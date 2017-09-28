@@ -60,15 +60,6 @@ except (ImportError, NameError):
     raise Exception(errormsg)
 Qt = QtCore.Qt
 
-# PyQtRibbon: import, and error msg if not installed
-try:
-    from PyQtRibbon.FileMenu import QFileMenu, QFileMenuPanel
-    from PyQtRibbon.RecentFilesManager import QRecentFilesManager
-    from PyQtRibbon.Ribbon import QRibbon, QRibbonTab, QRibbonSection
-except (ImportError, NameError):
-    errormsg = 'You haven\'t installed PyQtRibbon, or your installation of it is broken. Please download or fix it.'
-    raise Exception(errormsg)
-
 # Local imports
 import archive
 import LHTool
@@ -249,15 +240,6 @@ class ReggieSplashScreen(QtWidgets.QSplashScreen):
         with open('license_short.txt', 'r') as copyFile:
             drawText(copyFile.read(), *self.copyrightFontInfo)
 
-
-
-def GetUseRibbon():
-    """
-    This tells us if we're using the Ribbon
-    """
-    global UseRibbon
-    if str(setting('Menu')) == 'Ribbon': UseRibbon = True
-    else: UseRibbon = False
 
 
 defaultStyle = None
@@ -10005,13 +9987,13 @@ class ReggieTranslation():
                 3: 'Themes',
                 4: '[b]Reggie Preferences[/b][br]Customize Reggie Next by changing these settings.[br]Use the tabs below to view even more settings.[br]Reggie Next must be restarted before certain changes can take effect.',
                 5: '[b]Toolbar Preferences[/b][br]Choose menu items you would like to appear on the toolbar.[br]Reggie Next must be restarted before the toolbar can be updated.[br]',
-                6: '[b]Reggie Themes[/b][br]Pick a theme below to change application colors and icons.[br]You can download more themes at [a href="rvlution.net"]rvlution.net[/a].[br]Reggie Next must be restarted before the theme can be changed.',
+                6: '[b]Reggie Themes[/b][br]Pick a theme below to change application colors and icons.[br]Reggie Next must be restarted before the theme can be changed.',
                 7: None, # REMOVED: 'Show the splash screen:'
                 8: None, # REMOVED: 'If TPLLib cannot use a fast backend (recommended)'
                 9: None, # REMOVED: 'Always'
                 10: None, # REMOVED: 'Never'
                 11: 'Menu format:',
-                12: 'Use the ribbon',
+                12: None, # REMOVED: 'Use the ribbon'
                 13: 'Use the menubar',
                 14: 'Language:',
                 15: 'Recent Files data:',
@@ -10031,32 +10013,6 @@ class ReggieTranslation():
                 29: 'Use Old Tileset Picker',
                 30: 'You may need to restart Reggie Next for changes to take effect.',
                 31: 'Display lines indicating the leftmost x-position where entrances can be safely placed in zones',
-                },
-            'Ribbon': {
-                0: '&Home',
-                1: '&Actions',
-                2: '&View',
-                3: '&Game',
-                4: None, # REMOVED: 'H&elp'
-                5: 'Clipboard',
-                6: 'Freeze',
-                7: 'Level Information',
-                8: 'Area',
-                9: 'Selection',
-                10: 'Items',
-                11: 'Level Settings',
-                12: 'Areas',
-                13: 'Tilesets',
-                14: 'Layers',
-                15: 'Visibility',
-                16: 'Zoom',
-                17: 'Docks',
-                18: 'Reggie Next',
-                19: 'Libraries',
-                20: '([shortcut]) [description]',
-                21: ', ',
-                22: '(None) [description]',
-                23: '&File',
                 },
             'ScrShtDlg': {
                 0: 'Choose a Screenshot source',
@@ -13917,417 +13873,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
 
 
-class ReggieRibbon(QRibbon):
-    """
-    Class that represents Reggie's ribbon
-    """
-    def __init__(self):
-        """
-        Creates and initializes the Reggie Ribbon
-        """
-        QRibbon.__init__(self)
-
-        # Set up the file menu
-        self.fileMenu = ReggieRibbonFileMenu()
-        self.setFileMenu(self.fileMenu)
-        self.setFileTitle(trans.string('Ribbon', 23))
-
-        # Add tabs
-        self.btns = {}
-        self.addHomeTab()
-        self.addActionsTab()
-        self.addViewTab()
-
-        # Add the Help Menu
-        m = mainWindow.SetupHelpMenu()
-        self.setHelpMenu(m)
-        self.setHelpIcon(GetIcon('help'))
-
-        # Stylize on Windows
-        self.stylizeOnWindows(mainWindow)
-
-        global theme
-
-
-    def addHomeTab(self):
-        """
-        Adds the Home Tab
-        """
-        tab = self.addTab(trans.string('Ribbon', 0)) # "Home"
-        self.homeTab = tab
-
-        gi, ts, mw, qk = GetIcon, trans.string, mainWindow, QtGui.QKeySequence
-
-        # Clipboard Section
-        cSection = tab.addSection(ts('Ribbon', 5)) # "Clipboard"
-        a = cSection.addFullButton(gi('paste', True), ts('MenuItems', 30), mw.Paste, qk.Paste, ts('MenuItems', 31))
-        b = cSection.addSmallButton(gi('cut'),   ts('MenuItems', 26), mw.Cut,   qk.Cut,   ts('MenuItems', 27))
-        c = cSection.addSmallButton(gi('copy'),  ts('MenuItems', 28), mw.Copy,  qk.Copy,  ts('MenuItems', 29))
-        self.btns['paste'], self.btns['cut'], self.btns['copy'] = a, b, c
-        self.btns['cut'].setEnabled(False)
-        self.btns['copy'].setEnabled(False)
-
-        # Freeze Section
-        fSection = tab.addSection(ts('Ribbon', 6)) # "Freeze"
-        a = fSection.addSmallToggleButton(gi('objectsfreeze'),   None, mw.HandleObjectsFreeze,   'Ctrl+Shift+1', ts('MenuItems', 39))
-        b = fSection.addSmallToggleButton(gi('spritesfreeze'),   None, mw.HandleSpritesFreeze,   'Ctrl+Shift+2', ts('MenuItems', 41))
-        c = fSection.addSmallToggleButton(gi('entrancesfreeze'), None, mw.HandleEntrancesFreeze, 'Ctrl+Shift+3', ts('MenuItems', 43))
-        d = fSection.addSmallToggleButton(gi('locationsfreeze'), None, mw.HandleLocationsFreeze, 'Ctrl+Shift+4', ts('MenuItems', 45))
-        e = fSection.addSmallToggleButton(gi('pathsfreeze'),     None, mw.HandlePathsFreeze,     'Ctrl+Shift+5', ts('MenuItems', 47))
-        f = fSection.addSmallToggleButton(gi('commentsfreeze'),  None, mw.HandleCommentsFreeze,  'Ctrl+Shift+9', ts('MenuItems', 115))
-        self.btns['objfrz'], self.btns['sprfrz'], self.btns['entfrz'], self.btns['locfrz'], self.btns['pthfrz'], self.btns['comfrz'] = a, b, c, d, e, f
-
-        # Area Section
-        aSection = tab.addSection(ts('Ribbon', 8)) # "Area"
-        #a = aSection.addCustomWidget(self.AreaMenuButton())
-        b = aSection.addFullButton(gi('area', True), ts('MenuItems', 72), mw.HandleAreaOptions, 'Ctrl+Alt+A', ts('MenuItems', 73))
-        #self.btns['areasel'], self.btns['areaset'] = a, b
-            ##        LGroup.addButton(mainWindow.HandleAreaOptions, 'Ctrl+Alt+A', trans.string('MenuItems', 73), True, 'area', trans.string('MenuItems', 72))
-
-        # Set the toggle buttons to their default positions
-        self.btns['objfrz'].setChecked(ObjectsFrozen)
-        self.btns['sprfrz'].setChecked(SpritesFrozen)
-        self.btns['entfrz'].setChecked(EntrancesFrozen)
-        self.btns['locfrz'].setChecked(LocationsFrozen)
-        self.btns['pthfrz'].setChecked(PathsFrozen)
-        self.btns['comfrz'].setChecked(CommentsFrozen)
-
-        return # Everything after this is old
-
-##        cGroup = RibbonGroup(trans.string('Ribbon', 5)) # Clipboard
-##        tab.cutBtn   = cGroup.addButton(mainWindow.Cut, QtGui.QKeySequence.Cut, trans.string('MenuItems', 27), False, 'cut', trans.string('MenuItems', 26))
-##        tab.copyBtn  = cGroup.addButton(mainWindow.Copy, QtGui.QKeySequence.Copy, trans.string('MenuItems', 29), False, 'copy', trans.string('MenuItems', 28))
-##        tab.pasteBtn = cGroup.addButton(mainWindow.Paste, QtGui.QKeySequence.Paste, trans.string('MenuItems', 31), True, 'paste', trans.string('MenuItems', 30))
-##        tab.cutBtn.setEnabled(False)
-##        tab.copyBtn.setEnabled(False) # nothing should be selected yet
-##
-##        fGroup = RibbonGroup(trans.string('Ribbon', 6)) # Freeze
-##
-##
-##        iGroup = RibbonGroup(trans.string('Ribbon', 7)) # Level Information
-##        iGroup.addButton(mainWindow.HandleInfo, 'Ctrl+Alt+I', trans.string('MenuItems', 13), True, 'info', trans.string('MenuItems', 12))
-##        tab.infoWidget = InfoPreviewWidget(Qt.Horizontal)
-##        iGroup.addWidget(tab.infoWidget)
-##
-##        aGroup = RibbonGroup(trans.string('Ribbon', 8)) # Area
-##        tab.areaComboBox = QtWidgets.QComboBox()
-##        tab.areaComboBox.activated.connect(mainWindow.HandleSwitchArea)
-##        aGroup.addWidget(tab.areaComboBox)
-##
-##        tab.addGroup(cGroup)
-##        tab.addGroup(fGroup)
-##        tab.addGroup(iGroup)
-##        tab.addGroup(aGroup)
-##        tab.finish()
-##
-##        return tab
-
-
-    def addActionsTab(self):
-        """
-        Adds the Actions Tab
-        """
-        tab = self.addTab(trans.string('Ribbon', 1)) # "Actions"
-        self.actionsTab = tab
-
-        gi, ts, mw, qk = GetIcon, trans.string, mainWindow, QtGui.QKeySequence
-
-        return # Everything after this is old
-
-##        sGroup = RibbonGroup(trans.string('Ribbon', 9)) # Selection
-##        sGroup.addButton(mainWindow.SelectAll, QtGui.QKeySequence.SelectAll, trans.string('MenuItems', 23), False, 'select', trans.string('MenuItems', 22))
-##        tab.deselBtn = sGroup.addButton(mainWindow.Deselect, 'Ctrl+D', trans.string('MenuItems', 25), False, 'deselect', trans.string('MenuItems', 24))
-##        tab.deselBtn.setEnabled(False) # nothing should be selected upon startup
-##
-##        iGroup = RibbonGroup(trans.string('Ribbon', 10)) # Items
-##        tab.shiftBtn = iGroup.addButton(mainWindow.ShiftItems, 'Ctrl+Shift+S', trans.string('MenuItems', 33), False, 'move', trans.string('MenuItems', 32))
-##        tab.mergeBtn = iGroup.addButton(mainWindow.MergeLocations, 'Ctrl+Shift+E', trans.string('MenuItems', 35), False, 'merge', trans.string('MenuItems', 34))
-##        iGroup.addButton(mainWindow.SwapObjectsTilesets, 'Ctrl+Shift+L', trans.string('MenuItems', 105), False, 'swap', trans.string('MenuItems', 104))
-##        iGroup.addButton(mainWindow.SwapObjectsTypes, 'Ctrl+Shift+Y', trans.string('MenuItems', 107), False, 'swap', trans.string('MenuItems', 106))
-##
-##        tab.shiftBtn.setEnabled(False)
-##        tab.mergeBtn.setEnabled(False)
-##
-##        LGroup = RibbonGroup(trans.string('Ribbon', 11)) # Level Settings
-##        LGroup.addButton(mainWindow.HandleAreaOptions, 'Ctrl+Alt+A', trans.string('MenuItems', 73), True, 'area', trans.string('MenuItems', 72))
-##        LGroup.addButton(mainWindow.HandleZones, 'Ctrl+Alt+Z', trans.string('MenuItems', 75), True, 'zones', trans.string('MenuItems', 74))
-##        LGroup.addButton(mainWindow.HandleBG, 'Ctrl+Alt+B', trans.string('MenuItems', 77), True, 'background', trans.string('MenuItems', 76))
-##        LGroup.addButton(mainWindow.HandleDiagnostics, 'Ctrl+Shift+D', trans.string('MenuItems', 37), True, 'diagnostics', trans.string('MenuItems', 36))
-##        LGroup.addButton(mainWindow.HandleChangeGamePath, 'Ctrl+Alt+G', trans.string('MenuItems', 17), False, 'folderpath', trans.string('MenuItems', 16))
-##        LGroup.addButton(mainWindow.HandleScreenshot, 'Ctrl+Alt+S', trans.string('MenuItems', 15), False, 'screenshot', trans.string('MenuItems', 14))
-##
-##        aGroup = RibbonGroup(trans.string('Ribbon', 12)) # Areas
-##        tab.addAreaBtn    = aGroup.addButton(mainWindow.HandleAddNewArea, 'Ctrl+Alt+N', trans.string('MenuItems', 79), True, 'add', trans.string('MenuItems', 78))
-##        tab.importAreaBtn = aGroup.addButton(mainWindow.HandleImportArea, 'Ctrl+Alt+O', trans.string('MenuItems', 81), False, 'import', trans.string('MenuItems', 80))
-##        tab.deleteAreaBtn = aGroup.addButton(mainWindow.HandleDeleteArea, 'Ctrl+Alt+D', trans.string('MenuItems', 83), False, 'delete', trans.string('MenuItems', 82))
-##
-##        tGroup = RibbonGroup(trans.string('Ribbon', 13)) # Tilesets
-##        tGroup.addButton(mainWindow.ReloadTilesets, 'Ctrl+Shift+R', trans.string('MenuItems', 85), True, 'reload', trans.string('MenuItems', 84))
-##
-##        tab.addGroup(sGroup)
-##        tab.addGroup(iGroup)
-##        tab.addGroup(LGroup)
-##        tab.addGroup(aGroup)
-##        tab.addGroup(tGroup)
-##        tab.finish()
-##
-##        return tab
-
-    def addViewTab(self):
-        """
-        Adds the View Tab
-        """
-        tab = self.addTab(trans.string('Ribbon', 2)) # "View"
-        self.viewTab = tab
-
-        gi, ts, mw, qk = GetIcon, trans.string, mainWindow, QtGui.QKeySequence
-
-        # Layers
-        LSection = tab.addSection(ts('Ribbon', 14)) # "Layers"
-        a = LSection.addFullToggleButton(gi('layer0', True), ts('MenuItems', 48), mw.HandleUpdateLayer0, 'Ctrl+1', ts('MenuItems', 49))
-        b = LSection.addFullToggleButton(gi('layer1', True), ts('MenuItems', 50), mw.HandleUpdateLayer1, 'Ctrl+2', ts('MenuItems', 51))
-        c = LSection.addFullToggleButton(gi('layer2', True), ts('MenuItems', 52), mw.HandleUpdateLayer2, 'Ctrl+3', ts('MenuItems', 53))
-        self.btns['lay0'], self.btns['lay1'], self.btns['lay2'] = a, b, c
-
-        # Tilesets
-        tSection = tab.addSection(ts('Ribbon', 13)) # "Tilesets"
-        a = tSection.addSmallToggleButton(gi('animation'),  ts('MenuItems', 108), mw.HandleTilesetAnimToggle, 'Ctrl+7', ts('MenuItems', 109))
-        b = tSection.addSmallToggleButton(gi('collisions'), ts('MenuItems', 110), mw.HandleCollisionsToggle,  'Ctrl+8', ts('MenuItems', 111))
-        self.btns['anim'], self.btns['colls'] = a, b
-
-        # Visibility
-        vSection = tab.addSection(ts('Ribbon', 15)) # "Visibility"
-        a = vSection.addSmallToggleButton(gi('sprites'),    ts('MenuItems', 54),  mw.HandleSpritesVisibility,   'Ctrl+4', ts('MenuItems', 55))
-        b = vSection.addSmallToggleButton(gi('sprites'),    ts('MenuItems', 56),  mw.HandleSpriteImages,        'Ctrl+6', ts('MenuItems', 57))
-        c = vSection.addSmallToggleButton(gi('locations'),  ts('MenuItems', 58),  mw.HandleLocationsVisibility, 'Ctrl+5', ts('MenuItems', 59))
-        d = vSection.addSmallToggleButton(gi('comments'),   ts('MenuItems', 116), mw.HandleCommentsVisibility,  'Ctrl+0', ts('MenuItems', 117))
-        e = vSection.addSmallToggleButton(gi('realview'),   ts('MenuItems', 118), mw.HandleRealViewToggle,  'Ctrl+9', ts('MenuItems', 119))
-        f = vSection.addFullButton(       gi('grid', True), ts('MenuItems', 60),  mw.HandleSwitchGrid,          'Ctrl+G', ts('MenuItems', 61))
-        self.btns['showsprites'], self.btns['showspriteimgs'], self.btns['showlocs'], self.btns['showcoms'], self.btns['realview'], self.btns['grid'] = a, b, c, d, e, f
-
-        # Set the toggle buttons to their default start values
-        self.btns['lay0'].setChecked(Layer0Shown)
-        self.btns['lay1'].setChecked(Layer1Shown)
-        self.btns['lay2'].setChecked(Layer2Shown)
-        self.btns['showsprites'].setChecked(SpritesShown)
-        self.btns['showspriteimgs'].setChecked(SpriteImagesShown)
-        self.btns['showlocs'].setChecked(LocationsShown)
-        self.btns['showcoms'].setChecked(CommentsShown)
-        self.btns['realview'].setChecked(RealViewEnabled)
-
-        return # Everything after this is old
-
-##        TGroup = RibbonGroup(trans.string('Ribbon', 13)) # Tilesets
-##        tab.L0Btn = TGroup.addButton(mainWindow.HandleUpdateLayer0, 'Ctrl+1', trans.string('MenuItems', 49), True, 'layer0', trans.string('MenuItems', 48), True, True)
-##        tab.L1Btn = TGroup.addButton(mainWindow.HandleUpdateLayer1, 'Ctrl+2', trans.string('MenuItems', 51), True, 'layer1', trans.string('MenuItems', 50), True, True)
-##        tab.L2Btn = TGroup.addButton(mainWindow.HandleUpdateLayer2, 'Ctrl+3', trans.string('MenuItems', 53), True, 'layer2', trans.string('MenuItems', 52), True, True)
-##        tab.TileAnimBtn = TGroup.addButton(mainWindow.HandleTilesetAnimToggle, 'Ctrl+7', trans.string('MenuItems', 109) , True, 'animation', trans.string('MenuItems', 108), True, False)
-##
-##        iGroup = RibbonGroup(trans.string('Ribbon', 15)) # Visibility
-##        tab.ShowSpritesBtn = iGroup.addButton(mainWindow.HandleSpritesVisibility, 'Ctrl+4', trans.string('MenuItems', 55), False, 'sprites', trans.string('MenuItems', 54), True, SpritesShown)
-##        tab.ShowSpriteImgsBtn = iGroup.addButton(mainWindow.HandleSpriteImages, 'Ctrl+6', trans.string('MenuItems', 57), False, 'sprites', trans.string('MenuItems', 56), True, not SpriteImagesShown)
-##        tab.ShowLocsBtn = iGroup.addButton(mainWindow.HandleLocationsVisibility, 'Ctrl+5', trans.string('MenuItems', 59), True, 'locations', trans.string('MenuItems', 58), True, not LocationsShown)
-##        iGroup.addButton(mainWindow.HandleSwitchGrid, 'Ctrl+G', trans.string('MenuItems', 61), True, 'grid', trans.string('MenuItems', 60))
-##
-##        zGroup = RibbonGroup(trans.string('Ribbon', 16)) # Zoom
-##        tab.zoomInBtn =     zGroup.addButton(mainWindow.HandleZoomIn, QtGui.QKeySequence.ZoomIn, trans.string('MenuItems', 65), False, 'zoomin', trans.string('MenuItems', 64))
-##        tab.zoomMaxBtn =    zGroup.addButton(mainWindow.HandleZoomMax, 'Ctrl+PgDown', trans.string('MenuItems', 63), False, 'zoommax', trans.string('MenuItems', 62))
-##        tab.zoomActualBtn = zGroup.addButton(mainWindow.HandleZoomActual, 'Ctrl+0', trans.string('MenuItems', 67), True, 'zoomactual', trans.string('MenuItems', 66))
-##        tab.zoomOutBtn =    zGroup.addButton(mainWindow.HandleZoomOut, QtGui.QKeySequence.ZoomOut, trans.string('MenuItems', 69), False, 'zoomout', trans.string('MenuItems', 68))
-##        tab.zoomMinBtn =    zGroup.addButton(mainWindow.HandleZoomMin, 'Ctrl+PgUp', trans.string('MenuItems', 71), False, 'zoommin', trans.string('MenuItems', 70))
-##
-##        tab.addGroup(TGroup)
-##        tab.addGroup(iGroup)
-##        tab.addGroup(zGroup)
-##        # tab.finish() is called later, after adding palette and overview buttons
-##
-##        return tab
-
-
-    def addOverview(self, dock, act):
-        """
-        Adds the Show/Hide Overview action to the ribbon
-        """
-        return
-        self.oDock = dock
-        self.dockGroup = RibbonGroup(trans.string('Ribbon', 17))
-        self.overBtn = self.dockGroup.addButton(self.HandleOverviewClick, act.shortcut(), trans.string('MenuItems', 95), True, 'overview', trans.string('MenuItems', 94), True, True)
-
-    def addPalette(self, dock, act):
-        """
-        Adds the Show/Hide Palette action to the ribbon
-        """
-        return
-        self.pDock = dock
-        self.palBtn = self.dockGroup.addButton(self.HandlePaletteClick, act.shortcut(), trans.string('MenuItems', 97), True, 'palette', trans.string('MenuItems', 96), True, True)
-
-    def addIslandGen(self, dock, act):
-        """
-        Adds the Show/Hide Island Generator action to the ribbon
-        """
-        return
-        self.iDock = dock
-        self.genBtn = self.dockGroup.addButton(self.HandleIslandGenClick, act.shortcut(), trans.string('MenuItems', 101), True, 'islandgen', trans.string('MenuItems', 100), True, True)
-        self.viewTab.addGroup(self.dockGroup)
-        self.viewTab.finish()
-
-    @QtCore.pyqtSlot(bool)
-    def HandleOverviewClick(self, checked = None):
-        """
-        Updates the overview btn
-        """
-        return
-        visible = checked if checked is not None else not self.oDock.isVisible()
-        self.oDock.setVisible(visible)
-        if checked is None: self.overBtn.setChecked(visible)
-
-    @QtCore.pyqtSlot(bool)
-    def HandlePaletteClick(self, checked = None):
-        """
-        Updates the palette btn
-        """
-        return
-        visible = checked if checked is not None else not self.pDock.isVisible()
-        self.pDock.setVisible(visible)
-        if checked is None: self.palBtn.setChecked(visible)
-
-    @QtCore.pyqtSlot(bool)
-    def HandleIslandGenClick(self, checked = None):
-        """
-        Updates the island generator btn
-        """
-        return
-        visible = checked if checked is not None else not self.iDock.isVisible()
-        self.iDock.setVisible(visible)
-        if checked is None: self.genBtn.setChecked(visible)
-
-    def updateAreaComboBox(self, areas, area):
-        """
-        Updates the Area Combo Box
-        """
-        return
-        self.homeTab.areaComboBox.clear()
-        for i in range(1, len(Level.areas) + 1):
-            self.homeTab.areaComboBox.addItem(trans.string('AreaCombobox', 0, '[num]', i))
-        self.homeTab.areaComboBox.setCurrentIndex(area-1)
-
-    def setBtnEnabled(self, btn, enabled):
-        """
-        Enables or disables a button
-        """
-        try: self.btns[btn].setEnabled(enabled)
-        except Exception: print('Ribbon enabling error: ' + btn + ', ' + str(enabled))
-
-
-class ReggieRibbonFileMenu(QFileMenu):
-    """
-    Widget that represents the file menu for the ribbon
-    """
-    def __init__(self):
-        """
-        Creates and initializes the menu
-        """
-        QFileMenu.__init__(self)
-        self.setRecentFilesText('Recent levels')
-        self.btns = {}
-
-        # Add a recent files manager
-        self.recentFilesMgr = QRecentFilesManager(setting('RecentFiles'))
-        self.setRecentFilesManager(self.recentFilesMgr)
-        self.recentFileClicked.connect(self.handleRecentFileClicked)
-
-        # Get ready to add buttons
-        gi, ts, mw, qk = GetIcon, trans.string, mainWindow, QtGui.QKeySequence
-
-        # Create right-side panels
-        openPanel = QFileMenuPanel('Open an existing level')
-        a = openPanel.addButton(gi('open',         True), ts('MenuItems', 2),  mw.HandleOpenFromName, qk.Open,        ts('MenuItems', 3))
-        b = openPanel.addButton(gi('openfromfile', True), ts('MenuItems', 4),  mw.HandleOpenFromFile, 'Ctrl+Shift+O', ts('MenuItems', 5))
-        self.btns['openname2'], self.btns['openfile'] = a, b
-
-        # Add left-side buttons
-        a = self.addButton(                gi('new', True),    ts('MenuItems', 0),   mw.HandleNewLevel,     qk.New,             ts('MenuItems', 1))
-        b = self.addArrowButton(openPanel, gi('open', True),   ts('MenuItems', 112), mw.HandleOpenFromName, None,               ts('MenuItems', 3))
-        c = self.addButton(                gi('save', True),   ts('MenuItems', 8),   mw.HandleSave,         qk.Save,            ts('MenuItems', 9))
-        d = self.addButton(                gi('saveas', True), ts('MenuItems', 10),  mw.HandleSaveAs,       qk.SaveAs,          ts('MenuItems', 11))
-        self.btns['new'], self.btns['openname1'], self.btns['save'], self.btns['saveas'] = a, b, c, d
-        self.addSeparator()
-        a = self.addButton(gi('info', True),     trans.string('MenuItems', 12), mw.HandleInfo,        'Ctrl+Alt+I', trans.string('MenuItems', 13))
-        b = self.addButton(gi('settings', True), trans.string('MenuItems', 18), mw.HandlePreferences, 'Ctrl+Alt+P', trans.string('MenuItems', 19))
-        self.addSeparator()
-        c = self.addButton(gi('delete', True), trans.string('MenuItems', 20), mw.HandleExit, qk.Quit, trans.string('MenuItems', 21))
-        self.btns['lvlinfo'], self.btns['prefs'], self.btns['exit'] = a, b, c
-
-##        # create a left-column layout
-##        leftLayout = QtWidgets.QVBoxLayout()
-##        leftLayout.addWidget(a)
-##        leftLayout.addWidget(b)
-##        leftLayout.addWidget(c)
-##        leftLayout.addWidget(d)
-##        leftLayout.addWidget(e)
-##
-##        # create the Info Preview Widget
-##        self.InfoWidget = InfoPreviewWidget(Qt.Vertical)
-##        L = QtWidgets.QVBoxLayout()
-##        L.addWidget(self.InfoWidget)
-##        InfoBox = QtWidgets.QGroupBox(trans.string('InfoDlg', 0)) # 'Level Information'
-##        InfoBox.setLayout(L)
-##
-##        # create the Recent Files group
-##        recentGroup = QtWidgets.QGroupBox(trans.string('MenuItems', 6)) # 'Recent Files'
-##        RL = QtWidgets.QVBoxLayout()
-##        RL.addWidget(mainWindow.RecentMenu)
-##        RL.addStretch(1)
-##        recentGroup.setLayout(RL)
-##
-##        # create a bottom buttons layout
-##        prefsButton = QtWidgets.QPushButton(GetIcon('settings'), trans.string('MenuItems', 18)) # Reggie Preferences
-##        prefsButton.clicked.connect(mainWindow.HandlePreferences)
-##        prefsButton.setToolTip(trans.string('MenuItems', 19))
-##        s = QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Alt+P'), mainWindow)
-##        s.activated.connect(mainWindow.HandlePreferences)
-##        self.setButtonColor(prefsButton)
-##        exitButton = QtWidgets.QPushButton(GetIcon('delete'), trans.string('MenuItems', 20)) # Exit Reggie
-##        exitButton.clicked.connect(mainWindow.HandleExit)
-##        exitButton.setToolTip(trans.string('MenuItems', 21))
-##        s = QtGui.QShortcut(QtGui.QKeySequence.Quit, mainWindow)
-##        s.activated.connect(mainWindow.HandleExit)
-##        self.setButtonColor(exitButton)
-##        bottomButtonsLayout = QtWidgets.QHBoxLayout()
-##        bottomButtonsLayout.addStretch(1)
-##        bottomButtonsLayout.addWidget(prefsButton)
-##        bottomButtonsLayout.addWidget(exitButton)
-##
-##        # create a top layout
-##        self.topLayout = QtWidgets.QGridLayout()
-##        self.topLayout.addLayout(leftLayout, 0, 0)
-##        self.topLayout.addWidget(InfoBox, 1, 0)
-##        self.topLayout.addWidget(recentGroup, 0, 1, 3, 1)
-##        self.topLayout.addLayout(bottomButtonsLayout,  3, 0, 1, 2)
-##        self.topLayout.setRowStretch(2, 1)
-##
-##        # create a bottom (watermark) layout
-##        bottomLayout = QtWidgets.QGridLayout()
-##        v = self.getWatermark()
-##        if v is not None:
-##            w = QtWidgets.QLabel()
-##            w.setPixmap(v)
-##            bottomLayout.addWidget(w, 0, 0, 1, 1, Qt.AlignBottom | Qt.AlignRight)
-##
-##        # create a main layout
-##        self.mainLayout = QtWidgets.QGridLayout()
-##        self.mainLayout.addLayout(bottomLayout, 0, 0)
-##        self.mainLayout.addLayout(self.topLayout, 0, 0)
-##        self.setLayout(self.mainLayout)
-
-    def handleRecentFileClicked(self, path):
-        """
-        Handles recent files being clicked
-        """
-        mainWindow.LoadLevel(str(path), True, 1)
-
-
-
 class InfoPreviewWidget(QtWidgets.QWidget):
     """
     Widget that shows a preview of the level metadata info - available in vertical & horizontal flavors
@@ -14957,19 +14502,12 @@ class PreferencesDialog(QtWidgets.QDialog):
 
         # Update it
         self.tabChanged()
-        self.menuSettingChanged()
 
     def tabChanged(self):
         """
         Handles the current tab being changed
         """
         self.infoLabel.setText(self.tabWidget.currentWidget().info)
-
-    def menuSettingChanged(self):
-        """
-        Handles the menu-style option being changed
-        """
-        self.tabWidget.setTabEnabled(1, self.generalTab.MenuM.isChecked())
 
 
     def getGeneralTab(self):
@@ -14983,23 +14521,11 @@ class PreferencesDialog(QtWidgets.QDialog):
             """
             info = trans.string('PrefsDlg', 4)
 
-            def __init__(self, menuHandler):
+            def __init__(self):
                 """
                 Initializes the General Tab
                 """
                 QtWidgets.QWidget.__init__(self)
-
-                # Add the Menu Format settings
-                self.MenuR = QtWidgets.QRadioButton(trans.string('PrefsDlg', 12))
-                self.MenuM = QtWidgets.QRadioButton(trans.string('PrefsDlg', 13))
-                self.MenuG = QtWidgets.QButtonGroup() # huge glitches if it's not assigned to self.something
-                self.MenuG.setExclusive(True)
-                self.MenuG.addButton(self.MenuR)
-                self.MenuG.addButton(self.MenuM)
-                MenuL = QtWidgets.QVBoxLayout()
-                MenuL.addWidget(self.MenuR)
-                MenuL.addWidget(self.MenuM)
-                self.MenuG.buttonClicked.connect(menuHandler)
 
                 # Add the Tileset Selection settings
                 self.TileD = QtWidgets.QRadioButton(trans.string('PrefsDlg', 28))
@@ -15026,7 +14552,6 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
-                L.addRow(trans.string('PrefsDlg', 11), MenuL)
                 L.addRow(trans.string('PrefsDlg', 27), TileL)
                 L.addRow(trans.string('PrefsDlg', 14), self.Trans)
                 L.addRow(trans.string('PrefsDlg', 15), ClearRecentBtn)
@@ -15041,9 +14566,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                 """
                 Read the preferences and check the respective boxes
                 """
-                if str(setting('Menu')) == 'Ribbon': self.MenuR.setChecked(True)
-                else: self.MenuM.setChecked(True)
-
                 if str(setting('TilesetTab')) != 'Old': self.TileD.setChecked(True)
                 else: self.TileO.setChecked(True)
 
@@ -15076,7 +14598,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.RecentMenu.clearAll()
 
 
-        return GeneralTab(self.menuSettingChanged)
+        return GeneralTab()
 
 
     def getToolbarTab(self):
@@ -15660,9 +15182,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.view.YScrollBar.valueChanged.connect(self.YScrollChange)
         self.view.FrameSize.connect(self.HandleWindowSizeChange)
 
-        # make a 'ribbon' placeholder
-        self.ribbon = None
-
         # done creating the window!
         self.setCentralWidget(self.view)
 
@@ -15748,20 +15267,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.RecentMenu = RecentFilesMenu()
         self.GameDefMenu = GameDefMenu()
 
-        self.ribbon = None
-        if UseRibbon:
-            self.createRibbon()
-        else:
-            self.createMenubar()
-
-    def createRibbon(self):
-        """
-        Create a ribbon rather than a menubar/toolbar
-        """
-        self.ribbon = ReggieRibbon()
-        self.setMenuWidget(self.ribbon)
-        self.RecentFilesMgr = self.ribbon.fileMenu.recentFilesMgr
-        self.RecentFilesMgr.pathAdded.connect(self.handleRecentFilesPathAdded)
+        self.createMenubar()
 
     actions = {}
     def createMenubar(self):
@@ -15833,9 +15339,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.CreateAction('reloadgfx', self.ReloadTilesets, GetIcon('reload'), trans.stringOneLine('MenuItems', 84), trans.stringOneLine('MenuItems', 85), QtGui.QKeySequence('Ctrl+Shift+R'))
 
         # Help actions are created later
-
-        # Recent Files Menu
-        self.RecentFilesMgr = QRecentFilesManager()
 
 
         # Configure them
@@ -15968,7 +15471,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
     def SetupHelpMenu(self, menu=None):
         """
-        Creates the help menu. This is separate because both the ribbon and the menubar use this
+        Creates the help menu.
         """
         self.CreateAction('infobox', self.AboutBox, GetIcon('reggie'), trans.stringOneLine('MenuItems', 86), trans.string('MenuItems', 87), QtGui.QKeySequence('Ctrl+Shift+I'))
         self.CreateAction('helpbox', self.HelpBox, GetIcon('contents'), trans.stringOneLine('MenuItems', 88), trans.string('MenuItems', 89), QtGui.QKeySequence('Ctrl+Shift+H'))
@@ -16090,13 +15593,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.toolbar.addSeparator()
 
 
-    def handleRecentFilesPathAdded(self, path):
-        """
-        Handles a file being added to self.RecentFilesMgr
-        """
-        setSetting('RecentFiles', self.RecentFilesMgr.data())
-
-
     def SetupDocksAndPanels(self):
         """
         Sets up the dock widgets and panels
@@ -16118,8 +15614,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         act.setShortcut(QtGui.QKeySequence('Ctrl+M'))
         act.setIcon(GetIcon('overview'))
         act.setStatusTip(trans.string('MenuItems', 95))
-        if UseRibbon: self.ribbon.addOverview(dock, act)
-        else: self.vmenu.addAction(act)
+        self.vmenu.addAction(act)
 
         # create the sprite editor panel
         dock = QtWidgets.QDockWidget(trans.string('SpriteDataEditor', 0), self)
@@ -16195,8 +15690,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         act.setShortcut(QtGui.QKeySequence('Ctrl+I'))
         act.setIcon(GetIcon('islandgen'))
         act.setToolTip(trans.string('MenuItems', 101))
-        if UseRibbon: self.ribbon.addIslandGen(dock, act)
-        else: self.vmenu.addAction(act)
+        self.vmenu.addAction(act)
 
         # create the palette
         dock = QtWidgets.QDockWidget(trans.string('MenuItems', 96), self)
@@ -16209,8 +15703,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         act.setShortcut(QtGui.QKeySequence('Ctrl+P'))
         act.setIcon(GetIcon('palette'))
         act.setStatusTip(trans.string('MenuItems', 97))
-        if UseRibbon: self.ribbon.addPalette(dock, act)
-        else: self.vmenu.addAction(act)
+        self.vmenu.addAction(act)
 
         self.addDockWidget(Qt.RightDockWidgetArea, dock)
         dock.setVisible(True)
@@ -16551,12 +16044,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if clip.startswith('ReggieClip|') and clip.endswith('|%'):
                 self.clipboard = clip.replace(' ', '').replace('\n', '').replace('\r', '').replace('\t', '')
 
-                if UseRibbon: self.ribbon.setBtnEnabled('Paste', True)
-                else: self.actions['paste'].setEnabled(True)
+                self.actions['paste'].setEnabled(True)
             else:
                 self.clipboard = None
-                if UseRibbon: self.ribbon.setBtnEnabled('Paste', False)
-                else: self.actions['paste'].setEnabled(False)
+                self.actions['paste'].setEnabled(False)
 
 
     @QtCore.pyqtSlot(int)
@@ -16940,10 +16431,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             if len(clipboard_o) > 0 or len(clipboard_s) > 0:
                 SetDirty()
-                if UseRibbon: self.ribbon.setBtnEnabled('Cut', False)
-                else: self.actions['cut'].setEnabled(False)
-                if UseRibbon: self.ribbon.setBtnEnabled('Paste', True)
-                else: self.actions['paste'].setEnabled(True)
+                self.actions['cut'].setEnabled(False)
+                self.actions['paste'].setEnabled(True)
                 self.clipboard = self.encodeObjects(clipboard_o, clipboard_s)
                 self.systemClipboard.setText(self.clipboard)
 
@@ -16971,8 +16460,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     clipboard_s.append(obj)
 
             if len(clipboard_o) > 0 or len(clipboard_s) > 0:
-                if UseRibbon: self.ribbon.setBtnEnabled('Paste', True)
-                else: self.actions['paste'].setEnabled(True)
+                self.actions['paste'].setEnabled(True)
                 self.clipboard = self.encodeObjects(clipboard_o, clipboard_s)
                 self.systemClipboard.setText(self.clipboard)
 
@@ -17495,11 +16983,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec_() == QtWidgets.QDialog.Rejected:
             return
 
-        # Get the Menubar/Ribbon setting
-        if dlg.generalTab.MenuR.isChecked():
-            setSetting('Menu', 'Ribbon')
-        else:
-            setSetting('Menu', 'Menubar')
+        # Get the Menubar setting
+        setSetting('Menu', 'Menubar')
 
         # Get the Tileset Tab setting
         if dlg.generalTab.TileD.isChecked():
@@ -17624,8 +17109,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('AutoSaveFileData', 'x')
 
         self.UpdateTitle()
-
-        self.RecentFilesMgr.addPath(self.fileSavePath)
 
 
     @QtCore.pyqtSlot()
@@ -18023,19 +17506,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.levelOverview.mainWindowScale = z/100.0
 
         zi = self.ZoomLevels.index(z)
-        if UseRibbon:
-            # zoomMax and zoomMin are handled by the ribbon itself
-            self.ribbon.setBtnEnabled('zoommax', zi < len(self.ZoomLevels) - 1)
-            self.ribbon.setBtnEnabled('zoomin', zi < len(self.ZoomLevels) - 1)
-            self.ribbon.setBtnEnabled('zoom100', z != 100.0)
-            self.ribbon.setBtnEnabled('zoomout', zi > 0)
-            self.ribbon.setBtnEnabled('zoommin', zi > 0)
-        else:
-            self.actions['zoommax'].setEnabled(zi < len(self.ZoomLevels) - 1)
-            self.actions['zoomin'] .setEnabled(zi < len(self.ZoomLevels) - 1)
-            self.actions['zoomactual'].setEnabled(z != 100.0)
-            self.actions['zoomout'].setEnabled(zi > 0)
-            self.actions['zoommin'].setEnabled(zi > 0)
+        self.actions['zoommax'].setEnabled(zi < len(self.ZoomLevels) - 1)
+        self.actions['zoomin'] .setEnabled(zi < len(self.ZoomLevels) - 1)
+        self.actions['zoomactual'].setEnabled(z != 100.0)
+        self.actions['zoomout'].setEnabled(zi > 0)
+        self.actions['zoommin'].setEnabled(zi > 0)
 
         self.ZoomWidget.setZoomLevel(z)
         self.ZoomStatusWidget.setZoomLevel(z)
@@ -18227,13 +17702,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         mainWindow.levelOverview.maxY = 40
 
         # Fill up the area list
-        if UseRibbon:
-            self.ribbon.updateAreaComboBox(len(Level.areas), area)
-        else:
-            self.areaComboBox.clear()
-            for i in range(1, len(Level.areas) + 1):
-                self.areaComboBox.addItem(trans.string('AreaCombobox', 0, '[num]', i))
-            self.areaComboBox.setCurrentIndex(areaNum - 1)
+        self.areaComboBox.clear()
+        for i in range(1, len(Level.areas) + 1):
+            self.areaComboBox.addItem(trans.string('AreaCombobox', 0, '[num]', i))
+        self.areaComboBox.setCurrentIndex(areaNum - 1)
 
         self.levelOverview.update()
 
@@ -18248,17 +17720,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.ZoomTo(100.0)
 
         # Reset some editor things
-        if UseRibbon:
-            self.ribbon.setBtnEnabled('addarea', len(Level.areas) < 4)
-            self.ribbon.setBtnEnabled('imarea', len(Level.areas) < 4)
-            self.ribbon.setBtnEnabled('delarea', len(Level.areas) > 1)
-        else:
-            self.actions['showlay0'].setChecked(True)
-            self.actions['showlay1'].setChecked(True)
-            self.actions['showlay2'].setChecked(True)
-            self.actions['addarea'].setEnabled(len(Level.areas) < 4)
-            self.actions['importarea'].setEnabled(len(Level.areas) < 4)
-            self.actions['deletearea'].setEnabled(len(Level.areas) > 1)
+        self.actions['showlay0'].setChecked(True)
+        self.actions['showlay1'].setChecked(True)
+        self.actions['showlay2'].setChecked(True)
+        self.actions['addarea'].setEnabled(len(Level.areas) < 4)
+        self.actions['importarea'].setEnabled(len(Level.areas) < 4)
+        self.actions['deletearea'].setEnabled(len(Level.areas) > 1)
 
         # Turn snapping back on
         OverrideSnapping = False
@@ -18277,9 +17744,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Remove the splashscreen
         app.splashScreen.hide()
         del app.splashScreen
-
-        # Add the path to Recent Files
-        self.RecentFilesMgr.addPath(mainWindow.fileSavePath)
 
         # If we got this far, everything worked! Return True.
         return True
@@ -18448,29 +17912,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if len(selitems) == 0:
             # nothing is selected
-            if UseRibbon:
-                self.ribbon.setBtnEnabled('cut', False)
-                self.ribbon.setBtnEnabled('copy', False)
-                self.ribbon.setBtnEnabled('shiftitems', False)
-                self.ribbon.setBtnEnabled('mergelocs', False)
-            else:
-                self.actions['cut'].setEnabled(False)
-                self.actions['copy'].setEnabled(False)
-                self.actions['shiftitems'].setEnabled(False)
-                self.actions['mergelocations'].setEnabled(False)
+            self.actions['cut'].setEnabled(False)
+            self.actions['copy'].setEnabled(False)
+            self.actions['shiftitems'].setEnabled(False)
+            self.actions['mergelocations'].setEnabled(False)
 
         elif len(selitems) == 1:
             # only one item, check the type
-            if UseRibbon:
-                self.ribbon.setBtnEnabled('cut', True)
-                self.ribbon.setBtnEnabled('copy', True)
-                self.ribbon.setBtnEnabled('shiftitems', True)
-                self.ribbon.setBtnEnabled('mergelocs', False)
-            else:
-                self.actions['cut'].setEnabled(True)
-                self.actions['copy'].setEnabled(True)
-                self.actions['shiftitems'].setEnabled(True)
-                self.actions['mergelocations'].setEnabled(False)
+            self.actions['cut'].setEnabled(True)
+            self.actions['copy'].setEnabled(True)
+            self.actions['shiftitems'].setEnabled(True)
+            self.actions['mergelocations'].setEnabled(False)
 
             item = selitems[0]
             self.selObj = item
@@ -18509,14 +17961,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             updateModeInfo = True
 
             # more than one item
-            if UseRibbon:
-                self.ribbon.setBtnEnabled('cut', True)
-                self.ribbon.setBtnEnabled('copy', True)
-                self.ribbon.setBtnEnabled('shiftitems', True)
-            else:
-                self.actions['cut'].setEnabled(True)
-                self.actions['copy'].setEnabled(True)
-                self.actions['shiftitems'].setEnabled(True)
+            self.actions['cut'].setEnabled(True)
+            self.actions['copy'].setEnabled(True)
+            self.actions['shiftitems'].setEnabled(True)
 
 
 
@@ -18541,8 +17988,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if func_ii(item, type_com): com += 1
 
         if loc > 2:
-            if UseRibbon: self.ribbon.setBtnEnabled('MergeLocations', True)
-            else: self.actions['mergelocations'].setEnabled(True)
+            self.actions['mergelocations'].setEnabled(True)
 
         # write the statusbar label text
         text = ''
@@ -18603,11 +18049,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.pathEditorDock.setVisible(showPathPanel)
 
         if len(self.CurrentSelection) > 0:
-            if UseRibbon: self.ribbon.setBtnEnabled('desel', True)
-            else: self.actions['deselect'].setEnabled(True)
+            self.actions['deselect'].setEnabled(True)
         else:
-            if UseRibbon: self.ribbon.setBtnEnabled('desel', False)
-            else: self.actions['deselect'].setEnabled(False)
+            self.actions['deselect'].setEnabled(False)
 
         if updateModeInfo: self.UpdateModeInfo()
 
@@ -19639,7 +19083,6 @@ def main():
         sys.exit(1)
 
     # Load required stuff
-    global UseRibbon
     global Sprites
     global SpriteListData
     Sprites = None
@@ -19647,7 +19090,6 @@ def main():
     LoadGameDef()
     LoadTheme()
     LoadActionsLists()
-    GetUseRibbon()
     LoadConstantLists()
     SetAppStyle()
     LoadTilesetNames()

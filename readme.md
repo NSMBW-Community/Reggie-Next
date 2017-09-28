@@ -41,7 +41,6 @@ Download and install the following:
  * Python 3.4 (or newer) - http://www.python.org
  * PyQt 5.3 (or newer) - http://www.riverbankcomputing.co.uk/software/pyqt/intro
  * cx_Freeze 4.3 (or newer) (optional) - http://cx-freeze.sourceforge.net
- * PyQtRibbon (latest version) - https://github.com/RoadrunnerWMC/PyQtRibbon
  * TPLLib (latest version) - https://github.com/RoadrunnerWMC/TPLLib
 
 Run the following in a command prompt:  
@@ -91,7 +90,6 @@ Other Testers and Contributors:
 Python 3 - Python Software Foundation (https://www.python.org)  
 Qt 5 - Nokia (http://qt.nokia.com)  
 PyQt5 - Riverbank Computing (http://www.riverbankcomputing.co.uk/software/pyqt/intro)  
-PyQtRibbon - RoadrunnerWMC (https://github.com/RoadrunnerWMC/PyQtRibbon)  
 TPLLib - Tempus, RoadrunnerWMC (https://github.com/RoadrunnerWMC/TPLLib)  
 Wii.py - megazig, Xuzz, The Lemon Man, Matt_P, SquidMan, Omega (https://github.com/grp/Wii.py) (included)  
 Interface Icons - FlatIcons (http://flaticons.net)  
