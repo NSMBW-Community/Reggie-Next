@@ -10355,6 +10355,8 @@ class ReggieTranslation():
                 73: '[b]Lower Bounds 2:[/b][br]Unknown differences from the main lower bounds.',
                 74: 'Unknown Flag',
                 75: '[b]Unknown Flag:[/b][br]Unknown purpose. Seems to be always checked.',
+                76: 'Snap to 8x8 Grid',
+                77: 'Snap to 16x16 Grid',
                 },
             'Zones': {
                 0: 'Zone [num]',
@@ -12437,6 +12439,12 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_ypos.setToolTip(trans.string('ZonesDlg', 12))
         self.Zone_ypos.setValue(z.objy)
 
+        self.snapButton8 = QtWidgets.QPushButton(trans.string('ZonesDlg', 76))
+        self.snapButton8.clicked.connect(lambda: self.HandleSnapTo8x8Grid(z))
+
+        self.snapButton16 = QtWidgets.QPushButton(trans.string('ZonesDlg', 77))
+        self.snapButton16.clicked.connect(lambda: self.HandleSnapTo16x16Grid(z))
+
         self.Zone_width = QtWidgets.QSpinBox()
         self.Zone_width.setRange(300, 65535)
         self.Zone_width.setToolTip(trans.string('ZonesDlg', 14))
@@ -12470,6 +12478,8 @@ class ZoneTab(QtWidgets.QWidget):
         ZonePositionLayout = QtWidgets.QFormLayout()
         ZonePositionLayout.addRow(trans.string('ZonesDlg', 9), self.Zone_xpos)
         ZonePositionLayout.addRow(trans.string('ZonesDlg', 11), self.Zone_ypos)
+        ZonePositionLayout.addRow(self.snapButton8)
+        ZonePositionLayout.addRow(self.snapButton16)
 
         ZoneSizeLayout = QtWidgets.QFormLayout()
         ZoneSizeLayout.addRow(trans.string('ZonesDlg', 13), self.Zone_width)
@@ -12483,6 +12493,109 @@ class ZoneTab(QtWidgets.QWidget):
         innerLayout.addLayout(ZoneSizeLayout)
         self.Dimensions.setLayout(innerLayout)
 
+
+    @QtCore.pyqtSlot()
+    def HandleSnapTo8x8Grid(self, z):
+        """
+        Snaps the current zone to an 8x8 grid
+        """
+        left = self.Zone_xpos.value()
+        top = self.Zone_ypos.value()
+        right = left + self.Zone_width.value()
+        bottom = top + self.Zone_height.value()
+
+        if left % 8 < 4:
+            left -= (left % 8)
+        else:
+            left += 8 - (left % 8)
+
+        if top % 8 < 4:
+            top -= (top % 8)
+        else:
+            top += 8 - (top % 8)
+
+        if right % 8 < 4:
+            right -= (right % 8)
+        else:
+            right += 8 - (right % 8)
+
+        if bottom % 8 < 4:
+            bottom -= (bottom % 8)
+        else:
+            bottom += 8 - (bottom % 8)
+
+        if right <= left: right += 8
+        if bottom <= top: bottom += 8
+
+        right -= left
+        bottom -= top
+
+        if left < 16: left = 16
+        if top < 16: top = 16
+        if right < 304: right = 304
+        if bottom < 200: bottom = 200
+
+        if left > 65528: left = 65528
+        if top > 65528: top = 65528
+        if right > 65528: right = 65528
+        if bottom > 65528: bottom = 65528
+
+        self.Zone_xpos.setValue(left)
+        self.Zone_ypos.setValue(top)
+        self.Zone_width.setValue(right)
+        self.Zone_height.setValue(bottom)
+
+
+    @QtCore.pyqtSlot()
+    def HandleSnapTo16x16Grid(self, z):
+        """
+        Snaps the current zone to a 16x16 grid
+        """
+        left = self.Zone_xpos.value()
+        top = self.Zone_ypos.value()
+        right = left + self.Zone_width.value()
+        bottom = top + self.Zone_height.value()
+
+        if left % 16 < 8:
+            left -= (left % 16)
+        else:
+            left += 16 - (left % 16)
+
+        if top % 16 < 8:
+            top -= (top % 16)
+        else:
+            top += 16 - (top % 16)
+
+        if right % 16 < 8:
+            right -= (right % 16)
+        else:
+            right += 16 - (right % 16)
+
+        if bottom % 16 < 8:
+            bottom -= (bottom % 16)
+        else:
+            bottom += 16 - (bottom % 16)
+
+        if right <= left: right += 16
+        if bottom <= top: bottom += 16
+
+        right -= left
+        bottom -= top
+
+        if left < 16: left = 16
+        if top < 16: top = 16
+        if right < 304: right = 304
+        if bottom < 208: bottom = 208
+
+        if left > 65520: left = 65520
+        if top > 65520: top = 65520
+        if right > 65520: right = 65520
+        if bottom > 65520: bottom = 65520
+
+        self.Zone_xpos.setValue(left)
+        self.Zone_ypos.setValue(top)
+        self.Zone_width.setValue(right)
+        self.Zone_height.setValue(bottom)
 
 
     def createVisibility(self, z):
