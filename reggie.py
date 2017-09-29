@@ -1886,6 +1886,8 @@ def CreateTilesets():
 
 
 def LoadTileset(idx, name, reload=False):
+    if not name: return False
+
     try:
         return _LoadTileset(idx, name, reload)
     except Exception:
@@ -2751,6 +2753,19 @@ class Level_NSMBW(AbstractLevel):
         super().__init__()
         self.areas.append(Area_NSMBW())
 
+    def new(self):
+        """
+        Creates a completely new level
+        """
+        global Area
+
+        # Create area objects
+        self.areas = []
+        newarea = Area_NSMBW()
+        Area = newarea
+        SLib.Area = Area
+        self.areas.append(newarea)
+
     def load(self, data, areaToLoad):
         """
         Loads a NSMBW level from bytes data.
@@ -2898,7 +2913,7 @@ class AbstractParsedArea(AbstractArea):
         # Settings
         self.defEvents = 0
         self.wrapFlag = 0
-        self.timeLimit = 300
+        self.timeLimit = 200
         self.unk1 = 0
         self.startEntrance = 0
         self.unk2 = 0
@@ -2986,32 +3001,20 @@ class AbstractParsedArea(AbstractArea):
         """
         Save the area back to a file
         """
-        # Prepare this first because otherwise the game refuses to load some sprites
+        # prepare this because otherwise the game refuses to load some sprites
         self.SortSpritesByZone()
 
-        # We don't parse blocks 4, 11, 12, 13, 14.
-        # We can create the rest manually.
-        #self.blocks = [None] * 17
-        self.blocks[3] = b'\0\0\0\0\0\0\0\0'
-        # Other known values for block 4 in NSMBW: 0000 0002 0042 0000,
-        #                     0000 0002 0002 0000, 0000 0003 0003 0000
-        self.blocks[5] = b'\0\0\xFF\xFF\xFF\xFF\0\0\0\0\0\0\0\0\0\0\0\0\0\0' # always this
-        self.blocks[11] = b'' # never used
-        self.blocks[12] = b'' # never used
-        #self.blocks[13] = b'' # paths
-        #self.blocks[14] = b'' # path nodes
-
-        # Save each block
+        # save each block first
+        success = True
         self.SaveTilesetNames() # block 1
-        #self.SaveOptions() # block 2
-        #self.SaveEntrances() # block 7
+        self.SaveOptions() # block 2
+        self.SaveEntrances() # block 7
         self.SaveSprites() # block 8
         self.SaveLoadedSprites() # block 9
-        #self.SaveZones() # block 10 (and 3, 5 and 6)
+        self.SaveZones() # block 10 (and 3, 5 and 6)
         self.SaveLocations() # block 11
-        #self.SavePaths() # blocks 14 and 15
+        self.SavePaths()
 
-        # Save the metadata
         rdata = bytearray(self.Metadata.save())
         if len(rdata) % 4 != 0:
            for i in range(4 - (len(rdata) % 4)):
@@ -3023,16 +3026,16 @@ class AbstractParsedArea(AbstractArea):
         # Using bytearray here because it offers mutable bytes
         # and works directly with struct.pack_into(), so it's a
         # win-win situation
-        FileLength = (len(self.blocks) * 8) + len(rdata)
+        FileLength = (14 * 8) + len(rdata)
         for block in self.blocks:
             FileLength += len(block)
 
         course = bytearray()
         for i in range(FileLength): course.append(0)
-        saveblock = struct.Struct('<II')
+        saveblock = struct.Struct('>II')
 
         HeaderOffset = 0
-        FileOffset = (len(self.blocks) * 8) + len(rdata)
+        FileOffset = (14 * 8) + len(rdata)
         struct.pack_into('{0}s'.format(len(rdata)), course, 0x70, rdata)
         for block in self.blocks:
             blocksize = len(block)
@@ -3042,7 +3045,7 @@ class AbstractParsedArea(AbstractArea):
             HeaderOffset += 8
             FileOffset += blocksize
 
-        # Return stuff
+        # return stuff
         return (
             bytes(course),
             self.SaveLayer(0),
@@ -3111,6 +3114,37 @@ class Area_NSMBW(AbstractParsedArea):
         self.tileset1 = 'Pa1_nohara'
         self.tileset2 = ''
         self.tileset3 = ''
+
+        self.blocks = [None]*14
+        self.blocks[0] = b'Pa0_jyotyu\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+        self.blocks[1] = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc8\x00\x00\x00\x00\x00\x00\x00\x00'
+        self.blocks[2] = self.blocks[4] = self.blocks[5] = self.blocks[6] = self.blocks[8] = self.blocks[9] = self.blocks[10] = self.blocks[11] = self.blocks[12] = self.blocks[13] = b''
+        self.blocks[3] = b'\x00\x00\x00\x00\x00\x00\x00\x00'
+        self.blocks[7] = b'\xff\xff\xff\xff'
+
+        self.defEvents = 0
+        self.timeLimit = 200
+        self.creditsFlag = False
+        self.startEntrance = 0
+        self.ambushFlag = False
+        self.toadHouseType = 0
+        self.wrapFlag = False
+        self.unkFlag1 = False
+        self.unkFlag2 = False
+
+        self.unkVal1 = 0
+        self.unkVal2 = 0
+
+        self.entrances = []
+        self.sprites = []
+        self.bounding = []
+        self.bgA = []
+        self.bgB = []
+        self.zones = []
+        self.locations = []
+        self.pathdata = []
+        self.paths = []
+        self.comments = []
 
         super().__init__()
 
@@ -3393,7 +3427,9 @@ class Area_NSMBW(AbstractParsedArea):
         """
         Saves the tileset names back to block 1
         """
-        self.blocks[0] = ''.join([self.tileset0.ljust(32,'\0'), self.tileset1.ljust(32,'\0'), self.tileset2.ljust(32,'\0'), self.tileset3.ljust(32,'\0')]).encode('latin-1')
+        self.blocks[0] = ''.join(
+            [self.tileset0.ljust(32, '\0'), self.tileset1.ljust(32, '\0'), self.tileset2.ljust(32, '\0'),
+             self.tileset3.ljust(32, '\0')]).encode('latin-1')
 
 
     def SaveOptions(self):
@@ -3425,10 +3461,16 @@ class Area_NSMBW(AbstractParsedArea):
         buffer = bytearray((len(layer) * 10) + 2)
         f_int = int
         for obj in layer:
-            objstruct.pack_into(buffer, offset, f_int((obj.tileset << 12) | obj.type), f_int(obj.objx), f_int(obj.objy), f_int(obj.width), f_int(obj.height))
+            objstruct.pack_into(buffer,
+                                offset,
+                                f_int((obj.tileset << 12) | obj.type),
+                                f_int(obj.objx),
+                                f_int(obj.objy),
+                                f_int(obj.width),
+                                f_int(obj.height))
             offset += 10
         buffer[offset] = 0xFF
-        buffer[offset+1] = 0xFF
+        buffer[offset + 1] = 0xFF
         return bytes(buffer)
 
     def SaveEntrances(self):
@@ -3441,7 +3483,10 @@ class Area_NSMBW(AbstractParsedArea):
         zonelist = self.zones
         for entrance in self.entrances:
             zoneID = MapPositionToZoneID(zonelist, entrance.objx, entrance.objy)
-            entstruct.pack_into(buffer, offset, int(entrance.objx), int(entrance.objy), int(entrance.entid), int(entrance.destarea), int(entrance.destentrance), int(entrance.enttype), zoneID, int(entrance.entlayer), int(entrance.entpath), int(entrance.entsettings), int(entrance.cpdirection))
+            entstruct.pack_into(buffer, offset, int(entrance.objx), int(entrance.objy),
+                                int(entrance.entid), int(entrance.destarea), int(entrance.destentrance),
+                                int(entrance.enttype), zoneID, int(entrance.entlayer), int(entrance.entpath),
+                                int(entrance.entsettings), int(entrance.cpdirection))
             offset += 20
         self.blocks[6] = bytes(buffer)
 
@@ -3463,10 +3508,12 @@ class Area_NSMBW(AbstractParsedArea):
             if(len(path['nodes']) < 1): continue
             self.WritePathNodes(nodebuffer, nodeoffset, path['nodes'])
 
-            pathstruct.pack_into(buffer, offset, int(path['id']), int(nodeindex), int(len(path['nodes'])), 2 if path['loops'] else 0)
+            pathstruct.pack_into(buffer, offset, int(path['id']), int(nodeindex), int(len(path['nodes'])),
+                                 2 if path['loops'] else 0)
             offset += 8
             nodeoffset += len(path['nodes']) * 16
             nodeindex += len(path['nodes'])
+
         self.blocks[12] = bytes(buffer)
         self.blocks[13] = bytes(nodebuffer)
 
@@ -3478,7 +3525,8 @@ class Area_NSMBW(AbstractParsedArea):
         #[20:29:04]  [@Treeki] struct PathNode { unsigned short x; unsigned short y; float speed; float unknownMaybeAccel; short unknown; char padding[2]; }
         nodestruct = struct.Struct('>HHffhxx')
         for node in nodes:
-            nodestruct.pack_into(buffer, offset, int(node['x']), int(node['y']), float(node['speed']), float(node['accel']), int(node['delay']))
+            nodestruct.pack_into(buffer, offset, int(node['x']), int(node['y']), float(node['speed']),
+                                 float(node['accel']), int(node['delay']))
             offset += 16
 
     def SaveSprites(self):
@@ -3491,7 +3539,8 @@ class Area_NSMBW(AbstractParsedArea):
         f_int = int
         for sprite in self.sprites:
             try:
-                sprstruct.pack_into(buffer, offset, f_int(sprite.type), f_int(sprite.objx), f_int(sprite.objy), sprite.spritedata[:6], sprite.zoneID, bytes([sprite.spritedata[7],]))
+                sprstruct.pack_into(buffer, offset, f_int(sprite.type), f_int(sprite.objx), f_int(sprite.objy),
+                                    sprite.spritedata[:6], sprite.zoneID, bytes([sprite.spritedata[7],]))
             except:
                 # Hopefully this will solve the mysterious bug, and will
                 # soon no longer be necessary.
@@ -12278,7 +12327,7 @@ class ZonesDialog(QtWidgets.QDialog):
                 return
 
         a = [0, 0, 0, 0, 0, 0]
-        b = [0, 0, 0, 0, 0, 10, 10, 10, 0]
+        b = [[0, 0, 0, 0, 0, 10, 10, 10, 0]]
         id = len(self.zoneTabs)
         z = ZoneItem(256, 256, 448, 224, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, a, b, b, id)
         ZoneTabName = trans.string('ZonesDlg', 3, '[num]', id + 1)
@@ -17594,10 +17643,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         global levName
 
-        levName = os.path.basename(name)
-
+        new = name == None
+        
         # Get the file path, if possible
-        if name is not None:
+        if new:
+            # Set the filepath variables
+            self.fileSavePath = False
+            self.fileTitle = 'untitled'
+
+        else:
+            levName = os.path.basename(name)
+            
             if isFullPath:
                 checkname = name
             else:
@@ -17611,45 +17667,45 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 QtWidgets.QMessageBox.warning(self, 'Reggie!', trans.string('Err_InvalidLevel', 0), QtWidgets.QMessageBox.Ok)
                 return False
 
-        name = checkname
+            name = checkname
 
-        # Get the data
-        global RestoredFromAutoSave
-        if not RestoredFromAutoSave:
+            # Get the data
+            global RestoredFromAutoSave
+            if not RestoredFromAutoSave:
 
-            # Check if there is a file by this name
-            if not os.path.isfile(name):
-                QtWidgets.QMessageBox.warning(None, trans.string('Err_MissingLevel', 0), trans.string('Err_MissingLevel', 1, '[file]', name))
-                return False
+                # Check if there is a file by this name
+                if not os.path.isfile(name):
+                    QtWidgets.QMessageBox.warning(None, trans.string('Err_MissingLevel', 0), trans.string('Err_MissingLevel', 1, '[file]', name))
+                    return False
 
-            # Set the filepath variables
-            self.fileSavePath = name
-            self.fileTitle = os.path.basename(self.fileSavePath)
+                # Set the filepath variables
+                self.fileSavePath = name
+                self.fileTitle = os.path.basename(self.fileSavePath)
 
-            # Open the file
-            with open(self.fileSavePath, 'rb') as fileobj:
-                levelData = fileobj.read()
+                # Open the file
+                with open(self.fileSavePath, 'rb') as fileobj:
+                    levelData = fileobj.read()
 
-            # Decompress, if needed
-            if LHTool.isLHCompressed(levelData):
-                levelData = LHTool.decompressLH(levelData)
+                # Decompress, if needed
+                if LHTool.isLHCompressed(levelData):
+                    levelData = LHTool.decompressLH(levelData)
 
-        else:
-            # Auto-saved level. Check if there's a path associated with it:
-
-            if AutoSavePath == 'None':
-                self.fileSavePath = None
-                self.fileTitle = trans.string('WindowTitle', 0)
             else:
-                self.fileSavePath = AutoSavePath
-                self.fileTitle = os.path.basename(name)
+                # Auto-saved level. Check if there's a path associated with it:
 
-            # Get the level data
-            levelData = AutoSaveData
-            SetDirty(noautosave=True)
+                if AutoSavePath == 'None':
+                    self.fileSavePath = None
+                    self.fileTitle = trans.string('WindowTitle', 0)
+                else:
+                    self.fileSavePath = AutoSavePath
+                    self.fileTitle = os.path.basename(name)
 
-            # Turn off the autosave flag
-            RestoredFromAutoSave = False
+                # Get the level data
+                levelData = AutoSaveData
+                SetDirty(noautosave=True)
+
+                # Turn off the autosave flag
+                RestoredFromAutoSave = False
 
         # Turn the dirty flag off, and keep it that way
         global Dirty, DirtyOverride
@@ -17694,8 +17750,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         app.splashScreen.setProgress(trans.string('Splash', 2), 0)
 
-        # Load the actual level for this specific game
-        self.LoadLevel_NSMBW(levelData, areaNum)
+        # Load the actual level
+        if new:
+            self.newLevel()
+        else:
+            self.LoadLevel_NSMBW(levelData, areaNum)
 
         # Set the level overview settings
         mainWindow.levelOverview.maxX = 100
@@ -17745,9 +17804,33 @@ class ReggieWindow(QtWidgets.QMainWindow):
         app.splashScreen.hide()
         del app.splashScreen
 
+        if new:
+            SetDirty()
+
         # If we got this far, everything worked! Return True.
         return True
 
+
+    def newLevel(self):
+        # Create the new level object
+        global Level
+        Level = Level_NSMBW()
+
+        # Load it
+        Level.new()
+
+        # Prepare the object picker
+        app.splashScreen.setProgress(trans.string('Splash', 4), 7)
+
+        self.objUseLayer1.setChecked(True)
+
+        self.objPicker.LoadFromTilesets()
+
+        self.objAllTab.setCurrentIndex(0)
+        self.objAllTab.setTabEnabled(0, True)
+        self.objAllTab.setTabEnabled(1, False)
+        self.objAllTab.setTabEnabled(2, False)
+        self.objAllTab.setTabEnabled(3, False)
 
     def LoadLevel_NSMBW(self, levelData, areaNum):
         """
