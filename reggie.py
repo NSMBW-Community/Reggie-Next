@@ -2865,6 +2865,43 @@ class Level_NSMBW(AbstractLevel):
         return newArchive._dump()
 
 
+    def saveNewArea(self, course_new, L0_new, L1_new, L2_new):
+        """
+        Save the level back to a file
+        """
+
+        # Make a new archive
+        newArchive = archive.U8()
+
+        # Create a folder within the archive
+        newArchive['course'] = None
+
+        # Go through the areas, save them and add them back to the archive
+        for areanum, area in enumerate(self.areas):
+            course, L0, L1, L2 = area.save()
+
+            if course is not None:
+                newArchive['course/course%d.bin' % (areanum+1)] = course
+            if L0 is not None:
+                newArchive['course/course%d_bgdatL0.bin' % (areanum+1)] = L0
+            if L1 is not None:
+                newArchive['course/course%d_bgdatL1.bin' % (areanum+1)] = L1
+            if L2 is not None:
+                newArchive['course/course%d_bgdatL2.bin' % (areanum+1)] = L2
+
+        if course_new is not None:
+            newArchive['course/course%d.bin' % (len(self.areas) + 1)] = course_new
+        if L0_new is not None:
+            newArchive['course/course%d_bgdatL0.bin' % (len(self.areas) + 1)] =  L0_new
+        if L1_new is not None:
+            newArchive['course/course%d_bgdatL1.bin' % (len(self.areas) + 1)] = L1_new
+        if L2_new is not None:
+            newArchive['course/course%d_bgdatL2.bin' % (len(self.areas) + 1)] = L2_new
+
+        # return the U8 archive data
+        return newArchive._dump()
+
+
     def addArea(self):
         """
         Adds an area to the level, and returns it.
@@ -2968,7 +3005,11 @@ class AbstractParsedArea(AbstractArea):
         self.LoadComments()
 
         # Load the tilesets
-        app.splashScreen.setProgress(trans.string('Splash', 3), 1)
+        try:
+            app.splashScreen.setProgress(trans.string('Splash', 3), 1)
+        except AttributeError:
+            app.splashScreen = ReggieSplashScreen()
+            app.splashScreen.setProgress(trans.string('Splash', 3), 1)
 
         CreateTilesets()
         app.splashScreen.setProgress(trans.string('Splash', 3), 2)
@@ -16972,10 +17013,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # add them to our level
         newID = len(Level.areas) + 1
 
-        newA = Level.addArea()
-        newA.load(course, L0, L1, L2)
-
-        if not self.HandleSave(): return
+        if not self.HandleSaveNewArea(course, L0, L1, L2): return
         self.LoadLevel(None, self.fileSavePath, True, newID)
 
 
@@ -17118,6 +17156,32 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         global Dirty, AutoSaveDirty
         data = Level.save()
+        try:
+            with open(self.fileSavePath, 'wb') as f:
+                f.write(data)
+        except IOError as e:
+            QtWidgets.QMessageBox.warning(None, trans.string('Err_Save', 0), trans.string('Err_Save', 1, '[err1]', e.args[0], '[err2]', e.args[1]))
+            return False
+
+        Dirty = False
+        AutoSaveDirty = False
+        self.UpdateTitle()
+
+        setSetting('AutoSaveFilePath', self.fileSavePath)
+        setSetting('AutoSaveFileData', 'x')
+        return True
+
+    @QtCore.pyqtSlot()
+    def HandleSaveNewArea(self, course, L0, L1, L2):
+        """
+        Save a level back to the archive
+        """
+        if not self.fileSavePath:
+            self.HandleSaveAs()
+            return
+
+        global Dirty, AutoSaveDirty
+        data = Level.saveNewArea(course, L0, L1, L2)
         try:
             with open(self.fileSavePath, 'wb') as f:
                 f.write(data)
