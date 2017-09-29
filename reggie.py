@@ -16229,7 +16229,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Deselects selected path nodes in the list
         """
         for selecteditem in self.pathList.selectedItems():
-            self.pathList.setItemSelected(selecteditem, False)
+            selecteditem.setSelected(False)
 
     @QtCore.pyqtSlot()
     def Autosave(self):
