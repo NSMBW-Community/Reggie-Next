@@ -12478,8 +12478,6 @@ class ZoneTab(QtWidgets.QWidget):
         ZonePositionLayout = QtWidgets.QFormLayout()
         ZonePositionLayout.addRow(trans.string('ZonesDlg', 9), self.Zone_xpos)
         ZonePositionLayout.addRow(trans.string('ZonesDlg', 11), self.Zone_ypos)
-        ZonePositionLayout.addRow(self.snapButton8)
-        ZonePositionLayout.addRow(self.snapButton16)
 
         ZoneSizeLayout = QtWidgets.QFormLayout()
         ZoneSizeLayout.addRow(trans.string('ZonesDlg', 13), self.Zone_width)
@@ -12487,11 +12485,24 @@ class ZoneTab(QtWidgets.QWidget):
         ZoneSizeLayout.addRow(trans.string('ZonesDlg', 17), self.Zone_presets)
 
 
+        snapLayout = QtWidgets.QHBoxLayout()
+        
+        snapLayout.addWidget(self.snapButton8)
+        snapLayout.addWidget(self.snapButton16)
+
+
         innerLayout = QtWidgets.QHBoxLayout()
 
         innerLayout.addLayout(ZonePositionLayout)
         innerLayout.addLayout(ZoneSizeLayout)
-        self.Dimensions.setLayout(innerLayout)
+
+
+        verticalLayout = QtWidgets.QVBoxLayout()
+
+        verticalLayout.addLayout(innerLayout)
+        verticalLayout.addLayout(snapLayout)
+        
+        self.Dimensions.setLayout(verticalLayout)
 
 
     @QtCore.pyqtSlot()
