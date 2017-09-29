@@ -3111,7 +3111,7 @@ class Area_NSMBW(AbstractParsedArea):
         """
         # Default tileset names for NSMBW
         self.tileset0 = 'Pa0_jyotyu'
-        self.tileset1 = 'Pa1_nohara'
+        self.tileset1 = ''
         self.tileset2 = ''
         self.tileset3 = ''
 
