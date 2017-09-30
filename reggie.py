@@ -9213,7 +9213,7 @@ class ReggieGameDefinition:
             try:
                 self.InitFromName(name)
             except Exception:
-                self.InitAsEmpty()  # revert
+                raise  # self.InitAsEmpty()  # revert
 
     def InitAsEmpty(self):
         """
@@ -9253,8 +9253,6 @@ class ReggieGameDefinition:
         """
         Attempts to open/load a Game Definition from a name string
         """
-        raise NotImplementedError
-
         self.custom = True
         name = str(name)
         self.gamepath = name
@@ -9350,13 +9348,13 @@ class ReggieGameDefinition:
         """
         Returns the game path
         """
-        if not self.custom: return setting('GamePath_NSMBW')
+        if not self.custom: return setting('GamePath')
         name = 'GamePath_' + self.name
         setname = setting(name)
 
         # Use the default if there are no settings for this yet
         if setname is None:
-            return setting('GamePath_NSMBW')
+            return setting('GamePath')
         else:
             return str(setname)
 
@@ -9365,7 +9363,7 @@ class ReggieGameDefinition:
         Sets the game path
         """
         if not self.custom:
-            setSetting('GamePath_NSMBW', path)
+            setSetting('GamePath', path)
         else:
             name = 'GamePath_' + self.name
             setSetting(name, path)
@@ -9374,7 +9372,7 @@ class ReggieGameDefinition:
         """
         Returns game paths of this gamedef and its bases
         """
-        mainpath = setting('GamePath_NSMBW')
+        mainpath = setting('GamePath')
         if not self.custom: return [mainpath, ]
 
         name = 'GamePath_' + self.name
@@ -9927,9 +9925,10 @@ class ReggieTranslation:
                 12: 'Applying sprite image data...',
                 13: 'New Super Mario Bros. Wii',
                 14: 'A new Mario adventure![br]Published by Nintendo in November 2009.',
-                20: 'Loading entrance names...',
-                21: 'Error',
-                22: 'An error occurred while attempting to load this game patch. It will now be unloaded. Here\'s the specific error:[br][error]',
+                15: '[i]No description[/i]',
+                16: 'Loading entrance names...',
+                17: 'Error',
+                18: 'An error occurred while attempting to load this game patch. It will now be unloaded. Here\'s the specific error:[br][error]',
             },
             'InfoDlg': {
                 0: 'Level Information',
@@ -19292,6 +19291,11 @@ def main():
     # Load the style
     GetDefaultStyle()
 
+    # go to the script path
+    path = module_path()
+    if path is not None:
+        os.chdir(module_path())
+
     # Check if required files are missing
     if FilesAreMissing():
         sys.exit(1)
@@ -19362,7 +19366,7 @@ def main():
             QtWidgets.QMessageBox.information(None, trans.string('ChangeGamePath', 1),
                                               trans.string('ChangeGamePath', 3))
         else:
-            setSetting('GamePath_NSMBW', path)
+            setSetting('GamePath', path)
             break
 
     # Check to see if we have anything saved
