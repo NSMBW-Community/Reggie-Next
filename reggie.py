@@ -802,7 +802,7 @@ def LoadSpriteData():
     """
     global Sprites
 
-    Sprites = [None] * 1000
+    Sprites = [None] * 483
     errors = []
     errortext = []
 
@@ -935,7 +935,7 @@ def LoadSpriteCategories(reload_=False):
                                 CurrentCategory.append(i)
 
     # Add a Search category
-    SpriteCategories.append((trans.string('Sprites', 19), [(trans.string('Sprites', 16), list(range(0, 1000)))], []))
+    SpriteCategories.append((trans.string('Sprites', 19), [(trans.string('Sprites', 16), list(range(0, 483)))], []))
     SpriteCategories[-1][1][0][1].append(9999)  # 'no results' special case
 
 
@@ -6989,7 +6989,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         """
         Changes the selected sprite view
         """
-        for i in range(1, self.topLevelItemCount()):
+        for i in range(0, self.topLevelItemCount()):
             self.topLevelItem(i).setHidden(True)
 
         for node in view[2]:
