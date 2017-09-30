@@ -33,6 +33,7 @@
 import os.path
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 Qt = QtCore.Qt
 
 OutlineColor = None
@@ -81,7 +82,7 @@ def GetImg(imgname, image=False):
     # Try to find the best path
     path = os.path.join('reggiedata', 'sprites', imgname)
 
-    for folder in reversed(SpritesFolders): # find the most recent copy
+    for folder in reversed(SpritesFolders):  # find the most recent copy
         tryPath = os.path.join(folder, imgname)
         if os.path.isfile(tryPath):
             path = tryPath
@@ -89,8 +90,10 @@ def GetImg(imgname, image=False):
 
     # Return the appropriate object
     if os.path.isfile(path):
-        if image: return QtGui.QImage(path)
-        else: return QtGui.QPixmap(path)
+        if image:
+            return QtGui.QImage(path)
+        else:
+            return QtGui.QPixmap(path)
 
 
 def loadIfNotInImageCache(name, filename):
@@ -100,8 +103,6 @@ def loadIfNotInImageCache(name, filename):
     """
     if name not in ImageCache:
         ImageCache[name] = GetImg(filename)
-
-
 
 
 def getNearestZoneTo(objx, objy):
@@ -121,16 +122,16 @@ def getNearestZoneTo(objx, objy):
     print('    Found nothing for id %d; bye bye' % id)
 
 
-
 ################################################################
 ################################################################
 ################################################################
 ##################### SpriteImage Classes ######################
 
-class SpriteImage():
+class SpriteImage:
     """
     Class that contains information about a sprite image
     """
+
     def __init__(self, parent, scale=1.5):
         """
         Intializes the sprite image
@@ -174,45 +175,54 @@ class SpriteImage():
     # Offset property
     def getOffset(self):
         return (self.xOffset, self.yOffset)
+
     def setOffset(self, new):
         self.xOffset, self.yOffset = new[0], new[1]
+
     def delOffset(self):
         self.xOffset, self.yOffset = 0, 0
+
     offset = property(
         getOffset, setOffset, delOffset,
         'Convenience property that provides access to self.xOffset and self.yOffset in one tuple',
-        )
+    )
 
     # Size property
     def getSize(self):
         return (self.width, self.height)
+
     def setSize(self, new):
         self.width, self.height = new[0], new[1]
+
     def delSize(self):
         self.width, self.height = 16, 16
+
     size = property(
         getSize, setSize, delSize,
         'Convenience property that provides access to self.width and self.height in one tuple',
-        )
+    )
 
     # Dimensions property
     def getDimensions(self):
         return (self.xOffset, self.yOffset, self.width, self.height)
+
     def setDimensions(self, new):
         self.xOffset, self.yOffset, self.width, self.height = new[0], new[1], new[2], new[3]
+
     def delDimensions(self):
         self.xOffset, self.yOffset, self.width, self.height = 0, 0, 16, 16
+
     dimensions = property(
         getDimensions, setDimensions, delDimensions,
         'Convenience property that provides access to self.xOffset, self.yOffset, self.width and self.height in one tuple',
-        )
-
+    )
 
 
 class SpriteImage_Static(SpriteImage):
     """
     A simple class for drawing a static sprite image
     """
+
     def __init__(self, parent, scale=1.5, image=None, offset=None):
         super().__init__(parent, scale)
         self.image = image
@@ -232,7 +242,7 @@ class SpriteImage_Static(SpriteImage):
             self.size = (
                 (self.image.width() / self.scale) + 1,
                 (self.image.height() / self.scale) + 2,
-                )
+            )
         else:
             del self.size
 
@@ -242,7 +252,7 @@ class SpriteImage_Static(SpriteImage):
         if self.image is None: return
         painter.save()
         painter.setOpacity(self.alpha)
-        painter.scale(1.5 / self.scale, 1.5 / self.scale) # rescale images not based on a 24x24 block size
+        painter.scale(1.5 / self.scale, 1.5 / self.scale)  # rescale images not based on a 24x24 block size
         painter.setRenderHint(painter.SmoothPixmapTransform)
         painter.drawPixmap(0, 0, self.image)
         painter.restore()
@@ -253,9 +263,10 @@ class SpriteImage_StaticMultiple(SpriteImage_Static):
     A class that acts like a SpriteImage_Static but lets you change
     the image with the dataChanged() function
     """
+
     def __init__(self, parent, scale=1.5, image=None, offset=None):
         super().__init__(parent, scale, image, offset)
-    # no other changes needed yet
+        # no other changes needed yet
 
 
 ################################################################
@@ -263,10 +274,11 @@ class SpriteImage_StaticMultiple(SpriteImage_Static):
 ################################################################
 ####################### Spritebox Class ########################
 
-class Spritebox():
+class Spritebox:
     """
     Contains size and other information for a spritebox
     """
+
     def __init__(self, scale=1.5):
         super().__init__()
         self.shown = True
@@ -278,39 +290,49 @@ class Spritebox():
 
     # Offset property
     def getOffset(self):
-        return (self.xOffset, self.yOffset)
+        return self.xOffset, self.yOffset
+
     def setOffset(self, new):
         self.xOffset, self.yOffset = new[0], new[1]
+
     def delOffset(self):
         self.xOffset, self.yOffset = 0, 0
+
     offset = property(
         getOffset, setOffset, delOffset,
         'Convenience property that provides access to self.xOffset and self.yOffset in one tuple',
-        )
+    )
 
     # Size property
     def getSize(self):
-        return (self.width, self.height)
+        return self.width, self.height
+
     def setSize(self, new):
         self.width, self.height = new[0], new[1]
+
     def delSize(self):
         self.width, self.height = 16, 16
+
     size = property(
         getSize, setSize, delSize,
         'Convenience property that provides access to self.width and self.height in one tuple',
-        )
+    )
 
     # Dimensions property
     def getDimensions(self):
-        return (self.xOffset, self.yOffset, self.width, self.height)
+        return self.xOffset, self.yOffset, self.width, self.height
+
     def setDimensions(self, new):
         self.xOffset, self.yOffset, self.width, self.height = new[0], new[1], new[2], new[3]
+
     def delDimensions(self):
         self.xOffset, self.yOffset, self.width, self.height = 0, 0, 16, 16
+
     dimensions = property(
         getDimensions, setDimensions, delDimensions,
-        'Convenience property that provides access to self.xOffset, self.yOffset, self.width and self.height in one tuple',
-        )
+        'Convenience property that provides access to self.xOffset, self.yOffset, self.width and self.height in one '
+        'tuple',
+    )
 
     # RoundedRect property
     def getRR(self):
@@ -319,20 +341,23 @@ class Spritebox():
             (self.yOffset * self.scale) + 1,
             (self.width * self.scale) - 2,
             (self.height * self.scale) - 2,
-            )
+        )
+
     def setRR(self, new):
         self.dimensions = (
             (new.x() / self.scale) - 1,
             (new.y() / self.scale) - 1,
             (new.width() / self.scale) + 2,
             (new.height() / self.scale) + 2,
-            )
+        )
+
     def delRR(self):
         self.dimensions = 0, 0, 16, 16
+
     RoundedRect = property(
         getRR, setRR, delRR,
         'Property that contains the rounded rect for the spritebox',
-        )
+    )
 
     # BoundingRect property
     def getBR(self):
@@ -341,20 +366,23 @@ class Spritebox():
             self.yOffset * self.scale,
             self.width * self.scale,
             self.height * self.scale,
-            )
+        )
+
     def setBR(self, new):
         self.dimensions = (
             new.x() * self.scale,
             new.y() * self.scale,
             new.width() * self.scale,
             new.height() * self.scale,
-            )
+        )
+
     def delBR(self):
         self.dimensions = 0, 0, 16, 16
+
     BoundingRect = property(
         getBR, setBR, delBR,
         'Property that contains the bounding rect for the spritebox',
-        )
+    )
 
 
 ################################################################
@@ -363,7 +391,7 @@ class Spritebox():
 #################### AuxiliarySpriteItem Classes #####################
 
 
-class AuxiliaryItem():
+class AuxiliaryItem:
     """
     Base class for all auxiliary things
     """
@@ -374,6 +402,7 @@ class AuxiliarySpriteItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
     """
     Base class for auxiliary objects that accompany specific sprite types
     """
+
     def __init__(self, parent):
         """
         Generic constructor for auxiliary items
@@ -512,7 +541,6 @@ class AuxiliaryRotationAreaOutline(AuxiliarySpriteItem):
         self.spanAngle = spanAngle * 16
 
     def paint(self, painter, option, widget=None):
-
         if option is not None:
             painter.setClipRect(option.exposedRect)
             painter.setRenderHint(QtGui.QPainter.Antialiasing)
@@ -538,7 +566,6 @@ class AuxiliaryRectOutline(AuxiliarySpriteItem):
         self.setPos(xoff, yoff)
 
     def paint(self, painter, option, widget=None):
-
         if option is not None:
             painter.setClipRect(option.exposedRect)
             painter.setRenderHint(QtGui.QPainter.Antialiasing)
@@ -633,8 +660,10 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
         super().paint(painter, option, widget)
 
         if self.realimage is None:
-            try: self.realimage = self.image
-            except: pass
+            try:
+                self.realimage = self.image
+            except:
+                pass
 
     def move(self, x, y, w, h):
         """
@@ -661,7 +690,6 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
                 self.image = self.realimage.copy(0, 0, w, h)
             else:
                 self.image = self.realimage
-        
 
         # Find the absolute X-coord
         if self.flagPresent(self.alignment, Qt.AlignLeft):
@@ -669,7 +697,7 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
         elif self.flagPresent(self.alignment, Qt.AlignRight):
             newx = x + w - self.width
         else:
-            newx = x + (w/2) - (self.width/2)
+            newx = x + (w / 2) - (self.width / 2)
 
         # Find the absolute Y-coord
         if self.flagPresent(self.alignment, Qt.AlignTop):
@@ -696,6 +724,7 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
     """
     An auxiliary item that can have a zone as its parent
     """
+
     def __init__(self, parent, imageObj):
         """
         Generic constructor for auxiliary zone items
@@ -735,7 +764,7 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
             if iterz.id == id: z = iterz
         if z is None:
             raise ValueError('No zone with this ID exists.')
-        
+
         if self.parent is not None:
             self.parent.aux.remove(self)
         self.setParentItem(z)
@@ -752,7 +781,8 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         else:
             self.BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 
-    def zoneRepositioned(self):
+    @staticmethod
+    def zoneRepositioned():
         """
         Called when the zone is repositioned or resized
         """
@@ -769,6 +799,7 @@ class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
     """
     An auxiliary item that can have a location as its parent
     """
+
     def __init__(self, parent, imageObj):
         """
         Generic constructor for auxiliary items

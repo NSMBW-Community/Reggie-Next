@@ -34,15 +34,15 @@ import math
 import random
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 Qt = QtCore.Qt
 
-
 import spritelib as SLib
+
 ImageCache = SLib.ImageCache
 
 
-
-class SpriteImage_WoodenPlatform(SLib.SpriteImage): # 23, 31, 50, 103, 106, 122
+class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
     def __init__(self, parent):
         super().__init__(parent)
         self.spritebox.shown = False
@@ -86,7 +86,7 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage): # 23, 31, 50, 103, 106, 122
             painter.drawPixmap(0, 0, ImageCache[color + 'PlatformL'])
 
 
-class SpriteImage_DSStoneBlock(SLib.SpriteImage): # 27, 28
+class SpriteImage_DSStoneBlock(SLib.SpriteImage):  # 27, 28
     def __init__(self, parent):
         super().__init__(parent)
         self.spritebox.shown = False
@@ -133,16 +133,16 @@ class SpriteImage_DSStoneBlock(SLib.SpriteImage): # 27, 28
         painter.drawPixmap(right_x, bottom_y, ImageCache['DSBlockBottomRight'])
 
 
-class SpriteImage_StarCoin(SLib.SpriteImage_Static): # 32, 155, 389
+class SpriteImage_StarCoin(SLib.SpriteImage_Static):  # 32, 155, 389
     def __init__(self, parent):
         super().__init__(
             parent,
             ImageCache['StarCoin'],
             (0, 3),
-            )
+        )
 
 
-class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple): # 40, 41, 42, 153
+class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153
     def __init__(self, parent):
         super().__init__(parent)
         self.switchType = ''
@@ -154,7 +154,7 @@ class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple): # 40, 41, 42, 153
             q = SLib.GetImg('q_switch.png', True)
             ImageCache['QSwitch'] = QtGui.QPixmap.fromImage(q)
             ImageCache['QSwitchU'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
-        
+
         if 'PSwitch' not in ImageCache:
             p = SLib.GetImg('p_switch.png', True)
             ImageCache['PSwitch'] = QtGui.QPixmap.fromImage(p)
@@ -177,7 +177,7 @@ class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple): # 40, 41, 42, 153
         super().dataChanged()
 
 
-class SpriteImage_OldStoneBlock(SLib.SpriteImage): # 30, 81, 82, 83, 84, 85, 86
+class SpriteImage_OldStoneBlock(SLib.SpriteImage):  # 30, 81, 82, 83, 84, 85, 86
     def __init__(self, parent):
         super().__init__(parent)
         self.spritebox.shown = False
@@ -219,15 +219,15 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage): # 30, 81, 82, 83, 84, 85, 86
         self.width = width * 16 + 16
         self.height = height * 16 + 16
 
-        if self.spikesL: # left spikes
+        if self.spikesL:  # left spikes
             self.xOffset = -16
             self.width += 16
-        if self.spikesT: # top spikes
+        if self.spikesT:  # top spikes
             self.yOffset = -16
             self.height += 16
-        if self.spikesR: # right spikes
+        if self.spikesR:  # right spikes
             self.width += 16
-        if self.spikesB: # bottom spikes
+        if self.spikesB:  # bottom spikes
             self.height += 16
 
         # now set up the track
@@ -236,18 +236,18 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage): # 30, 81, 82, 83, 84, 85, 86
             distance = (self.parent.spritedata[4] & 0xF0) >> 4
             if direction > 3: direction = 0
 
-            if direction <= 1: # horizontal
+            if direction <= 1:  # horizontal
                 self.aux[0].direction = 1
                 self.aux[0].setSize(self.width + (distance * 16), self.height)
-            else: # vertical
+            else:  # vertical
                 self.aux[0].direction = 2
                 self.aux[0].setSize(self.width, self.height + (distance * 16))
 
-            if direction == 0 or direction == 3: # right, down
+            if direction == 0 or direction == 3:  # right, down
                 self.aux[0].setPos(0, 0)
-            elif direction == 1: # left
+            elif direction == 1:  # left
                 self.aux[0].setPos(-distance * 24, 0)
-            elif direction == 2: # up
+            elif direction == 2:  # up
                 self.aux[0].setPos(0, -distance * 24)
         else:
             self.aux[0].setSize(0, 0)
@@ -261,19 +261,19 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage): # 30, 81, 82, 83, 84, 85, 86
         width = self.width * 1.5
         height = self.height * 1.5
 
-        if self.spikesL: # left spikes
+        if self.spikesL:  # left spikes
             painter.drawTiledPixmap(0, 0, 24, height, ImageCache['SpikeL'])
             blockX = 24
             width -= 24
-        if self.spikesT: # top spikes
+        if self.spikesT:  # top spikes
             painter.drawTiledPixmap(0, 0, width, 24, ImageCache['SpikeU'])
             blockY = 24
             height -= 24
-        if self.spikesR: # right spikes
-            painter.drawTiledPixmap(blockX + width-24, 0, 24, height, ImageCache['SpikeR'])
+        if self.spikesR:  # right spikes
+            painter.drawTiledPixmap(blockX + width - 24, 0, 24, height, ImageCache['SpikeR'])
             width -= 24
-        if self.spikesB: # bottom spikes
-            painter.drawTiledPixmap(0, blockY + height-24, width, 24, ImageCache['SpikeD'])
+        if self.spikesB:  # bottom spikes
+            painter.drawTiledPixmap(0, blockY + height - 24, width, 24, ImageCache['SpikeD'])
             height -= 24
 
         column2x = blockX + 24
@@ -286,7 +286,7 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage): # 30, 81, 82, 83, 84, 85, 86
         painter.drawPixmap(column3x, blockY, ImageCache['OldStoneTR'])
 
         painter.drawTiledPixmap(blockX, row2y, 24, height - 48, ImageCache['OldStoneL'])
-        painter.drawTiledPixmap(column2x, row2y, width - 48, height-48, ImageCache['OldStoneM'])
+        painter.drawTiledPixmap(column2x, row2y, width - 48, height - 48, ImageCache['OldStoneM'])
         painter.drawTiledPixmap(column3x, row2y, 24, height - 48, ImageCache['OldStoneR'])
 
         painter.drawPixmap(blockX, row3y, ImageCache['OldStoneBL'])
@@ -294,20 +294,21 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage): # 30, 81, 82, 83, 84, 85, 86
         painter.drawPixmap(column3x, row3y, ImageCache['OldStoneBR'])
 
 
-class SpriteImage_LiquidOrFog(SLib.SpriteImage): # 64, 138, 139, 216, 358, 374, 435
-    
+class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 64, 138, 139, 216, 358, 374, 435
+
     class FreeAuxiliaryItem_LiquidOrFog(QtWidgets.QGraphicsItem):
         """
         An item that acts sort of like an auxiliary item, but isn't one. Biggest difference is that the sprite isn't its parent.
         It paints liquid or fog in a zone or location.
         """
+
         def __init__(self, imageObj):
             super().__init__()
             self.ImageObj = imageObj
 
             self.OuterRect = None
             self.BoundingRect = QtCore.QRectF(0, 0, 0, 0)
-            self.mode = 'z' # 'z' = zones, 'l' = locations
+            self.mode = 'z'  # 'z' = zones, 'l' = locations
 
         def boundingRect(self):
             """
@@ -368,7 +369,6 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage): # 64, 138, 139, 216, 358, 374, 
             # # Paint the rise, if going down
             # if self.imageObj.risingHeight < 0:
             #     painter.drawTiledPixmap(0, -self.imageObj.risingHeight, self.BoundingRect.width(), riseToDraw.height(), riseToDraw)
-
 
         def updateSize(self):
             """
@@ -462,41 +462,41 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage): # 64, 138, 139, 216, 358, 374, 
             Generic liquid-in-rect painter
             """
             return
-        #     rx, ry, rw, rh = rect.topLeft().x(), rect.topLeft().y(), rect.width(), rect.height()
+            #     rx, ry, rw, rh = rect.topLeft().x(), rect.topLeft().y(), rect.width(), rect.height()
 
-        #     drawRise = self.risingHeight != 0
-        #     drawCrest = self.drawCrest
-        #     drawRiseCrest = drawCrest
+            #     drawRise = self.risingHeight != 0
+            #     drawCrest = self.drawCrest
+            #     drawRiseCrest = drawCrest
 
-        #     # Get positions
-        #     offsetFromTop = self.top
-        #     if offsetFromTop < 0:
-        #         offsetFromTop = 0
-        #         drawCrest = False # off the top of the rect; no crest
-        #     if self.top > rh:
-        #         # the sprite is below the rect; don't draw anything
-        #         return
+            #     # Get positions
+            #     offsetFromTop = self.top
+            #     if offsetFromTop < 0:
+            #         offsetFromTop = 0
+            #         drawCrest = False # off the top of the rect; no crest
+            #     if self.top > rh:
+            #         # the sprite is below the rect; don't draw anything
+            #         return
 
-        #     # If all that fits in the rect is some of the crest, determine how much
-        #     if drawCrest:
-        #         crestSizeRemoval = (ry + offsetFromTop + self.crest.height()) - (ry + rh)
-        #         if crestSizeRemoval < 0: crestSizeRemoval = 0
-        #         crestHeight = self.crest.height() - crestSizeRemoval
+            #     # If all that fits in the rect is some of the crest, determine how much
+            #     if drawCrest:
+            #         crestSizeRemoval = (ry + offsetFromTop + self.crest.height()) - (ry + rh)
+            #         if crestSizeRemoval < 0: crestSizeRemoval = 0
+            #         crestHeight = self.crest.height() - crestSizeRemoval
 
-        #     # Determine where to put the rise image
-        #     offsetRise = offsetFromTop - self.risingHeight
-        #     riseToDraw = self.rise
-        #     if not drawRiseCrest:
-        #         riseToDraw = self.riseCrestless
+            #     # Determine where to put the rise image
+            #     offsetRise = offsetFromTop - self.risingHeight
+            #     riseToDraw = self.rise
+            #     if not drawRiseCrest:
+            #         riseToDraw = self.riseCrestless
 
-        #     # Draw everything!
-        #     if drawCrest:
-        #         painter.drawTiledPixmap(0, offsetFromTop, rw, crestHeight, self.crest)
-        #         painter.drawTiledPixmap(0, offsetFromTop + crestHeight, rw, rh - crestHeight - offsetFromTop, self.mid)
-        #     else:
-        #         painter.drawTiledPixmap(0, offsetFromTop, rw, rh - offsetFromTop - 4, self.mid)
-        #     if drawRise:
-        #         painter.drawTiledPixmap(0, offsetRise, rw, riseToDraw.height(), riseToDraw)
+            #     # Draw everything!
+            #     if drawCrest:
+            #         painter.drawTiledPixmap(0, offsetFromTop, rw, crestHeight, self.crest)
+            #         painter.drawTiledPixmap(0, offsetFromTop + crestHeight, rw, rh - crestHeight - offsetFromTop, self.mid)
+            #     else:
+            #         painter.drawTiledPixmap(0, offsetFromTop, rw, rh - offsetFromTop - 4, self.mid)
+            #     if drawRise:
+            #         painter.drawTiledPixmap(0, offsetRise, rw, riseToDraw.height(), riseToDraw)
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -521,7 +521,7 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage): # 64, 138, 139, 216, 358, 374, 
 
     def dataChanged(self):
         super().dataChanged()
-        
+
         z = SLib.getNearestZoneTo(self.parent.objx, self.parent.objy)
         if z is not None:
             self.LiqOrFogAux.OuterRect = QtCore.QRectF(z.BoundingRect)
@@ -548,20 +548,20 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage): # 64, 138, 139, 216, 358, 374, 
             self.LiqOrFogAux.updateSize()
 
 
-class SpriteImage_HammerBro(SLib.SpriteImage_Static): # 95, 308
+class SpriteImage_HammerBro(SLib.SpriteImage_Static):  # 95, 308
     def __init__(self, parent):
         super().__init__(
             parent,
             ImageCache['HammerBro'],
             (-8, -24),
-            )
+        )
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('HammerBro', 'hammerbro.png')
 
 
-class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage): # 97, 107, 132, 160
+class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage):  # 97, 107, 132, 160
     def __init__(self, parent):
         super().__init__(parent)
         self.spritebox.shown = False
@@ -583,24 +583,24 @@ class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage): # 97, 107, 132, 160
         pixmap = pixmap.scaled(
             self.width * 1.5, self.height * 1.5,
             Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
-            )
+        )
         painter.drawPixmap(0, 0, pixmap)
 
 
-class SpriteImage_Amp(SLib.SpriteImage_Static): # 104, 108
+class SpriteImage_Amp(SLib.SpriteImage_Static):  # 104, 108
     def __init__(self, parent):
         super().__init__(
             parent,
             ImageCache['Amp'],
             (-8, -8),
-            )
+        )
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Amp', 'amp.png')
 
 
-class SpriteImage_SpikedStake(SLib.SpriteImage): # 137, 140, 141, 142
+class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
     def __init__(self, parent):
         super().__init__(parent)
         self.spritebox.shown = False
@@ -634,17 +634,17 @@ class SpriteImage_SpikedStake(SLib.SpriteImage): # 137, 140, 141, 142
             x = 20
         else:
             x = 0
-        distance = x + 1 # In order to hide one side of the track behind the image.
+        distance = x + 1  # In order to hide one side of the track behind the image.
 
         w = 66
-        L = ((37 * 16) + 41) / 1.5 # (16 mid sections + an end section), accounting for image/sprite size difference
+        L = ((37 * 16) + 41) / 1.5  # (16 mid sections + an end section), accounting for image/sprite size difference
 
         if self.dir == 'up':
             self.aux[0].setPos(36, 24 - (distance * 24))
-            self.aux[0].setSize(16, distance*16)
+            self.aux[0].setSize(16, distance * 16)
         elif self.dir == 'down':
             self.aux[0].setPos(36, (L * 1.5) - 24)
-            self.aux[0].setSize(16, distance*16)
+            self.aux[0].setSize(16, distance * 16)
         elif self.dir == 'left':
             self.aux[0].setPos(24 - (distance * 24), 36)
             self.aux[0].setSize(distance * 16, 16)
@@ -682,7 +682,7 @@ class SpriteImage_SpikedStake(SLib.SpriteImage): # 137, 140, 141, 142
             painter.drawPixmap((self.width * 1.5) - endsize, 0, end)
 
 
-class SpriteImage_ScrewMushroom(SLib.SpriteImage): # 172, 382
+class SpriteImage_ScrewMushroom(SLib.SpriteImage):  # 172, 382
     def __init__(self, parent):
         super().__init__(parent)
         self.spritebox.shown = False
@@ -722,7 +722,7 @@ class SpriteImage_ScrewMushroom(SLib.SpriteImage): # 172, 382
         painter.drawPixmap(76, y + 253, ImageCache['ScrewShroomB'])
 
 
-class SpriteImage_Door(SLib.SpriteImage): # 182, 259, 276, 277, 278, 421, 452
+class SpriteImage_Door(SLib.SpriteImage):  # 182, 259, 276, 277, 278, 421, 452
     def __init__(self, parent):
         super().__init__(parent)
         self.spritebox.shown = False
@@ -737,7 +737,8 @@ class SpriteImage_Door(SLib.SpriteImage): # 182, 259, 276, 277, 278, 421, 452
     @staticmethod
     def loadImages():
         if 'DoorU' in ImageCache: return
-        doors = {'Door': 'door', 'GhostDoor': 'ghost_door', 'TowerDoor': 'tower_door', 'CastleDoor': 'castle_door', 'BowserDoor': 'bowser_door'}
+        doors = {'Door': 'door', 'GhostDoor': 'ghost_door', 'TowerDoor': 'tower_door', 'CastleDoor': 'castle_door',
+                 'BowserDoor': 'bowser_door'}
         transform90 = QtGui.QTransform()
         transform180 = QtGui.QTransform()
         transform270 = QtGui.QTransform()
@@ -775,7 +776,7 @@ class SpriteImage_Door(SLib.SpriteImage): # 182, 259, 276, 277, 278, 421, 452
                 doorSize[1] + (doorSize[3] - (doorSize[2] / 2)),
                 doorSize[3],
                 doorSize[2],
-                )
+            )
             paintEntrancePos = False
         elif direction == 2:
             self.image = ImageCache[doorName + 'D']
@@ -784,7 +785,7 @@ class SpriteImage_Door(SLib.SpriteImage): # 182, 259, 276, 277, 278, 421, 452
                 doorSize[1] + doorSize[3],
                 doorSize[2],
                 doorSize[3],
-                )
+            )
             paintEntrancePos = False
         elif direction == 3:
             self.image = ImageCache[doorName + 'R']
@@ -793,15 +794,15 @@ class SpriteImage_Door(SLib.SpriteImage): # 182, 259, 276, 277, 278, 421, 452
                 doorSize[1] + (doorSize[3] - (doorSize[2] / 2)),
                 doorSize[3],
                 doorSize[2],
-                )
+            )
             paintEntrancePos = False
 
         self.aux[0].setSize(
             *(
                 (0, 0, 0, 0),
                 (24, 24) + self.entranceOffset,
-                )[1 if paintEntrancePos else 0]
-            )
+            )[1 if paintEntrancePos else 0]
+        )
 
     def paint(self, painter):
         super().paint(painter)
@@ -810,7 +811,7 @@ class SpriteImage_Door(SLib.SpriteImage): # 182, 259, 276, 277, 278, 421, 452
         painter.setOpacity(1)
 
 
-class SpriteImage_GiantBubble(SLib.SpriteImage): # 205, 226
+class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
     def __init__(self, parent):
         super().__init__(parent)
         self.spritebox.shown = False
@@ -844,8 +845,7 @@ class SpriteImage_GiantBubble(SLib.SpriteImage): # 205, 226
         painter.drawPixmap(0, 0, ImageCache['GiantBubble%d' % self.shape])
 
 
-
-class SpriteImage_Block(SLib.SpriteImage): # 207, 208, 209, 221, 255, 256, 402, 403, 422, 423
+class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402, 403, 422, 423
     def __init__(self, parent):
         super().__init__(parent)
         self.spritebox.shown = False
@@ -871,13 +871,13 @@ class SpriteImage_Block(SLib.SpriteImage): # 207, 208, 209, 221, 255, 256, 402, 
         else:
             contents = self.parent.spritedata[self.contentsNybble] & 0xF
 
-        if contents == 2: # 1 and 2 are always fire flowers
+        if contents == 2:  # 1 and 2 are always fire flowers
             contents = 3
 
         if contents == 12 and self.twelveIsMushroom:
-            contents = 2 # 12 is a mushroom on some types
+            contents = 2  # 12 is a mushroom on some types
         if contents == 8 and self.eightIsMushroom:
-            contents = 2 # same as above, but for type 8
+            contents = 2  # same as above, but for type 8
 
         self.image = ImageCache['Blocks'][contents]
 
@@ -908,17 +908,18 @@ class SpriteImage_Block(SLib.SpriteImage): # 207, 208, 209, 221, 255, 256, 402, 
         painter.drawPixmap(0, 0, self.image)
 
 
-class SpriteImage_SpecialCoin(SLib.SpriteImage_Static): # 253, 371, 390
+class SpriteImage_SpecialCoin(SLib.SpriteImage_Static):  # 253, 371, 390
     def __init__(self, parent):
         super().__init__(
             parent,
             ImageCache['SpecialCoin'],
-            )
+        )
 
 
-class SpriteImage_Pipe(SLib.SpriteImage): # 254, 339, 353, 377, 378, 379, 380, 450
+class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 450
     Top = 0
     Bottom = 1
+
     def __init__(self, parent):
         super().__init__(parent)
         self.spritebox.shown = False
@@ -951,30 +952,30 @@ class SpriteImage_Pipe(SLib.SpriteImage): # 254, 339, 353, 377, 378, 379, 380, 4
         # 379 = Pipe Right
         # 380 = Pipe Left
         # 450 = Enterable Pipe Up
-        
+
         size = max(self.length1, self.length2) * 16
 
-        if self.direction in 'LR': # horizontal
+        if self.direction in 'LR':  # horizontal
             self.width = size
             self.height = 32
-            if self.direction == 'R': # faces right
+            if self.direction == 'R':  # faces right
                 self.xOffset = 0
-            else: # faces left
+            else:  # faces left
                 self.xOffset = 16 - size
             self.yOffset = 0
 
-        else: # vertical
+        else:  # vertical
             self.width = 32
             self.height = size
-            if self.direction == 'D': # faces down
+            if self.direction == 'D':  # faces down
                 self.yOffset = 0
-            else: # faces up
+            else:  # faces up
                 self.yOffset = 16 - size
             self.xOffset = 0
 
-        if self.direction == 'U': # facing up
+        if self.direction == 'U':  # facing up
             self.yOffset = 16 - size
-        else: # facing down
+        else:  # facing down
             self.yOffset = 0
 
     def paint(self, painter):
@@ -1034,7 +1035,7 @@ class SpriteImage_Pipe(SLib.SpriteImage): # 254, 339, 353, 377, 378, 379, 380, 4
             painter.drawPixmap(low - 24, 0, ImageCache['PipeRight%s' % color])
             painter.drawTiledPixmap(0, 0, low - 24, 48, ImageCache['PipeMiddleH%s' % color])
 
-        else: # left
+        else:  # left
 
             if length1 != length2:
                 # draw semi-transparent pipe
@@ -1049,7 +1050,7 @@ class SpriteImage_Pipe(SLib.SpriteImage): # 254, 339, 353, 377, 378, 379, 380, 4
             painter.drawPixmap(0, 0, ImageCache['PipeLeft%s' % color])
 
 
-class SpriteImage_PipeStationary(SpriteImage_Pipe): # 254, 377, 378, 379, 380, 450
+class SpriteImage_PipeStationary(SpriteImage_Pipe):  # 254, 377, 378, 379, 380, 450
     def __init__(self, parent):
         super().__init__(parent)
         self.length = 4
@@ -1057,33 +1058,33 @@ class SpriteImage_PipeStationary(SpriteImage_Pipe): # 254, 377, 378, 379, 380, 4
     def dataChanged(self):
         self.color = (
             'Green', 'Red', 'Yellow', 'Blue',
-            )[(self.parent.spritedata[5] >> 4) % 4]
+        )[(self.parent.spritedata[5] >> 4) % 4]
 
         self.length1 = self.length
         self.length2 = self.length
-        
+
         super().dataChanged()
 
 
-class SpriteImage_UnusedGiantDoor(SLib.SpriteImage_Static): # 319, 320
+class SpriteImage_UnusedGiantDoor(SLib.SpriteImage_Static):  # 319, 320
     def __init__(self, parent):
         super().__init__(
             parent,
             ImageCache['UnusedGiantDoor'],
-            )
+        )
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('UnusedGiantDoor', 'unused_giant_door.png')
 
 
-class SpriteImage_RollingHillWithPipe(SLib.SpriteImage): # 355, 360
+class SpriteImage_RollingHillWithPipe(SLib.SpriteImage):  # 355, 360
     def __init__(self, parent):
         super().__init__(parent)
         self.aux.append(SLib.AuxiliaryCircleOutline(parent, 800))
 
 
-class SpriteImage_ToadHouseBalloon(SLib.SpriteImage_StaticMultiple): # 411, 412
+class SpriteImage_ToadHouseBalloon(SLib.SpriteImage_StaticMultiple):  # 411, 412
     def __init__(self, parent):
         super().__init__(parent)
         self.hasHandle = False

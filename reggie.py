@@ -32,10 +32,11 @@
 # Python version: sanity check
 minimum = 3.4
 import sys
+
 currentRunningVersion = sys.version_info.major + (.1 * sys.version_info.minor)
 if currentRunningVersion < minimum:
     errormsg = 'Please update your copy of Python to ' + str(minimum) + \
-        ' or greater. Currently running on: ' + sys.version[:5]
+               ' or greater. Currently running on: ' + sys.version[:5]
     raise Exception(errormsg) from None
 
 # Stdlib imports
@@ -45,7 +46,6 @@ import math
 import os.path
 import pickle
 import struct
-import subprocess
 import threading
 import time
 import urllib.request
@@ -65,11 +65,11 @@ import archive
 import LHTool
 import lz77
 import spritelib as SLib
-import sprites_common
 import sprites
 
 try:
-    import pyximport; pyximport.install()
+    import pyximport
+    pyximport.install()
     import tpl_cy as tpl
 except ImportError:
     import tpl
@@ -79,11 +79,9 @@ ReggieVersion = 'Milestone 3'
 ReggieVersionShort = 'M3'
 UpdateURL = ''
 
-
 if not hasattr(QtWidgets.QGraphicsItem, 'ItemSendsGeometryChanges'):
     # enables itemChange being called on QGraphicsItem
     QtWidgets.QGraphicsItem.ItemSendsGeometryChanges = QtWidgets.QGraphicsItem.GraphicsItemFlag(0x800)
-
 
 # Globals
 app = None
@@ -110,7 +108,6 @@ class ReggieSplashScreen(QtWidgets.QSplashScreen):
         self.loadResources()
         super().__init__(self.basePix)
 
-
     def loadCfg(self):
         """
         Loads the raw data from splash_config.txt
@@ -128,14 +125,15 @@ class ReggieSplashScreen(QtWidgets.QSplashScreen):
                     for i, entry in enumerate(value):
                         try:
                             value[i] = int(entry)
-                        except ValueError: pass
+                        except ValueError:
+                            pass
                 if isinstance(value, str):
                     try:
                         value = int(value)
-                    except ValueError: pass
+                    except ValueError:
+                        pass
                 cfgData[key] = value
         self.cfgData = cfgData
-
 
     def loadResources(self):
         """
@@ -174,13 +172,11 @@ class ReggieSplashScreen(QtWidgets.QSplashScreen):
         self.meterM = QtGui.QPixmap(os.path.join('reggiedata', mNameM))
         self.meterR = QtGui.QPixmap(os.path.join('reggiedata', mNameR))
 
-
     def setProgressLimit(self, limit):
         """
         Sets the maximum progress, used to calculate the progress bar
         """
         self.posLimit = limit
-
 
     def setProgress(self, desc, pos):
         """
@@ -190,7 +186,6 @@ class ReggieSplashScreen(QtWidgets.QSplashScreen):
         self.currentPos = pos
         self.repaint()
         app.processEvents()
-
 
     def drawContents(self, painter):
         """
@@ -205,21 +200,21 @@ class ReggieSplashScreen(QtWidgets.QSplashScreen):
             min(self.meterL.width(), self.meterWidth * (self.currentPos / self.posLimit)),
             self.meterL.height(),
             self.meterL,
-            )
+        )
         painter.drawTiledPixmap(
             self.meterPos[0] + self.meterL.width(),
             self.meterPos[1],
             min(self.meterWidth - self.meterL.width() - self.meterR.width(), totalWidthSoFar - self.meterL.width()),
             self.meterM.height(),
             self.meterM,
-            )
+        )
         painter.drawTiledPixmap(
             self.meterPos[0] + self.meterWidth - self.meterR.width(),
             self.meterPos[1],
             totalWidthSoFar - self.meterWidth + self.meterR.width(),
             self.meterR.height(),
             self.meterR,
-            )
+        )
 
         def drawText(text, font, position, color, centered, wLim):
             """
@@ -230,7 +225,7 @@ class ReggieSplashScreen(QtWidgets.QSplashScreen):
                 position[1],
                 wLim,
                 512,
-                )
+            )
             flags = (Qt.AlignHCenter if centered else Qt.AlignLeft) | Qt.AlignTop | Qt.TextWordWrap
 
             painter.save()
@@ -246,9 +241,10 @@ class ReggieSplashScreen(QtWidgets.QSplashScreen):
             drawText(copyFile.read(), *self.copyrightFontInfo)
 
 
-
 defaultStyle = None
 defaultPalette = None
+
+
 def GetDefaultStyle():
     """
     Stores a copy of the default app style upon launch, which can then be accessed later
@@ -258,21 +254,28 @@ def GetDefaultStyle():
     defaultStyle = app.style()
     defaultPalette = QtGui.QPalette(app.palette())
 
+
 def setting(name, default=None):
     """
     Thin wrapper around QSettings, fixes the type=bool bug
     """
     result = settings.value(name, default)
-    if result == 'false': return False
-    elif result == 'true': return True
-    elif result == 'none': return None
-    else: return result
+    if result == 'false':
+        return False
+    elif result == 'true':
+        return True
+    elif result == 'none':
+        return None
+    else:
+        return result
+
 
 def setSetting(name, value):
     """
     Thin wrapper around QSettings
     """
     return settings.setValue(name, value)
+
 
 def module_path():
     """
@@ -284,7 +287,10 @@ def module_path():
         return os.path.dirname(os.path.abspath(sys.argv[0]))
     return None
 
+
 compressed = False
+
+
 def checkContent(data):
     if not data.startswith(b'U\xAA8-'):
         return False
@@ -295,6 +301,7 @@ def checkContent(data):
             return False
 
     return True
+
 
 def IsNSMBLevel(filename):
     global compressed
@@ -328,7 +335,7 @@ def FilesAreMissing():
         QtWidgets.QMessageBox.warning(None, trans.string('Err_MissingFiles', 0), trans.string('Err_MissingFiles', 1))
         return True
 
-    required = ['icon.png', 'about.png',]
+    required = ['icon.png', 'about.png', ]
 
     missing = []
 
@@ -337,7 +344,8 @@ def FilesAreMissing():
             missing.append(check)
 
     if len(missing) > 0:
-        QtWidgets.QMessageBox.warning(None, trans.string('Err_MissingFiles', 0), trans.string('Err_MissingFiles', 2, '[files]', ', '.join(missing)))
+        QtWidgets.QMessageBox.warning(None, trans.string('Err_MissingFiles', 0),
+                                      trans.string('Err_MissingFiles', 2, '[files]', ', '.join(missing)))
         return True
 
     return False
@@ -362,7 +370,6 @@ def SetGamePath(newpath):
     gamedef.SetGamePath(str(newpath))
 
 
-
 def isValidGamePath(check='ug'):
     """
     Checks to see if the path for NSMBWii contains a valid game
@@ -377,8 +384,9 @@ def isValidGamePath(check='ug'):
     return True
 
 
-
 LevelNames = None
+
+
 def LoadLevelNames():
     """
     Ensures that the level name info is loaded
@@ -391,6 +399,7 @@ def LoadLevelNames():
 
     # Parse the nodes (root acts like a large category)
     LevelNames = LoadLevelNames_Category(root)
+
 
 def LoadLevelNames_Category(node):
     """
@@ -406,6 +415,8 @@ def LoadLevelNames_Category(node):
 
 
 TilesetNames = None
+
+
 def LoadTilesetNames(reload_=False):
     """
     Ensures that the tileset name info is loaded
@@ -429,14 +440,18 @@ def LoadTilesetNames(reload_=False):
         # Go through each slot
         for node in root:
             if node.tag.lower() != 'slot': continue
-            try: slot = int(node.attrib['num'])
-            except ValueError: continue
+            try:
+                slot = int(node.attrib['num'])
+            except ValueError:
+                continue
             if slot > 3: continue
 
             # Parse the category data into a list
-            newlist = [LoadTilesetNames_Category(node),]
-            if 'sorted' in node.attrib: newlist.append(node.attrib['sorted'].lower() == 'true')
-            else: newlist.append(TilesetNames[slot][1]) # inherit
+            newlist = [LoadTilesetNames_Category(node), ]
+            if 'sorted' in node.attrib:
+                newlist.append(node.attrib['sorted'].lower() == 'true')
+            else:
+                newlist.append(TilesetNames[slot][1])  # inherit
 
             # Apply it as a patch over the current entry
             newlist[0] = CascadeTilesetNames_Category(TilesetNames[slot][0], newlist[0])
@@ -446,6 +461,7 @@ def LoadTilesetNames(reload_=False):
                 newlist[0] = SortTilesetNames_Category(newlist[0])
 
             TilesetNames[slot] = newlist
+
 
 def LoadTilesetNames_Category(node):
     """
@@ -457,13 +473,16 @@ def LoadTilesetNames_Category(node):
             new = [
                 str(child.attrib['name']),
                 LoadTilesetNames_Category(child),
-                ]
-            if 'sorted' in child.attrib: new.append(str(child.attrib['sorted'].lower()) == 'true')
-            else: new.append(False)
+            ]
+            if 'sorted' in child.attrib:
+                new.append(str(child.attrib['sorted'].lower()) == 'true')
+            else:
+                new.append(False)
             cat.append(new)
         elif child.tag.lower() == 'tileset':
             cat.append((str(child.attrib['filename']), str(child.attrib['name'])))
     return list(cat)
+
 
 def CascadeTilesetNames_Category(lower, upper):
     """
@@ -478,7 +497,7 @@ def CascadeTilesetNames_Category(lower, upper):
             found = False
             for i, lowitem in enumerate(lower):
                 lowitem = lower[i]
-                if lowitem[0] == item[0]: # names are ==
+                if lowitem[0] == item[0]:  # names are ==
                     lower[i] = list(lower[i])
                     lower[i][1] = CascadeTilesetNames_Category(lowitem[1], item[1])
                     found = True
@@ -487,13 +506,13 @@ def CascadeTilesetNames_Category(lower, upper):
             if not found:
                 i = 0
                 while (i < len(lower)) and (isinstance(lower[i][1], tuple) or isinstance(lower[i][1], list)): i += 1
-                lower.insert(i+1, item)
+                lower.insert(i + 1, item)
 
-        else: # It's a tileset entry
+        else:  # It's a tileset entry
             found = False
             for i, lowitem in enumerate(lower):
                 lowitem = lower[i]
-                if lowitem[0] == item[0]: # filenames are ==
+                if lowitem[0] == item[0]:  # filenames are ==
                     lower[i] = list(lower[i])
                     lower[i][1] = item[1]
                     found = True
@@ -501,6 +520,7 @@ def CascadeTilesetNames_Category(lower, upper):
 
             if not found: lower.append(item)
     return lower
+
 
 def SortTilesetNames_Category(cat):
     """
@@ -529,7 +549,10 @@ def SortTilesetNames_Category(cat):
     for tileset in cat: new.append(tuple(tileset))
     return tuple(new)
 
+
 ObjDesc = None
+
+
 def LoadObjDescriptions(reload_=False):
     """
     Ensures that the object description is loaded
@@ -556,6 +579,8 @@ def LoadObjDescriptions(reload_=False):
 
 
 BgANames = None
+
+
 def LoadBgANames(reload_=False):
     """
     Ensures that the background name info is loaded
@@ -591,6 +616,8 @@ def LoadBgANames(reload_=False):
 
 
 BgBNames = None
+
+
 def LoadBgBNames(reload_=False):
     """
     Ensures that the background name info is loaded
@@ -600,8 +627,7 @@ def LoadBgBNames(reload_=False):
 
     paths, isPatch = gamedef.recursiveFiles('bgb', True)
     if isPatch:
-        new = []
-        new.append(trans.files['bgb'])
+        new = [trans.files['bgb']]
         for path in paths: new.append(path)
         paths = new
 
@@ -634,7 +660,7 @@ def LoadConstantLists():
     global ZoneThemeValues
     global ZoneTerrainThemeValues
     global Sprites
-    global SpriteCategories
+    global SpriteListData
 
     BgScrollRates = [0.0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0, 0.0, 1.2, 1.5, 2.0, 4.0]
     BgScrollRateStrings = []
@@ -650,7 +676,7 @@ def LoadConstantLists():
     SpriteListData = None
 
 
-class SpriteDefinition():
+class SpriteDefinition:
     """
     Stores and manages the data info for a specific sprite
     """
@@ -673,7 +699,7 @@ class SpriteDefinition():
             """
             Required by Qt
             """
-            #return self.max
+            # return self.max
             return len(self.entries)
 
         def data(self, index, role=Qt.DisplayRole):
@@ -683,19 +709,18 @@ class SpriteDefinition():
             if not index.isValid(): return None
             n = index.row()
             if n < 0: return None
-            #if n >= self.max: return None
+            # if n >= self.max: return None
             if n >= len(self.entries): return None
 
             if role == Qt.DisplayRole:
-                #entries = self.entries
-                #if n in entries:
+                # entries = self.entries
+                # if n in entries:
                 #    return '%d: %s' % (n, entries[n])
-                #else:
+                # else:
                 #    return '%d: <unknown/unused>' % n
                 return '%d: %s' % self.entries[n]
 
             return None
-
 
     def loadFrom(self, elem):
         """
@@ -744,7 +769,8 @@ class SpriteDefinition():
                     entries.append((i, e.text))
                     existing[i] = True
 
-                fields.append((1, attribs['title'], nybble, SpriteDefinition.ListPropertyModel(entries, existing, max), comment))
+                fields.append(
+                    (1, attribs['title'], nybble, SpriteDefinition.ListPropertyModel(entries, existing, max), comment))
             elif field.tag == 'value':
                 # parameters: title, nybble, max, comment
                 snybble = attribs['nybble']
@@ -781,10 +807,8 @@ def LoadSpriteData():
     errortext = []
 
     # It works this way so that it can overwrite settings based on order of precedence
-    paths = []
-    paths.append((trans.files['spritedata'], None))
+    paths = [(trans.files['spritedata'], None)]
     for pathtuple in gamedef.multipleRecursiveFiles('spritedata', 'spritenames'): paths.append(pathtuple)
-
 
     for sdpath, snpath in paths:
 
@@ -797,8 +821,10 @@ def LoadSpriteData():
             for sprite in root:
                 if sprite.tag.lower() != 'sprite': continue
 
-                try: spriteid = int(sprite.attrib['id'])
-                except ValueError: continue
+                try:
+                    spriteid = int(sprite.attrib['id'])
+                except ValueError:
+                    continue
                 spritename = sprite.attrib['name']
                 notes = None
                 relatedObjFiles = None
@@ -807,7 +833,8 @@ def LoadSpriteData():
                     notes = trans.string('SpriteDataEditor', 2, '[notes]', sprite.attrib['notes'])
 
                 if 'files' in sprite.attrib:
-                    relatedObjFiles = trans.string('SpriteDataEditor', 8, '[list]', sprite.attrib['files'].replace(';', '<br>'))
+                    relatedObjFiles = trans.string('SpriteDataEditor', 8, '[list]',
+                                                   sprite.attrib['files'].replace(';', '<br>'))
 
                 sdef = SpriteDefinition()
                 sdef.id = spriteid
@@ -843,10 +870,15 @@ def LoadSpriteData():
 
     # Warn the user if errors occurred
     if len(errors) > 0:
-        QtWidgets.QMessageBox.warning(None, trans.string('Err_BrokenSpriteData', 0), trans.string('Err_BrokenSpriteData', 1, '[sprites]', ', '.join(errors)), QtWidgets.QMessageBox.Ok)
+        QtWidgets.QMessageBox.warning(None, trans.string('Err_BrokenSpriteData', 0),
+                                      trans.string('Err_BrokenSpriteData', 1, '[sprites]', ', '.join(errors)),
+                                      QtWidgets.QMessageBox.Ok)
         QtWidgets.QMessageBox.warning(None, trans.string('Err_BrokenSpriteData', 2), repr(errortext))
 
+
 SpriteCategories = None
+
+
 def LoadSpriteCategories(reload_=False):
     """
     Ensures that the sprite category info is loaded
@@ -856,8 +888,7 @@ def LoadSpriteCategories(reload_=False):
 
     paths, isPatch = gamedef.recursiveFiles('spritecategories', True)
     if isPatch:
-        new = []
-        new.append(trans.files['spritecategories'])
+        new = [trans.files['spritecategories']]
         for path in paths: new.append(path)
         paths = new
 
@@ -899,16 +930,18 @@ def LoadSpriteCategories(reload_=False):
                             CurrentCategory.append(int(sprite))
                     else:
                         x = sprite.split('-')
-                        for i in range(int(x[0]), int(x[1])+1):
+                        for i in range(int(x[0]), int(x[1]) + 1):
                             if i not in CurrentCategory:
                                 CurrentCategory.append(i)
 
     # Add a Search category
     SpriteCategories.append((trans.string('Sprites', 19), [(trans.string('Sprites', 16), list(range(0, 1000)))], []))
-    SpriteCategories[-1][1][0][1].append(9999) # 'no results' special case
+    SpriteCategories[-1][1][0][1].append(9999)  # 'no results' special case
 
 
 SpriteListData = None
+
+
 def LoadSpriteListData(reload_=False):
     """
     Ensures that the sprite list modifier data is loaded
@@ -917,8 +950,7 @@ def LoadSpriteListData(reload_=False):
     if (SpriteListData is not None) and not reload_: return
 
     paths = gamedef.recursiveFiles('spritelistdata')
-    new = []
-    new.append(os.path.join('reggiedata', 'spritelistdata.txt'))
+    new = [os.path.join('reggiedata', 'spritelistdata.txt')]
     for path in paths: new.append(path)
     paths = new
 
@@ -933,18 +965,21 @@ def LoadSpriteListData(reload_=False):
         for lineidx in range(24):
             line = split[lineidx]
             splitline = line.split(',')
-            splitlinelist = []
 
             # Add them
             for item in splitline:
-                try: newitem = int(item)
-                except ValueError: continue
+                try:
+                    newitem = int(item)
+                except ValueError:
+                    continue
                 if newitem in SpriteListData[lineidx]: continue
                 SpriteListData[lineidx].append(newitem)
             SpriteListData[lineidx].sort()
 
 
 EntranceTypeNames = None
+
+
 def LoadEntranceNames(reload_=False):
     """
     Ensures that the entrance names are loaded
@@ -954,8 +989,7 @@ def LoadEntranceNames(reload_=False):
 
     paths, isPatch = gamedef.recursiveFiles('entrancetypes', True)
     if isPatch:
-        new = []
-        new.append(trans.files['entrancetypes'])
+        new = [trans.files['entrancetypes']]
         for path in paths: new.append(path)
         paths = new
 
@@ -977,6 +1011,7 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
     """
     Dialog which lets you choose a level from a list
     """
+
     def __init__(self):
         """
         Creates and initializes the dialog
@@ -1016,7 +1051,7 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
         self.setLayout(layout)
         self.layout = layout
 
-        self.setMinimumWidth(320) # big enough to fit "World 5: Freezeflame Volcano/Freezeflame Glacier"
+        self.setMinimumWidth(320)  # big enough to fit "World 5: Freezeflame Volcano/Freezeflame Glacier"
         self.setMinimumHeight(384)
 
     def ParseCategory(self, items):
@@ -1053,7 +1088,6 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
             self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(True)
             self.currentlevel = str(self.currentlevel)
 
-
     @QtCore.pyqtSlot(QtWidgets.QTreeWidgetItem, int)
     def HandleItemActivated(self, item, column):
         """
@@ -1065,16 +1099,17 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
             self.accept()
 
 
-Tiles = None # 0x200 tiles per tileset, plus 64 for each type of override
+Tiles = None  # 0x200 tiles per tileset, plus 64 for each type of override
 TilesetFilesLoaded = [None, None, None, None]
 TilesetAnimTimer = None
-TilesetCache = {} # Tileset cache, to avoid reloading when possible
-Overrides = None # 320 tiles, this is put into Tiles usually
+TilesetCache = {}  # Tileset cache, to avoid reloading when possible
+Overrides = None  # 320 tiles, this is put into Tiles usually
 TileBehaviours = None
-ObjectDefinitions = None # 4 tilesets
+ObjectDefinitions = None  # 4 tilesets
 TilesetsAnimating = False
 
-class ObjectDef():
+
+class ObjectDef:
     """
     Class for the object definitions
     """
@@ -1104,11 +1139,11 @@ class ObjectDef():
             elif cbyte == 0xFF:
                 break
             elif (cbyte & 0x80) != 0:
-                row.append([cbyte,])
+                row.append([cbyte, ])
                 i += 1
             else:
-                extra = source[i+2]
-                tile = [cbyte, source[i+1] | ((extra & 3) << 8), extra >> 2]
+                extra = source[i + 2]
+                tile = [cbyte, source[i + 1] | ((extra & 3) << 8), extra >> 2]
                 row.append(tile)
                 i += 3
 
@@ -1121,11 +1156,11 @@ class ObjectDef():
                     tile[1] = (tile[1] % 256) + tileoffset
 
 
-
-class TilesetTile():
+class TilesetTile:
     """
     Class that represents a single tile in a tileset
     """
+
     def __init__(self, main):
         """
         Initializes the TilesetTile
@@ -1144,7 +1179,7 @@ class TilesetTile():
         animTiles = []
         numberOfFrames = len(data) // 2048
         for frame in range(numberOfFrames):
-            framedata = data[frame*2048: (frame*2048)+2048]
+            framedata = data[frame * 2048: (frame * 2048) + 2048]
             newdata = tpl.decodeRGB4A3(framedata, 32, 32)
             img = QtGui.QImage(newdata, 32, 32, 128, QtGui.QImage.Format_ARGB32)
             pix = QtGui.QPixmap.fromImage(img.copy(0, 0, 31, 31).scaledToHeight(24, Qt.SmoothTransformation))
@@ -1184,8 +1219,10 @@ class TilesetTile():
         Returns the current tile based on the current animation frame
         """
         result = None
-        if (not TilesetsAnimating) or (not self.isAnimated): result = self.main
-        else: result = self.animTiles[self.animFrame]
+        if (not TilesetsAnimating) or (not self.isAnimated):
+            result = self.main
+        else:
+            result = self.animTiles[self.animFrame]
         result = QtGui.QPixmap(result)
 
         p = QtGui.QPainter(result)
@@ -1206,13 +1243,13 @@ class TilesetTile():
         """
         Sets the collision data to that of a question block
         """
-        self.setCollisions((0,0,0,5,0,0,0,0))
+        self.setCollisions((0, 0, 0, 5, 0, 0, 0, 0))
 
     def setBrickCollisions(self):
         """
         Sets the collision data to that of a brick block
         """
-        self.setCollisions((0,0,0,0x10,0,0,0,0))
+        self.setCollisions((0, 0, 0, 0x10, 0, 0, 0, 0))
 
     def updateCollisionOverlay(self):
         """
@@ -1221,61 +1258,60 @@ class TilesetTile():
         # This is completely stolen from Puzzle. Only minor
         # changes have been made. Thanks, Treeki!
         CD = self.collData
-        if CD[2] & 16:      # Red
+        if CD[2] & 16:  # Red
             color = QtGui.QColor(255, 0, 0, 120)
-        elif CD[5] == 1:    # Ice
+        elif CD[5] == 1:  # Ice
             color = QtGui.QColor(0, 0, 255, 120)
-        elif CD[5] == 2:    # Snow
+        elif CD[5] == 2:  # Snow
             color = QtGui.QColor(0, 0, 255, 120)
-        elif CD[5] == 3:    # Quicksand
-            color = QtGui.QColor(128,64,0, 120)
-        elif CD[5] == 4:    # Conveyor
-            color = QtGui.QColor(128,128,128, 120)
-        elif CD[5] == 5:    # Conveyor
-            color = QtGui.QColor(128,128,128, 120)
-        elif CD[5] == 6:    # Rope
-            color = QtGui.QColor(128,0,255, 120)
-        elif CD[5] == 7:    # Half Spike
-            color = QtGui.QColor(128,0,255, 120)
-        elif CD[5] == 8:    # Ledge
-            color = QtGui.QColor(128,0,255, 120)
-        elif CD[5] == 9:    # Ladder
-            color = QtGui.QColor(128,0,255, 120)
-        elif CD[5] == 10:   # Staircase
-            color = QtGui.QColor(255, 0, 0, 120)
-        elif CD[5] == 11:   # Carpet
-            color = QtGui.QColor(255, 0, 0, 120)
-        elif CD[5] == 12:   # Dust
-            color = QtGui.QColor(128,64,0, 120)
-        elif CD[5] == 13:   # Grass
-            color = QtGui.QColor(0, 255, 0, 120)
-        elif CD[5] == 14:   # Unknown
-            color = QtGui.QColor(255, 0, 0, 120)
-        elif CD[5] == 15:   # Beach Sand
+        elif CD[5] == 3:  # Quicksand
             color = QtGui.QColor(128, 64, 0, 120)
-        else:               # Brown?
+        elif CD[5] == 4:  # Conveyor
+            color = QtGui.QColor(128, 128, 128, 120)
+        elif CD[5] == 5:  # Conveyor
+            color = QtGui.QColor(128, 128, 128, 120)
+        elif CD[5] == 6:  # Rope
+            color = QtGui.QColor(128, 0, 255, 120)
+        elif CD[5] == 7:  # Half Spike
+            color = QtGui.QColor(128, 0, 255, 120)
+        elif CD[5] == 8:  # Ledge
+            color = QtGui.QColor(128, 0, 255, 120)
+        elif CD[5] == 9:  # Ladder
+            color = QtGui.QColor(128, 0, 255, 120)
+        elif CD[5] == 10:  # Staircase
+            color = QtGui.QColor(255, 0, 0, 120)
+        elif CD[5] == 11:  # Carpet
+            color = QtGui.QColor(255, 0, 0, 120)
+        elif CD[5] == 12:  # Dust
+            color = QtGui.QColor(128, 64, 0, 120)
+        elif CD[5] == 13:  # Grass
+            color = QtGui.QColor(0, 255, 0, 120)
+        elif CD[5] == 14:  # Unknown
+            color = QtGui.QColor(255, 0, 0, 120)
+        elif CD[5] == 15:  # Beach Sand
+            color = QtGui.QColor(128, 64, 0, 120)
+        else:  # Brown?
             color = QtGui.QColor(64, 30, 0, 120)
 
-
         # Sets Brush style for fills
-        if CD[2] & 4:        # Climbing Grid
+        if CD[2] & 4:  # Climbing Grid
             style = Qt.DiagCrossPattern
-        elif (CD[3] & 16) or (CD[3] & 4) or (CD[3] & 8): # Breakable
+        elif (CD[3] & 16) or (CD[3] & 4) or (CD[3] & 8):  # Breakable
             style = Qt.Dense5Pattern
         else:
             style = Qt.SolidPattern
 
         brush = QtGui.QBrush(color, style)
-        pen = QtGui.QPen(QtGui.QColor(0,0,0,128))
+        pen = QtGui.QPen(QtGui.QColor(0, 0, 0, 128))
         collPix = QtGui.QPixmap(24, 24)
-        collPix.fill(QtGui.QColor(0,0,0,0))
+        collPix.fill(QtGui.QColor(0, 0, 0, 0))
         painter = QtGui.QPainter(collPix)
         painter.setBrush(brush)
         painter.setPen(pen)
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
 
         # Paints shape based on other stuff
-        if CD[3] & 32: # Slope
+        if CD[3] & 32:  # Slope
             if CD[7] == 0:
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
                                                     QtCore.QPoint(24, 24),
@@ -1346,7 +1382,7 @@ class TilesetTile():
                                                     QtCore.QPoint(0, 18),
                                                     QtCore.QPoint(0, 24)]))
 
-        elif CD[3] & 64: # Reverse Slope
+        elif CD[3] & 64:  # Reverse Slope
             if CD[7] == 0:
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
                                                     QtCore.QPoint(24, 24),
@@ -1417,7 +1453,7 @@ class TilesetTile():
                                                     QtCore.QPoint(24, 0),
                                                     QtCore.QPoint(0, 6)]))
 
-        elif CD[2] & 8: # Partial
+        elif CD[2] & 8:  # Partial
             if CD[7] == 1:
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
                                                     QtCore.QPoint(12, 0),
@@ -1506,7 +1542,7 @@ class TilesetTile():
                                                     QtCore.QPoint(24, 24),
                                                     QtCore.QPoint(0, 24)]))
 
-        elif CD[2] & 0x20: # Solid-on-bottom
+        elif CD[2] & 0x20:  # Solid-on-bottom
             painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
                                                 QtCore.QPoint(24, 24),
                                                 QtCore.QPoint(24, 18),
@@ -1520,7 +1556,7 @@ class TilesetTile():
                                                 QtCore.QPoint(9, 12),
                                                 QtCore.QPoint(9, 0)]))
 
-        elif CD[2] & 0x80: # Solid-on-top
+        elif CD[2] & 0x80:  # Solid-on-top
             painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
                                                 QtCore.QPoint(24, 0),
                                                 QtCore.QPoint(24, 6),
@@ -1534,7 +1570,7 @@ class TilesetTile():
                                                 QtCore.QPoint(9, 12),
                                                 QtCore.QPoint(9, 24)]))
 
-        elif CD[2] & 16: # Spikes
+        elif CD[2] & 16:  # Spikes
             if CD[7] == 0:
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 0),
                                                     QtCore.QPoint(24, 12),
@@ -1577,54 +1613,53 @@ class TilesetTile():
                                                     QtCore.QPoint(24, 0),
                                                     QtCore.QPoint(12, 24)]))
 
-##        elif CD[3] & 4: # QBlock
-##            if CD[7] == 0:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/FireF.png'))
-##            if CD[7] == 1:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Star.png'))
-##            if CD[7] == 2:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Coin.png'))
-##            if CD[7] == 3:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Vine.png'))
-##            if CD[7] == 4:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/1up.png'))
-##            if CD[7] == 5:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Mini.png'))
-##            if CD[7] == 6:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Prop.png'))
-##            if CD[7] == 7:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Peng.png'))
-##            if CD[7] == 8:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/IceF.png'))
-##
-##        elif CD[3] & 2: # Coin
-##            if CD[7] == 0:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Coin/Coin.png'))
-##            if CD[7] == 4:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Coin/POW.png'))
-##
-##        elif CD[3] & 8: # Exploder
-##            if CD[7] == 1:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Explode/Stone.png'))
-##            if CD[7] == 2:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Explode/Wood.png'))
-##            if CD[7] == 3:
-##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Explode/Red.png'))
-##
-##        elif CD[1] & 2: # Falling
-##            painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Prop/Fall.png'))
+            ##        elif CD[3] & 4: # QBlock
+            ##            if CD[7] == 0:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/FireF.png'))
+            ##            if CD[7] == 1:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Star.png'))
+            ##            if CD[7] == 2:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Coin.png'))
+            ##            if CD[7] == 3:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Vine.png'))
+            ##            if CD[7] == 4:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/1up.png'))
+            ##            if CD[7] == 5:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Mini.png'))
+            ##            if CD[7] == 6:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Prop.png'))
+            ##            if CD[7] == 7:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Peng.png'))
+            ##            if CD[7] == 8:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/IceF.png'))
+            ##
+            ##        elif CD[3] & 2: # Coin
+            ##            if CD[7] == 0:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Coin/Coin.png'))
+            ##            if CD[7] == 4:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Coin/POW.png'))
+            ##
+            ##        elif CD[3] & 8: # Exploder
+            ##            if CD[7] == 1:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Explode/Stone.png'))
+            ##            if CD[7] == 2:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Explode/Wood.png'))
+            ##            if CD[7] == 3:
+            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Explode/Red.png'))
+            ##
+            ##        elif CD[1] & 2: # Falling
+            ##            painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Prop/Fall.png'))
 
-#                elif CD[5] == 4 or 5: # Conveyor
-#                    d
+            #                elif CD[5] == 4 or 5: # Conveyor
+            #                    d
 
-        elif (CD[3] & 1) or (CD[3] in (5, 0x10)) or (CD[3] & 4) or (CD[3] & 8): # Solid, question or brick
+        elif (CD[3] & 1) or (CD[3] in (5, 0x10)) or (CD[3] & 4) or (CD[3] & 8):  # Solid, question or brick
             painter.drawRect(0, 0, 24, 24)
 
-        else: # No fill
+        else:  # No fill
             pass
 
         self.collOverlay = collPix
-
 
 
 def RenderObject(tileset, objnum, width, height, fullslope=False):
@@ -1633,7 +1668,7 @@ def RenderObject(tileset, objnum, width, height, fullslope=False):
     """
     # allocate an array
     dest = []
-    for i in range(height): dest.append([0]*width)
+    for i in range(height): dest.append([0] * width)
 
     # ignore non-existent objects
     try:
@@ -1669,7 +1704,9 @@ def RenderObject(tileset, objnum, width, height, fullslope=False):
                 else:
                     beforeRepeat.append(row)
 
-        bc = len(beforeRepeat); ic = len(inRepeat); ac = len(afterRepeat)
+        bc = len(beforeRepeat)
+        ic = len(inRepeat)
+        ac = len(afterRepeat)
         if ic == 0:
             for y in range(height):
                 RenderStandardRow(dest[y], beforeRepeat[y % bc], y, width)
@@ -1707,7 +1744,9 @@ def RenderStandardRow(dest, row, y, width):
             else:
                 beforeRepeat.append(tile)
 
-    bc = len(beforeRepeat); ic = len(inRepeat); ac = len(afterRepeat)
+    bc = len(beforeRepeat)
+    ic = len(inRepeat)
+    ac = len(afterRepeat)
     if ic == 0:
         for x in range(width):
             dest[x] = beforeRepeat[x % bc][1]
@@ -1732,7 +1771,7 @@ def RenderDiagonalObject(dest, obj, width, height, fullslope):
             row[x] = -1
 
     # get sections
-    mainBlock,subBlock = GetSlopeSections(obj)
+    mainBlock, subBlock = GetSlopeSections(obj)
     cbyte = obj.rows[0][0][0]
 
     # get direction
@@ -1781,7 +1820,6 @@ def RenderDiagonalObject(dest, obj, width, height, fullslope):
         xi = len(mainBlock[0])
         yi = -len(mainBlock)
 
-
     # finally draw it
     for i in range(drawAmount):
         PutObjectArray(dest, x, y, mainBlock, width, height)
@@ -1800,17 +1838,17 @@ def PutObjectArray(dest, xo, yo, block, width, height):
     """
     Places a tile array into an object
     """
-    #for y in range(yo,min(yo+len(block),height)):
-    for y in range(yo,yo+len(block)):
+    # for y in range(yo,min(yo+len(block),height)):
+    for y in range(yo, yo + len(block)):
         if y < 0: continue
         if y >= height: continue
         drow = dest[y]
-        srow = block[y-yo]
-        #for x in range(xo,min(xo+len(srow),width)):
-        for x in range(xo,xo+len(srow)):
+        srow = block[y - yo]
+        # for x in range(xo,min(xo+len(srow),width)):
+        for x in range(xo, xo + len(srow)):
             if x < 0: continue
             if x >= width: continue
-            drow[x] = srow[x-xo][1]
+            drow[x] = srow[x - xo][1]
 
 
 def GetSlopeSections(obj):
@@ -1821,19 +1859,19 @@ def GetSlopeSections(obj):
     currentSection = None
 
     for row in obj.rows:
-        if len(row) > 0 and (row[0][0] & 0x80) != 0: # begin new section
+        if len(row) > 0 and (row[0][0] & 0x80) != 0:  # begin new section
             if currentSection is not None:
                 sections.append(CreateSection(currentSection))
             currentSection = []
         currentSection.append(row)
 
-    if currentSection is not None: # end last section
+    if currentSection is not None:  # end last section
         sections.append(CreateSection(currentSection))
 
     if len(sections) == 1:
-        return (sections[0],None)
+        return (sections[0], None)
     else:
-        return (sections[0],sections[1])
+        return (sections[0], sections[1])
 
 
 def CreateSection(rows):
@@ -1877,14 +1915,14 @@ def CreateTilesets():
     """
     global Tiles, TilesetFilesLoaded, TilesetAnimTimer, TileBehaviours, ObjectDefinitions
 
-    Tiles = [None]*0x200*4
+    Tiles = [None] * 0x200 * 4
     Tiles += Overrides
     TilesetFilesLoaded = [None, None, None, None]
-    #TileBehaviours = [0]*1024
+    # TileBehaviours = [0]*1024
     TilesetAnimTimer = QtCore.QTimer()
     TilesetAnimTimer.timeout.connect(IncrementTilesetFrame)
     TilesetAnimTimer.start(180)
-    ObjectDefinitions = [None]*4
+    ObjectDefinitions = [None] * 4
     SLib.Tiles = Tiles
 
 
@@ -1894,7 +1932,8 @@ def LoadTileset(idx, name, reload=False):
     try:
         return _LoadTileset(idx, name, reload)
     except Exception:
-        QtWidgets.QMessageBox.warning(None, trans.string('Err_CorruptedTileset', 0), trans.string('Err_CorruptedTileset', 1, '[file]', name))
+        QtWidgets.QMessageBox.warning(None, trans.string('Err_CorruptedTileset', 0),
+                                      trans.string('Err_CorruptedTileset', 1, '[file]', name))
         return False
 
 
@@ -1927,7 +1966,8 @@ def _LoadTileset(idx, name, reload=False):
 
     # warning if not found
     if not found:
-        QtWidgets.QMessageBox.warning(None, trans.string('Err_MissingTileset', 0), trans.string('Err_MissingTileset', 1, '[file]', name))
+        QtWidgets.QMessageBox.warning(None, trans.string('Err_MissingTileset', 0),
+                                      trans.string('Err_MissingTileset', 1, '[file]', name))
         return False
 
     # if this file's already loaded, return
@@ -1944,7 +1984,7 @@ def _LoadTileset(idx, name, reload=False):
     tileoffset = idx * 0x200
 
     global Tiles, TilesetCache
-    tileCacheEntryName = name + (' ' * 256) + gamedef.name # It works :P
+    tileCacheEntryName = name + (' ' * 256) + gamedef.name  # It works :P
 
     if tileCacheEntryName not in TilesetCache:
         # Load the tiles
@@ -1954,7 +1994,8 @@ def _LoadTileset(idx, name, reload=False):
             comptiledata = arc['BG_tex/%s_tex.bin.LZ' % name]
             colldata = arc['BG_chk/d_bgchk_%s.bin' % name]
         except KeyError:
-            QtWidgets.QMessageBox.warning(None, trans.string('Err_CorruptedTilesetData', 0), trans.string('Err_CorruptedTilesetData', 1, '[file]', name))
+            QtWidgets.QMessageBox.warning(None, trans.string('Err_CorruptedTilesetData', 0),
+                                          trans.string('Err_CorruptedTilesetData', 1, '[file]', name))
             return False
 
         # load in the textures
@@ -1963,9 +2004,6 @@ def _LoadTileset(idx, name, reload=False):
 
         # Divide it into individual tiles and
         # add collisions at the same time
-        def getTileFromImage(tilemap, xtilenum, ytilenum):
-            return dest.copy(xtilenum * 24, ytilenum * 24, 24, 24)
-
         dest = QtGui.QPixmap.fromImage(img)
         sourcex = 4
         sourcey = 4
@@ -2010,7 +2048,6 @@ def _LoadTileset(idx, name, reload=False):
         # We already have tiles in the tileset cache; copy them over to Tiles
         for i in range(0x200):
             Tiles[i + tileoffset] = TilesetCache[tileCacheEntryName][i]
-
 
     # load the object definitions
     defs = [None] * 256
@@ -2070,7 +2107,7 @@ def CheckTilesetAnimated(tileset):
         'block_anime.bin',
         'hatena_anime.bin',
         'tuka_coin_anime.bin',
-        )
+    )
     texFiles = tileset['BG_tex']
     animFiles = []
     for f in texFiles:
@@ -2091,13 +2128,13 @@ def CheckTilesetAnimated(tileset):
         animFiles.append(f)
 
     # Quit if there's no animation
-    if len(animFiles) == 0: return False, None
+    if len(animFiles) == 0:
+        return False, None
     else:
         # This makes so many assumptions
         fn = animFiles[0]
         prefix = fn[0] if len(fn) == 9 else fn[:2]
         return True, prefix
-
 
 
 def UnloadTileset(idx):
@@ -2117,7 +2154,8 @@ def ProcessOverrides(idx, name):
     """
 
     try:
-        tsindexes = ['Pa0_jyotyu', 'Pa0_jyotyu_chika', 'Pa0_jyotyu_setsugen', 'Pa0_jyotyu_yougan', 'Pa0_jyotyu_staffRoll']
+        tsindexes = ['Pa0_jyotyu', 'Pa0_jyotyu_chika', 'Pa0_jyotyu_setsugen', 'Pa0_jyotyu_yougan',
+                     'Pa0_jyotyu_staffRoll']
         if name in tsindexes:
             offset = 0x800 + (tsindexes.index(name) * 64)
 
@@ -2148,71 +2186,71 @@ def ProcessOverrides(idx, name):
                 replace += 1
 
             # now the extra stuff (invisible collisions etc)
-            t[1].main = t[0x400 + 1280].main # solid
-            t[2].main = t[0x400 + 1311].main # vine stopper
-            t[11].main = t[0x400 + 1310].main # jumpthrough platform
-            t[12].main = t[0x400 + 1309].main # 16x8 roof platform
+            t[1].main = t[0x400 + 1280].main  # solid
+            t[2].main = t[0x400 + 1311].main  # vine stopper
+            t[11].main = t[0x400 + 1310].main  # jumpthrough platform
+            t[12].main = t[0x400 + 1309].main  # 16x8 roof platform
 
-            t[16].main = t[0x400 + 1291].main # 1x1 slope going up
-            t[17].main = t[0x400 + 1292].main # 1x1 slope going down
-            t[18].main = t[0x400 + 1281].main # 2x1 slope going up (part 1)
-            t[19].main = t[0x400 + 1282].main # 2x1 slope going up (part 2)
-            t[20].main = t[0x400 + 1283].main # 2x1 slope going down (part 1)
-            t[21].main = t[0x400 + 1284].main # 2x1 slope going down (part 2)
-            t[22].main = t[0x400 + 1301].main # 4x1 slope going up (part 1)
-            t[23].main = t[0x400 + 1302].main # 4x1 slope going up (part 2)
-            t[24].main = t[0x400 + 1303].main # 4x1 slope going up (part 3)
-            t[25].main = t[0x400 + 1304].main # 4x1 slope going up (part 4)
-            t[26].main = t[0x400 + 1305].main # 4x1 slope going down (part 1)
-            t[27].main = t[0x400 + 1306].main # 4x1 slope going down (part 2)
-            t[28].main = t[0x400 + 1307].main # 4x1 slope going down (part 3)
-            t[29].main = t[0x400 + 1308].main # 4x1 slope going down (part 4)
-            t[30].main = t[0x400 + 1062].main # coin
+            t[16].main = t[0x400 + 1291].main  # 1x1 slope going up
+            t[17].main = t[0x400 + 1292].main  # 1x1 slope going down
+            t[18].main = t[0x400 + 1281].main  # 2x1 slope going up (part 1)
+            t[19].main = t[0x400 + 1282].main  # 2x1 slope going up (part 2)
+            t[20].main = t[0x400 + 1283].main  # 2x1 slope going down (part 1)
+            t[21].main = t[0x400 + 1284].main  # 2x1 slope going down (part 2)
+            t[22].main = t[0x400 + 1301].main  # 4x1 slope going up (part 1)
+            t[23].main = t[0x400 + 1302].main  # 4x1 slope going up (part 2)
+            t[24].main = t[0x400 + 1303].main  # 4x1 slope going up (part 3)
+            t[25].main = t[0x400 + 1304].main  # 4x1 slope going up (part 4)
+            t[26].main = t[0x400 + 1305].main  # 4x1 slope going down (part 1)
+            t[27].main = t[0x400 + 1306].main  # 4x1 slope going down (part 2)
+            t[28].main = t[0x400 + 1307].main  # 4x1 slope going down (part 3)
+            t[29].main = t[0x400 + 1308].main  # 4x1 slope going down (part 4)
+            t[30].main = t[0x400 + 1062].main  # coin
 
-            t[32].main = t[0x400 + 1289].main # 1x1 roof going down
-            t[33].main = t[0x400 + 1290].main # 1x1 roof going up
-            t[34].main = t[0x400 + 1285].main # 2x1 roof going down (part 1)
-            t[35].main = t[0x400 + 1286].main # 2x1 roof going down (part 2)
-            t[36].main = t[0x400 + 1287].main # 2x1 roof going up (part 1)
-            t[37].main = t[0x400 + 1288].main # 2x1 roof going up (part 2)
-            t[38].main = t[0x400 + 1293].main # 4x1 roof going down (part 1)
-            t[39].main = t[0x400 + 1294].main # 4x1 roof going down (part 2)
-            t[40].main = t[0x400 + 1295].main # 4x1 roof going down (part 3)
-            t[41].main = t[0x400 + 1296].main # 4x1 roof going down (part 4)
-            t[42].main = t[0x400 + 1297].main # 4x1 roof going up (part 1)
-            t[43].main = t[0x400 + 1298].main # 4x1 roof going up (part 2)
-            t[44].main = t[0x400 + 1299].main # 4x1 roof going up (part 3)
-            t[45].main = t[0x400 + 1300].main # 4x1 roof going up (part 4)
-            t[46].main = t[0x400 + 1312].main # P-switch coins
+            t[32].main = t[0x400 + 1289].main  # 1x1 roof going down
+            t[33].main = t[0x400 + 1290].main  # 1x1 roof going up
+            t[34].main = t[0x400 + 1285].main  # 2x1 roof going down (part 1)
+            t[35].main = t[0x400 + 1286].main  # 2x1 roof going down (part 2)
+            t[36].main = t[0x400 + 1287].main  # 2x1 roof going up (part 1)
+            t[37].main = t[0x400 + 1288].main  # 2x1 roof going up (part 2)
+            t[38].main = t[0x400 + 1293].main  # 4x1 roof going down (part 1)
+            t[39].main = t[0x400 + 1294].main  # 4x1 roof going down (part 2)
+            t[40].main = t[0x400 + 1295].main  # 4x1 roof going down (part 3)
+            t[41].main = t[0x400 + 1296].main  # 4x1 roof going down (part 4)
+            t[42].main = t[0x400 + 1297].main  # 4x1 roof going up (part 1)
+            t[43].main = t[0x400 + 1298].main  # 4x1 roof going up (part 2)
+            t[44].main = t[0x400 + 1299].main  # 4x1 roof going up (part 3)
+            t[45].main = t[0x400 + 1300].main  # 4x1 roof going up (part 4)
+            t[46].main = t[0x400 + 1312].main  # P-switch coins
 
-            t[53].main = t[0x400 + 1314].main # donut lift
-            t[61].main = t[0x400 + 1063].main # multiplayer coin
-            t[63].main = t[0x400 + 1313].main # instant death tile
+            t[53].main = t[0x400 + 1314].main  # donut lift
+            t[61].main = t[0x400 + 1063].main  # multiplayer coin
+            t[63].main = t[0x400 + 1313].main  # instant death tile
 
         elif name in ('Pa1_nohara', 'Pa1_nohara2', 'Pa1_daishizen'):
             # flowers
             t = Tiles
-            t[416 + 0x100].main = t[0x400 + 1092].main # grass
+            t[416 + 0x100].main = t[0x400 + 1092].main  # grass
             t[417 + 0x100].main = t[0x400 + 1093].main
             t[418 + 0x100].main = t[0x400 + 1094].main
             t[419 + 0x100].main = t[0x400 + 1095].main
             t[420 + 0x100].main = t[0x400 + 1096].main
 
             if name == 'Pa1_nohara' or name == 'Pa1_nohara2':
-                t[432 + 0x100].main = t[0x400 + 1068].main # flowers
-                t[433 + 0x100].main = t[0x400 + 1069].main # flowers
-                t[434 + 0x100].main = t[0x400 + 1070].main # flowers
+                t[432 + 0x100].main = t[0x400 + 1068].main  # flowers
+                t[433 + 0x100].main = t[0x400 + 1069].main  # flowers
+                t[434 + 0x100].main = t[0x400 + 1070].main  # flowers
 
-                t[448 + 0x100].main = t[0x400 + 1158].main # flowers on grass
+                t[448 + 0x100].main = t[0x400 + 1158].main  # flowers on grass
                 t[449 + 0x100].main = t[0x400 + 1159].main
                 t[450 + 0x100].main = t[0x400 + 1160].main
             elif name == 'Pa1_daishizen':
                 # forest flowers
-                t[432 + 0x100].main = t[0x400 + 1071].main # flowers
-                t[433 + 0x100].main = t[0x400 + 1072].main # flowers
-                t[434 + 0x100].main = t[0x400 + 1073].main # flowers
+                t[432 + 0x100].main = t[0x400 + 1071].main  # flowers
+                t[433 + 0x100].main = t[0x400 + 1072].main  # flowers
+                t[434 + 0x100].main = t[0x400 + 1073].main  # flowers
 
-                t[448 + 0x100].main = t[0x400 + 1222].main # flowers on grass
+                t[448 + 0x100].main = t[0x400 + 1222].main  # flowers on grass
                 t[449 + 0x100].main = t[0x400 + 1223].main
                 t[450 + 0x100].main = t[0x400 + 1224].main
 
@@ -2222,128 +2260,128 @@ def ProcessOverrides(idx, name):
 
             t = Tiles
 
-            t[768 + 0x300].main = t[0x400 + 1088].main # horizontal line
-            t[769 + 0x300].main = t[0x400 + 1089].main # vertical line
-            t[770 + 0x300].main = t[0x400 + 1090].main # bottom-right corner
-            t[771 + 0x300].main = t[0x400 + 1091].main # top-left corner
+            t[768 + 0x300].main = t[0x400 + 1088].main  # horizontal line
+            t[769 + 0x300].main = t[0x400 + 1089].main  # vertical line
+            t[770 + 0x300].main = t[0x400 + 1090].main  # bottom-right corner
+            t[771 + 0x300].main = t[0x400 + 1091].main  # top-left corner
 
-            t[784 + 0x300].main = t[0x400 + 1152].main # left red blob (part 1)
-            t[785 + 0x300].main = t[0x400 + 1153].main # top red blob (part 1)
-            t[786 + 0x300].main = t[0x400 + 1154].main # top red blob (part 2)
-            t[787 + 0x300].main = t[0x400 + 1155].main # right red blob (part 1)
-            t[788 + 0x300].main = t[0x400 + 1156].main # top-left red blob
-            t[789 + 0x300].main = t[0x400 + 1157].main # top-right red blob
+            t[784 + 0x300].main = t[0x400 + 1152].main  # left red blob (part 1)
+            t[785 + 0x300].main = t[0x400 + 1153].main  # top red blob (part 1)
+            t[786 + 0x300].main = t[0x400 + 1154].main  # top red blob (part 2)
+            t[787 + 0x300].main = t[0x400 + 1155].main  # right red blob (part 1)
+            t[788 + 0x300].main = t[0x400 + 1156].main  # top-left red blob
+            t[789 + 0x300].main = t[0x400 + 1157].main  # top-right red blob
 
-            t[800 + 0x300].main = t[0x400 + 1216].main # left red blob (part 2)
-            t[801 + 0x300].main = t[0x400 + 1217].main # bottom red blob (part 1)
-            t[802 + 0x300].main = t[0x400 + 1218].main # bottom red blob (part 2)
-            t[803 + 0x300].main = t[0x400 + 1219].main # right red blob (part 2)
-            t[804 + 0x300].main = t[0x400 + 1220].main # bottom-left red blob
-            t[805 + 0x300].main = t[0x400 + 1221].main # bottom-right red blob
+            t[800 + 0x300].main = t[0x400 + 1216].main  # left red blob (part 2)
+            t[801 + 0x300].main = t[0x400 + 1217].main  # bottom red blob (part 1)
+            t[802 + 0x300].main = t[0x400 + 1218].main  # bottom red blob (part 2)
+            t[803 + 0x300].main = t[0x400 + 1219].main  # right red blob (part 2)
+            t[804 + 0x300].main = t[0x400 + 1220].main  # bottom-left red blob
+            t[805 + 0x300].main = t[0x400 + 1221].main  # bottom-right red blob
 
             # Those are all for Pa3_daishizen
             if name == 'Pa3_daishizen': return
 
-            t[816 + 0x300].main = t[0x400 + 1056].main # 1x2 diagonal going up (top edge)
-            t[817 + 0x300].main = t[0x400 + 1057].main # 1x2 diagonal going down (top edge)
+            t[816 + 0x300].main = t[0x400 + 1056].main  # 1x2 diagonal going up (top edge)
+            t[817 + 0x300].main = t[0x400 + 1057].main  # 1x2 diagonal going down (top edge)
 
-            t[832 + 0x300].main = t[0x400 + 1120].main # 1x2 diagonal going up (part 1)
-            t[833 + 0x300].main = t[0x400 + 1121].main # 1x2 diagonal going down (part 1)
-            t[834 + 0x300].main = t[0x400 + 1186].main # 1x1 diagonal going up
-            t[835 + 0x300].main = t[0x400 + 1187].main # 1x1 diagonal going down
-            t[836 + 0x300].main = t[0x400 + 1058].main # 2x1 diagonal going up (part 1)
-            t[837 + 0x300].main = t[0x400 + 1059].main # 2x1 diagonal going up (part 2)
-            t[838 + 0x300].main = t[0x400 + 1060].main # 2x1 diagonal going down (part 1)
-            t[839 + 0x300].main = t[0x400 + 1061].main # 2x1 diagonal going down (part 2)
+            t[832 + 0x300].main = t[0x400 + 1120].main  # 1x2 diagonal going up (part 1)
+            t[833 + 0x300].main = t[0x400 + 1121].main  # 1x2 diagonal going down (part 1)
+            t[834 + 0x300].main = t[0x400 + 1186].main  # 1x1 diagonal going up
+            t[835 + 0x300].main = t[0x400 + 1187].main  # 1x1 diagonal going down
+            t[836 + 0x300].main = t[0x400 + 1058].main  # 2x1 diagonal going up (part 1)
+            t[837 + 0x300].main = t[0x400 + 1059].main  # 2x1 diagonal going up (part 2)
+            t[838 + 0x300].main = t[0x400 + 1060].main  # 2x1 diagonal going down (part 1)
+            t[839 + 0x300].main = t[0x400 + 1061].main  # 2x1 diagonal going down (part 2)
 
-            t[848 + 0x300].main = t[0x400 + 1184].main # 1x2 diagonal going up (part 2)
-            t[849 + 0x300].main = t[0x400 + 1185].main # 1x2 diagonal going down (part 2)
-            t[850 + 0x300].main = t[0x400 + 1250].main # 1x1 diagonal going up
-            t[851 + 0x300].main = t[0x400 + 1251].main # 1x1 diagonal going down
-            t[852 + 0x300].main = t[0x400 + 1122].main # 2x1 diagonal going up (part 1)
-            t[853 + 0x300].main = t[0x400 + 1123].main # 2x1 diagonal going up (part 2)
-            t[854 + 0x300].main = t[0x400 + 1124].main # 2x1 diagonal going down (part 1)
-            t[855 + 0x300].main = t[0x400 + 1125].main # 2x1 diagonal going down (part 2)
+            t[848 + 0x300].main = t[0x400 + 1184].main  # 1x2 diagonal going up (part 2)
+            t[849 + 0x300].main = t[0x400 + 1185].main  # 1x2 diagonal going down (part 2)
+            t[850 + 0x300].main = t[0x400 + 1250].main  # 1x1 diagonal going up
+            t[851 + 0x300].main = t[0x400 + 1251].main  # 1x1 diagonal going down
+            t[852 + 0x300].main = t[0x400 + 1122].main  # 2x1 diagonal going up (part 1)
+            t[853 + 0x300].main = t[0x400 + 1123].main  # 2x1 diagonal going up (part 2)
+            t[854 + 0x300].main = t[0x400 + 1124].main  # 2x1 diagonal going down (part 1)
+            t[855 + 0x300].main = t[0x400 + 1125].main  # 2x1 diagonal going down (part 2)
 
-            t[866 + 0x300].main = t[0x400 + 1065].main # big circle piece 1st row
-            t[867 + 0x300].main = t[0x400 + 1066].main # big circle piece 1st row
-            t[870 + 0x300].main = t[0x400 + 1189].main # medium circle piece 1st row
-            t[871 + 0x300].main = t[0x400 + 1190].main # medium circle piece 1st row
+            t[866 + 0x300].main = t[0x400 + 1065].main  # big circle piece 1st row
+            t[867 + 0x300].main = t[0x400 + 1066].main  # big circle piece 1st row
+            t[870 + 0x300].main = t[0x400 + 1189].main  # medium circle piece 1st row
+            t[871 + 0x300].main = t[0x400 + 1190].main  # medium circle piece 1st row
 
-            t[881 + 0x300].main = t[0x400 + 1128].main # big circle piece 2nd row
-            t[882 + 0x300].main = t[0x400 + 1129].main # big circle piece 2nd row
-            t[883 + 0x300].main = t[0x400 + 1130].main # big circle piece 2nd row
-            t[884 + 0x300].main = t[0x400 + 1131].main # big circle piece 2nd row
-            t[885 + 0x300].main = t[0x400 + 1252].main # medium circle piece 2nd row
-            t[886 + 0x300].main = t[0x400 + 1253].main # medium circle piece 2nd row
-            t[887 + 0x300].main = t[0x400 + 1254].main # medium circle piece 2nd row
-            t[888 + 0x300].main = t[0x400 + 1188].main # small circle
+            t[881 + 0x300].main = t[0x400 + 1128].main  # big circle piece 2nd row
+            t[882 + 0x300].main = t[0x400 + 1129].main  # big circle piece 2nd row
+            t[883 + 0x300].main = t[0x400 + 1130].main  # big circle piece 2nd row
+            t[884 + 0x300].main = t[0x400 + 1131].main  # big circle piece 2nd row
+            t[885 + 0x300].main = t[0x400 + 1252].main  # medium circle piece 2nd row
+            t[886 + 0x300].main = t[0x400 + 1253].main  # medium circle piece 2nd row
+            t[887 + 0x300].main = t[0x400 + 1254].main  # medium circle piece 2nd row
+            t[888 + 0x300].main = t[0x400 + 1188].main  # small circle
 
-            t[896 + 0x300].main = t[0x400 + 1191].main # big circle piece 3rd row
-            t[897 + 0x300].main = t[0x400 + 1192].main # big circle piece 3rd row
-            t[900 + 0x300].main = t[0x400 + 1195].main # big circle piece 3rd row
-            t[901 + 0x300].main = t[0x400 + 1316].main # medium circle piece 3rd row
-            t[902 + 0x300].main = t[0x400 + 1317].main # medium circle piece 3rd row
-            t[903 + 0x300].main = t[0x400 + 1318].main # medium circle piece 3rd row
+            t[896 + 0x300].main = t[0x400 + 1191].main  # big circle piece 3rd row
+            t[897 + 0x300].main = t[0x400 + 1192].main  # big circle piece 3rd row
+            t[900 + 0x300].main = t[0x400 + 1195].main  # big circle piece 3rd row
+            t[901 + 0x300].main = t[0x400 + 1316].main  # medium circle piece 3rd row
+            t[902 + 0x300].main = t[0x400 + 1317].main  # medium circle piece 3rd row
+            t[903 + 0x300].main = t[0x400 + 1318].main  # medium circle piece 3rd row
 
-            t[912 + 0x300].main = t[0x400 + 1255].main # big circle piece 4th row
-            t[913 + 0x300].main = t[0x400 + 1256].main # big circle piece 4th row
-            t[916 + 0x300].main = t[0x400 + 1259].main # big circle piece 4th row
+            t[912 + 0x300].main = t[0x400 + 1255].main  # big circle piece 4th row
+            t[913 + 0x300].main = t[0x400 + 1256].main  # big circle piece 4th row
+            t[916 + 0x300].main = t[0x400 + 1259].main  # big circle piece 4th row
 
-            t[929 + 0x300].main = t[0x400 + 1320].main # big circle piece 5th row
-            t[930 + 0x300].main = t[0x400 + 1321].main # big circle piece 5th row
-            t[931 + 0x300].main = t[0x400 + 1322].main # big circle piece 5th row
-            t[932 + 0x300].main = t[0x400 + 1323].main # big circle piece 5th row
+            t[929 + 0x300].main = t[0x400 + 1320].main  # big circle piece 5th row
+            t[930 + 0x300].main = t[0x400 + 1321].main  # big circle piece 5th row
+            t[931 + 0x300].main = t[0x400 + 1322].main  # big circle piece 5th row
+            t[932 + 0x300].main = t[0x400 + 1323].main  # big circle piece 5th row
 
         elif name == 'Pa3_MG_house_ami_rail':
             t = Tiles
 
-            t[832 + 0x300].main = t[0x400 + 1088].main # horizontal line
-            t[833 + 0x300].main = t[0x400 + 1090].main # bottom-right corner
-            t[834 + 0x300].main = t[0x400 + 1088].main # horizontal line
+            t[832 + 0x300].main = t[0x400 + 1088].main  # horizontal line
+            t[833 + 0x300].main = t[0x400 + 1090].main  # bottom-right corner
+            t[834 + 0x300].main = t[0x400 + 1088].main  # horizontal line
 
-            t[848 + 0x300].main = t[0x400 + 1089].main # vertical line
-            t[849 + 0x300].main = t[0x400 + 1089].main # vertical line
-            t[850 + 0x300].main = t[0x400 + 1091].main # top-left corner
+            t[848 + 0x300].main = t[0x400 + 1089].main  # vertical line
+            t[849 + 0x300].main = t[0x400 + 1089].main  # vertical line
+            t[850 + 0x300].main = t[0x400 + 1091].main  # top-left corner
 
-            t[835 + 0x300].main = t[0x400 + 1152].main # left red blob (part 1)
-            t[836 + 0x300].main = t[0x400 + 1153].main # top red blob (part 1)
-            t[837 + 0x300].main = t[0x400 + 1154].main # top red blob (part 2)
-            t[838 + 0x300].main = t[0x400 + 1155].main # right red blob (part 1)
+            t[835 + 0x300].main = t[0x400 + 1152].main  # left red blob (part 1)
+            t[836 + 0x300].main = t[0x400 + 1153].main  # top red blob (part 1)
+            t[837 + 0x300].main = t[0x400 + 1154].main  # top red blob (part 2)
+            t[838 + 0x300].main = t[0x400 + 1155].main  # right red blob (part 1)
 
-            t[851 + 0x300].main = t[0x400 + 1216].main # left red blob (part 2)
-            t[852 + 0x300].main = t[0x400 + 1217].main # bottom red blob (part 1)
-            t[853 + 0x300].main = t[0x400 + 1218].main # bottom red blob (part 2)
-            t[854 + 0x300].main = t[0x400 + 1219].main # right red blob (part 2)
+            t[851 + 0x300].main = t[0x400 + 1216].main  # left red blob (part 2)
+            t[852 + 0x300].main = t[0x400 + 1217].main  # bottom red blob (part 1)
+            t[853 + 0x300].main = t[0x400 + 1218].main  # bottom red blob (part 2)
+            t[854 + 0x300].main = t[0x400 + 1219].main  # right red blob (part 2)
 
-            t[866 + 0x300].main = t[0x400 + 1065].main # big circle piece 1st row
-            t[867 + 0x300].main = t[0x400 + 1066].main # big circle piece 1st row
-            t[870 + 0x300].main = t[0x400 + 1189].main # medium circle piece 1st row
-            t[871 + 0x300].main = t[0x400 + 1190].main # medium circle piece 1st row
+            t[866 + 0x300].main = t[0x400 + 1065].main  # big circle piece 1st row
+            t[867 + 0x300].main = t[0x400 + 1066].main  # big circle piece 1st row
+            t[870 + 0x300].main = t[0x400 + 1189].main  # medium circle piece 1st row
+            t[871 + 0x300].main = t[0x400 + 1190].main  # medium circle piece 1st row
 
-            t[881 + 0x300].main = t[0x400 + 1128].main # big circle piece 2nd row
-            t[882 + 0x300].main = t[0x400 + 1129].main # big circle piece 2nd row
-            t[883 + 0x300].main = t[0x400 + 1130].main # big circle piece 2nd row
-            t[884 + 0x300].main = t[0x400 + 1131].main # big circle piece 2nd row
-            t[885 + 0x300].main = t[0x400 + 1252].main # medium circle piece 2nd row
-            t[886 + 0x300].main = t[0x400 + 1253].main # medium circle piece 2nd row
-            t[887 + 0x300].main = t[0x400 + 1254].main # medium circle piece 2nd row
+            t[881 + 0x300].main = t[0x400 + 1128].main  # big circle piece 2nd row
+            t[882 + 0x300].main = t[0x400 + 1129].main  # big circle piece 2nd row
+            t[883 + 0x300].main = t[0x400 + 1130].main  # big circle piece 2nd row
+            t[884 + 0x300].main = t[0x400 + 1131].main  # big circle piece 2nd row
+            t[885 + 0x300].main = t[0x400 + 1252].main  # medium circle piece 2nd row
+            t[886 + 0x300].main = t[0x400 + 1253].main  # medium circle piece 2nd row
+            t[887 + 0x300].main = t[0x400 + 1254].main  # medium circle piece 2nd row
 
-            t[896 + 0x300].main = t[0x400 + 1191].main # big circle piece 3rd row
-            t[897 + 0x300].main = t[0x400 + 1192].main # big circle piece 3rd row
-            t[900 + 0x300].main = t[0x400 + 1195].main # big circle piece 3rd row
-            t[901 + 0x300].main = t[0x400 + 1316].main # medium circle piece 3rd row
-            t[902 + 0x300].main = t[0x400 + 1317].main # medium circle piece 3rd row
-            t[903 + 0x300].main = t[0x400 + 1318].main # medium circle piece 3rd row
+            t[896 + 0x300].main = t[0x400 + 1191].main  # big circle piece 3rd row
+            t[897 + 0x300].main = t[0x400 + 1192].main  # big circle piece 3rd row
+            t[900 + 0x300].main = t[0x400 + 1195].main  # big circle piece 3rd row
+            t[901 + 0x300].main = t[0x400 + 1316].main  # medium circle piece 3rd row
+            t[902 + 0x300].main = t[0x400 + 1317].main  # medium circle piece 3rd row
+            t[903 + 0x300].main = t[0x400 + 1318].main  # medium circle piece 3rd row
 
-            t[912 + 0x300].main = t[0x400 + 1255].main # big circle piece 4th row
-            t[913 + 0x300].main = t[0x400 + 1256].main # big circle piece 4th row
-            t[916 + 0x300].main = t[0x400 + 1259].main # big circle piece 4th row
+            t[912 + 0x300].main = t[0x400 + 1255].main  # big circle piece 4th row
+            t[913 + 0x300].main = t[0x400 + 1256].main  # big circle piece 4th row
+            t[916 + 0x300].main = t[0x400 + 1259].main  # big circle piece 4th row
 
-            t[929 + 0x300].main = t[0x400 + 1320].main # big circle piece 5th row
-            t[930 + 0x300].main = t[0x400 + 1321].main # big circle piece 5th row
-            t[931 + 0x300].main = t[0x400 + 1322].main # big circle piece 5th row
-            t[932 + 0x300].main = t[0x400 + 1323].main # big circle piece 5th row
+            t[929 + 0x300].main = t[0x400 + 1320].main  # big circle piece 5th row
+            t[930 + 0x300].main = t[0x400 + 1321].main  # big circle piece 5th row
+            t[931 + 0x300].main = t[0x400 + 1322].main  # big circle piece 5th row
+            t[932 + 0x300].main = t[0x400 + 1323].main  # big circle piece 5th row
     except Exception:
         # Fail silently
         pass
@@ -2370,8 +2408,10 @@ def LoadOverrides():
 
             # Set collisions if it's a brick or question
             if y <= 4:
-                if 8 < x < 20: Overrides[idx].setQuestionCollisions()
-                elif 20 <= x < 32: Overrides[idx].setBrickCollisions()
+                if 8 < x < 20:
+                    Overrides[idx].setQuestionCollisions()
+                elif 20 <= x < 32:
+                    Overrides[idx].setBrickCollisions()
 
             idx += 1
             sourcex += 24
@@ -2390,7 +2430,7 @@ def SetAppStyle():
     global theme
 
     # Change the color if applicable
-    #if theme.color('ui') is not None: app.setPalette(QtGui.QPalette(theme.color('ui')))
+    # if theme.color('ui') is not None: app.setPalette(QtGui.QPalette(theme.color('ui')))
 
     # Change the style
     styleKey = setting('uiStyle')
@@ -2432,15 +2472,18 @@ AutoSaveData = b''
 AutoOpenScriptEnabled = False
 CurrentLevelNameForAutoOpenScript = None
 
+
 def createHorzLine():
     f = QtWidgets.QFrame()
     f.setFrameStyle(QtWidgets.QFrame.HLine | QtWidgets.QFrame.Sunken)
     return f
 
+
 def createVertLine():
     f = QtWidgets.QFrame()
     f.setFrameStyle(QtWidgets.QFrame.VLine | QtWidgets.QFrame.Sunken)
     return f
+
 
 def LoadNumberFont():
     """
@@ -2458,6 +2501,7 @@ def LoadNumberFont():
         NumberFont = QtGui.QFont('Lucida Grande', 9)
     else:
         NumberFont = QtGui.QFont('Sans', 8)
+
 
 def SetDirty(noautosave=False):
     global Dirty, DirtyOverride, AutoSaveDirty
@@ -2483,8 +2527,10 @@ def MapPositionToZoneID(zones, x, y, useid=False):
 
     for zone in zones:
         r = zone.ZoneRect
-        if   r.contains(x,y) and     useid: return zone.id
-        elif r.contains(x,y) and not useid: return id
+        if r.contains(x, y) and useid:
+            return zone.id
+        elif r.contains(x, y) and not useid:
+            return id
 
         xdist = 0
         ydist = 0
@@ -2503,11 +2549,11 @@ def MapPositionToZoneID(zones, x, y, useid=False):
     return rval
 
 
-
-class Metadata():
+class Metadata:
     """
     Class for the new level metadata system
     """
+
     # This new system is much more useful and flexible than the old
     # system, but is incompatible with older versions of Reggie.
     # They will fail to understand the data, and skip it like it
@@ -2538,7 +2584,8 @@ class Metadata():
                 level_info = pickle.loads(strdata)
                 for k, v in level_info.iteritems():
                     self.setStrData(k, v)
-            except Exception: pass
+            except Exception:
+                pass
             if ('Website' not in self.DataDict) and ('Webpage' in self.DataDict):
                 self.DataDict['Website'] = self.DataDict['Webpage']
             return
@@ -2548,47 +2595,46 @@ class Metadata():
         while idx < len(data) - 4:
 
             # Read the next (first) four bytes - the key length
-            rawKeyLen = data[idx:idx+4]
+            rawKeyLen = data[idx:idx + 4]
             idx += 4
 
             keyLen = (rawKeyLen[0] << 24) | (rawKeyLen[1] << 16) | (rawKeyLen[2] << 8) | rawKeyLen[3]
 
             # Read the next (key length) bytes - the key (as a str)
-            rawKey = data[idx:idx+keyLen]
+            rawKey = data[idx:idx + keyLen]
             idx += keyLen
 
             key = ''
             for b in rawKey: key += chr(b)
 
             # Read the next four bytes - the number of type entries
-            rawTypeEntries = data[idx:idx+4]
+            rawTypeEntries = data[idx:idx + 4]
             idx += 4
 
-            typeEntries = (rawTypeEntries[0] << 24) | (rawTypeEntries[1] << 16) | (rawTypeEntries[2] << 8) | rawTypeEntries[3]
+            typeEntries = (rawTypeEntries[0] << 24) | (rawTypeEntries[1] << 16) | (rawTypeEntries[2] << 8) | \
+                          rawTypeEntries[3]
 
             # Iterate through each type entry
             typeData = {}
             for entry in range(typeEntries):
-
                 # Read the next four bytes - the type
-                rawType = data[idx:idx+4]
+                rawType = data[idx:idx + 4]
                 idx += 4
 
                 type = (rawType[0] << 24) | (rawType[1] << 16) | (rawType[2] << 8) | rawType[3]
 
                 # Read the next four bytes - the data length
-                rawDataLen = data[idx:idx+4]
+                rawDataLen = data[idx:idx + 4]
                 idx += 4
 
                 dataLen = (rawDataLen[0] << 24) | (rawDataLen[1] << 16) | (rawDataLen[2] << 8) | rawDataLen[3]
 
                 # Read the next (data length) bytes - the data (as bytes)
-                entryData = data[idx:idx+dataLen]
+                entryData = data[idx:idx + dataLen]
                 idx += dataLen
 
                 # Add it to typeData
                 self.setOtherData(key, type, entryData)
-
 
     def binData(self, key):
         """
@@ -2700,10 +2746,11 @@ class Metadata():
         return data
 
 
-class AbstractLevel():
+class AbstractLevel:
     """
     Class for an abstract level from any game. Defines the API.
     """
+
     def __init__(self):
         """
         Initializes the level with default settings
@@ -2747,6 +2794,7 @@ class Level_NSMBW(AbstractLevel):
     """
     Class for a level from New Super Mario Bros. Wii
     """
+
     def __init__(self):
         """
         Initializes the level with default settings
@@ -2796,7 +2844,8 @@ class Level_NSMBW(AbstractLevel):
                 try:
                     thisArea = int(name[6])
                     laynum = int(name[14])
-                except ValueError: continue
+                except ValueError:
+                    continue
                 if not (0 < thisArea < 5): continue
 
                 if thisArea not in areaData: areaData[thisArea] = [None] * 4
@@ -2806,7 +2855,8 @@ class Level_NSMBW(AbstractLevel):
                 if len(name) != 11: continue
                 try:
                     thisArea = int(name[6])
-                except ValueError: continue
+                except ValueError:
+                    continue
                 if not (0 < thisArea < 5): continue
 
                 if thisArea not in areaData: areaData[thisArea] = [None] * 4
@@ -2837,7 +2887,6 @@ class Level_NSMBW(AbstractLevel):
 
         return True
 
-
     def save(self):
         """
         Save the level back to a file
@@ -2854,17 +2903,16 @@ class Level_NSMBW(AbstractLevel):
             course, L0, L1, L2 = area.save()
 
             if course is not None:
-                newArchive['course/course%d.bin' % (areanum+1)] = course
+                newArchive['course/course%d.bin' % (areanum + 1)] = course
             if L0 is not None:
-                newArchive['course/course%d_bgdatL0.bin' % (areanum+1)] = L0
+                newArchive['course/course%d_bgdatL0.bin' % (areanum + 1)] = L0
             if L1 is not None:
-                newArchive['course/course%d_bgdatL1.bin' % (areanum+1)] = L1
+                newArchive['course/course%d_bgdatL1.bin' % (areanum + 1)] = L1
             if L2 is not None:
-                newArchive['course/course%d_bgdatL2.bin' % (areanum+1)] = L2
+                newArchive['course/course%d_bgdatL2.bin' % (areanum + 1)] = L2
 
         # return the U8 archive data
         return newArchive._dump()
-
 
     def saveNewArea(self, course_new, L0_new, L1_new, L2_new):
         """
@@ -2882,18 +2930,18 @@ class Level_NSMBW(AbstractLevel):
             course, L0, L1, L2 = area.save()
 
             if course is not None:
-                newArchive['course/course%d.bin' % (areanum+1)] = course
+                newArchive['course/course%d.bin' % (areanum + 1)] = course
             if L0 is not None:
-                newArchive['course/course%d_bgdatL0.bin' % (areanum+1)] = L0
+                newArchive['course/course%d_bgdatL0.bin' % (areanum + 1)] = L0
             if L1 is not None:
-                newArchive['course/course%d_bgdatL1.bin' % (areanum+1)] = L1
+                newArchive['course/course%d_bgdatL1.bin' % (areanum + 1)] = L1
             if L2 is not None:
-                newArchive['course/course%d_bgdatL2.bin' % (areanum+1)] = L2
+                newArchive['course/course%d_bgdatL2.bin' % (areanum + 1)] = L2
 
         if course_new is not None:
             newArchive['course/course%d.bin' % (len(self.areas) + 1)] = course_new
         if L0_new is not None:
-            newArchive['course/course%d_bgdatL0.bin' % (len(self.areas) + 1)] =  L0_new
+            newArchive['course/course%d_bgdatL0.bin' % (len(self.areas) + 1)] = L0_new
         if L1_new is not None:
             newArchive['course/course%d_bgdatL1.bin' % (len(self.areas) + 1)] = L1_new
         if L2_new is not None:
@@ -2901,7 +2949,6 @@ class Level_NSMBW(AbstractLevel):
 
         # return the U8 archive data
         return newArchive._dump()
-
 
     def addArea(self):
         """
@@ -2913,10 +2960,11 @@ class Level_NSMBW(AbstractLevel):
         return new
 
 
-class AbstractArea():
+class AbstractArea:
     """
     An extremely basic abstract area. Implements the basic function API.
     """
+
     def __init__(self):
         self.areanum = 1
         self.course = None
@@ -2940,6 +2988,7 @@ class AbstractParsedArea(AbstractArea):
     Don't instantiate this! It could blow up becuase many of the functions are only defined
     within subclasses. If you want an area object, use a game-specific subclass.
     """
+
     def __init__(self):
         """
         Creates a completely new area
@@ -2975,7 +3024,6 @@ class AbstractParsedArea(AbstractArea):
         LoadTileset(0, self.tileset0)
         LoadTileset(1, self.tileset1)
 
-
     def load(self, course, L0, L1, L2):
         """
         Loads an area from the archive files
@@ -2985,13 +3033,13 @@ class AbstractParsedArea(AbstractArea):
         self.LoadBlocks(course)
 
         # Load stuff from individual blocks
-        self.LoadTilesetNames() # block 1
-        self.LoadOptions() # block 2
-        self.LoadEntrances() # block 7
-        self.LoadSprites() # block 8
-        self.LoadZones() # block 10 (also blocks 3, 5, and 6)
-        self.LoadLocations() # block 11
-        self.LoadPaths() # block 12 and 13
+        self.LoadTilesetNames()  # block 1
+        self.LoadOptions()  # block 2
+        self.LoadEntrances()  # block 7
+        self.LoadSprites()  # block 8
+        self.LoadZones()  # block 10 (also blocks 3, 5, and 6)
+        self.LoadLocations()  # block 11
+        self.LoadPaths()  # block 12 and 13
 
         # Load the editor metadata
         if self.block1pos[0] != 0x70:
@@ -3035,7 +3083,7 @@ class AbstractParsedArea(AbstractArea):
             self.LoadLayer(2, L2)
 
         # Delete self.blocks
-        #del self.blocks
+        # del self.blocks
 
         return True
 
@@ -3047,20 +3095,19 @@ class AbstractParsedArea(AbstractArea):
         self.SortSpritesByZone()
 
         # save each block first
-        success = True
-        self.SaveTilesetNames() # block 1
-        self.SaveOptions() # block 2
-        self.SaveEntrances() # block 7
-        self.SaveSprites() # block 8
-        self.SaveLoadedSprites() # block 9
-        self.SaveZones() # block 10 (and 3, 5 and 6)
-        self.SaveLocations() # block 11
+        self.SaveTilesetNames()  # block 1
+        self.SaveOptions()  # block 2
+        self.SaveEntrances()  # block 7
+        self.SaveSprites()  # block 8
+        self.SaveLoadedSprites()  # block 9
+        self.SaveZones()  # block 10 (and 3, 5 and 6)
+        self.SaveLocations()  # block 11
         self.SavePaths()
 
         rdata = bytearray(self.Metadata.save())
         if len(rdata) % 4 != 0:
-           for i in range(4 - (len(rdata) % 4)):
-               rdata.append(0)
+            for i in range(4 - (len(rdata) % 4)):
+                rdata.append(0)
         rdata = bytes(rdata)
 
         # Save the main course file
@@ -3093,8 +3140,7 @@ class AbstractParsedArea(AbstractArea):
             self.SaveLayer(0),
             self.SaveLayer(1),
             self.SaveLayer(2),
-            )
-
+        )
 
     def RemoveFromLayer(self, obj):
         """
@@ -3103,7 +3149,7 @@ class AbstractParsedArea(AbstractArea):
         layer = self.layers[obj.layer]
         idx = layer.index(obj)
         del layer[idx]
-        for i in range(idx,len(layer)):
+        for i in range(idx, len(layer)):
             upd = layer[i]
             upd.setZValue(upd.zValue() - 1)
 
@@ -3133,20 +3179,22 @@ class AbstractParsedArea(AbstractArea):
 
         self.sprites = newlist
 
-
     def LoadReggieInfo(self, data):
         if (data is None) or (len(data) == 0):
             self.Metadata = Metadata()
             return
 
-        try: self.Metadata = Metadata(data)
-        except Exception: self.Metadata = Metadata() # fallback
+        try:
+            self.Metadata = Metadata(data)
+        except Exception:
+            self.Metadata = Metadata()  # fallback
 
 
 class Area_NSMBW(AbstractParsedArea):
     """
     Class for a parsed NSMBW level area
     """
+
     def __init__(self):
         """
         Creates a completely new NSMBW area
@@ -3157,10 +3205,12 @@ class Area_NSMBW(AbstractParsedArea):
         self.tileset2 = ''
         self.tileset3 = ''
 
-        self.blocks = [None]*14
-        self.blocks[0] = b'Pa0_jyotyu\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+        self.blocks = [None] * 14
+        self.blocks[
+            0] = b'Pa0_jyotyu\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
         self.blocks[1] = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc8\x00\x00\x00\x00\x00\x00\x00\x00'
-        self.blocks[2] = self.blocks[4] = self.blocks[5] = self.blocks[6] = self.blocks[8] = self.blocks[9] = self.blocks[10] = self.blocks[11] = self.blocks[12] = self.blocks[13] = b''
+        self.blocks[2] = self.blocks[4] = self.blocks[5] = self.blocks[6] = self.blocks[8] = self.blocks[9] = \
+        self.blocks[10] = self.blocks[11] = self.blocks[12] = self.blocks[13] = b''
         self.blocks[3] = b'\x00\x00\x00\x00\x00\x00\x00\x00'
         self.blocks[7] = b'\xff\xff\xff\xff'
 
@@ -3194,17 +3244,16 @@ class Area_NSMBW(AbstractParsedArea):
         """
         Loads self.blocks from the course file
         """
-        self.blocks = [None]*14
+        self.blocks = [None] * 14
         getblock = struct.Struct('>II')
         for i in range(14):
-            data = getblock.unpack_from(course, i*8)
+            data = getblock.unpack_from(course, i * 8)
             if data[1] == 0:
                 self.blocks[i] = b''
             else:
-                self.blocks[i] = course[data[0]:data[0]+data[1]]
+                self.blocks[i] = course[data[0]:data[0] + data[1]]
 
         self.block1pos = getblock.unpack_from(course, 0)
-
 
     def LoadTilesetNames(self):
         """
@@ -3215,7 +3264,6 @@ class Area_NSMBW(AbstractParsedArea):
         self.tileset1 = data[1].strip(b'\0').decode('latin-1')
         self.tileset2 = data[2].strip(b'\0').decode('latin-1')
         self.tileset3 = data[3].strip(b'\0').decode('latin-1')
-
 
     def LoadOptions(self):
         """
@@ -3237,7 +3285,6 @@ class Area_NSMBW(AbstractParsedArea):
         data = optdata2struct.unpack(optdata2)
         self.unkVal1, self.unkVal2 = data
 
-
     def LoadEntrances(self):
         """
         Loads block 7, the entrances
@@ -3248,8 +3295,10 @@ class Area_NSMBW(AbstractParsedArea):
         offset = 0
         entrances = []
         for i in range(entcount):
-            data = entstruct.unpack_from(entdata,offset)
-            entrances.append(EntranceItem(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10]))
+            data = entstruct.unpack_from(entdata, offset)
+            entrances.append(
+                EntranceItem(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9],
+                             data[10]))
             offset += 20
         self.entrances = entrances
 
@@ -3267,7 +3316,7 @@ class Area_NSMBW(AbstractParsedArea):
         append = sprites.append
         obj = SpriteItem
         for i in range(sprcount):
-            data = unpack(spritedata,offset)
+            data = unpack(spritedata, offset)
             append(obj(data[0], data[1], data[2], data[3]))
             offset += 16
         self.sprites = sprites
@@ -3332,7 +3381,10 @@ class Area_NSMBW(AbstractParsedArea):
             for checkb in self.bounding:
                 if checkb[4] == id: boundObj = checkb
 
-            zones.append(ZoneItem(dataz[0], dataz[1], dataz[2], dataz[3], dataz[4], dataz[5], dataz[6], dataz[7], dataz[8], dataz[9], dataz[10], dataz[11], dataz[12], dataz[13], dataz[14], dataz[15], boundObj, bgA, bgB, i))
+            zones.append(
+                ZoneItem(dataz[0], dataz[1], dataz[2], dataz[3], dataz[4], dataz[5], dataz[6], dataz[7], dataz[8],
+                         dataz[9], dataz[10], dataz[11], dataz[12], dataz[13], dataz[14], dataz[15], boundObj, bgA, bgB,
+                         i))
             offset += 24
         self.zones = zones
 
@@ -3351,7 +3403,6 @@ class Area_NSMBW(AbstractParsedArea):
             offset += 12
         self.locations = locations
 
-
     def LoadLayer(self, idx, layerdata):
         """
         Loads a specific object layer from a string
@@ -3366,7 +3417,7 @@ class Area_NSMBW(AbstractParsedArea):
         obj = ObjectItem
         unpack = objstruct.unpack_from
         for i in range(objcount):
-            data = unpack(layerdata,offset)
+            data = unpack(layerdata, offset)
             append(obj(data[0] >> 12, data[0] & 4095, idx, data[1], data[2], data[3], data[4], z))
             z += 1
             offset += 10
@@ -3394,7 +3445,6 @@ class Area_NSMBW(AbstractParsedArea):
                 add2p['nodes'].append(node)
             pathinfo.append(add2p)
 
-
             offset += 8
 
         for i in range(pathcount):
@@ -3405,7 +3455,6 @@ class Area_NSMBW(AbstractParsedArea):
         self.pathdata = pathinfo
         self.paths = paths
 
-
     def LoadPathNodes(self, startindex, count):
         """
         Loads block 13, the path nodes
@@ -3414,17 +3463,17 @@ class Area_NSMBW(AbstractParsedArea):
         ret = []
         nodedata = self.blocks[13]
         nodestruct = struct.Struct('>HHffhxx')
-        offset = startindex*16
+        offset = startindex * 16
         unpack = nodestruct.unpack_from
         for i in range(count):
             data = unpack(nodedata, offset)
-            ret.append({'x':int(data[0]),
-                        'y':int(data[1]),
-                        'speed':float(data[2]),
-                        'accel':float(data[3]),
-                        'delay':int(data[4])
-                        #'id':i
-            })
+            ret.append({'x': int(data[0]),
+                        'y': int(data[1]),
+                        'speed': float(data[2]),
+                        'accel': float(data[3]),
+                        'delay': int(data[4])
+                        # 'id':i
+                        })
             offset += 16
         return ret
 
@@ -3437,20 +3486,20 @@ class Area_NSMBW(AbstractParsedArea):
         if b is None: return
         idx = 0
         while idx < len(b):
-            xpos  = b[idx]   << 24
-            xpos |= b[idx+1] << 16
-            xpos |= b[idx+2] << 8
-            xpos |= b[idx+3]
+            xpos = b[idx] << 24
+            xpos |= b[idx + 1] << 16
+            xpos |= b[idx + 2] << 8
+            xpos |= b[idx + 3]
             idx += 4
-            ypos  = b[idx]   << 24
-            ypos |= b[idx+1] << 16
-            ypos |= b[idx+2] << 8
-            ypos |= b[idx+3]
+            ypos = b[idx] << 24
+            ypos |= b[idx + 1] << 16
+            ypos |= b[idx + 2] << 8
+            ypos |= b[idx + 3]
             idx += 4
-            tlen  = b[idx]   << 24
-            tlen |= b[idx+1] << 16
-            tlen |= b[idx+2] << 8
-            tlen |= b[idx+3]
+            tlen = b[idx] << 24
+            tlen |= b[idx + 1] << 16
+            tlen |= b[idx + 2] << 8
+            tlen |= b[idx + 3]
             idx += 4
             s = ''
             for char in range(tlen):
@@ -3464,7 +3513,6 @@ class Area_NSMBW(AbstractParsedArea):
 
             com.UpdateListItem()
 
-
     def SaveTilesetNames(self):
         """
         Saves the tileset names back to block 1
@@ -3472,7 +3520,6 @@ class Area_NSMBW(AbstractParsedArea):
         self.blocks[0] = ''.join(
             [self.tileset0.ljust(32, '\0'), self.tileset1.ljust(32, '\0'), self.tileset2.ljust(32, '\0'),
              self.tileset3.ljust(32, '\0')]).encode('latin-1')
-
 
     def SaveOptions(self):
         """
@@ -3484,14 +3531,14 @@ class Area_NSMBW(AbstractParsedArea):
         if self.unkFlag1: wrapByte |= 8
         unkVal = 100 if self.unkFlag2 else 0
 
-        self.blocks[1] = optstruct.pack(self.defEvents, wrapByte, self.timeLimit, self.creditsFlag, unkVal, unkVal, unkVal, self.startEntrance, self.ambushFlag, self.toadHouseType)
+        self.blocks[1] = optstruct.pack(self.defEvents, wrapByte, self.timeLimit, self.creditsFlag, unkVal, unkVal,
+                                        unkVal, self.startEntrance, self.ambushFlag, self.toadHouseType)
 
         """
         Saves block 4, the unknown maybe-more-general-options block
         """
         optdata2struct = struct.Struct('>xxHHxx')
         self.blocks[3] = optdata2struct.pack(self.unkVal1, self.unkVal2)
-
 
     def SaveLayer(self, idx):
         """
@@ -3545,9 +3592,9 @@ class Area_NSMBW(AbstractParsedArea):
         nodeindex = 0
         offset = 0
         buffer = bytearray(len(self.pathdata) * 8)
-        #[20:28:38]  [@Treeki] struct Path { unsigned char id; char padding; unsigned short startNodeIndex; unsigned short nodeCount; unsigned short unknown; };
+        # [20:28:38]  [@Treeki] struct Path { unsigned char id; char padding; unsigned short startNodeIndex; unsigned short nodeCount; unsigned short unknown; };
         for path in self.pathdata:
-            if(len(path['nodes']) < 1): continue
+            if (len(path['nodes']) < 1): continue
             self.WritePathNodes(nodebuffer, nodeoffset, path['nodes'])
 
             pathstruct.pack_into(buffer, offset, int(path['id']), int(nodeindex), int(len(path['nodes'])),
@@ -3564,7 +3611,7 @@ class Area_NSMBW(AbstractParsedArea):
         Writes the pathnode data to the block 14 bytearray
         """
         offset = int(offst)
-        #[20:29:04]  [@Treeki] struct PathNode { unsigned short x; unsigned short y; float speed; float unknownMaybeAccel; short unknown; char padding[2]; }
+        # [20:29:04]  [@Treeki] struct PathNode { unsigned short x; unsigned short y; float speed; float unknownMaybeAccel; short unknown; char padding[2]; }
         nodestruct = struct.Struct('>HHffhxx')
         for node in nodes:
             nodestruct.pack_into(buffer, offset, int(node['x']), int(node['y']), float(node['speed']),
@@ -3582,19 +3629,19 @@ class Area_NSMBW(AbstractParsedArea):
         for sprite in self.sprites:
             try:
                 sprstruct.pack_into(buffer, offset, f_int(sprite.type), f_int(sprite.objx), f_int(sprite.objy),
-                                    sprite.spritedata[:6], sprite.zoneID, bytes([sprite.spritedata[7],]))
+                                    sprite.spritedata[:6], sprite.zoneID, bytes([sprite.spritedata[7], ]))
             except:
                 # Hopefully this will solve the mysterious bug, and will
                 # soon no longer be necessary.
                 raise ValueError('SaveSprites struct.error. Current sprite data dump:\n' + \
-                    str(offset) + '\n' + \
-                    str(sprite.type) + '\n' + \
-                    str(sprite.objx) + '\n' + \
-                    str(sprite.objy) + '\n' + \
-                    str(sprite.spritedata[:6]) + '\n' + \
-                    str(sprite.zoneID) + '\n' + \
-                    str(bytes([sprite.spritedata[7],])) + '\n',
-                    )
+                                 str(offset) + '\n' + \
+                                 str(sprite.type) + '\n' + \
+                                 str(sprite.objx) + '\n' + \
+                                 str(sprite.objy) + '\n' + \
+                                 str(sprite.spritedata[:6]) + '\n' + \
+                                 str(sprite.zoneID) + '\n' + \
+                                 str(bytes([sprite.spritedata[7], ])) + '\n',
+                                 )
             offset += 16
         buffer[offset] = 0xFF
         buffer[offset + 1] = 0xFF
@@ -3619,7 +3666,6 @@ class Area_NSMBW(AbstractParsedArea):
             offset += 4
         self.blocks[8] = bytes(buffer)
 
-
     def SaveZones(self):
         """
         Saves blocks 10, 3, 5 and 6, the zone data, boundings, bgA and bgB data respectively
@@ -3637,9 +3683,12 @@ class Area_NSMBW(AbstractParsedArea):
         buffer9 = bytearray(24 * zcount)
         for z in Area.zones:
             bdngstruct.pack_into(buffer2, offset, z.yupperbound, z.ylowerbound, z.yupperbound2, z.ylowerbound2, i, 0xF)
-            bgAstruct.pack_into(buffer4, offset, i, z.XscrollA, z.YscrollA, z.YpositionA, z.XpositionA, z.bg1A, z.bg2A, z.bg3A, z.ZoomA)
-            bgBstruct.pack_into(buffer5, offset, i, z.XscrollB, z.YscrollB, z.YpositionB, z.XpositionB, z.bg1B, z.bg2B, z.bg3B, z.ZoomB)
-            zonestruct.pack_into(buffer9, offset, z.objx, z.objy, z.width, z.height, z.modeldark, z.terraindark, i, i, z.cammode, z.camzoom, z.visibility, i, i, z.camtrack, z.music, z.sfxmod)
+            bgAstruct.pack_into(buffer4, offset, i, z.XscrollA, z.YscrollA, z.YpositionA, z.XpositionA, z.bg1A, z.bg2A,
+                                z.bg3A, z.ZoomA)
+            bgBstruct.pack_into(buffer5, offset, i, z.XscrollB, z.YscrollB, z.YpositionB, z.XpositionB, z.bg1B, z.bg2B,
+                                z.bg3B, z.ZoomB)
+            zonestruct.pack_into(buffer9, offset, z.objx, z.objy, z.width, z.height, z.modeldark, z.terraindark, i, i,
+                                 z.cammode, z.camzoom, z.visibility, i, i, z.camtrack, z.music, z.sfxmod)
             offset += 24
             i += 1
 
@@ -3647,7 +3696,6 @@ class Area_NSMBW(AbstractParsedArea):
         self.blocks[4] = bytes(buffer4)
         self.blocks[5] = bytes(buffer5)
         self.blocks[9] = bytes(buffer9)
-
 
     def SaveLocations(self):
         """
@@ -3664,7 +3712,6 @@ class Area_NSMBW(AbstractParsedArea):
 
         self.blocks[10] = bytes(buffer)
 
-
     def RemoveFromLayer(self, obj):
         """
         Removes a specific object from the level and updates Z indexes accordingly
@@ -3672,7 +3719,7 @@ class Area_NSMBW(AbstractParsedArea):
         layer = self.layers[obj.layer]
         idx = layer.index(obj)
         del layer[idx]
-        for i in range(idx,len(layer)):
+        for i in range(idx, len(layer)):
             upd = layer[i]
             upd.setZValue(upd.zValue() - 1)
 
@@ -3702,22 +3749,23 @@ class Area_NSMBW(AbstractParsedArea):
 
         self.sprites = newlist
 
-
     def LoadReggieInfo(self, data):
         if (data is None) or (len(data) == 0):
             self.Metadata = Metadata()
             return
 
-        try: self.Metadata = Metadata(data)
-        except Exception: self.Metadata = Metadata() # fallback
+        try:
+            self.Metadata = Metadata(data)
+        except Exception:
+            self.Metadata = Metadata()  # fallback
 
 
-
-class InstanceDefinition():
+class InstanceDefinition:
     """
     ABC for a definition of an instance of a LevelEditorItem class, used for persistence and comparisons
     """
     fieldNames = []
+
     def __init__(self, other=None):
         """
         Initializes it
@@ -3727,12 +3775,14 @@ class InstanceDefinition():
             self.setFrom(other)
         else:
             self.clear()
+
     @staticmethod
     def itemList():
         """
         Returns a list of all instances of this item currently in the level
         """
         return []
+
     def clear(self):
         """
         Clears all data and position data
@@ -3740,12 +3790,14 @@ class InstanceDefinition():
         self.objx = None
         self.objy = None
         self.clearData()
+
     def clearData(self):
         """
         Clears all data
         """
         for field in self.fields:
             field[1] = None
+
     def setFrom(self, other):
         """
         Sets data and position from an item
@@ -3753,12 +3805,14 @@ class InstanceDefinition():
         self.objx = other.objx
         self.objy = other.objy
         self.setDataFrom(other)
+
     def setDataFrom(self, other):
         """
         Sets data from an item
         """
         for field in self.fields:
             field[1] = getattr(other, field[0])
+
     def matches(self, other):
         """
         Returns True if this instance definition matches the specified item
@@ -3767,6 +3821,7 @@ class InstanceDefinition():
         matches = matches and abs(self.objx - other.objx) <= 2
         matches = matches and abs(self.objy - other.objy) <= 2
         return matches and self.matchesData(other)
+
     def matchesData(self, other):
         """
         Returns True if this instance definition's data matches the specified item's data
@@ -3775,6 +3830,7 @@ class InstanceDefinition():
         for field in self.fields:
             matches = matches and (field[1] == getattr(other, field[0]))
         return matches
+
     def defMatches(self, other):
         """
         Returns True if this instance definition matches the specified instance definition
@@ -3783,6 +3839,7 @@ class InstanceDefinition():
         matches = matches and (self.objx == other.objx)
         matches = matches and (self.objy == other.objy)
         return matches and self.defMatchesData(other)
+
     def defMatchesData(self, other):
         """
         Returns True if this instance definition's data matches the specified instance definition's data
@@ -3791,12 +3848,14 @@ class InstanceDefinition():
         for myField, otherField in zip(self.fields, other.fields):
             matches = matches and (myField == otherField)
         return matches
+
     def createNew(self):
         """
         Creates a new instance of the target class, with the data specified here
         """
         # This will need to be implemented separately in each subclass
         return LevelEditorItem()
+
     def findInstance(self):
         """
         Returns a matching instance of this thing in the level
@@ -3816,11 +3875,13 @@ class InstanceDefinition_ObjectItem(InstanceDefinition):
         'layer',
         'width',
         'height',
-        )
+    )
+
     @staticmethod
     def itemList():
         # list concatenation here
         return Area.layers[0] + Area.layers[1] + Area.layers[2]
+
     def createNew(self):
         return ObjectItem(
             self.fields[0][1],
@@ -3831,7 +3892,7 @@ class InstanceDefinition_ObjectItem(InstanceDefinition):
             self.fields[3][1],
             self.fields[4][1],
             1,
-            )
+        )
 
 
 class InstanceDefinition_LocationItem(InstanceDefinition):
@@ -3842,10 +3903,12 @@ class InstanceDefinition_LocationItem(InstanceDefinition):
         'width',
         'height',
         'id',
-        )
+    )
+
     @staticmethod
     def itemList():
         return Area.locations
+
     def createNew(self):
         return LocationItem(self.objx, self.objy, *(field[1] for field in self.fields))
 
@@ -3857,10 +3920,12 @@ class InstanceDefinition_SpriteItem(InstanceDefinition):
     fieldNames = (
         'type',
         'spritedata',
-        )
+    )
+
     @staticmethod
     def itemList():
         return Area.sprites
+
     def createNew(self):
         return SpriteItem(self.fields[0][1], self.objx, self.objy, self.fields[1][1])
 
@@ -3879,10 +3944,12 @@ class InstanceDefinition_EntranceItem(InstanceDefinition):
         'entpath',
         'cpdirection',
         'entsettings',
-        )
+    )
+
     @staticmethod
     def itemList():
         return Area.entrances
+
     def createNew(self):
         return EntranceItem(self.objx, self.objy, *(field[1] for field in self.fields))
 
@@ -3894,10 +3961,12 @@ class InstanceDefinition_PathItem(InstanceDefinition):
     fieldNames = (
         'pathinfo',
         'nodeinfo',
-        )
+    )
+
     @staticmethod
     def itemList():
         return Area.paths
+
     def createNew(self):
         return PathItem(self.objx, self.objy, *(field[1] for field in self.fields))
 
@@ -3908,10 +3977,12 @@ class InstanceDefinition_CommentItem(InstanceDefinition):
     """
     fieldNames = (
         'text',
-        )
+    )
+
     @staticmethod
     def itemList():
         return Area.comments
+
     def createNew(self):
         return CommentItem(self.objx, self.objy, field[0][1])
 
@@ -3920,9 +3991,11 @@ class ListWidgetItem_SortsByOther(QtWidgets.QListWidgetItem):
     """
     A ListWidgetItem that defers sorting to another object.
     """
+
     def __init__(self, reference, text=''):
         super().__init__(text)
         self.reference = reference
+
     def __lt__(self, other):
         return self.reference < other.reference
 
@@ -3932,7 +4005,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
     Class for any type of item that can show up in the level editor control
     """
     instanceDef = InstanceDefinition
-    positionChanged = None # Callback: positionChanged(LevelEditorItem obj, int oldx, int oldy, int x, int y)
+    positionChanged = None  # Callback: positionChanged(LevelEditorItem obj, int oldx, int oldy, int x, int y)
     autoPosChange = False
     dragoffsetx = 0
     dragoffsety = 0
@@ -3959,8 +4032,10 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
             # snap even further if Alt isn't held
             # but -only- if OverrideSnapping is off
             if (not OverrideSnapping) and (not self.autoPosChange):
-                if self.scene() is None: objectsSelected = False
-                else: objectsSelected = any([isinstance(thing, ObjectItem) for thing in mainWindow.CurrentSelection])
+                if self.scene() is None:
+                    objectsSelected = False
+                else:
+                    objectsSelected = any([isinstance(thing, ObjectItem) for thing in mainWindow.CurrentSelection])
                 if QtWidgets.QApplication.keyboardModifiers() == Qt.AltModifier:
                     # Alt is held; don't snap
                     newpos.setX(int(int((newpos.x() + 0.75) / 1.5) * 1.5))
@@ -4008,7 +4083,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
                     self.y() + self.BoundingRect.y(),
                     self.BoundingRect.width(),
                     self.BoundingRect.height(),
-                    )
+                )
                 if self.scene() is not None:
                     self.scene().update(updRect)
 
@@ -4102,7 +4177,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
             RenderPainter,
             QtCore.QRectF(0, 0, br.width(), br.height()),
             br,
-            )
+        )
         RenderPainter.end()
 
         # Shrink it if it's too big
@@ -4112,7 +4187,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
                 maxSize,
                 Qt.KeepAspectRatio,
                 Qt.SmoothTransformation,
-                )
+            )
 
         return final
 
@@ -4155,7 +4230,7 @@ class ObjectItem(LevelEditorItem):
 
         global DirtyOverride
         DirtyOverride += 1
-        self.setPos(x*24,y*24)
+        self.setPos(x * 24, y * 24)
         DirtyOverride -= 1
 
         self.setZValue(z)
@@ -4170,7 +4245,6 @@ class ObjectItem(LevelEditorItem):
 
         self.updateObjCache()
         self.UpdateTooltip()
-
 
     def SetType(self, tileset, type):
         """
@@ -4187,15 +4261,15 @@ class ObjectItem(LevelEditorItem):
         """
         Updates the tooltip
         """
-        self.setToolTip(trans.string('Objects', 0, '[tileset]', self.tileset+1, '[obj]', self.type, '[width]', self.width, '[height]', self.height, '[layer]', self.layer))
-
+        self.setToolTip(
+            trans.string('Objects', 0, '[tileset]', self.tileset + 1, '[obj]', self.type, '[width]', self.width,
+                         '[height]', self.height, '[layer]', self.layer))
 
     def updateObjCache(self):
         """
         Updates the rendered object data
         """
         self.objdata = RenderObject(self.tileset, self.type, self.width, self.height)
-
 
     def UpdateRects(self):
         """
@@ -4206,7 +4280,6 @@ class ObjectItem(LevelEditorItem):
         self.SelectionRect = QtCore.QRectF(0, 0, (24 * self.width) - 1, (24 * self.height) - 1)
         self.GrabberRect = QtCore.QRectF((24 * self.width) - 5, (24 * self.height) - 5, 5, 5)
         self.LevelRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
-
 
     def itemChange(self, change, value):
         """
@@ -4234,7 +4307,7 @@ class ObjectItem(LevelEditorItem):
             x = int(newpos.x() / 24)
             y = int(newpos.y() / 24)
             if x != self.objx or y != self.objy:
-                self.LevelRect.moveTo(x,y)
+                self.LevelRect.moveTo(x, y)
 
                 oldx = self.objx
                 oldy = self.objy
@@ -4251,16 +4324,16 @@ class ObjectItem(LevelEditorItem):
 
                 SetDirty()
 
-                #updRect = QtCore.QRectF(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
-                #scene.invalidate(updRect)
+                # updRect = QtCore.QRectF(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+                # scene.invalidate(updRect)
 
-                scene.invalidate(self.x(), self.y(), self.width*24, self.height*24, QtWidgets.QGraphicsScene.BackgroundLayer)
-                #scene.invalidate(newpos.x(), newpos.y(), self.width*24, self.height*24, QtWidgets.QGraphicsScene.BackgroundLayer)
+                scene.invalidate(self.x(), self.y(), self.width * 24, self.height * 24,
+                                 QtWidgets.QGraphicsScene.BackgroundLayer)
+                # scene.invalidate(newpos.x(), newpos.y(), self.width*24, self.height*24, QtWidgets.QGraphicsScene.BackgroundLayer)
 
             return newpos
 
         return QtWidgets.QGraphicsItem.itemChange(self, change, value)
-
 
     def paint(self, painter, option, widget):
         """
@@ -4275,7 +4348,6 @@ class ObjectItem(LevelEditorItem):
 
             painter.fillRect(self.GrabberRect, theme.color('object_lines_s'))
 
-
     def mousePressEvent(self, event):
         """
         Overrides mouse pressing events if needed for resizing
@@ -4289,8 +4361,9 @@ class ObjectItem(LevelEditorItem):
                     newZ = layer[-1].zValue() + 1
 
                 currentZ = self.zValue()
-                self.setZValue(newZ) # swap the Z values so it doesn't look like the cloned item is the old one
-                newitem = ObjectItem(self.tileset, self.type, self.layer, self.objx, self.objy, self.width, self.height, currentZ)
+                self.setZValue(newZ)  # swap the Z values so it doesn't look like the cloned item is the old one
+                newitem = ObjectItem(self.tileset, self.type, self.layer, self.objx, self.objy, self.width, self.height,
+                                     currentZ)
                 layer.append(newitem)
                 mainWindow.scene.addItem(newitem)
                 mainWindow.scene.clearSelection()
@@ -4313,7 +4386,6 @@ class ObjectItem(LevelEditorItem):
             self.dragging = False
             self.objsDragging = {}
         self.UpdateTooltip()
-
 
     def mouseMoveEvent(self, event):
         """
@@ -4364,7 +4436,6 @@ class ObjectItem(LevelEditorItem):
             LevelEditorItem.mouseMoveEvent(self, event)
         self.UpdateTooltip()
 
-
     def delete(self):
         """
         Delete the object from the level
@@ -4373,10 +4444,11 @@ class ObjectItem(LevelEditorItem):
         self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
 
 
-class AbstractBackground():
+class AbstractBackground:
     """
     A class that represents an abstract background for a zone (both bgA and bgB)
     """
+
     def __init__(self, xScroll=1, yScroll=1, xPos=1, yPos=1):
         self.xScroll = xScroll
         self.yScroll = yScroll
@@ -4391,7 +4463,7 @@ class Background_NSMBW(AbstractBackground):
     """
     A class that represents a background from New Super Mario Bros. Wii
     """
-    pass # not yet implemented
+    pass  # not yet implemented
 
 
 class ZoneItem(LevelEditorItem):
@@ -4484,17 +4556,15 @@ class ZoneItem(LevelEditorItem):
 
         global DirtyOverride
         DirtyOverride += 1
-        self.setPos(int(a*1.5),int(b*1.5))
+        self.setPos(int(a * 1.5), int(b * 1.5))
         DirtyOverride -= 1
         self.setZValue(50000)
-
 
     def UpdateTitle(self):
         """
         Updates the zone's title
         """
         self.title = trans.string('Zones', 0, '[num]', self.id + 1)
-
 
     def UpdateRects(self):
         """
@@ -4503,7 +4573,8 @@ class ZoneItem(LevelEditorItem):
         if hasattr(mainWindow, 'ZoomLevel'):
             grabberWidth = 500 / mainWindow.ZoomLevel
             if grabberWidth < 5: grabberWidth = 5
-        else: grabberWidth = 5
+        else:
+            grabberWidth = 5
 
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5)
@@ -4512,8 +4583,8 @@ class ZoneItem(LevelEditorItem):
         self.GrabberRectTL = QtCore.QRectF(0, 0, grabberWidth, grabberWidth)
         self.GrabberRectTR = QtCore.QRectF(int(self.width * 1.5) - grabberWidth, 0, grabberWidth, grabberWidth)
         self.GrabberRectBL = QtCore.QRectF(0, int(self.height * 1.5) - grabberWidth, grabberWidth, grabberWidth)
-        self.GrabberRectBR = QtCore.QRectF(int(self.width * 1.5) - grabberWidth, int(self.height * 1.5)-grabberWidth, grabberWidth, grabberWidth)
-
+        self.GrabberRectBR = QtCore.QRectF(int(self.width * 1.5) - grabberWidth, int(self.height * 1.5) - grabberWidth,
+                                           grabberWidth, grabberWidth)
 
     def paint(self, painter, option, widget):
         """
@@ -4521,7 +4592,7 @@ class ZoneItem(LevelEditorItem):
         """
         global theme
 
-        #painter.setClipRect(option.exposedRect)
+        # painter.setClipRect(option.exposedRect)
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
 
         # Paint an indicator line to show the leftmost edge of
@@ -4549,7 +4620,6 @@ class ZoneItem(LevelEditorItem):
         painter.fillRect(self.GrabberRectTR, GrabberColor)
         painter.fillRect(self.GrabberRectBL, GrabberColor)
         painter.fillRect(self.GrabberRectBR, GrabberColor)
-
 
     def mousePressEvent(self, event):
         """
@@ -4585,7 +4655,6 @@ class ZoneItem(LevelEditorItem):
             LevelEditorItem.mousePressEvent(self, event)
             self.dragging = False
 
-
     def mouseMoveEvent(self, event):
         """
         Overrides mouse movement events if needed for resizing
@@ -4618,8 +4687,8 @@ class ZoneItem(LevelEditorItem):
                 if clickedy < 0: clickedy = 0
 
             if clickedx != dsx or clickedy != dsy:
-                #if (cx + clickedx - dsx) < 16: clickedx += (16 - (cx + clickedx - dsx))
-                #if (cy + clickedy - dsy) < 16: clickedy += (16 - (cy + clickedy - dsy))
+                # if (cx + clickedx - dsx) < 16: clickedx += (16 - (cx + clickedx - dsx))
+                # if (cy + clickedy - dsy) < 16: clickedy += (16 - (cy + clickedy - dsy))
 
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
@@ -4699,7 +4768,7 @@ class LocationItem(LevelEditorItem):
     Level editor item that represents a sprite location
     """
     instanceDef = InstanceDefinition_LocationItem
-    sizeChanged = None # Callback: sizeChanged(SpriteItem obj, int width, int height)
+    sizeChanged = None  # Callback: sizeChanged(SpriteItem obj, int width, int height)
 
     def __init__(self, x, y, width, height, id):
         """
@@ -4708,7 +4777,7 @@ class LocationItem(LevelEditorItem):
         LevelEditorItem.__init__(self)
 
         self.font = NumberFont
-        self.TitlePos = QtCore.QPointF(4,12)
+        self.TitlePos = QtCore.QPointF(4, 12)
         self.objx = x
         self.objy = y
         self.width = width
@@ -4723,19 +4792,18 @@ class LocationItem(LevelEditorItem):
 
         global DirtyOverride
         DirtyOverride += 1
-        self.setPos(int(x*1.5),int(y*1.5))
+        self.setPos(int(x * 1.5), int(y * 1.5))
         DirtyOverride -= 1
 
         self.dragging = False
         self.setZValue(24000)
 
-
     def ListString(self):
         """
         Returns a string that can be used to describe the location in a list
         """
-        return trans.string('Locations', 2, '[id]', self.id, '[width]', int(self.width), '[height]', int(self.height), '[x]', int(self.objx), '[y]', int(self.objy))
-
+        return trans.string('Locations', 2, '[id]', self.id, '[width]', int(self.width), '[height]', int(self.height),
+                            '[x]', int(self.objx), '[y]', int(self.objy))
 
     def UpdateTitle(self):
         """
@@ -4744,10 +4812,8 @@ class LocationItem(LevelEditorItem):
         self.title = trans.string('Locations', 0, '[id]', self.id)
         self.UpdateListItem()
 
-
     def __lt__(self, other):
         return self.id < other.id
-
 
     def UpdateRects(self):
         """
@@ -4762,7 +4828,6 @@ class LocationItem(LevelEditorItem):
         self.DrawRect = QtCore.QRectF(1, 1, (self.width * 1.5) - 2, (self.height * 1.5) - 2)
         self.GrabberRect = QtCore.QRectF((1.5 * self.width) - 6, (1.5 * self.height) - 6, 5, 5)
         self.UpdateListItem()
-
 
     def paint(self, painter, option, widget):
         """
@@ -4789,7 +4854,6 @@ class LocationItem(LevelEditorItem):
         # Draw the resizer rectangle, if selected
         if self.isSelected(): painter.fillRect(self.GrabberRect, theme.color('location_lines_s'))
 
-
     def mousePressEvent(self, event):
         """
         Overrides mouse pressing events if needed for resizing
@@ -4803,7 +4867,6 @@ class LocationItem(LevelEditorItem):
         else:
             LevelEditorItem.mousePressEvent(self, event)
             self.dragging = False
-
 
     def mouseMoveEvent(self, event):
         """
@@ -4850,7 +4913,6 @@ class LocationItem(LevelEditorItem):
         else:
             LevelEditorItem.mouseMoveEvent(self, event)
 
-
     def delete(self):
         """
         Delete the location from the level
@@ -4862,8 +4924,6 @@ class LocationItem(LevelEditorItem):
         loclist.selectionModel().clearSelection()
         Area.locations.remove(self)
         self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
-
-
 
 
 class SpriteItem(LevelEditorItem):
@@ -4909,7 +4969,7 @@ class SpriteItem(LevelEditorItem):
         self.setPos(
             int((self.objx + self.ImageObj.xOffset) * 1.5),
             int((self.objy + self.ImageObj.yOffset) * 1.5),
-            )
+        )
         DirtyOverride -= 1
 
     def SetType(self, type):
@@ -4962,19 +5022,22 @@ class SpriteItem(LevelEditorItem):
         elif self.type in SpritesTriggeredByAnEventNyb0 and self.spritedata[0] != '\0':
             baseString += trans.string('Sprites', 2, '[event]', self.spritedata[0])
         elif self.type in AndController:
-            baseString += trans.string('Sprites', 3, '[event1]', self.spritedata[0], '[event2]', self.spritedata[2], '[event3]', self.spritedata[3], '[event4]', self.spritedata[4])
+            baseString += trans.string('Sprites', 3, '[event1]', self.spritedata[0], '[event2]', self.spritedata[2],
+                                       '[event3]', self.spritedata[3], '[event4]', self.spritedata[4])
         elif self.type in OrController:
-            baseString += trans.string('Sprites', 4, '[event1]', self.spritedata[0], '[event2]', self.spritedata[2], '[event3]', self.spritedata[3], '[event4]', self.spritedata[4])
+            baseString += trans.string('Sprites', 4, '[event1]', self.spritedata[0], '[event2]', self.spritedata[2],
+                                       '[event3]', self.spritedata[3], '[event4]', self.spritedata[4])
 
         # Activates an Event
-        if (self.type in SpritesThatActivateAnEvent)and (self.spritedata[1] != '\0'):
+        if (self.type in SpritesThatActivateAnEvent) and (self.spritedata[1] != '\0'):
             baseString += trans.string('Sprites', 5, '[event]', self.spritedata[1])
         elif (self.type in SpritesThatActivateAnEventNyb0) and (self.spritedata[0] != '\0'):
             baseString += trans.string('Sprites', 5, '[event]', self.spritedata[0])
         elif (self.type in MultiChainer):
             baseString += trans.string('Sprites', 6, '[event1]', self.spritedata[0], '[event2]', self.spritedata[1])
         elif (self.type in Random):
-            baseString += trans.string('Sprites', 7, '[event1]', self.spritedata[0], '[event2]', self.spritedata[2], '[event3]', self.spritedata[3], '[event4]', self.spritedata[4])
+            baseString += trans.string('Sprites', 7, '[event1]', self.spritedata[0], '[event2]', self.spritedata[2],
+                                       '[event3]', self.spritedata[3], '[event4]', self.spritedata[4])
 
         # Star Coin
         if (self.type in StarCoinNumbers):
@@ -5018,11 +5081,14 @@ class SpriteItem(LevelEditorItem):
             baseString += trans.string('Sprites', 14, '[id]', self.spritedata[4])
         elif self.type in BowserFireballArea and self.spritedata[3] != '\0':
             baseString += trans.string('Sprites', 14, '[id]', self.spritedata[3])
-        elif self.type in CheepCheepArea: # nybble 8-9
+        elif self.type in CheepCheepArea:  # nybble 8-9
             if (((self.spritedata[3] & 0xF) << 4) | ((self.spritedata[4] & 0xF0) >> 4)) != '\0':
-                baseString += trans.string('Sprites', 14, '[id]', (((self.spritedata[3] & 0xF) << 4) | ((self.spritedata[4] & 0xF0) >> 4)))
-        elif self.type in PoltergeistItem and (((self.spritedata[4] & 0xF) << 4) | ((self.spritedata[5] & 0xF0) >> 4)) != '\0': # nybble 10-11
-            baseString += trans.string('Sprites', 14, '[id]', (((self.spritedata[4] & 0xF) << 4) | ((self.spritedata[5] & 0xF0) >> 4)))
+                baseString += trans.string('Sprites', 14, '[id]',
+                                           (((self.spritedata[3] & 0xF) << 4) | ((self.spritedata[4] & 0xF0) >> 4)))
+        elif self.type in PoltergeistItem and (
+            ((self.spritedata[4] & 0xF) << 4) | ((self.spritedata[5] & 0xF0) >> 4)) != '\0':  # nybble 10-11
+            baseString += trans.string('Sprites', 14, '[id]',
+                                       (((self.spritedata[4] & 0xF) << 4) | ((self.spritedata[5] & 0xF0) >> 4)))
 
         # Add ')' to the end
         baseString += trans.string('Sprites', 15)
@@ -5031,7 +5097,8 @@ class SpriteItem(LevelEditorItem):
 
     def __lt__(self, other):
         # Sort by objx, then objy, then sprite type
-        return (self.objx * 100000 + self.objy) * 1000 + self.type < (other.objx * 100000 + other.objy) * 1000 + other.type
+        return (self.objx * 100000 + self.objy) * 1000 + self.type < (
+                                                                     other.objx * 100000 + other.objy) * 1000 + other.type
 
     def InitializeSprite(self):
         """
@@ -5074,7 +5141,7 @@ class SpriteItem(LevelEditorItem):
         self.setPos(
             int((self.objx + self.ImageObj.xOffset) * 1.5),
             int((self.objy + self.ImageObj.yOffset) * 1.5),
-            )
+        )
         self.ChangingPos = False
         if self.scene() is not None: self.scene().update()
 
@@ -5090,7 +5157,7 @@ class SpriteItem(LevelEditorItem):
                 auxObj.y() + self.y(),
                 auxObj.BoundingRect.width(),
                 auxObj.BoundingRect.height(),
-                ))
+            ))
 
         self.ImageObj.dataChanged()
         self.UpdateRects()
@@ -5099,7 +5166,7 @@ class SpriteItem(LevelEditorItem):
         self.setPos(
             int((self.objx + self.ImageObj.xOffset) * 1.5),
             int((self.objy + self.ImageObj.yOffset) * 1.5),
-            )
+        )
         self.ChangingPos = False
 
         if self.scene() is not None:
@@ -5107,7 +5174,6 @@ class SpriteItem(LevelEditorItem):
             self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
             for auxUpdateRect in CurrentAuxRects:
                 self.scene().update(auxUpdateRect)
-
 
     def UpdateRects(self):
         """
@@ -5122,20 +5188,20 @@ class SpriteItem(LevelEditorItem):
             0, 0,
             self.ImageObj.width * 1.5,
             self.ImageObj.height * 1.5,
-            )
+        )
         spriteboxRect = QtCore.QRectF(
             0, 0,
             self.ImageObj.spritebox.BoundingRect.width(),
             self.ImageObj.spritebox.BoundingRect.height(),
-            )
+        )
         imgOffsetRect = imgRect.translated(
             (self.objx + self.ImageObj.xOffset) * 1.5,
             (self.objy + self.ImageObj.yOffset) * 1.5,
-            )
+        )
         spriteboxOffsetRect = spriteboxRect.translated(
             (self.objx * 1.5) + self.ImageObj.spritebox.BoundingRect.topLeft().x(),
             (self.objy * 1.5) + self.ImageObj.spritebox.BoundingRect.topLeft().y(),
-            )
+        )
 
         if SpriteImagesShown:
             unitedRect = imgRect.united(spriteboxRect)
@@ -5148,7 +5214,7 @@ class SpriteItem(LevelEditorItem):
                 0, 0,
                 imgRect.width() - 1,
                 imgRect.height() - 1,
-                )
+            )
 
             # LevelRect: Used by the Level Overview to determine
             # the size and position of the sprite in the level.
@@ -5158,14 +5224,14 @@ class SpriteItem(LevelEditorItem):
                 unitedOffsetRect.topLeft().y() / 24,
                 unitedOffsetRect.width() / 24,
                 unitedOffsetRect.height() / 24,
-                )
+            )
 
             # BoundingRect: The sprite can only paint within
             # this area.
             self.BoundingRect = unitedRect.translated(
                 self.ImageObj.spritebox.BoundingRect.topLeft().x(),
                 self.ImageObj.spritebox.BoundingRect.topLeft().y(),
-                )
+            )
 
         else:
             self.SelectionRect = QtCore.QRectF(0, 0, 24, 24)
@@ -5175,15 +5241,14 @@ class SpriteItem(LevelEditorItem):
                 spriteboxOffsetRect.topLeft().y() / 24,
                 spriteboxOffsetRect.width() / 24,
                 spriteboxOffsetRect.height() / 24,
-                )
+            )
 
             # BoundingRect: The sprite can only paint within
             # this area.
             self.BoundingRect = spriteboxRect.translated(
                 self.ImageObj.spritebox.BoundingRect.topLeft().x(),
                 self.ImageObj.spritebox.BoundingRect.topLeft().y(),
-                )
-
+            )
 
     def getFullRect(self):
         """
@@ -5195,17 +5260,16 @@ class SpriteItem(LevelEditorItem):
         br = self.BoundingRect.translated(
             self.x(),
             self.y(),
-            )
+        )
         for aux in self.ImageObj.aux:
             br = br.united(
                 aux.BoundingRect.translated(
                     aux.x() + self.x(),
                     aux.y() + self.y(),
-                    )
                 )
+            )
 
         return br
-
 
     def itemChange(self, change, value):
         """
@@ -5284,7 +5348,7 @@ class SpriteItem(LevelEditorItem):
                         self.y() + auxObj.y(),
                         auxObj.BoundingRect.width(),
                         auxObj.BoundingRect.height(),
-                        )
+                    )
                     self.scene().update(auxUpdRect)
 
                 self.scene().update(
@@ -5292,7 +5356,7 @@ class SpriteItem(LevelEditorItem):
                     self.y() + self.ImageObj.spritebox.BoundingRect.topLeft().y(),
                     self.ImageObj.spritebox.BoundingRect.width(),
                     self.ImageObj.spritebox.BoundingRect.height(),
-                    )
+                )
 
                 oldx = self.objx
                 oldy = self.objy
@@ -5350,7 +5414,8 @@ class SpriteItem(LevelEditorItem):
         if obj:
             for z in Area.zones:
                 if z.id == id: return z
-        else: return id
+        else:
+            return id
 
     def updateScene(self):
         """
@@ -5360,7 +5425,6 @@ class SpriteItem(LevelEditorItem):
         # and this is a convenient way to do it:
         # self.parent.updateScene()
         if self.scene() is not None: self.scene().update()
-
 
     def paint(self, painter, option=None, widget=None, overrideGlobals=False):
         """
@@ -5408,7 +5472,6 @@ class SpriteItem(LevelEditorItem):
             painter.setFont(self.font)
             painter.drawText(spriteboxRect, Qt.AlignCenter, str(self.type))
 
-
     def scene(self):
         """
         Solves a small bug
@@ -5425,8 +5488,8 @@ class SpriteItem(LevelEditorItem):
         mainWindow.UpdateFlag = False
         sprlist.selectionModel().clearSelection()
         Area.sprites.remove(self)
-        #self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
-        self.scene().update() # The zone painters need for the whole thing to update
+        # self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+        self.scene().update()  # The zone painters need for the whole thing to update
 
 
 class EntranceItem(LevelEditorItem):
@@ -5443,6 +5506,7 @@ class EntranceItem(LevelEditorItem):
         Auxiliary item for drawing entrance things
         """
         BoundingRect = QtCore.QRectF(0, 0, 24, 24)
+
         def __init__(self, parent):
             """
             Initializes the auxiliary entrance thing
@@ -5648,24 +5712,24 @@ class EntranceItem(LevelEditorItem):
 
         icontype = 0
         enttype = self.enttype
-        if enttype == 0 or enttype == 1: icontype = 1 # normal
-        if enttype == 2: icontype = 2 # door exit
-        if enttype == 3: icontype = 4 # pipe up
-        if enttype == 4: icontype = 5 # pipe down
-        if enttype == 5: icontype = 6 # pipe left
-        if enttype == 6: icontype = 7 # pipe right
-        if enttype == 8: icontype = 12 # ground pound
-        if enttype == 9: icontype = 13 # sliding
-        #0F/15 is unknown?
-        if enttype == 16: icontype = 8 # mini pipe up
-        if enttype == 17: icontype = 9 # mini pipe down
-        if enttype == 18: icontype = 10 # mini pipe left
-        if enttype == 19: icontype = 11 # mini pipe right
-        if enttype == 20: icontype = 15 # jump out facing right
-        if enttype == 21: icontype = 17 # vine entrance
-        if enttype == 23: icontype = 14 # boss battle entrance
-        if enttype == 24: icontype = 16 # jump out facing left
-        if enttype == 27: icontype = 3 # door entrance
+        if enttype == 0 or enttype == 1: icontype = 1  # normal
+        if enttype == 2: icontype = 2  # door exit
+        if enttype == 3: icontype = 4  # pipe up
+        if enttype == 4: icontype = 5  # pipe down
+        if enttype == 5: icontype = 6  # pipe left
+        if enttype == 6: icontype = 7  # pipe right
+        if enttype == 8: icontype = 12  # ground pound
+        if enttype == 9: icontype = 13  # sliding
+        # 0F/15 is unknown?
+        if enttype == 16: icontype = 8  # mini pipe up
+        if enttype == 17: icontype = 9  # mini pipe down
+        if enttype == 18: icontype = 10  # mini pipe left
+        if enttype == 19: icontype = 11  # mini pipe right
+        if enttype == 20: icontype = 15  # jump out facing right
+        if enttype == 21: icontype = 17  # vine entrance
+        if enttype == 23: icontype = 14  # boss battle entrance
+        if enttype == 24: icontype = 16  # jump out facing left
+        if enttype == 27: icontype = 3  # door entrance
 
         painter.drawPixmap(0, 0, EntranceItem.EntranceImages[icontype])
 
@@ -5696,7 +5760,7 @@ class EntranceItem(LevelEditorItem):
                 self.y() + self.aux.y(),
                 self.aux.BoundingRect.width(),
                 self.aux.BoundingRect.height(),
-                )
+            )
             self.scene().update(updRect)
 
         return super().itemChange(change, value)
@@ -5710,13 +5774,13 @@ class EntranceItem(LevelEditorItem):
         br = self.BoundingRect.translated(
             self.x(),
             self.y(),
-            )
+        )
         br = br.united(
             self.aux.BoundingRect.translated(
                 self.aux.x() + self.x(),
                 self.aux.y() + self.y(),
-                )
             )
+        )
 
         return br
 
@@ -5728,7 +5792,6 @@ class PathItem(LevelEditorItem):
     instanceDef = InstanceDefinition_PathItem
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     RoundedRect = QtCore.QRectF(1, 1, 22, 22)
-
 
     def __init__(self, objx, objy, pathinfo, nodeinfo):
         """
@@ -5752,7 +5815,7 @@ class PathItem(LevelEditorItem):
 
         global DirtyOverride
         DirtyOverride += 1
-        self.setPos(int(objx*1.5),int(objy*1.5))
+        self.setPos(int(objx * 1.5), int(objy * 1.5))
         DirtyOverride -= 1
 
         self.setZValue(25002)
@@ -5813,8 +5876,6 @@ class PathItem(LevelEditorItem):
             painter.setPen(QtGui.QPen(theme.color('path_lines')))
         painter.drawRoundedRect(self.RoundedRect, 4, 4)
 
-        icontype = 0
-
         painter.setFont(self.font)
         painter.drawText(4, 11, str(self.pathid))
         painter.drawText(4, 9 + QtGui.QFontMetrics(self.font).height(), str(self.nodeid))
@@ -5833,7 +5894,7 @@ class PathItem(LevelEditorItem):
         Area.paths.remove(self)
         self.pathinfo['nodes'].remove(self.nodeinfo)
 
-        if(len(self.pathinfo['nodes']) < 1):
+        if (len(self.pathinfo['nodes']) < 1):
             Area.pathdata.remove(self.pathinfo)
             self.scene().removeItem(self.pathinfo['peline'])
 
@@ -5844,12 +5905,11 @@ class PathItem(LevelEditorItem):
         self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
 
 
-
 class PathEditorLineItem(LevelEditorItem):
     """
     Level editor item to draw a line between two path nodes
     """
-    BoundingRect = QtCore.QRectF(0, 0, 1, 1) # compute later
+    BoundingRect = QtCore.QRectF(0, 0, 1, 1)  # compute later
 
     def __init__(self, nodelist):
         """
@@ -5915,7 +5975,7 @@ class PathEditorLineItem(LevelEditorItem):
 
         color = theme.color('path_connector')
         painter.setBrush(QtGui.QBrush(color))
-        painter.setPen(QtGui.QPen(color, 3, join = Qt.RoundJoin, cap = Qt.RoundCap))
+        painter.setPen(QtGui.QPen(color, 3, join=Qt.RoundJoin, cap=Qt.RoundCap))
         ppath = QtGui.QPainterPath()
 
         lines = []
@@ -5924,17 +5984,16 @@ class PathEditorLineItem(LevelEditorItem):
 
         snl = self.nodelist
         for j, node in enumerate(snl):
-            if ((j+1) < len(snl)):
-                a = QtCore.QPointF(float(snl[j]['x']*1.5) - self.x(),float(snl[j]['y']*1.5) - self.y())
-                b = QtCore.QPointF(float(snl[j+1]['x']*1.5) - self.x(),float(snl[j+1]['y']*1.5) - self.y())
+            if ((j + 1) < len(snl)):
+                a = QtCore.QPointF(float(snl[j]['x'] * 1.5) - self.x(), float(snl[j]['y'] * 1.5) - self.y())
+                b = QtCore.QPointF(float(snl[j + 1]['x'] * 1.5) - self.x(), float(snl[j + 1]['y'] * 1.5) - self.y())
                 lines.append(QtCore.QLineF(a, b))
-            elif self.loops and (j+1) == len(snl):
-                a = QtCore.QPointF(float(snl[j]['x']*1.5) - self.x(),float(snl[j]['y']*1.5) - self.y())
-                b = QtCore.QPointF(float(snl[0]['x']*1.5) - self.x(),float(snl[0]['y']*1.5) - self.y())
+            elif self.loops and (j + 1) == len(snl):
+                a = QtCore.QPointF(float(snl[j]['x'] * 1.5) - self.x(), float(snl[j]['y'] * 1.5) - self.y())
+                b = QtCore.QPointF(float(snl[0]['x'] * 1.5) - self.x(), float(snl[0]['y'] * 1.5) - self.y())
                 lines.append(QtCore.QLineF(a, b))
 
         painter.drawLines(lines)
-
 
     def delete(self):
         """
@@ -5990,13 +6049,11 @@ class CommentItem(LevelEditorItem):
         self.TextEdit.textChanged.connect(self.handleTextChanged)
         self.reposTextEdit()
 
-
     def UpdateTooltip(self):
         """
         For compatibility, just in case
         """
         self.setToolTip(trans.string('Comments', 1, '[x]', self.objx, '[y]', self.objy))
-
 
     def ListString(self):
         """
@@ -6004,7 +6061,6 @@ class CommentItem(LevelEditorItem):
         """
         t = self.OneLineText()
         return trans.string('Comments', 0, '[x]', self.objx, '[y]', self.objy, '[text]', t)
-
 
     def OneLineText(self):
         """
@@ -6021,7 +6077,6 @@ class CommentItem(LevelEditorItem):
         if t2 is not None: t = t2 + '...'
 
         return t
-
 
     def paint(self, painter, option, widget):
         """
@@ -6048,11 +6103,13 @@ class CommentItem(LevelEditorItem):
         painter.drawPixmap(4, 4, GetIcon('comments', 24).pixmap(24, 24))
         painter.setOpacity(1)
 
-
         # Set the text edit visibility
-        try: shouldBeVisible = (len(mainWindow.scene.selectedItems()) == 1) and self.isSelected()
-        except RuntimeError: shouldBeVisible = False
-        try: self.TextEdit.setVisible(shouldBeVisible)
+        try:
+            shouldBeVisible = (len(mainWindow.scene.selectedItems()) == 1) and self.isSelected()
+        except RuntimeError:
+            shouldBeVisible = False
+        try:
+            self.TextEdit.setVisible(shouldBeVisible)
         except RuntimeError:
             # Sometimes Qt deletes my text edit.
             # Therefore, I need to make a new one.
@@ -6080,7 +6137,7 @@ class CommentItem(LevelEditorItem):
         """
         Repositions the text edit
         """
-        self.TextEditProxy.setPos((self.objx * 3/2) + 24, (self.objy * 3/2) + 16)
+        self.TextEditProxy.setPos((self.objx * 3 / 2) + 24, (self.objy * 3 / 2) + 16)
 
     def handlePosChange(self, oldx, oldy):
         """
@@ -6095,7 +6152,6 @@ class CommentItem(LevelEditorItem):
         oldy *= 1.5
         oldRect = QtCore.QRectF(oldx, oldy, w, h)
         self.scene().update(oldRect)
-
 
     def delete(self):
         """
@@ -6114,8 +6170,6 @@ class CommentItem(LevelEditorItem):
         mainWindow.SaveComments()
 
 
-
-
 class LevelOverviewWidget(QtWidgets.QWidget):
     """
     Widget that shows an overview of the level and can be clicked to move the view
@@ -6129,12 +6183,13 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         global theme
 
         QtWidgets.QWidget.__init__(self)
-        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding))
+        self.setSizePolicy(
+            QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding))
 
         self.bgbrush = QtGui.QBrush(theme.color('bg'))
         self.objbrush = QtGui.QBrush(theme.color('overview_object'))
         self.viewbrush = QtGui.QBrush(theme.color('overview_zone_fill'))
-        self.view = QtCore.QRectF(0,0,0,0)
+        self.view = QtCore.QRectF(0, 0, 0, 0)
         self.spritebrush = QtGui.QBrush(theme.color('overview_sprite'))
         self.entrancebrush = QtGui.QBrush(theme.color('overview_entrance'))
         self.locationbrush = QtGui.QBrush(theme.color('overview_location_fill'))
@@ -6221,10 +6276,10 @@ class LevelOverviewWidget(QtWidgets.QWidget):
             height = zone.height / 16
             fr(x, y, width, height, b)
             dr(x, y, width, height)
-            if x+width > maxX:
-                maxX = x+width
-            if y+height > maxY:
-                maxY = y+height
+            if x + width > maxX:
+                maxX = x + width
+            if y + height > maxY:
+                maxY = y + height
 
         b = self.objbrush
 
@@ -6236,26 +6291,23 @@ class LevelOverviewWidget(QtWidgets.QWidget):
                 if obj.objy > maxY:
                     maxY = obj.objy
 
-
         b = self.spritebrush
 
         for sprite in Area.sprites:
             fr(sprite.LevelRect, b)
-            if sprite.objx/16 > maxX:
-                maxX = sprite.objx/16
-            if sprite.objy/16 > maxY:
-                maxY = sprite.objy/16
-
+            if sprite.objx / 16 > maxX:
+                maxX = sprite.objx / 16
+            if sprite.objy / 16 > maxY:
+                maxY = sprite.objy / 16
 
         b = self.entrancebrush
 
         for ent in Area.entrances:
             fr(ent.LevelRect, b)
-            if ent.objx/16 > maxX:
-                maxX = ent.objx/16
-            if ent.objy/16 > maxY:
-                maxY = ent.objy/16
-
+            if ent.objx / 16 > maxX:
+                maxX = ent.objx / 16
+            if ent.objy / 16 > maxY:
+                maxY = ent.objy / 16
 
         b = self.locationbrush
         painter.setPen(QtGui.QPen(theme.color('overview_location_lines'), 1))
@@ -6267,22 +6319,22 @@ class LevelOverviewWidget(QtWidgets.QWidget):
             height = location.height / 16
             fr(x, y, width, height, b)
             dr(x, y, width, height)
-            if x+width > maxX:
-                maxX = x+width
-            if y+height > maxY:
-                maxY = y+height
+            if x + width > maxX:
+                maxX = x + width
+            if y + height > maxY:
+                maxY = y + height
 
         self.maxX = maxX
         self.maxY = maxY
 
         b = self.locationbrush
         painter.setPen(QtGui.QPen(theme.color('overview_viewbox'), 1))
-        painter.drawRect(self.Xposlocator/24/self.mainWindowScale, self.Yposlocator/24/self.mainWindowScale, self.Wlocator/24/self.mainWindowScale, self.Hlocator/24/self.mainWindowScale)
-
+        painter.drawRect(self.Xposlocator / 24 / self.mainWindowScale, self.Yposlocator / 24 / self.mainWindowScale,
+                         self.Wlocator / 24 / self.mainWindowScale, self.Hlocator / 24 / self.mainWindowScale)
 
     def Rescale(self):
-        self.Xscale = (float(self.width())/float(self.maxX+45))
-        self.Yscale = (float(self.height())/float(self.maxY+25))
+        self.Xscale = (float(self.width()) / float(self.maxX + 45))
+        self.Yscale = (float(self.height()) / float(self.maxY + 25))
 
         if self.Xscale <= self.Yscale:
             self.scale = self.Xscale
@@ -6292,8 +6344,6 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         if self.scale < 0.002: self.scale = 0.002
 
         self.CalcSize()
-
-
 
 
 class ObjectPickerWidget(QtWidgets.QListView):
@@ -6361,7 +6411,6 @@ class ObjectPickerWidget(QtWidgets.QListView):
     ObjChanged = QtCore.pyqtSignal(int)
     ObjReplace = QtCore.pyqtSignal(int)
 
-
     class ObjectItemDelegate(QtWidgets.QAbstractItemDelegate):
         """
         Handles tileset objects and their rendering
@@ -6381,8 +6430,8 @@ class ObjectPickerWidget(QtWidgets.QListView):
                 painter.fillRect(option.rect, option.palette.highlight())
 
             p = index.model().data(index, Qt.DecorationRole)
-            painter.drawPixmap(option.rect.x()+2, option.rect.y()+2, p)
-            #painter.drawText(option.rect, str(index.row()))
+            painter.drawPixmap(option.rect.x() + 2, option.rect.y() + 2, p)
+            # painter.drawText(option.rect, str(index.row()))
 
         def sizeHint(self, option, index):
             """
@@ -6390,8 +6439,7 @@ class ObjectPickerWidget(QtWidgets.QListView):
             """
             p = index.model().data(index, Qt.UserRole)
             return p
-            #return QtCore.QSize(76,76)
-
+            # return QtCore.QSize(76,76)
 
     class ObjectListModel(QtCore.QAbstractListModel):
         """
@@ -6407,7 +6455,7 @@ class ObjectPickerWidget(QtWidgets.QListView):
             self.itemsize = []
             QtCore.QAbstractListModel.__init__(self)
 
-            #for i in range(256):
+            # for i in range(256):
             #    self.items.append(None)
             #    self.ritems.append(None)
 
@@ -6498,6 +6546,7 @@ class StampChooserWidget(QtWidgets.QListView):
     Widget that shows a list of available stamps
     """
     selectionChangedSignal = QtCore.pyqtSignal()
+
     def __init__(self):
         """
         Initializes the widget
@@ -6514,7 +6563,6 @@ class StampChooserWidget(QtWidgets.QListView):
         self.setModel(self.model)
 
         self.setItemDelegate(StampChooserWidget.StampItemDelegate())
-
 
     class StampItemDelegate(QtWidgets.QStyledItemDelegate):
         """
@@ -6561,20 +6609,17 @@ class StampChooserWidget(QtWidgets.QListView):
             """
             return index.model().data(index, Qt.DecorationRole).size() + QtCore.QSize(4, 4)
 
-
     def addStamp(self, stamp):
         """
         Adds a stamp
         """
         self.model.addStamp(stamp)
 
-
     def removeStamp(self, stamp):
         """
         Removes a stamp
         """
         self.model.removeStamp(stamp)
-
 
     def currentlySelectedStamp(self):
         """
@@ -6604,7 +6649,7 @@ class StampListModel(QtCore.QAbstractListModel):
         """
         QtCore.QAbstractListModel.__init__(self)
 
-        self.items = [] # list of Stamp objects
+        self.items = []  # list of Stamp objects
 
     def rowCount(self, parent=None):
         """
@@ -6633,7 +6678,8 @@ class StampListModel(QtCore.QAbstractListModel):
         elif role == Qt.StatusTipRole:
             return self.items[n].Name
 
-        else: return None
+        else:
+            return None
 
     def setData(self, index, value, role=Qt.DisplayRole):
         """
@@ -6677,10 +6723,11 @@ class StampListModel(QtCore.QAbstractListModel):
         self.endResetModel()
 
 
-class Stamp():
+class Stamp:
     """
     Class that represents a stamp in the list
     """
+
     def __init__(self, ReggieClip=None, Name=''):
         """
         Initializes the stamp
@@ -6802,7 +6849,7 @@ class Stamp():
                 painter.translate(
                     offx + aux.x(),
                     offy + aux.y(),
-                    )
+                )
 
                 aux.paint(painter, None, None)
 
@@ -6875,6 +6922,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
     """
     Widget that shows a list of available sprites
     """
+
     def __init__(self):
         """
         Initializes the widget
@@ -6916,8 +6964,10 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
                         self.NoSpritesFound = snode
                     else:
                         sdef = Sprites[id]
-                        if sdef is None: sname = 'ERROR'
-                        else: sname = sdef.name
+                        if sdef is None:
+                            sname = 'ERROR'
+                        else:
+                            sname = sdef.name
                         snode.setText(0, trans.string('Sprites', 18, '[id]', id, '[name]', sname))
                         snode.setData(0, Qt.UserRole, id)
 
@@ -6935,7 +6985,6 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
 
         self.itemClicked.connect(self.HandleSprReplace)
 
-
     def SwitchView(self, view):
         """
         Changes the selected sprite view
@@ -6946,7 +6995,6 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         for node in view[2]:
             node.setHidden(False)
 
-
     @QtCore.pyqtSlot(QtWidgets.QTreeWidgetItem, QtWidgets.QTreeWidgetItem)
     def HandleItemChange(self, current, previous):
         """
@@ -6956,7 +7004,6 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         id = current.data(0, Qt.UserRole)
         if id != -1:
             self.SpriteChanged.emit(id)
-
 
     def SetSearchString(self, searchfor):
         """
@@ -6973,7 +7020,6 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
 
         self.NoSpritesFound.setHidden((len(results) != 0))
         self.SearchResultsCategory.setExpanded(True)
-
 
     @QtCore.pyqtSlot(QtWidgets.QTreeWidgetItem, int)
     def HandleSprReplace(self, item, column):
@@ -7064,7 +7110,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.notes = None
         self.relatedObjFiles = None
 
-
     class PropertyDecoder(QtCore.QObject):
         """
         Base class for all the sprite data decoder/encoders
@@ -7098,8 +7143,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 # we just want one nybble
                 if nybble >= (len(data) * 2): return 0
-                return (data[nybble//2] >> (0 if (nybble & 1) == 1 else 4)) & 15
-
+                return (data[nybble // 2] >> (0 if (nybble & 1) == 1 else 4)) & 15
 
         def insertvalue(self, data, value):
             """
@@ -7132,7 +7176,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 sdata[nybble >> 1] = cbyte
 
             return bytes(sdata)
-
 
     class CheckboxPropertyDecoder(PropertyDecoder):
         """
@@ -7186,7 +7229,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             self.updateData.emit(self)
 
-
     class ListPropertyDecoder(PropertyDecoder):
         """
         Class that decodes/encodes sprite data to/from a combobox
@@ -7205,7 +7247,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.widget.currentIndexChanged.connect(self.HandleIndexChanged)
 
             self.nybble = nybble
-            layout.addWidget(QtWidgets.QLabel(title+':'), row, 0, Qt.AlignRight)
+            layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
 
         def update(self, data):
@@ -7237,7 +7279,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             self.updateData.emit(self)
 
-
     class ValuePropertyDecoder(PropertyDecoder):
         """
         Class that decodes/encodes sprite data to/from a spinbox
@@ -7255,7 +7296,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.widget.valueChanged.connect(self.HandleValueChanged)
 
             self.nybble = nybble
-            layout.addWidget(QtWidgets.QLabel(title+':'), row, 0, Qt.AlignRight)
+            layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
 
         def update(self, data):
@@ -7277,7 +7318,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             Handle the value changing in the spinbox
             """
             self.updateData.emit(self)
-
 
     class BitfieldPropertyDecoder(PropertyDecoder):
         """
@@ -7366,7 +7406,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             self.updateData.emit(self)
 
-
     def setSprite(self, type, reset=False):
         """
         Change the sprite type used by the data editor
@@ -7426,7 +7465,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.fields = fields
 
-
     def update(self):
         """
         Updates all the fields to display the appropriate info
@@ -7434,7 +7472,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.UpdateFlag = True
 
         data = self.data
-        self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))
+        self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
+        data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))
         self.raweditor.setStyleSheet('')
 
         # Go through all the data
@@ -7443,16 +7482,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.UpdateFlag = False
 
-
     @QtCore.pyqtSlot()
     def ShowNoteTooltip(self):
         QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.notes, self)
 
-
     @QtCore.pyqtSlot()
     def ShowRelatedObjFilesTooltip(self):
         QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.relatedObjFiles, self)
-
 
     @QtCore.pyqtSlot('PyQt_PyObject')
     def HandleFieldUpdate(self, field):
@@ -7464,14 +7500,14 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         data = field.assign(self.data)
         self.data = data
 
-        self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))
+        self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
+        data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))
         self.raweditor.setStyleSheet('')
 
         for f in self.fields:
             if f != field: f.update(data)
 
         self.DataUpdate.emit(data)
-
 
     @QtCore.pyqtSlot(str)
     def HandleRawDataEdited(self, text):
@@ -7488,10 +7524,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             try:
                 data = []
                 for r in range(0, len(raw), 2):
-                    data.append(int(raw[r:r+2], 16))
+                    data.append(int(raw[r:r + 2], 16))
                 data = bytes(data)
                 valid = True
-            except Exception: pass
+            except Exception:
+                pass
 
         # if it's valid, let it go
         if valid:
@@ -7508,12 +7545,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.raweditor.setStyleSheet('QLineEdit { background-color: #ffd2d2; }')
 
 
-
-
 class EntranceEditorWidget(QtWidgets.QWidget):
     """
     Widget for editing entrance properties
     """
+
     @QtCore.pyqtSlot()
     def __init__(self, defaultmode=False):
         """
@@ -7582,7 +7618,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.cpDirection.setToolTip(trans.string('EntranceDataEditor', 26))
         self.cpDirection.activated.connect(self.HandleCpDirectionChanged)
 
-
         # create a layout
         layout = QtWidgets.QGridLayout()
         self.setLayout(layout)
@@ -7612,14 +7647,14 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         layout.addWidget(self.destEntrance, 3, 3, 1, 1)
         layout.addWidget(self.destArea, 4, 3, 1, 1)
         layout.addWidget(createHorzLine(), 5, 0, 1, 4)
-        layout.addWidget(self.allowEntryCheckbox, 6, 0, 1, 2)#, Qt.AlignRight)
-        layout.addWidget(self.unknownFlagCheckbox, 6, 2, 1, 2)#, Qt.AlignRight)
-        layout.addWidget(self.forwardPipeCheckbox, 7, 0, 1, 2)#, Qt.AlignRight)
-        layout.addWidget(self.connectedPipeCheckbox, 7, 2, 1, 2)#, Qt.AlignRight)
+        layout.addWidget(self.allowEntryCheckbox, 6, 0, 1, 2)  # , Qt.AlignRight)
+        layout.addWidget(self.unknownFlagCheckbox, 6, 2, 1, 2)  # , Qt.AlignRight)
+        layout.addWidget(self.forwardPipeCheckbox, 7, 0, 1, 2)  # , Qt.AlignRight)
+        layout.addWidget(self.connectedPipeCheckbox, 7, 2, 1, 2)  # , Qt.AlignRight)
 
         self.cpHorzLine = createHorzLine()
         layout.addWidget(self.cpHorzLine, 8, 0, 1, 4)
-        layout.addWidget(self.connectedPipeReverseCheckbox, 9, 0, 1, 2)#, Qt.AlignRight)
+        layout.addWidget(self.connectedPipeReverseCheckbox, 9, 0, 1, 2)  # , Qt.AlignRight)
         layout.addWidget(self.pathID, 9, 3, 1, 1)
         layout.addWidget(self.pathIDLabel, 9, 2, 1, 1, Qt.AlignRight)
 
@@ -7671,7 +7706,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
 
         self.UpdateFlag = False
 
-
     @QtCore.pyqtSlot(int)
     def HandleEntranceIDChanged(self, i):
         """
@@ -7684,7 +7718,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateTooltip()
         self.ent.UpdateListItem()
         self.editingLabel.setText(trans.string('EntranceDataEditor', 23, '[id]', i))
-
 
     @QtCore.pyqtSlot(int)
     def HandleEntranceTypeChanged(self, i):
@@ -7708,7 +7741,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         mainWindow.scene.update()
         self.ent.UpdateListItem()
 
-
     @QtCore.pyqtSlot(int)
     def HandleDestAreaChanged(self, i):
         """
@@ -7720,7 +7752,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateTooltip()
         self.ent.UpdateListItem()
 
-
     @QtCore.pyqtSlot(int)
     def HandleDestEntranceChanged(self, i):
         """
@@ -7731,7 +7762,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.destentrance = i
         self.ent.UpdateTooltip()
         self.ent.UpdateListItem()
-
 
     @QtCore.pyqtSlot(bool)
     def HandleAllowEntryClicked(self, checked):
@@ -7747,7 +7777,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateTooltip()
         self.ent.UpdateListItem()
 
-
     @QtCore.pyqtSlot(bool)
     def HandleUnknownFlagClicked(self, checked):
         """
@@ -7759,7 +7788,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
             self.ent.entsettings |= 2
         else:
             self.ent.entsettings &= ~2
-
 
     @QtCore.pyqtSlot(bool)
     def HandleConnectedPipeClicked(self, checked):
@@ -7831,7 +7859,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.cpdirection = i
 
 
-
 class PathNodeEditorWidget(QtWidgets.QWidget):
     """
     Widget for editing path node properties
@@ -7845,8 +7872,8 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed))
 
         # create widgets
-        #[20:52:41]  [Angel-SL] 1. (readonly) pathid 2. (readonly) nodeid 3. x 4. y 5. speed (float spinner) 6. accel (float spinner)
-        #not doing [20:52:58]  [Angel-SL] and 2 buttons - 7. 'Move Up' 8. 'Move Down'
+        # [20:52:41]  [Angel-SL] 1. (readonly) pathid 2. (readonly) nodeid 3. x 4. y 5. speed (float spinner) 6. accel (float spinner)
+        # not doing [20:52:58]  [Angel-SL] and 2 buttons - 7. 'Move Up' 8. 'Move Down'
         self.speed = QtWidgets.QDoubleSpinBox()
         self.speed.setRange(min(sys.float_info), max(sys.float_info))
         self.speed.setToolTip(trans.string('PathDataEditor', 3))
@@ -7893,10 +7920,8 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         layout.addWidget(self.accel, 5, 1)
         layout.addWidget(self.delay, 6, 1)
 
-
         self.path = None
         self.UpdateFlag = False
-
 
     def setPath(self, path):
         """
@@ -7915,7 +7940,6 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
 
         self.UpdateFlag = False
 
-
     @QtCore.pyqtSlot(float)
     def HandleSpeedChanged(self, i):
         """
@@ -7924,7 +7948,6 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         if self.UpdateFlag: return
         SetDirty()
         self.path.nodeinfo['speed'] = i
-
 
     @QtCore.pyqtSlot(float)
     def HandleAccelChanged(self, i):
@@ -7935,7 +7958,6 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         SetDirty()
         self.path.nodeinfo['accel'] = i
 
-
     @QtCore.pyqtSlot(int)
     def HandleDelayChanged(self, i):
         """
@@ -7944,7 +7966,6 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         if self.UpdateFlag: return
         SetDirty()
         self.path.nodeinfo['delay'] = i
-
 
     @QtCore.pyqtSlot(int)
     def HandleLoopsChanged(self, i):
@@ -7959,6 +7980,7 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
     """
     Widget for editing entrance properties
     """
+
     def __init__(self, defaultmode=False):
         """
         Constructor
@@ -7997,7 +8019,6 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
         self.tstr.setToolTip('Top-right Object ID')
         self.tstr.setValue(6)
 
-
         self.tsml = QtWidgets.QSpinBox()
         self.tsml.setRange(0, 65536)
         self.tsml.setToolTip('Middle-left Object ID')
@@ -8012,7 +8033,6 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
         self.tsmr.setRange(0, 65536)
         self.tsmr.setToolTip('Middle-right Object ID')
         self.tsmr.setValue(4)
-
 
         self.tsbl = QtWidgets.QSpinBox()
         self.tsbl.setRange(0, 65536)
@@ -8029,17 +8049,17 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
         self.tsbr.setToolTip('Bottom-right Object ID')
         self.tsbr.setValue(8)
 
-
         self.midix = QtWidgets.QSpinBox()
         self.midix.setRange(0, 65536)
         self.midix.setValue(0)
-        self.midix.setToolTip('Top Ground, Middle Filler and Bottom Roof \'interval\'. Set 0 to disable. The amount of tiles before a new object is created.<br><br>e.g. if you wanted a 2000t long island, the middle can be seperated into 100 20t long objects instead of 1 2000t long object.')
+        self.midix.setToolTip(
+            'Top Ground, Middle Filler and Bottom Roof \'interval\'. Set 0 to disable. The amount of tiles before a new object is created.<br><br>e.g. if you wanted a 2000t long island, the middle can be seperated into 100 20t long objects instead of 1 2000t long object.')
 
         self.midiy = QtWidgets.QSpinBox()
         self.midiy.setRange(0, 65536)
         self.midiy.setValue(0)
-        self.midiy.setToolTip('Middle Left, Middle Filler and Middle Right \'interval\'. Set 0 to disable. The amount of tiles before a new object is created.<br><br>e.g. if you wanted a 2000t tall island, the middle can be seperated into 100 20t tall objects instead of 1 2000t tall object.')
-
+        self.midiy.setToolTip(
+            'Middle Left, Middle Filler and Middle Right \'interval\'. Set 0 to disable. The amount of tiles before a new object is created.<br><br>e.g. if you wanted a 2000t tall island, the middle can be seperated into 100 20t tall objects instead of 1 2000t tall object.')
 
         self.layer = QtWidgets.QSpinBox()
         self.layer.setRange(0, 2)
@@ -8047,13 +8067,13 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
         self.layer.setValue(1)
 
         self.copyButton = QtWidgets.QPushButton('Copy to Clipboard')
-        self.copyButton.setToolTip('Copies the island you specified here to the clipboard. Paste it anywhere in Reggie. (Ctrl+V)')
+        self.copyButton.setToolTip(
+            'Copies the island you specified here to the clipboard. Paste it anywhere in Reggie. (Ctrl+V)')
         self.copyButton.clicked.connect(self.HandleCopy)
 
         self.placeButton = QtWidgets.QPushButton('Place')
         self.placeButton.setToolTip('Places the island specified here into Reggie.')
         self.placeButton.clicked.connect(self.HandlePlace)
-
 
         # create a layout
         layout = QtWidgets.QGridLayout()
@@ -8110,53 +8130,55 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
         # Paint the top tiles
 
         # Top-left tip
-        convclip.append('0:%d:%d:%d:0:0:1:1' % (self.tileset.value()-1, self.tstl.value(), self.layer.value()))
+        convclip.append('0:%d:%d:%d:0:0:1:1' % (self.tileset.value() - 1, self.tstl.value(), self.layer.value()))
         # Top Ground
         remnx = self.wpos.value() - 2
         remx = 1
         while True:
             if remnx >= self.midix.value():
-                convclip.append('0:%d:%d:%d:%d:0:%d:%d' % (self.tileset.value()-1, self.tstg.value(), self.layer.value(), remx, self.midix.value(), 1))
+                convclip.append('0:%d:%d:%d:%d:0:%d:%d' % (
+                self.tileset.value() - 1, self.tstg.value(), self.layer.value(), remx, self.midix.value(), 1))
                 remnx -= self.midix.value()
                 remx += self.midix.value()
             else:
-                convclip.append('0:%d:%d:%d:%d:0:%d:%d' % (self.tileset.value()-1, self.tstg.value(), self.layer.value(), remx, remnx, 1))
+                convclip.append('0:%d:%d:%d:%d:0:%d:%d' % (
+                self.tileset.value() - 1, self.tstg.value(), self.layer.value(), remx, remnx, 1))
                 break
 
         # Top-right tip
-        convclip.append('0:%d:%d:%d:%d:0:1:1' % (self.tileset.value()-1, self.tstr.value(), self.layer.value(), self.wpos.value() - 1))
+        convclip.append('0:%d:%d:%d:%d:0:1:1' % (
+        self.tileset.value() - 1, self.tstr.value(), self.layer.value(), self.wpos.value() - 1))
 
         # Paint the middle tiles
 
-        remny = self.hpos.value() -2
+        remny = self.hpos.value() - 2
         remy = 1
 
         # Middle-left edge
         while True:
             if remny >= self.midiy.value():
-                convclip.append('0:%d:%d:%d:0:%d:%d:%d' % (self.tileset.value()-1, self.tsml.value(), self.layer.value(), remy ,1, self.midiy.value()))
+                convclip.append('0:%d:%d:%d:0:%d:%d:%d' % (
+                self.tileset.value() - 1, self.tsml.value(), self.layer.value(), remy, 1, self.midiy.value()))
                 remny -= self.midiy.value()
                 remy += self.midiy.value()
             else:
-                convclip.append('0:%d:%d:%d:0:%d:%d:%d' % (self.tileset.value()-1, self.tsml.value(), self.layer.value(), remy, 1, remny))
+                convclip.append('0:%d:%d:%d:0:%d:%d:%d' % (
+                self.tileset.value() - 1, self.tsml.value(), self.layer.value(), remy, 1, remny))
                 break
 
-
-
         # Middle Filler! Hard
-        fullwidt = int(math.floor((self.wpos.value()-2) / self.midix.value()))
+        fullwidt = int(math.floor((self.wpos.value() - 2) / self.midix.value()))
 
-        widtremainder = int(math.floor((self.wpos.value()-2) % self.midix.value()))
+        widtremainder = int(math.floor((self.wpos.value() - 2) % self.midix.value()))
 
-        fullvert = int(math.floor((self.hpos.value()-2) / self.midiy.value()))
-        vertremainder = int(math.floor((self.hpos.value()-2) % self.midiy.value()))
-
-
+        fullvert = int(math.floor((self.hpos.value() - 2) / self.midiy.value()))
+        vertremainder = int(math.floor((self.hpos.value() - 2) % self.midiy.value()))
 
         for x in range(fullwidt):
             for y in range(fullvert):
-                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (self.tileset.value()-1, self.tsmf.value(), self.layer.value(), (x*self.midix.value()) +1, (y*self.midiy.value()) +1 ,self.midix.value(), self.midiy.value()))
-
+                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
+                self.tileset.value() - 1, self.tsmf.value(), self.layer.value(), (x * self.midix.value()) + 1,
+                (y * self.midiy.value()) + 1, self.midix.value(), self.midiy.value()))
 
         # Now paint the remainders
         if vertremainder:
@@ -8164,12 +8186,16 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
             remx = 1
             while True:
                 if remnx >= self.midix.value():
-                    convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (self.tileset.value()-1, self.tsmf.value(), self.layer.value(), remx, self.hpos.value() - 1 - vertremainder , self.midix.value(), vertremainder))
+                    convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
+                    self.tileset.value() - 1, self.tsmf.value(), self.layer.value(), remx,
+                    self.hpos.value() - 1 - vertremainder, self.midix.value(), vertremainder))
                     remnx -= self.midix.value()
                     remx += self.midix.value()
 
                 else:
-                    convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (self.tileset.value()-1, self.tsmf.value(), self.layer.value(), remx, self.hpos.value() - 1 - vertremainder, remnx, vertremainder))
+                    convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
+                    self.tileset.value() - 1, self.tsmf.value(), self.layer.value(), remx,
+                    self.hpos.value() - 1 - vertremainder, remnx, vertremainder))
                     break
 
         if widtremainder > 0:
@@ -8177,50 +8203,62 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
             remy = 1
             while True:
                 if remny >= self.midiy.value():
-                    convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (self.tileset.value()-1, self.tsmf.value(), self.layer.value(), self.wpos.value() - 1 - widtremainder, remy , widtremainder, self.midiy.value()))
+                    convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
+                    self.tileset.value() - 1, self.tsmf.value(), self.layer.value(),
+                    self.wpos.value() - 1 - widtremainder, remy, widtremainder, self.midiy.value()))
                     remny -= self.midiy.value()
                     remy += self.midiy.value()
 
                 else:
-                    convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (self.tileset.value()-1, self.tsmf.value(), self.layer.value(), self.wpos.value() - 1 - widtremainder, remy , widtremainder, remny))
+                    convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
+                    self.tileset.value() - 1, self.tsmf.value(), self.layer.value(),
+                    self.wpos.value() - 1 - widtremainder, remy, widtremainder, remny))
                     break
 
         if vertremainder and widtremainder:
-            convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (self.tileset.value()-1, self.tsmf.value(), self.layer.value(), self.wpos.value() - 1 - widtremainder, self.hpos.value() - 1 - vertremainder , widtremainder, vertremainder))
-
+            convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
+            self.tileset.value() - 1, self.tsmf.value(), self.layer.value(), self.wpos.value() - 1 - widtremainder,
+            self.hpos.value() - 1 - vertremainder, widtremainder, vertremainder))
 
         # Middle-right edge
 
-        remny = self.hpos.value() -2
+        remny = self.hpos.value() - 2
         remy = 1
         while True:
             if remny >= self.midiy.value():
-                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (self.tileset.value()-1, self.tsmr.value(), self.layer.value(), self.wpos.value() -1, remy ,1, self.midiy.value()))
+                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
+                self.tileset.value() - 1, self.tsmr.value(), self.layer.value(), self.wpos.value() - 1, remy, 1,
+                self.midiy.value()))
                 remny -= self.midiy.value()
                 remy += self.midiy.value()
             else:
-                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (self.tileset.value()-1, self.tsmr.value(), self.layer.value(), self.wpos.value() -1, remy, 1, remny))
+                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
+                self.tileset.value() - 1, self.tsmr.value(), self.layer.value(), self.wpos.value() - 1, remy, 1, remny))
                 break
-
 
         # Paint the bottom tiles
 
         # bottom-left tip
-        convclip.append('0:%d:%d:%d:0:%d:1:1' % (self.tileset.value()-1, self.tsbl.value(), self.layer.value(), self.hpos.value() -1))
+        convclip.append('0:%d:%d:%d:0:%d:1:1' % (
+        self.tileset.value() - 1, self.tsbl.value(), self.layer.value(), self.hpos.value() - 1))
         # Bottom Roof
         remnx = self.wpos.value() - 2
         remx = 1
         while True:
             if remnx >= self.midix.value():
-                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (self.tileset.value()-1, self.tsbm.value(), self.layer.value(), remx, self.hpos.value() -1, self.midix.value(), 1))
+                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
+                self.tileset.value() - 1, self.tsbm.value(), self.layer.value(), remx, self.hpos.value() - 1,
+                self.midix.value(), 1))
                 remnx -= self.midix.value()
                 remx += self.midix.value()
             else:
-                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (self.tileset.value()-1, self.tsbm.value(), self.layer.value(), remx, self.hpos.value() -1, remnx, 1))
+                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
+                self.tileset.value() - 1, self.tsbm.value(), self.layer.value(), remx, self.hpos.value() - 1, remnx, 1))
                 break
 
         # Bottom-right tip
-        convclip.append('0:%d:%d:%d:%d:%d:1:1' % (self.tileset.value()-1, self.tsbr.value(), self.layer.value(), self.wpos.value() - 1, self.hpos.value() -1))
+        convclip.append('0:%d:%d:%d:%d:%d:1:1' % (
+        self.tileset.value() - 1, self.tsbr.value(), self.layer.value(), self.wpos.value() - 1, self.hpos.value() - 1))
         convclip.append('%')
         if midixwas0:
             self.midix.setValue(0)
@@ -8238,7 +8276,6 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
         mainWindow.clipboard = retcb
         mainWindow.systemClipboard.setText(mainWindow.clipboard)
 
-
     @QtCore.pyqtSlot()
     def HandlePlace(self):
         """
@@ -8246,7 +8283,6 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
         """
         retcb = self.GetClipboardString()
         mainWindow.placeEncodedObjects(retcb)
-
 
 
 class LocationEditorWidget(QtWidgets.QWidget):
@@ -8319,10 +8355,8 @@ class LocationEditorWidget(QtWidgets.QWidget):
         layout.addWidget(self.locationWidth, 3, 3, 1, 1)
         layout.addWidget(self.locationHeight, 4, 3, 1, 1)
 
-
         self.loc = None
         self.UpdateFlag = False
-
 
     def setLocation(self, loc):
         """
@@ -8340,10 +8374,8 @@ class LocationEditorWidget(QtWidgets.QWidget):
 
         self.UpdateFlag = False
 
-
     def FixTitle(self):
         self.editingLabel.setText(trans.string('LocationDataEditor', 11, '[id]', self.loc.id))
-
 
     @QtCore.pyqtSlot(int)
     def HandleLocationIDChanged(self, i):
@@ -8366,7 +8398,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
         SetDirty()
         self.loc.objx = i
         self.loc.autoPosChange = True
-        self.loc.setX(int(i*1.5))
+        self.loc.setX(int(i * 1.5))
         self.loc.autoPosChange = False
         self.loc.UpdateRects()
         self.loc.update()
@@ -8380,7 +8412,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
         SetDirty()
         self.loc.objy = i
         self.loc.autoPosChange = True
-        self.loc.setY(int(i*1.5))
+        self.loc.setY(int(i * 1.5))
         self.loc.autoPosChange = False
         self.loc.UpdateRects()
         self.loc.update()
@@ -8417,8 +8449,8 @@ class LocationEditorWidget(QtWidgets.QWidget):
         loc = self.loc
         left = loc.objx
         top = loc.objy
-        right = left+loc.width
-        bottom = top+loc.height
+        right = left + loc.width
+        bottom = top + loc.height
 
         if left % 8 < 4:
             left -= (left % 8)
@@ -8451,8 +8483,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
         loc.setPos(int(left * 1.5), int(top * 1.5))
         loc.UpdateRects()
         loc.update()
-        self.setLocation(loc) # updates the fields
-
+        self.setLocation(loc)  # updates the fields
 
 
 def LoadTheme():
@@ -8470,20 +8501,21 @@ def LoadTheme():
         with open(path, 'rb') as f:
             theme = ReggieTheme(f)
 
-    else: theme = ReggieTheme()
+    else:
+        theme = ReggieTheme()
 
 
-class ReggieTheme():
+class ReggieTheme:
     """
     Class that represents a Reggie theme
     """
+
     def __init__(self, file=None):
         """
         Initializes the theme
         """
         self.initAsClassic()
         if file is not None: self.initFromFile(file)
-
 
     def initAsClassic(self):
         """
@@ -8501,49 +8533,49 @@ class ReggieTheme():
 
         # Add the colors                                                       # Descriptions:
         self.colors = {
-            'bg':                       QtGui.QColor(119,136,153),     # Main scene background fill
-            'comment_fill':             QtGui.QColor(220,212,135,120), # Unselected comment fill
-            'comment_fill_s':           QtGui.QColor(254,240,240,240), # Selected comment fill
-            'comment_lines':            QtGui.QColor(192,192,192,120), # Unselected comment lines
-            'comment_lines_s':          QtGui.QColor(220,212,135,240), # Selected comment lines
-            'entrance_fill':            QtGui.QColor(190,0,0,120),     # Unselected entrance fill
-            'entrance_fill_s':          QtGui.QColor(190,0,0,240),     # Selected entrance fill
-            'entrance_lines':           QtGui.QColor(0,0,0),           # Unselected entrance lines
-            'entrance_lines_s':         QtGui.QColor(255,255,255),     # Selected entrance lines
-            'grid':                     QtGui.QColor(255,255,255,100), # Grid
-            'location_fill':            QtGui.QColor(114,42,188,70),   # Unselected location fill
-            'location_fill_s':          QtGui.QColor(170,128,215,100), # Selected location fill
-            'location_lines':           QtGui.QColor(0,0,0),           # Unselected location lines
-            'location_lines_s':         QtGui.QColor(255,255,255),     # Selected location lines
-            'location_text':            QtGui.QColor(255,255,255),     # Location text
-            'object_fill_s':            QtGui.QColor(255,255,255,64),  # Select object fill
-            'object_lines_s':           QtGui.QColor(255,255,255),     # Selected object lines
-            'overview_entrance':        QtGui.QColor(255,0,0),         # Overview entrance fill
-            'overview_location_fill':   QtGui.QColor(114,42,188,50),   # Overview location fill
-            'overview_location_lines':  QtGui.QColor(0,0,0),           # Overview location lines
-            'overview_object':          QtGui.QColor(255,255,255),     # Overview object fill
-            'overview_sprite':          QtGui.QColor(0,92,196),        # Overview sprite fill
-            'overview_viewbox':         QtGui.QColor(0,0,255),         # Overview background fill
-            'overview_zone_fill':       QtGui.QColor(47,79,79,120),    # Overview zone fill
-            'overview_zone_lines':      QtGui.QColor(0,255,255),       # Overview zone lines
-            'path_connector':           QtGui.QColor(6,249,20),        # Path node connecting lines
-            'path_fill':                QtGui.QColor(6,249,20,120),    # Unselected path node fill
-            'path_fill_s':              QtGui.QColor(6,249,20,240),    # Selected path node fill
-            'path_lines':               QtGui.QColor(0,0,0),           # Unselected path node lines
-            'path_lines_s':             QtGui.QColor(255,255,255),     # Selected path node lines
-            'smi':                      QtGui.QColor(255,255,255,80),  # Sprite movement indicator
-            'sprite_fill_s':            QtGui.QColor(255,255,255,64),  # Selected sprite w/ image fill
-            'sprite_lines_s':           QtGui.QColor(255,255,255),     # Selected sprite w/ image lines
-            'spritebox_fill':           QtGui.QColor(0,92,196,120),    # Unselected sprite w/o image fill
-            'spritebox_fill_s':         QtGui.QColor(0,92,196,240),    # Selected sprite w/o image fill
-            'spritebox_lines':          QtGui.QColor(0,0,0),           # Unselected sprite w/o image fill
-            'spritebox_lines_s':        QtGui.QColor(255,255,255),     # Selected sprite w/o image fill
-            'zone_entrance_helper':     QtGui.QColor(190,0,0,120),     # Zone entrance-placement left border indicator
-            'zone_lines':               QtGui.QColor(145,200,255,176), # Zone lines
-            'zone_corner':              QtGui.QColor(255,255,255),     # Zone grabbers/corners
-            'zone_dark_fill':           QtGui.QColor(0,0,0,48),        # Zone fill when dark
-            'zone_text':                QtGui.QColor(44,64,84),        # Zone text
-            }
+            'bg': QtGui.QColor(119, 136, 153),  # Main scene background fill
+            'comment_fill': QtGui.QColor(220, 212, 135, 120),  # Unselected comment fill
+            'comment_fill_s': QtGui.QColor(254, 240, 240, 240),  # Selected comment fill
+            'comment_lines': QtGui.QColor(192, 192, 192, 120),  # Unselected comment lines
+            'comment_lines_s': QtGui.QColor(220, 212, 135, 240),  # Selected comment lines
+            'entrance_fill': QtGui.QColor(190, 0, 0, 120),  # Unselected entrance fill
+            'entrance_fill_s': QtGui.QColor(190, 0, 0, 240),  # Selected entrance fill
+            'entrance_lines': QtGui.QColor(0, 0, 0),  # Unselected entrance lines
+            'entrance_lines_s': QtGui.QColor(255, 255, 255),  # Selected entrance lines
+            'grid': QtGui.QColor(255, 255, 255, 100),  # Grid
+            'location_fill': QtGui.QColor(114, 42, 188, 70),  # Unselected location fill
+            'location_fill_s': QtGui.QColor(170, 128, 215, 100),  # Selected location fill
+            'location_lines': QtGui.QColor(0, 0, 0),  # Unselected location lines
+            'location_lines_s': QtGui.QColor(255, 255, 255),  # Selected location lines
+            'location_text': QtGui.QColor(255, 255, 255),  # Location text
+            'object_fill_s': QtGui.QColor(255, 255, 255, 64),  # Select object fill
+            'object_lines_s': QtGui.QColor(255, 255, 255),  # Selected object lines
+            'overview_entrance': QtGui.QColor(255, 0, 0),  # Overview entrance fill
+            'overview_location_fill': QtGui.QColor(114, 42, 188, 50),  # Overview location fill
+            'overview_location_lines': QtGui.QColor(0, 0, 0),  # Overview location lines
+            'overview_object': QtGui.QColor(255, 255, 255),  # Overview object fill
+            'overview_sprite': QtGui.QColor(0, 92, 196),  # Overview sprite fill
+            'overview_viewbox': QtGui.QColor(0, 0, 255),  # Overview background fill
+            'overview_zone_fill': QtGui.QColor(47, 79, 79, 120),  # Overview zone fill
+            'overview_zone_lines': QtGui.QColor(0, 255, 255),  # Overview zone lines
+            'path_connector': QtGui.QColor(6, 249, 20),  # Path node connecting lines
+            'path_fill': QtGui.QColor(6, 249, 20, 120),  # Unselected path node fill
+            'path_fill_s': QtGui.QColor(6, 249, 20, 240),  # Selected path node fill
+            'path_lines': QtGui.QColor(0, 0, 0),  # Unselected path node lines
+            'path_lines_s': QtGui.QColor(255, 255, 255),  # Selected path node lines
+            'smi': QtGui.QColor(255, 255, 255, 80),  # Sprite movement indicator
+            'sprite_fill_s': QtGui.QColor(255, 255, 255, 64),  # Selected sprite w/ image fill
+            'sprite_lines_s': QtGui.QColor(255, 255, 255),  # Selected sprite w/ image lines
+            'spritebox_fill': QtGui.QColor(0, 92, 196, 120),  # Unselected sprite w/o image fill
+            'spritebox_fill_s': QtGui.QColor(0, 92, 196, 240),  # Selected sprite w/o image fill
+            'spritebox_lines': QtGui.QColor(0, 0, 0),  # Unselected sprite w/o image fill
+            'spritebox_lines_s': QtGui.QColor(255, 255, 255),  # Selected sprite w/o image fill
+            'zone_entrance_helper': QtGui.QColor(190, 0, 0, 120),  # Zone entrance-placement left border indicator
+            'zone_lines': QtGui.QColor(145, 200, 255, 176),  # Zone lines
+            'zone_corner': QtGui.QColor(255, 255, 255),  # Zone grabbers/corners
+            'zone_dark_fill': QtGui.QColor(0, 0, 0, 48),  # Zone fill when dark
+            'zone_text': QtGui.QColor(44, 64, 84),  # Zone text
+        }
 
     def initFromFile(self, file):
         """
@@ -8562,8 +8594,10 @@ class ReggieTheme():
             return
 
         # Create a XML ElementTree
-        try: maintree = etree.parse(mainxmlfile)
-        except Exception: return
+        try:
+            maintree = etree.parse(mainxmlfile)
+        except Exception:
+            return
         root = maintree.getroot()
 
         # Parse the attributes of the <theme> tag
@@ -8579,7 +8613,8 @@ class ReggieTheme():
                 # Load the colors XML
                 try:
                     self.loadColorsXml(zipf.open(node.attrib['file']))
-                except Exception: continue
+                except Exception:
+                    continue
 
             elif node.tag.lower() == 'stylesheet':
                 if 'file' not in node.attrib: continue
@@ -8587,7 +8622,8 @@ class ReggieTheme():
                 # Load the stylesheet
                 try:
                     self.loadStylesheet(zipf.open(node.attrib['file']))
-                except Exception: continue
+                except Exception:
+                    continue
 
             elif node.tag.lower() == 'icons':
                 if not all(thing in node.attrib for thing in ['size', 'folder']): continue
@@ -8600,7 +8636,7 @@ class ReggieTheme():
                 for iconfilename in zipfList:
                     iconname = iconfilename
                     if not iconname.startswith(foldername + '/'): continue
-                    iconname = iconname[len(foldername)+1:]
+                    iconname = iconname[len(foldername) + 1:]
                     if len(iconname) <= len('icon-.png'): continue
                     if not iconname.startswith('icon-') or not iconname.endswith('.png'): continue
                     iconname = iconname[len('icon-'): -len('.png')]
@@ -8612,21 +8648,20 @@ class ReggieTheme():
 
                     cache[iconname] = ico
 
-##        # Add some overview colors if they weren't specified
-##        fallbacks = {
-##            'overview_entrance': 'entrance_fill',
-##            'overview_location_fill': 'location_fill',
-##            'overview_location_lines': 'location_lines',
-##            'overview_sprite': 'sprite_fill',
-##            'overview_zone_lines': 'zone_lines',
-##            }
-##        for index in fallbacks:
-##            if (index not in colors) and (fallbacks[index] in colors): colors[index] = colors[fallbacks[index]]
-##
-##        # Use the new colors dict to overwrite values in self.colors
-##        for index in colors:
-##            self.colors[index] = colors[index]
-
+                ##        # Add some overview colors if they weren't specified
+                ##        fallbacks = {
+                ##            'overview_entrance': 'entrance_fill',
+                ##            'overview_location_fill': 'location_fill',
+                ##            'overview_location_lines': 'location_lines',
+                ##            'overview_sprite': 'sprite_fill',
+                ##            'overview_zone_lines': 'zone_lines',
+                ##            }
+                ##        for index in fallbacks:
+                ##            if (index not in colors) and (fallbacks[index] in colors): colors[index] = colors[fallbacks[index]]
+                ##
+                ##        # Use the new colors dict to overwrite values in self.colors
+                ##        for index in colors:
+                ##            self.colors[index] = colors[index]
 
     def parseMainXMLHead(self, root):
         """
@@ -8638,25 +8673,32 @@ class ReggieTheme():
         if root.tag.lower() != 'theme': return False
         if 'format' in root.attrib:
             formatver = root.attrib['format']
-            try: self.formatver = float(formatver)
-            except ValueError: return False
-        else: return False
+            try:
+                self.formatver = float(formatver)
+            except ValueError:
+                return False
+        else:
+            return False
 
         if self.formatver > MaxSupportedXMLVersion: return False
-        if 'name' in root.attrib: self.themeName = root.attrib['name']
-        else: return False
+        if 'name' in root.attrib:
+            self.themeName = root.attrib['name']
+        else:
+            return False
 
         # Check for optional attributes
         self.creator = trans.string('Themes', 3)
         self.description = trans.string('Themes', 4)
         self.style = None
         self.version = 1.0
-        if 'creator'     in root.attrib: self.creator = root.attrib['creator']
+        if 'creator' in root.attrib: self.creator = root.attrib['creator']
         if 'description' in root.attrib: self.description = root.attrib['description']
-        if 'style'       in root.attrib: self.style = root.attrib['style']
-        if 'version'     in root.attrib:
-            try: self.version = float(root.attrib['style'])
-            except ValueError: pass
+        if 'style' in root.attrib: self.style = root.attrib['style']
+        if 'version' in root.attrib:
+            try:
+                self.version = float(root.attrib['style'])
+            except ValueError:
+                pass
 
         return True
 
@@ -8664,8 +8706,10 @@ class ReggieTheme():
         """
         Loads a colors.xml file
         """
-        try: tree = etree.parse(file)
-        except Exception: return
+        try:
+            tree = etree.parse(file)
+        except Exception:
+            return
 
         root = tree.getroot()
         if root.tag.lower() != 'colors': return False
@@ -8701,13 +8745,13 @@ class ReggieTheme():
                     g = int(colorval[2:4], 16)
                     b = int(colorval[4:6], 16)
                     a = int(colorval[6:8], 16)
-            except ValueError: continue
+            except ValueError:
+                continue
             colorobj = QtGui.QColor(r, g, b, a)
             colorDict[colorNode.attrib['id']] = colorobj
 
         # Merge dictionaries
         self.colors.update(colorDict)
-
 
     def loadStylesheet(self, file):
         """
@@ -8755,13 +8799,12 @@ def toQColor(*args):
     return QtGui.QColor(r, g, b, a)
 
 
-
-
 # Undo stuff
-class UndoStack():
+class UndoStack:
     """
     A stack you can push UndoActions on, and stuff.
     """
+
     def __init__(self):
         self.pastActions = []
         self.futureActions = []
@@ -8827,31 +8870,36 @@ class UndoStack():
         mainWindow.actions['redo'].setEnabled(len(self.futureActions) > 0)
 
 
-class UndoAction():
+class UndoAction:
     """
     Abstract undo action
     """
+
     def undo(self):
         """
         Sets the target to its initial state
         """
         pass
+
     def redo(self):
         """
         Sets the target to its final state
         """
         pass
+
     def isExtentionOf(self, other):
         """
         Returns True if this action extends another, else False
         """
         return False
+
     def extend(self, other):
         """
         Extends this UndoAction with the data from an extention of it.
         isExtentionOf must have returned True first!
         """
         pass
+
     def isNull(self):
         """
         Returns True if this action is effectively a no-op
@@ -8863,6 +8911,7 @@ class MoveItemUndoAction(UndoAction):
     """
     An UndoAction for movement of a single level item that is not an object
     """
+
     def __init__(self, target, origX, origY, finalX, finalY):
         """
         Initializes the undo action
@@ -8874,6 +8923,7 @@ class MoveItemUndoAction(UndoAction):
         self.origDef.objy = origY
         self.finalDef.objx = finalX
         self.finalDef.objy = finalY
+
     def undo(self):
         """
         Sets the target object's position to the original position
@@ -8883,6 +8933,7 @@ class MoveItemUndoAction(UndoAction):
             self.changeObjectPos(instance, self.origDef.objx, self.origDef.objy)
         else:
             print('Undo Move Item: Cannot find item instance! ' + str(self.finalDef))
+
     def redo(self):
         """
         Sets the target object's position to the final position
@@ -8892,6 +8943,7 @@ class MoveItemUndoAction(UndoAction):
             self.changeObjectPos(instance, self.finalDef.objx, self.finalDef.objy)
         else:
             print('Redo Move Item: Cannot find item instance! ' + str(self.origDef))
+
     @staticmethod
     def changeObjectPos(object, newX, newY):
         """
@@ -8919,11 +8971,13 @@ class MoveItemUndoAction(UndoAction):
         if isinstance(object, PathItem):
             object.updatePos()
             object.pathinfo['peline'].nodePosChanged()
+
     def isExtentionOf(self, other):
         """
         Returns True if this MoveItemUndoAction extends another
         """
         return hasattr(other, 'origDef') and self.origDef.defMatchesData(other.origDef)
+
     def extend(self, other):
         """
         Extends this MoveItemUndoAction with the data from an extention of it.
@@ -8931,6 +8985,7 @@ class MoveItemUndoAction(UndoAction):
         """
         self.finalDef.objx = other.finalDef.objx
         self.finalDef.objy = other.finalDef.objy
+
     def isNull(self):
         """
         Returns True if this action is effectively a no-op
@@ -8945,23 +9000,27 @@ class SimultaneousUndoAction(UndoAction):
     """
     An undo action that consists of multiple undo actions at once
     """
+
     def __init__(self, children):
         """
         Initializes the undo action
         """
         self.children = set(children)
+
     def undo(self):
         """
         Calls undo() on all children
         """
         for c in self.children:
             c.undo()
+
     def redo(self):
         """
         Calls redo() on all children
         """
         for c in self.children:
             c.redo()
+
     def isExtentionOf(self, other):
         """
         Returns True if this SinultaneousUndoAction and another one have equivalent children
@@ -8975,10 +9034,11 @@ class SimultaneousUndoAction(UndoAction):
                 if searchAgainstObj.isExtentionOf(searchInObj):
                     found = True
                     searchAgainst.remove(searchAgainstObj)
-                    break # only breaks out of inner loop
+                    break  # only breaks out of inner loop
             if not found:
                 return False
         return True
+
     def extend(self, other):
         """
         Extend this SimultaneousUndoAction with the data from an extention of it.
@@ -8992,7 +9052,7 @@ class SimultaneousUndoAction(UndoAction):
                 if searchOtherObj.isExtentionOf(searchMineObj):
                     searchMineObj.extend(searchOtherObj)
                     searchOther.remove(searchOtherObj)
-                    break # only breaks out of inner loop
+                    break  # only breaks out of inner loop
 
     def isNull(self):
         """
@@ -9003,7 +9063,6 @@ class SimultaneousUndoAction(UndoAction):
         for c in self.children:
             anythingIsDifferent = anythingIsDifferent or not c.isNull()
         return not anythingIsDifferent
-
 
 
 # Game Definitions
@@ -9020,20 +9079,28 @@ def LoadGameDef(name=None, dlg=None):
     try:
 
         # Load the gamedef
-        if dlg: dlg.setLabelText(trans.string('Gamedefs', 1)) # Loading game patch...
+        if dlg: dlg.setLabelText(trans.string('Gamedefs', 1))  # Loading game patch...
         gamedef = ReggieGameDefinition(name)
         if gamedef.custom and (not settings.contains('GamePath_' + gamedef.name)):
             # First-time usage of this gamedef. Have the
             # user pick a stage folder so we can load stages
             # and tilesets from there
-            QtWidgets.QMessageBox.information(None, trans.string('Gamedefs', 2), trans.string('Gamedefs', 3, '[game]', gamedef.name), QtWidgets.QMessageBox.Ok)
+            QtWidgets.QMessageBox.information(None, trans.string('Gamedefs', 2),
+                                              trans.string('Gamedefs', 3, '[game]', gamedef.name),
+                                              QtWidgets.QMessageBox.Ok)
             result = mainWindow.HandleChangeGamePath(True)
-            if result is not True: QtWidgets.QMessageBox.information(None, trans.string('Gamedefs', 4), trans.string('Gamedefs', 5, '[game]', gamedef.name), QtWidgets.QMessageBox.Ok)
-            else: QtWidgets.QMessageBox.information(None, trans.string('Gamedefs', 6), trans.string('Gamedefs', 7, '[game]', gamedef.name), QtWidgets.QMessageBox.Ok)
+            if result is not True:
+                QtWidgets.QMessageBox.information(None, trans.string('Gamedefs', 4),
+                                                  trans.string('Gamedefs', 5, '[game]', gamedef.name),
+                                                  QtWidgets.QMessageBox.Ok)
+            else:
+                QtWidgets.QMessageBox.information(None, trans.string('Gamedefs', 6),
+                                                  trans.string('Gamedefs', 7, '[game]', gamedef.name),
+                                                  QtWidgets.QMessageBox.Ok)
         if dlg: dlg.setValue(1)
 
         # Load spritedata.xml and spritecategories.xml
-        if dlg: dlg.setLabelText(trans.string('Gamedefs', 8)) # Loading sprite data...
+        if dlg: dlg.setLabelText(trans.string('Gamedefs', 8))  # Loading sprite data...
         LoadSpriteData()
         LoadSpriteListData(True)
         LoadSpriteCategories(True)
@@ -9041,27 +9108,28 @@ def LoadGameDef(name=None, dlg=None):
             mainWindow.spriteViewPicker.clear()
             for cat in SpriteCategories:
                 mainWindow.spriteViewPicker.addItem(cat[0])
-            mainWindow.sprPicker.LoadItems() # Reloads the sprite picker list items
-            mainWindow.spriteViewPicker.setCurrentIndex(0) # Sets the sprite picker to category 0 (enemies)
-            mainWindow.spriteDataEditor.setSprite(mainWindow.spriteDataEditor.spritetype, True) # Reloads the sprite data editor fields
+            mainWindow.sprPicker.LoadItems()  # Reloads the sprite picker list items
+            mainWindow.spriteViewPicker.setCurrentIndex(0)  # Sets the sprite picker to category 0 (enemies)
+            mainWindow.spriteDataEditor.setSprite(mainWindow.spriteDataEditor.spritetype,
+                                                  True)  # Reloads the sprite data editor fields
             mainWindow.spriteDataEditor.update()
         if dlg: dlg.setValue(2)
 
         # Load BgA/BgB names
-        if dlg: dlg.setLabelText(trans.string('Gamedefs', 9)) # Loading background names...
+        if dlg: dlg.setLabelText(trans.string('Gamedefs', 9))  # Loading background names...
         LoadBgANames(True)
         LoadBgBNames(True)
         if dlg: dlg.setValue(3)
 
         # Reload tilesets
-        if dlg: dlg.setLabelText(trans.string('Gamedefs', 10)) # Reloading tilesets...
-        LoadObjDescriptions(True) # reloads ts1_descriptions
+        if dlg: dlg.setLabelText(trans.string('Gamedefs', 10))  # Reloading tilesets...
+        LoadObjDescriptions(True)  # reloads ts1_descriptions
         if mainWindow is not None: mainWindow.ReloadTilesets(True)
-        LoadTilesetNames(True) # reloads tileset names
+        LoadTilesetNames(True)  # reloads tileset names
         if dlg: dlg.setValue(4)
 
         # Load sprites.py
-        if dlg: dlg.setLabelText(trans.string('Gamedefs', 11)) # Loading sprite image data...
+        if dlg: dlg.setLabelText(trans.string('Gamedefs', 11))  # Loading sprite image data...
         if Area is not None:
             SLib.SpritesFolders = gamedef.recursiveFiles('sprites', False, True)
 
@@ -9088,18 +9156,19 @@ def LoadGameDef(name=None, dlg=None):
         if dlg: dlg.setValue(5)
 
         # Reload the sprite-picker text
-        if dlg: dlg.setLabelText(trans.string('Gamedefs', 12)) # Applying sprite image data...
+        if dlg: dlg.setLabelText(trans.string('Gamedefs', 12))  # Applying sprite image data...
         if Area is not None:
             for spr in Area.sprites:
-                spr.UpdateListItem() # Reloads the sprite-picker text
+                spr.UpdateListItem()  # Reloads the sprite-picker text
         if dlg: dlg.setValue(6)
 
         # Load entrance names
-        if dlg: dlg.setLabelText(trans.string('Gamedefs', 16)) # Loading entrance names...
+        if dlg: dlg.setLabelText(trans.string('Gamedefs', 16))  # Loading entrance names...
         LoadEntranceNames(True)
         if dlg: dlg.setValue(7)
 
-    except Exception as e: raise
+    except Exception as e:
+        raise
     #    # Something went wrong.
     #    if dlg: dlg.setValue(7) # autocloses it
     #    QtWidgets.QMessageBox.information(None, trans.string('Gamedefs', 17), trans.string('Gamedefs', 18, '[error]', str(e)))
@@ -9112,16 +9181,17 @@ def LoadGameDef(name=None, dlg=None):
     return True
 
 
-class ReggieGameDefinition():
+class ReggieGameDefinition:
     """
     A class that defines a NSMBW hack: songs, tilesets, sprites, songs, etc.
     """
 
     # Gamedef File - has 2 values: name (str) and patch (bool)
-    class GameDefinitionFile():
+    class GameDefinitionFile:
         """
         A class that defines a filepath, and some options
         """
+
         def __init__(self, path, patch):
             """
             Initializes the GameDefinitionFile
@@ -9137,11 +9207,13 @@ class ReggieGameDefinition():
 
         # Try to init it from name if possible
         NoneTypes = (None, 'None', 0, '', True, False)
-        if name in NoneTypes: return
+        if name in NoneTypes:
+            return
         else:
-            try: self.InitFromName(name)
-            except Exception: self.InitAsEmpty() # revert
-
+            try:
+                self.InitFromName(name)
+            except Exception:
+                self.InitAsEmpty()  # revert
 
     def InitAsEmpty(self):
         """
@@ -9150,10 +9222,10 @@ class ReggieGameDefinition():
         gdf = self.GameDefinitionFile
 
         self.custom = False
-        self.base = None # gamedef to use as a base
+        self.base = None  # gamedef to use as a base
         self.gamepath = None
-        self.name = trans.string('Gamedefs', 13) # 'New Super Mario Bros. Wii'
-        self.description = trans.string('Gamedefs', 14) # 'A new Mario adventure!<br>' and the date
+        self.name = trans.string('Gamedefs', 13)  # 'New Super Mario Bros. Wii'
+        self.description = trans.string('Gamedefs', 14)  # 'A new Mario adventure!<br>' and the date
         self.version = '2'
 
         self.sprites = sprites
@@ -9170,12 +9242,12 @@ class ReggieGameDefinition():
             'spritenames': gdf(None, False),
             'tilesets': gdf(None, False),
             'ts1_descriptions': gdf(None, False),
-            }
+        }
         self.folders = {
             'bga': gdf(None, False),
             'bgb': gdf(None, False),
             'sprites': gdf(None, False),
-            }
+        }
 
     def InitFromName(self, name):
         """
@@ -9198,13 +9270,16 @@ class ReggieGameDefinition():
         self.name = root.attrib['name']
 
         self.description = trans.string('Gamedefs', 15)
-        if 'description' in root.attrib: self.description = root.attrib['description'].replace('[', '<').replace(']', '>')
+        if 'description' in root.attrib: self.description = root.attrib['description'].replace('[', '<').replace(']',
+                                                                                                                 '>')
         self.version = None
         if 'version' in root.attrib: self.version = root.attrib['version']
 
         self.base = None
-        if 'base' in root.attrib: self.base = FindGameDef(root.attrib['base'], name)
-        else: self.base = ReggieGameDefinition()
+        if 'base' in root.attrib:
+            self.base = FindGameDef(root.attrib['base'], name)
+        else:
+            self.base = ReggieGameDefinition()
 
         # Parse the nodes
         addpath = 'reggiedata/patches/' + name + '/'
@@ -9214,16 +9289,17 @@ class ReggieGameDefinition():
                 path = addpath + node.attrib['path']
 
                 if 'patch' in node.attrib:
-                    patch = node.attrib['patch'].lower() == 'true' # convert to bool
-                else: patch = True # DEFAULT PATCH VALUE
+                    patch = node.attrib['patch'].lower() == 'true'  # convert to bool
+                else:
+                    patch = True  # DEFAULT PATCH VALUE
                 if 'game' in node.attrib:
-                    if node.attrib['game'] != trans.string('Gamedefs', 13): # 'New Super Mario Bros. Wii'
+                    if node.attrib['game'] != trans.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
                         def_ = FindGameDef(node.attrib['game'], name)
                         path = os.path.join('reggiedata', 'patches', def_.gamepath, node.attrib['path'])
                     else:
                         path = os.path.join('reggiedata', node.attrib['path'])
 
-                ListToAddTo = eval('self.%ss' % n) # self.files or self.folders
+                ListToAddTo = eval('self.%ss' % n)  # self.files or self.folders
                 newdef = self.GameDefinitionFile(path, patch)
                 ListToAddTo[node.attrib['name']] = newdef
 
@@ -9234,7 +9310,8 @@ class ReggieGameDefinition():
         if 'sprites' in self.files:
             file = open(self.files['sprites'].path, 'r')
             filedata = file.read()
-            file.close(); del file
+            file.close();
+            del file
 
             # https://stackoverflow.com/questions/5362771/load-module-from-string-in-python
             # with modifications
@@ -9243,7 +9320,6 @@ class ReggieGameDefinition():
             sys.modules[new_module.__name__] = new_module
             self.sprites = new_module
 
-
     def bgFile(self, name, layer):
         """
         Returns the folder to a bg image. Layer must be 'a' or 'b'
@@ -9251,7 +9327,6 @@ class ReggieGameDefinition():
         # Name will be of the format '0000.png'
         fallback = os.path.join('reggiedata', 'bg' + layer)
         filename = 'bg%s/%s' % (layer, name)
-
 
         # See if it was defined specifically
         if filename in self.files:
@@ -9264,11 +9339,12 @@ class ReggieGameDefinition():
             if os.path.isfile(trypath): return trypath
 
         # If there's a base, return self.base.bgFile
-        if self.base is not None: return self.base.bgFile(name, layer)
+        if self.base is not None:
+            return self.base.bgFile(name, layer)
 
         # If not, return fallback
-        else: return fallback + '/' + name
-
+        else:
+            return fallback + '/' + name
 
     def GetGamePath(self):
         """
@@ -9279,14 +9355,17 @@ class ReggieGameDefinition():
         setname = setting(name)
 
         # Use the default if there are no settings for this yet
-        if setname is None: return setting('GamePath_NSMBW')
-        else: return str(setname)
+        if setname is None:
+            return setting('GamePath_NSMBW')
+        else:
+            return str(setname)
 
     def SetGamePath(self, path):
         """
         Sets the game path
         """
-        if not self.custom: setSetting('GamePath_NSMBW', path)
+        if not self.custom:
+            setSetting('GamePath_NSMBW', path)
         else:
             name = 'GamePath_' + self.name
             setSetting(name, path)
@@ -9296,7 +9375,7 @@ class ReggieGameDefinition():
         Returns game paths of this gamedef and its bases
         """
         mainpath = setting('GamePath_NSMBW')
-        if not self.custom: return [mainpath,]
+        if not self.custom: return [mainpath, ]
 
         name = 'GamePath_' + self.name
         stg = setting(name)
@@ -9307,7 +9386,6 @@ class ReggieGameDefinition():
             paths.append(stg)
             return paths
 
-
     def GetLastLevel(self):
         """
         Returns the last loaded level
@@ -9317,8 +9395,10 @@ class ReggieGameDefinition():
         stg = setting(name)
 
         # Use the default if there are no settings for this yet
-        if stg is None: return setting('LastLevel')
-        else: return stg
+        if stg is None:
+            return setting('LastLevel')
+        else:
+            return stg
 
     def SetLastLevel(self, path):
         """
@@ -9326,11 +9406,11 @@ class ReggieGameDefinition():
         """
         if path in (None, 'None', 'none', True, 'True', 'true', False, 'False', 'false', 0, 1, ''): return
         print('Last loaded level set to ' + str(path))
-        if not self.custom: setSetting('LastLevel', path)
+        if not self.custom:
+            setSetting('LastLevel', path)
         else:
             name = 'LastLevel_' + self.name
             setSetting(name, path)
-
 
     def recursiveFiles(self, name, isPatch=False, folder=False):
         """
@@ -9340,43 +9420,56 @@ class ReggieGameDefinition():
 
         # This can be handled 4 ways: if we do or don't have a base, and if we do or don't have a copy of the file.
         if self.base is None:
-            if ListToCheckIn[name].path is None: # No base, no file
+            if ListToCheckIn[name].path is None:  # No base, no file
 
-                if isPatch: return [], True
-                else: return []
+                if isPatch:
+                    return [], True
+                else:
+                    return []
 
-            else: # No base, file
+            else:  # No base, file
 
                 alist = []
                 alist.append(ListToCheckIn[name].path)
-                if isPatch: return alist, ListToCheckIn[name].patch
-                else: return alist
+                if isPatch:
+                    return alist, ListToCheckIn[name].patch
+                else:
+                    return alist
 
         else:
 
-            if isPatch: listUpToNow, wasPatch = self.base.recursiveFiles(name, True, folder)
-            else: listUpToNow = self.base.recursiveFiles(name, False, folder)
+            if isPatch:
+                listUpToNow, wasPatch = self.base.recursiveFiles(name, True, folder)
+            else:
+                listUpToNow = self.base.recursiveFiles(name, False, folder)
 
-            if ListToCheckIn[name].path is None: # Base, no file
+            if ListToCheckIn[name].path is None:  # Base, no file
 
-                if isPatch: return listUpToNow, wasPatch
-                else: return listUpToNow
+                if isPatch:
+                    return listUpToNow, wasPatch
+                else:
+                    return listUpToNow
 
-            else: # Base, file
+            else:  # Base, file
 
                 # If it's a patch, just add it to the end of the list
-                if ListToCheckIn[name].patch: listUpToNow.append(ListToCheckIn[name].path)
+                if ListToCheckIn[name].patch:
+                    listUpToNow.append(ListToCheckIn[name].path)
 
                 # If it's not (it's free-standing), make a new list and start over
                 else:
                     newlist = []
                     newlist.append(ListToCheckIn[name].path)
-                    if isPatch: return newlist, False
-                    else: return newlist
+                    if isPatch:
+                        return newlist, False
+                    else:
+                        return newlist
 
                 # Return
-                if isPatch: return listUpToNow, wasPatch
-                else: return listUpToNow
+                if isPatch:
+                    return listUpToNow, wasPatch
+                else:
+                    return listUpToNow
 
     def multipleRecursiveFiles(self, *args):
         """
@@ -9385,8 +9478,10 @@ class ReggieGameDefinition():
 
         # This should be very simple
         # Each arg should be a file name
-        if self.base is None: main = [] # start a new level
-        else: main = self.base.multipleRecursiveFiles(*args)
+        if self.base is None:
+            main = []  # start a new level
+        else:
+            main = self.base.multipleRecursiveFiles(*args)
 
         # Add the values from this level, and then return it
         result = []
@@ -9395,7 +9490,8 @@ class ReggieGameDefinition():
                 file = self.files[name]
                 if file.path is None: raise KeyError
                 result.append(self.files[name])
-            except KeyError: result.append(None)
+            except KeyError:
+                result.append(None)
         main.append(tuple(result))
         return main
 
@@ -9405,10 +9501,11 @@ class ReggieGameDefinition():
         """
         if name not in self.files: return
 
-        if self.files[name].path is not None: return self.files[name].path
+        if self.files[name].path is not None:
+            return self.files[name].path
         else:
             if self.base is None: return
-            return self.base.file(name) # it can recursively check its base, too
+            return self.base.file(name)  # it can recursively check its base, too
 
     def getImageClasses(self):
         """
@@ -9427,7 +9524,6 @@ class ReggieGameDefinition():
         return images
 
 
-
 # Related functions
 def GetPath(id_):
     """
@@ -9437,8 +9533,10 @@ def GetPath(id_):
     global trans
 
     # If there's a custom gamedef, use that
-    if gamedef.custom and gamedef.file(id_) is not None: return gamedef.file(id_)
-    else: return trans.path(id_)
+    if gamedef.custom and gamedef.file(id_) is not None:
+        return gamedef.file(id_)
+    else:
+        return trans.path(id_)
 
 
 def getMusic():
@@ -9451,7 +9549,8 @@ def getMusic():
     if isPatch:
         paths = [transsong]
         for path in gamedefsongs: paths.append(path)
-    else: paths = gamedefsongs
+    else:
+        paths = gamedefsongs
 
     songs = []
     for path in paths:
@@ -9477,9 +9576,10 @@ def getMusic():
 
     return sorted(songs, key=lambda song: int(song[0]))
 
+
 def FindGameDef(name, skip=None):
     "Helper function to find a game def with a specific name. Skip will be skipped"""
-    toSearch = [None] # Add the original game first
+    toSearch = [None]  # Add the original game first
     for folder in os.listdir(os.path.join('reggiedata', 'patches')): toSearch.append(folder)
 
     for folder in toSearch:
@@ -9487,7 +9587,6 @@ def FindGameDef(name, skip=None):
         def_ = ReggieGameDefinition(folder)
         if (not def_.custom) and (folder is not None): continue
         if def_.name == name: return def_
-
 
 
 # Translations
@@ -9500,16 +9599,19 @@ def LoadTranslation():
 
     name = setting('Translation')
     eng = (None, 'None', 'English', '', 0)
-    if name in eng: trans = ReggieTranslation(None)
-    else: trans = ReggieTranslation(name)
+    if name in eng:
+        trans = ReggieTranslation(None)
+    else:
+        trans = ReggieTranslation(name)
 
     if generateStringsXML: trans.generateXML()
 
 
-class ReggieTranslation():
+class ReggieTranslation:
     """
     A translation of all visible Reggie strings
     """
+
     def __init__(self, name):
         """
         Creates a Reggie translation
@@ -9521,7 +9623,6 @@ class ReggieTranslation():
             self.InitFromXML(name)
         except Exception:
             self.InitAsEnglish()
-
 
     def InitAsEnglish(self):
         """
@@ -9541,20 +9642,20 @@ class ReggieTranslation():
             'spritedata': os.path.join('reggiedata', 'spritedata.xml'),
             'tilesets': os.path.join('reggiedata', 'tilesets.xml'),
             'ts1_descriptions': os.path.join('reggiedata', 'ts1_descriptions.txt'),
-            }
+        }
 
         self.strings = {
             'AboutDlg': {
                 0: 'About Reggie Next',
-                },
+            },
             'AreaChoiceDlg': {
                 0: 'Choose an Area',
                 1: 'Area [num]',
                 2: 'You have reached the maximum amount of areas in this level.[br]Due to the game\'s limitations, Reggie Next only allows you to add up to 4 areas to a level.',
-                },
+            },
             'AreaCombobox': {
                 0: 'Area [num]',
-                },
+            },
             'AreaDlg': {
                 0: 'Area Options',
                 1: 'Tilesets',
@@ -9565,8 +9666,8 @@ class ReggieTranslation():
                 6: '[b]Entrance ID:[/b][br]Sets the entrance ID to load into when loading from the World Map',
                 7: 'Wrap across Edges',
                 8: '[b]Wrap across Edges:[/b][br]Makes the stage edges wrap[br]Warning: This option may cause the game to crash or behave weirdly. Wrapping only works correctly where the area is set up in the right way; see Coin Battle 1 for an example.',
-                9: None, # REMOVED: 'Event [id]'
-                10: None, # REMOVED: 'Default Events'
+                9: None,  # REMOVED: 'Event [id]'
+                10: None,  # REMOVED: 'Default Events'
                 11: 'Standard Suite',
                 12: 'Stage Suite',
                 13: 'Background Suite',
@@ -9578,12 +9679,15 @@ class ReggieTranslation():
                 19: '[name] ([file])',
                 20: 'Enter a Filename',
                 21: 'Enter the name of a custom tileset file to use. It must be placed in the game\'s Stage\\Texture or Unit folder in order for Reggie to recognize it. Do not add the \'.arc\' or \'.sarc\' extension at the end of the filename.',
-                22: None, # REMOVED: 'Unknown Value 1:'
-                23: None, # REMOVED: 'Unknown Value 2:'
-                24: None, # REMOVED: 'Unknown Value 3:'
-                25: None, # REMOVED: '[b]Unknown Value 1:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
-                26: None, # REMOVED: '[b]Unknown Value 2:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
-                27: None, # REMOVED: '[b]Unknown Value 3:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
+                22: None,  # REMOVED: 'Unknown Value 1:'
+                23: None,  # REMOVED: 'Unknown Value 2:'
+                24: None,  # REMOVED: 'Unknown Value 3:'
+                25: None,
+            # REMOVED: '[b]Unknown Value 1:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
+                26: None,
+            # REMOVED: '[b]Unknown Value 2:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
+                27: None,
+            # REMOVED: '[b]Unknown Value 3:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
                 28: 'Name',
                 29: 'File',
                 30: '(None)',
@@ -9594,7 +9698,7 @@ class ReggieTranslation():
                     'Star Toad House',
                     'Power-Up Toad House',
                     '1-UP Toad House',
-                    ),
+                ),
                 34: 'Credits',
                 35: '[b]Credits:[/b][br]Activates the game\'s Credits mode for this area',
                 36: 'Ambush',
@@ -9607,13 +9711,13 @@ class ReggieTranslation():
                 43: '[b]Unknown Option 3:[/b] We haven\'t managed to figure out what this does, or if it does anything.',
                 44: 'Unknown Option 4',
                 45: '[b]Unknown Option 4:[/b] We haven\'t managed to figure out what this does, or if it does anything.',
-                },
+            },
             'AutoSaveDlg': {
                 0: 'Auto-saved backup found',
                 1: 'Reggie Next has found some level data which wasn\'t saved - possibly due to a crash within the editor or by your computer. Do you want to restore this level?[br][br]If you pick No, the autosaved level data will be deleted and will no longer be accessible.[br][br]Original file path: [path]',
                 2: 'The level has unsaved changes in it.',
                 3: 'Do you want to save them?',
-                },
+            },
             'BGDlg': {
                 0: 'Backgrounds',
                 1: (
@@ -9631,7 +9735,7 @@ class ReggieTranslation():
                     '1.5x',
                     '2x',
                     '4x',
-                    ),
+                ),
                 2: 'Zone [num]',
                 3: 'Scenery',
                 4: 'Backdrop',
@@ -9650,7 +9754,7 @@ class ReggieTranslation():
                     '125%',
                     '150%',
                     '200%',
-                    ),
+                ),
                 16: 'Preview',
                 17: '[name] ([hex])',
                 18: '(Custom)',
@@ -9665,24 +9769,24 @@ class ReggieTranslation():
                     'Align to Screen',
                     'Unknown 5',
                     'Unknown 6',
-                    ),
-                },
+                ),
+            },
             'ChangeGamePath': {
                 0: 'Error',
                 1: 'Choose the Stage folder from [game]',
                 2: 'This folder doesn\'t have all of the files from the extracted New Super Mario Bros. Wii Stage folder.',
                 3: 'This folder doesn\'t seem to have the required files. In order to use Reggie Next in New Super Mario Bros Wii mode, you need the Stage folder from New Super Mario Bros. Wii, including the Texture folder and the level files contained within it.',
-                },
+            },
             'Comments': {
                 0: '[x], [y]: [text]',
                 1: '[b]Comment[/b][br]at [x], [y]',
                 2: ' - ',
                 3: '(empty)',
                 4: '...',
-                },
+            },
             'DeleteArea': {
                 0: 'Are you [b]sure[/b] you want to delete this area?[br][br]The level will automatically save afterwards - there is no way[br]you can undo the deletion or get it back afterwards!',
-                },
+            },
             'Diag': {
                 0: 'Level Diagnostics Tool',
                 1: 'This level references tilesets not used in NSMBWii.',
@@ -9714,7 +9818,7 @@ class ReggieTranslation():
                 27: 'Are you sure?',
                 28: 'Are you sure you want fix these items? This [b]cannot[/b] be undone!',
                 29: 'Fixing issues...',
-                },
+            },
             'EntranceDataEditor': {
                 0: 'ID:',
                 1: '[b]ID:[/b][br]Must be different from all other IDs',
@@ -9748,9 +9852,9 @@ class ReggieTranslation():
                     'Down',
                     'Left',
                     'Right',
-                    ),
+                ),
                 28: '([id]) [name]',
-                },
+            },
             'Entrances': {
                 0: '[b]Entrance [ent]:[/b][br]Type: [type][br][i][dest][/i]',
                 1: 'Unknown',
@@ -9759,44 +9863,44 @@ class ReggieTranslation():
                 4: '(arrives at entrance [id] in area [area])',
                 5: '[id]: [name] (cannot be entered) at [x], [y]',
                 6: '[id]: [name] (enterable) at [x], [y]'
-                },
+            },
             'Err_BrokenSpriteData': {
                 0: 'Warning',
                 1: 'The sprite data file didn\'t load correctly. The following sprites have incorrect and/or broken data in them, and may not be editable correctly in the editor: [sprites]',
                 2: 'Errors',
-                },
+            },
             'Err_CantFindLevel': {
                 0: 'Could not find file:[br][name]',
-                },
+            },
             'Err_CorruptedTileset': {
                 0: 'Error',
                 1: 'An error occurred while trying to load [file].arc. Check your Texture folder to make sure it is complete and not corrupted. The editor may run in a broken state or crash after this.',
                 2: 'An error occurred while trying to load [file].sarc. Check your Unit folder to make sure it is complete and not corrupted. The editor may run in a broken state or crash after this.',
-                },
+            },
             'Err_CorruptedTilesetData': {
                 0: 'Error',
                 1: 'Cannot find the required texture within the tileset file [file].arc, so it will not be loaded. Keep in mind that the tileset file cannot be renamed without changing the names of the texture/object files within the archive as well!',
-                },
+            },
             'Err_InvalidLevel': {
                 0: 'This file doesn\'t seem to be a valid level.',
-                },
+            },
             'Err_MissingFiles': {
                 0: 'Error',
                 1: 'Sorry, you seem to be missing the required data files for Reggie Next to work. Please redownload your copy of the editor.',
                 2: 'Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor. These are the files you are missing: [files]',
-                },
+            },
             'Err_MissingLevel': {
                 0: 'Error',
                 1: 'Cannot find the required level file [file].arc. Check your Stage folder and make sure it exists.',
-                },
+            },
             'Err_MissingTileset': {
                 0: 'Error',
                 1: 'Cannot find the required tileset file [file].arc. Check your Stage folder and make sure it exists.',
-                },
+            },
             'Err_Save': {
                 0: 'Error',
                 1: 'Error while Reggie was trying to save the level:[br](#[err1]) [err2][br][br](Your work has not been saved! Try saving it under a different filename or in a different folder.)',
-                },
+            },
             'FileDlgs': {
                 0: 'Choose a level archive',
                 1: 'NSMBWii Level Archives',
@@ -9806,7 +9910,7 @@ class ReggieTranslation():
                 5: 'Compressed Level Archives',
                 6: 'Choose a stamp archive',
                 7: 'Stamps File',
-                },
+            },
             'Gamedefs': {
                 0: 'This game has custom sprite images',
                 1: 'Loading patch...',
@@ -9826,7 +9930,7 @@ class ReggieTranslation():
                 20: 'Loading entrance names...',
                 21: 'Error',
                 22: 'An error occurred while attempting to load this game patch. It will now be unloaded. Here\'s the specific error:[br][error]',
-                },
+            },
             'InfoDlg': {
                 0: 'Level Information',
                 1: 'Add/Change Password',
@@ -9843,7 +9947,7 @@ class ReggieTranslation():
                 12: 'Level Information',
                 13: 'Password may be composed of any ASCII character,[br]and up to 64 characters long.[br]',
                 14: 'Sorry![br][br]You can only view or edit Level Information in Area 1.',
-                },
+            },
             'LocationDataEditor': {
                 0: 'ID:',
                 1: '[b]ID:[/b][br]Must be different from all other IDs',
@@ -9858,16 +9962,16 @@ class ReggieTranslation():
                 10: 'Snap to Grid',
                 11: '[b]Location [id]:[/b]',
                 12: 'Modify Selected Location Properties',
-                },
+            },
             'Locations': {
                 0: '[id]',
-                1: '', # REMOVED: 'Paint New Location'
+                1: '',  # REMOVED: 'Paint New Location'
                 2: '[id]: [width]x[height] at [x], [y]',
-                },
+            },
             'MainWindow': {
                 0: '[unsaved]',
                 1: 'You\'re trying to paste over 300 items at once.[br]This may take a while (depending on your computer speed), are you sure you want to continue?',
-                },
+            },
             'Menubar': {
                 0: '&File',
                 1: '&Edit',
@@ -9875,7 +9979,7 @@ class ReggieTranslation():
                 3: '&Settings',
                 4: '&Help',
                 5: 'Editor Toolbar',
-                },
+            },
             'MenuItems': {
                 0: 'New Level',
                 1: 'Create a new, blank level',
@@ -9883,7 +9987,7 @@ class ReggieTranslation():
                 3: 'Open a level based on its in-game world/number',
                 4: 'Open Level by File...',
                 5: 'Open a level based on its filename',
-                6: None, # REMOVED: 'Recent Files'
+                6: None,  # REMOVED: 'Recent Files'
                 7: 'Open a level from a list of recently opened levels',
                 8: 'Save Level',
                 9: 'Save the level back to the archive file',
@@ -9979,8 +10083,8 @@ class ReggieTranslation():
                 99: 'Change the currently loaded Reggie Next game patch',
                 100: 'Island Generator',
                 101: 'Show or hide the Island Generator window',
-                102: None, # REMOVED: 'Stamp Pad'
-                103: None, # REMOVED: 'Show or hide the Stamp Pad window'
+                102: None,  # REMOVED: 'Stamp Pad'
+                103: None,  # REMOVED: 'Show or hide the Stamp Pad window'
                 104: 'Swap Objects\' Tileset',
                 105: 'Swaps the tileset of objects using a certain tileset',
                 106: 'Swap Objects\' Type',
@@ -9990,7 +10094,7 @@ class ReggieTranslation():
                 110: 'Tileset Collisions',
                 111: 'View tileset collisions for existing objects',
                 112: 'Open Level...',
-                113: None, # This keeps the even-odd pattern going, since 112 uses description 3
+                113: None,  # This keeps the even-odd pattern going, since 112 uses description 3
                 114: 'Freeze Comments',
                 115: 'Make comments non-selectable',
                 116: 'Show Comments',
@@ -10005,17 +10109,17 @@ class ReggieTranslation():
                 127: 'Redoes the last action that was undone',
                 128: 'Save Copy of Level As...',
                 129: 'Save a copy of level with a new filename but keeps the current file open for editing',
-                },
+            },
             'Objects': {
                 0: '[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]',
                 1: 'Object [id]',
                 2: 'Object [id][br][i]This object is animated[/i]',
                 3: '[b]Object [id]:[/b][br][desc]',
                 4: '[b]Object [id]:[/b][br][desc][br][i]This object is animated[/i]',
-                },
+            },
             'OpenFromNameDlg': {
                 0: 'Choose Level',
-                },
+            },
             'Palette': {
                 0: 'Paint on Layer:',
                 1: '[b]Layer 0:[/b][br]This layer is mostly used for hidden caves, but can also be used to overlay tiles to create effects. The flashlight effect will occur if Mario walks behind a tile on layer 0 and the zone has it enabled.[br][b]Note:[/b] To switch objects on other layers to this layer, select them and then click this button while holding down the [i]Alt[/i] key.',
@@ -10053,7 +10157,7 @@ class ReggieTranslation():
                 33: 'Comments',
                 34: 'Comments currently in this area:[br](Double-click one to jump to it instantly)',
                 35: 'Name:',
-                },
+            },
             'PathDataEditor': {
                 0: 'Loops:',
                 1: '[b]Loops:[/b][br]Anything following this path will wait for any delay set at the last node and then proceed back in a straight line to the first node, and continue.',
@@ -10066,11 +10170,11 @@ class ReggieTranslation():
                 8: '[b]Path [id][/b]',
                 9: '[b]Node [id][/b]',
                 10: 'Modify Selected Path Node Properties',
-                },
+            },
             'Paths': {
                 0: '[b]Path [path][/b][br]Node [node]',
                 1: 'Path [path], Node [node]',
-                },
+            },
             'PrefsDlg': {
                 0: 'Reggie Next Preferences',
                 1: 'General',
@@ -10079,15 +10183,15 @@ class ReggieTranslation():
                 4: '[b]Reggie Preferences[/b][br]Customize Reggie Next by changing these settings.[br]Use the tabs below to view even more settings.[br]Reggie Next must be restarted before certain changes can take effect.',
                 5: '[b]Toolbar Preferences[/b][br]Choose menu items you would like to appear on the toolbar.[br]Reggie Next must be restarted before the toolbar can be updated.[br]',
                 6: '[b]Reggie Themes[/b][br]Pick a theme below to change application colors and icons.[br]Reggie Next must be restarted before the theme can be changed.',
-                7: None, # REMOVED: 'Show the splash screen:'
-                8: None, # REMOVED: 'If TPLLib cannot use a fast backend (recommended)'
-                9: None, # REMOVED: 'Always'
-                10: None, # REMOVED: 'Never'
+                7: None,  # REMOVED: 'Show the splash screen:'
+                8: None,  # REMOVED: 'If TPLLib cannot use a fast backend (recommended)'
+                9: None,  # REMOVED: 'Always'
+                10: None,  # REMOVED: 'Never'
                 11: 'Menu format:',
-                12: None, # REMOVED: 'Use the ribbon'
+                12: None,  # REMOVED: 'Use the ribbon'
                 13: 'Use the menubar',
                 14: 'Language:',
-                15: None, # REMOVED: 'Recent Files data:'
+                15: None,  # REMOVED: 'Recent Files data:'
                 16: 'Clear All',
                 17: 'Clear All Recent Files Data',
                 18: 'Are you sure you want to delete all recent files data? This [b]cannot[/b] be undone!',
@@ -10104,13 +10208,13 @@ class ReggieTranslation():
                 29: 'Use Old Tileset Picker',
                 30: 'You may need to restart Reggie Next for changes to take effect.',
                 31: 'Display lines indicating the leftmost x-position where entrances can be safely placed in zones',
-                },
+            },
             'ScrShtDlg': {
                 0: 'Choose a Screenshot source',
                 1: 'Current Screen',
                 2: 'All Zones',
                 3: 'Zone [zone]',
-                },
+            },
             'ShftItmDlg': {
                 0: 'Shift Items',
                 1: 'Move objects by:',
@@ -10119,7 +10223,7 @@ class ReggieTranslation():
                 4: 'Y:',
                 5: 'Warning',
                 6: 'You are trying to move object(s) by an offset which isn\'t a multiple of 16. It will work, but the objects will not be able to move exactly the same amount as the sprites. Are you sure you want to do this?',
-                },
+            },
             'Splash': {
                 0: '[current] (Stage [stage])',
                 1: 'Loading layers...',
@@ -10127,7 +10231,7 @@ class ReggieTranslation():
                 3: 'Loading tilesets...',
                 4: 'Loading objects...',
                 5: 'Preparing editor...',
-                },
+            },
             'SpriteDataEditor': {
                 0: 'Modify Selected Sprite Properties',
                 1: '[b][name][/b]: [note]',
@@ -10138,7 +10242,7 @@ class ReggieTranslation():
                 6: '[b]Sprite [id]:[br][name][/b]',
                 7: 'Object Files',
                 8: '[b]This sprite uses:[/b][br][list]',
-                },
+            },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
                 1: '[name] (at [x], [y]',
@@ -10160,7 +10264,7 @@ class ReggieTranslation():
                 17: 'No sprites found',
                 18: '[id]: [name]',
                 19: 'Search',
-                },
+            },
             'Statusbar': {
                 0: '- 1 object selected',
                 1: '- 1 sprite selected',
@@ -10196,14 +10300,14 @@ class ReggieTranslation():
                 31: '1 comment',
                 32: '[x] comments',
                 33: '- Comment under mouse: [xpos], [ypos]; "[text]"',
-                },
+            },
             'Themes': {
                 0: 'Classic',
                 1: 'Treeki, Tempus',
                 2: 'The default Reggie Next theme.',
                 3: '[i](unknown)[/i]',
                 4: '[i]No description[/i]',
-                },
+            },
             'Updates': {
                 0: 'Check for Updates',
                 1: 'Error while checking for updates.',
@@ -10212,10 +10316,10 @@ class ReggieTranslation():
                 4: 'Download Now',
                 5: 'Please wait, the update is downloading...',
                 6: 'Restart to finalize update!',
-                },
+            },
             'WindowTitle': {
                 0: 'Untitled',
-                },
+            },
             'ZonesDlg': {
                 0: 'Zones',
                 1: (
@@ -10242,13 +10346,13 @@ class ReggieTranslation():
                     'World 8 Castle',
                     'World 8 Doomship*',
                     'Lit Tower',
-                    ),
+                ),
                 2: (
                     'Normal/Overworld',
                     'Underground',
                     'Underwater',
                     'Lava/Volcano',
-                    ),
+                ),
                 3: 'Zone [num]',
                 4: 'New',
                 5: 'Delete',
@@ -10289,19 +10393,19 @@ class ReggieTranslation():
                     'Right to Left',
                     'Top to Bottom',
                     'Bottom to Top',
-                    ),
+                ),
                 39: 'Camera Tracking:',
                 40: '[b]Camera Tracking:[/b][br]This setting makes changes to camera tracking during multiplayer mode.[br]If the camera doesn\'t move, choose Left to Right.[br]If you\'re unsure, choose Left to Right.',
                 41: (
                     'Hidden',
                     'On Top',
-                    ),
+                ),
                 42: '[b]Visibility:[/b][br]Hidden - Mario is hidden when moving behind objects on Layer 0[br]On Top - Mario is displayed above Layer 0 at all times.[br][br]Note: Entities behind layer 0 other than Mario are never visible',
                 43: (
                     'Small',
                     'Large',
                     'Full Screen',
-                    ),
+                ),
                 44: '[b]Visibility:[/b][br]Small - A small, centered spotlight affords visibility through layer 0.[br]Large - A large, centered spotlight affords visibility through layer 0[br]Full Screen - the entire screen is revealed whenever Mario walks behind layer 0',
                 45: ('Large Foglight',
                      'Lightbeam',
@@ -10337,7 +10441,7 @@ class ReggieTranslation():
                     'Rich',
                     'Triple Underwater',
                     'Ring Echo',
-                    ),
+                ),
                 58: 'Boss Flag:',
                 59: '[b]Boss Flag:[/b][br]Set for bosses to allow proper music switching by sprites',
                 60: '(None)',
@@ -10358,12 +10462,11 @@ class ReggieTranslation():
                 75: '[b]Unknown Flag:[/b][br]Unknown purpose. Seems to be always checked.',
                 76: 'Snap to 8x8 Grid',
                 77: 'Snap to 16x16 Grid',
-                },
+            },
             'Zones': {
                 0: 'Zone [num]',
-                },
-            }
-
+            },
+        }
 
     def InitFromXML(self, name):
         """
@@ -10410,8 +10513,6 @@ class ReggieTranslation():
         # Overwrite self.files with files
         for index in files: self.files[index] = files[index]
 
-
-
         # Check for a strings node
         if not strings: raise Exception
 
@@ -10455,14 +10556,14 @@ class ReggieTranslation():
             for index2 in strings[index]:
                 self.strings[index][index2] = strings[index][index2]
 
-
     def string(self, *args):
         """
         Usage: string(section, numcode, replacementDummy, replacement, replacementDummy2, replacement2, etc.)
         """
 
         # If there are errors when the string is found, return an error report instead
-        try: return self.string_(*args)
+        try:
+            return self.string_(*args)
         except Exception as e:
             text = '\nReggieTranslation.string() ERROR: ' + str(args[1]) + '; ' + str(args[2]) + '; ' + repr(e) + '\n'
             # do 3 things with the text - print it, save it to ReggieErrors.txt, return it
@@ -10472,7 +10573,8 @@ class ReggieTranslation():
             else:
                 f = open('ReggieErrors.txt', 'a')
             f.write(text)
-            f.close(); del f
+            f.close();
+            del f
             return text
 
     def string_(self, *args):
@@ -10486,12 +10588,11 @@ class ReggieTranslation():
         # Perform any replacements
         i = 2
         while i < len(args):
-
             # Get the old string
             old = str(args[i])
 
             # Get the new string
-            new = str(args[i+1])
+            new = str(args[i + 1])
 
             # Replace
             astring = astring.replace(old, new)
@@ -10505,11 +10606,11 @@ class ReggieTranslation():
             '[i]': '<i>',
             '[/i]': '</i>',
             '[a': '<a',
-            '"]': '">', # workaround
+            '"]': '">',  # workaround
             '[/a]': '</a>',
             '\\n': '\n',
             '//n': '\n',
-            }
+        }
         for old in replace:
             astring = astring.replace(old, replace[old])
 
@@ -10527,14 +10628,17 @@ class ReggieTranslation():
         """
         Returns a list of strings
         """
-        try: return self.strings[section][numcode]
-        except Exception: return ('ReggieTranslation.stringList() ERROR:', section, numcode)
+        try:
+            return self.strings[section][numcode]
+        except Exception:
+            return ('ReggieTranslation.stringList() ERROR:', section, numcode)
 
     def path(self, key):
         """
         Returns the path to the file indicated by key
         """
-        try: return self.files[key]
+        try:
+            return self.files[key]
         except Exception:
             # (print, save, return) an error message
             text = 'ReggieTranslation.path() ERROR: ' + key
@@ -10557,9 +10661,9 @@ class ReggieTranslation():
                     sorted(
                         self.strings[key].items(),
                         key=lambda entry: entry[0]),
-                    ]
+                ]
                 for key in self.strings
-                ),
+            ),
             key=lambda entry: entry[0])
 
         # Create an XML
@@ -10588,6 +10692,7 @@ class LevelScene(QtWidgets.QGraphicsScene):
     """
     GraphicsView subclass for the level scene
     """
+
     def __init__(self, *args):
         global theme
 
@@ -10604,9 +10709,12 @@ class LevelScene(QtWidgets.QGraphicsScene):
         drawrect = QtCore.QRectF(rect.x() / 24, rect.y() / 24, rect.width() / 24 + 1, rect.height() / 24 + 1)
         isect = drawrect.intersects
 
-        layer0 = []; l0add = layer0.append
-        layer1 = []; l1add = layer1.append
-        layer2 = []; l2add = layer2.append
+        layer0 = [];
+        l0add = layer0.append
+        layer1 = [];
+        l1add = layer1.append
+        layer2 = [];
+        l2add = layer2.append
 
         type_obj = ObjectItem
         ii = isinstance
@@ -10625,9 +10733,9 @@ class LevelScene(QtWidgets.QGraphicsScene):
                 if not isect(item.LevelRect): continue
                 add(item)
                 xs = item.objx
-                xe = xs+item.width
+                xe = xs + item.width
                 ys = item.objy
-                ye = ys+item.height
+                ye = ys + item.height
                 if xs < x1: x1 = xs
                 if xe > x2: x2 = xe
                 if ys < y1: y1 = ys
@@ -10690,7 +10798,6 @@ class LevelScene(QtWidgets.QGraphicsScene):
                 painter.restore()
 
 
-
 class LevelViewWidget(QtWidgets.QGraphicsView):
     """
     QGraphicsView subclass for the level view
@@ -10707,11 +10814,11 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         QtWidgets.QGraphicsView.__init__(self, scene, parent)
 
         self.setAlignment(Qt.AlignLeft | Qt.AlignTop)
-        #self.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(119,136,153)))
+        # self.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(119,136,153)))
         self.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
-        #self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
+        # self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
         self.setMouseTracking(True)
-        #self.setOptimizationFlags(QtWidgets.QGraphicsView.IndirectPainting)
+        # self.setOptimizationFlags(QtWidgets.QGraphicsView.IndirectPainting)
         self.YScrollBar = QtWidgets.QScrollBar(Qt.Vertical, parent)
         self.XScrollBar = QtWidgets.QScrollBar(Qt.Horizontal, parent)
         self.setVerticalScrollBar(self.YScrollBar)
@@ -10757,10 +10864,10 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 if clicked.x() < 0: clicked.setX(0)
                 if clicked.y() < 0: clicked.setY(0)
 
-                if CurrentSprite >= 0: # fixes a bug -Treeki
-                    #[18:15:36]  Angel-SL: I found a bug in Reggie
-                    #[18:15:42]  Angel-SL: you can paint a 'No sprites found'
-                    #[18:15:47]  Angel-SL: results in a sprite -2
+                if CurrentSprite >= 0:  # fixes a bug -Treeki
+                    # [18:15:36]  Angel-SL: I found a bug in Reggie
+                    # [18:15:42]  Angel-SL: you can paint a 'No sprites found'
+                    # [18:15:47]  Angel-SL: results in a sprite -2
 
                     # paint a sprite
                     clickedx = int((clicked.x() - 12) / 12) * 8
@@ -10840,7 +10947,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     getids = [False for x in range(256)]
                     getids[0] = True
                     for pathdatax in Area.pathdata:
-                        #if(len(pathdatax['nodes']) > 0):
+                        # if(len(pathdatax['nodes']) > 0):
                         getids[int(pathdatax['id'])] = True
 
                     newpathid = getids.index(False)
@@ -10848,7 +10955,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         'id': newpathid,
                         'nodes': [{'x': clickedx, 'y': clickedy, 'speed': 0.5, 'accel': 0.00498, 'delay': 0}],
                         'loops': False,
-                        }
+                    }
                     Area.pathdata.append(newpathdata)
                     newnode = PathItem(clickedx, clickedy, newpathdata, newpathdata['nodes'][0])
                     newnode.positionChanged = mw.HandlePathPosChange
@@ -10865,7 +10972,9 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     plist.clear()
                     for fpath in Area.pathdata:
                         for fpnode in fpath['nodes']:
-                            fpnode['graphicsitem'].listitem = ListWidgetItem_SortsByOther(fpnode['graphicsitem'], fpnode['graphicsitem'].ListString())
+                            fpnode['graphicsitem'].listitem = ListWidgetItem_SortsByOther(fpnode['graphicsitem'],
+                                                                                          fpnode[
+                                                                                              'graphicsitem'].ListString())
                             plist.addItem(fpnode['graphicsitem'].listitem)
                             fpnode['graphicsitem'].updateId()
                     newnode.listitem.setSelected(True)
@@ -10885,13 +10994,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         if pathnode.listitem == selectedpn:
                             pathd = pathnode.pathinfo
 
-                    if not pathd: return # shouldn't happen
+                    if not pathd: return  # shouldn't happen
 
                     pathid = pathd['id']
                     newnodedata = {'x': clickedx, 'y': clickedy, 'speed': 0.5, 'accel': 0.00498, 'delay': 0}
                     pathd['nodes'].append(newnodedata)
                     nodeid = pathd['nodes'].index(newnodedata)
-
 
                     newnode = PathItem(clickedx, clickedy, pathd, newnodedata)
 
@@ -10902,7 +11010,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     plist.clear()
                     for fpath in Area.pathdata:
                         for fpnode in fpath['nodes']:
-                            fpnode['graphicsitem'].listitem = QtWidgets.QListWidgetItem(fpnode['graphicsitem'].ListString())
+                            fpnode['graphicsitem'].listitem = QtWidgets.QListWidgetItem(
+                                fpnode['graphicsitem'].ListString())
                             plist.addItem(fpnode['graphicsitem'].listitem)
                             fpnode['graphicsitem'].updateId()
                     newnode.listitem.setSelected(True)
@@ -10927,7 +11036,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int(clicked.x() / 1.5)
                 clickedy = int(clicked.y() / 1.5)
 
-                allID = set() # faster 'x in y' lookups for sets
+                allID = set()  # faster 'x in y' lookups for sets
                 newID = 1
                 for i in Area.locations:
                     allID.add(i.id)
@@ -11036,7 +11145,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             QtWidgets.QGraphicsView.mousePressEvent(self, event)
         mainWindow.levelOverview.update()
 
-
     def resizeEvent(self, event):
         """
         Catches resize events
@@ -11044,7 +11152,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         self.FrameSize.emit(event.size().width(), event.size().height())
         event.accept()
         QtWidgets.QGraphicsView.resizeEvent(self, event)
-
 
     def mouseMoveEvent(self, event):
         """
@@ -11168,7 +11275,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     if cwidth != width or cheight != height:
                         obj.width = width
                         obj.height = height
-    #                    obj.updateObjCache()
+                        #                    obj.updateObjCache()
 
                         oldrect = obj.BoundingRect
                         oldrect.translate(cx * 1.5, cy * 1.5)
@@ -11190,7 +11297,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     if obj.objx != clickedx or obj.objy != clickedy:
                         obj.objx = clickedx
                         obj.objy = clickedy
-                        obj.setPos(int((clickedx+obj.ImageObj.xOffset) * 1.5), int((clickedy+obj.ImageObj.yOffset) * 1.5))
+                        obj.setPos(int((clickedx + obj.ImageObj.xOffset) * 1.5),
+                                   int((clickedy + obj.ImageObj.yOffset) * 1.5))
 
                 elif isinstance(obj, type_ent) or isinstance(obj, type_path) or isinstance(obj, type_com):
                     # move the created entrance/path/comment
@@ -11229,8 +11337,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 changey = clicked.y() - (self.dragstarty * 1.5)
                 changexobj = int(changex / 24)
                 changeyobj = int(changey / 24)
-                changexspr = changex * 2/3
-                changeyspr = changey * 2/3
+                changexspr = changex * 2 / 3
+                changeyspr = changey * 2 / 3
 
                 if isinstance(obj, type_obj):
                     # move the current object
@@ -11238,7 +11346,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     newy = int(obj.dragstarty + changeyobj)
 
                     if obj.objx != newx or obj.objy != newy:
-
                         obj.objx = newx
                         obj.objy = newy
                         obj.setPos(newx * 24, newy * 24)
@@ -11259,7 +11366,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         else:
             QtWidgets.QGraphicsView.mouseMoveEvent(self, event)
 
-
     def mouseReleaseEvent(self, event):
         """
         Overrides mouse release events if needed
@@ -11270,14 +11376,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         else:
             QtWidgets.QGraphicsView.mouseReleaseEvent(self, event)
 
-
     def paintEvent(self, e):
         """
         Handles paint events and fires a signal
         """
         self.repaint.emit()
         QtWidgets.QGraphicsView.paintEvent(self, e)
-
 
     def drawForeground(self, painter, rect):
         """
@@ -11290,7 +11394,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         drawLine = painter.drawLine
         GridColor = theme.color('grid')
 
-        if GridType == 'grid': # draw a classic grid
+        if GridType == 'grid':  # draw a classic grid
             startx = rect.x()
             startx -= (startx % 24)
             endx = startx + rect.width() + 24
@@ -11327,61 +11431,58 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     painter.setPen(QtGui.QPen(GridColor, 1, Qt.DotLine))
                     drawLine(startx, y, endx, y)
 
-        else: # draw a checkerboard
+        else:  # draw a checkerboard
             L = 0.2
-            D = 0.1     # Change these values to change the checkerboard opacity
+            D = 0.1  # Change these values to change the checkerboard opacity
 
             Light = QtGui.QColor(GridColor)
             Dark = QtGui.QColor(GridColor)
-            Light.setAlpha(Light.alpha()*L)
-            Dark.setAlpha(Dark.alpha()*D)
+            Light.setAlpha(Light.alpha() * L)
+            Dark.setAlpha(Dark.alpha() * D)
 
             size = 24 if Zoom >= 50 else 96
 
-            board = QtGui.QPixmap(8*size, 8*size)
-            board.fill(QtGui.QColor(0,0,0,0))
+            board = QtGui.QPixmap(8 * size, 8 * size)
+            board.fill(QtGui.QColor(0, 0, 0, 0))
             p = QtGui.QPainter(board)
             p.setPen(Qt.NoPen)
 
             p.setBrush(QtGui.QBrush(Light))
             for x, y in ((0, size), (size, 0)):
-                p.drawRect(x+(4*size), y,          size, size)
-                p.drawRect(x+(4*size), y+(2*size), size, size)
-                p.drawRect(x+(6*size), y,          size, size)
-                p.drawRect(x+(6*size), y+(2*size), size, size)
+                p.drawRect(x + (4 * size), y, size, size)
+                p.drawRect(x + (4 * size), y + (2 * size), size, size)
+                p.drawRect(x + (6 * size), y, size, size)
+                p.drawRect(x + (6 * size), y + (2 * size), size, size)
 
-                p.drawRect(x,          y+(4*size), size, size)
-                p.drawRect(x,          y+(6*size), size, size)
-                p.drawRect(x+(2*size), y+(4*size), size, size)
-                p.drawRect(x+(2*size), y+(6*size), size, size)
+                p.drawRect(x, y + (4 * size), size, size)
+                p.drawRect(x, y + (6 * size), size, size)
+                p.drawRect(x + (2 * size), y + (4 * size), size, size)
+                p.drawRect(x + (2 * size), y + (6 * size), size, size)
             p.setBrush(QtGui.QBrush(Dark))
             for x, y in ((0, 0), (size, size)):
-                p.drawRect(x,          y,          size, size)
-                p.drawRect(x,          y+(2*size), size, size)
-                p.drawRect(x+(2*size), y,          size, size)
-                p.drawRect(x+(2*size), y+(2*size), size, size)
+                p.drawRect(x, y, size, size)
+                p.drawRect(x, y + (2 * size), size, size)
+                p.drawRect(x + (2 * size), y, size, size)
+                p.drawRect(x + (2 * size), y + (2 * size), size, size)
 
-                p.drawRect(x,          y+(4*size), size, size)
-                p.drawRect(x,          y+(6*size), size, size)
-                p.drawRect(x+(2*size), y+(4*size), size, size)
-                p.drawRect(x+(2*size), y+(6*size), size, size)
+                p.drawRect(x, y + (4 * size), size, size)
+                p.drawRect(x, y + (6 * size), size, size)
+                p.drawRect(x + (2 * size), y + (4 * size), size, size)
+                p.drawRect(x + (2 * size), y + (6 * size), size, size)
 
-                p.drawRect(x+(4*size), y,          size, size)
-                p.drawRect(x+(4*size), y+(2*size), size, size)
-                p.drawRect(x+(6*size), y,          size, size)
-                p.drawRect(x+(6*size), y+(2*size), size, size)
+                p.drawRect(x + (4 * size), y, size, size)
+                p.drawRect(x + (4 * size), y + (2 * size), size, size)
+                p.drawRect(x + (6 * size), y, size, size)
+                p.drawRect(x + (6 * size), y + (2 * size), size, size)
 
-                p.drawRect(x+(4*size), y+(4*size), size, size)
-                p.drawRect(x+(4*size), y+(6*size), size, size)
-                p.drawRect(x+(6*size), y+(4*size), size, size)
-                p.drawRect(x+(6*size), y+(6*size), size, size)
-
+                p.drawRect(x + (4 * size), y + (4 * size), size, size)
+                p.drawRect(x + (4 * size), y + (6 * size), size, size)
+                p.drawRect(x + (6 * size), y + (4 * size), size, size)
+                p.drawRect(x + (6 * size), y + (6 * size), size, size)
 
             del p
 
             painter.drawTiledPixmap(rect, board, QtCore.QPointF(rect.x(), rect.y()))
-
-
 
 
 ####################################################################
@@ -11418,7 +11519,6 @@ class HexSpinBox(QtWidgets.QSpinBox):
 
             return (self.Acceptable, input, pos)
 
-
     def __init__(self, format='%04X', *args):
         self.format = format
         QtWidgets.QSpinBox.__init__(self, *args)
@@ -11446,6 +11546,7 @@ class HexSpinBox(QtWidgets.QSpinBox):
 
     def valueFromText(self, value):
         return int(str(value), 16)
+
 
 class InputBox(QtWidgets.QDialog):
     Type_TextBox = 1
@@ -11483,6 +11584,7 @@ class AboutDialog(QtWidgets.QDialog):
     """
     Shows the About info for Reggie
     """
+
     def __init__(self):
         """
         Creates and initializes the dialog
@@ -11508,7 +11610,7 @@ class AboutDialog(QtWidgets.QDialog):
         logoLabel.setContentsMargins(16, 4, 32, 4)
 
         # Description
-        description =  '<html><head><style type="text/CSS">'
+        description = '<html><head><style type="text/CSS">'
         description += 'body {font-family: Calibri}'
         description += '.main {font-size: 12px}'
         description += '</style></head><body>'
@@ -11547,6 +11649,7 @@ class ObjectShiftDialog(QtWidgets.QDialog):
     """
     Lets you pick an amount to shift selected items by
     """
+
     def __init__(self):
         """
         Creates and initializes the dialog
@@ -11581,11 +11684,11 @@ class ObjectShiftDialog(QtWidgets.QDialog):
         self.setLayout(mainLayout)
 
 
-
 class ObjectTilesetSwapDialog(QtWidgets.QDialog):
     """
     Lets you pick tilesets to swap objects to
     """
+
     def __init__(self):
         """
         Creates and initializes the dialog
@@ -11601,7 +11704,6 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
         self.ToTS = QtWidgets.QSpinBox()
         self.ToTS.setRange(1, 4)
 
-
         # Swap layouts
         swapLayout = QtWidgets.QFormLayout()
 
@@ -11610,12 +11712,10 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
 
         self.DoExchange = QtWidgets.QCheckBox('Exchange (perform 2-way conversion)')
 
-
         # Buttonbox
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
-
 
         # Main layout
         mainLayout = QtWidgets.QVBoxLayout()
@@ -11625,11 +11725,11 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
         self.setLayout(mainLayout)
 
 
-
 class ObjectTypeSwapDialog(QtWidgets.QDialog):
     """
     Lets you pick object types to swap objects to
     """
+
     def __init__(self):
         """
         Creates and initializes the dialog
@@ -11637,7 +11737,6 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle('Swap Objects\' Types')
         self.setWindowIcon(GetIcon('swap'))
-
 
         # Create widgets
         self.FromType = QtWidgets.QSpinBox()
@@ -11654,7 +11753,6 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
 
         self.DoExchange = QtWidgets.QCheckBox('Exchange (perform 2-way conversion)')
 
-
         # Swap layout
         swapLayout = QtWidgets.QGridLayout()
 
@@ -11670,12 +11768,10 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         swapLayout.addWidget(QtWidgets.QLabel('To tileset:'), 1, 2)
         swapLayout.addWidget(self.ToTileset, 1, 3)
 
-
         # Buttonbox
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
-
 
         # Main layout
         mainLayout = QtWidgets.QVBoxLayout()
@@ -11685,11 +11781,11 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         self.setLayout(mainLayout)
 
 
-
 class MetaInfoDialog(QtWidgets.QDialog):
     """
     Allows the user to enter in various meta-info to be kept in the level for display
     """
+
     def __init__(self):
         """
         Creates and initializes the dialog
@@ -11742,14 +11838,12 @@ class MetaInfoDialog(QtWidgets.QDialog):
 
         self.changepw = QtWidgets.QPushButton(trans.string('InfoDlg', 1))
 
-
         if password != '':
             self.levelName.setReadOnly(False)
             self.Author.setReadOnly(False)
             self.Group.setReadOnly(False)
             self.Website.setReadOnly(False)
             self.changepw.setDisabled(False)
-
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
         buttonBox.addButton(self.changepw, buttonBox.ActionRole)
@@ -11803,15 +11897,14 @@ class MetaInfoDialog(QtWidgets.QDialog):
             self.changepw.setDisabled(True)
 
 
-#   To all would be crackers who are smart enough to reach here:
-#
-#   Make your own damn levels.
-#
-#
-#
-#       - The management
-#
-
+        #   To all would be crackers who are smart enough to reach here:
+        #
+        #   Make your own damn levels.
+        #
+        #
+        #
+        #       - The management
+        #
 
     def ChangeButton(self):
         """
@@ -11822,6 +11915,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
             """
             Dialog
             """
+
             def __init__(self):
                 QtWidgets.QDialog.__init__(self)
                 self.setWindowTitle(trans.string('InfoDlg', 9))
@@ -11885,13 +11979,13 @@ class MetaInfoDialog(QtWidgets.QDialog):
             self.changepw.setDisabled(False)
 
 
-
 # Sets up the Area Options Menu
 class AreaOptionsDialog(QtWidgets.QDialog):
     """
     Dialog which lets you choose among various area options from tabs
     """
-    def __init__(self, NewTilesetsTab = True):
+
+    def __init__(self, NewTilesetsTab=True):
         """
         Creates and initializes the tab dialog
         """
@@ -12002,19 +12096,24 @@ class TilesetsTab(QtWidgets.QWidget):
             # Create the tree widget
             tree = QtWidgets.QTreeWidget()
             tree.setColumnCount(2)
-            tree.setColumnWidth(0, 192) # hardcoded default width because Grop was complaining that the default width is too small
-            tree.setHeaderLabels([trans.string('AreaDlg', 28), trans.string('AreaDlg', 29)]) # ['Name', 'File']
+            tree.setColumnWidth(0,
+                                192)  # hardcoded default width because Grop was complaining that the default width is too small
+            tree.setHeaderLabels([trans.string('AreaDlg', 28), trans.string('AreaDlg', 29)])  # ['Name', 'File']
             tree.setIndentation(16)
-            if slot == 0: handler = self.handleTreeSel0
-            elif slot == 1: handler = self.handleTreeSel1
-            elif slot == 2: handler = self.handleTreeSel2
-            else: handler = self.handleTreeSel3
+            if slot == 0:
+                handler = self.handleTreeSel0
+            elif slot == 1:
+                handler = self.handleTreeSel1
+            elif slot == 2:
+                handler = self.handleTreeSel2
+            else:
+                handler = self.handleTreeSel3
             tree.itemSelectionChanged.connect(handler)
             self.trees.append(tree)
 
             # Add "None" entry
             item = QtWidgets.QTreeWidgetItem()
-            item.setText(0, trans.string('AreaDlg', 15)) # 'None'
+            item.setText(0, trans.string('AreaDlg', 15))  # 'None'
             tree.addTopLevelItem(item)
             self.noneItems.append(item)
 
@@ -12049,6 +12148,7 @@ class TilesetsTab(QtWidgets.QWidget):
                             node.addChild(cnode)
                     nodes.append(node)
                 return tuple(nodes)
+
             categories = ParseCategory(TilesetNames[slot][0])
             tree.addTopLevelItems(categories)
 
@@ -12056,7 +12156,7 @@ class TilesetsTab(QtWidgets.QWidget):
             line = QtWidgets.QLineEdit()
             line.textChanged.connect(eval('self.handleTextEdit%d' % slot))
             line.setCompleter(QtWidgets.QCompleter(tilesetList))
-            line.setPlaceholderText(trans.string('AreaDlg', 30)) # '(None)'
+            line.setPlaceholderText(trans.string('AreaDlg', 30))  # '(None)'
             self.lineEdits.append(line)
             line.setText(eval('Area.tileset%d' % slot))
             self.handleTextEdit(slot)
@@ -12066,7 +12166,7 @@ class TilesetsTab(QtWidgets.QWidget):
             # Create the layout and add it to the widget
             L = QtWidgets.QGridLayout()
             L.addWidget(tree, 0, 0, 1, 2)
-            L.addWidget(QtWidgets.QLabel(trans.string('AreaDlg', 31, '[slot]', slot)), 1, 0) # 'Tilesets (Pa[slot])'
+            L.addWidget(QtWidgets.QLabel(trans.string('AreaDlg', 31, '[slot]', slot)), 1, 0)  # 'Tilesets (Pa[slot])'
             L.addWidget(line, 1, 1)
             L.setRowStretch(0, 1)
             widget.setLayout(L)
@@ -12075,24 +12175,27 @@ class TilesetsTab(QtWidgets.QWidget):
         T = QtWidgets.QTabWidget()
         T.setTabPosition(T.West)
         T.setUsesScrollButtons(False)
-        T.addTab(self.widgets[0], trans.string('AreaDlg', 11)) # 'Standard Suite'
-        T.addTab(self.widgets[1], trans.string('AreaDlg', 12)) # 'Stage Suite'
-        T.addTab(self.widgets[2], trans.string('AreaDlg', 13)) # 'Background Suite'
-        T.addTab(self.widgets[3], trans.string('AreaDlg', 14)) # 'Interactive Suite'
+        T.addTab(self.widgets[0], trans.string('AreaDlg', 11))  # 'Standard Suite'
+        T.addTab(self.widgets[1], trans.string('AreaDlg', 12))  # 'Stage Suite'
+        T.addTab(self.widgets[2], trans.string('AreaDlg', 13))  # 'Background Suite'
+        T.addTab(self.widgets[3], trans.string('AreaDlg', 14))  # 'Interactive Suite'
         L = QtWidgets.QVBoxLayout()
         L.addWidget(T)
         self.setLayout(L)
 
-
     # Tree handlers
     def handleTreeSel0(self):
         self.handleTreeSel(0)
+
     def handleTreeSel1(self):
         self.handleTreeSel(1)
+
     def handleTreeSel2(self):
         self.handleTreeSel(2)
+
     def handleTreeSel3(self):
         self.handleTreeSel(3)
+
     def handleTreeSel(self, slot):
         """
         Handles changes to the selections in all tree widgets
@@ -12107,12 +12210,16 @@ class TilesetsTab(QtWidgets.QWidget):
     # Line-edit handlers
     def handleTextEdit0(self):
         self.handleTextEdit(0)
+
     def handleTextEdit1(self):
         self.handleTextEdit(1)
+
     def handleTextEdit2(self):
         self.handleTextEdit(2)
+
     def handleTextEdit3(self):
         self.handleTextEdit(3)
+
     def handleTextEdit(self, slot):
         """
         Handles changes made to the line-edit widgets
@@ -12161,7 +12268,8 @@ class OldTilesetsTab(QtWidgets.QWidget):
 
         self.widgets = [self.tile0, self.tile1, self.tile2, self.tile3]
         names = [Area.tileset0, Area.tileset1, Area.tileset2, Area.tileset3]
-        slots = [self.HandleTileset0Choice, self.HandleTileset1Choice, self.HandleTileset2Choice, self.HandleTileset3Choice]
+        slots = [self.HandleTileset0Choice, self.HandleTileset1Choice, self.HandleTileset2Choice,
+                 self.HandleTileset3Choice]
 
         self.currentChoices = [None, None, None, None]
 
@@ -12170,27 +12278,27 @@ class OldTilesetsTab(QtWidgets.QWidget):
         for idx, widget, name, data, slot in zip(range(4), self.widgets, names, TilesetNamesIterable, slots):
             # This loop runs once for each tileset.
             # First, find the current index and custom-tileset strings
-            if name == '': # No tileset selected, the current index should be None
-                ts_index = trans.string('AreaDlg', 15) # None
+            if name == '':  # No tileset selected, the current index should be None
+                ts_index = trans.string('AreaDlg', 15)  # None
                 custom = ''
-                custom_fname = trans.string('AreaDlg', 16) # [CUSTOM]
-            else: # Tileset selected
-                ts_index = trans.string('AreaDlg', 18, '[name]', name) # Custom filename... [name]
+                custom_fname = trans.string('AreaDlg', 16)  # [CUSTOM]
+            else:  # Tileset selected
+                ts_index = trans.string('AreaDlg', 18, '[name]', name)  # Custom filename... [name]
                 custom = name
-                custom_fname = trans.string('AreaDlg', 17, '[name]', name) # [CUSTOM] [name]
+                custom_fname = trans.string('AreaDlg', 17, '[name]', name)  # [CUSTOM] [name]
 
             # Add items to the widget:
             # - None
-            widget.addItem(trans.string('AreaDlg', 15), '') # None
+            widget.addItem(trans.string('AreaDlg', 15), '')  # None
             # - Retail Tilesets
             for tfile, tname in data:
-                text = trans.string('AreaDlg', 19, '[name]', tname, '[file]', tfile) # [name] ([file])
+                text = trans.string('AreaDlg', 19, '[name]', tname, '[file]', tfile)  # [name] ([file])
                 widget.addItem(text, tfile)
                 if name == tfile:
                     ts_index = text
                     custom = ''
             # - Custom Tileset
-            widget.addItem(trans.string('AreaDlg', 18, '[name]', custom), custom_fname) # Custom filename... [name]
+            widget.addItem(trans.string('AreaDlg', 18, '[name]', custom), custom_fname)  # Custom filename... [name]
 
             # Set the current index
             item_idx = widget.findText(ts_index)
@@ -12284,10 +12392,12 @@ class OldTilesetsTab(QtWidgets.QWidget):
             result.append(name)
         return tuple(result)
 
+
 def SimpleTilesetNames():
     """
     simple
     """
+
     # Category parser
     def ParseCategory(items):
         """
@@ -12314,12 +12424,12 @@ def SimpleTilesetNames():
     return (pa0, pa1, pa2, pa3)
 
 
-
 # Sets up the Zones Menu
 class ZonesDialog(QtWidgets.QDialog):
     """
     Dialog which lets you choose among various from tabs
     """
+
     def __init__(self):
         """
         Creates and initializes the tab dialog
@@ -12333,28 +12443,26 @@ class ZonesDialog(QtWidgets.QDialog):
         i = 0
         self.zoneTabs = []
         for z in Area.zones:
-            i = i+1
+            i = i + 1
             ZoneTabName = trans.string('ZonesDlg', 3, '[num]', i)
             tab = ZoneTab(z)
             self.zoneTabs.append(tab)
             self.tabWidget.addTab(tab, ZoneTabName)
 
-
         if self.tabWidget.count() > 5:
             for tab in range(0, self.tabWidget.count()):
                 self.tabWidget.setTabText(tab, str(tab + 1))
-
 
         self.NewButton = QtWidgets.QPushButton(trans.string('ZonesDlg', 4))
         self.DeleteButton = QtWidgets.QPushButton(trans.string('ZonesDlg', 5))
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
-        buttonBox.addButton(self.NewButton, buttonBox.ActionRole);
-        buttonBox.addButton(self.DeleteButton, buttonBox.ActionRole);
+        buttonBox.addButton(self.NewButton, buttonBox.ActionRole)
+        buttonBox.addButton(self.DeleteButton, buttonBox.ActionRole)
 
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
-        #self.NewButton.setEnabled(len(self.zoneTabs) < 8)
+        # self.NewButton.setEnabled(len(self.zoneTabs) < 8)
         self.NewButton.clicked.connect(self.NewZone)
         self.DeleteButton.clicked.connect(self.DeleteZone)
 
@@ -12366,7 +12474,8 @@ class ZonesDialog(QtWidgets.QDialog):
     @QtCore.pyqtSlot()
     def NewZone(self):
         if len(self.zoneTabs) >= 8:
-            result = QtWidgets.QMessageBox.warning(self, trans.string('ZonesDlg', 6), trans.string('ZonesDlg', 7), QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            result = QtWidgets.QMessageBox.warning(self, trans.string('ZonesDlg', 6), trans.string('ZonesDlg', 7),
+                                                   QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
             if result == QtWidgets.QMessageBox.No:
                 return
 
@@ -12382,8 +12491,7 @@ class ZonesDialog(QtWidgets.QDialog):
             for tab in range(0, self.tabWidget.count()):
                 self.tabWidget.setTabText(tab, str(tab + 1))
 
-        #self.NewButton.setEnabled(len(self.zoneTabs) < 8)
-
+                # self.NewButton.setEnabled(len(self.zoneTabs) < 8)
 
     @QtCore.pyqtSlot()
     def DeleteZone(self):
@@ -12394,17 +12502,16 @@ class ZonesDialog(QtWidgets.QDialog):
 
         for tab in range(curindex, tabamount):
             if self.tabWidget.count() < 6:
-                self.tabWidget.setTabText(tab, trans.string('ZonesDlg', 3, '[num]', tab+1))
+                self.tabWidget.setTabText(tab, trans.string('ZonesDlg', 3, '[num]', tab + 1))
             if self.tabWidget.count() > 5:
                 self.tabWidget.setTabText(tab, str(tab + 1))
 
         self.zoneTabs.pop(curindex)
         if self.tabWidget.count() < 6:
             for tab in range(0, self.tabWidget.count()):
-                self.tabWidget.setTabText(tab, trans.string('ZonesDlg', 3, '[num]', tab+1))
+                self.tabWidget.setTabText(tab, trans.string('ZonesDlg', 3, '[num]', tab + 1))
 
-        #self.NewButton.setEnabled(len(self.zoneTabs) < 8)
-
+                # self.NewButton.setEnabled(len(self.zoneTabs) < 8)
 
 
 class ZoneTab(QtWidgets.QWidget):
@@ -12425,7 +12532,6 @@ class ZoneTab(QtWidgets.QWidget):
         mainLayout.addWidget(self.Bounds)
         mainLayout.addWidget(self.Audio)
         self.setLayout(mainLayout)
-
 
     def createDimensions(self, z):
         self.Dimensions = QtWidgets.QGroupBox(trans.string('ZonesDlg', 8))
@@ -12467,14 +12573,14 @@ class ZoneTab(QtWidgets.QWidget):
         # 784 x 320; Zoom Level 2 (not added to list because it's just an expansion of 608x320)
         # 704 x 384; Zoom Level 3 (used multiple times; therefore it's important)
         # 944 x 448; Zoom Level 4 (used in 9-3 zone 3)
-        self.Zone_presets_values = ('0: 416x224', '0: 448x224', '0: 512x272', '2: 560x304', '2: 608x320', '3: 704x384', '4: 944x448')
+        self.Zone_presets_values = (
+        '0: 416x224', '0: 448x224', '0: 512x272', '2: 560x304', '2: 608x320', '3: 704x384', '4: 944x448')
 
         self.Zone_presets = QtWidgets.QComboBox()
         self.Zone_presets.addItems(self.Zone_presets_values)
         self.Zone_presets.setToolTip(trans.string('ZonesDlg', 18))
         self.Zone_presets.currentIndexChanged.connect(self.PresetSelected)
-        self.PresetDeselected() # can serve as an initializer for self.Zone_presets
-
+        self.PresetDeselected()  # can serve as an initializer for self.Zone_presets
 
         ZonePositionLayout = QtWidgets.QFormLayout()
         ZonePositionLayout.addRow(trans.string('ZonesDlg', 9), self.Zone_xpos)
@@ -12485,26 +12591,22 @@ class ZoneTab(QtWidgets.QWidget):
         ZoneSizeLayout.addRow(trans.string('ZonesDlg', 15), self.Zone_height)
         ZoneSizeLayout.addRow(trans.string('ZonesDlg', 17), self.Zone_presets)
 
-
         snapLayout = QtWidgets.QHBoxLayout()
-        
+
         snapLayout.addWidget(self.snapButton8)
         snapLayout.addWidget(self.snapButton16)
-
 
         innerLayout = QtWidgets.QHBoxLayout()
 
         innerLayout.addLayout(ZonePositionLayout)
         innerLayout.addLayout(ZoneSizeLayout)
 
-
         verticalLayout = QtWidgets.QVBoxLayout()
 
         verticalLayout.addLayout(innerLayout)
         verticalLayout.addLayout(snapLayout)
-        
-        self.Dimensions.setLayout(verticalLayout)
 
+        self.Dimensions.setLayout(verticalLayout)
 
     @QtCore.pyqtSlot()
     def HandleSnapTo8x8Grid(self, z):
@@ -12557,7 +12659,6 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_width.setValue(right)
         self.Zone_height.setValue(bottom)
 
-
     @QtCore.pyqtSlot()
     def HandleSnapTo16x16Grid(self, z):
         """
@@ -12609,7 +12710,6 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_width.setValue(right)
         self.Zone_height.setValue(bottom)
 
-
     def createVisibility(self, z):
         self.Visibility = QtWidgets.QGroupBox(trans.string('ZonesDlg', 19))
 
@@ -12626,7 +12726,6 @@ class ZoneTab(QtWidgets.QWidget):
         if z.terraindark < 0: z.terraindark = 0
         if z.terraindark >= len(ZoneTerrainThemeValues): z.terraindark = len(ZoneTerrainThemeValues)
         self.Zone_terraindark.setCurrentIndex(z.terraindark)
-
 
         self.Zone_vnormal = QtWidgets.QRadioButton(trans.string('ZonesDlg', 24))
         self.Zone_vnormal.setToolTip(trans.string('ZonesDlg', 25))
@@ -12651,12 +12750,10 @@ class ZoneTab(QtWidgets.QWidget):
         elif VRadioDiv == 3:
             self.Zone_vfulldark.setChecked(True)
 
-
         self.ChangeList()
         self.Zone_vnormal.clicked.connect(self.ChangeList)
         self.Zone_vspotlight.clicked.connect(self.ChangeList)
         self.Zone_vfulldark.clicked.connect(self.ChangeList)
-
 
         self.Zone_xtrack = QtWidgets.QCheckBox()
         self.Zone_xtrack.setToolTip(trans.string('ZonesDlg', 31))
@@ -12667,7 +12764,6 @@ class ZoneTab(QtWidgets.QWidget):
         if z.cammode in [0, 1, 3, 4]:
             self.Zone_ytrack.setChecked(True)
 
-
         self.Zone_camerazoom = QtWidgets.QComboBox()
         self.Zone_camerazoom.setToolTip(trans.string('ZonesDlg', 35))
         newItems1 = ['-2', '-1', '0', '1', '2', '3', '4']
@@ -12676,15 +12772,19 @@ class ZoneTab(QtWidgets.QWidget):
             self.Zone_camerazoom.setCurrentIndex(0)
         elif (z.camzoom == 9 and z.cammode in [3, 4]) or (z.camzoom in [19, 20] and z.cammode == 9):
             self.Zone_camerazoom.setCurrentIndex(1)
-        elif (z.camzoom in [0, 1, 2] and z.cammode in [0, 1, 6]) or (z.camzoom in [10, 11] and z.cammode in [3, 4]) or (z.camzoom == 13 and z.cammode == 9):
+        elif (z.camzoom in [0, 1, 2] and z.cammode in [0, 1, 6]) or (z.camzoom in [10, 11] and z.cammode in [3, 4]) or (
+                z.camzoom == 13 and z.cammode == 9):
             self.Zone_camerazoom.setCurrentIndex(2)
         elif z.camzoom in [5, 6, 7, 9, 10] and z.cammode in [0, 1, 6] or (z.camzoom == 12 and z.cammode == 9):
             self.Zone_camerazoom.setCurrentIndex(3)
-        elif (z.camzoom in [4, 11] and z.cammode in [0, 1, 6]) or (z.camzoom in [1, 5] and z.cammode in [3, 4])  or (z.camzoom == 14 and z.cammode == 9):
+        elif (z.camzoom in [4, 11] and z.cammode in [0, 1, 6]) or (z.camzoom in [1, 5] and z.cammode in [3, 4]) or (
+                z.camzoom == 14 and z.cammode == 9):
             self.Zone_camerazoom.setCurrentIndex(4)
-        elif (z.camzoom == 3 and z.cammode in [0, 1, 6]) or (z.camzoom == 2 and z.cammode in [3, 4]) or (z.camzoom == 15 and z.cammode == 9):
+        elif (z.camzoom == 3 and z.cammode in [0, 1, 6]) or (z.camzoom == 2 and z.cammode in [3, 4]) or (
+                z.camzoom == 15 and z.cammode == 9):
             self.Zone_camerazoom.setCurrentIndex(5)
-        elif (z.camzoom == 16 and z.cammode in [0, 1, 6]) or (z.camzoom in [3, 7] and z.cammode in [3, 4]) or (z.camzoom == 16 and z.cammode == 9):
+        elif (z.camzoom == 16 and z.cammode in [0, 1, 6]) or (z.camzoom in [3, 7] and z.cammode in [3, 4]) or (
+                z.camzoom == 16 and z.cammode == 9):
             self.Zone_camerazoom.setCurrentIndex(6)
         else:
             self.Zone_camerazoom.setCurrentIndex(2)
@@ -12700,7 +12800,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_directionmode.setToolTip(trans.string('ZonesDlg', 40))
         if z.camtrack < 0: z.camtrack = 0
         if z.camtrack >= 6: z.camtrack = 6
-        idx = z.camtrack/2
+        idx = z.camtrack / 2
         if z.camtrack == 1: idx = 1
         self.Zone_directionmode.setCurrentIndex(idx)
 
@@ -12734,7 +12834,6 @@ class ZoneTab(QtWidgets.QWidget):
         InnerLayout.addLayout(ZoneDirectionLayout)
         self.Visibility.setLayout(InnerLayout)
 
-
     @QtCore.pyqtSlot(bool)
     def ChangeList(self):
         VRadioMod = self.zv % 16
@@ -12757,7 +12856,6 @@ class ZoneTab(QtWidgets.QWidget):
             self.Zone_visibility.addItems(addList)
             self.Zone_visibility.setToolTip(trans.string('ZonesDlg', 46))
             self.Zone_visibility.setCurrentIndex(VRadioMod)
-
 
     def createBounds(self, z):
         self.Bounds = QtWidgets.QGroupBox(trans.string('ZonesDlg', 47))
@@ -12787,7 +12885,6 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_boundflg.setToolTip(trans.string('ZonesDlg', 75))
         self.Zone_boundflg.setChecked(z.unknownbnf == 0xF)
 
-
         LA = QtWidgets.QFormLayout()
         LA.addRow(trans.string('ZonesDlg', 48), self.Zone_yboundup)
         LA.addRow(trans.string('ZonesDlg', 50), self.Zone_ybounddown)
@@ -12801,7 +12898,6 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.Bounds.setLayout(LC)
 
-
     def createAudio(self, z):
         self.Audio = QtWidgets.QGroupBox(trans.string('ZonesDlg', 52))
         self.AutoEditMusic = False
@@ -12810,7 +12906,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_music.setToolTip(trans.string('ZonesDlg', 54))
         newItems = getMusic()
         for a, b in newItems:
-            self.Zone_music.addItem(b, a) # text, songid
+            self.Zone_music.addItem(b, a)  # text, songid
         self.Zone_music.setCurrentIndex(self.Zone_music.findData(z.music))
         self.Zone_music.currentIndexChanged.connect(self.handleMusicListSelect)
 
@@ -12830,7 +12926,6 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_boss.setToolTip(trans.string('ZonesDlg', 59))
         self.Zone_boss.setChecked(z.sfxmod % 16)
 
-
         ZoneAudioLayout = QtWidgets.QFormLayout()
         ZoneAudioLayout.addRow(trans.string('ZonesDlg', 53), self.Zone_music)
         ZoneAudioLayout.addRow(trans.string('ZonesDlg', 68), self.Zone_musicid)
@@ -12839,19 +12934,17 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.Audio.setLayout(ZoneAudioLayout)
 
-
     def handleMusicListSelect(self):
         """
         Handles the user selecting an entry from the music list
         """
         if self.AutoEditMusic: return
         id = self.Zone_music.itemData(self.Zone_music.currentIndex())
-        id = int(str(id)) # id starts out as a QString
+        id = int(str(id))  # id starts out as a QString
 
         self.AutoEditMusic = True
         self.Zone_musicid.setValue(id)
         self.AutoEditMusic = False
-
 
     def handleMusicIDChange(self):
         """
@@ -12865,7 +12958,6 @@ class ZoneTab(QtWidgets.QWidget):
         self.AutoEditMusic = True
         self.Zone_music.setCurrentIndex(self.Zone_music.findData(id))
         self.AutoEditMusic = False
-
 
     def PresetSelected(self, info=None):
         """
@@ -12883,7 +12975,6 @@ class ZoneTab(QtWidgets.QWidget):
 
         if self.Zone_presets.itemText(0) == trans.string('ZonesDlg', 60): self.Zone_presets.removeItem(0)
 
-
     def PresetDeselected(self, info=None):
         """
         Handles the zone height or width boxes being changed
@@ -12899,15 +12990,16 @@ class ZoneTab(QtWidgets.QWidget):
         for preset in self.Zone_presets_values:
             if check == preset[3:]: found = preset
 
-
         if found is not None:
             self.Zone_presets.setCurrentIndex(self.Zone_presets.findText(found))
             if self.Zone_presets.itemText(0) == trans.string('ZonesDlg', 60): self.Zone_presets.removeItem(0)
         else:
-            if self.Zone_presets.itemText(0) != trans.string('ZonesDlg', 60): self.Zone_presets.insertItem(0, trans.string('ZonesDlg', 60))
+            if self.Zone_presets.itemText(0) != trans.string('ZonesDlg', 60): self.Zone_presets.insertItem(0,
+                                                                                                           trans.string(
+                                                                                                               'ZonesDlg',
+                                                                                                               60))
             self.Zone_presets.setCurrentIndex(0)
         self.AutoChangingSize = False
-
 
 
 # Sets up the Background Dialog
@@ -12915,6 +13007,7 @@ class BGDialog(QtWidgets.QDialog):
     """
     Dialog which lets you choose among various from tabs
     """
+
     def __init__(self):
         """
         Creates and initializes the tab dialog
@@ -12928,17 +13021,15 @@ class BGDialog(QtWidgets.QDialog):
         i = 0
         self.BGTabs = []
         for z in Area.zones:
-            i = i+1
+            i = i + 1
             BGTabName = trans.string('BGDlg', 2, '[num]', i)
             tab = BGTab(z)
             self.BGTabs.append(tab)
             self.tabWidget.addTab(tab, BGTabName)
 
-
         if self.tabWidget.count() > 5:
             for tab in range(0, self.tabWidget.count()):
                 self.tabWidget.setTabText(tab, str(tab + 1))
-
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
 
@@ -12967,15 +13058,13 @@ class BGTab(QtWidgets.QWidget):
 
         self.updatePreviews()
 
-
     def createBGSettings(self, z):
         """
         Creates the BG Settings for BGA and BGB
         """
         for slot in ('A', 'B'):
-            g = QtWidgets.QGroupBox(trans.string('BGDlg', 3 if slot == 'A' else 4)) # 'Scenery' or 'Backdrop'
+            g = QtWidgets.QGroupBox(trans.string('BGDlg', 3 if slot == 'A' else 4))  # 'Scenery' or 'Backdrop'
             exec('self.BG%sSettings = g' % slot)
-
 
             # BG Comboboxes
             exec("""
@@ -13006,7 +13095,6 @@ class BGTab(QtWidgets.QWidget):
                 if z.bg3%s == bfile: self.name3%s.setCurrentIndex(self.name3%s.count() - 1)
             """.replace('%s', slot).replace('            ', ''))
 
-
             # Position
             exec("""
             self.xpos%s = QtWidgets.QSpinBox()
@@ -13019,7 +13107,6 @@ class BGTab(QtWidgets.QWidget):
             self.ypos%s.setRange(-255, 256)
             self.ypos%s.setValue(-z.Yposition%s)
             """.replace('%s', slot).replace('            ', ''))
-
 
             # Scrolling
             exec("""
@@ -13038,7 +13125,6 @@ class BGTab(QtWidgets.QWidget):
             self.yscroll%s.setCurrentIndex(z.Yscroll%s)
             """.replace('%s', slot).replace('            ', ''))
 
-
             # Zoom
             exec("""
             self.zoom%s = QtWidgets.QComboBox()
@@ -13048,13 +13134,11 @@ class BGTab(QtWidgets.QWidget):
             self.zoom%s.setCurrentIndex(z.Zoom%s)
             """.replace('%s', slot).replace('            ', ''))
 
-
             # Labels
             bgLabel = QtWidgets.QLabel(trans.string('BGDlg', 19))
             positionLabel = QtWidgets.QLabel(trans.string('BGDlg', 5))
             scrollLabel = QtWidgets.QLabel(trans.string('BGDlg', 10))
             alignLabel = QtWidgets.QLabel(trans.string('BGDlg', 16))
-
 
             # Layouts
             exec("""
@@ -13069,7 +13153,6 @@ class BGTab(QtWidgets.QWidget):
             Lzoom = QtWidgets.QFormLayout()
             Lzoom.addRow(trans.string('BGDlg', 13), self.zoom%s)
             """.replace('%s', slot).replace('            ', ''))
-
 
             exec("""
             mainLayout = QtWidgets.QGridLayout()
@@ -13089,11 +13172,9 @@ class BGTab(QtWidgets.QWidget):
             self.BG%sSettings.setLayout(mainLayout)
             """.replace('%s', slot).replace('            ', ''))
 
-
-
     def createBGViewers(self, z):
         for slot in ('A', 'B'):
-            g = QtWidgets.QGroupBox(trans.string('BGDlg', 16)) # Preview
+            g = QtWidgets.QGroupBox(trans.string('BGDlg', 16))  # Preview
             exec('self.BG%sViewer = g' % slot)
 
             exec("""
@@ -13110,7 +13191,6 @@ class BGTab(QtWidgets.QWidget):
             mainLayout.setRowStretch(2, 1)
             self.BG%sViewer.setLayout(mainLayout)
             """.replace('%s', slot).replace('            ', ''))
-
 
     @QtCore.pyqtSlot()
     def handleHexBox(self):
@@ -13135,7 +13215,6 @@ class BGTab(QtWidgets.QWidget):
                     namebox.setCurrentIndex(namebox.count() - 1)
         self.updatePreviews()
 
-
     @QtCore.pyqtSlot()
     def handleNameBox(self):
         """
@@ -13146,10 +13225,9 @@ class BGTab(QtWidgets.QWidget):
                 hexbox = eval('self.hex%d%s' % (boxnum, slot))
                 namebox = eval('self.name%d%s' % (boxnum, slot))
                 val = namebox.itemData(namebox.currentIndex())
-                if val is None: continue # the user chose '(Custom)'
+                if val is None: continue  # the user chose '(Custom)'
                 hexbox.setValue(val)
         self.updatePreviews()
-
 
     def updatePreviews(self):
         """
@@ -13222,12 +13300,12 @@ def calculateBgAlignmentMode(idA, idB, idC):
         return 0
 
 
-
 # Sets up the Screen Cap Choice Dialog
 class ScreenCapChoiceDialog(QtWidgets.QDialog):
     """
     Dialog which lets you choose which zone to take a pic of
     """
+
     def __init__(self):
         """
         Creates and initializes the dialog
@@ -13236,14 +13314,13 @@ class ScreenCapChoiceDialog(QtWidgets.QDialog):
         self.setWindowTitle(trans.string('ScrShtDlg', 0))
         self.setWindowIcon(GetIcon('screenshot'))
 
-        i=0
+        i = 0
         self.zoneCombo = QtWidgets.QComboBox()
         self.zoneCombo.addItem(trans.string('ScrShtDlg', 1))
         self.zoneCombo.addItem(trans.string('ScrShtDlg', 2))
         for z in Area.zones:
-            i = i+1
+            i = i + 1
             self.zoneCombo.addItem(trans.string('ScrShtDlg', 3, '[zone]', i))
-
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
 
@@ -13304,7 +13381,7 @@ class AreaChoiceDialog(QtWidgets.QDialog):
 
         self.areaCombo = QtWidgets.QComboBox()
         for i in range(areacount):
-            self.areaCombo.addItem(trans.string('AreaChoiceDlg', 1, '[num]', i+1))
+            self.areaCombo.addItem(trans.string('AreaChoiceDlg', 1, '[num]', i + 1))
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
 
@@ -13321,6 +13398,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
     """
     Dialog which checks for errors within the level
     """
+
     def __init__(self):
         """
         Creates and initializes the dialog
@@ -13367,26 +13445,26 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         self.mainLayout.addWidget(self.buttonBox)
         self.setLayout(self.mainLayout)
 
-    def updateHeader(self, testresult, secondTime = False):
+    def updateHeader(self, testresult, secondTime=False):
         """
         Creates the header
         """
         self.header = QtWidgets.QGridLayout()
         self.header.addWidget(QtWidgets.QLabel(trans.string('Diag', 18)), 0, 0, 1, 3)
 
-        pointsize = 14 # change this if you don't like it
-        if testresult is None: # good
+        pointsize = 14  # change this if you don't like it
+        if testresult is None:  # good
             L = QtWidgets.QLabel()
             L.setPixmap(GetIcon('check', True).pixmap(64, 64))
             self.header.addWidget(L, 1, 0)
 
             px = QtGui.QPixmap(64, pointsize)
-            px.fill(QtGui.QColor(0,0,0,0))
+            px.fill(QtGui.QColor(0, 0, 0, 0))
             p = QtGui.QPainter(px)
             f = p.font()
             f.setPointSize(pointsize)
             p.setFont(f)
-            p.setPen(QtGui.QColor(0,200,0))
+            p.setPen(QtGui.QColor(0, 200, 0))
             p.drawText(0, pointsize, trans.string('Diag', 19))
             del p
             L = QtWidgets.QLabel()
@@ -13394,18 +13472,18 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             self.header.addWidget(L, 1, 1)
 
             self.header.addWidget(QtWidgets.QLabel(trans.string('Diag', 20)), 1, 2)
-        elif not testresult: # warnings
+        elif not testresult:  # warnings
             L = QtWidgets.QLabel()
             L.setPixmap(GetIcon('warning', True).pixmap(64, 64))
             self.header.addWidget(L, 1, 0)
 
-            px = QtGui.QPixmap(128, pointsize*3/2)
-            px.fill(QtGui.QColor(0,0,0,0))
+            px = QtGui.QPixmap(128, pointsize * 3 / 2)
+            px.fill(QtGui.QColor(0, 0, 0, 0))
             p = QtGui.QPainter(px)
             f = p.font()
             f.setPointSize(pointsize)
             p.setFont(f)
-            p.setPen(QtGui.QColor(210,210,0))
+            p.setPen(QtGui.QColor(210, 210, 0))
             p.drawText(0, pointsize, trans.string('Diag', 21))
             del p
             L = QtWidgets.QLabel()
@@ -13413,18 +13491,18 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             self.header.addWidget(L, 1, 1)
 
             self.header.addWidget(QtWidgets.QLabel(trans.string('Diag', 22)), 1, 2)
-        else: # bad
+        else:  # bad
             L = QtWidgets.QLabel()
             L.setPixmap(GetIcon('delete', True).pixmap(64, 64))
             self.header.addWidget(L, 1, 0)
 
             px = QtGui.QPixmap(72, pointsize)
-            px.fill(QtGui.QColor(0,0,0,0))
+            px.fill(QtGui.QColor(0, 0, 0, 0))
             p = QtGui.QPainter(px)
             f = p.font()
             f.setPointSize(pointsize)
             p.setFont(f)
-            p.setPen(QtGui.QColor(255,0,0))
+            p.setPen(QtGui.QColor(255, 0, 0))
             p.drawText(0, pointsize, trans.string('Diag', 23))
             del p
             L = QtWidgets.QLabel()
@@ -13438,7 +13516,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             w.setLayout(self.header)
             self.mainLayout.takeAt(0).widget().hide()
             self.mainLayout.insertWidget(0, w)
-
 
     def populateLists(self):
         """
@@ -13459,8 +13536,10 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
                 item = QtWidgets.QListWidgetItem()
                 item.setText(desc)
-                if isCritical: item.setForeground(QtGui.QColor(255, 0, 0))
-                else:          item.setForeground(QtGui.QColor(172, 172, 0))
+                if isCritical:
+                    item.setForeground(QtGui.QColor(255, 0, 0))
+                else:
+                    item.setForeground(QtGui.QColor(172, 172, 0))
                 item.setIcon(GetIcon(ico))
                 item.fix = fxn
 
@@ -13474,10 +13553,11 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         self.errorLayout.addWidget(self.errorList)
         self.errorLayout.addWidget(self.fixBtn)
 
-        if foundCritical: return True, len(self.buttonHandlers)
-        elif foundAnything: return False, len(self.buttonHandlers)
+        if foundCritical:
+            return True, len(self.buttonHandlers)
+        elif foundAnything:
+            return False, len(self.buttonHandlers)
         return None, len(self.buttonHandlers)
-
 
     def FixSelected(self):
         """
@@ -13485,12 +13565,13 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
 
         # Ask the user to make sure
-        btn = QtWidgets.QMessageBox.warning(None, trans.string('Diag', 27), trans.string('Diag', 28), QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        btn = QtWidgets.QMessageBox.warning(None, trans.string('Diag', 27), trans.string('Diag', 28),
+                                            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if btn != QtWidgets.QMessageBox.Yes: return
 
         # Show the 'Fixing...' box while fixing
         pleasewait = QtWidgets.QProgressDialog()
-        pleasewait.setLabelText(trans.string('Diag', 29)) # Fixing...
+        pleasewait.setLabelText(trans.string('Diag', 29))  # Fixing...
         pleasewait.setMinimum(0)
         pleasewait.setMaximum(100)
         pleasewait.setAutoClose(True)
@@ -13501,12 +13582,14 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         # Fix them
         for index, item in enumerate(self.errorList.selectedIndexes()[:]):
             listItem = self.errorList.itemFromIndex(item)
-            try: listItem.fix()
-            except Exception: pass # fail silently
+            try:
+                listItem.fix()
+            except Exception:
+                pass  # fail silently
             self.errorList.takeItem(item.row())
 
             total = len(self.errorList.selectedIndexes()[:])
-            if total != 0: pleasewait.setValue(int(float(index)/total*100))
+            if total != 0: pleasewait.setValue(int(float(index) / total * 100))
 
         # Remove the 'Fixing...' box
         pleasewait.setValue(100)
@@ -13514,7 +13597,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         # Gray out the Fix button if there are no more problems
         if self.errorList.count() == 0: self.fixBtn.setEnabled(False)
-
 
     def UnusedTilesets(self, mode='f'):
         """
@@ -13524,7 +13606,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         global TilesetNames
 
         # Find all retail tileset names
-        possible = ['', ' ', None] # empty tilesets are represented by ''
+        possible = ['', ' ', None]  # empty tilesets are represented by ''
         for palette in SimpleTilesetNames():
             for tileset in palette:
                 possible.append(tileset[0])
@@ -13544,14 +13626,14 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return not (TS0 and TS1 and TS2 and TS3)
         else:
             # Remove all non-retail tilesets
-            for IsRetail, name, slot in ((TS0, 'Area.tileset0', 0), (TS1, 'Area.tileset1', 1), (TS2, 'Area.tileset2', 2), (TS3, 'Area.tileset3', 3)):
+            for IsRetail, name, slot in (
+            (TS0, 'Area.tileset0', 0), (TS1, 'Area.tileset1', 1), (TS2, 'Area.tileset2', 2), (TS3, 'Area.tileset3', 3)):
                 if IsRetail: continue
 
                 UnloadTileset(slot)
                 exec(name + ' = \'\' if slot != 0 else \'Pa0_jyotyu\'')
 
-
-            self.ObjsInTileset('f') # remove all orphaned objects w/o a loaded tileset
+            self.ObjsInTileset('f')  # remove all orphaned objects w/o a loaded tileset
 
             # Update the palette
             mainWindow.objPicker.LoadFromTilesets()
@@ -13569,7 +13651,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             # Update the scene
             self.scene.update()
 
-
     def ObjsInTileset(self, mode='f'):
         """
         Checks for any objects which cannot be found in the tilesets
@@ -13586,7 +13667,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 elif ObjectDefinitions[obj.tileset][obj.type] is None:
                     deletions.append(obj)
 
-        if mode == 'c': return len(deletions) != 0
+        if mode == 'c':
+            return len(deletions) != 0
         elif len(deletions) != 0:
             for obj in deletions:
                 obj.delete()
@@ -13595,28 +13677,27 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
             mainWindow.levelOverview.update()
 
-
     def CrashSprites(self, mode='f'):
         """
         Checks if there are any sprites which are known to be crashy and cause problems often
         """
         global Area
-        problems = (0,1,2,3,4,5,6,7,8,9, # glitch sprites
-                    121, # en reverse
-                    475) # will crash if you use a looped path
+        problems = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  # glitch sprites
+                    121,  # en reverse
+                    475)  # will crash if you use a looped path
 
         founds = []
         for sprite in Area.sprites:
             if sprite.type in problems: founds.append(sprite)
 
-        if mode == 'c': return len(founds) != 0
+        if mode == 'c':
+            return len(founds) != 0
         else:
             for sprite in founds:
                 sprite.delete()
                 sprite.setSelected(False)
                 mainWindow.scene.removeItem(sprite)
                 mainWindow.levelOverview.update()
-
 
     def CrashSpriteSettings(self, mode='f'):
         """
@@ -13648,33 +13729,49 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         for item in checkfor:
             for sprite in Area.sprites:
                 if sprite.type in item:
-                    try: new.remove(item)
-                    except Exception: pass # probably already removed it
+                    try:
+                        new.remove(item)
+                    except Exception:
+                        pass  # probably already removed it
         checkfor = new
         if len(checkfor) > 0: problem = True
 
-        if mode == 'c': return problem
+        if mode == 'c':
+            return problem
         elif problem:
             addsprites = []
             for sprite in Area.sprites:
                 # :(
-                if sprite.type == 166 and (sprite.spritedata[2] & 0xF0) >> 4 == 4: sprite.spritedata = sprite.spritedata[0:2]+' '+sprite.spritedata[3:]
-                if sprite.type == 171 and sprite.spritedata[4] & 0xF != 1: sprite.spritedata = sprite.spritedata[0:4]+chr(1)+sprite.spritedata[5:]
+                if sprite.type == 166 and (
+                    sprite.spritedata[2] & 0xF0) >> 4 == 4: sprite.spritedata = sprite.spritedata[
+                                                                                0:2] + ' ' + sprite.spritedata[3:]
+                if sprite.type == 171 and sprite.spritedata[4] & 0xF != 1: sprite.spritedata = sprite.spritedata[
+                                                                                               0:4] + chr(
+                    1) + sprite.spritedata[5:]
                 if sprite.type == 203 and sprite.spritedata[4] & 0xF == 1:
                     if [454, 432] in checkfor:
-                        addsprites.append((454, sprite.objx-128, sprite.objy-128))
-                if sprite.type == 247 and sprite.spritedata[5] & 0xF == 1: sprite.spritedata = sprite.spritedata[0:5]+chr(0)+sprite.spritedata[6:]
+                        addsprites.append((454, sprite.objx - 128, sprite.objy - 128))
+                if sprite.type == 247 and sprite.spritedata[5] & 0xF == 1: sprite.spritedata = sprite.spritedata[
+                                                                                               0:5] + chr(
+                    0) + sprite.spritedata[6:]
                 if sprite.type == 323:
-                    if sprite.spritedata[4] & 0xF == 4: sprite.spritedata = sprite.spritedata[0:4]+chr(1)+sprite.spritedata[5:]
+                    if sprite.spritedata[4] & 0xF == 4: sprite.spritedata = sprite.spritedata[0:4] + chr(
+                        1) + sprite.spritedata[5:]
                     if sprite.spritedata[2] & 0xF < (sprite.spritedata[3] & 0xF0) >> 4:
-                        sprite.spritedata = sprite.spritedata[0:2] + chr((sprite.spritedata[3] & 0xF0) >> 4)+sprite.spritedata[3:]
-                if sprite.type == 449 and (sprite.spritedata[5] & 0xF0) >> 4 == 1: sprite.spritedata = sprite.spritedata[0:5]+chr(0)+sprite.spritedata[6:]
+                        sprite.spritedata = sprite.spritedata[0:2] + chr(
+                            (sprite.spritedata[3] & 0xF0) >> 4) + sprite.spritedata[3:]
+                if sprite.type == 449 and (
+                    sprite.spritedata[5] & 0xF0) >> 4 == 1: sprite.spritedata = sprite.spritedata[0:5] + chr(
+                    0) + sprite.spritedata[6:]
                 if sprite.type == 479 and sprite.spritedata[4] & 0xF == 1:
-                    if (sprite.spritedata[4] & 0xF0) >> 4 == 1: sprite.spritedata = sprite.spritedata[0:4]+chr(0x10)+sprite.spritedata[5:]
-                    else: sprite.spritedata = sprite.spritedata[0:4]+chr(0)+sprite.spritedata[5:]
+                    if (sprite.spritedata[4] & 0xF0) >> 4 == 1:
+                        sprite.spritedata = sprite.spritedata[0:4] + chr(0x10) + sprite.spritedata[5:]
+                    else:
+                        sprite.spritedata = sprite.spritedata[0:4] + chr(0) + sprite.spritedata[5:]
                 if sprite.type == 481:
-                    if sprite.spritedata[5] & 0xF > 2: sprite.spritedata = sprite.spritdata[0:5]+chr(2)+sprite.spritedata[6:]
-                    addsprites.append((419, sprite.objx-128, sprite.objy-128))
+                    if sprite.spritedata[5] & 0xF > 2: sprite.spritedata = sprite.spritdata[0:5] + chr(
+                        2) + sprite.spritedata[6:]
+                    addsprites.append((419, sprite.objx - 128, sprite.objy - 128))
 
             for id, x, y in addsprites:
                 new = SpriteItem(id, x, y, '\0\0\0\0\0\0\0\0\0\0')
@@ -13688,7 +13785,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
                 new.UpdateListItem()
 
-
     def TooManySprites(self, mode='f'):
         """
         Determines if the # of sprites in the current area is > max
@@ -13697,7 +13793,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         max = 1000
 
         problem = len(Area.sprites) > max
-        if mode == 'c': return problem
+        if mode == 'c':
+            return problem
         elif problem:
             for spr in Area.sprites[max:]:
                 spr.delete()
@@ -13708,7 +13805,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             mainWindow.scene.update()
             mainWindow.levelOverview.update()
 
-
     def DuplicateEntranceIDs(self, mode='f'):
         """
         Checks for the prescence of multiple entrances with the same ID
@@ -13718,7 +13814,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         IDs = []
         for ent in Area.entrances:
             if ent.entid in IDs:
-                if mode == 'c': return False
+                if mode == 'c':
+                    return False
                 else:
                     # find the lowest available ID
                     getids = [False for x in range(256)]
@@ -13732,7 +13829,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         return False
 
-
     def NoStartEntrance(self, mode='f'):
         """
         Determines if there is a start entrance or not
@@ -13742,11 +13838,12 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         start = None
         for ent in Area.entrances:
             if ent.entid == Area.startEntrance: start = ent
-        else: problem = False
+        else:
+            problem = False
         problem = start is None
 
-
-        if mode == 'c': return problem
+        if mode == 'c':
+            return problem
         elif problem:
             # make an entrance at 1024, 512 with an ID of Area.startEntrance
             ent = EntranceItem(1024, 512, Area.startEntrance, 0, 0, 0, 0, 0, 0, 0x80, 0)
@@ -13766,13 +13863,12 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
             SetDirty()
 
-
     def EntranceTooCloseToZoneEdge(self, mode='f'):
         """
         Checks if the main entrance is too close to the left zone edge
         """
         global Area
-        offset = 24 * 8 # 8 blocks away from the left zone edge
+        offset = 24 * 8  # 8 blocks away from the left zone edge
         if len(Area.zones) == 0: return False
 
         # if the ent isn't even in the zone, return
@@ -13790,16 +13886,17 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         if firstzone is None: return False
 
         problem = start.objx < firstzone.objx + offset
-        if mode == 'c': return problem
-        elif problem: start.setPos((firstzone.objx + offset)*1.5, start.objy*1.5)
-
+        if mode == 'c':
+            return problem
+        elif problem:
+            start.setPos((firstzone.objx + offset) * 1.5, start.objy * 1.5)
 
     def EntranceOutsideOfZone(self, mode='f'):
         """
         Checks if any entrances are not inside of a zone
         """
         global Area
-        left_offset = 24 * 8 # 8 blocks away from the left zone edge
+        left_offset = 24 * 8  # 8 blocks away from the left zone edge
         if len(Area.zones) == 0: return False
 
         for ent in Area.entrances:
@@ -13811,27 +13908,38 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 if z.id == zoneID: zone = z
             if zone is None: return False
 
-            if   x < zone.objx: problem = True
-            elif x > zone.objx + zone.width: problem = True
-            elif y < zone.objy - 64: problem = True
-            elif y > zone.objy + zone.height: problem = True
-            else: problem = False
+            if x < zone.objx:
+                problem = True
+            elif x > zone.objx + zone.width:
+                problem = True
+            elif y < zone.objy - 64:
+                problem = True
+            elif y > zone.objy + zone.height:
+                problem = True
+            else:
+                problem = False
 
-            if problem and mode == 'c': return True
+            if problem and mode == 'c':
+                return True
             elif problem:
-                if   x < zone.objx:               newx = zone.objx + left_offset
-                elif x > zone.objx + zone.width:  newx = zone.objx + zone.width - 16
-                else:                             newx = ent.objx
-                if   y < (zone.objy - 64):        newy = zone.objy - 64 # entrances can be placed a few blocks above the top zone border
-                elif y > zone.objy + zone.height: newy = zone.objy + zone.height - 32
-                else:                             newy = ent.objy
+                if x < zone.objx:
+                    newx = zone.objx + left_offset
+                elif x > zone.objx + zone.width:
+                    newx = zone.objx + zone.width - 16
+                else:
+                    newx = ent.objx
+                if y < (zone.objy - 64):
+                    newy = zone.objy - 64  # entrances can be placed a few blocks above the top zone border
+                elif y > zone.objy + zone.height:
+                    newy = zone.objy + zone.height - 32
+                else:
+                    newy = ent.objy
                 ent.objx = newx
                 ent.objy = newy
-                ent.setPos(int(newx*1.5), int(newy*1.5))
+                ent.setPos(int(newx * 1.5), int(newy * 1.5))
                 mainWindow.scene.update()
 
         return False
-
 
     def TooManyZones(self, mode='f'):
         """
@@ -13841,13 +13949,13 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         problem = len(Area.zones) > 8
 
-        if mode == 'c': return problem
+        if mode == 'c':
+            return problem
         elif problem:
             Area.zones = Area.zones[0:8]
 
             mainWindow.scene.update()
             mainWindow.levelOverview.update()
-
 
     def NoZones(self, mode='f'):
         """
@@ -13856,7 +13964,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         global Area
 
         problem = len(Area.zones) == 0
-        if mode == 'c': return problem
+        if mode == 'c':
+            return problem
         elif problem:
             # make a default zone
             a = []
@@ -13871,22 +13980,23 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             mainWindow.scene.update()
             mainWindow.levelOverview.update()
 
-
     def ZonesTooClose(self, mode='f'):
         """
         Checks for any zones which are too close together or are overlapping
         """
         global Area
-        padding = 4 # minimum blocks between zones
+        padding = 4  # minimum blocks between zones
 
-        for check in reversed(Area.zones): # reversed because generally zone 0 is most important, 1 is less, 2 is lesser, etc.
+        for check in reversed(
+                Area.zones):  # reversed because generally zone 0 is most important, 1 is less, 2 is lesser, etc.
             crect = check.ZoneRect
             for against in Area.zones:
                 if check is against: continue
-                arect = against.ZoneRect.adjusted(-16*padding,-16*padding,16*padding,16*padding)
+                arect = against.ZoneRect.adjusted(-16 * padding, -16 * padding, 16 * padding, 16 * padding)
 
                 if crect.intersects(arect):
-                    if mode=='c': return True
+                    if mode == 'c':
+                        return True
                     else:
                         # AAAAAAAAAAA
                         center = crect.center()
@@ -13894,7 +14004,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                         if arect.contains(crect) or crect.contains(arect):
                             # one inside the other
                             axes = [None, 'both']
-                        elif abs(center.x()-arect.center().x()) > abs(center.y()-arect.center().y()):
+                        elif abs(center.x() - arect.center().x()) > abs(center.y() - arect.center().y()):
                             # horizontally positioned
                             if arect.center().x() > center.x():
                                 # shrink the right
@@ -13915,15 +14025,20 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                         checkzone = check.ZoneRect
                         oldCoords = checkzone.getCoords()
                         while checkzone.intersects(arect):
-                            if axes[0] is None: pass
-                            elif axes[0] == 'x': check.objx += 1
-                            else: check.objy += 1
+                            if axes[0] is None:
+                                pass
+                            elif axes[0] == 'x':
+                                check.objx += 1
+                            else:
+                                check.objy += 1
 
                             if axes[1] == 'both':
                                 check.objx += 1
                                 check.objy += 1
-                            elif axes[1] == 'w': check.width -= 1
-                            else: check.height -= 1
+                            elif axes[1] == 'w':
+                                check.width -= 1
+                            else:
+                                check.height -= 1
                             if check.width < 300: check.width = 300
                             if check.height < 200: check.height = 200
 
@@ -13939,7 +14054,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         return False
 
-
     def ZonesTooCloseToAreaEdges(self, mode='f'):
         """
         Checks for any zones which are too close to the area edges, and moves them
@@ -13950,7 +14064,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         for z in Area.zones:
             if (z.objx < 16) or (z.objy < 16) or (z.objx + z.width > areaw - 16) or (z.objy + z.height > areah - 16):
-                if mode=='c': return False
+                if mode == 'c':
+                    return False
                 else:
                     if z.objx < 16: z.objx = 16
                     if z.objy < 16: z.objy = 16
@@ -13961,55 +14076,56 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         return False
 
-
     def BiasNotEnabled(self, mode='f'):
         """
         Checks for any zones which do not have bias enabled
         """
         global Area
-        fix = {'0 0':  (0, 1),
-               '0 7':  (0, 6),
+        fix = {'0 0': (0, 1),
+               '0 7': (0, 6),
                '0 11': (0, 4),
-               '3 2':  (0, 3),
-               '3 7':  (3, 3),      # This doesn't always appear
-               '6 0':  (6, 2),      # to work due to inconsistencies
-               '6 7':  (6, 6),      # in the editor, but I'm pretty
-               '6 11': (6, 4),      # sure it's written correctly.
-               '1 0':  (1, 1),
-               '1 7':  (1, 10),
+               '3 2': (0, 3),
+               '3 7': (3, 3),  # This doesn't always appear
+               '6 0': (6, 2),  # to work due to inconsistencies
+               '6 7': (6, 6),  # in the editor, but I'm pretty
+               '6 11': (6, 4),  # sure it's written correctly.
+               '1 0': (1, 1),
+               '1 7': (1, 10),
                '1 11': (1, 4),
-               '4 2':  (1, 3),
-               '4 7':  (4, 3)}
+               '4 2': (1, 3),
+               '4 7': (4, 3)}
 
         for z in Area.zones:
             check = str(z.cammode) + ' ' + str(z.camzoom)
             if check in fix:
-                if mode=='c': return False
+                if mode == 'c':
+                    return False
                 else:
                     z.cammode = fix[check][0]
                     z.camzoom = fix[check][1]
 
         return False
 
-
     def ZonesTooBig(self, mode='f'):
         """
         Checks for any zones which may be too large
         """
         global Area
-        maxarea = 16384 # blocks (approximated value)
+        maxarea = 16384  # blocks (approximated value)
 
         for z in Area.zones:
-            if int((z.width/32)*(z.height/32)) > maxarea*8:
-                if mode == 'c': return False
-                else: # shrink it by whichever dimension is larger
-                    if z.width > z.height: z.width = int(256*maxarea/z.height)
-                    else: z.height = int(256*maxarea/z.width)
+            if int((z.width / 32) * (z.height / 32)) > maxarea * 8:
+                if mode == 'c':
+                    return False
+                else:  # shrink it by whichever dimension is larger
+                    if z.width > z.height:
+                        z.width = int(256 * maxarea / z.height)
+                    else:
+                        z.height = int(256 * maxarea / z.width)
                     z.UpdateRects()
                     mainWindow.scene.update()
 
         return False
-
 
     def ZonesTooSmall(self, mode='f'):
         """
@@ -14017,24 +14133,24 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         global Area
         MinimumSize = (484, 272)
-##                        (484, 272), # -1
-##                        (484, 272), # 0
-##                        (484, 272), # 1
-##                        (540, 304), # 2
-##                        (596, 336), # 3
-##                        (796, 448)) # 4
-##        ZoomLevels = (3,
-##                      3,
-##                      6,
-##                      6,
-##                      5,
-##                      None,
-##                      4,
-##                      4,
-##                      0,
-##                      1,
-##                      None,
-##                      5)
+        ##                        (484, 272), # -1
+        ##                        (484, 272), # 0
+        ##                        (484, 272), # 1
+        ##                        (540, 304), # 2
+        ##                        (596, 336), # 3
+        ##                        (796, 448)) # 4
+        ##        ZoomLevels = (3,
+        ##                      3,
+        ##                      6,
+        ##                      6,
+        ##                      5,
+        ##                      None,
+        ##                      4,
+        ##                      4,
+        ##                      0,
+        ##                      1,
+        ##                      None,
+        ##                      5)
 
         fixes = []
         for z in Area.zones:
@@ -14055,7 +14171,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         mainWindow.scene.update()
         mainWindow.levelOverview.update()
 
-
     def UnusedBackgrounds(self, mode='f'):
         """
         Checks if there are custom background IDs in this area
@@ -14068,30 +14183,39 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             for name in ('1A', '2A', '3A', '1B', '2B', '3B'):
                 bg = eval('z.bg%s' % name)
                 id = '%04X' % bg
-                if name[1] == 'A': check = BgANames
-                else: check = BgBNames
+                if name[1] == 'A':
+                    check = BgANames
+                else:
+                    check = BgBNames
 
                 found = False
                 for entry in check:
                     if id in entry: found = True
 
                 if not found:
-                    if mode == 'c': return True
+                    if mode == 'c':
+                        return True
                     else:
-                        if   name == '1A': z.bg1A = 1
-                        elif name == '2A': z.bg2A = 1
-                        elif name == '3A': z.bg3A = 1
-                        elif name == '1B': z.bg1B = 1
-                        elif name == '2B': z.bg2B = 1
-                        elif name == '3B': z.bg3B = 1
+                        if name == '1A':
+                            z.bg1A = 1
+                        elif name == '2A':
+                            z.bg2A = 1
+                        elif name == '3A':
+                            z.bg3A = 1
+                        elif name == '1B':
+                            z.bg1B = 1
+                        elif name == '2B':
+                            z.bg2B = 1
+                        elif name == '3B':
+                            z.bg3B = 1
         return False
-
 
 
 class InfoPreviewWidget(QtWidgets.QWidget):
     """
     Widget that shows a preview of the level metadata info - available in vertical & horizontal flavors
     """
+
     def __init__(self, direction):
         """
         Creates and initializes the widget
@@ -14114,31 +14238,33 @@ class InfoPreviewWidget(QtWidgets.QWidget):
         """
         Updates the widget labels
         """
-        if ('Area' not in globals()) or not hasattr(Area, 'filename'): # can't get level metadata if there's no level
+        if ('Area' not in globals()) or not hasattr(Area, 'filename'):  # can't get level metadata if there's no level
             self.Label1.setText('')
             if self.direction == Qt.Horizontal: self.Label2.setText('')
             return
 
-        a = [ # MUST be a list, not a tuple
+        a = [  # MUST be a list, not a tuple
             mainWindow.fileTitle,
             Area.Title,
             trans.string('InfoDlg', 8, '[name]', Area.Creator),
             trans.string('InfoDlg', 5) + ' ' + Area.Author,
             trans.string('InfoDlg', 6) + ' ' + Area.Group,
             trans.string('InfoDlg', 7) + ' ' + Area.Webpage,
-            ]
+        ]
 
-        for b, section in enumerate(a): # cut off excessively long strings
-            if self.direction == Qt.Vertical: short = clipStr(section, 128)
-            else: short = clipStr(section, 184)
+        for b, section in enumerate(a):  # cut off excessively long strings
+            if self.direction == Qt.Vertical:
+                short = clipStr(section, 128)
+            else:
+                short = clipStr(section, 184)
             if short is not None: a[b] = short + '...'
 
         if self.direction == Qt.Vertical:
-            str1 = a[0]+'<br>'+a[1]+'<br>'+a[2]+'<br>'+a[3]+'<br>'+a[4]+'<br>'+a[5]
+            str1 = a[0] + '<br>' + a[1] + '<br>' + a[2] + '<br>' + a[3] + '<br>' + a[4] + '<br>' + a[5]
             self.Label1.setText(str1)
         else:
-            str1 = a[0]+'<br>'+a[1]+'<br>'+a[2]
-            str2 = a[3]+'<br>'+a[4]+'<br>'+a[5]
+            str1 = a[0] + '<br>' + a[1] + '<br>' + a[2]
+            str2 = a[3] + '<br>' + a[4] + '<br>' + a[5]
             self.Label1.setText(str1)
             self.Label2.setText(str2)
 
@@ -14149,6 +14275,7 @@ class GameDefViewer(QtWidgets.QWidget):
     """
     Widget which displays basic info about the current game definition
     """
+
     def __init__(self):
         """
         Initializes the widget
@@ -14187,8 +14314,9 @@ class GameDefViewer(QtWidgets.QWidget):
         Updates all labels
         """
         empty = QtGui.QPixmap(16, 16)
-        empty.fill(QtGui.QColor(0,0,0,0))
-        img = GetIcon('sprites', False).pixmap(16, 16) if ((gamedef.recursiveFiles('sprites', False, True) != []) or (not gamedef.custom)) else empty
+        empty.fill(QtGui.QColor(0, 0, 0, 0))
+        img = GetIcon('sprites', False).pixmap(16, 16) if (
+        (gamedef.recursiveFiles('sprites', False, True) != []) or (not gamedef.custom)) else empty
         ver = '' if gamedef.version is None else '<i><p style="font-size:10px;">v' + str(gamedef.version) + '</p></i>'
         title = '<b>' + str(gamedef.name) + '</b>'
         desc = str(gamedef.description)
@@ -14204,6 +14332,7 @@ class GameDefSelector(QtWidgets.QWidget):
     Widget which lets you pick a new game definition
     """
     gameChanged = QtCore.pyqtSignal()
+
     def __init__(self):
         """
         Initializes the widget
@@ -14242,12 +14371,11 @@ class GameDefSelector(QtWidgets.QWidget):
 
         self.setLayout(L)
 
-
     def HandleRadioButtonClick(self, checked):
         """
         Handles radio button clicks
         """
-        if not checked: return # this is called twice; one button is checked, another is unchecked
+        if not checked: return  # this is called twice; one button is checked, another is unchecked
 
         loadNewGameDef(self.GameDefs[self.group.checkedId()])
         self.gameChanged.emit()
@@ -14258,6 +14386,7 @@ class GameDefMenu(QtWidgets.QMenu):
     A menu which lets the user pick gamedefs
     """
     gameChanged = QtCore.pyqtSignal()
+
     def __init__(self):
         """
         Creates and initializes the menu
@@ -14304,7 +14433,6 @@ class GameDefMenu(QtWidgets.QMenu):
         self.gameChanged.emit()
 
 
-
 def getAvailableGameDefs():
     GameDefs = []
 
@@ -14323,6 +14451,7 @@ def getAvailableGameDefs():
     for item in GameDefs: new.append(item[1])
     return new
 
+
 def loadNewGameDef(def_):
     """
     Loads ReggieGameDefinition def_, and displays a progress dialog
@@ -14339,7 +14468,6 @@ def loadNewGameDef(def_):
 
     dlg.setValue(100)
     del dlg
-
 
 
 def clipStr(text, idealWidth, font=None):
@@ -14361,12 +14489,13 @@ class ZoomWidget(QtWidgets.QWidget):
     """
     Widget that allows easy zoom level control
     """
+
     def __init__(self):
         """
         Creates and initializes the widget
         """
         QtWidgets.QWidget.__init__(self)
-        maxwidth = 512-128
+        maxwidth = 512 - 128
         maxheight = 20
 
         self.slider = QtWidgets.QSlider(Qt.Horizontal)
@@ -14377,7 +14506,7 @@ class ZoomWidget(QtWidgets.QWidget):
 
         self.slider.setMaximumHeight(maxheight)
         self.slider.setMinimum(0)
-        self.slider.setMaximum(len(mainWindow.ZoomLevels)-1)
+        self.slider.setMaximum(len(mainWindow.ZoomLevels) - 1)
         self.slider.setTickInterval(2)
         self.slider.setTickPosition(self.slider.TicksAbove)
         self.slider.setPageStep(1)
@@ -14399,14 +14528,14 @@ class ZoomWidget(QtWidgets.QWidget):
         self.maxLabel.clicked.connect(mainWindow.HandleZoomMax)
 
         self.layout = QtWidgets.QGridLayout()
-        self.layout.addWidget(self.minLabel,   0, 0)
+        self.layout.addWidget(self.minLabel, 0, 0)
         self.layout.addWidget(self.minusLabel, 0, 1)
-        self.layout.addWidget(self.slider,     0, 2)
-        self.layout.addWidget(self.plusLabel,  0, 3)
-        self.layout.addWidget(self.maxLabel,   0, 4)
+        self.layout.addWidget(self.slider, 0, 2)
+        self.layout.addWidget(self.plusLabel, 0, 3)
+        self.layout.addWidget(self.maxLabel, 0, 4)
         self.layout.setVerticalSpacing(0)
         self.layout.setHorizontalSpacing(0)
-        self.layout.setContentsMargins(0,0,4,0)
+        self.layout.setContentsMargins(0, 0, 4, 0)
 
         self.setLayout(self.layout)
         self.setMinimumWidth(maxwidth)
@@ -14434,6 +14563,7 @@ class ZoomStatusWidget(QtWidgets.QWidget):
     """
     Shows the current zoom level, in percent
     """
+
     def __init__(self):
         """
         Creates and initializes the widget
@@ -14445,7 +14575,7 @@ class ZoomStatusWidget(QtWidgets.QWidget):
 
         self.layout = QtWidgets.QHBoxLayout()
         self.layout.addWidget(self.label)
-        self.layout.setContentsMargins(4,0,8,0)
+        self.layout.setContentsMargins(4, 0, 8, 0)
         self.setMaximumWidth(56)
 
         self.setLayout(self.layout)
@@ -14455,10 +14585,9 @@ class ZoomStatusWidget(QtWidgets.QWidget):
         Updates the widget
         """
         if float(int(zoomLevel)) == float(zoomLevel):
-            self.label.setText(str(int(zoomLevel))+'%')
+            self.label.setText(str(int(zoomLevel)) + '%')
         else:
-            self.label.setText(str(float(zoomLevel))+'%')
-
+            self.label.setText(str(float(zoomLevel)) + '%')
 
 
 def LoadActionsLists():
@@ -14471,24 +14600,24 @@ def LoadActionsLists():
     global HelpActions
 
     FileActions = (
-        (trans.string('MenuItems', 0),  True,  'newlevel'),
-        (trans.string('MenuItems', 2),  True,  'openfromname'),
-        (trans.string('MenuItems', 4),  False, 'openfromfile'),
-        (trans.string('MenuItems', 8),  True,  'save'),
+        (trans.string('MenuItems', 0), True, 'newlevel'),
+        (trans.string('MenuItems', 2), True, 'openfromname'),
+        (trans.string('MenuItems', 4), False, 'openfromfile'),
+        (trans.string('MenuItems', 8), True, 'save'),
         (trans.string('MenuItems', 10), False, 'saveas'),
         (trans.string('MenuItems', 10), False, 'savecopyas'),
         (trans.string('MenuItems', 12), False, 'metainfo'),
-        (trans.string('MenuItems', 14), True,  'screenshot'),
+        (trans.string('MenuItems', 14), True, 'screenshot'),
         (trans.string('MenuItems', 16), False, 'changegamepath'),
         (trans.string('MenuItems', 18), False, 'preferences'),
         (trans.string('MenuItems', 20), False, 'exit'),
-        )
+    )
     EditActions = (
         (trans.string('MenuItems', 22), False, 'selectall'),
         (trans.string('MenuItems', 24), False, 'deselect'),
-        (trans.string('MenuItems', 26), True,  'cut'),
-        (trans.string('MenuItems', 28), True,  'copy'),
-        (trans.string('MenuItems', 30), True,  'paste'),
+        (trans.string('MenuItems', 26), True, 'cut'),
+        (trans.string('MenuItems', 28), True, 'copy'),
+        (trans.string('MenuItems', 30), True, 'paste'),
         (trans.string('MenuItems', 32), False, 'shiftitems'),
         (trans.string('MenuItems', 34), False, 'mergelocations'),
         (trans.string('MenuItems', 36), False, 'diagnostic'),
@@ -14497,21 +14626,21 @@ def LoadActionsLists():
         (trans.string('MenuItems', 42), False, 'freezeentrances'),
         (trans.string('MenuItems', 44), False, 'freezelocations'),
         (trans.string('MenuItems', 46), False, 'freezepaths'),
-        )
+    )
     ViewActions = (
-        (trans.string('MenuItems', 48), True,  'showlay0'),
-        (trans.string('MenuItems', 50), True,  'showlay1'),
-        (trans.string('MenuItems', 52), True,  'showlay2'),
-        (trans.string('MenuItems', 54), True,  'showsprites'),
+        (trans.string('MenuItems', 48), True, 'showlay0'),
+        (trans.string('MenuItems', 50), True, 'showlay1'),
+        (trans.string('MenuItems', 52), True, 'showlay2'),
+        (trans.string('MenuItems', 54), True, 'showsprites'),
         (trans.string('MenuItems', 56), False, 'showspriteimages'),
-        (trans.string('MenuItems', 58), True,  'showlocations'),
-        (trans.string('MenuItems', 60), True,  'grid'),
-        (trans.string('MenuItems', 62), True,  'zoommax'),
-        (trans.string('MenuItems', 64), True,  'zoomin'),
-        (trans.string('MenuItems', 66), True,  'zoomactual'),
-        (trans.string('MenuItems', 68), True,  'zoomout'),
-        (trans.string('MenuItems', 70), True,  'zoommin'),
-        )
+        (trans.string('MenuItems', 58), True, 'showlocations'),
+        (trans.string('MenuItems', 60), True, 'grid'),
+        (trans.string('MenuItems', 62), True, 'zoommax'),
+        (trans.string('MenuItems', 64), True, 'zoomin'),
+        (trans.string('MenuItems', 66), True, 'zoomactual'),
+        (trans.string('MenuItems', 68), True, 'zoomout'),
+        (trans.string('MenuItems', 70), True, 'zoommin'),
+    )
     SettingsActions = (
         (trans.string('MenuItems', 72), True, 'areaoptions'),
         (trans.string('MenuItems', 74), True, 'zones'),
@@ -14520,19 +14649,20 @@ def LoadActionsLists():
         (trans.string('MenuItems', 80), False, 'importarea'),
         (trans.string('MenuItems', 82), False, 'deletearea'),
         (trans.string('MenuItems', 84), False, 'reloadgfx'),
-        )
+    )
     HelpActions = (
         (trans.string('MenuItems', 86), False, 'infobox'),
         (trans.string('MenuItems', 88), False, 'helpbox'),
         (trans.string('MenuItems', 90), False, 'tipbox'),
         (trans.string('MenuItems', 92), False, 'aboutqt'),
-        )
+    )
 
 
 class PreferencesDialog(QtWidgets.QDialog):
     """
     Dialog which lets you customize Reggie
     """
+
     def __init__(self):
         """
         Creates and initializes the dialog
@@ -14575,7 +14705,6 @@ class PreferencesDialog(QtWidgets.QDialog):
         """
         self.infoLabel.setText(self.tabWidget.currentWidget().info)
 
-
     def getGeneralTab(self):
         """
         Returns the General Tab
@@ -14596,7 +14725,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Add the Tileset Selection settings
                 self.TileD = QtWidgets.QRadioButton(trans.string('PrefsDlg', 28))
                 self.TileO = QtWidgets.QRadioButton(trans.string('PrefsDlg', 29))
-                self.TileG = QtWidgets.QButtonGroup() # huge glitches if it's not assigned to self.something
+                self.TileG = QtWidgets.QButtonGroup()  # huge glitches if it's not assigned to self.something
                 self.TileG.setExclusive(True)
                 self.TileG.addButton(self.TileD)
                 self.TileG.addButton(self.TileO)
@@ -14621,13 +14750,14 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Set the buttons
                 self.Reset()
 
-
             def Reset(self):
                 """
                 Read the preferences and check the respective boxes
                 """
-                if str(setting('TilesetTab')) != 'Old': self.TileD.setChecked(True)
-                else: self.TileO.setChecked(True)
+                if str(setting('TilesetTab')) != 'Old':
+                    self.TileD.setChecked(True)
+                else:
+                    self.TileO.setChecked(True)
 
                 self.Trans.addItem('English')
                 self.Trans.setItemData(0, None, Qt.UserRole)
@@ -14649,9 +14779,7 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 self.zEntIndicator.setChecked(DrawEntIndicators)
 
-
         return GeneralTab()
-
 
     def getToolbarTab(self):
         """
@@ -14683,9 +14811,9 @@ class PreferencesDialog(QtWidgets.QDialog):
                     for List in (FileActions, EditActions, ViewActions, SettingsActions, HelpActions):
                         for name, activated, key in List:
                             toggled[key] = activated
-                else: # Get the registry settings
+                else:  # Get the registry settings
                     toggled = setting('ToolbarActs')
-                    newToggled = {} # here, I'm replacing QStrings w/ python strings
+                    newToggled = {}  # here, I'm replacing QStrings w/ python strings
                     for key in toggled:
                         newToggled[str(key)] = toggled[key]
                     toggled = newToggled
@@ -14722,11 +14850,12 @@ class PreferencesDialog(QtWidgets.QDialog):
                         box = QtWidgets.QCheckBox(L)
                         boxes.append(box)
                         layout.addWidget(box)
-                        try: box.setChecked(toggled[I])
-                        except KeyError: pass
-                        box.InternalName = I # to save settings later
+                        try:
+                            box.setChecked(toggled[I])
+                        except KeyError:
+                            pass
+                        box.InternalName = I  # to save settings later
                     group.setLayout(layout)
-
 
                 # Create the always-enabled Current Area checkbox
                 CurrentArea = QtWidgets.QCheckBox(trans.string('PrefsDlg', 19))
@@ -14739,12 +14868,12 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 # Create the main layout
                 L = QtWidgets.QGridLayout()
-                L.addWidget(reset,       0, 0, 1, 1)
-                L.addWidget(FB,          1, 0, 3, 1)
-                L.addWidget(EB,          1, 1, 3, 1)
-                L.addWidget(VB,          1, 2, 3, 1)
-                L.addWidget(SB,          1, 3, 1, 1)
-                L.addWidget(HB,          2, 3, 1, 1)
+                L.addWidget(reset, 0, 0, 1, 1)
+                L.addWidget(FB, 1, 0, 3, 1)
+                L.addWidget(EB, 1, 1, 3, 1)
+                L.addWidget(VB, 1, 2, 3, 1)
+                L.addWidget(SB, 1, 3, 1, 1)
+                L.addWidget(HB, 2, 3, 1, 1)
                 L.addWidget(CurrentArea, 3, 3, 1, 1)
                 self.setLayout(L)
 
@@ -14766,7 +14895,6 @@ class PreferencesDialog(QtWidgets.QDialog):
 
         return ToolbarTab()
 
-
     def getThemesTab(self):
         """
         Returns the Themes Tab
@@ -14786,7 +14914,7 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 # Get the current and available themes
                 self.themeID = theme.themeName
-                self.themes = self.getAvailableThemes()
+                self.themes = self.getAvailableThemes
 
                 # Create the radiobuttons
                 self.btns = []
@@ -14811,7 +14939,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Create the buttons groupbox
                 L = QtWidgets.QGridLayout()
                 for idx, button in enumerate(self.btns):
-                    L.addWidget(btn, idx%12, int(idx/12))
+                    L.addWidget(btn, idx % 12, int(idx / 12))
                 btnGB = QtWidgets.QGroupBox(trans.string('PrefsDlg', 21))
                 btnGB.setLayout(L)
 
@@ -14851,7 +14979,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Update the preview things
                 self.UpdatePreview()
 
-
+            @property
             def getAvailableThemes(self):
                 """Searches the Themes folder and returns a list of theme filepaths.
                 Automatically adds 'Classic' to the list."""
@@ -14863,7 +14991,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                             data = open('reggiedata/themes/' + themeName, 'rb').read()
                             theme = ReggieTheme(data)
                             themeList.append((themeName, theme))
-                    except Exception: pass
+                    except Exception:
+                        pass
 
                 return tuple(themeList)
 
@@ -14875,7 +15004,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                     if btn.isChecked():
                         t = self.btnvals[btn][1]
                         self.preview.setPixmap(self.drawPreview(t))
-                        text = trans.string('PrefsDlg', 26, '[name]', t.themeName, '[creator]', t.creator, '[description]', t.description)
+                        text = trans.string('PrefsDlg', 26, '[name]', t.themeName, '[creator]', t.creator,
+                                            '[description]', t.description)
                         self.description.setText(text)
 
             def drawPreview(self, theme):
@@ -14888,92 +15018,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                 px.fill(theme.color('bg'))
                 return px
 
-
-                paint = QtGui.QPainter(px)
-
-                UIColor = theme.color('ui')
-                if UIColor is None: UIColor = toQColor(240,240,240) # close enough
-
-                ice = QtGui.QPixmap(os.path.join('reggiedata', 'sprites', 'ice_flow_7.png'))
-
-                global NumberFont
-                font = QtGui.QFont(NumberFont) # need to make a new instance to avoid changing global settings
-                font.setPointSize(6)
-                paint.setFont(font)
-
-                # Draw the spriteboxes
-                paint.setPen(QtGui.QPen(theme.color('spritebox_lines'), 1))
-                paint.setBrush(QtGui.QBrush(theme.color('spritebox_fill')))
-
-                paint.drawRoundedRect(176, 64, 16, 16, 5, 5)
-                paint.drawText(QtCore.QPointF(180, 75), '38')
-
-                paint.drawRoundedRect(16, 96, 16, 16, 5, 5)
-                paint.drawText(QtCore.QPointF(20, 107), '53')
-
-                # Draw the entrance
-                paint.setPen(QtGui.QPen(theme.color('entrance_lines'), 1))
-                paint.setBrush(QtGui.QBrush(theme.color('entrance_fill')))
-
-                paint.drawRoundedRect(208, 128, 16, 16, 5, 5)
-                paint.drawText(QtCore.QPointF(212, 138), '0')
-
-                # Draw the location
-                paint.setPen(QtGui.QPen(theme.color('location_lines'), 1))
-                paint.setBrush(QtGui.QBrush(theme.color('location_fill')))
-
-                paint.drawRect(16, 144, 96, 32)
-                paint.setPen(QtGui.QPen(theme.color('location_text'), 1))
-                paint.drawText(QtCore.QPointF(20, 154), '1')
-
-                # Draw the iceblock (can't easily draw a tileset obj)
-                paint.drawPixmap(160, 144, ice.scaled(ice.width()*2/3, ice.height()*2/3))
-
-                # Draw the zone
-                paint.setPen(QtGui.QPen(theme.color('zone_lines'), 3))
-                paint.setBrush(QtGui.QBrush(toQColor(0,0,0,0)))
-                paint.drawRect(136, 52, 256, 120)
-                paint.setPen(QtGui.QPen(theme.color('zone_corner'), 3))
-                paint.setBrush(QtGui.QBrush(theme.color('zone_corner'), 3))
-                paint.drawRect(135, 51, 2, 2)
-                paint.drawRect(135, 171, 2, 2)
-                paint.setPen(QtGui.QPen(theme.color('zone_text'), 1))
-                font = QtGui.QFont(NumberFont)
-                font.setPointSize(5)
-                paint.setFont(font)
-                paint.drawText(QtCore.QPointF(140, 62), 'Zone 1')
-
-                # Draw the grid
-                paint.setPen(QtGui.QPen(theme.color('grid'), 1, Qt.DotLine))
-                gridcoords = []
-                i=0
-                while i < 350:
-                    gridcoords.append(i)
-                    i=i+16
-                for i in gridcoords:
-                    paint.setPen(QtGui.QPen(theme.color('grid'), 0.75, Qt.DotLine))
-                    paint.drawLine(i, 0, i, 185)
-                    paint.drawLine(0, i, 350, i)
-                    if (i/16)%4 == 0:
-                        paint.setPen(QtGui.QPen(theme.color('grid'), 1.5, Qt.DotLine))
-                        paint.drawLine(i, 0, i, 185)
-                        paint.drawLine(0, i, 350, i)
-                    if (i/16)%8 == 0:
-                        paint.setPen(QtGui.QPen(theme.color('grid'), 2.25, Qt.DotLine))
-                        paint.drawLine(i, 0, i, 185)
-                        paint.drawLine(0, i, 350, i)
-
-                # Draw the UI
-                paint.setBrush(QtGui.QBrush(UIColor))
-                paint.setPen(toQColor(0,0,0,0))
-                paint.drawRect(0, 0, 350, 24)
-                paint.drawRect(300, 24, 50, 165)
-
-                # Delete the painter and return the pixmap
-                del paint
-                return px
-
-
         return ThemesTab()
 
 
@@ -14981,6 +15025,7 @@ class UpdateDialog(QtWidgets.QDialog):
     """
     Dialog to display any available updates
     """
+
     def __init__(self):
         """
         Init the dialog
@@ -15019,12 +15064,16 @@ class UpdateDialog(QtWidgets.QDialog):
         """
         # Attempt to download data
         errors = False
-        try: data = self.getTxt()
-        except Exception: errors = True
+        try:
+            data = self.getTxt()
+        except Exception:
+            errors = True
 
         if not errors:
-            try: releaseType = open('release.txt', 'r').read()
-            except Exception: releaseType = 'unknown'
+            try:
+                releaseType = open('release.txt', 'r').read()
+            except Exception:
+                releaseType = 'unknown'
             releaseType = releaseType.replace('\n', '').replace('\r', '')
 
             available = ReggieVersion in data and len(data[ReggieVersion].values()) > 0
@@ -15076,7 +15125,6 @@ class UpdateDialog(QtWidgets.QDialog):
 
         return rootData
 
-
     def UpdateUi(self, available, name='', infourl='', url=''):
         """
         Updates the UI based on updateinfo
@@ -15092,8 +15140,7 @@ class UpdateDialog(QtWidgets.QDialog):
             self.msgLabel.setText(trans.string('Updates', 3, '[name]', name, '[info]', infourl))
 
             self.dldBtn.show()
-            self.dldBtn.url = url # hacky method
-
+            self.dldBtn.url = url  # hacky method
 
     def handleDldBtn(self):
         """
@@ -15120,12 +15167,14 @@ class UpdateDialog(QtWidgets.QDialog):
         An object that downloads the update. Contains signals.
         """
         done = QtCore.pyqtSignal()
+
         def __init__(self, url):
             """
             Initializes it
             """
             QtCore.QObject.__init__(self)
             self.url = url
+
         def run(self):
             """
             Runs the download
@@ -15141,7 +15190,6 @@ class UpdateDialog(QtWidgets.QDialog):
             time.sleep(8)
 
             self.done.emit()
-
 
 
 class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
@@ -15161,7 +15209,6 @@ class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
             self.toolTipAboutToShow.emit(self.itemFromIndex(self.indexAt(e.pos())))
 
         return super().viewportEvent(e)
-
 
 
 ####################################################################
@@ -15193,7 +15240,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.actions[shortname] = act
 
-
     def __init__(self):
         """
         Editor window constructor
@@ -15204,7 +15250,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Reggie Version number goes below here. 64 char max (32 if non-ascii).
         self.ReggieInfo = ReggieID
 
-        self.ZoomLevels = [7.5, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0, 85.0, 90.0, 95.0, 100.0, 125.0, 150.0, 175.0, 200.0, 250.0, 300.0, 350.0, 400.0]
+        self.ZoomLevels = [7.5, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0,
+                           85.0, 90.0, 95.0, 100.0, 125.0, 150.0, 175.0, 200.0, 250.0, 300.0, 350.0, 400.0]
 
         # add the undo stack object
         self.undoStack = UndoStack()
@@ -15223,12 +15270,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.setUnifiedTitleAndToolBarOnMac(True)
 
         # create the level view
-        self.scene = LevelScene(0, 0, 1024*24, 512*24, self)
+        self.scene = LevelScene(0, 0, 1024 * 24, 512 * 24, self)
         self.scene.setItemIndexMethod(QtWidgets.QGraphicsScene.NoIndex)
         self.scene.selectionChanged.connect(self.ChangeSelectionHandler)
 
         self.view = LevelViewWidget(self.scene, self)
-        self.view.centerOn(0,0) # this scrolls to the top left
+        self.view.centerOn(0, 0)  # this scrolls to the top left
         self.view.PositionHover.connect(self.PositionHovered)
         self.view.XScrollBar.valueChanged.connect(self.XScrollChange)
         self.view.YScrollBar.valueChanged.connect(self.YScrollChange)
@@ -15244,7 +15291,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # we might have something there already, activate Paste if so
         self.TrackClipboardUpdates()
-
 
     def __init2__(self):
         """
@@ -15285,7 +15331,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not loaded:
             self.LoadLevel(None, '01-01', False, 1)
 
-
         QtCore.QTimer.singleShot(100, self.levelOverview.update)
 
         toggleHandlers = {
@@ -15293,9 +15338,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.HandleSpriteImages: SpriteImagesShown,
             self.HandleLocationsVisibility: LocationsShown,
             self.HandleCommentsVisibility: CommentsShown,
-            }
+        }
         for handler in toggleHandlers:
-            handler(toggleHandlers[handler]) # call each toggle-button handler to set each feature correctly upon startup
+            handler(
+                toggleHandlers[handler])  # call each toggle-button handler to set each feature correctly upon startup
 
         # let's restore the state and geometry
         # geometry: determines the main window position
@@ -15311,7 +15357,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Aaaaaand... initializing is done!
         Initializing = False
 
-
     def SetupActionsAndMenus(self):
         """
         Sets up Reggie's actions, menus and toolbars
@@ -15321,72 +15366,147 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.createMenubar()
 
     actions = {}
+
     def createMenubar(self):
         """
         Create actions, a menubar and a toolbar
         """
 
         # File
-        self.CreateAction('newlevel', self.HandleNewLevel, GetIcon('new'), trans.stringOneLine('MenuItems', 0), trans.stringOneLine('MenuItems', 1), QtGui.QKeySequence.New)
-        self.CreateAction('openfromname', self.HandleOpenFromName, GetIcon('open'), trans.stringOneLine('MenuItems', 2), trans.stringOneLine('MenuItems', 3), QtGui.QKeySequence.Open)
-        self.CreateAction('openfromfile', self.HandleOpenFromFile, GetIcon('openfromfile'), trans.stringOneLine('MenuItems', 4), trans.stringOneLine('MenuItems', 5), QtGui.QKeySequence('Ctrl+Shift+O'))
-        self.CreateAction('save', self.HandleSave, GetIcon('save'), trans.stringOneLine('MenuItems', 8), trans.stringOneLine('MenuItems', 9), QtGui.QKeySequence.Save)
-        self.CreateAction('saveas', self.HandleSaveAs, GetIcon('saveas'), trans.stringOneLine('MenuItems', 10), trans.stringOneLine('MenuItems', 11), QtGui.QKeySequence.SaveAs)
-        self.CreateAction('savecopyas', self.HandleSaveCopyAs, GetIcon('savecopyas'), trans.stringOneLine('MenuItems', 128), trans.stringOneLine('MenuItems', 129), None)
-        self.CreateAction('metainfo', self.HandleInfo, GetIcon('info'), trans.stringOneLine('MenuItems', 12), trans.stringOneLine('MenuItems', 13), QtGui.QKeySequence('Ctrl+Alt+I'))
-        self.CreateAction('changegamedef', None, GetIcon('game'), trans.stringOneLine('MenuItems', 98), trans.stringOneLine('MenuItems', 99), None)
-        self.CreateAction('screenshot', self.HandleScreenshot, GetIcon('screenshot'), trans.stringOneLine('MenuItems', 14), trans.stringOneLine('MenuItems', 15), QtGui.QKeySequence('Ctrl+Alt+S'))
-        self.CreateAction('changegamepath', self.HandleChangeGamePath, GetIcon('folderpath'), trans.stringOneLine('MenuItems', 16), trans.stringOneLine('MenuItems', 17), QtGui.QKeySequence('Ctrl+Alt+G'))
-        self.CreateAction('preferences', self.HandlePreferences, GetIcon('settings'), trans.stringOneLine('MenuItems', 18), trans.stringOneLine('MenuItems', 19), QtGui.QKeySequence('Ctrl+Alt+P'))
-        self.CreateAction('exit', self.HandleExit, GetIcon('delete'), trans.stringOneLine('MenuItems', 20), trans.stringOneLine('MenuItems', 21), QtGui.QKeySequence('Ctrl+Q'))
+        self.CreateAction('newlevel', self.HandleNewLevel, GetIcon('new'), trans.stringOneLine('MenuItems', 0),
+                          trans.stringOneLine('MenuItems', 1), QtGui.QKeySequence.New)
+        self.CreateAction('openfromname', self.HandleOpenFromName, GetIcon('open'), trans.stringOneLine('MenuItems', 2),
+                          trans.stringOneLine('MenuItems', 3), QtGui.QKeySequence.Open)
+        self.CreateAction('openfromfile', self.HandleOpenFromFile, GetIcon('openfromfile'),
+                          trans.stringOneLine('MenuItems', 4), trans.stringOneLine('MenuItems', 5),
+                          QtGui.QKeySequence('Ctrl+Shift+O'))
+        self.CreateAction('save', self.HandleSave, GetIcon('save'), trans.stringOneLine('MenuItems', 8),
+                          trans.stringOneLine('MenuItems', 9), QtGui.QKeySequence.Save)
+        self.CreateAction('saveas', self.HandleSaveAs, GetIcon('saveas'), trans.stringOneLine('MenuItems', 10),
+                          trans.stringOneLine('MenuItems', 11), QtGui.QKeySequence.SaveAs)
+        self.CreateAction('savecopyas', self.HandleSaveCopyAs, GetIcon('savecopyas'),
+                          trans.stringOneLine('MenuItems', 128), trans.stringOneLine('MenuItems', 129), None)
+        self.CreateAction('metainfo', self.HandleInfo, GetIcon('info'), trans.stringOneLine('MenuItems', 12),
+                          trans.stringOneLine('MenuItems', 13), QtGui.QKeySequence('Ctrl+Alt+I'))
+        self.CreateAction('changegamedef', None, GetIcon('game'), trans.stringOneLine('MenuItems', 98),
+                          trans.stringOneLine('MenuItems', 99), None)
+        self.CreateAction('screenshot', self.HandleScreenshot, GetIcon('screenshot'),
+                          trans.stringOneLine('MenuItems', 14), trans.stringOneLine('MenuItems', 15),
+                          QtGui.QKeySequence('Ctrl+Alt+S'))
+        self.CreateAction('changegamepath', self.HandleChangeGamePath, GetIcon('folderpath'),
+                          trans.stringOneLine('MenuItems', 16), trans.stringOneLine('MenuItems', 17),
+                          QtGui.QKeySequence('Ctrl+Alt+G'))
+        self.CreateAction('preferences', self.HandlePreferences, GetIcon('settings'),
+                          trans.stringOneLine('MenuItems', 18), trans.stringOneLine('MenuItems', 19),
+                          QtGui.QKeySequence('Ctrl+Alt+P'))
+        self.CreateAction('exit', self.HandleExit, GetIcon('delete'), trans.stringOneLine('MenuItems', 20),
+                          trans.stringOneLine('MenuItems', 21), QtGui.QKeySequence('Ctrl+Q'))
 
         # Edit
-        self.CreateAction('selectall', self.SelectAll, GetIcon('selectall'), trans.stringOneLine('MenuItems', 22), trans.stringOneLine('MenuItems', 23), QtGui.QKeySequence.SelectAll)
-        self.CreateAction('deselect', self.Deselect, GetIcon('deselect'), trans.stringOneLine('MenuItems', 24), trans.stringOneLine('MenuItems', 25), QtGui.QKeySequence('Ctrl+D'))
-        self.CreateAction('undo', self.Undo, GetIcon('undo'), trans.stringOneLine('MenuItems', 124), trans.stringOneLine('MenuItems', 125), QtGui.QKeySequence.Undo)
-        self.CreateAction('redo', self.Redo, GetIcon('redo'), trans.stringOneLine('MenuItems', 126), trans.stringOneLine('MenuItems', 127), QtGui.QKeySequence.Redo)
-        self.CreateAction('cut', self.Cut, GetIcon('cut'), trans.stringOneLine('MenuItems', 26), trans.stringOneLine('MenuItems', 27), QtGui.QKeySequence.Cut)
-        self.CreateAction('copy', self.Copy, GetIcon('copy'), trans.stringOneLine('MenuItems', 28), trans.stringOneLine('MenuItems', 29), QtGui.QKeySequence.Copy)
-        self.CreateAction('paste', self.Paste, GetIcon('paste'), trans.stringOneLine('MenuItems', 30), trans.stringOneLine('MenuItems', 31), QtGui.QKeySequence.Paste)
-        self.CreateAction('shiftitems', self.ShiftItems, GetIcon('move'), trans.stringOneLine('MenuItems', 32), trans.stringOneLine('MenuItems', 33), QtGui.QKeySequence('Ctrl+Shift+S'))
-        self.CreateAction('mergelocations', self.MergeLocations, GetIcon('merge'), trans.stringOneLine('MenuItems', 34), trans.stringOneLine('MenuItems', 35), QtGui.QKeySequence('Ctrl+Shift+E'))
-        self.CreateAction('swapobjectstilesets', self.SwapObjectsTilesets, GetIcon('swap'), trans.stringOneLine('MenuItems', 104), trans.stringOneLine('MenuItems', 105), QtGui.QKeySequence('Ctrl+Shift+L'))
-        self.CreateAction('swapobjectstypes', self.SwapObjectsTypes, GetIcon('swap'), trans.stringOneLine('MenuItems', 106), trans.stringOneLine('MenuItems', 107), QtGui.QKeySequence('Ctrl+Shift+Y'))
-        self.CreateAction('diagnostic', self.HandleDiagnostics, GetIcon('diagnostics'), trans.stringOneLine('MenuItems', 36), trans.stringOneLine('MenuItems', 37), QtGui.QKeySequence('Ctrl+Shift+D'))
-        self.CreateAction('freezeobjects', self.HandleObjectsFreeze, GetIcon('objectsfreeze'), trans.stringOneLine('MenuItems', 38), trans.stringOneLine('MenuItems', 39), QtGui.QKeySequence('Ctrl+Shift+1'), True)
-        self.CreateAction('freezesprites', self.HandleSpritesFreeze, GetIcon('spritesfreeze'), trans.stringOneLine('MenuItems', 40), trans.stringOneLine('MenuItems', 41), QtGui.QKeySequence('Ctrl+Shift+2'), True)
-        self.CreateAction('freezeentrances', self.HandleEntrancesFreeze, GetIcon('entrancesfreeze'), trans.stringOneLine('MenuItems', 42), trans.stringOneLine('MenuItems', 43), QtGui.QKeySequence('Ctrl+Shift+3'), True)
-        self.CreateAction('freezelocations', self.HandleLocationsFreeze, GetIcon('locationsfreeze'), trans.stringOneLine('MenuItems', 44), trans.stringOneLine('MenuItems', 45), QtGui.QKeySequence('Ctrl+Shift+4'), True)
-        self.CreateAction('freezepaths', self.HandlePathsFreeze, GetIcon('pathsfreeze'), trans.stringOneLine('MenuItems', 46), trans.stringOneLine('MenuItems', 47), QtGui.QKeySequence('Ctrl+Shift+5'), True)
-        self.CreateAction('freezecomments', self.HandleCommentsFreeze, GetIcon('commentsfreeze'), trans.stringOneLine('MenuItems', 114), trans.stringOneLine('MenuItems', 115), QtGui.QKeySequence('Ctrl+Shift+9'), True)
+        self.CreateAction('selectall', self.SelectAll, GetIcon('selectall'), trans.stringOneLine('MenuItems', 22),
+                          trans.stringOneLine('MenuItems', 23), QtGui.QKeySequence.SelectAll)
+        self.CreateAction('deselect', self.Deselect, GetIcon('deselect'), trans.stringOneLine('MenuItems', 24),
+                          trans.stringOneLine('MenuItems', 25), QtGui.QKeySequence('Ctrl+D'))
+        self.CreateAction('undo', self.Undo, GetIcon('undo'), trans.stringOneLine('MenuItems', 124),
+                          trans.stringOneLine('MenuItems', 125), QtGui.QKeySequence.Undo)
+        self.CreateAction('redo', self.Redo, GetIcon('redo'), trans.stringOneLine('MenuItems', 126),
+                          trans.stringOneLine('MenuItems', 127), QtGui.QKeySequence.Redo)
+        self.CreateAction('cut', self.Cut, GetIcon('cut'), trans.stringOneLine('MenuItems', 26),
+                          trans.stringOneLine('MenuItems', 27), QtGui.QKeySequence.Cut)
+        self.CreateAction('copy', self.Copy, GetIcon('copy'), trans.stringOneLine('MenuItems', 28),
+                          trans.stringOneLine('MenuItems', 29), QtGui.QKeySequence.Copy)
+        self.CreateAction('paste', self.Paste, GetIcon('paste'), trans.stringOneLine('MenuItems', 30),
+                          trans.stringOneLine('MenuItems', 31), QtGui.QKeySequence.Paste)
+        self.CreateAction('shiftitems', self.ShiftItems, GetIcon('move'), trans.stringOneLine('MenuItems', 32),
+                          trans.stringOneLine('MenuItems', 33), QtGui.QKeySequence('Ctrl+Shift+S'))
+        self.CreateAction('mergelocations', self.MergeLocations, GetIcon('merge'), trans.stringOneLine('MenuItems', 34),
+                          trans.stringOneLine('MenuItems', 35), QtGui.QKeySequence('Ctrl+Shift+E'))
+        self.CreateAction('swapobjectstilesets', self.SwapObjectsTilesets, GetIcon('swap'),
+                          trans.stringOneLine('MenuItems', 104), trans.stringOneLine('MenuItems', 105),
+                          QtGui.QKeySequence('Ctrl+Shift+L'))
+        self.CreateAction('swapobjectstypes', self.SwapObjectsTypes, GetIcon('swap'),
+                          trans.stringOneLine('MenuItems', 106), trans.stringOneLine('MenuItems', 107),
+                          QtGui.QKeySequence('Ctrl+Shift+Y'))
+        self.CreateAction('diagnostic', self.HandleDiagnostics, GetIcon('diagnostics'),
+                          trans.stringOneLine('MenuItems', 36), trans.stringOneLine('MenuItems', 37),
+                          QtGui.QKeySequence('Ctrl+Shift+D'))
+        self.CreateAction('freezeobjects', self.HandleObjectsFreeze, GetIcon('objectsfreeze'),
+                          trans.stringOneLine('MenuItems', 38), trans.stringOneLine('MenuItems', 39),
+                          QtGui.QKeySequence('Ctrl+Shift+1'), True)
+        self.CreateAction('freezesprites', self.HandleSpritesFreeze, GetIcon('spritesfreeze'),
+                          trans.stringOneLine('MenuItems', 40), trans.stringOneLine('MenuItems', 41),
+                          QtGui.QKeySequence('Ctrl+Shift+2'), True)
+        self.CreateAction('freezeentrances', self.HandleEntrancesFreeze, GetIcon('entrancesfreeze'),
+                          trans.stringOneLine('MenuItems', 42), trans.stringOneLine('MenuItems', 43),
+                          QtGui.QKeySequence('Ctrl+Shift+3'), True)
+        self.CreateAction('freezelocations', self.HandleLocationsFreeze, GetIcon('locationsfreeze'),
+                          trans.stringOneLine('MenuItems', 44), trans.stringOneLine('MenuItems', 45),
+                          QtGui.QKeySequence('Ctrl+Shift+4'), True)
+        self.CreateAction('freezepaths', self.HandlePathsFreeze, GetIcon('pathsfreeze'),
+                          trans.stringOneLine('MenuItems', 46), trans.stringOneLine('MenuItems', 47),
+                          QtGui.QKeySequence('Ctrl+Shift+5'), True)
+        self.CreateAction('freezecomments', self.HandleCommentsFreeze, GetIcon('commentsfreeze'),
+                          trans.stringOneLine('MenuItems', 114), trans.stringOneLine('MenuItems', 115),
+                          QtGui.QKeySequence('Ctrl+Shift+9'), True)
 
         # View
-        self.CreateAction('showlay0', self.HandleUpdateLayer0, GetIcon('layer0'), trans.stringOneLine('MenuItems', 48), trans.stringOneLine('MenuItems', 49), QtGui.QKeySequence('Ctrl+1'), True)
-        self.CreateAction('showlay1', self.HandleUpdateLayer1, GetIcon('layer1'), trans.stringOneLine('MenuItems', 50), trans.stringOneLine('MenuItems', 51), QtGui.QKeySequence('Ctrl+2'), True)
-        self.CreateAction('showlay2', self.HandleUpdateLayer2, GetIcon('layer2'), trans.stringOneLine('MenuItems', 52), trans.stringOneLine('MenuItems', 53), QtGui.QKeySequence('Ctrl+3'), True)
-        self.CreateAction('tileanim', self.HandleTilesetAnimToggle, GetIcon('animation'), trans.stringOneLine('MenuItems', 108), trans.stringOneLine('MenuItems', 109), QtGui.QKeySequence('Ctrl+7'), True)
-        self.CreateAction('collisions', self.HandleCollisionsToggle, GetIcon('collisions'), trans.stringOneLine('MenuItems', 110), trans.stringOneLine('MenuItems', 111), QtGui.QKeySequence('Ctrl+8'), True)
-        self.CreateAction('realview', self.HandleRealViewToggle, GetIcon('realview'), trans.stringOneLine('MenuItems', 118), trans.stringOneLine('MenuItems', 119), QtGui.QKeySequence('Ctrl+9'), True)
-        self.CreateAction('showsprites', self.HandleSpritesVisibility, GetIcon('sprites'), trans.stringOneLine('MenuItems', 54), trans.stringOneLine('MenuItems', 55), QtGui.QKeySequence('Ctrl+4'), True)
-        self.CreateAction('showspriteimages', self.HandleSpriteImages, GetIcon('sprites'), trans.stringOneLine('MenuItems', 56), trans.stringOneLine('MenuItems', 57), QtGui.QKeySequence('Ctrl+6'), True)
-        self.CreateAction('showlocations', self.HandleLocationsVisibility, GetIcon('locations'), trans.stringOneLine('MenuItems', 58), trans.stringOneLine('MenuItems', 59), QtGui.QKeySequence('Ctrl+5'), True)
-        self.CreateAction('showcomments', self.HandleCommentsVisibility, GetIcon('comments'), trans.stringOneLine('MenuItems', 116), trans.stringOneLine('MenuItems', 117), QtGui.QKeySequence('Ctrl+0'), True)
-        self.CreateAction('grid', self.HandleSwitchGrid, GetIcon('grid'), trans.stringOneLine('MenuItems', 60), trans.stringOneLine('MenuItems', 61), QtGui.QKeySequence('Ctrl+G'), False)
-        self.CreateAction('zoommax', self.HandleZoomMax, GetIcon('zoommax'), trans.stringOneLine('MenuItems', 62), trans.stringOneLine('MenuItems', 63), QtGui.QKeySequence('Ctrl+PgDown'), False)
-        self.CreateAction('zoomin', self.HandleZoomIn, GetIcon('zoomin'), trans.stringOneLine('MenuItems', 64), trans.stringOneLine('MenuItems', 65), QtGui.QKeySequence.ZoomIn, False)
-        self.CreateAction('zoomactual', self.HandleZoomActual, GetIcon('zoomactual'), trans.stringOneLine('MenuItems', 66), trans.stringOneLine('MenuItems', 67), QtGui.QKeySequence('Ctrl+0'), False)
-        self.CreateAction('zoomout', self.HandleZoomOut, GetIcon('zoomout'), trans.stringOneLine('MenuItems', 68), trans.stringOneLine('MenuItems', 69), QtGui.QKeySequence.ZoomOut, False)
-        self.CreateAction('zoommin', self.HandleZoomMin, GetIcon('zoommin'), trans.stringOneLine('MenuItems', 70), trans.stringOneLine('MenuItems', 71), QtGui.QKeySequence('Ctrl+PgUp'), False)
+        self.CreateAction('showlay0', self.HandleUpdateLayer0, GetIcon('layer0'), trans.stringOneLine('MenuItems', 48),
+                          trans.stringOneLine('MenuItems', 49), QtGui.QKeySequence('Ctrl+1'), True)
+        self.CreateAction('showlay1', self.HandleUpdateLayer1, GetIcon('layer1'), trans.stringOneLine('MenuItems', 50),
+                          trans.stringOneLine('MenuItems', 51), QtGui.QKeySequence('Ctrl+2'), True)
+        self.CreateAction('showlay2', self.HandleUpdateLayer2, GetIcon('layer2'), trans.stringOneLine('MenuItems', 52),
+                          trans.stringOneLine('MenuItems', 53), QtGui.QKeySequence('Ctrl+3'), True)
+        self.CreateAction('tileanim', self.HandleTilesetAnimToggle, GetIcon('animation'),
+                          trans.stringOneLine('MenuItems', 108), trans.stringOneLine('MenuItems', 109),
+                          QtGui.QKeySequence('Ctrl+7'), True)
+        self.CreateAction('collisions', self.HandleCollisionsToggle, GetIcon('collisions'),
+                          trans.stringOneLine('MenuItems', 110), trans.stringOneLine('MenuItems', 111),
+                          QtGui.QKeySequence('Ctrl+8'), True)
+        self.CreateAction('realview', self.HandleRealViewToggle, GetIcon('realview'),
+                          trans.stringOneLine('MenuItems', 118), trans.stringOneLine('MenuItems', 119),
+                          QtGui.QKeySequence('Ctrl+9'), True)
+        self.CreateAction('showsprites', self.HandleSpritesVisibility, GetIcon('sprites'),
+                          trans.stringOneLine('MenuItems', 54), trans.stringOneLine('MenuItems', 55),
+                          QtGui.QKeySequence('Ctrl+4'), True)
+        self.CreateAction('showspriteimages', self.HandleSpriteImages, GetIcon('sprites'),
+                          trans.stringOneLine('MenuItems', 56), trans.stringOneLine('MenuItems', 57),
+                          QtGui.QKeySequence('Ctrl+6'), True)
+        self.CreateAction('showlocations', self.HandleLocationsVisibility, GetIcon('locations'),
+                          trans.stringOneLine('MenuItems', 58), trans.stringOneLine('MenuItems', 59),
+                          QtGui.QKeySequence('Ctrl+5'), True)
+        self.CreateAction('showcomments', self.HandleCommentsVisibility, GetIcon('comments'),
+                          trans.stringOneLine('MenuItems', 116), trans.stringOneLine('MenuItems', 117),
+                          QtGui.QKeySequence('Ctrl+0'), True)
+        self.CreateAction('grid', self.HandleSwitchGrid, GetIcon('grid'), trans.stringOneLine('MenuItems', 60),
+                          trans.stringOneLine('MenuItems', 61), QtGui.QKeySequence('Ctrl+G'), False)
+        self.CreateAction('zoommax', self.HandleZoomMax, GetIcon('zoommax'), trans.stringOneLine('MenuItems', 62),
+                          trans.stringOneLine('MenuItems', 63), QtGui.QKeySequence('Ctrl+PgDown'), False)
+        self.CreateAction('zoomin', self.HandleZoomIn, GetIcon('zoomin'), trans.stringOneLine('MenuItems', 64),
+                          trans.stringOneLine('MenuItems', 65), QtGui.QKeySequence.ZoomIn, False)
+        self.CreateAction('zoomactual', self.HandleZoomActual, GetIcon('zoomactual'),
+                          trans.stringOneLine('MenuItems', 66), trans.stringOneLine('MenuItems', 67),
+                          QtGui.QKeySequence('Ctrl+0'), False)
+        self.CreateAction('zoomout', self.HandleZoomOut, GetIcon('zoomout'), trans.stringOneLine('MenuItems', 68),
+                          trans.stringOneLine('MenuItems', 69), QtGui.QKeySequence.ZoomOut, False)
+        self.CreateAction('zoommin', self.HandleZoomMin, GetIcon('zoommin'), trans.stringOneLine('MenuItems', 70),
+                          trans.stringOneLine('MenuItems', 71), QtGui.QKeySequence('Ctrl+PgUp'), False)
         # Show Overview and Show Palette are added later
 
         # Settings
-        self.CreateAction('areaoptions', self.HandleAreaOptions, GetIcon('area'), trans.stringOneLine('MenuItems', 72), trans.stringOneLine('MenuItems', 73), QtGui.QKeySequence('Ctrl+Alt+A'))
-        self.CreateAction('zones', self.HandleZones, GetIcon('zones'), trans.stringOneLine('MenuItems', 74), trans.stringOneLine('MenuItems', 75), QtGui.QKeySequence('Ctrl+Alt+Z'))
-        self.CreateAction('backgrounds', self.HandleBG, GetIcon('background'), trans.stringOneLine('MenuItems', 76), trans.stringOneLine('MenuItems', 77), QtGui.QKeySequence('Ctrl+Alt+B'))
-        self.CreateAction('addarea', self.HandleAddNewArea, GetIcon('add'), trans.stringOneLine('MenuItems', 78), trans.stringOneLine('MenuItems', 79), QtGui.QKeySequence('Ctrl+Alt+N'))
-        self.CreateAction('importarea', self.HandleImportArea, GetIcon('import'), trans.stringOneLine('MenuItems', 80), trans.stringOneLine('MenuItems', 81), QtGui.QKeySequence('Ctrl+Alt+O'))
-        self.CreateAction('deletearea', self.HandleDeleteArea, GetIcon('delete'), trans.stringOneLine('MenuItems', 82), trans.stringOneLine('MenuItems', 83), QtGui.QKeySequence('Ctrl+Alt+D'))
-        self.CreateAction('reloadgfx', self.ReloadTilesets, GetIcon('reload'), trans.stringOneLine('MenuItems', 84), trans.stringOneLine('MenuItems', 85), QtGui.QKeySequence('Ctrl+Shift+R'))
+        self.CreateAction('areaoptions', self.HandleAreaOptions, GetIcon('area'), trans.stringOneLine('MenuItems', 72),
+                          trans.stringOneLine('MenuItems', 73), QtGui.QKeySequence('Ctrl+Alt+A'))
+        self.CreateAction('zones', self.HandleZones, GetIcon('zones'), trans.stringOneLine('MenuItems', 74),
+                          trans.stringOneLine('MenuItems', 75), QtGui.QKeySequence('Ctrl+Alt+Z'))
+        self.CreateAction('backgrounds', self.HandleBG, GetIcon('background'), trans.stringOneLine('MenuItems', 76),
+                          trans.stringOneLine('MenuItems', 77), QtGui.QKeySequence('Ctrl+Alt+B'))
+        self.CreateAction('addarea', self.HandleAddNewArea, GetIcon('add'), trans.stringOneLine('MenuItems', 78),
+                          trans.stringOneLine('MenuItems', 79), QtGui.QKeySequence('Ctrl+Alt+N'))
+        self.CreateAction('importarea', self.HandleImportArea, GetIcon('import'), trans.stringOneLine('MenuItems', 80),
+                          trans.stringOneLine('MenuItems', 81), QtGui.QKeySequence('Ctrl+Alt+O'))
+        self.CreateAction('deletearea', self.HandleDeleteArea, GetIcon('delete'), trans.stringOneLine('MenuItems', 82),
+                          trans.stringOneLine('MenuItems', 83), QtGui.QKeySequence('Ctrl+Alt+D'))
+        self.CreateAction('reloadgfx', self.ReloadTilesets, GetIcon('reload'), trans.stringOneLine('MenuItems', 84),
+                          trans.stringOneLine('MenuItems', 85), QtGui.QKeySequence('Ctrl+Shift+R'))
 
         # Help actions are created later
 
@@ -15418,11 +15538,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.actions['mergelocations'].setEnabled(False)
         self.actions['deselect'].setEnabled(False)
 
-
         ####
         menubar = QtWidgets.QMenuBar()
         self.setMenuBar(menubar)
-
 
         fmenu = menubar.addMenu(trans.string('Menubar', 0))
         fmenu.addAction(self.actions['newlevel'])
@@ -15521,11 +15639,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Creates the help menu.
         """
-        self.CreateAction('infobox', self.AboutBox, GetIcon('reggie'), trans.stringOneLine('MenuItems', 86), trans.string('MenuItems', 87), QtGui.QKeySequence('Ctrl+Shift+I'))
-        self.CreateAction('helpbox', self.HelpBox, GetIcon('contents'), trans.stringOneLine('MenuItems', 88), trans.string('MenuItems', 89), QtGui.QKeySequence('Ctrl+Shift+H'))
-        self.CreateAction('tipbox', self.TipBox, GetIcon('tips'), trans.stringOneLine('MenuItems', 90), trans.string('MenuItems', 91), QtGui.QKeySequence('Ctrl+Shift+T'))
-        self.CreateAction('update', self.UpdateCheck, GetIcon('download'), trans.stringOneLine('MenuItems', 120), trans.string('MenuItems', 121), QtGui.QKeySequence('Ctrl+Shift+U'))
-        self.CreateAction('aboutqt', QtWidgets.qApp.aboutQt, GetIcon('qt'), trans.stringOneLine('MenuItems', 92), trans.string('MenuItems', 93), QtGui.QKeySequence('Ctrl+Shift+Q'))
+        self.CreateAction('infobox', self.AboutBox, GetIcon('reggie'), trans.stringOneLine('MenuItems', 86),
+                          trans.string('MenuItems', 87), QtGui.QKeySequence('Ctrl+Shift+I'))
+        self.CreateAction('helpbox', self.HelpBox, GetIcon('contents'), trans.stringOneLine('MenuItems', 88),
+                          trans.string('MenuItems', 89), QtGui.QKeySequence('Ctrl+Shift+H'))
+        self.CreateAction('tipbox', self.TipBox, GetIcon('tips'), trans.stringOneLine('MenuItems', 90),
+                          trans.string('MenuItems', 91), QtGui.QKeySequence('Ctrl+Shift+T'))
+        self.CreateAction('update', self.UpdateCheck, GetIcon('download'), trans.stringOneLine('MenuItems', 120),
+                          trans.string('MenuItems', 121), QtGui.QKeySequence('Ctrl+Shift+U'))
+        self.CreateAction('aboutqt', QtWidgets.qApp.aboutQt, GetIcon('qt'), trans.stringOneLine('MenuItems', 92),
+                          trans.string('MenuItems', 93), QtGui.QKeySequence('Ctrl+Shift+Q'))
 
         if menu is None:
             menu = QtWidgets.QMenu(trans.string('Menubar', 4))
@@ -15621,9 +15744,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             for List in (FileActions, EditActions, ViewActions, SettingsActions, HelpActions):
                 for name, activated, key in List:
                     toggled[key] = activated
-        else: # Get the registry settings
+        else:  # Get the registry settings
             toggled = setting('ToolbarActs')
-            newToggled = {} # here, I'm replacing QStrings with python strings
+            newToggled = {}  # here, I'm replacing QStrings with python strings
             for key in toggled:
                 newToggled[str(key)] = toggled[key]
             toggled = newToggled
@@ -15639,16 +15762,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if addedButtons:
                 self.toolbar.addSeparator()
 
-
     def SetupDocksAndPanels(self):
         """
         Sets up the dock widgets and panels
         """
         # level overview
         dock = QtWidgets.QDockWidget(trans.string('MenuItems', 94), self)
-        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
-        #dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        dock.setObjectName('leveloverview') # needed for the state to save/restore correctly
+        dock.setFeatures(
+            QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
+        # dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        dock.setObjectName('leveloverview')  # needed for the state to save/restore correctly
 
         self.levelOverview = LevelOverviewWidget()
         self.levelOverview.moveIt.connect(self.HandleOverviewClick)
@@ -15668,7 +15791,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setVisible(False)
         dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable)
         dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        dock.setObjectName('spriteeditor') #needed for the state to save/restore correctly
+        dock.setObjectName('spriteeditor')  # needed for the state to save/restore correctly
 
         self.spriteDataEditor = SpriteEditorWidget()
         self.spriteDataEditor.DataUpdate.connect(self.SpriteDataUpdated)
@@ -15683,7 +15806,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setVisible(False)
         dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable)
         dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        dock.setObjectName('entranceeditor') #needed for the state to save/restore correctly
+        dock.setObjectName('entranceeditor')  # needed for the state to save/restore correctly
 
         self.entranceEditor = EntranceEditorWidget()
         dock.setWidget(self.entranceEditor)
@@ -15697,7 +15820,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setVisible(False)
         dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable)
         dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        dock.setObjectName('pathnodeeditor') #needed for the state to save/restore correctly
+        dock.setObjectName('pathnodeeditor')  # needed for the state to save/restore correctly
 
         self.pathEditor = PathNodeEditorWidget()
         dock.setWidget(self.pathEditor)
@@ -15711,7 +15834,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setVisible(False)
         dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable)
         dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        dock.setObjectName('locationeditor') #needed for the state to save/restore correctly
+        dock.setObjectName('locationeditor')  # needed for the state to save/restore correctly
 
         self.locationEditor = LocationEditorWidget()
         dock.setWidget(self.locationEditor)
@@ -15723,9 +15846,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # create the island generator panel
         dock = QtWidgets.QDockWidget(trans.string('MenuItems', 100), self)
         dock.setVisible(False)
-        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
+        dock.setFeatures(
+            QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
         dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        dock.setObjectName('islandgenerator') #needed for the state to save/restore correctly
+        dock.setObjectName('islandgenerator')  # needed for the state to save/restore correctly
 
         self.islandGen = IslandGeneratorWidget()
         dock.setWidget(self.islandGen)
@@ -15741,9 +15865,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # create the palette
         dock = QtWidgets.QDockWidget(trans.string('MenuItems', 96), self)
-        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
+        dock.setFeatures(
+            QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
         dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        dock.setObjectName('palette') #needed for the state to save/restore correctly
+        dock.setObjectName('palette')  # needed for the state to save/restore correctly
 
         self.creationDock = dock
         act = dock.toggleViewAction()
@@ -15754,7 +15879,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.addDockWidget(Qt.RightDockWidgetArea, dock)
         dock.setVisible(True)
-
 
         # add tabs to it
         tabs = QtWidgets.QTabWidget()
@@ -15866,9 +15990,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # default sprite data editor
         ddock = QtWidgets.QDockWidget(trans.string('Palette', 7), self)
-        ddock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
+        ddock.setFeatures(
+            QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
         ddock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        ddock.setObjectName('defaultprops') #needed for the state to save/restore correctly
+        ddock.setObjectName('defaultprops')  # needed for the state to save/restore correctly
 
         self.defaultDataEditor = SpriteEditorWidget(True)
         self.defaultDataEditor.setVisible(False)
@@ -15976,7 +16101,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             itm = QtWidgets.QTreeWidgetItem()
             itm.setFlags(flags)
             itm.setCheckState(0, Qt.Unchecked)
-            itm.setText(0, trans.string('Palette', 24, '[id]', str(id+1)))
+            itm.setText(0, trans.string('Palette', 24, '[id]', str(id + 1)))
             itm.setText(1, '')
             self.eventChooser.addTopLevelItem(itm)
             self.eventChooserItems.append(itm)
@@ -15997,15 +16122,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
         stampAddBtn = QtWidgets.QPushButton(trans.string('Palette', 28))
         stampAddBtn.clicked.connect(self.handleStampsAdd)
         stampAddBtn.setEnabled(False)
-        self.stampAddBtn = stampAddBtn # so we can enable/disable it later
+        self.stampAddBtn = stampAddBtn  # so we can enable/disable it later
         stampRemoveBtn = QtWidgets.QPushButton(trans.string('Palette', 29))
         stampRemoveBtn.clicked.connect(self.handleStampsRemove)
         stampRemoveBtn.setEnabled(False)
-        self.stampRemoveBtn = stampRemoveBtn # so we can enable/disable it later
+        self.stampRemoveBtn = stampRemoveBtn  # so we can enable/disable it later
 
         menu = QtWidgets.QMenu()
-        menu.addAction(trans.string('Palette', 31), self.handleStampsOpen, 0) # Open Set...
-        menu.addAction(trans.string('Palette', 32), self.handleStampsSave, 0) # Save Set As...
+        menu.addAction(trans.string('Palette', 31), self.handleStampsOpen, 0)  # Open Set...
+        menu.addAction(trans.string('Palette', 32), self.handleStampsSave, 0)  # Save Set As...
         stampToolsBtn = QtWidgets.QToolButton()
         stampToolsBtn.setText(trans.string('Palette', 30))
         stampToolsBtn.setMenu(menu)
@@ -16077,7 +16202,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('AutoSaveFileData', QtCore.QByteArray(data))
         AutoSaveDirty = False
 
-
     @QtCore.pyqtSlot()
     def TrackClipboardUpdates(self):
         """
@@ -16095,7 +16219,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             else:
                 self.clipboard = None
                 self.actions['paste'].setEnabled(False)
-
 
     @QtCore.pyqtSlot(int)
     def XScrollChange(self, pos):
@@ -16135,7 +16258,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         msg = QtWidgets.QMessageBox()
         msg.setText(trans.string('AutoSaveDlg', 2))
         msg.setInformativeText(trans.string('AutoSaveDlg', 3))
-        msg.setStandardButtons(QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard | QtWidgets.QMessageBox.Cancel)
+        msg.setStandardButtons(
+            QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard | QtWidgets.QMessageBox.Cancel)
         msg.setDefaultButton(QtWidgets.QMessageBox.Save)
         ret = msg.exec_()
 
@@ -16165,10 +16289,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
             while idx < len(data):
                 eventId = data[idx]
                 idx += 1
-                rawStrLen = data[idx:idx+4]
+                rawStrLen = data[idx:idx + 4]
                 idx += 4
                 strLen = (rawStrLen[0] << 24) | (rawStrLen[1] << 16) | (rawStrLen[2] << 8) | rawStrLen[3]
-                rawStr = data[idx:idx+strLen]
+                rawStr = data[idx:idx + strLen]
                 idx += strLen
                 newStr = ''
                 for char in rawStr: newStr += chr(char)
@@ -16178,8 +16302,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
             item = self.eventChooserItems[id]
             value = 1 << id
             item.setCheckState(0, checked if (defEvents & value) != 0 else unchecked)
-            if id in eventTexts: item.setText(1, eventTexts[id])
-            else: item.setText(1, '')
+            if id in eventTexts:
+                item.setText(1, eventTexts[id])
+            else:
+                item.setText(1, '')
             item.setSelected(False)
 
         self.eventChooserItems[0].setSelected(True)
@@ -16258,7 +16384,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Create a Stamp
         self.stampChooser.addStamp(Stamp(RegClp, 'New Stamp'))
 
-
     def handleStampsRemove(self):
         """
         Handles the "Remove Stamp" btn being clicked
@@ -16270,8 +16395,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handles the "Open Set..." btn being clicked
         """
         filetypes = ''
-        filetypes += trans.string('FileDlgs', 7) + ' (*.stamps);;' # *.stamps
-        filetypes += trans.string('FileDlgs', 2) + ' (*)' # *
+        filetypes += trans.string('FileDlgs', 7) + ' (*.stamps);;'  # *.stamps
+        filetypes += trans.string('FileDlgs', 2) + ' (*)'  # *
         fn = QtWidgets.QFileDialog.getOpenFileName(self, trans.string('FileDlgs', 6), '', filetypes)[0]
         if fn == '': return
 
@@ -16296,21 +16421,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 except IndexError:
                     # Meh. Malformed stamps file.
-                    i += 9999 # avoid infinite loops
+                    i += 9999  # avoid infinite loops
                     continue
 
                 stamps.append(Stamp(rc, name))
 
         for stamp in stamps: self.stampChooser.addStamp(stamp)
 
-
     def handleStampsSave(self):
         """
         Handles the "Save Set As..." btn being clicked
         """
         filetypes = ''
-        filetypes += trans.string('FileDlgs', 7) + ' (*.stamps);;' # *.stamps
-        filetypes += trans.string('FileDlgs', 2) + ' (*)' # *
+        filetypes += trans.string('FileDlgs', 7) + ' (*.stamps);;'  # *.stamps
+        filetypes += trans.string('FileDlgs', 2) + ' (*)'  # *
         fn = QtWidgets.QFileDialog.getSaveFileName(self, trans.string('FileDlgs', 3), '', filetypes)[0]
         if fn == '': return
 
@@ -16328,7 +16452,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         with open(fn, 'w', encoding='utf-8') as f:
             f.write(newdata)
 
-
     def handleStampSelectionChanged(self):
         """
         Called when the stamp selection is changed
@@ -16340,7 +16463,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         newName = '' if not stampSelected else newStamp.Name
         self.stampNameEdit.setText(newName)
-
 
     def handleStampNameEdited(self):
         """
@@ -16358,14 +16480,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.stampChooser.update()
             self.stampChooser.repaint()
 
-
     @QtCore.pyqtSlot()
     def AboutBox(self):
         """
         Shows the about box
         """
         AboutDialog().exec_()
-
 
     @QtCore.pyqtSlot()
     def HandleInfo(self):
@@ -16387,22 +16507,21 @@ class ReggieWindow(QtWidgets.QMainWindow):
             dlg.setText(trans.string('InfoDlg', 14))
             dlg.exec_()
 
-
     @QtCore.pyqtSlot()
     def HelpBox(self):
         """
         Shows the help box
         """
-        QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(os.path.join(module_path(), 'reggiedata', 'help', 'index.html')))
-
+        QtGui.QDesktopServices.openUrl(
+            QtCore.QUrl.fromLocalFile(os.path.join(module_path(), 'reggiedata', 'help', 'index.html')))
 
     @QtCore.pyqtSlot()
     def TipBox(self):
         """
         Reggie Next Tips and Commands
         """
-        QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(os.path.join(module_path(), 'reggiedata', 'help', 'tips.html')))
-
+        QtGui.QDesktopServices.openUrl(
+            QtCore.QUrl.fromLocalFile(os.path.join(module_path(), 'reggiedata', 'help', 'tips.html')))
 
     @QtCore.pyqtSlot()
     def UpdateCheck(self):
@@ -16411,16 +16530,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         UpdateDialog().exec_()
 
-
     @QtCore.pyqtSlot()
     def SelectAll(self):
         """
         Select all objects in the current area
         """
         paintRect = QtGui.QPainterPath()
-        paintRect.addRect(float(0), float(0), float(1024*24), float(512*24))
+        paintRect.addRect(float(0), float(0), float(1024 * 24), float(512 * 24))
         self.scene.setSelectionArea(paintRect)
-
 
     @QtCore.pyqtSlot()
     def Deselect(self):
@@ -16431,7 +16548,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for obj in items:
             obj.setSelected(False)
 
-
     @QtCore.pyqtSlot()
     def Undo(self):
         """
@@ -16439,14 +16555,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         self.undoStack.undo()
 
-
     @QtCore.pyqtSlot()
     def Redo(self):
         """
         Redoes something previously undone
         """
         self.undoStack.redo()
-
 
     @QtCore.pyqtSlot()
     def Cut(self):
@@ -16529,12 +16643,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         clipboard_o.sort(key=lambda x: x.zValue())
 
         for item in clipboard_o:
-            convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (item.tileset, item.type, item.layer, item.objx, item.objy, item.width, item.height))
+            convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
+            item.tileset, item.type, item.layer, item.objx, item.objy, item.width, item.height))
 
         # get sprites
         for item in clipboard_s:
             data = item.spritedata
-            convclip.append('1:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d' % (item.type, item.objx, item.objy, data[0], data[1], data[2], data[3], data[4], data[5], data[7]))
+            convclip.append('1:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d' % (
+            item.type, item.objx, item.objy, data[0], data[1], data[2], data[3], data[4], data[5], data[7]))
 
         convclip.append('%')
         return '|'.join(convclip)
@@ -16560,7 +16676,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         clip = encoded.split('|')[1:-1]
 
         if len(clip) > 300:
-            result = QtWidgets.QMessageBox.warning(self, 'Reggie', trans.string('MainWindow', 1), QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+            result = QtWidgets.QMessageBox.warning(self, 'Reggie', trans.string('MainWindow', 1),
+                                                   QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
             if result == QtWidgets.QMessageBox.No: return
 
         layers, sprites = self.getEncodedObjects(encoded)
@@ -16656,7 +16773,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 item.setPos(
                     (item.objx + xpixeloffset + item.ImageObj.xOffset) * 1.5,
                     (item.objy + ypixeloffset + item.ImageObj.yOffset) * 1.5,
-                    )
+                )
             elif isinstance(item, ObjectItem):
                 item.setPos((item.objx + xoffset) * 24, (item.objy + yoffset) * 24)
             if select: item.setSelected(True)
@@ -16684,7 +16801,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             clip = encoded[11:-2].split('|')
 
             if len(clip) > 300:
-                result = QtWidgets.QMessageBox.warning(self, 'Reggie', trans.string('MainWindow', 1), QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+                result = QtWidgets.QMessageBox.warning(self, 'Reggie', trans.string('MainWindow', 1),
+                                                       QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
                 if result == QtWidgets.QMessageBox.No:
                     return
 
@@ -16737,7 +16855,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         return layers, sprites
 
-
     @QtCore.pyqtSlot()
     def ShiftItems(self):
         """
@@ -16770,7 +16887,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 if objectsExist and spritesExist:
                     # no point in warning them if there are only objects
                     # since then, it will just silently reduce the offset and it won't be noticed
-                    result = QtWidgets.QMessageBox.information(None, trans.string('ShftItmDlg', 5),  trans.string('ShftItmDlg', 6), QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+                    result = QtWidgets.QMessageBox.information(None, trans.string('ShftItmDlg', 5),
+                                                               trans.string('ShftItmDlg', 6), QtWidgets.QMessageBox.Yes,
+                                                               QtWidgets.QMessageBox.No)
                     if result == QtWidgets.QMessageBox.No:
                         return
 
@@ -16787,7 +16906,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             SetDirty()
 
-
     @QtCore.pyqtSlot()
     def SwapObjectsTilesets(self):
         """
@@ -16799,11 +16917,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec_() == QtWidgets.QDialog.Accepted:
             for layer in Area.layers:
                 for nsmbobj in layer:
-                    if nsmbobj.tileset == (dlg.FromTS.value()-1):
-                        nsmbobj.SetType(dlg.ToTS.value() -1, nsmbobj.type)
-                    elif nsmbobj.tileset == (dlg.ToTS.value()-1) and dlg.DoExchange.checkState() == Qt.Checked:
-                        nsmbobj.SetType(dlg.FromTS.value() -1, nsmbobj.type)
-
+                    if nsmbobj.tileset == (dlg.FromTS.value() - 1):
+                        nsmbobj.SetType(dlg.ToTS.value() - 1, nsmbobj.type)
+                    elif nsmbobj.tileset == (dlg.ToTS.value() - 1) and dlg.DoExchange.checkState() == Qt.Checked:
+                        nsmbobj.SetType(dlg.FromTS.value() - 1, nsmbobj.type)
 
             SetDirty()
 
@@ -16820,12 +16937,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 for nsmbobj in layer:
                     if nsmbobj.type == (dlg.FromType.value()) and nsmbobj.tileset == (dlg.FromTileset.value() - 1):
                         nsmbobj.SetType(dlg.ToTileset.value() - 1, dlg.ToType.value())
-                    elif nsmbobj.type == (dlg.ToType.value()) and nsmbobj.tileset == (dlg.ToTileset.value() - 1) and dlg.DoExchange.checkState() == Qt.Checked:
+                    elif nsmbobj.type == (dlg.ToType.value()) and nsmbobj.tileset == (
+                        dlg.ToTileset.value() - 1) and dlg.DoExchange.checkState() == Qt.Checked:
                         nsmbobj.SetType(dlg.FromTileset.value() - 1, dlg.FromType.value())
 
-
             SetDirty()
-
 
     @QtCore.pyqtSlot()
     def MergeLocations(self):
@@ -16858,7 +16974,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 SetDirty()
 
         if newx != 999999 and newy != 999999:
-            allID = set() # faster 'x in y' lookups for sets
+            allID = set()  # faster 'x in y' lookups for sets
             newID = 1
             for i in Area.locations:
                 allID.add(i.id)
@@ -16877,7 +16993,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             Area.locations.append(loc)
             loc.setSelected(True)
 
-
     @QtCore.pyqtSlot()
     def HandleAddNewArea(self):
         """
@@ -16892,13 +17007,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         try:
             newA = Level.addArea()
-        except: return
+        except:
+            return
 
         newID = len(Level.areas)
 
         if not self.HandleSave(): return
         self.LoadLevel(None, self.fileSavePath, True, newID)
-
 
     @QtCore.pyqtSlot()
     def HandleImportArea(self):
@@ -16913,9 +17028,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         filetypes = ''
-        filetypes += trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;' # *.arc
-        filetypes += trans.string('FileDlgs', 5) + ' (*' + '.arc' + '.lh);;' # *.arc.LH
-        filetypes += trans.string('FileDlgs', 2) + ' (*)' # *
+        filetypes += trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;'  # *.arc
+        filetypes += trans.string('FileDlgs', 5) + ' (*' + '.arc' + '.lh);;'  # *.arc.LH
+        filetypes += trans.string('FileDlgs', 2) + ' (*)'  # *
         fn = QtWidgets.QFileDialog.getOpenFileName(self, trans.string('FileDlgs', 0), '', filetypes)[0]
         if fn == '': return
 
@@ -16932,7 +17047,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for item, val in arc.files:
             if val is not None:
                 # it's a file
-                fname = item[item.rfind('/')+1:]
+                fname = item[item.rfind('/') + 1:]
                 if fname.startswith('course'):
                     maxarea = int(fname[6])
                     if maxarea > areacount: areacount = maxarea
@@ -16973,13 +17088,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not self.HandleSaveNewArea(course, L0, L1, L2): return
         self.LoadLevel(None, self.fileSavePath, True, newID)
 
-
     @QtCore.pyqtSlot()
     def HandleDeleteArea(self):
         """
         Deletes the current area
         """
-        result = QtWidgets.QMessageBox.warning(self, 'Reggie', trans.string('DeleteArea', 0), QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+        result = QtWidgets.QMessageBox.warning(self, 'Reggie', trans.string('DeleteArea', 0),
+                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                               QtWidgets.QMessageBox.No)
         if result == QtWidgets.QMessageBox.No: return
 
         if not self.HandleSave(): return
@@ -16991,7 +17107,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             f.write(Level.save())
         self.LoadLevel(None, self.fileSavePath, True, 1)
 
-
     @QtCore.pyqtSlot()
     def HandleChangeGamePath(self, auto=False):
         """
@@ -17001,21 +17116,22 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         path = None
         while not isValidGamePath(path):
-            path = QtWidgets.QFileDialog.getExistingDirectory(None, trans.string('ChangeGamePath', 0, '[game]', gamedef.name))
+            path = QtWidgets.QFileDialog.getExistingDirectory(None,
+                                                              trans.string('ChangeGamePath', 0, '[game]', gamedef.name))
             if path == '':
                 return False
 
             path = str(path)
 
-            if (not isValidGamePath(path)) and (not gamedef.custom): # custom gamedefs can use incomplete folders
-                QtWidgets.QMessageBox.information(None, trans.string('ChangeGamePath', 1),  trans.string('ChangeGamePath', 2))
+            if (not isValidGamePath(path)) and (not gamedef.custom):  # custom gamedefs can use incomplete folders
+                QtWidgets.QMessageBox.information(None, trans.string('ChangeGamePath', 1),
+                                                  trans.string('ChangeGamePath', 2))
             else:
                 SetGamePath(path)
                 break
 
         if not auto: self.LoadLevel(None, '01-01', False, 1)
         return True
-
 
     @QtCore.pyqtSlot()
     def HandlePreferences(self):
@@ -17046,7 +17162,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('ZoneEntIndicators', DrawEntIndicators)
 
         # Get the Toolbar tab settings
-        boxes = (dlg.toolbarTab.FileBoxes, dlg.toolbarTab.EditBoxes, dlg.toolbarTab.ViewBoxes, dlg.toolbarTab.SettingsBoxes, dlg.toolbarTab.HelpBoxes)
+        boxes = (
+        dlg.toolbarTab.FileBoxes, dlg.toolbarTab.EditBoxes, dlg.toolbarTab.ViewBoxes, dlg.toolbarTab.SettingsBoxes,
+        dlg.toolbarTab.HelpBoxes)
         ToolbarSettings = {}
         for boxList in boxes:
             for box in boxList:
@@ -17063,7 +17181,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Warn the user that they may need to restart
         QtWidgets.QMessageBox.warning(None, trans.string('PrefsDlg', 0), trans.string('PrefsDlg', 30))
 
-
     @QtCore.pyqtSlot()
     def HandleNewLevel(self):
         """
@@ -17071,7 +17188,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         if self.CheckDirty(): return
         self.LoadLevel(None, None, False, 1)
-
 
     @QtCore.pyqtSlot()
     def HandleOpenFromName(self):
@@ -17085,7 +17201,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec_() == QtWidgets.QDialog.Accepted:
             self.LoadLevel(None, dlg.currentlevel, False, 1)
 
-
     @QtCore.pyqtSlot()
     def HandleOpenFromFile(self):
         """
@@ -17094,13 +17209,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if self.CheckDirty(): return
 
         filetypes = ''
-        filetypes += trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;' # *.arc
-        filetypes += trans.string('FileDlgs', 5) + ' (*' + '.arc' + '.lh);;' # *.arc.LH
-        filetypes += trans.string('FileDlgs', 2) + ' (*)' # *
+        filetypes += trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;'  # *.arc
+        filetypes += trans.string('FileDlgs', 5) + ' (*' + '.arc' + '.lh);;'  # *.arc.LH
+        filetypes += trans.string('FileDlgs', 2) + ' (*)'  # *
         fn = QtWidgets.QFileDialog.getOpenFileName(self, trans.string('FileDlgs', 0), '', filetypes)[0]
         if fn == '': return
         self.LoadLevel(None, str(fn), True, 1)
-
 
     @QtCore.pyqtSlot()
     def HandleSave(self):
@@ -17117,7 +17231,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             with open(self.fileSavePath, 'wb') as f:
                 f.write(data)
         except IOError as e:
-            QtWidgets.QMessageBox.warning(None, trans.string('Err_Save', 0), trans.string('Err_Save', 1, '[err1]', e.args[0], '[err2]', e.args[1]))
+            QtWidgets.QMessageBox.warning(None, trans.string('Err_Save', 0),
+                                          trans.string('Err_Save', 1, '[err1]', e.args[0], '[err2]', e.args[1]))
             return False
 
         Dirty = False
@@ -17143,7 +17258,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             with open(self.fileSavePath, 'wb') as f:
                 f.write(data)
         except IOError as e:
-            QtWidgets.QMessageBox.warning(None, trans.string('Err_Save', 0), trans.string('Err_Save', 1, '[err1]', e.args[0], '[err2]', e.args[1]))
+            QtWidgets.QMessageBox.warning(None, trans.string('Err_Save', 0),
+                                          trans.string('Err_Save', 1, '[err1]', e.args[0], '[err2]', e.args[1]))
             return False
 
         Dirty = False
@@ -17154,13 +17270,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('AutoSaveFileData', 'x')
         return True
 
-
     @QtCore.pyqtSlot()
     def HandleSaveAs(self):
         """
         Save a level back to the archive, with a new filename
         """
-        fn = QtWidgets.QFileDialog.getSaveFileName(self, trans.string('FileDlgs', 3), '', trans.string('FileDlgs', 1) + ' (*' + '.arc' +');;' + trans.string('FileDlgs', 2) + ' (*)')[0]
+        fn = QtWidgets.QFileDialog.getSaveFileName(self, trans.string('FileDlgs', 3), '',
+                                                   trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;' + trans.string(
+                                                       'FileDlgs', 2) + ' (*)')[0]
         if fn == '': return
 
         global Dirty, AutoSaveDirty
@@ -17180,19 +17297,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.UpdateTitle()
 
-
     @QtCore.pyqtSlot()
     def HandleSaveCopyAs(self):
         """
         Save a level back to the archive, with a new filename, but does not store this filename
         """
-        fn = QtWidgets.QFileDialog.getSaveFileName(self, trans.string('FileDlgs', 3), '', trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;' + trans.string('FileDlgs', 2) + ' (*)')[0]
+        fn = QtWidgets.QFileDialog.getSaveFileName(self, trans.string('FileDlgs', 3), '',
+                                                   trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;' + trans.string(
+                                                       'FileDlgs', 2) + ' (*)')[0]
         if fn == '': return
 
         data = Level.save()
         with open(fn, 'wb') as f:
             f.write(data)
-
 
     @QtCore.pyqtSlot()
     def HandleExit(self):
@@ -17200,7 +17317,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Exit the editor. Why would you want to do this anyway?
         """
         self.close()
-
 
     @QtCore.pyqtSlot(int)
     def HandleSwitchArea(self, idx):
@@ -17213,7 +17329,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if Area.areanum != idx + 1:
             self.LoadLevel(None, self.fileSavePath, True, idx + 1)
-
 
     @QtCore.pyqtSlot(bool)
     def HandleUpdateLayer0(self, checked):
@@ -17230,7 +17345,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-
     @QtCore.pyqtSlot(bool)
     def HandleUpdateLayer1(self, checked):
         """
@@ -17245,7 +17359,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 obj.setVisible(Layer1Shown)
 
         self.scene.update()
-
 
     @QtCore.pyqtSlot(bool)
     def HandleUpdateLayer2(self, checked):
@@ -17262,7 +17375,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-
     @QtCore.pyqtSlot(bool)
     def HandleTilesetAnimToggle(self, checked):
         """
@@ -17276,7 +17388,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-
     @QtCore.pyqtSlot(bool)
     def HandleCollisionsToggle(self, checked):
         """
@@ -17288,7 +17399,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         setSetting('ShowCollisions', CollisionsShown)
         self.scene.update()
-
 
     @QtCore.pyqtSlot(bool)
     def HandleRealViewToggle(self, checked):
@@ -17302,7 +17412,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         setSetting('RealViewEnabled', RealViewEnabled)
         self.scene.update()
-
 
     @QtCore.pyqtSlot(bool)
     def HandleSpritesVisibility(self, checked):
@@ -17319,7 +17428,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         setSetting('ShowSprites', SpritesShown)
         self.scene.update()
-
 
     @QtCore.pyqtSlot(bool)
     def HandleSpriteImages(self, checked):
@@ -17339,15 +17447,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     spr.setPos(
                         (spr.objx + spr.ImageObj.xOffset) * 1.5,
                         (spr.objy + spr.ImageObj.yOffset) * 1.5,
-                        )
+                    )
                 else:
                     spr.setPos(
                         spr.objx * 1.5,
                         spr.objy * 1.5,
-                        )
+                    )
 
         self.scene.update()
-
 
     @QtCore.pyqtSlot(bool)
     def HandleLocationsVisibility(self, checked):
@@ -17365,7 +17472,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('ShowLocations', LocationsShown)
         self.scene.update()
 
-
     @QtCore.pyqtSlot(bool)
     def HandleCommentsVisibility(self, checked):
         """
@@ -17381,7 +17487,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         setSetting('ShowComments', CommentsShown)
         self.scene.update()
-
 
     @QtCore.pyqtSlot(bool)
     def HandleObjectsFreeze(self, checked):
@@ -17403,7 +17508,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezeObjects', ObjectsFrozen)
         self.scene.update()
 
-
     @QtCore.pyqtSlot(bool)
     def HandleSpritesFreeze(self, checked):
         """
@@ -17422,7 +17526,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         setSetting('FreezeSprites', SpritesFrozen)
         self.scene.update()
-
 
     @QtCore.pyqtSlot(bool)
     def HandleEntrancesFreeze(self, checked):
@@ -17443,7 +17546,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezeEntrances', EntrancesFrozen)
         self.scene.update()
 
-
     @QtCore.pyqtSlot(bool)
     def HandleLocationsFreeze(self, checked):
         """
@@ -17462,7 +17564,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         setSetting('FreezeLocations', LocationsFrozen)
         self.scene.update()
-
 
     @QtCore.pyqtSlot(bool)
     def HandlePathsFreeze(self, checked):
@@ -17483,7 +17584,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezePaths', PathsFrozen)
         self.scene.update()
 
-
     @QtCore.pyqtSlot(bool)
     def HandleCommentsFreeze(self, checked):
         """
@@ -17503,7 +17603,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezeComments', CommentsFrozen)
         self.scene.update()
 
-
     @QtCore.pyqtSlot(bool)
     def HandleSwitchGrid(self):
         """
@@ -17511,13 +17610,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         global GridType
 
-        if GridType is None: GridType = 'grid'
-        elif GridType == 'grid': GridType = 'checker'
-        else: GridType = None
+        if GridType is None:
+            GridType = 'grid'
+        elif GridType == 'grid':
+            GridType = 'checker'
+        else:
+            GridType = None
 
         setSetting('GridType', GridType)
         self.scene.update()
-
 
     @QtCore.pyqtSlot()
     def HandleZoomIn(self):
@@ -17530,7 +17631,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if zi < len(self.ZoomLevels):
             self.ZoomTo(self.ZoomLevels[zi])
 
-
     @QtCore.pyqtSlot()
     def HandleZoomOut(self):
         """
@@ -17541,7 +17641,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         zi -= 1
         if zi >= 0:
             self.ZoomTo(self.ZoomLevels[zi])
-
 
     @QtCore.pyqtSlot()
     def HandleZoomActual(self):
@@ -17562,8 +17661,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle zooming to the maximum size
         """
-        self.ZoomTo(self.ZoomLevels[len(self.ZoomLevels)-1])
-
+        self.ZoomTo(self.ZoomLevels[len(self.ZoomLevels) - 1])
 
     def ZoomTo(self, z):
         """
@@ -17573,11 +17671,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         tr.scale(z / 100.0, z / 100.0)
         self.ZoomLevel = z
         self.view.setTransform(tr)
-        self.levelOverview.mainWindowScale = z/100.0
+        self.levelOverview.mainWindowScale = z / 100.0
 
         zi = self.ZoomLevels.index(z)
         self.actions['zoommax'].setEnabled(zi < len(self.ZoomLevels) - 1)
-        self.actions['zoomin'] .setEnabled(zi < len(self.ZoomLevels) - 1)
+        self.actions['zoomin'].setEnabled(zi < len(self.ZoomLevels) - 1)
         self.actions['zoomactual'].setEnabled(z != 100.0)
         self.actions['zoomout'].setEnabled(zi > 0)
         self.actions['zoommin'].setEnabled(zi > 0)
@@ -17591,7 +17689,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-
     @QtCore.pyqtSlot(int, int)
     def HandleOverviewClick(self, x, y):
         """
@@ -17599,7 +17696,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         self.view.centerOn(x, y)
         self.levelOverview.update()
-
 
     def SaveComments(self):
         """
@@ -17622,7 +17718,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             b.append(tlen & 0xFF)
             for char in com.text: b.append(ord(char))
         Area.Metadata.setBinData('InLevelComments_A%d' % Area.areanum, b)
-
 
     def closeEvent(self, event):
         """
@@ -17657,7 +17752,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             event.accept()
 
-
     def LoadLevel(self, game, name, isFullPath, areaNum):
         """
         Load a level from any game into the editor
@@ -17665,7 +17759,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         global levName
 
         new = name == None
-        
+
         # Get the file path, if possible
         if new:
             # Set the filepath variables
@@ -17674,7 +17768,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         else:
             levName = os.path.basename(name)
-            
+
             if isFullPath:
                 checkname = name
             else:
@@ -17682,10 +17776,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             found = os.path.isfile(checkname)
             if not found:
-                QtWidgets.QMessageBox.warning(self, 'Reggie!', trans.string('Err_CantFindLevel', 0, '[name]', checkname), QtWidgets.QMessageBox.Ok)
+                QtWidgets.QMessageBox.warning(self, 'Reggie!',
+                                              trans.string('Err_CantFindLevel', 0, '[name]', checkname),
+                                              QtWidgets.QMessageBox.Ok)
                 return False
             if not IsNSMBLevel(checkname):
-                QtWidgets.QMessageBox.warning(self, 'Reggie!', trans.string('Err_InvalidLevel', 0), QtWidgets.QMessageBox.Ok)
+                QtWidgets.QMessageBox.warning(self, 'Reggie!', trans.string('Err_InvalidLevel', 0),
+                                              QtWidgets.QMessageBox.Ok)
                 return False
 
             name = checkname
@@ -17696,7 +17793,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 # Check if there is a file by this name
                 if not os.path.isfile(name):
-                    QtWidgets.QMessageBox.warning(None, trans.string('Err_MissingLevel', 0), trans.string('Err_MissingLevel', 1, '[file]', name))
+                    QtWidgets.QMessageBox.warning(None, trans.string('Err_MissingLevel', 0),
+                                                  trans.string('Err_MissingLevel', 1, '[file]', name))
                     return False
 
                 # Set the filepath variables
@@ -17831,7 +17929,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # If we got this far, everything worked! Return True.
         return True
 
-
     def newLevel(self):
         # Create the new level object
         global Level
@@ -17946,14 +18043,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.scene.addItem(com)
             com.UpdateListItem()
 
-
     @QtCore.pyqtSlot()
     def ReloadTilesets(self, soft=False):
         """
         Reloads all the tilesets. If soft is True, they will not be reloaded if the filepaths have not changed.
         """
         global TilesetCache
-        if not soft: TilesetCache = {} # blank out the tileset cache; we're reloading them
+        if not soft: TilesetCache = {}  # blank out the tileset cache; we're reloading them
 
         tilesets = [Area.tileset0, Area.tileset1, Area.tileset2, Area.tileset3]
         for idx, name in enumerate(tilesets):
@@ -17968,11 +18064,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-
         global Sprites
         Sprites = None
         LoadSpriteData()
-
 
     @QtCore.pyqtSlot()
     def ChangeSelectionHandler(self):
@@ -18069,12 +18163,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.actions['copy'].setEnabled(True)
             self.actions['shiftitems'].setEnabled(True)
 
-
-
         # turn on the Stamp Add btn if applicable
         self.stampAddBtn.setEnabled(len(selitems) > 0)
-
-
 
         # count the # of each type, for the statusbar label
         spr = 0
@@ -18099,35 +18189,41 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if len(selitems) > 0:
             singleitem = len(selitems) == 1
             if singleitem:
-                if obj: text = trans.string('Statusbar', 0)  # 1 object selected
-                elif spr: text = trans.string('Statusbar', 1)  # 1 sprite selected
-                elif ent: text = trans.string('Statusbar', 2)  # 1 entrance selected
-                elif loc: text = trans.string('Statusbar', 3)  # 1 location selected
-                elif path: text = trans.string('Statusbar', 4)  # 1 path node selected
-                else: text = trans.string('Statusbar', 29) # 1 comment selected
-            else: # multiple things selected; see if they're all the same type
+                if obj:
+                    text = trans.string('Statusbar', 0)  # 1 object selected
+                elif spr:
+                    text = trans.string('Statusbar', 1)  # 1 sprite selected
+                elif ent:
+                    text = trans.string('Statusbar', 2)  # 1 entrance selected
+                elif loc:
+                    text = trans.string('Statusbar', 3)  # 1 location selected
+                elif path:
+                    text = trans.string('Statusbar', 4)  # 1 path node selected
+                else:
+                    text = trans.string('Statusbar', 29)  # 1 comment selected
+            else:  # multiple things selected; see if they're all the same type
                 if not any((spr, ent, loc, path, com)):
-                    text = trans.string('Statusbar', 5, '[x]', obj) # x objects selected
+                    text = trans.string('Statusbar', 5, '[x]', obj)  # x objects selected
                 elif not any((obj, ent, loc, path, com)):
-                    text = trans.string('Statusbar', 6, '[x]', spr) # x sprites selected
+                    text = trans.string('Statusbar', 6, '[x]', spr)  # x sprites selected
                 elif not any((obj, spr, loc, path, com)):
-                    text = trans.string('Statusbar', 7, '[x]', ent) # x entrances selected
+                    text = trans.string('Statusbar', 7, '[x]', ent)  # x entrances selected
                 elif not any((obj, spr, ent, path, com)):
-                    text = trans.string('Statusbar', 8, '[x]', loc) # x locations selected
+                    text = trans.string('Statusbar', 8, '[x]', loc)  # x locations selected
                 elif not any((obj, spr, ent, loc, com)):
-                    text = trans.string('Statusbar', 9, '[x]', path) # x path nodes selected
+                    text = trans.string('Statusbar', 9, '[x]', path)  # x path nodes selected
                 elif not any((obj, spr, ent, loc, path)):
-                    text = trans.string('Statusbar', 30, '[x]', com) # x comments selected
-                else: # different types
-                    text = trans.string('Statusbar', 10, '[x]', len(selitems)) # x items selected
+                    text = trans.string('Statusbar', 30, '[x]', com)  # x comments selected
+                else:  # different types
+                    text = trans.string('Statusbar', 10, '[x]', len(selitems))  # x items selected
                     types = (
-                        (obj, 12, 13), # variable, translation string ID if var == 1, translation string ID if var > 1
+                        (obj, 12, 13),  # variable, translation string ID if var == 1, translation string ID if var > 1
                         (spr, 14, 15),
                         (ent, 16, 17),
                         (loc, 18, 19),
                         (path, 20, 21),
                         (com, 31, 32),
-                        )
+                    )
                     first = True
                     for var, singleCode, multiCode in types:
                         if var > 0:
@@ -18136,7 +18232,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                             text += trans.string('Statusbar', (singleCode if var == 1 else multiCode), '[x]', var)
                             # above: '[x]', var) can't hurt if var == 1
 
-                    text += trans.string('Statusbar', 22) # ')'
+                    text += trans.string('Statusbar', 22)  # ')'
         self.selectionLabel.setText(text)
 
         self.CurrentSelection = selitems
@@ -18159,7 +18255,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if updateModeInfo: self.UpdateModeInfo()
 
-
     def HandleObjPosChange(self, obj, oldx, oldy, x, y):
         """
         Handle the object being dragged
@@ -18169,7 +18264,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             SetDirty()
         self.levelOverview.update()
 
-
     @QtCore.pyqtSlot(int)
     def CreationTabChanged(self, nt):
         """
@@ -18177,17 +18271,23 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         idx = self.creationTabs.currentIndex()
         CPT = -1
-        if idx == 0: # objects
+        if idx == 0:  # objects
             CPT = self.objAllTab.currentIndex()
-        elif idx == 1: # sprites
+        elif idx == 1:  # sprites
             CPT = 4
             if self.sprAllTab.currentIndex() == 1: CPT = -1
-        elif idx == 2: CPT = 5 # entrances
-        elif idx == 3: CPT = 7 # locations
-        elif idx == 4: CPT = 6 # paths
-        elif idx == 6: CPT = -1 # events
-        elif idx == 7: CPT = 8 # stamp pad
-        elif idx == 8: CPT = 9 # comment
+        elif idx == 2:
+            CPT = 5  # entrances
+        elif idx == 3:
+            CPT = 7  # locations
+        elif idx == 4:
+            CPT = 6  # paths
+        elif idx == 6:
+            CPT = -1  # events
+        elif idx == 7:
+            CPT = 8  # stamp pad
+        elif idx == 8:
+            CPT = 9  # comment
 
         global CurrentPaintType
         CurrentPaintType = CPT
@@ -18205,17 +18305,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
         global CurrentPaintType
         CurrentPaintType = nt
 
-
     @QtCore.pyqtSlot(int)
     def SprTabChanged(self, nt):
         """
         Handles the selected tab in the sprite palette changing
         """
-        if nt == 0: cpt = 4
-        else: cpt = -1
+        if nt == 0:
+            cpt = 4
+        else:
+            cpt = -1
         global CurrentPaintType
         CurrentPaintType = cpt
-
 
     @QtCore.pyqtSlot(int)
     def LayerChoiceChanged(self, nl):
@@ -18272,7 +18372,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.scene.update()
             SetDirty()
 
-
     @QtCore.pyqtSlot(int)
     def ObjectChoiceChanged(self, type):
         """
@@ -18280,7 +18379,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         global CurrentObject
         CurrentObject = type
-
 
     @QtCore.pyqtSlot(int)
     def ObjectReplace(self, type):
@@ -18301,7 +18399,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if changed:
             SetDirty()
 
-
     @QtCore.pyqtSlot(int)
     def SpriteChoiceChanged(self, type):
         """
@@ -18319,7 +18416,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.defaultPropDock.setVisible(False)
             self.defaultDataEditor.update()
 
-
     @QtCore.pyqtSlot(int)
     def SpriteReplace(self, type):
         """
@@ -18331,7 +18427,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         for x in items:
             if isinstance(x, type_spr):
-                x.spritedata = self.defaultDataEditor.data # change this first or else images get messed up
+                x.spritedata = self.defaultDataEditor.data  # change this first or else images get messed up
                 x.SetType(type)
                 x.update()
                 changed = True
@@ -18340,7 +18436,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             SetDirty()
 
         self.ChangeSelectionHandler()
-
 
     @QtCore.pyqtSlot(int)
     def SelectNewSpriteView(self, type):
@@ -18355,7 +18450,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         layout.itemAt(0).widget().setVisible(isSearch)
         layout.itemAt(1).widget().setVisible(isSearch)
 
-
     @QtCore.pyqtSlot(str)
     def NewSearchTerm(self, text):
         """
@@ -18363,14 +18457,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         self.sprPicker.SetSearchString(text)
 
-
     @QtCore.pyqtSlot()
     def ShowDefaultProps(self):
         """
         Handles the Show Default Properties button being clicked
         """
         self.defaultPropDock.setVisible(True)
-
 
     def HandleSprPosChange(self, obj, oldx, oldy, x, y):
         """
@@ -18380,7 +18472,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if oldx == x and oldy == y: return
             obj.UpdateListItem()
             SetDirty()
-
 
     @QtCore.pyqtSlot('PyQt_PyObject')
     def SpriteDataUpdated(self, data):
@@ -18395,7 +18486,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             obj.UpdateDynamicSizing()
 
-
     def HandleEntPosChange(self, obj, oldx, oldy, x, y):
         """
         Handle the entrance being dragged
@@ -18404,7 +18494,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         obj.UpdateListItem()
         if obj == self.selObj:
             SetDirty()
-
 
     def HandlePathPosChange(self, obj, oldx, oldy, x, y):
         """
@@ -18416,7 +18505,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         obj.UpdateListItem()
         if obj == self.selObj:
             SetDirty()
-
 
     def HandleComPosChange(self, obj, oldx, oldy, x, y):
         """
@@ -18430,7 +18518,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.SaveComments()
             SetDirty()
 
-
     def HandleComTxtChange(self, obj):
         """
         Handle the comment's text being changed
@@ -18439,7 +18526,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         obj.UpdateTooltip()
         self.SaveComments()
         SetDirty()
-
 
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleEntranceSelectByList(self, item):
@@ -18459,7 +18545,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         ent.setSelected(True)
 
-
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleEntranceToolTipAboutToShow(self, item):
         """
@@ -18473,7 +18558,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if ent is None: return
 
         ent.UpdateListItem(True)
-
 
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleLocationSelectByList(self, item):
@@ -18493,7 +18577,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         loc.setSelected(True)
 
-
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleLocationToolTipAboutToShow(self, item):
         """
@@ -18507,7 +18590,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if loc is None: return
 
         loc.UpdateListItem(True)
-
 
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleSpriteSelectByList(self, item):
@@ -18525,7 +18607,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         spr.setSelected(True)
 
-
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleSpriteToolTipAboutToShow(self, item):
         """
@@ -18540,7 +18621,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         spr.UpdateListItem(True)
 
-
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandlePathSelectByList(self, item):
         """
@@ -18548,7 +18628,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         path = None
         for check in Area.paths:
-           if check.listitem == item:
+            if check.listitem == item:
                 path = check
                 break
         if path is None: return
@@ -18557,7 +18637,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         path.setSelected(True)
 
-
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandlePathToolTipAboutToShow(self, item):
         """
@@ -18565,13 +18644,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         path = None
         for check in Area.paths:
-           if check.listitem == item:
+            if check.listitem == item:
                 path = check
                 break
         if path is None: return
 
         path.UpdateListItem(True)
-
 
     @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleCommentSelectByList(self, item):
@@ -18580,7 +18658,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         comment = None
         for check in Area.comments:
-           if check.listitem == item:
+            if check.listitem == item:
                 comment = check
                 break
         if comment is None: return
@@ -18596,13 +18674,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         comment = None
         for check in Area.comments:
-           if check.listitem == item:
+            if check.listitem == item:
                 comment = check
                 break
         if comment is None: return
 
         comment.UpdateListItem(True)
-
 
     def HandleLocPosChange(self, loc, oldx, oldy, x, y):
         """
@@ -18615,7 +18692,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         loc.UpdateListItem()
         self.levelOverview.update()
 
-
     def HandleLocSizeChange(self, loc, width, height):
         """
         Handle the location being resized
@@ -18625,7 +18701,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             SetDirty()
         loc.UpdateListItem()
         self.levelOverview.update()
-
 
     def UpdateModeInfo(self):
         """
@@ -18647,7 +18722,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.UpdateFlag = False
 
-
     @QtCore.pyqtSlot(int, int)
     def PositionHovered(self, x, y):
         """
@@ -18665,24 +18739,33 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 break
 
         if hovered is not None:
-            if isinstance(hovered, ObjectItem): # Object
-                info = trans.string('Statusbar', 23, '[width]', hovered.width, '[height]', hovered.height, '[xpos]', hovered.objx, '[ypos]', hovered.objy, '[layer]', hovered.layer, '[type]', hovered.type, '[tileset]', hovered.tileset+1)
-            elif isinstance(hovered, SpriteItem): # Sprite
-                info = trans.string('Statusbar', 24, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]', hovered.objy)
-            elif isinstance(hovered, SLib.AuxiliaryItem): # Sprite (auxiliary thing) (treat it like the actual sprite)
-                info = trans.string('Statusbar', 24, '[name]', hovered.parentItem().name, '[xpos]', hovered.parentItem().objx, '[ypos]', hovered.parentItem().objy)
-            elif isinstance(hovered, EntranceItem): # Entrance
-                info = trans.string('Statusbar', 25, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]', hovered.objy, '[dest]', hovered.destination)
-            elif isinstance(hovered, LocationItem): # Location
-                info = trans.string('Statusbar', 26, '[id]', int(hovered.id), '[xpos]', int(hovered.objx), '[ypos]', int(hovered.objy), '[width]', int(hovered.width), '[height]', int(hovered.height))
-            elif isinstance(hovered, PathItem): # Path
-                info = trans.string('Statusbar', 27, '[path]', hovered.pathid, '[node]', hovered.nodeid, '[xpos]', hovered.objx, '[ypos]', hovered.objy)
-            elif isinstance(hovered, CommentItem): # Comment
-                info = trans.string('Statusbar', 33, '[xpos]', hovered.objx, '[ypos]', hovered.objy, '[text]', hovered.OneLineText())
+            if isinstance(hovered, ObjectItem):  # Object
+                info = trans.string('Statusbar', 23, '[width]', hovered.width, '[height]', hovered.height, '[xpos]',
+                                    hovered.objx, '[ypos]', hovered.objy, '[layer]', hovered.layer, '[type]',
+                                    hovered.type, '[tileset]', hovered.tileset + 1)
+            elif isinstance(hovered, SpriteItem):  # Sprite
+                info = trans.string('Statusbar', 24, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]',
+                                    hovered.objy)
+            elif isinstance(hovered, SLib.AuxiliaryItem):  # Sprite (auxiliary thing) (treat it like the actual sprite)
+                info = trans.string('Statusbar', 24, '[name]', hovered.parentItem().name, '[xpos]',
+                                    hovered.parentItem().objx, '[ypos]', hovered.parentItem().objy)
+            elif isinstance(hovered, EntranceItem):  # Entrance
+                info = trans.string('Statusbar', 25, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]',
+                                    hovered.objy, '[dest]', hovered.destination)
+            elif isinstance(hovered, LocationItem):  # Location
+                info = trans.string('Statusbar', 26, '[id]', int(hovered.id), '[xpos]', int(hovered.objx), '[ypos]',
+                                    int(hovered.objy), '[width]', int(hovered.width), '[height]', int(hovered.height))
+            elif isinstance(hovered, PathItem):  # Path
+                info = trans.string('Statusbar', 27, '[path]', hovered.pathid, '[node]', hovered.nodeid, '[xpos]',
+                                    hovered.objx, '[ypos]', hovered.objy)
+            elif isinstance(hovered, CommentItem):  # Comment
+                info = trans.string('Statusbar', 33, '[xpos]', hovered.objx, '[ypos]', hovered.objy, '[text]',
+                                    hovered.OneLineText())
 
-        self.posLabel.setText(trans.string('Statusbar', 28, '[objx]', int(x/24), '[objy]', int(y/24), '[sprx]', int(x/1.5), '[spry]', int(y/1.5)))
+        self.posLabel.setText(
+            trans.string('Statusbar', 28, '[objx]', int(x / 24), '[objy]', int(y / 24), '[sprx]', int(x / 1.5),
+                         '[spry]', int(y / 1.5)))
         self.hoverLabel.setText(info)
-
 
     def keyPressEvent(self, event):
         """
@@ -18705,7 +18788,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.levelOverview.update()
 
         QtWidgets.QMainWindow.keyPressEvent(self, event)
-
 
     @QtCore.pyqtSlot()
     def HandleAreaOptions(self):
@@ -18747,11 +18829,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     fname = fname[len(trans.string('AreaDlg', 17, '[name]', '')):]
                     if fname == '': continue
 
-                exec (assignment + ' = fname')
+                exec(assignment + ' = fname')
                 LoadTileset(idx, fname)
 
             for idx in toUnload:
-                exec ('Area.tileset%d = \'\'' % idx)
+                exec('Area.tileset%d = \'\'' % idx)
                 UnloadTileset(idx)
 
             mainWindow.objPicker.LoadFromTilesets()
@@ -18821,7 +18903,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 z.prepareGeometryChange()
                 z.UpdateRects()
-                z.setPos(z.objx*1.5, z.objy*1.5)
+                z.setPos(z.objx * 1.5, z.objy * 1.5)
 
                 z.modeldark = tab.Zone_modeldark.currentIndex()
                 z.terraindark = tab.Zone_terraindark.currentIndex()
@@ -18829,15 +18911,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 if tab.Zone_xtrack.isChecked():
                     if tab.Zone_ytrack.isChecked():
                         if tab.Zone_camerabias.isChecked():
-                            #Xtrack, YTrack, Bias
+                            # Xtrack, YTrack, Bias
                             if tab.Zone_camerazoom.currentIndex() == 0:
                                 z.cammode = 0
                                 z.camzoom = 8
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 62))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 62))
                             elif tab.Zone_camerazoom.currentIndex() == 1:
                                 z.cammode = 3
                                 z.camzoom = 9
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 63))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 63))
                             elif tab.Zone_camerazoom.currentIndex() == 2:
                                 z.cammode = 0
                                 z.camzoom = 1
@@ -18854,7 +18938,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                                 z.cammode = 3
                                 z.camzoom = 3
                         else:
-                            #Xtrack, YTrack, No Bias
+                            # Xtrack, YTrack, No Bias
                             if tab.Zone_camerazoom.currentIndex() == 0:
                                 z.cammode = 0
                                 z.camzoom = 8
@@ -18878,14 +18962,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
                                 z.camzoom = 7
                     else:
                         if tab.Zone_camerabias.isChecked():
-                            #Xtrack, No YTrack, Bias
+                            # Xtrack, No YTrack, Bias
                             z.cammode = 6
                             if tab.Zone_camerazoom.currentIndex() == 0:
                                 z.camzoom = 8
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 62))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 62))
                             elif tab.Zone_camerazoom.currentIndex() == 1:
                                 z.camzoom = 1
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 63))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 63))
                             elif tab.Zone_camerazoom.currentIndex() == 2:
                                 z.camzoom = 2
                             elif tab.Zone_camerazoom.currentIndex() == 3:
@@ -18896,15 +18982,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
                                 z.camzoom = 3
                             elif tab.Zone_camerazoom.currentIndex() == 6:
                                 z.camzoom = 16
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 65))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 65))
                         else:
-                            #Xtrack, No YTrack, No Bias
+                            # Xtrack, No YTrack, No Bias
                             z.cammode = 6
                             if tab.Zone_camerazoom.currentIndex() == 0:
                                 z.camzoom = 8
                             elif tab.Zone_camerazoom.currentIndex() == 1:
                                 z.camzoom = 0
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 64))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 64))
                             elif tab.Zone_camerazoom.currentIndex() == 2:
                                 z.camzoom = 0
                             elif tab.Zone_camerazoom.currentIndex() == 3:
@@ -18915,19 +19003,22 @@ class ReggieWindow(QtWidgets.QMainWindow):
                                 z.camzoom = 3
                             elif tab.Zone_camerazoom.currentIndex() == 6:
                                 z.camzoom = 16
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 65))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 65))
                 else:
                     if tab.Zone_ytrack.isChecked():
                         if tab.Zone_camerabias.isChecked():
-                            #No Xtrack, YTrack, Bias
+                            # No Xtrack, YTrack, Bias
                             if tab.Zone_camerazoom.currentIndex() == 0:
                                 z.cammode = 1
                                 z.camzoom = 8
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 62))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 62))
                             elif tab.Zone_camerazoom.currentIndex() == 1:
                                 z.cammode = 4
                                 z.camzoom = 9
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 63))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 63))
                             elif tab.Zone_camerazoom.currentIndex() == 2:
                                 z.cammode = 1
                                 z.camzoom = 1
@@ -18944,7 +19035,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                                 z.cammode = 4
                                 z.camzoom = 3
                         else:
-                            #No Xtrack, YTrack, No Bias
+                            # No Xtrack, YTrack, No Bias
                             if tab.Zone_camerazoom.currentIndex() == 0:
                                 z.cammode = 4
                                 z.camzoom = 8
@@ -18968,66 +19059,79 @@ class ReggieWindow(QtWidgets.QMainWindow):
                                 z.camzoom = 7
                     else:
                         if tab.Zone_camerabias.isChecked():
-                            #No Xtrack, No YTrack, Bias (glitchy)
+                            # No Xtrack, No YTrack, Bias (glitchy)
                             if tab.Zone_camerazoom.currentIndex() == 0:
                                 z.cammode = 9
                                 z.camzoom = 8
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 66))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 66))
                             elif tab.Zone_camerazoom.currentIndex() == 1:
                                 z.cammode = 9
                                 z.camzoom = 20
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 66))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 66))
                             elif tab.Zone_camerazoom.currentIndex() == 2:
                                 z.cammode = 9
                                 z.camzoom = 13
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 66))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 66))
                             elif tab.Zone_camerazoom.currentIndex() == 3:
                                 z.cammode = 9
                                 z.camzoom = 12
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 66))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 66))
                             elif tab.Zone_camerazoom.currentIndex() == 4:
                                 z.cammode = 9
                                 z.camzoom = 14
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 66))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 66))
                             elif tab.Zone_camerazoom.currentIndex() == 5:
                                 z.cammode = 9
                                 z.camzoom = 15
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 66))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 66))
                             elif tab.Zone_camerazoom.currentIndex() == 6:
                                 z.cammode = 9
                                 z.camzoom = 16
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 66))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 66))
                         else:
-                            #No Xtrack, No YTrack, No Bias (glitchy)
+                            # No Xtrack, No YTrack, No Bias (glitchy)
                             if tab.Zone_camerazoom.currentIndex() == 0:
                                 z.cammode = 9
                                 z.camzoom = 8
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 67))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 67))
                             elif tab.Zone_camerazoom.currentIndex() == 1:
                                 z.cammode = 9
                                 z.camzoom = 19
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 67))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 67))
                             elif tab.Zone_camerazoom.currentIndex() == 2:
                                 z.cammode = 9
                                 z.camzoom = 13
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 67))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 67))
                             elif tab.Zone_camerazoom.currentIndex() == 3:
                                 z.cammode = 9
                                 z.camzoom = 12
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 67))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 67))
                             elif tab.Zone_camerazoom.currentIndex() == 4:
                                 z.cammode = 9
                                 z.camzoom = 14
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 67))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 67))
                             elif tab.Zone_camerazoom.currentIndex() == 5:
                                 z.cammode = 9
                                 z.camzoom = 15
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 67))
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 67))
                             elif tab.Zone_camerazoom.currentIndex() == 6:
                                 z.cammode = 9
                                 z.camzoom = 16
-                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61), trans.string('ZonesDlg', 67))
-
+                                QtWidgets.QMessageBox.warning(None, trans.string('ZonesDlg', 61),
+                                                              trans.string('ZonesDlg', 67))
 
                 if tab.Zone_vnormal.isChecked():
                     z.visibility = 0
@@ -19039,7 +19143,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     z.visibility = 32
                     z.visibility = z.visibility + tab.Zone_visibility.currentIndex()
 
-                val = tab.Zone_directionmode.currentIndex()*2
+                val = tab.Zone_directionmode.currentIndex() * 2
                 if val == 2: val = 1
                 z.camtrack = val
 
@@ -19081,7 +19185,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 z.bg2A = tab.hex2A.value()
                 z.bg3A = tab.hex3A.value()
 
-
                 z.XpositionB = tab.xposB.value()
                 z.YpositionB = -tab.yposB.value()
                 z.XscrollB = tab.xscrollB.currentIndex()
@@ -19103,16 +19206,21 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         dlg = ScreenCapChoiceDialog()
         if dlg.exec_() == QtWidgets.QDialog.Accepted:
-            fn = QtWidgets.QFileDialog.getSaveFileName(mainWindow, trans.string('FileDlgs', 3), '/untitled.png', trans.string('FileDlgs', 4) + ' (*.png)')[0]
+            fn = QtWidgets.QFileDialog.getSaveFileName(mainWindow, trans.string('FileDlgs', 3), '/untitled.png',
+                                                       trans.string('FileDlgs', 4) + ' (*.png)')[0]
             if fn == '': return
             fn = str(fn)
 
             if dlg.zoneCombo.currentIndex() == 0:
-                ScreenshotImage = QtGui.QImage(mainWindow.view.width(), mainWindow.view.height(), QtGui.QImage.Format_ARGB32)
+                ScreenshotImage = QtGui.QImage(mainWindow.view.width(), mainWindow.view.height(),
+                                               QtGui.QImage.Format_ARGB32)
                 ScreenshotImage.fill(Qt.transparent)
 
                 RenderPainter = QtGui.QPainter(ScreenshotImage)
-                mainWindow.view.render(RenderPainter, QtCore.QRectF(0,0,mainWindow.view.width(),  mainWindow.view.height()), QtCore.QRect(QtCore.QPoint(0,0), QtCore.QSize(mainWindow.view.width(),  mainWindow.view.height())))
+                mainWindow.view.render(RenderPainter,
+                                       QtCore.QRectF(0, 0, mainWindow.view.width(), mainWindow.view.height()),
+                                       QtCore.QRect(QtCore.QPoint(0, 0),
+                                                    QtCore.QSize(mainWindow.view.width(), mainWindow.view.height())))
                 RenderPainter.end()
             elif dlg.zoneCombo.currentIndex() == 1:
                 maxX = maxY = 0
@@ -19135,22 +19243,27 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 ScreenshotImage.fill(Qt.transparent)
 
                 RenderPainter = QtGui.QPainter(ScreenshotImage)
-                mainWindow.scene.render(RenderPainter, QtCore.QRectF(0, 0, int(maxX - minX), int(maxY - minY)), QtCore.QRectF(int(minX), int(minY), int(maxX - minX), int(maxY - minY)))
+                mainWindow.scene.render(RenderPainter, QtCore.QRectF(0, 0, int(maxX - minX), int(maxY - minY)),
+                                        QtCore.QRectF(int(minX), int(minY), int(maxX - minX), int(maxY - minY)))
                 RenderPainter.end()
 
             else:
                 i = dlg.zoneCombo.currentIndex() - 2
-                ScreenshotImage = QtGui.QImage(Area.zones[i].width * 1.5, Area.zones[i].height * 1.5, QtGui.QImage.Format_ARGB32)
+                ScreenshotImage = QtGui.QImage(Area.zones[i].width * 1.5, Area.zones[i].height * 1.5,
+                                               QtGui.QImage.Format_ARGB32)
                 ScreenshotImage.fill(Qt.transparent)
 
                 RenderPainter = QtGui.QPainter(ScreenshotImage)
-                mainWindow.scene.render(RenderPainter, QtCore.QRectF(0,0,Area.zones[i].width * 1.5, Area.zones[i].height * 1.5), QtCore.QRectF(int(Area.zones[i].objx) * 1.5, int(Area.zones[i].objy) * 1.5, Area.zones[i].width * 1.5, Area.zones[i].height * 1.5))
+                mainWindow.scene.render(RenderPainter,
+                                        QtCore.QRectF(0, 0, Area.zones[i].width * 1.5, Area.zones[i].height * 1.5),
+                                        QtCore.QRectF(int(Area.zones[i].objx) * 1.5, int(Area.zones[i].objy) * 1.5,
+                                                      Area.zones[i].width * 1.5, Area.zones[i].height * 1.5))
                 RenderPainter.end()
 
             ScreenshotImage.save(fn, 'PNG', 50)
 
-
-    def HandleDiagnostics(self):
+    @staticmethod
+    def HandleDiagnostics():
         """
         Checks the level for any obvious problems and provides options to autofix them
         """
@@ -19218,9 +19331,12 @@ def main():
     global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, DrawEntIndicators
 
     gt = setting('GridType')
-    if gt == 'checker': GridType = 'checker'
-    elif gt == 'grid': GridType = 'grid'
-    else: GridType = None
+    if gt == 'checker':
+        GridType = 'checker'
+    elif gt == 'grid':
+        GridType = 'grid'
+    else:
+        GridType = None
     CollisionsShown = setting('ShowCollisions', False)
     RealViewEnabled = setting('RealViewEnabled', False)
     ObjectsFrozen = setting('FreezeObjects', False)
@@ -19239,13 +19355,15 @@ def main():
     # Choose a folder for the game
     # Let the user pick a folder without restarting the editor if they fail
     while not isValidGamePath():
-        path = QtWidgets.QFileDialog.getExistingDirectory(None, trans.string('ChangeGamePath', 0, '[game]', gamedef.name))
+        path = QtWidgets.QFileDialog.getExistingDirectory(None,
+                                                          trans.string('ChangeGamePath', 0, '[game]', gamedef.name))
         if path == '':
             sys.exit(0)
 
         SetGamePath(path)
         if not isValidGamePath():
-            QtWidgets.QMessageBox.information(None, trans.string('ChangeGamePath', 1),  trans.string('ChangeGamePath', 3))
+            QtWidgets.QMessageBox.information(None, trans.string('ChangeGamePath', 1),
+                                              trans.string('ChangeGamePath', 3))
         else:
             setSetting('GamePath_NSMBW', path)
             break
@@ -19266,12 +19384,13 @@ def main():
 
     # Create and show the main window
     mainWindow = ReggieWindow()
-    mainWindow.__init2__() # fixes bugs
+    mainWindow.__init2__()  # fixes bugs
     mainWindow.show()
 
     exitcodesys = app.exec_()
     app.deleteLater()
     sys.exit(exitcodesys)
+
 
 generateStringsXML = False
 if '-generatestringsxml' in sys.argv:

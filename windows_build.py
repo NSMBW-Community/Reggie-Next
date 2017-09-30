@@ -27,14 +27,16 @@
 # Use the values below to configure the release:
 
 PackageName = 'reggie_next_m3_win32'
-Version = '0.3' # This must be a valid float in string format
-
+Version = '0.3'  # This must be a valid float in string format
 
 ################################################################
 ################################################################
 
 # Imports
-import os, os.path, shutil, sys
+import os.path
+import shutil
+import sys
+
 try:
     from cx_Freeze import setup, Executable
 except ImportError:
@@ -49,10 +51,12 @@ if '--verbose' in sys.argv:
     sys.argv.remove('--verbose')
     verboseFlag = True
 
+
 # Useful function to print text only if in verbose mode
 def printv(text):
     """Convenience function"""
     if verboseFlag: print(text)
+
 
 # UPX flag
 upxFlag = False
@@ -80,17 +84,17 @@ printv('>> Directory ready!')
 
 # exclude QtWebKit to save space, plus Python stuff we don't use
 excludes = ['doctest', 'pdb', 'unittest', 'difflib', 'inspect',
-    'os2emxpath', 'posixpath', 'optpath', 'locale', 'calendar',
-    'select', 'multiprocessing', 'ssl',
-    'PyQt5.QtWebKit', 'PyQt5.QtNetwork']
+            'os2emxpath', 'posixpath', 'optpath', 'locale', 'calendar',
+            'select', 'multiprocessing', 'ssl',
+            'PyQt5.QtWebKit', 'PyQt5.QtNetwork']
 
 # Set it up
 printv('>> Running build functions...')
 base = 'Win32GUI' if sys.platform == 'win32' else None
 setup(
-    name = 'Reggie! Level Editor Next',
-    version = Version,
-    description = 'Reggie! Level Editor Next',
+    name='Reggie! Level Editor Next',
+    version=Version,
+    description='Reggie! Level Editor Next',
     options={
         'build_exe': {
             'excludes': excludes,
@@ -98,26 +102,26 @@ setup(
             'compressed': 1,
             'build_exe': dir_,
             'icon': 'reggiedata/win_icon.ico',
-            },
         },
-    executables = [
+    },
+    executables=[
         Executable(
             'reggie.py',
-            base = base,
-            ),
-        ],
-    )
+            base=base,
+        ),
+    ],
+)
 print('>> Built frozen executable!')
-
-
 
 # Now that it's built, configure everything
 
 
 # Remove a useless file we don't need
 printv('>> Attempting to remove w9xpopen.exe ...')
-try: os.unlink(dir_ + '/w9xpopen.exe')
-except: pass
+try:
+    os.unlink(dir_ + '/w9xpopen.exe')
+except:
+    pass
 printv('>> Done.')
 
 if upxFlag:
@@ -127,7 +131,7 @@ if upxFlag:
         upx = []
         for f in files:
             if f.endswith('.exe') or f.endswith('.dll') or f.endswith('.pyd'):
-                upx.append('"%s/%s"' % (dir_,f))
+                upx.append('"%s/%s"' % (dir_, f))
         os.system('upx/upx.exe -9 ' + ' '.join(upx))
         print('>> Compression complete.')
     else:
@@ -138,10 +142,10 @@ else:
     print('>> No \'-upx\' flag specified, so UPX compression will not be attempted.')
 
 print('>> Attempting to copy required files...')
-if os.path.isdir(dir_ + '/reggiedata'): shutil.rmtree(dir_ + '/reggiedata') 
-if os.path.isdir(dir_ + '/reggieextras'): shutil.rmtree(dir_ + '/reggieextras') 
-shutil.copytree('reggiedata', dir_ + '/reggiedata') 
-shutil.copytree('reggieextras', dir_ + '/reggieextras') 
+if os.path.isdir(dir_ + '/reggiedata'): shutil.rmtree(dir_ + '/reggiedata')
+if os.path.isdir(dir_ + '/reggieextras'): shutil.rmtree(dir_ + '/reggieextras')
+shutil.copytree('reggiedata', dir_ + '/reggiedata')
+shutil.copytree('reggieextras', dir_ + '/reggieextras')
 shutil.copy('license.txt', dir_)
 shutil.copy('readme.md', dir_)
 if not os.path.isfile(dir_ + '/libEGL.dll'):

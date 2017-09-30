@@ -41,10 +41,11 @@ u16 = ctypes.c_ushort
 u32 = ctypes.c_uint
 
 
-class LHContext():
+class LHContext:
     """
     A storage place for LH data while decompressing
     """
+
     def __init__(self):
         self.buf1 = bytearray(0x800)
         self.buf2 = bytearray(0x80)
@@ -62,6 +63,7 @@ def getDecompressedSize(compData):
 
     return outSize
 
+
 def loadLHPiece(buf, inData, unk):
     """
     Unknown. Has something to do with reading the LH header(s)?
@@ -71,7 +73,7 @@ def loadLHPiece(buf, inData, unk):
     inOffset, dataSize, copiedAmount = \
         [u32() for i in range(3)]
 
-    r6.value = 1 << unk.value;
+    r6.value = 1 << unk.value
     r7.value = 2
     r9.value = 1
     r10.value = 0
@@ -94,7 +96,7 @@ def loadLHPiece(buf, inData, unk):
 
         r6.value = unk.value + 7
         r6.value = (r6.value - r11.value) >> 3
-        
+
         if r11.value < unk.value:
             for i in range(r6.value):
                 r4.value = inData[inOffset.value]
@@ -116,7 +118,7 @@ def loadLHPiece(buf, inData, unk):
         r11.value -= unk.value
 
     return copiedAmount.value
-    
+
 
 def decompressLH(inData):
     """
@@ -153,8 +155,8 @@ def decompressLH(inData):
 
     while outIndex.value < outSize.value:
 
-        r12.value = 2 # Used as an offset into context.buf1
-        r7.value = r4.value # Used as an offset into inBuf
+        r12.value = 2  # Used as an offset into context.buf1
+        r7.value = r4.value  # Used as an offset into inBuf
 
         enter = True
         while flag or enter:
@@ -172,7 +174,7 @@ def decompressLH(inData):
 
             r9.value = r8.value & 1
             r10.value = r11.value & 0x7F
-            r8.value = r3.value >> r9.value # sraw?
+            r8.value = r3.value >> r9.value  # sraw?
             r8.value = r11.value & r8.value
             flag = (r8.value == 0)
             r8.value = (r10.value + 1) << 1
@@ -196,8 +198,8 @@ def decompressLH(inData):
         r7.value &= 0xFF
         r25.value = 2
         r7.value += 3
-        r7.value &= 0xFFFF # r7 is really an ushort, probably
-        r8.value = r4.value # used as an offset into inBuf
+        r7.value &= 0xFFFF  # r7 is really an ushort, probably
+        r8.value = r4.value  # used as an offset into inBuf
 
         enter = True
         while enter or flag:
@@ -214,7 +216,7 @@ def decompressLH(inData):
             r6.value -= 1
             r10.value = r9.value & 1
             r11.value = r12.value & 7
-            r9.value = r0.value >> r10.value # sraw
+            r9.value = r0.value >> r10.value  # sraw
             r9.value = r12.value & r9.value
             flag = (r9.value == 0)
             r9.value = r11.value + 1
@@ -232,7 +234,7 @@ def decompressLH(inData):
 
         r10.value = 0
         if r11.value != 0:
-            r8.value = r4.value # offset into inBuf
+            r8.value = r4.value  # offset into inBuf
             r10.value = 1
 
             r11.value -= 1
@@ -258,7 +260,7 @@ def decompressLH(inData):
             r7.value &= 0xFFFF
 
         r9.value = r10.value + 1
-        r8.value = outIndex.value # offset into outBuf
+        r8.value = outIndex.value  # offset into outBuf
         r10.value = r9.value & 0xFFFF
 
         # Block copy loop
@@ -275,6 +277,7 @@ def decompressLH(inData):
 
     return bytes(outBuf)
 
+
 def isLHCompressed(data):
     """
     Returns True if it appears that the data is LH-compressed.
@@ -285,6 +288,7 @@ def isLHCompressed(data):
     # Since U8 archives begin with U\xAA8-, they will
     # never trigger this.
     return data.startswith(b'@')
+
 
 def main():
     """
@@ -312,9 +316,10 @@ def main():
 
     if not argsAreCorrect:
         errorTxt = '' \
-            'Command-line arguments are missing or wrong. Usage:\n' \
-            'To decompress a file: ' + selfName + ' -d compFile.bin decompFile.bin\n' \
-            'To compress a file: ' + selfName + ' -c decompFile.bin compFile.bin\n'
+                   'Command-line arguments are missing or wrong. Usage:\n' \
+                   'To decompress a file: ' + selfName + ' -d compFile.bin decompFile.bin\n' \
+                                                         'To compress a file: ' + selfName + ' -c decompFile.bin ' \
+                                                         'compFile.bin\n'
         raise ValueError(errorTxt)
 
     if '-d' in argv:
