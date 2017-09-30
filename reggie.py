@@ -18274,8 +18274,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if idx == 0:  # objects
             CPT = self.objAllTab.currentIndex()
         elif idx == 1:  # sprites
-            CPT = 4
-            if self.sprAllTab.currentIndex() == 1: CPT = -1
+            if self.sprAllTab.currentIndex() != 1: CPT = 4
         elif idx == 2:
             CPT = 5  # entrances
         elif idx == 3:
@@ -18283,10 +18282,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         elif idx == 4:
             CPT = 6  # paths
         elif idx == 6:
-            CPT = -1  # events
-        elif idx == 7:
             CPT = 8  # stamp pad
-        elif idx == 8:
+        elif idx == 7:
             CPT = 9  # comment
 
         global CurrentPaintType

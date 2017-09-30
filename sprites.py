@@ -3055,6 +3055,7 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
     def dataChanged(self):
         super().dataChanged()
         pieces = self.parent.spritedata[3] & 15
+        if pieces > 7: pieces = 7
         self.yOffset = -pieces * 16
         self.height = (pieces + 1) * 16
 
@@ -3062,6 +3063,7 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
         super().paint(painter)
 
         pieces = (self.parent.spritedata[3] & 15) + 1
+        if pieces > 8: pieces = 8
         pivot1_4 = self.parent.spritedata[4] & 15
         pivot5_8 = self.parent.spritedata[4] >> 4
         startleft1_4 = self.parent.spritedata[5] & 15
