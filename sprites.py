@@ -365,6 +365,10 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 64, 138, 139, 216, 358, 374,
         super().positionChanged()
         self.parent.scene().update()
 
+    def dataChanged(self):
+        super().dataChanged()
+        self.parent.scene().update()
+
     def realViewZone(self, painter, zoneRect, viewRect):
         """
         Real view zone painter for liquids/fog
@@ -1666,9 +1670,12 @@ class SpriteImage_OutdoorsFog(SpriteImage_LiquidOrFog):  # 64
     def loadImages():
         SLib.loadIfNotInImageCache('OutdoorsFog', 'fog_outdoors.png')
 
-    def updateSize(self):
-        super().updateSize()
-        self.parent.updateScene()
+    def dataChanged(self):
+        super().dataChanged()
+
+        self.paintZone = self.parent.spritedata[5] == 0
+        
+        self.parent.scene().update()
 
     def realViewZone(self, painter, zoneRect, viewRect):
 
@@ -2929,6 +2936,13 @@ class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
         ImageCache['LiquidWaterRise'] = SLib.GetImg('liquid_water_rise.png')
         ImageCache['LiquidWaterRiseCrest'] = SLib.GetImg('liquid_water_rise_crest.png')
 
+    def dataChanged(self):
+        super().dataChanged()
+
+        self.paintZone = self.parent.spritedata[5] == 0
+        
+        self.parent.scene().update()
+
     def realViewZone(self, painter, zoneRect, viewRect):
 
         self.paintZone = self.parent.spritedata[5] == 0
@@ -2959,6 +2973,13 @@ class SpriteImage_Lava(SpriteImage_LiquidOrFog):  # 139
         ImageCache['LiquidLavaCrest'] = SLib.GetImg('liquid_lava_crest.png')
         ImageCache['LiquidLavaRise'] = SLib.GetImg('liquid_lava_rise.png')
         ImageCache['LiquidLavaRiseCrest'] = SLib.GetImg('liquid_lava_rise_crest.png')
+
+    def dataChanged(self):
+        super().dataChanged()
+
+        self.paintZone = self.parent.spritedata[5] == 0
+        
+        self.parent.scene().update()
 
     def realViewZone(self, painter, zoneRect, viewRect):
 
@@ -3977,6 +3998,13 @@ class SpriteImage_Poison(SpriteImage_LiquidOrFog):  # 216
         ImageCache['LiquidPoisonCrest'] = SLib.GetImg('liquid_poison_crest.png')
         ImageCache['LiquidPoisonRise'] = SLib.GetImg('liquid_poison_rise.png')
         ImageCache['LiquidPoisonRiseCrest'] = SLib.GetImg('liquid_poison_rise_crest.png')
+
+    def dataChanged(self):
+        super().dataChanged()
+
+        self.paintZone = self.parent.spritedata[5] == 0
+        
+        self.parent.scene().update()
 
     def realViewZone(self, painter, zoneRect, viewRect):
 
@@ -6261,6 +6289,13 @@ class SpriteImage_SnowWind(SpriteImage_LiquidOrFog):  # 374
     def loadImages():
         SLib.loadIfNotInImageCache('SnowEffect', 'snow.png')
 
+    def dataChanged(self):
+        super().dataChanged()
+
+        self.paintZone = self.parent.spritedata[5] == 0
+        
+        self.parent.scene().update()
+
     def realViewZone(self, painter, zoneRect, viewRect):
 
         # For now, we only paint snow
@@ -6908,6 +6943,13 @@ class SpriteImage_GhostFog(SpriteImage_LiquidOrFog):  # 435
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('GhostFog', 'fog_ghost.png')
+
+    def dataChanged(self):
+        super().dataChanged()
+
+        self.paintZone = self.parent.spritedata[5] == 0
+        
+        self.parent.scene().update()
 
     def realViewZone(self, painter, zoneRect, viewRect):
 
