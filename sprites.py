@@ -345,214 +345,8 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage):  # 30, 81, 82, 83, 84, 85, 86
 
 
 class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 64, 138, 139, 216, 358, 374, 435
-
-    class FreeAuxiliaryItem_LiquidOrFog(QtWidgets.QGraphicsItem):
-        """
-        An item that acts sort of like an auxiliary item, but isn't one. Biggest difference is that the sprite isn't its parent.
-        It paints liquid or fog in a zone or location.
-        """
-
-        def __init__(self, imageObj):
-            super().__init__()
-            self.ImageObj = imageObj
-
-            self.OuterRect = None
-            self.BoundingRect = QtCore.QRectF(0, 0, 0, 0)
-            self.mode = 'z'  # 'z' = zones, 'l' = locations
-
-        def boundingRect(self):
-            """
-            Required by Qt
-            """
-            return self.BoundingRect
-
-        def paint(self, painter, option, widget=None):
-            painter.setClipRect(option.rect)
-
-            y, h = self.y(), self.OuterRect.height()
-
-            # Get info
-            selfTop = self.OuterRect.y()
-            spriteTop = self.ImageObj.parent.y()
-            y = spriteTop
-            h -= spriteTop - selfTop
-
-            # Create the new bounding rect
-            print(h)
-            y = max(0, y)
-            h = max(0, h)
-            self.BoundingRect = QtCore.QRectF(self.OuterRect)
-            self.setY(y)
-            self.BoundingRect.setHeight(h)
-
-            # # Determine the rise and top to be drawn, if any
-            # riseToDraw = self.ImageObj.rise if self.ImageObj.drawCrest else self.ImageObj.riseCrestless          
-
-            # Temp stuff: paint the bounding rect
-            painter.setBrush(QtGui.QBrush(Qt.red))
-            painter.save()
-            painter.setOpacity(0.2)
-            painter.drawRect(0, 0, self.BoundingRect.width(), self.BoundingRect.height())
-            painter.restore()
-            self.scene().update()
-
-            # # Paint the water top
-            # if self.waterTopUsesRise:
-            #     wTNRPH = self.waterTopNonRisePartHeight
-            #     crestToDraw = self.imageObj.crest if self.imageObj.drawCrest else self.imageObj.mid
-            #     painter.drawTiledPixmap(0, self.waterTop, self.BoundingRect.width(), wTNRPH, crestToDraw)
-            #     painter.drawTiledPixmap(0, self.waterTop + wTNRPH, self.BoundingRect.width(), riseToDraw.height() - wTNRPH, riseToDraw, 0, wTNRPH)
-            # else:
-            #     drawCrest = self.imageObj.drawCrest
-            #     if self.waterTopCrestOverride is not None:
-            #         drawCrest = self.waterTopCrestOverride
-            #     if drawCrest:
-            #         painter.drawTiledPixmap(0, self.waterTop, self.BoundingRect.width(), min(self.waterDepth, self.imageObj.crest.height()), self.imageObj.crest)
-            #         painter.drawTiledPixmap(0, self.waterTop + self.imageObj.crest.height(), self.BoundingRect.width(), max(0, self.waterDepth - self.imageObj.crest.height()), self.imageObj.mid)
-            #     else:
-            #         painter.drawTiledPixmap(0, self.waterTop, self.BoundingRect.width(), self.waterDepth, self.imageObj.mid)
-
-            # # Paint the rise, if going up
-            # if self.imageObj.risingHeight > 0:
-            #     painter.drawTiledPixmap(0, 0, self.BoundingRect.width(), riseToDraw.height(), riseToDraw)
-
-            # # Paint the rise, if going down
-            # if self.imageObj.risingHeight < 0:
-            #     painter.drawTiledPixmap(0, -self.imageObj.risingHeight, self.BoundingRect.width(), riseToDraw.height(), riseToDraw)
-
-        def updateSize(self):
-            """
-            Updates the size and position of the aux
-            """
-            if None in (self.OuterRect, self.ImageObj.rise, self.ImageObj.riseCrestless): return
-
-            # # Reset stuff
-            # self.waterTop = 0
-            # self.waterDepth = 0
-            # self.riseTop = 0
-            # self.waterTopUsesRise = False
-            # self.waterTopNonRisePartHeight = 0
-            # self.waterTopCrestOverride = None
-
-            # # Determine the rise to be drawn, if any
-            # riseToDraw = self.imageObj.rise if self.imageObj.drawCrest else self.imageObj.riseCrestless
-
-            # # Realign
-            # self.alignToZone()
-            # width = self.BoundingRect.width()
-
-            # # Keep track of the old position
-            # oldy, oldh = self.y(), self.BoundingRect.height()
-
-            # # First, calculate simple offsets
-            # self.waterTop = 0
-            # if self.imageObj.top < 0:
-            #     self.waterTop = 0
-            #     self.waterTopCrestOverride = False
-            #     if self.imageObj.risingHeight > 0:
-            #         self.waterTop += self.imageObj.risingHeight
-            # self.waterDepth = self.BoundingRect.height() - self.imageObj.top
-            # if self.waterDepth < riseToDraw.height():
-            #     self.waterDepth = riseToDraw.height()
-            # if self.imageObj.risingHeight > 0:
-            #     self.waterTop = self.imageObj.risingHeight
-            #     if self.imageObj.top < 0:
-            #         self.waterTop += self.imageObj.top
-            # elif self.imageObj.risingHeight < 0:
-            #     self.riseTop = -self.imageObj.risingHeight
-            # if self.BoundingRect.height() - self.imageObj.top < riseToDraw.height():
-            #     self.waterTopUsesRise = True
-            #     self.waterTopNonRisePartHeight = self.BoundingRect.height() - self.imageObj.top
-            #     self.waterTopNonRisePartHeight = max(0, self.waterTopNonRisePartHeight)
-
-            # print('------------------')
-            # print(self.waterTop)
-            # print(self.waterDepth)
-            # print(self.riseTop)
-            # print(self.waterTopUsesRise)
-            # print(self.waterTopNonRisePartHeight)
-            # print(self.waterTopCrestOverride)
-
-            # # Determine the top edge
-            # y = self.imageObj.top
-
-            # # Don't allow negative y
-            # y = max(0, y)
-
-            # # Determine the height
-            # h = self.BoundingRect.height() - y
-
-            # # Special case: if there is a rise going up
-            # if self.imageObj.risingHeight > 0:
-            #     y = self.imageObj.top - self.imageObj.risingHeight
-            #     h += self.imageObj.risingHeight
-
-            # # Don't allow negative height
-            # h = max(h, 0)
-
-            # # Special case: if the water to be drawn is smaller than the rise image
-            # if y + self.waterTop > self.BoundingRect.height() - riseToDraw.height():
-            #     h = riseToDraw.height()
-            #     if self.imageObj.risingHeight > 0:
-            #         h += self.imageObj.risingHeight
-
-            # # Special case: if there is a rise going down
-            # if self.imageObj.risingHeight < 0:
-            #     h = max(h, -self.imageObj.risingHeight + riseToDraw.height())
-
-            # # Set the settings
-            # self.setPos(0, y)
-            # self.BoundingRect.setHeight(h)
-
-            # # Update the old area
-            # self.parent.scene().update(self.parent.x(), self.parent.y() + oldy, width, oldh)
-
-        def paintLiquidInRect(self, painter, rect):
-            """
-            Generic liquid-in-rect painter
-            """
-            return
-            #     rx, ry, rw, rh = rect.topLeft().x(), rect.topLeft().y(), rect.width(), rect.height()
-
-            #     drawRise = self.risingHeight != 0
-            #     drawCrest = self.drawCrest
-            #     drawRiseCrest = drawCrest
-
-            #     # Get positions
-            #     offsetFromTop = self.top
-            #     if offsetFromTop < 0:
-            #         offsetFromTop = 0
-            #         drawCrest = False # off the top of the rect; no crest
-            #     if self.top > rh:
-            #         # the sprite is below the rect; don't draw anything
-            #         return
-
-            #     # If all that fits in the rect is some of the crest, determine how much
-            #     if drawCrest:
-            #         crestSizeRemoval = (ry + offsetFromTop + self.crest.height()) - (ry + rh)
-            #         if crestSizeRemoval < 0: crestSizeRemoval = 0
-            #         crestHeight = self.crest.height() - crestSizeRemoval
-
-            #     # Determine where to put the rise image
-            #     offsetRise = offsetFromTop - self.risingHeight
-            #     riseToDraw = self.rise
-            #     if not drawRiseCrest:
-            #         riseToDraw = self.riseCrestless
-
-            #     # Draw everything!
-            #     if drawCrest:
-            #         painter.drawTiledPixmap(0, offsetFromTop, rw, crestHeight, self.crest)
-            #         painter.drawTiledPixmap(0, offsetFromTop + crestHeight, rw, rh - crestHeight - offsetFromTop, self.mid)
-            #     else:
-            #         painter.drawTiledPixmap(0, offsetFromTop, rw, rh - offsetFromTop - 4, self.mid)
-            #     if drawRise:
-            #         painter.drawTiledPixmap(0, offsetRise, rw, riseToDraw.height(), riseToDraw)
-
-    def __init__(self, parent, scale=1.5):
-        super().__init__(parent, scale)
-
-        self.updateSceneAfterZoneMoved = True
-        self.updateSceneAfterLocationMoved = True
+    def __init__(self, parent):
+        super().__init__(parent)
 
         self.crest = None
         self.mid = None
@@ -565,37 +359,56 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 64, 138, 139, 216, 358, 374,
         self.risingHeight = 0
 
         self.paintZone = False
-
-        self.LiqOrFogAux = self.FreeAuxiliaryItem_LiquidOrFog(self)
-        self.parent.scene().addItem(self.LiqOrFogAux)
-
-    def dataChanged(self):
-        super().dataChanged()
-
-        z = SLib.getNearestZoneTo(self.parent.objx, self.parent.objy)
-        if z is not None:
-            self.LiqOrFogAux.OuterRect = QtCore.QRectF(z.BoundingRect)
-
-            self.LiqOrFogAux.setX(z.x() + 4)
-            self.LiqOrFogAux.setY(z.y())
-            self.LiqOrFogAux.OuterRect.setWidth(z.BoundingRect.width() - 8)
-            self.LiqOrFogAux.OuterRect.setHeight(z.BoundingRect.height())
-
-            self.LiqOrFogAux.updateSize()
+        self.paintLoc = False
 
     def positionChanged(self):
         super().positionChanged()
+        self.parent.scene().update()
 
-        z = SLib.getNearestZoneTo(self.parent.objx, self.parent.objy)
-        if z is not None:
-            self.LiqOrFogAux.OuterRect = QtCore.QRectF(z.BoundingRect)
+    def realViewZone(self, painter, zoneRect, viewRect):
+        """
+        Real view zone painter for liquids/fog
+        """
+        if not self.paintZone: return
 
-            self.LiqOrFogAux.setX(z.x() + 4)
-            self.LiqOrFogAux.setY(z.y())
-            self.LiqOrFogAux.OuterRect.setWidth(z.BoundingRect.width() - 8)
-            self.LiqOrFogAux.OuterRect.setHeight(z.BoundingRect.height())
+        # (0, 0) is the top-left corner of the zone
 
-            self.LiqOrFogAux.updateSize()
+        zx, zy, zw, zh = zoneRect.topLeft().x(), zoneRect.topLeft().y(), zoneRect.width(), zoneRect.height()
+
+        drawRise = self.risingHeight != 0
+        drawCrest = self.drawCrest
+
+        # Get positions
+        offsetFromTop = (self.top * 1.5) - zy
+        if offsetFromTop <= 4:
+            offsetFromTop = 4
+            drawCrest = False # off the top of the zone; no crest
+        if self.top > (zy + zh) / 1.5:
+            # the sprite is below the zone; don't draw anything
+            return
+
+        # If all that fits in the zone is some of the crest, determine how much
+        if drawCrest:
+            crestSizeRemoval = (zy + offsetFromTop + self.crest.height()) - (zy + zh) + 4
+            if crestSizeRemoval < 0: crestSizeRemoval = 0
+            crestHeight = self.crest.height() - crestSizeRemoval
+
+        # Determine where to put the rise image
+        offsetRise = offsetFromTop - (self.risingHeight * 24)
+        riseToDraw = self.rise
+        if offsetRise < 4:  # close enough to the top zone border
+            offsetRise = 4
+            riseToDraw = self.riseCrestless
+        if not drawCrest:
+            riseToDraw = self.riseCrestless
+
+        if drawCrest:
+            painter.drawTiledPixmap(4, offsetFromTop, zw - 8, crestHeight, self.crest)
+            painter.drawTiledPixmap(4, offsetFromTop + crestHeight, zw - 8, zh - crestHeight - offsetFromTop - 4, self.mid)
+        else:
+            painter.drawTiledPixmap(4, offsetFromTop, zw - 8, zh - offsetFromTop - 4, self.mid)
+        if drawRise:
+            painter.drawTiledPixmap(4, offsetRise, zw - 8, riseToDraw.height(), riseToDraw)
 
 
 class SpriteImage_HammerBro(SLib.SpriteImage_Static):  # 95, 308
@@ -1846,18 +1659,19 @@ class SpriteImage_SpikeBall(SLib.SpriteImage_Static):  # 63
 
 class SpriteImage_OutdoorsFog(SpriteImage_LiquidOrFog):  # 64
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
+        super().__init__(parent)
         self.mid = ImageCache['OutdoorsFog']
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('OutdoorsFog', 'fog_outdoors.png')
 
-    def dataChanged(self):
-        super().dataChanged()
-        self.parent.scene().update()
+    def updateSize(self):
+        super().updateSize()
+        self.parent.updateScene()
 
-    def realViewZone(self, painter, zoneRect):
+    def realViewZone(self, painter, zoneRect, viewRect):
+
         self.paintZone = self.parent.spritedata[5] == 0
 
         self.top = self.parent.objy
@@ -1865,7 +1679,7 @@ class SpriteImage_OutdoorsFog(SpriteImage_LiquidOrFog):  # 64
         # Get pixmaps
         mid = ImageCache['OutdoorsFog']
 
-        super().realViewZone(painter, zoneRect)
+        super().realViewZone(painter, zoneRect, viewRect)
 
 
 class SpriteImage_PipePiranhaUp(SLib.SpriteImage_Static):  # 65
@@ -3100,13 +2914,12 @@ class SpriteImage_SpikedStakeDown(SpriteImage_SpikedStake):  # 137
 
 class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
+        super().__init__(parent)
 
         self.crest = ImageCache['LiquidWaterCrest']
         self.mid = ImageCache['LiquidWater']
         self.rise = ImageCache['LiquidWaterRiseCrest']
         self.riseCrestless = ImageCache['LiquidWaterRise']
-        self.topAtSpritePos = True
 
     @staticmethod
     def loadImages():
@@ -3116,31 +2929,23 @@ class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
         ImageCache['LiquidWaterRise'] = SLib.GetImg('liquid_water_rise.png')
         ImageCache['LiquidWaterRiseCrest'] = SLib.GetImg('liquid_water_rise_crest.png')
 
-    def dataChanged(self):
+    def realViewZone(self, painter, zoneRect, viewRect):
+
         self.paintZone = self.parent.spritedata[5] == 0
-        self.topAtSpritePos = self.paintZone
-
-        # self.locationIDs = set()
-        # if not self.paintZone:
-        #     self.locationIDs.add(self.parent.spritedata[5])
-
-        self.drawCrest = True
-        if self.parent.spritedata[4] & 0xF in (8, 12):
-            self.drawCrest = False
-
+        self.top = self.parent.objy
+        self.drawCrest = self.parent.spritedata[4] & 15 == 0
         self.risingHeight = (self.parent.spritedata[3] & 0xF) << 4
         self.risingHeight |= self.parent.spritedata[4] >> 4
-        self.risingHeight *= 24
 
-        if self.parent.spritedata[2] > 7:  # falling water
+        if self.parent.spritedata[2] > 7:  # falling
             self.risingHeight = -self.risingHeight
 
-        super().dataChanged()
+        super().realViewZone(painter, zoneRect, viewRect)
 
 
 class SpriteImage_Lava(SpriteImage_LiquidOrFog):  # 139
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
+        super().__init__(parent)
 
         self.crest = ImageCache['LiquidLavaCrest']
         self.mid = ImageCache['LiquidLava']
@@ -3155,7 +2960,7 @@ class SpriteImage_Lava(SpriteImage_LiquidOrFog):  # 139
         ImageCache['LiquidLavaRise'] = SLib.GetImg('liquid_lava_rise.png')
         ImageCache['LiquidLavaRiseCrest'] = SLib.GetImg('liquid_lava_rise_crest.png')
 
-    def realViewZone(self, painter, zoneRect):
+    def realViewZone(self, painter, zoneRect, viewRect):
 
         self.paintZone = self.parent.spritedata[5] == 0
         self.top = self.parent.objy
@@ -3166,7 +2971,7 @@ class SpriteImage_Lava(SpriteImage_LiquidOrFog):  # 139
         if self.parent.spritedata[2] > 7:  # falling
             self.risingHeight = -self.risingHeight
 
-        super().realViewZone(painter, zoneRect)
+        super().realViewZone(painter, zoneRect, viewRect)
 
 
 class SpriteImage_SpikedStakeUp(SpriteImage_SpikedStake):  # 140
@@ -4158,7 +3963,7 @@ class SpriteImage_FreefallPlatform(SLib.SpriteImage_Static):  # 214
 
 class SpriteImage_Poison(SpriteImage_LiquidOrFog):  # 216
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
+        super().__init__(parent)
 
         self.crest = ImageCache['LiquidPoisonCrest']
         self.mid = ImageCache['LiquidPoison']
@@ -4173,7 +3978,7 @@ class SpriteImage_Poison(SpriteImage_LiquidOrFog):  # 216
         ImageCache['LiquidPoisonRise'] = SLib.GetImg('liquid_poison_rise.png')
         ImageCache['LiquidPoisonRiseCrest'] = SLib.GetImg('liquid_poison_rise_crest.png')
 
-    def realViewZone(self, painter, zoneRect):
+    def realViewZone(self, painter, zoneRect, viewRect):
 
         self.paintZone = self.parent.spritedata[5] == 0
         self.top = self.parent.objy
@@ -4184,7 +3989,7 @@ class SpriteImage_Poison(SpriteImage_LiquidOrFog):  # 216
         if self.parent.spritedata[2] > 7:  # falling
             self.risingHeight = -self.risingHeight
 
-        super().realViewZone(painter, zoneRect)
+        super().realViewZone(painter, zoneRect, viewRect)
 
 
 class SpriteImage_LineBlock(SLib.SpriteImage):  # 219
@@ -6254,7 +6059,7 @@ class SpriteImage_Fruit(SLib.SpriteImage_StaticMultiple):  # 357
 
 class SpriteImage_LavaParticles(SpriteImage_LiquidOrFog):  # 358
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
+        super().__init__(parent)
         self.paintZone = True
 
     @staticmethod
@@ -6264,15 +6069,16 @@ class SpriteImage_LavaParticles(SpriteImage_LiquidOrFog):  # 358
         ImageCache['LavaParticlesB'] = SLib.GetImg('lava_particles_b.png')
         ImageCache['LavaParticlesC'] = SLib.GetImg('lava_particles_c.png')
 
-    def realViewZone(self, painter, zoneRect):
+    def realViewZone(self, painter, zoneRect, viewRect):
+
         type = (self.parent.spritedata[5] & 0xF) % 3
         self.mid = (
             ImageCache['LavaParticlesA'],
             ImageCache['LavaParticlesB'],
             ImageCache['LavaParticlesC'],
-        )[type]
+            )[type]
 
-        super().realViewZone(painter, zoneRect)
+        super().realViewZone(painter, zoneRect, viewRect)
 
 
 class SpriteImage_WallLantern(SLib.SpriteImage):  # 359
@@ -6448,18 +6254,19 @@ class SpriteImage_RollingHillCoin(SpriteImage_SpecialCoin):  # 371
 
 class SpriteImage_SnowWind(SpriteImage_LiquidOrFog):  # 374
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
+        super().__init__(parent)
         self.mid = ImageCache['SnowEffect']
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('SnowEffect', 'snow.png')
 
-    def realViewZone(self, painter, zoneRect):
+    def realViewZone(self, painter, zoneRect, viewRect):
+
         # For now, we only paint snow
         self.paintZone = self.parent.spritedata[5] == 0
 
-        super().realViewZone(painter, zoneRect)
+        super().realViewZone(painter, zoneRect, viewRect)
 
 
 class SpriteImage_MovingFence(SLib.SpriteImage_StaticMultiple):  # 376
@@ -7094,7 +6901,7 @@ class SpriteImage_WarpCannon(SLib.SpriteImage_StaticMultiple):  # 434
 
 class SpriteImage_GhostFog(SpriteImage_LiquidOrFog):  # 435
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
+        super().__init__(parent)
 
         self.mid = ImageCache['GhostFog']
 
@@ -7102,11 +6909,12 @@ class SpriteImage_GhostFog(SpriteImage_LiquidOrFog):  # 435
     def loadImages():
         SLib.loadIfNotInImageCache('GhostFog', 'fog_ghost.png')
 
-    def realViewZone(self, painter, zoneRect):
+    def realViewZone(self, painter, zoneRect, viewRect):
+
         self.paintZone = self.parent.spritedata[5] == 0
         self.top = self.parent.objy
 
-        super().realViewZone(painter, zoneRect)
+        super().realViewZone(painter, zoneRect, viewRect)
 
 
 class SpriteImage_PurplePole(SLib.SpriteImage):  # 437
@@ -7685,7 +7493,7 @@ ImageClasses = {
     61: SpriteImage_BigBoo,
     62: SpriteImage_SpinningFirebar,
     63: SpriteImage_SpikeBall,
-    # 64: SpriteImage_OutdoorsFog,
+    64: SpriteImage_OutdoorsFog,
     65: SpriteImage_PipePiranhaUp,
     66: SpriteImage_PipePiranhaDown,
     67: SpriteImage_PipePiranhaRight,
@@ -7753,7 +7561,7 @@ ImageClasses = {
     136: SpriteImage_RotBulletLauncher,
     137: SpriteImage_SpikedStakeDown,
     138: SpriteImage_Water,
-    # 139: SpriteImage_Lava,
+    139: SpriteImage_Lava,
     140: SpriteImage_SpikedStakeUp,
     141: SpriteImage_SpikedStakeRight,
     142: SpriteImage_SpikedStakeLeft,
@@ -7809,7 +7617,7 @@ ImageClasses = {
     209: SpriteImage_BrickBlock,
     212: SpriteImage_RollingHill,
     214: SpriteImage_FreefallPlatform,
-    # 216: SpriteImage_Poison,
+    216: SpriteImage_Poison,
     219: SpriteImage_LineBlock,
     221: SpriteImage_InvisibleBlock,
     222: SpriteImage_ConveyorSpike,
@@ -7907,7 +7715,7 @@ ImageClasses = {
     355: SpriteImage_RollingHillWith1Pipe,
     356: SpriteImage_BrownBlock,
     357: SpriteImage_Fruit,
-    # 358: SpriteImage_LavaParticles,
+    358: SpriteImage_LavaParticles,
     359: SpriteImage_WallLantern,
     360: SpriteImage_RollingHillWith8Pipes,
     361: SpriteImage_CrystalBlock,
@@ -7918,7 +7726,7 @@ ImageClasses = {
     369: SpriteImage_SlidingPenguin,
     370: SpriteImage_CloudBlock,
     371: SpriteImage_RollingHillCoin,
-    # 374: SpriteImage_SnowWind,
+    374: SpriteImage_SnowWind,
     376: SpriteImage_MovingFence,
     377: SpriteImage_Pipe_Up,
     378: SpriteImage_Pipe_Down,
@@ -7959,7 +7767,7 @@ ImageClasses = {
     432: SpriteImage_Toad,
     433: SpriteImage_FloatingQBlock,
     434: SpriteImage_WarpCannon,
-    # 435: SpriteImage_GhostFog,
+    435: SpriteImage_GhostFog,
     437: SpriteImage_PurplePole,
     438: SpriteImage_CageBlocks,
     439: SpriteImage_CagePeachFake,

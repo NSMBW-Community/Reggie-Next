@@ -2517,38 +2517,6 @@ def SetDirty(noautosave=False):
         pass
 
 
-def MapPositionToZoneID(zones, x, y, useid=False):
-    """
-    Returns the zone ID containing or nearest the specified position
-    """
-    id = 0
-    minimumdist = -1
-    rval = -1
-
-    for zone in zones:
-        r = zone.ZoneRect
-        if r.contains(x, y) and useid:
-            return zone.id
-        elif r.contains(x, y) and not useid:
-            return id
-
-        xdist = 0
-        ydist = 0
-        if x <= r.left(): xdist = r.left() - x
-        if x >= r.right(): xdist = x - r.right()
-        if y <= r.top(): ydist = r.top() - y
-        if y >= r.bottom(): ydist = y - r.bottom()
-
-        dist = (xdist ** 2 + ydist ** 2) ** 0.5
-        if dist < minimumdist or minimumdist == -1:
-            minimumdist = dist
-            rval = zone.id
-
-        id += 1
-
-    return rval
-
-
 class Metadata:
     """
     Class for the new level metadata system
@@ -2875,7 +2843,6 @@ class Level_NSMBW(AbstractLevel):
                 newarea = Area_NSMBW()
                 Area = newarea
                 SLib.Area = Area
-                SLib.MapPositionToZoneID = MapPositionToZoneID
             else:
                 newarea = AbstractArea()
 
@@ -3161,7 +3128,7 @@ class AbstractParsedArea(AbstractArea):
         split = {}
         zones = []
 
-        f_MapPositionToZoneID = MapPositionToZoneID
+        f_MapPositionToZoneID = SLib.MapPositionToZoneID
         zonelist = self.zones
 
         for sprite in self.sprites:
@@ -3571,7 +3538,7 @@ class Area_NSMBW(AbstractParsedArea):
         buffer = bytearray(len(self.entrances) * 20)
         zonelist = self.zones
         for entrance in self.entrances:
-            zoneID = MapPositionToZoneID(zonelist, entrance.objx, entrance.objy)
+            zoneID = SLib.MapPositionToZoneID(zonelist, entrance.objx, entrance.objy)
             entstruct.pack_into(buffer, offset, int(entrance.objx), int(entrance.objy),
                                 int(entrance.entid), int(entrance.destarea), int(entrance.destentrance),
                                 int(entrance.enttype), zoneID, int(entrance.entlayer), int(entrance.entpath),
@@ -3731,7 +3698,7 @@ class Area_NSMBW(AbstractParsedArea):
         split = {}
         zones = []
 
-        f_MapPositionToZoneID = MapPositionToZoneID
+        f_MapPositionToZoneID = SLib.MapPositionToZoneID
         zonelist = self.zones
 
         for sprite in self.sprites:
@@ -4603,6 +4570,18 @@ class ZoneItem(LevelEditorItem):
             lineEnd = QtCore.QPointF(self.DrawRect.x() + (24 * 13), self.DrawRect.y() + self.DrawRect.height())
             painter.drawLine(lineStart, lineEnd)
 
+        # Paint liquids/fog
+        if SpritesShown and SpriteImagesShown:
+            zoneRect = QtCore.QRectF(self.objx * 1.5, self.objy * 1.5, self.width * 1.5, self.height * 1.5)
+            viewRect = mainWindow.view.mapToScene(mainWindow.view.viewport().rect()).boundingRect()
+
+            for sprite in Area.sprites:
+                if sprite.type in [64, 138, 139, 216, 358, 374, 435]:
+                    spriteZoneID = SLib.MapPositionToZoneID(Area.zones, sprite.objx, sprite.objy)
+
+                    if self.id == spriteZoneID:
+                        sprite.ImageObj.realViewZone(painter, zoneRect, viewRect)
+
         # Now paint the borders
         painter.setPen(QtGui.QPen(theme.color('zone_lines'), 3))
         if (self.visibility >= 32) and RealViewEnabled:
@@ -5410,7 +5389,7 @@ class SpriteItem(LevelEditorItem):
         Calls a modified MapPositionToZoneID (if obj = True, it returns the actual ZoneItem object)
         """
         if not hasattr(Area, 'zones'): return None
-        id = MapPositionToZoneID(Area.zones, self.objx, self.objy, True)
+        id = SLib.MapPositionToZoneID(Area.zones, self.objx, self.objy, True)
         if obj:
             for z in Area.zones:
                 if z.id == id: return z
@@ -13878,7 +13857,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             if ent.entid == Area.startEntrance: start = ent
         if start is None: return False
 
-        firstzoneid = MapPositionToZoneID(Area.zones, start.objx, start.objy, True)
+        firstzoneid = SLib.MapPositionToZoneID(Area.zones, start.objx, start.objy, True)
         firstzone = None
         for z in Area.zones:
             if z.id == firstzoneid: firstzone = z
@@ -13901,7 +13880,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         for ent in Area.entrances:
             x = ent.objx
             y = ent.objy
-            zoneID = MapPositionToZoneID(Area.zones, x, y, True)
+            zoneID = SLib.MapPositionToZoneID(Area.zones, x, y, True)
             zone = None
             for z in Area.zones:
                 if z.id == zoneID: zone = z
@@ -19378,7 +19357,7 @@ def main():
             global RestoredFromAutoSave, AutoSavePath, AutoSaveData
             RestoredFromAutoSave = True
             AutoSavePath = autofile
-            AutoSaveData = bytes(autofiledata, 'latin-1')
+            AutoSaveData = bytes(autofiledata)
         else:
             setSetting('AutoSaveFilePath', 'none')
             setSetting('AutoSaveFileData', 'x')
