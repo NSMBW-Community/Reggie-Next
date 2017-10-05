@@ -62,11 +62,19 @@ Qt = QtCore.Qt
 
 # Local imports
 import archive
-import LHTool
 import lz77
 import spritelib as SLib
 import sprites
 
+# LH decompressor
+try:
+    import pyximport
+    pyximport.install()
+    import lh_cy as lh
+except ImportError:
+    import lh
+
+# TPL decoder
 try:
     import pyximport
     pyximport.install()
@@ -87,6 +95,8 @@ if not hasattr(QtWidgets.QGraphicsItem, 'ItemSendsGeometryChanges'):
 app = None
 mainWindow = None
 settings = None
+
+FileExtentions = ('.arc', '.arc.LH')
 
 
 class ReggieSplashScreen(QtWidgets.QSplashScreen):
@@ -315,8 +325,8 @@ def IsNSMBLevel(filename):
     f.close()
     del f
 
-    if LHTool.isLHCompressed(data):
-        decomp = LHTool.decompressLH(data)
+    if lh.IsLHCompressed(bytes(data)):
+        decomp = lh.UncompressLH(bytearray(data))
         if checkContent(decomp):
             compressed = True
             return True
@@ -379,7 +389,8 @@ def isValidGamePath(check='ug'):
     if check is None or check == '': return False
     if not os.path.isdir(check): return False
     if not os.path.isdir(os.path.join(check, 'Texture')): return False
-    if not os.path.isfile(os.path.join(check, '01-01.arc')): return False
+    if not (os.path.isfile(os.path.join(check, '01-01.arc'))
+            or os.path.isfile(os.path.join(check, '01-01.arc.LH'))): return False
 
     return True
 
@@ -1066,7 +1077,7 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
             if isinstance(item[1], str):
                 # it's a level
                 node.setData(0, Qt.UserRole, item[1])
-                node.setToolTip(0, item[1] + '.arc')
+                node.setToolTip(0, item[1])
             else:
                 # it's a category
                 children = self.ParseCategory(item[1])
@@ -1958,7 +1969,7 @@ def _LoadTileset(idx, name, reload=False):
         if os.path.isfile(arcname):
             found = True
             break
-        arcname += '.lh'
+        arcname += '.LH'
         compressed = True
         if os.path.isfile(arcname):
             found = True
@@ -1976,8 +1987,10 @@ def _LoadTileset(idx, name, reload=False):
     # get the data
     with open(arcname, 'rb') as fileobj:
         arcdata = fileobj.read()
+
     if compressed:
-        arcdata = LHTool.decompressLH(arcdata)
+        if lh.IsLHCompressed(bytes(arcdata)):
+            arcdata = lh.UncompressLH(bytearray(arcdata))
 
     arc = archive.U8.load(arcdata)
 
@@ -9655,7 +9668,7 @@ class ReggieTranslation:
                 18: 'Custom filename... [name]',
                 19: '[name] ([file])',
                 20: 'Enter a Filename',
-                21: 'Enter the name of a custom tileset file to use. It must be placed in the game\'s Stage\\Texture or Unit folder in order for Reggie to recognize it. Do not add the \'.arc\' or \'.sarc\' extension at the end of the filename.',
+                21: 'Enter the name of a custom tileset file to use. It must be placed in the game\'s Stage\\Texture or Unit folder in order for Reggie to recognize it. Do not add the \'.arc\' or \'.arc.LH\' extension at the end of the filename.',
                 22: None,  # REMOVED: 'Unknown Value 1:'
                 23: None,  # REMOVED: 'Unknown Value 2:'
                 24: None,  # REMOVED: 'Unknown Value 3:'
@@ -9851,12 +9864,11 @@ class ReggieTranslation:
             },
             'Err_CorruptedTileset': {
                 0: 'Error',
-                1: 'An error occurred while trying to load [file].arc. Check your Texture folder to make sure it is complete and not corrupted. The editor may run in a broken state or crash after this.',
-                2: 'An error occurred while trying to load [file].sarc. Check your Unit folder to make sure it is complete and not corrupted. The editor may run in a broken state or crash after this.',
+                1: 'An error occurred while trying to load [file]. Check your Texture folder to make sure it is complete and not corrupted. The editor may run in a broken state or crash after this.',
             },
             'Err_CorruptedTilesetData': {
                 0: 'Error',
-                1: 'Cannot find the required texture within the tileset file [file].arc, so it will not be loaded. Keep in mind that the tileset file cannot be renamed without changing the names of the texture/object files within the archive as well!',
+                1: 'Cannot find the required texture within the tileset file [file], so it will not be loaded. Keep in mind that the tileset file cannot be renamed without changing the names of the texture/object files within the archive as well!',
             },
             'Err_InvalidLevel': {
                 0: 'This file doesn\'t seem to be a valid level.',
@@ -9868,11 +9880,11 @@ class ReggieTranslation:
             },
             'Err_MissingLevel': {
                 0: 'Error',
-                1: 'Cannot find the required level file [file].arc. Check your Stage folder and make sure it exists.',
+                1: 'Cannot find the required level file [file]. Check your Stage folder and make sure it exists.',
             },
             'Err_MissingTileset': {
                 0: 'Error',
-                1: 'Cannot find the required tileset file [file].arc. Check your Stage folder and make sure it exists.',
+                1: 'Cannot find the required tileset file [file]. Check your Stage folder and make sure it exists.',
             },
             'Err_Save': {
                 0: 'Error',
@@ -12348,7 +12360,8 @@ class OldTilesetsTab(QtWidgets.QWidget):
 
             if result == QtWidgets.QDialog.Accepted:
                 fname = str(dbox.textbox.text())
-                if fname.endswith('.arc'): fname = fname[:-len('.arc')]
+                if fname.endswith('.arc'): fname = fname[:-4]
+                elif fname.endswith('.arc.LH'): fname = fname[:-7]
 
                 w.setItemText(index, trans.string('AreaDlg', 18, '[name]', fname))
                 w.setItemData(index, trans.string('AreaDlg', 17, '[name]', fname))
@@ -17007,15 +17020,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         filetypes = ''
         filetypes += trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;'  # *.arc
-        filetypes += trans.string('FileDlgs', 5) + ' (*' + '.arc' + '.lh);;'  # *.arc.LH
+        filetypes += trans.string('FileDlgs', 5) + ' (*' + '.arc' + '.LH);;'  # *.arc.LH
         filetypes += trans.string('FileDlgs', 2) + ' (*)'  # *
         fn = QtWidgets.QFileDialog.getOpenFileName(self, trans.string('FileDlgs', 0), '', filetypes)[0]
         if fn == '': return
 
         with open(str(fn), 'rb') as fileobj:
             arcdata = fileobj.read()
-        if LHTool.isLHCompressed(arcdata):
-            arcdata = LHTool.decompressLH(arcdata)
+        if lh.IsLHCompressed(bytes(arcdata)):
+            arcdata = lh.UncompressLH(bytearray(arcdata))
 
         arc = archive.U8.load(arcdata)
 
@@ -17188,7 +17201,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         filetypes = ''
         filetypes += trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;'  # *.arc
-        filetypes += trans.string('FileDlgs', 5) + ' (*' + '.arc' + '.lh);;'  # *.arc.LH
+        filetypes += trans.string('FileDlgs', 5) + ' (*' + '.arc' + '.LH);;'  # *.arc.LH
         filetypes += trans.string('FileDlgs', 2) + ' (*)'  # *
         fn = QtWidgets.QFileDialog.getOpenFileName(self, trans.string('FileDlgs', 0), '', filetypes)[0]
         if fn == '': return
@@ -17199,7 +17212,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Save a level back to the archive
         """
-        if not self.fileSavePath:
+        if not self.fileSavePath or self.fileSavePath.endswith('.arc.LH'):
             self.HandleSaveAs()
             return
 
@@ -17226,7 +17239,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Save a level back to the archive
         """
-        if not self.fileSavePath:
+        if not self.fileSavePath or self.fileSavePath.endswith('.arc.LH'):
             self.HandleSaveAs()
             return
 
@@ -17747,12 +17760,18 @@ class ReggieWindow(QtWidgets.QMainWindow):
         else:
             levName = os.path.basename(name)
 
+            checknames = []
             if isFullPath:
-                checkname = name
+                checknames = [name, ]
             else:
-                checkname = os.path.join(gamedef.GetGamePath(), name + '.arc')
+                for ext in FileExtentions:
+                    checknames.append(os.path.join(gamedef.GetGamePath(), name + ext))
 
-            found = os.path.isfile(checkname)
+            found = False
+            for checkname in checknames:
+                if os.path.isfile(checkname):
+                    found = True
+                    break
             if not found:
                 QtWidgets.QMessageBox.warning(self, 'Reggie!',
                                               trans.string('Err_CantFindLevel', 0, '[name]', checkname),
@@ -17784,8 +17803,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     levelData = fileobj.read()
 
                 # Decompress, if needed
-                if LHTool.isLHCompressed(levelData):
-                    levelData = LHTool.decompressLH(levelData)
+                if lh.IsLHCompressed(bytes(levelData)):
+                    levelData = lh.UncompressLH(bytearray(levelData))
 
             else:
                 # Auto-saved level. Check if there's a path associated with it:
