@@ -2443,12 +2443,7 @@ def SetAppStyle():
     global theme
 
     # Change the color if applicable
-    # if theme.color('ui') is not None: app.setPalette(QtGui.QPalette(theme.color('ui')))
-
-    # Change the style
-    styleKey = setting('uiStyle')
-    style = QtWidgets.QStyleFactory.create(styleKey)
-    app.setStyle(style)
+    if theme.color('ui') is not None: app.setPalette(QtGui.QPalette(theme.color('ui')))
 
 
 Area = None
@@ -8725,7 +8720,11 @@ class ReggieTheme:
         """
         Returns a color
         """
-        return self.colors[name]
+        try:
+            return self.colors[name]
+
+        except KeyError:
+            return None
 
     def GetIcon(self, name, big=False):
         """
@@ -8740,12 +8739,6 @@ class ReggieTheme:
             cache[name] = QtGui.QIcon(path)
 
         return cache[name]
-
-    def ui(self):
-        """
-        Returns the UI style
-        """
-        return self.uiStyle
 
 
 # Related function
@@ -14883,11 +14876,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                 for name, themeObj in self.themes:
                     self.themeBox.addItem(name)
 
-                    if name == str(setting('Theme')):
-                        self.themeBox.setCurrentIndex(i)
-
-                    i += 1
-
                 self.themeBox.activated.connect(self.UpdatePreview)
 
                 boxGB = QtWidgets.QGroupBox('Themes')
@@ -14907,26 +14895,10 @@ class PreferencesDialog(QtWidgets.QDialog):
                 previewGB = QtWidgets.QGroupBox(trans.string('PrefsDlg', 22))
                 previewGB.setLayout(L)
 
-                # Create the options box options
-                keys = QtWidgets.QStyleFactory().keys()
-                self.NonWinStyle = QtWidgets.QComboBox()
-                self.NonWinStyle.setToolTip(trans.string('PrefsDlg', 24))
-                self.NonWinStyle.addItems(keys)
-                uistyle = setting('uiStyle')
-                if uistyle is not None:
-                    self.NonWinStyle.setCurrentIndex(keys.index(setting('uiStyle')))
-
-                # Create the options groupbox
-                L = QtWidgets.QVBoxLayout()
-                L.addWidget(self.NonWinStyle)
-                optionsGB = QtWidgets.QGroupBox(trans.string('PrefsDlg', 25))
-                optionsGB.setLayout(L)
-
                 # Create a main layout
                 Layout = QtWidgets.QGridLayout()
-                Layout.addWidget(boxGB, 0, 0, 2, 1)
-                Layout.addWidget(optionsGB, 0, 1)
-                Layout.addWidget(previewGB, 1, 1)
+                Layout.addWidget(boxGB, 0, 0)
+                Layout.addWidget(previewGB, 0, 1)
                 self.setLayout(Layout)
 
                 # Update the preview things
@@ -17124,7 +17096,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Get the theme settings
         setSetting('Theme', dlg.themesTab.themeBox.currentText())
-        setSetting('uiStyle', dlg.themesTab.NonWinStyle.currentText())
 
         # Warn the user that they may need to restart
         QtWidgets.QMessageBox.warning(None, trans.string('PrefsDlg', 0), trans.string('PrefsDlg', 30))
