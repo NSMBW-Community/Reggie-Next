@@ -8485,13 +8485,11 @@ def LoadTheme():
     global theme
 
     id = setting('Theme')
-    print('THEME ID: ' + str(id))
     if id is None: id = 'Classic'
-    if id != 'Classic':
+    print('THEME ID: ' + str(id))
 
-        path = os.path.join('reggiedata', 'themes', id)
-        with open(path, 'rb') as f:
-            theme = ReggieTheme(f)
+    if id != 'Classic':
+        theme = ReggieTheme(id)
 
     else:
         theme = ReggieTheme()
@@ -8502,12 +8500,12 @@ class ReggieTheme:
     Class that represents a Reggie theme
     """
 
-    def __init__(self, file=None):
+    def __init__(self, folder=None):
         """
         Initializes the theme
         """
         self.initAsClassic()
-        if file is not None: self.initFromFile(file)
+        if folder is not None: self.initFromFolder(folder)
 
     def initAsClassic(self):
         """
@@ -8569,27 +8567,16 @@ class ReggieTheme:
             'zone_text': QtGui.QColor(44, 64, 84),  # Zone text
         }
 
-    def initFromFile(self, file):
+    def initFromFolder(self, folder):
         """
-        Initializes the theme from the file
+        Initializes the theme from the folder
         """
-        try:
-            zipf = zipfile.ZipFile(file, 'r')
-            zipfList = zipf.namelist()
-        except Exception:
-            # Can't load the data for some reason
-            return
-        try:
-            mainxmlfile = zipf.open('main.xml')
-        except KeyError:
-            # There's no main.xml in the file
-            return
+        folder = os.path.join('reggiedata', 'themes', folder)
+
+        fileList = os.listdir(folder)
 
         # Create a XML ElementTree
-        try:
-            maintree = etree.parse(mainxmlfile)
-        except Exception:
-            return
+        maintree = etree.parse(os.path.join(folder, 'main.xml'))
         root = maintree.getroot()
 
         # Parse the attributes of the <theme> tag
@@ -8603,19 +8590,7 @@ class ReggieTheme:
                 if 'file' not in node.attrib: continue
 
                 # Load the colors XML
-                try:
-                    self.loadColorsXml(zipf.open(node.attrib['file']))
-                except Exception:
-                    continue
-
-            elif node.tag.lower() == 'stylesheet':
-                if 'file' not in node.attrib: continue
-
-                # Load the stylesheet
-                try:
-                    self.loadStylesheet(zipf.open(node.attrib['file']))
-                except Exception:
-                    continue
+                self.loadColorsXml(os.path.join(folder, node.attrib['file']))
 
             elif node.tag.lower() == 'icons':
                 if not all(thing in node.attrib for thing in ['size', 'folder']): continue
@@ -8625,7 +8600,7 @@ class ReggieTheme:
                 cache = self.iconCacheLg if big else self.iconCacheSm
 
                 # Load the icons
-                for iconfilename in zipfList:
+                for iconfilename in fileList:
                     iconname = iconfilename
                     if not iconname.startswith(foldername + '/'): continue
                     iconname = iconname[len(foldername) + 1:]
@@ -8633,7 +8608,8 @@ class ReggieTheme:
                     if not iconname.startswith('icon-') or not iconname.endswith('.png'): continue
                     iconname = iconname[len('icon-'): -len('.png')]
 
-                    icodata = zipf.open(iconfilename).read()
+                    with open(os.path.join(folder, iconfilename), "rb") as inf:
+                        icodata = inf.read()
                     pix = QtGui.QPixmap()
                     if not pix.loadFromData(icodata): continue
                     ico = QtGui.QIcon(pix)
@@ -8688,7 +8664,7 @@ class ReggieTheme:
         if 'style' in root.attrib: self.style = root.attrib['style']
         if 'version' in root.attrib:
             try:
-                self.version = float(root.attrib['style'])
+                self.version = float(root.attrib['version'])
             except ValueError:
                 pass
 
@@ -8744,12 +8720,6 @@ class ReggieTheme:
 
         # Merge dictionaries
         self.colors.update(colorDict)
-
-    def loadStylesheet(self, file):
-        """
-        Loads a stylesheet
-        """
-        print(file)
 
     def color(self, name):
         """
@@ -14907,32 +14877,25 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.themeID = theme.themeName
                 self.themes = self.getAvailableThemes
 
-                # Create the radiobuttons
-                self.btns = []
-                self.btnvals = {}
+                # Create the theme box
+                i = 0
+                self.themeBox = QtWidgets.QComboBox()
                 for name, themeObj in self.themes:
-                    displayname = name
-                    if displayname.lower().endswith('.rt'): displayname = displayname[:-3]
+                    self.themeBox.addItem(name)
 
-                    btn = QtWidgets.QRadioButton(displayname)
-                    if name == str(setting('Theme')): btn.setChecked(True)
-                    btn.clicked.connect(self.UpdatePreview)
+                    if name == str(setting('Theme')):
+                        self.themeBox.setCurrentIndex(i)
 
-                    self.btns.append(btn)
-                    self.btnvals[btn] = (name, themeObj)
+                    i += 1
 
-                # Create the buttons group
-                btnG = QtWidgets.QButtonGroup()
-                btnG.setExclusive(True)
-                for btn in self.btns:
-                    btnG.addButton(btn)
+                self.themeBox.activated.connect(self.UpdatePreview)
 
-                # Create the buttons groupbox
-                L = QtWidgets.QGridLayout()
-                for idx, button in enumerate(self.btns):
-                    L.addWidget(btn, idx % 12, int(idx / 12))
-                btnGB = QtWidgets.QGroupBox(trans.string('PrefsDlg', 21))
-                btnGB.setLayout(L)
+                boxGB = QtWidgets.QGroupBox('Themes')
+                L = QtWidgets.QFormLayout()
+                L.addRow('Theme:', self.themeBox)
+                L2 = QtWidgets.QGridLayout()
+                L2.addLayout(L, 0, 0)
+                boxGB.setLayout(L2)
 
                 # Create the preview labels and groupbox
                 self.preview = QtWidgets.QLabel()
@@ -14960,12 +14923,11 @@ class PreferencesDialog(QtWidgets.QDialog):
                 optionsGB.setLayout(L)
 
                 # Create a main layout
-                L = QtWidgets.QGridLayout()
-                L.addWidget(btnGB, 0, 0, 2, 1)
-                L.addWidget(optionsGB, 0, 1)
-                L.addWidget(previewGB, 1, 1)
-                L.setRowStretch(1, 1)
-                self.setLayout(L)
+                Layout = QtWidgets.QGridLayout()
+                Layout.addWidget(boxGB, 0, 0, 2, 1)
+                Layout.addWidget(optionsGB, 0, 1)
+                Layout.addWidget(previewGB, 1, 1)
+                self.setLayout(Layout)
 
                 # Update the preview things
                 self.UpdatePreview()
@@ -14978,10 +14940,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                 themeList = [('Classic', ReggieTheme())]
                 for themeName in themes:
                     try:
-                        if themeName.split('.')[-1].lower() == 'rt':
-                            data = open('reggiedata/themes/' + themeName, 'rb').read()
-                            theme = ReggieTheme(data)
-                            themeList.append((themeName, theme))
+                        theme = ReggieTheme(themeName)
+                        themeList.append((themeName, theme))
                     except Exception:
                         pass
 
@@ -14991,9 +14951,9 @@ class PreferencesDialog(QtWidgets.QDialog):
                 """
                 Updates the preview
                 """
-                for btn in self.btns:
-                    if btn.isChecked():
-                        t = self.btnvals[btn][1]
+                for name, themeObj in self.themes:
+                    if name == self.themeBox.currentText():
+                        t = themeObj
                         self.preview.setPixmap(self.drawPreview(t))
                         text = trans.string('PrefsDlg', 26, '[name]', t.themeName, '[creator]', t.creator,
                                             '[description]', t.description)
@@ -17163,10 +17123,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('ToolbarActs', ToolbarSettings)
 
         # Get the theme settings
-        for btn in dlg.themesTab.btns:
-            if btn.isChecked():
-                setSetting('Theme', dlg.themesTab.btnvals[btn][0])
-                break
+        setSetting('Theme', dlg.themesTab.themeBox.currentText())
         setSetting('uiStyle', dlg.themesTab.NonWinStyle.currentText())
 
         # Warn the user that they may need to restart
