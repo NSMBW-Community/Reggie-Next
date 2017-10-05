@@ -2951,7 +2951,7 @@ class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
         self.risingHeight = (self.parent.spritedata[3] & 0xF) << 4
         self.risingHeight |= self.parent.spritedata[4] >> 4
 
-        if self.parent.spritedata[2] > 7:  # falling
+        if (self.parent.spritedata[2] >> 4) > 7:  # falling
             self.risingHeight = -self.risingHeight
 
         super().realViewZone(painter, zoneRect, viewRect)
@@ -2989,7 +2989,7 @@ class SpriteImage_Lava(SpriteImage_LiquidOrFog):  # 139
         self.risingHeight = (self.parent.spritedata[3] & 0xF) << 4
         self.risingHeight |= self.parent.spritedata[4] >> 4
 
-        if self.parent.spritedata[2] > 7:  # falling
+        if (self.parent.spritedata[2] >> 4) > 7:  # falling
             self.risingHeight = -self.risingHeight
 
         super().realViewZone(painter, zoneRect, viewRect)
@@ -4014,7 +4014,7 @@ class SpriteImage_Poison(SpriteImage_LiquidOrFog):  # 216
         self.risingHeight = (self.parent.spritedata[3] & 0xF) << 4
         self.risingHeight |= self.parent.spritedata[4] >> 4
 
-        if self.parent.spritedata[2] > 7:  # falling
+        if (self.parent.spritedata[2] >> 4) > 7:  # falling
             self.risingHeight = -self.risingHeight
 
         super().realViewZone(painter, zoneRect, viewRect)
