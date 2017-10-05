@@ -2435,17 +2435,6 @@ def LoadOverrides():
             idx += 64
 
 
-def SetAppStyle():
-    """
-    Set the application window color
-    """
-    global app
-    global theme
-
-    # Change the color if applicable
-    if theme.color('ui') is not None: app.setPalette(QtGui.QPalette(theme.color('ui')))
-
-
 Area = None
 Dirty = False
 DirtyOverride = 0
@@ -19235,7 +19224,6 @@ def main():
     LoadTheme()
     LoadActionsLists()
     LoadConstantLists()
-    SetAppStyle()
     LoadTilesetNames()
     LoadObjDescriptions()
     LoadBgANames()
