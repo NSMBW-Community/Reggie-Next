@@ -2229,29 +2229,29 @@ def ProcessOverrides(idx, name):
         elif name in ('Pa1_nohara', 'Pa1_nohara2', 'Pa1_daishizen'):
             # flowers
             t = Tiles
-            t[416 + 0x100].main = t[0x400 + 1092].main  # grass
-            t[417 + 0x100].main = t[0x400 + 1093].main
-            t[418 + 0x100].main = t[0x400 + 1094].main
-            t[419 + 0x100].main = t[0x400 + 1095].main
-            t[420 + 0x100].main = t[0x400 + 1096].main
+            t[416].main = t[0x400 + 1092].main  # grass
+            t[417].main = t[0x400 + 1093].main
+            t[418].main = t[0x400 + 1094].main
+            t[419].main = t[0x400 + 1095].main
+            t[420].main = t[0x400 + 1096].main
 
             if name == 'Pa1_nohara' or name == 'Pa1_nohara2':
-                t[432 + 0x100].main = t[0x400 + 1068].main  # flowers
-                t[433 + 0x100].main = t[0x400 + 1069].main  # flowers
-                t[434 + 0x100].main = t[0x400 + 1070].main  # flowers
+                t[432].main = t[0x400 + 1068].main  # flowers
+                t[433].main = t[0x400 + 1069].main  # flowers
+                t[434].main = t[0x400 + 1070].main  # flowers
 
-                t[448 + 0x100].main = t[0x400 + 1158].main  # flowers on grass
-                t[449 + 0x100].main = t[0x400 + 1159].main
-                t[450 + 0x100].main = t[0x400 + 1160].main
+                t[448].main = t[0x400 + 1158].main  # flowers on grass
+                t[449].main = t[0x400 + 1159].main
+                t[450].main = t[0x400 + 1160].main
             elif name == 'Pa1_daishizen':
                 # forest flowers
-                t[432 + 0x100].main = t[0x400 + 1071].main  # flowers
-                t[433 + 0x100].main = t[0x400 + 1072].main  # flowers
-                t[434 + 0x100].main = t[0x400 + 1073].main  # flowers
+                t[432].main = t[0x400 + 1071].main  # flowers
+                t[433].main = t[0x400 + 1072].main  # flowers
+                t[434].main = t[0x400 + 1073].main  # flowers
 
-                t[448 + 0x100].main = t[0x400 + 1222].main  # flowers on grass
-                t[449 + 0x100].main = t[0x400 + 1223].main
-                t[450 + 0x100].main = t[0x400 + 1224].main
+                t[448].main = t[0x400 + 1222].main  # flowers on grass
+                t[449].main = t[0x400 + 1223].main
+                t[450].main = t[0x400 + 1224].main
 
         elif name in ('Pa3_rail', 'Pa3_rail_white', 'Pa3_daishizen'):
             # These are the line guides
@@ -2259,128 +2259,128 @@ def ProcessOverrides(idx, name):
 
             t = Tiles
 
-            t[768 + 0x300].main = t[0x400 + 1088].main  # horizontal line
-            t[769 + 0x300].main = t[0x400 + 1089].main  # vertical line
-            t[770 + 0x300].main = t[0x400 + 1090].main  # bottom-right corner
-            t[771 + 0x300].main = t[0x400 + 1091].main  # top-left corner
+            t[768].main = t[0x400 + 1088].main  # horizontal line
+            t[769].main = t[0x400 + 1089].main  # vertical line
+            t[770].main = t[0x400 + 1090].main  # bottom-right corner
+            t[771].main = t[0x400 + 1091].main  # top-left corner
 
-            t[784 + 0x300].main = t[0x400 + 1152].main  # left red blob (part 1)
-            t[785 + 0x300].main = t[0x400 + 1153].main  # top red blob (part 1)
-            t[786 + 0x300].main = t[0x400 + 1154].main  # top red blob (part 2)
-            t[787 + 0x300].main = t[0x400 + 1155].main  # right red blob (part 1)
-            t[788 + 0x300].main = t[0x400 + 1156].main  # top-left red blob
-            t[789 + 0x300].main = t[0x400 + 1157].main  # top-right red blob
+            t[784].main = t[0x400 + 1152].main  # left red blob (part 1)
+            t[785].main = t[0x400 + 1153].main  # top red blob (part 1)
+            t[786].main = t[0x400 + 1154].main  # top red blob (part 2)
+            t[787].main = t[0x400 + 1155].main  # right red blob (part 1)
+            t[788].main = t[0x400 + 1156].main  # top-left red blob
+            t[789].main = t[0x400 + 1157].main  # top-right red blob
 
-            t[800 + 0x300].main = t[0x400 + 1216].main  # left red blob (part 2)
-            t[801 + 0x300].main = t[0x400 + 1217].main  # bottom red blob (part 1)
-            t[802 + 0x300].main = t[0x400 + 1218].main  # bottom red blob (part 2)
-            t[803 + 0x300].main = t[0x400 + 1219].main  # right red blob (part 2)
-            t[804 + 0x300].main = t[0x400 + 1220].main  # bottom-left red blob
-            t[805 + 0x300].main = t[0x400 + 1221].main  # bottom-right red blob
+            t[800].main = t[0x400 + 1216].main  # left red blob (part 2)
+            t[801].main = t[0x400 + 1217].main  # bottom red blob (part 1)
+            t[802].main = t[0x400 + 1218].main  # bottom red blob (part 2)
+            t[803].main = t[0x400 + 1219].main  # right red blob (part 2)
+            t[804].main = t[0x400 + 1220].main  # bottom-left red blob
+            t[805].main = t[0x400 + 1221].main  # bottom-right red blob
 
             # Those are all for Pa3_daishizen
             if name == 'Pa3_daishizen': return
 
-            t[816 + 0x300].main = t[0x400 + 1056].main  # 1x2 diagonal going up (top edge)
-            t[817 + 0x300].main = t[0x400 + 1057].main  # 1x2 diagonal going down (top edge)
+            t[816].main = t[0x400 + 1056].main  # 1x2 diagonal going up (top edge)
+            t[817].main = t[0x400 + 1057].main  # 1x2 diagonal going down (top edge)
 
-            t[832 + 0x300].main = t[0x400 + 1120].main  # 1x2 diagonal going up (part 1)
-            t[833 + 0x300].main = t[0x400 + 1121].main  # 1x2 diagonal going down (part 1)
-            t[834 + 0x300].main = t[0x400 + 1186].main  # 1x1 diagonal going up
-            t[835 + 0x300].main = t[0x400 + 1187].main  # 1x1 diagonal going down
-            t[836 + 0x300].main = t[0x400 + 1058].main  # 2x1 diagonal going up (part 1)
-            t[837 + 0x300].main = t[0x400 + 1059].main  # 2x1 diagonal going up (part 2)
-            t[838 + 0x300].main = t[0x400 + 1060].main  # 2x1 diagonal going down (part 1)
-            t[839 + 0x300].main = t[0x400 + 1061].main  # 2x1 diagonal going down (part 2)
+            t[832].main = t[0x400 + 1120].main  # 1x2 diagonal going up (part 1)
+            t[833].main = t[0x400 + 1121].main  # 1x2 diagonal going down (part 1)
+            t[834].main = t[0x400 + 1186].main  # 1x1 diagonal going up
+            t[835].main = t[0x400 + 1187].main  # 1x1 diagonal going down
+            t[836].main = t[0x400 + 1058].main  # 2x1 diagonal going up (part 1)
+            t[837].main = t[0x400 + 1059].main  # 2x1 diagonal going up (part 2)
+            t[838].main = t[0x400 + 1060].main  # 2x1 diagonal going down (part 1)
+            t[839].main = t[0x400 + 1061].main  # 2x1 diagonal going down (part 2)
 
-            t[848 + 0x300].main = t[0x400 + 1184].main  # 1x2 diagonal going up (part 2)
-            t[849 + 0x300].main = t[0x400 + 1185].main  # 1x2 diagonal going down (part 2)
-            t[850 + 0x300].main = t[0x400 + 1250].main  # 1x1 diagonal going up
-            t[851 + 0x300].main = t[0x400 + 1251].main  # 1x1 diagonal going down
-            t[852 + 0x300].main = t[0x400 + 1122].main  # 2x1 diagonal going up (part 1)
-            t[853 + 0x300].main = t[0x400 + 1123].main  # 2x1 diagonal going up (part 2)
-            t[854 + 0x300].main = t[0x400 + 1124].main  # 2x1 diagonal going down (part 1)
-            t[855 + 0x300].main = t[0x400 + 1125].main  # 2x1 diagonal going down (part 2)
+            t[848].main = t[0x400 + 1184].main  # 1x2 diagonal going up (part 2)
+            t[849].main = t[0x400 + 1185].main  # 1x2 diagonal going down (part 2)
+            t[850].main = t[0x400 + 1250].main  # 1x1 diagonal going up
+            t[851].main = t[0x400 + 1251].main  # 1x1 diagonal going down
+            t[852].main = t[0x400 + 1122].main  # 2x1 diagonal going up (part 1)
+            t[853].main = t[0x400 + 1123].main  # 2x1 diagonal going up (part 2)
+            t[854].main = t[0x400 + 1124].main  # 2x1 diagonal going down (part 1)
+            t[855].main = t[0x400 + 1125].main  # 2x1 diagonal going down (part 2)
 
-            t[866 + 0x300].main = t[0x400 + 1065].main  # big circle piece 1st row
-            t[867 + 0x300].main = t[0x400 + 1066].main  # big circle piece 1st row
-            t[870 + 0x300].main = t[0x400 + 1189].main  # medium circle piece 1st row
-            t[871 + 0x300].main = t[0x400 + 1190].main  # medium circle piece 1st row
+            t[866].main = t[0x400 + 1065].main  # big circle piece 1st row
+            t[867].main = t[0x400 + 1066].main  # big circle piece 1st row
+            t[870].main = t[0x400 + 1189].main  # medium circle piece 1st row
+            t[871].main = t[0x400 + 1190].main  # medium circle piece 1st row
 
-            t[881 + 0x300].main = t[0x400 + 1128].main  # big circle piece 2nd row
-            t[882 + 0x300].main = t[0x400 + 1129].main  # big circle piece 2nd row
-            t[883 + 0x300].main = t[0x400 + 1130].main  # big circle piece 2nd row
-            t[884 + 0x300].main = t[0x400 + 1131].main  # big circle piece 2nd row
-            t[885 + 0x300].main = t[0x400 + 1252].main  # medium circle piece 2nd row
-            t[886 + 0x300].main = t[0x400 + 1253].main  # medium circle piece 2nd row
-            t[887 + 0x300].main = t[0x400 + 1254].main  # medium circle piece 2nd row
-            t[888 + 0x300].main = t[0x400 + 1188].main  # small circle
+            t[881].main = t[0x400 + 1128].main  # big circle piece 2nd row
+            t[882].main = t[0x400 + 1129].main  # big circle piece 2nd row
+            t[883].main = t[0x400 + 1130].main  # big circle piece 2nd row
+            t[884].main = t[0x400 + 1131].main  # big circle piece 2nd row
+            t[885].main = t[0x400 + 1252].main  # medium circle piece 2nd row
+            t[886].main = t[0x400 + 1253].main  # medium circle piece 2nd row
+            t[887].main = t[0x400 + 1254].main  # medium circle piece 2nd row
+            t[888].main = t[0x400 + 1188].main  # small circle
 
-            t[896 + 0x300].main = t[0x400 + 1191].main  # big circle piece 3rd row
-            t[897 + 0x300].main = t[0x400 + 1192].main  # big circle piece 3rd row
-            t[900 + 0x300].main = t[0x400 + 1195].main  # big circle piece 3rd row
-            t[901 + 0x300].main = t[0x400 + 1316].main  # medium circle piece 3rd row
-            t[902 + 0x300].main = t[0x400 + 1317].main  # medium circle piece 3rd row
-            t[903 + 0x300].main = t[0x400 + 1318].main  # medium circle piece 3rd row
+            t[896].main = t[0x400 + 1191].main  # big circle piece 3rd row
+            t[897].main = t[0x400 + 1192].main  # big circle piece 3rd row
+            t[900].main = t[0x400 + 1195].main  # big circle piece 3rd row
+            t[901].main = t[0x400 + 1316].main  # medium circle piece 3rd row
+            t[902].main = t[0x400 + 1317].main  # medium circle piece 3rd row
+            t[903].main = t[0x400 + 1318].main  # medium circle piece 3rd row
 
-            t[912 + 0x300].main = t[0x400 + 1255].main  # big circle piece 4th row
-            t[913 + 0x300].main = t[0x400 + 1256].main  # big circle piece 4th row
-            t[916 + 0x300].main = t[0x400 + 1259].main  # big circle piece 4th row
+            t[912].main = t[0x400 + 1255].main  # big circle piece 4th row
+            t[913].main = t[0x400 + 1256].main  # big circle piece 4th row
+            t[916].main = t[0x400 + 1259].main  # big circle piece 4th row
 
-            t[929 + 0x300].main = t[0x400 + 1320].main  # big circle piece 5th row
-            t[930 + 0x300].main = t[0x400 + 1321].main  # big circle piece 5th row
-            t[931 + 0x300].main = t[0x400 + 1322].main  # big circle piece 5th row
-            t[932 + 0x300].main = t[0x400 + 1323].main  # big circle piece 5th row
+            t[929].main = t[0x400 + 1320].main  # big circle piece 5th row
+            t[930].main = t[0x400 + 1321].main  # big circle piece 5th row
+            t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
+            t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
 
         elif name == 'Pa3_MG_house_ami_rail':
             t = Tiles
 
-            t[832 + 0x300].main = t[0x400 + 1088].main  # horizontal line
-            t[833 + 0x300].main = t[0x400 + 1090].main  # bottom-right corner
-            t[834 + 0x300].main = t[0x400 + 1088].main  # horizontal line
+            t[832].main = t[0x400 + 1088].main  # horizontal line
+            t[833].main = t[0x400 + 1090].main  # bottom-right corner
+            t[834].main = t[0x400 + 1088].main  # horizontal line
 
-            t[848 + 0x300].main = t[0x400 + 1089].main  # vertical line
-            t[849 + 0x300].main = t[0x400 + 1089].main  # vertical line
-            t[850 + 0x300].main = t[0x400 + 1091].main  # top-left corner
+            t[848].main = t[0x400 + 1089].main  # vertical line
+            t[849].main = t[0x400 + 1089].main  # vertical line
+            t[850].main = t[0x400 + 1091].main  # top-left corner
 
-            t[835 + 0x300].main = t[0x400 + 1152].main  # left red blob (part 1)
-            t[836 + 0x300].main = t[0x400 + 1153].main  # top red blob (part 1)
-            t[837 + 0x300].main = t[0x400 + 1154].main  # top red blob (part 2)
-            t[838 + 0x300].main = t[0x400 + 1155].main  # right red blob (part 1)
+            t[835].main = t[0x400 + 1152].main  # left red blob (part 1)
+            t[836].main = t[0x400 + 1153].main  # top red blob (part 1)
+            t[837].main = t[0x400 + 1154].main  # top red blob (part 2)
+            t[838].main = t[0x400 + 1155].main  # right red blob (part 1)
 
-            t[851 + 0x300].main = t[0x400 + 1216].main  # left red blob (part 2)
-            t[852 + 0x300].main = t[0x400 + 1217].main  # bottom red blob (part 1)
-            t[853 + 0x300].main = t[0x400 + 1218].main  # bottom red blob (part 2)
-            t[854 + 0x300].main = t[0x400 + 1219].main  # right red blob (part 2)
+            t[851].main = t[0x400 + 1216].main  # left red blob (part 2)
+            t[852].main = t[0x400 + 1217].main  # bottom red blob (part 1)
+            t[853].main = t[0x400 + 1218].main  # bottom red blob (part 2)
+            t[854].main = t[0x400 + 1219].main  # right red blob (part 2)
 
-            t[866 + 0x300].main = t[0x400 + 1065].main  # big circle piece 1st row
-            t[867 + 0x300].main = t[0x400 + 1066].main  # big circle piece 1st row
-            t[870 + 0x300].main = t[0x400 + 1189].main  # medium circle piece 1st row
-            t[871 + 0x300].main = t[0x400 + 1190].main  # medium circle piece 1st row
+            t[866].main = t[0x400 + 1065].main  # big circle piece 1st row
+            t[867].main = t[0x400 + 1066].main  # big circle piece 1st row
+            t[870].main = t[0x400 + 1189].main  # medium circle piece 1st row
+            t[871].main = t[0x400 + 1190].main  # medium circle piece 1st row
 
-            t[881 + 0x300].main = t[0x400 + 1128].main  # big circle piece 2nd row
-            t[882 + 0x300].main = t[0x400 + 1129].main  # big circle piece 2nd row
-            t[883 + 0x300].main = t[0x400 + 1130].main  # big circle piece 2nd row
-            t[884 + 0x300].main = t[0x400 + 1131].main  # big circle piece 2nd row
-            t[885 + 0x300].main = t[0x400 + 1252].main  # medium circle piece 2nd row
-            t[886 + 0x300].main = t[0x400 + 1253].main  # medium circle piece 2nd row
-            t[887 + 0x300].main = t[0x400 + 1254].main  # medium circle piece 2nd row
+            t[881].main = t[0x400 + 1128].main  # big circle piece 2nd row
+            t[882].main = t[0x400 + 1129].main  # big circle piece 2nd row
+            t[883].main = t[0x400 + 1130].main  # big circle piece 2nd row
+            t[884].main = t[0x400 + 1131].main  # big circle piece 2nd row
+            t[885].main = t[0x400 + 1252].main  # medium circle piece 2nd row
+            t[886].main = t[0x400 + 1253].main  # medium circle piece 2nd row
+            t[887].main = t[0x400 + 1254].main  # medium circle piece 2nd row
 
-            t[896 + 0x300].main = t[0x400 + 1191].main  # big circle piece 3rd row
-            t[897 + 0x300].main = t[0x400 + 1192].main  # big circle piece 3rd row
-            t[900 + 0x300].main = t[0x400 + 1195].main  # big circle piece 3rd row
-            t[901 + 0x300].main = t[0x400 + 1316].main  # medium circle piece 3rd row
-            t[902 + 0x300].main = t[0x400 + 1317].main  # medium circle piece 3rd row
-            t[903 + 0x300].main = t[0x400 + 1318].main  # medium circle piece 3rd row
+            t[896].main = t[0x400 + 1191].main  # big circle piece 3rd row
+            t[897].main = t[0x400 + 1192].main  # big circle piece 3rd row
+            t[900].main = t[0x400 + 1195].main  # big circle piece 3rd row
+            t[901].main = t[0x400 + 1316].main  # medium circle piece 3rd row
+            t[902].main = t[0x400 + 1317].main  # medium circle piece 3rd row
+            t[903].main = t[0x400 + 1318].main  # medium circle piece 3rd row
 
-            t[912 + 0x300].main = t[0x400 + 1255].main  # big circle piece 4th row
-            t[913 + 0x300].main = t[0x400 + 1256].main  # big circle piece 4th row
-            t[916 + 0x300].main = t[0x400 + 1259].main  # big circle piece 4th row
+            t[912].main = t[0x400 + 1255].main  # big circle piece 4th row
+            t[913].main = t[0x400 + 1256].main  # big circle piece 4th row
+            t[916].main = t[0x400 + 1259].main  # big circle piece 4th row
 
-            t[929 + 0x300].main = t[0x400 + 1320].main  # big circle piece 5th row
-            t[930 + 0x300].main = t[0x400 + 1321].main  # big circle piece 5th row
-            t[931 + 0x300].main = t[0x400 + 1322].main  # big circle piece 5th row
-            t[932 + 0x300].main = t[0x400 + 1323].main  # big circle piece 5th row
+            t[929].main = t[0x400 + 1320].main  # big circle piece 5th row
+            t[930].main = t[0x400 + 1321].main  # big circle piece 5th row
+            t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
+            t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
     except Exception:
         # Fail silently
         pass
