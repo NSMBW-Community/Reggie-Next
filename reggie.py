@@ -1113,7 +1113,6 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
 Tiles = None  # 0x200 tiles per tileset, plus 64 for each type of override
 TilesetFilesLoaded = [None, None, None, None]
 TilesetAnimTimer = None
-TilesetCache = {}  # Tileset cache, to avoid reloading when possible
 Overrides = None  # 320 tiles, this is put into Tiles usually
 TileBehaviours = None
 ObjectDefinitions = None  # 4 tilesets
@@ -1193,7 +1192,7 @@ class TilesetTile:
             framedata = data[frame * 2048: (frame * 2048) + 2048]
             newdata = tpl.decodeRGB4A3(framedata, 32, 32)
             img = QtGui.QImage(newdata, 32, 32, 128, QtGui.QImage.Format_ARGB32)
-            pix = QtGui.QPixmap.fromImage(img.copy(0, 0, 31, 31).scaledToHeight(24, Qt.SmoothTransformation))
+            pix = QtGui.QPixmap.fromImage(img.copy(4, 4, 24, 24))
             animTiles.append(pix)
         self.animTiles = animTiles
         self.isAnimated = True
@@ -1994,73 +1993,65 @@ def _LoadTileset(idx, name, reload=False):
 
     arc = archive.U8.load(arcdata)
 
-    tileoffset = idx * 0x200
+    # decompress the textures
+    try:
+        comptiledata = arc['BG_tex/%s_tex.bin.LZ' % name]
+        colldata = arc['BG_chk/d_bgchk_%s.bin' % name]
+    except KeyError:
+        QtWidgets.QMessageBox.warning(None, trans.string('Err_CorruptedTilesetData', 0),
+                                      trans.string('Err_CorruptedTilesetData', 1, '[file]', name))
+        return False
 
-    global Tiles, TilesetCache
-    tileCacheEntryName = name + (' ' * 256) + gamedef.name  # It works :P
+    # load in the textures
+    lz = lz77.LZS11()
+    img = LoadTexture_NSMBW(lz.Decompress11LZS(comptiledata))
 
-    if tileCacheEntryName not in TilesetCache:
-        # Load the tiles
+    # Divide it into individual tiles and
+    # add collisions at the same time
+    dest = QtGui.QPixmap.fromImage(img)
+    sourcex = 4
+    sourcey = 4
+    tileoffset = idx * 256
+    for i in range(tileoffset, tileoffset + 256):
+        T = TilesetTile(dest.copy(sourcex, sourcey, 24, 24))
+        T.setCollisions(struct.unpack_from('>8B', colldata, (i - tileoffset) * 8))
+        Tiles[i] = T
+        sourcex += 32
+        if sourcex >= 1024:
+            sourcex = 4
+            sourcey += 32
 
-        # decompress the textures
+    def exists(fn):
+        nonlocal arc
         try:
-            comptiledata = arc['BG_tex/%s_tex.bin.LZ' % name]
-            colldata = arc['BG_chk/d_bgchk_%s.bin' % name]
-        except KeyError:
-            QtWidgets.QMessageBox.warning(None, trans.string('Err_CorruptedTilesetData', 0),
-                                          trans.string('Err_CorruptedTilesetData', 1, '[file]', name))
+            arc[fn]
+        except:
             return False
-
-        # load in the textures
-        lz = lz77.LZS11()
-        img = LoadTexture_NSMBW(lz.Decompress11LZS(comptiledata))
-
-        # Divide it into individual tiles and
-        # add collisions at the same time
-        dest = QtGui.QPixmap.fromImage(img)
-        sourcex = 4
-        sourcey = 4
-        for i in range(tileoffset, tileoffset + 256):
-            T = TilesetTile(dest.copy(sourcex, sourcey, 24, 24))
-            T.setCollisions(struct.unpack_from('>8B', colldata, (i - tileoffset) * 8))
-            Tiles[i] = T
-            sourcex += 32
-            if sourcex >= 1024:
-                sourcex = 4
-                sourcey += 32
-
-        # Load the tileset animations, if there are any
-        isAnimated, prefix = CheckTilesetAnimated(arc)
-        if isAnimated:
-            row = 0
-            col = 0
-            for i in range(tileoffset, tileoffset + 256):
+        return True
+    
+    # Load the tileset animations, if there are any
+    isAnimated, prefix = CheckTilesetAnimated(arc)
+    if isAnimated:
+        tileoffset = idx*256
+        row = 0
+        col = 0
+        for i in range(tileoffset,tileoffset+256):
+            filenames = []
+            filenames.append('%s_%d%s%s.bin' % (prefix, idx, hex(row)[2].lower(), hex(col)[2].lower()))
+            filenames.append('%s_%d%s%s.bin' % (prefix, idx, hex(row)[2].upper(), hex(col)[2].upper()))
+            if filenames[0] == filenames[1]:
+                item = filenames[0]
                 filenames = []
-                filenames.append('%s_%d%s%s.bin' % (prefix, idx, hex(row)[2].lower(), hex(col)[2].lower()))
-                filenames.append('%s_%d%s%s.bin' % (prefix, idx, hex(row)[2].upper(), hex(col)[2].upper()))
-                if filenames[0] == filenames[1]:
-                    item = filenames[0]
-                    filenames = []
-                    filenames.append(item)
-                for fn in filenames:
-                    fn = 'BG_tex/' + fn
-                    found = False
-                    try:
-                        arc[fn]
-                        found = True
-                    except KeyError:
-                        pass
-                    if found:
-                        Tiles[i].addAnimationData(arc[fn])
-                col += 1
-                if col == 16:
-                    col = 0
-                    row += 1
-
-    else:
-        # We already have tiles in the tileset cache; copy them over to Tiles
-        for i in range(0x200):
-            Tiles[i + tileoffset] = TilesetCache[tileCacheEntryName][i]
+                filenames.append(item)
+            for fn in filenames:
+                fn = 'BG_tex/' + fn
+                found = exists(fn)
+                if found:
+                    Tiles[i].addAnimationData(arc[fn])
+            col += 1
+            if col == 16:
+                col = 0
+                row += 1
 
     # load the object definitions
     defs = [None] * 256
@@ -2087,11 +2078,6 @@ def _LoadTileset(idx, name, reload=False):
 
     # Add Tiles to spritelib
     SLib.Tiles = Tiles
-
-    # Add Tiles to the cache
-    TilesetCache[tileCacheEntryName] = []
-    for i in range(0x200):
-        TilesetCache[tileCacheEntryName].append(Tiles[i + tileoffset])
 
 
 def LoadTexture_NSMBW(tiledata):
@@ -17962,9 +17948,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Reloads all the tilesets. If soft is True, they will not be reloaded if the filepaths have not changed.
         """
-        global TilesetCache
-        if not soft: TilesetCache = {}  # blank out the tileset cache; we're reloading them
-
         tilesets = [Area.tileset0, Area.tileset1, Area.tileset2, Area.tileset3]
         for idx, name in enumerate(tilesets):
             if (name is not None) and (name != ''):

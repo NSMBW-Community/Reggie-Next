@@ -29,7 +29,7 @@
 ################################################################
 ################################################################
 
-cpdef bytes decodeRGB4A3(list data, int width, int height):
+cpdef bytes decodeRGB4A3(data, int width, int height):
     cdef bytearray result = bytearray(width * height * 4)
 
     cdef int i, yTile, xTile, y, x
