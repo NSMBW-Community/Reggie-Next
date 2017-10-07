@@ -40,15 +40,11 @@ cdef tuple GetUncompressedSize(inData):
     return outSize, offset
 
 
-def IsLZ77Compressed(inData):
-    return inData.startswith(b'\x11')
-
-
 cpdef bytes UncompressLZ77(inData):
-    if not IsLZ77Compressed(inData):
+    if inData[0] != 0x11:
         return inData
 
-    cdef unsigned int outLength, offset, outIndex, copylen
+    cdef unsigned int outLength, offset, outIndex, copylen, y
     cdef unsigned char flags, x, first, second, third, fourth
     cdef unsigned short pos
     cdef bytearray outData
@@ -63,6 +59,9 @@ cpdef bytes UncompressLZ77(inData):
         offset += 1
 
         for x in reversed(range(8)):
+            if outIndex >= outLength or offset >= len(inData):
+                break
+
             if flags & (1 << x):
                 first = inData[offset]
                 offset += 1
@@ -89,15 +88,14 @@ cpdef bytes UncompressLZ77(inData):
                     pos = (((first & 0xF) << 8) | second) + 1
                     copylen = (first >> 4) + 1
 
-                outData[outIndex:outIndex + copylen] = outData[outIndex - pos:outIndex - pos + copylen]
+                for y in range(copylen):
+                    outData[outIndex + y] = outData[outIndex - pos + y]
+
                 outIndex += copylen
 
             else:
                 outData[outIndex] = inData[offset]
                 offset += 1
                 outIndex += 1
-
-            if outIndex >= outLength or offset >= len(inData):
-                break
 
     return bytes(outData)
