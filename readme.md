@@ -115,6 +115,7 @@ Release Next (Milestone 3 Alpha 1): (October 7, 2017)
  * Added a new TPL decoder
  * Added a new LH decompressor
  * Added a new LZ77 decompressor
+ * Updated the spritedata for NSMBW and NewerSMBW
  * Fixed sprite categories bug
  * Fixed painting stamps and comments
  * Re-enabled selecting patches
