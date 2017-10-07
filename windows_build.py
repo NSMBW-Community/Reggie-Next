@@ -26,8 +26,8 @@
 # Builds Reggie! to a Windows binary (*.exe)
 # Use the values below to configure the release:
 
-PackageName = 'reggie_next_m3_win32'
-Version = '0.3'  # This must be a valid float in string format
+PackageName = 'reggie_next_m3a1_win32'
+Version = '0.3.1'  # This must be a valid float in string format
 
 ################################################################
 ################################################################
@@ -147,6 +147,7 @@ if os.path.isdir(dir_ + '/reggieextras'): shutil.rmtree(dir_ + '/reggieextras')
 shutil.copytree('reggiedata', dir_ + '/reggiedata')
 shutil.copytree('reggieextras', dir_ + '/reggieextras')
 shutil.copy('license.txt', dir_)
+shutil.copy('license_short.txt', dir_)
 shutil.copy('readme.md', dir_)
 if not os.path.isfile(dir_ + '/libEGL.dll'):
     shutil.copy('libEGL.dll', dir_)
@@ -158,15 +159,5 @@ release.write('windows')
 release.close()
 del release
 print('>> release.txt written!')
-
-print('>> Attempting to copy VC++2008 libraries...')
-if os.path.isdir('Microsoft.VC90.CRT'):
-    shutil.copytree('Microsoft.VC90.CRT', dir_ + '/Microsoft.VC90.CRT')
-    print('>> Copied libraries!')
-else:
-    print('>> Libraries not found! The frozen executable will require the '
-          'Visual C++ 2008 runtimes to be installed in order to work.')
-    print('>> In order to automatically include the runtimes, place the '
-          'Microsoft.VC90.CRT folder into this folder.')
 
 print('>> Reggie has been frozen to %s !' % dir_)

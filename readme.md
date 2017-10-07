@@ -103,8 +103,25 @@ See the license file in the distribution for information.
 
 ## Changelog
 
-Release Next (Milestone 3): (TBA)
+Release Next (Milestone 3 Alpha 1): (October 7, 2017)
  * Removed New Super Mario Bros. 2 support
+ * Removed PyQtRibbon
+ * Removed TPLLib
+ * Fixed creating new levels
+ * Fixed saving
+ * Fixed importing areas from another level
+ * Added snapping zone to grid
+ * Fixed deselecting paths
+ * Added a new TPL decoder
+ * Added a new LH decompressor
+ * Added a new LZ77 decompressor
+ * Fixed sprite categories bug
+ * Fixed painting stamps and comments
+ * Re-enabled selecting patches
+ * Fixed liquids, snow effect, lava particals, and fog rendering
+ * Fixed/added themes
+ * Fixed tileset animations
+ * Minor bug fixes
 
 Release Next (Milestone 2 Alpha 4): (unreleased)
  * Stamp preview icons are now functional

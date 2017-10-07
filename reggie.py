@@ -90,8 +90,8 @@ except ImportError:
     import tpl
 
 ReggieID = 'Reggie Next Level Editor by Treeki, Tempus, RoadrunnerWMC, Stella/AboodXD'
-ReggieVersion = 'Milestone 3'
-ReggieVersionShort = 'M3'
+ReggieVersion = 'Milestone 3 Alpha 1'
+ReggieVersionShort = 'M3A1'
 UpdateURL = ''
 
 if not hasattr(QtWidgets.QGraphicsItem, 'ItemSendsGeometryChanges'):
