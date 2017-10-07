@@ -1189,7 +1189,7 @@ class TilesetTile:
         self.collData = ()
         self.collOverlay = None
 
-    def addAnimationData(self, data):
+    def addAnimationData(self, data, reverse=False):
         """
         Applies Newer-style animation data to the tile
         """
@@ -1201,6 +1201,8 @@ class TilesetTile:
             img = QtGui.QImage(newdata, 32, 32, 128, QtGui.QImage.Format_ARGB32)
             pix = QtGui.QPixmap.fromImage(img.copy(4, 4, 24, 24))
             animTiles.append(pix)
+        if reverse:
+            animTiles = list(reversed(animTiles))
         self.animTiles = animTiles
         self.isAnimated = True
 
@@ -2036,28 +2038,102 @@ def _LoadTileset(idx, name, reload=False):
         return True
     
     # Load the tileset animations, if there are any
+    tileoffset = idx*256
+    row = 0
+    col = 0
+
+    containsConveyor = ['Pa1_toride', 'Pa1_toride_sabaku', 'Pa1_toride_kori', 'Pa1_toride_yogan', 'Pa1_toride_soto']
+
     isAnimated, prefix = CheckTilesetAnimated(arc)
-    if isAnimated:
-        tileoffset = idx*256
-        row = 0
-        col = 0
-        for i in range(tileoffset,tileoffset+256):
+
+    for i in range(tileoffset,tileoffset+256):
+        if idx == 0:
+            if Tiles[i].collData[3] == 5:
+                fn = 'BG_tex/hatena_anime.bin'
+                found = exists(fn)
+
+                if found:
+                    Tiles[i].addAnimationData(arc[fn])
+
+            elif Tiles[i].collData[3] == 0x10:
+                fn = 'BG_tex/block_anime.bin'
+                found = exists(fn)
+
+                if found:
+                    Tiles[i].addAnimationData(arc[fn])
+
+            elif Tiles[i].collData[7] == 0x28:
+                fn = 'BG_tex/tuka_coin_anime.bin'
+                found = exists(fn)
+
+                if found:
+                    Tiles[i].addAnimationData(arc[fn])
+
+        elif idx == 1 and name in containsConveyor:
+            for x in range(2):
+                if i == 320+x*16:
+                    fn = 'BG_tex/belt_conveyor_L_anime.bin'
+                    found = exists(fn)
+
+                    if found:
+                        Tiles[i].addAnimationData(arc[fn], True)
+
+                elif i == 321+x*16:
+                    fn = 'BG_tex/belt_conveyor_M_anime.bin'
+                    found = exists(fn)
+
+                    if found:
+                        Tiles[i].addAnimationData(arc[fn], True)
+
+                elif i == 322+x*16:
+                    fn = 'BG_tex/belt_conveyor_R_anime.bin'
+                    found = exists(fn)
+
+                    if found:
+                        Tiles[i].addAnimationData(arc[fn], True)
+
+                elif i == 323+x*16:
+                    fn = 'BG_tex/belt_conveyor_L_anime.bin'
+                    found = exists(fn)
+
+                    if found:
+                        Tiles[i].addAnimationData(arc[fn])
+
+                elif i == 324+x*16:
+                    fn = 'BG_tex/belt_conveyor_M_anime.bin'
+                    found = exists(fn)
+
+                    if found:
+                        Tiles[i].addAnimationData(arc[fn])
+
+                elif i == 325+x*16:
+                    fn = 'BG_tex/belt_conveyor_R_anime.bin'
+                    found = exists(fn)
+                    if found:
+                        Tiles[i].addAnimationData(arc[fn])
+
+        if isAnimated:
             filenames = []
             filenames.append('%s_%d%s%s.bin' % (prefix, idx, hex(row)[2].lower(), hex(col)[2].lower()))
             filenames.append('%s_%d%s%s.bin' % (prefix, idx, hex(row)[2].upper(), hex(col)[2].upper()))
+
             if filenames[0] == filenames[1]:
                 item = filenames[0]
                 filenames = []
                 filenames.append(item)
+
             for fn in filenames:
                 fn = 'BG_tex/' + fn
                 found = exists(fn)
+
                 if found:
                     Tiles[i].addAnimationData(arc[fn])
-            col += 1
-            if col == 16:
-                col = 0
-                row += 1
+
+        col += 1
+
+        if col == 16:
+            col = 0
+            row += 1
 
     # load the object definitions
     defs = [None] * 256
@@ -2181,8 +2257,8 @@ def ProcessOverrides(idx, name):
 
             # Question and brick blocks
             # these don't have their own tiles so we have to do them by objects
-            rangeA, rangeB = (range(38, 49), range(26, 38))
-            replace = offset + 9
+            rangeA, rangeB = (range(39, 49), range(27, 38))
+            replace = offset + 10
             for i in rangeA:
                 defs[i].rows[0][0] = (0, replace, 0)
                 replace += 1
