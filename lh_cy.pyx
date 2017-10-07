@@ -46,7 +46,7 @@ cdef unsigned int GetUncompressedSize(bytearray inData):
     return outSize
 
 
-cdef unsigned int LoadLHPiece(bytearray buf, bytearray inData, unsigned short unk):
+cdef unsigned int LoadLHPiece(bytearray buf, bytearray inData, unsigned char unk):
     cdef unsigned int r0, r4, r6, r7, r9, r10, r11, r12, r30
     cdef unsigned int inOffset, dataSize, copiedAmount
 

@@ -23,15 +23,15 @@
 
 
 # lz77.py
-# LZ77 decompressor in Python.
+# LZ77 decompressor in Cython.
 
 
 ################################################################
 ################################################################
 
-def GetUncompressedSize(inData):
-    offset = 4
-    outSize = inData[1] | (inData[2] << 8) | (inData[3] << 16)
+cdef tuple GetUncompressedSize(inData):
+    cdef unsigned int offset = 4
+    cdef unsigned int outSize = inData[1] | (inData[2] << 8) | (inData[3] << 16)
 
     if not outSize:
         outSize = inData[4] | (inData[5] << 8) | (inData[6] << 16) | (inData[7] << 24)
@@ -44,9 +44,14 @@ def IsLZ77Compressed(inData):
     return inData.startswith(b'\x11')
 
 
-def UncompressLZ77(inData):
+cpdef bytes UncompressLZ77(inData):
     if not IsLZ77Compressed(inData):
         return inData
+
+    cdef unsigned int outLength, offset, outIndex, copylen
+    cdef unsigned char flags, x, first, second, third, fourth
+    cdef unsigned short pos
+    cdef bytearray outData
 
     outLength, offset = GetUncompressedSize(inData)
     outData = bytearray(outLength)

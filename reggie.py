@@ -62,7 +62,6 @@ Qt = QtCore.Qt
 
 # Local imports
 import archive
-import lz77
 import spritelib as SLib
 import sprites
 
@@ -73,6 +72,14 @@ try:
     import lh_cy as lh
 except ImportError:
     import lh
+
+# LZ77 decompressor
+try:
+    import pyximport
+    pyximport.install()
+    import lz77_cy as lz77
+except ImportError:
+    import lz77
 
 # TPL decoder
 try:
@@ -2003,8 +2010,7 @@ def _LoadTileset(idx, name, reload=False):
         return False
 
     # load in the textures
-    lz = lz77.LZS11()
-    img = LoadTexture_NSMBW(lz.Decompress11LZS(comptiledata))
+    img = LoadTexture_NSMBW(lz77.UncompressLZ77(comptiledata))
 
     # Divide it into individual tiles and
     # add collisions at the same time
