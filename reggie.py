@@ -2262,6 +2262,7 @@ def ProcessOverrides(idx, name):
             for i in rangeA:
                 defs[i].rows[0][0] = (0, replace, 0)
                 replace += 1
+            replace += 1
             for i in rangeB:
                 defs[i].rows[0][0] = (0, replace, 0)
                 replace += 1
