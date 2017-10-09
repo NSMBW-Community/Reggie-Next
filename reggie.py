@@ -102,6 +102,7 @@ if not hasattr(QtWidgets.QGraphicsItem, 'ItemSendsGeometryChanges'):
 app = None
 mainWindow = None
 settings = None
+firstLoad = True
 
 FileExtentions = ('.arc', '.arc.LH')
 
@@ -1940,7 +1941,6 @@ def CreateTilesets():
     # TileBehaviours = [0]*1024
     TilesetAnimTimer = QtCore.QTimer()
     TilesetAnimTimer.timeout.connect(IncrementTilesetFrame)
-    TilesetAnimTimer.start(180)
     ObjectDefinitions = [None] * 4
     SLib.Tiles = Tiles
 
@@ -3086,25 +3086,38 @@ class AbstractParsedArea(AbstractArea):
         # Now, load the comments
         self.LoadComments()
 
-        # Load the tilesets
-        try:
-            app.splashScreen.setProgress(trans.string('Splash', 3), 1)
-        except AttributeError:
-            app.splashScreen = ReggieSplashScreen()
-            app.splashScreen.setProgress(trans.string('Splash', 3), 1)
+        global firstLoad
 
-        CreateTilesets()
-        app.splashScreen.setProgress(trans.string('Splash', 3), 2)
-        if self.tileset0 != '': LoadTileset(0, self.tileset0)
-        app.splashScreen.setProgress(trans.string('Splash', 3), 3)
-        if self.tileset1 != '': LoadTileset(1, self.tileset1)
-        app.splashScreen.setProgress(trans.string('Splash', 3), 4)
-        if self.tileset2 != '': LoadTileset(2, self.tileset2)
-        app.splashScreen.setProgress(trans.string('Splash', 3), 5)
-        if self.tileset3 != '': LoadTileset(3, self.tileset3)
+        if not firstLoad:
+            # Load the tilesets
+            try:
+                app.splashScreen.setProgress(trans.string('Splash', 3), 1)
+            except AttributeError:
+                app.splashScreen = ReggieSplashScreen()
+                app.splashScreen.setProgress(trans.string('Splash', 3), 1)
 
-        # Load the object layers
-        app.splashScreen.setProgress(trans.string('Splash', 1), 6)
+            CreateTilesets()
+            app.splashScreen.setProgress(trans.string('Splash', 3), 2)
+            if self.tileset0 != '': LoadTileset(0, self.tileset0)
+            app.splashScreen.setProgress(trans.string('Splash', 3), 3)
+            if self.tileset1 != '': LoadTileset(1, self.tileset1)
+            app.splashScreen.setProgress(trans.string('Splash', 3), 4)
+            if self.tileset2 != '': LoadTileset(2, self.tileset2)
+            app.splashScreen.setProgress(trans.string('Splash', 3), 5)
+            if self.tileset3 != '': LoadTileset(3, self.tileset3)
+
+            # Load the object layers
+            app.splashScreen.setProgress(trans.string('Splash', 1), 6)
+
+        else:
+            # Load the object layers
+            try:
+                app.splashScreen.setProgress(trans.string('Splash', 1), 6)
+            except AttributeError:
+                app.splashScreen = ReggieSplashScreen()
+                app.splashScreen.setProgress(trans.string('Splash', 1), 6)
+
+            firstLoad = False
 
         self.layers = [[], [], []]
 
@@ -15305,7 +15318,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if len(sys.argv) > 1 and os.path.isfile(sys.argv[1]) and IsNSMBLevel(sys.argv[1]):
             loaded = self.LoadLevel(None, sys.argv[1], True, 1)
-        elif settings.contains('LastLevel'):
+        elif settings.contains(('LastLevel_' + gamedef.name) if gamedef.custom else 'LastLevel'):
             lastlevel = str(gamedef.GetLastLevel())
             loaded = self.LoadLevel(None, lastlevel, True, 1)
 
@@ -19286,7 +19299,7 @@ def main():
     global SpriteListData
     Sprites = None
     SpriteListData = None
-    LoadGameDef()
+    LoadGameDef(setting('LastGameDef'))
     LoadTheme()
     LoadActionsLists()
     LoadConstantLists()
