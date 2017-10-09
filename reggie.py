@@ -1941,6 +1941,7 @@ def CreateTilesets():
     # TileBehaviours = [0]*1024
     TilesetAnimTimer = QtCore.QTimer()
     TilesetAnimTimer.timeout.connect(IncrementTilesetFrame)
+    TilesetAnimTimer.start(90)
     ObjectDefinitions = [None] * 4
     SLib.Tiles = Tiles
 
