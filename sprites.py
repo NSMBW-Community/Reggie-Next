@@ -386,7 +386,7 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 64, 138, 139, 216, 358, 374,
         offsetFromTop = (self.top * 1.5) - zy
         if offsetFromTop <= 4:
             offsetFromTop = 4
-            drawCrest = False # off the top of the zone; no crest
+            drawCrest = False  # off the top of the zone; no crest
         if self.top > (zy + zh) / 1.5:
             # the sprite is below the zone; don't draw anything
             return
@@ -408,7 +408,8 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 64, 138, 139, 216, 358, 374,
 
         if drawCrest:
             painter.drawTiledPixmap(4, offsetFromTop, zw - 8, crestHeight, self.crest)
-            painter.drawTiledPixmap(4, offsetFromTop + crestHeight, zw - 8, zh - crestHeight - offsetFromTop - 4, self.mid)
+            painter.drawTiledPixmap(4, offsetFromTop + crestHeight, zw - 8, zh - crestHeight - offsetFromTop - 4,
+                                    self.mid)
         else:
             painter.drawTiledPixmap(4, offsetFromTop, zw - 8, zh - offsetFromTop - 4, self.mid)
         if drawRise:
@@ -1674,11 +1675,10 @@ class SpriteImage_OutdoorsFog(SpriteImage_LiquidOrFog):  # 64
         super().dataChanged()
 
         self.paintZone = self.parent.spritedata[5] == 0
-        
+
         self.parent.scene().update()
 
     def realViewZone(self, painter, zoneRect, viewRect):
-
         self.paintZone = self.parent.spritedata[5] == 0
 
         self.top = self.parent.objy
@@ -2940,7 +2940,7 @@ class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
         super().dataChanged()
 
         self.paintZone = self.parent.spritedata[5] == 0
-        
+
         self.parent.scene().update()
 
     def realViewZone(self, painter, zoneRect, viewRect):
@@ -2978,7 +2978,7 @@ class SpriteImage_Lava(SpriteImage_LiquidOrFog):  # 139
         super().dataChanged()
 
         self.paintZone = self.parent.spritedata[5] == 0
-        
+
         self.parent.scene().update()
 
     def realViewZone(self, painter, zoneRect, viewRect):
@@ -4003,7 +4003,7 @@ class SpriteImage_Poison(SpriteImage_LiquidOrFog):  # 216
         super().dataChanged()
 
         self.paintZone = self.parent.spritedata[5] == 0
-        
+
         self.parent.scene().update()
 
     def realViewZone(self, painter, zoneRect, viewRect):
@@ -6098,13 +6098,12 @@ class SpriteImage_LavaParticles(SpriteImage_LiquidOrFog):  # 358
         ImageCache['LavaParticlesC'] = SLib.GetImg('lava_particles_c.png')
 
     def realViewZone(self, painter, zoneRect, viewRect):
-
         type = (self.parent.spritedata[5] & 0xF) % 3
         self.mid = (
             ImageCache['LavaParticlesA'],
             ImageCache['LavaParticlesB'],
             ImageCache['LavaParticlesC'],
-            )[type]
+        )[type]
 
         super().realViewZone(painter, zoneRect, viewRect)
 
@@ -6293,11 +6292,10 @@ class SpriteImage_SnowWind(SpriteImage_LiquidOrFog):  # 374
         super().dataChanged()
 
         self.paintZone = self.parent.spritedata[5] == 0
-        
+
         self.parent.scene().update()
 
     def realViewZone(self, painter, zoneRect, viewRect):
-
         # For now, we only paint snow
         self.paintZone = self.parent.spritedata[5] == 0
 
@@ -6948,11 +6946,10 @@ class SpriteImage_GhostFog(SpriteImage_LiquidOrFog):  # 435
         super().dataChanged()
 
         self.paintZone = self.parent.spritedata[5] == 0
-        
+
         self.parent.scene().update()
 
     def realViewZone(self, painter, zoneRect, viewRect):
-
         self.paintZone = self.parent.spritedata[5] == 0
         self.top = self.parent.objy
 
