@@ -87,7 +87,7 @@ cdef unsigned int LoadLHPiece(bytearray buf, bytearray inData, unsigned char unk
             r0 = r10 >> r0
             r0 &= r12
             buf[r7] = r0 >> 8
-            buf[r7+1] = r0 & 0xFF
+            buf[r7 + 1] = r0 & 0xFF
             r7 += 2
 
         r11 -= unk
@@ -101,10 +101,10 @@ def IsLHCompressed(bytes inData):
 
 cpdef bytes UncompressLH(bytearray inData):
     context = LHContext()
-    
+
     cdef unsigned int outLength = GetUncompressedSize(inData)
     cdef bytearray outData = bytearray(outLength)
-    
+
     cdef unsigned int outIndex = 0
     cdef unsigned int outSize = inData[1] | (inData[2] << 8) | (inData[3] << 16)
     inData = inData[4:]
@@ -125,8 +125,8 @@ cpdef bytes UncompressLH(bytearray inData):
     cdef unsigned int r7, r8, r9, r10, r11, r12, r25
 
     while outIndex < outSize:
-        r12 = 2 # Used as an offset into context.buf1
-        r7 = r4 # Used as an offset into inData
+        r12 = 2  # Used as an offset into context.buf1
+        r7 = r4  # Used as an offset into inData
 
         while True:
             if not r6:
@@ -141,7 +141,7 @@ cpdef bytes UncompressLH(bytearray inData):
 
             r9 = r8 & 1
             r10 = r11 & 0x7F
-            r8 = r3 >> r9 # sraw?
+            r8 = r3 >> r9  # sraw?
             r8 = r11 & r8
             flag = not r8
             r8 = (r10 + 1) << 1
@@ -153,9 +153,9 @@ cpdef bytes UncompressLH(bytearray inData):
                 r12 += r8
                 continue
             else:
-                r8 = r12 & ~3 # offset into buf1
+                r8 = r12 & ~3  # offset into buf1
                 r7 = r9 << 1
-                r7 = (context.buf1[r8+r7] << 8) | context.buf1[r8+r7+1]
+                r7 = (context.buf1[r8 + r7] << 8) | context.buf1[r8 + r7 + 1]
 
             break
 
@@ -166,10 +166,10 @@ cpdef bytes UncompressLH(bytearray inData):
 
         # block copy?
         r7 &= 0xFF
-        r25 = 2 # used as an offset into context.buf2
+        r25 = 2  # used as an offset into context.buf2
         r7 += 3
-        r7 &= 0xFFFF # r7 is really an ushort, probably
-        r8 = r4 # used as an offset into inData 
+        r7 &= 0xFFFF  # r7 is really an ushort, probably
+        r8 = r4  # used as an offset into inData
 
         while True:
             if not r6:
@@ -178,12 +178,12 @@ cpdef bytes UncompressLH(bytearray inData):
                 r4 += 1
                 r8 += 1
 
-            r12 = (context.buf2[r25] << 8) | context.buf2[r25+1]
+            r12 = (context.buf2[r25] << 8) | context.buf2[r25 + 1]
             r9 = r5 >> (r6 - 1)
             r6 -= 1
             r10 = r9 & 1
             r11 = r12 & 7
-            r9 = r0 >> r10 # sraw
+            r9 = r0 >> r10  # sraw
             r9 = r12 & r9
             flag = not r9
             r9 = r11 + 1
@@ -198,18 +198,18 @@ cpdef bytes UncompressLH(bytearray inData):
             else:
                 r9 = r25 & ~3
                 r8 = r10 << 1
-                r11 = (context.buf2[r9+r8] << 8) | context.buf2[r9+r8+1]
+                r11 = (context.buf2[r9 + r8] << 8) | context.buf2[r9 + r8 + 1]
 
             break
 
         r10 = 0
         if r11:
-            r8 = r4 # offset into inData
+            r8 = r4  # offset into inData
             r10 = 1
 
             while True:
                 r11 -= 1
-                r9 = r11 & 0xFFFF;
+                r9 = r11 & 0xFFFF
                 if r9:
                     r10 = (r10 << 1) & 0xFFFF
                     if not r6:
@@ -230,7 +230,7 @@ cpdef bytes UncompressLH(bytearray inData):
             r7 &= 0xFFFF
 
         r9 = r10 + 1
-        r8 = outIndex # offset into outData
+        r8 = outIndex  # offset into outData
         r10 = r9 & 0xFFFF
         while True:
             r9 = r7 & 0xFFFF
