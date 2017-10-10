@@ -4,11 +4,11 @@
 
 
 import spritelib as SLib
+
 ImageCache = SLib.ImageCache
 
 
-
-class SpriteImage_CustomModelSprite(SLib.SpriteImage_StaticMultiple): # 11
+class SpriteImage_CustomModelSprite(SLib.SpriteImage_StaticMultiple):  # 11
     @staticmethod
     def loadImages():
         if 'ModeAnim01' in ImageCache: return
@@ -16,7 +16,7 @@ class SpriteImage_CustomModelSprite(SLib.SpriteImage_StaticMultiple): # 11
             for model in range(0x15):
                 name = 'model_%s%02X.png' % ('anim_' if anim else '', model)
                 img = SLib.GetImg(name)
-                if img != None: ImageCache['Model%s%02X' % (('Anim' if anim else ''), model)] = img
+                if img is not None: ImageCache['Model%s%02X' % (('Anim' if anim else ''), model)] = img
 
     def dataChanged(self):
 
@@ -26,12 +26,15 @@ class SpriteImage_CustomModelSprite(SLib.SpriteImage_StaticMultiple): # 11
         if (type in (0, 8, 9)) or (type > 0x11): type = None
         if not anim:
             # Non-animated models use the same 3 images
-            if type in (1, 2, 3, 4, 5, 6, 7): type = 1
-            elif type in (0xA, 0xB, 0xC, 0xD, 0xE, 0xF): type = 0xA
-            elif type in (0x10, 0x11): type = 0x10
+            if type in (1, 2, 3, 4, 5, 6, 7):
+                type = 1
+            elif type in (0xA, 0xB, 0xC, 0xD, 0xE, 0xF):
+                type = 0xA
+            elif type in (0x10, 0x11):
+                type = 0x10
         size = self.parent.spritedata[2]
-        if size == 0: size = 4 # sizes 0 and 4 are identical
-        multiplier = size / 8 # all images are taken at size 8
+        if size == 0: size = 4  # sizes 0 and 4 are identical
+        multiplier = size / 8  # all images are taken at size 8
 
         if type is None:
             # Take away the image
@@ -62,14 +65,14 @@ class SpriteImage_CustomModelSprite(SLib.SpriteImage_StaticMultiple): # 11
             0x0F: (-42, -129),
             0x10: (-189, -409),
             0x11: (-217, -60),
-            }
+        }
         nonanimPositions = {
             # Same usage as animPositions
             # One entry per model
             0x01: (-42, -175),
             0x0A: (-43, -130),
             0x10: (-232, -407),
-            }
+        }
 
         # Pick an image and scale it
         img = ImageCache['Model%s%02X' % ('Anim' if anim else '', type)]
@@ -83,70 +86,75 @@ class SpriteImage_CustomModelSprite(SLib.SpriteImage_StaticMultiple): # 11
         self.offset = (
             pos[0] * multiplier,
             pos[1] * multiplier,
-            )
+        )
 
         super().dataChanged()
 
 
-class SpriteImage_CharginChuck(SLib.SpriteImage_Static): # 102
+class SpriteImage_CharginChuck(SLib.SpriteImage_Static):  # 102
     def __init__(self, parent):
         super().__init__(
             parent,
+            1.5,
             ImageCache['CharginChuck'],
             (-9, -24),
-            )
+        )
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('CharginChuck', 'charginchuck.png')
 
 
-class SpriteImage_ChompStatueOpen(SLib.SpriteImage_Static): # 143
+class SpriteImage_ChompStatueOpen(SLib.SpriteImage_Static):  # 143
     def __init__(self, parent):
         super().__init__(
             parent,
+            1.5,
             ImageCache['ChompStatueOpen'],
             (-70, -101),
-            )
+        )
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('ChompStatueOpen', 'chompstatueopen.png')
 
 
-class SpriteImage_Unagi(SLib.SpriteImage_Static): # 193
+class SpriteImage_Unagi(SLib.SpriteImage_Static):  # 193
     def __init__(self, parent):
         super().__init__(
             parent,
+            1.5,
             ImageCache['Unagi'],
             (-11, -17),
-            )
+        )
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Unagi', 'unagi.png')
 
 
-class SpriteImage_ChompStatueClosed(SLib.SpriteImage_Static): # 143
+class SpriteImage_ChompStatueClosed(SLib.SpriteImage_Static):  # 143
     def __init__(self, parent):
         super().__init__(
             parent,
+            1.5,
             ImageCache['ChompStatueClosed'],
             (-70, -69),
-            )
+        )
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('ChompStatueClosed', 'chompstatueclosed.png')
 
 
-class SpriteImage_SumSunRaft(SLib.SpriteImage_Static): # 143
+class SpriteImage_SumSunRaft(SLib.SpriteImage_Static):  # 143
     def __init__(self, parent):
         super().__init__(
             parent,
+            1.5,
             ImageCache['SumSunRaft'],
             (-16, -20),
-            )
+        )
 
     @staticmethod
     def loadImages():
@@ -160,4 +168,4 @@ ImageClasses = {
     193: SpriteImage_Unagi,
     321: SpriteImage_ChompStatueClosed,
     368: SpriteImage_SumSunRaft,
-    }
+}
