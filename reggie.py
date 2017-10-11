@@ -333,15 +333,20 @@ def IsNSMBLevel(filename):
     f.close()
     del f
 
+    compressed = False
+
     if lh.IsLHCompressed(bytes(data)):
-        decomp = lh.UncompressLH(bytearray(data))
-        if checkContent(decomp):
-            compressed = True
-            return True
-    else:
-        if checkContent(data):
-            compressed = False
-            return True
+        try:
+            data = lh.UncompressLH(bytearray(data))
+        except IndexError:
+            QtWidgets.QMessageBox.warning(None, trans.string('Err_Decompress', 0),
+                                          trans.string('Err_Decompress', 1, '[file]', filename))
+            return False
+
+        compressed = True
+
+    if checkContent(data):
+        return True
 
 
 def FilesAreMissing():
@@ -1949,12 +1954,7 @@ def CreateTilesets():
 def LoadTileset(idx, name, reload=False):
     if not name: return False
 
-    try:
-        return _LoadTileset(idx, name, reload)
-    except Exception:
-        QtWidgets.QMessageBox.warning(None, trans.string('Err_CorruptedTileset', 0),
-                                      trans.string('Err_CorruptedTileset', 1, '[file]', name))
-        return False
+    return _LoadTileset(idx, name, reload)
 
 
 def _LoadTileset(idx, name, reload=False):
@@ -1999,15 +1999,31 @@ def _LoadTileset(idx, name, reload=False):
 
     if compressed:
         if lh.IsLHCompressed(bytes(arcdata)):
-            arcdata = lh.UncompressLH(bytearray(arcdata))
+            try:
+                arcdata = lh.UncompressLH(bytearray(arcdata))
+            except IndexError:
+                QtWidgets.QMessageBox.warning(None, trans.string('Err_Decompress', 0),
+                                              trans.string('Err_Decompress', 1, '[file]', name))
+                return False
 
     arc = archive.U8.load(arcdata)
 
+    def exists(fn):
+        nonlocal arc
+        try:
+            arc[fn]
+        except:
+            return False
+        return True
+    
     # decompress the textures
-    try:
+    found = exists('BG_tex/%s_tex.bin.LZ' % name)
+    found2 = exists('BG_chk/d_bgchk_%s.bin' % name)
+
+    if found and found2:
         comptiledata = arc['BG_tex/%s_tex.bin.LZ' % name]
         colldata = arc['BG_chk/d_bgchk_%s.bin' % name]
-    except KeyError:
+    else:
         QtWidgets.QMessageBox.warning(None, trans.string('Err_CorruptedTilesetData', 0),
                                       trans.string('Err_CorruptedTilesetData', 1, '[file]', name))
         return False
@@ -2030,14 +2046,6 @@ def _LoadTileset(idx, name, reload=False):
             sourcex = 4
             sourcey += 32
 
-    def exists(fn):
-        nonlocal arc
-        try:
-            arc[fn]
-        except:
-            return False
-        return True
-    
     # Load the tileset animations, if there are any
     tileoffset = idx*256
     row = 0
@@ -9904,6 +9912,11 @@ class ReggieTranslation:
             'Err_CorruptedTilesetData': {
                 0: 'Error',
                 1: 'Cannot find the required texture within the tileset file [file], so it will not be loaded. Keep in mind that the tileset file cannot be renamed without changing the names of the texture/object files within the archive as well!',
+                2: 'Failed to decompress the tileset file [file]!',
+            },
+            'Err_Decompress': {
+                0: 'Error',
+                1: 'Failed to decompress the LH-compressed file [file].',
             },
             'Err_InvalidLevel': {
                 0: 'This file doesn\'t seem to be a valid level.',
@@ -17032,7 +17045,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         with open(str(fn), 'rb') as fileobj:
             arcdata = fileobj.read()
         if lh.IsLHCompressed(bytes(arcdata)):
-            arcdata = lh.UncompressLH(bytearray(arcdata))
+            try:
+                arcdata = lh.UncompressLH(bytearray(arcdata))
+            except IndexError:
+                QtWidgets.QMessageBox.warning(None, trans.string('Err_Decompress', 0),
+                                              trans.string('Err_Decompress', 1, '[file]', str(fn)))
+                return
 
         arc = archive.U8.load(arcdata)
 
@@ -17804,7 +17822,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 # Decompress, if needed
                 if lh.IsLHCompressed(bytes(levelData)):
-                    levelData = lh.UncompressLH(bytearray(levelData))
+                    try:
+                        levelData = lh.UncompressLH(bytearray(levelData))
+                    except IndexError:
+                        QtWidgets.QMessageBox.warning(None, trans.string('Err_Decompress', 0),
+                                                      trans.string('Err_Decompress', 1, '[file]', name))
+                        return False
 
             else:
                 # Auto-saved level. Check if there's a path associated with it:
