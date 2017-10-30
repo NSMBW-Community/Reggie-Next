@@ -58,6 +58,7 @@ Developers:
  * Pop006 - Sprite Images (NSMBW)
  * Tobias Amaranth - Sprite Data (NSMBW), Event Example Stage
  * Stella (AboodXD) - M3 Developer, Programmer, Optimization
+ * John10v10 - Quick Paint Tool Creator
  * RoadrunnerWMC - Reggie! Next Developer: Programmer, UI, Data, Sprite Images (NSMBW), Other
  * JasonP27 - ReggieMod Developer, Programmer, UI, Sprite Images (NSMBW)
  * Kinnay (Kamek64) - Reggie! Newer Sprites Developer, Programmer, Sprite Images (NSMBW, NewerSMBW), Sprite Data (NSMB2)

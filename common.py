@@ -4,7 +4,7 @@
 # Reggie Next - New Super Mario Bros. Wii Level Editor
 # Milestone 3
 # Copyright (C) 2009-2014 Treeki, Tempus, angelsl, JasonP27, Kamek64,
-# MalStar1000, RoadrunnerWMC, 2017 Stella/AboodXD
+# MalStar1000, RoadrunnerWMC, 2017 Stella/AboodXD, John10v10
 
 # This file is part of Reggie Next.
 
