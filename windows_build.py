@@ -26,8 +26,8 @@
 # Builds Reggie! to a Windows binary (*.exe)
 # Use the values below to configure the release:
 
-PackageName = 'reggie_next_m3a1_win32'
-Version = '0.3.1'  # This must be a valid float in string format
+PackageName = 'reggie_next_m3a2_win32'
+Version = '0.3.2'  # This must be a valid float in string format
 
 ################################################################
 ################################################################

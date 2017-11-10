@@ -92,8 +92,8 @@ except ImportError:
     import tpl
 
 ReggieID = 'Reggie Next Level Editor by Treeki, Tempus, RoadrunnerWMC, Stella/AboodXD'
-ReggieVersion = 'Milestone 3 Alpha 1'
-ReggieVersionShort = 'M3A1'
+ReggieVersion = 'Milestone 3 Alpha 2'
+ReggieVersionShort = 'M3A2'
 UpdateURL = ''
 
 if not hasattr(QtWidgets.QGraphicsItem, 'ItemSendsGeometryChanges'):
@@ -11856,8 +11856,8 @@ class ReggieTranslation:
                 ),
             },
             'ChangeGamePath': {
-                0: 'Error',
-                1: 'Choose the Stage folder from [game]',
+                0: 'Choose the Stage folder from [game]',
+                1: 'Error',
                 2: 'This folder doesn\'t have all of the files from the extracted New Super Mario Bros. Wii Stage folder.',
                 3: 'This folder doesn\'t seem to have the required files. In order to use Reggie Next in New Super Mario Bros Wii mode, you need the Stage folder from New Super Mario Bros. Wii, including the Texture folder and the level files contained within it.',
             },
@@ -17588,7 +17588,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # set up the window
         QtWidgets.QMainWindow.__init__(self, None)
-        self.setWindowTitle('Reggie Level Editor Next')
+        self.setWindowTitle('Reggie Level Editor Next %s' % ReggieVersionShort)
         self.setWindowIcon(QtGui.QIcon('reggiedata/icon.png'))
         self.setIconSize(QtCore.QSize(16, 16))
         self.setUnifiedTitleAndToolBarOnMac(True)
@@ -21690,7 +21690,7 @@ def main():
 
     # Set the default window icon (used for random popups and stuff)
     app.setWindowIcon(GetIcon('reggie'))
-    app.setApplicationDisplayName('Reggie Next')
+    app.setApplicationDisplayName('Reggie Next %s' % ReggieVersionShort)
 
     global EnableAlpha, GridType, CollisionsShown, RealViewEnabled
     global ObjectsFrozen, SpritesFrozen, EntrancesFrozen, LocationsFrozen, PathsFrozen, CommentsFrozen
