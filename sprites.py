@@ -2134,11 +2134,16 @@ class SpriteImage_PipeEnemyGenerator(SLib.SpriteImage):  # 99
     def dataChanged(self):
         super().dataChanged()
 
+        self.spritebox.size = (16, 16)
         direction = (self.parent.spritedata[5] & 0xF) % 4
         if direction in (0, 1):  # vertical pipe
             self.spritebox.size = (32, 16)
-        else:  # horizontal pipe
+        elif direction in (2, 3):  # horizontal pipe
             self.spritebox.size = (16, 32)
+
+        self.yOffset = 0
+        if direction in (2, 3):
+            self.yOffset = -16
 
 
 class SpriteImage_Swooper(SLib.SpriteImage_Static):  # 100
