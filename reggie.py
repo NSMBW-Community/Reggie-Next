@@ -6491,14 +6491,18 @@ class QuickPaintOperations:
         return res
 
     @staticmethod
-    def optimizeObjects():
+    def optimizeObjects(FromQPWidget=False):
         """
         This function merges all touching objects of the same type. We don't want huge files for level data.
-        Nor do we don't want an island to be completely made up of 1x1 objects. And we most definately don't want
+        Nor do we want an island to be completely made up of 1x1 objects. And we most definately don't want
         objects more than 1x1 to repeat only the first tile in them.
         """
         optimize_memory = []
-        for ln in range(len(Area.layers)):
+
+        if FromQPWidget: lr = range(-1, 0)
+        else: lr = range(len(Area.layers))
+
+        for ln in lr:
             objects_inside_optimize_boxes = []
 
             while len(list(filter(lambda i: i.layer == ln, QuickPaintOperations.object_optimize_database))) > 0:
@@ -6530,13 +6534,12 @@ class QuickPaintOperations:
                             w = x
                             break
 
+                # This somewhat helps remove the bug when painting over slopes.
+                calculated_dimensions = list(filter(lambda i: i[0] != 0 and i[1] != 0, calculated_dimensions))
+                if True in map(lambda i: i[1] > 1, calculated_dimensions):
+                    calculated_dimensions = list(filter(lambda i: i[1] > 1, calculated_dimensions))
+
                 if len(calculated_dimensions) > 0:
-                    # This somewhat helps remove the bus when painting over slopes.
-                    calculated_dimensions = list(filter(lambda i: i[0] != 0 and i[1] != 0, calculated_dimensions))
-
-                    if True in map(lambda i: i[1] > 1, calculated_dimensions):
-                        calculated_dimensions = list(filter(lambda i: i[1] > 1, calculated_dimensions))
-
                     lets_use_these_dimensions = max(calculated_dimensions, key=lambda i: i[0] * i[1])
 
                 else:
@@ -6561,9 +6564,15 @@ class QuickPaintOperations:
 
             for obj in objects_inside_optimize_boxes:
                 if obj not in map(lambda i: i[4], optimize_memory):
-                    obj.delete()
-                    obj.setSelected(False)
-                    mainWindow.scene.removeItem(obj)
+                    if FromQPWidget:
+                        if obj in mainWindow.quickPaint.scene.display_objects:
+                            obj.RemoveFromSearchDatabase()
+                            mainWindow.quickPaint.scene.display_objects.remove(obj)
+
+                    else:
+                        obj.delete()
+                        obj.setSelected(False)
+                        mainWindow.scene.removeItem(obj)
 
             for rect in optimize_memory:
                 if rect is not None:
@@ -7549,7 +7558,8 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         self.label_4.setText(_translate("self", "Presets:"))
         
         for fname in os.listdir("reggiedata/qpsp/"):
-            self.comboBox_4.addItem(fname.split(".qpp")[0])
+            if fname.endswith(".qpp"):
+                self.comboBox_4.addItem(fname[:-4])
         
         self.comboBox_4.setCurrentIndex(-1)
         self.SaveToPresetButton.setText(_translate("self", "Save"))
@@ -7706,13 +7716,6 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             if obj is not None:
                 if event.button() == Qt.LeftButton:
                     if CurrentPaintType != -1 and CurrentObject != -1:
-                        ln = CurrentLayer
-                        layer = Area.layers[CurrentLayer]
-                        if len(layer) == 0:
-                            z = (2 - ln) * 8192
-                        else:
-                            z = layer[-1].zValue() + 1
-
                         odef = ObjectDefinitions[CurrentPaintType][CurrentObject]
                         self.parent.scene.object_database[obj]['w'] = odef.width
                         self.parent.scene.object_database[obj]['h'] = odef.height
@@ -7723,7 +7726,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                                                                  self.parent.scene.object_database[obj][
                                                                                      'x'],
                                                                                  self.parent.scene.object_database[obj][
-                                                                                     'y'], odef.width, odef.height, z)
+                                                                                     'y'], odef.width, odef.height, 0)
                         self.parent.scene.object_database[obj]['ts'] = CurrentPaintType
                         self.parent.scene.object_database[obj]['t'] = CurrentObject
                         self.parent.scene.invalidate()
@@ -8038,18 +8041,27 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             """
             # Get those boundaries
             maxbasewidth, maxleftwidth, maxrightwidth, maxbaseheight, maxtopheight, maxbottomheight = self.calculateBoundaries()
+
             # Arrange Main Island...
             self.ArrangeMainIsland(maxbasewidth, maxleftwidth, maxrightwidth, maxbaseheight, maxtopheight,
                                    maxbottomheight)
+
             # Set corner setter island...
+            for obj in self.display_objects:
+                obj.RemoveFromSearchDatabase()
+
             self.display_objects.clear()
             self.ArrangeCornerSetterIsland(1, maxbasewidth, maxleftwidth, maxrightwidth, maxbaseheight, maxtopheight,
                                            maxbottomheight)
+
             # Let's update the sizes of these objects...
             for obj in self.object_database:
                 if (self.object_database[obj]['i'] is not None):
                     self.object_database[obj]['i'].updateObjCacheWH(self.object_database[obj]['w'],
                                                                     self.object_database[obj]['h'])
+
+            if len(QuickPaintOperations.object_optimize_database) > 0:
+                QuickPaintOperations.optimizeObjects(True)
 
         def AddDisplayObject(self, type, x, y, width, height):
             """
@@ -8069,6 +8081,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
 
                     obj = ObjectItem(this_obj['ts'], this_obj['t'], -1, x, y, width, height, z)
                     self.display_objects.append(obj)
+                    QuickPaintOperations.object_optimize_database.append(obj)
                     
                     return obj
             
