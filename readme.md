@@ -104,6 +104,16 @@ See the license file in the distribution for information.
 
 ## Changelog
 
+Release Next (Milestone 3 Alpha 2): (November 10, 2017)
+ * Added animations rendering for ? blocks, brick blocks, dash coins and conveyors
+ * Fixed last level loading
+ * Fixed Newer/NewerSumSun sprite images
+ * Reggie now warns the user if the LH-compressed file couldn't be decompressed
+ * Added the Quick Paint Tool
+ * Added a Recent Files menu
+ * Fixed Pipe Enemy Generator sprite image
+ * Minor bug fixes
+
 Release Next (Milestone 3 Alpha 1): (October 7, 2017)
  * Removed New Super Mario Bros. 2 support
  * Removed PyQtRibbon
