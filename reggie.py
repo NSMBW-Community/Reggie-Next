@@ -6504,6 +6504,7 @@ class QuickPaintOperations:
 
         for ln in lr:
             objects_inside_optimize_boxes = []
+            InfiniteLoopStopper = [-1, 0]
 
             while len(list(filter(lambda i: i.layer == ln, QuickPaintOperations.object_optimize_database))) > 0:
                 from math import sqrt
@@ -6561,6 +6562,17 @@ class QuickPaintOperations:
                         if cobj in QuickPaintOperations.object_optimize_database:
                             QuickPaintOperations.object_optimize_database.remove(cobj)
                             objects_inside_optimize_boxes.append(cobj)
+
+                if InfiniteLoopStopper[0] == len(list(filter(lambda i: i.layer == ln, QuickPaintOperations.object_optimize_database))):
+                    InfiniteLoopStopper[1] += 1
+
+                    if InfiniteLoopStopper[1] >= 20:
+                        break
+
+                else:
+                    InfiniteLoopStopper[1] = 0
+
+                InfiniteLoopStopper[0] = len(list(filter(lambda i: i.layer == ln, QuickPaintOperations.object_optimize_database)))
 
             for obj in objects_inside_optimize_boxes:
                 if obj not in map(lambda i: i[4], optimize_memory):
@@ -7354,13 +7366,13 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.PaintModeCheck = QtWidgets.QPushButton(self)
-        self.PaintModeCheck.setMinimumSize(QtCore.QSize(0, 80))
+        self.PaintModeCheck.setMinimumSize(QtCore.QSize(0, 40))
         self.PaintModeCheck.clicked.connect(self.SetPaintMode)
         self.PaintModeCheck.setCheckable(True)
         self.PaintModeCheck.setObjectName("PaintModeCheck")
         self.horizontalLayout_2.addWidget(self.PaintModeCheck)
         self.EraseModeCheck = QtWidgets.QPushButton(self)
-        self.EraseModeCheck.setMinimumSize(QtCore.QSize(0, 80))
+        self.EraseModeCheck.setMinimumSize(QtCore.QSize(0, 40))
         self.EraseModeCheck.clicked.connect(self.SetEraseMode)
         self.EraseModeCheck.setCheckable(True)
         self.EraseModeCheck.setObjectName("EraseModeCheck")
@@ -7376,15 +7388,15 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         self.horizontalLayout.setSpacing(5)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label_4 = QtWidgets.QLabel(self)
-        self.label_4.setMaximumSize(QtCore.QSize(80, 40))
+        self.label_4.setMaximumSize(QtCore.QSize(60, 30))
         self.label_4.setObjectName("label_4")
         self.horizontalLayout.addWidget(self.label_4)
         self.comboBox_4 = QtWidgets.QComboBox(self)
-        self.comboBox_4.currentIndexChanged.connect(self.currentPresetIndexChanged)
+        self.comboBox_4.activated.connect(self.currentPresetIndexChanged)
         self.comboBox_4.setObjectName("comboBox_4")
         self.horizontalLayout.addWidget(self.comboBox_4)
         self.SaveToPresetButton = QtWidgets.QPushButton(self)
-        self.SaveToPresetButton.setMaximumSize(QtCore.QSize(80, 40))
+        self.SaveToPresetButton.setMaximumSize(QtCore.QSize(60, 30))
         self.SaveToPresetButton.setBaseSize(QtCore.QSize(0, 0))
         self.SaveToPresetButton.setCheckable(False)
         self.SaveToPresetButton.clicked.connect(self.saveToCurrentPresetConfirm)
@@ -7392,20 +7404,20 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         self.SaveToPresetButton.setObjectName("SaveToPresetButton")
         self.horizontalLayout.addWidget(self.SaveToPresetButton)
         self.AddPresetButton = QtWidgets.QPushButton(self)
-        self.AddPresetButton.setMaximumSize(QtCore.QSize(80, 40))
+        self.AddPresetButton.setMaximumSize(QtCore.QSize(60, 30))
         self.AddPresetButton.setBaseSize(QtCore.QSize(0, 0))
         self.AddPresetButton.clicked.connect(self.openTextForm)
         self.AddPresetButton.setObjectName("AddPresetButton")
         self.horizontalLayout.addWidget(self.AddPresetButton)
         self.RemovePresetButton = QtWidgets.QPushButton(self)
-        self.RemovePresetButton.setMaximumSize(QtCore.QSize(80, 40))
+        self.RemovePresetButton.setMaximumSize(QtCore.QSize(60, 30))
         self.RemovePresetButton.clicked.connect(self.removeCurrentPresetConfirm)
         self.RemovePresetButton.setObjectName("RemovePresetButton")
         self.horizontalLayout.addWidget(self.RemovePresetButton)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
-        self.scene = self.QuickPaintScene()
-        self.graphicsView = self.QuickPaintView(self.scene, self)
+        self.graphicsView = self.QuickPaintView(None, self)
         self.graphicsView.setObjectName("graphicsView")
+        self.reset()
         self.gridLayout.addWidget(self.graphicsView, 1, 0, 1, 1)
         self.verticalScrollBar = QtWidgets.QScrollBar(self)
         self.verticalScrollBar.setOrientation(QtCore.Qt.Vertical)
@@ -7414,8 +7426,8 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         self.verticalScrollBar.setObjectName("verticalScrollBar")
         self.gridLayout.addWidget(self.verticalScrollBar, 1, 1, 1, 1)
         self.ZoomButton = QtWidgets.QPushButton(self)
-        self.ZoomButton.setMinimumSize(QtCore.QSize(40, 40))
-        self.ZoomButton.setMaximumSize(QtCore.QSize(40, 40))
+        self.ZoomButton.setMinimumSize(QtCore.QSize(30, 30))
+        self.ZoomButton.setMaximumSize(QtCore.QSize(30, 30))
         self.ZoomButton.setObjectName("ZoomButton")
         self.ZoomButton.clicked.connect(self.zoom)
         self.gridLayout.addWidget(self.ZoomButton, 0, 1, 1, 1)
@@ -7423,6 +7435,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         QtCore.QMetaObject.connectSlotsByName(self)
         self.setTabOrder(self.AddPresetButton, self.comboBox_4)
         self.setTabOrder(self.comboBox_4, self.RemovePresetButton)
+        self.show_badObjWarning = False
 
     def SetPaintMode(self):
         """
@@ -7462,6 +7475,25 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         
         else:
             self.QuickPaintMode = None
+
+        mainWindow.scene.update()
+
+    def reset(self):
+        setoffsets = False
+
+        if hasattr(self, 'scene'):
+            panoffsets = (self.scene.xoffset,self.scene.yoffset)
+            del self.scene
+            setoffsets = True
+
+        self.scene = self.QuickPaintScene(self)
+
+        if setoffsets:
+            self.scene.xoffset = panoffsets[0]
+            self.scene.yoffset = panoffsets[1]
+
+        self.graphicsView.setScene(self.scene)
+        self.comboBox_4.setCurrentIndex(-1)
 
     def currentPresetIndexChanged(self, index):
         """
@@ -7524,12 +7556,12 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         """
         Zoom the view to half/full. Half is best for view when it's in a small region.
         """
-        if self.scene.zoom == 1:
-            self.scene.zoom = 0.5
+        if self.scene.zoom == 2:
+            self.scene.zoom = 1
             self.ZoomButton.setIcon(GetIcon("zoomin", True))
         
         else:
-            self.scene.zoom = 1
+            self.scene.zoom = 2
             self.ZoomButton.setIcon(GetIcon("zoomout", True))
         
         self.scene.invalidate()
@@ -7550,22 +7582,29 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         """
         More UI construction.
         """
-        _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("self", "Quick Paint Tool"))
-        self.PaintModeCheck.setText(_translate("self", "Paint"))
+        self.setWindowTitle(trans.string('QuickPaint', 3))
+        self.PaintModeCheck.setText(trans.string('QuickPaint', 4))
         #        self.SlopeModeCheck.setText(_translate("self", "Slope"))
-        self.EraseModeCheck.setText(_translate("self", "Erase"))
-        self.label_4.setText(_translate("self", "Presets:"))
+        self.EraseModeCheck.setText(trans.string('QuickPaint', 5))
+        self.label_4.setText(trans.string('QuickPaint', 6))
         
         for fname in os.listdir("reggiedata/qpsp/"):
             if fname.endswith(".qpp"):
                 self.comboBox_4.addItem(fname[:-4])
         
         self.comboBox_4.setCurrentIndex(-1)
-        self.SaveToPresetButton.setText(_translate("self", "Save"))
-        self.AddPresetButton.setText(_translate("self", "Add"))
-        self.RemovePresetButton.setText(_translate("self", "Remove"))
+        self.SaveToPresetButton.setText(trans.string('QuickPaint', 7))
+        self.AddPresetButton.setText(trans.string('QuickPaint', 8))
+        self.RemovePresetButton.setText(trans.string('QuickPaint', 9))
         self.ZoomButton.setIcon(GetIcon("zoomin", True))
+
+    def ShowBadObjectWarning(self):
+        if self.show_badObjWarning:
+            QtWidgets.QMessageBox().warning(self,
+                                            trans.string('QuickPaint', 1),
+                                            trans.string('QuickPaint', 2))
+
+            self.show_badObjWarning = False
 
     class ConfirmRemovePresetDialog(object):
         """
@@ -7602,10 +7641,8 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             """
             More dialog UI construction.
             """
-            _translate = QtCore.QCoreApplication.translate
-            Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-            self.label.setText(
-                _translate("Dialog", "Are you sure you want to delete this preset? You cannot undo this action."))
+            Dialog.setWindowTitle(trans.string('QuickPaint', 10))
+            self.label.setText(trans.string('QuickPaint', 11))
 
     class ConfirmOverwritePresetDialog(object):
         """
@@ -7642,9 +7679,8 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             """
             More dialog UI construction.
             """
-            _translate = QtCore.QCoreApplication.translate
-            Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-            self.label.setText(_translate("Dialog", "Overwrite this preset?."))
+            Dialog.setWindowTitle(trans.string('QuickPaint', 10))
+            self.label.setText(trans.string('QuickPaint', 12))
 
     class TextDialog(object):
         """
@@ -7693,8 +7729,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             """
             More dialog UI construction.
             """
-            _translate = QtCore.QCoreApplication.translate
-            Dialog.setWindowTitle(_translate("Name Preset", "Name Preset"))
+            Dialog.setWindowTitle(trans.string('QuickPaint', 13))
 
     class QuickPaintView(QtWidgets.QGraphicsView):
         """
@@ -7746,7 +7781,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         This is the scene that contains the objects that will be arranged inside the user's quick paint strokes.
         """
 
-        def __init__(self, *args):
+        def __init__(self, parent, *args):
             """
             Constructs the quick paint scene.
             """
@@ -7754,7 +7789,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             bghsv = bgcolor.getHsv()
             self.xoffset = 0
             self.yoffset = 0
-            self.zoom = 0.5
+            self.zoom = 1
             self.object_database = {
                 'base': {'x': 0, 'y': 0, 'w': 1, 'h': 1, 'ow': 1, 'oh': 1, 'ts': -1, 't': -1, 'i': None},
                 'top': {'x': 0, 'y': -1, 'w': 1, 'h': 1, 'ow': 1, 'oh': 1, 'ts': -1, 't': -1, 'p': 'base', 'i': None},
@@ -7779,10 +7814,12 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                   'i': None}
             }
             self.display_objects = []
+            self.BadObjectWarning = False
             # I just feel like giving this widget a darker background than normal for some reason. Maybe it feels more empathetic.
             bgcolor.setHsv(bghsv[0], min(bghsv[1] * 1.5, 255), bghsv[2] / 1.5, bghsv[3])
             self.bgbrush = QtGui.QBrush(bgcolor)
             QtWidgets.QGraphicsScene.__init__(self, *args)
+            self.parent = parent
 
         def setXoffset(self, value):
             """
@@ -7854,77 +7891,146 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             self.object_database['bottomLeft']['y'] = maxbaseheight + maxtopheight - 1
             self.object_database['bottom']['y'] = maxbaseheight + maxtopheight - 1
             self.object_database['bottomRight']['y'] = maxbaseheight + maxtopheight - 1
+            
+            displayObjects = []
+            for y in range(self.object_database['top']['h']):
+                for x in range(self.object_database['top']['w']):
+                    displayObjects.append((self.AddDisplayObject('base', self.object_database['top']['x'] + x + 20, self.object_database['top']['y'] + 20 + y, 1,1), self.object_database['top']['i'] is None))
+
+            for y in range(self.object_database['base']['h']):
+                for x in range(self.object_database['base']['w']):
+                    displayObjects.append((self.AddDisplayObject('base', self.object_database['base']['x'] + x + 20, self.object_database['base']['y'] + 20 + y, 1,1), self.object_database['base']['i'] is None))
+
+            for y in range(self.object_database['bottom']['h']):
+                for x in range(self.object_database['bottom']['w']):
+                    displayObjects.append((self.AddDisplayObject('base', self.object_database['bottom']['x'] + x + 20, self.object_database['bottom']['y'] + 20 + y, 1,1), self.object_database['bottom']['i'] is None))
+
+            for y in range(self.object_database['topLeft']['h']):
+                for x in range(self.object_database['topLeft']['w']):
+                    displayObjects.append((self.AddDisplayObject('base', self.object_database['topLeft']['x'] + x + 20, self.object_database['topLeft']['y'] + 20 + y, 1,1), self.object_database['topLeft']['i'] is None))
+
+            for y in range(self.object_database['left']['h']):
+                for x in range(self.object_database['left']['w']):
+                    displayObjects.append((self.AddDisplayObject('base', self.object_database['left']['x'] + x + 20, self.object_database['left']['y'] + 20 + y, 1,1), self.object_database['left']['i'] is None))
+
+            for y in range(self.object_database['bottomLeft']['h']):
+                for x in range(self.object_database['bottomLeft']['w']):
+                    displayObjects.append((self.AddDisplayObject('base', self.object_database['bottomLeft']['x'] + x + 20, self.object_database['bottomLeft']['y'] + 20 + y, 1,1), self.object_database['bottomLeft']['i'] is None))
+
+            for y in range(self.object_database['topRight']['h']):
+                for x in range(self.object_database['topRight']['w']):
+                    displayObjects.append((self.AddDisplayObject('base', self.object_database['topRight']['x'] + x + 20, self.object_database['topRight']['y'] + 20 + y, 1,1), self.object_database['topRight']['i'] is None))
+
+            for y in range(self.object_database['bottomRight']['h']):
+                for x in range(self.object_database['bottomRight']['w']):
+                    displayObjects.append((self.AddDisplayObject('base', self.object_database['bottomRight']['x'] + x + 20, self.object_database['bottomRight']['y'] + 20 + y, 1,1), self.object_database['bottomRight']['i'] is None))
+
+            for y in range(self.object_database['right']['h']):
+                for x in range(self.object_database['right']['w']):
+                    displayObjects.append((self.AddDisplayObject('base', self.object_database['right']['x'] + x + 20, self.object_database['right']['y'] + 20 + y, 1,1), self.object_database['right']['i'] is None))
+					
+					
+            for obj in displayObjects:
+                if obj[0] is not None:
+                    QuickPaintOperations.autoTileObj(-1, obj[0])
+					
+            for obj in displayObjects:
+                if obj[0] is not None:
+                    QuickPaintOperations.autoTileObj(-1, obj[0])
+
+            for obj in displayObjects:
+                if obj[1] and obj[0] in self.display_objects:
+                    self.display_objects.remove(obj[0])
+                    obj[0].RemoveFromSearchDatabase()
+                    if obj[0] in QuickPaintOperations.object_optimize_database: QuickPaintOperations.object_optimize_database.remove(obj[0])
 
         def ArrangeCornerSetterIsland(self, offsetX, maxbasewidth, maxleftwidth, maxrightwidth, maxbaseheight,
                                       maxtopheight, maxbottomheight):
             """
             Places the objects forming the corner setter island (the square doughnut-shaped island) correctly (or at least it should).
             """
-            o0 = self.AddDisplayObject('topLeft', maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX, -3,
-                                       maxleftwidth, maxtopheight)
+            displayObjects = []
+            for y in range(maxtopheight):
+                for x in range(maxleftwidth):
+                    displayObjects.append((self.AddDisplayObject('base', maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + 20 + x, -3 + 20 + y,
+                                       1, 1), False))
             tx = 0
             
             for i in range(3 + maxrightwidth + maxleftwidth):
-                o1 = self.AddDisplayObject('top',
-                                           maxbasewidth + maxleftwidth - 1 + maxrightwidth + i + offsetX + maxleftwidth,
-                                           -3, 1, maxtopheight)
+                for y in range(maxtopheight):
+                    displayObjects.append((self.AddDisplayObject('base',
+                                           maxbasewidth + maxleftwidth - 1 + maxrightwidth + i + offsetX + maxleftwidth + 20,
+                                           -3 + 20 + y, 1, 1), False))
                 tx += 1
-            o2 = self.AddDisplayObject('topRight',
-                                       maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + tx,
-                                       -3, self.object_database['topRight']['w'], maxtopheight)
-            ty1 = 0
-            ty2 = 0
+            for y in range(maxtopheight):
+                for x in range(self.object_database['topRight']['w']):
+                    displayObjects.append((self.AddDisplayObject('base',
+                                       maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + tx + 20 + x,
+                                       -3 + 20 + y, 1,1), False))
+                    ty1 = 0
+                    ty2 = 0
             
             for i in range(3 + maxtopheight + maxbottomheight):
-                o3 = self.AddDisplayObject('left', maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX,
-                                           -3 + i + maxtopheight, maxleftwidth, 1)
+                for x in range(maxleftwidth):
+                    displayObjects.append((self.AddDisplayObject('base', maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + 20 + x,
+                                           -3 + i + maxtopheight + 20, 1, 1), False))
                 ty1 += 1
             
             for i in range(3 + maxtopheight + maxbottomheight):
-                o4 = self.AddDisplayObject('right',
-                                           maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + tx,
-                                           -3 + i + maxtopheight, maxrightwidth, 1)
+                for x in range(maxrightwidth):
+                    displayObjects.append((self.AddDisplayObject('base',
+                                           maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + tx + 20 + x,
+                                           -3 + i + maxtopheight + 20, 1, 1), False))
                 ty2 += 1
             ty = max(ty1, ty2)
-            o5 = self.AddDisplayObject('bottomLeft', maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX,
-                                       -3 + ty + maxtopheight, maxleftwidth, maxbottomheight)
+            for y in range(maxbottomheight):
+                for x in range(maxleftwidth):
+                    displayObjects.append((self.AddDisplayObject('base', maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + 20 + x,
+                                       -3 + ty + maxtopheight + 20 + y, 1, 1), False))
             
             for i in range(3 + maxrightwidth + maxleftwidth):
-                o6 = self.AddDisplayObject('bottom',
-                                           maxbasewidth + maxleftwidth - 1 + maxrightwidth + i + offsetX + maxleftwidth,
-                                           -3 + ty + maxtopheight, 1, maxbottomheight)
-            o7 = self.AddDisplayObject('bottomRight',
-                                       maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + tx,
-                                       -3 + ty + maxtopheight, self.object_database['bottomRight']['w'],
-                                       maxbottomheight)
+                for y in range(maxbottomheight):
+                    displayObjects.append((self.AddDisplayObject('base',
+                                           maxbasewidth + maxleftwidth - 1 + maxrightwidth + i + offsetX + maxleftwidth + 20,
+                                           -3 + ty + maxtopheight + 20 + y, 1, 1), False))
+            for y in range(maxbottomheight):
+                for x in range(self.object_database['bottomRight']['w']):
+                    displayObjects.append((self.AddDisplayObject('base',
+                                       maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + tx + 20 + x,
+                                       -3 + ty + maxtopheight + 20 + y, 1,
+                                       1), False))
             
             for i in range(3):
-                o8 = self.AddDisplayObject('top',
-                                           maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + i,
-                                           -3 + ty, 1, maxtopheight)
+                for y in range(maxtopheight):
+                    displayObjects.append((self.AddDisplayObject('base',
+                                           maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + i + 20,
+                                           -3 + ty + 20 + y, 1, 1), False))
             for i in range(3):
-                o9 = self.AddDisplayObject('bottom',
-                                           maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + i,
-                                           -3 + maxtopheight, 1, maxbottomheight)
+                for y in range(maxbottomheight):
+                    displayObjects.append((self.AddDisplayObject('base',
+                                           maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + i + 20,
+                                           -3 + maxtopheight + 20 + y, 1, 1), False))
             
             for i in range(3):
-                o13 = self.AddDisplayObject('right',
-                                            maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth,
-                                            -3 + maxtopheight + i + maxbottomheight, maxrightwidth, 1)
+                for x in range(maxrightwidth):
+                    displayObjects.append((self.AddDisplayObject('base',
+                                            maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + 20 + x,
+                                            -3 + maxtopheight + i + maxbottomheight + 20, 1, 1), False))
             
             for i in range(3):
-                o14 = self.AddDisplayObject('left',
-                                            maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3,
-                                            -3 + maxtopheight + i + maxbottomheight, maxleftwidth, 1)
+                for x in range(maxleftwidth):
+                    displayObjects.append((self.AddDisplayObject('base',
+                                            maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + 20 + x,
+                                            -3 + maxtopheight + i + maxbottomheight + 20, 1, 1), False))
             
             already_created_corner = False
             for ix in range(maxrightwidth):
                 for iy in range(maxbottomheight):
                     if ix <= maxrightwidth - self.object_database['topLeftCorner']['w'] - 1 or iy <= maxbottomheight - \
                             self.object_database['topLeftCorner']['h'] - 1:
-                        o10 = self.AddDisplayObject('base',
-                                                    maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix,
-                                                    -3 + iy + maxtopheight, 1, 1)
+                        displayObjects.append((self.AddDisplayObject('base',
+                                                    maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix + 20,
+                                                    -3 + iy + maxtopheight + 20, 1, 1), False))
                     
                     else:
                         if not already_created_corner:
@@ -7932,15 +8038,18 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                 'x'] = maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix
                             self.object_database['topLeftCorner']['y'] = -3 + iy + maxtopheight
                             already_created_corner = True
+                        displayObjects.append((self.AddDisplayObject('base',
+                                                    maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix + 20,
+                                                    -3 + iy + maxtopheight + 20, 1, 1), self.object_database['topLeftCorner']['i'] is None))
             
             already_created_corner = False
             for ix in range(maxleftwidth):
                 for iy in range(maxbottomheight):
                     if ix >= self.object_database['topRightCorner']['w'] or iy <= maxbottomheight - \
                             self.object_database['topRightCorner']['h'] - 1:
-                        o10 = self.AddDisplayObject('base',
-                                                    maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + ix,
-                                                    -3 + iy + maxtopheight, 1, 1)
+                        displayObjects.append((self.AddDisplayObject('base',
+                                                    maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + ix + 20,
+                                                    -3 + iy + maxtopheight + 20, 1, 1), False))
                     
                     else:
                         if not already_created_corner:
@@ -7948,14 +8057,17 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                 'x'] = maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + ix
                             self.object_database['topRightCorner']['y'] = -3 + iy + maxtopheight
                             already_created_corner = True
+                        displayObjects.append((self.AddDisplayObject('base',
+                                                    maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + ix + 20,
+                                                    -3 + iy + maxtopheight + 20, 1, 1), self.object_database['topRightCorner']['i'] is None))
             already_created_corner = False
             for ix in range(maxrightwidth):
                 for iy in range(maxtopheight):
                     if ix <= maxrightwidth - self.object_database['bottomLeftCorner']['w'] - 1 or iy >= \
                             self.object_database['bottomLeftCorner']['h']:
-                        o10 = self.AddDisplayObject('base',
-                                                    maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix,
-                                                    -3 + iy + maxtopheight + 3 + maxbottomheight, 1, 1)
+                        displayObjects.append((self.AddDisplayObject('base',
+                                                    maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix + 20,
+                                                    -3 + iy + maxtopheight + 3 + maxbottomheight + 20, 1, 1), False))
                     
                     else:
                         if not already_created_corner:
@@ -7963,15 +8075,18 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                 'x'] = maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix
                             self.object_database['bottomLeftCorner']['y'] = -3 + iy + maxtopheight + 3 + maxbottomheight
                             already_created_corner = True
+                        displayObjects.append((self.AddDisplayObject('base',
+                                                    maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix + 20,
+                                                     -3 + iy + maxtopheight + 3 + maxbottomheight + 20, 1, 1), self.object_database['bottomLeftCorner']['i'] is None))
             
             already_created_corner = False
             for ix in range(maxleftwidth):
                 for iy in range(maxtopheight):
                     if ix >= self.object_database['bottomRightCorner']['w'] or iy >= \
                             self.object_database['bottomRightCorner']['h']:
-                        o10 = self.AddDisplayObject('base',
-                                                    maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + ix,
-                                                    -3 + iy + maxtopheight + 3 + maxbottomheight, 1, 1)
+                        displayObjects.append((self.AddDisplayObject('base',
+                                                    maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + ix + 20,
+                                                    -3 + iy + maxtopheight + 3 + maxbottomheight + 20, 1, 1), False))
                     
                     else:
                         if not already_created_corner:
@@ -7980,6 +8095,23 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                             self.object_database['bottomRightCorner'][
                                 'y'] = -3 + iy + maxtopheight + 3 + maxbottomheight
                             already_created_corner = True
+                        displayObjects.append((self.AddDisplayObject('base',
+                                                    maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + ix + 20,
+                                                    -3 + iy + maxtopheight + 3 + maxbottomheight + 20, 1, 1), self.object_database['bottomRightCorner']['i'] is None))
+					
+            for obj in displayObjects:
+                if obj[0] is not None:
+                    QuickPaintOperations.autoTileObj(-1, obj[0])
+					
+            for obj in displayObjects:
+                if obj[0] is not None:
+                    QuickPaintOperations.autoTileObj(-1, obj[0])
+
+            for obj in displayObjects:
+                if obj[1] and obj[0] in self.display_objects:
+                    self.display_objects.remove(obj[0])
+                    obj[0].RemoveFromSearchDatabase()
+                    if obj[0] in QuickPaintOperations.object_optimize_database: QuickPaintOperations.object_optimize_database.remove(obj[0])
 
         def calculateBoundaries(self):
             """
@@ -8042,17 +8174,36 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             # Get those boundaries
             maxbasewidth, maxleftwidth, maxrightwidth, maxbaseheight, maxtopheight, maxbottomheight = self.calculateBoundaries()
 
-            # Arrange Main Island...
-            self.ArrangeMainIsland(maxbasewidth, maxleftwidth, maxrightwidth, maxbaseheight, maxtopheight,
-                                   maxbottomheight)
-
-            # Set corner setter island...
             for obj in self.display_objects:
                 obj.RemoveFromSearchDatabase()
 
             self.display_objects.clear()
+
+            # Arrange Main Island...
+            self.ArrangeMainIsland(maxbasewidth, maxleftwidth, maxrightwidth, maxbaseheight, maxtopheight,
+                                   maxbottomheight)
+
+            if len(QuickPaintOperations.object_optimize_database) > 0:
+                QuickPaintOperations.optimizeObjects(True)
+
+            doas = []  # Means "Display Objects Already Shifted."
+            for obj in self.display_objects:
+                obj.objx -= 20
+                obj.objy -= 20
+
+                doas.append(obj)
+
+            # Set corner setter island...
             self.ArrangeCornerSetterIsland(1, maxbasewidth, maxleftwidth, maxrightwidth, maxbaseheight, maxtopheight,
                                            maxbottomheight)
+            
+            if len(QuickPaintOperations.object_optimize_database) > 0:
+                QuickPaintOperations.optimizeObjects(True)
+
+            for obj in self.display_objects:
+                if obj not in doas:
+                    obj.objx -= 20
+                    obj.objy -= 20
 
             # Let's update the sizes of these objects...
             for obj in self.object_database:
@@ -8060,15 +8211,12 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                     self.object_database[obj]['i'].updateObjCacheWH(self.object_database[obj]['w'],
                                                                     self.object_database[obj]['h'])
 
-            if len(QuickPaintOperations.object_optimize_database) > 0:
-                QuickPaintOperations.optimizeObjects(True)
-
         def AddDisplayObject(self, type, x, y, width, height):
             """
             Adds a display-only object into the scene. No effect when clicked on.
             """
             if self.object_database['base']['i'] is not None:
-                this_type = self.pickObject(type)
+                this_type = type  # self.pickObject(type)
                 this_obj = self.object_database[this_type]
                 
                 if this_obj.get('ts') is not None and this_obj.get('t') is not None:
@@ -8160,6 +8308,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                 for tile in row:
                     if not exists:
                         destrow[destx] = -1
+                        self.BadObjectWarning = True
                     elif tile > 0:
                         destrow[destx] = tile
                     destx += 1
@@ -8284,7 +8433,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             """
             Paint_Level2 = False
             if self.object_database['base']['i'] != None:
-                self.drawObject(self.object_database['base'], painter, tiles)
+                # self.drawObject(self.object_database['base'], painter, tiles)
                 self.drawEmptyBox('', 'base', painter, fillbrush)
                 Paint_Level2 = True
             
@@ -8293,56 +8442,56 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             
             if Paint_Level2:
                 if self.object_database['top']['i'] != None:
-                    self.drawObject(self.object_database['top'], painter, tiles)
+                    # self.drawObject(self.object_database['top'], painter, tiles)
                     self.drawEmptyBox('', 'top', painter, fillbrush)
                 
                 else:
                     self.drawEmptyBox('TOP', 'top', painter, fillbrush)
                 
                 if self.object_database['right']['i'] != None:
-                    self.drawObject(self.object_database['right'], painter, tiles)
+                    # self.drawObject(self.object_database['right'], painter, tiles)
                     self.drawEmptyBox('', 'right', painter, fillbrush)
                 
                 else:
                     self.drawEmptyBox('RIGHT', 'right', painter, fillbrush)
                 
                 if self.object_database['bottom']['i'] != None:
-                    self.drawObject(self.object_database['bottom'], painter, tiles)
+                    # self.drawObject(self.object_database['bottom'], painter, tiles)
                     self.drawEmptyBox('', 'bottom', painter, fillbrush)
                 
                 else:
                     self.drawEmptyBox('BOTTOM', 'bottom', painter, fillbrush)
                 
                 if self.object_database['left']['i'] != None:
-                    self.drawObject(self.object_database['left'], painter, tiles)
+                    # self.drawObject(self.object_database['left'], painter, tiles)
                     self.drawEmptyBox('', 'left', painter, fillbrush)
                 
                 else:
                     self.drawEmptyBox('LEFT', 'left', painter, fillbrush)
                 
                 if self.object_database['topRight']['i'] != None:
-                    self.drawObject(self.object_database['topRight'], painter, tiles)
+                    # self.drawObject(self.object_database['topRight'], painter, tiles)
                     self.drawEmptyBox('', 'topRight', painter, fillbrush)
                 
                 else:
                     self.drawEmptyBox('TOPRIGHT', 'topRight', painter, fillbrush)
                 
                 if self.object_database['bottomRight']['i'] != None:
-                    self.drawObject(self.object_database['bottomRight'], painter, tiles)
+                    # self.drawObject(self.object_database['bottomRight'], painter, tiles)
                     self.drawEmptyBox('', 'bottomRight', painter, fillbrush)
                 
                 else:
                     self.drawEmptyBox('BOTTOMRIGHT', 'bottomRight', painter, fillbrush)
                 
                 if self.object_database['bottomLeft']['i'] != None:
-                    self.drawObject(self.object_database['bottomLeft'], painter, tiles)
+                    # self.drawObject(self.object_database['bottomLeft'], painter, tiles)
                     self.drawEmptyBox('', 'bottomLeft', painter, fillbrush)
                 
                 else:
                     self.drawEmptyBox('BOTTOMLEFT', 'bottomLeft', painter, fillbrush)
                 
                 if self.object_database['topLeft']['i'] != None:
-                    self.drawObject(self.object_database['topLeft'], painter, tiles)
+                    # self.drawObject(self.object_database['topLeft'], painter, tiles)
                     self.drawEmptyBox('', 'topLeft', painter, fillbrush)
                 
                 else:
@@ -8385,6 +8534,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             """
             Draws all visible objects
             """
+            self.BadObjectWarning = False
             painter.fillRect(rect, self.bgbrush)
             gridpen = QtGui.QPen()
             gridpen.setColor(theme.color('grid'))
@@ -8396,11 +8546,14 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             # Start Painting
             tiles = Tiles
             
-            if self.drawMainIsland(painter, tiles, fillbrush):
-                self.drawCornerObjects(painter, tiles, fillbrush)
-            
             for obj in self.display_objects:
                 self.drawItem(obj, painter, tiles)
+				
+            if self.drawMainIsland(painter, tiles, fillbrush):
+                self.drawCornerObjects(painter, tiles, fillbrush)
+
+            if self.BadObjectWarning:
+                self.parent.ShowBadObjectWarning()
 
     def openTextForm(self):
         """
@@ -12299,6 +12452,21 @@ class ReggieTranslation:
                 29: 'Use Old Tileset Picker',
                 30: 'You may need to restart Reggie Next for changes to take effect.',
                 31: 'Display lines indicating the leftmost x-position where entrances can be safely placed in zones',
+            },
+            'QuickPaint': {
+                1: "WOAH! Watch out!",
+                2: "Uh oh, it looks like there are objects in this preset that don't exist. Please remove them immediately![br]If you use the Quick Paint tool with non-existing objects, the game will likely CRASH when loading the level!",
+                3: "Quick Paint Tool",
+                4: "Paint",
+                5: "Erase",
+                6: "Presets:",
+                7: "Save",
+                8: "Add",
+                9: "Remove",
+                10: "Dialog",
+                11: "Are you sure you want to delete this preset? You cannot undo this action.",
+                12: "Overwrite this preset?",
+                13: "Name Preset"
             },
             'ScrShtDlg': {
                 0: 'Choose a Screenshot source',
@@ -18092,6 +18260,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if addedButtons:
                 self.toolbar.addSeparator()
 
+    def __QPPaintSet(self):
+        self.quickPaint.PaintModeCheck.setChecked(not self.quickPaint.PaintModeCheck.isChecked())
+        self.quickPaint.SetPaintMode()
+
+        if hasattr(QuickPaintOperations, 'prePaintedObjects'):
+            QuickPaintOperations.prePaintedObjects.clear()
+
+    def __QPEraseSet(self):
+        self.quickPaint.EraseModeCheck.setChecked(not self.quickPaint.EraseModeCheck.isChecked())
+        self.quickPaint.SetEraseMode()
+
+        if hasattr(QuickPaintOperations, 'prePaintedObjects'):
+            QuickPaintOperations.prePaintedObjects.clear()
+
     def SetupDocksAndPanels(self):
         """
         Sets up the dock widgets and panels
@@ -18130,6 +18312,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.addDockWidget(Qt.RightDockWidgetArea, dock)
         dock.setVisible(True)
+
+        self.QPPaintShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Alt+P"), self)
+        self.QPPaintShortcut.activated.connect(self.__QPPaintSet)
+        self.QPEraseShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Alt+Shift+P"), self)
+        self.QPEraseShortcut.activated.connect(self.__QPEraseSet)
+
         act = dock.toggleViewAction()
         act.setShortcut(QtGui.QKeySequence('Alt+Q'))
         act.setIcon(GetIcon('quickpaint'))
@@ -20238,6 +20426,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.newLevel()
         else:
             self.LoadLevel_NSMBW(levelData, areaNum)
+
+        # Set up and reset the Quick Paint Tool
+        if hasattr(self, 'quickPaint'):
+            self.quickPaint.reset()  # Reset the QP widget.
+        QuickPaintOperations.object_optimize_database = []
+        QuickPaintOperations.object_search_database = {}
 
         # Set the level overview settings
         mainWindow.levelOverview.maxX = 100
