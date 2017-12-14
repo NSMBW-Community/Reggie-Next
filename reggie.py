@@ -1205,7 +1205,7 @@ class TilesetTile:
         numberOfFrames = len(data) // 2048
         for frame in range(numberOfFrames):
             framedata = data[frame * 2048: (frame * 2048) + 2048]
-            newdata = tpl.decodeRGB4A3(framedata, 32, 32)
+            newdata = tpl.decodeRGB4A3(framedata, 32, 32, False)
             img = QtGui.QImage(newdata, 32, 32, 128, QtGui.QImage.Format_ARGB32)
             pix = QtGui.QPixmap.fromImage(img.copy(4, 4, 24, 24))
             animTiles.append(pix)
@@ -2174,7 +2174,7 @@ def _LoadTileset(idx, name, reload=False):
 
 
 def LoadTexture_NSMBW(tiledata):
-    data = tpl.decodeRGB4A3(tiledata, 1024, 256)
+    data = tpl.decodeRGB4A3(tiledata, 1024, 256, False)
     img = QtGui.QImage(data, 1024, 256, 4096, QtGui.QImage.Format_ARGB32)
     return img
 
@@ -3665,7 +3665,7 @@ class Area_NSMBW(AbstractParsedArea):
 
     def WritePathNodes(self, buffer, offst, nodes):
         """
-        Writes the pathnode data to the block 14 bytearray
+        Writes the path node data to the block 14 bytearray
         """
         offset = int(offst)
         # [20:29:04]  [@Treeki] struct PathNode { unsigned short x; unsigned short y; float speed; float unknownMaybeAccel; short unknown; char padding[2]; }
@@ -5945,6 +5945,8 @@ class PathItem(LevelEditorItem):
         self.setZValue(25002)
         self.UpdateTooltip()
 
+        self.setVisible(PathsShown)
+
         # now that we're inited, set
         self.nodeinfo['graphicsitem'] = self
 
@@ -6053,6 +6055,8 @@ class PathEditorLineItem(LevelEditorItem):
         self.computeBoundRectAndPos()
         self.setZValue(25002)
         self.UpdateTooltip()
+
+        self.setVisible(PathsShown)
 
     def UpdateTooltip(self):
         """
@@ -6241,7 +6245,7 @@ class CommentItem(LevelEditorItem):
             self.TextEditProxy = mainWindow.scene.addWidget(self.TextEdit)
             self.TextEditProxy.setZValue(self.zval)
             self.TextEditProxy.setCursor(Qt.IBeamCursor)
-            self.TextEditProxy.BoundingRect = QtCore.QRectF(0, 0, 400, 400)
+            self.TextEditProxy.BoundingRect = QtCore.QRectF(0, 0, 4000, 4000)
             self.TextEditProxy.boundingRect = lambda self: self.BoundingRect
             self.TextEdit.setMaximumWidth(192)
             self.TextEdit.setMaximumHeight(128)
@@ -8749,7 +8753,7 @@ class ObjectPickerWidget(QtWidgets.QListView):
                 return self.ritems[n]
 
             if role == Qt.BackgroundRole:
-                return QtGui.qApp.palette().base()
+                return QtWidgets.qApp.palette().base()
 
             if role == Qt.UserRole:
                 return self.itemsize[n]
@@ -8941,7 +8945,7 @@ class StampListModel(QtCore.QAbstractListModel):
             return self.items[n].Icon
 
         elif role == Qt.BackgroundRole:
-            return QtGui.qApp.palette().base()
+            return QtWidgets.qApp.palette().base()
 
         elif role == Qt.UserRole:
             return self.items[n].Name
@@ -12283,7 +12287,7 @@ class ReggieTranslation:
                 57: 'Toggle viewing of sprite images',
                 58: 'Show Locations',
                 59: 'Toggle viewing of locations',
-                60: 'Switch[br]Grid',
+                60: 'Switch\nGrid',
                 61: 'Cycle through available grid views',
                 62: 'Zoom to Maximum',
                 63: 'Zoom in all the way',
@@ -12351,6 +12355,8 @@ class ReggieTranslation:
                 127: 'Redoes the last action that was undone',
                 128: 'Save Copy of Level As...',
                 129: 'Save a copy of level with a new filename but keeps the current file open for editing',
+                130: 'Show Paths',
+                131: 'Toggle viewing of paths',
                 136: 'Quick Paint Properties',
                 137: 'Show the Properties Window to Configure Quick Paint',
             },
@@ -17114,7 +17120,7 @@ def LoadActionsLists():
         (trans.string('MenuItems', 6),  False, 'openrecent'),
         (trans.string('MenuItems', 8), True, 'save'),
         (trans.string('MenuItems', 10), False, 'saveas'),
-        (trans.string('MenuItems', 10), False, 'savecopyas'),
+        (trans.string('MenuItems', 128), False, 'savecopyas'),
         (trans.string('MenuItems', 12), False, 'metainfo'),
         (trans.string('MenuItems', 14), True, 'screenshot'),
         (trans.string('MenuItems', 16), False, 'changegamepath'),
@@ -17143,6 +17149,7 @@ def LoadActionsLists():
         (trans.string('MenuItems', 54), True, 'showsprites'),
         (trans.string('MenuItems', 56), False, 'showspriteimages'),
         (trans.string('MenuItems', 58), True, 'showlocations'),
+        (trans.string('MenuItems', 130), True, 'showpaths'),
         (trans.string('MenuItems', 60), True, 'grid'),
         (trans.string('MenuItems', 62), True, 'zoommax'),
         (trans.string('MenuItems', 64), True, 'zoomin'),
@@ -17445,7 +17452,11 @@ class PreferencesDialog(QtWidgets.QDialog):
                 for name, themeObj in self.themes:
                     self.themeBox.addItem(name)
 
-                self.themeBox.activated.connect(self.UpdatePreview)
+                index = self.themeBox.findText(setting('Theme'), Qt.MatchFixedString)
+                if index >= 0:
+                     self.themeBox.setCurrentIndex(index)
+
+                self.themeBox.currentIndexChanged.connect(self.UpdatePreview)
 
                 boxGB = QtWidgets.QGroupBox('Themes')
                 L = QtWidgets.QFormLayout()
@@ -17830,6 +17841,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.HandleSpriteImages: SpriteImagesShown,
             self.HandleLocationsVisibility: LocationsShown,
             self.HandleCommentsVisibility: CommentsShown,
+            self.HandlePathsVisibility: PathsShown,
         }
         for handler in toggleHandlers:
             handler(
@@ -17972,6 +17984,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.CreateAction('showcomments', self.HandleCommentsVisibility, GetIcon('comments'),
                           trans.stringOneLine('MenuItems', 116), trans.stringOneLine('MenuItems', 117),
                           QtGui.QKeySequence('Ctrl+0'), True)
+        self.CreateAction('showpaths', self.HandlePathsVisibility, GetIcon('paths'),
+                          trans.stringOneLine('MenuItems', 130), trans.stringOneLine('MenuItems', 131),
+                          QtGui.QKeySequence('Ctrl+*'), True)
         self.CreateAction('grid', self.HandleSwitchGrid, GetIcon('grid'), trans.stringOneLine('MenuItems', 60),
                           trans.stringOneLine('MenuItems', 61), QtGui.QKeySequence('Ctrl+G'), False)
         self.CreateAction('zoommax', self.HandleZoomMax, GetIcon('zoommax'), trans.stringOneLine('MenuItems', 62),
@@ -18017,6 +18032,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.actions['showspriteimages'].setChecked(SpriteImagesShown)
         self.actions['showlocations'].setChecked(LocationsShown)
         self.actions['showcomments'].setChecked(CommentsShown)
+        self.actions['showpaths'].setChecked(PathsShown)
 
         self.actions['freezeobjects'].setChecked(ObjectsFrozen)
         self.actions['freezesprites'].setChecked(SpritesFrozen)
@@ -18093,6 +18109,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         vmenu.addAction(self.actions['showspriteimages'])
         vmenu.addAction(self.actions['showlocations'])
         vmenu.addAction(self.actions['showcomments'])
+        vmenu.addAction(self.actions['showpaths'])
         vmenu.addSeparator()
         vmenu.addAction(self.actions['grid'])
         vmenu.addSeparator()
@@ -18217,6 +18234,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 'showsprites',
                 'showspriteimages',
                 'showlocations',
+                'showpaths',
             ), (
                 'areaoptions',
                 'zones',
@@ -18619,7 +18637,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # events tab
         self.eventEditorTab = QtWidgets.QWidget()
         tabs.addTab(self.eventEditorTab, GetIcon('events'), '')
-        tabs.setTabToolTip(6, trans.string('Palette', 18))
+        tabs.setTabToolTip(5, trans.string('Palette', 18))
 
         eventel = QtWidgets.QGridLayout(self.eventEditorTab)
         self.eventEditorLayout = eventel
@@ -18653,7 +18671,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # stamps tab
         self.stampTab = QtWidgets.QWidget()
         tabs.addTab(self.stampTab, GetIcon('stamp'), '')
-        tabs.setTabToolTip(7, trans.string('Palette', 19))
+        tabs.setTabToolTip(6, trans.string('Palette', 19))
 
         stampLabel = QtWidgets.QLabel(trans.string('Palette', 27))
 
@@ -18700,7 +18718,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # comments tab
         self.commentsTab = QtWidgets.QWidget()
         tabs.addTab(self.commentsTab, GetIcon('comments'), '')
-        tabs.setTabToolTip(8, trans.string('Palette', 33))
+        tabs.setTabToolTip(7, trans.string('Palette', 33))
 
         cel = QtWidgets.QVBoxLayout()
         self.commentsTab.setLayout(cel)
@@ -20030,6 +20048,25 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.update()
 
     @QtCore.pyqtSlot(bool)
+    def HandlePathsVisibility(self, checked):
+        """
+        Handle toggling of path visibility
+        """
+        global PathsShown
+
+        PathsShown = checked
+
+        if Area is not None:
+            for node in Area.paths:
+                node.setVisible(PathsShown)
+
+            for path in Area.pathdata:
+                path['peline'].setVisible(PathsShown)
+
+        setSetting('ShowPaths', PathsShown)
+        self.scene.update()
+
+    @QtCore.pyqtSlot(bool)
     def HandleObjectsFreeze(self, checked):
         """
         Handle toggling of objects being frozen
@@ -20708,7 +20745,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 showPathPanel = True
                 updateModeInfo = True
             elif func_ii(item, type_com):
-                self.creationTabs.setCurrentIndex(8)
+                self.creationTabs.setCurrentIndex(7)
                 self.UpdateFlag = True
                 self.commentList.setCurrentItem(item.listitem)
                 self.UpdateFlag = False
@@ -20771,7 +20808,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     text = trans.string('Statusbar', 8, '[x]', loc)  # x locations selected
                 elif not any((obj, spr, ent, loc, com)):
                     text = trans.string('Statusbar', 9, '[x]', path)  # x path nodes selected
-                elif not any((obj, spr, ent, loc, path)):
+                elif not any((obj, spr, ent, path, loc)):
                     text = trans.string('Statusbar', 30, '[x]', com)  # x comments selected
                 else:  # different types
                     text = trans.string('Statusbar', 10, '[x]', len(selitems))  # x items selected
@@ -21888,7 +21925,7 @@ def main():
 
     global EnableAlpha, GridType, CollisionsShown, RealViewEnabled
     global ObjectsFrozen, SpritesFrozen, EntrancesFrozen, LocationsFrozen, PathsFrozen, CommentsFrozen
-    global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, DrawEntIndicators
+    global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown, DrawEntIndicators
 
     gt = setting('GridType')
     if gt == 'checker':
@@ -21909,6 +21946,7 @@ def main():
     SpriteImagesShown = setting('ShowSpriteImages', True)
     LocationsShown = setting('ShowLocations', True)
     CommentsShown = setting('ShowComments', True)
+    PathsShown = setting('ShowPaths', True)
     DrawEntIndicators = setting('ZoneEntIndicators', False)
     SLib.RealViewEnabled = RealViewEnabled
 

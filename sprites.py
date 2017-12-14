@@ -4134,6 +4134,7 @@ class SpriteImage_LineBlock(SLib.SpriteImage):  # 219
 class SpriteImage_InvisibleBlock(SpriteImage_Block):  # 221
     def __init__(self, parent):
         super().__init__(parent, 1.5)
+        self.tilenum = 2339
         self.eightIsMushroom = True
 
 
@@ -6373,8 +6374,8 @@ class SpriteImage_ScrewMushroomNoBolt(SpriteImage_ScrewMushroom):  # 382
 class SpriteImage_PipeCooliganGenerator(SLib.SpriteImage):  # 384
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.size = (24, 48)
-        self.spritebox.yOffset = -24
+        self.spritebox.size = (16, 32)
+        self.yOffset = -16
 
 
 class SpriteImage_IceBlock(SLib.SpriteImage_StaticMultiple):  # 385
