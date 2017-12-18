@@ -260,6 +260,95 @@ class SpriteImage_MidwayFlag(SLib.SpriteImage_StaticMultiple):  # 188
         super().dataChanged()
 
 
+class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.aux2 = [SLib.AuxiliaryRectOutline(parent, 0, 0)]
+        self.aux = self.aux2
+
+    def dataChanged(self):
+        super().dataChanged()
+
+        type_ = self.parent.spritedata[4] >> 4
+        self.width = (self.parent.spritedata[5] >> 4) * 16
+        self.height = (self.parent.spritedata[5] & 0xF) * 16
+
+        if not self.width:
+            self.width = 16
+
+        if not self.height:
+            self.height = 16
+
+        if type_ in [2, 5, 7, 13, 15]:
+            self.aux = self.aux2
+            self.spritebox.shown = True
+            self.image = None
+
+            if [self.width, self.height] == [16, 16]:
+                self.aux2[0].setSize(0, 0)
+                return
+
+        else:
+            self.aux = []
+            self.spritebox.shown = False
+
+            if not type_:
+                tile = SLib.Tiles[55]
+
+            elif type_ == 1:
+                tile = SLib.Tiles[48]
+
+            elif type_ == 3:
+                tile = SLib.Tiles[52]
+
+            elif type_ == 4:
+                tile = SLib.Tiles[51]
+
+            elif type_ == 6:
+                tile = SLib.Tiles[45]
+
+            elif type_ in [8, 9, 10, 11]:
+                row = self.parent.spritedata[2] & 0xF
+                col = self.parent.spritedata[3] >> 4
+
+                tilenum = 256 * (type_ - 8)
+                tilenum += row * 16 + col
+
+                tile = SLib.Tiles[tilenum]
+
+            elif type_ == 12:
+                tile = SLib.Tiles[256 * 3 + 67]
+
+            elif type_ == 14:
+                tile = SLib.Tiles[256]
+
+            if tile:
+                self.image = tile.main
+
+            else:
+                self.image = SLib.Tiles[0x800 + 108].main
+
+        self.aux2[0].setSize(self.width * 1.5, self.height * 1.5)
+
+    def paint(self, painter):
+        if self.image is None:
+            return
+
+        painter.save()
+
+        painter.setOpacity(self.alpha)
+        painter.setRenderHint(painter.SmoothPixmapTransform)
+
+        for yTile in range(self.height // 16):
+            for xTile in range(self.width // 16):
+                painter.drawPixmap(xTile * 24, yTile * 24, self.image)
+
+        aux = self.aux2
+        aux[0].paint(painter, None, None)
+
+        painter.restore()
+
+
 class SpriteImage_Topman(SLib.SpriteImage_Static):  # 210
     def __init__(self, parent):
         super().__init__(
@@ -420,6 +509,7 @@ ImageClasses = {
     157: SpriteImage_BigPumpkin,
     183: SpriteImage_Meteor,
     188: SpriteImage_MidwayFlag,
+    191: SpriteImage_TileEvent,
     210: SpriteImage_Topman,
     213: SpriteImage_CaptainBowser,
     279: SpriteImage_RockyBoss,

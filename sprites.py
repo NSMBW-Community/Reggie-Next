@@ -3661,22 +3661,84 @@ class SpriteImage_TiltingGirderUnused(SLib.SpriteImage_Static):  # 190
         SLib.loadIfNotInImageCache('TiltingGirder', 'tilting_girder.png')
 
 
-class SpriteImage_TileEvent(SLib.SpriteImage):  # 191
+class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 0, 0))
+        self.aux2 = [SLib.AuxiliaryRectOutline(parent, 0, 0)]
+        self.aux = self.aux2
 
     def dataChanged(self):
         super().dataChanged()
 
-        w = self.parent.spritedata[5] >> 4
-        h = self.parent.spritedata[5] & 0xF
-        if w == 0: w = 1
-        if h == 0: h = 1
-        if w == 1 and h == 1:  # no point drawing a 1x1 outline behind the self.parent
-            self.aux[0].setSize(0, 0)
+        type_ = self.parent.spritedata[4] >> 4
+        self.width = (self.parent.spritedata[5] >> 4) * 16
+        self.height = (self.parent.spritedata[5] & 0xF) * 16
+
+        if not self.width:
+            self.width = 16
+
+        if not self.height:
+            self.height = 16
+
+        if type_ in [2, 5, 7, 9, 10, 11, 13, 15]:
+            self.aux = self.aux2
+            self.spritebox.shown = True
+            self.image = None
+
+            if [self.width, self.height] == [16, 16]:
+                self.aux2[0].setSize(0, 0)
+                return
+
+        else:
+            self.aux = []
+            self.spritebox.shown = False
+
+            if not type_:
+                tile = SLib.Tiles[55]
+
+            elif type_ == 1:
+                tile = SLib.Tiles[48]
+
+            elif type_ == 3:
+                tile = SLib.Tiles[52]
+
+            elif type_ == 4:
+                tile = SLib.Tiles[51]
+
+            elif type_ == 6:
+                tile = SLib.Tiles[45]
+
+            elif type_ in [8, 12]:
+                tile = SLib.Tiles[256 * 3 + 67]
+
+            elif type_ == 14:
+                tile = SLib.Tiles[256]
+
+            if tile:
+                self.image = tile.main
+
+            else:
+                self.image = SLib.Tiles[0x800 + 108].main
+
+        self.aux2[0].setSize(self.width * 1.5, self.height * 1.5)
+
+    def paint(self, painter):
+        if self.image is None:
             return
-        self.aux[0].setSize(w * 24, h * 24)
+
+        painter.save()
+
+        painter.setOpacity(self.alpha)
+        painter.setRenderHint(painter.SmoothPixmapTransform)
+
+        for yTile in range(self.height // 16):
+            for xTile in range(self.width // 16):
+                painter.drawPixmap(xTile * 24, yTile * 24, self.image)
+
+        aux = self.aux2
+        aux[0].paint(painter, None, None)
+
+        painter.restore()
 
 
 class SpriteImage_Urchin(SLib.SpriteImage_Static):  # 193
