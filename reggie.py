@@ -16999,6 +16999,117 @@ class RecentFilesMenu(QtWidgets.QMenu):
         if not mainWindow.LoadLevel(None, self.FileList[number], True, 1): self.RemoveFromList(number)
 
 
+class DiagnosticWidget(QtWidgets.QWidget):
+    """
+    Widget for the auto-diagnostic tool
+    """
+    def __init__(self):
+        """
+        Creates and initializes the widget
+        """
+        super().__init__()
+        self.CheckFunctions = (('objects', trans.string('Diag', 1), DiagnosticToolDialog.UnusedTilesets, False),
+               ('objects', trans.string('Diag', 2), DiagnosticToolDialog.ObjsInTileset, True),
+               ('sprites', trans.string('Diag', 3), DiagnosticToolDialog.CrashSprites, False),
+               ('sprites', trans.string('Diag', 4), DiagnosticToolDialog.CrashSpriteSettings, True),
+               ('sprites', trans.string('Diag', 5), DiagnosticToolDialog.TooManySprites, False),
+               ('entrances', trans.string('Diag', 6), DiagnosticToolDialog.DuplicateEntranceIDs, True),
+               ('entrances', trans.string('Diag', 7), DiagnosticToolDialog.NoStartEntrance, True),
+               ('entrances', trans.string('Diag', 8), DiagnosticToolDialog.EntranceTooCloseToZoneEdge, False),
+               ('entrances', trans.string('Diag', 9), DiagnosticToolDialog.EntranceOutsideOfZone, False),
+               ('zones', trans.string('Diag', 10), DiagnosticToolDialog.TooManyZones, True),
+               ('zones', trans.string('Diag', 11), DiagnosticToolDialog.NoZones, True),
+               ('zones', trans.string('Diag', 12), DiagnosticToolDialog.ZonesTooClose, True),
+               ('zones', trans.string('Diag', 13), DiagnosticToolDialog.ZonesTooCloseToAreaEdges, True),
+               ('zones', trans.string('Diag', 14), DiagnosticToolDialog.BiasNotEnabled, False),
+               ('zones', trans.string('Diag', 15), DiagnosticToolDialog.ZonesTooBig, True),
+               ('background', trans.string('Diag', 16), DiagnosticToolDialog.UnusedBackgrounds, False),
+               )
+        self.diagnosticIcon = QtWidgets.QPushButton()
+
+        self.diagnosticIcon.setIcon(GetIcon('autodiagnosticgood'))
+        self.diagnosticIcon.setFlat(True)
+        self.diagnosticIcon.setGeometry(2, 1, 2, 1)
+        #self.diagnosticIcon.setHeight(59)
+        #self.diagnosticIcon.clicked.connect(ReggieWindow.HandleDiagnostics)
+        self.diagnosticIcon.clicked.connect(self.findIssues)
+        self.layout = QtWidgets.QGridLayout()
+        self.layout.addWidget(self.diagnosticIcon, 0, 0)
+        self.layout.setVerticalSpacing(0)
+        self.layout.setHorizontalSpacing(0)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(self.layout)
+
+
+        self.starttimer = QtCore.QTimer()
+        self.starttimer.setSingleShot(True)
+        self.starttimer.timeout.connect(self.startloopytimer)
+        self.starttimer.start(10000)
+
+    def startloopytimer(self):
+        self.loopytimer = QtCore.QTimer()
+        self.loopytimer.timeout.connect(self.findIssues)
+        self.loopytimer.start(50)
+
+
+        
+    def findIssues(self):
+
+        try:
+            dtd = DiagnosticToolDialog()
+            issues = dtd.populateLists()
+
+            print(issues)
+        except:
+            pass
+
+
+    def populateLists(self):
+        """
+        Runs the check functions and adds items to the list if needed
+        """
+
+        print("Populate lists")
+        self.buttonHandlers = []
+
+
+        foundAnything = False
+        foundCritical = False
+        #print("Beginning of populateLists")
+        for ico, desc, fxn, isCritical in self.CheckFunctions:
+            #print("For statement worked")
+            #print(fxn('c'))
+            if False and fxn('c'):
+
+                foundAnything = True
+                #print("fxn('c') worked")
+                if isCritical: foundCritical = True
+
+                #item.setText(desc)
+                if isCritical: 
+                    self.diagnosticIcon.setIcon(GetIcon('autodiagnosticbad'))
+                    print("THIS IS BAD")
+                else:          
+                    self.diagnosticIcon.setIcon(GetIcon('autodiagnosticwarning'))
+                    print("Warning!")
+        #print("after the for statement")
+        if not foundAnything:
+            self.diagnosticIcon.setIcon(GetIcon('autodiagnosticgood', True))
+            print("'Sall cool!")
+
+        '''if foundCritical: True, len(self.buttonHandlers)#   self.diagnosticIcon.setIcon(GetIcon('autodiagnosticbad'))
+        elif foundAnything: False, len(self.buttonHandlers)   #self.diagnosticIcon.setIcon(GetIcon('autodiagnosticwarning'))
+        return None, len(self.buttonHandlers)'''
+        if foundCritical: return True, len(self.buttonHandlers)
+        elif foundAnything: return False, len(self.buttonHandlers)
+        #print("End of populateLists")
+        return None, len(self.buttonHandlers)
+
+
+        
+    def test(self):
+        print("Nyapakapow!")
+
 class ZoomWidget(QtWidgets.QWidget):
     """
     Widget that allows easy zoom level control
@@ -17881,11 +17992,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.posLabel = QtWidgets.QLabel()
         self.selectionLabel = QtWidgets.QLabel()
         self.hoverLabel = QtWidgets.QLabel()
+        self.diagnostic = DiagnosticWidget()
+
         self.statusBar().addWidget(self.posLabel)
         self.statusBar().addWidget(self.selectionLabel)
         self.statusBar().addWidget(self.hoverLabel)
         self.ZoomWidget = ZoomWidget()
         self.ZoomStatusWidget = ZoomStatusWidget()
+        self.statusBar().addPermanentWidget(self.diagnostic)
         self.statusBar().addPermanentWidget(self.ZoomWidget)
         self.statusBar().addPermanentWidget(self.ZoomStatusWidget)
 
