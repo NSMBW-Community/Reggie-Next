@@ -17936,10 +17936,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.statusBar().addWidget(self.posLabel)
         self.statusBar().addWidget(self.selectionLabel)
         self.statusBar().addWidget(self.hoverLabel)
-        self.diagnostic = DiagnosticWidget()
+        #self.diagnostic = DiagnosticWidget()
         self.ZoomWidget = ZoomWidget()
         self.ZoomStatusWidget = ZoomStatusWidget()
-        self.statusBar().addPermanentWidget(self.diagnostic)
+        #self.statusBar().addPermanentWidget(self.diagnostic)
         self.statusBar().addPermanentWidget(self.ZoomWidget)
         self.statusBar().addPermanentWidget(self.ZoomStatusWidget)
 
