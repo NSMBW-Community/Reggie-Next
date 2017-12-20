@@ -1102,7 +1102,6 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
             nodes.append(node)
         return tuple(nodes)
 
-    @QtCore.pyqtSlot(QtWidgets.QTreeWidgetItem, QtWidgets.QTreeWidgetItem)
     def HandleItemChange(self, current, previous):
         """
         Catch the selected level and enable/disable OK button as needed
@@ -1114,7 +1113,6 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
             self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(True)
             self.currentlevel = str(self.currentlevel)
 
-    @QtCore.pyqtSlot(QtWidgets.QTreeWidgetItem, int)
     def HandleItemActivated(self, item, column):
         """
         Handle a doubleclick on a level
@@ -8668,14 +8666,12 @@ class ObjectPickerWidget(QtWidgets.QListView):
         if id == 3: self.setModel(self.m3)
         self.setCurrentIndex(self.model().index(sel, 0, QtCore.QModelIndex()))
 
-    @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
     def currentChanged(self, current, previous):
         """
         Throws a signal when the selected object changed
         """
         self.ObjChanged.emit(current.row())
 
-    @QtCore.pyqtSlot(QtCore.QModelIndex)
     def HandleObjReplace(self, index):
         """
         Throws a signal when the selected object is used as a replacement
@@ -9497,7 +9493,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 value |= self.mask
             return self.insertvalue(data, value)
 
-        @QtCore.pyqtSlot(bool)
         def HandleClick(self, clicked=False):
             """
             Handles clicks on the checkbox
@@ -9547,7 +9542,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             return self.insertvalue(data, self.model.entries[self.widget.currentIndex()][0])
 
-        @QtCore.pyqtSlot(int)
         def HandleIndexChanged(self, index):
             """
             Handle the current index changing in the combobox
@@ -9587,7 +9581,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             return self.insertvalue(data, self.widget.value())
 
-        @QtCore.pyqtSlot(int)
         def HandleValueChanged(self, value):
             """
             Handle the value changing in the spinbox
@@ -9674,7 +9667,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             return bytes(data)
 
-        @QtCore.pyqtSlot(int)
         def HandleValueChanged(self, value):
             """
             Handle any checkbox being changed
@@ -9757,15 +9749,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.UpdateFlag = False
 
-    @QtCore.pyqtSlot()
     def ShowNoteTooltip(self):
         QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.notes, self)
 
-    @QtCore.pyqtSlot()
     def ShowRelatedObjFilesTooltip(self):
         QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.relatedObjFiles, self)
 
-    @QtCore.pyqtSlot('PyQt_PyObject')
     def HandleFieldUpdate(self, field):
         """
         Triggered when a field's data is updated
@@ -9784,7 +9773,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.DataUpdate.emit(data)
 
-    @QtCore.pyqtSlot(str)
     def HandleRawDataEdited(self, text):
         """
         Triggered when the raw data textbox is edited
@@ -9825,7 +9813,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
     Widget for editing entrance properties
     """
 
-    @QtCore.pyqtSlot()
     def __init__(self, defaultmode=False):
         """
         Constructor
@@ -9940,7 +9927,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent = None
         self.UpdateFlag = False
 
-    @QtCore.pyqtSlot()
     def setEntrance(self, ent):
         """
         Change the entrance being edited by the editor, update all fields
@@ -9981,7 +9967,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
 
         self.UpdateFlag = False
 
-    @QtCore.pyqtSlot(int)
     def HandleEntranceIDChanged(self, i):
         """
         Handler for the entrance ID changing
@@ -9994,7 +9979,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateListItem()
         self.editingLabel.setText(trans.string('EntranceDataEditor', 23, '[id]', i))
 
-    @QtCore.pyqtSlot(int)
     def HandleEntranceTypeChanged(self, i):
         """
         Handler for the entrance type changing
@@ -10016,7 +10000,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         mainWindow.scene.update()
         self.ent.UpdateListItem()
 
-    @QtCore.pyqtSlot(int)
     def HandleDestAreaChanged(self, i):
         """
         Handler for the destination area changing
@@ -10027,7 +10010,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateTooltip()
         self.ent.UpdateListItem()
 
-    @QtCore.pyqtSlot(int)
     def HandleDestEntranceChanged(self, i):
         """
         Handler for the destination entrance changing
@@ -10038,7 +10020,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateTooltip()
         self.ent.UpdateListItem()
 
-    @QtCore.pyqtSlot(bool)
     def HandleAllowEntryClicked(self, checked):
         """
         Handle for the Allow Entry checkbox being clicked
@@ -10052,7 +10033,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateTooltip()
         self.ent.UpdateListItem()
 
-    @QtCore.pyqtSlot(bool)
     def HandleUnknownFlagClicked(self, checked):
         """
         Handle for the Unknown Flag checkbox being clicked
@@ -10064,7 +10044,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         else:
             self.ent.entsettings &= ~2
 
-    @QtCore.pyqtSlot(bool)
     def HandleConnectedPipeClicked(self, checked):
         """
         Handle for the connected pipe checkbox being clicked
@@ -10082,7 +10061,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         else:
             self.ent.entsettings &= ~8
 
-    @QtCore.pyqtSlot(bool)
     def HandleConnectedPipeReverseClicked(self, checked):
         """
         Handle for the connected pipe reverse checkbox being clicked
@@ -10094,7 +10072,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         else:
             self.ent.entsettings &= ~1
 
-    @QtCore.pyqtSlot(int)
     def HandlePathIDChanged(self, i):
         """
         Handler for the path ID changing
@@ -10103,7 +10080,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         SetDirty()
         self.ent.entpath = i
 
-    @QtCore.pyqtSlot(bool)
     def HandleForwardPipeClicked(self, checked):
         """
         Handle for the forward pipe checkbox being clicked
@@ -10115,7 +10091,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         else:
             self.ent.entsettings &= ~4
 
-    @QtCore.pyqtSlot(int)
     def HandleActiveLayerChanged(self, i):
         """
         Handle for the active layer changing
@@ -10124,7 +10099,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         SetDirty()
         self.ent.entlayer = i
 
-    @QtCore.pyqtSlot(int)
     def HandleCpDirectionChanged(self, i):
         """
         Handle for CP Direction changing
@@ -10215,7 +10189,6 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
 
         self.UpdateFlag = False
 
-    @QtCore.pyqtSlot(float)
     def HandleSpeedChanged(self, i):
         """
         Handler for the speed changing
@@ -10224,7 +10197,6 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         SetDirty()
         self.path.nodeinfo['speed'] = i
 
-    @QtCore.pyqtSlot(float)
     def HandleAccelChanged(self, i):
         """
         Handler for the accel changing
@@ -10233,7 +10205,6 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         SetDirty()
         self.path.nodeinfo['accel'] = i
 
-    @QtCore.pyqtSlot(int)
     def HandleDelayChanged(self, i):
         """
         Handler for the delay changing
@@ -10242,7 +10213,6 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         SetDirty()
         self.path.nodeinfo['delay'] = i
 
-    @QtCore.pyqtSlot(int)
     def HandleLoopsChanged(self, i):
         if self.UpdateFlag: return
         SetDirty()
@@ -10541,7 +10511,6 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
             self.midiy.setValue(0)
         return '|'.join(convclip)
 
-    @QtCore.pyqtSlot()
     def HandleCopy(self):
         """
         Makes a copy of the island
@@ -10551,7 +10520,6 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
         mainWindow.clipboard = retcb
         mainWindow.systemClipboard.setText(mainWindow.clipboard)
 
-    @QtCore.pyqtSlot()
     def HandlePlace(self):
         """
         Places the island directly into the editor
@@ -10652,7 +10620,6 @@ class LocationEditorWidget(QtWidgets.QWidget):
     def FixTitle(self):
         self.editingLabel.setText(trans.string('LocationDataEditor', 11, '[id]', self.loc.id))
 
-    @QtCore.pyqtSlot(int)
     def HandleLocationIDChanged(self, i):
         """
         Handler for the location ID changing
@@ -10664,7 +10631,6 @@ class LocationEditorWidget(QtWidgets.QWidget):
         self.loc.UpdateTitle()
         self.FixTitle()
 
-    @QtCore.pyqtSlot(int)
     def HandleLocationXChanged(self, i):
         """
         Handler for the location X-pos changing
@@ -10678,7 +10644,6 @@ class LocationEditorWidget(QtWidgets.QWidget):
         self.loc.UpdateRects()
         self.loc.update()
 
-    @QtCore.pyqtSlot(int)
     def HandleLocationYChanged(self, i):
         """
         Handler for the location Y-pos changing
@@ -10692,7 +10657,6 @@ class LocationEditorWidget(QtWidgets.QWidget):
         self.loc.UpdateRects()
         self.loc.update()
 
-    @QtCore.pyqtSlot(int)
     def HandleLocationWidthChanged(self, i):
         """
         Handler for the location width changing
@@ -10703,7 +10667,6 @@ class LocationEditorWidget(QtWidgets.QWidget):
         self.loc.UpdateRects()
         self.loc.update()
 
-    @QtCore.pyqtSlot(int)
     def HandleLocationHeightChanged(self, i):
         """
         Handler for the location height changing
@@ -10714,7 +10677,6 @@ class LocationEditorWidget(QtWidgets.QWidget):
         self.loc.UpdateRects()
         self.loc.update()
 
-    @QtCore.pyqtSlot()
     def HandleSnapToGrid(self):
         """
         Snaps the current location to an 8x8 grid
@@ -14242,7 +14204,6 @@ class MetaInfoDialog(QtWidgets.QDialog):
 
         self.PasswordEntry('')
 
-    @QtCore.pyqtSlot(str)
     def PasswordEntry(self, text):
         pswd = Area.Metadata.strData('Password')
         if pswd is None: pswd = ''
@@ -14321,7 +14282,6 @@ class MetaInfoDialog(QtWidgets.QDialog):
                 mainLayout.addWidget(buttonBox)
                 self.setLayout(mainLayout)
 
-            @QtCore.pyqtSlot(str)
             def PasswordMatch(self, text):
                 self.Ok.setDisabled(self.New.text() != self.Verify.text() and self.New.text() != '')
 
@@ -14701,19 +14661,15 @@ class OldTilesetsTab(QtWidgets.QWidget):
         mainLayout.addStretch(1)
         self.setLayout(mainLayout)
 
-    @QtCore.pyqtSlot(int)
     def HandleTileset0Choice(self, index):
         self.HandleTilesetChoice(0, index)
 
-    @QtCore.pyqtSlot(int)
     def HandleTileset1Choice(self, index):
         self.HandleTilesetChoice(1, index)
 
-    @QtCore.pyqtSlot(int)
     def HandleTileset2Choice(self, index):
         self.HandleTilesetChoice(2, index)
 
-    @QtCore.pyqtSlot(int)
     def HandleTileset3Choice(self, index):
         self.HandleTilesetChoice(3, index)
 
@@ -14835,7 +14791,6 @@ class ZonesDialog(QtWidgets.QDialog):
         mainLayout.addWidget(buttonBox)
         self.setLayout(mainLayout)
 
-    @QtCore.pyqtSlot()
     def NewZone(self):
         if len(self.zoneTabs) >= 8:
             result = QtWidgets.QMessageBox.warning(self, trans.string('ZonesDlg', 6), trans.string('ZonesDlg', 7),
@@ -14857,7 +14812,6 @@ class ZonesDialog(QtWidgets.QDialog):
 
                 # self.NewButton.setEnabled(len(self.zoneTabs) < 8)
 
-    @QtCore.pyqtSlot()
     def DeleteZone(self):
         curindex = self.tabWidget.currentIndex()
         tabamount = self.tabWidget.count()
@@ -14972,7 +14926,6 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.Dimensions.setLayout(verticalLayout)
 
-    @QtCore.pyqtSlot()
     def HandleSnapTo8x8Grid(self, z):
         """
         Snaps the current zone to an 8x8 grid
@@ -15023,7 +14976,6 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_width.setValue(right)
         self.Zone_height.setValue(bottom)
 
-    @QtCore.pyqtSlot()
     def HandleSnapTo16x16Grid(self, z):
         """
         Snaps the current zone to a 16x16 grid
@@ -15198,7 +15150,6 @@ class ZoneTab(QtWidgets.QWidget):
         InnerLayout.addLayout(ZoneDirectionLayout)
         self.Visibility.setLayout(InnerLayout)
 
-    @QtCore.pyqtSlot(bool)
     def ChangeList(self):
         VRadioMod = self.zv % 16
 
@@ -15556,7 +15507,6 @@ class BGTab(QtWidgets.QWidget):
             self.BG%sViewer.setLayout(mainLayout)
             """.replace('%s', slot).replace('            ', ''))
 
-    @QtCore.pyqtSlot()
     def handleHexBox(self):
         """
         Handles any hex box changing
@@ -15579,7 +15529,6 @@ class BGTab(QtWidgets.QWidget):
                     namebox.setCurrentIndex(namebox.count() - 1)
         self.updatePreviews()
 
-    @QtCore.pyqtSlot()
     def handleNameBox(self):
         """
         Handles any name box changing
@@ -17030,8 +16979,8 @@ class DiagnosticWidget(QtWidgets.QWidget):
         self.diagnosticIcon.setIcon(GetIcon('autodiagnosticgood'))
         self.diagnosticIcon.setFlat(True)
         self.diagnosticIcon.setGeometry(2, 1, 2, 1)
-        #self.diagnosticIcon.setHeight(59)
-        #self.diagnosticIcon.clicked.connect(ReggieWindow.HandleDiagnostics)
+        # self.diagnosticIcon.setHeight(59)
+        # self.diagnosticIcon.clicked.connect(ReggieWindow.HandleDiagnostics)
         self.diagnosticIcon.clicked.connect(self.findIssues)
         self.layout = QtWidgets.QGridLayout()
         self.layout.addWidget(self.diagnosticIcon, 0, 0)
@@ -17039,7 +16988,6 @@ class DiagnosticWidget(QtWidgets.QWidget):
         self.layout.setHorizontalSpacing(0)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(self.layout)
-
 
         self.starttimer = QtCore.QTimer()
         self.starttimer.setSingleShot(True)
@@ -17050,19 +16998,16 @@ class DiagnosticWidget(QtWidgets.QWidget):
         self.loopytimer = QtCore.QTimer()
         self.loopytimer.timeout.connect(self.findIssues)
         self.loopytimer.start(50)
-
-
         
     def findIssues(self):
-
         try:
             dtd = DiagnosticToolDialog()
             issues = dtd.populateLists()
 
             print(issues)
+
         except:
             pass
-
 
     def populateLists(self):
         """
@@ -17075,24 +17020,24 @@ class DiagnosticWidget(QtWidgets.QWidget):
 
         foundAnything = False
         foundCritical = False
-        #print("Beginning of populateLists")
+        # print("Beginning of populateLists")
         for ico, desc, fxn, isCritical in self.CheckFunctions:
-            #print("For statement worked")
-            #print(fxn('c'))
+            # print("For statement worked")
+            # print(fxn('c'))
             if False and fxn('c'):
 
                 foundAnything = True
-                #print("fxn('c') worked")
+                # print("fxn('c') worked")
                 if isCritical: foundCritical = True
 
-                #item.setText(desc)
+                # item.setText(desc)
                 if isCritical: 
                     self.diagnosticIcon.setIcon(GetIcon('autodiagnosticbad'))
                     print("THIS IS BAD")
                 else:          
                     self.diagnosticIcon.setIcon(GetIcon('autodiagnosticwarning'))
                     print("Warning!")
-        #print("after the for statement")
+        # print("after the for statement")
         if not foundAnything:
             self.diagnosticIcon.setIcon(GetIcon('autodiagnosticgood', True))
             print("'Sall cool!")
@@ -17102,13 +17047,9 @@ class DiagnosticWidget(QtWidgets.QWidget):
         return None, len(self.buttonHandlers)'''
         if foundCritical: return True, len(self.buttonHandlers)
         elif foundAnything: return False, len(self.buttonHandlers)
-        #print("End of populateLists")
+        # print("End of populateLists")
         return None, len(self.buttonHandlers)
 
-
-        
-    def test(self):
-        print("Nyapakapow!")
 
 class ZoomWidget(QtWidgets.QWidget):
     """
@@ -17992,11 +17933,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.posLabel = QtWidgets.QLabel()
         self.selectionLabel = QtWidgets.QLabel()
         self.hoverLabel = QtWidgets.QLabel()
-        self.diagnostic = DiagnosticWidget()
-
         self.statusBar().addWidget(self.posLabel)
         self.statusBar().addWidget(self.selectionLabel)
         self.statusBar().addWidget(self.hoverLabel)
+        self.diagnostic = DiagnosticWidget()
         self.ZoomWidget = ZoomWidget()
         self.ZoomStatusWidget = ZoomStatusWidget()
         self.statusBar().addPermanentWidget(self.diagnostic)
@@ -18929,7 +18869,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for selecteditem in self.pathList.selectedItems():
             selecteditem.setSelected(False)
 
-    @QtCore.pyqtSlot()
     def Autosave(self):
         """
         Auto saves the level
@@ -18942,7 +18881,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('AutoSaveFileData', QtCore.QByteArray(data))
         AutoSaveDirty = False
 
-    @QtCore.pyqtSlot()
     def TrackClipboardUpdates(self):
         """
         Catches systemwide clipboard updates
@@ -18960,7 +18898,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.clipboard = None
                 self.actions['paste'].setEnabled(False)
 
-    @QtCore.pyqtSlot(int)
     def XScrollChange(self, pos):
         """
         Moves the Overview current position box based on X scroll bar value
@@ -18968,7 +18905,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.levelOverview.Xposlocator = pos
         self.levelOverview.update()
 
-    @QtCore.pyqtSlot(int)
     def YScrollChange(self, pos):
         """
         Moves the Overview current position box based on Y scroll bar value
@@ -18976,7 +18912,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.levelOverview.Yposlocator = pos
         self.levelOverview.update()
 
-    @QtCore.pyqtSlot(int, int)
     def HandleWindowSizeChange(self, w, h):
         self.levelOverview.Hlocator = h
         self.levelOverview.Wlocator = w
@@ -19220,14 +19155,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.stampChooser.update()
             self.stampChooser.repaint()
 
-    @QtCore.pyqtSlot()
     def AboutBox(self):
         """
         Shows the about box
         """
         AboutDialog().exec_()
 
-    @QtCore.pyqtSlot()
     def HandleInfo(self):
         """
         Records the Level Meta Information
@@ -19247,7 +19180,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             dlg.setText(trans.string('InfoDlg', 14))
             dlg.exec_()
 
-    @QtCore.pyqtSlot()
     def HelpBox(self):
         """
         Shows the help box
@@ -19255,7 +19187,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         QtGui.QDesktopServices.openUrl(
             QtCore.QUrl.fromLocalFile(os.path.join(module_path(), 'reggiedata', 'help', 'index.html')))
 
-    @QtCore.pyqtSlot()
     def TipBox(self):
         """
         Reggie Next Tips and Commands
@@ -19263,14 +19194,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         QtGui.QDesktopServices.openUrl(
             QtCore.QUrl.fromLocalFile(os.path.join(module_path(), 'reggiedata', 'help', 'tips.html')))
 
-    @QtCore.pyqtSlot()
     def UpdateCheck(self):
         """
         Checks for updates and displays an appropriate dialog
         """
         UpdateDialog().exec_()
 
-    @QtCore.pyqtSlot()
     def SelectAll(self):
         """
         Select all objects in the current area
@@ -19279,7 +19208,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         paintRect.addRect(float(0), float(0), float(1024 * 24), float(512 * 24))
         self.scene.setSelectionArea(paintRect)
 
-    @QtCore.pyqtSlot()
     def Deselect(self):
         """
         Deselect all currently selected items
@@ -19288,21 +19216,18 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for obj in items:
             obj.setSelected(False)
 
-    @QtCore.pyqtSlot()
     def Undo(self):
         """
         Undoes something
         """
         self.undoStack.undo()
 
-    @QtCore.pyqtSlot()
     def Redo(self):
         """
         Redoes something previously undone
         """
         self.undoStack.redo()
 
-    @QtCore.pyqtSlot()
     def Cut(self):
         """
         Cuts the selected items
@@ -19341,7 +19266,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.SelectionUpdateFlag = False
         self.ChangeSelectionHandler()
 
-    @QtCore.pyqtSlot()
     def Copy(self):
         """
         Copies the selected items
@@ -19365,7 +19289,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.clipboard = self.encodeObjects(clipboard_o, clipboard_s)
                 self.systemClipboard.setText(self.clipboard)
 
-    @QtCore.pyqtSlot()
     def Paste(self):
         """
         Paste the selected items
@@ -19595,7 +19518,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         return layers, sprites
 
-    @QtCore.pyqtSlot()
     def ShiftItems(self):
         """
         Shifts the selected object(s)
@@ -19646,7 +19568,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             SetDirty()
 
-    @QtCore.pyqtSlot()
     def SwapObjectsTilesets(self):
         """
         Swaps objects' tilesets
@@ -19664,7 +19585,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             SetDirty()
 
-    @QtCore.pyqtSlot()
     def SwapObjectsTypes(self):
         """
         Swaps objects' types
@@ -19683,7 +19603,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             SetDirty()
 
-    @QtCore.pyqtSlot()
     def MergeLocations(self):
         """
         Merges selected sprite locations
@@ -19733,7 +19652,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             Area.locations.append(loc)
             loc.setSelected(True)
 
-    @QtCore.pyqtSlot()
     def HandleAddNewArea(self):
         """
         Adds a new area to the level
@@ -19755,7 +19673,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not self.HandleSave(): return
         self.LoadLevel(None, self.fileSavePath, True, newID)
 
-    @QtCore.pyqtSlot()
     def HandleImportArea(self):
         """
         Imports an area from another level
@@ -19833,7 +19750,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not self.HandleSaveNewArea(course, L0, L1, L2): return
         self.LoadLevel(None, self.fileSavePath, True, newID)
 
-    @QtCore.pyqtSlot()
     def HandleDeleteArea(self):
         """
         Deletes the current area
@@ -19852,7 +19768,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             f.write(Level.save())
         self.LoadLevel(None, self.fileSavePath, True, 1)
 
-    @QtCore.pyqtSlot()
     def HandleChangeGamePath(self, auto=False):
         """
         Change the game path used by the current game definition
@@ -19878,7 +19793,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not auto: self.LoadLevel(None, '01-01', False, 1)
         return True
 
-    @QtCore.pyqtSlot()
     def HandlePreferences(self):
         """
         Edit Reggie Next preferences
@@ -19922,7 +19836,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Warn the user that they may need to restart
         QtWidgets.QMessageBox.warning(None, trans.string('PrefsDlg', 0), trans.string('PrefsDlg', 30))
 
-    @QtCore.pyqtSlot()
     def HandleNewLevel(self):
         """
         Create a new level
@@ -19930,7 +19843,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if self.CheckDirty(): return
         self.LoadLevel(None, None, False, 1)
 
-    @QtCore.pyqtSlot()
     def HandleOpenFromName(self):
         """
         Open a level using the level picker
@@ -19942,7 +19854,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec_() == QtWidgets.QDialog.Accepted:
             self.LoadLevel(None, dlg.currentlevel, False, 1)
 
-    @QtCore.pyqtSlot()
     def HandleOpenFromFile(self):
         """
         Open a level using the filename
@@ -19957,7 +19868,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if fn == '': return
         self.LoadLevel(None, str(fn), True, 1)
 
-    @QtCore.pyqtSlot()
     def HandleSave(self):
         """
         Save a level back to the archive
@@ -19984,7 +19894,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('AutoSaveFileData', 'x')
         return True
 
-    @QtCore.pyqtSlot()
     def HandleSaveNewArea(self, course, L0, L1, L2):
         """
         Save a level back to the archive
@@ -20011,7 +19920,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('AutoSaveFileData', 'x')
         return True
 
-    @QtCore.pyqtSlot()
     def HandleSaveAs(self):
         """
         Save a level back to the archive, with a new filename
@@ -20040,7 +19948,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.RecentMenu.AddToList(self.fileSavePath)
 
-    @QtCore.pyqtSlot()
     def HandleSaveCopyAs(self):
         """
         Save a level back to the archive, with a new filename, but does not store this filename
@@ -20054,14 +19961,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         with open(fn, 'wb') as f:
             f.write(data)
 
-    @QtCore.pyqtSlot()
     def HandleExit(self):
         """
         Exit the editor. Why would you want to do this anyway?
         """
         self.close()
 
-    @QtCore.pyqtSlot(int)
     def HandleSwitchArea(self, idx):
         """
         Handle activated signals for areaComboBox
@@ -20073,7 +19978,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if Area.areanum != idx + 1:
             self.LoadLevel(None, self.fileSavePath, True, idx + 1)
 
-    @QtCore.pyqtSlot(bool)
     def HandleUpdateLayer0(self, checked):
         """
         Handle toggling of layer 0 being shown
@@ -20088,7 +19992,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleUpdateLayer1(self, checked):
         """
         Handle toggling of layer 1 being shown
@@ -20103,7 +20006,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleUpdateLayer2(self, checked):
         """
         Handle toggling of layer 2 being shown
@@ -20118,7 +20020,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleTilesetAnimToggle(self, checked):
         """
         Handle toggling of tileset animations
@@ -20131,7 +20032,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleCollisionsToggle(self, checked):
         """
         Handle toggling of tileset collisions viewing
@@ -20143,7 +20043,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('ShowCollisions', CollisionsShown)
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleRealViewToggle(self, checked):
         """
         Handle toggling of Real View
@@ -20156,7 +20055,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('RealViewEnabled', RealViewEnabled)
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleSpritesVisibility(self, checked):
         """
         Handle toggling of sprite visibility
@@ -20172,7 +20070,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('ShowSprites', SpritesShown)
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleSpriteImages(self, checked):
         """
         Handle toggling of sprite images
@@ -20199,7 +20096,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleLocationsVisibility(self, checked):
         """
         Handle toggling of location visibility
@@ -20215,7 +20111,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('ShowLocations', LocationsShown)
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleCommentsVisibility(self, checked):
         """
         Handle toggling of comment visibility
@@ -20231,7 +20126,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('ShowComments', CommentsShown)
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandlePathsVisibility(self, checked):
         """
         Handle toggling of path visibility
@@ -20250,7 +20144,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('ShowPaths', PathsShown)
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleObjectsFreeze(self, checked):
         """
         Handle toggling of objects being frozen
@@ -20270,7 +20163,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezeObjects', ObjectsFrozen)
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleSpritesFreeze(self, checked):
         """
         Handle toggling of sprites being frozen
@@ -20289,7 +20181,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezeSprites', SpritesFrozen)
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleEntrancesFreeze(self, checked):
         """
         Handle toggling of entrances being frozen
@@ -20308,7 +20199,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezeEntrances', EntrancesFrozen)
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleLocationsFreeze(self, checked):
         """
         Handle toggling of locations being frozen
@@ -20327,7 +20217,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezeLocations', LocationsFrozen)
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandlePathsFreeze(self, checked):
         """
         Handle toggling of path nodes being frozen
@@ -20346,7 +20235,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezePaths', PathsFrozen)
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleCommentsFreeze(self, checked):
         """
         Handle toggling of comments being frozen
@@ -20365,7 +20253,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezeComments', CommentsFrozen)
         self.scene.update()
 
-    @QtCore.pyqtSlot(bool)
     def HandleSwitchGrid(self):
         """
         Handle switching of the grid view
@@ -20382,7 +20269,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('GridType', GridType)
         self.scene.update()
 
-    @QtCore.pyqtSlot()
     def HandleZoomIn(self):
         """
         Handle zooming in
@@ -20393,7 +20279,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if zi < len(self.ZoomLevels):
             self.ZoomTo(self.ZoomLevels[zi])
 
-    @QtCore.pyqtSlot()
     def HandleZoomOut(self):
         """
         Handle zooming out
@@ -20404,21 +20289,18 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if zi >= 0:
             self.ZoomTo(self.ZoomLevels[zi])
 
-    @QtCore.pyqtSlot()
     def HandleZoomActual(self):
         """
         Handle zooming to the actual size
         """
         self.ZoomTo(100.0)
 
-    @QtCore.pyqtSlot()
     def HandleZoomMin(self):
         """
         Handle zooming to the minimum size
         """
         self.ZoomTo(self.ZoomLevels[0])
 
-    @QtCore.pyqtSlot()
     def HandleZoomMax(self):
         """
         Handle zooming to the maximum size
@@ -20451,7 +20333,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
-    @QtCore.pyqtSlot(int, int)
     def HandleOverviewClick(self, x, y):
         """
         Handle position changes from the level overview
@@ -20826,7 +20707,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.scene.addItem(com)
             com.UpdateListItem()
 
-    @QtCore.pyqtSlot()
     def ReloadTilesets(self, soft=False):
         """
         Reloads all the tilesets. If soft is True, they will not be reloaded if the filepaths have not changed.
@@ -20848,7 +20728,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Sprites = None
         LoadSpriteData()
 
-    @QtCore.pyqtSlot()
     def ChangeSelectionHandler(self):
         """
         Update the visible panels whenever the selection changes
@@ -21044,7 +20923,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             SetDirty()
         self.levelOverview.update()
 
-    @QtCore.pyqtSlot(int)
     def CreationTabChanged(self, nt):
         """
         Handles the selected palette tab changing
@@ -21069,7 +20947,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         global CurrentPaintType
         CurrentPaintType = CPT
 
-    @QtCore.pyqtSlot(int)
     def ObjTabChanged(self, nt):
         """
         Handles the selected slot tab in the object palette changing
@@ -21082,7 +20959,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         global CurrentPaintType
         CurrentPaintType = nt
 
-    @QtCore.pyqtSlot(int)
     def SprTabChanged(self, nt):
         """
         Handles the selected tab in the sprite palette changing
@@ -21094,7 +20970,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         global CurrentPaintType
         CurrentPaintType = cpt
 
-    @QtCore.pyqtSlot(int)
     def LayerChoiceChanged(self, nl):
         """
         Handles the selected layer changing
@@ -21149,7 +21024,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.scene.update()
             SetDirty()
 
-    @QtCore.pyqtSlot(int)
     def ObjectChoiceChanged(self, type):
         """
         Handles a new object being chosen
@@ -21157,7 +21031,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         global CurrentObject
         CurrentObject = type
 
-    @QtCore.pyqtSlot(int)
     def ObjectReplace(self, type):
         """
         Handles a new object being chosen to replace the selected objects
@@ -21176,7 +21049,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if changed:
             SetDirty()
 
-    @QtCore.pyqtSlot(int)
     def SpriteChoiceChanged(self, type):
         """
         Handles a new sprite being chosen
@@ -21193,7 +21065,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.defaultPropDock.setVisible(False)
             self.defaultDataEditor.update()
 
-    @QtCore.pyqtSlot(int)
     def SpriteReplace(self, type):
         """
         Handles a new sprite type being chosen to replace the selected sprites
@@ -21214,7 +21085,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.ChangeSelectionHandler()
 
-    @QtCore.pyqtSlot(int)
     def SelectNewSpriteView(self, type):
         """
         Handles a new sprite view being chosen
@@ -21227,14 +21097,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         layout.itemAt(0).widget().setVisible(isSearch)
         layout.itemAt(1).widget().setVisible(isSearch)
 
-    @QtCore.pyqtSlot(str)
     def NewSearchTerm(self, text):
         """
         Handles a new sprite search term being entered
         """
         self.sprPicker.SetSearchString(text)
 
-    @QtCore.pyqtSlot()
     def ShowDefaultProps(self):
         """
         Handles the Show Default Properties button being clicked
@@ -21250,7 +21118,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             obj.UpdateListItem()
             SetDirty()
 
-    @QtCore.pyqtSlot('PyQt_PyObject')
     def SpriteDataUpdated(self, data):
         """
         Handle the current sprite's data being updated
@@ -21304,7 +21171,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.SaveComments()
         SetDirty()
 
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleEntranceSelectByList(self, item):
         """
         Handle an entrance being selected from the list
@@ -21322,7 +21188,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         ent.setSelected(True)
 
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleEntranceToolTipAboutToShow(self, item):
         """
         Handle an entrance being hovered in the list
@@ -21336,7 +21201,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         ent.UpdateListItem(True)
 
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleLocationSelectByList(self, item):
         """
         Handle a location being selected from the list
@@ -21354,7 +21218,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         loc.setSelected(True)
 
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleLocationToolTipAboutToShow(self, item):
         """
         Handle a location being hovered in the list
@@ -21368,7 +21231,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         loc.UpdateListItem(True)
 
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleSpriteSelectByList(self, item):
         """
         Handle a sprite being selected from the list
@@ -21384,7 +21246,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         spr.setSelected(True)
 
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleSpriteToolTipAboutToShow(self, item):
         """
         Handle a sprite being hovered in the list
@@ -21398,7 +21259,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         spr.UpdateListItem(True)
 
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandlePathSelectByList(self, item):
         """
         Handle a path node being selected
@@ -21414,7 +21274,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         path.setSelected(True)
 
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandlePathToolTipAboutToShow(self, item):
         """
         Handle a path node being hovered in the list
@@ -21428,7 +21287,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         path.UpdateListItem(True)
 
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleCommentSelectByList(self, item):
         """
         Handle a comment being selected
@@ -21444,7 +21302,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         comment.setSelected(True)
 
-    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleCommentToolTipAboutToShow(self, item):
         """
         Handle a comment being hovered in the list
@@ -21499,7 +21356,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.UpdateFlag = False
 
-    @QtCore.pyqtSlot(int, int)
     def PositionHovered(self, x, y):
         """
         Handle a position being hovered in the view
@@ -21566,7 +21422,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         QtWidgets.QMainWindow.keyPressEvent(self, event)
 
-    @QtCore.pyqtSlot()
     def HandleAreaOptions(self):
         """
         Pops up the options for Area Dialogue
@@ -21626,7 +21481,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             self.scene.update()
 
-    @QtCore.pyqtSlot()
     def HandleZones(self):
         """
         Pops up the options for Zone dialog
@@ -21939,7 +21793,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.levelOverview.update()
 
     # Handles setting the backgrounds
-    @QtCore.pyqtSlot()
     def HandleBG(self):
         """
         Pops up the Background settings Dialog
@@ -21975,7 +21828,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 i = i + 1
 
-    @QtCore.pyqtSlot()
     def HandleScreenshot(self):
         """
         Takes a screenshot of the entire level and saves it
