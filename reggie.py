@@ -883,15 +883,20 @@ def LoadSpriteData():
             root = tree.getroot()
 
             for sprite in root:
-                if sprite.tag.lower() != 'sprite': continue
+                if sprite.tag.lower() != 'sprite':
+                    continue
 
                 try:
                     spriteid = int(sprite.attrib['id'])
                 except ValueError:
                     continue
+
                 spritename = sprite.attrib['name']
                 notes = None
                 relatedObjFiles = None
+                yoshiNotes = None
+                yoshi = None
+                asm = None
 
                 if 'notes' in sprite.attrib:
                     notes = trans.string('SpriteDataEditor', 2, '[notes]', sprite.attrib['notes'])
@@ -900,11 +905,24 @@ def LoadSpriteData():
                     relatedObjFiles = trans.string('SpriteDataEditor', 8, '[list]',
                                                    sprite.attrib['files'].replace(';', '<br>'))
 
+                if 'yoshinotes' in sprite.attrib:
+                    yoshiNotes = trans.string('SpriteDataEditor', 9, '[notes]',
+                                                   sprite.attrib['yoshinotes'])
+                if 'yoshi' in sprite.attrib:
+                    yoshi = sprite.attrib['yoshi']
+
+                if 'asmhacks' in sprite.attrib:
+                    asm = sprite.attrib['asmhacks'] == "True"
+
+
                 sdef = SpriteDefinition()
                 sdef.id = spriteid
                 sdef.name = spritename
                 sdef.notes = notes
                 sdef.relatedObjFiles = relatedObjFiles
+                sdef.yoshiNotes = yoshiNotes
+                sdef.yoshi = yoshi
+                sdef.asm = asm
 
                 try:
                     sdef.loadFrom(sprite)
@@ -2569,6 +2587,7 @@ RealViewEnabled = False
 LocationsShown = True
 CommentsShown = True
 DrawEntIndicators = False
+AdvancedModeEnabled = False
 ObjectsFrozen = False
 SpritesFrozen = False
 EntrancesFrozen = False
@@ -8656,7 +8675,6 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         self.comboBox_4.removeItem(index)
 
 
-
 class ObjectPickerWidget(QtWidgets.QListView):
     """
     Widget that shows a list of available objects
@@ -9360,14 +9378,14 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # create the raw editor
         font = QtGui.QFont()
         font.setPointSize(8)
-        editbox = QtWidgets.QLabel(trans.string('SpriteDataEditor', 3))
-        editbox.setFont(font)
+        self.editbox = QtWidgets.QLabel(trans.string('SpriteDataEditor', 3))
+        self.editbox.setFont(font)
         edit = QtWidgets.QLineEdit()
         edit.textEdited.connect(self.HandleRawDataEdited)
         self.raweditor = edit
 
         editboxlayout = QtWidgets.QHBoxLayout()
-        editboxlayout.addWidget(editbox)
+        editboxlayout.addWidget(self.editbox)
         editboxlayout.addWidget(edit)
         editboxlayout.setStretch(1, 1)
 
@@ -9389,9 +9407,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.relatedObjFilesButton.setAutoRaise(True)
         self.relatedObjFilesButton.clicked.connect(self.ShowRelatedObjFilesTooltip)
 
+        self.yoshiInfo = QtWidgets.QLabel()
+
         toplayout = QtWidgets.QHBoxLayout()
         toplayout.addWidget(self.spriteLabel)
         toplayout.addStretch(1)
+        toplayout.addWidget(self.yoshiInfo)
         toplayout.addWidget(self.relatedObjFilesButton)
         toplayout.addWidget(self.noteButton)
 
@@ -9749,13 +9770,16 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     layout.removeWidget(widget)
                     widget.setParent(None)
 
+        # use the raw editor if advanced mode is enabled
+        self.raweditor.setVisible(AdvancedModeEnabled)
+        self.editbox.setVisible(AdvancedModeEnabled)
+
         if sprite is None:
             self.spriteLabel.setText(trans.string('SpriteDataEditor', 5, '[id]', type))
             self.noteButton.setVisible(False)
 
-            # use the raw editor if nothing is there
-            self.raweditor.setVisible(True)
-            if len(self.fields) > 0: self.fields = []
+            if len(self.fields) > 0:
+                self.fields = []
 
         else:
             self.spriteLabel.setText(trans.string('SpriteDataEditor', 6, '[id]', type, '[name]', sprite.name))
@@ -9769,6 +9793,14 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             # create all the new fields
             fields = []
             row = 2
+
+            # yoshi info
+            if sprite.yoshi is not None:
+                image = ["works", "physics", "glitch", "no"][sprite.yoshi]
+                self.yoshiInfo.setPixmap(GetIcon("ys-" + image))
+                self.yoshiInfo.setVisible(True)
+            else:
+                self.yoshiInfo.setVisible(False)
 
             for f in sprite.fields:
                 if f[0] == 0:
@@ -12474,6 +12506,7 @@ class ReggieTranslation:
                 29: 'Use Old Tileset Picker',
                 30: 'You may need to restart Reggie Next for changes to take effect.',
                 31: 'Display lines indicating the leftmost x-position where entrances can be safely placed in zones',
+                32: 'Enable advanced mode',
             },
             'QuickPaint': {
                 1: "WOAH! Watch out!",
@@ -12523,6 +12556,7 @@ class ReggieTranslation:
                 6: '[b]Sprite [id]:[br][name][/b]',
                 7: 'Object Files',
                 8: '[b]This sprite uses:[/b][br][list]',
+                9: '[b]Yoshi Notes:[/b] [notes]',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
@@ -17367,12 +17401,16 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Add the Zone Entrance Indicator checkbox
                 self.zEntIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 31))
 
+                # Advanced mode checkbox
+                self.advIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 32))
+
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
                 L.addRow(trans.string('PrefsDlg', 27), TileL)
                 L.addRow(trans.string('PrefsDlg', 14), self.Trans)
                 L.addRow(trans.string('PrefsDlg', 15), ClearRecentBtn)
                 L.addWidget(self.zEntIndicator)
+                L.addWidget(self.advIndicator)
                 self.setLayout(L)
 
                 # Set the buttons
@@ -17406,6 +17444,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                     i += 1
 
                 self.zEntIndicator.setChecked(DrawEntIndicators)
+                self.advIndicator.setChecked(AdvancedModeEnabled)
 
             def ClearRecent(self):
                 """
@@ -19874,6 +19913,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         DrawEntIndicators = dlg.generalTab.zEntIndicator.isChecked()
         setSetting('ZoneEntIndicators', DrawEntIndicators)
 
+        # Get the advanced mode setting
+        global AdvancedModeEnabled
+        AdvancedModeEnabled = dlg.generalTab.advIndicator.isChecked()
+        setSetting('AdvancedMode', AdvancedModeEnabled)
+
         # Get the Toolbar tab settings
         boxes = (
         dlg.toolbarTab.FileBoxes, dlg.toolbarTab.EditBoxes, dlg.toolbarTab.ViewBoxes, dlg.toolbarTab.SettingsBoxes,
@@ -22016,6 +22060,7 @@ def main():
     global EnableAlpha, GridType, CollisionsShown, RealViewEnabled
     global ObjectsFrozen, SpritesFrozen, EntrancesFrozen, LocationsFrozen, PathsFrozen, CommentsFrozen
     global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown, DrawEntIndicators
+    global AdvancedModeEnabled
 
     gt = setting('GridType')
     if gt == 'checker':
@@ -22038,6 +22083,7 @@ def main():
     CommentsShown = setting('ShowComments', True)
     PathsShown = setting('ShowPaths', True)
     DrawEntIndicators = setting('ZoneEntIndicators', False)
+    AdvancedModeEnabled = setting('AdvancedMode', False)
     SLib.RealViewEnabled = RealViewEnabled
 
     # Choose a folder for the game
