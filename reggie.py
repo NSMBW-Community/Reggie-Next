@@ -766,25 +766,55 @@ class SpriteDefinition:
                 comment = None
 
             if field.tag == 'checkbox':
-                # parameters: title, nybble, mask, comment
-                snybble = attribs['nybble']
-                if '-' not in snybble:
-                    nybble = int(snybble) - 1
+                # parameters: title, bit, mask, comment
+                if 'nybble' in attribs:
+                    sbit = attribs['nybble']
+                    sft = 2
                 else:
-                    getit = snybble.split('-')
-                    nybble = (int(getit[0]) - 1, int(getit[1]))
+                    sbit = attribs['bit']
+                    sft = 0
 
-                fields.append((0, attribs['title'], nybble, int(attribs['mask']) if 'mask' in attribs else 1, comment))
-            elif field.tag == 'list':
-                # parameters: title, nybble, model, comment
-                snybble = attribs['nybble']
-                if '-' not in snybble:
-                    nybble = int(snybble) - 1
-                    max = 16
+                if '-' not in sbit:
+                    if sft:
+                        # just 4 bits
+                        bit = (((int(sbit) - 1) << 2) + 1, (int(sbit) << 2) + 1)
+                    else:
+                        # just 1 bit
+                        bit = int(sbit)
                 else:
-                    getit = snybble.split('-')
-                    nybble = (int(getit[0]) - 1, int(getit[1]))
-                    max = (16 << ((nybble[1] - nybble[0] - 1) * 4))
+                    # different number of bits
+                    getit = sbit.split('-')
+                    bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+
+                if 'mask' in attribs:
+                    mask = int(attribs['mask'])
+                else:
+                    mask = 1
+
+                fields.append((0, attribs['title'], bit, mask, comment))
+            elif field.tag == 'list':
+                # parameters: title, bit, model, comment
+                if 'nybble' in attribs:
+                    sbit = attribs['nybble']
+                    sft = 2
+                else:
+                    sbit = attribs['bit']
+                    sft = 0
+
+                if '-' not in sbit:
+                    if sft:
+                        # just 4 bits
+                        bit = (((int(sbit) - 1) << 2) + 1, (int(sbit) << 2) + 1)
+                        max = 16
+                    else:
+                        # just 1 bit
+                        bit = int(sbit)
+                        max = 2
+                else:
+                    # different number of bits
+                    getit = sbit.split('-')
+                    bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+                    max = 1 << (bit[1] - bit[0] + 1)
 
                 entries = []
                 existing = [None for i in range(max)]
@@ -796,24 +826,32 @@ class SpriteDefinition:
                     existing[i] = True
 
                 fields.append(
-                    (1, attribs['title'], nybble, SpriteDefinition.ListPropertyModel(entries, existing, max), comment))
+                    (1, attribs['title'], bit, SpriteDefinition.ListPropertyModel(entries, existing, max), comment))
             elif field.tag == 'value':
-                # parameters: title, nybble, max, comment
-                snybble = attribs['nybble']
-
-                # if it's 5-12 skip it
-                # fixes tobias's crashy 'unknown values'
-                if snybble == '5-12': continue
-
-                if '-' not in snybble:
-                    nybble = int(snybble) - 1
-                    max = 16
+                # parameters: title, bit, max, comment
+                if 'nybble' in attribs:
+                    sbit = attribs['nybble']
+                    sft = 2
                 else:
-                    getit = snybble.split('-')
-                    nybble = (int(getit[0]) - 1, int(getit[1]))
-                    max = (16 << ((nybble[1] - nybble[0] - 1) * 4))
+                    sbit = attribs['bit']
+                    sft = 0
 
-                fields.append((2, attribs['title'], nybble, max, comment))
+                if '-' not in sbit:
+                    if sft:
+                        # just 4 bits
+                        bit = (((int(sbit) - 1) << 2) + 1, (int(sbit) << 2) + 1)
+                        max = 16
+                    else:
+                        # just 1 bit
+                        bit = int(sbit)
+                        max = 2
+                else:
+                    # different number of bits
+                    getit = sbit.split('-')
+                    bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+                    max = 1 << (bit[1] - bit[0] + 1)
+
+                fields.append((2, attribs['title'], bit, max, comment))
             elif field.tag == 'bitfield':
                 # parameters: title, startbit, bitnum, comment
                 startbit = int(attribs['startbit'])
@@ -1102,6 +1140,7 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
             nodes.append(node)
         return tuple(nodes)
 
+    @QtCore.pyqtSlot(QtWidgets.QTreeWidgetItem, QtWidgets.QTreeWidgetItem)
     def HandleItemChange(self, current, previous):
         """
         Catch the selected level and enable/disable OK button as needed
@@ -1113,6 +1152,7 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
             self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(True)
             self.currentlevel = str(self.currentlevel)
 
+    @QtCore.pyqtSlot(QtWidgets.QTreeWidgetItem, int)
     def HandleItemActivated(self, item, column):
         """
         Handle a doubleclick on a level
@@ -1203,7 +1243,7 @@ class TilesetTile:
         numberOfFrames = len(data) // 2048
         for frame in range(numberOfFrames):
             framedata = data[frame * 2048: (frame * 2048) + 2048]
-            newdata = tpl.decodeRGB4A3(framedata, 32, 32, False)
+            newdata = tpl.decodeRGB4A3(framedata, 32, 32)
             img = QtGui.QImage(newdata, 32, 32, 128, QtGui.QImage.Format_ARGB32)
             pix = QtGui.QPixmap.fromImage(img.copy(4, 4, 24, 24))
             animTiles.append(pix)
@@ -2015,7 +2055,7 @@ def _LoadTileset(idx, name, reload=False):
         except:
             return False
         return True
-    
+
     # decompress the textures
     found = exists('BG_tex/%s_tex.bin.LZ' % name)
     found2 = exists('BG_chk/d_bgchk_%s.bin' % name)
@@ -2172,7 +2212,7 @@ def _LoadTileset(idx, name, reload=False):
 
 
 def LoadTexture_NSMBW(tiledata):
-    data = tpl.decodeRGB4A3(tiledata, 1024, 256, False)
+    data = tpl.decodeRGB4A3(tiledata, 1024, 256)
     img = QtGui.QImage(data, 1024, 256, 4096, QtGui.QImage.Format_ARGB32)
     return img
 
@@ -3663,7 +3703,7 @@ class Area_NSMBW(AbstractParsedArea):
 
     def WritePathNodes(self, buffer, offst, nodes):
         """
-        Writes the path node data to the block 14 bytearray
+        Writes the pathnode data to the block 14 bytearray
         """
         offset = int(offst)
         # [20:29:04]  [@Treeki] struct PathNode { unsigned short x; unsigned short y; float speed; float unknownMaybeAccel; short unknown; char padding[2]; }
@@ -5255,6 +5295,7 @@ class SpriteItem(LevelEditorItem):
         if (self.type in gamedef.getImageClasses()) and (self.type not in SLib.SpriteImagesLoaded):
             gamedef.getImageClasses()[self.type].loadImages()
             SLib.SpriteImagesLoaded.add(self.type)
+
         self.ImageObj = obj(self)
 
         self.UpdateDynamicSizing()
@@ -5282,6 +5323,7 @@ class SpriteItem(LevelEditorItem):
             ))
 
         self.ImageObj.dataChanged()
+
         self.UpdateRects()
 
         self.ChangingPos = True
@@ -5943,8 +5985,6 @@ class PathItem(LevelEditorItem):
         self.setZValue(25002)
         self.UpdateTooltip()
 
-        self.setVisible(PathsShown)
-
         # now that we're inited, set
         self.nodeinfo['graphicsitem'] = self
 
@@ -6053,8 +6093,6 @@ class PathEditorLineItem(LevelEditorItem):
         self.computeBoundRectAndPos()
         self.setZValue(25002)
         self.UpdateTooltip()
-
-        self.setVisible(PathsShown)
 
     def UpdateTooltip(self):
         """
@@ -6243,7 +6281,7 @@ class CommentItem(LevelEditorItem):
             self.TextEditProxy = mainWindow.scene.addWidget(self.TextEdit)
             self.TextEditProxy.setZValue(self.zval)
             self.TextEditProxy.setCursor(Qt.IBeamCursor)
-            self.TextEditProxy.BoundingRect = QtCore.QRectF(0, 0, 4000, 4000)
+            self.TextEditProxy.BoundingRect = QtCore.QRectF(0, 0, 400, 400)
             self.TextEditProxy.boundingRect = lambda self: self.BoundingRect
             self.TextEdit.setMaximumWidth(192)
             self.TextEdit.setMaximumHeight(128)
@@ -6474,13 +6512,1501 @@ class LevelOverviewWidget(QtWidgets.QWidget):
 
 class QuickPaintOperations:
     """
-    All of the actions/functions/operations/whatever programmed for the quick paint tool are stored in here.
+    All of the actions/functions/operations/whatever programmed for the quick paint
+    tool are stored in here.
     """
     color_shift = 0
     color_shift_mouseGridPosition = None
     object_optimize_database = []
     object_search_database = {}
+    tilesMatrix = [[]]
+    objects = []
 
+    @staticmethod
+    def prePaintObject(ln, layer, x, y, z):
+        """
+        Schedules an object to be added by adding the coordinates to the list of pre-painted objects.
+        """
+        if not hasattr(QuickPaintOperations, 'prePaintedObjects'):
+            QuickPaintOperations.prePaintedObjects = {}
+
+        if not ('%i_%i' % (x, y) in QuickPaintOperations.prePaintedObjects):
+            QuickPaintOperations.prePaintedObjects['%i_%i' % (x, y)] = {'ln': ln, 'layer': layer, 'x': x, 'y': y,
+                                                                        'z': z, 'r': int(rand() * 127) + 128,
+                                                                        'g': int(rand() * 127) + 128,
+                                                                        'b': int(rand() * 127) + 128}
+        mainWindow.scene.invalidate()
+
+    @staticmethod
+    def PaintFromPrePaintedObjects():
+        """
+        Creates and adds all the objects scheduled from the list of pre-painted objects to the level.
+        """
+        QuickPaintOperations.sliceObjRange(QuickPaintOperations.prePaintedObjects)
+        if not hasattr(QuickPaintOperations, 'prePaintedObjects'):
+            return
+
+        # Build a matrix, with one padding
+        ppobjs = QuickPaintOperations.prePaintedObjects
+
+        xs = [ppobjs[ppobj]['x'] for ppobj in ppobjs]
+        ys = [ppobjs[ppobj]['y'] for ppobj in ppobjs]
+
+        width  = max(xs)
+        minx   = min(xs)
+        height = max(ys)
+        miny   = min(ys)
+
+        matrix = [[0 for i in range(height - miny + 3)] for j in range(width - minx + 3)]
+        for ppobj in QuickPaintOperations.prePaintedObjects:
+            obj = QuickPaintOperations.prePaintedObjects[ppobj]
+            matrix[obj['x'] - minx + 1][obj['y'] - miny + 1] = 1
+
+        QuickPaintOperations.tilesMatrix = matrix
+
+        print(matrix)
+
+        QuickPaintOperations.GetTopObjects(matrix, width, height, minx, miny)
+        QuickPaintOperations.GetBottomObjects(matrix, width, height, minx, miny)
+
+        # draw
+        QuickPaintOperations.drawObjects()
+        #layer = CurrentLayer
+
+        ## paint the objects
+        #for obj in objects:
+        #    Area.layers[layer].append(obj)
+        #    obj.positionChanged = mainWindow.HandleObjPosChange
+        #    mainWindow.scene.addItem(obj)
+
+        #QuickPaintOperations.prePaintedObjects.clear()
+        #mainWindow.scene.invalidate()
+
+    @staticmethod
+    def GetTopObjects(matrix, width, height, minx, miny):
+        BLOCKY = False
+
+        # Find heights per x
+        heights = QuickPaintOperations.GetHeightsFromMatrix(matrix, True)
+
+        # calculate runs
+        runs = QuickPaintOperations.GetRunsFromHeights(heights)
+
+        # get the objects
+        return QuickPaintOperations.GetObjectsFromRunsWithHeights(runs, heights, minx, miny, height, BLOCKY, True)
+
+    @staticmethod
+    def GetBottomObjects(matrix, width, height, minx, miny):
+        BLOCKY = False
+
+        # Find heights per x
+        heights = QuickPaintOperations.GetHeightsFromMatrix(matrix, False)
+        print(heights)
+
+        # calculate runs
+        runs = QuickPaintOperations.GetRunsFromHeights(heights)
+
+        print(runs)
+
+        # get the objects
+        return QuickPaintOperations.GetObjectsFromRunsWithHeights(runs, heights, minx, miny, height, BLOCKY, False)
+
+    @staticmethod
+    def GetHeightsFromMatrix(matrix, top):
+        heights = []
+        width = len(matrix) - 1
+        height = len(matrix[0]) - 1
+
+        if top:
+            for x in range(1, width):
+                for y in range(1, height):
+                    if matrix[x][y] == 1:
+                        break
+
+                heights.append(y)
+        else:
+            for x in range(1, width):
+                for y in reversed(range(1, height)):
+                    if matrix[x][y] == 1:
+                        break
+
+                heights.append(y)
+
+
+        return heights
+
+    @staticmethod
+    def GetRunsFromHeights(heights):
+        runs = []
+        cur = diff = 0
+        length = len(heights)
+
+        print("HEIGHTS")
+        print(heights)
+
+        newy = prevy = heights[0]
+        for i in range(length):
+            if heights[i] == newy:
+                cur += 1
+            else:
+                # run finished
+                runs.append((cur, diff))
+                newy = heights[i]
+                prevy = heights[i - 1]
+                diff = newy - prevy
+                cur = 1
+
+        runs.append((cur, diff))
+
+
+        return runs
+
+    @staticmethod
+    def GetObjectsFromRunsWithHeights(runs, heights, minx, miny, height, blocky, top):
+
+        current = 0
+        print("RUNS:")
+        print(runs)
+
+        for (size, dy) in runs:
+            # subtract 1 bacause of padding in the matrix
+            acty = miny + heights[current] - 1
+            actx = minx + current
+
+            if top:
+                o = 1
+            else:
+                o = -1
+
+            if current + size >= len(heights):
+                endType = 2
+            elif heights[current + size] - heights[current] == o:
+                endType = 1
+            elif o == 1 and heights[current + size] - heights[current] > 1:
+                endType = 2
+            elif o == -1 and heights[current + size] - heights[current] < -1:
+                endType = 2
+            else:
+                endType = 0
+
+            if dy > 0:
+                d = "D"
+            else:
+                d = "I"
+
+            print("endType: "+str(endType))
+            if dy == -1 * o and not blocky:
+                QuickPaintOperations.TryPaintingTile(current + 1, heights[current], actx, acty, size, True, o, d, endType)
+            else:
+                QuickPaintOperations.TryPaintingTile(current + 1, heights[current], actx, acty, size, False, o, d, endType)
+
+            current += size
+
+        return QuickPaintOperations.objects
+
+        # old code
+
+        objects = []
+        current = 0
+        i = 0
+
+        if top:
+            OBJ = {
+                "FLA": OBJ_FLAU,
+                "INL": OBJ_INBL,
+                "INR": OBJ_INBR,
+                "WAL": OBJ_WALL,
+                "WAR": OBJ_WALR,
+                "OUL": OBJ_OUTL,
+                "OUR": OBJ_OUTR,
+                "SI1": OBJ_SI1U,
+                "SD1": OBJ_SD1U,
+                "SD1": OBJ_SD1U,
+                "SI1": OBJ_SI1U,
+                "SD2": OBJ_SD2U,
+                "SI2": OBJ_SI2U,
+                "SD4": OBJ_SD4U,
+                "SI4": OBJ_SI4U
+            }
+        else:
+            OBJ = {
+                "FLA": OBJ_FLAD,
+                "INL": OBJ_OUBL,
+                "INR": OBJ_OUBR,
+                "WAL": OBJ_WALR,
+                "WAR": OBJ_WALL,
+                "OUL": OBJ_INTL,
+                "OUR": OBJ_INTR,
+                "SI1": OBJ_SI1D,
+                "SD1": OBJ_SD1D,
+                "SD1": OBJ_SD1D,
+                "SI1": OBJ_SI1D,
+                "SD2": OBJ_SD2D,
+                "SI2": OBJ_SI2D,
+                "SD4": OBJ_SD4D,
+                "SI4": OBJ_SI4D
+            }
+
+        for (size, dy) in runs:
+            # check the height difference to see if we can use slopes
+            y = miny + heights[current]
+            x = current + minx
+
+            if abs(dy) > 1 or (blocky and not dy == 0):
+                # this tile must (partially) be a corner
+
+                # check if this is a left or a right corner and adjust length
+                # accordingly
+                if dy > 0:
+                    length = size - 1
+                else:
+                    length = size
+
+                # check if the previous run was a corner and adjust length and
+                # starting point accordingly
+                if runs[i - 1][1] < -1 or (runs[i - 1][1] == -1 and blocky):
+                    length -= 1
+                    x += 1
+
+                # check if the previous object was an increasing slope
+                if i > 0 and runs[i - 1][1] == -1 and not blocky:
+                    # start with a slope of the correct size
+                    if length >= 4:
+                        # increasing 4x2
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["SI4"], layer, x, y, 4, 2, z))
+                        slope = 4
+                    elif length >= 2:
+                        # increasing 2x2
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["SI2"], layer, x, y, 2, 2, z))
+                        slope = 2
+                    else:
+                        # increasing 1x2
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["SI1"], layer, x, y, 1, 2, z))
+                        slope = 1
+
+                    length -= slope
+                    x += slope
+
+                if length > 0:
+                    objects.append(ObjectItem(CurrentPaintType, OBJ["FLA"], layer, x, y, length, 1, z))
+
+                if dy > 0:
+                    # dy is greater than 0, so lets go down!
+                    objects.append(ObjectItem(CurrentPaintType, OBJ["OUR"], layer, x + length, y, 1, 1, z))
+
+                    if dy != 1:
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["WAR"], layer, x + length, y + 1, 1, dy - 1, z))
+
+                    objects.append(ObjectItem(CurrentPaintType, OBJ["INL"], layer, x + length, y + dy, 1, 1, z))
+                else:
+                    # dy is smaller than 0, so lets go up!
+                    objects.append(ObjectItem(CurrentPaintType, OBJ["INR"], layer, x + length, y, 1, 1, z))
+
+                    if dy != -1:
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["WAL"], layer, x + length, y - abs(dy) + 1, 1, abs(dy) - 1, z))
+
+                    objects.append(ObjectItem(CurrentPaintType, OBJ["OUL"], layer, x + length, y - abs(dy), 1, 1, z))
+            elif dy == 0:
+                # this tile is the ending point
+                # check to see if the last piece already covered the first tile
+                # that only happens if it's not a slope
+                if runs[i - 1][1] < -1:
+                    length = size - 2
+                    x += 1
+                else:
+                    length = size - 1
+
+                # check if the previous object was an increasing slope
+                if runs[i - 1][1] == -1 and not blocky:
+                    # start with a slope of the correct size
+                    if length >= 4:
+                        # decreasing 4x2
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["SI4"], layer, x, y, 4, 2, z))
+                        slope = 4
+                    elif length >= 2:
+                        # decreasing 2x2
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["SI2"], layer, x, y, 2, 2, z))
+                        slope = 2
+                    else:
+                        # decreasing 1x2
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["SI1"], layer, x, y, 1, 2, z))
+                        slope = 1
+
+                    length -= slope
+                    x += slope
+
+                # remaining ground
+                if length > 0:
+                    objects.append(ObjectItem(CurrentPaintType, OBJ["FLA"], layer, x, y, length, 1, z))
+
+                # closing corner
+                objects.append(ObjectItem(CurrentPaintType, OBJ["OUR"], layer, x + length, y, 1, 1, z))
+            else:
+                # this tile should (partially) be a slope
+                # first determine the length of the runway to the slope. Note that
+                # size is always > 0 (=> >= 1)
+                length = size
+
+                # check if the previous run was a left or a right corner and
+                # adjust length and starting point accordingly
+                if runs[i - 1][1] < -1:
+                    length -= 1
+                    x += 1
+                elif runs[i - 1][1] == -1:
+                    # only use up at most half of the available space if we also
+                    # have to go down
+                    if dy == 1:
+                        space = length / 2
+                    else:
+                        space = length
+
+                    if space >= 4:
+                        # increasing 4x2
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["SI4"], layer, x, y, 4, 2, z))
+                        length -= 4
+                        x += 4
+                    elif space >= 2:
+                        # increasing 2x2
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["SI2"], layer, x, y, 2, 2, z))
+                        length -= 2
+                        x += 2
+                    elif space >= 1:
+                        # increasing 1x2
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["SI1"], layer, x, y, 1, 2, z))
+                        length -= 1
+                        x += 1
+
+                # this should not happen
+                if length < 0:
+                    print("Length was " + str(length) + ", which is smaller than 0. This is really bad.")
+                    return
+
+                # runway
+                if dy == 1:
+                    if length >= 4:
+                        length -= 4
+                        slope = 4
+                    elif length >= 2:
+                        length -= 2
+                        slope = 2
+                    elif length >= 1:
+                        length -= 1
+                        slope = 1
+
+                if length > 0:
+                    objects.append(ObjectItem(CurrentPaintType, OBJ["FLA"], layer, x, y, length, 1, z))
+
+                # only draw a slope if it's going down or if the previous one went
+                # up
+                if dy == 1:
+                    if slope == 4:
+                        # decreasing 4x2
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["SD4"], layer, x + length, y, 4, 2, z))
+                    elif slope == 2:
+                        # decreasing 2x2
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["SD2"], layer, x + length, y, 2, 2, z))
+                    else:
+                        # decreasing 1x2
+                        objects.append(ObjectItem(CurrentPaintType, OBJ["SD1"], layer, x + length, y, 1, 2, z))
+
+
+            current += size
+            i += 1
+
+        return objects
+
+    @staticmethod
+    def TryPaintingTile(mx, my, x, y, width, slope, orientation, direction, endType):
+        """
+        Tries painting a tile on the specified positions
+        """
+        # mx            -> matrix position of tile
+        # my            -> matrix position of tile
+        # x             -> x position of the tile
+        # y             -> y position of the tile
+        # width         -> width available
+        # height        -> height that is to be filled up
+        # slope         -> start with a slope? True/False
+        # orientation   -> is the "air" up (1) or down (-1)?
+        # direction     -> increasing/decreasing: "I"/"D"
+        # endType       -> 1 for endSlope, 2 for endCorner, anything else for nothing
+
+        # we'll need the matrix
+        matrix = QuickPaintOperations.tilesMatrix
+
+        ########################################################################
+        ##                             PREPARATION                            ##
+        ########################################################################
+
+        endSlope = endType == 1
+        endCorner = endType == 2
+
+        if endSlope:
+            if slope:
+                # divide the space evenly, but if there's more than enough of it,
+                # just set the remaining width to 4
+                remainingWidth = min(math.floor(width / 2), 4)
+            elif matrix[mx - 1][my + orientation] == 0:
+                # subtract 1 for the initial corner
+                remainingWidth = width - 1
+            else:
+                remainingWidth = width
+
+            if remainingWidth >= 4:
+                endWidth = 4
+            elif remainingWidth >= 2:
+                endWidth = 2
+            else:
+                endWidth = 1
+
+        elif endCorner:
+            endWidth = 1
+        else:
+            endWidth = 0
+
+        remainingWidth = width - endWidth
+
+        ########################################################################
+        ##                                START                               ##
+        ########################################################################
+        if slope:
+            # begin slope is always increasing
+            tile = "SI"
+
+            # determine the length of the slope
+            if remainingWidth >= 4:
+                slopeLength = 4
+            elif remainingWidth >= 2:
+                slopeLength = 2
+            else:
+                slopeLength = 1
+
+            tile += str(slopeLength)
+
+            # ... and the orientation
+            if orientation == 1:
+                tile += "U"
+            else:
+                tile += "D"
+
+            # the slope will use up a 2 x slopeLength area. Check the matrix to
+            # see if there's enough room for that
+            space = QuickPaintOperations.checkMatrix(mx, my, slopeLength, 2)
+
+            # if there is no room, try moving this to the right
+            if not space:
+                move = False
+                for i in range(remainingWidth - slopeLength):
+                    if QuickPaintOperations.checkMatrix(mx + i, my, slopeLength, 2):
+                        move = True
+                        break
+
+                if move:
+                    # first place ground from here to i
+                    if orientation == 1:
+                        tile = "FLAU"
+                    else:
+                        tile = "FLAD"
+
+                    QuickPaintOperations.PlaceTile(tile, mx, my, x, y, i, 1)
+
+                    # then let the thing figure out the rest
+                    QuickPaintOperations.TryPaintingTile(mx + i, my, x + i, y, width - i, slope, orientation, direction, endType)
+
+                    return
+                else:
+                    # we can't move it, so make it blocky
+                    QuickPaintOperations.TryPaintingTile(mx, my, x, y, width, False, orientation, direction, endType)
+
+                    return
+
+            # finally, build the slope and adjust variables accordingly
+            if orientation == 1:
+                QuickPaintOperations.PlaceTile(tile, mx, my, x, y, slopeLength, 2)
+            else:
+                QuickPaintOperations.PlaceTile(tile, mx, my - 1, x, y - 1, slopeLength, 2)
+
+            remainingWidth -= slopeLength
+            x += slopeLength
+            mx += slopeLength
+        elif matrix[mx - 1][my + orientation] == 0:
+            # place a begin (left) corner
+            if orientation == 1:
+                tile = "OUTL"
+            else:
+                tile = "OUBL"
+
+            QuickPaintOperations.PlaceTile(tile, mx, my, x, y, 1, 1)
+
+            # determine height of edge
+            currentY = my + orientation
+            while matrix[mx - 1][currentY] == 0 and matrix[mx][currentY] == 1:
+                currentY += orientation
+
+            if matrix[mx - 1][currentY] == 0:
+                edgeH = currentY - my - 2 * orientation
+            else:
+                edgeH = currentY - my - orientation
+
+            # place wall
+            if orientation == 1 and edgeH >= 1:
+                QuickPaintOperations.PlaceTile("WALL", mx, my + 1, x, y + 1, 1, edgeH)
+            elif orientation == -1 and edgeH <= -1:
+                QuickPaintOperations.PlaceTile("WALL", mx, my + edgeH, x, y + edgeH, 1, -edgeH)
+
+            # place connecting tile if we need to
+            if matrix[mx - 1][currentY] != 0:
+                if orientation == 1:
+                    tile = "INBR"
+                else:
+                    tile = "INTR"
+
+                QuickPaintOperations.PlaceTile(tile, mx, my + edgeH + orientation, x, y + edgeH + orientation, 1, 1)
+
+            remainingWidth -= 1
+            x += 1
+            mx += 1
+
+        ########################################################################
+        ##                               MIDDLE                               ##
+        ########################################################################
+
+        if remainingWidth >= 1:
+            if orientation == 1:
+                tile = "FLAU"
+            else:
+                tile = "FLAD"
+
+            QuickPaintOperations.PlaceTile(tile, mx, my, x, y, remainingWidth, 1)
+
+            # 20% chance of spawning decoration
+            if orientation == 1 and rand() < 0.5:
+                #41 - 58
+
+                xPos = int(rand() * remainingWidth)
+                tile = int(17 * rand() + 41)
+
+                QuickPaintOperations.PlaceTile(tile, mx + xPos, my - 1, x + xPos, y - 1, 1, 1)
+
+            x += remainingWidth#
+            mx += remainingWidth
+
+        ########################################################################
+        ##                                 END                                ##
+        ########################################################################
+
+        # maybe we should add an end corner
+        if endCorner:
+            if orientation == 1:
+                tile = "OUTR"
+            else:
+                tile = "OUBR"
+
+            QuickPaintOperations.PlaceTile(tile, mx, my, x, y, 1, 1)
+
+            # determine height of edge
+            currentY = my + orientation
+            while matrix[mx + 1][currentY] == 0 and matrix[mx][currentY] == 1:
+                currentY += orientation
+
+            if matrix[mx + 1][currentY] == 0:
+                edgeH = currentY - my - 2 * orientation
+            else:
+                edgeH = currentY - my - orientation
+
+            # place wall
+            if orientation == 1 and edgeH >= 1:
+                QuickPaintOperations.PlaceTile("WALR", mx, my + 1, x, y + 1, 1, edgeH)
+            elif orientation == -1 and edgeH <= -1:
+                QuickPaintOperations.PlaceTile("WALR", mx, my + edgeH, x, y + edgeH, 1, -edgeH)
+
+            # place connecting tile if we need to
+            if matrix[mx + 1][currentY] != 0:
+                if orientation == 1:
+                    tile = "INBL"
+                else:
+                    tile = "INTL"
+
+                QuickPaintOperations.PlaceTile(tile, mx, my + edgeH + orientation, x, y + edgeH + orientation, 1, 1)
+        elif endSlope:
+            # end slope is always decreasing
+            tile = "SD"
+
+            # determine the length of the slope
+            tile += str(endWidth)
+
+            # ... and the orientation
+            if orientation == 1:
+                tile += "U"
+            else:
+                tile += "D"
+
+            # the slope will use up a 2 x slopeLength area. Check the matrix to
+            # see if there's enough room for that
+            space = QuickPaintOperations.checkMatrix(mx, my, endWidth, 2)
+
+            # if there is no room, we cannot move it, so make this last part blocky
+            if not space:
+                QuickPaintOperations.TryPaintingTile(mx, my, x, y, endWidth, False, orientation, direction, 2)
+                return
+
+            # finally, build the slope
+            if orientation == 1:
+                QuickPaintOperations.PlaceTile(tile, mx, my, x, y, endWidth, 2)
+            else:
+                QuickPaintOperations.PlaceTile(tile, mx, my - 1, x, y - 1, endWidth, 2)
+
+    @staticmethod
+    def PlaceTile(tile, mx, my, x, y, width, height):
+        """
+        Places a tile at specified coords and updates matrix
+        """
+
+        if height < 1 or width < 1:
+            print("tile too small")
+            return
+
+        # FIXME:
+        layer = 1 # CurrentLayer
+        pt = 1 # CurrentPaintType
+        z = 36000
+
+        print("("+str(mx)+", "+str(my)+"): "+str(tile))
+        # hardcoded object ids. arrow points to 'air'
+        OBJ = {
+            "FLAU": 0,   # ^ -
+            "FLAD": 2,   # v -
+            "INBL": 9,   #   └ ^
+            "INTL": 11,  #   ┌ v
+            "INBR": 10,  # ^ ┘
+            "INTR": 12,  # v ┐
+            "WALL": 3,   # < |
+            "WALR": 4,   #   | >
+            "OUTL": 5,   # < ┌ ^
+            "OUTR": 6,   # ^ ┐ >
+            "OUBL": 7,   # < └ v
+            "OUBR": 8,   # v ┘ >
+            "SI1U": 13,  # slope, increase, 1 wide, face up
+            "SD1U": 14,  # slope, decrease, 1 wide, face up
+            "SI2U": 15,  # slope, increase, 2 wide, face up
+            "SD2U": 16,  # slope, decrease, 2 wide, face up
+            "SI4U": 17,  # slope, increase, 4 wide, face up
+            "SD4U": 18,  # slope, decrease, 4 wide, face up
+            "SI1D": 19,  # slope, increase, 1 wide, face down
+            "SD1D": 20,  # slope, decrease, 1 wide, face down
+            "SI2D": 21,  # slope, increase, 2 wide, face down
+            "SD2D": 22,  # slope, decrease, 2 wide, face down
+            "SI4D": 23,  # slope, increase, 4 wide, face down
+            "SD4D": 24,  # slope, decrease, 4 wide, face down
+            "FILL": 1,   # filler tile
+        }
+
+        # place tile
+        if type(tile) == int:
+            obj = tile
+            slope = edge = False
+        else:
+            obj   = OBJ[tile]
+            slope = "S" in tile
+            edge  = "WAL" in tile
+
+        tile  = ObjectItem(pt, obj, layer, x, y, width, height, z)
+        QuickPaintOperations.objects.append(tile)
+
+        # update matrix
+        # 'E' for edge
+        # 'S' for slope
+        # 1 for "to be filled"
+        # 0 for "no filling"
+        # 2 for "filled with other tile"
+        if slope:
+            text = "S"
+        elif edge:
+            text = "E"
+        else:
+            text = 2
+
+        for i in range(width):
+            for j in range(height):
+                QuickPaintOperations.tilesMatrix[mx + i][my + j] = text
+
+    @staticmethod
+    def drawObjects():
+        """
+        Actually adds the objects to the file and display.
+        """
+        # loop over all objects
+        for obj in QuickPaintOperations.objects:
+            # add it to the layer
+            Area.layers[obj.layer].append(obj)
+            # add event handler
+            obj.positionChanged = mainWindow.HandleObjPosChange
+            # and it to the scene
+            mainWindow.scene.addItem(obj)
+
+        # reset some stuff
+        QuickPaintOperations.prePaintedObjects.clear()
+        QuickPaintOperations.objects = []
+        print(QuickPaintOperations.tilesMatrix)
+
+        # request redraw of the screen
+        mainWindow.scene.invalidate()
+
+    @staticmethod
+    def checkMatrix(x, y, width, height):
+        """
+        Checks the matrix for room
+        """
+        matrix = QuickPaintOperations.tilesMatrix
+
+        for i in range(width):
+            for j in range(height):
+                if matrix[x + i][y + j] != 1:
+                    return False
+
+        return True
+
+    # unused
+    @staticmethod
+    def preEraseObject(ln, layer, x, y):
+        """
+        Schedules an object to be removed by adding the coordinates to the list of pre-painted objects.
+        """
+        if not hasattr(QuickPaintOperations, 'prePaintedObjects'):
+            QuickPaintOperations.prePaintedObjects = {}
+
+        if not ('%i_%i' % (x, y) in QuickPaintOperations.prePaintedObjects):
+            QuickPaintOperations.prePaintedObjects['%i_%i' % (x, y)] = {'ln': ln, 'layer': layer, 'x': x, 'y': y,
+                                                                        'z': 0, 'r': int(rand() * 127),
+                                                                        'g': int(rand() * 127), 'b': int(rand() * 127)}
+
+    # unused
+    @staticmethod
+    def EraseFromPreErasedObjects():
+        """
+        For every coordinate from the list of pre-painted objects, an object is removed from the level.
+        """
+        QuickPaintOperations.sliceObjRange(QuickPaintOperations.prePaintedObjects)
+        if hasattr(QuickPaintOperations, 'prePaintedObjects'):
+            for ppobj in QuickPaintOperations.prePaintedObjects:
+                # We do this action twice to make sure there is no trailing.
+                QuickPaintOperations.EraseObj(QuickPaintOperations.prePaintedObjects[ppobj]['ln'],
+                                              QuickPaintOperations.prePaintedObjects[ppobj]['layer'],
+                                              QuickPaintOperations.prePaintedObjects[ppobj]['x'],
+                                              QuickPaintOperations.prePaintedObjects[ppobj]['y'])
+                QuickPaintOperations.EraseObj(QuickPaintOperations.prePaintedObjects[ppobj]['ln'],
+                                              QuickPaintOperations.prePaintedObjects[ppobj]['layer'],
+                                              QuickPaintOperations.prePaintedObjects[ppobj]['x'],
+                                              QuickPaintOperations.prePaintedObjects[ppobj]['y'])
+
+        QuickPaintOperations.prePaintedObjects.clear()
+        mainWindow.scene.invalidate()
+
+    # unused
+    @staticmethod
+    def AddObj(ln, layer, x, y, z):
+        """
+        Adds an object to the level and automatically fixes the tiles of islands it may be touching.
+        """
+        if mainWindow.quickPaint is None or mainWindow.quickPaint.scene is None:
+            return
+
+        qpscn = mainWindow.quickPaint.scene
+        qp_data = qpscn.object_database
+
+        if qp_data['base']['i'] is None or qp_data['base']['ts'] is None or qp_data['base']['t'] is None:
+            return
+
+        mw = mainWindow
+
+        # remove any and all object behinds this object
+        objBehindThisOne = QuickPaintOperations.searchObj(ln, x, y)
+        while objBehindThisOne is not None:
+            objBehindThisOne.delete()
+
+            if objBehindThisOne in QuickPaintOperations.object_optimize_database:
+                QuickPaintOperations.object_optimize_database.remove(objBehindThisOne)
+
+            objBehindThisOne.setSelected(False)
+            mw.scene.removeItem(objBehindThisOne)
+            objBehindThisOne = QuickPaintOperations.searchObj(ln, x, y)
+
+        obj = ObjectItem(qp_data['base']['ts'], qp_data['base']['t'], ln, x, y, 1, 1, z)
+        layer.append(obj)
+        obj.positionChanged = mw.HandleObjPosChange
+
+        if obj not in QuickPaintOperations.object_optimize_database:
+            QuickPaintOperations.object_optimize_database.append(obj)
+
+        mw.scene.addItem(obj)
+
+        connected_objects = []
+        # This next function has to repeated multiple times at multiple places in and around this object.
+        # Otherwise, you will leave artifacts when painting with bigger objects.
+        QuickPaintOperations.autoTileObj(ln, obj)
+
+        for r in range(QuickPaintOperations._getMaxSize(qp_data) + 2):
+            for a in range(-r, r):
+                sobj = QuickPaintOperations.searchObj(ln, obj.objx + a, obj.objy - r)
+
+                if sobj is not None:
+                    QuickPaintOperations.autoTileObj(ln, sobj)
+
+            for a in range(-r, r):
+                sobj = QuickPaintOperations.searchObj(ln, obj.objx + r, obj.objy + a)
+
+                if sobj is not None:
+                    QuickPaintOperations.autoTileObj(ln, sobj)
+
+            for a in range(-r, r):
+                sobj = QuickPaintOperations.searchObj(ln, obj.objx - a, obj.objy + r)
+
+                if sobj is not None:
+                    QuickPaintOperations.autoTileObj(ln, sobj)
+
+            for a in range(-r, r):
+                sobj = QuickPaintOperations.searchObj(ln, obj.objx - r, obj.objy - a)
+
+                if sobj is not None:
+                    QuickPaintOperations.autoTileObj(ln, sobj)
+
+    # unused
+    @staticmethod
+    def EraseObj(ln, layer, x, y):
+        """
+        Removes an object from the level and automatically fixes the tiles of islands it may have been touching.
+        """
+        if mainWindow.quickPaint is not None and mainWindow.quickPaint.scene is not None:
+            qpscn = mainWindow.quickPaint.scene
+            qp_data = qpscn.object_database
+
+            if qp_data['base']['i'] is not None and qp_data['base']['ts'] is not None and qp_data['base'][
+                't'] is not None:
+                mw = mainWindow
+                obj = QuickPaintOperations.searchObj(ln, x, y)
+
+                if obj is not None:
+                    surrounding_objects = {
+                        'TopLeft': QuickPaintOperations.searchObj(ln, obj.objx - 1, obj.objy - 1),
+                        'Top': QuickPaintOperations.searchObj(ln, obj.objx, obj.objy - 1),
+                        'TopRight': QuickPaintOperations.searchObj(ln, obj.objx + 1, obj.objy - 1),
+                        'Left': QuickPaintOperations.searchObj(ln, obj.objx - 1, obj.objy),
+                        'Right': QuickPaintOperations.searchObj(ln, obj.objx + 1, obj.objy),
+                        'BottomLeft': QuickPaintOperations.searchObj(ln, obj.objx - 1, obj.objy + 1),
+                        'Bottom': QuickPaintOperations.searchObj(ln, obj.objx, obj.objy + 1),
+                        'BottomRight': QuickPaintOperations.searchObj(ln, obj.objx + 1, obj.objy + 1)
+                    }
+                    obj.delete()
+                    obj.setSelected(False)
+
+                    if obj in QuickPaintOperations.object_optimize_database:
+                        QuickPaintOperations.object_optimize_database.remove(obj)
+
+                    mw.scene.removeItem(obj)
+
+                    for r in range(QuickPaintOperations._getMaxSize(qp_data) + 2):
+                        for a in range(-r, r):
+                            sobj = QuickPaintOperations.searchObj(ln, obj.objx + a, obj.objy - r)
+
+                            if sobj is not None:
+                                QuickPaintOperations.autoTileObj(ln, sobj)
+
+                        for a in range(-r, r):
+                            sobj = QuickPaintOperations.searchObj(ln, obj.objx + r, obj.objy + a)
+
+                            if sobj is not None:
+                                QuickPaintOperations.autoTileObj(ln, sobj)
+
+                        for a in range(-r, r):
+                            sobj = QuickPaintOperations.searchObj(ln, obj.objx - a, obj.objy + r)
+
+                            if sobj is not None:
+                                QuickPaintOperations.autoTileObj(ln, sobj)
+
+                        for a in range(-r, r):
+                            sobj = QuickPaintOperations.searchObj(ln, obj.objx - r, obj.objy - a)
+
+                            if sobj is not None:
+                                QuickPaintOperations.autoTileObj(ln, sobj)
+
+    # unused
+    @staticmethod
+    def searchObj(layer, x, y):
+        """
+        Quickly searches for an object at the specified position.
+        """
+        if not QuickPaintOperations.object_search_database.get((x, y, layer)):
+            return None
+
+        if len(QuickPaintOperations.object_search_database[(x, y, layer)]) <= 0:
+            return None
+
+        return QuickPaintOperations.object_search_database[(x, y, layer)][0]
+
+    # unused
+    @staticmethod
+    def sliceObjRange(posList):
+        """
+        For every object and objects touching that object, they will slice into 1x1 objects.
+        """
+        connected_objects = []
+        objlist = []
+        for pos in map(lambda i: (posList[i]['x'], posList[i]['y'], posList[i]['ln']), posList):
+            qpscn = mainWindow.quickPaint.scene
+            qp_data = qpscn.object_database
+            # pronounced [BOB-JAY] lol
+            # Way to go Robert!
+            # Actually Bobj stands for base object, because these are the objects we start with as they lie
+            # on the positions where the user has painted over on the widget.
+            # - John10v10
+            bobj = QuickPaintOperations.searchObj(pos[2], pos[0], pos[1])
+
+            if bobj is not None and bobj not in connected_objects:
+                connected_objects.append(bobj)
+                objlist.append(bobj)
+
+            for r in range(QuickPaintOperations._getMaxSize(qp_data) + 2):
+                for a in range(-r, r):
+                    bobj = QuickPaintOperations.searchObj(pos[2], pos[0] + a, pos[1] - r)
+
+                    if bobj is not None and bobj not in connected_objects:
+                        connected_objects.append(bobj)
+                        objlist.append(bobj)
+
+                for a in range(-r, r):
+                    bobj = QuickPaintOperations.searchObj(pos[2], pos[0] + r, pos[1] + a)
+
+                    if bobj is not None and bobj not in connected_objects:
+                        connected_objects.append(bobj)
+                        objlist.append(bobj)
+
+                for a in range(-r, r):
+                    bobj = QuickPaintOperations.searchObj(pos[2], pos[0] - a, pos[1] + r)
+
+                    if bobj is not None and bobj not in connected_objects:
+                        connected_objects.append(bobj)
+                        objlist.append(bobj)
+
+                for a in range(-r, r):
+                    bobj = QuickPaintOperations.searchObj(pos[2], pos[0] - r, pos[1] - a)
+
+                    if bobj is not None and bobj not in connected_objects:
+                        connected_objects.append(bobj)
+                        objlist.append(bobj)
+
+        no_more_found = False
+        while not no_more_found:
+            preobjlist = []
+            for obj in objlist:
+                for x in range(obj.objx - 1, obj.objx + obj.width + 1):
+                    for y in range(obj.objy - 1, obj.objy + obj.height + 1):
+                        sobj = QuickPaintOperations.searchObj(obj.layer, x, y)
+
+                        if sobj is not None and sobj is not obj and sobj not in connected_objects:
+                            still_append = True
+
+                            for pos in map(lambda i: (posList[i]['x'], posList[i]['y']), posList):
+                                if abs(x - pos[0]) > r or abs(y - pos[1]) > r:
+                                    still_append = False
+
+                            if still_append:
+                                preobjlist.append(sobj)
+                                connected_objects.append(sobj)
+
+            if len(preobjlist) <= 0:
+                no_more_found = True
+
+            else:
+                objlist = preobjlist
+
+        connected_objects = list(filter(lambda i: i is not None, list(set(connected_objects))))
+        for robj in connected_objects:
+            QuickPaintOperations.sliceObj(robj)
+
+    # unused
+    @staticmethod
+    def sliceObj(obj, px=None, py=None):
+        """
+        Slices this object into 1x1 objects.
+        """
+        if not obj or (obj.width == 1 and obj.height == 1):
+            if obj not in QuickPaintOperations.object_optimize_database and obj:
+                QuickPaintOperations.object_optimize_database.append(obj)
+
+            return obj
+
+        out_obj = None
+        mw = mainWindow
+        objx = obj.objx
+        objy = obj.objy
+        w = obj.width
+        h = obj.height
+        l = obj.layer
+        ts = obj.tileset
+        t = obj.original_type
+        atd_archive = []
+
+        if hasattr(obj, 'atd_archive') and obj.atd_archive:
+            atd_archive = obj.atd_archive
+
+        skip = []
+        x = 0
+        y = 0
+        if obj.objdata:
+            for row in obj.objdata:
+                x = 0
+
+                for tile in row:
+                    if tile == -1:
+                        skip.append((x, y))
+
+                    x += 1
+
+                y += 1
+
+        if obj in Area.layers[obj.layer]:
+            obj.delete()
+            obj.setSelected(False)
+            mw.scene.removeItem(obj)
+
+        if obj in QuickPaintOperations.object_optimize_database:
+            QuickPaintOperations.object_optimize_database.remove(obj)
+
+        for y in range(h):
+            for x in range(w):
+                if (x, y) in skip: continue
+
+                layer = Area.layers[l]
+                ln = CurrentLayer
+
+                if len(layer) == 0:
+                    z = (2 - ln) * 8192
+
+                else:
+                    z = layer[-1].zValue() + 1
+
+                objBehindThisOne = QuickPaintOperations.sliceObj(QuickPaintOperations.searchObj(ln, x + objx, y + objy),
+                                                                 x + objx, y + objy)
+                if objBehindThisOne is not None:
+                    objBehindThisOne.delete()
+                    objBehindThisOne.setSelected(False)
+
+                    if objBehindThisOne in QuickPaintOperations.object_optimize_database:
+                        QuickPaintOperations.object_optimize_database.remove(objBehindThisOne)
+
+                    mw.scene.removeItem(objBehindThisOne)
+
+                sobj = ObjectItem(ts, t, l, x + objx, y + objy, 1, 1, z)
+
+                atd = list(filter(lambda i: i[0] == x and i[1] == y, atd_archive))
+
+                if atd is not None and len(atd) > 0:
+                    sobj.modifiedForSize = atd[0][2]
+                    sobj.autoTileType = atd[0][3]
+
+                layer.append(sobj)
+
+                if sobj not in QuickPaintOperations.object_optimize_database:
+                    QuickPaintOperations.object_optimize_database.append(sobj)
+
+                sobj.positionChanged = mw.HandleObjPosChange
+                mw.scene.addItem(sobj)
+
+                if sobj.objx == px and sobj.objy == py:
+                    out_obj = sobj
+
+        return out_obj
+
+    # unused
+    @staticmethod
+    def isObjectInQPwidget(obj):
+        """
+        Checks if object is in the quick paint configuration widget.
+        """
+        if obj is None: return False
+
+        qpscn = mainWindow.quickPaint.scene
+        qp_data = qpscn.object_database
+
+        for t in qp_data:
+            if qp_data[t] is not None and qp_data[t]['ts'] == obj.tileset and qp_data[t]['t'] == obj.original_type:
+                return True
+
+        return False
+
+    # unused
+    @staticmethod
+    def countUpLeft(layer, obj, maxX, maxY):
+        """
+        Checks if object is inside the top-left corner within a given boundary.
+        """
+        for x in range(maxX + 1):
+            for y in range(maxY + 1):
+                if QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy - y) is None: return True
+
+        return False
+
+    # unused
+    @staticmethod
+    def countUpRight(layer, obj, maxX, maxY):
+        """
+        Checks if object is inside the top-right corner within a given boundary.
+        """
+        for x in range(maxX + 1):
+            for y in range(maxY + 1):
+                if QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy - y) is None: return True
+
+        return False
+
+    # unused
+    @staticmethod
+    def countDownLeft(layer, obj, maxX, maxY):
+        """
+        Checks if object is inside the down-left corner within a given boundary.
+        """
+        for x in range(maxX + 1):
+            for y in range(maxY + 1):
+                if QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy + y) is None: return True
+
+        return False
+
+    # unused
+    @staticmethod
+    def countDownRight(layer, obj, maxX, maxY):
+        """
+        Checks if object is inside the down-right corner within a given boundary.
+        """
+        for x in range(maxX + 1):
+            for y in range(maxY + 1):
+                if QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy + y) is None: return True
+
+        return False
+
+    # unused
+    @staticmethod
+    def countUp(layer, obj, maxY):
+        """
+        Checks if object is not too far underneath the ground within a given boundary.
+        """
+        for y in range(maxY + 1):
+            if QuickPaintOperations.searchObj(layer, obj.objx, obj.objy - y) is None: return True
+
+        return False
+
+    # unused
+    @staticmethod
+    def countDown(layer, obj, maxY):
+        """
+        Checks if object is not too far above the bottom within a given boundary.
+        """
+        for y in range(maxY + 1):
+            if QuickPaintOperations.searchObj(layer, obj.objx, obj.objy + y) is None: return True
+
+        return False
+
+    # unused
+    @staticmethod
+    def countLeft(layer, obj, maxX):
+        """
+        Checks if object is not too far to the right of the left wall within a given boundary.
+        """
+        for x in range(maxX + 1):
+            if QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy) is None: return True
+
+        return False
+
+    # unused
+    @staticmethod
+    def countRight(layer, obj, maxX):
+        """
+        Checks if object is not too far to the left of the right wall within a given boundary.
+        """
+        for x in range(maxX + 1):
+            if QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy) is None: return True
+
+        return False
+
+    # unused
+    @staticmethod
+    def autoTileObj(layer, obj):
+        """
+        Automatically picks the tile that best fits its position.
+        It's a big process, but I hope it works well enough for Miyamoto users.
+        """
+        if not mainWindow.quickPaint or not mainWindow.quickPaint.scene or not obj:
+            return
+
+        qpscn = mainWindow.quickPaint.scene
+        qp_data = qpscn.object_database
+        startingTileset = obj.tileset
+        startingType = obj.type
+
+        surrounding_objects = {
+            'TopLeft': QuickPaintOperations.searchObj(layer, obj.objx - 1, obj.objy - 1),
+            'Top': QuickPaintOperations.searchObj(layer, obj.objx, obj.objy - 1),
+            'TopRight': QuickPaintOperations.searchObj(layer, obj.objx + 1, obj.objy - 1),
+            'Left': QuickPaintOperations.searchObj(layer, obj.objx - 1, obj.objy),
+            'Right': QuickPaintOperations.searchObj(layer, obj.objx + 1, obj.objy),
+            'BottomLeft': QuickPaintOperations.searchObj(layer, obj.objx - 1, obj.objy + 1),
+            'Bottom': QuickPaintOperations.searchObj(layer, obj.objx, obj.objy + 1),
+            'BottomRight': QuickPaintOperations.searchObj(layer, obj.objx + 1, obj.objy + 1),
+        }
+
+        if not QuickPaintOperations.isObjectInQPwidget(obj):
+            return
+
+        flag = 0x0
+        if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['TopLeft']):
+            flag |= 0x1
+        if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['Top']):
+            flag |= 0x2
+        if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['TopRight']):
+            flag |= 0x4
+        if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['Left']):
+            flag |= 0x8
+        if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['Right']):
+            flag |= 0x10
+        if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['BottomLeft']):
+            flag |= 0x20
+        if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['Bottom']):
+            flag |= 0x40
+        if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['BottomRight']):
+            flag |= 0x80
+
+        typeToTile = 'base'
+        if flag & 0xdb == 0xB:
+            typeToTile = qpscn.pickObject('bottomRight')
+        if flag & 0x7e == 0x16:
+            typeToTile = qpscn.pickObject('bottomLeft')
+        if flag & 0xdb == 0xd0:
+            typeToTile = qpscn.pickObject('topLeft')
+        if flag & 0x7e == 0x68:
+            typeToTile = qpscn.pickObject('topRight')
+        if flag & 0x5a == 0x1a:
+            typeToTile = qpscn.pickObject('bottom')
+        if flag & 0x5a == 0x58:
+            typeToTile = qpscn.pickObject('top')
+        if flag & 0x5a == 0x52:
+            typeToTile = qpscn.pickObject('left')
+        if flag & 0x5a == 0x4a:
+            typeToTile = qpscn.pickObject('right')
+        if flag & 0xdb == 0x5b:
+            typeToTile = qpscn.pickObject('topLeftCorner')
+        if flag & 0xdb == 0xda:
+            typeToTile = qpscn.pickObject('bottomRightCorner')
+        if flag & 0x7e == 0x5e:
+            typeToTile = qpscn.pickObject('topRightCorner')
+        if flag & 0x7e == 0x7a:
+            typeToTile = qpscn.pickObject('bottomLeftCorner')
+
+        obj.modifiedForSize = 0x00
+        obj.autoTileType = typeToTile
+        if typeToTile is None or qp_data.get(typeToTile) is None or qp_data[typeToTile]['i'] is None:
+            return
+
+
+        obj.tileset = qp_data[typeToTile]['ts']
+        obj.type = qp_data[typeToTile]['t']
+        obj.original_type = qp_data[typeToTile]['t']
+        if qp_data['topLeftCorner']['i'] is not None:
+            for y in range(qp_data['topLeftCorner']['oh']):
+                for x in range(qp_data['topLeftCorner']['ow']):
+                    sobj = QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy + y)
+
+                    if (sobj
+                        and sobj.width == 1
+                        and sobj.height == 1
+                        and hasattr(sobj, 'autoTileType')
+                        and sobj.autoTileType == 'topLeftCorner'
+                        and    (not hasattr(sobj, 'modifiedForSize')
+                             or not sobj.modifiedForSize & 0x100 >> 8 == 1)):
+                        obj.tileset = sobj.tileset
+                        obj.type = sobj.original_type
+                        obj.original_type = sobj.original_type
+                        obj.modifiedForSize |= 0x100
+
+        if qp_data['topRightCorner']['i'] is not None:
+            for y in range(qp_data['topRightCorner']['oh']):
+                for x in range(qp_data['topRightCorner']['ow']):
+                    if x > 0 or y > 0:
+                        sobj = QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy + y)
+
+                        if (sobj and sobj.width == 1 and sobj.height == 1
+                                and (hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'topRightCorner')
+                                and not (hasattr(sobj, 'modifiedForSize')
+                                         and sobj.modifiedForSize & 0x200 == 0x200)):
+                            obj.tileset = sobj.tileset
+                            obj.type = sobj.original_type
+                            obj.original_type = sobj.original_type
+                            obj.modifiedForSize |= 0x200
+
+        if qp_data['bottomLeftCorner']['i'] is not None:
+            for y in range(qp_data['bottomLeftCorner']['oh']):
+                for x in range(qp_data['bottomLeftCorner']['ow']):
+                    if x > 0 or y > 0:
+                        sobj = QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy - y)
+
+                        if (sobj and sobj.width == 1 and sobj.height == 1
+                            and (hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'bottomLeftCorner')
+                            and not (hasattr(sobj, 'modifiedForSize')
+                                     and sobj.modifiedForSize & 0x400 == 0x400)):
+                            obj.tileset = sobj.tileset
+                            obj.type = sobj.original_type
+                            obj.original_type = sobj.original_type
+                            obj.modifiedForSize |= 0x400
+
+        if qp_data['bottomRightCorner']['i'] is not None:
+            for y in range(qp_data['bottomRightCorner']['oh']):
+                for x in range(qp_data['bottomRightCorner']['ow']):
+                    if x > 0 or y > 0:
+                        sobj = QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy - y)
+                        if (sobj and sobj.width == 1 and sobj.height == 1
+                            and (hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'bottomRightCorner')
+                            and not (hasattr(sobj, 'modifiedForSize')
+                            and sobj.modifiedForSize & 0x800 == 0x800)):
+                            obj.tileset = sobj.tileset
+                            obj.type = sobj.original_type
+                            obj.original_type = sobj.original_type
+                            obj.modifiedForSize |= 0x800
+
+        if qp_data['topLeft']['i'] is not None and QuickPaintOperations.countUpLeft(layer, obj,
+                                                                                    qp_data['topLeft'][
+                                                                                        'ow'],
+                                                                                    qp_data['topLeft'][
+                                                                                        'oh']):
+            for y in range(qp_data['topLeft']['oh']):
+                for x in range(qp_data['topLeft']['ow']):
+                    if x > 0 or y > 0:
+                        sobj = QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy - y)
+                        if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
+                                    hasattr(sobj,
+                                            'autoTileType') and sobj.autoTileType == 'topLeft') and not (
+                                    hasattr(sobj,
+                                            'modifiedForSize') and sobj.modifiedForSize & 0x01 == 0x1):
+                            obj.tileset = sobj.tileset
+                            obj.type = sobj.original_type
+                            obj.original_type = sobj.original_type
+                            obj.modifiedForSize |= 0x01
+
+        if qp_data['topRight']['i'] is not None and QuickPaintOperations.countUpRight(layer, obj,
+                                                                                      qp_data['topRight'][
+                                                                                          'ow'],
+                                                                                      qp_data['topRight'][
+                                                                                          'oh']):
+            for y in range(qp_data['topRight']['oh']):
+                for x in range(qp_data['topRight']['ow']):
+                    if x > 0 or y > 0:
+                        sobj = QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy - y)
+                        if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
+                                    hasattr(sobj,
+                                            'autoTileType') and sobj.autoTileType == 'topRight') and not (
+                                    hasattr(sobj,
+                                            'modifiedForSize') and sobj.modifiedForSize & 0x02 == 0x2):
+                            obj.tileset = sobj.tileset
+                            obj.type = sobj.original_type
+                            obj.original_type = sobj.original_type
+                            obj.modifiedForSize |= 0x02
+
+        if qp_data['bottomLeft']['i'] is not None and QuickPaintOperations.countDownLeft(layer, obj,
+                                                                                         qp_data[
+                                                                                             'bottomLeft'][
+                                                                                             'ow'], qp_data[
+                                                                                             'bottomLeft'][
+                                                                                             'oh']):
+            for y in range(qp_data['bottomLeft']['oh']):
+                for x in range(qp_data['bottomLeft']['ow']):
+                    if x > 0 or y > 0:
+                        sobj = QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy + y)
+                        if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
+                                    hasattr(sobj,
+                                            'autoTileType') and sobj.autoTileType == 'bottomLeft') and not (
+                                    hasattr(sobj,
+                                            'modifiedForSize') and sobj.modifiedForSize & 0x04 == 0x4):
+                            obj.tileset = sobj.tileset
+                            obj.type = sobj.original_type
+                            obj.original_type = sobj.original_type
+                            obj.modifiedForSize |= 0x04
+
+        if qp_data['bottomRight']['i'] and QuickPaintOperations.countDownRight(layer, obj,
+                                                                               qp_data[
+                                                                                   'bottomRight'][
+                                                                                   'ow'],
+                                                                               qp_data[
+                                                                                   'bottomRight'][
+                                                                                   'oh']):
+            for y in range(qp_data['bottomRight']['oh']):
+                for x in range(qp_data['bottomRight']['ow']):
+                    if x > 0 or y > 0:
+                        sobj = QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy + y)
+                        if (sobj is not None and sobj.width == 1 and sobj.height == 1
+                            and (hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'bottomRight')
+                            and not (hasattr(sobj, 'modifiedForSize')
+                                 and sobj.modifiedForSize & 0x08 == 0x8)):
+                            obj.tileset = sobj.tileset
+                            obj.type = sobj.original_type
+                            obj.original_type = sobj.original_type
+                            obj.modifiedForSize |= 0x08
+
+        if qp_data['top']['i'] is not None and QuickPaintOperations.countUp(layer, obj,
+                                                                            qp_data['top']['oh']):
+            for y in range(qp_data['top']['oh']):
+                if y > 0:
+                    sobj = QuickPaintOperations.searchObj(layer, obj.objx, obj.objy - y)
+
+                    if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
+                                hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'top') and not (
+                                hasattr(sobj, 'modifiedForSize') and sobj.modifiedForSize & 0x10 == 0x10):
+                        obj.tileset = sobj.tileset
+                        obj.type = sobj.original_type
+                        obj.original_type = sobj.original_type
+                        obj.modifiedForSize |= 0x10
+
+        if qp_data['bottom']['i'] is not None and QuickPaintOperations.countDown(layer, obj,
+                                                                                 qp_data['bottom']['oh']):
+            for y in range(qp_data['bottom']['oh']):
+                if y > 0:
+                    sobj = QuickPaintOperations.searchObj(layer, obj.objx, obj.objy + y)
+
+                    if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
+                            hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'bottom') and not (
+                            hasattr(sobj, 'modifiedForSize') and sobj.modifiedForSize & 0x20 == 0x20):
+                        obj.tileset = sobj.tileset
+                        obj.type = sobj.original_type
+                        obj.original_type = sobj.original_type
+                        obj.modifiedForSize |= 0x20
+
+        if qp_data['left']['i'] is not None and QuickPaintOperations.countLeft(layer, obj,
+                                                                               qp_data['left']['ow']):
+            for x in range(qp_data['left']['ow']):
+                if x > 0:
+                    sobj = QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy)
+
+                    if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
+                                hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'left') and not (
+                                hasattr(sobj, 'modifiedForSize') and sobj.modifiedForSize & 0x40 == 0x40):
+                        obj.tileset = sobj.tileset
+                        obj.type = sobj.original_type
+                        obj.original_type = sobj.original_type
+                        obj.modifiedForSize |= 0x40
+
+        if qp_data['right']['i'] is not None and QuickPaintOperations.countRight(layer, obj,
+                                                                                 qp_data['right']['ow']):
+            for x in range(qp_data['right']['ow']):
+                if x > 0:
+                    sobj = QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy)
+
+                    if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
+                            hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'right') and not (
+                            hasattr(sobj, 'modifiedForSize') and sobj.modifiedForSize & 0x80 == 0x80):
+                        obj.tileset = sobj.tileset
+                        obj.type = sobj.original_type
+                        obj.original_type = sobj.original_type
+                        obj.modifiedForSize |= 0x80
+
+        obj.updateObjCache()
+        obj.UpdateTooltip()
+
+    # unused
     @staticmethod
     def _getMaxSize(qp_data):
         """
@@ -6492,12 +8018,14 @@ class QuickPaintOperations:
 
         return res
 
+    # unused
     @staticmethod
     def optimizeObjects(FromQPWidget=False):
         """
-        This function merges all touching objects of the same type. We don't want huge files for level data.
-        Nor do we want an island to be completely made up of 1x1 objects. And we most definately don't want
-        objects more than 1x1 to repeat only the first tile in them.
+        This function merges all touching objects of the same type. We don't want
+        huge files for level data. Nor do we want an island to be completely made
+        up of 1x1 objects. And we most definately don't want objects more than 1x1
+        to repeat only the first tile in them.
         """
         optimize_memory = []
 
@@ -6602,751 +8130,6 @@ class QuickPaintOperations:
 
         QuickPaintOperations.object_optimize_database = []
 
-    @staticmethod
-    def prePaintObject(ln, layer, x, y, z):
-        """
-        Schedules an object to be added by adding the coordinates to the list of pre-painted objects.
-        """
-        if not hasattr(QuickPaintOperations, 'prePaintedObjects'):
-            QuickPaintOperations.prePaintedObjects = {}
-
-        if not ('%i_%i' % (x, y) in QuickPaintOperations.prePaintedObjects):
-            QuickPaintOperations.prePaintedObjects['%i_%i' % (x, y)] = {'ln': ln, 'layer': layer, 'x': x, 'y': y,
-                                                                        'z': z, 'r': int(rand() * 127) + 128,
-                                                                        'g': int(rand() * 127) + 128,
-                                                                        'b': int(rand() * 127) + 128}
-        mainWindow.scene.invalidate()
-
-    @staticmethod
-    def PaintFromPrePaintedObjects():
-        """
-        Creates and adds all the objects scheduled from the list of pre-painted objects to the level.
-        """
-        QuickPaintOperations.sliceObjRange(QuickPaintOperations.prePaintedObjects)
-        if hasattr(QuickPaintOperations, 'prePaintedObjects'):
-            for ppobj in QuickPaintOperations.prePaintedObjects:
-                # We do this action twice to make sure there is no trailing.
-                QuickPaintOperations.AddObj(QuickPaintOperations.prePaintedObjects[ppobj]['ln'],
-                                            QuickPaintOperations.prePaintedObjects[ppobj]['layer'],
-                                            QuickPaintOperations.prePaintedObjects[ppobj]['x'],
-                                            QuickPaintOperations.prePaintedObjects[ppobj]['y'],
-                                            QuickPaintOperations.prePaintedObjects[ppobj]['z'])
-                QuickPaintOperations.AddObj(QuickPaintOperations.prePaintedObjects[ppobj]['ln'],
-                                            QuickPaintOperations.prePaintedObjects[ppobj]['layer'],
-                                            QuickPaintOperations.prePaintedObjects[ppobj]['x'],
-                                            QuickPaintOperations.prePaintedObjects[ppobj]['y'],
-                                            QuickPaintOperations.prePaintedObjects[ppobj]['z'])
-
-        QuickPaintOperations.prePaintedObjects.clear()
-        mainWindow.scene.invalidate()
-
-    @staticmethod
-    def preEraseObject(ln, layer, x, y):
-        """
-        Schedules an object to be removed by adding the coordinates to the list of pre-painted objects.
-        """
-        if not hasattr(QuickPaintOperations, 'prePaintedObjects'):
-            QuickPaintOperations.prePaintedObjects = {}
-
-        if not ('%i_%i' % (x, y) in QuickPaintOperations.prePaintedObjects):
-            QuickPaintOperations.prePaintedObjects['%i_%i' % (x, y)] = {'ln': ln, 'layer': layer, 'x': x, 'y': y,
-                                                                        'z': 0, 'r': int(rand() * 127),
-                                                                        'g': int(rand() * 127), 'b': int(rand() * 127)}
-
-    @staticmethod
-    def EraseFromPreErasedObjects():
-        """
-        For every coordinate from the list of pre-painted objects, an object is removed from the level.
-        """
-        QuickPaintOperations.sliceObjRange(QuickPaintOperations.prePaintedObjects)
-        if hasattr(QuickPaintOperations, 'prePaintedObjects'):
-            for ppobj in QuickPaintOperations.prePaintedObjects:
-                # We do this action twice to make sure there is no trailing.
-                QuickPaintOperations.EraseObj(QuickPaintOperations.prePaintedObjects[ppobj]['ln'],
-                                              QuickPaintOperations.prePaintedObjects[ppobj]['layer'],
-                                              QuickPaintOperations.prePaintedObjects[ppobj]['x'],
-                                              QuickPaintOperations.prePaintedObjects[ppobj]['y'])
-                QuickPaintOperations.EraseObj(QuickPaintOperations.prePaintedObjects[ppobj]['ln'],
-                                              QuickPaintOperations.prePaintedObjects[ppobj]['layer'],
-                                              QuickPaintOperations.prePaintedObjects[ppobj]['x'],
-                                              QuickPaintOperations.prePaintedObjects[ppobj]['y'])
-
-        QuickPaintOperations.prePaintedObjects.clear()
-        mainWindow.scene.invalidate()
-
-    @staticmethod
-    def AddObj(ln, layer, x, y, z):
-        """
-        Adds an object to the level and automatically fixes the tiles of islands it may be touching.
-        """
-        if mainWindow.quickPaint is not None and mainWindow.quickPaint.scene is not None:
-            qpscn = mainWindow.quickPaint.scene
-            qp_data = qpscn.object_database
-
-            if qp_data['base']['i'] is not None and qp_data['base']['ts'] is not None and qp_data['base'][
-                't'] is not None:
-                mw = mainWindow
-                objBehindThisOne = QuickPaintOperations.searchObj(ln, x, y)
-
-                while objBehindThisOne is not None:
-                    objBehindThisOne.delete()
-
-                    if objBehindThisOne in QuickPaintOperations.object_optimize_database:
-                        QuickPaintOperations.object_optimize_database.remove(objBehindThisOne)
-
-                    objBehindThisOne.setSelected(False)
-                    mw.scene.removeItem(objBehindThisOne)
-                    objBehindThisOne = QuickPaintOperations.searchObj(ln, x, y)
-
-                obj = ObjectItem(qp_data['base']['ts'], qp_data['base']['t'], ln, x, y, 1, 1, z)
-
-                layer.append(obj)
-                obj.positionChanged = mw.HandleObjPosChange
-
-                if obj not in QuickPaintOperations.object_optimize_database:
-                    QuickPaintOperations.object_optimize_database.append(obj)
-
-                mw.scene.addItem(obj)
-
-                connected_objects = []
-                # This next function has to repeated multiple times at multiple places in and around this object.
-                # Otherwise, you will leave artifacts when painting with bigger objects.
-                QuickPaintOperations.autoTileObj(ln, obj)
-                for r in range(QuickPaintOperations._getMaxSize(qp_data) + 2):
-                    for a in range(-r, r):
-                        sobj = QuickPaintOperations.searchObj(ln, obj.objx + a, obj.objy - r)
-
-                        if sobj is not None:
-                            QuickPaintOperations.autoTileObj(ln, sobj)
-
-                    for a in range(-r, r):
-                        sobj = QuickPaintOperations.searchObj(ln, obj.objx + r, obj.objy + a)
-
-                        if sobj is not None:
-                            QuickPaintOperations.autoTileObj(ln, sobj)
-
-                    for a in range(-r, r):
-                        sobj = QuickPaintOperations.searchObj(ln, obj.objx - a, obj.objy + r)
-
-                        if sobj is not None:
-                            QuickPaintOperations.autoTileObj(ln, sobj)
-
-                    for a in range(-r, r):
-                        sobj = QuickPaintOperations.searchObj(ln, obj.objx - r, obj.objy - a)
-
-                        if sobj is not None:
-                            QuickPaintOperations.autoTileObj(ln, sobj)
-
-    @staticmethod
-    def EraseObj(ln, layer, x, y):
-        """
-        Removes an object from the level and automatically fixes the tiles of islands it may have been touching.
-        """
-        if mainWindow.quickPaint is not None and mainWindow.quickPaint.scene is not None:
-            qpscn = mainWindow.quickPaint.scene
-            qp_data = qpscn.object_database
-
-            if qp_data['base']['i'] is not None and qp_data['base']['ts'] is not None and qp_data['base'][
-                't'] is not None:
-                mw = mainWindow
-                obj = QuickPaintOperations.searchObj(ln, x, y)
-
-                if obj is not None:
-                    surrounding_objects = {
-                        'TopLeft': QuickPaintOperations.searchObj(ln, obj.objx - 1, obj.objy - 1),
-                        'Top': QuickPaintOperations.searchObj(ln, obj.objx, obj.objy - 1),
-                        'TopRight': QuickPaintOperations.searchObj(ln, obj.objx + 1, obj.objy - 1),
-                        'Left': QuickPaintOperations.searchObj(ln, obj.objx - 1, obj.objy),
-                        'Right': QuickPaintOperations.searchObj(ln, obj.objx + 1, obj.objy),
-                        'BottomLeft': QuickPaintOperations.searchObj(ln, obj.objx - 1, obj.objy + 1),
-                        'Bottom': QuickPaintOperations.searchObj(ln, obj.objx, obj.objy + 1),
-                        'BottomRight': QuickPaintOperations.searchObj(ln, obj.objx + 1, obj.objy + 1)
-                    }
-                    obj.delete()
-                    obj.setSelected(False)
-
-                    if obj in QuickPaintOperations.object_optimize_database:
-                        QuickPaintOperations.object_optimize_database.remove(obj)
-
-                    mw.scene.removeItem(obj)
-
-                    for r in range(QuickPaintOperations._getMaxSize(qp_data) + 2):
-                        for a in range(-r, r):
-                            sobj = QuickPaintOperations.searchObj(ln, obj.objx + a, obj.objy - r)
-
-                            if sobj is not None:
-                                QuickPaintOperations.autoTileObj(ln, sobj)
-
-                        for a in range(-r, r):
-                            sobj = QuickPaintOperations.searchObj(ln, obj.objx + r, obj.objy + a)
-
-                            if sobj is not None:
-                                QuickPaintOperations.autoTileObj(ln, sobj)
-
-                        for a in range(-r, r):
-                            sobj = QuickPaintOperations.searchObj(ln, obj.objx - a, obj.objy + r)
-
-                            if sobj is not None:
-                                QuickPaintOperations.autoTileObj(ln, sobj)
-
-                        for a in range(-r, r):
-                            sobj = QuickPaintOperations.searchObj(ln, obj.objx - r, obj.objy - a)
-
-                            if sobj is not None:
-                                QuickPaintOperations.autoTileObj(ln, sobj)
-
-    @staticmethod
-    def searchObj(layer, x, y):
-        """
-        Quickly searches for an object at the specified position.
-        """
-        if not QuickPaintOperations.object_search_database.get((x, y, layer)):
-            return None
-
-        if len(QuickPaintOperations.object_search_database[(x, y, layer)]) <= 0:
-            return None
-
-        return QuickPaintOperations.object_search_database[(x, y, layer)][0]
-
-    @staticmethod
-    def sliceObjRange(posList):
-        """
-        For every object and objects touching that object, they will slice into 1x1 objects.
-        """
-        connected_objects = []
-        objlist = []
-        for pos in map(lambda i: (posList[i]['x'], posList[i]['y'], posList[i]['ln']), posList):
-            qpscn = mainWindow.quickPaint.scene
-            qp_data = qpscn.object_database
-            # pronounced [BOB-JAY] lol
-            # Way to go Robert!
-            # Actually Bobj stands for base object, because these are the objects we start with as they lie
-            # on the positions where the user has painted over on the widget.
-            # - John10v10
-            bobj = QuickPaintOperations.searchObj(pos[2], pos[0], pos[1])
-
-            if bobj is not None and bobj not in connected_objects:
-                connected_objects.append(bobj)
-                objlist.append(bobj)
-
-            for r in range(QuickPaintOperations._getMaxSize(qp_data) + 2):
-                for a in range(-r, r):
-                    bobj = QuickPaintOperations.searchObj(pos[2], pos[0] + a, pos[1] - r)
-
-                    if bobj is not None and bobj not in connected_objects:
-                        connected_objects.append(bobj)
-                        objlist.append(bobj)
-
-                for a in range(-r, r):
-                    bobj = QuickPaintOperations.searchObj(pos[2], pos[0] + r, pos[1] + a)
-
-                    if bobj is not None and bobj not in connected_objects:
-                        connected_objects.append(bobj)
-                        objlist.append(bobj)
-
-                for a in range(-r, r):
-                    bobj = QuickPaintOperations.searchObj(pos[2], pos[0] - a, pos[1] + r)
-
-                    if bobj is not None and bobj not in connected_objects:
-                        connected_objects.append(bobj)
-                        objlist.append(bobj)
-
-                for a in range(-r, r):
-                    bobj = QuickPaintOperations.searchObj(pos[2], pos[0] - r, pos[1] - a)
-
-                    if bobj is not None and bobj not in connected_objects:
-                        connected_objects.append(bobj)
-                        objlist.append(bobj)
-
-        no_more_found = False
-        while not no_more_found:
-            preobjlist = []
-            for obj in objlist:
-                for x in range(obj.objx - 1, obj.objx + obj.width + 1):
-                    for y in range(obj.objy - 1, obj.objy + obj.height + 1):
-                        sobj = QuickPaintOperations.searchObj(obj.layer, x, y)
-
-                        if sobj is not None and sobj is not obj and sobj not in connected_objects:
-                            still_append = True
-
-                            for pos in map(lambda i: (posList[i]['x'], posList[i]['y']), posList):
-                                if abs(x - pos[0]) > r or abs(y - pos[1]) > r:
-                                    still_append = False
-
-                            if still_append:
-                                preobjlist.append(sobj)
-                                connected_objects.append(sobj)
-
-            if len(preobjlist) <= 0:
-                no_more_found = True
-
-            else:
-                objlist = preobjlist
-
-        connected_objects = list(filter(lambda i: i is not None, list(set(connected_objects))))
-        for robj in connected_objects:
-            QuickPaintOperations.sliceObj(robj)
-
-    @staticmethod
-    def sliceObj(obj, px=None, py=None):
-        """
-        Slices this object into 1x1 objects.
-        """
-        if not obj or (obj.width == 1 and obj.height == 1):
-            if obj not in QuickPaintOperations.object_optimize_database and obj:
-                QuickPaintOperations.object_optimize_database.append(obj)
-
-            return obj
-
-        out_obj = None
-        mw = mainWindow
-        objx = obj.objx
-        objy = obj.objy
-        w = obj.width
-        h = obj.height
-        l = obj.layer
-        ts = obj.tileset
-        t = obj.original_type
-        atd_archive = []
-
-        if hasattr(obj, 'atd_archive') and obj.atd_archive:
-            atd_archive = obj.atd_archive
-
-        skip = []
-        x = 0
-        y = 0
-        if obj.objdata:
-            for row in obj.objdata:
-                x = 0
-
-                for tile in row:
-                    if tile == -1:
-                        skip.append((x, y))
-
-                    x += 1
-
-                y += 1
-
-        if obj in Area.layers[obj.layer]:
-            obj.delete()
-            obj.setSelected(False)
-            mw.scene.removeItem(obj)
-
-        if obj in QuickPaintOperations.object_optimize_database:
-            QuickPaintOperations.object_optimize_database.remove(obj)
-
-        for y in range(h):
-            for x in range(w):
-                if (x, y) in skip: continue
-
-                layer = Area.layers[l]
-                ln = CurrentLayer
-
-                if len(layer) == 0:
-                    z = (2 - ln) * 8192
-
-                else:
-                    z = layer[-1].zValue() + 1
-
-                objBehindThisOne = QuickPaintOperations.sliceObj(QuickPaintOperations.searchObj(ln, x + objx, y + objy),
-                                                                 x + objx, y + objy)
-                if objBehindThisOne is not None:
-                    objBehindThisOne.delete()
-                    objBehindThisOne.setSelected(False)
-
-                    if objBehindThisOne in QuickPaintOperations.object_optimize_database:
-                        QuickPaintOperations.object_optimize_database.remove(objBehindThisOne)
-
-                    mw.scene.removeItem(objBehindThisOne)
-
-                sobj = ObjectItem(ts, t, l, x + objx, y + objy, 1, 1, z)
-
-                atd = list(filter(lambda i: i[0] == x and i[1] == y, atd_archive))
-
-                if atd is not None and len(atd) > 0:
-                    sobj.modifiedForSize = atd[0][2]
-                    sobj.autoTileType = atd[0][3]
-
-                layer.append(sobj)
-
-                if sobj not in QuickPaintOperations.object_optimize_database:
-                    QuickPaintOperations.object_optimize_database.append(sobj)
-
-                sobj.positionChanged = mw.HandleObjPosChange
-                mw.scene.addItem(sobj)
-
-                if sobj.objx == px and sobj.objy == py:
-                    out_obj = sobj
-
-        return out_obj
-
-    @staticmethod
-    def isObjectInQPwidget(obj):
-        """
-        Checks if object is in the quick paint configuration widget.
-        """
-        if obj is None: return False
-
-        qpscn = mainWindow.quickPaint.scene
-        qp_data = qpscn.object_database
-
-        for t in qp_data:
-            if qp_data[t] is not None and qp_data[t]['ts'] == obj.tileset and qp_data[t]['t'] == obj.original_type:
-                return True
-
-        return False
-
-    @staticmethod
-    def countUpLeft(layer, obj, maxX, maxY):
-        """
-        Checks if object is inside the top-left corner within a given boundary.
-        """
-        for x in range(maxX + 1):
-            for y in range(maxY + 1):
-                if QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy - y) is None: return True
-
-        return False
-
-    @staticmethod
-    def countUpRight(layer, obj, maxX, maxY):
-        """
-        Checks if object is inside the top-right corner within a given boundary.
-        """
-        for x in range(maxX + 1):
-            for y in range(maxY + 1):
-                if QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy - y) is None: return True
-
-        return False
-
-    @staticmethod
-    def countDownLeft(layer, obj, maxX, maxY):
-        """
-        Checks if object is inside the down-left corner within a given boundary.
-        """
-        for x in range(maxX + 1):
-            for y in range(maxY + 1):
-                if QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy + y) is None: return True
-
-        return False
-
-    @staticmethod
-    def countDownRight(layer, obj, maxX, maxY):
-        """
-        Checks if object is inside the down-right corner within a given boundary.
-        """
-        for x in range(maxX + 1):
-            for y in range(maxY + 1):
-                if QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy + y) is None: return True
-
-        return False
-
-    @staticmethod
-    def countUp(layer, obj, maxY):
-        """
-        Checks if object is not too far underneath the ground within a given boundary.
-        """
-        for y in range(maxY + 1):
-            if QuickPaintOperations.searchObj(layer, obj.objx, obj.objy - y) is None: return True
-
-        return False
-
-    @staticmethod
-    def countDown(layer, obj, maxY):
-        """
-        Checks if object is not too far above the bottom within a given boundary.
-        """
-        for y in range(maxY + 1):
-            if QuickPaintOperations.searchObj(layer, obj.objx, obj.objy + y) is None: return True
-
-        return False
-
-    @staticmethod
-    def countLeft(layer, obj, maxX):
-        """
-        Checks if object is not too far to the right of the left wall within a given boundary.
-        """
-        for x in range(maxX + 1):
-            if QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy) is None: return True
-
-        return False
-
-    @staticmethod
-    def countRight(layer, obj, maxX):
-        """
-        Checks if object is not too far to the left of the right wall within a given boundary.
-        """
-        for x in range(maxX + 1):
-            if QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy) is None: return True
-
-        return False
-
-    @staticmethod
-    def autoTileObj(layer, obj):
-        """
-        Automatically picks the tile that best fits its position.
-        It's a big process, but I hope it works well enough for Miyamoto users.
-        """
-        if mainWindow.quickPaint and mainWindow.quickPaint.scene and obj:
-            qpscn = mainWindow.quickPaint.scene
-            qp_data = qpscn.object_database
-            startingTileset = obj.tileset
-            startingType = obj.type
-            surrounding_objects = {
-                'TopLeft': QuickPaintOperations.searchObj(layer, obj.objx - 1, obj.objy - 1),
-                'Top': QuickPaintOperations.searchObj(layer, obj.objx, obj.objy - 1),
-                'TopRight': QuickPaintOperations.searchObj(layer, obj.objx + 1, obj.objy - 1),
-                'Left': QuickPaintOperations.searchObj(layer, obj.objx - 1, obj.objy),
-                'Right': QuickPaintOperations.searchObj(layer, obj.objx + 1, obj.objy),
-                'BottomLeft': QuickPaintOperations.searchObj(layer, obj.objx - 1, obj.objy + 1),
-                'Bottom': QuickPaintOperations.searchObj(layer, obj.objx, obj.objy + 1),
-                'BottomRight': QuickPaintOperations.searchObj(layer, obj.objx + 1, obj.objy + 1),
-            }
-
-            if QuickPaintOperations.isObjectInQPwidget(obj):
-                flag = 0x0
-                if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['TopLeft']): flag |= 0x1
-                if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['Top']): flag |= 0x2
-                if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['TopRight']): flag |= 0x4
-                if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['Left']): flag |= 0x8
-                if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['Right']): flag |= 0x10
-                if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['BottomLeft']): flag |= 0x20
-                if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['Bottom']): flag |= 0x40
-                if QuickPaintOperations.isObjectInQPwidget(surrounding_objects['BottomRight']): flag |= 0x80
-
-                typeToTile = 'base'
-                if flag & 0xdb == 0xB:
-                    typeToTile = qpscn.pickObject('bottomRight')
-                if flag & 0x7e == 0x16:
-                    typeToTile = qpscn.pickObject('bottomLeft')
-                if flag & 0xdb == 0xd0:
-                    typeToTile = qpscn.pickObject('topLeft')
-                if flag & 0x7e == 0x68:
-                    typeToTile = qpscn.pickObject('topRight')
-                if flag & 0x5a == 0x1a:
-                    typeToTile = qpscn.pickObject('bottom')
-                if flag & 0x5a == 0x58:
-                    typeToTile = qpscn.pickObject('top')
-                if flag & 0x5a == 0x52:
-                    typeToTile = qpscn.pickObject('left')
-                if flag & 0x5a == 0x4a:
-                    typeToTile = qpscn.pickObject('right')
-                if flag & 0xdb == 0x5b:
-                    typeToTile = qpscn.pickObject('topLeftCorner')
-                if flag & 0xdb == 0xda:
-                    typeToTile = qpscn.pickObject('bottomRightCorner')
-                if flag & 0x7e == 0x5e:
-                    typeToTile = qpscn.pickObject('topRightCorner')
-                if flag & 0x7e == 0x7a:
-                    typeToTile = qpscn.pickObject('bottomLeftCorner')
-
-                obj.modifiedForSize = 0x00
-                obj.autoTileType = typeToTile
-                if typeToTile is not None and qp_data.get(typeToTile) is not None and qp_data[typeToTile][
-                    'i'] is not None:
-                    obj.tileset = qp_data[typeToTile]['ts']
-                    obj.type = qp_data[typeToTile]['t']
-                    obj.original_type = qp_data[typeToTile]['t']
-                    if qp_data['topLeftCorner']['i'] is not None:
-                        for y in range(qp_data['topLeftCorner']['oh']):
-                            for x in range(qp_data['topLeftCorner']['ow']):
-                                if x > 0 or y > 0:
-                                    sobj = QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy + y)
-
-                                    if (sobj and sobj.width == 1 and sobj.height == 1
-                                        and (hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'topLeftCorner')
-                                        and not (hasattr(sobj, 'modifiedForSize')
-                                                 and sobj.modifiedForSize & 0x100 == 0x100)):
-                                        obj.tileset = sobj.tileset
-                                        obj.type = sobj.original_type
-                                        obj.original_type = sobj.original_type
-                                        obj.modifiedForSize |= 0x100
-
-                    if qp_data['topRightCorner']['i'] is not None:
-                        for y in range(qp_data['topRightCorner']['oh']):
-                            for x in range(qp_data['topRightCorner']['ow']):
-                                if x > 0 or y > 0:
-                                    sobj = QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy + y)
-
-                                    if (sobj and sobj.width == 1 and sobj.height == 1
-                                        and (hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'topRightCorner')
-                                        and not (hasattr(sobj, 'modifiedForSize')
-                                                 and sobj.modifiedForSize & 0x200 == 0x200)):
-                                        obj.tileset = sobj.tileset
-                                        obj.type = sobj.original_type
-                                        obj.original_type = sobj.original_type
-                                        obj.modifiedForSize |= 0x200
-
-                    if qp_data['bottomLeftCorner']['i'] is not None:
-                        for y in range(qp_data['bottomLeftCorner']['oh']):
-                            for x in range(qp_data['bottomLeftCorner']['ow']):
-                                if x > 0 or y > 0:
-                                    sobj = QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy - y)
-
-                                    if (sobj and sobj.width == 1 and sobj.height == 1
-                                        and (hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'bottomLeftCorner')
-                                        and not (hasattr(sobj, 'modifiedForSize')
-                                                 and sobj.modifiedForSize & 0x400 == 0x400)):
-                                        obj.tileset = sobj.tileset
-                                        obj.type = sobj.original_type
-                                        obj.original_type = sobj.original_type
-                                        obj.modifiedForSize |= 0x400
-
-                    if qp_data['bottomRightCorner']['i'] is not None:
-                        for y in range(qp_data['bottomRightCorner']['oh']):
-                            for x in range(qp_data['bottomRightCorner']['ow']):
-                                if x > 0 or y > 0:
-                                    sobj = QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy - y)
-
-                                    if (sobj and sobj.width == 1 and sobj.height == 1
-                                        and (hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'bottomRightCorner')
-                                        and not (hasattr(sobj, 'modifiedForSize')
-                                                 and sobj.modifiedForSize & 0x800 == 0x800)):
-                                        obj.tileset = sobj.tileset
-                                        obj.type = sobj.original_type
-                                        obj.original_type = sobj.original_type
-                                        obj.modifiedForSize |= 0x800
-
-                    if qp_data['topLeft']['i'] is not None and QuickPaintOperations.countUpLeft(layer, obj,
-                                                                                                qp_data['topLeft'][
-                                                                                                    'ow'],
-                                                                                                qp_data['topLeft'][
-                                                                                                    'oh']):
-                        for y in range(qp_data['topLeft']['oh']):
-                            for x in range(qp_data['topLeft']['ow']):
-                                if x > 0 or y > 0:
-                                    sobj = QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy - y)
-
-                                    if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
-                                                hasattr(sobj,
-                                                        'autoTileType') and sobj.autoTileType == 'topLeft') and not (
-                                                hasattr(sobj,
-                                                        'modifiedForSize') and sobj.modifiedForSize & 0x01 == 0x1):
-                                        obj.tileset = sobj.tileset
-                                        obj.type = sobj.original_type
-                                        obj.original_type = sobj.original_type
-                                        obj.modifiedForSize |= 0x01
-
-                    if qp_data['topRight']['i'] is not None and QuickPaintOperations.countUpRight(layer, obj,
-                                                                                                  qp_data['topRight'][
-                                                                                                      'ow'],
-                                                                                                  qp_data['topRight'][
-                                                                                                      'oh']):
-                        for y in range(qp_data['topRight']['oh']):
-                            for x in range(qp_data['topRight']['ow']):
-                                if x > 0 or y > 0:
-                                    sobj = QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy - y)
-
-                                    if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
-                                                hasattr(sobj,
-                                                        'autoTileType') and sobj.autoTileType == 'topRight') and not (
-                                                hasattr(sobj,
-                                                        'modifiedForSize') and sobj.modifiedForSize & 0x02 == 0x2):
-                                        obj.tileset = sobj.tileset
-                                        obj.type = sobj.original_type
-                                        obj.original_type = sobj.original_type
-                                        obj.modifiedForSize |= 0x02
-
-                    if qp_data['bottomLeft']['i'] is not None and QuickPaintOperations.countDownLeft(layer, obj,
-                                                                                                     qp_data[
-                                                                                                         'bottomLeft'][
-                                                                                                         'ow'], qp_data[
-                                                                                                         'bottomLeft'][
-                                                                                                         'oh']):
-                        for y in range(qp_data['bottomLeft']['oh']):
-                            for x in range(qp_data['bottomLeft']['ow']):
-                                if x > 0 or y > 0:
-                                    sobj = QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy + y)
-
-                                    if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
-                                                hasattr(sobj,
-                                                        'autoTileType') and sobj.autoTileType == 'bottomLeft') and not (
-                                                hasattr(sobj,
-                                                        'modifiedForSize') and sobj.modifiedForSize & 0x04 == 0x4):
-                                        obj.tileset = sobj.tileset
-                                        obj.type = sobj.original_type
-                                        obj.original_type = sobj.original_type
-                                        obj.modifiedForSize |= 0x04
-
-                    if qp_data['bottomRight']['i'] and QuickPaintOperations.countDownRight(layer, obj,
-                                                                                           qp_data[
-                                                                                               'bottomRight'][
-                                                                                               'ow'],
-                                                                                           qp_data[
-                                                                                               'bottomRight'][
-                                                                                               'oh']):
-                        for y in range(qp_data['bottomRight']['oh']):
-                            for x in range(qp_data['bottomRight']['ow']):
-                                if x > 0 or y > 0:
-                                    sobj = QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy + y)
-
-                                    if (sobj is not None and sobj.width == 1 and sobj.height == 1
-                                        and (hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'bottomRight')
-                                        and not (hasattr(sobj, 'modifiedForSize')
-                                                 and sobj.modifiedForSize & 0x08 == 0x8)):
-                                        obj.tileset = sobj.tileset
-                                        obj.type = sobj.original_type
-                                        obj.original_type = sobj.original_type
-                                        obj.modifiedForSize |= 0x08
-
-                    if qp_data['top']['i'] is not None and QuickPaintOperations.countUp(layer, obj,
-                                                                                        qp_data['top']['oh']):
-                        for y in range(qp_data['top']['oh']):
-                            if y > 0:
-                                sobj = QuickPaintOperations.searchObj(layer, obj.objx, obj.objy - y)
-
-                                if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
-                                            hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'top') and not (
-                                            hasattr(sobj, 'modifiedForSize') and sobj.modifiedForSize & 0x10 == 0x10):
-                                    obj.tileset = sobj.tileset
-                                    obj.type = sobj.original_type
-                                    obj.original_type = sobj.original_type
-                                    obj.modifiedForSize |= 0x10
-
-                    if qp_data['bottom']['i'] is not None and QuickPaintOperations.countDown(layer, obj,
-                                                                                             qp_data['bottom']['oh']):
-                        for y in range(qp_data['bottom']['oh']):
-                            if y > 0:
-                                sobj = QuickPaintOperations.searchObj(layer, obj.objx, obj.objy + y)
-
-                                if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
-                                            hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'bottom') and not (
-                                            hasattr(sobj, 'modifiedForSize') and sobj.modifiedForSize & 0x20 == 0x20):
-                                    obj.tileset = sobj.tileset
-                                    obj.type = sobj.original_type
-                                    obj.original_type = sobj.original_type
-                                    obj.modifiedForSize |= 0x20
-
-                    if qp_data['left']['i'] is not None and QuickPaintOperations.countLeft(layer, obj,
-                                                                                           qp_data['left']['ow']):
-                        for x in range(qp_data['left']['ow']):
-                            if x > 0:
-                                sobj = QuickPaintOperations.searchObj(layer, obj.objx - x, obj.objy)
-
-                                if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
-                                            hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'left') and not (
-                                            hasattr(sobj, 'modifiedForSize') and sobj.modifiedForSize & 0x40 == 0x40):
-                                    obj.tileset = sobj.tileset
-                                    obj.type = sobj.original_type
-                                    obj.original_type = sobj.original_type
-                                    obj.modifiedForSize |= 0x40
-
-                    if qp_data['right']['i'] is not None and QuickPaintOperations.countRight(layer, obj,
-                                                                                             qp_data['right']['ow']):
-                        for x in range(qp_data['right']['ow']):
-                            if x > 0:
-                                sobj = QuickPaintOperations.searchObj(layer, obj.objx + x, obj.objy)
-
-                                if sobj is not None and sobj.width == 1 and sobj.height == 1 and (
-                                            hasattr(sobj, 'autoTileType') and sobj.autoTileType == 'right') and not (
-                                            hasattr(sobj, 'modifiedForSize') and sobj.modifiedForSize & 0x80 == 0x80):
-                                    obj.tileset = sobj.tileset
-                                    obj.type = sobj.original_type
-                                    obj.original_type = sobj.original_type
-                                    obj.modifiedForSize |= 0x80
-
-                    obj.updateObjCache()
-                    obj.UpdateTooltip()
-
 
 class QuickPaintConfigWidget(QtWidgets.QWidget):
     """
@@ -7356,47 +8139,67 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
 
     def __init__(self):
         """
-        Constructor for the quick paint confirmation widget
+        Constructor for the quick paint configuration widget
         """
 
         QtWidgets.QWidget.__init__(self)
-        self.setSizePolicy(
-            QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding))
-        self.QuickPaintMode = None
-        self.gridLayout = QtWidgets.QGridLayout(self)
-        self.gridLayout.setObjectName("gridLayout")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+
+        # TODO: Make this translateable
+        title = QtWidgets.QLabel("Objects in database")
+
+        self.db = QPDatabase(self)
+        self.list = QPList(self)
+        self.view = QPStructView(self)
+
+        self.addStructure = QtWidgets.QPushButton(self)
+        self.addStructure.setMinimumSize(QtCore.QSize(0, 40))
+        self.addStructure.clicked.connect(self.HandleAddStructure)
+
+        gridLayout = QtWidgets.QGridLayout(self)
+        gridLayout.addWidget(title, 0, 0, 1, 2)
+        gridLayout.addWidget(self.addStructure, 1, 0)
+        gridLayout.addWidget(self.remStructure, 1, 1)
+        gridLayout.addWidget(self.list, 2, 0, 1, 2)
+        gridLayout.addWidget(self.view, 3, 0, 1, 2)
+
+        self.QuickPaintMode = "PAINT"
+        self.show_badObjWarning = False
+        self.graphicsView = self.QuickPaintView(None, self)
+        self.comboBox_4 = QtWidgets.QComboBox()
+
+        return
+
+
         self.PaintModeCheck = QtWidgets.QPushButton(self)
         self.PaintModeCheck.setMinimumSize(QtCore.QSize(0, 40))
         self.PaintModeCheck.clicked.connect(self.SetPaintMode)
         self.PaintModeCheck.setCheckable(True)
         self.PaintModeCheck.setObjectName("PaintModeCheck")
-        self.horizontalLayout_2.addWidget(self.PaintModeCheck)
+
         self.EraseModeCheck = QtWidgets.QPushButton(self)
         self.EraseModeCheck.setMinimumSize(QtCore.QSize(0, 40))
         self.EraseModeCheck.clicked.connect(self.SetEraseMode)
         self.EraseModeCheck.setCheckable(True)
         self.EraseModeCheck.setObjectName("EraseModeCheck")
+
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.horizontalLayout_2.addWidget(self.PaintModeCheck)
         self.horizontalLayout_2.addWidget(self.EraseModeCheck)
-        self.gridLayout.addLayout(self.horizontalLayout_2, 4, 0, 1, 1)
+
         self.horizontalScrollBar = QtWidgets.QScrollBar(self)
         self.horizontalScrollBar.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalScrollBar.setValue(50)
         self.horizontalScrollBar.valueChanged.connect(self.horizontalScrollBar_changed)
         self.horizontalScrollBar.setObjectName("horizontalScrollBar")
-        self.gridLayout.addWidget(self.horizontalScrollBar, 2, 0, 1, 1)
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setSpacing(5)
-        self.horizontalLayout.setObjectName("horizontalLayout")
+
         self.label_4 = QtWidgets.QLabel(self)
         self.label_4.setMaximumSize(QtCore.QSize(60, 30))
         self.label_4.setObjectName("label_4")
-        self.horizontalLayout.addWidget(self.label_4)
-        self.comboBox_4 = QtWidgets.QComboBox(self)
+
         self.comboBox_4.activated.connect(self.currentPresetIndexChanged)
         self.comboBox_4.setObjectName("comboBox_4")
-        self.horizontalLayout.addWidget(self.comboBox_4)
+
         self.SaveToPresetButton = QtWidgets.QPushButton(self)
         self.SaveToPresetButton.setMaximumSize(QtCore.QSize(60, 30))
         self.SaveToPresetButton.setBaseSize(QtCore.QSize(0, 0))
@@ -7404,209 +8207,191 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         self.SaveToPresetButton.clicked.connect(self.saveToCurrentPresetConfirm)
         self.SaveToPresetButton.setEnabled(False)
         self.SaveToPresetButton.setObjectName("SaveToPresetButton")
-        self.horizontalLayout.addWidget(self.SaveToPresetButton)
+
         self.AddPresetButton = QtWidgets.QPushButton(self)
         self.AddPresetButton.setMaximumSize(QtCore.QSize(60, 30))
         self.AddPresetButton.setBaseSize(QtCore.QSize(0, 0))
         self.AddPresetButton.clicked.connect(self.openTextForm)
         self.AddPresetButton.setObjectName("AddPresetButton")
-        self.horizontalLayout.addWidget(self.AddPresetButton)
+
         self.RemovePresetButton = QtWidgets.QPushButton(self)
         self.RemovePresetButton.setMaximumSize(QtCore.QSize(60, 30))
         self.RemovePresetButton.clicked.connect(self.removeCurrentPresetConfirm)
         self.RemovePresetButton.setObjectName("RemovePresetButton")
+
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setSpacing(5)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.horizontalLayout.addWidget(self.label_4)
+        self.horizontalLayout.addWidget(self.comboBox_4)
+        self.horizontalLayout.addWidget(self.SaveToPresetButton)
+        self.horizontalLayout.addWidget(self.AddPresetButton)
         self.horizontalLayout.addWidget(self.RemovePresetButton)
-        self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
-        self.graphicsView = self.QuickPaintView(None, self)
+
         self.graphicsView.setObjectName("graphicsView")
         self.reset()
-        self.gridLayout.addWidget(self.graphicsView, 1, 0, 1, 1)
+
         self.verticalScrollBar = QtWidgets.QScrollBar(self)
         self.verticalScrollBar.setOrientation(QtCore.Qt.Vertical)
         self.verticalScrollBar.valueChanged.connect(self.verticalScrollBar_changed)
         self.verticalScrollBar.setValue(50)
         self.verticalScrollBar.setObjectName("verticalScrollBar")
-        self.gridLayout.addWidget(self.verticalScrollBar, 1, 1, 1, 1)
+
         self.ZoomButton = QtWidgets.QPushButton(self)
         self.ZoomButton.setMinimumSize(QtCore.QSize(30, 30))
         self.ZoomButton.setMaximumSize(QtCore.QSize(30, 30))
         self.ZoomButton.setObjectName("ZoomButton")
         self.ZoomButton.clicked.connect(self.zoom)
+
+        self.gridLayout = QtWidgets.QGridLayout(self)
+        self.gridLayout.setObjectName("gridLayout")
+        self.gridLayout.addLayout(self.horizontalLayout_2, 4, 0, 1, 1)
+        self.gridLayout.addWidget(self.horizontalScrollBar, 2, 0, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.graphicsView, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.verticalScrollBar, 1, 1, 1, 1)
         self.gridLayout.addWidget(self.ZoomButton, 0, 1, 1, 1)
+
         self.retranslateUi()
+
         QtCore.QMetaObject.connectSlotsByName(self)
         self.setTabOrder(self.AddPresetButton, self.comboBox_4)
         self.setTabOrder(self.comboBox_4, self.RemovePresetButton)
-        self.show_badObjWarning = False
 
-    def SetPaintMode(self):
+    class QPDataBase():
         """
-        Sets the Quick-Paint Mode to paint or turn off.
+        Class for the database of different structures
         """
-        #        self.SlopeModeCheck.setChecked(False)
-        self.EraseModeCheck.setChecked(False)
-        
-        if self.PaintModeCheck.isChecked():
-            self.QuickPaintMode = 'PAINT'
-        
-        else:
-            self.QuickPaintMode = None
+        def __init__(self, parent):
+            self.parent = parent
+            self.db = {}
 
-        mainWindow.scene.update()
+        def get(self, type):
+            """
+            Gets all structures of type
+            """
+            return self.db[type]
 
-    # I don't know if slopes will be supported in the future or not. But for now this function is useless.
-    """
-    def SetSlopeMode(self):
-        self.PaintModeCheck.setChecked(False)
-        self.EraseModeCheck.setChecked(False)
-        if self.SlopeModeCheck.isChecked():
-            self.QuickPaintMode = 'SLOPE'
-        else:
-            self.QuickPaintMode = None
-    """
+        def add(self, structure):
+            """
+            Adds this structure to the database
+            """
+            self.db[structure.type].append(structure)
 
-    def SetEraseMode(self):
+        def add(self, type="", tiles=[None], width=1, height=1, prob=1):
+            """
+            Creates a new structure and adds that to the database
+            """
+            structure = QPStructure(type, tiles, width, height, prob)
+
+            self.db[type].append(structure)
+
+        def rm(self, structure):
+            """
+            Removes a structure from the db
+            """
+            if not structure in self.db[structure.type]:
+                return
+
+            self.db[structure.type].remove(structure)
+
+        def cl(self):
+            """
+            Clears the database
+            """
+            self.db = {}
+
+
+    class QPStructure():
         """
-        Sets the Quick-Paint Mode to erase or turn off.
+        Class that represents a structure
         """
-        self.PaintModeCheck.setChecked(False)
-        # self.SlopeModeCheck.setChecked(False)
-        
-        if self.EraseModeCheck.isChecked():
-            self.QuickPaintMode = 'ERASE'
-        
-        else:
-            self.QuickPaintMode = None
+        def __init__(self, type="", tiles=[None], width=1, height=1, prob=1):
+            self.type   = type
+            self.width  = width
+            self.height = height
+            self.tiles  = tiles
+            self.prob   = prob
 
-        mainWindow.scene.update()
 
-    def reset(self):
-        setoffsets = False
-
-        if hasattr(self, 'scene'):
-            panoffsets = (self.scene.xoffset,self.scene.yoffset)
-            del self.scene
-            setoffsets = True
-
-        self.scene = self.QuickPaintScene(self)
-
-        if setoffsets:
-            self.scene.xoffset = panoffsets[0]
-            self.scene.yoffset = panoffsets[1]
-
-        self.graphicsView.setScene(self.scene)
-        self.comboBox_4.setCurrentIndex(-1)
-
-    def currentPresetIndexChanged(self, index):
+    class QPNewStructureWidget(QtWidgets.QWidget):
         """
-        Handles the change of index of the saved presets context menu and loads the preset.
+        Dialog for adding a new structure
         """
-        self.SaveToPresetButton.setEnabled(index != -1)
-        name = self.comboBox_4.currentText()
-        no = False
-        
-        try:
-            f = open("reggiedata/qpsp/" + name + ".qpp", 'r')
-        
-        except:
-            no = True
-        
-        if not no and ObjectDefinitions is not None:
-            try:
-                for line in f.readlines():
-                    elements = line.split('\t')
-                    
-                    if line != '\n':
-                        self.scene.object_database[elements[0]]['x'] = int(elements[1])
-                        self.scene.object_database[elements[0]]['y'] = int(elements[2])
-                        self.scene.object_database[elements[0]]['w'] = int(elements[3])
-                        self.scene.object_database[elements[0]]['h'] = int(elements[4])
-                        self.scene.object_database[elements[0]]['ow'] = int(elements[3])
-                        self.scene.object_database[elements[0]]['oh'] = int(elements[4])
-                        
-                        if elements[5] == '\n':
-                            self.scene.object_database[elements[0]]['i'] = None
-                        
-                        else:
-                            ln = CurrentLayer
-                            layer = Area.layers[CurrentLayer]
-                            if len(layer) == 0:
-                                z = (2 - ln) * 8192
-                            else:
-                                z = layer[-1].zValue() + 1
+        def __init__(self, parent):
+            QtWidgets.QWidget.__init__(self)
+            self.parent = parent
 
-                            self.scene.object_database[elements[0]]['ts'] = int(elements[5])
-                            self.scene.object_database[elements[0]]['t'] = int(elements[6])
-                            self.scene.object_database[elements[0]]['i'] = ObjectItem(int(elements[5]),
-                                                                                      int(elements[6]), -1,
-                                                                                      self.scene.object_database[
-                                                                                          elements[0]]['x'],
-                                                                                      self.scene.object_database[
-                                                                                          elements[0]]['y'],
-                                                                                      int(elements[3]),
-                                                                                      int(elements[4]), z)
+            self.typeList = [
+                "Top ground",
+                "Top left corner",
+                "Top right corner",
+                "Top inner left corner",
+                "Top inner right corner",
+                "Top slope increasing",
+                "Top slope decreasing",
+                "Left wall",
+                "Filler",
+                "Right wall",
+                "Bottom left corner",
+                "Bottom right corner",
+                "Bottom inner left corner",
+                "Bottom inner right corner",
+                "Bottom slope increasing",
+                "Bottom slope decreasing",
+                "Decoration"
+            ]
 
-            except:
-                print("Preset parse failed.")
-            
-            f.close()
-        
-        self.scene.fixAndUpdateObjects()
-        self.scene.invalidate()
+            self.typePicker = QtWidgets.QComboBox()
+            self.typePicker.addItems(self.typeList)
 
-    def zoom(self):
-        """
-        Zoom the view to half/full. Half is best for view when it's in a small region.
-        """
-        if self.scene.zoom == 2:
-            self.scene.zoom = 1
-            self.ZoomButton.setIcon(GetIcon("zoomin", True))
-        
-        else:
-            self.scene.zoom = 2
-            self.ZoomButton.setIcon(GetIcon("zoomout", True))
-        
-        self.scene.invalidate()
+            # self.tilePicker = ...
 
-    def verticalScrollBar_changed(self):
-        """
-        Handles vertical scroll movement, moving the view up and down.
-        """
-        self.scene.setYoffset((50 - self.verticalScrollBar.value()) * 16)
+            L = QtWidgets.QFormLayout()
+            L.addRow("Type", self.typePicker)
+            L.addRow("Tiles")
+            #L.addRow(self.tilePicker)
 
-    def horizontalScrollBar_changed(self):
-        """
-        Handles horizontal scroll movement, moving the view left and right.
-        """
-        self.scene.setXoffset((50 - self.horizontalScrollBar.value()) * 16)
+            mainLayout = QtWidgets.QVBoxLayout()
+            mainLayout.addLayout(L)
+            #mainLayout.addWidget(buttonBox)
 
-    def retranslateUi(self):
-        """
-        More UI construction.
-        """
-        self.setWindowTitle(trans.string('QuickPaint', 3))
-        self.PaintModeCheck.setText(trans.string('QuickPaint', 4))
-        #        self.SlopeModeCheck.setText(_translate("self", "Slope"))
-        self.EraseModeCheck.setText(trans.string('QuickPaint', 5))
-        self.label_4.setText(trans.string('QuickPaint', 6))
-        
-        for fname in os.listdir("reggiedata/qpsp/"):
-            if fname.endswith(".qpp"):
-                self.comboBox_4.addItem(fname[:-4])
-        
-        self.comboBox_4.setCurrentIndex(-1)
-        self.SaveToPresetButton.setText(trans.string('QuickPaint', 7))
-        self.AddPresetButton.setText(trans.string('QuickPaint', 8))
-        self.RemovePresetButton.setText(trans.string('QuickPaint', 9))
-        self.ZoomButton.setIcon(GetIcon("zoomin", True))
+            self.setLayout(mainLayout)
 
-    def ShowBadObjectWarning(self):
-        if self.show_badObjWarning:
-            QtWidgets.QMessageBox().warning(self,
-                                            trans.string('QuickPaint', 1),
-                                            trans.string('QuickPaint', 2))
+        def HandleCreation(self):
+            """
+            Handles a new structure being created
+            """
+            if self.typePicker.currentIndex() not in [5, 6, 15, 16]:
+                tile = ["FLAU", "OUTL", "OUTR", "INBL", "INBR", "", "" "WALL", "FILL", "WALR", "OUBL", "FLAD", "OUBR", "INTL", "INTR", "", "", ""][self.typePicker.currentIndex()]
+            else:
+                # slope
+                tile = "S"
 
-            self.show_badObjWarning = False
+                if "d" in self.typeList:
+                    tile += "D"
+                else:
+                    tile += "I"
+
+                tile += self.tilePicker.tileWidth
+
+                if "T" in self.typeList:
+                    tile += "U"
+                else:
+                    tile += "D"
+
+            height = self.tilePicker.tileHeight
+            width  = self.tilePicker.tileWidth
+            tiles  = self.tilePicker.getTiles()
+
+            self.parent.db.add(tile, tiles, width, height)
+
+
+    def HandleAddStructure(self):
+        """
+        Handles adding a new structure
+        """
+        self.db.add()
 
     class ConfirmRemovePresetDialog(object):
         """
@@ -7646,6 +8431,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             Dialog.setWindowTitle(trans.string('QuickPaint', 10))
             self.label.setText(trans.string('QuickPaint', 11))
 
+
     class ConfirmOverwritePresetDialog(object):
         """
         Dialog that asks the user for confirmation before overiting a preset. We want to make sure the user didn't press the save preset button by mistake.
@@ -7683,6 +8469,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             """
             Dialog.setWindowTitle(trans.string('QuickPaint', 10))
             self.label.setText(trans.string('QuickPaint', 12))
+
 
     class TextDialog(object):
         """
@@ -7733,6 +8520,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             """
             Dialog.setWindowTitle(trans.string('QuickPaint', 13))
 
+
     class QuickPaintView(QtWidgets.QGraphicsView):
         """
         Here we view the graphics that display the objects that will be arranged inside the user's quick paint strokes.
@@ -7750,33 +8538,36 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             Handles mouse pressing events over the widget
             """
             obj = self.parent.scene.HitObject(event.x(), event.y(), self.width(), self.height())
-            if obj is not None:
-                if event.button() == Qt.LeftButton:
-                    if CurrentPaintType != -1 and CurrentObject != -1:
-                        odef = ObjectDefinitions[CurrentPaintType][CurrentObject]
-                        self.parent.scene.object_database[obj]['w'] = odef.width
-                        self.parent.scene.object_database[obj]['h'] = odef.height
-                        self.parent.scene.object_database[obj]['ow'] = odef.width
-                        self.parent.scene.object_database[obj]['oh'] = odef.height
-                        self.parent.scene.object_database[obj]['i'] = ObjectItem(CurrentPaintType,
-                                                                                 CurrentObject, -1,
-                                                                                 self.parent.scene.object_database[obj][
-                                                                                     'x'],
-                                                                                 self.parent.scene.object_database[obj][
-                                                                                     'y'], odef.width, odef.height, 0)
-                        self.parent.scene.object_database[obj]['ts'] = CurrentPaintType
-                        self.parent.scene.object_database[obj]['t'] = CurrentObject
-                        self.parent.scene.invalidate()
-                
-                elif event.button() == Qt.RightButton:
-                    self.parent.scene.object_database[obj]['w'] = 1
-                    self.parent.scene.object_database[obj]['h'] = 1
-                    self.parent.scene.object_database[obj]['ow'] = 1
-                    self.parent.scene.object_database[obj]['oh'] = 1
-                    self.parent.scene.object_database[obj]['i'] = None
-                    self.parent.scene.invalidate()
-                
-                self.parent.scene.fixAndUpdateObjects()
+            if obj is None:
+                return
+
+            if event.button() == Qt.LeftButton and CurrentPaintType != -1 and CurrentObject != -1:
+                odef = ObjectDefinitions[CurrentPaintType][CurrentObject]
+                db = self.parent.scene.object_database[obj]
+                pt = CurrentPaintType
+                co = CurrentObject
+                width = odef.width
+                height = odef.height
+
+                tiles = ObjectItem(pt, co, -1, db['x'], db['y'], width, height, 0)
+
+                self.parent.scene.object_database[obj]['ts'] = CurrentPaintType
+                self.parent.scene.object_database[obj]['t'] = CurrentObject
+            elif event.button() == Qt.RightButton:
+                width = height = 1
+                tiles = None
+            else:
+                return
+
+            self.parent.scene.object_database[obj]['w'] = width
+            self.parent.scene.object_database[obj]['h'] = height
+            self.parent.scene.object_database[obj]['ow'] = width
+            self.parent.scene.object_database[obj]['oh'] = height
+            self.parent.scene.object_database[obj]['i'] = tiles
+
+            self.parent.scene.invalidate()
+            self.parent.scene.fixAndUpdateObjects()
+
 
     class QuickPaintScene(QtWidgets.QGraphicsScene):
         """
@@ -7793,7 +8584,17 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             self.yoffset = 0
             self.zoom = 1
             self.object_database = {
-                'base': {'x': 0, 'y': 0, 'w': 1, 'h': 1, 'ow': 1, 'oh': 1, 'ts': -1, 't': -1, 'i': None},
+                'base':
+                    {'x': 0,
+                     'y': 0,
+                     'w': 1,
+                     'h': 1,
+                     'ow': 1,
+                     'oh': 1,
+                     'ts': -1,
+                     't': -1,
+                     'i': None
+                     },
                 'top': {'x': 0, 'y': -1, 'w': 1, 'h': 1, 'ow': 1, 'oh': 1, 'ts': -1, 't': -1, 'p': 'base', 'i': None},
                 'topRight': {'x': 1, 'y': -1, 'w': 1, 'h': 1, 'ow': 1, 'oh': 1, 'ts': -1, 't': -1, 'p': 'base',
                              'i': None},
@@ -7817,7 +8618,8 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             }
             self.display_objects = []
             self.BadObjectWarning = False
-            # I just feel like giving this widget a darker background than normal for some reason. Maybe it feels more empathetic.
+            # I just feel like giving this widget a darker background than normal
+            # for some reason. Maybe it feels more empathetic.
             bgcolor.setHsv(bghsv[0], min(bghsv[1] * 1.5, 255), bghsv[2] / 1.5, bghsv[3])
             self.bgbrush = QtGui.QBrush(bgcolor)
             QtWidgets.QGraphicsScene.__init__(self, *args)
@@ -7853,9 +8655,9 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                 'w'] * 24 > hitPoint[0] and
                                     self.object_database[obj]['y'] * 24 + self.object_database[obj][
                                 'h'] * 24 > hitPoint[1]):
-                    
+
                     return obj
-            
+
             return None
 
         def ArrangeMainIsland(self, maxbasewidth, maxleftwidth, maxrightwidth, maxbaseheight, maxtopheight,
@@ -7893,7 +8695,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             self.object_database['bottomLeft']['y'] = maxbaseheight + maxtopheight - 1
             self.object_database['bottom']['y'] = maxbaseheight + maxtopheight - 1
             self.object_database['bottomRight']['y'] = maxbaseheight + maxtopheight - 1
-            
+
             displayObjects = []
             for y in range(self.object_database['top']['h']):
                 for x in range(self.object_database['top']['w']):
@@ -7930,12 +8732,12 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             for y in range(self.object_database['right']['h']):
                 for x in range(self.object_database['right']['w']):
                     displayObjects.append((self.AddDisplayObject('base', self.object_database['right']['x'] + x + 20, self.object_database['right']['y'] + 20 + y, 1,1), self.object_database['right']['i'] is None))
-					
-					
+
+
             for obj in displayObjects:
                 if obj[0] is not None:
                     QuickPaintOperations.autoTileObj(-1, obj[0])
-					
+
             for obj in displayObjects:
                 if obj[0] is not None:
                     QuickPaintOperations.autoTileObj(-1, obj[0])
@@ -7957,7 +8759,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                     displayObjects.append((self.AddDisplayObject('base', maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + 20 + x, -3 + 20 + y,
                                        1, 1), False))
             tx = 0
-            
+
             for i in range(3 + maxrightwidth + maxleftwidth):
                 for y in range(maxtopheight):
                     displayObjects.append((self.AddDisplayObject('base',
@@ -7971,13 +8773,13 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                        -3 + 20 + y, 1,1), False))
                     ty1 = 0
                     ty2 = 0
-            
+
             for i in range(3 + maxtopheight + maxbottomheight):
                 for x in range(maxleftwidth):
                     displayObjects.append((self.AddDisplayObject('base', maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + 20 + x,
                                            -3 + i + maxtopheight + 20, 1, 1), False))
                 ty1 += 1
-            
+
             for i in range(3 + maxtopheight + maxbottomheight):
                 for x in range(maxrightwidth):
                     displayObjects.append((self.AddDisplayObject('base',
@@ -7989,7 +8791,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                 for x in range(maxleftwidth):
                     displayObjects.append((self.AddDisplayObject('base', maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + 20 + x,
                                        -3 + ty + maxtopheight + 20 + y, 1, 1), False))
-            
+
             for i in range(3 + maxrightwidth + maxleftwidth):
                 for y in range(maxbottomheight):
                     displayObjects.append((self.AddDisplayObject('base',
@@ -8001,7 +8803,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                        maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + tx + 20 + x,
                                        -3 + ty + maxtopheight + 20 + y, 1,
                                        1), False))
-            
+
             for i in range(3):
                 for y in range(maxtopheight):
                     displayObjects.append((self.AddDisplayObject('base',
@@ -8012,19 +8814,19 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                     displayObjects.append((self.AddDisplayObject('base',
                                            maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + i + 20,
                                            -3 + maxtopheight + 20 + y, 1, 1), False))
-            
+
             for i in range(3):
                 for x in range(maxrightwidth):
                     displayObjects.append((self.AddDisplayObject('base',
                                             maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + 20 + x,
                                             -3 + maxtopheight + i + maxbottomheight + 20, 1, 1), False))
-            
+
             for i in range(3):
                 for x in range(maxleftwidth):
                     displayObjects.append((self.AddDisplayObject('base',
                                             maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + 20 + x,
                                             -3 + maxtopheight + i + maxbottomheight + 20, 1, 1), False))
-            
+
             already_created_corner = False
             for ix in range(maxrightwidth):
                 for iy in range(maxbottomheight):
@@ -8033,7 +8835,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix + 20,
                                                     -3 + iy + maxtopheight + 20, 1, 1), False))
-                    
+
                     else:
                         if not already_created_corner:
                             self.object_database['topLeftCorner'][
@@ -8043,7 +8845,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix + 20,
                                                     -3 + iy + maxtopheight + 20, 1, 1), self.object_database['topLeftCorner']['i'] is None))
-            
+
             already_created_corner = False
             for ix in range(maxleftwidth):
                 for iy in range(maxbottomheight):
@@ -8052,7 +8854,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + ix + 20,
                                                     -3 + iy + maxtopheight + 20, 1, 1), False))
-                    
+
                     else:
                         if not already_created_corner:
                             self.object_database['topRightCorner'][
@@ -8070,7 +8872,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix + 20,
                                                     -3 + iy + maxtopheight + 3 + maxbottomheight + 20, 1, 1), False))
-                    
+
                     else:
                         if not already_created_corner:
                             self.object_database['bottomLeftCorner'][
@@ -8080,7 +8882,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix + 20,
                                                      -3 + iy + maxtopheight + 3 + maxbottomheight + 20, 1, 1), self.object_database['bottomLeftCorner']['i'] is None))
-            
+
             already_created_corner = False
             for ix in range(maxleftwidth):
                 for iy in range(maxtopheight):
@@ -8089,7 +8891,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + ix + 20,
                                                     -3 + iy + maxtopheight + 3 + maxbottomheight + 20, 1, 1), False))
-                    
+
                     else:
                         if not already_created_corner:
                             self.object_database['bottomRightCorner'][
@@ -8100,11 +8902,11 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + ix + 20,
                                                     -3 + iy + maxtopheight + 3 + maxbottomheight + 20, 1, 1), self.object_database['bottomRightCorner']['i'] is None))
-					
+
             for obj in displayObjects:
                 if obj[0] is not None:
                     QuickPaintOperations.autoTileObj(-1, obj[0])
-					
+
             for obj in displayObjects:
                 if obj[0] is not None:
                     QuickPaintOperations.autoTileObj(-1, obj[0])
@@ -8198,7 +9000,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             # Set corner setter island...
             self.ArrangeCornerSetterIsland(1, maxbasewidth, maxleftwidth, maxrightwidth, maxbaseheight, maxtopheight,
                                            maxbottomheight)
-            
+
             if len(QuickPaintOperations.object_optimize_database) > 0:
                 QuickPaintOperations.optimizeObjects(True)
 
@@ -8217,25 +9019,27 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             """
             Adds a display-only object into the scene. No effect when clicked on.
             """
-            if self.object_database['base']['i'] is not None:
-                this_type = type  # self.pickObject(type)
-                this_obj = self.object_database[this_type]
-                
-                if this_obj.get('ts') is not None and this_obj.get('t') is not None:
-                    ln = CurrentLayer
-                    layer = Area.layers[CurrentLayer]
-                    if len(layer) == 0:
-                        z = (2 - ln) * 8192
-                    else:
-                        z = layer[-1].zValue() + 1
+            if self.object_database['base']['i'] is None:
+                return None
 
-                    obj = ObjectItem(this_obj['ts'], this_obj['t'], -1, x, y, width, height, z)
-                    self.display_objects.append(obj)
-                    QuickPaintOperations.object_optimize_database.append(obj)
-                    
-                    return obj
-            
-            return None
+            this_type = type  # self.pickObject(type)
+            this_obj = self.object_database[this_type]
+
+            if this_obj.get('ts') is None or this_obj.get('t') is None:
+                return None
+
+            ln = CurrentLayer
+            layer = Area.layers[CurrentLayer]
+            if len(layer) == 0:
+                z = (2 - ln) * 8192
+            else:
+                z = layer[-1].zValue() + 1
+
+            obj = ObjectItem(this_obj['ts'], this_obj['t'], -1, x, y, width, height, z)
+            self.display_objects.append(obj)
+            QuickPaintOperations.object_optimize_database.append(obj)
+
+            return obj
 
         def pickObject(self, type):
             """
@@ -8244,26 +9048,26 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             if (self.object_database[type]['i'] is None):
                 if type == 'top' or type == 'bottom' or type == 'left' or type == 'right':
                     return 'base'
-                
+
                 elif (type == 'topRight' or type == 'topLeft') and self.object_database['top']['i'] is not None:
                     return 'top'
-                
+
                 elif type == 'topLeft' and self.object_database['left']['i'] is not None:
                     return 'left'
-                
+
                 elif type == 'topRight' and self.object_database['right']['i'] is not None:
                     return 'right'
-                
+
                 elif (type == 'bottomRight' or type == 'bottomLeft') and self.object_database['bottom'][
                     'i'] is not None:
                     return 'bottom'
-                
+
                 elif type == 'bottomLeft' and self.object_database['left']['i'] is not None:
                     return 'left'
-                
+
                 elif type == 'bottomRight' and self.object_database['right']['i'] is not None:
                     return 'right'
-                
+
                 else:
                     return 'base'
 
@@ -8290,11 +9094,11 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             if height is None: height = item.height
             if x is None: x = item.objx
             if y is None: y = item.objy
-            
+
             while i < height:
                 tmap.append([None] * width)
                 i += 1
-            
+
             startx = 0
             desty = 0
 
@@ -8353,23 +9157,23 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             if filltype == 'FULL':
                 painter.fillRect(x * 24, y * 24, width * 24,
                                  height * 24, fillbrush)
-            
+
             elif filltype == 'TOP':
                 painter.fillRect(x * 24, y * 24 + 6, width * 24,
                                  height * 24 - 6, fillbrush)
-            
+
             elif filltype == 'RIGHT':
                 painter.fillRect(x * 24, y * 24, width * 24 - 6,
                                  height * 24, fillbrush)
-            
+
             elif filltype == 'BOTTOM':
                 painter.fillRect(x * 24, y * 24, width * 24,
                                  height * 24 - 6, fillbrush)
-            
+
             elif filltype == 'LEFT':
                 painter.fillRect(x * 24 + 6, y * 24, width * 24 - 6,
                                  height * 24, fillbrush)
-            
+
             elif filltype == 'TOPRIGHT':
                 painter.fillRect(x * 24, y * 24 + 6, width * 24 - 15,
                                  height * 24 - 6, fillbrush)
@@ -8377,7 +9181,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                  height * 24 - 15, fillbrush)
                 painter.fillRect(x * 24 + width * 24 - 15, y * 24 + 9, 6,
                                  height * 24 - 9, fillbrush)
-            
+
             elif filltype == 'BOTTOMRIGHT':
                 painter.fillRect(x * 24, y * 24, width * 24 - 15,
                                  height * 24 - 6, fillbrush)
@@ -8385,7 +9189,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                  height * 24 - 15, fillbrush)
                 painter.fillRect(x * 24 + width * 24 - 15, y * 24, 6,
                                  height * 24 - 9, fillbrush)
-            
+
             elif filltype == 'BOTTOMLEFT':
                 painter.fillRect(x * 24 + 15, y * 24, width * 24 - 15,
                                  height * 24 - 6, fillbrush)
@@ -8393,7 +9197,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                  fillbrush)
                 painter.fillRect(x * 24 + 6, y * 24, 3, height * 24 - 15,
                                  fillbrush)
-            
+
             elif filltype == 'TOPLEFT':
                 painter.fillRect(x * 24 + 15, y * 24 + 6, width * 24 - 15,
                                  height * 24 - 6, fillbrush)
@@ -8401,31 +9205,31 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                  height * 24 - 9, fillbrush)
                 painter.fillRect(x * 24 + 6, y * 24 + 15, 3,
                                  height * 24 - 15, fillbrush)
-            
+
             elif filltype == 'TOPLEFTCORNER':
                 painter.fillRect(x * 24, y * 24, width * 24 - 6,
                                  height * 24, fillbrush)
                 painter.fillRect(x * 24 + width * 24 - 6, y * 24, 6,
                                  height * 24 - 6, fillbrush)
-            
+
             elif filltype == 'TOPRIGHTCORNER':
                 painter.fillRect(x * 24 + 6, y * 24, width * 24 - 6,
                                  height * 24, fillbrush)
                 painter.fillRect(x * 24, y * 24, 6, height * 24 - 6,
                                  fillbrush)
-            
+
             elif filltype == 'BOTTOMLEFTCORNER':
                 painter.fillRect(x * 24, y * 24, width * 24 - 6,
                                  height * 24, fillbrush)
                 painter.fillRect(x * 24 + width * 24 - 6, y * 24 + 6, 6,
                                  height * 24 - 6, fillbrush)
-            
+
             elif filltype == 'BOTTOMRIGHTCORNER':
                 painter.fillRect(x * 24 + 6, y * 24, width * 24 - 6,
                                  height * 24, fillbrush)
                 painter.fillRect(x * 24, y * 24 + 6, 6, height * 24 - 6,
                                  fillbrush)
-            
+
             painter.drawRect(x * 24, y * 24, width * 24,
                              height * 24)
 
@@ -8438,67 +9242,67 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                 # self.drawObject(self.object_database['base'], painter, tiles)
                 self.drawEmptyBox('', 'base', painter, fillbrush)
                 Paint_Level2 = True
-            
+
             else:
                 self.drawEmptyBox('FULL', 'base', painter, fillbrush)
-            
+
             if Paint_Level2:
                 if self.object_database['top']['i'] != None:
                     # self.drawObject(self.object_database['top'], painter, tiles)
                     self.drawEmptyBox('', 'top', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('TOP', 'top', painter, fillbrush)
-                
+
                 if self.object_database['right']['i'] != None:
                     # self.drawObject(self.object_database['right'], painter, tiles)
                     self.drawEmptyBox('', 'right', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('RIGHT', 'right', painter, fillbrush)
-                
+
                 if self.object_database['bottom']['i'] != None:
                     # self.drawObject(self.object_database['bottom'], painter, tiles)
                     self.drawEmptyBox('', 'bottom', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('BOTTOM', 'bottom', painter, fillbrush)
-                
+
                 if self.object_database['left']['i'] != None:
                     # self.drawObject(self.object_database['left'], painter, tiles)
                     self.drawEmptyBox('', 'left', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('LEFT', 'left', painter, fillbrush)
-                
+
                 if self.object_database['topRight']['i'] != None:
                     # self.drawObject(self.object_database['topRight'], painter, tiles)
                     self.drawEmptyBox('', 'topRight', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('TOPRIGHT', 'topRight', painter, fillbrush)
-                
+
                 if self.object_database['bottomRight']['i'] != None:
                     # self.drawObject(self.object_database['bottomRight'], painter, tiles)
                     self.drawEmptyBox('', 'bottomRight', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('BOTTOMRIGHT', 'bottomRight', painter, fillbrush)
-                
+
                 if self.object_database['bottomLeft']['i'] != None:
                     # self.drawObject(self.object_database['bottomLeft'], painter, tiles)
                     self.drawEmptyBox('', 'bottomLeft', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('BOTTOMLEFT', 'bottomLeft', painter, fillbrush)
-                
+
                 if self.object_database['topLeft']['i'] != None:
                     # self.drawObject(self.object_database['topLeft'], painter, tiles)
                     self.drawEmptyBox('', 'topLeft', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('TOPLEFT', 'topLeft', painter, fillbrush)
-            
+
             return Paint_Level2
 
         def drawCornerObjects(self, painter, tiles, fillbrush):
@@ -8508,24 +9312,24 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             if self.object_database['topRightCorner']['i'] != None:
                 self.drawObject(self.object_database['topRightCorner'], painter, tiles)
                 self.drawEmptyBox('', 'topRightCorner', painter, fillbrush)
-            
+
             else:
                 self.drawEmptyBox('TOPRIGHTCORNER', 'topRightCorner', painter, fillbrush)
-            
+
             if self.object_database['bottomRightCorner']['i'] != None:
                 self.drawObject(self.object_database['bottomRightCorner'], painter, tiles)
                 self.drawEmptyBox('', 'bottomRightCorner', painter, fillbrush)
-            
+
             else:
                 self.drawEmptyBox('BOTTOMRIGHTCORNER', 'bottomRightCorner', painter, fillbrush)
-            
+
             if self.object_database['bottomLeftCorner']['i'] != None:
                 self.drawObject(self.object_database['bottomLeftCorner'], painter, tiles)
                 self.drawEmptyBox('', 'bottomLeftCorner', painter, fillbrush)
-            
+
             else:
                 self.drawEmptyBox('BOTTOMLEFTCORNER', 'bottomLeftCorner', painter, fillbrush)
-            
+
             if self.object_database['topLeftCorner']['i'] != None:
                 self.drawObject(self.object_database['topLeftCorner'], painter, tiles)
                 self.drawEmptyBox('', 'topLeftCorner', painter, fillbrush)
@@ -8547,15 +9351,16 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             painter.scale(self.zoom, self.zoom)
             # Start Painting
             tiles = Tiles
-            
+
             for obj in self.display_objects:
                 self.drawItem(obj, painter, tiles)
-				
+
             if self.drawMainIsland(painter, tiles, fillbrush):
                 self.drawCornerObjects(painter, tiles, fillbrush)
 
             if self.BadObjectWarning:
                 self.parent.ShowBadObjectWarning()
+
 
     def openTextForm(self):
         """
@@ -8594,7 +9399,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         """
         if name is None:
             name = self.comboBox_4.currentText()
-        
+
         with open("reggiedata/qpsp/" + name + ".qpp", "w") as f:
             for obj in self.scene.object_database:
                 f.write(obj + "\t")
@@ -8602,11 +9407,11 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                 f.write(str(self.scene.object_database[obj]['y']) + "\t")
                 f.write(str(self.scene.object_database[obj]['ow']) + "\t")
                 f.write(str(self.scene.object_database[obj]['oh']) + "\t")
-                
+
                 if self.scene.object_database[obj]['i'] is not None:
                     f.write(str(self.scene.object_database[obj]['i'].tileset) + "\t")
                     f.write(str(self.scene.object_database[obj]['i'].type) + "\t")
-                
+
                 f.write("\n")
 
     def removeCurrentPreset(self):
@@ -8616,6 +9421,175 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         os.remove("reggiedata/qpsp/" + self.comboBox_4.currentText() + ".qpp")
         index = self.comboBox_4.currentIndex()
         self.comboBox_4.removeItem(index)
+
+    def SetPaintMode(self):
+        """
+        Sets the Quick-Paint Mode to paint or turn off.
+        """
+        #        self.SlopeModeCheck.setChecked(False)
+        self.EraseModeCheck.setChecked(False)
+
+        if self.PaintModeCheck.isChecked():
+            self.QuickPaintMode = 'PAINT'
+
+        else:
+            self.QuickPaintMode = None
+
+        mainWindow.scene.update()
+
+    # I don't know if slopes will be supported in the future or not. But for now this function is useless.
+    """
+    def SetSlopeMode(self):
+        self.PaintModeCheck.setChecked(False)
+        self.EraseModeCheck.setChecked(False)
+        if self.SlopeModeCheck.isChecked():
+            self.QuickPaintMode = 'SLOPE'
+        else:
+            self.QuickPaintMode = None
+    """
+
+    def SetEraseMode(self):
+        """
+        Sets the Quick-Paint Mode to erase or turn off.
+        """
+        self.PaintModeCheck.setChecked(False)
+        # self.SlopeModeCheck.setChecked(False)
+
+        if self.EraseModeCheck.isChecked():
+            self.QuickPaintMode = 'ERASE'
+
+        else:
+            self.QuickPaintMode = None
+
+        mainWindow.scene.update()
+
+    def reset(self):
+        setoffsets = False
+
+        if hasattr(self, 'scene'):
+            panoffsets = (self.scene.xoffset,self.scene.yoffset)
+            del self.scene
+            setoffsets = True
+
+        self.scene = self.QuickPaintScene(self)
+
+        if setoffsets:
+            self.scene.xoffset = panoffsets[0]
+            self.scene.yoffset = panoffsets[1]
+
+        self.graphicsView.setScene(self.scene)
+        self.comboBox_4.setCurrentIndex(-1)
+
+    def currentPresetIndexChanged(self, index):
+        """
+        Handles the change of index of the saved presets context menu and loads the preset.
+        """
+        self.SaveToPresetButton.setEnabled(index != -1)
+        name = self.comboBox_4.currentText()
+        no = False
+
+        try:
+            f = open("reggiedata/qpsp/" + name + ".qpp", 'r')
+
+        except:
+            no = True
+
+        if not no and ObjectDefinitions is not None:
+            try:
+                for line in f.readlines():
+                    elements = line.split('\t')
+
+                    if line != '\n':
+                        self.scene.object_database[elements[0]]['x'] = int(elements[1])
+                        self.scene.object_database[elements[0]]['y'] = int(elements[2])
+                        self.scene.object_database[elements[0]]['w'] = int(elements[3])
+                        self.scene.object_database[elements[0]]['h'] = int(elements[4])
+                        self.scene.object_database[elements[0]]['ow'] = int(elements[3])
+                        self.scene.object_database[elements[0]]['oh'] = int(elements[4])
+
+                        if elements[5] == '\n':
+                            self.scene.object_database[elements[0]]['i'] = None
+
+                        else:
+                            ln = CurrentLayer
+                            layer = Area.layers[CurrentLayer]
+                            if len(layer) == 0:
+                                z = (2 - ln) * 8192
+                            else:
+                                z = layer[-1].zValue() + 1
+
+                            self.scene.object_database[elements[0]]['ts'] = int(elements[5])
+                            self.scene.object_database[elements[0]]['t'] = int(elements[6])
+                            self.scene.object_database[elements[0]]['i'] = ObjectItem(int(elements[5]),
+                                                                                      int(elements[6]), -1,
+                                                                                      self.scene.object_database[
+                                                                                          elements[0]]['x'],
+                                                                                      self.scene.object_database[
+                                                                                          elements[0]]['y'],
+                                                                                      int(elements[3]),
+                                                                                      int(elements[4]), z)
+
+            except:
+                print("Preset parse failed.")
+
+            f.close()
+
+        self.scene.fixAndUpdateObjects()
+        self.scene.invalidate()
+
+    def zoom(self):
+        """
+        Zoom the view to half/full. Half is best for view when it's in a small region.
+        """
+        if self.scene.zoom == 2:
+            self.scene.zoom = 1
+            self.ZoomButton.setIcon(GetIcon("zoomin", True))
+
+        else:
+            self.scene.zoom = 2
+            self.ZoomButton.setIcon(GetIcon("zoomout", True))
+
+        self.scene.invalidate()
+
+    def verticalScrollBar_changed(self):
+        """
+        Handles vertical scroll movement, moving the view up and down.
+        """
+        self.scene.setYoffset((50 - self.verticalScrollBar.value()) * 16)
+
+    def horizontalScrollBar_changed(self):
+        """
+        Handles horizontal scroll movement, moving the view left and right.
+        """
+        self.scene.setXoffset((50 - self.horizontalScrollBar.value()) * 16)
+
+    def retranslateUi(self):
+        """
+        More UI construction.
+        """
+        self.setWindowTitle(trans.string('QuickPaint', 3))
+        self.PaintModeCheck.setText(trans.string('QuickPaint', 4))
+        #        self.SlopeModeCheck.setText(_translate("self", "Slope"))
+        self.EraseModeCheck.setText(trans.string('QuickPaint', 5))
+        self.label_4.setText(trans.string('QuickPaint', 6))
+
+        for fname in os.listdir("reggiedata/qpsp/"):
+            if fname.endswith(".qpp"):
+                self.comboBox_4.addItem(fname[:-4])
+
+        self.comboBox_4.setCurrentIndex(-1)
+        self.SaveToPresetButton.setText(trans.string('QuickPaint', 7))
+        self.AddPresetButton.setText(trans.string('QuickPaint', 8))
+        self.RemovePresetButton.setText(trans.string('QuickPaint', 9))
+        self.ZoomButton.setIcon(GetIcon("zoomin", True))
+
+    def ShowBadObjectWarning(self):
+        if self.show_badObjWarning:
+            QtWidgets.QMessageBox().warning(self,
+                                            trans.string('QuickPaint', 1),
+                                            trans.string('QuickPaint', 2))
+
+            self.show_badObjWarning = False
 
 
 
@@ -8666,12 +9640,14 @@ class ObjectPickerWidget(QtWidgets.QListView):
         if id == 3: self.setModel(self.m3)
         self.setCurrentIndex(self.model().index(sel, 0, QtCore.QModelIndex()))
 
+    @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
     def currentChanged(self, current, previous):
         """
         Throws a signal when the selected object changed
         """
         self.ObjChanged.emit(current.row())
 
+    @QtCore.pyqtSlot(QtCore.QModelIndex)
     def HandleObjReplace(self, index):
         """
         Throws a signal when the selected object is used as a replacement
@@ -8749,7 +9725,7 @@ class ObjectPickerWidget(QtWidgets.QListView):
                 return self.ritems[n]
 
             if role == Qt.BackgroundRole:
-                return QtWidgets.qApp.palette().base()
+                return QtGui.qApp.palette().base()
 
             if role == Qt.UserRole:
                 return self.itemsize[n]
@@ -8941,7 +9917,7 @@ class StampListModel(QtCore.QAbstractListModel):
             return self.items[n].Icon
 
         elif role == Qt.BackgroundRole:
-            return QtWidgets.qApp.palette().base()
+            return QtGui.qApp.palette().base()
 
         elif role == Qt.UserRole:
             return self.items[n].Name
@@ -9387,64 +10363,74 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         updateData = QtCore.pyqtSignal('PyQt_PyObject')
 
-        def __init__(self):
-            """
-            Generic constructor
-            """
-            super().__init__()
-
         def retrieve(self, data):
             """
-            Extracts the value from the specified nybble(s)
+            Extracts the value from the specified bit(s). Bit numbering is ltr BE
+            and starts at 1.
             """
-            nybble = self.nybble
+            bit = self.bit
 
-            if isinstance(nybble, tuple):
-                if nybble[1] == (nybble[0] + 2) and (nybble[0] | 1) == 0:
-                    # optimize if it's just one byte
-                    return data[nybble[0] >> 1]
+            if isinstance(bit, tuple):
+                if bit[1] == bit[0] + 7 and bit[0] & 1 == 1:
+                    # optimise if it's just one byte
+                    return data[bit[0] >> 3]
                 else:
                     # we have to calculate it sadly
                     # just do it by looping, shouldn't be that bad
+
                     value = 0
-                    for n in range(nybble[0], nybble[1]):
-                        value <<= 4
-                        value |= (data[n >> 1] >> (0 if (n & 1) == 1 else 4)) & 15
+                    for n in range(bit[0], bit[1]):
+                        n -= 1
+                        value = (value << 1) | ((data[n >> 3] >> (7 - (n & 7))) & 1)
+
                     return value
             else:
-                # we just want one nybble
-                if nybble >= (len(data) * 2): return 0
-                return (data[nybble // 2] >> (0 if (nybble & 1) == 1 else 4)) & 15
+                # we just want one bit
+                bit -= 1
+
+                if (bit >> 3) >= len(data):
+                    return 0
+
+                return (data[bit >> 3] >> (7 - (bit & 7))) & 1
 
         def insertvalue(self, data, value):
             """
-            Assigns a value to the specified nybble(s)
+            Assigns a value to the specified bit(s)
             """
-            nybble = self.nybble
+            bit = self.bit
             sdata = list(data)
 
-            if isinstance(nybble, tuple):
-                if nybble[1] == (nybble[0] + 2) and (nybble[0] | 1) == 0:
+            if isinstance(bit, tuple):
+                if bit[1] == bit[0] + 7 and bit[0] & 1 == 1:
                     # just one byte, this is easier
-                    sdata[nybble[0] >> 1] = value & 255
+                    sdata[(bit[0] - 1) >> 3] = value & 0xFF
                 else:
-                    # AAAAAAAAAAA
-                    for n in reversed(range(nybble[0], nybble[1])):
-                        cbyte = sdata[n >> 1]
-                        if (n & 1) == 1:
-                            cbyte = (cbyte & 240) | (value & 15)
+                    # complicated stuff
+                    for n in reversed(range(bit[0], bit[1])):
+                        off = 1 << (7 - ((n - 1) & 7))
+
+                        if value & 1:
+                            # set the bit
+                            sdata[(n - 1) >> 3] |= off
                         else:
-                            cbyte = ((value & 15) << 4) | (cbyte & 15)
-                        sdata[n >> 1] = cbyte
-                        value >>= 4
+                            # mask the bit out
+                            sdata[(n - 1) >> 3] &= 0xFF ^ off
+
+                        value >>= 1
             else:
-                # only overwrite one nybble
-                cbyte = sdata[nybble >> 1]
-                if (nybble & 1) == 1:
-                    cbyte = (cbyte & 240) | (value & 15)
+                # only overwrite one bit
+                byte = (bit - 1) >> 3
+                if byte >= len(data):
+                    return 0
+
+                off = 1 << (7 - ((bit - 1) & 7))
+
+                if value & 1:
+                    # set the bit
+                    sdata[byte] |= off
                 else:
-                    cbyte = ((value & 15) << 4) | (cbyte & 15)
-                sdata[nybble >> 1] = cbyte
+                    # mask the bit out
+                    sdata[byte] &= 0xFF ^ off
 
             return bytes(sdata)
 
@@ -9453,26 +10439,27 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a checkbox
         """
 
-        def __init__(self, title, nybble, mask, comment, layout, row):
+        def __init__(self, title, bit, mask, comment, layout, row):
             """
             Creates the widget
             """
             super().__init__()
 
             self.widget = QtWidgets.QCheckBox(title)
-            if comment is not None: self.widget.setToolTip(comment)
+            if comment is not None:
+                self.widget.setToolTip(comment)
             self.widget.clicked.connect(self.HandleClick)
 
-            if isinstance(nybble, tuple):
-                length = nybble[1] - nybble[0] + 1
+            if isinstance(bit, tuple):
+                length = bit[1] - bit[0] + 1
             else:
                 length = 1
 
             xormask = 0
             for i in range(length):
-                xormask |= 0xF << (i * 4)
+                xormask |= 1 << i
 
-            self.nybble = nybble
+            self.bit = bit
             self.mask = mask
             self.xormask = xormask
             layout.addWidget(self.widget, row, 0, 1, 2)
@@ -9489,8 +10476,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             Assigns the selected value to the data
             """
             value = self.retrieve(data) & (self.mask ^ self.xormask)
+
             if self.widget.isChecked():
                 value |= self.mask
+
             return self.insertvalue(data, value)
 
         def HandleClick(self, clicked=False):
@@ -9504,7 +10493,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a combobox
         """
 
-        def __init__(self, title, nybble, model, comment, layout, row):
+        def __init__(self, title, bit, model, comment, layout, row):
             """
             Creates the widget
             """
@@ -9513,10 +10502,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.model = model
             self.widget = QtWidgets.QComboBox()
             self.widget.setModel(model)
-            if comment is not None: self.widget.setToolTip(comment)
+            if comment is not None:
+                self.widget.setToolTip(comment)
             self.widget.currentIndexChanged.connect(self.HandleIndexChanged)
 
-            self.nybble = nybble
+            self.bit = bit
             layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
 
@@ -9553,7 +10543,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a spinbox
         """
 
-        def __init__(self, title, nybble, max, comment, layout, row):
+        def __init__(self, title, bit, max, comment, layout, row):
             """
             Creates the widget
             """
@@ -9561,10 +10551,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.widget = QtWidgets.QSpinBox()
             self.widget.setRange(0, max - 1)
-            if comment is not None: self.widget.setToolTip(comment)
+            if comment is not None:
+                self.widget.setToolTip(comment)
+
             self.widget.valueChanged.connect(self.HandleValueChanged)
 
-            self.nybble = nybble
+            self.bit = bit
             layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
 
@@ -9749,12 +10741,15 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.UpdateFlag = False
 
+    @QtCore.pyqtSlot()
     def ShowNoteTooltip(self):
         QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.notes, self)
 
+    @QtCore.pyqtSlot()
     def ShowRelatedObjFilesTooltip(self):
         QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.relatedObjFiles, self)
 
+    @QtCore.pyqtSlot('PyQt_PyObject')
     def HandleFieldUpdate(self, field):
         """
         Triggered when a field's data is updated
@@ -9773,6 +10768,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.DataUpdate.emit(data)
 
+    @QtCore.pyqtSlot(str)
     def HandleRawDataEdited(self, text):
         """
         Triggered when the raw data textbox is edited
@@ -9813,6 +10809,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
     Widget for editing entrance properties
     """
 
+    @QtCore.pyqtSlot()
     def __init__(self, defaultmode=False):
         """
         Constructor
@@ -9927,6 +10924,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent = None
         self.UpdateFlag = False
 
+    @QtCore.pyqtSlot()
     def setEntrance(self, ent):
         """
         Change the entrance being edited by the editor, update all fields
@@ -9967,6 +10965,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
 
         self.UpdateFlag = False
 
+    @QtCore.pyqtSlot(int)
     def HandleEntranceIDChanged(self, i):
         """
         Handler for the entrance ID changing
@@ -9979,6 +10978,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateListItem()
         self.editingLabel.setText(trans.string('EntranceDataEditor', 23, '[id]', i))
 
+    @QtCore.pyqtSlot(int)
     def HandleEntranceTypeChanged(self, i):
         """
         Handler for the entrance type changing
@@ -10000,6 +11000,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         mainWindow.scene.update()
         self.ent.UpdateListItem()
 
+    @QtCore.pyqtSlot(int)
     def HandleDestAreaChanged(self, i):
         """
         Handler for the destination area changing
@@ -10010,6 +11011,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateTooltip()
         self.ent.UpdateListItem()
 
+    @QtCore.pyqtSlot(int)
     def HandleDestEntranceChanged(self, i):
         """
         Handler for the destination entrance changing
@@ -10020,6 +11022,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateTooltip()
         self.ent.UpdateListItem()
 
+    @QtCore.pyqtSlot(bool)
     def HandleAllowEntryClicked(self, checked):
         """
         Handle for the Allow Entry checkbox being clicked
@@ -10033,6 +11036,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateTooltip()
         self.ent.UpdateListItem()
 
+    @QtCore.pyqtSlot(bool)
     def HandleUnknownFlagClicked(self, checked):
         """
         Handle for the Unknown Flag checkbox being clicked
@@ -10044,6 +11048,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         else:
             self.ent.entsettings &= ~2
 
+    @QtCore.pyqtSlot(bool)
     def HandleConnectedPipeClicked(self, checked):
         """
         Handle for the connected pipe checkbox being clicked
@@ -10061,6 +11066,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         else:
             self.ent.entsettings &= ~8
 
+    @QtCore.pyqtSlot(bool)
     def HandleConnectedPipeReverseClicked(self, checked):
         """
         Handle for the connected pipe reverse checkbox being clicked
@@ -10072,6 +11078,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         else:
             self.ent.entsettings &= ~1
 
+    @QtCore.pyqtSlot(int)
     def HandlePathIDChanged(self, i):
         """
         Handler for the path ID changing
@@ -10080,6 +11087,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         SetDirty()
         self.ent.entpath = i
 
+    @QtCore.pyqtSlot(bool)
     def HandleForwardPipeClicked(self, checked):
         """
         Handle for the forward pipe checkbox being clicked
@@ -10091,6 +11099,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         else:
             self.ent.entsettings &= ~4
 
+    @QtCore.pyqtSlot(int)
     def HandleActiveLayerChanged(self, i):
         """
         Handle for the active layer changing
@@ -10099,6 +11108,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         SetDirty()
         self.ent.entlayer = i
 
+    @QtCore.pyqtSlot(int)
     def HandleCpDirectionChanged(self, i):
         """
         Handle for CP Direction changing
@@ -10189,6 +11199,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
 
         self.UpdateFlag = False
 
+    @QtCore.pyqtSlot(float)
     def HandleSpeedChanged(self, i):
         """
         Handler for the speed changing
@@ -10197,6 +11208,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         SetDirty()
         self.path.nodeinfo['speed'] = i
 
+    @QtCore.pyqtSlot(float)
     def HandleAccelChanged(self, i):
         """
         Handler for the accel changing
@@ -10205,6 +11217,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         SetDirty()
         self.path.nodeinfo['accel'] = i
 
+    @QtCore.pyqtSlot(int)
     def HandleDelayChanged(self, i):
         """
         Handler for the delay changing
@@ -10213,6 +11226,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         SetDirty()
         self.path.nodeinfo['delay'] = i
 
+    @QtCore.pyqtSlot(int)
     def HandleLoopsChanged(self, i):
         if self.UpdateFlag: return
         SetDirty()
@@ -10511,6 +11525,7 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
             self.midiy.setValue(0)
         return '|'.join(convclip)
 
+    @QtCore.pyqtSlot()
     def HandleCopy(self):
         """
         Makes a copy of the island
@@ -10520,6 +11535,7 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
         mainWindow.clipboard = retcb
         mainWindow.systemClipboard.setText(mainWindow.clipboard)
 
+    @QtCore.pyqtSlot()
     def HandlePlace(self):
         """
         Places the island directly into the editor
@@ -10620,6 +11636,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
     def FixTitle(self):
         self.editingLabel.setText(trans.string('LocationDataEditor', 11, '[id]', self.loc.id))
 
+    @QtCore.pyqtSlot(int)
     def HandleLocationIDChanged(self, i):
         """
         Handler for the location ID changing
@@ -10631,6 +11648,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
         self.loc.UpdateTitle()
         self.FixTitle()
 
+    @QtCore.pyqtSlot(int)
     def HandleLocationXChanged(self, i):
         """
         Handler for the location X-pos changing
@@ -10644,6 +11662,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
         self.loc.UpdateRects()
         self.loc.update()
 
+    @QtCore.pyqtSlot(int)
     def HandleLocationYChanged(self, i):
         """
         Handler for the location Y-pos changing
@@ -10657,6 +11676,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
         self.loc.UpdateRects()
         self.loc.update()
 
+    @QtCore.pyqtSlot(int)
     def HandleLocationWidthChanged(self, i):
         """
         Handler for the location width changing
@@ -10667,6 +11687,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
         self.loc.UpdateRects()
         self.loc.update()
 
+    @QtCore.pyqtSlot(int)
     def HandleLocationHeightChanged(self, i):
         """
         Handler for the location height changing
@@ -10677,6 +11698,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
         self.loc.UpdateRects()
         self.loc.update()
 
+    @QtCore.pyqtSlot()
     def HandleSnapToGrid(self):
         """
         Snaps the current location to an 8x8 grid
@@ -12249,7 +13271,7 @@ class ReggieTranslation:
                 57: 'Toggle viewing of sprite images',
                 58: 'Show Locations',
                 59: 'Toggle viewing of locations',
-                60: 'Switch\nGrid',
+                60: 'Switch[br]Grid',
                 61: 'Cycle through available grid views',
                 62: 'Zoom to Maximum',
                 63: 'Zoom in all the way',
@@ -12317,8 +13339,6 @@ class ReggieTranslation:
                 127: 'Redoes the last action that was undone',
                 128: 'Save Copy of Level As...',
                 129: 'Save a copy of level with a new filename but keeps the current file open for editing',
-                130: 'Show Paths',
-                131: 'Toggle viewing of paths',
                 136: 'Quick Paint Properties',
                 137: 'Show the Properties Window to Configure Quick Paint',
             },
@@ -13060,30 +14080,36 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         Overrides mouse pressing events if needed
         """
         if event.button() == Qt.RightButton:
-            if mainWindow.quickPaint and mainWindow.quickPaint.QuickPaintMode:
-                mw = mainWindow
-                ln = CurrentLayer
-                layer = Area.layers[CurrentLayer]
-
-                if len(layer) == 0:
-                    z = (2 - ln) * 8192
-
-                else:
-                    z = layer[-1].zValue() + 1
-                
-                if mw.quickPaint.QuickPaintMode == 'PAINT':
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]-0.5), z)
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]-0.5), z)
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]+0.5), z)
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]+0.5), z)
-
-                elif mw.quickPaint.QuickPaintMode == 'ERASE':
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]-0.5))
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]-0.5))
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]+0.5))
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]+0.5))
-
-            elif CurrentPaintType in (0, 1, 2, 3) and CurrentObject != -1:
+            #if mainWindow.quickPaint and mainWindow.quickPaint.QuickPaintMode:
+            #    mw = mainWindow
+            #    ln = CurrentLayer
+            #    layer = Area.layers[CurrentLayer]
+            #
+            #    if len(layer) == 0:
+            #        z = (2 - ln) * 8192
+            #
+            #    else:
+            #        z = layer[-1].zValue() + 1
+            #
+            #    if mw.quickPaint.QuickPaintMode == 'PAINT':
+            #        for i in range(3):
+            #            for j in range(3):
+            #                QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]-1+i), int(self.mouseGridPosition[1]-1+j), z)
+            #
+            #        #QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]+0.5), z)
+            #        #QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]+0.5), z)
+            #
+            #        #QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]-0.5), z)
+            #        #QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]-0.5), z)
+            #
+            #    elif mw.quickPaint.QuickPaintMode == 'ERASE':
+            #        QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]-0.5))
+            #        QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]-0.5))
+            #        QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]+0.5))
+            #        QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]+0.5))
+            #
+            #elif CurrentPaintType in (0, 1, 2, 3) and CurrentObject != -1:
+            if CurrentPaintType in (0, 1, 2, 3) and CurrentObject != -1:
                 # paint an object
                 clicked = mainWindow.view.mapToScene(event.x(), event.y())
                 if clicked.x() < 0: clicked.setX(0)
@@ -13417,35 +14443,34 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         if pos.y() < 0: pos.setY(0)
         self.PositionHover.emit(int(pos.x()), int(pos.y()))
 
-        if mainWindow.quickPaint and mainWindow.quickPaint.QuickPaintMode:
-            self.mouseGridPosition = ((pos.x()/24), (pos.y()/24))
-            inv = True
-
-        if event.buttons() == Qt.RightButton and mainWindow.quickPaint and mainWindow.quickPaint.QuickPaintMode:
-                mw = mainWindow
-                ln = CurrentLayer
-                layer = Area.layers[CurrentLayer]
-
-                if len(layer) == 0:
-                    z = (2 - ln) * 8192
-
-                else:
-                    z = layer[-1].zValue() + 1
-
-                if mw.quickPaint.QuickPaintMode == 'PAINT':
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]-0.5), z)
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]-0.5), z)
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]+0.5), z)
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]+0.5), z)
-
-                elif mw.quickPaint.QuickPaintMode == 'ERASE':
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]-0.5))
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]-0.5))
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]+0.5))
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]+0.5))
-
-        elif event.buttons() == Qt.RightButton and self.currentobj is not None and not self.dragstamp:
-
+        #if mainWindow.quickPaint and mainWindow.quickPaint.QuickPaintMode:
+        #    self.mouseGridPosition = ((pos.x()/24), (pos.y()/24))
+        #    inv = True
+        #
+        #if event.buttons() == Qt.RightButton and mainWindow.quickPaint and mainWindow.quickPaint.QuickPaintMode:
+        #        mw = mainWindow
+        #        ln = CurrentLayer
+        #        layer = Area.layers[CurrentLayer]
+        #
+        #        if len(layer) == 0:
+        #            z = (2 - ln) * 8192
+        #
+        #        else:
+        #            z = layer[-1].zValue() + 1
+        #
+        #        if mw.quickPaint.QuickPaintMode == 'PAINT':
+        #            for i in range(3):
+        #                for j in range(3):
+        #                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]-1+i), int(self.mouseGridPosition[1]-1+j), z)
+        #
+        #        elif mw.quickPaint.QuickPaintMode == 'ERASE':
+        #            QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]-0.5))
+        #            QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]-0.5))
+        #            QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]+0.5))
+        #            QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]+0.5))
+        #
+        #elif event.buttons() == Qt.RightButton and self.currentobj is not None and not self.dragstamp:
+        if event.buttons() == Qt.RightButton and self.currentobj is not None and not self.dragstamp:
             # possibly a small optimization
             type_obj = ObjectItem
             type_spr = SpriteItem
@@ -14204,6 +15229,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
 
         self.PasswordEntry('')
 
+    @QtCore.pyqtSlot(str)
     def PasswordEntry(self, text):
         pswd = Area.Metadata.strData('Password')
         if pswd is None: pswd = ''
@@ -14282,6 +15308,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
                 mainLayout.addWidget(buttonBox)
                 self.setLayout(mainLayout)
 
+            @QtCore.pyqtSlot(str)
             def PasswordMatch(self, text):
                 self.Ok.setDisabled(self.New.text() != self.Verify.text() and self.New.text() != '')
 
@@ -14419,8 +15446,7 @@ class TilesetsTab(QtWidgets.QWidget):
             # Create the tree widget
             tree = QtWidgets.QTreeWidget()
             tree.setColumnCount(2)
-            tree.setColumnWidth(0,
-                                192)  # hardcoded default width because Grop was complaining that the default width is too small
+            tree.setColumnWidth(0, 192)  # hardcoded default width because Grop was complaining that the default width is too small
             tree.setHeaderLabels([trans.string('AreaDlg', 28), trans.string('AreaDlg', 29)])  # ['Name', 'File']
             tree.setIndentation(16)
             if slot == 0:
@@ -14661,15 +15687,19 @@ class OldTilesetsTab(QtWidgets.QWidget):
         mainLayout.addStretch(1)
         self.setLayout(mainLayout)
 
+    @QtCore.pyqtSlot(int)
     def HandleTileset0Choice(self, index):
         self.HandleTilesetChoice(0, index)
 
+    @QtCore.pyqtSlot(int)
     def HandleTileset1Choice(self, index):
         self.HandleTilesetChoice(1, index)
 
+    @QtCore.pyqtSlot(int)
     def HandleTileset2Choice(self, index):
         self.HandleTilesetChoice(2, index)
 
+    @QtCore.pyqtSlot(int)
     def HandleTileset3Choice(self, index):
         self.HandleTilesetChoice(3, index)
 
@@ -14791,6 +15821,7 @@ class ZonesDialog(QtWidgets.QDialog):
         mainLayout.addWidget(buttonBox)
         self.setLayout(mainLayout)
 
+    @QtCore.pyqtSlot()
     def NewZone(self):
         if len(self.zoneTabs) >= 8:
             result = QtWidgets.QMessageBox.warning(self, trans.string('ZonesDlg', 6), trans.string('ZonesDlg', 7),
@@ -14812,6 +15843,7 @@ class ZonesDialog(QtWidgets.QDialog):
 
                 # self.NewButton.setEnabled(len(self.zoneTabs) < 8)
 
+    @QtCore.pyqtSlot()
     def DeleteZone(self):
         curindex = self.tabWidget.currentIndex()
         tabamount = self.tabWidget.count()
@@ -14926,6 +15958,7 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.Dimensions.setLayout(verticalLayout)
 
+    @QtCore.pyqtSlot()
     def HandleSnapTo8x8Grid(self, z):
         """
         Snaps the current zone to an 8x8 grid
@@ -14976,6 +16009,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_width.setValue(right)
         self.Zone_height.setValue(bottom)
 
+    @QtCore.pyqtSlot()
     def HandleSnapTo16x16Grid(self, z):
         """
         Snaps the current zone to a 16x16 grid
@@ -15150,6 +16184,7 @@ class ZoneTab(QtWidgets.QWidget):
         InnerLayout.addLayout(ZoneDirectionLayout)
         self.Visibility.setLayout(InnerLayout)
 
+    @QtCore.pyqtSlot(bool)
     def ChangeList(self):
         VRadioMod = self.zv % 16
 
@@ -15507,6 +16542,7 @@ class BGTab(QtWidgets.QWidget):
             self.BG%sViewer.setLayout(mainLayout)
             """.replace('%s', slot).replace('            ', ''))
 
+    @QtCore.pyqtSlot()
     def handleHexBox(self):
         """
         Handles any hex box changing
@@ -15529,6 +16565,7 @@ class BGTab(QtWidgets.QWidget):
                     namebox.setCurrentIndex(namebox.count() - 1)
         self.updatePreviews()
 
+    @QtCore.pyqtSlot()
     def handleNameBox(self):
         """
         Handles any name box changing
@@ -16948,109 +17985,6 @@ class RecentFilesMenu(QtWidgets.QMenu):
         if not mainWindow.LoadLevel(None, self.FileList[number], True, 1): self.RemoveFromList(number)
 
 
-class DiagnosticWidget(QtWidgets.QWidget):
-    """
-    Widget for the auto-diagnostic tool
-    """
-    def __init__(self):
-        """
-        Creates and initializes the widget
-        """
-        super().__init__()
-        self.CheckFunctions = (('objects', trans.string('Diag', 1), DiagnosticToolDialog.UnusedTilesets, False),
-               ('objects', trans.string('Diag', 2), DiagnosticToolDialog.ObjsInTileset, True),
-               ('sprites', trans.string('Diag', 3), DiagnosticToolDialog.CrashSprites, False),
-               ('sprites', trans.string('Diag', 4), DiagnosticToolDialog.CrashSpriteSettings, True),
-               ('sprites', trans.string('Diag', 5), DiagnosticToolDialog.TooManySprites, False),
-               ('entrances', trans.string('Diag', 6), DiagnosticToolDialog.DuplicateEntranceIDs, True),
-               ('entrances', trans.string('Diag', 7), DiagnosticToolDialog.NoStartEntrance, True),
-               ('entrances', trans.string('Diag', 8), DiagnosticToolDialog.EntranceTooCloseToZoneEdge, False),
-               ('entrances', trans.string('Diag', 9), DiagnosticToolDialog.EntranceOutsideOfZone, False),
-               ('zones', trans.string('Diag', 10), DiagnosticToolDialog.TooManyZones, True),
-               ('zones', trans.string('Diag', 11), DiagnosticToolDialog.NoZones, True),
-               ('zones', trans.string('Diag', 12), DiagnosticToolDialog.ZonesTooClose, True),
-               ('zones', trans.string('Diag', 13), DiagnosticToolDialog.ZonesTooCloseToAreaEdges, True),
-               ('zones', trans.string('Diag', 14), DiagnosticToolDialog.BiasNotEnabled, False),
-               ('zones', trans.string('Diag', 15), DiagnosticToolDialog.ZonesTooBig, True),
-               ('background', trans.string('Diag', 16), DiagnosticToolDialog.UnusedBackgrounds, False),
-               )
-        self.diagnosticIcon = QtWidgets.QPushButton()
-
-        self.diagnosticIcon.setIcon(GetIcon('autodiagnosticgood'))
-        self.diagnosticIcon.setFlat(True)
-        self.diagnosticIcon.setGeometry(2, 1, 2, 1)
-        # self.diagnosticIcon.setHeight(59)
-        # self.diagnosticIcon.clicked.connect(ReggieWindow.HandleDiagnostics)
-        self.diagnosticIcon.clicked.connect(self.findIssues)
-        self.layout = QtWidgets.QGridLayout()
-        self.layout.addWidget(self.diagnosticIcon, 0, 0)
-        self.layout.setVerticalSpacing(0)
-        self.layout.setHorizontalSpacing(0)
-        self.layout.setContentsMargins(0, 0, 0, 0)
-        self.setLayout(self.layout)
-
-        self.starttimer = QtCore.QTimer()
-        self.starttimer.setSingleShot(True)
-        self.starttimer.timeout.connect(self.startloopytimer)
-        self.starttimer.start(10000)
-
-    def startloopytimer(self):
-        self.loopytimer = QtCore.QTimer()
-        self.loopytimer.timeout.connect(self.findIssues)
-        self.loopytimer.start(50)
-        
-    def findIssues(self):
-        try:
-            dtd = DiagnosticToolDialog()
-            issues = dtd.populateLists()
-
-            print(issues)
-
-        except:
-            pass
-
-    def populateLists(self):
-        """
-        Runs the check functions and adds items to the list if needed
-        """
-
-        print("Populate lists")
-        self.buttonHandlers = []
-
-
-        foundAnything = False
-        foundCritical = False
-        # print("Beginning of populateLists")
-        for ico, desc, fxn, isCritical in self.CheckFunctions:
-            # print("For statement worked")
-            # print(fxn('c'))
-            if False and fxn('c'):
-
-                foundAnything = True
-                # print("fxn('c') worked")
-                if isCritical: foundCritical = True
-
-                # item.setText(desc)
-                if isCritical: 
-                    self.diagnosticIcon.setIcon(GetIcon('autodiagnosticbad'))
-                    print("THIS IS BAD")
-                else:          
-                    self.diagnosticIcon.setIcon(GetIcon('autodiagnosticwarning'))
-                    print("Warning!")
-        # print("after the for statement")
-        if not foundAnything:
-            self.diagnosticIcon.setIcon(GetIcon('autodiagnosticgood', True))
-            print("'Sall cool!")
-
-        '''if foundCritical: True, len(self.buttonHandlers)#   self.diagnosticIcon.setIcon(GetIcon('autodiagnosticbad'))
-        elif foundAnything: False, len(self.buttonHandlers)   #self.diagnosticIcon.setIcon(GetIcon('autodiagnosticwarning'))
-        return None, len(self.buttonHandlers)'''
-        if foundCritical: return True, len(self.buttonHandlers)
-        elif foundAnything: return False, len(self.buttonHandlers)
-        # print("End of populateLists")
-        return None, len(self.buttonHandlers)
-
-
 class ZoomWidget(QtWidgets.QWidget):
     """
     Widget that allows easy zoom level control
@@ -17172,7 +18106,7 @@ def LoadActionsLists():
         (trans.string('MenuItems', 6),  False, 'openrecent'),
         (trans.string('MenuItems', 8), True, 'save'),
         (trans.string('MenuItems', 10), False, 'saveas'),
-        (trans.string('MenuItems', 128), False, 'savecopyas'),
+        (trans.string('MenuItems', 10), False, 'savecopyas'),
         (trans.string('MenuItems', 12), False, 'metainfo'),
         (trans.string('MenuItems', 14), True, 'screenshot'),
         (trans.string('MenuItems', 16), False, 'changegamepath'),
@@ -17201,7 +18135,6 @@ def LoadActionsLists():
         (trans.string('MenuItems', 54), True, 'showsprites'),
         (trans.string('MenuItems', 56), False, 'showspriteimages'),
         (trans.string('MenuItems', 58), True, 'showlocations'),
-        (trans.string('MenuItems', 130), True, 'showpaths'),
         (trans.string('MenuItems', 60), True, 'grid'),
         (trans.string('MenuItems', 62), True, 'zoommax'),
         (trans.string('MenuItems', 64), True, 'zoomin'),
@@ -17504,11 +18437,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 for name, themeObj in self.themes:
                     self.themeBox.addItem(name)
 
-                index = self.themeBox.findText(setting('Theme'), Qt.MatchFixedString)
-                if index >= 0:
-                     self.themeBox.setCurrentIndex(index)
-
-                self.themeBox.currentIndexChanged.connect(self.UpdatePreview)
+                self.themeBox.activated.connect(self.UpdatePreview)
 
                 boxGB = QtWidgets.QGroupBox('Themes')
                 L = QtWidgets.QFormLayout()
@@ -17568,79 +18497,9 @@ class PreferencesDialog(QtWidgets.QDialog):
                 Returns a preview pixmap for the given theme
                 """
 
-                tilewidth = 24
-                width = int(21.875 * tilewidth)
-                height = int(11.5625 * tilewidth)
-
                 # Set up some things
-                px = QtGui.QPixmap(width, height)
+                px = QtGui.QPixmap(350, 185)
                 px.fill(theme.color('bg'))
-
-                paint = QtGui.QPainter(px)
-
-                global NumberFont
-                font = QtGui.QFont(NumberFont) # need to make a new instance to avoid changing global settings
-                font.setPointSize(6)
-                paint.setFont(font)
-
-                # Draw the spriteboxes
-                paint.setPen(QtGui.QPen(theme.color('spritebox_lines'), 1))
-                paint.setBrush(QtGui.QBrush(theme.color('spritebox_fill')))
-
-                paint.drawRoundedRect(11 * tilewidth, 4 * tilewidth, tilewidth, tilewidth, 5, 5)
-                paint.drawText(QtCore.QPointF(11.25 * tilewidth, 4.6875 * tilewidth), '38')
-
-                paint.drawRoundedRect(tilewidth, 6 * tilewidth, tilewidth, tilewidth, 5, 5)
-                paint.drawText(QtCore.QPointF(1.25 * tilewidth, 6.6875 * tilewidth), '53')
-
-                # Draw the entrance
-                paint.setPen(QtGui.QPen(theme.color('entrance_lines'), 1))
-                paint.setBrush(QtGui.QBrush(theme.color('entrance_fill')))
-
-                paint.drawRoundedRect(13 * tilewidth, 8 * tilewidth, tilewidth, tilewidth, 5, 5)
-                paint.drawText(QtCore.QPointF(13.25 * tilewidth, 8.625 * tilewidth), '0')
-
-                # Draw the location
-                paint.setPen(QtGui.QPen(theme.color('location_lines'), 1))
-                paint.setBrush(QtGui.QBrush(theme.color('location_fill')))
-
-                paint.drawRect(tilewidth, 9 * tilewidth, 6 * tilewidth, 2 * tilewidth)
-                paint.setPen(QtGui.QPen(theme.color('location_text'), 1))
-                paint.drawText(QtCore.QPointF(1.25 * tilewidth, 9.625 * tilewidth), '1')
-
-                # Draw the zone
-                paint.setPen(QtGui.QPen(theme.color('zone_lines'), 3))
-                paint.setBrush(QtGui.QBrush(toQColor(0, 0, 0, 0)))
-                paint.drawRect(8.5 * tilewidth, 3.25 * tilewidth, 16 * tilewidth, 7.5 * tilewidth)
-                paint.setPen(QtGui.QPen(theme.color('zone_corner'), 3))
-                paint.setBrush(QtGui.QBrush(theme.color('zone_corner'), 3))
-                paint.drawRect(8.4375 * tilewidth, 3.1875 * tilewidth, 0.125 * tilewidth, 0.125 * tilewidth)
-                paint.drawRect(8.4375 * tilewidth, 10.6875 * tilewidth, 0.125 * tilewidth, 0.125 * tilewidth)
-                paint.setPen(QtGui.QPen(theme.color('zone_text'), 1))
-                font = QtGui.QFont(NumberFont)
-                font.setPointSize(5 / 16 * tilewidth)
-                paint.setFont(font)
-                paint.drawText(QtCore.QPointF(8.75 * tilewidth, 3.875 * tilewidth), 'Zone 1')
-
-                # Draw the grid
-                paint.setPen(QtGui.QPen(theme.color('grid'), 1, Qt.DotLine))
-                gridcoords = [i for i in range(0, width, tilewidth)]
-                for i in gridcoords:
-                    paint.setPen(QtGui.QPen(theme.color('grid'), 0.75, Qt.DotLine))
-                    paint.drawLine(i, 0, i, height)
-                    paint.drawLine(0, i, width, i)
-                    if not (i / tilewidth) % (tilewidth / 4):
-                        paint.setPen(QtGui.QPen(theme.color('grid'), 1.5, Qt.DotLine))
-                        paint.drawLine(i, 0, i, height)
-                        paint.drawLine(0, i, width, i)
-
-                    if not (i / tilewidth) % (tilewidth / 2):
-                        paint.setPen(QtGui.QPen(theme.color('grid'), 2.25, Qt.DotLine))
-                        paint.drawLine(i, 0, i, height)
-                        paint.drawLine(0, i, width, i)
-
-                # Delete the painter and return the pixmap
-                paint.end()
                 return px
 
         return ThemesTab()
@@ -17830,7 +18689,7 @@ class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
         """
         Handles viewport events
         """
-        if e.type() == e.ToolTip:
+        if e.type() == e.ToolTip and self.itemFromIndex(self.indexAt(e.pos())) is not None:
             self.toolTipAboutToShow.emit(self.itemFromIndex(self.indexAt(e.pos())))
 
         return super().viewportEvent(e)
@@ -17871,6 +18730,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         global Initializing
         Initializing = True
+
+        # FIXME: remove this to enable bugs and quickpaint
+        self.quickPaint = False
 
         # Reggie Version number goes below here. 64 char max (32 if non-ascii).
         self.ReggieInfo = ReggieID
@@ -17936,10 +18798,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.statusBar().addWidget(self.posLabel)
         self.statusBar().addWidget(self.selectionLabel)
         self.statusBar().addWidget(self.hoverLabel)
-        #self.diagnostic = DiagnosticWidget()
         self.ZoomWidget = ZoomWidget()
         self.ZoomStatusWidget = ZoomStatusWidget()
-        #self.statusBar().addPermanentWidget(self.diagnostic)
         self.statusBar().addPermanentWidget(self.ZoomWidget)
         self.statusBar().addPermanentWidget(self.ZoomStatusWidget)
 
@@ -17965,7 +18825,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.HandleSpriteImages: SpriteImagesShown,
             self.HandleLocationsVisibility: LocationsShown,
             self.HandleCommentsVisibility: CommentsShown,
-            self.HandlePathsVisibility: PathsShown,
         }
         for handler in toggleHandlers:
             handler(
@@ -18108,9 +18967,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.CreateAction('showcomments', self.HandleCommentsVisibility, GetIcon('comments'),
                           trans.stringOneLine('MenuItems', 116), trans.stringOneLine('MenuItems', 117),
                           QtGui.QKeySequence('Ctrl+0'), True)
-        self.CreateAction('showpaths', self.HandlePathsVisibility, GetIcon('paths'),
-                          trans.stringOneLine('MenuItems', 130), trans.stringOneLine('MenuItems', 131),
-                          QtGui.QKeySequence('Ctrl+*'), True)
         self.CreateAction('grid', self.HandleSwitchGrid, GetIcon('grid'), trans.stringOneLine('MenuItems', 60),
                           trans.stringOneLine('MenuItems', 61), QtGui.QKeySequence('Ctrl+G'), False)
         self.CreateAction('zoommax', self.HandleZoomMax, GetIcon('zoommax'), trans.stringOneLine('MenuItems', 62),
@@ -18156,7 +19012,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.actions['showspriteimages'].setChecked(SpriteImagesShown)
         self.actions['showlocations'].setChecked(LocationsShown)
         self.actions['showcomments'].setChecked(CommentsShown)
-        self.actions['showpaths'].setChecked(PathsShown)
 
         self.actions['freezeobjects'].setChecked(ObjectsFrozen)
         self.actions['freezesprites'].setChecked(SpritesFrozen)
@@ -18233,7 +19088,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         vmenu.addAction(self.actions['showspriteimages'])
         vmenu.addAction(self.actions['showlocations'])
         vmenu.addAction(self.actions['showcomments'])
-        vmenu.addAction(self.actions['showpaths'])
         vmenu.addSeparator()
         vmenu.addAction(self.actions['grid'])
         vmenu.addSeparator()
@@ -18358,7 +19212,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 'showsprites',
                 'showspriteimages',
                 'showlocations',
-                'showpaths',
             ), (
                 'areaoptions',
                 'zones',
@@ -18439,32 +19292,32 @@ class ReggieWindow(QtWidgets.QMainWindow):
         act.setIcon(GetIcon('overview'))
         act.setStatusTip(trans.string('MenuItems', 95))
         self.vmenu.addAction(act)
-		
+
         # quick paint configuration
-        dock = QtWidgets.QDockWidget(trans.string('MenuItems', 136), self)
-        dock.setFeatures(
-            QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
+        #dock = QtWidgets.QDockWidget(trans.string('MenuItems', 136), self)
+        #dock.setFeatures(
+        #    QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
         # dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        dock.setObjectName('quickpaint')  # needed for the state to save/restore correctly #
+        #dock.setObjectName('quickpaint')  # needed for the state to save/restore correctly #
 
-        self.quickPaint = QuickPaintConfigWidget()
+        #self.quickPaint = QuickPaintConfigWidget()
         #self.quickPaint.moveIt.connect(self.HandleOverviewClick)
-        self.quickPaintDock = dock
-        dock.setWidget(self.quickPaint)
+        #self.quickPaintDock = dock
+        #dock.setWidget(self.quickPaint)
 
-        self.addDockWidget(Qt.RightDockWidgetArea, dock)
-        dock.setVisible(True)
+        #self.addDockWidget(Qt.RightDockWidgetArea, dock)
+        #dock.setVisible(True)
 
-        self.QPPaintShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Alt+P"), self)
-        self.QPPaintShortcut.activated.connect(self.__QPPaintSet)
-        self.QPEraseShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Alt+Shift+P"), self)
-        self.QPEraseShortcut.activated.connect(self.__QPEraseSet)
+        #self.QPPaintShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Alt+P"), self)
+        #self.QPPaintShortcut.activated.connect(self.__QPPaintSet)
+        #self.QPEraseShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Alt+Shift+P"), self)
+        #self.QPEraseShortcut.activated.connect(self.__QPEraseSet)
 
-        act = dock.toggleViewAction()
-        act.setShortcut(QtGui.QKeySequence('Alt+Q'))
-        act.setIcon(GetIcon('quickpaint'))
-        act.setStatusTip(trans.string('MenuItems', 137))
-        self.vmenu.addAction(act)
+        #act = dock.toggleViewAction()
+        #act.setShortcut(QtGui.QKeySequence('Alt+Q'))
+        #act.setIcon(GetIcon('quickpaint'))
+        #act.setStatusTip(trans.string('MenuItems', 137))
+        #self.vmenu.addAction(act)
 
         # create the sprite editor panel
         dock = QtWidgets.QDockWidget(trans.string('SpriteDataEditor', 0), self)
@@ -18761,7 +19614,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # events tab
         self.eventEditorTab = QtWidgets.QWidget()
         tabs.addTab(self.eventEditorTab, GetIcon('events'), '')
-        tabs.setTabToolTip(5, trans.string('Palette', 18))
+        tabs.setTabToolTip(6, trans.string('Palette', 18))
 
         eventel = QtWidgets.QGridLayout(self.eventEditorTab)
         self.eventEditorLayout = eventel
@@ -18795,7 +19648,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # stamps tab
         self.stampTab = QtWidgets.QWidget()
         tabs.addTab(self.stampTab, GetIcon('stamp'), '')
-        tabs.setTabToolTip(6, trans.string('Palette', 19))
+        tabs.setTabToolTip(7, trans.string('Palette', 19))
 
         stampLabel = QtWidgets.QLabel(trans.string('Palette', 27))
 
@@ -18842,7 +19695,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # comments tab
         self.commentsTab = QtWidgets.QWidget()
         tabs.addTab(self.commentsTab, GetIcon('comments'), '')
-        tabs.setTabToolTip(7, trans.string('Palette', 33))
+        tabs.setTabToolTip(8, trans.string('Palette', 33))
 
         cel = QtWidgets.QVBoxLayout()
         self.commentsTab.setLayout(cel)
@@ -18869,6 +19722,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for selecteditem in self.pathList.selectedItems():
             selecteditem.setSelected(False)
 
+    @QtCore.pyqtSlot()
     def Autosave(self):
         """
         Auto saves the level
@@ -18881,6 +19735,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('AutoSaveFileData', QtCore.QByteArray(data))
         AutoSaveDirty = False
 
+    @QtCore.pyqtSlot()
     def TrackClipboardUpdates(self):
         """
         Catches systemwide clipboard updates
@@ -18898,6 +19753,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.clipboard = None
                 self.actions['paste'].setEnabled(False)
 
+    @QtCore.pyqtSlot(int)
     def XScrollChange(self, pos):
         """
         Moves the Overview current position box based on X scroll bar value
@@ -18905,6 +19761,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.levelOverview.Xposlocator = pos
         self.levelOverview.update()
 
+    @QtCore.pyqtSlot(int)
     def YScrollChange(self, pos):
         """
         Moves the Overview current position box based on Y scroll bar value
@@ -18912,6 +19769,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.levelOverview.Yposlocator = pos
         self.levelOverview.update()
 
+    @QtCore.pyqtSlot(int, int)
     def HandleWindowSizeChange(self, w, h):
         self.levelOverview.Hlocator = h
         self.levelOverview.Wlocator = w
@@ -19155,12 +20013,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.stampChooser.update()
             self.stampChooser.repaint()
 
+    @QtCore.pyqtSlot()
     def AboutBox(self):
         """
         Shows the about box
         """
         AboutDialog().exec_()
 
+    @QtCore.pyqtSlot()
     def HandleInfo(self):
         """
         Records the Level Meta Information
@@ -19180,6 +20040,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             dlg.setText(trans.string('InfoDlg', 14))
             dlg.exec_()
 
+    @QtCore.pyqtSlot()
     def HelpBox(self):
         """
         Shows the help box
@@ -19187,6 +20048,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         QtGui.QDesktopServices.openUrl(
             QtCore.QUrl.fromLocalFile(os.path.join(module_path(), 'reggiedata', 'help', 'index.html')))
 
+    @QtCore.pyqtSlot()
     def TipBox(self):
         """
         Reggie Next Tips and Commands
@@ -19194,12 +20056,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         QtGui.QDesktopServices.openUrl(
             QtCore.QUrl.fromLocalFile(os.path.join(module_path(), 'reggiedata', 'help', 'tips.html')))
 
+    @QtCore.pyqtSlot()
     def UpdateCheck(self):
         """
         Checks for updates and displays an appropriate dialog
         """
         UpdateDialog().exec_()
 
+    @QtCore.pyqtSlot()
     def SelectAll(self):
         """
         Select all objects in the current area
@@ -19208,6 +20072,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         paintRect.addRect(float(0), float(0), float(1024 * 24), float(512 * 24))
         self.scene.setSelectionArea(paintRect)
 
+    @QtCore.pyqtSlot()
     def Deselect(self):
         """
         Deselect all currently selected items
@@ -19216,18 +20081,21 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for obj in items:
             obj.setSelected(False)
 
+    @QtCore.pyqtSlot()
     def Undo(self):
         """
         Undoes something
         """
         self.undoStack.undo()
 
+    @QtCore.pyqtSlot()
     def Redo(self):
         """
         Redoes something previously undone
         """
         self.undoStack.redo()
 
+    @QtCore.pyqtSlot()
     def Cut(self):
         """
         Cuts the selected items
@@ -19266,6 +20134,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.SelectionUpdateFlag = False
         self.ChangeSelectionHandler()
 
+    @QtCore.pyqtSlot()
     def Copy(self):
         """
         Copies the selected items
@@ -19289,6 +20158,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.clipboard = self.encodeObjects(clipboard_o, clipboard_s)
                 self.systemClipboard.setText(self.clipboard)
 
+    @QtCore.pyqtSlot()
     def Paste(self):
         """
         Paste the selected items
@@ -19518,6 +20388,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         return layers, sprites
 
+    @QtCore.pyqtSlot()
     def ShiftItems(self):
         """
         Shifts the selected object(s)
@@ -19568,6 +20439,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             SetDirty()
 
+    @QtCore.pyqtSlot()
     def SwapObjectsTilesets(self):
         """
         Swaps objects' tilesets
@@ -19585,6 +20457,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             SetDirty()
 
+    @QtCore.pyqtSlot()
     def SwapObjectsTypes(self):
         """
         Swaps objects' types
@@ -19603,6 +20476,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             SetDirty()
 
+    @QtCore.pyqtSlot()
     def MergeLocations(self):
         """
         Merges selected sprite locations
@@ -19652,6 +20526,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             Area.locations.append(loc)
             loc.setSelected(True)
 
+    @QtCore.pyqtSlot()
     def HandleAddNewArea(self):
         """
         Adds a new area to the level
@@ -19673,6 +20548,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not self.HandleSave(): return
         self.LoadLevel(None, self.fileSavePath, True, newID)
 
+    @QtCore.pyqtSlot()
     def HandleImportArea(self):
         """
         Imports an area from another level
@@ -19750,6 +20626,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not self.HandleSaveNewArea(course, L0, L1, L2): return
         self.LoadLevel(None, self.fileSavePath, True, newID)
 
+    @QtCore.pyqtSlot()
     def HandleDeleteArea(self):
         """
         Deletes the current area
@@ -19768,6 +20645,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             f.write(Level.save())
         self.LoadLevel(None, self.fileSavePath, True, 1)
 
+    @QtCore.pyqtSlot()
     def HandleChangeGamePath(self, auto=False):
         """
         Change the game path used by the current game definition
@@ -19793,6 +20671,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not auto: self.LoadLevel(None, '01-01', False, 1)
         return True
 
+    @QtCore.pyqtSlot()
     def HandlePreferences(self):
         """
         Edit Reggie Next preferences
@@ -19836,6 +20715,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Warn the user that they may need to restart
         QtWidgets.QMessageBox.warning(None, trans.string('PrefsDlg', 0), trans.string('PrefsDlg', 30))
 
+    @QtCore.pyqtSlot()
     def HandleNewLevel(self):
         """
         Create a new level
@@ -19843,6 +20723,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if self.CheckDirty(): return
         self.LoadLevel(None, None, False, 1)
 
+    @QtCore.pyqtSlot()
     def HandleOpenFromName(self):
         """
         Open a level using the level picker
@@ -19854,6 +20735,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec_() == QtWidgets.QDialog.Accepted:
             self.LoadLevel(None, dlg.currentlevel, False, 1)
 
+    @QtCore.pyqtSlot()
     def HandleOpenFromFile(self):
         """
         Open a level using the filename
@@ -19868,6 +20750,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if fn == '': return
         self.LoadLevel(None, str(fn), True, 1)
 
+    @QtCore.pyqtSlot()
     def HandleSave(self):
         """
         Save a level back to the archive
@@ -19894,6 +20777,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('AutoSaveFileData', 'x')
         return True
 
+    @QtCore.pyqtSlot()
     def HandleSaveNewArea(self, course, L0, L1, L2):
         """
         Save a level back to the archive
@@ -19920,6 +20804,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('AutoSaveFileData', 'x')
         return True
 
+    @QtCore.pyqtSlot()
     def HandleSaveAs(self):
         """
         Save a level back to the archive, with a new filename
@@ -19948,6 +20833,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.RecentMenu.AddToList(self.fileSavePath)
 
+    @QtCore.pyqtSlot()
     def HandleSaveCopyAs(self):
         """
         Save a level back to the archive, with a new filename, but does not store this filename
@@ -19961,12 +20847,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         with open(fn, 'wb') as f:
             f.write(data)
 
+    @QtCore.pyqtSlot()
     def HandleExit(self):
         """
         Exit the editor. Why would you want to do this anyway?
         """
         self.close()
 
+    @QtCore.pyqtSlot(int)
     def HandleSwitchArea(self, idx):
         """
         Handle activated signals for areaComboBox
@@ -19978,6 +20866,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if Area.areanum != idx + 1:
             self.LoadLevel(None, self.fileSavePath, True, idx + 1)
 
+    @QtCore.pyqtSlot(bool)
     def HandleUpdateLayer0(self, checked):
         """
         Handle toggling of layer 0 being shown
@@ -19992,6 +20881,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleUpdateLayer1(self, checked):
         """
         Handle toggling of layer 1 being shown
@@ -20006,6 +20896,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleUpdateLayer2(self, checked):
         """
         Handle toggling of layer 2 being shown
@@ -20020,6 +20911,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleTilesetAnimToggle(self, checked):
         """
         Handle toggling of tileset animations
@@ -20032,6 +20924,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleCollisionsToggle(self, checked):
         """
         Handle toggling of tileset collisions viewing
@@ -20043,6 +20936,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('ShowCollisions', CollisionsShown)
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleRealViewToggle(self, checked):
         """
         Handle toggling of Real View
@@ -20055,6 +20949,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('RealViewEnabled', RealViewEnabled)
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleSpritesVisibility(self, checked):
         """
         Handle toggling of sprite visibility
@@ -20070,6 +20965,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('ShowSprites', SpritesShown)
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleSpriteImages(self, checked):
         """
         Handle toggling of sprite images
@@ -20096,6 +20992,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleLocationsVisibility(self, checked):
         """
         Handle toggling of location visibility
@@ -20111,6 +21008,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('ShowLocations', LocationsShown)
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleCommentsVisibility(self, checked):
         """
         Handle toggling of comment visibility
@@ -20126,24 +21024,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('ShowComments', CommentsShown)
         self.scene.update()
 
-    def HandlePathsVisibility(self, checked):
-        """
-        Handle toggling of path visibility
-        """
-        global PathsShown
-
-        PathsShown = checked
-
-        if Area is not None:
-            for node in Area.paths:
-                node.setVisible(PathsShown)
-
-            for path in Area.pathdata:
-                path['peline'].setVisible(PathsShown)
-
-        setSetting('ShowPaths', PathsShown)
-        self.scene.update()
-
+    @QtCore.pyqtSlot(bool)
     def HandleObjectsFreeze(self, checked):
         """
         Handle toggling of objects being frozen
@@ -20163,6 +21044,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezeObjects', ObjectsFrozen)
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleSpritesFreeze(self, checked):
         """
         Handle toggling of sprites being frozen
@@ -20181,6 +21063,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezeSprites', SpritesFrozen)
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleEntrancesFreeze(self, checked):
         """
         Handle toggling of entrances being frozen
@@ -20199,6 +21082,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezeEntrances', EntrancesFrozen)
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleLocationsFreeze(self, checked):
         """
         Handle toggling of locations being frozen
@@ -20217,6 +21101,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezeLocations', LocationsFrozen)
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandlePathsFreeze(self, checked):
         """
         Handle toggling of path nodes being frozen
@@ -20235,6 +21120,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezePaths', PathsFrozen)
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleCommentsFreeze(self, checked):
         """
         Handle toggling of comments being frozen
@@ -20253,6 +21139,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('FreezeComments', CommentsFrozen)
         self.scene.update()
 
+    @QtCore.pyqtSlot(bool)
     def HandleSwitchGrid(self):
         """
         Handle switching of the grid view
@@ -20269,6 +21156,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('GridType', GridType)
         self.scene.update()
 
+    @QtCore.pyqtSlot()
     def HandleZoomIn(self):
         """
         Handle zooming in
@@ -20279,6 +21167,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if zi < len(self.ZoomLevels):
             self.ZoomTo(self.ZoomLevels[zi])
 
+    @QtCore.pyqtSlot()
     def HandleZoomOut(self):
         """
         Handle zooming out
@@ -20289,18 +21178,21 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if zi >= 0:
             self.ZoomTo(self.ZoomLevels[zi])
 
+    @QtCore.pyqtSlot()
     def HandleZoomActual(self):
         """
         Handle zooming to the actual size
         """
         self.ZoomTo(100.0)
 
+    @QtCore.pyqtSlot()
     def HandleZoomMin(self):
         """
         Handle zooming to the minimum size
         """
         self.ZoomTo(self.ZoomLevels[0])
 
+    @QtCore.pyqtSlot()
     def HandleZoomMax(self):
         """
         Handle zooming to the maximum size
@@ -20333,6 +21225,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
+    @QtCore.pyqtSlot(int, int)
     def HandleOverviewClick(self, x, y):
         """
         Handle position changes from the level overview
@@ -20530,7 +21423,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.LoadLevel_NSMBW(levelData, areaNum)
 
         # Set up and reset the Quick Paint Tool
-        if hasattr(self, 'quickPaint'):
+        if hasattr(self, 'quickPaint') and self.quickPaint is not False:
             self.quickPaint.reset()  # Reset the QP widget.
         QuickPaintOperations.object_optimize_database = []
         QuickPaintOperations.object_search_database = {}
@@ -20707,6 +21600,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.scene.addItem(com)
             com.UpdateListItem()
 
+    @QtCore.pyqtSlot()
     def ReloadTilesets(self, soft=False):
         """
         Reloads all the tilesets. If soft is True, they will not be reloaded if the filepaths have not changed.
@@ -20728,6 +21622,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Sprites = None
         LoadSpriteData()
 
+    @QtCore.pyqtSlot()
     def ChangeSelectionHandler(self):
         """
         Update the visible panels whenever the selection changes
@@ -20808,7 +21703,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 showPathPanel = True
                 updateModeInfo = True
             elif func_ii(item, type_com):
-                self.creationTabs.setCurrentIndex(7)
+                self.creationTabs.setCurrentIndex(8)
                 self.UpdateFlag = True
                 self.commentList.setCurrentItem(item.listitem)
                 self.UpdateFlag = False
@@ -20871,7 +21766,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     text = trans.string('Statusbar', 8, '[x]', loc)  # x locations selected
                 elif not any((obj, spr, ent, loc, com)):
                     text = trans.string('Statusbar', 9, '[x]', path)  # x path nodes selected
-                elif not any((obj, spr, ent, path, loc)):
+                elif not any((obj, spr, ent, loc, path)):
                     text = trans.string('Statusbar', 30, '[x]', com)  # x comments selected
                 else:  # different types
                     text = trans.string('Statusbar', 10, '[x]', len(selitems))  # x items selected
@@ -20923,6 +21818,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             SetDirty()
         self.levelOverview.update()
 
+    @QtCore.pyqtSlot(int)
     def CreationTabChanged(self, nt):
         """
         Handles the selected palette tab changing
@@ -20947,6 +21843,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         global CurrentPaintType
         CurrentPaintType = CPT
 
+    @QtCore.pyqtSlot(int)
     def ObjTabChanged(self, nt):
         """
         Handles the selected slot tab in the object palette changing
@@ -20959,6 +21856,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         global CurrentPaintType
         CurrentPaintType = nt
 
+    @QtCore.pyqtSlot(int)
     def SprTabChanged(self, nt):
         """
         Handles the selected tab in the sprite palette changing
@@ -20970,6 +21868,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         global CurrentPaintType
         CurrentPaintType = cpt
 
+    @QtCore.pyqtSlot(int)
     def LayerChoiceChanged(self, nl):
         """
         Handles the selected layer changing
@@ -21024,6 +21923,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.scene.update()
             SetDirty()
 
+    @QtCore.pyqtSlot(int)
     def ObjectChoiceChanged(self, type):
         """
         Handles a new object being chosen
@@ -21031,6 +21931,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         global CurrentObject
         CurrentObject = type
 
+    @QtCore.pyqtSlot(int)
     def ObjectReplace(self, type):
         """
         Handles a new object being chosen to replace the selected objects
@@ -21049,6 +21950,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if changed:
             SetDirty()
 
+    @QtCore.pyqtSlot(int)
     def SpriteChoiceChanged(self, type):
         """
         Handles a new sprite being chosen
@@ -21065,6 +21967,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.defaultPropDock.setVisible(False)
             self.defaultDataEditor.update()
 
+    @QtCore.pyqtSlot(int)
     def SpriteReplace(self, type):
         """
         Handles a new sprite type being chosen to replace the selected sprites
@@ -21085,6 +21988,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.ChangeSelectionHandler()
 
+    @QtCore.pyqtSlot(int)
     def SelectNewSpriteView(self, type):
         """
         Handles a new sprite view being chosen
@@ -21097,12 +22001,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         layout.itemAt(0).widget().setVisible(isSearch)
         layout.itemAt(1).widget().setVisible(isSearch)
 
+    @QtCore.pyqtSlot(str)
     def NewSearchTerm(self, text):
         """
         Handles a new sprite search term being entered
         """
         self.sprPicker.SetSearchString(text)
 
+    @QtCore.pyqtSlot()
     def ShowDefaultProps(self):
         """
         Handles the Show Default Properties button being clicked
@@ -21118,6 +22024,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             obj.UpdateListItem()
             SetDirty()
 
+    @QtCore.pyqtSlot('PyQt_PyObject')
     def SpriteDataUpdated(self, data):
         """
         Handle the current sprite's data being updated
@@ -21171,6 +22078,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.SaveComments()
         SetDirty()
 
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleEntranceSelectByList(self, item):
         """
         Handle an entrance being selected from the list
@@ -21188,6 +22096,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         ent.setSelected(True)
 
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleEntranceToolTipAboutToShow(self, item):
         """
         Handle an entrance being hovered in the list
@@ -21201,6 +22110,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         ent.UpdateListItem(True)
 
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleLocationSelectByList(self, item):
         """
         Handle a location being selected from the list
@@ -21218,6 +22128,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         loc.setSelected(True)
 
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleLocationToolTipAboutToShow(self, item):
         """
         Handle a location being hovered in the list
@@ -21231,6 +22142,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         loc.UpdateListItem(True)
 
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleSpriteSelectByList(self, item):
         """
         Handle a sprite being selected from the list
@@ -21246,6 +22158,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         spr.setSelected(True)
 
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleSpriteToolTipAboutToShow(self, item):
         """
         Handle a sprite being hovered in the list
@@ -21259,6 +22172,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         spr.UpdateListItem(True)
 
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandlePathSelectByList(self, item):
         """
         Handle a path node being selected
@@ -21274,6 +22188,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         path.setSelected(True)
 
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandlePathToolTipAboutToShow(self, item):
         """
         Handle a path node being hovered in the list
@@ -21287,6 +22202,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         path.UpdateListItem(True)
 
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleCommentSelectByList(self, item):
         """
         Handle a comment being selected
@@ -21302,6 +22218,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         comment.setSelected(True)
 
+    @QtCore.pyqtSlot(QtWidgets.QListWidgetItem)
     def HandleCommentToolTipAboutToShow(self, item):
         """
         Handle a comment being hovered in the list
@@ -21356,6 +22273,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.UpdateFlag = False
 
+    @QtCore.pyqtSlot(int, int)
     def PositionHovered(self, x, y):
         """
         Handle a position being hovered in the view
@@ -21422,6 +22340,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         QtWidgets.QMainWindow.keyPressEvent(self, event)
 
+    @QtCore.pyqtSlot()
     def HandleAreaOptions(self):
         """
         Pops up the options for Area Dialogue
@@ -21481,6 +22400,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             self.scene.update()
 
+    @QtCore.pyqtSlot()
     def HandleZones(self):
         """
         Pops up the options for Zone dialog
@@ -21793,6 +22713,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.levelOverview.update()
 
     # Handles setting the backgrounds
+    @QtCore.pyqtSlot()
     def HandleBG(self):
         """
         Pops up the Background settings Dialog
@@ -21828,6 +22749,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 i = i + 1
 
+    @QtCore.pyqtSlot()
     def HandleScreenshot(self):
         """
         Takes a screenshot of the entire level and saves it
@@ -21961,7 +22883,7 @@ def main():
 
     global EnableAlpha, GridType, CollisionsShown, RealViewEnabled
     global ObjectsFrozen, SpritesFrozen, EntrancesFrozen, LocationsFrozen, PathsFrozen, CommentsFrozen
-    global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown, DrawEntIndicators
+    global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, DrawEntIndicators
 
     gt = setting('GridType')
     if gt == 'checker':
@@ -21982,7 +22904,6 @@ def main():
     SpriteImagesShown = setting('ShowSpriteImages', True)
     LocationsShown = setting('ShowLocations', True)
     CommentsShown = setting('ShowComments', True)
-    PathsShown = setting('ShowPaths', True)
     DrawEntIndicators = setting('ZoneEntIndicators', False)
     SLib.RealViewEnabled = RealViewEnabled
 
