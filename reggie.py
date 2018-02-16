@@ -872,7 +872,8 @@ def LoadSpriteData():
 
     # It works this way so that it can overwrite settings based on order of precedence
     paths = [(trans.files['spritedata'], None)]
-    for pathtuple in gamedef.multipleRecursiveFiles('spritedata', 'spritenames'): paths.append(pathtuple)
+    for pathtuple in gamedef.multipleRecursiveFiles('spritedata', 'spritenames'):
+        paths.append(pathtuple)
 
     for sdpath, snpath in paths:
 
@@ -897,9 +898,13 @@ def LoadSpriteData():
                 yoshiNotes = None
                 yoshi = None
                 asm = None
+                advNotes = None
 
                 if 'notes' in sprite.attrib:
                     notes = trans.string('SpriteDataEditor', 2, '[notes]', sprite.attrib['notes'])
+
+                if 'advancednotes' in sprite.attrib:
+                    advNotes = trans.string('SpriteDataEditor', 11, '[notes]', sprite.attrib['advancednotes'])
 
                 if 'files' in sprite.attrib:
                     relatedObjFiles = trans.string('SpriteDataEditor', 8, '[list]',
@@ -908,8 +913,9 @@ def LoadSpriteData():
                 if 'yoshinotes' in sprite.attrib:
                     yoshiNotes = trans.string('SpriteDataEditor', 9, '[notes]',
                                                    sprite.attrib['yoshinotes'])
-                if 'yoshi' in sprite.attrib:
-                    yoshi = sprite.attrib['yoshi']
+
+                if 'yoshi' in sprite.attrib and 0 <= int(sprite.attrib['yoshi']) < 4:
+                    yoshi = int(sprite.attrib['yoshi'])
 
                 if 'asmhacks' in sprite.attrib:
                     asm = sprite.attrib['asmhacks'] == "True"
@@ -919,6 +925,7 @@ def LoadSpriteData():
                 sdef.id = spriteid
                 sdef.name = spritename
                 sdef.notes = notes
+                sdef.advNotes = advNotes
                 sdef.relatedObjFiles = relatedObjFiles
                 sdef.yoshiNotes = yoshiNotes
                 sdef.yoshi = yoshi
@@ -9407,14 +9414,30 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.relatedObjFilesButton.setAutoRaise(True)
         self.relatedObjFilesButton.clicked.connect(self.ShowRelatedObjFilesTooltip)
 
-        self.yoshiInfo = QtWidgets.QLabel()
+        self.advNoteButton = QtWidgets.QToolButton()
+        self.advNoteButton.setIcon(GetIcon('note-advanced'))
+        self.advNoteButton.setText(trans.string('SpriteDataEditor', 10))
+        self.advNoteButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.advNoteButton.setAutoRaise(True)
+        self.advNoteButton.clicked.connect(self.ShowAdvancedNoteTooltip)
+
+        self.yoshiInfo = QtWidgets.QToolButton()
+        self.yoshiInfo.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.yoshiInfo.setText(trans.string('SpriteDataEditor', 12))
+        self.yoshiInfo.setAutoRaise(True)
+        self.yoshiInfo.clicked.connect(self.ShowYoshiTooltip)
+
+        self.asm = QtWidgets.QToolButton()
+        self.asm.setIcon(GetIcon("asm"))
 
         toplayout = QtWidgets.QHBoxLayout()
         toplayout.addWidget(self.spriteLabel)
         toplayout.addStretch(1)
+        toplayout.addWidget(self.asm)
         toplayout.addWidget(self.yoshiInfo)
         toplayout.addWidget(self.relatedObjFilesButton)
         toplayout.addWidget(self.noteButton)
+        toplayout.addWidget(self.advNoteButton)
 
         subLayout = QtWidgets.QVBoxLayout()
         subLayout.setContentsMargins(0, 0, 0, 0)
@@ -9725,18 +9748,14 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 origBit = (origByte >> (7 - bitIdx)) & 1
                 newBit = 1 if checkbox.isChecked() else 0
 
-                if origBit == newBit: continue
-                if origBit == 0 and newBit == 1:
+                if origBit == newBit:
+                    continue
+                if newBit == 1:
                     # Turn the byte on by OR-ing it in
                     newByte = (origByte | (1 << (7 - bitIdx))) & 0xFF
                 else:
-                    # Turn it off by:
-                    # inverting it
-                    # OR-ing in the new byte
-                    # inverting it back
-                    newByte = ~origByte & 0xFF
-                    newByte = newByte | (1 << (7 - bitIdx))
-                    newByte = ~newByte & 0xFF
+                    # Turn it off by masking it out
+                    newbyte = origbyte & (0xFF ^ (1 << (7 - bitIdx)))
 
                 data[byteIdx] = newByte
 
@@ -9777,6 +9796,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         if sprite is None:
             self.spriteLabel.setText(trans.string('SpriteDataEditor', 5, '[id]', type))
             self.noteButton.setVisible(False)
+            self.yoshiInfo.setVisible(False)
+            self.advNoteButton.setVisible(False)
+            self.asm.setVisible(False)
 
             if len(self.fields) > 0:
                 self.fields = []
@@ -9787,20 +9809,34 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.noteButton.setVisible(sprite.notes is not None)
             self.notes = sprite.notes
 
+            # advanced comment
+            self.advNoteButton.setVisible(AdvancedModeEnabled and sprite.advNotes is not None)
+            self.advNotes = sprite.advNotes
+
             self.relatedObjFilesButton.setVisible(sprite.relatedObjFiles is not None)
             self.relatedObjFiles = sprite.relatedObjFiles
+
+            self.asm.setVisible(sprite.asm is not None and sprite.asm)
+
+            # yoshi info
+            if sprite.yoshi is not None:
+                # missing images:
+                # - ys-physics: upside down yoshi egg? maybe different colour
+                # - ys-glitch: red yoshi egg?
+                #
+                # add these to reggiedata/ico/sm and reggiedata/ico/lg
+                image = ["ys-works", "ys-physics", "ys-glitch", "ys-no"][sprite.yoshi]
+                self.yoshiInfo.setIcon(GetIcon(image))
+                self.yoshiInfo.setVisible(True)
+
+                self.yoshiNotes = sprite.yoshiNotes
+            else:
+                self.yoshiInfo.setVisible(False)
+
 
             # create all the new fields
             fields = []
             row = 2
-
-            # yoshi info
-            if sprite.yoshi is not None:
-                image = ["works", "physics", "glitch", "no"][sprite.yoshi]
-                self.yoshiInfo.setPixmap(GetIcon("ys-" + image))
-                self.yoshiInfo.setVisible(True)
-            else:
-                self.yoshiInfo.setVisible(False)
 
             for f in sprite.fields:
                 if f[0] == 0:
@@ -9840,6 +9876,15 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
     def ShowRelatedObjFilesTooltip(self):
         QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.relatedObjFiles, self)
+
+    def ShowYoshiTooltip(self):
+        if self.yoshiNotes is None:
+            return
+
+        QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.yoshiNotes, self)
+
+    def ShowAdvancedNoteTooltip(self):
+        QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.advNotes, self)
 
     def HandleFieldUpdate(self, field):
         """
@@ -12557,6 +12602,9 @@ class ReggieTranslation:
                 7: 'Object Files',
                 8: '[b]This sprite uses:[/b][br][list]',
                 9: '[b]Yoshi Notes:[/b] [notes]',
+                10: 'Advanced Notes',
+                11: '[b]Advanced Notes:[/b] [notes]',
+                12: 'Yoshi',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
