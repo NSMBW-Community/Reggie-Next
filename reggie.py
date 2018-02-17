@@ -9427,8 +9427,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.yoshiInfo.setAutoRaise(True)
         self.yoshiInfo.clicked.connect(self.ShowYoshiTooltip)
 
-        self.asm = QtWidgets.QToolButton()
-        self.asm.setIcon(GetIcon("asm"))
+        self.asm = QtWidgets.QLabel()
+        self.asm.setPixmap(GetIcon("asm").pixmap(64,64))
 
         toplayout = QtWidgets.QHBoxLayout()
         toplayout.addWidget(self.spriteLabel)
@@ -9442,6 +9442,27 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         subLayout = QtWidgets.QVBoxLayout()
         subLayout.setContentsMargins(0, 0, 0, 0)
 
+        # comments
+        desc = QtWidgets.QLabel(trans.string('SpriteDataEditor', 16))
+        self.com_main = QtWidgets.QLabel()
+        self.com_main.setWordWrap(True)
+
+        self.com_more = QtWidgets.QPushButton()
+        self.com_more.setText(trans.string('SpriteDataEditor', 13))
+        self.com_more.clicked.connect(self.ShowMoreComments)
+
+        self.com_extra = QtWidgets.QLabel()
+        self.com_extra.setWordWrap(True)
+
+        L = QtWidgets.QVBoxLayout()
+        L.addWidget(desc)
+        L.addWidget(self.com_main)
+        L.addWidget(self.com_more)
+        L.addWidget(self.com_extra)
+
+        self.comments = QtWidgets.QWidget()
+        self.comments.setLayout(L)
+
         # create a layout
         mainLayout = QtWidgets.QVBoxLayout()
         mainLayout.addLayout(toplayout)
@@ -9449,7 +9470,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         layout = QtWidgets.QGridLayout()
         self.editorlayout = layout
+
         subLayout.addLayout(layout)
+        subLayout.addWidget(self.comments)
         subLayout.addLayout(editboxlayout)
 
         self.setLayout(mainLayout)
@@ -9771,7 +9794,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         Change the sprite type used by the data editor
         """
-        if (self.spritetype == type) and not reset: return
+        if (self.spritetype == type) and not reset:
+            return
 
         self.spritetype = type
         if type != 1000:
@@ -9789,9 +9813,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     layout.removeWidget(widget)
                     widget.setParent(None)
 
-        # use the raw editor if advanced mode is enabled
+        # show the raw editor if advanced mode is enabled
         self.raweditor.setVisible(AdvancedModeEnabled)
         self.editbox.setVisible(AdvancedModeEnabled)
+
+        # Nothing is selected, so no comments should appear
+        self.comments.setVisible(False)
 
         if sprite is None:
             self.spriteLabel.setText(trans.string('SpriteDataEditor', 5, '[id]', type))
@@ -9816,18 +9843,19 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.relatedObjFilesButton.setVisible(sprite.relatedObjFiles is not None)
             self.relatedObjFiles = sprite.relatedObjFiles
 
-            self.asm.setVisible(sprite.asm is not None and sprite.asm)
+            self.asm.setVisible(sprite.asm is True)
 
             # yoshi info
             if sprite.yoshi is not None:
-                # missing images:
-                # - ys-physics: upside down yoshi egg? maybe different colour
-                # - ys-glitch: red yoshi egg?
-                #
-                # add these to reggiedata/ico/sm and reggiedata/ico/lg
-                image = ["ys-works", "ys-physics", "ys-glitch", "ys-no"][sprite.yoshi]
+                if sprite.yoshi is True:
+                    image = "ys-works"
+                else:
+                    image = "ys-no"
                 self.yoshiInfo.setIcon(GetIcon(image))
                 self.yoshiInfo.setVisible(True)
+
+                if sprite.yoshiNotes is None:
+                    sprite.yoshiNotes = trans.string('SpriteDataEditor', 15)
 
                 self.yoshiNotes = sprite.yoshiNotes
             else:
@@ -9872,19 +9900,47 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.UpdateFlag = False
 
     def ShowNoteTooltip(self):
-        QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.notes, self)
+        """
+        Show notes
+        """
+        self.comments.setVisible(True)
+        self.com_main.setText(self.notes)
+        self.com_more.setVisible(False)
 
     def ShowRelatedObjFilesTooltip(self):
-        QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.relatedObjFiles, self)
+        """
+        Show related obj files
+        """
+        self.comments.setVisible(True)
+        self.com_main.setText(self.relatedObjFiles)
+        self.com_more.setVisible(False)
 
     def ShowYoshiTooltip(self):
-        if self.yoshiNotes is None:
-            return
-
-        QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.yoshiNotes, self)
+        """
+        Show the Yoshi info
+        """
+        self.comments.setVisible(True)
+        self.com_main.setText(self.yoshiNotes)
+        self.com_more.setVisible(False)
 
     def ShowAdvancedNoteTooltip(self):
-        QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.advNotes, self)
+        """
+        Show the advanced notes
+        """
+        self.comments.setVisible(True)
+        self.com_main.setText(self.advNotes)
+        self.com_more.setVisible(False)
+
+    def ShowMoreComments(self):
+        """
+        Show or hide the extra comment
+        """
+        if self.com_extra.isVisible():
+            self.com_extra.setVisible(False)
+            self.com_more.setText(trans.string('SpriteDataEditor', 13))
+        else:
+            self.com_extra.setVisible(True)
+            self.com_more.setText(trans.string('SpriteDataEditor', 14))
 
     def HandleFieldUpdate(self, field):
         """
@@ -12016,12 +12072,9 @@ class ReggieTranslation:
                 22: None,  # REMOVED: 'Unknown Value 1:'
                 23: None,  # REMOVED: 'Unknown Value 2:'
                 24: None,  # REMOVED: 'Unknown Value 3:'
-                25: None,
-            # REMOVED: '[b]Unknown Value 1:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
-                26: None,
-            # REMOVED: '[b]Unknown Value 2:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
-                27: None,
-            # REMOVED: '[b]Unknown Value 3:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
+                25: None,  # REMOVED: '[b]Unknown Value 1:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
+                26: None,  # REMOVED: '[b]Unknown Value 2:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
+                27: None,  # REMOVED: '[b]Unknown Value 3:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
                 28: 'Name',
                 29: 'File',
                 30: '(None)',
@@ -12304,7 +12357,7 @@ class ReggieTranslation:
             },
             'Locations': {
                 0: '[id]',
-                1: '',  # REMOVED: 'Paint New Location'
+                1: None,  # REMOVED: 'Paint New Location'
                 2: '[id]: [width]x[height] at [x], [y]',
             },
             'MainWindow': {
@@ -12605,6 +12658,10 @@ class ReggieTranslation:
                 10: 'Advanced Notes',
                 11: '[b]Advanced Notes:[/b] [notes]',
                 12: 'Yoshi',
+                13: 'Read more...',
+                14: 'Read less...',
+                15: 'This sprite works properly with Yoshi.',
+                16: 'Information',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
