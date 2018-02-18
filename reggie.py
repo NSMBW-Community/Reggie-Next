@@ -765,6 +765,37 @@ class SpriteDefinition:
             else:
                 comment = None
 
+            if 'requiredbit' in attribs:
+                required = []
+                bits = attribs['requiredbit'].split(",")
+
+                if 'requiredval' in attribs:
+                    vals = attribs['requiredval'].split(",")
+                else:
+                    vals = [None] * len(bits)
+
+                for sbit, sval in zip(bits, vals):
+                    if '-' not in sbit:
+                        bit = int(sbit)
+                    else:
+                        getit = sbit.split('-')
+                        bit = (int(getit[0]), int(getit[1]) + 1)
+
+                    if sval is None:
+                        if isinstance(bit, tuple):
+                            val = (1, (1 << (bit[1] - bit[0])) - 1)
+                        else:
+                            val = 1
+                    elif '-' not in sval:
+                        val = int(sval)
+                    else:
+                        getit = sval.split('-')
+                        val = (int(getit[0]), int(getit[1]) + 1)
+
+                    required.append((bit, val))
+            else:
+                required = None
+
             if field.tag == 'checkbox':
                 # parameters: title, bit, mask, comment
                 if 'nybble' in attribs:
@@ -791,7 +822,7 @@ class SpriteDefinition:
                 else:
                     mask = 1
 
-                fields.append((0, attribs['title'], bit, mask, comment))
+                fields.append((0, attribs['title'], bit, mask, comment, required))
             elif field.tag == 'list':
                 # parameters: title, bit, model, comment
                 if 'nybble' in attribs:
@@ -826,7 +857,7 @@ class SpriteDefinition:
                     existing[i] = True
 
                 fields.append(
-                    (1, attribs['title'], bit, SpriteDefinition.ListPropertyModel(entries, existing, max), comment))
+                    (1, attribs['title'], bit, SpriteDefinition.ListPropertyModel(entries, existing, max), comment, required))
             elif field.tag == 'value':
                 # parameters: title, bit, max, comment
                 if 'nybble' in attribs:
@@ -851,13 +882,13 @@ class SpriteDefinition:
                     bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
                     max = 1 << (bit[1] - bit[0] + 1)
 
-                fields.append((2, attribs['title'], bit, max, comment))
+                fields.append((2, attribs['title'], bit, max, comment, required))
             elif field.tag == 'bitfield':
                 # parameters: title, startbit, bitnum, comment
                 startbit = int(attribs['startbit'])
                 bitnum = int(attribs['bitnum'])
 
-                fields.append((3, attribs['title'], startbit, bitnum, comment))
+                fields.append((3, attribs['title'], startbit, bitnum, comment, required))
             elif field.tag == 'multibox':
                 # parameters: title, bit, comment
                 if 'nybble' in attribs:
@@ -879,7 +910,7 @@ class SpriteDefinition:
                     getit = sbit.split('-')
                     bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
 
-                fields.append((4, attribs['title'], bit, comment))
+                fields.append((4, attribs['title'], bit, comment, required))
 
 
 def LoadSpriteData():
@@ -9520,12 +9551,16 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         updateData = QtCore.pyqtSignal('PyQt_PyObject')
 
-        def retrieve(self, data):
+        def retrieve(self, data, bits=None):
             """
             Extracts the value from the specified bit(s). Bit numbering is ltr BE
             and starts at 1.
             """
-            bit = self.bit
+            if bits is None:
+                bit = self.bit
+            else:
+                bit = bits
+                print(bits)
 
             if isinstance(bit, tuple):
                 if bit[1] == bit[0] + 7 and bit[0] & 1 == 1:
@@ -9591,12 +9626,37 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             return bytes(sdata)
 
+        def checkReq(self, data):
+            """
+            Checks the requirements
+            """
+            if self.required is None:
+                return
+
+            show = True
+            for requirement in self.required:
+                val = self.retrieve(data, requirement[0])
+                ran = requirement[1]
+
+                print("Req " + str(requirement[0]) + " " + str(ran) + ": " + str(val))
+
+                if isinstance(ran, tuple):
+                    show = show and ran[0] <= val < ran[1]
+                else:
+                    show = show and ran == val
+
+                print(show)
+
+            # show/hide all widgets in this row
+            for i in range(self.layout.columnCount()):
+                self.layout.itemAtPosition(self.row, i).widget().setVisible(show)
+
     class CheckboxPropertyDecoder(PropertyDecoder):
         """
         Class that decodes/encodes sprite data to/from a checkbox
         """
 
-        def __init__(self, title, bit, mask, comment, layout, row):
+        def __init__(self, title, bit, mask, comment, required, layout, row):
             """
             Creates the widget
             """
@@ -9618,6 +9678,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.bit = bit
             self.mask = mask
             self.xormask = xormask
+            self.required = required
+
+            self.row = row
+            self.layout = layout
 
             layout.addWidget(label, row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
@@ -9626,6 +9690,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             Updates the value shown by the widget
             """
+            # check if requirements are met
+            self.checkReq(data)
+
             value = ((self.retrieve(data) & self.mask) == self.mask)
             self.widget.setChecked(value)
 
@@ -9651,7 +9718,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a combobox
         """
 
-        def __init__(self, title, bit, model, comment, layout, row):
+        def __init__(self, title, bit, model, comment, required, layout, row):
             """
             Creates the widget
             """
@@ -9668,10 +9735,17 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
 
+            self.layout = layout
+            self.row = row
+            self.required = required
+
         def update(self, data):
             """
             Updates the value shown by the widget
             """
+            # check if requirements are met
+            self.checkReq(data)
+
             value = self.retrieve(data)
             if not self.model.existingLookup[value]:
                 self.widget.setCurrentIndex(-1)
@@ -9701,7 +9775,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a spinbox
         """
 
-        def __init__(self, title, bit, max, comment, layout, row):
+        def __init__(self, title, bit, max, comment, required, layout, row):
             """
             Creates the widget
             """
@@ -9718,10 +9792,17 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
 
+            self.layout = layout
+            self.row = row
+            self.required = required
+
         def update(self, data):
             """
             Updates the value shown by the widget
             """
+            # check if requirements are met
+            self.checkReq(data)
+
             value = self.retrieve(data)
             self.widget.setValue(value)
 
@@ -9742,7 +9823,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a bitfield
         """
 
-        def __init__(self, title, startbit, bitnum, comment, layout, row):
+        def __init__(self, title, startbit, bitnum, comment, required, layout, row):
             """
             Creates the widget
             """
@@ -9771,10 +9852,17 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
             layout.addWidget(w, row, 1)
 
+            self.layout = layout
+            self.row = row
+            self.required = required
+
         def update(self, data):
             """
             Updates the value shown by the widget
             """
+            # check if requirements are met
+            self.checkReq(data)
+
             value = self.retrieve(data)
             i = self.bitnum
 
@@ -9807,7 +9895,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a multibox
         """
 
-        def __init__(self, title, bit, comment, layout, row):
+        def __init__(self, title, bit, comment, required, layout, row):
             """
             Creates the widget
             """
@@ -9842,10 +9930,17 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
             layout.addWidget(w, row, 1)
 
+            self.layout = layout
+            self.row = row
+            self.required = required
+
         def update(self, data):
             """
             Updates the value shown by the widget
             """
+            # check if requirements are met
+            self.checkReq(data)
+
             value = self.retrieve(data)
             i = self.bitnum
 
@@ -9952,15 +10047,15 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             for f in sprite.fields:
                 if f[0] == 0:
-                    nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
+                    nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
                 elif f[0] == 1:
-                    nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
+                    nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
                 elif f[0] == 2:
-                    nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
+                    nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
                 elif f[0] == 3:
-                    nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
+                    nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
                 elif f[0] == 4:
-                    nf = SpriteEditorWidget.MultiboxPropertyDecoder(f[1], f[2], f[3], layout, row)
+                    nf = SpriteEditorWidget.MultiboxPropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
 
                 nf.updateData.connect(self.HandleFieldUpdate)
                 fields.append(nf)
