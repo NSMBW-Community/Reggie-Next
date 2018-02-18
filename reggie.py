@@ -896,7 +896,7 @@ def LoadSpriteData():
                 notes = None
                 relatedObjFiles = None
                 yoshiNotes = None
-                yoshi = None
+                noyoshi = None
                 asm = None
                 advNotes = None
 
@@ -914,8 +914,8 @@ def LoadSpriteData():
                     yoshiNotes = trans.string('SpriteDataEditor', 9, '[notes]',
                                                    sprite.attrib['yoshinotes'])
 
-                if 'yoshi' in sprite.attrib and 0 <= int(sprite.attrib['yoshi']) < 4:
-                    yoshi = int(sprite.attrib['yoshi'])
+                if 'noyoshi' in sprite.attrib:
+                    noyoshi = sprite.attrib['noyoshi'] == "True"
 
                 if 'asmhacks' in sprite.attrib:
                     asm = sprite.attrib['asmhacks'] == "True"
@@ -928,7 +928,7 @@ def LoadSpriteData():
                 sdef.advNotes = advNotes
                 sdef.relatedObjFiles = relatedObjFiles
                 sdef.yoshiNotes = yoshiNotes
-                sdef.yoshi = yoshi
+                sdef.noyoshi = noyoshi
                 sdef.asm = asm
 
                 try:
@@ -944,14 +944,15 @@ def LoadSpriteData():
         # gamedef is loaded, because spritenames.txt
         # is a file only ever used by custom gamedefs.
         if (snpath is not None) and (snpath.path is not None):
-            snfile = open(snpath.path)
-            data = snfile.read()
-            snfile.close()
+            with open(snpath.path) as snfile:
+                data = snfile.read()
+
             del snfile
 
             # Split the data
             data = data.split('\n')
-            for i, line in enumerate(data): data[i] = line.split(':')
+            for i, line in enumerate(data):
+                data[i] = line.split(':')
 
             # Apply it
             for spriteid, name in data:
@@ -9391,9 +9392,14 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         edit.textEdited.connect(self.HandleRawDataEdited)
         self.raweditor = edit
 
+        self.resetButton = QtWidgets.QPushButton(trans.string('SpriteDataEditor', 17))
+        self.resetButton.clicked.connect(self.HandleResetData)
+
         editboxlayout = QtWidgets.QHBoxLayout()
         editboxlayout.addWidget(self.editbox)
         editboxlayout.addWidget(edit)
+        editboxlayout.addWidget(self.resetButton)
+        editboxlayout.addStretch(1)
         editboxlayout.setStretch(1, 1)
 
         # 'Editing Sprite #' label
@@ -9816,6 +9822,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # show the raw editor if advanced mode is enabled
         self.raweditor.setVisible(AdvancedModeEnabled)
         self.editbox.setVisible(AdvancedModeEnabled)
+        self.resetButton.setVisible(not AdvancedModeEnabled)
 
         # Nothing is selected, so no comments should appear
         self.comments.setVisible(False)
@@ -9846,11 +9853,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.asm.setVisible(sprite.asm is True)
 
             # yoshi info
-            if sprite.yoshi is not None:
-                if sprite.yoshi is True:
-                    image = "ys-works"
-                else:
+            if sprite.noyoshi is not None:
+                if sprite.noyoshi is True:
                     image = "ys-no"
+                else:
+                    image = "ys-works"
                 self.yoshiInfo.setIcon(GetIcon(image))
                 self.yoshiInfo.setVisible(True)
 
@@ -9959,6 +9966,20 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if f != field: f.update(data)
 
         self.DataUpdate.emit(data)
+
+    def HandleResetData(self):
+        """
+        Handles the reset data button being clicked
+        """
+        self.data = b'\0\0\0\0\0\0\0\0'
+
+        self.UpdateFlag = True
+        for f in self.fields:
+            f.update(self.data)
+        self.UpdateFlag = False
+
+        self.DataUpdate.emit(self.data)
+        self.raweditor.setStyleSheet('QLineEdit { background-color: #ffffff; }')
 
     def HandleRawDataEdited(self, text):
         """
@@ -12661,7 +12682,8 @@ class ReggieTranslation:
                 13: 'Read more...',
                 14: 'Read less...',
                 15: 'This sprite works properly with Yoshi.',
-                16: 'Information',
+                16: '[b]Information:[/b]',
+                17: 'Reset all settings',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
