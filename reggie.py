@@ -756,7 +756,7 @@ class SpriteDefinition:
         fields = self.fields
 
         for field in elem:
-            if field.tag not in ['checkbox', 'list', 'value', 'bitfield']: continue
+            if field.tag not in ['checkbox', 'list', 'value', 'bitfield', 'multibox']: continue
 
             attribs = field.attrib
 
@@ -858,6 +858,28 @@ class SpriteDefinition:
                 bitnum = int(attribs['bitnum'])
 
                 fields.append((3, attribs['title'], startbit, bitnum, comment))
+            elif field.tag == 'multibox':
+                # parameters: title, bit, comment
+                if 'nybble' in attribs:
+                    sbit = attribs['nybble']
+                    sft = 2
+                else:
+                    sbit = attribs['bit']
+                    sft = 0
+
+                if '-' not in sbit:
+                    if sft:
+                        # just 4 bits
+                        bit = (((int(sbit) - 1) << 2) + 1, (int(sbit) << 2) + 1)
+                    else:
+                        # just 1 bit
+                        bit = int(sbit)
+                else:
+                    # different number of bits
+                    getit = sbit.split('-')
+                    bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+
+                fields.append((4, attribs['title'], bit, comment))
 
 
 def LoadSpriteData():
@@ -9580,9 +9602,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             super().__init__()
 
-            self.widget = QtWidgets.QCheckBox(title)
+            self.widget = QtWidgets.QCheckBox()
+            label = QtWidgets.QLabel(title + ':')
             if comment is not None:
-                self.widget.setToolTip(comment)
+                label.setToolTip(comment)
             self.widget.clicked.connect(self.HandleClick)
 
             if isinstance(bit, tuple):
@@ -9590,14 +9613,14 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 length = 1
 
-            xormask = 0
-            for i in range(length):
-                xormask |= 1 << i
+            xormask = (1 << length) - 1
 
             self.bit = bit
             self.mask = mask
             self.xormask = xormask
-            layout.addWidget(self.widget, row, 0, 1, 2)
+
+            layout.addWidget(label, row, 0, Qt.AlignRight)
+            layout.addWidget(self.widget, row, 1)
 
         def update(self, data):
             """
@@ -9752,43 +9775,97 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             Updates the value shown by the widget
             """
-            for bitIdx in range(self.bitnum):
-                checkbox = self.widgets[bitIdx]
+            value = self.retrieve(data)
+            i = self.bitnum
 
-                adjustedIdx = bitIdx + self.startbit
-                byteNum = adjustedIdx // 8
-                bitNum = adjustedIdx % 8
-                checkbox.setChecked((data[byteNum] >> (7 - bitNum) & 1))
+            # run at most self.bitnum times
+            while value != 0 and i != 0:
+                self.widgets[i].setChecked(value & 1)
+                value >>= 1
+                i -= 1
 
         def assign(self, data):
             """
             Assigns the checkbox states to the data
             """
-            data = bytearray(data)
+            value = 0
 
-            for idx in range(self.bitnum):
-                checkbox = self.widgets[idx]
+            # construct bitmask
+            for i in self.bitnum:
+                value = (value | self.widgets[i].isChecked()) << 1
 
-                adjustedIdx = idx + self.startbit
-                byteIdx = adjustedIdx // 8
-                bitIdx = adjustedIdx % 8
+            return self.insertvalue(data, value)
 
-                origByte = data[byteIdx]
-                origBit = (origByte >> (7 - bitIdx)) & 1
-                newBit = 1 if checkbox.isChecked() else 0
+        def HandleValueChanged(self, value):
+            """
+            Handle any checkbox being changed
+            """
+            self.updateData.emit(self)
 
-                if origBit == newBit:
-                    continue
-                if newBit == 1:
-                    # Turn the byte on by OR-ing it in
-                    newByte = (origByte | (1 << (7 - bitIdx))) & 0xFF
-                else:
-                    # Turn it off by masking it out
-                    newbyte = origbyte & (0xFF ^ (1 << (7 - bitIdx)))
+    class MultiboxPropertyDecoder(PropertyDecoder):
+        """
+        Class that decodes/encodes sprite data to/from a multibox
+        """
 
-                data[byteIdx] = newByte
+        def __init__(self, title, bit, comment, layout, row):
+            """
+            Creates the widget
+            """
+            super().__init__()
 
-            return bytes(data)
+            if isinstance(bit, tuple):
+                bitnum = bit[1] - bit[0]
+                startbit = bit[0]
+            else:
+                bitnum = 1
+                startbit = bit
+
+            self.bit = bit
+            self.startbit = startbit
+            self.bitnum = bitnum
+
+            self.widgets = []
+            CheckboxLayout = QtWidgets.QGridLayout()
+            CheckboxLayout.setContentsMargins(0, 0, 0, 0)
+
+            for i in range(bitnum):
+                c = QtWidgets.QCheckBox(str(bitnum - i))
+                self.widgets.append(c)
+                CheckboxLayout.addWidget(c, 0, i)
+                if comment is not None:
+                    c.setToolTip(comment)
+                c.toggled.connect(self.HandleValueChanged)
+
+            w = QtWidgets.QWidget()
+            w.setLayout(CheckboxLayout)
+
+            layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
+            layout.addWidget(w, row, 1)
+
+        def update(self, data):
+            """
+            Updates the value shown by the widget
+            """
+            value = self.retrieve(data)
+            i = self.bitnum
+
+            # run at most self.bitnum times
+            while value != 0 and i != 0:
+                self.widgets[i].setChecked(value & 1)
+                value >>= 1
+                i -= 1
+
+        def assign(self, data):
+            """
+            Assigns the checkbox states to the data
+            """
+            value = 0
+
+            # construct bitmask
+            for i in range(self.bitnum):
+                value = (value << 1) | self.widgets[i].isChecked()
+
+            return self.insertvalue(data, value)
 
         def HandleValueChanged(self, value):
             """
@@ -9882,6 +9959,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
                 elif f[0] == 3:
                     nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
+                elif f[0] == 4:
+                    nf = SpriteEditorWidget.MultiboxPropertyDecoder(f[1], f[2], f[3], layout, row)
 
                 nf.updateData.connect(self.HandleFieldUpdate)
                 fields.append(nf)
