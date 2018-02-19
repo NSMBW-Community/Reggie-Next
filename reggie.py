@@ -2400,8 +2400,7 @@ def ProcessOverrides(idx, name):
 
             # Setsugen/Snow is unused, but we still override it
             # StaffRoll is the same as plain Jyotyu, so if it's used, let's be lazy and treat it as the normal one
-            if offset == 1280:
-                offset = 1024
+            if offset == 1280: offset = 1024
 
             defs = ObjectDefinitions[idx]
             t = Tiles
