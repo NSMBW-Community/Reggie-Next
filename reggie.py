@@ -805,17 +805,24 @@ class SpriteDefinition:
                     sbit = attribs['bit']
                     sft = 0
 
-                if '-' not in sbit:
-                    if sft:
-                        # just 4 bits
-                        bit = (((int(sbit) - 1) << 2) + 1, (int(sbit) << 2) + 1)
+                bit = []
+                for ran in sbit.split(','):
+                    if '-' not in ran:
+                        if sft:
+                            # just 4 bits
+                            r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+                        else:
+                            # just 1 bit
+                            r_bit = int(ran)
                     else:
-                        # just 1 bit
-                        bit = int(sbit)
-                else:
-                    # different number of bits
-                    getit = sbit.split('-')
-                    bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+                        # different number of bits
+                        getit = ran.split('-')
+                        r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+
+                    bit.append(r_bit)
+
+                if len(bit) == 1:
+                    bit = bit[0]
 
                 if 'mask' in attribs:
                     mask = int(attribs['mask'])
@@ -832,20 +839,30 @@ class SpriteDefinition:
                     sbit = attribs['bit']
                     sft = 0
 
-                if '-' not in sbit:
-                    if sft:
-                        # just 4 bits
-                        bit = (((int(sbit) - 1) << 2) + 1, (int(sbit) << 2) + 1)
-                        max = 16
+                l = 0
+                bit = []
+                for ran in sbit.split(','):
+                    if '-' not in ran:
+                        if sft:
+                            # just 4 bits
+                            r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+                            l += 4
+                        else:
+                            # just 1 bit
+                            r_bit = int(ran)
+                            l += 1
                     else:
-                        # just 1 bit
-                        bit = int(sbit)
-                        max = 2
-                else:
-                    # different number of bits
-                    getit = sbit.split('-')
-                    bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
-                    max = 1 << (bit[1] - bit[0] + 1)
+                        # different number of bits
+                        getit = ran.split('-')
+                        r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+                        l += r_bit[1] - r_bit[0] + 1
+
+                    bit.append(r_bit)
+
+                max = 1 << l
+
+                if len(bit) == 1:
+                    bit = bit[0]
 
                 entries = []
                 existing = [None for i in range(max)]
@@ -867,20 +884,30 @@ class SpriteDefinition:
                     sbit = attribs['bit']
                     sft = 0
 
-                if '-' not in sbit:
-                    if sft:
-                        # just 4 bits
-                        bit = (((int(sbit) - 1) << 2) + 1, (int(sbit) << 2) + 1)
-                        max = 16
+                l = 0
+                bit = []
+                for ran in sbit.split(','):
+                    if '-' not in ran:
+                        if sft:
+                            # just 4 bits
+                            r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+                            l += 4
+                        else:
+                            # just 1 bit
+                            r_bit = int(ran)
+                            l += 1
                     else:
-                        # just 1 bit
-                        bit = int(sbit)
-                        max = 2
-                else:
-                    # different number of bits
-                    getit = sbit.split('-')
-                    bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
-                    max = 1 << (bit[1] - bit[0] + 1)
+                        # different number of bits
+                        getit = ran.split('-')
+                        r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+                        l += r_bit[1] - r_bit[0] + 1
+
+                    bit.append(r_bit)
+
+                max = 1 << l
+
+                if len(bit) == 1:
+                    bit = bit[0]
 
                 fields.append((2, attribs['title'], bit, max, comment, required))
             elif field.tag == 'bitfield':
@@ -898,17 +925,24 @@ class SpriteDefinition:
                     sbit = attribs['bit']
                     sft = 0
 
-                if '-' not in sbit:
-                    if sft:
-                        # just 4 bits
-                        bit = (((int(sbit) - 1) << 2) + 1, (int(sbit) << 2) + 1)
+                bit = []
+                for ran in sbit.split(','):
+                    if '-' not in ran:
+                        if sft:
+                            # just 4 bits
+                            r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+                        else:
+                            # just 1 bit
+                            r_bit = int(ran)
                     else:
-                        # just 1 bit
-                        bit = int(sbit)
-                else:
-                    # different number of bits
-                    getit = sbit.split('-')
-                    bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+                        # different number of bits
+                        getit = ran.split('-')
+                        r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+
+                    bit.append(r_bit)
+
+                if len(bit) == 1:
+                    bit = bit[0]
 
                 fields.append((4, attribs['title'], bit, comment, required))
 
@@ -9593,16 +9627,34 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 bit = self.bit
             else:
                 bit = bits
-                print(bits)
 
-            if isinstance(bit, tuple):
+            if isinstance(bit, list):
+                # multiple ranges. do this recursively.
+                value = 0
+
+                for ran in bit:
+                    # find the size of the range
+                    if isinstance(ran, tuple):
+                        l = ran[1] - ran[0]
+                    else:
+                        l = 1
+
+                    # shift the value so we don't overwrite
+                    value <<= l
+
+                    # and OR in the value for the range
+                    value |= self.retrieve(data, ran)
+
+                # done
+                return value
+
+            elif isinstance(bit, tuple):
                 if bit[1] == bit[0] + 7 and bit[0] & 1 == 1:
                     # optimise if it's just one byte
                     return data[bit[0] >> 3]
                 else:
                     # we have to calculate it sadly
                     # just do it by looping, shouldn't be that bad
-
                     value = 0
                     for n in range(bit[0], bit[1]):
                         n -= 1
@@ -9618,14 +9670,42 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
                 return (data[bit >> 3] >> (7 - (bit & 7))) & 1
 
-        def insertvalue(self, data, value):
+        def insertvalue(self, data, value, bits=None):
             """
             Assigns a value to the specified bit(s)
             """
-            bit = self.bit
+            if bits is None:
+                bit = self.bit
+            else:
+                bit = bits
+
             sdata = list(data)
 
-            if isinstance(bit, tuple):
+            if isinstance(bit, list):
+                # multiple ranges
+                print("writing to compound: " + str(bit))
+                for ran in reversed(bit):
+                    # find the size of the range
+                    if isinstance(ran, tuple):
+                        l = ran[1] - ran[0]
+                    else:
+                        l = 1
+
+                    # mask the value over this length
+                    mask = (1 << l) - 1
+                    v = value & mask
+
+                    print("Writing value %d, %d & %d, to bits %s" % (v, value, mask, ran))
+
+                    # remove these bits from the value
+                    value >>= l
+
+                    # recursively set the value
+                    data = list(self.insertvalue(data, v, ran))
+
+                return bytes(data)
+
+            elif isinstance(bit, tuple):
                 if bit[1] == bit[0] + 7 and bit[0] & 1 == 1:
                     # just one byte, this is easier
                     sdata[(bit[0] - 1) >> 3] = value & 0xFF

@@ -6055,7 +6055,7 @@
     </list>
     <checkbox bit="32" title="Vine / Climbing Exit" comment="When enabled, the Special Exit Controller will only activate is the player is also climbing while within the specified area." />
     <value bit="25-28, 45-48" title="Entrance ID" comment="This determines the Entrance ID that the Exit Controller will run when triggered." requiredbit="22" requiredval="0" idtype="Entrance" />
-    <value nybble="2-8" title="Triggering Event ID" comment="When the Triggering Event is 0, or is currently activated, the Special Exit Controller will also be active. If the Triggering Event is set and the Event is not activated, the Special Exit Controller will not function even when the player is inside it." comment2="Maximum usable value for this sprite is 64." idtype="Triggering Event" />
+    <value bit="2-8" title="Triggering Event ID" comment="When the Triggering Event is 0, or is currently activated, the Special Exit Controller will also be active. If the Triggering Event is set and the Event is not activated, the Special Exit Controller will not function even when the player is inside it." comment2="Maximum usable value for this sprite is 64." idtype="Triggering Event" />
   </sprite> <!-- #179: Special Exit Controller -->
 
   <sprite id="180" name="Cheep-Chomp" sizehack="True" notes="A rather large Cheep enemy that is capable of swallowing the player whole, killing them regardless of their power-up state. Star excluded, of course.">
