@@ -6008,7 +6008,7 @@
     <value bit="10-16" title="Triggering Event ID" comment="Maximum usable value for this sprite is 64." requiredbit="20" idtype="Triggering Event" />
   </sprite> <!-- #178: Basic Platform - Scale -->
 
-<!-- Consider adding a new 'value type' to Reggie that creates a value range based on either two sets of nybbles or two sets of bits. [04][11-12] or [13-16][41-48] as examples. multivalue or mergedvalue or something. -->
+  <!-- Consider adding a new 'value type' to Reggie that creates a value range based on either two sets of nybbles or two sets of bits. [04][11-12] or [13-16][41-48] as examples. multivalue or mergedvalue or something. -->
   <sprite id="179" name="Special Exit Controller" notes="A special controller that will activate Entrance transitions when a player enters a specific area.">
     <list nybble="10" title="Width" comment="This determines the width of the area that the Special Exit Controller will check for the player inside of.">
       <entry value="0">1 Block</entry>
@@ -6054,7 +6054,7 @@
       <entry value="3">Black Iris and Pipe Sound</entry>
     </list>
     <checkbox bit="32" title="Vine / Climbing Exit" comment="When enabled, the Special Exit Controller will only activate is the player is also climbing while within the specified area." />
-    <value multibit="25-28, 45-48" title="Entrance ID" comment="This determines the Entrance ID that the Exit Controller will run when triggered." requiredbit="22" requiredval="0" idtype="Entrance" />
+    <value bit="25-28, 45-48" title="Entrance ID" comment="This determines the Entrance ID that the Exit Controller will run when triggered." requiredbit="22" requiredval="0" idtype="Entrance" />
     <value nybble="2-8" title="Triggering Event ID" comment="When the Triggering Event is 0, or is currently activated, the Special Exit Controller will also be active. If the Triggering Event is set and the Event is not activated, the Special Exit Controller will not function even when the player is inside it." comment2="Maximum usable value for this sprite is 64." idtype="Triggering Event" />
   </sprite> <!-- #179: Special Exit Controller -->
 
@@ -6831,7 +6831,7 @@
       <suggested sprite="163" />
     </dependency>
     <value nybble="8-9" title="Initial Delay?" comment="Definitely not measured in Mario seconds." />
-    <checkbox bit="40" title1="Flies Left to Right" title2="Flies Right to Left" comment="This determines the direction the Jumbo Ray will travel across the screen." />
+    <dualbox bit="40" title1="Flies Left to Right" title2="Flies Right to Left" comment="This determines the direction the Jumbo Ray will travel across the screen." />
     <value bit="41-44" title="Altitude (Flight Route)" comment="This determines how high the Jumbo Ray will fly up from the bottom of the screen." comment2="More research is required on the exact details of each number, but Retail levels use 1 and 2 with 2 being higher, while Newer also uses 0 which also seems to be fairly high." />
     <value nybble="12" title="Ray ID" comment="This determines which Jumbo Ray Respawner will influence the respawn of this Jumbo Ray." idtype="Ray" />
   </sprite> <!-- #224: Jumbo Ray -->
@@ -9654,7 +9654,6 @@
       <entry value="14">15 Passengers</entry>
       <entry value="15">16 Passengers</entry>
     </list>
-    <!-- REMOVE: 179 224 -->
     <list bit="27-28" title="Direction" comment="This determines which direction the platform will move when the Passenger Number is satisfied." comment2="It will show an arrow pointing in the direction it is moving, whether it is moving this direction or returning." requiredbit="26" requiredval="0">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
