@@ -1318,14 +1318,17 @@ class TilesetTile:
         """
         animTiles = []
         numberOfFrames = len(data) // 2048
+
         for frame in range(numberOfFrames):
             framedata = data[frame * 2048: (frame * 2048) + 2048]
             newdata = tpl.decodeRGB4A3(framedata, 32, 32, False)
             img = QtGui.QImage(newdata, 32, 32, 128, QtGui.QImage.Format_ARGB32)
             pix = QtGui.QPixmap.fromImage(img.copy(4, 4, 24, 24))
             animTiles.append(pix)
+
         if reverse:
             animTiles = list(reversed(animTiles))
+
         self.animTiles = animTiles
         self.isAnimated = True
 
@@ -1345,8 +1348,11 @@ class TilesetTile:
         """
         Increments to the next frame
         """
-        if not self.isAnimated: return
+        if not self.isAnimated:
+            return
+
         self.animFrame += 1
+
         if self.animFrame == len(self.animTiles):
             self.animFrame = 0
 
@@ -2354,21 +2360,48 @@ def UnloadTileset(idx):
     ObjectDefinitions[idx] = None
     TilesetFilesLoaded[idx] = None
 
+OverriddenTilesets = {
+    "Pa0": [
+        'Pa0_jyotyu',
+        'Pa0_jyotyu_chika',
+        'Pa0_jyotyu_setsugen',
+        'Pa0_jyotyu_yougan',
+        'Pa0_jyotyu_staffRoll'
+    ],
+    "Flowers": [
+        'Pa1_nohara',
+        'Pa1_nohara2'
+    ],
+    "Forest Flowers": [
+        'Pa1_daishizen'
+    ],
+    "Lines": [
+        'Pa3_daishizen'
+    ],
+    "Minigame Lines": [
+        'Pa3_MG_house_ami_rail'
+    ],
+    "Full Lines": [
+        'Pa3_rail',
+        'Pa3_rail_white'
+    ]
+}
 
 def ProcessOverrides(idx, name):
     """
     Load overridden tiles if there are any
     """
 
-    try:
-        tsindexes = ['Pa0_jyotyu', 'Pa0_jyotyu_chika', 'Pa0_jyotyu_setsugen', 'Pa0_jyotyu_yougan',
-                     'Pa0_jyotyu_staffRoll']
-        if name in tsindexes:
-            offset = 0x800 + (tsindexes.index(name) * 64)
+    if True:
+    #try:
+        tsidx = OverriddenTilesets
+        if name in tsidx["Pa0"]:
+            offset = 0x800 + (tsidx["Pa0"].index(name) * 64)
 
             # Setsugen/Snow is unused, but we still override it
             # StaffRoll is the same as plain Jyotyu, so if it's used, let's be lazy and treat it as the normal one
-            if offset == 1280: offset = 1024
+            if offset == 1280:
+                offset = 1024
 
             defs = ObjectDefinitions[idx]
             t = Tiles
@@ -2435,7 +2468,7 @@ def ProcessOverrides(idx, name):
             t[61].main = t[0x400 + 1063].main  # multiplayer coin
             t[63].main = t[0x400 + 1313].main  # instant death tile
 
-        elif name in ('Pa1_nohara', 'Pa1_nohara2', 'Pa1_daishizen'):
+        elif name in tsidx["Flowers"] or name in tsidx["Forest Flowers"]:
             # flowers
             t = Tiles
             t[416].main = t[0x400 + 1092].main  # grass
@@ -2444,7 +2477,7 @@ def ProcessOverrides(idx, name):
             t[419].main = t[0x400 + 1095].main
             t[420].main = t[0x400 + 1096].main
 
-            if name == 'Pa1_nohara' or name == 'Pa1_nohara2':
+            if name in tsidx["Flowers"]:
                 t[432].main = t[0x400 + 1068].main  # flowers
                 t[433].main = t[0x400 + 1069].main  # flowers
                 t[434].main = t[0x400 + 1070].main  # flowers
@@ -2452,7 +2485,7 @@ def ProcessOverrides(idx, name):
                 t[448].main = t[0x400 + 1158].main  # flowers on grass
                 t[449].main = t[0x400 + 1159].main
                 t[450].main = t[0x400 + 1160].main
-            elif name == 'Pa1_daishizen':
+            elif name in tsidx["Forest Flowers"]:
                 # forest flowers
                 t[432].main = t[0x400 + 1071].main  # flowers
                 t[433].main = t[0x400 + 1072].main  # flowers
@@ -2462,7 +2495,7 @@ def ProcessOverrides(idx, name):
                 t[449].main = t[0x400 + 1223].main
                 t[450].main = t[0x400 + 1224].main
 
-        elif name in ('Pa3_rail', 'Pa3_rail_white', 'Pa3_daishizen'):
+        elif name in tsidx["Lines"] or name in tsidx["Full Lines"]:
             # These are the line guides
             # Pa3_daishizen has less though
 
@@ -2541,7 +2574,7 @@ def ProcessOverrides(idx, name):
             t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
             t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
 
-        elif name == 'Pa3_MG_house_ami_rail':
+        elif name in tsidx["Minigame Lines"]:
             t = Tiles
 
             t[832].main = t[0x400 + 1088].main  # horizontal line
@@ -2590,9 +2623,10 @@ def ProcessOverrides(idx, name):
             t[930].main = t[0x400 + 1321].main  # big circle piece 5th row
             t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
             t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
-    except Exception:
-        # Fail silently
-        pass
+    #except Exception:
+    #
+    #    # Fail silently
+    #    pass
 
 
 def LoadOverrides():
