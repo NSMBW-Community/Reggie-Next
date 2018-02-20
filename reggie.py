@@ -10224,19 +10224,19 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             for f in sprite.fields:
                 if f[0] == 0:
-                    nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+                    nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], layout, row)
 
                 elif f[0] == 1:
-                    nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+                    nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], layout, row)
 
                 elif f[0] == 2:
-                    nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+                    nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], layout, row)
 
                 elif f[0] == 3:
-                    nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+                    nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], layout, row)
 
                 elif f[0] == 4:
-                    nf = SpriteEditorWidget.MultiboxPropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
+                    nf = SpriteEditorWidget.MultiboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
 
                 nf.updateData.connect(self.HandleFieldUpdate)
                 fields.append(nf)
