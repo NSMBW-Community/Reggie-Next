@@ -4899,7 +4899,7 @@ class ZoneItem(LevelEditorItem):
             painter.drawLine(lineStart, lineEnd)
 
         # Paint liquids/fog
-        if SpritesShown and SpriteImagesShown:
+        if SpritesShown and RealViewEnabled:
             zoneRect = QtCore.QRectF(self.objx * 1.5, self.objy * 1.5, self.width * 1.5, self.height * 1.5)
             viewRect = mainWindow.view.mapToScene(mainWindow.view.viewport().rect()).boundingRect()
 
@@ -12276,7 +12276,10 @@ def getMusic():
 
 
 def FindGameDef(name, skip=None):
-    "Helper function to find a game def with a specific name. Skip will be skipped"""
+    """
+    Helper function to find a game def with a specific name.
+    Skip will be skipped
+    """
     toSearch = [None]  # Add the original game first
     for folder in os.listdir(os.path.join('reggiedata', 'patches')): toSearch.append(folder)
 
@@ -20913,7 +20916,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         global levName
 
-        new = name == None
+        new = name is None
 
         # Get the file path, if possible
         if new:
@@ -22473,18 +22476,22 @@ def main():
 
     global EnableAlpha, GridType, CollisionsShown, RealViewEnabled
     global ObjectsFrozen, SpritesFrozen, EntrancesFrozen, LocationsFrozen, PathsFrozen, CommentsFrozen
-    global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown, DrawEntIndicators
-    global AdvancedModeEnabled
+    global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown
+    global DrawEntIndicators, AdvancedModeEnabled
 
     gt = setting('GridType')
+    
     if gt == 'checker':
         GridType = 'checker'
+    
     elif gt == 'grid':
         GridType = 'grid'
+    
     else:
         GridType = None
+    
     CollisionsShown = setting('ShowCollisions', False)
-    RealViewEnabled = setting('RealViewEnabled', False)
+    RealViewEnabled = setting('RealViewEnabled', True)
     ObjectsFrozen = setting('FreezeObjects', False)
     SpritesFrozen = setting('FreezeSprites', False)
     EntrancesFrozen = setting('FreezeEntrances', False)
