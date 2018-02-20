@@ -4714,7 +4714,7 @@ class ZoneItem(LevelEditorItem):
             painter.drawLine(lineStart, lineEnd)
 
         # Paint liquids/fog
-        if SpritesShown and SpriteImagesShown:
+        if SpritesShown and RealViewEnabled:
             zoneRect = QtCore.QRectF(self.objx * 1.5, self.objy * 1.5, self.width * 1.5, self.height * 1.5)
             viewRect = mainWindow.view.mapToScene(mainWindow.view.viewport().rect()).boundingRect()
 
@@ -11781,7 +11781,10 @@ def getMusic():
 
 
 def FindGameDef(name, skip=None):
-    "Helper function to find a game def with a specific name. Skip will be skipped"""
+    """
+    Helper function to find a game def with a specific name.
+    Skip will be skipped
+    """
     toSearch = [None]  # Add the original game first
     for folder in os.listdir(os.path.join('reggiedata', 'patches')): toSearch.append(folder)
 
@@ -20401,7 +20404,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         global levName
 
-        new = name == None
+        new = name is None
 
         # Get the file path, if possible
         if new:
@@ -21961,7 +21964,8 @@ def main():
 
     global EnableAlpha, GridType, CollisionsShown, RealViewEnabled
     global ObjectsFrozen, SpritesFrozen, EntrancesFrozen, LocationsFrozen, PathsFrozen, CommentsFrozen
-    global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown, DrawEntIndicators
+    global RealViewEnabled, SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown
+    global DrawEntIndicators
 
     gt = setting('GridType')
     if gt == 'checker':
@@ -21978,6 +21982,7 @@ def main():
     LocationsFrozen = setting('FreezeLocations', False)
     PathsFrozen = setting('FreezePaths', False)
     CommentsFrozen = setting('FreezeComments', False)
+    RealViewEnabled = setting('RealViewEnabled', True)
     SpritesShown = setting('ShowSprites', True)
     SpriteImagesShown = setting('ShowSpriteImages', True)
     LocationsShown = setting('ShowLocations', True)
