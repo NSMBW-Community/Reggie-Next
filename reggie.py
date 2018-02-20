@@ -18773,7 +18773,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.CreateAction(
             'showlay2', self.HandleUpdateLayer2, GetIcon('layer2'),
             trans.stringOneLine('MenuItems', 52), trans.stringOneLine('MenuItems', 53),
-            QtGui.QKeySequence('Ctrl+3'), True.
+            QtGui.QKeySequence('Ctrl+3'), True,
         )
 
         self.CreateAction(
