@@ -108,6 +108,33 @@ firstLoad = True
 
 FileExtentions = ('.arc', '.arc.LH')
 
+OverriddenTilesets = {
+    "Pa0": [
+        'Pa0_jyotyu',
+        'Pa0_jyotyu_chika',
+        'Pa0_jyotyu_setsugen',
+        'Pa0_jyotyu_yougan',
+        'Pa0_jyotyu_staffRoll'
+    ],
+    "Flowers": [
+        'Pa1_nohara',
+        'Pa1_nohara2'
+    ],
+    "Forest Flowers": [
+        'Pa1_daishizen'
+    ],
+    "Lines": [
+        'Pa3_daishizen'
+    ],
+    "Minigame Lines": [
+        'Pa3_MG_house_ami_rail'
+    ],
+    "Full Lines": [
+        'Pa3_rail',
+        'Pa3_rail_white'
+    ]
+}
+
 
 class ReggieSplashScreen(QtWidgets.QSplashScreen):
     """
@@ -762,8 +789,11 @@ class SpriteDefinition:
 
             if 'comment' in attribs:
                 comment = trans.string('SpriteDataEditor', 1, '[name]', attribs['title'], '[note]', attribs['comment'])
+
             else:
                 comment = None
+
+            advanced = 'advanced' in attribs and attribs['advanced'] == "True"
 
             if 'requiredbit' in attribs:
                 required = []
@@ -771,12 +801,14 @@ class SpriteDefinition:
 
                 if 'requiredval' in attribs:
                     vals = attribs['requiredval'].split(",")
+
                 else:
                     vals = [None] * len(bits)
 
                 for sbit, sval in zip(bits, vals):
                     if '-' not in sbit:
                         bit = int(sbit)
+
                     else:
                         getit = sbit.split('-')
                         bit = (int(getit[0]), int(getit[1]) + 1)
@@ -784,15 +816,19 @@ class SpriteDefinition:
                     if sval is None:
                         if isinstance(bit, tuple):
                             val = (1, (1 << (bit[1] - bit[0])) - 1)
+
                         else:
                             val = 1
+
                     elif '-' not in sval:
                         val = int(sval)
+
                     else:
                         getit = sval.split('-')
                         val = (int(getit[0]), int(getit[1]) + 1)
 
                     required.append((bit, val))
+
             else:
                 required = None
 
@@ -801,6 +837,7 @@ class SpriteDefinition:
                 if 'nybble' in attribs:
                     sbit = attribs['nybble']
                     sft = 2
+
                 else:
                     sbit = attribs['bit']
                     sft = 0
@@ -811,9 +848,11 @@ class SpriteDefinition:
                         if sft:
                             # just 4 bits
                             r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+
                         else:
                             # just 1 bit
                             r_bit = int(ran)
+
                     else:
                         # different number of bits
                         getit = ran.split('-')
@@ -826,15 +865,18 @@ class SpriteDefinition:
 
                 if 'mask' in attribs:
                     mask = int(attribs['mask'])
+
                 else:
                     mask = 1
 
-                fields.append((0, attribs['title'], bit, mask, comment, required))
+                fields.append((0, attribs['title'], bit, mask, comment, required, advanced))
+
             elif field.tag == 'list':
                 # parameters: title, bit, model, comment
                 if 'nybble' in attribs:
                     sbit = attribs['nybble']
                     sft = 2
+
                 else:
                     sbit = attribs['bit']
                     sft = 0
@@ -847,10 +889,12 @@ class SpriteDefinition:
                             # just 4 bits
                             r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
                             l += 4
+
                         else:
                             # just 1 bit
                             r_bit = int(ran)
                             l += 1
+
                     else:
                         # different number of bits
                         getit = ran.split('-')
@@ -874,12 +918,14 @@ class SpriteDefinition:
                     existing[i] = True
 
                 fields.append(
-                    (1, attribs['title'], bit, SpriteDefinition.ListPropertyModel(entries, existing, max), comment, required))
+                    (1, attribs['title'], bit, SpriteDefinition.ListPropertyModel(entries, existing, max), comment, required, advanced))
+
             elif field.tag == 'value':
                 # parameters: title, bit, max, comment
                 if 'nybble' in attribs:
                     sbit = attribs['nybble']
                     sft = 2
+
                 else:
                     sbit = attribs['bit']
                     sft = 0
@@ -892,10 +938,12 @@ class SpriteDefinition:
                             # just 4 bits
                             r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
                             l += 4
+
                         else:
                             # just 1 bit
                             r_bit = int(ran)
                             l += 1
+
                     else:
                         # different number of bits
                         getit = ran.split('-')
@@ -909,18 +957,21 @@ class SpriteDefinition:
                 if len(bit) == 1:
                     bit = bit[0]
 
-                fields.append((2, attribs['title'], bit, max, comment, required))
+                fields.append((2, attribs['title'], bit, max, comment, required, advanced))
+
             elif field.tag == 'bitfield':
                 # parameters: title, startbit, bitnum, comment
                 startbit = int(attribs['startbit'])
                 bitnum = int(attribs['bitnum'])
 
-                fields.append((3, attribs['title'], startbit, bitnum, comment, required))
+                fields.append((3, attribs['title'], startbit, bitnum, comment, required, advanced))
+
             elif field.tag == 'multibox':
                 # parameters: title, bit, comment
                 if 'nybble' in attribs:
                     sbit = attribs['nybble']
                     sft = 2
+
                 else:
                     sbit = attribs['bit']
                     sft = 0
@@ -931,9 +982,11 @@ class SpriteDefinition:
                         if sft:
                             # just 4 bits
                             r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+
                         else:
                             # just 1 bit
                             r_bit = int(ran)
+
                     else:
                         # different number of bits
                         getit = ran.split('-')
@@ -944,7 +997,7 @@ class SpriteDefinition:
                 if len(bit) == 1:
                     bit = bit[0]
 
-                fields.append((4, attribs['title'], bit, comment, required))
+                fields.append((4, attribs['title'], bit, comment, required, advanced))
 
 
 def LoadSpriteData():
@@ -1033,8 +1086,6 @@ def LoadSpriteData():
         if (snpath is not None) and (snpath.path is not None):
             with open(snpath.path) as snfile:
                 data = snfile.read()
-
-            del snfile
 
             # Split the data
             data = data.split('\n')
@@ -2394,272 +2445,242 @@ def UnloadTileset(idx):
     ObjectDefinitions[idx] = None
     TilesetFilesLoaded[idx] = None
 
-OverriddenTilesets = {
-    "Pa0": [
-        'Pa0_jyotyu',
-        'Pa0_jyotyu_chika',
-        'Pa0_jyotyu_setsugen',
-        'Pa0_jyotyu_yougan',
-        'Pa0_jyotyu_staffRoll'
-    ],
-    "Flowers": [
-        'Pa1_nohara',
-        'Pa1_nohara2'
-    ],
-    "Forest Flowers": [
-        'Pa1_daishizen'
-    ],
-    "Lines": [
-        'Pa3_daishizen'
-    ],
-    "Minigame Lines": [
-        'Pa3_MG_house_ami_rail'
-    ],
-    "Full Lines": [
-        'Pa3_rail',
-        'Pa3_rail_white'
-    ]
-}
 
 def ProcessOverrides(idx, name):
     """
     Load overridden tiles if there are any
     """
+    global OverriddenTilesets
+    tsidx = OverriddenTilesets
 
-    if True:
-    #try:
-        tsidx = OverriddenTilesets
-        if name in tsidx["Pa0"]:
-            offset = 0x800 + (tsidx["Pa0"].index(name) * 64)
+    if name in tsidx["Pa0"]:
+        offset = 0x800 + (tsidx["Pa0"].index(name) * 64)
 
-            # Setsugen/Snow is unused, but we still override it
-            # StaffRoll is the same as plain Jyotyu, so if it's used, let's be lazy and treat it as the normal one
-            if offset == 1280: offset = 1024
+        # Setsugen/Snow is unused, but we still override it
+        # StaffRoll is the same as plain Jyotyu, so if it's used, let's be lazy and treat it as the normal one
+        if offset == 1280:
+            offset = 1024
 
-            defs = ObjectDefinitions[idx]
-            t = Tiles
+        defs = ObjectDefinitions[idx]
+        t = Tiles
 
-            # Invisible blocks
-            # these are all the same so let's just load them from the first row
-            invisiblocks = [3, 4, 5, 6, 7, 8, 9, 10, 13]
-            replace = 0x800
-            for i in invisiblocks:
-                t[i].main = t[replace].main
-                replace += 1
-
-            # Question and brick blocks
-            # these don't have their own tiles so we have to do them by objects
-            rangeA, rangeB = (range(39, 49), range(27, 38))
-            replace = offset + 10
-            for i in rangeA:
-                defs[i].rows[0][0] = (0, replace, 0)
-                replace += 1
+        # Invisible blocks
+        # these are all the same so let's just load them from the first row
+        invisiblocks = [3, 4, 5, 6, 7, 8, 9, 10, 13]
+        replace = 0x800
+        for i in invisiblocks:
+            t[i].main = t[replace].main
             replace += 1
-            for i in rangeB:
-                defs[i].rows[0][0] = (0, replace, 0)
-                replace += 1
 
-            # now the extra stuff (invisible collisions etc)
-            t[1].main = t[0x400 + 1280].main  # solid
-            t[2].main = t[0x400 + 1311].main  # vine stopper
-            t[11].main = t[0x400 + 1310].main  # jumpthrough platform
-            t[12].main = t[0x400 + 1309].main  # 16x8 roof platform
+        # Question and brick blocks
+        # these don't have their own tiles so we have to do them by objects
+        rangeA, rangeB = (range(39, 49), range(27, 38))
+        replace = offset + 10
+        for i in rangeA:
+            defs[i].rows[0][0] = (0, replace, 0)
+            replace += 1
+        replace += 1
+        for i in rangeB:
+            defs[i].rows[0][0] = (0, replace, 0)
+            replace += 1
 
-            t[16].main = t[0x400 + 1291].main  # 1x1 slope going up
-            t[17].main = t[0x400 + 1292].main  # 1x1 slope going down
-            t[18].main = t[0x400 + 1281].main  # 2x1 slope going up (part 1)
-            t[19].main = t[0x400 + 1282].main  # 2x1 slope going up (part 2)
-            t[20].main = t[0x400 + 1283].main  # 2x1 slope going down (part 1)
-            t[21].main = t[0x400 + 1284].main  # 2x1 slope going down (part 2)
-            t[22].main = t[0x400 + 1301].main  # 4x1 slope going up (part 1)
-            t[23].main = t[0x400 + 1302].main  # 4x1 slope going up (part 2)
-            t[24].main = t[0x400 + 1303].main  # 4x1 slope going up (part 3)
-            t[25].main = t[0x400 + 1304].main  # 4x1 slope going up (part 4)
-            t[26].main = t[0x400 + 1305].main  # 4x1 slope going down (part 1)
-            t[27].main = t[0x400 + 1306].main  # 4x1 slope going down (part 2)
-            t[28].main = t[0x400 + 1307].main  # 4x1 slope going down (part 3)
-            t[29].main = t[0x400 + 1308].main  # 4x1 slope going down (part 4)
-            t[30].main = t[0x400 + 1062].main  # coin
+        # now the extra stuff (invisible collisions etc)
+        t[1].main = t[0x400 + 1280].main  # solid
+        t[2].main = t[0x400 + 1311].main  # vine stopper
+        t[11].main = t[0x400 + 1310].main  # jumpthrough platform
+        t[12].main = t[0x400 + 1309].main  # 16x8 roof platform
 
-            t[32].main = t[0x400 + 1289].main  # 1x1 roof going down
-            t[33].main = t[0x400 + 1290].main  # 1x1 roof going up
-            t[34].main = t[0x400 + 1285].main  # 2x1 roof going down (part 1)
-            t[35].main = t[0x400 + 1286].main  # 2x1 roof going down (part 2)
-            t[36].main = t[0x400 + 1287].main  # 2x1 roof going up (part 1)
-            t[37].main = t[0x400 + 1288].main  # 2x1 roof going up (part 2)
-            t[38].main = t[0x400 + 1293].main  # 4x1 roof going down (part 1)
-            t[39].main = t[0x400 + 1294].main  # 4x1 roof going down (part 2)
-            t[40].main = t[0x400 + 1295].main  # 4x1 roof going down (part 3)
-            t[41].main = t[0x400 + 1296].main  # 4x1 roof going down (part 4)
-            t[42].main = t[0x400 + 1297].main  # 4x1 roof going up (part 1)
-            t[43].main = t[0x400 + 1298].main  # 4x1 roof going up (part 2)
-            t[44].main = t[0x400 + 1299].main  # 4x1 roof going up (part 3)
-            t[45].main = t[0x400 + 1300].main  # 4x1 roof going up (part 4)
-            t[46].main = t[0x400 + 1312].main  # P-switch coins
+        t[16].main = t[0x400 + 1291].main  # 1x1 slope going up
+        t[17].main = t[0x400 + 1292].main  # 1x1 slope going down
+        t[18].main = t[0x400 + 1281].main  # 2x1 slope going up (part 1)
+        t[19].main = t[0x400 + 1282].main  # 2x1 slope going up (part 2)
+        t[20].main = t[0x400 + 1283].main  # 2x1 slope going down (part 1)
+        t[21].main = t[0x400 + 1284].main  # 2x1 slope going down (part 2)
+        t[22].main = t[0x400 + 1301].main  # 4x1 slope going up (part 1)
+        t[23].main = t[0x400 + 1302].main  # 4x1 slope going up (part 2)
+        t[24].main = t[0x400 + 1303].main  # 4x1 slope going up (part 3)
+        t[25].main = t[0x400 + 1304].main  # 4x1 slope going up (part 4)
+        t[26].main = t[0x400 + 1305].main  # 4x1 slope going down (part 1)
+        t[27].main = t[0x400 + 1306].main  # 4x1 slope going down (part 2)
+        t[28].main = t[0x400 + 1307].main  # 4x1 slope going down (part 3)
+        t[29].main = t[0x400 + 1308].main  # 4x1 slope going down (part 4)
+        t[30].main = t[0x400 + 1062].main  # coin
 
-            t[53].main = t[0x400 + 1314].main  # donut lift
-            t[61].main = t[0x400 + 1063].main  # multiplayer coin
-            t[63].main = t[0x400 + 1313].main  # instant death tile
+        t[32].main = t[0x400 + 1289].main  # 1x1 roof going down
+        t[33].main = t[0x400 + 1290].main  # 1x1 roof going up
+        t[34].main = t[0x400 + 1285].main  # 2x1 roof going down (part 1)
+        t[35].main = t[0x400 + 1286].main  # 2x1 roof going down (part 2)
+        t[36].main = t[0x400 + 1287].main  # 2x1 roof going up (part 1)
+        t[37].main = t[0x400 + 1288].main  # 2x1 roof going up (part 2)
+        t[38].main = t[0x400 + 1293].main  # 4x1 roof going down (part 1)
+        t[39].main = t[0x400 + 1294].main  # 4x1 roof going down (part 2)
+        t[40].main = t[0x400 + 1295].main  # 4x1 roof going down (part 3)
+        t[41].main = t[0x400 + 1296].main  # 4x1 roof going down (part 4)
+        t[42].main = t[0x400 + 1297].main  # 4x1 roof going up (part 1)
+        t[43].main = t[0x400 + 1298].main  # 4x1 roof going up (part 2)
+        t[44].main = t[0x400 + 1299].main  # 4x1 roof going up (part 3)
+        t[45].main = t[0x400 + 1300].main  # 4x1 roof going up (part 4)
+        t[46].main = t[0x400 + 1312].main  # P-switch coins
 
-        elif name in tsidx["Flowers"] or name in tsidx["Forest Flowers"]:
-            # flowers
-            t = Tiles
-            t[416].main = t[0x400 + 1092].main  # grass
-            t[417].main = t[0x400 + 1093].main
-            t[418].main = t[0x400 + 1094].main
-            t[419].main = t[0x400 + 1095].main
-            t[420].main = t[0x400 + 1096].main
+        t[53].main = t[0x400 + 1314].main  # donut lift
+        t[61].main = t[0x400 + 1063].main  # multiplayer coin
+        t[63].main = t[0x400 + 1313].main  # instant death tile
 
-            if name in tsidx["Flowers"]:
-                t[432].main = t[0x400 + 1068].main  # flowers
-                t[433].main = t[0x400 + 1069].main  # flowers
-                t[434].main = t[0x400 + 1070].main  # flowers
+    elif name in tsidx["Flowers"] or name in tsidx["Forest Flowers"]:
+        # flowers
+        t = Tiles
+        t[416].main = t[0x400 + 1092].main  # grass
+        t[417].main = t[0x400 + 1093].main
+        t[418].main = t[0x400 + 1094].main
+        t[419].main = t[0x400 + 1095].main
+        t[420].main = t[0x400 + 1096].main
 
-                t[448].main = t[0x400 + 1158].main  # flowers on grass
-                t[449].main = t[0x400 + 1159].main
-                t[450].main = t[0x400 + 1160].main
-            elif name in tsidx["Forest Flowers"]:
-                # forest flowers
-                t[432].main = t[0x400 + 1071].main  # flowers
-                t[433].main = t[0x400 + 1072].main  # flowers
-                t[434].main = t[0x400 + 1073].main  # flowers
+        if name in tsidx["Flowers"]:
+            t[432].main = t[0x400 + 1068].main  # flowers
+            t[433].main = t[0x400 + 1069].main  # flowers
+            t[434].main = t[0x400 + 1070].main  # flowers
 
-                t[448].main = t[0x400 + 1222].main  # flowers on grass
-                t[449].main = t[0x400 + 1223].main
-                t[450].main = t[0x400 + 1224].main
+            t[448].main = t[0x400 + 1158].main  # flowers on grass
+            t[449].main = t[0x400 + 1159].main
+            t[450].main = t[0x400 + 1160].main
+        elif name in tsidx["Forest Flowers"]:
+            # forest flowers
+            t[432].main = t[0x400 + 1071].main  # flowers
+            t[433].main = t[0x400 + 1072].main  # flowers
+            t[434].main = t[0x400 + 1073].main  # flowers
 
-        elif name in tsidx["Lines"] or name in tsidx["Full Lines"]:
-            # These are the line guides
-            # Pa3_daishizen has less though
+            t[448].main = t[0x400 + 1222].main  # flowers on grass
+            t[449].main = t[0x400 + 1223].main
+            t[450].main = t[0x400 + 1224].main
 
-            t = Tiles
+    elif name in tsidx["Lines"] or name in tsidx["Full Lines"]:
+        # These are the line guides
+        # Pa3_daishizen has less though
 
-            t[768].main = t[0x400 + 1088].main  # horizontal line
-            t[769].main = t[0x400 + 1089].main  # vertical line
-            t[770].main = t[0x400 + 1090].main  # bottom-right corner
-            t[771].main = t[0x400 + 1091].main  # top-left corner
+        t = Tiles
 
-            t[784].main = t[0x400 + 1152].main  # left red blob (part 1)
-            t[785].main = t[0x400 + 1153].main  # top red blob (part 1)
-            t[786].main = t[0x400 + 1154].main  # top red blob (part 2)
-            t[787].main = t[0x400 + 1155].main  # right red blob (part 1)
-            t[788].main = t[0x400 + 1156].main  # top-left red blob
-            t[789].main = t[0x400 + 1157].main  # top-right red blob
+        t[768].main = t[0x400 + 1088].main  # horizontal line
+        t[769].main = t[0x400 + 1089].main  # vertical line
+        t[770].main = t[0x400 + 1090].main  # bottom-right corner
+        t[771].main = t[0x400 + 1091].main  # top-left corner
 
-            t[800].main = t[0x400 + 1216].main  # left red blob (part 2)
-            t[801].main = t[0x400 + 1217].main  # bottom red blob (part 1)
-            t[802].main = t[0x400 + 1218].main  # bottom red blob (part 2)
-            t[803].main = t[0x400 + 1219].main  # right red blob (part 2)
-            t[804].main = t[0x400 + 1220].main  # bottom-left red blob
-            t[805].main = t[0x400 + 1221].main  # bottom-right red blob
+        t[784].main = t[0x400 + 1152].main  # left red blob (part 1)
+        t[785].main = t[0x400 + 1153].main  # top red blob (part 1)
+        t[786].main = t[0x400 + 1154].main  # top red blob (part 2)
+        t[787].main = t[0x400 + 1155].main  # right red blob (part 1)
+        t[788].main = t[0x400 + 1156].main  # top-left red blob
+        t[789].main = t[0x400 + 1157].main  # top-right red blob
 
-            # Those are all for Pa3_daishizen
-            if name == 'Pa3_daishizen': return
+        t[800].main = t[0x400 + 1216].main  # left red blob (part 2)
+        t[801].main = t[0x400 + 1217].main  # bottom red blob (part 1)
+        t[802].main = t[0x400 + 1218].main  # bottom red blob (part 2)
+        t[803].main = t[0x400 + 1219].main  # right red blob (part 2)
+        t[804].main = t[0x400 + 1220].main  # bottom-left red blob
+        t[805].main = t[0x400 + 1221].main  # bottom-right red blob
 
-            t[816].main = t[0x400 + 1056].main  # 1x2 diagonal going up (top edge)
-            t[817].main = t[0x400 + 1057].main  # 1x2 diagonal going down (top edge)
+        # Those are all for Pa3_daishizen
+        if name == 'Pa3_daishizen': return
 
-            t[832].main = t[0x400 + 1120].main  # 1x2 diagonal going up (part 1)
-            t[833].main = t[0x400 + 1121].main  # 1x2 diagonal going down (part 1)
-            t[834].main = t[0x400 + 1186].main  # 1x1 diagonal going up
-            t[835].main = t[0x400 + 1187].main  # 1x1 diagonal going down
-            t[836].main = t[0x400 + 1058].main  # 2x1 diagonal going up (part 1)
-            t[837].main = t[0x400 + 1059].main  # 2x1 diagonal going up (part 2)
-            t[838].main = t[0x400 + 1060].main  # 2x1 diagonal going down (part 1)
-            t[839].main = t[0x400 + 1061].main  # 2x1 diagonal going down (part 2)
+        t[816].main = t[0x400 + 1056].main  # 1x2 diagonal going up (top edge)
+        t[817].main = t[0x400 + 1057].main  # 1x2 diagonal going down (top edge)
 
-            t[848].main = t[0x400 + 1184].main  # 1x2 diagonal going up (part 2)
-            t[849].main = t[0x400 + 1185].main  # 1x2 diagonal going down (part 2)
-            t[850].main = t[0x400 + 1250].main  # 1x1 diagonal going up
-            t[851].main = t[0x400 + 1251].main  # 1x1 diagonal going down
-            t[852].main = t[0x400 + 1122].main  # 2x1 diagonal going up (part 1)
-            t[853].main = t[0x400 + 1123].main  # 2x1 diagonal going up (part 2)
-            t[854].main = t[0x400 + 1124].main  # 2x1 diagonal going down (part 1)
-            t[855].main = t[0x400 + 1125].main  # 2x1 diagonal going down (part 2)
+        t[832].main = t[0x400 + 1120].main  # 1x2 diagonal going up (part 1)
+        t[833].main = t[0x400 + 1121].main  # 1x2 diagonal going down (part 1)
+        t[834].main = t[0x400 + 1186].main  # 1x1 diagonal going up
+        t[835].main = t[0x400 + 1187].main  # 1x1 diagonal going down
+        t[836].main = t[0x400 + 1058].main  # 2x1 diagonal going up (part 1)
+        t[837].main = t[0x400 + 1059].main  # 2x1 diagonal going up (part 2)
+        t[838].main = t[0x400 + 1060].main  # 2x1 diagonal going down (part 1)
+        t[839].main = t[0x400 + 1061].main  # 2x1 diagonal going down (part 2)
 
-            t[866].main = t[0x400 + 1065].main  # big circle piece 1st row
-            t[867].main = t[0x400 + 1066].main  # big circle piece 1st row
-            t[870].main = t[0x400 + 1189].main  # medium circle piece 1st row
-            t[871].main = t[0x400 + 1190].main  # medium circle piece 1st row
+        t[848].main = t[0x400 + 1184].main  # 1x2 diagonal going up (part 2)
+        t[849].main = t[0x400 + 1185].main  # 1x2 diagonal going down (part 2)
+        t[850].main = t[0x400 + 1250].main  # 1x1 diagonal going up
+        t[851].main = t[0x400 + 1251].main  # 1x1 diagonal going down
+        t[852].main = t[0x400 + 1122].main  # 2x1 diagonal going up (part 1)
+        t[853].main = t[0x400 + 1123].main  # 2x1 diagonal going up (part 2)
+        t[854].main = t[0x400 + 1124].main  # 2x1 diagonal going down (part 1)
+        t[855].main = t[0x400 + 1125].main  # 2x1 diagonal going down (part 2)
 
-            t[881].main = t[0x400 + 1128].main  # big circle piece 2nd row
-            t[882].main = t[0x400 + 1129].main  # big circle piece 2nd row
-            t[883].main = t[0x400 + 1130].main  # big circle piece 2nd row
-            t[884].main = t[0x400 + 1131].main  # big circle piece 2nd row
-            t[885].main = t[0x400 + 1252].main  # medium circle piece 2nd row
-            t[886].main = t[0x400 + 1253].main  # medium circle piece 2nd row
-            t[887].main = t[0x400 + 1254].main  # medium circle piece 2nd row
-            t[888].main = t[0x400 + 1188].main  # small circle
+        t[866].main = t[0x400 + 1065].main  # big circle piece 1st row
+        t[867].main = t[0x400 + 1066].main  # big circle piece 1st row
+        t[870].main = t[0x400 + 1189].main  # medium circle piece 1st row
+        t[871].main = t[0x400 + 1190].main  # medium circle piece 1st row
 
-            t[896].main = t[0x400 + 1191].main  # big circle piece 3rd row
-            t[897].main = t[0x400 + 1192].main  # big circle piece 3rd row
-            t[900].main = t[0x400 + 1195].main  # big circle piece 3rd row
-            t[901].main = t[0x400 + 1316].main  # medium circle piece 3rd row
-            t[902].main = t[0x400 + 1317].main  # medium circle piece 3rd row
-            t[903].main = t[0x400 + 1318].main  # medium circle piece 3rd row
+        t[881].main = t[0x400 + 1128].main  # big circle piece 2nd row
+        t[882].main = t[0x400 + 1129].main  # big circle piece 2nd row
+        t[883].main = t[0x400 + 1130].main  # big circle piece 2nd row
+        t[884].main = t[0x400 + 1131].main  # big circle piece 2nd row
+        t[885].main = t[0x400 + 1252].main  # medium circle piece 2nd row
+        t[886].main = t[0x400 + 1253].main  # medium circle piece 2nd row
+        t[887].main = t[0x400 + 1254].main  # medium circle piece 2nd row
+        t[888].main = t[0x400 + 1188].main  # small circle
 
-            t[912].main = t[0x400 + 1255].main  # big circle piece 4th row
-            t[913].main = t[0x400 + 1256].main  # big circle piece 4th row
-            t[916].main = t[0x400 + 1259].main  # big circle piece 4th row
+        t[896].main = t[0x400 + 1191].main  # big circle piece 3rd row
+        t[897].main = t[0x400 + 1192].main  # big circle piece 3rd row
+        t[900].main = t[0x400 + 1195].main  # big circle piece 3rd row
+        t[901].main = t[0x400 + 1316].main  # medium circle piece 3rd row
+        t[902].main = t[0x400 + 1317].main  # medium circle piece 3rd row
+        t[903].main = t[0x400 + 1318].main  # medium circle piece 3rd row
 
-            t[929].main = t[0x400 + 1320].main  # big circle piece 5th row
-            t[930].main = t[0x400 + 1321].main  # big circle piece 5th row
-            t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
-            t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
+        t[912].main = t[0x400 + 1255].main  # big circle piece 4th row
+        t[913].main = t[0x400 + 1256].main  # big circle piece 4th row
+        t[916].main = t[0x400 + 1259].main  # big circle piece 4th row
 
-        elif name in tsidx["Minigame Lines"]:
-            t = Tiles
+        t[929].main = t[0x400 + 1320].main  # big circle piece 5th row
+        t[930].main = t[0x400 + 1321].main  # big circle piece 5th row
+        t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
+        t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
 
-            t[832].main = t[0x400 + 1088].main  # horizontal line
-            t[833].main = t[0x400 + 1090].main  # bottom-right corner
-            t[834].main = t[0x400 + 1088].main  # horizontal line
+    elif name in tsidx["Minigame Lines"]:
+        t = Tiles
 
-            t[848].main = t[0x400 + 1089].main  # vertical line
-            t[849].main = t[0x400 + 1089].main  # vertical line
-            t[850].main = t[0x400 + 1091].main  # top-left corner
+        t[832].main = t[0x400 + 1088].main  # horizontal line
+        t[833].main = t[0x400 + 1090].main  # bottom-right corner
+        t[834].main = t[0x400 + 1088].main  # horizontal line
 
-            t[835].main = t[0x400 + 1152].main  # left red blob (part 1)
-            t[836].main = t[0x400 + 1153].main  # top red blob (part 1)
-            t[837].main = t[0x400 + 1154].main  # top red blob (part 2)
-            t[838].main = t[0x400 + 1155].main  # right red blob (part 1)
+        t[848].main = t[0x400 + 1089].main  # vertical line
+        t[849].main = t[0x400 + 1089].main  # vertical line
+        t[850].main = t[0x400 + 1091].main  # top-left corner
 
-            t[851].main = t[0x400 + 1216].main  # left red blob (part 2)
-            t[852].main = t[0x400 + 1217].main  # bottom red blob (part 1)
-            t[853].main = t[0x400 + 1218].main  # bottom red blob (part 2)
-            t[854].main = t[0x400 + 1219].main  # right red blob (part 2)
+        t[835].main = t[0x400 + 1152].main  # left red blob (part 1)
+        t[836].main = t[0x400 + 1153].main  # top red blob (part 1)
+        t[837].main = t[0x400 + 1154].main  # top red blob (part 2)
+        t[838].main = t[0x400 + 1155].main  # right red blob (part 1)
 
-            t[866].main = t[0x400 + 1065].main  # big circle piece 1st row
-            t[867].main = t[0x400 + 1066].main  # big circle piece 1st row
-            t[870].main = t[0x400 + 1189].main  # medium circle piece 1st row
-            t[871].main = t[0x400 + 1190].main  # medium circle piece 1st row
+        t[851].main = t[0x400 + 1216].main  # left red blob (part 2)
+        t[852].main = t[0x400 + 1217].main  # bottom red blob (part 1)
+        t[853].main = t[0x400 + 1218].main  # bottom red blob (part 2)
+        t[854].main = t[0x400 + 1219].main  # right red blob (part 2)
 
-            t[881].main = t[0x400 + 1128].main  # big circle piece 2nd row
-            t[882].main = t[0x400 + 1129].main  # big circle piece 2nd row
-            t[883].main = t[0x400 + 1130].main  # big circle piece 2nd row
-            t[884].main = t[0x400 + 1131].main  # big circle piece 2nd row
-            t[885].main = t[0x400 + 1252].main  # medium circle piece 2nd row
-            t[886].main = t[0x400 + 1253].main  # medium circle piece 2nd row
-            t[887].main = t[0x400 + 1254].main  # medium circle piece 2nd row
+        t[866].main = t[0x400 + 1065].main  # big circle piece 1st row
+        t[867].main = t[0x400 + 1066].main  # big circle piece 1st row
+        t[870].main = t[0x400 + 1189].main  # medium circle piece 1st row
+        t[871].main = t[0x400 + 1190].main  # medium circle piece 1st row
 
-            t[896].main = t[0x400 + 1191].main  # big circle piece 3rd row
-            t[897].main = t[0x400 + 1192].main  # big circle piece 3rd row
-            t[900].main = t[0x400 + 1195].main  # big circle piece 3rd row
-            t[901].main = t[0x400 + 1316].main  # medium circle piece 3rd row
-            t[902].main = t[0x400 + 1317].main  # medium circle piece 3rd row
-            t[903].main = t[0x400 + 1318].main  # medium circle piece 3rd row
+        t[881].main = t[0x400 + 1128].main  # big circle piece 2nd row
+        t[882].main = t[0x400 + 1129].main  # big circle piece 2nd row
+        t[883].main = t[0x400 + 1130].main  # big circle piece 2nd row
+        t[884].main = t[0x400 + 1131].main  # big circle piece 2nd row
+        t[885].main = t[0x400 + 1252].main  # medium circle piece 2nd row
+        t[886].main = t[0x400 + 1253].main  # medium circle piece 2nd row
+        t[887].main = t[0x400 + 1254].main  # medium circle piece 2nd row
 
-            t[912].main = t[0x400 + 1255].main  # big circle piece 4th row
-            t[913].main = t[0x400 + 1256].main  # big circle piece 4th row
-            t[916].main = t[0x400 + 1259].main  # big circle piece 4th row
+        t[896].main = t[0x400 + 1191].main  # big circle piece 3rd row
+        t[897].main = t[0x400 + 1192].main  # big circle piece 3rd row
+        t[900].main = t[0x400 + 1195].main  # big circle piece 3rd row
+        t[901].main = t[0x400 + 1316].main  # medium circle piece 3rd row
+        t[902].main = t[0x400 + 1317].main  # medium circle piece 3rd row
+        t[903].main = t[0x400 + 1318].main  # medium circle piece 3rd row
 
-            t[929].main = t[0x400 + 1320].main  # big circle piece 5th row
-            t[930].main = t[0x400 + 1321].main  # big circle piece 5th row
-            t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
-            t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
-    #except Exception:
-    #
-    #    # Fail silently
-    #    pass
+        t[912].main = t[0x400 + 1255].main  # big circle piece 4th row
+        t[913].main = t[0x400 + 1256].main  # big circle piece 4th row
+        t[916].main = t[0x400 + 1259].main  # big circle piece 4th row
+
+        t[929].main = t[0x400 + 1320].main  # big circle piece 5th row
+        t[930].main = t[0x400 + 1321].main  # big circle piece 5th row
+        t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
+        t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
 
 
 def LoadOverrides():
@@ -4899,7 +4920,7 @@ class ZoneItem(LevelEditorItem):
             painter.drawLine(lineStart, lineEnd)
 
         # Paint liquids/fog
-        if SpritesShown and SpriteImagesShown:
+        if SpritesShown and RealViewEnabled:
             zoneRect = QtCore.QRectF(self.objx * 1.5, self.objy * 1.5, self.width * 1.5, self.height * 1.5)
             viewRect = mainWindow.view.mapToScene(mainWindow.view.viewport().rect()).boundingRect()
 
@@ -9625,6 +9646,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             if bits is None:
                 bit = self.bit
+
             else:
                 bit = bits
 
@@ -9636,6 +9658,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     # find the size of the range
                     if isinstance(ran, tuple):
                         l = ran[1] - ran[0]
+
                     else:
                         l = 1
 
@@ -9652,6 +9675,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 if bit[1] == bit[0] + 7 and bit[0] & 1 == 1:
                     # optimise if it's just one byte
                     return data[bit[0] >> 3]
+
                 else:
                     # we have to calculate it sadly
                     # just do it by looping, shouldn't be that bad
@@ -9661,6 +9685,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                         value = (value << 1) | ((data[n >> 3] >> (7 - (n & 7))) & 1)
 
                     return value
+
             else:
                 # we just want one bit
                 bit -= 1
@@ -9676,6 +9701,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             if bits is None:
                 bit = self.bit
+
             else:
                 bit = bits
 
@@ -9683,19 +9709,17 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             if isinstance(bit, list):
                 # multiple ranges
-                print("writing to compound: " + str(bit))
                 for ran in reversed(bit):
                     # find the size of the range
                     if isinstance(ran, tuple):
                         l = ran[1] - ran[0]
+
                     else:
                         l = 1
 
                     # mask the value over this length
                     mask = (1 << l) - 1
                     v = value & mask
-
-                    print("Writing value %d, %d & %d, to bits %s" % (v, value, mask, ran))
 
                     # remove these bits from the value
                     value >>= l
@@ -9709,6 +9733,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 if bit[1] == bit[0] + 7 and bit[0] & 1 == 1:
                     # just one byte, this is easier
                     sdata[(bit[0] - 1) >> 3] = value & 0xFF
+
                 else:
                     # complicated stuff
                     for n in reversed(range(bit[0], bit[1])):
@@ -9717,11 +9742,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                         if value & 1:
                             # set the bit
                             sdata[(n - 1) >> 3] |= off
+
                         else:
                             # mask the bit out
                             sdata[(n - 1) >> 3] &= 0xFF ^ off
 
                         value >>= 1
+
             else:
                 # only overwrite one bit
                 byte = (bit - 1) >> 3
@@ -9733,6 +9760,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 if value & 1:
                     # set the bit
                     sdata[byte] |= off
+
                 else:
                     # mask the bit out
                     sdata[byte] &= 0xFF ^ off
@@ -9751,10 +9779,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 val = self.retrieve(data, requirement[0])
                 ran = requirement[1]
 
-                print("Req " + str(requirement[0]) + " " + str(ran) + ": " + str(val))
-
                 if isinstance(ran, tuple):
                     show = show and ran[0] <= val < ran[1]
+
                 else:
                     show = show and ran == val
 
@@ -9764,12 +9791,24 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             for i in range(self.layout.columnCount()):
                 self.layout.itemAtPosition(self.row, i).widget().setVisible(show)
 
+        def checkAdv(self):
+            """
+            Checks if we should show this setting
+            """
+
+            if not self.advanced or AdvancedModeEnabled:
+                return
+
+            # hide all widgets in this row
+            for i in range(self.layout.columnCount()):
+                self.layout.itemAtPosition(self.row, i).widget().setVisible(False)
+
     class CheckboxPropertyDecoder(PropertyDecoder):
         """
         Class that decodes/encodes sprite data to/from a checkbox
         """
 
-        def __init__(self, title, bit, mask, comment, required, layout, row):
+        def __init__(self, title, bit, mask, comment, required, advanced, layout, row):
             """
             Creates the widget
             """
@@ -9777,12 +9816,15 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.widget = QtWidgets.QCheckBox()
             label = QtWidgets.QLabel(title + ':')
+
             if comment is not None:
                 label.setToolTip(comment)
+
             self.widget.clicked.connect(self.HandleClick)
 
             if isinstance(bit, tuple):
                 length = bit[1] - bit[0] + 1
+
             else:
                 length = 1
 
@@ -9792,6 +9834,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.mask = mask
             self.xormask = xormask
             self.required = required
+            self.advanced = advanced
 
             self.row = row
             self.layout = layout
@@ -9805,6 +9848,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data)
+            self.checkAdv()
 
             value = ((self.retrieve(data) & self.mask) == self.mask)
             self.widget.setChecked(value)
@@ -9831,7 +9875,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a combobox
         """
 
-        def __init__(self, title, bit, model, comment, required, layout, row):
+        def __init__(self, title, bit, model, comment, required, advanced, layout, row):
             """
             Creates the widget
             """
@@ -9840,17 +9884,20 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.model = model
             self.widget = QtWidgets.QComboBox()
             self.widget.setModel(model)
+
             if comment is not None:
                 self.widget.setToolTip(comment)
-            self.widget.currentIndexChanged.connect(self.HandleIndexChanged)
 
+            self.widget.currentIndexChanged.connect(self.HandleIndexChanged)
             self.bit = bit
+            self.required = required
+            self.advanced = advanced
+
+            self.row = row
+            self.layout = layout
+
             layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
-
-            self.layout = layout
-            self.row = row
-            self.required = required
 
         def update(self, data):
             """
@@ -9858,18 +9905,17 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data)
+            self.checkAdv()
 
             value = self.retrieve(data)
             if not self.model.existingLookup[value]:
                 self.widget.setCurrentIndex(-1)
                 return
 
-            i = 0
-            for x in self.model.entries:
+            for i, x in enumerate(self.model.entries):
                 if x[0] == value:
                     self.widget.setCurrentIndex(i)
                     break
-                i += 1
 
         def assign(self, data):
             """
@@ -9888,7 +9934,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a spinbox
         """
 
-        def __init__(self, title, bit, max, comment, required, layout, row):
+        def __init__(self, title, bit, max, comment, required, advanced, layout, row):
             """
             Creates the widget
             """
@@ -9896,18 +9942,20 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.widget = QtWidgets.QSpinBox()
             self.widget.setRange(0, max - 1)
+
             if comment is not None:
                 self.widget.setToolTip(comment)
 
             self.widget.valueChanged.connect(self.HandleValueChanged)
-
             self.bit = bit
+            self.required = required
+            self.advanced = advanced
+
             layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
 
             self.layout = layout
             self.row = row
-            self.required = required
 
         def update(self, data):
             """
@@ -9915,6 +9963,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data)
+            self.checkAdv()
 
             value = self.retrieve(data)
             self.widget.setValue(value)
@@ -9936,7 +9985,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a bitfield
         """
 
-        def __init__(self, title, startbit, bitnum, comment, required, layout, row):
+        def __init__(self, title, startbit, bitnum, comment, required, advanced, layout, row):
             """
             Creates the widget
             """
@@ -9944,15 +9993,21 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.startbit = startbit
             self.bitnum = bitnum
+            self.required = required
+            self.advanced = advanced
 
             self.widgets = []
             CheckboxLayout = QtWidgets.QGridLayout()
             CheckboxLayout.setContentsMargins(0, 0, 0, 0)
+
             for i in range(bitnum):
                 c = QtWidgets.QCheckBox()
                 self.widgets.append(c)
                 CheckboxLayout.addWidget(c, 0, i)
-                if comment is not None: c.setToolTip(comment)
+
+                if comment is not None:
+                    c.setToolTip(comment)
+
                 c.toggled.connect(self.HandleValueChanged)
 
                 L = QtWidgets.QLabel(str(i + 1))
@@ -9967,7 +10022,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.layout = layout
             self.row = row
-            self.required = required
 
         def update(self, data):
             """
@@ -9975,6 +10029,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data)
+            self.checkAdv()
 
             value = self.retrieve(data)
             i = self.bitnum
@@ -10008,7 +10063,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a multibox
         """
 
-        def __init__(self, title, bit, comment, required, layout, row):
+        def __init__(self, title, bit, comment, required, advanced, layout, row):
             """
             Creates the widget
             """
@@ -10017,6 +10072,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if isinstance(bit, tuple):
                 bitnum = bit[1] - bit[0]
                 startbit = bit[0]
+
             else:
                 bitnum = 1
                 startbit = bit
@@ -10024,6 +10080,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.bit = bit
             self.startbit = startbit
             self.bitnum = bitnum
+            self.required = required
+            self.advanced = advanced
 
             self.widgets = []
             CheckboxLayout = QtWidgets.QGridLayout()
@@ -10033,8 +10091,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 c = QtWidgets.QCheckBox(str(bitnum - i))
                 self.widgets.append(c)
                 CheckboxLayout.addWidget(c, 0, i)
+
                 if comment is not None:
                     c.setToolTip(comment)
+
                 c.toggled.connect(self.HandleValueChanged)
 
             w = QtWidgets.QWidget()
@@ -10045,7 +10105,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.layout = layout
             self.row = row
-            self.required = required
 
         def update(self, data):
             """
@@ -10053,6 +10112,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data)
+            self.checkAdv()
 
             value = self.retrieve(data)
             i = self.bitnum
@@ -10091,6 +10151,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.spritetype = type
         if type != 1000:
             sprite = Sprites[type]
+
         else:
             sprite = None
 
@@ -10141,8 +10202,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if sprite.noyoshi is not None:
                 if sprite.noyoshi is True:
                     image = "ys-no"
+
                 else:
                     image = "ys-works"
+
                 self.yoshiInfo.setIcon(GetIcon(image))
                 self.yoshiInfo.setVisible(True)
 
@@ -10150,6 +10213,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     sprite.yoshiNotes = trans.string('SpriteDataEditor', 15)
 
                 self.yoshiNotes = sprite.yoshiNotes
+
             else:
                 self.yoshiInfo.setVisible(False)
 
@@ -10161,12 +10225,16 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             for f in sprite.fields:
                 if f[0] == 0:
                     nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+
                 elif f[0] == 1:
                     nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+
                 elif f[0] == 2:
                     nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+
                 elif f[0] == 3:
                     nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+
                 elif f[0] == 4:
                     nf = SpriteEditorWidget.MultiboxPropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
 
@@ -10183,8 +10251,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.UpdateFlag = True
 
         data = self.data
+
         self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
-        data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))
+            data[0], data[1], data[2], data[3],
+            data[4], data[5], data[6], data[7],
+        ))
+
         self.raweditor.setStyleSheet('')
 
         # Go through all the data
@@ -10232,6 +10304,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         if self.com_extra.isVisible():
             self.com_extra.setVisible(False)
             self.com_more.setText(trans.string('SpriteDataEditor', 13))
+
         else:
             self.com_extra.setVisible(True)
             self.com_more.setText(trans.string('SpriteDataEditor', 14))
@@ -10246,7 +10319,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.data = data
 
         self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
-        data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))
+            data[0], data[1], data[2], data[3],
+            data[4], data[5], data[6], data[7],
+        ))
+
         self.raweditor.setStyleSheet('')
 
         for f in self.fields:
@@ -10261,8 +10337,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.data = b'\0\0\0\0\0\0\0\0'
 
         self.UpdateFlag = True
+
         for f in self.fields:
             f.update(self.data)
+
         self.UpdateFlag = False
 
         self.DataUpdate.emit(self.data)
@@ -10280,11 +10358,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         if len(raw) == 16:
             try:
-                data = []
-                for r in range(0, len(raw), 2):
-                    data.append(int(raw[r:r + 2], 16))
-                data = bytes(data)
+                data = bytes([int(raw[r:r + 2], 16) for r in range(0, len(raw), 2)])
                 valid = True
+
             except Exception:
                 pass
 
@@ -10299,6 +10375,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.DataUpdate.emit(data)
             self.raweditor.setStyleSheet('QLineEdit { background-color: #ffffff; }')
+
         else:
             self.raweditor.setStyleSheet('QLineEdit { background-color: #ffd2d2; }')
 
@@ -12276,7 +12353,10 @@ def getMusic():
 
 
 def FindGameDef(name, skip=None):
-    "Helper function to find a game def with a specific name. Skip will be skipped"""
+    """
+    Helper function to find a game def with a specific name.
+    Skip will be skipped
+    """
     toSearch = [None]  # Add the original game first
     for folder in os.listdir(os.path.join('reggiedata', 'patches')): toSearch.append(folder)
 
@@ -18509,148 +18589,342 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
 
         # File
-        self.CreateAction('newlevel', self.HandleNewLevel, GetIcon('new'), trans.stringOneLine('MenuItems', 0),
-                          trans.stringOneLine('MenuItems', 1), QtGui.QKeySequence.New)
-        self.CreateAction('openfromname', self.HandleOpenFromName, GetIcon('open'), trans.stringOneLine('MenuItems', 2),
-                          trans.stringOneLine('MenuItems', 3), QtGui.QKeySequence.Open)
-        self.CreateAction('openfromfile', self.HandleOpenFromFile, GetIcon('openfromfile'),
-                          trans.stringOneLine('MenuItems', 4), trans.stringOneLine('MenuItems', 5),
-                          QtGui.QKeySequence('Ctrl+Shift+O'))
-        self.CreateAction('openrecent', None, GetIcon('recent'), trans.stringOneLine('MenuItems', 6),
-                          trans.stringOneLine('MenuItems', 7), None)
-        self.CreateAction('save', self.HandleSave, GetIcon('save'), trans.stringOneLine('MenuItems', 8),
-                          trans.stringOneLine('MenuItems', 9), QtGui.QKeySequence.Save)
-        self.CreateAction('saveas', self.HandleSaveAs, GetIcon('saveas'), trans.stringOneLine('MenuItems', 10),
-                          trans.stringOneLine('MenuItems', 11), QtGui.QKeySequence.SaveAs)
-        self.CreateAction('savecopyas', self.HandleSaveCopyAs, GetIcon('savecopyas'),
-                          trans.stringOneLine('MenuItems', 128), trans.stringOneLine('MenuItems', 129), None)
-        self.CreateAction('metainfo', self.HandleInfo, GetIcon('info'), trans.stringOneLine('MenuItems', 12),
-                          trans.stringOneLine('MenuItems', 13), QtGui.QKeySequence('Ctrl+Alt+I'))
-        self.CreateAction('changegamedef', None, GetIcon('game'), trans.stringOneLine('MenuItems', 98),
-                          trans.stringOneLine('MenuItems', 99), None)
-        self.CreateAction('screenshot', self.HandleScreenshot, GetIcon('screenshot'),
-                          trans.stringOneLine('MenuItems', 14), trans.stringOneLine('MenuItems', 15),
-                          QtGui.QKeySequence('Ctrl+Alt+S'))
-        self.CreateAction('changegamepath', self.HandleChangeGamePath, GetIcon('folderpath'),
-                          trans.stringOneLine('MenuItems', 16), trans.stringOneLine('MenuItems', 17),
-                          QtGui.QKeySequence('Ctrl+Alt+G'))
-        self.CreateAction('preferences', self.HandlePreferences, GetIcon('settings'),
-                          trans.stringOneLine('MenuItems', 18), trans.stringOneLine('MenuItems', 19),
-                          QtGui.QKeySequence('Ctrl+Alt+P'))
-        self.CreateAction('exit', self.HandleExit, GetIcon('delete'), trans.stringOneLine('MenuItems', 20),
-                          trans.stringOneLine('MenuItems', 21), QtGui.QKeySequence('Ctrl+Q'))
+        self.CreateAction(
+            'newlevel', self.HandleNewLevel, GetIcon('new'),
+            trans.stringOneLine('MenuItems', 0), trans.stringOneLine('MenuItems', 1),
+            QtGui.QKeySequence.New,
+        )
+
+        self.CreateAction(
+            'openfromname', self.HandleOpenFromName, GetIcon('open'),
+            trans.stringOneLine('MenuItems', 2), trans.stringOneLine('MenuItems', 3),
+            QtGui.QKeySequence.Open,
+        )
+
+        self.CreateAction(
+            'openfromfile', self.HandleOpenFromFile, GetIcon('openfromfile'),
+            trans.stringOneLine('MenuItems', 4), trans.stringOneLine('MenuItems', 5),
+            QtGui.QKeySequence('Ctrl+Shift+O'),
+        )
+
+        self.CreateAction(
+            'openrecent', None, GetIcon('recent'),
+            trans.stringOneLine('MenuItems', 6), trans.stringOneLine('MenuItems', 7),
+            None,
+        )
+
+        self.CreateAction(
+            'save', self.HandleSave, GetIcon('save'),
+            trans.stringOneLine('MenuItems', 8), trans.stringOneLine('MenuItems', 9),
+            QtGui.QKeySequence.Save,
+        )
+
+        self.CreateAction(
+            'saveas', self.HandleSaveAs, GetIcon('saveas'),
+            trans.stringOneLine('MenuItems', 10), trans.stringOneLine('MenuItems', 11),
+            QtGui.QKeySequence.SaveAs,
+        )
+
+        self.CreateAction(
+            'savecopyas', self.HandleSaveCopyAs, GetIcon('savecopyas'),
+            trans.stringOneLine('MenuItems', 128), trans.stringOneLine('MenuItems', 129),
+            None,
+        )
+
+        self.CreateAction(
+            'metainfo', self.HandleInfo, GetIcon('info'),
+            trans.stringOneLine('MenuItems', 12), trans.stringOneLine('MenuItems', 13),
+            QtGui.QKeySequence('Ctrl+Alt+I'),
+        )
+
+        self.CreateAction(
+            'changegamedef', None, GetIcon('game'),
+            trans.stringOneLine('MenuItems', 98), trans.stringOneLine('MenuItems', 99),
+            None,
+        )
+
+        self.CreateAction(
+            'screenshot', self.HandleScreenshot, GetIcon('screenshot'),
+            trans.stringOneLine('MenuItems', 14), trans.stringOneLine('MenuItems', 15),
+            QtGui.QKeySequence('Ctrl+Alt+S'),
+        )
+
+        self.CreateAction(
+            'changegamepath', self.HandleChangeGamePath, GetIcon('folderpath'),
+            trans.stringOneLine('MenuItems', 16), trans.stringOneLine('MenuItems', 17),
+            QtGui.QKeySequence('Ctrl+Alt+G'),
+        )
+
+        self.CreateAction(
+            'preferences', self.HandlePreferences, GetIcon('settings'),
+            trans.stringOneLine('MenuItems', 18), trans.stringOneLine('MenuItems', 19),
+            QtGui.QKeySequence('Ctrl+Alt+P'),
+        )
+
+        self.CreateAction(
+            'exit', self.HandleExit, GetIcon('delete'),
+            trans.stringOneLine('MenuItems', 20), trans.stringOneLine('MenuItems', 21),
+            QtGui.QKeySequence('Ctrl+Q'),
+        )
 
         # Edit
-        self.CreateAction('selectall', self.SelectAll, GetIcon('selectall'), trans.stringOneLine('MenuItems', 22),
-                          trans.stringOneLine('MenuItems', 23), QtGui.QKeySequence.SelectAll)
-        self.CreateAction('deselect', self.Deselect, GetIcon('deselect'), trans.stringOneLine('MenuItems', 24),
-                          trans.stringOneLine('MenuItems', 25), QtGui.QKeySequence('Ctrl+D'))
-        self.CreateAction('undo', self.Undo, GetIcon('undo'), trans.stringOneLine('MenuItems', 124),
-                          trans.stringOneLine('MenuItems', 125), QtGui.QKeySequence.Undo)
-        self.CreateAction('redo', self.Redo, GetIcon('redo'), trans.stringOneLine('MenuItems', 126),
-                          trans.stringOneLine('MenuItems', 127), QtGui.QKeySequence.Redo)
-        self.CreateAction('cut', self.Cut, GetIcon('cut'), trans.stringOneLine('MenuItems', 26),
-                          trans.stringOneLine('MenuItems', 27), QtGui.QKeySequence.Cut)
-        self.CreateAction('copy', self.Copy, GetIcon('copy'), trans.stringOneLine('MenuItems', 28),
-                          trans.stringOneLine('MenuItems', 29), QtGui.QKeySequence.Copy)
-        self.CreateAction('paste', self.Paste, GetIcon('paste'), trans.stringOneLine('MenuItems', 30),
-                          trans.stringOneLine('MenuItems', 31), QtGui.QKeySequence.Paste)
-        self.CreateAction('shiftitems', self.ShiftItems, GetIcon('move'), trans.stringOneLine('MenuItems', 32),
-                          trans.stringOneLine('MenuItems', 33), QtGui.QKeySequence('Ctrl+Shift+S'))
-        self.CreateAction('mergelocations', self.MergeLocations, GetIcon('merge'), trans.stringOneLine('MenuItems', 34),
-                          trans.stringOneLine('MenuItems', 35), QtGui.QKeySequence('Ctrl+Shift+E'))
-        self.CreateAction('swapobjectstilesets', self.SwapObjectsTilesets, GetIcon('swap'),
-                          trans.stringOneLine('MenuItems', 104), trans.stringOneLine('MenuItems', 105),
-                          QtGui.QKeySequence('Ctrl+Shift+L'))
-        self.CreateAction('swapobjectstypes', self.SwapObjectsTypes, GetIcon('swap'),
-                          trans.stringOneLine('MenuItems', 106), trans.stringOneLine('MenuItems', 107),
-                          QtGui.QKeySequence('Ctrl+Shift+Y'))
-        self.CreateAction('diagnostic', self.HandleDiagnostics, GetIcon('diagnostics'),
-                          trans.stringOneLine('MenuItems', 36), trans.stringOneLine('MenuItems', 37),
-                          QtGui.QKeySequence('Ctrl+Shift+D'))
-        self.CreateAction('freezeobjects', self.HandleObjectsFreeze, GetIcon('objectsfreeze'),
-                          trans.stringOneLine('MenuItems', 38), trans.stringOneLine('MenuItems', 39),
-                          QtGui.QKeySequence('Ctrl+Shift+1'), True)
-        self.CreateAction('freezesprites', self.HandleSpritesFreeze, GetIcon('spritesfreeze'),
-                          trans.stringOneLine('MenuItems', 40), trans.stringOneLine('MenuItems', 41),
-                          QtGui.QKeySequence('Ctrl+Shift+2'), True)
-        self.CreateAction('freezeentrances', self.HandleEntrancesFreeze, GetIcon('entrancesfreeze'),
-                          trans.stringOneLine('MenuItems', 42), trans.stringOneLine('MenuItems', 43),
-                          QtGui.QKeySequence('Ctrl+Shift+3'), True)
-        self.CreateAction('freezelocations', self.HandleLocationsFreeze, GetIcon('locationsfreeze'),
-                          trans.stringOneLine('MenuItems', 44), trans.stringOneLine('MenuItems', 45),
-                          QtGui.QKeySequence('Ctrl+Shift+4'), True)
-        self.CreateAction('freezepaths', self.HandlePathsFreeze, GetIcon('pathsfreeze'),
-                          trans.stringOneLine('MenuItems', 46), trans.stringOneLine('MenuItems', 47),
-                          QtGui.QKeySequence('Ctrl+Shift+5'), True)
-        self.CreateAction('freezecomments', self.HandleCommentsFreeze, GetIcon('commentsfreeze'),
-                          trans.stringOneLine('MenuItems', 114), trans.stringOneLine('MenuItems', 115),
-                          QtGui.QKeySequence('Ctrl+Shift+9'), True)
+        self.CreateAction(
+            'selectall', self.SelectAll, GetIcon('selectall'),
+            trans.stringOneLine('MenuItems', 22), trans.stringOneLine('MenuItems', 23),
+            QtGui.QKeySequence.SelectAll,
+        )
+
+        self.CreateAction(
+            'deselect', self.Deselect, GetIcon('deselect'),
+            trans.stringOneLine('MenuItems', 24), trans.stringOneLine('MenuItems', 25),
+            QtGui.QKeySequence('Ctrl+D'),
+        )
+
+        self.CreateAction(
+            'undo', self.Undo, GetIcon('undo'),
+            trans.stringOneLine('MenuItems', 124), trans.stringOneLine('MenuItems', 125),
+            QtGui.QKeySequence.Undo,
+        )
+
+        self.CreateAction(
+            'redo', self.Redo, GetIcon('redo'),
+            trans.stringOneLine('MenuItems', 126), trans.stringOneLine('MenuItems', 127),
+            QtGui.QKeySequence.Redo,
+        )
+
+        self.CreateAction(
+            'cut', self.Cut, GetIcon('cut'),
+            trans.stringOneLine('MenuItems', 26), trans.stringOneLine('MenuItems', 27),
+            QtGui.QKeySequence.Cut,
+        )
+
+        self.CreateAction(
+            'copy', self.Copy, GetIcon('copy'),
+            trans.stringOneLine('MenuItems', 28), trans.stringOneLine('MenuItems', 29),
+            QtGui.QKeySequence.Copy,
+        )
+
+        self.CreateAction(
+            'paste', self.Paste, GetIcon('paste'),
+            trans.stringOneLine('MenuItems', 30), trans.stringOneLine('MenuItems', 31),
+            QtGui.QKeySequence.Paste,
+        )
+
+        self.CreateAction(
+            'shiftitems', self.ShiftItems, GetIcon('move'),
+            trans.stringOneLine('MenuItems', 32), trans.stringOneLine('MenuItems', 33),
+            QtGui.QKeySequence('Ctrl+Shift+S'),
+        )
+
+        self.CreateAction(
+            'mergelocations', self.MergeLocations, GetIcon('merge'),
+            trans.stringOneLine('MenuItems', 34), trans.stringOneLine('MenuItems', 35),
+            QtGui.QKeySequence('Ctrl+Shift+E'),
+        )
+
+        self.CreateAction(
+            'swapobjectstilesets', self.SwapObjectsTilesets, GetIcon('swap'),
+            trans.stringOneLine('MenuItems', 104), trans.stringOneLine('MenuItems', 105),
+            QtGui.QKeySequence('Ctrl+Shift+L'),
+        )
+
+        self.CreateAction(
+            'swapobjectstypes', self.SwapObjectsTypes, GetIcon('swap'),
+            trans.stringOneLine('MenuItems', 106), trans.stringOneLine('MenuItems', 107),
+            QtGui.QKeySequence('Ctrl+Shift+Y'),
+        )
+
+        self.CreateAction(
+            'diagnostic', self.HandleDiagnostics, GetIcon('diagnostics'),
+            trans.stringOneLine('MenuItems', 36), trans.stringOneLine('MenuItems', 37),
+            QtGui.QKeySequence('Ctrl+Shift+D'),
+        )
+
+        self.CreateAction(
+            'freezeobjects', self.HandleObjectsFreeze, GetIcon('objectsfreeze'),
+            trans.stringOneLine('MenuItems', 38), trans.stringOneLine('MenuItems', 39),
+            QtGui.QKeySequence('Ctrl+Shift+1'), True,
+        )
+
+        self.CreateAction(
+            'freezesprites', self.HandleSpritesFreeze, GetIcon('spritesfreeze'),
+            trans.stringOneLine('MenuItems', 40), trans.stringOneLine('MenuItems', 41),
+            QtGui.QKeySequence('Ctrl+Shift+2'), True,
+        )
+
+        self.CreateAction(
+            'freezeentrances', self.HandleEntrancesFreeze, GetIcon('entrancesfreeze'),
+            trans.stringOneLine('MenuItems', 42), trans.stringOneLine('MenuItems', 43),
+            QtGui.QKeySequence('Ctrl+Shift+3'), True,
+        )
+
+        self.CreateAction(
+            'freezelocations', self.HandleLocationsFreeze, GetIcon('locationsfreeze'),
+            trans.stringOneLine('MenuItems', 44), trans.stringOneLine('MenuItems', 45),
+            QtGui.QKeySequence('Ctrl+Shift+4'), True,
+        )
+
+        self.CreateAction(
+            'freezepaths', self.HandlePathsFreeze, GetIcon('pathsfreeze'),
+            trans.stringOneLine('MenuItems', 46), trans.stringOneLine('MenuItems', 47),
+            QtGui.QKeySequence('Ctrl+Shift+5'), True,
+        )
+
+        self.CreateAction(
+            'freezecomments', self.HandleCommentsFreeze, GetIcon('commentsfreeze'),
+            trans.stringOneLine('MenuItems', 114), trans.stringOneLine('MenuItems', 115),
+            QtGui.QKeySequence('Ctrl+Shift+9'), True,
+        )
 
         # View
-        self.CreateAction('showlay0', self.HandleUpdateLayer0, GetIcon('layer0'), trans.stringOneLine('MenuItems', 48),
-                          trans.stringOneLine('MenuItems', 49), QtGui.QKeySequence('Ctrl+1'), True)
-        self.CreateAction('showlay1', self.HandleUpdateLayer1, GetIcon('layer1'), trans.stringOneLine('MenuItems', 50),
-                          trans.stringOneLine('MenuItems', 51), QtGui.QKeySequence('Ctrl+2'), True)
-        self.CreateAction('showlay2', self.HandleUpdateLayer2, GetIcon('layer2'), trans.stringOneLine('MenuItems', 52),
-                          trans.stringOneLine('MenuItems', 53), QtGui.QKeySequence('Ctrl+3'), True)
-        self.CreateAction('tileanim', self.HandleTilesetAnimToggle, GetIcon('animation'),
-                          trans.stringOneLine('MenuItems', 108), trans.stringOneLine('MenuItems', 109),
-                          QtGui.QKeySequence('Ctrl+7'), True)
-        self.CreateAction('collisions', self.HandleCollisionsToggle, GetIcon('collisions'),
-                          trans.stringOneLine('MenuItems', 110), trans.stringOneLine('MenuItems', 111),
-                          QtGui.QKeySequence('Ctrl+8'), True)
-        self.CreateAction('realview', self.HandleRealViewToggle, GetIcon('realview'),
-                          trans.stringOneLine('MenuItems', 118), trans.stringOneLine('MenuItems', 119),
-                          QtGui.QKeySequence('Ctrl+9'), True)
-        self.CreateAction('showsprites', self.HandleSpritesVisibility, GetIcon('sprites'),
-                          trans.stringOneLine('MenuItems', 54), trans.stringOneLine('MenuItems', 55),
-                          QtGui.QKeySequence('Ctrl+4'), True)
-        self.CreateAction('showspriteimages', self.HandleSpriteImages, GetIcon('sprites'),
-                          trans.stringOneLine('MenuItems', 56), trans.stringOneLine('MenuItems', 57),
-                          QtGui.QKeySequence('Ctrl+6'), True)
-        self.CreateAction('showlocations', self.HandleLocationsVisibility, GetIcon('locations'),
-                          trans.stringOneLine('MenuItems', 58), trans.stringOneLine('MenuItems', 59),
-                          QtGui.QKeySequence('Ctrl+5'), True)
-        self.CreateAction('showcomments', self.HandleCommentsVisibility, GetIcon('comments'),
-                          trans.stringOneLine('MenuItems', 116), trans.stringOneLine('MenuItems', 117),
-                          QtGui.QKeySequence('Ctrl+0'), True)
-        self.CreateAction('showpaths', self.HandlePathsVisibility, GetIcon('paths'),
-                          trans.stringOneLine('MenuItems', 130), trans.stringOneLine('MenuItems', 131),
-                          QtGui.QKeySequence('Ctrl+*'), True)
-        self.CreateAction('grid', self.HandleSwitchGrid, GetIcon('grid'), trans.stringOneLine('MenuItems', 60),
-                          trans.stringOneLine('MenuItems', 61), QtGui.QKeySequence('Ctrl+G'), False)
-        self.CreateAction('zoommax', self.HandleZoomMax, GetIcon('zoommax'), trans.stringOneLine('MenuItems', 62),
-                          trans.stringOneLine('MenuItems', 63), QtGui.QKeySequence('Ctrl+PgDown'), False)
-        self.CreateAction('zoomin', self.HandleZoomIn, GetIcon('zoomin'), trans.stringOneLine('MenuItems', 64),
-                          trans.stringOneLine('MenuItems', 65), QtGui.QKeySequence.ZoomIn, False)
-        self.CreateAction('zoomactual', self.HandleZoomActual, GetIcon('zoomactual'),
-                          trans.stringOneLine('MenuItems', 66), trans.stringOneLine('MenuItems', 67),
-                          QtGui.QKeySequence('Ctrl+0'), False)
-        self.CreateAction('zoomout', self.HandleZoomOut, GetIcon('zoomout'), trans.stringOneLine('MenuItems', 68),
-                          trans.stringOneLine('MenuItems', 69), QtGui.QKeySequence.ZoomOut, False)
-        self.CreateAction('zoommin', self.HandleZoomMin, GetIcon('zoommin'), trans.stringOneLine('MenuItems', 70),
-                          trans.stringOneLine('MenuItems', 71), QtGui.QKeySequence('Ctrl+PgUp'), False)
+        self.CreateAction(
+            'showlay0', self.HandleUpdateLayer0, GetIcon('layer0'),
+            trans.stringOneLine('MenuItems', 48), trans.stringOneLine('MenuItems', 49),
+            QtGui.QKeySequence('Ctrl+1'), True,
+        )
+
+        self.CreateAction(
+            'showlay1', self.HandleUpdateLayer1, GetIcon('layer1'),
+            trans.stringOneLine('MenuItems', 50), trans.stringOneLine('MenuItems', 51),
+            QtGui.QKeySequence('Ctrl+2'), True,
+        )
+
+        self.CreateAction(
+            'showlay2', self.HandleUpdateLayer2, GetIcon('layer2'),
+            trans.stringOneLine('MenuItems', 52), trans.stringOneLine('MenuItems', 53),
+            QtGui.QKeySequence('Ctrl+3'), True,
+        )
+
+        self.CreateAction(
+            'tileanim', self.HandleTilesetAnimToggle, GetIcon('animation'),
+            trans.stringOneLine('MenuItems', 108), trans.stringOneLine('MenuItems', 109),
+            QtGui.QKeySequence('Ctrl+7'), True,
+        )
+
+        self.CreateAction(
+            'collisions', self.HandleCollisionsToggle, GetIcon('collisions'),
+            trans.stringOneLine('MenuItems', 110), trans.stringOneLine('MenuItems', 111),
+            QtGui.QKeySequence('Ctrl+8'), True,
+        )
+
+        self.CreateAction(
+            'realview', self.HandleRealViewToggle, GetIcon('realview'),
+            trans.stringOneLine('MenuItems', 118), trans.stringOneLine('MenuItems', 119),
+            QtGui.QKeySequence('Ctrl+9'), True,
+        )
+
+        self.CreateAction(
+            'showsprites', self.HandleSpritesVisibility, GetIcon('sprites'),
+            trans.stringOneLine('MenuItems', 54), trans.stringOneLine('MenuItems', 55),
+            QtGui.QKeySequence('Ctrl+4'), True,
+        )
+
+        self.CreateAction(
+            'showspriteimages', self.HandleSpriteImages, GetIcon('sprites'),
+            trans.stringOneLine('MenuItems', 56), trans.stringOneLine('MenuItems', 57),
+            QtGui.QKeySequence('Ctrl+6'), True,
+        )
+
+        self.CreateAction(
+            'showlocations', self.HandleLocationsVisibility, GetIcon('locations'),
+            trans.stringOneLine('MenuItems', 58), trans.stringOneLine('MenuItems', 59),
+            QtGui.QKeySequence('Ctrl+5'), True,
+        )
+
+        self.CreateAction(
+            'showcomments', self.HandleCommentsVisibility, GetIcon('comments'),
+            trans.stringOneLine('MenuItems', 116), trans.stringOneLine('MenuItems', 117),
+            QtGui.QKeySequence('Ctrl+0'), True,
+        )
+
+        self.CreateAction(
+            'showpaths', self.HandlePathsVisibility, GetIcon('paths'),
+            trans.stringOneLine('MenuItems', 130), trans.stringOneLine('MenuItems', 131),
+            QtGui.QKeySequence('Ctrl+*'), True,
+        )
+
+        self.CreateAction(
+            'grid', self.HandleSwitchGrid, GetIcon('grid'),
+            trans.stringOneLine('MenuItems', 60), trans.stringOneLine('MenuItems', 61),
+            QtGui.QKeySequence('Ctrl+G'),
+        )
+
+        self.CreateAction(
+            'zoommax', self.HandleZoomMax, GetIcon('zoommax'),
+            trans.stringOneLine('MenuItems', 62), trans.stringOneLine('MenuItems', 63),
+            QtGui.QKeySequence('Ctrl+PgDown'),
+        )
+
+        self.CreateAction(
+            'zoomin', self.HandleZoomIn, GetIcon('zoomin'),
+            trans.stringOneLine('MenuItems', 64), trans.stringOneLine('MenuItems', 65),
+            QtGui.QKeySequence.ZoomIn,
+        )
+
+        self.CreateAction(
+            'zoomactual', self.HandleZoomActual, GetIcon('zoomactual'),
+            trans.stringOneLine('MenuItems', 66), trans.stringOneLine('MenuItems', 67),
+            QtGui.QKeySequence('Ctrl+0'),
+        )
+
+        self.CreateAction(
+            'zoomout', self.HandleZoomOut, GetIcon('zoomout'),
+            trans.stringOneLine('MenuItems', 68), trans.stringOneLine('MenuItems', 69),
+            QtGui.QKeySequence.ZoomOut,
+        )
+
+        self.CreateAction(
+            'zoommin', self.HandleZoomMin, GetIcon('zoommin'),
+            trans.stringOneLine('MenuItems', 70), trans.stringOneLine('MenuItems', 71),
+            QtGui.QKeySequence('Ctrl+PgUp'),
+        )
+
         # Show Overview and Show Palette are added later
 
         # Settings
-        self.CreateAction('areaoptions', self.HandleAreaOptions, GetIcon('area'), trans.stringOneLine('MenuItems', 72),
-                          trans.stringOneLine('MenuItems', 73), QtGui.QKeySequence('Ctrl+Alt+A'))
-        self.CreateAction('zones', self.HandleZones, GetIcon('zones'), trans.stringOneLine('MenuItems', 74),
-                          trans.stringOneLine('MenuItems', 75), QtGui.QKeySequence('Ctrl+Alt+Z'))
-        self.CreateAction('backgrounds', self.HandleBG, GetIcon('background'), trans.stringOneLine('MenuItems', 76),
-                          trans.stringOneLine('MenuItems', 77), QtGui.QKeySequence('Ctrl+Alt+B'))
-        self.CreateAction('addarea', self.HandleAddNewArea, GetIcon('add'), trans.stringOneLine('MenuItems', 78),
-                          trans.stringOneLine('MenuItems', 79), QtGui.QKeySequence('Ctrl+Alt+N'))
-        self.CreateAction('importarea', self.HandleImportArea, GetIcon('import'), trans.stringOneLine('MenuItems', 80),
-                          trans.stringOneLine('MenuItems', 81), QtGui.QKeySequence('Ctrl+Alt+O'))
-        self.CreateAction('deletearea', self.HandleDeleteArea, GetIcon('delete'), trans.stringOneLine('MenuItems', 82),
-                          trans.stringOneLine('MenuItems', 83), QtGui.QKeySequence('Ctrl+Alt+D'))
-        self.CreateAction('reloadgfx', self.ReloadTilesets, GetIcon('reload'), trans.stringOneLine('MenuItems', 84),
-                          trans.stringOneLine('MenuItems', 85), QtGui.QKeySequence('Ctrl+Shift+R'))
+        self.CreateAction(
+            'areaoptions', self.HandleAreaOptions, GetIcon('area'),
+            trans.stringOneLine('MenuItems', 72), trans.stringOneLine('MenuItems', 73),
+            QtGui.QKeySequence('Ctrl+Alt+A'),
+        )
+
+        self.CreateAction(
+            'zones', self.HandleZones, GetIcon('zones'),
+            trans.stringOneLine('MenuItems', 74), trans.stringOneLine('MenuItems', 75),
+            QtGui.QKeySequence('Ctrl+Alt+Z'),
+        )
+
+        self.CreateAction(
+            'backgrounds', self.HandleBG, GetIcon('background'),
+            trans.stringOneLine('MenuItems', 76), trans.stringOneLine('MenuItems', 77),
+            QtGui.QKeySequence('Ctrl+Alt+B'),
+        )
+
+        self.CreateAction(
+            'addarea', self.HandleAddNewArea, GetIcon('add'),
+            trans.stringOneLine('MenuItems', 78), trans.stringOneLine('MenuItems', 79),
+            QtGui.QKeySequence('Ctrl+Alt+N'),
+        )
+
+        self.CreateAction(
+            'importarea', self.HandleImportArea, GetIcon('import'),
+            trans.stringOneLine('MenuItems', 80), trans.stringOneLine('MenuItems', 81),
+            QtGui.QKeySequence('Ctrl+Alt+O'),
+        )
+
+        self.CreateAction(
+            'deletearea', self.HandleDeleteArea, GetIcon('delete'),
+            trans.stringOneLine('MenuItems', 82), trans.stringOneLine('MenuItems', 83),
+            QtGui.QKeySequence('Ctrl+Alt+D'),
+        )
+
+        self.CreateAction(
+            'reloadgfx', self.ReloadTilesets, GetIcon('reload'),
+            trans.stringOneLine('MenuItems', 84), trans.stringOneLine('MenuItems', 85),
+            QtGui.QKeySequence('Ctrl+Shift+R'),
+        )
 
         # Help actions are created later
-
 
         # Configure them
         self.actions['openrecent'].setMenu(self.RecentMenu)
@@ -20913,7 +21187,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         global levName
 
-        new = name == None
+        new = name is None
 
         # Get the file path, if possible
         if new:
@@ -22473,18 +22747,22 @@ def main():
 
     global EnableAlpha, GridType, CollisionsShown, RealViewEnabled
     global ObjectsFrozen, SpritesFrozen, EntrancesFrozen, LocationsFrozen, PathsFrozen, CommentsFrozen
-    global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown, DrawEntIndicators
-    global AdvancedModeEnabled
+    global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown
+    global DrawEntIndicators, AdvancedModeEnabled
 
     gt = setting('GridType')
+
     if gt == 'checker':
         GridType = 'checker'
+
     elif gt == 'grid':
         GridType = 'grid'
+
     else:
         GridType = None
+
     CollisionsShown = setting('ShowCollisions', False)
-    RealViewEnabled = setting('RealViewEnabled', False)
+    RealViewEnabled = setting('RealViewEnabled', True)
     ObjectsFrozen = setting('FreezeObjects', False)
     SpritesFrozen = setting('FreezeSprites', False)
     EntrancesFrozen = setting('FreezeEntrances', False)
