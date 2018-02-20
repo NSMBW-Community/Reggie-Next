@@ -756,7 +756,7 @@ class SpriteDefinition:
         fields = self.fields
 
         for field in elem:
-            if field.tag not in ['checkbox', 'list', 'value', 'bitfield']: continue
+            if field.tag not in ['checkbox', 'list', 'value', 'bitfield', 'multibox']: continue
 
             attribs = field.attrib
 
@@ -765,26 +765,104 @@ class SpriteDefinition:
             else:
                 comment = None
 
-            if field.tag == 'checkbox':
-                # parameters: title, nybble, mask, comment
-                snybble = attribs['nybble']
-                if '-' not in snybble:
-                    nybble = int(snybble) - 1
-                else:
-                    getit = snybble.split('-')
-                    nybble = (int(getit[0]) - 1, int(getit[1]))
+            if 'requiredbit' in attribs:
+                required = []
+                bits = attribs['requiredbit'].split(",")
 
-                fields.append((0, attribs['title'], nybble, int(attribs['mask']) if 'mask' in attribs else 1, comment))
-            elif field.tag == 'list':
-                # parameters: title, nybble, model, comment
-                snybble = attribs['nybble']
-                if '-' not in snybble:
-                    nybble = int(snybble) - 1
-                    max = 16
+                if 'requiredval' in attribs:
+                    vals = attribs['requiredval'].split(",")
                 else:
-                    getit = snybble.split('-')
-                    nybble = (int(getit[0]) - 1, int(getit[1]))
-                    max = (16 << ((nybble[1] - nybble[0] - 1) * 4))
+                    vals = [None] * len(bits)
+
+                for sbit, sval in zip(bits, vals):
+                    if '-' not in sbit:
+                        bit = int(sbit)
+                    else:
+                        getit = sbit.split('-')
+                        bit = (int(getit[0]), int(getit[1]) + 1)
+
+                    if sval is None:
+                        if isinstance(bit, tuple):
+                            val = (1, (1 << (bit[1] - bit[0])) - 1)
+                        else:
+                            val = 1
+                    elif '-' not in sval:
+                        val = int(sval)
+                    else:
+                        getit = sval.split('-')
+                        val = (int(getit[0]), int(getit[1]) + 1)
+
+                    required.append((bit, val))
+            else:
+                required = None
+
+            if field.tag == 'checkbox':
+                # parameters: title, bit, mask, comment
+                if 'nybble' in attribs:
+                    sbit = attribs['nybble']
+                    sft = 2
+                else:
+                    sbit = attribs['bit']
+                    sft = 0
+
+                bit = []
+                for ran in sbit.split(','):
+                    if '-' not in ran:
+                        if sft:
+                            # just 4 bits
+                            r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+                        else:
+                            # just 1 bit
+                            r_bit = int(ran)
+                    else:
+                        # different number of bits
+                        getit = ran.split('-')
+                        r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+
+                    bit.append(r_bit)
+
+                if len(bit) == 1:
+                    bit = bit[0]
+
+                if 'mask' in attribs:
+                    mask = int(attribs['mask'])
+                else:
+                    mask = 1
+
+                fields.append((0, attribs['title'], bit, mask, comment, required))
+            elif field.tag == 'list':
+                # parameters: title, bit, model, comment
+                if 'nybble' in attribs:
+                    sbit = attribs['nybble']
+                    sft = 2
+                else:
+                    sbit = attribs['bit']
+                    sft = 0
+
+                l = 0
+                bit = []
+                for ran in sbit.split(','):
+                    if '-' not in ran:
+                        if sft:
+                            # just 4 bits
+                            r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+                            l += 4
+                        else:
+                            # just 1 bit
+                            r_bit = int(ran)
+                            l += 1
+                    else:
+                        # different number of bits
+                        getit = ran.split('-')
+                        r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+                        l += r_bit[1] - r_bit[0] + 1
+
+                    bit.append(r_bit)
+
+                max = 1 << l
+
+                if len(bit) == 1:
+                    bit = bit[0]
 
                 entries = []
                 existing = [None for i in range(max)]
@@ -796,30 +874,77 @@ class SpriteDefinition:
                     existing[i] = True
 
                 fields.append(
-                    (1, attribs['title'], nybble, SpriteDefinition.ListPropertyModel(entries, existing, max), comment))
+                    (1, attribs['title'], bit, SpriteDefinition.ListPropertyModel(entries, existing, max), comment, required))
             elif field.tag == 'value':
-                # parameters: title, nybble, max, comment
-                snybble = attribs['nybble']
-
-                # if it's 5-12 skip it
-                # fixes tobias's crashy 'unknown values'
-                if snybble == '5-12': continue
-
-                if '-' not in snybble:
-                    nybble = int(snybble) - 1
-                    max = 16
+                # parameters: title, bit, max, comment
+                if 'nybble' in attribs:
+                    sbit = attribs['nybble']
+                    sft = 2
                 else:
-                    getit = snybble.split('-')
-                    nybble = (int(getit[0]) - 1, int(getit[1]))
-                    max = (16 << ((nybble[1] - nybble[0] - 1) * 4))
+                    sbit = attribs['bit']
+                    sft = 0
 
-                fields.append((2, attribs['title'], nybble, max, comment))
+                l = 0
+                bit = []
+                for ran in sbit.split(','):
+                    if '-' not in ran:
+                        if sft:
+                            # just 4 bits
+                            r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+                            l += 4
+                        else:
+                            # just 1 bit
+                            r_bit = int(ran)
+                            l += 1
+                    else:
+                        # different number of bits
+                        getit = ran.split('-')
+                        r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+                        l += r_bit[1] - r_bit[0] + 1
+
+                    bit.append(r_bit)
+
+                max = 1 << l
+
+                if len(bit) == 1:
+                    bit = bit[0]
+
+                fields.append((2, attribs['title'], bit, max, comment, required))
             elif field.tag == 'bitfield':
                 # parameters: title, startbit, bitnum, comment
                 startbit = int(attribs['startbit'])
                 bitnum = int(attribs['bitnum'])
 
-                fields.append((3, attribs['title'], startbit, bitnum, comment))
+                fields.append((3, attribs['title'], startbit, bitnum, comment, required))
+            elif field.tag == 'multibox':
+                # parameters: title, bit, comment
+                if 'nybble' in attribs:
+                    sbit = attribs['nybble']
+                    sft = 2
+                else:
+                    sbit = attribs['bit']
+                    sft = 0
+
+                bit = []
+                for ran in sbit.split(','):
+                    if '-' not in ran:
+                        if sft:
+                            # just 4 bits
+                            r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+                        else:
+                            # just 1 bit
+                            r_bit = int(ran)
+                    else:
+                        # different number of bits
+                        getit = ran.split('-')
+                        r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+
+                    bit.append(r_bit)
+
+                if len(bit) == 1:
+                    bit = bit[0]
+
+                fields.append((4, attribs['title'], bit, comment, required))
 
 
 def LoadSpriteData():
@@ -834,7 +959,8 @@ def LoadSpriteData():
 
     # It works this way so that it can overwrite settings based on order of precedence
     paths = [(trans.files['spritedata'], None)]
-    for pathtuple in gamedef.multipleRecursiveFiles('spritedata', 'spritenames'): paths.append(pathtuple)
+    for pathtuple in gamedef.multipleRecursiveFiles('spritedata', 'spritenames'):
+        paths.append(pathtuple)
 
     for sdpath, snpath in paths:
 
@@ -845,28 +971,52 @@ def LoadSpriteData():
             root = tree.getroot()
 
             for sprite in root:
-                if sprite.tag.lower() != 'sprite': continue
+                if sprite.tag.lower() != 'sprite':
+                    continue
 
                 try:
                     spriteid = int(sprite.attrib['id'])
                 except ValueError:
                     continue
+
                 spritename = sprite.attrib['name']
                 notes = None
                 relatedObjFiles = None
+                yoshiNotes = None
+                noyoshi = None
+                asm = None
+                advNotes = None
 
                 if 'notes' in sprite.attrib:
                     notes = trans.string('SpriteDataEditor', 2, '[notes]', sprite.attrib['notes'])
+
+                if 'advancednotes' in sprite.attrib:
+                    advNotes = trans.string('SpriteDataEditor', 11, '[notes]', sprite.attrib['advancednotes'])
 
                 if 'files' in sprite.attrib:
                     relatedObjFiles = trans.string('SpriteDataEditor', 8, '[list]',
                                                    sprite.attrib['files'].replace(';', '<br>'))
 
+                if 'yoshinotes' in sprite.attrib:
+                    yoshiNotes = trans.string('SpriteDataEditor', 9, '[notes]',
+                                                   sprite.attrib['yoshinotes'])
+
+                if 'noyoshi' in sprite.attrib:
+                    noyoshi = sprite.attrib['noyoshi'] == "True"
+
+                if 'asmhacks' in sprite.attrib:
+                    asm = sprite.attrib['asmhacks'] == "True"
+
+
                 sdef = SpriteDefinition()
                 sdef.id = spriteid
                 sdef.name = spritename
                 sdef.notes = notes
+                sdef.advNotes = advNotes
                 sdef.relatedObjFiles = relatedObjFiles
+                sdef.yoshiNotes = yoshiNotes
+                sdef.noyoshi = noyoshi
+                sdef.asm = asm
 
                 try:
                     sdef.loadFrom(sprite)
@@ -881,14 +1031,15 @@ def LoadSpriteData():
         # gamedef is loaded, because spritenames.txt
         # is a file only ever used by custom gamedefs.
         if (snpath is not None) and (snpath.path is not None):
-            snfile = open(snpath.path)
-            data = snfile.read()
-            snfile.close()
+            with open(snpath.path) as snfile:
+                data = snfile.read()
+
             del snfile
 
             # Split the data
             data = data.split('\n')
-            for i, line in enumerate(data): data[i] = line.split(':')
+            for i, line in enumerate(data):
+                data[i] = line.split(':')
 
             # Apply it
             for spriteid, name in data:
@@ -1201,14 +1352,17 @@ class TilesetTile:
         """
         animTiles = []
         numberOfFrames = len(data) // 2048
+
         for frame in range(numberOfFrames):
             framedata = data[frame * 2048: (frame * 2048) + 2048]
             newdata = tpl.decodeRGB4A3(framedata, 32, 32, False)
             img = QtGui.QImage(newdata, 32, 32, 128, QtGui.QImage.Format_ARGB32)
             pix = QtGui.QPixmap.fromImage(img.copy(4, 4, 24, 24))
             animTiles.append(pix)
+
         if reverse:
             animTiles = list(reversed(animTiles))
+
         self.animTiles = animTiles
         self.isAnimated = True
 
@@ -1228,8 +1382,11 @@ class TilesetTile:
         """
         Increments to the next frame
         """
-        if not self.isAnimated: return
+        if not self.isAnimated:
+            return
+
         self.animFrame += 1
+
         if self.animFrame == len(self.animTiles):
             self.animFrame = 0
 
@@ -2015,7 +2172,7 @@ def _LoadTileset(idx, name, reload=False):
         except:
             return False
         return True
-    
+
     # decompress the textures
     found = exists('BG_tex/%s_tex.bin.LZ' % name)
     found2 = exists('BG_chk/d_bgchk_%s.bin' % name)
@@ -2237,17 +2394,43 @@ def UnloadTileset(idx):
     ObjectDefinitions[idx] = None
     TilesetFilesLoaded[idx] = None
 
+OverriddenTilesets = {
+    "Pa0": [
+        'Pa0_jyotyu',
+        'Pa0_jyotyu_chika',
+        'Pa0_jyotyu_setsugen',
+        'Pa0_jyotyu_yougan',
+        'Pa0_jyotyu_staffRoll'
+    ],
+    "Flowers": [
+        'Pa1_nohara',
+        'Pa1_nohara2'
+    ],
+    "Forest Flowers": [
+        'Pa1_daishizen'
+    ],
+    "Lines": [
+        'Pa3_daishizen'
+    ],
+    "Minigame Lines": [
+        'Pa3_MG_house_ami_rail'
+    ],
+    "Full Lines": [
+        'Pa3_rail',
+        'Pa3_rail_white'
+    ]
+}
 
 def ProcessOverrides(idx, name):
     """
     Load overridden tiles if there are any
     """
 
-    try:
-        tsindexes = ['Pa0_jyotyu', 'Pa0_jyotyu_chika', 'Pa0_jyotyu_setsugen', 'Pa0_jyotyu_yougan',
-                     'Pa0_jyotyu_staffRoll']
-        if name in tsindexes:
-            offset = 0x800 + (tsindexes.index(name) * 64)
+    if True:
+    #try:
+        tsidx = OverriddenTilesets
+        if name in tsidx["Pa0"]:
+            offset = 0x800 + (tsidx["Pa0"].index(name) * 64)
 
             # Setsugen/Snow is unused, but we still override it
             # StaffRoll is the same as plain Jyotyu, so if it's used, let's be lazy and treat it as the normal one
@@ -2318,7 +2501,7 @@ def ProcessOverrides(idx, name):
             t[61].main = t[0x400 + 1063].main  # multiplayer coin
             t[63].main = t[0x400 + 1313].main  # instant death tile
 
-        elif name in ('Pa1_nohara', 'Pa1_nohara2', 'Pa1_daishizen'):
+        elif name in tsidx["Flowers"] or name in tsidx["Forest Flowers"]:
             # flowers
             t = Tiles
             t[416].main = t[0x400 + 1092].main  # grass
@@ -2327,7 +2510,7 @@ def ProcessOverrides(idx, name):
             t[419].main = t[0x400 + 1095].main
             t[420].main = t[0x400 + 1096].main
 
-            if name == 'Pa1_nohara' or name == 'Pa1_nohara2':
+            if name in tsidx["Flowers"]:
                 t[432].main = t[0x400 + 1068].main  # flowers
                 t[433].main = t[0x400 + 1069].main  # flowers
                 t[434].main = t[0x400 + 1070].main  # flowers
@@ -2335,7 +2518,7 @@ def ProcessOverrides(idx, name):
                 t[448].main = t[0x400 + 1158].main  # flowers on grass
                 t[449].main = t[0x400 + 1159].main
                 t[450].main = t[0x400 + 1160].main
-            elif name == 'Pa1_daishizen':
+            elif name in tsidx["Forest Flowers"]:
                 # forest flowers
                 t[432].main = t[0x400 + 1071].main  # flowers
                 t[433].main = t[0x400 + 1072].main  # flowers
@@ -2345,7 +2528,7 @@ def ProcessOverrides(idx, name):
                 t[449].main = t[0x400 + 1223].main
                 t[450].main = t[0x400 + 1224].main
 
-        elif name in ('Pa3_rail', 'Pa3_rail_white', 'Pa3_daishizen'):
+        elif name in tsidx["Lines"] or name in tsidx["Full Lines"]:
             # These are the line guides
             # Pa3_daishizen has less though
 
@@ -2424,7 +2607,7 @@ def ProcessOverrides(idx, name):
             t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
             t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
 
-        elif name == 'Pa3_MG_house_ami_rail':
+        elif name in tsidx["Minigame Lines"]:
             t = Tiles
 
             t[832].main = t[0x400 + 1088].main  # horizontal line
@@ -2473,9 +2656,10 @@ def ProcessOverrides(idx, name):
             t[930].main = t[0x400 + 1321].main  # big circle piece 5th row
             t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
             t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
-    except Exception:
-        # Fail silently
-        pass
+    #except Exception:
+    #
+    #    # Fail silently
+    #    pass
 
 
 def LoadOverrides():
@@ -2531,6 +2715,7 @@ RealViewEnabled = False
 LocationsShown = True
 CommentsShown = True
 DrawEntIndicators = False
+AdvancedModeEnabled = False
 ObjectsFrozen = False
 SpritesFrozen = False
 EntrancesFrozen = False
@@ -7445,10 +7630,10 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         """
         #        self.SlopeModeCheck.setChecked(False)
         self.EraseModeCheck.setChecked(False)
-        
+
         if self.PaintModeCheck.isChecked():
             self.QuickPaintMode = 'PAINT'
-        
+
         else:
             self.QuickPaintMode = None
 
@@ -7471,10 +7656,10 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         """
         self.PaintModeCheck.setChecked(False)
         # self.SlopeModeCheck.setChecked(False)
-        
+
         if self.EraseModeCheck.isChecked():
             self.QuickPaintMode = 'ERASE'
-        
+
         else:
             self.QuickPaintMode = None
 
@@ -7504,18 +7689,18 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         self.SaveToPresetButton.setEnabled(index != -1)
         name = self.comboBox_4.currentText()
         no = False
-        
+
         try:
             f = open("reggiedata/qpsp/" + name + ".qpp", 'r')
-        
+
         except:
             no = True
-        
+
         if not no and ObjectDefinitions is not None:
             try:
                 for line in f.readlines():
                     elements = line.split('\t')
-                    
+
                     if line != '\n':
                         self.scene.object_database[elements[0]]['x'] = int(elements[1])
                         self.scene.object_database[elements[0]]['y'] = int(elements[2])
@@ -7523,10 +7708,10 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         self.scene.object_database[elements[0]]['h'] = int(elements[4])
                         self.scene.object_database[elements[0]]['ow'] = int(elements[3])
                         self.scene.object_database[elements[0]]['oh'] = int(elements[4])
-                        
+
                         if elements[5] == '\n':
                             self.scene.object_database[elements[0]]['i'] = None
-                        
+
                         else:
                             ln = CurrentLayer
                             layer = Area.layers[CurrentLayer]
@@ -7548,9 +7733,9 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
 
             except:
                 print("Preset parse failed.")
-            
+
             f.close()
-        
+
         self.scene.fixAndUpdateObjects()
         self.scene.invalidate()
 
@@ -7561,11 +7746,11 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         if self.scene.zoom == 2:
             self.scene.zoom = 1
             self.ZoomButton.setIcon(GetIcon("zoomin", True))
-        
+
         else:
             self.scene.zoom = 2
             self.ZoomButton.setIcon(GetIcon("zoomout", True))
-        
+
         self.scene.invalidate()
 
     def verticalScrollBar_changed(self):
@@ -7589,11 +7774,11 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         #        self.SlopeModeCheck.setText(_translate("self", "Slope"))
         self.EraseModeCheck.setText(trans.string('QuickPaint', 5))
         self.label_4.setText(trans.string('QuickPaint', 6))
-        
+
         for fname in os.listdir("reggiedata/qpsp/"):
             if fname.endswith(".qpp"):
                 self.comboBox_4.addItem(fname[:-4])
-        
+
         self.comboBox_4.setCurrentIndex(-1)
         self.SaveToPresetButton.setText(trans.string('QuickPaint', 7))
         self.AddPresetButton.setText(trans.string('QuickPaint', 8))
@@ -7767,7 +7952,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         self.parent.scene.object_database[obj]['ts'] = CurrentPaintType
                         self.parent.scene.object_database[obj]['t'] = CurrentObject
                         self.parent.scene.invalidate()
-                
+
                 elif event.button() == Qt.RightButton:
                     self.parent.scene.object_database[obj]['w'] = 1
                     self.parent.scene.object_database[obj]['h'] = 1
@@ -7775,7 +7960,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                     self.parent.scene.object_database[obj]['oh'] = 1
                     self.parent.scene.object_database[obj]['i'] = None
                     self.parent.scene.invalidate()
-                
+
                 self.parent.scene.fixAndUpdateObjects()
 
     class QuickPaintScene(QtWidgets.QGraphicsScene):
@@ -7853,9 +8038,9 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                 'w'] * 24 > hitPoint[0] and
                                     self.object_database[obj]['y'] * 24 + self.object_database[obj][
                                 'h'] * 24 > hitPoint[1]):
-                    
+
                     return obj
-            
+
             return None
 
         def ArrangeMainIsland(self, maxbasewidth, maxleftwidth, maxrightwidth, maxbaseheight, maxtopheight,
@@ -7893,7 +8078,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             self.object_database['bottomLeft']['y'] = maxbaseheight + maxtopheight - 1
             self.object_database['bottom']['y'] = maxbaseheight + maxtopheight - 1
             self.object_database['bottomRight']['y'] = maxbaseheight + maxtopheight - 1
-            
+
             displayObjects = []
             for y in range(self.object_database['top']['h']):
                 for x in range(self.object_database['top']['w']):
@@ -7930,12 +8115,12 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             for y in range(self.object_database['right']['h']):
                 for x in range(self.object_database['right']['w']):
                     displayObjects.append((self.AddDisplayObject('base', self.object_database['right']['x'] + x + 20, self.object_database['right']['y'] + 20 + y, 1,1), self.object_database['right']['i'] is None))
-					
-					
+
+
             for obj in displayObjects:
                 if obj[0] is not None:
                     QuickPaintOperations.autoTileObj(-1, obj[0])
-					
+
             for obj in displayObjects:
                 if obj[0] is not None:
                     QuickPaintOperations.autoTileObj(-1, obj[0])
@@ -7957,7 +8142,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                     displayObjects.append((self.AddDisplayObject('base', maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + 20 + x, -3 + 20 + y,
                                        1, 1), False))
             tx = 0
-            
+
             for i in range(3 + maxrightwidth + maxleftwidth):
                 for y in range(maxtopheight):
                     displayObjects.append((self.AddDisplayObject('base',
@@ -7971,13 +8156,13 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                        -3 + 20 + y, 1,1), False))
                     ty1 = 0
                     ty2 = 0
-            
+
             for i in range(3 + maxtopheight + maxbottomheight):
                 for x in range(maxleftwidth):
                     displayObjects.append((self.AddDisplayObject('base', maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + 20 + x,
                                            -3 + i + maxtopheight + 20, 1, 1), False))
                 ty1 += 1
-            
+
             for i in range(3 + maxtopheight + maxbottomheight):
                 for x in range(maxrightwidth):
                     displayObjects.append((self.AddDisplayObject('base',
@@ -7989,7 +8174,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                 for x in range(maxleftwidth):
                     displayObjects.append((self.AddDisplayObject('base', maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + 20 + x,
                                        -3 + ty + maxtopheight + 20 + y, 1, 1), False))
-            
+
             for i in range(3 + maxrightwidth + maxleftwidth):
                 for y in range(maxbottomheight):
                     displayObjects.append((self.AddDisplayObject('base',
@@ -8001,7 +8186,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                        maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + tx + 20 + x,
                                        -3 + ty + maxtopheight + 20 + y, 1,
                                        1), False))
-            
+
             for i in range(3):
                 for y in range(maxtopheight):
                     displayObjects.append((self.AddDisplayObject('base',
@@ -8012,19 +8197,19 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                     displayObjects.append((self.AddDisplayObject('base',
                                            maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + i + 20,
                                            -3 + maxtopheight + 20 + y, 1, 1), False))
-            
+
             for i in range(3):
                 for x in range(maxrightwidth):
                     displayObjects.append((self.AddDisplayObject('base',
                                             maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + 20 + x,
                                             -3 + maxtopheight + i + maxbottomheight + 20, 1, 1), False))
-            
+
             for i in range(3):
                 for x in range(maxleftwidth):
                     displayObjects.append((self.AddDisplayObject('base',
                                             maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + 20 + x,
                                             -3 + maxtopheight + i + maxbottomheight + 20, 1, 1), False))
-            
+
             already_created_corner = False
             for ix in range(maxrightwidth):
                 for iy in range(maxbottomheight):
@@ -8033,7 +8218,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix + 20,
                                                     -3 + iy + maxtopheight + 20, 1, 1), False))
-                    
+
                     else:
                         if not already_created_corner:
                             self.object_database['topLeftCorner'][
@@ -8043,7 +8228,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix + 20,
                                                     -3 + iy + maxtopheight + 20, 1, 1), self.object_database['topLeftCorner']['i'] is None))
-            
+
             already_created_corner = False
             for ix in range(maxleftwidth):
                 for iy in range(maxbottomheight):
@@ -8052,7 +8237,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + ix + 20,
                                                     -3 + iy + maxtopheight + 20, 1, 1), False))
-                    
+
                     else:
                         if not already_created_corner:
                             self.object_database['topRightCorner'][
@@ -8070,7 +8255,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix + 20,
                                                     -3 + iy + maxtopheight + 3 + maxbottomheight + 20, 1, 1), False))
-                    
+
                     else:
                         if not already_created_corner:
                             self.object_database['bottomLeftCorner'][
@@ -8080,7 +8265,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + ix + 20,
                                                      -3 + iy + maxtopheight + 3 + maxbottomheight + 20, 1, 1), self.object_database['bottomLeftCorner']['i'] is None))
-            
+
             already_created_corner = False
             for ix in range(maxleftwidth):
                 for iy in range(maxtopheight):
@@ -8089,7 +8274,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + ix + 20,
                                                     -3 + iy + maxtopheight + 3 + maxbottomheight + 20, 1, 1), False))
-                    
+
                     else:
                         if not already_created_corner:
                             self.object_database['bottomRightCorner'][
@@ -8100,11 +8285,11 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                         displayObjects.append((self.AddDisplayObject('base',
                                                     maxbasewidth + maxleftwidth - 1 + maxrightwidth + offsetX + maxleftwidth + maxrightwidth + 3 + ix + 20,
                                                     -3 + iy + maxtopheight + 3 + maxbottomheight + 20, 1, 1), self.object_database['bottomRightCorner']['i'] is None))
-					
+
             for obj in displayObjects:
                 if obj[0] is not None:
                     QuickPaintOperations.autoTileObj(-1, obj[0])
-					
+
             for obj in displayObjects:
                 if obj[0] is not None:
                     QuickPaintOperations.autoTileObj(-1, obj[0])
@@ -8198,7 +8383,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             # Set corner setter island...
             self.ArrangeCornerSetterIsland(1, maxbasewidth, maxleftwidth, maxrightwidth, maxbaseheight, maxtopheight,
                                            maxbottomheight)
-            
+
             if len(QuickPaintOperations.object_optimize_database) > 0:
                 QuickPaintOperations.optimizeObjects(True)
 
@@ -8220,7 +8405,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             if self.object_database['base']['i'] is not None:
                 this_type = type  # self.pickObject(type)
                 this_obj = self.object_database[this_type]
-                
+
                 if this_obj.get('ts') is not None and this_obj.get('t') is not None:
                     ln = CurrentLayer
                     layer = Area.layers[CurrentLayer]
@@ -8232,9 +8417,9 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                     obj = ObjectItem(this_obj['ts'], this_obj['t'], -1, x, y, width, height, z)
                     self.display_objects.append(obj)
                     QuickPaintOperations.object_optimize_database.append(obj)
-                    
+
                     return obj
-            
+
             return None
 
         def pickObject(self, type):
@@ -8244,26 +8429,26 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             if (self.object_database[type]['i'] is None):
                 if type == 'top' or type == 'bottom' or type == 'left' or type == 'right':
                     return 'base'
-                
+
                 elif (type == 'topRight' or type == 'topLeft') and self.object_database['top']['i'] is not None:
                     return 'top'
-                
+
                 elif type == 'topLeft' and self.object_database['left']['i'] is not None:
                     return 'left'
-                
+
                 elif type == 'topRight' and self.object_database['right']['i'] is not None:
                     return 'right'
-                
+
                 elif (type == 'bottomRight' or type == 'bottomLeft') and self.object_database['bottom'][
                     'i'] is not None:
                     return 'bottom'
-                
+
                 elif type == 'bottomLeft' and self.object_database['left']['i'] is not None:
                     return 'left'
-                
+
                 elif type == 'bottomRight' and self.object_database['right']['i'] is not None:
                     return 'right'
-                
+
                 else:
                     return 'base'
 
@@ -8290,11 +8475,11 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             if height is None: height = item.height
             if x is None: x = item.objx
             if y is None: y = item.objy
-            
+
             while i < height:
                 tmap.append([None] * width)
                 i += 1
-            
+
             startx = 0
             desty = 0
 
@@ -8353,23 +8538,23 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             if filltype == 'FULL':
                 painter.fillRect(x * 24, y * 24, width * 24,
                                  height * 24, fillbrush)
-            
+
             elif filltype == 'TOP':
                 painter.fillRect(x * 24, y * 24 + 6, width * 24,
                                  height * 24 - 6, fillbrush)
-            
+
             elif filltype == 'RIGHT':
                 painter.fillRect(x * 24, y * 24, width * 24 - 6,
                                  height * 24, fillbrush)
-            
+
             elif filltype == 'BOTTOM':
                 painter.fillRect(x * 24, y * 24, width * 24,
                                  height * 24 - 6, fillbrush)
-            
+
             elif filltype == 'LEFT':
                 painter.fillRect(x * 24 + 6, y * 24, width * 24 - 6,
                                  height * 24, fillbrush)
-            
+
             elif filltype == 'TOPRIGHT':
                 painter.fillRect(x * 24, y * 24 + 6, width * 24 - 15,
                                  height * 24 - 6, fillbrush)
@@ -8377,7 +8562,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                  height * 24 - 15, fillbrush)
                 painter.fillRect(x * 24 + width * 24 - 15, y * 24 + 9, 6,
                                  height * 24 - 9, fillbrush)
-            
+
             elif filltype == 'BOTTOMRIGHT':
                 painter.fillRect(x * 24, y * 24, width * 24 - 15,
                                  height * 24 - 6, fillbrush)
@@ -8385,7 +8570,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                  height * 24 - 15, fillbrush)
                 painter.fillRect(x * 24 + width * 24 - 15, y * 24, 6,
                                  height * 24 - 9, fillbrush)
-            
+
             elif filltype == 'BOTTOMLEFT':
                 painter.fillRect(x * 24 + 15, y * 24, width * 24 - 15,
                                  height * 24 - 6, fillbrush)
@@ -8393,7 +8578,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                  fillbrush)
                 painter.fillRect(x * 24 + 6, y * 24, 3, height * 24 - 15,
                                  fillbrush)
-            
+
             elif filltype == 'TOPLEFT':
                 painter.fillRect(x * 24 + 15, y * 24 + 6, width * 24 - 15,
                                  height * 24 - 6, fillbrush)
@@ -8401,31 +8586,31 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                                  height * 24 - 9, fillbrush)
                 painter.fillRect(x * 24 + 6, y * 24 + 15, 3,
                                  height * 24 - 15, fillbrush)
-            
+
             elif filltype == 'TOPLEFTCORNER':
                 painter.fillRect(x * 24, y * 24, width * 24 - 6,
                                  height * 24, fillbrush)
                 painter.fillRect(x * 24 + width * 24 - 6, y * 24, 6,
                                  height * 24 - 6, fillbrush)
-            
+
             elif filltype == 'TOPRIGHTCORNER':
                 painter.fillRect(x * 24 + 6, y * 24, width * 24 - 6,
                                  height * 24, fillbrush)
                 painter.fillRect(x * 24, y * 24, 6, height * 24 - 6,
                                  fillbrush)
-            
+
             elif filltype == 'BOTTOMLEFTCORNER':
                 painter.fillRect(x * 24, y * 24, width * 24 - 6,
                                  height * 24, fillbrush)
                 painter.fillRect(x * 24 + width * 24 - 6, y * 24 + 6, 6,
                                  height * 24 - 6, fillbrush)
-            
+
             elif filltype == 'BOTTOMRIGHTCORNER':
                 painter.fillRect(x * 24 + 6, y * 24, width * 24 - 6,
                                  height * 24, fillbrush)
                 painter.fillRect(x * 24, y * 24 + 6, 6, height * 24 - 6,
                                  fillbrush)
-            
+
             painter.drawRect(x * 24, y * 24, width * 24,
                              height * 24)
 
@@ -8438,67 +8623,67 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                 # self.drawObject(self.object_database['base'], painter, tiles)
                 self.drawEmptyBox('', 'base', painter, fillbrush)
                 Paint_Level2 = True
-            
+
             else:
                 self.drawEmptyBox('FULL', 'base', painter, fillbrush)
-            
+
             if Paint_Level2:
                 if self.object_database['top']['i'] != None:
                     # self.drawObject(self.object_database['top'], painter, tiles)
                     self.drawEmptyBox('', 'top', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('TOP', 'top', painter, fillbrush)
-                
+
                 if self.object_database['right']['i'] != None:
                     # self.drawObject(self.object_database['right'], painter, tiles)
                     self.drawEmptyBox('', 'right', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('RIGHT', 'right', painter, fillbrush)
-                
+
                 if self.object_database['bottom']['i'] != None:
                     # self.drawObject(self.object_database['bottom'], painter, tiles)
                     self.drawEmptyBox('', 'bottom', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('BOTTOM', 'bottom', painter, fillbrush)
-                
+
                 if self.object_database['left']['i'] != None:
                     # self.drawObject(self.object_database['left'], painter, tiles)
                     self.drawEmptyBox('', 'left', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('LEFT', 'left', painter, fillbrush)
-                
+
                 if self.object_database['topRight']['i'] != None:
                     # self.drawObject(self.object_database['topRight'], painter, tiles)
                     self.drawEmptyBox('', 'topRight', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('TOPRIGHT', 'topRight', painter, fillbrush)
-                
+
                 if self.object_database['bottomRight']['i'] != None:
                     # self.drawObject(self.object_database['bottomRight'], painter, tiles)
                     self.drawEmptyBox('', 'bottomRight', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('BOTTOMRIGHT', 'bottomRight', painter, fillbrush)
-                
+
                 if self.object_database['bottomLeft']['i'] != None:
                     # self.drawObject(self.object_database['bottomLeft'], painter, tiles)
                     self.drawEmptyBox('', 'bottomLeft', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('BOTTOMLEFT', 'bottomLeft', painter, fillbrush)
-                
+
                 if self.object_database['topLeft']['i'] != None:
                     # self.drawObject(self.object_database['topLeft'], painter, tiles)
                     self.drawEmptyBox('', 'topLeft', painter, fillbrush)
-                
+
                 else:
                     self.drawEmptyBox('TOPLEFT', 'topLeft', painter, fillbrush)
-            
+
             return Paint_Level2
 
         def drawCornerObjects(self, painter, tiles, fillbrush):
@@ -8508,24 +8693,24 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             if self.object_database['topRightCorner']['i'] != None:
                 self.drawObject(self.object_database['topRightCorner'], painter, tiles)
                 self.drawEmptyBox('', 'topRightCorner', painter, fillbrush)
-            
+
             else:
                 self.drawEmptyBox('TOPRIGHTCORNER', 'topRightCorner', painter, fillbrush)
-            
+
             if self.object_database['bottomRightCorner']['i'] != None:
                 self.drawObject(self.object_database['bottomRightCorner'], painter, tiles)
                 self.drawEmptyBox('', 'bottomRightCorner', painter, fillbrush)
-            
+
             else:
                 self.drawEmptyBox('BOTTOMRIGHTCORNER', 'bottomRightCorner', painter, fillbrush)
-            
+
             if self.object_database['bottomLeftCorner']['i'] != None:
                 self.drawObject(self.object_database['bottomLeftCorner'], painter, tiles)
                 self.drawEmptyBox('', 'bottomLeftCorner', painter, fillbrush)
-            
+
             else:
                 self.drawEmptyBox('BOTTOMLEFTCORNER', 'bottomLeftCorner', painter, fillbrush)
-            
+
             if self.object_database['topLeftCorner']['i'] != None:
                 self.drawObject(self.object_database['topLeftCorner'], painter, tiles)
                 self.drawEmptyBox('', 'topLeftCorner', painter, fillbrush)
@@ -8547,10 +8732,10 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             painter.scale(self.zoom, self.zoom)
             # Start Painting
             tiles = Tiles
-            
+
             for obj in self.display_objects:
                 self.drawItem(obj, painter, tiles)
-				
+
             if self.drawMainIsland(painter, tiles, fillbrush):
                 self.drawCornerObjects(painter, tiles, fillbrush)
 
@@ -8594,7 +8779,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         """
         if name is None:
             name = self.comboBox_4.currentText()
-        
+
         with open("reggiedata/qpsp/" + name + ".qpp", "w") as f:
             for obj in self.scene.object_database:
                 f.write(obj + "\t")
@@ -8602,11 +8787,11 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                 f.write(str(self.scene.object_database[obj]['y']) + "\t")
                 f.write(str(self.scene.object_database[obj]['ow']) + "\t")
                 f.write(str(self.scene.object_database[obj]['oh']) + "\t")
-                
+
                 if self.scene.object_database[obj]['i'] is not None:
                     f.write(str(self.scene.object_database[obj]['i'].tileset) + "\t")
                     f.write(str(self.scene.object_database[obj]['i'].type) + "\t")
-                
+
                 f.write("\n")
 
     def removeCurrentPreset(self):
@@ -8616,7 +8801,6 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         os.remove("reggiedata/qpsp/" + self.comboBox_4.currentText() + ".qpp")
         index = self.comboBox_4.currentIndex()
         self.comboBox_4.removeItem(index)
-
 
 
 class ObjectPickerWidget(QtWidgets.QListView):
@@ -9322,15 +9506,20 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # create the raw editor
         font = QtGui.QFont()
         font.setPointSize(8)
-        editbox = QtWidgets.QLabel(trans.string('SpriteDataEditor', 3))
-        editbox.setFont(font)
+        self.editbox = QtWidgets.QLabel(trans.string('SpriteDataEditor', 3))
+        self.editbox.setFont(font)
         edit = QtWidgets.QLineEdit()
         edit.textEdited.connect(self.HandleRawDataEdited)
         self.raweditor = edit
 
+        self.resetButton = QtWidgets.QPushButton(trans.string('SpriteDataEditor', 17))
+        self.resetButton.clicked.connect(self.HandleResetData)
+
         editboxlayout = QtWidgets.QHBoxLayout()
-        editboxlayout.addWidget(editbox)
+        editboxlayout.addWidget(self.editbox)
         editboxlayout.addWidget(edit)
+        editboxlayout.addWidget(self.resetButton)
+        editboxlayout.addStretch(1)
         editboxlayout.setStretch(1, 1)
 
         # 'Editing Sprite #' label
@@ -9351,14 +9540,54 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.relatedObjFilesButton.setAutoRaise(True)
         self.relatedObjFilesButton.clicked.connect(self.ShowRelatedObjFilesTooltip)
 
+        self.advNoteButton = QtWidgets.QToolButton()
+        self.advNoteButton.setIcon(GetIcon('note-advanced'))
+        self.advNoteButton.setText(trans.string('SpriteDataEditor', 10))
+        self.advNoteButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.advNoteButton.setAutoRaise(True)
+        self.advNoteButton.clicked.connect(self.ShowAdvancedNoteTooltip)
+
+        self.yoshiInfo = QtWidgets.QToolButton()
+        self.yoshiInfo.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.yoshiInfo.setText(trans.string('SpriteDataEditor', 12))
+        self.yoshiInfo.setAutoRaise(True)
+        self.yoshiInfo.clicked.connect(self.ShowYoshiTooltip)
+
+        self.asm = QtWidgets.QLabel()
+        self.asm.setPixmap(GetIcon("asm").pixmap(64,64))
+
         toplayout = QtWidgets.QHBoxLayout()
         toplayout.addWidget(self.spriteLabel)
         toplayout.addStretch(1)
+        toplayout.addWidget(self.asm)
+        toplayout.addWidget(self.yoshiInfo)
         toplayout.addWidget(self.relatedObjFilesButton)
         toplayout.addWidget(self.noteButton)
+        toplayout.addWidget(self.advNoteButton)
 
         subLayout = QtWidgets.QVBoxLayout()
         subLayout.setContentsMargins(0, 0, 0, 0)
+
+        # comments
+        desc = QtWidgets.QLabel(trans.string('SpriteDataEditor', 16))
+        self.com_main = QtWidgets.QLabel()
+        self.com_main.setWordWrap(True)
+
+        self.com_more = QtWidgets.QPushButton()
+        self.com_more.setText(trans.string('SpriteDataEditor', 13))
+        self.com_more.clicked.connect(self.ShowMoreComments)
+
+        self.com_extra = QtWidgets.QLabel()
+        self.com_extra.setWordWrap(True)
+
+        L = QtWidgets.QVBoxLayout()
+        L.addWidget(desc)
+        L.addWidget(self.com_main)
+        L.addWidget(self.com_more)
+        L.addWidget(self.com_extra)
+
+        self.comments = QtWidgets.QWidget()
+        self.comments.setLayout(L)
 
         # create a layout
         mainLayout = QtWidgets.QVBoxLayout()
@@ -9367,7 +9596,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         layout = QtWidgets.QGridLayout()
         self.editorlayout = layout
+
         subLayout.addLayout(layout)
+        subLayout.addWidget(self.comments)
         subLayout.addLayout(editboxlayout)
 
         self.setLayout(mainLayout)
@@ -9387,100 +9618,194 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         updateData = QtCore.pyqtSignal('PyQt_PyObject')
 
-        def __init__(self):
+        def retrieve(self, data, bits=None):
             """
-            Generic constructor
+            Extracts the value from the specified bit(s). Bit numbering is ltr BE
+            and starts at 1.
             """
-            super().__init__()
+            if bits is None:
+                bit = self.bit
+            else:
+                bit = bits
 
-        def retrieve(self, data):
-            """
-            Extracts the value from the specified nybble(s)
-            """
-            nybble = self.nybble
+            if isinstance(bit, list):
+                # multiple ranges. do this recursively.
+                value = 0
 
-            if isinstance(nybble, tuple):
-                if nybble[1] == (nybble[0] + 2) and (nybble[0] | 1) == 0:
-                    # optimize if it's just one byte
-                    return data[nybble[0] >> 1]
+                for ran in bit:
+                    # find the size of the range
+                    if isinstance(ran, tuple):
+                        l = ran[1] - ran[0]
+                    else:
+                        l = 1
+
+                    # shift the value so we don't overwrite
+                    value <<= l
+
+                    # and OR in the value for the range
+                    value |= self.retrieve(data, ran)
+
+                # done
+                return value
+
+            elif isinstance(bit, tuple):
+                if bit[1] == bit[0] + 7 and bit[0] & 1 == 1:
+                    # optimise if it's just one byte
+                    return data[bit[0] >> 3]
                 else:
                     # we have to calculate it sadly
                     # just do it by looping, shouldn't be that bad
                     value = 0
-                    for n in range(nybble[0], nybble[1]):
-                        value <<= 4
-                        value |= (data[n >> 1] >> (0 if (n & 1) == 1 else 4)) & 15
+                    for n in range(bit[0], bit[1]):
+                        n -= 1
+                        value = (value << 1) | ((data[n >> 3] >> (7 - (n & 7))) & 1)
+
                     return value
             else:
-                # we just want one nybble
-                if nybble >= (len(data) * 2): return 0
-                return (data[nybble // 2] >> (0 if (nybble & 1) == 1 else 4)) & 15
+                # we just want one bit
+                bit -= 1
 
-        def insertvalue(self, data, value):
+                if (bit >> 3) >= len(data):
+                    return 0
+
+                return (data[bit >> 3] >> (7 - (bit & 7))) & 1
+
+        def insertvalue(self, data, value, bits=None):
             """
-            Assigns a value to the specified nybble(s)
+            Assigns a value to the specified bit(s)
             """
-            nybble = self.nybble
+            if bits is None:
+                bit = self.bit
+            else:
+                bit = bits
+
             sdata = list(data)
 
-            if isinstance(nybble, tuple):
-                if nybble[1] == (nybble[0] + 2) and (nybble[0] | 1) == 0:
+            if isinstance(bit, list):
+                # multiple ranges
+                print("writing to compound: " + str(bit))
+                for ran in reversed(bit):
+                    # find the size of the range
+                    if isinstance(ran, tuple):
+                        l = ran[1] - ran[0]
+                    else:
+                        l = 1
+
+                    # mask the value over this length
+                    mask = (1 << l) - 1
+                    v = value & mask
+
+                    print("Writing value %d, %d & %d, to bits %s" % (v, value, mask, ran))
+
+                    # remove these bits from the value
+                    value >>= l
+
+                    # recursively set the value
+                    data = list(self.insertvalue(data, v, ran))
+
+                return bytes(data)
+
+            elif isinstance(bit, tuple):
+                if bit[1] == bit[0] + 7 and bit[0] & 1 == 1:
                     # just one byte, this is easier
-                    sdata[nybble[0] >> 1] = value & 255
+                    sdata[(bit[0] - 1) >> 3] = value & 0xFF
                 else:
-                    # AAAAAAAAAAA
-                    for n in reversed(range(nybble[0], nybble[1])):
-                        cbyte = sdata[n >> 1]
-                        if (n & 1) == 1:
-                            cbyte = (cbyte & 240) | (value & 15)
+                    # complicated stuff
+                    for n in reversed(range(bit[0], bit[1])):
+                        off = 1 << (7 - ((n - 1) & 7))
+
+                        if value & 1:
+                            # set the bit
+                            sdata[(n - 1) >> 3] |= off
                         else:
-                            cbyte = ((value & 15) << 4) | (cbyte & 15)
-                        sdata[n >> 1] = cbyte
-                        value >>= 4
+                            # mask the bit out
+                            sdata[(n - 1) >> 3] &= 0xFF ^ off
+
+                        value >>= 1
             else:
-                # only overwrite one nybble
-                cbyte = sdata[nybble >> 1]
-                if (nybble & 1) == 1:
-                    cbyte = (cbyte & 240) | (value & 15)
+                # only overwrite one bit
+                byte = (bit - 1) >> 3
+                if byte >= len(data):
+                    return 0
+
+                off = 1 << (7 - ((bit - 1) & 7))
+
+                if value & 1:
+                    # set the bit
+                    sdata[byte] |= off
                 else:
-                    cbyte = ((value & 15) << 4) | (cbyte & 15)
-                sdata[nybble >> 1] = cbyte
+                    # mask the bit out
+                    sdata[byte] &= 0xFF ^ off
 
             return bytes(sdata)
+
+        def checkReq(self, data):
+            """
+            Checks the requirements
+            """
+            if self.required is None:
+                return
+
+            show = True
+            for requirement in self.required:
+                val = self.retrieve(data, requirement[0])
+                ran = requirement[1]
+
+                print("Req " + str(requirement[0]) + " " + str(ran) + ": " + str(val))
+
+                if isinstance(ran, tuple):
+                    show = show and ran[0] <= val < ran[1]
+                else:
+                    show = show and ran == val
+
+                print(show)
+
+            # show/hide all widgets in this row
+            for i in range(self.layout.columnCount()):
+                self.layout.itemAtPosition(self.row, i).widget().setVisible(show)
 
     class CheckboxPropertyDecoder(PropertyDecoder):
         """
         Class that decodes/encodes sprite data to/from a checkbox
         """
 
-        def __init__(self, title, nybble, mask, comment, layout, row):
+        def __init__(self, title, bit, mask, comment, required, layout, row):
             """
             Creates the widget
             """
             super().__init__()
 
-            self.widget = QtWidgets.QCheckBox(title)
-            if comment is not None: self.widget.setToolTip(comment)
+            self.widget = QtWidgets.QCheckBox()
+            label = QtWidgets.QLabel(title + ':')
+            if comment is not None:
+                label.setToolTip(comment)
             self.widget.clicked.connect(self.HandleClick)
 
-            if isinstance(nybble, tuple):
-                length = nybble[1] - nybble[0] + 1
+            if isinstance(bit, tuple):
+                length = bit[1] - bit[0] + 1
             else:
                 length = 1
 
-            xormask = 0
-            for i in range(length):
-                xormask |= 0xF << (i * 4)
+            xormask = (1 << length) - 1
 
-            self.nybble = nybble
+            self.bit = bit
             self.mask = mask
             self.xormask = xormask
-            layout.addWidget(self.widget, row, 0, 1, 2)
+            self.required = required
+
+            self.row = row
+            self.layout = layout
+
+            layout.addWidget(label, row, 0, Qt.AlignRight)
+            layout.addWidget(self.widget, row, 1)
 
         def update(self, data):
             """
             Updates the value shown by the widget
             """
+            # check if requirements are met
+            self.checkReq(data)
+
             value = ((self.retrieve(data) & self.mask) == self.mask)
             self.widget.setChecked(value)
 
@@ -9489,8 +9814,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             Assigns the selected value to the data
             """
             value = self.retrieve(data) & (self.mask ^ self.xormask)
+
             if self.widget.isChecked():
                 value |= self.mask
+
             return self.insertvalue(data, value)
 
         def HandleClick(self, clicked=False):
@@ -9504,7 +9831,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a combobox
         """
 
-        def __init__(self, title, nybble, model, comment, layout, row):
+        def __init__(self, title, bit, model, comment, required, layout, row):
             """
             Creates the widget
             """
@@ -9513,17 +9840,25 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.model = model
             self.widget = QtWidgets.QComboBox()
             self.widget.setModel(model)
-            if comment is not None: self.widget.setToolTip(comment)
+            if comment is not None:
+                self.widget.setToolTip(comment)
             self.widget.currentIndexChanged.connect(self.HandleIndexChanged)
 
-            self.nybble = nybble
+            self.bit = bit
             layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
+
+            self.layout = layout
+            self.row = row
+            self.required = required
 
         def update(self, data):
             """
             Updates the value shown by the widget
             """
+            # check if requirements are met
+            self.checkReq(data)
+
             value = self.retrieve(data)
             if not self.model.existingLookup[value]:
                 self.widget.setCurrentIndex(-1)
@@ -9553,7 +9888,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a spinbox
         """
 
-        def __init__(self, title, nybble, max, comment, layout, row):
+        def __init__(self, title, bit, max, comment, required, layout, row):
             """
             Creates the widget
             """
@@ -9561,17 +9896,26 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.widget = QtWidgets.QSpinBox()
             self.widget.setRange(0, max - 1)
-            if comment is not None: self.widget.setToolTip(comment)
+            if comment is not None:
+                self.widget.setToolTip(comment)
+
             self.widget.valueChanged.connect(self.HandleValueChanged)
 
-            self.nybble = nybble
+            self.bit = bit
             layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
+
+            self.layout = layout
+            self.row = row
+            self.required = required
 
         def update(self, data):
             """
             Updates the value shown by the widget
             """
+            # check if requirements are met
+            self.checkReq(data)
+
             value = self.retrieve(data)
             self.widget.setValue(value)
 
@@ -9592,7 +9936,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a bitfield
         """
 
-        def __init__(self, title, startbit, bitnum, comment, layout, row):
+        def __init__(self, title, startbit, bitnum, comment, required, layout, row):
             """
             Creates the widget
             """
@@ -9621,51 +9965,115 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
             layout.addWidget(w, row, 1)
 
+            self.layout = layout
+            self.row = row
+            self.required = required
+
         def update(self, data):
             """
             Updates the value shown by the widget
             """
-            for bitIdx in range(self.bitnum):
-                checkbox = self.widgets[bitIdx]
+            # check if requirements are met
+            self.checkReq(data)
 
-                adjustedIdx = bitIdx + self.startbit
-                byteNum = adjustedIdx // 8
-                bitNum = adjustedIdx % 8
-                checkbox.setChecked((data[byteNum] >> (7 - bitNum) & 1))
+            value = self.retrieve(data)
+            i = self.bitnum
+
+            # run at most self.bitnum times
+            while value != 0 and i != 0:
+                self.widgets[i].setChecked(value & 1)
+                value >>= 1
+                i -= 1
 
         def assign(self, data):
             """
             Assigns the checkbox states to the data
             """
-            data = bytearray(data)
+            value = 0
 
-            for idx in range(self.bitnum):
-                checkbox = self.widgets[idx]
+            # construct bitmask
+            for i in self.bitnum:
+                value = (value | self.widgets[i].isChecked()) << 1
 
-                adjustedIdx = idx + self.startbit
-                byteIdx = adjustedIdx // 8
-                bitIdx = adjustedIdx % 8
+            return self.insertvalue(data, value)
 
-                origByte = data[byteIdx]
-                origBit = (origByte >> (7 - bitIdx)) & 1
-                newBit = 1 if checkbox.isChecked() else 0
+        def HandleValueChanged(self, value):
+            """
+            Handle any checkbox being changed
+            """
+            self.updateData.emit(self)
 
-                if origBit == newBit: continue
-                if origBit == 0 and newBit == 1:
-                    # Turn the byte on by OR-ing it in
-                    newByte = (origByte | (1 << (7 - bitIdx))) & 0xFF
-                else:
-                    # Turn it off by:
-                    # inverting it
-                    # OR-ing in the new byte
-                    # inverting it back
-                    newByte = ~origByte & 0xFF
-                    newByte = newByte | (1 << (7 - bitIdx))
-                    newByte = ~newByte & 0xFF
+    class MultiboxPropertyDecoder(PropertyDecoder):
+        """
+        Class that decodes/encodes sprite data to/from a multibox
+        """
 
-                data[byteIdx] = newByte
+        def __init__(self, title, bit, comment, required, layout, row):
+            """
+            Creates the widget
+            """
+            super().__init__()
 
-            return bytes(data)
+            if isinstance(bit, tuple):
+                bitnum = bit[1] - bit[0]
+                startbit = bit[0]
+            else:
+                bitnum = 1
+                startbit = bit
+
+            self.bit = bit
+            self.startbit = startbit
+            self.bitnum = bitnum
+
+            self.widgets = []
+            CheckboxLayout = QtWidgets.QGridLayout()
+            CheckboxLayout.setContentsMargins(0, 0, 0, 0)
+
+            for i in range(bitnum):
+                c = QtWidgets.QCheckBox(str(bitnum - i))
+                self.widgets.append(c)
+                CheckboxLayout.addWidget(c, 0, i)
+                if comment is not None:
+                    c.setToolTip(comment)
+                c.toggled.connect(self.HandleValueChanged)
+
+            w = QtWidgets.QWidget()
+            w.setLayout(CheckboxLayout)
+
+            layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
+            layout.addWidget(w, row, 1)
+
+            self.layout = layout
+            self.row = row
+            self.required = required
+
+        def update(self, data):
+            """
+            Updates the value shown by the widget
+            """
+            # check if requirements are met
+            self.checkReq(data)
+
+            value = self.retrieve(data)
+            i = self.bitnum
+
+            # run at most self.bitnum times
+            while value != 0 and i != 0:
+                self.widgets[i].setChecked(value & 1)
+                value >>= 1
+                i -= 1
+
+        def assign(self, data):
+            """
+            Assigns the checkbox states to the data
+            """
+            value = 0
+
+            # construct bitmask
+            for i in range(self.bitnum):
+                value = (value << 1) | self.widgets[i].isChecked()
+
+            return self.insertvalue(data, value)
 
         def HandleValueChanged(self, value):
             """
@@ -9677,7 +10085,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         Change the sprite type used by the data editor
         """
-        if (self.spritetype == type) and not reset: return
+        if (self.spritetype == type) and not reset:
+            return
 
         self.spritetype = type
         if type != 1000:
@@ -9695,13 +10104,23 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     layout.removeWidget(widget)
                     widget.setParent(None)
 
+        # show the raw editor if advanced mode is enabled
+        self.raweditor.setVisible(AdvancedModeEnabled)
+        self.editbox.setVisible(AdvancedModeEnabled)
+        self.resetButton.setVisible(not AdvancedModeEnabled)
+
+        # Nothing is selected, so no comments should appear
+        self.comments.setVisible(False)
+
         if sprite is None:
             self.spriteLabel.setText(trans.string('SpriteDataEditor', 5, '[id]', type))
             self.noteButton.setVisible(False)
+            self.yoshiInfo.setVisible(False)
+            self.advNoteButton.setVisible(False)
+            self.asm.setVisible(False)
 
-            # use the raw editor if nothing is there
-            self.raweditor.setVisible(True)
-            if len(self.fields) > 0: self.fields = []
+            if len(self.fields) > 0:
+                self.fields = []
 
         else:
             self.spriteLabel.setText(trans.string('SpriteDataEditor', 6, '[id]', type, '[name]', sprite.name))
@@ -9709,8 +10128,31 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.noteButton.setVisible(sprite.notes is not None)
             self.notes = sprite.notes
 
+            # advanced comment
+            self.advNoteButton.setVisible(AdvancedModeEnabled and sprite.advNotes is not None)
+            self.advNotes = sprite.advNotes
+
             self.relatedObjFilesButton.setVisible(sprite.relatedObjFiles is not None)
             self.relatedObjFiles = sprite.relatedObjFiles
+
+            self.asm.setVisible(sprite.asm is True)
+
+            # yoshi info
+            if sprite.noyoshi is not None:
+                if sprite.noyoshi is True:
+                    image = "ys-no"
+                else:
+                    image = "ys-works"
+                self.yoshiInfo.setIcon(GetIcon(image))
+                self.yoshiInfo.setVisible(True)
+
+                if sprite.yoshiNotes is None:
+                    sprite.yoshiNotes = trans.string('SpriteDataEditor', 15)
+
+                self.yoshiNotes = sprite.yoshiNotes
+            else:
+                self.yoshiInfo.setVisible(False)
+
 
             # create all the new fields
             fields = []
@@ -9718,13 +10160,15 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             for f in sprite.fields:
                 if f[0] == 0:
-                    nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
+                    nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
                 elif f[0] == 1:
-                    nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
+                    nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
                 elif f[0] == 2:
-                    nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
+                    nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
                 elif f[0] == 3:
-                    nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
+                    nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+                elif f[0] == 4:
+                    nf = SpriteEditorWidget.MultiboxPropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
 
                 nf.updateData.connect(self.HandleFieldUpdate)
                 fields.append(nf)
@@ -9750,10 +10194,47 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.UpdateFlag = False
 
     def ShowNoteTooltip(self):
-        QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.notes, self)
+        """
+        Show notes
+        """
+        self.comments.setVisible(True)
+        self.com_main.setText(self.notes)
+        self.com_more.setVisible(False)
 
     def ShowRelatedObjFilesTooltip(self):
-        QtWidgets.QToolTip.showText(QtGui.QCursor.pos(), self.relatedObjFiles, self)
+        """
+        Show related obj files
+        """
+        self.comments.setVisible(True)
+        self.com_main.setText(self.relatedObjFiles)
+        self.com_more.setVisible(False)
+
+    def ShowYoshiTooltip(self):
+        """
+        Show the Yoshi info
+        """
+        self.comments.setVisible(True)
+        self.com_main.setText(self.yoshiNotes)
+        self.com_more.setVisible(False)
+
+    def ShowAdvancedNoteTooltip(self):
+        """
+        Show the advanced notes
+        """
+        self.comments.setVisible(True)
+        self.com_main.setText(self.advNotes)
+        self.com_more.setVisible(False)
+
+    def ShowMoreComments(self):
+        """
+        Show or hide the extra comment
+        """
+        if self.com_extra.isVisible():
+            self.com_extra.setVisible(False)
+            self.com_more.setText(trans.string('SpriteDataEditor', 13))
+        else:
+            self.com_extra.setVisible(True)
+            self.com_more.setText(trans.string('SpriteDataEditor', 14))
 
     def HandleFieldUpdate(self, field):
         """
@@ -9772,6 +10253,20 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if f != field: f.update(data)
 
         self.DataUpdate.emit(data)
+
+    def HandleResetData(self):
+        """
+        Handles the reset data button being clicked
+        """
+        self.data = b'\0\0\0\0\0\0\0\0'
+
+        self.UpdateFlag = True
+        for f in self.fields:
+            f.update(self.data)
+        self.UpdateFlag = False
+
+        self.DataUpdate.emit(self.data)
+        self.raweditor.setStyleSheet('QLineEdit { background-color: #ffffff; }')
 
     def HandleRawDataEdited(self, text):
         """
@@ -11888,12 +12383,9 @@ class ReggieTranslation:
                 22: None,  # REMOVED: 'Unknown Value 1:'
                 23: None,  # REMOVED: 'Unknown Value 2:'
                 24: None,  # REMOVED: 'Unknown Value 3:'
-                25: None,
-            # REMOVED: '[b]Unknown Value 1:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
-                26: None,
-            # REMOVED: '[b]Unknown Value 2:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
-                27: None,
-            # REMOVED: '[b]Unknown Value 3:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
+                25: None,  # REMOVED: '[b]Unknown Value 1:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
+                26: None,  # REMOVED: '[b]Unknown Value 2:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
+                27: None,  # REMOVED: '[b]Unknown Value 3:[/b] We haven\'t managed to figure out what this does, or if it does anything.'
                 28: 'Name',
                 29: 'File',
                 30: '(None)',
@@ -12176,7 +12668,7 @@ class ReggieTranslation:
             },
             'Locations': {
                 0: '[id]',
-                1: '',  # REMOVED: 'Paint New Location'
+                1: None,  # REMOVED: 'Paint New Location'
                 2: '[id]: [width]x[height] at [x], [y]',
             },
             'MainWindow': {
@@ -12423,6 +12915,7 @@ class ReggieTranslation:
                 29: 'Use Old Tileset Picker',
                 30: 'You may need to restart Reggie Next for changes to take effect.',
                 31: 'Display lines indicating the leftmost x-position where entrances can be safely placed in zones',
+                32: 'Enable advanced mode',
             },
             'QuickPaint': {
                 1: "WOAH! Watch out!",
@@ -12472,6 +12965,15 @@ class ReggieTranslation:
                 6: '[b]Sprite [id]:[br][name][/b]',
                 7: 'Object Files',
                 8: '[b]This sprite uses:[/b][br][list]',
+                9: '[b]Yoshi Notes:[/b] [notes]',
+                10: 'Advanced Notes',
+                11: '[b]Advanced Notes:[/b] [notes]',
+                12: 'Yoshi',
+                13: 'Read more...',
+                14: 'Read less...',
+                15: 'This sprite works properly with Yoshi.',
+                16: '[b]Information:[/b]',
+                17: 'Reset all settings',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
@@ -13073,7 +13575,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                 else:
                     z = layer[-1].zValue() + 1
-                
+
                 if mw.quickPaint.QuickPaintMode == 'PAINT':
                     QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]-0.5), z)
                     QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]-0.5), z)
@@ -17001,7 +17503,7 @@ class DiagnosticWidget(QtWidgets.QWidget):
         self.loopytimer = QtCore.QTimer()
         self.loopytimer.timeout.connect(self.findIssues)
         self.loopytimer.start(50)
-        
+
     def findIssues(self):
         try:
             dtd = DiagnosticToolDialog()
@@ -17034,10 +17536,10 @@ class DiagnosticWidget(QtWidgets.QWidget):
                 if isCritical: foundCritical = True
 
                 # item.setText(desc)
-                if isCritical: 
+                if isCritical:
                     self.diagnosticIcon.setIcon(GetIcon('autodiagnosticbad'))
                     print("THIS IS BAD")
-                else:          
+                else:
                     self.diagnosticIcon.setIcon(GetIcon('autodiagnosticwarning'))
                     print("Warning!")
         # print("after the for statement")
@@ -17316,12 +17818,16 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Add the Zone Entrance Indicator checkbox
                 self.zEntIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 31))
 
+                # Advanced mode checkbox
+                self.advIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 32))
+
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
                 L.addRow(trans.string('PrefsDlg', 27), TileL)
                 L.addRow(trans.string('PrefsDlg', 14), self.Trans)
                 L.addRow(trans.string('PrefsDlg', 15), ClearRecentBtn)
                 L.addWidget(self.zEntIndicator)
+                L.addWidget(self.advIndicator)
                 self.setLayout(L)
 
                 # Set the buttons
@@ -17355,6 +17861,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                     i += 1
 
                 self.zEntIndicator.setChecked(DrawEntIndicators)
+                self.advIndicator.setChecked(AdvancedModeEnabled)
 
             def ClearRecent(self):
                 """
@@ -18442,7 +18949,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         act.setIcon(GetIcon('overview'))
         act.setStatusTip(trans.string('MenuItems', 95))
         self.vmenu.addAction(act)
-		
+
         # quick paint configuration
         dock = QtWidgets.QDockWidget(trans.string('MenuItems', 136), self)
         dock.setFeatures(
@@ -19822,6 +20329,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         global DrawEntIndicators
         DrawEntIndicators = dlg.generalTab.zEntIndicator.isChecked()
         setSetting('ZoneEntIndicators', DrawEntIndicators)
+
+        # Get the advanced mode setting
+        global AdvancedModeEnabled
+        AdvancedModeEnabled = dlg.generalTab.advIndicator.isChecked()
+        setSetting('AdvancedMode', AdvancedModeEnabled)
 
         # Get the Toolbar tab settings
         boxes = (
@@ -21964,31 +22476,35 @@ def main():
 
     global EnableAlpha, GridType, CollisionsShown, RealViewEnabled
     global ObjectsFrozen, SpritesFrozen, EntrancesFrozen, LocationsFrozen, PathsFrozen, CommentsFrozen
-    global RealViewEnabled, SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown
-    global DrawEntIndicators
+    global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown
+    global DrawEntIndicators, AdvancedModeEnabled
 
     gt = setting('GridType')
+    
     if gt == 'checker':
         GridType = 'checker'
+    
     elif gt == 'grid':
         GridType = 'grid'
+    
     else:
         GridType = None
+    
     CollisionsShown = setting('ShowCollisions', False)
-    RealViewEnabled = setting('RealViewEnabled', False)
+    RealViewEnabled = setting('RealViewEnabled', True)
     ObjectsFrozen = setting('FreezeObjects', False)
     SpritesFrozen = setting('FreezeSprites', False)
     EntrancesFrozen = setting('FreezeEntrances', False)
     LocationsFrozen = setting('FreezeLocations', False)
     PathsFrozen = setting('FreezePaths', False)
     CommentsFrozen = setting('FreezeComments', False)
-    RealViewEnabled = setting('RealViewEnabled', True)
     SpritesShown = setting('ShowSprites', True)
     SpriteImagesShown = setting('ShowSpriteImages', True)
     LocationsShown = setting('ShowLocations', True)
     CommentsShown = setting('ShowComments', True)
     PathsShown = setting('ShowPaths', True)
     DrawEntIndicators = setting('ZoneEntIndicators', False)
+    AdvancedModeEnabled = setting('AdvancedMode', False)
     SLib.RealViewEnabled = RealViewEnabled
 
     # Choose a folder for the game
