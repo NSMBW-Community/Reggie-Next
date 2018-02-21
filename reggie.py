@@ -783,12 +783,18 @@ class SpriteDefinition:
         fields = self.fields
 
         for field in elem:
-            if field.tag not in ['checkbox', 'list', 'value', 'bitfield', 'multibox']: continue
+            if field.tag not in ['checkbox', 'list', 'value', 'bitfield', 'multibox', 'dualbox']: continue
 
             attribs = field.attrib
 
             if 'comment' in attribs:
-                comment = trans.string('SpriteDataEditor', 1, '[name]', attribs['title'], '[note]', attribs['comment'])
+
+                if field.tag == 'dualbox':
+                    title = attribs['title1']
+                else:
+                    title = attribs['title']
+
+                comment = trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['comment'])
 
             else:
                 comment = None
@@ -998,6 +1004,14 @@ class SpriteDefinition:
                     bit = bit[0]
 
                 fields.append((4, attribs['title'], bit, comment, required, advanced))
+
+            elif field.tag == 'dualbox':
+                # parameters title1, title2, bit, comment, required, advanced
+                # ONLY SUPPORTS A SINGLE BIT!
+
+                bit = int(attribs['bit'])
+
+                fields.append((5, attribs['title1'], attribs['title2'], bit, comment, required, advanced))
 
 
 def LoadSpriteData():
@@ -9785,8 +9799,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 else:
                     show = show and ran == val
 
-                print(show)
-
             # show/hide all widgets in this row
             for i in range(self.layout.columnCount()):
                 self.layout.itemAtPosition(self.row, i).widget().setVisible(show)
@@ -10141,6 +10153,82 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             self.updateData.emit(self)
 
+    class DualboxPropertyDecoder(PropertyDecoder):
+        """
+        Class that decodes/encodes sprite data to/from a checkbox
+        """
+
+        def __init__(self, title1, title2, bit, comment, required, advanced, layout, row):
+            """
+            Creates the widget
+            """
+            super().__init__()
+
+            if isinstance(bit, tuple) or isinstance(bit, list):
+                raise NotImplementedError("Only single bits allowed for dualbox")
+
+            self.bit = bit
+            self.required = required
+            self.advanced = advanced
+
+            self.row = row
+            self.layout = layout
+
+            self.buttons = [
+                QtWidgets.QRadioButton(), # off
+                QtWidgets.QRadioButton()  # on
+            ]
+
+            for button in self.buttons:
+                button.clicked.connect(self.HandleClick)
+
+            label1 = QtWidgets.QLabel(title1 + ':')
+            label2 = QtWidgets.QLabel(title2 + ':')
+
+            if comment is not None:
+                label1.setToolTip(comment)
+
+            L = QtWidgets.QHBoxLayout()
+            L.addStretch(1)
+            L.addWidget(label1)
+            L.addWidget(self.buttons[0])
+            L.addWidget(QtWidgets.QLabel("|"))
+            L.addWidget(self.buttons[1])
+            L.addWidget(label2)
+            L.addStretch(1)
+
+            # span 2 columns
+            w = QtWidgets.QWidget()
+            w.setLayout(L)
+            layout.addWidget(w, row, 0, 1, 2)
+
+        def update(self, data):
+            """
+            Updates the value shown by the widget
+            """
+            # check if requirements are met
+            self.checkReq(data)
+            self.checkAdv()
+
+            value = self.retrieve(data) & 1
+
+            self.buttons[value].setChecked(True)
+            self.buttons[not value].setChecked(False)
+
+        def assign(self, data):
+            """
+            Assigns the selected value to the data
+            """
+            value = self.buttons[1].isChecked()
+
+            return self.insertvalue(data, value)
+
+        def HandleClick(self, clicked=False):
+            """
+            Handles clicks on the checkbox
+            """
+            self.updateData.emit(self)
+
     def setSprite(self, type, reset=False):
         """
         Change the sprite type used by the data editor
@@ -10237,6 +10325,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
                 elif f[0] == 4:
                     nf = SpriteEditorWidget.MultiboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+
+                elif f[0] == 5:
+                    nf = SpriteEditorWidget.DualboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], layout, row)
 
                 nf.updateData.connect(self.HandleFieldUpdate)
                 fields.append(nf)
@@ -16160,39 +16251,41 @@ def calculateBgAlignmentMode(idA, idB, idC):
     if idB <= 0x000A: idB = 0
     if idC <= 0x000A: idC = 0
 
-    if ((idA == 0) and (idB == 0)) or (idC == 0):
+    if idA == idB == 0 or idC == 0:
         # Either both the first two are empty or the last one is empty
         return 0
-    elif (idA == idC) and (idB == idC):
+    elif idA == idC == idB:
         # They are all the same
         return 5
-    elif (idA == idC) and (idB != idC) and (idB != 0):
+    elif idA == idC != idB and idB != 0:
         # The first and last ones are the same, but
         # the middle one is different (not empty, though)
         return 1
-    elif (idC == idB) and (idA != idC) and (idA != 0):
+    elif idC == idB != idA and idA != 0:
         # The second and last ones are the same, but
         # the first one is different (not empty, though)
         return 2
-    elif (idB == 0) and (idA != idC) and (idA != 0):
+    elif idB == 0 and idC != idA != 0:
         # The middle one is empty. The first and last
         # ones are different, and the first one is not
         # empty
         return 3
-    elif (idA == 0) and (idB != idC) and (idB != 0):
+    elif idA == 0 and idC != idB != 0:
         # The first one is empty. The second and last
         # ones are different, and the second one is not
         # empty
         return 4
-    elif (idA == idB) and (idA != 0) and (idB != 0):
+    elif idA == idB != 0:
         # The first two match, and are not empty
         return 6
-    elif (idA != 0) and (idA != 0) and (idB != 0):
+    elif idA != 0 != idB:
         # Every single one is not empty
+        # note that idC is guaranteed to be nonzero,
+        # otherwise it'd have returned 0 already.
         return 7
-    else:
-        # Doesn't fit into any of the above categories
-        return 0
+
+    # Doesn't fit into any of the above categories
+    return 0
 
 
 # Sets up the Screen Cap Choice Dialog

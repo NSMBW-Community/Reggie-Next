@@ -319,7 +319,7 @@
       <requires sprite="297" /> <!-- Dragon Coaster -->
     </dependency>
     <dualbox bit="20" title1="Horizontal Platform" title2="Angled Platform" comment="This determines if the platform is flat and horizontal, or if it is tilted at an angle." />
-    <dualbox bit="21" title1="Angles Left" tilte2="Angles Right" comment="This determines which direction the platform will be angled." requiredbit="20" /> <!-- Appears only if Angled is enabled -->
+    <dualbox bit="21" title1="Angles Left" title2="Angles Right" comment="This determines which direction the platform will be angled." requiredbit="20" /> <!-- Appears only if Angled is enabled -->
     <list bit="22-24" title="Angle" comment="Angles greater than 45° have glitchy collision and are not recommended." requiredbit="20-21" requiredval="2">
       <entry value="7">11.25°</entry>
       <entry value="6">22.50°</entry>
@@ -345,7 +345,7 @@
       <entry value="1">Body</entry>
       <entry value="2">Tail</entry>
     </list>
-    <dualbox nybble="7" title1="Faces Left" title2="Faces Right" comment="This determines which direction the platform will face." requiredbit="48" requiredval="0" /> <!-- Only shows when Segment is set to Head or Tail; assumes no effect on Body -->
+    <dualbox bit="28" title1="Faces Left" title2="Faces Right" comment="This determines which direction the platform will face." requiredbit="48" requiredval="0" /> <!-- Only shows when Segment is set to Head or Tail; assumes no effect on Body -->
   </sprite> <!-- #18: Dragon Coaster Platform -->
 
 <!-- Document Dependency. Check for Level/Area/Zone requirements. Ask Treeki about isBigBoss effects. -->
@@ -397,7 +397,7 @@
   </sprite> <!-- #21: Paragoomba -->
 
   <sprite id="22" name="Pumpkin Goomba" asmhacks="True" notes="A Goomba inside a pumpkin.">
-    <dualbox nybble="12" title1="Goomba" title2="Paragoomba" comment="This will determine if it behaves like a Goomba or like a Paragoomba." />
+    <dualbox bit="48" title1="Goomba" title2="Paragoomba" comment="This will determine if it behaves like a Goomba or like a Paragoomba." />
   </sprite> <!-- #22: Pumpkin Goomba -->
 
   <sprite id="23" name="Basic Platform - Horizontal Movement" notes="The most basic platform in the game. Moves on its own from left to right.">
@@ -616,7 +616,7 @@
     <value bit="33-40" title="Target Event ID 4" requiredbit="25-32" idtype="Target Event" /> <!-- This value needs expanded to support 256 Event IDs --> <!-- Multiple Target Event IDtypes may not function -->
     <dualbox bit="48"  title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are activated." />
     <value bit="9-16"  title="Triggering Event ID" comment="This event will cause one of the available Target Events to be modified at random." idtype="Triggering Event" /> <!-- This value needs expanded to support 256 Event IDs -->
-    <dualbox bit="43-44" title1="Single Use" title2="Multi-Use" comment="This determines how often a Target Event ID can be modified by the controller." comment2="Single Use: When the Triggering Event becomes active, a Target Event will be modified, and the controller will not affect any Target Event again even if the Triggering Event becomes active again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time the Triggering Event becomes active, a Target Event will be modified. This means you must deactivate the Triggering Event ID before the controller can attempt to activate another Target ID." />
+    <dualbox bit="44" title1="Single Use" title2="Multi-Use" comment="This determines how often a Target Event ID can be modified by the controller." comment2="Single Use: When the Triggering Event becomes active, a Target Event will be modified, and the controller will not affect any Target Event again even if the Triggering Event becomes active again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time the Triggering Event becomes active, a Target Event will be modified. This means you must deactivate the Triggering Event ID before the controller can attempt to activate another Target ID." />
   </sprite> <!-- #36: Event Controller - "RANDOM" (If X, do Y OR Z) -->
 
   <sprite id="37" name="Event Controller - Chainer (If X, do Y)" notes="This event controller will link two events together. When the Triggering Event ID is activated, the Target Event ID will be modified. It's also possible to define a duration the Target Event will stay active, or a delay until the Target Event becomes active.">
@@ -625,7 +625,7 @@
     <dualbox bit="48" title1="Deactivates Target Event" title2="Activates Target Event" comment="This determines how the Target Event is modified." requiredbit="17-24" requiredval="0" /> <!-- Appears if no Delay is set -->
     <dualbox bit="48" title1="Off; On after Delay" title2="On; Off after Duration" comment="This determines how the Target Event is modified both before and after the delay." requiredbit="17-24" /> <!-- Appears if Delay is set -->
     <value bit="17-24" title="Activation Delay/Duration" comment="The Target Event will be modified instantly. When this is set to 0, the Target Event will not be modified further. Otherwise, it will wait a specific amount of time before placing it in the reverse state." comment2="A value of 6 is approximately 1 second on the game's clock. A value of 60 is approximately the same as a Timed Switch or Red Ring." />
-    <dualbox bit="43-44" title1="Single Use" title2="Multi-Use" comment="This determines how often the Target Event ID can be modified by the controller." comment2="Single Use: When the Triggering Event becomes active, the Target Event will be modified, and the controller will not affect the Target Event again even if the Triggering Event becomes active again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time the Triggering Event becomes active from a deactivated state, the Target Event will be modified. If the delay is still running, the delay will be refreshed to its full value." />
+    <dualbox bit="44" title1="Single Use" title2="Multi-Use" comment="This determines how often the Target Event ID can be modified by the controller." comment2="Single Use: When the Triggering Event becomes active, the Target Event will be modified, and the controller will not affect the Target Event again even if the Triggering Event becomes active again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time the Triggering Event becomes active from a deactivated state, the Target Event will be modified. If the delay is still running, the delay will be refreshed to its full value." />
   </sprite> <!-- #37: Event Controller - Chainer (If X, do Y) -->
 
 <!-- Improve comment2 on bit48, combined with Enemy Location ID. See comment chunk below for existing description. -->
@@ -915,7 +915,7 @@
       <entry value="3">5 Blocks*</entry>
     </list>
     <checkbox bit="40" title="Invisible Collision Box" advanced="True" advancedcomment="While strange, this value's function is clear: When the game loads the platform for the first time into view, and the player then leaves the screen, this value tells the game to remember the last position of the platform. It will then spawn an equally large collision box exactly over its last position. Mario cannot fall through this collision box, but he may pass through coming from below. I.e. when loading the platforms back to the original position, Mario is carried by the collision box, if he stands on it. This happens each time the platform leaves the screen. The bad thing is that Mario cannot activate more platforms when he stands exactly over their original position, where they spawned initially." />
-    <dualbox bit="43" title1="Touch to Activate" title="Activates when Loaded" comment="This determines how the platform begins to move. It can either be set to move only when touched by a player, or it can be set to move automatically when loaded into memory." advanced="True" />
+    <dualbox bit="43" title1="Touch to Activate" title2="Activates when Loaded" comment="This determines how the platform begins to move. It can either be set to move only when touched by a player, or it can be set to move automatically when loaded into memory." advanced="True" />
     <list bit="47-48" title="Vertical Movement and Direction" advanced="True" advancedcomment="This determines how the platform moves on the Y-axis. If the value is set to '0' or '2', the platform will rise up. With value '1', the platform will fall slowly. The platform stops only after it has reached the 'Travel Limit' line. At this position, an upward-moving platform will stop ; however, a downward-moving platform will move continuously if a value of '1' is used and the platform is positioned below the 'Travel Limit' line. If the platform is placed above the 'Travel Limit' line, it will automatically be moved to the 'Travel Limit' line (no matter which direction it is moving) when it becomes active. The 'Travel Limit' line is located 7.5 Blocks below the upper zone border. &lt;br&gt;&lt;br&gt;This platform functions independently of scroll limits (therefore, the 'Travel Limit' ignores scroll limits).">
       <entry value="3">No Vertical Movement</entry>
       <entry value="0">Up</entry>
@@ -986,8 +986,8 @@
       <entry value="2">Start Going Down</entry>
       <entry value="3">Glitchy Behavior</entry>
     </list> <!-- Only appears when Flying: Up and Down is selected -->
-    <dualbox bit="40" title="Initial Flying Distance" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 10 Blocks, so this only sets the initial movement distance on load." requiredbit="43-44" requiredval="1" /> <!-- Only appears when Flying: Left and Right is selected -->
-    <dualbox bit="40" title="Initial Flying Distance" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 10 Blocks, so this only sets the initial movement distance on load." requiredbit="43-44" requiredval="2" /> <!-- Only appears when Flying: Up and Down is selected -->
+    <value nybble="10" title="Initial Flying Distance" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 10 Blocks, so this only sets the initial movement distance on load." requiredbit="43-44" requiredval="1" /> <!-- Only appears when Flying: Left and Right is selected -->
+    <value nybble="10" title="Initial Flying Distance" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 10 Blocks, so this only sets the initial movement distance on load." requiredbit="43-44" requiredval="2" /> <!-- Only appears when Flying: Up and Down is selected -->
     <dualbox bit="48" title1="Walks Off Ledges" title2="Turns Around At Ledges" comment="This determines if the Koopa Troopa, once stepped on and de-winged, will mindlessly walk off of ledges or if it will turn around when it reaches a ledge." comment2="This also changes the color of the Koopa Troopa." />
     <list nybble="6" title="Color" comment="This determines the color of the Koopa Paratroopa." advancedcomments="More colors can be added for your hack." requiredbit="48" requiredval="0">
       <entry value="0">Green</entry>
@@ -5115,7 +5115,7 @@
 
 <!-- Feel free to research the Timing Offset value for information on what it does. There's a few options. It could be a Set ID sort of matching that causes all Skewers of a specific set to be loaded in when any from the set is loaded into memory. If all Skewers are loaded into memory for timing purposes from the start of a level, it could be a fractional offset causing it to simply shift the starting time. It could also be a flat delay rather than a fractional one. Confirmation on its function would be nice. Load yourself up a starman and low zoom level and see what happens across a long stage. For the most part, keep your Skewers otherwise identical on their settings, but also test using a single "Timing Offset" and see what happens when differences between them are added. Or, just dig around in ASM. Your choice. Edit 140-142 and maybe 398-399 with the same findings. -->
   <sprite id="137" name="Skewer - Down" sizehacks="True" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
-    <dualbox bit="31" title1="Black" title="Silver" comment="This determines the color of the Skewer." />
+    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer." />
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
       <entry value="0">6 Blocks</entry>
       <entry value="1">14 Blocks</entry>
@@ -5275,7 +5275,7 @@
  -->
 
   <sprite id="140" name="Skewer - Up" sizehacks="True" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
-    <dualbox bit="31" title1="Black" title="Silver" comment="This determines the color of the Skewer." />
+    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer." />
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
       <entry value="0">6 Blocks</entry>
       <entry value="1">14 Blocks</entry>
@@ -5308,7 +5308,7 @@
   </sprite> <!-- #140: Skewer - Up -->
 
   <sprite id="141" name="Skewer - Right" sizehacks="True" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
-    <dualbox bit="31" title1="Black" title="Silver" comment="This determines the color of the Skewer." />
+    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer." />
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
       <entry value="0">6 Blocks</entry>
       <entry value="1">14 Blocks</entry>
@@ -5341,7 +5341,7 @@
   </sprite> <!-- #141: Skewer - Right -->
 
   <sprite id="142" name="Skewer - Left" sizehacks="True" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
-    <dualbox bit="31" title1="Black" title="Silver" comment="This determines the color of the Skewer." />
+    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer." />
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
       <entry value="0">6 Blocks</entry>
       <entry value="1">14 Blocks</entry>
@@ -5846,7 +5846,7 @@
   </sprite> <!-- #167: Shy Guy Giants -->
 
   <sprite id="168" name="Thundercloud" asmhacks="True" notes="This creates an unhappy Thundercloud that is similar to a Lakitu's cloud. It will slingshot around the top of the stage and occasionally shoot down Thunder. This Thunder will turn non-tiny Marios into Mini-Mario, and kill Mini-Marios outright. The Thunder will not reach beneath solid terrain.">
-    <dualbox bit="48" title1="Chases Player" title2="Stationary" title="Stationary Thunder" comment="This determines if the Thundercloud will chase the player, or if it will remain in a single position. " />
+    <dualbox bit="48" title1="Chases Player" title2="Stationary" comment="This determines if the Thundercloud will chase the player, or if it will remain in a single position. " />
     <checkbox bit="20" title="Do Not Respawn" comment="When enabled, the Thundercloud will not respawn on its own after being killed by the player. Otherwise the Thundercloud will continue to respawn once loaded until the Triggering Event is activated." />
     <value bit="26-32" title="Triggering Event ID (Die)" comment="When the Triggering Event is activated, the Thundercloud will die." requiredbit="48" requiredval="0" /> <!-- Appears if Chases Player is set -->
     <value bit="26-32" title="Triggering Event ID (Thunder)" comment="If a Triggering Event is set, the Thundercloud will only shoot thunder while this Event is activated. If a Triggering Event is not set, it will shoot thunder for 3 seconds on, 1 second off (?)." requiredbit="48" /> <!-- Appears if Stationary is set -->
@@ -6873,8 +6873,8 @@
   </sprite> <!-- #227: Pipe Cannon -->
 
   <sprite id="228" name="Stretching Mushroom Platform" asmhacks="True" notes="A stretching platform that looks like a mushroom with naturally synchronized timing.">
-    <dualbox title1="Long Platform" title2="Short Platform" comment="This determines the width of the Mushroom Platform when expanded." />
-    <dualbox title1="Starts Contracted" title2="Starts Expanded" comment="This determines the initial state of the Mushroom Platform." />
+    <dualbox bit="40" title1="Long Platform" title2="Short Platform" comment="This determines the width of the Mushroom Platform when expanded." />
+    <dualbox bit="44" title1="Starts Contracted" title2="Starts Expanded" comment="This determines the initial state of the Mushroom Platform." />
     <list nybble="6" title="Color" comment="This determines the color of the Mushroom Platform." advancedcomment="More colors can be added for your hack.">
       <entry value="0">Pink (Original)</entry>
       <entry value="1">Red</entry>
@@ -9732,7 +9732,7 @@
 <!-- Documentation conflict with bit 28 (26??) (nybble 7, 0100, value 4???) on 398, 400, 401, and 404. W4 Castle vs unchecked. Additionally, investigate the use of Layer 0 (foreground) terrain with all four skewers. -->
   <sprite id="398" name="Long / Massive Skewers - Right" notes="A long spiked pillar that covers a distance of about 80 Blocks to the right. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
     <dualbox bit="28" title1="Massive Skewer" title2="Long Skewer" comment="This determines which type of Skewer will be used." comment2="A massive Skewer is an extremely wide and intimidating spiked pillar spanning just over 10 blocks in width. It appears in front of all terrain and all other sprites. A long Skewer is the size of a standard spiked pillar and has the same behavior as normal Skewers." />
-    <dualbox bit="31" title1="Black" title="Silver" comment="This determines the color of the Skewer." />
+    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer." />
     <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction." />
     <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position." />
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting." />
@@ -9744,7 +9744,7 @@
 
   <sprite id="400" name="Long / Massive Skewers - Left" notes="A long spiked pillar that covers a distance of about 80 Blocks to the left. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
     <dualbox bit="28" title1="Massive Skewer" title2="Long Skewer" comment="This determines which type of Skewer will be used." comment2="A massive Skewer is an extremely wide and intimidating spiked pillar spanning just over 10 blocks in width. It appears in front of all terrain and all other sprites. A long Skewer is the size of a standard spiked pillar and has the same behavior as normal Skewers." />
-    <dualbox bit="31" title1="Black" title="Silver" comment="This determines the color of the Skewer." />
+    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer." />
     <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction." />
     <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position." />
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting." />
@@ -9753,7 +9753,7 @@
 
   <sprite id="401" name="Long / Massive Skewers - Down" notes="A long spiked pillar that covers a distance of exactly 108 Blocks downwards. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
     <dualbox bit="28" title1="Massive Skewer" title2="Long Skewer" comment="This determines which type of Skewer will be used." comment2="A massive Skewer is an extremely wide and intimidating spiked pillar spanning just over 10 blocks in width. It appears in front of all terrain and all other sprites. A long Skewer is the size of a standard spiked pillar and has the same behavior as normal Skewers." />
-    <dualbox bit="31" title1="Black" title="Silver" comment="This determines the color of the Skewer." />
+    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer." />
     <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction." />
     <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position." />
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting." />
@@ -9834,7 +9834,7 @@
 
   <sprite id="404" name="Long / Massive Skewers - Up" notes="A long spiked pillar that covers a distance of exactly 108 Blocks upwards. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
     <dualbox bit="28" title1="Massive Skewer" title2="Long Skewer" comment="This determines which type of Skewer will be used." comment2="A massive Skewer is an extremely wide and intimidating spiked pillar spanning just over 10 blocks in width. It appears in front of all terrain and all other sprites. A long Skewer is the size of a standard spiked pillar and has the same behavior as normal Skewers." />
-    <dualbox bit="31" title1="Black" title="Silver" comment="This determines the color of the Skewer." />
+    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer." />
     <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction." />
     <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position." />
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting." />
@@ -10272,7 +10272,7 @@
     <dualbox bit="40" title1="Red" title2="Green" comment="This determines the color of the Thick mushroom platform." requiredbit="44" /> <!-- Appears if Thick is set -->
     <value nybble="12" title="Width" comment="This determines the width of the mushroom platform." />
     <dualbox bit="20" title1="Horizontal Platform" title2="Angled Platform" comment="This determines if the mushroom platform is flat and horizontal, or if it is tilted at an angle." />
-    <dualbox bit="21" title1="Angles Left" tilte2="Anlges Right" comment="This determines which direction the mushroom platform will be angled." requiredbit="20" /> <!-- Appears only if Angled is enabled -->
+    <dualbox bit="21" title1="Angles Left" title2="Anlges Right" comment="This determines which direction the mushroom platform will be angled." requiredbit="20" /> <!-- Appears only if Angled is enabled -->
     <list bit="22-24" title="Angle" comment="Angles greater than 45° have glitchy collision and are not recommended." requiredbit="20-21" requiredval="2">
       <entry value="7">11.25°</entry>
       <entry value="6">22.50°</entry>
