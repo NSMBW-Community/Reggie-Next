@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--Version 2.013-->
+<!--Version 2.014-->
 <!-- &lt; = < -->
 <!-- &gt; = > -->
 <!-- &quot; = " -->
@@ -6830,7 +6830,7 @@
       <suggested sprite="163"/>
     </dependency>
     <value nybble="8-9" title="Initial Delay?" comment="Definitely not measured in Mario seconds."/>
-    <checkbox bit="40" title1="Flies Left to Right" title2="Flies Right to Left" comment="This determines the direction the Jumbo Ray will travel across the screen."/>
+    <dualbox bit="40" title1="Flies Left to Right" title2="Flies Right to Left" comment="This determines the direction the Jumbo Ray will travel across the screen."/>
     <value bit="41-44" title="Altitude (Flight Route)" comment="This determines how high the Jumbo Ray will fly up from the bottom of the screen." comment2="More research is required on the exact details of each number, but Retail levels use 1 and 2 with 2 being higher, while Newer also uses 0 which also seems to be fairly high."/>
     <value nybble="12" title="Ray ID" comment="This determines which Jumbo Ray Respawner will influence the respawn of this Jumbo Ray." idtype="Ray"/>
   </sprite> <!-- #224: Jumbo Ray -->
