@@ -9619,7 +9619,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         # comments
         self.com_box = QtWidgets.QGroupBox()
-        self.com_box.setMaximumHeight(200)
+        self.com_box.setMaximumHeight(67)
 
         self.com_main = QtWidgets.QTextEdit()
         self.com_main.setReadOnly(True)
