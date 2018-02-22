@@ -10528,11 +10528,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.buttons = []
 
             button = QtWidgets.QRadioButton()
-            button.setStyleSheet("height: 16px")
+            #button.setStyleSheet("height: 18px; width: 18px")
             self.buttons.append(button)
 
             button = QtWidgets.QRadioButton()
-            button.setStyleSheet("height: 16px")
+            #button.setStyleSheet("height: 18px; width: 18px")
             self.buttons.append(button)
 
             for button in self.buttons:
@@ -10676,7 +10676,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # show the raw editor if advanced mode is enabled
         self.raweditor.setVisible(AdvancedModeEnabled)
         self.editbox.setVisible(AdvancedModeEnabled)
-        self.resetButton.setVisible(not AdvancedModeEnabled)
+        self.resetButton.setVisible(not AdvancedModeEnabled and len(sprite.fields) > 0)
 
         # Nothing is selected, so no comments should appear
         self.com_box.setVisible(False)
