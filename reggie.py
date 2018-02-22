@@ -9565,10 +9565,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.resetButton.clicked.connect(self.HandleResetData)
 
         editboxlayout = QtWidgets.QHBoxLayout()
-        editboxlayout.addWidget(self.editbox)
-        editboxlayout.addWidget(edit)
         editboxlayout.addWidget(self.resetButton)
         editboxlayout.addStretch(1)
+        editboxlayout.addWidget(self.editbox)
+        editboxlayout.addWidget(edit)
         editboxlayout.setStretch(1, 1)
 
         # 'Editing Sprite #' label
@@ -9619,7 +9619,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         # comments
         self.com_box = QtWidgets.QGroupBox()
-        self.com_box.setMaximumHeight(67)
+        self.com_box.setMaximumHeight(120)
 
         self.com_main = QtWidgets.QTextEdit()
         self.com_main.setReadOnly(True)
