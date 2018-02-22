@@ -10676,7 +10676,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # show the raw editor if advanced mode is enabled
         self.raweditor.setVisible(AdvancedModeEnabled)
         self.editbox.setVisible(AdvancedModeEnabled)
-        self.resetButton.setVisible(not AdvancedModeEnabled and len(sprite.fields) > 0)
+        self.resetButton.setVisible(AdvancedModeEnabled or len(sprite.fields) > 0)
 
         # Nothing is selected, so no comments should appear
         self.com_box.setVisible(False)
