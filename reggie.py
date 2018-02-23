@@ -919,8 +919,6 @@ class SpriteDefinition:
 
                     bit.append(r_bit)
 
-                if int(elem.attrib['id']) == 169:
-                    print("in: [" + sbit + "]; out: [" + str(bit) + "]; max: " + str(1 << l))
                 max = 1 << l
 
                 if len(bit) == 1:
@@ -9571,7 +9569,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         editboxlayout.addStretch(1)
         editboxlayout.addWidget(self.editbox)
         editboxlayout.addWidget(edit)
-        editboxlayout.setStretch(1, 1)
+        #editboxlayout.setStretch(1, 1)
 
         # 'Editing Sprite #' label
         self.spriteLabel = QtWidgets.QLabel('-')
@@ -9598,6 +9596,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.advNoteButton.setAutoRaise(True)
         self.advNoteButton.clicked.connect(self.ShowAdvancedNoteTooltip)
 
+        self.yoshiIcon = QtWidgets.QLabel()
+
         self.yoshiInfo = QtWidgets.QToolButton()
         self.yoshiInfo.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
         self.yoshiInfo.setText(trans.string('SpriteDataEditor', 12))
@@ -9605,12 +9605,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.yoshiInfo.clicked.connect(self.ShowYoshiTooltip)
 
         self.asm = QtWidgets.QLabel()
-        self.asm.setPixmap(GetIcon("asm").pixmap(64,64))
+        self.asm.setPixmap(GetIcon("asm").pixmap(64, 64))
 
         toplayout = QtWidgets.QHBoxLayout()
         toplayout.addWidget(self.spriteLabel)
         toplayout.addStretch(1)
         toplayout.addWidget(self.asm)
+        toplayout.addWidget(self.yoshiIcon)
         toplayout.addWidget(self.yoshiInfo)
         toplayout.addWidget(self.relatedObjFilesButton)
         toplayout.addWidget(self.noteButton)
@@ -9632,6 +9633,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.com_extra = QtWidgets.QTextEdit()
         self.com_extra.setReadOnly(True)
+        self.com_extra.setVisible(False)
 
         L = QtWidgets.QVBoxLayout()
         L.addWidget(self.com_main)
@@ -10695,69 +10697,82 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if len(self.fields) > 0:
                 self.fields = []
 
+            return
+
+        self.spriteLabel.setText(trans.string('SpriteDataEditor', 6, '[id]', type, '[name]', sprite.name))
+
+        if sprite.notes is not None:
+            self.noteButton.setVisible(True)
+            self.com_main.setText(sprite.notes)
+            self.com_more.setVisible(False)
+            self.com_extra.setVisible(False)
+            self.com_box.setVisible(True)
+
+        self.notes = sprite.notes
+
+        # advanced comment
+        self.advNoteButton.setVisible(AdvancedModeEnabled and sprite.advNotes is not None)
+        self.advNotes = sprite.advNotes
+
+        self.relatedObjFilesButton.setVisible(sprite.relatedObjFiles is not None)
+        self.relatedObjFiles = sprite.relatedObjFiles
+
+        self.asm.setVisible(sprite.asm is True)
+
+        # yoshi info
+        if sprite.noyoshi is True:
+            image = "ys-no"
+        elif sprite.noyoshi is not None:
+            image = "ys-works"
         else:
-            self.spriteLabel.setText(trans.string('SpriteDataEditor', 6, '[id]', type, '[name]', sprite.name))
+            image = None
 
-            self.noteButton.setVisible(sprite.notes is not None)
-            self.notes = sprite.notes
+        if sprite.yoshiNotes is not None:
+            if image is None:
+                image = "ys-works"
 
-            # advanced comment
-            self.advNoteButton.setVisible(AdvancedModeEnabled and sprite.advNotes is not None)
-            self.advNotes = sprite.advNotes
+            self.yoshiIcon.setVisible(False)
+            self.yoshiInfo.setIcon(GetIcon(image))
+            self.yoshiInfo.setVisible(True)
+            self.yoshiNotes = sprite.yoshiNotes
 
-            self.relatedObjFilesButton.setVisible(sprite.relatedObjFiles is not None)
-            self.relatedObjFiles = sprite.relatedObjFiles
-
-            self.asm.setVisible(sprite.asm is True)
-
-            # yoshi info
-            if sprite.noyoshi is not None:
-                if sprite.noyoshi is True:
-                    image = "ys-no"
-
-                else:
-                    image = "ys-works"
-
-                self.yoshiInfo.setIcon(GetIcon(image))
-                self.yoshiInfo.setVisible(True)
-
-                if sprite.yoshiNotes is None:
-                    sprite.yoshiNotes = trans.string('SpriteDataEditor', 15)
-
-                self.yoshiNotes = sprite.yoshiNotes
-
+        else:
+            if image is None:
+                self.yoshiIcon.setVisible(False)
             else:
-                self.yoshiInfo.setVisible(False)
+                self.yoshiIcon.setPixmap(GetIcon(image).pixmap(64, 64))
+                self.yoshiIcon.setVisible(True)
 
+            self.yoshiInfo.setVisible(False)
 
-            # create all the new fields
-            fields = []
-            row = 2
+        # create all the new fields
+        fields = []
+        row = 2
 
-            for f in sprite.fields:
-                if f[0] == 0:
-                    nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+        for f in sprite.fields:
+            if f[0] == 0:
+                nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
 
-                elif f[0] == 1:
-                    nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+            elif f[0] == 1:
+                nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
 
-                elif f[0] == 2:
-                    nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+            elif f[0] == 2:
+                nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
 
-                elif f[0] == 3:
-                    nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+            elif f[0] == 3:
+                nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
 
-                elif f[0] == 4:
-                    nf = SpriteEditorWidget.MultiboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], layout, row, self)
+            elif f[0] == 4:
+                nf = SpriteEditorWidget.MultiboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], layout, row, self)
 
-                elif f[0] == 5:
-                    nf = SpriteEditorWidget.DualboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+            elif f[0] == 5:
+                nf = SpriteEditorWidget.DualboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
 
-                nf.updateData.connect(self.HandleFieldUpdate)
-                fields.append(nf)
-                row += 1
+            nf.updateData.connect(self.HandleFieldUpdate)
+            fields.append(nf)
+            row += 1
 
-            self.fields = fields
+        self.fields = fields
 
     def update(self):
         """
@@ -10828,7 +10843,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.com_more.setText(trans.string('SpriteDataEditor', 14))
             self.com_main.setVisible(False)
 
-
     def HandleFieldUpdate(self, field):
         """
         Triggered when a field's data is updated
@@ -10866,10 +10880,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.DataUpdate.emit(data)
 
-        self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
-            data[0], data[1], data[2], data[3],
-            data[4], data[5], data[6], data[7],
-        ))
+        data = ['0' * 4] * 4
+        self.raweditor.setText(' '.join(data))
         self.raweditor.setStyleSheet('QLineEdit { background-color: #ffffff; }')
 
     def HandleRawDataEdited(self, text):
