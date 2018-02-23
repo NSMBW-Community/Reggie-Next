@@ -5858,7 +5858,7 @@
 
 <!-- Double check Moving Direction, value 0 with ASM. -->
   <sprite id="169" name="Magic Platform" asmhacks="True" notes="Magic Platforms are created by assigning tileset data to an invisible block as a new texture, and moving that texture around. While it functions best as a moving platform, the Magic Platform does not have to move in order to perform its function. It can also simply create terrain chunks with a different type of collision than normal.">
-    <dependency notes="It should be noted that the Magic Platform can only create rectangular shapes. It cannot have slopes, and it cannot have 'unused space' within the location. All tiles will turn into solid blocks."/>
+    <dependency notes="It should be noted that the Magic Platform can only create rectangular shapes. It cannot have slopes, and it cannot have 'unused space' within the location. All tiles will turn into solid blocks." />
     <value nybble="11-12" title="Location ID" comment="This determines what the Magic Platform looks like. It will clone the tiles as it sees them within the given Location. This Location does not have to be within the current Zone boundaries."/>
     <list nybble="6" title="Collision" comment="This determines the type of collision.">
       <entry value="0">Solid Block</entry>
@@ -5871,7 +5871,7 @@
       <entry value="7">Fully Permeable (Layer 0)</entry>
     </list>
     <value bit="17-19" title="Z-Order" comment="Changes the Z-Order of the Magic Platform to place it behind Layer 2."/>
-    <value nybble="9-16" title="Triggering Event ID" comment="When this Event is activated, the Magic Platform will move as specified. When the Event is deactivated, the Magic Platform will return to its starting position." idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs -->
+    <value bit="9-16" title="Triggering Event ID" comment="When this Event is activated, the Magic Platform will move as specified. When the Event is deactivated, the Magic Platform will return to its starting position." idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs -->
     <list bit="34-36" title="Moving Direction" comment="This determines which direction the Magic Platform will move.">
       <entry value="0">Does Not Move</entry>
       <entry value="1">Left</entry>

@@ -10855,15 +10855,21 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Handles the reset data button being clicked
         """
         self.data = b'\0\0\0\0\0\0\0\0'
+        data = self.data
 
         self.UpdateFlag = True
 
         for f in self.fields:
-            f.update(self.data)
+            f.update(data)
 
         self.UpdateFlag = False
 
-        self.DataUpdate.emit(self.data)
+        self.DataUpdate.emit(data)
+
+        self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
+            data[0], data[1], data[2], data[3],
+            data[4], data[5], data[6], data[7],
+        ))
         self.raweditor.setStyleSheet('QLineEdit { background-color: #ffffff; }')
 
     def HandleRawDataEdited(self, text):
@@ -11822,8 +11828,8 @@ def LoadTheme():
     global theme
 
     id = setting('Theme')
-    if id is None: id = 'Classic'
-    print('THEME ID: ' + str(id))
+    if id is None:
+        id = 'Classic'
 
     if id != 'Classic':
         theme = ReggieTheme(id)
