@@ -915,10 +915,12 @@ class SpriteDefinition:
                         # different number of bits
                         getit = ran.split('-')
                         r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
-                        l += r_bit[1] - r_bit[0] + 1
+                        l += r_bit[1] - r_bit[0]
 
                     bit.append(r_bit)
 
+                if int(elem.attrib['id']) == 169:
+                    print("in: [" + sbit + "]; out: [" + str(bit) + "]; max: " + str(1 << l))
                 max = 1 << l
 
                 if len(bit) == 1:
@@ -964,7 +966,7 @@ class SpriteDefinition:
                         # different number of bits
                         getit = ran.split('-')
                         r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
-                        l += r_bit[1] - r_bit[0] + 1
+                        l += r_bit[1] - r_bit[0]
 
                     bit.append(r_bit)
 
@@ -9815,8 +9817,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             # show/hide all widgets in this row
             for i in range(self.layout.columnCount()):
-                if self.layout.itemAtPosition(self.row, i) is not None:
-                    self.layout.itemAtPosition(self.row, i).widget().setVisible(show)
+                w = self.layout.itemAtPosition(self.row, i)
+                if w is not None:
+                    w.widget().clearFocus()
+                    w.widget().setVisible(show)
 
         def checkAdv(self):
             """
