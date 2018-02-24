@@ -787,25 +787,24 @@ class SpriteDefinition:
 
             attribs = field.attrib
 
+            if field.tag == 'dualbox':
+                title = attribs['title1'] + " / " + attribs['title2']
+            else:
+                title = attribs['title']
+
             if 'comment' in attribs:
-
-                if field.tag == 'dualbox':
-                    title = attribs['title1'] + " / " + attribs['title2']
-                else:
-                    title = attribs['title']
-
                 comment = trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['comment'])
 
             else:
                 comment = None
 
             if 'comment2' in attribs:
-                comment2 = attribs['comment2']
+                comment2 = trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['comment2'])
             else:
                 comment2 = None
 
             if 'advancedcomment' in attribs:
-                advancedcomment = attribs['advancedcomment']
+                advancedcomment = trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['advancedcomment'])
             else:
                 advancedcomment = None
 
