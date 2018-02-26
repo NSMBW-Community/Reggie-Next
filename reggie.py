@@ -752,28 +752,24 @@ class SpriteDefinition:
             """
             Required by Qt
             """
-            # return self.max
             return len(self.entries)
 
         def data(self, index, role=Qt.DisplayRole):
             """
             Get what we have for a specific row
             """
-            if not index.isValid(): return None
-            n = index.row()
-            if n < 0: return None
-            # if n >= self.max: return None
-            if n >= len(self.entries): return None
+            if not index.isValid() or role != Qt.DisplayRole:
+                return None
 
-            if role == Qt.DisplayRole:
-                # entries = self.entries
-                # if n in entries:
-                #    return '%d: %s' % (n, entries[n])
-                # else:
-                #    return '%d: <unknown/unused>' % n
+            n = index.row()
+            if n < 0 or n >= len(self.entries):
+                return None
+
+            if AdvancedModeEnabled:
                 return '%d: %s' % self.entries[n]
 
-            return None
+            return str(self.entries[n][1])
+
 
     def loadFrom(self, elem):
         """
@@ -9537,6 +9533,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
 
 
 AltSettingIcons = False
+ResetDataWhenHiding = False
 
 class SpriteEditorWidget(QtWidgets.QWidget):
     """
@@ -9816,12 +9813,21 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 else:
                     show = show and ran == val
 
+            visibleNow = self.layout.itemAtPosition(self.row, 0).widget().isVisible()
+
+            if show == visibleNow:
+                return
+
             # show/hide all widgets in this row
             for i in range(self.layout.columnCount()):
                 w = self.layout.itemAtPosition(self.row, i)
                 if w is not None:
                     w.widget().clearFocus()
                     w.widget().setVisible(show)
+
+            # maybe reset hidden stuff
+            if ResetDataWhenHiding and not show:
+                self.insertvalue(data, 0)
 
         def checkAdv(self):
             """
@@ -10117,6 +10123,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             Handle the current index changing in the combobox
             """
+            if index < 0:
+                return
+
             self.updateData.emit(self)
 
     class ValuePropertyDecoder(PropertyDecoder):
@@ -18437,6 +18446,10 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Advanced mode checkbox
                 self.advIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 32))
 
+                # Reset data when hide checkbox
+                # TODO: Add this to strings
+                self.rdhIndicator = QtWidgets.QCheckBox("Reset sprite data when hiding sprite fields")
+
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
                 L.addRow(trans.string('PrefsDlg', 27), TileL)
@@ -18444,6 +18457,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L.addRow(trans.string('PrefsDlg', 15), ClearRecentBtn)
                 L.addWidget(self.zEntIndicator)
                 L.addWidget(self.advIndicator)
+                L.addWidget(self.rdhIndicator)
                 self.setLayout(L)
 
                 # Set the buttons
@@ -18478,6 +18492,7 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 self.zEntIndicator.setChecked(DrawEntIndicators)
                 self.advIndicator.setChecked(AdvancedModeEnabled)
+                self.rdhIndicator.setChecked(ResetDataWhenHiding)
 
             def ClearRecent(self):
                 """
@@ -21145,6 +21160,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         AdvancedModeEnabled = dlg.generalTab.advIndicator.isChecked()
         setSetting('AdvancedMode', AdvancedModeEnabled)
 
+        # Get the reset data when hiding setting
+        global ResetDataWhenHiding
+        ResetDataWhenHiding = dlg.generalTab.rdhIndicator.isChecked()
+        setSetting('ResetDataWhenHiding', ResetDataWhenHiding)
+
         # Get the Toolbar tab settings
         boxes = (
         dlg.toolbarTab.FileBoxes, dlg.toolbarTab.EditBoxes, dlg.toolbarTab.ViewBoxes, dlg.toolbarTab.SettingsBoxes,
@@ -23287,7 +23307,7 @@ def main():
     global EnableAlpha, GridType, CollisionsShown, RealViewEnabled
     global ObjectsFrozen, SpritesFrozen, EntrancesFrozen, LocationsFrozen, PathsFrozen, CommentsFrozen
     global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown
-    global DrawEntIndicators, AdvancedModeEnabled
+    global DrawEntIndicators, AdvancedModeEnabled, ResetDataWhenHiding
 
     gt = setting('GridType')
 
@@ -23315,6 +23335,7 @@ def main():
     PathsShown = setting('ShowPaths', True)
     DrawEntIndicators = setting('ZoneEntIndicators', False)
     AdvancedModeEnabled = setting('AdvancedMode', False)
+    ResetDataWhenHiding = setting('ResetDataWhenHiding', False)
     SLib.RealViewEnabled = RealViewEnabled
 
     # Choose a folder for the game
