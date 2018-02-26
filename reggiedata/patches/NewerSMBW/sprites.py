@@ -91,6 +91,49 @@ class SpriteImage_PumpkinGoomba(SLib.SpriteImage_StaticMultiple):  # 22
 
         super().dataChanged()
 
+class SpriteImage_Thwomp(SLib.SpriteImage_StaticMultiple):  # 47
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['Thwomp'],
+            (-6, -6),
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('Thwomp', 'thwomp.png')
+        SLib.loadIfNotInImageCache('ThwompIce', 'thwomp_ice.png')
+
+    def dataChanged(self):
+        icy = self.parent.spritedata[2] & 1
+
+        if icy:
+            self.image = ImageCache['ThwompIce']
+        else:
+            self.image = ImageCache['Thwomp']
+
+class SpriteImage_GiantThwomp(SLib.SpriteImage_StaticMultiple):  # 48
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['GiantThwomp'],
+            (-8, -8),
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('GiantThwomp', 'giant_thwomp.png')
+        SLib.loadIfNotInImageCache('GiantThwompIce', 'thwomp_ice.png')
+
+    def dataChanged(self):
+        icy = self.parent.spritedata[2] & 1
+
+        if icy:
+            self.image = ImageCache['GiantThwompIce']
+        else:
+            self.image = ImageCache['GiantThwomp']
 
 class SpriteImage_FakeStarCoin(SLib.SpriteImage_Static):  # 49
     def __init__(self, parent):
@@ -504,6 +547,8 @@ ImageClasses = {
     19: SpriteImage_SamuraiGuy,
     20: SpriteImage_NewerGoomba,
     22: SpriteImage_PumpkinGoomba,
+    47: SpriteImage_Thwomp,
+    48: SpriteImage_GiantThwomp,
     49: SpriteImage_FakeStarCoin,
     57: SpriteImage_NewerKoopa,
     157: SpriteImage_BigPumpkin,

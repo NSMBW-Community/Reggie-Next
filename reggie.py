@@ -10552,8 +10552,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             for button in self.buttons:
                 button.clicked.connect(self.HandleClick)
 
-            label1 = QtWidgets.QLabel(title1 + ':')
-            label2 = QtWidgets.QLabel(':' + title2)
+            label1 = QtWidgets.QLabel(title1)
+            label2 = QtWidgets.QLabel(title2)
 
             self.comment = comment
             self.comment2 = comment2
