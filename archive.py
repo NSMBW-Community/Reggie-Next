@@ -30,8 +30,8 @@
 ################################################################
 ################################################################
 
-
-from common import *
+import os
+from common import Struct, WiiArchive, align
 
 
 class U8(WiiArchive):

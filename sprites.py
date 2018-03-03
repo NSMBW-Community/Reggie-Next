@@ -33,14 +33,11 @@
 import math
 import random
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5 import QtCore, QtGui
 Qt = QtCore.Qt
 
 import spritelib as SLib
-
 ImageCache = SLib.ImageCache
-import sprites_common
 
 
 ################################################################
@@ -307,7 +304,6 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage):  # 30, 81, 82, 83, 84, 85, 86
 
         blockX = 0
         blockY = 0
-        type = self.parent.type
         width = self.width * 1.5
         height = self.height * 1.5
 
@@ -377,7 +373,7 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 64, 138, 139, 216, 358, 374,
 
         # (0, 0) is the top-left corner of the zone
 
-        zx, zy, zw, zh = zoneRect.topLeft().x(), zoneRect.topLeft().y(), zoneRect.width(), zoneRect.height()
+        zy, zw, zh = zoneRect.topLeft().y(), zoneRect.width(), zoneRect.height()
 
         drawRise = self.risingHeight != 0
         drawCrest = self.drawCrest
@@ -506,7 +502,6 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
             x = 0
         distance = x + 1  # In order to hide one side of the track behind the image.
 
-        w = 66
         L = ((37 * 16) + 41) / 1.5  # (16 mid sections + an end section), accounting for image/sprite size difference
 
         if self.dir == 'up':
@@ -697,7 +692,6 @@ class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
 
         self.shape = self.parent.spritedata[4] >> 4
         self.direction = self.parent.spritedata[5] & 15
-        arrow = None
 
         if self.shape == 0 or self.shape > 3:
             self.size = (122, 137)
@@ -853,7 +847,6 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
         super().paint(painter)
 
         color = self.color
-        xsize = self.width * 1.5
         ysize = self.height * 1.5
 
         # Assume moving pipes
@@ -1682,9 +1675,6 @@ class SpriteImage_OutdoorsFog(SpriteImage_LiquidOrFog):  # 64
         self.paintZone = self.parent.spritedata[5] == 0
 
         self.top = self.parent.objy
-
-        # Get pixmaps
-        mid = ImageCache['OutdoorsFog']
 
         super().realViewZone(painter, zoneRect, viewRect)
 
@@ -4105,17 +4095,13 @@ class SpriteImage_LineBlock(SLib.SpriteImage):  # 219
             # reverse them if going down
             widthA, widthB = widthB, widthA
 
-        noWidthA = False
         aA = 1
         if widthA == 0:
             widthA = 1
-            noWidthA = True
             aA = 0.25
-        noWidthB = False
         aB = 0.5
         if widthB == 0:
             widthB = 1
-            noWidthB = True
             aB = 0.25
 
         blockimg = ImageCache['LineBlock']
@@ -6375,7 +6361,6 @@ class SpriteImage_MovingFence(SLib.SpriteImage_StaticMultiple):  # 376
     def dataChanged(self):
 
         self.shape = (self.parent.spritedata[4] >> 4) % 4
-        arrow = None
 
         size = (
             (64, 64),

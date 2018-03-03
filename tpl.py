@@ -29,12 +29,12 @@
 ################################################################
 ################################################################
 
+
 # 'data' must be RGBA8 raw data
 def decodeRGB4A3(data, width, height, noAlpha):
     result = bytearray(width * height * 4)
 
     i = 0
-
     for yTile in range(0, height, 4):
         for xTile in range(0, width, 4):
             for y in range(yTile, yTile + 4):
@@ -59,9 +59,6 @@ def decodeRGB4A3(data, width, height, noAlpha):
 
                     pos = (y * width + x) * 4
 
-                    # works but slow
-                    ## result[pos:pos + 4] = ((r << 24) | (g << 16) | (b << 8) | a).to_bytes(4, "big")
-
                     result[pos] = r
                     result[pos + 1] = g
                     result[pos + 2] = b
@@ -72,22 +69,21 @@ def decodeRGB4A3(data, width, height, noAlpha):
     return bytes(result)
 
 
-# 'tex' must be an ARGB32 QImage
+# 'data' must be RGBA8 raw data
 def encodeRGB4A3(tex, width, height):
     result = bytearray(width * height * 2)
 
     i = 0
-
     for yTile in range(0, height, 4):
         for xTile in range(0, width, 4):
             for y in range(yTile, yTile + 4):
                 for x in range(xTile, xTile + 4):
-                    pixel = tex.pixel(x, y)
-                    
-                    a = pixel >> 24
-                    r = (pixel >> 16) & 0xFF
-                    g = (pixel >> 8) & 0xFF
-                    b = pixel & 0xFF
+                    pos = (y * width + x) * 4
+
+                    r = data_[pos]
+                    g = data_[pos + 1]
+                    b = data_[pos + 2]
+                    a = data_[pos + 3]
                     
                     if a < 0xF7:
                         a //= 32

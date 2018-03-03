@@ -30,9 +30,6 @@
 ################################################################
 
 # Imports
-import math
-import random
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 Qt = QtCore.Qt
@@ -257,7 +254,6 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage):  # 30, 81, 82, 83, 84, 85, 86
 
         blockX = 0
         blockY = 0
-        type = self.parent.type
         width = self.width * 1.5
         height = self.height * 1.5
 
@@ -636,7 +632,6 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
             x = 0
         distance = x + 1  # In order to hide one side of the track behind the image.
 
-        w = 66
         L = ((37 * 16) + 41) / 1.5  # (16 mid sections + an end section), accounting for image/sprite size difference
 
         if self.dir == 'up':
@@ -827,7 +822,6 @@ class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
 
         self.shape = self.parent.spritedata[4] >> 4
         self.direction = self.parent.spritedata[5] & 15
-        arrow = None
 
         if self.shape == 0 or self.shape > 3:
             self.size = (122, 137)
@@ -982,7 +976,6 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
         super().paint(painter)
 
         color = self.color
-        xsize = self.width * 1.5
         ysize = self.height * 1.5
 
         # Assume moving pipes

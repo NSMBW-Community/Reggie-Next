@@ -2862,7 +2862,6 @@ class Metadata:
                           rawTypeEntries[3]
 
             # Iterate through each type entry
-            typeData = {}
             for entry in range(typeEntries):
                 # Read the next four bytes - the type
                 rawType = data[idx:idx + 4]
@@ -3073,7 +3072,7 @@ class Level_NSMBW(AbstractLevel):
         arc = archive.U8.load(data)
 
         try:
-            courseFolder = arc['course']
+            arc['course']
         except:
             return False
 
@@ -3289,7 +3288,6 @@ class AbstractParsedArea(AbstractArea):
 
         # Load the editor metadata
         if self.block1pos[0] != 0x70:
-            rdsize = self.block1pos[0] - 0x70
             rddata = course[0x70:self.block1pos[0]]
             self.LoadReggieInfo(rddata)
         else:
@@ -4243,7 +4241,7 @@ class InstanceDefinition_CommentItem(InstanceDefinition):
         return Area.comments
 
     def createNew(self):
-        return CommentItem(self.objx, self.objy, field[0][1])
+        return CommentItem(self.objx, self.objy, self.fields[0][1])
 
 
 class ListWidgetItem_SortsByOther(QtWidgets.QListWidgetItem):
@@ -5505,8 +5503,6 @@ class SpriteItem(LevelEditorItem):
         """
         Creates all the rectangles for the sprite
         """
-        type = self.type
-
         self.prepareGeometryChange()
 
         # Get rects
@@ -6306,11 +6302,8 @@ class PathEditorLineItem(LevelEditorItem):
         color = theme.color('path_connector')
         painter.setBrush(QtGui.QBrush(color))
         painter.setPen(QtGui.QPen(color, 3, join=Qt.RoundJoin, cap=Qt.RoundCap))
-        ppath = QtGui.QPainterPath()
 
         lines = []
-
-        firstn = True
 
         snl = self.nodelist
         for j, node in enumerate(snl):
@@ -6912,7 +6905,6 @@ class QuickPaintOperations:
 
                 mw.scene.addItem(obj)
 
-                connected_objects = []
                 # This next function has to repeated multiple times at multiple places in and around this object.
                 # Otherwise, you will leave artifacts when painting with bigger objects.
                 QuickPaintOperations.autoTileObj(ln, obj)
@@ -6956,16 +6948,6 @@ class QuickPaintOperations:
                 obj = QuickPaintOperations.searchObj(ln, x, y)
 
                 if obj is not None:
-                    surrounding_objects = {
-                        'TopLeft': QuickPaintOperations.searchObj(ln, obj.objx - 1, obj.objy - 1),
-                        'Top': QuickPaintOperations.searchObj(ln, obj.objx, obj.objy - 1),
-                        'TopRight': QuickPaintOperations.searchObj(ln, obj.objx + 1, obj.objy - 1),
-                        'Left': QuickPaintOperations.searchObj(ln, obj.objx - 1, obj.objy),
-                        'Right': QuickPaintOperations.searchObj(ln, obj.objx + 1, obj.objy),
-                        'BottomLeft': QuickPaintOperations.searchObj(ln, obj.objx - 1, obj.objy + 1),
-                        'Bottom': QuickPaintOperations.searchObj(ln, obj.objx, obj.objy + 1),
-                        'BottomRight': QuickPaintOperations.searchObj(ln, obj.objx + 1, obj.objy + 1)
-                    }
                     obj.delete()
                     obj.setSelected(False)
 
@@ -7293,8 +7275,6 @@ class QuickPaintOperations:
         if mainWindow.quickPaint and mainWindow.quickPaint.scene and obj:
             qpscn = mainWindow.quickPaint.scene
             qp_data = qpscn.object_database
-            startingTileset = obj.tileset
-            startingType = obj.type
             surrounding_objects = {
                 'TopLeft': QuickPaintOperations.searchObj(layer, obj.objx - 1, obj.objy - 1),
                 'Top': QuickPaintOperations.searchObj(layer, obj.objx, obj.objy - 1),
@@ -8522,7 +8502,6 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
 
             painter.save()
             painter.translate(x * 24, y * 24)
-            drawPixmap = painter.drawPixmap
             desty = 0
             for row in tmap:
                 destx = 0
@@ -9190,7 +9169,6 @@ class StampListModel(QtCore.QAbstractListModel):
         self.beginResetModel()
 
         # Remove the stamp from self.items
-        idx = self.items.index(stamp)
         self.items.remove(stamp)
 
         # Finish resetting
@@ -9363,7 +9341,6 @@ class Stamp:
         painter = QtGui.QPainter(pix)
 
         # Draw the preview
-        iconWidth = prevIcon.width()
         iconXOffset = (totalWidth - prevIcon.width()) / 2
         painter.drawPixmap(iconXOffset, 0, prevIcon)
 
@@ -10335,8 +10312,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         raw = text.replace(' ', '')
         valid = False
 
-        expectedRawLen = 16
-
         if len(raw) == 16:
             try:
                 data = bytes([int(raw[r:r + 2], 16) for r in range(0, len(raw), 2)])
@@ -10922,7 +10897,6 @@ class IslandGeneratorWidget(QtWidgets.QWidget):
         if self.midiy.value() == 0:
             self.midiy.setValue(self.hpos.value())
             midiywas0 = True
-        ret = ''
         convclip = ['ReggieClip']
 
         # Paint the top tiles
@@ -11707,7 +11681,6 @@ class MoveItemUndoAction(UndoAction):
         """
         Changes the position of an object
         """
-        oldX, oldY = object.objx, object.objy
         oldBR = object.getFullRect()
 
         if isinstance(object, SpriteItem):
@@ -11805,7 +11778,6 @@ class SimultaneousUndoAction(UndoAction):
         searchMine = set(self.children)
         searchOther = set(other.children)
         for searchMineObj in searchMine:
-            found = False
             for searchOtherObj in searchOther:
                 if searchOtherObj.isExtentionOf(searchMineObj):
                     searchMineObj.extend(searchOtherObj)
@@ -12014,7 +11986,6 @@ class ReggieGameDefinition:
         self.custom = True
         name = str(name)
         self.gamepath = name
-        MaxVer = 1.0
 
         # Parse the file (errors are handled by __init__())
         path = 'reggiedata/patches/' + name + '/main.xml'
@@ -13499,15 +13470,9 @@ class LevelScene(QtWidgets.QGraphicsScene):
         drawrect = QtCore.QRectF(rect.x() / 24, rect.y() / 24, rect.width() / 24 + 1, rect.height() / 24 + 1)
         isect = drawrect.intersects
 
-        layer0 = [];
-        l0add = layer0.append
-        layer1 = [];
-        l1add = layer1.append
-        layer2 = [];
-        l2add = layer2.append
-
-        type_obj = ObjectItem
-        ii = isinstance
+        layer0 = []
+        layer1 = []
+        layer2 = []
 
         x1 = 1024
         y1 = 512
@@ -13567,7 +13532,6 @@ class LevelScene(QtWidgets.QGraphicsScene):
 
                 painter.save()
                 painter.translate(x1 * 24, y1 * 24)
-                drawPixmap = painter.drawPixmap
                 desty = 0
                 for row in tmap:
                     destx = 0
@@ -13811,10 +13775,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                     if not pathd: return  # shouldn't happen
 
-                    pathid = pathd['id']
                     newnodedata = {'x': clickedx, 'y': clickedy, 'speed': 0.5, 'accel': 0.00498, 'delay': 0}
                     pathd['nodes'].append(newnodedata)
-                    nodeid = pathd['nodes'].index(newnodedata)
 
                     newnode = PathItem(clickedx, clickedy, pathd, newnodedata)
 
@@ -16016,7 +15978,6 @@ class BGTab(QtWidgets.QWidget):
             bgLabel = QtWidgets.QLabel(trans.string('BGDlg', 19))
             positionLabel = QtWidgets.QLabel(trans.string('BGDlg', 5))
             scrollLabel = QtWidgets.QLabel(trans.string('BGDlg', 10))
-            alignLabel = QtWidgets.QLabel(trans.string('BGDlg', 16))
 
             # Layouts
             exec("""
@@ -17294,7 +17255,6 @@ class GameDefMenu(QtWidgets.QMenu):
             act.setCheckable(True)
             if folder == loadedDef:
                 act.setChecked(True)
-                first = False
             act.toggled.connect(self.handleGameDefClicked)
             self.addAction(act)
 
@@ -17405,7 +17365,6 @@ class RecentFilesMenu(QtWidgets.QMenu):
 
         self.clear()  # removes any actions already in the menu
         ico = GetIcon('new')
-        currentShortcut = 0
 
         for i, filename in enumerate(self.FileList):
             filename = os.path.basename(filename)
@@ -18067,7 +18026,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.themes = self.getAvailableThemes
 
                 # Create the theme box
-                i = 0
                 self.themeBox = QtWidgets.QComboBox()
                 for name, themeObj in self.themes:
                     self.themeBox.addItem(name)
@@ -18551,6 +18509,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         LoadGameDef(setting('LastGameDef'), False)
 
         # Aaaaaand... initializing is done!
+        global Initializing
         Initializing = False
 
     def SetupActionsAndMenus(self):
@@ -19775,7 +19734,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Set the text to the event chooser
         currentItem = self.eventChooser.selectedItems()[0]
         currentItem.setText(1, newText)
-        selIdx = self.eventChooserItems.index(currentItem)
 
         # Save all the events to the metadata
         data = []
@@ -19880,8 +19838,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         newdata += '------\n'
 
         for stampobj in self.stampChooser.model.items:
-            name = stampobj.Name
-            rc = stampobj.ReggieClip
             newdata += '\n'
             newdata += stampobj.Name + '\n'
             newdata += stampobj.ReggieClip + '\n'
@@ -20268,9 +20224,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     objy = int(split[3])
                     data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10]]))
 
-                    x = objx / 16
-                    y = objy / 16
-
                     newitem = SpriteItem(int(split[1]), objx, objy, data)
                     sprites.append(newitem)
 
@@ -20296,7 +20249,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             type_obj = ObjectItem
             type_spr = SpriteItem
             type_ent = EntranceItem
-            type_loc = LocationItem
 
             if ((xoffset % 16) != 0) or ((yoffset % 16) != 0):
                 # warn if any objects exist
@@ -20426,7 +20378,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         try:
-            newA = Level.addArea()
+            Level.addArea()
         except:
             return
 
@@ -21748,7 +21700,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if QtWidgets.QApplication.keyboardModifiers() == Qt.AltModifier:
             items = self.scene.selectedItems()
             type_obj = ObjectItem
-            tileset = CurrentPaintType
             area = Area
             change = []
 
@@ -22207,11 +22158,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             Area.unkFlag2 = dlg.LoadingTab.unk2.isChecked()
             Area.unkVal1 = dlg.LoadingTab.unk3.value()
             Area.unkVal2 = dlg.LoadingTab.unk4.value()
-
-            tileset0tmp = Area.tileset0
-            tileset1tmp = Area.tileset1
-            tileset2tmp = Area.tileset2
-            tileset3tmp = Area.tileset3
 
             oldnames = [Area.tileset0, Area.tileset1, Area.tileset2, Area.tileset3]
             assignments = ['Area.tileset0', 'Area.tileset1', 'Area.tileset2', 'Area.tileset3']
