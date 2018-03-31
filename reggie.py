@@ -4588,7 +4588,16 @@ class ObjectItem(LevelEditorItem):
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(0, 0, 24 * self.width, 24 * self.height)
         self.SelectionRect = QtCore.QRectF(0, 0, (24 * self.width) - 1, (24 * self.height) - 1)
-        self.GrabberRect = QtCore.QRectF((24 * self.width) - 5, (24 * self.height) - 5, 5, 5)
+
+        self.GrabberRectTL = QtCore.QRectF(0, 0, 4.8, 4.8)
+        self.GrabberRectTR = QtCore.QRectF((24 * self.width) - 4.8, 0, 4.8, 4.8)
+        self.GrabberRectBL = QtCore.QRectF(0, (24 * self.height) - 4.8, 4.8, 4.8)
+        self.GrabberRectBR = QtCore.QRectF((24 * self.width) - 4.8, (24 * self.height) - 4.8, 4.8, 4.8)
+        self.GrabberRectMT = QtCore.QRectF(((24 * self.width) - 4.8) / 2, 0, 4.8, 4.8)
+        self.GrabberRectML = QtCore.QRectF(0, ((24 * self.height) - 4.8) / 2, 4.8, 4.8)
+        self.GrabberRectMB = QtCore.QRectF(((24 * self.width) - 4.8) / 2, (24 * self.height) - 4.8, 4.8, 4.8)
+        self.GrabberRectMR = QtCore.QRectF((24 * self.width) - 4.8, ((24 * self.height) - 4.8) / 2, 4.8, 4.8)
+
         self.LevelRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
 
     def itemChange(self, change, value):
@@ -4657,7 +4666,14 @@ class ObjectItem(LevelEditorItem):
             painter.drawRect(self.SelectionRect)
             painter.fillRect(self.SelectionRect, theme.color('object_fill_s'))
 
-            painter.fillRect(self.GrabberRect, theme.color('object_lines_s'))
+            painter.fillRect(self.GrabberRectTL, theme.color('object_lines_s'))
+            painter.fillRect(self.GrabberRectTR, theme.color('object_lines_s'))
+            painter.fillRect(self.GrabberRectBL, theme.color('object_lines_s'))
+            painter.fillRect(self.GrabberRectBR, theme.color('object_lines_s'))
+            painter.fillRect(self.GrabberRectMT, theme.color('object_lines_s'))
+            painter.fillRect(self.GrabberRectML, theme.color('object_lines_s'))
+            painter.fillRect(self.GrabberRectMB, theme.color('object_lines_s'))
+            painter.fillRect(self.GrabberRectMR, theme.color('object_lines_s'))
 
     def mousePressEvent(self, event):
         """
@@ -4666,15 +4682,19 @@ class ObjectItem(LevelEditorItem):
         if event.button() == Qt.LeftButton:
             if QtWidgets.QApplication.keyboardModifiers() == Qt.ControlModifier:
                 layer = Area.layers[self.layer]
+
                 if len(layer) == 0:
                     newZ = (2 - self.layer) * 8192
+
                 else:
                     newZ = layer[-1].zValue() + 1
 
                 currentZ = self.zValue()
                 self.setZValue(newZ)  # swap the Z values so it doesn't look like the cloned item is the old one
+
                 newitem = ObjectItem(self.tileset, self.type, self.layer, self.objx, self.objy, self.width, self.height,
                                      currentZ)
+
                 layer.append(newitem)
                 mainWindow.scene.addItem(newitem)
                 mainWindow.scene.clearSelection()
@@ -4682,21 +4702,59 @@ class ObjectItem(LevelEditorItem):
 
                 SetDirty()
 
-        if self.isSelected() and self.GrabberRect.contains(event.pos()):
+        self.TLGrabbed = self.GrabberRectTL.contains(event.pos())
+        self.TRGrabbed = self.GrabberRectTR.contains(event.pos())
+        self.BLGrabbed = self.GrabberRectBL.contains(event.pos())
+        self.BRGrabbed = self.GrabberRectBR.contains(event.pos())
+        self.MTGrabbed = self.GrabberRectMT.contains(event.pos())
+        self.MLGrabbed = self.GrabberRectML.contains(event.pos())
+        self.MBGrabbed = self.GrabberRectMB.contains(event.pos())
+        self.MRGrabbed = self.GrabberRectMR.contains(event.pos())
+
+        if self.isSelected() and (
+            self.TLGrabbed
+            or self.TRGrabbed
+            or self.BLGrabbed
+            or self.BRGrabbed
+            or self.MTGrabbed
+            or self.MLGrabbed
+            or self.MBGrabbed
+            or self.MRGrabbed
+        ):
             # start dragging
             self.dragging = True
             self.dragstartx = int((event.pos().x() - 10) / 24)
             self.dragstarty = int((event.pos().y() - 10) / 24)
             self.objsDragging = {}
+
             for selitem in mainWindow.scene.selectedItems():
-                if not isinstance(selitem, ObjectItem): continue
+                if not isinstance(selitem, ObjectItem):
+                    continue
+
                 self.objsDragging[selitem] = [selitem.width, selitem.height]
+
             event.accept()
+
         else:
             LevelEditorItem.mousePressEvent(self, event)
             self.dragging = False
             self.objsDragging = {}
+
         self.UpdateTooltip()
+
+    def UpdateObj(self, oldX, oldY):
+        """
+        Updates the object if the width/height/position has been changed
+        """
+        self.updateObjCache()
+
+        oldrect = self.BoundingRect
+        oldrect.translate(oldX * 24, oldY * 24)
+        newrect = QtCore.QRectF(self.x(), self.y(), self.width * 24, self.height * 24)
+        updaterect = oldrect.united(newrect)
+
+        self.UpdateRects()
+        self.scene().update(updaterect)
 
     def mouseMoveEvent(self, event):
         """
@@ -4707,44 +4765,257 @@ class ObjectItem(LevelEditorItem):
             dsx = self.dragstartx
             dsy = self.dragstarty
 
-            clickedx = int((event.pos().x() - 10) / 24)
-            clickedy = int((event.pos().y() - 10) / 24)
+            clickedx = int((event.pos().x() - 12) / 24)
+            clickedy = int((event.pos().y() - 12) / 24)
 
             cx = self.objx
             cy = self.objy
 
-            if clickedx < 0: clickedx = 0
-            if clickedy < 0: clickedy = 0
+            if self.TLGrabbed:
+                if clickedx != dsx or clickedy != dsy:
+                    for obj in self.objsDragging:
+                        oldWidth = self.objsDragging[obj][0] + 0
+                        oldHeight = self.objsDragging[obj][1] + 0
 
-            if clickedx != dsx or clickedy != dsy:
-                self.dragstartx = clickedx
-                self.dragstarty = clickedy
+                        self.objsDragging[obj][0] -= clickedx - dsx
+                        self.objsDragging[obj][1] -= clickedy - dsy
 
-                for obj in self.objsDragging:
+                        if self.objsDragging[obj][0] < 1 or self.objsDragging[obj][1] < 1:
+                            if self.objsDragging[obj][0] < 1:
+                                self.objsDragging[obj][0] = oldWidth
 
-                    self.objsDragging[obj][0] += clickedx - dsx
-                    self.objsDragging[obj][1] += clickedy - dsy
-                    newWidth = self.objsDragging[obj][0]
-                    newHeight = self.objsDragging[obj][1]
-                    if newWidth < 1: newWidth = 1
-                    if newHeight < 1: newHeight = 1
-                    obj.width = newWidth
-                    obj.height = newHeight
+                            if self.objsDragging[obj][1] < 1:
+                                self.objsDragging[obj][1] = oldHeight
 
-                    obj.updateObjCache()
+                        else:
+                            newX = obj.objx + clickedx - dsx
+                            newY = obj.objy + clickedy - dsy
 
-                    oldrect = obj.BoundingRect
-                    oldrect.translate(cx * 24, cy * 24)
-                    newrect = QtCore.QRectF(obj.x(), obj.y(), obj.width * 24, obj.height * 24)
-                    updaterect = oldrect.united(newrect)
+                            newWidth = self.objsDragging[obj][0]
+                            newHeight = self.objsDragging[obj][1]
 
-                    obj.UpdateRects()
-                    obj.scene().update(updaterect)
-                SetDirty()
+                            if newX >= 0 and newX + newWidth == obj.objx + obj.width:
+                                obj.objx = newX
+                                obj.width = newWidth
+
+                            else:
+                                self.objsDragging[obj][0] = oldWidth
+
+                            if newY >= 0 and newY + newHeight == obj.objy + obj.height:
+                                obj.objy = newY
+                                obj.height = newHeight
+
+                            else:
+                                self.objsDragging[obj][1] = oldHeight
+
+                            obj.UpdateRects()
+                            obj.UpdateObj(cx, cy)
+
+                    SetDirty()
+
+            elif self.TRGrabbed:
+                if clickedx < 0:
+                    clickedx = 0
+
+                if clickedx != dsx or clickedy != dsy:
+                    self.dragstartx= clickedx
+
+                    for obj in self.objsDragging:
+                        oldHeight = self.objsDragging[obj][1] + 0
+
+                        self.objsDragging[obj][0] += clickedx - dsx
+                        self.objsDragging[obj][1] -= clickedy - dsy
+
+                        if self.objsDragging[obj][1] < 1:
+                            self.objsDragging[obj][1] = oldHeight
+
+                        else:
+                            newY = obj.objy + clickedy - dsy
+
+                            newWidth = self.objsDragging[obj][0]
+                            if newWidth < 1:
+                                newWidth = 1
+
+                            newHeight = self.objsDragging[obj][1]
+
+                            if newY >= 0 and newY + newHeight == obj.objy + obj.height:
+                                obj.objy = newY
+                                obj.height = newHeight
+
+                            else:
+                                self.objsDragging[obj][1] = oldHeight
+
+                            obj.width = newWidth
+
+                            obj.UpdateRects()
+                            obj.UpdateObj(cx, cy)
+
+                    SetDirty()
+
+            elif self.BLGrabbed:
+                if clickedy < 0:
+                    clickedy = 0
+
+                if clickedx != dsx or clickedy != dsy:
+                    self.dragstarty = clickedy
+
+                    for obj in self.objsDragging:
+                        oldWidth = self.objsDragging[obj][0] + 0
+
+                        self.objsDragging[obj][0] -= clickedx - dsx
+                        self.objsDragging[obj][1] += clickedy - dsy
+
+                        if self.objsDragging[obj][0] < 1:
+                            self.objsDragging[obj][0] = oldWidth
+
+                        else:
+                            newX = obj.objx + clickedx - dsx
+
+                            newWidth = self.objsDragging[obj][0]
+
+                            newHeight = self.objsDragging[obj][1]
+                            if newHeight < 1:
+                                newHeight = 1
+
+                            if newX >= 0 and newX + newWidth == obj.objx + obj.width:
+                                obj.objx = newX
+                                obj.width = newWidth
+
+                            else:
+                                self.objsDragging[obj][0] = oldWidth
+
+                            obj.height = newHeight
+
+                            obj.UpdateRects()
+                            obj.UpdateObj(cx, cy)
+
+                    SetDirty()
+
+            elif self.BRGrabbed:
+                if clickedx < 0: clickedx = 0
+                if clickedy < 0: clickedy = 0
+
+                if clickedx != dsx or clickedy != dsy:
+                    self.dragstartx = clickedx
+                    self.dragstarty = clickedy
+
+                    for obj in self.objsDragging:
+                        self.objsDragging[obj][0] += clickedx - dsx
+                        self.objsDragging[obj][1] += clickedy - dsy
+
+                        newWidth = self.objsDragging[obj][0]
+                        newHeight = self.objsDragging[obj][1]
+
+                        if newWidth < 1:
+                            newWidth = 1
+
+                        if newHeight < 1:
+                            newHeight = 1
+
+                        obj.width = newWidth
+                        obj.height = newHeight
+
+                        obj.UpdateObj(cx, cy)
+
+                    SetDirty()
+
+            elif self.MTGrabbed:
+                if clickedy != dsy:
+                    for obj in self.objsDragging:
+                        oldHeight = self.objsDragging[obj][1] + 0
+
+                        self.objsDragging[obj][1] -= clickedy - dsy
+
+                        if self.objsDragging[obj][1] < 1:
+                            self.objsDragging[obj][1] = oldHeight
+
+                        else:
+                            newY = obj.objy + clickedy - dsy
+
+                            newHeight = self.objsDragging[obj][1]
+
+                            if newY >= 0 and newY + newHeight == obj.objy + obj.height:
+                                obj.objy = newY
+                                obj.height = newHeight
+
+                            else:
+                                self.objsDragging[obj][1] = oldHeight
+
+                            obj.UpdateRects()
+                            obj.UpdateObj(cx, cy)
+
+                    SetDirty()
+
+            elif self.MLGrabbed:
+                if clickedx != dsx:
+                    for obj in self.objsDragging:
+                        oldWidth = self.objsDragging[obj][0] + 0
+
+                        self.objsDragging[obj][0] -= clickedx - dsx
+
+                        if self.objsDragging[obj][0] < 1:
+                            self.objsDragging[obj][0] = oldWidth
+
+                        else:
+                            newX = obj.objx + clickedx - dsx
+
+                            newWidth = self.objsDragging[obj][0]
+
+                            if newX >= 0 and newX + newWidth == obj.objx + obj.width:
+                                obj.objx = newX
+                                obj.width = newWidth
+
+                            else:
+                                self.objsDragging[obj][0] = oldWidth
+
+                            obj.UpdateRects()
+                            obj.UpdateObj(cx, cy)
+
+                    SetDirty()
+
+            elif self.MBGrabbed:
+                if clickedy < 0:
+                    clickedy = 0
+
+                if clickedy != dsy:
+                    self.dragstarty = clickedy
+
+                    for obj in self.objsDragging:
+                        self.objsDragging[obj][1] += clickedy - dsy
+
+                        newHeight = self.objsDragging[obj][1]
+                        if newHeight < 1:
+                            newHeight = 1
+
+                        obj.height = newHeight
+                        obj.UpdateObj(cx, cy)
+
+                    SetDirty()
+
+            elif self.MRGrabbed:
+                if clickedx < 0:
+                    clickedx = 0
+
+                if clickedx != dsx:
+                    self.dragstartx = clickedx
+
+                    for obj in self.objsDragging:
+                        self.objsDragging[obj][0] += clickedx - dsx
+
+                        newWidth = self.objsDragging[obj][0]
+                        if newWidth < 1:
+                            newWidth = 1
+
+                        obj.width = newWidth
+                        obj.UpdateObj(cx, cy)
+
+                    SetDirty()
 
             event.accept()
+
         else:
             LevelEditorItem.mouseMoveEvent(self, event)
+
         self.UpdateTooltip()
 
     def delete(self):
@@ -4883,10 +5154,10 @@ class ZoneItem(LevelEditorItem):
         Updates the zone's bounding rectangle
         """
         if hasattr(mainWindow, 'ZoomLevel'):
-            grabberWidth = 500 / mainWindow.ZoomLevel
-            if grabberWidth < 5: grabberWidth = 5
+            grabberWidth = 480 / mainWindow.ZoomLevel
+            if grabberWidth < 4.8: grabberWidth = 4.8
         else:
-            grabberWidth = 5
+            grabberWidth = 4.8
 
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5)
@@ -5150,7 +5421,7 @@ class LocationItem(LevelEditorItem):
         self.SelectionRect = QtCore.QRectF(self.objx * 1.5, self.objy * 1.5, self.width * 1.5, self.height * 1.5)
         self.ZoneRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
         self.DrawRect = QtCore.QRectF(1, 1, (self.width * 1.5) - 2, (self.height * 1.5) - 2)
-        self.GrabberRect = QtCore.QRectF((1.5 * self.width) - 6, (1.5 * self.height) - 6, 5, 5)
+        self.GrabberRect = QtCore.QRectF(((1.5) * self.width) - 4.8, ((1.5) * self.height) - 4.8, 4.8, 4.8)
         self.UpdateListItem()
 
     def paint(self, painter, option, widget):
