@@ -31,6 +31,7 @@
 
 # Python version: sanity check
 minimum = 3.4
+pqt_min = map(int, "5.8.2".split('.'))
 import sys
 
 currentRunningVersion = sys.version_info.major + (.1 * sys.version_info.minor)
@@ -61,6 +62,18 @@ except (ImportError, NameError):
     errormsg = 'PyQt5 is not installed for this Python installation. Go online and download it.'
     raise Exception(errormsg)
 Qt = QtCore.Qt
+
+version = QtCore.QT_VERSION_STR.split('.')
+for v, c in zip(version, pqt_min):
+    if c < int(v):
+        # lower version
+        errormsg = 'Please update your copy of PyQt to ' + '.'.join(pqt_min) + \
+                   ' or greater. Currently running on: ' + QtCore.QT_VERSION_STR
+
+        raise Exception(errormsg) from None
+    elif c > int(v):
+        # higher version
+        break
 
 # Local imports
 import archive
@@ -779,13 +792,13 @@ class SpriteDefinition:
         fields = self.fields
 
         for field in elem:
-            if field.tag not in ['checkbox', 'list', 'value', 'bitfield', 'multibox', 'dualbox']: continue
+            if field.tag not in ['checkbox', 'list', 'value', 'bitfield', 'multibox', 'dualbox', 'dependency']: continue
 
             attribs = field.attrib
 
             if field.tag == 'dualbox':
                 title = attribs['title1'] + " / " + attribs['title2']
-            else:
+            elif 'title' in attribs:
                 title = attribs['title']
 
             if 'comment' in attribs:
@@ -1013,12 +1026,30 @@ class SpriteDefinition:
             elif field.tag == 'dualbox':
                 # parameters title1, title2, bit, comment, required, advanced
                 # ONLY SUPPORTS A SINGLE BIT!
-
                 bit = int(attribs['bit'])
 
-
-
                 fields.append((5, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
+
+            elif field.tag == 'dependency':
+                for entry in field:
+                    types = ['required', 'suggested']
+
+                    if entry.tag not in types:
+                        continue
+
+                    if 'sprite' not in entry.attrib:
+                        print(self.id)
+                        continue
+
+                    if entry.attrib['sprite'] == "":
+                        continue
+
+                    self.dependencies.append((int(entry.attrib['sprite']), types.index(entry.tag)))
+
+                if 'notes' in attribs:
+                    self.dependencynotes = attribs['notes']
+                else:
+                    self.dependencynotes = None
 
 
 def LoadSpriteData():
@@ -1091,12 +1122,14 @@ def LoadSpriteData():
                 sdef.yoshiNotes = yoshiNotes
                 sdef.noyoshi = noyoshi
                 sdef.asm = asm
+                sdef.dependencies = []
 
-                try:
+                #try:
+                if 1:
                     sdef.loadFrom(sprite)
-                except Exception as e:
-                    errors.append(str(spriteid))
-                    errortext.append(str(e))
+                #except Exception as e:
+                #    errors.append(str(spriteid))
+                #    errortext.append(str(e))
 
                 Sprites[spriteid] = sdef
 
@@ -5446,8 +5479,9 @@ class SpriteItem(LevelEditorItem):
 
     def __lt__(self, other):
         # Sort by objx, then objy, then sprite type
-        return (self.objx * 100000 + self.objy) * 1000 + self.type < (
-                                                                     other.objx * 100000 + other.objy) * 1000 + other.type
+        score = lambda sprite: (sprite.objx * 100000 + sprite.objy) * 1000 + sprite.type
+
+        return score(self) < score(other)
 
     def InitializeSprite(self):
         """
@@ -5739,30 +5773,38 @@ class SpriteItem(LevelEditorItem):
         """
         Overrides mouse pressing events if needed for cloning
         """
-        if event.button() == Qt.LeftButton:
-            if QtWidgets.QApplication.keyboardModifiers() == Qt.ControlModifier:
-                newitem = SpriteItem(self.type, self.objx, self.objy, self.spritedata)
-                newitem.listitem = ListWidgetItem_SortsByOther(newitem, newitem.ListString())
-                mainWindow.spriteList.addItem(newitem.listitem)
-                Area.sprites.append(newitem)
-                mainWindow.scene.addItem(newitem)
-                mainWindow.scene.clearSelection()
-                self.setSelected(True)
-                newitem.UpdateListItem()
-                SetDirty()
-                return
+        if event.button() != Qt.LeftButton or QtWidgets.QApplication.keyboardModifiers() != Qt.ControlModifier:
+            LevelEditorItem.mousePressEvent(self, event)
+            return
 
-        LevelEditorItem.mousePressEvent(self, event)
+        newitem = SpriteItem(self.type, self.objx, self.objy, self.spritedata)
+        newitem.listitem = ListWidgetItem_SortsByOther(newitem, newitem.ListString())
+
+        mainWindow.spriteList.addItem(newitem.listitem)
+        Area.sprites.append(newitem)
+
+        mainWindow.scene.addItem(newitem)
+        mainWindow.scene.clearSelection()
+
+        self.setSelected(True)
+
+        newitem.UpdateListItem()
+        SetDirty()
+
 
     def nearestZone(self, obj=False):
         """
         Calls a modified MapPositionToZoneID (if obj = True, it returns the actual ZoneItem object)
         """
-        if not hasattr(Area, 'zones'): return None
+        if not hasattr(Area, 'zones'):
+            return None
+
         id = SLib.MapPositionToZoneID(Area.zones, self.objx, self.objy, True)
+
         if obj:
             for z in Area.zones:
-                if z.id == id: return z
+                if z.id == id:
+                    return z
         else:
             return id
 
@@ -9531,7 +9573,6 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
     SpriteChanged = QtCore.pyqtSignal(int)
     SpriteReplace = QtCore.pyqtSignal(int)
 
-
 AltSettingIcons = False
 ResetDataWhenHiding = False
 
@@ -9578,6 +9619,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.noteButton.setAutoRaise(True)
         self.noteButton.clicked.connect(self.ShowNoteTooltip)
 
+        self.depButton = QtWidgets.QToolButton()
+        self.depButton.setIcon(GetIcon('dependency-notes'))
+        self.depButton.setText(trans.string('SpriteDataEditor', 4))
+        self.depButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.depButton.setAutoRaise(True)
+        self.depButton.clicked.connect(self.ShowDependencies)
+
         self.relatedObjFilesButton = QtWidgets.QToolButton()
         self.relatedObjFilesButton.setIcon(GetIcon('data'))
         self.relatedObjFilesButton.setText(trans.string('SpriteDataEditor', 7))
@@ -9616,6 +9664,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         subLayout = QtWidgets.QVBoxLayout()
         subLayout.setContentsMargins(0, 0, 0, 0)
 
+        # messages - now used for dependency warnings, but it might be useful for
+        # other stuff too
+        self.msg_layout = QtWidgets.QVBoxLayout()
+
         # comments
         self.com_box = QtWidgets.QGroupBox()
         self.com_box.setMaximumHeight(120)
@@ -9627,14 +9679,26 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.com_more.setText(trans.string('SpriteDataEditor', 13))
         self.com_more.clicked.connect(self.ShowMoreComments)
 
+        self.com_dep = QtWidgets.QPushButton()
+        self.com_dep.setText(trans.string('SpriteDataEditor', 18))
+        self.com_dep.clicked.connect(self.DependencyToggle)
+        self.com_dep.setVisible(False)
+
         self.com_extra = QtWidgets.QTextEdit()
         self.com_extra.setReadOnly(True)
         self.com_extra.setVisible(False)
 
+        self.com_deplist_w = QtWidgets.QWidget()
+        self.com_deplist = QtWidgets.QFormLayout()
+        self.com_deplist_w.setVisible(False)
+        self.com_deplist_w.setLayout(self.com_deplist)
+
         L = QtWidgets.QVBoxLayout()
         L.addWidget(self.com_main)
         L.addWidget(self.com_more)
+        L.addWidget(self.com_dep)
         L.addWidget(self.com_extra)
+        L.addWidget(self.com_deplist_w)
 
         self.com_box.setLayout(L)
 
@@ -9646,6 +9710,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         layout = QtWidgets.QGridLayout()
         self.editorlayout = layout
 
+        subLayout.addLayout(self.msg_layout)
         subLayout.addLayout(layout)
         subLayout.addWidget(self.com_box)
         subLayout.addLayout(editboxlayout)
@@ -9660,6 +9725,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.notes = None
         self.relatedObjFiles = None
+        self.dependencyNotes = None
 
     class PropertyDecoder(QtCore.QObject):
         """
@@ -10727,6 +10793,40 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.asm.setVisible(sprite.asm is True)
 
+        # dependency stuff
+        # first clear current msgs
+        for i in range(self.com_deplist.rowCount()):
+            self.com_deplist.removeRow(0)
+
+        # (sprite id, importance level)
+        # importance level is 0 for 'required', 1 for 'suggested'
+        missing = [[], []]
+        cur_sprites = [s.type for s in Area.sprites]
+        for dependency, importance in sprite.dependencies:
+            if dependency not in cur_sprites:
+                missing[importance].append(dependency)
+
+        # if there are missing things
+        for missingSprite in missing[0]:
+            name = trans.string('SpriteDataEditor', 21, '[id]', missingSprite)
+            addButton = QtWidgets.QPushButton('Add Sprite')
+            addButton.clicked.connect(self.HandleSpritePlaced(missingSprite))
+            self.com_deplist.addRow(name, addButton)
+
+        for missingSprite in missing[1]:
+            name = trans.string('SpriteDataEditor', 22, '[id]', missingSprite)
+            addButton = QtWidgets.QPushButton('Add Sprite')
+            addButton.clicked.connect(self.HandleSpritePlaced(missingSprite))
+            self.com_deplist.addRow(name, addButton)
+
+        # dependency notes
+        self.depButton.setVisible(sprite.dependencynotes is not None)
+
+        if sprite.dependencynotes is not None:
+            self.dependencyNotes = sprite.dependencynotes
+            self.com_extra.setText(trans.string('SpriteDataEditor', 20))
+            self.com_dep.setVisible(self.com_deplist.rowCount() > 0)
+
         # yoshi info
         if sprite.noyoshi is True:
             image = "ys-no"
@@ -10851,6 +10951,32 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.com_more.setText(trans.string('SpriteDataEditor', 14))
             self.com_main.setVisible(False)
 
+    def ShowDependencies(self):
+        """
+        Show dependencies
+        """
+        self.com_main.setText(self.dependencyNotes)
+        self.com_main.setVisible(True)
+        self.com_extra.setVisible(False)
+        self.com_deplist_w.setVisible(False)
+        self.com_dep.setText(trans.string('SpriteDataEditor', 18))
+
+    def DependencyToggle(self):
+        """
+        Show dependencies
+        """
+        if self.com_extra.isVisible():
+            self.com_extra.setVisible(False)
+            self.com_deplist_w.setVisible(False)
+            self.com_dep.setText(trans.string('SpriteDataEditor', 18))
+            self.com_main.setVisible(True)
+
+        else:
+            self.com_main.setVisible(False)
+            self.com_dep.setText(trans.string('SpriteDataEditor', 19))
+            self.com_extra.setVisible(True)
+            self.com_deplist_w.setVisible(True)
+
     def HandleFieldUpdate(self, field):
         """
         Triggered when a field's data is updated
@@ -10924,6 +11050,28 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         else:
             self.raweditor.setStyleSheet('QLineEdit { background-color: #ffd2d2; }')
+
+    def HandleSpritePlaced(self, id_):
+        x_ = 0
+        y_ = 0
+        data_ = mainWindow.defaultDataEditor.data
+
+        def placeSprite():
+            mw = mainWindow
+
+            spr = SpriteItem(id_, x_, y_, data_)
+            spr.positionChanged = mw.HandleSprPosChange
+
+            mw.scene.addItem(spr)
+            Area.sprites.append(spr)
+
+            spr.listitem = ListWidgetItem_SortsByOther(spr)
+            mw.spriteList.addItem(spr.listitem)
+
+            SetDirty()
+            spr.UpdateListItem()
+
+        return placeSprite
 
 
 class EntranceEditorWidget(QtWidgets.QWidget):
@@ -13595,8 +13743,15 @@ class ReggieTranslation:
                 13: 'Read more...',
                 14: 'Read less...',
                 15: 'This sprite works properly with Yoshi.',
-                16: '[b]Information:[/b]',
+                16: None, # '[b]Information:[/b]'
                 17: 'Reset all settings',
+                18: 'Check dependent sprites',
+                19: 'Check dependency notes',
+                19: 'This sprite has the following dependencies:',
+                20: 'Sprite [id]: required in area',
+                21: 'Sprite [id]: suggested in area',
+                22: 'Sprite [id]: required in zone',
+                23: 'Sprite [id]: suggested in zone',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
@@ -14244,11 +14399,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 if clicked.x() < 0: clicked.setX(0)
                 if clicked.y() < 0: clicked.setY(0)
 
-                if CurrentSprite >= 0:  # fixes a bug -Treeki
-                    # [18:15:36]  Angel-SL: I found a bug in Reggie
-                    # [18:15:42]  Angel-SL: you can paint a 'No sprites found'
-                    # [18:15:47]  Angel-SL: results in a sprite -2
-
+                if CurrentSprite >= 0:
                     # paint a sprite
                     clickedx = int((clicked.x() - 12) / 12) * 8
                     clickedy = int((clicked.y() - 12) / 12) * 8
@@ -21223,6 +21374,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         global Dirty, AutoSaveDirty
         data = Level.save()
+
         try:
             with open(self.fileSavePath, 'wb') as f:
                 f.write(data)

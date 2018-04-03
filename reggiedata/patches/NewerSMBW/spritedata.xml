@@ -6675,7 +6675,7 @@
 <!-- Research all dependencies -->
   <sprite id="213" name="Captain Bowser" asmhacks="True" noyoshi="True" notes="NewerSMBW's Final Boss fight features Bowser riding a small airship while lobbing junk at the players.">
     <dependency notes="Captain Bowser requires a lot of stuff hidden off in a corner of the level in order to function properly and without crashes. Beyond those, you will need a Clowncar with Cannon to damage him.">
-      <required sprited="13"/> <!-- Clowncar to damage him --> <!-- Plus ?????? to avoid crashes -->
+      <required sprite="13"/> <!-- Clowncar to damage him --> <!-- Plus ?????? to avoid crashes -->
     </dependency>
   </sprite> <!-- #213: Captain Bowser -->
 
@@ -9260,14 +9260,14 @@
 
   <sprite id="363" name="Boss Controller - Tower Boss" noyoshi="True" notes="This controls the various boss fight mechanics for the World 1-7 Tower battles, such as boss movement and level completion.">
     <dependency notes="An appropriate loose Koopaling is required in order for the controller to do what it needs to. It's also required to place the sprite on a spot without terrain. See Retail X-22 for suggested room builds for Tower bosses.">
-      <suggested sprites="436"/>
-      <suggested sprites="189"/>
-      <suggested sprites="347"/>
-      <suggested sprites="340"/>
-      <suggested sprites="336"/>
-      <suggested sprites="337"/>
-      <suggested sprites="344"/>
-      <suggested sprites="348"/>
+      <suggested sprite="436"/>
+      <suggested sprite="189"/>
+      <suggested sprite="347"/>
+      <suggested sprite="340"/>
+      <suggested sprite="336"/>
+      <suggested sprite="337"/>
+      <suggested sprite="344"/>
+      <suggested sprite="348"/>
     </dependency>
     <list nybble="12" title="Tower Boss" comment="This determines which Koopaling you will be fighting. When that Koopaling is defeated, the level will end.">
       <entry value="0">Larry</entry>
@@ -9920,13 +9920,13 @@
   <sprite id="407" name="Cutscene Controller - Castle Boss" noyoshi="True" notes="This controller manages the Castle Boss's cinematics such as the start of the fight and the transition to the Airship segment.">
     <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the desired Castle's Boss Room in the Retail level.">
       <required sprite="408"/>
-      <suggested sprites="192"/>
-      <suggested sprites="364"/>
-      <suggested sprites="381"/>
-      <suggested sprites="375"/>
-      <suggested sprites="372"/>
-      <suggested sprites="349"/>
-      <suggested sprites="365"/>
+      <suggested sprite="192"/>
+      <suggested sprite="364"/>
+      <suggested sprite="381"/>
+      <suggested sprite="375"/>
+      <suggested sprite="372"/>
+      <suggested sprite="349"/>
+      <suggested sprite="365"/>
     </dependency>
     <list nybble="12" title="Boss" comment="Select the boss that matches the setup you are creating.">
       <entry value="0">Larry</entry>
@@ -9942,13 +9942,13 @@
   <sprite id="408" name="Cutscene Controller - Bowser Jr and Peach at Castle" noyoshi="True" notes="This controller manages the Castle Boss's Airship cinematics and the level completion.">
     <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the desired Castle's Boss Room in the Retail level.">
       <required sprite="407"/>
-      <suggested sprites="192"/>
-      <suggested sprites="364"/>
-      <suggested sprites="381"/>
-      <suggested sprites="375"/>
-      <suggested sprites="372"/>
-      <suggested sprites="349"/>
-      <suggested sprites="365"/>
+      <suggested sprite="192"/>
+      <suggested sprite="364"/>
+      <suggested sprite="381"/>
+      <suggested sprite="375"/>
+      <suggested sprite="372"/>
+      <suggested sprite="349"/>
+      <suggested sprite="365"/>
     </dependency>
     <list nybble="12" title="Boss" comment="Select the boss that matches the setup you are creating.">
       <entry value="0">Larry</entry>

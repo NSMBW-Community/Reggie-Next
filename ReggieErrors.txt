@@ -1,0 +1,2 @@
+
+ReggieTranslation.string() ERROR: 22; [id]; KeyError('SpriteEditorWidget',)
