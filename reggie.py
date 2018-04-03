@@ -2437,10 +2437,9 @@ def UnloadTileset(idx):
     """
     Unload the tileset from a specific slot
     """
-    for i in range(idx * 0x200, idx * 0x200 + 0x200):
-        Tiles[i] = None
-
-    ObjectDefinitions[idx] = None
+    tileoffset = idx * 256
+    Tiles[tileoffset:tileoffset + 256] = [None] * 256
+    ObjectDefinitions[idx] = [None] * 256
     TilesetFilesLoaded[idx] = None
 
 

@@ -59,7 +59,7 @@ cpdef bytes UncompressLZ77(data):
         return bytes(data)
 
     cdef:
-        u32 inLength, outLength, offset, outIndex, copylen, y
+        u32 inLength, outLength, offset, outIndex, copylen
         u8 flags, x, first, second, third, fourth
         u16 pos
         u8 *outData
@@ -104,10 +104,8 @@ cpdef bytes UncompressLZ77(data):
                         pos = (((first & 0xF) << 8) | second) + 1
                         copylen = (first >> 4) + 1
 
-                    for y in range(copylen):
-                        outData[outIndex + y] = outData[outIndex - pos + y]
-
-                    outIndex += copylen
+                    for _ in range(copylen):
+                        outData[outIndex] = outData[outIndex - pos]; outIndex += 1
 
                 else:
                     outData[outIndex] = inData[offset]
