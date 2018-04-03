@@ -1123,13 +1123,13 @@ def LoadSpriteData():
                 sdef.noyoshi = noyoshi
                 sdef.asm = asm
                 sdef.dependencies = []
+                sdef.dependencynotes = None
 
-                #try:
-                if 1:
+                try:
                     sdef.loadFrom(sprite)
-                #except Exception as e:
-                #    errors.append(str(spriteid))
-                #    errortext.append(str(e))
+                except Exception as e:
+                    errors.append(str(spriteid))
+                    errortext.append(str(e))
 
                 Sprites[spriteid] = sdef
 
@@ -9658,6 +9658,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         toplayout.addWidget(self.yoshiIcon)
         toplayout.addWidget(self.yoshiInfo)
         toplayout.addWidget(self.relatedObjFilesButton)
+        toplayout.addWidget(self.depButton)
         toplayout.addWidget(self.noteButton)
         toplayout.addWidget(self.advNoteButton)
 
@@ -9688,8 +9689,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.com_extra.setReadOnly(True)
         self.com_extra.setVisible(False)
 
+        self.com_deplist = QtWidgets.QGridLayout()
+
         self.com_deplist_w = QtWidgets.QWidget()
-        self.com_deplist = QtWidgets.QFormLayout()
         self.com_deplist_w.setVisible(False)
         self.com_deplist_w.setLayout(self.com_deplist)
 
@@ -10745,8 +10747,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         # remove all the existing widgets in the layout
         layout = self.editorlayout
-        for row in range(2, layout.rowCount()):
-            for column in range(0, layout.columnCount()):
+        for row in range(layout.rowCount()):
+            for column in range(layout.columnCount()):
                 w = layout.itemAtPosition(row, column)
                 if w is not None:
                     widget = w.widget()
@@ -10795,8 +10797,18 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         # dependency stuff
         # first clear current msgs
-        for i in range(self.com_deplist.rowCount()):
-            self.com_deplist.removeRow(0)
+        l = self.com_deplist
+        for row in range(2, l.rowCount()):
+            for column in range(0, l.columnCount()):
+                w = l.itemAtPosition(row, column)
+                if w is not None:
+                    widget = w.widget()
+                    l.removeWidget(widget)
+                    widget.setParent(None)
+
+        rownum = 0
+
+        print('after removal %d' % self.com_deplist.rowCount())
 
         # (sprite id, importance level)
         # importance level is 0 for 'required', 1 for 'suggested'
@@ -10811,21 +10823,30 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             name = trans.string('SpriteDataEditor', 21, '[id]', missingSprite)
             addButton = QtWidgets.QPushButton('Add Sprite')
             addButton.clicked.connect(self.HandleSpritePlaced(missingSprite))
-            self.com_deplist.addRow(name, addButton)
+
+            self.com_deplist.addWidget(QtWidgets.QLabel(name), rownum, 0)
+            self.com_deplist.addWidget(addButton, rownum, 1)
+            rownum += 1
 
         for missingSprite in missing[1]:
             name = trans.string('SpriteDataEditor', 22, '[id]', missingSprite)
             addButton = QtWidgets.QPushButton('Add Sprite')
             addButton.clicked.connect(self.HandleSpritePlaced(missingSprite))
-            self.com_deplist.addRow(name, addButton)
 
+            self.com_deplist.addWidget(QtWidgets.QLabel(name), rownum, 0)
+            self.com_deplist.addWidget(addButton, rownum, 1)
+            rownum += 1
+
+        print('missing: %s' % str(missing))
+        print('new %d' % self.com_deplist.rowCount())
         # dependency notes
         self.depButton.setVisible(sprite.dependencynotes is not None)
+        self.com_deplist_w.setVisible(False)
+        self.com_dep.setVisible(False)
 
         if sprite.dependencynotes is not None:
             self.dependencyNotes = sprite.dependencynotes
             self.com_extra.setText(trans.string('SpriteDataEditor', 20))
-            self.com_dep.setVisible(self.com_deplist.rowCount() > 0)
 
         # yoshi info
         if sprite.noyoshi is True:
@@ -10907,6 +10928,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         Show notes
         """
+        self.com_dep.setVisible(False)
         self.com_main.setText(self.notes)
         self.com_main.setVisible(True)
         self.com_more.setVisible(False)
@@ -10917,6 +10939,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         Show related obj files
         """
+        self.com_dep.setVisible(False)
         self.com_main.setText(self.relatedObjFiles)
         self.com_more.setVisible(False)
         self.com_box.setVisible(True)
@@ -10925,6 +10948,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         Show the Yoshi info
         """
+        self.com_dep.setVisible(False)
         self.com_main.setText(self.yoshiNotes)
         self.com_more.setVisible(False)
         self.com_box.setVisible(True)
@@ -10933,6 +10957,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         Show the advanced notes
         """
+        self.com_dep.setVisible(False)
         self.com_main.setText(self.advNotes)
         self.com_more.setVisible(False)
         self.com_box.setVisible(True)
@@ -10941,10 +10966,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         Show or hide the extra comment
         """
+        self.com_dep.setVisible(False)
+
         if self.com_extra.isVisible():
             self.com_extra.setVisible(False)
             self.com_more.setText(trans.string('SpriteDataEditor', 13))
             self.com_main.setVisible(True)
+            self.com_dep
 
         else:
             self.com_extra.setVisible(True)
@@ -10960,21 +10988,28 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.com_extra.setVisible(False)
         self.com_deplist_w.setVisible(False)
         self.com_dep.setText(trans.string('SpriteDataEditor', 18))
+        self.com_dep.setVisible(True)
 
     def DependencyToggle(self):
         """
-        Show dependencies
+        The button was clicked
         """
-        if self.com_extra.isVisible():
-            self.com_extra.setVisible(False)
-            self.com_deplist_w.setVisible(False)
+        if not self.com_main.isVisible():
+            self.com_box.setMaximumHeight(120)
+            w = self.com_box.width()
+            self.com_box.resize(w, 120)
+
             self.com_dep.setText(trans.string('SpriteDataEditor', 18))
+            self.com_deplist_w.setVisible(False)
             self.com_main.setVisible(True)
 
         else:
-            self.com_main.setVisible(False)
+            self.com_box.setMaximumHeight(200)
+            w = self.com_box.width()
+            self.com_box.resize(w, 200)
+
             self.com_dep.setText(trans.string('SpriteDataEditor', 19))
-            self.com_extra.setVisible(True)
+            self.com_main.setVisible(False)
             self.com_deplist_w.setVisible(True)
 
     def HandleFieldUpdate(self, field):
