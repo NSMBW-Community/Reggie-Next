@@ -10747,8 +10747,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         # remove all the existing widgets in the layout
         layout = self.editorlayout
-        for row in range(layout.rowCount()):
-            for column in range(layout.columnCount()):
+        for row in range(2, layout.rowCount()):
+            for column in range(0, layout.columnCount()):
                 w = layout.itemAtPosition(row, column)
                 if w is not None:
                     widget = w.widget()
@@ -10796,9 +10796,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.asm.setVisible(sprite.asm is True)
 
         # dependency stuff
-        # first clear current msgs
+        # first clear current dependencies
         l = self.com_deplist
-        for row in range(2, l.rowCount()):
+        for row in range(0, l.rowCount()):
             for column in range(0, l.columnCount()):
                 w = l.itemAtPosition(row, column)
                 if w is not None:
@@ -10807,8 +10807,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     widget.setParent(None)
 
         rownum = 0
-
-        print('after removal %d' % self.com_deplist.rowCount())
 
         # (sprite id, importance level)
         # importance level is 0 for 'required', 1 for 'suggested'
@@ -10822,7 +10820,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         for missingSprite in missing[0]:
             name = trans.string('SpriteDataEditor', 21, '[id]', missingSprite)
             addButton = QtWidgets.QPushButton('Add Sprite')
-            addButton.clicked.connect(self.HandleSpritePlaced(missingSprite))
+            addButton.clicked.connect(self.HandleSpritePlaced(missingSprite, addButton))
 
             self.com_deplist.addWidget(QtWidgets.QLabel(name), rownum, 0)
             self.com_deplist.addWidget(addButton, rownum, 1)
@@ -10831,14 +10829,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         for missingSprite in missing[1]:
             name = trans.string('SpriteDataEditor', 22, '[id]', missingSprite)
             addButton = QtWidgets.QPushButton('Add Sprite')
-            addButton.clicked.connect(self.HandleSpritePlaced(missingSprite))
+            addButton.clicked.connect(self.HandleSpritePlaced(missingSprite, addButton))
 
             self.com_deplist.addWidget(QtWidgets.QLabel(name), rownum, 0)
             self.com_deplist.addWidget(addButton, rownum, 1)
             rownum += 1
 
-        print('missing: %s' % str(missing))
-        print('new %d' % self.com_deplist.rowCount())
         # dependency notes
         self.depButton.setVisible(sprite.dependencynotes is not None)
         self.com_deplist_w.setVisible(False)
@@ -11086,10 +11082,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         else:
             self.raweditor.setStyleSheet('QLineEdit { background-color: #ffd2d2; }')
 
-    def HandleSpritePlaced(self, id_):
+    def HandleSpritePlaced(self, id_, button_):
         x_ = 0
         y_ = 0
         data_ = mainWindow.defaultDataEditor.data
+        self_ = self
 
         def placeSprite():
             mw = mainWindow
@@ -11105,6 +11102,23 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             SetDirty()
             spr.UpdateListItem()
+
+            # remove this dependency, because it is now fulfilled.
+            # get row of button
+            idx = self_.com_deplist.indexOf(button_)
+            row, _, _, _ = self_.com_deplist.getItemPosition(idx)
+
+            # first clear current dependencies
+            l = self.com_deplist
+            for column in range(0, l.columnCount()):
+                w = l.itemAtPosition(row, column)
+                if w is not None:
+                    widget = w.widget()
+                    l.removeWidget(widget)
+                    widget.setParent(None)
+
+            ...
+
 
         return placeSprite
 
