@@ -395,7 +395,7 @@ def hexdump(s, sep=' '):  # just dumps hex values
 
 def hexdump2(src, length=16):  # dumps to a 'hex editor' style output
     result = []
-    for i in xrange(0, len(src), length):
+    for i in range(0, len(src), length):
         s = src[i:i + length]
         if len(s) % 4 == 0:
             mod = 0

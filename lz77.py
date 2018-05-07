@@ -29,6 +29,7 @@
 ################################################################
 ################################################################
 
+
 def GetUncompressedSize(inData):
     offset = 4
     outSize = inData[1] | (inData[2] << 8) | (inData[3] << 16)
@@ -44,17 +45,18 @@ def UncompressLZ77(inData):
     if inData[0] != 0x11:
         return inData
 
+    inLength = len(inData)
     outLength, offset = GetUncompressedSize(inData)
     outData = bytearray(outLength)
     
     outIndex = 0
 
-    while outIndex < outLength and offset < len(inData):
+    while outIndex < outLength and offset < inLength:
         flags = inData[offset]
         offset += 1
 
         for x in reversed(range(8)):
-            if outIndex >= outLength or offset >= len(inData):
+            if outIndex >= outLength or offset >= inLength:
                 break
 
             if flags & (1 << x):
