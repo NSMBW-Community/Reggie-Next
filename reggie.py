@@ -31,6 +31,7 @@
 
 # Python version: sanity check
 minimum = 3.4
+pqt_min = map(int, "5.8.2".split('.'))
 import sys
 
 currentRunningVersion = sys.version_info.major + (.1 * sys.version_info.minor)
@@ -61,6 +62,18 @@ except (ImportError, NameError):
     errormsg = 'PyQt5 is not installed for this Python installation. Go online and download it.'
     raise Exception(errormsg)
 Qt = QtCore.Qt
+
+version = QtCore.QT_VERSION_STR.split('.')
+for v, c in zip(version, pqt_min):
+    if c < int(v):
+        # lower version
+        errormsg = 'Please update your copy of PyQt to ' + '.'.join(pqt_min) + \
+                   ' or greater. Currently running on: ' + QtCore.QT_VERSION_STR
+
+        raise Exception(errormsg) from None
+    elif c > int(v):
+        # higher version
+        break
 
 # Local imports
 import archive
@@ -752,28 +765,24 @@ class SpriteDefinition:
             """
             Required by Qt
             """
-            # return self.max
             return len(self.entries)
 
         def data(self, index, role=Qt.DisplayRole):
             """
             Get what we have for a specific row
             """
-            if not index.isValid(): return None
-            n = index.row()
-            if n < 0: return None
-            # if n >= self.max: return None
-            if n >= len(self.entries): return None
+            if not index.isValid() or role != Qt.DisplayRole:
+                return None
 
-            if role == Qt.DisplayRole:
-                # entries = self.entries
-                # if n in entries:
-                #    return '%d: %s' % (n, entries[n])
-                # else:
-                #    return '%d: <unknown/unused>' % n
+            n = index.row()
+            if n < 0 or n >= len(self.entries):
+                return None
+
+            if AdvancedModeEnabled:
                 return '%d: %s' % self.entries[n]
 
-            return None
+            return str(self.entries[n][1])
+
 
     def loadFrom(self, elem):
         """
@@ -783,15 +792,31 @@ class SpriteDefinition:
         fields = self.fields
 
         for field in elem:
-            if field.tag not in ['checkbox', 'list', 'value', 'bitfield', 'multibox']: continue
+            if field.tag not in ['checkbox', 'list', 'value', 'bitfield', 'multibox', 'dualbox', 'dependency']: continue
 
             attribs = field.attrib
 
-            if 'comment' in attribs:
-                comment = trans.string('SpriteDataEditor', 1, '[name]', attribs['title'], '[note]', attribs['comment'])
+            if field.tag == 'dualbox':
+                title = attribs['title1'] + " / " + attribs['title2']
+            elif 'title' in attribs:
+                title = attribs['title']
 
+            if 'comment' in attribs:
+                comment = trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['comment'])
             else:
                 comment = None
+
+            if 'comment2' in attribs:
+                comment2 = trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['comment2'])
+            else:
+                comment2 = None
+
+            if 'advancedcomment' in attribs:
+                advancedcomment = trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['advancedcomment'])
+            else:
+                advancedcomment = None
+
+            advanced = 'advanced' in attribs and attribs['advanced'] == "True"
 
             if 'requiredbit' in attribs:
                 required = []
@@ -813,7 +838,7 @@ class SpriteDefinition:
 
                     if sval is None:
                         if isinstance(bit, tuple):
-                            val = (1, (1 << (bit[1] - bit[0])) - 1)
+                            val = (1, 1 << (bit[1] - bit[0]))
 
                         else:
                             val = 1
@@ -867,7 +892,7 @@ class SpriteDefinition:
                 else:
                     mask = 1
 
-                fields.append((0, attribs['title'], bit, mask, comment, required))
+                fields.append((0, attribs['title'], bit, mask, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'list':
                 # parameters: title, bit, model, comment
@@ -897,7 +922,7 @@ class SpriteDefinition:
                         # different number of bits
                         getit = ran.split('-')
                         r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
-                        l += r_bit[1] - r_bit[0] + 1
+                        l += r_bit[1] - r_bit[0]
 
                     bit.append(r_bit)
 
@@ -916,7 +941,7 @@ class SpriteDefinition:
                     existing[i] = True
 
                 fields.append(
-                    (1, attribs['title'], bit, SpriteDefinition.ListPropertyModel(entries, existing, max), comment, required))
+                    (1, attribs['title'], bit, SpriteDefinition.ListPropertyModel(entries, existing, max), comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'value':
                 # parameters: title, bit, max, comment
@@ -946,7 +971,7 @@ class SpriteDefinition:
                         # different number of bits
                         getit = ran.split('-')
                         r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
-                        l += r_bit[1] - r_bit[0] + 1
+                        l += r_bit[1] - r_bit[0]
 
                     bit.append(r_bit)
 
@@ -955,14 +980,14 @@ class SpriteDefinition:
                 if len(bit) == 1:
                     bit = bit[0]
 
-                fields.append((2, attribs['title'], bit, max, comment, required))
+                fields.append((2, attribs['title'], bit, max, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'bitfield':
                 # parameters: title, startbit, bitnum, comment
                 startbit = int(attribs['startbit'])
                 bitnum = int(attribs['bitnum'])
 
-                fields.append((3, attribs['title'], startbit, bitnum, comment, required))
+                fields.append((3, attribs['title'], startbit, bitnum, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'multibox':
                 # parameters: title, bit, comment
@@ -995,7 +1020,35 @@ class SpriteDefinition:
                 if len(bit) == 1:
                     bit = bit[0]
 
-                fields.append((4, attribs['title'], bit, comment, required))
+                fields.append((4, attribs['title'], bit, comment, required, advanced, comment2, advancedcomment))
+
+            elif field.tag == 'dualbox':
+                # parameters title1, title2, bit, comment, required, advanced
+                # ONLY SUPPORTS A SINGLE BIT!
+                bit = int(attribs['bit'])
+
+                fields.append((5, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
+
+            elif field.tag == 'dependency':
+                for entry in field:
+                    types = ['required', 'suggested']
+
+                    if entry.tag not in types:
+                        continue
+
+                    if 'sprite' not in entry.attrib:
+                        print(self.id)
+                        continue
+
+                    if entry.attrib['sprite'] == "":
+                        continue
+
+                    self.dependencies.append((int(entry.attrib['sprite']), types.index(entry.tag)))
+
+                if 'notes' in attribs:
+                    self.dependencynotes = attribs['notes']
+                else:
+                    self.dependencynotes = None
 
 
 def LoadSpriteData():
@@ -1068,6 +1121,8 @@ def LoadSpriteData():
                 sdef.yoshiNotes = yoshiNotes
                 sdef.noyoshi = noyoshi
                 sdef.asm = asm
+                sdef.dependencies = []
+                sdef.dependencynotes = None
 
                 try:
                     sdef.loadFrom(sprite)
@@ -5691,8 +5746,9 @@ class SpriteItem(LevelEditorItem):
 
     def __lt__(self, other):
         # Sort by objx, then objy, then sprite type
-        return (self.objx * 100000 + self.objy) * 1000 + self.type < (
-                                                                     other.objx * 100000 + other.objy) * 1000 + other.type
+        score = lambda sprite: (sprite.objx * 100000 + sprite.objy) * 1000 + sprite.type
+
+        return score(self) < score(other)
 
     def InitializeSprite(self):
         """
@@ -5982,30 +6038,38 @@ class SpriteItem(LevelEditorItem):
         """
         Overrides mouse pressing events if needed for cloning
         """
-        if event.button() == Qt.LeftButton:
-            if QtWidgets.QApplication.keyboardModifiers() == Qt.ControlModifier:
-                newitem = SpriteItem(self.type, self.objx, self.objy, self.spritedata)
-                newitem.listitem = ListWidgetItem_SortsByOther(newitem, newitem.ListString())
-                mainWindow.spriteList.addItem(newitem.listitem)
-                Area.sprites.append(newitem)
-                mainWindow.scene.addItem(newitem)
-                mainWindow.scene.clearSelection()
-                self.setSelected(True)
-                newitem.UpdateListItem()
-                SetDirty()
-                return
+        if event.button() != Qt.LeftButton or QtWidgets.QApplication.keyboardModifiers() != Qt.ControlModifier:
+            LevelEditorItem.mousePressEvent(self, event)
+            return
 
-        LevelEditorItem.mousePressEvent(self, event)
+        newitem = SpriteItem(self.type, self.objx, self.objy, self.spritedata)
+        newitem.listitem = ListWidgetItem_SortsByOther(newitem, newitem.ListString())
+
+        mainWindow.spriteList.addItem(newitem.listitem)
+        Area.sprites.append(newitem)
+
+        mainWindow.scene.addItem(newitem)
+        mainWindow.scene.clearSelection()
+
+        self.setSelected(True)
+
+        newitem.UpdateListItem()
+        SetDirty()
+
 
     def nearestZone(self, obj=False):
         """
         Calls a modified MapPositionToZoneID (if obj = True, it returns the actual ZoneItem object)
         """
-        if not hasattr(Area, 'zones'): return None
+        if not hasattr(Area, 'zones'):
+            return None
+
         id = SLib.MapPositionToZoneID(Area.zones, self.objx, self.objy, True)
+
         if obj:
             for z in Area.zones:
-                if z.id == id: return z
+                if z.id == id:
+                    return z
         else:
             return id
 
@@ -9755,6 +9819,8 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
     SpriteChanged = QtCore.pyqtSignal(int)
     SpriteReplace = QtCore.pyqtSignal(int)
 
+AltSettingIcons = False
+ResetDataWhenHiding = False
 
 class SpriteEditorWidget(QtWidgets.QWidget):
     """
@@ -9782,11 +9848,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.resetButton.clicked.connect(self.HandleResetData)
 
         editboxlayout = QtWidgets.QHBoxLayout()
-        editboxlayout.addWidget(self.editbox)
-        editboxlayout.addWidget(edit)
         editboxlayout.addWidget(self.resetButton)
         editboxlayout.addStretch(1)
-        editboxlayout.setStretch(1, 1)
+        editboxlayout.addWidget(self.editbox)
+        editboxlayout.addWidget(edit)
+        #editboxlayout.setStretch(1, 1)
 
         # 'Editing Sprite #' label
         self.spriteLabel = QtWidgets.QLabel('-')
@@ -9798,6 +9864,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.noteButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
         self.noteButton.setAutoRaise(True)
         self.noteButton.clicked.connect(self.ShowNoteTooltip)
+
+        self.depButton = QtWidgets.QToolButton()
+        self.depButton.setIcon(GetIcon('dependency-notes'))
+        self.depButton.setText(trans.string('SpriteDataEditor', 4))
+        self.depButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.depButton.setAutoRaise(True)
+        self.depButton.clicked.connect(self.ShowDependencies)
 
         self.relatedObjFilesButton = QtWidgets.QToolButton()
         self.relatedObjFilesButton.setIcon(GetIcon('data'))
@@ -9813,6 +9886,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.advNoteButton.setAutoRaise(True)
         self.advNoteButton.clicked.connect(self.ShowAdvancedNoteTooltip)
 
+        self.yoshiIcon = QtWidgets.QLabel()
+
         self.yoshiInfo = QtWidgets.QToolButton()
         self.yoshiInfo.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
         self.yoshiInfo.setText(trans.string('SpriteDataEditor', 12))
@@ -9820,40 +9895,60 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.yoshiInfo.clicked.connect(self.ShowYoshiTooltip)
 
         self.asm = QtWidgets.QLabel()
-        self.asm.setPixmap(GetIcon("asm").pixmap(64,64))
+        self.asm.setPixmap(GetIcon("asm").pixmap(64, 64))
 
         toplayout = QtWidgets.QHBoxLayout()
         toplayout.addWidget(self.spriteLabel)
         toplayout.addStretch(1)
         toplayout.addWidget(self.asm)
+        toplayout.addWidget(self.yoshiIcon)
         toplayout.addWidget(self.yoshiInfo)
         toplayout.addWidget(self.relatedObjFilesButton)
+        toplayout.addWidget(self.depButton)
         toplayout.addWidget(self.noteButton)
         toplayout.addWidget(self.advNoteButton)
 
         subLayout = QtWidgets.QVBoxLayout()
         subLayout.setContentsMargins(0, 0, 0, 0)
 
+        # messages - now used for dependency warnings, but it might be useful for
+        # other stuff too
+        self.msg_layout = QtWidgets.QVBoxLayout()
+
         # comments
-        desc = QtWidgets.QLabel(trans.string('SpriteDataEditor', 16))
-        self.com_main = QtWidgets.QLabel()
-        self.com_main.setWordWrap(True)
+        self.com_box = QtWidgets.QGroupBox()
+        self.com_box.setMaximumHeight(120)
+
+        self.com_main = QtWidgets.QTextEdit()
+        self.com_main.setReadOnly(True)
 
         self.com_more = QtWidgets.QPushButton()
         self.com_more.setText(trans.string('SpriteDataEditor', 13))
         self.com_more.clicked.connect(self.ShowMoreComments)
 
-        self.com_extra = QtWidgets.QLabel()
-        self.com_extra.setWordWrap(True)
+        self.com_dep = QtWidgets.QPushButton()
+        self.com_dep.setText(trans.string('SpriteDataEditor', 18))
+        self.com_dep.clicked.connect(self.DependencyToggle)
+        self.com_dep.setVisible(False)
+
+        self.com_extra = QtWidgets.QTextEdit()
+        self.com_extra.setReadOnly(True)
+        self.com_extra.setVisible(False)
+
+        self.com_deplist = QtWidgets.QGridLayout()
+
+        self.com_deplist_w = QtWidgets.QWidget()
+        self.com_deplist_w.setVisible(False)
+        self.com_deplist_w.setLayout(self.com_deplist)
 
         L = QtWidgets.QVBoxLayout()
-        L.addWidget(desc)
         L.addWidget(self.com_main)
         L.addWidget(self.com_more)
+        L.addWidget(self.com_dep)
         L.addWidget(self.com_extra)
+        L.addWidget(self.com_deplist_w)
 
-        self.comments = QtWidgets.QWidget()
-        self.comments.setLayout(L)
+        self.com_box.setLayout(L)
 
         # create a layout
         mainLayout = QtWidgets.QVBoxLayout()
@@ -9863,8 +9958,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         layout = QtWidgets.QGridLayout()
         self.editorlayout = layout
 
+        subLayout.addLayout(self.msg_layout)
         subLayout.addLayout(layout)
-        subLayout.addWidget(self.comments)
+        subLayout.addWidget(self.com_box)
         subLayout.addLayout(editboxlayout)
 
         self.setLayout(mainLayout)
@@ -9877,6 +9973,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.notes = None
         self.relatedObjFiles = None
+        self.dependencyNotes = None
 
     class PropertyDecoder(QtCore.QObject):
         """
@@ -9954,7 +10051,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             if isinstance(bit, list):
                 # multiple ranges
-                print("writing to compound: " + str(bit))
                 for ran in reversed(bit):
                     # find the size of the range
                     if isinstance(ran, tuple):
@@ -9966,8 +10062,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     # mask the value over this length
                     mask = (1 << l) - 1
                     v = value & mask
-
-                    print("Writing value %d, %d & %d, to bits %s" % (v, value, mask, ran))
 
                     # remove these bits from the value
                     value >>= l
@@ -10027,26 +10121,84 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 val = self.retrieve(data, requirement[0])
                 ran = requirement[1]
 
-                print("Req " + str(requirement[0]) + " " + str(ran) + ": " + str(val))
-
                 if isinstance(ran, tuple):
                     show = show and ran[0] <= val < ran[1]
 
                 else:
                     show = show and ran == val
 
-                print(show)
+            visibleNow = self.layout.itemAtPosition(self.row, 0).widget().isVisible()
+
+            if show == visibleNow:
+                return
 
             # show/hide all widgets in this row
             for i in range(self.layout.columnCount()):
-                self.layout.itemAtPosition(self.row, i).widget().setVisible(show)
+                w = self.layout.itemAtPosition(self.row, i)
+                if w is not None:
+                    w.widget().clearFocus()
+                    w.widget().setVisible(show)
+
+            # maybe reset hidden stuff
+            if ResetDataWhenHiding and not show:
+                self.insertvalue(data, 0)
+
+        def checkAdv(self):
+            """
+            Checks if we should show this setting
+            """
+
+            if not self.advanced or AdvancedModeEnabled:
+                return
+
+            # hide all widgets in this row
+            for i in range(self.layout.columnCount()):
+                if self.layout.itemAtPosition(self.row, i) is not None:
+                    self.layout.itemAtPosition(self.row, i).widget().setVisible(False)
+
+        def ShowComment(self):
+            """
+            Sets the comment text
+            """
+            self.parent.com_main.setText(self.comment)
+            self.parent.com_main.setVisible(True)
+
+            if self.comment2 is None or not AltSettingIcons:
+                self.parent.com_more.setVisible(False)
+
+            else:
+                self.parent.com_more.setVisible(True)
+                self.parent.com_extra.setText(self.comment2)
+
+            self.parent.com_extra.setVisible(False)
+            self.parent.com_box.setVisible(True)
+
+        def ShowComment2(self):
+            """
+            Sets the comment2 text
+            """
+            self.parent.com_main.setText(self.comment2)
+            self.parent.com_main.setVisible(True)
+            self.parent.com_more.setVisible(False)
+            self.parent.com_extra.setVisible(False)
+            self.parent.com_box.setVisible(True)
+
+        def ShowAdvancedComment(self):
+            """
+            Sets the advanced comment
+            """
+            self.parent.com_main.setText(self.commentAdv)
+            self.parent.com_main.setVisible(True)
+            self.parent.com_more.setVisible(False)
+            self.parent.com_extra.setVisible(False)
+            self.parent.com_box.setVisible(True)
 
     class CheckboxPropertyDecoder(PropertyDecoder):
         """
         Class that decodes/encodes sprite data to/from a checkbox
         """
 
-        def __init__(self, title, bit, mask, comment, required, layout, row):
+        def __init__(self, title, bit, mask, comment, required, advanced, comment2, commentAdv, layout, row, parent):
             """
             Creates the widget
             """
@@ -10055,8 +10207,67 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.widget = QtWidgets.QCheckBox()
             label = QtWidgets.QLabel(title + ':')
 
+            self.comment = comment
+            self.comment2 = comment2
+            self.commentAdv = commentAdv
+
             if comment is not None:
-                label.setToolTip(comment)
+                button_com = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_com.setIcon(GetIcon('setting-comment'))
+                    button_com.setStyleSheet("border-radius: 50%")
+
+                button_com.clicked.connect(self.ShowComment)
+                button_com.setAutoRaise(True)
+
+            else:
+                button_com = None
+
+            if comment2 is not None and not AltSettingIcons:
+                button_com2 = QtWidgets.QToolButton()
+                button_com2.setIcon(GetIcon('setting-comment2'))
+                button_com2.setStyleSheet("border-radius: 50%")
+                button_com2.clicked.connect(self.ShowComment2)
+                button_com2.setAutoRaise(True)
+
+            else:
+                button_com2 = None
+
+            if commentAdv is not None and AdvancedModeEnabled:
+                button_adv = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_adv.setIcon(GetIcon('setting-comment-adv'))
+                    button_adv.setStyleSheet("border-radius: 50%")
+
+                button_adv.clicked.connect(self.ShowAdvancedComment)
+                button_adv.setAutoRaise(True)
+
+            else:
+                button_adv = None
+
+            if button_com is not None or button_com2 is not None or button_adv is not None:
+                L = QtWidgets.QHBoxLayout()
+                L.addWidget(self.widget)
+
+                if button_com is not None:
+                    L.addWidget(button_com)
+
+                if button_com2 is not None:
+                    L.addWidget(button_com2)
+
+                if button_adv is not None:
+                    L.addWidget(button_adv)
+
+                L.addStretch(1)
+                L.setContentsMargins(0, 0, 0, 0)
+
+                widget = QtWidgets.QWidget()
+                widget.setLayout(L)
+
+            else:
+                widget = self.widget
 
             self.widget.clicked.connect(self.HandleClick)
 
@@ -10072,12 +10283,14 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.mask = mask
             self.xormask = xormask
             self.required = required
+            self.advanced = advanced
+            self.parent = parent
 
             self.row = row
             self.layout = layout
 
             layout.addWidget(label, row, 0, Qt.AlignRight)
-            layout.addWidget(self.widget, row, 1)
+            layout.addWidget(widget, row, 1)
 
         def update(self, data):
             """
@@ -10085,6 +10298,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data)
+            self.checkAdv()
 
             value = ((self.retrieve(data) & self.mask) == self.mask)
             self.widget.setChecked(value)
@@ -10111,7 +10325,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a combobox
         """
 
-        def __init__(self, title, bit, model, comment, required, layout, row):
+        def __init__(self, title, bit, model, comment, required, advanced, comment2, commentAdv, layout, row, parent):
             """
             Creates the widget
             """
@@ -10120,19 +10334,80 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.model = model
             self.widget = QtWidgets.QComboBox()
             self.widget.setModel(model)
-
-            if comment is not None:
-                self.widget.setToolTip(comment)
+            self.parent = parent
 
             self.widget.currentIndexChanged.connect(self.HandleIndexChanged)
             self.bit = bit
-
-            layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
-            layout.addWidget(self.widget, row, 1)
-
-            self.layout = layout
-            self.row = row
             self.required = required
+            self.advanced = advanced
+
+            self.row = row
+            self.layout = layout
+
+            self.comment = comment
+            self.comment2 = comment2
+            self.commentAdv = commentAdv
+
+            if comment is not None:
+                button_com = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_com.setIcon(GetIcon('setting-comment'))
+                    button_com.setStyleSheet("border-radius: 50%")
+
+                button_com.clicked.connect(self.ShowComment)
+                button_com.setAutoRaise(True)
+
+            else:
+                button_com = None
+
+            if comment2 is not None and not AltSettingIcons:
+                button_com2 = QtWidgets.QToolButton()
+                button_com2.setIcon(GetIcon('setting-comment2'))
+                button_com2.setStyleSheet("border-radius: 50%")
+                button_com2.clicked.connect(self.ShowComment2)
+                button_com2.setAutoRaise(True)
+
+            else:
+                button_com2 = None
+
+            if commentAdv is not None and AdvancedModeEnabled:
+                button_adv = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_adv.setIcon(GetIcon('setting-comment-adv'))
+                    button_adv.setStyleSheet("border-radius: 50%")
+
+                button_adv.clicked.connect(self.ShowAdvancedComment)
+                button_adv.setAutoRaise(True)
+
+            else:
+                button_adv = None
+
+            if button_com is not None or button_com2 is not None or button_adv is not None:
+                L = QtWidgets.QHBoxLayout()
+                L.addStretch(1)
+
+                if button_com is not None:
+                    L.addWidget(button_com)
+
+                if button_com2 is not None:
+                    L.addWidget(button_com2)
+
+                if button_adv is not None:
+                    L.addWidget(button_adv)
+
+                L.addWidget(QtWidgets.QLabel(title + ':'))
+                L.setContentsMargins(0, 0, 0, 0)
+
+                widget = QtWidgets.QWidget()
+                widget.setLayout(L)
+
+            else:
+                widget = QtWidgets.QLabel(title + ':')
+
+            layout.addWidget(widget, row, 0, Qt.AlignRight)
+            layout.addWidget(self.widget, row, 1)
 
         def update(self, data):
             """
@@ -10140,6 +10415,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data)
+            self.checkAdv()
 
             value = self.retrieve(data)
             if not self.model.existingLookup[value]:
@@ -10161,6 +10437,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             Handle the current index changing in the combobox
             """
+            if index < 0:
+                return
+
             self.updateData.emit(self)
 
     class ValuePropertyDecoder(PropertyDecoder):
@@ -10168,7 +10447,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a spinbox
         """
 
-        def __init__(self, title, bit, max, comment, required, layout, row):
+        def __init__(self, title, bit, max, comment, required, advanced, comment2, commentAdv, layout, row, parent):
             """
             Creates the widget
             """
@@ -10176,19 +10455,80 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.widget = QtWidgets.QSpinBox()
             self.widget.setRange(0, max - 1)
+            self.parent = parent
+
+            self.comment = comment
+            self.comment2 = comment2
+            self.commentAdv = commentAdv
 
             if comment is not None:
-                self.widget.setToolTip(comment)
+                button_com = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_com.setIcon(GetIcon('setting-comment'))
+                    button_com.setStyleSheet("border-radius: 50%")
+
+                button_com.clicked.connect(self.ShowComment)
+                button_com.setAutoRaise(True)
+
+            else:
+                button_com = None
+
+            if comment2 is not None and not AltSettingIcons:
+                button_com2 = QtWidgets.QToolButton()
+                button_com2.setIcon(GetIcon('setting-comment2'))
+                button_com2.setStyleSheet("border-radius: 50%")
+                button_com2.clicked.connect(self.ShowComment2)
+                button_com2.setAutoRaise(True)
+
+            else:
+                button_com2 = None
+
+            if commentAdv is not None and AdvancedModeEnabled:
+                button_adv = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_adv.setIcon(GetIcon('setting-comment-adv'))
+                    button_adv.setStyleSheet("border-radius: 50%")
+
+                button_adv.clicked.connect(self.ShowAdvancedComment)
+                button_adv.setAutoRaise(True)
+
+            else:
+                button_adv = None
+
+            if button_com is not None or button_com2 is not None or button_adv is not None:
+                L = QtWidgets.QHBoxLayout()
+                L.addStretch(1)
+
+                if button_com is not None:
+                    L.addWidget(button_com)
+
+                if button_com2 is not None:
+                    L.addWidget(button_com2)
+
+                if button_adv is not None:
+                    L.addWidget(button_adv)
+
+                L.addWidget(QtWidgets.QLabel(title + ':'))
+                L.setContentsMargins(0, 0, 0, 0)
+
+                widget = QtWidgets.QWidget()
+                widget.setLayout(L)
+
+            else:
+                widget = QtWidgets.QLabel(title + ':')
 
             self.widget.valueChanged.connect(self.HandleValueChanged)
             self.bit = bit
+            self.required = required
+            self.advanced = advanced
 
-            layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
+            layout.addWidget(widget, row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
 
             self.layout = layout
             self.row = row
-            self.required = required
 
         def update(self, data):
             """
@@ -10196,6 +10536,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data)
+            self.checkAdv()
 
             value = self.retrieve(data)
             self.widget.setValue(value)
@@ -10217,7 +10558,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a bitfield
         """
 
-        def __init__(self, title, startbit, bitnum, comment, required, layout, row):
+        def __init__(self, title, startbit, bitnum, comment, required, advanced, comment2, commentAdv, layout, row, parent):
             """
             Creates the widget
             """
@@ -10225,18 +10566,80 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.startbit = startbit
             self.bitnum = bitnum
+            self.required = required
+            self.advanced = advanced
+            self.parent = parent
 
             self.widgets = []
             CheckboxLayout = QtWidgets.QGridLayout()
             CheckboxLayout.setContentsMargins(0, 0, 0, 0)
 
+            self.comment = comment
+            self.comment2 = comment2
+            self.commentAdv = commentAdv
+
+            if comment is not None:
+                button_com = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_com.setIcon(GetIcon('setting-comment'))
+                    button_com.setStyleSheet("border-radius: 50%")
+
+                button_com.clicked.connect(self.ShowComment)
+                button_com.setAutoRaise(True)
+
+            else:
+                button_com = None
+
+            if comment2 is not None and not AltSettingIcons:
+                button_com2 = QtWidgets.QToolButton()
+                button_com2.setIcon(GetIcon('setting-comment2'))
+                button_com2.setStyleSheet("border-radius: 50%")
+                button_com2.clicked.connect(self.ShowComment2)
+                button_com2.setAutoRaise(True)
+
+            else:
+                button_com2 = None
+
+            if commentAdv is not None and AdvancedModeEnabled:
+                button_adv = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_adv.setIcon(GetIcon('setting-comment-adv'))
+                    button_adv.setStyleSheet("border-radius: 50%")
+
+                button_adv.clicked.connect(self.ShowAdvancedComment)
+                button_adv.setAutoRaise(True)
+
+            else:
+                button_adv = None
+
+            if button_com is not None or button_com2 is not None or button_adv is not None:
+                L = QtWidgets.QHBoxLayout()
+                L.addStretch(1)
+
+                if button_com is not None:
+                    L.addWidget(button_com)
+
+                if button_com2 is not None:
+                    L.addWidget(button_com2)
+
+                if button_adv is not None:
+                    L.addWidget(button_adv)
+
+                L.addWidget(QtWidgets.QLabel(title + ':'))
+                L.setContentsMargins(0, 0, 0, 0)
+
+                widget = QtWidgets.QWidget()
+                widget.setLayout(L)
+
+            else:
+                widget = QtWidgets.QLabel(title + ':')
+
             for i in range(bitnum):
                 c = QtWidgets.QCheckBox()
                 self.widgets.append(c)
                 CheckboxLayout.addWidget(c, 0, i)
-
-                if comment is not None:
-                    c.setToolTip(comment)
 
                 c.toggled.connect(self.HandleValueChanged)
 
@@ -10247,12 +10650,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             w = QtWidgets.QWidget()
             w.setLayout(CheckboxLayout)
 
-            layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
+            layout.addWidget(widget, row, 0, Qt.AlignRight)
             layout.addWidget(w, row, 1)
 
             self.layout = layout
             self.row = row
-            self.required = required
 
         def update(self, data):
             """
@@ -10260,6 +10662,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data)
+            self.checkAdv()
 
             value = self.retrieve(data)
             i = self.bitnum
@@ -10293,7 +10696,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a multibox
         """
 
-        def __init__(self, title, bit, comment, required, layout, row):
+        def __init__(self, title, bit, comment, required, advanced, comment2, commentAdv, layout, row, parent):
             """
             Creates the widget
             """
@@ -10310,6 +10713,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.bit = bit
             self.startbit = startbit
             self.bitnum = bitnum
+            self.required = required
+            self.advanced = advanced
+            self.parent = parent
 
             self.widgets = []
             CheckboxLayout = QtWidgets.QGridLayout()
@@ -10317,23 +10723,81 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             for i in range(bitnum):
                 c = QtWidgets.QCheckBox(str(bitnum - i))
+                c.toggled.connect(self.HandleValueChanged)
+
                 self.widgets.append(c)
                 CheckboxLayout.addWidget(c, 0, i)
-
-                if comment is not None:
-                    c.setToolTip(comment)
-
-                c.toggled.connect(self.HandleValueChanged)
 
             w = QtWidgets.QWidget()
             w.setLayout(CheckboxLayout)
 
-            layout.addWidget(QtWidgets.QLabel(title + ':'), row, 0, Qt.AlignRight)
+            self.comment = comment
+            self.comment2 = comment2
+            self.commentAdv = commentAdv
+
+            if comment is not None:
+                button_com = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_com.setIcon(GetIcon('setting-comment'))
+                    button_com.setStyleSheet("border-radius: 50%")
+
+                button_com.clicked.connect(self.ShowComment)
+                button_com.setAutoRaise(True)
+
+            else:
+                button_com = None
+
+            if comment2 is not None and not AltSettingIcons:
+                button_com2 = QtWidgets.QToolButton()
+                button_com2.setIcon(GetIcon('setting-comment2'))
+                button_com2.setStyleSheet("border-radius: 50%")
+                button_com2.clicked.connect(self.ShowComment2)
+                button_com2.setAutoRaise(True)
+
+            else:
+                button_com2 = None
+
+            if commentAdv is not None and AdvancedModeEnabled:
+                button_adv = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_adv.setIcon(GetIcon('setting-comment-adv'))
+                    button_adv.setStyleSheet("border-radius: 50%")
+
+                button_adv.clicked.connect(self.ShowAdvancedComment)
+                button_adv.setAutoRaise(True)
+
+            else:
+                button_adv = None
+
+            if button_com is not None or button_com2 is not None or button_adv is not None:
+                L = QtWidgets.QHBoxLayout()
+                L.addStretch(1)
+
+                if button_com is not None:
+                    L.addWidget(button_com)
+
+                if button_com2 is not None:
+                    L.addWidget(button_com2)
+
+                if button_adv is not None:
+                    L.addWidget(button_adv)
+
+                L.addWidget(QtWidgets.QLabel(title + ':'))
+                L.setContentsMargins(0, 0, 0, 0)
+
+                widget = QtWidgets.QWidget()
+                widget.setLayout(L)
+
+            else:
+                widget = QtWidgets.QLabel(title + ':')
+
+            layout.addWidget(widget, row, 0, Qt.AlignRight)
             layout.addWidget(w, row, 1)
 
             self.layout = layout
             self.row = row
-            self.required = required
 
         def update(self, data):
             """
@@ -10341,6 +10805,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data)
+            self.checkAdv()
 
             value = self.retrieve(data)
             i = self.bitnum
@@ -10366,6 +10831,149 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         def HandleValueChanged(self, value):
             """
             Handle any checkbox being changed
+            """
+            self.updateData.emit(self)
+
+    class DualboxPropertyDecoder(PropertyDecoder):
+        """
+        Class that decodes/encodes sprite data to/from a checkbox
+        """
+
+        def __init__(self, title1, title2, bit, comment, required, advanced, comment2, commentAdv, layout, row, parent):
+            """
+            Creates the widget
+            """
+            super().__init__()
+
+            self.bit = bit
+            self.required = required
+            self.advanced = advanced
+            self.parent = parent
+
+            self.row = row
+            self.layout = layout
+
+            self.buttons = []
+
+            button = QtWidgets.QRadioButton()
+            #button.setStyleSheet("height: 18px; width: 18px")
+            self.buttons.append(button)
+
+            button = QtWidgets.QRadioButton()
+            #button.setStyleSheet("height: 18px; width: 18px")
+            self.buttons.append(button)
+
+            for button in self.buttons:
+                button.clicked.connect(self.HandleClick)
+
+            label1 = QtWidgets.QLabel(title1)
+            label2 = QtWidgets.QLabel(title2)
+
+            self.comment = comment
+            self.comment2 = comment2
+            self.commentAdv = commentAdv
+
+            if comment is not None:
+                button_com = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_com.setIcon(GetIcon('setting-comment'))
+                    button_com.setStyleSheet("border-radius: 50%")
+
+                button_com.clicked.connect(self.ShowComment)
+                button_com.setAutoRaise(True)
+
+            else:
+                button_com = None
+
+            if comment2 is not None and not AltSettingIcons:
+                button_com2 = QtWidgets.QToolButton()
+                button_com2.setIcon(GetIcon('setting-comment2'))
+                button_com2.setStyleSheet("border-radius: 50%")
+                button_com2.clicked.connect(self.ShowComment2)
+                button_com2.setAutoRaise(True)
+
+            else:
+                button_com2 = None
+
+            if commentAdv is not None and AdvancedModeEnabled:
+                button_adv = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_adv.setIcon(GetIcon('setting-comment-adv'))
+                    button_adv.setStyleSheet("border-radius: 50%")
+
+                button_adv.clicked.connect(self.ShowAdvancedComment)
+                button_adv.setAutoRaise(True)
+
+            else:
+                button_adv = None
+
+            if button_com is not None or button_com2 is not None or button_adv is not None:
+                L = QtWidgets.QHBoxLayout()
+
+                if button_com is not None:
+                    L.addWidget(button_com)
+
+                if button_com2 is not None:
+                    L.addWidget(button_com2)
+
+                if button_adv is not None:
+                    L.addWidget(button_adv)
+
+                L.setContentsMargins(0, 0, 0, 0)
+
+                widget = QtWidgets.QWidget()
+                widget.setLayout(L)
+
+            else:
+                widget = None
+
+            L = QtWidgets.QHBoxLayout()
+            L.addStretch(1)
+            L.addWidget(label1)
+            L.addWidget(self.buttons[0])
+            L.addWidget(QtWidgets.QLabel("|"))
+
+            if widget is not None:
+                L.addWidget(widget)
+                L.addWidget(QtWidgets.QLabel("|"))
+
+            L.addWidget(self.buttons[1])
+            L.addWidget(label2)
+            L.addStretch(1)
+
+            L.setContentsMargins(0, 0, 0, 0)
+
+            # span 2 columns
+            w = QtWidgets.QWidget()
+            w.setLayout(L)
+            layout.addWidget(w, row, 0, 1, 2)
+
+        def update(self, data):
+            """
+            Updates the value shown by the widget
+            """
+            # check if requirements are met
+            self.checkReq(data)
+            self.checkAdv()
+
+            value = self.retrieve(data) & 1
+
+            self.buttons[value].setChecked(True)
+            self.buttons[not value].setChecked(False)
+
+        def assign(self, data):
+            """
+            Assigns the selected value to the data
+            """
+            value = self.buttons[1].isChecked()
+
+            return self.insertvalue(data, value)
+
+        def HandleClick(self, clicked=False):
+            """
+            Handles clicks on the checkbox
             """
             self.updateData.emit(self)
 
@@ -10396,10 +11004,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # show the raw editor if advanced mode is enabled
         self.raweditor.setVisible(AdvancedModeEnabled)
         self.editbox.setVisible(AdvancedModeEnabled)
-        self.resetButton.setVisible(not AdvancedModeEnabled)
+        self.resetButton.setVisible(AdvancedModeEnabled or len(sprite.fields) > 0)
 
         # Nothing is selected, so no comments should appear
-        self.comments.setVisible(False)
+        self.com_box.setVisible(False)
 
         if sprite is None:
             self.spriteLabel.setText(trans.string('SpriteDataEditor', 5, '[id]', type))
@@ -10411,66 +11019,131 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if len(self.fields) > 0:
                 self.fields = []
 
+            return
+
+        self.spriteLabel.setText(trans.string('SpriteDataEditor', 6, '[id]', type, '[name]', sprite.name))
+
+        if sprite.notes is not None:
+            self.noteButton.setVisible(True)
+            self.com_main.setText(sprite.notes)
+            self.com_more.setVisible(False)
+            self.com_extra.setVisible(False)
+            self.com_box.setVisible(True)
+
+        self.notes = sprite.notes
+
+        # advanced comment
+        self.advNoteButton.setVisible(AdvancedModeEnabled and sprite.advNotes is not None)
+        self.advNotes = sprite.advNotes
+
+        self.relatedObjFilesButton.setVisible(sprite.relatedObjFiles is not None)
+        self.relatedObjFiles = sprite.relatedObjFiles
+
+        self.asm.setVisible(sprite.asm is True)
+
+        # dependency stuff
+        # first clear current dependencies
+        l = self.com_deplist
+        for row in range(0, l.rowCount()):
+            for column in range(0, l.columnCount()):
+                w = l.itemAtPosition(row, column)
+                if w is not None:
+                    widget = w.widget()
+                    l.removeWidget(widget)
+                    widget.setParent(None)
+
+        rownum = 0
+
+        # (sprite id, importance level)
+        # importance level is 0 for 'required', 1 for 'suggested'
+        missing = [[], []]
+        cur_sprites = [s.type for s in Area.sprites]
+        for dependency, importance in sprite.dependencies:
+            if dependency not in cur_sprites:
+                missing[importance].append(dependency)
+
+        # if there are missing things
+        for missingSprite in missing[0]:
+            name = trans.string('SpriteDataEditor', 21, '[id]', missingSprite)
+            addButton = QtWidgets.QPushButton('Add Sprite')
+            addButton.clicked.connect(self.HandleSpritePlaced(missingSprite, addButton))
+
+            self.com_deplist.addWidget(QtWidgets.QLabel(name), rownum, 0)
+            self.com_deplist.addWidget(addButton, rownum, 1)
+            rownum += 1
+
+        for missingSprite in missing[1]:
+            name = trans.string('SpriteDataEditor', 22, '[id]', missingSprite)
+            addButton = QtWidgets.QPushButton('Add Sprite')
+            addButton.clicked.connect(self.HandleSpritePlaced(missingSprite, addButton))
+
+            self.com_deplist.addWidget(QtWidgets.QLabel(name), rownum, 0)
+            self.com_deplist.addWidget(addButton, rownum, 1)
+            rownum += 1
+
+        # dependency notes
+        self.depButton.setVisible(sprite.dependencynotes is not None)
+        self.com_deplist_w.setVisible(False)
+        self.com_dep.setVisible(False)
+
+        if sprite.dependencynotes is not None:
+            self.dependencyNotes = sprite.dependencynotes
+            self.com_extra.setText(trans.string('SpriteDataEditor', 20))
+
+        # yoshi info
+        if sprite.noyoshi is True:
+            image = "ys-no"
+        elif sprite.noyoshi is not None:
+            image = "ys-works"
         else:
-            self.spriteLabel.setText(trans.string('SpriteDataEditor', 6, '[id]', type, '[name]', sprite.name))
+            image = None
 
-            self.noteButton.setVisible(sprite.notes is not None)
-            self.notes = sprite.notes
+        if sprite.yoshiNotes is not None:
+            if image is None:
+                image = "ys-works"
 
-            # advanced comment
-            self.advNoteButton.setVisible(AdvancedModeEnabled and sprite.advNotes is not None)
-            self.advNotes = sprite.advNotes
+            self.yoshiIcon.setVisible(False)
+            self.yoshiInfo.setIcon(GetIcon(image))
+            self.yoshiInfo.setVisible(True)
+            self.yoshiNotes = sprite.yoshiNotes
 
-            self.relatedObjFilesButton.setVisible(sprite.relatedObjFiles is not None)
-            self.relatedObjFiles = sprite.relatedObjFiles
-
-            self.asm.setVisible(sprite.asm is True)
-
-            # yoshi info
-            if sprite.noyoshi is not None:
-                if sprite.noyoshi is True:
-                    image = "ys-no"
-
-                else:
-                    image = "ys-works"
-
-                self.yoshiInfo.setIcon(GetIcon(image))
-                self.yoshiInfo.setVisible(True)
-
-                if sprite.yoshiNotes is None:
-                    sprite.yoshiNotes = trans.string('SpriteDataEditor', 15)
-
-                self.yoshiNotes = sprite.yoshiNotes
-
+        else:
+            if image is None:
+                self.yoshiIcon.setVisible(False)
             else:
-                self.yoshiInfo.setVisible(False)
+                self.yoshiIcon.setPixmap(GetIcon(image).pixmap(64, 64))
+                self.yoshiIcon.setVisible(True)
 
+            self.yoshiInfo.setVisible(False)
 
-            # create all the new fields
-            fields = []
-            row = 2
+        # create all the new fields
+        fields = []
+        row = 2
 
-            for f in sprite.fields:
-                if f[0] == 0:
-                    nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+        for f in sprite.fields:
+            if f[0] == 0:
+                nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
 
-                elif f[0] == 1:
-                    nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+            elif f[0] == 1:
+                nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
 
-                elif f[0] == 2:
-                    nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+            elif f[0] == 2:
+                nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
 
-                elif f[0] == 3:
-                    nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], f[5], layout, row)
+            elif f[0] == 3:
+                nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
 
-                elif f[0] == 4:
-                    nf = SpriteEditorWidget.MultiboxPropertyDecoder(f[1], f[2], f[3], f[4], layout, row)
+            elif f[0] == 4:
+                nf = SpriteEditorWidget.MultiboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], layout, row, self)
 
-                nf.updateData.connect(self.HandleFieldUpdate)
-                fields.append(nf)
-                row += 1
+            elif f[0] == 5:
+                nf = SpriteEditorWidget.DualboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
 
-            self.fields = fields
+            nf.updateData.connect(self.HandleFieldUpdate)
+            fields.append(nf)
+            row += 1
+
+        self.fields = fields
 
     def update(self):
         """
@@ -10497,45 +11170,89 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         Show notes
         """
-        self.comments.setVisible(True)
+        self.com_dep.setVisible(False)
         self.com_main.setText(self.notes)
+        self.com_main.setVisible(True)
         self.com_more.setVisible(False)
+        self.com_extra.setVisible(False)
+        self.com_box.setVisible(True)
 
     def ShowRelatedObjFilesTooltip(self):
         """
         Show related obj files
         """
-        self.comments.setVisible(True)
+        self.com_dep.setVisible(False)
         self.com_main.setText(self.relatedObjFiles)
         self.com_more.setVisible(False)
+        self.com_box.setVisible(True)
 
     def ShowYoshiTooltip(self):
         """
         Show the Yoshi info
         """
-        self.comments.setVisible(True)
+        self.com_dep.setVisible(False)
         self.com_main.setText(self.yoshiNotes)
         self.com_more.setVisible(False)
+        self.com_box.setVisible(True)
 
     def ShowAdvancedNoteTooltip(self):
         """
         Show the advanced notes
         """
-        self.comments.setVisible(True)
+        self.com_dep.setVisible(False)
         self.com_main.setText(self.advNotes)
         self.com_more.setVisible(False)
+        self.com_box.setVisible(True)
 
     def ShowMoreComments(self):
         """
         Show or hide the extra comment
         """
+        self.com_dep.setVisible(False)
+
         if self.com_extra.isVisible():
             self.com_extra.setVisible(False)
             self.com_more.setText(trans.string('SpriteDataEditor', 13))
+            self.com_main.setVisible(True)
+            self.com_dep
 
         else:
             self.com_extra.setVisible(True)
             self.com_more.setText(trans.string('SpriteDataEditor', 14))
+            self.com_main.setVisible(False)
+
+    def ShowDependencies(self):
+        """
+        Show dependencies
+        """
+        self.com_main.setText(self.dependencyNotes)
+        self.com_main.setVisible(True)
+        self.com_extra.setVisible(False)
+        self.com_deplist_w.setVisible(False)
+        self.com_dep.setText(trans.string('SpriteDataEditor', 18))
+        self.com_dep.setVisible(True)
+
+    def DependencyToggle(self):
+        """
+        The button was clicked
+        """
+        if not self.com_main.isVisible():
+            self.com_box.setMaximumHeight(120)
+            w = self.com_box.width()
+            self.com_box.resize(w, 120)
+
+            self.com_dep.setText(trans.string('SpriteDataEditor', 18))
+            self.com_deplist_w.setVisible(False)
+            self.com_main.setVisible(True)
+
+        else:
+            self.com_box.setMaximumHeight(200)
+            w = self.com_box.width()
+            self.com_box.resize(w, 200)
+
+            self.com_dep.setText(trans.string('SpriteDataEditor', 19))
+            self.com_main.setVisible(False)
+            self.com_deplist_w.setVisible(True)
 
     def HandleFieldUpdate(self, field):
         """
@@ -10563,15 +11280,19 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Handles the reset data button being clicked
         """
         self.data = b'\0\0\0\0\0\0\0\0'
+        data = self.data
 
         self.UpdateFlag = True
 
         for f in self.fields:
-            f.update(self.data)
+            f.update(data)
 
         self.UpdateFlag = False
 
-        self.DataUpdate.emit(self.data)
+        self.DataUpdate.emit(data)
+
+        data = ['0' * 4] * 4
+        self.raweditor.setText(' '.join(data))
         self.raweditor.setStyleSheet('QLineEdit { background-color: #ffffff; }')
 
     def HandleRawDataEdited(self, text):
@@ -10604,6 +11325,46 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         else:
             self.raweditor.setStyleSheet('QLineEdit { background-color: #ffd2d2; }')
+
+    def HandleSpritePlaced(self, id_, button_):
+        x_ = 0
+        y_ = 0
+        data_ = mainWindow.defaultDataEditor.data
+        self_ = self
+
+        def placeSprite():
+            mw = mainWindow
+
+            spr = SpriteItem(id_, x_, y_, data_)
+            spr.positionChanged = mw.HandleSprPosChange
+
+            mw.scene.addItem(spr)
+            Area.sprites.append(spr)
+
+            spr.listitem = ListWidgetItem_SortsByOther(spr)
+            mw.spriteList.addItem(spr.listitem)
+
+            SetDirty()
+            spr.UpdateListItem()
+
+            # remove this dependency, because it is now fulfilled.
+            # get row of button
+            idx = self_.com_deplist.indexOf(button_)
+            row, _, _, _ = self_.com_deplist.getItemPosition(idx)
+
+            # first clear current dependencies
+            l = self.com_deplist
+            for column in range(0, l.columnCount()):
+                w = l.itemAtPosition(row, column)
+                if w is not None:
+                    widget = w.widget()
+                    l.removeWidget(widget)
+                    widget.setParent(None)
+
+            ...
+
+
+        return placeSprite
 
 
 class EntranceEditorWidget(QtWidgets.QWidget):
@@ -11527,8 +12288,8 @@ def LoadTheme():
     global theme
 
     id = setting('Theme')
-    if id is None: id = 'Classic'
-    print('THEME ID: ' + str(id))
+    if id is None:
+        id = 'Classic'
 
     if id != 'Classic':
         theme = ReggieTheme(id)
@@ -13271,8 +14032,15 @@ class ReggieTranslation:
                 13: 'Read more...',
                 14: 'Read less...',
                 15: 'This sprite works properly with Yoshi.',
-                16: '[b]Information:[/b]',
+                16: None, # '[b]Information:[/b]'
                 17: 'Reset all settings',
+                18: 'Check dependent sprites',
+                19: 'Check dependency notes',
+                19: 'This sprite has the following dependencies:',
+                20: 'Sprite [id]: required in area',
+                21: 'Sprite [id]: suggested in area',
+                22: 'Sprite [id]: required in zone',
+                23: 'Sprite [id]: suggested in zone',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
@@ -13913,11 +14681,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 if clicked.x() < 0: clicked.setX(0)
                 if clicked.y() < 0: clicked.setY(0)
 
-                if CurrentSprite >= 0:  # fixes a bug -Treeki
-                    # [18:15:36]  Angel-SL: I found a bug in Reggie
-                    # [18:15:42]  Angel-SL: you can paint a 'No sprites found'
-                    # [18:15:47]  Angel-SL: results in a sprite -2
-
+                if CurrentSprite >= 0:
                     # paint a sprite
                     clickedx = int((clicked.x() - 12) / 12) * 8
                     clickedy = int((clicked.y() - 12) / 12) * 8
@@ -16372,39 +17136,41 @@ def calculateBgAlignmentMode(idA, idB, idC):
     if idB <= 0x000A: idB = 0
     if idC <= 0x000A: idC = 0
 
-    if ((idA == 0) and (idB == 0)) or (idC == 0):
+    if idA == idB == 0 or idC == 0:
         # Either both the first two are empty or the last one is empty
         return 0
-    elif (idA == idC) and (idB == idC):
+    elif idA == idC == idB:
         # They are all the same
         return 5
-    elif (idA == idC) and (idB != idC) and (idB != 0):
+    elif idA == idC != idB and idB != 0:
         # The first and last ones are the same, but
         # the middle one is different (not empty, though)
         return 1
-    elif (idC == idB) and (idA != idC) and (idA != 0):
+    elif idC == idB != idA and idA != 0:
         # The second and last ones are the same, but
         # the first one is different (not empty, though)
         return 2
-    elif (idB == 0) and (idA != idC) and (idA != 0):
+    elif idB == 0 and idC != idA != 0:
         # The middle one is empty. The first and last
         # ones are different, and the first one is not
         # empty
         return 3
-    elif (idA == 0) and (idB != idC) and (idB != 0):
+    elif idA == 0 and idC != idB != 0:
         # The first one is empty. The second and last
         # ones are different, and the second one is not
         # empty
         return 4
-    elif (idA == idB) and (idA != 0) and (idB != 0):
+    elif idA == idB != 0:
         # The first two match, and are not empty
         return 6
-    elif (idA != 0) and (idA != 0) and (idB != 0):
+    elif idA != 0 != idB:
         # Every single one is not empty
+        # note that idC is guaranteed to be nonzero,
+        # otherwise it'd have returned 0 already.
         return 7
-    else:
-        # Doesn't fit into any of the above categories
-        return 0
+
+    # Doesn't fit into any of the above categories
+    return 0
 
 
 # Sets up the Screen Cap Choice Dialog
@@ -18108,6 +18874,10 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Advanced mode checkbox
                 self.advIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 32))
 
+                # Reset data when hide checkbox
+                # TODO: Add this to strings
+                self.rdhIndicator = QtWidgets.QCheckBox("Reset sprite data when hiding sprite fields")
+
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
                 L.addRow(trans.string('PrefsDlg', 27), TileL)
@@ -18115,6 +18885,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L.addRow(trans.string('PrefsDlg', 15), ClearRecentBtn)
                 L.addWidget(self.zEntIndicator)
                 L.addWidget(self.advIndicator)
+                L.addWidget(self.rdhIndicator)
                 self.setLayout(L)
 
                 # Set the buttons
@@ -18149,6 +18920,7 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 self.zEntIndicator.setChecked(DrawEntIndicators)
                 self.advIndicator.setChecked(AdvancedModeEnabled)
+                self.rdhIndicator.setChecked(ResetDataWhenHiding)
 
             def ClearRecent(self):
                 """
@@ -20809,6 +21581,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         AdvancedModeEnabled = dlg.generalTab.advIndicator.isChecked()
         setSetting('AdvancedMode', AdvancedModeEnabled)
 
+        # Get the reset data when hiding setting
+        global ResetDataWhenHiding
+        ResetDataWhenHiding = dlg.generalTab.rdhIndicator.isChecked()
+        setSetting('ResetDataWhenHiding', ResetDataWhenHiding)
+
         # Get the Toolbar tab settings
         boxes = (
         dlg.toolbarTab.FileBoxes, dlg.toolbarTab.EditBoxes, dlg.toolbarTab.ViewBoxes, dlg.toolbarTab.SettingsBoxes,
@@ -20867,6 +21644,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         global Dirty, AutoSaveDirty
         data = Level.save()
+
         try:
             with open(self.fileSavePath, 'wb') as f:
                 f.write(data)
@@ -22945,19 +23723,19 @@ def main():
     global EnableAlpha, GridType, CollisionsShown, RealViewEnabled
     global ObjectsFrozen, SpritesFrozen, EntrancesFrozen, LocationsFrozen, PathsFrozen, CommentsFrozen
     global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown
-    global DrawEntIndicators, AdvancedModeEnabled
+    global DrawEntIndicators, AdvancedModeEnabled, ResetDataWhenHiding
 
     gt = setting('GridType')
-    
+
     if gt == 'checker':
         GridType = 'checker'
-    
+
     elif gt == 'grid':
         GridType = 'grid'
-    
+
     else:
         GridType = None
-    
+
     CollisionsShown = setting('ShowCollisions', False)
     RealViewEnabled = setting('RealViewEnabled', True)
     ObjectsFrozen = setting('FreezeObjects', False)
@@ -22973,6 +23751,7 @@ def main():
     PathsShown = setting('ShowPaths', True)
     DrawEntIndicators = setting('ZoneEntIndicators', False)
     AdvancedModeEnabled = setting('AdvancedMode', False)
+    ResetDataWhenHiding = setting('ResetDataWhenHiding', False)
     SLib.RealViewEnabled = RealViewEnabled
 
     # Choose a folder for the game

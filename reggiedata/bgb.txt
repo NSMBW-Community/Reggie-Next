@@ -48,6 +48,7 @@
 5302=Island Waterfall
 5602=Large Clouds
 5802=Teal Gradient
+5902=Stacked Columns (Glyph)
 5A02=Scaled Arches
 A302=Blue Swiggle
 A402=Spotlight
