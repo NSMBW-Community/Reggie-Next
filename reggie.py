@@ -1301,27 +1301,40 @@ def LoadTilesetInfo(reload_=False):
         """Parses all 'random' tags that are a child of the given node"""
         randoms = {}
         for type_ in node:
+            # if this uses the 'name' attribute, insert the settings of the type
+            # and go to the next child
             if 'name' in type_.attrib:
                 name = type_.attrib['name']
-                return types[name]
-
+                randoms.update(types[name])
+                continue
 
             if 'list' in type_.attrib:
                 list_ = map(lambda s: int(s, 0), type_.attrib['list'].split(","))
             else:
-                numbers = map(lambda s: int(s, 0), type_.attrib['range'].split(","))
-                numbers = list(numbers)
-                list_ = range(numbers[0], numbers[1] + 1)
+                numbers = type_.attrib['range'].split(",")
 
+                # inclusive range
+                list_ = range(int(numbers[0], 0), int(numbers[1], 0) + 1)
+
+            direction = 0
             if 'direction' in type_.attrib:
-                direction = type_.attrib['direction']
+                direction_s = type_.attrib['direction']
+                if direction_s in ['horizontal', 'both']:
+                    direction |= 0b01
+                if direction_s in ['vertical', 'both']:
+                    direction |= 0b10
             else:
-                direction = 'both'
+                direction = 0b11
 
+            special = 0
             if 'special' in type_.attrib:
-                special = type_.attrib['special']
+                special_s = type_.attrib['special']
+                if special_s == 'vdouble-top':
+                    special = 0b01
+                elif special_s == 'vdouble-bottom':
+                    special = 0b10
             else:
-                special = 'none'
+                special = 0b00
 
             list_ = list(list_)
             from_ = list_[0]
@@ -4757,7 +4770,7 @@ class ObjectItem(LevelEditorItem):
             height = self.height
 
         # Direction specifies the direction of neighbouring tiles that cannot
-        # be the same. TODO: Figure out what special does.
+        # be the same.
         [tiles, direction, special_] = TilesetInfo[name][tile]
 
         # prepare tiles to OR in the correct tileset id
@@ -4767,10 +4780,43 @@ class ObjectItem(LevelEditorItem):
         # randomise every tile in this thing
         for y in range(starty, starty + height):
             for x in range(startx, startx + width):
-                # TODO: take direction into account when choosing tiles.
-                num = random.choice(tiles)
-                print('picked %d for tile from tileset %d' % (num, self.tileset))
-                self.objdata[y][x] = random.choice(tiles)
+                # Take direction into account - chosen tile must be different from
+                # the tile to the left/right/top/bottom. Using try/except here
+                # so the value has to be looked up only once.
+
+                # TODO: Make this work even on the edges of the object. This requires
+                # a function that returns the tile on the block next to the current
+                # tile on a specified layer. Maybe something for the Area class?
+
+                # TODO: Take special into account. Not even sure how that works...
+
+                # Copy over the tiles array by value, not by reference. This is
+                # a list of values, so a shallow copy is good enough
+                restricted_tiles = tiles[:]
+
+                # direction is 2 bits:
+                # highest := vertical direction; lowest := horizontal direction
+                if direction & 0b01:
+                    # only look at the left neighbour, since we will generate the
+                    # right neighbour later
+                    try:
+                        restricted_tiles.remove(self.objdata[y][x-1])
+                    except:
+                        pass
+
+                if direction & 0b10:
+                    # only look at the above neighbour, since we will generate the
+                    # neighbour below later
+                    try:
+                        restricted_tiles.remove(self.objdata[y-1][x])
+                    except:
+                        pass
+
+                # if we removed all options, just use the original tiles
+                if len(restricted_tiles) == 0:
+                    restricted_tiles = tiles
+
+                self.objdata[y][x] = random.choice(restricted_tiles)
 
     def updateObjCacheWH(self, width, height):
         """
