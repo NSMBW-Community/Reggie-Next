@@ -48,6 +48,7 @@ from math import sqrt
 import os.path
 import pickle
 from random import random as rand
+import random
 import struct
 import threading
 import time
@@ -1276,16 +1277,107 @@ def LoadEntranceNames(reload_=False):
 
     NameList = {}
     for path in paths:
-        getit = open(path, 'r')
         newNames = {}
-        for line in getit.readlines(): newNames[int(line.split(':')[0])] = line.split(':')[1].replace('\n', '')
-        for idx in newNames: NameList[idx] = newNames[idx]
+        with open(path, 'r') as f:
+            for line in f.readlines():
+                id_ = int(line.split(':')[0])
+                newNames[id_] = line.split(':')[1].replace('\n', '')
+
+        for idx in newNames:
+            NameList[idx] = newNames[idx]
 
     EntranceTypeNames = []
     idx = 0
     while idx in NameList:
         EntranceTypeNames.append(trans.string('EntranceDataEditor', 28, '[id]', idx, '[name]', NameList[idx]))
         idx += 1
+
+
+TilesetInfo = None
+
+
+def LoadTilesetInfo(reload_=False):
+    def parseRandom(node, types):
+        """Parses all 'random' tags that are a child of the given node"""
+        randoms = {}
+        for type_ in node:
+            if 'name' in type_.attrib:
+                name = type_.attrib['name']
+                return types[name]
+
+
+            if 'list' in type_.attrib:
+                list_ = map(lambda s: int(s, 0), type_.attrib['list'].split(","))
+            else:
+                numbers = map(lambda s: int(s, 0), type_.attrib['range'].split(","))
+                numbers = list(numbers)
+                list_ = range(numbers[0], numbers[1] + 1)
+
+            if 'direction' in type_.attrib:
+                direction = type_.attrib['direction']
+            else:
+                direction = 'both'
+
+            if 'special' in type_.attrib:
+                special = type_.attrib['special']
+            else:
+                special = 'none'
+
+            list_ = list(list_)
+            from_ = list_[0]
+            randoms[from_] = [list_, direction, special]
+
+        return randoms
+
+    global TilesetInfo
+
+    if (TilesetInfo is not None) and not reload_:
+        return
+
+    paths, isPatch = gamedef.recursiveFiles('tilesetinfo', True)
+    if isPatch:
+        new = [trans.files['tilesetinfo']]
+
+        for path in paths:
+            new.append(path)
+
+        paths = new
+
+    # go through the types
+    types = {}
+    for path in paths:
+        tree = etree.parse(path)
+        root = tree.getroot()
+
+        for node in root:
+            if node.tag.lower() == "types":
+                # read all types
+                for type_ in node:
+                    name = type_.attrib['name'].strip()
+                    stuff = parseRandom(type_, types)
+                    types[name] = stuff
+
+        del tree
+        del root
+
+    # go through the groups
+    info = {}
+    for path in paths:
+        tree = etree.parse(path)
+        root = tree.getroot()
+
+        for node in root:
+            if node.tag.lower() == "group":
+                randoms = parseRandom(node, types)
+
+                for name in node.attrib['names'].split(","):
+                    name = name.strip()
+                    info[name] = randoms
+
+        del tree
+        del root
+
+    TilesetInfo = info
 
 
 class ChooseLevelNameDialog(QtWidgets.QDialog):
@@ -1429,9 +1521,9 @@ class ObjectDef:
         for row in self.rows:
             for tile in row:
                 if len(tile) == 1 and tile[0] != 0:
-                    tile[0] = (tile[0] % 256) + tileoffset
+                    tile[0] = (tile[0] & 0xFF) + tileoffset
                 elif len(tile) == 3 and tile[1] != 0:
-                    tile[1] = (tile[1] % 256) + tileoffset
+                    tile[1] = (tile[1] & 0xFF) + tileoffset
 
 
 class TilesetTile:
@@ -1961,13 +2053,16 @@ def RenderObject(tileset, objnum, width, height, fullslope=False):
         tileset_defs = ObjectDefinitions[tileset]
     except IndexError:
         tileset_defs = None
-    if tileset_defs is None: return dest
+
+    if tileset_defs is None:
+        return dest
+
     try:
         obj = tileset_defs[objnum]
     except IndexError:
         obj = None
-    if obj is None: return dest
-    if len(obj.rows) == 0: return dest
+    if obj is None or len(obj.rows) == 0:
+        return dest
 
     # diagonal objects are rendered differently
     if (obj.rows[0][0][0] & 0x80) != 0:
@@ -4626,13 +4721,106 @@ class ObjectItem(LevelEditorItem):
         Updates the rendered object data
         """
         self.objdata = RenderObject(self.tileset, self.type, self.width, self.height)
+        self.randomise()
         self.UpdateSearchDatabase()
+
+    def randomise(self, startx=0, starty=0, width=None, height=None):
+        if TilesetFilesLoaded[self.tileset] is None \
+           or TilesetInfo is None \
+           or ObjectDefinitions is None \
+           or ObjectDefinitions[self.tileset] is None \
+           or ObjectDefinitions[self.tileset][self.type] is None \
+           or ObjectDefinitions[self.tileset][self.type].rows is None \
+           or ObjectDefinitions[self.tileset][self.type].rows[0] is None \
+           or ObjectDefinitions[self.tileset][self.type].rows[0][0] is None \
+           or len(ObjectDefinitions[self.tileset][self.type].rows[0][0]) == 1:
+            # no randomisation info -> exit
+            return
+
+        name = TilesetFilesLoaded[self.tileset].split("/")[-1].split(".arc")[0]
+
+        if name not in TilesetInfo:
+            # tileset not randomised -> exit
+            return
+
+        # get the position in the tileset image
+        tile = ObjectDefinitions[self.tileset][self.type].rows[0][0][1] & 0xFF
+
+        if tile not in TilesetInfo[name]:
+            # tile not randomised -> exit
+            return
+
+        if width is None:
+            width = self.width
+
+        if height is None:
+            height = self.height
+
+        # Direction specifies the direction of neighbouring tiles that cannot
+        # be the same. TODO: Figure out what special does.
+        [tiles, direction, special_] = TilesetInfo[name][tile]
+
+        # prepare tiles to OR in the correct tileset id
+        for i in range(len(tiles)):
+            tiles[i] |= self.tileset << 8
+
+        # randomise every tile in this thing
+        for y in range(starty, starty + height):
+            for x in range(startx, startx + width):
+                # TODO: take direction into account when choosing tiles.
+                num = random.choice(tiles)
+                print('picked %d for tile from tileset %d' % (num, self.tileset))
+                self.objdata[y][x] = random.choice(tiles)
 
     def updateObjCacheWH(self, width, height):
         """
         Updates the rendered object data with custom width and height
         """
-        self.objdata = RenderObject(self.tileset, self.type, width, height)
+        # if we don't have to randomise, simply rerender everything
+        if TilesetFilesLoaded[self.tileset] is None \
+           or TilesetInfo is None \
+           or ObjectDefinitions is None \
+           or ObjectDefinitions[self.tileset] is None \
+           or ObjectDefinitions[self.tileset][self.type] is None \
+           or ObjectDefinitions[self.tileset][self.type].rows is None \
+           or ObjectDefinitions[self.tileset][self.type].rows[0] is None \
+           or ObjectDefinitions[self.tileset][self.type].rows[0][0] is None \
+           or len(ObjectDefinitions[self.tileset][self.type].rows[0][0]) == 1:
+            # no randomisation info -> exit
+            save = (self.width, self.height)
+            self.width, self.height = width, height
+            self.updateObjCache()
+            self.width, self.height = save
+            return
+
+        name = TilesetFilesLoaded[self.tileset].split("/")[-1].split(".arc")[0]
+        tile = ObjectDefinitions[self.tileset][self.type].rows[0][0][1] & 0xFF
+        if name not in TilesetInfo or tile not in TilesetInfo[name]:
+            # no randomisation needed -> exit
+            save = (self.width, self.height)
+            self.width, self.height = width, height
+            self.updateObjCache()
+            self.width, self.height = save
+            return
+
+        if width == self.width and height == self.height:
+            return
+
+        if height < self.height:
+            self.objdata = self.objdata[:height]
+        elif height > self.height:
+            self.objdata += RenderObject(self.tileset, self.type, self.width, height - self.height)
+            self.randomise(0, self.height, self.width, height - self.height)
+
+        if width < self.width:
+            for y in range(len(self.objdata)):
+                self.objdata[y] = self.objdata[y][:width]
+        elif width > self.width:
+            new = RenderObject(self.tileset, self.type, width - self.width, height)
+            for y in range(len(self.objdata)):
+                self.objdata[y] += new[y]
+            self.randomise(self.width, 0, width - self.width, height)
+
         self.UpdateSearchDatabase()
 
     def UpdateRects(self):
@@ -4796,16 +4984,17 @@ class ObjectItem(LevelEditorItem):
 
         self.UpdateTooltip()
 
-    def UpdateObj(self, oldX, oldY):
+    def UpdateObj(self, oldX, oldY, newSize):
         """
         Updates the object if the width/height/position has been changed
         """
-        self.updateObjCache()
+        self.updateObjCacheWH(newSize[0], newSize[1])
 
         oldrect = self.BoundingRect
         oldrect.translate(oldX * 24, oldY * 24)
-        newrect = QtCore.QRectF(self.x(), self.y(), self.width * 24, self.height * 24)
+        newrect = QtCore.QRectF(self.x(), self.y(), newSize[0] * 24, newSize[1] * 24)
         updaterect = oldrect.united(newrect)
+        self.width, self.height = newSize
 
         self.UpdateRects()
         self.scene().update(updaterect)
@@ -4844,26 +5033,28 @@ class ObjectItem(LevelEditorItem):
                         else:
                             newX = obj.objx + clickedx - dsx
                             newY = obj.objy + clickedy - dsy
+                            newSize = [obj.width, obj.height]
 
                             newWidth = self.objsDragging[obj][0]
                             newHeight = self.objsDragging[obj][1]
 
                             if newX >= 0 and newX + newWidth == obj.objx + obj.width:
                                 obj.objx = newX
-                                obj.width = newWidth
+                                newSize[0] = newWidth
 
                             else:
                                 self.objsDragging[obj][0] = oldWidth
 
                             if newY >= 0 and newY + newHeight == obj.objy + obj.height:
                                 obj.objy = newY
-                                obj.height = newHeight
+                                newSize[1] = newHeight
 
                             else:
                                 self.objsDragging[obj][1] = oldHeight
 
+                            obj.setPos(obj.objx * 24, obj.objy * 24)
                             obj.UpdateRects()
-                            obj.UpdateObj(cx, cy)
+                            obj.UpdateObj(cx, cy, newSize)
 
                     SetDirty()
 
@@ -4885,6 +5076,7 @@ class ObjectItem(LevelEditorItem):
 
                         else:
                             newY = obj.objy + clickedy - dsy
+                            newSize = [obj.width, obj.height]
 
                             newWidth = self.objsDragging[obj][0]
                             if newWidth < 1:
@@ -4894,15 +5086,16 @@ class ObjectItem(LevelEditorItem):
 
                             if newY >= 0 and newY + newHeight == obj.objy + obj.height:
                                 obj.objy = newY
-                                obj.height = newHeight
+                                newSize[1] = newHeight
+                                obj.setPos(cx * 24, newY * 24)
 
                             else:
                                 self.objsDragging[obj][1] = oldHeight
 
-                            obj.width = newWidth
+                            newSize[0] = newWidth
 
                             obj.UpdateRects()
-                            obj.UpdateObj(cx, cy)
+                            obj.UpdateObj(cx, cy, newSize)
 
                     SetDirty()
 
@@ -4924,24 +5117,23 @@ class ObjectItem(LevelEditorItem):
 
                         else:
                             newX = obj.objx + clickedx - dsx
-
                             newWidth = self.objsDragging[obj][0]
-
                             newHeight = self.objsDragging[obj][1]
+                            newSize = [obj.width, obj.height]
+
                             if newHeight < 1:
                                 newHeight = 1
 
                             if newX >= 0 and newX + newWidth == obj.objx + obj.width:
                                 obj.objx = newX
-                                obj.width = newWidth
+                                newSize[0] = newWidth
+                                obj.setPos(newX * 24, cy * 24)
 
                             else:
                                 self.objsDragging[obj][0] = oldWidth
 
-                            obj.height = newHeight
-
-                            obj.UpdateRects()
-                            obj.UpdateObj(cx, cy)
+                            newSize[1] = newHeight
+                            obj.UpdateObj(cx, cy, newSize)
 
                     SetDirty()
 
@@ -4966,17 +5158,16 @@ class ObjectItem(LevelEditorItem):
                         if newHeight < 1:
                             newHeight = 1
 
-                        obj.width = newWidth
-                        obj.height = newHeight
+                        newSize = [newWidth, newHeight]
 
-                        obj.UpdateObj(cx, cy)
+                        obj.UpdateObj(cx, cy, newSize)
 
                     SetDirty()
 
             elif self.MTGrabbed:
                 if clickedy != dsy:
                     for obj in self.objsDragging:
-                        oldHeight = self.objsDragging[obj][1] + 0
+                        oldHeight = self.objsDragging[obj][1]
 
                         self.objsDragging[obj][1] -= clickedy - dsy
 
@@ -4985,25 +5176,25 @@ class ObjectItem(LevelEditorItem):
 
                         else:
                             newY = obj.objy + clickedy - dsy
-
                             newHeight = self.objsDragging[obj][1]
+                            newSize = [obj.width, obj.height]
 
                             if newY >= 0 and newY + newHeight == obj.objy + obj.height:
                                 obj.objy = newY
-                                obj.height = newHeight
+                                newSize[1] = newHeight
+                                obj.setPos(cx * 24, newY * 24)
 
                             else:
                                 self.objsDragging[obj][1] = oldHeight
 
-                            obj.UpdateRects()
-                            obj.UpdateObj(cx, cy)
+                            obj.UpdateObj(cx, cy, newSize)
 
                     SetDirty()
 
             elif self.MLGrabbed:
                 if clickedx != dsx:
                     for obj in self.objsDragging:
-                        oldWidth = self.objsDragging[obj][0] + 0
+                        oldWidth = self.objsDragging[obj][0]
 
                         self.objsDragging[obj][0] -= clickedx - dsx
 
@@ -5014,16 +5205,17 @@ class ObjectItem(LevelEditorItem):
                             newX = obj.objx + clickedx - dsx
 
                             newWidth = self.objsDragging[obj][0]
+                            newSize = [obj.width, obj.height]
 
                             if newX >= 0 and newX + newWidth == obj.objx + obj.width:
                                 obj.objx = newX
-                                obj.width = newWidth
+                                newSize[0] = newWidth
+                                obj.setPos(newX * 24, cy * 24)
 
                             else:
                                 self.objsDragging[obj][0] = oldWidth
 
-                            obj.UpdateRects()
-                            obj.UpdateObj(cx, cy)
+                            obj.UpdateObj(cx, cy, newSize)
 
                     SetDirty()
 
@@ -5041,8 +5233,8 @@ class ObjectItem(LevelEditorItem):
                         if newHeight < 1:
                             newHeight = 1
 
-                        obj.height = newHeight
-                        obj.UpdateObj(cx, cy)
+                        newSize = [obj.width, newHeight]
+                        obj.UpdateObj(cx, cy, newSize)
 
                     SetDirty()
 
@@ -5060,8 +5252,8 @@ class ObjectItem(LevelEditorItem):
                         if newWidth < 1:
                             newWidth = 1
 
-                        obj.width = newWidth
-                        obj.UpdateObj(cx, cy)
+                        newSize = (newWidth, obj.height)
+                        obj.UpdateObj(cx, cy, newSize)
 
                     SetDirty()
 
@@ -6055,7 +6247,6 @@ class SpriteItem(LevelEditorItem):
 
         newitem.UpdateListItem()
         SetDirty()
-
 
     def nearestZone(self, obj=False):
         """
@@ -11379,6 +11570,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed))
 
+        LoadEntranceNames()
         self.CanUseFlag8 = {3, 4, 5, 6, 16, 17, 18, 19}
         self.CanUseFlag4 = {3, 4, 5, 6}
 
@@ -11389,7 +11581,6 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.entranceID.valueChanged.connect(self.HandleEntranceIDChanged)
 
         self.entranceType = QtWidgets.QComboBox()
-        LoadEntranceNames()
         self.entranceType.addItems(EntranceTypeNames)
         self.entranceType.setToolTip(trans.string('EntranceDataEditor', 3))
         self.entranceType.activated.connect(self.HandleEntranceTypeChanged)
@@ -12887,6 +13078,7 @@ def LoadGameDef(name=None, dlg=None):
         LoadObjDescriptions(True)  # reloads ts1_descriptions
         if mainWindow is not None: mainWindow.ReloadTilesets(True)
         LoadTilesetNames(True)  # reloads tileset names
+        LoadTilesetInfo(True)  # reloads tileset info
         if dlg: dlg.setValue(4)
 
         # Load sprites.py
@@ -13002,6 +13194,7 @@ class ReggieGameDefinition:
             'spritelistdata': gdf(None, False),
             'spritenames': gdf(None, False),
             'tilesets': gdf(None, False),
+            'tilesetinfo': gdf(None, False),
             'ts1_descriptions': gdf(None, False),
         }
         self.folders = {
@@ -13057,7 +13250,7 @@ class ReggieGameDefinition:
                     else:
                         path = os.path.join('reggiedata', node.attrib['path'])
 
-                ListToAddTo = eval('self.%ss' % n)  # self.files or self.folders
+                ListToAddTo = self.files if n == 'file' else self.folders  # self.files or self.folders
                 newdef = self.GameDefinitionFile(path, patch)
                 ListToAddTo[node.attrib['name']] = newdef
 
@@ -13066,10 +13259,8 @@ class ReggieGameDefinition:
 
         # Load sprites.py if provided
         if 'sprites' in self.files:
-            file = open(self.files['sprites'].path, 'r')
-            filedata = file.read()
-            file.close();
-            del file
+            with open(self.files['sprites'].path, 'r') as f:
+                filedata = f.read()
 
             # https://stackoverflow.com/questions/5362771/load-module-from-string-in-python
             # with modifications
@@ -13402,7 +13593,8 @@ class ReggieTranslation:
             'spritecategories': os.path.join('reggiedata', 'spritecategories.xml'),
             'spritedata': os.path.join('reggiedata', 'spritedata.xml'),
             'tilesets': os.path.join('reggiedata', 'tilesets.xml'),
-            'ts1_descriptions': os.path.join('reggiedata', 'ts1_descriptions.txt'),
+            'tilesetinfo': os.path.join('reggiedata', 'tilesetinfo.xml'),
+            'ts1_descriptions': os.path.join('reggiedata', 'ts1_descriptions.txt')
         }
 
         self.strings = {
@@ -23712,6 +23904,7 @@ def main():
     LoadEntranceNames()
     LoadNumberFont()
     LoadOverrides()
+    LoadTilesetInfo()
     SLib.OutlineColor = theme.color('smi')
     SLib.main()
     sprites.LoadBasics()

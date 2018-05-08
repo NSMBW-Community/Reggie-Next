@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<tilesets>
+    <types>
+        <type name="regular-terrain">
+            <random from="2" range="2, 7" direction="horizontal" />
+            <random from="16" list="16, 32, 48, 64" direction="vertical" />
+            <random from="17" list="17, 33, 49, 65" direction="vertical" />
+            <random from="18" range="18, 23" />
+            <random from="34" range="34, 40" direction="horizontal" />
+        </type>
+        <type name="sub-terrain">
+            <random range="10, 15" direction="horizontal" />
+            <random list="24, 0x28, 0x38, 0x48" direction="vertical" />
+            <random range="25, 0x29, 0x39, 0x49" direction="vertical" />
+            <random range="0x1A, 0x1F" />
+            <random range="0x2A, 0x2F" direction="horizontal" />
+        </type>
+    </types>
+    <group names="Pa1_chika, Pa1_setsugen, Pa1_shiro, Pa1_suichu, Pa1_daishizen, Pa1_sabaku_chika, Pa1_nohara2, Pa1_kurayami_chika, Pa1_shiro_yogan, Pa1_koopa_out, Pa1_shiro_koopa, Pa1_gake_yougan, Pa2_doukutu, Pa2_doukutu2, Pa2_doukutu3, Pa2_doukutu4, Pa2_doukutu5, Pa2_doukutu6, Pa2_doukutu8">
+        <random name="regular-terrain" />
+    </group>
+    <group names="Pa1_nohara">
+        <random name="regular-terrain" />
+        <random name="sub-terrain" />
+    </group>
+    <group names="Pa1_gake">
+        <random name="regular-terrain" />
+        <random name="sub-terrain" />
+        <random list="0xAA, 0xBA, 0xCA, 0xDA" direction="vertical" />
+        <random list="0xAB, 0xBB, 0xCB, 0xDB" direction="vertical" />
+        <random list="0x8E, 0x9E, 0xAE, 0xBE" direction="vertical" />
+        <random list="0x8F, 0x9F, 0xAF, 0xBF" direction="vertical" />
+        <random range="0xC4, 0xC9" direction="horizontal" />
+        <random range="0xD4, 0xD9" direction="horizontal" />
+        <random range="0xE4, 0xE9" direction="horizontal" />
+    </group>
+    <group names="Pa1_kaigan">
+        <random name="regular-terrain" />
+        <random range="0x18, 0x1B" />
+        <random range="0x28, 0x2A" />
+        <random range="0x3A, 0x3D" />
+    </group>
+    <group names="Pa1_obake_soto">
+        <random range="10, 15" direction="horizontal" />
+        <random range="0x1A, 0x1F" />
+        <random range="0x2A, 0x2F" direction="horizontal" />
+        <random list="0x4E, 0x5E, 0x6E, 0x7E" direction="vertical" />
+        <random list="0x4F, 0x5F, 0x6F, 0x7F" direction="vertical" />
+    </group>
+    <group names="Pa1_shiro_boss1">
+        <random name="regular-terrain" />
+        <random range="0x60, 0x65" direction="horizontal" />
+    </group>
+    <group names="Pa2_kori">
+        <random name="regular-terrain" />
+        <random range="0xA0, 0xA5" direction="horizontal" />
+        <random range="0xB0, 0xB5" direction="horizontal" />
+    </group>
+</tilesets>
