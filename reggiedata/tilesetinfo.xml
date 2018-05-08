@@ -2,11 +2,11 @@
 <tilesets>
     <types>
         <type name="regular-terrain">
-            <random from="2" range="2, 7" direction="horizontal" />
-            <random from="16" list="16, 32, 48, 64" direction="vertical" />
-            <random from="17" list="17, 33, 49, 65" direction="vertical" />
-            <random from="18" range="18, 23" />
-            <random from="34" range="34, 40" direction="horizontal" />
+            <random range="2, 7" direction="horizontal" />
+            <random list="0x10, 0x20, 0x30, 0x40" direction="vertical" />
+            <random list="0x11, 0x21, 0x31, 0x41" direction="vertical" />
+            <random range="0x12, 0x17" />
+            <random range="0x22, 0x27" direction="horizontal" />
         </type>
         <type name="sub-terrain">
             <random range="10, 15" direction="horizontal" />

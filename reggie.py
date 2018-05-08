@@ -1316,6 +1316,15 @@ def LoadTilesetInfo(reload_=False):
                 # inclusive range
                 list_ = range(int(numbers[0], 0), int(numbers[1], 0) + 1)
 
+            if 'values' in type_.attrib:
+                values_ = list(map(lambda s: int(s, 0), type_.attrib['values'].split(",")))
+            else:
+                values_ = list(list_)[:]
+
+            if len(values_) == 0:
+                print("nono")
+                raise Exception
+
             direction = 0
             if 'direction' in type_.attrib:
                 direction_s = type_.attrib['direction']
@@ -1329,16 +1338,13 @@ def LoadTilesetInfo(reload_=False):
             special = 0
             if 'special' in type_.attrib:
                 special_s = type_.attrib['special']
-                if special_s == 'vdouble-top':
+                if special_s == 'double-top':
                     special = 0b01
-                elif special_s == 'vdouble-bottom':
+                elif special_s == 'double-bottom':
                     special = 0b10
-            else:
-                special = 0b00
 
-            list_ = list(list_)
-            from_ = list_[0]
-            randoms[from_] = [list_, direction, special]
+            for item in list_:
+                randoms[item] = [list(values_), direction, special]
 
         return randoms
 
@@ -4738,6 +4744,14 @@ class ObjectItem(LevelEditorItem):
         self.UpdateSearchDatabase()
 
     def randomise(self, startx=0, starty=0, width=None, height=None):
+        """
+        Randomises (a part of) the self.objdata according to the loaded tileset
+        info
+        """
+        # TODO: Make this work even on the edges of the object. This requires a
+        # function that returns the tile on the block next to the current tile
+        # on a specified layer. Maybe something for the Area class?
+
         if TilesetFilesLoaded[self.tileset] is None \
            or TilesetInfo is None \
            or ObjectDefinitions is None \
@@ -4756,43 +4770,34 @@ class ObjectItem(LevelEditorItem):
             # tileset not randomised -> exit
             return
 
-        # get the position in the tileset image
-        tile = ObjectDefinitions[self.tileset][self.type].rows[0][0][1] & 0xFF
-
-        if tile not in TilesetInfo[name]:
-            # tile not randomised -> exit
-            return
-
         if width is None:
             width = self.width
 
         if height is None:
             height = self.height
 
-        # Direction specifies the direction of neighbouring tiles that cannot
-        # be the same.
-        [tiles, direction, special_] = TilesetInfo[name][tile]
-
-        # prepare tiles to OR in the correct tileset id
-        for i in range(len(tiles)):
-            tiles[i] |= self.tileset << 8
-
         # randomise every tile in this thing
         for y in range(starty, starty + height):
             for x in range(startx, startx + width):
+                # should we randomise this tile?
+                tile = self.objdata[y][x] & 0xFF
+
+                try:
+                    [tiles, direction, special] = TilesetInfo[name][tile]
+                except:
+                    # tile not randomised -> continue with next position
+                    continue
+
+                # If the special indicates the top, don't randomise it now, but
+                # randomise it when we come across the bottom.
+                if special & 0b01:
+                    continue
+
+                tiles_ = tiles[:]
+
                 # Take direction into account - chosen tile must be different from
                 # the tile to the left/right/top/bottom. Using try/except here
                 # so the value has to be looked up only once.
-
-                # TODO: Make this work even on the edges of the object. This requires
-                # a function that returns the tile on the block next to the current
-                # tile on a specified layer. Maybe something for the Area class?
-
-                # TODO: Take special into account. Not even sure how that works...
-
-                # Copy over the tiles array by value, not by reference. This is
-                # a list of values, so a shallow copy is good enough
-                restricted_tiles = tiles[:]
 
                 # direction is 2 bits:
                 # highest := vertical direction; lowest := horizontal direction
@@ -4800,7 +4805,7 @@ class ObjectItem(LevelEditorItem):
                     # only look at the left neighbour, since we will generate the
                     # right neighbour later
                     try:
-                        restricted_tiles.remove(self.objdata[y][x-1])
+                        tiles_.remove(self.objdata[y][x-1] & 0xFF)
                     except:
                         pass
 
@@ -4808,15 +4813,35 @@ class ObjectItem(LevelEditorItem):
                     # only look at the above neighbour, since we will generate the
                     # neighbour below later
                     try:
-                        restricted_tiles.remove(self.objdata[y-1][x])
+                        tiles_.remove(self.objdata[y-1][x] & 0xFF)
                     except:
                         pass
 
                 # if we removed all options, just use the original tiles
-                if len(restricted_tiles) == 0:
-                    restricted_tiles = tiles
+                if len(tiles_) == 0:
+                    tiles_ = tiles
 
-                self.objdata[y][x] = random.choice(restricted_tiles)
+                choice = (self.tileset << 8) | random.choice(tiles_)
+                self.objdata[y][x] = choice
+
+                # Bottom of special, so change the tile above to the tile in the
+                # previous row of the tileset image (at offset choice - 0x10).
+                if special & 0b10:
+                    try:
+                        self.objdata[y - 1][x] = choice - 0x10
+                    except:
+                        # y is equal to 0. When this happens in-game, the game
+                        # just changes the tile above (even if it's 'air') to
+                        # (choice - 0x10).
+
+                        # TODO: faking that here would mean decreasing the y position
+                        # and increasing the height of this object and its boundingrect
+                        # by 1, then adding a new row to self.objdata at the top,
+                        # then placing the choice there, and finally updating the
+                        # z position to be greater than that of the object(s) above.
+
+                        # tl;dr: A lot of work to properly implement this.
+                        pass
 
     def updateObjCacheWH(self, width, height):
         """
@@ -22716,6 +22741,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Reloads all the tilesets. If soft is True, they will not be reloaded if the filepaths have not changed.
         """
+        LoadTilesetInfo(True)
+
         tilesets = [Area.tileset0, Area.tileset1, Area.tileset2, Area.tileset3]
         for idx, name in enumerate(tilesets):
             if (name is not None) and (name != ''):
