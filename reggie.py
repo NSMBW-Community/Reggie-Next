@@ -1308,6 +1308,7 @@ def LoadTilesetInfo(reload_=False):
                 randoms.update(types[name])
                 continue
 
+            # [list | range] = input space
             if 'list' in type_.attrib:
                 list_ = map(lambda s: int(s, 0), type_.attrib['list'].split(","))
             else:
@@ -1316,14 +1317,11 @@ def LoadTilesetInfo(reload_=False):
                 # inclusive range
                 list_ = range(int(numbers[0], 0), int(numbers[1], 0) + 1)
 
+            # values = output space [= [list | range] by default]
             if 'values' in type_.attrib:
-                values_ = list(map(lambda s: int(s, 0), type_.attrib['values'].split(",")))
+                values = list(map(lambda s: int(s, 0), type_.attrib['values'].split(",")))
             else:
-                values_ = list(list_)[:]
-
-            if len(values_) == 0:
-                print("nono")
-                raise Exception
+                values = list(list_)[:]
 
             direction = 0
             if 'direction' in type_.attrib:
@@ -1344,7 +1342,7 @@ def LoadTilesetInfo(reload_=False):
                     special = 0b10
 
             for item in list_:
-                randoms[item] = [list(values_), direction, special]
+                randoms[item] = [values, direction, special]
 
         return randoms
 
@@ -15294,8 +15292,13 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     dsx = self.dragstartx
                     dsy = self.dragstarty
                     clicked = mainWindow.view.mapToScene(event.x(), event.y())
-                    if clicked.x() < 0: clicked.setX(0)
-                    if clicked.y() < 0: clicked.setY(0)
+
+                    if clicked.x() < 0:
+                        clicked.setX(0)
+
+                    if clicked.y() < 0:
+                        clicked.setY(0)
+
                     clickx = int(clicked.x() / 24)
                     clicky = int(clicked.y() / 24)
 
@@ -15322,9 +15325,9 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                     # if the size changed, recache it and update the area
                     if cwidth != width or cheight != height:
+                        obj.updateObjCacheWH(width, height)
                         obj.width = width
                         obj.height = height
-                        obj.updateObjCache()
 
                         oldrect = obj.BoundingRect
                         oldrect.translate(cx * 24, cy * 24)
@@ -15387,7 +15390,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                         obj.UpdateRects()
                         obj.scene().update(updaterect)
-
 
                 elif isinstance(obj, type_spr):
                     # move the created sprite

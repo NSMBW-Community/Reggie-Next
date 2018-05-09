@@ -11,7 +11,7 @@
         <type name="sub-terrain">
             <random range="10, 15" direction="horizontal" />
             <random list="24, 0x28, 0x38, 0x48" direction="vertical" />
-            <random range="25, 0x29, 0x39, 0x49" direction="vertical" />
+            <random list="25, 0x29, 0x39, 0x49" direction="vertical" />
             <random range="0x1A, 0x1F" />
             <random range="0x2A, 0x2F" direction="horizontal" />
         </type>
