@@ -31,7 +31,7 @@
 
 # Python version: sanity check
 minimum = 3.4
-pqt_min = map(int, "5.8.2".split('.'))
+pqt_min = map(int, "5.4.1".split('.'))
 import sys
 
 currentRunningVersion = sys.version_info.major + (.1 * sys.version_info.minor)
@@ -63,15 +63,15 @@ except (ImportError, NameError):
     raise Exception(errormsg)
 Qt = QtCore.Qt
 
-version = QtCore.QT_VERSION_STR.split('.')
+version = map(int, QtCore.QT_VERSION_STR.split('.'))
 for v, c in zip(version, pqt_min):
-    if c < int(v):
+    if c < v:
         # lower version
         errormsg = 'Please update your copy of PyQt to ' + '.'.join(pqt_min) + \
                    ' or greater. Currently running on: ' + QtCore.QT_VERSION_STR
 
         raise Exception(errormsg) from None
-    elif c > int(v):
+    elif c > v:
         # higher version
         break
 
@@ -3072,15 +3072,6 @@ class AbstractLevel:
         """
         return b''
 
-    def addArea(self):
-        """
-        Adds an area to the level, and returns it.
-        """
-        new = AbstractArea()
-        self.areas.append(new)
-
-        return new
-
     def deleteArea(self, number):
         """
         Removes the area specified. Number is a 1-based value, not 0-based;
@@ -3101,6 +3092,9 @@ class Level_NSMBW(AbstractLevel):
         """
         super().__init__()
         self.areas.append(Area_NSMBW())
+
+        global Area
+        Area = self.areas[0]
 
     def new(self):
         """
@@ -3248,15 +3242,6 @@ class Level_NSMBW(AbstractLevel):
 
         # return the U8 archive data
         return newArchive._dump()
-
-    def addArea(self):
-        """
-        Adds an area to the level, and returns it.
-        """
-        new = Area_NSMBW()
-        self.areas.append(new)
-
-        return new
 
 
 class AbstractArea:
@@ -21419,14 +21404,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if self.CheckDirty():
             return
 
-        try:
-            Level.addArea()
-        except:
-            return
+        newID = len(Level.areas) + 1
 
-        newID = len(Level.areas)
+        with open('reggiedata/blankcourse.bin', 'rb') as blank:
+            course = blank.read()
 
-        if not self.HandleSave(): return
+        L0 = None
+        L1 = None
+        L2 = None
+
+        if not self.HandleSaveNewArea(course, L0, L1, L2): return
         self.LoadLevel(None, self.fileSavePath, True, newID)
 
     def HandleImportArea(self):
