@@ -791,9 +791,12 @@ class SpriteDefinition:
         """
         self.fields = []
         fields = self.fields
+        allowed = ['checkbox', 'list', 'value', 'bitfield', 'multibox', 'dualbox',
+                   'dependency', 'external']
 
         for field in elem:
-            if field.tag not in ['checkbox', 'list', 'value', 'bitfield', 'multibox', 'dualbox', 'dependency']: continue
+            if field.tag not in allowed:
+                continue
 
             attribs = field.attrib
 
@@ -801,6 +804,8 @@ class SpriteDefinition:
                 title = attribs['title1'] + " / " + attribs['title2']
             elif 'title' in attribs:
                 title = attribs['title']
+            else:
+                title = "NO TITLE GIVEN!"
 
             if 'comment' in attribs:
                 comment = trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['comment'])
@@ -871,7 +876,8 @@ class SpriteDefinition:
                     if '-' not in ran:
                         if sft:
                             # just 4 bits
-                            r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+                            thing = int(ran) << 2
+                            r_bit = (thing - 3, thing + 1)
 
                         else:
                             # just 1 bit
@@ -880,7 +886,10 @@ class SpriteDefinition:
                     else:
                         # different number of bits
                         getit = ran.split('-')
-                        r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+                        if sft:
+                            r_bit = ((int(getit[0]) << 2) - 3, (int(getit[1]) << 2) + 1)
+                        else:
+                            r_bit = (int(getit[0]), int(getit[1]) + 1)
 
                     bit.append(r_bit)
 
@@ -911,7 +920,8 @@ class SpriteDefinition:
                     if '-' not in ran:
                         if sft:
                             # just 4 bits
-                            r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+                            thing = int(ran) << 2
+                            r_bit = (thing - 3, thing + 1)
                             l += 4
 
                         else:
@@ -922,7 +932,12 @@ class SpriteDefinition:
                     else:
                         # different number of bits
                         getit = ran.split('-')
-                        r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+
+                        if sft:
+                            r_bit = ((int(getit[0]) << 2) - 3, (int(getit[1]) << 2) + 1)
+                        else:
+                            r_bit = (int(getit[0]), int(getit[1]) + 1)
+
                         l += r_bit[1] - r_bit[0]
 
                     bit.append(r_bit)
@@ -941,8 +956,9 @@ class SpriteDefinition:
                     entries.append((i, e.text))
                     existing[i] = True
 
+                model = SpriteDefinition.ListPropertyModel(entries, existing, max)
                 fields.append(
-                    (1, attribs['title'], bit, SpriteDefinition.ListPropertyModel(entries, existing, max), comment, required, advanced, comment2, advancedcomment))
+                    (1, title, bit, model, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'value':
                 # parameters: title, bit, max, comment
@@ -960,7 +976,8 @@ class SpriteDefinition:
                     if '-' not in ran:
                         if sft:
                             # just 4 bits
-                            r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+                            thing = int(ran) << 2
+                            r_bit = (thing - 3, thing + 1)
                             l += 4
 
                         else:
@@ -971,7 +988,12 @@ class SpriteDefinition:
                     else:
                         # different number of bits
                         getit = ran.split('-')
-                        r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+
+                        if sft:
+                            r_bit = ((int(getit[0]) << 2) - 3, (int(getit[1]) << 2) + 1)
+                        else:
+                            r_bit = (int(getit[0]), int(getit[1]) + 1)
+
                         l += r_bit[1] - r_bit[0]
 
                     bit.append(r_bit)
@@ -1005,7 +1027,8 @@ class SpriteDefinition:
                     if '-' not in ran:
                         if sft:
                             # just 4 bits
-                            r_bit = (((int(ran) - 1) << 2) + 1, (int(ran) << 2) + 1)
+                            thing = int(ran) << 2
+                            r_bit = (thing - 3, thing + 1)
 
                         else:
                             # just 1 bit
@@ -1014,7 +1037,11 @@ class SpriteDefinition:
                     else:
                         # different number of bits
                         getit = ran.split('-')
-                        r_bit = (((int(getit[0]) - 1) << sft) + 1, (int(getit[1]) << sft) + 1)
+
+                        if sft:
+                            r_bit = ((int(getit[0]) << 2) - 3, (int(getit[1]) << 2) + 1)
+                        else:
+                            r_bit = (int(getit[0]), int(getit[1]) + 1)
 
                     bit.append(r_bit)
 
@@ -1050,6 +1077,49 @@ class SpriteDefinition:
                     self.dependencynotes = attribs['notes']
                 else:
                     self.dependencynotes = None
+
+            elif field.tag == 'external':
+                # phonebook / external resource.
+                # used for big lists like actors, sound effects etc.
+
+                # maybe also for easy syncing of ids later
+                # (eg. "click the coins with the same coin id")
+                if 'nybble' in attribs:
+                    sbit = attribs['nybble']
+                    sft = 2
+
+                else:
+                    sbit = attribs['bit']
+                    sft = 0
+
+                bit = []
+                for ran in sbit.split(','):
+                    if '-' not in ran:
+                        if sft:
+                            # just 4 bits
+                            thing = int(ran) << 2
+                            r_bit = (thing - 3, thing + 1)
+
+                        else:
+                            # just 1 bit
+                            r_bit = int(ran)
+
+                    else:
+                        # different number of bits
+                        getit = ran.split('-')
+
+                        if sft:
+                            r_bit = ((int(getit[0]) << 2) - 3, (int(getit[1]) << 2) + 1)
+                        else:
+                            r_bit = (int(getit[0]), int(getit[1]) + 1)
+
+                    bit.append(r_bit)
+
+                if len(bit) == 1:
+                    bit = bit[0]
+
+                type = attribs['type']
+                fields.append((6, title, bit, comment, required, advanced, comment2, advancedcomment, type))
 
 
 def LoadSpriteData():
@@ -1156,6 +1226,61 @@ def LoadSpriteData():
                                       trans.string('Err_BrokenSpriteData', 1, '[sprites]', ', '.join(errors)),
                                       QtWidgets.QMessageBox.Ok)
         QtWidgets.QMessageBox.warning(None, trans.string('Err_BrokenSpriteData', 2), repr(errortext))
+
+
+ExternalSpriteSettings = {}
+
+def LoadExternalSpriteSettings():
+    """
+    Loads external sprite settings
+    """
+    global ExternalSpriteSettings
+
+    # add more stuff here
+    types = ['external-actors']
+    for type_ in types:
+        # It works this way so that it can overwrite settings based on order of
+        # precedence
+        paths = [trans.files[type_]]
+        for path in gamedef.recursiveFiles(type_):
+            if path in (None, ''):
+                continue
+
+            paths.append(path)
+
+        options = {}
+        for path in paths:
+            # Add XML sprite data
+            if not isinstance(path, str):
+                path = path.path
+
+            tree = etree.parse(path)
+            root = tree.getroot()
+
+            for option in root:
+                # skip if this is not an <option>
+                if option.tag.lower() != 'option':
+                    continue
+
+                # read properties and put it in this dict
+                properties = {}
+                for prop in option:
+                    if prop.tag.lower() != 'property':
+                        continue
+
+                    name = prop.attrib['name']
+                    value = prop.attrib['value']
+
+                    properties[name] = value
+
+                # parse the value [can be hexadecimal, binary or octal]
+                value = int(option.attrib['value'], 0)
+
+                # save it
+                options[value] = properties
+
+        # save this type
+        ExternalSpriteSettings[type_] = options
 
 
 SpriteCategories = None
@@ -9981,6 +10106,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         LoadSpriteData()
         LoadSpriteListData()
         LoadSpriteCategories()
+        LoadExternalSpriteSettings()
         self.LoadItems()
 
     def LoadItems(self):
@@ -11096,7 +11222,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
     class DualboxPropertyDecoder(PropertyDecoder):
         """
-        Class that decodes/encodes sprite data to/from a checkbox
+        Class that decodes/encodes sprite data to/from a dualbox
         """
 
         def __init__(self, title1, title2, bit, comment, required, advanced, comment2, commentAdv, layout, row, parent):
@@ -11235,6 +11361,138 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             Handles clicks on the checkbox
             """
+            self.updateData.emit(self)
+
+    class ExternalPropertyDecoder(PropertyDecoder):
+        # (6, title, bit, comment, required, advanced, comment2, advancedcomment, type)
+
+        def __init__(self, title, bit, comment, required, advanced, comment2, advancedcomment, type, layout, row, parent):
+            """
+            Creates the widget
+            """
+            super().__init__()
+
+            self.bit = bit
+            self.row = row
+            self.layout = layout
+            self.parent = parent
+            self.comment = comment
+            self.advanced = advanced
+            self.comment2 = comment2
+            self.required = required
+            self.commentAdv = advancedcomment
+            self.type = type
+
+            if comment is not None:
+                button_com = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_com.setIcon(GetIcon('setting-comment'))
+                    button_com.setStyleSheet("border-radius: 50%")
+
+                button_com.clicked.connect(self.ShowComment)
+                button_com.setAutoRaise(True)
+
+            else:
+                button_com = None
+
+            if comment2 is not None and not AltSettingIcons:
+                button_com2 = QtWidgets.QToolButton()
+                button_com2.setIcon(GetIcon('setting-comment2'))
+                button_com2.setStyleSheet("border-radius: 50%")
+                button_com2.clicked.connect(self.ShowComment2)
+                button_com2.setAutoRaise(True)
+
+            else:
+                button_com2 = None
+
+            if advancedcomment is not None and AdvancedModeEnabled:
+                button_adv = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_adv.setIcon(GetIcon('setting-comment-adv'))
+                    button_adv.setStyleSheet("border-radius: 50%")
+
+                button_adv.clicked.connect(self.ShowAdvancedComment)
+                button_adv.setAutoRaise(True)
+
+            else:
+                button_adv = None
+
+            if button_com is not None or button_com2 is not None or button_adv is not None:
+                L = QtWidgets.QHBoxLayout()
+                L.addStretch(1)
+
+                if button_com is not None:
+                    L.addWidget(button_com)
+
+                if button_com2 is not None:
+                    L.addWidget(button_com2)
+
+                if button_adv is not None:
+                    L.addWidget(button_adv)
+
+                L.addWidget(QtWidgets.QLabel(title + ':'))
+                L.setContentsMargins(0, 0, 0, 0)
+
+                widget = QtWidgets.QWidget()
+                widget.setLayout(L)
+
+            else:
+                widget = QtWidgets.QLabel(title + ':')
+
+            # label that contains the current value
+            self.dispwidget = QtWidgets.QLabel()
+            self.widget = QtWidgets.QPushButton()
+
+            L2 = QtWidgets.QHBoxLayout()
+            L2.addWidget(self.widget)
+            L2.addWidget(self.dispwidget)
+            L2.addStretch(1)
+            L2.setContentsMargins(0, 0, 0, 0)
+
+            rightwidget = QtWidgets.QWidget()
+            rightwidget.setLayout(L2)
+
+            self.widget.clicked.connect(self.HandleClicked)
+
+            layout.addWidget(widget, row, 0, Qt.AlignRight)
+            layout.addWidget(rightwidget, row, 1)
+
+        def update(self, data):
+            """
+            Updates the info
+            """
+            # check if requirements are met
+            self.checkReq(data)
+            self.checkAdv()
+
+            value = self.retrieve(data)
+            self.dispwidget.setText(str(value))
+
+        def assign(self, data):
+            """
+            Assigns the currently selected value to data
+            """
+            value = int(self.dispwidget.text())
+            return self.insertvalue(data, value)
+
+        def HandleClicked(self, e):
+            """
+            Handles the button being clicked.
+            """
+            current = int(self.dispwidget.text())
+            dlg = ExternalSpriteOptionDialog(self.type, current)
+
+            # only contine if the user pressed "OK"
+            if dlg.exec_() != QtWidgets.QDialog.Accepted:
+                return
+
+            # read set value from dlg and update self.dispwidget
+            value = dlg.widget.currentIndex()
+            self.dispwidget.setText(str(value))
+
+            # update all other fields
             self.updateData.emit(self)
 
     def setSprite(self, type, reset=False):
@@ -11398,6 +11656,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             elif f[0] == 5:
                 nf = SpriteEditorWidget.DualboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+
+            elif f[0] == 6:
+                nf = SpriteEditorWidget.ExternalPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
 
             nf.updateData.connect(self.HandleFieldUpdate)
             fields.append(nf)
@@ -11614,7 +11875,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             # first clear current dependencies
             l = self.com_deplist
-            for column in range(0, l.columnCount()):
+            for column in range(l.columnCount()):
                 w = l.itemAtPosition(row, column)
                 if w is not None:
                     widget = w.widget()
@@ -11625,6 +11886,56 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
 
         return placeSprite
+
+class ExternalSpriteOptionDialog(QtWidgets.QDialog):
+    """
+    Dialog for the external sprite option.
+    """
+
+    def __init__(self, type, current):
+        """
+        Initialise the dialog
+        """
+        QtWidgets.QDialog.__init__(self)
+
+        # create edit thing based on type
+        # each of these functions should assign the editing thing to self.widget
+        self.type = "external-%s" % type
+        self.widget = QtWidgets.QComboBox()
+
+        items = self.loadItemsFromXML()
+        self.fillWidgetFromItems(items)
+
+        self.widget.setCurrentIndex(current)
+
+        # create layout
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
+
+        mainLayout = QtWidgets.QVBoxLayout()
+        mainLayout.addWidget(self.widget)
+        mainLayout.addWidget(buttonBox)
+        self.setLayout(mainLayout)
+
+    def loadItemsFromXML(self):
+        """
+        Returns the items from the correct XML
+        """
+        global ExternalSpriteSettings
+
+        items = ExternalSpriteSettings[self.type]
+        print(items)
+
+        return items
+
+    def fillWidgetFromItems(self, items):
+        """
+        Adds items to the combobox
+        """
+        for item in items:
+            self.widget.addItem("%s: %s" % (str(item), str(items[item])))
 
 
 class EntranceEditorWidget(QtWidgets.QWidget):
@@ -12042,7 +12353,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
 
 class IslandGeneratorWidget(QtWidgets.QWidget):
     """
-    Widget for editing entrance properties
+    Widget for generating an island
     """
 
     def __init__(self, defaultmode=False):
@@ -13125,6 +13436,7 @@ def LoadGameDef(name=None, dlg=None):
         LoadSpriteData()
         LoadSpriteListData(True)
         LoadSpriteCategories(True)
+        LoadExternalSpriteSettings()
         if mainWindow:
             mainWindow.spriteViewPicker.clear()
             for cat in SpriteCategories:
@@ -13265,6 +13577,7 @@ class ReggieGameDefinition:
             'tilesets': gdf(None, False),
             'tilesetinfo': gdf(None, False),
             'ts1_descriptions': gdf(None, False),
+            'external-actors': gdf(None, False),
         }
         self.folders = {
             'bga': gdf(None, False),
@@ -13663,7 +13976,8 @@ class ReggieTranslation:
             'spritedata': os.path.join('reggiedata', 'spritedata.xml'),
             'tilesets': os.path.join('reggiedata', 'tilesets.xml'),
             'tilesetinfo': os.path.join('reggiedata', 'tilesetinfo.xml'),
-            'ts1_descriptions': os.path.join('reggiedata', 'ts1_descriptions.txt')
+            'ts1_descriptions': os.path.join('reggiedata', 'ts1_descriptions.txt'),
+            'external-actors': os.path.join('reggiedata', 'external', 'actors.xml')
         }
 
         self.strings = {
@@ -15747,10 +16061,9 @@ class AboutDialog(QtWidgets.QDialog):
         self.setPalette(QtGui.QPalette(defaultPalette))
 
         # Open the readme file
-        f = open('readme.md', 'r')
-        readme = f.read()
-        f.close()
-        del f
+        readme = ""
+        with open('readme.md', 'r') as f:
+            readme = f.read()
 
         # Logo
         logo = QtGui.QPixmap('reggiedata/about.png')
@@ -22564,6 +22877,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Set up and reset the Quick Paint Tool
         if hasattr(self, 'quickPaint'):
             self.quickPaint.reset()  # Reset the QP widget.
+
         QuickPaintOperations.object_optimize_database = []
         QuickPaintOperations.object_search_database = {}
 
@@ -22583,10 +22897,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         startEntID = Area.startEntrance
         startEnt = None
         for ent in Area.entrances:
-            if ent.entid == startEntID: startEnt = ent
+            if ent.entid == startEntID:
+                startEnt = ent
+                break
 
-        self.view.centerOn(0, 0)
-        if startEnt is not None: self.view.centerOn(startEnt.objx * 1.5, startEnt.objy * 1.5)
+
+        if startEnt is not None:
+            self.view.centerOn(startEnt.objx * 1.5, startEnt.objy * 1.5)
+        else:
+            self.view.centerOn(0, 0)
+
         self.ZoomTo(100.0)
 
         # Reset some editor things
@@ -23379,7 +23699,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
             obj = self.selObj
             self.spriteDataEditor.setSprite(obj.type)
             self.spriteDataEditor.data = obj.spritedata
+
             self.spriteDataEditor.update()
+
+            for field in self.spriteDataEditor.fields:
+                self.spriteDataEditor.HandleFieldUpdate(field)
+
         elif self.entranceEditorDock.isVisible():
             self.entranceEditor.setEntrance(self.selObj)
         elif self.pathEditorDock.isVisible():
