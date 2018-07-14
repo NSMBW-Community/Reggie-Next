@@ -1435,7 +1435,7 @@ def LoadTilesetInfo(reload_=False):
 
             # [list | range] = input space
             if 'list' in type_.attrib:
-                list_ = map(lambda s: int(s, 0), type_.attrib['list'].split(","))
+                list_ = list(map(lambda s: int(s, 0), type_.attrib['list'].split(",")))
             else:
                 numbers = type_.attrib['range'].split(",")
 
