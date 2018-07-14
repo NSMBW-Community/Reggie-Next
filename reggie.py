@@ -10693,10 +10693,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             Assigns the selected value to the data
             """
-            value = self.retrieve(data) & (self.mask ^ self.xormask)
+            value = self.retrieve(data)
 
             if self.widget.isChecked():
                 value |= self.mask
+            elif value & self.mask == self.mask:
+                value = 0
 
             return self.insertvalue(data, value)
 
