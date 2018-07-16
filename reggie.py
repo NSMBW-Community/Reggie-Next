@@ -11491,7 +11491,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 return
 
             # read set value from dlg and update self.dispwidget
-            value = dlg.widget.currentIndex()
+            value = dlg.getValue()
             self.dispwidget.setText(str(value))
 
             # update all other fields
@@ -11903,12 +11903,57 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         # create edit thing based on type
         # each of these functions should assign the editing thing to self.widget
         self.type = "external-%s" % type
-        self.widget = QtWidgets.QComboBox()
 
         items = self.loadItemsFromXML()
         self.fillWidgetFromItems(items)
 
-        self.widget.setCurrentIndex(current)
+        self.value = current
+
+        # make the layout of ExternalSpriteOptionWidgets
+        self.widget = QtWidgets.QWidget()
+        self.buttons = []
+
+        L = QtWidgets.QGridLayout()
+        self.buttongroup = QtWidgets.QButtonGroup()
+        for i, widget in enumerate(self.widgets):
+            button = QtWidgets.QRadioButton()
+            button.setChecked(i == self.value)
+
+            self.buttongroup.addButton(button, i)
+            L.addWidget(button, 2 * i, 0, 2, 1)
+
+            for j, text in enumerate(widget[0]):
+                label = QtWidgets.QLabel(str(text))
+                L.addWidget(label, 2 * i, j + 1, 1, 1)
+
+            button = QtWidgets.QPushButton("v")
+            button.clicked.connect(self.HandleButtonClick(i))
+
+            self.buttons.append(button)
+
+            L.addWidget(button, 2 * i, len(widget[0]) + 1, 1, 1)
+
+            width = int((L.columnCount() - 1) / len(widget[1]))
+            offset = L.columnCount() - width * len(widget[1])
+            for j, text in enumerate(widget[1]):
+                label = QtWidgets.QLabel(str(text))
+                L.addWidget(label, 2 * i + 1, j + offset, 1, width)
+
+        self.widget.setLayout(L)
+
+        for i in range(1, len(self.widgets), 2):
+            self.hideRow(i)
+
+        # search thing
+        searchbar = QtWidgets.QLineEdit()
+        searchbar.textEdited.connect(self.search)
+
+        L = QtWidgets.QHBoxLayout()
+        L.addWidget(QtWidgets.QLabel("Search:"))
+        L.addWidget(searchbar)
+
+        search = QtWidgets.QWidget()
+        search.setLayout(L)
 
         # create layout
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
@@ -11916,9 +11961,16 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 
+        #self.widget.setMaximumHeight(self.height() * 0.8)
+        scrollWidget = QtWidgets.QScrollArea()
+        scrollWidget.setWidget(self.widget)
+        scrollWidget.setWidgetResizable(True)
+
         mainLayout = QtWidgets.QVBoxLayout()
-        mainLayout.addWidget(self.widget)
-        mainLayout.addWidget(buttonBox)
+        mainLayout.addWidget(search)
+        mainLayout.addWidget(scrollWidget)
+        mainLayout.addWidget(buttonBox, 0, Qt.AlignBottom)
+
         self.setLayout(mainLayout)
 
     def loadItemsFromXML(self):
@@ -11927,17 +11979,112 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         """
         global ExternalSpriteSettings
 
-        items = ExternalSpriteSettings[self.type]
-        print(items)
+        return ExternalSpriteSettings[self.type]
 
-        return items
+    def fillWidgetFromItems(self, options):
+        """
+        Adds items to the layout
+        """
+        # FIXME: Make this configurable
+        order = (
+            (None, "Usability", "Name", "Sprite"),  # primary
+            () # secondary
+        )
 
-    def fillWidgetFromItems(self, items):
+        # list of widgets sorted by value
+        self.widgets = []
+
+        for option in options:
+            items = options[option]
+            subwidgets = ([], [])
+
+            for prop in order[0]:
+                if prop == None:
+                    value = option
+                else:
+                    value = items[prop]
+
+                subwidgets[0].append(value)
+
+            for prop in order[1]:
+                subwidgets[1].append(items[prop])
+
+            self.widgets.append(subwidgets)
+
+    def setCurrentValue(self, value):
         """
-        Adds items to the combobox
+        Sets the current value to 'value'
         """
-        for item in items:
-            self.widget.addItem("%s: %s" % (str(item), str(items[item])))
+        self.buttongroup.button(value).setChecked(True)
+
+    def getValue(self):
+        """
+        Gets the current value
+        """
+        return self.buttongroup.checkedId()
+
+    def search(self, text):
+        """
+        Only show the elements fulfilling the search for text
+        """
+        for i, row in enumerate(self.widgets):
+            for value in row[0]:
+                if str(value).find(text) >= 0:
+                    # text was in this row -> show row
+                    self.showRow(2 * i)
+                    break
+            else:
+                for value in row[1]:
+                    if str(value).find(text) >= 0:
+                        # text was in this row -> show row
+                        self.showRow(2 * i)
+                        break
+                else:
+                    # not in row -> hide row
+                    self.hideRow(2 * i)
+                    self.hideRow(2 * i + 1)
+
+    def showRow(self, i):
+        """
+        Shows the i'th row
+        """
+        layout = self.widget.layout()
+
+        for column in range(layout.columnCount()):
+            layout.itemAtPosition(i, column).widget().show()
+
+    def hideRow(self, i):
+        """
+        Hides the i'th row
+        """
+        if i % 2 == 1:
+            # odd row
+            #  -> don't hide the first widget, because that's the radiobutton
+            start = 1
+        else:
+            start = 0
+
+        layout = self.widget.layout()
+
+        for column in range(start, layout.columnCount()):
+            layout.itemAtPosition(i, column).widget().hide()
+
+    def doRowVisibilityChange(self, i):
+        """
+        Changes visibility of row i
+        """
+        if self.buttons[i].text() == 'v':
+            self.showRow(i)
+            self.buttons[i].setText('^')
+        else:
+            self.hideRow(i)
+            self.buttons[i].setText('v')
+
+    def HandleButtonClick(self, i):
+        """
+        Returns a function that handles the i'th button being clicked
+        """
+        return (lambda e: self.doRowVisibilityChange(2 * i + 1))
 
 
 class EntranceEditorWidget(QtWidgets.QWidget):
