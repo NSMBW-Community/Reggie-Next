@@ -1520,7 +1520,6 @@ def LoadTilesetInfo(reload_=False):
         del root
 
     TilesetInfo = info
-    print(TilesetInfo['Pa1_daishizen'])
 
 
 class ChooseLevelNameDialog(QtWidgets.QDialog):
@@ -4902,22 +4901,15 @@ class ObjectItem(LevelEditorItem):
             height = self.height
 
         # randomise every tile in this thing
-        try:
-            print("%s: %s" % (name, str(TilesetInfo[name][17])))
-        except:
-            print("%s: %s" % (name, str(TilesetInfo[name])))
-        print(self.objdata)
         for y in range(starty, starty + height):
             for x in range(startx, startx + width):
                 # should we randomise this tile?
                 tile = self.objdata[y][x] & 0xFF
-                print("Randomising tile %d from %s" % (tile, name))
 
                 try:
                     [tiles, direction, special] = TilesetInfo[name][tile]
                 except:
                     # tile not randomised -> continue with next position
-                    print('sad')
                     continue
 
                 # If the special indicates the top, don't randomise it now, but
@@ -4975,7 +4967,6 @@ class ObjectItem(LevelEditorItem):
                         # tl;dr: A lot of work to properly implement this.
                         pass
 
-        print(self.objdata)
 
     def updateObjCacheWH(self, width, height):
         """
@@ -19319,24 +19310,18 @@ class DiagnosticWidget(QtWidgets.QWidget):
 
         foundAnything = False
         foundCritical = False
-        # print("Beginning of populateLists")
         for ico, desc, fxn, isCritical in self.CheckFunctions:
-            # print("For statement worked")
-            # print(fxn('c'))
             if False and fxn('c'):
 
                 foundAnything = True
-                # print("fxn('c') worked")
                 if isCritical: foundCritical = True
 
-                # item.setText(desc)
                 if isCritical:
                     self.diagnosticIcon.setIcon(GetIcon('autodiagnosticbad'))
                     print("THIS IS BAD")
                 else:
                     self.diagnosticIcon.setIcon(GetIcon('autodiagnosticwarning'))
                     print("Warning!")
-        # print("after the for statement")
         if not foundAnything:
             self.diagnosticIcon.setIcon(GetIcon('autodiagnosticgood', True))
             print("'Sall cool!")
@@ -19346,7 +19331,6 @@ class DiagnosticWidget(QtWidgets.QWidget):
         return None, len(self.buttonHandlers)'''
         if foundCritical: return True, len(self.buttonHandlers)
         elif foundAnything: return False, len(self.buttonHandlers)
-        # print("End of populateLists")
         return None, len(self.buttonHandlers)
 
 
