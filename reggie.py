@@ -1520,6 +1520,7 @@ def LoadTilesetInfo(reload_=False):
         del root
 
     TilesetInfo = info
+    print(TilesetInfo['Pa1_daishizen'])
 
 
 class ChooseLevelNameDialog(QtWidgets.QDialog):
@@ -4893,6 +4894,7 @@ class ObjectItem(LevelEditorItem):
             # tileset not randomised -> exit
             return
 
+
         if width is None:
             width = self.width
 
@@ -4900,15 +4902,22 @@ class ObjectItem(LevelEditorItem):
             height = self.height
 
         # randomise every tile in this thing
+        try:
+            print("%s: %s" % (name, str(TilesetInfo[name][17])))
+        except:
+            print("%s: %s" % (name, str(TilesetInfo[name])))
+        print(self.objdata)
         for y in range(starty, starty + height):
             for x in range(startx, startx + width):
                 # should we randomise this tile?
                 tile = self.objdata[y][x] & 0xFF
+                print("Randomising tile %d from %s" % (tile, name))
 
                 try:
                     [tiles, direction, special] = TilesetInfo[name][tile]
                 except:
                     # tile not randomised -> continue with next position
+                    print('sad')
                     continue
 
                 # If the special indicates the top, don't randomise it now, but
@@ -4919,8 +4928,8 @@ class ObjectItem(LevelEditorItem):
                 tiles_ = tiles[:]
 
                 # Take direction into account - chosen tile must be different from
-                # the tile to the left/right/top/bottom. Using try/except here
-                # so the value has to be looked up only once.
+                # the tile to the left/top. Using try/except here so the value has
+                # to be looked up only once.
 
                 # direction is 2 bits:
                 # highest := vertical direction; lowest := horizontal direction
@@ -4965,6 +4974,8 @@ class ObjectItem(LevelEditorItem):
 
                         # tl;dr: A lot of work to properly implement this.
                         pass
+
+        print(self.objdata)
 
     def updateObjCacheWH(self, width, height):
         """
@@ -11926,23 +11937,26 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
                 label = QtWidgets.QLabel(str(text))
                 L.addWidget(label, 2 * i, j + 1, 1, 1)
 
-            button = QtWidgets.QPushButton("v")
-            button.clicked.connect(self.HandleButtonClick(i))
+            if len(widget[1]) > 0:
+                button = QtWidgets.QPushButton("v")
+                button.clicked.connect(self.HandleButtonClick(i))
 
-            self.buttons.append(button)
+                self.buttons.append(button)
 
-            L.addWidget(button, 2 * i, len(widget[0]) + 1, 1, 1)
+                L.addWidget(button, 2 * i, len(widget[0]) + 1, 1, 1)
 
-            width = int((L.columnCount() - 1) / len(widget[1]))
-            offset = L.columnCount() - width * len(widget[1])
-            for j, text in enumerate(widget[1]):
-                label = QtWidgets.QLabel(str(text))
-                L.addWidget(label, 2 * i + 1, j + offset, 1, width)
+                width = int((L.columnCount() - 1) / len(widget[1]))
+                offset = L.columnCount() - width * len(widget[1])
+
+                for j, text in enumerate(widget[1]):
+                    label = QtWidgets.QLabel(str(text))
+                    L.addWidget(label, 2 * i + 1, j + offset, 1, width)
 
         self.widget.setLayout(L)
 
-        for i in range(1, len(self.widgets), 2):
-            self.hideRow(i)
+        if len(self.widgets[0][1]) > 0:
+            for i in range(1, len(self.widgets), 2):
+                self.hideRow(i)
 
         # search thing
         searchbar = QtWidgets.QLineEdit()
