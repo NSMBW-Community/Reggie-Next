@@ -12056,7 +12056,12 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         layout = self.widget.layout()
 
         for column in range(layout.columnCount()):
-            layout.itemAtPosition(i, column).widget().show()
+            try:
+                layout.itemAtPosition(i, column).widget().show()
+            except:
+                # this was not a widget, happens when this row is already hidden
+                # or something
+                break
 
     def hideRow(self, i):
         """
@@ -12072,7 +12077,11 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         layout = self.widget.layout()
 
         for column in range(start, layout.columnCount()):
-            layout.itemAtPosition(i, column).widget().hide()
+            try:
+                layout.itemAtPosition(i, column).widget().hide()
+            except:
+                # this was not a widget, happens when this row is already hidden
+                break
 
     def doRowVisibilityChange(self, i):
         """
@@ -15096,13 +15105,15 @@ class ReggieTranslation:
             text = '\nReggieTranslation.string() ERROR: ' + str(args[1]) + '; ' + str(args[2]) + '; ' + repr(e) + '\n'
             # do 3 things with the text - print it, save it to ReggieErrors.txt, return it
             print(text)
+
             if not os.path.isfile('ReggieErrors.txt'):
-                f = open('ReggieErrors.txt', 'w')
+                mode = 'w'
             else:
-                f = open('ReggieErrors.txt', 'a')
-            f.write(text)
-            f.close();
-            del f
+                mode = 'a'
+
+            with open('ReggieErrors.txt', mode) as f:
+                f.write(text)
+
             return text
 
     def string_(self, *args):
