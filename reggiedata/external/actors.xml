@@ -114,6 +114,7 @@
         <property name="Usability" value="---" />
         <property name="Sprite" value="" />
     </option>
+    <!-- NEWER -->
     <option value="20">
         <property name="Name" value="Boss - Topman" />
         <property name="Usability" value="***" />
@@ -265,6 +266,7 @@
         <property name="Sprite" value="" />
     </option>
     <option value="50">
+        <!-- NEWER -->
         <property name="Name" value="Line God" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="244" />
@@ -610,11 +612,13 @@
         <property name="Sprite" value="" />
     </option>
     <option value="119">
+        <!-- NEWER -->
         <property name="Name" value="Actor Spawner" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="88" />
     </option>
     <option value="120">
+        <!-- NEWER -->
         <property name="Name" value="Timed Actor Spawner" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="89" />
@@ -625,6 +629,7 @@
         <property name="Sprite" value="90" />
     </option>
     <option value="122">
+        <!-- NEWER? -->
         <property name="Name" value="Special Level Events" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="246" />
@@ -700,6 +705,7 @@
         <property name="Sprite" value="271" />
     </option>
     <option value="137">
+        <!-- NEWER -->
         <property name="Name" value="Boss - Thwompadomp" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="322" />
@@ -880,6 +886,7 @@
         <property name="Sprite" value="241" />
     </option>
     <option value="173">
+        <!-- NEWER? -->
         <property name="Name" value="Ending Manager" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="245" />
@@ -985,7 +992,7 @@
         <property name="Sprite" value="154" />
     </option>
     <option value="194">
-        <property name="Name" value="Fire Snake " />
+        <property name="Name" value="Fire Snake" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="158" />
     </option>
@@ -995,6 +1002,7 @@
         <property name="Sprite" value="383" />
     </option>
     <option value="196">
+        <!-- NEWER -->
         <property name="Name" value="Magic Platform" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="169" />
@@ -1060,11 +1068,13 @@
         <property name="Sprite" value="319" />
     </option>
     <option value="209">
+        <!-- NEWER -->
         <property name="Name" value="Falling Chestnut" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="320" />
     </option>
     <option value="210">
+        <!-- NEWER -->
         <property name="Name" value="Captain Bowser" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="213" />
@@ -1145,7 +1155,7 @@
         <property name="Sprite" value="" />
     </option>
     <option value="226">
-        <property name="Name" value="Special Exit Controller - [y2=n11+1]" />
+        <property name="Name" value="Special Exit Controller" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="179" />
     </option>
@@ -1385,6 +1395,7 @@
         <property name="Sprite" value="" />
     </option>
     <option value="274">
+        <!-- NEWER -->
         <property name="Name" value="Final Battle Bowser Bridge" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="456" />
@@ -1510,6 +1521,7 @@
         <property name="Sprite" value="" />
     </option>
     <option value="299">
+        <!-- NEWER -->
         <property name="Name" value="Player Clown Car" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="13" />
@@ -1620,6 +1632,7 @@
         <property name="Sprite" value="229" />
     </option>
     <option value="321">
+        <!-- NEWER -->
         <property name="Name" value="Event Block" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="239" />
@@ -1715,11 +1728,13 @@
         <property name="Sprite" value="265" />
     </option>
     <option value="340">
+        <!-- NEWER -->
         <property name="Name" value="Boss - Fuzzy Bear" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="283" />
     </option>
     <option value="341">
+        <!-- NEWER -->
         <property name="Name" value="Mr Sun" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="282" />
@@ -1895,7 +1910,7 @@
         <property name="Sprite" value="" />
     </option>
     <option value="376">
-        <property name="Name" value="BGM_INTERLOCKING_DUMMY_BLOCK - Dancing Coin" />
+        <property name="Name" value="Dancing Coin" />
         <property name="Usability" value="---" />
         <property name="Sprite" value="" />
     </option>
@@ -2170,6 +2185,7 @@
         <property name="Sprite" value="331" />
     </option>
     <option value="431">
+        <!-- NEWER -->
         <property name="Name" value="Effect and Sound Player" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="332" />
@@ -2305,6 +2321,7 @@
         <property name="Sprite" value="31" />
     </option>
     <option value="458">
+        <!-- NEWER -->
         <property name="Name" value="Fake Star Coin" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="49" />
@@ -2420,6 +2437,7 @@
         <property name="Sprite" value="464" />
     </option>
     <option value="481">
+        <!-- NEWER -->
         <property name="Name" value="Message Box Manager" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="107" />
@@ -2555,6 +2573,7 @@
         <property name="Sprite" value="" />
     </option>
     <option value="508">
+        <!-- NEWER -->
         <property name="Name" value="Meteor" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="183" />
@@ -2855,6 +2874,7 @@
         <property name="Sprite" value="" />
     </option>
     <option value="568">
+        <!-- NEWER -->
         <property name="Name" value="Topman" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="210" />
@@ -3030,6 +3050,7 @@
         <property name="Sprite" value="373" />
     </option>
     <option value="603">
+        <!-- NEWER -->
         <property name="Name" value="Message Box" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="152" />
@@ -3160,11 +3181,13 @@
         <property name="Sprite" value="" />
     </option>
     <option value="629">
+        <!-- NEWER -->
         <property name="Name" value="Song Block" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="17" />
     </option>
     <option value="630">
+        <!-- NEWER -->
         <property name="Name" value="Sing Along House" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="15" />
@@ -3285,16 +3308,19 @@
         <property name="Sprite" value="" />
     </option>
     <option value="654">
+        <!-- NEWER -->
         <property name="Name" value="Captain Bowser: Koopa Flamethrower" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="14" />
     </option>
     <option value="655">
+        <!-- NEWER -->
         <property name="Name" value="Challenge Star" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="12" />
     </option>
     <option value="656">
+        <!-- NEWER -->
         <property name="Name" value="Boss - Samurshai" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="19" />
@@ -3330,6 +3356,7 @@
         <property name="Sprite" value="" />
     </option>
     <option value="663">
+        <!-- NEWER -->
         <property name="Name" value="Shy Guy Giant" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="167" />
@@ -3340,6 +3367,7 @@
         <property name="Sprite" value="" />
     </option>
     <option value="665">
+        <!-- NEWER -->
         <property name="Name" value="Flipblock" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="319" />
@@ -3365,11 +3393,13 @@
         <property name="Sprite" value="" />
     </option>
     <option value="670">
+        <!-- NEWER -->
         <property name="Name" value="Make Your Own Model" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="11" />
     </option>
     <option value="671">
+        <!-- NEWER -->
         <property name="Name" value="Captain Bowser: Koopa Throw" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="10" />
@@ -3380,6 +3410,7 @@
         <property name="Sprite" value="" />
     </option>
     <option value="673">
+        <!-- NEWER -->
         <property name="Name" value="Bridge Bowser Bomb Drop" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="16" />
@@ -3405,11 +3436,13 @@
         <property name="Sprite" value="" />
     </option>
     <option value="678">
+        <!-- NEWER -->
         <property name="Name" value="Thundercloud" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="168" />
     </option>
     <option value="679">
+        <!-- NEWER -->
         <property name="Name" value="Palace Activator" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="273" />

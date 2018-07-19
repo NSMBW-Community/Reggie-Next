@@ -4967,7 +4967,6 @@ class ObjectItem(LevelEditorItem):
                         # tl;dr: A lot of work to properly implement this.
                         pass
 
-
     def updateObjCacheWH(self, width, height):
         """
         Updates the rendered object data with custom width and height
@@ -10497,7 +10496,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             return bytes(sdata)
 
-        def checkReq(self, data):
+        def checkReq(self, data, first=False):
             """
             Checks the requirements
             """
@@ -10517,7 +10516,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             visibleNow = self.layout.itemAtPosition(self.row, 0).widget().isVisible()
 
-            if show == visibleNow:
+            if show == visibleNow and not first:
                 return
 
             # show/hide all widgets in this row
@@ -10680,12 +10679,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(label, row, 0, Qt.AlignRight)
             layout.addWidget(widget, row, 1)
 
-        def update(self, data):
+        def update(self, data, first=False):
             """
             Updates the value shown by the widget
             """
             # check if requirements are met
-            self.checkReq(data)
+            self.checkReq(data, first)
             self.checkAdv()
 
             value = ((self.retrieve(data) & self.mask) == self.mask)
@@ -10799,12 +10798,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(widget, row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
 
-        def update(self, data):
+        def update(self, data, first=False):
             """
             Updates the value shown by the widget
             """
             # check if requirements are met
-            self.checkReq(data)
+            self.checkReq(data, first)
             self.checkAdv()
 
             value = self.retrieve(data)
@@ -10920,12 +10919,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.layout = layout
             self.row = row
 
-        def update(self, data):
+        def update(self, data, first=False):
             """
             Updates the value shown by the widget
             """
             # check if requirements are met
-            self.checkReq(data)
+            self.checkReq(data, first)
             self.checkAdv()
 
             value = self.retrieve(data)
@@ -11046,12 +11045,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.layout = layout
             self.row = row
 
-        def update(self, data):
+        def update(self, data, first=False):
             """
             Updates the value shown by the widget
             """
             # check if requirements are met
-            self.checkReq(data)
+            self.checkReq(data, first)
             self.checkAdv()
 
             value = self.retrieve(data)
@@ -11189,12 +11188,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.layout = layout
             self.row = row
 
-        def update(self, data):
+        def update(self, data, first=False):
             """
             Updates the value shown by the widget
             """
             # check if requirements are met
-            self.checkReq(data)
+            self.checkReq(data, first)
             self.checkAdv()
 
             value = self.retrieve(data)
@@ -11340,12 +11339,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             w.setLayout(L)
             layout.addWidget(w, row, 0, 1, 2)
 
-        def update(self, data):
+        def update(self, data, first=False):
             """
             Updates the value shown by the widget
             """
             # check if requirements are met
-            self.checkReq(data)
+            self.checkReq(data, first)
             self.checkAdv()
 
             value = self.retrieve(data) & 1
@@ -11463,12 +11462,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(widget, row, 0, Qt.AlignRight)
             layout.addWidget(rightwidget, row, 1)
 
-        def update(self, data):
+        def update(self, data, first=False):
             """
             Updates the info
             """
             # check if requirements are met
-            self.checkReq(data)
+            self.checkReq(data, first)
             self.checkAdv()
 
             value = self.retrieve(data)
@@ -11548,6 +11547,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         if sprite.notes is not None:
             self.noteButton.setVisible(True)
             self.com_main.setText(sprite.notes)
+            self.com_main.setVisible(True)
             self.com_more.setVisible(False)
             self.com_extra.setVisible(False)
             self.com_box.setVisible(True)
@@ -11669,8 +11669,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             row += 1
 
         self.fields = fields
+        self.update(True)
 
-    def update(self):
+    def update(self, first=False):
         """
         Updates all the fields to display the appropriate info
         """
@@ -11687,7 +11688,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         # Go through all the data
         for f in self.fields:
-            f.update(data)
+            f.update(data, first)
 
         self.UpdateFlag = False
 
@@ -11890,6 +11891,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
 
         return placeSprite
+
 
 class ExternalSpriteOptionDialog(QtWidgets.QDialog):
     """
@@ -19314,10 +19316,7 @@ class DiagnosticWidget(QtWidgets.QWidget):
         """
         Runs the check functions and adds items to the list if needed
         """
-
-        print("Populate lists")
         self.buttonHandlers = []
-
 
         foundAnything = False
         foundCritical = False
