@@ -11,7 +11,7 @@
 
 	Original file by by Grop
 -->
-<options primary="Model, From Level">
+<options primary="Model, From Level" short="Model [Model] from [From Level]">
     <option value="0">
         <property name="Model" value="Basic Title Balloon Red" />
         <property name="From Level" value="01-10" />

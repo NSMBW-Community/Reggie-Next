@@ -11329,6 +11329,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.required = required
             self.commentAdv = advancedcomment
             self.type = type
+            self.dispvalue = 0
 
             if comment is not None:
                 button_com = QtWidgets.QToolButton()
@@ -11414,33 +11415,82 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.checkReq(data, first)
             self.checkAdv()
 
-            value = self.retrieve(data)
-            self.dispwidget.setText(str(value))
+            self.dispvalue = self.retrieve(data)
+            self.dispwidget.setText(self.getShortForValue(self.dispvalue))
 
         def assign(self, data):
             """
             Assigns the currently selected value to data
             """
-            value = int(self.dispwidget.text())
-            return self.insertvalue(data, value)
+            return self.insertvalue(data, self.dispvalue)
 
         def HandleClicked(self, e):
             """
             Handles the button being clicked.
             """
-            current = int(self.dispwidget.text())
-            dlg = ExternalSpriteOptionDialog(self.type, current)
+            dlg = ExternalSpriteOptionDialog(self.type, self.dispvalue)
 
             # only contine if the user pressed "OK"
             if dlg.exec_() != QtWidgets.QDialog.Accepted:
                 return
 
             # read set value from dlg and update self.dispwidget
-            value = dlg.getValue()
-            self.dispwidget.setText(str(value))
+            self.dispvalue = dlg.getValue()
+            self.dispwidget.setText(self.getShortForValue(self.dispvalue))
 
             # update all other fields
             self.updateData.emit(self)
+
+        def getShortForValue(self, value):
+            """
+            Gets the short form from the xml for a value
+            """
+            print('getShortForValue(%d)' % value)
+
+            # find correct xml
+            filename = gamedef.externalFile(self.type + '.xml')
+            if not os.path.isfile(filename):
+                raise Exception # file does not exist
+
+            # parse the xml
+            tree = etree.parse(filename)
+            root = tree.getroot()
+
+            try:
+                fmt = root.attrib['short']
+            except:
+                return str(value)
+
+            option = None
+            for option_ in root:
+                # skip if this is not an <option> or it's not for the correct value
+                if option_.tag.lower() == 'option' and int(option_.attrib['value'], 0) == int(value):
+                    option = option_
+                    break
+
+            if option is None:
+                return str(value)
+
+            # Do replacements
+            for prop in option:
+                name = "[%s]" % prop.attrib['name']
+                fmt = fmt.replace(name, prop.attrib['value'])
+
+            del tree, root
+
+            # Do some automatic replacements
+            replace = {
+                '[b]': '<b>',
+                '[/b]': '</b>',
+                '[i]': '<i>',
+                '[/i]': '</i>',
+            }
+
+            for old in replace:
+                fmt = fmt.replace(old, replace[old])
+
+            # Return it
+            return fmt
 
     def setSprite(self, type, reset=False):
         """
@@ -11955,7 +12005,7 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         root = tree.getroot()
 
         try:
-            primary += list(map(lambda x: x.strip(), root.attrib['primary'].split(',')))
+            primary += list(map(lambda x: None if x.strip().lower() == "[id]" else x.strip(), root.attrib['primary'].split(',')))
         except:
             pass
 
