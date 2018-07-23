@@ -10244,9 +10244,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.resetButton = QtWidgets.QPushButton(trans.string('SpriteDataEditor', 17))
         self.resetButton.clicked.connect(self.HandleResetData)
 
+        self.showRawData = QtWidgets.QPushButton(trans.string('SpriteDataEditor', 24))
+        self.showRawData.clicked.connect(self.HandleShowRawData)
+
         editboxlayout = QtWidgets.QHBoxLayout()
         editboxlayout.addWidget(self.resetButton)
         editboxlayout.addStretch(1)
+        editboxlayout.addWidget(self.showRawData)
         editboxlayout.addWidget(self.editbox)
         editboxlayout.addWidget(edit)
 
@@ -11581,6 +11585,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     widget.setParent(None)
 
         # show the raw editor if advanced mode is enabled
+        self.showRawData.setVisible(not AdvancedModeEnabled)
         self.raweditor.setVisible(AdvancedModeEnabled)
         self.editbox.setVisible(AdvancedModeEnabled)
         self.resetButton.setVisible(AdvancedModeEnabled or len(sprite.fields) > 0)
@@ -11909,6 +11914,14 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         else:
             self.raweditor.setStyleSheet('QLineEdit { background-color: #ffd2d2; }')
+
+    def HandleShowRawData(self, e):
+        """
+        Shows raw data
+        """
+        self.showRawData.setVisible(False)
+        self.raweditor.setVisible(True)
+        self.editbox.setVisible(True)
 
     def HandleSpritePlaced(self, id_, button_):
         x_ = 0
@@ -14919,6 +14932,7 @@ class ReggieTranslation:
                 21: 'Sprite [id]: suggested in area',
                 22: 'Sprite [id]: required in zone',
                 23: 'Sprite [id]: suggested in zone',
+                24: 'Show raw data',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
