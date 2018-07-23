@@ -10238,7 +10238,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.editbox.setFont(font)
         edit = QtWidgets.QLineEdit()
         edit.textEdited.connect(self.HandleRawDataEdited)
-        edit.setMinimumWidth(133 + 10)
+        edit.setMinimumWidth(133 + 10) # width of 'dddd dddd dddd dddd' (widest valid string) + padding
         self.raweditor = edit
 
         self.resetButton = QtWidgets.QPushButton(trans.string('SpriteDataEditor', 17))
