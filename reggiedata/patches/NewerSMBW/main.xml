@@ -5,6 +5,7 @@
     <folder name="bga" path="bga" />
     <folder name="bgb" path="bgb" />
     <folder name="sprites" path="sprites" />
+    <folder name="external" path="external" />
 
     <!-- Background imports -->
     <!-- None yet... -->

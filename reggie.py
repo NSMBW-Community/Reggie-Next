@@ -1228,61 +1228,6 @@ def LoadSpriteData():
         QtWidgets.QMessageBox.warning(None, trans.string('Err_BrokenSpriteData', 2), repr(errortext))
 
 
-ExternalSpriteSettings = {}
-
-def LoadExternalSpriteSettings():
-    """
-    Loads external sprite settings
-    """
-    global ExternalSpriteSettings
-
-    # add more stuff here
-    types = ['external-actors']
-    for type_ in types:
-        # It works this way so that it can overwrite settings based on order of
-        # precedence
-        paths = [trans.files[type_]]
-        for path in gamedef.recursiveFiles(type_):
-            if path in (None, ''):
-                continue
-
-            paths.append(path)
-
-        options = {}
-        for path in paths:
-            # Add XML sprite data
-            if not isinstance(path, str):
-                path = path.path
-
-            tree = etree.parse(path)
-            root = tree.getroot()
-
-            for option in root:
-                # skip if this is not an <option>
-                if option.tag.lower() != 'option':
-                    continue
-
-                # read properties and put it in this dict
-                properties = {}
-                for prop in option:
-                    if prop.tag.lower() != 'property':
-                        continue
-
-                    name = prop.attrib['name']
-                    value = prop.attrib['value']
-
-                    properties[name] = value
-
-                # parse the value [can be hexadecimal, binary or octal]
-                value = int(option.attrib['value'], 0)
-
-                # save it
-                options[value] = properties
-
-        # save this type
-        ExternalSpriteSettings[type_] = options
-
-
 SpriteCategories = None
 
 
@@ -10107,7 +10052,6 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         LoadSpriteData()
         LoadSpriteListData()
         LoadSpriteCategories()
-        LoadExternalSpriteSettings()
         self.LoadItems()
 
     def LoadItems(self):
@@ -11906,10 +11850,10 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
 
         # create edit thing based on type
         # each of these functions should assign the editing thing to self.widget
-        self.type = "external-%s" % type
+        self.type = type
 
-        items = self.loadItemsFromXML()
-        self.fillWidgetFromItems(items)
+        items, order = self.loadItemsFromXML()
+        self.fillWidgetFromItems(items, order)
 
         self.value = current
 
@@ -11980,24 +11924,77 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
 
         self.setLayout(mainLayout)
 
+        # Keep col widths constant
+        layout = self.widget.layout()
+        colCount = layout.columnCount()
+        rowCount = layout.rowCount()
+
+        for column in range(colCount):
+            for row in range(rowCount):
+                try:
+                    width = layout.itemAtPosition(row, column).widget().width()
+                    layout.itemAtPosition(row, column).widget().setFixedWidth(width)
+                except:
+                    pass
+
     def loadItemsFromXML(self):
         """
         Returns the items from the correct XML
         """
-        global ExternalSpriteSettings
+        # find correct xml
+        filename = gamedef.externalFile(self.type + '.xml')
+        if not os.path.isfile(filename):
+            raise Exception # file does not exist
 
-        return ExternalSpriteSettings[self.type]
+        # parse the xml
+        options = {}
+        primary = []
+        secondary = []
 
-    def fillWidgetFromItems(self, options):
+        tree = etree.parse(filename)
+        root = tree.getroot()
+
+        try:
+            primary += list(map(lambda x: x.strip(), root.attrib['primary'].split(',')))
+        except:
+            pass
+
+        try:
+            secondary += list(map(lambda x: x.strip(), root.attrib['secondary'].split(',')))
+        except:
+            pass
+
+        for option in root:
+            # skip if this is not an <option>
+            if option.tag.lower() != 'option':
+                continue
+
+            # read properties and put it in this dict
+            properties = {}
+            for prop in option:
+                if prop.tag.lower() != 'property':
+                    continue
+
+                name = prop.attrib['name']
+                value = prop.attrib['value']
+
+                properties[name] = value
+
+            # parse the value [can be hexadecimal, binary or octal]
+            value = int(option.attrib['value'], 0)
+
+            # save it
+            options[value] = properties
+
+        # delete the xml stuff
+        del tree, root
+
+        return (options, (primary, secondary))
+
+    def fillWidgetFromItems(self, options, order):
         """
         Adds items to the layout
         """
-        # FIXME: Make this configurable
-        order = (
-            (None, "Usability", "Name", "Sprite"),  # primary
-            () # secondary
-        )
-
         # list of widgets sorted by value
         self.widgets = []
 
@@ -12034,9 +12031,13 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         """
         Only show the elements fulfilling the search for text
         """
+        # Don't do anything if you search for less than 2 characters
+        if len(text) < 2:
+            return
+
         for i, row in enumerate(self.widgets):
             for value in row[0]:
-                if str(value).find(text) >= 0:
+                if str(value).lower().find(text.lower()) >= 0:
                     # text was in this row -> show row
                     self.showRow(2 * i)
                     break
@@ -12061,8 +12062,8 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
             try:
                 layout.itemAtPosition(i, column).widget().show()
             except:
-                # this was not a widget, happens when this row is already hidden
-                # or something
+                # this was not a widget, happens when this row is not there or
+                # something
                 break
 
     def hideRow(self, i):
@@ -13563,7 +13564,6 @@ class SimultaneousUndoAction(UndoAction):
 
 
 # Game Definitions
-
 def LoadGameDef(name=None, dlg=None):
     """
     Loads a game definition
@@ -13601,7 +13601,6 @@ def LoadGameDef(name=None, dlg=None):
         LoadSpriteData()
         LoadSpriteListData(True)
         LoadSpriteCategories(True)
-        LoadExternalSpriteSettings()
         if mainWindow:
             mainWindow.spriteViewPicker.clear()
             for cat in SpriteCategories:
@@ -13742,12 +13741,12 @@ class ReggieGameDefinition:
             'tilesets': gdf(None, False),
             'tilesetinfo': gdf(None, False),
             'ts1_descriptions': gdf(None, False),
-            'external-actors': gdf(None, False),
         }
         self.folders = {
             'bga': gdf(None, False),
             'bgb': gdf(None, False),
             'sprites': gdf(None, False),
+            'external': gdf(None, False),
         }
 
     def InitFromName(self, name):
@@ -13821,7 +13820,7 @@ class ReggieGameDefinition:
         Returns the folder to a bg image. Layer must be 'a' or 'b'
         """
         # Name will be of the format '0000.png'
-        fallback = os.path.join('reggiedata', 'bg' + layer)
+        fallback = os.path.join('reggiedata', 'bg' + layer, name)
         filename = 'bg%s/%s' % (layer, name)
 
         # See if it was defined specifically
@@ -13839,8 +13838,34 @@ class ReggieGameDefinition:
             return self.base.bgFile(name, layer)
 
         # If not, return fallback
-        else:
-            return fallback + '/' + name
+        return fallback
+
+    def externalFile(self, name):
+        """
+        Returns the filename to the external xml.
+        """
+        # Name is of the format 'something.xml'
+        filename = os.path.join('external', name)
+        fallback = os.path.join('reggiedata', filename)
+
+        # check if it's in self.files
+        if filename in self.files:
+            path = self.files[filename].path
+            if os.path.isfile(path):
+                return path
+
+        # check if it's in self.folders
+        if self.folders['external'].path is not None:
+            path = os.path.join(self.folders['external'].path, name)
+            if os.path.isfile(path):
+                return path
+
+        # No luck so far. If we have a base, use that
+        if self.base is not None:
+            return self.base.externalFile(name)
+
+        # Use the fallback
+        return fallback
 
     def GetGamePath(self):
         """
@@ -14089,7 +14114,6 @@ def FindGameDef(name, skip=None):
 
 
 # Translations
-
 def LoadTranslation():
     """
     Loads the translation
