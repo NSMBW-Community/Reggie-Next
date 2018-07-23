@@ -10150,6 +10150,68 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
     SpriteChanged = QtCore.pyqtSignal(int)
     SpriteReplace = QtCore.pyqtSignal(int)
 
+class SpriteList(QtWidgets.QWidget):
+    """
+    Sprite list viewer
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.searchbox = QtWidgets.QLineEdit()
+        self.searchbox.textEdited.connect(self.search)
+
+        layout = QtWidgets.QHBoxLayout()
+        layout.addWidget(QtWidgets.QLabel(trans.string('Sprites', 19) + ":"))
+        layout.addWidget(self.searchbox)
+
+        search = QtWidgets.QWidget()
+        search.setLayout(layout)
+        search.setContentsMargins(0, 0, 0, 0)
+
+        self.list_ = ListWidgetWithToolTipSignal()
+
+        layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(search)
+        layout.addWidget(self.list_)
+        self.setLayout(layout)
+        self.setContentsMargins(0, 0, 0, 0)
+
+    def search(self, text):
+        """
+        Search the list.
+        """
+        results = self.list_.findItems(text, Qt.MatchContains | Qt.MatchRecursive)
+
+        for sprite in self.list_.findItems("", Qt.MatchContains | Qt.MatchRecursive):
+            sprite.setHidden(True)
+
+        for sprite in results:
+            sprite.setHidden(False)
+
+        self.ShownSearchResults = results
+
+    def clear(self):
+        self.searchbox.setText("")
+        return self.list_.clear()
+
+    def selectionModel(self):
+        return self.list_.selectionModel()
+
+    def addItem(self, *args):
+        result = self.list_.addItem(*args)
+        self.search(self.searchbox.text())
+        return result
+
+    def setCurrentItem(self, *args):
+        return self.list_.setCurrentItem(*args)
+
+    def takeItem(self, *args):
+        return self.list_.takeItem(*args)
+
+    def row(self, *args):
+        return self.list_.row(*args)
+
+
 AltSettingIcons = False
 ResetDataWhenHiding = False
 
@@ -11445,7 +11507,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             Gets the short form from the xml for a value
             """
-            print('getShortForValue(%d)' % value)
 
             # find correct xml
             filename = gamedef.externalFile(self.type + '.xml')
@@ -13398,7 +13459,7 @@ class UndoStack:
 
     def redo(self):
         """
-        Redoes the last undid action
+        Redoes the last undone action
         """
         if len(self.futureActions) == 0: return
 
@@ -19206,7 +19267,6 @@ class RecentFilesMenu(QtWidgets.QMenu):
 
         self.updateActionList()
 
-
     def writeSettings(self):
         """
         Writes FileList back to the Registry
@@ -19230,22 +19290,7 @@ class RecentFilesMenu(QtWidgets.QMenu):
             if i <= 9: act.setShortcut(QtGui.QKeySequence('Ctrl+Alt+%d' % i))
             act.setToolTip(str(self.FileList[i]))
 
-            # This is a TERRIBLE way to do this, but I can't think of anything simpler. :(
-            if i == 0:  handler = self.HandleOpenRecentFile0
-            if i == 1:  handler = self.HandleOpenRecentFile1
-            if i == 2:  handler = self.HandleOpenRecentFile2
-            if i == 3:  handler = self.HandleOpenRecentFile3
-            if i == 4:  handler = self.HandleOpenRecentFile4
-            if i == 5:  handler = self.HandleOpenRecentFile5
-            if i == 6:  handler = self.HandleOpenRecentFile6
-            if i == 7:  handler = self.HandleOpenRecentFile7
-            if i == 8:  handler = self.HandleOpenRecentFile8
-            if i == 9:  handler = self.HandleOpenRecentFile9
-            if i == 10: handler = self.HandleOpenRecentFile10
-            if i == 11: handler = self.HandleOpenRecentFile11
-            if i == 12: handler = self.HandleOpenRecentFile12
-            if i == 13: handler = self.HandleOpenRecentFile13
-            if i == 14: handler = self.HandleOpenRecentFile14
+            handler = self.HandleOpenRecentFile_(i)
             act.triggered.connect(handler)
 
             self.addAction(act)
@@ -19285,36 +19330,8 @@ class RecentFilesMenu(QtWidgets.QMenu):
         self.writeSettings()
         self.updateActionList()
 
-    def HandleOpenRecentFile0(self):
-        self.HandleOpenRecentFile(0)
-    def HandleOpenRecentFile1(self):
-        self.HandleOpenRecentFile(1)
-    def HandleOpenRecentFile2(self):
-        self.HandleOpenRecentFile(2)
-    def HandleOpenRecentFile3(self):
-        self.HandleOpenRecentFile(3)
-    def HandleOpenRecentFile4(self):
-        self.HandleOpenRecentFile(4)
-    def HandleOpenRecentFile5(self):
-        self.HandleOpenRecentFile(5)
-    def HandleOpenRecentFile6(self):
-        self.HandleOpenRecentFile(6)
-    def HandleOpenRecentFile7(self):
-        self.HandleOpenRecentFile(7)
-    def HandleOpenRecentFile8(self):
-        self.HandleOpenRecentFile(8)
-    def HandleOpenRecentFile9(self):
-        self.HandleOpenRecentFile(9)
-    def HandleOpenRecentFile10(self):
-        self.HandleOpenRecentFile(10)
-    def HandleOpenRecentFile11(self):
-        self.HandleOpenRecentFile(11)
-    def HandleOpenRecentFile12(self):
-        self.HandleOpenRecentFile(12)
-    def HandleOpenRecentFile13(self):
-        self.HandleOpenRecentFile(13)
-    def HandleOpenRecentFile14(self):
-        self.HandleOpenRecentFile(14)
+    def HandleOpenRecentFile_(self, i):
+        return (lambda e: self.HandleOpenRecentFile(i))
 
     def HandleOpenRecentFile(self, number):
         """
@@ -20208,7 +20225,9 @@ class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
         Handles viewport events
         """
         if e.type() == e.ToolTip:
-            self.toolTipAboutToShow.emit(self.itemFromIndex(self.indexAt(e.pos())))
+            item = self.itemFromIndex(self.indexAt(e.pos()))
+            if item is not None:
+                self.toolTipAboutToShow.emit(item)
 
         return super().viewportEvent(e)
 
@@ -21265,10 +21284,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         slabel = QtWidgets.QLabel(trans.string('Palette', 11))
         slabel.setWordWrap(True)
-        self.spriteList = ListWidgetWithToolTipSignal()
-        self.spriteList.itemActivated.connect(self.HandleSpriteSelectByList)
-        self.spriteList.toolTipAboutToShow.connect(self.HandleSpriteToolTipAboutToShow)
-        self.spriteList.setSortingEnabled(True)
+        self.spriteList = SpriteList()
+        self.spriteList.list_.itemActivated.connect(self.HandleSpriteSelectByList)
+        self.spriteList.list_.toolTipAboutToShow.connect(self.HandleSpriteToolTipAboutToShow)
 
         spel.addWidget(slabel)
         spel.addWidget(self.spriteList)
