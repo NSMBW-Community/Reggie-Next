@@ -10150,6 +10150,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
     SpriteChanged = QtCore.pyqtSignal(int)
     SpriteReplace = QtCore.pyqtSignal(int)
 
+
 class SpriteList(QtWidgets.QWidget):
     """
     Sprite list viewer
@@ -10161,20 +10162,22 @@ class SpriteList(QtWidgets.QWidget):
         self.searchbox.textEdited.connect(self.search)
 
         layout = QtWidgets.QHBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+
         layout.addWidget(QtWidgets.QLabel(trans.string('Sprites', 19) + ":"))
         layout.addWidget(self.searchbox)
 
         search = QtWidgets.QWidget()
         search.setLayout(layout)
-        search.setContentsMargins(0, 0, 0, 0)
 
         self.list_ = ListWidgetWithToolTipSignal()
 
         layout = QtWidgets.QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+
         layout.addWidget(search)
         layout.addWidget(self.list_)
         self.setLayout(layout)
-        self.setContentsMargins(0, 0, 0, 0)
 
     def search(self, text):
         """
@@ -10235,6 +10238,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.editbox.setFont(font)
         edit = QtWidgets.QLineEdit()
         edit.textEdited.connect(self.HandleRawDataEdited)
+        edit.setMinimumWidth(133 + 10)
         self.raweditor = edit
 
         self.resetButton = QtWidgets.QPushButton(trans.string('SpriteDataEditor', 17))
@@ -10245,7 +10249,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         editboxlayout.addStretch(1)
         editboxlayout.addWidget(self.editbox)
         editboxlayout.addWidget(edit)
-        #editboxlayout.setStretch(1, 1)
 
         # 'Editing Sprite #' label
         self.spriteLabel = QtWidgets.QLabel('-')
