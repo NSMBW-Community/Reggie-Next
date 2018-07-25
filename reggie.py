@@ -1158,6 +1158,7 @@ def LoadSpriteData():
                 notes = None
                 relatedObjFiles = None
                 yoshiNotes = None
+                size = False
                 noyoshi = None
                 asm = None
                 advNotes = None
@@ -1182,6 +1183,9 @@ def LoadSpriteData():
                 if 'asmhacks' in sprite.attrib:
                     asm = sprite.attrib['asmhacks'] == "True"
 
+                if 'sizehacks' in sprite.attrib:
+                    size = sprite.attrib['sizehacks'] == "True"
+
 
                 sdef = SpriteDefinition()
                 sdef.id = spriteid
@@ -1192,6 +1196,7 @@ def LoadSpriteData():
                 sdef.yoshiNotes = yoshiNotes
                 sdef.noyoshi = noyoshi
                 sdef.asm = asm
+                sdef.size = size
                 sdef.dependencies = []
                 sdef.dependencynotes = None
 
@@ -10297,12 +10302,20 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.asm = QtWidgets.QLabel()
         self.asm.setPixmap(GetIcon("asm").pixmap(64, 64))
 
+        self.sizeButton = QtWidgets.QToolButton()
+        self.sizeButton.setIcon(GetIcon('reggie')) # TODO: find a proper icon
+        self.sizeButton.setText("Resize") # TODO: Add this to the translation
+        self.sizeButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.sizeButton.setAutoRaise(True)
+        self.sizeButton.clicked.connect(self.HandleSizeButtonClicked)
+
         toplayout = QtWidgets.QHBoxLayout()
         toplayout.addWidget(self.spriteLabel)
         toplayout.addStretch(1)
         toplayout.addWidget(self.asm)
         toplayout.addWidget(self.yoshiIcon)
         toplayout.addWidget(self.yoshiInfo)
+        toplayout.addWidget(self.sizeButton)
         toplayout.addWidget(self.relatedObjFilesButton)
         toplayout.addWidget(self.depButton)
         toplayout.addWidget(self.noteButton)
@@ -11590,6 +11603,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.editbox.setVisible(AdvancedModeEnabled)
         self.resetButton.setVisible(AdvancedModeEnabled or len(sprite.fields) > 0)
 
+        # show size stuff
+        self.sizeButton.setVisible(sprite.size)
+
         # Nothing is selected, so no comments should appear
         self.com_box.setVisible(False)
 
@@ -11961,6 +11977,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
 
         return placeSprite
+
+    def HandleSizeButtonClicked(self, e):
+        """
+        Handles the 'resize' button being clicked
+        """
+        ...
 
 
 class ExternalSpriteOptionDialog(QtWidgets.QDialog):
