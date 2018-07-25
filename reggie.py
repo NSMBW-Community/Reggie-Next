@@ -12250,7 +12250,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         Handles the 'resize' button being clicked
         """
-        ...
+        dlg = ResizeChoiceDialog(self.spritetype)
+
+        # only contine if the user pressed "OK"
+        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+            return
 
 
 class ExternalSpriteOptionDialog(QtWidgets.QDialog):
@@ -12330,7 +12334,6 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 
-        #self.widget.setMaximumHeight(self.height() * 0.8)
         scrollWidget = QtWidgets.QScrollArea()
         scrollWidget.setWidget(self.widget)
         scrollWidget.setWidgetResizable(True)
@@ -12526,6 +12529,181 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         Returns a function that handles the i'th button being clicked
         """
         return (lambda e: self.doRowVisibilityChange(i))
+
+
+class ResizeChoiceDialog(QtWidgets.QDialog):
+    """
+    Dialog for the resize option.
+    """
+    # TODO: Make this translatable
+
+    def __init__(self, spriteid):
+        """
+        Initialise the dialog
+        """
+        QtWidgets.QDialog.__init__(self)
+
+        self.sprite = Sprites[spriteid]
+
+        text = "Let's resize your sprite.\nIn order to do this, choose one of " \
+               "slots, based on the below information. Note that some choices " \
+               "can overlap with other settings, leading to undesired effects."
+
+        text2 = "Click the button below to create a Special Event sprite with " \
+                "the selected slot."
+
+        ## Slots
+        used = self.getNyb5And7Availability()
+        rows = max(len(used[5]), len(used[7]), 1)
+
+        self.buttongroup = QtWidgets.QButtonGroup()
+        self.radio1 = QtWidgets.QRadioButton()
+        self.buttongroup.addButton(self.radio1, 0)
+        self.radio2 = QtWidgets.QRadioButton()
+        self.buttongroup.addButton(self.radio2, 1)
+
+
+        header = QtWidgets.QLabel("Slots")
+        header.setStyleSheet("""QLabel {border-bottom: 3px solid black; }""")
+
+        footer = QtWidgets.QLabel(text2)
+
+        createButton = QtWidgets.QPushButton("Create")
+        createButton.clicked.connect(self.placeSpecialResizeEvent)
+
+        line = QtWidgets.QLabel("")
+        line.setStyleSheet("""QLabel {border: 1px solid black; background: black; }""")
+        line.setContentsMargins(0, 0, 0, 0)
+
+        slotsLayout = QtWidgets.QGridLayout()
+        slotsLayout.setContentsMargins(0, 0, 0, 0)
+        slotsLayout.addWidget(header,   0, 0, 1, 3, Qt.AlignHCenter)
+        slotsLayout.addWidget(line,     1, 1, rows + 2, 1, Qt.AlignHCenter)
+        slotsLayout.addWidget(QtWidgets.QLabel("A"),      1, 0, 1, 1, Qt.AlignHCenter)
+        slotsLayout.addWidget(self.radio1,   2, 0, 1, 1, Qt.AlignHCenter)
+        slotsLayout.addWidget(QtWidgets.QLabel("B"),      1, 2, 1, 1, Qt.AlignHCenter)
+        slotsLayout.addWidget(self.radio2,   2, 2, 1, 1, Qt.AlignHCenter)
+
+        if len(used[5]) == 0:
+            slotsLayout.addWidget(QtWidgets.QLabel("None"), 3, 0, 1, 1, Qt.AlignHCenter)
+        else:
+            for offset, conflict in enumerate(used[5]):
+                slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 0, 1, 1, Qt.AlignHCenter)
+
+        if len(used[7]) == 0:
+            slotsLayout.addWidget(QtWidgets.QLabel("None"), 3, 0, 1, 1, Qt.AlignHCenter)
+        else:
+            for offset, conflict in enumerate(used[7]):
+                slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 2, 1, 1, Qt.AlignHCenter)
+
+        slotsLayout.addWidget(line,   3 + rows, 0, 1, 3)
+        slotsLayout.addWidget(footer, 4 + rows, 0, 1, 3)
+        slotsLayout.addWidget(createButton, 5 + rows, 0, 1, 3, Qt.AlignHCenter)
+
+
+        # create layout
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
+
+        mainLayout = QtWidgets.QVBoxLayout()
+        mainLayout.addWidget(QtWidgets.QLabel(text))
+        mainLayout.addLayout(slotsLayout)
+        mainLayout.addWidget(buttonBox, 0, Qt.AlignBottom)
+
+        self.setLayout(mainLayout)
+
+    def getNyb5And7Availability(self):
+        """
+        Gets whether nybble 5 or 7 or both or none is free.
+        """
+        nyb5 = (17, 21) # excludes end
+        nyb7 = (25, 29)
+
+        found = {5: [], 7: []}
+        for type, *field in self.sprite.fields:
+            if type == 3: # multibox
+                start = field[1]
+                num = field[2]
+                bit = (start, start + num)
+            elif type == 5 or type == 7: # (multi)dualbox
+                bit = field[2]
+            else:
+                bit = field[1]
+
+            if not isinstance(bit, tuple):
+                bit = ((bit, bit + 1),)
+            elif not isinstance(bit[0], tuple):
+                bit = (bit,)
+
+            for bitrange in bit:
+                # two ranges overlap iff either of the following:
+                #  start1 <= start2 AND end1 >= start2
+                #  start1 < end2 AND end1 >= end2
+                if (bitrange[0] <= nyb5[0] and bitrange[1] >= nyb5[0]) \
+                  or (bitrange[0] < nyb5[1] and bitrange[1] >= nyb5[1]):
+                    found[5].append((type, *field))
+
+                if (bitrange[0] <= nyb7[0] and bitrange[1] >= nyb7[0]) \
+                  or (bitrange[0] < nyb7[1] and bitrange[1] >= nyb7[1]):
+                    found[7].append((type, *field))
+
+        return found
+
+    def getSpecialEventAvailability(self):
+        """
+        Find Special Event [246] and then check if it has resize set.
+        Returns a list of (slot, sprite) pairs, where slot = 2 means it is a global
+        resize.
+        """
+        global Area
+
+        slots = []
+        for sprite in Area.sprites:
+            if sprite.type != 246:
+                continue
+
+            type = sprite.spritedata[5] & 0xF
+
+            if type == 5:
+                # Resizer
+                slots.append((2, sprite))
+            elif type == 6:
+                # Selective resizer
+                slot = (sprite.spritedata[5] >> 4) & 1
+                slots.append((slot, sprite))
+
+        print(slots)
+        return slots
+
+    def placeSpecialResizeEvent(self):
+        """
+        Places a Special Event [246] and sets the settings so the correct slot.
+        """
+        global mainWindow, Area
+
+        slot = self.buttongroup.checkedId()
+        data = bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00')
+        if slot == -1:
+            data[5] = 5
+        else:
+            data[5] = (slot << 4) | 6
+
+        x = mainWindow.selObj.objx
+        y = mainWindow.selObj.objy
+
+        sprite = SpriteItem(246, x, y, data)
+        sprite.positionChanged = mainWindow.HandleSprPosChange
+
+        mainWindow.scene.addItem(sprite)
+        Area.sprites.append(sprite)
+
+        sprite.listitem = ListWidgetItem_SortsByOther(sprite)
+        mainWindow.spriteList.addItem(sprite.listitem)
+
+        SetDirty()
+        sprite.UpdateListItem()
 
 
 class EntranceEditorWidget(QtWidgets.QWidget):
