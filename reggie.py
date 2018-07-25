@@ -123,30 +123,30 @@ firstLoad = True
 FileExtentions = ('.arc', '.arc.LH')
 
 OverriddenTilesets = {
-    "Pa0": [
+    "Pa0": (
         'Pa0_jyotyu',
         'Pa0_jyotyu_chika',
         'Pa0_jyotyu_setsugen',
         'Pa0_jyotyu_yougan',
         'Pa0_jyotyu_staffRoll'
-    ],
-    "Flowers": [
+    ),
+    "Flowers": (
         'Pa1_nohara',
         'Pa1_nohara2'
-    ],
-    "Forest Flowers": [
+    ),
+    "Forest Flowers": (
         'Pa1_daishizen'
-    ],
-    "Lines": [
+    ),
+    "Lines": (
         'Pa3_daishizen'
-    ],
-    "Minigame Lines": [
+    ),
+    "Minigame Lines": (
         'Pa3_MG_house_ami_rail'
-    ],
-    "Full Lines": [
+    ),
+    "Full Lines": (
         'Pa3_rail',
         'Pa3_rail_white'
-    ]
+    )
 }
 
 
@@ -1601,12 +1601,12 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
             self.accept()
 
 
-Tiles = None  # 0x200 tiles per tileset, plus 64 for each type of override
+Tiles = None # 0x200 tiles per tileset, plus 64 for each type of override
 TilesetFilesLoaded = [None, None, None, None]
 TilesetAnimTimer = None
-Overrides = None  # 320 tiles, this is put into Tiles usually
+Overrides = None # 320 tiles, this is put into Tiles usually
 TileBehaviours = None
-ObjectDefinitions = None  # 4 tilesets
+ObjectDefinitions = None # 4 tilesets
 TilesetsAnimating = False
 
 
