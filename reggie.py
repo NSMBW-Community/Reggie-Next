@@ -11924,13 +11924,14 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.editbox.setVisible(True)
 
     def HandleSpritePlaced(self, id_, button_):
-        x_ = 0
-        y_ = 0
-        data_ = mainWindow.defaultDataEditor.data
         self_ = self
 
         def placeSprite():
             mw = mainWindow
+
+            x_ = mw.selObj.objx
+            y_ = mw.selObj.objy
+            data_ = mw.defaultDataEditor.data
 
             spr = SpriteItem(id_, x_, y_, data_)
             spr.positionChanged = mw.HandleSprPosChange
@@ -11949,7 +11950,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             idx = self_.com_deplist.indexOf(button_)
             row, _, _, _ = self_.com_deplist.getItemPosition(idx)
 
-            # first clear current dependencies
+            # remove this row
             l = self.com_deplist
             for column in range(l.columnCount()):
                 w = l.itemAtPosition(row, column)
@@ -11957,8 +11958,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     widget = w.widget()
                     l.removeWidget(widget)
                     widget.setParent(None)
-
-            ...
 
 
         return placeSprite
@@ -12014,6 +12013,8 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
 
                 for j, text in enumerate(widget[1]):
                     label = QtWidgets.QLabel(str(text))
+                    label.setWordWrap(True)
+
                     L.addWidget(label, 2 * i + 1, j + offset, 1, width)
 
         self.widget.setLayout(L)
@@ -12158,7 +12159,7 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         """
         Only show the elements fulfilling the search for text
         """
-        # Don't do anything if you search for less than 2 characters
+        # Don't do anything if you search for fewer than 2 characters
         if len(text) < 2:
             return
 
@@ -12187,11 +12188,14 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
 
         for column in range(layout.columnCount()):
             try:
-                layout.itemAtPosition(i, column).widget().show()
+                widget = layout.itemAtPosition(i, column).widget()
             except:
                 # this was not a widget, happens when this row is not there or
                 # something
                 break
+
+            # BUG: Qt doesn't automatically add the margins
+            widget.show()
 
     def hideRow(self, i):
         """
@@ -12208,27 +12212,30 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
 
         for column in range(start, layout.columnCount()):
             try:
-                layout.itemAtPosition(i, column).widget().hide()
+                widget = layout.itemAtPosition(i, column).widget()
             except:
                 # this was not a widget, happens when this row is already hidden
                 break
+
+            # BUG: Qt doesn't automatically remove the margins
+            widget.hide()
 
     def doRowVisibilityChange(self, i):
         """
         Changes visibility of row i
         """
         if self.buttons[i].text() == 'v':
-            self.showRow(i)
+            self.showRow(2 * i + 1)
             self.buttons[i].setText('^')
         else:
-            self.hideRow(i)
+            self.hideRow(2 * i + 1)
             self.buttons[i].setText('v')
 
     def HandleButtonClick(self, i):
         """
         Returns a function that handles the i'th button being clicked
         """
-        return (lambda e: self.doRowVisibilityChange(2 * i + 1))
+        return (lambda e: self.doRowVisibilityChange(i))
 
 
 class EntranceEditorWidget(QtWidgets.QWidget):
