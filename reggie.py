@@ -11665,7 +11665,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         # if there are missing things
         for missingSprite in missing[0]:
-            name = trans.string('SpriteDataEditor', 21, '[id]', missingSprite)
+            name = trans.string('SpriteDataEditor', 20, '[id]', missingSprite)
             addButton = QtWidgets.QPushButton('Add Sprite')
             addButton.clicked.connect(self.HandleSpritePlaced(missingSprite, addButton))
 
@@ -11674,7 +11674,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             rownum += 1
 
         for missingSprite in missing[1]:
-            name = trans.string('SpriteDataEditor', 22, '[id]', missingSprite)
+            name = trans.string('SpriteDataEditor', 21, '[id]', missingSprite)
             addButton = QtWidgets.QPushButton('Add Sprite')
             addButton.clicked.connect(self.HandleSpritePlaced(missingSprite, addButton))
 
