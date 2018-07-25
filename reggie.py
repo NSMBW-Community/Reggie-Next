@@ -792,7 +792,7 @@ class SpriteDefinition:
         self.fields = []
         fields = self.fields
         allowed = ['checkbox', 'list', 'value', 'bitfield', 'multibox', 'dualbox',
-                   'dependency', 'external']
+                   'dependency', 'external', 'multidualbox']
 
         for field in elem:
             if field.tag not in allowed:
@@ -1120,6 +1120,45 @@ class SpriteDefinition:
 
                 type = attribs['type']
                 fields.append((6, title, bit, comment, required, advanced, comment2, advancedcomment, type))
+
+            elif field.tag == 'multidualbox':
+                # multibox but with dualboxes instead of checkboxes
+
+                if 'nybble' in attribs:
+                    sbit = attribs['nybble']
+                    sft = 2
+
+                else:
+                    sbit = attribs['bit']
+                    sft = 0
+
+                bit = []
+                for ran in sbit.split(','):
+                    if '-' not in ran:
+                        if sft:
+                            # just 4 bits
+                            thing = int(ran) << 2
+                            r_bit = (thing - 3, thing + 1)
+
+                        else:
+                            # just 1 bit
+                            r_bit = int(ran)
+
+                    else:
+                        # different number of bits
+                        getit = ran.split('-')
+
+                        if sft:
+                            r_bit = ((int(getit[0]) << 2) - 3, (int(getit[1]) << 2) + 1)
+                        else:
+                            r_bit = (int(getit[0]), int(getit[1]) + 1)
+
+                    bit.append(r_bit)
+
+                if len(bit) == 1:
+                    bit = bit[0]
+
+                fields.append((7, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
 
 
 def LoadSpriteData():
@@ -10223,6 +10262,92 @@ class SpriteList(QtWidgets.QWidget):
 AltSettingIcons = False
 ResetDataWhenHiding = False
 
+class DualBox(QtWidgets.QWidget):
+    """
+    A dualbox widget for the sprite data
+    """
+    toggled = QtCore.pyqtSignal('PyQt_PyObject')
+
+    def __init__(self, text1, text2, initial = 0, direction = 0):
+        """
+        Inits the dualbox with text to the left/above and text to the right/below
+        """
+        super().__init__()
+
+        self.qsstemplate = """QPushButton {
+            width: %dpx;
+            height: %dpx;
+            border-radius: 0px;
+            border: 1px solid dark%%s;
+            background: %%s;
+        }"""
+
+        self.value = initial
+        self.direction = direction
+
+        self.slider = QtWidgets.QPushButton()
+        self.slider.clicked.connect(self.toggle)
+
+        if direction == 0:
+            layout = QtWidgets.QHBoxLayout()
+            self.qsstemplate %= (40, 20)
+        else:
+            layout = QtWidgets.QVBoxLayout()
+            self.qsstemplate %= (20, 40)
+
+        label1 = QtWidgets.QPushButton(text1)
+        label1.setStyleSheet("""QPushButton {border:0; background:0; margin:0; padding:0}""")
+        label1.clicked.connect(self.toggle)
+        label2 = QtWidgets.QPushButton(text2)
+        label2.setStyleSheet("""QPushButton {border:0; background:0; margin:0; padding:0}""")
+        label2.clicked.connect(self.toggle)
+
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.addWidget(label1)
+        layout.addWidget(self.slider)
+        layout.addWidget(label2)
+
+        self.setLayout(layout)
+        self.setColour()
+
+    def isSet(self):
+        return self.value == 1
+
+    def setValue(self, value):
+        """
+        Sets the value and updates the UI
+        """
+        # the only allowed values for 'value' are 0 and 1
+        if value != 0 and value != 1:
+            raise ValueError
+
+        # don't do anything if we are already set
+        if self.value == value:
+            return
+
+        self.value = value
+
+        # update the UI
+        # TODO: Make this a slider
+        # TODO: Make this a nice animation
+        self.setColour()
+
+    def getValue(self):
+        return self.value
+
+    def setColour(self):
+        colour = ['red', 'green'][self.value]
+        self.qss = self.qsstemplate % (colour, colour)
+        self.slider.setStyleSheet(self.qss)
+
+    def toggle(self):
+        """
+        The slider was toggled, so update UI and emit the signal
+        """
+        self.setValue(1 - self.value)
+        self.toggled.emit(self)
+
+
 class SpriteEditorWidget(QtWidgets.QWidget):
     """
     Widget for editing sprite data
@@ -11223,7 +11348,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.checkAdv()
 
             value = self.retrieve(data)
-            i = self.bitnum
+            i = self.bitnum - 1
 
             # run at most self.bitnum times
             while value != 0 and i != 0:
@@ -11293,7 +11418,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
                 if not AltSettingIcons:
                     button_com.setIcon(GetIcon('setting-comment'))
-                    button_com.setStyleSheet("border-radius: 50%")
+                    button_com.setStyleSheet("QToolButton { border-radius: 50%; }")
 
                 button_com.clicked.connect(self.ShowComment)
                 button_com.setAutoRaise(True)
@@ -11573,6 +11698,146 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             # Return it
             return fmt
 
+    class MultiDualboxPropertyDecoder(PropertyDecoder):
+        """
+        Class that decodes/encodes sprite data to/from a row of dualboxes
+        """
+
+        def __init__(self, title1, title2, bit, comment, required, advanced, comment2, commentAdv, layout, row, parent):
+            """
+            Creates the widget
+            """
+            super().__init__()
+
+            self.bit = bit
+            self.required = required
+            self.advanced = advanced
+            self.parent = parent
+            self.layout = layout
+            self.row = row
+            self.comment = comment
+            self.comment2 = comment2
+            self.commentAdv = commentAdv
+
+            if isinstance(bit, tuple):
+                self.bitnum = bit[1] - bit[0]
+                self.startbit = bit[0]
+
+            else:
+                self.bitnum = 1
+                self.startbit = bit
+
+            self.widgets = []
+            DualboxLayout = QtWidgets.QGridLayout()
+            DualboxLayout.setContentsMargins(0, 0, 0, 0)
+
+            for i in range(self.bitnum):
+                dualbox = DualBox(title1, title2, direction = 1)
+                dualbox.toggled.connect(self.HandleValueChanged)
+
+                self.widgets.append(dualbox)
+                DualboxLayout.addWidget(dualbox, 0, i)
+
+            w = QtWidgets.QWidget()
+            w.setLayout(DualboxLayout)
+
+            if comment is not None:
+                button_com = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_com.setIcon(GetIcon('setting-comment'))
+                    button_com.setStyleSheet("QToolButton { border-radius: 50%; }")
+
+                button_com.clicked.connect(self.ShowComment)
+                button_com.setAutoRaise(True)
+
+            else:
+                button_com = None
+
+            if comment2 is not None and not AltSettingIcons:
+                button_com2 = QtWidgets.QToolButton()
+                button_com2.setIcon(GetIcon('setting-comment2'))
+                button_com2.setStyleSheet("QToolButton { border-radius: 50%; }")
+                button_com2.clicked.connect(self.ShowComment2)
+                button_com2.setAutoRaise(True)
+
+            else:
+                button_com2 = None
+
+            if commentAdv is not None and AdvancedModeEnabled:
+                button_adv = QtWidgets.QToolButton()
+
+                if not AltSettingIcons:
+                    button_adv.setIcon(GetIcon('setting-comment-adv'))
+                    button_adv.setStyleSheet("QToolButton { border-radius: 50%; }")
+
+                button_adv.clicked.connect(self.ShowAdvancedComment)
+                button_adv.setAutoRaise(True)
+
+            else:
+                button_adv = None
+
+            if button_com is not None or button_com2 is not None or button_adv is not None:
+                L = QtWidgets.QHBoxLayout()
+                L.addStretch(1)
+
+                if button_com is not None:
+                    L.addWidget(button_com)
+
+                if button_com2 is not None:
+                    L.addWidget(button_com2)
+
+                if button_adv is not None:
+                    L.addWidget(button_adv)
+
+                L.setContentsMargins(0, 0, 0, 0)
+
+                widget = QtWidgets.QWidget()
+                widget.setLayout(L)
+
+            else:
+                widget = QtWidgets.QLabel(title + ':')
+
+
+            layout.addWidget(widget, row, 0, Qt.AlignRight)
+            layout.addWidget(w, row, 1)
+
+        def HandleValueChanged(self, _):
+            """
+            Handles clicks on the radiobutton
+            """
+            self.updateData.emit(self)
+
+        def update(self, data, first=False):
+            """
+            Updates the value shown by the widget
+            """
+            # check if requirements are met
+            self.checkReq(data, first)
+            self.checkAdv()
+
+            value = self.retrieve(data)
+            i = self.bitnum - 1
+
+            # run at most self.bitnum times
+            while value != 0 and i != 0:
+                self.widgets[i].setValue(value & 1)
+                value >>= 1
+                i -= 1
+
+        def assign(self, data):
+            """
+            Assigns the checkbox states to the data
+            """
+            value = 0
+
+            # construct bitmask
+            for i in range(self.bitnum):
+                value = (value << 1) | self.widgets[i].getValue()
+
+            return self.insertvalue(data, value)
+
+
     def setSprite(self, type, reset=False):
         """
         Change the sprite type used by the data editor
@@ -11742,6 +12007,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             elif f[0] == 6:
                 nf = SpriteEditorWidget.ExternalPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+
+            elif f[0] == 7:
+                nf = SpriteEditorWidget.MultiDualboxPropertyDecoder(*f[1:], layout, row, self)
 
             nf.updateData.connect(self.HandleFieldUpdate)
             fields.append(nf)
