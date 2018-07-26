@@ -11603,20 +11603,26 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 widget = QtWidgets.QLabel(title + ':')
 
-            # label that contains the current value
-            self.dispwidget = QtWidgets.QLabel()
-            self.widget = QtWidgets.QPushButton()
+            bits = bit[1] - bit[0]
+
+            # button that contains the current value
+            self.button = QtWidgets.QPushButton()
+
+            # spinbox that contains the current value
+            self.box = QtWidgets.QSpinBox()
+            self.box.setRange(0, (2 ** bits) - 1)
+            self.box.setValue(self.dispvalue)
 
             L2 = QtWidgets.QHBoxLayout()
-            L2.addWidget(self.widget)
-            L2.addWidget(self.dispwidget)
-            L2.addStretch(1)
+            L2.addWidget(self.button)
+            L2.addWidget(self.box)
             L2.setContentsMargins(0, 0, 0, 0)
 
             rightwidget = QtWidgets.QWidget()
             rightwidget.setLayout(L2)
 
-            self.widget.clicked.connect(self.HandleClicked)
+            self.button.clicked.connect(self.HandleClicked)
+            self.box.valueChanged.connect(self.HandleValueChanged)
 
             layout.addWidget(widget, row, 0, Qt.AlignRight)
             layout.addWidget(rightwidget, row, 1)
@@ -11630,7 +11636,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.checkAdv()
 
             self.dispvalue = self.retrieve(data)
-            self.dispwidget.setText(self.getShortForValue(self.dispvalue))
+            self.button.setText(self.getShortForValue(self.dispvalue))
+            self.box.setValue(self.dispvalue)
 
         def assign(self, data):
             """
@@ -11650,7 +11657,18 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             # read set value from dlg and update self.dispwidget
             self.dispvalue = dlg.getValue()
-            self.dispwidget.setText(self.getShortForValue(self.dispvalue))
+            self.button.setText(self.getShortForValue(self.dispvalue))
+            self.box.setValue(self.dispvalue)
+
+            # update all other fields
+            self.updateData.emit(self)
+
+        def HandleValueChanged(self, value):
+            """
+            Handles the spin value being changed
+            """
+            self.dispvalue = value
+            self.button.setText(self.getShortForValue(self.dispvalue))
 
             # update all other fields
             self.updateData.emit(self)
@@ -11737,11 +11755,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.widgets = []
             DualboxLayout = QtWidgets.QGridLayout()
             DualboxLayout.setContentsMargins(0, 0, 0, 0)
-            #DualboxLayout.addWidget(, 0, 0, 1, self.bitnum, Qt.AlignHCenter)
-            #DualboxLayout.addWidget(QtWidgets.QLabel(title2), 2, 0, 1, self.bitnum, Qt.AlignHCenter)
 
             for i in range(self.bitnum):
-                dualbox = DualBox(direction = 1)
+                dualbox = DualBox(direction = 1) # vertical dualboxes
                 dualbox.toggled.connect(self.HandleValueChanged)
 
                 self.widgets.append(dualbox)

@@ -13,7 +13,7 @@
     - Displacement      The displacement from the spawn point
     - Internal name     Class names and the like
 -->
-<options primary="[id], Usability, Sprite, Name" short="You picked [Name] ([Usability]) [[Sprite]]">
+<options primary="[id], Usability, Sprite, Name" short="[Name] ([Usability]) [[Sprite]]">
     <option value="0">
         <property name="Name" value="BOOT" />
         <property name="Usability" value="xxx" />
