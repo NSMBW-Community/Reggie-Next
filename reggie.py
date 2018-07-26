@@ -10268,7 +10268,7 @@ class DualBox(QtWidgets.QWidget):
     """
     toggled = QtCore.pyqtSignal('PyQt_PyObject')
 
-    def __init__(self, text1, text2, initial = 0, direction = 0):
+    def __init__(self, text1 = None, text2 = None, initial = 0, direction = 0):
         """
         Inits the dualbox with text to the left/above and text to the right/below
         """
@@ -10295,20 +10295,27 @@ class DualBox(QtWidgets.QWidget):
             layout = QtWidgets.QVBoxLayout()
             self.qsstemplate %= (20, 40)
 
-        label1 = QtWidgets.QPushButton(text1)
-        label1.setStyleSheet("""QPushButton {border:0; background:0; margin:0; padding:0}""")
-        label1.clicked.connect(self.toggle)
-        label2 = QtWidgets.QPushButton(text2)
-        label2.setStyleSheet("""QPushButton {border:0; background:0; margin:0; padding:0}""")
-        label2.clicked.connect(self.toggle)
-
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(label1)
+
+        if text1 is not None:
+            label = QtWidgets.QPushButton(text1)
+            label.setStyleSheet("""QPushButton {border:0; background:0; margin:0; padding:0}""")
+            label.clicked.connect(self.toggle)
+            if direction == 0:
+                layout.addWidget(label, 0, Qt.AlignRight)
+            else:
+                layout.addWidget(label)
+
         layout.addWidget(self.slider)
-        layout.addWidget(label2)
+
+        if text2 is not None:
+            label = QtWidgets.QPushButton(text2)
+            label.setStyleSheet("""QPushButton {border:0; background:0; margin:0; padding:0}""")
+            label.clicked.connect(self.toggle)
+            layout.addWidget(label)
 
         self.setLayout(layout)
-        self.setColour()
+        self.updateUI()
 
     def isSet(self):
         return self.value == 1
@@ -10330,12 +10337,12 @@ class DualBox(QtWidgets.QWidget):
         # update the UI
         # TODO: Make this a slider
         # TODO: Make this a nice animation
-        self.setColour()
+        self.updateUI()
 
     def getValue(self):
         return self.value
 
-    def setColour(self):
+    def updateUI(self):
         colour = ['red', 'green'][self.value]
         self.qss = self.qsstemplate % (colour, colour)
         self.slider.setStyleSheet(self.qss)
@@ -11730,9 +11737,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.widgets = []
             DualboxLayout = QtWidgets.QGridLayout()
             DualboxLayout.setContentsMargins(0, 0, 0, 0)
+            #DualboxLayout.addWidget(, 0, 0, 1, self.bitnum, Qt.AlignHCenter)
+            #DualboxLayout.addWidget(QtWidgets.QLabel(title2), 2, 0, 1, self.bitnum, Qt.AlignHCenter)
 
             for i in range(self.bitnum):
-                dualbox = DualBox(title1, title2, direction = 1)
+                dualbox = DualBox(direction = 1)
                 dualbox.toggled.connect(self.HandleValueChanged)
 
                 self.widgets.append(dualbox)
@@ -11777,26 +11786,27 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 button_adv = None
 
-            if button_com is not None or button_com2 is not None or button_adv is not None:
-                L = QtWidgets.QHBoxLayout()
-                L.addStretch(1)
+            L = QtWidgets.QHBoxLayout()
+            L.setContentsMargins(0, 0, 0, 0)
+            L.addStretch(1)
 
-                if button_com is not None:
-                    L.addWidget(button_com)
+            if button_com is not None:
+                L.addWidget(button_com)
 
-                if button_com2 is not None:
-                    L.addWidget(button_com2)
+            if button_com2 is not None:
+                L.addWidget(button_com2)
 
-                if button_adv is not None:
-                    L.addWidget(button_adv)
+            if button_adv is not None:
+                L.addWidget(button_adv)
 
-                L.setContentsMargins(0, 0, 0, 0)
 
-                widget = QtWidgets.QWidget()
-                widget.setLayout(L)
+            L2 = QtWidgets.QVBoxLayout()
+            L2.addWidget(QtWidgets.QLabel(title1), 0, Qt.AlignRight)
+            L2.addWidget(QtWidgets.QLabel(title2), 0, Qt.AlignRight)
 
-            else:
-                widget = QtWidgets.QLabel(title + ':')
+            L.addLayout(L2)
+            widget = QtWidgets.QWidget()
+            widget.setLayout(L)
 
 
             layout.addWidget(widget, row, 0, Qt.AlignRight)
