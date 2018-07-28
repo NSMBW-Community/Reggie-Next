@@ -12648,32 +12648,31 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         nyb7 = (25, 29)
 
         found = {5: [], 7: []}
-        for type, *field in self.sprite.fields:
+        for field in self.sprite.fields:
+
             if type == 3: # multibox
-                start = field[1]
-                num = field[2]
+                start = field[2]
+                num = field[3]
                 bit = (start, start + num)
             elif type == 5 or type == 7: # (multi)dualbox
-                bit = field[2]
+                bit = field[3]
             else:
-                bit = field[1]
+                bit = field[2]
 
             if not isinstance(bit, tuple):
                 bit = ((bit, bit + 1),)
             elif not isinstance(bit[0], tuple):
                 bit = (bit,)
 
-            for bitrange in bit:
+            for ran in bit:
                 # two ranges overlap iff either of the following:
                 #  start1 <= start2 AND end1 >= start2
                 #  start1 < end2 AND end1 >= end2
-                if (bitrange[0] <= nyb5[0] and bitrange[1] >= nyb5[0]) \
-                  or (bitrange[0] < nyb5[1] and bitrange[1] >= nyb5[1]):
-                    found[5].append((type, *field))
+                if (ran[0] <= nyb5[0] and ran[1] >= nyb5[0]) or (ran[0] < nyb5[1] and ran[1] >= nyb5[1]):
+                    found[5].append(field)
 
-                if (bitrange[0] <= nyb7[0] and bitrange[1] >= nyb7[0]) \
-                  or (bitrange[0] < nyb7[1] and bitrange[1] >= nyb7[1]):
-                    found[7].append((type, *field))
+                if (ran[0] <= nyb7[0] and ran[1] >= nyb7[0]) or (ran[0] < nyb7[1] and ran[1] >= nyb7[1]):
+                    found[7].append(field)
 
         return found
 
