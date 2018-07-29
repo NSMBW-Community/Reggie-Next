@@ -32,6 +32,11 @@ class QSliderSwitch(QtWidgets.QAbstractButton):
 
         self.setBrush(brush)
 
+        self.setSizePolicy(QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed,
+            QtWidgets.QSizePolicy.PushButton
+        ))
+
     def getBrush(self):
         """
         Returns the brush
@@ -66,6 +71,12 @@ class QSliderSwitch(QtWidgets.QAbstractButton):
         p = QtGui.QPainter(self)
         p.setPen(QtCore.Qt.NoPen)
 
+        if self._direction == QSliderSwitch.Horizontal:
+            # rotate 90 degrees to the right
+            p.rotate(360 - 90)
+            # move down by the height of the slider
+            p.translate(- (self._height + 3 * self._margin), 0)
+
         if self.isEnabled():
             if self._switch:
                 p.setBrush(self.getBrush())
@@ -77,26 +88,19 @@ class QSliderSwitch(QtWidgets.QAbstractButton):
             p.setRenderHint(QtGui.QPainter.Antialiasing, True)
 
             # track
-            p.drawRect(QtCore.QRect(
+            p.drawRect(
                 self._margin, self._margin,
-                self._height + 2 * self._margin, self.height() - 2 * self._margin
-            ))
+                self._height + 2 * self._margin, 2 * self._height + 2 * self._margin
+            )
 
             # knob
             p.setBrush(self._thumb)
             p.setOpacity(1.0)
 
-            if self._direction == QSliderSwitch.Horizontal:
-                p.drawRect(QtCore.QRect(
-                    self.getOffset(), 2 * self._margin,
-                    self._height, self._height
-                ))
-
-            else:
-                p.drawRect(QtCore.QRect(
-                    2 * self._margin, self.getOffset(),
-                    self._height, self._height
-                ))
+            p.drawRect(
+                2 * self._margin, self.getOffset(),
+                self._height, self._height
+            )
 
         else:
             p.setBrush(QtCore.Qt.Black)
@@ -127,11 +131,7 @@ class QSliderSwitch(QtWidgets.QAbstractButton):
         if self._switch:
             self._thumb = self._brush
             self._anim.setStartValue(2 * self._margin)
-
-            if self._direction == QSliderSwitch.Horizontal:
-                self._anim.setEndValue(self._height)
-            else:
-                self._anim.setEndValue(self._height)
+            self._anim.setEndValue(2 * self._margin + self._height)
         else:
             self._thumb = QtGui.QBrush(QtGui.QColor("#D5D5D5"))
             self._anim.setStartValue(self.getOffset())
@@ -146,9 +146,9 @@ class QSliderSwitch(QtWidgets.QAbstractButton):
 
     def sizeHint(self):
         if self._direction == QSliderSwitch.Horizontal:
-            return QtCore.QSize(2 * (self._height + self._margin), self._height + 2 * self._margin)
+            return QtCore.QSize(4 * self._margin + 2 * self._height, 4 * self._margin + self._height)
 
-        return QtCore.QSize(self._height, 2 * (self._height + self._margin))
+        return QtCore.QSize(4 * self._margin + self._height, 4 * self._margin + 2 * self._height)
 
     def getValue(self):
         return self._switch
