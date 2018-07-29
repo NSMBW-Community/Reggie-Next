@@ -80,6 +80,7 @@ for v, c in zip(version, pqt_min):
 import archive
 import spritelib as SLib
 import sprites
+from sliderswitch import QSliderSwitch
 
 # LH decompressor
 try:
@@ -11757,8 +11758,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             DualboxLayout.setContentsMargins(0, 0, 0, 0)
 
             for i in range(self.bitnum):
-                dualbox = DualBox(direction = 1) # vertical dualboxes
-                dualbox.toggled.connect(self.HandleValueChanged)
+                dualbox = QSliderSwitch(QSliderSwitch.Vertical, "#F00000")
+                dualbox.clicked.connect(self.HandleValueChanged)
 
                 self.widgets.append(dualbox)
                 DualboxLayout.addWidget(dualbox, 0, i)
@@ -11846,7 +11847,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             i = self.bitnum - 1
 
             # run at most self.bitnum times
-            while value != 0 and i != 0:
+            while value != 0 and i >= 0:
                 self.widgets[i].setValue(value & 1)
                 value >>= 1
                 i -= 1
