@@ -3063,7 +3063,7 @@ def LoadNumberFont():
         NumberFont = QtGui.QFont('Sans', 8)
 
 
-def SetDirty(noautosave=False):
+def SetDirty(noautosave = False):
     global Dirty, DirtyOverride, AutoSaveDirty
     if DirtyOverride > 0: return
 
@@ -11881,6 +11881,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             sprite = None
 
         # remove all the existing widgets in the layout
+        self.clearMessages()
+
         layout = self.editorlayout
         for row in range(2, layout.rowCount()):
             for column in range(0, layout.columnCount()):
@@ -11959,16 +11961,25 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # if there are missing things
         for missingSprite in missing[0]:
             name = trans.string('SpriteDataEditor', 20, '[id]', missingSprite)
-            addButton = QtWidgets.QPushButton('Add Sprite')
-            addButton.clicked.connect(self.HandleSpritePlaced(missingSprite, addButton))
+            action = 'Add Sprite' # TODO: Make this translatable
+            addButton = QtWidgets.QPushButton(action)
+
+            message = self.addMessage(name, level = 1, close = action)
+            callback = self.closeMessageCallback(message, self.HandleSpritePlaced(missingSprite, addButton))
+            self.addCallbackToMessage(message, callback)
+
+            addButton.clicked.connect(callback)
 
             self.com_deplist.addWidget(QtWidgets.QLabel(name), rownum, 0)
             self.com_deplist.addWidget(addButton, rownum, 1)
+
             rownum += 1
 
         for missingSprite in missing[1]:
             name = trans.string('SpriteDataEditor', 21, '[id]', missingSprite)
-            addButton = QtWidgets.QPushButton('Add Sprite')
+            action = 'Add Sprite' # TODO: Make this translatable
+
+            addButton = QtWidgets.QPushButton(action)
             addButton.clicked.connect(self.HandleSpritePlaced(missingSprite, addButton))
 
             self.com_deplist.addWidget(QtWidgets.QLabel(name), rownum, 0)
@@ -11982,7 +11993,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         if sprite.dependencynotes is not None:
             self.dependencyNotes = sprite.dependencynotes
-            self.com_extra.setText(trans.string('SpriteDataEditor', 20))
 
         # yoshi info
         if sprite.noyoshi is True:
@@ -12045,6 +12055,97 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.fields = fields
         self.update(True)
+
+    def addMessage(self, text, action = None, level = 0, close = "x"):
+        """
+        Adds a message to the message layout which can be removed
+        """
+        if level == 0:
+            colours = ('darkred', 'red')
+        elif level == 1:
+            # dark orange, orange
+            colours = ('#FF8C00', '#FFA500')
+        elif level == 2:
+            colours = ('black', 'white')
+        elif level == 3:
+            colours = ('darkgreen', 'green')
+        else:
+            colours = ('None', 'None')
+
+        label = QtWidgets.QLabel(text)
+        label.setWordWrap(True)
+
+        close = QtWidgets.QPushButton(close)
+        close.setStyleSheet("""
+            QPushButton {
+                background: %s;
+            }
+        """ % colours[1])
+
+        L = QtWidgets.QHBoxLayout()
+        L.addWidget(label)
+        L.addStretch(1)
+        L.addWidget(close)
+
+        message = QtWidgets.QWidget()
+        message.setStyleSheet("""
+            .QWidget {
+                border: 2px solid %s;
+                border-radius: 3px;
+                background: %s;
+            }
+        """ % colours)
+        message.setLayout(L)
+
+        if action is not None:
+            close.clicked.connect(self.closeMessageCallback(message, action))
+
+        self.msg_layout.addWidget(message)
+
+        return message
+
+    def clearMessages(self):
+        """
+        Clears all messages
+        """
+        l = self.msg_layout
+
+        for row in range(l.count()):
+            w = l.itemAt(row)
+            if w is not None:
+                widget = w.widget()
+                l.removeWidget(widget)
+                widget.setParent(None)
+
+    def closeMessageCallback(self, message_, action_):
+        """
+        Gets callback for the close button of messages
+        """
+        layout_ = self.msg_layout
+
+        def callback(e):
+            if action_ is not None:
+                action_()
+
+            # remove message from layout
+            layout_.removeWidget(message_)
+            message_.setParent(None)
+
+        return callback
+
+    def addCallbackToMessage(self, message, callback):
+        """
+        Adds a callback to the clicked attribute of the button of a message
+        """
+        l = self.msg_layout
+
+        for row in range(l.count()):
+            w = l.itemAt(row)
+            if w is not None and w.widget() == message:
+                layout = message.layout()
+                close = layout.itemAt(layout.count() - 1).widget()
+                close.clicked.connect(callback)
+                break
 
     def update(self, first=False):
         """
@@ -12131,7 +12232,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.com_extra.setVisible(False)
         self.com_deplist_w.setVisible(False)
         self.com_dep.setText(trans.string('SpriteDataEditor', 18))
-        self.com_dep.setVisible(True)
+        self.com_dep.setVisible(self.com_deplist.count() > 0)
 
     def DependencyToggle(self):
         """
@@ -12259,8 +12360,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             # remove this dependency, because it is now fulfilled.
             # get row of button
-            idx = self_.com_deplist.indexOf(button_)
-            row, _, _, _ = self_.com_deplist.getItemPosition(idx)
+            idx = self.com_deplist.indexOf(button_)
+            row, _, _, _ = self.com_deplist.getItemPosition(idx)
 
             # remove this row
             l = self.com_deplist
