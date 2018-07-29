@@ -4883,7 +4883,6 @@ class ObjectItem(LevelEditorItem):
             # tileset not randomised -> exit
             return
 
-
         if width is None:
             width = self.width
 
@@ -10502,6 +10501,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         mainLayout.addLayout(subLayout)
 
         layout = QtWidgets.QGridLayout()
+        layout.setVerticalSpacing(15) # 11 px
+
         self.editorlayout = layout
 
         subLayout.addLayout(self.msg_layout)
@@ -11937,8 +11938,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # dependency stuff
         # first clear current dependencies
         l = self.com_deplist
-        for row in range(0, l.rowCount()):
-            for column in range(0, l.columnCount()):
+        for row in range(l.rowCount()):
+            for column in range(l.columnCount()):
                 w = l.itemAtPosition(row, column)
                 if w is not None:
                     widget = w.widget()
