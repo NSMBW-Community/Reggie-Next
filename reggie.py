@@ -11964,7 +11964,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             action = 'Add Sprite' # TODO: Make this translatable
             addButton = QtWidgets.QPushButton(action)
 
-            message = self.addMessage(name, level = 1, close = action)
+            message = self.addMessage(name, level = 0, close = action)
             callback = self.closeMessageCallback(message, self.HandleSpritePlaced(missingSprite, addButton))
             self.addCallbackToMessage(message, callback)
 
