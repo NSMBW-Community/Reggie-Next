@@ -4265,9 +4265,9 @@
     <value nybble="8" title="Spawn Delay (Set Above 0!)" comment="This determines how soon after the launch of the initial Jumbo Ray that another one will be spawned." comment2="A value of 1 is equal to about the width of one Jumbo Ray. &lt;font color=&quot;red&quot;&gt;Do not use a value of 0 or the game will crash.&lt;/font&gt;"/>
     <value nybble="9" title="Unknown Value 9" advanced="True" advancedcomment="Used in Retail: 05-05 A1, 0+F"/>
   </sprite> <!-- #235: Jumbo Ray Respawner -->
-  
+
   <sprite id="236" name="Movement Controller - Use Lines" notes="This controller will create synchronized movement between matched sprites and cause them to load at the same time so that their paths will always function consistently.">
-    <value nybble="17-24" title="Line ID" comment="This pairs matching Line controlled objects to this controller for synchronized movement." idtype="Line"/>
+    <value bit="17-24" title="Line ID" comment="This pairs matching Line controlled objects to this controller for synchronized movement." idtype="Line"/>
   </sprite> <!-- #236: Movement Controller - Use Lines -->
 
 <!-- Check if you can use the Z-Order to place the blue coin behind Chainlink. -->
