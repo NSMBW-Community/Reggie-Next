@@ -6396,12 +6396,13 @@
       <entry value="0">12x10</entry>
       <entry value="1">16x10</entry>
       <entry value="2">21x6</entry>
+      <entry value="3">21x6</entry>
     </list>
     <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Crystal Block in relation to other Crystal Blocks." comment2="If you have multiple Crystal Blocks overlapping each other, you can use this setting to avoid some types of graphical glitches. Crystal Blocks with a higher Z-Order number will show behind those with a lower number. Unlike with Rolling Hills, it is not necessary to do this. Placing blocks with the correct distance apart can allow them to seamlessly coexist."/>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
     <checkbox bit="24" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Nintendo uses this value, but no effect was observed. Likely a removed setting."/>
   </sprite> <!-- #361: Rotation Controlled Crystal Block -->
-  
+
   <sprite id="362" name="Rotation Controlled Colored Box" notes="A rotation controlled large resizable block with the appearance of a patterned box.">
     <dependency notes="This block does not appear unless actually paired to a rotation controller.">
       <suggested sprite="96"/>

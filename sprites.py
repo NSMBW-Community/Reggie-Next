@@ -6195,11 +6195,10 @@ class SpriteImage_CrystalBlock(SLib.SpriteImage_StaticMultiple):  # 361
 
         size = (self.parent.spritedata[4] & 15) & 3
 
-        # FIXME: Newer uses value 3 in 09-08. There is no image for that and we
-        # do not know what size it is. Please remove this hack when the size is
-        # figured out and add 'CrystalBlock3' to the ImageCache.
-        if size < 3:
-            self.image = ImageCache['CrystalBlock%d' % size]
+        if size == 3:
+            size = 2
+
+        self.image = ImageCache['CrystalBlock%d' % size]
 
         super().dataChanged()
 
