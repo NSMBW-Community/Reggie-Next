@@ -12108,10 +12108,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """ % colours[3:])
         message.setLayout(L)
 
-        if action is not None:
-            close.clicked.connect(self.closeMessageCallback(message, action))
-        else:
-            close.clicked.connect(self.closeMessageCallback(message, None))
+        close.clicked.connect(self.closeMessageCallback(message, action))
 
         self.msg_layout.addWidget(message)
 
@@ -12355,7 +12352,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         def placeSprite():
             mw = mainWindow
 
-            x_ = mw.selObj.objx
+            x_ = mw.selObj.objx + 16
             y_ = mw.selObj.objy
             data_ = mw.defaultDataEditor.data
 
@@ -12825,13 +12822,13 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         global mainWindow, Area
 
         slot = self.buttongroup.checkedId()
-        data = bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00')
+        data = bytearray(b'\0\0\0\0\0\0\0\0')
         if slot == -1:
             data[5] = 5
         else:
             data[5] = (slot << 4) | 6
 
-        x = mainWindow.selObj.objx
+        x = mainWindow.selObj.objx + 16
         y = mainWindow.selObj.objy
 
         sprite = SpriteItem(246, x, y, data)
