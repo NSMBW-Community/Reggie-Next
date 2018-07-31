@@ -12060,27 +12060,38 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         Adds a message to the message layout which can be removed
         """
+        # buttonbg, buttontext, widgettext, widgetbg, widgetborder
         if level == 0:
-            colours = ('darkred', 'red')
+            # red
+            colours = ('black', 'white', 'white', '#CF3038', 'darkred')
         elif level == 1:
-            # dark orange, orange
-            colours = ('#FF8C00', '#FFA500')
+            # orange
+            colours = ('#FFA500', 'black', 'black', '#FFA500', '#FF8C00')
         elif level == 2:
-            colours = ('black', 'white')
+            # neutral
+            colours = ('none', 'black', 'black', 'none', 'black')
         elif level == 3:
-            colours = ('darkgreen', 'green')
+            # green
+            colours = ('green', 'white', 'white', 'green', 'darkgreen')
         else:
-            colours = ('None', 'None')
+            # neutral
+            colours = ('none', 'black', 'black', 'none', 'black')
 
         label = QtWidgets.QLabel(text)
         label.setWordWrap(True)
+        label.setStyleSheet("""
+            QLabel {
+                color: %s;
+            }
+        """ % colours[2])
 
         close = QtWidgets.QPushButton(close)
         close.setStyleSheet("""
             QPushButton {
                 background: %s;
+                color: %s;
             }
-        """ % colours[1])
+        """ % colours[:2])
 
         L = QtWidgets.QHBoxLayout()
         L.addWidget(label)
@@ -12090,15 +12101,17 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         message = QtWidgets.QWidget()
         message.setStyleSheet("""
             .QWidget {
+                background: %s;
                 border: 2px solid %s;
                 border-radius: 3px;
-                background: %s;
             }
-        """ % colours)
+        """ % colours[3:])
         message.setLayout(L)
 
         if action is not None:
             close.clicked.connect(self.closeMessageCallback(message, action))
+        else:
+            close.clicked.connect(self.closeMessageCallback(message, None))
 
         self.msg_layout.addWidget(message)
 
