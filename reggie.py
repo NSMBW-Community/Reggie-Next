@@ -12730,7 +12730,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
                 slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 0, 1, 1, Qt.AlignHCenter)
 
         if len(used[7]) == 0:
-            slotsLayout.addWidget(QtWidgets.QLabel("None"), 3, 0, 1, 1, Qt.AlignHCenter)
+            slotsLayout.addWidget(QtWidgets.QLabel("None"), 3, 2, 1, 1, Qt.AlignHCenter)
         else:
             for offset, conflict in enumerate(used[7]):
                 slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 2, 1, 1, Qt.AlignHCenter)
