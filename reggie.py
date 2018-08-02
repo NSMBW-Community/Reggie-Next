@@ -12210,7 +12210,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.UpdateFlag = False
 
         # minimise width
-        self.window().resize(0, self.height())
+        if mainWindow.spriteEditorDock.isFloating():
+            self.window().resize(0, self.height())
 
     def ShowNoteTooltip(self):
         """
