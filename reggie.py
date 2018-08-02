@@ -10367,6 +10367,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         super().__init__()
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed))
+        self.setMaximumWidth(500)
 
         # create the raw editor
         font = QtGui.QFont()
@@ -10501,8 +10502,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         mainLayout.addLayout(subLayout)
 
         layout = QtWidgets.QGridLayout()
-        layout.setVerticalSpacing(15) # 11 px
-
         self.editorlayout = layout
 
         subLayout.addLayout(self.msg_layout)
@@ -10753,6 +10752,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.widget = QtWidgets.QCheckBox()
             label = QtWidgets.QLabel(title + ':')
+            label.setWordWrap(True)
 
             self.comment = comment
             self.comment2 = comment2
@@ -10808,7 +10808,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     L.addWidget(button_adv)
 
                 L.addStretch(1)
-                L.setContentsMargins(0, 0, 0, 0)
 
                 widget = QtWidgets.QWidget()
                 widget.setLayout(L)
@@ -10946,7 +10945,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 if button_adv is not None:
                     L.addWidget(button_adv)
 
-                L.addWidget(QtWidgets.QLabel(title + ':'))
+                label = QtWidgets.QLabel(title + ':')
+                label.setWordWrap(True)
+
+                L.addWidget(label)
                 L.setContentsMargins(0, 0, 0, 0)
 
                 widget = QtWidgets.QWidget()
@@ -10954,6 +10956,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             else:
                 widget = QtWidgets.QLabel(title + ':')
+                widget.setWordWrap(True)
 
             layout.addWidget(widget, row, 0, Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
@@ -11059,7 +11062,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 if button_adv is not None:
                     L.addWidget(button_adv)
 
-                L.addWidget(QtWidgets.QLabel(title + ':'))
+                label = QtWidgets.QLabel(title + ':')
+                label.setWordWrap(True)
+
+                L.addWidget(label)
                 L.setContentsMargins(0, 0, 0, 0)
 
                 widget = QtWidgets.QWidget()
@@ -11067,6 +11073,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             else:
                 widget = QtWidgets.QLabel(title + ':')
+                widget.setWordWrap(True)
 
             self.widget.valueChanged.connect(self.HandleValueChanged)
             self.bit = bit
@@ -11176,7 +11183,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 if button_adv is not None:
                     L.addWidget(button_adv)
 
-                L.addWidget(QtWidgets.QLabel(title + ':'))
+                label = QtWidgets.QLabel(title + ':')
+                label.setWordWrap(True)
+
+                L.addWidget(label)
                 L.setContentsMargins(0, 0, 0, 0)
 
                 widget = QtWidgets.QWidget()
@@ -11184,6 +11194,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             else:
                 widget = QtWidgets.QLabel(title + ':')
+                widget.setWordWrap(True)
 
             for i in range(bitnum):
                 c = QtWidgets.QCheckBox()
@@ -11333,7 +11344,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 if button_adv is not None:
                     L.addWidget(button_adv)
 
-                L.addWidget(QtWidgets.QLabel(title + ':'))
+                label = QtWidgets.QLabel(title + ':')
+                label.setWordWrap(True)
+
+                L.addWidget(label)
                 L.setContentsMargins(0, 0, 0, 0)
 
                 widget = QtWidgets.QWidget()
@@ -11341,6 +11355,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             else:
                 widget = QtWidgets.QLabel(title + ':')
+                widget.setWordWrap(True)
 
             layout.addWidget(widget, row, 0, Qt.AlignRight)
             layout.addWidget(w, row, 1)
@@ -11416,7 +11431,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 button.clicked.connect(self.HandleClick)
 
             label1 = QtWidgets.QLabel(title1)
+            label1.setWordWrap(True)
             label2 = QtWidgets.QLabel(title2)
+            label2.setWordWrap(True)
 
             self.comment = comment
             self.comment2 = comment2
@@ -11596,7 +11613,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 if button_adv is not None:
                     L.addWidget(button_adv)
 
-                L.addWidget(QtWidgets.QLabel(title + ':'))
+                label = QtWidgets.QLabel(title + ':')
+                label.setWordWrap(True)
+
+                L.addWidget(label)
                 L.setContentsMargins(0, 0, 0, 0)
 
                 widget = QtWidgets.QWidget()
@@ -11604,6 +11624,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             else:
                 widget = QtWidgets.QLabel(title + ':')
+                widget.setWordWrap(True)
 
             bits = bit[1] - bit[0]
 
@@ -11722,6 +11743,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             for old in replace:
                 fmt = fmt.replace(old, replace[old])
 
+            # only display the first 27 characters and ...
+            # so len(fmt) is at most 30.
+            if len(fmt) > 30:
+                fmt = fmt[:27] + '...'
+
             # Return it
             return fmt
 
@@ -11819,13 +11845,18 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
 
             L2 = QtWidgets.QVBoxLayout()
-            L2.addWidget(QtWidgets.QLabel(title1), 0, Qt.AlignRight)
-            L2.addWidget(QtWidgets.QLabel(title2), 0, Qt.AlignRight)
+
+            label1 = QtWidgets.QLabel(title1)
+            label1.setWordWrap(True)
+            label2 = QtWidgets.QLabel(title2)
+            label2.setWordWrap(True)
+
+            L2.addWidget(label1, 0, Qt.AlignRight)
+            L2.addWidget(label2, 0, Qt.AlignRight)
 
             L.addLayout(L2)
             widget = QtWidgets.QWidget()
             widget.setLayout(L)
-
 
             layout.addWidget(widget, row, 0, Qt.AlignRight)
             layout.addWidget(w, row, 1)
@@ -12177,6 +12208,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             f.update(data, first)
 
         self.UpdateFlag = False
+
+        # minimise width
+        self.window().resize(0, self.height())
 
     def ShowNoteTooltip(self):
         """
