@@ -4660,13 +4660,19 @@ class SpriteImage_WaterPiranha(SLib.SpriteImage_Static):  # 263
         super().__init__(
             parent,
             1.5,
-            ImageCache['WaterPiranha'],
-            (-5, -145),
+            ImageCache['WaterPiranhaBody'],
+            (-8, -25),
         )
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 38, 30))
+        self.aux[0].image = ImageCache['WaterPiranhaBall']
+        self.aux[0].setPos(3, -180)
+        self.aux[0].hover = True
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('WaterPiranha', 'water_piranha.png')
+        SLib.loadIfNotInImageCache('WaterPiranhaBody', 'water_piranha_body.png')
+        SLib.loadIfNotInImageCache('WaterPiranhaBall', 'water_piranha_ball.png')
 
 
 class SpriteImage_WalkingPiranha(SLib.SpriteImage_Static):  # 264
