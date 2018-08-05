@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<tilesets>
+    <group names="ghostrocks, Pa1_daishizenkuri, Pa1_darkmtmush, Pa1_e3setsugen, Pa2_darkcave, Pa3_autumnbg, Pa2_volcanobg, Pa1_mushcastle, Pa1_pumpkin">
+        <random name="regular-terrain" />
+    </group>
+    <group names="Pa1_cracks, Pa1_springwater, Pa1_space, Pa1_chika2">
+        <random name="regular-terrain" />
+        <random name="sub-terrain" />
+    </group>
+    <group names="Pa1_gake_nocoll, Pa1_Mountains">
+        <random name="regular-terrain" />
+        <random name="sub-terrain" />
+        <random list="0xAA, 0xBA, 0xCA, 0xDA" direction="vertical" />
+        <random list="0xAB, 0xBB, 0xCB, 0xDB" direction="vertical" />
+        <random list="0x8E, 0x9E, 0xAE, 0xBE" direction="vertical" />
+        <random list="0x8F, 0x9F, 0xAF, 0xBF" direction="vertical" />
+        <random range="0xC4, 0xC9" direction="horizontal" />
+        <random range="0xD4, 0xD9" direction="horizontal" />
+        <random range="0xE4, 0xE9" direction="horizontal" />
+    </group>
+    <group names="Pa1_kaiganplus">
+        <random name="regular-terrain" />
+        <random range="0x18, 0x1B" />
+        <random range="0x28, 0x2A" />
+        <random range="0x3A, 0x3D" />
+    </group>
+    <group names="Pa1_korichika">
+        <random name="regular-terrain" />
+        <random range="0x6A, 0x6F" direction="horizontal" />
+        <random range="0x7A, 0x7F" />
+        <random range="0x8A, 0x8F" direction="horizontal" />
+        <random list="0x1E, 0x2E, 0x3E, 0x4E" direction="vertical" />
+        <random list="0x1F, 0x2F, 0x3F, 0x4F" direction="vertical" />
+        <random list="0xB8, 0xC8, 0xD8, 0xE8" direction="vertical" />
+        <random list="0xB9, 0xC9, 0xD9, 0xE9" direction="vertical" />
+    </group>
+    <group names="Pa2_e3kori">
+        <random name="regular-terrain" />
+        <random range="0xA0, 0xA5" direction="horizontal" />
+        <random range="0xB0, 0xB5" direction="horizontal" />
+    </group>
+    <group names="Cloudscape, pa2_clouds">
+        <random range="0x20, 0x23" direction="horizontal" />
+        <random range="0x24, 0x27" direction="horizontal" />
+        <random range="0x30, 0x33" />
+        <random list="8, 0x18, 0x28, 0x38" direction="vertical" />
+        <random list="9, 0x19, 0x29, 0x39" direction="vertical" />
+    </group>
+    <group names="Pa1_autumncastle, Pa3_autumncastle, Pa1_snowfort, Pa2_ghostcastle, Pa2_crystalcastle">
+        <random list="0xB0, 0xC0, 0xD0, 0xE0" direction="vertical" />
+        <random list="0xB1, 0xC1, 0xD1, 0xE1" direction="vertical" />
+        <random range="0xB2, 0xB7" direction="horizontal" />
+        <random range="0xC2, 0xC7" />
+        <random range="0xD2, 0xD7" direction="horizontal" />
+    </group>
+    <group names="CrackedMega">
+        <random range="2, 7" direction="horizontal" special="double-top" />
+        <random range="0x12, 0x17" direction="horizontal" special="double-bottom" />
+        <random range="0xA, 0xF" direction="horizontal" special="double-top" />
+        <random range="0x1A, 0x1F" direction="horizontal" special="double-bottom" />
+        <random list="0x20, 0x30, 0x40" direction="vertical" />
+        <random list="0x21, 0x31, 0x41" direction="vertical" />
+        <random range="0x22, 0x27" direction="horizontal" />
+        <random range="0x2A, 0x2F" direction="horizontal" />
+        <random list="0x5E, 0x6E, 0x7E" direction="vertical" />
+        <random list="0x5F, 0x6F, 0x7F" direction="vertical" />
+        <random range="0xB0, 0xDF" />
+    </group>
+    <group names="Pa1_dessert">
+        <random name="regular-terrain" />
+        <random range="0xC, 0xE" direction="horizontal" />
+        <random range="0x1C, 0x1E" direction="horizontal" />
+    </group>
+    <group names="Pa1_freezeflame">
+        <random name="regular-terrain" />
+        <random list="0x18, 0x28, 0x38, 0x48" direction="vertical" />
+        <random list="0x19, 0x29, 0x39, 0x49" direction="vertical" />
+        <random range="0x1A, 0x1F" direction="horizontal" />
+        <random range="0x2A, 0x2F" direction="horizontal" />
+        <random range="0x52, 0x57" direction="horizontal" />
+        <random range="0x6A, 0x6F" />
+        <random list="0x96, 0xA6, 0xB6, 0xC6" direction="vertical" />
+        <random list="0x97, 0xA7, 0xB7, 0xC7" direction="vertical" />
+        <random list="0xBE, 0xCE, 0xDE, 0xEE" direction="vertical" />
+        <random list="0xBF, 0xCF, 0xDF, 0xEF" direction="vertical" />
+        <random range="0xB8, 0xBD" direction="horizontal" />
+        <random range="0xC8, 0xCD" />
+        <random range="0xD8, 0xDD" direction="horizontal" />
+        <random range="0xE8, 0xED" />
+        <random range="0xF8, 0xFD" direction="horizontal" />
+    </group>
+    <group names="Pa1_magicsnow, Pa2_magicsnow, Pa3_magicsnow">
+        <random range="0xB4, 0xB9" direction="horizontal" />
+    </group>
+    <group names="Pa1_graveyard, Pa3_graveyars, Pa3_graveyard">
+        <random name="regular-terrain" />
+        <random range="0x19, 0x1E" direction="horizontal" />
+    </group>
+    <group names="Pa3_ghostship">
+        <random range="0xA, 0xF" direction="horizontal" />
+        <random range="0x1A, 0x1F" />
+        <random range="0x2A, 0x2F" direction="horizontal" />
+        <random list="0x4E, 0x5E, 0x6E, 0x7E" direction="vertical" />
+        <random list="0x4F, 0x5F, 0x6F, 0x7F" direction="vertical" />
+        <random range="0xA0, 0xA3" direction="horizontal" />
+    </group>
+    <group names="Pa1_lavaglow">
+        <random list="0x20, 0x30, 0x40, 0x50" direction="vertical" />
+        <random list="0x21, 0x31, 0x41, 0x51" direction="vertical" />
+        <random range="0x2, 0x7" direction="horizontal" special="double-top" />
+        <random range="0x12, 0x17" direction="horizontal" special="double-bottom" />
+        <random range="0x22, 0x27" />
+        <random range="0x32, 0x37" direction="horizontal" />
+        <random range="0x28, 0x2D" direction="horizontal" />
+    </group>
+    <group names="Pa1_StarRoad">
+        <random list="0x11" values="0x11, 0x4C, 0x4D, 0x4E, 0x4F, 0x5C, 0x5D, 0x5E, 0x5F" />
+    </group>
+    <group names="Pa2_forestobake">
+        <random range="0x00, 0x05" direction="horizontal" />
+        <random range="0x10, 0x15" />
+        <random range="0x20, 0x25" direction="horizontal" />
+        <random list="0x40, 0x50, 0x60, 0x70" direction="vertical" />
+        <random list="0x41, 0x51, 0x61, 0x71" direction="vertical" />
+    </group>
+    <group names="Pa1_newnohara">
+        <random name="sub-terrain" />
+        <random range="0x02, 0x07" direction="horizontal" />
+        <random range="0x22, 0x27" direction="horizontal" />
+        <random list="0x10, 0x20, 0x30, 0x40" direction="vertical" />
+        <random list="0x11, 0x21, 0x31, 0x41" direction="vertical" />
+        <random range="0x12, 0x17" values="170, 171, 172, 173, 174, 175, 186, 187, 188, 189, 190, 191, 202, 203, 204, 205, 206, 207, 218, 219, 220, 221, 222, 223, 234, 235, 236, 237, 238, 239, 250, 251, 252, 253, 254, 255" />
+        <random range="0xAA, 0xAF" values="170, 171, 172, 173, 174, 175, 186, 187, 188, 189, 190, 191, 202, 203, 204, 205, 206, 207, 218, 219, 220, 221, 222, 223, 234, 235, 236, 237, 238, 239, 250, 251, 252, 253, 254, 255" />
+        <random range="0xBA, 0xBF" values="170, 171, 172, 173, 174, 175, 186, 187, 188, 189, 190, 191, 202, 203, 204, 205, 206, 207, 218, 219, 220, 221, 222, 223, 234, 235, 236, 237, 238, 239, 250, 251, 252, 253, 254, 255" />
+        <random range="0xCA, 0xCF" values="170, 171, 172, 173, 174, 175, 186, 187, 188, 189, 190, 191, 202, 203, 204, 205, 206, 207, 218, 219, 220, 221, 222, 223, 234, 235, 236, 237, 238, 239, 250, 251, 252, 253, 254, 255" />
+        <random range="0xDA, 0xDF" values="170, 171, 172, 173, 174, 175, 186, 187, 188, 189, 190, 191, 202, 203, 204, 205, 206, 207, 218, 219, 220, 221, 222, 223, 234, 235, 236, 237, 238, 239, 250, 251, 252, 253, 254, 255" />
+        <random range="0xEA, 0xEF" values="170, 171, 172, 173, 174, 175, 186, 187, 188, 189, 190, 191, 202, 203, 204, 205, 206, 207, 218, 219, 220, 221, 222, 223, 234, 235, 236, 237, 238, 239, 250, 251, 252, 253, 254, 255" />
+        <random range="0xFA, 0xFF" values="170, 171, 172, 173, 174, 175, 186, 187, 188, 189, 190, 191, 202, 203, 204, 205, 206, 207, 218, 219, 220, 221, 222, 223, 234, 235, 236, 237, 238, 239, 250, 251, 252, 253, 254, 255" />
+    </group>
+    <group names="Pa1_mtmush">
+        <random name="sub-terrain" />
+        <random range="2, 7" direction="horizontal" />
+        <random range="0x22, 0x27" direction="horizontal" />
+        <random list="0x10, 0x20, 0x30, 0x40" direction="vertical" />
+        <random list="0x11, 0x21, 0x31, 0x41" direction="vertical" />
+        <random range="0x12, 0x17" values="218, 219, 220, 221, 222, 223, 234, 235, 236, 237, 238, 239, 250, 251, 252, 253, 254, 255" />
+        <random range="0xDA, 0xDF" values="218, 219, 220, 221, 222, 223, 234, 235, 236, 237, 238, 239, 250, 251, 252, 253, 254, 255" />
+        <random range="0xEA, 0xEF" values="218, 219, 220, 221, 222, 223, 234, 235, 236, 237, 238, 239, 250, 251, 252, 253, 254, 255" />
+        <random range="0xFA, 0xFF" values="218, 219, 220, 221, 222, 223, 234, 235, 236, 237, 238, 239, 250, 251, 252, 253, 254, 255" />
+    </group>
+    <group names="Pa1_darkmtmush">
+        <random name="sub-terrain" />
+        <random range="2, 7" direction="horizontal" />
+        <random range="0x22, 0x27" direction="horizontal" />
+        <random list="0x10, 0x20, 0x30, 0x40" direction="vertical" />
+        <random list="0x11, 0x21, 0x31, 0x41" direction="vertical" />
+        <random range="0x12, 0x17" values="204, 205, 206, 207, 220, 221, 222, 223, 236, 237, 238, 239, 252, 253, 254, 255" />
+        <random range="0xCC, 0xCF" values="204, 205, 206, 207, 220, 221, 222, 223, 236, 237, 238, 239, 252, 253, 254, 255" />
+        <random range="0xDC, 0xDF" values="204, 205, 206, 207, 220, 221, 222, 223, 236, 237, 238, 239, 252, 253, 254, 255" />
+        <random range="0xEC, 0xEF" values="204, 205, 206, 207, 220, 221, 222, 223, 236, 237, 238, 239, 252, 253, 254, 255" />
+        <random range="0xFC, 0xFF" values="204, 205, 206, 207, 220, 221, 222, 223, 236, 237, 238, 239, 252, 253, 254, 255" />
+    </group>
+    <group names="Pa1_risingsun">
+        <random list="0x19, 0x1A, 0x29, 0x2A, 0xA3, 0xA6" />
+    </group>
+</tilesets>

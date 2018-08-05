@@ -1,0 +1,227 @@
+<!--
+    All NSMBW models for sprite 11 Custom Model Loader. This list needs to be updated, but at least it's not in the
+    spritedata xml anymore.
+    Properties:
+    - Model             Description of the model
+    - From Level        Used in which level
+    Future:
+    - Description       A description of the model
+    - Displacement      The displacement from the spawn point
+    - Model name        Name of the model used
+
+	Original file by by Grop
+-->
+<options primary="Model, From Level" short="Model [Model] from [From Level]">
+    <option value="0">
+        <property name="Model" value="Basic Title Balloon Red" />
+        <property name="From Level" value="01-10" />
+    </option>
+    <option value="1">
+        <property name="Model" value="Basic Title Balloon Green" />
+        <property name="From Level" value="01-10" />
+    </option>
+    <option value="2">
+        <property name="Model" value="Basic Title Mario" />
+        <property name="From Level" value="01-10" />
+    </option>
+    <option value="3">
+        <property name="Model" value="Basic Title Peach" />
+        <property name="From Level" value="01-10" />
+    </option>
+    <option value="4">
+        <property name="Model" value="Basic Title Luigi" />
+        <property name="From Level" value="01-10" />
+    </option>
+    <option value="5">
+        <property name="Model" value="Basic Title ToadA" />
+        <property name="From Level" value="01-10" />
+    </option>
+    <option value="6">
+        <property name="Model" value="Basic Title ToadB" />
+        <property name="From Level" value="01-10" />
+    </option>
+    <option value="7">
+        <property name="Model" value="Victory Title Clowncar Mario" />
+        <property name="From Level" value="04-10" />
+    </option>
+    <option value="8">
+        <property name="Model" value="Victory Title Clowncar Luigi" />
+        <property name="From Level" value="04-10" />
+    </option>
+    <option value="9">
+        <property name="Model" value="Victory Title Clowncar Toad A" />
+        <property name="From Level" value="04-10" />
+    </option>
+    <option value="10">
+        <property name="Model" value="Victory Title Clowncar Toad B" />
+        <property name="From Level" value="04-10" />
+    </option>
+    <option value="11">
+        <property name="Model" value="Victory Title Clowncar Peach" />
+        <property name="From Level" value="---" />
+    </option>
+    <option value="12">
+        <property name="Model" value="Victory Title Mario" />
+        <property name="From Level" value="04-10" />
+    </option>
+    <option value="13">
+        <property name="Model" value="Victory Title Luigi" />
+        <property name="From Level" value="04-10" />
+    </option>
+    <option value="14">
+        <property name="Model" value="Victory Title ToadA" />
+        <property name="From Level" value="04-10" />
+    </option>
+    <option value="15">
+        <property name="Model" value="Victory Title ToadB" />
+        <property name="From Level" value="04-10" />
+    </option>
+    <option value="16">
+        <property name="Model" value="Victory Title Peach" />
+        <property name="From Level" value="---" />
+    </option>
+    <option value="17">
+        <property name="Model" value="Perfect Title Peach's Castle" />
+        <property name="From Level" value="04-11" />
+    </option>
+    <option value="18">
+        <property name="Model" value="Perfect Title Mario" />
+        <property name="From Level" value="04-11" />
+    </option>
+    <option value="19">
+        <property name="Model" value="Perfect Title Luigi" />
+        <property name="From Level" value="04-11" />
+    </option>
+    <option value="20">
+        <property name="Model" value="Perfect Title ToadA" />
+        <property name="From Level" value="04-11" />
+    </option>
+    <option value="21">
+        <property name="Model" value="Perfect Title ToadB" />
+        <property name="From Level" value="04-11" />
+    </option>
+    <option value="22">
+        <property name="Model" value="Perfect Title Peach" />
+        <property name="From Level" value="---" />
+    </option>
+    <option value="23">
+        <property name="Model" value="Backdrop" />
+        <property name="From Level" value="---" />
+    </option>
+    <option value="24">
+        <property name="Model" value="Cloud" />
+        <property name="From Level" value="10-22" />
+    </option>
+    <option value="43">
+        <property name="Model" value="Opening Balloon Red" />
+        <property name="From Level" value="02-41" />
+    </option>
+    <option value="44">
+        <property name="Model" value="Opening Balloon Green" />
+        <property name="From Level" value="02-41" />
+    </option>
+    <option value="46">
+        <property name="Model" value="Opening Mario" />
+        <property name="From Level" value="02-41" />
+    </option>
+    <option value="45">
+        <property name="Model" value="Opening Luigi" />
+        <property name="From Level" value="02-41" />
+    </option>
+    <option value="47">
+        <property name="Model" value="Opening ToadA" />
+        <property name="From Level" value="02-41" />
+    </option>
+    <option value="48">
+        <property name="Model" value="Opening ToadB" />
+        <property name="From Level" value="02-41" />
+    </option>
+    <option value="25">
+        <property name="Model" value="Ending Broken Ship" />
+        <property name="From Level" value="08-41" />
+    </option>
+    <option value="26">
+        <property name="Model" value="Ending Tree" />
+        <property name="From Level" value="08-41" />
+    </option>
+    <option value="27">
+        <property name="Model" value="Ending Bowser" />
+        <property name="From Level" value="08-41" />
+    </option>
+    <option value="28">
+        <property name="Model" value="Ending Player Clowncar" />
+        <property name="From Level" value="08-41" />
+    </option>
+    <option value="29">
+        <property name="Model" value="Credits Mario Clowncar" />
+        <property name="From Level" value="Unknown" />
+    </option>
+    <option value="30">
+        <property name="Model" value="Credits Luigi Clowncar" />
+        <property name="From Level" value="Unknown" />
+    </option>
+    <option value="31">
+        <property name="Model" value="Credits ToadA Clowncar" />
+        <property name="From Level" value="Unknown" />
+    </option>
+    <option value="32">
+        <property name="Model" value="Credits ToadB Clowncar" />
+        <property name="From Level" value="Unknown" />
+    </option>
+    <option value="33">
+        <property name="Model" value="Credits Peach Clowncar" />
+        <property name="From Level" value="---" />
+    </option>
+    <option value="34">
+        <property name="Model" value="Credits Mario" />
+        <property name="From Level" value="Unknown" />
+    </option>
+    <option value="35">
+        <property name="Model" value="Credits Luigi" />
+        <property name="From Level" value="Unknown" />
+    </option>
+    <option value="36">
+        <property name="Model" value="Credits ToadA" />
+        <property name="From Level" value="Unknown" />
+    </option>
+    <option value="37">
+        <property name="Model" value="Credits ToadB" />
+        <property name="From Level" value="Unknown" />
+    </option>
+    <option value="38">
+        <property name="Model" value="Credits Peach" />
+        <property name="From Level" value="---" />
+    </option>
+    <option value="39">
+        <property name="Model" value="Credits Peach's Castle" />
+        <property name="From Level" value="Unknown" />
+    </option>
+    <option value="40">
+        <property name="Model" value="Tree Canopy A (Do Not Animate)" />
+        <property name="From Level" value="10-03" />
+    </option>
+    <option value="41">
+        <property name="Model" value="Tree Canopy B (Do Not Animate)" />
+        <property name="From Level" value="10-03" />
+    </option>
+    <option value="42">
+        <property name="Model" value="Tree Canopy C (Do Not Animate)" />
+        <property name="From Level" value="10-03" />
+    </option>
+    <option value="49">
+        <property name="Model" value="Tree Canopy D (Do Not Animate)" />
+        <property name="From Level" value="01-15" />
+    </option>
+    <option value="253">
+        <property name="Model" value="Opening, Ending, and Credits" />
+        <property name="From Level" value="DoNotUseMe" />
+    </option>
+    <option value="254">
+        <property name="Model" value="Title Screen Cinematics" />
+        <property name="From Level" value="DoNotUseMe" />
+    </option>
+    <option value="255">
+        <property name="Model" value="Level Decoration" />
+        <property name="From Level" value="DoNotUseMe" />
+    </option>
+</options>

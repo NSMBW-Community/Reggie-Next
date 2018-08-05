@@ -5,6 +5,7 @@
     <folder name="bga" path="bga" />
     <folder name="bgb" path="bgb" />
     <folder name="sprites" path="sprites" />
+    <folder name="external" path="external" />
 
     <!-- Background imports -->
     <!-- None yet... -->
@@ -17,5 +18,6 @@
     <file name="spritedata" path="spritedata.xml" />
     <file name="sprites" path="sprites.py" />
     <file name="tilesets" path="tilesets.xml" />
+    <file name="tilesetinfo" path="tilesetinfo.xml" />
 
 </game>
