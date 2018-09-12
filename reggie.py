@@ -68,10 +68,11 @@ version = map(int, QtCore.QT_VERSION_STR.split('.'))
 for v, c in zip(version, pqt_min):
     if c < v:
         # lower version
-        errormsg = 'Please update your copy of PyQt to ' + '.'.join(pqt_min) + \
-                   ' or greater. Currently running on: ' + QtCore.QT_VERSION_STR
-
-        raise Exception(errormsg) from None
+        #errormsg = 'Please update your copy of PyQt to ' + '.'.join(str(n) for n in pqt_min) + \
+        # ' or greater. Currently running on: ' + QtCore.QT_VERSION_STR
+        
+        #raise Exception(errormsg) from None
+        pass
     elif c > v:
         # higher version
         break
