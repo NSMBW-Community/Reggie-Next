@@ -4206,6 +4206,8 @@ class Area_NSMBW(AbstractParsedArea):
         buffer5 = bytearray(24 * zcount)
         buffer9 = bytearray(24 * zcount)
         for z in Area.zones:
+            if z.objx < 0: z.objx = 0
+            if z.objy < 0: z.objy = 0
             bdngstruct.pack_into(buffer2, offset, z.yupperbound, z.ylowerbound, z.yupperbound2, z.ylowerbound2, i, 0xF)
             bgAstruct.pack_into(buffer4, offset, i, z.XscrollA, z.YscrollA, z.YpositionA, z.XpositionA, z.bg1A, z.bg2A,
                                 z.bg3A, z.ZoomA)
@@ -4586,8 +4588,8 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
                     newpos.setY(referenceY - (24 + dragoffsety))
                 else:
                     # Snap to 8x8
-                    newpos.setX(int(int((newpos.x() + 6) / 12) * 12))
-                    newpos.setY(int(int((newpos.y() + 6) / 12) * 12))
+                    newpos.setX((int((int((newpos.x() + 6) / 1.5) - xOffset) / 8) * 8 + xOffset) * 1.5)
+                    newpos.setY((int((int((newpos.y() + 6) / 1.5) - yOffset) / 8) * 8 + yOffset) * 1.5)
 
             x = newpos.x()
             y = newpos.y()
@@ -5638,33 +5640,31 @@ class ZoneItem(LevelEditorItem):
         """
 
         if self.GrabberRectTL.contains(event.pos()):
-            # start dragging
             self.dragging = True
-            self.dragstartx = int(event.pos().x() / 1.5)
-            self.dragstarty = int(event.pos().y() / 1.5)
             self.dragcorner = 1
-            event.accept()
         elif self.GrabberRectTR.contains(event.pos()):
             self.dragging = True
-            self.dragstartx = int(event.pos().x() / 1.5)
-            self.dragstarty = int(event.pos().y() / 1.5)
             self.dragcorner = 2
-            event.accept()
         elif self.GrabberRectBL.contains(event.pos()):
             self.dragging = True
-            self.dragstartx = int(event.pos().x() / 1.5)
-            self.dragstarty = int(event.pos().y() / 1.5)
             self.dragcorner = 3
-            event.accept()
         elif self.GrabberRectBR.contains(event.pos()):
             self.dragging = True
-            self.dragstartx = int(event.pos().x() / 1.5)
-            self.dragstarty = int(event.pos().y() / 1.5)
             self.dragcorner = 4
+        else:
+            self.dragging = False
+
+        if self.dragging:
+            # start dragging
+            self.dragstartx = int(event.scenePos().x() / 1.5)
+            self.dragstarty = int(event.scenePos().y() / 1.5)
+            self.draginitialx1 = self.objx
+            self.draginitialy1 = self.objy
+            self.draginitialx2 = self.objx + self.width
+            self.draginitialy2 = self.objy + self.height
             event.accept()
         else:
             LevelEditorItem.mousePressEvent(self, event)
-            self.dragging = False
 
     def mouseMoveEvent(self, event):
         """
@@ -5673,95 +5673,74 @@ class ZoneItem(LevelEditorItem):
 
         if event.buttons() != Qt.NoButton and self.dragging:
             # resize it
-            dsx = self.dragstartx
-            dsy = self.dragstarty
-            clickedx = int(event.pos().x() / 1.5)
-            clickedy = int(event.pos().y() / 1.5)
-            corner = self.dragcorner
+            clickedx = int(event.scenePos().x() / 1.5)
+            clickedy = int(event.scenePos().y() / 1.5)
 
-            cx = self.objx
-            cy = self.objy
+            x1 = self.draginitialx1
+            y1 = self.draginitialy1
+            x2 = self.draginitialx2
+            y2 = self.draginitialy2
 
-            checkwidth = self.width - 128
-            checkheight = self.height - 128
-            if corner == 1:
-                if clickedx >= checkwidth: clickedx = checkwidth - 1
-                if clickedy >= checkheight: clickedy = checkheight - 1
-            elif corner == 2:
-                if clickedx < 0: clickedx = 0
-                if clickedy >= checkheight: clickedy = checkheight - 1
-            elif corner == 3:
-                if clickedx >= checkwidth: clickedx = checkwidth - 1
-                if clickedy < 0: clickedy = 0
-            elif corner == 4:
-                if clickedx < 0: clickedx = 0
-                if clickedy < 0: clickedy = 0
+            oldx = self.x()
+            oldy = self.y()
+            oldw = self.width * 1.5
+            oldh = self.height * 1.5
 
-            if clickedx != dsx or clickedy != dsy:
-                # if (cx + clickedx - dsx) < 16: clickedx += (16 - (cx + clickedx - dsx))
-                # if (cy + clickedy - dsy) < 16: clickedy += (16 - (cy + clickedy - dsy))
+            deltax = clickedx - self.dragstartx
+            deltay = clickedy - self.dragstarty
 
-                self.dragstartx = clickedx
-                self.dragstarty = clickedy
-                xdelta = clickedx - dsx
-                ydelta = clickedy - dsy
+            MIN_X = 16
+            MIN_Y = 16
+            MIN_W = 300
+            MIN_H = 200
 
-                if corner == 1:
-                    self.objx += xdelta
-                    self.objy += ydelta
-                    self.dragstartx -= xdelta
-                    self.dragstarty -= ydelta
-                    self.width -= xdelta
-                    self.height -= ydelta
-                elif corner == 2:
-                    self.objy += ydelta
-                    self.dragstarty -= ydelta
-                    self.width += xdelta
-                    self.height -= ydelta
-                elif corner == 3:
-                    self.objx += xdelta
-                    self.dragstartx -= xdelta
-                    self.width -= xdelta
-                    self.height += ydelta
-                elif corner == 4:
-                    self.width += xdelta
-                    self.height += ydelta
+            if self.dragcorner == 1: # TL
+                x1 += deltax
+                y1 += deltay
+                if x1 < MIN_X: x1 = MIN_X
+                if y1 < MIN_Y: y1 = MIN_Y
+                if x2 - x1 < MIN_W: x1 = x2 - MIN_W
+                if y2 - y1 < MIN_H: y1 = y2 - MIN_H
 
-                if self.width < 16:
-                    self.objx -= (16 - self.width)
-                    self.width = 16
-                if self.height < 16:
-                    self.objy -= (16 - self.height)
-                    self.height = 16
+            elif self.dragcorner == 2: # TR
+                x2 += deltax
+                y1 += deltay
+                if y1 < MIN_Y: y1 = MIN_Y
+                if x2 - x1 < MIN_W: x2 = x1 + MIN_W
+                if y2 - y1 < MIN_H: y1 = y2 - MIN_H
 
-                if self.objx < 16:
-                    self.width -= (16 - self.objx)
-                    self.objx = 16
-                if self.objy < 16:
-                    self.height -= (16 - self.objy)
-                    self.objy = 16
+            elif self.dragcorner == 3: # BL
+                x1 += deltax
+                y2 += deltay
+                if x1 < MIN_X: x1 = MIN_X
+                if x2 - x1 < MIN_W: x1 = x2 - MIN_W
+                if y2 - y1 < MIN_H: y2 = y1 + MIN_H
 
-                oldrect = self.BoundingRect
-                oldrect.translate(cx * 1.5, cy * 1.5)
-                newrect = QtCore.QRectF(self.x(), self.y(), self.width * 1.5, self.height * 1.5)
-                updaterect = oldrect.united(newrect)
-                updaterect.setTop(updaterect.top() - 3)
-                updaterect.setLeft(updaterect.left() - 3)
-                updaterect.setRight(updaterect.right() + 3)
-                updaterect.setBottom(updaterect.bottom() + 3)
+            elif self.dragcorner == 4: # BR
+                x2 += deltax
+                y2 += deltay
+                if x2 - x1 < MIN_W: x2 = x1 + MIN_W
+                if y2 - y1 < MIN_H: y2 = y1 + MIN_H
 
-                self.UpdateRects()
-                self.setPos(int(self.objx * 1.5), int(self.objy * 1.5))
-                self.scene().update(updaterect)
+            self.objx = x1
+            self.objy = y1
+            self.width = x2 - x1
+            self.height = y2 - y1
 
-                mainWindow.levelOverview.update()
+            oldrect = QtCore.QRectF(oldx, oldy, oldw, oldh)
+            newrect = QtCore.QRectF(self.x(), self.y(), self.width * 1.5, self.height * 1.5)
+            updaterect = oldrect.united(newrect)
+            updaterect.setTop(updaterect.top() - 3)
+            updaterect.setLeft(updaterect.left() - 3)
+            updaterect.setRight(updaterect.right() + 3)
+            updaterect.setBottom(updaterect.bottom() + 3)
 
-                # Call the zoneRepositioned function of all
-                # the sprite auxs for this zone
-                for a in self.aux:
-                    a.zoneRepositioned()
+            self.UpdateRects()
+            self.setPos(int(self.objx * 1.5), int(self.objy * 1.5))
+            self.scene().update(updaterect)
 
-                SetDirty()
+            mainWindow.levelOverview.update()
+            SetDirty()
 
             event.accept()
         else:
@@ -5911,6 +5890,7 @@ class LocationItem(LevelEditorItem):
                 self.UpdateRects()
                 self.scene().update(updaterect)
                 SetDirty()
+                mainWindow.levelOverview.update()
 
                 if self.sizeChanged is not None:
                     self.sizeChanged(self, self.width, self.height)
@@ -16017,7 +15997,7 @@ class ReggieTranslation:
 
 class LevelScene(QtWidgets.QGraphicsScene):
     """
-    GraphicsView subclass for the level scene
+    GraphicsScene subclass for the level scene
     """
 
     def __init__(self, *args):
@@ -16998,7 +16978,7 @@ class InputBox(QtWidgets.QDialog):
 
 class AboutDialog(QtWidgets.QDialog):
     """
-    Shows the About info for Reggie
+    The About info for Reggie
     """
 
     def __init__(self):
@@ -18123,14 +18103,14 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_modeldark.addItems(ZoneThemeValues)
         self.Zone_modeldark.setToolTip(trans.string('ZonesDlg', 21))
         if z.modeldark < 0: z.modeldark = 0
-        if z.modeldark >= len(ZoneThemeValues): z.modeldark = len(ZoneThemeValues)
+        if z.modeldark >= len(ZoneThemeValues): z.modeldark = len(ZoneThemeValues) - 1
         self.Zone_modeldark.setCurrentIndex(z.modeldark)
 
         self.Zone_terraindark = QtWidgets.QComboBox()
         self.Zone_terraindark.addItems(ZoneTerrainThemeValues)
         self.Zone_terraindark.setToolTip(trans.string('ZonesDlg', 23))
         if z.terraindark < 0: z.terraindark = 0
-        if z.terraindark >= len(ZoneTerrainThemeValues): z.terraindark = len(ZoneTerrainThemeValues)
+        if z.terraindark >= len(ZoneTerrainThemeValues): z.terraindark = len(ZoneTerrainThemeValues) - 1
         self.Zone_terraindark.setCurrentIndex(z.terraindark)
 
         self.Zone_vnormal = QtWidgets.QRadioButton(trans.string('ZonesDlg', 24))
