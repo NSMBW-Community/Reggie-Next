@@ -4588,8 +4588,8 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
                     newpos.setY(referenceY - (24 + dragoffsety))
                 else:
                     # Snap to 8x8
-                    newpos.setX((int((int((newpos.x() + 6) / 1.5) - xOffset) / 8) * 8 + xOffset) * 1.5)
-                    newpos.setY((int((int((newpos.y() + 6) / 1.5) - yOffset) / 8) * 8 + yOffset) * 1.5)
+                    newpos.setX(int(int((newpos.x() + 6) / 12) * 12))
+                    newpos.setY(int(int((newpos.y() + 6) / 12) * 12))
 
             x = newpos.x()
             y = newpos.y()
