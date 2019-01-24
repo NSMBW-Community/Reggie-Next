@@ -470,11 +470,11 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.spritebox.shown = False
-
+ 
         self.SpikeLength = ((37 * 16) + 41) / 1.5
         # (16 mid sections + an end section), accounting for image/sprite size difference
         self.dir = 'down'
-
+ 
     @staticmethod
     def loadImages():
         if 'StakeM0up' not in ImageCache:
@@ -483,27 +483,20 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
                 ImageCache['StakeM1' + dir] = SLib.GetImg('stake_%s_m_1.png' % dir)
                 ImageCache['StakeE0' + dir] = SLib.GetImg('stake_%s_e_0.png' % dir)
                 ImageCache['StakeE1' + dir] = SLib.GetImg('stake_%s_e_1.png' % dir)
-
+ 
     def dataChanged(self):
         super().dataChanged()
-
-        distance = self.parent.spritedata[3] >> 4
-        if distance == 0:
-            x = 16
-        elif distance == 1:
-            x = 7
-        elif distance == 2:
-            x = 14
-        elif distance == 3:
-            x = 10
-        elif distance >= 8:
-            x = 20
-        else:
-            x = 0
-        distance = x + 1  # In order to hide one side of the track behind the image.
-
+ 
+        rawdistance = self.parent.spritedata[3] >> 4
+        distance = (
+            (6, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112),
+            (16, 7, 14, 10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16)
+        )[self.dir == "down"][rawdistance]
+        distance += 1  # In order to hide one side of the track behind the image.
+ 
+        w = 66
         L = ((37 * 16) + 41) / 1.5  # (16 mid sections + an end section), accounting for image/sprite size difference
-
+ 
         if self.dir == 'up':
             self.aux[0].setPos(36, 24 - (distance * 24))
             self.aux[0].setSize(16, distance * 16)
@@ -516,10 +509,10 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
         elif self.dir == 'right':
             self.aux[0].setPos((L * 1.5) - 24, 36)
             self.aux[0].setSize(distance * 16, 16)
-
+ 
     def paint(self, painter):
         super().paint(painter)
-
+ 
         color = self.parent.spritedata[3] & 15
         if color == 2 or color == 3 or color == 7:
             mid = ImageCache['StakeM1' + self.dir]
@@ -527,12 +520,12 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
         else:
             mid = ImageCache['StakeM0' + self.dir]
             end = ImageCache['StakeE0' + self.dir]
-
+ 
         tiles = 16
         tilesize = 37
         endsize = 41
         width = 100
-
+ 
         if self.dir == 'up':
             painter.drawPixmap(0, 0, end)
             painter.drawTiledPixmap(0, endsize, width, tilesize * tiles, mid)
@@ -7341,6 +7334,33 @@ class SpriteImage_SpinningThinBars(SLib.SpriteImage_Static):  # 457
     def loadImages():
         SLib.loadIfNotInImageCache('SpinningThinBars', 'spinning_thin_bars.png')
 		
+class SpriteImage_LongMetalBar(SLib.SpriteImage_Static):  # 458
+    def __init__(self, parent):
+        super().__init__(parent)
+        i = ImageCache['LongMetalBar']
+        self.aux.append(SLib.AuxiliaryImage(parent, i.width(), i.height()))
+        self.aux[0].image = i
+        self.aux[0].setPos(-252, -24)
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('LongMetalBar', 'long_metal_bar.png')
+		
+class SpriteImage_SilverGearBlock(SLib.SpriteImage_StaticMultiple):  # 460
+    @staticmethod
+    def loadImages():
+        if 'SilverGearBlock4' in ImageCache: return
+        ImageCache['SilverGearBlock4'] = SLib.GetImg('silver_gear_block_4.png')
+        ImageCache['SilverGearBlock7'] = SLib.GetImg('silver_gear_block_7.png')
+        ImageCache['SilverGearBlock8'] = SLib.GetImg('silver_gear_block_8.png')
+        ImageCache['SilverGearBlock14'] = SLib.GetImg('silver_gear_block_14.png')
+
+    def dataChanged(self):
+        style = self.parent.spritedata[5] & 3
+        self.image = ImageCache['SilverGearBlock%d' % [7, 4, 14, 8][style]]
+
+        super().dataChanged()
+		
 class SpriteImage_EnormousBlock(SLib.SpriteImage): # 462
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -7959,8 +7979,10 @@ ImageClasses = {
     455: SpriteImage_HammerPlatform,
     456: SpriteImage_BossBridge,
     457: SpriteImage_SpinningThinBars,
-	462: SpriteImage_EnormousBlock,
-	463: SpriteImage_Glare,
+    458: SpriteImage_LongMetalBar,
+    460: SpriteImage_SilverGearBlock,
+    462: SpriteImage_EnormousBlock,
+    463: SpriteImage_Glare,
     464: SpriteImage_SwingingVine,
     466: SpriteImage_LavaIronBlock,
     467: SpriteImage_MovingGemBlock,
