@@ -2323,20 +2323,21 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
         SLib.loadIfNotInImageCache('Sunlight', 'sunlight.png')
 
     def moveSunlight(self):
-        if SLib.RealViewEnabled:
-            self.aux[0].realimage = ImageCache['Sunlight']
-        else:
+        if not SLib.RealViewEnabled:
             self.aux[0].realimage = None
             return
-        zone = self.parent.getZone(True)
+
+        zone = self.parent.nearestZone(True)
         if zone is None:
             self.aux[0].realimage = None
             return
+
         zoneRect = QtCore.QRectF(zone.objx * 1.5, zone.objy * 1.5, zone.width * 1.5, zone.height * 1.5)
         view = self.parent.scene().views()[0]
         viewRect = view.mapToScene(view.viewport().rect()).boundingRect()
         bothRect = zoneRect & viewRect
 
+        self.aux[0].realimage = ImageCache['Sunlight']
         self.aux[0].move(bothRect.x(), bothRect.y(), bothRect.width(), bothRect.height())
 
 
@@ -7707,7 +7708,7 @@ ImageClasses = {
     107: SpriteImage_RotationControlledPassBetaPlatform,
     108: SpriteImage_AmpLine,
     109: SpriteImage_ChainBall,
-    # 110: SpriteImage_Sunlight,
+    110: SpriteImage_Sunlight,
     111: SpriteImage_Blooper,
     112: SpriteImage_BlooperBabies,
     113: SpriteImage_Flagpole,
@@ -7958,6 +7959,8 @@ ImageClasses = {
     455: SpriteImage_HammerPlatform,
     456: SpriteImage_BossBridge,
     457: SpriteImage_SpinningThinBars,
+	462: SpriteImage_EnormousBlock,
+	463: SpriteImage_Glare,
     464: SpriteImage_SwingingVine,
     466: SpriteImage_LavaIronBlock,
     467: SpriteImage_MovingGemBlock,
