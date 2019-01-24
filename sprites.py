@@ -7339,7 +7339,83 @@ class SpriteImage_SpinningThinBars(SLib.SpriteImage_Static):  # 457
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('SpinningThinBars', 'spinning_thin_bars.png')
+		
+class SpriteImage_EnormousBlock(SLib.SpriteImage): # 462
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+ 
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24))
+        self.aux.append(
+            SLib.AuxiliaryPainterPath(parent, QtGui.QPainterPath(), 24, 24)
+        )
+        self.aux.append(
+            SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal)
+        )
+ 
+        self.spikes = []
+        for height in (28, 16, 41, 47, 31):
+            spikes = []
+            for direction in range(2):
+                # This has to be within the loop because the
+                # following commands transpose them
+                if direction == 0:
+                    points = ((0, 0), (24, 12))
+                else:
+                    # faces right
+                    points = ((24, 0), (0, 12))
+ 
+                painterPath = QtGui.QPainterPath()
+                painterPath.moveTo(direction * 24, 0)
+                for i in range(height):
+                    for point in points:
+                        painterPath.lineTo(QtCore.QPointF(point[0], point[1] + i * 24))
+                painterPath.lineTo(QtCore.QPointF(direction * 24, height * 24))
+                painterPath.closeSubpath()
+                spikes.append(painterPath)
+            self.spikes.append(spikes)
+ 
+    def dataChanged(self):
+        # get sprite data
+        size = (self.parent.spritedata[5] >> 1) & 7
+        direction = self.parent.spritedata[2] & 1
+        distance = (self.parent.spritedata[4] >> 4) + 1
+        side = self.parent.spritedata[6] & 1
+ 
+        # update the platform
+        realsize = ((18, 28), (18, 16), (18, 41), (18, 47), (24, 31))[size]
+        self.aux[0].setSize(realsize[0] * 24 - 24, realsize[1] * 24)
+        if side == 0:
+            self.aux[0].setPos(0, 0)
+        else:
+            self.aux[0].setPos(24, 0)
+ 
+        # update the spikes
+        self.aux[1].setSize(48, realsize[1] * 24 + 24)
+        if side == 0:
+            self.aux[1].setPos(realsize[0] * 24 - 24, 0)
+        else:
+            self.aux[1].setPos(0, 0)
+        self.aux[1].SetPath(self.spikes[size][side])
+ 
+        # update the track
+        self.aux[2].setSize(distance * 16, 16)
+        halfheight = realsize[1] * 12 - 12
+        halfwidth = realsize[0] * 12
+        if direction == 0:
+            self.aux[2].setPos(halfwidth, halfheight)
+        else:
+            self.aux[2].setPos(halfwidth - distance * 24, halfheight)
+			
+class SpriteImage_Glare(SLib.SpriteImage):  # 463
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.aux.append(SLib.AuxiliaryImage(parent, 1000, 1000))
+        self.aux[0].image = ImageCache['SunGlare']
+        self.aux[0].setSize(9 * 24, 9 * 24, -4 * 24, -4 * 24)
 
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('SunGlare', 'glare.png')
 
 class SpriteImage_SwingingVine(SLib.SpriteImage_StaticMultiple):  # 464
     @staticmethod

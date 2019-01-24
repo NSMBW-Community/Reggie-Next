@@ -40,7 +40,7 @@ ctypedef unsigned int u32
 
 
 # 'data' must be RGBA8 raw data
-cpdef bytes decodeRGB4A3(data, u32 width, u32 height, int noAlpha):
+cpdef bytes decodeRGB4A3(bytes data, u32 width, u32 height, int noAlpha):
     cdef:
         array.array dataArr = array.array('B', data)
         u8 *data_ = dataArr.data.as_uchars

@@ -45,7 +45,7 @@ class SpriteImage_SamuraiGuy(SLib.SpriteImage_Static):  # 19
             parent,
             1.5,
             ImageCache['SamuraiGuy'],
-            (-1, -4),
+            (-1, 20),
         )
 
     @staticmethod
