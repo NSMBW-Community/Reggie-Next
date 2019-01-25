@@ -6630,6 +6630,20 @@ class SpriteImage_Pipe_Left(SpriteImage_PipeStationary):  # 380
         super().dataChanged()
 
 
+class SpriteImage_LemmyKoopaController(SLib.SpriteImage):  # 381
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 648, 288))
+        self.aux[0].image = ImageCache['LemmyKoopaController']
+        self.aux[0].setPos(0, 96)
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 312))
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('LemmyKoopaController', 'boss_controller_lemmy.png')
+
 class SpriteImage_ScrewMushroomNoBolt(SpriteImage_ScrewMushroom):  # 382
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -8148,6 +8162,7 @@ ImageClasses = {
     378: SpriteImage_Pipe_Down,
     379: SpriteImage_Pipe_Right,
     380: SpriteImage_Pipe_Left,
+    381: SpriteImage_LemmyKoopaController,
     382: SpriteImage_ScrewMushroomNoBolt,
     384: SpriteImage_PipeCooliganGenerator,
     385: SpriteImage_IceBlock,
