@@ -3675,6 +3675,22 @@ class SpriteImage_TileEvent(SLib.SpriteImage):  # 191
         self.aux[0].setSize(w * 24, h * 24)
 
 
+class SpriteImage_LarryKoopaController(SLib.SpriteImage_Static):  # 192
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['LarryKoopaController'],
+            (0, 48),
+        )
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 216))
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('LarryKoopaController', 'boss_controller_larry.png')
+
+
 class SpriteImage_Urchin(SLib.SpriteImage_Static):  # 193
     def __init__(self, parent):
         super().__init__(
@@ -7840,6 +7856,7 @@ ImageClasses = {
     189: SpriteImage_LarryKoopa,
     190: SpriteImage_TiltingGirderUnused,
     191: SpriteImage_TileEvent,
+    192: SpriteImage_LarryKoopaController,
     193: SpriteImage_Urchin,
     194: SpriteImage_MegaUrchin,
     195: SpriteImage_HuckitCrab,
