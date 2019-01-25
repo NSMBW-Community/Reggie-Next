@@ -3763,14 +3763,13 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
         painter.restore()
 
 
-class SpriteImage_LarryKoopaController(SLib.SpriteImage_Static):  # 192
+class SpriteImage_LarryKoopaController(SLib.SpriteImage):  # 192
     def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['LarryKoopaController'],
-            (0, 48),
-        )
+        super().__init__(parent)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 624, 360))
+        self.aux[0].image = ImageCache['LarryKoopaController']
+        self.aux[0].setPos(0, 72)
 
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 216))
 
