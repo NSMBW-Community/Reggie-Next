@@ -575,18 +575,38 @@ class AuxiliaryRectOutline(AuxiliarySpriteItem):
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.setPos(xoff, yoff)
         self.hover = False
+        self.color = None
 
     def setSize(self, width, height, xoff=0, yoff=0):
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.setPos(xoff, yoff)
+
+    def setColor(self, color):
+        if color is None:
+            self.color = None
+        else:
+            self.color = QtGui.QColor(color)
 
     def paint(self, painter, option, widget=None):
         if option is not None:
             painter.setClipRect(option.exposedRect)
             painter.setRenderHint(QtGui.QPainter.Antialiasing)
 
-        painter.setPen(OutlinePen)
-        painter.setBrush(OutlineBrush)
+        if self.color is None:
+            painter.setPen(OutlinePen)
+            painter.setBrush(OutlineBrush)
+        else:
+            pen = QtGui.QPen(OutlinePen)
+            brush = QtGui.QBrush(OutlineBrush)
+
+            self.color.setAlpha(pen.color().alpha())
+            pen.setColor(self.color)
+            self.color.setAlpha(brush.color().alpha())
+            brush.setColor(self.color)
+
+            painter.setPen(pen)
+            painter.setBrush(brush)
+
         painter.drawRect(self.BoundingRect)
 
 
