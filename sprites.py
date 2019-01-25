@@ -3787,9 +3787,36 @@ class SpriteImage_Urchin(SLib.SpriteImage_Static):  # 193
             (-12, -14),
         )
 
+        self.aux.append(SLib.AuxiliaryTrackObject(
+            parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical
+        ))
+        self.aux[0].setPos(self.width * 0.75 - 12, self.height * 0.75 - 12)
+
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Urchin', 'urchin.png')
+
+    def dataChanged(self):
+        super().dataChanged()
+
+        distance = (((self.parent.spritedata[5] >> 4) << 1) | 1) << 4
+        horizontal = self.parent.spritedata[5] & 1 == 1
+        positiveFirst = self.parent.spritedata[4] & 1 == 1
+
+        if horizontal:
+            self.aux[0].direction = SLib.AuxiliaryTrackObject.Horizontal
+            self.aux[0].setSize(distance, 16)
+            if positiveFirst:
+                self.aux[0].setPos(self.width * 0.75 - 12, self.height * 0.75 - 12)
+            else:
+                self.aux[0].setPos((self.width * 0.75) - (distance * 1.5) - 12, self.height * 0.75 - 12)
+        else:
+            self.aux[0].direction = SLib.AuxiliaryTrackObject.Vertical
+            self.aux[0].setSize(16, distance)
+            if positiveFirst:
+                self.aux[0].setPos(self.width * 0.75 - 12, self.height * 0.75 - 12)
+            else:
+                self.aux[0].setPos(self.width * 0.75 - 12, (self.height * 0.75) - (distance * 1.5) - 12)
 
 
 class SpriteImage_MegaUrchin(SLib.SpriteImage_Static):  # 194
@@ -3801,9 +3828,36 @@ class SpriteImage_MegaUrchin(SLib.SpriteImage_Static):  # 194
             (-40, -46),
         )
 
+        self.aux.append(SLib.AuxiliaryTrackObject(
+            parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical
+        ))
+        self.aux[0].setPos(self.width * 0.75 - 12, self.height * 0.75 - 12)
+
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('MegaUrchin', 'mega_urchin.png')
+
+    def dataChanged(self):
+        super().dataChanged()
+
+        distance = (((self.parent.spritedata[5] >> 4) << 1) | 1) << 4
+        horizontal = self.parent.spritedata[5] & 1 == 1
+        positiveFirst = self.parent.spritedata[4] & 1 == 1
+
+        if horizontal:
+            self.aux[0].direction = SLib.AuxiliaryTrackObject.Horizontal
+            self.aux[0].setSize(distance, 16)
+            if positiveFirst:
+                self.aux[0].setPos(self.width * 0.75 - 12, self.height * 0.75 - 12)
+            else:
+                self.aux[0].setPos((self.width * 0.75) - (distance * 1.5) - 12, self.height * 0.75 - 12)
+        else:
+            self.aux[0].direction = SLib.AuxiliaryTrackObject.Vertical
+            self.aux[0].setSize(16, distance)
+            if positiveFirst:
+                self.aux[0].setPos(self.width * 0.75 - 12, self.height * 0.75 - 12)
+            else:
+                self.aux[0].setPos(self.width * 0.75 - 12, (self.height * 0.75) - (distance * 1.5) - 12)
 
 
 class SpriteImage_HuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
