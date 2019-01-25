@@ -37,7 +37,6 @@ from PyQt5 import QtCore, QtGui
 Qt = QtCore.Qt
 
 import spritelib as SLib
-import sprites_common as common
 ImageCache = SLib.ImageCache
 
 
@@ -3764,7 +3763,6 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
         painter.restore()
 
 
-
 class SpriteImage_LarryKoopaController(SLib.SpriteImage_Static):  # 192
     def __init__(self, parent):
         super().__init__(
@@ -6393,6 +6391,21 @@ class SpriteImage_ColoredBox(SLib.SpriteImage):  # 362
         painter.drawTiledPixmap(25, 25, xsize - 50, ysize - 50, ImageCache[prefix + 'M'])
 
 
+class SpriteImage_RoyKoopaController(SLib.SpriteImage):  # 364
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 648, 432))
+        self.aux[0].image = ImageCache['RoyKoopaController']
+        self.aux[0].setSize(648, 432, 0, -96)
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 24, 312))
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('RoyKoopaController', 'boss_controller_roy.png')
+
+
 class SpriteImage_CubeKinokoRot(SLib.SpriteImage_StaticMultiple):  # 366
     @staticmethod
     def loadImages():
@@ -8069,6 +8082,7 @@ ImageClasses = {
     360: SpriteImage_RollingHillWith8Pipes,
     361: SpriteImage_CrystalBlock,
     362: SpriteImage_ColoredBox,
+    364: SpriteImage_RoyKoopaController,
     366: SpriteImage_CubeKinokoRot,
     367: SpriteImage_CubeKinokoLine,
     368: SpriteImage_FlashRaft,
