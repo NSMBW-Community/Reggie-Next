@@ -1512,22 +1512,62 @@ class SpriteImage_KoopaTroopa(SLib.SpriteImage_StaticMultiple):  # 57
 class SpriteImage_KoopaParatroopa(SLib.SpriteImage_StaticMultiple):  # 58
     def __init__(self, parent):
         super().__init__(parent, 1.5)
+        self.track = SLib.AuxiliaryTrackObject(parent, 0, 0, 0)
         self.offset = (-7, -12)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ParakoopaG', 'parakoopa_green.png')
-        SLib.loadIfNotInImageCache('ParakoopaR', 'parakoopa_red.png')
+        if 'ParakoopaG' not in ImageCache:
+            ImageCache['ParakoopaG'] = SLib.GetImg('parakoopa_green.png')
+            ImageCache['ParakoopaR'] = SLib.GetImg('parakoopa_red.png')
+        if 'KoopaShellG' not in ImageCache:
+            ImageCache['KoopaShellG'] = SLib.GetImg('koopa_green_shell.png')
+            ImageCache['KoopaShellR'] = SLib.GetImg('koopa_red_shell.png')
 
     def dataChanged(self):
 
         # get properties
         color = self.parent.spritedata[5] & 1
+        mode = (self.parent.spritedata[5] >> 4) & 3
 
+        # 0: jumping
+        # 3: shell
         if color == 0:
-            self.image = ImageCache['ParakoopaG']
+            if mode == 3:
+                del self.offset
+                self.image = ImageCache['KoopaShellG']
+            else:
+                self.offset = (-7, -12)
+                self.image = ImageCache['ParakoopaG']
         else:
-            self.image = ImageCache['ParakoopaR']
+            if mode == 3:
+                del self.offset
+                self.image = ImageCache['KoopaShellR']
+            else:
+                self.offset = (-7, -12)
+                self.image = ImageCache['ParakoopaR']
+
+        if mode == 1 or mode == 2:
+            turnImmediately = self.parent.spritedata[4] & 1 == 1
+            if mode == 1:
+                self.track.direction = SLib.AuxiliaryTrackObject.Horizontal
+                self.track.setSize(9 * 16, 16)
+                if turnImmediately:
+                    self.track.setPos(self.width / 2, self.height / 2)
+                else:
+                    self.track.setPos(-4 * 24 + self.width / 2, self.height / 2)
+            else:
+                self.track.direction = SLib.AuxiliaryTrackObject.Vertical
+                self.track.setSize(16, 9 * 16)
+                if turnImmediately:
+                    self.track.setPos(self.width / 2, self.height / 2)
+                else:
+                    self.track.setPos(self.width / 2, -4 * 24 + self.height / 2)
+
+            if len(self.aux) == 0:
+                self.aux.append(self.track)
+        elif len(self.aux) != 0:
+            self.aux.clear()
 
         super().dataChanged()
 
