@@ -91,6 +91,7 @@ class SpriteImage_PumpkinGoomba(SLib.SpriteImage_StaticMultiple):  # 22
 
         super().dataChanged()
 
+
 class SpriteImage_Thwomp(SLib.SpriteImage_StaticMultiple):  # 47
     def __init__(self, parent):
         super().__init__(
@@ -113,6 +114,7 @@ class SpriteImage_Thwomp(SLib.SpriteImage_StaticMultiple):  # 47
         else:
             self.image = ImageCache['Thwomp']
 
+
 class SpriteImage_GiantThwomp(SLib.SpriteImage_StaticMultiple):  # 48
     def __init__(self, parent):
         super().__init__(
@@ -134,6 +136,7 @@ class SpriteImage_GiantThwomp(SLib.SpriteImage_StaticMultiple):  # 48
             self.image = ImageCache['GiantThwompIce']
         else:
             self.image = ImageCache['GiantThwomp']
+
 
 class SpriteImage_FakeStarCoin(SLib.SpriteImage_Static):  # 49
     def __init__(self, parent):
@@ -239,6 +242,18 @@ class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
         self.image = ImageCache['BigPumpkin%d' % power]
         super().dataChanged()
 
+class SpriteImage_Thundercloud(SLib.SpriteImage_Static):  # 168
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['Thundercloud'],
+            (-24, -40),
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('Thundercloud', 'thundercloud.png')
 
 class SpriteImage_Meteor(SLib.SpriteImage_StaticMultiple):  # 183
     @staticmethod
@@ -573,6 +588,7 @@ ImageClasses = {
     49: SpriteImage_FakeStarCoin,
     57: SpriteImage_NewerKoopa,
     157: SpriteImage_BigPumpkin,
+    168: SpriteImage_Thundercloud,
     183: SpriteImage_Meteor,
     188: SpriteImage_MidwayFlag,
     191: SpriteImage_TileEventNewer,
