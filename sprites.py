@@ -3887,12 +3887,32 @@ class SpriteImage_HuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
 
 class SpriteImage_Fishbones(SLib.SpriteImage_StaticMultiple):  # 196
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
-        self.offset = (0, -2)
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['FishbonesL'],
+            (0, -2)
+        )
+        self.aux.append(SLib.AuxiliaryTrackObject(
+            parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal
+        ))
 
     def dataChanged(self):
 
         direction = self.parent.spritedata[5] >> 4
+        distance = self.parent.spritedata[5] & 0xF
+
+        # distance values > 1 result in a distance of 9
+        if distance == 0:
+            distance = 5
+        elif distance == 1:
+            distance = 7
+        else:
+            distance = 9
+
+        self.aux[0].setSize(distance * 16, 16)
+        self.aux[0].setPos(distance * -12 + 12, 2)
+
         if direction == 1:
             self.image = ImageCache['FishbonesR']
         else:
