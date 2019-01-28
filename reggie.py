@@ -9478,7 +9478,11 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
         """
         Removes the current preset.
         """
-        os.remove("reggiedata/qpsp/" + self.comboBox_4.currentText() + ".qpp")
+        try:
+            os.remove("reggiedata/qpsp/" + self.comboBox_4.currentText() + ".qpp")
+        except FileNotFoundError:
+            return
+
         index = self.comboBox_4.currentIndex()
         self.comboBox_4.removeItem(index)
 
