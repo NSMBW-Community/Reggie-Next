@@ -243,6 +243,7 @@ class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
         self.image = ImageCache['BigPumpkin%d' % power]
         super().dataChanged()
 
+
 class SpriteImage_Thundercloud(SLib.SpriteImage_Static):  # 168
     def __init__(self, parent):
         super().__init__(
@@ -255,6 +256,7 @@ class SpriteImage_Thundercloud(SLib.SpriteImage_Static):  # 168
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Thundercloud', 'thundercloud.png')
+
 
 class SpriteImage_Meteor(SLib.SpriteImage_StaticMultiple):  # 183
     @staticmethod
