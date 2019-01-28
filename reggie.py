@@ -24162,7 +24162,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         else:
             self.actions['deselect'].setEnabled(False)
 
-        if updateModeInfo: self.UpdateModeInfo()
+        if updateModeInfo:
+            global DirtyOverride
+
+            DirtyOverride += 1
+            self.UpdateModeInfo()
+            DirtyOverride -= 1
 
     def HandleObjPosChange(self, obj, oldx, oldy, x, y):
         """
