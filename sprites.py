@@ -3698,7 +3698,7 @@ class SpriteImage_TiltingGirderUnused(SLib.SpriteImage_Static):  # 190
         SLib.loadIfNotInImageCache('TiltingGirder', 'tilting_girder.png')
 
 
-class SpriteImage_TileEvent(common.SpriteImage_TileEvent):
+class SpriteImage_TileEvent(common.SpriteImage_TileEvent):  # 191
     def __init__(self, parent):
         super().__init__(parent)
         self.notAllowedTypes = (2, 5, 7)
@@ -3736,7 +3736,7 @@ class SpriteImage_LarryKoopaController(SLib.SpriteImage):  # 192
         self.aux[0].image = ImageCache['LarryKoopaController']
         self.aux[0].setPos(0, 72)
 
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 216))
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 288))
 
     @staticmethod
     def loadImages():
@@ -6549,6 +6549,7 @@ class SpriteImage_IggyKoopaController(SLib.SpriteImage):  # 372
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('IggyKoopaController', 'boss_controller_iggy.png')
+
 
 class SpriteImage_SnowWind(SpriteImage_LiquidOrFog):  # 374
     def __init__(self, parent):
