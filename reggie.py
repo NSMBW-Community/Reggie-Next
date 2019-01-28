@@ -23315,13 +23315,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle toggling of sprite images
         """
-        global SpriteImagesShown
+        global SpriteImagesShown, DirtyOverride
 
         SpriteImagesShown = checked
 
         setSetting('ShowSpriteImages', SpriteImagesShown)
 
         if Area is not None:
+            DirtyOverride += 1
             for spr in Area.sprites:
                 spr.UpdateRects()
                 if SpriteImagesShown:
@@ -23334,6 +23335,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                         spr.objx * 1.5,
                         spr.objy * 1.5,
                     )
+            DirtyOverride -= 1
 
         self.scene.update()
 
