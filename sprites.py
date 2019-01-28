@@ -6628,6 +6628,21 @@ class SpriteImage_SnowWind(SpriteImage_LiquidOrFog):  # 374
         super().realViewZone(painter, zoneRect, viewRect)
 
 
+class SpriteImage_WendyKoopaController(SLib.SpriteImage):  # 375
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 648, 528))
+        self.aux[0].image = ImageCache['WendyKoopaController']
+        self.aux[0].setPos(0, -120)
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 288))
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('WendyKoopaController', 'boss_controller_wendy.png')
+
+
 class SpriteImage_MovingFence(SLib.SpriteImage_StaticMultiple):  # 376
     @staticmethod
     def loadImages():
@@ -8217,6 +8232,7 @@ ImageClasses = {
     370: SpriteImage_CloudBlock,
     371: SpriteImage_RollingHillCoin,
     374: SpriteImage_SnowWind,
+    375: SpriteImage_WendyKoopaController,
     376: SpriteImage_MovingFence,
     377: SpriteImage_Pipe_Up,
     378: SpriteImage_Pipe_Down,
