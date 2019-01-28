@@ -6378,14 +6378,24 @@ class SpriteItem(LevelEditorItem):
         Sets a new position, through objx and objy
         """
         self.objx, self.objy = newobjx, newobjy
-        self.setPos((newobjx + self.ImageObj.xOffset) * 1.5, (newobjy + self.ImageObj.yOffset) * 1.5)
+        if SpriteImagesShown:
+            self.setPos((newobjx + self.ImageObj.xOffset) * 1.5, (newobjy + self.ImageObj.yOffset) * 1.5)
+        else:
+            self.setPos(newobjx * 1.5, newobjy * 1.5)
 
     def mousePressEvent(self, event):
         """
         Overrides mouse pressing events if needed for cloning
         """
         if event.button() != Qt.LeftButton or QtWidgets.QApplication.keyboardModifiers() != Qt.ControlModifier:
+            if not SpriteImagesShown:
+                oldpos = (self.objx, self.objy)
+
             LevelEditorItem.mousePressEvent(self, event)
+
+            if not SpriteImagesShown:
+                self.setNewObjPos(oldpos[0], oldpos[1])
+
             return
 
         newitem = SpriteItem(self.type, self.objx, self.objy, self.spritedata)
