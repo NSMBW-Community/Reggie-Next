@@ -6530,6 +6530,26 @@ class SpriteImage_RollingHillCoin(SpriteImage_SpecialCoin):  # 371
     pass
 
 
+class SpriteImage_IggyKoopaController(SLib.SpriteImage):  # 372
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.aux.append(SLib.AuxiliaryImage(parent, 624, 312))
+        self.aux[0].image = ImageCache['IggyKoopaController']
+        self.aux[0].setSize(624, 312, 24, 24)
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 24, 312))
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 528, 264, 72, 24))
+        self.aux[2].fillFlag = False
+
+        w = SLib.OutlinePen.widthF()
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 336 + w, 24 + w, 168 - w / 2, 144 - w / 2))
+        self.aux[3].fillFlag = False
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('IggyKoopaController', 'boss_controller_iggy.png')
+
 class SpriteImage_SnowWind(SpriteImage_LiquidOrFog):  # 374
     def __init__(self, parent):
         super().__init__(parent)
@@ -8156,6 +8176,7 @@ ImageClasses = {
     369: SpriteImage_SlidingPenguin,
     370: SpriteImage_CloudBlock,
     371: SpriteImage_RollingHillCoin,
+    372: SpriteImage_IggyKoopaController,
     374: SpriteImage_SnowWind,
     375: SpriteImage_WendyKoopaController,
     376: SpriteImage_MovingFence,
