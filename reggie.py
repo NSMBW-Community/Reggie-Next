@@ -5958,10 +5958,16 @@ class SpriteItem(LevelEditorItem):
 
         global DirtyOverride
         DirtyOverride += 1
-        self.setPos(
-            int((self.objx + self.ImageObj.xOffset) * 1.5),
-            int((self.objy + self.ImageObj.yOffset) * 1.5),
-        )
+        if SpriteImagesShown:
+            self.setPos(
+                int((self.objx + self.ImageObj.xOffset) * 1.5),
+                int((self.objy + self.ImageObj.yOffset) * 1.5),
+            )
+        else:
+            self.setPos(
+                int(self.objx * 1.5),
+                int(self.objy * 1.5),
+            )
         DirtyOverride -= 1
 
     def SetType(self, type):
@@ -6128,18 +6134,7 @@ class SpriteItem(LevelEditorItem):
             SLib.SpriteImagesLoaded.add(self.type)
         self.ImageObj = obj(self)
 
-        if not SpriteImagesShown:
-            return
-
         self.UpdateDynamicSizing()
-        self.UpdateRects()
-        self.ChangingPos = True
-        self.setPos(
-            int((self.objx + self.ImageObj.xOffset) * 1.5),
-            int((self.objy + self.ImageObj.yOffset) * 1.5),
-        )
-        self.ChangingPos = False
-        self.updateScene()
 
     def UpdateDynamicSizing(self):
         """
@@ -6156,14 +6151,15 @@ class SpriteItem(LevelEditorItem):
             ))
 
         self.ImageObj.dataChanged()
-        self.UpdateRects()
 
-        self.ChangingPos = True
-        self.setPos(
-            int((self.objx + self.ImageObj.xOffset) * 1.5),
-            int((self.objy + self.ImageObj.yOffset) * 1.5),
-        )
-        self.ChangingPos = False
+        if SpriteImagesShown:
+            self.UpdateRects()
+            self.ChangingPos = True
+            self.setPos(
+                int((self.objx + self.ImageObj.xOffset) * 1.5),
+                int((self.objy + self.ImageObj.yOffset) * 1.5),
+            )
+            self.ChangingPos = False
 
         if self.scene() is not None:
             self.scene().update(CurrentRect)
@@ -21001,6 +20997,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         QtCore.QTimer.singleShot(100, self.levelOverview.update)
 
+        # call each toggle-button handler to set each feature correctly upon
+        # startup
         toggleHandlers = {
             self.HandleSpritesVisibility: SpritesShown,
             self.HandleSpriteImages: SpriteImagesShown,
@@ -21009,8 +21007,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.HandlePathsVisibility: PathsShown,
         }
         for handler in toggleHandlers:
-            handler(
-                toggleHandlers[handler])  # call each toggle-button handler to set each feature correctly upon startup
+            handler(toggleHandlers[handler])
 
         # let's restore the state and geometry
         # geometry: determines the main window position
@@ -23315,7 +23312,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle toggling of sprite images
         """
-        global SpriteImagesShown, DirtyOverride
+        global SpriteImagesShown, DirtyOverride, Initializing
 
         SpriteImagesShown = checked
 
@@ -23325,12 +23322,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
             DirtyOverride += 1
             for spr in Area.sprites:
                 spr.UpdateRects()
-                if SpriteImagesShown:
+                if SpriteImagesShown and not Initializing:
                     spr.setPos(
                         (spr.objx + spr.ImageObj.xOffset) * 1.5,
                         (spr.objy + spr.ImageObj.yOffset) * 1.5,
                     )
-                else:
+                elif not Initializing:
                     spr.setPos(
                         spr.objx * 1.5,
                         spr.objy * 1.5,
