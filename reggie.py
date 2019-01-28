@@ -6128,6 +6128,9 @@ class SpriteItem(LevelEditorItem):
             SLib.SpriteImagesLoaded.add(self.type)
         self.ImageObj = obj(self)
 
+        if not SpriteImagesShown:
+            return
+
         self.UpdateDynamicSizing()
         self.UpdateRects()
         self.ChangingPos = True
@@ -6136,7 +6139,7 @@ class SpriteItem(LevelEditorItem):
             int((self.objy + self.ImageObj.yOffset) * 1.5),
         )
         self.ChangingPos = False
-        if self.scene() is not None: self.scene().update()
+        self.updateScene()
 
     def UpdateDynamicSizing(self):
         """
