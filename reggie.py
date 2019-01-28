@@ -70,7 +70,7 @@ for v, c in zip(version, pqt_min):
         # lower version
         #errormsg = 'Please update your copy of PyQt to ' + '.'.join(str(n) for n in pqt_min) + \
         # ' or greater. Currently running on: ' + QtCore.QT_VERSION_STR
-        
+
         #raise Exception(errormsg) from None
         pass
     elif c > v:
@@ -5895,10 +5895,11 @@ class LocationItem(LevelEditorItem):
                 if self.sizeChanged is not None:
                     self.sizeChanged(self, self.width, self.height)
 
-                if RealViewEnabled:
-                    for sprite in Area.sprites:
-                        if self.id in sprite.ImageObj.locationIDs and sprite.ImageObj.updateSceneAfterLocationMoved:
-                            self.scene().update()
+                # This code causes an error or something.
+                # if RealViewEnabled:
+                #     for sprite in Area.sprites:
+                #         if self.id in sprite.ImageObj.locationIDs and sprite.ImageObj.updateSceneAfterLocationMoved:
+                #             self.scene().update()
 
             event.accept()
         else:
