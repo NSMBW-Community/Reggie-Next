@@ -7,6 +7,7 @@ from PyQt5 import QtCore, QtGui
 Qt = QtCore.Qt
 
 import spritelib as SLib
+import sprites_common as common
 
 ImageCache = SLib.ImageCache
 
@@ -318,114 +319,43 @@ class SpriteImage_MidwayFlag(SLib.SpriteImage_StaticMultiple):  # 188
         super().dataChanged()
 
 
-class SpriteImage_TileEventNewer(SLib.SpriteImage_StaticMultiple):  # 191
+class SpriteImage_TileEventNewer(common.SpriteImage_TileEvent):  # 191
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 0, 0))
+        super().__init__(parent)
+        self.notAllowedTypes = (2, 5, 7, 13, 15)
 
-    def dataChanged(self):
-        super().dataChanged()
+    def getTileFromType(self, type_):
+        if type_ == 0:
+            return SLib.Tiles[55]
 
-        self.width = (self.parent.spritedata[5] >> 4) * 16
-        self.height = (self.parent.spritedata[5] & 0xF) * 16
-        type_ = self.parent.spritedata[4] >> 4
-        self.creationtype = self.parent.spritedata[4] & 1
-        self.noeffect = self.parent.spritedata[3] & 4 == 4
-        self.pattern = self.parent.spritedata[3] & 3
-        self.permanent = self.parent.spritedata[2] & 16 == 16
-        self.shouldTile = True
+        if type_ == 1:
+            return SLib.Tiles[48]
 
-        if self.creationtype == 0: # destroys
-            if self.permanent or self.noeffect:
-                self.aux[0].setColor(None)
-                self.shouldTile = False
-            else:
-                self.aux[0].setColor("#f00000")
-        else:
-            self.aux[0].setColor("#00f000")
+        if type_ == 3:
+            return SLib.Tiles[52]
 
-        if not self.width:
-            self.width = 16
+        if type_ == 4:
+            return SLib.Tiles[51]
 
-        if not self.height:
-            self.height = 16
+        if type_ == 6:
+            return SLib.Tiles[45]
 
-        self.aux[0].setSize(self.width * 1.5, self.height * 1.5)
-
-        if type_ in [2, 5, 7, 13, 15]:
-            self.spritebox.shown = True
-            self.image = None
-
-            if self.width == self.height == 16:
-                self.aux[0].setSize(0, 0)
-
-            return
-
-        self.spritebox.shown = False
-
-        if not type_:
-            tile = SLib.Tiles[55]
-
-        elif type_ == 1:
-            tile = SLib.Tiles[48]
-
-        elif type_ == 3:
-            tile = SLib.Tiles[52]
-
-        elif type_ == 4:
-            tile = SLib.Tiles[51]
-
-        elif type_ == 6:
-            tile = SLib.Tiles[45]
-
-        elif type_ in [8, 9, 10, 11]:
+        if type_ in [8, 9, 10, 11]:
             row = self.parent.spritedata[2] & 0xF
             col = self.parent.spritedata[3] >> 4
 
             tilenum = 256 * (type_ - 8)
             tilenum += row * 16 + col
 
-            tile = SLib.Tiles[tilenum]
+            return SLib.Tiles[tilenum]
 
-        elif type_ == 12:
-            tile = SLib.Tiles[256 * 3 + 67]
+        if type_ == 12:
+            return SLib.Tiles[256 * 3 + 67]
 
-        elif type_ == 14:
-            tile = SLib.Tiles[256]
+        if type_ == 14:
+            return SLib.Tiles[256]
 
-        if tile:
-            self.image = tile.main
-
-        else:
-            self.image = SLib.Tiles[0x800 + 108].main
-
-    def paint(self, painter):
-        if self.image is None:
-            return
-
-        painter.save()
-
-        painter.setOpacity(self.alpha)
-        painter.setRenderHint(painter.SmoothPixmapTransform)
-
-        if self.pattern == 0 and self.shouldTile:
-            painter.drawTiledPixmap(0, 0, self.width * 1.5, self.height * 1.5, self.image)
-        elif self.pattern == 1 and self.shouldTile:
-            for y_ in range(self.height >> 4):
-                y = y_ * 24
-                start = (y_ & 1) * 24
-                for x in range(int(start), int(self.width * 1.5), 48):
-                    painter.drawPixmap(x, y, self.image)
-        elif self.shouldTile:
-            for y_ in range(self.height >> 4):
-                y = y_ * 24
-                start = 24 * ((y_ & 1) ^ 1)
-                for x in range(int(start), int(self.width * 1.5), 48):
-                    painter.drawPixmap(x, y, self.image)
-
-        self.aux[0].paint(painter, None, None)
-
-        painter.restore()
+        return None
 
 
 class SpriteImage_Topman(SLib.SpriteImage_Static):  # 210
