@@ -745,9 +745,13 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
             newy = y + (h / 2) - (self.height / 2)
 
         # Translate that to relative coords
-        parent = self.parent
-        newx = newx - parent.x()
-        newy = newy - parent.y()
+        try:
+            parent = self.parent
+            newx = newx - parent.x()
+            newy = newy - parent.y()
+        except RuntimeError:
+            # Must catch this error -> if parent is deleted
+            return
 
         # Set the pos
         self.setPos(newx, newy)
