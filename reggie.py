@@ -24603,9 +24603,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             self.spriteDataEditor.update()
 
-            for field in self.spriteDataEditor.fields:
-                self.spriteDataEditor.HandleFieldUpdate(field)
-
         elif self.entranceEditorDock.isVisible():
             self.entranceEditor.setEntrance(self.selObj)
         elif self.pathEditorDock.isVisible():
