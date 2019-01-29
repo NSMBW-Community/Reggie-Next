@@ -6199,6 +6199,21 @@ class SpriteImage_LudwigVonKoopa(SLib.SpriteImage_Static):  # 348
         SLib.loadIfNotInImageCache('LudwigVonKoopa', 'Ludwig_Von_Koopa.png')
 
 
+class SpriteImage_MortonKoopaController(SLib.SpriteImage):  # 349
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 648, 408))
+        self.aux[0].image = ImageCache['MortonKoopaController']
+        self.aux[0].setPos(0, 0)
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 288))
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('MortonKoopaController', 'boss_controller_morton.png')
+
+
 class SpriteImage_RockyWrench(SLib.SpriteImage_Static):  # 352
     def __init__(self, parent):
         super().__init__(
@@ -6664,6 +6679,7 @@ class SpriteImage_LemmyKoopaController(SLib.SpriteImage):  # 381
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('LemmyKoopaController', 'boss_controller_lemmy.png')
+
 
 class SpriteImage_ScrewMushroomNoBolt(SpriteImage_ScrewMushroom):  # 382
     def __init__(self, parent):
@@ -8159,6 +8175,7 @@ ImageClasses = {
     346: SpriteImage_HangingChainPlatform,
     347: SpriteImage_RoyKoopa,
     348: SpriteImage_LudwigVonKoopa,
+    349: SpriteImage_MortonKoopaController,
     352: SpriteImage_RockyWrench,
     353: SpriteImage_Pipe_MovingDown,
     354: SpriteImage_BrownBlock,
