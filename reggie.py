@@ -16108,6 +16108,10 @@ class LevelScene(QtWidgets.QGraphicsScene):
                     desty += 24
                 painter.restore()
 
+    def getMainWindow(self):
+        global mainWindow
+        return mainWindow
+
 
 class LevelViewWidget(QtWidgets.QGraphicsView):
     """

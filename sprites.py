@@ -2437,12 +2437,32 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
         self.aux.append(SLib.AuxiliaryImage_FollowsRect(parent, i.width(), i.height()))
         self.aux[0].realimage = i
         self.aux[0].alignment = Qt.AlignTop | Qt.AlignRight
-        self.parent.scene().views()[0].repaint.connect(lambda: self.moveSunlight())
         self.aux[0].hover = False
+
+        # Moving the sunlight when a repaint occured is overkill and causes an
+        # infinite loop. Alternative idea: Only move the sunlight when
+        # - scrolling or
+        # - zooming
+        # This causes small visual bugs while moving the sprite, but moving this
+        # sprite makes little sense, so I guess it's fine.
+
+        slot = lambda: self.moveSunlight()
+
+        # scrolling
+        view = self.parent.scene().views()[0]
+        view.XScrollBar.valueChanged.connect(slot)
+        view.YScrollBar.valueChanged.connect(slot)
+
+        # zooming
+        self.parent.scene().getMainWindow().ZoomWidget.slider.valueChanged.connect(slot)
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Sunlight', 'sunlight.png')
+
+    def paint(self, painter):
+        self.moveSunlight()
+        SLib.SpriteImage.paint(self, painter)
 
     def moveSunlight(self):
         try:
