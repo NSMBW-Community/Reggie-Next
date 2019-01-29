@@ -18983,6 +18983,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             listItem = self.errorList.itemFromIndex(item)
             try:
                 listItem.fix()
+                SetDirty()
             except Exception:
                 pass  # fail silently
             self.errorList.takeItem(item.row())
