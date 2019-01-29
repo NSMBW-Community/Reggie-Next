@@ -1416,71 +1416,6 @@ class SpriteImage_UnusedRotPlatforms(SLib.SpriteImage):  # 52
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
-        self.aux.append(SLib.AuxiliaryCircleOutline(parent, 12 * 16, Qt.AlignCenter))
-        self.aux[0].setPos(-144, -104 - 40)
-        self.aux[0].fillFlag = False
-
-        self.aux.append(SLib.AuxiliaryPainterPath(parent, None, 13 * 24, 13 * 24))
-        self.aux[1].setPos(-144 - 24, -104 - 40 - 24)
-
-        self.aux.append(SLib.AuxiliaryPainterPath(parent, None, 13 * 24, 13 * 24))
-        self.aux[2].setPos(-144 - 24, -104 - 40 - 24)
-
-        self.aux.append(SLib.AuxiliaryPainterPath(parent, None, 13 * 24, 13 * 24))
-        self.aux[3].setPos(-144 - 24, -104 - 40 - 24)
-
-        self.aux.append(SLib.AuxiliaryPainterPath(parent, None, 13 * 24, 13 * 24))
-        self.aux[4].setPos(-144 - 24, -104 - 40 - 24)
-
-        #self.aux.append(SLib.AuxiliaryImage(parent, 432, 312))
-        #self.aux[1].image = ImageCache['UnusedRotPlatforms']
-        #self.aux[1].setPos(-144 - 72, -104 - 52)  # It actually isn't centered correctly in-game
-        #self.aux[1].hover = False
-        x = 24
-        HALF_SQRT_3 = (3 ** 0.5) / 2
-
-        points = (
-            (
-                (0, 0),
-                (HALF_SQRT_3 * x, -x/2),
-                (HALF_SQRT_3 * x, x/2)
-            ), (
-                (0, x / 2),
-                (HALF_SQRT_3 * x, 0),
-                (0, -x / 2),
-                (0, x / 2),
-            )
-        )
-
-        angles = (1 / 4, 3 / 4, 5 / 4, 7 / 4)
-        positions = (
-            (56, 56),
-            (257, 257),
-            #(56.235498012182866, 56.23549801218289),
-            #(327.7645019878171, 56.235498012182866),
-            #(327.76450198781714, 327.7645019878171),
-            #(56.23549801218291, 327.76450198781714)
-        )
-
-        self.arrows = []
-        for i in range(2):
-            for pos in positions:
-                PainterPath = QtGui.QPainterPath()
-
-                for point in points[i]:
-                    PainterPath.lineTo(QtCore.QPointF(point[0], point[1]))
-                PainterPath.closeSubpath()
-
-                #x = 12 * 16 * (1 - math.cos(angle * math.pi))
-                #y = 12 * 16 * (1 - math.sin(angle * math.pi))
-                x = pos[0]
-                y = pos[1]
-                print(x, y)
-
-                PainterPath.translate(x, y)
-                self.arrows.append(PainterPath)
-
-
     @staticmethod
     def loadImages():
         if 'UnusedRotPlatforms' in ImageCache:
@@ -1503,18 +1438,6 @@ class SpriteImage_UnusedRotPlatforms(SLib.SpriteImage):  # 52
         del paint
 
         ImageCache['UnusedRotPlatforms'] = img
-
-    def dataChanged(self):
-        super().dataChanged()
-
-        goesClockwise = self.parent.spritedata[3] & 1
-
-        #self.aux[1].SetPath(self.arrows[goesClockwise * 4])
-        #self.aux[2].SetPath(self.arrows[goesClockwise * 4 + 1])
-        #self.aux[3].SetPath(self.arrows[goesClockwise * 4 + 2])
-        #self.aux[4].SetPath(self.arrows[goesClockwise * 4 + 3])
-        for i in range(1, 5):
-            self.aux[i].SetPath(self.arrows[i - 1])
 
 
 class SpriteImage_Lakitu(SLib.SpriteImage_Static):  # 54
