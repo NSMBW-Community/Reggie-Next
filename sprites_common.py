@@ -75,7 +75,7 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
 
         self.aux[0].setSize(self.width * 1.5, self.height * 1.5)
 
-        type_ = (self.parent.spritedata[4] >> 4) & 0x7
+        type_ = self.parent.spritedata[4] >> 4
         if type_ in self.notAllowedTypes:
             self.spritebox.shown = True
             self.image = None
