@@ -22230,17 +22230,21 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handles an item being clicked in the Events tab
         """
+        # Write the current note to the event note editor
         noteText = item.text(1)
         self.eventNotesEditor.setText(noteText)
+
         selIdx = self.eventChooserItems.index(item)
-        if item.checkState(0):
+        isOn = (Area.defEvents & 1 << selIdx) == 1 << selIdx
+        if item.checkState(0) == Qt.Checked and not isOn:
             # Turn a bit on
             Area.defEvents |= 1 << selIdx
-        else:
-            # Turn a bit off (invert, turn on, invert)
-            Area.defEvents = ~Area.defEvents
-            Area.defEvents |= 1 << selIdx
-            Area.defEvents = ~Area.defEvents
+            SetDirty()
+        elif item.checkState(0) == Qt.Unchecked and isOn:
+            # Turn a bit off (mask out 1 bit)
+            Area.defEvents &= ~(1 << selIdx)
+            SetDirty()
+
 
     def handleEventNotesEdit(self):
         """
