@@ -6131,6 +6131,10 @@ class SpriteItem(LevelEditorItem):
             SLib.SpriteImagesLoaded.add(self.type)
         self.ImageObj = obj(self)
 
+        # show auxiliary objects properly
+        for aux in self.ImageObj.aux:
+            aux.setVisible(SpriteImagesShown)
+
         self.UpdateDynamicSizing()
 
     def UpdateDynamicSizing(self):
