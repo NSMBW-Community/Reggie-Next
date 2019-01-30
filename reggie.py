@@ -4743,6 +4743,9 @@ class ObjectItem(LevelEditorItem):
         self.height = height
         self.objdata = None
 
+        self.TLGrabbed = self.TRGrabbed = self.BLGrabbed = self.BRGrabbed = False
+        self.MTGrabbed = self.MLGrabbed = self.MBGrabbed = self.MRGrabbed = False
+
         self.setFlag(self.ItemIsMovable, not ObjectsFrozen)
         self.setFlag(self.ItemIsSelectable, not ObjectsFrozen)
         self.UpdateRects()
@@ -5000,14 +5003,21 @@ class ObjectItem(LevelEditorItem):
         self.BoundingRect = QtCore.QRectF(0, 0, 24 * self.width, 24 * self.height)
         self.SelectionRect = QtCore.QRectF(0, 0, (24 * self.width) - 1, (24 * self.height) - 1)
 
-        self.GrabberRectTL = QtCore.QRectF(0, 0, 4.8, 4.8)
-        self.GrabberRectTR = QtCore.QRectF((24 * self.width) - 4.8, 0, 4.8, 4.8)
-        self.GrabberRectBL = QtCore.QRectF(0, (24 * self.height) - 4.8, 4.8, 4.8)
-        self.GrabberRectBR = QtCore.QRectF((24 * self.width) - 4.8, (24 * self.height) - 4.8, 4.8, 4.8)
-        self.GrabberRectMT = QtCore.QRectF(((24 * self.width) - 4.8) / 2, 0, 4.8, 4.8)
-        self.GrabberRectML = QtCore.QRectF(0, ((24 * self.height) - 4.8) / 2, 4.8, 4.8)
-        self.GrabberRectMB = QtCore.QRectF(((24 * self.width) - 4.8) / 2, (24 * self.height) - 4.8, 4.8, 4.8)
-        self.GrabberRectMR = QtCore.QRectF((24 * self.width) - 4.8, ((24 * self.height) - 4.8) / 2, 4.8, 4.8)
+        grabberwidth = 4.8 + self.width * self.height * 0.01
+
+        # make sure the grabbers don't overlap
+        grabberwidth = min(grabberwidth, self.width * 9, self.height * 9)
+
+        self.GrabberRectTL = QtCore.QRectF(0, 0, grabberwidth, grabberwidth)
+        self.GrabberRectTR = QtCore.QRectF((24 * self.width) - grabberwidth, 0, grabberwidth, grabberwidth)
+
+        self.GrabberRectBL = QtCore.QRectF(0, (24 * self.height) - grabberwidth, grabberwidth, grabberwidth)
+        self.GrabberRectBR = QtCore.QRectF((24 * self.width) - grabberwidth, (24 * self.height) - grabberwidth, grabberwidth, grabberwidth)
+
+        self.GrabberRectMT = QtCore.QRectF(((24 * self.width) - grabberwidth) / 2, 0, grabberwidth, grabberwidth)
+        self.GrabberRectML = QtCore.QRectF(0, ((24 * self.height) - grabberwidth) / 2, grabberwidth, grabberwidth)
+        self.GrabberRectMB = QtCore.QRectF(((24 * self.width) - grabberwidth) / 2, (24 * self.height) - grabberwidth, grabberwidth, grabberwidth)
+        self.GrabberRectMR = QtCore.QRectF((24 * self.width) - grabberwidth, ((24 * self.height) - grabberwidth) / 2, grabberwidth, grabberwidth)
 
         self.LevelRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
 
@@ -5072,18 +5082,51 @@ class ObjectItem(LevelEditorItem):
         """
         global theme
 
-        if self.isSelected():
-            painter.setPen(QtGui.QPen(theme.color('object_lines_s'), 1, Qt.DotLine))
-            painter.drawRect(self.SelectionRect)
-            painter.fillRect(self.SelectionRect, theme.color('object_fill_s'))
+        if not self.isSelected():
+            return
 
+        painter.setPen(QtGui.QPen(theme.color('object_lines_s'), 1, Qt.DotLine))
+        painter.drawRect(self.SelectionRect)
+        painter.fillRect(self.SelectionRect, theme.color('object_fill_s'))
+
+        if self.TLGrabbed:
+            painter.fillRect(self.GrabberRectTL, theme.color('object_lines_r'))
+        else:
             painter.fillRect(self.GrabberRectTL, theme.color('object_lines_s'))
+
+        if self.TRGrabbed:
+            painter.fillRect(self.GrabberRectTR, theme.color('object_lines_r'))
+        else:
             painter.fillRect(self.GrabberRectTR, theme.color('object_lines_s'))
+
+        if self.BLGrabbed:
+            painter.fillRect(self.GrabberRectBL, theme.color('object_lines_r'))
+        else:
             painter.fillRect(self.GrabberRectBL, theme.color('object_lines_s'))
+
+        if self.BRGrabbed:
+            painter.fillRect(self.GrabberRectBR, theme.color('object_lines_r'))
+        else:
             painter.fillRect(self.GrabberRectBR, theme.color('object_lines_s'))
+
+        if self.MTGrabbed:
+            painter.fillRect(self.GrabberRectMT, theme.color('object_lines_r'))
+        else:
             painter.fillRect(self.GrabberRectMT, theme.color('object_lines_s'))
+
+        if self.MLGrabbed:
+            painter.fillRect(self.GrabberRectML, theme.color('object_lines_r'))
+        else:
             painter.fillRect(self.GrabberRectML, theme.color('object_lines_s'))
+
+        if self.MBGrabbed:
+            painter.fillRect(self.GrabberRectMB, theme.color('object_lines_r'))
+        else:
             painter.fillRect(self.GrabberRectMB, theme.color('object_lines_s'))
+
+        if self.MRGrabbed:
+            painter.fillRect(self.GrabberRectMR, theme.color('object_lines_r'))
+        else:
             painter.fillRect(self.GrabberRectMR, theme.color('object_lines_s'))
 
     def mousePressEvent(self, event):
@@ -5152,6 +5195,7 @@ class ObjectItem(LevelEditorItem):
             self.objsDragging = {}
 
         self.UpdateTooltip()
+        self.update()
 
     def UpdateObj(self, oldX, oldY, newSize):
         """
@@ -5440,6 +5484,15 @@ class ObjectItem(LevelEditorItem):
         self.RemoveFromSearchDatabase()
         Area.RemoveFromLayer(self)
         self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+
+    def mouseReleaseEvent(self, event):
+        """
+        Overrides releasing the mouse after a move
+        """
+        self.TLGrabbed = self.TRGrabbed = self.BLGrabbed = self.BRGrabbed = False
+        self.MTGrabbed = self.MLGrabbed = self.MBGrabbed = self.MRGrabbed = False
+        event.accept()
+        self.update()
 
 
 class AbstractBackground:
@@ -13836,6 +13889,7 @@ class ReggieTheme:
             'location_text': QtGui.QColor(255, 255, 255),  # Location text
             'object_fill_s': QtGui.QColor(255, 255, 255, 64),  # Select object fill
             'object_lines_s': QtGui.QColor(255, 255, 255),  # Selected object lines
+            'object_lines_r': QtGui.QColor(0, 148, 255),  # Clicked object corner
             'overview_entrance': QtGui.QColor(255, 0, 0),  # Overview entrance fill
             'overview_location_fill': QtGui.QColor(114, 42, 188, 50),  # Overview location fill
             'overview_location_lines': QtGui.QColor(0, 0, 0),  # Overview location lines
