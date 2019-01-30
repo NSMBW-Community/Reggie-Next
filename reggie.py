@@ -2536,7 +2536,7 @@ def _LoadTileset(idx, name, reload=False):
             sourcey += 32
 
     # Load the tileset animations, if there are any
-    tileoffset = idx*256
+    tileoffset = idx * 256
     row = 0
     col = 0
 
@@ -3548,11 +3548,9 @@ class AbstractParsedArea(AbstractArea):
         self.LoadTilesetNames()  # block 1
         self.LoadOptions()  # block 2
         self.LoadEntrances()  # block 7
-        self.LoadSprites()  # block 8
         self.LoadZones()  # block 10 (also blocks 3, 5, and 6)
         self.LoadLocations()  # block 11
         self.LoadPaths()  # block 12 and 13
-
         # Load the editor metadata
         if self.block1pos[0] != 0x70:
             rddata = course[0x70:self.block1pos[0]]
@@ -3596,6 +3594,8 @@ class AbstractParsedArea(AbstractArea):
                 app.splashScreen.setProgress(trans.string('Splash', 1), 6)
 
             firstLoad = False
+
+        self.LoadSprites()  # block 8
 
         self.layers = [[], [], []]
 
@@ -22245,7 +22245,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             Area.defEvents &= ~(1 << selIdx)
             SetDirty()
 
-
     def handleEventNotesEdit(self):
         """
         Handles the text within self.eventNotesEditor changing
@@ -23830,7 +23829,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.UpdateTitle()
 
         # Update UI things
-        self.scene.update()
+        self.scene.update(0, 0, self.scene.width(), self.scene.height())
 
         self.levelOverview.Reset()
         self.levelOverview.update()
