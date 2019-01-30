@@ -5232,7 +5232,7 @@ class ObjectItem(LevelEditorItem):
                     clickedx = 0
 
                 if clickedx != dsx or clickedy != dsy:
-                    self.dragstartx= clickedx
+                    self.dragstartx = clickedx
 
                     for obj in self.objsDragging:
                         oldHeight = self.objsDragging[obj][1] + 0
@@ -5256,7 +5256,7 @@ class ObjectItem(LevelEditorItem):
                             if newY >= 0 and newY + newHeight == obj.objy + obj.height:
                                 obj.objy = newY
                                 newSize[1] = newHeight
-                                obj.setPos(cx * 24, newY * 24)
+                                obj.setPos(obj.objx * 24, newY * 24)
 
                             else:
                                 self.objsDragging[obj][1] = oldHeight
@@ -5351,7 +5351,7 @@ class ObjectItem(LevelEditorItem):
                             if newY >= 0 and newY + newHeight == obj.objy + obj.height:
                                 obj.objy = newY
                                 newSize[1] = newHeight
-                                obj.setPos(cx * 24, newY * 24)
+                                obj.setPos(obj.objx * 24, newY * 24)
 
                             else:
                                 self.objsDragging[obj][1] = oldHeight
