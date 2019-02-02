@@ -5489,9 +5489,10 @@ class ObjectItem(LevelEditorItem):
         """
         Overrides releasing the mouse after a move
         """
+        LevelEditorItem.mouseReleaseEvent(self, event)
+
         self.TLGrabbed = self.TRGrabbed = self.BLGrabbed = self.BRGrabbed = False
         self.MTGrabbed = self.MLGrabbed = self.MBGrabbed = self.MRGrabbed = False
-        event.accept()
         self.update()
 
 
