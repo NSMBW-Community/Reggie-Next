@@ -6483,6 +6483,22 @@ class SpriteImage_RoyKoopaController(SLib.SpriteImage):  # 364
         SLib.loadIfNotInImageCache('RoyKoopaController', 'boss_controller_roy.png')
 
 
+class SpriteImage_LudwigVonKoopaController(SLib.SpriteImage):  # 365
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 720, 840))
+        self.aux[0].image = ImageCache['LudwigVonKoopaController']
+        self.aux[0].setPos(-24, -360)
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 24, 288))
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 528, 24, 72, 264))
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('LudwigVonKoopaController', 'boss_controller_ludwig.png')
+
+
 class SpriteImage_CubeKinokoRot(SLib.SpriteImage_StaticMultiple):  # 366
     @staticmethod
     def loadImages():
@@ -8212,6 +8228,7 @@ ImageClasses = {
     361: SpriteImage_CrystalBlock,
     362: SpriteImage_ColoredBox,
     364: SpriteImage_RoyKoopaController,
+    365: SpriteImage_LudwigVonKoopaController,
     366: SpriteImage_CubeKinokoRot,
     367: SpriteImage_CubeKinokoLine,
     368: SpriteImage_FlashRaft,
