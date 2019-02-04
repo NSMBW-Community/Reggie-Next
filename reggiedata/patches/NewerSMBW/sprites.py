@@ -128,7 +128,7 @@ class SpriteImage_GiantThwomp(SLib.SpriteImage_StaticMultiple):  # 48
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('GiantThwomp', 'giant_thwomp.png')
-        SLib.loadIfNotInImageCache('GiantThwompIce', 'thwomp_ice.png')
+        SLib.loadIfNotInImageCache('GiantThwompIce', 'giant_thwomp_ice.png')
 
     def dataChanged(self):
         icy = self.parent.spritedata[2] & 1
