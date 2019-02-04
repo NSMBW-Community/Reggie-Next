@@ -3119,13 +3119,29 @@ class SpriteImage_FloatingBarrel(SLib.SpriteImage_Static):  # 145
         super().__init__(
             parent,
             1.5,
-            ImageCache['FloatingBarrel'],
-            (-16, -9),
+            offset = (-16, -9)
         )
+
+        img = ImageCache['FloatingBarrel']
+        self.width = (img.width() / self.scale) + 1
+        self.height = (img.height() / self.scale) + 2
+
+        self.aux.append(SLib.AuxiliaryImage(parent, img.width(), img.height()))
+        self.aux[0].image = img
+
+        path = QtGui.QPainterPath()
+        path.lineTo(QtCore.QPointF(self.width * 1.5, 0))
+
+        self.aux.append(SLib.AuxiliaryPainterPath(parent, path, img.width(),
+            SLib.OutlinePen.width(), 0, 14))
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('FloatingBarrel', 'barrel_floating.png')
+
+    def dataChanged(self):
+        # Don't let SLib.SpriteImage_Static reset size
+        SLib.SpriteImage.dataChanged(self)
 
 
 class SpriteImage_ChainChomp(SLib.SpriteImage_Static):  # 146
