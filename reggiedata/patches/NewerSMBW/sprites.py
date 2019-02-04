@@ -195,6 +195,46 @@ class SpriteImage_NewerKoopa(SLib.SpriteImage_StaticMultiple):  # 57
         super().dataChanged()
 
 
+class SpriteImage_NewerBouncyCloud(SLib.SpriteImage_StaticMultiple):  # 78
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['CloudTrSmall'],
+            (-2, -2),
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('CloudTrBig', 'cloud_trampoline_big.png')
+        SLib.loadIfNotInImageCache('CloudTrSmall', 'cloud_trampoline_small.png')
+
+        if 'CloudTrBig1' in ImageCache:
+            return
+
+        for size in ("Big", "Small"):
+            for style in range(1, 7):
+                name = "CloudTr%s%d" % (size, style)
+                ImageCache[name] = SLib.GetImg("cloud_trampoline_%s%d.png" % (size.lower(), style))
+
+    def dataChanged(self):
+        style = self.parent.spritedata[2] & 0xF
+        raw_size = (self.parent.spritedata[4] >> 4) & 1
+        size = "Small" if raw_size == 0 else "Big"
+
+        if style == 0 or style > 6:
+            self.image = ImageCache['CloudTr%s' % size]
+            self.offset = (-2, -2)
+        elif style == 6 and size == "Small":
+            self.image = ImageCache['CloudTrSmall6']
+            self.offset = (64, 27)
+        else:
+            self.image = ImageCache['CloudTr%s%d' % (size, style)]
+            self.offset = (-2, -2)
+
+        super().dataChanged()
+
+
 class SpriteImage_GiantSpikeBall(SLib.SpriteImage_StaticMultiple):  # 98
     def __init__(self, parent):
         super().__init__(
@@ -542,6 +582,7 @@ ImageClasses = {
     48: SpriteImage_GiantThwomp,
     49: SpriteImage_FakeStarCoin,
     57: SpriteImage_NewerKoopa,
+    78: SpriteImage_NewerBouncyCloud,
     98: SpriteImage_GiantSpikeBall,
     157: SpriteImage_BigPumpkin,
     168: SpriteImage_Thundercloud,

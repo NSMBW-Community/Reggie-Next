@@ -1966,13 +1966,11 @@ class SpriteImage_CloudTrampoline(SLib.SpriteImage_StaticMultiple):  # 78
 
     def dataChanged(self):
 
-        size = (self.parent.spritedata[4] & 0x10) >> 4
+        size = (self.parent.spritedata[4] >> 4) & 1
         if size == 0:
             self.image = ImageCache['CloudTrSmall']
-            self.size = (68, 27)
         else:
             self.image = ImageCache['CloudTrBig']
-            self.size = (132, 32)
 
         super().dataChanged()
 
