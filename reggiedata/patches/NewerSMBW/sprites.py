@@ -195,6 +195,27 @@ class SpriteImage_NewerKoopa(SLib.SpriteImage_StaticMultiple):  # 57
         super().dataChanged()
 
 
+class SpriteImage_NewerSpikeBall(SLib.SpriteImage_StaticMultiple):  # 63
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['SpikeBall'],
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('SpikeBall', 'spike_ball.png')
+        SLib.loadIfNotInImageCache('SnowBall', 'snow_ball.png')
+
+    def dataChanged(self):
+        snowy = self.parent.spritedata[2] & 1
+        if snowy:
+            self.image = ImageCache['SnowBall']
+        else:
+            self.image = ImageCache['SpikeBall']
+
+
 class SpriteImage_NewerBouncyCloud(SLib.SpriteImage_StaticMultiple):  # 78
     def __init__(self, parent):
         super().__init__(
@@ -583,6 +604,7 @@ ImageClasses = {
     49: SpriteImage_FakeStarCoin,
     57: SpriteImage_NewerKoopa,
     78: SpriteImage_NewerBouncyCloud,
+    63: SpriteImage_NewerSpikeBall,
     98: SpriteImage_GiantSpikeBall,
     157: SpriteImage_BigPumpkin,
     168: SpriteImage_Thundercloud,
