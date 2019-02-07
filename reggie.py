@@ -3032,6 +3032,7 @@ AutoSavePath = ''
 AutoSaveData = b''
 AutoOpenScriptEnabled = False
 CurrentLevelNameForAutoOpenScript = None
+HideResetSpritedata = False
 
 
 def createHorzLine():
@@ -11962,7 +11963,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.showRawData.setVisible(not AdvancedModeEnabled)
         self.raweditor.setVisible(AdvancedModeEnabled)
         self.editbox.setVisible(AdvancedModeEnabled)
-        self.resetButton.setVisible(AdvancedModeEnabled or len(sprite.fields) > 0)
+        self.resetButton.setVisible(not HideResetSpritedata and (AdvancedModeEnabled or len(sprite.fields) > 0))
 
         # show size stuff
         self.sizeButton.setVisible(sprite.size)
@@ -15551,6 +15552,8 @@ class ReggieTranslation:
                 30: 'You may need to restart Reggie Next for changes to take effect.',
                 31: 'Display lines indicating the leftmost x-position where entrances can be safely placed in zones',
                 32: 'Enable advanced mode',
+                33: 'Reset sprite data when hiding sprite fields',
+                34: 'Hide Reset Spritedata button'
             },
             'QuickPaint': {
                 1: "WOAH! Watch out!",
@@ -20407,8 +20410,10 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.advIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 32))
 
                 # Reset data when hide checkbox
-                # TODO: Add this to strings
-                self.rdhIndicator = QtWidgets.QCheckBox("Reset sprite data when hiding sprite fields")
+                self.rdhIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 33))
+
+                # Hide reset spritedata button
+                self.erbIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 34))
 
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
@@ -20418,6 +20423,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L.addWidget(self.zEntIndicator)
                 L.addWidget(self.advIndicator)
                 L.addWidget(self.rdhIndicator)
+                L.addWidget(self.erbIndicator)
                 self.setLayout(L)
 
                 # Set the buttons
@@ -20453,6 +20459,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.zEntIndicator.setChecked(DrawEntIndicators)
                 self.advIndicator.setChecked(AdvancedModeEnabled)
                 self.rdhIndicator.setChecked(ResetDataWhenHiding)
+                self.erbIndicator.setChecked(HideResetSpritedata)
 
             def ClearRecent(self):
                 """
@@ -23124,6 +23131,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         global ResetDataWhenHiding
         ResetDataWhenHiding = dlg.generalTab.rdhIndicator.isChecked()
         setSetting('ResetDataWhenHiding', ResetDataWhenHiding)
+
+        # Get the reset data when hiding setting
+        global HideResetSpritedata
+        HideResetSpritedata = dlg.generalTab.erbIndicator.isChecked()
+        setSetting('HideResetSpritedata', HideResetSpritedata)
 
         # Get the Toolbar tab settings
         boxes = (
