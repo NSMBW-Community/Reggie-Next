@@ -5826,6 +5826,7 @@ class LocationItem(LevelEditorItem):
         self.height = height
         self.id = id
         self.listitem = None
+
         self.UpdateTitle()
         self.UpdateRects()
 
@@ -5852,6 +5853,12 @@ class LocationItem(LevelEditorItem):
         Updates the location's title
         """
         self.title = trans.string('Locations', 0, '[id]', self.id)
+
+        # since font never changes, we can just define TitleRect here
+        metrics = QtGui.QFontMetrics(self.font)
+        self.TitleRect = QtCore.QRectF(metrics.boundingRect(self.title))
+        self.TitleRect.moveTo(4, 4)
+
         self.UpdateListItem()
 
     def __lt__(self, other):
@@ -5864,7 +5871,10 @@ class LocationItem(LevelEditorItem):
         self.prepareGeometryChange()
         if self.width == 0: self.width == 1
         if self.height == 0: self.height == 1
+
         self.BoundingRect = QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5)
+        self.BoundingRect = self.BoundingRect.united(self.TitleRect)
+
         self.SelectionRect = QtCore.QRectF(self.objx * 1.5, self.objy * 1.5, self.width * 1.5, self.height * 1.5)
         self.ZoneRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
         self.DrawRect = QtCore.QRectF(1, 1, (self.width * 1.5) - 2, (self.height * 1.5) - 2)
@@ -5891,10 +5901,11 @@ class LocationItem(LevelEditorItem):
         # Draw the ID
         painter.setPen(QtGui.QPen(theme.color('location_text')))
         painter.setFont(self.font)
-        painter.drawText(self.TitlePos, self.title)
+        painter.drawText(self.TitleRect, self.title)
 
         # Draw the resizer rectangle, if selected
-        if self.isSelected(): painter.fillRect(self.GrabberRect, theme.color('location_lines_s'))
+        if self.isSelected():
+            painter.fillRect(self.GrabberRect, theme.color('location_lines_s'))
 
     def mousePressEvent(self, event):
         """
