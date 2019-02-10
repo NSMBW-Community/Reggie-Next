@@ -5819,7 +5819,6 @@ class LocationItem(LevelEditorItem):
         LevelEditorItem.__init__(self)
 
         self.font = NumberFont
-        self.TitlePos = QtCore.QPointF(4, 12)
         self.objx = x
         self.objy = y
         self.width = width
@@ -16212,6 +16211,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         self.setVerticalScrollBar(self.YScrollBar)
         self.setHorizontalScrollBar(self.XScrollBar)
 
+        short_HOME = QtWidgets.QShortcut(QtGui.QKeySequence.MoveToStartOfLine, self.XScrollBar)
+        short_HOME.activated.connect(lambda: self.XScrollBar.setValue(self.XScrollBar.value() - self.XScrollBar.pageStep()))
+
+        short_END = QtWidgets.QShortcut(QtGui.QKeySequence.MoveToEndOfLine, self.XScrollBar)
+        short_END.activated.connect(lambda: self.XScrollBar.setValue(self.XScrollBar.value() + self.XScrollBar.pageStep()))
+
         self.currentobj = None
         self.mouseGridPosition = None  # QUICKPAINT purposes
         self.prev_mouseGridPosition = None  # QUICKPAINT purposes
@@ -16220,7 +16225,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Overrides mouse pressing events if needed
         """
-        if event.button() == Qt.RightButton:
+
+        if event.button() == Qt.BackButton:
+            self.XScrollBar.setValue(self.XScrollBar.value() - self.XScrollBar.singleStep())
+        elif event.button() == Qt.ForwardButton:
+            self.XScrollBar.setValue(self.XScrollBar.value() + self.XScrollBar.singleStep())
+        elif event.button() == Qt.RightButton:
             if mainWindow.quickPaint and mainWindow.quickPaint.QuickPaintMode:
                 mw = mainWindow
                 ln = CurrentLayer
