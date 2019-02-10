@@ -16227,9 +16227,19 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
 
         if event.button() == Qt.BackButton:
-            self.XScrollBar.setValue(self.XScrollBar.value() - self.XScrollBar.singleStep())
+            self.xButtonScrollTimer = QtCore.QTimer()
+            self.xButtonScrollTimer.timeout.connect(
+                lambda: self.XScrollBar.setValue(self.XScrollBar.value() - self.XScrollBar.singleStep())
+            )
+            self.xButtonScrollTimer.start(100)
+
         elif event.button() == Qt.ForwardButton:
-            self.XScrollBar.setValue(self.XScrollBar.value() + self.XScrollBar.singleStep())
+            self.xButtonScrollTimer = QtCore.QTimer()
+            self.xButtonScrollTimer.timeout.connect(
+                lambda: self.XScrollBar.setValue(self.XScrollBar.value() + self.XScrollBar.singleStep())
+            )
+            self.xButtonScrollTimer.start(100)
+
         elif event.button() == Qt.RightButton:
             if mainWindow.quickPaint and mainWindow.quickPaint.QuickPaintMode:
                 mw = mainWindow
@@ -16830,6 +16840,9 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 QuickPaintOperations.EraseFromPreErasedObjects()
 
             QuickPaintOperations.optimizeObjects()
+
+        elif event.button() in (Qt.BackButton, Qt.ForwardButton):
+            self.xButtonScrollTimer.stop()
 
         elif event.button() == Qt.RightButton:
             self.currentobj = None
