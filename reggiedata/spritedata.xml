@@ -10428,13 +10428,14 @@
       <required sprite="260"/>
     </dependency>
     <value nybble="5-6" title="Two Way Line ID" comment="This pairs the block to a matching Two Way Line movement controller." idtype="Two Way Line"/>
+    <checkbox nybble="11" title="Upside-Down" comment="Flips the block upside down. This doesn't affect its movement."/>
     <list nybble="12" title="Size" comment="">
       <entry value="1">Thin (4x9)</entry>
       <entry value="0">Single (7x9)</entry>
       <entry value="3">Wide (8x9)</entry>
       <entry value="2">Double (14x9)</entry>
     </list>
-  </sprite> <!-- #460: Silver Gear Block -->
+  </sprite>	<!-- #460: Silver Gear Block -->
 
   <sprite id="461" name="Crowd Clapping Controller for Coin Collection #2" notes="A controller that generates a clapping sound when the player collects the listed number of coinso f both types from the Collection ID group. Seems to be identical to #1.">
     <value nybble="7-8" title="# of Blue Coins Required" comment="This determines the number of paired blue coins required to trigger the Crowd Clapper."/>
