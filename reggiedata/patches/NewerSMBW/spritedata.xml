@@ -307,7 +307,7 @@
       <entry value="5">SMB3 Underwater |**** | (Sewer)</entry>
       <entry value="12">Ghost Luigi Mansion theme |**** | (Ghost)</entry>
       <entry value="4">SMB3 Hammer Bros |*****| (MiniMega)</entry>
-      <entry value="14">Gusty Garden Galaxy |*****| (Space)</entry> 
+      <entry value="14">Gusty Garden Galaxy |*****| (Space)</entry>
       <entry value="15">Unused Slot |     | ()</entry>
     </list>
     <checkbox bit="44" title="Always used in NewerSMBW" comment="Unknown effect." advanced="True" advancedcomment="While this is always used in NewerSMBW's Music Houses, there's no discernable difference between having this enabled and not."/>
@@ -640,7 +640,7 @@
   <sprite id="34" name="Event Controller - &quot;AND&quot; (If X AND Y, do Z)" notes="This Event Controller works by allowing up to 4 Event IDs to be required to modify a single Event. Not all Triggering Event IDs must be set to a relevant value. You can and should leave unused Triggering Event IDs as '0'. You should also fill Triggering IDs in numerical order. Using the same value with multiple Event ID slots may cause issues in the editor.">
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when all set Triggering Events are activated." idtype="Target Event"/>
     <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are activated."/>
-    <value bit="1-8" title="Triggering Event ID 1" comment="All Triggering Events must be enabled for this Event Controller to function. A value of 0 is ignored." comment2="If you find yourself experiencing issues, please try resetting this Sprite's Settings." idtype="Triggering Event"/> 
+    <value bit="1-8" title="Triggering Event ID 1" comment="All Triggering Events must be enabled for this Event Controller to function. A value of 0 is ignored." comment2="If you find yourself experiencing issues, please try resetting this Sprite's Settings." idtype="Triggering Event"/>
     <value bit="17-24" title="Triggering Event ID 2" requiredbit="1-8" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
     <value bit="25-32" title="Triggering Event ID 3" requiredbit="17-24" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
     <value bit="33-40" title="Triggering Event ID 4" requiredbit="25-32" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
@@ -655,7 +655,7 @@
   <sprite id="35" name="Event Controller - &quot;OR&quot; (If X OR Y, do Z)" notes="This Event Controller works by allowing up to 4 Event IDs to be able to modify a single Event. Not all Triggering Event IDs must be set to a relevant value. You can and should leave unused Triggering Event IDs as '0'. You should also fill Triggering IDs in numerical order. Using the same value with multiple Event ID slots may cause issues in the editor.">
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when any of the set Triggering Events are activated." idtype="Target Event"/>
     <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are activated."/>
-    <value bit="1-8" title="Triggering Event ID 1" comment="Any Triggering Events that are enabled will cause this Event Controller to function. A value of 0 is ignored." comment2="If you find yourself experiencing issues, please try resetting this Sprite's Settings." idtype="Triggering Event"/> 
+    <value bit="1-8" title="Triggering Event ID 1" comment="Any Triggering Events that are enabled will cause this Event Controller to function. A value of 0 is ignored." comment2="If you find yourself experiencing issues, please try resetting this Sprite's Settings." idtype="Triggering Event"/>
     <value bit="17-24" title="Triggering Event ID 2" requiredbit="1-8" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
     <value bit="25-32" title="Triggering Event ID 3" requiredbit="17-24" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
     <value bit="33-40" title="Triggering Event ID 4" requiredbit="25-32" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
@@ -667,7 +667,7 @@
   </sprite> <!-- #35: Event Controller - "OR" (If X OR Y, do Z) -->
   
   <sprite id="36" name="Event Controller - &quot;RANDOM&quot; (If X, do Y OR Z)" notes="This Event Controller can cause one of the four random IDs to trigger if the relevant Event ID has been activated. You do not have to use all four Random ID slots, and you can use the same Event ID on multiple slots. &lt;br&gt;&lt;br&gt;Example: ID A in slot 1, ID A in slot 2 and ID B in slot 3 will cause 2/3 chance of A being activated and 1/3 chance of B.">
-    <value bit="1-8" title="Target Event ID 1" comment="Not all Target Event IDs are required to be used, and you can affect the probability by using the same Event ID in multiple slots." comment2="If you find yourself experiencing issues, please try resetting this Sprite's Settings." idtype="Target Event"/> 
+    <value bit="1-8" title="Target Event ID 1" comment="Not all Target Event IDs are required to be used, and you can affect the probability by using the same Event ID in multiple slots." comment2="If you find yourself experiencing issues, please try resetting this Sprite's Settings." idtype="Target Event"/>
     <value bit="17-24" title="Target Event ID 2" requiredbit="1-8" idtype="Target Event"/> <!-- Multiple Target Event IDtypes may not function -->
     <value bit="25-32" title="Target Event ID 3" requiredbit="17-24" idtype="Target Event"/> <!-- Multiple Target Event IDtypes may not function -->
     <value bit="33-40" title="Target Event ID 4" requiredbit="25-32" idtype="Target Event"/> <!-- Multiple Target Event IDtypes may not function -->
@@ -807,7 +807,7 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #42: "!" Switch (Red) -->
   
-<!-- These notes apply to 43, 44, and 45 -->  
+<!-- These notes apply to 43, 44, and 45 -->
 <!-- Make a quick test level to show general functionality of a Brick Block switch with a Triggering Event. Does it appear after being struck if the event is later turned on? Does it only appear if the event is on before the block is struck? -->
   <sprite id="43" name="Brick Block &quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <list bit="29-32" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch.">
@@ -876,7 +876,7 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #45: Brick Block "!" Switch (Red) -->  
+  </sprite> <!-- #45: Brick Block "!" Switch (Red) -->
   
   <sprite id="46" name="Lava Bubble (Podoboo)" asmhacks="True" sizehacks="True" notes="The Lava Bubble (Podoboo) is a firey enemey that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava.">
     <dependency notes="The Podoboo requires [139] Lava within 15 blocks underneath it in order to appear.">
@@ -1095,7 +1095,7 @@
   
   <sprite id="61" name="Big Boo" sizehacks="True" notes="A large version of the Boo enemy.">
     <checkbox bit="48" title="Slightly Faster" comment="When enabled, the Big Boo will move slightly faster."/>
-    <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/> 
+    <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #61: Big Boo -->
   
   <sprite id="62" name="Spinning Firebar" notes="A Spinning Firebar like one you would find in a Castle stage.">
@@ -1241,7 +1241,7 @@
 <!-- Determine the scope of this event controller with a video showcasing its behavior with a delay of 6 and 10 Red Coins. Create a Zone that the player will stand in and an IF controller that governs the Looper. Stand in it until the coins have come on, and all gone off, at least twice (assuming they turn off). If they do not turn off, exit the location and observe the behavior. If they do turn off, exit the location after half of the coins have come on and observe the behavior. -->
 <!-- My descriptions here are operating under the assumption that it proceeds to disable each event after having activated it before it proceeds to the next. It also assumes that it must complete the full sequence before deactivating even when the Triggering Event ID is deactivated. -->
   <sprite id="79" name="Event Controller - Looper (If X, do Y THEN Z+, Repeat)" asmhacks="True" notes="Similar to the Multi-Chainer, this controller will activate a sequence of Events ranging from [Target Event ID Start] through [Target Event ID End]. However, it will only activate one event at a time. After activating one event, it will deactivate it and activate the next event. Once it has done this for all events, if the [Triggering Event ID] is still activated, it will return to [Target Event ID Start] and begin again.">
-    <value bit="33-40" title="Triggering Event ID" idtype="Triggering Event"/> 
+    <value bit="33-40" title="Triggering Event ID" idtype="Triggering Event"/>
     <value bit="17-24" title="Target Event ID Start" comment="When the Triggering Event is activated, this Event ID will be activated first. It will then run until it reaches [Target Event ID End]."/>
     <value bit="25-32" title="Target Event ID End" comment="After enabling and disabling this event, if the Triggering Event is still activated, the Looper will return to [Target Event ID Start] and repeat the loop."/>
     <value nybble="11-12" title="Delay" comment="This determines the amount of time the Looper will wait between activating/deactivating each event." comment2="A value of 6 is approximately 1 second on the game's clock."/>
@@ -1476,7 +1476,7 @@
     </list>
     <checkbox bit="20" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
-  </sprite> <!-- #84: Grey Tiled Block with Spikes - Top -->  
+  </sprite> <!-- #84: Grey Tiled Block with Spikes - Top -->
 
   <sprite id="85" name="Grey Tiled Block with Spikes - Bottom" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. A custom texture was applied for NewerSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
@@ -1724,7 +1724,7 @@
     <value nybble="6" title="Homing Missile Bill Limit" comment="The Launcher will not create new Missile Bills unless the amount currently on the screen is less than this number." comment2="Value 0 functions the same as Value 1." requiredbit="48"/>
   </sprite> <!-- #92: Bullet Bill Launcher -->
 
-<!-- Could use a few ??? values tested and played with. -->    
+<!-- Could use a few ??? values tested and played with. -->
   <sprite id="93" name="Banzai Bill Launcher" notes="This is a Bullet Bill Launcher (Bill Blaster) that will shoot larger versions (Banzai) of either normal or homing Bullet Bills at the player.">
     <list nybble="10" title="Shooting Direction" comment="This determines which direction the Launcher will fire in, either towards the player on either side, or towards one side only.">
       <entry value="0">Towards Player</entry>
@@ -1853,7 +1853,7 @@
   
   <sprite id="99" name="Pipe Enemy Generator" asmhacks="True" notes="Use this to spawn waves of either Goombas or Bob-Ombs from a pipe.">
     <dependency notes="The spawner must be placed directly on the edge of the pipe in order to function. If spawning Left or Right, place it directly on the bottom square. If spawning Up or Down, place it directly on the left square."/>
-    <dualbox bit="44" title1="Spawns Goombas" title2="Spawns Bob-Ombs" comment="This determines which enemy will be spawned from the pipe."/>    
+    <dualbox bit="44" title1="Spawns Goombas" title2="Spawns Bob-Ombs" comment="This determines which enemy will be spawned from the pipe."/>
     <list nybble="6" title="Color" comment="This determines the color and style of the Spawned Goombas." requiredbit="44" requiredval="0">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
@@ -2231,7 +2231,7 @@
       <entry value="14">224 Blocks</entry>
       <entry value="15">240 Blocks</entry>
     </list>
-    <list bit="23-24" title="Speed" comment="This determines the speed the platform will travel."> 
+    <list bit="23-24" title="Speed" comment="This determines the speed the platform will travel.">
       <entry value="0">Fast</entry>
       <entry value="1">Medium-Slow</entry>
       <entry value="2">Slow</entry>
@@ -2618,7 +2618,7 @@
     <dependency notes="The suggested use is to have 8 Red Coins placed with the same Red Coin ID and Event ID as a matching [156] Red Coin Ring. &lt;font color=&quot;red&quot;&gt;A game crash will occur if you assign more than 8 Red Coins within the same Red Coin ID&lt;/font&gt; and it is also not recommended to use either object for a purpose outside of the default, within a normal style level.">
       <suggested sprite="156"/> <!-- Red Coin Ring -->
     </dependency>
-    <value bit="10-16" title="Triggering Event ID" comment="When this Event ID is activated, the Red Coin will appear." idtype="Triggering Event"/> 
+    <value bit="10-16" title="Triggering Event ID" comment="When this Event ID is activated, the Red Coin will appear." idtype="Triggering Event"/>
     <checkbox bit="40" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Red Coin placing it further behind other sprites."/>
     <value nybble="12" title="Red Coin ID" comment="When the player collects all 8 Red Coins from the same set, the game will reference a Red Ring with the same Red Coin ID to determine which item to award to all players." comment2="&lt;font color=&quot;red&quot;&gt;A game crash will occur if you assign more than 8 Red Coins within the same Red Coin ID&lt;/font&gt;" idtype="Red Coin"/>
   </sprite> <!-- #144: Red Coin -->
@@ -2910,9 +2910,9 @@
       <entry value="5">Penguin Suit</entry>
       <entry value="6">Mini Mushroom</entry>
       <entry value="9">Yoshi Egg + Fire Flower</entry>
-      <entry value="7">Star</entry> 
+      <entry value="7">Star</entry>
       <entry value="11">1-Up</entry>
-      <entry value="14">Key</entry>     
+      <entry value="14">Key</entry>
     </list>
     <value nybble="11" title="Withstands (Needs Multiple Hits)" comment="This determines the number of hits or ground-pounds needed for the block to break. For this function, a texture will be used that has some odd-looking white numbers on it." advanced="True" advancedcomment="This setting may only apply to the original Giant Breakable Brick Block"/>
   </sprite> <!-- #157: Big Pumpkin -->
@@ -2924,7 +2924,7 @@
     
 <!-- There's definitely "Movement at 2" in that ghost house. What else is actually going on there that might define what '2' means? Or is 2 just an unused value and in fact has no relevance? Someone should find out. 2 should be Single, 3 should be the same thing Repeating. -->
 <!-- I'm actually not fully sure of the technical differences between 'Single' and 'Repeating'. Should they only use Repeating when the end node overlaps with the start node? Do they have to overlap? Does it just travel directly back to the first node? What if it starts with a Starting Node? What if they use Single combined with a Starting Node? Does it end up at the same starting location or just at the End Node (assumed: End Node) -->
-  <sprite id="159" name="Movement Controller - Use Paths" notes="A movement controller that connects certain sprites so they can be moved by Paths. Paths are a special type of data within the level structure that has speed, acceleration, and delay values built into each Node."> 
+  <sprite id="159" name="Movement Controller - Use Paths" notes="A movement controller that connects certain sprites so they can be moved by Paths. Paths are a special type of data within the level structure that has speed, acceleration, and delay values built into each Node.">
     <dependency notes="The distance of this sprite to the first node of the Path will be imitated by all associated Path Controlled objects. This means that every linked object will be placed the same amount of blocks away from each node, identical to the distance of this sprite to its first node. It is therefore recommended to place this sprite directly on top of the first node, so that all controlled objects follow the path directly as drawn."/>
     <value nybble="11" title="Path Movement ID" comment="This pairs matching 'Path Movement' controlled objects to this controller." idtype="Path Movement"/>
     <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the objects will be linked to." idtype="Path"/>
@@ -3378,7 +3378,7 @@
 
   <sprite id="191" name="Tile God Event" asmhacks="True" notes="The Tile God can Create / Change / Destroy tiles within a specified area when an Event is activated.">
     <dependency notes="The Tile God sprite can be placed no more than one block outside of the Zone it is being activated in for it to function."/>
-    <value bit="9-16" title="Triggering Event ID" comment="When this Event ID is activated, the tiles affected by the Tile God's area will be created or destroyed, depending on the Mode." idtype="Triggering Event"/>    
+    <value bit="9-16" title="Triggering Event ID" comment="When this Event ID is activated, the tiles affected by the Tile God's area will be created or destroyed, depending on the Mode." idtype="Triggering Event"/>
     <value nybble="11" title="Width" comment="This determines the width of the area that is affected."/>
     <value nybble="12" title="Height" comment="This determines the height of the area that is affected."/>
     <list nybble="16" title="Target Layer" comment="This determines which terrain layer is affected.">
@@ -4129,7 +4129,7 @@
       <entry value="4">Straight Up</entry>
       <entry value="2">15° Right</entry>
       <entry value="0">30° Right</entry>
-      <entry value="5">45° Right</entry>      
+      <entry value="5">45° Right</entry>
     </list>
   </sprite> <!-- #227: Pipe Cannon -->
   
@@ -5133,7 +5133,7 @@
       <entry value="11">1-Up</entry>
       <entry value="14">Key</entry>
     </list>
-    <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="ASM shows Nybble 5 might affect something."/> 
+    <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="ASM shows Nybble 5 might affect something."/>
   </sprite> <!-- #289: Wooden and Metal Boxes -->
   
   <sprite id="290" name="World-6 Boss: Ramboo" asmhacks="True" noyoshi="True" notes="The extra large Boo boss that is not the least bit shy about continuing to advance towards the player. He can be knocked back with grabbable items and can only be defeated when the specified Event is activated.">
@@ -5683,7 +5683,7 @@
       <entry value="4">Star Coin</entry>
     </list>
     <checkbox bit="34" title="Falls Earlier" comment="When enabled, the Chestnut will fall from a further player distance." requiredbit="36" requiredval="0"/> <!-- Appears only if Falls only from POW is not set -->
-    <checkbox bit="36" title="Falls only from POW" comment="When enabled, instead of falling from the approach of a player, the Chestnut will only fall if a POW is used."/> 
+    <checkbox bit="36" title="Falls only from POW" comment="When enabled, instead of falling from the approach of a player, the Chestnut will only fall if a POW is used."/>
     <checkbox bit="35" title="Breaks Blocks" comment="When enabled, the Chestnut will destroy certain types of blocks and tileset pieces."/>
     <list nybble="10" title="Star Coin Number" comment="This determines which Star Coin will be credited by the coin inside the Chestnut." requiredbit="30">
       <entry value="0">1st Star Coin</entry>
@@ -5833,7 +5833,7 @@
       <suggested sprite="96"/>
       <suggested sprite="149"/>
     </dependency>
-    <dualbox bit="40" title1="Short Platform" title2="Long Platform" comment="This determines the length of the platform."/> 
+    <dualbox bit="40" title1="Short Platform" title2="Long Platform" comment="This determines the length of the platform."/>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #331: Rotation Controlled Dish Platform -->
   
@@ -5873,7 +5873,7 @@
     <dependency notes="The Cheep Cheep will only spawn if placed within water. In addition, Deep Cheeps and the Eep Cheep only work on non-location water.">
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
-    <checkbox bit="17" title="Swims Left" comment="If checked, swims to the left. The fish will not swim backwards when you backtrack. If unchecked, it depends on the 'Type' set, in which Direction the Cheep Cheep swims first. For Types 3, 4, 6 and 7, it swims to the right in general. All other Types will cause the Cheep Cheeps to swim in Mario's Direction."/> 
+    <checkbox bit="17" title="Swims Left" comment="If checked, swims to the left. The fish will not swim backwards when you backtrack. If unchecked, it depends on the 'Type' set, in which Direction the Cheep Cheep swims first. For Types 3, 4, 6 and 7, it swims to the right in general. All other Types will cause the Cheep Cheeps to swim in Mario's Direction."/>
     <list bit="45-48" title="Type" comment="Specifies the Swimming-'Type' that should be used for this Cheep Cheep. Deep Cheeps and Eep Cheeps only work in non-Location water. Value 5 is unique. Type-5 Cheep Cheeps will look into the camera until Mario comes close. Furthermore, the Direction will be ignored and the Cheep Cheep will always swim in the opposite Direction, away from Mario, but only if Mario is close enough. &lt;br&gt;Values marked with an asterisk &lt;b&gt;(*)&lt;/b&gt; will ignore the speed Value set and instead will always use Value 1, no matter what is selected there. Also, all Values with &lt;b&gt;(*)&lt;/b&gt; will let the Cheep Cheep swim in a wavy line (just as the Coin Cheep Cheep does). &lt;br&gt;The two Values with &lt;b&gt;(**)&lt;/b&gt; follow exactly the same behavior as those marked with &lt;b&gt;(*)&lt;/b&gt;, only difference is its speed. Cheep Cheeps affected will swim slightly faster, both vertical and horizontal.&lt;br&gt;&lt;br&gt;&lt;b&gt;New naming scheme as of NSMBU:&lt;/br&gt;&lt;br&gt;Red = Cheep Cheep (normal)&lt;br&gt;Green = Deep Cheep (aggressive)&lt;br&gt;Yellow = Eep Cheep (shy)">
       <entry value="0">Big Cheep Cheep ("Swim"), Swims Straight</entry>
       <entry value="2">Big Cheep Cheep ("Swim"), Swims Straight</entry>
@@ -6698,7 +6698,7 @@
       <required sprite="408"/>
       <suggested sprite="436"/>
     </dependency>
-  </sprite> <!-- #381: Boss Controller - Lemmy Koopa -->  
+  </sprite> <!-- #381: Boss Controller - Lemmy Koopa -->
   
   <sprite id="382" name="Screw Mushroom Platform without Bolt" notes="A mechanical biological hybrid of a mushroom platform that can be magically controlled by nearby similar platforms with Bolts.">
     <dependency notes="">
@@ -6716,7 +6716,7 @@
       <required sprite="427"/>
       <suggested sprite="436"/>
     </dependency>
-  </sprite> <!-- #383: Boss Controller - Kamek -->  
+  </sprite> <!-- #383: Boss Controller - Kamek -->
 
   <sprite id="384" name="Sliding Penguin Generator" noyoshi="True" yoshinotes="Yoshi cannot jump on penguins, though he can use the stomp attack and tongue attack to defeat them." notes="Use this to spawn waves of Penguins from this location, usually with a pipe, but other decoration can be used as well.">
     <dualbox bit="48" title1="Spawns Sliding Right" title2="Spawns Sliding Left" comment="This determines which direction the Penguin will spawn from."/>
@@ -6852,7 +6852,7 @@
     <dependency notes="The Cheep Cheep will only spawn if placed within water. In addition, Type 1, 7, and 8 only work on non-location water.">
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
-    <checkbox bit="17" title="Swims Left" comment="If checked, swims to the left. The fish will not swim backwards when you backtrack. If unchecked, it depends on the 'Type' set, in which Direction the Cheep Cheep swims first. For Types 3, 4, 6 and 7, it swims to the right in general. All other Types will cause the Cheep Cheeps to swim in Mario's Direction."/> 
+    <checkbox bit="17" title="Swims Left" comment="If checked, swims to the left. The fish will not swim backwards when you backtrack. If unchecked, it depends on the 'Type' set, in which Direction the Cheep Cheep swims first. For Types 3, 4, 6 and 7, it swims to the right in general. All other Types will cause the Cheep Cheeps to swim in Mario's Direction."/>
     <list bit="45-48" title="Type" comment="Specifies the Swimming-'Type' that should be used for this Cheep Cheep. Deep Cheeps and Eep Cheeps only work in non-Location water. Value 5 is unique. Type-5 Cheep Cheeps will look into the camera until Mario comes close. Furthermore, the Direction will be ignored and the Cheep Cheep will always swim in the opposite Direction, away from Mario, but only if Mario is close enough. &lt;br&gt;Values marked with an asterisk &lt;b&gt;(*)&lt;/b&gt; will ignore the speed Value set and instead will always use Value 1, no matter what is selected there. Also, all Values with &lt;b&gt;(*)&lt;/b&gt; will let the Cheep Cheep swim in a wavy line (just as the Coin Cheep Cheep does). &lt;br&gt;The two Values with &lt;b&gt;(**)&lt;/b&gt; follow exactly the same behavior as those marked with &lt;b&gt;(*)&lt;/b&gt;, only difference is its speed. Cheep Cheeps affected will swim slightly faster, both vertical and horizontal.&lt;br&gt;&lt;br&gt;&lt;b&gt;New naming scheme as of NSMBU:&lt;/br&gt;&lt;br&gt;Red = Cheep Cheep (normal)&lt;br&gt;Green = Deep Cheep (aggressive)&lt;br&gt;Yellow = Eep Cheep (shy)">
       <entry value="0">Spiny Cheep Cheep ("Swim"), Swims Straight</entry>
       <entry value="2">Spiny Cheep Cheep ("Swim"), Swims Straight</entry>
@@ -6978,7 +6978,7 @@
       <entry value="13">14 Passengers</entry>
       <entry value="14">15 Passengers</entry>
       <entry value="15">16 Passengers</entry>
-    </list>    
+    </list>
     <list bit="27-28" title="Direction" comment="This determines which direction the block will move when the Sprites Required value is satisfied." requiredbit="26" requiredval="0">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -7762,7 +7762,7 @@
       <entry value="1">Left</entry>
       <entry value="2">Up</entry>
       <entry value="3">Down</entry>
-    </list>   
+    </list>
     <value nybble="7" title="Delay Before Movement" comment="This determines how long the block will wait before making its outwards movement." comment2="Each value is equal to two game seconds."/>
     <value nybble="9" title="Distance" comment="This defines how many tiles the block will move before returning to its starting position."/>
     <value nybble="8" title="Delay Before Return" comment="This determines how long the block will wait before making its return movement." comment2="Each value is equal to two game seconds."/>
