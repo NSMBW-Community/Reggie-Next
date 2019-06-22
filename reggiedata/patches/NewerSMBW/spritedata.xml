@@ -2960,7 +2960,7 @@
       <entry value="2">Right</entry>
       <entry value="3">Left</entry>
     </list>
-    <value nybble="10-16" title="Triggering Event ID" comment="When this Event is activated, the bubble jet will turn off allowing the player to access the pipe at the end." idtype="Triggering Event"/>
+    <value bit="10-16" title="Triggering Event ID" comment="When this Event is activated, the bubble jet will turn off allowing the player to access the pipe at the end." idtype="Triggering Event"/>
   </sprite> <!-- #161: Pipe Bubbles -->
   
 <!-- What does "Revoke the Scroll Limit" mean? Does it mean placing these inside of a pair of 2's will override the effect of the other set? Does it mean the camera breaks free of the Zone Boundary? Value 1 is used in 3 retail levels. Value 2 was said to be a checkbox? -->
