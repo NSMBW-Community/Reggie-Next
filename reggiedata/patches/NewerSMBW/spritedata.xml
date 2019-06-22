@@ -4286,7 +4286,7 @@
   <sprite id="239" name="Event Block" asmhacks="True" notes="A red or green block that, when struck, will affect the state of the Target Event(s). Events that are deactivated will become activated, and those that are activated will become deactivated." advancednotes="Kamek code references the events by the opposite number.">
     <dualbox bit="32" title1="Affect Event 1" title2="Swap Event 2 and Event 1" comment="This determines which associated Event IDs will be affected when the block is struck." comment2="If set to Affect Event 1, Event 1 will be activated or deactivated and the color of the block will display the state of Event 1, green for on and red for off. &lt;br&gt; &lt;br&gt;If set to Swap Events, Event 2 will be activated initially and Event 1 will be deactivated initially during the Zone loading. The color of the block will rely on Event 2's current state."/>
     <value bit="41-48" title="Target Event ID 1" idtype="Target Event"/> <!-- May already support 256 Event IDs -->
-    <value nybble="33-40" title="Target Event ID 2" requiredbit="32" idtype="Target Event"/> <!-- May already support 256 Event IDs --> <!-- Appears if affecting Event 2 --> <!-- Multiple Target Event IDtypes may not function -->
+    <value bit="33-40" title="Target Event ID 2" requiredbit="32" idtype="Target Event"/> <!-- May already support 256 Event IDs --> <!-- Appears if affecting Event 2 --> <!-- Multiple Target Event IDtypes may not function -->
   </sprite> <!-- #239: Event Block -->
 
   <sprite id="240" name="Big Wiggler" noyoshi="True" notes="A very large Wiggler that could not care less what you do to it, so you can safely ride on its back.">
