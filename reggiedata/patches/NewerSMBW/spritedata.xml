@@ -7702,6 +7702,7 @@
       <entry value="3">Wide (8x9)</entry>
       <entry value="2">Double (14x9)</entry>
     </list>
+    <checkbox nybble="11" title="Upside-Down" comment="Flips the block upside down. This doesn't affect its movement."/>
   </sprite> <!-- #460: Silver Gear Block -->
   
   <sprite id="461" name="Crowd Clapping Controller for Coin Collection #2" notes="A controller that generates a clapping sound when the player collects the listed number of coinso f both types from the Collection ID group. Seems to be identical to #1.">
