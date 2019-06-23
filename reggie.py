@@ -12755,6 +12755,8 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
     """
     Dialog for the resize option.
     """
+    # TODO: Think critically about the design/behaviour/goal of this dialog
+    # TODO: Add size selector to the sprite editor
     # TODO: Make this translatable
 
     def __init__(self, spriteid):
@@ -12765,15 +12767,25 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         self.sprite = Sprites[spriteid]
 
-        text = "Let's resize your sprite.\nIn order to do this, choose one of " \
-               "slots, based on the below information. Note that some choices " \
-               "can overlap with other settings, leading to undesired effects."
+        text = "Let's resize your sprite. In order to do this, choose one of " \
+               "the two slots, based on the below information. Note that some " \
+               "choices can overlap with other settings, leading to undesired " \
+               "effects."
 
         text2 = "Click the button below to create a Special Event sprite with " \
                 "the selected slot."
 
+        text3 = "Please note that there already is a resizer sprite that affects " \
+                "this sprite. All changes made here will apply to the entire zone/area " \
+                "so be careful."
+
+        text4 = "More than 1 resizer is a <b>very</b> bad idea. Please don't do " \
+                "this and remove the extra resizers."
+
         ## Slots
         used = self.getNyb5And7Availability()
+        self.present = self.getSpecialEventAvailability()
+
         rows = max(len(used[5]), len(used[7]), 1)
 
         self.buttongroup = QtWidgets.QButtonGroup()
@@ -12781,28 +12793,35 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         self.buttongroup.addButton(self.radio1, 0)
         self.radio2 = QtWidgets.QRadioButton()
         self.buttongroup.addButton(self.radio2, 1)
-
+        self.radio3 = QtWidgets.QRadioButton()
+        self.buttongroup.addButton(self.radio3, -1)
 
         header = QtWidgets.QLabel("Slots")
-        header.setStyleSheet("""QLabel {border-bottom: 3px solid black; }""")
-
         footer = QtWidgets.QLabel(text2)
 
-        createButton = QtWidgets.QPushButton("Create")
-        createButton.clicked.connect(self.placeSpecialResizeEvent)
+        if len(self.present) == 0:
+            label = "Create"
+        elif len(self.present) == 1:
+            label = "Edit"
+        else:
+            label = "Nothing."
 
-        line = QtWidgets.QLabel("")
-        line.setStyleSheet("""QLabel {border: 1px solid black; background: black; }""")
-        line.setContentsMargins(0, 0, 0, 0)
+        createButton = QtWidgets.QPushButton(label)
+        createButton.clicked.connect(self.doAThing)
+
+        a_label = QtWidgets.QLabel("A")
+        b_label = QtWidgets.QLabel("B")
+        g_label = QtWidgets.QLabel("Global")
 
         slotsLayout = QtWidgets.QGridLayout()
         slotsLayout.setContentsMargins(0, 0, 0, 0)
-        slotsLayout.addWidget(header,   0, 0, 1, 3, Qt.AlignHCenter)
-        slotsLayout.addWidget(line,     1, 1, rows + 2, 1, Qt.AlignHCenter)
-        slotsLayout.addWidget(QtWidgets.QLabel("A"),      1, 0, 1, 1, Qt.AlignHCenter)
-        slotsLayout.addWidget(self.radio1,   2, 0, 1, 1, Qt.AlignHCenter)
-        slotsLayout.addWidget(QtWidgets.QLabel("B"),      1, 2, 1, 1, Qt.AlignHCenter)
-        slotsLayout.addWidget(self.radio2,   2, 2, 1, 1, Qt.AlignHCenter)
+        slotsLayout.addWidget(header,      0, 0, 1, 3, Qt.AlignHCenter)
+        slotsLayout.addWidget(a_label,     1, 0, 1, 1, Qt.AlignHCenter)
+        slotsLayout.addWidget(self.radio1, 2, 0, 1, 1, Qt.AlignHCenter)
+        slotsLayout.addWidget(b_label,     1, 1, 1, 1, Qt.AlignHCenter)
+        slotsLayout.addWidget(self.radio2, 2, 1, 1, 1, Qt.AlignHCenter)
+        slotsLayout.addWidget(g_label,     1, 2, 1, 1, Qt.AlignHCenter)
+        slotsLayout.addWidget(self.radio3, 2, 2, 1, 1, Qt.AlignHCenter)
 
         if len(used[5]) == 0:
             slotsLayout.addWidget(QtWidgets.QLabel("None"), 3, 0, 1, 1, Qt.AlignHCenter)
@@ -12811,15 +12830,20 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
                 slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 0, 1, 1, Qt.AlignHCenter)
 
         if len(used[7]) == 0:
-            slotsLayout.addWidget(QtWidgets.QLabel("None"), 3, 2, 1, 1, Qt.AlignHCenter)
+            slotsLayout.addWidget(QtWidgets.QLabel("None"), 3, 1, 1, 1, Qt.AlignHCenter)
         else:
             for offset, conflict in enumerate(used[7]):
-                slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 2, 1, 1, Qt.AlignHCenter)
+                slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 1, 1, 1, Qt.AlignHCenter)
 
-        slotsLayout.addWidget(line,   3 + rows, 0, 1, 3)
-        slotsLayout.addWidget(footer, 4 + rows, 0, 1, 3)
+        slotsLayout.addWidget(footer,       4 + rows, 0, 1, 3)
         slotsLayout.addWidget(createButton, 5 + rows, 0, 1, 3, Qt.AlignHCenter)
 
+        # Proposing the best option
+        # Maybe change this to set the option that is already applied?
+        if len(used[5]) <= len(used[7]):
+            self.radio1.setChecked(True)
+        else:
+            self.radio2.setChecked(True)
 
         # create layout
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
@@ -12829,6 +12853,11 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         mainLayout = QtWidgets.QVBoxLayout()
         mainLayout.addWidget(QtWidgets.QLabel(text))
+
+        if len(self.present) > 0:
+            mainLayout.addWidget(QtWidgets.QLabel(text3))
+            mainLayout.addWidget(QtWidgets.QLabel(str(self.present)))
+
         mainLayout.addLayout(slotsLayout)
         mainLayout.addWidget(buttonBox, 0, Qt.AlignBottom)
 
@@ -12844,11 +12873,12 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         found = {5: [], 7: []}
         for field in self.sprite.fields:
 
+            type = field[0]
             if type == 3: # multibox
                 start = field[2]
                 num = field[3]
                 bit = (start, start + num)
-            elif type == 5 or type == 7: # (multi)dualbox
+            elif type in (5, 7): # (multi)dualbox
                 bit = field[3]
             else:
                 bit = field[2]
@@ -12893,8 +12923,44 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
                 slot = (sprite.spritedata[5] >> 4) & 1
                 slots.append((slot, sprite))
 
-        print(slots)
         return slots
+
+    def doAThing(self):
+        """
+        Either places a new special event or changes the old one.
+        """
+        slot = self.buttongroup.checkedId()
+
+        thing = []
+        for type, sprite in self.present:
+            if slot == -1 and type == 2:
+                thing.append(sprite)
+
+            elif not (slot == -1 or type == 2):
+                thing.append(sprite)
+
+        if len(thing) == 0:
+            self.placeSpecialResizeEvent()
+        elif len(thing) == 1:
+            self.editSpecialResizeEvent(thing[0][1])
+        else:
+            # TODO: figure out what to do here
+            ...
+
+        return self.accept()
+    
+    def editSpecialResizeEvent(self, sprite):
+        data = list(sprite.spritedata)
+
+        slot = self.buttongroup.checkedId()
+        if slot == -1:
+            # global
+            data[5] = (data[5] & 0xF0) | 5
+        else:
+            # only slot
+            data[5] = (slot << 4) | 6
+
+        sprite.spritedata = bytes(data)
 
     def placeSpecialResizeEvent(self):
         """
