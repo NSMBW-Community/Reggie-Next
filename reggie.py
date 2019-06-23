@@ -23925,6 +23925,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.actions['addarea'].setEnabled(len(Level.areas) < 4)
         self.actions['importarea'].setEnabled(len(Level.areas) < 4)
         self.actions['deletearea'].setEnabled(len(Level.areas) > 1)
+        self.actions['backgrounds'].setEnabled(len(Area.zones) > 0)
 
         # Turn snapping back on
         OverrideSnapping = False
@@ -25154,6 +25155,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     z.sfxmod = z.sfxmod + 1
 
                 i = i + 1
+
+            self.actions['backgrounds'].setEnabled(len(Area.zones) > 0)
+
         self.levelOverview.update()
 
     # Handles setting the backgrounds
