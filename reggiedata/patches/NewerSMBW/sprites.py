@@ -279,6 +279,16 @@ class SpriteImage_GiantSpikeBall(SLib.SpriteImage_StaticMultiple):  # 98
             self.image = ImageCache['GiantSpikeBall']
 
 
+class SpriteImage_MessageBlock(SLib.SpriteImage_Static): # 152
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            SLib.Tiles[0x98].main,
+            (8, 0)
+        )
+
+
 class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
     def __init__(self, parent):
         super().__init__(parent)
@@ -616,6 +626,7 @@ ImageClasses = {
     78: SpriteImage_NewerBouncyCloud,
     63: SpriteImage_NewerSpikeBall,
     98: SpriteImage_GiantSpikeBall,
+    152: SpriteImage_MessageBlock,
     157: SpriteImage_BigPumpkin,
     168: SpriteImage_Thundercloud,
     183: SpriteImage_Meteor,
