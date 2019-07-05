@@ -131,3 +131,44 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
         self.aux[0].paint(painter, None, None)
 
         painter.restore()
+
+
+class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153
+    def __init__(self, parent, scale=1.5):
+        super().__init__(parent, scale)
+        self.switchType = ''
+        self.styleType = 0
+
+    @staticmethod
+    def loadImages():
+
+        if 'QSwitch' not in ImageCache:
+            q = SLib.GetImg('q_switch.png', True)
+            ImageCache['QSwitch'] = QtGui.QPixmap.fromImage(q)
+            ImageCache['QSwitchU'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
+
+        if 'PSwitch' not in ImageCache:
+            p = SLib.GetImg('p_switch.png', True)
+            ImageCache['PSwitch'] = QtGui.QPixmap.fromImage(p)
+            ImageCache['PSwitchU'] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
+
+        if 'ESwitch' not in ImageCache:
+            e = SLib.GetImg('e_switch.png', True)
+            ImageCache['ESwitch'] = QtGui.QPixmap.fromImage(e)
+            ImageCache['ESwitchU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
+
+    def dataChanged(self):
+
+        upsideDown = self.parent.spritedata[5] & 1
+        
+        if self.styleType != 0:
+            style = str(self.styleType)
+        else:
+            style = ''
+
+        if upsideDown:
+            self.image = ImageCache[self.switchType + 'SwitchU' + style]
+        else:
+            self.image = ImageCache[self.switchType + 'Switch' + style]
+
+        super().dataChanged()

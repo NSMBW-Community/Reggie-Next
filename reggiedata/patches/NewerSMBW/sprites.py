@@ -11,6 +11,49 @@ import sprites_common as common
 
 ImageCache = SLib.ImageCache
 
+################################################################################
+################################################################################
+################################################################################
+
+# Newer-specific base classes
+class SpriteImage_NewerSwitch(common.SpriteImage_Switch):
+
+    @staticmethod
+    def loadImages():
+        common.SpriteImage_Switch.loadImages()
+
+        if 'QSwitch2' not in ImageCache:
+            for i in range(2, 5):
+                p = SLib.GetImg('q_switch%d.png' % i, True)
+
+                if p is None:
+                    # happens when the newer patch folder is not loaded yet
+                    return
+
+                ImageCache['QSwitch%d' % i] = QtGui.QPixmap.fromImage(p)
+                ImageCache['QSwitchU%d' % i] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
+
+        if 'ExSwitch2' not in ImageCache:
+            for i in range(2, 5):
+                p = SLib.GetImg('e_switch%d.png' % i, True)
+                ImageCache['ESwitch%d' % i] = QtGui.QPixmap.fromImage(p)
+                ImageCache['ESwitchU%d' % i] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
+
+    def dataChanged(self):
+        self.styleType = self.parent.spritedata[3] & 0xF
+
+        if self.styleType == 1 or self.styleType > 4:
+            self.styleType = 0
+
+        # hack needed if data is changed before patch folder is loaded
+        if 'QSwitch2' not in ImageCache:
+            return
+
+        super().dataChanged()
+
+################################################################################
+################################################################################
+################################################################################
 
 class SpriteImage_StarCollectable(SLib.SpriteImage_Static):  # 12
     def __init__(self, parent):
@@ -92,6 +135,17 @@ class SpriteImage_PumpkinGoomba(SLib.SpriteImage_StaticMultiple):  # 22
 
         super().dataChanged()
 
+
+class SpriteImage_NewerQSwitch(SpriteImage_NewerSwitch): # 40
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.switchType = "Q"
+
+
+class SpriteImage_ExcSwitch(SpriteImage_NewerSwitch):  # 42
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.switchType = 'E'
 
 class SpriteImage_Thwomp(SLib.SpriteImage_StaticMultiple):  # 47
     def __init__(self, parent):
@@ -619,6 +673,8 @@ ImageClasses = {
     19: SpriteImage_SamuraiGuy,
     20: SpriteImage_NewerGoomba,
     22: SpriteImage_PumpkinGoomba,
+    40: SpriteImage_NewerQSwitch,
+    42: SpriteImage_ExcSwitch,
     47: SpriteImage_Thwomp,
     48: SpriteImage_GiantThwomp,
     49: SpriteImage_FakeStarCoin,

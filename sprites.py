@@ -190,41 +190,6 @@ class SpriteImage_StarCoin(SLib.SpriteImage_Static):  # 32, 155, 389
         )
 
 
-class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153
-    def __init__(self, parent, scale=1.5):
-        super().__init__(parent, scale)
-        self.switchType = ''
-
-    @staticmethod
-    def loadImages():
-
-        if 'QSwitch' not in ImageCache:
-            q = SLib.GetImg('q_switch.png', True)
-            ImageCache['QSwitch'] = QtGui.QPixmap.fromImage(q)
-            ImageCache['QSwitchU'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
-
-        if 'PSwitch' not in ImageCache:
-            p = SLib.GetImg('p_switch.png', True)
-            ImageCache['PSwitch'] = QtGui.QPixmap.fromImage(p)
-            ImageCache['PSwitchU'] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
-
-        if 'ESwitch' not in ImageCache:
-            e = SLib.GetImg('e_switch.png', True)
-            ImageCache['ESwitch'] = QtGui.QPixmap.fromImage(e)
-            ImageCache['ESwitchU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
-
-    def dataChanged(self):
-
-        upsideDown = self.parent.spritedata[5] & 1
-
-        if not upsideDown:
-            self.image = ImageCache[self.switchType + 'Switch']
-        else:
-            self.image = ImageCache[self.switchType + 'SwitchU']
-
-        super().dataChanged()
-
-
 class SpriteImage_OldStoneBlock(SLib.SpriteImage):  # 30, 81, 82, 83, 84, 85, 86
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
@@ -1211,19 +1176,19 @@ class SpriteImage_StarCoinRegular(SpriteImage_StarCoin):  # 32
     pass
 
 
-class SpriteImage_QuestionSwitch(SpriteImage_Switch):  # 40
+class SpriteImage_QuestionSwitch(common.SpriteImage_Switch):  # 40
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'Q'
 
 
-class SpriteImage_PSwitch(SpriteImage_Switch):  # 41
+class SpriteImage_PSwitch(common.SpriteImage_Switch):  # 41
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'P'
 
 
-class SpriteImage_ExcSwitch(SpriteImage_Switch):  # 42
+class SpriteImage_ExcSwitch(common.SpriteImage_Switch):  # 42
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'E'
@@ -3231,7 +3196,7 @@ class SpriteImage_Porcupuffer(SLib.SpriteImage_Static):  # 151
         SLib.loadIfNotInImageCache('Porcupuffer', 'porcu_puffer.png')
 
 
-class SpriteImage_QuestionSwitchUnused(SpriteImage_Switch):  # 153
+class SpriteImage_QuestionSwitchUnused(common.SpriteImage_Switch):  # 153
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'Q'
