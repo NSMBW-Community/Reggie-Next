@@ -626,6 +626,7 @@ ImageClasses = {
     78: SpriteImage_NewerBouncyCloud,
     63: SpriteImage_NewerSpikeBall,
     98: SpriteImage_GiantSpikeBall,
+    107: SLib.SpriteImage,
     152: SpriteImage_MessageBlock,
     157: SpriteImage_BigPumpkin,
     168: SpriteImage_Thundercloud,
