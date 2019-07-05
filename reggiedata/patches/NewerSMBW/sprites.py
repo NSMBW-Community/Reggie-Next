@@ -471,6 +471,27 @@ class SpriteImage_CaptainBowser(SLib.SpriteImage_Static):  # 213
         SLib.loadIfNotInImageCache('CaptainBowser', 'captain_bowser.png')
 
 
+class SpriteImage_EventBlock(SLib.SpriteImage_Static): # 239
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        tile = SLib.Tiles[0x97]
+
+        if tile:
+            self.image = tile.main
+        else:
+            self.image = SLib.Tiles[0x800 + 108].main
+
+    def paint(self, painter):
+        if self.image is None:
+            return
+
+        painter.save()
+        painter.setRenderHint(painter.SmoothPixmapTransform)
+        painter.drawPixmap(0, 0, self.image)
+        painter.restore()
+
+
 class SpriteImage_RockyBoss(SLib.SpriteImage_Static):  # 279
     def __init__(self, parent):
         super().__init__(
@@ -613,6 +634,7 @@ ImageClasses = {
     191: SpriteImage_TileEventNewer,
     210: SpriteImage_Topman,
     213: SpriteImage_CaptainBowser,
+    239: SpriteImage_EventBlock,
     279: SpriteImage_RockyBoss,
     282: SpriteImage_AngrySun,
     283: SpriteImage_FuzzyBear,
