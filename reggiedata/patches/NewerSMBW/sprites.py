@@ -473,23 +473,12 @@ class SpriteImage_CaptainBowser(SLib.SpriteImage_Static):  # 213
 
 class SpriteImage_EventBlock(SLib.SpriteImage_Static): # 239
     def __init__(self, parent):
-        super().__init__(parent)
-
-        tile = SLib.Tiles[0x97]
-
-        if tile:
-            self.image = tile.main
-        else:
-            self.image = SLib.Tiles[0x800 + 108].main
-
-    def paint(self, painter):
-        if self.image is None:
-            return
-
-        painter.save()
-        painter.setRenderHint(painter.SmoothPixmapTransform)
-        painter.drawPixmap(0, 0, self.image)
-        painter.restore()
+        super().__init__(
+            parent,
+            1.5,
+            SLib.Tiles[0x97].main,
+            (-8, -16)
+        )
 
 
 class SpriteImage_RockyBoss(SLib.SpriteImage_Static):  # 279
