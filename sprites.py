@@ -5225,6 +5225,7 @@ class SpriteImage_DragonCoaster(SLib.SpriteImage):  # 297
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
+        self.height = 22
 
     @staticmethod
     def loadImages():
