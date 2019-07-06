@@ -41,6 +41,12 @@ class SpriteImage_NewerSwitch(common.SpriteImage_Switch):
 
     def dataChanged(self):
         self.styleType = self.parent.spritedata[3] & 0xF
+        upsideDown = self.parent.spritedata[5] & 1
+
+        if self.styleType > 0:
+            self.yOffset = -16 + 32 * upsideDown
+        else:
+            self.yOffset = 0
 
         if self.styleType == 1 or self.styleType > 4:
             self.styleType = 0
@@ -154,6 +160,7 @@ class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple):
             self.parent.setTransform(transform)
 
         super().dataChanged()
+
 
 class SpriteImage_NewerGoomba(SLib.SpriteImage_StaticMultiple):  # 20
     @staticmethod
