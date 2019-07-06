@@ -761,12 +761,13 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
     def loadImages():
         if 'PipeTopGreen' not in ImageCache:
             for color in ('Green', 'Red', 'Yellow', 'Blue'):
-                ImageCache['PipeTop%s' % color] = SLib.GetImg('pipe_%s_top.png' % color)
-                ImageCache['PipeMiddleV%s' % color] = SLib.GetImg('pipe_%s_middle.png' % color)
-                ImageCache['PipeBottom%s' % color] = SLib.GetImg('pipe_%s_bottom.png' % color)
-                ImageCache['PipeLeft%s' % color] = SLib.GetImg('pipe_%s_left.png' % color)
-                ImageCache['PipeMiddleH%s' % color] = SLib.GetImg('pipe_%s_center.png' % color)
-                ImageCache['PipeRight%s' % color] = SLib.GetImg('pipe_%s_right.png' % color)
+                color_l = color.lower()
+                ImageCache['PipeTop%s' % color] = SLib.GetImg('pipe_%s_top.png' % color_l)
+                ImageCache['PipeMiddleV%s' % color] = SLib.GetImg('pipe_%s_middle.png' % color_l)
+                ImageCache['PipeBottom%s' % color] = SLib.GetImg('pipe_%s_bottom.png' % color_l)
+                ImageCache['PipeLeft%s' % color] = SLib.GetImg('pipe_%s_left.png' % color_l)
+                ImageCache['PipeMiddleH%s' % color] = SLib.GetImg('pipe_%s_center.png' % color_l)
+                ImageCache['PipeRight%s' % color] = SLib.GetImg('pipe_%s_right.png' % color_l)
 
     def dataChanged(self):
         super().dataChanged()
