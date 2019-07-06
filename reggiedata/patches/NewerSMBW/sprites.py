@@ -96,6 +96,64 @@ class SpriteImage_SamuraiGuy(SLib.SpriteImage_Static):  # 19
     def loadImages():
         SLib.loadIfNotInImageCache('SamuraiGuy', 'samurai_guy.png')
 
+# TODO: Fix massive artifacts when moving the sprite image, caused by an incorrect
+# bounding rectangle.
+class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple):
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5
+        )
+
+        self.yOffset = -4
+
+    @staticmethod
+    def loadImages():
+        if 'DragonHead' in ImageCache: return
+        ImageCache['DragonHead'] = SLib.GetImg('dragon_coaster_head.png')
+        ImageCache['DragonBody'] = SLib.GetImg('dragon_coaster_body.png')
+        ImageCache['DragonTail'] = SLib.GetImg('dragon_coaster_tail.png')
+
+    def dataChanged(self):
+        piece = self.parent.spritedata[5] & 3
+        direction = (self.parent.spritedata[3] >> 4) & 1
+        rotates = self.parent.spritedata[2] & 0x10
+
+        sPiece = ("Head", "Body", "Tail")[piece]
+
+        self.image = ImageCache["Dragon%s" % sPiece]
+
+        transform = None
+
+        if direction == 1:
+            transform = QtGui.QTransform()
+            transform.translate(12, 0)
+            transform.scale(-1, 1)
+            transform.translate(-12, 0)
+        else:
+            self.xOffset = -16
+
+        if rotates:
+            if transform is None:
+                transform = QtGui.QTransform()
+
+            angle = self.parent.spritedata[2] & 0xF
+
+            if angle < 8:
+                angle -= 8
+            else:
+                angle -= 7
+
+            angle *= (180.0 / 16)
+
+            transform.translate(24, 15)
+            transform.rotate(angle)
+            transform.translate(-24, -15)
+
+        if transform is not None:
+            self.parent.setTransform(transform)
+
+        super().dataChanged()
 
 class SpriteImage_NewerGoomba(SLib.SpriteImage_StaticMultiple):  # 20
     @staticmethod
@@ -146,6 +204,7 @@ class SpriteImage_ExcSwitch(SpriteImage_NewerSwitch):  # 42
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'E'
+
 
 class SpriteImage_Thwomp(SLib.SpriteImage_StaticMultiple):  # 47
     def __init__(self, parent):
@@ -670,6 +729,7 @@ class SpriteImage_GigaGoomba(SLib.SpriteImage_Static):  # 410
 ImageClasses = {
     12: SpriteImage_StarCollectable,
     13: SpriteImage_ClownCar,
+    18: SpriteImage_DragonCoasterPiece,
     19: SpriteImage_SamuraiGuy,
     20: SpriteImage_NewerGoomba,
     22: SpriteImage_PumpkinGoomba,
