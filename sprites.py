@@ -5278,13 +5278,18 @@ class SpriteImage_LongCannon(SLib.SpriteImage_StaticMultiple):  # 298
         ImageCache['LongCannonFR'] = SLib.GetImg('cannon_front_right.png')
         ImageCache['LongCannonM'] = SLib.GetImg('cannon_middle.png')
         ImageCache['LongCannonEL'] = SLib.GetImg('cannon_end_left.png')
-        ImageCache['LongCannonER'] = ImageCache['LongCannonEL']
-        #ImageCache['LongCannonER'] = SLib.GetImg('cannon_end_right.png')
+
         ImageCache['BLongCannonFL'] = SLib.GetImg('cannonbig_front_left.png')
         ImageCache['BLongCannonFR'] = SLib.GetImg('cannonbig_front_right.png')
         ImageCache['BLongCannonM'] = SLib.GetImg('cannonbig_middle.png')
         ImageCache['BLongCannonEL'] = SLib.GetImg('cannonbig_end_left.png')
+
+        ImageCache['LongCannonFU'] = SLib.GetImg('cannon_front_up.png')
+        ImageCache['BLongCannonFU'] = SLib.GetImg('cannonbig_front_up.png')
+
+        ImageCache['LongCannonER'] = ImageCache['LongCannonEL']
         ImageCache['BLongCannonER'] = ImageCache['BLongCannonEL']
+        #ImageCache['LongCannonER'] = SLib.GetImg('cannon_end_right.png')
         #ImageCache['BLongCannonER'] = SLib.GetImg('cannonbig_end_right.png')
 
     def dataChanged(self):
@@ -5293,6 +5298,11 @@ class SpriteImage_LongCannon(SLib.SpriteImage_StaticMultiple):  # 298
         raw_length = self.parent.spritedata[4] & 0xF
         self.dir = self.parent.spritedata[5] & 1
         self.big = self.parent.spritedata[5] & 0x10 != 0
+
+        self.bugged = (self.parent.spritedata[5] & 2 == 2) and self.dir == 0
+
+        if self.bugged:
+            self.dir = 1
 
         if self.big:
             self.height = 32
@@ -5304,6 +5314,10 @@ class SpriteImage_LongCannon(SLib.SpriteImage_StaticMultiple):  # 298
             else:
                 self.xOffset = 0
                 self.numMiddle = raw_length - 1
+
+            if self.bugged:
+                self.xOffset = -8
+                self.width += 8
         else:
             self.height = 16
             self.tilesize = 24
@@ -5314,28 +5328,33 @@ class SpriteImage_LongCannon(SLib.SpriteImage_StaticMultiple):  # 298
             else:
                 self.xOffset = 4
 
+            if self.bugged:
+                self.xOffset = 0
+                self.height += 8
+                self.width -= 4
+
     def paint(self, painter):
         super().paint(painter)
 
-        if self.big:
-            middle = ImageCache['BLongCannonM']
-            if self.dir == 0: # right
-                front = ImageCache['BLongCannonFR']
-                end = ImageCache['BLongCannonEL']
-            else:
-                front = ImageCache['BLongCannonFL']
-                end = ImageCache['BLongCannonER']
+        big_s = 'B' if self.big else ''
+
+        middle = ImageCache[big_s + 'LongCannonM']
+        solid = SLib.Tiles[0x400 + 1280].main
+        if self.dir == 0: # right
+            front = ImageCache[big_s + 'LongCannonFR']
+            end = ImageCache[big_s + 'LongCannonEL']
         else:
-            middle = ImageCache['LongCannonM']
-            if self.dir == 0: # right
-                front = ImageCache['LongCannonFR']
-                end = ImageCache['LongCannonEL']
-            else:
-                front = ImageCache['LongCannonFL']
-                end = ImageCache['LongCannonER']
+            front = ImageCache[big_s + 'LongCannonFL']
+            end = ImageCache[big_s + 'LongCannonER']
 
         # the front
-        if self.big and self.dir == 0:
+        if self.bugged and self.big:
+            front = ImageCache['BLongCannonFU']
+            painter.drawPixmap(0, 0, front)
+        elif self.bugged:
+            front = ImageCache['LongCannonFU']
+            painter.drawPixmap(0, 12, front)
+        elif self.big and self.dir == 0:
             painter.drawPixmap(24 + 24 * self.numMiddle + self.tilesize, 0, front)
         elif self.dir == 0:
             painter.drawPixmap(24 * self.numMiddle + self.tilesize, 0, front)
@@ -5343,13 +5362,22 @@ class SpriteImage_LongCannon(SLib.SpriteImage_StaticMultiple):  # 298
             painter.drawPixmap(0, 0, front)
 
         # the middle
-        if self.dir != 0 or not self.big:
-            painter.drawTiledPixmap(self.tilesize, 0, self.numMiddle * 24, self.tilesize, middle)
-        else:
+        if self.bugged and self.big:
+            painter.drawTiledPixmap(self.tilesize, 0, self.numMiddle * 24 + 8, self.tilesize, middle)
+        elif self.bugged:
+            painter.drawTiledPixmap(self.tilesize, 12, self.numMiddle * 24 - 8, self.tilesize, middle)
+        elif self.dir == 0 and self.big:
             painter.drawTiledPixmap(self.tilesize + 24, 0, self.numMiddle * 24, self.tilesize, middle)
+        else:
+            painter.drawTiledPixmap(self.tilesize, 0, self.numMiddle * 24, self.tilesize, middle)
 
         # the end
-        if self.dir == 0 and self.big:
+        if self.bugged and self.big:
+            painter.drawPixmap(24 * self.numMiddle + self.tilesize + 8, 0, end)
+        elif self.bugged:
+            painter.drawPixmap(24 * self.numMiddle + self.tilesize - 8, 12, end)
+        elif self.dir == 0 and self.big:
+            painter.drawTiledPixmap(0, 0, 24, 48, solid)
             painter.drawPixmap(24, 0, end)
         elif self.dir == 0:
             painter.drawPixmap(0, 0, end)
