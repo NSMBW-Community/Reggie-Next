@@ -7249,6 +7249,21 @@ class SpriteImage_MGPanel(SLib.SpriteImage_Static):  # 428
         SLib.loadIfNotInImageCache('MGPanel', 'minigame_flip_panel.png')
 
 
+class SpriteImage_BowserController(SLib.SpriteImage):  # 431
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 48, 288))
+        self.aux[0].image = ImageCache['BowserController']
+        self.aux[0].setPos(1248, -288)
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 768, 408, 1248, -336))
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('BowserController', 'boss_controller_bowser.png')
+
+
 class SpriteImage_Toad(SLib.SpriteImage_Static):  # 432
     def __init__(self, parent):
         super().__init__(
@@ -8285,6 +8300,7 @@ ImageClasses = {
     425: SpriteImage_Jellybeam,
     427: SpriteImage_Kamek,
     428: SpriteImage_MGPanel,
+    431: SpriteImage_BowserController,
     432: SpriteImage_Toad,
     433: SpriteImage_FloatingQBlock,
     434: SpriteImage_WarpCannon,
