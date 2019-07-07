@@ -201,6 +201,46 @@ class SpriteImage_PumpkinGoomba(SLib.SpriteImage_StaticMultiple):  # 22
         super().dataChanged()
 
 
+class SpriteImage_NewerBuzzyBeetle(SLib.SpriteImage_StaticMultiple):  # 24
+    @staticmethod
+    def loadImages():
+        if "BuzzyBeetle" not in ImageCache:
+            ImageCache["BuzzyBeetle"] = SLib.GetImg('buzzy_beetle.png')
+            ImageCache["BuzzyBeetleU"] = SLib.GetImg('buzzy_beetle_u.png')
+            ImageCache["BuzzyBeetleShell"] = SLib.GetImg('buzzy_beetle_shell.png')
+            ImageCache["BuzzyBeetleShellU"] = SLib.GetImg('buzzy_beetle_shell_u.png')
+
+        if "BuzzyBeetleBlack" not in ImageCache:
+            for colour in ("Black", "Blue", "Green", "Orange", "Purple", "Red", "Yellow"):
+                ImageCache["BuzzyBeetle%s" % colour] = SLib.GetImg('buzzy_beetle_%s.png' % colour.lower())
+                ImageCache["BuzzyBeetle%sU" % colour] = SLib.GetImg('buzzy_beetle_%s_u.png' % colour.lower())
+                ImageCache["BuzzyBeetle%sShell" % colour] = SLib.GetImg('buzzy_beetle_%s_shell.png' % colour.lower())
+                ImageCache["BuzzyBeetle%sShellU" % colour] = SLib.GetImg('buzzy_beetle_%s_shell_u.png' % colour.lower())
+
+    def dataChanged(self):
+
+        orient = self.parent.spritedata[5] & 15
+        colour = self.parent.spritedata[2] & 15
+        if colour > 7:
+            colour = 0
+
+        colour = ("", "Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Black")[colour]
+        if orient == 1:
+            self.image = ImageCache['BuzzyBeetle%sU' % colour]
+            self.yOffset = 0
+        elif orient == 2:
+            self.image = ImageCache['BuzzyBeetle%sShell' % colour]
+            self.yOffset = 2
+        elif orient == 3:
+            self.image = ImageCache['BuzzyBeetle%sShellU' % colour]
+            self.yOffset = 2
+        else:
+            self.image = ImageCache['BuzzyBeetle%s' % colour]
+            self.yOffset = 0
+
+        super().dataChanged()
+
+
 class SpriteImage_NewerQSwitch(SpriteImage_NewerSwitch): # 40
     def __init__(self, parent):
         super().__init__(parent)
@@ -740,6 +780,7 @@ ImageClasses = {
     19: SpriteImage_SamuraiGuy,
     20: SpriteImage_NewerGoomba,
     22: SpriteImage_PumpkinGoomba,
+    24: SpriteImage_NewerBuzzyBeetle,
     40: SpriteImage_NewerQSwitch,
     42: SpriteImage_ExcSwitch,
     47: SpriteImage_Thwomp,
