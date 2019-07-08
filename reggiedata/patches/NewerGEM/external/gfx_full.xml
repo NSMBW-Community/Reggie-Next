@@ -1,0 +1,3031 @@
+<!--
+    All NSMBW Graphics Effects for sprite 332 Sound and Effect Spawner. This list needs to be updated, but at least it's not in the
+    spritedata xml anymore.
+	
+	Properties:
+		- Description	  	Description of the graphics effect
+	Future:
+		- Name    			Simple name
+		- Description		Description
+		- Problems			Any problems when spawning the gfx
+
+	Original file by by Grop/joietyfull64/Zementblock
+-->
+
+<options primary="[id], RAW Name" short="[RAW Name]">
+	<option value="0">
+		<property name="RAW Name" value="Wm_mr_2dlandsmoke" />
+	</option>
+	<option value="1">
+		<property name="RAW Name" value="Wm_mr_cmnsndlandsmk" />
+	</option>
+	<option value="2">
+		<property name="RAW Name" value="Wm_mr_cmnlandsmoke" />
+	</option>
+	<option value="3">
+		<property name="RAW Name" value="Wm_en_landsmoke" />
+	</option>
+	<option value="4">
+		<property name="RAW Name" value="Wm_en_landsmoke_s" />
+	</option>
+	<option value="5">
+		<property name="RAW Name" value="Wm_en_sndlandsmk" />
+	</option>
+	<option value="6">
+		<property name="RAW Name" value="Wm_en_sndlandsmk_s" />
+	</option>
+	<option value="7">
+		<property name="RAW Name" value="Wm_en_burst_big" />
+	</option>
+	<option value="8">
+		<property name="RAW Name" value="Wm_en_burst_m" />
+	</option>
+	<option value="9">
+		<property name="RAW Name" value="Wm_en_burst_s" />
+	</option>
+	<option value="10">
+		<property name="RAW Name" value="Wm_en_burst_ss" />
+	</option>
+	<option value="11">
+		<property name="RAW Name" value="Wm_en_burst_water00" />
+	</option>
+	<option value="12">
+		<property name="RAW Name" value="Wm_en_burst_water01" />
+	</option>
+	<option value="13">
+		<property name="RAW Name" value="Wm_en_cmnwatertail" />
+	</option>
+	<option value="14">
+		<property name="RAW Name" value="Wm_en_cmnwaterdash" />
+	</option>
+	<option value="15">
+		<property name="RAW Name" value="Wm_en_cmnwater01" />
+	</option>
+	<option value="16">
+		<property name="RAW Name" value="Wm_en_cmnwater" />
+	</option>
+	<option value="17">
+		<property name="RAW Name" value="Wm_en_waterwave_in" />
+	</option>
+	<option value="18">
+		<property name="RAW Name" value="Wm_en_waterwave_in_a" />
+	</option>
+	<option value="19">
+		<property name="RAW Name" value="Wm_en_waterwave_in_b" />
+	</option>
+	<option value="20">
+		<property name="RAW Name" value="Wm_en_firevanish" />
+	</option>
+	<option value="21">
+		<property name="RAW Name" value="Wm_en_watersplash" />
+	</option>
+	<option value="22">
+		<property name="RAW Name" value="Wm_en_watersplash_cld" />
+	</option>
+	<option value="23">
+		<property name="RAW Name" value="Wm_mr_watersplash" />
+	</option>
+	<option value="24">
+		<property name="RAW Name" value="Wm_en_poisoninbig00" />
+	</option>
+	<option value="25">
+		<property name="RAW Name" value="Wm_en_poisoninbig01" />
+	</option>
+	<option value="26">
+		<property name="RAW Name" value="Wm_en_poisonwave" />
+	</option>
+	<option value="27">
+		<property name="RAW Name" value="Wm_en_poisonwave_a" />
+	</option>
+	<option value="28">
+		<property name="RAW Name" value="Wm_en_poisonwave_b" />
+	</option>
+	<option value="29">
+		<property name="RAW Name" value="Wm_en_cmnmagmawave" />
+	</option>
+	<option value="30">
+		<property name="RAW Name" value="Wm_en_magmawave" />
+	</option>
+	<option value="31">
+		<property name="RAW Name" value="Wm_en_magmawave_a" />
+	</option>
+	<option value="32">
+		<property name="RAW Name" value="Wm_en_magmawave_b" />
+	</option>
+	<option value="33">
+		<property name="RAW Name" value="Wm_en_vshit" />
+	</option>
+	<option value="34">
+		<property name="RAW Name" value="Wm_en_vshit_hit" />
+	</option>
+	<option value="35">
+		<property name="RAW Name" value="Wm_en_vshit_glow" />
+	</option>
+	<option value="36">
+		<property name="RAW Name" value="Wm_en_vshit_star" />
+	</option>
+	<option value="37">
+		<property name="RAW Name" value="Wm_en_vshit_ring" />
+	</option>
+	<option value="38">
+		<property name="RAW Name" value="Wm_en_comattack" />
+	</option>
+	<option value="39">
+		<property name="RAW Name" value="Wm_ob_cmnshotstar" />
+	</option>
+	<option value="40">
+		<property name="RAW Name" value="Wm_ob_cmnshothit" />
+	</option>
+	<option value="41">
+		<property name="RAW Name" value="Wm_ob_cmnshotspark" />
+	</option>
+	<option value="42">
+		<property name="RAW Name" value="Wm_ob_cmnsparkloop" />
+	</option>
+	<option value="43">
+		<property name="RAW Name" value="Wm_ob_cmnspark" />
+	</option>
+	<option value="44">
+		<property name="RAW Name" value="Wm_ob_cmnicekira" />
+	</option>
+	<option value="45">
+		<property name="RAW Name" value="Wm_ob_cmnrockpiece" />
+	</option>
+	<option value="46">
+		<property name="RAW Name" value="Wm_ob_cmnboxpiece" />
+	</option>
+	<option value="47">
+		<property name="RAW Name" value="Wm_ob_cmnboxsmoke" />
+	</option>
+	<option value="48">
+		<property name="RAW Name" value="Wm_ob_cmnboxgrain" />
+	</option>
+	<option value="49">
+		<property name="RAW Name" value="Wm_en_hit" />
+	</option>
+	<option value="50">
+		<property name="RAW Name" value="Wm_en_hit_ring" />
+	</option>
+	<option value="51">
+		<property name="RAW Name" value="Wm_mr_misshit" />
+	</option>
+	<option value="52">
+		<property name="RAW Name" value="Wm_mr_misshit_ring" />
+	</option>
+	<option value="53">
+		<property name="RAW Name" value="Wm_en_quicksand" />
+	</option>
+	<option value="54">
+		<property name="RAW Name" value="Wm_ob_envsunlight" />
+	</option>
+	<option value="55">
+		<property name="RAW Name" value="Wm_ob_envsunlight_a" />
+	</option>
+	<option value="56">
+		<property name="RAW Name" value="Wm_ob_envsunlight_b" />
+	</option>
+	<option value="57">
+		<property name="RAW Name" value="Wm_mr_landsmoke" />
+	</option>
+	<option value="58">
+		<property name="RAW Name" value="Wm_mr_landsmoke_s" />
+	</option>
+	<option value="59">
+		<property name="RAW Name" value="Wm_mr_landsmoke_ss" />
+	</option>
+	<option value="60">
+		<property name="RAW Name" value="Wm_mr_sealandsmk" />
+	</option>
+	<option value="61">
+		<property name="RAW Name" value="Wm_mr_sealandsmk_s" />
+	</option>
+	<option value="62">
+		<property name="RAW Name" value="Wm_mr_sealandsmk_ss" />
+	</option>
+	<option value="63">
+		<property name="RAW Name" value="Wm_mr_sndlandsmk" />
+	</option>
+	<option value="64">
+		<property name="RAW Name" value="Wm_mr_sndlandsmk_s" />
+	</option>
+	<option value="65">
+		<property name="RAW Name" value="Wm_mr_sndlandsmk_ss" />
+	</option>
+	<option value="66">
+		<property name="RAW Name" value="Wm_mr_beachlandsmk" />
+	</option>
+	<option value="67">
+		<property name="RAW Name" value="Wm_mr_beachlandsmk_s" />
+	</option>
+	<option value="68">
+		<property name="RAW Name" value="Wm_mr_beachlandsmk_ss" />
+	</option>
+	<option value="69">
+		<property name="RAW Name" value="Wm_mr_slipsmoke" />
+	</option>
+	<option value="70">
+		<property name="RAW Name" value="Wm_mr_slipsmoke_ss" />
+	</option>
+	<option value="71">
+		<property name="RAW Name" value="Wm_mr_slipsmoke_big" />
+	</option>
+	<option value="72">
+		<property name="RAW Name" value="Wm_mr_sndslipsmk" />
+	</option>
+	<option value="73">
+		<property name="RAW Name" value="Wm_mr_sndslipsmk_ss" />
+	</option>
+	<option value="74">
+		<property name="RAW Name" value="Wm_mr_beachslipsmk" />
+	</option>
+	<option value="75">
+		<property name="RAW Name" value="Wm_mr_beachslipsmk_ss" />
+	</option>
+	<option value="76">
+		<property name="RAW Name" value="Wm_mr_iceslipsmk" />
+	</option>
+	<option value="77">
+		<property name="RAW Name" value="Wm_mr_iceslipsmk_ss" />
+	</option>
+	<option value="78">
+		<property name="RAW Name" value="Wm_mr_brakesmoke" />
+	</option>
+	<option value="79">
+		<property name="RAW Name" value="Wm_mr_brakesmoke_ss" />
+	</option>
+	<option value="80">
+		<property name="RAW Name" value="Wm_mr_sndbrakesmk" />
+	</option>
+	<option value="81">
+		<property name="RAW Name" value="Wm_mr_sndbrakesmk_ss" />
+	</option>
+	<option value="82">
+		<property name="RAW Name" value="Wm_mr_beachbrakesmk" />
+	</option>
+	<option value="83">
+		<property name="RAW Name" value="Wm_mr_beachbrakesmk_ss" />
+	</option>
+	<option value="84">
+		<property name="RAW Name" value="Wm_mr_icebrakesmk" />
+	</option>
+	<option value="85">
+		<property name="RAW Name" value="Wm_mr_icebrakesmk_ss" />
+	</option>
+	<option value="86">
+		<property name="RAW Name" value="Wm_mr_drop" />
+	</option>
+	<option value="87">
+		<property name="RAW Name" value="Wm_mr_quicksand" />
+	</option>
+	<option value="88">
+		<property name="RAW Name" value="Wm_mr_swimpaddle" />
+	</option>
+	<option value="89">
+		<property name="RAW Name" value="Wm_mr_flutterkick" />
+	</option>
+	<option value="90">
+		<property name="RAW Name" value="Wm_mr_ivy" />
+	</option>
+	<option value="91">
+		<property name="RAW Name" value="Wm_en_firebar_fire" />
+	</option>
+	<option value="92">
+		<property name="RAW Name" value="Wm_en_firebar_ind" />
+	</option>
+	<option value="93">
+		<property name="RAW Name" value="Wm_en_firebar" />
+	</option>
+	<option value="94">
+		<property name="RAW Name" value="Wm_mr_fireball_a" />
+	</option>
+	<option value="95">
+		<property name="RAW Name" value="Wm_mr_fireball_b" />
+	</option>
+	<option value="96">
+		<property name="RAW Name" value="Wm_mr_fireball" />
+	</option>
+	<option value="97">
+		<property name="RAW Name" value="Wm_mr_iceball_a" />
+	</option>
+	<option value="98">
+		<property name="RAW Name" value="Wm_mr_iceball_b" />
+	</option>
+	<option value="99">
+		<property name="RAW Name" value="Wm_mr_iceball" />
+	</option>
+	<option value="100">
+		<property name="RAW Name" value="Wm_ob_icemisshit" />
+	</option>
+	<option value="101">
+		<property name="RAW Name" value="Wm_ob_icemisshit_smk" />
+	</option>
+	<option value="102">
+		<property name="RAW Name" value="Wm_mr_fireball_hit" />
+	</option>
+	<option value="103">
+		<property name="RAW Name" value="Wm_mr_fireball_hit00" />
+	</option>
+	<option value="104">
+		<property name="RAW Name" value="Wm_en_bubble" />
+	</option>
+	<option value="105">
+		<property name="RAW Name" value="Wm_en_bubble_a" />
+	</option>
+	<option value="106">
+		<property name="RAW Name" value="Wm_en_bubble_b" />
+	</option>
+	<option value="107">
+		<property name="RAW Name" value="Wm_mr_startail" />
+	</option>
+	<option value="108">
+		<property name="RAW Name" value="Wm_mr_movecliff" />
+	</option>
+	<option value="109">
+		<property name="RAW Name" value="Wm_mr_cliffcatch" />
+	</option>
+	<option value="110">
+		<property name="RAW Name" value="Wm_mr_cliffcatch_cd" />
+	</option>
+	<option value="111">
+		<property name="RAW Name" value="Wm_en_iron" />
+	</option>
+	<option value="112">
+		<property name="RAW Name" value="Wm_mr_wallkick_r" />
+	</option>
+	<option value="113">
+		<property name="RAW Name" value="Wm_mr_wallkick_up_r" />
+	</option>
+	<option value="114">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_r" />
+	</option>
+	<option value="115">
+		<property name="RAW Name" value="Wm_mr_wallkick_dn_r" />
+	</option>
+	<option value="116">
+		<property name="RAW Name" value="Wm_mr_wallkick_c_r" />
+	</option>
+	<option value="117">
+		<property name="RAW Name" value="Wm_mr_wallkick_b_r" />
+	</option>
+	<option value="118">
+		<property name="RAW Name" value="Wm_mr_wallkick_l" />
+	</option>
+	<option value="119">
+		<property name="RAW Name" value="Wm_mr_wallkick_up_l" />
+	</option>
+	<option value="120">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_l" />
+	</option>
+	<option value="121">
+		<property name="RAW Name" value="Wm_mr_wallkick_dn_l" />
+	</option>
+	<option value="122">
+		<property name="RAW Name" value="Wm_mr_wallkick_c_l" />
+	</option>
+	<option value="123">
+		<property name="RAW Name" value="Wm_mr_wallkick_b_l" />
+	</option>
+	<option value="124">
+		<property name="RAW Name" value="Wm_mr_wallkick_s_r" />
+	</option>
+	<option value="125">
+		<property name="RAW Name" value="Wm_mr_wallkick_up_s_r" />
+	</option>
+	<option value="126">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_s_r" />
+	</option>
+	<option value="127">
+		<property name="RAW Name" value="Wm_mr_wallkick_dn_s_r" />
+	</option>
+	<option value="128">
+		<property name="RAW Name" value="Wm_mr_wallkick_c_s_r" />
+	</option>
+	<option value="129">
+		<property name="RAW Name" value="Wm_mr_wallkick_b_s_r" />
+	</option>
+	<option value="130">
+		<property name="RAW Name" value="Wm_mr_wallkick_s_l" />
+	</option>
+	<option value="131">
+		<property name="RAW Name" value="Wm_mr_wallkick_up_s_l" />
+	</option>
+	<option value="132">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_s_l" />
+	</option>
+	<option value="133">
+		<property name="RAW Name" value="Wm_mr_wallkick_dn_s_l" />
+	</option>
+	<option value="134">
+		<property name="RAW Name" value="Wm_mr_wallkick_c_s_l" />
+	</option>
+	<option value="135">
+		<property name="RAW Name" value="Wm_mr_wallkick_b_s_l" />
+	</option>
+	<option value="136">
+		<property name="RAW Name" value="Wm_mr_wallkick_ss_r" />
+	</option>
+	<option value="137">
+		<property name="RAW Name" value="Wm_mr_wallkick_up_ss_r" />
+	</option>
+	<option value="138">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_ss_r" />
+	</option>
+	<option value="139">
+		<property name="RAW Name" value="Wm_mr_wallkick_dn_ss_r" />
+	</option>
+	<option value="140">
+		<property name="RAW Name" value="Wm_mr_wallkick_b_ss_r" />
+	</option>
+	<option value="141">
+		<property name="RAW Name" value="Wm_mr_wallkick_c_ss_r" />
+	</option>
+	<option value="142">
+		<property name="RAW Name" value="Wm_mr_wallkick_ss_l" />
+	</option>
+	<option value="143">
+		<property name="RAW Name" value="Wm_mr_wallkick_up_ss_l" />
+	</option>
+	<option value="144">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_ss_l" />
+	</option>
+	<option value="145">
+		<property name="RAW Name" value="Wm_mr_wallkick_dn_ss_l" />
+	</option>
+	<option value="146">
+		<property name="RAW Name" value="Wm_mr_wallkick_b_ss_l" />
+	</option>
+	<option value="147">
+		<property name="RAW Name" value="Wm_mr_wallkick_c_ss_l" />
+	</option>
+	<option value="148">
+		<property name="RAW Name" value="Wm_mr_wallslip_r" />
+	</option>
+	<option value="149">
+		<property name="RAW Name" value="Wm_mr_wallslip_l" />
+	</option>
+	<option value="150">
+		<property name="RAW Name" value="Wm_mr_wallslip_cld" />
+	</option>
+	<option value="151">
+		<property name="RAW Name" value="Wm_mr_wallslip_s_r" />
+	</option>
+	<option value="152">
+		<property name="RAW Name" value="Wm_mr_wallslip_s_l" />
+	</option>
+	<option value="153">
+		<property name="RAW Name" value="Wm_mr_wallslip_cld_s" />
+	</option>
+	<option value="154">
+		<property name="RAW Name" value="Wm_mr_wallslip_ss_r" />
+	</option>
+	<option value="155">
+		<property name="RAW Name" value="Wm_mr_wallslip_ss_l" />
+	</option>
+	<option value="156">
+		<property name="RAW Name" value="Wm_mr_wallslip_cld_ss" />
+	</option>
+	<option value="157">
+		<property name="RAW Name" value="Wm_mr_hardhit" />
+	</option>
+	<option value="158">
+		<property name="RAW Name" value="Wm_mr_hardhit_glow" />
+	</option>
+	<option value="159">
+		<property name="RAW Name" value="Wm_mr_hardhit_spak" />
+	</option>
+	<option value="160">
+		<property name="RAW Name" value="Wm_mr_hardhit_grain" />
+	</option>
+	<option value="161">
+		<property name="RAW Name" value="Wm_mr_kickhit" />
+	</option>
+	<option value="162">
+		<property name="RAW Name" value="Wm_mr_kick_glow" />
+	</option>
+	<option value="163">
+		<property name="RAW Name" value="Wm_mr_kick_grain" />
+	</option>
+	<option value="164">
+		<property name="RAW Name" value="Wm_mr_softhit" />
+	</option>
+	<option value="165">
+		<property name="RAW Name" value="Wm_mr_softhit_glow" />
+	</option>
+	<option value="166">
+		<property name="RAW Name" value="Wm_mr_softhit_spak" />
+	</option>
+	<option value="167">
+		<property name="RAW Name" value="Wm_mr_wirehit" />
+	</option>
+	<option value="168">
+		<property name="RAW Name" value="Wm_mr_wirehit_line" />
+	</option>
+	<option value="169">
+		<property name="RAW Name" value="Wm_mr_wirehit_star" />
+	</option>
+	<option value="170">
+		<property name="RAW Name" value="Wm_mr_wirehit_glow" />
+	</option>
+	<option value="171">
+		<property name="RAW Name" value="Wm_mr_wirehit_hit" />
+	</option>
+	<option value="172">
+		<property name="RAW Name" value="Wm_ob_coin" />
+	</option>
+	<option value="173">
+		<property name="RAW Name" value="Wm_ob_coinkira" />
+	</option>
+	<option value="174">
+		<property name="RAW Name" value="Wm_ob_bluecoinkira" />
+	</option>
+	<option value="175">
+		<property name="RAW Name" value="Wm_ob_greencoinkira" />
+	</option>
+	<option value="176">
+		<property name="RAW Name" value="Wm_ob_greencoinkira_c" />
+	</option>
+	<option value="177">
+		<property name="RAW Name" value="Wm_ob_greencoinkira_b" />
+	</option>
+	<option value="178">
+		<property name="RAW Name" value="Wm_ob_greencoinkira_a" />
+	</option>
+	<option value="179">
+		<property name="RAW Name" value="Wm_ob_redcoinkira" />
+	</option>
+	<option value="180">
+		<property name="RAW Name" value="Wm_ob_starcoinget" />
+	</option>
+	<option value="181">
+		<property name="RAW Name" value="Wm_ob_starcoinget_gl" />
+	</option>
+	<option value="182">
+		<property name="RAW Name" value="Wm_ob_starcoinget_lighit" />
+	</option>
+	<option value="183">
+		<property name="RAW Name" value="Wm_ob_starcoinget_hit" />
+	</option>
+	<option value="184">
+		<property name="RAW Name" value="Wm_ob_starcoinget_str" />
+	</option>
+	<option value="185">
+		<property name="RAW Name" value="Wm_ob_starcoinget_ring" />
+	</option>
+	<option value="186">
+		<property name="RAW Name" value="Wm_mr_electricshock" />
+	</option>
+	<option value="187">
+		<property name="RAW Name" value="Wm_mr_electricshock_glw" />
+	</option>
+	<option value="188">
+		<property name="RAW Name" value="Wm_mr_electricshock_biri00" />
+	</option>
+	<option value="189">
+		<property name="RAW Name" value="Wm_mr_electricshock_biri01" />
+	</option>
+	<option value="190">
+		<property name="RAW Name" value="Wm_mr_electricshock_kira" />
+	</option>
+	<option value="191">
+		<property name="RAW Name" value="Wm_mr_electricshock_s" />
+	</option>
+	<option value="192">
+		<property name="RAW Name" value="Wm_mr_electricshock_glw_s" />
+	</option>
+	<option value="193">
+		<property name="RAW Name" value="Wm_mr_electricshock_biri01_s" />
+	</option>
+	<option value="194">
+		<property name="RAW Name" value="Wm_mr_electricshock_biri02_s" />
+	</option>
+	<option value="195">
+		<property name="RAW Name" value="Wm_mr_electricshock_kira_s" />
+	</option>
+	<option value="196">
+		<property name="RAW Name" value="Wm_en_birikyu" />
+	</option>
+	<option value="197">
+		<property name="RAW Name" value="Wm_en_birikyu_glw" />
+	</option>
+	<option value="198">
+		<property name="RAW Name" value="Wm_en_birikyu_kira" />
+	</option>
+	<option value="199">
+		<property name="RAW Name" value="Wm_en_birikyu_biri" />
+	</option>
+	<option value="200">
+		<property name="RAW Name" value="Wm_mr_1upkira" />
+	</option>
+	<option value="201">
+		<property name="RAW Name" value="Wm_mr_1upkira_spin" />
+	</option>
+	<option value="202">
+		<property name="RAW Name" value="Wm_mr_1upkira_00" />
+	</option>
+	<option value="203">
+		<property name="RAW Name" value="Wm_mr_1upkira_01" />
+	</option>
+	<option value="204">
+		<property name="RAW Name" value="Wm_mr_1upkira_s" />
+	</option>
+	<option value="205">
+		<property name="RAW Name" value="Wm_mr_1upkira_spin_s" />
+	</option>
+	<option value="206">
+		<property name="RAW Name" value="Wm_mr_1upkira_01_s" />
+	</option>
+	<option value="207">
+		<property name="RAW Name" value="Wm_mr_1upkira_02_s" />
+	</option>
+	<option value="208">
+		<property name="RAW Name" value="Wm_mr_1upkira_ss" />
+	</option>
+	<option value="209">
+		<property name="RAW Name" value="Wm_mr_1upkira_spin_ss" />
+	</option>
+	<option value="210">
+		<property name="RAW Name" value="Wm_mr_1upkira_01_ss" />
+	</option>
+	<option value="211">
+		<property name="RAW Name" value="Wm_en_hanapetal" />
+	</option>
+	<option value="212">
+		<property name="RAW Name" value="Wm_en_hanapetal_a" />
+	</option>
+	<option value="213">
+		<property name="RAW Name" value="Wm_en_hanapetal_b" />
+	</option>
+	<option value="214">
+		<property name="RAW Name" value="Wm_en_movecloud" />
+	</option>
+	<option value="215">
+		<property name="RAW Name" value="Wm_mr_cloud_on" />
+	</option>
+	<option value="216">
+		<property name="RAW Name" value="Wm_en_blockcloud" />
+	</option>
+	<option value="217">
+		<property name="RAW Name" value="Wm_en_hanasnort" />
+	</option>
+	<option value="218">
+		<property name="RAW Name" value="Wm_en_hanasnort_r" />
+	</option>
+	<option value="219">
+		<property name="RAW Name" value="Wm_en_hanasnort_l" />
+	</option>
+	<option value="220">
+		<property name="RAW Name" value="Wm_en_hanasnort_cld" />
+	</option>
+	<option value="221">
+		<property name="RAW Name" value="Wm_mr_gauge" />
+	</option>
+	<option value="222">
+		<property name="RAW Name" value="Wm_mr_flaggetkira" />
+	</option>
+	<option value="223">
+		<property name="RAW Name" value="Wm_mr_flaggetkira_s" />
+	</option>
+	<option value="224">
+		<property name="RAW Name" value="Wm_mr_flaggetkira_ss" />
+	</option>
+	<option value="225">
+		<property name="RAW Name" value="Wm_ob_flagget" />
+	</option>
+	<option value="226">
+		<property name="RAW Name" value="Wm_ob_flagget_kira" />
+	</option>
+	<option value="227">
+		<property name="RAW Name" value="Wm_ob_flaggetkira_cld" />
+	</option>
+	<option value="228">
+		<property name="RAW Name" value="Wm_ob_flagget_light" />
+	</option>
+	<option value="229">
+		<property name="RAW Name" value="Wm_ob_icethaw" />
+	</option>
+	<option value="230">
+		<property name="RAW Name" value="Wm_ob_icebreak" />
+	</option>
+	<option value="231">
+		<property name="RAW Name" value="Wm_ob_icebreakwt" />
+	</option>
+	<option value="232">
+		<property name="RAW Name" value="Wm_ob_icebreaksmk" />
+	</option>
+	<option value="233">
+		<property name="RAW Name" value="Wm_ob_icewait" />
+	</option>
+	<option value="234">
+		<property name="RAW Name" value="Wm_ob_icewaitwat" />
+	</option>
+	<option value="235">
+		<property name="RAW Name" value="Wm_ob_iceattack" />
+	</option>
+	<option value="236">
+		<property name="RAW Name" value="Wm_ob_iceattackkira" />
+	</option>
+	<option value="237">
+		<property name="RAW Name" value="Wm_ob_iceattackline" />
+	</option>
+	<option value="238">
+		<property name="RAW Name" value="Wm_ob_iceattacksmk" />
+	</option>
+	<option value="239">
+		<property name="RAW Name" value="Wm_ob_icehit" />
+	</option>
+	<option value="240">
+		<property name="RAW Name" value="Wm_ob_icehitwat" />
+	</option>
+	<option value="241">
+		<property name="RAW Name" value="Wm_ob_icehithit" />
+	</option>
+	<option value="242">
+		<property name="RAW Name" value="Wm_ob_icehitsmk" />
+	</option>
+	<option value="243">
+		<property name="RAW Name" value="Wm_ob_iceevaporate" />
+	</option>
+	<option value="244">
+		<property name="RAW Name" value="Wm_ob_icepoison" />
+	</option>
+	<option value="245">
+		<property name="RAW Name" value="Wm_ob_waterbreak" />
+	</option>
+	<option value="246">
+		<property name="RAW Name" value="Wm_ob_waterbreak_a" />
+	</option>
+	<option value="247">
+		<property name="RAW Name" value="Wm_ob_waterbreak_b" />
+	</option>
+	<option value="248">
+		<property name="RAW Name" value="Wm_ob_waterbreak_c" />
+	</option>
+	<option value="249">
+		<property name="RAW Name" value="Wm_en_firesnk_icehit_h" />
+	</option>
+	<option value="250">
+		<property name="RAW Name" value="Wm_en_firesnk_icehitsmk_h" />
+	</option>
+	<option value="251">
+		<property name="RAW Name" value="Wm_en_firesnk_icehit_b" />
+	</option>
+	<option value="252">
+		<property name="RAW Name" value="Wm_en_firesnk_icehitsmk_b" />
+	</option>
+	<option value="253">
+		<property name="RAW Name" value="Wm_en_firesnkspark00" />
+	</option>
+	<option value="254">
+		<property name="RAW Name" value="Wm_en_firesnkspark01" />
+	</option>
+	<option value="255">
+		<property name="RAW Name" value="Wm_mr_vshipattack" />
+	</option>
+	<option value="256">
+		<property name="RAW Name" value="Wm_mr_vshipattack_line" />
+	</option>
+	<option value="257">
+		<property name="RAW Name" value="Wm_mr_vshipattack_hosi" />
+	</option>
+	<option value="258">
+		<property name="RAW Name" value="Wm_mr_vshipattack_gl" />
+	</option>
+	<option value="259">
+		<property name="RAW Name" value="Wm_mr_vshipattack_ud" />
+	</option>
+	<option value="260">
+		<property name="RAW Name" value="Wm_mr_vshipattack_ind" />
+	</option>
+	<option value="261">
+		<property name="RAW Name" value="Wm_mr_vshipattack_ind_a" />
+	</option>
+	<option value="262">
+		<property name="RAW Name" value="Wm_mr_vshipattack_ind_c" />
+	</option>
+	<option value="263">
+		<property name="RAW Name" value="Wm_mr_vshipattack_ind_b" />
+	</option>
+	<option value="264">
+		<property name="RAW Name" value="Wm_mr_spinstart" />
+	</option>
+	<option value="265">
+		<property name="RAW Name" value="Wm_mr_propellertail" />
+	</option>
+	<option value="266">
+		<property name="RAW Name" value="Wm_mr_p_iceslip" />
+	</option>
+	<option value="267">
+		<property name="RAW Name" value="Wm_mr_p_snowslip" />
+	</option>
+	<option value="268">
+		<property name="RAW Name" value="Wm_mr_penguinsmoke" />
+	</option>
+	<option value="269">
+		<property name="RAW Name" value="Wm_mr_pdesertsmoke" />
+	</option>
+	<option value="270">
+		<property name="RAW Name" value="Wm_mr_pbeachsmoke" />
+	</option>
+	<option value="271">
+		<property name="RAW Name" value="Wm_mr_penguinsnow" />
+	</option>
+	<option value="272">
+		<property name="RAW Name" value="Wm_mr_penguinice" />
+	</option>
+	<option value="273">
+		<property name="RAW Name" value="Wm_mr_spinsmoke" />
+	</option>
+	<option value="274">
+		<property name="RAW Name" value="Wm_mr_spinjump" />
+	</option>
+	<option value="275">
+		<property name="RAW Name" value="Wm_mr_spinjump_re" />
+	</option>
+	<option value="276">
+		<property name="RAW Name" value="Wm_mr_spindepart" />
+	</option>
+	<option value="277">
+		<property name="RAW Name" value="Wm_mr_spindepart_a" />
+	</option>
+	<option value="278">
+		<property name="RAW Name" value="Wm_mr_spindepart_b" />
+	</option>
+	<option value="279">
+		<property name="RAW Name" value="Wm_mr_spindown" />
+	</option>
+	<option value="280">
+		<property name="RAW Name" value="Wm_mr_spindown_a" />
+	</option>
+	<option value="281">
+		<property name="RAW Name" value="Wm_mr_spindown_b" />
+	</option>
+	<option value="282">
+		<property name="RAW Name" value="Wm_mr_spindownline" />
+	</option>
+	<option value="283">
+		<property name="RAW Name" value="Wm_mr_normalspin_pm" />
+	</option>
+	<option value="284">
+		<property name="RAW Name" value="Wm_mr_normalspin" />
+	</option>
+	<option value="285">
+		<property name="RAW Name" value="Wm_mr_halfspin" />
+	</option>
+	<option value="286">
+		<property name="RAW Name" value="Wm_en_shellredtail" />
+	</option>
+	<option value="287">
+		<property name="RAW Name" value="Wm_en_shellgreentail" />
+	</option>
+	<option value="288">
+		<property name="RAW Name" value="Wm_mr_starkira" />
+	</option>
+	<option value="289">
+		<property name="RAW Name" value="Wm_mr_starkira_a" />
+	</option>
+	<option value="290">
+		<property name="RAW Name" value="Wm_mr_starkira_b" />
+	</option>
+	<option value="291">
+		<property name="RAW Name" value="Wm_mr_starkira_s" />
+	</option>
+	<option value="292">
+		<property name="RAW Name" value="Wm_mr_starkira_a_s" />
+	</option>
+	<option value="293">
+		<property name="RAW Name" value="Wm_mr_starkira_b_s" />
+	</option>
+	<option value="294">
+		<property name="RAW Name" value="Wm_ob_itemget" />
+	</option>
+	<option value="295">
+		<property name="RAW Name" value="Wm_ob_itemget_hitlighit" />
+	</option>
+	<option value="296">
+		<property name="RAW Name" value="Wm_ob_itemget_hit" />
+	</option>
+	<option value="297">
+		<property name="RAW Name" value="Wm_ob_itemget_ring" />
+	</option>
+	<option value="298">
+		<property name="RAW Name" value="Wm_mr_itemget00" />
+	</option>
+	<option value="299">
+		<property name="RAW Name" value="Wm_mr_itemget01" />
+	</option>
+	<option value="300">
+		<property name="RAW Name" value="Wm_ob_itemappear" />
+	</option>
+	<option value="301">
+		<property name="RAW Name" value="Wm_ob_itemappear_r" />
+	</option>
+	<option value="302">
+		<property name="RAW Name" value="Wm_ob_itemappear_gl" />
+	</option>
+	<option value="303">
+		<property name="RAW Name" value="Wm_ob_itemappear_ss" />
+	</option>
+	<option value="304">
+		<property name="RAW Name" value="Wm_ob_itemappear_r_ss" />
+	</option>
+	<option value="305">
+		<property name="RAW Name" value="Wm_ob_itemappear_gl_ss" />
+	</option>
+	<option value="306">
+		<property name="RAW Name" value="Wm_ob_startail" />
+	</option>
+	<option value="307">
+		<property name="RAW Name" value="Wm_ob_startail_star" />
+	</option>
+	<option value="308">
+		<property name="RAW Name" value="Wm_ob_startail_kira" />
+	</option>
+	<option value="309">
+		<property name="RAW Name" value="Wm_ob_itempropeller" />
+	</option>
+	<option value="310">
+		<property name="RAW Name" value="Wm_ob_powdown" />
+	</option>
+	<option value="311">
+		<property name="RAW Name" value="Wm_ob_powdown_ind" />
+	</option>
+	<option value="312">
+		<property name="RAW Name" value="Wm_ob_powdown_ind_a" />
+	</option>
+	<option value="313">
+		<property name="RAW Name" value="Wm_ob_powdown_ind_c" />
+	</option>
+	<option value="314">
+		<property name="RAW Name" value="Wm_ob_powdown_ind_b" />
+	</option>
+	<option value="315">
+		<property name="RAW Name" value="Wm_ob_itemlandsmoke" />
+	</option>
+	<option value="316">
+		<property name="RAW Name" value="Wm_ob_itemsealandsmk" />
+	</option>
+	<option value="317">
+		<property name="RAW Name" value="Wm_ob_itemsndlandsmk" />
+	</option>
+	<option value="318">
+		<property name="RAW Name" value="Wm_en_spindamage" />
+	</option>
+	<option value="319">
+		<property name="RAW Name" value="Wm_en_spindamage_rg" />
+	</option>
+	<option value="320">
+		<property name="RAW Name" value="Wm_en_spindamage_star" />
+	</option>
+	<option value="321">
+		<property name="RAW Name" value="Wm_en_spindamage_big" />
+	</option>
+	<option value="322">
+		<property name="RAW Name" value="Wm_en_spindamage_big_st" />
+	</option>
+	<option value="323">
+		<property name="RAW Name" value="Wm_en_spindamage_big_rg" />
+	</option>
+	<option value="324">
+		<property name="RAW Name" value="Wm_mr_atitismoke" />
+	</option>
+	<option value="325">
+		<property name="RAW Name" value="Wm_en_sanbosmoke" />
+	</option>
+	<option value="326">
+		<property name="RAW Name" value="Wm_en_sanbospillsand" />
+	</option>
+	<option value="327">
+		<property name="RAW Name" value="Wm_en_sanbohit" />
+	</option>
+	<option value="328">
+		<property name="RAW Name" value="Wm_en_sanbohit_smk" />
+	</option>
+	<option value="329">
+		<property name="RAW Name" value="Wm_en_sanbohit_hit" />
+	</option>
+	<option value="330">
+		<property name="RAW Name" value="Wm_en_sanbohit_ring" />
+	</option>
+	<option value="331">
+		<property name="RAW Name" value="Wm_en_sanbohitsmk" />
+	</option>
+	<option value="332">
+		<property name="RAW Name" value="Wm_en_keronpafire" />
+	</option>
+	<option value="333">
+		<property name="RAW Name" value="Wm_en_keronpafire_f" />
+	</option>
+	<option value="334">
+		<property name="RAW Name" value="Wm_en_keronpafire_ca" />
+	</option>
+	<option value="335">
+		<property name="RAW Name" value="Wm_en_keronpalight" />
+	</option>
+	<option value="336">
+		<property name="RAW Name" value="Wm_en_explosion" />
+	</option>
+	<option value="337">
+		<property name="RAW Name" value="Wm_en_explosion_ln" />
+	</option>
+	<option value="338">
+		<property name="RAW Name" value="Wm_en_explosion_gl00" />
+	</option>
+	<option value="339">
+		<property name="RAW Name" value="Wm_en_explosion_hd" />
+	</option>
+	<option value="340">
+		<property name="RAW Name" value="Wm_en_explosion_un" />
+	</option>
+	<option value="341">
+		<property name="RAW Name" value="Wm_en_explosion_gl01" />
+	</option>
+	<option value="342">
+		<property name="RAW Name" value="Wm_en_explosion_smk" />
+	</option>
+	<option value="343">
+		<property name="RAW Name" value="Wm_en_bombheibreak" />
+	</option>
+	<option value="344">
+		<property name="RAW Name" value="Wm_en_bombignition" />
+	</option>
+	<option value="345">
+		<property name="RAW Name" value="Wm_en_bomignition_ln" />
+	</option>
+	<option value="346">
+		<property name="RAW Name" value="Wm_en_bomignition_gl00" />
+	</option>
+	<option value="347">
+		<property name="RAW Name" value="Wm_en_bomignition_pati" />
+	</option>
+	<option value="348">
+		<property name="RAW Name" value="Wm_mr_sanddive" />
+	</option>
+	<option value="349">
+		<property name="RAW Name" value="Wm_mr_sanddive_sd" />
+	</option>
+	<option value="350">
+		<property name="RAW Name" value="Wm_mr_sanddive_in" />
+	</option>
+	<option value="351">
+		<property name="RAW Name" value="Wm_mr_sanddive_out" />
+	</option>
+	<option value="352">
+		<property name="RAW Name" value="Wm_mr_sanddive_smk" />
+	</option>
+	<option value="353">
+		<property name="RAW Name" value="Wm_mr_sanddive_m" />
+	</option>
+	<option value="354">
+		<property name="RAW Name" value="Wm_mr_sanddive_sd_m" />
+	</option>
+	<option value="355">
+		<property name="RAW Name" value="Wm_mr_sanddive_in_m" />
+	</option>
+	<option value="356">
+		<property name="RAW Name" value="Wm_mr_sanddive_out_m" />
+	</option>
+	<option value="357">
+		<property name="RAW Name" value="Wm_mr_sanddive_smk_m" />
+	</option>
+	<option value="358">
+		<property name="RAW Name" value="Wm_mr_sanddive_s" />
+	</option>
+	<option value="359">
+		<property name="RAW Name" value="Wm_mr_sanddive_sb_s" />
+	</option>
+	<option value="360">
+		<property name="RAW Name" value="Wm_mr_sanddive_smk_s" />
+	</option>
+	<option value="361">
+		<property name="RAW Name" value="Wm_mr_sandsplash" />
+	</option>
+	<option value="362">
+		<property name="RAW Name" value="Wm_en_dossunfall00" />
+	</option>
+	<option value="363">
+		<property name="RAW Name" value="Wm_en_dossunfall01" />
+	</option>
+	<option value="364">
+		<property name="RAW Name" value="Wm_en_dossunfall02" />
+	</option>
+	<option value="365">
+		<property name="RAW Name" value="Wm_en_kuribobigsplit" />
+	</option>
+	<option value="366">
+		<property name="RAW Name" value="Wm_en_kuribobigsplit_sk" />
+	</option>
+	<option value="367">
+		<property name="RAW Name" value="Wm_en_kuribobigsplit_ht" />
+	</option>
+	<option value="368">
+		<property name="RAW Name" value="Wm_en_kuribobigsplit_gr01" />
+	</option>
+	<option value="369">
+		<property name="RAW Name" value="Wm_en_kuribobigsplit_gr00" />
+	</option>
+	<option value="370">
+		<property name="RAW Name" value="Wm_en_kuribobigsplit_rg" />
+	</option>
+	<option value="371">
+		<property name="RAW Name" value="Wm_en_kuribosplit" />
+	</option>
+	<option value="372">
+		<property name="RAW Name" value="Wm_en_kuribosplit_gl01" />
+	</option>
+	<option value="373">
+		<property name="RAW Name" value="Wm_en_kuribosplit_gl00" />
+	</option>
+	<option value="374">
+		<property name="RAW Name" value="Wm_en_kuribosplit_sk" />
+	</option>
+	<option value="375">
+		<property name="RAW Name" value="Wm_en_teresatail" />
+	</option>
+	<option value="376">
+		<property name="RAW Name" value="Wm_en_teresavanish" />
+	</option>
+	<option value="377">
+		<property name="RAW Name" value="Wm_en_obakedoor" />
+	</option>
+	<option value="378">
+		<property name="RAW Name" value="Wm_en_obakedoor_sm" />
+	</option>
+	<option value="379">
+		<property name="RAW Name" value="Wm_en_obakedoor_ic" />
+	</option>
+	<option value="380">
+		<property name="RAW Name" value="Wm_mr_yoshistep" />
+	</option>
+	<option value="381">
+		<property name="RAW Name" value="Wm_mr_yoshistep_a" />
+	</option>
+	<option value="382">
+		<property name="RAW Name" value="Wm_mr_yoshistep_a_cld" />
+	</option>
+	<option value="383">
+		<property name="RAW Name" value="Wm_mr_yoshistep_b" />
+	</option>
+	<option value="384">
+		<property name="RAW Name" value="Wm_mr_fruitget" />
+	</option>
+	<option value="385">
+		<property name="RAW Name" value="Wm_mr_fruitget_w" />
+	</option>
+	<option value="386">
+		<property name="RAW Name" value="Wm_mr_fruitget_h" />
+	</option>
+	<option value="387">
+		<property name="RAW Name" value="Wm_ob_eggbreak_gr" />
+	</option>
+	<option value="388">
+		<property name="RAW Name" value="Wm_ob_eggbreak_rd" />
+	</option>
+	<option value="389">
+		<property name="RAW Name" value="Wm_ob_eggbreak_yw" />
+	</option>
+	<option value="390">
+		<property name="RAW Name" value="Wm_ob_eggbreak_bl" />
+	</option>
+	<option value="391">
+		<property name="RAW Name" value="Wm_mr_yoshifire" />
+	</option>
+	<option value="392">
+		<property name="RAW Name" value="Wm_mr_yoshifire_a" />
+	</option>
+	<option value="393">
+		<property name="RAW Name" value="Wm_mr_yoshifire_b" />
+	</option>
+	<option value="394">
+		<property name="RAW Name" value="Wm_mr_yoshiiceball" />
+	</option>
+	<option value="395">
+		<property name="RAW Name" value="Wm_mr_yoshiiceball_b" />
+	</option>
+	<option value="396">
+		<property name="RAW Name" value="Wm_mr_yoshiiceball_a" />
+	</option>
+	<option value="397">
+		<property name="RAW Name" value="Wm_mr_yoshifirehit" />
+	</option>
+	<option value="398">
+		<property name="RAW Name" value="Wm_mr_yoshifirehit00" />
+	</option>
+	<option value="399">
+		<property name="RAW Name" value="Wm_mr_yoshiicehit" />
+	</option>
+	<option value="400">
+		<property name="RAW Name" value="Wm_mr_yoshiicehit_a" />
+	</option>
+	<option value="401">
+		<property name="RAW Name" value="Wm_mr_yoshiicehit_b" />
+	</option>
+	<option value="402">
+		<property name="RAW Name" value="Wm_mr_yssweatrun" />
+	</option>
+	<option value="403">
+		<property name="RAW Name" value="Wm_mr_yssweat" />
+	</option>
+	<option value="404">
+		<property name="RAW Name" value="Wm_mr_ystonguehit" />
+	</option>
+	<option value="405">
+		<property name="RAW Name" value="Wm_mr_ystonguehit_a" />
+	</option>
+	<option value="406">
+		<property name="RAW Name" value="Wm_en_crowhit" />
+	</option>
+	<option value="407">
+		<property name="RAW Name" value="Wm_en_crowfly" />
+	</option>
+	<option value="408">
+		<property name="RAW Name" value="Wm_en_crowattack_r" />
+	</option>
+	<option value="409">
+		<property name="RAW Name" value="Wm_en_crowattack_l" />
+	</option>
+	<option value="410">
+		<property name="RAW Name" value="Wm_en_pakkunfire" />
+	</option>
+	<option value="411">
+		<property name="RAW Name" value="Wm_en_pakkunfire00" />
+	</option>
+	<option value="412">
+		<property name="RAW Name" value="Wm_en_firebros_fire" />
+	</option>
+	<option value="413">
+		<property name="RAW Name" value="Wm_en_firebros_fire_a" />
+	</option>
+	<option value="414">
+		<property name="RAW Name" value="Wm_en_firebros_fire_b" />
+	</option>
+	<option value="415">
+		<property name="RAW Name" value="Wm_mr_magmawave" />
+	</option>
+	<option value="416">
+		<property name="RAW Name" value="Wm_mr_magmawave_a" />
+	</option>
+	<option value="417">
+		<property name="RAW Name" value="Wm_mr_magmawave_b" />
+	</option>
+	<option value="418">
+		<property name="RAW Name" value="Wm_ob_magmagear" />
+	</option>
+	<option value="419">
+		<property name="RAW Name" value="Wm_mr_poisonwave" />
+	</option>
+	<option value="420">
+		<property name="RAW Name" value="Wm_mr_poisonwave_a" />
+	</option>
+	<option value="421">
+		<property name="RAW Name" value="Wm_mr_poisonwave_b" />
+	</option>
+	<option value="422">
+		<property name="RAW Name" value="Wm_mr_waterwave_in" />
+	</option>
+	<option value="423">
+		<property name="RAW Name" value="Wm_mr_waterwave_in_a" />
+	</option>
+	<option value="424">
+		<property name="RAW Name" value="Wm_mr_waterwave_in_b" />
+	</option>
+	<option value="425">
+		<property name="RAW Name" value="Wm_mr_waterwave_in_c" />
+	</option>
+	<option value="426">
+		<property name="RAW Name" value="Wm_mr_waterwave_in_d" />
+	</option>
+	<option value="427">
+		<property name="RAW Name" value="Wm_mr_waterwave_out" />
+	</option>
+	<option value="428">
+		<property name="RAW Name" value="Wm_mr_waterwave_out_a" />
+	</option>
+	<option value="429">
+		<property name="RAW Name" value="Wm_mr_waterwave_out_b" />
+	</option>
+	<option value="430">
+		<property name="RAW Name" value="Wm_mr_waterwave_out_c" />
+	</option>
+	<option value="431">
+		<property name="RAW Name" value="Wm_mr_waterwave_in_ss" />
+	</option>
+	<option value="432">
+		<property name="RAW Name" value="Wm_mr_waterwave_in_a_ss" />
+	</option>
+	<option value="433">
+		<property name="RAW Name" value="Wm_mr_waterwave_in_b_ss" />
+	</option>
+	<option value="434">
+		<property name="RAW Name" value="Wm_mr_waterwave_out_ss" />
+	</option>
+	<option value="435">
+		<property name="RAW Name" value="Wm_mr_waterwave_out_a_ss" />
+	</option>
+	<option value="436">
+		<property name="RAW Name" value="Wm_mr_waterwave_out_b_ss" />
+	</option>
+	<option value="437">
+		<property name="RAW Name" value="Wm_mr_waterrun_l_ss" />
+	</option>
+	<option value="438">
+		<property name="RAW Name" value="Wm_mr_waterrun_r_ss" />
+	</option>
+	<option value="439">
+		<property name="RAW Name" value="Wm_mr_waterswim" />
+	</option>
+	<option value="440">
+		<property name="RAW Name" value="Wm_ob_magmasign00" />
+	</option>
+	<option value="441">
+		<property name="RAW Name" value="Wm_ob_magmasign01" />
+	</option>
+	<option value="442">
+		<property name="RAW Name" value="Wm_ob_firespillarunder" />
+	</option>
+	<option value="443">
+		<property name="RAW Name" value="Wm_ob_firespillar01" />
+	</option>
+	<option value="444">
+		<property name="RAW Name" value="Wm_ob_firespillar00" />
+	</option>
+	<option value="445">
+		<property name="RAW Name" value="Wm_mr_foot_snow" />
+	</option>
+	<option value="446">
+		<property name="RAW Name" value="Wm_mr_foot_ice" />
+	</option>
+	<option value="447">
+		<property name="RAW Name" value="Wm_mr_foot_sand" />
+	</option>
+	<option value="448">
+		<property name="RAW Name" value="Wm_mr_foot_beach" />
+	</option>
+	<option value="449">
+		<property name="RAW Name" value="Wm_mr_foot_water" />
+	</option>
+	<option value="450">
+		<property name="RAW Name" value="Wm_mr_turn_beach_r" />
+	</option>
+	<option value="451">
+		<property name="RAW Name" value="Wm_mr_turn_beach_l" />
+	</option>
+	<option value="452">
+		<property name="RAW Name" value="Wm_mr_turn_water_r" />
+	</option>
+	<option value="453">
+		<property name="RAW Name" value="Wm_mr_turn_water_l" />
+	</option>
+	<option value="454">
+		<property name="RAW Name" value="Wm_mr_turn_ice_r" />
+	</option>
+	<option value="455">
+		<property name="RAW Name" value="Wm_mr_turn_ice_l" />
+	</option>
+	<option value="456">
+		<property name="RAW Name" value="Wm_mr_turn_sand_r" />
+	</option>
+	<option value="457">
+		<property name="RAW Name" value="Wm_mr_turn_sand_l" />
+	</option>
+	<option value="458">
+		<property name="RAW Name" value="Wm_mr_turn_snow_r" />
+	</option>
+	<option value="459">
+		<property name="RAW Name" value="Wm_mr_turn_snow_l" />
+	</option>
+	<option value="460">
+		<property name="RAW Name" value="Wm_mr_turn_usual_r" />
+	</option>
+	<option value="461">
+		<property name="RAW Name" value="Wm_mr_turn_usual_l" />
+	</option>
+	<option value="462">
+		<property name="RAW Name" value="Wm_ob_sandpillar00" />
+	</option>
+	<option value="463">
+		<property name="RAW Name" value="Wm_ob_sandpillar01" />
+	</option>
+	<option value="464">
+		<property name="RAW Name" value="Wm_ob_spillarsign00" />
+	</option>
+	<option value="465">
+		<property name="RAW Name" value="Wm_ob_spillarsign01" />
+	</option>
+	<option value="466">
+		<property name="RAW Name" value="Wm_mr_spsmoke" />
+	</option>
+	<option value="467">
+		<property name="RAW Name" value="Wm_en_spsmoke" />
+	</option>
+	<option value="468">
+		<property name="RAW Name" value="Wm_en_sphitsmoke" />
+	</option>
+	<option value="469">
+		<property name="RAW Name" value="Wm_mr_sprisesmoke" />
+	</option>
+	<option value="470">
+		<property name="RAW Name" value="Wm_en_huhubreathstart" />
+	</option>
+	<option value="471">
+		<property name="RAW Name" value="Wm_en_huhubreath" />
+	</option>
+	<option value="472">
+		<property name="RAW Name" value="Wm_en_huhuhaze" />
+	</option>
+	<option value="473">
+		<property name="RAW Name" value="Wm_en_huhufloat" />
+	</option>
+	<option value="474">
+		<property name="RAW Name" value="Wm_en_huhudamage00" />
+	</option>
+	<option value="475">
+		<property name="RAW Name" value="Wm_en_huhudamage01" />
+	</option>
+	<option value="476">
+		<property name="RAW Name" value="Wm_en_huhurevival00" />
+	</option>
+	<option value="477">
+		<property name="RAW Name" value="Wm_en_huhurevival01" />
+	</option>
+	<option value="478">
+		<property name="RAW Name" value="Wm_mr_wfloatsplash" />
+	</option>
+	<option value="479">
+		<property name="RAW Name" value="Wm_mr_wfloatsplash_a" />
+	</option>
+	<option value="480">
+		<property name="RAW Name" value="Wm_mr_wfloatsplash_b" />
+	</option>
+	<option value="481">
+		<property name="RAW Name" value="Wm_en_wfsplash_in_r" />
+	</option>
+	<option value="482">
+		<property name="RAW Name" value="Wm_en_wfsplash_in01_r" />
+	</option>
+	<option value="483">
+		<property name="RAW Name" value="Wm_en_wfsplash_in02_r" />
+	</option>
+	<option value="484">
+		<property name="RAW Name" value="Wm_en_wfsplash_in_l" />
+	</option>
+	<option value="485">
+		<property name="RAW Name" value="Wm_en_wfsplash_in01_l" />
+	</option>
+	<option value="486">
+		<property name="RAW Name" value="Wm_en_wfsplash_in02_l" />
+	</option>
+	<option value="487">
+		<property name="RAW Name" value="Wm_en_wfsplash_out_r" />
+	</option>
+	<option value="488">
+		<property name="RAW Name" value="Wm_en_wfsplash_out01_r" />
+	</option>
+	<option value="489">
+		<property name="RAW Name" value="Wm_en_wfsplash_out02_r" />
+	</option>
+	<option value="490">
+		<property name="RAW Name" value="Wm_en_wfsplash_out_l" />
+	</option>
+	<option value="491">
+		<property name="RAW Name" value="Wm_en_wfsplash_out01_l" />
+	</option>
+	<option value="492">
+		<property name="RAW Name" value="Wm_en_wfsplash_out02_l" />
+	</option>
+	<option value="493">
+		<property name="RAW Name" value="Wm_mr_balloonburst" />
+	</option>
+	<option value="494">
+		<property name="RAW Name" value="Wm_mr_balloonburst_w" />
+	</option>
+	<option value="495">
+		<property name="RAW Name" value="Wm_mr_balloonburst_h" />
+	</option>
+	<option value="496">
+		<property name="RAW Name" value="Wm_en_magkillersmoke" />
+	</option>
+	<option value="497">
+		<property name="RAW Name" value="Wm_en_mgkillershot_r" />
+	</option>
+	<option value="498">
+		<property name="RAW Name" value="Wm_en_mgkillershot_l" />
+	</option>
+	<option value="499">
+		<property name="RAW Name" value="Wm_en_killersmoke" />
+	</option>
+	<option value="500">
+		<property name="RAW Name" value="Wm_en_killershot" />
+	</option>
+	<option value="501">
+		<property name="RAW Name" value="Wm_en_killervanish" />
+	</option>
+	<option value="502">
+		<property name="RAW Name" value="Wm_en_kingkiller" />
+	</option>
+	<option value="503">
+		<property name="RAW Name" value="Wm_en_kingkiller_gr" />
+	</option>
+	<option value="504">
+		<property name="RAW Name" value="Wm_en_kingkiller_rg" />
+	</option>
+	<option value="505">
+		<property name="RAW Name" value="Wm_en_kingkiller_sm" />
+	</option>
+	<option value="506">
+		<property name="RAW Name" value="Wm_en_mgsearchkiller" />
+	</option>
+	<option value="507">
+		<property name="RAW Name" value="Wm_en_searchkiller" />
+	</option>
+	<option value="508">
+		<property name="RAW Name" value="Wm_en_pakkunsweat" />
+	</option>
+	<option value="509">
+		<property name="RAW Name" value="Wm_en_pakkun_ball00" />
+	</option>
+	<option value="510">
+		<property name="RAW Name" value="Wm_en_pakkun_ball01" />
+	</option>
+	<option value="511">
+		<property name="RAW Name" value="Wm_en_pakkun_foo" />
+	</option>
+	<option value="512">
+		<property name="RAW Name" value="Wm_en_igafirehit" />
+	</option>
+	<option value="513">
+		<property name="RAW Name" value="Wm_en_patametsweat" />
+	</option>
+	<option value="514">
+		<property name="RAW Name" value="Wm_ob_fireworks_y" />
+	</option>
+	<option value="515">
+		<property name="RAW Name" value="Wm_ob_fireworks_y00" />
+	</option>
+	<option value="516">
+		<property name="RAW Name" value="Wm_ob_fireworks_ycld" />
+	</option>
+	<option value="517">
+		<property name="RAW Name" value="Wm_ob_fireworks_b" />
+	</option>
+	<option value="518">
+		<property name="RAW Name" value="Wm_ob_fireworks_b00" />
+	</option>
+	<option value="519">
+		<property name="RAW Name" value="Wm_ob_fireworks_bcld" />
+	</option>
+	<option value="520">
+		<property name="RAW Name" value="Wm_ob_fireworks_g" />
+	</option>
+	<option value="521">
+		<property name="RAW Name" value="Wm_ob_fireworks_g00" />
+	</option>
+	<option value="522">
+		<property name="RAW Name" value="Wm_ob_fireworks_gcld" />
+	</option>
+	<option value="523">
+		<property name="RAW Name" value="Wm_ob_fireworks_p" />
+	</option>
+	<option value="524">
+		<property name="RAW Name" value="Wm_ob_fireworks_p00" />
+	</option>
+	<option value="525">
+		<property name="RAW Name" value="Wm_ob_fireworks_pcld" />
+	</option>
+	<option value="526">
+		<property name="RAW Name" value="Wm_ob_fireworks_k" />
+	</option>
+	<option value="527">
+		<property name="RAW Name" value="Wm_ob_fireworks_kgl00" />
+	</option>
+	<option value="528">
+		<property name="RAW Name" value="Wm_ob_fireworks_kgl01" />
+	</option>
+	<option value="529">
+		<property name="RAW Name" value="Wm_ob_fireworks_k00" />
+	</option>
+	<option value="530">
+		<property name="RAW Name" value="Wm_ob_fireworks_kcld0" />
+	</option>
+	<option value="531">
+		<property name="RAW Name" value="Wm_ob_fireworks_k01" />
+	</option>
+	<option value="532">
+		<property name="RAW Name" value="Wm_ob_fireworks_kcld1" />
+	</option>
+	<option value="533">
+		<property name="RAW Name" value="Wm_ob_fireworks_1up" />
+	</option>
+	<option value="534">
+		<property name="RAW Name" value="Wm_ob_fireworks_1upgl00" />
+	</option>
+	<option value="535">
+		<property name="RAW Name" value="Wm_ob_fireworks_1upgl01" />
+	</option>
+	<option value="536">
+		<property name="RAW Name" value="Wm_ob_fireworks_1up00" />
+	</option>
+	<option value="537">
+		<property name="RAW Name" value="Wm_ob_fireworks_1upcld0" />
+	</option>
+	<option value="538">
+		<property name="RAW Name" value="Wm_ob_fireworks_1up01" />
+	</option>
+	<option value="539">
+		<property name="RAW Name" value="Wm_ob_fireworks_1upcld1" />
+	</option>
+	<option value="540">
+		<property name="RAW Name" value="Wm_ob_fireworks_star" />
+	</option>
+	<option value="541">
+		<property name="RAW Name" value="Wm_ob_fireworks_stargl00" />
+	</option>
+	<option value="542">
+		<property name="RAW Name" value="Wm_ob_fireworks_stargl01" />
+	</option>
+	<option value="543">
+		<property name="RAW Name" value="Wm_ob_fireworks_star00" />
+	</option>
+	<option value="544">
+		<property name="RAW Name" value="Wm_ob_fireworks_starcld0" />
+	</option>
+	<option value="545">
+		<property name="RAW Name" value="Wm_ob_fireworks_star01" />
+	</option>
+	<option value="546">
+		<property name="RAW Name" value="Wm_ob_fireworks_starcld1" />
+	</option>
+	<option value="547">
+		<property name="RAW Name" value="Wm_ob_switch" />
+	</option>
+	<option value="548">
+		<property name="RAW Name" value="Wm_ob_switch00" />
+	</option>
+	<option value="549">
+		<property name="RAW Name" value="Wm_en_sweat" />
+	</option>
+	<option value="550">
+		<property name="RAW Name" value="Wm_en_choroappear" />
+	</option>
+	<option value="551">
+		<property name="RAW Name" value="Wm_en_choroescape" />
+	</option>
+	<option value="552">
+		<property name="RAW Name" value="Wm_en_brakesmoke" />
+	</option>
+	<option value="553">
+		<property name="RAW Name" value="Wm_ob_redcioinkira" />
+	</option>
+	<option value="554">
+		<property name="RAW Name" value="Wm_ob_redcioinkira_cd" />
+	</option>
+	<option value="555">
+		<property name="RAW Name" value="Wm_ob_redcioinitem00" />
+	</option>
+	<option value="556">
+		<property name="RAW Name" value="Wm_ob_redcioinitem_cd" />
+	</option>
+	<option value="557">
+		<property name="RAW Name" value="Wm_ob_redcioinitem01" />
+	</option>
+	<option value="558">
+		<property name="RAW Name" value="Wm_ob_redcioinitem02_b" />
+	</option>
+	<option value="559">
+		<property name="RAW Name" value="Wm_ob_redcioinitem02_a" />
+	</option>
+	<option value="560">
+		<property name="RAW Name" value="Wm_ob_itemfall" />
+	</option>
+	<option value="561">
+		<property name="RAW Name" value="Wm_ob_itemfall_a" />
+	</option>
+	<option value="562">
+		<property name="RAW Name" value="Wm_ob_itemfall_b" />
+	</option>
+	<option value="563">
+		<property name="RAW Name" value="Wm_ob_redringkira" />
+	</option>
+	<option value="564">
+		<property name="RAW Name" value="Wm_ob_redringget" />
+	</option>
+	<option value="565">
+		<property name="RAW Name" value="Wm_ob_redringget_a" />
+	</option>
+	<option value="566">
+		<property name="RAW Name" value="Wm_ob_redringget_b" />
+	</option>
+	<option value="567">
+		<property name="RAW Name" value="Wm_ob_redringget_c" />
+	</option>
+	<option value="568">
+		<property name="RAW Name" value="Wm_ob_warpcannonkira" />
+	</option>
+	<option value="569">
+		<property name="RAW Name" value="Wm_ob_witchcraft" />
+	</option>
+	<option value="570">
+		<property name="RAW Name" value="Wm_ob_witchcraftup" />
+	</option>
+	<option value="571">
+		<property name="RAW Name" value="Wm_bs_kameckmagic" />
+	</option>
+	<option value="572">
+		<property name="RAW Name" value="Wm_bs_kameckmagic_e" />
+	</option>
+	<option value="573">
+		<property name="RAW Name" value="Wm_bs_kameckmagic_f" />
+	</option>
+	<option value="574">
+		<property name="RAW Name" value="Wm_bs_kameckmagic_a" />
+	</option>
+	<option value="575">
+		<property name="RAW Name" value="Wm_bs_kameckmagic_b" />
+	</option>
+	<option value="576">
+		<property name="RAW Name" value="Wm_bs_kameckmagic_c" />
+	</option>
+	<option value="577">
+		<property name="RAW Name" value="Wm_bs_kameckmagic_d" />
+	</option>
+	<option value="578">
+		<property name="RAW Name" value="Wm_ob_keyfall" />
+	</option>
+	<option value="579">
+		<property name="RAW Name" value="Wm_ob_keywait" />
+	</option>
+	<option value="580">
+		<property name="RAW Name" value="Wm_ob_keywait_c" />
+	</option>
+	<option value="581">
+		<property name="RAW Name" value="Wm_ob_keywait_a" />
+	</option>
+	<option value="582">
+		<property name="RAW Name" value="Wm_ob_keywait_b" />
+	</option>
+	<option value="583">
+		<property name="RAW Name" value="Wm_ob_keyget00" />
+	</option>
+	<option value="584">
+		<property name="RAW Name" value="Wm_ob_keyget01_d" />
+	</option>
+	<option value="585">
+		<property name="RAW Name" value="Wm_ob_keyget01_a" />
+	</option>
+	<option value="586">
+		<property name="RAW Name" value="Wm_ob_keyget01_b" />
+	</option>
+	<option value="587">
+		<property name="RAW Name" value="Wm_ob_keyget01_c" />
+	</option>
+	<option value="588">
+		<property name="RAW Name" value="Wm_ob_keyget01" />
+	</option>
+	<option value="589">
+		<property name="RAW Name" value="Wm_ob_keyget02_kira" />
+	</option>
+	<option value="590">
+		<property name="RAW Name" value="Wm_ob_keyget02_ring00" />
+	</option>
+	<option value="591">
+		<property name="RAW Name" value="Wm_ob_keyget02_ring01" />
+	</option>
+	<option value="592">
+		<property name="RAW Name" value="Wm_ob_keyget02_gl01" />
+	</option>
+	<option value="593">
+		<property name="RAW Name" value="Wm_ob_keyget02_gl00" />
+	</option>
+	<option value="594">
+		<property name="RAW Name" value="Wm_ob_keyget02_lighit" />
+	</option>
+	<option value="595">
+		<property name="RAW Name" value="Wm_ob_keyget02_hit" />
+	</option>
+	<option value="596">
+		<property name="RAW Name" value="Wm_ob_keyget02_str" />
+	</option>
+	<option value="597">
+		<property name="RAW Name" value="Wm_ob_stream" />
+	</option>
+	<option value="598">
+		<property name="RAW Name" value="Wm_seacloudout" />
+	</option>
+	<option value="599">
+		<property name="RAW Name" value="Wm_shellopen" />
+	</option>
+	<option value="600">
+		<property name="RAW Name" value="Wm_shellopen_a" />
+	</option>
+	<option value="601">
+		<property name="RAW Name" value="Wm_shellopen_b" />
+	</option>
+	<option value="602">
+		<property name="RAW Name" value="Wm_2d_courseclear" />
+	</option>
+	<option value="603">
+		<property name="RAW Name" value="Wm_2d_courseclear_da" />
+	</option>
+	<option value="604">
+		<property name="RAW Name" value="Wm_2d_courseclear_kiraL" />
+	</option>
+	<option value="605">
+		<property name="RAW Name" value="Wm_2d_courseclear_kiraR" />
+	</option>
+	<option value="606">
+		<property name="RAW Name" value="Wm_2d_courseclear_cld" />
+	</option>
+	<option value="607">
+		<property name="RAW Name" value="Wm_2d_courseclear_smkL" />
+	</option>
+	<option value="608">
+		<property name="RAW Name" value="Wm_2d_courseclearsmcld00" />
+	</option>
+	<option value="609">
+		<property name="RAW Name" value="Wm_2d_courseclear_smkR" />
+	</option>
+	<option value="610">
+		<property name="RAW Name" value="Wm_2d_courseclearsmcld01" />
+	</option>
+	<option value="611">
+		<property name="RAW Name" value="Wm_2d_timeup" />
+	</option>
+	<option value="612">
+		<property name="RAW Name" value="Wm_2d_timeupsmoke" />
+	</option>
+	<option value="613">
+		<property name="RAW Name" value="Wm_2d_timeupstar" />
+	</option>
+	<option value="614">
+		<property name="RAW Name" value="Wm_2d_timeupstarcld" />
+	</option>
+	<option value="615">
+		<property name="RAW Name" value="Wm_2d_gameover" />
+	</option>
+	<option value="616">
+		<property name="RAW Name" value="Wm_2d_gameover_a" />
+	</option>
+	<option value="617">
+		<property name="RAW Name" value="Wm_2d_gameover_b" />
+	</option>
+	<option value="618">
+		<property name="RAW Name" value="Wm_2d_mrstarkira" />
+	</option>
+	<option value="619">
+		<property name="RAW Name" value="Wm_2d_1up01" />
+	</option>
+	<option value="620">
+		<property name="RAW Name" value="Wm_2d_1up00" />
+	</option>
+	<option value="621">
+		<property name="RAW Name" value="Wm_2d_coin100" />
+	</option>
+	<option value="622">
+		<property name="RAW Name" value="Wm_2d_coin100a" />
+	</option>
+	<option value="623">
+		<property name="RAW Name" value="Wm_2d_coinlight" />
+	</option>
+	<option value="624">
+		<property name="RAW Name" value="Wm_2d_continue" />
+	</option>
+	<option value="625">
+		<property name="RAW Name" value="Wm_2d_stockitem" />
+	</option>
+	<option value="626">
+		<property name="RAW Name" value="Wm_2d_stockitem_a" />
+	</option>
+	<option value="627">
+		<property name="RAW Name" value="Wm_2d_stockitem_b" />
+	</option>
+	<option value="628">
+		<property name="RAW Name" value="Wm_mr_stockitemuse" />
+	</option>
+	<option value="629">
+		<property name="RAW Name" value="Wm_mr_stockitemuse_a" />
+	</option>
+	<option value="630">
+		<property name="RAW Name" value="Wm_mr_stockitemuse_b" />
+	</option>
+	<option value="631">
+		<property name="RAW Name" value="Wm_mr_stockitemuse_c" />
+	</option>
+	<option value="632">
+		<property name="RAW Name" value="Wm_2d_moviecoinkira" />
+	</option>
+	<option value="633">
+		<property name="RAW Name" value="Wm_2d_moviecoinvanish" />
+	</option>
+	<option value="634">
+		<property name="RAW Name" value="Wm_2d_movieopen" />
+	</option>
+	<option value="635">
+		<property name="RAW Name" value="Wm_2d_movieopen_a" />
+	</option>
+	<option value="636">
+		<property name="RAW Name" value="Wm_2d_movieopen_b0" />
+	</option>
+	<option value="637">
+		<property name="RAW Name" value="Wm_2d_movieopen_b1" />
+	</option>
+	<option value="638">
+		<property name="RAW Name" value="Wm_2d_resultscore" />
+	</option>
+	<option value="639">
+		<property name="RAW Name" value="Wm_2d_resultrest" />
+	</option>
+	<option value="640">
+		<property name="RAW Name" value="Wm_2d_resultno0" />
+	</option>
+	<option value="641">
+		<property name="RAW Name" value="Wm_2d_result" />
+	</option>
+	<option value="642">
+		<property name="RAW Name" value="Wm_2d_result_a0" />
+	</option>
+	<option value="643">
+		<property name="RAW Name" value="Wm_2d_result_a1" />
+	</option>
+	<option value="644">
+		<property name="RAW Name" value="Wm_2d_result_b0" />
+	</option>
+	<option value="645">
+		<property name="RAW Name" value="Wm_2d_result_b1" />
+	</option>
+	<option value="646">
+		<property name="RAW Name" value="Wm_2d_starcoinget" />
+	</option>
+	<option value="647">
+		<property name="RAW Name" value="Wm_2d_starcoinvanish" />
+	</option>
+	<option value="648">
+		<property name="RAW Name" value="Wm_2d_multiclear" />
+	</option>
+	<option value="649">
+		<property name="RAW Name" value="Wm_2d_titlestar00" />
+	</option>
+	<option value="650">
+		<property name="RAW Name" value="Wm_2d_titlestar01" />
+	</option>
+	<option value="651">
+		<property name="RAW Name" value="Wm_en_fireburner" />
+	</option>
+	<option value="652">
+		<property name="RAW Name" value="Wm_en_firebrnsignind" />
+	</option>
+	<option value="653">
+		<property name="RAW Name" value="Wm_en_firebrnsign" />
+	</option>
+	<option value="654">
+		<property name="RAW Name" value="Wm_en_fireburner3ind" />
+	</option>
+	<option value="655">
+		<property name="RAW Name" value="Wm_en_fireburner4ind" />
+	</option>
+	<option value="656">
+		<property name="RAW Name" value="Wm_en_fireburner6ind" />
+	</option>
+	<option value="657">
+		<property name="RAW Name" value="Wm_mr_palm_s" />
+	</option>
+	<option value="658">
+		<property name="RAW Name" value="Wm_mr_palm" />
+	</option>
+	<option value="659">
+		<property name="RAW Name" value="Wm_ob_boat" />
+	</option>
+	<option value="660">
+		<property name="RAW Name" value="Wm_ob_fallsmoke" />
+	</option>
+	<option value="661">
+		<property name="RAW Name" value="Wm_ob_fallsmoke_big" />
+	</option>
+	<option value="662">
+		<property name="RAW Name" value="Wm_ob_fallsmoke_s" />
+	</option>
+	<option value="663">
+		<property name="RAW Name" value="Wm_bg_volcano" />
+	</option>
+	<option value="664">
+		<property name="RAW Name" value="Wm_bg_volcano_a" />
+	</option>
+	<option value="665">
+		<property name="RAW Name" value="Wm_bg_volcano_b" />
+	</option>
+	<option value="666">
+		<property name="RAW Name" value="Wm_ob_treasurebox" />
+	</option>
+	<option value="667">
+		<property name="RAW Name" value="Wm_ob_treasureboxwait" />
+	</option>
+	<option value="668">
+		<property name="RAW Name" value="Wm_ob_treasureboxwait_a" />
+	</option>
+	<option value="669">
+		<property name="RAW Name" value="Wm_ob_treasureboxwait_b" />
+	</option>
+	<option value="670">
+		<property name="RAW Name" value="Wm_ob_treasureboxtail" />
+	</option>
+	<option value="671">
+		<property name="RAW Name" value="Wm_ob_itemteil" />
+	</option>
+	<option value="672">
+		<property name="RAW Name" value="Wm_ob_icicle" />
+	</option>
+	<option value="673">
+		<property name="RAW Name" value="Wm_mr_brosquake" />
+	</option>
+	<option value="674">
+		<property name="RAW Name" value="Wm_en_atitismoke" />
+	</option>
+	<option value="675">
+		<property name="RAW Name" value="Wm_en_waterwave_in_a" />
+	</option>
+	<option value="676">
+		<property name="RAW Name" value="Wm_en_waterwave_in_b" />
+	</option>
+	<option value="677">
+		<property name="RAW Name" value="Wm_en_watersplash_cld" />
+	</option>
+	<option value="678">
+		<property name="RAW Name" value="Wm_en_poisonwave_a" />
+	</option>
+	<option value="679">
+		<property name="RAW Name" value="Wm_en_poisonwave_b" />
+	</option>
+	<option value="680">
+		<property name="RAW Name" value="Wm_en_magmawave_a" />
+	</option>
+	<option value="681">
+		<property name="RAW Name" value="Wm_en_magmawave_b" />
+	</option>
+	<option value="682">
+		<property name="RAW Name" value="Wm_en_vshit_hit" />
+	</option>
+	<option value="683">
+		<property name="RAW Name" value="Wm_en_vshit_glow" />
+	</option>
+	<option value="684">
+		<property name="RAW Name" value="Wm_en_vshit_ring" />
+	</option>
+	<option value="685">
+		<property name="RAW Name" value="Wm_en_vshit_star" />
+	</option>
+	<option value="686">
+		<property name="RAW Name" value="Wm_en_hit_ring" />
+	</option>
+	<option value="687">
+		<property name="RAW Name" value="Wm_mr_misshit_ring" />
+	</option>
+	<option value="688">
+		<property name="RAW Name" value="Wm_ob_envsunlight_b" />
+	</option>
+	<option value="689">
+		<property name="RAW Name" value="Wm_ob_envsunlight_a" />
+	</option>
+	<option value="690">
+		<property name="RAW Name" value="Wm_mr_fireball_a" />
+	</option>
+	<option value="691">
+		<property name="RAW Name" value="Wm_mr_fireball_b" />
+	</option>
+	<option value="692">
+		<property name="RAW Name" value="Wm_mr_iceball_a" />
+	</option>
+	<option value="693">
+		<property name="RAW Name" value="Wm_mr_iceball_b" />
+	</option>
+	<option value="694">
+		<property name="RAW Name" value="Wm_ob_icemisshit_smk" />
+	</option>
+	<option value="695">
+		<property name="RAW Name" value="Wm_mr_fireball_hit00" />
+	</option>
+	<option value="696">
+		<property name="RAW Name" value="Wm_en_bubble_a" />
+	</option>
+	<option value="697">
+		<property name="RAW Name" value="Wm_en_bubble_b" />
+	</option>
+	<option value="698">
+		<property name="RAW Name" value="Wm_mr_cliffcatch_cd" />
+	</option>
+	<option value="699">
+		<property name="RAW Name" value="Wm_mr_wallkick_up_r" />
+	</option>
+	<option value="700">
+		<property name="RAW Name" value="Wm_mr_wallkick_dn_r" />
+	</option>
+	<option value="701">
+		<property name="RAW Name" value="Wm_mr_wallkick_b_r" />
+	</option>
+	<option value="702">
+		<property name="RAW Name" value="Wm_mr_wallkick_c_r" />
+	</option>
+	<option value="703">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_r" />
+	</option>
+	<option value="704">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_r" />
+	</option>
+	<option value="705">
+		<property name="RAW Name" value="Wm_mr_wallkick_up_l" />
+	</option>
+	<option value="706">
+		<property name="RAW Name" value="Wm_mr_wallkick_dn_l" />
+	</option>
+	<option value="707">
+		<property name="RAW Name" value="Wm_mr_wallkick_b_l" />
+	</option>
+	<option value="708">
+		<property name="RAW Name" value="Wm_mr_wallkick_c_l" />
+	</option>
+	<option value="709">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_l" />
+	</option>
+	<option value="710">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_l" />
+	</option>
+	<option value="711">
+		<property name="RAW Name" value="Wm_mr_wallkick_up_s_r" />
+	</option>
+	<option value="712">
+		<property name="RAW Name" value="Wm_mr_wallkick_dn_s_r" />
+	</option>
+	<option value="713">
+		<property name="RAW Name" value="Wm_mr_wallkick_b_s_r" />
+	</option>
+	<option value="714">
+		<property name="RAW Name" value="Wm_mr_wallkick_c_s_r" />
+	</option>
+	<option value="715">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_s_r" />
+	</option>
+	<option value="716">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_s_r" />
+	</option>
+	<option value="717">
+		<property name="RAW Name" value="Wm_mr_wallkick_up_s_l" />
+	</option>
+	<option value="718">
+		<property name="RAW Name" value="Wm_mr_wallkick_dn_s_l" />
+	</option>
+	<option value="719">
+		<property name="RAW Name" value="Wm_mr_wallkick_b_s_l" />
+	</option>
+	<option value="720">
+		<property name="RAW Name" value="Wm_mr_wallkick_c_s_l" />
+	</option>
+	<option value="721">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_s_l" />
+	</option>
+	<option value="722">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_s_l" />
+	</option>
+	<option value="723">
+		<property name="RAW Name" value="Wm_mr_wallkick_up_ss_r" />
+	</option>
+	<option value="724">
+		<property name="RAW Name" value="Wm_mr_wallkick_dn_ss_r" />
+	</option>
+	<option value="725">
+		<property name="RAW Name" value="Wm_mr_wallkick_b_ss_r" />
+	</option>
+	<option value="726">
+		<property name="RAW Name" value="Wm_mr_wallkick_c_ss_r" />
+	</option>
+	<option value="727">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_ss_r" />
+	</option>
+	<option value="728">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_ss_r" />
+	</option>
+	<option value="729">
+		<property name="RAW Name" value="Wm_mr_wallkick_up_ss_l" />
+	</option>
+	<option value="730">
+		<property name="RAW Name" value="Wm_mr_wallkick_dn_ss_l" />
+	</option>
+	<option value="731">
+		<property name="RAW Name" value="Wm_mr_wallkick_b_ss_l" />
+	</option>
+	<option value="732">
+		<property name="RAW Name" value="Wm_mr_wallkick_c_ss_l" />
+	</option>
+	<option value="733">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_ss_l" />
+	</option>
+	<option value="734">
+		<property name="RAW Name" value="Wm_mr_wallkick_cld_ss_l" />
+	</option>
+	<option value="735">
+		<property name="RAW Name" value="Wm_mr_wallslip_cld" />
+	</option>
+	<option value="736">
+		<property name="RAW Name" value="Wm_mr_wallslip_cld" />
+	</option>
+	<option value="737">
+		<property name="RAW Name" value="Wm_mr_wallslip_cld_s" />
+	</option>
+	<option value="738">
+		<property name="RAW Name" value="Wm_mr_wallslip_cld_s" />
+	</option>
+	<option value="739">
+		<property name="RAW Name" value="Wm_mr_wallslip_cld_ss" />
+	</option>
+	<option value="740">
+		<property name="RAW Name" value="Wm_mr_wallslip_cld_ss" />
+	</option>
+	<option value="741">
+		<property name="RAW Name" value="Wm_mr_hardhit_spak" />
+	</option>
+	<option value="742">
+		<property name="RAW Name" value="Wm_mr_hardhit_glow" />
+	</option>
+	<option value="743">
+		<property name="RAW Name" value="Wm_mr_hardhit_grain" />
+	</option>
+	<option value="744">
+		<property name="RAW Name" value="Wm_mr_kick_glow" />
+	</option>
+	<option value="745">
+		<property name="RAW Name" value="Wm_mr_kick_grain" />
+	</option>
+	<option value="746">
+		<property name="RAW Name" value="Wm_mr_softhit_spak" />
+	</option>
+	<option value="747">
+		<property name="RAW Name" value="Wm_mr_softhit_glow" />
+	</option>
+	<option value="748">
+		<property name="RAW Name" value="Wm_mr_wirehit_glow" />
+	</option>
+	<option value="749">
+		<property name="RAW Name" value="Wm_mr_wirehit_hit" />
+	</option>
+	<option value="750">
+		<property name="RAW Name" value="Wm_mr_wirehit_line" />
+	</option>
+	<option value="751">
+		<property name="RAW Name" value="Wm_mr_wirehit_star" />
+	</option>
+	<option value="752">
+		<property name="RAW Name" value="Wm_ob_greencoinkira_c" />
+	</option>
+	<option value="753">
+		<property name="RAW Name" value="Wm_ob_greencoinkira_b" />
+	</option>
+	<option value="754">
+		<property name="RAW Name" value="Wm_ob_greencoinkira_a" />
+	</option>
+	<option value="755">
+		<property name="RAW Name" value="Wm_ob_starcoinget_str" />
+	</option>
+	<option value="756">
+		<property name="RAW Name" value="Wm_ob_starcoinget_gl" />
+	</option>
+	<option value="757">
+		<property name="RAW Name" value="Wm_ob_starcoinget_hit" />
+	</option>
+	<option value="758">
+		<property name="RAW Name" value="Wm_ob_starcoinget_ring" />
+	</option>
+	<option value="759">
+		<property name="RAW Name" value="Wm_ob_starcoinget_lighit" />
+	</option>
+	<option value="760">
+		<property name="RAW Name" value="Wm_mr_electricshock_glw" />
+	</option>
+	<option value="761">
+		<property name="RAW Name" value="Wm_mr_electricshock_biri00" />
+	</option>
+	<option value="762">
+		<property name="RAW Name" value="Wm_mr_electricshock_biri01" />
+	</option>
+	<option value="763">
+		<property name="RAW Name" value="Wm_mr_electricshock_kira" />
+	</option>
+	<option value="764">
+		<property name="RAW Name" value="Wm_mr_electricshock_glw_s" />
+	</option>
+	<option value="765">
+		<property name="RAW Name" value="Wm_mr_electricshock_biri01_s" />
+	</option>
+	<option value="766">
+		<property name="RAW Name" value="Wm_mr_electricshock_biri02_s" />
+	</option>
+	<option value="767">
+		<property name="RAW Name" value="Wm_mr_electricshock_kira_s" />
+	</option>
+	<option value="768">
+		<property name="RAW Name" value="Wm_en_birikyu_glw" />
+	</option>
+	<option value="769">
+		<property name="RAW Name" value="Wm_en_birikyu_biri" />
+	</option>
+	<option value="770">
+		<property name="RAW Name" value="Wm_en_birikyu_kira" />
+	</option>
+	<option value="771">
+		<property name="RAW Name" value="Wm_mr_1upkira_spin" />
+	</option>
+	<option value="772">
+		<property name="RAW Name" value="Wm_mr_1upkira_00" />
+	</option>
+	<option value="773">
+		<property name="RAW Name" value="Wm_mr_1upkira_01" />
+	</option>
+	<option value="774">
+		<property name="RAW Name" value="Wm_mr_1upkira_spin_s" />
+	</option>
+	<option value="775">
+		<property name="RAW Name" value="Wm_mr_1upkira_01_s" />
+	</option>
+	<option value="776">
+		<property name="RAW Name" value="Wm_mr_1upkira_02_s" />
+	</option>
+	<option value="777">
+		<property name="RAW Name" value="Wm_mr_1upkira_spin_ss" />
+	</option>
+	<option value="778">
+		<property name="RAW Name" value="Wm_mr_1upkira_01_ss" />
+	</option>
+	<option value="779">
+		<property name="RAW Name" value="Wm_en_hanapetal_a" />
+	</option>
+	<option value="780">
+		<property name="RAW Name" value="Wm_en_hanapetal_b" />
+	</option>
+	<option value="781">
+		<property name="RAW Name" value="Wm_en_hanasnort_r" />
+	</option>
+	<option value="782">
+		<property name="RAW Name" value="Wm_en_hanasnort_l" />
+	</option>
+	<option value="783">
+		<property name="RAW Name" value="Wm_en_hanasnort_cld" />
+	</option>
+	<option value="784">
+		<property name="RAW Name" value="Wm_en_hanasnort_cld" />
+	</option>
+	<option value="785">
+		<property name="RAW Name" value="Wm_ob_flagget_kira" />
+	</option>
+	<option value="786">
+		<property name="RAW Name" value="Wm_ob_flagget_light" />
+	</option>
+	<option value="787">
+		<property name="RAW Name" value="Wm_ob_flaggetkira_cld" />
+	</option>
+	<option value="788">
+		<property name="RAW Name" value="Wm_ob_icebreakwt" />
+	</option>
+	<option value="789">
+		<property name="RAW Name" value="Wm_ob_icebreaksmk" />
+	</option>
+	<option value="790">
+		<property name="RAW Name" value="Wm_ob_icewaitwat" />
+	</option>
+	<option value="791">
+		<property name="RAW Name" value="Wm_ob_iceattackkira" />
+	</option>
+	<option value="792">
+		<property name="RAW Name" value="Wm_ob_iceattackline" />
+	</option>
+	<option value="793">
+		<property name="RAW Name" value="Wm_ob_iceattacksmk" />
+	</option>
+	<option value="794">
+		<property name="RAW Name" value="Wm_ob_icehithit" />
+	</option>
+	<option value="795">
+		<property name="RAW Name" value="Wm_ob_icehitwat" />
+	</option>
+	<option value="796">
+		<property name="RAW Name" value="Wm_ob_icehitsmk" />
+	</option>
+	<option value="797">
+		<property name="RAW Name" value="Wm_ob_waterbreak_c" />
+	</option>
+	<option value="798">
+		<property name="RAW Name" value="Wm_ob_waterbreak_a" />
+	</option>
+	<option value="799">
+		<property name="RAW Name" value="Wm_ob_waterbreak_b" />
+	</option>
+	<option value="800">
+		<property name="RAW Name" value="Wm_mr_vshipattack_line" />
+	</option>
+	<option value="801">
+		<property name="RAW Name" value="Wm_mr_vshipattack_hosi" />
+	</option>
+	<option value="802">
+		<property name="RAW Name" value="Wm_mr_vshipattack_gl" />
+	</option>
+	<option value="803">
+		<property name="RAW Name" value="Wm_mr_vshipattack_ud" />
+	</option>
+	<option value="804">
+		<property name="RAW Name" value="Wm_mr_vshipattack_ind_c" />
+	</option>
+	<option value="805">
+		<property name="RAW Name" value="Wm_mr_vshipattack_ind_a" />
+	</option>
+	<option value="806">
+		<property name="RAW Name" value="Wm_mr_vshipattack_ind_b" />
+	</option>
+	<option value="807">
+		<property name="RAW Name" value="Wm_mr_spindepart_b" />
+	</option>
+	<option value="808">
+		<property name="RAW Name" value="Wm_mr_spindepart_a" />
+	</option>
+	<option value="809">
+		<property name="RAW Name" value="Wm_mr_spindown_a" />
+	</option>
+	<option value="810">
+		<property name="RAW Name" value="Wm_mr_spindown_b" />
+	</option>
+	<option value="811">
+		<property name="RAW Name" value="Wm_mr_starkira_a" />
+	</option>
+	<option value="812">
+		<property name="RAW Name" value="Wm_mr_starkira_b" />
+	</option>
+	<option value="813">
+		<property name="RAW Name" value="Wm_mr_starkira_a_s" />
+	</option>
+	<option value="814">
+		<property name="RAW Name" value="Wm_mr_starkira_b_s" />
+	</option>
+	<option value="815">
+		<property name="RAW Name" value="Wm_ob_itemget_hit" />
+	</option>
+	<option value="816">
+		<property name="RAW Name" value="Wm_ob_itemget_ring" />
+	</option>
+	<option value="817">
+		<property name="RAW Name" value="Wm_ob_itemget_hitlighit" />
+	</option>
+	<option value="818">
+		<property name="RAW Name" value="Wm_ob_itemappear_r" />
+	</option>
+	<option value="819">
+		<property name="RAW Name" value="Wm_ob_itemappear_gl" />
+	</option>
+	<option value="820">
+		<property name="RAW Name" value="Wm_ob_itemappear_r_ss" />
+	</option>
+	<option value="821">
+		<property name="RAW Name" value="Wm_ob_itemappear_gl_ss" />
+	</option>
+	<option value="822">
+		<property name="RAW Name" value="Wm_ob_startail_star" />
+	</option>
+	<option value="823">
+		<property name="RAW Name" value="Wm_ob_startail_kira" />
+	</option>
+	<option value="824">
+		<property name="RAW Name" value="Wm_ob_powdown_ind_a" />
+	</option>
+	<option value="825">
+		<property name="RAW Name" value="Wm_ob_powdown_ind_c" />
+	</option>
+	<option value="826">
+		<property name="RAW Name" value="Wm_ob_powdown_ind_b" />
+	</option>
+	<option value="827">
+		<property name="RAW Name" value="Wm_en_spindamage_rg" />
+	</option>
+	<option value="828">
+		<property name="RAW Name" value="Wm_en_spindamage_star" />
+	</option>
+	<option value="829">
+		<property name="RAW Name" value="Wm_en_spindamage_big_rg" />
+	</option>
+	<option value="830">
+		<property name="RAW Name" value="Wm_en_spindamage_big_st" />
+	</option>
+	<option value="831">
+		<property name="RAW Name" value="Wm_en_sanbohit_hit" />
+	</option>
+	<option value="832">
+		<property name="RAW Name" value="Wm_en_sanbohit_ring" />
+	</option>
+	<option value="833">
+		<property name="RAW Name" value="Wm_en_sanbohit_smk" />
+	</option>
+	<option value="834">
+		<property name="RAW Name" value="Wm_en_keronpafire_ca" />
+	</option>
+	<option value="835">
+		<property name="RAW Name" value="Wm_en_keronpafire_f" />
+	</option>
+	<option value="836">
+		<property name="RAW Name" value="Wm_en_explosion_ln" />
+	</option>
+	<option value="837">
+		<property name="RAW Name" value="Wm_en_explosion_gl00" />
+	</option>
+	<option value="838">
+		<property name="RAW Name" value="Wm_en_explosion_hd" />
+	</option>
+	<option value="839">
+		<property name="RAW Name" value="Wm_en_explosion_un" />
+	</option>
+	<option value="840">
+		<property name="RAW Name" value="Wm_en_explosion_gl01" />
+	</option>
+	<option value="841">
+		<property name="RAW Name" value="Wm_en_explosion_smk" />
+	</option>
+	<option value="842">
+		<property name="RAW Name" value="Wm_en_bomignition_ln" />
+	</option>
+	<option value="843">
+		<property name="RAW Name" value="Wm_en_bomignition_gl00" />
+	</option>
+	<option value="844">
+		<property name="RAW Name" value="Wm_en_bomignition_pati" />
+	</option>
+	<option value="845">
+		<property name="RAW Name" value="Wm_mr_sanddive_sd" />
+	</option>
+	<option value="846">
+		<property name="RAW Name" value="Wm_mr_sanddive_in" />
+	</option>
+	<option value="847">
+		<property name="RAW Name" value="Wm_mr_sanddive_out" />
+	</option>
+	<option value="848">
+		<property name="RAW Name" value="Wm_mr_sanddive_smk" />
+	</option>
+	<option value="849">
+		<property name="RAW Name" value="Wm_mr_sanddive_sd_m" />
+	</option>
+	<option value="850">
+		<property name="RAW Name" value="Wm_mr_sanddive_in_m" />
+	</option>
+	<option value="851">
+		<property name="RAW Name" value="Wm_mr_sanddive_out_m" />
+	</option>
+	<option value="852">
+		<property name="RAW Name" value="Wm_mr_sanddive_smk_m" />
+	</option>
+	<option value="853">
+		<property name="RAW Name" value="Wm_mr_sanddive_sb_s" />
+	</option>
+	<option value="854">
+		<property name="RAW Name" value="Wm_mr_sanddive_smk_s" />
+	</option>
+	<option value="855">
+		<property name="RAW Name" value="Wm_en_kuribobigsplit_sk" />
+	</option>
+	<option value="856">
+		<property name="RAW Name" value="Wm_en_kuribobigsplit_ht" />
+	</option>
+	<option value="857">
+		<property name="RAW Name" value="Wm_en_kuribobigsplit_gr01" />
+	</option>
+	<option value="858">
+		<property name="RAW Name" value="Wm_en_kuribobigsplit_gr00" />
+	</option>
+	<option value="859">
+		<property name="RAW Name" value="Wm_en_kuribobigsplit_rg" />
+	</option>
+	<option value="860">
+		<property name="RAW Name" value="Wm_en_kuribosplit_sk" />
+	</option>
+	<option value="861">
+		<property name="RAW Name" value="Wm_en_kuribosplit_gl00" />
+	</option>
+	<option value="862">
+		<property name="RAW Name" value="Wm_en_kuribosplit_gl01" />
+	</option>
+	<option value="863">
+		<property name="RAW Name" value="Wm_en_obakedoor_sm" />
+	</option>
+	<option value="864">
+		<property name="RAW Name" value="Wm_en_obakedoor_ic" />
+	</option>
+	<option value="865">
+		<property name="RAW Name" value="Wm_mr_yoshistep_b" />
+	</option>
+	<option value="866">
+		<property name="RAW Name" value="Wm_mr_yoshistep_a" />
+	</option>
+	<option value="867">
+		<property name="RAW Name" value="Wm_mr_yoshistep_a_cld" />
+	</option>
+	<option value="868">
+		<property name="RAW Name" value="Wm_mr_fruitget_w" />
+	</option>
+	<option value="869">
+		<property name="RAW Name" value="Wm_mr_fruitget_h" />
+	</option>
+	<option value="870">
+		<property name="RAW Name" value="Wm_mr_yoshifire_a" />
+	</option>
+	<option value="871">
+		<property name="RAW Name" value="Wm_mr_yoshifire_b" />
+	</option>
+	<option value="872">
+		<property name="RAW Name" value="Wm_mr_yoshiiceball_b" />
+	</option>
+	<option value="873">
+		<property name="RAW Name" value="Wm_mr_yoshiiceball_a" />
+	</option>
+	<option value="874">
+		<property name="RAW Name" value="Wm_mr_yoshifirehit00" />
+	</option>
+	<option value="875">
+		<property name="RAW Name" value="Wm_mr_yoshiicehit_b" />
+	</option>
+	<option value="876">
+		<property name="RAW Name" value="Wm_mr_yoshiicehit_a" />
+	</option>
+	<option value="877">
+		<property name="RAW Name" value="Wm_mr_ystonguehit_a" />
+	</option>
+	<option value="878">
+		<property name="RAW Name" value="Wm_en_firebros_fire_a" />
+	</option>
+	<option value="879">
+		<property name="RAW Name" value="Wm_en_firebros_fire_b" />
+	</option>
+	<option value="880">
+		<property name="RAW Name" value="Wm_mr_magmawave_a" />
+	</option>
+	<option value="881">
+		<property name="RAW Name" value="Wm_mr_magmawave_b" />
+	</option>
+	<option value="882">
+		<property name="RAW Name" value="Wm_mr_poisonwave_a" />
+	</option>
+	<option value="883">
+		<property name="RAW Name" value="Wm_mr_poisonwave_b" />
+	</option>
+	<option value="884">
+		<property name="RAW Name" value="Wm_mr_waterwave_in_a" />
+	</option>
+	<option value="885">
+		<property name="RAW Name" value="Wm_mr_waterwave_in_b" />
+	</option>
+	<option value="886">
+		<property name="RAW Name" value="Wm_mr_waterwave_in_c" />
+	</option>
+	<option value="887">
+		<property name="RAW Name" value="Wm_mr_waterwave_in_d" />
+	</option>
+	<option value="888">
+		<property name="RAW Name" value="Wm_mr_waterwave_out_a" />
+	</option>
+	<option value="889">
+		<property name="RAW Name" value="Wm_mr_waterwave_out_b" />
+	</option>
+	<option value="890">
+		<property name="RAW Name" value="Wm_mr_waterwave_out_c" />
+	</option>
+	<option value="891">
+		<property name="RAW Name" value="Wm_mr_waterwave_in_a_ss" />
+	</option>
+	<option value="892">
+		<property name="RAW Name" value="Wm_mr_waterwave_in_b_ss" />
+	</option>
+	<option value="893">
+		<property name="RAW Name" value="Wm_mr_waterwave_out_a_ss" />
+	</option>
+	<option value="894">
+		<property name="RAW Name" value="Wm_mr_waterwave_out_b_ss" />
+	</option>
+	<option value="895">
+		<property name="RAW Name" value="Wm_mr_wfloatsplash_a" />
+	</option>
+	<option value="896">
+		<property name="RAW Name" value="Wm_mr_wfloatsplash_b" />
+	</option>
+	<option value="897">
+		<property name="RAW Name" value="Wm_en_wfsplash_in01_r" />
+	</option>
+	<option value="898">
+		<property name="RAW Name" value="Wm_en_wfsplash_in02_r" />
+	</option>
+	<option value="899">
+		<property name="RAW Name" value="Wm_en_wfsplash_in01_l" />
+	</option>
+	<option value="900">
+		<property name="RAW Name" value="Wm_en_wfsplash_in02_l" />
+	</option>
+	<option value="901">
+		<property name="RAW Name" value="Wm_en_wfsplash_out01_r" />
+	</option>
+	<option value="902">
+		<property name="RAW Name" value="Wm_en_wfsplash_out02_r" />
+	</option>
+	<option value="903">
+		<property name="RAW Name" value="Wm_en_wfsplash_out01_l" />
+	</option>
+	<option value="904">
+		<property name="RAW Name" value="Wm_en_wfsplash_out02_l" />
+	</option>
+	<option value="905">
+		<property name="RAW Name" value="Wm_mr_balloonburst_w" />
+	</option>
+	<option value="906">
+		<property name="RAW Name" value="Wm_mr_balloonburst_h" />
+	</option>
+	<option value="907">
+		<property name="RAW Name" value="Wm_en_kingkiller_gr" />
+	</option>
+	<option value="908">
+		<property name="RAW Name" value="Wm_en_kingkiller_rg" />
+	</option>
+	<option value="909">
+		<property name="RAW Name" value="Wm_en_kingkiller_sm" />
+	</option>
+	<option value="910">
+		<property name="RAW Name" value="Wm_ob_fireworks_y00" />
+	</option>
+	<option value="911">
+		<property name="RAW Name" value="Wm_ob_fireworks_ycld" />
+	</option>
+	<option value="912">
+		<property name="RAW Name" value="Wm_ob_fireworks_b00" />
+	</option>
+	<option value="913">
+		<property name="RAW Name" value="Wm_ob_fireworks_bcld" />
+	</option>
+	<option value="914">
+		<property name="RAW Name" value="Wm_ob_fireworks_g00" />
+	</option>
+	<option value="915">
+		<property name="RAW Name" value="Wm_ob_fireworks_gcld" />
+	</option>
+	<option value="916">
+		<property name="RAW Name" value="Wm_ob_fireworks_p00" />
+	</option>
+	<option value="917">
+		<property name="RAW Name" value="Wm_ob_fireworks_pcld" />
+	</option>
+	<option value="918">
+		<property name="RAW Name" value="Wm_ob_fireworks_k01" />
+	</option>
+	<option value="919">
+		<property name="RAW Name" value="Wm_ob_fireworks_kgl00" />
+	</option>
+	<option value="920">
+		<property name="RAW Name" value="Wm_ob_fireworks_kgl01" />
+	</option>
+	<option value="921">
+		<property name="RAW Name" value="Wm_ob_fireworks_k00" />
+	</option>
+	<option value="922">
+		<property name="RAW Name" value="Wm_ob_fireworks_kcld0" />
+	</option>
+	<option value="923">
+		<property name="RAW Name" value="Wm_ob_fireworks_kcld1" />
+	</option>
+	<option value="924">
+		<property name="RAW Name" value="Wm_ob_fireworks_1up01" />
+	</option>
+	<option value="925">
+		<property name="RAW Name" value="Wm_ob_fireworks_1upgl00" />
+	</option>
+	<option value="926">
+		<property name="RAW Name" value="Wm_ob_fireworks_1upgl01" />
+	</option>
+	<option value="927">
+		<property name="RAW Name" value="Wm_ob_fireworks_1up00" />
+	</option>
+	<option value="928">
+		<property name="RAW Name" value="Wm_ob_fireworks_1upcld0" />
+	</option>
+	<option value="929">
+		<property name="RAW Name" value="Wm_ob_fireworks_1upcld1" />
+	</option>
+	<option value="930">
+		<property name="RAW Name" value="Wm_ob_fireworks_star01" />
+	</option>
+	<option value="931">
+		<property name="RAW Name" value="Wm_ob_fireworks_stargl00" />
+	</option>
+	<option value="932">
+		<property name="RAW Name" value="Wm_ob_fireworks_stargl01" />
+	</option>
+	<option value="933">
+		<property name="RAW Name" value="Wm_ob_fireworks_star00" />
+	</option>
+	<option value="934">
+		<property name="RAW Name" value="Wm_ob_fireworks_starcld0" />
+	</option>
+	<option value="935">
+		<property name="RAW Name" value="Wm_ob_fireworks_starcld1" />
+	</option>
+	<option value="936">
+		<property name="RAW Name" value="Wm_ob_switch00" />
+	</option>
+	<option value="937">
+		<property name="RAW Name" value="Wm_ob_redcioinkira_cd" />
+	</option>
+	<option value="938">
+		<property name="RAW Name" value="Wm_ob_redcioinitem_cd" />
+	</option>
+	<option value="939">
+		<property name="RAW Name" value="Wm_ob_redcioinitem02_b" />
+	</option>
+	<option value="940">
+		<property name="RAW Name" value="Wm_ob_redcioinitem02_a" />
+	</option>
+	<option value="941">
+		<property name="RAW Name" value="Wm_ob_itemfall_a" />
+	</option>
+	<option value="942">
+		<property name="RAW Name" value="Wm_ob_itemfall_b" />
+	</option>
+	<option value="943">
+		<property name="RAW Name" value="Wm_ob_redringget_a" />
+	</option>
+	<option value="944">
+		<property name="RAW Name" value="Wm_ob_redringget_b" />
+	</option>
+	<option value="945">
+		<property name="RAW Name" value="Wm_ob_redringget_c" />
+	</option>
+	<option value="946">
+		<property name="RAW Name" value="Wm_bs_kameckmagic_f" />
+	</option>
+	<option value="947">
+		<property name="RAW Name" value="Wm_bs_kameckmagic_e" />
+	</option>
+	<option value="948">
+		<property name="RAW Name" value="Wm_bs_kameckmagic_a" />
+	</option>
+	<option value="949">
+		<property name="RAW Name" value="Wm_bs_kameckmagic_c" />
+	</option>
+	<option value="950">
+		<property name="RAW Name" value="Wm_bs_kameckmagic_d" />
+	</option>
+	<option value="951">
+		<property name="RAW Name" value="Wm_bs_kameckmagic_b" />
+	</option>
+	<option value="952">
+		<property name="RAW Name" value="Wm_ob_keywait_a" />
+	</option>
+	<option value="953">
+		<property name="RAW Name" value="Wm_ob_keywait_b" />
+	</option>
+	<option value="954">
+		<property name="RAW Name" value="Wm_ob_keywait_c" />
+	</option>
+	<option value="955">
+		<property name="RAW Name" value="Wm_ob_keyget01_d" />
+	</option>
+	<option value="956">
+		<property name="RAW Name" value="Wm_ob_keyget01_a" />
+	</option>
+	<option value="957">
+		<property name="RAW Name" value="Wm_ob_keyget01_b" />
+	</option>
+	<option value="958">
+		<property name="RAW Name" value="Wm_ob_keyget01_c" />
+	</option>
+	<option value="959">
+		<property name="RAW Name" value="Wm_ob_keyget02_ring01" />
+	</option>
+	<option value="960">
+		<property name="RAW Name" value="Wm_ob_keyget02_kira" />
+	</option>
+	<option value="961">
+		<property name="RAW Name" value="Wm_ob_keyget02_gl01" />
+	</option>
+	<option value="962">
+		<property name="RAW Name" value="Wm_ob_keyget02_str" />
+	</option>
+	<option value="963">
+		<property name="RAW Name" value="Wm_ob_keyget02_gl00" />
+	</option>
+	<option value="964">
+		<property name="RAW Name" value="Wm_ob_keyget02_hit" />
+	</option>
+	<option value="965">
+		<property name="RAW Name" value="Wm_ob_keyget02_ring00" />
+	</option>
+	<option value="966">
+		<property name="RAW Name" value="Wm_ob_keyget02_lighit" />
+	</option>
+	<option value="967">
+		<property name="RAW Name" value="Wm_shellopen_a" />
+	</option>
+	<option value="968">
+		<property name="RAW Name" value="Wm_shellopen_b" />
+	</option>
+	<option value="969">
+		<property name="RAW Name" value="Wm_2d_courseclear_da" />
+	</option>
+	<option value="970">
+		<property name="RAW Name" value="Wm_2d_courseclear_kiraL" />
+	</option>
+	<option value="971">
+		<property name="RAW Name" value="Wm_2d_courseclear_kiraR" />
+	</option>
+	<option value="972">
+		<property name="RAW Name" value="Wm_2d_courseclear_smkL" />
+	</option>
+	<option value="973">
+		<property name="RAW Name" value="Wm_2d_courseclear_smkR" />
+	</option>
+	<option value="974">
+		<property name="RAW Name" value="Wm_2d_courseclear_cld" />
+	</option>
+	<option value="975">
+		<property name="RAW Name" value="Wm_2d_courseclear_cld" />
+	</option>
+	<option value="976">
+		<property name="RAW Name" value="Wm_2d_courseclearsmcld00" />
+	</option>
+	<option value="977">
+		<property name="RAW Name" value="Wm_2d_courseclearsmcld01" />
+	</option>
+	<option value="978">
+		<property name="RAW Name" value="Wm_2d_timeupsmoke" />
+	</option>
+	<option value="979">
+		<property name="RAW Name" value="Wm_2d_timeupstar" />
+	</option>
+	<option value="980">
+		<property name="RAW Name" value="Wm_2d_timeupstarcld" />
+	</option>
+	<option value="981">
+		<property name="RAW Name" value="Wm_2d_gameover_a" />
+	</option>
+	<option value="982">
+		<property name="RAW Name" value="Wm_2d_gameover_b" />
+	</option>
+	<option value="983">
+		<property name="RAW Name" value="Wm_2d_coin100a" />
+	</option>
+	<option value="984">
+		<property name="RAW Name" value="Wm_2d_coinlight" />
+	</option>
+	<option value="985">
+		<property name="RAW Name" value="Wm_2d_stockitem_a" />
+	</option>
+	<option value="986">
+		<property name="RAW Name" value="Wm_2d_stockitem_b" />
+	</option>
+	<option value="987">
+		<property name="RAW Name" value="Wm_mr_stockitemuse_a" />
+	</option>
+	<option value="988">
+		<property name="RAW Name" value="Wm_mr_stockitemuse_b" />
+	</option>
+	<option value="989">
+		<property name="RAW Name" value="Wm_mr_stockitemuse_c" />
+	</option>
+	<option value="990">
+		<property name="RAW Name" value="Wm_2d_movieopen_a" />
+	</option>
+	<option value="991">
+		<property name="RAW Name" value="Wm_2d_movieopen_b1" />
+	</option>
+	<option value="992">
+		<property name="RAW Name" value="Wm_2d_movieopen_b0" />
+	</option>
+	<option value="993">
+		<property name="RAW Name" value="Wm_2d_result_a1" />
+	</option>
+	<option value="994">
+		<property name="RAW Name" value="Wm_2d_result_b1" />
+	</option>
+	<option value="995">
+		<property name="RAW Name" value="Wm_2d_result_a0" />
+	</option>
+	<option value="996">
+		<property name="RAW Name" value="Wm_2d_result_b0" />
+	</option>
+	<option value="997">
+		<property name="RAW Name" value="Wm_bg_volcano_a" />
+	</option>
+	<option value="998">
+		<property name="RAW Name" value="Wm_bg_volcano_b" />
+	</option>
+	<option value="999">
+		<property name="RAW Name" value="Wm_ob_treasureboxwait_a" />
+	</option>
+	<option value="1000">
+		<property name="RAW Name" value="Wm_ob_treasureboxwait_b" />
+	</option>
+	<option value="1001">
+		<property name="RAW Name" value="Wm_jr_electricstart" />
+	</option>
+	<option value="1002">
+		<property name="RAW Name" value="Wm_jr_electricglow" />
+	</option>
+	<option value="1003">
+		<property name="RAW Name" value="Wm_jr_electricspark" />
+	</option>
+	<option value="1004">
+		<property name="RAW Name" value="Wm_jr_electricline" />
+	</option>
+</options>

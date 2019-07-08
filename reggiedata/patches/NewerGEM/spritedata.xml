@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Version 2.033-->
+<!-- &lt; = < -->
+<!-- &gt; = > -->
+<!-- $amp; = & -->
+<!-- &quot; = " -->
+<!-- &lt;font color=&quot;COLOR&quot;&gt;TEXT TEXT TEXT.&lt;/font&gt; = Colored Text -->
+<!-- &lt;bgt;TEXT TEXT TEXT.&lt;/b&gt; = Bold Text -->
+<!-- &lt;br&gt; = New Line -->
+<!-- Opinion on each dualbox to determine if it should be dualbox or if it should revert to being a list or checkbox. -->
+<!-- idtypes: Star Set, Path Movement, Rotation, Two Way Line, Water Ball, Mushroom, Line, Bolt, Target Event, Triggering Event, Collection, Location, Physics, Message, Path, Path Movement, Red Coin, Hill, Stretch, Ray, Dragon, Bubble Cannon, Burner, Wiggling, Panel, Colony -->
+<!-- idtypes - Sprites with multiple Target Events or Triggering Events may need a secondary idtype, so that the primary Target/Triggering can be displayed in the sprite's display box. -->
+<!-- idtypes - Sprites with idtypes should have their idtype displayed within their blue box, usually in the lower right corner. (primary) Target Event should usually be in the lower right, and Triggering Event should usually be in the lower left. Secondary values like AND controller's second+ Triggering Event, and IF controller's secondary Location ID should be displayed in the top right corner or otherwise not displayed at all. -->
+<!-- Sample sprite with full settings -->
+<!-- <sprite id="#" name="Sprite Name" asmhacks="True" sizehacks="True" phonebook="Actors/Effects" noyoshi="True" yoshinotes="Talk about how it interacts with Yoshi. Advanced Only." notes="Talk about how to use this sprite in a basic sense." advancednotes="Talk about how to use this sprite in an advanced sense. Advanced Only."> -->
+<!--   <dependency notes="Talk about the dependencies."> -->
+<!--     <required sprite="#" /> -->
+<!--     <suggested sprite="#" /> -->
+<!--   </dependency> -->
+<!--   <checkbox bit="#" title="What it does when checked." comment="Information about it." comment2="Another bit of commentary." advanced="True" advancedcomment="Wordy complicated information about it. Advanced Only." idtype="ID Type etc." requiredbit="#-#, #-#" requiredval="#-#, #-#" /> Checkbox is ALWAYS bit - EXCEPT: #38, IF Controller, when setting 'ignore player/enemy'... -->
+<!--   <dualbox bit="#" title1="What it does when unchecked." title2="What it does when checked." comment="All of that stuff above here is an option." /> -->
+<!--   <value bit="#-# or" nybble="# or" multibit="#-#, #-#" title="What it's for." comment="Etc." /> -->
+<!--   <list bit="#-# or" nybble="#" title="What it's for." comment="Etc."> -->
+<!--     <entry value="#">Name</entry> -->
+<!--   </list> -->
+<!--   <multidualbox bit="#-#" title="What it's for." comment="Etc." /> -->
+<!-- </sprite> -->
+<!-- Sizehacks Check - 63, 98, 113, 156, 357 -->
+<!-- Stopped after Line 7046 / 10755 (#230) -->
+<sprites>
+  <sprite id="152" name="Message Box" notes="A block that the player can hit which will display a custom message. Messages are defined in Message.py.">
+    <dependency notes="The Message Box Controller must be included in each Zone for Message Boxes to function correctly.">
+      <required sprite="107"/>
+    </dependency>
+	<value nybble="3-4" title="Triggering Event ID" comment="&lt;b&gt;&lt;font color=&quot;blue&quot;&gt;Select an Event ID that triggers the Message. &lt;/font&gt;&lt;/b&gt;Messages defined in Message.py. Add 256 to the value shown in the Newer Message Editor program." idtype="Message"/>
+    <value nybble="9-12" title="Message ID" comment="Messages defined in Message.py. Add 256 to the value shown in the Newer Message Editor program." idtype="Message"/>
+  </sprite> <!-- 152: Message Box -->
+  
+<!-- Add a page within the level editor where the full list of effects and sounds can be referenced. Additionally, clean up the list so it's not littered with German. :P -->
+  <sprite id="332" name="Sound/Graphic Effects Spawner" asmhacks="True" phonebook="Effects" notes="Enables event-driven spawning of Sound Effects and Graphic Effects.&lt;br&gt;&lt;u&gt;Limitations&lt;/u&gt;&lt;br&gt; 1) Do not use 1000 or more sounds/effects per area&lt;br&gt; 2) A single Event ID can only trigger one sound/effect per area&lt;br&gt; 3) Only a specific number of sounds/effects can be active at the same time&lt;br&gt; 4) Only two BRSTMs can be active at the same time">
+	  <value nybble="5-6" title="Triggering Event ID" comment="When this Event ID is activated, the associated sound or affect will be played." idtype="Triggering Event"/>
+
+	  <external type="sfx" nybble="10-12" title="Sfx ID" comment="Use this external window to select your Sound Effect." requiredbit="32" requiredval="0"/>
+	  <external type="gfx_full" nybble="10-12" title="Gfx ID" comment="Use this external window to select your Graphic Effect.&lt;b&gt;&lt;font color=&quot;blue&quot;&gt;" requiredbit="32" requiredval="1"/>
+	  <dualbox bit="32" title1="Sound Effect" title2="Graphical Effect*" comment="This determines if you are spawning a sound effect or a graphical effect. &lt;b&gt;&lt;font color=&quot;blue&quot;&gt;(*) NewerGEM allows to choose from 1004 different Gfx.&lt;/font&gt;&lt;/b&gt;" comment2="The volume of the sound effect is relative to the distance of the placement of the spawner."/>
+	  <list nybble="7" title="Effect Scale" comment="This determines the size of the spawned graphic effect." requiredbit="32">
+		  <entry value="1">x0.25 (25%)</entry>
+		  <entry value="2">x0.5 (50%)</entry>
+		  <entry value="3">x0.75 (75%)</entry>
+		  <entry value="0">x1.0 (100%)</entry>
+		  <entry value="5">x1.25</entry>
+		  <entry value="6">x1.5</entry>
+		  <entry value="7">x1.75</entry>
+		  <entry value="8">x2.0 (200%)</entry>
+		  <entry value="9">x2.25</entry>
+		  <entry value="10">x2.5</entry>
+		  <entry value="11">x2.75</entry>
+		  <entry value="12">x3.0 (300%)</entry>
+		  <entry value="13">x3.25</entry>
+		  <entry value="14">x3.5</entry>
+		  <entry value="15">x3.75</entry>
+	  </list>
+	  <value nybble="9" title="Loop Delay" comment="This determines the number of seconds between activations of the sound or graphic effect." comment2="The effect will only activate once if the delay is left at 0."/>
+  </sprite> <!-- #332: Effect/Sound Spawner -->
+  
+  <sprite id="468" name="Credits Controller">
+  <list nybble="6" title="Jump to new Scene&lt;br&gt;&lt;b&gt;&lt;font color=&quot;blue&quot;&gt;NewerGEM&lt;/font&gt;&lt;/b&gt;" comment="">
+      <entry value="0">Yes</entry>
+      <entry value="1">No</entry>y>
+    </list>
+  <value nybble="7-8" title="Scene ID&lt;br&gt;&lt;b&gt;&lt;font color=&quot;blue&quot;&gt;NewerGEM&lt;/font&gt;&lt;/b&gt;" comment="&lt;br&gt;This requires a yet unreleased mod by Grop. Here you can directly load a Scene ID from your custom NewerStaffRollX.bin file. Make sure the file is placed in NewerRes. See 'Credits File ID'."/>
+  <value nybble="9-10" title="Triggering Event ID&lt;br&gt;&lt;b&gt;&lt;font color=&quot;blue&quot;&gt;NewerGEM&lt;/font&gt;&lt;/b&gt;" comment="&lt;br&gt;This requires a yet unreleased mod by Grop. When this Event ID is triggered, ???."/>
+  <value nybble="11-12" title="Credits File ID&lt;br&gt;&lt;b&gt;&lt;font color=&quot;blue&quot;&gt;NewerGEM&lt;/font&gt;&lt;/b&gt;" comment="&lt;br&gt;This requires a yet unreleased mod by Grop. Value 0 loads the default file, NewerStaffRoll.bin. All other values load a new file that needs to be placed into the NewerRes folder with the filename NewerStaffRollX.bin. Value 1 loads NewerStaffRoll1.bin, etc..."/>
+	<dependency notes="There are several hardcoded dependencies involved in this, so it is not usable outside of the established level and arrangement. The Staffroll credits themselves however have an editor available for them.">
+      <suggested sprite="436"/>
+    </dependency>
+  </sprite> <!-- #468: Cutscene Controller - Credits -->
+</sprites>
+<!-- Thank you so much for a-playing my game! -->
