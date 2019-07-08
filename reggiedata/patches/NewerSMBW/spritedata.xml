@@ -149,61 +149,7 @@
       <suggested sprite="320"/> <!-- chestnut -->
       <suggested sprite="273"/> <!-- OpeningScene -->
     </dependency>
-    <list nybble="11-12" title="Model" comment="This determines which Model will be used. If [Animate Model] is checked, then the Models will run their coded animation instead of standing still. Values with '---' were not used in Newer levels.">
-        <entry value="0">Basic Title Balloon Red [01-10]</entry>
-        <entry value="1">Basic Title Balloon Green [01-10]</entry>
-        <entry value="2">Basic Title Mario [01-10]</entry>
-        <entry value="4">Basic Title Luigi [01-10]</entry>
-        <entry value="5">Basic Title ToadA [01-10]</entry>
-        <entry value="6">Basic Title ToadB [01-10]</entry>
-        <entry value="3">Basic Title Peach [01-10]</entry>
-        <entry value="7">Victory Title Clowncar Mario [04-10]</entry>
-        <entry value="8">Victory Title Clowncar Luigi [04-10]</entry>
-        <entry value="9">Victory Title Clowncar Toad A [04-10]</entry>
-        <entry value="10">Victory Title Clowncar Toad B [04-10]</entry>
-        <entry value="11">Victory Title Clowncar Peach [---]</entry>
-        <entry value="12">Victory Title Mario [04-10]</entry>
-        <entry value="13">Victory Title Luigi [04-10]</entry>
-        <entry value="14">Victory Title ToadA [04-10]</entry>
-        <entry value="15">Victory Title ToadB [04-10]</entry>
-        <entry value="16">Victory Title Peach [---]</entry>
-        <entry value="17">Perfect Title Peach's Castle (Do Not Animate) [04-11]</entry>
-        <entry value="18">Perfect Title Mario [04-11]</entry>
-        <entry value="19">Perfect Title Luigi [04-11]</entry>
-        <entry value="20">Perfect Title ToadA [04-11]</entry>
-        <entry value="21">Perfect Title ToadB [04-11]</entry>
-        <entry value="22">Perfect Title Peach [---]</entry>
-        <entry value="23">Backdrop [---]</entry>
-        <entry value="24">Cloud [10-22]</entry>
-        <entry value="43">Opening Balloon Red [02-41]</entry>
-        <entry value="44">Opening Balloon Green [02-41]</entry>
-        <entry value="46">Opening Mario [02-41]</entry>
-        <entry value="45">Opening Luigi [02-41]</entry>
-        <entry value="47">Opening ToadA [02-41]</entry>
-        <entry value="48">Opening ToadB [02-41]</entry>
-        <entry value="25">Ending Broken Ship [08-41]</entry>
-        <entry value="26">Ending Tree [08-41]</entry>
-        <entry value="27">Ending Bowser [08-41]</entry>
-        <entry value="28">Ending Player Clowncar [08-41]</entry>
-        <entry value="29">Credits Mario Clowncar [Unknown]</entry>
-        <entry value="30">Credits Luigi Clowncar [Unknown]</entry>
-        <entry value="31">Credits ToadA Clowncar [Unknown]</entry>
-        <entry value="32">Credits ToadB Clowncar [Unknown]</entry>
-        <entry value="33">Credits Peach Clowncar [---]</entry>
-        <entry value="34">Credits Mario [Unknown]</entry>
-        <entry value="35">Credits Luigi [Unknown]</entry>
-        <entry value="36">Credits ToadA [Unknown]</entry>
-        <entry value="37">Credits ToadB [Unknown]</entry>
-        <entry value="38">Credits Peach [---]</entry>
-        <entry value="39">Credits Peach's Castle [Unknown]</entry>
-        <entry value="40">Tree Canopy A (Do Not Animate) [10-03]</entry>
-        <entry value="41">Tree Canopy B (Do Not Animate) [10-03]</entry>
-        <entry value="42">Tree Canopy C (Do Not Animate) [10-03]</entry>
-        <entry value="49">Tree Canopy D (Do Not Animate) [01-15]</entry>
-        <entry value="253">Opening, Ending, and Credits [DoNotUseMe]</entry>
-        <entry value="254">Title Screen Cinematics [DoNotUseMe]</entry>
-        <entry value="255">Level Decoration [DoNotUseMe]</entry>
-    </list>
+	<external type="models" nybble="11-12" title="Model ID" comment="Use this external window to select your Model.&lt;br&gt;&lt;br&gt;This determines which Model will be used. If [Animate Model] is checked, then the Models will run their coded animation instead of standing still. Values with '---' were not used in Newer levels." />
     <value nybble="5-6" title="Scale: Value/4.0" comment="This determines the scale of the Model." comment2="Value 0 creates an original-sized Model (100%). Values above 0 are divided by 4 to determine the Model Size. 1=25%, 2=50%, 8=200%, etc." advancedcomment="Value limit unknown. Maximum value suspected to be 24, or 600%"/>
     <checkbox bit="40" title="Animate Model" comment="When enabled, the loaded model will activate its attached animation, otherwise the loaded model will be stationary." comment2="&lt;font color=&quot;red&quot;&gt;Will CRASH if Animation not present and this is checked.&lt;/font&gt; &lt;br&gt; &lt;br&gt;Known values that must have [Animate Model] left unchecked: &lt;br&gt;17: Perfect Title Peach's Castle &lt;br&gt;40-42, 49: Tree Canopy A/B/C/D"/>
     <list nybble="8" title="Z-Order" comment="This determines the Z-Order of the model." comment2="Some in-game Z-Order values: &lt;br&gt;Background: -5500.0 &lt;br&gt;Layer 2: -3300.0 &lt;br&gt;Layer 1: 0.0 &lt;br&gt;Player: 300.0 &lt;br&gt;Foreground: 1200.0 &lt;br&gt;Layer 0: 3300.0 &lt;br&gt;Above Layer 0: 5500.0">
@@ -4953,7 +4899,7 @@
     <dependency notes="">
       <required sprite=""/> <!-- Kamek -->
       <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite=""/> <!-- ??? -->
+      <required sprite="27"/> <!-- ??? -->
     </dependency>
     <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
   </sprite> <!-- #279: World-3 Boss: Balboa Wrench -->
@@ -5840,8 +5786,9 @@
 <!-- Add a page within the level editor where the full list of effects and sounds can be referenced. Additionally, clean up the list so it's not littered with German. :P -->
   <sprite id="332" name="Sound/Graphic Effects Spawner" asmhacks="True" phonebook="Effects" notes="Enables event-driven spawning of Sound Effects and Graphic Effects.&lt;br&gt;&lt;u&gt;Limitations&lt;/u&gt;&lt;br&gt; 1) Do not use 1000 or more sounds/effects per area&lt;br&gt; 2) A single Event ID can only trigger one sound/effect per area&lt;br&gt; 3) Only a specific number of sounds/effects can be active at the same time&lt;br&gt; 4) Only two BRSTMs can be active at the same time">
 	  <value nybble="5-6" title="Triggering Event ID" comment="When this Event ID is activated, the associated sound or affect will be played." idtype="Triggering Event"/>
-	  <value nybble="10-12" title="Effect ID" comment="Please dial the extension of the effect you are trying to reach." comment2="Please consult the Effects phone book found in the [MENU]."/>
-	  <dualbox bit="32" title1="Sound Effect" title2="Graphic Effect" comment="This determines if you are spawning a sound effect or a graphical effect." comment2="The volume of the sound effect is relative to the distance of the placement of the spawner."/>
+	  <external type="sfx" nybble="10-12" title="Sfx ID" comment="Use this external window to select your Sound Effect." requiredbit="32" requiredval="0"/>
+	  <external type="gfx" nybble="10-12" title="Gfx ID" comment="Use this external window to select your Graphic Effect." requiredbit="32" requiredval="1"/>
+	  <dualbox bit="32" title1="Sound Effect" title2="Graphical Effect*" comment="This determines if you are spawning a sound effect or a graphical effect. The list of graphical effects is limited to the entries used by Newer. NewerGem does not have this limitation and uses all available 1004 Gfx." comment2="The volume of the sound effect is relative to the distance of the placement of the spawner."/>
 	  <list nybble="7" title="Effect Scale" comment="This determines the size of the spawned graphic effect." requiredbit="32">
 		  <entry value="1">x0.25 (25%)</entry>
 		  <entry value="2">x0.5 (50%)</entry>
@@ -5864,7 +5811,7 @@
   
   <sprite id="333" name="Line Controlled Player-Block Platform" notes="A tilt-controlled platform that only activates when a player strikes the Player Block. It will zip from one end of a line guide to the other when the controlling player tilts their controller.">
     <dependency notes="This platform will not move along line objects without the use of [187] Player Block.">
-      <requires sprite="187"/>
+      <required sprite="187"/>
     </dependency>
   </sprite> <!-- #333: Line Controlled Player-Block Platform -->
   
