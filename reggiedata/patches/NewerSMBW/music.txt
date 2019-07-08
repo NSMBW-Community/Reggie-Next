@@ -73,5 +73,5 @@
 144:Bonus Area
 145:Challenge
 146:Bowser's Castle
-147:Castle Boss
-148:Airship Boss
+156:Castle Boss
+157:Airship Boss
