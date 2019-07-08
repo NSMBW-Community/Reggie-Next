@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<game base="Newer Super Mario Bros. Wii" name="Newer General Engine Mod" version="0.1" description="Newer General Engine Mod, adding new features and sprites to NSMBW.Based on Newer Super Mario Bros. Wii.">
+<game base="Newer Super Mario Bros. Wii" name="Newer General Engine Mod" version="0.0.1" description="Newer General Engine Mod, adding new features and sprites to NSMBW.Based on Newer Super Mario Bros. Wii.">
     <folder name="bga" path="bga" game="Newer Super Mario Bros. Wii" />
     <folder name="bgb" path="bgb" game="Newer Super Mario Bros. Wii" />
     <folder name="sprites" path="sprites" game="Newer Super Mario Bros. Wii" />
