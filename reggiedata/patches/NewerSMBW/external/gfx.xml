@@ -3,7 +3,7 @@
     spritedata xml anymore.
 	
 	Properties:
-		- Description	  	Description of the graphics effect
+		- Description	  		Description of the graphics effect
 	Future:
 		- Name    			Simple name
 		- Problems			Any problems when spawning the gfx
