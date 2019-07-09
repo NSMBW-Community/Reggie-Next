@@ -1,0 +1,5950 @@
+<!--
+    All NSMBW Sound Effects for sprite 332 Sound and Effect Spawner. This list needs to be updated, but at least it's not in the
+    spritedata xml anymore.
+	
+	Properties:
+		- RAW Name	 		RAW Name of the sound effect
+	Future:
+		- Loops    			Does it loop properly
+		- Description		A description of the sfx
+		- Problems			Any problems when spawning the sfx
+
+	Original file by by Grop/joietyfull64/Zementblock
+-->
+
+<options primary="[id], RAW Name" short="[RAW Name]">
+	<option value="0">
+		<property name="RAW Name" value="SE_DEMO_OP_DUMMY_U" />
+	</option>
+	<option value="1">
+		<property name="RAW Name" value="SE_DEMO_OP_JUMP_JR_0954f" />
+	</option>
+	<option value="2">
+		<property name="RAW Name" value="SE_DEMO_OP_LAND_JR_0983f" />
+	</option>
+	<option value="3">
+		<property name="RAW Name" value="SE_DEMO_OP_JUMP_SUB_1038f" />
+	</option>
+	<option value="4">
+		<property name="RAW Name" value="SE_DEMO_OP_LAND_SUB_1071f" />
+	</option>
+	<option value="5">
+		<property name="RAW Name" value="SE_DEMO_OP_CAKE_LIFT_1142f" />
+	</option>
+	<option value="6">
+		<property name="RAW Name" value="SE_DEMO_OP_CAKE_THROW_1166f" />
+	</option>
+	<option value="7">
+		<property name="RAW Name" value="SE_DEMO_OP_CAKE_CLASH_1210f" />
+	</option>
+	<option value="8">
+		<property name="RAW Name" value="SE_DEMO_OP_SHIP_PROPELLER_1511f" />
+	</option>
+	<option value="9">
+		<property name="RAW Name" value="SE_DEMO_OP_CAKE_THROW_1522f" />
+	</option>
+	<option value="10">
+		<property name="RAW Name" value="SE_DEMO_OP_CAKE_ON_SHIP_1562f" />
+	</option>
+	<option value="11">
+		<property name="RAW Name" value="SE_DEMO_OP_PRESENT_LIFT_2188f" />
+	</option>
+	<option value="12">
+		<property name="RAW Name" value="SE_DEMO_OP_PRESENT_THROW_2308f" />
+	</option>
+	<option value="13">
+		<property name="RAW Name" value="SE_DEMO_OP_PRESENT_INTO_TAIHOU_2340f" />
+	</option>
+	<option value="14">
+		<property name="RAW Name" value="SE_DEMO_OP_PRESENT_LIFT_2369f" />
+	</option>
+	<option value="15">
+		<property name="RAW Name" value="SE_DEMO_OP_PRESENT_THROW_2400f" />
+	</option>
+	<option value="16">
+		<property name="RAW Name" value="SE_DEMO_OP_PRESENT_INTO_TAIHOU_2427f" />
+	</option>
+	<option value="17">
+		<property name="RAW Name" value="SE_DEMO_OP_PRESENT_FIRE_2660f" />
+	</option>
+	<option value="18">
+		<property name="RAW Name" value="SE_DEMO_OP_SHIP_PROPELLER_3032f" />
+	</option>
+	<option value="19">
+		<property name="RAW Name" value="SE_DEMO_OP_FOOTNOTE_SUB_1227f" />
+	</option>
+	<option value="20">
+		<property name="RAW Name" value="SE_DEMO_OP_FOOTNOTE_MARIO_1397f" />
+	</option>
+	<option value="21">
+		<property name="RAW Name" value="SE_DEMO_OP_MARIO_JUMP_1743f" />
+	</option>
+	<option value="22">
+		<property name="RAW Name" value="SE_DEMO_OP_FOOTNOTE_KINO_2031f" />
+	</option>
+	<option value="23">
+		<property name="RAW Name" value="SE_DEMO_OP_FOOTNOTE_KINO_2454f" />
+	</option>
+	<option value="24">
+		<property name="RAW Name" value="SE_DEMO_OP_FOOTNOTE_MARIO_3083f" />
+	</option>
+	<option value="25">
+		<property name="RAW Name" value="SE_DEMO_OP_FIREWORKS" />
+	</option>
+	<option value="26">
+		<property name="RAW Name" value="SE_DEMO_OP_V_ALL_GAYA" />
+	</option>
+	<option value="27">
+		<property name="RAW Name" value="SE_DEMO_OP_CAKE_APP" />
+	</option>
+	<option value="28">
+		<property name="RAW Name" value="SE_DEMO_OP_V_MA_NOTICE_CAKE1" />
+	</option>
+	<option value="29">
+		<property name="RAW Name" value="SE_DEMO_OP_V_MA_NOTICE_CAKE2" />
+	</option>
+	<option value="30">
+		<property name="RAW Name" value="SE_DEMO_OP_PCH_WALK_TO_CAKE" />
+	</option>
+	<option value="31">
+		<property name="RAW Name" value="SE_DEMO_OP_V_JR_APP_FROM_CAKE" />
+	</option>
+	<option value="32">
+		<property name="RAW Name" value="SE_DEMO_OP_V_PCH_SURPRISED_JR" />
+	</option>
+	<option value="33">
+		<property name="RAW Name" value="SE_DEMO_OP_V_ALL_NOTICE_JR" />
+	</option>
+	<option value="34">
+		<property name="RAW Name" value="SE_DEMO_OP_V_KO_NOTICE_JR" />
+	</option>
+	<option value="35">
+		<property name="RAW Name" value="SE_DEMO_OP_V_LAR_APP_FROM_CAKE" />
+	</option>
+	<option value="36">
+		<property name="RAW Name" value="SE_DEMO_OP_V_ROY_APP_FROM_CAKE" />
+	</option>
+	<option value="37">
+		<property name="RAW Name" value="SE_DEMO_OP_V_LEM_APP_FROM_CAKE" />
+	</option>
+	<option value="38">
+		<property name="RAW Name" value="SE_DEMO_OP_V_WEN_APP_FROM_CAKE" />
+	</option>
+	<option value="39">
+		<property name="RAW Name" value="SE_DEMO_OP_V_IGG_APP_FROM_CAKE" />
+	</option>
+	<option value="40">
+		<property name="RAW Name" value="SE_DEMO_OP_V_MOR_APP_FROM_CAKE" />
+	</option>
+	<option value="41">
+		<property name="RAW Name" value="SE_DEMO_OP_V_LUD_APP_FROM_CAKE" />
+	</option>
+	<option value="42">
+		<property name="RAW Name" value="SE_DEMO_OP_V_ALL_SURPRISED_RINGS" />
+	</option>
+	<option value="43">
+		<property name="RAW Name" value="SE_DEMO_OP_V_KO_SURPRISED_RINGS" />
+	</option>
+	<option value="44">
+		<property name="RAW Name" value="SE_DEMO_OP_V_LAR_THROW_CAKE" />
+	</option>
+	<option value="45">
+		<property name="RAW Name" value="SE_DEMO_OP_V_ROY_THROW_CAKE" />
+	</option>
+	<option value="46">
+		<property name="RAW Name" value="SE_DEMO_OP_V_LEM_THROW_CAKE" />
+	</option>
+	<option value="47">
+		<property name="RAW Name" value="SE_DEMO_OP_V_WEN_THROW_CAKE" />
+	</option>
+	<option value="48">
+		<property name="RAW Name" value="SE_DEMO_OP_V_IGG_THROW_CAKE" />
+	</option>
+	<option value="49">
+		<property name="RAW Name" value="SE_DEMO_OP_V_MOR_THROW_CAKE" />
+	</option>
+	<option value="50">
+		<property name="RAW Name" value="SE_DEMO_OP_V_LUD_THROW_CAKE" />
+	</option>
+	<option value="51">
+		<property name="RAW Name" value="SE_DEMO_OP_V_PCH_INTO_CAKE" />
+	</option>
+	<option value="52">
+		<property name="RAW Name" value="SE_DEMO_OP_V_MA_DOWN" />
+	</option>
+	<option value="53">
+		<property name="RAW Name" value="SE_DEMO_OP_V_LU_DOWN" />
+	</option>
+	<option value="54">
+		<property name="RAW Name" value="SE_DEMO_OP_V_JR_SNATCH_PCH" />
+	</option>
+	<option value="55">
+		<property name="RAW Name" value="SE_DEMO_OP_V_KO2_ROLL" />
+	</option>
+	<option value="56">
+		<property name="RAW Name" value="SE_DEMO_OP_V_KO_ROLL" />
+	</option>
+	<option value="57">
+		<property name="RAW Name" value="SE_DEMO_OP_V_ALL_WAKEUP" />
+	</option>
+	<option value="58">
+		<property name="RAW Name" value="SE_DEMO_OP_V_MA_CHASE" />
+	</option>
+	<option value="59">
+		<property name="RAW Name" value="SE_DEMO_OP_V_PCH_HELP_FROM_SHIP" />
+	</option>
+	<option value="60">
+		<property name="RAW Name" value="SE_DEMO_OP_V_JR_LAUGH_AT_SHIP" />
+	</option>
+	<option value="61">
+		<property name="RAW Name" value="SE_DEMO_OP_V_MA_JUMP" />
+	</option>
+	<option value="62">
+		<property name="RAW Name" value="SE_DEMO_OP_V_LU_JUMP" />
+	</option>
+	<option value="63">
+		<property name="RAW Name" value="SE_DEMO_OP_V_KO2_JUMP" />
+	</option>
+	<option value="64">
+		<property name="RAW Name" value="SE_DEMO_OP_V_KO_JUMP" />
+	</option>
+	<option value="65">
+		<property name="RAW Name" value="SE_DEMO_OP_V_MA_WAIT" />
+	</option>
+	<option value="66">
+		<property name="RAW Name" value="SE_DEMO_OP_V_NPC_KO_CALL_CANNON" />
+	</option>
+	<option value="67">
+		<property name="RAW Name" value="SE_DEMO_OP_CANNON_COME_IN" />
+	</option>
+	<option value="68">
+		<property name="RAW Name" value="SE_DEMO_OP_V_NPC_KO_HOLD_BOX1" />
+	</option>
+	<option value="69">
+		<property name="RAW Name" value="SE_DEMO_OP_V_NPC_KO_THROW_BOX1" />
+	</option>
+	<option value="70">
+		<property name="RAW Name" value="SE_DEMO_OP_V_NPC_KO_HOLD_BOX2" />
+	</option>
+	<option value="71">
+		<property name="RAW Name" value="SE_DEMO_OP_V_NPC_KO_THROW_BOX2" />
+	</option>
+	<option value="72">
+		<property name="RAW Name" value="SE_DEMO_OP_CANNON_GO_AWAY" />
+	</option>
+	<option value="73">
+		<property name="RAW Name" value="SE_DEMO_OP_PRESENT_BOX_BURST" />
+	</option>
+	<option value="74">
+		<property name="RAW Name" value="SE_DEMO_OP_ITEM_GLIDE" />
+	</option>
+	<option value="75">
+		<property name="RAW Name" value="SE_DEMO_OP_PRPL_BOUND" />
+	</option>
+	<option value="76">
+		<property name="RAW Name" value="SE_DEMO_OP_PNGN_BOUND" />
+	</option>
+	<option value="77">
+		<property name="RAW Name" value="SE_DEMO_ED_DUMMY_U" />
+	</option>
+	<option value="78">
+		<property name="RAW Name" value="SE_DEMO_EX_DUMMY_U" />
+	</option>
+	<option value="79">
+		<property name="RAW Name" value="SE_DEMO_ED_FOOTNOTE_0000f" />
+	</option>
+	<option value="80">
+		<property name="RAW Name" value="SE_DEMO_ED_FOOTNOTE_0661f" />
+	</option>
+	<option value="81">
+		<property name="RAW Name" value="SE_DEMO_ED_FOOTNOTE_1608f" />
+	</option>
+	<option value="82">
+		<property name="RAW Name" value="SE_DEMO_ED_FOOTNOTE_1921f" />
+	</option>
+	<option value="83">
+		<property name="RAW Name" value="SE_DEMO_ED_FOOTNOTE_2374f" />
+	</option>
+	<option value="84">
+		<property name="RAW Name" value="SE_DEMO_ED_FOOTNOTE_2722f" />
+	</option>
+	<option value="85">
+		<property name="RAW Name" value="SE_DEMO_EX_FOOTNOTE_0011f" />
+	</option>
+	<option value="86">
+		<property name="RAW Name" value="SE_DEMO_EX_FOOTNOTE_0436f" />
+	</option>
+	<option value="87">
+		<property name="RAW Name" value="SE_DEMO_ED_V_LU_CALL_FAR" />
+	</option>
+	<option value="88">
+		<property name="RAW Name" value="SE_DEMO_ED_V_MA_HEAR_LUIGI" />
+	</option>
+	<option value="89">
+		<property name="RAW Name" value="SE_DEMO_ED_V_ALL_SURPRISE_BALLOON" />
+	</option>
+	<option value="90">
+		<property name="RAW Name" value="SE_DEMO_ED_V_ALL_WAVE_BALLOON" />
+	</option>
+	<option value="91">
+		<property name="RAW Name" value="SE_DEMO_ED_BALLOON_LAND" />
+	</option>
+	<option value="92">
+		<property name="RAW Name" value="SE_DEMO_ED_V_LU_GOOD_TEMPER" />
+	</option>
+	<option value="93">
+		<property name="RAW Name" value="SE_DEMO_ED_BALLOON_DOOR_CLOSE" />
+	</option>
+	<option value="94">
+		<property name="RAW Name" value="SE_DEMO_ED_V_LU_DOWN" />
+	</option>
+	<option value="95">
+		<property name="RAW Name" value="SE_DEMO_ED_V_LU_BUMMER" />
+	</option>
+	<option value="96">
+		<property name="RAW Name" value="SE_DEMO_ED_V_KO_CALL_LUIGI" />
+	</option>
+	<option value="97">
+		<property name="RAW Name" value="SE_DEMO_ED_V_LU_FEEL_GLAD" />
+	</option>
+	<option value="98">
+		<property name="RAW Name" value="SE_DEMO_ED_V_PCH_TALK_TO_MARIO" />
+	</option>
+	<option value="99">
+		<property name="RAW Name" value="SE_DEMO_ED_V_MA_TALKED_BY_PCH" />
+	</option>
+	<option value="100">
+		<property name="RAW Name" value="SE_DEMO_ED_V_PCH_SMILE_TO_MARIO" />
+	</option>
+	<option value="101">
+		<property name="RAW Name" value="SE_DEMO_ED_V_MA_NOD" />
+	</option>
+	<option value="102">
+		<property name="RAW Name" value="SE_DEMO_ED_V_MA_BLUSH" />
+	</option>
+	<option value="103">
+		<property name="RAW Name" value="SE_DEMO_EX_WIND" />
+	</option>
+	<option value="104">
+		<property name="RAW Name" value="SE_DEMO_EX_V_LAR_FATAL" />
+	</option>
+	<option value="105">
+		<property name="RAW Name" value="SE_DEMO_EX_V_LAR_FATAL_DOWN" />
+	</option>
+	<option value="106">
+		<property name="RAW Name" value="SE_DEMO_EX_V_LAR_NOTICE_JR" />
+	</option>
+	<option value="107">
+		<property name="RAW Name" value="SE_DEMO_EX_V_JR_ORDER_S" />
+	</option>
+	<option value="108">
+		<property name="RAW Name" value="SE_DEMO_EX_V_JR_ORDER_L" />
+	</option>
+	<option value="109">
+		<property name="RAW Name" value="SE_DEMO_EX_V_ALL_PUSH_KP" />
+	</option>
+	<option value="110">
+		<property name="RAW Name" value="SE_DEMO_EX_KP_TURN_OVER" />
+	</option>
+	<option value="111">
+		<property name="RAW Name" value="SE_DEMO_EX_KP_LAND" />
+	</option>
+	<option value="112">
+		<property name="RAW Name" value="SE_DEMO_EX_V_ALL_SATISFIED" />
+	</option>
+	<option value="113">
+		<property name="RAW Name" value="SE_DEMO_EX_CASTLE_FALLS_OVER" />
+	</option>
+	<option value="114">
+		<property name="RAW Name" value="SE_DEMO_EX_V_KP_NOTICE_PINCH" />
+	</option>
+	<option value="115">
+		<property name="RAW Name" value="SE_DEMO_EX_CASTLE_CRASH" />
+	</option>
+	<option value="116">
+		<property name="RAW Name" value="SE_DEMO_EX_V_KP_GROAN" />
+	</option>
+	<option value="117">
+		<property name="RAW Name" value="STRM_BGM_DUMMY" />
+	</option>
+	<option value="118">
+		<property name="RAW Name" value="SE_DUMMY" />
+	</option>
+	<option value="119">
+		<property name="RAW Name" value="SE_SYS_GAME_START" />
+	</option>
+	<option value="120">
+		<property name="RAW Name" value="SE_SYS_CURSOR" />
+	</option>
+	<option value="121">
+		<property name="RAW Name" value="SE_SYS_DECIDE" />
+	</option>
+	<option value="122">
+		<property name="RAW Name" value="SE_SYS_BACK" />
+	</option>
+	<option value="123">
+		<property name="RAW Name" value="SE_SYS_INVALID" />
+	</option>
+	<option value="124">
+		<property name="RAW Name" value="SE_SYS_PAUSE" />
+	</option>
+	<option value="125">
+		<property name="RAW Name" value="SE_SYS_PAGE" />
+	</option>
+	<option value="126">
+		<property name="RAW Name" value="SE_SYS_KO_DIALOGUE_IN" />
+	</option>
+	<option value="127">
+		<property name="RAW Name" value="SE_SYS_DIALOGUE_IN" />
+	</option>
+	<option value="128">
+		<property name="RAW Name" value="SE_SYS_DIALOGUE_SWITCH" />
+	</option>
+	<option value="129">
+		<property name="RAW Name" value="SE_SYS_DIALOGUE_OUT" />
+	</option>
+	<option value="130">
+		<property name="RAW Name" value="SE_SYS_DIALOGUE_OUT_AUTO" />
+	</option>
+	<option value="131">
+		<property name="RAW Name" value="SE_SYS_PAIRING_WINDOW_IN" />
+	</option>
+	<option value="132">
+		<property name="RAW Name" value="SE_SYS_PAIRING_WINDOW_OUT" />
+	</option>
+	<option value="133">
+		<property name="RAW Name" value="SE_SYS_BUTTON_SKIP" />
+	</option>
+	<option value="134">
+		<property name="RAW Name" value="SE_SYS_CTRL_0_CONNECTED_TV" />
+	</option>
+	<option value="135">
+		<property name="RAW Name" value="SE_SYS_CTRL_0_CONNECTED_RC" />
+	</option>
+	<option value="136">
+		<property name="RAW Name" value="SE_SYS_CTRL_1_CONNECTED_TV" />
+	</option>
+	<option value="137">
+		<property name="RAW Name" value="SE_SYS_CTRL_1_CONNECTED_RC" />
+	</option>
+	<option value="138">
+		<property name="RAW Name" value="SE_SYS_CTRL_2_CONNECTED_TV" />
+	</option>
+	<option value="139">
+		<property name="RAW Name" value="SE_SYS_CTRL_2_CONNECTED_RC" />
+	</option>
+	<option value="140">
+		<property name="RAW Name" value="SE_SYS_CTRL_3_CONNECTED_TV" />
+	</option>
+	<option value="141">
+		<property name="RAW Name" value="SE_SYS_CTRL_3_CONNECTED_RC" />
+	</option>
+	<option value="142">
+		<property name="RAW Name" value="SE_SYS_PJ_PLAYER_TURN" />
+	</option>
+	<option value="143">
+		<property name="RAW Name" value="SE_SYS_PJ_PLAYER_JUMP" />
+	</option>
+	<option value="144">
+		<property name="RAW Name" value="SE_SYS_PJ_PLAYER_SPIN_JUMP" />
+	</option>
+	<option value="145">
+		<property name="RAW Name" value="SE_SYS_SCORE_COUNT" />
+	</option>
+	<option value="146">
+		<property name="RAW Name" value="SE_SYS_SCORE_COUNT_FINISH" />
+	</option>
+	<option value="147">
+		<property name="RAW Name" value="SE_SYS_RANK_THEME_ROLL" />
+	</option>
+	<option value="148">
+		<property name="RAW Name" value="SE_SYS_RANK_SCORE_COUNT" />
+	</option>
+	<option value="149">
+		<property name="RAW Name" value="SE_SYS_RANK_SCORE_COUNT_FINISH" />
+	</option>
+	<option value="150">
+		<property name="RAW Name" value="SE_SYS_RANK_COIN_TO_SCORE" />
+	</option>
+	<option value="151">
+		<property name="RAW Name" value="SE_SYS_RANK_COIN_TO_SCORE_FINISH" />
+	</option>
+	<option value="152">
+		<property name="RAW Name" value="SE_SYS_RANK_STAR_COIN_TO_SCORE" />
+	</option>
+	<option value="153">
+		<property name="RAW Name" value="SE_SYS_LIFE_TO_SCORE" />
+	</option>
+	<option value="154">
+		<property name="RAW Name" value="SE_SYS_CHANGE_RANK" />
+	</option>
+	<option value="155">
+		<property name="RAW Name" value="SE_SYS_RANK_APP_1" />
+	</option>
+	<option value="156">
+		<property name="RAW Name" value="SE_SYS_RANK_APP_2" />
+	</option>
+	<option value="157">
+		<property name="RAW Name" value="SE_SYS_RANK_APP_3" />
+	</option>
+	<option value="158">
+		<property name="RAW Name" value="SE_SYS_RANK_APP_4" />
+	</option>
+	<option value="159">
+		<property name="RAW Name" value="SE_SYS_GET_PRIZE" />
+	</option>
+	<option value="160">
+		<property name="RAW Name" value="SE_SYS_FS_COPY" />
+	</option>
+	<option value="161">
+		<property name="RAW Name" value="SE_SYS_FS_DELETE" />
+	</option>
+	<option value="162">
+		<property name="RAW Name" value="SE_SYS_FS_PROCESSING" />
+	</option>
+	<option value="163">
+		<property name="RAW Name" value="SE_SYS_FS_FINISHED" />
+	</option>
+	<option value="164">
+		<property name="RAW Name" value="SE_SYS_COUNT_ZANKI" />
+	</option>
+	<option value="165">
+		<property name="RAW Name" value="SE_SYS_COUNT_CONTINUE" />
+	</option>
+	<option value="166">
+		<property name="RAW Name" value="SE_SYS_MARK_CLEAR" />
+	</option>
+	<option value="167">
+		<property name="RAW Name" value="SE_SYS_WINDOW_OPEN_OTAKARA" />
+	</option>
+	<option value="168">
+		<property name="RAW Name" value="SE_SYS_STAR_COIN_PAY" />
+	</option>
+	<option value="169">
+		<property name="RAW Name" value="SE_SYS_GOTO_MOVIE" />
+	</option>
+	<option value="170">
+		<property name="RAW Name" value="SE_SYS_SWITCH_CT" />
+	</option>
+	<option value="171">
+		<property name="RAW Name" value="SE_SYS_SWITCH_CT_LAST" />
+	</option>
+	<option value="172">
+		<property name="RAW Name" value="SE_SYS_MID_POINT" />
+	</option>
+	<option value="173">
+		<property name="RAW Name" value="SE_SYS_STAR_FINISH" />
+	</option>
+	<option value="174">
+		<property name="RAW Name" value="SE_SYS_STAR_FINISH_RC" />
+	</option>
+	<option value="175">
+		<property name="RAW Name" value="SE_SYS_HURRY_UP" />
+	</option>
+	<option value="176">
+		<property name="RAW Name" value="SE_SYS_GOAL_FLAG" />
+	</option>
+	<option value="177">
+		<property name="RAW Name" value="SE_SYS_ONE_UP" />
+	</option>
+	<option value="178">
+		<property name="RAW Name" value="SE_SYS_ONE_UP_RC" />
+	</option>
+	<option value="179">
+		<property name="RAW Name" value="SE_SYS_100COIN_ONE_UP" />
+	</option>
+	<option value="180">
+		<property name="RAW Name" value="SE_SYS_100COIN_ONE_UP_RC" />
+	</option>
+	<option value="181">
+		<property name="RAW Name" value="SE_SYS_ONE_DOWN" />
+	</option>
+	<option value="182">
+		<property name="RAW Name" value="SE_SYS_RED_RING" />
+	</option>
+	<option value="183">
+		<property name="RAW Name" value="SE_SYS_NICE_S" />
+	</option>
+	<option value="184">
+		<property name="RAW Name" value="SE_SYS_NICE_BATTLE_CLEAR" />
+	</option>
+	<option value="185">
+		<property name="RAW Name" value="SE_SYS_STOCK_ITEM" />
+	</option>
+	<option value="186">
+		<property name="RAW Name" value="SE_SYS_STOCK_ITEM_USE" />
+	</option>
+	<option value="187">
+		<property name="RAW Name" value="SE_SYS_ROUTE_OK" />
+	</option>
+	<option value="188">
+		<property name="RAW Name" value="SE_SYS_ROUTE_NG" />
+	</option>
+	<option value="189">
+		<property name="RAW Name" value="SE_VOC_YS_GOKUN" />
+	</option>
+	<option value="190">
+		<property name="RAW Name" value="SE_VCO_YS_DAMAGE" />
+	</option>
+	<option value="191">
+		<property name="RAW Name" value="SE_VOC_YS_EAT" />
+	</option>
+	<option value="192">
+		<property name="RAW Name" value="SE_VOC_YS_ATTACK" />
+	</option>
+	<option value="193">
+		<property name="RAW Name" value="SE_VOC_YS_YOSHI" />
+	</option>
+	<option value="194">
+		<property name="RAW Name" value="SE_VOC_YS_LAUGH" />
+	</option>
+	<option value="195">
+		<property name="RAW Name" value="SE_PLY_QUAT" />
+	</option>
+	<option value="196">
+		<property name="RAW Name" value="SE_PLY_DOKAN_IN_OUT" />
+	</option>
+	<option value="197">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_DIRT" />
+	</option>
+	<option value="198">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_DIRT_L" />
+	</option>
+	<option value="199">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_ROCK" />
+	</option>
+	<option value="200">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_ROCK_L" />
+	</option>
+	<option value="201">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_ROCK_CLIMB" />
+	</option>
+	<option value="202">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_ROCK_CLIMB_L" />
+	</option>
+	<option value="203">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_SAND" />
+	</option>
+	<option value="204">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_SAND_L" />
+	</option>
+	<option value="205">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_LEAF" />
+	</option>
+	<option value="206">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_LEAF_L" />
+	</option>
+	<option value="207">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_SNOW" />
+	</option>
+	<option value="208">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_SNOW_L" />
+	</option>
+	<option value="209">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_WATER" />
+	</option>
+	<option value="210">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_WATER_L" />
+	</option>
+	<option value="211">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_BLOWSAND" />
+	</option>
+	<option value="212">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_BLOWSAND_L" />
+	</option>
+	<option value="213">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_MANTA" />
+	</option>
+	<option value="214">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_MANTA_L" />
+	</option>
+	<option value="215">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CLOUD" />
+	</option>
+	<option value="216">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CLOUD_L" />
+	</option>
+	<option value="217">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CARPET" />
+	</option>
+	<option value="218">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CARPET_L" />
+	</option>
+	<option value="219">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_WOOD" />
+	</option>
+	<option value="220">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_WOOD_L" />
+	</option>
+	<option value="221">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_HASHIGO_NAWA" />
+	</option>
+	<option value="222">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_HASHIGO_NAWA_L" />
+	</option>
+	<option value="223">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_HASHIGO_FE" />
+	</option>
+	<option value="224">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_HASHIGO_FE_L" />
+	</option>
+	<option value="225">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_PNGN" />
+	</option>
+	<option value="226">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_PNGN_L" />
+	</option>
+	<option value="227">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_YOSHI" />
+	</option>
+	<option value="228">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_YOSHI_L" />
+	</option>
+	<option value="229">
+		<property name="RAW Name" value="SE_PLY_SLIP" />
+	</option>
+	<option value="230">
+		<property name="RAW Name" value="SE_PLY_ICE_SLIP" />
+	</option>
+	<option value="231">
+		<property name="RAW Name" value="SE_PLY_SLIP_ICE" />
+	</option>
+	<option value="232">
+		<property name="RAW Name" value="SE_PLY_SLIP_SNOW" />
+	</option>
+	<option value="233">
+		<property name="RAW Name" value="SE_PLY_SLIP_SAND" />
+	</option>
+	<option value="234">
+		<property name="RAW Name" value="SE_PLY_SLIP_W" />
+	</option>
+	<option value="235">
+		<property name="RAW Name" value="SE_PLY_SLIP_TATE" />
+	</option>
+	<option value="236">
+		<property name="RAW Name" value="SE_PLY_BRAKE" />
+	</option>
+	<option value="237">
+		<property name="RAW Name" value="SE_PLY_BRAKE_ICE" />
+	</option>
+	<option value="238">
+		<property name="RAW Name" value="SE_PLY_BRAKE_SNOW" />
+	</option>
+	<option value="239">
+		<property name="RAW Name" value="SE_PLY_BRAKE_SAND" />
+	</option>
+	<option value="240">
+		<property name="RAW Name" value="SE_PLY_BRAKE_WATER" />
+	</option>
+	<option value="241">
+		<property name="RAW Name" value="SE_PLY_JUMP" />
+	</option>
+	<option value="242">
+		<property name="RAW Name" value="SE_PLY_JUMP_S" />
+	</option>
+	<option value="243">
+		<property name="RAW Name" value="SE_PLY_JUMP_SS" />
+	</option>
+	<option value="244">
+		<property name="RAW Name" value="SE_PLY_JUMP_HIGH" />
+	</option>
+	<option value="245">
+		<property name="RAW Name" value="SE_PLY_JUMP_S_HIGH" />
+	</option>
+	<option value="246">
+		<property name="RAW Name" value="SE_PLY_JUMP_SS_HIGH" />
+	</option>
+	<option value="247">
+		<property name="RAW Name" value="SE_PLY_LAND_DIRT" />
+	</option>
+	<option value="248">
+		<property name="RAW Name" value="SE_PLY_LAND_ROCK" />
+	</option>
+	<option value="249">
+		<property name="RAW Name" value="SE_PLY_LAND_SAND" />
+	</option>
+	<option value="250">
+		<property name="RAW Name" value="SE_PLY_LAND_LEAF" />
+	</option>
+	<option value="251">
+		<property name="RAW Name" value="SE_PLY_LAND_WOOD" />
+	</option>
+	<option value="252">
+		<property name="RAW Name" value="SE_PLY_LAND_SNOW" />
+	</option>
+	<option value="253">
+		<property name="RAW Name" value="SE_PLY_LAND_WATER" />
+	</option>
+	<option value="254">
+		<property name="RAW Name" value="SE_PLY_LAND_BLOWSAND" />
+	</option>
+	<option value="255">
+		<property name="RAW Name" value="SE_PLY_LAND_MANTA" />
+	</option>
+	<option value="256">
+		<property name="RAW Name" value="SE_PLY_LAND_CLOUD" />
+	</option>
+	<option value="257">
+		<property name="RAW Name" value="SE_PLY_LAND_CARPET" />
+	</option>
+	<option value="258">
+		<property name="RAW Name" value="SE_PLY_LAND_PNGN" />
+	</option>
+	<option value="259">
+		<property name="RAW Name" value="SE_PLY_LAND_YOSHI" />
+	</option>
+	<option value="260">
+		<property name="RAW Name" value="SE_PLY_ROLLING" />
+	</option>
+	<option value="261">
+		<property name="RAW Name" value="SE_PLY_HIP_ATTACK" />
+	</option>
+	<option value="262">
+		<property name="RAW Name" value="SE_PLY_HIP_ATTACK_SOFT" />
+	</option>
+	<option value="263">
+		<property name="RAW Name" value="SE_PLY_HIP_ATTACK_M" />
+	</option>
+	<option value="264">
+		<property name="RAW Name" value="SE_PLY_KABE_KICK" />
+	</option>
+	<option value="265">
+		<property name="RAW Name" value="SE_PLY_2NDJUMP" />
+	</option>
+	<option value="266">
+		<property name="RAW Name" value="SE_PLY_2NDJUMP_S" />
+	</option>
+	<option value="267">
+		<property name="RAW Name" value="SE_PLY_2NDJUMP_SS" />
+	</option>
+	<option value="268">
+		<property name="RAW Name" value="SE_PLY_3RDJUMP" />
+	</option>
+	<option value="269">
+		<property name="RAW Name" value="SE_PLY_3RDJUMP_S" />
+	</option>
+	<option value="270">
+		<property name="RAW Name" value="SE_PLY_3RDJUMP_SS" />
+	</option>
+	<option value="271">
+		<property name="RAW Name" value="SE_PLY_SPIN_ATTACK" />
+	</option>
+	<option value="272">
+		<property name="RAW Name" value="SE_PLY_SPIN_ONCE" />
+	</option>
+	<option value="273">
+		<property name="RAW Name" value="SE_PLY_CHANGE_SMALL" />
+	</option>
+	<option value="274">
+		<property name="RAW Name" value="SE_PLY_CHANGE_BIG" />
+	</option>
+	<option value="275">
+		<property name="RAW Name" value="SE_PLY_CHANGE_MAME" />
+	</option>
+	<option value="276">
+		<property name="RAW Name" value="SE_PLY_CHANGE_PRPL" />
+	</option>
+	<option value="277">
+		<property name="RAW Name" value="SE_PLY_CHANGE_PNGN" />
+	</option>
+	<option value="278">
+		<property name="RAW Name" value="SE_PLY_GET_ITEM_AGAIN" />
+	</option>
+	<option value="279">
+		<property name="RAW Name" value="SE_PLY_THROW_FIRE" />
+	</option>
+	<option value="280">
+		<property name="RAW Name" value="SE_PLY_PRPL_JUMP" />
+	</option>
+	<option value="281">
+		<property name="RAW Name" value="SE_PLY_PRPL_LETDOWN_FAST" />
+	</option>
+	<option value="282">
+		<property name="RAW Name" value="SE_PLY_PRPL_LETDOWN_SPIN" />
+	</option>
+	<option value="283">
+		<property name="RAW Name" value="SE_PLY_PRPL_LETDOWN_FAST_LAND" />
+	</option>
+	<option value="284">
+		<property name="RAW Name" value="SE_PLY_PRPL_FLY" />
+	</option>
+	<option value="285">
+		<property name="RAW Name" value="SE_PLY_PNGN_SLIP" />
+	</option>
+	<option value="286">
+		<property name="RAW Name" value="SE_PLY_PNGN_SLIP_SEA" />
+	</option>
+	<option value="287">
+		<property name="RAW Name" value="SE_PLY_THROW_ICEBALL" />
+	</option>
+	<option value="288">
+		<property name="RAW Name" value="SE_PLY_PNGN_SWIM" />
+	</option>
+	<option value="289">
+		<property name="RAW Name" value="SE_PLY_PNGN_JUMP" />
+	</option>
+	<option value="290">
+		<property name="RAW Name" value="SE_PLY_CATCH_IVY" />
+	</option>
+	<option value="291">
+		<property name="RAW Name" value="SE_PLY_MOVE_IVY" />
+	</option>
+	<option value="292">
+		<property name="RAW Name" value="SE_PLY_POLE_CATCH" />
+	</option>
+	<option value="293">
+		<property name="RAW Name" value="SE_PLY_POLE_CLIMB" />
+	</option>
+	<option value="294">
+		<property name="RAW Name" value="SE_PLY_POLE_SLIDE" />
+	</option>
+	<option value="295">
+		<property name="RAW Name" value="SE_PLY_CATCH_ROPE" />
+	</option>
+	<option value="296">
+		<property name="RAW Name" value="SE_PLY_CLIMB_ROPE" />
+	</option>
+	<option value="297">
+		<property name="RAW Name" value="SE_PLY_SLIDE_ROPE" />
+	</option>
+	<option value="298">
+		<property name="RAW Name" value="SE_PLY_TARZAN_ROPE" />
+	</option>
+	<option value="299">
+		<property name="RAW Name" value="SE_PLY_CATCH_KUSARI" />
+	</option>
+	<option value="300">
+		<property name="RAW Name" value="SE_PLY_CLIMB_KUSARI" />
+	</option>
+	<option value="301">
+		<property name="RAW Name" value="SE_PLY_SLIDE_KUSARI" />
+	</option>
+	<option value="302">
+		<property name="RAW Name" value="SE_PLY_TARZAN_KUSARI" />
+	</option>
+	<option value="303">
+		<property name="RAW Name" value="SE_PLY_MONKEY_BARS" />
+	</option>
+	<option value="304">
+		<property name="RAW Name" value="SE_PLY_SHUFFLE" />
+	</option>
+	<option value="305">
+		<property name="RAW Name" value="SE_PLY_HANG_MOVE" />
+	</option>
+	<option value="306">
+		<property name="RAW Name" value="SE_PLY_JUMP_CLIFF" />
+	</option>
+	<option value="307">
+		<property name="RAW Name" value="SE_PLY_SCALE_CLIFF" />
+	</option>
+	<option value="308">
+		<property name="RAW Name" value="SE_PLY_WALK_METAL" />
+	</option>
+	<option value="309">
+		<property name="RAW Name" value="SE_PLY_WALK_METAL_L" />
+	</option>
+	<option value="310">
+		<property name="RAW Name" value="SE_PLY_JUMP_FENCE" />
+	</option>
+	<option value="311">
+		<property name="RAW Name" value="SE_PLY_JUMP_FENCE_S" />
+	</option>
+	<option value="312">
+		<property name="RAW Name" value="SE_PLY_JUMP_FENCE_SS" />
+	</option>
+	<option value="313">
+		<property name="RAW Name" value="SE_PLY_LAND_FENCE" />
+	</option>
+	<option value="314">
+		<property name="RAW Name" value="SE_PLY_ATTACK_FENCE" />
+	</option>
+	<option value="315">
+		<property name="RAW Name" value="SE_PLY_DOWN" />
+	</option>
+	<option value="316">
+		<property name="RAW Name" value="SE_PLY_TOUCH_BIRI" />
+	</option>
+	<option value="317">
+		<property name="RAW Name" value="SE_PLY_BURN_DOWN" />
+	</option>
+	<option value="318">
+		<property name="RAW Name" value="SE_PLY_SWIM" />
+	</option>
+	<option value="319">
+		<property name="RAW Name" value="SE_PLY_SWIM_KICK" />
+	</option>
+	<option value="320">
+		<property name="RAW Name" value="SE_PLY_SWIM_KICK_PENGUIN" />
+	</option>
+	<option value="321">
+		<property name="RAW Name" value="SE_PLY_WATER_DOKAN_IN_OUT" />
+	</option>
+	<option value="322">
+		<property name="RAW Name" value="SE_PLY_CRASH_S" />
+	</option>
+	<option value="323">
+		<property name="RAW Name" value="SE_PLY_CRASH_L" />
+	</option>
+	<option value="324">
+		<property name="RAW Name" value="SE_PLY_SPLASH_GEL" />
+	</option>
+	<option value="325">
+		<property name="RAW Name" value="SE_PLY_SPLASH_GEL_OUT" />
+	</option>
+	<option value="326">
+		<property name="RAW Name" value="SE_PLY_SPLASH_POISON" />
+	</option>
+	<option value="327">
+		<property name="RAW Name" value="SE_PLY_SPLASH_LAVA" />
+	</option>
+	<option value="328">
+		<property name="RAW Name" value="SE_PLY_SPLASH" />
+	</option>
+	<option value="329">
+		<property name="RAW Name" value="SE_PLY_SPLASH_OUT" />
+	</option>
+	<option value="330">
+		<property name="RAW Name" value="SE_PLY_SPLASH_MAME" />
+	</option>
+	<option value="331">
+		<property name="RAW Name" value="SE_PLY_OTHER_ON" />
+	</option>
+	<option value="332">
+		<property name="RAW Name" value="SE_PLY_OTHER_OFF" />
+	</option>
+	<option value="333">
+		<property name="RAW Name" value="SE_PLY_BREAK_FREE" />
+	</option>
+	<option value="334">
+		<property name="RAW Name" value="SE_PLY_BREAK_FREE_PRPL" />
+	</option>
+	<option value="335">
+		<property name="RAW Name" value="SE_PLY_MOVE_ROLLING" />
+	</option>
+	<option value="336">
+		<property name="RAW Name" value="SE_PLY_HPDP_SPECIAL_FOUR" />
+	</option>
+	<option value="337">
+		<property name="RAW Name" value="SE_PLY_HPDP_SPECIAL_THREE" />
+	</option>
+	<option value="338">
+		<property name="RAW Name" value="SE_PLY_HPDP_SPECIAL_TWO" />
+	</option>
+	<option value="339">
+		<property name="RAW Name" value="SE_PLY_HPDP_SPLASH" />
+	</option>
+	<option value="340">
+		<property name="RAW Name" value="SE_PLY_BALLOON_SELF" />
+	</option>
+	<option value="341">
+		<property name="RAW Name" value="SE_PLY_BALLOON_WAFTING" />
+	</option>
+	<option value="342">
+		<property name="RAW Name" value="SE_PLY_BALLOON_WAFTING_RC" />
+	</option>
+	<option value="343">
+		<property name="RAW Name" value="SE_PLY_BALLOON_BRAKE" />
+	</option>
+	<option value="344">
+		<property name="RAW Name" value="SE_PLY_YOSHI_HIT_WALL" />
+	</option>
+	<option value="345">
+		<property name="RAW Name" value="SE_PLY_YOSHI_TONGUE_HIT" />
+	</option>
+	<option value="346">
+		<property name="RAW Name" value="SE_PLY_YOSHI_TONGUE" />
+	</option>
+	<option value="347">
+		<property name="RAW Name" value="SE_PLY_YOSHI_HIT_ENEMY" />
+	</option>
+	<option value="348">
+		<property name="RAW Name" value="SE_PLY_YOSHI_FJUMP" />
+	</option>
+	<option value="349">
+		<property name="RAW Name" value="SE_PLY_YOSHI_FIRE" />
+	</option>
+	<option value="350">
+		<property name="RAW Name" value="SE_PLY_BREAK_FREE_YOSHI" />
+	</option>
+	<option value="351">
+		<property name="RAW Name" value="SE_EMY_CMN_STEP" />
+	</option>
+	<option value="352">
+		<property name="RAW Name" value="SE_EMY_MAME_STEP" />
+	</option>
+	<option value="353">
+		<property name="RAW Name" value="SE_EMY_YOSHI_STEP" />
+	</option>
+	<option value="354">
+		<property name="RAW Name" value="SE_PLY_PNGN_WATER_SLIDE" />
+	</option>
+	<option value="355">
+		<property name="RAW Name" value="SE_PLY_RIDE_CLOUD" />
+	</option>
+	<option value="356">
+		<property name="RAW Name" value="SE_PLY_SPLASH_SHALLOW" />
+	</option>
+	<option value="357">
+		<property name="RAW Name" value="SE_PLY_SPLASH_SHALLOW_OUT" />
+	</option>
+	<option value="358">
+		<property name="RAW Name" value="SE_PLY_SPLASH_SHALLOW_MAME" />
+	</option>
+	<option value="359">
+		<property name="RAW Name" value="SE_OBJ_RADAR_ONPU" />
+	</option>
+	<option value="360">
+		<property name="RAW Name" value="SE_OBJ_RADAR_ONPU_1" />
+	</option>
+	<option value="361">
+		<property name="RAW Name" value="SE_OBJ_RADAR_ONPU_2" />
+	</option>
+	<option value="362">
+		<property name="RAW Name" value="SE_OBJ_RADAR_ONPU_3" />
+	</option>
+	<option value="363">
+		<property name="RAW Name" value="SE_OBJ_RADAR_ONPU_4" />
+	</option>
+	<option value="364">
+		<property name="RAW Name" value="SE_OBJ_RADAR_ONPU_5" />
+	</option>
+	<option value="365">
+		<property name="RAW Name" value="SE_OBJ_RADAR_ONPU_1_1" />
+	</option>
+	<option value="366">
+		<property name="RAW Name" value="SE_OBJ_RADAR_ONPU_2_1" />
+	</option>
+	<option value="367">
+		<property name="RAW Name" value="SE_OBJ_RADAR_ONPU_3_1" />
+	</option>
+	<option value="368">
+		<property name="RAW Name" value="SE_OBJ_RADAR_ONPU_4_1" />
+	</option>
+	<option value="369">
+		<property name="RAW Name" value="SE_OBJ_RADAR_ONPU_5_1" />
+	</option>
+	<option value="370">
+		<property name="RAW Name" value="SE_OBJ_GET_ONPU" />
+	</option>
+	<option value="371">
+		<property name="RAW Name" value="SE_EMY_KURIBO_FUMU" />
+	</option>
+	<option value="372">
+		<property name="RAW Name" value="SE_EMY_FUMU_1" />
+	</option>
+	<option value="373">
+		<property name="RAW Name" value="SE_EMY_FUMU_2" />
+	</option>
+	<option value="374">
+		<property name="RAW Name" value="SE_EMY_FUMU_3" />
+	</option>
+	<option value="375">
+		<property name="RAW Name" value="SE_EMY_FUMU_4" />
+	</option>
+	<option value="376">
+		<property name="RAW Name" value="SE_EMY_FUMU_5" />
+	</option>
+	<option value="377">
+		<property name="RAW Name" value="SE_EMY_FUMU_6" />
+	</option>
+	<option value="378">
+		<property name="RAW Name" value="SE_EMY_FUMU_7" />
+	</option>
+	<option value="379">
+		<property name="RAW Name" value="SE_EMY_DOWN" />
+	</option>
+	<option value="380">
+		<property name="RAW Name" value="SE_EMY_DOWN_COMBO_1" />
+	</option>
+	<option value="381">
+		<property name="RAW Name" value="SE_EMY_DOWN_COMBO_2" />
+	</option>
+	<option value="382">
+		<property name="RAW Name" value="SE_EMY_DOWN_COMBO_3" />
+	</option>
+	<option value="383">
+		<property name="RAW Name" value="SE_EMY_DOWN_COMBO_4" />
+	</option>
+	<option value="384">
+		<property name="RAW Name" value="SE_EMY_DOWN_COMBO_5" />
+	</option>
+	<option value="385">
+		<property name="RAW Name" value="SE_EMY_DOWN_COMBO_6" />
+	</option>
+	<option value="386">
+		<property name="RAW Name" value="SE_EMY_DOWN_COMBO_7" />
+	</option>
+	<option value="387">
+		<property name="RAW Name" value="SE_EMY_DOWN_SPIN" />
+	</option>
+	<option value="388">
+		<property name="RAW Name" value="SE_EMY_DOWN_SPIN_1" />
+	</option>
+	<option value="389">
+		<property name="RAW Name" value="SE_EMY_DOWN_SPIN_2" />
+	</option>
+	<option value="390">
+		<property name="RAW Name" value="SE_EMY_DOWN_SPIN_3" />
+	</option>
+	<option value="391">
+		<property name="RAW Name" value="SE_EMY_DOWN_SPIN_4" />
+	</option>
+	<option value="392">
+		<property name="RAW Name" value="SE_EMY_DOWN_SPIN_5" />
+	</option>
+	<option value="393">
+		<property name="RAW Name" value="SE_EMY_DOWN_SPIN_6" />
+	</option>
+	<option value="394">
+		<property name="RAW Name" value="SE_EMY_DOWN_SPIN_7" />
+	</option>
+	<option value="395">
+		<property name="RAW Name" value="SE_EMY_DOWN_HPDP_S" />
+	</option>
+	<option value="396">
+		<property name="RAW Name" value="SE_EMY_DOWN_HPDP_H" />
+	</option>
+	<option value="397">
+		<property name="RAW Name" value="SE_EMY_YOSHI_FUMU_1" />
+	</option>
+	<option value="398">
+		<property name="RAW Name" value="SE_EMY_YOSHI_FUMU_2" />
+	</option>
+	<option value="399">
+		<property name="RAW Name" value="SE_EMY_YOSHI_FUMU_3" />
+	</option>
+	<option value="400">
+		<property name="RAW Name" value="SE_EMY_YOSHI_FUMU_4" />
+	</option>
+	<option value="401">
+		<property name="RAW Name" value="SE_EMY_YOSHI_FUMU_5" />
+	</option>
+	<option value="402">
+		<property name="RAW Name" value="SE_EMY_YOSHI_FUMU_6" />
+	</option>
+	<option value="403">
+		<property name="RAW Name" value="SE_EMY_YOSHI_FUMU_7" />
+	</option>
+	<option value="404">
+		<property name="RAW Name" value="SE_EMY_YOSHI_HPDP" />
+	</option>
+	<option value="405">
+		<property name="RAW Name" value="SE_EMY_KAME_KERU" />
+	</option>
+	<option value="406">
+		<property name="RAW Name" value="SE_EMY_KAME_HIT_1" />
+	</option>
+	<option value="407">
+		<property name="RAW Name" value="SE_EMY_KAME_HIT_2" />
+	</option>
+	<option value="408">
+		<property name="RAW Name" value="SE_EMY_KAME_HIT_3" />
+	</option>
+	<option value="409">
+		<property name="RAW Name" value="SE_EMY_KAME_HIT_4" />
+	</option>
+	<option value="410">
+		<property name="RAW Name" value="SE_EMY_KAME_HIT_5" />
+	</option>
+	<option value="411">
+		<property name="RAW Name" value="SE_EMY_KAME_HIT_6" />
+	</option>
+	<option value="412">
+		<property name="RAW Name" value="SE_EMY_KAME_HIT_7" />
+	</option>
+	<option value="413">
+		<property name="RAW Name" value="SE_EMY_DOWN_SYNC_1" />
+	</option>
+	<option value="414">
+		<property name="RAW Name" value="SE_EMY_DOWN_SYNC_2" />
+	</option>
+	<option value="415">
+		<property name="RAW Name" value="SE_EMY_DOWN_SYNC_3" />
+	</option>
+	<option value="416">
+		<property name="RAW Name" value="SE_EMY_DOWN_SYNC_4" />
+	</option>
+	<option value="417">
+		<property name="RAW Name" value="SE_EMY_DOWN_SYNC_5" />
+	</option>
+	<option value="418">
+		<property name="RAW Name" value="SE_EMY_DOWN_SYNC_6" />
+	</option>
+	<option value="419">
+		<property name="RAW Name" value="SE_EMY_DOWN_SYNC_7" />
+	</option>
+	<option value="420">
+		<property name="RAW Name" value="SE_EMY_DOWN_NO_SCORE" />
+	</option>
+	<option value="421">
+		<property name="RAW Name" value="SE_EMY_EXTINCT_BY_GREEN_COIN" />
+	</option>
+	<option value="422">
+		<property name="RAW Name" value="SE_EMY_KAME_FUMU" />
+	</option>
+	<option value="423">
+		<property name="RAW Name" value="SE_EMY_PAKKUN_MOUTH" />
+	</option>
+	<option value="424">
+		<property name="RAW Name" value="SE_EMY_PAKKUN_DOWN" />
+	</option>
+	<option value="425">
+		<property name="RAW Name" value="SE_EMY_DOKAN_PAKKUN_MOUTH" />
+	</option>
+	<option value="426">
+		<property name="RAW Name" value="SE_EMY_DOKAN_PAKKUN_DOWN" />
+	</option>
+	<option value="427">
+		<property name="RAW Name" value="SE_EMY_BIG_PAKKUN_MOUTH" />
+	</option>
+	<option value="428">
+		<property name="RAW Name" value="SE_EMY_BIG_PAKKUN_DOWN" />
+	</option>
+	<option value="429">
+		<property name="RAW Name" value="SE_EMY_BIG_PAKKUN_DAMAGE_1" />
+	</option>
+	<option value="430">
+		<property name="RAW Name" value="SE_EMY_BIG_PAKKUN_DAMAGE_2" />
+	</option>
+	<option value="431">
+		<property name="RAW Name" value="SE_EMY_PAKKUN_FIRE" />
+	</option>
+	<option value="432">
+		<property name="RAW Name" value="SE_EMY_BIG_PAKKUN_FIRE" />
+	</option>
+	<option value="433">
+		<property name="RAW Name" value="SE_EMY_BLOW_PAKKUN_DOWN" />
+	</option>
+	<option value="434">
+		<property name="RAW Name" value="SE_EMY_WALK_PAKKUN_REACH" />
+	</option>
+	<option value="435">
+		<property name="RAW Name" value="SE_EMY_WALK_PAKKUN_RECEDE" />
+	</option>
+	<option value="436">
+		<property name="RAW Name" value="SE_EMY_WALK_PAKKUN_DOWN" />
+	</option>
+	<option value="437">
+		<property name="RAW Name" value="SE_EMY_SANBO_LAND" />
+	</option>
+	<option value="438">
+		<property name="RAW Name" value="SE_EMY_FIRE_SNAKE_BIGGER" />
+	</option>
+	<option value="439">
+		<property name="RAW Name" value="SE_EMY_FIRE_SNAKE_EXTINCT" />
+	</option>
+	<option value="440">
+		<property name="RAW Name" value="SE_EMY_JUGEM_APP" />
+	</option>
+	<option value="441">
+		<property name="RAW Name" value="SE_OBJ_PAIPO" />
+	</option>
+	<option value="442">
+		<property name="RAW Name" value="SE_OBJ_PAIPO_LAND" />
+	</option>
+	<option value="443">
+		<property name="RAW Name" value="SE_OBJ_PAIPO_TO_TOGEZO" />
+	</option>
+	<option value="444">
+		<property name="RAW Name" value="SE_EMY_REV_KOURA_FALL" />
+	</option>
+	<option value="445">
+		<property name="RAW Name" value="SE_EMY_KILLER_SHOT" />
+	</option>
+	<option value="446">
+		<property name="RAW Name" value="SE_EMY_KILLER_HIT_BOTH" />
+	</option>
+	<option value="447">
+		<property name="RAW Name" value="SE_EMY_KILLER_CROSS" />
+	</option>
+	<option value="448">
+		<property name="RAW Name" value="SE_EMY_MG_KILLER_HIT_KILLER" />
+	</option>
+	<option value="449">
+		<property name="RAW Name" value="SE_EMY_MG_KILLER_SHOT" />
+	</option>
+	<option value="450">
+		<property name="RAW Name" value="SE_EMY_KG_KILLER_SHOT" />
+	</option>
+	<option value="451">
+		<property name="RAW Name" value="SE_EMY_KG_KILLER_FLY" />
+	</option>
+	<option value="452">
+		<property name="RAW Name" value="SE_EMY_SR_KILLER_SHOT" />
+	</option>
+	<option value="453">
+		<property name="RAW Name" value="SE_EMY_SR_MG_KILLER_SHOT" />
+	</option>
+	<option value="454">
+		<property name="RAW Name" value="SE_EMY_WANWAN_BARK" />
+	</option>
+	<option value="455">
+		<property name="RAW Name" value="SE_EMY_WANWAN_KUSARI" />
+	</option>
+	<option value="456">
+		<property name="RAW Name" value="SE_EMY_WANWAN_ESCAPE" />
+	</option>
+	<option value="457">
+		<property name="RAW Name" value="SE_EMY_KERONPA_FIRE" />
+	</option>
+	<option value="458">
+		<property name="RAW Name" value="SE_EMY_KERONPA_ALARM" />
+	</option>
+	<option value="459">
+		<property name="RAW Name" value="SE_EMY_KERONPA_BOMB" />
+	</option>
+	<option value="460">
+		<property name="RAW Name" value="SE_EMY_BH_BOMB" />
+	</option>
+	<option value="461">
+		<property name="RAW Name" value="SE_EMY_BH_HIBANA" />
+	</option>
+	<option value="462">
+		<property name="RAW Name" value="SE_EMY_BIRIKYU_SPARK" />
+	</option>
+	<option value="463">
+		<property name="RAW Name" value="SE_EMY_BUBBLE" />
+	</option>
+	<option value="464">
+		<property name="RAW Name" value="SE_EMY_BUBBLE_SPLASH" />
+	</option>
+	<option value="465">
+		<property name="RAW Name" value="SE_EMY_BUBBLE_EXTINCT" />
+	</option>
+	<option value="466">
+		<property name="RAW Name" value="SE_EMY_KALON" />
+	</option>
+	<option value="467">
+		<property name="RAW Name" value="SE_EMY_KALON_REVIVAL" />
+	</option>
+	<option value="468">
+		<property name="RAW Name" value="SE_EMY_KALON_REVIVAL_HEAD" />
+	</option>
+	<option value="469">
+		<property name="RAW Name" value="SE_EMY_BIG_KALON" />
+	</option>
+	<option value="470">
+		<property name="RAW Name" value="SE_EMY_BIG_KALON_REVIVAL" />
+	</option>
+	<option value="471">
+		<property name="RAW Name" value="SE_EMY_BIG_KALON_REVIVAL_HEAD" />
+	</option>
+	<option value="472">
+		<property name="RAW Name" value="SE_EMY_STEP_BIG_KALON" />
+	</option>
+	<option value="473">
+		<property name="RAW Name" value="SE_EMY_BAKU_SUCK" />
+	</option>
+	<option value="474">
+		<property name="RAW Name" value="SE_EMY_BAKU_PAKU" />
+	</option>
+	<option value="475">
+		<property name="RAW Name" value="SE_EMY_TOBIPUKU_JUMP" />
+	</option>
+	<option value="476">
+		<property name="RAW Name" value="SE_EMY_TOBIPUKU_SPLASH" />
+	</option>
+	<option value="477">
+		<property name="RAW Name" value="SE_EMY_FUGUMANNEN_JUMP" />
+	</option>
+	<option value="478">
+		<property name="RAW Name" value="SE_EMY_FUGUMANNEN_SPLASH" />
+	</option>
+	<option value="479">
+		<property name="RAW Name" value="SE_EMY_FUGUMANNEN_SWIM" />
+	</option>
+	<option value="480">
+		<property name="RAW Name" value="SE_EMY_HANACHAN_STOMP" />
+	</option>
+	<option value="481">
+		<property name="RAW Name" value="SE_EMY_IBARAMUSHI_KNOCK_UP" />
+	</option>
+	<option value="482">
+		<property name="RAW Name" value="SE_EMY_IBARAMUSHI_FOOT" />
+	</option>
+	<option value="483">
+		<property name="RAW Name" value="SE_EMY_TERESA" />
+	</option>
+	<option value="484">
+		<property name="RAW Name" value="SE_EMY_TERESA_STOP" />
+	</option>
+	<option value="485">
+		<property name="RAW Name" value="SE_EMY_TERESA_DEAD" />
+	</option>
+	<option value="486">
+		<property name="RAW Name" value="SE_EMY_BIG_TERESA_DEAD" />
+	</option>
+	<option value="487">
+		<property name="RAW Name" value="SE_EMY_MOUSE_WALK" />
+	</option>
+	<option value="488">
+		<property name="RAW Name" value="SE_EMY_MOUSE_RUN" />
+	</option>
+	<option value="489">
+		<property name="RAW Name" value="SE_EMY_HAMMER_BROS_HAMMER" />
+	</option>
+	<option value="490">
+		<property name="RAW Name" value="SE_EMY_FIRE_BROS_FIRE" />
+	</option>
+	<option value="491">
+		<property name="RAW Name" value="SE_EMY_ICE_BROS_ICE" />
+	</option>
+	<option value="492">
+		<property name="RAW Name" value="SE_EMY_BOOMERANG_BROS_BOOMERANG" />
+	</option>
+	<option value="493">
+		<property name="RAW Name" value="SE_EMY_MEGA_BROS_HAMMER" />
+	</option>
+	<option value="494">
+		<property name="RAW Name" value="SE_EMY_MEGA_BROS_EARTHQUAKE" />
+	</option>
+	<option value="495">
+		<property name="RAW Name" value="SE_EMY_CROW_CAW" />
+	</option>
+	<option value="496">
+		<property name="RAW Name" value="SE_EMY_BASABASA_SING" />
+	</option>
+	<option value="497">
+		<property name="RAW Name" value="SE_EMY_BASABASA" />
+	</option>
+	<option value="498">
+		<property name="RAW Name" value="SE_EMY_IGAKURIBO_OPEN" />
+	</option>
+	<option value="499">
+		<property name="RAW Name" value="SE_EMY_IGAKURIBO_CLOSE" />
+	</option>
+	<option value="500">
+		<property name="RAW Name" value="SE_EMY_IGAKURIBO_BURN" />
+	</option>
+	<option value="501">
+		<property name="RAW Name" value="SE_EMY_PENGUIN_DAMAGE" />
+	</option>
+	<option value="502">
+		<property name="RAW Name" value="SE_EMY_PENGUIN_SLIDE" />
+	</option>
+	<option value="503">
+		<property name="RAW Name" value="SE_EMY_PENGUIN_PIYO" />
+	</option>
+	<option value="504">
+		<property name="RAW Name" value="SE_EMY_MAMEKURIBO_DEAD_HPDP" />
+	</option>
+	<option value="505">
+		<property name="RAW Name" value="SE_EMY_MAMEKURIBO_DEAD_FIRE" />
+	</option>
+	<option value="506">
+		<property name="RAW Name" value="SE_EMY_MAMEKURIBO_DEAD" />
+	</option>
+	<option value="507">
+		<property name="RAW Name" value="SE_EMY_MAMEKURIBO_FLICK_DEAD" />
+	</option>
+	<option value="508">
+		<property name="RAW Name" value="SE_EMY_MAMEKURIBO_CLING" />
+	</option>
+	<option value="509">
+		<property name="RAW Name" value="SE_EMY_MAMEKURIBO_CLINGING_NOW" />
+	</option>
+	<option value="510">
+		<property name="RAW Name" value="SE_EMY_KURIBO_M_SPLIT" />
+	</option>
+	<option value="511">
+		<property name="RAW Name" value="SE_EMY_KURIBO_M_DAMAGE" />
+	</option>
+	<option value="512">
+		<property name="RAW Name" value="SE_EMY_KURIBO_L_SPLIT" />
+	</option>
+	<option value="513">
+		<property name="RAW Name" value="SE_EMY_KURIBO_L_SPLIT_HPDP" />
+	</option>
+	<option value="514">
+		<property name="RAW Name" value="SE_EMY_KURIBO_L_DAMAGE_01" />
+	</option>
+	<option value="515">
+		<property name="RAW Name" value="SE_EMY_KURIBO_L_DAMAGE_02" />
+	</option>
+	<option value="516">
+		<property name="RAW Name" value="SE_EMY_KURIBO_L_DAMAGE_03" />
+	</option>
+	<option value="517">
+		<property name="RAW Name" value="SE_EMY_SHELL_CLOSE" />
+	</option>
+	<option value="518">
+		<property name="RAW Name" value="SE_EMY_SHELL_OPEN" />
+	</option>
+	<option value="519">
+		<property name="RAW Name" value="SE_EMY_FISHBONE_FIND" />
+	</option>
+	<option value="520">
+		<property name="RAW Name" value="SE_EMY_FISHBONE_ATTACK" />
+	</option>
+	<option value="521">
+		<property name="RAW Name" value="SE_EMY_FISHBONE_BREAK" />
+	</option>
+	<option value="522">
+		<property name="RAW Name" value="SE_EMY_MECHAKOOPA_DAMAGE" />
+	</option>
+	<option value="523">
+		<property name="RAW Name" value="SE_EMY_MECHAKOOPA_BOUND" />
+	</option>
+	<option value="524">
+		<property name="RAW Name" value="SE_EMY_MECHAKOOPA_RESTART" />
+	</option>
+	<option value="525">
+		<property name="RAW Name" value="SE_EMY_MECHAKOOPA_RESTART_F" />
+	</option>
+	<option value="526">
+		<property name="RAW Name" value="SE_EMY_MECHAKOOPA_WALK" />
+	</option>
+	<option value="527">
+		<property name="RAW Name" value="SE_EMY_DOSSUN_DEAD" />
+	</option>
+	<option value="528">
+		<property name="RAW Name" value="SE_EMY_BIG_DOSSUN_DEAD" />
+	</option>
+	<option value="529">
+		<property name="RAW Name" value="SE_EMY_DOSSUN" />
+	</option>
+	<option value="530">
+		<property name="RAW Name" value="SE_EMY_BIG_DOSSUN" />
+	</option>
+	<option value="531">
+		<property name="RAW Name" value="SE_EMY_GESSO_JUMPOUT_MANY" />
+	</option>
+	<option value="532">
+		<property name="RAW Name" value="SE_EMY_GESSO_JUMPOUT" />
+	</option>
+	<option value="533">
+		<property name="RAW Name" value="SE_EMY_GABON_ROCK_MAKE_ROCK" />
+	</option>
+	<option value="534">
+		<property name="RAW Name" value="SE_EMY_GABON_ROCK_THROW" />
+	</option>
+	<option value="535">
+		<property name="RAW Name" value="SE_EMY_KANIBO_THROW" />
+	</option>
+	<option value="536">
+		<property name="RAW Name" value="SE_EMY_CRASHER_PUNCH" />
+	</option>
+	<option value="537">
+		<property name="RAW Name" value="SE_EMY_CHOROPU_SIGN" />
+	</option>
+	<option value="538">
+		<property name="RAW Name" value="SE_EMY_CHOROPU_APP" />
+	</option>
+	<option value="539">
+		<property name="RAW Name" value="SE_EMY_CHOROPU_LAND" />
+	</option>
+	<option value="540">
+		<property name="RAW Name" value="SE_EMY_CHOROPU_BOUND" />
+	</option>
+	<option value="541">
+		<property name="RAW Name" value="SE_EMY_CHOROBON_ROLL" />
+	</option>
+	<option value="542">
+		<property name="RAW Name" value="SE_EMY_CHOROBON_L_ROLL" />
+	</option>
+	<option value="543">
+		<property name="RAW Name" value="SE_EMY_CHOROPU_M_OPEN" />
+	</option>
+	<option value="544">
+		<property name="RAW Name" value="SE_EMY_CHOROPU_M_APP" />
+	</option>
+	<option value="545">
+		<property name="RAW Name" value="SE_EMY_CHOROPU_M_CLOSE" />
+	</option>
+	<option value="546">
+		<property name="RAW Name" value="SE_EMY_CHOROPU_M_SPANNER" />
+	</option>
+	<option value="547">
+		<property name="RAW Name" value="SE_EMY_HUHU_DOWN" />
+	</option>
+	<option value="548">
+		<property name="RAW Name" value="SE_EMY_HUHU_EXTINCT" />
+	</option>
+	<option value="549">
+		<property name="RAW Name" value="SE_EMY_HUHU_BREATH_OUT" />
+	</option>
+	<option value="550">
+		<property name="RAW Name" value="SE_EMY_HUHU_BREATH_IN" />
+	</option>
+	<option value="551">
+		<property name="RAW Name" value="SE_EMY_PATAMET_STEP" />
+	</option>
+	<option value="552">
+		<property name="RAW Name" value="SE_EMY_PATAMET_STEP_2" />
+	</option>
+	<option value="553">
+		<property name="RAW Name" value="SE_EMY_PATAMET_STEP_3" />
+	</option>
+	<option value="554">
+		<property name="RAW Name" value="SE_EMY_PATAMET_STEP_4" />
+	</option>
+	<option value="555">
+		<property name="RAW Name" value="SE_EMY_PATAMET_STEP_5" />
+	</option>
+	<option value="556">
+		<property name="RAW Name" value="SE_EMY_PATAMET_STEP_6" />
+	</option>
+	<option value="557">
+		<property name="RAW Name" value="SE_EMY_PATAMET_STEP_7" />
+	</option>
+	<option value="558">
+		<property name="RAW Name" value="SE_EMY_PATAMET_STEP_8" />
+	</option>
+	<option value="559">
+		<property name="RAW Name" value="SE_EMY_PATAMET_COMPLETE" />
+	</option>
+	<option value="560">
+		<property name="RAW Name" value="SE_EMY_MANTA_SING" />
+	</option>
+	<option value="561">
+		<property name="RAW Name" value="SE_EMY_LIFT_LINE_ACTIVE" />
+	</option>
+	<option value="562">
+		<property name="RAW Name" value="SE_EMY_LIFT_LINE_MOVE" />
+	</option>
+	<option value="563">
+		<property name="RAW Name" value="SE_EMY_LIFT_LINE_BARK" />
+	</option>
+	<option value="564">
+		<property name="RAW Name" value="SE_EMY_LIFT_LINE_HPDP_HEAD" />
+	</option>
+	<option value="565">
+		<property name="RAW Name" value="SE_EMY_LIFT_LINE_HPDP_BODY" />
+	</option>
+	<option value="566">
+		<property name="RAW Name" value="SE_OBJ_GET_COIN_OLD" />
+	</option>
+	<option value="567">
+		<property name="RAW Name" value="SE_OBJ_GET_COIN" />
+	</option>
+	<option value="568">
+		<property name="RAW Name" value="SE_OBJ_GET_COIN_SHOWER" />
+	</option>
+	<option value="569">
+		<property name="RAW Name" value="SE_OBJ_COIN_APP" />
+	</option>
+	<option value="570">
+		<property name="RAW Name" value="SE_OBJ_COIN_BOUND" />
+	</option>
+	<option value="571">
+		<property name="RAW Name" value="SE_OBJ_COIN_POP_UP" />
+	</option>
+	<option value="572">
+		<property name="RAW Name" value="SE_OBJ_GET_RED_COIN" />
+	</option>
+	<option value="573">
+		<property name="RAW Name" value="SE_OBJ_GET_RED_COIN_2" />
+	</option>
+	<option value="574">
+		<property name="RAW Name" value="SE_OBJ_GET_RED_COIN_3" />
+	</option>
+	<option value="575">
+		<property name="RAW Name" value="SE_OBJ_GET_RED_COIN_4" />
+	</option>
+	<option value="576">
+		<property name="RAW Name" value="SE_OBJ_GET_RED_COIN_5" />
+	</option>
+	<option value="577">
+		<property name="RAW Name" value="SE_OBJ_GET_RED_COIN_6" />
+	</option>
+	<option value="578">
+		<property name="RAW Name" value="SE_OBJ_GET_RED_COIN_7" />
+	</option>
+	<option value="579">
+		<property name="RAW Name" value="SE_OBJ_GET_RED_COIN_COMPLETE" />
+	</option>
+	<option value="580">
+		<property name="RAW Name" value="SE_OBJ_GREEN_COIN_APP" />
+	</option>
+	<option value="581">
+		<property name="RAW Name" value="SE_OBJ_GET_GREEN_COIN" />
+	</option>
+	<option value="582">
+		<property name="RAW Name" value="SE_OBJ_GET_GREEN_COIN_2" />
+	</option>
+	<option value="583">
+		<property name="RAW Name" value="SE_OBJ_GET_GREEN_COIN_3" />
+	</option>
+	<option value="584">
+		<property name="RAW Name" value="SE_OBJ_GET_GREEN_COIN_4" />
+	</option>
+	<option value="585">
+		<property name="RAW Name" value="SE_OBJ_GET_GREEN_COIN_5" />
+	</option>
+	<option value="586">
+		<property name="RAW Name" value="SE_OBJ_GET_GREEN_COIN_6" />
+	</option>
+	<option value="587">
+		<property name="RAW Name" value="SE_OBJ_GET_GREEN_COIN_7" />
+	</option>
+	<option value="588">
+		<property name="RAW Name" value="SE_OBJ_GET_GREEN_COIN_COMPLETE" />
+	</option>
+	<option value="589">
+		<property name="RAW Name" value="SE_OBJ_GET_DRAGON_COIN" />
+	</option>
+	<option value="590">
+		<property name="RAW Name" value="SE_OBJ_GET_DRAGON_COIN_COMPLETE" />
+	</option>
+	<option value="591">
+		<property name="RAW Name" value="SE_OBJ_TYUKAN_SWING" />
+	</option>
+	<option value="592">
+		<property name="RAW Name" value="SE_OBJ_GOAL_FIREWORKS" />
+	</option>
+	<option value="593">
+		<property name="RAW Name" value="SE_OBJ_GOAL_FIREWORKS_FINISH" />
+	</option>
+	<option value="594">
+		<property name="RAW Name" value="SE_OBJ_GOAL_GET_COIN_BONUS" />
+	</option>
+	<option value="595">
+		<property name="RAW Name" value="SE_OBJ_TREASURE_BOX_APP" />
+	</option>
+	<option value="596">
+		<property name="RAW Name" value="SE_OBJ_TREASURE_BOX_SHAKE" />
+	</option>
+	<option value="597">
+		<property name="RAW Name" value="SE_OBJ_TREASURE_BOX_OPEN" />
+	</option>
+	<option value="598">
+		<property name="RAW Name" value="SE_OBJ_ITEM_FROM_KINOPIO" />
+	</option>
+	<option value="599">
+		<property name="RAW Name" value="SE_OBJ_ITEM_APPEAR" />
+	</option>
+	<option value="600">
+		<property name="RAW Name" value="SE_OBJ_ITEM_APPEAR_HAUNT" />
+	</option>
+	<option value="601">
+		<property name="RAW Name" value="SE_OBJ_ITEM_DISAPP" />
+	</option>
+	<option value="602">
+		<property name="RAW Name" value="SE_OBJ_ITEM_PRPL_APPEAR" />
+	</option>
+	<option value="603">
+		<property name="RAW Name" value="SE_OBJ_ITEM_PRPL_GLIDE" />
+	</option>
+	<option value="604">
+		<property name="RAW Name" value="SE_PLY_YOSHI_EGG_APPEAR" />
+	</option>
+	<option value="605">
+		<property name="RAW Name" value="SE_PLY_YOSHI_LAY_EGG" />
+	</option>
+	<option value="606">
+		<property name="RAW Name" value="SE_PLY_YOSHI_EGG_BREAK" />
+	</option>
+	<option value="607">
+		<property name="RAW Name" value="SE_PLY_YOSHI_EAT_NUT" />
+	</option>
+	<option value="608">
+		<property name="RAW Name" value="SE_PLY_YOSHI_EAT_NUT_2" />
+	</option>
+	<option value="609">
+		<property name="RAW Name" value="SE_PLY_YOSHI_EAT_NUT_3" />
+	</option>
+	<option value="610">
+		<property name="RAW Name" value="SE_PLY_YOSHI_EAT_NUT_4" />
+	</option>
+	<option value="611">
+		<property name="RAW Name" value="SE_PLY_YOSHI_EAT_NUT_5" />
+	</option>
+	<option value="612">
+		<property name="RAW Name" value="SE_OBJ_STAR_BOUND" />
+	</option>
+	<option value="613">
+		<property name="RAW Name" value="SE_OBJ_FIREBALL_SPLASH" />
+	</option>
+	<option value="614">
+		<property name="RAW Name" value="SE_OBJ_FIREBALL_DISAPP" />
+	</option>
+	<option value="615">
+		<property name="RAW Name" value="SE_OBJ_EMY_FIRE_SPLASH" />
+	</option>
+	<option value="616">
+		<property name="RAW Name" value="SE_OBJ_EMY_FIRE_DISAPP" />
+	</option>
+	<option value="617">
+		<property name="RAW Name" value="SE_OBJ_PNGN_ICEBALL_DISAPP" />
+	</option>
+	<option value="618">
+		<property name="RAW Name" value="SE_OBJ_PNGN_ICE_FREEZE" />
+	</option>
+	<option value="619">
+		<property name="RAW Name" value="SE_OBJ_PNGN_ICE_THAW" />
+	</option>
+	<option value="620">
+		<property name="RAW Name" value="SE_OBJ_PNGN_ICE_BREAK" />
+	</option>
+	<option value="621">
+		<property name="RAW Name" value="SE_OBJ_PNGN_ICE_SLIDE" />
+	</option>
+	<option value="622">
+		<property name="RAW Name" value="SE_OBJ_PNGN_ICE_SLIDE_V" />
+	</option>
+	<option value="623">
+		<property name="RAW Name" value="SE_OBJ_PNGN_ICE_LAND" />
+	</option>
+	<option value="624">
+		<property name="RAW Name" value="SE_OBJ_ICE_S_THAW" />
+	</option>
+	<option value="625">
+		<property name="RAW Name" value="SE_OBJ_EMY_ICEBALL_DISAPP" />
+	</option>
+	<option value="626">
+		<property name="RAW Name" value="SE_PLY_HIT_BLOCK" />
+	</option>
+	<option value="627">
+		<property name="RAW Name" value="SE_PLY_HIT_BLOCK_BOUND" />
+	</option>
+	<option value="628">
+		<property name="RAW Name" value="SE_OBJ_BLOCK_BREAK" />
+	</option>
+	<option value="629">
+		<property name="RAW Name" value="SE_OBJ_BLOCK_HELP_APPEAL" />
+	</option>
+	<option value="630">
+		<property name="RAW Name" value="SE_OBJ_ROULETTE_BLOCK_ROLL" />
+	</option>
+	<option value="631">
+		<property name="RAW Name" value="SE_OBJ_ONPU_BLOCK_HIT" />
+	</option>
+	<option value="632">
+		<property name="RAW Name" value="SE_OBJ_BOUND_BLOCK_JUMP" />
+	</option>
+	<option value="633">
+		<property name="RAW Name" value="SE_OBJ_BOUND_BLOCK_JUMP_HIGH" />
+	</option>
+	<option value="634">
+		<property name="RAW Name" value="SE_OBJ_CLOUD_BLOCK_TO_JUGEM" />
+	</option>
+	<option value="635">
+		<property name="RAW Name" value="SE_OBJ_TSUTA_APPEAR" />
+	</option>
+	<option value="636">
+		<property name="RAW Name" value="SE_OBJ_SNAKE_BLOCK" />
+	</option>
+	<option value="637">
+		<property name="RAW Name" value="SE_OBJ_POW_BLOCK_QUAKE" />
+	</option>
+	<option value="638">
+		<property name="RAW Name" value="SE_OBJ_WOOD_BOX_LAND" />
+	</option>
+	<option value="639">
+		<property name="RAW Name" value="SE_OBJ_WOOD_BOX_BREAK" />
+	</option>
+	<option value="640">
+		<property name="RAW Name" value="SE_OBJ_METAL_BOX_LAND" />
+	</option>
+	<option value="641">
+		<property name="RAW Name" value="SE_PLY_HIT_GENERAL_OBJ" />
+	</option>
+	<option value="642">
+		<property name="RAW Name" value="SE_OBJ_CMN_SPLASH" />
+	</option>
+	<option value="643">
+		<property name="RAW Name" value="SE_OBJ_CMN_SPLASH_POISON" />
+	</option>
+	<option value="644">
+		<property name="RAW Name" value="SE_OBJ_CMN_SPLASH_LAVA" />
+	</option>
+	<option value="645">
+		<property name="RAW Name" value="SE_OBJ_CMN_SPLASH_GEL" />
+	</option>
+	<option value="646">
+		<property name="RAW Name" value="SE_OBJ_CMN_BALLOON_BREAK" />
+	</option>
+	<option value="647">
+		<property name="RAW Name" value="SE_OBJ_KOURA" />
+	</option>
+	<option value="648">
+		<property name="RAW Name" value="SE_OBJ_HAMMER_HIT_BOTH" />
+	</option>
+	<option value="649">
+		<property name="RAW Name" value="SE_OBJ_SWITCH_APP" />
+	</option>
+	<option value="650">
+		<property name="RAW Name" value="SE_OBJ_STEP_ON_SWITCH" />
+	</option>
+	<option value="651">
+		<property name="RAW Name" value="SE_OBJ_STEP_ON_KSWITCH" />
+	</option>
+	<option value="652">
+		<property name="RAW Name" value="SE_OBJ_SWITCH_APP_AGAIN" />
+	</option>
+	<option value="653">
+		<property name="RAW Name" value="SE_OBJ_DOOR_OPEN" />
+	</option>
+	<option value="654">
+		<property name="RAW Name" value="SE_OBJ_DOOR_CLOSE" />
+	</option>
+	<option value="655">
+		<property name="RAW Name" value="SE_OBJ_BDOOR_OPEN" />
+	</option>
+	<option value="656">
+		<property name="RAW Name" value="SE_OBJ_BDOOR_MOVE" />
+	</option>
+	<option value="657">
+		<property name="RAW Name" value="SE_OBJ_BDOOR_CLOSE" />
+	</option>
+	<option value="658">
+		<property name="RAW Name" value="SE_OBJ_KDOOR_OPEN" />
+	</option>
+	<option value="659">
+		<property name="RAW Name" value="SE_OBJ_KDOOR_MOVE" />
+	</option>
+	<option value="660">
+		<property name="RAW Name" value="SE_OBJ_KDOOR_CLOSE" />
+	</option>
+	<option value="661">
+		<property name="RAW Name" value="SE_OBJ_DDOOR_OPEN" />
+	</option>
+	<option value="662">
+		<property name="RAW Name" value="SE_OBJ_JUMPDAI_APP" />
+	</option>
+	<option value="663">
+		<property name="RAW Name" value="SE_PLY_JUMPDAI" />
+	</option>
+	<option value="664">
+		<property name="RAW Name" value="SE_PLY_JUMPDAI_HIGH" />
+	</option>
+	<option value="665">
+		<property name="RAW Name" value="SE_OBJ_TRPLN_BOUND" />
+	</option>
+	<option value="666">
+		<property name="RAW Name" value="SE_PLY_CANNON_READY" />
+	</option>
+	<option value="667">
+		<property name="RAW Name" value="SE_PLY_CANNON_SHOT" />
+	</option>
+	<option value="668">
+		<property name="RAW Name" value="SE_PLY_CANNON_BACK_SHOT" />
+	</option>
+	<option value="669">
+		<property name="RAW Name" value="SE_OBJ_WARP_CANNON_APP" />
+	</option>
+	<option value="670">
+		<property name="RAW Name" value="SE_OBJ_WARP_CANNON_TURN" />
+	</option>
+	<option value="671">
+		<property name="RAW Name" value="SE_OBJ_WARP_CANNON_SIGHT" />
+	</option>
+	<option value="672">
+		<property name="RAW Name" value="SE_OBJ_WARP_CANNON_SHOT" />
+	</option>
+	<option value="673">
+		<property name="RAW Name" value="SE_OBJ_WARP_CANNON_SHINE" />
+	</option>
+	<option value="674">
+		<property name="RAW Name" value="SE_OBJ_HOUDAI_S_SHOT" />
+	</option>
+	<option value="675">
+		<property name="RAW Name" value="SE_OBJ_HOUDAI_L_SHOT" />
+	</option>
+	<option value="676">
+		<property name="RAW Name" value="SE_OBJ_ROT_HOUDAI_S_SHOT" />
+	</option>
+	<option value="677">
+		<property name="RAW Name" value="SE_OBJ_ROT_HOUDAI_L_SHOT" />
+	</option>
+	<option value="678">
+		<property name="RAW Name" value="SE_OBJ_RC_CONTROL_ON" />
+	</option>
+	<option value="679">
+		<property name="RAW Name" value="SE_OBJ_RC_CONTROL_OFF" />
+	</option>
+	<option value="680">
+		<property name="RAW Name" value="SE_OBJ_RC_CANNON_MOVE" />
+	</option>
+	<option value="681">
+		<property name="RAW Name" value="SE_OBJ_RC_CANNON_READY" />
+	</option>
+	<option value="682">
+		<property name="RAW Name" value="SE_OBJ_RC_LIGHTBOAT_CREAK" />
+	</option>
+	<option value="683">
+		<property name="RAW Name" value="SE_OBJ_RC_SEESAW_MOVE" />
+	</option>
+	<option value="684">
+		<property name="RAW Name" value="SE_OBJ_RC_LIFTABACUS_MOVE" />
+	</option>
+	<option value="685">
+		<property name="RAW Name" value="SE_OBJ_RC_LIFTABACUS_STOP" />
+	</option>
+	<option value="686">
+		<property name="RAW Name" value="SE_OBJ_RC_LIFTLINE_MOVE" />
+	</option>
+	<option value="687">
+		<property name="RAW Name" value="SE_OBJ_RC_UPLIFT_UP" />
+	</option>
+	<option value="688">
+		<property name="RAW Name" value="SE_OBJ_RC_UPLIFT_REVERT" />
+	</option>
+	<option value="689">
+		<property name="RAW Name" value="SE_OBJ_RC_UPLIFT_MOVE" />
+	</option>
+	<option value="690">
+		<property name="RAW Name" value="SE_OBJ_LIFTMARUTA_ROLL" />
+	</option>
+	<option value="691">
+		<property name="RAW Name" value="SE_OBJ_SUISHA_ROLL" />
+	</option>
+	<option value="692">
+		<property name="RAW Name" value="SE_OBJ_SUISHA_BUMP" />
+	</option>
+	<option value="693">
+		<property name="RAW Name" value="SE_OBJ_LIFT_TENBIN_MOVE" />
+	</option>
+	<option value="694">
+		<property name="RAW Name" value="SE_OBJ_LIFT_LIMIT_0" />
+	</option>
+	<option value="695">
+		<property name="RAW Name" value="SE_OBJ_LIFT_LIMIT_1" />
+	</option>
+	<option value="696">
+		<property name="RAW Name" value="SE_OBJ_LIFT_LIMIT_2" />
+	</option>
+	<option value="697">
+		<property name="RAW Name" value="SE_OBJ_LIFT_LIMIT_3" />
+	</option>
+	<option value="698">
+		<property name="RAW Name" value="SE_OBJ_LIFT_LIMIT_4" />
+	</option>
+	<option value="699">
+		<property name="RAW Name" value="SE_OBJ_LIFT_LIMIT_OVER" />
+	</option>
+	<option value="700">
+		<property name="RAW Name" value="SE_OBJ_SPIN_SCREW" />
+	</option>
+	<option value="701">
+		<property name="RAW Name" value="SE_OBJ_SPIN_SCREW_REVERT" />
+	</option>
+	<option value="702">
+		<property name="RAW Name" value="SE_OBJ_SPIN_LIFT_MOVE" />
+	</option>
+	<option value="703">
+		<property name="RAW Name" value="SE_OBJ_SPIN_LIFT_REVERT" />
+	</option>
+	<option value="704">
+		<property name="RAW Name" value="SE_OBJ_SPIN_KINOKO_UP" />
+	</option>
+	<option value="705">
+		<property name="RAW Name" value="SE_OBJ_SPIN_KINOKO_DOWN" />
+	</option>
+	<option value="706">
+		<property name="RAW Name" value="SE_OBJ_SPIN_KINOKO_REVERT" />
+	</option>
+	<option value="707">
+		<property name="RAW Name" value="SE_OBJ_KINOKO_YOKO_LONGER" />
+	</option>
+	<option value="708">
+		<property name="RAW Name" value="SE_OBJ_KINOKO_YOKO_SHORTER" />
+	</option>
+	<option value="709">
+		<property name="RAW Name" value="SE_OBJ_PALM_SWING" />
+	</option>
+	<option value="710">
+		<property name="RAW Name" value="SE_OBJ_LIFT_GURAYUKA_DOWN" />
+	</option>
+	<option value="711">
+		<property name="RAW Name" value="SE_OBJ_ROCK_S_CRASH" />
+	</option>
+	<option value="712">
+		<property name="RAW Name" value="SE_OBJ_ROCK_LAND" />
+	</option>
+	<option value="713">
+		<property name="RAW Name" value="SE_OBJ_ROCK_CRASH" />
+	</option>
+	<option value="714">
+		<property name="RAW Name" value="SE_OBJ_KAZAN_ROCK_CRASH" />
+	</option>
+	<option value="715">
+		<property name="RAW Name" value="SE_OBJ_KAZAN_ROCK_L_CRASH" />
+	</option>
+	<option value="716">
+		<property name="RAW Name" value="SE_OBJ_KAZAN_ROCK_FALL" />
+	</option>
+	<option value="717">
+		<property name="RAW Name" value="SE_OBJ_KAZAN_ERUPTION" />
+	</option>
+	<option value="718">
+		<property name="RAW Name" value="SE_OBJ_TARU_ROLL" />
+	</option>
+	<option value="719">
+		<property name="RAW Name" value="SE_OBJ_TARU_BREAK" />
+	</option>
+	<option value="720">
+		<property name="RAW Name" value="SE_OBJ_TARU_LAND" />
+	</option>
+	<option value="721">
+		<property name="RAW Name" value="SE_OBJ_TARU_HIT" />
+	</option>
+	<option value="722">
+		<property name="RAW Name" value="SE_OBJ_TARU_LIFT_ROLL" />
+	</option>
+	<option value="723">
+		<property name="RAW Name" value="SE_OBJ_TEKKYU_ROLL" />
+	</option>
+	<option value="724">
+		<property name="RAW Name" value="SE_OBJ_TEKKYU_CRASH" />
+	</option>
+	<option value="725">
+		<property name="RAW Name" value="SE_OBJ_TEKKYU_L_ROLL" />
+	</option>
+	<option value="726">
+		<property name="RAW Name" value="SE_OBJ_TEKKYU_L_CRASH" />
+	</option>
+	<option value="727">
+		<property name="RAW Name" value="SE_OBJ_TEKKYU_G_ROLL" />
+	</option>
+	<option value="728">
+		<property name="RAW Name" value="SE_OBJ_TEKKYU_G_CRASH" />
+	</option>
+	<option value="729">
+		<property name="RAW Name" value="SE_OBJ_ICICLE_SIGN" />
+	</option>
+	<option value="730">
+		<property name="RAW Name" value="SE_OBJ_ICICLE_BREAK" />
+	</option>
+	<option value="731">
+		<property name="RAW Name" value="SE_OBJ_ICICLE_L_SIGN" />
+	</option>
+	<option value="732">
+		<property name="RAW Name" value="SE_OBJ_ICICLE_L_LAND" />
+	</option>
+	<option value="733">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_LAND" />
+	</option>
+	<option value="734">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_B_LAND" />
+	</option>
+	<option value="735">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_M_SIGN" />
+	</option>
+	<option value="736">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_M_MOVE" />
+	</option>
+	<option value="737">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_M_LAND" />
+	</option>
+	<option value="738">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_M_REVERT" />
+	</option>
+	<option value="739">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_M_REVERT_F" />
+	</option>
+	<option value="740">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_W_SIGN" />
+	</option>
+	<option value="741">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_W_MOVE" />
+	</option>
+	<option value="742">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_W_LAND" />
+	</option>
+	<option value="743">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_W_REVERT" />
+	</option>
+	<option value="744">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_W_REVERT_F" />
+	</option>
+	<option value="745">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_L_SIGN" />
+	</option>
+	<option value="746">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_L_MOVE" />
+	</option>
+	<option value="747">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_L_LAND" />
+	</option>
+	<option value="748">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_L_REVERT" />
+	</option>
+	<option value="749">
+		<property name="RAW Name" value="SE_OBJ_DAIKONBOU_L_REVERT_F" />
+	</option>
+	<option value="750">
+		<property name="RAW Name" value="SE_OBJ_POLTERGEIST_FLY" />
+	</option>
+	<option value="751">
+		<property name="RAW Name" value="SE_OBJ_POLTERGEIST_CRASH" />
+	</option>
+	<option value="752">
+		<property name="RAW Name" value="SE_OBJ_FREE_FALL" />
+	</option>
+	<option value="753">
+		<property name="RAW Name" value="SE_OBJ_FENCE_TURN_S" />
+	</option>
+	<option value="754">
+		<property name="RAW Name" value="SE_OBJ_FENCE_TURN_L" />
+	</option>
+	<option value="755">
+		<property name="RAW Name" value="SE_OBJ_FENCE_TURN_L_FIN" />
+	</option>
+	<option value="756">
+		<property name="RAW Name" value="SE_OBJ_RC_FENCE_ROLL" />
+	</option>
+	<option value="757">
+		<property name="RAW Name" value="SE_OBJ_RC_FENCE_BUMP" />
+	</option>
+	<option value="758">
+		<property name="RAW Name" value="SE_OBJ_NUT_ROLL" />
+	</option>
+	<option value="759">
+		<property name="RAW Name" value="SE_OBJ_NUT_REVERT" />
+	</option>
+	<option value="760">
+		<property name="RAW Name" value="SE_OBJ_FIRE_CANNON_BLAZE" />
+	</option>
+	<option value="761">
+		<property name="RAW Name" value="SE_OBJ_FIRE_ROT_CANNON_BLAZE" />
+	</option>
+	<option value="762">
+		<property name="RAW Name" value="SE_OBJ_BROOM_SHUTTER_CLOSE" />
+	</option>
+	<option value="763">
+		<property name="RAW Name" value="SE_OBJ_BROOM_SHUTTER_LOCK_OFF" />
+	</option>
+	<option value="764">
+		<property name="RAW Name" value="SE_OBJ_BROOM_SHUTTER_OPEN" />
+	</option>
+	<option value="765">
+		<property name="RAW Name" value="SE_OBJ_KROOM_SHUTTER_CLOSE" />
+	</option>
+	<option value="766">
+		<property name="RAW Name" value="SE_OBJ_BROOM_KEY_APP" />
+	</option>
+	<option value="767">
+		<property name="RAW Name" value="SE_OBJ_BROOM_KEY_GET" />
+	</option>
+	<option value="768">
+		<property name="RAW Name" value="SE_OBJ_BROOM_KEY_SHOW" />
+	</option>
+	<option value="769">
+		<property name="RAW Name" value="SE_OBJ_PEACH_CAGE_OPEN" />
+	</option>
+	<option value="770">
+		<property name="RAW Name" value="SE_OBJ_PEACH_COME_DOWN" />
+	</option>
+	<option value="771">
+		<property name="RAW Name" value="SE_OBJ_PEACH_LAND" />
+	</option>
+	<option value="772">
+		<property name="RAW Name" value="SE_AMB_DOKAN_AWA" />
+	</option>
+	<option value="773">
+		<property name="RAW Name" value="SE_AMB_WATER_SURFACE_UP" />
+	</option>
+	<option value="774">
+		<property name="RAW Name" value="SE_AMB_WATER_SURFACE_DOWN" />
+	</option>
+	<option value="775">
+		<property name="RAW Name" value="SE_AMB_SANDPILLAR_SIGN" />
+	</option>
+	<option value="776">
+		<property name="RAW Name" value="SE_AMB_SANDPILLAR_SPOUT" />
+	</option>
+	<option value="777">
+		<property name="RAW Name" value="SE_AMB_FIREPILLAR_SIGN" />
+	</option>
+	<option value="778">
+		<property name="RAW Name" value="SE_AMB_FIREPILLAR_SPOUT" />
+	</option>
+	<option value="779">
+		<property name="RAW Name" value="SE_AMB_WIND" />
+	</option>
+	<option value="780">
+		<property name="RAW Name" value="SE_AMB_MAGMA" />
+	</option>
+	<option value="781">
+		<property name="RAW Name" value="SE_AMB_SEASIDE" />
+	</option>
+	<option value="782">
+		<property name="RAW Name" value="SE_AMB_JUNGLE" />
+	</option>
+	<option value="783">
+		<property name="RAW Name" value="SE_AMB_SEWER" />
+	</option>
+	<option value="784">
+		<property name="RAW Name" value="SE_AMB_MAGMA_RISE" />
+	</option>
+	<option value="785">
+		<property name="RAW Name" value="SE_AMB_BLACK_CLOUD" />
+	</option>
+	<option value="786">
+		<property name="RAW Name" value="SE_AMB_THUNDER_CLOUD" />
+	</option>
+	<option value="787">
+		<property name="RAW Name" value="SE_AMB_SHIP_WIND" />
+	</option>
+	<option value="788">
+		<property name="RAW Name" value="SE_AMB_BROOM_W1" />
+	</option>
+	<option value="789">
+		<property name="RAW Name" value="SE_AMB_BROOM_W2" />
+	</option>
+	<option value="790">
+		<property name="RAW Name" value="SE_AMB_BROOM_W3" />
+	</option>
+	<option value="791">
+		<property name="RAW Name" value="SE_AMB_BROOM_W4" />
+	</option>
+	<option value="792">
+		<property name="RAW Name" value="SE_AMB_BROOM_W5" />
+	</option>
+	<option value="793">
+		<property name="RAW Name" value="SE_AMB_BROOM_W6" />
+	</option>
+	<option value="794">
+		<property name="RAW Name" value="SE_AMB_BROOM_W7" />
+	</option>
+	<option value="795">
+		<property name="RAW Name" value="SE_AMB_BROOM_W8" />
+	</option>
+	<option value="796">
+		<property name="RAW Name" value="SE_AMB_LAST_BATTLE" />
+	</option>
+	<option value="797">
+		<property name="RAW Name" value="SE_VOC_MA_PLAYER_JOIN" />
+	</option>
+	<option value="798">
+		<property name="RAW Name" value="SE_VOC_MA_PLAYER_JOIN_MAME" />
+	</option>
+	<option value="799">
+		<property name="RAW Name" value="SE_VOC_MA_PJ_JUMP" />
+	</option>
+	<option value="800">
+		<property name="RAW Name" value="SE_VOC_MA_PJ_JUMP_MAME" />
+	</option>
+	<option value="801">
+		<property name="RAW Name" value="SE_VOC_MA_PJ_SPIN_JUMP" />
+	</option>
+	<option value="802">
+		<property name="RAW Name" value="SE_VOC_MA_PJ_SPIN_JUMP_MAME" />
+	</option>
+	<option value="803">
+		<property name="RAW Name" value="SE_VOC_MA_PLAYER_DECIDE" />
+	</option>
+	<option value="804">
+		<property name="RAW Name" value="SE_VOC_MA_PLAYER_DECIDE_MAME" />
+	</option>
+	<option value="805">
+		<property name="RAW Name" value="SE_VOC_MA_CS_FALL_INTO_MAP" />
+	</option>
+	<option value="806">
+		<property name="RAW Name" value="SE_VOC_MA_CS_COURSE_IN" />
+	</option>
+	<option value="807">
+		<property name="RAW Name" value="SE_VOC_MA_CS_COURSE_IN_MULTI" />
+	</option>
+	<option value="808">
+		<property name="RAW Name" value="SE_VOC_MA_CS_COURSE_IN_HARD" />
+	</option>
+	<option value="809">
+		<property name="RAW Name" value="SE_VOC_MA_CS_COURSE_MISS" />
+	</option>
+	<option value="810">
+		<property name="RAW Name" value="SE_VOC_MA_CS_JUMP" />
+	</option>
+	<option value="811">
+		<property name="RAW Name" value="SE_VOC_MA_CS_DECIDE_JOIN" />
+	</option>
+	<option value="812">
+		<property name="RAW Name" value="SE_VOC_MA_CS_ENCOUNT" />
+	</option>
+	<option value="813">
+		<property name="RAW Name" value="SE_VOC_MA_CS_SHOVED" />
+	</option>
+	<option value="814">
+		<property name="RAW Name" value="SE_VOC_MA_CS_CHASE_SHIP" />
+	</option>
+	<option value="815">
+		<property name="RAW Name" value="SE_VOC_MA_CS_NOTICE_JR" />
+	</option>
+	<option value="816">
+		<property name="RAW Name" value="SE_VOC_MA_GAME_OVER" />
+	</option>
+	<option value="817">
+		<property name="RAW Name" value="SE_VOC_MA_CONTINUE" />
+	</option>
+	<option value="818">
+		<property name="RAW Name" value="SE_VOC_MA_CONTINUE_COURSE" />
+	</option>
+	<option value="819">
+		<property name="RAW Name" value="SE_VOC_MA_MOTIAGE" />
+	</option>
+	<option value="820">
+		<property name="RAW Name" value="SE_VOC_MA_NAGERU" />
+	</option>
+	<option value="821">
+		<property name="RAW Name" value="SE_VOC_MA_MOTIAGE_PLAYER" />
+	</option>
+	<option value="822">
+		<property name="RAW Name" value="SE_VOC_MA_JUMP_2ND" />
+	</option>
+	<option value="823">
+		<property name="RAW Name" value="SE_VOC_MA_JUMP_3RD" />
+	</option>
+	<option value="824">
+		<property name="RAW Name" value="SE_VOC_MA_YOSHI_JUMP" />
+	</option>
+	<option value="825">
+		<property name="RAW Name" value="SE_VOC_MA_JR_A_BATTLE_APP" />
+	</option>
+	<option value="826">
+		<property name="RAW Name" value="SE_VOC_MA_WALL_KICK" />
+	</option>
+	<option value="827">
+		<property name="RAW Name" value="SE_VOC_MA_PRPL_JUMP" />
+	</option>
+	<option value="828">
+		<property name="RAW Name" value="SE_VOC_MA_PNGN_SLIDE" />
+	</option>
+	<option value="829">
+		<property name="RAW Name" value="SE_VOC_MA_ROPE_CATCH" />
+	</option>
+	<option value="830">
+		<property name="RAW Name" value="SE_VOC_MA_ROPE_FALL" />
+	</option>
+	<option value="831">
+		<property name="RAW Name" value="SE_VOC_MA_ROPE_RELEASE" />
+	</option>
+	<option value="832">
+		<property name="RAW Name" value="SE_VOC_MA_GOAL_POLE_CATCH" />
+	</option>
+	<option value="833">
+		<property name="RAW Name" value="SE_VOC_MA_CLIFF_DIVE" />
+	</option>
+	<option value="834">
+		<property name="RAW Name" value="SE_VOC_MA_CLIFF_UP" />
+	</option>
+	<option value="835">
+		<property name="RAW Name" value="SE_VOC_MA_CLIFF_DOWN" />
+	</option>
+	<option value="836">
+		<property name="RAW Name" value="SE_VOC_MA_CANNON_SHOT_S" />
+	</option>
+	<option value="837">
+		<property name="RAW Name" value="SE_VOC_MA_CANNON_SHOT" />
+	</option>
+	<option value="838">
+		<property name="RAW Name" value="SE_VOC_MA_BALLOON_HELP" />
+	</option>
+	<option value="839">
+		<property name="RAW Name" value="SE_VOC_MA_HUKKATSU" />
+	</option>
+	<option value="840">
+		<property name="RAW Name" value="SE_VOC_MA_DAMAGE_LAST" />
+	</option>
+	<option value="841">
+		<property name="RAW Name" value="SE_VOC_MA_TIMEUP" />
+	</option>
+	<option value="842">
+		<property name="RAW Name" value="SE_VOC_MA_TIMEUP_MULTI" />
+	</option>
+	<option value="843">
+		<property name="RAW Name" value="SE_VOC_MA_SCROLL_OUT" />
+	</option>
+	<option value="844">
+		<property name="RAW Name" value="SE_VOC_MA_DAMAGE_FIRE" />
+	</option>
+	<option value="845">
+		<property name="RAW Name" value="SE_VOC_MA_DAMAGE_FREEZE" />
+	</option>
+	<option value="846">
+		<property name="RAW Name" value="SE_VOC_MA_DAMAGE_POISON" />
+	</option>
+	<option value="847">
+		<property name="RAW Name" value="SE_VOC_MA_DAMAGE_ELEC" />
+	</option>
+	<option value="848">
+		<property name="RAW Name" value="SE_VOC_MA_DAMAGE_EATEN" />
+	</option>
+	<option value="849">
+		<property name="RAW Name" value="SE_VOC_MA_INTO_SANDPILLAR" />
+	</option>
+	<option value="850">
+		<property name="RAW Name" value="SE_VOC_MA_QUAKE" />
+	</option>
+	<option value="851">
+		<property name="RAW Name" value="SE_VOC_MA_STOMPED" />
+	</option>
+	<option value="852">
+		<property name="RAW Name" value="SE_VOC_MA_HIP_ATTACKED" />
+	</option>
+	<option value="853">
+		<property name="RAW Name" value="SE_VOC_MA_TYUKAN" />
+	</option>
+	<option value="854">
+		<property name="RAW Name" value="SE_VOC_MA_GET_STAR" />
+	</option>
+	<option value="855">
+		<property name="RAW Name" value="SE_VOC_MA_ITEM_COMPLETE" />
+	</option>
+	<option value="856">
+		<property name="RAW Name" value="SE_VOC_MA_CLEAR_NORMAL" />
+	</option>
+	<option value="857">
+		<property name="RAW Name" value="SE_VOC_MA_CLEAR_ANOTHER" />
+	</option>
+	<option value="858">
+		<property name="RAW Name" value="SE_VOC_MA_CLEAR_MULTI" />
+	</option>
+	<option value="859">
+		<property name="RAW Name" value="SE_VOC_MA_CLEAR_HELPED" />
+	</option>
+	<option value="860">
+		<property name="RAW Name" value="SE_VOC_MA_CLEAR_BOSS" />
+	</option>
+	<option value="861">
+		<property name="RAW Name" value="SE_VOC_MA_CLEAR_LAST_BOSS" />
+	</option>
+	<option value="862">
+		<property name="RAW Name" value="SE_VOC_MA_SAVE_PRINCESS" />
+	</option>
+	<option value="863">
+		<property name="RAW Name" value="SE_VOC_MA_CS_COMPLETE_DEMO" />
+	</option>
+	<option value="864">
+		<property name="RAW Name" value="SE_VOC_MA_GET_PRIZE" />
+	</option>
+	<option value="865">
+		<property name="RAW Name" value="SE_VOC_MA_FLOOR_FALL" />
+	</option>
+	<option value="866">
+		<property name="RAW Name" value="SE_VOC_MA_NOTICE" />
+	</option>
+	<option value="867">
+		<property name="RAW Name" value="SE_VOC_MA_MISS_PRINCESS" />
+	</option>
+	<option value="868">
+		<property name="RAW Name" value="SE_VOC_MA_THANK_YOU" />
+	</option>
+	<option value="869">
+		<property name="RAW Name" value="SE_VOC_LU_PLAYER_JOIN" />
+	</option>
+	<option value="870">
+		<property name="RAW Name" value="SE_VOC_LU_PLAYER_JOIN_MAME" />
+	</option>
+	<option value="871">
+		<property name="RAW Name" value="SE_VOC_LU_PJ_JUMP" />
+	</option>
+	<option value="872">
+		<property name="RAW Name" value="SE_VOC_LU_PJ_JUMP_MAME" />
+	</option>
+	<option value="873">
+		<property name="RAW Name" value="SE_VOC_LU_PJ_SPIN_JUMP" />
+	</option>
+	<option value="874">
+		<property name="RAW Name" value="SE_VOC_LU_PJ_SPIN_JUMP_MAME" />
+	</option>
+	<option value="875">
+		<property name="RAW Name" value="SE_VOC_LU_PLAYER_DECIDE" />
+	</option>
+	<option value="876">
+		<property name="RAW Name" value="SE_VOC_LU_CS_FALL_INTO_MAP" />
+	</option>
+	<option value="877">
+		<property name="RAW Name" value="SE_VOC_LU_CS_COURSE_IN" />
+	</option>
+	<option value="878">
+		<property name="RAW Name" value="SE_VOC_LU_CS_COURSE_IN_MULTI" />
+	</option>
+	<option value="879">
+		<property name="RAW Name" value="SE_VOC_LU_CS_COURSE_IN_HARD" />
+	</option>
+	<option value="880">
+		<property name="RAW Name" value="SE_VOC_LU_CS_COURSE_MISS" />
+	</option>
+	<option value="881">
+		<property name="RAW Name" value="SE_VOC_LU_CS_JUMP" />
+	</option>
+	<option value="882">
+		<property name="RAW Name" value="SE_VOC_LU_CS_DECIDE_JOIN" />
+	</option>
+	<option value="883">
+		<property name="RAW Name" value="SE_VOC_LU_CS_ENCOUNT" />
+	</option>
+	<option value="884">
+		<property name="RAW Name" value="SE_VOC_LU_CS_SHOVED" />
+	</option>
+	<option value="885">
+		<property name="RAW Name" value="SE_VOC_LU_CS_CHASE_SHIP" />
+	</option>
+	<option value="886">
+		<property name="RAW Name" value="SE_VOC_LU_CS_NOTICE_JR" />
+	</option>
+	<option value="887">
+		<property name="RAW Name" value="SE_VOC_LU_GAME_OVER" />
+	</option>
+	<option value="888">
+		<property name="RAW Name" value="SE_VOC_LU_CONTINUE" />
+	</option>
+	<option value="889">
+		<property name="RAW Name" value="SE_VOC_LU_CONTINUE_COURSE" />
+	</option>
+	<option value="890">
+		<property name="RAW Name" value="SE_VOC_LU_MOTIAGE" />
+	</option>
+	<option value="891">
+		<property name="RAW Name" value="SE_VOC_LU_NAGERU" />
+	</option>
+	<option value="892">
+		<property name="RAW Name" value="SE_VOC_LU_MOTIAGE_PLAYER" />
+	</option>
+	<option value="893">
+		<property name="RAW Name" value="SE_VOC_LU_JUMP_2ND" />
+	</option>
+	<option value="894">
+		<property name="RAW Name" value="SE_VOC_LU_JUMP_3RD" />
+	</option>
+	<option value="895">
+		<property name="RAW Name" value="SE_VOC_LU_YOSHI_JUMP" />
+	</option>
+	<option value="896">
+		<property name="RAW Name" value="SE_VOC_LU_JR_A_BATTLE_APP" />
+	</option>
+	<option value="897">
+		<property name="RAW Name" value="SE_VOC_LU_WALL_KICK" />
+	</option>
+	<option value="898">
+		<property name="RAW Name" value="SE_VOC_LU_PRPL_JUMP" />
+	</option>
+	<option value="899">
+		<property name="RAW Name" value="SE_VOC_LU_PNGN_SLIDE" />
+	</option>
+	<option value="900">
+		<property name="RAW Name" value="SE_VOC_LU_ROPE_CATCH" />
+	</option>
+	<option value="901">
+		<property name="RAW Name" value="SE_VOC_LU_ROPE_FALL" />
+	</option>
+	<option value="902">
+		<property name="RAW Name" value="SE_VOC_LU_ROPE_RELEASE" />
+	</option>
+	<option value="903">
+		<property name="RAW Name" value="SE_VOC_LU_GOAL_POLE_CATCH" />
+	</option>
+	<option value="904">
+		<property name="RAW Name" value="SE_VOC_LU_CLIFF_DIVE" />
+	</option>
+	<option value="905">
+		<property name="RAW Name" value="SE_VOC_LU_CLIFF_UP" />
+	</option>
+	<option value="906">
+		<property name="RAW Name" value="SE_VOC_LU_CLIFF_DOWN" />
+	</option>
+	<option value="907">
+		<property name="RAW Name" value="SE_VOC_LU_CANNON_SHOT_S" />
+	</option>
+	<option value="908">
+		<property name="RAW Name" value="SE_VOC_LU_CANNON_SHOT" />
+	</option>
+	<option value="909">
+		<property name="RAW Name" value="SE_VOC_LU_BALLOON_HELP" />
+	</option>
+	<option value="910">
+		<property name="RAW Name" value="SE_VOC_LU_HUKKATSU" />
+	</option>
+	<option value="911">
+		<property name="RAW Name" value="SE_VOC_LU_DAMAGE_LAST" />
+	</option>
+	<option value="912">
+		<property name="RAW Name" value="SE_VOC_LU_TIMEUP" />
+	</option>
+	<option value="913">
+		<property name="RAW Name" value="SE_VOC_LU_TIMEUP_MULTI" />
+	</option>
+	<option value="914">
+		<property name="RAW Name" value="SE_VOC_LU_SCROLL_OUT" />
+	</option>
+	<option value="915">
+		<property name="RAW Name" value="SE_VOC_LU_DAMAGE_FIRE" />
+	</option>
+	<option value="916">
+		<property name="RAW Name" value="SE_VOC_LU_DAMAGE_FREEZE" />
+	</option>
+	<option value="917">
+		<property name="RAW Name" value="SE_VOC_LU_DAMAGE_POISON" />
+	</option>
+	<option value="918">
+		<property name="RAW Name" value="SE_VOC_LU_DAMAGE_ELEC" />
+	</option>
+	<option value="919">
+		<property name="RAW Name" value="SE_VOC_LU_DAMAGE_EATEN" />
+	</option>
+	<option value="920">
+		<property name="RAW Name" value="SE_VOC_LU_INTO_SANDPILLAR" />
+	</option>
+	<option value="921">
+		<property name="RAW Name" value="SE_VOC_LU_QUAKE" />
+	</option>
+	<option value="922">
+		<property name="RAW Name" value="SE_VOC_LU_STOMPED" />
+	</option>
+	<option value="923">
+		<property name="RAW Name" value="SE_VOC_LU_HIP_ATTACKED" />
+	</option>
+	<option value="924">
+		<property name="RAW Name" value="SE_VOC_LU_TYUKAN" />
+	</option>
+	<option value="925">
+		<property name="RAW Name" value="SE_VOC_LU_GET_STAR" />
+	</option>
+	<option value="926">
+		<property name="RAW Name" value="SE_VOC_LU_ITEM_COMPLETE" />
+	</option>
+	<option value="927">
+		<property name="RAW Name" value="SE_VOC_LU_CLEAR_NORMAL" />
+	</option>
+	<option value="928">
+		<property name="RAW Name" value="SE_VOC_LU_CLEAR_ANOTHER" />
+	</option>
+	<option value="929">
+		<property name="RAW Name" value="SE_VOC_LU_CLEAR_MULTI" />
+	</option>
+	<option value="930">
+		<property name="RAW Name" value="SE_VOC_LU_CLEAR_HELPED" />
+	</option>
+	<option value="931">
+		<property name="RAW Name" value="SE_VOC_LU_CLEAR_BOSS" />
+	</option>
+	<option value="932">
+		<property name="RAW Name" value="SE_VOC_LU_CLEAR_LAST_BOSS" />
+	</option>
+	<option value="933">
+		<property name="RAW Name" value="SE_VOC_LU_SAVE_PRINCESS" />
+	</option>
+	<option value="934">
+		<property name="RAW Name" value="SE_VOC_LU_CS_COMPLETE_DEMO" />
+	</option>
+	<option value="935">
+		<property name="RAW Name" value="SE_VOC_LU_GET_PRIZE" />
+	</option>
+	<option value="936">
+		<property name="RAW Name" value="SE_VOC_LU_FLOOR_FALL" />
+	</option>
+	<option value="937">
+		<property name="RAW Name" value="SE_VOC_LU_NOTICE" />
+	</option>
+	<option value="938">
+		<property name="RAW Name" value="SE_VOC_LU_MISS_PRINCESS" />
+	</option>
+	<option value="939">
+		<property name="RAW Name" value="SE_VOC_LU_HELP_START" />
+	</option>
+	<option value="940">
+		<property name="RAW Name" value="SE_VOC_KO_PLAYER_JOIN" />
+	</option>
+	<option value="941">
+		<property name="RAW Name" value="SE_VOC_KO_PLAYER_JOIN_MAME" />
+	</option>
+	<option value="942">
+		<property name="RAW Name" value="SE_VOC_KO_PJ_JUMP" />
+	</option>
+	<option value="943">
+		<property name="RAW Name" value="SE_VOC_KO_PJ_JUMP_MAME" />
+	</option>
+	<option value="944">
+		<property name="RAW Name" value="SE_VOC_KO_PJ_SPIN_JUMP" />
+	</option>
+	<option value="945">
+		<property name="RAW Name" value="SE_VOC_KO_PJ_SPIN_JUMP_MAME" />
+	</option>
+	<option value="946">
+		<property name="RAW Name" value="SE_VOC_KO_PLAYER_DECIDE" />
+	</option>
+	<option value="947">
+		<property name="RAW Name" value="SE_VOC_KO_CS_FALL_INTO_MAP" />
+	</option>
+	<option value="948">
+		<property name="RAW Name" value="SE_VOC_KO_CS_COURSE_IN" />
+	</option>
+	<option value="949">
+		<property name="RAW Name" value="SE_VOC_KO_CS_COURSE_IN_MULTI" />
+	</option>
+	<option value="950">
+		<property name="RAW Name" value="SE_VOC_KO_CS_COURSE_IN_HARD" />
+	</option>
+	<option value="951">
+		<property name="RAW Name" value="SE_VOC_KO_CS_COURSE_MISS" />
+	</option>
+	<option value="952">
+		<property name="RAW Name" value="SE_VOC_KO_CS_JUMP" />
+	</option>
+	<option value="953">
+		<property name="RAW Name" value="SE_VOC_KO_CS_DECIDE_JOIN" />
+	</option>
+	<option value="954">
+		<property name="RAW Name" value="SE_VOC_KO_CS_ENCOUNT" />
+	</option>
+	<option value="955">
+		<property name="RAW Name" value="SE_VOC_KO_CS_SHOVED" />
+	</option>
+	<option value="956">
+		<property name="RAW Name" value="SE_VOC_KO_CS_CHASE_SHIP" />
+	</option>
+	<option value="957">
+		<property name="RAW Name" value="SE_VOC_KO_CS_NOTICE_JR" />
+	</option>
+	<option value="958">
+		<property name="RAW Name" value="SE_VOC_KO_GAME_OVER" />
+	</option>
+	<option value="959">
+		<property name="RAW Name" value="SE_VOC_KO_CONTINUE" />
+	</option>
+	<option value="960">
+		<property name="RAW Name" value="SE_VOC_KO_CONTINUE_COURSE" />
+	</option>
+	<option value="961">
+		<property name="RAW Name" value="SE_VOC_KO_MOTIAGE" />
+	</option>
+	<option value="962">
+		<property name="RAW Name" value="SE_VOC_KO_NAGERU" />
+	</option>
+	<option value="963">
+		<property name="RAW Name" value="SE_VOC_KO_MOTIAGE_PLAYER" />
+	</option>
+	<option value="964">
+		<property name="RAW Name" value="SE_VOC_KO_JUMP_2ND" />
+	</option>
+	<option value="965">
+		<property name="RAW Name" value="SE_VOC_KO_JUMP_3RD" />
+	</option>
+	<option value="966">
+		<property name="RAW Name" value="SE_VOC_KO_YOSHI_JUMP" />
+	</option>
+	<option value="967">
+		<property name="RAW Name" value="SE_VOC_KO_JR_A_BATTLE_APP" />
+	</option>
+	<option value="968">
+		<property name="RAW Name" value="SE_VOC_KO_WALL_KICK" />
+	</option>
+	<option value="969">
+		<property name="RAW Name" value="SE_VOC_KO_PRPL_JUMP" />
+	</option>
+	<option value="970">
+		<property name="RAW Name" value="SE_VOC_KO_PNGN_SLIDE" />
+	</option>
+	<option value="971">
+		<property name="RAW Name" value="SE_VOC_KO_ROPE_CATCH" />
+	</option>
+	<option value="972">
+		<property name="RAW Name" value="SE_VOC_KO_ROPE_FALL" />
+	</option>
+	<option value="973">
+		<property name="RAW Name" value="SE_VOC_KO_ROPE_RELEASE" />
+	</option>
+	<option value="974">
+		<property name="RAW Name" value="SE_VOC_KO_GOAL_POLE_CATCH" />
+	</option>
+	<option value="975">
+		<property name="RAW Name" value="SE_VOC_KO_CLIFF_DIVE" />
+	</option>
+	<option value="976">
+		<property name="RAW Name" value="SE_VOC_KO_CLIFF_UP" />
+	</option>
+	<option value="977">
+		<property name="RAW Name" value="SE_VOC_KO_CLIFF_DOWN" />
+	</option>
+	<option value="978">
+		<property name="RAW Name" value="SE_VOC_KO_CANNON_SHOT_S" />
+	</option>
+	<option value="979">
+		<property name="RAW Name" value="SE_VOC_KO_CANNON_SHOT" />
+	</option>
+	<option value="980">
+		<property name="RAW Name" value="SE_VOC_KO_BALLOON_HELP" />
+	</option>
+	<option value="981">
+		<property name="RAW Name" value="SE_VOC_KO_HUKKATSU" />
+	</option>
+	<option value="982">
+		<property name="RAW Name" value="SE_VOC_KO_DAMAGE_LAST" />
+	</option>
+	<option value="983">
+		<property name="RAW Name" value="SE_VOC_KO_TIMEUP" />
+	</option>
+	<option value="984">
+		<property name="RAW Name" value="SE_VOC_KO_TIMEUP_MULTI" />
+	</option>
+	<option value="985">
+		<property name="RAW Name" value="SE_VOC_KO_SCROLL_OUT" />
+	</option>
+	<option value="986">
+		<property name="RAW Name" value="SE_VOC_KO_DAMAGE_FIRE" />
+	</option>
+	<option value="987">
+		<property name="RAW Name" value="SE_VOC_KO_DAMAGE_FREEZE" />
+	</option>
+	<option value="988">
+		<property name="RAW Name" value="SE_VOC_KO_DAMAGE_POISON" />
+	</option>
+	<option value="989">
+		<property name="RAW Name" value="SE_VOC_KO_DAMAGE_ELEC" />
+	</option>
+	<option value="990">
+		<property name="RAW Name" value="SE_VOC_KO_DAMAGE_EATEN" />
+	</option>
+	<option value="991">
+		<property name="RAW Name" value="SE_VOC_KO_INTO_SANDPILLAR" />
+	</option>
+	<option value="992">
+		<property name="RAW Name" value="SE_VOC_KO_QUAKE" />
+	</option>
+	<option value="993">
+		<property name="RAW Name" value="SE_VOC_KO_STOMPED" />
+	</option>
+	<option value="994">
+		<property name="RAW Name" value="SE_VOC_KO_HIP_ATTACKED" />
+	</option>
+	<option value="995">
+		<property name="RAW Name" value="SE_VOC_KO_TYUKAN" />
+	</option>
+	<option value="996">
+		<property name="RAW Name" value="SE_VOC_KO_GET_STAR" />
+	</option>
+	<option value="997">
+		<property name="RAW Name" value="SE_VOC_KO_ITEM_COMPLETE" />
+	</option>
+	<option value="998">
+		<property name="RAW Name" value="SE_VOC_KO_CLEAR_NORMAL" />
+	</option>
+	<option value="999">
+		<property name="RAW Name" value="SE_VOC_KO_CLEAR_ANOTHER" />
+	</option>
+	<option value="1000">
+		<property name="RAW Name" value="SE_VOC_KO_CLEAR_MULTI" />
+	</option>
+	<option value="1001">
+		<property name="RAW Name" value="SE_VOC_KO_CLEAR_HELPED" />
+	</option>
+	<option value="1002">
+		<property name="RAW Name" value="SE_VOC_KO_CLEAR_BOSS" />
+	</option>
+	<option value="1003">
+		<property name="RAW Name" value="SE_VOC_KO_CLEAR_LAST_BOSS" />
+	</option>
+	<option value="1004">
+		<property name="RAW Name" value="SE_VOC_KO_SAVE_PRINCESS" />
+	</option>
+	<option value="1005">
+		<property name="RAW Name" value="SE_VOC_KO_CS_COMPLETE_DEMO" />
+	</option>
+	<option value="1006">
+		<property name="RAW Name" value="SE_VOC_KO_GET_PRIZE" />
+	</option>
+	<option value="1007">
+		<property name="RAW Name" value="SE_VOC_KO_FLOOR_FALL" />
+	</option>
+	<option value="1008">
+		<property name="RAW Name" value="SE_VOC_KO_NOTICE" />
+	</option>
+	<option value="1009">
+		<property name="RAW Name" value="SE_VOC_KO_MISS_PRINCESS" />
+	</option>
+	<option value="1010">
+		<property name="RAW Name" value="SE_VOC_KO2_PLAYER_JOIN" />
+	</option>
+	<option value="1011">
+		<property name="RAW Name" value="SE_VOC_KO2_PLAYER_JOIN_MAME" />
+	</option>
+	<option value="1012">
+		<property name="RAW Name" value="SE_VOC_KO2_PJ_JUMP" />
+	</option>
+	<option value="1013">
+		<property name="RAW Name" value="SE_VOC_KO2_PJ_JUMP_MAME" />
+	</option>
+	<option value="1014">
+		<property name="RAW Name" value="SE_VOC_KO2_PJ_SPIN_JUMP" />
+	</option>
+	<option value="1015">
+		<property name="RAW Name" value="SE_VOC_KO2_PJ_SPIN_JUMP_MAME" />
+	</option>
+	<option value="1016">
+		<property name="RAW Name" value="SE_VOC_KO2_PLAYER_DECIDE" />
+	</option>
+	<option value="1017">
+		<property name="RAW Name" value="SE_VOC_KO2_CS_FALL_INTO_MAP" />
+	</option>
+	<option value="1018">
+		<property name="RAW Name" value="SE_VOC_KO2_CS_COURSE_IN" />
+	</option>
+	<option value="1019">
+		<property name="RAW Name" value="SE_VOC_KO2_CS_COURSE_IN_MULTI" />
+	</option>
+	<option value="1020">
+		<property name="RAW Name" value="SE_VOC_KO2_CS_COURSE_IN_HARD" />
+	</option>
+	<option value="1021">
+		<property name="RAW Name" value="SE_VOC_KO2_CS_COURSE_MISS" />
+	</option>
+	<option value="1022">
+		<property name="RAW Name" value="SE_VOC_KO2_CS_JUMP" />
+	</option>
+	<option value="1023">
+		<property name="RAW Name" value="SE_VOC_KO2_CS_DECIDE_JOIN" />
+	</option>
+	<option value="1024">
+		<property name="RAW Name" value="SE_VOC_KO2_CS_ENCOUNT" />
+	</option>
+	<option value="1025">
+		<property name="RAW Name" value="SE_VOC_KO2_CS_SHOVED" />
+	</option>
+	<option value="1026">
+		<property name="RAW Name" value="SE_VOC_KO2_CS_CHASE_SHIP" />
+	</option>
+	<option value="1027">
+		<property name="RAW Name" value="SE_VOC_KO2_CS_NOTICE_JR" />
+	</option>
+	<option value="1028">
+		<property name="RAW Name" value="SE_VOC_KO2_GAME_OVER" />
+	</option>
+	<option value="1029">
+		<property name="RAW Name" value="SE_VOC_KO2_CONTINUE" />
+	</option>
+	<option value="1030">
+		<property name="RAW Name" value="SE_VOC_KO2_CONTINUE_COURSE" />
+	</option>
+	<option value="1031">
+		<property name="RAW Name" value="SE_VOC_KO2_MOTIAGE" />
+	</option>
+	<option value="1032">
+		<property name="RAW Name" value="SE_VOC_KO2_NAGERU" />
+	</option>
+	<option value="1033">
+		<property name="RAW Name" value="SE_VOC_KO2_MOTIAGE_PLAYER" />
+	</option>
+	<option value="1034">
+		<property name="RAW Name" value="SE_VOC_KO2_JUMP_2ND" />
+	</option>
+	<option value="1035">
+		<property name="RAW Name" value="SE_VOC_KO2_JUMP_3RD" />
+	</option>
+	<option value="1036">
+		<property name="RAW Name" value="SE_VOC_KO2_YOSHI_JUMP" />
+	</option>
+	<option value="1037">
+		<property name="RAW Name" value="SE_VOC_KO2_JR_A_BATTLE_APP" />
+	</option>
+	<option value="1038">
+		<property name="RAW Name" value="SE_VOC_KO2_WALL_KICK" />
+	</option>
+	<option value="1039">
+		<property name="RAW Name" value="SE_VOC_KO2_PRPL_JUMP" />
+	</option>
+	<option value="1040">
+		<property name="RAW Name" value="SE_VOC_KO2_PNGN_SLIDE" />
+	</option>
+	<option value="1041">
+		<property name="RAW Name" value="SE_VOC_KO2_ROPE_CATCH" />
+	</option>
+	<option value="1042">
+		<property name="RAW Name" value="SE_VOC_KO2_ROPE_FALL" />
+	</option>
+	<option value="1043">
+		<property name="RAW Name" value="SE_VOC_KO2_ROPE_RELEASE" />
+	</option>
+	<option value="1044">
+		<property name="RAW Name" value="SE_VOC_KO2_GOAL_POLE_CATCH" />
+	</option>
+	<option value="1045">
+		<property name="RAW Name" value="SE_VOC_KO2_CLIFF_DIVE" />
+	</option>
+	<option value="1046">
+		<property name="RAW Name" value="SE_VOC_KO2_CLIFF_UP" />
+	</option>
+	<option value="1047">
+		<property name="RAW Name" value="SE_VOC_KO2_CLIFF_DOWN" />
+	</option>
+	<option value="1048">
+		<property name="RAW Name" value="SE_VOC_KO2_CANNON_SHOT_S" />
+	</option>
+	<option value="1049">
+		<property name="RAW Name" value="SE_VOC_KO2_CANNON_SHOT" />
+	</option>
+	<option value="1050">
+		<property name="RAW Name" value="SE_VOC_KO2_BALLOON_HELP" />
+	</option>
+	<option value="1051">
+		<property name="RAW Name" value="SE_VOC_KO2_HUKKATSU" />
+	</option>
+	<option value="1052">
+		<property name="RAW Name" value="SE_VOC_KO2_DAMAGE_LAST" />
+	</option>
+	<option value="1053">
+		<property name="RAW Name" value="SE_VOC_KO2_TIMEUP" />
+	</option>
+	<option value="1054">
+		<property name="RAW Name" value="SE_VOC_KO2_TIMEUP_MULTI" />
+	</option>
+	<option value="1055">
+		<property name="RAW Name" value="SE_VOC_KO2_SCROLL_OUT" />
+	</option>
+	<option value="1056">
+		<property name="RAW Name" value="SE_VOC_KO2_DAMAGE_FIRE" />
+	</option>
+	<option value="1057">
+		<property name="RAW Name" value="SE_VOC_KO2_DAMAGE_FREEZE" />
+	</option>
+	<option value="1058">
+		<property name="RAW Name" value="SE_VOC_KO2_DAMAGE_POISON" />
+	</option>
+	<option value="1059">
+		<property name="RAW Name" value="SE_VOC_KO2_DAMAGE_ELEC" />
+	</option>
+	<option value="1060">
+		<property name="RAW Name" value="SE_VOC_KO2_DAMAGE_EATEN" />
+	</option>
+	<option value="1061">
+		<property name="RAW Name" value="SE_VOC_KO2_INTO_SANDPILLAR" />
+	</option>
+	<option value="1062">
+		<property name="RAW Name" value="SE_VOC_KO2_QUAKE" />
+	</option>
+	<option value="1063">
+		<property name="RAW Name" value="SE_VOC_KO2_STOMPED" />
+	</option>
+	<option value="1064">
+		<property name="RAW Name" value="SE_VOC_KO2_HIP_ATTACKED" />
+	</option>
+	<option value="1065">
+		<property name="RAW Name" value="SE_VOC_KO2_TYUKAN" />
+	</option>
+	<option value="1066">
+		<property name="RAW Name" value="SE_VOC_KO2_GET_STAR" />
+	</option>
+	<option value="1067">
+		<property name="RAW Name" value="SE_VOC_KO2_ITEM_COMPLETE" />
+	</option>
+	<option value="1068">
+		<property name="RAW Name" value="SE_VOC_KO2_CLEAR_NORMAL" />
+	</option>
+	<option value="1069">
+		<property name="RAW Name" value="SE_VOC_KO2_CLEAR_ANOTHER" />
+	</option>
+	<option value="1070">
+		<property name="RAW Name" value="SE_VOC_KO2_CLEAR_MULTI" />
+	</option>
+	<option value="1071">
+		<property name="RAW Name" value="SE_VOC_KO2_CLEAR_HELPED" />
+	</option>
+	<option value="1072">
+		<property name="RAW Name" value="SE_VOC_KO2_CLEAR_BOSS" />
+	</option>
+	<option value="1073">
+		<property name="RAW Name" value="SE_VOC_KO2_CLEAR_LAST_BOSS" />
+	</option>
+	<option value="1074">
+		<property name="RAW Name" value="SE_VOC_KO2_SAVE_PRINCESS" />
+	</option>
+	<option value="1075">
+		<property name="RAW Name" value="SE_VOC_KO2_CS_COMPLETE_DEMO" />
+	</option>
+	<option value="1076">
+		<property name="RAW Name" value="SE_VOC_KO2_GET_PRIZE" />
+	</option>
+	<option value="1077">
+		<property name="RAW Name" value="SE_VOC_KO2_FLOOR_FALL" />
+	</option>
+	<option value="1078">
+		<property name="RAW Name" value="SE_VOC_KO2_NOTICE" />
+	</option>
+	<option value="1079">
+		<property name="RAW Name" value="SE_VOC_KO2_MISS_PRINCESS" />
+	</option>
+	<option value="1080">
+		<property name="RAW Name" value="SE_VOC_ITEM_KO_CRY_FAR" />
+	</option>
+	<option value="1081">
+		<property name="RAW Name" value="SE_VOC_ITEM_KO_CRY_MID" />
+	</option>
+	<option value="1082">
+		<property name="RAW Name" value="SE_VOC_ITEM_KO_CRY_NEAR" />
+	</option>
+	<option value="1083">
+		<property name="RAW Name" value="SE_VOC_ITEM_KO_CRY" />
+	</option>
+	<option value="1084">
+		<property name="RAW Name" value="SE_VOC_ITEM_KO_FOUND" />
+	</option>
+	<option value="1085">
+		<property name="RAW Name" value="SE_VOC_ITEM_KO_FROM_TREASURE" />
+	</option>
+	<option value="1086">
+		<property name="RAW Name" value="SE_VOC_ITEM_KO_INFO" />
+	</option>
+	<option value="1087">
+		<property name="RAW Name" value="SE_VOC_ITEM_KO_HELP_ME" />
+	</option>
+	<option value="1088">
+		<property name="RAW Name" value="SE_VOC_ITEM_KO_HELP_ME_HERE" />
+	</option>
+	<option value="1089">
+		<property name="RAW Name" value="SE_VOC_PCH_HELP" />
+	</option>
+	<option value="1090">
+		<property name="RAW Name" value="SE_VOC_PCH_NOTICE" />
+	</option>
+	<option value="1091">
+		<property name="RAW Name" value="SE_VOC_PCH_WAVE" />
+	</option>
+	<option value="1092">
+		<property name="RAW Name" value="SE_VOC_PCH_NOTICE2" />
+	</option>
+	<option value="1093">
+		<property name="RAW Name" value="SE_VOC_PCH_SCREAM" />
+	</option>
+	<option value="1094">
+		<property name="RAW Name" value="SE_VOC_PCH_LAST_BATTLE_HELP_MA" />
+	</option>
+	<option value="1095">
+		<property name="RAW Name" value="SE_VOC_PCH_LAST_BATTLE_HELP_LU" />
+	</option>
+	<option value="1096">
+		<property name="RAW Name" value="SE_VOC_PCH_LAST_BATTLE_HELP" />
+	</option>
+	<option value="1097">
+		<property name="RAW Name" value="SE_VOC_NO_SOUND" />
+	</option>
+	<option value="1098">
+		<property name="RAW Name" value="SE_VOC_LAR_MAGIC_SHOT" />
+	</option>
+	<option value="1099">
+		<property name="RAW Name" value="SE_VOC_LAR_SHELL_OUT" />
+	</option>
+	<option value="1100">
+		<property name="RAW Name" value="SE_VOC_LAR_DAMAGE_S" />
+	</option>
+	<option value="1101">
+		<property name="RAW Name" value="SE_VOC_LAR_DAMAGE_L" />
+	</option>
+	<option value="1102">
+		<property name="RAW Name" value="SE_VOC_LAR_LOSE_S1" />
+	</option>
+	<option value="1103">
+		<property name="RAW Name" value="SE_VOC_LAR_LOSE_L" />
+	</option>
+	<option value="1104">
+		<property name="RAW Name" value="SE_VOC_LAR_NOTICE1" />
+	</option>
+	<option value="1105">
+		<property name="RAW Name" value="SE_VOC_LAR_NOTICE2" />
+	</option>
+	<option value="1106">
+		<property name="RAW Name" value="SE_VOC_LAR_WAKE1" />
+	</option>
+	<option value="1107">
+		<property name="RAW Name" value="SE_VOC_LAR_ESC_JUMP" />
+	</option>
+	<option value="1108">
+		<property name="RAW Name" value="SE_VOC_LAR_FALL_INTO_MAP" />
+	</option>
+	<option value="1109">
+		<property name="RAW Name" value="SE_VOC_LAR_BRING_IT" />
+	</option>
+	<option value="1110">
+		<property name="RAW Name" value="SE_VOC_LAR_BEAT_YOU" />
+	</option>
+	<option value="1111">
+		<property name="RAW Name" value="SE_VOC_LAR_SHOVED" />
+	</option>
+	<option value="1112">
+		<property name="RAW Name" value="SE_VOC_LAR_CS_JUMP" />
+	</option>
+	<option value="1113">
+		<property name="RAW Name" value="SE_VOC_LAR_CS_JUMP_F" />
+	</option>
+	<option value="1114">
+		<property name="RAW Name" value="SE_VOC_ROY_MAGIC_SHOT" />
+	</option>
+	<option value="1115">
+		<property name="RAW Name" value="SE_VOC_ROY_JUMP_L" />
+	</option>
+	<option value="1116">
+		<property name="RAW Name" value="SE_VOC_ROY_SHELL_OUT" />
+	</option>
+	<option value="1117">
+		<property name="RAW Name" value="SE_VOC_ROY_QUAKE" />
+	</option>
+	<option value="1118">
+		<property name="RAW Name" value="SE_VOC_ROY_SHOW_HEAD" />
+	</option>
+	<option value="1119">
+		<property name="RAW Name" value="SE_VOC_ROY_DOKAN_IN" />
+	</option>
+	<option value="1120">
+		<property name="RAW Name" value="SE_VOC_ROY_DOKAN_OUT" />
+	</option>
+	<option value="1121">
+		<property name="RAW Name" value="SE_VOC_ROY_DAMAGE_S" />
+	</option>
+	<option value="1122">
+		<property name="RAW Name" value="SE_VOC_ROY_DAMAGE_L" />
+	</option>
+	<option value="1123">
+		<property name="RAW Name" value="SE_VOC_ROY_LOSE_S1" />
+	</option>
+	<option value="1124">
+		<property name="RAW Name" value="SE_VOC_ROY_LOSE_S2" />
+	</option>
+	<option value="1125">
+		<property name="RAW Name" value="SE_VOC_ROY_LOSE_L" />
+	</option>
+	<option value="1126">
+		<property name="RAW Name" value="SE_VOC_ROY_NOTICE1" />
+	</option>
+	<option value="1127">
+		<property name="RAW Name" value="SE_VOC_ROY_NOTICE2" />
+	</option>
+	<option value="1128">
+		<property name="RAW Name" value="SE_VOC_ROY_WAKE1" />
+	</option>
+	<option value="1129">
+		<property name="RAW Name" value="SE_VOC_ROY_ESC_JUMP" />
+	</option>
+	<option value="1130">
+		<property name="RAW Name" value="SE_VOC_ROY_FALL_INTO_MAP" />
+	</option>
+	<option value="1131">
+		<property name="RAW Name" value="SE_VOC_ROY_BRING_IT" />
+	</option>
+	<option value="1132">
+		<property name="RAW Name" value="SE_VOC_ROY_BEAT_YOU" />
+	</option>
+	<option value="1133">
+		<property name="RAW Name" value="SE_VOC_ROY_SHOVED" />
+	</option>
+	<option value="1134">
+		<property name="RAW Name" value="SE_VOC_ROY_CS_JUMP" />
+	</option>
+	<option value="1135">
+		<property name="RAW Name" value="SE_VOC_ROY_CS_JUMP_F" />
+	</option>
+	<option value="1136">
+		<property name="RAW Name" value="SE_VOC_LEM_MAGIC_SHOT" />
+	</option>
+	<option value="1137">
+		<property name="RAW Name" value="SE_VOC_LEM_JUMP" />
+	</option>
+	<option value="1138">
+		<property name="RAW Name" value="SE_VOC_LEM_LAND" />
+	</option>
+	<option value="1139">
+		<property name="RAW Name" value="SE_VOC_LEM_SHELL_OUT" />
+	</option>
+	<option value="1140">
+		<property name="RAW Name" value="SE_VOC_LEM_RUSH" />
+	</option>
+	<option value="1141">
+		<property name="RAW Name" value="SE_VOC_LEM_DAMAGE_S" />
+	</option>
+	<option value="1142">
+		<property name="RAW Name" value="SE_VOC_LEM_DAMAGE_L" />
+	</option>
+	<option value="1143">
+		<property name="RAW Name" value="SE_VOC_LEM_LOSE_S1" />
+	</option>
+	<option value="1144">
+		<property name="RAW Name" value="SE_VOC_LEM_LOSE_L" />
+	</option>
+	<option value="1145">
+		<property name="RAW Name" value="SE_VOC_LEM_NOTICE1" />
+	</option>
+	<option value="1146">
+		<property name="RAW Name" value="SE_VOC_LEM_NOTICE2" />
+	</option>
+	<option value="1147">
+		<property name="RAW Name" value="SE_VOC_LEM_NOTICE3" />
+	</option>
+	<option value="1148">
+		<property name="RAW Name" value="SE_VOC_LEM_WAKE1" />
+	</option>
+	<option value="1149">
+		<property name="RAW Name" value="SE_VOC_LEM_ESC_JUMP" />
+	</option>
+	<option value="1150">
+		<property name="RAW Name" value="SE_VOC_LEM_FALL_INTO_MAP" />
+	</option>
+	<option value="1151">
+		<property name="RAW Name" value="SE_VOC_LEM_BRING_IT" />
+	</option>
+	<option value="1152">
+		<property name="RAW Name" value="SE_VOC_LEM_BEAT_YOU" />
+	</option>
+	<option value="1153">
+		<property name="RAW Name" value="SE_VOC_LEM_SHOVED" />
+	</option>
+	<option value="1154">
+		<property name="RAW Name" value="SE_VOC_LEM_CS_JUMP" />
+	</option>
+	<option value="1155">
+		<property name="RAW Name" value="SE_VOC_LEM_CS_JUMP_F" />
+	</option>
+	<option value="1156">
+		<property name="RAW Name" value="SE_VOC_WEN_MAGIC_SHOT" />
+	</option>
+	<option value="1157">
+		<property name="RAW Name" value="SE_VOC_WEN_SHELL_OUT" />
+	</option>
+	<option value="1158">
+		<property name="RAW Name" value="SE_VOC_WEN_DAMAGE_S" />
+	</option>
+	<option value="1159">
+		<property name="RAW Name" value="SE_VOC_WEN_DAMAGE_L" />
+	</option>
+	<option value="1160">
+		<property name="RAW Name" value="SE_VOC_WEN_LOSE_S1" />
+	</option>
+	<option value="1161">
+		<property name="RAW Name" value="SE_VOC_WEN_LOSE_S2" />
+	</option>
+	<option value="1162">
+		<property name="RAW Name" value="SE_VOC_WEN_LOSE_L" />
+	</option>
+	<option value="1163">
+		<property name="RAW Name" value="SE_VOC_WEN_NOTICE1" />
+	</option>
+	<option value="1164">
+		<property name="RAW Name" value="SE_VOC_WEN_NOTICE2" />
+	</option>
+	<option value="1165">
+		<property name="RAW Name" value="SE_VOC_WEN_NOTICE3" />
+	</option>
+	<option value="1166">
+		<property name="RAW Name" value="SE_VOC_WEN_WAKE1" />
+	</option>
+	<option value="1167">
+		<property name="RAW Name" value="SE_VOC_WEN_ESC_JUMP" />
+	</option>
+	<option value="1168">
+		<property name="RAW Name" value="SE_VOC_WEN_FALL_INTO_MAP" />
+	</option>
+	<option value="1169">
+		<property name="RAW Name" value="SE_VOC_WEN_BRING_IT" />
+	</option>
+	<option value="1170">
+		<property name="RAW Name" value="SE_VOC_WEN_BEAT_YOU" />
+	</option>
+	<option value="1171">
+		<property name="RAW Name" value="SE_VOC_WEN_SHOVED" />
+	</option>
+	<option value="1172">
+		<property name="RAW Name" value="SE_VOC_WEN_CS_JUMP" />
+	</option>
+	<option value="1173">
+		<property name="RAW Name" value="SE_VOC_WEN_CS_JUMP_F" />
+	</option>
+	<option value="1174">
+		<property name="RAW Name" value="SE_VOC_IGG_MAGIC_MAKE" />
+	</option>
+	<option value="1175">
+		<property name="RAW Name" value="SE_VOC_IGG_MAGIC_MAKE_FAST" />
+	</option>
+	<option value="1176">
+		<property name="RAW Name" value="SE_VOC_IGG_MAGIC_SHOT" />
+	</option>
+	<option value="1177">
+		<property name="RAW Name" value="SE_VOC_IGG_JUMP" />
+	</option>
+	<option value="1178">
+		<property name="RAW Name" value="SE_VOC_IGG_SHELL_OUT" />
+	</option>
+	<option value="1179">
+		<property name="RAW Name" value="SE_VOC_IGG_HYSTERICAL" />
+	</option>
+	<option value="1180">
+		<property name="RAW Name" value="SE_VOC_IGG_TWIT" />
+	</option>
+	<option value="1181">
+		<property name="RAW Name" value="SE_VOC_IGG_GUTS" />
+	</option>
+	<option value="1182">
+		<property name="RAW Name" value="SE_VOC_IGG_DAMAGE_S" />
+	</option>
+	<option value="1183">
+		<property name="RAW Name" value="SE_VOC_IGG_DAMAGE_L" />
+	</option>
+	<option value="1184">
+		<property name="RAW Name" value="SE_VOC_IGG_DAMAGE_L_LAST" />
+	</option>
+	<option value="1185">
+		<property name="RAW Name" value="SE_VOC_IGG_LOSE_S1" />
+	</option>
+	<option value="1186">
+		<property name="RAW Name" value="SE_VOC_IGG_LOSE_S2" />
+	</option>
+	<option value="1187">
+		<property name="RAW Name" value="SE_VOC_IGG_LOSE_S3" />
+	</option>
+	<option value="1188">
+		<property name="RAW Name" value="SE_VOC_IGG_LOSE_S4" />
+	</option>
+	<option value="1189">
+		<property name="RAW Name" value="SE_VOC_IGG_LOSE_L" />
+	</option>
+	<option value="1190">
+		<property name="RAW Name" value="SE_VOC_IGG_NOTICE1" />
+	</option>
+	<option value="1191">
+		<property name="RAW Name" value="SE_VOC_IGG_NOTICE2" />
+	</option>
+	<option value="1192">
+		<property name="RAW Name" value="SE_VOC_IGG_POWER_UP" />
+	</option>
+	<option value="1193">
+		<property name="RAW Name" value="SE_VOC_IGG_WAKE1" />
+	</option>
+	<option value="1194">
+		<property name="RAW Name" value="SE_VOC_IGG_WAKE2" />
+	</option>
+	<option value="1195">
+		<property name="RAW Name" value="SE_VOC_IGG_ESC_JUMP" />
+	</option>
+	<option value="1196">
+		<property name="RAW Name" value="SE_VOC_IGG_FALL_INTO_MAP" />
+	</option>
+	<option value="1197">
+		<property name="RAW Name" value="SE_VOC_IGG_BRING_IT" />
+	</option>
+	<option value="1198">
+		<property name="RAW Name" value="SE_VOC_IGG_BEAT_YOU" />
+	</option>
+	<option value="1199">
+		<property name="RAW Name" value="SE_VOC_IGG_SHOVED" />
+	</option>
+	<option value="1200">
+		<property name="RAW Name" value="SE_VOC_IGG_CS_JUMP" />
+	</option>
+	<option value="1201">
+		<property name="RAW Name" value="SE_VOC_IGG_CS_JUMP_F" />
+	</option>
+	<option value="1202">
+		<property name="RAW Name" value="SE_VOC_MOR_MAGIC_SHOT" />
+	</option>
+	<option value="1203">
+		<property name="RAW Name" value="SE_VOC_MOR_JUMP_L" />
+	</option>
+	<option value="1204">
+		<property name="RAW Name" value="SE_VOC_MOR_SHELL_OUT" />
+	</option>
+	<option value="1205">
+		<property name="RAW Name" value="SE_VOC_MOR_QUAKE" />
+	</option>
+	<option value="1206">
+		<property name="RAW Name" value="SE_VOC_MOR_DAMAGE_S" />
+	</option>
+	<option value="1207">
+		<property name="RAW Name" value="SE_VOC_MOR_DAMAGE_L" />
+	</option>
+	<option value="1208">
+		<property name="RAW Name" value="SE_VOC_MOR_LOSE_S1" />
+	</option>
+	<option value="1209">
+		<property name="RAW Name" value="SE_VOC_MOR_LOSE_S2" />
+	</option>
+	<option value="1210">
+		<property name="RAW Name" value="SE_VOC_MOR_LOSE_L" />
+	</option>
+	<option value="1211">
+		<property name="RAW Name" value="SE_VOC_MOR_NOTICE1" />
+	</option>
+	<option value="1212">
+		<property name="RAW Name" value="SE_VOC_MOR_NOTICE2" />
+	</option>
+	<option value="1213">
+		<property name="RAW Name" value="SE_VOC_MOR_WAKE1" />
+	</option>
+	<option value="1214">
+		<property name="RAW Name" value="SE_VOC_MOR_ESC_JUMP" />
+	</option>
+	<option value="1215">
+		<property name="RAW Name" value="SE_VOC_MOR_FALL_INTO_MAP" />
+	</option>
+	<option value="1216">
+		<property name="RAW Name" value="SE_VOC_MOR_BRING_IT" />
+	</option>
+	<option value="1217">
+		<property name="RAW Name" value="SE_VOC_MOR_BEAT_YOU" />
+	</option>
+	<option value="1218">
+		<property name="RAW Name" value="SE_VOC_MOR_SHOVED" />
+	</option>
+	<option value="1219">
+		<property name="RAW Name" value="SE_VOC_MOR_CS_JUMP" />
+	</option>
+	<option value="1220">
+		<property name="RAW Name" value="SE_VOC_MOR_CS_JUMP_F" />
+	</option>
+	<option value="1221">
+		<property name="RAW Name" value="SE_VOC_LUD_MAGIC_SHOT_S" />
+	</option>
+	<option value="1222">
+		<property name="RAW Name" value="SE_VOC_LUD_MAGIC_SHOT_L" />
+	</option>
+	<option value="1223">
+		<property name="RAW Name" value="SE_VOC_LUD_JUMP" />
+	</option>
+	<option value="1224">
+		<property name="RAW Name" value="SE_VOC_LUD_LAND" />
+	</option>
+	<option value="1225">
+		<property name="RAW Name" value="SE_VOC_LUD_SHELL_OUT" />
+	</option>
+	<option value="1226">
+		<property name="RAW Name" value="SE_VOC_LUD_FLUTTER" />
+	</option>
+	<option value="1227">
+		<property name="RAW Name" value="SE_VOC_LUD_DAMAGE_S" />
+	</option>
+	<option value="1228">
+		<property name="RAW Name" value="SE_VOC_LUD_DAMAGE_L" />
+	</option>
+	<option value="1229">
+		<property name="RAW Name" value="SE_VOC_LUD_LOSE_S1" />
+	</option>
+	<option value="1230">
+		<property name="RAW Name" value="SE_VOC_LUD_LOSE_L" />
+	</option>
+	<option value="1231">
+		<property name="RAW Name" value="SE_VOC_LUD_NOTICE1" />
+	</option>
+	<option value="1232">
+		<property name="RAW Name" value="SE_VOC_LUD_NOTICE2" />
+	</option>
+	<option value="1233">
+		<property name="RAW Name" value="SE_VOC_LUD_NOTICE3" />
+	</option>
+	<option value="1234">
+		<property name="RAW Name" value="SE_VOC_LUD_WAKE1" />
+	</option>
+	<option value="1235">
+		<property name="RAW Name" value="SE_VOC_LUD_ESC_JUMP" />
+	</option>
+	<option value="1236">
+		<property name="RAW Name" value="SE_VOC_LUD_FALL_INTO_MAP" />
+	</option>
+	<option value="1237">
+		<property name="RAW Name" value="SE_VOC_LUD_BRING_IT" />
+	</option>
+	<option value="1238">
+		<property name="RAW Name" value="SE_VOC_LUD_BEAT_YOU" />
+	</option>
+	<option value="1239">
+		<property name="RAW Name" value="SE_VOC_LUD_SHOVED" />
+	</option>
+	<option value="1240">
+		<property name="RAW Name" value="SE_VOC_LUD_CS_JUMP" />
+	</option>
+	<option value="1241">
+		<property name="RAW Name" value="SE_VOC_LUD_CS_JUMP_F" />
+	</option>
+	<option value="1242">
+		<property name="RAW Name" value="SE_VOC_KMC_NOTICE1" />
+	</option>
+	<option value="1243">
+		<property name="RAW Name" value="SE_VOC_KMC_DAMAGE_L1" />
+	</option>
+	<option value="1244">
+		<property name="RAW Name" value="SE_VOC_KMC_DAMAGE_L2" />
+	</option>
+	<option value="1245">
+		<property name="RAW Name" value="SE_VOC_KMC_DAMAGE_L3" />
+	</option>
+	<option value="1246">
+		<property name="RAW Name" value="SE_VOC_KMC_WAKE1" />
+	</option>
+	<option value="1247">
+		<property name="RAW Name" value="SE_VOC_KMC_SURPRISE" />
+	</option>
+	<option value="1248">
+		<property name="RAW Name" value="SE_VOC_KMC_FALL_INTO_MAP" />
+	</option>
+	<option value="1249">
+		<property name="RAW Name" value="SE_VOC_KMC_BRING_IT" />
+	</option>
+	<option value="1250">
+		<property name="RAW Name" value="SE_VOC_KMC_BEAT_YOU" />
+	</option>
+	<option value="1251">
+		<property name="RAW Name" value="SE_VOC_JR_PROV1" />
+	</option>
+	<option value="1252">
+		<property name="RAW Name" value="SE_VOC_JR_PROV2" />
+	</option>
+	<option value="1253">
+		<property name="RAW Name" value="SE_VOC_JR_JUMP" />
+	</option>
+	<option value="1254">
+		<property name="RAW Name" value="SE_VOC_JR_GO" />
+	</option>
+	<option value="1255">
+		<property name="RAW Name" value="SE_VOC_JR_ANGRY" />
+	</option>
+	<option value="1256">
+		<property name="RAW Name" value="SE_VOC_JR_SURPRISE" />
+	</option>
+	<option value="1257">
+		<property name="RAW Name" value="SE_VOC_JR_COMPARE" />
+	</option>
+	<option value="1258">
+		<property name="RAW Name" value="SE_VOC_JR_DAMAGE_S" />
+	</option>
+	<option value="1259">
+		<property name="RAW Name" value="SE_VOC_JR_DAMAGE_L" />
+	</option>
+	<option value="1260">
+		<property name="RAW Name" value="SE_VOC_JR_DAMAGE_L_LAST" />
+	</option>
+	<option value="1261">
+		<property name="RAW Name" value="SE_VOC_JR_RETRY" />
+	</option>
+	<option value="1262">
+		<property name="RAW Name" value="SE_VOC_JR_BOUND" />
+	</option>
+	<option value="1263">
+		<property name="RAW Name" value="SE_VOC_JR_CHARGE" />
+	</option>
+	<option value="1264">
+		<property name="RAW Name" value="SE_VOC_JR_CANNON_APP" />
+	</option>
+	<option value="1265">
+		<property name="RAW Name" value="SE_VOC_JR_CS_FALL_OUT_CASTLE" />
+	</option>
+	<option value="1266">
+		<property name="RAW Name" value="SE_VOC_JR_CS_SURPRISE" />
+	</option>
+	<option value="1267">
+		<property name="RAW Name" value="SE_VOC_JR_CS_JUMP" />
+	</option>
+	<option value="1268">
+		<property name="RAW Name" value="SE_VOC_KP_JUMP_S" />
+	</option>
+	<option value="1269">
+		<property name="RAW Name" value="SE_VOC_KP_JUMP_L" />
+	</option>
+	<option value="1270">
+		<property name="RAW Name" value="SE_VOC_KP_DAMAGE_HPDP" />
+	</option>
+	<option value="1271">
+		<property name="RAW Name" value="SE_VOC_KP_LOSE_BY_HPDP" />
+	</option>
+	<option value="1272">
+		<property name="RAW Name" value="SE_VOC_KP_LOSE_BY_FIRE" />
+	</option>
+	<option value="1273">
+		<property name="RAW Name" value="SE_VOC_KP_SHOUT" />
+	</option>
+	<option value="1274">
+		<property name="RAW Name" value="SE_VOC_KP_FALL" />
+	</option>
+	<option value="1275">
+		<property name="RAW Name" value="SE_VOC_KP_CS_LAUGH" />
+	</option>
+	<option value="1276">
+		<property name="RAW Name" value="SE_VOC_KP_L_JUMP" />
+	</option>
+	<option value="1277">
+		<property name="RAW Name" value="SE_VOC_KP_L_SWING_S" />
+	</option>
+	<option value="1278">
+		<property name="RAW Name" value="SE_VOC_KP_L_SWING_L" />
+	</option>
+	<option value="1279">
+		<property name="RAW Name" value="SE_VOC_KP_L_APP" />
+	</option>
+	<option value="1280">
+		<property name="RAW Name" value="SE_VOC_KP_L_SHOUT" />
+	</option>
+	<option value="1281">
+		<property name="RAW Name" value="SE_VOC_KP_L_NOTICE" />
+	</option>
+	<option value="1282">
+		<property name="RAW Name" value="SE_VOC_KP_L_LOOK_AROUND" />
+	</option>
+	<option value="1283">
+		<property name="RAW Name" value="SE_VOC_KP_L_SURPRISED_LAVA" />
+	</option>
+	<option value="1284">
+		<property name="RAW Name" value="SE_VOC_KP_L_FALL" />
+	</option>
+	<option value="1285">
+		<property name="RAW Name" value="SE_BOSS_CMN_JUMP_S" />
+	</option>
+	<option value="1286">
+		<property name="RAW Name" value="SE_BOSS_CMN_JUMP_M" />
+	</option>
+	<option value="1287">
+		<property name="RAW Name" value="SE_BOSS_CMN_JUMP_L" />
+	</option>
+	<option value="1288">
+		<property name="RAW Name" value="SE_BOSS_CMN_SMART_LAND" />
+	</option>
+	<option value="1289">
+		<property name="RAW Name" value="SE_BOSS_CMN_FAT_LAND" />
+	</option>
+	<option value="1290">
+		<property name="RAW Name" value="SE_BOSS_CMN_FAT_LAND_QUAKE" />
+	</option>
+	<option value="1291">
+		<property name="RAW Name" value="SE_BOSS_CMN_SHELL_IN" />
+	</option>
+	<option value="1292">
+		<property name="RAW Name" value="SE_BOSS_CMN_SHELL_OUT" />
+	</option>
+	<option value="1293">
+		<property name="RAW Name" value="SE_BOSS_CMN_SMART_SHELL_LAND" />
+	</option>
+	<option value="1294">
+		<property name="RAW Name" value="SE_BOSS_CMN_FAT_SHELL_LAND" />
+	</option>
+	<option value="1295">
+		<property name="RAW Name" value="SE_BOSS_CMN_SMART_SHELL_ROLL" />
+	</option>
+	<option value="1296">
+		<property name="RAW Name" value="SE_BOSS_CMN_FAT_SHELL_ROLL" />
+	</option>
+	<option value="1297">
+		<property name="RAW Name" value="SE_BOSS_CMN_SMART_SHELL_CRASH" />
+	</option>
+	<option value="1298">
+		<property name="RAW Name" value="SE_BOSS_CMN_FAT_SHELL_CRASH" />
+	</option>
+	<option value="1299">
+		<property name="RAW Name" value="SE_BOSS_CMN_STOMPED" />
+	</option>
+	<option value="1300">
+		<property name="RAW Name" value="SE_BOSS_CMN_STOMPED_LAST1" />
+	</option>
+	<option value="1301">
+		<property name="RAW Name" value="SE_BOSS_CMN_STOMPED_LAST2" />
+	</option>
+	<option value="1302">
+		<property name="RAW Name" value="SE_BOSS_CMN_DAMAGE_FIRE" />
+	</option>
+	<option value="1303">
+		<property name="RAW Name" value="SE_BOSS_CMN_DAMAGE_FIRE_DEF" />
+	</option>
+	<option value="1304">
+		<property name="RAW Name" value="SE_BOSS_CMN_DAMAGE_FIRE_LAST" />
+	</option>
+	<option value="1305">
+		<property name="RAW Name" value="SE_BOSS_CMN_DAMAGE_STAR_DEF" />
+	</option>
+	<option value="1306">
+		<property name="RAW Name" value="SE_BOSS_CMN_DAMAGE_STAR_LAST" />
+	</option>
+	<option value="1307">
+		<property name="RAW Name" value="SE_BOSS_CMN_DAMAGE_DEF" />
+	</option>
+	<option value="1308">
+		<property name="RAW Name" value="SE_BOSS_CMN_DAMAGE_LAST" />
+	</option>
+	<option value="1309">
+		<property name="RAW Name" value="SE_BOSS_CMN_MAGIC_SHOT" />
+	</option>
+	<option value="1310">
+		<property name="RAW Name" value="SE_BOSS_CMN_MAGIC_DISAPP" />
+	</option>
+	<option value="1311">
+		<property name="RAW Name" value="SE_BOSS_CMN_MAGIC_EXTINCT" />
+	</option>
+	<option value="1312">
+		<property name="RAW Name" value="SE_BOSS_CMN_GET_COIN_BONUS" />
+	</option>
+	<option value="1313">
+		<property name="RAW Name" value="SE_BOSS_LARRY_MAGIC_MAKE" />
+	</option>
+	<option value="1314">
+		<property name="RAW Name" value="SE_BOSS_LARRY_RAMP_JUMP" />
+	</option>
+	<option value="1315">
+		<property name="RAW Name" value="SE_BOSS_LARRY_DOWN_LAND1" />
+	</option>
+	<option value="1316">
+		<property name="RAW Name" value="SE_BOSS_LARRY_DOWN_LAND2" />
+	</option>
+	<option value="1317">
+		<property name="RAW Name" value="SE_BOSS_LARRY_DOWN_LAND3" />
+	</option>
+	<option value="1318">
+		<property name="RAW Name" value="SE_BOSS_LARRY_WAKE_UP" />
+	</option>
+	<option value="1319">
+		<property name="RAW Name" value="SE_BOSS_LARRY_ESC_LAND" />
+	</option>
+	<option value="1320">
+		<property name="RAW Name" value="SE_BOSS_LARRY_ESC_JUMP" />
+	</option>
+	<option value="1321">
+		<property name="RAW Name" value="SE_BOSS_ROY_MAGIC_MAKE" />
+	</option>
+	<option value="1322">
+		<property name="RAW Name" value="SE_BOSS_ROY_MAGIC_MAKE_FAST" />
+	</option>
+	<option value="1323">
+		<property name="RAW Name" value="SE_BOSS_ROY_DOKAN_IN" />
+	</option>
+	<option value="1324">
+		<property name="RAW Name" value="SE_BOSS_ROY_DOKAN_IN2" />
+	</option>
+	<option value="1325">
+		<property name="RAW Name" value="SE_BOSS_ROY_DOWN_LAND1" />
+	</option>
+	<option value="1326">
+		<property name="RAW Name" value="SE_BOSS_ROY_DOWN_LAND2" />
+	</option>
+	<option value="1327">
+		<property name="RAW Name" value="SE_BOSS_ROY_DOWN_LAND3" />
+	</option>
+	<option value="1328">
+		<property name="RAW Name" value="SE_BOSS_ROY_SHAKE_HEAD" />
+	</option>
+	<option value="1329">
+		<property name="RAW Name" value="SE_BOSS_ROY_ESC_LAND" />
+	</option>
+	<option value="1330">
+		<property name="RAW Name" value="SE_BOSS_ROY_ESC_JUMP" />
+	</option>
+	<option value="1331">
+		<property name="RAW Name" value="SE_BOSS_ROY_DOKAN_APP" />
+	</option>
+	<option value="1332">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_MAGIC_MAKE" />
+	</option>
+	<option value="1333">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_MAGIC_MAKE_FAST" />
+	</option>
+	<option value="1334">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_MAGIC_SHOT" />
+	</option>
+	<option value="1335">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_BALL_BOUND" />
+	</option>
+	<option value="1336">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_BALL_HIT_WALL" />
+	</option>
+	<option value="1337">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_BALL_HIT_PLY" />
+	</option>
+	<option value="1338">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_B_BALL_APP" />
+	</option>
+	<option value="1339">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_B_BALL_RUSH" />
+	</option>
+	<option value="1340">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_RUSH_FOOT_L" />
+	</option>
+	<option value="1341">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_RUSH_FOOT_R" />
+	</option>
+	<option value="1342">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_RUSH_FOOT_F_L" />
+	</option>
+	<option value="1343">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_RUSH_FOOT_F_R" />
+	</option>
+	<option value="1344">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_L_BALL_JUMP" />
+	</option>
+	<option value="1345">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_L_BALL_LAND" />
+	</option>
+	<option value="1346">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_L_BALL_APP" />
+	</option>
+	<option value="1347">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_L_BALL_TO_LL" />
+	</option>
+	<option value="1348">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_RAMP_LAND" />
+	</option>
+	<option value="1349">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_DOWN_LAND1" />
+	</option>
+	<option value="1350">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_DOWN_LAND2" />
+	</option>
+	<option value="1351">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_DOWN_LAND3" />
+	</option>
+	<option value="1352">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_SHAKE_HEAD" />
+	</option>
+	<option value="1353">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_ESC_LAND" />
+	</option>
+	<option value="1354">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_ESC_JUMP" />
+	</option>
+	<option value="1355">
+		<property name="RAW Name" value="SE_BOSS_LEMMY_BALL_TO_L" />
+	</option>
+	<option value="1356">
+		<property name="RAW Name" value="SE_BOSS_WENDY_MAGIC_MAKE" />
+	</option>
+	<option value="1357">
+		<property name="RAW Name" value="SE_BOSS_WENDY_MAGIC_SHOT" />
+	</option>
+	<option value="1358">
+		<property name="RAW Name" value="SE_BOSS_WENDY_RING_BOUND" />
+	</option>
+	<option value="1359">
+		<property name="RAW Name" value="SE_BOSS_WENDY_RING_DISAPP" />
+	</option>
+	<option value="1360">
+		<property name="RAW Name" value="SE_BOSS_WENDY_WATER_FALL_SIGN" />
+	</option>
+	<option value="1361">
+		<property name="RAW Name" value="SE_BOSS_WENDY_WATER_FALL" />
+	</option>
+	<option value="1362">
+		<property name="RAW Name" value="SE_BOSS_WENDY_WATER_UP_SIGN" />
+	</option>
+	<option value="1363">
+		<property name="RAW Name" value="SE_BOSS_WENDY_WATER_UP" />
+	</option>
+	<option value="1364">
+		<property name="RAW Name" value="SE_BOSS_WENDY_WATER_DOWN" />
+	</option>
+	<option value="1365">
+		<property name="RAW Name" value="SE_BOSS_WENDY_WAND_ROLL" />
+	</option>
+	<option value="1366">
+		<property name="RAW Name" value="SE_BOSS_WENDY_WAND_CATCH" />
+	</option>
+	<option value="1367">
+		<property name="RAW Name" value="SE_BOSS_WENDY_RAMP_LAND" />
+	</option>
+	<option value="1368">
+		<property name="RAW Name" value="SE_BOSS_WENDY_DOWN_LAND1" />
+	</option>
+	<option value="1369">
+		<property name="RAW Name" value="SE_BOSS_WENDY_DOWN_LAND2" />
+	</option>
+	<option value="1370">
+		<property name="RAW Name" value="SE_BOSS_WENDY_DOWN_LAND3" />
+	</option>
+	<option value="1371">
+		<property name="RAW Name" value="SE_BOSS_WENDY_SHAKE_HEAD" />
+	</option>
+	<option value="1372">
+		<property name="RAW Name" value="SE_BOSS_WENDY_ESC_LAND" />
+	</option>
+	<option value="1373">
+		<property name="RAW Name" value="SE_BOSS_WENDY_ESC_JUMP" />
+	</option>
+	<option value="1374">
+		<property name="RAW Name" value="SE_BOSS_IGGY_MAGIC_MAKE" />
+	</option>
+	<option value="1375">
+		<property name="RAW Name" value="SE_BOSS_IGGY_MAGIC_MAKE_FAST" />
+	</option>
+	<option value="1376">
+		<property name="RAW Name" value="SE_BOSS_IGGY_SHELL_ROLL" />
+	</option>
+	<option value="1377">
+		<property name="RAW Name" value="SE_BOSS_IGGY_SHELL_CRASH" />
+	</option>
+	<option value="1378">
+		<property name="RAW Name" value="SE_BOSS_IGGY_WANWAN_L_BARK" />
+	</option>
+	<option value="1379">
+		<property name="RAW Name" value="SE_BOSS_IGGY_WANWAN_L_BARK_L" />
+	</option>
+	<option value="1380">
+		<property name="RAW Name" value="SE_BOSS_IGGY_WANWAN_L_MOUTH" />
+	</option>
+	<option value="1381">
+		<property name="RAW Name" value="SE_BOSS_IGGY_WANWAN_L_ANGRY" />
+	</option>
+	<option value="1382">
+		<property name="RAW Name" value="SE_BOSS_IGGY_SLED_MOVE" />
+	</option>
+	<option value="1383">
+		<property name="RAW Name" value="SE_BOSS_IGGY_TURN" />
+	</option>
+	<option value="1384">
+		<property name="RAW Name" value="SE_BOSS_IGGY_RAMP_SPANK" />
+	</option>
+	<option value="1385">
+		<property name="RAW Name" value="SE_BOSS_IGGY_DOWN_LAND1" />
+	</option>
+	<option value="1386">
+		<property name="RAW Name" value="SE_BOSS_IGGY_DOWN_LAND2" />
+	</option>
+	<option value="1387">
+		<property name="RAW Name" value="SE_BOSS_IGGY_DOWN_LAND3" />
+	</option>
+	<option value="1388">
+		<property name="RAW Name" value="SE_BOSS_IGGY_ESC_LAND" />
+	</option>
+	<option value="1389">
+		<property name="RAW Name" value="SE_BOSS_IGGY_ESC_JUMP" />
+	</option>
+	<option value="1390">
+		<property name="RAW Name" value="SE_BOSS_IGGY_WANWAN_TO_L" />
+	</option>
+	<option value="1391">
+		<property name="RAW Name" value="SE_BOSS_IGGY_WANWAN_L_TO_M" />
+	</option>
+	<option value="1392">
+		<property name="RAW Name" value="SE_BOSS_IGGY_SLED_BREAK" />
+	</option>
+	<option value="1393">
+		<property name="RAW Name" value="SE_BOSS_MORTON_MAGIC_MAKE" />
+	</option>
+	<option value="1394">
+		<property name="RAW Name" value="SE_BOSS_MORTON_MAGIC_MAKE_FAST" />
+	</option>
+	<option value="1395">
+		<property name="RAW Name" value="SE_BOSS_MORTON_GROUND_SHAKE" />
+	</option>
+	<option value="1396">
+		<property name="RAW Name" value="SE_BOSS_MORTON_GROUND_CRASH" />
+	</option>
+	<option value="1397">
+		<property name="RAW Name" value="SE_BOSS_MORTON_GROUND_CRASH2" />
+	</option>
+	<option value="1398">
+		<property name="RAW Name" value="SE_BOSS_MORTON_STAMP" />
+	</option>
+	<option value="1399">
+		<property name="RAW Name" value="SE_BOSS_MORTON_DOWN_LAND1" />
+	</option>
+	<option value="1400">
+		<property name="RAW Name" value="SE_BOSS_MORTON_DOWN_LAND2" />
+	</option>
+	<option value="1401">
+		<property name="RAW Name" value="SE_BOSS_MORTON_DOWN_LAND3" />
+	</option>
+	<option value="1402">
+		<property name="RAW Name" value="SE_BOSS_MORTON_ESC_LAND" />
+	</option>
+	<option value="1403">
+		<property name="RAW Name" value="SE_BOSS_MORTON_ESC_JUMP" />
+	</option>
+	<option value="1404">
+		<property name="RAW Name" value="SE_BOSS_MORTON_GROUND_ACTIVE" />
+	</option>
+	<option value="1405">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_MAGIC_MAKE" />
+	</option>
+	<option value="1406">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_MAGIC_MAKE_FAST" />
+	</option>
+	<option value="1407">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_MAGIC_EXTINCT" />
+	</option>
+	<option value="1408">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_FLUTTER_KICK" />
+	</option>
+	<option value="1409">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_FLUTTER_KICK_L" />
+	</option>
+	<option value="1410">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_MAGIC_SPREAD" />
+	</option>
+	<option value="1411">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_DOWN_LAND1" />
+	</option>
+	<option value="1412">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_DOWN_LAND2" />
+	</option>
+	<option value="1413">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_DOWN_LAND3" />
+	</option>
+	<option value="1414">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_SHAKE_HEAD" />
+	</option>
+	<option value="1415">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_ESC_LAND" />
+	</option>
+	<option value="1416">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_ESC_JUMP" />
+	</option>
+	<option value="1417">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_STAGE_UPWARD" />
+	</option>
+	<option value="1418">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_BLOCK_BREAK" />
+	</option>
+	<option value="1419">
+		<property name="RAW Name" value="SE_BOSS_LUDWIG_LIFT_STOP" />
+	</option>
+	<option value="1420">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_MAGIC_MAKE" />
+	</option>
+	<option value="1421">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_MAGIC_FLY" />
+	</option>
+	<option value="1422">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_DISAPP" />
+	</option>
+	<option value="1423">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_APP" />
+	</option>
+	<option value="1424">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_BLOCK_SIGN" />
+	</option>
+	<option value="1425">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_BLOCK_MUTATE" />
+	</option>
+	<option value="1426">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_BLOCK_BREAK" />
+	</option>
+	<option value="1427">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_FLY_STOP" />
+	</option>
+	<option value="1428">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_FLY_START" />
+	</option>
+	<option value="1429">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_FLY" />
+	</option>
+	<option value="1430">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_FLY_MAGIC" />
+	</option>
+	<option value="1431">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_MAGIC_STAGE" />
+	</option>
+	<option value="1432">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_DOWN_LAND1" />
+	</option>
+	<option value="1433">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_BLOOM_APP" />
+	</option>
+	<option value="1434">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_CATCH_PCH" />
+	</option>
+	<option value="1435">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_UNMASK" />
+	</option>
+	<option value="1436">
+		<property name="RAW Name" value="SE_BOSS_KAMECK_DOWN" />
+	</option>
+	<option value="1437">
+		<property name="RAW Name" value="SE_BOSS_JR_JUMP_S" />
+	</option>
+	<option value="1438">
+		<property name="RAW Name" value="SE_BOSS_JR_JUMP_L" />
+	</option>
+	<option value="1439">
+		<property name="RAW Name" value="SE_BOSS_JR_CROWN_JR_RIDE" />
+	</option>
+	<option value="1440">
+		<property name="RAW Name" value="SE_BOSS_JR_CROWN_JR_RISE" />
+	</option>
+	<option value="1441">
+		<property name="RAW Name" value="SE_BOSS_JR_ELEC_APP" />
+	</option>
+	<option value="1442">
+		<property name="RAW Name" value="SE_BOSS_JR_FLOOR_SHAKE" />
+	</option>
+	<option value="1443">
+		<property name="RAW Name" value="SE_BOSS_JR_BOUND" />
+	</option>
+	<option value="1444">
+		<property name="RAW Name" value="SE_BOSS_JR_LAND" />
+	</option>
+	<option value="1445">
+		<property name="RAW Name" value="SE_BOSS_JR_CROWN_LAND" />
+	</option>
+	<option value="1446">
+		<property name="RAW Name" value="SE_BOSS_JR_CROWN_LAND2" />
+	</option>
+	<option value="1447">
+		<property name="RAW Name" value="SE_BOSS_JR_TURN_HEAD" />
+	</option>
+	<option value="1448">
+		<property name="RAW Name" value="SE_BOSS_JR_KICK" />
+	</option>
+	<option value="1449">
+		<property name="RAW Name" value="SE_BOSS_JR_CROWN_KP_RIDE" />
+	</option>
+	<option value="1450">
+		<property name="RAW Name" value="SE_BOSS_JR_CROWN_KP_RISE" />
+	</option>
+	<option value="1451">
+		<property name="RAW Name" value="SE_BOSS_JR_FLOOR_BREAK" />
+	</option>
+	<option value="1452">
+		<property name="RAW Name" value="SE_BOSS_JR_NOW_DAMAGING" />
+	</option>
+	<option value="1453">
+		<property name="RAW Name" value="SE_BOSS_JR_DAMAGE_ELEC" />
+	</option>
+	<option value="1454">
+		<property name="RAW Name" value="SE_BOSS_JR_DAMAGE_ELEC_LAST1" />
+	</option>
+	<option value="1455">
+		<property name="RAW Name" value="SE_BOSS_JR_RETRY" />
+	</option>
+	<option value="1456">
+		<property name="RAW Name" value="SE_BOSS_JR_FIRE_SHOT" />
+	</option>
+	<option value="1457">
+		<property name="RAW Name" value="SE_BOSS_JR_FIRE_DISAPP" />
+	</option>
+	<option value="1458">
+		<property name="RAW Name" value="SE_BOSS_JR_FIRE_BURNING" />
+	</option>
+	<option value="1459">
+		<property name="RAW Name" value="SE_BOSS_JR_ELEC_SPARK" />
+	</option>
+	<option value="1460">
+		<property name="RAW Name" value="SE_PLY_CROWN_RISE" />
+	</option>
+	<option value="1461">
+		<property name="RAW Name" value="SE_PLY_CROWN_ACC" />
+	</option>
+	<option value="1462">
+		<property name="RAW Name" value="SE_BOSS_JR_CROWN_JR_ACC" />
+	</option>
+	<option value="1463">
+		<property name="RAW Name" value="SE_BOSS_JR_CROWN_JR_HIT_S" />
+	</option>
+	<option value="1464">
+		<property name="RAW Name" value="SE_BOSS_JR_CROWN_JR_HIT_M" />
+	</option>
+	<option value="1465">
+		<property name="RAW Name" value="SE_BOSS_JR_CROWN_JR_HIT_L" />
+	</option>
+	<option value="1466">
+		<property name="RAW Name" value="SE_BOSS_JR_CANNON_APP" />
+	</option>
+	<option value="1467">
+		<property name="RAW Name" value="SE_BOSS_JR_CANNON_APP_FINAL" />
+	</option>
+	<option value="1468">
+		<property name="RAW Name" value="SE_BOSS_JR_CANNON_SHOT" />
+	</option>
+	<option value="1469">
+		<property name="RAW Name" value="SE_BOSS_JR_BOMB_LAND" />
+	</option>
+	<option value="1470">
+		<property name="RAW Name" value="SE_BOSS_JR_BOMB_HIT_WALL" />
+	</option>
+	<option value="1471">
+		<property name="RAW Name" value="SE_BOSS_JR_BOMB_ROLL" />
+	</option>
+	<option value="1472">
+		<property name="RAW Name" value="SE_BOSS_JR_BOMB_SIGN" />
+	</option>
+	<option value="1473">
+		<property name="RAW Name" value="SE_BOSS_JR_BOMB_BOUND" />
+	</option>
+	<option value="1474">
+		<property name="RAW Name" value="SE_BOSS_JR_BOMB_BURST" />
+	</option>
+	<option value="1475">
+		<property name="RAW Name" value="SE_BOSS_SHIP_PRPL" />
+	</option>
+	<option value="1476">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_FOOT" />
+	</option>
+	<option value="1477">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_L_FOOT" />
+	</option>
+	<option value="1478">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_L_FOOT_LAVA" />
+	</option>
+	<option value="1479">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_LAND" />
+	</option>
+	<option value="1480">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_L_LAND" />
+	</option>
+	<option value="1481">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_L_LAND_LAVA" />
+	</option>
+	<option value="1482">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_FIRE_SHOT" />
+	</option>
+	<option value="1483">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_L_FIRE_SHOT" />
+	</option>
+	<option value="1484">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_FIRE_DISAPP" />
+	</option>
+	<option value="1485">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_L_FIRE_DISAPP" />
+	</option>
+	<option value="1486">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_BLOCK_BREAK" />
+	</option>
+	<option value="1487">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_L_SWING" />
+	</option>
+	<option value="1488">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_FLOOR_BREAK" />
+	</option>
+	<option value="1489">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_JITABATA" />
+	</option>
+	<option value="1490">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_FALL" />
+	</option>
+	<option value="1491">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_CRASH" />
+	</option>
+	<option value="1492">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_RUMBLE1" />
+	</option>
+	<option value="1493">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_RUMBLE2" />
+	</option>
+	<option value="1494">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_L_LOSE_RUMBLE" />
+	</option>
+	<option value="1495">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_L_LAVA_SPOUT_SIGN" />
+	</option>
+	<option value="1496">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_L_LAVA_SPOUT" />
+	</option>
+	<option value="1497">
+		<property name="RAW Name" value="SE_BOSS_KOOPA_L_BLOCK_SPLASH" />
+	</option>
+	<option value="1498">
+		<property name="RAW Name" value="SE_MG_CMN_WIN_CLK" />
+	</option>
+	<option value="1499">
+		<property name="RAW Name" value="SE_MG_CMN_WIN_CLOSE" />
+	</option>
+	<option value="1500">
+		<property name="RAW Name" value="SE_MG_CMN_WIN_T_OPEN" />
+	</option>
+	<option value="1501">
+		<property name="RAW Name" value="SE_MG_CMN_FANFARE_BEGIN" />
+	</option>
+	<option value="1502">
+		<property name="RAW Name" value="SE_MG_CMN_FANFARE_GREAT" />
+	</option>
+	<option value="1503">
+		<property name="RAW Name" value="SE_MG_CMN_FANFARE_END" />
+	</option>
+	<option value="1504">
+		<property name="RAW Name" value="SE_MG_IH_MA_ACTIVE_TV" />
+	</option>
+	<option value="1505">
+		<property name="RAW Name" value="SE_MG_IH_LU_ACTIVE_TV" />
+	</option>
+	<option value="1506">
+		<property name="RAW Name" value="SE_MG_IH_KO_ACTIVE_TV" />
+	</option>
+	<option value="1507">
+		<property name="RAW Name" value="SE_MG_IH_KO2_ACTIVE_TV" />
+	</option>
+	<option value="1508">
+		<property name="RAW Name" value="SE_MG_IH_MA_ACTIVE_RC" />
+	</option>
+	<option value="1509">
+		<property name="RAW Name" value="SE_MG_IH_LU_ACTIVE_RC" />
+	</option>
+	<option value="1510">
+		<property name="RAW Name" value="SE_MG_IH_KO_ACTIVE_RC" />
+	</option>
+	<option value="1511">
+		<property name="RAW Name" value="SE_MG_IH_KO2_ACTIVE_RC" />
+	</option>
+	<option value="1512">
+		<property name="RAW Name" value="SE_MG_IH_FENCE_HIT" />
+	</option>
+	<option value="1513">
+		<property name="RAW Name" value="SE_MG_IH_PANEL_HIT" />
+	</option>
+	<option value="1514">
+		<property name="RAW Name" value="SE_MG_IH_PANEL_OPEN" />
+	</option>
+	<option value="1515">
+		<property name="RAW Name" value="SE_MG_IH_NOPAIR_OK" />
+	</option>
+	<option value="1516">
+		<property name="RAW Name" value="SE_MG_IH_PAIR_OK" />
+	</option>
+	<option value="1517">
+		<property name="RAW Name" value="SE_MG_IH_NOPAIR_NG" />
+	</option>
+	<option value="1518">
+		<property name="RAW Name" value="SE_MG_IH_PAIR_NG" />
+	</option>
+	<option value="1519">
+		<property name="RAW Name" value="SE_MG_IH_PAIR_NG_JR" />
+	</option>
+	<option value="1520">
+		<property name="RAW Name" value="SE_MG_IH_ALL_PANEL_OPEN" />
+	</option>
+	<option value="1521">
+		<property name="RAW Name" value="SE_MG_IH_ALL_PANEL_OPEN_FIN" />
+	</option>
+	<option value="1522">
+		<property name="RAW Name" value="SE_MG_IH_WIN_GR_OPEN" />
+	</option>
+	<option value="1523">
+		<property name="RAW Name" value="SE_MG_IH_WIN_BR_OPEN" />
+	</option>
+	<option value="1524">
+		<property name="RAW Name" value="SE_MG_UH_LIFT_START" />
+	</option>
+	<option value="1525">
+		<property name="RAW Name" value="SE_MG_UH_RC_CANNON_MOVE" />
+	</option>
+	<option value="1526">
+		<property name="RAW Name" value="SE_MG_UH_RC_CANNON_SHOT" />
+	</option>
+	<option value="1527">
+		<property name="RAW Name" value="SE_MG_UH_1UP_BALOON_BREAK" />
+	</option>
+	<option value="1528">
+		<property name="RAW Name" value="SE_MG_UH_2UP_BALOON_BREAK" />
+	</option>
+	<option value="1529">
+		<property name="RAW Name" value="SE_MG_UH_3UP_BALOON_BREAK" />
+	</option>
+	<option value="1530">
+		<property name="RAW Name" value="SE_MG_UH_4UP_BALOON_BREAK" />
+	</option>
+	<option value="1531">
+		<property name="RAW Name" value="SE_MG_UH_LIFT_STOP" />
+	</option>
+	<option value="1532">
+		<property name="RAW Name" value="SE_MG_UH_WIN_GR_OPEN" />
+	</option>
+	<option value="1533">
+		<property name="RAW Name" value="SE_MG_UH_WIN_BR_OPEN" />
+	</option>
+	<option value="1534">
+		<property name="RAW Name" value="SE_MG_IH_NICE" />
+	</option>
+	<option value="1535">
+		<property name="RAW Name" value="SE_MG_UH_NICE" />
+	</option>
+	<option value="1536">
+		<property name="RAW Name" value="SE_OBJ_GEN_LOAD" />
+	</option>
+	<option value="1537">
+		<property name="RAW Name" value="SE_OBJ_GEN_LODA_TSUTA" />
+	</option>
+	<option value="1538">
+		<property name="RAW Name" value="SE_OBJ_GEN_LODA_YOUGAN" />
+	</option>
+	<option value="1539">
+		<property name="RAW Name" value="SE_OBJ_GEN_NEW_COURSE" />
+	</option>
+	<option value="1540">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_DIRT" />
+	</option>
+	<option value="1541">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_DIRT_L" />
+	</option>
+	<option value="1542">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_ROCK" />
+	</option>
+	<option value="1543">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_ROCK_L" />
+	</option>
+	<option value="1544">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_ROCK_CLIMB" />
+	</option>
+	<option value="1545">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_ROCK_CLIMB_L" />
+	</option>
+	<option value="1546">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_SAND" />
+	</option>
+	<option value="1547">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_SAND_L" />
+	</option>
+	<option value="1548">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_SNOW" />
+	</option>
+	<option value="1549">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_SNOW_L" />
+	</option>
+	<option value="1550">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_WATER" />
+	</option>
+	<option value="1551">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_WATER_L" />
+	</option>
+	<option value="1552">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_CLOUD" />
+	</option>
+	<option value="1553">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_CLOUD_L" />
+	</option>
+	<option value="1554">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_CARPET" />
+	</option>
+	<option value="1555">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_CARPET_L" />
+	</option>
+	<option value="1556">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_WOOD" />
+	</option>
+	<option value="1557">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_WOOD_L" />
+	</option>
+	<option value="1558">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_PNGN" />
+	</option>
+	<option value="1559">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_PNGN_L" />
+	</option>
+	<option value="1560">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_YOSHI" />
+	</option>
+	<option value="1561">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_YOSHI_L" />
+	</option>
+	<option value="1562">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_HASHIGO_NAWA" />
+	</option>
+	<option value="1563">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_HASHIGO_NAWA_L" />
+	</option>
+	<option value="1564">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_HASHIGO_FE" />
+	</option>
+	<option value="1565">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_CS_HASHIGO_FE_L" />
+	</option>
+	<option value="1566">
+		<property name="RAW Name" value="SE_PLY_CS_JUMP" />
+	</option>
+	<option value="1567">
+		<property name="RAW Name" value="SE_PLY_CS_JUMP_S" />
+	</option>
+	<option value="1568">
+		<property name="RAW Name" value="SE_PLY_CS_JUMP_SS" />
+	</option>
+	<option value="1569">
+		<property name="RAW Name" value="SE_PLY_CS_DOKAN_IN_OUT" />
+	</option>
+	<option value="1570">
+		<property name="RAW Name" value="SE_PLY_CS_CHANGE_SMALL" />
+	</option>
+	<option value="1571">
+		<property name="RAW Name" value="SE_PLY_CS_SLIP" />
+	</option>
+	<option value="1572">
+		<property name="RAW Name" value="SE_PLY_CS_MOVE_IVY" />
+	</option>
+	<option value="1573">
+		<property name="RAW Name" value="SE_OBJ_CS_PROPELLER" />
+	</option>
+	<option value="1574">
+		<property name="RAW Name" value="SE_OBJ_CS_DOOR_OPEN" />
+	</option>
+	<option value="1575">
+		<property name="RAW Name" value="SE_OBJ_CS_DOOR_OPEN_STRONG" />
+	</option>
+	<option value="1576">
+		<property name="RAW Name" value="SE_OBJ_CS_DOOR_CLOSE" />
+	</option>
+	<option value="1577">
+		<property name="RAW Name" value="SE_OBJ_CS_DOOR_OPEN_WOOD" />
+	</option>
+	<option value="1578">
+		<property name="RAW Name" value="SE_OBJ_CS_DOOR_OPEN_STRONG_WOOD" />
+	</option>
+	<option value="1579">
+		<property name="RAW Name" value="SE_OBJ_CS_DOOR_CLOSE_WOOD" />
+	</option>
+	<option value="1580">
+		<property name="RAW Name" value="SE_OBJ_CS_DOOR_OPEN_KOOPA" />
+	</option>
+	<option value="1581">
+		<property name="RAW Name" value="SE_OBJ_CS_DOOR_OPEN_STRONG_KOOPA" />
+	</option>
+	<option value="1582">
+		<property name="RAW Name" value="SE_OBJ_CS_DOOR_CLOSE_KOOPA" />
+	</option>
+	<option value="1583">
+		<property name="RAW Name" value="SE_OBJ_CS_DOOR_OPEN_PEACH" />
+	</option>
+	<option value="1584">
+		<property name="RAW Name" value="SE_OBJ_CS_DOOR_CLOSE_PEACH" />
+	</option>
+	<option value="1585">
+		<property name="RAW Name" value="SE_OBJ_CS_WINDOW_OPEN_TERESA" />
+	</option>
+	<option value="1586">
+		<property name="RAW Name" value="SE_OBJ_CS_WINDOW_CLOSE_TERESA" />
+	</option>
+	<option value="1587">
+		<property name="RAW Name" value="SE_BOSS_CS_JUMP" />
+	</option>
+	<option value="1588">
+		<property name="RAW Name" value="SE_BOSS_CS_LAND_SHIRO" />
+	</option>
+	<option value="1589">
+		<property name="RAW Name" value="SE_BOSS_CS_INTO_SHIRO" />
+	</option>
+	<option value="1590">
+		<property name="RAW Name" value="SE_PLY_CS_LAND_POINT" />
+	</option>
+	<option value="1591">
+		<property name="RAW Name" value="SE_PLY_CS_LAND_PNGN" />
+	</option>
+	<option value="1592">
+		<property name="RAW Name" value="SE_OBJ_CS_HATA" />
+	</option>
+	<option value="1593">
+		<property name="RAW Name" value="SE_SYS_COURSE_IN" />
+	</option>
+	<option value="1594">
+		<property name="RAW Name" value="SE_OBJ_CS_KINOHOUSE_APP" />
+	</option>
+	<option value="1595">
+		<property name="RAW Name" value="SE_OBJ_CS_KINOHOUSE_DISAPP" />
+	</option>
+	<option value="1596">
+		<property name="RAW Name" value="SE_SYS_KINO_BALLOON" />
+	</option>
+	<option value="1597">
+		<property name="RAW Name" value="SE_SYS_KINO_BALLOON_DISAPP" />
+	</option>
+	<option value="1598">
+		<property name="RAW Name" value="SE_PLY_CSDEMO_KURI_APP" />
+	</option>
+	<option value="1599">
+		<property name="RAW Name" value="SE_PLY_CSDEMO_KURI_LOOK" />
+	</option>
+	<option value="1600">
+		<property name="RAW Name" value="SE_PLY_CSDEMO_KURI_TAKEAWAY" />
+	</option>
+	<option value="1601">
+		<property name="RAW Name" value="SE_PLY_CSDEMO_KURI_COURSE_IN" />
+	</option>
+	<option value="1602">
+		<property name="RAW Name" value="SE_PLY_CS_ENEMY_CONTACT" />
+	</option>
+	<option value="1603">
+		<property name="RAW Name" value="SE_PLY_CS_GOTO_ENEMY_COURSE" />
+	</option>
+	<option value="1604">
+		<property name="RAW Name" value="SE_PLY_CS_PLAYER_BYE" />
+	</option>
+	<option value="1605">
+		<property name="RAW Name" value="SE_EMY_CS_ENEMY_BYE" />
+	</option>
+	<option value="1606">
+		<property name="RAW Name" value="SE_EMY_CS_MOVE_W1_KURIBO" />
+	</option>
+	<option value="1607">
+		<property name="RAW Name" value="SE_EMY_CS_MOVE_W2_SANDHALL" />
+	</option>
+	<option value="1608">
+		<property name="RAW Name" value="SE_EMY_CS_MOVE_W3_ICEBROS" />
+	</option>
+	<option value="1609">
+		<property name="RAW Name" value="SE_EMY_CS_MOVE_W4_PUKU" />
+	</option>
+	<option value="1610">
+		<property name="RAW Name" value="SE_EMY_CS_MOVE_W5_PAKKUN" />
+	</option>
+	<option value="1611">
+		<property name="RAW Name" value="SE_EMY_CS_MOVE_W6_KILLER" />
+	</option>
+	<option value="1612">
+		<property name="RAW Name" value="SE_EMY_CS_MOVE_W7_JUGEM" />
+	</option>
+	<option value="1613">
+		<property name="RAW Name" value="SE_EMY_CS_MOVE_W8_BUBBLE_APP" />
+	</option>
+	<option value="1614">
+		<property name="RAW Name" value="SE_EMY_CS_MOVE_W8_BUBBLE_DISAPP" />
+	</option>
+	<option value="1615">
+		<property name="RAW Name" value="SE_SYS_MAP_VIEW_MODE" />
+	</option>
+	<option value="1616">
+		<property name="RAW Name" value="SE_SYS_MAP_VIEW_QUIT" />
+	</option>
+	<option value="1617">
+		<property name="RAW Name" value="SE_SYS_MAP_VIEW_MOVING" />
+	</option>
+	<option value="1618">
+		<property name="RAW Name" value="SE_OBJ_CS_SWITCH" />
+	</option>
+	<option value="1619">
+		<property name="RAW Name" value="SE_OBJ_CS_BLOCK_GEN" />
+	</option>
+	<option value="1620">
+		<property name="RAW Name" value="SE_OBJ_CS_BLOCK_DISAPP" />
+	</option>
+	<option value="1621">
+		<property name="RAW Name" value="SE_OBJ_CS_IBARA" />
+	</option>
+	<option value="1622">
+		<property name="RAW Name" value="SE_EMY_CS_KILLER" />
+	</option>
+	<option value="1623">
+		<property name="RAW Name" value="SE_OBJ_CS_DOKAN" />
+	</option>
+	<option value="1624">
+		<property name="RAW Name" value="SE_BOSS_CS_KAMECK_FLY" />
+	</option>
+	<option value="1625">
+		<property name="RAW Name" value="SE_BOSS_CS_KAMECK_FLY_SHIP" />
+	</option>
+	<option value="1626">
+		<property name="RAW Name" value="SE_BOSS_CS_KAMECK_FLY_K_CASTLE" />
+	</option>
+	<option value="1627">
+		<property name="RAW Name" value="SE_OBJ_CS_K_CASTLE_RUMBLE" />
+	</option>
+	<option value="1628">
+		<property name="RAW Name" value="SE_OBJ_CS_MOUNTAIN_DISAPP" />
+	</option>
+	<option value="1629">
+		<property name="RAW Name" value="SE_OBJ_CS_K_CASTLE_BRIDGE_APP" />
+	</option>
+	<option value="1630">
+		<property name="RAW Name" value="SE_OBJ_CS_K_CASTLE_BRIDGE_APP_F" />
+	</option>
+	<option value="1631">
+		<property name="RAW Name" value="SE_SYS_SELECT_WORLD" />
+	</option>
+	<option value="1632">
+		<property name="RAW Name" value="SE_SYS_CURSOR_REPEAT" />
+	</option>
+	<option value="1633">
+		<property name="RAW Name" value="SE_OBJ_CS_KINOPIO_HERE" />
+	</option>
+	<option value="1634">
+		<property name="RAW Name" value="SE_SYS_GEN_W9" />
+	</option>
+	<option value="1635">
+		<property name="RAW Name" value="SE_BOSS_CS_JR_JUMP_S" />
+	</option>
+	<option value="1636">
+		<property name="RAW Name" value="SE_BOSS_CS_JR_JUMP_L" />
+	</option>
+	<option value="1637">
+		<property name="RAW Name" value="SE_BOSS_CS_JR_LAND" />
+	</option>
+	<option value="1638">
+		<property name="RAW Name" value="SE_BOSS_CS_JR_FOOT" />
+	</option>
+	<option value="1639">
+		<property name="RAW Name" value="SE_EMY_CS_TERESA_BRING_IT" />
+	</option>
+	<option value="1640">
+		<property name="RAW Name" value="SE_EMY_CS_TERESA_BEAT_YOU" />
+	</option>
+	<option value="1641">
+		<property name="RAW Name" value="SE_PLY_CS_CHANGE_BIG" />
+	</option>
+	<option value="1642">
+		<property name="RAW Name" value="SE_PLY_CS_CHANGE_PRPL" />
+	</option>
+	<option value="1643">
+		<property name="RAW Name" value="SE_PLY_CS_CHANGE_PNGN" />
+	</option>
+	<option value="1644">
+		<property name="RAW Name" value="SE_PLY_CS_CHANGE_MAME" />
+	</option>
+	<option value="1645">
+		<property name="RAW Name" value="SE_PLY_CS_CHANGE_STAR" />
+	</option>
+	<option value="1646">
+		<property name="RAW Name" value="SE_PLY_CS_CHANGE_MAME_STAR" />
+	</option>
+	<option value="1647">
+		<property name="RAW Name" value="SE_BGM_CS_STAR" />
+	</option>
+	<option value="1648">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_MENU" />
+	</option>
+	<option value="1649">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_DOKAN_MENU" />
+	</option>
+	<option value="1650">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_SAND_MENU" />
+	</option>
+	<option value="1651">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_SNOW_MENU" />
+	</option>
+	<option value="1652">
+		<property name="RAW Name" value="SE_PLY_ARRIVE_POINT" />
+	</option>
+	<option value="1653">
+		<property name="RAW Name" value="SE_PLY_MAP_JUMP" />
+	</option>
+	<option value="1654">
+		<property name="RAW Name" value="SE_EMY_HMBR_WALK" />
+	</option>
+	<option value="1655">
+		<property name="RAW Name" value="SE_EMY_MAP_KPJR_FOOT" />
+	</option>
+	<option value="1656">
+		<property name="RAW Name" value="SE_EMY_MAP_KPJR_JUMP" />
+	</option>
+	<option value="1657">
+		<property name="RAW Name" value="SE_OBJ_PTBK_MOVE" />
+	</option>
+	<option value="1658">
+		<property name="RAW Name" value="SE_OBJ_SHIRO_BOYON" />
+	</option>
+	<option value="1659">
+		<property name="RAW Name" value="SE_OBJ_STAR_COIN_BOARD" />
+	</option>
+	<option value="1660">
+		<property name="RAW Name" value="SE_OBJ_KINO_HOUSE_APP" />
+	</option>
+	<option value="1661">
+		<property name="RAW Name" value="SE_OBJ_KINO_HOUSE_DISAPP" />
+	</option>
+	<option value="1662">
+		<property name="RAW Name" value="SE_OBJ_NEW_ROAD" />
+	</option>
+	<option value="1663">
+		<property name="RAW Name" value="SE_OBJ_BRIDGE_APP" />
+	</option>
+	<option value="1664">
+		<property name="RAW Name" value="SE_OBJ_YOUGAN_ABUKU" />
+	</option>
+	<option value="1665">
+		<property name="RAW Name" value="SE_OBJ_BOARD_OFF" />
+	</option>
+	<option value="1666">
+		<property name="RAW Name" value="SE_OBJ_BOARD_DISAPP" />
+	</option>
+	<option value="1667">
+		<property name="RAW Name" value="SE_VOC_MAP_P_HELP" />
+	</option>
+	<option value="1668">
+		<property name="RAW Name" value="SE_AMB_EARTHQUAKE" />
+	</option>
+	<option value="1669">
+		<property name="RAW Name" value="SE_AMB_SEA_WAVE" />
+	</option>
+	<option value="1670">
+		<property name="RAW Name" value="SE_AMB_SABAKU_WIND" />
+	</option>
+	<option value="1671">
+		<property name="RAW Name" value="SE_AMB_YOUGAN" />
+	</option>
+	<option value="1672">
+		<property name="RAW Name" value="SE_SYS_COURSE_IN_L" />
+	</option>
+	<option value="1673">
+		<property name="RAW Name" value="SE_SYS_ZOOM_OUT" />
+	</option>
+	<option value="1674">
+		<property name="RAW Name" value="SE_SYS_ZOOM_IN" />
+	</option>
+	<option value="1675">
+		<property name="RAW Name" value="SE_SYS_WORLD_CHG" />
+	</option>
+	<option value="1676">
+		<property name="RAW Name" value="SE_SYS_NEW_POINT" />
+	</option>
+	<option value="1677">
+		<property name="RAW Name" value="SE_SYS_NEW_POINT_END" />
+	</option>
+	<option value="1678">
+		<property name="RAW Name" value="SE_SYS_SCROLL_COMAND" />
+	</option>
+	<option value="1679">
+		<property name="RAW Name" value="SE_SYS_WINDOW_OPEN" />
+	</option>
+	<option value="1680">
+		<property name="RAW Name" value="SE_SYS_WINDOW_CLOSE" />
+	</option>
+	<option value="1681">
+		<property name="RAW Name" value="SE_SYS_NINTENDO_LOGO" />
+	</option>
+	<option value="1682">
+		<property name="RAW Name" value="SE_SYS_CAMERA_MOVE" />
+	</option>
+	<option value="1683">
+		<property name="RAW Name" value="SE_SYS_STAR_COIN_DEC" />
+	</option>
+	<option value="1684">
+		<property name="RAW Name" value="SE_SYS_WARNING" />
+	</option>
+	<option value="1685">
+		<property name="RAW Name" value="SE_SYS_SLEEP_IN" />
+	</option>
+	<option value="1686">
+		<property name="RAW Name" value="SE_SYS_SLEEP_OUT" />
+	</option>
+	<option value="1687">
+		<property name="RAW Name" value="SE_OBJ_MAP_FLAG_HATAMEKI" />
+	</option>
+	<option value="1688">
+		<property name="RAW Name" value="SE_EMY_WANWAN_GACHI" />
+	</option>
+	<option value="1689">
+		<property name="RAW Name" value="SE_OBJ_LIFT_TENBIN" />
+	</option>
+	<option value="1690">
+		<property name="RAW Name" value="SE_OBJ_TURN_LIFT" />
+	</option>
+	<option value="1691">
+		<property name="RAW Name" value="SE_OBJ_FLIPPER" />
+	</option>
+	<option value="1692">
+		<property name="RAW Name" value="SE_OBJ_BIG_ROCK_ROLL" />
+	</option>
+	<option value="1693">
+		<property name="RAW Name" value="SE_OBJ_BIG_ROCK_CRASH" />
+	</option>
+	<option value="1694">
+		<property name="RAW Name" value="SE_EMY_KPJR_DAMAGE_V" />
+	</option>
+	<option value="1695">
+		<property name="RAW Name" value="SE_EMY_KPJR_CRY_V" />
+	</option>
+	<option value="1696">
+		<property name="RAW Name" value="SE_EMY_KPJR_UH" />
+	</option>
+	<option value="1697">
+		<property name="RAW Name" value="SE_EMY_KPJR_LAND" />
+	</option>
+	<option value="1698">
+		<property name="RAW Name" value="SE_EMY_KPJR_JITABATA" />
+	</option>
+	<option value="1699">
+		<property name="RAW Name" value="SE_EMY_KPJR_GUARD_ON" />
+	</option>
+	<option value="1700">
+		<property name="RAW Name" value="SE_EMY_KPJR_GUARDING" />
+	</option>
+	<option value="1701">
+		<property name="RAW Name" value="SE_EMY_KPJR_GUARD_OFF" />
+	</option>
+	<option value="1702">
+		<property name="RAW Name" value="SE_EMY_KPJR_DAMAGE" />
+	</option>
+	<option value="1703">
+		<property name="RAW Name" value="SE_EMY_KPJR_PURUPURU" />
+	</option>
+	<option value="1704">
+		<property name="RAW Name" value="SE_EMY_KURI_CHANGE_BIG" />
+	</option>
+	<option value="1705">
+		<property name="RAW Name" value="SE_EMY_BIG_KURIBO_WALK" />
+	</option>
+	<option value="1706">
+		<property name="RAW Name" value="SE_EMY_BIG_KURIBO_DAMAGE" />
+	</option>
+	<option value="1707">
+		<property name="RAW Name" value="SE_EMY_BIG_KURIBO_DOWN" />
+	</option>
+	<option value="1708">
+		<property name="RAW Name" value="SE_EMY_BIG_KURIBO_DESITION" />
+	</option>
+	<option value="1709">
+		<property name="RAW Name" value="SE_EMY_BIG_KURIBO_SMOKE" />
+	</option>
+	<option value="1710">
+		<property name="RAW Name" value="SE_EMY_BK_FUMARE_BY_HUGE" />
+	</option>
+	<option value="1711">
+		<property name="RAW Name" value="SE_EMY_CHIBI_KURI_WALK" />
+	</option>
+	<option value="1712">
+		<property name="RAW Name" value="SE_EMY_HAMMER" />
+	</option>
+	<option value="1713">
+		<property name="RAW Name" value="SE_EMY_BOOMERANG" />
+	</option>
+	<option value="1714">
+		<property name="RAW Name" value="SE_EMY_PAKKUN_MOUTH_2" />
+	</option>
+	<option value="1715">
+		<property name="RAW Name" value="SE_EMY_PAKKUN_DAMAGE" />
+	</option>
+	<option value="1716">
+		<property name="RAW Name" value="SE_EMY_WAKABA_APP" />
+	</option>
+	<option value="1717">
+		<property name="RAW Name" value="SE_PLY_BURN_DOWN_L" />
+	</option>
+	<option value="1718">
+		<property name="RAW Name" value="SE_OBJ_UKISHIMA_S" />
+	</option>
+	<option value="1719">
+		<property name="RAW Name" value="SE_OBJ_UKISHIMA_L" />
+	</option>
+	<option value="1720">
+		<property name="RAW Name" value="SE_OBJ_BURNER" />
+	</option>
+	<option value="1721">
+		<property name="RAW Name" value="SE_OBJ_BURNER_LEVEL" />
+	</option>
+	<option value="1722">
+		<property name="RAW Name" value="SE_EMY_BATTAN_WALK" />
+	</option>
+	<option value="1723">
+		<property name="RAW Name" value="SE_EMY_BATTAN_FALLDOWN" />
+	</option>
+	<option value="1724">
+		<property name="RAW Name" value="SE_EMY_BATTAN_BREAK" />
+	</option>
+	<option value="1725">
+		<property name="RAW Name" value="SE_EMY_BUBBLE_IN" />
+	</option>
+	<option value="1726">
+		<property name="RAW Name" value="SE_VOC_BIRI" />
+	</option>
+	<option value="1727">
+		<property name="RAW Name" value="SE_VOC_BIRI_L" />
+	</option>
+	<option value="1728">
+		<property name="RAW Name" value="SE_EMY_UTSUBO" />
+	</option>
+	<option value="1729">
+		<property name="RAW Name" value="SE_EMY_BIG_UTSUBO" />
+	</option>
+	<option value="1730">
+		<property name="RAW Name" value="SE_EMY_UTSUBO_POUNCE" />
+	</option>
+	<option value="1731">
+		<property name="RAW Name" value="SE_EMY_MENBO_SHOOT" />
+	</option>
+	<option value="1732">
+		<property name="RAW Name" value="SE_OBJ_BOMB_FLASH" />
+	</option>
+	<option value="1733">
+		<property name="RAW Name" value="SE_OBJ_MENBO_BOMB" />
+	</option>
+	<option value="1734">
+		<property name="RAW Name" value="SE_VOC_BAKU_EATEN" />
+	</option>
+	<option value="1735">
+		<property name="RAW Name" value="SE_VOC_BAKU_EATEN_L" />
+	</option>
+	<option value="1736">
+		<property name="RAW Name" value="SE_AMB_WATER_TORNADO" />
+	</option>
+	<option value="1737">
+		<property name="RAW Name" value="SE_EMY_GAMA_FUMARE" />
+	</option>
+	<option value="1738">
+		<property name="RAW Name" value="SE_EMY_GAMA_LAST" />
+	</option>
+	<option value="1739">
+		<property name="RAW Name" value="SE_EMY_GAMA_JUMP" />
+	</option>
+	<option value="1740">
+		<property name="RAW Name" value="SE_EMY_GASA_APPEAR" />
+	</option>
+	<option value="1741">
+		<property name="RAW Name" value="SE_EMY_GASA_FOOT" />
+	</option>
+	<option value="1742">
+		<property name="RAW Name" value="SE_EMY_KABO_HIBI" />
+	</option>
+	<option value="1743">
+		<property name="RAW Name" value="SE_EMY_KABO_BREAK" />
+	</option>
+	<option value="1744">
+		<property name="RAW Name" value="SE_EMY_FO_FADE_AWAY" />
+	</option>
+	<option value="1745">
+		<property name="RAW Name" value="SE_EMY_FO_GLOW_UP" />
+	</option>
+	<option value="1746">
+		<property name="RAW Name" value="SE_EMY_FO_CHASE" />
+	</option>
+	<option value="1747">
+		<property name="RAW Name" value="SE_EMY_KNUCKLER" />
+	</option>
+	<option value="1748">
+		<property name="RAW Name" value="SE_OBJ_LIFT_GATAGATA" />
+	</option>
+	<option value="1749">
+		<property name="RAW Name" value="SE_OBJ_LIFT_KYUKOKA" />
+	</option>
+	<option value="1750">
+		<property name="RAW Name" value="SE_OBJ_LIFT_KYUJYOSHO" />
+	</option>
+	<option value="1751">
+		<property name="RAW Name" value="SE_OBJ_MANHOLE_LAND" />
+	</option>
+	<option value="1752">
+		<property name="RAW Name" value="SE_OBJ_MANHOLE_ROLLING" />
+	</option>
+	<option value="1753">
+		<property name="RAW Name" value="SE_PLY_PUNCH" />
+	</option>
+	<option value="1754">
+		<property name="RAW Name" value="SE_PLY_KICK" />
+	</option>
+	<option value="1755">
+		<property name="RAW Name" value="SE_PLY_GLIDING" />
+	</option>
+	<option value="1756">
+		<property name="RAW Name" value="SE_PLY_GLIDING_END" />
+	</option>
+	<option value="1757">
+		<property name="RAW Name" value="SE_OBJ_PUFF_MUSH" />
+	</option>
+	<option value="1758">
+		<property name="RAW Name" value="SE_OBJ_PUFF_MUSH_2" />
+	</option>
+	<option value="1759">
+		<property name="RAW Name" value="SE_OBJ_PUFF_MUSH_3" />
+	</option>
+	<option value="1760">
+		<property name="RAW Name" value="SE_OBJ_PUFF_MUSH_4" />
+	</option>
+	<option value="1761">
+		<property name="RAW Name" value="SE_OBJ_PUFF_MUSH_LAST" />
+	</option>
+	<option value="1762">
+		<property name="RAW Name" value="SE_OBJ_STORE_STAR_COIN" />
+	</option>
+	<option value="1763">
+		<property name="RAW Name" value="SE_OBJ_BLOCK_KICK" />
+	</option>
+	<option value="1764">
+		<property name="RAW Name" value="SE_OBJ_GET_THUNDER" />
+	</option>
+	<option value="1765">
+		<property name="RAW Name" value="SE_OBJ_GOAL_HANABI" />
+	</option>
+	<option value="1766">
+		<property name="RAW Name" value="SE_OBJ_COIN_SUBSTANT" />
+	</option>
+	<option value="1767">
+		<property name="RAW Name" value="SE_OBJ_TATE_KINO_DOWN" />
+	</option>
+	<option value="1768">
+		<property name="RAW Name" value="SE_OBJ_YOKO_KINO_EXPAND" />
+	</option>
+	<option value="1769">
+		<property name="RAW Name" value="SE_OBJ_YOKO_KINO_CONST" />
+	</option>
+	<option value="1770">
+		<property name="RAW Name" value="SE_OBJ_SISO_KINO" />
+	</option>
+	<option value="1771">
+		<property name="RAW Name" value="SE_OBJ_TATE_KINO_UP" />
+	</option>
+	<option value="1772">
+		<property name="RAW Name" value="SE_OBJ_BLOCK_EXTEND" />
+	</option>
+	<option value="1773">
+		<property name="RAW Name" value="SE_EMY_FUWA_FUMU" />
+	</option>
+	<option value="1774">
+		<property name="RAW Name" value="SE_EMY_DOWN_BY_PUNCH" />
+	</option>
+	<option value="1775">
+		<property name="RAW Name" value="SE_EMY_HONE" />
+	</option>
+	<option value="1776">
+		<property name="RAW Name" value="SE_VOC_MA_GET_ITEM" />
+	</option>
+	<option value="1777">
+		<property name="RAW Name" value="SE_VOC_MA_GET_ITEM_2" />
+	</option>
+	<option value="1778">
+		<property name="RAW Name" value="SE_SYS_SLOT" />
+	</option>
+	<option value="1779">
+		<property name="RAW Name" value="SE_SYS_CORRECT" />
+	</option>
+	<option value="1780">
+		<property name="RAW Name" value="SE_SYS_INCORRECT" />
+	</option>
+	<option value="1781">
+		<property name="RAW Name" value="SE_OBJ_KOOPA_CORPSE" />
+	</option>
+	<option value="1782">
+		<property name="RAW Name" value="SE_OBJ_BOARD_REVERSE" />
+	</option>
+	<option value="1783">
+		<property name="RAW Name" value="SE_OBJ_SPRAY" />
+	</option>
+	<option value="1784">
+		<property name="RAW Name" value="SE_OBJ_GOOD_ITEM_APPEAR" />
+	</option>
+	<option value="1785">
+		<property name="RAW Name" value="SE_AMB_SUII_JYOSHO" />
+	</option>
+	<option value="1786">
+		<property name="RAW Name" value="SE_AMB_SUII_KAKOU" />
+	</option>
+	<option value="1787">
+		<property name="RAW Name" value="SE_PLY_WDOKAN_SHOT" />
+	</option>
+	<option value="1788">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_H" />
+	</option>
+	<option value="1789">
+		<property name="RAW Name" value="SE_PLY_JUMP_4" />
+	</option>
+	<option value="1790">
+		<property name="RAW Name" value="SE_PLY_HIP_ATTACK_H" />
+	</option>
+	<option value="1791">
+		<property name="RAW Name" value="SE_PLY_KOURA_QUAT" />
+	</option>
+	<option value="1792">
+		<property name="RAW Name" value="SE_PLY_CHANGE_NORMAL" />
+	</option>
+	<option value="1793">
+		<property name="RAW Name" value="SE_PLY_CHANGE_BIGGEST" />
+	</option>
+	<option value="1794">
+		<property name="RAW Name" value="SE_PLY_KOURA_SLIDE" />
+	</option>
+	<option value="1795">
+		<property name="RAW Name" value="SE_PLY_WALK_ON_ROPE" />
+	</option>
+	<option value="1796">
+		<property name="RAW Name" value="SE_PLY_CLASH" />
+	</option>
+	<option value="1797">
+		<property name="RAW Name" value="SE_PLY_CLASH_2" />
+	</option>
+	<option value="1798">
+		<property name="RAW Name" value="SE_OBJ_TRAMPOLINE_JUMP" />
+	</option>
+	<option value="1799">
+		<property name="RAW Name" value="SE_OBJ_TRAMPOLINE_JUMP2" />
+	</option>
+	<option value="1800">
+		<property name="RAW Name" value="SE_PLY_SPIN_JUMP" />
+	</option>
+	<option value="1801">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_N" />
+	</option>
+	<option value="1802">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_F" />
+	</option>
+	<option value="1803">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_SD" />
+	</option>
+	<option value="1804">
+		<property name="RAW Name" value="SE_PLY_FOOTNOTE_SN" />
+	</option>
+	<option value="1805">
+		<property name="RAW Name" value="SE_PLY_STAR_ATTACK" />
+	</option>
+	<option value="1806">
+		<property name="RAW Name" value="SE_OBJ_DOKAN_BREAK" />
+	</option>
+	<option value="1807">
+		<property name="RAW Name" value="SE_EMY_HANABI_IGNITION" />
+	</option>
+	<option value="1808">
+		<property name="RAW Name" value="SE_EMY_HANABI_TAME" />
+	</option>
+	<option value="1809">
+		<property name="RAW Name" value="SE_OBJ_HANABI_HYU" />
+	</option>
+	<option value="1810">
+		<property name="RAW Name" value="SE_OBJ_HANABI_DON" />
+	</option>
+	<option value="1811">
+		<property name="RAW Name" value="SE_OBJ_ROCK" />
+	</option>
+	<option value="1812">
+		<property name="RAW Name" value="SE_AMB_ERUPT" />
+	</option>
+	<option value="1813">
+		<property name="RAW Name" value="SE_PLY_WARP" />
+	</option>
+	<option value="1814">
+		<property name="RAW Name" value="SE_PLY_FB_FROM_LUIGI" />
+	</option>
+	<option value="1815">
+		<property name="RAW Name" value="SE_PLY_FB_FROM_MARIO" />
+	</option>
+	<option value="1816">
+		<property name="RAW Name" value="SE_PLY_PLAYER_FUMU" />
+	</option>
+	<option value="1817">
+		<property name="RAW Name" value="SE_OBJ_DOKAN_APP" />
+	</option>
+	<option value="1818">
+		<property name="RAW Name" value="SE_EMY_FUWA_FUMU_L" />
+	</option>
+	<option value="1819">
+		<property name="RAW Name" value="SE_SYS_VS_COUNT" />
+	</option>
+	<option value="1820">
+		<property name="RAW Name" value="SE_SYS_VS_COUNT_LAST" />
+	</option>
+	<option value="1821">
+		<property name="RAW Name" value="SE_SYS_VS_STAR_GET" />
+	</option>
+	<option value="1822">
+		<property name="RAW Name" value="SE_SYS_VS_STAR_DENIED" />
+	</option>
+	<option value="1823">
+		<property name="RAW Name" value="SE_SYS_VS_STAR_APP" />
+	</option>
+	<option value="1824">
+		<property name="RAW Name" value="SE_EMY_ELCJ_PRE_DIVE" />
+	</option>
+	<option value="1825">
+		<property name="RAW Name" value="SE_EMY_ELCJ_DIVE" />
+	</option>
+	<option value="1826">
+		<property name="RAW Name" value="SE_EMY_PIPO_BOUND" />
+	</option>
+	<option value="1827">
+		<property name="RAW Name" value="SE_EMY_ELCJ_APP" />
+	</option>
+	<option value="1828">
+		<property name="RAW Name" value="SE_EMY_ELCJ_CHARGE" />
+	</option>
+	<option value="1829">
+		<property name="RAW Name" value="SE_EMY_ELCJ_THROW" />
+	</option>
+	<option value="1830">
+		<property name="RAW Name" value="SE_EMY_ELCJ_DOWN" />
+	</option>
+	<option value="1831">
+		<property name="RAW Name" value="SE_AMB_THUNDER" />
+	</option>
+	<option value="1832">
+		<property name="RAW Name" value="SE_PLY_JUMP_OUT" />
+	</option>
+	<option value="1833">
+		<property name="RAW Name" value="SE_AMB_TORNADO" />
+	</option>
+	<option value="1834">
+		<property name="RAW Name" value="SE_VOC_MA_WDOKAN_SHOT" />
+	</option>
+	<option value="1835">
+		<property name="RAW Name" value="SE_VOC_MA_SPIN_JUMP" />
+	</option>
+	<option value="1836">
+		<property name="RAW Name" value="SE_VOC_MA_CHANGE_BIGGEST" />
+	</option>
+	<option value="1837">
+		<property name="RAW Name" value="SE_VOC_LU_WDOKAN_SHOT" />
+	</option>
+	<option value="1838">
+		<property name="RAW Name" value="SE_VOC_LU_SPIN_JUMP" />
+	</option>
+	<option value="1839">
+		<property name="RAW Name" value="SE_VOC_LU_CHANGE_BIGGEST" />
+	</option>
+	<option value="1840">
+		<property name="RAW Name" value="SE_OBJ_STICK" />
+	</option>
+	<option value="1841">
+		<property name="RAW Name" value="SE_OBJ_ITEM_SLOT" />
+	</option>
+	<option value="1842">
+		<property name="RAW Name" value="SE_OBJ_CARD_SET" />
+	</option>
+	<option value="1843">
+		<property name="RAW Name" value="SE_OBJ_BLOCK_SET" />
+	</option>
+	<option value="1844">
+		<property name="RAW Name" value="SE_OBJ_BLOCK_SHUFFLE" />
+	</option>
+	<option value="1845">
+		<property name="RAW Name" value="SE_EMY_KOOPA_LAUGH" />
+	</option>
+	<option value="1846">
+		<property name="RAW Name" value="SE_SYS_KABE_CHG" />
+	</option>
+	<option value="1847">
+		<property name="RAW Name" value="STRM_BGM_CHIKA_FAST" />
+	</option>
+	<option value="1848">
+		<property name="RAW Name" value="STRM_BGM_YUKI" />
+	</option>
+	<option value="1849">
+		<property name="RAW Name" value="STRM_BGM_YUKI_FAST" />
+	</option>
+	<option value="1850">
+		<property name="RAW Name" value="STRM_BGM_CHIJOU" />
+	</option>
+	<option value="1851">
+		<property name="RAW Name" value="STRM_BGM_CHIKA" />
+	</option>
+	<option value="1852">
+		<property name="RAW Name" value="STRM_BGM_CHIJOU_FAST" />
+	</option>
+	<option value="1853">
+		<property name="RAW Name" value="STRM_BGM_ATHLETIC" />
+	</option>
+	<option value="1854">
+		<property name="RAW Name" value="STRM_BGM_ATHLETIC_FAST" />
+	</option>
+	<option value="1855">
+		<property name="RAW Name" value="STRM_BGM_SELECT_W1" />
+	</option>
+	<option value="1856">
+		<property name="RAW Name" value="STRM_BGM_SELECT_W2" />
+	</option>
+	<option value="1857">
+		<property name="RAW Name" value="STRM_BGM_SELECT_W3" />
+	</option>
+	<option value="1858">
+		<property name="RAW Name" value="STRM_BGM_SELECT_W4" />
+	</option>
+	<option value="1859">
+		<property name="RAW Name" value="STRM_BGM_SELECT_W5" />
+	</option>
+	<option value="1860">
+		<property name="RAW Name" value="STRM_BGM_SELECT_W6" />
+	</option>
+	<option value="1861">
+		<property name="RAW Name" value="STRM_BGM_SELECT_W7" />
+	</option>
+	<option value="1862">
+		<property name="RAW Name" value="STRM_BGM_SELECT_W8" />
+	</option>
+	<option value="1863">
+		<property name="RAW Name" value="STRM_BGM_SELECT_W9" />
+	</option>
+	<option value="1864">
+		<property name="RAW Name" value="STRM_BGM_TITLE" />
+	</option>
+	<option value="1865">
+		<property name="RAW Name" value="STRM_BGM_MENU" />
+	</option>
+	<option value="1866">
+		<property name="RAW Name" value="STRM_BGM_SWITCH" />
+	</option>
+	<option value="1867">
+		<property name="RAW Name" value="STRM_BGM_COURSE_OUT_ALL_BUBBLE" />
+	</option>
+	<option value="1868">
+		<property name="RAW Name" value="STRM_BGM_DEMO_ED" />
+	</option>
+	<option value="1869">
+		<property name="RAW Name" value="STRM_BGM_DEMO_OMAKE" />
+	</option>
+	<option value="1870">
+		<property name="RAW Name" value="STRM_BGM_DOWN" />
+	</option>
+	<option value="1871">
+		<property name="RAW Name" value="STRM_BGM_GAMEOVER" />
+	</option>
+	<option value="1872">
+		<property name="RAW Name" value="STRM_BGM_COURSE_CLEAR" />
+	</option>
+	<option value="1873">
+		<property name="RAW Name" value="STRM_BGM_COURSE_CLEAR_ZORO" />
+	</option>
+	<option value="1874">
+		<property name="RAW Name" value="STRM_BGM_KAZAN" />
+	</option>
+	<option value="1875">
+		<property name="RAW Name" value="STRM_BGM_KAZAN_FAST" />
+	</option>
+	<option value="1876">
+		<property name="RAW Name" value="STRM_BGM_KAZAN_TIKA" />
+	</option>
+	<option value="1877">
+		<property name="RAW Name" value="STRM_BGM_KAZAN_TIKA_FAST" />
+	</option>
+	<option value="1878">
+		<property name="RAW Name" value="STRM_BGM_TORIDE" />
+	</option>
+	<option value="1879">
+		<property name="RAW Name" value="STRM_BGM_TORIDE_FAST" />
+	</option>
+	<option value="1880">
+		<property name="RAW Name" value="STRM_BGM_SHIRO_BOSS" />
+	</option>
+	<option value="1881">
+		<property name="RAW Name" value="STRM_BGM_SHIRO_BOSS_FAST" />
+	</option>
+	<option value="1882">
+		<property name="RAW Name" value="STRM_BGM_SHIRO_BOSS_CLEAR" />
+	</option>
+	<option value="1883">
+		<property name="RAW Name" value="STRM_BGM_HIKOUSEN" />
+	</option>
+	<option value="1884">
+		<property name="RAW Name" value="STRM_BGM_HIKOUSEN_FAST" />
+	</option>
+	<option value="1885">
+		<property name="RAW Name" value="STRM_BGM_HIKOUSENBOSS_CREAR" />
+	</option>
+	<option value="1886">
+		<property name="RAW Name" value="STRM_BGM_MINIGAME" />
+	</option>
+	<option value="1887">
+		<property name="RAW Name" value="STRM_BGM_MINIGAME_FANFARE_BAD" />
+	</option>
+	<option value="1888">
+		<property name="RAW Name" value="STRM_BGM_MINIGAME_FANFARE_GOOD" />
+	</option>
+	<option value="1889">
+		<property name="RAW Name" value="STRM_BGM_OBAKE" />
+	</option>
+	<option value="1890">
+		<property name="RAW Name" value="STRM_BGM_OBAKE_FAST" />
+	</option>
+	<option value="1891">
+		<property name="RAW Name" value="STRM_BGM_SABAKU" />
+	</option>
+	<option value="1892">
+		<property name="RAW Name" value="STRM_BGM_SABAKU_FAST" />
+	</option>
+	<option value="1893">
+		<property name="RAW Name" value="STRM_BGM_SHIRO" />
+	</option>
+	<option value="1894">
+		<property name="RAW Name" value="STRM_BGM_SHIRO_FAST" />
+	</option>
+	<option value="1895">
+		<property name="RAW Name" value="STRM_BGM_STAR" />
+	</option>
+	<option value="1896">
+		<property name="RAW Name" value="STRM_BGM_STAR_FAST" />
+	</option>
+	<option value="1897">
+		<property name="RAW Name" value="STRM_BGM_TORIDE_BOSS" />
+	</option>
+	<option value="1898">
+		<property name="RAW Name" value="STRM_BGM_TORIDE_BOSS_FAST" />
+	</option>
+	<option value="1899">
+		<property name="RAW Name" value="STRM_BGM_LAST_CASTLE_APPEAR" />
+	</option>
+	<option value="1900">
+		<property name="RAW Name" value="STRM_BGM_ROAD_TO_LAST" />
+	</option>
+	<option value="1901">
+		<property name="RAW Name" value="STRM_BGM_ROAD_TO_LAST_FAST" />
+	</option>
+	<option value="1902">
+		<property name="RAW Name" value="STRM_BGM_LAST_BOSS" />
+	</option>
+	<option value="1903">
+		<property name="RAW Name" value="STRM_BGM_LAST_BOSS_FAST" />
+	</option>
+	<option value="1904">
+		<property name="RAW Name" value="STRM_BGM_LAST_BOSS_CLEAR" />
+	</option>
+	<option value="1905">
+		<property name="RAW Name" value="STRM_BGM_LAST_BOSS_HARP" />
+	</option>
+	<option value="1906">
+		<property name="RAW Name" value="STRM_BGM_LAST_BOSS2" />
+	</option>
+	<option value="1907">
+		<property name="RAW Name" value="STRM_BGM_LAST_BOSS2_FAST" />
+	</option>
+	<option value="1908">
+		<property name="RAW Name" value="STRM_BGM_LAST_BOSS2_CLEAR" />
+	</option>
+	<option value="1909">
+		<property name="RAW Name" value="STRM_BGM_LAST_BOSS2_HARP" />
+	</option>
+	<option value="1910">
+		<property name="RAW Name" value="STRM_BGM_TORIDEBOSS_CREAR" />
+	</option>
+	<option value="1911">
+		<property name="RAW Name" value="STRM_BGM_WATER" />
+	</option>
+	<option value="1912">
+		<property name="RAW Name" value="STRM_BGM_WATER_FAST" />
+	</option>
+	<option value="1913">
+		<property name="RAW Name" value="STRM_BGM_HIKOUSEN_BOSS" />
+	</option>
+	<option value="1914">
+		<property name="RAW Name" value="STRM_BGM_HIKOUSEN_BOSS_FAST" />
+	</option>
+	<option value="1915">
+		<property name="RAW Name" value="STRM_BGM_MORI" />
+	</option>
+	<option value="1916">
+		<property name="RAW Name" value="STRM_BGM_MORI_FAST" />
+	</option>
+	<option value="1917">
+		<property name="RAW Name" value="STRM_BGM_SANBASHI" />
+	</option>
+	<option value="1918">
+		<property name="RAW Name" value="STRM_BGM_SANBASHI_FAST" />
+	</option>
+	<option value="1919">
+		<property name="RAW Name" value="STRM_BGM_MG_BTL" />
+	</option>
+	<option value="1920">
+		<property name="RAW Name" value="STRM_BGM_STAR_COIN_CMPLT_ALL" />
+	</option>
+	<option value="1921">
+		<property name="RAW Name" value="STRM_BGM_STAR_COIN_CMPLT_WORLD" />
+	</option>
+	<option value="1922">
+		<property name="RAW Name" value="STRM_BGM_ALL_CMPLT_5STARS" />
+	</option>
+	<option value="1923">
+		<property name="RAW Name" value="STRM_BGM_MG_BTL_END" />
+	</option>
+	<option value="1924">
+		<property name="RAW Name" value="STRM_BGM_PEACH_CASTLE" />
+	</option>
+	<option value="1925">
+		<property name="RAW Name" value="STRM_BGM_BONUS" />
+	</option>
+	<option value="1926">
+		<property name="RAW Name" value="STRM_BGM_BONUS_FAST" />
+	</option>
+	<option value="1927">
+		<property name="RAW Name" value="STRM_BGM_STAFF_CREDIT" />
+	</option>
+	<option value="1928">
+		<property name="RAW Name" value="STRM_BGM_MULTI_FAIL" />
+	</option>
+	<option value="1929">
+		<property name="RAW Name" value="STRM_BGM_MULTI_RESULT" />
+	</option>
+	<option value="1930">
+		<property name="RAW Name" value="STRM_BGM_MG_BTL_END2" />
+	</option>
+	<option value="1931">
+		<property name="RAW Name" value="STRM_BGM_DEMO_OP" />
+	</option>
+	<option value="1932">
+		<property name="RAW Name" value="STRM_BGM_HIKOUSEN_ROUKA" />
+	</option>
+	<option value="1933">
+		<property name="RAW Name" value="STRM_BGM_HIKOUSEN_ROUKA_FAST" />
+	</option>
+	<option value="1934">
+		<property name="RAW Name" value="SEQ_BGM_YUKI_V" />
+	</option>
+	<option value="1935">
+		<property name="RAW Name" value="SEQ_BGM_YUKI_FAST_V" />
+	</option>
+	<option value="1936">
+		<property name="RAW Name" value="SEQ_BGM_CHIJOU_V" />
+	</option>
+	<option value="1937">
+		<property name="RAW Name" value="SEQ_BGM_CHIJOU_FAST_V" />
+	</option>
+	<option value="1938">
+		<property name="RAW Name" value="SEQ_BGM_CHIKA_V" />
+	</option>
+	<option value="1939">
+		<property name="RAW Name" value="SEQ_BGM_CHIKA_FAST_V" />
+	</option>
+	<option value="1940">
+		<property name="RAW Name" value="SEQ_BGM_ATHLETIC_V" />
+	</option>
+	<option value="1941">
+		<property name="RAW Name" value="SEQ_BGM_ATHLETIC_FAST_V" />
+	</option>
+	<option value="1942">
+		<property name="RAW Name" value="SEQ_BGM_WATER_V" />
+	</option>
+	<option value="1943">
+		<property name="RAW Name" value="SEQ_BGM_SABAKU_V" />
+	</option>
+	<option value="1944">
+		<property name="RAW Name" value="SEQ_BGM_WATER_FAST_V" />
+	</option>
+	<option value="1945">
+		<property name="RAW Name" value="SEQ_BGM_SABAKU_FAST_V" />
+	</option>
+	<option value="1946">
+		<property name="RAW Name" value="SEQ_BGM_SHIRO_V" />
+	</option>
+	<option value="1947">
+		<property name="RAW Name" value="SEQ_BGM_SHIORO_FAST_V" />
+	</option>
+	<option value="1948">
+		<property name="RAW Name" value="SEQ_BGM_MORI_V" />
+	</option>
+	<option value="1949">
+		<property name="RAW Name" value="SEQ_BGM_MORI_FAST_V" />
+	</option>
+	<option value="1950">
+		<property name="RAW Name" value="SEQ_BGM_SANBASHI_V" />
+	</option>
+	<option value="1951">
+		<property name="RAW Name" value="SEQ_BGM_SANBASHI_FAST_V" />
+	</option>
+	<option value="1952">
+		<property name="RAW Name" value="SEQ_BGM_KAZAN_V" />
+	</option>
+	<option value="1953">
+		<property name="RAW Name" value="SEQ_BGM_KAZAN_FAST_V" />
+	</option>
+	<option value="1954">
+		<property name="RAW Name" value="SEQ_BGM_KAZAN_TIKA_V" />
+	</option>
+	<option value="1955">
+		<property name="RAW Name" value="SEQ_BGM_KAZAN_TIKA_FAST_V" />
+	</option>
+	<option value="1956">
+		<property name="RAW Name" value="SEQ_BGM_STAFFCREDIT_V" />
+	</option>
+	<option value="1957">
+		<property name="RAW Name" value="SEQ_BGM_SELECT_W1_V" />
+	</option>
+	<option value="1958">
+		<property name="RAW Name" value="SEQ_BGM_SELECT_W2_V" />
+	</option>
+	<option value="1959">
+		<property name="RAW Name" value="SEQ_BGM_SELECT_W3_V" />
+	</option>
+	<option value="1960">
+		<property name="RAW Name" value="SEQ_BGM_SELECT_W4_V" />
+	</option>
+	<option value="1961">
+		<property name="RAW Name" value="SEQ_BGM_SELECT_W5_V" />
+	</option>
+	<option value="1962">
+		<property name="RAW Name" value="SEQ_BGM_SELECT_W6_V" />
+	</option>
+	<option value="1963">
+		<property name="RAW Name" value="SEQ_BGM_SELECT_W7_V" />
+	</option>
+	<option value="1964">
+		<property name="RAW Name" value="SEQ_BGM_SELECT_W8_V" />
+	</option>
+	<option value="1965">
+		<property name="RAW Name" value="SEQ_BGM_SELECT_W9_V" />
+	</option>
+	<option value="1966">
+		<property name="RAW Name" value="SEQ_BGM_TORIDE_V" />
+	</option>
+	<option value="1967">
+		<property name="RAW Name" value="SEQ_BGM_TORIDE_FAST_V" />
+	</option>
+	<option value="1968">
+		<property name="RAW Name" value="SE_GAKKI_U_1_ON" />
+	</option>
+	<option value="1969">
+		<property name="RAW Name" value="SE_GAKKI_U_2_ON" />
+	</option>
+	<option value="1970">
+		<property name="RAW Name" value="SE_GAKKI_R_1_ON" />
+	</option>
+	<option value="1971">
+		<property name="RAW Name" value="SE_GAKKI_R_1_OFF" />
+	</option>
+	<option value="1972">
+		<property name="RAW Name" value="SE_GAKKI_R_2_ON" />
+	</option>
+	<option value="1973">
+		<property name="RAW Name" value="SE_GAKKI_R_2_OFF" />
+	</option>
+	<option value="1974">
+		<property name="RAW Name" value="SE_GAKKI_D_1_ON" />
+	</option>
+	<option value="1975">
+		<property name="RAW Name" value="SE_GAKKI_D_2_ON" />
+	</option>
+	<option value="1976">
+		<property name="RAW Name" value="SE_GAKKI_L_1_ON" />
+	</option>
+	<option value="1977">
+		<property name="RAW Name" value="SE_GAKKI_L_2_ON" />
+	</option>
+</options>
