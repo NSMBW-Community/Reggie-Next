@@ -959,32 +959,36 @@ class SpriteImage_MeasureJump(SLib.SpriteImage):
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.aux.append(SLib.AuxiliaryImage(parent, 312, 191))
-        self.aux[0].image = ImageCache["Jump1"]
+        self.aux[0].image = ImageCache["JumpRunSpin1"]
         self.aux[0].setPos(0, 0)
 
     @staticmethod
     def loadImages():
-        if "Jump1" in ImageCache:
+        if "JumpRunSpin1" in ImageCache:
             return
 
         for i in range(1, 4):
             # ImageCache["Jump%d" % i] = SLib.GetImg("jump_%d.png" % i)
-            ImageCache["JumpRun%d" % i] = SLib.GetImg("jump_run_%d.png" % i)
+            ImageCache["JumpRunSpin%d" % i] = SLib.GetImg("jump_run_spin_%d.png" % i)
 
     def dataChanged(self):
         super().dataChanged()
 
         jumptype = self.parent.spritedata[2] & 3
-        direction = (self.parent.spritedata[3] & 0x80) >> 7
+        flags = (self.parent.spritedata[3] & 0xF0) >> 4
+        direction = flags >> 3
+        spin = (flags & 4) >> 2
+        vertical = (flags & 2) >> 1
+
         if jumptype > 2:
             jumptype = 0
 
-        img = ImageCache["JumpRun%d" % (jumptype + 1)]
+        img = ImageCache["JumpRunSpin%d" % (jumptype + 1)]
         if direction == 1:
             img = img.transformed(QtGui.QTransform().scale(-1, 1))
 
         self.aux[0].image = img
-        width, height = self.aux[0].image.width(), self.aux[0].image.height()
+        width, height = img.width(), img.height()
         self.aux[0].setSize(width, height)
 
         if direction == 1:
