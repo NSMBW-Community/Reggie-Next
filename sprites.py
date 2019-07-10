@@ -640,6 +640,7 @@ class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.spritebox.shown = False
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
 
     @staticmethod
     def loadImages():
@@ -651,18 +652,34 @@ class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
         super().dataChanged()
 
         self.shape = self.parent.spritedata[4] >> 4
-        self.direction = self.parent.spritedata[5] & 15
+        direction = self.parent.spritedata[5] & 15
+        distance = (self.parent.spritedata[5] >> 4) + 1
         arrow = None
 
         if self.shape == 0 or self.shape > 3:
             self.size = (122, 137)
+            HorzOffset = 24
+            VertOffset = 20
         elif self.shape == 1:
             self.size = (76, 170)
+            HorzOffset = 28
+            VertOffset = 7
         elif self.shape == 2:
             self.size = (160, 81)
+            HorzOffset = 8
+            VertOffset = 28
 
         self.xOffset = -(self.width / 2) + 8
         self.yOffset = -(self.height / 2) + 8
+
+        if direction == 1:  # horizontal
+            self.aux[0].direction = 1
+            self.aux[0].setSize((distance * 32) + self.width - 32, 16)
+            self.aux[0].setPos((-distance * 24) + 24, (self.height / 2) + HorzOffset)
+        else:  # vertical
+            self.aux[0].direction = 2
+            self.aux[0].setSize(16, (distance * 32) + self.height - 32)
+            self.aux[0].setPos((self.width / 2) + VertOffset, (-distance * 24) + 24)
 
     def paint(self, painter):
         super().paint(painter)

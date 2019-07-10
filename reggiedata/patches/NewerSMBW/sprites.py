@@ -657,7 +657,11 @@ class SpriteImage_RockyBoss(SLib.SpriteImage_Static):  # 279
             parent,
             1.5,
             ImageCache['RockyBoss'],
+            (-25, -33),
         )
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 71, 77, -166, -50))
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 71, 77, -334, -2))
 
     @staticmethod
     def loadImages():
@@ -715,6 +719,38 @@ class SpriteImage_Flipblock(SLib.SpriteImage_Static):  # 319
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Flipblock', 'flipblock.png')
+
+
+class SpriteImage_MegaThwomp(SLib.SpriteImage):  # 322
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.aux.append(SLib.AuxiliaryImage(parent, 121, 140))
+        self.aux[0].image = ImageCache['MegaThwomp']
+        self.aux[0].setPos(-60, -101)
+
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
+
+    def dataChanged(self):
+        super().dataChanged()
+
+        left_buffer = self.parent.spritedata[2] + 2
+        right_buffer = self.parent.spritedata[3] + 2
+        top_buffer = self.parent.spritedata[4] + 2
+
+        self.aux[1].setSize(left_buffer * 8, 16)
+        self.aux[1].setPos((-left_buffer * 12) + 24, 0)
+
+        self.aux[2].setSize(right_buffer * 8, 16)
+        self.aux[2].setPos(0, 0)
+
+        self.aux[3].setSize(16, top_buffer * 8)
+        self.aux[3].setPos(0, (-top_buffer * 12) + 24)
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('MegaThwomp', 'giant_thwomp.png')
 
 
 class SpriteImage_Podoboule(SLib.SpriteImage_StaticMultiple):  # 324
@@ -805,6 +841,7 @@ ImageClasses = {
     283: SpriteImage_FuzzyBear,
     290: SpriteImage_Boolossus,
     319: SpriteImage_Flipblock,
+    322: SpriteImage_MegaThwomp,
     324: SpriteImage_Podoboule,
     351: SpriteImage_ShyGuy,
     410: SpriteImage_GigaGoomba,
