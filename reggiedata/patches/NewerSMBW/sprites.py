@@ -657,7 +657,11 @@ class SpriteImage_RockyBoss(SLib.SpriteImage_Static):  # 279
             parent,
             1.5,
             ImageCache['RockyBoss'],
+            (-25, -33),
         )
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 71, 77, -166, -50))
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 71, 77, -334, -2))
 
     @staticmethod
     def loadImages():
