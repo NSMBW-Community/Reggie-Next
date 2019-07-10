@@ -4451,20 +4451,19 @@ class SpriteImage_ExtendShroom(SLib.SpriteImage):  # 228
     def dataChanged(self):
 
         props = self.parent.spritedata[5]
-        width = self.parent.spritedata[4] & 1
-        start = (props & 0x10) >> 4
+        size = self.parent.spritedata[4] & 1
+        self.start = (props & 0x10) >> 4
         stemlength = props & 0xF
 
-        if start == 0:  # contracted
-            self.image = ImageCache['ExtendShroomC']
-            self.width = 32
-        else:
-            if width == 0:  # big
-                self.image = ImageCache['ExtendShroomB']
-                self.width = 160
-            else:  # small
-                self.image = ImageCache['ExtendShroomS']
-                self.width = 96
+        if size == 0:  # big
+            self.image = ImageCache['ExtendShroomB']
+            self.width = 160
+        else:  # small
+            self.image = ImageCache['ExtendShroomS']
+            self.width = 96
+
+        if self.start == 0:  # contracted
+            self.indicator, self.image = self.image, ImageCache['ExtendShroomC']
 
         self.xOffset = 8 - (self.width / 2)
         self.height = (stemlength * 16) + 48
@@ -4474,7 +4473,16 @@ class SpriteImage_ExtendShroom(SLib.SpriteImage):  # 228
     def paint(self, painter):
         super().paint(painter)
 
-        painter.drawPixmap(0, 0, self.image)
+        if self.start == 0: # contracted, so paint indicator
+            painter.save()
+            painter.setOpacity(0.5)
+            painter.drawPixmap(0, 0, self.indicator)
+            painter.restore()
+
+            painter.drawPixmap((self.width * 1.5) / 2 - 24, 0, self.image)
+        else:
+            painter.drawPixmap(0, 0, self.image)
+
         painter.drawTiledPixmap(
             (self.width * 1.5) / 2 - 14,
             48,
