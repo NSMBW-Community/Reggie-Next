@@ -403,12 +403,9 @@ class SpriteImage_NewerBouncyCloud(SLib.SpriteImage_StaticMultiple):  # 78
         raw_size = (self.parent.spritedata[4] >> 4) & 1
         size = "Small" if raw_size == 0 else "Big"
 
-        if style == 0 or style > 6:
+        if style == 0 or style > 7:
             self.image = ImageCache['CloudTr%s' % size]
             self.offset = (-2, -2)
-        elif style == 6 and size == "Small":
-            self.image = ImageCache['CloudTrSmall6']
-            self.offset = (64, 27)
         else:
             self.image = ImageCache['CloudTr%s%d' % (size, style)]
             self.offset = (-2, -2)
@@ -612,6 +609,36 @@ class SpriteImage_TileEventNewer(common.SpriteImage_TileEvent):  # 191
             return SLib.Tiles[256]
 
         return None
+        
+
+class SpriteImage_NewerHuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
+    @staticmethod
+    def loadImages():
+        if 'HuckitCrabWhiteR' in ImageCache: return
+        Huckitcrab = SLib.GetImg('huckit_crab.png', True)
+        Wintercrab = SLib.GetImg('huckit_crab_white.png', True)
+        ImageCache['HuckitCrabL'] = QtGui.QPixmap.fromImage(Huckitcrab)
+        ImageCache['HuckitCrabR'] = QtGui.QPixmap.fromImage(Huckitcrab.mirrored(True, False))
+        ImageCache['HuckitCrabWhiteL'] = QtGui.QPixmap.fromImage(Wintercrab)
+        ImageCache['HuckitCrabWhiteR'] = QtGui.QPixmap.fromImage(Wintercrab.mirrored(True, False))
+
+    def dataChanged(self):
+        info = self.parent.spritedata[5]
+        colour = self.parent.spritedata[2] & 1
+
+        colour = ("", "White")[colour]
+        if info == 1:
+            self.image = ImageCache['HuckitCrab%sR' % colour]
+            self.xOffset = 0
+        else:
+            if info == 13:
+                self.image = ImageCache['HuckitCrab%sR' % colour]
+                self.xOffset = 0
+            else:
+                self.image = ImageCache['HuckitCrab%sL' % colour]
+                self.xOffset = -16
+
+        super().dataChanged()
 
 
 class SpriteImage_Topman(SLib.SpriteImage_Static):  # 210
@@ -833,6 +860,7 @@ ImageClasses = {
     183: SpriteImage_Meteor,
     188: SpriteImage_MidwayFlag,
     191: SpriteImage_TileEventNewer,
+    195: SpriteImage_NewerHuckitCrab,
     210: SpriteImage_Topman,
     213: SpriteImage_CaptainBowser,
     239: SpriteImage_EventBlock,
