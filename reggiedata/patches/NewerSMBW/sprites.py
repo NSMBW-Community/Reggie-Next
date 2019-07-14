@@ -678,6 +678,21 @@ class SpriteImage_EventBlock(SLib.SpriteImage_Static): # 239
         )
 
 
+class SpriteImage_TopmanBoss(SLib.SpriteImage_Static):  # 251
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['TopmanBoss'],
+            (-47.3, -66.6)
+            #(-71, -100),
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('TopmanBoss', 'topman_boss.png')
+
+
 class SpriteImage_RockyBoss(SLib.SpriteImage_Static):  # 279
     def __init__(self, parent):
         super().__init__(
@@ -864,6 +879,7 @@ ImageClasses = {
     210: SpriteImage_Topman,
     213: SpriteImage_CaptainBowser,
     239: SpriteImage_EventBlock,
+    251: SpriteImage_TopmanBoss,
     279: SpriteImage_RockyBoss,
     282: SpriteImage_AngrySun,
     283: SpriteImage_FuzzyBear,
