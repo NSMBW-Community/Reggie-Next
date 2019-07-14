@@ -89,22 +89,9 @@ class SpriteImage_ClownCar(SLib.SpriteImage_Static):  # 13
         SLib.loadIfNotInImageCache('ClownCar', 'clown_car.png')
 
 
-class SpriteImage_SamuraiGuy(SLib.SpriteImage_Static):  # 19
-    def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['SamuraiGuy'],
-            (-1, 20),
-        )
-
-    @staticmethod
-    def loadImages():
-        SLib.loadIfNotInImageCache('SamuraiGuy', 'samurai_guy.png')
-
 # TODO: Fix massive artifacts when moving the sprite image, caused by an incorrect
 # bounding rectangle.
-class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple):
+class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple): # 18
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -160,6 +147,20 @@ class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple):
             self.parent.setTransform(transform)
 
         super().dataChanged()
+
+
+class SpriteImage_SamuraiGuy(SLib.SpriteImage_Static):  # 19
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['SamuraiGuy'],
+            (-1, 20),
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('SamuraiGuy', 'samurai_guy.png')
 
 
 class SpriteImage_NewerGoomba(SLib.SpriteImage_StaticMultiple):  # 20
@@ -492,6 +493,35 @@ class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
 
         power = self.parent.spritedata[5] & 0xF
         self.image = ImageCache['BigPumpkin%d' % power]
+        super().dataChanged()
+
+
+class SpriteImage_ShyGuyGiant(SLib.SpriteImage_Static): # 167
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+    
+    @staticmethod
+    def loadImages():
+        if "ShyGuy%s%s" in ImageCache: return
+        for size in ("Big", "Mega", "Colossal"):
+            for colour in ("Red", "Blue", "Green", "Yellow", "Magenta"):
+                ImageCache['ShyGuy%s%s' % (size, colour)] = SLib.GetImg('shyguy_%s_%s.png' % (size, colour))
+    
+    def dataChanged(self):
+        size = (self.parent.spritedata[2] >> 4) & 3
+        colour = (self.parent.spritedata[2] & 0xF) % 5
+        scale = ("Big", "Mega", "Colossal")[size]
+        color = ("Red", "Blue", "Green", "Yellow", "Magenta")[colour]
+        
+        self.image = ImageCache['ShyGuy%s%s' % (scale, color)]
+        
+        if size == 0:
+            self.offset = (-12.7, -128)
+        elif size == 1:
+            self.offset = (-32, -165.3)
+        else:
+            self.offset = (-52.7, -229.3)
+
         super().dataChanged()
 
 
@@ -871,6 +901,7 @@ ImageClasses = {
     107: SLib.SpriteImage,
     152: SpriteImage_MessageBlock,
     157: SpriteImage_BigPumpkin,
+    167: SpriteImage_ShyGuyGiant,
     168: SpriteImage_Thundercloud,
     183: SpriteImage_Meteor,
     188: SpriteImage_MidwayFlag,
