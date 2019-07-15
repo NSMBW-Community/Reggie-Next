@@ -671,6 +671,50 @@ class SpriteImage_NewerHuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
         super().dataChanged()
 
 
+class SpriteImage_NewerGiantGoomba(SLib.SpriteImage_StaticMultiple):  # 198
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('GiantGoomba', 'giant_goomba.png')
+        if 'GiantGoomba1' in ImageCache: return
+        for i in range(6):
+            ImageCache['GiantGoomba%d' % (i + 1)] = SLib.GetImg('giant_goomba_%d.png' % (i + 1))
+
+    def dataChanged(self):
+
+        colour = (self.parent.spritedata[2] & 0xF) % 7
+
+        if colour == 0:
+            self.image = ImageCache['GiantGoomba']
+            self.offset = (-6, -19)
+        else:
+            self.image = ImageCache['GiantGoomba%d' % colour]
+            self.offset = (-7, -18)
+
+        super().dataChanged()
+        
+
+class SpriteImage_NewerMegaGoomba(SLib.SpriteImage_StaticMultiple):  # 198
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('MegaGoomba', 'mega_goomba.png')
+        if 'MegaGoomba1' in ImageCache: return
+        for i in range(6):
+            ImageCache['MegaGoomba%d' % (i + 1)] = SLib.GetImg('mega_goomba_%d.png' % (i + 1))
+
+    def dataChanged(self):
+
+        colour = (self.parent.spritedata[2] & 0xF) % 7
+
+        if colour == 0:
+            self.image = ImageCache['MegaGoomba']
+            self.offset = (-11, -37)
+        else:
+            self.image = ImageCache['MegaGoomba%d' % colour]
+            self.offset = (-11, -37)
+
+        super().dataChanged()
+
+
 class SpriteImage_Topman(SLib.SpriteImage_Static):  # 210
     def __init__(self, parent):
         super().__init__(
@@ -907,6 +951,8 @@ ImageClasses = {
     188: SpriteImage_MidwayFlag,
     191: SpriteImage_TileEventNewer,
     195: SpriteImage_NewerHuckitCrab,
+    198: SpriteImage_NewerGiantGoomba,
+    199: SpriteImage_NewerMegaGoomba,
     210: SpriteImage_Topman,
     213: SpriteImage_CaptainBowser,
     239: SpriteImage_EventBlock,
