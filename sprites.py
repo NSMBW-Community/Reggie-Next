@@ -4020,32 +4020,32 @@ class SpriteImage_Clam(SLib.SpriteImage_StaticMultiple):  # 197
         super().dataChanged()
 
 
-class SpriteImage_Giantgoomba(SLib.SpriteImage_Static):  # 198
+class SpriteImage_GiantGoomba(SLib.SpriteImage_Static):  # 198
     def __init__(self, parent):
         super().__init__(
             parent,
             1.5,
-            ImageCache['Giantgoomba'],
+            ImageCache['GiantGoomba'],
             (-6, -19),
         )
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Giantgoomba', 'giantgoomba.png')
+        SLib.loadIfNotInImageCache('GiantGoomba', 'giant_goomba.png')
 
 
-class SpriteImage_Megagoomba(SLib.SpriteImage_Static):  # 199
+class SpriteImage_MegaGoomba(SLib.SpriteImage_Static):  # 199
     def __init__(self, parent):
         super().__init__(
             parent,
             1.5,
-            ImageCache['Megagoomba'],
+            ImageCache['MegaGoomba'],
             (-11, -37),
         )
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Megagoomba', 'megagoomba.png')
+        SLib.loadIfNotInImageCache('MegaGoomba', 'mega_goomba.png')
 
 
 class SpriteImage_Microgoomba(SLib.SpriteImage_Static):  # 200
@@ -8204,8 +8204,8 @@ ImageClasses = {
     195: SpriteImage_HuckitCrab,
     196: SpriteImage_Fishbones,
     197: SpriteImage_Clam,
-    198: SpriteImage_Giantgoomba,
-    199: SpriteImage_Megagoomba,
+    198: SpriteImage_GiantGoomba,
+    199: SpriteImage_MegaGoomba,
     200: SpriteImage_Microgoomba,
     201: SpriteImage_Icicle,
     202: SpriteImage_MGCannon,

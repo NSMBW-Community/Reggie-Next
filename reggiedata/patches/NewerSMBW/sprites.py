@@ -89,22 +89,9 @@ class SpriteImage_ClownCar(SLib.SpriteImage_Static):  # 13
         SLib.loadIfNotInImageCache('ClownCar', 'clown_car.png')
 
 
-class SpriteImage_SamuraiGuy(SLib.SpriteImage_Static):  # 19
-    def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['SamuraiGuy'],
-            (-1, 20),
-        )
-
-    @staticmethod
-    def loadImages():
-        SLib.loadIfNotInImageCache('SamuraiGuy', 'samurai_guy.png')
-
 # TODO: Fix massive artifacts when moving the sprite image, caused by an incorrect
 # bounding rectangle.
-class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple):
+class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple): # 18
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -160,6 +147,20 @@ class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple):
             self.parent.setTransform(transform)
 
         super().dataChanged()
+
+
+class SpriteImage_SamuraiGuy(SLib.SpriteImage_Static):  # 19
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['SamuraiGuy'],
+            (-1, 20),
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('SamuraiGuy', 'samurai_guy.png')
 
 
 class SpriteImage_NewerGoomba(SLib.SpriteImage_StaticMultiple):  # 20
@@ -403,12 +404,9 @@ class SpriteImage_NewerBouncyCloud(SLib.SpriteImage_StaticMultiple):  # 78
         raw_size = (self.parent.spritedata[4] >> 4) & 1
         size = "Small" if raw_size == 0 else "Big"
 
-        if style == 0 or style > 6:
+        if style == 0 or style > 7:
             self.image = ImageCache['CloudTr%s' % size]
             self.offset = (-2, -2)
-        elif style == 6 and size == "Small":
-            self.image = ImageCache['CloudTrSmall6']
-            self.offset = (64, 27)
         else:
             self.image = ImageCache['CloudTr%s%d' % (size, style)]
             self.offset = (-2, -2)
@@ -495,6 +493,35 @@ class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
 
         power = self.parent.spritedata[5] & 0xF
         self.image = ImageCache['BigPumpkin%d' % power]
+        super().dataChanged()
+
+
+class SpriteImage_ShyGuyGiant(SLib.SpriteImage_Static): # 167
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+    
+    @staticmethod
+    def loadImages():
+        if "ShyGuy%s%s" in ImageCache: return
+        for size in ("Big", "Mega", "Colossal"):
+            for colour in ("Red", "Blue", "Green", "Yellow", "Magenta"):
+                ImageCache['ShyGuy%s%s' % (size, colour)] = SLib.GetImg('shyguy_%s_%s.png' % (size, colour))
+    
+    def dataChanged(self):
+        size = (self.parent.spritedata[2] >> 4) & 3
+        colour = (self.parent.spritedata[2] & 0xF) % 5
+        scale = ("Big", "Mega", "Colossal")[size]
+        color = ("Red", "Blue", "Green", "Yellow", "Magenta")[colour]
+        
+        self.image = ImageCache['ShyGuy%s%s' % (scale, color)]
+        
+        if size == 0:
+            self.offset = (-12.7, -128)
+        elif size == 1:
+            self.offset = (-32, -165.3)
+        else:
+            self.offset = (-52.7, -229.3)
+
         super().dataChanged()
 
 
@@ -612,6 +639,80 @@ class SpriteImage_TileEventNewer(common.SpriteImage_TileEvent):  # 191
             return SLib.Tiles[256]
 
         return None
+        
+
+class SpriteImage_NewerHuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
+    @staticmethod
+    def loadImages():
+        if 'HuckitCrabWhiteR' in ImageCache: return
+        Huckitcrab = SLib.GetImg('huckit_crab.png', True)
+        Wintercrab = SLib.GetImg('huckit_crab_white.png', True)
+        ImageCache['HuckitCrabL'] = QtGui.QPixmap.fromImage(Huckitcrab)
+        ImageCache['HuckitCrabR'] = QtGui.QPixmap.fromImage(Huckitcrab.mirrored(True, False))
+        ImageCache['HuckitCrabWhiteL'] = QtGui.QPixmap.fromImage(Wintercrab)
+        ImageCache['HuckitCrabWhiteR'] = QtGui.QPixmap.fromImage(Wintercrab.mirrored(True, False))
+
+    def dataChanged(self):
+        info = self.parent.spritedata[5]
+        colour = self.parent.spritedata[2] & 1
+
+        colour = ("", "White")[colour]
+        if info == 1:
+            self.image = ImageCache['HuckitCrab%sR' % colour]
+            self.xOffset = 0
+        else:
+            if info == 13:
+                self.image = ImageCache['HuckitCrab%sR' % colour]
+                self.xOffset = 0
+            else:
+                self.image = ImageCache['HuckitCrab%sL' % colour]
+                self.xOffset = -16
+
+        super().dataChanged()
+
+
+class SpriteImage_NewerGiantGoomba(SLib.SpriteImage_StaticMultiple):  # 198
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('GiantGoomba', 'giant_goomba.png')
+        if 'GiantGoomba1' in ImageCache: return
+        for i in range(6):
+            ImageCache['GiantGoomba%d' % (i + 1)] = SLib.GetImg('giant_goomba_%d.png' % (i + 1))
+
+    def dataChanged(self):
+
+        colour = (self.parent.spritedata[2] & 0xF) % 7
+
+        if colour == 0:
+            self.image = ImageCache['GiantGoomba']
+            self.offset = (-6, -19)
+        else:
+            self.image = ImageCache['GiantGoomba%d' % colour]
+            self.offset = (-7, -18)
+
+        super().dataChanged()
+        
+
+class SpriteImage_NewerMegaGoomba(SLib.SpriteImage_StaticMultiple):  # 198
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('MegaGoomba', 'mega_goomba.png')
+        if 'MegaGoomba1' in ImageCache: return
+        for i in range(6):
+            ImageCache['MegaGoomba%d' % (i + 1)] = SLib.GetImg('mega_goomba_%d.png' % (i + 1))
+
+    def dataChanged(self):
+
+        colour = (self.parent.spritedata[2] & 0xF) % 7
+
+        if colour == 0:
+            self.image = ImageCache['MegaGoomba']
+            self.offset = (-11, -37)
+        else:
+            self.image = ImageCache['MegaGoomba%d' % colour]
+            self.offset = (-11, -37)
+
+        super().dataChanged()
 
 
 class SpriteImage_Topman(SLib.SpriteImage_Static):  # 210
@@ -649,6 +750,21 @@ class SpriteImage_EventBlock(SLib.SpriteImage_Static): # 239
             SLib.Tiles[0x97].main,
             (-8, -16)
         )
+
+
+class SpriteImage_TopmanBoss(SLib.SpriteImage_Static):  # 251
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['TopmanBoss'],
+            (-47.3, -66.6)
+            #(-71, -100),
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('TopmanBoss', 'topman_boss.png')
 
 
 class SpriteImage_RockyBoss(SLib.SpriteImage_Static):  # 279
@@ -829,13 +945,18 @@ ImageClasses = {
     107: SLib.SpriteImage,
     152: SpriteImage_MessageBlock,
     157: SpriteImage_BigPumpkin,
+    167: SpriteImage_ShyGuyGiant,
     168: SpriteImage_Thundercloud,
     183: SpriteImage_Meteor,
     188: SpriteImage_MidwayFlag,
     191: SpriteImage_TileEventNewer,
+    195: SpriteImage_NewerHuckitCrab,
+    198: SpriteImage_NewerGiantGoomba,
+    199: SpriteImage_NewerMegaGoomba,
     210: SpriteImage_Topman,
     213: SpriteImage_CaptainBowser,
     239: SpriteImage_EventBlock,
+    251: SpriteImage_TopmanBoss,
     279: SpriteImage_RockyBoss,
     282: SpriteImage_AngrySun,
     283: SpriteImage_FuzzyBear,
