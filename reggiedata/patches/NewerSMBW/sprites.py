@@ -356,6 +356,73 @@ class SpriteImage_NewerKoopa(SLib.SpriteImage_StaticMultiple):  # 57
         super().dataChanged()
 
 
+class SpriteImage_NewerParaKoopa(SLib.SpriteImage_StaticMultiple):  # 58
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.track = SLib.AuxiliaryTrackObject(parent, 0, 0, 0)
+        self.offset = (-7, -12)
+
+    @staticmethod
+    def loadImages():
+        if 'KoopaG' in ImageCache: return
+        ImageCache['ParaKoopaG'] = SLib.GetImg('parakoopa_green.png')
+        ImageCache['ParaKoopaR'] = SLib.GetImg('parakoopa_red.png')
+        ImageCache['KoopaShellG'] = SLib.GetImg('koopa_green_shell.png')
+        ImageCache['KoopaShellR'] = SLib.GetImg('koopa_red_shell.png')
+        for flag in (0, 1):
+            for style in range(4):
+                ImageCache['ParaKoopa%d%d' % (flag, style + 1)] = \
+                    SLib.GetImg('parakoopa_%d%d.png' % (flag, style + 1))
+                if style < 3:
+                    ImageCache['KoopaShell%d%d' % (flag, style + 1)] = \
+                        SLib.GetImg('koopa_shell_%d%d.png' % (flag, style + 1))
+
+    def dataChanged(self):
+        # get properties
+        red = self.parent.spritedata[5] & 1
+        mode = (self.parent.spritedata[5] >> 4) & 3
+        texhack = (self.parent.spritedata[2] & 0xF) % 5
+
+        if texhack == 0:
+            if mode == 3:
+                del self.offset
+                self.image = ImageCache['KoopaShellG'] if not red else ImageCache['KoopaShellR']
+            else:
+                self.offset = (-7, -12)
+                self.image = ImageCache['ParaKoopaG'] if not red else ImageCache['ParaKoopaR']
+        else:
+            if mode == 3:
+                del self.offset
+                self.image = ImageCache['KoopaShell%d%d' % (red, texhack)]
+            else:
+                self.offset = (-8, -12)
+                self.image = ImageCache['ParaKoopa%d%d' % (red, texhack)]
+                
+        if mode == 1 or mode == 2:
+            turnImmediately = self.parent.spritedata[4] & 1 == 1
+            if mode == 1:
+                self.track.direction = SLib.AuxiliaryTrackObject.Horizontal
+                self.track.setSize(9 * 16, 16)
+                if turnImmediately:
+                    self.track.setPos(self.width / 2, self.height / 2)
+                else:
+                    self.track.setPos(-4 * 24 + self.width / 2, self.height / 2)
+            else:
+                self.track.direction = SLib.AuxiliaryTrackObject.Vertical
+                self.track.setSize(16, 9 * 16)
+                if turnImmediately:
+                    self.track.setPos(self.width / 2, self.height / 2)
+                else:
+                    self.track.setPos(self.width / 2, -4 * 24 + self.height / 2)
+
+            if len(self.aux) == 0:
+                self.aux.append(self.track)
+        elif len(self.aux) != 0:
+            self.aux.clear()
+
+        super().dataChanged()
+
+
 class SpriteImage_NewerSpikeBall(SLib.SpriteImage_StaticMultiple):  # 63
     def __init__(self, parent):
         super().__init__(
@@ -437,6 +504,40 @@ class SpriteImage_GiantSpikeBall(SLib.SpriteImage_StaticMultiple):  # 98
             self.image = ImageCache['GiantSpikeBall']
 
 
+class SpriteImage_NewerFloatingBarrel(SLib.SpriteImage_StaticMultiple):  # 145
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            offset = (-16, -9)
+        )
+        image = ImageCache['FloatingBarrel']
+        self.width = (image.width() / self.scale) + 1
+        self.height = (image.height() / self.scale) + 2
+        
+        self.aux.append(SLib.AuxiliaryImage(parent, image.width(), image.height()))
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 72, 2, 0, 36))
+    
+    @staticmethod
+    def loadImages():
+        if 'FloatingBarrel' in ImageCache: return
+        ImageCache['FloatingBarrel'] = SLib.GetImg('barrel_floating.png')
+        for flag in (1, 2):
+            ImageCache['FloatingBarrel%d' % flag] = SLib.GetImg('barrel_floating_%d.png' % flag)
+
+    def dataChanged(self):
+        color = self.parent.spritedata[2] & 3
+        if color == 0:
+            img = ImageCache['FloatingBarrel']
+        else:
+            img = ImageCache['FloatingBarrel%d' % color]
+        
+        self.aux[0].image = img
+            
+        # Don't let SLib.SpriteImage_Static reset size
+        SLib.SpriteImage.dataChanged(self)
+
+
 class SpriteImage_MessageBlock(SLib.SpriteImage_Static): # 152
     def __init__(self, parent):
         super().__init__(
@@ -516,7 +617,7 @@ class SpriteImage_ShyGuyGiant(SLib.SpriteImage_Static): # 167
         self.image = ImageCache['ShyGuy%s%s' % (scale, color)]
         
         if size == 0:
-            self.offset = (-12.7, -128)
+            self.offset = (-12.7, -124)
         elif size == 1:
             self.offset = (-32, -165.3)
         else:
@@ -939,10 +1040,12 @@ ImageClasses = {
     48: SpriteImage_GiantThwomp,
     49: SpriteImage_FakeStarCoin,
     57: SpriteImage_NewerKoopa,
+    58: SpriteImage_NewerParaKoopa,
     78: SpriteImage_NewerBouncyCloud,
     63: SpriteImage_NewerSpikeBall,
     98: SpriteImage_GiantSpikeBall,
     107: SLib.SpriteImage,
+    145: SpriteImage_NewerFloatingBarrel,
     152: SpriteImage_MessageBlock,
     157: SpriteImage_BigPumpkin,
     167: SpriteImage_ShyGuyGiant,
