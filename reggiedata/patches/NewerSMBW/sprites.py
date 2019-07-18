@@ -423,6 +423,64 @@ class SpriteImage_NewerParaKoopa(SLib.SpriteImage_StaticMultiple):  # 58
         super().dataChanged()
 
 
+class SpriteImage_NewerSpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            offset = (0, -4)
+        )
+
+    @staticmethod
+    def loadImages():
+        if 'SpikeTop00' in ImageCache: return
+        for style in ("", "_Red", "_Orange", "_Yellow", "_Green", "_Hothead", "_Purple", "_Black"):
+            SpikeTop = SLib.GetImg('spiketop%s.png' % style, True)
+
+            Transform = QtGui.QTransform()
+            ImageCache['SpikeTop00%s' % style] = QtGui.QPixmap.fromImage(SpikeTop.mirrored(True, False))
+            Transform.rotate(90)
+            ImageCache['SpikeTop10%s' % style] = ImageCache['SpikeTop00%s' % style].transformed(Transform)
+            Transform.rotate(90)
+            ImageCache['SpikeTop20%s' % style] = ImageCache['SpikeTop00%s' % style].transformed(Transform)
+            Transform.rotate(90)
+            ImageCache['SpikeTop30%s' % style] = ImageCache['SpikeTop00%s' % style].transformed(Transform)
+
+            Transform = QtGui.QTransform()
+            ImageCache['SpikeTop01%s' % style] = QtGui.QPixmap.fromImage(SpikeTop)
+            Transform.rotate(90)
+            ImageCache['SpikeTop11%s' % style] = ImageCache['SpikeTop01%s' % style].transformed(Transform)
+            Transform.rotate(90)
+            ImageCache['SpikeTop21%s' % style] = ImageCache['SpikeTop01%s' % style].transformed(Transform)
+            Transform.rotate(90)
+            ImageCache['SpikeTop31%s' % style] = ImageCache['SpikeTop01%s' % style].transformed(Transform)
+
+    def dataChanged(self):
+        orientation = (self.parent.spritedata[5] >> 4) % 4
+        direction = self.parent.spritedata[5] & 1
+        colour = self.parent.spritedata[2] & 7
+        
+        color = ("", "_Red", "_Orange", "_Yellow", "_Green", "_Hothead", "_Purple", "_Black")[colour]
+        self.image = ImageCache['SpikeTop%d%d%s' % (orientation, direction, color)]
+
+        if colour == 5:
+            self.offset = (
+                (0, -4),
+                (-4, 0),
+                (0, -4),
+                (-4, 0),
+            )[orientation]
+        else:
+            self.offset = (
+                (0, -4),
+                (0, 0),
+                (0, 0),
+                (-4, 0),
+            )[orientation]
+
+        super().dataChanged()
+
+
 class SpriteImage_NewerSpikeBall(SLib.SpriteImage_StaticMultiple):  # 63
     def __init__(self, parent):
         super().__init__(
@@ -1041,6 +1099,7 @@ ImageClasses = {
     49: SpriteImage_FakeStarCoin,
     57: SpriteImage_NewerKoopa,
     58: SpriteImage_NewerParaKoopa,
+    60: SpriteImage_NewerSpikeTop,
     78: SpriteImage_NewerBouncyCloud,
     63: SpriteImage_NewerSpikeBall,
     98: SpriteImage_GiantSpikeBall,
