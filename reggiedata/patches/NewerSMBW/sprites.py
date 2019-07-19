@@ -562,6 +562,26 @@ class SpriteImage_GiantSpikeBall(SLib.SpriteImage_StaticMultiple):  # 98
             self.image = ImageCache['GiantSpikeBall']
 
 
+class SpriteImage_NewerBobomb(SLib.SpriteImage_StaticMultiple):  # 101
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('Bobomb', 'bobomb.png')
+        if 'Bobomb1' in ImageCache: return
+        for i in range(8):
+            ImageCache['Bobomb%d' % (i + 1)] = SLib.GetImg('bobomb_%d.png' % (i + 1))
+        
+    def dataChanged(self):
+        colour = (self.parent.spritedata[2] & 0xF) % 9
+        if colour == 0:
+            self.image = ImageCache['Bobomb']
+            self.offset = (-8, -8)
+        else:
+            self.image = ImageCache['Bobomb%d' % colour]
+            self.offset = (-10, -8)
+
+        super().dataChanged()
+
+
 class SpriteImage_NewerFloatingBarrel(SLib.SpriteImage_StaticMultiple):  # 145
     def __init__(self, parent):
         super().__init__(
@@ -1103,6 +1123,7 @@ ImageClasses = {
     78: SpriteImage_NewerBouncyCloud,
     63: SpriteImage_NewerSpikeBall,
     98: SpriteImage_GiantSpikeBall,
+    101: SpriteImage_NewerBobomb,
     107: SLib.SpriteImage,
     145: SpriteImage_NewerFloatingBarrel,
     152: SpriteImage_MessageBlock,
