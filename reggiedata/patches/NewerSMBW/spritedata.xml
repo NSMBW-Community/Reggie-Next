@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--Version 2.034-->
+<!--Version 2019-07-18 -->
 <!-- &lt; = < -->
 <!-- &gt; = > -->
 <!-- $amp; = & -->
@@ -408,7 +408,7 @@
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #23: Basic Platform - Horizontal Movement -->
   
-  <sprite id="24" name="Buzzy Beetle" asmhacks="True" sizehacks="True" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads. It will turn around when it reaches ledges and blocks are treated the same as terrain.">
+  <sprite id="24" name="Buzzy Beetle" asmhacks="True" sizehacks="True" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads. It will turn around when it reaches ledges and blocks are treated the same as terrain. It will turn around if it walks into lava, but die if it falls into it.">
     <list nybble="6" title="Color" comment="This determines the color of the Buzzy Beetle.">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
@@ -966,10 +966,11 @@
 <!-- Investigate "Glitchy Behavior" further? -->
 <!-- Test Nybble 10 more, something seems to be weird about it. Is it 'start at end of path instead of middle' or .... what, really? What's the value range? -->
   <sprite id="58" name="Koopa Paratroopa" asmhacks="True" sizehacks="True" notes="Your standard Koopa Paratroopa. Place it in the level and it will jump around or fly. Once stomped, it can either be set to walk off ledges, or turn around at ledges.">
-    <list bit="43-44" title="Movement Type" comment="This determines the primary type of movement behavior of the Koopa Paratroopa. Flying Paratroopas move 10 blocks total.">
+    <list bit="43-44" title="Movement Type" comment="This determines the primary type of movement behavior of the Koopa Paratroopa. Flying Paratroopas move 9 blocks total." advancedcomment="Mode 3 spawns a floating shell that cannot be picked up. When Mario hits it from the side, he takes damage, but when the jumps on it, it falls to the ground and becomes a regular shell that can be picked up.">
       <entry value="0">Jumping</entry>
       <entry value="1">Flying: Left and Right</entry>
       <entry value="2">Flying: Up and Down</entry>
+      <entry value="3">No Movement (Shell Only)</entry>
       <!--<entry value="3">Shell Only</entry> Not Useful-->
     </list>
     <list bit="35-36" title="Start Direction" comment="This determines how the Paratroopa will move upon load." advancedcomment="Glitchy Behavior: The Paratroopa will bounce [] while facing the opposite direction. Once de-winged, the Koopa Troopa will walk in place while continuing to face the same direction." requiredbit="43-44" requiredval="0-1">
@@ -984,8 +985,8 @@
       <entry value="2">Start Going Down</entry>
       <entry value="3">Glitchy Behavior</entry>
     </list> <!-- Only appears when Flying: Up and Down is selected -->
-    <value nybble="10" title="Initial Flying Distance" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 10 Blocks, so this only sets the initial movement distance on load." requiredbit="43-44" requiredval="1"/> <!-- Only appears when Flying: Left and Right is selected -->
-    <value nybble="10" title="Initial Flying Distance" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 10 Blocks, so this only sets the initial movement distance on load." requiredbit="43-44" requiredval="2"/> <!-- Only appears when Flying: Up and Down is selected -->
+    <dualbox bit="40" title1="Moves in specified direction (4 blocks), then turns around" title2="Moves in opposite direction immediately" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 9 Blocks, so this only sets the initial movement distance on load." requiredbit="43-44" requiredval="1"/> <!-- Only appears when Flying: Left and Right is selected -->
+    <dualbox bit="40" title1="Moves in specified direction (4 blocks), then turns around" title2="Moves in opposite direction immediately" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 9 Blocks, so this only sets the initial movement distance on load." requiredbit="43-44" requiredval="2"/> <!-- Only appears when Flying: Up and Down is selected -->
     <dualbox bit="48" title1="Walks Off Ledges" title2="Turns Around At Ledges" comment="This determines if the Koopa Troopa, once stepped on and de-winged, will mindlessly walk off of ledges or if it will turn around when it reaches a ledge." comment2="This also changes the color of the Koopa Troopa."/>
     <list nybble="6" title="Color" comment="This determines the color of the Koopa Paratroopa." requiredbit="48" requiredval="0">
       <entry value="0">Green</entry>
@@ -1565,8 +1566,9 @@
     <dependency notes="Directly place any sprite you want to spawn with the Actor Spawner somewhere in your level for the game to load the required secondary assets of that sprite."/>
     <value bit="17-20" title="Triggering Event ID" comment="When this event is activated, the Actor Spawner will create one copy of the Actor at the location of the Spawner. Keep in mind that some sprites have abnormal placement so expect a lot of testing to make sure that everything works correctly." comment2="The Triggering Event ID is limited to only the first 15 Event IDs." idtype="Triggering Event"/>
     <checkbox bit="21" title="Automatically Respawn" comment="When the actor spawned by this spawner is deleted or missing, and the event is triggered, another actor with the same settings will be spawened."/>
-    <value bit="22-32" title="Actor ID - Number Entry" comment="Please enter the extension that you wish to dial. If your party cannot be reached, please dial a different number. Thank you." comment2="Do not use an Actor ID that does not return a value on one of the lists below." idtype="Actor"/> <!-- ID type is used so that the number can be shown on the sprite display. -->
-    <external type="actors" bit="22-32" title="Actor ID" comment="Use this external window to select your actor id." />
+    <value bit="22-32" title="Actor ID - Number Entry" comment="Please enter the extension that you wish to dial. If your party cannot be reached, please dial a different number. Thank you." comment2="Do not use an Actor ID that does not return a value on the list below." idtype="Actor"/> <!-- ID type is used so that the number can be shown on the sprite display. -->
+    <external type="actors" bit="22-32" title="Actor ID" comment="Use this external window to select your Actor ID." />
+    <external type="actors_details" bit="22-32" title="Actor Details" comment="" /> <!-- bit="22-32" -->
     <value bit="33-34" title="Nybble 5" />
     <value bit="35-36" title="Nybble 6" />
     <value bit="37-38" title="Nybble 7" />
@@ -1866,7 +1868,7 @@
     </list>
   </sprite> <!-- #101: Bob-Omb -->
   
-  <sprite id="102" name="Broozer" sizehacks="True" notes="A ghost house enemy that behaves similarly to Chargin' Chuck from Super Mario World. He must be stepped on twice in order to be defeated. He will also destroy certain types of blocks and terrain with his flailing attack.">
+  <sprite id="102" name="Broozer" sizehacks="True" notes="A ghost house enemy that behaves similarly to Chargin' Chuck from Super Mario World. He must be stepped on twice in order to be defeated. He will also destroy certain types of blocks and terrain with his flailing attack. Please note that he can only destroy tileset bricks and not sprite bricks.">
   </sprite> <!-- #102: Broozer -->
   
   <sprite id="103" name="Basic Platform - Spawner" notes="This will endlessly spawn Basic Platforms moving in a specific direction. The platforms will continue for as long as the player rides on one.">
@@ -1983,12 +1985,14 @@
     
   <sprite id="111" name="Blooper" sizehacks="True" notes="An underwater enemy that will chase the player.">
     <dependency notes="Because the Bloopers can be used without Water, if they are placed in anything but an Underwater style level, they will appear to fly rather than swim and not be confined to Location Water, etc."/>
+    <value nybble="3-4" title="Triggering Event ID" idtype="Triggering Event" />
     <list bit="19-20" title="Hiding In Wait" comment="When this is set to an option other than the default, the Blooper will wait for the player to approach before shooting out from behind the terrain.">
       <entry value="0">Already Moving</entry>
       <entry value="3">Shoots Up and Left</entry>
       <entry value="1">Shoots Upwards</entry>
       <entry value="2">Shoots Up and Right</entry>
     </list>
+    <dualbox bit="20" title1="In Front of Layer 1" title2="Behind Layer 1" />
     <list nybble="12" title="Start Direction" comment="This determines the Blooper's initial movement direction. It then follows Mario as far as it can." requiredbit="19-20" requiredval="0">
       <entry value="0">Left</entry>
       <entry value="1">Right</entry>
@@ -2198,9 +2202,9 @@
   </sprite> <!-- #123: (Unused) Swinging Castle Platform -->
     
 <!-- If a chance arises, test Super Guide with 04-05 setting Flag 6 to 0. -->
-  <sprite id="124" name="Lakitu Spawn Area" notes="Assigns a spawn area where Lakitu will continue to respawn while the player is inside it. Lakitu will follow the player along the top of the camera line and toss Spiny balls at the player to hinder their progress.">
+  <sprite id="124" name="Lakitu Spawn Area" notes="Assigns a spawn area where Lakitu will continue to respawn while the player is inside it. Lakitu will follow the player along the top of the camera line and toss Spiny balls at the player to hinder their progress. The sprite's vertical position is used for Lakitu's height.">
     <value nybble="9-10" title="Location ID" comment="Lakitu respawn and chase the player only while a player is in this location." idtype="Location"/>
-    <checkbox bit="24" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in Retail: 04-05 A1. No visible differences."/>
+    <checkbox bit="24" title="Delay" comment="This flag makes Lakitu throw Spinies less often." advancedcomment="Used in Retail: 04-05 A1."/>
   </sprite> <!-- #124: Lakitu Spawn Area -->
   
   <sprite id="125" name="Climbing Koopa - Horizontal" sizehacks="True" notes="A Koopa Troopa that clings to and walks around on Chainlink Fence type objects and terrain. This one only moves from left to right.">
@@ -2715,7 +2719,7 @@
       <entry value="2">Event Triggered - On While Active</entry>
     </list>
     <value bit="9-16" title="Triggering Event ID" comment="When the Triggering Event is activated, the controller will rotate all associated objects according to the mode. Deactivation effects will also differ depending on the mode. See the ! Comment." comment2="Stops and Returns - When activated, the items will rotate the Rotation Distance and stop. When deactivated, the items will immediately start to rotate back to their starting positions, even if the initial movement is not completed. &lt;br&gt;On While Active - While activated, the items will rotate continuously. When deactivated, the items will stop at the next point it would complete the Rotation Distance." requiredbit="32" requiredval="0" idtype="Triggering Event"/> <!-- Appears only when Event Triggered [Activation Modes] are set -->
-    <list nybble="6" title="Event Triggered - Rotation Distance" comment="This determines the distance the rotation controller will spin the items before stopping as the Activation Mode calls for." comment2="For coins and blocks, the Rotation Distance value is doubled! This means that a value of 4 will rotate the coin or block 180°." requiredbit="32" requiredval="0">
+    <list nybble="6" title="Event Triggered - Rotation Distance" comment="This determines the distance the rotation controller will spin the items before stopping as the Activation Mode calls for." comment2="Coins and blocks have the same Rotation Distance as other sprites." requiredbit="32" requiredval="0">
       <entry value="0">0.0°</entry>
       <entry value="1">22.5°</entry>
       <entry value="2">45.0°</entry>
@@ -3009,9 +3013,9 @@
     <list nybble="6" title="Color" comment="This determines the color of the Shy Guy Giant.">
       <entry value="0">Red</entry>
       <entry value="1">Blue</entry>
-      <entry value="3">Green</entry>
-      <entry value="4">Cyan</entry>
-      <entry value="5">Magenta</entry>
+      <entry value="2">Green</entry>
+      <entry value="3">Yellow</entry>
+      <entry value="4">Magenta</entry>
     </list>
   </sprite> <!-- #167: Shy Guy Giants -->
 
@@ -3368,9 +3372,9 @@
   
   <sprite id="193" name="Urchin" sizehacks="True" notes="A small spiky ball enemy typically used in Water. Water is not required, however, for it to load and function.">
     <value bit="41-44" title="Movement Distance (*2)" comment="This determines how far the Urchin will move, if at all. Multiply this value by 2."/>
-    <dualbox bit="48" title1="Moves Vertically" title2="Moves Horizontally" comment="This determines which direction the Urchin will move." requiredbit="41-44"/> <!-- Appears only if Movement Distance is set -->
-    <dualbox bit="40" title1="Moves Up First" title2="Moves Down First" comment="This determines which direction the Urchin will move first." requiredbit="41-44, 48" requiredval="1-15, 0"/> <!-- Appears only if Movement Distance is set, and movement is Vertical -->
-    <dualbox bit="40" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Urchin will move first." requiredbit="41-44, 48" requiredval="1-15, 1"/> <!-- Appears only if Movement Distance is set, and movement is Horizontal -->
+    <dualbox bit="48" title1="Moves Vertically" title2="Moves Horizontally" comment="This determines which direction the Urchin will move. The starting position from their movement is in the center, not at one of the two edges." requiredbit="41-44"/> <!-- Appears only if Movement Distance is set -->
+    <dualbox bit="40" title1="Moves Up First" title2="Moves Down First" comment="This determines which direction the Urchin will move first. The starting position from their movement is in the center, not at one of the two edges." requiredbit="41-44, 48" requiredval="1-15, 0"/> <!-- Appears only if Movement Distance is set, and movement is Vertical -->
+    <dualbox bit="40" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Urchin will move first. The starting position from their movement is in the center, not at one of the two edges." requiredbit="41-44, 48" requiredval="1-15, 1"/> <!-- Appears only if Movement Distance is set, and movement is Horizontal -->
   </sprite> <!-- #193: Urchin -->
   
   <sprite id="194" name="Mega Urchin" sizehacks="True" notes="A large spiky ball enemy typically used in Water. Water is not required, however, for it to load and function.">
@@ -3420,8 +3424,8 @@
       <entry value="2">Long</entry>
     </list>
     <list nybble="11" title="Start Direction" comment="This determines the direction the Fishbones will start swimming in." comment2="Swims In Place: The Fishbones will look into the camera, then (from this position) swim one block to the left. If Mario is close while the Fish Bone is swimming left, it will chase Mario while still facing the camera.">
-      <entry value="0">Left</entry>
-      <entry value="1">Right</entry>
+      <entry value="0">Right</entry>
+      <entry value="1">Left</entry>
       <entry value="2">Swims In Place (Buggy)</entry>
     </list>
     <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="ASM shows Nybble 10 might affect something. May relate to Swims In Place."/>
@@ -4067,7 +4071,7 @@
     <value nybble="11" title="Distance Moved" comment="This determines the distance the Water Ball will drift in one direction before returning."/>
   </sprite> <!-- #226: (Unused) Water Ball -->
 
-  <sprite id="227" name="Pipe Cannon" noyoshi="True" notes="An enterable pipe that will shoot the player upwards allowing them to reach new heights.">
+  <sprite id="227" name="Pipe Cannon" noyoshi="True" notes="An enterable pipe that will shoot the player upwards allowing them to reach new heights." advancednotes="Pipe Cannons use the green pipe tile from Pa0." >
     <list nybble="12" title="Firing Direction" comment="This determines which direction the Pipe Cannon will launch the player.">
       <entry value="6">45° Left</entry>
       <entry value="1">30° Left</entry>
@@ -4144,11 +4148,11 @@
       <entry value="0">Metal Pink</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
-      <entry value="3">Yellow</entry>
+      <!-- <entry value="3">Yellow</entry> Not in Newer -->
       <entry value="4">Green</entry>
       <entry value="5">Blue</entry>
-      <entry value="6">Violet</entry>
-      <entry value="7">Black</entry>
+      <!-- <entry value="6">Violet</entry> Not in Newer -->
+      <!-- <entry value="7">Black</entry> Not in Newer -->
     </list>
     <list nybble="9" title="Width of Platform" comment="This determines the width of the mushroom platform.">
       <entry value="0">3 Blocks</entry>
@@ -4279,10 +4283,10 @@
       <entry value="7">Disable Z-Order Fixes</entry> <!-- 0111 -->
       <entry value="8">Disable MP Bubbling</entry>   <!-- 1000 --> <!-- 45-48 -->
     </list>
-    <checkbox bit="44" title="Time Stop: Platforms" comment="When enabled, the Special Event will freeze all Platforms that support this function." requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
-    <checkbox bit="43" title="Time Stop: Players" comment="When enabled, the Special Event will freeze all Players." comment2="Remember to deactivate the Special Event or else Mario and the other Players will remain frozen. Forever~" requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
-    <checkbox bit="42" title="Time Stop: Terrain" comment="When enabled, the Special Event will freeze all Terrain Animations." requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
-    <checkbox bit="41" title="Time Stop: Enemies" comment="When enabled, the Special Event will freeze all Enemies that support this function." requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
+    <checkbox bit="44" title="Time Stop: Platforms &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Platforms that support this function." requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
+    <checkbox bit="43" title="Time Stop: Players &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Players." comment2="Remember to deactivate the Special Event or else Mario and the other Players will remain frozen. Forever~" requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
+    <checkbox bit="42" title="Time Stop: Terrain &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Terrain Animations." requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
+    <checkbox bit="41" title="Time Stop: Enemies &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Enemies that support this function." requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
     <list nybble="11" title="Gravity Type" comment="This determines what the altered state of gravity will be while the Special Event is activated." comment2="Anti Gravity is a little strange, not fully documented, and defnitely not recommended for normal use." requiredbit="45-48" requiredval="3"> <!-- Appears if [Type] = 3 -->
       <entry value="0">Low Gravity</entry>
       <entry value="1">Anti Gravity</entry>
@@ -4311,8 +4315,78 @@
       <entry value="1">Use Data B</entry>
     </list>
     <!-- 1001 -->
-    <value nybble="7-8" title="bgA Size (Scenery)" comment="The Special Event will resize the 'Scenery' background picture. Higher Values = Bigger Size" requiredbit="45-48" requiredval="9"/> <!-- Appears if [Type] = 9 -->
-    <value nybble="9-10" title="bgB Size (Backdrop)" comment="The Special Event will resize the 'Backdrop' background picture. Higher Values = Bigger Size" requiredbit="45-48" requiredval="9"/> <!-- Appears if [Type] = 9 -->
+    <list nybble="7" title="bgA (Scenery) X Size" comment="The Special Event will resize the 'Scenery' background picture horizontally. Higher Values = Bigger Size" requiredbit="45-48" requiredval="9"> <!-- Appears if [Type] = 9 -->
+      <entry value="0">x0.1</entry>
+      <entry value="1">x0.15</entry>
+      <entry value="2">x0.25</entry>
+      <entry value="3">x0.375</entry>
+      <entry value="4">x1.5</entry>
+      <entry value="5">x0.625</entry>
+      <entry value="6">x0.75</entry>
+      <entry value="7">x0.9</entry>
+      <entry value="8">x1.0 (Normal)</entry>
+      <entry value="9">x1.125</entry>
+      <entry value="10">x1.25</entry>
+      <entry value="11">x1.5</entry>
+      <entry value="12">x1.75</entry>
+      <entry value="13">x2</entry>
+      <entry value="14">x2.25</entry>
+      <entry value="15">x2.5</entry>
+    </list>
+    <list nybble="8" title="bgA (Scenery) Y Size" comment="The Special Event will resize the 'Scenery' background picture vertically. Higher Values = Bigger Size" requiredbit="45-48" requiredval="9"> <!-- Appears if [Type] = 9 -->
+      <entry value="0">x0.1</entry>
+      <entry value="1">x0.15</entry>
+      <entry value="2">x0.25</entry>
+      <entry value="3">x0.375</entry>
+      <entry value="4">x1.5</entry>
+      <entry value="5">x0.625</entry>
+      <entry value="6">x0.75</entry>
+      <entry value="7">x0.9</entry>
+      <entry value="8">x1.0 (Normal)</entry>
+      <entry value="9">x1.125</entry>
+      <entry value="10">x1.25</entry>
+      <entry value="11">x1.5</entry>
+      <entry value="12">x1.75</entry>
+      <entry value="13">x2</entry>
+      <entry value="14">x2.25</entry>
+      <entry value="15">x2.5</entry>
+    </list>
+    <list nybble="9" title="bgB (Backdrop) X Size" comment="The Special Event will resize the 'Backdrop' background picture horizontally. Higher Values = Bigger Size" requiredbit="45-48" requiredval="9"> <!-- Appears if [Type] = 9 -->
+      <entry value="0">x0.1</entry>
+      <entry value="1">x0.15</entry>
+      <entry value="2">x0.25</entry>
+      <entry value="3">x0.375</entry>
+      <entry value="4">x1.5</entry>
+      <entry value="5">x0.625</entry>
+      <entry value="6">x0.75</entry>
+      <entry value="7">x0.9</entry>
+      <entry value="8">x1.0 (Normal)</entry>
+      <entry value="9">x1.125</entry>
+      <entry value="10">x1.25</entry>
+      <entry value="11">x1.5</entry>
+      <entry value="12">x1.75</entry>
+      <entry value="13">x2</entry>
+      <entry value="14">x2.25</entry>
+      <entry value="15">x2.5</entry>
+    </list>
+    <list nybble="10" title="bgB (Backdrop) Y Size" comment="The Special Event will resize the 'Backdrop' background picture vertically. Higher Values = Bigger Size" requiredbit="45-48" requiredval="9"> <!-- Appears if [Type] = 9 -->
+      <entry value="0">x0.1</entry>
+      <entry value="1">x0.15</entry>
+      <entry value="2">x0.25</entry>
+      <entry value="3">x0.375</entry>
+      <entry value="4">x1.5</entry>
+      <entry value="5">x0.625</entry>
+      <entry value="6">x0.75</entry>
+      <entry value="7">x0.9</entry>
+      <entry value="8">x1.0 (Normal)</entry>
+      <entry value="9">x1.125</entry>
+      <entry value="10">x1.25</entry>
+      <entry value="11">x1.5</entry>
+      <entry value="12">x1.75</entry>
+      <entry value="13">x2</entry>
+      <entry value="14">x2.25</entry>
+      <entry value="15">x2.5</entry>
+    </list>
   </sprite> <!-- #246: Special Event -->
 
 <!-- A ReggieResource is required for this sprite showing various combinations in screenshot form or with styles due to the visual complexity of what it does. As such, I'm not going to edit the current documentation. -->
@@ -4467,7 +4541,7 @@
       <suggested sprite="149"/>
     </dependency>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the ?-Block to a matching rotation controller." idtype="Rotation"/>
-    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted." comment2="Tilted blocks cannot be used with a Rotation ID." requiredbit="41-48" requiredval="0"> <!-- Disappears if Rotation ID is set -->
+    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted."> <!-- Does not disappear if Rotation ID is set -->
       <entry value="0">0°</entry>
       <entry value="1">3°</entry>
       <entry value="2">6°</entry>
@@ -4485,7 +4559,7 @@
       <entry value="14">42°</entry>
       <entry value="15">45°</entry>
     </list>
-    <dualbox bit="32" title1="Tilts Right" title2="Tilts Left" asmhacks="True" comment="This determines which direction the block will be tilted." requiredbit="41-48" requiredval="0"/> <!-- Disappears if Rotation ID is set -->
+    <dualbox bit="32" title1="Tilts Right" title2="Tilts Left" asmhacks="True" comment="This determines which direction the block will be tilted." /> <!-- Does not disappear if Rotation ID is set -->
     <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players. Some items, such as the Spring, won't appear if the player strikes the Block while it is actively rotating.">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
@@ -4512,7 +4586,7 @@
       <suggested sprite="149"/>
     </dependency>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the ?-Block to a matching rotation controller." idtype="Rotation"/>
-    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted." comment2="Tilted blocks cannot be used with a Rotation ID." requiredbit="41-48" requiredval="0"> <!-- Disappears if Rotation ID is set -->
+    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted." > <!-- Does not disappear if Rotation ID is set -->
       <entry value="0">0°</entry>
       <entry value="1">3°</entry>
       <entry value="2">6°</entry>
@@ -4530,7 +4604,7 @@
       <entry value="14">42°</entry>
       <entry value="15">45°</entry>
     </list>
-    <dualbox bit="32" title1="Tilts Right" title2="Tilts Left" comment="This determines which direction the block will be tilted." requiredbit="41-48" requiredval="0"/> <!-- Disappears if Rotation ID is set -->
+    <dualbox bit="32" title1="Tilts Right" title2="Tilts Left" comment="This determines which direction the block will be tilted." /> <!-- Does not disappear if Rotation ID is set -->
     <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will only release one power-up item. Some items, such as the Spring, won't appear if the player strikes the Block while it is actively rotating.">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
@@ -4895,11 +4969,12 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
   </sprite> <!-- #278: Castle Boss Door -->
   
-  <sprite id="279" name="World-3 Boss: Balboa Wrench" asmhacks="True" noyoshi="True" notes="The giant Rocky Wrench boss used by NewerSMBW. He must be Ground-Pounded 3 times to be defeated.">
-    <dependency notes="">
-      <required sprite=""/> <!-- Kamek -->
-      <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite="27"/> <!-- ??? -->
+  <sprite id="279" name="World-3 Boss: Balboa Wrench" asmhacks="True" noyoshi="True" notes="The giant Rocky Wrench boss used by NewerSMBW. He must be Ground-Pounded 3 times to be defeated. ">
+    <dependency notes="Kamek and Kamek Controller can be placed in any area. They should be placed in an area on their own, though.">
+      <required sprite="427"/> <!-- Kamek -->
+      <required sprite="383"/> <!-- Kamek Controller -->
+      <required sprite="27"/> <!-- lift_zen.arc from grey block -->
+      <required sprite="352"/> <!-- Rocky Wrench -->
     </dependency>
     <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
   </sprite> <!-- #279: World-3 Boss: Balboa Wrench -->
@@ -5229,7 +5304,25 @@
     </list>
     <dualbox bit="44" title1="Normal Cannonball Cannon" title2="Giant Cannonball Cannon" comment="This determines the size of the cannon and cannonball."/>
     <dualbox bit="48" title1="Faces Right" title2="Faces Left" comment="This determines which direction the cannon will face."/>
-    <list nybble="10" title="Length" comment="This determines how long the cannon is.">
+    <list nybble="10" requiredbit="44" requiredval="0" title="Normal Cannon Length" comment="This determines how long the cannon is.">
+      <entry value="0">2 Blocks</entry>
+      <entry value="1">3 Blocks</entry>
+      <entry value="2">4 Blocks</entry>
+      <entry value="3">5 Blocks</entry>
+      <entry value="4">6 Blocks</entry>
+      <entry value="5">7 Blocks</entry>
+      <entry value="6">8 Blocks</entry>
+      <entry value="7">9 Blocks</entry>
+      <entry value="8">10 Blocks</entry>
+      <entry value="9">11 Blocks</entry>
+      <entry value="10">12 Blocks</entry>
+      <entry value="11">13 Blocks</entry>
+      <entry value="12">14 Blocks</entry>
+      <entry value="13">15 Blocks</entry>
+      <entry value="14">16 Blocks</entry>
+      <entry value="15">17 Blocks</entry>
+    </list>
+    <list nybble="10" requiredbit="44" requiredval="1" title="Giant Cannon Length" comment="This determines how long the cannon is. If the cannon is giant, the collision will always be value + 3 blocks long, but the visual will not.">
       <entry value="0">3 Blocks</entry>
       <entry value="1">4 Blocks</entry>
       <entry value="2">5 Blocks</entry>
@@ -5969,7 +6062,7 @@
   </sprite> <!-- #338: Rising / Lowering Bullet Bill Launcher -->
   
   <sprite id="339" name="Moving Pipe - Facing Up" notes="An upwards facing Pipe that moves between two heights.">
-    <list bit="31-32" title="Color" comment="This determines the color of the Pipe.">
+    <list bit="31-32" title="Color" comment="This determines the color of the Pipe." advancedcomment="Moving Pipes use obj_dokan.arc." >
       <entry value="0">Green</entry>
       <entry value="1">Red</entry>
       <entry value="2">Yellow</entry>
@@ -6020,7 +6113,7 @@
     </dependency>
   </sprite> <!-- #340: Lemmy Koopa -->
   
-  <sprite id="341" name="Giant Turtle Shell Cave" asmhacks="True" notes="A decorative large shell that can be used as a cave with the right arrangement of invisible blocks and settings.">
+  <sprite id="341" name="Giant Koopa Shell Cave" asmhacks="True" notes="A decorative large shell that can be used as a cave with the right arrangement of invisible blocks and settings.">
     <dependency notes="Look in Retail 5-01 A1 for an example of how to use this sprite correctly. You will need to make use of Spotlight Lighting, Layer 0 tiles, and invisible collision blocks in order for it to look correct."/>
     <dualbox bit="24" title1="Green" title2="Red" comment="This determines the color of the Shell Cave."/>
     <checkbox bit="48" title="Remove Grass/Rocks" comment="When enabled, this will remove the decoration from the bottom of the Shell Cave."/>
@@ -6152,7 +6245,7 @@
   </sprite> <!-- #352: Rocky Wrench -->
   
   <sprite id="353" name="Moving Pipe - Facing Down" notes="A downwards facing Pipe that moves between two heights.">
-    <list bit="31-32" title="Color" comment="This determines the color of the Pipe.">
+    <list bit="31-32" title="Color" comment="This determines the color of the Pipe." advancedcomment="Moving Pipes use obj_dokan.arc.">
       <entry value="0">Green</entry>
       <entry value="1">Red</entry>
       <entry value="2">Yellow</entry>
@@ -7379,7 +7472,7 @@
   </sprite> <!-- #430: Toad House Minigame - Flip Panel Controller -->
   
   <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the Retail Bowser battle.">
-    <dependency notes="Most of the final Bowser fight involves hardcoded elements, so directly copying 08-24 A4 is strongly recommended.">
+    <dependency notes="Most of the final Bowser fight involves hardcoded elements, so directly copying 08-24 A4 is strongly recommended. Sprites won't spawn if on screen when entering the zone.">
       <required sprite="439"/>
       <required sprite="445"/>
       <required sprite="449"/>
@@ -7536,12 +7629,12 @@
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the block placing it further behind other sprites."/>
   </sprite> <!-- #448: Metal Bar -->
   
-  <sprite id="449" name="Bowser Fireball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Bowser Fireballs will fire from the screen's right edge towards the left while a player is inside it.">
-    <dependency notes="Almost all settings are hardcoded and the sprite will not function outside of the exact setup used in 8-24 A4.">
+  <sprite id="449" name="Bowser Fireball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Bowser Fireballs will fire from the screen's right edge towards the left  while a player is inside it." advancednotes="&lt;br&gt; - Uses hardcoded location ID 0 (you can have multiple ones in the zone)&lt;br&gt; - They will look awful if Bowser's sprite isn't present in any area of the level&lt;br&gt;&lt;br&gt;&lt;b&gt;Sprite Placement:&lt;/b&gt;&lt;br&gt; - X Position does not matter&lt;br&gt; - Y Position matters, as the sprite will spawn fireballs in a range of 6 tiles below its placement&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Placement:&lt;/b&gt;&lt;br&gt; - Bowser Fireballs start spawning as soon as the left edge of the location enters the screen&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Size (fireballs won't spawn if requirements aren't met):&lt;/b&gt;&lt;br&gt; - X Size: Unknown, but a specific minimal X location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt; - Y Size: At least 120px (5 blocks). A specific minimal Y location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt;" >
+    <dependency notes="Almost all settings are hardcoded and the sprite will not function outside of the exact setup used in 8-24 A4. See advanced notes for more information.">
       <required sprite="431"/>
     </dependency>
-    <checkbox bit="48" title="Enable Functionality" commnet="This must be enabled for the sprite to function."/>
-    <value nybble="7-8" title="Location ID" comment="The Fireballs will only spawn while a player is in this location." advancedcomment="Or at least, it would, if its behavior had not been hardcoded. " requiredbit="48"/>
+    <checkbox bit="48" title="Enable Functionality" comment="This must be enabled for the sprite to function."/>
+    <value nybble="7-8" title="Location ID" comment="&lt;b&gt;&lt;font color=&quot;red&quot;&gt;Only works with hardcoded location ID 0!&lt;/font&gt;&lt;/b&gt; The Fireballs will only spawn while a player is in this location." advancedcomment="Or at least, it would, if its behavior had not been hardcoded. " requiredbit="48"/>
     <value nybble="10" title="Number of Fireballs" comment="This determines the number of fireballs in each wave." comment2="A value of 0 creates 5 fireballs. A value of 1+ creates that number." requiredbit="48"/>
     <value nybble="11" title="Positioning" comment="Changes position the Fireballs appear in." comment2="A value of 0 creates random patterns. A value of 1 will CRASH the game. A value of 2+ will change the positioning or patterns or something." requiredbit="48"/>
   </sprite> <!-- #449: Bowser Fireball Spawn Area -->
@@ -7890,6 +7983,7 @@
       <entry value="4">Blue w/Black !</entry>
       <entry value="5">Question Mark</entry>
     </list>
+    <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
     <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set."/>
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/>
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
