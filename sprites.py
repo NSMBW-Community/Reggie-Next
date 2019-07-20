@@ -3159,7 +3159,7 @@ class SpriteImage_FloatingBarrel(SLib.SpriteImage_Static):  # 145
         path.lineTo(QtCore.QPointF(self.width * 1.5, 0))
 
         self.aux.append(SLib.AuxiliaryPainterPath(parent, path, img.width(),
-            SLib.OutlinePen.width(), 0, 14))
+            SLib.OutlinePen.width(), 0, 36))
 
     @staticmethod
     def loadImages():
@@ -7328,6 +7328,7 @@ class SpriteImage_BowserController(SLib.SpriteImage):  # 431
         self.aux[0].setPos(1248, -288)
 
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 768, 408, 1248, -336))
+        self.aux[1].fillFlag = False
 
     @staticmethod
     def loadImages():
