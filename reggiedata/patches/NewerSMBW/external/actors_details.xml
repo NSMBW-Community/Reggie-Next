@@ -3,15 +3,8 @@
     spritedata xml anymore.
 
     Properties:
-    - Name      The name of the actor
-    - Usability The usability of the actor
-    - Sprite    The sprite id of the actor, or "" if this actor has no sprite
-
-    Future:
-    - Description       A description of what the actor does
-    - Settings          A description of the actor's settings
-    - Displacement      The displacement from the spawn point
-    - Internal name     Class names and the like
+    - Details      Advanced details for a selected actor.
+    
 -->
 <options primary="Details" short="Details available">
     <option value="60">
