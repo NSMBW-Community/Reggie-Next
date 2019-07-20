@@ -881,7 +881,6 @@ class SpriteImage_NewerMegaGoomba(SLib.SpriteImage_StaticMultiple):  # 198
             ImageCache['MegaGoomba%d' % (i + 1)] = SLib.GetImg('mega_goomba_%d.png' % (i + 1))
 
     def dataChanged(self):
-
         colour = (self.parent.spritedata[2] & 0xF) % 7
 
         if colour == 0:
@@ -919,6 +918,28 @@ class SpriteImage_CaptainBowser(SLib.SpriteImage_Static):  # 213
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('CaptainBowser', 'captain_bowser.png')
+
+
+class SpriteImage_NewerSpringBlock(SLib.SpriteImage_StaticMultiple):  # 223
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('SpringBlock', 'spring_block.png')
+        SLib.loadIfNotInImageCache('SpringBlockAlt', 'spring_block_alt.png')
+        if 'SpringBlock1' in ImageCache: return
+        for i in range(3):
+            ImageCache['SpringBlock%d' % (i + 1)] = SLib.GetImg('spring_block_%d.png' % (i + 1))
+            ImageCache['SpringBlockAlt%d' % (i + 1)] = SLib.GetImg('spring_block_alt_%d.png' % (i + 1))
+
+    def dataChanged(self):
+        colour = (self.parent.spritedata[2] & 0xF) % 4
+        alt = self.parent.spritedata[5] & 1
+        
+        if colour == 0:
+            self.image = ImageCache['SpringBlockAlt'] if alt else ImageCache['SpringBlock']
+        else:
+            self.image = ImageCache['SpringBlockAlt%d' % colour] if alt else ImageCache['SpringBlock%d' % colour]
+
+        super().dataChanged()
 
 
 class SpriteImage_EventBlock(SLib.SpriteImage_Static): # 239
@@ -1138,6 +1159,7 @@ ImageClasses = {
     199: SpriteImage_NewerMegaGoomba,
     210: SpriteImage_Topman,
     213: SpriteImage_CaptainBowser,
+    223: SpriteImage_NewerSpringBlock,
     239: SpriteImage_EventBlock,
     251: SpriteImage_TopmanBoss,
     279: SpriteImage_RockyBoss,
