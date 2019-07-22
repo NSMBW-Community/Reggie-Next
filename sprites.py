@@ -4483,7 +4483,7 @@ class SpriteImage_PipeCannon(SLib.SpriteImage):  # 227
             path.cubicTo(QtCore.QPoint(1036 - 348, -14), QtCore.QPoint(1036 - 420, -14), QtCore.QPoint(1036 - 528, 54))
             path.lineTo(QtCore.QPoint(1036 - 1036, 348))
             self.aux[1].setSize(1036, 348, -1036 + 24, -252)
-        self.aux[1].SetPath(path)
+        self.aux[1].setPath(path)
 
 
 class SpriteImage_ExtendShroom(SLib.SpriteImage):  # 228
@@ -6005,7 +6005,7 @@ class SpriteImage_KingBill(SLib.SpriteImage):  # 326
 
         direction = (self.parent.spritedata[5] & 15) % 4
 
-        self.aux[0].SetPath(self.paths[direction])
+        self.aux[0].setPath(self.paths[direction])
 
         newx, newy = (
             (0, (-8 * 24) + 12),
@@ -7826,7 +7826,7 @@ class SpriteImage_EnormousBlock(SLib.SpriteImage):  # 462
             self.aux[1].setPos(realsize[0] * 24 - 24, 0)
         else:
             self.aux[1].setPos(0, 0)
-        self.aux[1].SetPath(self.spikes[size][side])
+        self.aux[1].setPath(self.spikes[size][side])
 
         # update the track
         self.aux[2].setSize(distance * 16, 16)
