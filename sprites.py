@@ -1539,9 +1539,8 @@ class SpriteImage_KoopaTroopa(SLib.SpriteImage_StaticMultiple):  # 57
 
 class SpriteImage_KoopaParatroopa(SLib.SpriteImage_StaticMultiple):  # 58
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
-        self.track = SLib.AuxiliaryTrackObject(parent, 0, 0, 0)
-        self.offset = (-7, -12)
+        super().__init__(parent, 1.5, None, (-7, -12))
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 0, 0, 0))
 
     @staticmethod
     def loadImages():
@@ -1576,7 +1575,10 @@ class SpriteImage_KoopaParatroopa(SLib.SpriteImage_StaticMultiple):  # 58
                 self.image = ImageCache['ParakoopaR']
 
         if mode == 1 or mode == 2:
+
+            track = self.aux[0]
             turnImmediately = self.parent.spritedata[4] & 1 == 1
+
             if mode == 1:
                 self.track.direction = SLib.AuxiliaryTrackObject.Horizontal
                 self.track.setSize(9 * 16, 16)
@@ -1592,10 +1594,9 @@ class SpriteImage_KoopaParatroopa(SLib.SpriteImage_StaticMultiple):  # 58
                 else:
                     self.track.setPos(self.width / 2, -4 * 24 + self.height / 2)
 
-            if len(self.aux) == 0:
-                self.aux.append(self.track)
-        elif len(self.aux) != 0:
-            self.aux.clear()
+        else:
+            # hide the track
+            self.aux[0].setSize(0, 0)
 
         super().dataChanged()
 

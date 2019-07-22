@@ -358,22 +358,28 @@ class SpriteImage_NewerKoopa(SLib.SpriteImage_StaticMultiple):  # 57
 
 class SpriteImage_NewerParaKoopa(SLib.SpriteImage_StaticMultiple):  # 58
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
-        self.track = SLib.AuxiliaryTrackObject(parent, 0, 0, 0)
-        self.offset = (-7, -12)
+        super().__init__(parent, 1.5, None, (-7, -12))
+        self.aux.append(SLib.AuxiliaryTrackObject(self.parent, 0, 0, 0))
 
     @staticmethod
     def loadImages():
-        if 'KoopaG' in ImageCache: return
-        ImageCache['ParaKoopaG'] = SLib.GetImg('parakoopa_green.png')
-        ImageCache['ParaKoopaR'] = SLib.GetImg('parakoopa_red.png')
-        ImageCache['KoopaShellG'] = SLib.GetImg('koopa_green_shell.png')
-        ImageCache['KoopaShellR'] = SLib.GetImg('koopa_red_shell.png')
-        for flag in (0, 1):
-            for style in range(4):
-                ImageCache['ParaKoopa%d%d' % (flag, style + 1)] = \
-                    SLib.GetImg('parakoopa_%d%d.png' % (flag, style + 1))
-                if style < 3:
+        if 'ParaKoopaG' not in ImageCache:
+            ImageCache['ParaKoopaG'] = SLib.GetImg('parakoopa_green.png')
+            ImageCache['ParaKoopaR'] = SLib.GetImg('parakoopa_red.png')
+
+        if 'KoopaShellG' not in ImageCache:
+            ImageCache['KoopaShellG'] = SLib.GetImg('koopa_green_shell.png')
+            ImageCache['KoopaShellR'] = SLib.GetImg('koopa_red_shell.png')
+
+        if 'ParaKoopa01' not in ImageCache:
+            for flag in (0, 1):
+                for style in range(4):
+                    ImageCache['ParaKoopa%d%d' % (flag, style + 1)] = \
+                        SLib.GetImg('parakoopa_%d%d.png' % (flag, style + 1))
+
+        if 'KoopaShell01' not in ImageCache:
+            for flag in (0, 1):
+                for style in range(4):
                     ImageCache['KoopaShell%d%d' % (flag, style + 1)] = \
                         SLib.GetImg('koopa_shell_%d%d.png' % (flag, style + 1))
 
@@ -399,26 +405,28 @@ class SpriteImage_NewerParaKoopa(SLib.SpriteImage_StaticMultiple):  # 58
                 self.image = ImageCache['ParaKoopa%d%d' % (red, texhack)]
                 
         if mode == 1 or mode == 2:
-            turnImmediately = self.parent.spritedata[4] & 1 == 1
-            if mode == 1:
-                self.track.direction = SLib.AuxiliaryTrackObject.Horizontal
-                self.track.setSize(9 * 16, 16)
-                if turnImmediately:
-                    self.track.setPos(self.width / 2, self.height / 2)
-                else:
-                    self.track.setPos(-4 * 24 + self.width / 2, self.height / 2)
-            else:
-                self.track.direction = SLib.AuxiliaryTrackObject.Vertical
-                self.track.setSize(16, 9 * 16)
-                if turnImmediately:
-                    self.track.setPos(self.width / 2, self.height / 2)
-                else:
-                    self.track.setPos(self.width / 2, -4 * 24 + self.height / 2)
 
-            if len(self.aux) == 0:
-                self.aux.append(self.track)
-        elif len(self.aux) != 0:
-            self.aux.clear()
+            turnImmediately = self.parent.spritedata[4] & 1 == 1
+            track = self.aux[0]
+
+            if mode == 1:
+                track.direction = SLib.AuxiliaryTrackObject.Horizontal
+                track.setSize(9 * 16, 16)
+                if turnImmediately:
+                    track.setPos(self.width / 2, self.height / 2)
+                else:
+                    track.setPos(-4 * 24 + self.width / 2, self.height / 2)
+            else:
+                track.direction = SLib.AuxiliaryTrackObject.Vertical
+                track.setSize(16, 9 * 16)
+                if turnImmediately:
+                    track.setPos(self.width / 2, self.height / 2)
+                else:
+                    track.setPos(self.width / 2, -4 * 24 + self.height / 2)
+
+        else:
+            # hide the track
+            self.aux[0].setSize(0, 0)
 
         super().dataChanged()
 
