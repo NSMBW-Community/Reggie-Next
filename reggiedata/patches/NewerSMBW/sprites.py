@@ -185,6 +185,27 @@ class SpriteImage_NewerGoomba(SLib.SpriteImage_StaticMultiple):  # 20
         super().dataChanged()
 
 
+class SpriteImage_NewerParaGoomba(SLib.SpriteImage_StaticMultiple):  # 21
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('ParaGoomba', 'para_goomba.png')
+        if 'ParaGoomba1' in ImageCache: return
+        for i in range(8):
+            ImageCache['ParaGoomba%d' % (i + 1)] = SLib.GetImg('para_goomba_%d.png' % (i + 1))
+
+    def dataChanged(self):
+        colour = (self.parent.spritedata[2] & 0xF) % 9
+        self.offset = (-1, -10)
+
+        if colour == 0:
+            self.image = ImageCache['ParaGoomba']
+
+        else:
+            self.image = ImageCache['ParaGoomba%d' % colour]
+
+        super().dataChanged()
+
+
 class SpriteImage_PumpkinGoomba(SLib.SpriteImage_StaticMultiple):  # 22
     def __init__(self, parent):
         super().__init__(parent)
@@ -364,7 +385,7 @@ class SpriteImage_NewerParaKoopa(SLib.SpriteImage_StaticMultiple):  # 58
 
     @staticmethod
     def loadImages():
-        if 'KoopaG' in ImageCache: return
+        if 'ParaKoopaG' in ImageCache: return
         ImageCache['ParaKoopaG'] = SLib.GetImg('parakoopa_green.png')
         ImageCache['ParaKoopaR'] = SLib.GetImg('parakoopa_red.png')
         ImageCache['KoopaShellG'] = SLib.GetImg('koopa_green_shell.png')
@@ -1131,6 +1152,7 @@ ImageClasses = {
     18: SpriteImage_DragonCoasterPiece,
     19: SpriteImage_SamuraiGuy,
     20: SpriteImage_NewerGoomba,
+    21: SpriteImage_NewerParaGoomba,
     22: SpriteImage_PumpkinGoomba,
     24: SpriteImage_NewerBuzzyBeetle,
     40: SpriteImage_NewerQSwitch,

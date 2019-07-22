@@ -5109,22 +5109,19 @@
       <entry value="9">White</entry>
       <entry value="10">Pink</entry>
     </list>
-    <value nybble="10" title="Speed" comment="This determines how fast the Para-Beetle flies."/>
-    <list nybble="9" title="???" comment="">
-      <entry value="0"/>
-      <entry value="1"/>
+    <checkbox bit="36" title="Unknown Flag 9 (1)" comment=""/>
+    <value nybble="10" title="Speed" comment="This determines how fast the Para-Beetle flies. Value 0 keeps it in place."/>
+    <list nybble="11" title="Direction" comment="This determines what direction the Para-Beetle flies.">
+      <entry value="0">Right</entry>
+      <entry value="1">Left</entry>
+	  <entry value="2">Left</entry>
+	  <entry value="3">Left</entry>
     </list>
-    <list nybble="11" title="Direction or Facing?" comment="">
-      <entry value="0"/>
-      <entry value="1"/>
-      <entry value="2"/>
-      <entry value="3"/>
-    </list>
-    <list nybble="12" title="Direction or Facing?" comment="">
-      <entry value="0"/>
-      <entry value="1"/>
-      <entry value="2"/>
-      <entry value="3"/>
+    <list nybble="12" title="Facing" comment="This determines what direction the Para-Beetle is facing.">
+      <entry value="0">Right</entry>
+      <entry value="1">Left</entry>
+	  <entry value="2">Right-ish</entry>
+	  <entry value="3">Towards Screen</entry>
     </list>
   </sprite> <!-- #291: Para-Beetle -->
   

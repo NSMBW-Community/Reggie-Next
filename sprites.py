@@ -1032,18 +1032,18 @@ class SpriteImage_Goomba(SLib.SpriteImage_Static):  # 20
         SLib.loadIfNotInImageCache('Goomba', 'goomba.png')
 
 
-class SpriteImage_Paragoomba(SLib.SpriteImage_Static):  # 21
+class SpriteImage_ParaGoomba(SLib.SpriteImage_Static):  # 21
     def __init__(self, parent):
         super().__init__(
             parent,
             1.5,
-            ImageCache['Paragoomba'],
+            ImageCache['ParaGoomba'],
             (1, -10),
         )
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Paragoomba', 'paragoomba.png')
+        SLib.loadIfNotInImageCache('ParaGoomba', 'paragoomba.png')
 
 
 class SpriteImage_HorzMovingPlatform(SpriteImage_WoodenPlatform):  # 23
@@ -8060,7 +8060,7 @@ ImageClasses = {
     0: SpriteImage_MeasureJump,
     9: SpriteImage_CharacterSpawner,
     20: SpriteImage_Goomba,
-    21: SpriteImage_Paragoomba,
+    21: SpriteImage_ParaGoomba,
     23: SpriteImage_HorzMovingPlatform,
     24: SpriteImage_BuzzyBeetle,
     25: SpriteImage_Spiny,
