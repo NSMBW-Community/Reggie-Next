@@ -10842,6 +10842,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             if button_com is not None or button_com2 is not None or button_adv is not None:
                 L = QtWidgets.QHBoxLayout()
+                L.setContentsMargins(0, 0, 0, 0)
                 L.addWidget(self.widget)
 
                 if button_com is not None:
