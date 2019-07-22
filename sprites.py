@@ -1444,9 +1444,19 @@ class SpriteImage_UnusedRotPlatforms(SLib.SpriteImage):  # 52
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
+        for _ in range(4):
+            img = SLib.AuxiliaryImage(parent, 144, 24)
+            img.image = ImageCache["UnusedRotPlatform"]
+            self.aux.append(img)
+
+        self.aux[0].setPos(-60, -144) # top
+        self.aux[1].setPos(-60, 144) # bottom
+        self.aux[2].setPos(-204, 0) # left
+        self.aux[3].setPos(84, 0) # right
+
     @staticmethod
     def loadImages():
-        if 'UnusedRotPlatforms' in ImageCache:
+        if 'UnusedRotPlatform' in ImageCache:
             return
 
         SLib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
@@ -1455,17 +1465,13 @@ class SpriteImage_UnusedRotPlatforms(SLib.SpriteImage):  # 52
             144, 24,
             Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
         )
-        img = QtGui.QPixmap(432, 312)
+        img = QtGui.QPixmap(144, 24)
         img.fill(Qt.transparent)
         paint = QtGui.QPainter(img)
         paint.setOpacity(0.8)
-        paint.drawPixmap(144, 0, platform)  # top
-        paint.drawPixmap(144, 288, platform)  # bottom
-        paint.drawPixmap(0, 144, platform)  # left
-        paint.drawPixmap(288, 144, platform)  # right
-        del paint
+        paint.drawPixmap(0, 0, platform)
+        ImageCache['UnusedRotPlatform'] = img
 
-        ImageCache['UnusedRotPlatforms'] = img
 
 
 class SpriteImage_Lakitu(SLib.SpriteImage_Static):  # 54
