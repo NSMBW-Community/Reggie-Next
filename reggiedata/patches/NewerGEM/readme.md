@@ -1,4 +1,4 @@
-### Newer General Engine Mod ###
+# Newer General Engine Mod #
 NewerGEM aims to unify different mods and patches made for Newer Super Mario Bros. Wii.
 In addition to this, NewerGEM also includes tilesets from all major tileset packs, and in the future, backgrounds, model edits, and more.
 To download those additional resources, please visit https://github.com/Zement/NewerGEM.
@@ -6,7 +6,7 @@ The compiled patches that go into the *NewerRes* folder can also be found there.
 
 ## Features ##
 
-# Patches #
+### Patches ###
 - Shell Mod (with new version you can hit sprites, but currently causes bugs)
 - Glow Block Mod (same thing, you can throw it upwards)
 - Yoshi Mod (partially complete)
@@ -16,7 +16,7 @@ The compiled patches that go into the *NewerRes* folder can also be found there.
 - Music Slots Mod (40 additional music slots)
 - Mod for custom Pa0 Bricks and ?-Blocks that are not on the usual spot (on demand)
 - Better block_anime Animation (more frames for Brick Block)
-# Resources #
+### Resources ###
 Tileset packs:
 - Tileset Pack by B1_Gaming
 - Tilesets by CLF78
@@ -47,7 +47,7 @@ All of this works. But many aspects still untested.
 5) Brick Block Mod: More frames! :slight_smile:
 
 
-### Credits ###
+## Credits ##
 
 - B1_Gaming - Tileset Pack
 - Grop - Reverse Engineering, Coding
