@@ -1,5 +1,4 @@
 ### Newer General Engine Mod ###
-
 NewerGEM aims to unify different mods and patches made for Newer Super Mario Bros. Wii.
 In addition to this, NewerGEM also includes tilesets from all major tileset packs, and in the future, backgrounds, model edits, and more.
 To download those additional resources, please visit https://github.com/Zement/NewerGEM.
@@ -18,14 +17,13 @@ The compiled patches that go into the *NewerRes* folder can also be found there.
 - Mod for custom Pa0 Bricks and ?-Blocks that are not on the usual spot (on demand)
 - Better block_anime Animation (more frames for Brick Block)
 # Resources #
-- Tileset packs:
--- Tileset Pack by B1_Gaming
--- Tilesets by CLF78
--- Tilesets (NSMBU) by Titovision, Danster, and God4Live
+Tileset packs:
+- Tileset Pack by B1_Gaming
+- Tilesets by CLF78
+- Tilesets (NSMBU) by Titovision, Danster, and God4Live
 
 
 ## Mods explained in more detail: ##
-
 1) Shell Mod SMW Style:
 Shells can be thrown up while grabbed and UP is pressed. Koopa/Buzzy Beetle/Spiny shells are supported. Brand new: Bob-ombs and Glow Blocks.
 Grabbing the shell again after throwing it was beautifully implemented by Grop. Also, the forward-movement of the shell allows to throw and catch it at any (Mario) speed, even max speed. At slower speeds, the throw arc is reduced accordingly.
@@ -51,9 +49,9 @@ All of this works. But many aspects still untested.
 
 ### Credits ###
 
-B1_Gaming - Tileset Pack
-Grop - Reverse Engineering, Coding
-CLF78 - Tileset Pack
-Danster64 - Tileset Pack
-God4Live - Tileset Pack
+- B1_Gaming - Tileset Pack
+- Grop - Reverse Engineering, Coding
+- CLF78 - Tileset Pack
+- Danster64 - Tileset Pack
+- God4Live - Tileset Pack
 Titovision - Tileset Pack
