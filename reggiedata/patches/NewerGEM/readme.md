@@ -54,4 +54,4 @@ All of this works. But many aspects still untested.
 - CLF78 - Tileset Pack
 - Danster64 - Tileset Pack
 - God4Live - Tileset Pack
-Titovision - Tileset Pack
+- Titovision - Tileset Pack
