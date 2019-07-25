@@ -46,7 +46,6 @@ SpriteImagesLoaded = set()
 SpritesFolders = []
 RealViewEnabled = False
 Area = None
-MapPositionToZoneID = None
 
 
 ################################################################
@@ -155,8 +154,6 @@ class SpriteImage:
 
         self.alpha = 1.0
         self.image = None
-        if not isinstance(scale, float):
-            print('Tell RoadrunnerWMC that he missed the __init__ API change for NSMBW sprite %d.' % self.parent.type)
         self.spritebox = Spritebox(scale)
         self.dimensions = 0, 0, 16, 16
         self.scale = scale
@@ -403,7 +400,7 @@ class Spritebox:
 ################################################################
 ################################################################
 ################################################################
-#################### AuxiliarySpriteItem Classes #####################
+#################### AuxiliarySpriteItem Classes ###############
 
 
 class AuxiliaryItem:
@@ -626,7 +623,7 @@ class AuxiliaryPainterPath(AuxiliarySpriteItem):
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.hover = False
 
-    def SetPath(self, path):
+    def setPath(self, path):
         self.PainterPath = path
 
     def setSize(self, width, height, xoff=0, yoff=0):
