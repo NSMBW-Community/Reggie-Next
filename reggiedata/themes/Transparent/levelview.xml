@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<colors>
+    <color id="bg"               value="#404040" />
+    <color id="grid"             value="#FFFFFF33" />
+    <color id="ui"               value="#181818"   />
+    <color id="comment_fill"     value="#7F7F003F" />
+    <color id="comment_fill_s"   value="#7F7F007F" />
+    <color id="comment_lines"    value="#FFFF00DF" />
+    <color id="comment_lines_s"  value="#FFFF00FF" />
+    <color id="entrance_fill"    value="#96000066" />
+    <color id="entrance_fill_s"  value="#8daa06FF" />
+    <color id="entrance_lines"   value="#FFFFFF" />
+    <color id="location_fill"    value="#d2f50a0A" />
+    <color id="location_fill_s"  value="#dc23a560" />
+    <color id="location_lines"   value="#B18FFFFF" />
+    <color id="location_lines_s" value="#B18FFFFF" />
+    <color id="path_connector"   value="#17FF00FF" />
+    <color id="path_fill"        value="#17FF0050" />
+    <color id="path_fill_s"      value="#17FF00AA" />
+    <color id="path_lines"       value="#3FFF5FFF" />
+    <color id="smi"              value="#ddffdd10" />
+    <color id="spritebox_fill"   value="#0000FF2F" />
+    <color id="spritebox_fill_s" value="#b000b0FF" />
+    <color id="spritebox_lines"  value="#FFFFFF" />
+    <color id="zone_lines"       value="#dc23a5" />
+    <color id="zone_text"        value="#F5F5F5"   />
+</colors>
