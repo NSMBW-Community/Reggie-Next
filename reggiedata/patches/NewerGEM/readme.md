@@ -50,8 +50,8 @@ All of this works. But many aspects still untested.
 ## Credits ##
 
 - B1_Gaming - Tileset Pack
-- Grop - Reverse Engineering, Coding
-- CLF78 - Tileset Pack
+- CLF78 - Game Patch, Tileset Pack
 - Danster64 - Tileset Pack
 - God4Live - Tileset Pack
+- Grop - Reverse Engineering, Coding
 - Titovision - Tileset Pack
