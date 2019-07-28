@@ -55,7 +55,6 @@ import time
 import urllib.request
 from xml.etree import ElementTree as etree
 import zipfile
-import copy
 
 # PyQt5: import, and error msg if not installed
 try:
@@ -2774,12 +2773,12 @@ def ProcessOverrides(idx, name):
         invisiblocks = [3, 4, 5, 6, 7, 8, 9, 10, 13]
         replace = 0x800
         for i in invisiblocks:
-            t[i].main = overlay(t[i].main, t[replace].main)
+            t[i].main = t[replace].main
             replace += 1
 
         # Question and brick blocks
         # these don't have their own tiles so we have to do them by objects
-        rangeA, rangeB = range(39, 49), range(26, 38)
+        rangeA, rangeB = range(39, 49), range(27, 38)
         replace = offset + 10
         baseblock = t[defs[39].rows[0][0][1]].main
 
@@ -2792,83 +2791,81 @@ def ProcessOverrides(idx, name):
 
         replace += 1
         baseblock = t[defs[27].rows[0][0][1]].main
-        a = 20
+        a = 10
         for i in rangeB:
             t[replace].main = overlay(baseblock, Overrides_safe[a].main)
             defs[i].rows[0][0] = (0, replace, 0)
             replace += 1
             a += 1
 
-        print('a =', a)
-
         # now the extra stuff (invisible collisions etc)
-        t[1].main = overlay(t[1].main, t[0x400 + 1280].main)  # solid
-        t[2].main = overlay(t[2].main, t[0x400 + 1311].main)  # vine stopper
-        t[11].main = overlay(t[11].main, t[0x400 + 1310].main)  # jumpthrough platform
-        t[12].main = overlay(t[12].main, t[0x400 + 1309].main)  # 16x8 roof platform
+        t[1].main = t[0x400 + 1280].main  # solid
+        t[2].main = t[0x400 + 1311].main  # vine stopper
+        t[11].main = t[0x400 + 1310].main  # jumpthrough platform
+        t[12].main = t[0x400 + 1309].main  # 16x8 roof platform
 
-        t[16].main = overlay(t[16].main, t[0x400 + 1291].main)  # 1x1 slope going up
-        t[17].main = overlay(t[17].main, t[0x400 + 1292].main)  # 1x1 slope going down
-        t[18].main = overlay(t[18].main, t[0x400 + 1281].main)  # 2x1 slope going up (part 1)
-        t[19].main = overlay(t[19].main, t[0x400 + 1282].main)  # 2x1 slope going up (part 2)
-        t[20].main = overlay(t[20].main, t[0x400 + 1283].main)  # 2x1 slope going down (part 1)
-        t[21].main = overlay(t[21].main, t[0x400 + 1284].main)  # 2x1 slope going down (part 2)
-        t[22].main = overlay(t[22].main, t[0x400 + 1301].main)  # 4x1 slope going up (part 1)
-        t[23].main = overlay(t[23].main, t[0x400 + 1302].main)  # 4x1 slope going up (part 2)
-        t[24].main = overlay(t[24].main, t[0x400 + 1303].main)  # 4x1 slope going up (part 3)
-        t[25].main = overlay(t[25].main, t[0x400 + 1304].main)  # 4x1 slope going up (part 4)
-        t[26].main = overlay(t[26].main, t[0x400 + 1305].main)  # 4x1 slope going down (part 1)
-        t[27].main = overlay(t[27].main, t[0x400 + 1306].main)  # 4x1 slope going down (part 2)
-        t[28].main = overlay(t[28].main, t[0x400 + 1307].main)  # 4x1 slope going down (part 3)
-        t[29].main = overlay(t[29].main, t[0x400 + 1308].main)  # 4x1 slope going down (part 4)
-        t[30].main = overlay(t[30].main, t[0x400 + 1062].main)  # coin
+        t[16].main = t[0x400 + 1291].main  # 1x1 slope going up
+        t[17].main = t[0x400 + 1292].main  # 1x1 slope going down
+        t[18].main = t[0x400 + 1281].main  # 2x1 slope going up (part 1)
+        t[19].main = t[0x400 + 1282].main  # 2x1 slope going up (part 2)
+        t[20].main = t[0x400 + 1283].main  # 2x1 slope going down (part 1)
+        t[21].main = t[0x400 + 1284].main  # 2x1 slope going down (part 2)
+        t[22].main = t[0x400 + 1301].main  # 4x1 slope going up (part 1)
+        t[23].main = t[0x400 + 1302].main  # 4x1 slope going up (part 2)
+        t[24].main = t[0x400 + 1303].main  # 4x1 slope going up (part 3)
+        t[25].main = t[0x400 + 1304].main  # 4x1 slope going up (part 4)
+        t[26].main = t[0x400 + 1305].main  # 4x1 slope going down (part 1)
+        t[27].main = t[0x400 + 1306].main  # 4x1 slope going down (part 2)
+        t[28].main = t[0x400 + 1307].main  # 4x1 slope going down (part 3)
+        t[29].main = t[0x400 + 1308].main  # 4x1 slope going down (part 4)
+        t[30].main = t[0x400 + 1062].main  # coin
 
-        t[32].main = overlay(t[32].main, t[0x400 + 1289].main)  # 1x1 roof going down
-        t[33].main = overlay(t[33].main, t[0x400 + 1290].main)  # 1x1 roof going up
-        t[34].main = overlay(t[34].main, t[0x400 + 1285].main)  # 2x1 roof going down (part 1)
-        t[35].main = overlay(t[35].main, t[0x400 + 1286].main)  # 2x1 roof going down (part 2)
-        t[36].main = overlay(t[36].main, t[0x400 + 1287].main)  # 2x1 roof going up (part 1)
-        t[37].main = overlay(t[37].main, t[0x400 + 1288].main)  # 2x1 roof going up (part 2)
-        t[38].main = overlay(t[38].main, t[0x400 + 1293].main)  # 4x1 roof going down (part 1)
-        t[39].main = overlay(t[39].main, t[0x400 + 1294].main)  # 4x1 roof going down (part 2)
-        t[40].main = overlay(t[40].main, t[0x400 + 1295].main)  # 4x1 roof going down (part 3)
-        t[41].main = overlay(t[41].main, t[0x400 + 1296].main)  # 4x1 roof going down (part 4)
-        t[42].main = overlay(t[42].main, t[0x400 + 1297].main)  # 4x1 roof going up (part 1)
-        t[43].main = overlay(t[43].main, t[0x400 + 1298].main)  # 4x1 roof going up (part 2)
-        t[44].main = overlay(t[44].main, t[0x400 + 1299].main)  # 4x1 roof going up (part 3)
-        t[45].main = overlay(t[45].main, t[0x400 + 1300].main)  # 4x1 roof going up (part 4)
-        t[46].main = overlay(t[46].main, t[0x400 + 1312].main)  # P-switch coins
+        t[32].main = t[0x400 + 1289].main  # 1x1 roof going down
+        t[33].main = t[0x400 + 1290].main  # 1x1 roof going up
+        t[34].main = t[0x400 + 1285].main  # 2x1 roof going down (part 1)
+        t[35].main = t[0x400 + 1286].main  # 2x1 roof going down (part 2)
+        t[36].main = t[0x400 + 1287].main  # 2x1 roof going up (part 1)
+        t[37].main = t[0x400 + 1288].main  # 2x1 roof going up (part 2)
+        t[38].main = t[0x400 + 1293].main  # 4x1 roof going down (part 1)
+        t[39].main = t[0x400 + 1294].main  # 4x1 roof going down (part 2)
+        t[40].main = t[0x400 + 1295].main  # 4x1 roof going down (part 3)
+        t[41].main = t[0x400 + 1296].main  # 4x1 roof going down (part 4)
+        t[42].main = t[0x400 + 1297].main  # 4x1 roof going up (part 1)
+        t[43].main = t[0x400 + 1298].main  # 4x1 roof going up (part 2)
+        t[44].main = t[0x400 + 1299].main  # 4x1 roof going up (part 3)
+        t[45].main = t[0x400 + 1300].main  # 4x1 roof going up (part 4)
+        t[46].main = t[0x400 + 1312].main  # P-switch coins
 
-        t[53].main = overlay(t[53].main, t[0x400 + 1314].main)  # donut lift
-        t[61].main = overlay(t[61].main, t[0x400 + 1063].main)  # multiplayer coin
-        t[63].main = overlay(t[63].main, t[0x400 + 1313].main)  # instant death tile
+        t[53].main = t[0x400 + 1314].main  # donut lift
+        t[61].main = t[0x400 + 1063].main  # multiplayer coin
+        t[63].main = t[0x400 + 1313].main  # instant death tile
 
     elif name in tsidx["Flowers"] or name in tsidx["Forest Flowers"]:
         # flowers
         t = Tiles
-        t[416].main = overlay(t[416].main, t[0x400 + 1092].main)  # grass
-        t[417].main = overlay(t[417].main, t[0x400 + 1093].main)
-        t[418].main = overlay(t[418].main, t[0x400 + 1094].main)
-        t[419].main = overlay(t[419].main, t[0x400 + 1095].main)
-        t[420].main = overlay(t[420].main, t[0x400 + 1096].main)
+        t[416].main = t[0x400 + 1092].main  # grass
+        t[417].main = t[0x400 + 1093].main
+        t[418].main = t[0x400 + 1094].main
+        t[419].main = t[0x400 + 1095].main
+        t[420].main = t[0x400 + 1096].main
 
         if name in tsidx["Flowers"]:
-            t[432].main = overlay(t[432].main, t[0x400 + 1068].main)  # flowers
-            t[433].main = overlay(t[433].main, t[0x400 + 1069].main)  # flowers
-            t[434].main = overlay(t[434].main, t[0x400 + 1070].main)  # flowers
+            t[432].main = t[0x400 + 1068].main  # flowers
+            t[433].main = t[0x400 + 1069].main  # flowers
+            t[434].main = t[0x400 + 1070].main  # flowers
 
-            t[448].main = overlay(t[448].main, t[0x400 + 1158].main)  # flowers on grass
-            t[449].main = overlay(t[449].main, t[0x400 + 1159].main)
-            t[450].main = overlay(t[450].main, t[0x400 + 1160].main)
+            t[448].main = t[0x400 + 1158].main  # flowers on grass
+            t[449].main = t[0x400 + 1159].main
+            t[450].main = t[0x400 + 1160].main
         elif name in tsidx["Forest Flowers"]:
             # forest flowers
-            t[432].main = overlay(t[432].main, t[0x400 + 1071].main)  # flowers
-            t[433].main = overlay(t[433].main, t[0x400 + 1072].main)  # flowers
-            t[434].main = overlay(t[434].main, t[0x400 + 1073].main)  # flowers
+            t[432].main = t[0x400 + 1071].main  # flowers
+            t[433].main = t[0x400 + 1072].main  # flowers
+            t[434].main = t[0x400 + 1073].main  # flowers
 
-            t[448].main = overlay(t[448].main, t[0x400 + 1222].main)  # flowers on grass
-            t[449].main = overlay(t[449].main, t[0x400 + 1223].main)
-            t[450].main = overlay(t[450].main, t[0x400 + 1224].main)
+            t[448].main = t[0x400 + 1222].main  # flowers on grass
+            t[449].main = t[0x400 + 1223].main
+            t[450].main = t[0x400 + 1224].main
 
     elif name in tsidx["Lines"] or name in tsidx["Full Lines"]:
         # These are the line guides
@@ -2876,128 +2873,128 @@ def ProcessOverrides(idx, name):
 
         t = Tiles
 
-        t[768].main = overlay(t[768].main, t[0x400 + 1088].main)  # horizontal line
-        t[769].main = overlay(t[769].main, t[0x400 + 1089].main)  # vertical line
-        t[770].main = overlay(t[770].main, t[0x400 + 1090].main)  # bottom-right corner
-        t[771].main = overlay(t[771].main, t[0x400 + 1091].main)  # top-left corner
+        t[768].main = t[0x400 + 1088].main  # horizontal line
+        t[769].main = t[0x400 + 1089].main  # vertical line
+        t[770].main = t[0x400 + 1090].main  # bottom-right corner
+        t[771].main = t[0x400 + 1091].main  # top-left corner
 
-        t[784].main = overlay(t[784].main, t[0x400 + 1152].main)  # left red blob (part 1)
-        t[785].main = overlay(t[785].main, t[0x400 + 1153].main)  # top red blob (part 1)
-        t[786].main = overlay(t[786].main, t[0x400 + 1154].main)  # top red blob (part 2)
-        t[787].main = overlay(t[787].main, t[0x400 + 1155].main)  # right red blob (part 1)
-        t[788].main = overlay(t[788].main, t[0x400 + 1156].main)  # top-left red blob
-        t[789].main = overlay(t[789].main, t[0x400 + 1157].main)  # top-right red blob
+        t[784].main = t[0x400 + 1152].main  # left red blob (part 1)
+        t[785].main = t[0x400 + 1153].main  # top red blob (part 1)
+        t[786].main = t[0x400 + 1154].main  # top red blob (part 2)
+        t[787].main = t[0x400 + 1155].main  # right red blob (part 1)
+        t[788].main = t[0x400 + 1156].main  # top-left red blob
+        t[789].main = t[0x400 + 1157].main  # top-right red blob
 
-        t[800].main = overlay(t[800].main, t[0x400 + 1216].main)  # left red blob (part 2)
-        t[801].main = overlay(t[801].main, t[0x400 + 1217].main)  # bottom red blob (part 1)
-        t[802].main = overlay(t[802].main, t[0x400 + 1218].main)  # bottom red blob (part 2)
-        t[803].main = overlay(t[803].main, t[0x400 + 1219].main)  # right red blob (part 2)
-        t[804].main = overlay(t[804].main, t[0x400 + 1220].main)  # bottom-left red blob
-        t[805].main = overlay(t[805].main, t[0x400 + 1221].main)  # bottom-right red blob
+        t[800].main = t[0x400 + 1216].main  # left red blob (part 2)
+        t[801].main = t[0x400 + 1217].main  # bottom red blob (part 1)
+        t[802].main = t[0x400 + 1218].main  # bottom red blob (part 2)
+        t[803].main = t[0x400 + 1219].main  # right red blob (part 2)
+        t[804].main = t[0x400 + 1220].main  # bottom-left red blob
+        t[805].main = t[0x400 + 1221].main  # bottom-right red blob
 
         # Those are all for normal lines
         if name in tsidx["Lines"]: return
 
-        t[816].main = overlay(t[816].main, t[0x400 + 1056].main)  # 1x2 diagonal going up (top edge)
-        t[817].main = overlay(t[817].main, t[0x400 + 1057].main)  # 1x2 diagonal going down (top edge)
+        t[816].main = t[0x400 + 1056].main  # 1x2 diagonal going up (top edge)
+        t[817].main = t[0x400 + 1057].main  # 1x2 diagonal going down (top edge)
 
-        t[832].main = overlay(t[832].main, t[0x400 + 1120].main)  # 1x2 diagonal going up (part 1)
-        t[833].main = overlay(t[833].main, t[0x400 + 1121].main)  # 1x2 diagonal going down (part 1)
-        t[834].main = overlay(t[834].main, t[0x400 + 1186].main)  # 1x1 diagonal going up
-        t[835].main = overlay(t[835].main, t[0x400 + 1187].main)  # 1x1 diagonal going down
-        t[836].main = overlay(t[836].main, t[0x400 + 1058].main)  # 2x1 diagonal going up (part 1)
-        t[837].main = overlay(t[837].main, t[0x400 + 1059].main)  # 2x1 diagonal going up (part 2)
-        t[838].main = overlay(t[838].main, t[0x400 + 1060].main)  # 2x1 diagonal going down (part 1)
-        t[839].main = overlay(t[839].main, t[0x400 + 1061].main)  # 2x1 diagonal going down (part 2)
+        t[832].main = t[0x400 + 1120].main  # 1x2 diagonal going up (part 1)
+        t[833].main = t[0x400 + 1121].main  # 1x2 diagonal going down (part 1)
+        t[834].main = t[0x400 + 1186].main  # 1x1 diagonal going up
+        t[835].main = t[0x400 + 1187].main  # 1x1 diagonal going down
+        t[836].main = t[0x400 + 1058].main  # 2x1 diagonal going up (part 1)
+        t[837].main = t[0x400 + 1059].main  # 2x1 diagonal going up (part 2)
+        t[838].main = t[0x400 + 1060].main  # 2x1 diagonal going down (part 1)
+        t[839].main = t[0x400 + 1061].main  # 2x1 diagonal going down (part 2)
 
-        t[848].main = overlay(t[848].main, t[0x400 + 1184].main)  # 1x2 diagonal going up (part 2)
-        t[849].main = overlay(t[849].main, t[0x400 + 1185].main)  # 1x2 diagonal going down (part 2)
-        t[850].main = overlay(t[850].main, t[0x400 + 1250].main)  # 1x1 diagonal going up
-        t[851].main = overlay(t[851].main, t[0x400 + 1251].main)  # 1x1 diagonal going down
-        t[852].main = overlay(t[852].main, t[0x400 + 1122].main)  # 2x1 diagonal going up (part 1)
-        t[853].main = overlay(t[853].main, t[0x400 + 1123].main)  # 2x1 diagonal going up (part 2)
-        t[854].main = overlay(t[854].main, t[0x400 + 1124].main)  # 2x1 diagonal going down (part 1)
-        t[855].main = overlay(t[855].main, t[0x400 + 1125].main)  # 2x1 diagonal going down (part 2)
+        t[848].main = t[0x400 + 1184].main  # 1x2 diagonal going up (part 2)
+        t[849].main = t[0x400 + 1185].main  # 1x2 diagonal going down (part 2)
+        t[850].main = t[0x400 + 1250].main  # 1x1 diagonal going up
+        t[851].main = t[0x400 + 1251].main  # 1x1 diagonal going down
+        t[852].main = t[0x400 + 1122].main  # 2x1 diagonal going up (part 1)
+        t[853].main = t[0x400 + 1123].main  # 2x1 diagonal going up (part 2)
+        t[854].main = t[0x400 + 1124].main  # 2x1 diagonal going down (part 1)
+        t[855].main = t[0x400 + 1125].main  # 2x1 diagonal going down (part 2)
 
-        t[866].main = overlay(t[866].main, t[0x400 + 1065].main)  # big circle piece 1st row
-        t[867].main = overlay(t[867].main, t[0x400 + 1066].main)  # big circle piece 1st row
-        t[870].main = overlay(t[870].main, t[0x400 + 1189].main)  # medium circle piece 1st row
-        t[871].main = overlay(t[871].main, t[0x400 + 1190].main)  # medium circle piece 1st row
+        t[866].main = t[0x400 + 1065].main  # big circle piece 1st row
+        t[867].main = t[0x400 + 1066].main  # big circle piece 1st row
+        t[870].main = t[0x400 + 1189].main  # medium circle piece 1st row
+        t[871].main = t[0x400 + 1190].main  # medium circle piece 1st row
 
-        t[881].main = overlay(t[881].main, t[0x400 + 1128].main)  # big circle piece 2nd row
-        t[882].main = overlay(t[882].main, t[0x400 + 1129].main)  # big circle piece 2nd row
-        t[883].main = overlay(t[883].main, t[0x400 + 1130].main)  # big circle piece 2nd row
-        t[884].main = overlay(t[884].main, t[0x400 + 1131].main)  # big circle piece 2nd row
-        t[885].main = overlay(t[885].main, t[0x400 + 1252].main)  # medium circle piece 2nd row
-        t[886].main = overlay(t[886].main, t[0x400 + 1253].main)  # medium circle piece 2nd row
-        t[887].main = overlay(t[887].main, t[0x400 + 1254].main)  # medium circle piece 2nd row
-        t[888].main = overlay(t[888].main, t[0x400 + 1188].main)  # small circle
+        t[881].main = t[0x400 + 1128].main  # big circle piece 2nd row
+        t[882].main = t[0x400 + 1129].main  # big circle piece 2nd row
+        t[883].main = t[0x400 + 1130].main  # big circle piece 2nd row
+        t[884].main = t[0x400 + 1131].main  # big circle piece 2nd row
+        t[885].main = t[0x400 + 1252].main  # medium circle piece 2nd row
+        t[886].main = t[0x400 + 1253].main  # medium circle piece 2nd row
+        t[887].main = t[0x400 + 1254].main  # medium circle piece 2nd row
+        t[888].main = t[0x400 + 1188].main  # small circle
 
-        t[896].main = overlay(t[896].main, t[0x400 + 1191].main)  # big circle piece 3rd row
-        t[897].main = overlay(t[897].main, t[0x400 + 1192].main)  # big circle piece 3rd row
-        t[900].main = overlay(t[900].main, t[0x400 + 1195].main)  # big circle piece 3rd row
-        t[901].main = overlay(t[901].main, t[0x400 + 1316].main)  # medium circle piece 3rd row
-        t[902].main = overlay(t[902].main, t[0x400 + 1317].main)  # medium circle piece 3rd row
-        t[903].main = overlay(t[903].main, t[0x400 + 1318].main)  # medium circle piece 3rd row
+        t[896].main = t[0x400 + 1191].main  # big circle piece 3rd row
+        t[897].main = t[0x400 + 1192].main  # big circle piece 3rd row
+        t[900].main = t[0x400 + 1195].main  # big circle piece 3rd row
+        t[901].main = t[0x400 + 1316].main  # medium circle piece 3rd row
+        t[902].main = t[0x400 + 1317].main  # medium circle piece 3rd row
+        t[903].main = t[0x400 + 1318].main  # medium circle piece 3rd row
 
-        t[912].main = overlay(t[912].main, t[0x400 + 1255].main)  # big circle piece 4th row
-        t[913].main = overlay(t[913].main, t[0x400 + 1256].main)  # big circle piece 4th row
-        t[916].main = overlay(t[916].main, t[0x400 + 1259].main)  # big circle piece 4th row
+        t[912].main = t[0x400 + 1255].main  # big circle piece 4th row
+        t[913].main = t[0x400 + 1256].main  # big circle piece 4th row
+        t[916].main = t[0x400 + 1259].main  # big circle piece 4th row
 
-        t[929].main = overlay(t[929].main, t[0x400 + 1320].main)  # big circle piece 5th row
-        t[930].main = overlay(t[930].main, t[0x400 + 1321].main)  # big circle piece 5th row
-        t[931].main = overlay(t[931].main, t[0x400 + 1322].main)  # big circle piece 5th row
-        t[932].main = overlay(t[932].main, t[0x400 + 1323].main)  # big circle piece 5th row
+        t[929].main = t[0x400 + 1320].main  # big circle piece 5th row
+        t[930].main = t[0x400 + 1321].main  # big circle piece 5th row
+        t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
+        t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
 
     elif name in tsidx["Minigame Lines"]:
         t = Tiles
 
-        t[832].main = overlay(t[832].main, t[0x400 + 1088].main)  # horizontal line
-        t[833].main = overlay(t[833].main, t[0x400 + 1090].main)  # bottom-right corner
-        t[834].main = overlay(t[834].main, t[0x400 + 1088].main)  # horizontal line
+        t[832].main = t[0x400 + 1088].main  # horizontal line
+        t[833].main = t[0x400 + 1090].main  # bottom-right corner
+        t[834].main = t[0x400 + 1088].main  # horizontal line
 
-        t[848].main = overlay(t[848].main, t[0x400 + 1089].main)  # vertical line
-        t[849].main = overlay(t[849].main, t[0x400 + 1089].main)  # vertical line
-        t[850].main = overlay(t[850].main, t[0x400 + 1091].main)  # top-left corner
+        t[848].main = t[0x400 + 1089].main  # vertical line
+        t[849].main = t[0x400 + 1089].main  # vertical line
+        t[850].main = t[0x400 + 1091].main  # top-left corner
 
-        t[835].main = overlay(t[835].main, t[0x400 + 1152].main)  # left red blob (part 1)
-        t[836].main = overlay(t[836].main, t[0x400 + 1153].main)  # top red blob (part 1)
-        t[837].main = overlay(t[837].main, t[0x400 + 1154].main)  # top red blob (part 2)
-        t[838].main = overlay(t[838].main, t[0x400 + 1155].main)  # right red blob (part 1)
+        t[835].main = t[0x400 + 1152].main  # left red blob (part 1)
+        t[836].main = t[0x400 + 1153].main  # top red blob (part 1)
+        t[837].main = t[0x400 + 1154].main  # top red blob (part 2)
+        t[838].main = t[0x400 + 1155].main  # right red blob (part 1)
 
-        t[851].main = overlay(t[851].main, t[0x400 + 1216].main)  # left red blob (part 2)
-        t[852].main = overlay(t[852].main, t[0x400 + 1217].main)  # bottom red blob (part 1)
-        t[853].main = overlay(t[853].main, t[0x400 + 1218].main)  # bottom red blob (part 2)
-        t[854].main = overlay(t[854].main, t[0x400 + 1219].main)  # right red blob (part 2)
+        t[851].main = t[0x400 + 1216].main  # left red blob (part 2)
+        t[852].main = t[0x400 + 1217].main  # bottom red blob (part 1)
+        t[853].main = t[0x400 + 1218].main  # bottom red blob (part 2)
+        t[854].main = t[0x400 + 1219].main  # right red blob (part 2)
 
-        t[866].main = overlay(t[866].main, t[0x400 + 1065].main)  # big circle piece 1st row
-        t[867].main = overlay(t[867].main, t[0x400 + 1066].main)  # big circle piece 1st row
-        t[870].main = overlay(t[870].main, t[0x400 + 1189].main)  # medium circle piece 1st row
-        t[871].main = overlay(t[871].main, t[0x400 + 1190].main)  # medium circle piece 1st row
+        t[866].main = t[0x400 + 1065].main  # big circle piece 1st row
+        t[867].main = t[0x400 + 1066].main  # big circle piece 1st row
+        t[870].main = t[0x400 + 1189].main  # medium circle piece 1st row
+        t[871].main = t[0x400 + 1190].main  # medium circle piece 1st row
 
-        t[881].main = overlay(t[881].main, t[0x400 + 1128].main)  # big circle piece 2nd row
-        t[882].main = overlay(t[882].main, t[0x400 + 1129].main)  # big circle piece 2nd row
-        t[883].main = overlay(t[883].main, t[0x400 + 1130].main)  # big circle piece 2nd row
-        t[884].main = overlay(t[884].main, t[0x400 + 1131].main)  # big circle piece 2nd row
-        t[885].main = overlay(t[885].main, t[0x400 + 1252].main)  # medium circle piece 2nd row
-        t[886].main = overlay(t[886].main, t[0x400 + 1253].main)  # medium circle piece 2nd row
-        t[887].main = overlay(t[887].main, t[0x400 + 1254].main)  # medium circle piece 2nd row
+        t[881].main = t[0x400 + 1128].main  # big circle piece 2nd row
+        t[882].main = t[0x400 + 1129].main  # big circle piece 2nd row
+        t[883].main = t[0x400 + 1130].main  # big circle piece 2nd row
+        t[884].main = t[0x400 + 1131].main  # big circle piece 2nd row
+        t[885].main = t[0x400 + 1252].main  # medium circle piece 2nd row
+        t[886].main = t[0x400 + 1253].main  # medium circle piece 2nd row
+        t[887].main = t[0x400 + 1254].main  # medium circle piece 2nd row
 
-        t[896].main = overlay(t[896].main, t[0x400 + 1191].main)  # big circle piece 3rd row
-        t[897].main = overlay(t[897].main, t[0x400 + 1192].main)  # big circle piece 3rd row
-        t[900].main = overlay(t[900].main, t[0x400 + 1195].main)  # big circle piece 3rd row
-        t[901].main = overlay(t[901].main, t[0x400 + 1316].main)  # medium circle piece 3rd row
-        t[902].main = overlay(t[902].main, t[0x400 + 1317].main)  # medium circle piece 3rd row
-        t[903].main = overlay(t[903].main, t[0x400 + 1318].main)  # medium circle piece 3rd row
+        t[896].main = t[0x400 + 1191].main  # big circle piece 3rd row
+        t[897].main = t[0x400 + 1192].main  # big circle piece 3rd row
+        t[900].main = t[0x400 + 1195].main  # big circle piece 3rd row
+        t[901].main = t[0x400 + 1316].main  # medium circle piece 3rd row
+        t[902].main = t[0x400 + 1317].main  # medium circle piece 3rd row
+        t[903].main = t[0x400 + 1318].main  # medium circle piece 3rd row
 
-        t[912].main = overlay(t[912].main, t[0x400 + 1255].main)  # big circle piece 4th row
-        t[913].main = overlay(t[913].main, t[0x400 + 1256].main)  # big circle piece 4th row
-        t[916].main = overlay(t[916].main, t[0x400 + 1259].main)  # big circle piece 4th row
+        t[912].main = t[0x400 + 1255].main  # big circle piece 4th row
+        t[913].main = t[0x400 + 1256].main  # big circle piece 4th row
+        t[916].main = t[0x400 + 1259].main  # big circle piece 4th row
 
-        t[929].main = overlay(t[929].main, t[0x400 + 1320].main)  # big circle piece 5th row
-        t[930].main = overlay(t[930].main, t[0x400 + 1321].main)  # big circle piece 5th row
-        t[931].main = overlay(t[931].main, t[0x400 + 1322].main)  # big circle piece 5th row
-        t[932].main = overlay(t[932].main, t[0x400 + 1323].main)  # big circle piece 5th row
+        t[929].main = t[0x400 + 1320].main  # big circle piece 5th row
+        t[930].main = t[0x400 + 1321].main  # big circle piece 5th row
+        t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
+        t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
 
 
 def LoadOverrides():
