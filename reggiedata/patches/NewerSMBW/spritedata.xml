@@ -1568,7 +1568,6 @@
     <checkbox bit="21" title="Automatically Respawn" comment="When the actor spawned by this spawner is deleted or missing, and the event is triggered, another actor with the same settings will be spawened."/>
     <value bit="22-32" title="Actor ID - Number Entry" comment="Please enter the extension that you wish to dial. If your party cannot be reached, please dial a different number. Thank you." comment2="Do not use an Actor ID that does not return a value on the list below." idtype="Actor"/> <!-- ID type is used so that the number can be shown on the sprite display. -->
     <external type="actors" bit="22-32" title="Actor ID" comment="Use this external window to select your Actor ID." />
-    <external type="actors_details" bit="22-32" title="Actor Details" comment="" /> <!-- bit="22-32" -->
     <value bit="33-34" title="Nybble 5" />
     <value bit="35-36" title="Nybble 6" />
     <value bit="37-38" title="Nybble 7" />

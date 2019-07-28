@@ -12516,42 +12516,23 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         # make the layout of ExternalSpriteOptionWidgets
         self.widget = QtWidgets.QWidget()
         self.buttons = []
+        self.visibleEntries = []
 
-        L = QtWidgets.QGridLayout()
+        L = QtWidgets.QVBoxLayout()
         self.buttongroup = QtWidgets.QButtonGroup()
-        for i, widget in enumerate(self.widgets):
+
+        # create a widget for every entry
+        self.widgets = []
+        for i, widget in enumerate(self.entries):
             button = QtWidgets.QRadioButton()
             button.setChecked(i == self.value)
-
             self.buttongroup.addButton(button, i)
-            L.addWidget(button, 2 * i, 0, 2, 1)
 
-            for j, text in enumerate(widget[0]):
-                label = QtWidgets.QLabel(str(text))
-                L.addWidget(label, 2 * i, j + 1, 1, 1)
-
-            if len(widget[1]) > 0:
-                button = QtWidgets.QPushButton("v")
-                button.clicked.connect(self.HandleButtonClick(i))
-
-                self.buttons.append(button)
-
-                L.addWidget(button, 2 * i, len(widget[0]) + 1, 1, 1)
-
-                width = int((L.columnCount() - 1) / len(widget[1]))
-                offset = L.columnCount() - width * len(widget[1])
-
-                for j, text in enumerate(widget[1]):
-                    label = QtWidgets.QLabel(str(text))
-                    label.setWordWrap(True)
-
-                    L.addWidget(label, 2 * i + 1, j + offset, 1, width)
+            self.widgets.append(
+                ExternalSpriteOptionRow(button, widget[0], widget[1])
+            )
 
         self.widget.setLayout(L)
-
-        if len(self.widgets[0][1]) > 0:
-            for i in range(1, len(self.widgets), 2):
-                self.hideRow(i)
 
         # search thing
         searchbar = QtWidgets.QLineEdit()
@@ -12581,18 +12562,20 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
 
         self.setLayout(mainLayout)
 
-        # Keep col widths constant
-        layout = self.widget.layout()
-        colCount = layout.columnCount()
-        rowCount = layout.rowCount()
+        self.updateVisibleRows(list(range(len(self.entries))))
 
-        for column in range(colCount):
-            for row in range(rowCount):
-                try:
-                    width = layout.itemAtPosition(row, column).widget().width()
-                    layout.itemAtPosition(row, column).widget().setFixedWidth(width)
-                except:
-                    pass
+        # Keep col widths constant
+        #layout = self.widget.layout()
+        #colCount = layout.columnCount()
+        #rowCount = layout.rowCount()
+
+        #for column in range(colCount):
+        #    for row in range(rowCount):
+        #        try:
+        #            width = layout.itemAtPosition(row, column).widget().width()
+        #            layout.itemAtPosition(row, column).widget().setFixedWidth(width)
+        #        except:
+        #            pass
 
     def loadItemsFromXML(self):
         """
@@ -12612,12 +12595,18 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         root = tree.getroot()
 
         try:
-            primary += list(map(lambda x: None if x.strip().lower() == "[id]" else x.strip(), root.attrib['primary'].split(',')))
+            primary += list(map(
+                lambda x: None if x.strip().lower() == "[id]" else x.strip(),
+                root.attrib['primary'].split(',')
+            ))
         except:
             pass
 
         try:
-            secondary += list(map(lambda x: x.strip(), root.attrib['secondary'].split(',')))
+            secondary += list(map(
+                lambda x: x.strip(),
+                root.attrib['secondary'].split(',')
+            ))
         except:
             pass
 
@@ -12653,7 +12642,7 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         Adds items to the layout
         """
         # list of widgets sorted by value
-        self.widgets = []
+        self.entries = []
 
         for option in options:
             items = options[option]
@@ -12667,10 +12656,12 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
 
                 subwidgets[0].append(value)
 
+            # secondary items are optional
             for prop in order[1]:
-                subwidgets[1].append(items[prop])
+                if prop in items:
+                    subwidgets[1].append(items[prop])
 
-            self.widgets.append(subwidgets)
+            self.entries.append(subwidgets)
 
     def setCurrentValue(self, value):
         """
@@ -12688,84 +12679,125 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         """
         Only show the elements fulfilling the search for text
         """
+        # TODO: maybe let another thread handle this...
         # Don't do anything if you search for fewer than 2 characters
         if len(text) < 2:
             return
 
-        for i, row in enumerate(self.widgets):
-            for value in row[0]:
-                if str(value).lower().find(text.lower()) >= 0:
-                    # text was in this row -> show row
-                    self.showRow(2 * i)
+        matches = lambda haystack, needle: haystack.lower().find(needle.lower()) >= 0
+
+        matching = []
+        for i, entry in enumerate(self.entries):
+            for property in entry[0]: # primary
+                if matches(str(property), text):
+                    matching.append(i)
                     break
             else:
-                for value in row[1]:
-                    if str(value).find(text) >= 0:
-                        # text was in this row -> show row
-                        self.showRow(2 * i)
+                for property in entry[1]: # secondary
+                    if matches(str(property), text):
+                        matching.append(i)
                         break
-                else:
-                    # not in row -> hide row
-                    self.hideRow(2 * i)
-                    self.hideRow(2 * i + 1)
 
-    def showRow(self, i):
-        """
-        Shows the i'th row
-        """
-        layout = self.widget.layout()
+        self.updateVisibleRows(matching)
 
-        for column in range(layout.columnCount()):
-            try:
-                widget = layout.itemAtPosition(i, column).widget()
-            except:
-                # this was not a widget, happens when this row is not there or
-                # something
-                break
-
-            # BUG: Qt doesn't automatically add the margins
-            widget.show()
-
-    def hideRow(self, i):
+    def updateVisibleRows(self, new):
         """
-        Hides the i'th row
+        Makes sure we only show the correct rows
         """
-        if i % 2 == 1:
-            # odd row
-            #  -> don't hide the first widget, because that's the radiobutton
-            start = 1
-        else:
-            start = 0
 
         layout = self.widget.layout()
 
-        for column in range(start, layout.columnCount()):
-            try:
-                widget = layout.itemAtPosition(i, column).widget()
-            except:
-                # this was not a widget, happens when this row is already hidden
+        # clear layout
+        self.clearLayout(layout)
+
+        # add back the correct ones
+        for id in new:
+            row = self.widgets[id]
+
+            # add row to the layout
+            layout.addWidget(row)
+
+        # add stretch so the items align to the top
+        layout.addStretch()
+
+        self.visibleEntries = new
+
+    def clearLayout(self, layout):
+        """
+        Removes all rows of the layout
+        """
+        while True:
+            item = layout.takeAt(0)
+            if item is None:
                 break
 
-            # BUG: Qt doesn't automatically remove the margins
-            widget.hide()
+            wid = item.widget()
+            del item
 
-    def doRowVisibilityChange(self, i):
+            if wid is None:
+                continue
+
+            # don't delete the widget, since we might need to show it again later
+            wid.setParent(None)
+
+
+class ExternalSpriteOptionRow(QtWidgets.QWidget):
+    def __init__(self, button, primary, secondary):
+        QtWidgets.QWidget.__init__(self)
+
+        L = QtWidgets.QHBoxLayout()
+
+        self.gridLayout = QtWidgets.QGridLayout()
+        self.gridLayout.addWidget(button, 0, 0, 1, 1)
+        self.setLayout(self.gridLayout)
+
+        for i, text in enumerate(primary):
+            label = QtWidgets.QLabel(str(text))
+            self.gridLayout.addWidget(label, 0, i + 1, 1, 1)
+
+        self.secondary = []
+
+        if len(secondary) == 0:
+            return
+
+        placedText = False
+        for i, text in enumerate(secondary):
+            if str(text) == "":
+                continue
+
+            placedText = True
+            label = QtWidgets.QLabel(str(text))
+            label.setWordWrap(True)
+
+            self.secondary.append(label)
+
+        if placedText:
+            more = QtWidgets.QPushButton("v")
+            more.clicked.connect(self.handleButtonClick)
+
+            self.gridLayout.addWidget(more, 0, len(primary) + 1, 1, 1)
+
+    def handleButtonClick(self, e):
         """
-        Changes visibility of row i
+        Handles button click
         """
-        if self.buttons[i].text() == 'v':
-            self.showRow(2 * i + 1)
-            self.buttons[i].setText('^')
+
+        layout = self.gridLayout
+        cols = layout.columnCount()
+        button = layout.itemAtPosition(0, cols - 1).widget()
+
+        width = (cols - 1) // len(self.secondary)
+
+        if button.text() == "v":
+            button.setText("^")
+
+            for i, label in enumerate(self.secondary):
+                layout.addWidget(label, 1, i + 1, 1, width)
         else:
-            self.hideRow(2 * i + 1)
-            self.buttons[i].setText('v')
+            button.setText("v")
 
-    def HandleButtonClick(self, i):
-        """
-        Returns a function that handles the i'th button being clicked
-        """
-        return (lambda e: self.doRowVisibilityChange(i))
-
+            for label in self.secondary:
+                label.setParent(None)
 
 class ResizeChoiceDialog(QtWidgets.QDialog):
     """
