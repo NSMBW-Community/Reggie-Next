@@ -2791,7 +2791,7 @@ def ProcessOverrides(idx, name):
 
         replace += 1
         baseblock = t[defs[27].rows[0][0][1]].main
-        a = 10
+        a = 21
         for i in rangeB:
             t[replace].main = overlay(baseblock, Overrides_safe[a].main)
             defs[i].rows[0][0] = (0, replace, 0)
