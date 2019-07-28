@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<theme
+		format="1.0"
+		name="Transparent"
+		version="1.0"
+		creator="&lt;i&gt;Zementblock&lt;/i&gt;"
+		description="&lt;br&gt;&lt;font color=&quot;darkgreen&quot;&gt;A dark theme with &lt;b&gt;transparent (inactive)&lt;/b&gt; locations and sprites.&lt;/font&gt;"
+		>
+		
+	<colors file="levelview.xml" />
+	
+</theme>

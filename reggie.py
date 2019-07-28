@@ -1298,6 +1298,9 @@ def LoadSpriteCategories(reload_=False):
         paths = new
 
     SpriteCategories = []
+    # Add a Search category
+    SpriteCategories.append((trans.string('Sprites', 19), [(trans.string('Sprites', 16), list(range(0, 483)))], []))
+    SpriteCategories[-1][1][0][1].append(9999)  # 'no results' special case
     for path in paths:
         tree = etree.parse(path)
         root = tree.getroot()
@@ -1339,9 +1342,6 @@ def LoadSpriteCategories(reload_=False):
                             if i not in CurrentCategory:
                                 CurrentCategory.append(i)
 
-    # Add a Search category
-    SpriteCategories.append((trans.string('Sprites', 19), [(trans.string('Sprites', 16), list(range(0, 483)))], []))
-    SpriteCategories[-1][1][0][1].append(9999)  # 'no results' special case
 
 
 SpriteListData = None
@@ -2738,9 +2738,20 @@ def ProcessOverrides(idx, name):
     Load overridden tiles if there are any
     """
     global OverriddenTilesets
+    global Overrides_safe
 
     if OverriddenTilesets is None:
         raise ValueError("Overridden tilesets not yet initialised")
+
+    def overlay(base, overlay):
+        img = QtGui.QPixmap(base.width(), base.height())
+        img.fill(Qt.transparent)
+
+        p = QtGui.QPainter(img)
+        p.drawPixmap(0, 0, base)
+        p.drawPixmap(0, 0, overlay)
+
+        return img
 
     tsidx = OverriddenTilesets
 
@@ -2769,15 +2780,25 @@ def ProcessOverrides(idx, name):
 
         # Question and brick blocks
         # these don't have their own tiles so we have to do them by objects
-        rangeA, rangeB = (range(39, 49), range(27, 38))
+        rangeA, rangeB = range(39, 49), range(27, 38)
         replace = offset + 10
+        baseblock = t[defs[39].rows[0][0][1]].main
+
+        a = 10
         for i in rangeA:
+            t[replace].main = overlay(baseblock, Overrides_safe[a].main)
             defs[i].rows[0][0] = (0, replace, 0)
             replace += 1
+            a += 1
+
         replace += 1
+        baseblock = t[defs[27].rows[0][0][1]].main
+        a = 21
         for i in rangeB:
+            t[replace].main = overlay(baseblock, Overrides_safe[a].main)
             defs[i].rows[0][0] = (0, replace, 0)
             replace += 1
+            a += 1
 
         # now the extra stuff (invisible collisions etc)
         t[1].main = t[0x400 + 1280].main  # solid
@@ -2983,7 +3004,9 @@ def LoadOverrides():
     Load overrides
     """
     global Overrides
+    global Overrides_safe # these pixmaps will never be changed
     Overrides = [None] * 384
+    Overrides_safe = [None] * 384
 
     OverrideBitmap = QtGui.QPixmap(os.path.join('reggiedata', 'overrides.png'))
     idx = 0
@@ -2996,13 +3019,16 @@ def LoadOverrides():
         for x in range(xcount):
             bmp = OverrideBitmap.copy(sourcex, sourcey, 24, 24)
             Overrides[idx] = TilesetTile(bmp)
+            Overrides_safe[idx] = TilesetTile(bmp)
 
             # Set collisions if it's a brick or question
             if y <= 4:
                 if 8 < x < 20:
                     Overrides[idx].setQuestionCollisions()
+                    Overrides_safe[idx].setQuestionCollisions()
                 elif 20 <= x < 32:
                     Overrides[idx].setBrickCollisions()
+                    Overrides_safe[idx].setBrickCollisions()
 
             idx += 1
             sourcex += 24
@@ -5945,7 +5971,6 @@ class LocationItem(LevelEditorItem):
             dsy = self.dragstarty
             clickedx = event.pos().x() / 1.5
             clickedy = event.pos().y() / 1.5
-
             cx = self.objx
             cy = self.objy
 
@@ -12522,7 +12547,6 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         for i, widget in enumerate(self.widgets):
             button = QtWidgets.QRadioButton()
             button.setChecked(i == self.value)
-
             self.buttongroup.addButton(button, i)
             L.addWidget(button, 2 * i, 0, 2, 1)
 
@@ -24542,7 +24566,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         cat = SpriteCategories[type]
         self.sprPicker.SwitchView(cat)
 
-        isSearch = (type == len(SpriteCategories) - 1)
+        isSearch = (type == 0)
         layout = self.spriteSearchLayout
         layout.itemAt(0).widget().setVisible(isSearch)
         layout.itemAt(1).widget().setVisible(isSearch)

@@ -13,7 +13,8 @@
     - Displacement      The displacement from the spawn point
     - Internal name     Class names and the like
 -->
-<options primary="[id], Usability, Sprite, Name" short="[Name] ([Usability]) [[Sprite]]">
+<options primary="[id], Usability, Sprite, Name" short="[Name] ([Usability]) [[Sprite]]"
+    secondary="Settings" >
     <option value="0">
         <property name="Name" value="BOOT" />
         <property name="Usability" value="xxx" />
@@ -320,6 +321,7 @@
         <property name="Name" value="EN_ITEM, Actor handling items" />
         <property name="Usability" value="***" />
         <property name="Sprite" value="" />
+        <property name="Settings" value="&lt;b&gt;All values for the different EN_ITEM fields (Id 60):&lt;/b&gt;&lt;br&gt;&lt;br&gt;Powerup type: [0, 1, 2, 3, 16, 17, 18, 19]&lt;br&gt;0xDCE: [0, 1]&lt;br&gt;DropMove: [0]&lt;br&gt;0xD9C: [0, 1]&lt;br&gt;MeterDropMove:[0]&lt;br&gt;Z-Order Flag: [0]&lt;br&gt;0xD68: [0, 1]&lt;br&gt;0xDB0: [0, 1]&lt;br&gt;0xDA0: [0]&lt;br&gt;Player ID: [0, 1, 2, 3]&lt;br&gt;0xD98: [0]&lt;br&gt;0xDA4: [0, 1, 2, 3]&lt;br&gt;0xDA8: [0]&lt;br&gt;Spawn Type: [0, 1, 2, 3, 16, 17, 18, 19, 32, 33, 34, 35, 48, 49, 50, 51]&lt;br&gt;Direction: [0]&lt;br&gt;&lt;br&gt;x00 - Fire Flower (Block Anim)&lt;br&gt;x01 - Star (Block Anim)&lt;br&gt;x02 - Coin (Block Anim)&lt;br&gt;x03 - Mushroom (Block Anim)&lt;br&gt;x10 - Mushroom (Block Anim)&lt;br&gt;x11 - Penguin (Block Anim)&lt;br&gt;x12 - Mushroom (Block Anim)&lt;br&gt;x13 - Mushroom (Block Anim)&lt;br&gt;x20 - Fire Flower (Block Anim)&lt;br&gt;x21 - Star (Block Anim)&lt;br&gt;x22 - Coin (Block Anim)&lt;br&gt;x23 - Mushroom (Block Anim)&lt;br&gt;x30 - Mushroom (Block Anim)&lt;br&gt;x31 - Mushroom (Block Anim)&lt;br&gt;x32 - Mushroom (Block Anim)&lt;br&gt;x33 - Mushroom (Block Anim)" />
     </option>
     <option value="61">
         <property name="Name" value="Star Coin" />

@@ -5,57 +5,57 @@
 		<tileset filename="Pa0_WSELTS" name="Standard (Blue)" />
 		<tileset filename="Pa0_global" name="Pa0 Global by Zementblock" />
         <category name="Pa0 Tilesets by CLF78">
-			<tileset filename="Pa0_jyotyu_kaigan_CLF78" name="Beach" />
-			<tileset filename="Pa0_jyotyu_shadow_CLF78" name="Black" />
-			<tileset filename="Pa0_jyotyu_chocolate_CLF78" name="Chocolate (Text Tileset Mod)" />
-			<tileset filename="Pa0_jyotyu_urban_CLF78" name="City" />
-			<tileset filename="Pa0_computer_CLF78" name="Computer (Text Tileset Mod)" />
-			<tileset filename="Pa0_jyotyu_sabaku_CLF78" name="Desert" />
-			<tileset filename="Pa0_jyotyu_desert_night_CLF78" name="Desert Night" />
-			<tileset filename="Pa0_jyotyu_factory_CLF78" name="Factory (Text Tileset Mod)" />
-			<tileset filename="Pa0_dark_fortress_CLF78" name="Final Castle Exterior" />
-			<tileset filename="Pa0_jyotyu_golden_CLF78" name="Golden" />
-			<tileset filename="Pa0_jyotyu_ghost_CLF78" name="Graveyard" />
-			<tileset filename="Pa0_jyotyu_grave_CLF78" name="Graveyard 2" />
-			<tileset filename="Pa0_Icegravy0_CLF78" name="Gray Pa0 Tiles and Pipes" />
-			<tileset filename="Pa0_Icegravy1_CLF78" name="Hand-Written (Text Tileset Mod)" />
-			<tileset filename="Pa0_jyotyu_kori_CLF78" name="Ice" />
-			<tileset filename="Pa0_jyotyu_daishizen_CLF78" name="Jungle" />
-			<tileset filename="Pa0_jyotyu_daishizen_chika_CLF78" name="Jungle Cave" />
-			<tileset filename="Pa0_jyotyu_yougan_CLF78" name="Lava (Text Tileset Mod)" />
-			<tileset filename="Pa0_jyotyu_steel_CLF78" name="Metal" />
-			<tileset filename="Pa0_jyotyu_4k_CLF78" name="NSMBU" />
-			<tileset filename="Pa0_jyotyu_silver_CLF78" name="NSMBU (Black)" />
-			<tileset filename="Pa0_jyotyu_yougan_u_CLF78" name="NSMBU (Lava)" />
-			<tileset filename="Pa0_jyotyu_yougan_u'_CLF78" name="NSMBU (Lava, Different Shading)" />
-			<tileset filename="Pa0_jyotyu_pipes_CLF78" name="Pipes" />
-			<tileset filename="Pa0_jyotyu_dokan_naibu_CLF78" name="Sewer" />
-			<tileset filename="Pa0_jyotyu_shadow_palace_CLF78" name="Shadow Palace" />
-			<tileset filename="Pa0_jyotyu_setsugen_CLF78" name="Snow (Text Tileset Mod)" />
-			<tileset filename="Pa0_WSELTS_CLF78" name="Standard (Blue Pipes)" />
-			<tileset filename="Pa0_jyotyu_CLF78" name="Standard (Text Tileset Mod)" />
-			<tileset filename="Pa0_jyotyu_toad_newer_CLF78" name="Toad" />
-			<tileset filename="Pa0_OhFuckIhopeThisWorks_CLF78" name="Train Wheels (NOT STANDARD)" />
-			<tileset filename="Pa0_jyotyu_training_CLF78" name="Training" />
-			<tileset filename="Pa0_jyotyu_chika_CLF78" name="Underground (Text Tileset Mod)" />
-            <tileset filename="Pa0_jyotyu_u'_CLF78" name="NSMBU (Standard)" />
-            <tileset filename="Pa0_jyotyu_u_CLF78" name="NSMBU (Standard)" />
-            <tileset filename="Pa0_jyotyu_violet_CLF78" name="NSMBU (Violet)" />
+			<tileset filename="Pa0_jyotyu_kaigan_CLF78" name="Beach" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_shadow_CLF78" name="Black" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_chocolate_CLF78" name="Chocolate (Text Tileset Mod)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_urban_CLF78" name="City" override="Pa0:normal" />
+			<tileset filename="Pa0_computer_CLF78" name="Computer (Text Tileset Mod)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_sabaku_CLF78" name="Desert" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_desert_night_CLF78" name="Desert Night" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_factory_CLF78" name="Factory (Text Tileset Mod)" override="Pa0:normal" />
+			<tileset filename="Pa0_dark_fortress_CLF78" name="Final Castle Exterior" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_golden_CLF78" name="Golden" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_ghost_CLF78" name="Graveyard" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_grave_CLF78" name="Graveyard 2" override="Pa0:normal" />
+			<tileset filename="Pa0_Icegravy0_CLF78" name="Gray Pa0 Tiles and Pipes" override="Pa0:normal" />
+			<tileset filename="Pa0_Icegravy1_CLF78" name="Hand-Written (Text Tileset Mod)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_kori_CLF78" name="Ice" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_daishizen_CLF78" name="Jungle" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_daishizen_chika_CLF78" name="Jungle Cave" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_yougan_CLF78" name="Lava (Text Tileset Mod)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_steel_CLF78" name="Metal" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_4k_CLF78" name="NSMBU" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_silver_CLF78" name="NSMBU (Black)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_yougan_u_CLF78" name="NSMBU (Lava)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_yougan_u'_CLF78" name="NSMBU (Lava, Different Shading)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_pipes_CLF78" name="Pipes" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_dokan_naibu_CLF78" name="Sewer" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_shadow_palace_CLF78" name="Shadow Palace" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_setsugen_CLF78" name="Snow (Text Tileset Mod)" override="Pa0:normal" />
+			<tileset filename="Pa0_WSELTS_CLF78" name="Standard (Blue Pipes)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_CLF78" name="Standard (Text Tileset Mod)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_toad_newer_CLF78" name="Toad" override="Pa0:normal" />
+			<tileset filename="Pa0_OhFuckIhopeThisWorks_CLF78" name="Train Wheels (NOT STANDARD)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_training_CLF78" name="Training" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_chika_CLF78" name="Underground (Text Tileset Mod)" override="Pa0:normal" />
+            <tileset filename="Pa0_jyotyu_u'_CLF78" name="NSMBU (Standard)" override="Pa0:normal" />
+            <tileset filename="Pa0_jyotyu_u_CLF78" name="NSMBU (Standard)" override="Pa0:normal" />
+            <tileset filename="Pa0_jyotyu_violet_CLF78" name="NSMBU (Violet)" override="Pa0:normal" />
         </category>
         <category name="Pa0 Tilesets by Titovision Danster God4Live">
-            <tileset filename="Pa0_jyotyu_3k_TDG" name="" />
-            <tileset filename="Pa0_jyotyu_8k_TDG" name="" />
-			<tileset filename="Pa0_jyotyu_chika_8k_TDG" name="" />
-			<tileset filename="Pa0_jyotyu0_TDG" name="" />
-			<tileset filename="Pa0_jyotyu1_TDG" name="" />
-			<tileset filename="Pa0_jyotyu2_TDG" name="" />
-			<tileset filename="Pa0_jyotyu3_TDG" name="" />
-			<tileset filename="Pa0_jyotyu4_TDG" name="" />
-			<tileset filename="Pa0_jyotyu5_TDG" name="" />
-			<tileset filename="Pa0_jyotyu6_TDG" name="" />
-			<tileset filename="Pa0_jyotyu7_TDG" name="" />
-			<tileset filename="Pa0_jyotyu8_TDG" name="" />
-			<tileset filename="Pa0_jyotyu9_TDG" name="" />
+            <tileset filename="Pa0_jyotyu_3k+_TDG" name="NSMBU Standard (Text Tileset Mod)" override="Pa0:normal" />
+            <tileset filename="Pa0_jyotyu_8k_TDG" name="NSMBU Standard (More Pipes Mod)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu_chika_8k_TDG" name="NSMBU Underground (More Pipes Mod)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu0_TDG" name="SMW (Standard)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu1_TDG" name="SMW (Standard)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu2_TDG" name="SMW (Standard)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu3_TDG" name="SMW (Standard)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu4_TDG" name="SMW (Standard)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu5_TDG" name="SMW (Standard)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu6_TDG" name="SMW (Standard)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu7_TDG" name="SMW (Standard)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu8_TDG" name="SMW (Standard)" override="Pa0:normal" />
+			<tileset filename="Pa0_jyotyu9_TDG" name="SMW (Standard)" override="Pa0:normal" />
         </category>
 	</slot>
 	<slot num="1">
@@ -393,38 +393,39 @@
 			<tileset filename="Pa1_tswsele_CLF78" name="Warp Room" />
         </category>
         <category name="Pa1 Tilesets by Titovision Danster God4Live">
-            <tileset filename="Pa1_airship_TDG" name="" />
-			<tileset filename="Pa1_bonus_TDG" name="" />
-			<tileset filename="Pa1_bonus+_TDG" name="" />
-			<tileset filename="Pa1_bosque1_TDG" name="" />
-			<tileset filename="Pa1_bosque2_TDG" name="" />
-			<tileset filename="Pa1_castillo1_TDG" name="" />
-			<tileset filename="Pa1_castillo2_TDG" name="" />
-			<tileset filename="Pa1_castillo3_TDG" name="" />
-			<tileset filename="Pa1_cueva1_TDG" name="" />
-			<tileset filename="Pa1_cueva2_TDG" name="" />
-			<tileset filename="Pa1_cueva3_TDG" name="" />
-			<tileset filename="Pa1_cueva4_TDG" name="" />
-			<tileset filename="Pa1_cueva5_TDG" name="" />
-			<tileset filename="Pa1_desierto1_TDG" name="" />
-			<tileset filename="Pa1_fastasma1_TDG" name="" />
-			<tileset filename="Pa1_fastasma2_TDG" name="" />
-			<tileset filename="Pa1_hierba1_TDG" name="" />
-			<tileset filename="Pa1_hierba2_TDG" name="" />
-			<tileset filename="Pa1_hierba3_TDG" name="" />
-			<tileset filename="Pa1_hierba4_TDG" name="" />
-			<tileset filename="Pa1_hierba5_TDG" name="" />
-			<tileset filename="Pa1_hierba6_TDG" name="" />
-			<tileset filename="Pa1_hierba7_TDG" name="" />
-			<tileset filename="Pa1_hongo_TDG" name="" />
-			<tileset filename="Pa1_hongo2_TDG" name="" />
-			<tileset filename="Pa1_master_TDG" name="" />
-			<tileset filename="Pa1_master1_TDG" name="" />
-			<tileset filename="Pa1_montana1_TDG" name="" />
-			<tileset filename="Pa1_montana2_TDG" name="" />
-			<tileset filename="Pa1_nieve1_TDG" name="" />
-			<tileset filename="Pa1_nube_TDG" name="" />
-        </category>
+            <tileset filename="Pa1_airship_TDG" name="SMM (Airship)" />
+			<tileset filename="Pa1_bonus_TDG" name="NSMBU (Bonus)" />
+			<tileset filename="Pa1_bonus+_TDG" name="NSMBU (Bonus)" />
+			<tileset filename="Pa1_bosque1_TDG" name="NSMBU (Forest)" />
+			<tileset filename="Pa1_bosque2_TDG" name="NSMBU (Forest Blue)" />
+			<tileset filename="Pa1_castillo1_TDG" name="NSMBU (Castle Blue)" />
+			<tileset filename="Pa1_castillo2_TDG" name="NSMBU (Castle Lava)" />
+			<tileset filename="Pa1_castillo3_TDG" name="NSMBU (Castle Blue/Dark)" />
+			<tileset filename="Pa1_cueva1_TDG" name="NSMBU (Underground)" />
+			<tileset filename="Pa1_cueva2_TDG" name="NSMBU (Underground Desert)" />
+			<tileset filename="Pa1_cueva3_TDG" name="NSMBU (Underground Ice)" />
+			<tileset filename="Pa1_cueva4_TDG" name="NSMBU (Underwater)" />
+			<tileset filename="Pa1_cueva5_TDG" name="NSMBU (Volcano)" />
+			<tileset filename="Pa1_desierto1_TDG" name="NSMBU (Desert)" />
+			<tileset filename="Pa1_fastasma1_TDG" name="NSMBU (Haunted)" />
+			<tileset filename="Pa1_fastasma2_TDG" name="NSMBU (Haunted Ship)" />
+			<tileset filename="Pa1_hierba1_TDG" name="NSMBU (Overworld)" />
+			<tileset filename="Pa1_hierba2_TDG" name="NSMBU (Sky Blueish) " />
+			<tileset filename="Pa1_hierba3_TDG" name="NSMBWII (Overworld Dark)" />
+			<tileset filename="Pa1_hierba4_TDG" name="NSMBU (Beach)" />
+			<tileset filename="Pa1_hierba5_TDG" name="NSLU (Overworld)" />
+			<tileset filename="Pa1_hierba6_TDG" name="NSMBU (Ghost Forest)" />
+			<tileset filename="Pa1_hierba7_TDG" name="NSMBU (Sky Green)" />
+			<tileset filename="Pa1_hongo_TDG" name="SMW (Mushroom)" />
+			<tileset filename="Pa1_hongo2_TDG" name="SMW (Mushroom Purple)" />
+			<tileset filename="Pa1_master_TDG" name="SMB3 (Castle)" />
+			<tileset filename="Pa1_master1_TDG" name="SMB3 (Castle Extras)" />
+			<tileset filename="Pa1_montana1_TDG" name="NSMBU (Mountain)" />
+			<tileset filename="Pa1_montana2_TDG" name="NSMBU (Mountain Red)" />
+			<tileset filename="Pa1_nieve1_TDG" name="NSMBU (Snow)" />
+			<tileset filename="Pa1_nube_TDG" name="SMW (Sky)" />
+			<tileset filename="Pa1_varios_TDG" name="NSMBU (Credits)" />
+         </category>
 	</slot>
 	<slot num="2">
 		<category name="Rocks" sorted="true">
@@ -677,38 +678,38 @@
 			<tileset filename="Pa2_yoshihaus_CLF78" name="Yoshi House" />
         </category>
         <category name="Pa2 Tilesets by Titovision Danster God4Live">
-            <tileset filename="Pa2_bonus_TDG" name="" />
-			<tileset filename="Pa2_bonus+_TDG" name="" />
-			<tileset filename="Pa2_bosque1_TDG" name="" />
-			<tileset filename="Pa2_bosque2_TDG" name="" />
-			<tileset filename="Pa2_castillo1_TDG" name="" />
-			<tileset filename="Pa2_castillo2_TDG" name="" />
-			<tileset filename="Pa2_castillo3_TDG" name="" />
-			<tileset filename="Pa2_cueva1_TDG" name="" />
-			<tileset filename="Pa2_cueva2_TDG" name="" />
-			<tileset filename="Pa2_cueva3_TDG" name="" />
-			<tileset filename="Pa2_cueva4_TDG" name="" />
-			<tileset filename="Pa2_cueva5_TDG" name="" />
-			<tileset filename="Pa2_desierto1_TDG" name="" />
-			<tileset filename="Pa2_fastasma1_TDG" name="" />
-			<tileset filename="Pa2_fastasma2_TDG" name="" />
-			<tileset filename="Pa2_fastasma2+_TDG" name="" />
-			<tileset filename="Pa2_hierba1_TDG" name="" />
-			<tileset filename="Pa2_hierba2_TDG" name="" />
-			<tileset filename="Pa2_hierba3_TDG" name="" />
-			<tileset filename="Pa2_hierba4_TDG" name="" />
-			<tileset filename="Pa2_hierba5_TDG" name="" />
-			<tileset filename="Pa2_hierba5+_TDG" name="" />
-			<tileset filename="Pa2_hierba6_TDG" name="" />
-			<tileset filename="Pa2_hierba6+_TDG" name="" />
-			<tileset filename="Pa2_hierba7_TDG" name="" />
-			<tileset filename="Pa2_hongo_TDG" name="" />
-			<tileset filename="Pa2_hongo2_TDG" name="" />
-			<tileset filename="Pa2_montana1_TDG" name="" />
-			<tileset filename="Pa2_montana2_TDG" name="" />
-			<tileset filename="Pa2_nieve1_TDG" name="" />
-			<tileset filename="Pa2_nube_TDG" name="" />
-			<tileset filename="Pa2_varios_TDG" name="" />
+            <tileset filename="Pa2_bonus_TDG" name="NSMBU (Bonus Extras)" />
+			<tileset filename="Pa2_bonus+_TDG" name="NSMBU (Bonus Extras)" />
+			<tileset filename="Pa2_bosque1_TDG" name="NSMBU (Forest Extras)" />
+			<tileset filename="Pa2_bosque2_TDG" name="NSMBU (Forest Blue Extras)" />
+			<tileset filename="Pa2_castillo1_TDG" name="NSMBU (Castle Blue Extras)" />
+			<tileset filename="Pa2_castillo2_TDG" name="NSMBU (Castle Lava Extras)" />
+			<tileset filename="Pa2_castillo3_TDG" name="NSMBU (Castle Dark/Blue Extras)" />
+			<tileset filename="Pa2_cueva1_TDG" name="NSMBU (Underground Extras)" />
+			<tileset filename="Pa2_cueva2_TDG" name="NSMBU (Underground Desert Extras)" />
+			<tileset filename="Pa2_cueva3_TDG" name="NSMBU (Underground Ice Extras)" />
+			<tileset filename="Pa2_cueva4_TDG" name="NSMBU (Underwater Extras)" />
+			<tileset filename="Pa2_cueva5_TDG" name="NSMBU (Volcano Extras)" />
+			<tileset filename="Pa2_desierto1_TDG" name="NSMBU (Desert Extras)" />
+			<tileset filename="Pa2_fastasma1_TDG" name="NSMBU (Haunted Extras)" />
+			<tileset filename="Pa2_fastasma2_TDG" name="NSMBU (Haunted Ships Extras)" />
+			<tileset filename="Pa2_fastasma2+_TDG" name="NSMBU (Haunted Overworld)" />
+			<tileset filename="Pa2_hierba1_TDG" name="NSMBU (Overworld Extras)" />
+			<tileset filename="Pa2_hierba2_TDG" name="NSMBU (Sky Blueish Extras)" />
+			<tileset filename="Pa2_hierba3_TDG" name="NSLU (Overworld Red Extras)" />
+			<tileset filename="Pa2_hierba4_TDG" name="NSMBU (Beach Extras)" />
+			<tileset filename="Pa2_hierba5_TDG" name="NSLU (Overworld Extras)" />
+			<tileset filename="Pa2_hierba5+_TDG" name="NSLU (Overworld Yoshi House Extra)" />
+			<tileset filename="Pa2_hierba6_TDG" name="NSMBU (Ghost Forest Extras)" />
+			<tileset filename="Pa2_hierba6+_TDG" name="NSMBU (Ghost Forest Extra+)" />
+			<tileset filename="Pa2_hierba7_TDG" name="NSMBU (Sky Green Extras)" />
+			<tileset filename="Pa2_hongo_TDG" name="SMW (Mushroom Extras)" />
+			<tileset filename="Pa2_hongo2_TDG" name="SMW (Mushroom Purple Extras)" />
+			<tileset filename="Pa2_montana1_TDG" name="NSMBU (Mountain Extras)" />
+			<tileset filename="Pa2_montana2_TDG" name="NSMBU (Mountain Red Extras)" />
+			<tileset filename="Pa2_nieve1_TDG" name="NSMBU (Snow Extras)" />
+			<tileset filename="Pa2_nube_TDG" name="SMW (Sky Extras)" />
+			<tileset filename="Pa2_varios_TDG" name="NSMBU (Credits)" />
         </category>
 	</slot>
 	<slot num="3">
@@ -962,8 +963,8 @@
 			<tileset filename="Pa3_mizu_v2_CLF78" name="Water Boxes" />
         </category>
         <category name="Pa3 Tilesets by Titovision Danster God4Live">
-            <tileset filename="Pa3_rail_TDG" name="" />
-			<tileset filename="Pa3_rail_white_TDG" name="" />
+            <tileset filename="Pa3_rail_TDG" name="NSMBWII (Rails Extras)" />
+			<tileset filename="Pa3_rail_white_TDG" name="NSMBWII (Rails)" />
 			<tileset filename="" name="" />
         </category>
         <tileset filename="Pa3_colors_and_letters" name="Pa3 Supporting Tiles, Colors and Letters by Zementblock" />
