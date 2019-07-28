@@ -5971,27 +5971,6 @@ class LocationItem(LevelEditorItem):
             dsy = self.dragstarty
             clickedx = event.pos().x() / 1.5
             clickedy = event.pos().y() / 1.5
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             cx = self.objx
             cy = self.objy
 
@@ -12568,10 +12547,6 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         for i, widget in enumerate(self.widgets):
             button = QtWidgets.QRadioButton()
             button.setChecked(i == self.value)
-
-
-
-
             self.buttongroup.addButton(button, i)
             L.addWidget(button, 2 * i, 0, 2, 1)
 
