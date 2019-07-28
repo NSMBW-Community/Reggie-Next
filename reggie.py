@@ -125,30 +125,12 @@ firstLoad = True
 FileExtentions = ('.arc', '.arc.LH')
 
 OverriddenTilesets = {
-    "Pa0": (
-        'Pa0_jyotyu',
-        'Pa0_jyotyu_chika',
-        'Pa0_jyotyu_setsugen',
-        'Pa0_jyotyu_yougan',
-        'Pa0_jyotyu_staffRoll'
-    ),
-    "Flowers": (
-        'Pa1_nohara',
-        'Pa1_nohara2'
-    ),
-    "Forest Flowers": (
-        'Pa1_daishizen'
-    ),
-    "Lines": (
-        'Pa3_daishizen'
-    ),
-    "Minigame Lines": (
-        'Pa3_MG_house_ami_rail'
-    ),
-    "Full Lines": (
-        'Pa3_rail',
-        'Pa3_rail_white'
-    )
+    "Pa0": dict(),
+    "Flowers": set(),
+    "Forest Flowers": set(),
+    "Lines": set(),
+    "Minigame Lines": set(),
+    "Full Lines": set()
 }
 
 
@@ -536,6 +518,8 @@ def LoadTilesetNames_Category(node):
     """
     Loads a TilesetNames XML category
     """
+    global OverriddenTilesets
+
     cat = []
     for child in node:
         if child.tag.lower() == 'category':
@@ -549,7 +533,30 @@ def LoadTilesetNames_Category(node):
                 new.append(False)
             cat.append(new)
         elif child.tag.lower() == 'tileset':
-            cat.append((str(child.attrib['filename']), str(child.attrib['name'])))
+            fname = str(child.attrib['filename'])
+            cat.append((fname, str(child.attrib['name'])))
+
+            # read override attribute
+            if 'override' not in child.attrib:
+                continue
+
+            # override present, add it to the correct type
+            type = str(child.attrib['override'])
+
+            # TODO: come up with a better solution for this
+            if type[:4] == "Pa0:":
+                key = "Pa0"
+                value = {fname: type[4:]}
+            else:
+                key = type
+                # make a set containing the file name
+                value = {fname}
+
+            if key not in OverriddenTilesets:
+                OverriddenTilesets[key] = value
+            else:
+                OverriddenTilesets[key].update(value)
+
     return list(cat)
 
 
@@ -2731,15 +2738,23 @@ def ProcessOverrides(idx, name):
     Load overridden tiles if there are any
     """
     global OverriddenTilesets
+
+    if OverriddenTilesets is None:
+        raise ValueError("Overridden tilesets not yet initialised")
+
     tsidx = OverriddenTilesets
 
     if name in tsidx["Pa0"]:
-        offset = 0x800 + (tsidx["Pa0"].index(name) * 64)
+        type = tsidx["Pa0"][name]
 
         # Setsugen/Snow is unused, but we still override it
         # StaffRoll is the same as plain Jyotyu, so if it's used, let's be lazy and treat it as the normal one
-        if offset == 1280:
-            offset = 1024
+        offset = {
+            "normal": 2048,
+            "underground": 2048 + 64,
+            "snow": 2048 + 2 * 64,
+            "lava": 2048 + 3 * 64
+        }[type]
 
         defs = ObjectDefinitions[idx]
         t = Tiles
@@ -2835,7 +2850,7 @@ def ProcessOverrides(idx, name):
 
     elif name in tsidx["Lines"] or name in tsidx["Full Lines"]:
         # These are the line guides
-        # Pa3_daishizen has less though
+        # normal lines have fewer though
 
         t = Tiles
 
@@ -2858,8 +2873,8 @@ def ProcessOverrides(idx, name):
         t[804].main = t[0x400 + 1220].main  # bottom-left red blob
         t[805].main = t[0x400 + 1221].main  # bottom-right red blob
 
-        # Those are all for Pa3_daishizen
-        if name == 'Pa3_daishizen': return
+        # Those are all for normal lines
+        if name in tsidx["Lines"]: return
 
         t[816].main = t[0x400 + 1056].main  # 1x2 diagonal going up (top edge)
         t[817].main = t[0x400 + 1057].main  # 1x2 diagonal going down (top edge)
