@@ -1359,10 +1359,12 @@ def LoadSpriteListData(reload_=False):
     for path in paths: new.append(path)
     paths = new
 
-    SpriteListData = [[] for _ in range(24)]
+    SpriteListData = []
+    for i in range(24): SpriteListData.append([])
     for path in paths:
-        with open(path) as f:
-            data = f.read()
+        f = open(path)
+        data = f.read()
+        f.close()
 
         split = data.replace('\n', '').split(';')
         for lineidx in range(24):
@@ -4572,7 +4574,6 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
     autoPosChange = False
     dragoffsetx = 0
     dragoffsety = 0
-    objx, objy = 0, 0
 
     def __init__(self):
         """
@@ -4582,9 +4583,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         self.setFlag(self.ItemSendsGeometryChanges, True)
 
     def __lt__(self, other):
-        if self.objx != other.objx:
-            return self.objx < other.objx
-        return self.objy < other.objy
+        return (self.objx * 100000 + self.objy) < (other.objx * 100000 + other.objy)
 
     def itemChange(self, change, value):
         """
@@ -5550,7 +5549,7 @@ class AbstractBackground:
         self.xPos = xPos
         self.yPos = yPos
 
-    def save(self, idnum=0):
+    def save(idnum=0):
         return b''
 
 
@@ -5853,7 +5852,6 @@ class LocationItem(LevelEditorItem):
     """
     instanceDef = InstanceDefinition_LocationItem
     sizeChanged = None  # Callback: sizeChanged(SpriteItem obj, int width, int height)
-    dragstartx, dragstarty = None, None
 
     def __init__(self, x, y, width, height, id):
         """
@@ -5967,55 +5965,68 @@ class LocationItem(LevelEditorItem):
         """
         Overrides mouse movement events if needed for resizing
         """
-        if not (event.buttons() != Qt.NoButton and self.dragging):
+        if event.buttons() != Qt.NoButton and self.dragging:
+            # resize it
+            dsx = self.dragstartx
+            dsy = self.dragstarty
+            clickedx = event.pos().x() / 1.5
+            clickedy = event.pos().y() / 1.5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            cx = self.objx
+            cy = self.objy
+
+            if clickedx < 0: clickedx = 0
+            if clickedy < 0: clickedy = 0
+
+            if clickedx != dsx or clickedy != dsy:
+                self.dragstartx = clickedx
+                self.dragstarty = clickedy
+
+                self.width += clickedx - dsx
+                self.height += clickedy - dsy
+
+                oldrect = self.BoundingRect
+                oldrect.translate(cx * 1.5, cy * 1.5)
+                newrect = QtCore.QRectF(self.x(), self.y(), self.width * 1.5, self.height * 1.5)
+                updaterect = oldrect.united(newrect)
+
+                self.UpdateRects()
+                self.scene().update(updaterect)
+                SetDirty()
+                mainWindow.levelOverview.update()
+
+                if self.sizeChanged is not None:
+                    self.sizeChanged(self, self.width, self.height)
+
+                # This code causes an error or something.
+                # if RealViewEnabled:
+                #     for sprite in Area.sprites:
+                #         if self.id in sprite.ImageObj.locationIDs and sprite.ImageObj.updateSceneAfterLocationMoved:
+                #             self.scene().update()
+
+            event.accept()
+        else:
             LevelEditorItem.mouseMoveEvent(self, event)
-
-        # resize it
-        dsx = self.dragstartx
-        dsy = self.dragstarty
-        clickedx = event.pos().x() / 1.5
-        clickedy = event.pos().y() / 1.5
-
-        cx = self.objx
-        cy = self.objy
-
-        #if clickedx < 0: clickedx = 0
-        #if clickedy < 0: clickedy = 0
-
-        if clickedx != dsx or clickedy != dsy:
-            self.dragstartx = clickedx
-            self.dragstarty = clickedy
-
-            # new rectangle is defined by two opposing corners: (cx, cy) and (clickedx, clickedy)
-            newx, newy = min(cx, clickedx * 1.5), min(cy, clickedy * 1.5)
-            self.objx, self.objy = newx, newy
-            self.setPos(newx, newy)
-            self.width = abs(cx / 1.5 - clickedx)
-            self.height = abs(cy / 1.5 - clickedy)
-
-            #self.width += clickedx - dsx
-            #self.height += clickedy - dsy
-
-            oldrect = self.BoundingRect
-            oldrect.translate(cx * 1.5, cy * 1.5)
-            newrect = QtCore.QRectF(self.x(), self.y(), self.width * 1.5, self.height * 1.5)
-            updaterect = oldrect.united(newrect)
-
-            self.UpdateRects()
-            self.scene().update(updaterect)
-            SetDirty()
-            mainWindow.levelOverview.update()
-
-            if self.sizeChanged is not None:
-                self.sizeChanged(self, self.width, self.height)
-
-            # This code causes an error or something.
-            # if RealViewEnabled:
-            #     for sprite in Area.sprites:
-            #         if self.id in sprite.ImageObj.locationIDs and sprite.ImageObj.updateSceneAfterLocationMoved:
-            #             self.scene().update()
-
-        event.accept()
 
     def delete(self):
         """
@@ -12551,23 +12562,45 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         # make the layout of ExternalSpriteOptionWidgets
         self.widget = QtWidgets.QWidget()
         self.buttons = []
-        self.visibleEntries = []
 
-        L = QtWidgets.QVBoxLayout()
+        L = QtWidgets.QGridLayout()
         self.buttongroup = QtWidgets.QButtonGroup()
-
-        # create a widget for every entry
-        self.widgets = []
-        for i, widget in enumerate(self.entries):
+        for i, widget in enumerate(self.widgets):
             button = QtWidgets.QRadioButton()
             button.setChecked(i == self.value)
-            self.buttongroup.addButton(button, i)
 
-            self.widgets.append(
-                ExternalSpriteOptionRow(button, widget[0], widget[1])
-            )
+
+
+
+            self.buttongroup.addButton(button, i)
+            L.addWidget(button, 2 * i, 0, 2, 1)
+
+            for j, text in enumerate(widget[0]):
+                label = QtWidgets.QLabel(str(text))
+                L.addWidget(label, 2 * i, j + 1, 1, 1)
+
+            if len(widget[1]) > 0:
+                button = QtWidgets.QPushButton("v")
+                button.clicked.connect(self.HandleButtonClick(i))
+
+                self.buttons.append(button)
+
+                L.addWidget(button, 2 * i, len(widget[0]) + 1, 1, 1)
+
+                width = int((L.columnCount() - 1) / len(widget[1]))
+                offset = L.columnCount() - width * len(widget[1])
+
+                for j, text in enumerate(widget[1]):
+                    label = QtWidgets.QLabel(str(text))
+                    label.setWordWrap(True)
+
+                    L.addWidget(label, 2 * i + 1, j + offset, 1, width)
 
         self.widget.setLayout(L)
+
+        if len(self.widgets[0][1]) > 0:
+            for i in range(1, len(self.widgets), 2):
+                self.hideRow(i)
 
         # search thing
         searchbar = QtWidgets.QLineEdit()
@@ -12597,20 +12630,18 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
 
         self.setLayout(mainLayout)
 
-        self.updateVisibleRows(list(range(len(self.entries))))
-
         # Keep col widths constant
-        #layout = self.widget.layout()
-        #colCount = layout.columnCount()
-        #rowCount = layout.rowCount()
+        layout = self.widget.layout()
+        colCount = layout.columnCount()
+        rowCount = layout.rowCount()
 
-        #for column in range(colCount):
-        #    for row in range(rowCount):
-        #        try:
-        #            width = layout.itemAtPosition(row, column).widget().width()
-        #            layout.itemAtPosition(row, column).widget().setFixedWidth(width)
-        #        except:
-        #            pass
+        for column in range(colCount):
+            for row in range(rowCount):
+                try:
+                    width = layout.itemAtPosition(row, column).widget().width()
+                    layout.itemAtPosition(row, column).widget().setFixedWidth(width)
+                except:
+                    pass
 
     def loadItemsFromXML(self):
         """
@@ -12630,18 +12661,12 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         root = tree.getroot()
 
         try:
-            primary += list(map(
-                lambda x: None if x.strip().lower() == "[id]" else x.strip(),
-                root.attrib['primary'].split(',')
-            ))
+            primary += list(map(lambda x: None if x.strip().lower() == "[id]" else x.strip(), root.attrib['primary'].split(',')))
         except:
             pass
 
         try:
-            secondary += list(map(
-                lambda x: x.strip(),
-                root.attrib['secondary'].split(',')
-            ))
+            secondary += list(map(lambda x: x.strip(), root.attrib['secondary'].split(',')))
         except:
             pass
 
@@ -12677,7 +12702,7 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         Adds items to the layout
         """
         # list of widgets sorted by value
-        self.entries = []
+        self.widgets = []
 
         for option in options:
             items = options[option]
@@ -12691,12 +12716,10 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
 
                 subwidgets[0].append(value)
 
-            # secondary items are optional
             for prop in order[1]:
-                if prop in items:
-                    subwidgets[1].append(items[prop])
+                subwidgets[1].append(items[prop])
 
-            self.entries.append(subwidgets)
+            self.widgets.append(subwidgets)
 
     def setCurrentValue(self, value):
         """
@@ -12714,125 +12737,84 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         """
         Only show the elements fulfilling the search for text
         """
-        # TODO: maybe let another thread handle this...
         # Don't do anything if you search for fewer than 2 characters
         if len(text) < 2:
             return
 
-        matches = lambda haystack, needle: haystack.lower().find(needle.lower()) >= 0
-
-        matching = []
-        for i, entry in enumerate(self.entries):
-            for property in entry[0]: # primary
-                if matches(str(property), text):
-                    matching.append(i)
+        for i, row in enumerate(self.widgets):
+            for value in row[0]:
+                if str(value).lower().find(text.lower()) >= 0:
+                    # text was in this row -> show row
+                    self.showRow(2 * i)
                     break
             else:
-                for property in entry[1]: # secondary
-                    if matches(str(property), text):
-                        matching.append(i)
+                for value in row[1]:
+                    if str(value).find(text) >= 0:
+                        # text was in this row -> show row
+                        self.showRow(2 * i)
                         break
+                else:
+                    # not in row -> hide row
+                    self.hideRow(2 * i)
+                    self.hideRow(2 * i + 1)
 
-        self.updateVisibleRows(matching)
+    def showRow(self, i):
+        """
+        Shows the i'th row
+        """
+        layout = self.widget.layout()
 
-    def updateVisibleRows(self, new):
+        for column in range(layout.columnCount()):
+            try:
+                widget = layout.itemAtPosition(i, column).widget()
+            except:
+                # this was not a widget, happens when this row is not there or
+                # something
+                break
+
+            # BUG: Qt doesn't automatically add the margins
+            widget.show()
+
+    def hideRow(self, i):
         """
-        Makes sure we only show the correct rows
+        Hides the i'th row
         """
+        if i % 2 == 1:
+            # odd row
+            #  -> don't hide the first widget, because that's the radiobutton
+            start = 1
+        else:
+            start = 0
 
         layout = self.widget.layout()
 
-        # clear layout
-        self.clearLayout(layout)
-
-        # add back the correct ones
-        for id in new:
-            row = self.widgets[id]
-
-            # add row to the layout
-            layout.addWidget(row)
-
-        # add stretch so the items align to the top
-        layout.addStretch()
-
-        self.visibleEntries = new
-
-    def clearLayout(self, layout):
-        """
-        Removes all rows of the layout
-        """
-        while True:
-            item = layout.takeAt(0)
-            if item is None:
+        for column in range(start, layout.columnCount()):
+            try:
+                widget = layout.itemAtPosition(i, column).widget()
+            except:
+                # this was not a widget, happens when this row is already hidden
                 break
 
-            wid = item.widget()
-            del item
+            # BUG: Qt doesn't automatically remove the margins
+            widget.hide()
 
-            if wid is None:
-                continue
-
-            # don't delete the widget, since we might need to show it again later
-            wid.setParent(None)
-
-
-class ExternalSpriteOptionRow(QtWidgets.QWidget):
-    def __init__(self, button, primary, secondary):
-        QtWidgets.QWidget.__init__(self)
-
-        L = QtWidgets.QHBoxLayout()
-
-        self.gridLayout = QtWidgets.QGridLayout()
-        self.gridLayout.addWidget(button, 0, 0, 1, 1)
-        self.setLayout(self.gridLayout)
-
-        for i, text in enumerate(primary):
-            label = QtWidgets.QLabel(str(text))
-            self.gridLayout.addWidget(label, 0, i + 1, 1, 1)
-
-        self.secondary = []
-
-        if len(secondary) == 0:
-            return
-
-        placedText = False
-        for i, text in enumerate(secondary):
-            if str(text) == "":
-                continue
-
-            placedText = True
-            label = QtWidgets.QLabel(str(text))
-            label.setWordWrap(True)
-
-            self.secondary.append(label)
-
-        if placedText:
-            more = QtWidgets.QPushButton("v")
-            more.clicked.connect(self.handleButtonClick)
-
-            self.gridLayout.addWidget(more, 0, len(primary) + 1, 1, 1)
-
-    def handleButtonClick(self, e):
+    def doRowVisibilityChange(self, i):
         """
-        Handles button click
+        Changes visibility of row i
         """
-
-        layout = self.gridLayout
-        cols = layout.columnCount()
-        button = layout.itemAtPosition(0, cols - 1).widget()
-
-        width = (cols - 1) // len(self.secondary)
-
-        if button.text() == "v":
-            button.setText("^")
-
-            for i, label in enumerate(self.secondary):
-                layout.addWidget(label, 1, i + 1, 1, width)
+        if self.buttons[i].text() == 'v':
+            self.showRow(2 * i + 1)
+            self.buttons[i].setText('^')
         else:
-            button.setText("v")
+            self.hideRow(2 * i + 1)
+            self.buttons[i].setText('v')
 
-            for label in self.secondary:
-                label.setParent(None)
+    def HandleButtonClick(self, i):
+        """
+        Returns a function that handles the i'th button being clicked
+        """
+        return (lambda e: self.doRowVisibilityChange(i))
+
 
 class ResizeChoiceDialog(QtWidgets.QDialog):
     """
@@ -12966,24 +12948,19 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             else:
                 bit = field[2]
 
-            print(bit)
             if not isinstance(bit, tuple):
                 bit = ((bit, bit + 1),)
             elif not isinstance(bit[0], tuple):
                 bit = (bit,)
 
             for ran in bit:
-                # if two ranges (a..b, c..d) overlap, that means that a..b is not
-                # completely before c..d (that is, b >= c) nor
-                #    a <= i < b AND c <= i < d
-                # since a < b and c < d,
-                #    a < d AND c < b
-                overlap = lambda a, b: a[0] < b[1] and b[0] < a[1]
-
-                if overlap(ran, nyb5):
+                # two ranges overlap iff either of the following:
+                #  start1 <= start2 AND end1 >= start2
+                #  start1 < end2 AND end1 >= end2
+                if (ran[0] <= nyb5[0] and ran[1] >= nyb5[0]) or (ran[0] < nyb5[1] and ran[1] >= nyb5[1]):
                     found[5].append(field)
 
-                if overlap(ran, nyb7):
+                if (ran[0] <= nyb7[0] and ran[1] >= nyb7[0]) or (ran[0] < nyb7[1] and ran[1] >= nyb7[1]):
                     found[7].append(field)
 
         return found
@@ -13036,7 +13013,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             ...
 
         return self.accept()
-
+    
     def editSpecialResizeEvent(self, sprite):
         data = list(sprite.spritedata)
 
