@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <tilesets>
 	<slot num="0" sorted="true">
-		<tileset filename="Pa0_jyotyu" name="Standard" />
-		<tileset filename="Pa0_jyotyu_chika" name="Underground" />
-		<tileset filename="Pa0_jyotyu_setsugen" name="Snow" />
-		<tileset filename="Pa0_jyotyu_yougan" name="Lava" />
-		<tileset filename="Pa0_jyotyu_staffRoll" name="Credits" />
+		<tileset filename="Pa0_jyotyu" name="Standard" override="Pa0:normal" />
+		<tileset filename="Pa0_jyotyu_chika" name="Underground" override="Pa0:underground" />
+		<tileset filename="Pa0_jyotyu_setsugen" name="Snow" override="Pa0:snow" />
+		<tileset filename="Pa0_jyotyu_yougan" name="Lava" override="Pa0:lava" />
+		<tileset filename="Pa0_jyotyu_staffRoll" name="Credits" override="Pa0:normal" />
 	</slot>
 	<slot num="1">
 		<category name="Overworld">
 			<tileset filename="Pa1_kaigan" name="Beach" />
 			<tileset filename="Pa1_sabaku" name="Desert" />
-			<tileset filename="Pa1_daishizen" name="Forest" />
-			<tileset filename="Pa1_nohara" name="Grassland" />
+			<tileset filename="Pa1_daishizen" name="Forest" override="Forest Flowers" />
+			<tileset filename="Pa1_nohara" name="Grassland" override="Flowers" />
 			<tileset filename="Pa1_gake" name="Mountains" />
 			<tileset filename="Pa1_gake_yougan" name="Mountains (Lava)" />
-			<tileset filename="Pa1_nohara2" name="Sky" />
+			<tileset filename="Pa1_nohara2" name="Sky" override="Flowers" />
 			<tileset filename="Pa1_setsugen" name="Snow" />
 			<tileset filename="Pa1_koopa_out" name="Volcano" />
 		</category>
@@ -91,10 +91,10 @@
 	</slot>
 	<slot num="3">
 		<category name="Line Guides &amp; Fences">
-			<tileset filename="Pa3_rail" name="Normal Line Guides &amp; Fences" />
-			<tileset filename="Pa3_rail_white" name="White Line Guides &amp; Fences" />
-			<tileset filename="Pa3_daishizen" name="Forest &amp; Line Guides" />
-			<tileset filename="Pa3_MG_house_ami_rail" name="Line Guides &amp; Minigame Fences" />
+			<tileset filename="Pa3_rail" name="Normal Line Guides &amp; Fences" override="Full Lines" />
+			<tileset filename="Pa3_rail_white" name="White Line Guides &amp; Fences" override="Full Lines" />
+			<tileset filename="Pa3_daishizen" name="Forest &amp; Line Guides" override="Lines" />
+			<tileset filename="Pa3_MG_house_ami_rail" name="Line Guides &amp; Minigame Fences" override="Minigame Lines" />
 		</category>
 		<category name="Other">
 			<tileset filename="Pa3_shiro_koopa" name="Final Boss Effects" />
