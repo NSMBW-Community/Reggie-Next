@@ -1444,9 +1444,19 @@ class SpriteImage_UnusedRotPlatforms(SLib.SpriteImage):  # 52
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
+        for _ in range(4):
+            img = SLib.AuxiliaryImage(parent, 144, 24)
+            img.image = ImageCache["UnusedRotPlatform"]
+            self.aux.append(img)
+
+        self.aux[0].setPos(-60, -144) # top
+        self.aux[1].setPos(-60, 144) # bottom
+        self.aux[2].setPos(-204, 0) # left
+        self.aux[3].setPos(84, 0) # right
+
     @staticmethod
     def loadImages():
-        if 'UnusedRotPlatforms' in ImageCache:
+        if 'UnusedRotPlatform' in ImageCache:
             return
 
         SLib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
@@ -1455,17 +1465,13 @@ class SpriteImage_UnusedRotPlatforms(SLib.SpriteImage):  # 52
             144, 24,
             Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
         )
-        img = QtGui.QPixmap(432, 312)
+        img = QtGui.QPixmap(144, 24)
         img.fill(Qt.transparent)
         paint = QtGui.QPainter(img)
         paint.setOpacity(0.8)
-        paint.drawPixmap(144, 0, platform)  # top
-        paint.drawPixmap(144, 288, platform)  # bottom
-        paint.drawPixmap(0, 144, platform)  # left
-        paint.drawPixmap(288, 144, platform)  # right
-        del paint
+        paint.drawPixmap(0, 0, platform)
+        ImageCache['UnusedRotPlatform'] = img
 
-        ImageCache['UnusedRotPlatforms'] = img
 
 
 class SpriteImage_Lakitu(SLib.SpriteImage_Static):  # 54
@@ -1539,9 +1545,8 @@ class SpriteImage_KoopaTroopa(SLib.SpriteImage_StaticMultiple):  # 57
 
 class SpriteImage_KoopaParatroopa(SLib.SpriteImage_StaticMultiple):  # 58
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
-        self.track = SLib.AuxiliaryTrackObject(parent, 0, 0, 0)
-        self.offset = (-7, -12)
+        super().__init__(parent, 1.5, None, (-7, -12))
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 0, 0, 0))
 
     @staticmethod
     def loadImages():
@@ -1576,7 +1581,10 @@ class SpriteImage_KoopaParatroopa(SLib.SpriteImage_StaticMultiple):  # 58
                 self.image = ImageCache['ParakoopaR']
 
         if mode == 1 or mode == 2:
+
+            track = self.aux[0]
             turnImmediately = self.parent.spritedata[4] & 1 == 1
+
             if mode == 1:
                 self.track.direction = SLib.AuxiliaryTrackObject.Horizontal
                 self.track.setSize(9 * 16, 16)
@@ -1592,10 +1600,9 @@ class SpriteImage_KoopaParatroopa(SLib.SpriteImage_StaticMultiple):  # 58
                 else:
                     self.track.setPos(self.width / 2, -4 * 24 + self.height / 2)
 
-            if len(self.aux) == 0:
-                self.aux.append(self.track)
-        elif len(self.aux) != 0:
-            self.aux.clear()
+        else:
+            # hide the track
+            self.aux[0].setSize(0, 0)
 
         super().dataChanged()
 
@@ -4476,7 +4483,7 @@ class SpriteImage_PipeCannon(SLib.SpriteImage):  # 227
             path.cubicTo(QtCore.QPoint(1036 - 348, -14), QtCore.QPoint(1036 - 420, -14), QtCore.QPoint(1036 - 528, 54))
             path.lineTo(QtCore.QPoint(1036 - 1036, 348))
             self.aux[1].setSize(1036, 348, -1036 + 24, -252)
-        self.aux[1].SetPath(path)
+        self.aux[1].setPath(path)
 
 
 class SpriteImage_ExtendShroom(SLib.SpriteImage):  # 228
@@ -5998,7 +6005,7 @@ class SpriteImage_KingBill(SLib.SpriteImage):  # 326
 
         direction = (self.parent.spritedata[5] & 15) % 4
 
-        self.aux[0].SetPath(self.paths[direction])
+        self.aux[0].setPath(self.paths[direction])
 
         newx, newy = (
             (0, (-8 * 24) + 12),
@@ -7819,7 +7826,7 @@ class SpriteImage_EnormousBlock(SLib.SpriteImage):  # 462
             self.aux[1].setPos(realsize[0] * 24 - 24, 0)
         else:
             self.aux[1].setPos(0, 0)
-        self.aux[1].SetPath(self.spikes[size][side])
+        self.aux[1].setPath(self.spikes[size][side])
 
         # update the track
         self.aux[2].setSize(distance * 16, 16)

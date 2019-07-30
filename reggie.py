@@ -125,30 +125,12 @@ firstLoad = True
 FileExtentions = ('.arc', '.arc.LH')
 
 OverriddenTilesets = {
-    "Pa0": (
-        'Pa0_jyotyu',
-        'Pa0_jyotyu_chika',
-        'Pa0_jyotyu_setsugen',
-        'Pa0_jyotyu_yougan',
-        'Pa0_jyotyu_staffRoll'
-    ),
-    "Flowers": (
-        'Pa1_nohara',
-        'Pa1_nohara2'
-    ),
-    "Forest Flowers": (
-        'Pa1_daishizen'
-    ),
-    "Lines": (
-        'Pa3_daishizen'
-    ),
-    "Minigame Lines": (
-        'Pa3_MG_house_ami_rail'
-    ),
-    "Full Lines": (
-        'Pa3_rail',
-        'Pa3_rail_white'
-    )
+    "Pa0": dict(),
+    "Flowers": set(),
+    "Forest Flowers": set(),
+    "Lines": set(),
+    "Minigame Lines": set(),
+    "Full Lines": set()
 }
 
 
@@ -536,6 +518,8 @@ def LoadTilesetNames_Category(node):
     """
     Loads a TilesetNames XML category
     """
+    global OverriddenTilesets
+
     cat = []
     for child in node:
         if child.tag.lower() == 'category':
@@ -549,7 +533,30 @@ def LoadTilesetNames_Category(node):
                 new.append(False)
             cat.append(new)
         elif child.tag.lower() == 'tileset':
-            cat.append((str(child.attrib['filename']), str(child.attrib['name'])))
+            fname = str(child.attrib['filename'])
+            cat.append((fname, str(child.attrib['name'])))
+
+            # read override attribute
+            if 'override' not in child.attrib:
+                continue
+
+            # override present, add it to the correct type
+            type = str(child.attrib['override'])
+
+            # TODO: come up with a better solution for this
+            if type[:4] == "Pa0:":
+                key = "Pa0"
+                value = {fname: type[4:]}
+            else:
+                key = type
+                # make a set containing the file name
+                value = {fname}
+
+            if key not in OverriddenTilesets:
+                OverriddenTilesets[key] = value
+            else:
+                OverriddenTilesets[key].update(value)
+
     return list(cat)
 
 
@@ -1291,6 +1298,9 @@ def LoadSpriteCategories(reload_=False):
         paths = new
 
     SpriteCategories = []
+    # Add a Search category
+    SpriteCategories.append((trans.string('Sprites', 19), [(trans.string('Sprites', 16), list(range(0, 483)))], []))
+    SpriteCategories[-1][1][0][1].append(9999)  # 'no results' special case
     for path in paths:
         tree = etree.parse(path)
         root = tree.getroot()
@@ -1332,9 +1342,6 @@ def LoadSpriteCategories(reload_=False):
                             if i not in CurrentCategory:
                                 CurrentCategory.append(i)
 
-    # Add a Search category
-    SpriteCategories.append((trans.string('Sprites', 19), [(trans.string('Sprites', 16), list(range(0, 483)))], []))
-    SpriteCategories[-1][1][0][1].append(9999)  # 'no results' special case
 
 
 SpriteListData = None
@@ -2731,15 +2738,34 @@ def ProcessOverrides(idx, name):
     Load overridden tiles if there are any
     """
     global OverriddenTilesets
+    global Overrides_safe
+
+    if OverriddenTilesets is None:
+        raise ValueError("Overridden tilesets not yet initialised")
+
+    def overlay(base, overlay):
+        img = QtGui.QPixmap(base.width(), base.height())
+        img.fill(Qt.transparent)
+
+        p = QtGui.QPainter(img)
+        p.drawPixmap(0, 0, base)
+        p.drawPixmap(0, 0, overlay)
+
+        return img
+
     tsidx = OverriddenTilesets
 
     if name in tsidx["Pa0"]:
-        offset = 0x800 + (tsidx["Pa0"].index(name) * 64)
+        type = tsidx["Pa0"][name]
 
         # Setsugen/Snow is unused, but we still override it
         # StaffRoll is the same as plain Jyotyu, so if it's used, let's be lazy and treat it as the normal one
-        if offset == 1280:
-            offset = 1024
+        offset = {
+            "normal": 2048,
+            "underground": 2048 + 64,
+            "snow": 2048 + 2 * 64,
+            "lava": 2048 + 3 * 64
+        }[type]
 
         defs = ObjectDefinitions[idx]
         t = Tiles
@@ -2754,15 +2780,25 @@ def ProcessOverrides(idx, name):
 
         # Question and brick blocks
         # these don't have their own tiles so we have to do them by objects
-        rangeA, rangeB = (range(39, 49), range(27, 38))
+        rangeA, rangeB = range(39, 49), range(27, 38)
         replace = offset + 10
+        baseblock = t[defs[39].rows[0][0][1]].main
+
+        a = 10
         for i in rangeA:
+            t[replace].main = overlay(baseblock, Overrides_safe[a].main)
             defs[i].rows[0][0] = (0, replace, 0)
             replace += 1
+            a += 1
+
         replace += 1
+        baseblock = t[defs[27].rows[0][0][1]].main
+        a = 21
         for i in rangeB:
+            t[replace].main = overlay(baseblock, Overrides_safe[a].main)
             defs[i].rows[0][0] = (0, replace, 0)
             replace += 1
+            a += 1
 
         # now the extra stuff (invisible collisions etc)
         t[1].main = t[0x400 + 1280].main  # solid
@@ -2835,7 +2871,7 @@ def ProcessOverrides(idx, name):
 
     elif name in tsidx["Lines"] or name in tsidx["Full Lines"]:
         # These are the line guides
-        # Pa3_daishizen has less though
+        # normal lines have fewer though
 
         t = Tiles
 
@@ -2858,8 +2894,8 @@ def ProcessOverrides(idx, name):
         t[804].main = t[0x400 + 1220].main  # bottom-left red blob
         t[805].main = t[0x400 + 1221].main  # bottom-right red blob
 
-        # Those are all for Pa3_daishizen
-        if name == 'Pa3_daishizen': return
+        # Those are all for normal lines
+        if name in tsidx["Lines"]: return
 
         t[816].main = t[0x400 + 1056].main  # 1x2 diagonal going up (top edge)
         t[817].main = t[0x400 + 1057].main  # 1x2 diagonal going down (top edge)
@@ -2968,7 +3004,9 @@ def LoadOverrides():
     Load overrides
     """
     global Overrides
+    global Overrides_safe # these pixmaps will never be changed
     Overrides = [None] * 384
+    Overrides_safe = [None] * 384
 
     OverrideBitmap = QtGui.QPixmap(os.path.join('reggiedata', 'overrides.png'))
     idx = 0
@@ -2981,13 +3019,16 @@ def LoadOverrides():
         for x in range(xcount):
             bmp = OverrideBitmap.copy(sourcex, sourcey, 24, 24)
             Overrides[idx] = TilesetTile(bmp)
+            Overrides_safe[idx] = TilesetTile(bmp)
 
             # Set collisions if it's a brick or question
             if y <= 4:
                 if 8 < x < 20:
                     Overrides[idx].setQuestionCollisions()
+                    Overrides_safe[idx].setQuestionCollisions()
                 elif 20 <= x < 32:
                     Overrides[idx].setBrickCollisions()
+                    Overrides_safe[idx].setBrickCollisions()
 
             idx += 1
             sourcex += 24
@@ -5930,7 +5971,6 @@ class LocationItem(LevelEditorItem):
             dsy = self.dragstarty
             clickedx = event.pos().x() / 1.5
             clickedy = event.pos().y() / 1.5
-
             cx = self.objx
             cy = self.objy
 
@@ -10842,6 +10882,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             if button_com is not None or button_com2 is not None or button_adv is not None:
                 L = QtWidgets.QHBoxLayout()
+                L.setContentsMargins(0, 0, 0, 0)
                 L.addWidget(self.widget)
 
                 if button_com is not None:
@@ -12500,42 +12541,23 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         # make the layout of ExternalSpriteOptionWidgets
         self.widget = QtWidgets.QWidget()
         self.buttons = []
+        self.visibleEntries = []
 
-        L = QtWidgets.QGridLayout()
+        L = QtWidgets.QVBoxLayout()
         self.buttongroup = QtWidgets.QButtonGroup()
-        for i, widget in enumerate(self.widgets):
+
+        # create a widget for every entry
+        self.widgets = []
+        for i, widget in enumerate(self.entries):
             button = QtWidgets.QRadioButton()
             button.setChecked(i == self.value)
-
             self.buttongroup.addButton(button, i)
-            L.addWidget(button, 2 * i, 0, 2, 1)
 
-            for j, text in enumerate(widget[0]):
-                label = QtWidgets.QLabel(str(text))
-                L.addWidget(label, 2 * i, j + 1, 1, 1)
-
-            if len(widget[1]) > 0:
-                button = QtWidgets.QPushButton("v")
-                button.clicked.connect(self.HandleButtonClick(i))
-
-                self.buttons.append(button)
-
-                L.addWidget(button, 2 * i, len(widget[0]) + 1, 1, 1)
-
-                width = int((L.columnCount() - 1) / len(widget[1]))
-                offset = L.columnCount() - width * len(widget[1])
-
-                for j, text in enumerate(widget[1]):
-                    label = QtWidgets.QLabel(str(text))
-                    label.setWordWrap(True)
-
-                    L.addWidget(label, 2 * i + 1, j + offset, 1, width)
+            self.widgets.append(
+                ExternalSpriteOptionRow(button, widget[0], widget[1])
+            )
 
         self.widget.setLayout(L)
-
-        if len(self.widgets[0][1]) > 0:
-            for i in range(1, len(self.widgets), 2):
-                self.hideRow(i)
 
         # search thing
         searchbar = QtWidgets.QLineEdit()
@@ -12565,18 +12587,20 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
 
         self.setLayout(mainLayout)
 
-        # Keep col widths constant
-        layout = self.widget.layout()
-        colCount = layout.columnCount()
-        rowCount = layout.rowCount()
+        self.updateVisibleRows(list(range(len(self.entries))))
 
-        for column in range(colCount):
-            for row in range(rowCount):
-                try:
-                    width = layout.itemAtPosition(row, column).widget().width()
-                    layout.itemAtPosition(row, column).widget().setFixedWidth(width)
-                except:
-                    pass
+        # Keep col widths constant
+        #layout = self.widget.layout()
+        #colCount = layout.columnCount()
+        #rowCount = layout.rowCount()
+
+        #for column in range(colCount):
+        #    for row in range(rowCount):
+        #        try:
+        #            width = layout.itemAtPosition(row, column).widget().width()
+        #            layout.itemAtPosition(row, column).widget().setFixedWidth(width)
+        #        except:
+        #            pass
 
     def loadItemsFromXML(self):
         """
@@ -12596,12 +12620,18 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         root = tree.getroot()
 
         try:
-            primary += list(map(lambda x: None if x.strip().lower() == "[id]" else x.strip(), root.attrib['primary'].split(',')))
+            primary += list(map(
+                lambda x: None if x.strip().lower() == "[id]" else x.strip(),
+                root.attrib['primary'].split(',')
+            ))
         except:
             pass
 
         try:
-            secondary += list(map(lambda x: x.strip(), root.attrib['secondary'].split(',')))
+            secondary += list(map(
+                lambda x: x.strip(),
+                root.attrib['secondary'].split(',')
+            ))
         except:
             pass
 
@@ -12637,7 +12667,7 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         Adds items to the layout
         """
         # list of widgets sorted by value
-        self.widgets = []
+        self.entries = []
 
         for option in options:
             items = options[option]
@@ -12651,10 +12681,12 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
 
                 subwidgets[0].append(value)
 
+            # secondary items are optional
             for prop in order[1]:
-                subwidgets[1].append(items[prop])
+                if prop in items:
+                    subwidgets[1].append(items[prop])
 
-            self.widgets.append(subwidgets)
+            self.entries.append(subwidgets)
 
     def setCurrentValue(self, value):
         """
@@ -12672,83 +12704,125 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         """
         Only show the elements fulfilling the search for text
         """
+        # TODO: maybe let another thread handle this...
         # Don't do anything if you search for fewer than 2 characters
         if len(text) < 2:
             return
 
-        for i, row in enumerate(self.widgets):
-            for value in row[0]:
-                if str(value).lower().find(text.lower()) >= 0:
-                    # text was in this row -> show row
-                    self.showRow(2 * i)
+        matches = lambda haystack, needle: haystack.lower().find(needle.lower()) >= 0
+
+        matching = []
+        for i, entry in enumerate(self.entries):
+            for property in entry[0]: # primary
+                if matches(str(property), text):
+                    matching.append(i)
                     break
             else:
-                for value in row[1]:
-                    if str(value).find(text) >= 0:
-                        # text was in this row -> show row
-                        self.showRow(2 * i)
+                for property in entry[1]: # secondary
+                    if matches(str(property), text):
+                        matching.append(i)
                         break
-                else:
-                    # not in row -> hide row
-                    self.hideRow(2 * i)
-                    self.hideRow(2 * i + 1)
 
-    def showRow(self, i):
-        """
-        Shows the i'th row
-        """
-        layout = self.widget.layout()
+        self.updateVisibleRows(matching)
 
-        for column in range(layout.columnCount()):
-            try:
-                widget = layout.itemAtPosition(i, column).widget()
-            except:
-                # this was not a widget, happens when this row is not there or
-                # something
-                break
-
-            # BUG: Qt doesn't automatically add the margins
-            widget.show()
-
-    def hideRow(self, i):
+    def updateVisibleRows(self, new):
         """
-        Hides the i'th row
+        Makes sure we only show the correct rows
         """
-        if i % 2 == 1:
-            # odd row
-            #  -> don't hide the first widget, because that's the radiobutton
-            start = 1
-        else:
-            start = 0
 
         layout = self.widget.layout()
 
-        for column in range(start, layout.columnCount()):
-            try:
-                widget = layout.itemAtPosition(i, column).widget()
-            except:
-                # this was not a widget, happens when this row is already hidden
+        # clear layout
+        self.clearLayout(layout)
+
+        # add back the correct ones
+        for id in new:
+            row = self.widgets[id]
+
+            # add row to the layout
+            layout.addWidget(row)
+
+        # add stretch so the items align to the top
+        layout.addStretch()
+
+        self.visibleEntries = new
+
+    def clearLayout(self, layout):
+        """
+        Removes all rows of the layout
+        """
+        while True:
+            item = layout.takeAt(0)
+            if item is None:
                 break
 
-            # BUG: Qt doesn't automatically remove the margins
-            widget.hide()
+            wid = item.widget()
+            del item
 
-    def doRowVisibilityChange(self, i):
+            if wid is None:
+                continue
+
+            # don't delete the widget, since we might need to show it again later
+            wid.setParent(None)
+
+
+class ExternalSpriteOptionRow(QtWidgets.QWidget):
+    def __init__(self, button, primary, secondary):
+        QtWidgets.QWidget.__init__(self)
+
+        L = QtWidgets.QHBoxLayout()
+
+        self.gridLayout = QtWidgets.QGridLayout()
+        self.gridLayout.addWidget(button, 0, 0, 1, 1)
+        self.setLayout(self.gridLayout)
+
+        for i, text in enumerate(primary):
+            label = QtWidgets.QLabel(str(text))
+            self.gridLayout.addWidget(label, 0, i + 1, 1, 1)
+
+        self.secondary = []
+
+        if len(secondary) == 0:
+            return
+
+        placedText = False
+        for i, text in enumerate(secondary):
+            if str(text) == "":
+                continue
+
+            placedText = True
+            label = QtWidgets.QLabel(str(text))
+            label.setWordWrap(True)
+
+            self.secondary.append(label)
+
+        if placedText:
+            more = QtWidgets.QPushButton("v")
+            more.clicked.connect(self.handleButtonClick)
+
+            self.gridLayout.addWidget(more, 0, len(primary) + 1, 1, 1)
+
+    def handleButtonClick(self, e):
         """
-        Changes visibility of row i
+        Handles button click
         """
-        if self.buttons[i].text() == 'v':
-            self.showRow(2 * i + 1)
-            self.buttons[i].setText('^')
+
+        layout = self.gridLayout
+        cols = layout.columnCount()
+        button = layout.itemAtPosition(0, cols - 1).widget()
+
+        width = (cols - 1) // len(self.secondary)
+
+        if button.text() == "v":
+            button.setText("^")
+
+            for i, label in enumerate(self.secondary):
+                layout.addWidget(label, 1, i + 1, 1, width)
         else:
-            self.hideRow(2 * i + 1)
-            self.buttons[i].setText('v')
+            button.setText("v")
 
-    def HandleButtonClick(self, i):
-        """
-        Returns a function that handles the i'th button being clicked
-        """
-        return (lambda e: self.doRowVisibilityChange(i))
+            for label in self.secondary:
+                label.setParent(None)
 
 
 class ResizeChoiceDialog(QtWidgets.QDialog):
@@ -24526,7 +24600,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         cat = SpriteCategories[type]
         self.sprPicker.SwitchView(cat)
 
-        isSearch = (type == len(SpriteCategories) - 1)
+        isSearch = (type == 0)
         layout = self.spriteSearchLayout
         layout.itemAt(0).widget().setVisible(isSearch)
         layout.itemAt(1).widget().setVisible(isSearch)
