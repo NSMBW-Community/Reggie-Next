@@ -125,7 +125,7 @@ firstLoad = True
 FileExtentions = ('.arc', '.arc.LH')
 
 OverriddenTilesets = {
-    "Pa0": dict(),
+    "Pa0": set(),
     "Flowers": set(),
     "Forest Flowers": set(),
     "Lines": set(),
@@ -543,19 +543,10 @@ def LoadTilesetNames_Category(node):
             # override present, add it to the correct type
             type = str(child.attrib['override'])
 
-            # TODO: come up with a better solution for this
-            if type[:4] == "Pa0:":
-                key = "Pa0"
-                value = {fname: type[4:]}
-            else:
-                key = type
-                # make a set containing the file name
-                value = {fname}
+            if type not in OverriddenTilesets:
+                raise ValueError("Unknown override type '%s' for tileset '%s'" % (type, fname))
 
-            if key not in OverriddenTilesets:
-                OverriddenTilesets[key] = value
-            else:
-                OverriddenTilesets[key].update(value)
+            OverriddenTilesets[type].add(fname)
 
     return list(cat)
 
@@ -1343,7 +1334,6 @@ def LoadSpriteCategories(reload_=False):
                                 CurrentCategory.append(i)
 
 
-
 SpriteListData = None
 
 
@@ -1359,12 +1349,10 @@ def LoadSpriteListData(reload_=False):
     for path in paths: new.append(path)
     paths = new
 
-    SpriteListData = []
-    for i in range(24): SpriteListData.append([])
+    SpriteListData = [[] for _ in range(24)]
     for path in paths:
-        f = open(path)
-        data = f.read()
-        f.close()
+        with open(path) as f:
+            data = f.read()
 
         split = data.replace('\n', '').split(';')
         for lineidx in range(24):
@@ -2756,118 +2744,114 @@ def ProcessOverrides(idx, name):
     tsidx = OverriddenTilesets
 
     if name in tsidx["Pa0"]:
-        type = tsidx["Pa0"][name]
-
-        # Setsugen/Snow is unused, but we still override it
-        # StaffRoll is the same as plain Jyotyu, so if it's used, let's be lazy and treat it as the normal one
-        offset = {
-            "normal": 2048,
-            "underground": 2048 + 64,
-            "snow": 2048 + 2 * 64,
-            "lava": 2048 + 3 * 64
-        }[type]
-
         defs = ObjectDefinitions[idx]
         t = Tiles
 
+        # 0: invisibg
+        ## Items:
+        # 1:coin, 2:fire, 3:star, 4:stoi, 5:vine,
+        # 6:spri, 7:mini, 8:prop, 9:ping, 10:yosh,
+        # 11:ice, 12:10c, 13:1up,
+
         # Invisible blocks
-        # these are all the same so let's just load them from the first row
-        invisiblocks = [3, 4, 5, 6, 7, 8, 9, 10, 13]
-        replace = 0x800
-        for i in invisiblocks:
-            t[i].main = t[replace].main
-            replace += 1
+        invisiblocks = (3, 4, 5, 6, 7, 8, 9, 10, 13)
+        replacement = (1, 2, 3, 13, 5, 7, 8, 9, 11)
+        # coin, fire, star, 1up, vine, mini, prop, ping, ice
+        baseblock = Overrides_safe[0].main
+        for i, replace in zip(invisiblocks, replacement):
+            t[i].main = overlay(baseblock, Overrides_safe[replace].main)
 
         # Question and brick blocks
         # these don't have their own tiles so we have to do them by objects
         rangeA, rangeB = range(39, 49), range(27, 38)
-        replace = offset + 10
+        replace = 2048 + 10
         baseblock = t[defs[39].rows[0][0][1]].main
 
-        a = 10
-        for i in rangeA:
+        # question blocks
+        for i, a in zip(rangeA, range(2, 12)):
             t[replace].main = overlay(baseblock, Overrides_safe[a].main)
             defs[i].rows[0][0] = (0, replace, 0)
             replace += 1
-            a += 1
 
         replace += 1
-        baseblock = t[defs[27].rows[0][0][1]].main
-        a = 21
-        for i in rangeB:
+        baseblock = t[defs[26].rows[0][0][1]].main
+        # brick block
+        for i, a in zip(rangeB, (1, 12, 2, 3, 13, 5, 7, 8, 9, 10, 11)):
             t[replace].main = overlay(baseblock, Overrides_safe[a].main)
             defs[i].rows[0][0] = (0, replace, 0)
             replace += 1
-            a += 1
 
         # now the extra stuff (invisible collisions etc)
-        t[1].main = t[0x400 + 1280].main  # solid
-        t[2].main = t[0x400 + 1311].main  # vine stopper
-        t[11].main = t[0x400 + 1310].main  # jumpthrough platform
-        t[12].main = t[0x400 + 1309].main  # 16x8 roof platform
+        global Overrides
+        # @ row i, col j => Overrides[25 * i + j]
 
-        t[16].main = t[0x400 + 1291].main  # 1x1 slope going up
-        t[17].main = t[0x400 + 1292].main  # 1x1 slope going down
-        t[18].main = t[0x400 + 1281].main  # 2x1 slope going up (part 1)
-        t[19].main = t[0x400 + 1282].main  # 2x1 slope going up (part 2)
-        t[20].main = t[0x400 + 1283].main  # 2x1 slope going down (part 1)
-        t[21].main = t[0x400 + 1284].main  # 2x1 slope going down (part 2)
-        t[22].main = t[0x400 + 1301].main  # 4x1 slope going up (part 1)
-        t[23].main = t[0x400 + 1302].main  # 4x1 slope going up (part 2)
-        t[24].main = t[0x400 + 1303].main  # 4x1 slope going up (part 3)
-        t[25].main = t[0x400 + 1304].main  # 4x1 slope going up (part 4)
-        t[26].main = t[0x400 + 1305].main  # 4x1 slope going down (part 1)
-        t[27].main = t[0x400 + 1306].main  # 4x1 slope going down (part 2)
-        t[28].main = t[0x400 + 1307].main  # 4x1 slope going down (part 3)
-        t[29].main = t[0x400 + 1308].main  # 4x1 slope going down (part 4)
-        t[30].main = t[0x400 + 1062].main  # coin
+        t[1].main = Overrides[26 * 4].main  # solid
+        t[2].main = Overrides[26 + 10].main  # vine stopper
+        t[11].main = Overrides[26 * 3 + 13].main  # jumpthrough platform
+        t[12].main = Overrides[26 * 3 + 12].main  # 16x8 roof platform
 
-        t[32].main = t[0x400 + 1289].main  # 1x1 roof going down
-        t[33].main = t[0x400 + 1290].main  # 1x1 roof going up
-        t[34].main = t[0x400 + 1285].main  # 2x1 roof going down (part 1)
-        t[35].main = t[0x400 + 1286].main  # 2x1 roof going down (part 2)
-        t[36].main = t[0x400 + 1287].main  # 2x1 roof going up (part 1)
-        t[37].main = t[0x400 + 1288].main  # 2x1 roof going up (part 2)
-        t[38].main = t[0x400 + 1293].main  # 4x1 roof going down (part 1)
-        t[39].main = t[0x400 + 1294].main  # 4x1 roof going down (part 2)
-        t[40].main = t[0x400 + 1295].main  # 4x1 roof going down (part 3)
-        t[41].main = t[0x400 + 1296].main  # 4x1 roof going down (part 4)
-        t[42].main = t[0x400 + 1297].main  # 4x1 roof going up (part 1)
-        t[43].main = t[0x400 + 1298].main  # 4x1 roof going up (part 2)
-        t[44].main = t[0x400 + 1299].main  # 4x1 roof going up (part 3)
-        t[45].main = t[0x400 + 1300].main  # 4x1 roof going up (part 4)
-        t[46].main = t[0x400 + 1312].main  # P-switch coins
+        t[16].main = Overrides[26 * 4 + 11].main  # 1x1 slope going up
+        t[17].main = Overrides[26 * 4 + 12].main  # 1x1 slope going down
+        t[18].main = Overrides[26 * 4 + 1].main  # 2x1 slope going up (part 1)
+        t[19].main = Overrides[26 * 4 + 2].main  # 2x1 slope going up (part 2)
+        t[20].main = Overrides[26 * 4 + 3].main  # 2x1 slope going down (part 1)
+        t[21].main = Overrides[26 * 4 + 4].main  # 2x1 slope going down (part 2)
+        t[22].main = Overrides[26 * 4 + 21].main  # 4x1 slope going up (part 1)
+        t[23].main = Overrides[26 * 4 + 22].main  # 4x1 slope going up (part 2)
+        t[24].main = Overrides[26 * 4 + 23].main  # 4x1 slope going up (part 3)
+        t[25].main = Overrides[26 * 4 + 24].main  # 4x1 slope going up (part 4)
+        t[26].main = Overrides[26 * 4 + 25].main  # 4x1 slope going down (part 1)
+        t[27].main = Overrides[26 * 4 - 3].main   # 4x1 slope going down (part 2)
+        t[28].main = Overrides[26 * 4 - 2].main   # 4x1 slope going down (part 3)
+        t[29].main = Overrides[26 * 4 - 1].main   # 4x1 slope going down (part 4)
+        t[30].main = Overrides[1].main    # coin
 
-        t[53].main = t[0x400 + 1314].main  # donut lift
-        t[61].main = t[0x400 + 1063].main  # multiplayer coin
-        t[63].main = t[0x400 + 1313].main  # instant death tile
+        t[32].main = Overrides[26 * 4 + 9].main  # 1x1 roof going down
+        t[33].main = Overrides[26 * 4 + 10].main  # 1x1 roof going up
+        t[34].main = Overrides[26 * 4 + 5].main  # 2x1 roof going down (part 1)
+        t[35].main = Overrides[26 * 4 + 6].main  # 2x1 roof going down (part 2)
+        t[36].main = Overrides[26 * 4 + 7].main  # 2x1 roof going up (part 1)
+        t[37].main = Overrides[26 * 4 + 8].main  # 2x1 roof going up (part 2)
+        t[38].main = Overrides[26 * 4 + 13].main  # 4x1 roof going down (part 1)
+        t[39].main = Overrides[26 * 4 + 14].main  # 4x1 roof going down (part 2)
+        t[40].main = Overrides[26 * 4 + 15].main  # 4x1 roof going down (part 3)
+        t[41].main = Overrides[26 * 4 + 16].main  # 4x1 roof going down (part 4)
+        t[42].main = Overrides[26 * 4 + 17].main  # 4x1 roof going up (part 1)
+        t[43].main = Overrides[26 * 4 + 18].main  # 4x1 roof going up (part 2)
+        t[44].main = Overrides[26 * 4 + 19].main  # 4x1 roof going up (part 3)
+        t[45].main = Overrides[26 * 4 + 20].main  # 4x1 roof going up (part 4)
+        t[46].main = Overrides[26 + 11].main  # P-switch coins
+
+        t[53].main = Overrides[26 + 12].main  # donut lift
+        t[61].main = Overrides[26 + 9].main  # multiplayer coin
+        t[63].main = Overrides[26 * 2 + 13].main  # instant death tile
 
     elif name in tsidx["Flowers"] or name in tsidx["Forest Flowers"]:
         # flowers
         t = Tiles
-        t[416].main = t[0x400 + 1092].main  # grass
-        t[417].main = t[0x400 + 1093].main
-        t[418].main = t[0x400 + 1094].main
-        t[419].main = t[0x400 + 1095].main
-        t[420].main = t[0x400 + 1096].main
+        t[416].main = Overrides[26 + 4].main  # grass
+        t[417].main = Overrides[26 + 5].main
+        t[418].main = Overrides[26 + 6].main
+        t[419].main = Overrides[26 + 7].main
+        t[420].main = Overrides[26 + 8].main
 
         if name in tsidx["Flowers"]:
-            t[432].main = t[0x400 + 1068].main  # flowers
-            t[433].main = t[0x400 + 1069].main  # flowers
-            t[434].main = t[0x400 + 1070].main  # flowers
+            t[432].main = Overrides[26 * 2 + 9].main  # flowers
+            t[433].main = Overrides[26 * 2 + 10].main  # flowers
+            t[434].main = Overrides[26 * 2 + 11].main  # flowers
 
-            t[448].main = t[0x400 + 1158].main  # flowers on grass
-            t[449].main = t[0x400 + 1159].main
-            t[450].main = t[0x400 + 1160].main
+            t[448].main = Overrides[26 * 2 + 6].main  # flowers on grass
+            t[449].main = Overrides[26 * 2 + 7].main
+            t[450].main = Overrides[26 * 2 + 8].main
         elif name in tsidx["Forest Flowers"]:
             # forest flowers
-            t[432].main = t[0x400 + 1071].main  # flowers
-            t[433].main = t[0x400 + 1072].main  # flowers
-            t[434].main = t[0x400 + 1073].main  # flowers
+            t[432].main = Overrides[26 * 3 + 9].main  # flowers
+            t[433].main = Overrides[26 * 3 + 10].main  # flowers
+            t[434].main = Overrides[26 * 3 + 11].main  # flowers
 
-            t[448].main = t[0x400 + 1222].main  # flowers on grass
-            t[449].main = t[0x400 + 1223].main
-            t[450].main = t[0x400 + 1224].main
+            t[448].main = Overrides[26 * 3 + 6].main  # flowers on grass
+            t[449].main = Overrides[26 * 3 + 7].main
+            t[450].main = Overrides[26 * 3 + 8].main
 
     elif name in tsidx["Lines"] or name in tsidx["Full Lines"]:
         # These are the line guides
@@ -2875,128 +2859,129 @@ def ProcessOverrides(idx, name):
 
         t = Tiles
 
-        t[768].main = t[0x400 + 1088].main  # horizontal line
-        t[769].main = t[0x400 + 1089].main  # vertical line
-        t[770].main = t[0x400 + 1090].main  # bottom-right corner
-        t[771].main = t[0x400 + 1091].main  # top-left corner
+        # use Overrides_safe here because the beginning of Overrides is overwritten
+        t[768].main = Overrides_safe[26].main  # horizontal line
+        t[769].main = Overrides_safe[26 + 1].main  # vertical line
+        t[770].main = Overrides_safe[26 + 2].main  # bottom-right corner
+        t[771].main = Overrides_safe[26 + 3].main  # top-left corner
 
-        t[784].main = t[0x400 + 1152].main  # left red blob (part 1)
-        t[785].main = t[0x400 + 1153].main  # top red blob (part 1)
-        t[786].main = t[0x400 + 1154].main  # top red blob (part 2)
-        t[787].main = t[0x400 + 1155].main  # right red blob (part 1)
-        t[788].main = t[0x400 + 1156].main  # top-left red blob
-        t[789].main = t[0x400 + 1157].main  # top-right red blob
+        t[784].main = Overrides[26 * 2].main  # left red blob (part 1)
+        t[785].main = Overrides[26 * 2 + 1].main  # top red blob (part 1)
+        t[786].main = Overrides[26 * 2 + 2].main  # top red blob (part 2)
+        t[787].main = Overrides[26 * 2 + 3].main  # right red blob (part 1)
+        t[788].main = Overrides[26 * 2 + 4].main  # top-left red blob
+        t[789].main = Overrides[26 * 2 + 5].main  # top-right red blob
 
-        t[800].main = t[0x400 + 1216].main  # left red blob (part 2)
-        t[801].main = t[0x400 + 1217].main  # bottom red blob (part 1)
-        t[802].main = t[0x400 + 1218].main  # bottom red blob (part 2)
-        t[803].main = t[0x400 + 1219].main  # right red blob (part 2)
-        t[804].main = t[0x400 + 1220].main  # bottom-left red blob
-        t[805].main = t[0x400 + 1221].main  # bottom-right red blob
+        t[800].main = Overrides[26 * 3].main  # left red blob (part 2)
+        t[801].main = Overrides[26 * 3 + 1].main  # bottom red blob (part 1)
+        t[802].main = Overrides[26 * 3 + 2].main  # bottom red blob (part 2)
+        t[803].main = Overrides[26 * 3 + 3].main  # right red blob (part 2)
+        t[804].main = Overrides[26 * 3 + 4].main  # bottom-left red blob
+        t[805].main = Overrides[26 * 3 + 5].main  # bottom-right red blob
 
         # Those are all for normal lines
         if name in tsidx["Lines"]: return
 
-        t[816].main = t[0x400 + 1056].main  # 1x2 diagonal going up (top edge)
-        t[817].main = t[0x400 + 1057].main  # 1x2 diagonal going down (top edge)
+        t[816].main = Overrides_safe[14].main  # 1x2 diagonal going up (top edge)
+        t[817].main = Overrides_safe[15].main  # 1x2 diagonal going down (top edge)
 
-        t[832].main = t[0x400 + 1120].main  # 1x2 diagonal going up (part 1)
-        t[833].main = t[0x400 + 1121].main  # 1x2 diagonal going down (part 1)
-        t[834].main = t[0x400 + 1186].main  # 1x1 diagonal going up
-        t[835].main = t[0x400 + 1187].main  # 1x1 diagonal going down
-        t[836].main = t[0x400 + 1058].main  # 2x1 diagonal going up (part 1)
-        t[837].main = t[0x400 + 1059].main  # 2x1 diagonal going up (part 2)
-        t[838].main = t[0x400 + 1060].main  # 2x1 diagonal going down (part 1)
-        t[839].main = t[0x400 + 1061].main  # 2x1 diagonal going down (part 2)
+        t[832].main = Overrides[26 + 14].main  # 1x2 diagonal going up (part 1)
+        t[833].main = Overrides[26 + 15].main  # 1x2 diagonal going down (part 1)
+        t[834].main = Overrides[26 * 2 + 19].main  # 1x1 diagonal going up
+        t[835].main = Overrides[26 * 2 + 20].main  # 1x1 diagonal going down
+        #t[836].main = Overrides[ + 1058].main  # 2x1 diagonal going up (part 1) nothing
+        t[837].main = Overrides[20].main  # 2x1 diagonal going up (part 2)
+        t[838].main = Overrides_safe[21].main  # 2x1 diagonal going down (part 1)
+        #t[839].main = Overrides[ + 1061].main  # 2x1 diagonal going down (part 2) nothing
 
-        t[848].main = t[0x400 + 1184].main  # 1x2 diagonal going up (part 2)
-        t[849].main = t[0x400 + 1185].main  # 1x2 diagonal going down (part 2)
-        t[850].main = t[0x400 + 1250].main  # 1x1 diagonal going up
-        t[851].main = t[0x400 + 1251].main  # 1x1 diagonal going down
-        t[852].main = t[0x400 + 1122].main  # 2x1 diagonal going up (part 1)
-        t[853].main = t[0x400 + 1123].main  # 2x1 diagonal going up (part 2)
-        t[854].main = t[0x400 + 1124].main  # 2x1 diagonal going down (part 1)
-        t[855].main = t[0x400 + 1125].main  # 2x1 diagonal going down (part 2)
+        t[848].main = Overrides[26 * 2 + 14].main  # 1x2 diagonal going up (part 2)
+        t[849].main = Overrides[26 * 2 + 15].main  # 1x2 diagonal going down (part 2)
+        t[850].main = Overrides[26 * 3 + 14].main  # 1x1 diagonal going up
+        t[851].main = Overrides[26 * 3 + 15].main  # 1x1 diagonal going down
+        t[852].main = Overrides[26 + 19].main  # 2x1 diagonal going up (part 1)
+        t[853].main = Overrides[26 + 20].main  # 2x1 diagonal going up (part 2)
+        t[854].main = Overrides[26 + 21].main  # 2x1 diagonal going down (part 1)
+        t[855].main = Overrides[26 + 22].main  # 2x1 diagonal going down (part 2)
 
-        t[866].main = t[0x400 + 1065].main  # big circle piece 1st row
-        t[867].main = t[0x400 + 1066].main  # big circle piece 1st row
-        t[870].main = t[0x400 + 1189].main  # medium circle piece 1st row
-        t[871].main = t[0x400 + 1190].main  # medium circle piece 1st row
+        t[866].main = Overrides[26 * 3 + 17].main  # big circle piece 1st row
+        t[867].main = Overrides[26 * 3 + 18].main  # big circle piece 1st row
+        t[870].main = Overrides_safe[17].main  # medium circle piece 1st row
+        t[871].main = Overrides_safe[18].main  # medium circle piece 1st row
 
-        t[881].main = t[0x400 + 1128].main  # big circle piece 2nd row
-        t[882].main = t[0x400 + 1129].main  # big circle piece 2nd row
-        t[883].main = t[0x400 + 1130].main  # big circle piece 2nd row
-        t[884].main = t[0x400 + 1131].main  # big circle piece 2nd row
-        t[885].main = t[0x400 + 1252].main  # medium circle piece 2nd row
-        t[886].main = t[0x400 + 1253].main  # medium circle piece 2nd row
-        t[887].main = t[0x400 + 1254].main  # medium circle piece 2nd row
-        t[888].main = t[0x400 + 1188].main  # small circle
+        t[881].main = Overrides[26 * 3 + 20].main  # big circle piece 2nd row
+        t[882].main = Overrides_safe[23].main  # big circle piece 2nd row
+        t[883].main = Overrides_safe[24].main  # big circle piece 2nd row
+        t[884].main = Overrides_safe[25].main  # big circle piece 2nd row
+        t[885].main = Overrides[26 + 16].main  # medium circle piece 2nd row
+        t[886].main = Overrides[26 + 17].main  # medium circle piece 2nd row
+        t[887].main = Overrides[26 + 18].main  # medium circle piece 2nd row
+        t[888].main = Overrides[26 + 13].main  # small circle
 
-        t[896].main = t[0x400 + 1191].main  # big circle piece 3rd row
-        t[897].main = t[0x400 + 1192].main  # big circle piece 3rd row
-        t[900].main = t[0x400 + 1195].main  # big circle piece 3rd row
-        t[901].main = t[0x400 + 1316].main  # medium circle piece 3rd row
-        t[902].main = t[0x400 + 1317].main  # medium circle piece 3rd row
-        t[903].main = t[0x400 + 1318].main  # medium circle piece 3rd row
+        t[896].main = Overrides[26 * 2 + 21].main  # big circle piece 3rd row
+        t[897].main = Overrides[26 * 2 + 22].main  # big circle piece 3rd row
+        t[900].main = Overrides[26 * 2 + 24].main  # big circle piece 3rd row
+        t[901].main = Overrides[26 * 2 + 16].main  # medium circle piece 3rd row
+        t[902].main = Overrides[26 * 2 + 17].main  # medium circle piece 3rd row
+        t[903].main = Overrides[26 * 2 + 18].main  # medium circle piece 3rd row
 
-        t[912].main = t[0x400 + 1255].main  # big circle piece 4th row
-        t[913].main = t[0x400 + 1256].main  # big circle piece 4th row
-        t[916].main = t[0x400 + 1259].main  # big circle piece 4th row
+        t[912].main = Overrides[26 * 3 + 21].main  # big circle piece 4th row
+        t[913].main = Overrides[26 * 3 + 22].main  # big circle piece 4th row
+        t[916].main = Overrides[26 * 2 + 25].main  # big circle piece 4th row
 
-        t[929].main = t[0x400 + 1320].main  # big circle piece 5th row
-        t[930].main = t[0x400 + 1321].main  # big circle piece 5th row
-        t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
-        t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
+        t[929].main = Overrides[26 * 2 + 23].main  # big circle piece 5th row
+        t[930].main = Overrides[26 + 23].main  # big circle piece 5th row
+        t[931].main = Overrides[26 + 24].main  # big circle piece 5th row
+        t[932].main = Overrides[26 + 25].main  # big circle piece 5th row
 
     elif name in tsidx["Minigame Lines"]:
         t = Tiles
 
-        t[832].main = t[0x400 + 1088].main  # horizontal line
-        t[833].main = t[0x400 + 1090].main  # bottom-right corner
-        t[834].main = t[0x400 + 1088].main  # horizontal line
+        t[832].main = Overrides_safe[26].main  # horizontal line
+        t[833].main = Overrides_safe[26 + 2].main  # bottom-right corner
+        t[834].main = Overrides_safe[26].main  # horizontal line
 
-        t[848].main = t[0x400 + 1089].main  # vertical line
-        t[849].main = t[0x400 + 1089].main  # vertical line
-        t[850].main = t[0x400 + 1091].main  # top-left corner
+        t[848].main = Overrides_safe[26 + 1].main  # vertical line
+        t[849].main = Overrides_safe[26 + 1].main  # vertical line
+        t[850].main = Overrides_safe[26 + 3].main  # top-left corner
 
-        t[835].main = t[0x400 + 1152].main  # left red blob (part 1)
-        t[836].main = t[0x400 + 1153].main  # top red blob (part 1)
-        t[837].main = t[0x400 + 1154].main  # top red blob (part 2)
-        t[838].main = t[0x400 + 1155].main  # right red blob (part 1)
+        t[835].main = Overrides[26 * 2].main  # left red blob (part 1)
+        t[836].main = Overrides[26 * 2 + 1].main  # top red blob (part 1)
+        t[837].main = Overrides[26 * 2 + 2].main  # top red blob (part 2)
+        t[838].main = Overrides[26 * 2 + 3].main  # right red blob (part 1)
 
-        t[851].main = t[0x400 + 1216].main  # left red blob (part 2)
-        t[852].main = t[0x400 + 1217].main  # bottom red blob (part 1)
-        t[853].main = t[0x400 + 1218].main  # bottom red blob (part 2)
-        t[854].main = t[0x400 + 1219].main  # right red blob (part 2)
+        t[851].main = Overrides[26 * 3].main  # left red blob (part 2)
+        t[852].main = Overrides[26 * 3 + 1].main  # bottom red blob (part 1)
+        t[853].main = Overrides[26 * 3 + 2].main  # bottom red blob (part 2)
+        t[854].main = Overrides[26 * 3 + 3].main  # right red blob (part 2)
 
-        t[866].main = t[0x400 + 1065].main  # big circle piece 1st row
-        t[867].main = t[0x400 + 1066].main  # big circle piece 1st row
-        t[870].main = t[0x400 + 1189].main  # medium circle piece 1st row
-        t[871].main = t[0x400 + 1190].main  # medium circle piece 1st row
+        t[866].main = Overrides[26 * 3 + 17].main  # big circle piece 1st row
+        t[867].main = Overrides[26 * 3 + 18].main  # big circle piece 1st row
+        t[870].main = Overrides_safe[17].main  # medium circle piece 1st row
+        t[871].main = Overrides_safe[18].main  # medium circle piece 1st row
 
-        t[881].main = t[0x400 + 1128].main  # big circle piece 2nd row
-        t[882].main = t[0x400 + 1129].main  # big circle piece 2nd row
-        t[883].main = t[0x400 + 1130].main  # big circle piece 2nd row
-        t[884].main = t[0x400 + 1131].main  # big circle piece 2nd row
-        t[885].main = t[0x400 + 1252].main  # medium circle piece 2nd row
-        t[886].main = t[0x400 + 1253].main  # medium circle piece 2nd row
-        t[887].main = t[0x400 + 1254].main  # medium circle piece 2nd row
+        t[881].main = Overrides[26 * 3 + 20].main  # big circle piece 2nd row
+        t[882].main = Overrides_safe[23].main  # big circle piece 2nd row
+        t[883].main = Overrides_safe[24].main  # big circle piece 2nd row
+        t[884].main = Overrides_safe[25].main  # big circle piece 2nd row
+        t[885].main = Overrides[26 + 16].main  # medium circle piece 2nd row
+        t[886].main = Overrides[26 + 17].main  # medium circle piece 2nd row
+        t[887].main = Overrides[26 + 18].main  # medium circle piece 2nd row
 
-        t[896].main = t[0x400 + 1191].main  # big circle piece 3rd row
-        t[897].main = t[0x400 + 1192].main  # big circle piece 3rd row
-        t[900].main = t[0x400 + 1195].main  # big circle piece 3rd row
-        t[901].main = t[0x400 + 1316].main  # medium circle piece 3rd row
-        t[902].main = t[0x400 + 1317].main  # medium circle piece 3rd row
-        t[903].main = t[0x400 + 1318].main  # medium circle piece 3rd row
+        t[896].main = Overrides[26 * 2 + 21].main  # big circle piece 3rd row
+        t[897].main = Overrides[26 * 2 + 22].main  # big circle piece 3rd row
+        t[900].main = Overrides[26 * 2 + 24].main  # big circle piece 3rd row
+        t[901].main = Overrides[26 * 2 + 16].main  # medium circle piece 3rd row
+        t[902].main = Overrides[26 * 2 + 17].main  # medium circle piece 3rd row
+        t[903].main = Overrides[26 * 2 + 18].main  # medium circle piece 3rd row
 
-        t[912].main = t[0x400 + 1255].main  # big circle piece 4th row
-        t[913].main = t[0x400 + 1256].main  # big circle piece 4th row
-        t[916].main = t[0x400 + 1259].main  # big circle piece 4th row
+        t[912].main = Overrides[26 * 3 + 21].main  # big circle piece 4th row
+        t[913].main = Overrides[26 * 3 + 22].main  # big circle piece 4th row
+        t[916].main = Overrides[26 * 2 + 25].main  # big circle piece 4th row
 
-        t[929].main = t[0x400 + 1320].main  # big circle piece 5th row
-        t[930].main = t[0x400 + 1321].main  # big circle piece 5th row
-        t[931].main = t[0x400 + 1322].main  # big circle piece 5th row
-        t[932].main = t[0x400 + 1323].main  # big circle piece 5th row
+        t[929].main = Overrides[26 * 2 + 23].main  # big circle piece 5th row
+        t[930].main = Overrides[26 + 23].main  # big circle piece 5th row
+        t[931].main = Overrides[26 + 24].main  # big circle piece 5th row
+        t[932].main = Overrides[26 + 25].main  # big circle piece 5th row
 
 
 def LoadOverrides():
@@ -3005,8 +2990,8 @@ def LoadOverrides():
     """
     global Overrides
     global Overrides_safe # these pixmaps will never be changed
-    Overrides = [None] * 384
-    Overrides_safe = [None] * 384
+    Overrides = [None] * (5 * 26)
+    Overrides_safe = [None] * (5 * 26)
 
     OverrideBitmap = QtGui.QPixmap(os.path.join('reggiedata', 'overrides.png'))
     idx = 0
@@ -3034,9 +3019,6 @@ def LoadOverrides():
             sourcex += 24
         sourcex = 0
         sourcey += 24
-        if idx % 64 != 0:
-            idx -= (idx % 64)
-            idx += 64
 
 
 Area = None
