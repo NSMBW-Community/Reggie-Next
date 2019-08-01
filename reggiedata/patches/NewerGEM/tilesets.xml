@@ -3,7 +3,7 @@
 	<slot num="0" sorted="true">
 		<tileset filename="Pa0_OhFuckIhopeThisWorks" name="Train Wheels" />
 		<tileset filename="Pa0_WSELTS" name="Standard (Blue)" override="Pa0" />
-		<tileset filename="Pa0_global" name="Pa0 Global by Zementblock" />
+		<tileset filename="Pa0_global" name="Pa0 Global by Zementblock" override="Pa0" />
         <category name="Pa0 Tilesets by CLF78">
 			<tileset filename="Pa0_jyotyu_kaigan_CLF78" name="Beach" override="Pa0" />
 			<tileset filename="Pa0_jyotyu_shadow_CLF78" name="Black" override="Pa0" />
