@@ -2829,8 +2829,8 @@ def ProcessOverrides(idx, name):
     elif name in tsidx["Flowers"] or name in tsidx["Forest Flowers"]:
         # flowers
         t = Tiles
-        t[416].main = Overrides[26 + 4].main  # grass
-        t[417].main = Overrides[26 + 5].main
+        t[416].main = Overrides_safe[26 + 4].main  # grass
+        t[417].main = Overrides_safe[26 + 5].main
         t[418].main = Overrides[26 + 6].main
         t[419].main = Overrides[26 + 7].main
         t[420].main = Overrides[26 + 8].main
