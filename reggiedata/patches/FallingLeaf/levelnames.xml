@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<levels>
+
+	<category name="Unknown Island">
+		<level file="01-08" name="See you next time!" />
+	</category>
+
+	<category name="Everbrown Woods">
+		<level file="01-01" name="Wiggler Wood" />
+		<level file="01-02" name="Woodfall Canyon" />
+		<level file="01-03" name="Crystalswing Cave" />
+		<level file="01-04" name="Burning Bush" />
+		<level file="01-05" name="Hallow's End" />
+		<level file="01-07" name="Seaside Boo House" />
+	</category>
+
+	<category name="Freezefall Hill">
+		<level file="01-06" name="Moonview Ascent" />
+		<level file="01-31" name="Tetromino Switch Palace" />
+	</category>
+
+	<category name="Titlescreens">
+		<level file="01-11" name="Titlescreen: Everbrown Woods" />
+		<level file="01-12" name="Titlescreen: Freezefall Hill" />
+	</category>
+
+</levels>

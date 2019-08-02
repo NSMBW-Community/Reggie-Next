@@ -1,0 +1,4 @@
+3FE2=Green Ghost Forest
+3FF2=Brown Ghost Forest
+9989=Pink Tree Flower Forest
+BAB9=Burning Automn
