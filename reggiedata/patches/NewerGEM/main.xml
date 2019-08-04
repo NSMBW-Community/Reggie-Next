@@ -2,14 +2,14 @@
 <game base="Newer Super Mario Bros. Wii" name="Newer General Engine Mod" version="0.1" description="Based on [i]Newer Super Mario Bros. Wii.[/i][br][br]By adding new features and sprites to NSMBW, [b]Newer General Engine Mod[/b] attempts to build upon and improve Newer.">
     <folder name="bga" path="bga" game="Newer Super Mario Bros. Wii" />
     <folder name="bgb" path="bgb" game="Newer Super Mario Bros. Wii" />
-    <folder name="sprites" path="sprites" game="Newer Super Mario Bros. Wii" />
+    <folder name="sprites" path="sprites" />
 	<folder name="external" path="external" />
     <file name="bga" path="bga.txt" game="Newer Super Mario Bros. Wii" />
     <file name="bgb" path="bgb.txt" game="Newer Super Mario Bros. Wii" />
     <file name="levelnames" path="levelnames.xml" game="Newer Super Mario Bros. Wii" />
     <file name="music" path="music.txt" patch="False" />
     <file name="spritedata" path="spritedata.xml" />
-    <file name="sprites" path="sprites.py" game="Newer Super Mario Bros. Wii" />
+    <file name="sprites" path="sprites.py" patch="True" />
     <file name="tilesets" path="tilesets.xml" />
     <file name="tilesetinfo" path="tilesetinfo.xml" game="Newer Super Mario Bros. Wii" />
 </game>
