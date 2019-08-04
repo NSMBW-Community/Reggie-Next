@@ -2988,12 +2988,12 @@ def LoadOverrides():
     """
     Load overrides
     """
-    global Overrides
-    global Overrides_safe # these pixmaps will never be changed
+    global theme, Overrides, Overrides_safe # these pixmaps will never be changed
+
     Overrides = [None] * (5 * 26)
     Overrides_safe = [None] * (5 * 26)
 
-    OverrideBitmap = QtGui.QPixmap(os.path.join('reggiedata', 'overrides.png'))
+    OverrideBitmap = QtGui.QPixmap(theme.overridesFile)
     idx = 0
     xcount = OverrideBitmap.width() // 24
     ycount = OverrideBitmap.height() // 24
@@ -14003,6 +14003,7 @@ class ReggieTheme:
         self.iconCacheSm = {}
         self.iconCacheLg = {}
         self.style = None
+        self.overridesFile = os.path.join('reggiedata', 'overrides.png')
 
         # Add the colors                                                       # Descriptions:
         self.colors = {
@@ -14099,7 +14100,16 @@ class ReggieTheme:
                     ico = QtGui.QIcon(pix)
 
                     cache[iconname] = ico
+            elif node.tag.lower() == 'overrides':
+                fn = node.attrib['file']
+                if not fn.endswith('.png'):
+                    continue
 
+                filename = os.path.join(folder, fn)
+                if not os.path.isfile(filename):
+                    continue
+
+                self.overridesFile = filename
                 ##        # Add some overview colors if they weren't specified
                 ##        fallbacks = {
                 ##            'overview_entrance': 'entrance_fill',
