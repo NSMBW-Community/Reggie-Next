@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding: latin-1 -*-
-
 # Reggie Next - New Super Mario Bros. Wii Level Editor
 # Milestone 3
 # Copyright (C) 2009-2014 Treeki, Tempus, angelsl, JasonP27, Kamek64,
@@ -100,13 +97,13 @@ setup(
             'excludes': excludes,
             'packages': ['sip', 'encodings', 'encodings.hex_codec', 'encodings.utf_8'],
             'build_exe': dir_,
-            'icon': 'reggiedata/win_icon.ico',
         },
     },
     executables=[
         Executable(
             'reggie.py',
             base=base,
+			icon='reggiedata/win_icon.ico',
         ),
     ],
 )
