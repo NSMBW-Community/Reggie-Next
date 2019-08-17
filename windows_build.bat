@@ -8,5 +8,5 @@ copy C:\Python34\Lib\calendar.py distrib\reggie_next_m3a2_win32\calendar.py
 copy C:\Python34\Lib\locale.py distrib\reggie_next_m3a2_win32\locale.py
 copy C:\Python34\Lib\posixpath.py distrib\reggie_next_m3a2_win32\posixpath.py
 set bklog=%date:~6,4%-%date:~3,2%-%date:~0,2%_%time:~0,2%%time:~3,2%
-move reggie_next_m3a2_win32 "reggie_next_m3a2_win32-%bklog%"
+move distrib\reggie_next_m3a2_win32 "distrib\reggie_next_m3a2_win32-%bklog%"
 pause
