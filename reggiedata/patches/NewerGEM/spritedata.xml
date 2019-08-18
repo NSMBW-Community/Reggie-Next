@@ -28,6 +28,17 @@
 <!-- Sizehacks Check - 63, 98, 113, 156, 357 -->
 <!-- Stopped after Line 7046 / 10755 (#230) -->
 <sprites>
+  <sprite id="52" name="Auto-Rotating 4-Platform" asmhacks="True" notes="This platform is similar to the Reznor platforms from Super Mario World. It consists of four 6x1 platforms that rotate around the center point. &lt;font color=&quot;green&quot;&gt;NewerGEM added several new models to the sprite.&lt;/font&gt;">
+    <dualbox bit="32" title1="Counter-Clockwise" title2="Clockwise" comment="This determines which way the platform will rotate."/>
+    <list nybble="6" title="Model" comment="This determines the model or texture used for the sprite." >
+		  <entry value="0">Yellow and black blocks</entry>
+		  <entry value="1">Beach Bridge</entry>
+		  <entry value="2">Bone Platform</entry>
+		  <entry value="3">Ice blocks</entry>
+		  <entry value="4">Silver Platform</entry>
+		  <entry value="5">Golden Platform</entry>
+	  </list>
+  </sprite> <!-- #52: Auto-Rotating 4-Platform -->
   <sprite id="152" name="Message Box" notes="A block that the player can hit which will display a custom message. Messages are defined in Message.py.">
     <dependency notes="The Message Box Controller must be included in each Zone for Message Boxes to function correctly.">
       <required sprite="107"/>
