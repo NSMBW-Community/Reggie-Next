@@ -61,6 +61,120 @@ class SpriteImage_NewerSwitch(common.SpriteImage_Switch):
 ################################################################################
 ################################################################################
 
+class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402, 403, 422, 423
+    def __init__(self, parent, scale=1.5):
+        super().__init__(parent, scale)
+        self.spritebox.shown = False
+
+        self.tilenum = 1315
+        self.contentsNybble = 5
+        self.contentsOverride = None
+        self.eightIsMushroom = False
+        self.twelveIsMushroom = False
+        self.rotates = False
+
+    def dataChanged(self):
+        super().dataChanged()
+
+        # SET CONTENTS
+        # In the blocks.png file:
+        # 0 = Empty, 1 = Coin, 2 = Mushroom, 3 = Fire Flower, 4 = Propeller, 5 = Penguin Suit,
+        # 6 = Mini Shroom, 7 = Star, 8 = Continuous Star, 9 = Yoshi Egg, 10 = 10 Coins,
+        # 11 = 1-up, 12 = Vine, 13 = Spring, 14 = Shroom/Coin, 15 = Ice Flower, 16 = Toad, 17 = Hammer
+
+        if self.contentsOverride is not None:
+            contents = self.contentsOverride
+        else:
+            contents = self.parent.spritedata[self.contentsNybble] & 0xF
+
+        if contents == 2:  # Hammer
+            contents = 17
+
+        if contents == 12 and self.twelveIsMushroom:
+            contents = 2  # 12 is a mushroom on some types
+        if contents == 8 and self.eightIsMushroom:
+            contents = 2  # same as above, but for type 8
+
+        self.image = ImageCache['Blocks'][contents]
+
+        # SET UP ROTATION
+        if self.rotates:
+            transform = QtGui.QTransform()
+            transform.translate(12, 12)
+
+            angle = (self.parent.spritedata[4] & 0xF0) >> 4
+            leftTilt = self.parent.spritedata[3] & 1
+
+            angle *= (45.0 / 16.0)
+
+            if leftTilt == 0:
+                transform.rotate(angle)
+            else:
+                transform.rotate(360.0 - angle)
+
+            transform.translate(-12, -12)
+            self.parent.setTransform(transform)
+
+    def paint(self, painter):
+        super().paint(painter)
+
+        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        if self.tilenum < len(SLib.Tiles):
+            painter.drawPixmap(0, 0, SLib.Tiles[self.tilenum].main)
+        painter.drawPixmap(0, 0, self.image)
+        
+
+class SpriteImage_QBlock(SpriteImage_Block):  # 207
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.tilenum = 49
+
+
+class SpriteImage_QBlockUnused(SpriteImage_Block):  # 208
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.tilenum = 49
+        self.eightIsMushroom = True
+        self.twelveIsMushroom = True
+
+
+class SpriteImage_BrickBlock(SpriteImage_Block):  # 209
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.tilenum = 48
+        
+        
+class SpriteImage_RotatingQBlock(SpriteImage_Block):  # 255
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.tilenum = 49
+        self.contentsNybble = 4
+        self.twelveIsMushroom = True
+        self.rotates = True
+
+
+class SpriteImage_RotatingBrickBlock(SpriteImage_Block):  # 256
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.tilenum = 48
+        self.contentsNybble = 4
+        self.twelveIsMushroom = True
+        self.rotates = True
+        
+        
+class SpriteImage_LineQBlock(SpriteImage_Block):  # 402
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.tilenum = 49
+        self.twelveIsMushroom = True
+
+
+class SpriteImage_LineBrickBlock(SpriteImage_Block):  # 403
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.tilenum = 48
+
+
 class SpriteImage_StarCollectable(SLib.SpriteImage_Static):  # 12
     def __init__(self, parent):
         super().__init__(
@@ -1209,12 +1323,17 @@ ImageClasses = {
     195: SpriteImage_NewerHuckitCrab,
     198: SpriteImage_NewerGiantGoomba,
     199: SpriteImage_NewerMegaGoomba,
+    207: SpriteImage_QBlock,
+    208: SpriteImage_QBlockUnused,
+    209: SpriteImage_BrickBlock,
     210: SpriteImage_Topman,
     213: SpriteImage_CaptainBowser,
     223: SpriteImage_NewerSpringBlock,
     230: SpriteImage_NewerBramball,
     239: SpriteImage_EventBlock,
     251: SpriteImage_TopmanBoss,
+    255: SpriteImage_RotatingQBlock,
+    256: SpriteImage_RotatingBrickBlock,
     279: SpriteImage_RockyBoss,
     282: SpriteImage_AngrySun,
     283: SpriteImage_FuzzyBear,
@@ -1223,5 +1342,7 @@ ImageClasses = {
     322: SpriteImage_MegaThwomp,
     324: SpriteImage_Podoboule,
     351: SpriteImage_ShyGuy,
+    402: SpriteImage_LineQBlock,
+    403: SpriteImage_LineBrickBlock,
     410: SpriteImage_GigaGoomba,
 }
