@@ -5836,6 +5836,7 @@ class LocationItem(LevelEditorItem):
     """
     instanceDef = InstanceDefinition_LocationItem
     sizeChanged = None  # Callback: sizeChanged(SpriteItem obj, int width, int height)
+    dragstartx, dragstarty = None, None
 
     def __init__(self, x, y, width, height, id):
         """
@@ -5949,55 +5950,48 @@ class LocationItem(LevelEditorItem):
         """
         Overrides mouse movement events if needed for resizing
         """
-        if not (event.buttons() != Qt.NoButton and self.dragging):
+        if event.buttons() != Qt.NoButton and self.dragging:
+            # resize it
+            dsx = self.dragstartx
+            dsy = self.dragstarty
+            clickedx = event.pos().x() / 1.5
+            clickedy = event.pos().y() / 1.5
+
+            cx = self.objx
+            cy = self.objy
+
+            if clickedx < 0: clickedx = 0
+            if clickedy < 0: clickedy = 0
+
+            if clickedx != dsx or clickedy != dsy:
+                self.dragstartx = clickedx
+                self.dragstarty = clickedy
+
+                self.width += clickedx - dsx
+                self.height += clickedy - dsy
+
+                oldrect = self.BoundingRect
+                oldrect.translate(cx * 1.5, cy * 1.5)
+                newrect = QtCore.QRectF(self.x(), self.y(), self.width * 1.5, self.height * 1.5)
+                updaterect = oldrect.united(newrect)
+
+                self.UpdateRects()
+                self.scene().update(updaterect)
+                SetDirty()
+                mainWindow.levelOverview.update()
+
+                if self.sizeChanged is not None:
+                    self.sizeChanged(self, self.width, self.height)
+
+                # This code causes an error or something.
+                # if RealViewEnabled:
+                #     for sprite in Area.sprites:
+                #         if self.id in sprite.ImageObj.locationIDs and sprite.ImageObj.updateSceneAfterLocationMoved:
+                #             self.scene().update()
+
+            event.accept()
+        else:
             LevelEditorItem.mouseMoveEvent(self, event)
-
-        # resize it
-        dsx = self.dragstartx
-        dsy = self.dragstarty
-        clickedx = event.pos().x() / 1.5
-        clickedy = event.pos().y() / 1.5
-
-        cx = self.objx
-        cy = self.objy
-
-        #if clickedx < 0: clickedx = 0
-        #if clickedy < 0: clickedy = 0
-
-        if clickedx != dsx or clickedy != dsy:
-            self.dragstartx = clickedx
-            self.dragstarty = clickedy
-
-            # new rectangle is defined by two opposing corners: (cx, cy) and (clickedx, clickedy)
-            newx, newy = min(cx, clickedx * 1.5), min(cy, clickedy * 1.5)
-            self.objx, self.objy = newx, newy
-            self.setPos(newx, newy)
-            self.width = abs(cx / 1.5 - clickedx)
-            self.height = abs(cy / 1.5 - clickedy)
-
-            #self.width += clickedx - dsx
-            #self.height += clickedy - dsy
-
-            oldrect = self.BoundingRect
-            oldrect.translate(cx * 1.5, cy * 1.5)
-            newrect = QtCore.QRectF(self.x(), self.y(), self.width * 1.5, self.height * 1.5)
-            updaterect = oldrect.united(newrect)
-
-            self.UpdateRects()
-            self.scene().update(updaterect)
-            SetDirty()
-            mainWindow.levelOverview.update()
-
-            if self.sizeChanged is not None:
-                self.sizeChanged(self, self.width, self.height)
-
-            # This code causes an error or something.
-            # if RealViewEnabled:
-            #     for sprite in Area.sprites:
-            #         if self.id in sprite.ImageObj.locationIDs and sprite.ImageObj.updateSceneAfterLocationMoved:
-            #             self.scene().update()
-
-        event.accept()
 
     def delete(self):
         """
