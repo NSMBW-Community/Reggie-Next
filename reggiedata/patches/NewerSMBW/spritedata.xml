@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--Version 2019-07-18 -->
+<!-- Version 2019-08-18 -->
 <!-- &lt; = < -->
 <!-- &gt; = > -->
 <!-- $amp; = & -->
@@ -435,10 +435,10 @@
       <entry value="7">Sidestepper</entry>
     </list>
     <list bit="47-48" title="Load-In Animation" comment="This will determine which animation state is used by the Spiny when it is first loaded.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Balled Up (Lakitu)</entry>
-      <entry value="2">Shell</entry>
-      <entry value="3">Upside-Down Shell</entry>
+      <entry value="0">Normal (Towards Player)</entry>
+      <entry value="1">Balled Up (Lakitu) (Default Direction)</entry>
+      <entry value="2">Shell (Towards Player)</entry>
+      <entry value="3">Upside-Down Shell (Towards Player)</entry>
     </list>
     <checkbox bit="44" title="Unknown Flag 11" advanced="True" advancedcomment="Unused flag with unknown effects."/>
   </sprite> <!-- #25: Spiny -->
@@ -1089,7 +1089,7 @@
     </list>
   </sprite> <!-- #63: Spiked Ball / Snowball -->
   
-  <sprite id="64" name="Effect - Thick Fog" notes="This adds a thick rolling fog effect to the level that can be used with or without a Location ID.">
+  <sprite id="64" name="Effect - Thick Fog" notes="This adds a thick rolling fog effect to the level that can be used with or without a Location ID." advancednotes="Please note that Poison Water and Lava will turn into &lt;b&gt;Water&lt;/b&gt; and lose their deadly properties, should this sprite's location and the water location overlap. The player can then swim in Poison/Lava without being killed. The Poison/Lava still looks correct, only their physics are changed.">
     <dependency notes="A Location ID is NOT required in order for the Thick Fog to function. Without a Location ID set, it will simply fill the entire Zone with the Thick Fog effect."/>
     <value nybble="11-12" title="Location ID" comment="This determines the location in which the Thick Fog will spawn." idtype="Location"/>
     <checkbox bit="38" title="Unknown Flag 10 (4)" advanced="True" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function, or this flag may do something else entirely. Or nothing."/>
@@ -1984,7 +1984,42 @@
     
   <sprite id="111" name="Blooper" sizehacks="True" notes="An underwater enemy that will chase the player.">
     <dependency notes="Because the Bloopers can be used without Water, if they are placed in anything but an Underwater style level, they will appear to fly rather than swim and not be confined to Location Water, etc."/>
-    <value nybble="3-4" title="Triggering Event ID" idtype="Triggering Event" />
+    <list nybble="3-4" title="Triggering Event ID" idtype="Triggering Event" >
+      <entry value="0">Not Event Triggered</entry>
+      <entry value="1">Event ID 1</entry>
+      <entry value="2">Event ID 2</entry>
+      <entry value="4">Event ID 4</entry>
+      <entry value="6">Event ID 6</entry>
+      <entry value="8">Event ID 8</entry>
+      <entry value="10">Event ID 10</entry>
+      <entry value="12">Event ID 12</entry>
+      <entry value="14">Event ID 14</entry>
+      <entry value="16">Event ID 16</entry>
+      <entry value="18">Event ID 18</entry>
+      <entry value="20">Event ID 20</entry>
+      <entry value="22">Event ID 22</entry>
+      <entry value="24">Event ID 24</entry>
+      <entry value="26">Event ID 26</entry>
+      <entry value="28">Event ID 28</entry>
+      <entry value="30">Event ID 30</entry>
+      <entry value="32">Event ID 32</entry>
+      <entry value="34">Event ID 34</entry>
+      <entry value="36">Event ID 36</entry>
+      <entry value="38">Event ID 38</entry>
+      <entry value="40">Event ID 40</entry>
+      <entry value="42">Event ID 42</entry>
+      <entry value="44">Event ID 44</entry>
+      <entry value="46">Event ID 46</entry>
+      <entry value="48">Event ID 48</entry>
+      <entry value="50">Event ID 50</entry>
+      <entry value="52">Event ID 52</entry>
+      <entry value="54">Event ID 54</entry>
+      <entry value="56">Event ID 56</entry>
+      <entry value="58">Event ID 58</entry>
+      <entry value="60">Event ID 60</entry>
+      <entry value="62">Event ID 62</entry>
+      <entry value="64">Event ID 64</entry>
+    </list>
     <list bit="19-20" title="Hiding In Wait" comment="When this is set to an option other than the default, the Blooper will wait for the player to approach before shooting out from behind the terrain.">
       <entry value="0">Already Moving</entry>
       <entry value="3">Shoots Up and Left</entry>
@@ -2000,13 +2035,50 @@
   
   <sprite id="112" name="Blooper Nanny with Babies" sizehacks="True" notes="An underwater enemy that will chase the player with a trail of babies in tow.">
     <dependency notes="Because the Bloopers can be used without Water, if they are placed in anything but an Underwater style level, they will appear to fly rather than swim and not be confined to Location Water, etc."/>
+    <list nybble="3-4" title="Triggering Event ID" idtype="Triggering Event" >
+      <entry value="0">Not Event Triggered</entry>
+      <entry value="1">Event ID 1</entry>
+      <entry value="2">Event ID 2</entry>
+      <entry value="4">Event ID 4</entry>
+      <entry value="6">Event ID 6</entry>
+      <entry value="8">Event ID 8</entry>
+      <entry value="10">Event ID 10</entry>
+      <entry value="12">Event ID 12</entry>
+      <entry value="14">Event ID 14</entry>
+      <entry value="16">Event ID 16</entry>
+      <entry value="18">Event ID 18</entry>
+      <entry value="20">Event ID 20</entry>
+      <entry value="22">Event ID 22</entry>
+      <entry value="24">Event ID 24</entry>
+      <entry value="26">Event ID 26</entry>
+      <entry value="28">Event ID 28</entry>
+      <entry value="30">Event ID 30</entry>
+      <entry value="32">Event ID 32</entry>
+      <entry value="34">Event ID 34</entry>
+      <entry value="36">Event ID 36</entry>
+      <entry value="38">Event ID 38</entry>
+      <entry value="40">Event ID 40</entry>
+      <entry value="42">Event ID 42</entry>
+      <entry value="44">Event ID 44</entry>
+      <entry value="46">Event ID 46</entry>
+      <entry value="48">Event ID 48</entry>
+      <entry value="50">Event ID 50</entry>
+      <entry value="52">Event ID 52</entry>
+      <entry value="54">Event ID 54</entry>
+      <entry value="56">Event ID 56</entry>
+      <entry value="58">Event ID 58</entry>
+      <entry value="60">Event ID 60</entry>
+      <entry value="62">Event ID 62</entry>
+      <entry value="64">Event ID 64</entry>
+    </list>
     <list bit="19-20" title="Hiding In Wait" comment="When this is set to an option other than the default, the Blooper will wait for the player to approach before shooting out from behind the terrain.">
       <entry value="0">Already Moving</entry>
       <entry value="3">Shoots Up and Left</entry>
       <entry value="1">Shoots Upwards</entry>
       <entry value="2">Shoots Up and Right</entry>
     </list>
-    <list nybble="12" title="Start Direction" comment="This determines the Blooper Nanny's initial movement direction. It then follows Mario as far as it can." requiredbit="19-20" requiredval="0">
+    <dualbox bit="20" title1="In Front of Layer 1" title2="Behind Layer 1" />
+    <list nybble="12" title="Start Direction" comment="This determines the Blooper's initial movement direction. It then follows Mario as far as it can." requiredbit="19-20" requiredval="0">
       <entry value="0">Left</entry>
       <entry value="1">Right</entry>
     </list>
@@ -2931,40 +3003,43 @@
 <!-- Sprite 163-165 are still unedited -->
 <!-- Sprite 163-165 are still unedited -->
 <!-- Sprite 163-165 are still unedited -->
-  <sprite id="163" name="Vertical Scroll Limiter 1 - Right Side" notes="This sprite allows you to limit how far the camera will scroll vertically. Place it on the (bottom or top) right side of the area you want to limit, and place an identical sprite 162 on the left side (same height). This will create an independent, vertical zone border located at the height of the sprite's placement.">
-    <checkbox bit="23" title="Revoke Vertical Scroll Limit (Right)" comment="0-15. 0 and 1 have no effect. Values 2+ seem to revoke the scroll limit."/>
-    <list nybble="5" title="Limit Side" comment="(S) 0-15. 0: The screen will stay above the scroll limit in all circumstances. 1: The screen will stay below the scroll limit in all circumstances.">
-      <entry value="0">Screen Will Stay Above (Limits Bottom)</entry>
-      <entry value="1">Screen Will Stay Below (Limits Top)</entry>
-    </list>
-    <checkbox bit="36" title="Permeable Scroll Limit" comment="(S) 0, 1. With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. &lt;br&gt;The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). &lt;br&gt;Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting.&lt;br&gt;&lt;br&gt;If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)...&lt;br&gt;&lt;br&gt;This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
-    <value nybble="10" title="Unknown Value 10" comment="(S) 0-15. Independent of nybble 9."/>
-    <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="0-15.&lt;br&gt; Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <value nybble="12" title="Unknown Value 12" comment="(S) 0-15. Independent of Value 9."/>
+  <sprite id="163" name="Vertical Scroll Limiter 1 - Right Side" notes="This sprite allows you to limit how far the camera will scroll vertically by creating an imaginary horizontal border between a matching pair of Scroll Limiters. This can be used to create a deeper kill zone, hide secret areas, or otherwise restrict the camera in certain sections of a level.">
+    <dependency notes="Place this on the right side of the area you want to limit, and place an identical [162] on the left side at the same height. This will create an independent, horizontal zone border located at the height of the Limit pair's placement.">
+      <required sprite="162"/>
+    </dependency>
+    <value bit="21-24" title="Revoke Vertical Scroll Limit (Right)" comment="I don't know? Is apparently a VALUE, 0, 1, 2, 3+?"/>
+    <dualbox bit="20" title1="Create Bottom Boundary" title2="Create Top Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
+    <checkbox bit="36" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
+    <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
+    <checkbox bit="24" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in Retail: 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
+    <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite>
   
-  <sprite id="164" name="Vertical Scroll Limiter 2 - Left Side" notes="Similar to sprite 162; the differences are unknown. This sprite allows you to limit how far the camera will scroll vertically. Place it on the (bottom or top) left side of the area you want to limit, and place an identical sprite 165 on the right side (same height). This will create an independent, vertical zone border located at the height of the sprite's placement.">
-    <checkbox bit="23" title="Revoke Vertical Scroll Limit (Left)" comment="0-15. 0 and 1 have no effect. Values 2+ seem to revoke the scroll limit."/>
-    <list nybble="5" title="Limit Side" comment="(S) 0-15. 0: The screen will stay above the scroll limit in all circumstances. 1: The screen will stay below the scroll limit in all circumstances.">
-      <entry value="0">Screen Will Stay Above (Limits Bottom)</entry>
-      <entry value="1">Screen Will Stay Below (Limits Top)</entry>
-    </list>
-    <checkbox bit="36" title="Permeable Scroll Limit" comment="(S) 0, 1. With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. &lt;br&gt;The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). &lt;br&gt;Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting.&lt;br&gt;&lt;br&gt;If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)...&lt;br&gt;&lt;br&gt;This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
-    <value nybble="10" title="Unknown Value 10" comment="(S) 0-15. Independent of nybble 9."/>
-    <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="0-15.&lt;br&gt; Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <value nybble="12" title="Unknown Value 12" comment="(S) 0-15. Independent of nybble 9."/>
+  <sprite id="164" name="Vertical Scroll Limiter 2 - Left Side" notes="Similar to sprite 162; the differences are unknown. This sprite allows you to limit how far the camera will scroll vertically by creating an imaginary horizontal border between a matching pair of Scroll Limiters. This can be used to create a deeper kill zone, hide secret areas, or otherwise restrict the camera in certain sections of a level.">
+    <dependency notes="Place this on the left side of the area you want to limit, and place an identical [165] on the right side at the same height. This will create an independent, horizontal zone border located at the height of the Limit pair's placement.">
+      <required sprite="165"/>
+    </dependency>
+    <value bit="21-24" title="Revoke Vertical Scroll Limit (Left)" comment="I don't know? Is apparently a VALUE, 0, 1, 2, 3+?"/>
+    <dualbox bit="20" title1="Create Bottom Boundary" title2="Create Top Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
+    <checkbox bit="36" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
+    <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
+    <checkbox bit="24" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in Retail: 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
+    <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite>
   
-  <sprite id="165" name="Vertical Scroll Limiter 2 - Right Side" notes="Similar to sprite 163; the differences are unknown. This sprite allows you to limit how far the camera will scroll vertically. Place it on the (bottom or top) right side of the area you want to limit, and place an identical sprite 164 on the left side (same height). This will create an independent, vertical zone border located at the height of the sprite's placement.">
-    <checkbox bit="23" title="Revoke Vertical Scroll Limit (Right)" comment="0-15. 0 and 1 have no effect. Values 2+ seem to revoke the scroll limit."/>
-    <list nybble="5" title="Limit Side" comment="(S) 0-15. 0: The screen will stay above the scroll limit in all circumstances. 1: The screen will stay below the scroll limit in all circumstances.">
-      <entry value="0">Screen Will Stay Above (Limits Bottom)</entry>
-      <entry value="1">Screen Will Stay Below (Limits Top)</entry>
-    </list>
-    <checkbox bit="36" title="Permeable Scroll Limit" comment="(S) 0, 1. With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. &lt;br&gt;The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). &lt;br&gt;Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting.&lt;br&gt;&lt;br&gt;If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)...&lt;br&gt;&lt;br&gt;This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
-    <value nybble="10" title="Unknown Value 10" comment="(S) 0-15. Independent of nybble 9."/>
-    <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="0-15.&lt;br&gt; Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <value nybble="12" title="Unknown Value 12" comment="(S) 0-15. Independent of Value 9."/>
+  <sprite id="165" name="Vertical Scroll Limiter 2 - Right Side" notes="Similar to sprite 163; the differences are unknown. This sprite allows you to limit how far the camera will scroll vertically by creating an imaginary horizontal border between a matching pair of Scroll Limiters. This can be used to create a deeper kill zone, hide secret areas, or otherwise restrict the camera in certain sections of a level.">
+    <dependency notes="Place this on the right side of the area you want to limit, and place an identical [164] on the left side at the same height. This will create an independent, horizontal zone border located at the height of the Limit pair's placement.">
+      <required sprite="164"/>
+    </dependency>
+    <value bit="21-24" title="Revoke Vertical Scroll Limit (Right)" comment="I don't know? Is apparently a VALUE, 0, 1, 2, 3+?"/>
+    <dualbox bit="20" title1="Create Bottom Boundary" title2="Create Top Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
+    <checkbox bit="36" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
+    <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
+    <checkbox bit="24" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in Retail: 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
+    <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite>
   
   <sprite id="166" name="Icy Block Train" notes="A length of connected icy blocks which travels along an assigned Path.">
@@ -3672,7 +3747,7 @@
       <entry value="12">Vine</entry>
       <entry value="13">Spring</entry>
     </list>
-    <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the ?-Block placing it further behind other sprites." comment2="This will place the ?-Block behind even Chainlink Fence and Layer 1 terrain."/>
+    <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the ?-Block placing it further behind other sprites." comment2="This will place the ?-Block behind even Chainlink Fence and Layer 1 terrain." advanced="True" advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
     <checkbox bit="40" title="Follows Lines" comment="When enabled, the ?-Block will attempt to follow Lines." advanced="True" advancedcomment="It is recommended to use [402] Line Controlled ? Block instead."/>
     <dualbox bit="36" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the ?-Block will move based on the Line that it is connected to." advanced="True" advancedcomment="It is recommended to use [402] Line Controlled ? Block instead."/>
   </sprite> <!-- #207: ? Block -->
@@ -3717,7 +3792,7 @@
       <entry value="12">Vine</entry>
       <entry value="13">Spring</entry>
     </list>
-    <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the ?-Block placing it further behind other sprites." comment2="This will place the ?-Block behind even Chainlink Fence and Layer 1 terrain."/>
+    <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the ?-Block placing it further behind other sprites." comment2="This will place the ?-Block behind even Chainlink Fence and Layer 1 terrain."  advanced="True" advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
   </sprite> <!-- #208: (Unused) ? Block -->
   
   <sprite id="209" name="Brick Block" asmhacks="True" sizehacks="True" notes="Your most basic, most flexible, standard brown Brick Block. When spawning power-ups, it will spawn only one, no matter how many players! Such a stingy block~">
@@ -3760,7 +3835,7 @@
       <entry value="12">Vine</entry>
       <entry value="13">Spring</entry>
     </list>
-    <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Brick Block placing it further behind other sprites." comment2="This will place the Brick Block behind even Chainlink Fence and Layer 1 terrain."/>
+    <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Brick Block placing it further behind other sprites." comment2="This will place the Brick Block behind even Chainlink Fence and Layer 1 terrain."  advanced="True" advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
     <checkbox bit="40" title="Follows Lines" comment="When enabled, the Brick Block will attempt to follow Lines." advanced="True" advancedcomment="It is recommended to use [402] Line Controlled ? Block instead."/>
     <dualbox bit="36" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Brick Block will move based on the Line that it is connected to." advanced="True" advancedcomment="It is recommended to use [403] Line Controlled Brick Block instead."/>
   </sprite> <!-- #209: Brick Block -->
@@ -4442,20 +4517,28 @@
   </sprite> <!-- #247: (Unused) Cheep Cheep Formation Spawner -->
   
 <!-- Seems to have the same exact settings as 162-165. Needs the same research done with it to ensure everything is functional in the same manner. It may be easier to research 248-249 than 162-165 due to the exactness of horizontal movement. -->
-  <sprite id="248" name="Horizontal Scroll Limiter - Top" notes="The same Values ​​are listed as the Vertical Scroll Limiter (162, 163, 164, 165). This sprite allows you to limit how far the camera will scroll horizontally by creating an imaginary vertical border between a matching pair of Scroll Limiters. This can be used to hide secret areas, or otherwise restrict the camera in certain sections of a level.">
-    <value nybble="6" title="Unknown Value 6" advancedcomment="Revoke Horizontal Scroll Limit (Top) -- Referencing 162"/>
-    <value nybble="5" title="Unknown Value 5" advancedcomment="Create Left Boundary / Create Right Boundary -- Referencing 162"/>
-    <checkbox bit="36" title="Permeable Scroll Limit" comment="-- Referencing 162"/>
-    <value nybble="11" title="Unknown Value 11" advancedcomment="Scroll Limit Shifting in Restricted Direction -- Referencing 162"/>
+  <sprite id="248" name="Horizontal Scroll Limiter - Top" notes="The same Values ​​are listed as the Vertical Scroll Limiter (162, 163, 164, 165). This sprite allows you to limit how far the camera will scroll horizontally by creating an imaginary horizontal border between a matching pair of Scroll Limiters. This can be used to create a deeper kill zone, hide secret areas, or otherwise restrict the camera in certain sections of a level.">
+    <dependency notes="Place this at the top of the area you want to limit, and place an identical [249] at the bottom (same X position). This will create an independent, vertical zone border located at the X position of the Limit pair's placement.">
+      <required sprite="249"/>
+    </dependency>
+    <value bit="21-24" title="Revoke Horizontal Scroll Limit (Top)" comment="I don't know? Is apparently a VALUE, 0, 1, 2, 3+?"/>
+    <dualbox bit="20" title1="Create Left Boundary" title2="Create Right Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
+    <checkbox bit="36" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
+    <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
+    <checkbox bit="24" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in Retail: 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
     <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite> <!-- #248: Horizontal Scroll Limiter - Top -->
   
-  <sprite id="249" name="Horizontal Scroll Limiter - Bottom" notes="The same Values ​​are listed as the Vertical Scroll Limiter (162, 163, 164, 165). This sprite allows you to limit how far the camera will scroll horizontally by creating an imaginary vertical border between a matching pair of Scroll Limiters. This can be used to hide secret areas, or otherwise restrict the camera in certain sections of a level.">
-    <value nybble="6" title="Unknown Value 6" advancedcomment="Revoke Horizontal Scroll Limit (Top) -- Referencing 162"/>
-    <value nybble="5" title="Unknown Value 5" advancedcomment="Create Left Boundary / Create Right Boundary -- Referencing 162"/>
-    <checkbox bit="36" title="Permeable Scroll Limit" comment="-- Referencing 162"/>
-    <value nybble="11" title="Unknown Value 11" advancedcomment="Scroll Limit Shifting in Restricted Direction -- Referencing 162"/>
+  <sprite id="249" name="Horizontal Scroll Limiter - Bottom" notes="The same Values ​​are listed as the Vertical Scroll Limiter (162, 163, 164, 165). This sprite allows you to limit how far the camera will scroll horizontally by creating an imaginary horizontal border between a matching pair of Scroll Limiters. This can be used to create a deeper kill zone, hide secret areas, or otherwise restrict the camera in certain sections of a level.">
+    <dependency notes="Place this at the bottom of the area you want to limit, and place an identical [248] at the top (same X position). This will create an independent, vertical zone border located at the X position of the Limit pair's placement.">
+      <required sprite="248"/>
+    </dependency>
+    <value bit="21-24" title="Revoke Horizontal Scroll Limit (Bottom)" comment="I don't know? Is apparently a VALUE, 0, 1, 2, 3+?"/>
+    <dualbox bit="20" title1="Create Left Boundary" title2="Create Right Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
+    <checkbox bit="36" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
+    <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
+    <checkbox bit="24" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in Retail: 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
     <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite> <!-- #249: Horizontal Scroll Limiter - Bottom -->
@@ -6930,7 +7013,7 @@
   <sprite id="396" name="Move-When-On Platform" notes="A special platform that will move at any point when a specified number of 'passengers' (players + enemies) are standing on it.">
     <value nybble="12" title="Length" comment="This determines the length of the platform." comment2="This value must be at least 1."/>
     <checkbox bit="26" title="Does not Move" comment="When enabled, the movement function of this platform will be disabled making the platform into a decorative object."/>
-    <dualbox bit="32" title1="Returns to Original Position" title2="Does not Return" comment="When enabled, the platform's movement will be one-way only." requiredbit="26" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
+    <dualbox bit="40" title1="Returns to Original Position" title2="Does not Return" comment="When enabled, the platform's movement will be one-way only." requiredbit="26" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
     <list nybble="11" title="Moves with Passenger Number" comment="This determines how many 'passengers' are needed for the platform's movement to activate." comment2="A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers. It will change colors from blue to red when this condition is satisfied.">
       <entry value="0">1 Passenger</entry>
       <entry value="1">2 Passengers</entry>
@@ -7517,7 +7600,7 @@
     </list>
   </sprite> <!-- #434: Warp Cannon -->
 
-  <sprite id="435" name="Effect - Ghost Fog" notes="This adds a thin wispy fog effect to the level that can be used with or without a Location ID.">
+  <sprite id="435" name="Effect - Ghost Fog" notes="This adds a thin wispy fog effect to the level that can be used with or without a Location ID." advancednotes="Please note that Poison Water and Lava will turn into &lt;b&gt;Water&lt;/b&gt; and lose their deadly properties, should this sprite's location and the water location overlap. The player can then swim in Poison/Lava without being killed. The Poison/Lava still looks correct, only their physics are changed." >
     <dependency notes="A Location ID is NOT required in order for the Ghost Fog to function. Without a Location ID set, it will simply fill the entire Zone with the Ghost Fog effect."/>
     <value nybble="11-12" title="Location ID" comment="This determines the location in which the Ghost Fog will spawn." idtype="Location"/>
     <checkbox bit="38" title="Unknown Flag 10 (4)" advanced="True" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function."/>

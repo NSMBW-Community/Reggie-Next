@@ -3056,6 +3056,8 @@ AutoSaveData = b''
 AutoOpenScriptEnabled = False
 CurrentLevelNameForAutoOpenScript = None
 HideResetSpritedata = False
+EnablePadding = False
+PaddingLength = 0
 
 
 def createHorzLine():
@@ -5948,44 +5950,44 @@ class LocationItem(LevelEditorItem):
         Overrides mouse movement events if needed for resizing
         """
         if event.buttons() != Qt.NoButton and self.dragging:
-            # resize it
-            dsx = self.dragstartx
-            dsy = self.dragstarty
-            clickedx = event.pos().x() / 1.5
-            clickedy = event.pos().y() / 1.5
-            cx = self.objx
-            cy = self.objy
+        # resize it
+        dsx = self.dragstartx
+        dsy = self.dragstarty
+        clickedx = event.pos().x() / 1.5
+        clickedy = event.pos().y() / 1.5
+        cx = self.objx
+        cy = self.objy
 
             if clickedx < 0: clickedx = 0
             if clickedy < 0: clickedy = 0
 
-            if clickedx != dsx or clickedy != dsy:
-                self.dragstartx = clickedx
-                self.dragstarty = clickedy
+        if clickedx != dsx or clickedy != dsy:
+            self.dragstartx = clickedx
+            self.dragstarty = clickedy
 
                 self.width += clickedx - dsx
                 self.height += clickedy - dsy
 
-                oldrect = self.BoundingRect
-                oldrect.translate(cx * 1.5, cy * 1.5)
-                newrect = QtCore.QRectF(self.x(), self.y(), self.width * 1.5, self.height * 1.5)
-                updaterect = oldrect.united(newrect)
+            oldrect = self.BoundingRect
+            oldrect.translate(cx * 1.5, cy * 1.5)
+            newrect = QtCore.QRectF(self.x(), self.y(), self.width * 1.5, self.height * 1.5)
+            updaterect = oldrect.united(newrect)
 
-                self.UpdateRects()
-                self.scene().update(updaterect)
-                SetDirty()
-                mainWindow.levelOverview.update()
+            self.UpdateRects()
+            self.scene().update(updaterect)
+            SetDirty()
+            mainWindow.levelOverview.update()
 
-                if self.sizeChanged is not None:
-                    self.sizeChanged(self, self.width, self.height)
+            if self.sizeChanged is not None:
+                self.sizeChanged(self, self.width, self.height)
 
-                # This code causes an error or something.
-                # if RealViewEnabled:
-                #     for sprite in Area.sprites:
-                #         if self.id in sprite.ImageObj.locationIDs and sprite.ImageObj.updateSceneAfterLocationMoved:
-                #             self.scene().update()
+            # This code causes an error or something.
+            # if RealViewEnabled:
+            #     for sprite in Area.sprites:
+            #         if self.id in sprite.ImageObj.locationIDs and sprite.ImageObj.updateSceneAfterLocationMoved:
+            #             self.scene().update()
 
-            event.accept()
+        event.accept()
         else:
             LevelEditorItem.mouseMoveEvent(self, event)
 
@@ -13004,7 +13006,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             ...
 
         return self.accept()
-    
+
     def editSpecialResizeEvent(self, sprite):
         data = list(sprite.spritedata)
 
@@ -15061,9 +15063,9 @@ def FindGameDef(name, skip=None):
     for folder in os.listdir(os.path.join('reggiedata', 'patches')): toSearch.append(folder)
 
     for folder in toSearch:
-        if folder == skip: continue
+        if (folder is None) or (folder == skip): continue
         def_ = ReggieGameDefinition(folder)
-        if (not def_.custom) and (folder is not None): continue
+        if not def_.custom: continue
         if def_.name == name: return def_
 
 
@@ -15380,6 +15382,7 @@ class ReggieTranslation:
             'Err_Save': {
                 0: 'Error',
                 1: 'Error while Reggie was trying to save the level:[br](#[err1]) [err2][br][br](Your work has not been saved! Try saving it under a different filename or in a different folder.)',
+                2: 'Error while Reggie was trying to save the level:[br]The original file data ([orig-len] bytes) exceeded the fixed length ([pad-len] bytes).[br][br](Your work has not been saved! Increase the fixed length in the Preferences Dialog.)',
             },
             'FileDlgs': {
                 0: 'Choose a level archive',
@@ -15695,7 +15698,9 @@ class ReggieTranslation:
                 31: 'Display lines indicating the leftmost x-position where entrances can be safely placed in zones',
                 32: 'Enable advanced mode',
                 33: 'Reset sprite data when hiding sprite fields',
-                34: 'Hide Reset Spritedata button'
+                34: 'Hide Reset Spritedata button',
+                35: 'Pad level with null bytes',
+                36: 'Fixed level size (bytes)',
             },
             'QuickPaint': {
                 1: "WOAH! Watch out!",
@@ -20581,11 +20586,23 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Hide reset spritedata button
                 self.erbIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 34))
 
+                # Enable padding button
+                self.epbIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 35))
+                self.epbIndicator.stateChanged.connect(
+                    lambda v: self.psValue.setDisabled(v == 0)
+                )
+
+                # Padding size value
+                self.psValue = QtWidgets.QSpinBox()
+                self.psValue.setRange(0, 2147483647) # maximum value allowed by qt
+
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
                 L.addRow(trans.string('PrefsDlg', 27), TileL)
                 L.addRow(trans.string('PrefsDlg', 14), self.Trans)
                 L.addRow(trans.string('PrefsDlg', 15), ClearRecentBtn)
+                L.addWidget(self.epbIndicator)
+                L.addRow(trans.string('PrefsDlg', 36), self.psValue)
                 L.addWidget(self.zEntIndicator)
                 L.addWidget(self.advIndicator)
                 L.addWidget(self.rdhIndicator)
@@ -20626,6 +20643,14 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.advIndicator.setChecked(AdvancedModeEnabled)
                 self.rdhIndicator.setChecked(ResetDataWhenHiding)
                 self.erbIndicator.setChecked(HideResetSpritedata)
+
+                global EnablePadding, PaddingLength
+                EnablePadding = bool(setting('EnablePadding'))
+                PaddingLength = int(setting('PaddingLength'))
+                
+                self.epbIndicator.setChecked(EnablePadding)
+                self.psValue.setEnabled(EnablePadding)
+                self.psValue.setValue(PaddingLength)
 
             def ClearRecent(self):
                 """
@@ -23303,6 +23328,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         HideResetSpritedata = dlg.generalTab.erbIndicator.isChecked()
         setSetting('HideResetSpritedata', HideResetSpritedata)
 
+        global EnablePadding
+        EnablePadding = dlg.generalTab.epbIndicator.isChecked()
+        setSetting('EnablePadding', EnablePadding)
+
+        global PaddingLength
+        PaddingLength = dlg.generalTab.psValue.value()
+        setSetting('PaddingLength', PaddingLength)
+
         # Get the Toolbar tab settings
         boxes = (
         dlg.toolbarTab.FileBoxes, dlg.toolbarTab.EditBoxes, dlg.toolbarTab.ViewBoxes, dlg.toolbarTab.SettingsBoxes,
@@ -23362,6 +23395,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         global Dirty, AutoSaveDirty
         data = Level.save()
 
+        # maybe pad with null bytes
+        if EnablePadding:
+            pad_length = PaddingLength - len(data)
+            if pad_length < 0:
+                # err: orig data is longer than padding data
+                QtWidgets.QMessageBox.warning(None, trans.string('Err_Save', 0), trans.string('Err_Save', 2, '[orig-len]', len(data), '[pad-len]', PaddingLength))
+                return False
+
+            data += bytes(pad_length)
+
         try:
             with open(self.fileSavePath, 'wb') as f:
                 f.write(data)
@@ -23404,7 +23447,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('AutoSaveFileData', 'x')
         return True
 
-    def HandleSaveAs(self):
+    def HandleSaveAs(self, copy = False):
         """
         Save a level back to the archive, with a new filename
         """
@@ -23413,37 +23456,43 @@ class ReggieWindow(QtWidgets.QMainWindow):
                                                        'FileDlgs', 2) + ' (*)')[0]
         if fn == '': return
 
-        global Dirty, AutoSaveDirty
-        Dirty = False
-        AutoSaveDirty = False
-        Dirty = False
+        if not copy:
+            global Dirty, AutoSaveDirty
+            AutoSaveDirty = False
+            Dirty = False
 
-        self.fileSavePath = fn
-        self.fileTitle = os.path.basename(fn)
+            self.fileSavePath = fn
+            self.fileTitle = os.path.basename(fn)
 
         data = Level.save()
+
+        # maybe pad with null bytes
+        if EnablePadding:
+            pad_length = PaddingLength - len(data)
+            if pad_length < 0:
+                # err: orig data is longer than padding data
+                QtWidgets.QMessageBox.warning(None, trans.string('Err_Save', 0), trans.string('Err_Save', 2, '[orig-len]', len(data), '[pad-len]', PaddingLength))
+                return False
+
+            data += bytes(pad_length)
+
         with open(fn, 'wb') as f:
             f.write(data)
+        
+        if copy:
+            return
 
         setSetting('AutoSaveFilePath', fn)
         setSetting('AutoSaveFileData', 'x')
 
         self.UpdateTitle()
-
         self.RecentMenu.AddToList(self.fileSavePath)
 
     def HandleSaveCopyAs(self):
         """
         Save a level back to the archive, with a new filename, but does not store this filename
         """
-        fn = QtWidgets.QFileDialog.getSaveFileName(self, trans.string('FileDlgs', 3), '',
-                                                   trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;' + trans.string(
-                                                       'FileDlgs', 2) + ' (*)')[0]
-        if fn == '': return
-
-        data = Level.save()
-        with open(fn, 'wb') as f:
-            f.write(data)
+        self.HandleSaveAs(True)
 
     def HandleExit(self):
         """

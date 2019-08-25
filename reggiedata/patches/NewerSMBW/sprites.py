@@ -972,6 +972,27 @@ class SpriteImage_NewerSpringBlock(SLib.SpriteImage_StaticMultiple):  # 223
         super().dataChanged()
 
 
+class SpriteImage_NewerBramball(SLib.SpriteImage_StaticMultiple):  # 230
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('Bramball', 'bramball.png')
+        if 'Bramball1' in ImageCache: return
+        for i in range(6):
+            ImageCache['Bramball%d' % (i + 1)] = SLib.GetImg('bramball_%d.png' % (i + 1))
+
+    def dataChanged(self):
+        colour = (self.parent.spritedata[2] & 0xF) % 5
+
+        if colour == 0:
+            self.image = ImageCache['Bramball']
+            self.offset = (-32, -48)
+        else:
+            self.image = ImageCache['Bramball%d' % colour]
+            self.offset = (-33, -47)
+
+        super().dataChanged()
+
+
 class SpriteImage_EventBlock(SLib.SpriteImage_Static): # 239
     def __init__(self, parent):
         super().__init__(
@@ -1191,6 +1212,7 @@ ImageClasses = {
     210: SpriteImage_Topman,
     213: SpriteImage_CaptainBowser,
     223: SpriteImage_NewerSpringBlock,
+    230: SpriteImage_NewerBramball,
     239: SpriteImage_EventBlock,
     251: SpriteImage_TopmanBoss,
     279: SpriteImage_RockyBoss,
