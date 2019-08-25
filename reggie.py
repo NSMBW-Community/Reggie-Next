@@ -15390,11 +15390,12 @@ class ReggieTranslation:
                 0: 'Choose a level archive',
                 1: 'NSMBWii Level Archives',
                 2: 'All Files',
-                3: 'Choose a new filename',
+                3: 'Save As: Choose a new filename',
                 4: 'Portable Network Graphics',
                 5: 'Compressed Level Archives',
                 6: 'Choose a stamp archive',
                 7: 'Stamps File',
+                8: 'Save Copy: Choose a new filename',
             },
             'Gamedefs': {
                 0: 'This game has custom sprite images',
@@ -23449,7 +23450,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Save a level back to the archive, with a new filename
         """
-        fn = QtWidgets.QFileDialog.getSaveFileName(self, trans.string('FileDlgs', 3), '',
+        fn = QtWidgets.QFileDialog.getSaveFileName(self, trans.string('FileDlgs', 8 if copy else 3), '',
                                                    trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;' + trans.string(
                                                        'FileDlgs', 2) + ' (*)')[0]
         if fn == '': return
