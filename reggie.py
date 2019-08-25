@@ -5949,24 +5949,34 @@ class LocationItem(LevelEditorItem):
         """
         Overrides mouse movement events if needed for resizing
         """
-        if event.buttons() != Qt.NoButton and self.dragging:
+        if not (event.buttons() != Qt.NoButton and self.dragging):
+            LevelEditorItem.mouseMoveEvent(self, event)
+
         # resize it
         dsx = self.dragstartx
         dsy = self.dragstarty
         clickedx = event.pos().x() / 1.5
         clickedy = event.pos().y() / 1.5
+
         cx = self.objx
         cy = self.objy
 
-            if clickedx < 0: clickedx = 0
-            if clickedy < 0: clickedy = 0
+        #if clickedx < 0: clickedx = 0
+        #if clickedy < 0: clickedy = 0
 
         if clickedx != dsx or clickedy != dsy:
             self.dragstartx = clickedx
             self.dragstarty = clickedy
 
-                self.width += clickedx - dsx
-                self.height += clickedy - dsy
+            # new rectangle is defined by two opposing corners: (cx, cy) and (clickedx, clickedy)
+            newx, newy = min(cx, clickedx * 1.5), min(cy, clickedy * 1.5)
+            self.objx, self.objy = newx, newy
+            self.setPos(newx, newy)
+            self.width = abs(cx / 1.5 - clickedx)
+            self.height = abs(cy / 1.5 - clickedy)
+
+            #self.width += clickedx - dsx
+            #self.height += clickedy - dsy
 
             oldrect = self.BoundingRect
             oldrect.translate(cx * 1.5, cy * 1.5)
@@ -5988,8 +5998,6 @@ class LocationItem(LevelEditorItem):
             #             self.scene().update()
 
         event.accept()
-        else:
-            LevelEditorItem.mouseMoveEvent(self, event)
 
     def delete(self):
         """
