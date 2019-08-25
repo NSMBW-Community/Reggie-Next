@@ -20732,7 +20732,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Set up the menus by iterating over the above data
                 for defaults, boxes, layout, group in menuItems:
                     for L, C, I in defaults:
-                        box = QtWidgets.QCheckBox(L)
+                        box = QtWidgets.QCheckBox(L.replace('<br>', ' '))
                         boxes.append(box)
                         layout.addWidget(box)
                         try:
@@ -25546,7 +25546,7 @@ def main():
     AdvancedModeEnabled = setting('AdvancedMode', False)
     ResetDataWhenHiding = setting('ResetDataWhenHiding', False)
     EnablePadding = setting('EnablePadding', False)
-    PaddingLength = setting('PaddingLength', 0)
+    PaddingLength = int(setting('PaddingLength', 0))
     SLib.RealViewEnabled = RealViewEnabled
 
     # Choose a folder for the game
