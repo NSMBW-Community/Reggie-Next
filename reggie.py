@@ -20652,10 +20652,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.rdhIndicator.setChecked(ResetDataWhenHiding)
                 self.erbIndicator.setChecked(HideResetSpritedata)
 
-                global EnablePadding, PaddingLength
-                EnablePadding = bool(setting('EnablePadding'))
-                PaddingLength = int(setting('PaddingLength'))
-                
                 self.epbIndicator.setChecked(EnablePadding)
                 self.psValue.setEnabled(EnablePadding)
                 self.psValue.setValue(PaddingLength)
@@ -25520,7 +25516,7 @@ def main():
     global EnableAlpha, GridType, CollisionsShown, RealViewEnabled
     global ObjectsFrozen, SpritesFrozen, EntrancesFrozen, LocationsFrozen, PathsFrozen, CommentsFrozen
     global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown
-    global DrawEntIndicators, AdvancedModeEnabled, ResetDataWhenHiding
+    global DrawEntIndicators, AdvancedModeEnabled, ResetDataWhenHiding, EnablePadding, PaddingLength
 
     gt = setting('GridType')
 
@@ -25549,6 +25545,8 @@ def main():
     DrawEntIndicators = setting('ZoneEntIndicators', False)
     AdvancedModeEnabled = setting('AdvancedMode', False)
     ResetDataWhenHiding = setting('ResetDataWhenHiding', False)
+    EnablePadding = setting('EnablePadding', False)
+    PaddingLength = setting('PaddingLength', 0)
     SLib.RealViewEnabled = RealViewEnabled
 
     # Choose a folder for the game
