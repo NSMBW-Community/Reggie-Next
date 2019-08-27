@@ -6816,8 +6816,8 @@ class SpriteImage_ScrewMushroomNoBolt(SpriteImage_ScrewMushroom):  # 382
 class SpriteImage_PipeCooliganGenerator(SLib.SpriteImage):  # 384
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.size = (24, 48)
-        self.spritebox.yOffset = -24
+        self.spritebox.size = (16, 32)
+        self.spritebox.yOffset = -16
 
 
 class SpriteImage_IceBlock(SLib.SpriteImage_StaticMultiple):  # 385
@@ -8057,6 +8057,34 @@ class SpriteImage_BowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
         super().dataChanged()
 
 
+class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.aux.append(SLib.AuxiliaryImage(parent, 3612, 672))
+        self.aux[0].image = ImageCache['FinalBossEffects0']
+        self.aux[0].setPos(-228, -555)
+
+    @staticmethod
+    def loadImages():
+        if 'FinalBossEffects0' in ImageCache: return
+        for i in range(0, 3):
+            ImageCache["FinalBossEffects%d" % i] = SLib.GetImg("final_boss_effects_%d.png" % i)
+        
+    def dataChanged(self):
+        style = self.parent.spritedata[5] & 3
+        
+        self.aux[0].image = ImageCache['FinalBossEffects%d' % style]
+        
+        if style == 0:
+            self.aux[0].setPos(-228, -555)
+        elif style == 1:
+            self.aux[0].setPos(-228, -408)
+        elif style == 2:
+            self.aux[0].setPos(-24, -192)
+
+        super().dataChanged()
+
+
 ################################################################
 ################################################################
 ################################################################
@@ -8416,4 +8444,5 @@ ImageClasses = {
     477: SpriteImage_SuperGuideBlock,
     478: SpriteImage_BowserSwitchSm,
     479: SpriteImage_BowserSwitchLg,
+    482: SpriteImage_FinalBossEffects,
 }
