@@ -7955,6 +7955,18 @@ class SpriteImage_PotPlatform(SLib.SpriteImage_Static):  # 471
         ImageCache['PotPlatform'] = full
 
 
+class SpriteImage_IceFloeGenerator(SLib.SpriteImage):  # 472
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 96, 120, 0, -96))
+
+
+class SpriteImage_FloatingIceFloeGenerator(SLib.SpriteImage):  # 473
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 96, 96, 0, 24))
+
+
 class SpriteImage_IceFloe(SLib.SpriteImage_StaticMultiple):  # 475
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -8439,6 +8451,8 @@ ImageClasses = {
     469: SpriteImage_BoltPlatform,
     470: SpriteImage_BoltPlatformWire,
     471: SpriteImage_PotPlatform,
+    472: SpriteImage_IceFloeGenerator,
+    473: SpriteImage_FloatingIceFloeGenerator,
     475: SpriteImage_IceFloe,
     476: SpriteImage_FlyingWrench,
     477: SpriteImage_SuperGuideBlock,
