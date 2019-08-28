@@ -8069,6 +8069,28 @@ class SpriteImage_BowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
         super().dataChanged()
 
 
+class SpriteImage_FinalBossRubble(SLib.SpriteImage_StaticMultiple):  # 481
+    def __init__(self, parent):
+        super().__init__(parent)
+
+    @staticmethod
+    def loadImages():
+        if 'FinalBossRubble0' in ImageCache: return
+        for size in range(2):
+            ImageCache['FinalBossRubble%d' % size] = SLib.GetImg('final_boss_rubble_%d.png' % size)
+
+    def dataChanged(self):
+        size = self.parent.spritedata[5] & 1
+        self.offset = (
+            (-13, -7),
+            (-19, -13),
+        )[size]
+
+        self.image = ImageCache['FinalBossRubble%d' % size]
+
+        super().dataChanged()
+
+
 class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
     def __init__(self, parent):
         super().__init__(parent)
@@ -8458,5 +8480,6 @@ ImageClasses = {
     477: SpriteImage_SuperGuideBlock,
     478: SpriteImage_BowserSwitchSm,
     479: SpriteImage_BowserSwitchLg,
+    481: SpriteImage_FinalBossRubble,
     482: SpriteImage_FinalBossEffects,
 }
