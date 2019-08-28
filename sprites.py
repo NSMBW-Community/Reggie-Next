@@ -6032,6 +6032,24 @@ class SpriteImage_LinePlatformBolt(SLib.SpriteImage_Static):  # 327
         SLib.loadIfNotInImageCache('LinePlatformBolt', 'line_platform_with_bolt.png')
 
 
+class SpriteImage_BubbleCannon(SLib.SpriteImage_StaticMultiple):  # 328
+    @staticmethod
+    def loadImages():
+        if 'BubbleCannon0' in ImageCache: return
+        ImageCache['BubbleCannon0'] = SLib.GetImg('bubble_cannon_small.png')
+        ImageCache['BubbleCannon1'] = SLib.GetImg('bubble_cannon_big.png')
+
+    def dataChanged(self):
+        size = self.parent.spritedata[5] & 1
+        self.image = ImageCache['BubbleCannon%d' % size]
+        self.offset = (
+            (-17, -15),
+            (-36, -31),
+        )[size]
+
+        super().dataChanged()
+
+
 class SpriteImage_RopeLadder(SLib.SpriteImage_StaticMultiple):  # 330
     @staticmethod
     def loadImages():
@@ -8364,6 +8382,7 @@ ImageClasses = {
     325: SpriteImage_GhostHouseStand,
     326: SpriteImage_KingBill,
     327: SpriteImage_LinePlatformBolt,
+    328: SpriteImage_BubbleCannon,
     330: SpriteImage_RopeLadder,
     331: SpriteImage_DishPlatform,
     333: SpriteImage_PlayerBlockPlatform,

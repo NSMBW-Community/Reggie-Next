@@ -5929,7 +5929,7 @@
     <value nybble="7-8" title="Unknown Value 7-8" advanced="True" advancedcomment="Used (1) in Retail: 01-05 A1."/>
   </sprite> <!-- #172: Screw Mushroom Platform with Bolt -->
 
-  <sprite id="173" name="Giant Floating Log" noyoshi="True" notes="A very large log that will slowly try to dump the player into the liquid below.">
+  <sprite id="173" name="Giant Floating Log" noyoshi="True" yoshinotes="Yoshi can't jump off of the log, and instead rides it to the bottom. Also, he can eat the whole thing." notes="A very large log that will slowly try to dump the player into the liquid below.">
     <dependency notes="While this is not dependent on liquid in order to spawn, it should be noted that it only has collision along the top. While the player is along the top two blocks of the log, the log will generate spinning momentum and try to drop the player below it. Once the player passes those top two blocks, they will instantly fall no matter how fast the log is spinning."/>
   </sprite> <!-- #173: Giant Floating Log -->
 
@@ -8528,20 +8528,24 @@
     <value nybble="12" title="Speed" comment="This determines the speed at which the platform will travel." comment2="The platform will not move if Speed is set to 0."/>
   </sprite> <!-- #327: Line Controlled Platform with Bolt -->
 
-  <sprite id="328" name="(Unused) (Incomplete) Bubble Cannon" notes="This loads a flat texture that says 'temporary' in Japanese letters, and shoots out more of the same. You can hold the jump button while the player is on the 'bubble' to hold onto it for a very short amount of time.">
-    <value nybble="5" title="Bubble Cannon ID" comment="This pairs the object to a matching Bubble Cannon Controller for functionality." idtype="Bubble Cannon"/>
-    <value nybble="12" title="Bubble Size" comment="This determines the size of the bubble."/>
-    <list nybble="9" title="Direction" comment="This determines the direction the bubble is launched in.">
+  <sprite id="328" name="(Unused) (Incomplete) Bubble Cannon" noyoshi="True" yoshinotes="The game will crash if Yoshi flutters while touching a 'bubble.'"
+  notes="This loads a flat texture that says 'temporary' in Japanese letters, and shoots out more of the same. If it's moving up, you can hold the jump button while the player is on the 'bubble' to hold onto it for a very short amount of time. They will despawn if they hit a wall.">
+    <value nybble="5" title="Bubble Cannon ID" comment="This pairs the object to a matching Bubble Cannon Controller. It works on its own if left at 0." idtype="Bubble Cannon"/>
+    <list nybble="12" title="Bubble Size" comment="This determines the size of the bubble.">
+	  <entry value="0">Small</entry>
+      <entry value="1">Big</entry>
+	</list>
+    <list nybble="9" title="Direction" comment="This determines the direction the bubble is launched in, and Mario is pushed">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
       <entry value="2">Left</entry>
       <entry value="3">Right</entry>
     </list>
-    <value nybble="10" title="Bubble Speed" comment="This determines the speed the bubble travels."/>
+    <value nybble="10" title="Bubble Speed" comment="This determines the speed the bubble travel, and the force Mario is pushed by."/>
     <value nybble="11" title="Bubble Spawn Delay" comment="This determines the delay between bubble spawns."/>
   </sprite> <!-- #328: (Unused) (Incomplete) Bubble Cannon -->
 
-  <sprite id="329" name="(Unused) (Incomplete) Bubble Cannon Controller" notes="A controller for the Bubble Cannon. It's recommended to use identical settings. Because reasons.">
+  <sprite id="329" name="(Unused) (Incomplete) Bubble Cannon Controller" notes="A controller for the Bubble Cannon. It overrides the settings of the paired Bubble Cannon, but it's recommended to use identical settings. Because reasons.">
     <value nybble="5" title="Bubble Cannon ID" comment="This pairs the controller to a matching Bubble Cannon for functionality." idtype="Bubble Cannon"/>
     <list nybble="9" title="Direction" comment="This determines the direction the bubble is launched in.">
       <entry value="0">Up</entry>
@@ -8549,7 +8553,7 @@
       <entry value="2">Left</entry>
       <entry value="3">Right</entry>
     </list>
-    <value nybble="10" title="Bubble Speed" comment="This determines the speed the bubble travels."/>
+    <value nybble="10" title="Bubble Speed" comment="This determines the speed the bubble travel, and the force Mario is pushed by."/>
     <value nybble="11" title="Bubble Initial Spawn Delay" comment="This determines the delay before the first bubble spawn."/>
     <value nybble="12" title="Bubble Spawn Delay" comment="This determines the delay between bubble spawns."/>
   </sprite> <!-- #329: (Unused) (Incomplete) Bubble Cannon Controller -->
