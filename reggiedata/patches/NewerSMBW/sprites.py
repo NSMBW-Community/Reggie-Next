@@ -1132,6 +1132,27 @@ class SpriteImage_TopmanBoss(SLib.SpriteImage_Static):  # 251
         SLib.loadIfNotInImageCache('TopmanBoss', 'topman_boss.png')
 
 
+class SpriteImage_NewerParabomb(SLib.SpriteImage_StaticMultiple):  # 269
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('Parabomb', 'parabomb.png')
+        if 'Bramball1' in ImageCache: return
+        for i in range(8):
+            ImageCache['Parabomb%d' % (i + 1)] = SLib.GetImg('parabomb_%d.png' % (i + 1))
+
+    def dataChanged(self):
+        colour = (self.parent.spritedata[2] & 0xF) % 9
+        self.offset = (-2, -16)
+
+        if colour == 0:
+            self.image = ImageCache['Parabomb']
+            
+        else:
+            self.image = ImageCache['Parabomb%d' % colour]
+
+        super().dataChanged()
+
+
 class SpriteImage_RockyBoss(SLib.SpriteImage_Static):  # 279
     def __init__(self, parent):
         super().__init__(
@@ -1334,6 +1355,7 @@ ImageClasses = {
     251: SpriteImage_TopmanBoss,
     255: SpriteImage_RotatingQBlock,
     256: SpriteImage_RotatingBrickBlock,
+    269: SpriteImage_NewerParabomb,
     279: SpriteImage_RockyBoss,
     282: SpriteImage_AngrySun,
     283: SpriteImage_FuzzyBear,
