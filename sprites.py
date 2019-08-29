@@ -7215,6 +7215,20 @@ class SpriteImage_SpinjumpCoin(SLib.SpriteImage_Static):  # 417
         self.alpha = 0.55
 
 
+class SpriteImage_BanzaiGen(SLib.SpriteImage_Static):  # 418
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['BanzaiGen'],
+            (-48, -16),
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('BanzaiGen', 'banzai_bill_gen.png')
+
+
 class SpriteImage_Bowser(SLib.SpriteImage_Static):  # 419
     def __init__(self, parent):
         super().__init__(
@@ -8451,6 +8465,7 @@ ImageClasses = {
     415: SpriteImage_BetaLarryKoopa,
     416: SpriteImage_InvisibleOneUp,
     417: SpriteImage_SpinjumpCoin,
+    418: SpriteImage_BanzaiGen,
     419: SpriteImage_Bowser,
     420: SpriteImage_GiantGlowBlock,
     421: SpriteImage_UnusedGhostDoor,
