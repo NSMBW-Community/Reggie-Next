@@ -271,7 +271,7 @@
     </list>
   </sprite> <!-- #16: Bomb Drop Controller -->
   
-  <sprite id="17" name="Music House Glow Block" asmhacks="True" notes="These are the colored Glow Blocks that are created by [15] in NewerSMBW's Music Houses. They look like colored Glow Blocks. They can either be used as decoration, or as an item block.">
+  <sprite id="17" name="Lighting - Music House Glow Block" asmhacks="True" notes="These are the colored Glow Blocks that act like normal blocks. They can be spawned by [15] in NewerSMBW's Music Houses. They can either be used as decoration, or as an item block.">
     <dualbox bit="44" title1="Plays a Musical Note" title2="Awards an Item" comment="This determines if the glow block will play a note when struck or award an item."/>
     <list nybble="7-8" title="Item" comment="This determines the item rewarded." comment2="[Bug] Block will award unlimited items." advancedcomment="The block can be set to both award an item and play a musical note, but it is not recommended." requiredbit="44">
       <entry value="0">None</entry>
@@ -6925,10 +6925,10 @@
   </sprite> <!-- #390: Bolt Controlled Coin -->
   
   <sprite id="391" name="Lighting - Glow Block" asmhacks="True" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely dimished as anything other than a weapon of destruction if not using Full Darkness lighting.">
-    <list nybble="6" title="Color" advanced="True" comment="There are currently no available alternate colors, however the feature is available.">
+    <list nybble="6" title="Color" advanced="True" comment="A recolor for the Glow Block." advancedcomment="More effects can be added for your hack.">
       <entry value="0">Yellow</entry>
+	  <entry value="1">Dark Purple</entry>
     </list>
-    <checkbox bit="32" title="Disable Glow" comment="When enabled, the glow effect will be disabled." comment2="This is useful if you are using the block only as a weapon for challenge rooms or specific Newer bosses."/>
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #391: Lighting - Glow Block -->
   

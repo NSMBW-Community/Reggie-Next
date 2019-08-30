@@ -203,6 +203,27 @@ class SpriteImage_ClownCar(SLib.SpriteImage_Static):  # 13
         SLib.loadIfNotInImageCache('ClownCar', 'clown_car.png')
 
 
+class SpriteImage_MusicBlock(SLib.SpriteImage_StaticMultiple): # 17
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.offset = (0, -45)
+
+    @staticmethod
+    def loadImages():
+        if 'MusicBlock1' in ImageCache: return
+        for i in range(8):
+            ImageCache['MusicBlock%d' % (i + 1)] = SLib.GetImg('music_block_%d.png' % (i + 1))
+
+    def dataChanged(self):
+        colour = (self.parent.spritedata[5] & 0xF) % 9
+        
+        if colour == 0:
+            self.image = None
+        else:
+            self.image = ImageCache['MusicBlock%d' % colour]
+        super().dataChanged()
+
+
 # TODO: Fix massive artifacts when moving the sprite image, caused by an incorrect
 # bounding rectangle.
 class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple): # 18
@@ -1136,7 +1157,7 @@ class SpriteImage_NewerParabomb(SLib.SpriteImage_StaticMultiple):  # 269
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Parabomb', 'parabomb.png')
-        if 'Bramball1' in ImageCache: return
+        if 'Parabomb1' in ImageCache: return
         for i in range(8):
             ImageCache['Parabomb%d' % (i + 1)] = SLib.GetImg('parabomb_%d.png' % (i + 1))
 
@@ -1297,6 +1318,24 @@ class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
         super().dataChanged()
 
 
+class SpriteImage_NewerGlowBlock(SLib.SpriteImage):  # 391
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.spritebox.shown = False
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 48, 48))
+        self.aux[0].setPos(-12, -12)
+    
+    def dataChanged(self):
+        purple = self.parent.spritedata[2] & 1
+        self.aux[0].image = ImageCache['GlowBlock' if not purple else 'GlowBlockPurple']
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('GlowBlock', 'glow_block.png')
+        SLib.loadIfNotInImageCache('GlowBlockPurple', 'glow_block_1.png')
+
+
 class SpriteImage_GigaGoomba(SLib.SpriteImage_Static):  # 410
     def __init__(self, parent):
         super().__init__(
@@ -1314,6 +1353,7 @@ class SpriteImage_GigaGoomba(SLib.SpriteImage_Static):  # 410
 ImageClasses = {
     12: SpriteImage_StarCollectable,
     13: SpriteImage_ClownCar,
+    17: SpriteImage_MusicBlock,
     18: SpriteImage_DragonCoasterPiece,
     19: SpriteImage_SamuraiGuy,
     20: SpriteImage_NewerGoomba,
@@ -1364,6 +1404,7 @@ ImageClasses = {
     322: SpriteImage_MegaThwomp,
     324: SpriteImage_Podoboule,
     351: SpriteImage_ShyGuy,
+    391: SpriteImage_NewerGlowBlock,
     402: SpriteImage_LineQBlock,
     403: SpriteImage_LineBrickBlock,
     410: SpriteImage_GigaGoomba,
