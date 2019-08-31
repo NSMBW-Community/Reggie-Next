@@ -95,7 +95,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         if contents == 8 and self.eightIsMushroom:
             contents = 2  # same as above, but for type 8
 
-        self.image = ImageCache['Blocks'][contents]
+        self.image = ImageCache['BlockContents'][contents]
 
         # SET UP ROTATION
         if self.rotates:
@@ -843,8 +843,8 @@ class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
             pix = QtGui.QPixmap(48, 24)
             pix.fill(Qt.transparent)
             paint = QtGui.QPainter(pix)
-            paint.drawPixmap(0, 0, ImageCache['Blocks'][9])
-            paint.drawPixmap(24, 0, ImageCache['Blocks'][3])
+            paint.drawPixmap(0, 0, ImageCache['BlockContents'][9])
+            paint.drawPixmap(24, 0, ImageCache['BlockContents'][3])
             del paint
             ImageCache['YoshiFire'] = pix
 
@@ -854,7 +854,7 @@ class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
                 continue
 
             x, y = 36, 48
-            overlay = ImageCache['Blocks'][power]
+            overlay = ImageCache['BlockContents'][power]
             if power == 9:
                 overlay = ImageCache['YoshiFire']
                 x = 24
