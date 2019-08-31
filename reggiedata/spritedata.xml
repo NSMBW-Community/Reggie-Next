@@ -426,8 +426,8 @@
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Buzzy Beetle will be upside-down and able to cling to and walk on ceilings if placed adjacent to them. If not placed adjacent, he will immediately fall and spin towards the player."/>
   </sprite> <!-- #24: Buzzy Beetle -->
 
-  <sprite id="25" name="Spiny" asmhacks="True" sizehacks="True" notes="A Spiny walking along the ground.">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Spiny." advancedcomment="More colors can be added for your hack.">
+  <sprite id="25" name="Spiny" asmhacks="True" sizehacks="True" notes="A Spiny that walks along the ground.">
+    <list nybble="6" title="Color" comment="This determines the color and style of the Spiny." comment2="Any Spiny that uses the Balled Up animation will initially use the original red color. Additionally, the Sidestepper's shell has no texture, so it flickers through all the other colors.">
       <entry value="0">Original</entry>
       <entry value="1">Orange</entry>
       <entry value="2">Yellow</entry>
@@ -437,11 +437,11 @@
       <entry value="6">Black</entry>
       <entry value="7">Sidestepper</entry>
     </list>
-    <list bit="47-48" title="Starts as..." comment="This will determine which animation state the Spiny will load in as.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Balled Up (Lakitu)</entry>
-      <entry value="2">Shell</entry>
-      <entry value="3">Upside-Down Shell</entry>
+    <list bit="47-48" title="Load-In Animation" comment="This will determine which animation state is used by the Spiny when it is first loaded.">
+      <entry value="0">Normal (Towards Player)</entry>
+      <entry value="1">Balled Up (Lakitu) (Default Direction)</entry>
+      <entry value="2">Shell (Towards Player)</entry>
+      <entry value="3">Upside-Down Shell (Towards Player)</entry>
     </list>
     <checkbox bit="44" title="Unknown Flag 11" advanced="True" advancedcomment="Unused flag with unknown effects."/>
   </sprite> <!-- #25: Spiny -->

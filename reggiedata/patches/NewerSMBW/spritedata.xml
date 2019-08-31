@@ -424,7 +424,7 @@
   </sprite> <!-- #24: Buzzy Beetle -->
   
   <sprite id="25" name="Spiny" asmhacks="True" sizehacks="True" notes="A Spiny that walks along the ground.">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Spiny.">
+    <list nybble="6" title="Color" comment="This determines the color and style of the Spiny." comment2="Any Spiny that uses the Balled Up animation will initially use the original red color. Additionally, the Sidestepper's shell has no texture, so it flickers through all the other colors.">
       <entry value="0">Original</entry>
       <entry value="1">Orange</entry>
       <entry value="2">Yellow</entry>

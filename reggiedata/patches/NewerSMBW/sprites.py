@@ -398,6 +398,43 @@ class SpriteImage_NewerBuzzyBeetle(SLib.SpriteImage_StaticMultiple):  # 24
         super().dataChanged()
 
 
+class SpriteImage_NewerSpiny(SLib.SpriteImage_StaticMultiple):  # 25
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('Spiny', 'spiny.png')
+        SLib.loadIfNotInImageCache('SpinyShell', 'spiny_shell.png')
+        SLib.loadIfNotInImageCache('SpinyShellU', 'spiny_shell_u.png')
+        SLib.loadIfNotInImageCache('SpinyBall', 'spiny_ball.png')
+
+        if 'SpinyOrange' in ImageCache: return
+        for colour in ("Orange", "Yellow", "Green", "Blue", "Violet", "Black", "Sidestepper"):
+            ImageCache["Spiny%s" % colour] = SLib.GetImg('spiny_%s.png' % colour.lower())
+            ImageCache["Spiny%sShell" % colour] = SLib.GetImg('spiny_%s_shell.png' % colour.lower())
+            ImageCache["Spiny%sShellU" % colour] = SLib.GetImg('spiny_%s_shell_u.png' % colour.lower())
+
+    def dataChanged(self):
+        orient = self.parent.spritedata[5] & 15
+        colour = self.parent.spritedata[2] & 15
+        if colour > 7:
+            colour = 0
+
+        colour = ("", "Orange", "Yellow", "Green", "Blue", "Violet", "Black", "Sidestepper")[colour]
+        if orient == 1:
+            self.image = ImageCache['SpinyBall']
+            self.yOffset = -2
+        elif orient == 2:
+            self.image = ImageCache['Spiny%sShell' % colour]
+            self.yOffset = 1
+        elif orient == 3:
+            self.image = ImageCache['Spiny%sShellU' % colour]
+            self.yOffset = 2
+        else:
+            self.image = ImageCache['Spiny%s' % colour]
+            self.yOffset = 0
+
+        super().dataChanged()
+
+
 class SpriteImage_NewerQSwitch(SpriteImage_NewerSwitch): # 40
     def __init__(self, parent):
         super().__init__(parent)
@@ -1360,6 +1397,7 @@ ImageClasses = {
     21: SpriteImage_NewerParaGoomba,
     22: SpriteImage_PumpkinGoomba,
     24: SpriteImage_NewerBuzzyBeetle,
+    25: SpriteImage_NewerSpiny,
     40: SpriteImage_NewerQSwitch,
     42: SpriteImage_ExcSwitch,
     47: SpriteImage_Thwomp,
