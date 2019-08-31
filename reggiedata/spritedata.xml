@@ -448,7 +448,17 @@
 
 <!-- Research Unknown Flag 12 -->
   <sprite id="26" name="Upside-Down Spiny" sizehacks="True" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading.">
-    <checkbox bit="32" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
+    <list nybble="6" title="Color" comment="This determines the color and style of the Spiny.">
+      <entry value="0">Original</entry>
+      <entry value="1">Orange</entry>
+      <entry value="2">Yellow</entry>
+      <entry value="3">Green</entry>
+      <entry value="4">Blue</entry>
+      <entry value="5">Violet</entry>
+      <entry value="6">Black</entry>
+      <entry value="7">Sidestepper</entry>
+    </list>
+	<checkbox bit="32" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
     <checkbox bit="48" title="Unknown Flag 12" advanced="True" advancedcomment="Used in Retail: 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 

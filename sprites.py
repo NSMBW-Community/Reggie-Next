@@ -56,23 +56,21 @@ def LoadBasics():
     ImageCache['RedCoin'] = SLib.GetImg('redcoin.png')
     ImageCache['StarCoin'] = SLib.GetImg('starcoin.png')
 
-    # Load blocks
+    # Load block contents
+    ContentImage = SLib.GetImg('block_contents.png')
+    Blocks = []
+    count = ContentImage.width() // 24
+    for i in range(count):
+        Blocks.append(ContentImage.copy(i * 24, 0, 24, 24))
+    ImageCache['BlockContents'] = Blocks
+
+    # Load the blocks
     BlockImage = SLib.GetImg('blocks.png')
     Blocks = []
     count = BlockImage.width() // 24
     for i in range(count):
         Blocks.append(BlockImage.copy(i * 24, 0, 24, 24))
     ImageCache['Blocks'] = Blocks
-
-    # Load the overrides
-    Overrides = QtGui.QPixmap('reggiedata/overrides.png')
-    Blocks = []
-    x = Overrides.width() // 24
-    y = Overrides.height() // 24
-    for i in range(y):
-        for j in range(x):
-            Blocks.append(Overrides.copy(j * 24, i * 24, 24, 24))
-    ImageCache['Overrides'] = Blocks
 
     # Load the characters
     for num in range(4):
@@ -703,7 +701,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         super().dataChanged()
 
         # SET CONTENTS
-        # In the blocks.png file:
+        # In the block_contents.png file:
         # 0 = Empty, 1 = Coin, 2 = Mushroom, 3 = Fire Flower, 4 = Propeller, 5 = Penguin Suit,
         # 6 = Mini Shroom, 7 = Star, 8 = Continuous Star, 9 = Yoshi Egg, 10 = 10 Coins,
         # 11 = 1-up, 12 = Vine, 13 = Spring, 14 = Shroom/Coin, 15 = Ice Flower, 16 = Toad, 17 = Hammer
@@ -721,7 +719,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         if contents == 8 and self.eightIsMushroom:
             contents = 2  # same as above, but for type 8
 
-        self.image = ImageCache['Blocks'][contents]
+        self.image = ImageCache['BlockContents'][contents]
 
         # SET UP ROTATION
         if self.rotates:
@@ -3304,18 +3302,18 @@ class SpriteImage_BigBrick(SLib.SpriteImage_StaticMultiple):  # 157
             pix = QtGui.QPixmap(48, 24)
             pix.fill(Qt.transparent)
             paint = QtGui.QPainter(pix)
-            paint.drawPixmap(0, 0, ImageCache['Blocks'][9])
-            paint.drawPixmap(24, 0, ImageCache['Blocks'][3])
+            paint.drawPixmap(0, 0, ImageCache['BlockContents'][9])
+            paint.drawPixmap(24, 0, ImageCache['BlockContents'][3])
             del paint
             ImageCache['YoshiFire'] = pix
 
-        for power in range(0x10):
+        for power in range(16):
             if power in (0, 8, 12, 13):
                 ImageCache['BigBrick%d' % power] = ImageCache['BigBrick']
                 continue
 
-            x, y = 24, 24
-            overlay = ImageCache['Blocks'][power]
+            x = y = 24
+            overlay = ImageCache['BlockContents'][power]
             if power == 9:
                 overlay = ImageCache['YoshiFire']
                 x = 12
@@ -3553,18 +3551,20 @@ class SpriteImage_FlyingQBlock(SLib.SpriteImage):  # 175
     def paint(self, painter):
         super().paint(painter)
 
-        color = self.parent.spritedata[4] >> 4
-        if color == 0 or color > 3:
-            block = 9
-        elif color == 1:
-            block = 59
-        elif color == 2:
-            block = 109
-        elif color == 3:
-            block = 159
+        theme = self.parent.spritedata[4] >> 4
+        content = self.parent.spritedata[5] & 0xF
+        
+        if theme > 3:
+            theme = 0
+        
+        if content == 2:
+            content = 17
+        elif content in (8, 9, 10, 12, 13, 14):
+            content = 0
 
         painter.drawPixmap(0, 0, ImageCache['FlyingQBlock'])
-        painter.drawPixmap(18, 23, ImageCache['Overrides'][block])
+        painter.drawPixmap(18, 23, ImageCache['Blocks'][theme])
+        painter.drawPixmap(18, 23, ImageCache['BlockContents'][content])
 
 
 class SpriteImage_RouletteBlock(SLib.SpriteImage_Static):  # 176
@@ -3983,7 +3983,7 @@ class SpriteImage_Clam(SLib.SpriteImage_StaticMultiple):  # 197
 
         overlays = (
             (26, 22, 'Star', ImageCache['StarCoin']),
-            (40, 42, '1Up', ImageCache['Blocks'][11]),
+            (40, 42, '1Up', ImageCache['BlockContents'][11]),
             (40, 42, 'PSwitch', ImageCache['PSwitch']),
             (40, 42, 'PSwitchU', ImageCache['PSwitchU']),
         )
@@ -4345,7 +4345,7 @@ class SpriteImage_InvisibleBlock(SpriteImage_Block):  # 221
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.eightIsMushroom = True
-        self.tilenum = 0x400 + 1315
+        self.tilenum = 0x200 * 4
 
 
 class SpriteImage_ConveyorSpike(SLib.SpriteImage_Static):  # 222
@@ -4795,13 +4795,9 @@ class SpriteImage_PoltergeistItem(SLib.SpriteImage):  # 262
         polterblock = SLib.GetImg('polter_qblock.png')
 
         standpainter = QtGui.QPainter(polterstand)
-        blockpainter = QtGui.QPainter(polterblock)
-
         standpainter.drawPixmap(18, 18, ImageCache['GhostHouseStand'])
-        blockpainter.drawPixmap(18, 18, ImageCache['Overrides'][9])
-
+        
         del standpainter
-        del blockpainter
 
         ImageCache['PolterStand'] = polterstand
         ImageCache['PolterQBlock'] = polterblock
@@ -7202,7 +7198,7 @@ class SpriteImage_InvisibleOneUp(SLib.SpriteImage_Static):  # 416
     @staticmethod
     def loadImages():
         if 'InvisibleOneUp' in ImageCache: return
-        ImageCache['InvisibleOneUp'] = ImageCache['Blocks'][11].scaled(16, 16)
+        ImageCache['InvisibleOneUp'] = ImageCache['BlockContents'][11].scaled(16, 16)
 
 
 class SpriteImage_SpinjumpCoin(SLib.SpriteImage_Static):  # 417

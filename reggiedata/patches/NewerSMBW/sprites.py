@@ -95,7 +95,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         if contents == 8 and self.eightIsMushroom:
             contents = 2  # same as above, but for type 8
 
-        self.image = ImageCache['Blocks'][contents]
+        self.image = ImageCache['BlockContents'][contents]
 
         # SET UP ROTATION
         if self.rotates:
@@ -435,6 +435,35 @@ class SpriteImage_NewerSpiny(SLib.SpriteImage_StaticMultiple):  # 25
         super().dataChanged()
 
 
+class SpriteImage_NewerUpsideDownSpiny(SLib.SpriteImage_StaticMultiple):  # 26
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('SpinyU', 'spiny_u.png')
+        if 'SpinyOrangeU' not in ImageCache:
+            for style in ("Orange", "Yellow", "Green", "Blue", "Violet", "Black", "Sidestepper"):
+                Spiny = SLib.GetImg('spiny_%s.png' % style, True)
+                
+                if Spiny is None:
+                    # slow patch folder is slow
+                    return
+            
+                ImageCache['Spiny%sU' % style] = QtGui.QPixmap.fromImage(Spiny.mirrored(False, True))
+
+    def dataChanged(self):
+        colour = self.parent.spritedata[2] & 15
+        if colour > 7:
+            colour = 0
+
+        colour = ("", "Orange", "Yellow", "Green", "Blue", "Violet", "Black", "Sidestepper")[colour]
+        # slow patch folder is slow, 2
+        if 'SpinyOrangeU' not in ImageCache:
+            return
+        
+        self.image = ImageCache['Spiny%sU' % colour]
+            
+        super().dataChanged()
+
+
 class SpriteImage_NewerQSwitch(SpriteImage_NewerSwitch): # 40
     def __init__(self, parent):
         super().__init__(parent)
@@ -638,6 +667,9 @@ class SpriteImage_NewerSpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
         if 'SpikeTop00' in ImageCache: return
         for style in ("", "_Red", "_Orange", "_Yellow", "_Green", "_Hothead", "_Purple", "_Black"):
             SpikeTop = SLib.GetImg('spiketop%s.png' % style, True)
+            if SpikeTop is None:
+                # happens when the newer patch folder is not loaded yet
+                return
 
             Transform = QtGui.QTransform()
             ImageCache['SpikeTop00%s' % style] = QtGui.QPixmap.fromImage(SpikeTop.mirrored(True, False))
@@ -663,6 +695,10 @@ class SpriteImage_NewerSpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
         colour = self.parent.spritedata[2] & 7
         
         color = ("", "_Red", "_Orange", "_Yellow", "_Green", "_Hothead", "_Purple", "_Black")[colour]
+        # slow patch folder is slow, 2
+        if 'SpikeTop01_Red' not in ImageCache:
+            return
+        
         self.image = ImageCache['SpikeTop%d%d%s' % (orientation, direction, color)]
 
         if colour == 5:
@@ -843,8 +879,8 @@ class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
             pix = QtGui.QPixmap(48, 24)
             pix.fill(Qt.transparent)
             paint = QtGui.QPainter(pix)
-            paint.drawPixmap(0, 0, ImageCache['Blocks'][9])
-            paint.drawPixmap(24, 0, ImageCache['Blocks'][3])
+            paint.drawPixmap(0, 0, ImageCache['BlockContents'][9])
+            paint.drawPixmap(24, 0, ImageCache['BlockContents'][3])
             del paint
             ImageCache['YoshiFire'] = pix
 
@@ -854,7 +890,7 @@ class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
                 continue
 
             x, y = 36, 48
-            overlay = ImageCache['Blocks'][power]
+            overlay = ImageCache['BlockContents'][power]
             if power == 9:
                 overlay = ImageCache['YoshiFire']
                 x = 24
@@ -1028,6 +1064,9 @@ class SpriteImage_NewerHuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
         if 'HuckitCrabWhiteR' in ImageCache: return
         Huckitcrab = SLib.GetImg('huckit_crab.png', True)
         Wintercrab = SLib.GetImg('huckit_crab_white.png', True)
+        if Wintercrab is None:
+            return
+        
         ImageCache['HuckitCrabL'] = QtGui.QPixmap.fromImage(Huckitcrab)
         ImageCache['HuckitCrabR'] = QtGui.QPixmap.fromImage(Huckitcrab.mirrored(True, False))
         ImageCache['HuckitCrabWhiteL'] = QtGui.QPixmap.fromImage(Wintercrab)
@@ -1038,6 +1077,8 @@ class SpriteImage_NewerHuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
         colour = self.parent.spritedata[2] & 1
 
         colour = ("", "White")[colour]
+        if 'HuckitCrabWhiteR' not in ImageCache:
+            return
         if info == 1:
             self.image = ImageCache['HuckitCrab%sR' % colour]
             self.xOffset = 0
@@ -1398,6 +1439,7 @@ ImageClasses = {
     22: SpriteImage_PumpkinGoomba,
     24: SpriteImage_NewerBuzzyBeetle,
     25: SpriteImage_NewerSpiny,
+    26: SpriteImage_NewerUpsideDownSpiny,
     40: SpriteImage_NewerQSwitch,
     42: SpriteImage_ExcSwitch,
     47: SpriteImage_Thwomp,
