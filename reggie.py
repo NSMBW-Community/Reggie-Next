@@ -2989,9 +2989,11 @@ def LoadOverrides():
     Load overrides
     """
     global theme, Overrides, Overrides_safe # these pixmaps will never be changed
+    global OVERRIDE_UNKNOWN
 
     Overrides = [None] * (5 * 26)
     Overrides_safe = [None] * (5 * 26)
+    OVERRIDE_UNKNOWN = 2 * 26 + 12
 
     OverrideBitmap = QtGui.QPixmap(theme.overridesFile)
     idx = 0
@@ -4558,6 +4560,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
     autoPosChange = False
     dragoffsetx = 0
     dragoffsety = 0
+    objx, objy = 0, 0
 
     def __init__(self):
         """
@@ -4567,7 +4570,9 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         self.setFlag(self.ItemSendsGeometryChanges, True)
 
     def __lt__(self, other):
-        return (self.objx * 100000 + self.objy) < (other.objx * 100000 + other.objy)
+        if self.objx != other.objx:
+            return self.objx < other.objx
+        return self.objy < other.objy
 
     def itemChange(self, change, value):
         """
@@ -5533,7 +5538,7 @@ class AbstractBackground:
         self.xPos = xPos
         self.yPos = yPos
 
-    def save(idnum=0):
+    def save(self, idnum=0):
         return b''
 
 
@@ -9287,7 +9292,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
 
                     if tile == -1:
                         # Draw unknown tiles
-                        pix = Overrides[108].getCurrentTile()
+                        pix = Overrides[OVERRIDE_UNKNOWN].getCurrentTile()
                     elif tile is not None:
                         pix = tiles[tile].getCurrentTile()
 
@@ -16309,7 +16314,7 @@ class LevelScene(QtWidgets.QGraphicsScene):
 
                         if tile == -1:
                             # Draw unknown tiles
-                            pix = Overrides[108].getCurrentTile()
+                            pix = Overrides[OVERRIDE_UNKNOWN].getCurrentTile()
                         elif tile is not None:
                             pix = tiles[tile].getCurrentTile()
 
