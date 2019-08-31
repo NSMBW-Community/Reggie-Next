@@ -4345,7 +4345,7 @@ class SpriteImage_InvisibleBlock(SpriteImage_Block):  # 221
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.eightIsMushroom = True
-        self.tilenum = 0x400 + 1315
+        self.tilenum = 0x200 * 4
 
 
 class SpriteImage_ConveyorSpike(SLib.SpriteImage_Static):  # 222
