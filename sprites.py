@@ -7237,7 +7237,7 @@ class SpriteImage_Bowser(SLib.SpriteImage_Static):  # 419
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Bowser', 'Bowser.png')
+        SLib.loadIfNotInImageCache('Bowser', 'bowser.png')
 
 
 class SpriteImage_GiantGlowBlock(SLib.SpriteImage):  # 420
