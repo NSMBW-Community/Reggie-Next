@@ -7232,7 +7232,7 @@ class SpriteImage_Bowser(SLib.SpriteImage_Static):  # 419
             parent,
             1.5,
             ImageCache['Bowser'],
-            (-43, -70),
+            (-35, -70),
         )
 
     @staticmethod
