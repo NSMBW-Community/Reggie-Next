@@ -6266,7 +6266,8 @@ class SpriteImage_ChainHolder(SLib.SpriteImage_Static):  # 345
         super().__init__(
             parent,
             1.5,
-            ImageCache['ChainHolder']
+            ImageCache['ChainHolder'],
+            (0, -12)
         )
 
     @staticmethod
