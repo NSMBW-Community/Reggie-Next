@@ -6566,7 +6566,7 @@
     <checkbox bit="48" title="Low Gravity" comment="When enabled, the Topman will fall much more slowly."/>
   </sprite> <!-- #210: Topman -->
 
-  <sprite id="211" name="Boss Controller - Bowser Jr. (1st Battle)" noyoshi="True" notes="This controls the mechanics for the First Bowser Jr. boss fight.">
+  <sprite id="211" name="Boss Controller - Bowser Jr. (1st Battle)" noyoshi="True" notes="This controls the mechanics for the First Bowser Jr. boss fight. It spawns the backgrounds BgA_0E02 and BgB_3402, and will overlap any other backgrounds set in the zone.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 04-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
@@ -6943,11 +6943,11 @@
       <entry value="0">Metal Pink</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
-      <entry value="3">Yellow</entry>
+      <!-- <entry value="3">Yellow</entry> Not in Newer -->
       <entry value="4">Green</entry>
       <entry value="5">Blue</entry>
-      <entry value="6">Violet</entry>
-      <entry value="7">Black</entry>
+      <!-- <entry value="6">Violet</entry> Not in Newer -->
+      <!-- <entry value="7">Black</entry> Not in Newer -->
     </list>
     <list nybble="9" title="Width of Platform" comment="This determines the width of the mushroom platform.">
       <entry value="0">3 Blocks</entry>

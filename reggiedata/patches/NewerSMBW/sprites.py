@@ -1206,6 +1206,58 @@ class SpriteImage_NewerBramball(SLib.SpriteImage_StaticMultiple):  # 230
         super().dataChanged()
 
 
+class SpriteImage_NewerWiggleShroom(SLib.SpriteImage):  # 231
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.spritebox.shown = False
+
+    @staticmethod
+    def loadImages():
+        if 'WiggleShroomL' in ImageCache: return
+        ImageCache['WiggleShroomL'] = SLib.GetImg('wiggle_shroom_left.png')
+        ImageCache['WiggleShroomM'] = SLib.GetImg('wiggle_shroom_middle.png')
+        ImageCache['WiggleShroomR'] = SLib.GetImg('wiggle_shroom_right.png')
+        ImageCache['WiggleShroomS'] = SLib.GetImg('wiggle_shroom_stem.png')
+        
+        if 'WiggleShroomRedL' in ImageCache: return
+        for style in ("Red", "Orange", "Green", "Blue"):
+            ImageCache['WiggleShroom%sL' % (style)] = SLib.GetImg('wiggle_shroom_%s_left.png' % (style))
+            ImageCache['WiggleShroom%sM' % (style)] = SLib.GetImg('wiggle_shroom_%s_middle.png' % (style))
+            ImageCache['WiggleShroom%sR' % (style)] = SLib.GetImg('wiggle_shroom_%s_right.png' % (style))
+            ImageCache['WiggleShroomNewerS'] = SLib.GetImg('wiggle_shroom_newer_stem.png')
+
+    def dataChanged(self):
+        super().dataChanged()
+        
+        width = (self.parent.spritedata[4] & 0xF0) >> 4
+        stemlength = self.parent.spritedata[3] & 3
+        colour = (self.parent.spritedata[2] & 0xF) % 6
+        shroom = ("", "Red", "Orange", "", "Green", "Blue")[colour]
+        
+        self.wiggleleft = ImageCache['WiggleShroom%sL' % shroom]
+        self.wigglemiddle = ImageCache['WiggleShroom%sM' % shroom]
+        self.wiggleright = ImageCache['WiggleShroom%sR' % shroom]
+        if colour > 0:
+            self.wigglestem = ImageCache['WiggleShroomNewerS']
+        else:
+            self.wigglestem = ImageCache['WiggleShroomS']
+            
+        self.xOffset = -(width * 8) - 20
+        self.width = (width * 16) + 56
+        self.height = (stemlength * 16) + 64
+
+        self.parent.setZValue(24999)
+
+    def paint(self, painter):
+        super().paint(painter)
+        
+        xsize = self.width * 1.5
+        painter.drawPixmap(0, 0, self.wiggleleft)
+        painter.drawTiledPixmap(18, 0, xsize - 36, 24, self.wigglemiddle)
+        painter.drawPixmap(xsize - 18, 0, self.wiggleright)
+        painter.drawTiledPixmap((xsize / 2) - 12, 24, 24, (self.height * 1.5) - 24, self.wigglestem)
+
+
 class SpriteImage_EventBlock(SLib.SpriteImage_Static): # 239
     def __init__(self, parent):
         super().__init__(
@@ -1471,6 +1523,7 @@ ImageClasses = {
     213: SpriteImage_CaptainBowser,
     223: SpriteImage_NewerSpringBlock,
     230: SpriteImage_NewerBramball,
+    231: SpriteImage_NewerWiggleShroom,
     239: SpriteImage_EventBlock,
     251: SpriteImage_TopmanBoss,
     255: SpriteImage_RotatingQBlock,
