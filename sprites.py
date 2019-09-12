@@ -8126,6 +8126,7 @@ class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
         self.aux.append(SLib.AuxiliaryImage(parent, 3612, 672))
         self.aux[0].image = ImageCache['FinalBossEffects0']
         self.aux[0].setPos(-228, -555)
+        self.parent.setZValue(24999)
 
     @staticmethod
     def loadImages():

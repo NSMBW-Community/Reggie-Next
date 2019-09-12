@@ -218,7 +218,7 @@ class SpriteImage_MusicBlock(SLib.SpriteImage_StaticMultiple): # 17
         colour = (self.parent.spritedata[5] & 0xF) % 9
         
         if colour == 0:
-            self.image = None
+            self.image = ImageCache['MusicBlock1']
         else:
             self.image = ImageCache['MusicBlock%d' % colour]
         super().dataChanged()
@@ -959,8 +959,8 @@ class SpriteImage_Thundercloud(SLib.SpriteImage_Static):  # 168
 class SpriteImage_Meteor(SLib.SpriteImage_StaticMultiple):  # 183
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Meteor', 'meteor.png')
-        SLib.loadIfNotInImageCache('MeteorElectric', 'meteor_electric.png')
+        ImageCache['Meteor'] = SLib.GetImg('meteor.png')
+        ImageCache['MeteorElectric'] = SLib.GetImg('meteor_electric.png')
 
     def dataChanged(self):
         multiplier = self.parent.spritedata[4] / 20.0
@@ -985,6 +985,8 @@ class SpriteImage_Meteor(SLib.SpriteImage_StaticMultiple):  # 183
         absYoff = size[3]
 
         base = ImageCache['MeteorElectric' if isElectric else 'Meteor']
+        if base is None: 
+            return
 
         self.image = base.scaled(
             (base.width() * multiplier) + 8,

@@ -8101,7 +8101,7 @@
     <dependency notes="While it can be placed, it only has two variants, has no collision, and requires Bowser in the level in order to function. It may be indirectly called on during the actual Bowser battle, however.">
       <required sprite="419"/>
     </dependency>
-    <dualbox bit="48" title1="1x2 Block" title2="2x3 Block" comment="This determines the size of the decoration"/>
+    <dualbox bit="48" title1="2x1 Block" title2="3x2 Block" comment="This determines the size of the decoration"/>
     <value nybble="7-8" title="Unknown Value 7-8" advanced="True" advancedcomment="ASM shows Nybble 7-8 might affect something."/>
     <value nybble="9-10" title="Unknown Value 9-10" advanced="True" advancedcomment="ASM shows Nybble 9-10 might affect something."/>
   </sprite> <!-- #481: (Unused) Final Boss - Rubble Block -->
