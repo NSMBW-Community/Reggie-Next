@@ -1574,7 +1574,7 @@
   <sprite id="88" name="Actor Spawner" asmhacks="True" phonebook="Actors" notes="With this sprite, you can spawn anything and everything that exists in the game. Sprite Data can be applied to sprites spawned through this within certain limitations. Please utilize Raw Data (Visible with Advanced Settings enabled) to determine what the settings should be set to. Combine the Actor Spawner with [332] Effect/Sound Spawner to add flair to the spawn effect. &lt;br&gt; &lt;br&gt;Additionally, anything spawned by the Actor Spawner will need to be respawned each time the player changes Zones. If returning from a bonus room, be sure to trigger any relevant spawns. Each Actor Spawner can only trigger once each Zone.">
     <dependency notes="Directly place any sprite you want to spawn with the Actor Spawner somewhere in your level for the game to load the required secondary assets of that sprite."/>
     <value bit="17-20" title="Triggering Event ID" comment="When this event is activated, the Actor Spawner will create one copy of the Actor at the location of the Spawner. Keep in mind that some sprites have abnormal placement so expect a lot of testing to make sure that everything works correctly." comment2="The Triggering Event ID is limited to only the first 15 Event IDs." idtype="Triggering Event"/>
-    <checkbox bit="21" title="Automatically Respawn" comment="When the actor spawned by this spawner is deleted or missing, and the event is triggered, another actor with the same settings will be spawened."/>
+    <checkbox bit="21" title="Automatically Respawn" comment="When the actor spawned by this spawner is deleted or missing, and the event is triggered, another actor with the same settings will be spawened. This also stops the spawned actor from despawning when the event is deactivated."/>
     <value bit="22-32" title="Actor ID - Number Entry" comment="Please enter the extension that you wish to dial. If your party cannot be reached, please dial a different number. Thank you." comment2="Do not use an Actor ID that does not return a value on the list below." idtype="Actor"/> <!-- ID type is used so that the number can be shown on the sprite display. -->
     <external type="actors" bit="22-32" title="Actor ID" comment="Use this external window to select your Actor ID." />
     <value bit="33-34" title="Nybble 5" />
@@ -7823,8 +7823,8 @@
     <value nybble="12" title="Collection ID" comment="This pairs matching Coins with the Crowd Clapper to track their collection." idtype="Collection"/>
   </sprite> <!-- #459: Crowd Clapping Controller for Coin Collection #1 -->
   
-  <sprite id="460" name="Silver Gear Block - Two Way Line" notes="A large rectangular block with a silver gear motif as decoration. It can only be paired for Two Way Line movement.">
-    <dependency notes="This block must be paired with a [260] Two Way Line movement controller in order to appear and function.">
+  <sprite id="460" name="Silver Gear Block - Two Way Line" notes="A large rectangular block with a silver gear motif as decoration. It can only be paired for Two Way Line movement." advancednotes="If linked with an Event Activated Two Way Line controller, the Silver Gear Block will only spawn when the event is activated.">
+    <dependency notes="This block must be paired with a [260] Two Way Line movement controller in order to spawn and function.">
       <required sprite="260"/>
     </dependency>
     <value nybble="5-6" title="Two Way Line ID" comment="This pairs the block to a matching Two Way Line movement controller." idtype="Two Way Line"/>

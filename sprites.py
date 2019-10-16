@@ -7787,15 +7787,20 @@ class SpriteImage_LongMetalBar(SLib.SpriteImage):  # 458
 class SpriteImage_SilverGearBlock(SLib.SpriteImage_StaticMultiple):  # 460
     @staticmethod
     def loadImages():
-        if 'SilverGearBlock4' in ImageCache: return
-        ImageCache['SilverGearBlock4'] = SLib.GetImg('silver_gear_block_4.png')
-        ImageCache['SilverGearBlock7'] = SLib.GetImg('silver_gear_block_7.png')
-        ImageCache['SilverGearBlock8'] = SLib.GetImg('silver_gear_block_8.png')
-        ImageCache['SilverGearBlock14'] = SLib.GetImg('silver_gear_block_14.png')
+        if 'SilverGearBlockDown3' in ImageCache: return
+        for gear in range(4):
+            image = SLib.GetImg('silver_gear_block_%d.png' % gear, True)
+            ImageCache['SilverGearBlockUp%d' % gear] = QtGui.QPixmap.fromImage(image)
+            ImageCache['SilverGearBlockDown%d' % gear] = QtGui.QPixmap.fromImage(image.mirrored(True, True))
 
     def dataChanged(self):
         style = self.parent.spritedata[5] & 3
-        self.image = ImageCache['SilverGearBlock%d' % [7, 4, 14, 8][style]]
+        flipped = (self.parent.spritedata[5] >> 4) & 1
+        
+        if flipped:
+            self.image = ImageCache['SilverGearBlockDown%d' % style]
+        else:
+            self.image = ImageCache['SilverGearBlockUp%d' % style]
 
         super().dataChanged()
 
@@ -8131,7 +8136,7 @@ class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
     @staticmethod
     def loadImages():
         if 'FinalBossEffects0' in ImageCache: return
-        for i in range(0, 3):
+        for i in range(4):
             ImageCache["FinalBossEffects%d" % i] = SLib.GetImg("final_boss_effects_%d.png" % i)
         
     def dataChanged(self):
