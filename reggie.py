@@ -5034,21 +5034,29 @@ class ObjectItem(LevelEditorItem):
         self.BoundingRect = QtCore.QRectF(0, 0, 24 * self.width, 24 * self.height)
         self.SelectionRect = QtCore.QRectF(0, 0, (24 * self.width) - 1, (24 * self.height) - 1)
 
-        grabberwidth = 4.8 + self.width * self.height * 0.01
+        grabbersize = 4.8 + self.width * self.height * 0.01
 
         # make sure the grabbers don't overlap
-        grabberwidth = min(grabberwidth, self.width * 9, self.height * 9)
+        grabbersize = min(grabbersize, self.width * 9, self.height * 9)
 
-        self.GrabberRectTL = QtCore.QRectF(0, 0, grabberwidth, grabberwidth)
-        self.GrabberRectTR = QtCore.QRectF((24 * self.width) - grabberwidth, 0, grabberwidth, grabberwidth)
+        self.GrabberRectTL = QtCore.QRectF(0, 0, grabbersize, grabbersize)
+        self.GrabberRectTR = QtCore.QRectF((24 * self.width) - grabbersize, 0, grabbersize, grabbersize)
 
-        self.GrabberRectBL = QtCore.QRectF(0, (24 * self.height) - grabberwidth, grabberwidth, grabberwidth)
-        self.GrabberRectBR = QtCore.QRectF((24 * self.width) - grabberwidth, (24 * self.height) - grabberwidth, grabberwidth, grabberwidth)
+        self.GrabberRectBL = QtCore.QRectF(0, (24 * self.height) - grabbersize, grabbersize, grabbersize)
+        self.GrabberRectBR = QtCore.QRectF((24 * self.width) - grabbersize, (24 * self.height) - grabbersize, grabbersize, grabbersize)
 
-        self.GrabberRectMT = QtCore.QRectF(((24 * self.width) - grabberwidth) / 2, 0, grabberwidth, grabberwidth)
-        self.GrabberRectML = QtCore.QRectF(0, ((24 * self.height) - grabberwidth) / 2, grabberwidth, grabberwidth)
-        self.GrabberRectMB = QtCore.QRectF(((24 * self.width) - grabberwidth) / 2, (24 * self.height) - grabberwidth, grabberwidth, grabberwidth)
-        self.GrabberRectMR = QtCore.QRectF((24 * self.width) - grabberwidth, ((24 * self.height) - grabberwidth) / 2, grabberwidth, grabberwidth)
+        self.GrabberRectMT = QtCore.QRectF(((24 * self.width) - grabbersize) / 2, 0, grabbersize, grabbersize)
+        self.GrabberRectML = QtCore.QRectF(0, ((24 * self.height) - grabbersize) / 2, grabbersize, grabbersize)
+        self.GrabberRectMB = QtCore.QRectF(((24 * self.width) - grabbersize) / 2, (24 * self.height) - grabbersize, grabbersize, grabbersize)
+        self.GrabberRectMR = QtCore.QRectF((24 * self.width) - grabbersize, ((24 * self.height) - grabbersize) / 2, grabbersize, grabbersize)
+
+        # Create rects for the edges
+        longwidth = 24 * self.width - 2 * grabbersize
+        longheight = 24 * self.height - 2 * grabbersize
+        self.GrabberRectMT_ = QtCore.QRectF(grabbersize, 0, longwidth, grabbersize)
+        self.GrabberRectML_ = QtCore.QRectF(0, grabbersize, grabbersize, longheight)
+        self.GrabberRectMB_ = QtCore.QRectF(grabbersize, longheight + grabbersize, longwidth, grabbersize)
+        self.GrabberRectMR_ = QtCore.QRectF(longwidth + grabbersize, grabbersize, grabbersize, longheight)
 
         self.LevelRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
 
@@ -5191,10 +5199,10 @@ class ObjectItem(LevelEditorItem):
         self.TRGrabbed = self.GrabberRectTR.contains(event.pos())
         self.BLGrabbed = self.GrabberRectBL.contains(event.pos())
         self.BRGrabbed = self.GrabberRectBR.contains(event.pos())
-        self.MTGrabbed = self.GrabberRectMT.contains(event.pos())
-        self.MLGrabbed = self.GrabberRectML.contains(event.pos())
-        self.MBGrabbed = self.GrabberRectMB.contains(event.pos())
-        self.MRGrabbed = self.GrabberRectMR.contains(event.pos())
+        self.MTGrabbed = self.GrabberRectMT_.contains(event.pos())
+        self.MLGrabbed = self.GrabberRectML_.contains(event.pos())
+        self.MBGrabbed = self.GrabberRectMB_.contains(event.pos())
+        self.MRGrabbed = self.GrabberRectMR_.contains(event.pos())
 
         if self.isSelected() and (
             self.TLGrabbed
