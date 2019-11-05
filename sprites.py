@@ -4154,6 +4154,21 @@ class SpriteImage_BrickBlock(SpriteImage_Block):  # 209
         self.tilenum = 48
 
 
+class SpriteImage_BowserJr1stController(SLib.SpriteImage):  # 211
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 672, 80))
+        self.aux[0].image = ImageCache['BowserJr1stController']
+        self.aux[0].setPos(-504, -55)
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, -504, -312))
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('BowserJr1stController', 'boss_controller_bowserjr_1.png')
+
+
 class SpriteImage_RollingHill(SLib.SpriteImage):  # 212
     RollingHillSizes = [0, 18 * 16, 32 * 16, 50 * 16, 64 * 16, 10 * 16, 14 * 16, 20 * 16, 0, 0, 0, 0, 0, 0, 0, 0]
 
@@ -8320,6 +8335,7 @@ ImageClasses = {
     207: SpriteImage_QBlock,
     208: SpriteImage_QBlockUnused,
     209: SpriteImage_BrickBlock,
+    211: SpriteImage_BowserJr1stController,
     212: SpriteImage_RollingHill,
     214: SpriteImage_FreefallPlatform,
     216: SpriteImage_Poison,
