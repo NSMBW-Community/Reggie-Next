@@ -7124,6 +7124,21 @@ class SpriteImage_LineBrickBlock(SpriteImage_Block):  # 403
         self.tilenum = 48
 
 
+class SpriteImage_BowserJr2ndController(SLib.SpriteImage):  # 405
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 672, 384))
+        self.aux[0].image = ImageCache['BowserJr2ndController']
+        self.aux[0].setPos(-504, -336)
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, -504, -312))
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('BowserJr2ndController', 'boss_controller_bowserjr_2.png')
+
+
 class SpriteImage_ToadHouseBalloonUnused(SpriteImage_ToadHouseBalloon):  # 411
     def dataChanged(self):
         self.livesNum = (self.parent.spritedata[4] >> 4) % 4
@@ -8477,6 +8492,7 @@ ImageClasses = {
     397: SpriteImage_GhostHouseBox,
     402: SpriteImage_LineQBlock,
     403: SpriteImage_LineBrickBlock,
+    405: SpriteImage_BowserJr2ndController,
     411: SpriteImage_ToadHouseBalloonUnused,
     412: SpriteImage_ToadHouseBalloonUsed,
     413: SpriteImage_WendyRing,
