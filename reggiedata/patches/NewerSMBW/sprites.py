@@ -1270,6 +1270,27 @@ class SpriteImage_EventBlock(SLib.SpriteImage_Static): # 239
         )
 
 
+class SpriteImage_LineEvent(SLib.SpriteImage):  # 244
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 0, 0))
+
+    def dataChanged(self):
+        super().dataChanged()
+        width = (self.parent.spritedata[5] >> 4) & 0xF
+        height = self.parent.spritedata[4] & 0xF
+        if width == 0:
+            w = 1
+        else:
+            w = 0
+        if height == 0:
+            h = 1
+        else:
+            h = 0
+        
+        self.aux[0].setSize((width + w) * 24, (height + h) * 24)
+
+
 class SpriteImage_TopmanBoss(SLib.SpriteImage_Static):  # 251
     def __init__(self, parent):
         super().__init__(
@@ -1527,6 +1548,7 @@ ImageClasses = {
     230: SpriteImage_NewerBramball,
     231: SpriteImage_NewerWiggleShroom,
     239: SpriteImage_EventBlock,
+    244: SpriteImage_LineEvent,
     251: SpriteImage_TopmanBoss,
     255: SpriteImage_RotatingQBlock,
     256: SpriteImage_RotatingBrickBlock,
