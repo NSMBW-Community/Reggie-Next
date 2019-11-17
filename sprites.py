@@ -6216,12 +6216,12 @@ class SpriteImage_BigShell(SLib.SpriteImage_StaticMultiple):  # 341
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BigShell', 'bigshell.png')
-        SLib.loadIfNotInImageCache('BigShellGrass', 'bigshell_grass.png')
+        SLib.loadIfNotInImageCache('BigShell', 'bigshell_green.png')
+        SLib.loadIfNotInImageCache('BigShellGrass', 'bigshell_green_grass.png')
 
     def dataChanged(self):
-
         style = self.parent.spritedata[5] & 1
+        
         if style == 0:
             self.image = ImageCache['BigShellGrass']
         else:

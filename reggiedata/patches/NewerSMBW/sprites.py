@@ -1442,6 +1442,31 @@ class SpriteImage_Podoboule(SLib.SpriteImage_StaticMultiple):  # 324
         super().dataChanged()
 
 
+class SpriteImage_NewerBigShell(SLib.SpriteImage_StaticMultiple):  # 341
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.offset = (-97, -145)
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('BigShellGreen', 'bigshell_green.png')
+        SLib.loadIfNotInImageCache('BigShellGreenGrass', 'bigshell_green_grass.png')
+        SLib.loadIfNotInImageCache('BigShellRed', 'bigshell_red.png')
+        SLib.loadIfNotInImageCache('BigShellRedGrass', 'bigshell_red_grass.png')
+
+    def dataChanged(self):
+        style = self.parent.spritedata[5] & 1
+        colour = self.parent.spritedata[2] & 1
+        
+        colour = ("Green", "Red")[colour]
+        if style == 0:
+            self.image = ImageCache['BigShell%sGrass' % colour]
+        else:
+            self.image = ImageCache['BigShell%s' % colour]
+
+        super().dataChanged()
+
+
 class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
     @staticmethod
     def loadImages():
@@ -1560,6 +1585,7 @@ ImageClasses = {
     319: SpriteImage_Flipblock,
     322: SpriteImage_MegaThwomp,
     324: SpriteImage_Podoboule,
+    341: SpriteImage_NewerBigShell,
     351: SpriteImage_ShyGuy,
     391: SpriteImage_NewerGlowBlock,
     402: SpriteImage_LineQBlock,
