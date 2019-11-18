@@ -1584,19 +1584,19 @@ class SpriteImage_KoopaParatroopa(SLib.SpriteImage_StaticMultiple):  # 58
             turnImmediately = self.parent.spritedata[4] & 1 == 1
 
             if mode == 1:
-                self.track.direction = SLib.AuxiliaryTrackObject.Horizontal
-                self.track.setSize(9 * 16, 16)
+                track.direction = SLib.AuxiliaryTrackObject.Horizontal
+                track.setSize(9 * 16, 16)
                 if turnImmediately:
-                    self.track.setPos(self.width / 2, self.height / 2)
+                    track.setPos(self.width / 2, self.height / 2)
                 else:
-                    self.track.setPos(-4 * 24 + self.width / 2, self.height / 2)
+                    track.setPos(-4 * 24 + self.width / 2, self.height / 2)
             else:
-                self.track.direction = SLib.AuxiliaryTrackObject.Vertical
-                self.track.setSize(16, 9 * 16)
+                track.direction = SLib.AuxiliaryTrackObject.Vertical
+                track.setSize(16, 9 * 16)
                 if turnImmediately:
-                    self.track.setPos(self.width / 2, self.height / 2)
+                    track.setPos(self.width / 2, self.height / 2)
                 else:
-                    self.track.setPos(self.width / 2, -4 * 24 + self.height / 2)
+                    track.setPos(self.width / 2, -4 * 24 + self.height / 2)
 
         else:
             # hide the track
