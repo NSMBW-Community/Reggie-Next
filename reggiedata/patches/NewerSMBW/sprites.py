@@ -1270,6 +1270,27 @@ class SpriteImage_EventBlock(SLib.SpriteImage_Static): # 239
         )
 
 
+class SpriteImage_LineEvent(SLib.SpriteImage):  # 244
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 0, 0))
+
+    def dataChanged(self):
+        super().dataChanged()
+        width = (self.parent.spritedata[5] >> 4) & 0xF
+        height = self.parent.spritedata[4] & 0xF
+        if width == 0:
+            w = 1
+        else:
+            w = 0
+        if height == 0:
+            h = 1
+        else:
+            h = 0
+        
+        self.aux[0].setSize((width + w) * 24, (height + h) * 24)
+
+
 class SpriteImage_TopmanBoss(SLib.SpriteImage_Static):  # 251
     def __init__(self, parent):
         super().__init__(
@@ -1421,6 +1442,31 @@ class SpriteImage_Podoboule(SLib.SpriteImage_StaticMultiple):  # 324
         super().dataChanged()
 
 
+class SpriteImage_NewerBigShell(SLib.SpriteImage_StaticMultiple):  # 341
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.offset = (-97, -145)
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('BigShellGreen', 'bigshell_green.png')
+        SLib.loadIfNotInImageCache('BigShellGreenGrass', 'bigshell_green_grass.png')
+        SLib.loadIfNotInImageCache('BigShellRed', 'bigshell_red.png')
+        SLib.loadIfNotInImageCache('BigShellRedGrass', 'bigshell_red_grass.png')
+
+    def dataChanged(self):
+        style = self.parent.spritedata[5] & 1
+        colour = self.parent.spritedata[2] & 1
+        
+        colour = ("Green", "Red")[colour]
+        if style == 0:
+            self.image = ImageCache['BigShell%sGrass' % colour]
+        else:
+            self.image = ImageCache['BigShell%s' % colour]
+
+        super().dataChanged()
+
+
 class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
     @staticmethod
     def loadImages():
@@ -1527,6 +1573,7 @@ ImageClasses = {
     230: SpriteImage_NewerBramball,
     231: SpriteImage_NewerWiggleShroom,
     239: SpriteImage_EventBlock,
+    244: SpriteImage_LineEvent,
     251: SpriteImage_TopmanBoss,
     255: SpriteImage_RotatingQBlock,
     256: SpriteImage_RotatingBrickBlock,
@@ -1538,6 +1585,7 @@ ImageClasses = {
     319: SpriteImage_Flipblock,
     322: SpriteImage_MegaThwomp,
     324: SpriteImage_Podoboule,
+    341: SpriteImage_NewerBigShell,
     351: SpriteImage_ShyGuy,
     391: SpriteImage_NewerGlowBlock,
     402: SpriteImage_LineQBlock,
