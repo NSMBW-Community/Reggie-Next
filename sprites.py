@@ -7352,9 +7352,18 @@ class SpriteImage_Jellybeam(SLib.SpriteImage_Static):  # 425
             (-6, 0),
         )
 
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
+
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Jellybeam', 'jellybeam.png')
+
+    def dataChanged(self):
+        distance = (self.parent.spritedata[5] & 0xF) % 4
+        self.aux[0].setSize(16, (distance * 32) + 108)
+        self.aux[0].setPos(self.width * 0.75 - 14, self.height * 0.75 - 16)
+        
+        super().dataChanged()
 
 
 class SpriteImage_Kamek(SLib.SpriteImage_Static):  # 427
