@@ -6534,8 +6534,11 @@ class SpriteImage_CrystalBlock(SLib.SpriteImage_StaticMultiple):  # 361
             ImageCache['CrystalBlock%d' % size] = SLib.GetImg('crystal_block_%d.png' % size)
 
     def dataChanged(self):
+        size = self.parent.spritedata[4] & 3
 
-        size = (self.parent.spritedata[4] & 15) & 3
+        if size == 3:
+            size = 2
+
         self.image = ImageCache['CrystalBlock%d' % size]
 
         super().dataChanged()
