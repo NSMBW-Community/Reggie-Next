@@ -238,11 +238,11 @@ class ReggieSplashScreen(QtWidgets.QSplashScreen):
         """
         painter.setRenderHint(painter.Antialiasing)
 
-        totalWidthSoFar = self.meterWidth * (self.currentPos / self.posLimit)
+        totalWidthSoFar = int(self.meterWidth * (self.currentPos / self.posLimit))
         painter.drawPixmap(
             self.meterPos[0],
             self.meterPos[1],
-            min(self.meterL.width(), self.meterWidth * (self.currentPos / self.posLimit)),
+            min(self.meterL.width(), totalWidthSoFar),
             self.meterL.height(),
             self.meterL,
         )
@@ -277,7 +277,7 @@ class ReggieSplashScreen(QtWidgets.QSplashScreen):
             painter.setFont(font)
             r, g, b = int(color[1:3], 16), int(color[3:5], 16), int(color[5:7], 16)
             painter.setPen(QtGui.QPen(QtGui.QColor(r, g, b)))
-            painter.drawText(rect, flags, text)
+            painter.drawText(rect, int(flags), text)
             painter.restore()
 
         drawText(ReggieVersionShort, *self.versionFontInfo)
@@ -8791,8 +8791,7 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
             }
             self.display_objects = []
             self.BadObjectWarning = False
-            # I just feel like giving this widget a darker background than normal for some reason. Maybe it feels more empathetic.
-            bgcolor.setHsv(bghsv[0], min(bghsv[1] * 1.5, 255), bghsv[2] / 1.5, bghsv[3])
+            bgcolor.setHsv(bghsv[0], min(int(bghsv[1] * 1.5), 255), int(bghsv[2] / 1.5), bghsv[3])
             self.bgbrush = QtGui.QBrush(bgcolor)
             QtWidgets.QGraphicsScene.__init__(self, *args)
             self.parent = parent
@@ -17097,8 +17096,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             Light = QtGui.QColor(GridColor)
             Dark = QtGui.QColor(GridColor)
-            Light.setAlpha(Light.alpha() * L)
-            Dark.setAlpha(Dark.alpha() * D)
+            Light.setAlpha(int(Light.alpha() * L))
+            Dark.setAlpha(int(Dark.alpha() * D))
 
             size = 24 if Zoom >= 50 else 96
 
