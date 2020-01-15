@@ -15612,6 +15612,8 @@ class ReggieTranslation:
                 131: 'Toggle viewing of paths',
                 136: 'Quick Paint Properties',
                 137: 'Show the Properties Window to Configure Quick Paint',
+                138: 'Reload Spritedata',
+                139: 'Reload the spritedata file, including any changes made since the level was loaded',
             },
             'Objects': {
                 0: '[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]',
@@ -20496,6 +20498,7 @@ def LoadActionsLists():
         (trans.string('MenuItems', 80), False, 'importarea'),
         (trans.string('MenuItems', 82), False, 'deletearea'),
         (trans.string('MenuItems', 84), False, 'reloadgfx'),
+        (trans.string('MenuItems', 138), False, 'reloaddata'),
     )
     HelpActions = (
         (trans.string('MenuItems', 86), False, 'infobox'),
@@ -21650,6 +21653,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
             QtGui.QKeySequence('Ctrl+Shift+R'),
         )
 
+        self.CreateAction(
+            'reloaddata', self.ReloadSpritedata, GetIcon('reload'),
+            trans.stringOneLine('MenuItems', 138), trans.stringOneLine('MenuItems', 139),
+            # No shortcut for now...
+            None
+            # QtGui.QKeySequence('Ctrl+Shift+R'),
+        )
+
         # Help actions are created later
 
         # Configure them
@@ -21764,6 +21775,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         lmenu.addAction(self.actions['deletearea'])
         lmenu.addSeparator()
         lmenu.addAction(self.actions['reloadgfx'])
+        lmenu.addAction(self.actions['reloaddata'])
 
         hmenu = menubar.addMenu(trans.string('Menubar', 4))
         self.SetupHelpMenu(hmenu)
@@ -21876,6 +21888,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 'deletearea',
             ), (
                 'reloadgfx',
+                'reloaddata',
             ), (
                 'infobox',
                 'helpbox',
@@ -24279,8 +24292,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 obj.updateObjCache()
 
         self.scene.update()
-
-        self.ReloadSpritedata()
 
     def ReloadSpritedata(self):
         global Sprites
