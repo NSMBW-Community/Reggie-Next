@@ -4933,20 +4933,20 @@ class ObjectItem(LevelEditorItem):
 
                 # direction is 2 bits:
                 # highest := vertical direction; lowest := horizontal direction
-                if direction & 0b01:
+                if direction & 0b01 and x > 0:
                     # only look at the left neighbour, since we will generate the
                     # right neighbour later
                     try:
                         tiles_.remove(self.objdata[y][x-1] & 0xFF)
-                    except:
+                    except ValueError:
                         pass
 
-                if direction & 0b10:
+                if direction & 0b10 and y > 0:
                     # only look at the above neighbour, since we will generate the
                     # neighbour below later
                     try:
                         tiles_.remove(self.objdata[y-1][x] & 0xFF)
-                    except:
+                    except ValueError:
                         pass
 
                 # if we removed all options, just use the original tiles
@@ -4959,9 +4959,9 @@ class ObjectItem(LevelEditorItem):
                 # Bottom of special, so change the tile above to the tile in the
                 # previous row of the tileset image (at offset choice - 0x10).
                 if special & 0b10:
-                    try:
+                    if y > 0:
                         self.objdata[y - 1][x] = choice - 0x10
-                    except:
+                    else:
                         # y is equal to 0. When this happens in-game, the game
                         # just changes the tile above (even if it's 'air') to
                         # (choice - 0x10).
