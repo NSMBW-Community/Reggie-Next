@@ -4875,6 +4875,44 @@ class ObjectItem(LevelEditorItem):
         self.randomise()
         self.UpdateSearchDatabase()
 
+    def isBottomRowSpecial(self):
+        """
+        Returns whether the bottom row of self.objdata contains the a special
+        vdouble top tile
+        """
+        if TilesetFilesLoaded[self.tileset] is None \
+           or TilesetInfo is None \
+           or ObjectDefinitions is None \
+           or ObjectDefinitions[self.tileset] is None \
+           or ObjectDefinitions[self.tileset][self.type] is None \
+           or ObjectDefinitions[self.tileset][self.type].rows is None \
+           or ObjectDefinitions[self.tileset][self.type].rows[0] is None \
+           or ObjectDefinitions[self.tileset][self.type].rows[0][0] is None \
+           or len(ObjectDefinitions[self.tileset][self.type].rows[0][0]) == 1:
+            # no randomisation info -> false
+            return False
+
+        name = TilesetFilesLoaded[self.tileset].split("/")[-1].split(".arc")[0]
+
+        if name not in TilesetInfo:
+            # tileset not randomised -> false
+            return False
+
+        for x in range(0, self.width):
+            # get the special data for this tile
+            tile = self.objdata[-1][x] & 0xFF
+
+            try:
+                [_, _, special] = TilesetInfo[name][tile]
+            except KeyError:
+                # tile not randomised -> continue with next position
+                continue
+
+            if special & 0b01:
+                return True
+
+        return False
+
     def randomise(self, startx=0, starty=0, width=None, height=None):
         """
         Randomises (a part of) the self.objdata according to the loaded tileset
@@ -5012,6 +5050,12 @@ class ObjectItem(LevelEditorItem):
         if height < self.height:
             self.objdata = self.objdata[:height]
         elif height > self.height:
+            # add extra rows at the bottom
+            if self.isBottomRowSpecial():
+                # re-render the bottom row as well
+                self.objdata = self.objdata[:-1]
+                self.height -= 1
+
             self.objdata += RenderObject(self.tileset, self.type, self.width, height - self.height)
             self.randomise(0, self.height, self.width, height - self.height)
 
