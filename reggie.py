@@ -24280,9 +24280,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.scene.update()
 
+        self.ReloadSpritedata()
+
+    def ReloadSpritedata(self):
         global Sprites
         Sprites = None
         LoadSpriteData()
+
+        # Reload spritedata editor
+        cur_sel_sprite = self.spriteDataEditor.spritetype
+        self.spriteDataEditor.setSprite(cur_sel_sprite, True)
 
     def ChangeSelectionHandler(self):
         """
