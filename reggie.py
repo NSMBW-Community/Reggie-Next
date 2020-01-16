@@ -16661,7 +16661,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int(clicked.x() / 1.5)
                 clickedy = int(clicked.y() / 1.5)
 
-                loc = mainWindow.CreateLocation(clickedx, clickedy, 4, 4)
+                loc = mainWindow.CreateLocation(clickedx, clickedy)
 
                 self.dragstamp = False
                 self.currentobj = loc
@@ -23169,7 +23169,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             loc = self.CreateLocation(newx, newy, neww - newx, newh - newy)
             loc.setSelected(True)
     
-    def CreateLocation(self, x, y, width, height, id = None):
+    def CreateLocation(self, x, y, width = 16, height = 16, id = None):
         """
         Creates and returns a new location and makes sure it's added to
         the right lists. If 'id' is None, the next id is calculated. This
