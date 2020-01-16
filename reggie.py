@@ -16661,38 +16661,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int(clicked.x() / 1.5)
                 clickedy = int(clicked.y() / 1.5)
 
-                allID = set()  # faster 'x in y' lookups for sets
-                newID = 1
-                for i in Area.locations:
-                    allID.add(i.id)
-
-                while newID <= 255:
-                    if newID not in allID:
-                        break
-                    newID += 1
-
-                global OverrideSnapping
-                OverrideSnapping = True
-                loc = LocationItem(clickedx, clickedy, 4, 4, newID)
-                OverrideSnapping = False
-
-                mw = mainWindow
-                loc.positionChanged = mw.HandleLocPosChange
-                loc.sizeChanged = mw.HandleLocSizeChange
-                loc.listitem = ListWidgetItem_SortsByOther(loc)
-                mw.locationList.addItem(loc.listitem)
-                mw.scene.addItem(loc)
-
-                Area.locations.append(loc)
+                loc = mainWindow.CreateLocation(clickedx, clickedy, 4, 4)
 
                 self.dragstamp = False
                 self.currentobj = loc
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
-
-                loc.UpdateListItem()
-
-                SetDirty()
 
             elif CurrentPaintType == 8:
                 # paint a stamp
@@ -23192,24 +23166,50 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 SetDirty()
 
         if newx != 999999 and newy != 999999:
-            allID = set()  # faster 'x in y' lookups for sets
-            newID = 1
-            for i in Area.locations:
-                allID.add(i.id)
-
-            while newID <= 255:
-                if newID not in allID:
-                    break
-                newID += 1
-
-            loc = LocationItem(newx, newy, neww - newx, newh - newy, newID)
-
-            mw = mainWindow
-            loc.positionChanged = mw.HandleObjPosChange
-            mw.scene.addItem(loc)
-
-            Area.locations.append(loc)
+            loc = self.CreateLocation(newx, newy, neww - newx, newh - newy)
             loc.setSelected(True)
+    
+    def CreateLocation(self, x, y, width, height, id = None):
+        """
+        Creates and returns a new location and makes sure it's added to
+        the right lists. If 'id' is None, the next id is calculated. This
+        function returns None if 
+        """
+        if id is None:
+            # This can be done more efficiently, but 255 is not that big
+            # a number so it doesn't really matter
+            all_ids = set(loc.id for loc in Area.locations)
+
+            id = 1
+            while id <= 255:
+                if id not in all_ids:
+                    break
+                id += 1
+
+            if id == 256:
+                print("ReggieWindow#CreateLocation: No free location id")
+                return None
+
+        global OverrideSnapping
+        OverrideSnapping = True
+        loc = LocationItem(x, y, width, height, id)
+        OverrideSnapping = False
+
+        loc.positionChanged = self.HandleObjPosChange
+        loc.sizeChanged = self.HandleLocSizeChange
+        loc.listitem = ListWidgetItem_SortsByOther(loc)
+
+        self.locationList.addItem(loc.listitem)
+        self.scene.addItem(loc)
+        Area.locations.append(loc)
+        loc.setSelected(True)
+
+        loc.UpdateListItem()
+
+        # We've changed the level, so set the dirty flag
+        SetDirty()
+
+        return loc
 
     def HandleAddNewArea(self):
         """
