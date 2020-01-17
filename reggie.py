@@ -21666,7 +21666,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         )
 
         self.CreateAction(
-            'reloadgfx', self.ReloadTilesets, GetIcon('reload'),
+            'reloadgfx', self.ReloadTilesets, GetIcon('reload-tilesets'),
             trans.stringOneLine('MenuItems', 84), trans.stringOneLine('MenuItems', 85),
             QtGui.QKeySequence('Ctrl+Shift+R'),
         )
