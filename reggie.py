@@ -21672,11 +21672,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         )
 
         self.CreateAction(
-            'reloaddata', self.ReloadSpritedata, GetIcon('reload'),
+            'reloaddata', self.ReloadSpritedata, GetIcon('reload-spritedata'),
             trans.stringOneLine('MenuItems', 138), trans.stringOneLine('MenuItems', 139),
             # No shortcut for now...
             None
-            # QtGui.QKeySequence('Ctrl+Shift+R'),
         )
 
         # Help actions are created later
