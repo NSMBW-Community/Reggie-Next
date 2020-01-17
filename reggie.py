@@ -5218,26 +5218,19 @@ class ObjectItem(LevelEditorItem):
         """
         if event.button() == Qt.LeftButton:
             if QtWidgets.QApplication.keyboardModifiers() == Qt.ControlModifier:
-                layer = Area.layers[self.layer]
+                newitem = mainWindow.CreateObject(
+                    self.tileset, self.type, self.layer, self.objx, 
+                    self.objy, self.width, self.height, currentZ
+                )
 
-                if len(layer) == 0:
-                    newZ = (2 - self.layer) * 8192
+                # swap the Z values so it doesn't look like the 
+                # cloned item is the old one
+                newZ = newItem.zValue()
+                newItem.setZValue(self.zValue())
+                self.setZValue(newZ)
 
-                else:
-                    newZ = layer[-1].zValue() + 1
-
-                currentZ = self.zValue()
-                self.setZValue(newZ)  # swap the Z values so it doesn't look like the cloned item is the old one
-
-                newitem = ObjectItem(self.tileset, self.type, self.layer, self.objx, self.objy, self.width, self.height,
-                                     currentZ)
-
-                layer.append(newitem)
-                mainWindow.scene.addItem(newitem)
                 mainWindow.scene.clearSelection()
                 self.setSelected(True)
-
-                SetDirty()
 
         self.TLGrabbed = self.GrabberRectTL.contains(event.pos())
         self.TRGrabbed = self.GrabberRectTR.contains(event.pos())
@@ -7729,15 +7722,10 @@ class QuickPaintOperations:
                     mw.scene.removeItem(objBehindThisOne)
                     objBehindThisOne = QuickPaintOperations.searchObj(ln, x, y)
 
-                obj = ObjectItem(qp_data['base']['ts'], qp_data['base']['t'], ln, x, y, 1, 1, z)
-
-                layer.append(obj)
-                obj.positionChanged = mw.HandleObjPosChange
+                obj = mainWindow.CreateObject(qp_data['base']['ts'], qp_data['base']['t'], ln, x, y)
 
                 if obj not in QuickPaintOperations.object_optimize_database:
                     QuickPaintOperations.object_optimize_database.append(obj)
-
-                mw.scene.addItem(obj)
 
                 # This next function has to repeated multiple times at multiple places in and around this object.
                 # Otherwise, you will leave artifacts when painting with bigger objects.
@@ -7959,15 +7947,6 @@ class QuickPaintOperations:
             for x in range(w):
                 if (x, y) in skip: continue
 
-                layer = Area.layers[l]
-                ln = CurrentLayer
-
-                if len(layer) == 0:
-                    z = (2 - ln) * 8192
-
-                else:
-                    z = layer[-1].zValue() + 1
-
                 objBehindThisOne = QuickPaintOperations.sliceObj(QuickPaintOperations.searchObj(ln, x + objx, y + objy),
                                                                  x + objx, y + objy)
                 if objBehindThisOne is not None:
@@ -7979,7 +7958,9 @@ class QuickPaintOperations:
 
                     mw.scene.removeItem(objBehindThisOne)
 
-                sobj = ObjectItem(ts, t, l, x + objx, y + objy, 1, 1, z)
+                sobj = mainWindow.CreateObject(
+                    ts, t, l, x + objx, y + objy
+                )
 
                 atd = list(filter(lambda i: i[0] == x and i[1] == y, atd_archive))
 
@@ -7987,13 +7968,8 @@ class QuickPaintOperations:
                     sobj.modifiedForSize = atd[0][2]
                     sobj.autoTileType = atd[0][3]
 
-                layer.append(sobj)
-
                 if sobj not in QuickPaintOperations.object_optimize_database:
                     QuickPaintOperations.object_optimize_database.append(sobj)
-
-                sobj.positionChanged = mw.HandleObjPosChange
-                mw.scene.addItem(sobj)
 
                 if sobj.objx == px and sobj.objy == py:
                     out_obj = sobj
@@ -16462,32 +16438,24 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]+0.5))
                     QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]+0.5))
 
-            elif CurrentPaintType in (0, 1, 2, 3) and CurrentObject != -1:
+            elif CurrentPaintType < 4 and CurrentObject != -1:
                 # paint an object
                 clicked = mainWindow.view.mapToScene(event.x(), event.y())
                 if clicked.x() < 0: clicked.setX(0)
                 if clicked.y() < 0: clicked.setY(0)
+
                 clickedx = int(clicked.x() / 24)
                 clickedy = int(clicked.y() / 24)
 
-                ln = CurrentLayer
-                layer = Area.layers[CurrentLayer]
-                if len(layer) == 0:
-                    z = (2 - ln) * 8192
-                else:
-                    z = layer[-1].zValue() + 1
-
-                obj = ObjectItem(CurrentPaintType, CurrentObject, ln, clickedx, clickedy, 1, 1, z)
-                layer.append(obj)
-                mw = mainWindow
-                obj.positionChanged = mw.HandleObjPosChange
-                mw.scene.addItem(obj)
+                obj = mainWindow.CreateObject(
+                    CurrentPaintType, CurrentObject, CurrentLayer, 
+                    clickedx, clickedy
+                )
 
                 self.dragstamp = False
                 self.currentobj = obj
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
-                SetDirty()
 
             elif CurrentPaintType == 4 and CurrentSprite != -1:
                 # paint a sprite
@@ -23030,7 +22998,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     if width < 1 or width > 1023: continue
                     if height < 1 or height > 511: continue
 
-                    newitem = ObjectItem(tileset, type, layer, objx, objy, width, height, 1)
+                    newitem = self.CreateObject(tileset, type, layer, objx, objy, width, height, add_to_scene = False)
 
                     layers[layer].append(newitem)
 
@@ -23167,7 +23135,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if newx != 999999 and newy != 999999:
             loc = self.CreateLocation(newx, newy, neww - newx, newh - newy)
             loc.setSelected(True)
-    
+
+    ###########################################################################
+    # Functions that create items
+    ###########################################################################
+    # Maybe move these as static methods to their respective classes
     def CreateLocation(self, x, y, width = 16, height = 16, id = None):
         """
         Creates and returns a new location and makes sure it's added to
@@ -23209,6 +23181,29 @@ class ReggieWindow(QtWidgets.QMainWindow):
         SetDirty()
 
         return loc
+
+    def CreateObject(self, tileset, object_num, layer, x, y, width = 1, height = 1, add_to_scene = True):
+        """
+        Creates and returns a new object and makes sure it's added to
+        the right lists.
+        TODO: Make QuickPaint use this function more...
+        """
+        layer_list = Area.layers[layer]
+        if len(layer_list) == 0:
+            z = (2 - layer) * 8192
+        else:
+            z = layer_list[-1].zValue() + 1
+
+        obj = ObjectItem(tileset, object_num, layer, x, y, width, height, z)
+
+        if add_to_scene:
+            layer_list.append(obj)
+            obj.positionChanged = self.HandleObjPosChange
+            self.scene.addItem(obj)
+
+            SetDirty()
+
+        return obj
 
     def HandleAddNewArea(self):
         """
