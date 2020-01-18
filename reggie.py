@@ -10202,6 +10202,23 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         LoadSpriteCategories()
         self.LoadItems()
 
+    def UpdateSpriteNames(self):
+        """
+        Updates all spritenames
+        """
+        for viewname, view, nodelist in SpriteCategories:
+            for cnode in nodelist:
+                for i in range(cnode.childCount()):
+                    snode = cnode.child(i)
+                    id_ = snode.data(0, Qt.UserRole)
+
+                    if Sprites[id_] is None:
+                        name = 'ERROR'
+                    else:
+                        name = Sprites[id_].name
+
+                    snode.setText(0, trans.string('Sprites', 18, '[id]', id_, '[name]', name))
+
     def LoadItems(self):
         """
         Loads tree widget items
@@ -24342,6 +24359,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Reload spritedata editor
         cur_sel_sprite = self.spriteDataEditor.spritetype
         self.spriteDataEditor.setSprite(cur_sel_sprite, True)
+
+        # Update list
+        self.sprPicker.UpdateSpriteNames()
 
     def ChangeSelectionHandler(self):
         """
