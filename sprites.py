@@ -5427,7 +5427,7 @@ class SpriteImage_LongCannon(SLib.SpriteImage_StaticMultiple):  # 298
         big_s = 'B' if self.big else ''
 
         middle = ImageCache[big_s + 'LongCannonM']
-        solid = SLib.Tiles[0x400 + 1280].main
+        solid = SLib.Tiles[1].main
         if self.dir == 0: # right
             front = ImageCache[big_s + 'LongCannonFR']
             end = ImageCache[big_s + 'LongCannonEL']
