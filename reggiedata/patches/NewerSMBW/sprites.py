@@ -144,8 +144,8 @@ class SpriteImage_BrickBlock(SpriteImage_Block):  # 209
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 48
-        
-        
+
+
 class SpriteImage_RotatingQBlock(SpriteImage_Block):  # 255
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -162,8 +162,8 @@ class SpriteImage_RotatingBrickBlock(SpriteImage_Block):  # 256
         self.contentsNybble = 4
         self.twelveIsMushroom = True
         self.rotates = True
-        
-        
+
+
 class SpriteImage_LineQBlock(SpriteImage_Block):  # 402
     def __init__(self, parent):
         super().__init__(parent, 1.5)

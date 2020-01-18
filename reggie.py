@@ -13061,7 +13061,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         global mainWindow, Area
 
         slot = self.buttongroup.checkedId()
-        data = bytearray(b'\0\0\0\0\0\0\0\0')
+        data = bytearray(8)
         if slot == -1:
             data[5] = 5
         else:
@@ -16427,16 +16427,19 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     z = layer[-1].zValue() + 1
 
                 if mw.quickPaint.QuickPaintMode == 'PAINT':
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]-0.5), z)
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]-0.5), z)
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]+0.5), z)
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]+0.5), z)
+                    for yoffs in (-0.5, +0.5):
+                        for xoffs in (-0.5, +0.5):
+                            QuickPaintOperations.prePaintObject(ln, layer,
+                                int(self.mouseGridPosition[0] + xoffs),
+                                int(self.mouseGridPosition[1] + yoffs), 
+                            z)
 
                 elif mw.quickPaint.QuickPaintMode == 'ERASE':
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]-0.5))
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]-0.5))
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]+0.5))
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]+0.5))
+                    for yoffs in (-0.5, +0.5):
+                        for xoffs in (-0.5, +0.5):
+                            QuickPaintOperations.preEraseObject(ln, layer,
+                                int(self.mouseGridPosition[0] + xoffs),
+                                int(self.mouseGridPosition[1] + yoffs))
 
             elif CurrentPaintType < 4 and CurrentObject != -1:
                 # paint an object
@@ -23540,7 +23543,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         with open(fn, 'wb') as f:
             f.write(data)
-        
+
         if copy:
             return
 
