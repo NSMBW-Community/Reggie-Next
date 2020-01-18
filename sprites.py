@@ -6889,26 +6889,27 @@ class SpriteImage_PowBlock(SLib.SpriteImage_Static):  # 386
 
 class SpriteImage_Bush(SLib.SpriteImage_StaticMultiple):  # 387
     def __init__(self, parent):
+        # this sprite image should actually show behind layer 1...
         super().__init__(parent, 1.5)
         self.parent.setZValue(24999)
 
     @staticmethod
     def loadImages():
         if 'Bush00' in ImageCache: return
-        for typenum, typestr in zip((0, 1), ('green', 'yellow')):
-            for sizenum, sizestr in zip(range(4), ('small', 'med', 'large', 'xlarge')):
+        for typenum, typestr in enumerate(('green', 'yellow')):
+            for sizenum, sizestr in enumerate(('small', 'med', 'large', 'xlarge')):
                 ImageCache['Bush%d%d' % (typenum, sizenum)] = SLib.GetImg('bush_%s_%s.png' % (typestr, sizestr))
 
     def dataChanged(self):
 
         props = self.parent.spritedata[5]
         style = (props >> 4) & 1
-        size = (props & 3) % 4
+        size = props & 3
 
         self.offset = (
-            (-22, -25),
-            (-29, -45),
-            (-41, -61),
+            (-22, -26),
+            (-28, -46),
+            (-41, -62),
             (-52, -80),
         )[size]
 
