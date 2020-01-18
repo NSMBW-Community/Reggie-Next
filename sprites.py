@@ -8138,10 +8138,10 @@ class SpriteImage_BowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
         upsideDown = self.parent.spritedata[5] & 1
         if not upsideDown:
             self.image = ImageCache['ELSwitch']
-            self.offset = (-16, -26)
+            self.offset = (-15, -24)
         else:
             self.image = ImageCache['ELSwitchU']
-            self.offset = (-16, 0)
+            self.offset = (-15, 0)
 
         super().dataChanged()
 

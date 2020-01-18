@@ -8063,17 +8063,17 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #478: Bowser Switch (Small) -->
   
-  <sprite id="479" name="Bowser Switch (Large)" noyoshi="True" sizehacks="True" notes="A much larger, fancier switch that was originally used for the final Bowser Boss fight.">
+  <sprite id="479" name="Bowser Switch (Large)" noyoshi="True" sizehacks="True" notes="A much larger, fancier switch that was originally used for the final Bowser Boss fight. It always flashes red.">
     <dependency notes="This sprite has additional hardcoded behavior that may cause bugs when it is used outside of its intended boss fight. Known bugs: It is incompatible with Multi-Use. The Target Event ID must be unique to this Switch.">
       <suggested sprite="431"/>
     </dependency>
-    <list bit="29-32" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should.">
-      <entry value="0">Orange w/Red ! (Original)</entry>
-      <entry value="1">Red w/Red !</entry>
-      <entry value="2">Yellow w/Black !</entry>
-      <entry value="3">Light Yellow w/Red !</entry>
-      <entry value="4">Blue w/Black !</entry>
-      <entry value="5">Question Mark</entry>
+    <list bit="29-32" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
+      <entry value="0">Orange (Original)</entry>
+      <entry value="1">Red</entry>
+      <entry value="2">Yellow</entry>
+      <entry value="3">Green</entry>
+      <entry value="4">Blue</entry>
+      <entry value="5">Orange w/? Mark</entry>
     </list>
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
     <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set."/>

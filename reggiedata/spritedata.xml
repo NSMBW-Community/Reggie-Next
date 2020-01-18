@@ -7824,20 +7824,12 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #478: Bowser Switch (Small) -->
 
-  <sprite id="479" name="Bowser Switch (Large)" noyoshi="True" sizehacks="True" notes="A much larger, fancier switch that was originally used for the final Bowser Boss fight.">
+  <sprite id="479" name="Bowser Switch (Large)" noyoshi="True" sizehacks="True" notes="A much larger, fancier switch that was originally used for the final Bowser Boss fight. It always flashes red.">
     <dependency notes="This sprite has additional hardcoded behavior that may cause bugs when it is used outside of its intended boss fight. Known bugs: It is incompatible with Multi-Use. The Target Event ID must be unique to this Switch.">
       <suggested sprite="431"/>
     </dependency>
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
     <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or riding along a conveyor belt."/>
-    <list bit="29-32" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should." advancedcomment="More styles can be added for your hack.">
-      <entry value="0">Orange w/Red ! (Original)</entry>
-      <entry value="1">Red w/Red !</entry>
-      <entry value="2">Yellow w/Black !</entry>
-      <entry value="3">Light Yellow w/Red !</entry>
-      <entry value="4">Blue w/Black !</entry>
-      <entry value="5">Question Mark</entry>
-    </list>
     <dualbox bit="28" title1="Timed Event" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Red Blocks will not become solid."/>
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="28"/> <!-- Appears if Permanent Event is set -->

@@ -1530,6 +1530,51 @@ class SpriteImage_GigaGoomba(SLib.SpriteImage_Static):  # 410
         SLib.loadIfNotInImageCache('GigaGoomba', 'goomba_giga.png')
 
 
+class SpriteImage_NewerBowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
+    @staticmethod
+    def loadImages():
+        if 'ELSwitch' in ImageCache: return
+        elg = SLib.GetImg('e_switch_lg.png', True)
+        ImageCache['ELSwitch'] = QtGui.QPixmap.fromImage(elg)
+        ImageCache['ELSwitchU'] = QtGui.QPixmap.fromImage(elg.mirrored(True, True))
+        
+        if 'ELSwitch1' not in ImageCache:
+            for i in range(1, 6):
+                elg2 = SLib.GetImg('e_switch_lg%d.png' % i, True)
+            
+                if elg2 is None: 
+                    return
+                
+                ImageCache['ELSwitch%d' % i] = QtGui.QPixmap.fromImage(elg2)
+                ImageCache['ELSwitchU%d' % i] = QtGui.QPixmap.fromImage(elg2.mirrored(True, True))
+
+    def dataChanged(self):
+    
+        colour = (self.parent.spritedata[3] & 0xF) % 6
+        upsideDown = self.parent.spritedata[5] & 1
+        
+        if colour == 0:
+            if not upsideDown:
+                self.image = ImageCache['ELSwitch']
+                self.offset = (-15, -24)
+            else:
+                self.image = ImageCache['ELSwitchU']
+                self.offset = (-15, 0)
+        else:
+            if not upsideDown:
+                self.image = ImageCache['ELSwitch%d' % colour]
+                self.offset = (-15, -40)
+            else:
+                self.image = ImageCache['ELSwitchU%d' % colour]
+                self.offset = (-15, -16)
+                
+        if 'ELSwitch5' not in ImageCache: 
+            return
+
+
+        super().dataChanged()
+
+
 ImageClasses = {
     12: SpriteImage_StarCollectable,
     13: SpriteImage_ClownCar,
@@ -1593,4 +1638,5 @@ ImageClasses = {
     402: SpriteImage_LineQBlock,
     403: SpriteImage_LineBrickBlock,
     410: SpriteImage_GigaGoomba,
+    479: SpriteImage_NewerBowserSwitchLg,
 }
