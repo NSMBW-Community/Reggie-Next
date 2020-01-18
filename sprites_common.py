@@ -160,7 +160,7 @@ class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153
     def dataChanged(self):
 
         upsideDown = self.parent.spritedata[5] & 1
-        
+
         if self.styleType != 0:
             style = str(self.styleType)
         else:
@@ -168,8 +168,14 @@ class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153
 
         if upsideDown:
             self.image = ImageCache[self.switchType + 'SwitchU' + style]
+            if self.switchType != 'E':
+                self.xOffset -= 1
+                self.yOffset -= 1
         else:
             self.image = ImageCache[self.switchType + 'Switch' + style]
-            self.yOffset = -3
+            if self.switchType == 'E':
+                self.yOffset -= 3
+            else:
+                self.yOffset -= 2
 
         super().dataChanged()

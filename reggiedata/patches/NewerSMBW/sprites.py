@@ -33,7 +33,7 @@ class SpriteImage_NewerSwitch(common.SpriteImage_Switch):
                 ImageCache['QSwitch%d' % i] = QtGui.QPixmap.fromImage(p)
                 ImageCache['QSwitchU%d' % i] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
 
-        if 'ExSwitch2' not in ImageCache:
+        if 'ESwitch2' not in ImageCache:
             for i in range(2, 5):
                 p = SLib.GetImg('e_switch%d.png' % i, True)
                 ImageCache['ESwitch%d' % i] = QtGui.QPixmap.fromImage(p)
@@ -47,6 +47,8 @@ class SpriteImage_NewerSwitch(common.SpriteImage_Switch):
             self.yOffset = -16 + 32 * upsideDown
         else:
             self.yOffset = 0
+
+        self.xOffset = 0
 
         if self.styleType == 1 or self.styleType > 4:
             self.styleType = 0
