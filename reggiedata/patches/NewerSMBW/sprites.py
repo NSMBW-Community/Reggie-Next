@@ -920,18 +920,18 @@ class SpriteImage_ShyGuyGiant(SLib.SpriteImage_Static): # 167
     @staticmethod
     def loadImages():
         if "ShyGuy%s%s" in ImageCache: return
-        for size in ("Big", "Mega", "Colossal"):
-            for colour in ("Red", "Blue", "Green", "Yellow", "Magenta"):
+        for size in ("big", "mega", "colossal"):
+            for colour in ("red", "blue", "green", "yellow", "magenta"):
                 ImageCache['ShyGuy%s%s' % (size, colour)] = SLib.GetImg('shyguy_%s_%s.png' % (size, colour))
     
     def dataChanged(self):
         size = (self.parent.spritedata[2] >> 4) & 3
         colour = (self.parent.spritedata[2] & 0xF) % 5
-        scale = ("Big", "Mega", "Colossal")[size]
-        color = ("Red", "Blue", "Green", "Yellow", "Magenta")[colour]
-        
+        scale = ("big", "mega", "colossal")[size]
+        color = ("red", "blue", "green", "yellow", "magenta")[colour]
+
         self.image = ImageCache['ShyGuy%s%s' % (scale, color)]
-        
+
         if size == 0:
             self.offset = (-12.7, -124)
         elif size == 1:
