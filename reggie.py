@@ -10874,6 +10874,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.widget = QtWidgets.QCheckBox()
             label = QtWidgets.QLabel(title + ':')
             label.setWordWrap(True)
+            label.setAlignment(Qt.AlignRight)
 
             self.comment = comment
             self.comment2 = comment2
@@ -10957,7 +10958,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.row = row
             self.layout = layout
 
-            layout.addWidget(label, row, 0, Qt.AlignRight)
+            layout.addWidget(label, row, 0)
             layout.addWidget(widget, row, 1)
 
         def update(self, data, first=False):
