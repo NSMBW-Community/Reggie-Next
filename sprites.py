@@ -6648,22 +6648,30 @@ class SpriteImage_CubeKinokoLine(SLib.SpriteImage_Static):  # 367
         SLib.loadIfNotInImageCache('CubeKinokoP', 'cube_kinoko_p.png')
 
 
-class SpriteImage_FlashRaft(SLib.SpriteImage_Static):  # 368
+class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
     def __init__(self, parent):
         super().__init__(
             parent,
             1.5,
             ImageCache['FlashlightRaft'],
-            (-16, -96),
+            (-16, -20),
         )
+        
+        self.aux.append(SLib.AuxiliaryImage(parent, 72, 114))
+        self.aux[0].image = ImageCache['FlashlightLamp']
+        self.aux[0].setPos(0, -114)
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 144, 30))
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('FlashlightRaft', 'flashraft.png')
+        SLib.loadIfNotInImageCache('FlashlightLamp', 'flashraft_light.png')
 
     def dataChanged(self):
         midway = (self.parent.spritedata[5] >> 4) & 1
         self.alpha = 0.5 if midway else 1
+        
         super().dataChanged()
 
 

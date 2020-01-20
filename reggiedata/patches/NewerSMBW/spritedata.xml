@@ -286,8 +286,8 @@
       <entry value="21">Propeller Mushroom</entry>
       <entry value="25">Mini Mushroom</entry>
     </list>
-    <list nybble="12" title="Color" comment="This determines the color of the glow block." requiredbit="44">
-      <entry value="0">White</entry>
+    <list nybble="12" title="Color" comment="This determines the color of the glow block." comment2="Value 0 has no recolour in the 'block_light.arc' file. If a color (white) was added, it would work fine." requiredbit="44">
+      <entry value="0">Nothing (CRASHES)</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
       <entry value="3">Yellow</entry>
@@ -297,8 +297,8 @@
       <entry value="7">Violet</entry>
       <entry value="8">Black</entry>
     </list>
-    <list nybble="12" title="Color &amp; Note" comment="This determines which note is played when a player hits the block." comment2="&lt;font color=&quot;Red&quot;&gt;*[Bug] Value 0: White - C1♯ currently crashes the game.&lt;/font&gt;" requiredbit="44" requiredval="0">
-      <entry value="0">White - C1♯ (C1 Sharp)*</entry>
+    <list nybble="12" title="Color &amp; Note" comment="This determines which note is played when a player hits the block." comment2="&lt;font color=&quot;Red&quot;&gt;*[Bug] Value 0: Nothing - C1♯ currently crashes the game.&lt;/font&gt;" requiredbit="44" requiredval="0">
+      <entry value="0">Nothing - C1♯ (C1 Sharp)*</entry>
       <entry value="1">Red - C1 (High C)</entry>
       <entry value="2">Orange - D1</entry>
       <entry value="3">Yellow - E1</entry>
@@ -2653,7 +2653,7 @@
     <value nybble="12" title="Red Coin ID" comment="When the player collects all 8 Red Coins from the same set, the game will reference a Red Ring with the same Red Coin ID to determine which item to award to all players." comment2="&lt;font color=&quot;red&quot;&gt;A game crash will occur if you assign more than 8 Red Coins within the same Red Coin ID&lt;/font&gt;" idtype="Red Coin"/>
   </sprite> <!-- #144: Red Coin -->
   
-  <sprite id="145" name="Floating Barrel" noyoshi="True" notes="A floating barrel that can only be placed on a liquid surface. It will sink while a player is standing on it, but will pop back up once the player jumps off.">
+  <sprite id="145" name="Floating Barrel" noyoshi="True" notes="A floating barrel that can only be placed on a liquid surface. It will sink while a player is standing on it, but will pop back up once the player jumps off. The barrel can also flow with the unused water current controller.">
     <dependency notes="The Floating Barrel will not load when placed on the same screen as an entrance. Place the Floating Barrel where you want it to load using the liquid line, and it will spawn floating at the surface line of that body of liquid. It only works with non-Location liquids, and it does work with Moving liquids when placed correctly. Unlike Floating Coins / ? Blocks, it will also function with Rising/Falling Water. Lastly, it should be noted that the visual splash effect is always made of water.">
       <suggested sprite="138"/>
       <suggested sprite="139"/>
@@ -2845,7 +2845,7 @@
     <value nybble="9-12" title="Message ID" comment="Messages defined in Message.py. Add 256 to the value shown in the Newer Message Editor program. (01/10/18)" idtype="Message"/>
   </sprite> <!-- 152: Message Box -->
   
-  <sprite id="153" name="(Unused) Big &quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="This is a large version of the basic stand-alone switch. When triggered, it only modifies the Target Event.">
+  <sprite id="153" name="(Unused) &quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="This is a large version of the basic stand-alone switch. When triggered, it only modifies the Target Event.">
     <dependency notes="The game will crash unless a normal orange switch is placed somewhere in the level. It does not have to be within an area that is actually used.">
       <required sprite="40"/>
     </dependency>
@@ -3445,13 +3445,6 @@
     <value nybble="7" title="Tileset Column" comment="When using [Block Type: Tile from Pa(x)], you can spawn every tile from the tileset by selecting it from a grid formation. Each tileset contains 16 Rows (0-15), and 16 Columns (0-15). The first tile in the top left is 0,0 and the last tile in the bottom right is 15,15." comment2="Some common examples for Pa0: &lt;br&gt; &lt;i&gt;Coin: 1,14 | Coin Outline: 1,15 | ?-Block: 3,1 | Used Block: 3,2 | Wooden Block: 3,3 | Stone Block: 3,4 | Donut Lift: 3,5 | Steel Block: 3,6" requiredbit="33-36" requiredval="8-11"/> <!-- Appears only if Block Type (Tile) = 8-11 -->
   </sprite> <!-- #191: Tile God Event -->
 
-  <sprite id="192" name="Boss Controller - Larry Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 1 Castle, such as the boss movement, and camera options.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
-      <required sprite="407"/>
-      <required sprite="408"/>
-      <suggested sprite="436"/>
-    </dependency>
-  </sprite> <!-- #192: Boss Controller - Larry Koopa -->
   
   <sprite id="193" name="Urchin" sizehacks="True" notes="A small spiky ball enemy typically used in Water. Water is not required, however, for it to load and function.">
     <value bit="41-44" title="Movement Distance (*2)" comment="This determines how far the Urchin will move, if at all. Multiply this value by 2."/>
@@ -3854,12 +3847,6 @@
     <checkbox bit="48" title="Low Gravity" comment="When enabled, the Topman will fall much more slowly."/>
   </sprite> <!-- #210: Topman -->
   
-  <sprite id="211" name="Boss Controller - Bowser Jr. (1st Battle)" noyoshi="True" notes="This controls the mechanics for the First Bowser Jr. boss fight. It spawns the backgrounds BgA_0E02 and BgB_3402, and will overlap any other backgrounds set in the zone.">
-    <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 04-38 A1.">
-      <required sprite="409"/>
-      <suggested sprite="436"/>
-    </dependency>
-  </sprite> <!-- #211: Boss Controller - Bowser Jr. (1st Battle) -->
 
 <!-- Improve for USMBW -->
   <sprite id="212" name="Rolling Hill" notes="A rotating circle that has the same general appearance as various tilesets.">
@@ -4169,16 +4156,6 @@
   <sprite id="228" name="Stretching Mushroom Platform" asmhacks="True" notes="A stretching platform that looks like a mushroom with naturally synchronized timing.">
     <dualbox bit="40" title1="Long Platform" title2="Short Platform" comment="This determines the width of the Mushroom Platform when expanded."/>
     <dualbox bit="44" title1="Starts Contracted" title2="Starts Expanded" comment="This determines the initial state of the Mushroom Platform."/>
-    <list nybble="6" title="Color" comment="This determines the color of the Mushroom Platform.">
-      <entry value="0">Pink (Original)</entry>
-      <entry value="1">Red</entry>
-      <entry value="2">Orange</entry>
-      <entry value="3">Yellow</entry>
-      <entry value="4">Green</entry>
-      <entry value="5">Blue</entry>
-      <entry value="6">Violet</entry>
-      <entry value="7">Gray</entry>
-    </list>
     <list nybble="12" title="Height of Stem" comment="This determines the height of the decorative mushroom stem.">
       <entry value="0">2 Blocks</entry>
       <entry value="1">3 Blocks</entry>
@@ -5834,9 +5811,9 @@
   
   <sprite id="322" name="World-2 Boss: Mega Thwomp" asmhacks="True" notes="A large Thwomp boss used by NewerSMBW. It can be defeated by having it fall through crushable terrain at least 4 blocks wide.">
     <dependency notes="The Mega Thwomp itself is about 5.5 blocks tall and 4 blocks wide, and should be placed at ground level on the opposite end of the room from the player's entrance. Then, from the sprite placement, you must define his movement area. Each buffer defines the amount of space between the sprite's placement and the wall, calculated in half-blocks.">
-      <required sprite=""/> <!-- Kamek -->
-      <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite=""/> <!-- ??? -->
+      <required sprite="427"/> <!-- Kamek -->
+      <required sprite="383"/> <!-- Kamek Controller -->
+      <required sprite="48"/> <!-- Big Thwomp -->
     </dependency>
     <value nybble="5-6" title="Left Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move through from the left side of the sprite's placement, calculated in half-blocks."/>
     <value nybble="7-8" title="Right Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move through from the right side of the sprite's placement, calculated in half-blocks."/>
@@ -6275,13 +6252,6 @@
     </dependency>
   </sprite> <!-- #348: Ludwig von Koopa -->
   
-  <sprite id="349" name="Boss Controller - Morton Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
-      <required sprite="407"/>
-      <required sprite="408"/>
-      <suggested sprite="436"/>
-    </dependency>
-  </sprite> <!-- #349: Boss Controller - Morton Koopa -->
 
   <sprite id="350" name="Fireball Laser" asmhacks="True" notes="A controller that creates a constant stream of fireballs in a specific direction. These fireballs will not pass through terrain.">
     <value nybble="7-8" title="Triggering Event ID" comment="While this Event ID is activated, the controller will create fireballs." idtype="Triggering Event"/>
@@ -6519,21 +6489,6 @@
     <checkbox bit="24" title="Invisible Pipes" advanced="True" advancedcomment="When enabled, the Pipes will be invisible, but still able to be entered. It was likely meant to be another texture, but was never actually added in. Do not use this setting."/>
   </sprite> <!-- #360: Rolling Hill - 8 Pipes -->
   
-  <sprite id="361" name="Rotation Controlled Crystal Block" notes="A rotation controlled large purple crystal block.">
-    <dependency notes="This block does not appear unless actually paired to a rotation controller.">
-      <suggested sprite="96"/>
-      <suggested sprite="149"/>
-    </dependency>
-    <list bit="39-40" title="Size" comment="This determines the size of the block.">
-      <entry value="0">12x10</entry>
-      <entry value="1">16x10</entry>
-      <entry value="2">21x6</entry>
-      <entry value="3">21x6</entry>
-    </list>
-    <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Crystal Block in relation to other Crystal Blocks." comment2="If you have multiple Crystal Blocks overlapping each other, you can use this setting to avoid some types of graphical glitches. Crystal Blocks with a higher Z-Order number will show behind those with a lower number. Unlike with Rolling Hills, it is not necessary to do this. Placing blocks with the correct distance apart can allow them to seamlessly coexist."/>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
-    <checkbox bit="24" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Nintendo uses this value, but no effect was observed. Likely a removed setting."/>
-  </sprite> <!-- #361: Rotation Controlled Crystal Block -->
 
   <sprite id="362" name="Rotation Controlled Colored Box" notes="A rotation controlled large resizable block with the appearance of a patterned box.">
     <dependency notes="This block does not appear unless actually paired to a rotation controller.">
@@ -6587,43 +6542,6 @@
     <checkbox bit="24" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Nintendo uses this value, but no effect was observed. Likely a removed setting."/>
   </sprite> <!-- #362: Rotation Controlled Colored Box -->
   
-  <sprite id="363" name="Boss Controller - Tower Boss" noyoshi="True" notes="This controls the various boss fight mechanics for the World 1-7 Tower battles, such as boss movement and level completion.">
-    <dependency notes="An appropriate loose Koopaling is required in order for the controller to do what it needs to. It's also required to place the sprite on a spot without terrain. See Retail X-22 for suggested room builds for Tower bosses.">
-      <suggested sprite="436"/>
-      <suggested sprite="189"/>
-      <suggested sprite="347"/>
-      <suggested sprite="340"/>
-      <suggested sprite="336"/>
-      <suggested sprite="337"/>
-      <suggested sprite="344"/>
-      <suggested sprite="348"/>
-    </dependency>
-    <list nybble="12" title="Tower Boss" comment="This determines which Koopaling you will be fighting. When that Koopaling is defeated, the level will end.">
-      <entry value="0">Larry</entry>
-      <entry value="1">Roy</entry>
-      <entry value="2">Lemmy</entry>
-      <entry value="3">Wendy</entry>
-      <entry value="4">Iggy</entry>
-      <entry value="5">Morton</entry>
-      <entry value="6">Ludwig von</entry>
-    </list>
-  </sprite> <!-- #363: Boss Controller - Tower Boss -->
-  
-  <sprite id="364" name="Boss Controller - Roy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
-      <required sprite="407"/>
-      <required sprite="408"/>
-      <suggested sprite="436"/>
-    </dependency>
-  </sprite> <!-- #364: Boss Controller - Roy Koopa -->
-  
-  <sprite id="365" name="Boss Controller - Ludwig von Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
-      <required sprite="407"/>
-      <required sprite="408"/>
-      <suggested sprite="436"/>
-    </dependency>
-  </sprite> <!-- #365: Boss Controller - Ludwig von Koopa -->
   
   <sprite id="366" name="Rotation Controlled Mushroom Block" notes="A rotation controlled mushroom block with two different sizes.">
     <dependency notes="This block does not appear unless actually paired to a rotation controller.">
@@ -6647,93 +6565,7 @@
     <checkbox bit="24" title="Bounce Back" comment="When enabled, the mushroom block will reverse its course along the Line guide when it reaches an end point." comment2="The mushroom block will always rotate in the same direction, even when traveling in reverse."/>
     <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="Used by Nintendo in Retail 2-06 A1 as value 7. No visible effect."/>
   </sprite> <!-- #367: Line Controlled Spinning Pink Mushroom Block -->
-  
-<!-- Do a stupid-check on Nybble 9 in regards to the original comment... -->
-<!-- Do a quick test on Nybble 8 while you're at it. -->
-  <sprite id="368" name="Path Controlled Flashlight Raft" notes="A floating Raft that travels along an assigned Path. It also has a flashlight that produces a cone of light that can be controlled by tilting the controller. It uses a unique type of Water, so it cannot be used with Lava or Poisoned Water.">
-    <dependency notes="A Path is required for this sprite to function. Its placement is irrelevant, as the Raft will be located at the listed Starting Path Node. A special Water sprite [373] is also required in order for everything to function correctly.">
-      <required sprite="373"/>
-    </dependency>
-    <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the Raft will be linked to." idtype="Path"/>
-    <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the Raft will appear at and start moving from."/>
-    <checkbox bit="44" title="Midway Raft" comment="When enabled, this Raft will appear only if the level is loaded from the Midpoint Flag."/>
-    <checkbox bit="48" title="Use Flashlight" comment="When enabled, the Raft's Flashlight will be turned on and controlled by the first person to activate the Raft." comment2="When using the Flashlight, it's recommended to use a darkness mode for the zone's lighting."/>
-    <checkbox bit="36" title="Event Activated Flashlight" comment="When enabled, the Flashlight will only be illuminated when the Triggering Event ID is activated." requiredbit="48"/> <!-- Appears only if Use Flashlight is active -->
-    <value bit="10-16" title="Flashlight: Triggering Event ID" comment="The flashlight will be turned on when this Event ID is activated." requiredbit="48, 36" requiredval="1, 1"/> <!-- Appears only if Use Flashlight and Event Activated Flashlight are active -->
-    <checkbox bit="24" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="[Nice Boat]"/>
-  </sprite> <!-- #368: Path Controlled Flashlight Raft -->
-  
-  <sprite id="369" name="Sliding Penguin" sizehacks="True" noyoshi="True" yoshinotes="Yoshi cannot jump on penguins, though he can use the stomp attack and tongue attack to defeat them." notes="A fancy penguin in sunglasses that slides along terrain on his belly and ricochets off walls.">
-    <list nybble="12" title="Starting Direction" comment="This determines which direction the Penguin will initially be sliding in.">
-      <entry value="0">Towards Mario</entry>
-      <entry value="1">Right</entry>
-      <entry value="2">Left</entry>
-    </list>
-  </sprite> <!-- #369: Sliding Penguin -->
 
-  <sprite id="370" name="Lakitu Cloud Block" notes="A block that when struck from below will spawn a Lakitu enemy that throws coins instead of Spinies.">
-    <value nybble="11" title="Maximum Coins Thrown (*5)" comment="This determines how many coins the Lakitu will throw before flying off." comment2="A value of 1 is equal to 5 coins across 15 game seconds. If set to 0, the Lakitu will never fly off."/>
-    <value nybble="12" title="Spawn Height" comment="This determines the distance relative to the bottom border of the Zone, in which the Lakitu will float upwards before it begins to throw coins." comment2="At value 0, the top of the Lakitu's shell will reach 12 blocks above the bottom Zone border. Each additional value increases this by two blocks. A value of 4 is equal to the standard height of a [134] Lakitu Spawn Area's Lakitu spawn."/>
-  </sprite> <!-- #370: Lakitu Cloud Block -->
-  
-  <sprite id="371" name="Rolling Hill Coin" notes="A coin that will rotate around a standard Rolling Hill.">
-    <dependency notes="The coin may be placed anywhere within the zone, but it is suggested to place it nearby the relevant [212] Rolling Hill. It must be paired to a standard Rolling Hill in order to function, but it can be staged to work with any type of Rolling Hill. Just place a smaller standard Rolling Hill in a way that it is hidden behind the Rolling Hill with Pipe(s), and increase the coin's distance as needed.">
-      <required sprite="212"/>
-    </dependency>
-    <value nybble="11-12" title="Hill ID" comment="This pairs the coins to a matching standard Rolling Hill." idtype="Hill"/>
-    <value nybble="8" title="Distance from Hill Surface" comment="This determines how many blocks away from the surface of the Rolling Hill the coin will rotate at."/>
-    <value nybble="9-10" title="Spacing" comment="This determines the angle of the coin around the Rolling Hill." comment2="Each incriment is equal to 1.40625°, or 1/256 of the circle. A value of 0 places the coin directly above the hill, and it increases in a clockwise direction. Recommended values for complete groupings of coins are factors of 4, 8, 16, or 32. Factors of 1 and 2 are not recommended as the coins will overlap. If not covering the entire hill, any factors can be used, but consistency is recommended."/>
-    <list nybble="9" title="Spacing - Major Parts" comment="This determines the angle of the coin around the Rolling Hill." comment2="Each incriment is equal to 22.5°, with 0 being directly above the hill, and increasing in a clockwise direction.">
-      <entry value="0">0.0°</entry>
-      <entry value="1">22.5°</entry>
-      <entry value="2">45.0°</entry>
-      <entry value="3">67.5°</entry>
-      <entry value="4">90.0°</entry>
-      <entry value="5">112.5°</entry>
-      <entry value="6">135.0°</entry>
-      <entry value="7">157.5°</entry>
-      <entry value="8">180.0°</entry>
-      <entry value="9">202.5°</entry>
-      <entry value="10">225.0°</entry>
-      <entry value="11">247.5°</entry>
-      <entry value="12">270.0°</entry>
-      <entry value="13">292.5°</entry>
-      <entry value="14">315.0°</entry>
-      <entry value="15">337.5°</entry>
-    </list>
-    <list nybble="10" title="Spacing - Sub Parts" comment="This determines the angle of the coin around the Rolling Hill." comment2="Each incriment is equal to an increase of 1.40625°, with 0 being the start of the value above, increasing in a clockwise direction.">
-      <entry value="0">0.0°</entry>
-      <entry value="1">1.41°</entry>
-      <entry value="2">2.81°</entry>
-      <entry value="3">4.23°</entry>
-      <entry value="4">5.63°</entry>
-      <entry value="5">7.03°</entry>
-      <entry value="6">8.44°</entry>
-      <entry value="7">9.84°</entry>
-      <entry value="8">11.25°</entry>
-      <entry value="9">12.66°</entry>
-      <entry value="10">14.06°</entry>
-      <entry value="11">15.47°</entry>
-      <entry value="12">16.88°</entry>
-      <entry value="13">18.28°</entry>
-      <entry value="14">19.69°</entry>
-      <entry value="15">21.09°</entry>
-    </list>
-  </sprite> <!-- #371: Rolling Hill Coin -->
-  
-  <sprite id="372" name="Boss Controller - Iggy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 5 Castle, such as the boss movement, and camera options.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
-      <required sprite="407"/>
-      <required sprite="408"/>
-      <suggested sprite="436"/>
-    </dependency>
-  </sprite> <!-- #372: Boss Controller - Iggy Koopa -->
-  
-  <sprite id="373" name="Flashlight Raft Water" notes="This is the Water that is used with the Flashlight Raft. It will rise and fall along the Path indicated by the Flashlight Raft.">
-    <dependency notes="This must be included with the [368] Flashlight Raft in order to function. Do not include more than one in a Zone.">
-      <required sprite="368"/>
-    </dependency>
-  </sprite> <!-- #373: Flashlight Raft Water -->
   
 <!-- Test is 90 continues to function (at all? / correctly?) if Falling Objects is set to something other than Snow. -->
 <!-- Test if 374 is required for 90 to generate pushback (90 Only). Test if 90 is required for 374 to generate sandstorm graphics (374 Only). -->
@@ -6757,14 +6589,7 @@
       <entry value="10">Stardust - Mauve</entry>
     </list> <!-- Appears only if Falling Objects is set -->
   </sprite> <!-- #374: Effect - Falling Objects and Wind -->
-  
-  <sprite id="375" name="Boss Controller - Wendy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 4 Castle, such as the boss movement, and camera options.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
-      <required sprite="407"/>
-      <required sprite="408"/>
-      <suggested sprite="436"/>
-    </dependency>
-  </sprite> <!-- #375: Boss Controller - Wendy Koopa -->
+
 
 <!-- Block values can be removed when editor has images. -->
   <sprite id="376" name="Moving Chainlink Fence Panel" noyoshi="True" notes="A climbable chainlink fence panel that can either be paired with a Two Way Line controller or allowed to move independently in a back and forth direction.">
@@ -6823,14 +6648,7 @@
     </list>
     <value nybble="12" title="Length" comment="This determines the length of the Pipe."/>
   </sprite> <!-- #380: Warp Pipe - Left -->
-  
-  <sprite id="381" name="Boss Controller - Lemmy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 3 Castle, such as the boss movement, and camera options.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
-      <required sprite="407"/>
-      <required sprite="408"/>
-      <suggested sprite="436"/>
-    </dependency>
-  </sprite> <!-- #381: Boss Controller - Lemmy Koopa -->
+
   
   <sprite id="382" name="Screw Mushroom Platform without Bolt" notes="A mechanical biological hybrid of a mushroom platform that can be magically controlled by nearby similar platforms with Bolts.">
     <dependency notes="">
@@ -6941,41 +6759,6 @@
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #391: Lighting - Glow Block -->
   
-  <sprite id="392" name="Magic Fireball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Koopaling Fireballs will fire from the screen's edge towards the players while a player is inside it. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
-    <value nybble="11" title="Location ID" comment="The Fireballs will only spawn while a player is in this location." comment2="While a Location ID is not required, it is recommended."/>
-    <list bit="31-32" title="Color of Fireball" comment="This determines the color of the fireball." comment2="Different colored fireballs do not have different effects.">
-      <entry value="0">Light Blue</entry>
-      <entry value="1">Purple</entry>
-      <entry value="2">Green</entry>
-    </list>
-    <list nybble="9" title="Rate of Fire" comment="This determines the frequency of the fireball spawns, in game seconds." comment2="In retail levels, Nintendo used 12 and 14.">
-      <entry value="1">1</entry>
-      <entry value="2">2</entry>
-      <entry value="3">3</entry>
-      <entry value="0">3.3</entry>
-      <entry value="4">4</entry>
-      <entry value="5">5</entry>
-      <entry value="6">6</entry>
-      <entry value="7">7</entry>
-      <entry value="8">8</entry>
-      <entry value="9">9</entry>
-      <entry value="10">10</entry>
-      <entry value="11">11</entry>
-      <entry value="12">12</entry>
-      <entry value="13">13</entry>
-      <entry value="14">14</entry>
-      <entry value="15">15</entry>
-    </list>
-    <dualbox bit="48" title1="Appears from Top" title2="Appears from Right" comment="This determines the portion of the screen the fireballs will appear from." comment2="The fireball will appear from the center of the selected portion, plus or minus about 10 blocks. Placement does not affect this."/>
-    <value bit="40" title="Unknown Flag 10 (1)" comment="ASM shows Nybble 10 might affect something. No visible effect."/>
-  </sprite> <!-- #392: Magic Fireball Spawn Area -->
-  
-  <sprite id="393" name="Propeller Block" notes="A grabbable propeller block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. It can also boost the player into the air like a Propeller Cap if the player shakes their controller a second time while holding it. If it is thrown and it hits the ground, it will bounce slightly.">
-  </sprite> <!-- #393: Propeller Block -->
-  
-  <sprite id="394" name="Bouncing Lemmy Ball" noyoshi="True" notes="A stand-alone version of the bouncing ball used in the Lemmy Koopa boss fights.">
-    <dualbox bit="20" title1="Starts Bouncing Left" title2="Starts Bouncing Right" comment="This determines the direction the Lemmy Ball will initially be bouncing in."/>
-  </sprite> <!-- #394: Bouncing Lemmy Ball -->
   
 <!-- See #115 -->
 <!-- Check for any differences. -->
@@ -7023,102 +6806,6 @@
     <value nybble="3-4" title="'Dodge' Event ID" comment="Right, this does look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right). Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'. &lt;br&gt;If it really works is a good question."/>
   </sprite> <!-- #395: Spiny Cheep Cheep -->
 
-  <sprite id="396" name="Move-When-On Platform" notes="A special platform that will move at any point when a specified number of 'passengers' (players + enemies) are standing on it.">
-    <value nybble="12" title="Length" comment="This determines the length of the platform." comment2="This value must be at least 1."/>
-    <checkbox bit="26" title="Does not Move" comment="When enabled, the movement function of this platform will be disabled making the platform into a decorative object."/>
-    <dualbox bit="40" title1="Returns to Original Position" title2="Does not Return" comment="When enabled, the platform's movement will be one-way only." requiredbit="26" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
-    <list nybble="11" title="Moves with Passenger Number" comment="This determines how many 'passengers' are needed for the platform's movement to activate." comment2="A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers. It will change colors from blue to red when this condition is satisfied.">
-      <entry value="0">1 Passenger</entry>
-      <entry value="1">2 Passengers</entry>
-      <entry value="2">3 Passengers</entry>
-      <entry value="3">4 Passengers</entry>
-      <entry value="4">5 Passengers</entry>
-      <entry value="5">6 Passengers</entry>
-      <entry value="6">7 Passengers</entry>
-      <entry value="7">8 Passengers</entry>
-      <entry value="8">9 Passengers</entry>
-      <entry value="9">10 Passengers</entry>
-      <entry value="10">11 Passengers</entry>
-      <entry value="11">12 Passengers</entry>
-      <entry value="12">13 Passengers</entry>
-      <entry value="13">14 Passengers</entry>
-      <entry value="14">15 Passengers</entry>
-      <entry value="15">16 Passengers</entry>
-    </list>
-    <list bit="27-28" title="Direction" comment="This determines which direction the platform will move when the Passenger Number is satisfied." comment2="It will show an arrow pointing in the direction it is moving, whether it is moving this direction or returning." requiredbit="26" requiredval="0">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Up</entry>
-      <entry value="3">Down</entry>
-    </list>
-    <value nybble="8" title="Speed" comment="This determines the speed the platform will move." requiredbit="26" requiredval="0"/>
-  </sprite> <!-- #396: Move-When-On Platform -->
-  
-  <sprite id="397" name="Move-When-On Ghost House Box" notes="A special block that will move at any point when a specified number of 'passengers' (players + enemies) are standing on it.">
-    <list nybble="9" title="Height" comment="This determines the height of the block.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
-    <list nybble="12" title="Width" comment="This determines the width of the block.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
-    <checkbox bit="26" title="Does not Move" comment="When enabled, the movement function of this block will be disabled making the block into a decorative object."/>
-    <dualbox bit="32" title1="Returns to Original Position" title2="Does not Return" comment="When enabled, the block's movement will be one-way only." requiredbit="26" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
-    <list nybble="11" title="Moves with Passenger Number" comment="This determines how many 'passengers' are needed for the platform's movement to activate." comment2="A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers." requiredbit="26" requiredval="0">
-      <entry value="0">1 Passenger</entry>
-      <entry value="1">2 Passengers</entry>
-      <entry value="2">3 Passengers</entry>
-      <entry value="3">4 Passengers</entry>
-      <entry value="4">5 Passengers</entry>
-      <entry value="5">6 Passengers</entry>
-      <entry value="6">7 Passengers</entry>
-      <entry value="7">8 Passengers</entry>
-      <entry value="8">9 Passengers</entry>
-      <entry value="9">10 Passengers</entry>
-      <entry value="10">11 Passengers</entry>
-      <entry value="11">12 Passengers</entry>
-      <entry value="12">13 Passengers</entry>
-      <entry value="13">14 Passengers</entry>
-      <entry value="14">15 Passengers</entry>
-      <entry value="15">16 Passengers</entry>
-    </list>
-    <list bit="27-28" title="Direction" comment="This determines which direction the block will move when the Sprites Required value is satisfied." requiredbit="26" requiredval="0">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Up</entry>
-      <entry value="3">Down</entry>
-    </list>
-    <value nybble="8" title="Speed" comment="This determines the speed the block will move." requiredbit="26" requiredval="0"/>
-  </sprite> <!-- #397: Move-When-On Ghost House Box -->
 
 <!-- Documentation conflict with bit 28 (26??) (nybble 7, 0100, value 4???) on 398, 400, 401, and 404. W4 Castle vs unchecked. Additionally, investigate the use of Layer 0 (foreground) terrain with all four skewers. -->
   <sprite id="398" name="Long / Massive Skewers - Right" notes="A long spiked pillar that covers a distance of about 80 Blocks to the right. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
@@ -7232,77 +6919,20 @@
     <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
   </sprite> <!-- #404: Long / Massive Skewers - Up -->
 
-  <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the Second Bowser Jr. boss fight.">
+  <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the Second Bowser Jr. boss fight. The white square indicates the placement for the Airship Boss Cutscene controller. The cannon used in Newer's final boss fight is included on the clown car, but don't damage Bowser Jr.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 06-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
     </dependency>
   </sprite> <!-- #405: Boss Controller - Bowser Jr. (2nd Battle) -->
 
-  <sprite id="406" name="Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the Third Bowser Jr. boss fight.">
+  <sprite id="406" name="Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the Third Bowser Jr. boss fight. &lt;b&gt;&lt;font color=&quot;red&quot;&gt;This fight crashes randomly in Newer!&lt;/font&gt;&lt;/b&gt">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 08-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
     </dependency>
   </sprite> <!-- #406: Boss Controller - Bowser Jr. (3rd Battle) -->
-
-  <sprite id="407" name="Cutscene Controller - Castle Boss" noyoshi="True" notes="This controller manages the Castle Boss's cinematics such as the start of the fight and the transition to the Airship segment.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the desired Castle's Boss Room in the Retail level.">
-      <required sprite="408"/>
-      <suggested sprite="192"/>
-      <suggested sprite="364"/>
-      <suggested sprite="381"/>
-      <suggested sprite="375"/>
-      <suggested sprite="372"/>
-      <suggested sprite="349"/>
-      <suggested sprite="365"/>
-    </dependency>
-    <list nybble="12" title="Boss" comment="Select the boss that matches the setup you are creating.">
-      <entry value="0">Larry</entry>
-      <entry value="1">Roy</entry>
-      <entry value="2">Lemmy</entry>
-      <entry value="3">Wendy</entry>
-      <entry value="4">Iggy</entry>
-      <entry value="5">Morton</entry>
-      <entry value="6">Ludwig</entry>
-    </list>
-  </sprite> <!-- #407: Cutscene Controller - Castle Boss -->
   
-  <sprite id="408" name="Cutscene Controller - Bowser Jr and Peach at Castle" noyoshi="True" notes="This controller manages the Castle Boss's Airship cinematics and the level completion.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the desired Castle's Boss Room in the Retail level.">
-      <required sprite="407"/>
-      <suggested sprite="192"/>
-      <suggested sprite="364"/>
-      <suggested sprite="381"/>
-      <suggested sprite="375"/>
-      <suggested sprite="372"/>
-      <suggested sprite="349"/>
-      <suggested sprite="365"/>
-    </dependency>
-    <list nybble="12" title="Boss" comment="Select the boss that matches the setup you are creating.">
-      <entry value="0">Larry</entry>
-      <entry value="1">Roy</entry>
-      <entry value="2">Lemmy</entry>
-      <entry value="3">Wendy</entry>
-      <entry value="4">Iggy</entry>
-      <entry value="5">Morton</entry>
-      <entry value="6">Ludwig</entry>
-    </list>
-  </sprite> <!-- #408: Cutscene Controller - Bowser Jr and Peach at Castle -->
-  
-  <sprite id="409" name="Cutscene Controller - Bowser Jr and Peach at Airship" noyoshi="True" notes="This controller manages the Bowser Jr. cinematics and level completion, as well as the World 8 Airship transition segment. This sprite will be used twice in the Third Bowser Jr. Fight's arrangement.">
-    <dependency notes="Specific room settings are likely required. Please reference the original Retail levels, 04-, 06-, and 08-38 A1.">
-      <suggested sprite="211"/>
-      <suggested sprite="405"/>
-      <suggested sprite="406"/>
-    </dependency>
-    <list bit="47-48" title="Version" comment="This determines which version of the Bowser Jr. boss fight is being used.">
-      <entry value="0">World 4 Airship</entry>
-      <entry value="1">World 6 Airship</entry>
-      <entry value="2">World 8 Airship Part 1</entry>
-      <entry value="3">World 8 Airship Part 2</entry>
-    </list>
-  </sprite> <!-- #409: Cutscene Controller - Bowser Jr and Peach at Airship -->
 
   <sprite id="410" name="Giga Goomba" asmhacks="True" notes="An extremely large Goomba added by Newer that will stun the player and shake the screen with each step.">
     <checkbox bit="48" title="Longer Stuns" comment="When enabled, the stun duration will be longer."/>
@@ -7364,18 +6994,6 @@
 
   </sprite> <!-- #414: Spike / Stone Spike -->
   
-  <sprite id="415" name="(Unused) Boss Controller - Larry Koopa" notes="An unused and incomplete version of the Larry Koopa boss fight's controller. Do not use." advancednotes="Considered incomplete. Does not want to do anything, even with a Tower Boss Controller or a Cutscene Controller attached. You can still put this Sprite in a normal level and Larry will appear at the Sprite's placement. He can be defeated with Fire and Ice. If Mario jumps on him, Mario will get hit. Nonetheless, Mario can do a Ground-Pound to defeat him immediately. This Sprite was perhaps created to give the possibility to place Larry normally in a level. He just stands there and waits...">
-  </sprite> <!-- #415: (Unused) Boss Controller - Larry Koopa -->
-  
-  <sprite id="416" name="Invisible 1-Up - Mini-Mario Only" notes="A stationary invisible 1-up Mushroom that can only be collected by a player with the Mini power-up.">
-  </sprite> <!-- #416: Invisible 1-up - Mini-Mario Only -->
-  
-  <sprite id="417" name="Invisible Spin-Jump Coin" notes="A loose Coin appears if you spin-jump near this sprite, identical to the effect of spin-jumping near a dancing flower.">
-  </sprite> <!-- #417: Invisible Spin-Jump Coin -->
-
-  <sprite id="418" name="Banzai Missile Bill Generator" notes="This sprite spawns endless homing Banzai Bills from the sprite's placement. There is no cannon for them to appear from, though the sound effect is played. Once they spawn, they will rise or fall vertically until they lock onto a player, and then they will begin to move forward.">
-    <value nybble="5-6" title="Delay Between Firing" comment="This determines how long the game will wait before firing another Banzai Bill." comment2="A value of 16-24 is recommended."/>
-  </sprite> <!-- #418: Banzai Missile Bill Generator -->
   
   <sprite id="419" name="Bowser" noyoshi="True" notes="Bowser himself, used in the final boss fight of World 8. He cannot be used without the proper controllers and level setup.">
     <dependency notes="Most of the final Bowser fight involves hardcoded elements, so directly copying 08-24 A4 is strongly recommended.">
@@ -7564,7 +7182,7 @@
   </sprite> <!-- #430: Toad House Minigame - Flip Panel Controller -->
   
   <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the Retail Bowser battle.">
-    <dependency notes="Most of the final Bowser fight involves hardcoded elements, so directly copying 08-24 A4 is strongly recommended. Sprites won't spawn if on screen when entering the zone.">
+    <dependency notes="Most of the final Bowser fight involves hardcoded elements, some of which that were removed in Newer. Directly copying 08-24 A4 from Newer is strongly recommended. Sprites won't spawn if on screen when entering the zone.">
       <required sprite="439"/>
       <required sprite="445"/>
       <required sprite="449"/>
@@ -7721,15 +7339,6 @@
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the block placing it further behind other sprites."/>
   </sprite> <!-- #448: Metal Bar -->
   
-  <sprite id="449" name="Bowser Fireball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Bowser Fireballs will fire from the screen's right edge towards the left  while a player is inside it." advancednotes="&lt;br&gt; - Uses hardcoded location ID 0 (you can have multiple ones in the zone)&lt;br&gt; - They will look awful if Bowser's sprite isn't present in any area of the level&lt;br&gt;&lt;br&gt;&lt;b&gt;Sprite Placement:&lt;/b&gt;&lt;br&gt; - X Position does not matter&lt;br&gt; - Y Position matters, as the sprite will spawn fireballs in a range of 6 tiles below its placement&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Placement:&lt;/b&gt;&lt;br&gt; - Bowser Fireballs start spawning as soon as the left edge of the location enters the screen&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Size (fireballs won't spawn if requirements aren't met):&lt;/b&gt;&lt;br&gt; - X Size: Unknown, but a specific minimal X location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt; - Y Size: At least 120px (5 blocks). A specific minimal Y location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt;" >
-    <dependency notes="Almost all settings are hardcoded and the sprite will not function outside of the exact setup used in 8-24 A4. See advanced notes for more information.">
-      <required sprite="431"/>
-    </dependency>
-    <checkbox bit="48" title="Enable Functionality" comment="This must be enabled for the sprite to function."/>
-    <value nybble="7-8" title="Location ID" comment="&lt;b&gt;&lt;font color=&quot;red&quot;&gt;Only works with hardcoded location ID 0!&lt;/font&gt;&lt;/b&gt; The Fireballs will only spawn while a player is in this location." advancedcomment="Or at least, it would, if its behavior had not been hardcoded. " requiredbit="48"/>
-    <value nybble="10" title="Number of Fireballs" comment="This determines the number of fireballs in each wave." comment2="A value of 0 creates 5 fireballs. A value of 1+ creates that number." requiredbit="48"/>
-    <value nybble="11" title="Positioning" comment="Changes position the Fireballs appear in." comment2="A value of 0 creates random patterns. A value of 1 will CRASH the game. A value of 2+ will change the positioning or patterns or something." requiredbit="48"/>
-  </sprite> <!-- #449: Bowser Fireball Spawn Area -->
 
   <sprite id="450" name="Enterable Warp Pipe - Up" notes="A non-tileset pipe that can be entered or exited from. Only one facing upwards exists. It does not have to be placed exactly on the grid.">
     <list bit="43-44" title="Color" comment="This determines the color of the Pipe.">
@@ -8106,15 +7715,6 @@
     <value nybble="9-10" title="Unknown Value 9-10" advanced="True" advancedcomment="ASM shows Nybble 9-10 might affect something."/>
   </sprite> <!-- #481: (Unused) Final Boss - Rubble Block -->
 
-  <sprite id="482" name="Final Boss - Pre-Boss Camera Effects" notes="A set of special elements utilized by the sections of level leading up to the final Bowser Boss fight.">
-    <dependency notes="While the effects can be used on their own without any bugs, they are very specific in how they act. First, they are all generated from the bottom left corner of the sprite's placement. The Door Room Darkness will create a border of blackness forming a single room. Corridor Darkness will create a border of blackness that is about 10 blocks tall and 150 blocks long. The Corridor Wall BG creates a Layer 2 wall decoration that lines the tunnel. Both have several specifically placed pits in it to match the terrain seen in Retail 8-24 A4.">
-      <suggested sprite="431"/>
-    </dependency>
-    <list bit="47-48" title="Effect" comment="This determines the type of effect used.">
-      <entry value="0">Door Room Darkness</entry>
-      <entry value="1">Corridor Darkness</entry>
-      <entry value="2">Corridor Wall BG</entry>
-    </list>
-  </sprite> <!-- #482: Final Boss - Pre-Boss Camera Effects -->
+
 </sprites>
 <!-- Thank you so much for a-playing my game! -->

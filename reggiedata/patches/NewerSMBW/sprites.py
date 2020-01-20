@@ -472,7 +472,7 @@ class SpriteImage_NewerQSwitch(SpriteImage_NewerSwitch): # 40
         self.switchType = "Q"
 
 
-class SpriteImage_ExcSwitch(SpriteImage_NewerSwitch):  # 42
+class SpriteImage_NewerExcSwitch(SpriteImage_NewerSwitch):  # 42
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'E'
@@ -864,6 +864,12 @@ class SpriteImage_MessageBlock(SLib.SpriteImage_Static): # 152
             SLib.Tiles[0x98].main,
             (8, 0)
         )
+
+
+class SpriteImage_NewerQSwitchUnused(SpriteImage_NewerSwitch): # 153
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.switchType = "Q"
 
 
 class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
@@ -1530,6 +1536,12 @@ class SpriteImage_GigaGoomba(SLib.SpriteImage_Static):  # 410
         SLib.loadIfNotInImageCache('GigaGoomba', 'goomba_giga.png')
 
 
+class SpriteImage_NewerBowserSwitchSm(SpriteImage_NewerSwitch):  # 478
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.switchType = 'E'
+
+
 class SpriteImage_NewerBowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
     @staticmethod
     def loadImages():
@@ -1588,7 +1600,7 @@ ImageClasses = {
     25: SpriteImage_NewerSpiny,
     26: SpriteImage_NewerUpsideDownSpiny,
     40: SpriteImage_NewerQSwitch,
-    42: SpriteImage_ExcSwitch,
+    42: SpriteImage_NewerExcSwitch,
     47: SpriteImage_Thwomp,
     48: SpriteImage_GiantThwomp,
     49: SpriteImage_FakeStarCoin,
@@ -1602,6 +1614,7 @@ ImageClasses = {
     107: SLib.SpriteImage,
     145: SpriteImage_NewerFloatingBarrel,
     152: SpriteImage_MessageBlock,
+    153: SpriteImage_NewerQSwitchUnused,
     157: SpriteImage_BigPumpkin,
     167: SpriteImage_ShyGuyGiant,
     168: SpriteImage_Thundercloud,
@@ -1638,5 +1651,6 @@ ImageClasses = {
     402: SpriteImage_LineQBlock,
     403: SpriteImage_LineBrickBlock,
     410: SpriteImage_GigaGoomba,
+    478: SpriteImage_NewerBowserSwitchSm,
     479: SpriteImage_NewerBowserSwitchLg,
 }

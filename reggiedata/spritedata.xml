@@ -77,286 +77,36 @@
     </list>
   </sprite> <!-- #9: (Unused) Glitch Player Actor -->
 
-  <sprite id="10" name="(Unused) Large Object Thrower" asmhacks="True" notes="Used in the Newer Final Boss Fight. This is spawned through Captain Bowser's code. It will throw a larger version of the Projectile at a 45° arc. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is best made use of by spawning it through the Actor Spawner. Projectiles have a very high velocity. It will spawn the object around 5 blocks above the placement of the sprite.">
-    <dependency notes="[95] Hammer Bros is required to be placed in the level if using this sprite with the Object: Hammer setting.">
-      <suggested sprite="95"/> <!-- Requires Hammer Bros if Hammer is used -->
-    </dependency>
-    <dualbox bit="40" title1="Place in Front" title2="Place Behind" comment="This determines the Z-Order of the thrown object." advanced="True" advancedcomment="Place in Front: +3300 to the Z-Order. &lt;br&gt;&lt;br&gt;Place Behind: -1804 to the Z-Order."/>
-    <list bit="41-44" title="Object" comment="This determines what object is thrown. These objects are larger than the normal versions." advanced="True">
-      <entry value="0">Wrench</entry>
-      <entry value="1">Exploding Wrench</entry>
-      <entry value="2">Bowser Bomb</entry>
-      <entry value="3">Hammer</entry>
-      <entry value="4">Thwomp</entry>
-      <entry value="5">Mushroom Present Box</entry>
-    </list>
-    <dualbox bit="48" title1="Throws Left" title2="Throws Right" comment="This sets the direction the object will be thrown." advanced="True"/>
-  </sprite> <!-- #10: (Unused) Large Object Thrower -->
+  <sprite id="10" name="Unused">
+  </sprite> <!-- #10: Unused -->  
 
-<!-- Establish full list of Dependencies -->
-  <sprite id="11" name="Custom Model Loader" asmhacks="True" notes="The Custom Model Loader allows the use of pre-scripted Models and Animations for use in user-created cutscenes. It can also provide new models as decoration for your level. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Attention:&lt;/b&gt; Will CRASH if [Animate Model] is set and no animation is available.&lt;/font&gt;" advancednotes="New Models and Animations can be added to this sprite's functionality specifically for your hack. This requires editing of the game code through Kamek or with the assistance of members of the NEWER team.">
-    <dependency notes="As this sprite will pull Models and Animations from specific .arc files, those sprites are required to be placed within the level to prevent a game crash. The list of required sprites is as follows: &lt;br&gt; &lt;br&gt;0-6: arrow.arc (143) &lt;br&gt;7-16: block_arrow.arc (321) &lt;br&gt;17-24: arrow.arc (143) &lt;br&gt;25-28: cage_boss_koopa.arc (???) &lt;br&gt;29-38: kameck_princess.arc (???) &lt;br&gt;39: CreditsBG.arc (???) &lt;br&gt;40-42: chestnut.arc (320) &lt;br&gt;43-48: OpeningScene.arc (273) &lt;br&gt;49: chestnut.arc (320)">
-      <suggested sprite="143"/> <!-- arrow.arc -->
-      <suggested sprite="321"/> <!-- block_arrow.arc -->
-      <suggested sprite="439"/> <!-- cage_boss_koopa, kameck_princess -->
-      <suggested sprite="0"/> <!-- CreditsBG -->
-      <suggested sprite="320"/> <!-- chestnut -->
-      <suggested sprite="273"/> <!-- OpeningScene -->
-    </dependency>
-    <list nybble="11-12" title="Model" comment="Determines which Model will be used. If [Animate Model] is checked, then the Models will run their coded animation instead of standing still. Values with '---' were not used by Newer.">
-      <entry value="255">Level Decoration [DoNotUseMe]</entry>
-        <entry value="24">Cloud [10-22]</entry>
-        <entry value="40">Tree Canopy A (Do not animate?) [10-03]</entry>
-        <entry value="41">Tree Canopy B (Do not animate?) [10-03]</entry>
-        <entry value="42">Tree Canopy C (Do not animate?) [10-03]</entry>
-        <entry value="49">Tree Canopy D (Do not animate?) [01-15]</entry>
-        <entry value="254">Title Screen Cinematics [DoNotUseMe]</entry>
-        <entry value="0">Basic Title Balloon Red [01-10]</entry>
-        <entry value="1">Basic Title Balloon Green [01-10]</entry>
-        <entry value="2">Basic Title Mario [01-10]</entry>
-        <entry value="3">Basic Title Peach [01-10]</entry>
-        <entry value="4">Basic Title Luigi [01-10]</entry>
-        <entry value="5">Basic Title ToadA [01-10]</entry>
-        <entry value="6">Basic Title ToadB [01-10]</entry>
-        <entry value="7">Victory Title Clowncar Mario [04-10]</entry>
-        <entry value="8">Victory Title Clowncar Luigi [04-10]</entry>
-        <entry value="9">Victory Title Clowncar Toad A [04-10]</entry>
-        <entry value="10">Victory Title Clowncar Toad B [04-10]</entry>
-        <entry value="11">Victory Title Clowncar Peach [---]</entry>
-        <entry value="12">Victory Title Mario [04-10]</entry>
-        <entry value="13">Victory Title Luigi [04-10]</entry>
-        <entry value="14">Victory Title ToadA [04-10]</entry>
-        <entry value="15">Victory Title ToadB [04-10]</entry>
-        <entry value="16">Victory Title Peach [---]</entry>
-        <entry value="17">Perfect Title Peach's Castle [04-11]</entry>
-        <entry value="18">Perfect Title Mario [04-11]</entry>
-        <entry value="19">Perfect Title Luigi [04-11]</entry>
-        <entry value="20">Perfect Title ToadA [04-11]</entry>
-        <entry value="21">Perfect Title ToadB [04-11]</entry>
-        <entry value="22">Perfect Title Peach [---]</entry>
-        <entry value="23">Backdrop [---]</entry>
-        <entry value="253">Opening, Ending, and Credits [DoNotUseMe]</entry>
-        <entry value="43">Opening Balloon Red [02-41]</entry>
-        <entry value="44">Opening Balloon Green [02-41]</entry>
-        <entry value="46">Opening Mario [02-41]</entry>
-        <entry value="45">Opening Luigi [02-41]</entry>
-        <entry value="47">Opening ToadA [02-41]</entry>
-        <entry value="48">Opening ToadB [02-41]</entry>
-        <entry value="25">Ending Broken Ship [08-41]</entry>
-        <entry value="26">Ending Tree [08-41]</entry>
-        <entry value="27">Ending Bowser [08-41]</entry>
-        <entry value="28">Ending Player Clowncar [08-41]</entry>
-        <entry value="29">Credits Mario Clowncar [Unknown]</entry>
-        <entry value="30">Credits Luigi Clowncar [Unknown]</entry>
-        <entry value="31">Credits ToadA Clowncar [Unknown]</entry>
-        <entry value="32">Credits ToadB Clowncar [Unknown]</entry>
-        <entry value="33">Credits Peach Clowncar [---]</entry>
-        <entry value="34">Credits Mario [Unknown]</entry>
-        <entry value="35">Credits Luigi [Unknown]</entry>
-        <entry value="36">Credits ToadA [Unknown]</entry>
-        <entry value="37">Credits ToadB [Unknown]</entry>
-        <entry value="38">Credits Peach [---]</entry>
-        <entry value="39">Credits Peach's Castle [Unknown]</entry>
-    </list>
-    <value nybble="5-6" title="Scale: Value/4.0" comment="Changes the Scale of the 3D Model. Value 0 creates an original-sized Model (100%). Values above 0 are divided by 4 to determine the Model Size. 1=25%, 2=50%, 8=200%, etc." advancedcomment="Value limit unknown. Maximum value suspected to be 24, or 600%"/>
-    <checkbox bit="40" title="Animate Model" comment="Enabling this will cause the loaded model to activate its attached animation. Without it, the loaded model will only stand still." comment2="&lt;font color=&quot;red&quot;&gt;Will CRASH if Animation not present and this is checked.&lt;/font&gt; &lt;br&gt; &lt;br&gt;Known values that must have [Animate Model] left unchecked: &lt;br&gt;40-42: Tree Canopy A/B/C &lt;br&gt;49: Tree Canopy D"/>
-    <list nybble="8" title="Z-Order" comment="Smaller Values cause the model to be placed in the background. &lt;br&gt; &lt;br&gt;Some in-game values: &lt;br&gt;Background: -5500.0 &lt;br&gt;Layer 2: -3300.0 &lt;br&gt;Layer 1: 0.0 &lt;br&gt;Player: 300.0 &lt;br&gt;Foreground: 1200.0 &lt;br&gt;Layer 0: 3300.0 &lt;br&gt;Above Layer 0: 5500.0">
-      <entry value="0">Use Default Z-Order for Custom Model</entry>
-      <entry value="1">-5000.0</entry>
-      <entry value="2">-4500.0</entry>
-      <entry value="3">-2000.0</entry>
-      <entry value="4">-1000.0</entry>
-      <entry value="5">300.0</entry>
-      <entry value="6">800.0</entry>
-      <entry value="7">1600.0</entry>
-      <entry value="8">2000.0</entry>
-      <entry value="9">3600.0</entry>
-      <entry value="10">4000.0</entry>
-      <entry value="11">4500.0</entry>
-      <entry value="12">6000.0</entry>
-      <entry value="13">6500.0</entry>
-      <entry value="14">7000.0</entry>
-      <entry value="15">7500.0</entry>
-    </list>
-  </sprite> <!-- #11: Custom Model Loader -->
+  <sprite id="11" name="Unused">
+  </sprite> <!-- #11: Unused -->  
 
-  <sprite id="12" name="Toad House Minigame - Silver Star" notes="A collection challenge added in NewerSMBW. The player must collect all of the stars in order to trigger an event, tied to their success.">
-    <value nybble="5-6" title="Target Event ID" comment="When all Collectible Stars in the Zone are collected, the Target Event ID will be activated." idtype="Target Event"/>
-    <value bit="47-48" title="Minimum Number of Players" comment="This Challenge House Star will spawn if the current number of players is Value+1 or greater."/>
-  </sprite> <!-- #12: Toad House Minigame - Silver Star -->
+  <sprite id="12" name="Unused">
+  </sprite> <!-- #12: Unused -->  
 
-  <sprite id="13" name="Rideable Clowncar with Cannon" asmhacks="True" noyoshi="True" notes="Used in the NewerSMBW Final Boss Fight. The player can fly around freely and shoot a cannon at a fixed angle. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Not recommended for use outside of the Final Boss Fight.&lt;/font&gt;" advancedcomment="If you do choose to use this vehicle outside of the boss fight, please keep in mind there is no documentation for what issues you might encounter. Be sure to test your level for crashes and glitches. Cannon shots behave similarly but not identically to Bob-omb explosions. Water causes it to react similarly to Yoshi, with the player jumping off and the Clowncar sinking.">
-    <value nybble="12" title="Minimum Number of Players" comment="If this value is more than the current number of players, the Clowncar will not load. A value of 4 will only load if there are 4 players." advanced="True"/>
-  </sprite> <!-- #13: Rideable Clowncar with Cannon -->
+  <sprite id="13" name="Unused">
+  </sprite> <!-- #13: Unused -->  
 
-  <sprite id="14" name="(Unused) Captain Bowser Flame Breath" asmhacks="True" notes="Captain Bowser uses this in the NewerSMBW Final Boss Fight. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Cannot be placed as an individual sprite.&lt;/font&gt;">
-  </sprite> <!-- #14: (Unused) Captain Bowser Flame Breath -->
+  <sprite id="14" name="Unused">
+  </sprite> <!-- #14: Unused -->  
 
-  <sprite id="15" name="Toad House Minigame - Music House" asmhacks="True" noyoshi="True" notes="This sprite is used to generate the Music House bonus game from NewerSMBW. The blocks will spawn centered on the sprite's placement. Playing the mini-game to completion will cause the level to end in completion." advancednotes="Additional songs can be added with a little adjustment to the sprite's code. Simple edits will allow for new songs in your hack.">
-    <list nybble="5" title="1st Chord Prize" comment="Prize awarded for passing the first Chord of the song.">
-      <entry value="0">Mushroom</entry>
-      <entry value="1">Fire Flower</entry>
-      <entry value="2">Propeller</entry>
-      <entry value="3">Ice Flower</entry>
-      <entry value="4">Penguin Suit</entry>
-      <entry value="5">Mini Mushroom</entry>
-      <entry value="6">Star</entry>
-      <entry value="7">Hammer Suit</entry>
-      <entry value="8">1-Up</entry>
-      <entry value="9">50 Coins</entry>
-    </list>
-    <list nybble="6" title="2nd Chord Prize" comment="Prize awarded for passing the second Chord of the song.">
-      <entry value="0">Mushroom</entry>
-      <entry value="1">Fire Flower</entry>
-      <entry value="2">Propeller</entry>
-      <entry value="3">Ice Flower</entry>
-      <entry value="4">Penguin Suit</entry>
-      <entry value="5">Mini Mushroom</entry>
-      <entry value="6">Star</entry>
-      <entry value="7">Hammer Suit</entry>
-      <entry value="8">1-Up</entry>
-      <entry value="9">50 Coins</entry>
-    </list>
-    <list nybble="7" title="3rd Chord Prize" comment="Prize awarded for passing the third Chord of the song.">
-      <entry value="0">Mushroom</entry>
-      <entry value="1">Fire Flower</entry>
-      <entry value="2">Propeller</entry>
-      <entry value="3">Ice Flower</entry>
-      <entry value="4">Penguin Suit</entry>
-      <entry value="5">Mini Mushroom</entry>
-      <entry value="6">Star</entry>
-      <entry value="7">Hammer Suit</entry>
-      <entry value="8">1-Up</entry>
-      <entry value="9">50 Coins</entry>
-    </list>
-    <list nybble="8" title="4th Chord Prize" comment="Prize awarded for passing the fourth Chord of the song.">
-      <entry value="0">Mushroom</entry>
-      <entry value="1">Fire Flower</entry>
-      <entry value="2">Propeller</entry>
-      <entry value="3">Ice Flower</entry>
-      <entry value="4">Penguin Suit</entry>
-      <entry value="5">Mini Mushroom</entry>
-      <entry value="6">Star</entry>
-      <entry value="7">Hammer Suit</entry>
-      <entry value="8">1-Up</entry>
-      <entry value="9">50 Coins</entry>
-    </list>
-    <list nybble="12" title="Song" comment="This determines the song that must be played in the minigame. Number of Stars (*) represents the difficulty. The world the song was used in is listed in parentheses.">
-      <entry value="3">SMB3 Clouds |*    | (Goldwood)</entry>
-      <entry value="6">SMW Castle |*    | (Crystal Cave)</entry>
-      <entry value="8">Yoshi Story Theme |*    | (Yoshi Island)</entry>
-      <entry value="2">SMB Starman |**   | (Star Road)</entry>
-      <entry value="7">SMW Theme |**   | (Mt. Mush)</entry>
-      <entry value="13">Koopahari Desert |**   | (Desert)</entry>
-      <entry value="0">SMB Melody |***  | (Cherry)</entry>
-      <entry value="9">SM64 Peaches Castle |***  | (Yoshi Island)</entry>
-      <entry value="10">SM64 Koopa Road |***  | (Koopa Planet)</entry>
-      <entry value="11">Frappe Snowland |***  | (FreezeFlame)</entry>
-      <entry value="1">SMB Underground |**** | (Koopa Core)</entry>
-      <entry value="5">SMB3 Underwater |**** | (Sewer)</entry>
-      <entry value="12">Ghost Luigi Mansion theme |**** | (Ghost)</entry>
-      <entry value="4">SMB3 Hammer Bros |*****| (MiniMega)</entry>
-      <entry value="14">Gusty Garden Galaxy |*****| (Space)</entry>
-      <entry value="15">Unused Slot |     | ()</entry>
-    </list>
-    <checkbox bit="44" title="Always used in NewerSMBW" comment="Unknown effect." advanced="True" advancedcomment="While this is always used in NewerSMBW's Music Houses, there's no discernable difference between having this enabled and not."/>
-  </sprite> <!-- #15: Toad House Minigame - Music House -->
+  <sprite id="15" name="Unused">
+  </sprite> <!-- #15: Unused -->  
 
-  <sprite id="16" name="Bomb Drop Controller" asmhacks="True" yoshinotes="The Bomb Dropper does work with Yoshi. When the player is hit and he's on Yoshi, he will dismount Yoshi." notes="When one of the Triggering Events is activated, this controller will drop a large exploding spiked ball on either Bowser or a specific player." advancednotes="Feeling adventurous? Try making a multiplayer level that uses this sprite to create a versus style game which disables player respawn and triggers an event when only one player is left alive.">
-    <value bit="18-24" title="Triggering Event ID #1" comment="Two different Event IDs can trigger the bomb drop." comment2="Maximum usable value for this sprite is 64." idtype="Triggering Event"/>
-    <value bit="26-32" title="Triggering Event ID #2" comment="Two different Event IDs can trigger the bomb drop." comment2="Maximum usable value for this sprite is 64." idtype="Triggering Event"/>
-    <list nybble="12" title="Target" comment="This determines which target the bomb will drop above. Players have the ability to outrun the bomb.">
-      <entry value="0">Bowser</entry>
-      <entry value="1">Mario (P1)</entry>
-      <entry value="2">Luigi (P2)</entry>
-      <entry value="3">ToadA (P3)</entry>
-      <entry value="4">ToadB (P4)</entry>
-    </list>
-  </sprite> <!-- #16: Bomb Drop Controller -->
+  <sprite id="16" name="Unused">
+  </sprite> <!-- #16: Unused -->  
 
-  <sprite id="17" name="Music House Glow Block" asmhacks="True" notes="These are the colored Glow Blocks that are created by [15] in NewerSMBW's Music Houses. They look like colored Glow Blocks. They can either be used as decoration, or as an item block.">
-    <dualbox bit="44" title1="Plays a musical note" title2="Awards an item" comment="The glow block can either play a note or award an item."/>
-    <list nybble="7-8" title="Item" comment="Item rewarded." comment2="[Bug] Block will award unlimited items." advancedcomment="The block can be set to both award an item and play a musical note, but it is not recommended." requiredbit="44">
-      <entry value="0">None</entry>
-      <entry value="1">Star</entry>
-      <entry value="2">Coin</entry>
-      <entry value="3">Mushroom</entry>
-      <entry value="6">Hammer Suit</entry>
-      <entry value="7">1-up</entry>
-      <entry value="9">Fire Flower</entry>
-      <entry value="14">Ice Flower</entry>
-      <entry value="17">Penguin Suit</entry>
-      <entry value="21">Propeller Mushroom</entry>
-      <entry value="25">Mini Mushroom</entry>
-    </list>
-    <list nybble="12" title="Color" comment="Determines the color of the glow block." requiredbit="44">
-      <entry value="0">White</entry>
-      <entry value="1">Red</entry>
-      <entry value="2">Orange</entry>
-      <entry value="3">Yellow</entry>
-      <entry value="4">Green</entry>
-      <entry value="5">Cyan</entry>
-      <entry value="6">Blue</entry>
-      <entry value="7">Violet</entry>
-      <entry value="8">Black</entry>
-    </list>
-    <list nybble="12" title="Color &amp; Note" comment="Determines which note is played when a player hits the block." comment2="&lt;font color=&quot;Red&quot;&gt;*[Bug] Value 0: White - C1♯ currently crashes the game.&lt;/font&gt;" requiredbit="44" requiredval="0">
-      <entry value="0">White - C1♯ (C1 Sharp)*</entry>
-      <entry value="1">Red - C1 (High C)</entry>
-      <entry value="2">Orange - D1</entry>
-      <entry value="3">Yellow - E1</entry>
-      <entry value="4">Green - F1</entry>
-      <entry value="5">Cyan - G1</entry>
-      <entry value="6">Blue - A1</entry>
-      <entry value="7">Violet - B1</entry>
-      <entry value="8">Black - C0 (Deep C)</entry>
-    </list>
-  </sprite> <!-- #17: Music House Glow Block -->
-
-  <sprite id="18" name="Dragon Coaster Platform" asmhacks="True" notes="This creates immobile 'Dragon Coaster' Platforms (1x2). The Sprite's placement represents the right side of the Platform.">
-    <dependency notes="The normal Dragon Coaster [297] must be placed somewhere in your level. It does not have to be part of a zone.">
-      <requires sprite="297"/> <!-- Dragon Coaster -->
-    </dependency>
-    <dualbox bit="20" title1="Horizontal Platform" title2="Angled Platform" comment="This determines if the platform is flat and horizontal, or if it is tilted at an angle."/>
-    <dualbox bit="21" title1="Angles Left" title2="Angles Right" comment="This determines which direction the platform will be angled." requiredbit="20"/> <!-- Appears only if Angled is enabled -->
-    <list bit="22-24" title="Angle" comment="Angles greater than 45° have glitchy collision and are not recommended." requiredbit="20-21" requiredval="2">
-      <entry value="7">11.25°</entry>
-      <entry value="6">22.50°</entry>
-      <entry value="5">33.75°</entry>
-      <entry value="4">45.00°</entry>
-      <entry value="3">56.25°</entry>
-      <entry value="2">67.50°</entry>
-      <entry value="1">78.75°</entry>
-      <entry value="0">90.00°</entry>
-    </list> <!-- Appears only if Angled + Left is enabled -->
-    <list bit="22-24" title="Angle" comment="Angles greater than 45° have glitchy collision and are not recommended." requiredbit="20-21" requiredval="3">
-      <entry value="0">11.25°</entry>
-      <entry value="1">22.50°</entry>
-      <entry value="2">33.75°</entry>
-      <entry value="3">45.00°</entry>
-      <entry value="4">56.25°</entry>
-      <entry value="5">67.50°</entry>
-      <entry value="6">78.75°</entry>
-      <entry value="7">90.00°</entry>
-    </list> <!-- Appears only if Angled + Right is enabled -->
-    <list nybble="12" title="Segment" comment="This determines which segment of the Dragon Coaster is used.">
-      <entry value="0">Head</entry>
-      <entry value="1">Body</entry>
-      <entry value="2">Tail</entry>
-    </list>
-    <dualbox bit="28" title1="Faces Left" title2="Faces Right" comment="This determines which direction the platform will face." requiredbit="48" requiredval="0"/> <!-- Only shows when Segment is set to Head or Tail; assumes no effect on Body -->
-  </sprite> <!-- #18: Dragon Coaster Platform -->
-
-<!-- Document Dependency. Check for Level/Area/Zone requirements. Ask Treeki about isBigBoss effects. -->
-  <sprite id="19" name="World-4 Boss: Samurshai" asmhacks="True" noyoshi="True" notes="Samurai Shy Guy boss used by NewerSMBW.">
-    <dependency notes="">
-      <required sprite=""/> <!-- Kamek -->
-      <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite=""/> <!-- ??? -->
-    </dependency>
-    <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
-  </sprite> <!-- #19: World-4 Boss: Samurshai -->
-
+  <sprite id="17" name="Unused">
+  </sprite> <!-- #17: Unused -->
+  
+  <sprite id="18" name="Unused">
+  </sprite> <!-- #18: Unused -->
+  
+  <sprite id="19" name="Unused">
+  </sprite> <!-- #19: Unused -->
+  
   <sprite id="20" name="Goomba" asmhacks="True" sizehacks="True" notes="Your standard Goomba. Place it in the level and it will walk towards Mario when it loads.">
     <list nybble="6" title="Color" comment="This determines the color and style of the Goomba." advancedcomment="More colors can be added for your hack.">
       <entry value="0">Normal</entry>
@@ -395,9 +145,8 @@
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the Paragoomba placing it further behind other sprites."/>
   </sprite> <!-- #21: Paragoomba -->
 
-  <sprite id="22" name="Pumpkin Goomba" asmhacks="True" notes="A Goomba inside a pumpkin.">
-    <dualbox bit="48" title1="Goomba" title2="Paragoomba" comment="This will determine if it behaves like a Goomba or like a Paragoomba."/>
-  </sprite> <!-- #22: Pumpkin Goomba -->
+  <sprite id="22" name="Unused">
+  </sprite> <!-- #22: Unused -->  
 
   <sprite id="23" name="Basic Platform - Horizontal Movement" notes="The most basic platform in the game. Moves on its own from left to right.">
     <dualbox bit="27" title1="Normal Model" title2="boss_koopa_lift.arc" advanced="True" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
@@ -494,8 +243,8 @@
     <value bit="10-16" title="Triggering Event ID" comment="Maximum usable value for this sprite is 64." requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #28: Stone Block (NSMB-DS) - Horizontal Movement -->
 
-  <!--<sprite id="29" name="Incomplete Platform - Ac_Lift_ObjBg_HMove_Big" notes="This sprite does not load. Settings are the same as in sprite 28. We're currently unsure why this sprite does not load. &lt;br&gt;Needs RE (reverse-engineering) data to figure out the issue."> -->
-  <!--</sprite> --> <!-- #29: Incomplete Platform - Ac_Lift_ObjBG_HMove_Big -->
+  <sprite id="29" name="Incomplete Platform - Ac_Lift_ObjBg_HMove_Big" notes="This sprite does not load. Settings are the same as in sprite 28. We're currently unsure why this sprite does not load. &lt;br&gt;Needs RE (reverse-engineering) data to figure out the issue.">
+  </sprite> <!-- #29: Incomplete Platform - Ac_Lift_ObjBG_HMove_Big -->
 
   <sprite id="30" name="Grey Tiled Block" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. A custom texture was applied for NewerSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
@@ -875,13 +624,47 @@
     <checkbox bit="48" title="Unknown Flag 12 (1)" comment="An unknown setting for Nybble 12." advanced="True" advancedcomment="Bit 47-48 may be a list, but only value 2 has been defined. Value 3 is confirmed to CRASH the game, so do not activate this with Crush Forever. However, value 1 may provide different effects. Experimenting and testing are required."/>
   </sprite> <!-- #48: Big Thwomp -->
 
-  <sprite id="49" name="Fake Star Coin" asmhacks="True" sizehacks="True" notes="Has an appearance similar to a normal Star Coin, but when the player tries to collect it, it will vanish and disperse into 4 harmless Boos like a Fake Door.">
-    <dependency notes="A real Star Coin must be placed within the same Zone.">
-      <required sprite="32"/> <!-- Requires at least one Star Coin in the Zone -->
-      <suggested sprite="155"/>
-      <suggested sprite="389"/>
-    </dependency>
-  </sprite> <!-- #49: Fake Star Coin -->
+  <!-- Redo the Tilt Distances, they got lost in translation somehow? -->
+  <sprite id="49" name="(Unused) Seesaw Platform" notes="This is an incomplete platform that functions like a seesaw. Usage is not recommended, as the texture used is incomplete. Otherwise, it functions well.">
+    <value nybble="3-4" title="Triggering Event ID" />
+    <checkbox nybble="5" title="Event Activated" />
+    <list nybble="11" title="Tilt Distance" comment="This option determines the maximum amount the platform can be tilted while standing on it. Values are a bit similar to those from the 'length' category. Value 5 and above will cause Mario to slide from the platform if standing on it for too long. From values 6+, the platform can be tilted more than 90&#176;. Exceptions are values 11 and 15 - they will produce stationary platforms. They can be useful if a custom platform with customizable texture and size is needed.">
+      <entry value="11">None</entry>
+      <entry value="15">None</entry>
+      <entry value="1">12.5% (1x8 Slope)</entry>
+      <entry value="2">16.67% (1x6 Slope)</entry>
+      <entry value="3">25% (1x4 Slope)</entry>
+      <entry value="0">100% (1x1 Slope)</entry>
+      <entry value="4">166.67% (3x5 Slope)</entry>
+      <entry value="5">300% (1x3 Slope)</entry>
+      <entry value="6">?</entry>
+      <entry value="7">?</entry>
+      <entry value="8">?</entry>
+      <entry value="9">?</entry>
+      <entry value="10">?</entry>
+      <entry value="12">?</entry>
+      <entry value="13">?</entry>
+      <entry value="14">?</entry>
+    </list>
+    <list nybble="12" title="Width" comment="Value x 2 (in blocks). Value '0' has a width of 16.">
+      <entry value="1">2</entry>
+      <entry value="2">4</entry>
+      <entry value="3">6</entry>
+      <entry value="4">8</entry>
+      <entry value="5">10</entry>
+      <entry value="6">12</entry>
+      <entry value="7">14</entry>
+      <entry value="0">16</entry>
+      <entry value="8">16</entry>
+      <entry value="9">18</entry>
+      <entry value="10">20</entry>
+      <entry value="11">22</entry>
+      <entry value="12">24</entry>
+      <entry value="13">26</entry>
+      <entry value="14">28</entry>
+      <entry value="15">30</entry>
+    </list>
+  </sprite> <!-- #49: (Unused) Seesaw Platform -->
 
   <sprite id="50" name="Fall-When-Touched Platform" notes="This platform will begin to fall when a player first touches it.">
     <checkbox bit="27" title="Use an Alternate Color" comment="When enabled, the platform will load alternate textures."/>
@@ -2560,18 +2343,13 @@
     <value nybble="12" title="Red Coin ID" comment="When the player collects all 8 Red Coins from the same set, the game will reference a Red Ring with the same Red Coin ID to determine which item to reward to all players." comment2="&lt;font color=&quot;red&quot;&gt;A game crash will occur if you assign more than 8 Red Coins within the same Red Coin ID&lt;/font&gt;" idtype="Red Coin"/>
   </sprite> <!-- #144: Red Coin -->
 
-  <sprite id="145" name="Floating Barrel" noyoshi="True" notes="A floating barrel that can only be placed on a liquid surface. It will sink while a player is standing on it, but will pop back up once the player jumps off.">
+  <sprite id="145" name="Floating Barrel" noyoshi="True" notes="A floating barrel that can only be placed on a liquid surface. It will sink while a player is standing on it, but will pop back up once the player jumps off. The barrel can also flow with the unused water current controller.">
     <dependency notes="The Floating Barrel will not load when placed on the same screen as an entrance. Place the Floating Barrel where you want it to load using the liquid line, and it will spawn floating at the surface line of that body of liquid. It only works with non-Location liquids, and it does work with Moving liquids when placed correctly. Unlike Floating Coins / ? Blocks, it will also function with Rising/Falling Water. Lastly, it should be noted that the visual splash effect is always made of water.">
       <suggested sprite="138"/>
       <suggested sprite="139"/>
       <suggested sprite="216"/>
       <suggested sprite="285"/>
     </dependency>
-    <list nybble="6" title="Style" comment="This determines the style of the Floating Barrel." advancedcomment="More colors can be added for your hack.">
-      <entry value="0">Wooden</entry>
-      <entry value="1">Metal</entry>
-      <entry value="2">Oil Drum</entry>
-    </list>
     <checkbox bit="17" title="Initially Submerged" comment="When enabled, the floating barrel will load partially submerged."/>
   </sprite> <!-- #145: Floating Barrel -->
 
@@ -2752,7 +2530,7 @@
     <value nybble="9-12" title="Message ID" comment="Messages defined in Message.py. Add 256 to the value shown in the Newer Message Editor program. (01/10/18)" idtype="Message"/>
   </sprite> <!-- 152: Message Box -->
 
-  <sprite id="153" name="(Unused) Big &quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="This is a large version of the basic stand-alone switch. When triggered, it only modifies the Target Event.">
+  <sprite id="153" name="(Unused) &quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="This is a large version of the basic stand-alone switch. When triggered, it only modifies the Target Event.">
     <dependency notes="The game will crash unless a normal orange switch is placed somewhere in the level. It does not have to be within an area that is actually used.">
       <required sprite="40"/>
     </dependency>
@@ -3350,7 +3128,7 @@
     <value nybble="7" title="Tileset Column" comment="When using [Block Type: Tile from Pa(x)], you can spawn every tile from the tileset by selecting it from a grid formation. Each tileset contains 16 Rows (0-15), and 16 Columns (0-15). The first tile in the top left is 0,0 and the last tile in the bottom right is 15,15." comment2="Some common examples for Pa0: &lt;br&gt; &lt;i&gt;Coin: 1,14 | Coin Outline: 1,15 | ?-Block: 3,1 | Used Block: 3,2 | Wooden Block: 3,3 | Stone Block: 3,4 | Donut Lift: 3,5 | Steel Block: 3,6" requiredbit="33-36" requiredval="8-11"/> <!-- Appears only if Block Type (Tile) = 8-11 -->
   </sprite> <!-- #191: Tile God Event -->
 
-  <sprite id="192" name="Boss Controller - Larry Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 1 Castle, such as the boss movement, and camera options.">
+  <sprite id="192" name="Boss Controller - Larry Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 1 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
     <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -3713,7 +3491,7 @@
     <checkbox bit="48" title="Low Gravity" comment="When enabled, the Topman will fall much more slowly."/>
   </sprite> <!-- #210: Topman -->
 
-  <sprite id="211" name="Boss Controller - Bowser Jr. (1st Battle)" noyoshi="True" notes="This controls the mechanics for the First Bowser Jr. boss fight. It spawns the backgrounds BgA_0E02 and BgB_3402, and will overlap any other backgrounds set in the zone.">
+  <sprite id="211" name="Boss Controller - Bowser Jr. (1st Battle)" noyoshi="True" notes="This controls the mechanics for the First Bowser Jr. boss fight. It spawns the backgrounds BgA_0E02 and BgB_3402, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 04-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
@@ -4028,16 +3806,6 @@
   <sprite id="228" name="Stretching Mushroom Platform" asmhacks="True" notes="A stretching platform that looks like a mushroom with naturally synchronized timing.">
     <dualbox bit="40" title1="Long Platform" title2="Short Platform" comment="This determines the width of the Mushroom Platform when expanded."/>
     <dualbox bit="44" title1="Starts Contracted" title2="Starts Expanded" comment="This determines the initial state of the Mushroom Platform."/>
-    <list nybble="6" title="Color" comment="This determines the color of the Mushroom Platform." advancedcomment="More colors can be added for your hack.">
-      <entry value="0">Pink (Original)</entry>
-      <entry value="1">Red</entry>
-      <entry value="2">Orange</entry>
-      <entry value="3">Yellow</entry>
-      <entry value="4">Green</entry>
-      <entry value="5">Blue</entry>
-      <entry value="6">Violet</entry>
-      <entry value="7">Gray</entry>
-    </list>
     <list nybble="12" title="Height of Stem" comment="This determines the height of the decorative mushroom stem.">
       <entry value="0">2 Blocks</entry>
       <entry value="1">3 Blocks</entry>
@@ -5596,16 +5364,8 @@
     <dualbox bit="40" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the arrow will rotate." requiredbit="44"/> <!-- Appears if Ground-Pound Rotate is enabled -->
   </sprite> <!-- #321: Beta Arrow Block -->
 
-  <sprite id="322" name="World-2 Boss: Mega Thwomp" asmhacks="True" notes="A large Thwomp boss used by NewerSMBW. It can be defeated by having it fall through crushable terrain at least 4 blocks wide.">
-    <dependency notes="The Mega Thwomp itself is about 5.5 blocks tall and 4 blocks wide, and should be placed at ground level on the opposite end of the room from the player's entrance. Then, from the sprite placement, you must define his movement area. Each buffer defines the amount of space between the sprite's placement and the wall, calculated in half-blocks.">
-      <required sprite=""/> <!-- Kamek -->
-      <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite=""/> <!-- ??? -->
-    </dependency>
-    <value nybble="5-6" title="Left Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move through from the left side of the sprite's placement, calculated in half-blocks."/>
-    <value nybble="7-8" title="Right Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move through from the right side of the sprite's placement, calculated in half-blocks."/>
-    <value nybble="9-10" title="Top Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move upwards from the sprite's placement, calculated in half-blocks."/>
-  </sprite> <!-- #322: World-2 Boss: Mega Thwomp -->
+  <sprite id="322" name="Incomplete Sprite - 'En_Ghost_Jugem'" notes="No code.">
+  </sprite> <!-- #322: Incomplete Sprite - "En_Ghost_Jugem" -->
 
   <sprite id="323" name="Boo Circle" notes="A circle of Boos that can rotate along a central point. It will always have one opening for the player to pass through.">
     <list nybble="8" title="# of Boos" comment="This determines the number of Boos in the circle.">
@@ -6038,8 +5798,8 @@
     </dependency>
   </sprite> <!-- #348: Ludwig von Koopa -->
 
-  <sprite id="349" name="Boss Controller - Morton Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
+  <sprite id="349" name="Boss Controller - Morton Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
       <suggested sprite="436"/>
@@ -6282,6 +6042,7 @@
     <checkbox bit="24" title="Invisible Pipes" advanced="True" advancedcomment="When enabled, the Pipes will be invisible, but still able to be entered. It was likely meant to be another texture, but was never actually added in. Do not use this setting."/>
   </sprite> <!-- #360: Rolling Hill - 8 Pipes -->
 
+
   <sprite id="361" name="Rotation Controlled Crystal Block" notes="A rotation controlled large purple crystal block.">
     <dependency notes="This block does not appear unless actually paired to a rotation controller.">
       <suggested sprite="96"/>
@@ -6291,11 +6052,13 @@
       <entry value="0">12x10</entry>
       <entry value="1">16x10</entry>
       <entry value="2">21x6</entry>
+      <entry value="3">21x6</entry>
     </list>
-    <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Crystal Block in relation to other Crystal Blocks." comment2="If you have multiple Crystal Blocks overlapping each other, you can use this setting to avoid some types of graphical glitches. Crystal Blocks with a higher Z-order number will show behind those with a lower number. Unlike with Rolling Hills, it is not necessary to do this. Placing blocks with the correct distance apart can allow them to seamlessly coexist."/>
+    <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Crystal Block in relation to other Crystal Blocks." comment2="If you have multiple Crystal Blocks overlapping each other, you can use this setting to avoid some types of graphical glitches. Crystal Blocks with a higher Z-Order number will show behind those with a lower number. Unlike with Rolling Hills, it is not necessary to do this. Placing blocks with the correct distance apart can allow them to seamlessly coexist."/>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
     <checkbox bit="24" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Nintendo uses this value, but no effect was observed. Likely a removed setting."/>
   </sprite> <!-- #361: Rotation Controlled Crystal Block -->
+
 
   <sprite id="362" name="Rotation Controlled Colored Box" notes="A rotation controlled large resizable block with the appearance of a patterned box.">
     <dependency notes="This block does not appear unless actually paired to a rotation controller.">
@@ -6349,7 +6112,7 @@
     <checkbox bit="24" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Nintendo uses this value, but no effect was observed. Likely a removed setting."/>
   </sprite> <!-- #362: Rotation Controlled Colored Box -->
 
-  <sprite id="363" name="Boss Controller - Tower Boss" noyoshi="True" notes="This controls the various boss fight mechanics for the World 1-7 Tower battles, such as boss movement and level completion.">
+  <sprite id="363" name="Boss Controller - Tower Boss" noyoshi="True" notes="This controls the level completion for the World 1-7 Tower battles, as well as the listed Koopaling's initial movements. Koopalings function without this controller, but they won't move until hit, and the level won't end when they are defeated.">
     <dependency notes="An appropriate loose Koopaling is required in order for the controller to do what it needs to. It's also required to place the sprite on a spot without terrain. See Retail X-22 for suggested room builds for Tower bosses.">
       <suggested sprite="436"/>
       <suggested sprite="189"/>
@@ -6371,16 +6134,16 @@
     </list>
   </sprite> <!-- #363: Boss Controller - Tower Boss -->
 
-  <sprite id="364" name="Boss Controller - Roy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
+  <sprite id="364" name="Boss Controller - Roy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
       <suggested sprite="436"/>
     </dependency>
   </sprite> <!-- #364: Boss Controller - Roy Koopa -->
 
-  <sprite id="365" name="Boss Controller - Ludwig von Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
+  <sprite id="365" name="Boss Controller - Ludwig von Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
       <suggested sprite="436"/>
@@ -6410,19 +6173,18 @@
     <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="Used by Nintendo in Retail 2-06 A1 as value 7. No visible effect."/>
   </sprite> <!-- #367: Line Controlled Spinning Pink Mushroom Block -->
 
-<!-- Do a stupid-check on Nybble 9 in regards to the original comment... -->
-<!-- Do a quick test on Nybble 8 while you're at it. -->
-  <sprite id="368" name="Path Controlled Flashlight Raft" notes="A floating Raft that travels along an assigned Path. It also has a flashlight that produces a cone of light that can be controlled by tilting the controller. It uses a unique type of Water, so it cannot be used with Lava or Poison Water.">
-    <dependency notes="A Path is required for this sprite to function. Its placement is irrelevant, as the Raft will be located at the listed Starting Path Node. A special Water sprite [373] is also required in order for everything to function correctly.">
-      <required sprite="373"/>
+
+  <sprite id="368" name="Path Controlled Flashlight Raft" notes="A floating Raft that travels slowly to the right, or follows along an assigned Path. It also has a flashlight that produces a cone of light on both sides that can be controlled by tilting the controller. It is activated when all players land on it. It's recommended to use a Darkness mode for the Zone's lighting">
+    <dependency notes="The sprite's placement is irrelevant if Path Controlled, as the Raft will be located at the listed Starting Path Node (indicated by the white square). A special Water sprite [373] is recommended to be used with the Raft, but it's not required.">
+	  <suggested sprite="373"/>
     </dependency>
-    <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the Raft will be linked to." idtype="Path"/>
-    <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the Raft will appear at and start moving from."/>
+	<checkbox bit="48" title="Uses Paths" comment="When enabled, the Raft will follow the assigned Path. Otherwise, the Raft will move slowly to the right."/>
+    <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the Raft will be linked to." idtype="Path" requiredbit="48" requiredval="1"/>
+    <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the Raft will appear at and start moving from." requiredbit="48" requiredval="1"/>
     <checkbox bit="44" title="Midway Raft" comment="When enabled, this Raft will appear only if the level is loaded from the Midpoint Flag."/>
-    <checkbox bit="48" title="Use Flashlight" comment="When enabled, the Raft's Flashlight will be turned on and controlled by the first person to activate the Raft." comment2="When using the Flashlight, it's recommended to use a darkness mode for the zone's lighting."/>
-    <checkbox bit="36" title="Event Activated Flashlight" comment="When enabled, the Flashlight will only be illuminated when the Triggering Event ID is activated." requiredbit="48"/> <!-- Appears only if Use Flashlight is active -->
-    <value bit="10-16" title="Flashlight: Triggering Event ID" comment="The flashlight will be turned on when this Event ID is activated." requiredbit="48, 36" requiredval="1, 1"/> <!-- Appears only if Use Flashlight and Event Activated Flashlight are active -->
-    <checkbox bit="24" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="[Nice Boat]"/>
+    <checkbox bit="36" title="Event Activated Flashlight" comment="When enabled, the Flashlight will only be illuminated when the Triggering Event ID is activated." comment2="The Flashlight can only be controlled by tilting the controller when it is Event Activated. The Flashlight can't be deactivated."/> <!-- Appears only if Use Flashlight is active -->
+    <value bit="10-16" title="Flashlight: Triggering Event ID" comment="The flashlight will be turned on when this Event ID is activated." requiredbit="36" requiredval="1"/> <!-- Appears only if Use Flashlight and Event Activated Flashlight are active -->
+    <checkbox bit="32" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="When this flag is enabled along with a Path (regardless of the Use Paths flag), the Raft will go to the indicated Path Node and not move. But, if the Path is set to loop, this doesn't do anything. So uh, Nice Boat."/>
   </sprite> <!-- #368: Path Controlled Flashlight Raft -->
 
   <sprite id="369" name="Sliding Penguin" sizehacks="True" noyoshi="True" yoshinotes="Yoshi cannot jump on penguins, though he can use the stomp attack and tongue attack to defeat them." notes="A fancy penguin in sunglasses that slides along terrain on his belly and ricochets off walls.">
@@ -6483,8 +6245,8 @@
     </list>
   </sprite> <!-- #371: Rolling Hill Coin -->
 
-  <sprite id="372" name="Boss Controller - Iggy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 5 Castle, such as the boss movement, and camera options.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
+  <sprite id="372" name="Boss Controller - Iggy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 5 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
       <suggested sprite="436"/>
@@ -6500,28 +6262,15 @@
 <!-- Test is 90 continues to function (at all? / correctly?) if Falling Objects is set to something other than Snow. -->
 <!-- Test if 374 is required for 90 to generate pushback (90 Only). Test if 90 is required for 374 to generate sandstorm graphics (374 Only). -->
 <!-- Clean up 90 after finishing research on these questions -->
-  <sprite id="374" name="Effect - Falling Objects and Wind" asmhacks="True" notes="This effect controller will either create a falling particle effect, or it will create a Sandstorm.">
+  <sprite id="374" name="Effect - Snow and Wind" asmhacks="True" notes="This effect controller will either create falling snow, or it will create a Sandstorm.">
     <dependency notes="If this sprite is placed more than once in the same Zone, the game will crash. If Sandstorm is selected, you must include [90] Wind Physics and Sound.">
       <suggested sprite="90"/>
     </dependency>
-    <dualbox bit="48" title1="Falling Objects" title2="Sandstorm" comment="This determines the functionality of the sprite."/>
-    <list nybble="6" title="Falling Object Type" comment="This determines the particle effect used as stage decoration." advancedcomment="More effects can be added for your hack." requiredbit="48" requiredval="0">
-      <entry value="0">Snow</entry>
-      <entry value="1">Maple Leaves - Red</entry>
-      <entry value="2">Maple Leaves - Scarlet</entry>
-      <entry value="3">Maple Leaves - Brown</entry>
-      <entry value="4">Maple Leaves - Gold</entry>
-      <entry value="5">Maple Leaves - Chestnut</entry>
-      <entry value="6">Sakura Petals</entry>
-      <entry value="7">Stardust - White</entry>
-      <entry value="8">Stardust - Gold</entry>
-      <entry value="9">Stardust - Purple</entry>
-      <entry value="10">Stardust - Mauve</entry>
-    </list> <!-- Appears only if Falling Objects is set -->
+    <dualbox bit="48" title1="Snow" title2="Sandstorm" comment="This determines the functionality of the sprite."/>
   </sprite> <!-- #374: Effect - Falling Objects and Wind -->
 
-  <sprite id="375" name="Boss Controller - Wendy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 4 Castle, such as the boss movement, and camera options.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
+  <sprite id="375" name="Boss Controller - Wendy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 4 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
       <suggested sprite="436"/>
@@ -6586,8 +6335,8 @@
     <value nybble="12" title="Length" comment="This determines the length of the Pipe."/>
   </sprite> <!-- #380: Warp Pipe - Left -->
 
-  <sprite id="381" name="Boss Controller - Lemmy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 3 Castle, such as the boss movement, and camera options.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
+  <sprite id="381" name="Boss Controller - Lemmy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 3 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
       <suggested sprite="436"/>
@@ -6696,10 +6445,6 @@
   </sprite> <!-- #390: Bolt Controlled Coin -->
 
   <sprite id="391" name="Lighting - Glow Block" asmhacks="True" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely dimished as anything other than a weapon of destruction if not using Full Darkness lighting.">
-    <list nybble="6" title="Color" advanced="True" comment="A recolor for the Glow Block." advancedcomment="More effects can be added for your hack.">
-      <entry value="0">Yellow</entry>
-	  <entry value="1">Dark Purple</entry>
-    </list>
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #391: Lighting - Glow Block -->
 
@@ -6994,7 +6739,7 @@
     <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
   </sprite> <!-- #404: Long / Massive Skewers - Up -->
 
-  <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the Second Bowser Jr. boss fight.">
+  <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the Second Bowser Jr. boss fight. The white square indicates the placement for the Airship Boss Cutscene controller.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 06-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
@@ -7482,12 +7227,12 @@
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the block placing it further behind other sprites."/>
   </sprite> <!-- #448: Metal Bar -->
 
-  <sprite id="449" name="Bowser Fireball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Bowser Fireballs will fire from the screen's right edge towards the left while a player is inside it.">
-    <dependency notes="Almost all settings are hardcoded and the sprite will not function outside of the exact setup used in 8-24 A4.">
+  <sprite id="449" name="Bowser Fireball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Bowser Fireballs will fire from the screen's right edge towards the left  while a player is inside it." advancednotes="&lt;br&gt; - Uses hardcoded location ID 0 (you can have multiple ones in the zone)&lt;br&gt; - They will look awful if Bowser's sprite isn't present in any area of the level&lt;br&gt;&lt;br&gt;&lt;b&gt;Sprite Placement:&lt;/b&gt;&lt;br&gt; - X Position does not matter&lt;br&gt; - Y Position matters, as the sprite will spawn fireballs in a range of 6 tiles below its placement&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Placement:&lt;/b&gt;&lt;br&gt; - Bowser Fireballs start spawning as soon as the left edge of the location enters the screen&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Size (fireballs won't spawn if requirements aren't met):&lt;/b&gt;&lt;br&gt; - X Size: Unknown, but a specific minimal X location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt; - Y Size: At least 120px (5 blocks). A specific minimal Y location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt;" >
+    <dependency notes="Almost all settings are hardcoded and the sprite will not function outside of the exact setup used in 8-24 A4. See advanced notes for more information.">
       <required sprite="431"/>
     </dependency>
-    <checkbox bit="48" title="Enable Functionality" commnet="This must be enabled for the sprite to function."/>
-    <value nybble="7-8" title="Location ID" comment="The Fireballs will only spawn while a player is in this location." advancedcomment="Or at least, it would, if its behavior had not been hardcoded. " requiredbit="48"/>
+    <checkbox bit="48" title="Enable Functionality" comment="This must be enabled for the sprite to function."/>
+    <value nybble="7-8" title="Location ID" comment="&lt;b&gt;&lt;font color=&quot;red&quot;&gt;Only works with hardcoded location ID 0!&lt;/font&gt;&lt;/b&gt; The Fireballs will only spawn while a player is in this location." advancedcomment="Or at least, it would, if its behavior had not been hardcoded. " requiredbit="48"/>
     <value nybble="10" title="Number of Fireballs" comment="This determines the number of fireballs in each wave." comment2="A value of 0 creates 5 fireballs. A value of 1+ creates that number." requiredbit="48"/>
     <value nybble="11" title="Positioning" comment="Changes position the Fireballs appear in." comment2="A value of 0 creates random patterns. A value of 1 will CRASH the game. A value of 2+ will change the positioning or patterns or something." requiredbit="48"/>
   </sprite> <!-- #449: Bowser Fireball Spawn Area -->
@@ -7859,9 +7604,6 @@
   </sprite> <!-- #481: (Unused) Final Boss - Rubble Block -->
 
   <sprite id="482" name="Final Boss - Pre-Boss Camera Effects" notes="A set of special elements utilized by the sections of level leading up to the final Bowser Boss fight.">
-    <dependency notes="While the effects can be used on their own without any bugs, they are very specific in how they act. First, they are all generated from the bottom left corner of the sprite's placement. The Door Room Darkness will create a border of blackness forming a single room. Corridor Darkness will create a border of blackness that is about 10 blocks tall and 150 blocks long. The Corridor Wall BG creates a Layer 2 wall decoration that lines the tunnel. Both have several specifically placed pits in it to match the terrain seen in Retail 8-24 A4.">
-      <suggested sprite="431"/>
-    </dependency>
     <list bit="47-48" title="Effect" comment="This determines the type of effect used.">
       <entry value="0">Door Room Darkness</entry>
       <entry value="1">Corridor Darkness</entry>
