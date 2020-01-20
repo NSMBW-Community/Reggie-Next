@@ -5318,7 +5318,7 @@
   
 <!-- Retest 'Nybble 12' with loading tests, and see if he turns around properly when reaching a wall or not. Honestly, something about the current documentation sounds incorrect -->
   <sprite id="296" name="Giant Buzzy Beetle" notes="A very large Buzzy Beetle that isn't especially pretty, but will carry the player around on its back. It can still hurt the player from the side.">
-    <list nybble="6" title="Color" comment="This determines the color of the Giant Buzzy Beetle.">
+    <list nybble="6" title="Color" comment="This determines the color of the Giant Buzzy Beetle." advancedcomment="More colors and styles can be added for your hack.">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -5327,9 +5327,10 @@
       <entry value="5">Blue</entry>
       <entry value="6">Violet</entry>
       <entry value="7">Black</entry>
+	  <entry value="8">Giant Shy Guy</entry>
       <entry value="9">Giant Monty Mole</entry>
     </list>
-    <value nybble="11" title="Speed" comment="This determines how quickly the Buzzy Beetle will move." comment2="When the speed value is set to 15, the Buzzy Beetle will sometimes not load."/>
+    <value nybble="11" title="Speed" comment="This determines how quickly the Buzzy Beetle will move." comment2="When the speed value is set to 15, the Buzzy Beetle will sometimes not load. When the speed is 0, the Beetle won't move."/>
     <list nybble="12" title="???" comment="???" comment2="&quot;At You&quot; - Looking at the camera while walking to the left. The perspective does not change the Direction the beetle walks. No movement at 0 (looks strange).">
       <entry value="0">???</entry>
       <entry value="1">???</entry>
@@ -6926,7 +6927,7 @@
     </dependency>
   </sprite> <!-- #405: Boss Controller - Bowser Jr. (2nd Battle) -->
 
-  <sprite id="406" name="Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the Third Bowser Jr. boss fight. &lt;b&gt;&lt;font color=&quot;red&quot;&gt;This fight crashes randomly in Newer!&lt;/font&gt;&lt;/b&gt">
+  <sprite id="406" name="Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the Third Bowser Jr. boss fight. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;This fight crashes randomly in Newer.&lt;/font&gt;">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 08-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>

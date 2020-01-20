@@ -5288,23 +5288,24 @@ class SpriteImage_NutPlatform(SLib.SpriteImage_StaticMultiple):  # 295
 class SpriteImage_MegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.offset = (-41, -80)
+        self.offset = (-43, -74)
 
     @staticmethod
     def loadImages():
-        if 'MegaBuzzyL' in ImageCache: return
-        ImageCache['MegaBuzzyL'] = SLib.GetImg('megabuzzy_left.png')
-        ImageCache['MegaBuzzyF'] = SLib.GetImg('megabuzzy_front.png')
-        ImageCache['MegaBuzzyR'] = SLib.GetImg('megabuzzy_right.png')
+        if 'MegaBuzzyR' in ImageCache: return
+        buzzy = SLib.GetImg('megabuzzy.png', True)
+        ImageCache['MegaBuzzyR'] = QtGui.QPixmap.fromImage(buzzy)
+        ImageCache['MegaBuzzyL'] = QtGui.QPixmap.fromImage(buzzy.mirrored(True, False))
+        SLib.loadIfNotInImageCache('MegaBuzzyF', 'megabuzzy_front.png')
 
     def dataChanged(self):
 
-        dir = self.parent.spritedata[5] & 3
-        if dir == 0 or dir > 2:
+        direction = self.parent.spritedata[5] & 3
+        if direction == 0 or direction > 2:
             self.image = ImageCache['MegaBuzzyR']
-        elif dir == 1:
+        elif direction == 1:
             self.image = ImageCache['MegaBuzzyL']
-        elif dir == 2:
+        elif direction == 2:
             self.image = ImageCache['MegaBuzzyF']
 
         super().dataChanged()
