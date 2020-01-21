@@ -30,7 +30,7 @@
 ################################################################
 
 # Python version: sanity check
-minimum = 3.4
+minimum = 3.5
 pqt_min = map(int, "5.4.1".split('.'))
 import sys
 
