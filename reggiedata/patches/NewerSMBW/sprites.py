@@ -472,7 +472,7 @@ class SpriteImage_NewerQSwitch(SpriteImage_NewerSwitch): # 40
         self.switchType = "Q"
 
 
-class SpriteImage_ExcSwitch(SpriteImage_NewerSwitch):  # 42
+class SpriteImage_NewerExcSwitch(SpriteImage_NewerSwitch):  # 42
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'E'
@@ -864,6 +864,12 @@ class SpriteImage_MessageBlock(SLib.SpriteImage_Static): # 152
             SLib.Tiles[0x98].main,
             (8, 0)
         )
+
+
+class SpriteImage_NewerQSwitchUnused(SpriteImage_NewerSwitch): # 153
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.switchType = "Q"
 
 
 class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
@@ -1386,6 +1392,53 @@ class SpriteImage_Boolossus(SLib.SpriteImage_Static):  # 290
         SLib.loadIfNotInImageCache('Boolossus', 'boolossus.png')
 
 
+class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 479
+    @staticmethod
+    def loadImages():
+        if 'MegaBuzzyR' in ImageCache: return
+        buzz = SLib.GetImg('megabuzzy.png', True)
+        ImageCache['MegaBuzzyR'] = QtGui.QPixmap.fromImage(buzz)
+        ImageCache['MegaBuzzyL'] = QtGui.QPixmap.fromImage(buzz.mirrored(True, False))
+        SLib.loadIfNotInImageCache('MegaBuzzyF', 'megabuzzy_front.png')
+        
+        if 'MegaBuzzyRedR' in ImageCache: return
+        for style in ("Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Black", "ShyGuy", "Monty"):
+            buzzy = SLib.GetImg('megabuzzy_%s.png' % style, True)
+            if buzzy is None: return
+            ImageCache['MegaBuzzy%sR' % style] = QtGui.QPixmap.fromImage(buzzy)
+            ImageCache['MegaBuzzy%sL' % style] = QtGui.QPixmap.fromImage(buzzy.mirrored(True, False))
+            ImageCache['MegaBuzzy%sF' % style] = SLib.GetImg('megabuzzy_%s_front.png' % style)
+
+    def dataChanged(self):
+    
+        direction = self.parent.spritedata[5] & 3
+        style = (self.parent.spritedata[2] & 0xF) % 10
+        dir = ("R", "L", "F")[direction]
+        colour = ("", "Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Black", "ShyGuy", "Monty")[style]
+        
+        if 'MegaBuzzyShyGuyF' not in ImageCache: return
+        self.image = ImageCache['MegaBuzzy%s%s' % (colour, dir)]
+        
+        if style == 8: # Shy Guy's offset
+            if direction == 2:
+                self.offset = (-31, -71)
+            else:
+                self.offset = (-36, -71)
+        elif style == 9: # Monty Mole's offset
+            if direction == 2:
+                self.offset = (-49, -73)
+            else:
+                self.offset = (-40, -73)
+        else: # Buzzy Beetle's offset
+            if direction == 2:
+                self.offset = (-39, -74)
+            else:
+                self.offset = (-43, -74)
+
+
+        super().dataChanged()
+
+
 class SpriteImage_Flipblock(SLib.SpriteImage_Static):  # 319
     def __init__(self, parent):
         super().__init__(
@@ -1530,6 +1583,12 @@ class SpriteImage_GigaGoomba(SLib.SpriteImage_Static):  # 410
         SLib.loadIfNotInImageCache('GigaGoomba', 'goomba_giga.png')
 
 
+class SpriteImage_NewerBowserSwitchSm(SpriteImage_NewerSwitch):  # 478
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.switchType = 'E'
+
+
 class SpriteImage_NewerBowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
     @staticmethod
     def loadImages():
@@ -1553,6 +1612,7 @@ class SpriteImage_NewerBowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
         colour = (self.parent.spritedata[3] & 0xF) % 6
         upsideDown = self.parent.spritedata[5] & 1
         
+        if 'ELSwitch5' not in ImageCache: return
         if colour == 0:
             if not upsideDown:
                 self.image = ImageCache['ELSwitch']
@@ -1567,9 +1627,6 @@ class SpriteImage_NewerBowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
             else:
                 self.image = ImageCache['ELSwitchU%d' % colour]
                 self.offset = (-15, -16)
-                
-        if 'ELSwitch5' not in ImageCache: 
-            return
 
 
         super().dataChanged()
@@ -1588,7 +1645,7 @@ ImageClasses = {
     25: SpriteImage_NewerSpiny,
     26: SpriteImage_NewerUpsideDownSpiny,
     40: SpriteImage_NewerQSwitch,
-    42: SpriteImage_ExcSwitch,
+    42: SpriteImage_NewerExcSwitch,
     47: SpriteImage_Thwomp,
     48: SpriteImage_GiantThwomp,
     49: SpriteImage_FakeStarCoin,
@@ -1602,6 +1659,7 @@ ImageClasses = {
     107: SLib.SpriteImage,
     145: SpriteImage_NewerFloatingBarrel,
     152: SpriteImage_MessageBlock,
+    153: SpriteImage_NewerQSwitchUnused,
     157: SpriteImage_BigPumpkin,
     167: SpriteImage_ShyGuyGiant,
     168: SpriteImage_Thundercloud,
@@ -1629,6 +1687,7 @@ ImageClasses = {
     282: SpriteImage_AngrySun,
     283: SpriteImage_FuzzyBear,
     290: SpriteImage_Boolossus,
+    296: SpriteImage_NewerMegaBuzzy,
     319: SpriteImage_Flipblock,
     322: SpriteImage_MegaThwomp,
     324: SpriteImage_Podoboule,
@@ -1638,5 +1697,6 @@ ImageClasses = {
     402: SpriteImage_LineQBlock,
     403: SpriteImage_LineBrickBlock,
     410: SpriteImage_GigaGoomba,
+    478: SpriteImage_NewerBowserSwitchSm,
     479: SpriteImage_NewerBowserSwitchLg,
 }

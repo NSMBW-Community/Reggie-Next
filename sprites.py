@@ -5288,23 +5288,24 @@ class SpriteImage_NutPlatform(SLib.SpriteImage_StaticMultiple):  # 295
 class SpriteImage_MegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.offset = (-41, -80)
+        self.offset = (-43, -74)
 
     @staticmethod
     def loadImages():
-        if 'MegaBuzzyL' in ImageCache: return
-        ImageCache['MegaBuzzyL'] = SLib.GetImg('megabuzzy_left.png')
-        ImageCache['MegaBuzzyF'] = SLib.GetImg('megabuzzy_front.png')
-        ImageCache['MegaBuzzyR'] = SLib.GetImg('megabuzzy_right.png')
+        if 'MegaBuzzyR' in ImageCache: return
+        buzzy = SLib.GetImg('megabuzzy.png', True)
+        ImageCache['MegaBuzzyR'] = QtGui.QPixmap.fromImage(buzzy)
+        ImageCache['MegaBuzzyL'] = QtGui.QPixmap.fromImage(buzzy.mirrored(True, False))
+        SLib.loadIfNotInImageCache('MegaBuzzyF', 'megabuzzy_front.png')
 
     def dataChanged(self):
 
-        dir = self.parent.spritedata[5] & 3
-        if dir == 0 or dir > 2:
+        direction = self.parent.spritedata[5] & 3
+        if direction == 0 or direction > 2:
             self.image = ImageCache['MegaBuzzyR']
-        elif dir == 1:
+        elif direction == 1:
             self.image = ImageCache['MegaBuzzyL']
-        elif dir == 2:
+        elif direction == 2:
             self.image = ImageCache['MegaBuzzyF']
 
         super().dataChanged()
@@ -6648,22 +6649,30 @@ class SpriteImage_CubeKinokoLine(SLib.SpriteImage_Static):  # 367
         SLib.loadIfNotInImageCache('CubeKinokoP', 'cube_kinoko_p.png')
 
 
-class SpriteImage_FlashRaft(SLib.SpriteImage_Static):  # 368
+class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
     def __init__(self, parent):
         super().__init__(
             parent,
             1.5,
             ImageCache['FlashlightRaft'],
-            (-16, -96),
+            (-16, -20),
         )
+        
+        self.aux.append(SLib.AuxiliaryImage(parent, 72, 114))
+        self.aux[0].image = ImageCache['FlashlightLamp']
+        self.aux[0].setPos(0, -114)
+
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 144, 30))
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('FlashlightRaft', 'flashraft.png')
+        SLib.loadIfNotInImageCache('FlashlightLamp', 'flashraft_light.png')
 
     def dataChanged(self):
         midway = (self.parent.spritedata[5] >> 4) & 1
         self.alpha = 0.5 if midway else 1
+        
         super().dataChanged()
 
 
