@@ -16304,73 +16304,74 @@ class LevelScene(QtWidgets.QGraphicsScene):
         funcs = [layer0.append, layer1.append, layer2.append]
         show = [Layer0Shown, Layer1Shown, Layer2Shown]
         for layer, add, process in zip(Area.layers, funcs, show):
-            if not process: continue
+            if not process:
+                continue
+
             for item in layer:
-                if not isect(item.LevelRect): continue
+                if not isect(item.LevelRect):
+                    continue
+
                 add(item)
-                xs = item.objx
-                xe = xs + item.width
-                ys = item.objy
-                ye = ys + item.height
-                if xs < x1: x1 = xs
-                if xe > x2: x2 = xe
-                if ys < y1: y1 = ys
-                if ye > y2: y2 = ye
+                x1 = min(x1, item.objx)
+                x2 = max(x2, item.objx + item.width)
+                y1 = min(y1, item.objy)
+                y2 = max(y2, item.objy + item.height)
 
         width = x2 - x1
         height = y2 - y1
+
+        # Assigning global variables to local variables for
+        # performance
         tiles = Tiles
+        odefs = ObjectDefinitions
 
         # create and draw the tilemaps
         for layer in [layer2, layer1, layer0]:
-            if len(layer) > 0:
-                tmap = []
-                i = 0
-                while i < height:
-                    tmap.append([None] * width)
-                    i += 1
+            if len(layer) == 0:
+                continue
 
-                for item in layer:
-                    startx = item.objx - x1
-                    desty = item.objy - y1
+            tmap = [[None] * width for _ in range(height)]
 
-                    exists = True
-                    if ObjectDefinitions[item.tileset] is None:
-                        exists = False
-                    elif ObjectDefinitions[item.tileset][item.type] is None:
-                        exists = False
+            for item in layer:
+                startx = item.objx - x1
 
-                    for row in item.objdata:
-                        destrow = tmap[desty]
-                        destx = startx
-                        for tile in row:
-                            if not exists:
-                                destrow[destx] = -1
-                            elif tile > 0:
-                                destrow[destx] = tile
-                            destx += 1
-                        desty += 1
+                if odefs[item.tileset] is None or \
+                        odefs[item.tileset][item.type] is None:
+                    # This is an unknown object, so place -1
+                    # in the tile map.
+                    for i in range(len(item.objdata)):
+                        row = item.objdata[i]
+                        destrow = tmap[desty + i]
+                        for destx in range(startx, len(row)):
+                            destrow[destx] = -1
 
-                painter.save()
-                painter.translate(x1 * 24, y1 * 24)
-                desty = 0
-                for row in tmap:
-                    destx = 0
-                    for tile in row:
-                        pix = None
+                    continue
 
-                        if tile == -1:
-                            # Draw unknown tiles
-                            pix = Overrides[OVERRIDE_UNKNOWN].getCurrentTile()
-                        elif tile is not None:
-                            pix = tiles[tile].getCurrentTile()
+                # This is not an unkown object, so update the tile map
+                # normally.
+                desty = item.objy - y1
 
-                        if pix is not None:
-                            painter.drawPixmap(destx, desty, pix)
+                for row in item.objdata:
+                    destrow = tmap[desty]
+                    destx = startx
+                    for i, tile in enumerate(row):
+                        if tile > 0:
+                            destrow[startx + i] = tile
+                    desty += 1
 
-                        destx += 24
-                    desty += 24
-                painter.restore()
+            painter.save()
+            painter.translate(x1 * 24, y1 * 24)
+
+            unkn_tile = Overrides[OVERRIDE_UNKNOWN].getCurrentTile()
+            for row, desty in zip(tmap, range(0, len(tmap) * 24, 24)):
+                for tile, destx in zip(row, range(0, len(row) * 24, 24)):
+                    if tile == -1:
+                        # Draw unknown tiles
+                        painter.drawPixmap(destx, desty, unkn_tile)
+                    elif tile is not None:
+                        painter.drawPixmap(destx, desty, tiles[tile].getCurrentTile())
+
+            painter.restore()
 
     def getMainWindow(self):
         global mainWindow
