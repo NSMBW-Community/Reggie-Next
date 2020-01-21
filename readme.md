@@ -29,7 +29,7 @@ If you are not on Windows or you want the very latest features, you'll need to r
 ### How to Run Reggie! from Source
 
 Download and install the following:
- * Python 3.4 (or newer) - http://www.python.org
+ * Python 3.5 (or newer) - http://www.python.org
  * PyQt 5.4.1 (or newer) - http://www.riverbankcomputing.co.uk/software/pyqt/intro
  * MinGW (for Windows only) - http://tdm-gcc.tdragon.net/
  * Cython 0.25.2 - http://cython.org/
