@@ -4539,7 +4539,7 @@
   </sprite> <!-- #250: Electric Line -->
 
   <sprite id="251" name="World-7 Boss: Super Topman" asmhacks="True" notes="Large Topman boss used by NewerSMBW. It can be beaten by luring it into [250] Electric Lines.">
-    <dependency notes="Kamek and his controller should be included in the Area.>
+    <dependency notes="Kamek and his controller should be included in the Area.">
       <suggested sprite="250"/> <!-- Electric Line -->
       <required sprite="427"/> <!-- Kamek -->
       <required sprite="383"/> <!-- Kamek Controller -->
