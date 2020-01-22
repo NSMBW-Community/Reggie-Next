@@ -1299,6 +1299,24 @@ class SpriteImage_LineEvent(SLib.SpriteImage):  # 244
         self.aux[0].setSize((width + w) * 24, (height + h) * 24)
 
 
+class SpriteImage_ElectricLine(SLib.SpriteImage_StaticMultiple):  # 250
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('ElectricLineLeft', 'electric_line_left.png')
+        SLib.loadIfNotInImageCache('ElectricLineRight', 'electric_line_right.png')
+
+    def dataChanged(self):
+        left = self.parent.spritedata[5] & 1
+        if left:
+            self.image = ImageCache['ElectricLineLeft']
+            self.offset = (-16, -128)
+        else:
+            self.image = ImageCache['ElectricLineRight']
+            self.offset = (-8, -128)
+
+        super().dataChanged()
+
+
 class SpriteImage_TopmanBoss(SLib.SpriteImage_Static):  # 251
     def __init__(self, parent):
         super().__init__(
@@ -1679,6 +1697,7 @@ ImageClasses = {
     231: SpriteImage_NewerWiggleShroom,
     239: SpriteImage_EventBlock,
     244: SpriteImage_LineEvent,
+    250: SpriteImage_ElectricLine,
     251: SpriteImage_TopmanBoss,
     255: SpriteImage_RotatingQBlock,
     256: SpriteImage_RotatingBrickBlock,

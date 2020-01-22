@@ -4529,28 +4529,20 @@
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite> <!-- #249: Horizontal Scroll Limiter - Bottom -->
   
-<!-- Check Delay on Looping to see if it functions as described. I need to know if the delay applies to both the On AND Off state or just the Off state. -->
-<!-- Check the Direction and see if Up and Down function in any reasonable sense of the word. .cpp lists them as possible options. -->
   <sprite id="250" name="Electric Line" asmhacks="True" notes="A tall electrified wall that will elecrtocute any player that touches it.">
-    <dependency notes="Height = 14 Blocks, Width = 2 Blocks. Placement represents the topmost right(?) block."/>
-    <dualbox bit="44" title1="Always On" title2="Looping" comment="This determines if the Electric Line is always on after it powers up or if it cycles between on and off."/>
-    <value nybble="7-8" title="Delay Turning On" comment="This determines how long the Electric Line stays off before first coming on." comment2="Delay in 1/6ths of a second." requiredbit="44" requiredval="0"/> <!-- Appears if Always On -->
-    <value nybble="7-8" title="Delay on Looping" comment="This determines the time the Electric Line will stay on and off during its power looping." comment2="Delay in 1/6ths of a second." requiredbit="44"/> <!-- Appears if Looping -->
-    <dualbox bit="44" title1="Power Nodes Point Right" title2="Power Nodes Point Left" comment="This determines the direction the power node spikes will face."/>
-    <!-- <list bit="47-48" title="Direction" comment="This determines the direction of Electric Line.">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Up</entry>
-      <entry value="3">Down</entry>
-    </list> -->
+    <dependency notes="The Boss Controller for Bowser Jr's 2nd Fight must be included in the area to load the line. The game will crash otherwise.">
+	   <required sprite="405"/> <!-- Bowser Jr. 2nd Fight -->
+	</dependency>
+    <dualbox bit="44" title1="Always On" title2="Looping" comment="This determines if the Electric Line is always on or if it cycles between on and off."/>
+    <value nybble="7-8" title="Delay between Loops" comment="This determines the time the Electric Line will stay on and off during its power looping." comment2="Delay in 1/6ths of a second." requiredbit="44"/> <!-- Appears if Looping -->
+    <dualbox bit="48" title1="Power Nodes Point Right" title2="Power Nodes Point Left" comment="This determines the direction the power node spikes will face."/>
   </sprite> <!-- #250: Electric Line -->
 
   <sprite id="251" name="World-7 Boss: Super Topman" asmhacks="True" notes="Large Topman boss used by NewerSMBW. It can be beaten by luring it into [250] Electric Lines.">
-    <dependency notes="">
-      <required sprite="250"/>
-      <required sprite=""/> <!-- Kamek -->
-      <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite=""/> <!-- ??? -->
+    <dependency notes="Kamek and his controller should be included in the Area.>
+      <suggested sprite="250"/> <!-- Electric Line -->
+      <required sprite="427"/> <!-- Kamek -->
+      <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
     <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
   </sprite> <!-- #251: World-7 Boss: Super Topman -->
@@ -5083,8 +5075,9 @@
   </sprite> <!-- #282: Angry Sun and Moon -->
   
   <sprite id="283" name="World-1 Boss: Fuzzy Bear" asmhacks="True" noyoshi="True" notes="The giant Fuzzy boss that jumps around and occasionally rolls after the player. It can only be defeated by having grabbable items thrown at it.">
-    <dependency notes="">
-      <required sprite="427"/> <!-- Kamek -->
+    <dependency notes="Kamek and his controller should be included in the Area.">
+      <suggested sprite="391"/>
+	  <required sprite="427"/> <!-- Kamek -->
       <required sprite="383"/> <!-- Kamek Controller -->
       <required sprite="343"/> <!-- Fuzzy -->
     </dependency>
@@ -5472,14 +5465,6 @@
     <value nybble="8-9" title="Entrance ID" comment="This determines the Entrance ID that the pipe will connect with." comment2="It does not have to be placed on the pipe. It can only be used as an exit." idtype="Entrance"/>
     <checkbox bit="44" title="Upside-Down" comment="When enabled, the cannon is upside-down and can be placed against the ceiling." advanced="True" advancedcomment="The pipe will load on the opposide side alongside a cannon, leaving a hole on one side. As such, this option should not be used."/>
   </sprite> <!-- #301: 4-Way Large Cannon with Pipe -->
-  
-<!-- So... Umm... It wasn't used anywhere. Ever. What IS it? How does it look in action? What do these options mean? -->
-  <sprite id="302" name="Loose Giant Flying Wrench" asmhacks="True" notes="???">
-    <checkbox bit="40" title="Place In Front Of Other Sprites" comment=""/>
-    <checkbox bit="44" title="Homing" comment="???"/>
-    <dualbox bit="48" title1="??? Left" title2="??? Right" comment="???"/>
-    <dualbox bit="47" title1="??? Ground" title2="??? Upside-Down" comment="???"/>
-  </sprite> <!-- #302: Throwing Wrench -->
 
   <sprite id="303" name="Monty Mole" notes="An energetic mole enemy that will pop out of the terrain after loading on screen and proceed to move quickly after the player. A Monty Hole is left behind after the mole jumps out.">
     <list nybble="6" title="Color" comment="This determines the color of the Monty Mole.">
@@ -5489,76 +5474,6 @@
     </list>
     <checkbox bit="48" title="Loose Monty Mole" comment="When enabled, the Monty Mole will already be out of the wall running around, and does not leave behind a Monty Hole."/>
   </sprite> <!-- #303: Monty Mole -->
-  
-  <sprite id="304" name="Burner - Rotating" notes="A standard flame jet that's always on and will rotate from one side to the other.">
-    <list nybble="12" title="Flame Length" comment="This determines how long the flame is.">
-      <entry value="0">Very Short</entry>
-      <entry value="1">Short</entry>
-      <entry value="2">Medium</entry>
-      <entry value="3">Long</entry>
-      <entry value="4">Very Long</entry>
-    </list>
-    <checkbox bit="44" title="Upside-Down" comment="When enabled, the flame jet is upside-down and can be placed against the ceiling."/>
-  </sprite> <!-- #304: Burner - Rotating -->
-  
-  <sprite id="305" name="Lighting - Circle" notes="A small spot of light that only functions when the lighting mode is set to cause darkness.">
-    <dependency notes="As with all Lighting involved sprites, the effect is severely diminished when not using Full Darkness. Additionally, this sprite only functions with very specific settings. First, it cannot be used unless it is matched to a movement controller. Second, Swaying cannot actually move it, which makes it best for stationary use. Other movement types are fully capable of moving the light circle around.">
-      <suggested sprite="159"/>
-      <suggested sprite="260"/>
-      <suggested sprite="96"/>
-      <suggested sprite="149"/>
-    </dependency>
-    <list bit="35-36" title="Activation Mode" comment="This determines if the light circle is naturally on, or if it is event controlled.">
-      <entry value="0">Always On</entry>
-      <entry value="1">Event Activated - Turns On</entry>
-      <entry value="2">Event Activated - On With Event</entry>
-    </list>
-    <value bit="10-16" title="Triggering Event ID" comment="This determines which Event must be activated for the circle to glow." requiredbit="35-36" idtype="Triggering Event"/>
-    <list bit="39-40" title="Movement Type" comment="This determines the movement behavior of the light circle." comment2="** - Pairing the light circle with a Swaying controller will not generate movement. However, as a movement controller is required for the light circle to spawn, using a Swaying controller is a great way to create a stationary spot of light.">
-      <entry value="0">[159] Path Controlled</entry>
-      <entry value="1">[260] Two Way Line</entry>
-      <entry value="2">[96] Swaying**</entry>
-      <entry value="3">[149] Spinning</entry>
-    </list>
-    <value bit="41-48" title="Path Movement ID" comment="If pairing the light circle with Sprite 159, match the Path Movement ID to enable Path controlled movement." requiredbit="39-40" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
-    <value bit="41-48" title="Two Way Line ID" comment="If pairing the light circle with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requiredbit="39-40" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
-    <value bit="41-48" title="Rotation ID" comment="If pairing the light circle with sprite 96 or 149, match the Rotation ID to allow the light circle to function." comment2="Only pairing it with a Spinning controller will actually allow movement. Swaying controllers will create a stationary spot of light." requiredbit="39-40" requiredval="2-3" idtype="Rotation"/> <!-- Appears if [Movement Type] = 2/3 -->
-  </sprite> <!-- #305: Lighting - Circle -->
-  
-  <sprite id="306" name="Lighting - Rotation Controlled Spotlight" notes="A hanging spotlight lamp with a decorative vertical support that generates a cone of light.">
-    <dependency notes="When using the Spotlight with Path movement or Two Way Line movement, the light will remain in a fixed position and the entire structure will move along the Path / move back and forth. The Two Way Line movement cannot be Event Activated. When using the Spotlight with a Swaying rotation controller, the rotation controller must be placed directly on the swinging point of the Spotlight's hinge. If it is not, it behaves incorrectly. It must be paired to some form of movement controller in order to function.">
-      <suggested sprite="159"/>
-      <suggested sprite="260"/>
-      <suggested sprite="96"/>
-    </dependency>
-    <list nybble="8" title="Light's Angle" comment="This determines the angle of the Spotlight." comment2="When paired with a Swaying rotation controller, the light will swing equally to both sides of this value. Other movement controllers will not change the light's angle.">
-      <entry value="0">90.0°</entry>
-      <entry value="1">112.5°</entry>
-      <entry value="2">135.0°</entry>
-      <entry value="3">157.5°</entry>
-      <entry value="4">180.0°</entry>
-      <entry value="5">202.5°</entry>
-      <entry value="6">225.0°</entry>
-      <entry value="7">247.5°</entry>
-      <entry value="8">270.0°</entry>
-      <entry value="9">292.5°</entry>
-      <entry value="10">315.0°</entry>
-      <entry value="11">337.5°</entry>
-      <entry value="12">0.0°</entry>
-      <entry value="13">22.5°</entry>
-      <entry value="14">45.0°</entry>
-      <entry value="15">67.5°</entry>
-    </list>
-    <list bit="39-40" title="Movement Type" comment="This determines the movement behavior of the Spotlight.">
-      <entry value="0">[159] Path Controlled</entry>
-      <entry value="1">[260] Two Way Line</entry>
-      <entry value="2">[96] Swaying</entry>
-    </list>
-    <value bit="41-48" title="Path Movement ID" comment="If pairing the Spotlight with Sprite 159, match the Path Movement ID to enable Path controlled movement." requiredbit="39-40" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
-    <value bit="41-48" title="Two Way Line ID" comment="If pairing the Spotlight with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requiredbit="39-40" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
-    <value bit="41-48" title="Rotation ID" comment="If pairing the Spotlight with sprite 96, match the Rotation ID to enable Swaying movement." comment2="The Spotlight does not pair with sprite 149, the Spinning rotation controller." requiredbit="39-40" requiredval="2" idtype="Rotation"/> <!-- Appears if [Movement Type] = 2 -->
-    <checkbox bit="28" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="ASM shows Nybble 7 might affect something."/>
-  </sprite> <!-- #306: Lighting - Rotation Controlled Spotlight -->
   
   <sprite id="307" name="Burner - Pulsating (Synchronized) Controller" notes="A controller that allows creation of synchronized waves of pulsating flame jets.">
     <dependency notes="Synchronized flame jets will only function if associated with a matching controller.">
@@ -5579,7 +5494,7 @@
     <value nybble="12" title="Burner ID" comment="This determines which flame jets are linked to this controller." idtype="Burner ID"/>
   </sprite> <!-- #307: Burner - Pulsating (Synchronized) Controller -->
   
-<!-- Do we know what makes this one special compared to #95? -->
+  <!-- Do we know what makes this one special compared to #95? -->
   <sprite id="308" name="Platform Hammer Bro" asmhacks="True" sizehacks="True" notes="'En_Lift_HammerBros' - Likely allows it to be used on places where he shouldn't jump off.">
     <dualbox bit="48" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
     <list nybble="6" title="Color" comment="This determines the color of the Hammer Bro.">
@@ -5798,23 +5713,10 @@
     <checkbox bit="16" title="Unknown Flag 4 (1)" advanced="True" advancedcomment="Not used in Newer, function unclear. Wha??"/>
   </sprite> <!-- #320: Falling Chestnut -->
   
-<!-- Low Priority Fun: Find a way to make this work in fun ways with the Auto-Scrolling Controller! :D -->
-  <sprite id="321" name="Beta Arrow Block" notes="A strange unused block with an arrow that can rotate when the block is ground-pounded. There is also a glitchy and unused association with the Auto-Scrolling Controller.">
-    <list nybble="12" title="Starting Arrow Direction" comment="This determines which direction the arrow will initially point.">
-      <entry value="0">Up</entry>
-      <entry value="1">Down</entry>
-      <entry value="2">Left</entry>
-      <entry value="3">Right</entry>
-    </list>
-    <checkbox bit="44" title="Ground-Pound Rotate" comment="When enabled, the arrow on the block will rotate when the block is ground-pounded."/>
-    <dualbox bit="40" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the arrow will rotate." requiredbit="44"/> <!-- Appears if Ground-Pound Rotate is enabled -->
-  </sprite> <!-- #321: Beta Arrow Block -->
-  
   <sprite id="322" name="World-2 Boss: Mega Thwomp" asmhacks="True" notes="A large Thwomp boss used by NewerSMBW. It can be defeated by having it fall through crushable terrain at least 4 blocks wide.">
-    <dependency notes="The Mega Thwomp itself is about 5.5 blocks tall and 4 blocks wide, and should be placed at ground level on the opposite end of the room from the player's entrance. Then, from the sprite placement, you must define his movement area. Each buffer defines the amount of space between the sprite's placement and the wall, calculated in half-blocks.">
+    <dependency notes="The Mega Thwomp should be placed at ground level on the opposite end of the room from the player's entrance. Also, Kamek and his controller must be included in the Area.">
       <required sprite="427"/> <!-- Kamek -->
       <required sprite="383"/> <!-- Kamek Controller -->
-      <required sprite="48"/> <!-- Big Thwomp -->
     </dependency>
     <value nybble="5-6" title="Left Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move through from the left side of the sprite's placement, calculated in half-blocks."/>
     <value nybble="7-8" title="Right Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move through from the right side of the sprite's placement, calculated in half-blocks."/>
@@ -6302,11 +6204,6 @@
     </list>
   </sprite> <!-- #351: Shy Guy -->
   
-<!-- More research is needed alongside 302 and 476 -->
-  <sprite id="352" name="Rocky Wrench" notes="A small mole that will hide under a metal cover and throw wrenches at the player. It can be defeated with a ground pound or fireball, or it can be frozen.">
-    <dependency notes="The Rocky Wrench must be placed with its feet touching the ground."/>
-  </sprite> <!-- #352: Rocky Wrench -->
-  
   <sprite id="353" name="Moving Pipe - Facing Down" notes="A downwards facing Pipe that moves between two heights.">
     <list bit="31-32" title="Color" comment="This determines the color of the Pipe." advancedcomment="Moving Pipes use obj_dokan.arc.">
       <entry value="0">Green</entry>
@@ -6736,21 +6633,6 @@
     <dualbox bit="28" title1="Triggers a Timed Event" title2="Permanently activates Target Event" comment="This determines if the Target Event is timed or permanent. Timed events will pause the music and replace it with ticking." requiredbit="2-8"/>
     <value nybble="8" title="Unknown Value 8" advanced="True" advancedcomment="ASM shows Nybble 8 might affect something."/>
   </sprite> <!-- #389: Bolt Controlled Star Coin -->
-
-  <sprite id="390" name="Bolt Controlled Coin" sizehacks="True" notes="A standard Coin variant that moves when a matching Bolt is spun.">
-    <dependency notes="This sprite must be paired to a [315] Bolt in order to function.">
-      <required sprite="315"/>
-    </dependency>
-    <value nybble="5" title="Bolt ID" comment="This pairs the Coin with a matching Bolt." idtype="Bolt"/>
-    <list bit="47-48" title="Movement Direction" comment="This determines which direction the Coin will move.">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Up</entry>
-      <entry value="3">Down</entry>
-    </list>
-    <value bit="42-44" title="Distance Multiplier" comment="This determines the number of blocks that the Coin will move for every equivalent one block of distance the matching Bolt is spun." comment2="For example, if the Bolt's distance is 10, and the Coin's distance multiplier is 4, the Coin will move a total of 40 blocks. The time it takes for the Coin to travel the full distance is unaffected no matter what the distance multiplier is."/>
-    <checkbox bit="40" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Platform placing it further behind other sprites."/>
-  </sprite> <!-- #390: Bolt Controlled Coin -->
   
   <sprite id="391" name="Lighting - Glow Block" asmhacks="True" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely dimished as anything other than a weapon of destruction if not using Full Darkness lighting.">
     <list nybble="6" title="Color" advanced="True" comment="A recolor for the Glow Block." advancedcomment="More effects can be added for your hack.">
@@ -6760,10 +6642,9 @@
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #391: Lighting - Glow Block -->
   
-  
-<!-- See #115 -->
-<!-- Check for any differences. -->
-<!-- Define what makes the Spiny Cheep Cheep behave differently from the regular Cheep Cheep, because I forget... -->
+  <!-- See #115 -->
+  <!-- Check for any differences. -->
+  <!-- Define what makes the Spiny Cheep Cheep behave differently from the regular Cheep Cheep, because I forget... -->
   <sprite id="395" name="Spiny Cheep Cheep" asmhacks="True" sizehacks="True" notes="A spiky version of the basic Cheep Cheep and its very similar brethren. When placed in water, it will swim along or even swim after the player." advancednotes="In NSMBW the Spiny Cheep Cheep was always purple. NewerSMBW changed them to have the same colors as regular Cheep Cheeps.">
     <dependency notes="The Cheep Cheep will only spawn if placed within water. In addition, Type 1, 7, and 8 only work on non-location water.">
       <required sprite="138"/> <!-- Requires Water -->
@@ -7001,33 +6882,6 @@
       <required sprite="431"/>
     </dependency>
   </sprite> <!-- #419: Bowser -->
-
-  <sprite id="420" name="Lighting - Giant Glow Block" notes="A large glow block that cannot be picked up. Instead, it moves like a platform and can also be turned on and off.">
-    <dependency notes="The effect of this sprite is diminished if not using Full Darkness lighting. It must have a Triggering Event ID of at least 1, even if it is set to Always On, or it will not load. It also must be paired with a movement controller in order to function.">
-      <suggested sprite="159"/>
-      <suggested sprite="260"/>
-      <suggested sprite="96"/>
-      <suggested sprite="149"/>
-    </dependency>
-    <list bit="35-36" title="Activation Mode" comment="This determines if the glow block is naturally on, or if it is event controlled.">
-      <entry value="0">Always On</entry>
-      <entry value="1">Event Activated - Turns On</entry>
-      <entry value="2">Event Activated - On With Event</entry>
-    </list>
-    <value bit="10-16" title="Triggering Event ID (VALUE REQUIRED)" comment="This determines which Event must be activated for the block to glow, and it must be set to at least 1 event if the Activation Mode is set to Always On." idtype="Triggering Event"/>
-    <list bit="39-40" title="Movement Type" comment="This determines the movement behavior of the glow block." comment2="All movement types require a matching movement controller, and at least one type of movement controller is required for the sprite to function.">
-      <entry value="0">[159] Path Controlled</entry>
-      <entry value="1">[260] Two Way Line</entry>
-      <entry value="2">[96] Swaying</entry>
-      <entry value="3">[149] Spinning</entry>
-    </list>
-    <value bit="41-48" title="Path Movement ID" comment="If pairing the glow block with Sprite 159, match the Path Movement ID to enable Path controlled movement." requiredbit="39-40" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
-    <value bit="41-48" title="Two Way Line ID" comment="If pairing the glow block with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requiredbit="39-40" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
-    <value bit="41-48" title="Rotation ID" comment="If pairing the glow block with sprite 96 or 149, match the Rotation ID to allow enable Rotation controlled movement." requiredbit="39-40" requiredval="2-3" idtype="Rotation"/> <!-- Appears if [Movement Type] = 2/3 -->
-  </sprite> <!-- #420: Lighting - Giant Glow Block -->
-  
-  <sprite id="421" name="(Unused) Fake Ghost House Door" noyoshi="True" notes="A stand-alone version of the 'Fake Door' effect from the normal Ghost House Door.">
-  </sprite> <!-- #421: (Unused) Fake Ghost House Door -->
 
   <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
     <dependency notes="Usable in classic NSMBW only. All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
@@ -7340,7 +7194,6 @@
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the block placing it further behind other sprites."/>
   </sprite> <!-- #448: Metal Bar -->
   
-
   <sprite id="450" name="Enterable Warp Pipe - Up" notes="A non-tileset pipe that can be entered or exited from. Only one facing upwards exists. It does not have to be placed exactly on the grid.">
     <list bit="43-44" title="Color" comment="This determines the color of the Pipe.">
       <entry value="0">Green</entry>
@@ -7630,12 +7483,6 @@
     <checkbox bit="44" title="Floating" comment="When enabled, the Ice Flow will wiggle around as though it is floating on the surface of the water."/>
   </sprite> <!-- #475: Path Controlled Ice Flow -->
   
-<!-- Research on Nybble 11, and other Nybbles, is suggested. This includes checking for camera related values, so make sure that the test level has enough room to scroll vertically, or has an Airship Rocking effect. -->
-  <sprite id="476" name="Loose Flying Wrench" notes="A stand-alone Rocky Wrench's wrench that will fly across the screen.">
-    <dualbox bit="48" title1="Moves Right" title2="Moves Left" comment="This determines which direction the wrench flies in when it loads."/>
-    <checkbox bit="44" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="Unknown."/>
-  </sprite> <!-- #476: Loose Flying Wrench -->
-  
   <sprite id="477" name="Super Guide Block" notes="A block that activates a special Luigi replay where Luigi will complete the level as minimally as possible with as little running or wall jumping as he can get away with.">
     <dependency notes="This block cannot currently be utilized, as there is no tool to create and assign replays. As a result, do NOT use this block in your levels, and if you edit a Retail level, you need to remove this block."/>
     <checkbox bit="39" title="Glows" comment="When enabled, the block will glow and emit light in Full Darkness."/>
@@ -7715,7 +7562,6 @@
     <value nybble="7-8" title="Unknown Value 7-8" advanced="True" advancedcomment="ASM shows Nybble 7-8 might affect something."/>
     <value nybble="9-10" title="Unknown Value 9-10" advanced="True" advancedcomment="ASM shows Nybble 9-10 might affect something."/>
   </sprite> <!-- #481: (Unused) Final Boss - Rubble Block -->
-
 
 </sprites>
 <!-- Thank you so much for a-playing my game! -->

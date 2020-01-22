@@ -976,14 +976,8 @@
     <checkbox bit="36" title="Larger Cloud" comment="When enabled, the Bouncy Cloud will be bigger."/>
   </sprite> <!-- #78: Bouncy Cloud -->
 
-<!-- Determine the scope of this event controller with a video showcasing its behavior with a delay of 6 and 10 Red Coins. Create a Zone that the player will stand in and an IF controller that governs the Looper. Stand in it until the coins have come on, and all gone off, at least twice (assuming they turn off). If they do not turn off, exit the location and observe the behavior. If they do turn off, exit the location after half of the coins have come on and observe the behavior. -->
-<!-- My descriptions here are operating under the assumption that it proceeds to disable each event after having activated it before it proceeds to the next. It also assumes that it must complete the full sequence before deactivating even when the Triggering Event ID is deactivated. -->
-  <sprite id="79" name="Event Controller - Looper (If X, do Y THEN Z+, Repeat)" asmhacks="True" notes="Similar to the Multi-Chainer, this controller will activate a sequence of Events ranging from [Target Event ID Start] through [Target Event ID End]. However, it will only activate one event at a time. After activating one event, it will deactivate it and activate the next event. Once it has done this for all events, if the [Triggering Event ID] is still activated, it will return to [Target Event ID Start] and begin again.">
-    <value bit="33-40" title="Triggering Event ID" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <value bit="17-24" title="Target Event ID Start" comment="When the Triggering Event is activated, this Event ID will be activated first. It will then run until it reaches [Target Event ID End]."/>
-    <value bit="25-32" title="Target Event ID End" comment="After enabling and disabling this event, if the Triggering Event is still activated, the Looper will return to [Target Event ID Start] and repeat the loop."/>
-    <value nybble="11-12" title="Delay" comment="The Looper will wait this amount of time between activating/deactivating each event." comment2="A value of 6 is approximately 1 second on the game's clock."/>
-  </sprite> <!-- #79: Event Looper -->
+  <sprite id="79" name="Incomplete Sprite - 'En_Helpos'" notes="Does nothing.">
+    </sprite> <!-- #79: Incomplete Sprite - 'En_Helpos' -->
 
   <sprite id="80" name="Fire Bro" sizehacks="True" notes="A standard Brothers enemy that shoots fireballs at the player.">
   </sprite> <!-- #80: Fire Bro -->
@@ -1351,38 +1345,11 @@
     </list>
   </sprite> <!-- #87 (Unused) Trampoline Wall -->
 
-<!-- Someone look this thing over and make sure I'm not a total idiot. Thanks. -->
-<!-- When you're done (me), go back through the list and fix the Sprite Number names. In both places. Then clone it to the other Actor Spawner. Ugh. -->
-  <sprite id="88" name="Actor Spawner" asmhacks="True" phonebook="Actors" notes="With this sprite, you can spawn anything and everything that exists in the game. Sprite Data can be applied to sprites spawned through this within certain limitations. Please utilize Raw Data (Visible with Advanced Settings enabled) to determine what the settings should be set to. Combine the Actor Spawner with [332] Effect/Sound Spawner to add flair to the spawn effect. &lt;br&gt; &lt;br&gt;Additionally, anything spawned by the Actor Spawner will need to be respawned each time the player changes Zones. If returning from a bonus room, be sure to trigger any relevant spawns. Each Actor Spawner can only trigger once each Zone.">
-    <dependency notes="Directly place any sprite you want to spawn with the Actor Spawner somewhere in your level for the game to load the required secondary assets of that sprite."/>
-    <value bit="17-20" title="Triggering Event ID" comment="When this event is activated, the Actor Spawner will create one copy of the Actor at the location of the Spawner. Keep in mind that some sprites have abnormal placement so expect a lot of testing to make sure that everything works correctly." comment2="The Triggering Event ID is limited to only the first 15 Event IDs." idtype="Triggering Event"/>
-    <checkbox bit="21" title="Automatically Respawn" comment="When the actor spawned by this spawner is deleted or missing, and the event is triggered, another actor with the same settings will be spawened. This also stops the spawned actor from despawning when the event is deactivated."/>
-    <value bit="22-32" title="Actor ID - Number Entry" comment="Please enter the extension that you wish to dial. If your party cannot be reached, please dial a different number. Thank you." comment2="Do not use an Actor ID that does not return a value on the list below." idtype="Actor"/> <!-- ID type is used so that the number can be shown on the sprite display. -->
-    <external type="actors" bit="22-32" title="Actor ID" comment="Use this external window to select your Actor ID." />
-    <value bit="33-34" title="Nybble 5" />
-    <value bit="35-36" title="Nybble 6" />
-    <value bit="37-38" title="Nybble 7" />
-    <value bit="39-40" title="Nybble 8" />
-    <value bit="41-42" title="Nybble 9" />
-    <value bit="43-44" title="Nybble 10" />
-    <value bit="45-46" title="Nybble 11" />
-    <value bit="47-48" title="Nybble 12" />
-  </sprite> <!-- #88: Actor Spawner -->
+  <sprite id="88" name="Incomplete Sprite - 'En_Boyon'" notes="Does nothing.">
+    </sprite> <!-- #88: Incomplete Sprite - 'En_Boyon' -->
 
-  <sprite id="89" name="Actor Multi-Spawner" asmhacks="True" phonebook="Actors" notes="With this sprite, you can spawn anything and everything that exists in the game. It will spawn the Actor every 2 seconds while the Triggering Event is on. If you need to spawn them at a faster rate, use an Event Controller to deactivate and activate the Triggering Event. Sprite Data can be applied to sprites spawned through this within certain limitations. Please utilize Raw Data (Visible with Advanced Settings enabled) to determine what the settings should be set to. Combine the Actor Spawner with [332] Effect/Sound Spawner to add flair to the spawn effect. &lt;br&gt; &lt;br&gt;Additionally, anything spawned by the Actor Spawner will need to be respawned each time the player changes Zones. If returning from a bonus room, be sure to trigger any relevant spawns. Each Actor Spawner can only trigger once each Zone.">
-    <dependency notes="Directly place any sprite you want to spawn with the Actor Spawner somewhere in your level for the game to load the required secondary assets of that sprite."/>
-    <value bit="17-20" title="Triggering Event ID" comment="While this event is activated, the Actor Spawner will create a copy of the Actor every 2 seconds at the location of the Spawner. Keep in mind that some sprites have abnormal placement so expect a lot of testing to make sure that everything works correctly." comment2="The Triggering Event ID is limited to only the first 15 Event IDs." idtype="Triggering Event"/>
-    <value bit="21-32" title="Actor ID - Number Entry" comment="Please enter the extension that you wish to dial. If your party cannot be reached, please dial a different number. Thank you." comment2="Do not use an Actor ID that does not return a value on one of the lists below." idtype="Actor"/> <!-- ID type is used so that the number can be shown on the sprite display. -->
-    <external type="actors" bit="22-32" title="Actor ID" comment="Use this external window to select your actor id." />
-    <value bit="33-34" title="Nybble 5" />
-    <value bit="35-36" title="Nybble 6" />
-    <value bit="37-38" title="Nybble 7" />
-    <value bit="39-40" title="Nybble 8" />
-    <value bit="41-42" title="Nybble 9" />
-    <value bit="43-44" title="Nybble 10" />
-    <value bit="45-46" title="Nybble 11" />
-    <value bit="47-48" title="Nybble 12" />
-  </sprite> <!-- #89: Actor Multi-Spawner -->
+  <sprite id="89" name="Incomplete Sprite - 'En_Remocon_Torimochi'" notes="Does nothing.">
+    </sprite> <!-- #89: Incomplete Sprite - 'En_Remocon_Torimochi' -->
 
   <sprite id="90" name="Effect - Wind Physics and Sound" notes="This will generate occasional windy pushbacks and wind sound effects. It is best used in conjunction with the suggested sprites, but they are not required.">
     <dependency notes="In order to generate sandstorm graphics, [374] Effect - Falling Objects and Wind is required using the Snow setting. To add coins to this effect, [284] Physics Coin Controller must be linked.">
@@ -2523,12 +2490,8 @@
     <checkbox bit="44" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #151: Porcupuffer -->
 
-  <sprite id="152" name="Message Box" notes="A block that the player can hit which will display a custom message. Messages are defined in Message.py.">
-    <dependency notes="The Message Box Controller must be included in each Zone for Message Boxes to function correctly.">
-      <required sprite="107"/>
-    </dependency>
-    <value nybble="9-12" title="Message ID" comment="Messages defined in Message.py. Add 256 to the value shown in the Newer Message Editor program. (01/10/18)" idtype="Message"/>
-  </sprite> <!-- 152: Message Box -->
+  <sprite id="152" name="Incomplete Sprite - 'En_Blur'" notes="Does nothing.">
+    </sprite> <!-- #152: Incomplete Sprite - 'En_Blur' -->
 
   <sprite id="153" name="(Unused) &quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="This is a large version of the basic stand-alone switch. When triggered, it only modifies the Target Event.">
     <dependency notes="The game will crash unless a normal orange switch is placed somewhere in the level. It does not have to be within an area that is actually used.">
@@ -2791,50 +2754,8 @@
     <value bit="26-32" title="Triggering Event ID (Thunder)" comment="If a Triggering Event is set, the Thundercloud will only shoot thunder while this Event is activated. If a Triggering Event is not set, it will shoot thunder for 3 seconds on, 1 second off (?)." requiredbit="48"/> <!-- Appears if Stationary is set -->
   </sprite> <!-- #168: Thundercloud -->
 
-<!-- Double check Moving Direction, value 0 with ASM. -->
-  <sprite id="169" name="Magic Platform" asmhacks="True" notes="Magic Platforms are created by assigning tileset data to an invisible block as a new texture, and moving that texture around. While it functions best as a moving platform, the Magic Platform does not have to move in order to perform its function. It can also simply create terrain chunks with a different type of collision than normal.">
-    <dependency notes="It should be noted that the Magic Platform can only create rectangular shapes. It cannot have slopes, and it cannot have 'unused space' within the location. All tiles will turn into solid blocks." />
-    <value nybble="11-12" title="Location ID" comment="This determines what the Magic Platform looks like. It will clone the tiles as it sees them within the given Location. This Location does not have to be within the current Zone boundaries."/>
-    <list nybble="6" title="Collision" comment="This determines the type of collision.">
-      <entry value="0">Solid Block</entry>
-      <entry value="1">Permeable (Solid on Top)</entry>
-      <entry value="2">Fully Permeable (Layer 1)</entry>
-      <entry value="3">Collision Line on Right Side</entry>
-      <entry value="4">Collision Line on Left Side</entry>
-      <entry value="5">Collision Line on Top Edge</entry>
-      <entry value="6">Collision Line on Bottom Edge</entry>
-      <entry value="7">Fully Permeable (Layer 0)</entry>
-    </list>
-    <value bit="17-19" title="Z-Order" comment="Changes the Z-Order of the Magic Platform to place it behind Layer 2."/>
-    <value bit="9-16" title="Triggering Event ID" comment="When this Event is activated, the Magic Platform will move as specified. When the Event is deactivated, the Magic Platform will return to its starting position." idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <list bit="34-36" title="Moving Direction" comment="This determines which direction the Magic Platform will move.">
-      <entry value="0">Does Not Move</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Up</entry>
-      <entry value="3">Down</entry>
-      <entry value="4">Right</entry>
-    </list>
-    <value nybble="10" title="Speed" comment="This determines the speed at which the Magic Platform will move." comment2="The speed increases by a factor of .2 per increment. It must be set greater than 0 for the Magic Platform to move at all."/>
-    <checkbox bit="20" title="Move Forever" comment="When enabled, the Magic Platform will move in the assigned direction while the Triggering Event is activated, and will move in the opposite direction while the Triggering Event is deactivated."/>
-    <list nybble="8" title="Distance" comment="This determines how far the Magic Platform will be moved when the Triggering Event is activated.">
-      <entry value="0">1 Block</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
-  </sprite> <!-- #169: Magic Platform -->
+  <sprite id="169" name="Incomplete Sprite - 'En_Slip_Penguin'" notes="Does nothing.">
+    </sprite> <!-- #169: Incomplete Sprite - 'En_Slip_Penguin' -->
 
   <sprite id="170" name="Chestnut Goomba" yoshinotes="While Yoshi cannot jump on this enemy, any Yoshi Fireball will burn the outer shell releasing the tasty Goomba inside." notes="A spikey brown ball that contians a normal Goomba, which will appear if it is shot with a Fireball. Fire Bro fireballs will also open it, but Fire Chomp fireballs will not.">
   </sprite> <!-- #170: Chestnut Goomba -->
@@ -3017,21 +2938,11 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
   </sprite> <!-- #182: Event Triggered Door -->
 
-  <sprite id="183" name="Meteor" asmhacks="True" notes="A floating, spinning, safe to stand on Meteor.">
-    <value nybble="9-10" title="Size" comment="This determines how large the Meteor is." comment2="A setting of 0 is the same as a setting of 5. 1-255 provide general scaling from 20% to 5100% scaling."/>
-    <checkbox bit="44" title="Electrified" comment="When enabled, the Meteor will be electrified, and will hurt any player that touches it."/>
-    <value bit="25-32" title="Rotation Speed" comment="This determines how fast the Meteor will rotate, if at all."/>
-    <dualbox bit="48" title1="Spins Counter-Clockwise" title2="Spins Clockwise" comment="This determines which direction the Meteor will spin." requiredbit="25-32"/> <!-- Appears if Rotation Speed > 0 -->
-    <list nybble="5" title="Spawn Item when Destroyed" comment="This determines if an item will appear when the Meteor is destroyed." comment2="The Meteor can only be destroyed by the Rideable Clowncar. The Mushroom Bubbles will float in from the right of the screen after the Meteor is destroyed.">
-      <entry value="0">Nothing</entry>
-      <!--<entry value="1">1 Coin</entry>-->
-      <entry value="2">Mushroom in Bubble</entry>
-    </list>
-    <value nybble="6" title="Z-Order" comment="This will adjust the Z-Order of the Meteors in relation to other objects." comment2="A higher value will place this sprite further towards the background."/>
-  </sprite> <!-- #183: Meteor -->
+  <sprite id="183" name="Incomplete Sprite - 'En_TarzanRope'" notes="Does nothing.">
+  </sprite> <!-- #183: Incomplete Sprite - 'En_TarzanRope' -->
 
-  <sprite id="184" name="(Unused) Mask" notes="&quot;Mask&quot; refers to the secret Layer 0 areas. Maybe in the early stages of development, this sprite needed to be present in the level in order for Layer 0 to create the see-through effect of Spotlight mode.">
-  </sprite> <!-- #184: (Unused) Mask -->
+  <sprite id="184" name="Incomplete Sprite - 'Mask'" notes="Does nothing. &quot;Mask&quot; refers to the secret Layer 0 areas. Maybe in the early stages of development, this sprite needed to be present in the level in order for Layer 0 to create the see-through effect of Spotlight mode.">
+  </sprite> <!-- #184: Incomplete Sprite - 'Mask' -->
 
   <sprite id="185" name="Ambush - Toad Balloon" noyoshi="True" notes="Collecting 8 of these spawns a Toad House Chest. Requires an Ambush Level Controller for the balloons to spawn and function.">
     <dependency notes="The [454] Ambush Controller will allow the Toad Balloons to spawn. When 8 Toad Balloons have been collected, (most) enemies will be killed, and any [203] Item Chests set to spawn from Ambush Controllers will spawn.">
@@ -3486,10 +3397,8 @@
     <dualbox bit="36" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Brick Block will move based on the Line that it is connected to." advanced="True" advancedcomment="It is recommended to use [403] Line Controlled Brick Block instead."/>
   </sprite> <!-- #209: Brick Block -->
 
-  <sprite id="210" name="Topman" asmhacks="True" notes="An enemy from Super Mario Galaxy that looks like a UFO with a spike on his head. He will walk off of platform edges and turn around at walls.">
-    <checkbox bit="44" title="Stands Still" comment="When enabled, the Topman will not walk towards the player."/>
-    <checkbox bit="48" title="Low Gravity" comment="When enabled, the Topman will fall much more slowly."/>
-  </sprite> <!-- #210: Topman -->
+  <sprite id="210" name="Incomplete Sprite - 'Tarzan_Rope'" notes="Does nothing.">
+  </sprite> <!-- #210: Incomplete Sprite - 'Tarzan_Rope' -->
 
   <sprite id="211" name="Boss Controller - Bowser Jr. (1st Battle)" noyoshi="True" notes="This controls the mechanics for the First Bowser Jr. boss fight. It spawns the backgrounds BgA_0E02 and BgB_3402, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 04-38 A1.">
@@ -3943,11 +3852,8 @@
     <checkbox bit="48" title="Does Not Create Clouds" comment="When enabled, the Foo will not create clouds."/>
   </sprite> <!-- #238: Foo, the Cloud Blower -->
 
-  <sprite id="239" name="Event Block" asmhacks="True" notes="A red or green block that, when struck, will affect the state of the Target Event(s). Events that are deactivated will become activated, and those that are activated will become deactivated." advancednotes="Kamek code references the events by the opposite number.">
-    <dualbox bit="32" title1="Affect Event 1" title2="Swap Event 2 and Event 1" comment="This determines which associated Event IDs will be affected when the block is struck." comment2="If set to Affect Event 1, Event 1 will be activated or deactivated and the color of the block will display the state of Event 1, green for on and red for off. &lt;br&gt; &lt;br&gt;If set to Swap Events, Event 2 will be activated initially and Event 1 will be deactivated initially during the Zone loading. The color of the block will rely on Event 2's current state."/>
-    <value bit="41-48" title="Target Event ID 1" idtype="Target Event"/> <!-- May already support 256 Event IDs -->
-    <value nybble="33-40" title="Target Event ID 2" requiredbit="32" idtype="Target Event"/> <!-- May already support 256 Event IDs --> <!-- Appears if affecting Event 2 --> <!-- Multiple Target Event IDtypes may not function -->
-  </sprite> <!-- #239: Event Block -->
+  <sprite id="239" name="Incomplete Sprite - 'Mist_Intermittent'" notes="Does nothing.">
+    </sprite> <!-- #239: Incomplete Sprite - 'Mist_Intermittent' -->
 
   <sprite id="240" name="Big Wiggler" noyoshi="True" notes="A very large Wiggler that could not care less what you do to it, so you can safely ride on its back.">
     <checkbox bit="48" title="Moves Slightly Faster" comment="When enabled, the Wiggler will move slightly faster than normal."/>
@@ -3968,66 +3874,14 @@
     <value nybble="5-6" title="Current Force" comment="This determines the strength of the current."/>
   </sprite> <!-- #243: (Unused) Water Current Controller -->
 
-  <sprite id="244" name="Line God Event" asmhacks="True" notes="The Line God can hide and unhide Line Guides within a specified area by using Events.">
-    <dependency notes="The Line God cannot create new Line objects, only determine if the object within its affected area are displayed and functional."/>
-    <value bit="17-24" title="Triggering Event ID" comment="When this Event ID is activated, the Line Guides affected by the Line God's area will be hidden or unhidden, depending on the Mode." idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <value nybble="11" title="Width" comment="Width of the area affected by the Line God."/>
-    <value nybble="10" title="Height" comment="Height of the area affected by the Line God."/>
-    <dualbox bit="48" title1="Shows when Active" title2="Hides when Active" comment="This determines how the Line God will act when the Triggering Event is activated." comment2="When the event is not active, the Line Guides will exist in the opposite state from what's listed."/>
-  </sprite> <!-- #244: Line God Event -->
+  <sprite id="244" name="Incomplete Sprite - 'Hana_Mountain'" notes="Does nothing.">
+    </sprite> <!-- #244: Incomplete Sprite - 'Hana_Mountain' -->
 
-  <sprite id="245" name="Newer Cutscene Controller: Ending" asmhacks="True" notes="&lt;font color=&quot;red&quot;&gt;This sprite is predominately hardcoded in how it functions. Custom usage is not recommended.&lt;/font&gt;" advancednotes="It needs a very specific level set-up to function. Shows the Bowser cutscene that runs in a separate level.">
-  </sprite> <!-- #245: Newer Cutscene Controller: Ending -->
+  <sprite id="245" name="Incomplete Sprite - 'River_Mgr'" notes="Does nothing.">
+    </sprite> <!-- #245: Incomplete Sprite - 'River_Mgr' -->
 
-  <sprite id="246" name="Special Event" asmhacks="True" notes="This sprite can do all sorts of special functions, such as freezing actors, changing the size of sprites, editing the game Timer, and changing the gravity. This function is restricted to the active Zone. The settings available to each type will appear when selecting that option. Be sure to reset the Sprite Settings when switching between different typees in order to prevent any bugs.">
-    <value bit="17-24" title="Triggering Event ID" comment="The Special Event is on as long as this Event is activated."/>
-    <list bit="45-48" title="Type" comment="This determines the effect of the Special Event." comment2="Time Stop: Freezes some Actors/Elements. &lt;br&gt;Pause Timer: Pauses the Level's Clock, different from Time Stop. &lt;br&gt;Set Timer: Changes the time on the Level's Clock. &lt;br&gt;Change Gravity: Changes player physics to simulate a different type of gravity. &lt;br&gt;Resizer: Changes the size of all sprites affected by this function. &lt;br&gt;Selective Resizer: Changes the size of sprites affected by this function to their specified sizes. &lt;br&gt;Background Resizer: Changes the Background settings. &lt;br&gt;Disable Z-Order Fixes: Deactivates all Z-Order modifications while the Special Event is activated. &lt;br&gt;Disable MP Bubbling: Deactivates the ability to 'bubble' yourself during Multiplayer.">
-      <entry value="0">None</entry>                  <!-- 0000 -->
-      <entry value="1">Time Stop</entry>             <!-- 0001 -->
-      <entry value="2">Pause Timer</entry>           <!-- 0010 -->
-      <entry value="4">Set Timer</entry>             <!-- 0100 -->
-      <entry value="3">Change Gravity</entry>        <!-- 0011 -->
-      <entry value="5">Resizer</entry>               <!-- 0101 -->
-      <entry value="6">Selective Resizer</entry>     <!-- 0110 -->
-      <entry value="9">Background Resizer</entry>    <!-- 1001 -->
-      <entry value="7">Disable Z-Order Fixes</entry> <!-- 0111 -->
-      <entry value="8">Disable MP Bubbling</entry>   <!-- 1000 --> <!-- 45-48 -->
-    </list>
-    <checkbox bit="44" title="Time Stop: Platforms" comment="When enabled, the Special Event will freeze all Platforms that support this function." requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
-    <checkbox bit="43" title="Time Stop: Players" comment="When enabled, the Special Event will freeze all Players." comment2="Remember to deactivate the Special Event or else Mario and the other Players will remain frozen. Forever~" requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
-    <checkbox bit="42" title="Time Stop: Terrain" comment="When enabled, the Special Event will freeze all Terrain Animations." requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
-    <checkbox bit="41" title="Time Stop: Enemies" comment="When enabled, the Special Event will freeze all Enemies that support this function." requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
-    <list nybble="11" title="Gravity Type" comment="This determines what the altered state of gravity will be while the Special Event is activated." comment2="Anti Gravity is a little strange, not fully documented, and defnitely not recommended for normal use." requiredbit="45-48" requiredval="3"> <!-- Appears if [Type] = 3 -->
-      <entry value="0">Low Gravity</entry>
-      <entry value="1">Anti Gravity</entry>
-    </list>
-    <value nybble="7-10" title="Set Time to..." comment="This determines what the Level's Clock will be set to when the Special Event is activated." comment2="Do not use a value higher than 999." requiredbit="45-48" requiredval="4"/> <!-- Appears if [Type] = 4 -->
-    <list nybble="11" title="Scale / Size (Global)" comment="The Special Event will resize all Enemies in the Zone that support this function." requiredbit="45-48" requiredval="5"> <!-- Appears if [Type] = 5 -->
-      <entry value="0">x1.0 (normal)</entry>
-      <entry value="1">x0.25</entry>
-      <entry value="2">x0.5</entry>
-      <entry value="3">x0.75</entry>
-      <entry value="4">x1.25</entry>
-      <entry value="5">x1.5</entry>
-      <entry value="6">x1.75</entry>
-      <entry value="7">x2.0</entry>
-      <entry value="8">x2.5</entry>
-      <entry value="9">x3.0</entry>
-      <entry value="10">x4.0</entry>
-      <entry value="11">x5.0</entry>
-      <entry value="12">x6.0</entry>
-      <entry value="13">x7.0</entry>
-      <entry value="14">x8.0</entry>
-      <entry value="15">x10.0</entry>
-    </list>
-    <list nybble="11" title="Scale / Size (Selective)" comment="The Special Event will resize all Enemies in the Zone according to this individual setting found in each sprite, even if that data is also controlling another function. Be sure to enable the level setting in Reggie to display Size Hacks for Data A or B." requiredbit="45-48" requiredval="6"> <!-- Appears if [Type] = 6 -->
-      <entry value="0">Use Data A</entry>
-      <entry value="1">Use Data B</entry>
-    </list>
-    <!-- 1001 -->
-    <value nybble="7-8" title="bgA Size (Scenery)" comment="The Special Event will resize the 'Scenery' background picture. Higher Values = Bigger Size" requiredbit="45-48" requiredval="9"/> <!-- Appears if [Type] = 9 -->
-    <value nybble="9-10" title="bgB Size (Backdrop)" comment="The Special Event will resize the 'Backdrop' background picture. Higher Values = Bigger Size" requiredbit="45-48" requiredval="9"/> <!-- Appears if [Type] = 9 -->
-  </sprite> <!-- #246: Special Event -->
+  <sprite id="246" name="Incomplete Sprite - 'Tag_Thunder'" notes="Does nothing.">
+    </sprite> <!-- #246: Incomplete Sprite - 'Tag_Thunder' -->
 
 <!-- A ReggieResource is required for this sprite showing various combinations in screenshot form or with styles due to the visual complexity of what it does. As such, I'm not going to edit the current documentation. -->
   <sprite id="247" name="(Unused) Cheep Cheep Formation Spawner" notes="This will create groups of Cheep Cheeps with certain creation rules that will generate formations.">
@@ -4101,31 +3955,11 @@
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite> <!-- #249: Horizontal Scroll Limiter - Bottom -->
 
-<!-- Check Delay on Looping to see if it functions as described. I need to know if the delay applies to both the On AND Off state or just the Off state. -->
-<!-- Check the Direction and see if Up and Down function in any reasonable sense of the word. .cpp lists them as possible options. -->
-  <sprite id="250" name="Electric Line" asmhacks="True" notes="A tall electrified wall that will elecrtocute any player that touches it.">
-    <dependency notes="Height = 14 Blocks, Width = 2 Blocks. Placement represents the topmost right(?) block."/>
-    <dualbox bit="44" title1="Always On" title2="Looping" comment="This determines if the Electric Line is always on after it powers up or if it cycles between on and off."/>
-    <value nybble="7-8" title="Delay Turning On" comment="This determines how long the Electric Line stays off before first coming on." comment2="Delay in 1/6ths of a second." requiredbit="44" requiredval="0"/> <!-- Appears if Always On -->
-    <value nybble="7-8" title="Delay on Looping" comment="This determines the time the Electric Line will stay on and off during its power looping." comment2="Delay in 1/6ths of a second." requiredbit="44"/> <!-- Appears if Looping -->
-    <dualbox bit="44" title1="Power Nodes Point Right" title2="Power Nodes Point Left" comment="This determines the direction the power node spikes will face."/>
-    <!-- <list bit="47-48" title="Direction" comment="This determines the direction of Electric Line.">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Up</entry>
-      <entry value="3">Down</entry>
-    </list> -->
-  </sprite> <!-- #250: Electric Line -->
+  <sprite id="250" name="Incomplete Sprite - 'Kawanagare'" notes="Does nothing.">
+    </sprite> <!-- #250: Incomplete Sprite 'Kawanagare' -->
 
-  <sprite id="251" name="World-7 Boss: Super Topman" asmhacks="True" notes="Large Topman boss used by NewerSMBW. It can be beaten by luring it into [250] Electric Lines.">
-    <dependency notes="">
-      <required sprite="250"/>
-      <required sprite=""/> <!-- Kamek -->
-      <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite=""/> <!-- ??? -->
-    </dependency>
-    <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
-  </sprite> <!-- #251: World-7 Boss: Super Topman -->
+  <sprite id="251" name="Incomplete Sprite - 'Slow_Quick_Tag'" notes="Does nothing.">
+  </sprite> <!-- #251: Incomplete Sprite 'Slow_Quick_Tag'" -->
 
   <sprite id="252" name="Rotation Controlled Event Deactivation Block" notes="When struck, this ?-Block will deactivate the Target Event. It can also appear through use of a Rotation Controller allowing it to be hidden from sight before hand.">
     <dependency notes="This sprite must have both a Target Event set and a matching Rotation Controller in order to function. As the block cannot be struck while actively moving, it is only compatible with an Event Activated Swinging Rotation Controller.">
@@ -4608,14 +4442,8 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
   </sprite> <!-- #278: Castle Boss Door -->
 
-  <sprite id="279" name="World-3 Boss: Balboa Wrench" asmhacks="True" noyoshi="True" notes="The giant Rocky Wrench boss used by NewerSMBW. He must be Ground-Pounded 3 times to be defeated.">
-    <dependency notes="">
-      <required sprite=""/> <!-- Kamek -->
-      <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite=""/> <!-- ??? -->
-    </dependency>
-    <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
-  </sprite> <!-- #279: World-3 Boss: Balboa Wrench -->
+  <sprite id="279" name="Incomplete Sprite - 'Ac_Lift_Ice_Spring'" notes="Does nothing.">
+  </sprite> <!-- #279: Incomplete Sprite - 'Ac_Lift_Ice_Spring' -->
 
   <sprite id="280" name="Giant Ice Block" asmhacks="True" notes="A large 3x3 ice block that can be broken with an explosion.">
     <list bit="47-48" title="Frozen Inside" comment="This determines what type of object is frozen inside the block." comment2="Bob-Omb ice blocks will explode to other nearby ice blocks.">
@@ -4646,20 +4474,11 @@
     </dependency>
   </sprite> <!-- #281: Rising Tilt-Controlled Girder Controller -->
 
-  <sprite id="282" name="Angry Sun and Moon" asmhacks="True" notes="A recreation of the Angry Sun enemy from Super Mario Bros. 3 that will chase the player indefinitely unless the Triggering Event is activated.">
-    <dualbox bit="48" title1="Angry Sun" title2="Angry Moon" comment="This determines which model the enemy will use."/>
-    <value bit="26-32" title="Die on Triggering Event ID" comment="Disappears, when this Event ID is activated." comment2="Maximum usable value for this sprite is 64." idtype="Triggering Event"/>
-    <checkbox bit="20" title="Never Respawns" comment="When enabled, the enemy will not respawn after being defeated or after leaving the screen." comment2="If this is not enabled, the enemy will continue to respawn once loaded until the Triggering Event is activated. One way to manage this with locations is to use an IF controller that deactivates the Triggering Event while a player is inside the specified location."/>
-  </sprite> <!-- #282: Angry Sun and Moon -->
+  <sprite id="282" name="Incomplete Sprite - 'En_WallInsect'" notes="Does nothing.">
+  </sprite> <!-- #282: Incomplete Sprite - 'En_WallInsect' -->
 
-  <sprite id="283" name="World-1 Boss: Fuzzy Bear" asmhacks="True" noyoshi="True" notes="The giant Fuzzy boss that jumps around and occasionally rolls after the player. It can only be defeated by having grabbable items thrown at it.">
-    <dependency notes="">
-      <required sprite="427"/> <!-- Kamek -->
-      <required sprite="383"/> <!-- Kamek Controller -->
-      <required sprite="343"/> <!-- Fuzzy -->
-    </dependency>
-    <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
-  </sprite> <!-- #283: World-1 Boss: Fuzzy Bear -->
+  <sprite id="283" name="Incomplete Sprite - 'WallInsect_Mgr'" notes="Does nothing.">
+  </sprite> <!-- #283: Incomplete Sprite - 'WallInsect_Mgr' -->
 
 <!-- ASM Research is suggested. -->
   <sprite id="284" name="Physics Coin Controller" notes="A coin related controller that currently is only known to be paired with [90] Wind Physics. It may have other functions, or it may have had all secondary functions scrapped during development.">
@@ -4795,19 +4614,12 @@
     <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="ASM shows Nybble 5 might affect something."/>
   </sprite> <!-- #289: Wooden and Metal Boxes -->
 
-  <sprite id="290" name="World-6 Boss: Ramboo" asmhacks="True" noyoshi="True" notes="The extra large Boo boss that is not the least bit shy about continuing to advance towards the player. He can be knocked back with grabbable items and can only be defeated when the specified Event is activated.">
-    <dependency notes="">
-      <required sprite=""/> <!-- Kamek -->
-      <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite=""/> <!-- ??? -->
-    </dependency>
-    <value bit="26-32" title="Die on Triggering Event ID" comment="When activated, the Ramboo will be killed, completing the level." idtype="Triggering Event"/>
-    <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
-  </sprite> <!-- #290: World-6 Boss: Ramboo -->
+  <sprite id="290" name="Incomplete Sprite - 'En_Iwao'" notes="Does nothing.">
+  </sprite> <!-- #290: Incomplete Sprite - 'En_Iwao' -->
 
-<!-- Redo and reinvestigate ALL setting values. Do not assume any of the current information is accurate. Test one setting at a time!! -->
-<!-- Test 9 separate between normal and heavy. Remember to test between True Left, True Right, and Faces Player for spawning. Also test the range of Speed. Is the maximum 3, 7, or 15? -->
-<!-- Options still need 'sorted' after ensuring what each one does -->
+  <!-- Redo and reinvestigate ALL setting values. Do not assume any of the current information is accurate. Test one setting at a time!! -->
+  <!-- Test 9 separate between normal and heavy. Remember to test between True Left, True Right, and Faces Player for spawning. Also test the range of Speed. Is the maximum 3, 7, or 15? -->
+  <!-- Options still need 'sorted' after ensuring what each one does -->
   <sprite id="291" name="Para-Beetle" asmhacks="True" sizehacks="True" notes="A small flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below.">
     <list nybble="6" title="Color" comment="This determines the color of the Para-Beetle." advancedcomment="More colors and styles can be added for your hack.">
       <entry value="0">Original</entry>
@@ -5016,7 +4828,7 @@
     <checkbox bit="44" title="Upside-Down" comment="When enabled, the cannon is upside-down and can be placed against the ceiling." advanced="True" advancedcomment="The pipe will load on the opposide side alongside a cannon, leaving a hole on one side. As such, this option should not be used."/>
   </sprite> <!-- #301: 4-Way Large Cannon with Pipe -->
 
-<!-- So... Umm... It wasn't used anywhere. Ever. What IS it? How does it look in action? What do these options mean? -->
+  <!-- So... Umm... It wasn't used anywhere. Ever. What IS it? How does it look in action? What do these options mean? -->
   <sprite id="302" name="Loose Giant Flying Wrench" asmhacks="True" notes="???">
     <checkbox bit="40" title="Place In Front Of Other Sprites" comment=""/>
     <checkbox bit="44" title="Homing" comment="???"/>
@@ -5025,11 +4837,6 @@
   </sprite> <!-- #302: Throwing Wrench -->
 
   <sprite id="303" name="Monty Mole" notes="An energetic mole enemy that will pop out of the terrain after loading on screen and proceed to move quickly after the player. A Monty Hole is left behind after the mole jumps out.">
-    <list nybble="6" title="Color" comment="This determines the color of the Monty Mole." advancedcomment="More colors and styles can be added for your hack.">
-      <entry value="0">Original</entry>
-      <entry value="1">Gray</entry>
-      <entry value="2">Black</entry>
-    </list>
     <checkbox bit="48" title="Loose Monty Mole" comment="When enabled, the Monty Mole will already be out of the wall running around, and does not leave behind a Monty Hole."/>
   </sprite> <!-- #303: Monty Mole -->
 
@@ -5056,7 +4863,7 @@
       <entry value="1">Event Activated - Turns On</entry>
       <entry value="2">Event Activated - On With Event</entry>
     </list>
-    <value bit="10-16" title="Triggering Event ID" comment="This determines which Event must be activated for the circle to glow." comment2="Maximum usable value for this sprite is 64." requiredbit="35-36" idtype="Triggering Event"/>
+    <value bit="10-16" title="Triggering Event ID" comment="This determines which Event must be activated for the circle to glow." requiredbit="35-36" idtype="Triggering Event"/>
     <list bit="39-40" title="Movement Type" comment="This determines the movement behavior of the light circle." comment2="** - Pairing the light circle with a Swaying controller will not generate movement. However, as a movement controller is required for the light circle to spawn, using a Swaying controller is a great way to create a stationary spot of light.">
       <entry value="0">[159] Path Controlled</entry>
       <entry value="1">[260] Two Way Line</entry>
@@ -5073,6 +4880,7 @@
       <suggested sprite="159"/>
       <suggested sprite="260"/>
       <suggested sprite="96"/>
+	  <suggested sprite="149"/>
     </dependency>
     <list nybble="8" title="Light's Angle" comment="This determines the angle of the Spotlight." comment2="When paired with a Swaying rotation controller, the light will swing equally to both sides of this value. Other movement controllers will not change the light's angle.">
       <entry value="0">90.0°</entry>
@@ -5096,10 +4904,11 @@
       <entry value="0">[159] Path Controlled</entry>
       <entry value="1">[260] Two Way Line</entry>
       <entry value="2">[96] Swaying</entry>
+	  <entry value="3">[149] Spinning</entry>
     </list>
-    <value bit="41-48" title="Path Movement ID" comment="If pairing the Spotlight with Sprite 159, match the Path Movement ID to enable Path controlled movement." requiredbit="39-40" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
-    <value bit="41-48" title="Two Way Line ID" comment="If pairing the Spotlight with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requiredbit="39-40" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
-    <value bit="41-48" title="Rotation ID" comment="If pairing the Spotlight with sprite 96, match the Rotation ID to enable Swaying movement." comment2="The Spotlight does not pair with sprite 149, the Spinning rotation controller." requiredbit="39-40" requiredval="2" idtype="Rotation"/> <!-- Appears if [Movement Type] = 2 -->
+    <value bit="41-48" title="Path Movement ID" comment="If pairing the Spotlight with Sprite 159, match the Path Movement ID to enable Path controlled movement. It won't spawn without one." requiredbit="39-40" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
+    <value bit="41-48" title="Two Way Line ID" comment="If pairing the Spotlight with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement. It won't spawn without one." requiredbit="39-40" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
+    <value bit="41-48" title="Rotation ID" comment="If pairing the Spotlight with sprite 96 or 149, match the Rotation ID to enable Swaying or Spinning movement. It won't spawn without one." comment2="When using sprite 149, be sure to place the controller at the Spotlight's exact position. Otherwise, the entire sprite will rotate around the controller awkwardly." requiredbit="39-40" requiredval="2-3" idtype="Rotation"/> <!-- Appears if [Movement Type] = 2 or 3 -->
     <checkbox bit="28" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="ASM shows Nybble 7 might affect something."/>
   </sprite> <!-- #306: Lighting - Rotation Controlled Spotlight -->
 
@@ -5342,7 +5151,7 @@
   </sprite> <!-- #320: Falling Chestnut -->
 
 <!-- Low Priority Fun: Find a way to make this work in fun ways with the Auto-Scrolling Controller! :D -->
-  <sprite id="321" name="Beta Arrow Block" notes="A strange unused block with an arrow that can rotate when the block is ground-pounded. There is also a glitchy and unused association with the Auto-Scrolling Controller.">
+  <sprite id="321" name="(Unused) Beta Arrow Block" notes="A strange unused block with an arrow that can rotate when the block is ground-pounded. There is also a glitchy and unused association with the Auto-Scrolling Controller.">
     <list nybble="12" title="Starting Arrow Direction" comment="This determines which direction the arrow will initially point.">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
@@ -5398,15 +5207,8 @@
     <dualbox bit="48" title1="Rotates Clockwise" title2="Rotates Counterclockwise" comment="This determines which direction the Boo Circle will rotate."/>
   </sprite> <!-- #323: Boo Circle -->
 
-  <sprite id="324" name="World-5 Boss: Podouble" asmhacks="True" notes="A pair of large Podoboo bosses used in NewerSMBW. It can only be defeated by using fire or ice attacks against the correct half, and spawns a Yoshi for each player to assist them.">
-    <dependency notes="Both an Ice Podouble and a Fire Podouble are required for this boss fight. The Podouble grows 300% in an upwards direction from the base of the sprite. They can only be damaged by the opposite elemental attack, and a Yoshi is provided automatically to help with this.">
-      <required sprite=""/> <!-- Kamek -->
-      <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite=""/> <!-- ??? -->
-    </dependency>
-    <dualbox bit="20" title1="Ice Podouble" title2="Fire Podouble" comment="This determines which half of the Podouble duo the sprite is." comment2="Fire will always face right, and Ice will always face left."/>
-    <value nybble="11-12" title="Falling Offset" comment="This determines the bottom of the Podouble's jump relative to the sprite's placement, calculated in half-blocks."/>
-  </sprite> <!-- #324: World-5 Boss: Podouble -->
+  <sprite id="324" name="Incomplete Sprite - 'Ship_Window'" notes="Does nothing.">
+  </sprite> <!-- #324: Incomplete Sprite - 'Ship_Window' -->
 
   <sprite id="325" name="Ghost House Stand" notes="A decorative stand that cannot be interacted with, typically used inside Ghost House levels.">
     <dependency notes="Including a few [262] Poltergeist Item versions of this will keep the player alert and on guard.">
@@ -5481,30 +5283,8 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #331: Rotation Controlled Dish Platform -->
 
-<!-- Add a page within the level editor where the full list of effects and sounds can be referenced. Additionally, clean up the list so it's not littered with German. :P -->
-  <sprite id="332" name="Sound/Graphic Effects Spawner" asmhacks="True" notes="Enables event-driven spawning of Sound Effects and Graphic Effects.&lt;br&gt;&lt;u&gt;Limitations&lt;/u&gt;&lt;br&gt; 1) Do not use 1000 or more sounds/effects per area&lt;br&gt; 2) A single Event ID can only trigger one sound/effect per area&lt;br&gt; 3) Only a specific number of sounds/effects can be active at the same time&lt;br&gt; 4) Only two BRSTMs can be active at the same time">
-	  <value nybble="5-6" title="Triggering Event ID" comment="When this Event ID is activated, the associated sound or affect will be played." idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-	  <value nybble="10-12" title="Effect ID" comment="Please dial the extension of the effect you are trying to reach." comment2="Please consult the Effects phone book found in the [MENU]."/>
-	  <dualbox bit="32" title1="Sound Effect" title2="Graphic Effect" comment="This determines if you are spawning a sound effect or a graphical effect." comment2="The volume of the sound effect is relative to the distance of the placement of the spawner."/>
-	  <list nybble="7" title="Effect Scale" comment="This determines the size of the spawned graphic effect." requiredbit="32">
-		  <entry value="1">x0.25 (25%)</entry>
-		  <entry value="2">x0.5 (50%)</entry>
-		  <entry value="3">x0.75 (75%)</entry>
-		  <entry value="0">x1.0 (100%)</entry>
-		  <entry value="5">x1.25</entry>
-		  <entry value="6">x1.5</entry>
-		  <entry value="7">x1.75</entry>
-		  <entry value="8">x2.0 (200%)</entry>
-		  <entry value="9">x2.25</entry>
-		  <entry value="10">x2.5</entry>
-		  <entry value="11">x2.75</entry>
-		  <entry value="12">x3.0 (300%)</entry>
-		  <entry value="13">x3.25</entry>
-		  <entry value="14">x3.5</entry>
-		  <entry value="15">x3.75</entry>
-	  </list>
-	  <value nybble="9" title="Loop Delay" comment="This determines the number of seconds between activations of the sound or graphic effect." comment2="The effect will only activate once if the delay is left at 0."/>
-  </sprite> <!-- #332: Effect/Sound Spawner -->
+  <sprite id="332" name="Incomplete Sprite - 'Lift_Toride_Roll'" notes="Does nothing.">
+  </sprite> <!-- #332: Incomplete Sprite - 'Lift_Toride_Roll' -->
 
   <sprite id="333" name="Line Controlled Player-Block Platform" notes="A tilt-controlled platform that only activates when a player strikes the Player Block. It will zip from one end of a line guide to the other when the controlling player tilts their controller.">
     <dependency notes="This platform will not move along line objects without the use of [187] Player Block.">
@@ -5795,55 +5575,13 @@
     </dependency>
   </sprite> <!-- #349: Boss Controller - Morton Koopa -->
 
-  <sprite id="350" name="Fireball Laser" asmhacks="True" notes="A controller that creates a constant stream of fireballs in a specific direction. These fireballs will not pass through terrain.">
-    <value nybble="7-8" title="Triggering Event ID" comment="While this Event ID is activated, the controller will create fireballs." idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <list nybble="12" title="Direction" comment="This determines which direction the fireballs will fire in.">
-      <entry value="0">Right</entry>
-      <entry value="1">Up + Right</entry>
-      <entry value="2">Up</entry>
-      <entry value="3">Up + Left</entry>
-      <entry value="4">Left</entry>
-      <entry value="5">Down + Left</entry>
-      <entry value="6">Down</entry>
-      <entry value="7">Down + Right</entry>
-    </list>
-  </sprite> <!-- #350: Fireball Laser -->
+  <sprite id="350" name="Incomplete Sprite - 'Dummy_Door_Parent'" notes="No code.">
+  </sprite> <!-- #350: Incomplete Sprite - 'Dummy_Door_Parent' -->
 
-<!-- Generate descriptions for the behavior of each type of Shy Guy -->
-<!-- Establish which type of Shy Guy nybble 9 influences, and in what way. -->
-  <sprite id="351" name="Shy Guys" asmhacks="True" notes="An assortment of normal-sized Shy Guys with varying behaviors.">
-    <list nybble="5" title="Shy Guy Types" comment="This determines which type of Shy Guy will be placed." comment2="Walker: [???] &gt;br&lt;Pacer: [???] &gt;br&lt;Sleeper: [???] &gt;br&lt;Jumper: [???] &gt;br&lt;Judo Master: [???] &gt;br&lt;Spike Thrower: [???] &gt;br&lt;Red Ballooneer: [???] &gt;br&lt;Blue Ballooneer: [???]">
-      <entry value="0">Walker</entry>
-      <entry value="1">Pacer</entry>
-      <entry value="2">Sleeper</entry>
-      <entry value="3">Jumper</entry>
-      <entry value="4">Judo Master</entry>
-      <entry value="5">Spike Thrower</entry>
-      <entry value="6">Red Ballooneer Vertical</entry>
-      <entry value="7">Red Ballooneer Horizontal</entry>
-      <entry value="8">Blue Ballooneer Circular</entry>
-    </list>
-  <list nybble="9" title="Unknown Value 9" comment="Probably determines the Distance the Shy Guy will move until he turns around. Free roaming at 0.">
-      <entry value="0">???</entry>
-      <entry value="1">???</entry>
-      <entry value="2">???</entry>
-      <entry value="3">???</entry>
-      <entry value="4">???</entry>
-      <entry value="5">???</entry>
-      <entry value="6">???</entry>
-      <entry value="7">???</entry>
-      <entry value="8">???</entry>
-      <entry value="9">???</entry>
-      <entry value="10">???</entry>
-      <entry value="11">???</entry>
-      <entry value="12">???</entry>
-      <entry value="13">???</entry>
-      <entry value="14">???</entry>
-      <entry value="15">???</entry>
-    </list>
-  </sprite> <!-- #351: Shy Guy -->
+  <sprite id="351" name="Incomplete Sprite - 'Dummy_Door_Child'" notes="No code.">
+  </sprite> <!-- #351: Incomplete Sprite - 'Dummy_Door_Child' -->
 
-<!-- More research is needed alongside 302 and 476 -->
+  <!-- More research is needed alongside 302 and 476 -->
   <sprite id="352" name="Rocky Wrench" notes="A small mole that will hide under a metal cover and throw wrenches at the player. It can be defeated with a ground pound or fireball, or it can be frozen.">
     <dependency notes="The Rocky Wrench must be placed with its feet touching the ground."/>
   </sprite> <!-- #352: Rocky Wrench -->
@@ -6031,7 +5769,6 @@
     <checkbox bit="24" title="Invisible Pipes" advanced="True" advancedcomment="When enabled, the Pipes will be invisible, but still able to be entered. It was likely meant to be another texture, but was never actually added in. Do not use this setting."/>
   </sprite> <!-- #360: Rolling Hill - 8 Pipes -->
 
-
   <sprite id="361" name="Rotation Controlled Crystal Block" notes="A rotation controlled large purple crystal block.">
     <dependency notes="This block does not appear unless actually paired to a rotation controller.">
       <suggested sprite="96"/>
@@ -6047,7 +5784,6 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
     <checkbox bit="24" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Nintendo uses this value, but no effect was observed. Likely a removed setting."/>
   </sprite> <!-- #361: Rotation Controlled Crystal Block -->
-
 
   <sprite id="362" name="Rotation Controlled Colored Box" notes="A rotation controlled large resizable block with the appearance of a patterned box.">
     <dependency notes="This block does not appear unless actually paired to a rotation controller.">
@@ -6151,7 +5887,7 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #366: Rotation Controlled Mushroom Block -->
 
-<!-- Awaiting results from Collision Tests and Multiplayer Test -->
+  <!-- Awaiting results from Collision Tests and Multiplayer Test -->
   <sprite id="367" name="Line Controlled Spinning Pink Mushroom Block" notes="A large mushroom block that automatically rotates from its center point and will move along Line objects after the player touches it.">
     <dependency notes="Line objects are required for this sprite to function. It does not interact with other terrain, and will instead continue to follow the Line guide it is connected to. As with all Line controlled sprites, it will connect to a new Line guide when it falls off of its current one, if it touches one. [???]"/>
     <value bit="10-16" title="Target Event ID" comment="When the mushroom block is stepped on by a player, in addition to starting to move, the Target Event ID will be activated." comment2="Maximum usable value for this sprite is 64." idtype="Target Event"/>
@@ -6161,7 +5897,6 @@
     <checkbox bit="24" title="Bounce Back" comment="When enabled, the mushroom block will reverse its course along the Line guide when it reaches an end point." comment2="The mushroom block will always rotate in the same direction, even when traveling in reverse."/>
     <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="Used by Nintendo in Retail 2-06 A1 as value 7. No visible effect."/>
   </sprite> <!-- #367: Line Controlled Spinning Pink Mushroom Block -->
-
 
   <sprite id="368" name="Path Controlled Flashlight Raft" notes="A floating Raft that travels slowly to the right, or follows along an assigned Path. It also has a flashlight that produces a cone of light on both sides that can be controlled by tilting the controller. It is activated when all players land on it. It's recommended to use a Darkness mode for the Zone's lighting">
     <dependency notes="The sprite's placement is irrelevant if Path Controlled, as the Raft will be located at the listed Starting Path Node (indicated by the white square). A special Water sprite [373] is recommended to be used with the Raft, but it's not required.">
@@ -6248,9 +5983,9 @@
     </dependency>
   </sprite> <!-- #373: Flashlight Raft Water -->
 
-<!-- Test is 90 continues to function (at all? / correctly?) if Falling Objects is set to something other than Snow. -->
-<!-- Test if 374 is required for 90 to generate pushback (90 Only). Test if 90 is required for 374 to generate sandstorm graphics (374 Only). -->
-<!-- Clean up 90 after finishing research on these questions -->
+  <!-- Test is 90 continues to function (at all? / correctly?) if Falling Objects is set to something other than Snow. -->
+  <!-- Test if 374 is required for 90 to generate pushback (90 Only). Test if 90 is required for 374 to generate sandstorm graphics (374 Only). -->
+  <!-- Clean up 90 after finishing research on these questions -->
   <sprite id="374" name="Effect - Snow and Wind" asmhacks="True" notes="This effect controller will either create falling snow, or it will create a Sandstorm.">
     <dependency notes="If this sprite is placed more than once in the same Zone, the game will crash. If Sandstorm is selected, you must include [90] Wind Physics and Sound.">
       <suggested sprite="90"/>
@@ -6266,7 +6001,7 @@
     </dependency>
   </sprite> <!-- #375: Boss Controller - Wendy Koopa -->
 
-<!-- Block values can be removed when editor has images. -->
+  <!-- Block values can be removed when editor has images. -->
   <sprite id="376" name="Moving Chainlink Fence Panel" noyoshi="True" notes="A climbable chainlink fence panel that can either be paired with a Two Way Line controller or allowed to move independently in a back and forth direction.">
     <dependency notes="The Chainlink Fence may be paired with a [260] Two Way Line movement controller to allow for synchronized movement across a Zone. Additionally, it will appear in front of Layer 1, so is must have Layer 0 tiles painted to make it appear behind terrain.">
       <suggested sprite="260"/>
@@ -6800,9 +6535,8 @@
     </list>
   </sprite> <!-- #409: Cutscene Controller - Bowser Jr and Peach at Airship -->
 
-  <sprite id="410" name="Giga Goomba" asmhacks="True" notes="An extremely large Goomba added by Newer that will stun the player and shake the screen with each step.">
-    <checkbox bit="48" title="Longer Stuns" comment="When enabled, the stun duration will be longer."/>
-  </sprite> <!-- #410: Giga Goomba -->
+  <sprite id="410" name="Incomplete Sprite - 'Ac_Block_Group'" notes="Does nothing.">
+  </sprite> <!-- #410: Incomplete Sprite - 'Ac_Block_Group' -->
 
   <sprite id="411" name="(Unused) Toad House Minigame - Lives Balloon" notes="An unused version of sprite 412 and has no purpose.">
   </sprite> <!-- #411: (Unused) Toad House Minigame - Lives Balloon -->
@@ -6890,7 +6624,7 @@
       <entry value="1">Event Activated - Turns On</entry>
       <entry value="2">Event Activated - On With Event</entry>
     </list>
-    <value bit="10-16" title="Triggering Event ID (VALUE REQUIRED)" comment="This determines which Event must be activated for the block to glow, and it must be set to at least 1 event if the Activation Mode is set to Always On." comment2="Maximum usable value for this sprite is 64." idtype="Triggering Event"/>
+    <value bit="10-16" title="Triggering Event ID (VALUE REQUIRED)" comment="This determines which Event must be activated for the block to glow, and it must be set to at least 1 event if the Activation Mode is set to Always On." idtype="Triggering Event"/>
     <list bit="39-40" title="Movement Type" comment="This determines the movement behavior of the glow block." comment2="All movement types require a matching movement controller, and at least one type of movement controller is required for the sprite to function.">
       <entry value="0">[159] Path Controlled</entry>
       <entry value="1">[260] Two Way Line</entry>
@@ -7515,7 +7249,7 @@
     <checkbox bit="44" title="Floating" comment="When enabled, the Ice Flow will wiggle around as though it is floating on the surface of the water."/>
   </sprite> <!-- #475: Path Controlled Ice Flow -->
 
-<!-- Research on Nybble 11, and other Nybbles, is suggested. This includes checking for camera related values, so make sure that the test level has enough room to scroll vertically, or has an Airship Rocking effect. -->
+  <!-- Research on Nybble 11, and other Nybbles, is suggested. This includes checking for camera related values, so make sure that the test level has enough room to scroll vertically, or has an Airship Rocking effect. -->
   <sprite id="476" name="Loose Flying Wrench" notes="A stand-alone Rocky Wrench's wrench that will fly across the screen.">
     <dualbox bit="48" title1="Moves Right" title2="Moves Left" comment="This determines which direction the wrench flies in when it loads."/>
     <checkbox bit="44" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="Unknown."/>
