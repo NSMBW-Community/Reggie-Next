@@ -3,7 +3,7 @@
     <folder name="bga" path="bga" game="Newer Super Mario Bros. Wii" />
     <folder name="bgb" path="bgb" game="Newer Super Mario Bros. Wii" />
     <folder name="sprites" path="sprites" />
-	<folder name="external" path="external" />
+    <folder name="external" path="external" />
     <file name="bga" path="bga.txt" game="Newer Super Mario Bros. Wii" />
     <file name="bgb" path="bgb.txt" game="Newer Super Mario Bros. Wii" />
     <file name="levelnames" path="levelnames.xml" game="Newer Super Mario Bros. Wii" />
