@@ -16343,23 +16343,21 @@ class LevelScene(QtWidgets.QGraphicsScene):
 
             for item in layer:
                 startx = item.objx - x1
+                desty = item.objy - y1
 
                 if odefs[item.tileset] is None or \
                         odefs[item.tileset][item.type] is None:
                     # This is an unknown object, so place -1
                     # in the tile map.
-                    for i in range(len(item.objdata)):
-                        row = item.objdata[i]
+                    for i, row in enumerate(item.objdata):
                         destrow = tmap[desty + i]
-                        for destx in range(startx, len(row)):
-                            destrow[destx] = -1
+                        for j in range(startx, len(row)):
+                            destrow[j] = -1
 
                     continue
 
                 # This is not an unkown object, so update the tile map
                 # normally.
-                desty = item.objy - y1
-
                 for row in item.objdata:
                     destrow = tmap[desty]
                     destx = startx
@@ -16372,8 +16370,12 @@ class LevelScene(QtWidgets.QGraphicsScene):
             painter.translate(x1 * 24, y1 * 24)
 
             unkn_tile = Overrides[OVERRIDE_UNKNOWN].getCurrentTile()
-            for row, desty in zip(tmap, range(0, len(tmap) * 24, 24)):
-                for tile, destx in zip(row, range(0, len(row) * 24, 24)):
+            desty = -24
+            for row in tmap:
+                desty += 24
+                destx = -24
+                for tile in row:
+                    destx += 24
                     if tile == -1:
                         # Draw unknown tiles
                         painter.drawPixmap(destx, desty, unkn_tile)
