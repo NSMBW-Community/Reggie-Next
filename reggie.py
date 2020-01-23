@@ -15106,19 +15106,28 @@ def getMusic():
     return sorted(songs, key=lambda song: int(song[0]))
 
 
+CachedGameDefs = {}
 def FindGameDef(name, skip=None):
     """
     Helper function to find a game def with a specific name.
     Skip will be skipped
     """
-    toSearch = [None]  # Add the original game first
-    for folder in os.listdir(os.path.join('reggiedata', 'patches')): toSearch.append(folder)
+    global CachedGameDefs
 
-    for folder in toSearch:
-        if (folder is None) or (folder == skip): continue
+    if name in CachedGameDefs:
+        return CachedGameDefs[name]
+
+    patches_path = os.path.join('reggiedata', 'patches')
+
+    for folder in os.listdir(patches_path):
+        if folder == skip:
+            continue
+
         def_ = ReggieGameDefinition(folder)
-        if not def_.custom: continue
-        if def_.name == name: return def_
+        CachedGameDefs[def_.name] = def_
+
+        if def_.name == name and def_.custom:
+            return def_
 
 
 # Translations
