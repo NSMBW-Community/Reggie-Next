@@ -17773,8 +17773,9 @@ class TilesetsTab(QtWidgets.QWidget):
             # Create the tree widget
             tree = QtWidgets.QTreeWidget()
             tree.setColumnCount(2)
-            tree.setColumnWidth(0,
-                                192)  # hardcoded default width because Grop was complaining that the default width is too small
+            # hardcoded initial width because the default width
+            # is too small
+            tree.setColumnWidth(0, 192)
             tree.setHeaderLabels([trans.string('AreaDlg', 28), trans.string('AreaDlg', 29)])  # ['Name', 'File']
             tree.setIndentation(16)
             if slot == 0:
@@ -17883,6 +17884,7 @@ class TilesetsTab(QtWidgets.QWidget):
 
         value = str(item.text(1))
         self.lineEdits[slot].setText(value)
+        self.trees[slot].scrollToItem(item, QtWidgets.QAbstractItemView.PositionAtCenter)
 
     # Line-edit handlers
     def handleTextEdit0(self):
