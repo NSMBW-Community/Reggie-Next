@@ -1429,8 +1429,8 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 479
 
     def dataChanged(self):
     
-        direction = (self.parent.spritedata[5] & 0xF) % 4
-        style = (self.parent.spritedata[2] & 0xF) % 10
+        direction = self.parent.spritedata[5] & 4
+        style = self.parent.spritedata[2] & 10
         dir = ("R", "L", "F", "R")[direction]
         colour = ("", "Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Black", "ShyGuy", "Monty")[style]
         

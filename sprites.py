@@ -2,9 +2,10 @@
 # -*- coding: latin-1 -*-
 
 # Reggie Next - New Super Mario Bros. Wii Level Editor
-# Milestone 3
-# Copyright (C) 2009-2014 Treeki, Tempus, angelsl, JasonP27, Kamek64,
-# MalStar1000, RoadrunnerWMC, 2017 Stella/AboodXD, John10v10
+# Milestone 4
+# Copyright (C) 2009-2020 Treeki, Tempus, angelsl, JasonP27, Kamek64,
+# MalStar1000, RoadrunnerWMC, AboodXD, John10v10, TheGrop, CLF78,
+# Zementblock, Danster64
 
 # This file is part of Reggie Next.
 
@@ -2292,7 +2293,7 @@ class SpriteImage_Pokey(SLib.SpriteImage):  # 105
         super().dataChanged()
 
         # get the height
-        height = (self.parent.spritedata[5] & 0xF) % 8
+        height = self.parent.spritedata[5] & 7
         self.height = (height * 16) + 16 + 25
         self.yOffset = 0 - self.height + 16
 
