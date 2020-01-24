@@ -19338,25 +19338,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         mainWindow.scene.update()
         mainWindow.levelOverview.update()
 
-    def UnusedBackgrounds(self, mode='f'):
-        """
-        Checks if there are custom background IDs in this area
-        """
-        global Area
-        global BgANames
-        global BgBNames
-
-        for z in Area.zones:
-            for name in ('1A', '2A', '3A', '1B', '2B', '3B'):
-                bg = eval('z.bg%s' % name)
-                id = '%04X' % bg
-                if name[1] == 'A':
-                    check = BgANames
-                else:
-                    check = BgBNames
-
-                found = False
-                for entry in check:
 
 class InfoPreviewWidget(QtWidgets.QWidget):
     """
