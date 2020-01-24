@@ -8925,7 +8925,6 @@ class QuickPaintConfigWidget(QtWidgets.QWidget):
                 for x in range(self.object_database['right']['w']):
                     displayObjects.append((self.AddDisplayObject('base', self.object_database['right']['x'] + x + 20, self.object_database['right']['y'] + 20 + y, 1,1), self.object_database['right']['i'] is None))
 
-
             for obj in displayObjects:
                 if obj[0] is not None:
                     QuickPaintOperations.autoTileObj(-1, obj[0])
@@ -13515,312 +13514,6 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         mainWindow.scene.update()
 
 
-class IslandGeneratorWidget(QtWidgets.QWidget):
-    """
-    Widget for generating an island
-    """
-
-    def __init__(self, defaultmode=False):
-        """
-        Constructor
-        """
-        QtWidgets.QWidget.__init__(self)
-        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed))
-
-        # create widgets
-        self.wpos = QtWidgets.QSpinBox()
-        self.wpos.setRange(1, 65535)
-        self.wpos.setToolTip('Width (tiles)')
-        self.wpos.setValue(7)
-
-        self.hpos = QtWidgets.QSpinBox()
-        self.hpos.setRange(1, 65535)
-        self.hpos.setToolTip('Height (tiles)')
-        self.hpos.setValue(7)
-
-        self.tileset = QtWidgets.QSpinBox()
-        self.tileset.setRange(1, 4)
-        self.tileset.setToolTip('Tileset ID')
-        self.tileset.setValue(2)
-
-        self.tstl = QtWidgets.QSpinBox()
-        self.tstl.setRange(0, 65536)
-        self.tstl.setToolTip('Top-left Object ID')
-        self.tstl.setValue(5)
-
-        self.tstg = QtWidgets.QSpinBox()
-        self.tstg.setRange(0, 65536)
-        self.tstg.setToolTip('Top Ground Object ID')
-        self.tstg.setValue(0)
-
-        self.tstr = QtWidgets.QSpinBox()
-        self.tstr.setRange(0, 65536)
-        self.tstr.setToolTip('Top-right Object ID')
-        self.tstr.setValue(6)
-
-        self.tsml = QtWidgets.QSpinBox()
-        self.tsml.setRange(0, 65536)
-        self.tsml.setToolTip('Middle-left Object ID')
-        self.tsml.setValue(3)
-
-        self.tsmf = QtWidgets.QSpinBox()
-        self.tsmf.setRange(0, 65536)
-        self.tsmf.setToolTip('Middle Filler Object ID')
-        self.tsmf.setValue(1)
-
-        self.tsmr = QtWidgets.QSpinBox()
-        self.tsmr.setRange(0, 65536)
-        self.tsmr.setToolTip('Middle-right Object ID')
-        self.tsmr.setValue(4)
-
-        self.tsbl = QtWidgets.QSpinBox()
-        self.tsbl.setRange(0, 65536)
-        self.tsbl.setToolTip('Bottom-left Object ID')
-        self.tsbl.setValue(7)
-
-        self.tsbm = QtWidgets.QSpinBox()
-        self.tsbm.setRange(0, 65536)
-        self.tsbm.setToolTip('Bottom Roof Object ID')
-        self.tsbm.setValue(2)
-
-        self.tsbr = QtWidgets.QSpinBox()
-        self.tsbr.setRange(0, 65536)
-        self.tsbr.setToolTip('Bottom-right Object ID')
-        self.tsbr.setValue(8)
-
-        self.midix = QtWidgets.QSpinBox()
-        self.midix.setRange(0, 65536)
-        self.midix.setValue(0)
-        self.midix.setToolTip(
-            'Top Ground, Middle Filler and Bottom Roof \'interval\'. Set 0 to disable. The amount of tiles before a new object is created.<br><br>e.g. if you wanted a 2000t long island, the middle can be seperated into 100 20t long objects instead of 1 2000t long object.')
-
-        self.midiy = QtWidgets.QSpinBox()
-        self.midiy.setRange(0, 65536)
-        self.midiy.setValue(0)
-        self.midiy.setToolTip(
-            'Middle Left, Middle Filler and Middle Right \'interval\'. Set 0 to disable. The amount of tiles before a new object is created.<br><br>e.g. if you wanted a 2000t tall island, the middle can be seperated into 100 20t tall objects instead of 1 2000t tall object.')
-
-        self.layer = QtWidgets.QSpinBox()
-        self.layer.setRange(0, 2)
-        self.layer.setToolTip('Layer to paint the island onto')
-        self.layer.setValue(1)
-
-        self.copyButton = QtWidgets.QPushButton('Copy to Clipboard')
-        self.copyButton.setToolTip(
-            'Copies the island you specified here to the clipboard. Paste it anywhere in Reggie. (Ctrl+V)')
-        self.copyButton.clicked.connect(self.HandleCopy)
-
-        self.placeButton = QtWidgets.QPushButton('Place')
-        self.placeButton.setToolTip('Places the island specified here into Reggie.')
-        self.placeButton.clicked.connect(self.HandlePlace)
-
-        # create a layout
-        layout = QtWidgets.QGridLayout()
-        self.setLayout(layout)
-
-        self.editingLabel = QtWidgets.QLabel('<b>Island Generator</b>')
-        layout.addWidget(self.editingLabel, 0, 0, 1, 4, Qt.AlignTop)
-        # add labels
-
-        layout.addWidget(QtWidgets.QLabel('Width:'), 1, 0, 1, 1, Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel('Height:'), 2, 0, 1, 1, Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel('Layer:'), 3, 0, 1, 1, Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel('Tileset ID:'), 4, 0, 1, 1, Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel('X Interval:'), 5, 0, 1, 1, Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel('Y Interval:'), 6, 0, 1, 1, Qt.AlignRight)
-        layout.addWidget(createHorzLine(), 7, 0, 1, -1)
-
-        # add the widgets
-        layout.addWidget(self.wpos, 1, 1, 1, -1)
-        layout.addWidget(self.hpos, 2, 1, 1, -1)
-        layout.addWidget(self.layer, 3, 1, 1, -1)
-        layout.addWidget(self.tileset, 4, 1, 1, -1)
-        layout.addWidget(self.midix, 5, 1, 1, -1)
-        layout.addWidget(self.midiy, 6, 1, 1, -1)
-
-        layout.addWidget(self.tstl, 8, 1, 1, 1)
-        layout.addWidget(self.tstg, 8, 2, 1, 1)
-        layout.addWidget(self.tstr, 8, 3, 1, 1)
-
-        layout.addWidget(self.tsml, 9, 1, 1, 1)
-        layout.addWidget(self.tsmf, 9, 2, 1, 1)
-        layout.addWidget(self.tsmr, 9, 3, 1, 1)
-
-        layout.addWidget(self.tsbl, 10, 1, 1, 1)
-        layout.addWidget(self.tsbm, 10, 2, 1, 1)
-        layout.addWidget(self.tsbr, 10, 3, 1, 1)
-
-        layout.addWidget(self.copyButton, 11, 0, 1, 2)
-        layout.addWidget(self.placeButton, 11, 3, 1, 2)
-        self.UpdateFlag = False
-
-    def GetClipboardString(self):
-        midixwas0 = False
-        midiywas0 = False
-        if self.midix.value() == 0:
-            self.midix.setValue(self.wpos.value())
-            midixwas0 = True
-        if self.midiy.value() == 0:
-            self.midiy.setValue(self.hpos.value())
-            midiywas0 = True
-        convclip = ['ReggieClip']
-
-        # Paint the top tiles
-
-        # Top-left tip
-        convclip.append('0:%d:%d:%d:0:0:1:1' % (self.tileset.value() - 1, self.tstl.value(), self.layer.value()))
-        # Top Ground
-        remnx = self.wpos.value() - 2
-        remx = 1
-        while True:
-            if remnx >= self.midix.value():
-                convclip.append('0:%d:%d:%d:%d:0:%d:%d' % (
-                self.tileset.value() - 1, self.tstg.value(), self.layer.value(), remx, self.midix.value(), 1))
-                remnx -= self.midix.value()
-                remx += self.midix.value()
-            else:
-                convclip.append('0:%d:%d:%d:%d:0:%d:%d' % (
-                self.tileset.value() - 1, self.tstg.value(), self.layer.value(), remx, remnx, 1))
-                break
-
-        # Top-right tip
-        convclip.append('0:%d:%d:%d:%d:0:1:1' % (
-        self.tileset.value() - 1, self.tstr.value(), self.layer.value(), self.wpos.value() - 1))
-
-        # Paint the middle tiles
-
-        remny = self.hpos.value() - 2
-        remy = 1
-
-        # Middle-left edge
-        while True:
-            if remny >= self.midiy.value():
-                convclip.append('0:%d:%d:%d:0:%d:%d:%d' % (
-                self.tileset.value() - 1, self.tsml.value(), self.layer.value(), remy, 1, self.midiy.value()))
-                remny -= self.midiy.value()
-                remy += self.midiy.value()
-            else:
-                convclip.append('0:%d:%d:%d:0:%d:%d:%d' % (
-                self.tileset.value() - 1, self.tsml.value(), self.layer.value(), remy, 1, remny))
-                break
-
-        # Middle Filler! Hard
-        fullwidt = int(math.floor((self.wpos.value() - 2) / self.midix.value()))
-
-        widtremainder = int(math.floor((self.wpos.value() - 2) % self.midix.value()))
-
-        fullvert = int(math.floor((self.hpos.value() - 2) / self.midiy.value()))
-        vertremainder = int(math.floor((self.hpos.value() - 2) % self.midiy.value()))
-
-        for x in range(fullwidt):
-            for y in range(fullvert):
-                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
-                self.tileset.value() - 1, self.tsmf.value(), self.layer.value(), (x * self.midix.value()) + 1,
-                (y * self.midiy.value()) + 1, self.midix.value(), self.midiy.value()))
-
-        # Now paint the remainders
-        if vertremainder:
-            remnx = self.wpos.value() - 2 - widtremainder
-            remx = 1
-            while True:
-                if remnx >= self.midix.value():
-                    convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
-                    self.tileset.value() - 1, self.tsmf.value(), self.layer.value(), remx,
-                    self.hpos.value() - 1 - vertremainder, self.midix.value(), vertremainder))
-                    remnx -= self.midix.value()
-                    remx += self.midix.value()
-
-                else:
-                    convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
-                    self.tileset.value() - 1, self.tsmf.value(), self.layer.value(), remx,
-                    self.hpos.value() - 1 - vertremainder, remnx, vertremainder))
-                    break
-
-        if widtremainder > 0:
-            remny = self.hpos.value() - 2 - vertremainder
-            remy = 1
-            while True:
-                if remny >= self.midiy.value():
-                    convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
-                    self.tileset.value() - 1, self.tsmf.value(), self.layer.value(),
-                    self.wpos.value() - 1 - widtremainder, remy, widtremainder, self.midiy.value()))
-                    remny -= self.midiy.value()
-                    remy += self.midiy.value()
-
-                else:
-                    convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
-                    self.tileset.value() - 1, self.tsmf.value(), self.layer.value(),
-                    self.wpos.value() - 1 - widtremainder, remy, widtremainder, remny))
-                    break
-
-        if vertremainder and widtremainder:
-            convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
-            self.tileset.value() - 1, self.tsmf.value(), self.layer.value(), self.wpos.value() - 1 - widtremainder,
-            self.hpos.value() - 1 - vertremainder, widtremainder, vertremainder))
-
-        # Middle-right edge
-
-        remny = self.hpos.value() - 2
-        remy = 1
-        while True:
-            if remny >= self.midiy.value():
-                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
-                self.tileset.value() - 1, self.tsmr.value(), self.layer.value(), self.wpos.value() - 1, remy, 1,
-                self.midiy.value()))
-                remny -= self.midiy.value()
-                remy += self.midiy.value()
-            else:
-                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
-                self.tileset.value() - 1, self.tsmr.value(), self.layer.value(), self.wpos.value() - 1, remy, 1, remny))
-                break
-
-        # Paint the bottom tiles
-
-        # bottom-left tip
-        convclip.append('0:%d:%d:%d:0:%d:1:1' % (
-        self.tileset.value() - 1, self.tsbl.value(), self.layer.value(), self.hpos.value() - 1))
-        # Bottom Roof
-        remnx = self.wpos.value() - 2
-        remx = 1
-        while True:
-            if remnx >= self.midix.value():
-                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
-                self.tileset.value() - 1, self.tsbm.value(), self.layer.value(), remx, self.hpos.value() - 1,
-                self.midix.value(), 1))
-                remnx -= self.midix.value()
-                remx += self.midix.value()
-            else:
-                convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
-                self.tileset.value() - 1, self.tsbm.value(), self.layer.value(), remx, self.hpos.value() - 1, remnx, 1))
-                break
-
-        # Bottom-right tip
-        convclip.append('0:%d:%d:%d:%d:%d:1:1' % (
-        self.tileset.value() - 1, self.tsbr.value(), self.layer.value(), self.wpos.value() - 1, self.hpos.value() - 1))
-        convclip.append('%')
-        if midixwas0:
-            self.midix.setValue(0)
-        if midiywas0:
-            self.midiy.setValue(0)
-        return '|'.join(convclip)
-
-    def HandleCopy(self):
-        """
-        Makes a copy of the island
-        """
-        retcb = self.GetClipboardString()
-        mainWindow.actions['paste'].setEnabled(True)
-        mainWindow.clipboard = retcb
-        mainWindow.systemClipboard.setText(mainWindow.clipboard)
-
-    def HandlePlace(self):
-        """
-        Places the island directly into the editor
-        """
-        retcb = self.GetClipboardString()
-        mainWindow.placeEncodedObjects(retcb)
-
-
 class LocationEditorWidget(QtWidgets.QWidget):
     """
     Widget for editing location properties
@@ -15628,8 +15321,8 @@ class ReggieTranslation:
                 97: 'Show or hide the Palette window',
                 98: 'Change Game',
                 99: 'Change the currently loaded Reggie Next game patch',
-                100: 'Island Generator',
-                101: 'Show or hide the Island Generator window',
+                100: None,  # REMOVED: 'Island Generator',
+                101: None,  # REMOVED: 'Show or hide the Island Generator window',
                 102: None,  # REMOVED: 'Stamp Pad'
                 103: None,  # REMOVED: 'Show or hide the Stamp Pad window'
                 104: 'Swap Objects\' Tileset',
@@ -15756,9 +15449,9 @@ class ReggieTranslation:
                 24: '[b]Use Nonstandard Window Style[/b][br]If this is checkable, the selected theme specifies a[br]window style other than the default. In most cases, you[br]should leave this checked. Uncheck this if you dislike[br]the style this theme uses.',
                 25: 'Options',
                 26: '[b][name][/b][br]By [creator][br][description]',
-                27: 'Tilesets:',
-                28: 'Use Default Tileset Picker (recommended)',
-                29: 'Use Old Tileset Picker',
+                27: None,  # REMOVED: 'Tilesets:',
+                28: None,  # REMOVED: 'Use Default Tileset Picker (recommended)',
+                29: None,  # REMOVED: 'Use Old Tileset Picker',
                 30: 'You may need to restart Reggie Next for changes to take effect.',
                 31: 'Display lines indicating the leftmost x-position where entrances can be safely placed in zones',
                 32: 'Enable advanced mode',
@@ -17663,7 +17356,7 @@ class AreaOptionsDialog(QtWidgets.QDialog):
     Dialog which lets you choose among various area options from tabs
     """
 
-    def __init__(self, NewTilesetsTab=True):
+    def __init__(self):
         """
         Creates and initializes the tab dialog
         """
@@ -17673,7 +17366,7 @@ class AreaOptionsDialog(QtWidgets.QDialog):
 
         self.tabWidget = QtWidgets.QTabWidget()
         self.LoadingTab = LoadingTab()
-        self.TilesetsTab = TilesetsTab() if NewTilesetsTab else OldTilesetsTab()
+        self.TilesetsTab = TilesetsTab()
         self.tabWidget.addTab(self.TilesetsTab, trans.string('AreaDlg', 1))
         self.tabWidget.addTab(self.LoadingTab, trans.string('AreaDlg', 2))
 
@@ -17934,139 +17627,6 @@ class TilesetsTab(QtWidgets.QWidget):
         result = []
         for i in range(4):
             result.append(str(self.lineEdits[i].text()))
-        return tuple(result)
-
-
-class OldTilesetsTab(QtWidgets.QWidget):
-    def __init__(self):
-        QtWidgets.QWidget.__init__(self)
-
-        self.tile0 = QtWidgets.QComboBox()
-        self.tile1 = QtWidgets.QComboBox()
-        self.tile2 = QtWidgets.QComboBox()
-        self.tile3 = QtWidgets.QComboBox()
-
-        self.widgets = [self.tile0, self.tile1, self.tile2, self.tile3]
-        names = [Area.tileset0, Area.tileset1, Area.tileset2, Area.tileset3]
-        slots = [self.HandleTileset0Choice, self.HandleTileset1Choice, self.HandleTileset2Choice,
-                 self.HandleTileset3Choice]
-
-        self.currentChoices = [None, None, None, None]
-
-        TilesetNamesIterable = SimpleTilesetNames()
-
-        for idx, widget, name, data, slot in zip(range(4), self.widgets, names, TilesetNamesIterable, slots):
-            # This loop runs once for each tileset.
-            # First, find the current index and custom-tileset strings
-            if name == '':  # No tileset selected, the current index should be None
-                ts_index = trans.string('AreaDlg', 15)  # None
-                custom = ''
-                custom_fname = trans.string('AreaDlg', 16)  # [CUSTOM]
-            else:  # Tileset selected
-                ts_index = trans.string('AreaDlg', 18, '[name]', name)  # Custom filename... [name]
-                custom = name
-                custom_fname = trans.string('AreaDlg', 17, '[name]', name)  # [CUSTOM] [name]
-
-            # Add items to the widget:
-            # - None
-            widget.addItem(trans.string('AreaDlg', 15), '')  # None
-            # - Retail Tilesets
-            for tfile, tname in data:
-                text = trans.string('AreaDlg', 19, '[name]', tname, '[file]', tfile)  # [name] ([file])
-                widget.addItem(text, tfile)
-                if name == tfile:
-                    ts_index = text
-                    custom = ''
-            # - Custom Tileset
-            widget.addItem(trans.string('AreaDlg', 18, '[name]', custom), custom_fname)  # Custom filename... [name]
-
-            # Set the current index
-            item_idx = widget.findText(ts_index)
-            self.currentChoices[idx] = item_idx
-            widget.setCurrentIndex(item_idx)
-
-            # Handle combobox changes
-            widget.activated.connect(slot)
-
-        # don't allow ts0 to be removable
-        self.tile0.removeItem(0)
-
-        mainLayout = QtWidgets.QVBoxLayout()
-        tile0Box = QtWidgets.QGroupBox(trans.string('AreaDlg', 11))
-        tile1Box = QtWidgets.QGroupBox(trans.string('AreaDlg', 12))
-        tile2Box = QtWidgets.QGroupBox(trans.string('AreaDlg', 13))
-        tile3Box = QtWidgets.QGroupBox(trans.string('AreaDlg', 14))
-
-        t0 = QtWidgets.QVBoxLayout()
-        t0.addWidget(self.tile0)
-        t1 = QtWidgets.QVBoxLayout()
-        t1.addWidget(self.tile1)
-        t2 = QtWidgets.QVBoxLayout()
-        t2.addWidget(self.tile2)
-        t3 = QtWidgets.QVBoxLayout()
-        t3.addWidget(self.tile3)
-
-        tile0Box.setLayout(t0)
-        tile1Box.setLayout(t1)
-        tile2Box.setLayout(t2)
-        tile3Box.setLayout(t3)
-
-        mainLayout.addWidget(tile0Box)
-        mainLayout.addWidget(tile1Box)
-        mainLayout.addWidget(tile2Box)
-        mainLayout.addWidget(tile3Box)
-        mainLayout.addStretch(1)
-        self.setLayout(mainLayout)
-
-    def HandleTileset0Choice(self, index):
-        self.HandleTilesetChoice(0, index)
-
-    def HandleTileset1Choice(self, index):
-        self.HandleTilesetChoice(1, index)
-
-    def HandleTileset2Choice(self, index):
-        self.HandleTilesetChoice(2, index)
-
-    def HandleTileset3Choice(self, index):
-        self.HandleTilesetChoice(3, index)
-
-    def HandleTilesetChoice(self, tileset, index):
-        w = self.widgets[tileset]
-
-        if index == (w.count() - 1):
-            fname = str(w.itemData(index))
-            fname = fname[len(trans.string('AreaDlg', 17, '[name]', '')):]
-
-            dbox = InputBox()
-            dbox.setWindowTitle(trans.string('AreaDlg', 20))
-            dbox.label.setText(trans.string('AreaDlg', 21))
-            dbox.textbox.setMaxLength(31)
-            dbox.textbox.setText(fname)
-            result = dbox.exec_()
-
-            if result == QtWidgets.QDialog.Accepted:
-                fname = str(dbox.textbox.text())
-                if fname.endswith('.arc'): fname = fname[:-4]
-                elif fname.endswith('.arc.LH'): fname = fname[:-7]
-
-                w.setItemText(index, trans.string('AreaDlg', 18, '[name]', fname))
-                w.setItemData(index, trans.string('AreaDlg', 17, '[name]', fname))
-            else:
-                w.setCurrentIndex(self.currentChoices[tileset])
-                return
-
-        self.currentChoices[tileset] = index
-
-    def values(self):
-        """
-        Returns all 4 tileset choices
-        """
-        result = []
-        for i in range(4):
-            widget = eval('self.tile%d' % i)
-            idx = widget.currentIndex()
-            name = str(widget.itemData(idx))
-            result.append(name)
         return tuple(result)
 
 
@@ -20594,17 +20154,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                 """
                 QtWidgets.QWidget.__init__(self)
 
-                # Add the Tileset Selection settings
-                self.TileD = QtWidgets.QRadioButton(trans.string('PrefsDlg', 28))
-                self.TileO = QtWidgets.QRadioButton(trans.string('PrefsDlg', 29))
-                self.TileG = QtWidgets.QButtonGroup()  # huge glitches if it's not assigned to self.something
-                self.TileG.setExclusive(True)
-                self.TileG.addButton(self.TileD)
-                self.TileG.addButton(self.TileO)
-                TileL = QtWidgets.QVBoxLayout()
-                TileL.addWidget(self.TileD)
-                TileL.addWidget(self.TileO)
-
                 # Add the Clear Recent Files button
                 ClearRecentBtn = QtWidgets.QPushButton(trans.string('PrefsDlg', 16))
                 ClearRecentBtn.setMaximumWidth(ClearRecentBtn.minimumSizeHint().width())
@@ -20638,7 +20187,6 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
-                L.addRow(trans.string('PrefsDlg', 27), TileL)
                 L.addRow(trans.string('PrefsDlg', 14), self.Trans)
                 L.addRow(trans.string('PrefsDlg', 15), ClearRecentBtn)
                 L.addWidget(self.epbIndicator)
@@ -20656,11 +20204,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                 """
                 Read the preferences and check the respective boxes
                 """
-                if str(setting('TilesetTab')) != 'Old':
-                    self.TileD.setChecked(True)
-                else:
-                    self.TileO.setChecked(True)
-
                 self.Trans.addItem('English')
                 self.Trans.setItemData(0, None, Qt.UserRole)
                 self.Trans.setCurrentIndex(0)
@@ -22064,26 +21607,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.addDockWidget(Qt.RightDockWidgetArea, dock)
         dock.setFloating(True)
 
-        # create the island generator panel
-        dock = QtWidgets.QDockWidget(trans.string('MenuItems', 100), self)
-        dock.setVisible(False)
-        dock.setFeatures(
-            QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
-        dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        dock.setObjectName('islandgenerator')  # needed for the state to save/restore correctly
-
-        self.islandGen = IslandGeneratorWidget()
-        dock.setWidget(self.islandGen)
-        self.islandGenDock = dock
-
-        self.addDockWidget(Qt.RightDockWidgetArea, dock)
-        dock.setFloating(True)
-        act = dock.toggleViewAction()
-        act.setShortcut(QtGui.QKeySequence('Ctrl+I'))
-        act.setIcon(GetIcon('islandgen'))
-        act.setToolTip(trans.string('MenuItems', 101))
-        self.vmenu.addAction(act)
-
         # create the palette
         dock = QtWidgets.QDockWidget(trans.string('MenuItems', 96), self)
         dock.setFeatures(
@@ -23396,12 +22919,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Get the Menubar setting
         setSetting('Menu', 'Menubar')
 
-        # Get the Tileset Tab setting
-        if dlg.generalTab.TileD.isChecked():
-            setSetting('TilesetTab', 'Default')
-        else:
-            setSetting('TilesetTab', 'Old')
-
         # Get the translation
         name = str(dlg.generalTab.Trans.itemData(dlg.generalTab.Trans.currentIndex(), Qt.UserRole))
         setSetting('Translation', name)
@@ -24608,7 +24125,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handles the selected slot tab in the object palette changing
         """
         if hasattr(self, 'objPicker'):
-            if nt >= 0 and nt <= 3:
+            if 0 <= nt <= 3:
                 self.objPicker.ShowTileset(nt)
                 eval('self.objTS%dTab' % nt).setLayout(self.createObjectLayout)
             self.defaultPropDock.setVisible(False)
@@ -25083,7 +24600,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Pops up the options for Area Dialogue
         """
-        dlg = AreaOptionsDialog(setting('TilesetTab') != 'Old')
+        dlg = AreaOptionsDialog()
         if dlg.exec_() == QtWidgets.QDialog.Accepted:
             SetDirty()
 

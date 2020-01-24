@@ -99,3 +99,4 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+/reggiedata/patches/NSMASR
