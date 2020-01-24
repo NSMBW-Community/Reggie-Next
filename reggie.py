@@ -21906,6 +21906,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handles the "Remove Stamp" btn being clicked
         """
         self.stampChooser.removeStamp(self.stampChooser.currentlySelectedStamp())
+        self.handleStampSelectionChanged()
 
     def handleStampsOpen(self):
         """
@@ -21916,8 +21917,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         filetypes += trans.string('FileDlgs', 2) + ' (*)'  # *
         fn = QtWidgets.QFileDialog.getOpenFileName(self, trans.string('FileDlgs', 6), '', filetypes)[0]
         if fn == '': return
-
-        stamps = []
 
         with open(fn, 'r', encoding='utf-8') as file:
             filedata = file.read()
@@ -21937,13 +21936,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     i += 3
 
                 except IndexError:
-                    # Meh. Malformed stamps file.
-                    i += 9999  # avoid infinite loops
-                    continue
+                    return
 
-                stamps.append(Stamp(rc, name))
-
-        for stamp in stamps: self.stampChooser.addStamp(stamp)
+                else:
+                    self.stampChooser.addStamp(Stamp(rc, name))
 
     def handleStampsSave(self):
         """
@@ -21984,6 +21980,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Called when the user edits the name of the current stamp
         """
         stamp = self.stampChooser.currentlySelectedStamp()
+        if not stamp:
+            return
+
         text = self.stampNameEdit.text()
         stamp.Name = text
         stamp.update()
