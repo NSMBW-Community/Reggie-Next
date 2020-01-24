@@ -122,6 +122,7 @@ else:
 
 ReggieID = 'Reggie Next Level Editor by Treeki, Tempus and RoadrunnerWMC'
 ReggieVersion = 'Milestone 4'
+ReggieVersionFloat = 4.0
 ReggieVersionShort = 'M4'
 UpdateURL = ''
 
@@ -358,22 +359,25 @@ def setting(name, default=None):
     """
     Thin wrapper around QSettings, fixes the type=bool bug
     """
-    result = settings.value(name, default)
-    if result == 'false':
-        return False
-    elif result == 'true':
-        return True
-    elif result == 'none':
+    types_str = {str: 'str', int: 'int', float: 'float', dict: 'dict', bool: 'bool', QtCore.QByteArray: 'QByteArray', type(None): 'NoneType'}
+    types = {'str': str, 'int': int, 'float': float, 'dict': dict, 'bool': bool, 'QByteArray': QtCore.QByteArray}
+
+    type_ = settings.value('typeof(%s)' % name, types_str[type(default)], str)
+    if type_ == 'NoneType':
         return None
-    else:
-        return result
+
+    return settings.value(name, default, types[type_])
 
 
 def setSetting(name, value):
     """
     Thin wrapper around QSettings
     """
-    return settings.setValue(name, value)
+    types_str = {str: 'str', int: 'int', float: 'float', dict: 'dict', bool: 'bool', QtCore.QByteArray: 'QByteArray', type(None): 'NoneType'}
+    assert isinstance(name, str) and type(value) in types_str
+
+    settings.setValue(name, value)
+    settings.setValue('typeof(%s)' % name, types_str[type(value)])
 
 
 def module_path():
@@ -8134,7 +8138,7 @@ class QuickPaintOperations:
     def autoTileObj(layer, obj):
         """
         Automatically picks the tile that best fits its position.
-        It's a big process, but I hope it works well enough for Miyamoto users.
+        It's a big process, but I hope it works well enough for Reggie users.
         """
         if mainWindow.quickPaint and mainWindow.quickPaint.scene and obj:
             qpscn = mainWindow.quickPaint.scene
@@ -24937,13 +24941,24 @@ def main():
     # Go to the script path
     path = module_path()
     if path is not None:
-        os.chdir(module_path())
+        os.chdir(path)
 
     # Create an application
     app = QtWidgets.QApplication(sys.argv)
 
     # Load the settings
-    settings = QtCore.QSettings('Reggie', ReggieVersion)
+    settings = QtCore.QSettings('settings.ini', QtCore.QSettings.IniFormat)
+
+    # Check the version and set the UI style to Fusion by default
+    if setting("ReggieVersion") is None:
+        setSetting("ReggieVersion", ReggieVersionFloat)
+        setSetting('uiStyle', "Fusion")
+
+    # 4.0 -> oldest version with settings.ini compatible with the current version
+    if setting("ReggieVersion") < 4.0 or setting("ReggieVersion") > ReggieVersionFloat:
+        warningBox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.NoIcon, 'Unsupported settings file', 'Your settings.ini file is unsupported. Please remove it and run Reggie again.')
+        warningBox.exec_()
+        sys.exit(1)
 
     # Load the translation (needs to happen first)
     LoadTranslation()
