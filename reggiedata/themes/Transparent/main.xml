@@ -5,6 +5,7 @@
 		version="1.0"
 		creator="&lt;i&gt;Zementblock&lt;/i&gt;"
 		description="&lt;br&gt;&lt;font color=&quot;darkgreen&quot;&gt;A dark theme with &lt;b&gt;transparent (inactive)&lt;/b&gt; locations and sprites.&lt;/font&gt;"
+		forceUiColor="true"
 		>
 		
 	<colors file="levelview.xml" />

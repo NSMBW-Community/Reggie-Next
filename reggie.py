@@ -13766,17 +13766,12 @@ def LoadTheme():
     """
     Loads the theme
     """
-    global theme
-
     id = setting('Theme')
     if id is None:
         id = 'Classic'
 
-    if id != 'Classic':
-        theme = ReggieTheme(id)
-
-    else:
-        theme = ReggieTheme()
+    global theme
+    theme = ReggieTheme(id)
 
 
 class ReggieTheme:
@@ -13789,13 +13784,14 @@ class ReggieTheme:
         Initializes the theme
         """
         self.initAsClassic()
-        if folder is not None: self.initFromFolder(folder)
+        if folder and folder != "Classic": self.initFromFolder(folder)
 
     def initAsClassic(self):
         """
         Initializes the theme as the hardcoded Classic theme
         """
         self.fileName = 'Classic'
+        self.styleSheet = ''
         self.formatver = 1.0
         self.version = 1.0
         self.themeName = trans.string('Themes', 0)
@@ -13804,6 +13800,8 @@ class ReggieTheme:
         self.iconCacheSm = {}
         self.iconCacheLg = {}
         self.style = None
+        self.forceUiColor = False
+        self.forceStyleSheet = False
         self.overridesFile = os.path.join('reggiedata', 'overrides.png')
 
         # Add the colors                                                       # Descriptions:
@@ -13878,6 +13876,12 @@ class ReggieTheme:
                 # Load the colors XML
                 self.loadColorsXml(os.path.join(folder, node.attrib['file']))
 
+            elif node.tag.lower() == 'qss':
+                if 'file' not in node.attrib: continue
+
+                # Load the style sheet
+                self.loadStyleSheet(os.path.join(folder, node.attrib['file']))
+
             elif node.tag.lower() == 'icons':
                 if not all(thing in node.attrib for thing in ['size', 'folder']): continue
 
@@ -13931,6 +13935,7 @@ class ReggieTheme:
         Parses the main attributes of main.xml
         """
         MaxSupportedXMLVersion = 1.0
+        self.styleSheet = ''
 
         # Check for required attributes
         if root.tag.lower() != 'theme': return False
@@ -13943,7 +13948,9 @@ class ReggieTheme:
         else:
             return False
 
-        if self.formatver > MaxSupportedXMLVersion: return False
+        if self.formatver > MaxSupportedXMLVersion:
+            return False
+
         if 'name' in root.attrib:
             self.themeName = root.attrib['name']
         else:
@@ -13953,10 +13960,14 @@ class ReggieTheme:
         self.creator = trans.string('Themes', 3)
         self.description = trans.string('Themes', 4)
         self.style = None
+        self.forceUiColor = False
+        self.forceStyleSheet = False
         self.version = 1.0
         if 'creator' in root.attrib: self.creator = root.attrib['creator']
         if 'description' in root.attrib: self.description = root.attrib['description']
         if 'style' in root.attrib: self.style = root.attrib['style']
+        if 'forceUiColor' in root.attrib: self.forceUiColor = True if root.attrib['forceUiColor'] == "true" else False
+        if 'forceStyleSheet' in root.attrib: self.forceStyleSheet = True if root.attrib['forceStyleSheet'] == "true" else False
         if 'version' in root.attrib:
             try:
                 self.version = float(root.attrib['version'])
@@ -14016,6 +14027,15 @@ class ReggieTheme:
         # Merge dictionaries
         self.colors.update(colorDict)
 
+    def loadStyleSheet(self, file):
+        """
+        Loads a style.qss file
+        """
+        with open(file) as inf:
+            style = inf.read()
+
+        self.styleSheet = style
+
     def color(self, name):
         """
         Returns a color
@@ -14041,7 +14061,7 @@ class ReggieTheme:
         return cache[name]
 
 
-# Related function
+# Related functions
 def toQColor(*args):
     """
     Usage: toQColor(r, g, b[, a]) OR toQColor((r, g, b[, a]))
@@ -14052,6 +14072,34 @@ def toQColor(*args):
     b = args[2]
     a = args[3] if len(args) == 4 else 255
     return QtGui.QColor(r, g, b, a)
+
+
+def SetAppStyle(styleKey=''):
+    """
+    Set the application window color
+    """
+    global theme, app
+    # Change the color if applicable
+    if theme.color('ui') is not None and not theme.forceStyleSheet:
+        app.setPalette(QtGui.QPalette(theme.color('ui')))
+
+    # Change the style
+    if not styleKey: styleKey = setting('uiStyle', "Fusion")
+    style = QtWidgets.QStyleFactory.create(styleKey)
+    app.setStyle(style)
+
+    # Apply the style sheet, if exists
+    if theme.styleSheet:
+        app.setStyleSheet(theme.styleSheet)
+
+    # Manually set the background color
+    if theme.forceUiColor and not theme.forceStyleSheet:
+        color = theme.color('ui').getRgb()
+        bgColor = "#%02x%02x%02x" % tuple(map(lambda x: x // 2, color[:3]))
+        app.setStyleSheet("""
+            QListView, QTreeWidget, QLineEdit, QDoubleSpinBox, QSpinBox, QTextEdit, QPlainTextEdit{
+                background-color: %s;
+            }""" % bgColor)
 
 
 # Undo stuff
@@ -17010,10 +17058,6 @@ class AboutDialog(QtWidgets.QDialog):
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle(trans.string('AboutDlg', 0))
         self.setWindowIcon(GetIcon('reggie'))
-
-        # Set the palette to the default
-        # defaultPalette is a global
-        self.setPalette(QtGui.QPalette(defaultPalette))
 
         # Open the readme file
         readme = ""
@@ -20063,7 +20107,7 @@ class PreferencesDialog(QtWidgets.QDialog):
         self.infoLabel = QtWidgets.QLabel()
         self.generalTab = self.getGeneralTab()
         self.toolbarTab = self.getToolbarTab()
-        self.themesTab = self.getThemesTab()
+        self.themesTab = self.getThemesTab(QtWidgets.QWidget)()
         self.tabWidget.addTab(self.generalTab, trans.string('PrefsDlg', 1))
         self.tabWidget.addTab(self.toolbarTab, trans.string('PrefsDlg', 2))
         self.tabWidget.addTab(self.themesTab, trans.string('PrefsDlg', 3))
@@ -20307,12 +20351,13 @@ class PreferencesDialog(QtWidgets.QDialog):
 
         return ToolbarTab()
 
-    def getThemesTab(self):
+    @staticmethod
+    def getThemesTab(parent):
         """
         Returns the Themes Tab
         """
 
-        class ThemesTab(QtWidgets.QWidget):
+        class ThemesTab(parent):
             """
             Themes Tab
             """
@@ -20322,7 +20367,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 """
                 Initializes the Themes Tab
                 """
-                QtWidgets.QWidget.__init__(self)
+                super().__init__()
 
                 # Get the current and available themes
                 self.themeID = theme.themeName
@@ -20356,10 +20401,27 @@ class PreferencesDialog(QtWidgets.QDialog):
                 previewGB = QtWidgets.QGroupBox(trans.string('PrefsDlg', 22))
                 previewGB.setLayout(L)
 
+                # Create the options box options
+                keys = QtWidgets.QStyleFactory().keys()
+                self.NonWinStyle = QtWidgets.QComboBox()
+                self.NonWinStyle.setToolTip(trans.string('PrefsDlg', 24))
+                self.NonWinStyle.addItems(keys)
+                uistyle = setting('uiStyle', "Fusion")
+                if uistyle is not None:
+                    self.NonWinStyle.setCurrentIndex(keys.index(setting('uiStyle', "Fusion")))
+
+                # Create the options groupbox
+                L = QtWidgets.QVBoxLayout()
+                L.addWidget(self.NonWinStyle)
+                optionsGB = QtWidgets.QGroupBox(trans.string('PrefsDlg', 25))
+                optionsGB.setLayout(L)
+
                 # Create a main layout
                 Layout = QtWidgets.QGridLayout()
                 Layout.addWidget(boxGB, 0, 0)
-                Layout.addWidget(previewGB, 0, 1)
+                Layout.addWidget(optionsGB, 0, 1)
+                Layout.addWidget(previewGB, 1, 1)
+                Layout.setRowStretch(1, 1)
                 self.setLayout(Layout)
 
                 # Update the preview things
@@ -20372,18 +20434,39 @@ class PreferencesDialog(QtWidgets.QDialog):
                 themes = os.listdir('reggiedata/themes')
                 themeList = [('Classic', ReggieTheme())]
                 for themeName in themes:
-                    try:
-                        theme = ReggieTheme(themeName)
-                        themeList.append((themeName, theme))
-                    except Exception:
-                        pass
+                    if os.path.isdir('reggiedata/themes/' + themeName):
+                        try:
+                            theme = ReggieTheme(themeName)
+                            themeList.append((themeName, theme))
+                        except Exception:
+                            pass
 
                 return tuple(themeList)
 
             def UpdatePreview(self):
                 """
-                Updates the preview
+                Updates the preview and theme box
                 """
+                theme = self.themeBox.currentText()
+                style = self.NonWinStyle.currentText()
+
+                themeObj = ReggieTheme(theme)
+                keys = QtWidgets.QStyleFactory().keys()
+
+                if themeObj.color('ui') is not None and not themeObj.forceStyleSheet:
+                    styles = ["WindowsXP", "WindowsVista"]
+                    for _style in styles:
+                        for key in _style, _style.lower():
+                            if key in keys:
+                                keys.remove(key)
+
+                    if style in styles + [_style.lower() for _style in styles]:
+                        style = "Fusion"
+
+                self.NonWinStyle.clear()
+                self.NonWinStyle.addItems(keys)
+                self.NonWinStyle.setCurrentIndex(keys.index(style))
+
                 for name, themeObj in self.themes:
                     if name == self.themeBox.currentText():
                         t = themeObj
@@ -20472,7 +20555,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 paint.end()
                 return px
 
-        return ThemesTab()
+        return ThemesTab
 
 
 class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
@@ -22733,6 +22816,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Get the theme settings
         setSetting('Theme', dlg.themesTab.themeBox.currentText())
+        setSetting('uiStyle', dlg.themesTab.NonWinStyle.currentText())
 
         # Warn the user that they may need to restart
         QtWidgets.QMessageBox.warning(None, trans.string('PrefsDlg', 0), trans.string('PrefsDlg', 30))
@@ -24882,7 +24966,6 @@ def main():
     Sprites = None
     SpriteListData = None
     LoadGameDef(setting('LastGameDef'))
-    LoadTheme()
     LoadActionsLists()
     LoadConstantLists()
     LoadTilesetNames()
@@ -24893,6 +24976,8 @@ def main():
     LoadSpriteListData()
     LoadEntranceNames()
     LoadNumberFont()
+    LoadTheme()
+    SetAppStyle()
     LoadOverrides()
     LoadTilesetInfo()
     SLib.OutlineColor = theme.color('smi')
