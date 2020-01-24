@@ -32,14 +32,14 @@
 
 # Python version: sanity check
 minimum = 3.5
-pqt_min = map(int, "5.4.1".split('.'))
 import sys
 
 currentRunningVersion = sys.version_info.major + (.1 * sys.version_info.minor)
 if currentRunningVersion < minimum:
     errormsg = 'Please update your copy of Python to ' + str(minimum) + \
                ' or greater. Currently running on: ' + sys.version[:5]
-    raise Exception(errormsg) from None
+
+    raise Exception(errormsg)
 
 # Stdlib imports
 import base64
@@ -53,9 +53,11 @@ import random
 import struct
 import threading
 import time
+import traceback
 from xml.etree import ElementTree as etree
 
 # PyQt5: import, and error msg if not installed
+pqt_min = map(int, "5.4.1".split('.'))
 try:
     from PyQt5 import QtCore, QtGui, QtWidgets
 except (ImportError, NameError):
@@ -65,14 +67,13 @@ Qt = QtCore.Qt
 
 version = map(int, QtCore.QT_VERSION_STR.split('.'))
 for v, c in zip(version, pqt_min):
-    if c < v:
+    if c > v:
         # lower version
-        #errormsg = 'Please update your copy of PyQt to ' + '.'.join(str(n) for n in pqt_min) + \
-        # ' or greater. Currently running on: ' + QtCore.QT_VERSION_STR
+        errormsg = 'Please update your copy of PyQt to 5.4.1' + \
+                   ' or greater. Currently running on: ' + QtCore.QT_VERSION_STR
 
-        #raise Exception(errormsg) from None
-        pass
-    elif c > v:
+        raise Exception(errormsg) from None
+    else:
         # higher version
         break
 
@@ -82,33 +83,46 @@ import spritelib as SLib
 import sprites
 from sliderswitch import QSliderSwitch
 
-# LH decompressor
+# Check if Cython is available
 try:
     import pyximport
     pyximport.install()
+
+    import cython_available
+
+except:
+    print("Cython is not available!")
+    print("Expect Reggie to be very slow!\n")
+    cython_available = False
+
+else:
+    del cython_available
+    cython_available = True
+
+# LH decompressor
+if cython_available:
     import lh_cy as lh
-except ImportError:
+
+else:
     import lh
 
 # LZ77 decompressor
-try:
-    import pyximport
-    pyximport.install()
+if cython_available:
     import lz77_cy as lz77
-except ImportError:
+
+else:
     import lz77
 
 # TPL decoder
-try:
-    import pyximport
-    pyximport.install()
+if cython_available:
     import tpl_cy as tpl
-except ImportError:
+
+else:
     import tpl
 
-ReggieID = 'Reggie Next Level Editor by Treeki, Tempus, RoadrunnerWMC, Stella/AboodXD'
-ReggieVersion = 'Milestone 3 Alpha 2'
-ReggieVersionShort = 'M3A2'
+ReggieID = 'Reggie Next Level Editor by Treeki, Tempus and RoadrunnerWMC'
+ReggieVersion = 'Milestone 4'
+ReggieVersionShort = 'M4'
 UpdateURL = ''
 
 if not hasattr(QtWidgets.QGraphicsItem, 'ItemSendsGeometryChanges'):
@@ -120,6 +134,7 @@ app = None
 mainWindow = None
 settings = None
 firstLoad = True
+# cython_available
 
 FileExtentions = ('.arc', '.arc.LH')
 
@@ -131,6 +146,46 @@ OverriddenTilesets = {
     "Minigame Lines": set(),
     "Full Lines": set()
 }
+
+
+def _excepthook(*exc_info):
+    """
+    Custom unhandled exceptions handler
+    """
+    separator = '-' * 80
+    logFile = "log.txt"
+    notice = \
+        """An unhandled exception occurred. Please report the problem """\
+        """in the Horizon Discord server.\n"""\
+        """A log will be written to "%s"."""\
+        """\n\nError information:\n""" % logFile
+
+    timeString = time.strftime("%Y-%m-%d, %H:%M:%S")
+
+    e = "".join(traceback.format_exception(*exc_info))
+    sections = [separator, timeString, separator, e]
+    msg = '\n'.join(sections)
+
+    global ErrMsg
+    ErrMsg += msg
+
+    try:
+        with open(logFile, "w") as f:
+            f.write(ErrMsg)
+
+    except IOError:
+        pass
+
+    errorbox = QtWidgets.QMessageBox()
+    errorbox.setText(notice + msg)
+    errorbox.exec_()
+
+    global DirtyOverride
+    DirtyOverride = 0
+
+
+# Override the exception handler with ours
+sys.excepthook = _excepthook
 
 
 class ReggieSplashScreen(QtWidgets.QSplashScreen):
@@ -3058,6 +3113,7 @@ CurrentLevelNameForAutoOpenScript = None
 HideResetSpritedata = False
 EnablePadding = False
 PaddingLength = 0
+ErrMsg = ''
 
 
 def createHorzLine():
@@ -24783,6 +24839,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Checks the level for any obvious problems and provides options to autofix them
         """
+        raise Exception
         dlg = DiagnosticToolDialog()
         dlg.exec_()
 
