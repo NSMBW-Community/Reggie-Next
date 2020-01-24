@@ -12548,7 +12548,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.UpdateFlag = False
 
             self.DataUpdate.emit(data)
-            self.raweditor.setStyleSheet('QLineEdit { background-color: #ffffff; }')
+            self.raweditor.setStyleSheet('')
 
         else:
             self.raweditor.setStyleSheet('QLineEdit { background-color: #ffd2d2; }')
@@ -23398,7 +23398,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             gamedef.SetLastLevel(str(self.fileSavePath))
 
-            setSetting('AutoSaveFilePath', 'none')
+            setSetting('AutoSaveFilePath', None)
             setSetting('AutoSaveFileData', 'x')
 
             event.accept()
@@ -25066,7 +25066,7 @@ def main():
             AutoSavePath = autofile
             AutoSaveData = bytes(autofiledata)
         else:
-            setSetting('AutoSaveFilePath', 'none')
+            setSetting('AutoSaveFilePath', None)
             setSetting('AutoSaveFileData', 'x')
 
     # Create and show the main window
