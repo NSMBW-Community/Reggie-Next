@@ -1,21 +1,22 @@
 # Reggie! Level Editor Next
 ## The New Super Mario Bros. Wii Editor 
-(Milestone 3)
+(Milestone 4)
 
 ----------------------------------------------------------------
 
 Advanced level editor for New Super Mario Bros. Wii originally created by Treeki, Tempus and RoadrunnerWMC using Python, PyQt and Wii.py .
 
-"Next" version created by RoadrunnerWMC, based on official release 3. Milestone 3 version by AboodXD and it aims to add more features requested by users.
+"Next" version created by RoadrunnerWMC, based on official release 3. Milestone 4 version is a collaboration of Horizon users and it aims to add more features requested by users.
 
 This release contains many improvements, in addition to code imports from the following Reggie! forks:
  * "ReggieMod 3.7.2" by JasonP27
  * "Reggie! Level Editor Mod (Newer Sprites) 3.8.1" by Kamek64 and MalStar1000
  * "NeweReggie! (Extension to Reggie! Level Editor)" by Treeki and angelsl
+ * "Miyamoto!" by AboodXD
  * "Reggie Updated" by RoadRunnerWMC
 
-Source code repository for Reggie! Next can be found at: 
-https://github.com/aboood40091/Reggie-Next-M3  
+Source code can be found at:  
+https://github.com/H1dd3nM1nd/Reggie-Next-M4  
 
 ----------------------------------------------------------------
 
@@ -49,7 +50,7 @@ Developers:
  * Omega - int(), Python, Testing
  * Pop006 - Sprite Images (NSMBW)
  * Tobias - Sprite Data (NSMBW), Event Example Stage
- * AboodXD - M3 Developer, Programmer, Optimization
+ * AboodXD - Programmer, Optimization
  * Grop - Programmer, Sprite Data (NSMBW)
  * John10v10 - Quick Paint Tool Creator
  * RoadrunnerWMC - Reggie! Next Developer: Programmer, UI, Data, Sprite Images (NSMBW), Other
@@ -70,9 +71,9 @@ Other Testers and Contributors:
 
 Python 3 - Python Software Foundation (https://www.python.org)  
 Qt 5 - Nokia (http://qt.nokia.com)  
-PyQt5 - Riverbank Computing (http://www.riverbankcomputing.co.uk/software/pyqt/intro)
-MinGW - http://www.mingw.org/
-Cython - http://cython.org/
+PyQt5 - Riverbank Computing (http://www.riverbankcomputing.co.uk/software/pyqt/intro)  
+MinGW - http://www.mingw.org/  
+Cython - http://cython.org/  
 Wii.py - megazig, Xuzz, The Lemon Man, Matt_P, SquidMan, Omega (https://github.com/grp/Wii.py) (included)  
 Interface Icons - FlatIcons (http://flaticons.net)  
 

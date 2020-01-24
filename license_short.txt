@@ -1,4 +1,4 @@
-Reggie Next M3 - a NSMBW level editor
+Reggie Next M4 - a NSMBW level editor
 Copyright (C) 2015-2020 Treeki, Tempus, angelsl, JasonP27, Kinnay, MalStar1000, RoadrunnerWMC, AboodXD, John10v10, TheGrop, CLF78, Zementblock, Danster64
 
 Development forums: https://horizon.miraheze.org/wiki/Main_Page
