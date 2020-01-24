@@ -15019,7 +15019,7 @@ class ReggieTranslation:
             },
             'Diag': {
                 0: 'Level Diagnostics Tool',
-                1: 'This level references tilesets not used in NSMBWii.',
+                1: None,  # REMOVED: 'This level references tilesets not used in NSMBWii.',
                 2: 'Some objects in the level are not found in the tileset files.',
                 3: 'There are sprites in this area which are known to cause NSMBWii to crash.',
                 4: 'There are sprites in this area which have settings which are known to cause NSMBWii to crash.',
@@ -15034,7 +15034,7 @@ class ReggieTranslation:
                 13: 'A zone is positioned too close to the edges of this area.',
                 14: 'Some zones do not have bias enabled.',
                 15: 'Some zones are too large.',
-                16: 'This level references backgrounds not used in NSMBWii.',
+                16: None,  # REMOVED: 'This level references backgrounds not used in NSMBWii.',
                 17: 'Problems found within this area:',
                 18: 'This level is:',
                 19: 'Good',
@@ -18627,8 +18627,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         self.setWindowIcon(GetIcon('diagnostics'))
 
         # CheckFunctions: (icon, description, function, iscritical)
-        self.CheckFunctions = (('objects', trans.string('Diag', 1), self.UnusedTilesets, False),
-                               ('objects', trans.string('Diag', 2), self.ObjsInTileset, True),
+        self.CheckFunctions = (('objects', trans.string('Diag', 2), self.ObjsInTileset, True),
                                ('sprites', trans.string('Diag', 3), self.CrashSprites, False),
                                ('sprites', trans.string('Diag', 4), self.CrashSpriteSettings, True),
                                ('sprites', trans.string('Diag', 5), self.TooManySprites, False),
@@ -18642,7 +18641,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                                ('zones', trans.string('Diag', 13), self.ZonesTooCloseToAreaEdges, True),
                                ('zones', trans.string('Diag', 14), self.BiasNotEnabled, False),
                                ('zones', trans.string('Diag', 15), self.ZonesTooBig, True),
-                               ('background', trans.string('Diag', 16), self.UnusedBackgrounds, False),
                                )
 
         box = QtWidgets.QGroupBox(trans.string('Diag', 17))
@@ -18818,59 +18816,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         # Gray out the Fix button if there are no more problems
         if self.errorList.count() == 0: self.fixBtn.setEnabled(False)
 
-    def UnusedTilesets(self, mode='f'):
-        """
-        Checks for any tilesets in this area not found in NSMBWii
-        """
-        global Area
-        global TilesetNames
-
-        # Find all retail tileset names
-        possible = ['', ' ', None]  # empty tilesets are represented by ''
-        for palette in SimpleTilesetNames():
-            for tileset in palette:
-                possible.append(tileset[0])
-
-        # Check if any tilesets aren't retail
-        TS0 = True
-        TS1 = True
-        TS2 = True
-        TS3 = True
-        if Area.tileset0 not in possible: TS0 = False
-        if Area.tileset1 not in possible: TS1 = False
-        if Area.tileset2 not in possible: TS2 = False
-        if Area.tileset3 not in possible: TS3 = False
-
-        # Do the appropriate thing based on mode
-        if mode == 'c':
-            return not (TS0 and TS1 and TS2 and TS3)
-        else:
-            # Remove all non-retail tilesets
-            for IsRetail, name, slot in (
-            (TS0, 'Area.tileset0', 0), (TS1, 'Area.tileset1', 1), (TS2, 'Area.tileset2', 2), (TS3, 'Area.tileset3', 3)):
-                if IsRetail: continue
-
-                UnloadTileset(slot)
-                exec(name + ' = \'\' if slot != 0 else \'Pa0_jyotyu\'')
-
-            self.ObjsInTileset('f')  # remove all orphaned objects w/o a loaded tileset
-
-            # Update the palette
-            mainWindow.objPicker.LoadFromTilesets()
-            self.objAllTab.setCurrentIndex(0)
-            self.objAllTab.setTabEnabled(0, (Area.tileset0 != ''))
-            self.objAllTab.setTabEnabled(1, (Area.tileset1 != ''))
-            self.objAllTab.setTabEnabled(2, (Area.tileset2 != ''))
-            self.objAllTab.setTabEnabled(3, (Area.tileset3 != ''))
-
-            # Update the layers
-            for layer in Area.layers:
-                for obj in layer:
-                    obj.updateObjCache()
-
-            # Update the scene
-            self.scene.update()
-
     def ObjsInTileset(self, mode='f'):
         """
         Checks for any objects which cannot be found in the tilesets
@@ -18902,8 +18847,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         Checks if there are any sprites which are known to be crashy and cause problems often
         """
         global Area
-        problems = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  # glitch sprites
-                    121,  # en reverse
+        problems = (121,  # en reverse
                     475)  # will crash if you use a looped path
 
         founds = []
@@ -19054,12 +18998,15 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         Determines if there is a start entrance or not
         """
         global Area
+        if Area.areanum != 1:
+            return False
 
         start = None
         for ent in Area.entrances:
-            if ent.entid == Area.startEntrance: start = ent
-        else:
-            problem = False
+            if ent.entid == Area.startEntrance:
+                start = ent
+            else:
+                problem = False
         problem = start is None
 
         if mode == 'c':
@@ -19134,7 +19081,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 problem = True
             elif y < zone.objy - 64:
                 problem = True
-            elif y > zone.objy + zone.height:
+            elif y > zone.objy + zone.height + 192:
                 problem = True
             else:
                 problem = False
@@ -19410,26 +19357,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
                 found = False
                 for entry in check:
-                    if id in entry: found = True
-
-                if not found:
-                    if mode == 'c':
-                        return True
-                    else:
-                        if name == '1A':
-                            z.bg1A = 1
-                        elif name == '2A':
-                            z.bg2A = 1
-                        elif name == '3A':
-                            z.bg3A = 1
-                        elif name == '1B':
-                            z.bg1B = 1
-                        elif name == '2B':
-                            z.bg2B = 1
-                        elif name == '3B':
-                            z.bg3B = 1
-        return False
-
 
 class InfoPreviewWidget(QtWidgets.QWidget):
     """
