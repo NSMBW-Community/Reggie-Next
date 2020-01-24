@@ -1,13 +1,14 @@
 # Reggie Next - New Super Mario Bros. Wii Level Editor
-# Milestone 3
-# Copyright (C) 2009-2014 Treeki, Tempus, angelsl, JasonP27, Kamek64,
-# MalStar1000, RoadrunnerWMC, 2017 Stella/AboodXD, John10v10
+# Milestone 4
+# Copyright (C) 2009-2020 Treeki, Tempus, angelsl, JasonP27, Kamek64,
+# MalStar1000, RoadrunnerWMC, AboodXD, John10v10, TheGrop, CLF78, 
+# Zementblock, Danster64
 
 # This file is part of Reggie Next.
 
 # Reggie Next is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
+# the Free Software Foundation, either version 4 of the License, or
 # (at your option) any later version.
 
 # Reggie Next is distributed in the hope that it will be useful,
@@ -23,8 +24,8 @@
 # Builds Reggie! to a Windows binary (*.exe)
 # Use the values below to configure the release:
 
-PackageName = 'reggie_next_m3a2_win32'
-Version = '0.3.2'  # This must be a valid float in string format
+PackageName = 'reggie_next_m4_win32'
+Version = '0.4.0'  # This must be a valid float in string format
 
 ################################################################
 ################################################################
@@ -81,8 +82,7 @@ printv('>> Directory ready!')
 
 # exclude QtWebKit to save space, plus Python stuff we don't use
 excludes = ['doctest', 'pdb', 'unittest', 'difflib', 'inspect',
-            'os2emxpath', 'posixpath', 'optpath', 'locale', 'calendar',
-            'select', 'multiprocessing', 'ssl',
+            'os2emxpath', 'optpath', 'multiprocessing', 'ssl',
             'PyQt5.QtWebKit', 'PyQt5.QtNetwork']
 
 # Set it up

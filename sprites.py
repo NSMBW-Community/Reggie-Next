@@ -2292,7 +2292,7 @@ class SpriteImage_Pokey(SLib.SpriteImage):  # 105
         super().dataChanged()
 
         # get the height
-        height = self.parent.spritedata[5] & 0xF
+        height = (self.parent.spritedata[5] & 0xF) % 8
         self.height = (height * 16) + 16 + 25
         self.yOffset = 0 - self.height + 16
 

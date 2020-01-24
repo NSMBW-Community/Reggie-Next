@@ -1429,9 +1429,9 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 479
 
     def dataChanged(self):
     
-        direction = self.parent.spritedata[5] & 3
+        direction = (self.parent.spritedata[5] & 0xF) % 4
         style = (self.parent.spritedata[2] & 0xF) % 10
-        dir = ("R", "L", "F")[direction]
+        dir = ("R", "L", "F", "R")[direction]
         colour = ("", "Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Black", "ShyGuy", "Monty")[style]
         
         if 'MegaBuzzyShyGuyF' not in ImageCache: return
