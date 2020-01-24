@@ -53,9 +53,7 @@ import random
 import struct
 import threading
 import time
-import urllib.request
 from xml.etree import ElementTree as etree
-import zipfile
 
 # PyQt5: import, and error msg if not installed
 try:
@@ -1225,7 +1223,6 @@ def LoadSpriteData():
 
                 if 'sizehacks' in sprite.attrib:
                     size = sprite.attrib['sizehacks'] == "True"
-
 
                 sdef = SpriteDefinition()
                 sdef.id = spriteid
@@ -15341,8 +15338,8 @@ class ReggieTranslation:
                 117: 'Toggle viewing of comments',
                 118: 'Real View',
                 119: 'Show special effects present in the level',
-                120: 'Check for Updates...',
-                121: 'Check if any updates for Reggie Next are available to download',
+                120: None,  # REMOVED: 'Check for Updates...',
+                121: None,  # REMOVED: 'Check if any updates for Reggie Next are available to download',
                 124: 'Undo',
                 125: 'Undoes the last action',
                 126: 'Redo',
@@ -15590,15 +15587,6 @@ class ReggieTranslation:
                 2: 'The default Reggie Next theme.',
                 3: '[i](unknown)[/i]',
                 4: '[i]No description[/i]',
-            },
-            'Updates': {
-                0: 'Check for Updates',
-                1: 'Error while checking for updates.',
-                2: 'No updates are available.',
-                3: 'An update is available: [name][br][info]',
-                4: 'Download Now',
-                5: 'Please wait, the update is downloading...',
-                6: 'Restart to finalize update!',
             },
             'WindowTitle': {
                 0: 'Untitled',
@@ -20523,177 +20511,6 @@ class PreferencesDialog(QtWidgets.QDialog):
         return ThemesTab()
 
 
-class UpdateDialog(QtWidgets.QDialog):
-    """
-    Dialog to display any available updates
-    """
-
-    def __init__(self):
-        """
-        Init the dialog
-        """
-        QtWidgets.QDialog.__init__(self)
-        self.setWindowTitle(trans.string('Updates', 0))
-        self.setWindowIcon(GetIcon('download'))
-        self.setMinimumWidth(256)
-
-        # Create widgets
-        self.msgLabel = QtWidgets.QLabel()
-        self.dldBtn = QtWidgets.QPushButton(trans.string('Updates', 4))
-        self.dldBtn.clicked.connect(self.handleDldBtn)
-        self.dldBtn.hide()
-        self.progLabel = QtWidgets.QLabel()
-
-        # Create the buttonbox
-        buttonBox = QtWidgets.QDialogButtonBox()
-        buttonBox.addButton(QtWidgets.QDialogButtonBox.Ok)
-        buttonBox.accepted.connect(self.accept)
-        buttonBox.rejected.connect(self.reject)
-
-        self.PerformCheck()
-
-        # Create a main layout
-        L = QtWidgets.QVBoxLayout()
-        L.addWidget(self.msgLabel)
-        L.addWidget(self.dldBtn)
-        L.addWidget(self.progLabel)
-        L.addWidget(buttonBox)
-        self.setLayout(L)
-
-    def PerformCheck(self):
-        """
-        Performs the update check
-        """
-        # Attempt to download data
-        errors = False
-        try:
-            data = self.getTxt()
-        except Exception:
-            errors = True
-
-        if not errors:
-            try:
-                releaseType = open('release.txt', 'r').read()
-            except Exception:
-                releaseType = 'unknown'
-            releaseType = releaseType.replace('\n', '').replace('\r', '')
-
-            available = ReggieVersion in data and len(data[ReggieVersion].values()) > 0
-
-        # All right; now handle the results
-        if errors:
-            # Errors occurred
-            self.UpdateUi('error')
-        elif available:
-            # Update is available
-            name = list(data[ReggieVersion].keys())[0]
-            infourl = data[ReggieVersion][name]['InfoUrl']
-            url = data[ReggieVersion][name][releaseType]['url']
-            self.UpdateUi(True, name, infourl, url)
-        else:
-            # No update is available
-            self.UpdateUi(False)
-
-    def getTxt(self):
-        """
-        Returns the parsed data in the online text file
-        """
-        rawdata = urllib.request.urlopen(UpdateURL)
-        rawdata = rawdata.read(20000).decode('latin-1')
-
-        tree = etree.ElementTree(etree.fromstring(rawdata))
-        root = tree.getroot()
-
-        rootData = {}
-        for versionNode in root:
-            if versionNode.tag.lower() != 'version': continue
-            versionData = {}
-
-            for updateNode in versionNode:
-                if updateNode.tag.lower() != 'update': continue
-                updateData = {}
-
-                for releaseNode in updateNode:
-                    if releaseNode.tag.lower() != 'release': continue
-                    releaseData = {}
-                    releaseData['url'] = releaseNode.attrib['url']
-
-                    updateData[releaseNode.attrib['id']] = releaseData
-
-                versionData[updateNode.attrib['name']] = updateData
-                updateData['InfoUrl'] = updateNode.attrib['url']
-
-            rootData[versionNode.attrib['id']] = versionData
-
-        return rootData
-
-    def UpdateUi(self, available, name='', infourl='', url=''):
-        """
-        Updates the UI based on updateinfo
-        """
-        if available == 'error':
-            # Error while checking for update
-            self.msgLabel.setText(trans.string('Updates', 1))
-        elif not available:
-            # No updates
-            self.msgLabel.setText(trans.string('Updates', 2))
-        else:
-            # Updates!
-            self.msgLabel.setText(trans.string('Updates', 3, '[name]', name, '[info]', infourl))
-
-            self.dldBtn.show()
-            self.dldBtn.url = url  # hacky method
-
-    def handleDldBtn(self):
-        """
-        Handles the user clicking the Download Now button
-        """
-        self.dldBtn.hide()
-        self.progLabel.show()
-        self.progLabel.setText(trans.string('Updates', 5))
-
-        downloader = self.downloader(self.dldBtn.url)
-        downloader.done.connect(self.handleDldDone)
-
-        thread = threading.Thread(None, downloader.run)
-        thread.start()
-
-    def handleDldDone(self):
-        """
-        The download finished
-        """
-        self.progLabel.setText(trans.string('Updates', 6))
-
-    class downloader(QtCore.QObject):
-        """
-        An object that downloads the update. Contains signals.
-        """
-        done = QtCore.pyqtSignal()
-
-        def __init__(self, url):
-            """
-            Initializes it
-            """
-            QtCore.QObject.__init__(self)
-            self.url = url
-
-        def run(self):
-            """
-            Runs the download
-            """
-            local_filename, headers = urllib.request.urlretrieve(self.url)
-
-            if local_filename.startswith('\\'):
-                local_filename = local_filename[1:]
-            dest = os.path.dirname(sys.argv[0])
-
-            zipfile.ZipFile(local_filename).extractall(dest)
-
-            time.sleep(8)
-
-            self.done.emit()
-
-
 class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
     """
     A QtWidgets.QListWidget that includes a signal that
@@ -21366,8 +21183,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                           trans.string('MenuItems', 89), QtGui.QKeySequence('Ctrl+Shift+H'))
         self.CreateAction('tipbox', self.TipBox, GetIcon('tips'), trans.stringOneLine('MenuItems', 90),
                           trans.string('MenuItems', 91), QtGui.QKeySequence('Ctrl+Shift+T'))
-        self.CreateAction('update', self.UpdateCheck, GetIcon('download'), trans.stringOneLine('MenuItems', 120),
-                          trans.string('MenuItems', 121), QtGui.QKeySequence('Ctrl+Shift+U'))
         self.CreateAction('aboutqt', QtWidgets.qApp.aboutQt, GetIcon('qt'), trans.stringOneLine('MenuItems', 92),
                           trans.string('MenuItems', 93), QtGui.QKeySequence('Ctrl+Shift+Q'))
 
@@ -21376,8 +21191,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         menu.addAction(self.actions['infobox'])
         menu.addAction(self.actions['helpbox'])
         menu.addAction(self.actions['tipbox'])
-        menu.addSeparator()
-        menu.addAction(self.actions['update'])
         menu.addSeparator()
         menu.addAction(self.actions['aboutqt'])
         return menu
@@ -22256,12 +22069,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         QtGui.QDesktopServices.openUrl(
             QtCore.QUrl.fromLocalFile(os.path.join(module_path(), 'reggiedata', 'help', 'tips.html')))
-
-    def UpdateCheck(self):
-        """
-        Checks for updates and displays an appropriate dialog
-        """
-        UpdateDialog().exec_()
 
     def SelectAll(self):
         """
