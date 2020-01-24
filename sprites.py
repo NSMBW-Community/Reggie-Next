@@ -901,7 +901,7 @@ class SpriteImage_PipeStationary(SpriteImage_Pipe):  # 254, 377, 378, 379, 380, 
     def dataChanged(self):
         self.color = (
             'Green', 'Red', 'Yellow', 'Blue',
-        )[(self.parent.spritedata[5] >> 4) % 4]
+        )[(self.parent.spritedata[5] >> 4) & 3]
 
         self.length1 = self.length
         self.length2 = self.length
@@ -1003,7 +1003,7 @@ class SpriteImage_MeasureJump(SLib.SpriteImage):
 class SpriteImage_CharacterSpawner(SLib.SpriteImage_StaticMultiple):  # 9
     def dataChanged(self):
         direction = self.parent.spritedata[2] & 1
-        character = (self.parent.spritedata[5] & 0xF) % 4
+        character = self.parent.spritedata[5] & 3
 
         directionstr = 'L' if direction else 'R'
 
@@ -1653,7 +1653,7 @@ class SpriteImage_SpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
         ImageCache['SpikeTop31'] = ImageCache['SpikeTop01'].transformed(Transform)
 
     def dataChanged(self):
-        orientation = (self.parent.spritedata[5] >> 4) % 4
+        orientation = (self.parent.spritedata[5] >> 4) & 3
         direction = self.parent.spritedata[5] & 1
 
         self.image = ImageCache['SpikeTop%d%d' % (orientation, direction)]
@@ -2202,7 +2202,7 @@ class SpriteImage_PipeEnemyGenerator(SLib.SpriteImage):  # 99
         super().dataChanged()
 
         self.spritebox.size = (16, 16)
-        direction = (self.parent.spritedata[5] & 0xF) % 4
+        direction = (self.parent.spritedata[5] & 0xF) & 3
         if direction in (0, 1):  # vertical pipe
             self.spritebox.size = (32, 16)
         elif direction in (2, 3):  # horizontal pipe
@@ -2363,7 +2363,7 @@ class SpriteImage_ChainBall(SLib.SpriteImage_StaticMultiple):  # 109
         direction = self.parent.spritedata[5] & 3
         if direction > 3: direction = 0
 
-        if direction % 2 == 0:  # horizontal
+        if direction & 1 == 0:  # horizontal
             self.size = (96, 38)
         else:  # vertical
             self.size = (37, 96)
@@ -2626,7 +2626,7 @@ class SpriteImage_CoinCheep(SLib.SpriteImage):  # 116
             self.image = ImageCache['CheepRedAtYou']
         else:
             type = self.parent.spritedata[2] >> 4
-            if type % 4 == 3:
+            if type & 3 == 3:
                 self.spritebox.shown = True
                 self.image = None
             elif type < 7:
@@ -2988,7 +2988,7 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
         ysize = self.height * 1.5
 
         for piece in range(pieces):
-            bitpos = 2 ** (piece % 4)
+            bitpos = 1 << (piece & 3)
             if pivots[int(piece / 4)] & bitpos:
                 painter.drawPixmap(5, ysize - (piece * 24) - 24, ImageCache['RotLauncherPivot'])
             else:
@@ -4717,7 +4717,7 @@ class SpriteImage_RotControlledCoin(SpriteImage_SpecialCoin):  # 253
 class SpriteImage_RotControlledPipe(SpriteImage_PipeStationary):  # 254
     def dataChanged(self):
         self.length = (self.parent.spritedata[4] >> 4) + 2
-        dir = (self.parent.spritedata[4] & 0xF) % 4
+        dir = self.parent.spritedata[4] & 3
         self.direction = 'URDL'[dir]
         super().dataChanged()
 
@@ -4767,7 +4767,7 @@ class SpriteImage_MovementController_TwoWayLine(SLib.SpriteImage):  # 260
     def dataChanged(self):
         super().dataChanged()
 
-        direction = (self.parent.spritedata[3] & 0xF) % 4
+        direction = self.parent.spritedata[3] & 3
         distance = (self.parent.spritedata[5] >> 4) + 1
 
         if direction <= 1:  # horizontal
@@ -5183,7 +5183,7 @@ class SpriteImage_Box(SLib.SpriteImage_StaticMultiple):  # 289
     def dataChanged(self):
 
         style = self.parent.spritedata[4] & 1
-        size = (self.parent.spritedata[5] >> 4) % 4
+        size = (self.parent.spritedata[5] >> 4) & 3
 
         self.image = ImageCache['Box%d%d' % (style, size)]
 
@@ -5262,14 +5262,13 @@ class SpriteImage_NutPlatform(SLib.SpriteImage_StaticMultiple):  # 295
 
     def dataChanged(self):
         offsetUp = self.parent.spritedata[5] >> 4
-        offsetRight = self.parent.spritedata[5] & 15
+        offsetRight = self.parent.spritedata[5] & 7
 
         if offsetUp == 0:
             self.yOffset = -8
         else:
             self.yOffset = 0
 
-        newOffsetRight = offsetRight % 8
         self.xOffset = (
             -16,
             -8,
@@ -5279,7 +5278,7 @@ class SpriteImage_NutPlatform(SLib.SpriteImage_StaticMultiple):  # 295
             24,
             32,
             40,
-        )[newOffsetRight]
+        )[offsetRight]
 
         self.image = ImageCache['NutPlatform']
 
@@ -5652,8 +5651,8 @@ class SpriteImage_SynchroFlameJet(SLib.SpriteImage_StaticMultiple):  # 309
             offImage.transformed(transform270).mirrored(True, False))
 
     def dataChanged(self):
-        mode = (self.parent.spritedata[4] & 15) % 2
-        direction = (self.parent.spritedata[5] & 15) % 4
+        mode = self.parent.spritedata[4] & 1
+        direction = self.parent.spritedata[5] & 3
 
         mode = 'Off' if mode else 'On'
         self.offset = (
@@ -5847,7 +5846,7 @@ class SpriteImage_ArrowBlock(SLib.SpriteImage_StaticMultiple):  # 321
         ImageCache['ArrowBlock3'] = SLib.GetImg('arrow_block_right.png')
 
     def dataChanged(self):
-        direction = (self.parent.spritedata[5] & 3) % 4
+        direction = self.parent.spritedata[5] & 3
         self.image = ImageCache['ArrowBlock%d' % direction]
 
         super().dataChanged()
@@ -6016,7 +6015,7 @@ class SpriteImage_KingBill(SLib.SpriteImage):  # 326
 
     def dataChanged(self):
 
-        direction = (self.parent.spritedata[5] & 15) % 4
+        direction = self.parent.spritedata[5] & 3
 
         self.aux[0].setPath(self.paths[direction])
 
@@ -6192,7 +6191,7 @@ class SpriteImage_Pipe_MovingUp(SpriteImage_Pipe):  # 339
         self.length2 = (self.parent.spritedata[5] & 0xF) + 2
         self.color = (
             'Green', 'Red', 'Yellow', 'Blue',
-        )[(self.parent.spritedata[3] & 0xF) % 4]
+        )[self.parent.spritedata[3] & 3]
 
         super().dataChanged()
 
@@ -6301,7 +6300,7 @@ class SpriteImage_HangingChainPlatform(SLib.SpriteImage_StaticMultiple):  # 346
         ImageCache['HangingChainPlatformL'] = SLib.GetImg('hanging_chain_platform_large.png')
 
     def dataChanged(self):
-        size = ((self.parent.spritedata[4] & 0xF) % 4) % 3
+        size = (self.parent.spritedata[4] & 3) % 3
         size, self.xOffset = (
             ('S', -26),
             ('M', -42),
@@ -6380,7 +6379,7 @@ class SpriteImage_Pipe_MovingDown(SpriteImage_Pipe):  # 353
         self.length2 = (self.parent.spritedata[5] & 0xF) + 2
         self.color = (
             'Green', 'Red', 'Yellow', 'Blue',
-        )[(self.parent.spritedata[3] & 0xF) % 4]
+        )[self.parent.spritedata[3] & 3]
 
         super().dataChanged()
 
@@ -6782,7 +6781,7 @@ class SpriteImage_MovingFence(SLib.SpriteImage_StaticMultiple):  # 376
 
     def dataChanged(self):
 
-        self.shape = (self.parent.spritedata[4] >> 4) % 4
+        self.shape = (self.parent.spritedata[4] >> 4) & 3
         arrow = None
 
         size = (
@@ -7155,7 +7154,7 @@ class SpriteImage_BowserJr2ndController(SLib.SpriteImage):  # 405
 
 class SpriteImage_ToadHouseBalloonUnused(SpriteImage_ToadHouseBalloon):  # 411
     def dataChanged(self):
-        self.livesNum = (self.parent.spritedata[4] >> 4) % 4
+        self.livesNum = (self.parent.spritedata[4] >> 4) & 3
 
         super().dataChanged()
 
@@ -7165,7 +7164,7 @@ class SpriteImage_ToadHouseBalloonUnused(SpriteImage_ToadHouseBalloon):  # 411
 class SpriteImage_ToadHouseBalloonUsed(SpriteImage_ToadHouseBalloon):  # 412
     def dataChanged(self):
 
-        self.livesNum = (self.parent.spritedata[4] >> 4) % 4
+        self.livesNum = (self.parent.spritedata[4] >> 4) & 3
         self.hasHandle = not ((self.parent.spritedata[5] >> 4) & 1)
 
         super().dataChanged()
@@ -7373,7 +7372,7 @@ class SpriteImage_Jellybeam(SLib.SpriteImage_Static):  # 425
         SLib.loadIfNotInImageCache('Jellybeam', 'jellybeam.png')
 
     def dataChanged(self):
-        distance = (self.parent.spritedata[5] & 0xF) % 4
+        distance = self.parent.spritedata[5] & 3
         self.aux[0].setSize(16, (distance * 32) + 108)
         self.aux[0].setPos(self.width * 0.75 - 14, self.height * 0.75 - 16)
         
