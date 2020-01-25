@@ -57,7 +57,6 @@ import traceback
 from xml.etree import ElementTree as etree
 
 # PyQt5: import, and error msg if not installed
-pqt_min = map(int, "5.4.1".split('.'))
 try:
     from PyQt5 import QtCore, QtGui, QtWidgets
 except (ImportError, NameError):
@@ -66,14 +65,16 @@ except (ImportError, NameError):
 Qt = QtCore.Qt
 
 version = map(int, QtCore.QT_VERSION_STR.split('.'))
+min_version = "5.4.1"
+pqt_min = map(int, min_version.split('.'))
 for v, c in zip(version, pqt_min):
     if c > v:
         # lower version
-        errormsg = 'Please update your copy of PyQt to 5.4.1' + \
-                   ' or greater. Currently running on: ' + QtCore.QT_VERSION_STR
+        errormsg = 'Please update your copy of PyQt to ' + min_version \
+                 + ' or greater. Currently running on: ' + QtCore.QT_VERSION_STR
 
         raise Exception(errormsg) from None
-    else:
+    elif c < v:
         # higher version
         break
 
