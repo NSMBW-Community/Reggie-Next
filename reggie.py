@@ -21527,7 +21527,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         stampToolsBtn.setMenu(menu)
         stampToolsBtn.setPopupMode(QtWidgets.QToolButton.InstantPopup)
         stampToolsBtn.setSizePolicy(stampAddBtn.sizePolicy())
-        stampToolsBtn.setMinimumHeight(stampAddBtn.height() / 20)
+        stampToolsBtn.setMinimumHeight(stampAddBtn.height() // 20)
 
         stampNameLabel = QtWidgets.QLabel(trans.string('Palette', 35))
         self.stampNameEdit = QtWidgets.QLineEdit()
