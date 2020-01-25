@@ -12881,14 +12881,18 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             elif not isinstance(bit[0], tuple):
                 bit = (bit,)
 
+            # if two ranges (a..b, c..d) overlap, that means that a..b is not
+            # completely before c..d (that is, b >= c) nor
+            #    a <= i < b AND c <= i < d
+            # since a < b and c < d,
+            #    a < d AND c < b
+            overlap = lambda a, b: a[0] < b[1] and b[0] < a[1]
+
             for ran in bit:
-                # two ranges overlap iff either of the following:
-                #  start1 <= start2 AND end1 >= start2
-                #  start1 < end2 AND end1 >= end2
-                if (ran[0] <= nyb5[0] and ran[1] >= nyb5[0]) or (ran[0] < nyb5[1] and ran[1] >= nyb5[1]):
+                if overlap(ran, nyb5):
                     found[5].append(field)
 
-                if (ran[0] <= nyb7[0] and ran[1] >= nyb7[0]) or (ran[0] < nyb7[1] and ran[1] >= nyb7[1]):
+                if overlap(ran, nyb7):
                     found[7].append(field)
 
         return found
