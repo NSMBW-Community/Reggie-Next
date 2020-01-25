@@ -102,5 +102,7 @@ $RECYCLE.BIN/
 
 # Others
 /reggiedata/patches/NSMASR
+/Stage
 log.txt
 settings.ini
+openlevel.bat

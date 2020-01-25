@@ -189,158 +189,6 @@ def _excepthook(*exc_info):
 sys.excepthook = _excepthook
 
 
-class ReggieSplashScreen(QtWidgets.QSplashScreen):
-    """
-    Splash screen class for Reggie.
-    """
-    cfgData = {}
-    currentDesc = ''
-    currentPos = 0
-    posLimit = 0
-
-    def __init__(self):
-        """
-        Initializes the splash screen.
-        super().__init__(QPixmap) has to be called with the pixmap you want or else transparency
-        is messed up. self.setPixmap(QPixmap) doesn't seem to work properly.
-        """
-        self.loadCfg()
-        self.loadResources()
-        super().__init__(self.basePix)
-
-    def loadCfg(self):
-        """
-        Loads the raw data from splash_config.txt
-        """
-        cfgData = {}
-        with open('reggiedata/splash_config.txt', encoding='utf-8') as cfg:
-            for line in cfg:
-                lsplit = line.replace('\n', '').split(':')
-                key = lsplit[0].lower()
-                value = ':'.join(lsplit[1:])
-                if value.lower() in ('true', 'false'):
-                    value = value.lower() == 'true'
-                elif ',' in value:
-                    value = value.split(',')
-                    for i, entry in enumerate(value):
-                        try:
-                            value[i] = int(entry)
-                        except ValueError:
-                            pass
-                if isinstance(value, str):
-                    try:
-                        value = int(value)
-                    except ValueError:
-                        pass
-                cfgData[key] = value
-        self.cfgData = cfgData
-
-    def loadResources(self):
-        """
-        Reads the info from self.cfgData and loads stuff
-        """
-        self.basePix = QtGui.QPixmap(os.path.join('reggiedata', self.cfgData['base_image']))
-
-        def loadFont(name):
-            fname = self.cfgData.get(name + '_font', 'sans-serif')
-            bold = self.cfgData.get(name + '_font_bold', False)
-            color = '#' + self.cfgData.get(name + '_font_color', '000000')
-            size = self.cfgData.get(name + '_font_size', 12)
-            weight = self.cfgData.get(name + '_font_weight', 12)
-            wLim = self.cfgData.get(name + '_wrap_limit', 1024)
-            position = self.cfgData.get(name + '_position', (0, 0))
-            centered = self.cfgData.get(name + '_centered', False)
-
-            font = QtGui.QFont()
-            font.setFamily(fname)
-            font.setBold(bold)
-            font.setPointSize(size)
-            font.setWeight(weight)
-            return font, position, color, centered, wLim
-
-        self.versionFontInfo = loadFont('version')
-        self.loadingFontInfo = loadFont('loading')
-        self.copyrightFontInfo = loadFont('copyright')
-
-        mNameL = self.cfgData.get('meter_left', '')
-        mNameM = self.cfgData.get('meter_mid', '')
-        mNameR = self.cfgData.get('meter_right', '')
-        self.meterPos = self.cfgData.get('meter_position', (0, 0))
-        self.meterWidth = self.cfgData.get('meter_width', 64)
-
-        self.meterL = QtGui.QPixmap(os.path.join('reggiedata', mNameL))
-        self.meterM = QtGui.QPixmap(os.path.join('reggiedata', mNameM))
-        self.meterR = QtGui.QPixmap(os.path.join('reggiedata', mNameR))
-
-    def setProgressLimit(self, limit):
-        """
-        Sets the maximum progress, used to calculate the progress bar
-        """
-        self.posLimit = limit
-
-    def setProgress(self, desc, pos):
-        """
-        Sets the current progress
-        """
-        self.currentDesc = desc
-        self.currentPos = pos
-        self.repaint()
-        app.processEvents()
-
-    def drawContents(self, painter):
-        """
-        Draws the contents of the splash screen
-        """
-        painter.setRenderHint(painter.Antialiasing)
-
-        totalWidthSoFar = int(self.meterWidth * (self.currentPos / self.posLimit))
-        painter.drawPixmap(
-            self.meterPos[0],
-            self.meterPos[1],
-            min(self.meterL.width(), totalWidthSoFar),
-            self.meterL.height(),
-            self.meterL,
-        )
-        painter.drawTiledPixmap(
-            self.meterPos[0] + self.meterL.width(),
-            self.meterPos[1],
-            min(self.meterWidth - self.meterL.width() - self.meterR.width(), totalWidthSoFar - self.meterL.width()),
-            self.meterM.height(),
-            self.meterM,
-        )
-        painter.drawTiledPixmap(
-            self.meterPos[0] + self.meterWidth - self.meterR.width(),
-            self.meterPos[1],
-            totalWidthSoFar - self.meterWidth + self.meterR.width(),
-            self.meterR.height(),
-            self.meterR,
-        )
-
-        def drawText(text, font, position, color, centered, wLim):
-            """
-            Draws some text
-            """
-            rect = QtCore.QRectF(
-                position[0] - (wLim / 2 if centered else 0),
-                position[1],
-                wLim,
-                512,
-            )
-            flags = (Qt.AlignHCenter if centered else Qt.AlignLeft) | Qt.AlignTop | Qt.TextWordWrap
-
-            painter.save()
-            painter.setFont(font)
-            r, g, b = int(color[1:3], 16), int(color[3:5], 16), int(color[5:7], 16)
-            painter.setPen(QtGui.QPen(QtGui.QColor(r, g, b)))
-            painter.drawText(rect, int(flags), text)
-            painter.restore()
-
-        drawText(ReggieVersionShort, *self.versionFontInfo)
-        drawText(self.currentDesc, *self.loadingFontInfo)
-        with open('license_short.txt', 'r') as copyFile:
-            drawText(copyFile.read(), *self.copyrightFontInfo)
-
-
 defaultStyle = None
 defaultPalette = None
 
@@ -3651,34 +3499,14 @@ class AbstractParsedArea(AbstractArea):
         global firstLoad
 
         if not firstLoad:
-            # Load the tilesets
-            try:
-                app.splashScreen.setProgress(trans.string('Splash', 3), 1)
-            except AttributeError:
-                app.splashScreen = ReggieSplashScreen()
-                app.splashScreen.setProgress(trans.string('Splash', 3), 1)
-
-            CreateTilesets()
-            app.splashScreen.setProgress(trans.string('Splash', 3), 2)
-            if self.tileset0 != '': LoadTileset(0, self.tileset0)
-            app.splashScreen.setProgress(trans.string('Splash', 3), 3)
-            if self.tileset1 != '': LoadTileset(1, self.tileset1)
-            app.splashScreen.setProgress(trans.string('Splash', 3), 4)
-            if self.tileset2 != '': LoadTileset(2, self.tileset2)
-            app.splashScreen.setProgress(trans.string('Splash', 3), 5)
-            if self.tileset3 != '': LoadTileset(3, self.tileset3)
-
             # Load the object layers
-            app.splashScreen.setProgress(trans.string('Splash', 1), 6)
-
+            CreateTilesets()
+            if self.tileset0 != '': LoadTileset(0, self.tileset0)
+            if self.tileset1 != '': LoadTileset(1, self.tileset1)
+            if self.tileset2 != '': LoadTileset(2, self.tileset2)
+            if self.tileset3 != '': LoadTileset(3, self.tileset3)
         else:
             # Load the object layers
-            try:
-                app.splashScreen.setProgress(trans.string('Splash', 1), 6)
-            except AttributeError:
-                app.splashScreen = ReggieSplashScreen()
-                app.splashScreen.setProgress(trans.string('Splash', 1), 6)
-
             firstLoad = False
 
         self.LoadSprites()  # block 8
@@ -14943,8 +14771,6 @@ def LoadTranslation():
     else:
         trans = ReggieTranslation(name)
 
-    if generateStringsXML: trans.generateXML()
-
 
 class ReggieTranslation:
     """
@@ -15594,14 +15420,6 @@ class ReggieTranslation:
                 4: 'Y:',
                 5: 'Warning',
                 6: 'You are trying to move object(s) by an offset which isn\'t a multiple of 16. It will work, but the objects will not be able to move exactly the same amount as the sprites. Are you sure you want to do this?',
-            },
-            'Splash': {
-                0: '[current] (Stage [stage])',
-                1: 'Loading layers...',
-                2: 'Loading level data...',
-                3: 'Loading tilesets...',
-                4: 'Loading objects...',
-                5: 'Preparing editor...',
             },
             'SpriteDataEditor': {
                 0: 'Modify Selected Sprite Properties',
@@ -23493,20 +23311,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Dirty = False
         DirtyOverride += 1
 
-        # Show the splash screen
-        app.splashScreen = ReggieSplashScreen()
-        app.splashScreen.setProgressLimit(9)
-        app.splashScreen.show()
-
-        # Here's how progress is tracked. (After the major refactor, it may be a bit messed up now.)
-        # - 0: Loading level data
-        # [Area.__init__ is entered here]
-        # - 1: Loading tilesets [1/2/3/4 allocated for each tileset]
-        # - 5: Loading layers
-        # [Control is returned to LoadLevel_NSMBW]
-        # - 6: Loading objects
-        # - 7: Preparing editor
-
         # First, clear out the existing level.
         self.scene.clearSelection()
         self.CurrentSelection = []
@@ -23528,8 +23332,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Prevent things from snapping when they're created
         global OverrideSnapping
         OverrideSnapping = True
-
-        app.splashScreen.setProgress(trans.string('Splash', 2), 0)
 
         # Load the actual level
         if new:
@@ -23595,10 +23397,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.levelOverview.update()
         QtCore.QTimer.singleShot(20, self.levelOverview.update)
 
-        # Remove the splashscreen
-        app.splashScreen.hide()
-        del app.splashScreen
-
         if new:
             SetDirty()
 
@@ -23618,8 +23416,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Level.new()
 
         # Prepare the object picker
-        app.splashScreen.setProgress(trans.string('Splash', 4), 7)
-
         self.objUseLayer1.setChecked(True)
 
         self.objPicker.LoadFromTilesets()
@@ -23644,8 +23440,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             raise Exception
 
         # Prepare the object picker
-        app.splashScreen.setProgress(trans.string('Splash', 4), 7)
-
         self.objUseLayer1.setChecked(True)
 
         self.objPicker.LoadFromTilesets()
@@ -23655,9 +23449,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.objAllTab.setTabEnabled(1, (Area.tileset1 != ''))
         self.objAllTab.setTabEnabled(2, (Area.tileset2 != ''))
         self.objAllTab.setTabEnabled(3, (Area.tileset3 != ''))
-
-        # Add all things to scene
-        app.splashScreen.setProgress(trans.string('Splash', 5), 8)
 
         # Load events
         self.LoadEventTabFromLevel()
@@ -25073,6 +24864,8 @@ def main():
     mainWindow = ReggieWindow()
     mainWindow.__init2__()  # fixes bugs
     mainWindow.show()
+    if generateStringsXML:
+        trans.generateXML()
 
     exitcodesys = app.exec_()
     app.deleteLater()
