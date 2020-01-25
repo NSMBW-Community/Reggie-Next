@@ -2953,8 +2953,6 @@ EntrancesFrozen = False
 LocationsFrozen = False
 PathsFrozen = False
 CommentsFrozen = False
-PaintingEntrance = None
-PaintingEntranceListIndex = None
 NumberFont = None
 GridType = None
 RestoredFromAutoSave = False
@@ -16154,10 +16152,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 ent.listitem = ListWidgetItem_SortsByOther(ent)
                 elist.insertItem(minimumID, ent.listitem)
 
-                global PaintingEntrance, PaintingEntranceListIndex
-                PaintingEntrance = ent
-                PaintingEntranceListIndex = minimumID
-
                 Area.entrances.insert(minimumID, ent)
 
                 self.dragstamp = False
@@ -18943,9 +18937,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             ent.listitem = ListWidgetItem_SortsByOther(ent)
             elist.insertItem(Area.startEntrance, ent.listitem)
 
-            global PaintingEntrance, PaintingEntranceListIndex
-            PaintingEntrance = ent
-            PaintingEntranceListIndex = Area.startEntrance
             Area.entrances.insert(Area.startEntrance, ent)
 
             ent.UpdateListItem()
