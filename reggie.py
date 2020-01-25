@@ -24726,7 +24726,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Checks the level for any obvious problems and provides options to autofix them
         """
-        raise Exception
         dlg = DiagnosticToolDialog()
         dlg.exec_()
 
@@ -24857,8 +24856,8 @@ def main():
 
     # Check to see if we have anything saved
     autofile = setting('AutoSaveFilePath')
-    if autofile is not None:
-        autofiledata = setting('AutoSaveFileData', 'x')
+    autofiledata = setting('AutoSaveFileData', 'x')
+    if autofile is not None and autofiledata != 'x':
         result = AutoSavedInfoDialog(autofile).exec_()
         if result == QtWidgets.QDialog.Accepted:
             global RestoredFromAutoSave, AutoSavePath, AutoSaveData
