@@ -16137,31 +16137,13 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int((clicked.x() - 12) / 1.5)
                 clickedy = int((clicked.y() - 12) / 1.5)
 
-                getids = [False for x in range(256)]
-                for ent in Area.entrances: getids[ent.entid] = True
-                minimumID = getids.index(False)
-
-                ent = EntranceItem(clickedx, clickedy, minimumID, 0, 0, 0, 0, 0, 0, 0x80, 0)
-                mw = mainWindow
-                ent.positionChanged = mw.HandleEntPosChange
-                mw.scene.addItem(ent)
-
-                elist = mw.entranceList
-                # if it's the first available ID, all the other indexes should match right?
-                # so I can just use the ID to insert
-                ent.listitem = ListWidgetItem_SortsByOther(ent)
-                elist.insertItem(minimumID, ent.listitem)
-
-                Area.entrances.insert(minimumID, ent)
+                ent = mainWindow.CreateEntrance(clickedx, clickedy)
 
                 self.dragstamp = False
                 self.currentobj = ent
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
 
-                ent.UpdateListItem()
-
-                SetDirty()
             elif CurrentPaintType == 6:
                 # paint a path node
                 clicked = mainWindow.view.mapToScene(event.x(), event.y())
@@ -18929,19 +18911,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return problem
         elif problem:
             # make an entrance at 1024, 512 with an ID of Area.startEntrance
-            ent = EntranceItem(1024, 512, Area.startEntrance, 0, 0, 0, 0, 0, 0, 0x80, 0)
-            ent.positionChanged = mainWindow.HandleEntPosChange
-            mainWindow.scene.addItem(ent)
-
-            elist = mainWindow.entranceList
-            ent.listitem = ListWidgetItem_SortsByOther(ent)
-            elist.insertItem(Area.startEntrance, ent.listitem)
-
-            Area.entrances.insert(Area.startEntrance, ent)
-
-            ent.UpdateListItem()
-
-            SetDirty()
+            mainWindow.CreateEntrance(1024, 512, Area.startEntrance)
+            
 
     def EntranceTooCloseToZoneEdge(self, mode='f'):
         """
@@ -22429,6 +22400,48 @@ class ReggieWindow(QtWidgets.QMainWindow):
             SetDirty()
 
         return obj
+
+    def CreateEntrance(self, x, y, id_ = None):
+        """
+        Creates and returns a new entrance and makes sure it's added to
+        the right lists. This function returns None if no further entrances
+        can be created.
+        """
+        if id_ is None:
+            # This can be done more efficiently, but 255 is not that big
+            # a number so it doesn't really matter
+            all_ids = set(ent.entid for ent in Area.entrances)
+
+            id_ = 0
+            while id_ <= 255:
+                if id_ not in all_ids:
+                    break
+                id_ += 1
+
+            if id_ == 256:
+                print("ReggieWindow#CreateEntrance: No free entrance id")
+                return None
+        elif id_ in all_ids:
+            print("ReggieWindow#CreateEntrance: Given entrance id (%d) already in use" % id_)
+            return None
+
+        ent = EntranceItem(x, y, id_, 0, 0, 0, 0, 0, 0, 0x80, 0)
+        ent.positionChanged = self.HandleEntPosChange
+        
+        # if it's the first available ID, all the other indices
+        # should match, so I can just use the ID to insert
+        ent.listitem = ListWidgetItem_SortsByOther(ent)
+        self.entranceList.insertItem(id_, ent.listitem)
+
+        Area.entrances.insert(id_, ent)
+
+        self.scene.addItem(ent)
+        ent.UpdateListItem()
+
+        SetDirty()
+
+        return ent
+
 
     def HandleAddNewArea(self):
         """
