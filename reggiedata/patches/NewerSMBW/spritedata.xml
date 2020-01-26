@@ -5343,10 +5343,10 @@
       <entry value="6">Skull + 6 Platforms</entry>
       <entry value="7">Skull + 7 Platforms</entry>
     </list>
-    <list nybble="6" title="Color" comment="This determines the color of the Dragon Coaster.">
+    <list nybble="6" title="Color" comment="This determines the color of the Dragon Coaster. The current colors both either show no difference, or crash the game.">
       <entry value="0">Original</entry>
-      <entry value="1">Light Blue</entry>
-      <entry value="2">Black</entry>
+      <entry value="1">Light Blue (No difference)</entry>
+      <entry value="2">Black (Crashes)</entry>
     </list>
     <value nybble="10" title="Speed" comment="This determines how quickly the Dragon Coaster will travel along the Lines."/>
     <checkbox bit="44" title="Touch Activated" comment="When enabled, this platform will activate when all players are touching the Dragon Coaster." comment2="When not enabled, this platform will only activate when a platform with the same Dragon ID is activated through Touch Activation."/>
@@ -6156,7 +6156,7 @@
   </sprite> <!-- #348: Ludwig von Koopa -->
   
 
-  <sprite id="350" name="Fireball Laser" asmhacks="True" notes="A controller that creates a constant stream of fireballs in a specific direction. These fireballs will not pass through terrain.">
+  <sprite id="350" name="Fireball Laser" asmhacks="True" notes="A controller that creates a constant stream of fireballs in a specific direction. These fireballs will not pass through terrain. They spawn at the top left corner of the sprite's placement.">
     <value nybble="7-8" title="Triggering Event ID" comment="While this Event ID is activated, the controller will create fireballs." idtype="Triggering Event"/>
     <list nybble="12" title="Direction" comment="This determines which direction the fireballs will fire in.">
       <entry value="0">Right</entry>
@@ -7544,15 +7544,6 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." idtype="Triggering Event"/>
   </sprite> <!-- #479: Bowser Switch (Large) -->
-
-  <sprite id="480" name="Morton's Skewer" notes="A spiked pillar for the Morton Koopa Tower Boss fight with a large amount of control over the timing values. It is 4 blocks wide, and 2 blocks tall when retracted. It extends downwards 9 additional blocks for a total of 10 below its placement.">
-    <dependency notes="This spiked pillar will only function as a part of the Morton Koopa Tower Boss fight.">
-      <required sprite="363"/>
-    </dependency>
-    <value nybble="7-8" title="Initial Launch Delay" comment="This determines the launch delay prior to the first time the pillar moves." comment2="A value of 4 is equal to one game second."/>
-    <value nybble="9-10" title="Launch Delay" comment="This determines the launch delay after the first time the pillar moves." comment2="A value of 64 is equal to one game second. A value of 255 is equal to four game seconds."/>
-    <value nybble="11-12" title="Return Delay" comment="This determines the return delay after the pillar moves." comment2="A value of 64 is equal to one game second. A value of 255 is equal to four game seconds."/>
-  </sprite> <!-- #480: Morton's Skewer -->
 
   <sprite id="481" name="(Unused) Final Boss - Rubble Block" notes="A completely useless piece of decoration that was not directly used in the final Bowser Boss fight.">
     <dependency notes="While it can be placed, it only has two variants, has no collision, and requires Bowser in the level in order to function. It may be indirectly called on during the actual Bowser battle, however.">

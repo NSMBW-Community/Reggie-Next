@@ -8155,6 +8155,32 @@ class SpriteImage_BowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
         super().dataChanged()
 
 
+class SpriteImage_MortonSpikedStake(SLib.SpriteImage):  # 480
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.spritebox.shown = False
+        self.yOffset = -406
+        self.size = (64, 422)
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 36, 608, SLib.AuxiliaryTrackObject.Vertical))
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('MortonStakeM', 'stake_down_m_0.png')
+        SLib.loadIfNotInImageCache('MortonStakeE', 'stake_down_e_0.png')
+
+    def dataChanged(self):
+        super().dataChanged()
+
+        self.aux[0].setPos(36, 608)
+        self.aux[0].setSize(16, 160)
+
+    def paint(self, painter):
+        super().paint(painter)
+
+        painter.drawTiledPixmap(0, 0, 100, 592, ImageCache['MortonStakeM'])
+        painter.drawPixmap(0, 592, ImageCache['MortonStakeE'])
+
+
 class SpriteImage_FinalBossRubble(SLib.SpriteImage_StaticMultiple):  # 481
     def __init__(self, parent):
         super().__init__(parent)
@@ -8571,6 +8597,7 @@ ImageClasses = {
     477: SpriteImage_SuperGuideBlock,
     478: SpriteImage_BowserSwitchSm,
     479: SpriteImage_BowserSwitchLg,
+    480: SpriteImage_MortonSpikedStake,
     481: SpriteImage_FinalBossRubble,
     482: SpriteImage_FinalBossEffects,
 }
