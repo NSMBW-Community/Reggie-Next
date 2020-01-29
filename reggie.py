@@ -686,10 +686,7 @@ class SpriteDefinition:
             if n < 0 or n >= len(self.entries):
                 return None
 
-            if AdvancedModeEnabled:
-                return '%d: %s' % self.entries[n]
-
-            return str(self.entries[n][1])
+            return '%d: %s' % self.entries[n]
 
 
     def loadFrom(self, elem):
@@ -2947,7 +2944,6 @@ RealViewEnabled = False
 LocationsShown = True
 CommentsShown = True
 DrawEntIndicators = False
-AdvancedModeEnabled = False
 ObjectsFrozen = False
 SpritesFrozen = False
 EntrancesFrozen = False
@@ -10387,13 +10383,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.resetButton = QtWidgets.QPushButton(trans.string('SpriteDataEditor', 17))
         self.resetButton.clicked.connect(self.HandleResetData)
 
-        self.showRawData = QtWidgets.QPushButton(trans.string('SpriteDataEditor', 24))
-        self.showRawData.clicked.connect(self.HandleShowRawData)
-
         editboxlayout = QtWidgets.QHBoxLayout()
         editboxlayout.addWidget(self.resetButton)
         editboxlayout.addStretch(1)
-        editboxlayout.addWidget(self.showRawData)
         editboxlayout.addWidget(self.editbox)
         editboxlayout.addWidget(edit)
 
@@ -10694,19 +10686,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if ResetDataWhenHiding and not show:
                 self.insertvalue(data, 0)
 
-        def checkAdv(self):
-            """
-            Checks if we should show this setting
-            """
-
-            if not self.advanced or AdvancedModeEnabled:
-                return
-
-            # hide all widgets in this row
-            for i in range(self.layout.columnCount()):
-                if self.layout.itemAtPosition(self.row, i) is not None:
-                    self.layout.itemAtPosition(self.row, i).widget().setVisible(False)
-
         def ShowComment(self):
             """
             Sets the comment text
@@ -10787,7 +10766,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 button_com2 = None
 
-            if commentAdv is not None and AdvancedModeEnabled:
+            if commentAdv is not None:
                 button_adv = QtWidgets.QToolButton()
 
                 if not AltSettingIcons:
@@ -10851,7 +10830,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data, first)
-            self.checkAdv()
 
             value = ((self.retrieve(data) & self.mask) == self.mask)
             self.widget.setChecked(value)
@@ -10926,7 +10904,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 button_com2 = None
 
-            if commentAdv is not None and AdvancedModeEnabled:
+            if commentAdv is not None:
                 button_adv = QtWidgets.QToolButton()
 
                 if not AltSettingIcons:
@@ -10974,7 +10952,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data, first)
-            self.checkAdv()
 
             value = self.retrieve(data)
             if not self.model.existingLookup[value]:
@@ -11043,7 +11020,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 button_com2 = None
 
-            if commentAdv is not None and AdvancedModeEnabled:
+            if commentAdv is not None:
                 button_adv = QtWidgets.QToolButton()
 
                 if not AltSettingIcons:
@@ -11099,7 +11076,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data, first)
-            self.checkAdv()
 
             value = self.retrieve(data)
             self.widget.setValue(value)
@@ -11164,7 +11140,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 button_com2 = None
 
-            if commentAdv is not None and AdvancedModeEnabled:
+            if commentAdv is not None:
                 button_adv = QtWidgets.QToolButton()
 
                 if not AltSettingIcons:
@@ -11229,7 +11205,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data, first)
-            self.checkAdv()
 
             value = self.retrieve(data)
             i = self.bitnum
@@ -11325,7 +11300,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 button_com2 = None
 
-            if commentAdv is not None and AdvancedModeEnabled:
+            if commentAdv is not None:
                 button_adv = QtWidgets.QToolButton()
 
                 if not AltSettingIcons:
@@ -11376,7 +11351,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data, first)
-            self.checkAdv()
 
             value = self.retrieve(data)
             i = self.bitnum - 1
@@ -11469,7 +11443,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 button_com2 = None
 
-            if commentAdv is not None and AdvancedModeEnabled:
+            if commentAdv is not None:
                 button_adv = QtWidgets.QToolButton()
 
                 if not AltSettingIcons:
@@ -11529,7 +11503,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data, first)
-            self.checkAdv()
 
             value = self.retrieve(data) & 1
 
@@ -11594,7 +11567,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 button_com2 = None
 
-            if advancedcomment is not None and AdvancedModeEnabled:
+            if advancedcomment is not None:
                 button_adv = QtWidgets.QToolButton()
 
                 if not AltSettingIcons:
@@ -11663,7 +11636,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data, first)
-            self.checkAdv()
 
             self.dispvalue = self.retrieve(data)
             self.button.setText(self.getShortForValue(self.dispvalue))
@@ -11824,7 +11796,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 button_com2 = None
 
-            if commentAdv is not None and AdvancedModeEnabled:
+            if commentAdv is not None:
                 button_adv = QtWidgets.QToolButton()
 
                 if not AltSettingIcons:
@@ -11880,7 +11852,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             # check if requirements are met
             self.checkReq(data, first)
-            self.checkAdv()
 
             value = self.retrieve(data)
             i = self.bitnum - 1
@@ -11930,11 +11901,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     layout.removeWidget(widget)
                     widget.setParent(None)
 
-        # show the raw editor if advanced mode is enabled
-        self.showRawData.setVisible(not AdvancedModeEnabled)
-        self.raweditor.setVisible(AdvancedModeEnabled)
-        self.editbox.setVisible(AdvancedModeEnabled)
-        self.resetButton.setVisible(not HideResetSpritedata and (AdvancedModeEnabled or len(sprite.fields) > 0))
+        self.raweditor.setVisible(True)
+        self.editbox.setVisible(True)
+        self.resetButton.setVisible(not HideResetSpritedata and (len(sprite.fields) > 0))
 
         # show size stuff
         self.sizeButton.setVisible(sprite.size)
@@ -11967,7 +11936,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.notes = sprite.notes
 
         # advanced comment
-        self.advNoteButton.setVisible(AdvancedModeEnabled and sprite.advNotes is not None)
+        self.advNoteButton.setVisible(sprite.advNotes is not None)
         self.advNotes = sprite.advNotes
 
         self.relatedObjFilesButton.setVisible(sprite.relatedObjFiles is not None)
@@ -12379,14 +12348,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         else:
             self.raweditor.setStyleSheet('QLineEdit { background-color: #ffd2d2; }')
-
-    def HandleShowRawData(self, e):
-        """
-        Shows raw data
-        """
-        self.showRawData.setVisible(False)
-        self.raweditor.setVisible(True)
-        self.editbox.setVisible(True)
 
     def HandleSpritePlaced(self, id_, button_):
         self_ = self
@@ -15388,7 +15349,7 @@ class ReggieTranslation:
                 29: None,  # REMOVED: 'Use Old Tileset Picker',
                 30: 'You may need to restart Reggie Next for changes to take effect.',
                 31: 'Display lines indicating the leftmost x-position where entrances can be safely placed in zones',
-                32: 'Enable advanced mode',
+                32: None,  # REMOVED: 'Enable advanced mode',
                 33: 'Reset sprite data when hiding sprite fields',
                 34: 'Hide Reset Spritedata button',
                 35: 'Pad level with null bytes',
@@ -15450,7 +15411,7 @@ class ReggieTranslation:
                 21: 'Sprite [id]: suggested in area',
                 22: 'Sprite [id]: required in zone',
                 23: 'Sprite [id]: suggested in zone',
-                24: 'Show raw data',
+                24: None,  # REMOVED: 'Show raw data',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
@@ -19951,9 +19912,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Add the Zone Entrance Indicator checkbox
                 self.zEntIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 31))
 
-                # Advanced mode checkbox
-                self.advIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 32))
-
                 # Reset data when hide checkbox
                 self.rdhIndicator = QtWidgets.QCheckBox(trans.string('PrefsDlg', 33))
 
@@ -19977,7 +19935,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L.addWidget(self.epbIndicator)
                 L.addRow(trans.string('PrefsDlg', 36), self.psValue)
                 L.addWidget(self.zEntIndicator)
-                L.addWidget(self.advIndicator)
                 L.addWidget(self.rdhIndicator)
                 L.addWidget(self.erbIndicator)
                 self.setLayout(L)
@@ -20008,7 +19965,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                     i += 1
 
                 self.zEntIndicator.setChecked(DrawEntIndicators)
-                self.advIndicator.setChecked(AdvancedModeEnabled)
                 self.rdhIndicator.setChecked(ResetDataWhenHiding)
                 self.erbIndicator.setChecked(HideResetSpritedata)
 
@@ -22612,11 +22568,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         DrawEntIndicators = dlg.generalTab.zEntIndicator.isChecked()
         setSetting('ZoneEntIndicators', DrawEntIndicators)
 
-        # Get the advanced mode setting
-        global AdvancedModeEnabled
-        AdvancedModeEnabled = dlg.generalTab.advIndicator.isChecked()
-        setSetting('AdvancedMode', AdvancedModeEnabled)
-
         # Get the reset data when hiding setting
         global ResetDataWhenHiding
         ResetDataWhenHiding = dlg.generalTab.rdhIndicator.isChecked()
@@ -24805,7 +24756,7 @@ def main():
     global EnableAlpha, GridType, CollisionsShown, RealViewEnabled
     global ObjectsFrozen, SpritesFrozen, EntrancesFrozen, LocationsFrozen, PathsFrozen, CommentsFrozen
     global SpritesShown, SpriteImagesShown, LocationsShown, CommentsShown, PathsShown
-    global DrawEntIndicators, AdvancedModeEnabled, ResetDataWhenHiding, EnablePadding, PaddingLength
+    global DrawEntIndicators, ResetDataWhenHiding, EnablePadding, PaddingLength
 
     gt = setting('GridType')
 
@@ -24832,7 +24783,6 @@ def main():
     CommentsShown = setting('ShowComments', True)
     PathsShown = setting('ShowPaths', True)
     DrawEntIndicators = setting('ZoneEntIndicators', False)
-    AdvancedModeEnabled = setting('AdvancedMode', False)
     ResetDataWhenHiding = setting('ResetDataWhenHiding', False)
     EnablePadding = setting('EnablePadding', False)
     PaddingLength = int(setting('PaddingLength', 0))
