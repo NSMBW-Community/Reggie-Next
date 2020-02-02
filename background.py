@@ -157,9 +157,9 @@ class BGTab(QtWidgets.QWidget):
             mainLayout = QtWidgets.QGridLayout()
             mainLayout.addWidget(bgLabel, 0, 0, 1, 2)
             for i, box in enumerate(self.hex_boxes[-1]):
-                mainLayout.addWidget(box, i, 0)
+                mainLayout.addWidget(box, i + 1, 0)
             for i, box in enumerate(self.name_boxes[-1]):
-                mainLayout.addWidget(box, i, 1)
+                mainLayout.addWidget(box, i + 1, 1)
             mainLayout.addWidget(positionLabel, 4, 0)
             mainLayout.addLayout(Lpos, 5, 0)
             mainLayout.addWidget(scrollLabel, 4, 1)
@@ -242,8 +242,8 @@ class BGTab(QtWidgets.QWidget):
         scale = 0.75
         previews = (self.previewA, self.previewB)
         for slot_id, align_box in enumerate((self.alignA, self.alignB)):
-            for boxnum in (1, 2, 3):
-                val = '%04X' % self.hex_boxes[slot_id][boxnum].value()
+            for box_num in range(3):
+                val = '%04X' % self.hex_boxes[slot_id][box_num].value()
 
                 filename = globals_.gamedef.bgFile(val + '.png', 'ab'[slot_id])
                 if not os.path.isfile(filename):
@@ -251,7 +251,7 @@ class BGTab(QtWidgets.QWidget):
 
                 pix = QtGui.QPixmap(filename)
                 pix = pix.scaled(pix.width() * scale, pix.height() * scale)
-                previews[slot_id].setPixmap(pix)
+                previews[slot_id][box_num].setPixmap(pix)
 
             # Alignment mode
             box1 = self.hex_boxes[slot_id][0].value()
