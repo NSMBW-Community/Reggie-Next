@@ -1783,12 +1783,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                 """
                 Initializes the Toolbar Tab
                 """
-                # global FileActions
-                # global EditActions
-                # global ViewActions
-                # global SettingsActions
-                # global HelpActions
-
                 QtWidgets.QWidget.__init__(self)
 
                 # Determine which keys are activated
@@ -1798,7 +1792,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                     for List in (globals_.FileActions, globals_.EditActions, globals_.ViewActions, globals_.SettingsActions, globals_.HelpActions):
                         for name, activated, key in List:
                             toggled[key] = activated
-                else:  # Get the registry settings
+                else:
+                    # Get the settings from the .ini
                     toggled = setting('ToolbarActs')
                     newToggled = {}  # here, I'm replacing QStrings w/ python strings
                     for key in toggled:

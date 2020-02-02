@@ -13,8 +13,6 @@ class LevelScene(QtWidgets.QGraphicsScene):
     """
 
     def __init__(self, *args):
-        # global theme
-
         self.bgbrush = QtGui.QBrush(globals_.theme.color('bg'))
         QtWidgets.QGraphicsScene.__init__(self, *args)
 
@@ -113,7 +111,6 @@ class LevelScene(QtWidgets.QGraphicsScene):
             painter.restore()
 
     def getMainWindow(self):
-        # global globals_.mainWindow
         return globals_.mainWindow
 
 
@@ -606,7 +603,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.objx = x
                         obj.objy = y
 
-                        # global globals_.OverrideSnapping
                         globals_.OverrideSnapping = True
                         obj.setPos(x * 1.5, y * 1.5)
                         globals_.OverrideSnapping = False
@@ -740,8 +736,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Draws a foreground grid and other stuff
         """
-        # global theme
-
         # Draw Paint Tool Helpers
         if self.mouseGridPosition is not None and globals_.mainWindow.quickPaint is not None and globals_.mainWindow.quickPaint.QuickPaintMode is not None:
             gridpen = QtGui.QPen()

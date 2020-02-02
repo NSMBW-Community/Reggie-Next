@@ -839,12 +839,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Reads from the Preferences file and adds the appropriate options to the toolbar
         """
-        # global FileActions
-        # global EditActions
-        # global ViewActions
-        # global globals_.SettingsActions
-        # global globals_.HelpActions
-
         # First, define groups. Each group is isolated by separators.
         Groups = (
             (
@@ -3127,7 +3121,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 globals_.RestoredFromAutoSave = False
 
         # Turn the dirty flag off, and keep it that way
-        # global globals_.Dirty, globals_.DirtyOverride
         globals_.Dirty = False
         globals_.DirtyOverride += 1
 
@@ -3143,14 +3136,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Reset these here, because if they are set after
         # creating the objects, they use the old values.
-        # global globals_.CurrentLayer, globals_.Layer0Shown, globals_.Layer1Shown, globals_.Layer2Shown
         globals_.CurrentLayer = 1
         globals_.Layer0Shown = True
         globals_.Layer1Shown = True
         globals_.Layer2Shown = True
 
         # Prevent things from snapping when they're created
-        # global globals_.OverrideSnapping
         globals_.OverrideSnapping = True
 
         # Load the actual level
@@ -3548,8 +3539,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.actions['deselect'].setEnabled(False)
 
         if updateModeInfo:
-            # global globals_.DirtyOverride
-
             globals_.DirtyOverride += 1
             self.UpdateModeInfo()
             globals_.DirtyOverride -= 1
