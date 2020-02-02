@@ -2685,8 +2685,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle toggling of Real View
         """
-        # global globals_.RealViewEnabled
-
         globals_.RealViewEnabled = checked
         SLib.RealViewEnabled = globals_.RealViewEnabled
 
@@ -2755,8 +2753,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle toggling of comment visibility
         """
-        # global globals_.CommentsShown
-
         globals_.CommentsShown = checked
 
         if globals_.Area is not None:
@@ -2770,8 +2766,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle toggling of path visibility
         """
-        # global globals_.PathsShown
-
         globals_.PathsShown = checked
 
         if globals_.Area is not None:
@@ -2879,8 +2873,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle toggling of comments being frozen
         """
-        # global globals_.CommentsFrozen
-
         globals_.CommentsFrozen = checked
         flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
         flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
@@ -2897,8 +2889,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle switching of the grid view
         """
-        # global globals_.GridType
-
         if globals_.GridType is None:
             globals_.GridType = 'grid'
         elif globals_.GridType == 'grid':
@@ -3039,8 +3029,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Load a level from any game into the editor
         """
-        # global globals_.levName
-
         new = name is None
 
         # Get the file path, if possible
@@ -3077,7 +3065,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             name = checkname
 
             # Get the data
-            # global globals_.RestoredFromAutoSave
             if not globals_.RestoredFromAutoSave:
 
                 # Check if there is a file by this name
@@ -3177,7 +3164,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 startEnt = ent
                 break
 
-
         if startEnt is not None:
             self.view.centerOn(startEnt.objx * 1.5, startEnt.objy * 1.5)
         else:
@@ -3220,7 +3206,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
     def newLevel(self):
         # Create the new level object
-        # global globals_.Level
         globals_.Level = globals_.Level_NSMBW()
 
         # Load it
