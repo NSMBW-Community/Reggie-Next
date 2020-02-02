@@ -2426,37 +2426,32 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('Translation', name)
 
         # Get the Zone Entrance Indicators setting
-        # global DrawEntIndicators
-        DrawEntIndicators = dlg.generalTab.zEntIndicator.isChecked()
-        setSetting('ZoneEntIndicators', DrawEntIndicators)
+        globals_.DrawEntIndicators = dlg.generalTab.zEntIndicator.isChecked()
+        setSetting('ZoneEntIndicators', globals_.DrawEntIndicators)
 
         # Get the advanced mode setting
-        # global AdvancedModeEnabled
-        AdvancedModeEnabled = dlg.generalTab.advIndicator.isChecked()
-        setSetting('AdvancedMode', AdvancedModeEnabled)
+        globals_.AdvancedModeEnabled = dlg.generalTab.advIndicator.isChecked()
+        setSetting('AdvancedMode', globals_.AdvancedModeEnabled)
 
         # Get the reset data when hiding setting
-        # global ResetDataWhenHiding
-        ResetDataWhenHiding = dlg.generalTab.rdhIndicator.isChecked()
-        setSetting('ResetDataWhenHiding', ResetDataWhenHiding)
+        globals_.ResetDataWhenHiding = dlg.generalTab.rdhIndicator.isChecked()
+        setSetting('ResetDataWhenHiding', globals_.ResetDataWhenHiding)
 
         # Get the reset data when hiding setting
-        # global HideResetSpritedata
-        HideResetSpritedata = dlg.generalTab.erbIndicator.isChecked()
-        setSetting('HideResetSpritedata', HideResetSpritedata)
+        globals_.HideResetSpritedata = dlg.generalTab.erbIndicator.isChecked()
+        setSetting('HideResetSpritedata', globals_.HideResetSpritedata)
 
-        # global globals_.EnablePadding
         globals_.EnablePadding = dlg.generalTab.epbIndicator.isChecked()
         setSetting('EnablePadding', globals_.EnablePadding)
 
-        # global globals_.PaddingLength
         globals_.PaddingLength = dlg.generalTab.psValue.value()
         setSetting('PaddingLength', globals_.PaddingLength)
 
         # Get the Toolbar tab settings
         boxes = (
-        dlg.toolbarTab.FileBoxes, dlg.toolbarTab.EditBoxes, dlg.toolbarTab.ViewBoxes, dlg.toolbarTab.SettingsBoxes,
-        dlg.toolbarTab.HelpBoxes)
+            dlg.toolbarTab.FileBoxes, dlg.toolbarTab.EditBoxes, dlg.toolbarTab.ViewBoxes, dlg.toolbarTab.SettingsBoxes,
+            dlg.toolbarTab.HelpBoxes
+        )
         ToolbarSettings = {}
         for boxList in boxes:
             for box in boxList:
