@@ -1708,15 +1708,29 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Shows the help box
         """
-        QtGui.QDesktopServices.openUrl(
-            QtCore.QUrl.fromLocalFile(os.path.join(module_path(), 'reggiedata', 'help', 'index.html')))
+        mod_path = module_path()
+
+        file_path = os.path.join('reggiedata', 'help', 'index.html')
+        if mod_path is None:
+            file_path = os.path.join(os.getcwd(), file_path)
+        else:
+            file_path = os.path.join(mod_path, file_path)
+
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(file_path))
 
     def TipBox(self):
         """
         Reggie Next Tips and Commands
         """
-        QtGui.QDesktopServices.openUrl(
-            QtCore.QUrl.fromLocalFile(os.path.join(module_path(), 'reggiedata', 'help', 'tips.html')))
+        mod_path = module_path()
+
+        file_path = os.path.join('reggiedata', 'help', 'tips.html')
+        if mod_path is None:
+            file_path = os.path.join(os.getcwd(), file_path)
+        else:
+            file_path = os.path.join(mod_path, file_path)
+
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(file_path))
 
     def SelectAll(self):
         """
