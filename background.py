@@ -43,7 +43,6 @@ class BGDialog(QtWidgets.QDialog):
         mainLayout.addWidget(buttonBox)
         self.setLayout(mainLayout)
 
-# TODO: remove the exec calls
 class BGTab(QtWidgets.QWidget):
     def __init__(self, z):
         QtWidgets.QWidget.__init__(self)
