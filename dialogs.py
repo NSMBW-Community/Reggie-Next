@@ -742,8 +742,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks for sprite settings which are known to cause major glitches and crashes
         """
-        # global Area
-
         checkfor = []
         problem = False
         for sprite in globals_.Area.sprites:
@@ -826,45 +824,50 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
     def TooManySprites(self, mode='f'):
         """
-        Determines if the # of sprites in the current area is > max
+        Determines if the # of sprites in the current area is > max_
         """
-        # global Area
-        max = 1000
+        max_ = 1000
 
-        problem = len(globals_.Area.sprites) > max
+        problem = len(globals_.Area.sprites) > max_
+
         if mode == 'c':
             return problem
-        elif problem:
-            for spr in globals_.Area.sprites[max:]:
-                spr.delete()
-                spr.setSelected(False)
-                globals_.mainWindow.scene.removeItem(spr)
 
-            globals_.Area.sprites = globals_.Area.sprites[0:max]
-            globals_.mainWindow.scene.update()
-            globals_.mainWindow.levelOverview.update()
+        if not problem:
+            return None
+
+        for spr in globals_.Area.sprites[max_:]:
+            spr.delete()
+            spr.setSelected(False)
+            globals_.mainWindow.scene.removeItem(spr)
+
+        globals_.Area.sprites = globals_.Area.sprites[:max_]
+        globals_.mainWindow.scene.update()
+        globals_.mainWindow.levelOverview.update()
 
     def DuplicateEntranceIDs(self, mode='f'):
         """
-        Checks for the prescence of multiple entrances with the same ID
+        mode 'c': Checks for the prescence of multiple entrances with the same ID
+        mode 'f': Fixes the entrance id of the duplicate entrances
         """
-        # global Area
-
-        IDs = []
+        ids = []
         for ent in globals_.Area.entrances:
-            if ent.entid in IDs:
+            if ent.entid in ids:
                 if mode == 'c':
                     return False
-                else:
-                    # find the lowest available ID
-                    getids = [False for x in range(256)]
-                    for check in globals_.Area.entrances: getids[check.entid] = True
-                    minimumID = getids.index(False)
 
-                    ent.entid = minimumID
-                    ent.UpdateTooltip()
-                    ent.UpdateListItem()
-            IDs.append(ent.entid)
+                # find the lowest available ID
+                getids = [False for _ in range(256)]
+                for check in globals_.Area.entrances:
+                    getids[check.entid] = True
+
+                minimumID = getids.index(False)
+
+                ent.entid = minimumID
+                ent.UpdateTooltip()
+                ent.UpdateListItem()
+
+            ids.append(ent.entid)
 
         return False
 
