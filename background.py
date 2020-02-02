@@ -80,10 +80,16 @@ class BGTab(QtWidgets.QWidget):
         bg_zooms = z.ZoomA, z.ZoomB
         bg_scroll_vals = (z.XscrollA, z.YscrollA), (z.XscrollB, z.YscrollB)
 
+        self.hex_boxes = []
+        self.name_boxes = []
+        self.pos_boxes = []
+        self.scroll_boxes = []
+        self.zoom_boxes = []
+
         for slot_id, target_box in enumerate((self.BGASettings, self.BGBSettings)):
             # hex values
             self.hex_boxes.append((HexSpinBox(), HexSpinBox(), HexSpinBox()))
-            
+
             for box, value in zip(self.hex_boxes[-1], bg_vals[slot_id]):
                 box.setRange(0, 0xFFFF)
                 box.setValue(value)
