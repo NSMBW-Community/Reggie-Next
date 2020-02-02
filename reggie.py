@@ -2424,10 +2424,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.DrawEntIndicators = dlg.generalTab.zEntIndicator.isChecked()
         setSetting('ZoneEntIndicators', globals_.DrawEntIndicators)
 
-        # Get the advanced mode setting
-        globals_.AdvancedModeEnabled = dlg.generalTab.advIndicator.isChecked()
-        setSetting('AdvancedMode', globals_.AdvancedModeEnabled)
-
         # Get the reset data when hiding setting
         globals_.ResetDataWhenHiding = dlg.generalTab.rdhIndicator.isChecked()
         setSetting('ResetDataWhenHiding', globals_.ResetDataWhenHiding)
@@ -4590,8 +4586,8 @@ def main():
     globals_.CommentsShown = setting('ShowComments', True)
     globals_.PathsShown = setting('ShowPaths', True)
     globals_.DrawEntIndicators = setting('ZoneEntIndicators', False)
-    globals_.AdvancedModeEnabled = setting('AdvancedMode', False)
     globals_.ResetDataWhenHiding = setting('ResetDataWhenHiding', False)
+    globals_.HideResetSpritedata = setting('HideResetSpritedata', False)
     globals_.EnablePadding = setting('EnablePadding', False)
     globals_.PaddingLength = int(setting('PaddingLength', 0))
     SLib.RealViewEnabled = globals_.RealViewEnabled

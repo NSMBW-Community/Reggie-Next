@@ -2,7 +2,6 @@ import sys
 
 # TODO: remove globals that are only used by 1 file
 
-AdvancedModeEnabled = False
 AltSettingIcons = False
 Area = None
 AutoOpenScriptEnabled = False

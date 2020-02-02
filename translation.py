@@ -630,7 +630,7 @@ class ReggieTranslation:
                 29: None,  # REMOVED: 'Use Old Tileset Picker',
                 30: 'You may need to restart Reggie Next for changes to take effect.',
                 31: 'Display lines indicating the leftmost x-position where entrances can be safely placed in zones',
-                32: 'Enable advanced mode',
+                32: None,  # REMOVED: 'Enable advanced mode',
                 33: 'Reset sprite data when hiding sprite fields',
                 34: 'Hide Reset Spritedata button',
                 35: 'Pad level with null bytes',
@@ -691,7 +691,7 @@ class ReggieTranslation:
                 21: 'Sprite [id]: suggested in area',
                 22: 'Sprite [id]: required in zone',
                 23: 'Sprite [id]: suggested in zone',
-                24: 'Show raw data',
+                24: None,  # REMOVED: 'Show raw data',
                 25: 'This sprite has the following dependencies:',
             },
             'Sprites': {

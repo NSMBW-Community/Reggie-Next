@@ -445,10 +445,7 @@ class SpriteDefinition:
             if n < 0 or n >= len(self.entries):
                 return None
 
-            if globals_.AdvancedModeEnabled:
-                return '%d: %s' % self.entries[n]
-
-            return str(self.entries[n][1])
+            return '%d: %s' % self.entries[n]
 
 
     def loadFrom(self, elem):
@@ -1693,9 +1690,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Add the Zone Entrance Indicator checkbox
                 self.zEntIndicator = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 31))
 
-                # Advanced mode checkbox
-                self.advIndicator = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 32))
-
                 # Reset data when hide checkbox
                 self.rdhIndicator = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 33))
 
@@ -1719,7 +1713,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L.addWidget(self.epbIndicator)
                 L.addRow(globals_.trans.string('PrefsDlg', 36), self.psValue)
                 L.addWidget(self.zEntIndicator)
-                L.addWidget(self.advIndicator)
                 L.addWidget(self.rdhIndicator)
                 L.addWidget(self.erbIndicator)
                 self.setLayout(L)
@@ -1750,7 +1743,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                     i += 1
 
                 self.zEntIndicator.setChecked(globals_.DrawEntIndicators)
-                self.advIndicator.setChecked(globals_.AdvancedModeEnabled)
                 self.rdhIndicator.setChecked(globals_.ResetDataWhenHiding)
                 self.erbIndicator.setChecked(globals_.HideResetSpritedata)
 
