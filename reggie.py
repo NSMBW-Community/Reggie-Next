@@ -915,7 +915,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             for List in (globals_.FileActions, globals_.EditActions, globals_.ViewActions, globals_.SettingsActions, globals_.HelpActions):
                 for name, activated, key in List:
                     toggled[key] = activated
-        else:  # Get the registry settings
+        else:
+            # Get the settings from the .ini
             toggled = setting('ToolbarActs')
             newToggled = {}  # here, I'm replacing QStrings with python strings
             for key in toggled:
@@ -2886,8 +2887,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle zooming in
         """
         z = self.ZoomLevel
-        zi = self.ZoomLevels.index(z)
-        zi += 1
+        zi = self.ZoomLevels.index(z) + 1
         if zi < len(self.ZoomLevels):
             self.ZoomTo(self.ZoomLevels[zi])
 
@@ -2896,8 +2896,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle zooming out
         """
         z = self.ZoomLevel
-        zi = self.ZoomLevels.index(z)
-        zi -= 1
+        zi = self.ZoomLevels.index(z) - 1
         if zi >= 0:
             self.ZoomTo(self.ZoomLevels[zi])
 
@@ -2917,7 +2916,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle zooming to the maximum size
         """
-        self.ZoomTo(self.ZoomLevels[len(self.ZoomLevels) - 1])
+        self.ZoomTo(self.ZoomLevels[-1])
 
     def ZoomTo(self, z):
         """
@@ -2978,34 +2977,34 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handler for the main window close event
         """
-
         if self.CheckDirty():
             event.ignore()
-        else:
-            # save our state
-            self.spriteEditorDock.setVisible(False)
-            self.entranceEditorDock.setVisible(False)
-            self.pathEditorDock.setVisible(False)
-            self.locationEditorDock.setVisible(False)
-            self.defaultPropDock.setVisible(False)
+            return
 
-            # state: determines positions of docks
-            # geometry: determines the main window position
-            setSetting('MainWindowState', self.saveState(0))
-            setSetting('MainWindowGeometry', self.saveGeometry())
+        # save our state
+        self.spriteEditorDock.setVisible(False)
+        self.entranceEditorDock.setVisible(False)
+        self.pathEditorDock.setVisible(False)
+        self.locationEditorDock.setVisible(False)
+        self.defaultPropDock.setVisible(False)
 
-            if hasattr(self, 'HelpBoxInstance'):
-                self.HelpBoxInstance.close()
+        # state: determines positions of docks
+        # geometry: determines the main window position
+        setSetting('MainWindowState', self.saveState(0))
+        setSetting('MainWindowGeometry', self.saveGeometry())
 
-            if hasattr(self, 'TipsBoxInstance'):
-                self.TipsBoxInstance.close()
+        if hasattr(self, 'HelpBoxInstance'):
+            self.HelpBoxInstance.close()
 
-            globals_.gamedef .SetLastLevel(str(self.fileSavePath))
+        if hasattr(self, 'TipsBoxInstance'):
+            self.TipsBoxInstance.close()
 
-            setSetting('AutoSaveFilePath', None)
-            setSetting('AutoSaveFileData', 'x')
+        globals_.gamedef.SetLastLevel(str(self.fileSavePath))
 
-            event.accept()
+        setSetting('AutoSaveFilePath', None)
+        setSetting('AutoSaveFileData', 'x')
+
+        event.accept()
 
     def LoadLevel(self, game, name, isFullPath, areaNum):
         """
@@ -3024,7 +3023,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             checknames = []
             if isFullPath:
-                checknames = [name, ]
+                checknames = [name]
             else:
                 for ext in globals_.FileExtentions:
                     checknames.append(os.path.join(globals_.gamedef.GetGamePath(), name + ext))
