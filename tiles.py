@@ -598,15 +598,19 @@ def RenderObject(tileset, objnum, width, height, fullslope=False):
     dest = [[0] * width for _ in range(height)]
 
     # ignore non-existent objects
-    if tileset in globals_.ObjectDefinitions:
+    try:
         tileset_defs = globals_.ObjectDefinitions[tileset]
-    else:
+    except:
         tileset_defs = None
 
     if tileset_defs is None:
         return dest
 
-    obj = tileset_defs.get(objnum, None)
+    try:
+        obj = tileset_defs[objnum]
+    except:
+        obj = None
+
     if obj is None or len(obj.rows) == 0:
         return dest
 
@@ -647,6 +651,8 @@ def RenderObject(tileset, objnum, width, height, fullslope=False):
                 RenderStandardRow(dest[y], afterRepeat[y - height + ac], y, width)
             else:
                 RenderStandardRow(dest[y], inRepeat[(y - bc) % ic], y, width)
+
+    return dest
 
 
 def RenderStandardRow(dest, row, y, width):
