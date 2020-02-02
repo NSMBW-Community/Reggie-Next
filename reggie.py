@@ -41,19 +41,10 @@ if currentRunningVersion < minimum:
 
     raise Exception(errormsg)
 
-# # Stdlib imports
-# import importlib
-# import math
-# from math import sqrt
+# Stdlib imports
 import os.path
-# import pickle
-# from random import random as rand
-# import random
-# import struct
-# import threading
 import time
 import traceback
-# from xml.etree import ElementTree as etree
 
 # PyQt5: import, and error msg if not installed
 try:
@@ -90,26 +81,7 @@ import archive
 import sprites
 import spritelib as SLib
 
-
 import globals_
-from ui import GetIcon, SetAppStyle, GetDefaultStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme
-from misc import LoadActionsLists, LoadTilesetNames, LoadBgANames, LoadBgBNames, LoadConstantLists, LoadObjDescriptions, LoadSpriteData, LoadSpriteListData, LoadEntranceNames, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePath, isValidGamePath
-from misc2 import LevelScene, LevelViewWidget
-from dirty import setting, setSetting, SetDirty
-from gamedef import GameDefMenu, LoadGameDef
-from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem
-from dialogs import AutoSavedInfoDialog, DiagnosticToolDialog, ScreenCapChoiceDialog, AreaChoiceDialog, ObjectTypeSwapDialog, ObjectTilesetSwapDialog, ObjectShiftDialog, MetaInfoDialog, AboutDialog
-from background import BGDialog
-from zones import ZonesDialog
-from tiles import UnloadTileset, LoadTileset, LoadOverrides
-from area import AreaOptionsDialog
-from level import Level_NSMBW
-from quickpaint import QuickPaintOperations, QuickPaintConfigWidget
-from sidelists import Stamp, StampChooserWidget, SpriteList, SpritePickerWidget, ObjectPickerWidget, LevelOverviewWidget
-from spriteeditor import SpriteEditorWidget
-from editors import LocationEditorWidget, PathNodeEditorWidget, EntranceEditorWidget
-from undo import UndoStack
-from translation import LoadTranslation
 
 ################################################################################
 ################################################################################
@@ -131,15 +103,34 @@ else:
     del cython_available
     globals_.cython_available = True
 
+################################################################################
+################################################################################
+################################################################################
+
 if globals_.cython_available:
     import libs.lh_cy as lh
-#     import libs.lz77_cy as lz77
-#     import libs.tpl_cy as tpl
 
 else:
     import libs.lh as lh
-#     import libs.lz77 as lz77
-#     import libs.tpl as tpl
+
+from ui import GetIcon, SetAppStyle, GetDefaultStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme
+from misc import LoadActionsLists, LoadTilesetNames, LoadBgANames, LoadBgBNames, LoadConstantLists, LoadObjDescriptions, LoadSpriteData, LoadSpriteListData, LoadEntranceNames, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePath, isValidGamePath
+from misc2 import LevelScene, LevelViewWidget
+from dirty import setting, setSetting, SetDirty
+from gamedef import GameDefMenu, LoadGameDef
+from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem
+from dialogs import AutoSavedInfoDialog, DiagnosticToolDialog, ScreenCapChoiceDialog, AreaChoiceDialog, ObjectTypeSwapDialog, ObjectTilesetSwapDialog, ObjectShiftDialog, MetaInfoDialog, AboutDialog
+from background import BGDialog
+from zones import ZonesDialog
+from tiles import UnloadTileset, LoadTileset, LoadOverrides
+from area import AreaOptionsDialog
+from level import Level_NSMBW
+from quickpaint import QuickPaintOperations, QuickPaintConfigWidget
+from sidelists import Stamp, StampChooserWidget, SpriteList, SpritePickerWidget, ObjectPickerWidget, LevelOverviewWidget
+from spriteeditor import SpriteEditorWidget
+from editors import LocationEditorWidget, PathNodeEditorWidget, EntranceEditorWidget
+from undo import UndoStack
+from translation import LoadTranslation
 
 ################################################################################
 ################################################################################
