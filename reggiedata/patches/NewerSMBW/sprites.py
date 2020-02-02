@@ -1300,6 +1300,11 @@ class SpriteImage_LineEvent(SLib.SpriteImage):  # 244
 
 
 class SpriteImage_ElectricLine(SLib.SpriteImage_StaticMultiple):  # 250
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 48, 672))
+        self.aux[0].fillFlag = False
+        
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('ElectricLineLeft', 'electric_line_left.png')
@@ -1307,13 +1312,16 @@ class SpriteImage_ElectricLine(SLib.SpriteImage_StaticMultiple):  # 250
 
     def dataChanged(self):
         left = self.parent.spritedata[5] & 1
+        
         if left:
             self.image = ImageCache['ElectricLineLeft']
             self.offset = (-16, -128)
+            self.aux[0].setPos(24, -144)
         else:
             self.image = ImageCache['ElectricLineRight']
             self.offset = (-8, -128)
-
+            self.aux[0].setPos(-12, -144)
+        
         super().dataChanged()
 
 
@@ -1420,7 +1428,7 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 479
         SLib.loadIfNotInImageCache('MegaBuzzyF', 'megabuzzy_front.png')
         
         if 'MegaBuzzyRedR' in ImageCache: return
-        for style in ("Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Black", "ShyGuy", "Monty"):
+        for style in ('Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Black', 'ShyGuy', 'Monty'):
             buzzy = SLib.GetImg('megabuzzy_%s.png' % style, True)
             if buzzy is None: return
             ImageCache['MegaBuzzy%sR' % style] = QtGui.QPixmap.fromImage(buzzy)
@@ -1429,12 +1437,12 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 479
 
     def dataChanged(self):
     
-        direction = self.parent.spritedata[5] & 4
-        style = self.parent.spritedata[2] & 10
+        direction = self.parent.spritedata[5] & 3
+        style = (self.parent.spritedata[2] & 0xF) % 10
         dir = ("R", "L", "F", "R")[direction]
         colour = ("", "Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Black", "ShyGuy", "Monty")[style]
         
-        if 'MegaBuzzyShyGuyF' not in ImageCache: return
+        if 'MegaBuzzyMontyF' not in ImageCache: return
         self.image = ImageCache['MegaBuzzy%s%s' % (colour, dir)]
         
         if style == 8: # Shy Guy's offset

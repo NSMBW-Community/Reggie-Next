@@ -346,11 +346,7 @@
   
 <!-- Document Dependency. Check for Level/Area/Zone requirements. Ask Treeki about isBigBoss effects. -->
   <sprite id="19" name="World-4 Boss: Samurshai" asmhacks="True" noyoshi="True" notes="Samurai Shy Guy boss used by NewerSMBW.">
-    <dependency notes="">
-      <required sprite=""/> <!-- Kamek -->
-      <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite=""/> <!-- ??? -->
-    </dependency>
+    <dependency notes="The boss works fine without any other required sprite."></dependency>
     <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
   </sprite> <!-- #19: World-4 Boss: Samurshai -->
   
@@ -4326,8 +4322,8 @@
     <dualbox bit="48" title1="Shows when Active" title2="Hides when Active" comment="This determines how the Line God will act when the Triggering Event is activated." comment2="When the event is not active, the Line Guides will exist in the opposite state from what's listed."/>
   </sprite> <!-- #244: Line God Event -->
   
-  <sprite id="245" name="Newer Cutscene Controller: Ending" asmhacks="True" notes="&lt;font color=&quot;red&quot;&gt;This sprite is predominately hardcoded in how it functions. Custom usage is not recommended.&lt;/font&gt;" advancednotes="It needs a very specific level set-up to function. Shows the Bowser cutscene that runs in a separate level.">
-  </sprite> <!-- #245: Newer Cutscene Controller: Ending -->
+  <sprite id="245" name="Newer Cutscene Controller: Credits" asmhacks="True" notes="&lt;font color=&quot;red&quot;&gt;This sprite is predominately hardcoded in how it functions. Custom usage is not recommended.&lt;/font&gt;" advancednotes="It needs a very specific level set-up to function. Shows the Bowser ctscene that runs in a separate level.">
+  </sprite> <!-- #245: Newer Cutscene Controller: Credits -->
 
   <sprite id="246" name="Special Event" asmhacks="True" notes="This sprite can do all sorts of special functions, such as freezing actors, changing the size of sprites, editing the game Timer, and changing the gravity. This function is restricted to the active Zone. The settings available to each type will appear when selecting that option. Be sure to reset the Sprite Settings when switching between different typees in order to prevent any bugs.">
     <value bit="17-24" title="Triggering Event ID" comment="The Special Event is on as long as this Event is activated."/>
@@ -4529,7 +4525,7 @@
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite> <!-- #249: Horizontal Scroll Limiter - Bottom -->
   
-  <sprite id="250" name="Electric Line" asmhacks="True" notes="A tall electrified wall that will elecrtocute any player that touches it.">
+  <sprite id="250" name="Electric Line" asmhacks="True" notes="A tall electrified wall that will elecrtocute any player that touches it. It has a huge hitbox, indicated by the white outline." noyoshi="True" yoshinotes="Yoshi won't be hurt when touching the electricity.">
     <dependency notes="The Boss Controller for Bowser Jr's 2nd Fight must be included in the area to load the line. The game will crash otherwise.">
 	   <required sprite="405"/> <!-- Bowser Jr. 2nd Fight -->
 	</dependency>
@@ -4539,10 +4535,8 @@
   </sprite> <!-- #250: Electric Line -->
 
   <sprite id="251" name="World-7 Boss: Super Topman" asmhacks="True" notes="Large Topman boss used by NewerSMBW. It can be beaten by luring it into [250] Electric Lines.">
-    <dependency notes="Kamek and his controller should be included in the Area.">
+    <dependency notes="The boss works fine without any other required sprite, but the Electric Line is recommended.">
       <suggested sprite="250"/> <!-- Electric Line -->
-      <required sprite="427"/> <!-- Kamek -->
-      <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
     <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
   </sprite> <!-- #251: World-7 Boss: Super Topman -->
@@ -5183,7 +5177,7 @@
   </sprite> <!-- #287: (Unused) Path Controlled Ice Block -->
   
 <!-- Investigate Nybble 12 - Right = 2? If so, then it's suspected that Left = 1 and Towards Player = 0. True or False? -->
-  <sprite id="288" name="Rolling Barrel" asmhacks="True" notes="A barrel that will roll across the terrain breaking certain types of terrain and blocks.">
+  <sprite id="288" name="Rolling Barrel" asmhacks="True" notes="A barrel that will roll across the terrain breaking certain types of terrain and blocks. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;This sprite crashes the game in Newer.&lt;/font&gt;">
     <list nybble="6" title="Style" comment="This determines the style of the Rolling Barrel.">
       <entry value="0">Original</entry>
       <entry value="1">Metal</entry>
@@ -5669,8 +5663,8 @@
     <dualbox bit="40" title1="Wooden Box" title2="Metal Box" comment="This determines the type of box."/>
   </sprite> <!-- #318: Box Generator -->
   
-  <sprite id="319" name="Rotating Block" asmhacks="True" notes="A yellow block with two eyes that cannot be destroyed. When struck, it will spin, allowing passage through it for a limited time.">
-  </sprite> <!-- #319: Rotating Block -->
+  <sprite id="319" name="Flip Block" asmhacks="True" notes="A yellow block with two eyes that cannot be destroyed. When struck, it will spin, allowing passage through it for a limited time.">
+  </sprite> <!-- #319: Flip Block -->
   
 <!-- Graphical resources for the editor are missing. -->
 <!-- Research "Nybble 4" -->
