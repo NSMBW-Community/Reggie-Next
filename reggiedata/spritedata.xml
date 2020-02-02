@@ -4723,11 +4723,6 @@
       <entry value="6">Skull + 6 Platforms</entry>
       <entry value="7">Skull + 7 Platforms</entry>
     </list>
-    <list nybble="6" title="Color" comment="This determines the color of the Dragon Coaster." advancedcomment="More colors and styles can be added for your hack.">
-      <entry value="0">Original</entry>
-      <entry value="1">Light Blue</entry>
-      <entry value="2">Black</entry>
-    </list>
     <value nybble="10" title="Speed" comment="This determines how quickly the Dragon Coaster will travel along the Lines."/>
     <checkbox bit="44" title="Touch Activated" comment="When enabled, this platform will activate when all players are touching the Dragon Coaster." comment2="When not enabled, this platform will only activate when a platform with the same Dragon ID is activated through Touch Activation."/>
     <value nybble="5" title="Dragon ID" comment="This will pair multiple Dragon Coasters together so that when one of them starts, they all start at the same time." comment2="Do not pair more than one Dragon Coaster with [Touch Activated] enabled!" idtype="Dragon"/>
@@ -7309,8 +7304,9 @@
   </sprite> <!-- #479: Bowser Switch (Large) -->
 
   <sprite id="480" name="Morton's Skewer" notes="A spiked pillar for the Morton Koopa Tower Boss fight with a large amount of control over the timing values. It is 4 blocks wide, and 2 blocks tall when retracted. It extends downwards 9 additional blocks for a total of 10 below its placement.">
-    <dependency notes="This spiked pillar will only function as a part of the Morton Koopa Tower Boss fight.">
-      <required sprite="363"/>
+    <dependency notes="This spiked pillar will only move once Morton does his start-up animation when paired with his Tower Boss controlelr.">
+	  <suggested sprite="344"/>
+      <suggested sprite="363"/>
     </dependency>
     <value nybble="7-8" title="Initial Launch Delay" comment="This determines the launch delay prior to the first time the pillar moves." comment2="A value of 4 is equal to one game second."/>
     <value nybble="9-10" title="Launch Delay" comment="This determines the launch delay after the first time the pillar moves." comment2="A value of 64 is equal to one game second. A value of 255 is equal to four game seconds."/>

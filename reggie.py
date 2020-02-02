@@ -4565,11 +4565,6 @@ def main():
     globals_.app.setWindowIcon(GetIcon('reggie'))
     globals_.app.setApplicationDisplayName('Reggie Next %s' % globals_.ReggieVersionShort)
 
-    # global EnableAlpha, globals_.GridType, CollisionsShown, globals_.RealViewEnabled
-    # global ObjectsFrozen, SpritesFrozen, globals_.EntrancesFrozen, LocationsFrozen, PathsFrozen, globals_.CommentsFrozen
-    # global SpritesShown, SpriteImagesShown, globals_.LocationsShown, globals_.CommentsShown, globals_.PathsShown
-    # global DrawEntIndicators, AdvancedModeEnabled, ResetDataWhenHiding, globals_.EnablePadding, globals_.PaddingLength
-
     gt = setting('GridType')
 
     if gt == 'checker':
