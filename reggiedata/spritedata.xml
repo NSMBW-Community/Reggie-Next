@@ -6489,7 +6489,7 @@
     </list>
   </sprite> <!-- #407: Cutscene Controller - Castle Boss -->
 
-  <sprite id="408" name="Cutscene Controller - Bowser Jr and Peach at Castle" noyoshi="True" notes="This controller manages the Castle Boss's Airship cinematics and the level completion. ">
+  <sprite id="408" name="Cutscene Controller - Bowser Jr and Peach at Castle" noyoshi="True" notes="This controller manages the Castle Boss's Airship cinematics and the level completion.">
     <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the desired Castle's Boss Room in the Retail level.">
       <required sprite="407"/>
       <suggested sprite="192"/>
