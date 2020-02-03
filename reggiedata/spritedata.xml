@@ -3039,7 +3039,7 @@
     <value nybble="7" title="Tileset Column" comment="When using [Block Type: Tile from Pa(x)], you can spawn every tile from the tileset by selecting it from a grid formation. Each tileset contains 16 Rows (0-15), and 16 Columns (0-15). The first tile in the top left is 0,0 and the last tile in the bottom right is 15,15." comment2="Some common examples for Pa0: &lt;br&gt; &lt;i&gt;Coin: 1,14 | Coin Outline: 1,15 | ?-Block: 3,1 | Used Block: 3,2 | Wooden Block: 3,3 | Stone Block: 3,4 | Donut Lift: 3,5 | Steel Block: 3,6" requiredbit="33-36" requiredval="8-11"/> <!-- Appears only if Block Type (Tile) = 8-11 -->
   </sprite> <!-- #191: Tile God Event -->
 
-  <sprite id="192" name="Boss Controller - Larry Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 1 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+  <sprite id="192" name="Boss Controller - Larry Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 1 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -4580,11 +4580,6 @@
 
 <!-- Investigate Nybble 12 - Right = 2? If so, then it's suspected that Left = 1 and Towards Player = 0. True or False? -->
   <sprite id="288" name="Rolling Barrel" asmhacks="True" notes="A barrel that will roll across the terrain breaking certain types of terrain and blocks.">
-    <list nybble="6" title="Style" comment="This determines the style of the Rolling Barrel." advancedcomment="More colors and styles can be added for your hack.">
-      <entry value="0">Original</entry>
-      <entry value="1">Metal</entry>
-      <entry value="2">Oil Drum</entry>
-    </list>
     <dualbox bit="47" title1="Rolls Left" title2="Rolls Right" comment="This determines which direction the barrel will roll."/>
   </sprite> <!-- #288: Rolling Barrel -->
 
@@ -5101,8 +5096,8 @@
     <dualbox bit="40" title1="Wooden Box" title2="Metal Box" comment="This determines the type of box."/>
   </sprite> <!-- #318: Box Generator -->
 
-  <sprite id="319" name="Rotating Block" asmhacks="True" notes="A yellow block with two eyes that cannot be destroyed. When struck, it will spin, allowing passage through it for a limited time.">
-  </sprite> <!-- #319: Rotating Block -->
+  <sprite id="319" name="(Unused) Wiimote Controlled Door" notes="Spawns a giant unenterable door that loads in front of Mario. You can open it by tilting the Wii Remote.">
+  </sprite> <!-- #319: ="(Unused) Wiimote Controlled Door -->
 
 <!-- Graphical resources for the editor are missing. -->
 <!-- Research "Nybble 4" -->
@@ -5562,7 +5557,7 @@
     </dependency>
   </sprite> <!-- #348: Ludwig von Koopa -->
 
-  <sprite id="349" name="Boss Controller - Morton Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+  <sprite id="349" name="Boss Controller - Morton Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5854,7 +5849,7 @@
     </list>
   </sprite> <!-- #363: Boss Controller - Tower Boss -->
 
-  <sprite id="364" name="Boss Controller - Roy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+  <sprite id="364" name="Boss Controller - Roy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 2 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5862,7 +5857,7 @@
     </dependency>
   </sprite> <!-- #364: Boss Controller - Roy Koopa -->
 
-  <sprite id="365" name="Boss Controller - Ludwig von Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+  <sprite id="365" name="Boss Controller - Ludwig von Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 7 Castle, such as the boss movement, and camera options. All tiles the controller spawns are behind Layer 1. The white square indicates the placement for the Castle Boss Cutscene controller. The rectangle indicates the placement of the Brick blocks destroyed during the cutscene. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5964,7 +5959,7 @@
     </list>
   </sprite> <!-- #371: Rolling Hill Coin -->
 
-  <sprite id="372" name="Boss Controller - Iggy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 5 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+  <sprite id="372" name="Boss Controller - Iggy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 5 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5988,7 +5983,7 @@
     <dualbox bit="48" title1="Snow" title2="Sandstorm" comment="This determines the functionality of the sprite."/>
   </sprite> <!-- #374: Effect - Falling Objects and Wind -->
 
-  <sprite id="375" name="Boss Controller - Wendy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 4 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+  <sprite id="375" name="Boss Controller - Wendy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 4 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -6054,7 +6049,7 @@
     <value nybble="12" title="Length" comment="This determines the length of the Pipe."/>
   </sprite> <!-- #380: Warp Pipe - Left -->
 
-  <sprite id="381" name="Boss Controller - Lemmy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 3 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+  <sprite id="381" name="Boss Controller - Lemmy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 3 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
