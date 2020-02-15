@@ -25,10 +25,107 @@
 <!-- Sizehacks Check - 63, 98, 113, 156, 357 -->
 <!-- Stopped after Line xxxx / 10755 (#x) -->
 <sprites>
-  <sprite id="0" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="0" name="Mario Jumps! [TESTING ONLY]" notes="This Glitch Mario has been repurposed for use in the level editor as a means of approximating Mario's athletic prowess.">
+    <list bit="17-20" title="Powerup Type" comment="This determines which Powerup or Object will be displayed.">
+      <entry value="0">Super Mario</entry>
+      <!--<entry value="1">Small Mario</entry>-->
+      <entry value="2">Propeller Mario</entry>
+      <entry value="3">Mini Mario</entry>
+      <entry value="4">Yoshi Jumps</entry>
+      <entry value="5">Bouncy Jumps</entry>
+    </list>
+    <list bit="21-24" title="Jump Type: Super Mario" comment="This determines which type of jump will be displayed." requiredbit="17-20" requiredval="0-1">
+      <entry value="0">Running Jump</entry>
+      <entry value="1">Running Second-Jump</entry>
+      <entry value="2">Running Third-Jump</entry>
+      <entry value="3">Wall Jump</entry>
+    </list>
+    <list bit="21-24" title="Jump Type: Propeller Mario" comment="This determines which type of jump will be displayed." requiredbit="17-20" requiredval="2">
+      <entry value="0">Normal Jump</entry>
+      <entry value="1">Constant Spin / Shake</entry>
+    </list>
+    <list bit="21-24" title="Jump Type: Mini Mario" comment="This determines which type of jump will be displayed." requiredbit="17-20" requiredval="3">
+      <entry value="0">Running Jump</entry>
+      <entry value="1">Running Second-Jump</entry>
+      <entry value="2">Running Third-Jump</entry>
+      <entry value="3">Wall Jump</entry>
+    </list>
+    <list bit="21-24" title="Jump Type: Yoshi Jumps" comment="This determines which type of jump will be displayed." requiredbit="17-20" requiredval="4">
+      <entry value="0">Normal Jump with Flutter</entry>
+      <entry value="1">Flutter Only</entry>
+      <entry value="2">Dismount</entry>
+    </list>
+    <list bit="21-24" title="Jump Type: Bouncy Jumps" comment="This determines which type of jump will be displayed." requiredbit="17-20" requiredval="5">
+      <entry value="0">Springboard: Neutral</entry>
+      <entry value="1">Springboard: Maximum</entry>
+      <entry value="2">Checkered Block: Neutral</entry>
+      <entry value="3">Checkered Block: Maximum</entry>
+      <entry value="4">Cloud: Neutral</entry>
+      <entry value="5">Cloud: Maximum</entry>
+    </list>
+    <dualbox bit="25" title1="Facing Right" title2="Facing Left" comment="This determines which direction the jump is facing, when applicable."/>
+    <checkbox bit="26" title="Add Spin" comment="Enabling this adds an extra block to account for a single Spin / Wii Remote shake."/>
+    <checkbox bit="27" title="Vertical Override" comment="Enabling this uses the vertical-only image for Propeller and Bouncy." requiredbit="21-24" requiredval="2"/>
+    <checkbox bit="27" title="Vertical Override" comment="Enabling this uses the vertical-only image for Propeller and Bouncy." requiredbit="21-24" requiredval="5"/>
+  </sprite> <!-- #0: Mario Jumps [TESTING ONLY] -->
+  
   <sprite id="1" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
   <sprite id="2" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
   <sprite id="3" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="4" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="5" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="6" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="7" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="8" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  
+  <sprite id="9" name="(Unused) Glitch Player Actor" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is the most stable version of all the &quot;Glitch Marios.&quot; (#0-#9)&lt;br&gt;It creates a stationary Player clone. The clone will not move, and will shoot Fireballs if the matching player has the Fire Flower powerup. Other possible functions are untested. It's possible the game utilizes this data to create a temporary player actor at Entrances for no-control load-ins before switching to a controlled player actor. Additionally, depending on the position of this sprite relative to an Entrance, this Player Actor can sometimes be controlled instead of the one created by the entrance.">
+    <dualbox bit="24" title1="Faces Right" title2="Faces Left" comment="This determines which way the spawned Player Actor faces." advanced="True"/>
+    <list nybble="7-8" title="Load-In Animation" comment="This determines what animation is used by the spawned Player Actor when it is first loaded." comment2="This value uses the same list and order as normal entrances. Every value creates a character at its position. Compared to normal entrances, Mario will be positioned on top of the sprite's placement and not inside it. The 3D model is stationary and does not move." advanced="True">
+      <entry value="0">Normal</entry>
+      <entry value="1">Normal</entry>
+      <entry value="2">Door Exit</entry>
+      <entry value="3">Pipe Facing Up</entry>
+      <entry value="4">Pipe Facing Down</entry>
+      <entry value="5">Pipe Facing Left</entry>
+      <entry value="6">Pipe Facing Right</entry>
+      <entry value="7">Falling (Fast)</entry>
+      <entry value="8">Ground-Pound</entry>
+      <entry value="9">Sliding</entry>
+      <entry value="10">Swimming</entry>
+      <entry value="11">Normal</entry>
+      <entry value="12">Normal</entry>
+      <entry value="13">Normal</entry>
+      <entry value="14">Out of nothing</entry>
+      <entry value="15">Out of nothing</entry>
+      <entry value="16">Mini Pipe Facing Up</entry>
+      <entry value="17">Mini Pipe Facing Down</entry>
+      <entry value="18">Mini Pipe Facing Left</entry>
+      <entry value="19">Mini Pipe Facing Right</entry>
+      <entry value="20">Jumping (Facing Right)</entry>
+      <entry value="21">Beanstalk Entrance</entry>
+      <entry value="22">Pipe Facing Towards Screen</entry>
+      <entry value="23">Boss Entrance (Standing)</entry>
+      <entry value="24">Jumping (Facing Left)</entry>
+      <entry value="25">Boss Entrance (Jumping Right)</entry>
+      <entry value="26">Boss Entrance (Falling Right)</entry>
+      <entry value="27">Door Entrance</entry>
+      <entry value="28">Unknown (CRASH)</entry>
+      <entry value="29">Unknown (FREEZE)</entry>
+    </list>
+    <list bit="47-48" title="Character" comment="This determines which character will be spawned." advanced="True">
+      <entry value="0">Mario</entry>
+      <entry value="1">Luigi</entry>
+      <entry value="2">Yellow Toad</entry>
+      <entry value="3">Blue Toad</entry>
+    </list>
+  </sprite> <!-- #9: (Unused) Glitch Player Actor -->
+  
+  <sprite id="1" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  
+  <sprite id="2" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  
+  <sprite id="3" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  
   <sprite id="4" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
   <sprite id="5" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
   <sprite id="6" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
@@ -77,48 +174,18 @@
     </list>
   </sprite> <!-- #9: (Unused) Glitch Player Actor -->
 
-  <sprite id="10" name="Unused">
-  </sprite> <!-- #10: Unused -->  
-
-  <sprite id="11" name="Unused">
-  </sprite> <!-- #11: Unused -->  
-
-  <sprite id="12" name="Unused">
-  </sprite> <!-- #12: Unused -->  
-
-  <sprite id="13" name="Unused">
-  </sprite> <!-- #13: Unused -->  
-
-  <sprite id="14" name="Unused">
-  </sprite> <!-- #14: Unused -->  
-
-  <sprite id="15" name="Unused">
-  </sprite> <!-- #15: Unused -->  
-
-  <sprite id="16" name="Unused">
-  </sprite> <!-- #16: Unused -->  
-
-  <sprite id="17" name="Unused">
-  </sprite> <!-- #17: Unused -->
-  
-  <sprite id="18" name="Unused">
-  </sprite> <!-- #18: Unused -->
-  
-  <sprite id="19" name="Unused">
-  </sprite> <!-- #19: Unused -->
+  <sprite id="10" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #10: Unused -->
+  <sprite id="11" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #11: Unused -->
+  <sprite id="12" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #12: Unused -->
+  <sprite id="13" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #13: Unused -->
+  <sprite id="14" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #14: Unused -->
+  <sprite id="15" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #15: Unused -->
+  <sprite id="16" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #16: Unused -->
+  <sprite id="17" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #17: Unused -->
+  <sprite id="18" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #18: Unused -->
+  <sprite id="19" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #19: Unused -->
   
   <sprite id="20" name="Goomba" asmhacks="True" sizehacks="True" notes="Your standard Goomba. Place it in the level and it will walk towards Mario when it loads.">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Goomba." advancedcomment="More colors can be added for your hack.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Gloomba</entry>
-      <entry value="2">Hyper</entry>
-      <entry value="3">Bella</entry>
-      <entry value="4">Red</entry>
-      <entry value="5">Blue</entry>
-      <entry value="6">Gray</entry>
-      <entry value="7">Santa</entry>
-      <entry value="8">Gray Santa</entry>
-    </list> <!-- Update [21] Paragoomba and [99] Pipe Enemy Generator when new items are added to this list! -->
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the Goomba placing it further behind other sprites."/>
     <list nybble="12" title="Load-In Animation" comment="This value affects the spawning animation of the Goomba. This is useful for Goombas within range of a nearby Entrance. Jumps and Tumble will result in it landing on the platform below where it was initially placed.">
       <entry value="0">Normal</entry>
@@ -131,61 +198,29 @@
   </sprite> <!-- #20: Goomba -->
 
   <sprite id="21" name="Paragoomba" asmhacks="True" sizehacks="True" notes="A Goomba with wings that will flutter towards Mario when it loads.">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Paragoomba." advancedcomment="More colors can be added for your hack.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Gloomba</entry>
-      <entry value="2">Hyper</entry>
-      <entry value="3">Bella</entry>
-      <entry value="4">Red</entry>
-      <entry value="5">Blue</entry>
-      <entry value="6">Gray</entry>
-      <entry value="7">Santa (No Wings)</entry>
-      <entry value="8">Gray Santa (No Wings)</entry>
-    </list>
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the Paragoomba placing it further behind other sprites."/>
   </sprite> <!-- #21: Paragoomba -->
 
-  <sprite id="22" name="Unused">
-  </sprite> <!-- #22: Unused -->  
+  <sprite id="22" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #22: Unused -->
 
   <sprite id="23" name="Basic Platform - Horizontal Movement" notes="The most basic platform in the game. Moves on its own from left to right.">
     <dualbox bit="27" title1="Normal Model" title2="boss_koopa_lift.arc" advanced="True" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
-    <dualbox bit="28" title1="Gold Platform" title2="Silver Platform" comment="This will set the color of the platform." requiredbit="27" requiredval="0"/>
-    <dualbox bit="28" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used. The default texture model is the Gold Platform." requiredbit="27"/>
+    <dualbox bit="28" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requiredbit="27" requiredval="0"/>
+    <dualbox bit="28" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used. The default texture model is the Gold Platform." advanced="True" requiredbit="27"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
-    <dualbox bit="32" title1="Stars moving Right" title2="Starts moving Left" comment="This determines which direction the platform will initially start moving in."/>
+    <dualbox bit="32" title1="Starts moving Right" title2="Starts moving Left" comment="This determines which direction the platform will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the platform will move."/>
-    <dualbox bit="24" title1="Fast" title2="Slow" comment="This determines the speed the platform will move." advancedcomment="The exact speed difference between the two speeds is a 5:9 ratio."/>
+    <dualbox bit="24" title1="Fast" title2="Slow" comment="This determines the speed the platform will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox bit="20" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
-    <value bit="10-16" title="Triggering Event ID" comment="Maximum usable value for this sprite is 64." requiredbit="20" idtype="Triggering Event"/>
+    <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #23: Basic Platform - Horizontal Movement -->
 
-  <sprite id="24" name="Buzzy Beetle" asmhacks="True" sizehacks="True" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads. It will turn around when it reaches ledges and blocks are treated the same as terrain.">
-    <list nybble="6" title="Color" comment="This determines the color of the Buzzy Beetle." advancedcomment="More colors can be added for your hack.">
-      <entry value="0">Original</entry>
-      <entry value="1">Red</entry>
-      <entry value="2">Orange</entry>
-      <entry value="3">Yellow</entry>
-      <entry value="4">Green</entry>
-      <entry value="5">Blue</entry>
-      <entry value="6">Violet</entry>
-      <entry value="7">Black</entry>
-    </list>
-    <checkbox bit="47" title="Inside Shell" comment="When enabled, the Buzzy Beetle will spawn inside his shell. He will eventually climb out and resume walking, even if set to be upside-down. Upside-down shells will fall without spinning towards the player."/>
+  <sprite id="24" name="Buzzy Beetle" asmhacks="True" sizehacks="True" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads. It will turn around when it reaches ledges and blocks are treated the same as terrain. It will turn around if it walks into lava, but die if it falls into it.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Buzzy Beetle will be upside-down and able to cling to and walk on ceilings if placed adjacent to them. If not placed adjacent, he will immediately fall and spin towards the player."/>
+    <checkbox bit="47" title="Inside Shell" comment="When enabled, the Buzzy Beetle will spawn inside his shell. He will eventually climb out and resume walking, even if set to be upside-down. Upside-down shells will fall without spinning towards the player."/>
   </sprite> <!-- #24: Buzzy Beetle -->
 
   <sprite id="25" name="Spiny" asmhacks="True" sizehacks="True" notes="A Spiny that walks along the ground.">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Spiny." comment2="Any Spiny that uses the Balled Up animation will initially use the original red color. Additionally, the Sidestepper's shell has no texture, so it flickers through all the other colors.">
-      <entry value="0">Original</entry>
-      <entry value="1">Orange</entry>
-      <entry value="2">Yellow</entry>
-      <entry value="3">Green</entry>
-      <entry value="4">Blue</entry>
-      <entry value="5">Violet</entry>
-      <entry value="6">Black</entry>
-      <entry value="7">Sidestepper</entry>
-    </list>
     <list bit="47-48" title="Load-In Animation" comment="This will determine which animation state is used by the Spiny when it is first loaded.">
       <entry value="0">Normal (Towards Player)</entry>
       <entry value="1">Balled Up (Lakitu) (Default Direction)</entry>
@@ -195,58 +230,49 @@
     <checkbox bit="44" title="Unknown Flag 11" advanced="True" advancedcomment="Unused flag with unknown effects."/>
   </sprite> <!-- #25: Spiny -->
 
-<!-- Research Unknown Flag 12 -->
+  <!-- Research Unknown Flag 12 -->
   <sprite id="26" name="Upside-Down Spiny" sizehacks="True" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading.">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Spiny.">
-      <entry value="0">Original</entry>
-      <entry value="1">Orange</entry>
-      <entry value="2">Yellow</entry>
-      <entry value="3">Green</entry>
-      <entry value="4">Blue</entry>
-      <entry value="5">Violet</entry>
-      <entry value="6">Black</entry>
-      <entry value="7">Sidestepper</entry>
-    </list>
 	<checkbox bit="32" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
     <checkbox bit="48" title="Unknown Flag 12" advanced="True" advancedcomment="Used in Retail: 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 
+  <!-- Confirm Slow Down functions the same as Basic Platform. -->
   <sprite id="27" name="Stone Block (NSMB-DS) - Vertical Movement" notes="An unused Stone Block style moving platform. It is solid so it cannot be jumped through. It was originally used in NSMB DS and the code was added to NSMBW but not used.">
-    <list bit="35-36" title="Height">
+    <list bit="35-36" title="Height" comment="This determines the height of the block.">
       <entry value="0">1 Tile</entry>
       <entry value="1">2 Tiles</entry>
       <entry value="2">4 Tiles</entry>
       <entry value="3">8 Tiles</entry>
     </list>
-    <value bit="46-48" title="Width" comment="Width should not be set unless [Height] is set to 1 Tile." requiredbit="35-36" requiredval="0"/>
-    <value bit="46-48" title="Width (Buggy)" comment="Width should not be set unless [Height] is set to 1 Tile." advanced="True" advancedcomment="When [Height] is set above 1 Tile, the center of the block will not be textured. Please keep this in mind." requiredbit="35-36"/>
-    <dualbox bit="32" title1="Starts moving Up" title2="Starts moving Down" comment="This determines which direction the platform will initially start moving in."/>
-    <value nybble="10" title="Movement Distance"/>
-    <checkbox bit="24" title="Slow Down" comment="When enabled, the platform will..."/>
-    <checkbox bit="20" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
-    <value bit="10-16" title="Triggering Event ID" comment="Maximum usable value for this sprite is 64." requiredbit="20" idtype="Triggering Event"/>
+    <value bit="46-48" title="Width" comment="This determines the width of the block. Width should not be used unless [Height] is set to 1 Tile." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requiredbit="35-36" requiredval="0"/>
+    <value bit="46-48" title="Width (Buggy)" comment="This determines the width of the block." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requiredbit="35-36"/>
+    <dualbox bit="32" title1="Starts moving Up" title2="Starts moving Down" comment="This determines which direction the block will initially start moving in."/>
+    <value nybble="10" title="Movement Distance" comment="This determines the distance the block will move."/>
+    <dualbox bit="24" title1="Fast" title2="Slow" comment="This determines the speed the block will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
+    <checkbox bit="20" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated."/>
+    <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #27: Stone Block (NSMB-DS) - Vertical Movement -->
-
+  
   <sprite id="28" name="Stone Block (NSMB-DS) - Horizontal Movement" notes="An unused Stone Block style moving platform. It is solid so it cannot be jumped through. It was originally used in NSMB DS and the code was added to NSMBW but not used.">
-    <list bit="35-36" title="Height">
+    <list bit="35-36" title="Height" comment="This determines the height of the block.">
       <entry value="0">1 Tile</entry>
       <entry value="1">2 Tiles</entry>
       <entry value="2">4 Tiles</entry>
       <entry value="3">8 Tiles</entry>
     </list>
-    <value bit="46-48" title="Width" comment="Width should not be set unless [Height] is set to 1 Tile." requiredbit="35-36" requiredval="0"/>
-    <value bit="46-48" title="Width (Buggy)" comment="Width should not be set unless [Height] is set to 1 Tile." advanced="True" advancedcomment="When [Height] is set above 1 Tile, the center of the block will not be textured. Please keep this in mind." requiredbit="35-36"/>
-    <dualbox bit="32" title1="Starts moving Right" title2="Starts moving Left" comment="This determines which direction the platform will initially start moving in."/>
-    <value nybble="10" title="Movement Distance"/>
-    <checkbox bit="24" title="Slow Down" comment="When enabled, the platform will..."/>
-    <checkbox bit="20" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
-    <value bit="10-16" title="Triggering Event ID" comment="Maximum usable value for this sprite is 64." requiredbit="20" idtype="Triggering Event"/>
+    <value bit="46-48" title="Width" comment="This determines the width of the block. Width should not be used unless [Height] is set to 1 Tile." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requiredbit="35-36" requiredval="0"/>
+    <value bit="46-48" title="Width (Buggy)" comment="This determines the width of the block." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requiredbit="35-36"/>
+    <dualbox bit="32" title1="Starts moving Right" title2="Starts moving Left" comment="This determines which direction the block will initially start moving in."/>
+    <value nybble="10" title="Movement Distance" comment="This determines the distance the block will move."/>
+    <dualbox bit="24" title1="Fast" title2="Slow" comment="This determines the speed the block will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
+    <checkbox bit="20" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated."/>
+    <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #28: Stone Block (NSMB-DS) - Horizontal Movement -->
 
   <sprite id="29" name="Incomplete Platform - Ac_Lift_ObjBg_HMove_Big" notes="This sprite does not load. Settings are the same as in sprite 28. We're currently unsure why this sprite does not load. &lt;br&gt;Needs RE (reverse-engineering) data to figure out the issue.">
   </sprite> <!-- #29: Incomplete Platform - Ac_Lift_ObjBG_HMove_Big -->
 
-  <sprite id="30" name="Grey Tiled Block" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. A custom texture was applied for NewerSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  <sprite id="30" name="Grey Tiled Block" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">2 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -299,52 +325,55 @@
       <entry value="2">Normal</entry>
       <entry value="3">Fast</entry>
     </list>
-    <checkbox bit="20" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
-    <value bit="10-16" title="Triggering Event ID" comment="This determines which Event must be activated for the platform to appear." comment2="Maximum usable value for this sprite is 64." requiredbit="20" idtype="Triggering Event"/>
+    <checkbox bit="20" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated, for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
+    <value bit="10-16" title="Triggering Event ID" comment="This determines which Event must be activated for the platform to appear." requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #30: Grey Tiled Block -->
 
-  <sprite id="31" name="Basic Platform - Vertical Movement" notes="The most basic platform in the game. Moves on its own from left to right.">
+  <sprite id="31" name="Basic Platform - Vertical Movement" notes="The most basic platform in the game. Moves on its own, upwards and downwards.">
     <dualbox bit="27" title1="Normal Model" title2="boss_koopa_lift.arc" advanced="True" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
-    <dualbox bit="28" title1="Gold Platform" title2="Silver Platform" comment="This will set the color of the platform." requiredbit="27" requiredval="0"/>
+    <dualbox bit="28" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requiredbit="27" requiredval="0"/>
     <dualbox bit="28" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used." requiredbit="27"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
     <dualbox bit="32" title1="Stars moving Up" title2="Starts moving Down" comment="This determines which direction the platform will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the platform will move."/>
     <dualbox bit="24" title1="Fast" title2="Slow" comment="This determines the speed the platform will move." advancedcomment="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox bit="20" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
-    <value bit="10-16" title="Triggering Event ID" comment="Maximum usable value for this sprite is 64." requiredbit="20" idtype="Triggering Event"/>
+    <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #31: Basic Platform - Vertical Movement -->
 
   <sprite id="32" name="Star Coin" sizehacks="True" notes="The Star Coin is a level-wide collectible. The player's goal is to collect all three to complete their savefile.">
-    <list bit="39-40" title="Coin Number" comment="This determines which Star Coin flag will be set for the level when this Star Coin is collected." comment2="If multiple Star Coins with the same number are placed, duplicate entries will not load if the player has already collected one that attempt.">
+    <list bit="39-40" title="Coin Number" comment="This determines which Star Coin flag will be set for the level when this Star Coin is collected." comment2="Multiple Star Coins with the same [Coin Number] can be placed. However, once one of them is collected, the duplicate entries will not load.">
       <entry value="0">First Coin</entry>
       <entry value="1">Second Coin</entry>
       <entry value="2">Third Coin</entry>
     </list>
-    <checkbox bit="48" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the Star Coin placing it further behind other sprites."/>
+    <checkbox bit="48" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Star Coin placing it further behind other sprites."/>
     <checkbox bit="36" title="Place Behind Chainlink Fence" comment="When enabled, the Star Coin can only be collected if the player is on the reverse side of a Chainlink Fence."/>
     <checkbox bit="44" title="Falls when POW is Used" comment="The Star Coin will fall to the ground if a POW effect is triggered."/>
-    <value bit="2-8" title="Target Event ID" comment="When the Star Coin is collected, the Target Event ID will be activated." comment2="Maximum usable value for this sprite is 64." idtype="Target Event"/>
+    <value bit="2-8" title="Target Event ID" comment="When the Star Coin is collected, the Target Event ID will be activated." idtype="Target Event"/>
     <dualbox bit="28" title1="Triggers a Timed Event" title2="Permanently activates Target Event" comment="This determines if the Target Event is timed or permanent. Timed events will pause the music and replace it with ticking." requiredbit="2-8"/>
     <value bit="19-20" title="Unknown List 5" advanced="True" advancedcomment="ASM shows Nybble 5 might affect something."/>
+      <entry value="0">???</entry>
+      <entry value="1">???</entry>
+      <entry value="2">???</entry>
+      <entry value="3">???</entry>
     <value nybble="8" title="Unknown Value 8" advanced="True" advancedcomment="ASM shows Nybble 8 might affect something."/>
   </sprite> <!-- #32: Star Coin -->
 
-  <sprite id="33" name="Event Controller - Zone Enter" notes="When the zone is loaded, all Zone Enter Event Controllers will activate and change the status of their associated Event IDs. Note that Event IDs 1-33 are stored Level-wide, and not per Area or Zone. By using this controller in a midway room, you can clear those Event flags or set them to start activated.">
-    <value bit="9-16" title="Target Event ID" comment="This Event ID will be modified when the zone loads." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
+  <sprite id="33" name="Event Controller - Zone Enter" notes="When the zone is loaded, all 'Zone Enter' Event Controllers will activate and modify the status of their associated Event IDs. Note that Event IDs 1-33 are stored Level-wide, and not per Area or Zone. By using this controller in a midway room, you can clear those Event flags or set them to start activated.">
+    <value bit="9-16" title="Target Event ID" comment="This Event ID will be modified when the zone loads." idtype="Target Event"/>
     <dualbox bit="44" title1="Deactivates Target Event" title2="Activates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are activated."/>
-    <value nybble="5-6" title="Time Activated" comment="Set the amount of time the Target Event will be activated for before deactivating. A value of 0 will not deactivate on its own." requiredbit="44"/>
-    <checkbox bit="48" title="Does Nothing / Self Destructs" comment="Makes the Event Controller skip its function and delete itself." advanced="True" advancedcomment="Why make this?? Silly Nintendo."/>
+    <value nybble="5-6" title="Time Activated" comment="This determines the amount of time the Target Event will be activated for before deactivating." comment2="A value of 0 will not deactivate on its own." requiredbit="44"/>
+    <checkbox bit="48" title="Does Nothing / Self Destructs" comment="When enabled, the Event Controller will skip its function and delete itself." advanced="True" advancedcomment="Why make this?? Silly Nintendo."/>
   </sprite> <!-- #33: Event Controller - Zone Enter -->
 
-<!-- Needs tested to confirm Activate/Deactivate are correct in their descriptions. -->
-  <sprite id="34" name="Event Controller - &quot;AND&quot; (If X AND Y, do Z)" notes="This sprite works by allowing up to 4 Event IDs to be required to modify a single Event. Not all Triggering Event IDs must be set to a relevant value. You can and should leave unused Triggering Event IDs as '0'. You should also fill Triggering IDs in numerical order. Using the same value into multiple slots may cause issues in the editor.">
-    <value bit="9-16" title="Target Event ID" comment="This event will be modified when all set Triggering Events are activated." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
+  <sprite id="34" name="Event Controller - &quot;AND&quot; (If X AND Y, do Z)" notes="This Event Controller works by allowing up to 4 Event IDs to be required to modify a single Event. Not all Triggering Event IDs must be set to a relevant value. You can and should leave unused Triggering Event IDs as '0'. You should also fill Triggering IDs in numerical order. Using the same value with multiple Event ID slots may cause issues in the editor.">
+    <value bit="9-16" title="Target Event ID" comment="This event will be modified when all set Triggering Events are activated." idtype="Target Event"/>
     <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are activated."/>
-    <value bit="1-8" title="Triggering Event ID 1" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <value bit="17-24" title="Triggering Event ID 2" requiredbit="1-8" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Multiple Triggering Event IDtypes may not function -->
-    <value bit="25-32" title="Triggering Event ID 3" requiredbit="17-24" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Multiple Triggering Event IDtypes may not function -->
-    <value bit="33-40" title="Triggering Event ID 4" requiredbit="25-32" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Multiple Triggering Event IDtypes may not function -->
+    <value bit="1-8" title="Triggering Event ID 1" comment="All Triggering Events must be enabled for this Event Controller to function. A value of 0 is ignored." comment2="If you find yourself experiencing issues, please try resetting this Sprite's Settings." idtype="Triggering Event"/>
+    <value bit="17-24" title="Triggering Event ID 2" requiredbit="1-8" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
+    <value bit="25-32" title="Triggering Event ID 3" requiredbit="17-24" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
+    <value bit="33-40" title="Triggering Event ID 4" requiredbit="25-32" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
     <list bit="43-44" title="Usage Mode" comment="This will determine how often the Target Event ID will be modified." comment2="Single Use: When all Triggering Events become active, the Target Event will be modified, and the controller will not affect the Target Event again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time all Triggering Events become active, the Target Event will be modified. &lt;br&gt; &lt;br&gt;Only While Active: Each time all Triggering Events become active, the Target Event will be modified. When this condition is no longer met, the Target Event will have the opposite state applied to it.">
       <entry value="0">Single Use</entry>
       <entry value="1">Multi-Use</entry>
@@ -352,115 +381,101 @@
     </list>
   </sprite> <!-- #34: Event Controller - "AND" (If X AND Y, do Z) -->
 
-<!-- Needs tested to confirm Activate/Deactivate are correct in their descriptions. -->
-  <sprite id="35" name="Event Controller - &quot;OR&quot; (If X OR Y, do Z)" notes="This sprite works by allowing up to 4 Event IDs to be able to modify a single Event. Not all Triggering Event IDs must be set to a relevant value. You can and should leave unused Triggering Event IDs as '0'. You should also fill Triggering IDs in numerical order. Using the same value into multiple slots may cause issues in the editor.">
-    <value bit="9-16" title="Target Event ID" comment="This event will be modified when all set Triggering Events are activated." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
+  <sprite id="35" name="Event Controller - &quot;OR&quot; (If X OR Y, do Z)" notes="This Event Controller works by allowing up to 4 Event IDs to be able to modify a single Event. Not all Triggering Event IDs must be set to a relevant value. You can and should leave unused Triggering Event IDs as '0'. You should also fill Triggering IDs in numerical order. Using the same value with multiple Event ID slots may cause issues in the editor.">
+    <value bit="9-16" title="Target Event ID" comment="This event will be modified when any of the set Triggering Events are activated." idtype="Target Event"/>
     <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are activated."/>
-    <value bit="1-8" title="Triggering Event ID 1" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <value bit="17-24" title="Triggering Event ID 2" requiredbit="1-8" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Multiple Triggering Event IDtypes may not function -->
-    <value bit="25-32" title="Triggering Event ID 3" requiredbit="17-24" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Multiple Triggering Event IDtypes may not function -->
-    <value bit="33-40" title="Triggering Event ID 4" requiredbit="25-32" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Multiple Triggering Event IDtypes may not function -->
-    <list bit="43-44" title="Usage Mode" comment="This will determine how often the Target Event ID will be modified." comment2="Single Use: When any Triggering Event becomes active, the Target Event will be modified, and the controller will not affect the Target Event again even if a different Triggering Event becomes active. &lt;br&gt; &lt;br&gt;Multi-Use: Each time any Triggering Event becomes active, the Target Event will be modified. &lt;br&gt; &lt;br&gt;Only While Active: When any of the Triggering Events become active, the Target Event will be modified. When this condition is no longer met, the Target Event will have the opposite state applied to it.">
+    <value bit="1-8" title="Triggering Event ID 1" comment="Any Triggering Events that are enabled will cause this Event Controller to function. A value of 0 is ignored." comment2="If you find yourself experiencing issues, please try resetting this Sprite's Settings." idtype="Triggering Event"/>
+    <value bit="17-24" title="Triggering Event ID 2" requiredbit="1-8" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
+    <value bit="25-32" title="Triggering Event ID 3" requiredbit="17-24" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
+    <value bit="33-40" title="Triggering Event ID 4" requiredbit="25-32" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
+    <list bit="43-44" title="Usage Mode" comment="This will determine how often the Target Event ID will be modified." comment2="Single Use: When any Triggering Event becomes active, the Target Event will be modified, and the controller will not affect the Target Event again even if a different Triggering Event becomes active. &lt;br&gt; &lt;br&gt;Multi-Use: Each time any Triggering Event becomes active, the Target Event will be modified. &lt;br&gt; &lt;br&gt;Only While Active: When any of the Triggering Events become active, the Target Event will be modified. When this condition is no longer met by any of the Triggering Events, the Target Event will have the opposite state applied to it.">
       <entry value="0">Single Use</entry>
       <entry value="1">Multi-Use</entry>
       <entry value="2">Only While Active (Any)</entry>
     </list>
   </sprite> <!-- #35: Event Controller - "OR" (If X OR Y, do Z) -->
 
-  <sprite id="36" name="Event Controller - &quot;RANDOM&quot; (If X, do Y OR Z)" notes="This event controller can cause one of the four random IDs to trigger if a relevant Event ID has been activated. You do not have to use all four Random ID slots, and you can use the same ID on multiple slots. &lt;br&gt;&lt;br&gt;Example: ID A in slot 1, ID A in slot 2 and ID B in slot 3 will cause 2/3 chance of A being activated and 1/3 chance of B.">
-    <value bit="1-8" title="Target Event ID 1" idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <value bit="17-24" title="Target Event ID 2" requiredbit="1-8" idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Multiple Target Event IDtypes may not function -->
-    <value bit="25-32" title="Target Event ID 3" requiredbit="17-24" idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Multiple Target Event IDtypes may not function -->
-    <value bit="33-40" title="Target Event ID 4" requiredbit="25-32" idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Multiple Target Event IDtypes may not function -->
+  <sprite id="36" name="Event Controller - &quot;RANDOM&quot; (If X, do Y OR Z)" notes="This Event Controller can cause one of the four random IDs to trigger if the relevant Event ID has been activated. You do not have to use all four Random ID slots, and you can use the same Event ID on multiple slots. &lt;br&gt;&lt;br&gt;Example: ID A in slot 1, ID A in slot 2 and ID B in slot 3 will cause 2/3 chance of A being activated and 1/3 chance of B.">
+    <value bit="1-8" title="Target Event ID 1" comment="Not all Target Event IDs are required to be used, and you can affect the probability by using the same Event ID in multiple slots." comment2="If you find yourself experiencing issues, please try resetting this Sprite's Settings." idtype="Target Event"/>
+    <value bit="17-24" title="Target Event ID 2" requiredbit="1-8" idtype="Target Event"/> <!-- Multiple Target Event IDtypes may not function -->
+    <value bit="25-32" title="Target Event ID 3" requiredbit="17-24" idtype="Target Event"/> <!-- Multiple Target Event IDtypes may not function -->
+    <value bit="33-40" title="Target Event ID 4" requiredbit="25-32" idtype="Target Event"/> <!-- Multiple Target Event IDtypes may not function -->
     <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are activated."/>
-    <value bit="9-16" title="Triggering Event ID" comment="This event will cause one of the available Target Events to be modified at random." idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs -->
+    <value bit="9-16" title="Triggering Event ID" comment="This event will cause one of the available Target Events to be modified at random." idtype="Triggering Event"/>
     <dualbox bit="44" title1="Single Use" title2="Multi-Use" comment="This determines how often a Target Event ID can be modified by the controller." comment2="Single Use: When the Triggering Event becomes active, a Target Event will be modified, and the controller will not affect any Target Event again even if the Triggering Event becomes active again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time the Triggering Event becomes active, a Target Event will be modified. This means you must deactivate the Triggering Event ID before the controller can attempt to activate another Target ID."/>
   </sprite> <!-- #36: Event Controller - "RANDOM" (If X, do Y OR Z) -->
-
-  <sprite id="37" name="Event Controller - Chainer (If X, do Y)" notes="This event controller will link two events together. When the Triggering Event ID is activated, the Target Event ID will be modified. It's also possible to define a duration the Target Event will stay active, or a delay until the Target Event becomes active.">
-    <value bit="1-8" title="Triggering Event ID" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the Triggering Event is activated." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <dualbox bit="48" title1="Deactivates Target Event" title2="Activates Target Event" comment="This determines how the Target Event is modified." requiredbit="17-24" requiredval="0"/> <!-- Appears if no Delay is set -->
+  
+  <sprite id="37" name="Event Controller - Chainer (If X, do Y)" notes="This Event Controller will link two events together. When the condition of the Triggering Event ID is met, the Target Event ID will be modified. It's also possible to define a duration the Target Event will stay active, or a delay until the Target Event becomes active.">
+    <value bit="1-8" title="Triggering Event ID" comment="This event will trigger the activation of this Event Controller." idtype="Triggering Event"/>
+    <dualbox bit="32" title1="Triggers from Activation" title2="Triggers from Deactivation" comment="This determines the event state that activates this Event Controller." comment2="The event state must be triggered from the opposite state, first. It is specifically the activation or deactivation that is checked, not the actual status of the event."/>
+    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the Triggering Event is activated." idtype="Target Event"/>
+    <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="17-24" requiredval="0"/> <!-- Appears if no Delay is set -->
     <dualbox bit="48" title1="Off; On after Delay" title2="On; Off after Duration" comment="This determines how the Target Event is modified both before and after the delay." requiredbit="17-24"/> <!-- Appears if Delay is set -->
-    <value bit="17-24" title="Activation Delay/Duration" comment="The Target Event will be modified instantly. When this is set to 0, the Target Event will not be modified further. Otherwise, it will wait a specific amount of time before placing it in the reverse state." comment2="A value of 6 is approximately 1 second on the game's clock. A value of 60 is approximately the same as a Timed Switch or Red Ring."/>
-    <dualbox bit="44" title1="Single Use" title2="Multi-Use" comment="This determines how often the Target Event ID can be modified by the controller." comment2="Single Use: When the Triggering Event becomes active, the Target Event will be modified, and the controller will not affect the Target Event again even if the Triggering Event becomes active again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time the Triggering Event becomes active from a deactivated state, the Target Event will be modified. If the delay is still running, the delay will be refreshed to its full value."/>
+    <value bit="17-24" title="Activation Delay/Duration" comment="The Target Event will be modified instantly. When this is set to 0, the Target Event will not be modified further. Otherwise, it will place it in the reverse state then wait a specific amount of time before modifying it again." comment2="A value of 6 is approximately 1 second on the game's clock. &lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring."/>
+    <dualbox bit="44" title1="Single Use" title2="Multi-Use" comment="This determines how often the Target Event ID can be modified by the controller." comment2="Single Use: When the condition of the Triggering Event is met, the Target Event will be modified, and the controller will not affect the Target Event again even if the condition of the Triggering Event is subsequently met again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time the condition of the Triggering Event is met, the Target Event will be modified. If the delay is still running, the delay will be refreshed to its full value."/>
   </sprite> <!-- #37: Event Controller - Chainer (If X, do Y) -->
-
-<!-- Improve comment2 on bit48, combined with Enemy Location ID. See comment chunk below for existing description. -->
-<!-- Specifically in regards to the state of the event when the conditions are not met. Must it first be met for it to revert? Expected: Yes, like other controllers it does not affect the event until it has been activated once. -->
+  
+  <!-- Improve comment2 on bit48, combined with Enemy Location ID. See comment chunk below for existing description. -->
+  <!-- Specifically in regards to the state of the event when the conditions are not met. Must it first be met for it to revert? Expected: Yes, like other controllers it does not affect the event until it has been activated once. -->
   <sprite id="38" name="Event Controller - &quot;IF&quot; (Uses Locations)" noyoshi="True" notes="This event controller will modify a Target Event ID if matching player or enemy conditions within a predefined location. &lt;br&gt;&lt;br&gt;&lt;b&gt;Note:&lt;/b&gt; Some sprites are not counted as enemies, for example the Spike Ball. 'Loose Coins', on the other hand, are treated as enemies. Use a sprite like [396] to test what the game considers enemies.">
-    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the Location ID conditions are satisfied." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are satisfied." comment2="For locations with an Enemy Location ID, the reverse status will only be applied when...? For locations with only a Player Location ID, the reverse status will only be applied when...?"/>
+    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the Location ID conditions are satisfied." idtype="Target Event"/>
+    <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are satisfied." comment2="For locations with an Enemy Location ID, the reverse status will only be applied when...? For locations with only a Player Location ID, the reverse status will only be applied when...? Specifically, is the reverse condition immediately applied upon level load when it's found to not be met, or will it only apply the reverse condition after the positive condition is met? Or even more confusingly, will the reverse condition be activated when HALF of the condition is temporarily met for the first time?"/>
+    <checkbox nybble="5-6" title="Ignore Player Location" mask="255" comment="When enabled, the Event Controller will ignore [Player Status] and [Player Power-up Status] completely when determining if it will modify the Target Event."/>
     <value nybble="5-6" title="Player Location ID" comment="The Target Event will be modified if [Player Status] and [Player Power-up Status] are satisfied while within this Location ID." requiredbit="17-24" requiredval="0-254"/>
-    <checkbox nybble="5-6" title="Ignore Player Location" mask="255" comment="Enabling this will have the controller ignore [Player Status] and [Player Power-up Status] completely when determining if it will modify the Target Event."/>
-    <list nybble="10" title="Player Status" comment="When [Player Location ID] is set, the Target Event will only be triggered if a player's physical location matches this condition. Measurements will always correspond to the center of the player's feet and the lowest pixel." comment2="Within: The Target Event is only modified if a player is inside the Player Location. &lt;br&gt;&lt;br&gt;Ground: The Target Event is only modified if a player is touching the ground while inside the Player Location.&lt;br&gt;&lt;br&gt;Air: The Target Event is only modified if a player is jumping or otherwise not touching the ground but is still inside the Player Location.">
+    <list nybble="10" title="Player Status" comment="When [Player Location ID] is set, the Target Event will only be triggered if a player's physical location matches this condition. Measurements will always correspond to the center of the player's feet and the lowest pixel." comment2="Within: The Target Event is only modified if a player is inside the Player Location. &lt;br&gt;&lt;br&gt;Ground: The Target Event is only modified if a player is touching the ground while inside the Player Location.&lt;br&gt;&lt;br&gt;Air: The Target Event is only modified if a player is jumping or otherwise not touching the ground but is still inside the Player Location.&lt;br&gt;&lt;br&gt;Climbing: The Target Event is only modified if a player is in a climbing state, such as on a vine or chainlink fence." requiredbit="17-24" requiredval="0-254">
       <entry value="0">Within</entry>
       <entry value="1">Ground</entry>
       <entry value="2">Air</entry>
       <entry value="3">Climbing</entry>
     </list>
-    <list nybble="9" title="Player Power-up Status" comment="When [Player Location ID] is set, the Target Event will only be triggered if the Player's power-up matches the one specified here." comment2="Currently, Ice Flower, Propeller Cap, Penguin Suit, and Hammer Suit are not available to check for.">
+    <list nybble="9" title="Player Power-up Status" comment="When [Player Location ID] is set, the Target Event will only be triggered if the Player's power-up matches the one specified here." comment2="Currently, Ice Flower, Propeller Cap, Penguin Suit, and Hammer Suit are unavailable to check for." requiredbit="17-24" requiredval="0-254">
       <entry value="0">Any Status</entry>
       <entry value="1">No Power-up</entry>
       <entry value="2">Mushroom</entry>
       <entry value="3">Fire Flower</entry>
       <entry value="4">Mini Mushroom</entry>
-      <entry value="5">Mini Mushroom</entry>
-      <entry value="6">No Power-up</entry>
       <entry value="7">Star</entry>
-      <entry value="8">Star</entry>
-      <entry value="9">Star</entry>
-      <entry value="10">Star</entry>
-      <entry value="11">Star</entry>
-      <entry value="12">Star</entry>
-      <entry value="13">Star</entry>
-      <entry value="14">Star</entry>
-      <entry value="15">Star</entry>
+      <!--<entry value="5">Mini Mushroom</entry>-->
+      <!--<entry value="6">No Power-up</entry>-->
+      <!--<entry value="8">Star (8-15)</entry>-->
     </list>
-    <value nybble="7-8" title="Enemy Location ID" comment="The Target Event is only modified if there is at least one enemy sprite inside this Location ID."/>
-    <checkbox nybble="7-8" title="Ignore Enemy Location" mask="255" comment="Enabling this will have the controller ignore the requirement to have at least one enemy involved when determining if it will modify the Target Event."/>
-    <list bit="43-44" title="Usage Mode" comment="This will determine how often the Target Event ID will be modified." comment2="Single Use: When the player and enemy conditions are satisfied, the Target Event will be modified, and the controller will not affect the Target Event again even if the conditions later become satisfied again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time the player and enemy conditions are satisfied, the Target Event will be modified. &lt;br&gt; &lt;br&gt;Only While Satisfied: The Target Event will only be modified while the player and enemy conditions are satisfied. When they are not actively being satisfied, the Target Event is set to the opposite state instead.">
+    <checkbox nybble="7-8" title="Ignore Enemy Location" mask="255" comment="When enabled, the Event Controller will ignore the requirement to have at least one enemy within a Location ID when determining if it will modify the Target Event."/>
+    <value nybble="7-8" title="Enemy Location ID" comment="The Target Event is only modified if there is at least one enemy sprite inside this Location ID." requiredbit="25-32" requiredval="0-254"/>
+    <list bit="43-44" title="Usage Mode" comment="This will determine how often the Target Event ID will be modified." comment2="Single Use: When the player and enemy conditions are both satisfied, the Target Event will be modified, and the controller will not affect the Target Event again even if the conditions later become satisfied again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time the player and enemy conditions are both satisfied, the Target Event will be modified. &lt;br&gt; &lt;br&gt;Only While Satisfied: The Target Event will only be modified while the player and enemy conditions are both satisfied. When either or both are not actively being satisfied, the Target Event is set to the opposite state instead. Additionally, this flags the event as 'activated' every frame.">
       <entry value="0">Single Use</entry>
       <entry value="1">Multi-Use</entry>
       <entry value="2">Only While Satisfied</entry>
     </list>
     <!-- Simplify this information for use above: "If this option is set to &quot;Deactivates Target&quot;, the activation modes will be reversed - for example, Activation Mode 2 will deactivate the event while you're touching the location, and reactivate it when you leave.&lt;br&gt;&lt;br&gt;Note on locations for Enemies that have &quot;Deactivates Target&quot; set: The opposite effect of the controller becomes active when Mario gets close enough to the sprite to load it into memory. The opposite effect of the controller is always active though. The event is deactivated while the enemy touches the location, and will reactivate when it leaves. As stated before, this special behavior is only valid for enemy-'deactivated' Locations." -->
   </sprite> <!-- #38: Event Controller - "IF" (Uses Locations) -->
-
-  <sprite id="39" name="Event Controller - Multi-Chainer (If X, do Y THROUGH Z)" notes="This event controller will run its code when the Start Event ID is activated. It will then activate each Event ID from ('Start Event ID' + 1) to 'End Event ID' (including it). While you cannot use this to deactivate events directly, if you use the Only While Active mode, activating and then deactivating the Start Event ID will cause the event controller to instead deactivate the events it just activated.">
-    <value bit="1-8" title="Start Event ID" comment="The Multi-Chainer will start running when this Event ID is activated." idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <value bit="9-16" title="End Event ID" comment="The Multi-Chainer will activate all Events from the Start Event ID to this Event ID (including this one). The value entered here must be larger than the value entered for 'Start Event ID'" idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
+  
+  <sprite id="39" name="Event Controller - Multi-Chainer (If X, do Y THROUGH Z)" notes="This Event Controller will run its code when the Start Event ID is activated. It will then activate each Event ID from ['Start Event ID' + 1] through ['End Event ID']. While you cannot use this to deactivate events directly, if you use the Only While Active mode, activating and then deactivating the Start Event ID will cause the event controller to instead deactivate the events it just activated.">
+    <value bit="1-8" title="Start Event ID" comment="The Multi-Chainer will start running when this Event ID is activated." idtype="Triggering Event"/>
+    <value bit="9-16" title="End Event ID" comment="The Multi-Chainer will activate all Events from the Start Event ID to this Event ID (including this one)." comment2="The value entered here must be larger than the value entered for 'Start Event ID'" idtype="Target Event"/>
     <value nybble="5-6" title="Delay" comment="The Multi-Chainer will wait this amount of time between activating each event." comment2="A value of 6 is approximately 1 second on the game's clock." requiredbit="44" requiredval="0"/>
     <value nybble="5-6" title="Delay" comment="The Multi-Chainer will wait this amount of time between activating/deactivating each event." comment2="A value of 6 is approximately 1 second on the game's clock." requiredbit="44"/> <!-- Appears if Only While Active is selected for better clarification of its effect. -->
     <dualbox bit="44" title1="Single Run" title2="Only While Active" comment="This will determine if the Multi-Chainer will only run once, or if it can deactivate the events with the potential to activate them again." comment2="Single Run: When the Start Event ID is first activated, the Multi-Chainer will activate all events through End Event ID and then cease functioning. &lt;br&gt; &lt;br&gt;Only While Active: Every time the Start Event ID is activated, the Multi-Chainer will begin to activate all events through End Event ID. Every time the Start Event ID is deactivated, the Multi-Chainer will begin to deactivate all events through End Event ID."/>
   </sprite> <!-- #39: Event Controller - Multi-Chainer (If X, do Y THROUGH Z) -->
 
-<!-- Possible additional Usage Mode, Value 2 in Nybble 10 -->
-  <sprite id="40" name="&quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="This is the basic stand-alone switch. When triggered, it only modifies the Target Event.">
-    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing down. Upside-Down switches cannot be set to fall."/>
-    <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms. It does not work with conveyor belts." requiredbit="48" requiredval="0"/> <!-- Disappears if Upside-Down is enabled -->
-    <list bit="29-32" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should." advancedcomment="More styles can be added for your hack.">
-      <entry value="0">Standard Question Mark (Original)</entry>
-      <entry value="1">Standard Question Mark</entry>
-      <entry value="2">! with Explosion (Tile God)</entry>
-      <entry value="3">Two Arrows Forming a Circle (Flipper)</entry>
-      <entry value="4">Up and Down Arrows (Raise + Lower)</entry>
-    </list>
-    <dualbox bit="28" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use."/>
+  <!-- Possible additional Usage Mode, Value 2 in Nybble 10 -->
+  <sprite id="40" name="&quot;?&quot; Switch (Orange)" notes="This is the basic stand-alone switch. When triggered, it modifies the Target Event.">
+    <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
+    <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set." requiredbit="48" requiredval="0"/> <!-- Disappears if Upside-Down is enabled -->
+    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/>
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
+    <dualbox bit="28" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This will determine if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/>
-    <list bit="23-24" title="Delay on Multi-Use" comment="This will set how long the switch takes to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
-      <entry value="0">Instantly</entry>
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/>
+    <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
+      <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
       <entry value="3">Long Delay</entry>
       <entry value="1">Very Long Delay</entry>
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
-    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Disappears if Multi-Use is set -->
-    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
+    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #40: "?" Switch (Orange) -->
 
   <sprite id="41" name="&quot;P&quot; Switch (Blue)" sizehacks="True" notes="This switch is similar to the ? Switch, but it has the additional abilitiy of causing all Blue Coins (tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality. &lt;br&gt; &lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block.">
@@ -485,142 +500,107 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #41: "P" Switch (Blue) -->
 
-  <sprite id="42" name="&quot;!&quot; Switch (Red)" asmhacks="True" sizehacks="True" notes="This switch is similar to the ? Switch, but it has the additional ability of causing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
+  <sprite id="42" name="&quot;!&quot; Switch (Red)" asmhacks="True" sizehacks="True" notes="This switch is similar to the ? Switch, but it has the additional effect of changing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
     <dependency notes="Activates 'Red Block Outline A/B' tiles."/>
-    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing down. Upside-Down switches cannot be set to fall."/>
-    <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms. It does not work with conveyor belts." requiredbit="48" requiredval="0"/> <!-- Disappears if Upside-Down is enabled -->
-    <list bit="29-32" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should." advancedcomment="More styles can be added for your hack.">
-      <entry value="0">Red (Original)</entry>
-      <entry value="1">Red</entry>
-      <entry value="2">Yellow</entry>
-      <entry value="3">Green</entry>
-      <entry value="4">Blue</entry>
-    </list>
-    <dualbox bit="28" title1="Timed Event" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Red Blocks will not become solid."/>
+    <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
+    <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set." requiredbit="48" requiredval="0"/> <!-- Disappears if Upside-Down is enabled -->
+    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/>
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
+    <dualbox bit="28" title1="Timed Event &amp; Transform" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Red Blocks will not become solid."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox bit="17" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This will determine if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <list bit="23-24" title="Delay on Multi-Use" comment="This will set how long the switch takes to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
-      <entry value="0">Instantly</entry>
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
+      <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
       <entry value="3">Long Delay</entry>
       <entry value="1">Very Long Delay</entry>
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
-    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Disappears if Multi-Use is set -->
-    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
+    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #42: "!" Switch (Red) -->
 
-<!-- These notes apply to 43, 44, and 45 -->
-<!-- Make a quick test level to show general functionality of a Brick Block switch with a Triggering Event. Does it appear after being struck if the event is later turned on? Does it only appear if the event is on before the block is struck? -->
-  <sprite id="43" name="Brick Block &quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it only modifies the Target Event." advancednotes="A brick block cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
-    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
+  <!-- These notes apply to 43, 44, and 45 -->
+  <!-- Make a quick test level to show general functionality of a Brick Block switch with a Triggering Event. Does it appear after being struck if the event is later turned on? Does it only appear if the event is on before the block is struck? -->
+  <sprite id="43" name="Brick Block &quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
-    <list bit="29-32" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." advancedcomment="More styles can be added for your hack.">
-      <entry value="0">Standard Question Mark</entry>
-      <entry value="2">Two Arrows Forming a Circle (Flipper)</entry>
-    </list>
+    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/>
+    <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
+    <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
     <dualbox bit="28" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use."/>
-    <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
-    <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This will determine if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <list bit="23-24" title="Delay on Multi-Use" comment="This will set how long the switch takes to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
-      <entry value="0">Instantly</entry>
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
+      <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
       <entry value="3">Long Delay</entry>
       <entry value="1">Very Long Delay</entry>
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
-    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Disappears if Multi-Use is set -->
-    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
+    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #43: Brick Block "?" Switch (Orange) -->
-
-  <sprite id="44" name="Brick Block &quot;P&quot; Switch (Blue)" sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional abilitiy of causing all Blue Coins (tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality. &lt;br&gt; &lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block." advancednotes="A brick block cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+ 
+  <sprite id="44" name="Brick Block &quot;P&quot; Switch (Blue)" sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (both tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Bug: &lt;/b&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if they were blocks.&lt;/font&gt;" advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
-    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Blue Coins, or transform blocks and coins." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
-    <dualbox bit="28" title1="Timed Event" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Blue Coins will not become visible."/>
+    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Blue Coins, or transform blocks and coins." idtype="Target Event"/>
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
+    <dualbox bit="28" title1="Timed Event &amp; Transform" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Blue Coins will not become visible."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox bit="17" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This will determine if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <list bit="23-24" title="Delay on Multi-Use" comment="This will set how long the switch takes to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
-      <entry value="0">Instantly</entry>
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
+      <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
       <entry value="3">Long Delay</entry>
       <entry value="1">Very Long Delay</entry>
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
-    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Disappears if Multi-Use is set -->
-    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
+    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #44: Brick Block "P" Switch (Blue) -->
-
-  <sprite id="45" name="Brick Block &quot;!&quot; Switch (Red)" asmhacks="True" sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional ability of causing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  
+  <sprite id="45" name="Brick Block &quot;!&quot; Switch (Red)" asmhacks="True" sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
-    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
-    <list bit="29-32" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." advancedcomment="More styles can be added for your hack.">
-      <entry value="0">Red</entry>
-      <entry value="2">Green</entry>
-    </list>
-    <dualbox bit="28" title1="Timed Event" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Red Blocks will not become solid."/>
+    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/>
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
+    <dualbox bit="28" title1="Timed Event &amp; Transform" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Red Blocks will not become solid."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox bit="17" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This will determine if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <list bit="23-24" title="Delay on Multi-Use" comment="This will set how long the switch takes to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
-      <entry value="0">Instantly</entry>
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
+      <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
       <entry value="3">Long Delay</entry>
       <entry value="1">Very Long Delay</entry>
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
-    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Disappears if Multi-Use is set -->
-    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
+    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #45: Brick Block "!" Switch (Red) -->
 
-  <sprite id="46" name="Lava Bubble (Podoboo)" asmhacks="True" sizehacks="True" notes="The Podoboo will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava.">
-    <dependency notes="The Podoboo requires [139] Lava underneath it in order to appear.">
+  <sprite id="46" name="Lava Bubble (Podoboo)" asmhacks="True" sizehacks="True" notes="The Lava Bubble (Podoboo) is a firey enemey that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava.">
+    <dependency notes="The Podoboo requires [139] Lava within 15 blocks underneath it in order to appear.">
       <required sprite="139"/> <!-- Requires Lava -->
     </dependency>
-    <list nybble="6" title="Color" comment="This determines the color of the Podoboo." advancedcomment="More styles can be added for your hack.">
-      <entry value="0">Original</entry>
-      <entry value="1">Red</entry>
-      <entry value="2">Orange</entry>
-      <entry value="3">Yellow</entry>
-      <entry value="4">Green</entry>
-      <entry value="5">Blue</entry>
-      <entry value="6">Violet</entry>
-      <entry value="7">Black</entry>
-      <entry value="8">White</entry>
-      <entry value="9">Pink</entry>
-    </list>
-    <value nybble="12" title="Delay Between Jumps" comment="This value will adjust the delay between the Podoboo's jumps." comment2="Podoboos load in the air at the top of their jump, so Podoboos with higher delay values may not even interact with the player as they pass by. Each increment is approximately 1 game second."/>
+    <value nybble="12" title="Delay Between Jumps" comment="This determines the delay between each of the Podoboo's jumps." comment2="Each value is approximately 1 game second. Podoboos first load in the air at the top of their jump, so a Podoboo with a large delay value may not even interact with the player as they run by."/>
     <checkbox bit="42" title="Unknown Flag 11 (4)" comment="An unknown flag for Nybble 11." advanced="True" advancedcomment="Used in Retail: 08-06 A1"/>
     <checkbox bit="43" title="Unknown Flag 11 (2)" comment="An unknown flag for Nybble 11." advanced="True" advancedcomment="Used in Retail: 08-06 A1"/>
   </sprite> <!-- #46: Lava Bubble (Podoboo) -->
 
   <sprite id="47" name="Thwomp" asmhacks="True" sizehacks="True" noyoshi="True" notes="A normal sized Thwomp that will try to crush the player when it is nearby or underneath. Thwomps are not capable of destroying tileset objects unless set to Crush Forever.">
-    <dualbox bit="47" title1="Drop and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well out of the Zone, or the falling sound effect and rumble will not stop."/>
-    <list nybble="6" title="Style" comment="This determines the style of the Thwomp." advancedcomment="More styles can be added for your hack.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Frozen</entry>
-    </list>
+    <dualbox bit="47" title1="Drop and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop."/>
     <checkbox bit="48" title="Unknown Flag 12 (1)" comment="An unknown setting for Nybble 12." advanced="True" advancedcomment="Bit 47-48 may be a list, but only value 2 has been defined. Value 3 is confirmed to CRASH the game, so do not activate this with Crush Forever. However, value 1 may provide different effects. Experimenting and testing are required."/>
   </sprite> <!-- #47: Thwomp -->
-
+  
   <sprite id="48" name="Big Thwomp" asmhacks="True" sizehacks="True" noyoshi="True" notes="A larger Thwomp that will try to crush the player when it is nearby or underneath. Big Thwomps are capable of destroying certain types of tileset objects such as brick blocks and grey blocks.">
-    <dualbox bit="47" title1="Crush and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position after crushing up to one row of breakable terrain, or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well out of the Zone, or the falling sound effect and rumble will not stop."/>
-    <list nybble="6" title="Style" comment="This determines the style of the Big Thwomp." advancedcomment="More styles can be added for your hack.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Frozen</entry>
-    </list>
+    <dualbox bit="47" title1="Crush and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position after crushing up to one row of breakable terrain, or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop."/>
     <checkbox bit="48" title="Unknown Flag 12 (1)" comment="An unknown setting for Nybble 12." advanced="True" advancedcomment="Bit 47-48 may be a list, but only value 2 has been defined. Value 3 is confirmed to CRASH the game, so do not activate this with Crush Forever. However, value 1 may provide different effects. Experimenting and testing are required."/>
   </sprite> <!-- #48: Big Thwomp -->
 
@@ -667,17 +647,20 @@
   </sprite> <!-- #49: (Unused) Seesaw Platform -->
 
   <sprite id="50" name="Fall-When-Touched Platform" notes="This platform will begin to fall when a player first touches it.">
-    <checkbox bit="27" title="Use an Alternate Color" comment="When enabled, the platform will load alternate textures."/>
-    <dualbox bit="28" title1="Silver" title2="Bone" comment="Choose the Alternate Color you want to use." requiredbit="27"/>
-    <dualbox bit="44" title1="Instant Fast Fall" title2="Delayed Slow Fall" comment="This determines the rate at which the platform will fall when activated."/>
-    <value nybble="12" title="Width" comment="This determines the length of the platform." comment2="The platform will be (Value + 1) blocks in width. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Do not use a Width of 0.&lt;/font&gt;"/>
+    <list bit="27-28" title="Color" comment="This determines the color of the platform.">
+      <entry value="0">Normal</entry>
+      <entry value="1">Silver</entry>
+      <entry value="3">Bone</entry>
+    </list>
+    <value nybble="12" title="Width" comment="This determines the length of the platform." comment2="&lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Do not use a Width of 0.&lt;/font&gt;"/>
+    <dualbox bit="44" title1="Instant, Fast Fall" title2="Delayed, Slow Fall" comment="This determines the rate at which the platform will fall when activated."/>
     <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="ASM shows Nybble 10 might affect something."/>
   </sprite> <!-- #50: Fall-When-Touched Platform -->
-
-  <sprite id="51" name="Tilt-Controlled Girder" notes="This is the Tilt-Controlled Girder (Beam) platform that is assigned to the first player to touch it for as long as they touch it.">
+  
+  <sprite id="51" name="Tilt-Controlled Girder" notes="This is the Tilt-Controlled Girder (Beam) platform that is assigned to the first player to touch it. That player will maintain tilt control for as long as they are touching it.">
   </sprite> <!-- #51: Tilt-Controlled Girder -->
-
-  <sprite id="52" name="Auto-Rotating 4-Platform" asmhacks="True" notes="This platform is similar to the Reznor platforms from Super Mario World. It consists of four 6x1 platforms that rotate around the center point. NewerSMBW added a black and yellow texture to the platform.">
+  
+  <sprite id="52" name="Auto-Rotating 4-Platform" asmhacks="True" notes="This platform is similar to the Reznor platforms from Super Mario World. It consists of four 6x1 platforms that rotate around the center point.">
     <dualbox bit="32" title1="Counter-Clockwise" title2="Clockwise" comment="This determines which way the platform will rotate."/>
   </sprite> <!-- #52: Auto-Rotating 4-Platform -->
 
@@ -687,14 +670,14 @@
     <value nybble="11-12" title="Location ID" comment="This determines the Location where the quicksand animation will be created." idtype="Location"/>
   </sprite> <!-- #53: Effect - Quicksand -->
 
-  <sprite id="54" name="Lakitu" sizehacks="True" notes="A stand-alone Lakitu, more useful for small rooms than entire levels. Lakitu will throw Spinies (or coins) at the player and will follow the player until killed.">
+   <sprite id="54" name="Lakitu" sizehacks="True" notes="A stand-alone Lakitu, more useful for small rooms than entire levels. Lakitu will throw Spinies (or coins) at the player and will follow the player until killed.">
     <dependency notes="The stand-alone Lakitu will spawn at exactly the height that it is placed and will remain at that height as it follows the player. Additionally, as it does not respawn after killed unless re-entering the zone, utilizing it for its cloud riding is not recommended for mandatory progress."/>
-    <dualbox bit="40" title1="Spawn from the Side" title2="Spawn from the Background" comment="This determines how the Lakitu loads." comment2="Spawning from the Background means that the Lakitu will fly in from the background, facing the camera."/>
+    <dualbox bit="40" title1="Spawn from the Side" title2="Spawn from the Background" comment="This will determine which animation state is used by the Lakitu when it is first loaded." comment2="Spawning from the Background means that the Lakitu will fly in from the background, facing the camera."/>
     <dualbox bit="47" title1="Throws Spinies" title2="Throws Coins" comment="This determines what the Lakitu will throw." advancedcomment="ASM shows that odd values may differ from even values. No differences observed."/>
-    <checkbox bit="1" title="Low Throw Arc" advanced="True" advancedcomment="Makes the Lakitu throw spinies from a low throwing arc. This behavior looks glitchy when the Lakitu is moving quickly. It also should be noted this option is in a space normally used for events, so it may have a deeper function."/>
+    <checkbox bit="8" title="Low Throw Arc" advanced="True" advancedcomment="When enabled, the Lakitu will throw spinies from a low throwing arc. This behavior looks glitchy when the Lakitu is moving quickly. It also should be noted this option is in a space normally used for events, so it may have a deeper function."/>
     <value nybble="7" title="Unknown Value 7" advanced="True" advancedcomment="ASM shows Nybble 7 might affect something."/>
   </sprite> <!-- #54: Lakitu -->
-
+  
   <sprite id="55" name="(Unused) Rising Tilting Platform" notes="This is a platform imported from New Super Mario Bros. DS. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;It is not recommended for use due to various glitches and a lack of texture.&lt;/font&gt;" advancednotes="Size is 1x7 blocks. The distance covered depends on two factors: Y-position and zone height. See [Movement Distance].">
     <checkbox bit="28" title="Loads at Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point." advanced="True"/>
     <list bit="35-36" title="Movement Distance" advanced="True" advancedcomment="This determines the maximum distance this Platform will cover. The platform covers 'Travel Limit' distance at value '0'. After any set amount of time, the platform will start blinking two blocks before the 'Travel Limit' and disappear once the player gets off it. For values marked with an asterisk (*), Mario must leave the platform for the blinking to begin. Once it starts blinking, the platform's disappearance can't be prevented.">
@@ -712,12 +695,12 @@
       <entry value="1">Down (Slow)</entry>
     </list>
   </sprite> <!-- #55: (Unused) Rising Tilting Platform -->
-
-  <sprite id="56" name="Rising Tilt-Controlled Girder" notes="This is a Girder platform that can be controlled to move it left and right by tilting the Wiimode. It will rise up until solid ground blocks its path, or until it reaches the Rising Tilt Lift Controller.">
+  
+  <sprite id="56" name="Rising Tilt-Controlled Girder" notes="This is a Girder platform that can be controlled to move it left and right by tilting the Wii Remote. It will rise up until solid ground blocks its path, or until it reaches the Rising Tilt Lift Controller.">
     <dependency notes="The [281] Rising Tilt-Controlled Girder Controller is required to be placed in the Zone for this platform to function. The platform must be placed below the Controller.">
        <required sprite="281"/> <!-- Requires Controller -->
     </dependency>
-    <checkbox bit="20" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-order of the platform placing it in front of other sprites."/>
+    <checkbox bit="20" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites."/>
     <checkbox bit="48" title="Loads at Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point."/>
     <checkbox bit="40" title="Unknown Flag 10 (1)" comment="Might affect the platform's direction properties." advanced="True" advancedcomment="ASM shows Nybble 10 might affect something."/>
     <list bit="43-44" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something.">
@@ -729,40 +712,26 @@
   </sprite> <!-- #56: Rising Tilt-Controlled Girder -->
 
   <sprite id="57" name="Koopa Troopa" asmhacks="True" sizehacks="True" notes="Your standard Koopa Troopa. Place it in the level and it will walk towards Mario when it loads. It can either be set to walk off ledges, or turn around at ledges.">
-    <dualbox bit="48" title1="Walks Off Ledges" title2="Turns Around At Ledges" comment="This determines if the Koopa Troopa will mindlessly walk off of ledges or if it will turn around when it reaches a ledge."/>
-    <list nybble="6" title="Color" comment="This determines the color of the Koopa Troopa." advancedcomment="More colors can be added for your hack." requiredbit="48" requiredval="0">
-      <entry value="0">Green</entry>
-      <entry value="1">Blue</entry>
-      <entry value="2">Orange</entry>
-      <entry value="3">Black</entry>
-      <entry value="4">Green with Blue Coat</entry>
-    </list>
-    <list nybble="6" title="Color" comment="This determines the color of the Koopa Troopa." advancedcomment="More colors can be added for your hack." requiredbit="48">
-      <entry value="0">Red</entry>
-      <entry value="1">Yellow</entry>
-      <entry value="2">Violet</entry>
-      <entry value="3">White</entry>
-      <entry value="4">Red with Blue Coat</entry>
-    </list>
+    <dualbox bit="48" title1="Walks Off Ledges" title2="Turns Around At Ledges" comment="This determines if the Koopa Troopa will mindlessly walk off of ledges or if it will turn around when it reaches a ledge." comment2="This also changes the color of the Koopa Troopa."/>
     <list bit="19-20" title="Load State" comment="This determines what animation state the Koopa Troopa will load as." comment2="Normal: The Koopa Troopa will be walking normally when loaded. &lt;br&gt; &lt;br&gt;Loads as Shell: The Koopa Troopa will load inside its shell and then return to normal. &lt;br&gt; &lt;br&gt;Stays in Shell: The Koopa Troopa will load inside its shell and not return to normal. However, it cannot be kicked until jumped on and will instead hurt the player.">
       <entry value="0">Normal</entry>
       <entry value="1">Loads as Shell</entry>
       <entry value="2">Stays in Shell</entry>
     </list>
     <checkbox bit="44" title="Empty Shell" comment="When enabled, a empty kickable shell is spawned instead of a Koopa Troopa."/>
-    <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Troopa will walk behind Chainlink Fences."/>
+    <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Troopa will walk behind Chainlink Fences." advancedcomment="Exact values are 1500.0 unchecked, -2500.0 checked."/>
     <checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
   </sprite> <!-- #57: Koopa Troopa -->
-
-<!-- Why use Movement Type: Shell Only with Paratroopa instead of regular Koopa? -->
-<!-- Investigate "Glitchy Behavior" further? -->
-<!-- Test Nybble 10 more, something seems to be weird about it. Is it 'start at end of path instead of middle' or .... what, really? What's the value range? -->
+  
+  <!-- Investigate "Glitchy Behavior" further? -->
+  <!-- Test Nybble 10 more, something seems to be weird about it. Is it 'start at end of path instead of middle' or .... what, really? What's the value range? -->
   <sprite id="58" name="Koopa Paratroopa" asmhacks="True" sizehacks="True" notes="Your standard Koopa Paratroopa. Place it in the level and it will jump around or fly. Once stomped, it can either be set to walk off ledges, or turn around at ledges.">
-    <list bit="43-44" title="Movement Type" comment="This determines the primary type of movement behavior of the Koopa Paratroopa. Flying Paratroopas move 10 blocks total.">
+    <list bit="43-44" title="Movement Type" comment="This determines the primary type of movement behavior of the Koopa Paratroopa. Flying Paratroopas move 9 blocks total." advancedcomment="Mode 3 spawns a floating shell that cannot be picked up. When Mario hits it from the side, he takes damage, but when the jumps on it, it falls to the ground and becomes a regular shell that can be picked up.">
       <entry value="0">Jumping</entry>
       <entry value="1">Flying: Left and Right</entry>
       <entry value="2">Flying: Up and Down</entry>
-      <entry value="3">Shell Only</entry>
+      <entry value="3">No Movement (Shell Only)</entry>
+      <!--<entry value="3">Shell Only</entry> Not Useful-->
     </list>
     <list bit="35-36" title="Start Direction" comment="This determines how the Paratroopa will move upon load." advancedcomment="Glitchy Behavior: The Paratroopa will bounce [] while facing the opposite direction. Once de-winged, the Koopa Troopa will walk in place while continuing to face the same direction." requiredbit="43-44" requiredval="0-1">
       <entry value="0">Start Going Towards Player</entry>
@@ -776,24 +745,10 @@
       <entry value="2">Start Going Down</entry>
       <entry value="3">Glitchy Behavior</entry>
     </list> <!-- Only appears when Flying: Up and Down is selected -->
-    <value nybble="10" title="Initial Flying Distance" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 10 Blocks, so this only sets the initial movement distance on load." requiredbit="43-44" requiredval="1"/> <!-- Only appears when Flying: Left and Right is selected -->
-    <value nybble="10" title="Initial Flying Distance" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 10 Blocks, so this only sets the initial movement distance on load." requiredbit="43-44" requiredval="2"/> <!-- Only appears when Flying: Up and Down is selected -->
+    <dualbox bit="40" title1="Moves in specified direction (4 blocks), then turns around" title2="Moves in opposite direction immediately" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 9 Blocks, so this only sets the initial movement distance on load." requiredbit="43-44" requiredval="1"/> <!-- Only appears when Flying: Left and Right is selected -->
+    <dualbox bit="40" title1="Moves in specified direction (4 blocks), then turns around" title2="Moves in opposite direction immediately" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 9 Blocks, so this only sets the initial movement distance on load." requiredbit="43-44" requiredval="2"/> <!-- Only appears when Flying: Up and Down is selected -->
     <dualbox bit="48" title1="Walks Off Ledges" title2="Turns Around At Ledges" comment="This determines if the Koopa Troopa, once stepped on and de-winged, will mindlessly walk off of ledges or if it will turn around when it reaches a ledge." comment2="This also changes the color of the Koopa Troopa."/>
-    <list nybble="6" title="Color" comment="This determines the color of the Koopa Paratroopa." advancedcomment="More colors can be added for your hack." requiredbit="48" requiredval="0">
-      <entry value="0">Green</entry>
-      <entry value="1">Blue</entry>
-      <entry value="2">Orange</entry>
-      <entry value="3">Black</entry>
-      <entry value="4">Green w/Blue Coat (No Wings)</entry>
-    </list>
-    <list nybble="6" title="Color" comment="This determines the color of the Koopa Paratroopa." advancedcomment="More colors can be added for your hack." requiredbit="48">
-      <entry value="0">Red</entry>
-      <entry value="1">Yellow</entry>
-      <entry value="2">Violet</entry>
-      <entry value="3">White</entry>
-      <entry value="4">Red w/Blue Coat (No Wings)</entry>
-    </list>
-    <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Paratroopa will be able to move behind Chainlink Fences."/>
+    <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Paratroopa will be able to move behind Chainlink Fences." advancedcomment="Exact values are 1500.0 unchecked, -2500.0 checked."/>
     <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="Used in Retail: 06-01 A1 as 12"/>
     <value bit="21" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in Retail: 06-01 A1"/>
   </sprite> <!-- #58: Koopa Paratroopa -->
@@ -811,7 +766,7 @@
     <value nybble="12" title="Width of the Collision Box" advanced="True" advancedcomment="Value + 6. This option does not change the length of the platform, but instead the length of the (invisible) collision box attached. The collision box ensures that Mario does not fall through the platform. The collision box usually has the same size as the platform itself. The collision box and the platform have the same center point. Per value, the collision box will extend its length 1/2 blocks to the left and right. If you stand on this collision box but outside the platform, then it looks as if you are standing in midair."/>
   </sprite> <!-- #59: Line Controlled Tilt-Controlled Girder -->
 
-  <sprite id="60" name="Spike Top" asmhacks="True" sizehacks="True" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks.">
+  <sprite id="60" name="Spike Top" asmhacks="True" sizehacks="True" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spiketops don't properly work on slopes.">
     <list bit="43-44" title="Orientation" comment="The Spike Top must be placed against something for it to appear.">
       <entry value="0">Placed on Ground</entry>
       <entry value="1">Placed on Left Wall</entry>
@@ -819,25 +774,15 @@
       <entry value="3">Placed on Right Wall</entry>
     </list>
     <dualbox bit="48" title1="Walks Clockwise" title2="Walks Counter-Clockwise" comment="This determines which direction the Spike Top will walk."/>
-    <list nybble="6" title="Color" comment="This determines the color and style of the Spike Top. Value 5 will turn the Spike Top into a Lil'Sparky. Use Sizehacks if you want a Hothead." advancedcomment="More colors can be added for your hack.">
-      <entry value="0">Original</entry>
-      <entry value="1">Bright Red</entry>
-      <entry value="2">Orange</entry>
-      <entry value="3">Yellow</entry>
-      <entry value="4">Green</entry>
-      <entry value="5">Lil'Sparky/Hothead</entry>
-      <entry value="6">Violet</entry>
-      <entry value="7">Black</entry>
-    </list>
   </sprite> <!-- #60: Spike Top -->
 
   <sprite id="61" name="Big Boo" sizehacks="True" notes="A large version of the Boo enemy.">
-    <checkbox bit="48" title="Slightly Faster" comment="When enabled, the Big Boo will move slightly faster"/>
+    <checkbox bit="48" title="Slightly Faster" comment="When enabled, the Big Boo will move slightly faster."/>
     <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #61: Big Boo -->
-
-  <sprite id="62" name="Spinning Firebar" notes="A Spinning Firebar like one you'd find in a Castle.">
-    <dualbox bit="28" title1="1x1 Block Base" title2="2x1 Block Base" comment="This determines the size of the Block Base the Fire. The Firebar will emerge from the center of the base. The base also has no collision, so you will need to place Invisible Collision Blocks or other Tileset pieces behind it to create collision."/>
+  
+  <sprite id="62" name="Spinning Firebar" notes="A Spinning Firebar like one you would find in a Castle stage.">
+    <dualbox bit="28" title1="1x1 Block Base" title2="2x1 Block Base" comment="This determines the size of the Block Base. The Firebar will emerge from the center of the base. The base also has no collision, so you will need to place Invisible Collision Blocks or other Tileset pieces behind it to create collision."/>
     <list nybble="12" title="Length" comment="This determines how many fireballs make up one arm of the Firebar. One fireball adds approximately 0.75 blocks to the length.">
       <entry value="0">2 Fireballs (~ 1.50 Blocks)</entry>
       <entry value="1">3 Fireballs (~ 2.25 Blocks)</entry>
@@ -862,11 +807,7 @@
     <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, any Chainlink Fence object will cover the Firebar, protecting the player from it unless they are also behind the fence. Exposed Firebar without fence in front of it will still hurt the player. The Block Base will also be hidden by Chainlink Fence."/>
   </sprite> <!-- #62: Spinning Firebar -->
 
-  <sprite id="63" name="Spiked Ball / Snowball" asmhacks="True" sizehacks="True" notes="A loose Spiked Ball that will also destroy certain types of blocks. Can also be turned into a Snowball.">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Spiked Ball." advancedcomment="More colors and styles can be added for your hack.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Snowball</entry>
-    </list>
+  <sprite id="63" name="Spiked Ball" asmhacks="True" sizehacks="True" notes="A loose Spiked Ball that will also destroy certain types of blocks.">
     <dualbox bit="44" title1="Starts Rolling Left" title2="Starts Rolling Right" comment="This determines which direction the Spiked Ball will begin rolling in."/>
     <list bit="47-48" title="Speed" comment="This determines how fast the Spiked Ball rolls.">
       <entry value="0">Stopped</entry>
@@ -876,34 +817,34 @@
     </list>
     <list bit="36" title="Speed After Hitting Wall" comment="This determines if the Spiked Ball will slow down after hitting a wall.">
       <entry value="0">Really Slow</entry>
-      <entry value="1">Same as Before</entry>
+      <entry value="1">Same Momentum</entry>
     </list>
-  </sprite> <!-- #63: Spiked Ball / Snowball -->
+  </sprite> <!-- #63: Spiked Ball -->
 
-  <sprite id="64" name="Effect - Thick Fog" notes="This adds a thick rolling fog effect to the level that can be used with or without a Location ID.">
+  <sprite id="64" name="Effect - Thick Fog" notes="This adds a thick rolling fog effect to the level that can be used with or without a Location ID." advancednotes="Please note that Poison Water and Lava will turn into &lt;b&gt;Water&lt;/b&gt; and lose their deadly properties, should this sprite's location and the water location overlap. The player can then swim in Poison/Lava without being killed. The Poison/Lava still looks correct, only their physics are changed.">
     <dependency notes="A Location ID is NOT required in order for the Thick Fog to function. Without a Location ID set, it will simply fill the entire Zone with the Thick Fog effect."/>
     <value nybble="11-12" title="Location ID" comment="This determines the location in which the Thick Fog will spawn." idtype="Location"/>
-    <checkbox bit="38" title="Unknown Flag 10 (4)" advanced="True" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function."/>
+    <checkbox bit="38" title="Unknown Flag 10 (4)" advanced="True" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function, or this flag may do something else entirely. Or nothing."/>
   </sprite> <!-- #64: Effect - Thick Fog -->
-
+  
   <sprite id="65" name="Pipe Piranha Plant - Up" sizehacks="True" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one.">
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #65: Pipe Piranha Plant - Up -->
-
+  
   <sprite id="66" name="Pipe Piranha Plant - Down" sizehacks="True" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one.">
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #66: Pipe Piranha Plant - Down -->
-
+  
   <sprite id="67" name="Pipe Piranha Plant - Right" sizehacks="True" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #67: Pipe Piranha Plant - Right -->
-
+  
   <sprite id="68" name="Pipe Piranha Plant - Left" sizehacks="True" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #68: Pipe Piranha Plant - Left -->
-
+  
   <sprite id="69" name="Pipe Fire Piranha Plant - Up" sizehacks="True" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one.">
-    <list nybble="12" title="Fireball Ammo" comment="This sets how many fireballs the Piranha Plant will shoot before ducking back into the pipe.">
+    <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
       <entry value="0">1 Fireball</entry>
       <entry value="1">2 Fireballs</entry>
       <entry value="2">3 Fireballs</entry>
@@ -911,9 +852,9 @@
     </list>
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #69: Pipe Fire Piranha Plant - Up -->
-
+  
   <sprite id="70" name="Pipe Fire Piranha Plant - Down" sizehacks="True" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one.">
-    <list nybble="12" title="Fireball Ammo" comment="This sets how many fireballs the Piranha Plant will shoot before ducking back into the pipe.">
+    <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
       <entry value="0">1 Fireball</entry>
       <entry value="1">2 Fireballs</entry>
       <entry value="2">3 Fireballs</entry>
@@ -921,9 +862,9 @@
     </list>
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #70: Pipe Fire Piranha Plant - Down -->
-
+  
   <sprite id="71" name="Pipe Fire Piranha Plant - Right" sizehacks="True" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
-    <list nybble="12" title="Fireball Ammo" comment="This sets how many fireballs the Piranha Plant will shoot before ducking back into the pipe.">
+    <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
       <entry value="0">1 Fireball</entry>
       <entry value="1">2 Fireballs</entry>
       <entry value="2">3 Fireballs</entry>
@@ -931,9 +872,9 @@
     </list>
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #71: Pipe Fire Piranha Plant - Right -->
-
+  
   <sprite id="72" name="Pipe Fire Piranha Plant - Left" sizehacks="True" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
-    <list nybble="12" title="Fireball Ammo" comment="This sets how many fireballs the Piranha Plant will shoot before ducking back into the pipe.">
+    <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
       <entry value="0">1 Fireball</entry>
       <entry value="1">2 Fireballs</entry>
       <entry value="2">3 Fireballs</entry>
@@ -941,48 +882,39 @@
     </list>
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #72: Pipe Fire Piranha Plant - Left -->
-
+    
   <sprite id="73" name="Piranha Plant" sizehacks="True" notes="The standard Piranha Plant.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling."/>
     <checkbox bit="44" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="Used in Retail: 5-04 A1"/>
   </sprite> <!-- #73: Piranha Plant -->
-
+  
   <sprite id="74" name="Big Piranha Plant" sizehacks="True" notes="A large version of the standard Piranha Plant. It takes 3 fireballs to kill.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling."/>
     <checkbox bit="44" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="Used in Retail: 5-04 A1"/>
   </sprite> <!-- #74: Big Piranha Plant -->
-
+  
   <sprite id="75" name="Fire Piranha Plant" sizehacks="True" notes="The Piranha Plant that shoots fireballs.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling."/>
   </sprite> <!-- #75: Fire Piranha Plant -->
-
+  
   <sprite id="76" name="Big Fire Piranha Plant" sizehacks="True" notes="A large version of the Piranha Plant that shoots fireballs. It takes 3 fireballs to kill.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling."/>
   </sprite> <!-- #76: Big Fire Piranha Plant -->
-
-  <sprite id="77" name="(Unused) Doomship Key" notes="A key titled the Doomship Key. When collecting this key, it will fly up past the top-left corner of the screen near the Star Coin inventory, but this is the only effect it has. Entirely useless on its own.">
+  
+  <sprite id="77" name="(Unused) Doomship Key" notes="A key titled the Doomship Key. When collecting this key, it will fly up past the top-left corner of the screen near the Star Coin inventory, but this is the only effect it has. It is entirely useless on its own.">
   </sprite> <!-- #77: (Unused) Doomship Key -->
 
-  <sprite id="78" name="Bouncy Cloud" noyoshi="True" notes="A cloud platform with a happy face that the player can bounce on to jump really high.">
-    <list nybble="6" title="Style" comment="This determines the color and style of the Bouncy Cloud." comment2="If you want the Angry Cloud to hurt players, you have to add an invisible tileset piece to do that for you. Sorry." advancedcomment="More colors and styles can be added for your hack.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Angry</entry>
-      <entry value="2">Green Mushroom</entry>
-      <entry value="3">Red Mushroom</entry>
-      <entry value="4">Blue Mushroom</entry>
-      <entry value="5">Yellow Mushroom</entry>
-      <entry value="6">Big Checkered Block</entry>
-    </list>
+  <sprite id="78" name="Bouncy Cloud" asmhacks="True" noyoshi="True" notes="A cloud platform with a happy face that the player can bounce on to jump really high. NewerSMBW adds more style options including Mushrooms and Checkered Block.">
     <checkbox bit="36" title="Larger Cloud" comment="When enabled, the Bouncy Cloud will be bigger."/>
   </sprite> <!-- #78: Bouncy Cloud -->
-
+  
   <sprite id="79" name="Incomplete Sprite - 'En_Helpos'" notes="Does nothing.">
     </sprite> <!-- #79: Incomplete Sprite - 'En_Helpos' -->
 
   <sprite id="80" name="Fire Bro" sizehacks="True" notes="A standard Brothers enemy that shoots fireballs at the player.">
   </sprite> <!-- #80: Fire Bro -->
 
-  <sprite id="81" name="Grey Tiled Block with Spikes - Left" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. A custom texture was applied for NewerSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  <sprite id="81" name="Grey Tiled Block with Spikes - Left" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">1 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -1025,7 +957,7 @@
       <entry value="2">Up</entry>
       <entry value="3">Down</entry>
     </list>
-    <checkbox bit="21" title="Start Delay" comment="When enabled, the block will wait two game seconds before moving. This is important for adjusting timing in athletic levels."/>
+    <checkbox bit="21" title="Offset Delay" comment="When enabled, the block will wait two game seconds before moving the first time. This is important for adjusting timing in athletic levels."/>
     <value nybble="7" title="Delay Before Movement" comment="This determines how long the block will wait before making its outwards movement." comment2="Each value is equal to two game seconds."/>
     <value nybble="9" title="Distance" comment="This defines how many tiles the block will move before returning to its starting position."/>
     <value nybble="8" title="Delay Before Return" comment="This determines how long the block will wait before making its return movement." comment2="Each value is equal to two game seconds."/>
@@ -1036,10 +968,10 @@
       <entry value="3">Fast</entry>
     </list>
     <checkbox bit="20" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
-    <value bit="10-16" title="Triggering Event ID" comment="Maximum usable value for this sprite is 64." requiredbit="20" idtype="Triggering Event"/>
+    <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #81: Grey Tiled Block with Spikes - Left -->
-
-  <sprite id="82" name="Grey Tiled Block with Spikes - Right" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. A custom texture was applied for NewerSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  
+  <sprite id="82" name="Grey Tiled Block with Spikes - Right" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">1 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -1082,7 +1014,7 @@
       <entry value="2">Up</entry>
       <entry value="3">Down</entry>
     </list>
-    <checkbox bit="21" title="Start Delay" comment="When enabled, the block will wait two game seconds before moving. This is important for adjusting timing in athletic levels."/>
+    <checkbox bit="21" title="Offset Delay" comment="When enabled, the block will wait two game seconds before moving the first time. This is important for adjusting timing in athletic levels."/>
     <value nybble="7" title="Delay Before Movement" comment="This determines how long the block will wait before making its outwards movement." comment2="Each value is equal to two game seconds."/>
     <value nybble="9" title="Distance" comment="This defines how many tiles the block will move before returning to its starting position."/>
     <value nybble="8" title="Delay Before Return" comment="This determines how long the block will wait before making its return movement." comment2="Each value is equal to two game seconds."/>
@@ -1093,10 +1025,10 @@
       <entry value="3">Fast</entry>
     </list>
     <checkbox bit="20" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
-    <value bit="10-16" title="Triggering Event ID" comment="Maximum usable value for this sprite is 64." requiredbit="20" idtype="Triggering Event"/>
+    <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #82: Grey Tiled Block with Spikes - Right -->
-
-  <sprite id="83" name="Grey Tiled Block with Spikes - Left + Right" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. A custom texture was applied for NewerSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  
+  <sprite id="83" name="Grey Tiled Block with Spikes - Left + Right" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">1 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -1139,7 +1071,7 @@
       <entry value="2">Up</entry>
       <entry value="3">Down</entry>
     </list>
-    <checkbox bit="21" title="Start Delay" comment="When enabled, the block will wait two game seconds before moving. This is important for adjusting timing in athletic levels."/>
+    <checkbox bit="21" title="Offset Delay" comment="When enabled, the block will wait two game seconds before moving the first time. This is important for adjusting timing in athletic levels."/>
     <value nybble="7" title="Delay Before Movement" comment="This determines how long the block will wait before making its outwards movement." comment2="Each value is equal to two game seconds."/>
     <value nybble="9" title="Distance" comment="This defines how many tiles the block will move before returning to its starting position."/>
     <value nybble="8" title="Delay Before Return" comment="This determines how long the block will wait before making its return movement." comment2="Each value is equal to two game seconds."/>
@@ -1150,10 +1082,10 @@
       <entry value="3">Fast</entry>
     </list>
     <checkbox bit="20" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
-    <value bit="10-16" title="Triggering Event ID" comment="Maximum usable value for this sprite is 64." requiredbit="20" idtype="Triggering Event"/>
+    <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #83: Grey Tiled Block with Spikes - Left + Right -->
-
-  <sprite id="84" name="Grey Tiled Block with Spikes - Top" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. A custom texture was applied for NewerSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  
+  <sprite id="84" name="Grey Tiled Block with Spikes - Top" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">1 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -1196,7 +1128,7 @@
       <entry value="2">Up</entry>
       <entry value="3">Down</entry>
     </list>
-    <checkbox bit="21" title="Start Delay" comment="When enabled, the block will wait two game seconds before moving. This is important for adjusting timing in athletic levels."/>
+    <checkbox bit="21" title="Offset Delay" comment="When enabled, the block will wait two game seconds before moving the first time. This is important for adjusting timing in athletic levels."/>
     <value nybble="7" title="Delay Before Movement" comment="This determines how long the block will wait before making its outwards movement." comment2="Each value is equal to two game seconds."/>
     <value nybble="9" title="Distance" comment="This defines how many tiles the block will move before returning to its starting position."/>
     <value nybble="8" title="Delay Before Return" comment="This determines how long the block will wait before making its return movement." comment2="Each value is equal to two game seconds."/>
@@ -1207,10 +1139,10 @@
       <entry value="3">Fast</entry>
     </list>
     <checkbox bit="20" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
-    <value bit="10-16" title="Triggering Event ID" comment="Maximum usable value for this sprite is 64." requiredbit="20" idtype="Triggering Event"/>
+    <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #84: Grey Tiled Block with Spikes - Top -->
 
-  <sprite id="85" name="Grey Tiled Block with Spikes - Bottom" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. A custom texture was applied for NewerSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  <sprite id="85" name="Grey Tiled Block with Spikes - Bottom" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">1 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -1253,7 +1185,7 @@
       <entry value="2">Up</entry>
       <entry value="3">Down</entry>
     </list>
-    <checkbox bit="21" title="Start Delay" comment="When enabled, the block will wait two game seconds before moving. This is important for adjusting timing in athletic levels."/>
+    <checkbox bit="21" title="Offset Delay" comment="When enabled, the block will wait two game seconds before moving the first time. This is important for adjusting timing in athletic levels."/>
     <value nybble="7" title="Delay Before Movement" comment="This determines how long the block will wait before making its outwards movement." comment2="Each value is equal to two game seconds."/>
     <value nybble="9" title="Distance" comment="This defines how many tiles the block will move before returning to its starting position."/>
     <value nybble="8" title="Delay Before Return" comment="This determines how long the block will wait before making its return movement." comment2="Each value is equal to two game seconds."/>
@@ -1264,10 +1196,10 @@
       <entry value="3">Fast</entry>
     </list>
     <checkbox bit="20" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
-    <value bit="10-16" title="Triggering Event ID" comment="Maximum usable value for this sprite is 64." requiredbit="20" idtype="Triggering Event"/>
+    <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #85: Grey Tiled Block with Spikes - Bottom -->
-
-  <sprite id="86" name="Grey Tiled Block with Spikes - Top + Bottom" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. A custom texture was applied for NewerSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  
+  <sprite id="86" name="Grey Tiled Block with Spikes - Top + Bottom" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">1 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -1310,7 +1242,7 @@
       <entry value="2">Up</entry>
       <entry value="3">Down</entry>
     </list>
-    <checkbox bit="21" title="Start Delay" comment="When enabled, the block will wait two game seconds before moving. This is important for adjusting timing in athletic levels."/>
+    <checkbox bit="21" title="Offset Delay" comment="When enabled, the block will wait two game seconds before moving the first time. This is important for adjusting timing in athletic levels."/>
     <value nybble="7" title="Delay Before Movement" comment="This determines how long the block will wait before making its outwards movement." comment2="Each value is equal to two game seconds."/>
     <value nybble="9" title="Distance" comment="This defines how many tiles the block will move before returning to its starting position."/>
     <value nybble="8" title="Delay Before Return" comment="This determines how long the block will wait before making its return movement." comment2="Each value is equal to two game seconds."/>
@@ -1321,9 +1253,9 @@
       <entry value="3">Fast</entry>
     </list>
     <checkbox bit="20" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
-    <value bit="10-16" title="Triggering Event ID" comment="Maximum usable value for this sprite is 64." requiredbit="20" idtype="Triggering Event"/>
+    <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #86: Grey Tiled Block with Spikes - Top + Bottom -->
-
+  
   <sprite id="87" name="(Unused) Trampoline Wall" notes="This sprite lacks finished textures and as such, is incomplete. Upon contact, the player is thrust in the opposite direction. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;This sprite is not recommended for normal use at this time.&lt;/font&gt;">
     <list nybble="12" title="Height" comment="This determines how tall the Trampoline Wall is.">
       <entry value="0">1 Block</entry>
@@ -1368,20 +1300,20 @@
     <value nybble="11" title="Physics ID" comment="This will pair the Wind Physics with Physics Coin Controller." requiredbit="47-48" idtype="Physics"/>
   </sprite> <!-- #90: Effect - Wind Physics and Sound -->
 
-<!-- Research Loop Last 2 Nodes and its accompanying Screen Shake option, as well as the rest of the End Behaviors to confirm their descriptions. With and without 'Loops' -->
-<!-- Confirm that Screen Shake only applies to End Behavior value 1 and not value 4/etc. -->
-<!-- Add full documentation on usage such as path placement and sprite placement. -->
-<!-- SpD1.5 lists Screen Shake as 9-10 instead of just 9...? -->
-<!-- SpD1.5 suggests Loop Last 2 Nodes will actually just reverse the path. What if the Path isn't set to 'Loops'? -->
-  <sprite id="91" name="Auto-Scrolling Controller" notes="The Auto-Scroller will lock the game's camera along a specific Path. This path cannot cause the camera to unnaturally leave the Zone's boundaries. The camera's boundary is defined by the left side of the screen, so it is recommended to leave at least one screen's width after the path's final Node.">
+  <!-- Research Loop Last 2 Nodes and its accompanying Screen Shake option, as well as the rest of the End Behaviors to confirm their descriptions. With and without 'Loops' -->
+  <!-- Confirm that Screen Shake only applies to End Behavior value 1 and not value 4/etc. -->
+  <!-- Add full documentation on usage such as path placement and sprite placement. -->
+  <!-- SpD1.5 lists Screen Shake as 9-10 instead of just 9...? -->
+  <!-- SpD1.5 suggests Loop Last 2 Nodes will actually just reverse the path. What if the Path isn't set to 'Loops'? -->
+  <sprite id="91" name="Auto-Scrolling Controller" notes="The Auto-Scroller will lock the game's camera along a specific Path. This path cannot cause the camera to unnaturally leave the Zone's boundaries. The camera's boundary is defined by the left side of the screen, so it is recommended to leave at least one screen's width after the path's final Node. &lt;br&gt; &lt;br&gt;Finally, the Auto-Scroller moves at a set Speed and Acceleration that cannot be altered by Path settings.">
     <dependency notes="A path is required for the Auto-Scrolling Controller to function."/>
-    <list bit="25-28" title="Activation Mode" comment="This determines the conditions to activate the Auto-Scroller." comment2="Event Activated: Auto-Scroller only starts when the Triggering Event is activated. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Behaves Incorrectly:&lt;/font&gt; Do not use this option. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;yellow&quot;&gt;Activated by Ground-Pounding [321]:&lt;/font&gt; When the Beta Arrow Block is ground-pounded, it sends code to the Auto-Scroller to start. Intended functionality was likely to control the direction as well. &lt;br&gt; &lt;br&gt;Already Activated: Activates without the need to set a Triggering Event.">
+    <list bit="25-28" title="Activation Mode" comment="This determines the conditions to activate the Auto-Scroller." comment2="Event Activated: Auto-Scroller only starts when the Triggering Event is activated. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Behaves Incorrectly:&lt;/font&gt; Do not use this option. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;orange&quot;&gt;Activated by Ground-Pounding [321]:&lt;/font&gt; When the Beta Arrow Block is ground-pounded, it sends code to the Auto-Scroller to start. Intended functionality was likely to control the direction as well. &lt;br&gt; &lt;br&gt;Already Activated: Activates without the need to set a Triggering Event.">
       <entry value="0">Event Activated</entry>
       <entry value="1">Behaves Incorrectly</entry>
       <entry value="2">Activated by Ground-Pounding [321]</entry>
       <entry value="3">Already Activated</entry>
     </list>
-    <value bit="9-16" title="Triggering Event ID" comment="When this Event ID is activated, the Auto-Scroller will activate. Deactivating the event will not deactivate the Auto-Scroller, it will continue until it has reached the final Path Node." requiredbit="25-28" requiredval="0" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears only if set to Event Activated -->
+    <value bit="9-16" title="Triggering Event ID" comment="When this Event ID is activated, the Auto-Scroller will activate. Deactivating the event will not deactivate the Auto-Scroller; it will continue until it has reached the final Path Node." requiredbit="25-28" requiredval="0" idtype="Triggering Event"/> <!-- Appears only if set to Event Activated -->
     <list bit="30-32" title="End Behavior" comment="This determines what the Auto-Scroller will do with the camera when it has reached the final Node of its path." comment2="Release Control: The camera will unlock, and the player can continue wherever they want. The camera may jerk slightly when it first releases.(?) &lt;br&gt; &lt;br&gt;Loop Last 2 Nodes: The Auto-Scroller will continue to scroll between the last two Nodes on the path. &lt;br&gt; &lt;br&gt;Lock Screen: This option will lock the screen at the final path Node. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Unknown Value 2/3:&lt;/font&gt; May have different effects, ASM research is likely required.">
       <entry value="0">Release Control</entry>
       <entry value="1">Loop Last 2 Nodes</entry>
@@ -1394,7 +1326,7 @@
       <entry value="1">Light Screen Shake</entry>
       <entry value="2">Faster Screen Shake</entry>
     </list>
-    <value bit="1-8" title="Target Event ID" comment="When the Auto-Scroller reaches its final path Node, this Event ID is activated." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
+    <value bit="1-8" title="Target Event ID" comment="When the Auto-Scroller reaches its final path Node, this Event ID is activated." idtype="Target Event"/>
     <value nybble="12" title="Path ID" comment="This determines which Path the camera will follow while scrolling. [CLARIFY] The upper left corner of the Screen, relative to the Auto-Scroller's placement, is the starting point for the path." idtype="Path"/>
     <value nybble="5-6" title="Midway Start Node ID" comment="If the level was entered from the Midway Point, the Auto-Scroller will begin from this Node instead of the first Node in the Path."/>
     <value bit="44" title="Unknown Flag 11 (1)" comment="Possibly determines behavior relating to [159]" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
@@ -1424,11 +1356,12 @@
       <entry value="1">Left Only</entry>
       <entry value="2">Right Only</entry>
     </list>
-    <value bit="30-32" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. See Retail: 07-07 A1 Z5."/>
+    <value bit="30-32" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers." comment2="For usage examples, see Retail: 07-07 A1 Z5."/>
     <checkbox bit="48" title="Shoots Homing Missile Bills" comment="When enabled, the Launcher will spawn Bullet Bills that seek out the players instead of moving straight ahead."/>
-    <value nybble="6" title="Homing Missile Bill Limit" comment="The Launcher will not create new Missile Bills unless the amount currently on the screen is less than this number. Value 0 functions the same as Value 1." requiredbit="48"/>
+    <value nybble="6" title="Homing Missile Bill Limit" comment="The Launcher will not create new Missile Bills unless the amount currently on the screen is less than this number." comment2="Value 0 functions the same as Value 1." requiredbit="48"/>
   </sprite> <!-- #92: Bullet Bill Launcher -->
 
+<!-- Could use a few ??? values tested and played with. -->
   <sprite id="93" name="Banzai Bill Launcher" notes="This is a Bullet Bill Launcher (Bill Blaster) that will shoot larger versions (Banzai) of either normal or homing Bullet Bills at the player.">
     <list nybble="10" title="Shooting Direction" comment="This determines which direction the Launcher will fire in, either towards the player on either side, or towards one side only.">
       <entry value="0">Towards Player</entry>
@@ -1441,7 +1374,7 @@
       <entry value="1">Very Long</entry>
       <entry value="3">???</entry>
     </list>
-    <value bit="30-32" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. See Retail: 07-07 A1 Z5."/>
+    <value bit="30-32" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers" comment2="For usage examples, see Retail: 07-07 A1 Z5."/>
     <checkbox bit="48" title="Shoots Homing Missile Bills" comment="When enabled, the Launcher will spawn Bullet Bills that seek out the players instead of moving straight ahead." comment2="Using this with Banzai Bills is not recommended, as they only home in on a vertical axis. They will climb or fall vertically and then move towards the player when they have 'locked on'. Instead, use sprite 418."/>
     <value nybble="6" title="Homing Missile Bill Limit" comment="The Launcher will not create new Missile Banzai Bills unless the amount currently on the screen is less than this number." requiredbit="48"/>
     <list bit="27-28" title="Unknown Value 7" advanced="True" advancedcomment="ASM shows Nybble 7 might affect something.">
@@ -1458,30 +1391,18 @@
     </list>
     <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #93: Banzai Bill Launcher -->
-
+  
   <sprite id="94" name="Boomerang Bro" sizehacks="True" notes="A standard Brothers enemy that throws Boomerangs at the player.">
   </sprite> <!-- #94: Boomerang Bro" -->
 
   <sprite id="95" name="Hammer Bro Plus" asmhacks="True" sizehacks="True" notes="A standard Brothers enemy that throws hammers (or other objects!) at the player.">
     <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. With a platform limit of one, he can jump onto any passthrough terrain or brick blocks above this solid ground at a distance of 4. With a platform limit of two, he can jump between this platform and another one above it. When on the top of this platform limit, he will not try and jump upwards. He can also jump down from passthrough terrain set higher than 8 blocks above the solid ground, though he will not be able to return."/>
     <dualbox bit="48" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
-    <list nybble="6" title="Color" comment="This determines the color of the Hammer Bro." advancedcomment="More colors can be added for your hack.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Black</entry>
-    </list>
-    <list nybble="10" title="Thrown Object" comment="This determines which object will be thrown by the Hammer Bro Plus." advancedcomment="More objects can be added for your hack.">
-      <entry value="0">Hammers</entry>
-      <entry value="1">Bob-omb</entry>
-      <entry value="2">Goomba</entry>
-      <entry value="3">Spiny</entry>
-      <entry value="4">Coins/Random Power-up</entry>
-      <entry value="5">Lemmy Ball</entry>
-    </list>
   </sprite> <!-- #95: Hammer Bro Plus -->
 
   <sprite id="96" name="Rotation Controller - Swaying" notes="This controller will create synchronized movement between matched sprites and cause them to sway back and forth.">
     <value nybble="11-12" title="Rotation ID" comment="This pairs matching rotation controlled objects to this controller." idtype="Rotation"/>
-    <list nybble="5" title="Swing Arc" comment="This determines how wide the swinging arc is." comment2="No swing arc at 0. Adds 11.25 degrees in each direction per value.">
+    <list nybble="5" title="Swing Arc" comment="This determines how wide the swinging arc is." comment2="Each value adds 11.25 degrees in each direction per value.">
       <entry value="0">No Swing Arc</entry>
       <entry value="1">22.5°</entry>
       <entry value="2">45.0°</entry>
@@ -1517,7 +1438,7 @@
       <entry value="14">Faster+</entry>
       <entry value="15">Very Fast</entry>
     </list>
-    <value nybble="8" title="Delay at Extremes" comment="This determines how long the Swing Arc will stay extended to its extremes."/>
+    <value nybble="8" title="Delay at Extremes" comment="This determines how long the Swing Arc will wait at the extremes of its angle."/>
     <checkbox bit="36" title="Reverse" comment="When enabled, the timing of the left and right positions of the Swing Arc will be reversed in relation to other Swaying Controllers with the same settings."/>
     <list bit="39-40" title="Unknown Value 10" advanced="True" advancedcomment="1: Used in Retail: 07-21 A2, 2: Used in Retail: 04-21 A1/A2/A3, 07-21 A1/A2/A4">
       <entry value="0">Normal</entry>
@@ -1525,9 +1446,9 @@
       <entry value="2">???</entry>
     </list>
   </sprite> <!-- #96: Rotation Controller - Swaying -->
-
+  
   <sprite id="97" name="(Unused) Rotation Controlled Block" notes="This is a block platform that is able to be controlled by a Rotation Controller. It is incomplete, so you may encounter issues when using it." advancednotes="The class name is 'En_Lift_Rotation_Full' if you want to change the texture.">
-    <list nybble="5-6" title="Z-Order" comment="This this changes the relative Z-order of the block platform.">
+    <list nybble="5-6" title="Z-Order" comment="This this changes the relative Z-Order of the block platform.">
       <entry value="3">20</entry>
       <entry value="0">0</entry>
       <entry value="1">-20</entry>
@@ -1538,11 +1459,7 @@
     <value nybble="11-12" title="Rotation ID" comment="Match this sprite with a Rotation Controller to make this sprite move. Works with both Spinning and Swaying." idtype="Rotation"/>
   </sprite> <!-- #97: (Unused) Rotation Controlled Block -->
 
-  <sprite id="98" name="Giant Spiked Ball / Snowball" asmhacks="True" sizehacks="True" notes="A large loose Spiked Ball that will also destroy certain types of blocks. Can also be turned into a Snowball.">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Giant Spiked Ball." advancedcomment="More colors and styles can be added for your hack.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Snowball</entry>
-    </list>
+  <sprite id="98" name="Giant Spiked Ball" asmhacks="True" sizehacks="True" notes="A large loose Spiked Ball that will also destroy certain types of blocks.">
     <dualbox bit="44" title1="Starts Rolling Left" title2="Starts Rolling Right" comment="This determines which direction the Spiked Ball will begin rolling in."/>
     <list bit="47-48" title="Speed" comment="This determines how fast the Spiked Ball rolls.">
       <entry value="0">Stopped</entry>
@@ -1551,35 +1468,13 @@
     </list>
     <list bit="36" title="Speed After Hitting Wall" comment="This determines if the Spiked Ball will slow down after hitting a wall.">
       <entry value="0">Really Slow</entry>
-      <entry value="1">Same as Before</entry>
+      <entry value="1">Same Momentum</entry>
     </list>
-  </sprite> <!-- #98: Giant Spiked Ball / Snowball -->
-
+  </sprite> <!-- #98: Giant Spiked Ball -->
+  
   <sprite id="99" name="Pipe Enemy Generator" asmhacks="True" notes="Use this to spawn waves of either Goombas or Bob-Ombs from a pipe.">
     <dependency notes="The spawner must be placed directly on the edge of the pipe in order to function. If spawning Left or Right, place it directly on the bottom square. If spawning Up or Down, place it directly on the left square."/>
     <dualbox bit="44" title1="Spawns Goombas" title2="Spawns Bob-Ombs" comment="This determines which enemy will be spawned from the pipe."/>
-    <list nybble="6" title="Color" comment="This determines the color and style of the Spawned Goombas." advancedcomment="More colors can be added for your hack." requiredbit="44" requiredval="0">
-      <entry value="0">Normal</entry>
-      <entry value="1">Gloomba</entry>
-      <entry value="2">Hyper</entry>
-      <entry value="3">Bella</entry>
-      <entry value="4">Red</entry>
-      <entry value="5">Blue</entry>
-      <entry value="6">Gray</entry>
-      <entry value="7">Santa</entry>
-      <entry value="8">Gray Santa</entry>
-    </list> <!-- Appears when Spawns Goombas is set -->
-    <list nybble="6" title="Color" comment="This determines the color of the Spawned Bob-Ombs." advancedcomment="More colors can be added for your hack." requiredbit="44">
-      <entry value="0">Original</entry>
-      <entry value="1">Red</entry>
-      <entry value="2">Orange</entry>
-      <entry value="3">Yellow</entry>
-      <entry value="4">Green</entry>
-      <entry value="5">Blue</entry>
-      <entry value="6">Violet</entry>
-      <entry value="7">White</entry>
-      <entry value="8">Pink</entry>
-    </list> <!-- Appears when Spawns Bob-Ombs is set -->
     <list nybble="12" title="Exit Direction" commnet="This determines which direction the enemy will spawn from the pipe." comment2="The spawner must be correctly positioned or it will not function. See Dependency Notes for more information.">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
@@ -2493,34 +2388,28 @@
   <sprite id="152" name="Incomplete Sprite - 'En_Blur'" notes="Does nothing.">
     </sprite> <!-- #152: Incomplete Sprite - 'En_Blur' -->
 
-  <sprite id="153" name="(Unused) &quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="This is a large version of the basic stand-alone switch. When triggered, it only modifies the Target Event.">
+  <sprite id="153" name="(Unused) &quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="An exact duplicate of the normal &quot;?&quot; Switch (Orange).">
     <dependency notes="The game will crash unless a normal orange switch is placed somewhere in the level. It does not have to be within an area that is actually used.">
       <required sprite="40"/>
     </dependency>
-    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-    <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing down. Upside-Down switches cannot be set to fall."/>
-    <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms. It does not work with conveyor belts." requiredbit="48" requiredval="0"/> <!-- Disappears if Upside-Down is enabled -->
-    <list bit="29-32" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." advancedcomment="More styles can be added for your hack.">
-      <entry value="0">Standard Question Mark</entry>
-      <entry value="1">! with Explosion (Tile God)</entry>
-      <entry value="2">Two Arrows Forming a Circle (Flipper)</entry>
-      <entry value="3">Up and Down Arrows (Raise + Lower)</entry>
-    </list>
-    <dualbox bit="28" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use."/>
+    <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
+    <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set." requiredbit="48" requiredval="0"/> <!-- Disappears if Upside-Down is enabled -->
+    <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/>
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
+    <dualbox bit="28" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This will determine if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/>
-    <list bit="23-24" title="Delay on Multi-Use" comment="This will set how long the switch takes to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
-      <entry value="0">Instantly</entry>
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/>
+    <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
+      <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
       <entry value="3">Long Delay</entry>
       <entry value="1">Very Long Delay</entry>
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
-    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Disappears if Multi-Use is set -->
-    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #153: (Unused) Big "?" Switch (Orange) -->
+    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
+    <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+  </sprite> <!-- #153: (Unused) "?" Switch (Orange) -->
 
   <sprite id="154" name="Porcu-Puffer Spawn Area" notes="Assigns a spawn area where Porcu-Puffers will continue to respawn while the player is inside it. Porcu-puffers will follow the player along the water line.">
     <dependency notes="Water is required for the Porcu-Puffer to function. It must be non-location water, possibly non-moving water.">
@@ -4554,12 +4443,8 @@
       <entry value="1">6 Blocks Wide</entry>
       <entry value="2">8 Blocks Wide</entry>
     </list>
-    <list nybble="6" title="Color" comment="This determines the color and style of the wheel." advancedcomment="More colors and styles can be added for your hack.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Grey</entry>
-    </list>
     <dualbox bit="44" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines the direction the wheel will rotate in."/>
-    <value nybble="10" title="Speed" comment="This determines the speed of the wheel's rotation."/>
+    <value nybble="10" title="Speed" comment="This determines the speed of the wheel's rotation. A speed of 0 still moves, just very slowly."/>
   </sprite> <!-- #286: Rotating Wooden Airship Wheel -->
 
   <sprite id="287" name="(Unused) Path Controlled Ice Block" notes="A slippery block of ice that can be paired with a Path.">
