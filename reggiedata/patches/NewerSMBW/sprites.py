@@ -164,6 +164,35 @@ class SpriteImage_RotatingBrickBlock(SpriteImage_Block):  # 256
         self.rotates = True
 
 
+class SpriteImage_NewerWoodCircle(SLib.SpriteImage_StaticMultiple):  # 286
+    @staticmethod
+    def loadImages():
+        if 'WoodCircle0' in ImageCache: return
+        for i in range(3):
+            ImageCache['WoodCircle%d' % i] = SLib.GetImg('wood_circle_%d.png' % i)
+        
+        if 'GrayWoodCircle0' in ImageCache: return
+        for i in range(3):
+            ImageCache['GrayWoodCircle%d' % i] = SLib.GetImg('gray_wood_circle_%d.png' % i)
+
+    def dataChanged(self):
+        super().dataChanged()
+        size = self.parent.spritedata[5] & 3
+        gray = self.parent.spritedata[2] & 1
+
+        if gray:
+            self.image = ImageCache['GrayWoodCircle%d' % size]
+        else:
+            self.image = ImageCache['WoodCircle%d' % size]
+
+        if size > 2: size = 0
+        self.dimensions = (
+            (-24, -24, 64, 64),
+            (-40, -40, 96, 96),
+            (-56, -56, 128, 128),
+        )[size]
+
+
 class SpriteImage_LineQBlock(SpriteImage_Block):  # 402
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -1713,6 +1742,7 @@ ImageClasses = {
     279: SpriteImage_RockyBoss,
     282: SpriteImage_AngrySun,
     283: SpriteImage_FuzzyBear,
+    286: SpriteImage_NewerWoodCircle,
     290: SpriteImage_Boolossus,
     296: SpriteImage_NewerMegaBuzzy,
     319: SpriteImage_Flipblock,
