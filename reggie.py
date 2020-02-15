@@ -1206,8 +1206,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         slabel = QtWidgets.QLabel(globals_.trans.string('Palette', 11))
         slabel.setWordWrap(True)
         self.spriteList = SpriteList()
-        self.spriteList.list_.itemActivated.connect(self.HandleSpriteSelectByList)
-        self.spriteList.list_.toolTipAboutToShow.connect(self.HandleSpriteToolTipAboutToShow)
+        # self.spriteList.list_.itemActivated.connect(self.HandleSpriteSelectByList)
+        # self.spriteList.list_.toolTipAboutToShow.connect(self.HandleSpriteToolTipAboutToShow)
 
         spel.addWidget(slabel)
         spel.addWidget(self.spriteList)
@@ -1874,6 +1874,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             globals_.Area.sprites.append(spr)
             added.append(spr)
+            self.spriteList.addSprite(spr)
             self.scene.addItem(spr)
 
         # Go through the objects
@@ -3235,8 +3236,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         pcEvent = self.HandleSprPosChange
         for spr in globals_.Area.sprites:
             spr.positionChanged = pcEvent
-            spr.listitem = ListWidgetItem_SortsByOther(spr)
-            self.spriteList.addItem(spr.listitem)
+            self.spriteList.addSprite(spr)
             self.scene.addItem(spr)
             spr.UpdateListItem()
 
@@ -3340,7 +3340,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.selObj = None
         self.selObjs = None
 
-        self.spriteList.setCurrentItem(None)
+        self.spriteList.clearSelection()
         self.entranceList.setCurrentItem(None)
         self.locationList.setCurrentItem(None)
         self.pathList.setCurrentItem(None)
@@ -3821,33 +3821,33 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         loc.UpdateListItem(True)
 
-    def HandleSpriteSelectByList(self, item):
-        """
-        Handle a sprite being selected from the list
-        """
-        spr = None
-        for check in globals_.Area.sprites:
-            if check.listitem == item:
-                spr = check
-                break
-        if spr is None: return
+    # def HandleSpriteSelectByList(self, item):
+    #     """
+    #     Handle a sprite being selected from the list
+    #     """
+    #     spr = None
+    #     for check in globals_.Area.sprites:
+    #         if check.listitem == item:
+    #             spr = check
+    #             break
+    #     if spr is None: return
 
-        spr.ensureVisible(QtCore.QRectF(), 192, 192)
-        self.scene.clearSelection()
-        spr.setSelected(True)
+    #     spr.ensureVisible(QtCore.QRectF(), 192, 192)
+    #     self.scene.clearSelection()
+    #     spr.setSelected(True)
 
-    def HandleSpriteToolTipAboutToShow(self, item):
-        """
-        Handle a sprite being hovered in the list
-        """
-        spr = None
-        for check in globals_.Area.sprites:
-            if check.listitem == item:
-                spr = check
-                break
-        if spr is None: return
+    # def HandleSpriteToolTipAboutToShow(self, item):
+    #     """
+    #     Handle a sprite being hovered in the list
+    #     """
+    #     spr = None
+    #     for check in globals_.Area.sprites:
+    #         if check.listitem == item:
+    #             spr = check
+    #             break
+    #     if spr is None: return
 
-        spr.UpdateListItem(True)
+    #     spr.UpdateListItem(True)
 
     def HandlePathSelectByList(self, item):
         """
