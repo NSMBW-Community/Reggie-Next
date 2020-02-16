@@ -1259,6 +1259,122 @@ class SpriteImage_CaptainBowser(SLib.SpriteImage_Static):  # 213
         SLib.loadIfNotInImageCache('CaptainBowser', 'captain_bowser.png')
 
 
+class SpriteImage_NewerLineBlock(SLib.SpriteImage):  # 219
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.spritebox.shown = False
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 24, 24))
+        self.aux[0].setPos(0, 32)
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('LineBlock0', 'lineblock.png')
+        if 'LineBlock8' in ImageCache: return
+        for i in range(8):
+            ImageCache['LineBlock%d' % (i + 1)] = SLib.GetImg('lineblock%d.png' % (i + 1))
+
+    def dataChanged(self):
+
+        direction = self.parent.spritedata[4] >> 4
+        widthA = self.parent.spritedata[5] & 15
+        widthB = self.parent.spritedata[5] >> 4
+        distance = self.parent.spritedata[4] & 0xF
+        color = (self.parent.spritedata[2] & 0xF) % 9
+
+        if direction & 1:
+            # reverse them if going down
+            widthA, widthB = widthB, widthA
+
+        noWidthA = False
+        aA = 1
+        if widthA == 0:
+            widthA = 1
+            noWidthA = True
+            aA = 0.25
+        noWidthB = False
+        aB = 0.5
+        if widthB == 0:
+            widthB = 1
+            noWidthB = True
+            aB = 0.25
+
+        if ImageCache['LineBlock8'] is None: return
+        blockimg = ImageCache['LineBlock%d' % color]
+
+        if widthA > widthB:
+            totalWidth = widthA
+        else:
+            totalWidth = widthB
+
+        imgA = QtGui.QPixmap(widthA * 24, 24)
+        imgB = QtGui.QPixmap(widthB * 24, 24)
+        imgA.fill(Qt.transparent)
+        imgB.fill(Qt.transparent)
+        painterA = QtGui.QPainter(imgA)
+        painterB = QtGui.QPainter(imgB)
+        painterA.setOpacity(aA)
+        painterB.setOpacity(1)
+
+        if totalWidth > 1:
+            for i in range(totalWidth):
+                # 'j' is just 'i' out of order.
+                # This causes the lineblock to be painted from the
+                # sides in, rather than linearly.
+                if i & 1:
+                    j = totalWidth - (i // 2) - 1
+                else:
+                    j = i // 2
+                xA = j * 24 * ((widthA - 1) / (totalWidth - 1))
+                xB = j * 24 * ((widthB - 1) / (totalWidth - 1))
+
+                # now actually paint it
+                painterA.drawPixmap(xA, 0, blockimg)
+                painterB.drawPixmap(xB, 0, blockimg)
+        else:
+            # special-case to avoid ZeroDivisionError
+            painterA.drawPixmap(0, 0, blockimg)
+            painterB.drawPixmap(0, 0, blockimg)
+
+        del painterA, painterB
+
+        if widthA >= 1:
+            self.width = widthA * 16
+        else:
+            self.width = 16
+
+        xposA = (widthA * -8) + 8
+        if widthA == 0: xposA = 0
+        xposB = (widthA - widthB) * 12
+        if widthA == 0: xposB = 0
+        if direction & 1:
+            # going down
+            yposB = distance * 24
+        else:
+            # going up
+            yposB = -distance * 24
+
+        newImgB = QtGui.QPixmap(imgB.width(), imgB.height())
+        newImgB.fill(Qt.transparent)
+        painterB2 = QtGui.QPainter(newImgB)
+        painterB2.setOpacity(aB)
+        painterB2.drawPixmap(0, 0, imgB)
+        del painterB2
+        imgB = newImgB
+
+        self.image = imgA
+        self.xOffset = xposA
+        self.aux[0].setSize(imgB.width(), imgB.height())
+        self.aux[0].image = imgB
+        self.aux[0].setPos(xposB, yposB)
+
+        super().dataChanged()
+
+    def paint(self, painter):
+        super().paint(painter)
+        painter.drawPixmap(0, 0, self.image)
+
+
 class SpriteImage_NewerSpringBlock(SLib.SpriteImage_StaticMultiple):  # 223
     @staticmethod
     def loadImages():
@@ -1788,6 +1904,7 @@ ImageClasses = {
     209: SpriteImage_BrickBlock,
     210: SpriteImage_Topman,
     213: SpriteImage_CaptainBowser,
+    219: SpriteImage_NewerLineBlock,
     223: SpriteImage_NewerSpringBlock,
     230: SpriteImage_NewerBramball,
     231: SpriteImage_NewerWiggleShroom,
