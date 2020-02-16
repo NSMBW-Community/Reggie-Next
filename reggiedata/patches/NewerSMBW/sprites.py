@@ -507,6 +507,63 @@ class SpriteImage_NewerExcSwitch(SpriteImage_NewerSwitch):  # 42
         self.switchType = 'E'
 
 
+class SpriteImage_NewerQSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 43
+    @staticmethod
+    def loadImages():
+        if 'QSwitchBlock' in ImageCache: return
+        q = SLib.GetImg('q_switch_block.png', True)
+        ImageCache['QSwitchBlock'] = QtGui.QPixmap.fromImage(q)
+        ImageCache['QSwitchBlockU'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
+
+        if 'QSwitchBlock3' in ImageCache: return
+        q = SLib.GetImg('q_switch_block3.png', True)
+        if q is None: return     
+        ImageCache['QSwitchBlock3'] = QtGui.QPixmap.fromImage(q)
+        ImageCache['QSwitchBlock3U'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
+
+    def dataChanged(self):
+        upsideDown = self.parent.spritedata[5] & 1
+        style = self.parent.spritedata[3] & 3
+        
+        if 'QSwitchBlock3U' not in ImageCache: return
+        
+        if style == 0:
+            self.image = ImageCache['QSwitchBlock'] if not upsideDown else ImageCache['QSwitchBlockU']
+        else:
+            self.image = ImageCache['QSwitchBlock3'] if not upsideDown else ImageCache['QSwitchBlock3U']
+        
+
+        super().dataChanged()
+
+
+class SpriteImage_NewerExcSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 45
+    @staticmethod
+    def loadImages():
+        if 'ESwitchBlock' in ImageCache: return
+        e = SLib.GetImg('e_switch_block.png', True)
+        ImageCache['ESwitchBlock'] = QtGui.QPixmap.fromImage(e)
+        ImageCache['ESwitchBlockU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
+
+        if 'ESwitchBlock3' in ImageCache: return
+        e = SLib.GetImg('e_switch_block3.png', True)
+        if e is None: return
+        ImageCache['ESwitchBlock3'] = QtGui.QPixmap.fromImage(e)
+        ImageCache['ESwitchBlock3U'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
+
+    def dataChanged(self):
+        upsideDown = self.parent.spritedata[5] & 1
+        color = self.parent.spritedata[3] & 3
+        
+        if 'ESwitchBlock3U' not in ImageCache: return
+        
+        if color == 0:
+            self.image = ImageCache['ESwitchBlock'] if not upsideDown else ImageCache['ESwitchBlockU']
+        else:
+            self.image = ImageCache['ESwitchBlock3'] if not upsideDown else ImageCache['ESwitchBlock3U']
+
+        super().dataChanged()
+
+
 class SpriteImage_Thwomp(SLib.SpriteImage_StaticMultiple):  # 47
     def __init__(self, parent):
         super().__init__(
@@ -1701,6 +1758,8 @@ ImageClasses = {
     26: SpriteImage_NewerUpsideDownSpiny,
     40: SpriteImage_NewerQSwitch,
     42: SpriteImage_NewerExcSwitch,
+    43: SpriteImage_NewerQSwitchBlock,
+    45: SpriteImage_NewerExcSwitchBlock,
     47: SpriteImage_Thwomp,
     48: SpriteImage_GiantThwomp,
     49: SpriteImage_FakeStarCoin,

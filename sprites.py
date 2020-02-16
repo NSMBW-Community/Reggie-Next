@@ -1238,7 +1238,7 @@ class SpriteImage_StarCoinRegular(SpriteImage_StarCoin):  # 32
     pass
 
 
-class SpriteImage_QuestionSwitch(common.SpriteImage_Switch):  # 40
+class SpriteImage_QSwitch(common.SpriteImage_Switch):  # 40
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'Q'
@@ -1256,17 +1256,23 @@ class SpriteImage_ExcSwitch(common.SpriteImage_Switch):  # 42
         self.switchType = 'E'
 
 
-class SpriteImage_QuestionSwitchBlock(SLib.SpriteImage_Static):  # 43
-    def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['QSwitchBlock'],
-        )
-
+class SpriteImage_QSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 43
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('QSwitchBlock', 'q_switch_block.png')
+        if 'QSwitchBlock' not in ImageCache:
+            q = SLib.GetImg('q_switch_block.png', True)
+            ImageCache['QSwitchBlock'] = QtGui.QPixmap.fromImage(q)
+            ImageCache['QSwitchBlockU'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
+
+    def dataChanged(self):
+        upsideDown = self.parent.spritedata[5] & 1
+        
+        if upsideDown:
+            self.image = ImageCache['QSwitchBlockU']
+        else:
+            self.image = ImageCache['QSwitchBlock']
+
+        super().dataChanged()
 
 
 class SpriteImage_PSwitchBlock(SLib.SpriteImage_Static):  # 44
@@ -1282,17 +1288,23 @@ class SpriteImage_PSwitchBlock(SLib.SpriteImage_Static):  # 44
         SLib.loadIfNotInImageCache('PSwitchBlock', 'p_switch_block.png')
 
 
-class SpriteImage_ExcSwitchBlock(SLib.SpriteImage_Static):  # 45
-    def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['ESwitchBlock'],
-        )
-
+class SpriteImage_ExcSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 45
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ESwitchBlock', 'e_switch_block.png')
+        if 'ESwitchBlock' not in ImageCache:
+            e = SLib.GetImg('e_switch_block.png', True)
+            ImageCache['ESwitchBlock'] = QtGui.QPixmap.fromImage(e)
+            ImageCache['ESwitchBlockU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
+
+    def dataChanged(self):
+        upsideDown = self.parent.spritedata[5] & 1
+        
+        if upsideDown:
+            self.image = ImageCache['ESwitchBlockU']
+        else:
+            self.image = ImageCache['ESwitchBlock']
+
+        super().dataChanged()
 
 
 class SpriteImage_Podoboo(SLib.SpriteImage_Static):  # 46
@@ -3293,7 +3305,7 @@ class SpriteImage_Porcupuffer(SLib.SpriteImage_Static):  # 151
         SLib.loadIfNotInImageCache('Porcupuffer', 'porcu_puffer.png')
 
 
-class SpriteImage_QuestionSwitchUnused(common.SpriteImage_Switch):  # 153
+class SpriteImage_QSwitchUnused(common.SpriteImage_Switch):  # 153
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'Q'
@@ -7697,12 +7709,12 @@ class SpriteImage_PreSwingingVine(SLib.SpriteImage_Static):  # 444
         super().__init__(
             parent,
             1.5,
-            ImageCache['SwingVine'],
+            ImageCache['PreSwingVine'],
         )
 
-        @staticmethod
-        def loadImages():
-            SLib.loadIfNotInImageCache('SwingVine', 'swing_vine.png')
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('PreSwingVine', 'swing_vine.png')
 
 
 class SpriteImage_CagePeachReal(SLib.SpriteImage_Static):  # 445
@@ -8279,10 +8291,10 @@ ImageClasses = {
     30: SpriteImage_OldStoneBlock_NoSpikes,
     31: SpriteImage_VertMovingPlatform,
     32: SpriteImage_StarCoinRegular,
-    40: SpriteImage_QuestionSwitch,
+    40: SpriteImage_QSwitch,
     41: SpriteImage_PSwitch,
     42: SpriteImage_ExcSwitch,
-    43: SpriteImage_QuestionSwitchBlock,
+    43: SpriteImage_QSwitchBlock,
     44: SpriteImage_PSwitchBlock,
     45: SpriteImage_ExcSwitchBlock,
     46: SpriteImage_Podoboo,
@@ -8383,7 +8395,7 @@ ImageClasses = {
     148: SpriteImage_Spring,
     149: SpriteImage_RotationControllerSpinning,
     151: SpriteImage_Porcupuffer,
-    153: SpriteImage_QuestionSwitchUnused,
+    153: SpriteImage_QSwitchUnused,
     155: SpriteImage_StarCoinLineControlled,
     156: SpriteImage_RedCoinRing,
     157: SpriteImage_BigBrick,
@@ -8597,7 +8609,7 @@ ImageClasses = {
     440: SpriteImage_HorizontalRope,
     441: SpriteImage_MushroomPlatform,
     443: SpriteImage_ReplayBlock,
-    444: SpriteImage_SwingingVine,
+    444: SpriteImage_PreSwingingVine,
     445: SpriteImage_CagePeachReal,
     447: SpriteImage_UnderwaterLamp,
     448: SpriteImage_MetalBar,
