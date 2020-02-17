@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Version 2019-08-18 -->
+<!-- Version 2020-02-16 -->
 <!-- &lt; = < -->
 <!-- &gt; = > -->
 <!-- $amp; = & -->
@@ -27,6 +27,7 @@
 <!-- </sprite> -->
 <!-- Sizehacks Check - 63, 98, 113, 156, 357 -->
 <!-- Stopped after Line 7046 / 10755 (#230) -->
+
 <sprites>
   <sprite id="10" name="(Unused) Large Object Thrower" asmhacks="True" notes="Used in the Newer Final Boss Fight. This is spawned through Captain Bowser's code. It will throw a larger version of the Projectile at a 45° arc. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is best made use of by spawning it through the Actor Spawner. Projectiles have a very high velocity. It will spawn the object around 5 blocks above the placement of the sprite.">
     <dependency notes="[95] Hammer Bros is required to be placed in the level if using this sprite with the Object: Hammer setting.">
@@ -2412,6 +2413,13 @@
     </list> <!-- Appears only if Falling Objects is set -->
   </sprite> <!-- #374: Effect - Falling Objects and Wind -->
 
+  <sprite id="383" name="Boss Controller - Kamek" notes="This controls the various boss fight mechanics for the Kamek fight in World 8-Tower, such as the boss movement, and level completion. &lt;font color=&quot;red&quot;&gt;The Boss Controller crashes NewerSMBW once he loads on-screen.&lt;/font&gt;">
+    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see 08-22's Boss Room.">
+      <required sprite="427"/>
+      <suggested sprite="436"/>
+    </dependency>
+  </sprite> <!-- #383: Boss Controller - Kamek -->
+
   <!-- Color conflicts in recent sprite data, needs rechecked with screenshot. Also check color changes with Size setting. -->
   <sprite id="387" name="Bush" asmhacks="True" sizehacks="True" notes="A decorative leafy bush that appears behind Layer 1 terrain.">
     <dualbox bit="44" title1="Use Bush Color" title2="Yellowish Bush" comment="This determines if the Bush is a yellowish color, or if it uses the color listed in Bush Color instead."/>
@@ -2439,15 +2447,6 @@
     </list>
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #391: Lighting - Glow Block -->
-  
-  <sprite id="401" name="Long / Massive Skewers - Down" notes="A long spiked pillar that covers a distance of exactly 108 Blocks downwards. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
-    <dualbox bit="28" title1="Massive Skewer" title2="Long Skewer" comment="This determines which type of Skewer will be used." comment2="A massive Skewer is an extremely wide and intimidating spiked pillar spanning just over 10 blocks in width. It appears in front of all terrain and all other sprites. A long Skewer is the size of a standard spiked pillar and has the same behavior as normal Skewers."/>
-    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position."/>
-    <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
-    <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
-  </sprite> <!-- #401: Long / Massive Skewers - Down -->
   
   <sprite id="402" name="Line Controlled ? Block" asmhacks="True" notes="A variant of the ? Block that will ride along Line objects.">
     <dependency notes="This sprite must be paired with a [236] Use Lines movement controller in order to function.">
@@ -2520,15 +2519,6 @@
       <entry value="13">Spring</entry>
     </list>
   </sprite> <!-- #403: Line Controlled Brick Block -->
-  
-  <sprite id="404" name="Long / Massive Skewers - Up" notes="A long spiked pillar that covers a distance of exactly 108 Blocks upwards. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
-    <dualbox bit="28" title1="Massive Skewer" title2="Long Skewer" comment="This determines which type of Skewer will be used." comment2="A massive Skewer is an extremely wide and intimidating spiked pillar spanning just over 10 blocks in width. It appears in front of all terrain and all other sprites. A long Skewer is the size of a standard spiked pillar and has the same behavior as normal Skewers."/>
-    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position."/>
-    <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
-    <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
-  </sprite> <!-- #404: Long / Massive Skewers - Up -->
 
   <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the Second Bowser Jr. boss fight. The white square indicates the placement for the Airship Boss Cutscene controller. The cannon used in Newer's final boss fight is included on the clown car, but don't damage Bowser Jr.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 06-38 A1.">
@@ -2544,48 +2534,12 @@
     </dependency>
   </sprite> <!-- #406: Boss Controller - Bowser Jr. (3rd Battle) -->
   
-
   <sprite id="410" name="Giga Goomba" asmhacks="True" notes="An extremely large Goomba added by Newer that will stun the player and shake the screen with each step.">
     <checkbox bit="48" title="Longer Stuns" comment="When enabled, the stun duration will be longer."/>
   </sprite> <!-- #410: Giga Goomba -->
 
   <sprite id="411" name="(Unused) Toad House Minigame - Lives Balloon" notes="An unused version of sprite 412 and has no purpose.">
   </sprite> <!-- #411: (Unused) Toad House Minigame - Lives Balloon -->
-  
-  <sprite id="412" name="Toad House Minigame - Lives Balloon" notes="A colored balloon with a number on it that will award extra lives when shot by a Toad Cannon.">
-    <dependency notes="It can be placed with or without Line objects. It requires both a Toad Cannon and a Cannon Minigame Controller in order to function properly.">
-      <required sprite="202"/>
-      <required sprite="429"/>
-    </dependency>
-    <checkbox bit="44" title="No Handle" comment="When enabled, the balloon will not have a handle." comment2="Only balloons with handles can have a type other than 'Normal'."/>
-    <list bit="39-40" title="Type" comment="This determines the secondary movement effect of the balloon." comment2="A bobbing balloon will move up and down with its handle, a swaying balloon will swing left and right, and a spinning balloon will spin around in a circle." requiredbit="44" requiredval="0">
-      <entry value="0">Normal</entry>
-      <entry value="1">Bobbing</entry>
-      <entry value="2">Swaying</entry>
-      <entry value="3">Spinning</entry>
-    </list> <!-- Appears only if No Handle is not set -->
-    <list nybble="9" title="Number of Lives">
-      <entry value="0">1 Life</entry>
-      <entry value="1">2 Lives</entry>
-      <entry value="2">3 Lives</entry>
-      <entry value="3">4 Lives</entry>
-    </list>
-    <dualbox bit="48" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the block will move based on the Line that it is connected to."/>
-    <checkbox bit="32" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="Used in Retail 03-26 as 1, no visible effect."/>
-  </sprite> <!-- #412: Toad House Minigame - Lives Balloon -->
-
-  <sprite id="413" name="Bouncing Wendy Ring" noyoshi="True" notes="A stand-alone version of the bouncing ring used in the Wendy Koopa boss fights.">
-    <list nybble="12" title="Starting Direction" comment="This determines the direction the ring will initially be moving in.">
-      <entry value="0">Right</entry>
-      <entry value="1">Up + Right</entry>
-      <entry value="2">Up</entry>
-      <entry value="3">Up + Left</entry>
-      <entry value="4">Left</entry>
-      <entry value="5">Down + Left</entry>
-      <entry value="6">Down</entry>
-      <entry value="7">Down + Right</entry>
-    </list>
-  </sprite> <!-- #413: Bouncing Wendy Ring -->
 
   <sprite id="414" name="Spike / Stone Spike" asmhacks="True" sizehacks="True" notes="A strange little koopa that can pull spiked balls from another dimension located inside their stomach and endlessly hurl them towards the player. These spiked balls cannot damage terrain.">
     <list nybble="6" title="Color" comment="This determines the color of the Spike or Stone Spike." commnet2="The Snow Spike will use Snowballs instead of Spiked Balls.">
@@ -2602,168 +2556,24 @@
     <checkbox bit="44" title="Always Throwing" comment="When enabled, the Spike will always throw spiked balls, even when off-screen." comment2="May only function with Stone Spikes."/>
     <value nybble="5" title="Throwing Delay" comment="This determines the delay between each time the Spike or Gabon throws their spiked ball." comment2="The amount of delay is inconsistent between increases in value."/>
     <dualbox bit="40" title1="Faces Left" title2="Faces Right" comment="This determines the initial direction the Spike will face." comment2="This has limited use, as the Spike will turn to face the player when needed. It's most useful when placing the Spike in range of an entrance."/>
-
   </sprite> <!-- #414: Spike / Stone Spike -->
-  
-  
-  <sprite id="419" name="Bowser" noyoshi="True" notes="Bowser himself, used in the final boss fight of World 8. He cannot be used without the proper controllers and level setup.">
-    <dependency notes="Most of the final Bowser fight involves hardcoded elements, so directly copying 08-24 A4 is strongly recommended.">
-      <required sprite="431"/>
-    </dependency>
-  </sprite> <!-- #419: Bowser -->
 
   <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
-    <dependency notes="Usable in classic NSMBW only. All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
+    <dependency notes="&lt;font color=&quot;red&quot;&gt;Usable in classic NSMBW only.&lt;/font&gt; All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
     <checkbox bit="48" title="Unknown Flag 12 (1)" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #422: Toad Needs Help - ? Block -->
   
   <sprite id="423" name="Toad Needs Help - Brick Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
-    <dependency notes="Usable in classic NSMBW only. All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
+    <dependency notes="&lt;font color=&quot;red&quot;&gt;Usable in classic NSMBW only.&lt;/font&gt; All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
     <checkbox bit="48" title="Unknown Flag 12 (1)" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #423: Toad Needs Help - Brick Block -->
 
-  <sprite id="424" name="Palm Tree" notes="A palm tree decoration with a solid-on-top collision.">
-    <list bit="46-48" title="Height" comment="This determines the height of the Palm Tree.">
-      <entry value="0">4 Blocks</entry>
-      <entry value="1">5 Blocks</entry>
-      <entry value="2">6 Blocks</entry>
-      <entry value="3">7 Blocks</entry>
-      <entry value="4">8 Blocks</entry>
-      <entry value="5">9 Blocks</entry>
-      <entry value="6">10 Blocks</entry>
-      <entry value="7">11 Blocks</entry>
-    </list>
-  </sprite> <!-- #424: Palm Tree -->
-
-  <sprite id="425" name="Jellybeam" sizehacks="True" notes="A jellyfish enemy that produces a varying cone of light.">
-    <dependency notes="Unlike most lighting related sprites, the Jellybeam MUST be accompanied by Full Darkness light mode or else it will cause bugs/glitches. While it can be used without water, the use of water is still suggested."/>
-    <list bit="19-20" title="Delay Before Dropping" comment="This determines the delay before the Jellybeam swims downwards.">
-      <entry value="2">Short</entry>
-      <entry value="0">Normal</entry>
-      <entry value="1">Long</entry>
-    </list>
-    <value bit="47-48" title="Distance Dropped" comment="This determines the amount of additional distance the Jellybeam will swim downwards."/>
-  </sprite> <!-- #425: Jellybeam -->
-
-  <sprite id="426" name="Fireball Spawn Area" notes="Assigns a spawn area where loose Fireballs will spawn from the side of the screen while a player is inside it. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
-    <dependency notes="The fireballs will spawn from the specified side of the screen at the same vertical height as the sprite's placement, and move across the screen in a horizontal line."/>
-    <value nybble="11" title="Location ID" comment="The Fireballs will only spawn while a player is in this location."/>
-    <list nybble="10" title="Rate of Fire" comment="This determines the frequency of fireball spawns." comment2="The delay isn't quite in game seconds, instead each value other than 0 is a fraction of value 1. In retail, Nintendo used 12 and 14.">
-      <entry value="0">1/7.3</entry>
-      <entry value="1">1/1</entry>
-      <entry value="2">1/2</entry>
-      <entry value="3">1/3</entry>
-      <entry value="4">1/4</entry>
-      <entry value="5">1/5</entry>
-      <entry value="6">1/6</entry>
-      <entry value="7">1/7</entry>
-      <entry value="8">1/8</entry>
-      <entry value="9">1/9</entry>
-      <entry value="10">1/10</entry>
-      <entry value="11">1/11</entry>
-      <entry value="12">1/12</entry>
-      <entry value="13">1/13</entry>
-      <entry value="14">1/14</entry>
-      <entry value="15">1/15</entry>
-    </list>
-    <dualbox bit="44" title1="Spawns from Right" title2="Spawns from Left" comment="This determines which side of the screen the fireballs will appear from."/>
-  </sprite> <!-- #426: Fireball Spawn Area -->
-
-  <sprite id="427" name="Kamek" noyoshi="True" notes="Kamek himself, used in the tower boss fight of World 8. He cannot be used without the proper controllers and level setup.">
+  <sprite id="427" name="Kamek" noyoshi="True" notes="Kamek himself, used in the tower boss fight of World 8. He cannot be used without the proper controllers and level setup. &lt;font color=&quot;red&quot;&gt;Kamek crashes NewerSMBW once he loads on-screen.&lt;/font&gt;">
     <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see 08-22's Boss Room.">
       <required sprite="383"/>
       <suggested sprite="436"/>
     </dependency>
   </sprite> <!-- #427: Kamek -->
-
-  <sprite id="428" name="Toad House Minigame - Flip Panel" notes="One of the item panels used in the Flip Panel minigame.">
-    <dependency notes="All 6 Variants must be properly set, as the game will select one of them at random. It's recommended to use 3-4 different items in even quantities, and exactly 2 Bowsers and 2 Bowser Jr's in each set. Additionally, you must use exactly 18 panels, and every panel must have a unique ID from 0-17.">
-      <required sprite="430"/>
-      <suggested sprite="436"/>
-    </dependency>
-    <list nybble="5" title="Minigame Variant #1" comment="This determines the item shown during the first Flip Panel minigame variant.">
-      <entry value="0">Mushroom</entry>
-      <entry value="1">Mini Shroom</entry>
-      <entry value="2">Fire Flower</entry>
-      <entry value="3">Ice Flower</entry>
-      <entry value="4">Penguin Suit</entry>
-      <entry value="5">Propeller Shroom</entry>
-      <entry value="6">Star</entry>
-      <entry value="7">Bowser</entry>
-      <entry value="8">Bowser Jr</entry>
-    </list>
-    <list nybble="6" title="Minigame Variant #2" comment="This determines the item shown during the second Flip Panel minigame variant.">
-      <entry value="0">Mushroom</entry>
-      <entry value="1">Mini Shroom</entry>
-      <entry value="2">Fire Flower</entry>
-      <entry value="3">Ice Flower</entry>
-      <entry value="4">Penguin Suit</entry>
-      <entry value="5">Propeller Shroom</entry>
-      <entry value="6">Star</entry>
-      <entry value="7">Bowser</entry>
-      <entry value="8">Bowser Jr</entry>
-    </list>
-    <list nybble="7" title="Minigame Variant #3" comment="This determines the item shown during the third Flip Panel minigame variant.">
-      <entry value="0">Mushroom</entry>
-      <entry value="1">Mini Shroom</entry>
-      <entry value="2">Fire Flower</entry>
-      <entry value="3">Ice Flower</entry>
-      <entry value="4">Penguin Suit</entry>
-      <entry value="5">Propeller Shroom</entry>
-      <entry value="6">Star</entry>
-      <entry value="7">Bowser</entry>
-      <entry value="8">Bowser Jr</entry>
-    </list>
-    <list nybble="8" title="Minigame Variant #4" comment="This determines the item shown during the fourth Flip Panel minigame variant.">
-      <entry value="0">Mushroom</entry>
-      <entry value="1">Mini Shroom</entry>
-      <entry value="2">Fire Flower</entry>
-      <entry value="3">Ice Flower</entry>
-      <entry value="4">Penguin Suit</entry>
-      <entry value="5">Propeller Shroom</entry>
-      <entry value="6">Star</entry>
-      <entry value="7">Bowser</entry>
-      <entry value="8">Bowser Jr</entry>
-    </list>
-    <list nybble="9" title="Minigame Variant #5" comment="This determines the item shown during the fifth Flip Panel minigame variant.">
-      <entry value="0">Mushroom</entry>
-      <entry value="1">Mini Shroom</entry>
-      <entry value="2">Fire Flower</entry>
-      <entry value="3">Ice Flower</entry>
-      <entry value="4">Penguin Suit</entry>
-      <entry value="5">Propeller Shroom</entry>
-      <entry value="6">Star</entry>
-      <entry value="7">Bowser</entry>
-      <entry value="8">Bowser Jr</entry>
-    </list>
-    <list nybble="10" title="Minigame Variant #6" comment="This determines the item shown during the sixth Flip Panel minigame variant.">
-      <entry value="0">Mushroom</entry>
-      <entry value="1">Mini Shroom</entry>
-      <entry value="2">Fire Flower</entry>
-      <entry value="3">Ice Flower</entry>
-      <entry value="4">Penguin Suit</entry>
-      <entry value="5">Propeller Shroom</entry>
-      <entry value="6">Star</entry>
-      <entry value="7">Bowser</entry>
-      <entry value="8">Bowser Jr</entry>
-    </list>
-    <value nybble="11-12" title="Panel ID" comment="This determines the ID of the panel for the purposes of the minigame controller." comment2="See Dependency Notes for information on setting this up, or reference a retail 0X-27 level." idtype="Panel"/>
-  </sprite> <!-- #428: Toad House Minigame - Flip Panel -->
-
-  <sprite id="429" name="Toad House Minigame - Cannon Controller" noyoshi="True" notes="This controls the minigame functionality of the Cannon minigame for extra lives found in Toad Houses.">
-    <dependency notes="This must be included with a proper Cannon balloon room in order for the minigame to function correctly.">
-      <required sprite="202"/>
-      <required sprite="412"/>
-      <suggested sprite="436"/>
-    </dependency>
-  </sprite> <!-- #429: Toad House Minigame - Cannon Controller -->
-  
-  <sprite id="430" name="Toad House Minigame - Flip Panel Controller" noyoshi="True" notes="This controls the minigame functionality of the Flip Panel minigame for items found in Toad Houses.">
-    <dependency notes="This must be included with a proper Flip Panel room in order for the minigame to function correctly.">
-      <required sprite="428"/>
-      <suggested sprite="436"/>
-    </dependency>
-  </sprite> <!-- #430: Toad House Minigame - Flip Panel Controller -->
   
   <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the Retail Bowser battle.">
     <dependency notes="Most of the final Bowser fight involves hardcoded elements, some of which that were removed in Newer. Directly copying 08-24 A4 from Newer is strongly recommended. Sprites won't spawn if on screen when entering the zone.">
@@ -2777,9 +2587,6 @@
       <suggested sprite="436"/>
     </dependency>
   </sprite> <!-- #431: Boss Controller - Bowser -->
-  
-  <sprite id="432" name="Toad NPC" notes="A non-interactable Toad that will turn and face the player.">
-  </sprite> <!-- #432: Toad NPC -->
 
   <sprite id="433" name="Floating ? Block" asmhacks="True" notes="A slightly-larger-than-normal ? Block that floats on the surface of the Zone's non-Location Water, Poisoned Water, or Lava.">
     <dependency notes="Place this block at the horizontal position you want it to load, and it will spawn floating at the surface line of the body of liquid. It only works with non-Location liquids, and it does work with Moving liquids.">
@@ -2806,59 +2613,6 @@
       <entry value="13">Spring</entry>
     </list>
   </sprite> <!-- #433: Floating ? Block -->
-
-  <sprite id="434" name="Warp Cannon" notes="A large cannon that will flag a level for completion.">
-    <list bit="47-48" title="Inscription" comment="This determines which number is printed on the side of the giant cannon." comment2="The level that the cannon actually travels to is hardcoded in Retail NSMBW. Changing this setting will not change the destination.">
-      <entry value="0">World 5</entry>
-      <entry value="1">World 6</entry>
-      <entry value="2">World 8</entry>
-    </list>
-  </sprite> <!-- #434: Warp Cannon -->
-
-  <sprite id="435" name="Effect - Ghost Fog" notes="This adds a thin wispy fog effect to the level that can be used with or without a Location ID." advancednotes="Please note that Poison Water and Lava will turn into &lt;b&gt;Water&lt;/b&gt; and lose their deadly properties, should this sprite's location and the water location overlap. The player can then swim in Poison/Lava without being killed. The Poison/Lava still looks correct, only their physics are changed." >
-    <dependency notes="A Location ID is NOT required in order for the Ghost Fog to function. Without a Location ID set, it will simply fill the entire Zone with the Ghost Fog effect."/>
-    <value nybble="11-12" title="Location ID" comment="This determines the location in which the Ghost Fog will spawn." idtype="Location"/>
-    <checkbox bit="38" title="Unknown Flag 10 (4)" advanced="True" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function."/>
-  </sprite> <!-- #435: Effect - Ghost Fog -->
-
-  <sprite id="436" name="Background Paralax Center Point" notes="This will center the scrolling of the Zone's backgrounds at the placement of the sprite.">
-    <dependency notes="This sprite will affect the background's paralax settings by setting the center point at the placement of the sprite. Do not use more than one [436] per Zone."/>
-    <list nybble="12" title="Boss Related: Alignment" comment="This will slightly adjust the Y-Axis alignment, and should be set appropriately when creating a boss room. ">
-      <entry value="0">Centered</entry>
-      <entry value="1">Align as Boss Fight</entry>
-      <entry value="2">Align as Bowser Fight</entry>
-    </list>
-  </sprite> <!-- #436: Background Paralax Center Point -->
-
-  <sprite id="437" name="Climbable Striped Pole" noyoshi="True" notes="A stationary purple striped pole that can be climbed up. This does not count as a climbing animation for the IF Event Controller. It counts as being in the air.">
-    <dependency notes="This sprite must be placed evenly on the grid in order to function properly."/>
-    <value nybble="12" title="Height" comment="This determines the height of the pole."/>
-  </sprite> <!-- #437: Climbable Striped Pole -->
-
-  <sprite id="438" name="Rotation Controlled Cage Blocks" notes="A large textured block meant for use with a Spinning rotation controller. It has several different shapes and poses a challenging obstacle when trying to climb it.">
-    <dependency notes="This block does not appear unless actually paired to a rotation controller.">
-      <suggested sprite="96"/>
-      <suggested sprite="149"/>
-    </dependency>
-    <list nybble="10" title="Type" comment="This determines the shape of the block.">
-      <entry value="0">Backwards C (15x15; Pink)</entry>
-      <entry value="1">Half-Closed C (15x15; Blue)</entry>
-      <entry value="2">Tetris Z (13x11; Green)</entry>
-      <entry value="3">Tetris S (13x11; Blue)</entry>
-      <entry value="4">Bracket Box (15x15; Pink)</entry>
-    </list>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
-  </sprite> <!-- #438: Rotation Controlled Cage Blocks -->
-
-  <sprite id="439" name="Peach in Cage - Fake" notes="Kamek sitting inside of a cage dressed like Peach.">
-    <dependency notes="While it can be used as decoration, it doesn't do anything special unless it's part of the Bowser Boss fight.">
-      <suggested sprite="431"/>
-    </dependency>
-  </sprite> <!-- #439: Peach in Cage - Fake -->
-
-  <sprite id="440" name="Climbable Horizontal Rope" noyoshi="True" notes="A horizontal rope that the player will hang from and slowly move across. This does not count as a climbing animation for the IF Event Controller. It counts as being in the air.">
-    <value bit="43-48" title="Length" comment="This determines the length of the rope."/>
-  </sprite> <!-- #440: Climbable Horizontal Rope -->
 
   <sprite id="441" name="Mushroom Platform" asmhacks="True" notes="A mushroom platform with a solid-on-top collision representing the top segment of a large mushroom. The stem portion must be painted with tileset objects.">
     <dualbox bit="44" title1="Skinny" title2="Thick" comment="This determines the thickness (style) of the mushroom platform."/>
@@ -2889,334 +2643,6 @@
     </list> <!-- Appears only if Angled + Right is enabled -->
     <checkbox bit="36" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites." comment2="The player will jump behind the mushroom platform when passing through from underneath."/>
   </sprite> <!-- #441: Mushroom Platform -->
-  
-  <sprite id="442" name="Hint Movie Block Controller" notes="A controller for the Hint Movie block.">
-    <dependency notes="As it is currently impossible to meet the replay dependency, this sprite should not be used.">
-      <required sprite="443"/>
-    </dependency>
-  </sprite> <!-- #442: Hint Movie Block Controller -->
-  
-  <sprite id="443" name="Hint Movie Block" notes="A block that loads a menu of special replays.">
-    <dependency notes="As it is currently impossible to meet the replay dependency, this sprite should not be used.">
-      <required sprite="442"/>
-    </dependency>
-  </sprite> <!-- #443: Hint Movie Block -->
-
-  <sprite id="444" name="Climbable Swinging Vine - Already Swinging" notes="A swinging vine that loads in with a small amount of momentum already applied to it. Not especially useful compared to [464]. This does not count as a climbing animation for the IF Event Controller. It counts as being in the air.">
-  </sprite> <!-- #444: Climbable Swinging Vine - Already Swinging -->
-
-  <sprite id="445" name="Peach in Cage - Real" notes="Peach standing inside of a cage.">
-    <dependency notes="While it can be used as decoration, it doesn't do anything special unless it's part of the Bowser Boss fight.">
-      <suggested sprite="431"/>
-    </dependency>
-  </sprite> <!-- #445: Peach in Cage - Real -->
-
-  <sprite id="446" name="Effect - Light Cloud Area" asmhacks="True" notes="This adds a light cloud effect to the level. It must use a Location ID.">
-    <checkbox bit="20" title="Death Clouds" comment="When enabled, the cloud area will produce purple instant death clouds instead of normal white clouds."/>
-    <value nybble="11-12" title="Location ID" comment="This determines the location in which the cloud effect will appear."/>
-  </sprite> <!-- #446: Effect - Light Cloud Area -->
-
-  <sprite id="447" name="Lighting - Underwater Lamp" notes="A decorative aquatic lamp that generates light around it. It has no collision by default. It does not have to be used with water, it just happens to have a ship motif.">
-  </sprite> <!-- #447: Lighting - Underwater Lamp -->
-
-  <sprite id="448" name="Metal Bar" notes="A metal bar that is essentially just a 5x2 block.">
-    <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the block placing it further behind other sprites."/>
-  </sprite> <!-- #448: Metal Bar -->
-  
-  <sprite id="450" name="Enterable Warp Pipe - Up" notes="A non-tileset pipe that can be entered or exited from. Only one facing upwards exists. It does not have to be placed exactly on the grid.">
-    <list bit="43-44" title="Color" comment="This determines the color of the Pipe.">
-      <entry value="0">Green</entry>
-      <entry value="1">Red</entry>
-      <entry value="2">Yellow</entry>
-      <entry value="3">Blue</entry>
-    </list>
-    <value nybble="12" title="Length" comment="This determines the length of the Pipe."/>
-    <value nybble="9-10" title="Entrance ID" comment="This determines which Entrance is paired with the pipe."/>
-  </sprite> <!-- #450: Enterable Warp Pipe - Up -->
-  
-  <sprite id="451" name="Scaredy Rat Despawner" asmhacks="True" notes="A decorative mouse hole with a secondary function. It will despawn Scaredy Rats that pass through it, and using Newer code, it will also despawn Bob-Ombs.">
-    <dependency notes="This has the ability to depsawn two different sprites.">
-      <suggested sprite="271"/>
-      <suggested sprite="101"/>
-    </dependency>
-  </sprite> <!-- #451: Scaredy Rat Despawner -->
-
-  <sprite id="452" name="Bowser Boss Door" sizehacks="True" noyoshi="True" notes="A very large green door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
-    <list bit="35-36" title="Orientation" comment="This determines which direction the door will be facing." comment2="A door can only be entered if it is upright." advancedcomment="As decoration, this is fine. Actually making it properly associate its corresponding Entrance is either impossible or very functionally strange.">
-      <entry value="0">Upright</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Down</entry>
-      <entry value="3">Right</entry>
-    </list>
-    <checkbox bit="40" title="Rotation Controlled (Buggy)" comment="When enabled, the door will only function when paired with a Rotation ID." advanced="True" advancedcomment="'Function' is perhaps misleading. There are only a few ways you can successfully utilize a Rotation Controller door. For starters, you can only enter the door while it is almost fully upright. There is also a peculiarity with how the Entrance is placed. The most reliable way to use a Rotation Controlled Door is to place it with an already activated Spinning controller that returns to its original position when deactivated."/>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
-  </sprite> <!-- #452: Bowser Boss Door -->
-
-  <sprite id="453" name="Seaweed Plant" sizehacks="True" notes="A decorative seaweed plant that sways lightly back and forth.">
-    <list nybble="12" title="Size" comment="This determines the size of the seaweed.">
-      <entry value="0">Small</entry>
-      <entry value="1">Medium</entry>
-      <entry value="2">Large</entry>
-      <entry value="3">Large (Air Current)</entry>
-      <entry value="4">Very Large</entry>
-      <entry value="5">Very Large (Air Current)</entry>
-    </list>
-  </sprite> <!-- #453: Seaweed Plant -->
-
-  <sprite id="454" name="Ambush Level Controller" notes="This controls the miscellanous behaviors of an Ambush level, including the Toad Balloons, the Chest, and the destruction of the enemies.">
-    <dependency notes="The Ambush Level Controller, 8 Toad Balloons, and a Toad House Chest with proper settings are all required in order for an Ambush to function.">
-      <required sprite="185"/>
-      <required sprite="203"/>
-    </dependency>
-    <value nybble="11-12" title="Unknown Value 11-12" advanced="True" advancedcomment="ASM shows Nybble 11-12 might affect something. Value 0-254."/>
-  </sprite> <!-- #454: Ambush Level Controller -->
-
-  <sprite id="455" name="Rotation Controlled Hanging Sledge Block" notes="A hanging sledge hammer type block that can be paired with rotation controllers.">
-    <dependency notes="This block does not appear unless actually paired to a rotation controller.">
-      <suggested sprite="96"/>
-      <suggested sprite="149"/>
-    </dependency>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the block to a matching rotation controller." idtype="Rotation"/>
-  </sprite> <!-- #455: Rotation Controlled Hanging Sledge Block -->
-
-  <sprite id="456" name="Final Boss - Bridge Pieces" notes="The pieces of the bridge used during the final boss battle against Bowser.">
-    <dependency notes="The falling behavior can only be achieved when part of the Bowser Boss Battle arrangement. However, it can still be used as a decorative portion of a level.">
-      <suggested sprite="431"/>
-    </dependency>
-    <list nybble="12" title="Piece" comment="This determines which piece of the bridge is used.">
-      <entry value="0">Center</entry>
-      <entry value="1">Right</entry>
-      <entry value="2">Left</entry>
-    </list>
-  </sprite> <!-- #456: Final Boss - Bridge Pieces -->
-
-  <sprite id="457" name="Rotation Controlled 4-Way Thin Bar" notes="A block with four thin bars protruding from it that can be paired with rotation controllers.">
-    <dependency notes="This block does not appear unless actually paired to a rotation controller.">
-      <suggested sprite="96"/>
-      <suggested sprite="149"/>
-    </dependency>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the block to a matching rotation controller." idtype="Rotation"/>
-  </sprite> <!-- #457: Rotation Controlled 4-Way Thin Bar -->
-  
-  <sprite id="458" name="Rotation Controlled Metal Bar" notes="A very large metal bar block that can be paired with rotation controllers. It is approximately 22 blocks long by 4 blocks wide. It will load just slightly behind Layer 1 terrain.">
-    <dependency notes="This block does not appear unless actually paired to a rotation controller.">
-      <suggested sprite="96"/>
-      <suggested sprite="149"/>
-    </dependency>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the block to a matching rotation controller." idtype="Rotation"/>
-  </sprite> <!-- #458: Rotation Controlled Metal Bar -->
-
-  <sprite id="459" name="Crowd Clapping Controller for Coin Collection #1" notes="A controller that generates a clapping sound when the player collects the listed number of coins of both types from the Collection ID group.">
-    <dependency notes="You cannot use tileset coins for this to function."/>
-      <suggested sprite="147"/>
-      <suggested sprite="237"/>
-    <value nybble="7-8" title="# of Blue Coins Required" comment="This determines the number of paired blue coins required to trigger the Crowd Clapper."/>
-    <value nybble="9-10" title="# of Yellow Coins Required" comment="This determines the number of paired standard coins required to trigger the Crowd Clapper."/>
-    <value nybble="12" title="Collection ID" comment="This pairs matching Coins with the Crowd Clapper to track their collection." idtype="Collection"/>
-  </sprite> <!-- #459: Crowd Clapping Controller for Coin Collection #1 -->
-  
-  <sprite id="460" name="Silver Gear Block - Two Way Line" notes="A large rectangular block with a silver gear motif as decoration. It can only be paired for Two Way Line movement." advancednotes="If linked with an Event Activated Two Way Line controller, the Silver Gear Block will only spawn when the event is activated.">
-    <dependency notes="This block must be paired with a [260] Two Way Line movement controller in order to spawn and function.">
-      <required sprite="260"/>
-    </dependency>
-    <value nybble="5-6" title="Two Way Line ID" comment="This pairs the block to a matching Two Way Line movement controller." idtype="Two Way Line"/>
-    <list nybble="12" title="Size" comment="">
-      <entry value="1">Thin (4x9)</entry>
-      <entry value="0">Single (7x9)</entry>
-      <entry value="3">Wide (8x9)</entry>
-      <entry value="2">Double (14x9)</entry>
-    </list>
-    <checkbox nybble="11" title="Upside-Down" comment="Flips the block upside down. This doesn't affect its movement."/>
-  </sprite> <!-- #460: Silver Gear Block -->
-  
-  <sprite id="461" name="Crowd Clapping Controller for Coin Collection #2" notes="A controller that generates a clapping sound when the player collects the listed number of coinso f both types from the Collection ID group. Seems to be identical to #1.">
-    <value nybble="7-8" title="# of Blue Coins Required" comment="This determines the number of paired blue coins required to trigger the Crowd Clapper."/>
-    <value nybble="9-10" title="# of Yellow Coins Required" comment="This determines the number of paired standard coins required to trigger the Crowd Clapper."/>
-    <value nybble="12" title="Collection ID" comment="This pairs matching Coins with the Crowd Clapper to track their collection." idtype="Collection"/>
-  </sprite> <!-- #461: Crowd Clapping Controller for Coin Collection #2 -->
-
-  <sprite id="462" name="Enormous Tower Block with Spikes" notes="A very large block that is decorated with the Pa1_toride (Tower) tileset. This appearance is hardcoded and not pulled directly from the tileset. The Sprite's placement represents the upper left corner of the block.">
-    <list bit="45-47" title="Size" comment="This determines the size of the block">
-      <entry value="1">18x16</entry>
-      <entry value="0">18x28</entry>
-      <entry value="2">18x41</entry>
-      <entry value="3">18x47</entry>
-      <entry value="4">24x31</entry>
-    </list>
-    <dualbox bit="24" title1="Moves Right First" title2="Moves Left First" comment="This determines the initial direction the block will travel."/>
-    <value nybble="7" title="Delay Before Movement" comment="This determines how long the block will wait before making its outwards movement." comment2="Each value is equal to two game seconds."/>
-    <value nybble="9" title="Distance" comment="This defines how many tiles the block will move before returning to its starting position."/>
-    <value nybble="8" title="Delay Before Return" comment="This determines how long the block will wait before making its return movement." comment2="Each value is equal to two game seconds."/>
-    <list bit="39-40" title="Speed" comment="This determines the speed of the block's movement.">
-      <entry value="0">Very Slow</entry>
-      <entry value="1">Slow</entry>
-      <entry value="2">Normal</entry>
-      <entry value="3">Fast</entry>
-    </list>
-    <dualbox bit="48" title1="Spikes on Right" title2="Spikes on Left" comment="This determines which side of the block has spikes."/>
-  </sprite> <!-- #462: Enormous Tower Block with Spikes -->
-
-  <sprite id="463" name="Effect - Glare" comment="This creates a sunbeam effect pointing down and right from the placement of the sprite. Multiple can be used in the same Zone.">
-  </sprite> <!-- #463: Effect - Glare -->
-
-  <sprite id="464" name="Climbable Swinging Vine / Chain" noyoshi="True" notes="A swinging vine or chain that can be grabbed onto by the player and made to swing left and right. This does not count as a climbing animation for the IF Event Controller. It counts as being in the air.">
-    <dualbox bit="48" title1="Vine" title2="Chain" comment="This determines which type of visuals are used for the swinging object."/>
-    <value nybble="6" title="Unknown Value 6" advanced="True" advancedcomment="Nintendo uses value 1 in 5-01 A1. No visible effect."/>
-  </sprite> <!-- #464: Climbable Swinging Vine / Chain -->
-
-<!-- Determine if Value 1 Jungle Birds is different from Value 5 Jungle Birds -->
-<!-- Check if it crashes from using more than one different type of ambiance / more than one of the same type of ambiance -->
-  <sprite id="465" name="Effect - Ambiance Sound Effects" notes="This generates various ambiance effects for the Zone, such as birds and thunder.">
-    <dependency notes="If this sprite is placed more than once in the same Zone, the game will crash."/>
-    <list nybble="12" title="Type" comment="This determines the ambiance used in the Zone.">
-      <entry value="0">Lava Rumbling</entry>
-      <entry value="1">Jungle Birds</entry>
-      <entry value="2">Thunder</entry>
-      <entry value="3">Beach Waves</entry>
-      <entry value="4">Dripping</entry>
-      <entry value="5">Jungle Birds</entry>
-    </list>
-  </sprite> <!-- #465: Effect - Ambiance Sound Effects -->
-
-<!-- Test Nybble 11/12 for height/width -->
-<!-- Test Nybble 5 (Checkbox) and Nybble 3-4 (Event ID) for event activation; referencing Grey Tiled Blocks -->
-<!-- Test Nybble 6 (Value 8) for Start Delay; referencing Grey Tiled Blocks -->
-  <sprite id="466" name="Moving Lava Glow Metal Block" notes="A tall block with the glow of lava underneath it that moves back and forth.">
-    <list bit="23-24" title="Movement Direction" comment="This determines the initial direction the block will travel.">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Up</entry>
-      <entry value="3">Down</entry>
-    </list>
-    <value nybble="7" title="Delay Before Movement" comment="This determines how long the block will wait before making its outwards movement." comment2="Each value is equal to two game seconds."/>
-    <value nybble="9" title="Distance" comment="This defines how many tiles the block will move before returning to its starting position."/>
-    <value nybble="8" title="Delay Before Return" comment="This determines how long the block will wait before making its return movement." comment2="Each value is equal to two game seconds."/>
-    <list bit="39-40" title="Speed" comment="This determines the speed of the block's movement.">
-      <entry value="0">Very Slow</entry>
-      <entry value="1">Slow</entry>
-      <entry value="2">Normal</entry>
-      <entry value="3">Fast</entry>
-    </list>
-  </sprite> <!-- #466: Moving Lava Glow Metal Block -->
-  
-<!-- Run additional tests on this sprite's direction setting, including values greater than 3, mixed with the potentially unlisted size settings -->
-  <sprite id="467" name="Moving Light Gem Block" notes="A small block with a triangular gem in it that lights up just before it moves from its starting position, and then deactivates instantly when it begins to move back.">
-    <list nybble="6" title="Direction Moved" comment="This determines the initial direction the block will travel. The block's gem will light up when travelling in this direction.">
-      <entry value="0">Up</entry>
-      <entry value="2">Up</entry>
-      <entry value="1">Down</entry>
-      <entry value="3">Down</entry>
-    </list>
-    <value nybble="7" title="Delay Before Movement" comment="This determines how long the block will wait before making its outwards movement." comment2="Each value is equal to two game seconds."/>
-    <value nybble="9" title="Distance" comment="This defines how many tiles the block will move before returning to its starting position."/>
-    <value nybble="8" title="Delay Before Return" comment="This determines how long the block will wait before making its return movement." comment2="Each value is equal to two game seconds."/>
-    <list bit="39-40" title="Speed" comment="This determines the speed of the block's movement.">
-      <entry value="0">Very Slow</entry>
-      <entry value="1">Slow</entry>
-      <entry value="2">Normal</entry>
-      <entry value="3">Fast</entry>
-    </list>
-  </sprite> <!-- #467: Moving Light Gem Block -->
-
-  <sprite id="468" name="Cutscene Controller - Credits" notes="This controller manages the game's credits and staffroll after the final Bowser fight.">
-    <dependency notes="There are several hardcoded dependencies involved in this, so it is not usable outside of the established level and arrangement. The Staffroll credits themselves however have an editor available for them.">
-      <suggested sprite="436"/>
-    </dependency>
-  </sprite> <!-- #468: Cutscene Controller - Credits -->
-
-<!-- Test Nybble 6 for 'Direction' -->
-<!-- Test Nybble 11 for 'Distance Multiplier' -->
-  <sprite id="469" name="Bolt Controlled Airship Platform" notes="An airship platform that can also be made to move by spinning a Bolt. It can only move in a downwards direction.">
-    <dependency notes="This platform is intended to function as a pair with two [470] Airship Platform Wires. Additionally, it must be paired to a [315] Bolt in order to function.">
-      <required sprite="315"/>
-      <suggested sprite="470"/>
-    </dependency>
-    <value nybble="5" title="Bolt ID" comment="This pairs the platform with a matching Bolt." idtype="Bolt"/>
-    <checkbox bit="40" title="Moves from Bolt" comment="When enabled, the metal block will move when the matching Bolt is spun." comment2="The platform can only be made to move downwards."/>
-    <list nybble="12" title="Width" comment="This determines the width of the platform.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
-  </sprite> <!-- #469: Bolt Controlled Airship Platform -->
-  
-<!-- Test Nybble 6 for 'Direction' -->
-<!-- Test Nybble 11 for 'Distance Multiplier' -->
-  <sprite id="470" name="Bolt Controlled Airship Platform Wire" notes="A wire that matches the motif of the Airship Platform that can be made to move by spinning a Bolt. It can only move in a downwards direction.">
-    <dependency notes="Two of these decorative wires are intended to function as a pair with the [469] Airship Platform. Additionally, it must be paired to a [315] Bolt in order to function.">
-      <required sprite="315"/>
-      <suggested sprite="469"/>
-    </dependency>
-    <value nybble="5" title="Bolt ID" comment="This pairs the wire with a matching Bolt." idtype="Bolt"/>
-    <checkbox bit="40" title="Moves from Bolt" comment="Check this to cause the Sprite to move when the Bolt is spun."/>
-  </sprite> <!-- #470: Bolt Controlled Airship Platform Wire -->
-
-  <sprite id="471" name="Moving Pot on a Bolt Platform" notes="A pot that rests on top of a large colorful bolt, and moves down and then up again. The bolt cannot be passed through.">
-    <value nybble="7" title="Delay Before Moving Down" comment="This determines how long the platform will wait before making its downwards movement." comment2="Each value is equal to two game seconds."/>
-    <value nybble="9" title="Distance" comment="This defines how many tiles the platform will move before returning to its starting position."/>
-    <value nybble="8" title="Delay Before Moving Up" comment="This determines how long the platform will wait before making its upwards movement." comment2="Each value is equal to two game seconds."/>
-    <list bit="39-40" title="Speed" comment="This determines the speed of the platform's movement.">
-      <entry value="0">Very Slow</entry>
-      <entry value="1">Slow</entry>
-      <entry value="2">Normal</entry>
-      <entry value="3">Fast</entry>
-    </list>
-  </sprite> <!-- #471: Moving Pot on a Bolt Platform -->
-
-  <sprite id="472" name="Ice Flow Generator" noyoshi="True" notes="This generates 'cylindrical' Ice Blocks of a random size that slide across the ground from the right to the left.">
-    <dependency notes="They will spawn from the sprite's placement and fall to the nearest ground under the sprite placement. They will destroy breakable and explodable blocks placed against the ground line and will come to a complete stop when encountering any other terrain. Following that, they start to stack up, making it preferred that they have a pit to fall through. They are half in the air, half embedded in the ground when interacting with slopes, but they will make use of them."/>
-  </sprite> <!-- #472: Ice Flow Generator -->
-
-  <sprite id="473" name="Floating Ice Flow Generator" noyoshi="True" notes="This generates 'cylindrical' Ice Blocks of a random size that float across the surface of a liquid from the right to the left.">
-    <dependency notes="They will spawn from the sprite's placement and fall or float to the liquid's surface. They will bob up and down with momentum and weight when they do this. They will move through all terrain. While it does function with Lava, it looks rather strange, thematically. Therefore it is only recommended to use this with Water and Poisoned Water. It does work with Moving Water, as well.">
-      <suggested sprite="138"/>
-      <suggested sprite="216"/>
-    </dependency>
-  </sprite> <!-- #473: Floating Ice Flow Generator -->
-  
-  <sprite id="474" name="Dancing Coin/Block Controller" notes="This is the controller that operates 'Dancing' and 'Dancing (Reversed) standard Coins and Blocks. Dancing Coins/Blocks will quickly sway left to right two blocks in distance while dipping slightly downwards about half a block.">
-    <dependency notes="Only one Dancing controller is needed per Zone. It is recommended to place it nearby the Zone's entrance, but it can exist anywhere."/>
-  </sprite> <!-- #474: Dancing Coin/Block Controller -->
-
-  <sprite id="475" name="Path Controlled Ice Flow" noyoshi="True" notes="A stand-alone Ice Flow that travels along an assigned Path.">
-    <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the Ice Flow will be linked to." idtype="Path"/>
-    <value nybble="6" title="Starting Node" comment="This determines the Node of the Path that the Ice Flow will appear at and start moving from."/>
-    <list nybble="12" title="Size" comment="This determines the size of the Ice Flow.">
-      <entry value="8">2x4</entry>
-      <entry value="11">2x5</entry>
-      <entry value="0">3x3</entry>
-      <entry value="9">3x4</entry>
-      <entry value="12">3x5</entry>
-      <entry value="3">4x3</entry>
-      <entry value="1">4x4</entry>
-      <entry value="4">5x4</entry>
-      <entry value="2">5x5</entry>
-      <entry value="10">6x7</entry>
-      <entry value="5">7x6</entry>
-      <entry value="7">11x8</entry>
-      <entry value="6">16x11</entry>
-    </list>
-    <checkbox bit="44" title="Floating" comment="When enabled, the Ice Flow will wiggle around as though it is floating on the surface of the water."/>
-  </sprite> <!-- #475: Path Controlled Ice Flow -->
-  
-  <sprite id="477" name="Super Guide Block" notes="A block that activates a special Luigi replay where Luigi will complete the level as minimally as possible with as little running or wall jumping as he can get away with.">
-    <dependency notes="This block cannot currently be utilized, as there is no tool to create and assign replays. As a result, do NOT use this block in your levels, and if you edit a Retail level, you need to remove this block."/>
-    <checkbox bit="39" title="Glows" comment="When enabled, the block will glow and emit light in Full Darkness."/>
-    <checkbox bit="48" title="Loads at Midway" comment="When enabled, the block will only appear if the level has been loaded from a Midway point."/>
-  </sprite> <!-- #477: Super Guide Block -->
 
   <sprite id="478" name="Bowser Switch (Small)" asmhacks="True" sizehacks="True" notes="This switch is nearly identical to the Red ! Switch, but it does not activate outlined Red Blocks. It may have additional bugs. Not recommended for use outside of the final Bowser Boss fight.">
     <dependency notes="This sprite has additional hardcoded behavior that may cause bugs when it is used outside of its intended boss fight.">
@@ -3249,7 +2675,7 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #478: Bowser Switch (Small) -->
   
-  <sprite id="479" name="Bowser Switch (Large)" noyoshi="True" sizehacks="True" notes="A much larger, fancier switch that was originally used for the final Bowser Boss fight. It always flashes red.">
+  <sprite id="479" name="Bowser Switch (Large)" noyoshi="True" sizehacks="True" notes="A much larger, fancier switch that was originally used for the final Bowser Boss fight, and Switch Palaces. It always flashes red.">
     <dependency notes="This sprite has additional hardcoded behavior that may cause bugs when it is used outside of its intended boss fight. Known bugs: It is incompatible with Multi-Use. The Target Event ID must be unique to this Switch.">
       <suggested sprite="431"/>
     </dependency>
@@ -3273,15 +2699,6 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." idtype="Triggering Event"/>
   </sprite> <!-- #479: Bowser Switch (Large) -->
-
-  <sprite id="481" name="(Unused) Final Boss - Rubble Block" notes="A completely useless piece of decoration that was not directly used in the final Bowser Boss fight.">
-    <dependency notes="While it can be placed, it only has two variants, has no collision, and requires Bowser in the level in order to function. It may be indirectly called on during the actual Bowser battle, however.">
-      <required sprite="419"/>
-    </dependency>
-    <dualbox bit="48" title1="2x1 Block" title2="3x2 Block" comment="This determines the size of the decoration"/>
-    <value nybble="7-8" title="Unknown Value 7-8" advanced="True" advancedcomment="ASM shows Nybble 7-8 might affect something."/>
-    <value nybble="9-10" title="Unknown Value 9-10" advanced="True" advancedcomment="ASM shows Nybble 9-10 might affect something."/>
-  </sprite> <!-- #481: (Unused) Final Boss - Rubble Block -->
-
+  
 </sprites>
 <!-- Thank you so much for a-playing my game! -->
