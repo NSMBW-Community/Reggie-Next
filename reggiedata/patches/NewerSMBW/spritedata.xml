@@ -440,7 +440,7 @@
   
   <sprite id="42" name="&quot;!&quot; Switch (Red)" asmhacks="True" sizehacks="True" notes="This switch is similar to the ? Switch, but it has the additional effect of changing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
     <dependency notes="Activates 'Red Block Outline A/B' tiles."/>
-    <list bit="29-32" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. this is accounted for in the sprite image.">
+    <list bit="29-32" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Red (Original)</entry>
       <entry value="1">Red</entry>
       <entry value="2">Yellow</entry>
@@ -1175,7 +1175,7 @@
   </sprite> <!-- #198: Giant Goomba -->
   
   <sprite id="199" name="Mega Goomba" asmhacks="True" notes="An even larger version of the Goomba that splits into two Giant Goombas when stepped on.">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Giant Goomba." comment2="The smaller Goombas spawned correspond to it's recolor of the same value. This means that all smaller Goombas are the same color, except for Green, which is the normal Brown at the smallest size.">
+    <list nybble="6" title="Color" comment="This determines the color and style of the Mega Goomba." comment2="The smaller Goombas spawned correspond to it's recolor of the same value. This means that all smaller Goombas are the same color, except for Green, which is the normal Brown at the smallest size.">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
       <entry value="2">Green</entry>
@@ -1617,7 +1617,7 @@
       <entry value="5">Sky Blue</entry>
       <entry value="6">Blue</entry>
       <entry value="7">Purple</entry>
-	  <entry value="8">Black</entry>
+      <entry value="8">Black</entry>
       <entry value="9">Gray</entry>
     </list>
     <value nybble="8-9" title="Initial Delay?" comment="Definitely not measured in Mario seconds."/>
