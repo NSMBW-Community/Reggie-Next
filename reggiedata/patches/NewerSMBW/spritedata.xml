@@ -2423,7 +2423,7 @@
   <!-- Color conflicts in recent sprite data, needs rechecked with screenshot. Also check color changes with Size setting. -->
   <sprite id="387" name="Bush" asmhacks="True" sizehacks="True" notes="A decorative leafy bush that appears behind Layer 1 terrain.">
     <dualbox bit="44" title1="Use Bush Color" title2="Yellowish Bush" comment="This determines if the Bush is a yellowish color, or if it uses the color listed in Bush Color instead."/>
-    <list nybble="5" title="Bush Style" comment="This determines the style of the Bush." requiredbit="44" requiredval="0">
+    <list nybble="5" title="Bush Style" comment="This determines the style of the Bush. The Forest Tree Leafs specifically are in front of Layer 1, but behind Layer 0." requiredbit="44" requiredval="0">
       <entry value="0">Green</entry>
       <entry value="1">Brown</entry>
       <entry value="2">Dark Red</entry>
