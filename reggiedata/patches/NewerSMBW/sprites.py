@@ -1097,7 +1097,7 @@ class SpriteImage_Meteor(SLib.SpriteImage_StaticMultiple):  # 183
 class SpriteImage_MidwayFlag(SLib.SpriteImage_StaticMultiple):  # 188
     def __init__(self, parent):
         super().__init__(parent)
-        self.yOffset = -37
+        self.yOffset = -36
 
     @staticmethod
     def loadImages():
@@ -1779,6 +1779,56 @@ class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
         super().dataChanged()
 
 
+class SpriteImage_NewerBush(SLib.SpriteImage_StaticMultiple):  # 387
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.parent.setZValue(24999)
+
+    @staticmethod
+    def loadImages():
+        if 'BushGreenSmall' in ImageCache: return
+        for style in ('Green', 'Yellowish', 'Yellow'):
+            for size in ('Small', 'Med', 'Large', 'XLarge'):
+                ImageCache['Bush%s%s' % (style, size)] = SLib.GetImg('bush_%s_%s.png' % (style, size))
+          
+        if 'BushTreeLeafsXLarge' in ImageCache: return
+        for style in ('Brown', 'DarkRed', 'Yellow', 'DarkBrown', 'Red', 'TreeLeafs'):
+            for size in ('Small', 'Med', 'Large', 'XLarge'):
+                ImageCache['Bush%s%s' % (style, size)] = SLib.GetImg('bush_%s_%s.png' % (style, size))
+
+    def dataChanged(self):
+        style = self.parent.spritedata[2] >> 4
+        colors = style % 6
+        size = self.parent.spritedata[5] & 3
+        yellowish = (self.parent.spritedata[5] >> 4) & 1
+       
+        bush = ("Green", "Brown", "DarkRed", "Yellow", "DarkBrown", "Red")[colors]
+        scale = ("Small", "Med", "Large", "XLarge")[size]
+        if yellowish:
+            self.image = ImageCache['BushYellowish%s' % scale]
+        elif style == 15:
+            self.image = ImageCache['BushTreeLeafs%s' % scale]
+        else:
+            self.image = ImageCache['Bush%s%s' % (bush, scale)]
+            
+        if style == 15:
+            self.offset = (
+                (-59, 29), #89, -43
+                (-63, -13), #95, 20
+                (-71, -77), #106, 116
+                (-86, -289), #129, 433
+            )[size]
+        else:
+            self.offset = (
+                (-22, -26),
+                (-28, -46),
+                (-41, -62),
+                (-52, -80),
+            )[size]
+
+        super().dataChanged()
+
+
 class SpriteImage_NewerGlowBlock(SLib.SpriteImage):  # 391
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -1926,6 +1976,7 @@ ImageClasses = {
     324: SpriteImage_Podoboule,
     341: SpriteImage_NewerBigShell,
     351: SpriteImage_ShyGuy,
+    387: SpriteImage_NewerBush,
     391: SpriteImage_NewerGlowBlock,
     402: SpriteImage_LineQBlock,
     403: SpriteImage_LineBrickBlock,

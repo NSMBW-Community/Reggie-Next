@@ -3775,7 +3775,7 @@ class SpriteImage_MidwayPoint(SLib.SpriteImage_Static):  # 188
             parent,
             1.5,
             ImageCache['MidwayFlag'],
-            (0, -37),
+            (0, -36),
         )
 
     @staticmethod
@@ -5122,15 +5122,15 @@ class SpriteImage_TowerDoor(SpriteImage_Door):  # 277
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.doorName = 'TowerDoor'
-        self.doorDimensions = (-2, -10.5, 53, 59)
-        self.entranceOffset = (0, 64)
+        self.doorDimensions = (-2, -13, 53, 61)
+        self.entranceOffset = (0, 68)
 
 
 class SpriteImage_CastleDoor(SpriteImage_Door):  # 278
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.doorName = 'CastleDoor'
-        self.doorDimensions = (-2, -13, 53, 62)
+        self.doorDimensions = (-2, -13, 53, 61)
         self.entranceOffset = (0, 68)
 
 
@@ -6703,6 +6703,7 @@ class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
         self.aux[0].setPos(0, -114)
 
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 144, 30))
+        self.aux[1].setIsBehindSprite(False)
 
     @staticmethod
     def loadImages():
@@ -6945,7 +6946,7 @@ class SpriteImage_Bush(SLib.SpriteImage_StaticMultiple):  # 387
     @staticmethod
     def loadImages():
         if 'Bush00' in ImageCache: return
-        for typenum, typestr in enumerate(('green', 'yellow')):
+        for typenum, typestr in enumerate(('green', 'yellowish')):
             for sizenum, sizestr in enumerate(('small', 'med', 'large', 'xlarge')):
                 ImageCache['Bush%d%d' % (typenum, sizenum)] = SLib.GetImg('bush_%s_%s.png' % (typestr, sizestr))
 
