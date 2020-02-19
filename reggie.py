@@ -4390,35 +4390,33 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Pops up the Background settings Dialog
         """
         dlg = BGDialog()
-        if dlg.exec_() == QtWidgets.QDialog.Accepted:
-            SetDirty()
-            i = 0
-            for z in globals_.Area.zones:
-                tab = dlg.BGTabs[i]
+        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+            return
 
-                z.XpositionA = tab.xposA.value()
-                z.YpositionA = -tab.yposA.value()
-                z.XscrollA = tab.xscrollA.currentIndex()
-                z.YscrollA = tab.yscrollA.currentIndex()
+        SetDirty()
+        for tab, z in zip(dlg.BGTabs, globals_.Area.zones):
+            # first index: BGA/BGB
+            # second index: X/Y
+            z.XpositionA = tab.pos_boxes[0][0].value()
+            z.YpositionA = -tab.pos_boxes[0][1].value()
+            z.XpositionB = tab.pos_boxes[1][0].value()
+            z.YpositionB = -tab.pos_boxes[1][1].value()
 
-                z.ZoomA = tab.zoomA.currentIndex()
+            z.XscrollA = tab.scroll_boxes[0][0].currentIndex()
+            z.YscrollA = tab.scroll_boxes[0][1].currentIndex()
+            z.XscrollB = tab.scroll_boxes[1][0].currentIndex()
+            z.YscrollB = tab.scroll_boxes[1][1].currentIndex()
 
-                z.bg1A = tab.hex1A.value()
-                z.bg2A = tab.hex2A.value()
-                z.bg3A = tab.hex3A.value()
+            z.ZoomA = tab.zoom_boxes[0].currentIndex()
+            z.ZoomB = tab.zoom_boxes[1].currentIndex()
 
-                z.XpositionB = tab.xposB.value()
-                z.YpositionB = -tab.yposB.value()
-                z.XscrollB = tab.xscrollB.currentIndex()
-                z.YscrollB = tab.yscrollB.currentIndex()
+            z.bg1A = tab.hex_boxes[0][0].value()
+            z.bg2A = tab.hex_boxes[0][1].value()
+            z.bg3A = tab.hex_boxes[0][2].value()
 
-                z.ZoomB = tab.zoomB.currentIndex()
-
-                z.bg1B = tab.hex1B.value()
-                z.bg2B = tab.hex2B.value()
-                z.bg3B = tab.hex3B.value()
-
-                i = i + 1
+            z.bg1B = tab.hex_boxes[0][0].value()
+            z.bg2B = tab.hex_boxes[0][1].value()
+            z.bg3B = tab.hex_boxes[0][2].value()
 
     def HandleScreenshot(self):
         """
