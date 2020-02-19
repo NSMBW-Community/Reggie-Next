@@ -962,7 +962,7 @@ class SpriteList(QtWidgets.QWidget):
         Search the table
         """
         results = self.table.findItems(text, QtCore.Qt.MatchContains | QtCore.Qt.MatchRecursive)
-        rows = set(item.row() for item in results)
+        rows = set(item.row() for item in results if item is not None)
 
         for row in range(self.table.rowCount()):
             self.table.setRowHidden(row, row not in rows)
