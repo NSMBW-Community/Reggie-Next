@@ -229,14 +229,14 @@ class BGTab(QtWidgets.QWidget):
         Handles any name box changing
         """
         for slot_id, slot in enumerate(('A', 'B')):
-            for boxnum in (1, 2, 3):
-                name_box = self.name_boxes[slot_id][boxnum]
+            for box_num in range(3):
+                name_box = self.name_boxes[slot_id][box_num]
                 val = name_box.itemData(name_box.currentIndex())
                 if val is None:
                     # the user chose '(Custom)'
                     continue
 
-                self.hex_boxes[slot_id][boxnum].setValue(val)
+                self.hex_boxes[slot_id][box_num].setValue(val)
 
         self.updatePreviews()
 
