@@ -2246,6 +2246,35 @@
     </list>
   </sprite> <!-- #308: Platform Hammer Brother -->
   
+  <!-- In what way does Yoshi not interact with this sprite? -->
+  <!-- Testing needed with Second Falling Animation - Tile God, platforms, etc. May only function with Snake Block, but even that needs additional testing. -->
+  <!-- Further describe Use 'Forming' Animation (and maybe suggest another name for it) -->
+  <!-- Extensive testing needed for Nybble 9 and 10 -->
+  <!-- More testing is needed for Tilt after Falling, too. In retail it tilts Right during the one instance it is used, but was listed as Left in previous documentation. -->
+  <sprite id="311" name="Mega Icicle" noyoshi="True" notes="A large hanging icicle that can fall if the player comes too close to it. It can also be triggered by a Snake Block.">
+    <dependency notes="The Mega Icicle has several options that function specifically with the Snake Block.">
+      <suggested sprite="166"/>
+    </dependency>
+	<list nybble="7" title="Style" comment="This sets the style of the Mega Icicle.">
+	  <entry value="0">Icicle (Original)</entry>
+      <entry value="1">Crystal</entry>
+    </list>
+    <checkbox bit="20" title="Don't Fall" comment="When enabled, the Icicle will not fall."/>
+    <checkbox bit="30" title="Use 'Forming' Animation" comment="When enabled, the Icicle will start small when it loads in and grow to its final size."/>
+    <value nybble="10" title="(Snake Block?) Fall Delay" comment="It's unsure what exactly this does; in retail, 13 is used." requiredbit="20" requiredval="0"/> <!-- Disappears if Don't Fall is set -->
+    *<list nybble="12" title="Tilt after Falling" comment="When enabled, the Icicle will tilt to the right (?) after it falls." requiredbit="20" requiredval="0">
+      <entry value="0">No (Straight)</entry>
+      <entry value="1">Yes (Tilts Right? Towards Player/Source?)</entry>
+    </list> <!-- Disappears if Don't Fall is set -->
+    <checkbox bit="44" title="Falls onto a Snake Block" comment="When enabled, only a Snake Block will cause the Icicle to fall." requiredbit="20" requiredval="0"/> <!-- Disappears if Don't Fall is set -->
+    <list nybble="8" title="Second Falling Animation" comment="This determines the animation the Icicle uses after falling off the Snake Block, or the terrain underneath it is otherwise removed." comment2="If set to 0 or 1, the Icicle will fall through any other terrain and despawn. If set to 2, it will still interact with other Layer 1 terrain after falling." requiredbit="20" requiredval="0">
+      <entry value="0">Dies, with Tilting Drop</entry>
+      <entry value="1">Dies, with Upright Drop</entry>
+      <entry value="2">Lives, Falls Straight Down</entry>
+    </list> <!-- Disappears if Don't Fall is set -->
+    <value nybble="9" title="Unknown Value 9" advanced="True" advancedcomment="ASM shows Nybble 9 might affect something."/>
+  </sprite> <!-- #311: Mega Icicle -->
+
   <sprite id="319" name="Flip Block" asmhacks="True" notes="A yellow block with two eyes that cannot be destroyed. When struck, it will spin, allowing passage through it for a limited time.">
   </sprite> <!-- #319: Flip Block -->
   
@@ -2389,6 +2418,13 @@
       <entry value="15">???</entry>
     </list>
   </sprite> <!-- #351: Shy Guy -->
+
+  <sprite id="357" name="Yoshi Fruit" asmhacks="True" sizehacks="True" notes="An edible fruit that Yoshi can grab. Collecting five will cause Yoshi to lay an egg. What's inside the egg will change depending on the player's current power-up. Normal -&gt; Fire -&gt; Ice -&gt; Propeller -&gt; 1-Up.">
+    <list nybble="12" title="Type" comment="This determines if the fruit is a standard berry, or if it is a special fruit that will instantly award a power-up egg.">
+      <entry value="0">Berry</entry>
+      <entry value="1">Cherry (Instantly Awards Egg)</entry>
+    </list>
+  </sprite> <!-- #357: Yoshi Fruit -->
 
   <!-- Test is 90 continues to function (at all? / correctly?) if Falling Objects is set to something other than Snow. -->
   <!-- Test if 374 is required for 90 to generate pushback (90 Only). Test if 90 is required for 374 to generate sandstorm graphics (374 Only). -->
