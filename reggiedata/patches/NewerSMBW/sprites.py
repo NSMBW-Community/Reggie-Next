@@ -1620,7 +1620,7 @@ class SpriteImage_Boolossus(SLib.SpriteImage_Static):  # 290
         SLib.loadIfNotInImageCache('Boolossus', 'boolossus.png')
 
 
-class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 479
+class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
     @staticmethod
     def loadImages():
         if 'MegaBuzzyR' in ImageCache: return
@@ -1663,6 +1663,23 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 479
             else:
                 self.offset = (-43, -74)
 
+
+        super().dataChanged()
+
+
+class SpriteImage_NewerMegaIcicle(SLib.SpriteImage_StaticMultiple):  # 311
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.offset = (-24, -3)
+        
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('MegaIcicle', 'mega_icicle.png')
+        SLib.loadIfNotInImageCache('MegaCrystal', 'mega_crystal.png')
+        
+    def dataChanged(self):
+        crystal = (self.parent.spritedata[3] >> 4) & 1
+        self.image = ImageCache['MegaIcicle'] if not crystal else ImageCache['MegaCrystal']
 
         super().dataChanged()
 
@@ -1775,6 +1792,25 @@ class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
             (2, -9),  # 7: red (ballooneer - horizontal)
             (2, -9),  # 8: blue (ballooneer - circular)
         )[type]
+
+        super().dataChanged()
+
+
+class SpriteImage_NewerFruit(SLib.SpriteImage_StaticMultiple):  # 357
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('Fruit', 'fruit.png')
+        SLib.loadIfNotInImageCache('FruitCherry', 'fruit_cherry.png')
+
+    def dataChanged(self):
+
+        style = self.parent.spritedata[5] & 1
+        if style == 0:
+            self.image = ImageCache['Fruit']
+            self.offset = (0, 0)
+        else:
+            self.image = ImageCache['FruitCherry']
+            self.offset = (-2, -11) #-3, -16
 
         super().dataChanged()
 
@@ -2012,11 +2048,13 @@ ImageClasses = {
     286: SpriteImage_NewerWoodCircle,
     290: SpriteImage_Boolossus,
     296: SpriteImage_NewerMegaBuzzy,
+    311: SpriteImage_NewerMegaIcicle,
     319: SpriteImage_Flipblock,
     322: SpriteImage_MegaThwomp,
     324: SpriteImage_Podoboule,
     341: SpriteImage_NewerBigShell,
     351: SpriteImage_ShyGuy,
+    357: SpriteImage_NewerFruit,
     387: SpriteImage_NewerBush,
     391: SpriteImage_NewerGlowBlock,
     402: SpriteImage_LineQBlock,

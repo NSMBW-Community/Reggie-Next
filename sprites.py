@@ -6504,7 +6504,7 @@ class SpriteImage_Fruit(SLib.SpriteImage_StaticMultiple):  # 357
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Fruit', 'fruit.png')
-        SLib.loadIfNotInImageCache('Cookie', 'cookie.png')
+        SLib.loadIfNotInImageCache('FruitCookie', 'fruit_cookie.png')
 
     def dataChanged(self):
 
@@ -6512,7 +6512,7 @@ class SpriteImage_Fruit(SLib.SpriteImage_StaticMultiple):  # 357
         if style == 0:
             self.image = ImageCache['Fruit']
         else:
-            self.image = ImageCache['Cookie']
+            self.image = ImageCache['FruitCookie']
 
         super().dataChanged()
 
