@@ -1861,6 +1861,47 @@ class SpriteImage_GigaGoomba(SLib.SpriteImage_Static):  # 410
         SLib.loadIfNotInImageCache('GigaGoomba', 'goomba_giga.png')
 
 
+class SpriteImage_NewerGabon(SLib.SpriteImage_StaticMultiple):  # 414
+    @staticmethod
+    def loadImages():
+        if 'GabonLeft' in ImageCache: return
+        gabon = SLib.GetImg('gabon.png', True)
+        ImageCache['GabonLeft'] = QtGui.QPixmap.fromImage(gabon)
+        ImageCache['GabonRight'] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
+        SLib.loadIfNotInImageCache('GabonSpike', 'gabon_spike.png')
+        
+        if 'GabonSnowRight' in ImageCache: return
+        for style in ("Red", "Orange", "Yellow", "Snow"):
+            gabon = SLib.GetImg('gabon_%s.png' % style, True)
+            if gabon is None: return
+            ImageCache['Gabon%sLeft' % style] = QtGui.QPixmap.fromImage(gabon)
+            ImageCache['Gabon%sRight' % style] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
+        
+        if 'GabonBlackSpike' in ImageCache: return
+        for color in ("Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Black"):
+            ImageCache['Gabon%sSpike' % color] = SLib.GetImg('gabon_%s_spike.png' % color)
+
+    def dataChanged(self):
+        throwdir = self.parent.spritedata[5] & 1
+        facing = self.parent.spritedata[4] & 1
+        style = self.parent.spritedata[2]
+        
+        if 'GabonSnowRight' not in ImageCache: return
+        color = ("", "Red", "Orange", "Yellow", "", "Snow")[style % 6]
+        colour = ("", "Red", "Orange", "Yellow", "Green", "", "Purple", "Black")[style & 7]
+        if throwdir == 0:
+            self.image = ImageCache['Gabon%sSpike' % colour]
+            self.offset = (-7, -31) #-11, -47
+        else:
+            self.image = (
+                ImageCache['Gabon%sLeft' % color],
+                ImageCache['Gabon%sRight' % color],
+            )[facing]
+            self.offset = (-8, -33) #-12, -50
+
+        super().dataChanged()
+
+
 class SpriteImage_NewerBowserSwitchSm(SpriteImage_NewerSwitch):  # 478
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -1981,6 +2022,7 @@ ImageClasses = {
     402: SpriteImage_LineQBlock,
     403: SpriteImage_LineBrickBlock,
     410: SpriteImage_GigaGoomba,
+    414: SpriteImage_NewerGabon,
     478: SpriteImage_NewerBowserSwitchSm,
     479: SpriteImage_NewerBowserSwitchLg,
 }

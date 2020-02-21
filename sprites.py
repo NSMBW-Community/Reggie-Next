@@ -7234,24 +7234,24 @@ class SpriteImage_Gabon(SLib.SpriteImage_StaticMultiple):  # 414
     @staticmethod
     def loadImages():
         if 'GabonLeft' in ImageCache: return
-        ImageCache['GabonLeft'] = SLib.GetImg('gabon_l.png')
-        ImageCache['GabonRight'] = SLib.GetImg('gabon_r.png')
-        ImageCache['GabonDown'] = SLib.GetImg('gabon_d.png')
+        gabon = SLib.GetImg('gabon.png', True)
+        ImageCache['GabonLeft'] = QtGui.QPixmap.fromImage(gabon)
+        ImageCache['GabonRight'] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
+        SLib.loadIfNotInImageCache('GabonSpike', 'gabon_spike.png')
 
     def dataChanged(self):
-
         throwdir = self.parent.spritedata[5] & 1
-        if throwdir == 0:  # down
-            self.image = ImageCache['GabonDown']
-            self.offset = (-5, -29)
-        else:  # left/right
-
-            facing = self.parent.spritedata[4] & 1
+        facing = self.parent.spritedata[4] & 1
+        
+        if throwdir == 0:
+            self.image = ImageCache['GabonSpike']
+            self.offset = (-7, -31) #-11, -47
+        else:
             self.image = (
                 ImageCache['GabonLeft'],
                 ImageCache['GabonRight'],
             )[facing]
-            self.offset = (-7, -31)
+            self.offset = (-8, -33) #-12, -50
 
         super().dataChanged()
 
