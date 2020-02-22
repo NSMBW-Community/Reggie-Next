@@ -5304,6 +5304,14 @@
       <required sprite="363"/>
     </dependency>
   </sprite> <!-- #348: Ludwig von Koopa -->
+  
+  <sprite id="349" name="Boss Controller - Morton Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
+    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room.">
+      <required sprite="407"/>
+      <required sprite="408"/>
+      <suggested sprite="436"/>
+    </dependency>
+  </sprite> <!-- #349: Boss Controller - Morton Koopa -->
 
   <sprite id="350" name="Incomplete Sprite - 'Dummy_Door_Parent'" notes="Does nothing.">
   </sprite> <!-- #350: Incomplete Sprite - 'Dummy_Door_Parent' -->
@@ -5589,16 +5597,16 @@
     </list>
   </sprite> <!-- #363: Boss Controller - Tower Boss -->
 
-  <sprite id="364" name="Boss Controller - Roy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
-    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
+  <sprite id="364" name="Boss Controller - Roy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 2 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
+    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room.">
       <required sprite="407"/>
       <required sprite="408"/>
       <suggested sprite="436"/>
     </dependency>
   </sprite> <!-- #364: Boss Controller - Roy Koopa -->
 
-  <sprite id="365" name="Boss Controller - Ludwig von Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
-    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
+  <sprite id="365" name="Boss Controller - Ludwig von Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 7 Castle, such as the boss movement, and camera options. All tiles the controller spawns are behind Layer 1. The white square indicates the placement for the Castle Boss Cutscene controller. The rectangle indicates the placement of the Brick blocks destroyed during the cutscene. Mario spawns at Entrance 3 after the battle.">
+    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room.">
       <required sprite="407"/>
       <required sprite="408"/>
       <suggested sprite="436"/>
@@ -5699,8 +5707,8 @@
     </list>
   </sprite> <!-- #371: Rolling Hill Coin -->
 
-  <sprite id="372" name="Boss Controller - Iggy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 5 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
-    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
+  <sprite id="372" name="Boss Controller - Iggy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 5 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
+    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room.">
       <required sprite="407"/>
       <required sprite="408"/>
       <suggested sprite="436"/>
@@ -5723,8 +5731,8 @@
     <dualbox bit="48" title1="Snow" title2="Sandstorm" comment="This determines the functionality of the sprite."/>
   </sprite> <!-- #374: Effect - Falling Objects and Wind -->
 
-  <sprite id="375" name="Boss Controller - Wendy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 4 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
-    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
+  <sprite id="375" name="Boss Controller - Wendy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 4 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
+    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room.">
       <required sprite="407"/>
       <required sprite="408"/>
       <suggested sprite="436"/>
@@ -5789,8 +5797,8 @@
     <value nybble="12" title="Length" comment="This determines the length of the Pipe."/>
   </sprite> <!-- #380: Warp Pipe - Left -->
 
-  <sprite id="381" name="Boss Controller - Lemmy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 3 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
-    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
+  <sprite id="381" name="Boss Controller - Lemmy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 3 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
+    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room.">
       <required sprite="407"/>
       <required sprite="408"/>
       <suggested sprite="436"/>
@@ -6640,6 +6648,16 @@
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the block placing it further behind other sprites."/>
   </sprite> <!-- #448: Metal Bar -->
   
+  <sprite id="449" name="Bowser Fireball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Bowser Fireballs will fire from the screen's right edge towards the left  while a player is inside it." advancednotes="&lt;br&gt; - Uses hardcoded location ID 0 (you can have multiple ones in the zone)&lt;br&gt; - They will look awful if Bowser's sprite isn't present in any area of the level&lt;br&gt;&lt;br&gt;&lt;b&gt;Sprite Placement:&lt;/b&gt;&lt;br&gt; - X Position does not matter&lt;br&gt; - Y Position matters, as the sprite will spawn fireballs in a range of 6 tiles below its placement&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Placement:&lt;/b&gt;&lt;br&gt; - Bowser Fireballs start spawning as soon as the left edge of the location enters the screen&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Size (fireballs won't spawn if requirements aren't met):&lt;/b&gt;&lt;br&gt; - X Size: Unknown, but a specific minimal X location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt; - Y Size: At least 120px (5 blocks). A specific minimal Y location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt;" >
+    <dependency notes="Almost all settings are hardcoded and the sprite will not function outside of the exact setup used in 8-24 A4. See advanced notes for more information.">
+      <required sprite="431"/>
+    </dependency>
+    <checkbox bit="48" title="Enable Functionality" comment="This must be enabled for the sprite to function."/>
+    <value nybble="7-8" title="Location ID" comment="&lt;b&gt;&lt;font color=&quot;red&quot;&gt;Only works with hardcoded location ID 0!&lt;/font&gt;&lt;/b&gt; The Fireballs will only spawn while a player is in this location." advancedcomment="Or at least, it would, if its behavior had not been hardcoded. " requiredbit="48"/>
+    <value nybble="10" title="Number of Fireballs" comment="This determines the number of fireballs in each wave." comment2="A value of 0 creates 5 fireballs. A value of 1+ creates that number." requiredbit="48"/>
+    <value nybble="11" title="Positioning" comment="Changes position the Fireballs appear in." comment2="A value of 0 creates random patterns. A value of 1 will CRASH the game. A value of 2+ will change the positioning or patterns or something." requiredbit="48"/>
+  </sprite> <!-- #449: Bowser Fireball Spawn Area -->
+
   <sprite id="450" name="Enterable Warp Pipe - Up" notes="A non-tileset pipe that can be entered or exited from. Only one facing upwards exists. It does not have to be placed exactly on the grid.">
     <list bit="43-44" title="Color" comment="This determines the color of the Pipe.">
       <entry value="0">Green</entry>
