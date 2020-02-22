@@ -25,7 +25,7 @@
 # Use the values below to configure the release:
 
 PackageName = 'reggie_next_m4_win32'
-Version = '4.0.0'  # This must be a valid float in string format
+Version = '4.2.0'  # This must be a valid float in string format
 
 ################################################################
 ################################################################
