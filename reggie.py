@@ -3184,7 +3184,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
     def newLevel(self):
         # Create the new level object
-        globals_.Level = globals_.Level_NSMBW()
+        globals_.Level = Level_NSMBW()
 
         # Load it
         globals_.Level.new()
