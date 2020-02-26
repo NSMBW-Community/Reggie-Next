@@ -2955,7 +2955,7 @@
     </list>
   </sprite> <!-- #191: Tile God Event -->
 
-  <sprite id="192" name="Boss Controller - Larry Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 1 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller.">
+  <sprite id="192" name="Boss Controller - Larry Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 1 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -4879,6 +4879,7 @@
     <dualbox bit="40" title1="Wooden Box" title2="Metal Box" comment="This determines the type of box."/>
   </sprite> <!-- #318: Box Generator -->
 
+
   <sprite id="319" name="(Unused) Wiimote Controlled Door" notes="Graphically identical to 320. Spawns a giant door that loads in front of Mario. Cannot be forced behind Mario, and he cannot be made to enter it. By tilting the Wii Remote you can make it open. " />
   
   <sprite id="320" name="(Unused) Sliding Wiimote Controlled Door" notes="Graphically identical to 319. Spawns a giant door that loads in front of Mario. Cannot be forced behind Mario, and he cannot be made to enter it. By tilting the Wii Remote you can make it slide. " />
@@ -5304,7 +5305,7 @@
       <required sprite="363"/>
     </dependency>
   </sprite> <!-- #348: Ludwig von Koopa -->
-  
+
   <sprite id="349" name="Boss Controller - Morton Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 6 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room.">
       <required sprite="407"/>

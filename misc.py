@@ -28,8 +28,8 @@ def GetPath(id_):
     Checks the game definition and the translation and returns the appropriate path
     """
     # If there's a custom globals_.gamedef, use that
-    if globals_.globals_.gamedef.custom and globals_.globals_.gamedef.file(id_) is not None:
-        return globals_.globals_.gamedef.file(id_)
+    if globals_.gamedef.custom and globals_.gamedef.file(id_) is not None:
+        return globals_.gamedef.file(id_)
     else:
         return globals_.trans.path(id_)
 

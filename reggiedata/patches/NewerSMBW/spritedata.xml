@@ -252,11 +252,7 @@
   
   <!-- Document Dependency. Check for Level/Area/Zone requirements. Ask Treeki about isBigBoss effects. -->
   <sprite id="19" name="World-4 Boss: Samurshai" asmhacks="True" noyoshi="True" notes="Samurai Shy Guy boss used by NewerSMBW.">
-    <dependency notes="">
-      <required sprite=""/> <!-- Kamek -->
-      <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite=""/> <!-- ??? -->
-    </dependency>
+    <dependency notes="The boss works fine without any other required sprite."></dependency>
     <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
   </sprite> <!-- #19: World-4 Boss: Samurshai -->
   
@@ -1701,8 +1697,8 @@
     <dualbox bit="48" title1="Hides when Active" title2="Shows when Active" comment="This determines how the Line God will act when the Triggering Event is activated." comment2="When the event is not active, the Line Guides will exist in the opposite state from what's listed."/>
   </sprite> <!-- #244: Line God Event -->
   
-  <sprite id="245" name="Newer Cutscene Controller: Ending" asmhacks="True" notes="&lt;font color=&quot;red&quot;&gt;This sprite is predominately hardcoded in how it functions. Custom usage is not recommended.&lt;/font&gt;" advancednotes="It needs a very specific level set-up to function. Shows the Bowser cutscene that runs in a separate level.">
-  </sprite> <!-- #245: Newer Cutscene Controller: Ending -->
+  <sprite id="245" name="Newer Cutscene Controller: Credits" asmhacks="True" notes="&lt;font color=&quot;red&quot;&gt;This sprite is predominately hardcoded in how it functions. Custom usage is not recommended.&lt;/font&gt;" advancednotes="It needs a very specific level set-up to function. Shows the Bowser ctscene that runs in a separate level.">
+  </sprite> <!-- #245: Newer Cutscene Controller: Credits -->
 
   <sprite id="246" name="Special Event" asmhacks="True" notes="This sprite can do all sorts of special functions, such as freezing actors, changing the size of sprites, editing the game Timer, and changing the gravity. This function is restricted to the active Zone. The settings available to each type will appear when selecting that option. Be sure to reset the Sprite Settings when switching between different types in order to prevent any bugs.">
     <value bit="17-24" title="Triggering Event ID" comment="The Special Event is on as long as this Event is activated."/>
@@ -1829,7 +1825,7 @@
   <sprite id="250" name="Electric Line" asmhacks="True" notes="A tall electrified wall that will elecrtocute any player that touches it.">
     <dependency notes="The Boss Controller for Bowser Jr's 2nd Fight must be included in the area to load the line. The game will crash otherwise.">
 	   <required sprite="405"/> <!-- Bowser Jr. 2nd Fight -->
-	</dependency>
+  	</dependency>
     <dualbox bit="44" title1="Always On" title2="Looping" comment="This determines if the Electric Line is always on or if it cycles between on and off."/>
     <value nybble="7-8" title="Delay between Loops" comment="This determines the time the Electric Line will stay on and off during its power looping." comment2="Delay in 1/6ths of a second." requiredbit="44"/> <!-- Appears if Looping -->
     <dualbox bit="48" title1="Power Nodes Point Right" title2="Power Nodes Point Left" comment="This determines the direction the power node spikes will face."/>

@@ -1472,6 +1472,34 @@ class SpriteImage_UnusedRotPlatforms(SLib.SpriteImage):  # 52
         ImageCache['UnusedRotPlatform'] = img
 
 
+class SpriteImage_Sand(SpriteImage_LiquidOrFog):  # 53
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.crest = ImageCache['LiquidSandCrest']
+        self.mid = ImageCache['LiquidSand']
+
+    @staticmethod
+    def loadImages():
+        if 'LiquidSand' in ImageCache: return
+        ImageCache['LiquidSand'] = SLib.GetImg('liquid_sand.png')
+        ImageCache['LiquidSandCrest'] = SLib.GetImg('liquid_sand_crest.png')
+
+    def dataChanged(self):
+        super().dataChanged()
+
+        self.paintZone = self.parent.spritedata[5] == 0
+
+        self.parent.scene().update()
+
+    def realViewZone(self, painter, zoneRect, viewRect):
+
+        self.paintZone = self.parent.spritedata[5] == 0
+        self.top = self.parent.objy
+        self.drawCrest = self.parent.spritedata[4] & 15 == 0
+
+        super().realViewZone(painter, zoneRect, viewRect)
+
 
 class SpriteImage_Lakitu(SLib.SpriteImage_Static):  # 54
     def __init__(self, parent):
@@ -8159,8 +8187,7 @@ class SpriteImage_MortonSpikedStake(SLib.SpriteImage):  # 480
     def __init__(self, parent):
         super().__init__(parent)
         self.spritebox.shown = False
-        self.yOffset = -406
-        self.size = (64, 422)
+        self.dimensions = (0, -406, 64, 422)
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 36, 608, SLib.AuxiliaryTrackObject.Vertical))
 
     @staticmethod
@@ -8265,6 +8292,7 @@ ImageClasses = {
     50: SpriteImage_FallingPlatform,
     51: SpriteImage_TiltingGirder,
     52: SpriteImage_UnusedRotPlatforms,
+    53: SpriteImage_Sand,
     54: SpriteImage_Lakitu,
     55: SpriteImage_UnusedRisingSeesaw,
     56: SpriteImage_RisingTiltGirder,
