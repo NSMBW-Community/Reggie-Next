@@ -3759,7 +3759,7 @@
       <suggested sprite="313"/>
     </dependency>
     <value bit="17-20" title="Wiggling Mushroom ID" comment="This pairs the platform to a matching Wiggling Mushroom Controller for synchronized movement." comment2="If an ID is set, that ID will control and override all matching Wiggle Speeds." idtype="Wiggling"/>
-    <value nybble="41-48" title="Wiggle Speed" comment="This determines how quickly the platform will tilt from one side to the other." comment2="If set to 0 the platform will not wiggle at all, but can still have Upwards Lift." requiredbit="17-20" requiredval="0"/> <!-- Disappears if Wiggling Mushroom ID is set -->
+    <value bit="41-48" title="Wiggle Speed" comment="This determines how quickly the platform will tilt from one side to the other." comment2="If set to 0 the platform will not wiggle at all, but can still have Upwards Lift." requiredbit="17-20" requiredval="0"/> <!-- Disappears if Wiggling Mushroom ID is set -->
     <value bit="38-40" title="Tilt Distance" comment="This determines how much the platform will tilt." comment2="A value of 1 or 2 is recommended." requiredbit="41-48"/>
     <dualbox bit="30" title1="Tilts Left First" title2="Tilts Right First" comment="This determines the initial direction the platform will tilt in." requiredbit="41-48"/>
     <value bit="25-28" title="Upwards Lift" comment="This determines how much vertical movement is mixed into the tilting motion." comment2="May have combination restrictions."/>
@@ -3836,7 +3836,7 @@
   </sprite> <!-- #235: Jumbo Ray Respawner -->
 
   <sprite id="236" name="Movement Controller - Use Lines" notes="This controller will create synchronized movement between matched sprites and cause them to load at the same time so that their paths will always function consistently.">
-    <value nybble="17-24" title="Line ID" comment="This pairs matching Line controlled objects to this controller for synchronized movement." idtype="Line"/>
+    <value bit="17-24" title="Line ID" comment="This pairs matching Line controlled objects to this controller for synchronized movement." idtype="Line"/>
   </sprite> <!-- #236: Movement Controller - Use Lines -->
 
 <!-- Check if you can use the Z-Order to place the blue coin behind Chainlink. -->
