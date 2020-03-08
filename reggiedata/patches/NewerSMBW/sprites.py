@@ -164,6 +164,35 @@ class SpriteImage_RotatingBrickBlock(SpriteImage_Block):  # 256
         self.rotates = True
 
 
+class SpriteImage_NewerWoodCircle(SLib.SpriteImage_StaticMultiple):  # 286
+    @staticmethod
+    def loadImages():
+        if 'WoodCircle0' in ImageCache: return
+        for i in range(3):
+            ImageCache['WoodCircle%d' % i] = SLib.GetImg('wood_circle_%d.png' % i)
+        
+        if 'GrayWoodCircle0' in ImageCache: return
+        for i in range(3):
+            ImageCache['GrayWoodCircle%d' % i] = SLib.GetImg('gray_wood_circle_%d.png' % i)
+
+    def dataChanged(self):
+        super().dataChanged()
+        size = self.parent.spritedata[5] & 3
+        gray = self.parent.spritedata[2] & 1
+
+        if gray:
+            self.image = ImageCache['GrayWoodCircle%d' % size]
+        else:
+            self.image = ImageCache['WoodCircle%d' % size]
+
+        if size > 2: size = 0
+        self.dimensions = (
+            (-24, -24, 64, 64),
+            (-40, -40, 96, 96),
+            (-56, -56, 128, 128),
+        )[size]
+
+
 class SpriteImage_LineQBlock(SpriteImage_Block):  # 402
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -476,6 +505,63 @@ class SpriteImage_NewerExcSwitch(SpriteImage_NewerSwitch):  # 42
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'E'
+
+
+class SpriteImage_NewerQSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 43
+    @staticmethod
+    def loadImages():
+        if 'QSwitchBlock' in ImageCache: return
+        q = SLib.GetImg('q_switch_block.png', True)
+        ImageCache['QSwitchBlock'] = QtGui.QPixmap.fromImage(q)
+        ImageCache['QSwitchBlockU'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
+
+        if 'QSwitchBlock3' in ImageCache: return
+        q = SLib.GetImg('q_switch_block3.png', True)
+        if q is None: return     
+        ImageCache['QSwitchBlock3'] = QtGui.QPixmap.fromImage(q)
+        ImageCache['QSwitchBlock3U'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
+
+    def dataChanged(self):
+        upsideDown = self.parent.spritedata[5] & 1
+        style = self.parent.spritedata[3] & 3
+        
+        if 'QSwitchBlock3U' not in ImageCache: return
+        
+        if style == 0:
+            self.image = ImageCache['QSwitchBlock'] if not upsideDown else ImageCache['QSwitchBlockU']
+        else:
+            self.image = ImageCache['QSwitchBlock3'] if not upsideDown else ImageCache['QSwitchBlock3U']
+        
+
+        super().dataChanged()
+
+
+class SpriteImage_NewerExcSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 45
+    @staticmethod
+    def loadImages():
+        if 'ESwitchBlock' in ImageCache: return
+        e = SLib.GetImg('e_switch_block.png', True)
+        ImageCache['ESwitchBlock'] = QtGui.QPixmap.fromImage(e)
+        ImageCache['ESwitchBlockU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
+
+        if 'ESwitchBlock3' in ImageCache: return
+        e = SLib.GetImg('e_switch_block3.png', True)
+        if e is None: return
+        ImageCache['ESwitchBlock3'] = QtGui.QPixmap.fromImage(e)
+        ImageCache['ESwitchBlock3U'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
+
+    def dataChanged(self):
+        upsideDown = self.parent.spritedata[5] & 1
+        color = self.parent.spritedata[3] & 3
+        
+        if 'ESwitchBlock3U' not in ImageCache: return
+        
+        if color == 0:
+            self.image = ImageCache['ESwitchBlock'] if not upsideDown else ImageCache['ESwitchBlockU']
+        else:
+            self.image = ImageCache['ESwitchBlock3'] if not upsideDown else ImageCache['ESwitchBlock3U']
+
+        super().dataChanged()
 
 
 class SpriteImage_Thwomp(SLib.SpriteImage_StaticMultiple):  # 47
@@ -1011,7 +1097,7 @@ class SpriteImage_Meteor(SLib.SpriteImage_StaticMultiple):  # 183
 class SpriteImage_MidwayFlag(SLib.SpriteImage_StaticMultiple):  # 188
     def __init__(self, parent):
         super().__init__(parent)
-        self.yOffset = -37
+        self.yOffset = -36
 
     @staticmethod
     def loadImages():
@@ -1171,6 +1257,122 @@ class SpriteImage_CaptainBowser(SLib.SpriteImage_Static):  # 213
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('CaptainBowser', 'captain_bowser.png')
+
+
+class SpriteImage_NewerLineBlock(SLib.SpriteImage):  # 219
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.spritebox.shown = False
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 24, 24))
+        self.aux[0].setPos(0, 32)
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('LineBlock0', 'lineblock.png')
+        if 'LineBlock8' in ImageCache: return
+        for i in range(8):
+            ImageCache['LineBlock%d' % (i + 1)] = SLib.GetImg('lineblock%d.png' % (i + 1))
+
+    def dataChanged(self):
+
+        direction = self.parent.spritedata[4] >> 4
+        widthA = self.parent.spritedata[5] & 15
+        widthB = self.parent.spritedata[5] >> 4
+        distance = self.parent.spritedata[4] & 0xF
+        color = (self.parent.spritedata[2] & 0xF) % 9
+
+        if direction & 1:
+            # reverse them if going down
+            widthA, widthB = widthB, widthA
+
+        noWidthA = False
+        aA = 1
+        if widthA == 0:
+            widthA = 1
+            noWidthA = True
+            aA = 0.25
+        noWidthB = False
+        aB = 0.5
+        if widthB == 0:
+            widthB = 1
+            noWidthB = True
+            aB = 0.25
+
+        if ImageCache['LineBlock8'] is None: return
+        blockimg = ImageCache['LineBlock%d' % color]
+
+        if widthA > widthB:
+            totalWidth = widthA
+        else:
+            totalWidth = widthB
+
+        imgA = QtGui.QPixmap(widthA * 24, 24)
+        imgB = QtGui.QPixmap(widthB * 24, 24)
+        imgA.fill(Qt.transparent)
+        imgB.fill(Qt.transparent)
+        painterA = QtGui.QPainter(imgA)
+        painterB = QtGui.QPainter(imgB)
+        painterA.setOpacity(aA)
+        painterB.setOpacity(1)
+
+        if totalWidth > 1:
+            for i in range(totalWidth):
+                # 'j' is just 'i' out of order.
+                # This causes the lineblock to be painted from the
+                # sides in, rather than linearly.
+                if i & 1:
+                    j = totalWidth - (i // 2) - 1
+                else:
+                    j = i // 2
+                xA = j * 24 * ((widthA - 1) / (totalWidth - 1))
+                xB = j * 24 * ((widthB - 1) / (totalWidth - 1))
+
+                # now actually paint it
+                painterA.drawPixmap(xA, 0, blockimg)
+                painterB.drawPixmap(xB, 0, blockimg)
+        else:
+            # special-case to avoid ZeroDivisionError
+            painterA.drawPixmap(0, 0, blockimg)
+            painterB.drawPixmap(0, 0, blockimg)
+
+        del painterA, painterB
+
+        if widthA >= 1:
+            self.width = widthA * 16
+        else:
+            self.width = 16
+
+        xposA = (widthA * -8) + 8
+        if widthA == 0: xposA = 0
+        xposB = (widthA - widthB) * 12
+        if widthA == 0: xposB = 0
+        if direction & 1:
+            # going down
+            yposB = distance * 24
+        else:
+            # going up
+            yposB = -distance * 24
+
+        newImgB = QtGui.QPixmap(imgB.width(), imgB.height())
+        newImgB.fill(Qt.transparent)
+        painterB2 = QtGui.QPainter(newImgB)
+        painterB2.setOpacity(aB)
+        painterB2.drawPixmap(0, 0, imgB)
+        del painterB2
+        imgB = newImgB
+
+        self.image = imgA
+        self.xOffset = xposA
+        self.aux[0].setSize(imgB.width(), imgB.height())
+        self.aux[0].image = imgB
+        self.aux[0].setPos(xposB, yposB)
+
+        super().dataChanged()
+
+    def paint(self, painter):
+        super().paint(painter)
+        painter.drawPixmap(0, 0, self.image)
 
 
 class SpriteImage_NewerSpringBlock(SLib.SpriteImage_StaticMultiple):  # 223
@@ -1418,7 +1620,7 @@ class SpriteImage_Boolossus(SLib.SpriteImage_Static):  # 290
         SLib.loadIfNotInImageCache('Boolossus', 'boolossus.png')
 
 
-class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 479
+class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
     @staticmethod
     def loadImages():
         if 'MegaBuzzyR' in ImageCache: return
@@ -1461,6 +1663,23 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 479
             else:
                 self.offset = (-43, -74)
 
+
+        super().dataChanged()
+
+
+class SpriteImage_NewerMegaIcicle(SLib.SpriteImage_StaticMultiple):  # 311
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.offset = (-24, -3)
+        
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('MegaIcicle', 'mega_icicle.png')
+        SLib.loadIfNotInImageCache('MegaCrystal', 'mega_crystal.png')
+        
+    def dataChanged(self):
+        crystal = (self.parent.spritedata[3] >> 4) & 1
+        self.image = ImageCache['MegaIcicle'] if not crystal else ImageCache['MegaCrystal']
 
         super().dataChanged()
 
@@ -1577,6 +1796,75 @@ class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
         super().dataChanged()
 
 
+class SpriteImage_NewerFruit(SLib.SpriteImage_StaticMultiple):  # 357
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('Fruit', 'fruit.png')
+        SLib.loadIfNotInImageCache('FruitCherry', 'fruit_cherry.png')
+
+    def dataChanged(self):
+
+        style = self.parent.spritedata[5] & 1
+        if style == 0:
+            self.image = ImageCache['Fruit']
+            self.offset = (0, 0)
+        else:
+            self.image = ImageCache['FruitCherry']
+            self.offset = (-2, -11) #-3, -16
+
+        super().dataChanged()
+
+
+class SpriteImage_NewerBush(SLib.SpriteImage_StaticMultiple):  # 387
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.parent.setZValue(24999)
+
+    @staticmethod
+    def loadImages():
+        if 'BushGreenSmall' in ImageCache: return
+        for style in ('Green', 'Yellowish', 'Yellow'):
+            for size in ('Small', 'Med', 'Large', 'XLarge'):
+                ImageCache['Bush%s%s' % (style, size)] = SLib.GetImg('bush_%s_%s.png' % (style, size))
+          
+        if 'BushTreeLeafsXLarge' in ImageCache: return
+        for style in ('Brown', 'DarkRed', 'Yellow', 'DarkBrown', 'Red', 'TreeLeafs'):
+            for size in ('Small', 'Med', 'Large', 'XLarge'):
+                ImageCache['Bush%s%s' % (style, size)] = SLib.GetImg('bush_%s_%s.png' % (style, size))
+
+    def dataChanged(self):
+        style = self.parent.spritedata[2] >> 4
+        colors = style % 6
+        size = self.parent.spritedata[5] & 3
+        yellowish = (self.parent.spritedata[5] >> 4) & 1
+       
+        bush = ("Green", "Brown", "DarkRed", "Yellow", "DarkBrown", "Red")[colors]
+        scale = ("Small", "Med", "Large", "XLarge")[size]
+        if yellowish:
+            self.image = ImageCache['BushYellowish%s' % scale]
+        elif style == 15:
+            self.image = ImageCache['BushTreeLeafs%s' % scale]
+        else:
+            self.image = ImageCache['Bush%s%s' % (bush, scale)]
+            
+        if style == 15:
+            self.offset = (
+                (-59, 29), #89, -43
+                (-63, -13), #95, 20
+                (-71, -77), #106, 116
+                (-86, -289), #129, 433
+            )[size]
+        else:
+            self.offset = (
+                (-22, -26),
+                (-28, -46),
+                (-41, -62),
+                (-52, -80),
+            )[size]
+
+        super().dataChanged()
+
+
 class SpriteImage_NewerGlowBlock(SLib.SpriteImage):  # 391
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -1607,6 +1895,47 @@ class SpriteImage_GigaGoomba(SLib.SpriteImage_Static):  # 410
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('GigaGoomba', 'goomba_giga.png')
+
+
+class SpriteImage_NewerGabon(SLib.SpriteImage_StaticMultiple):  # 414
+    @staticmethod
+    def loadImages():
+        if 'GabonLeft' in ImageCache: return
+        gabon = SLib.GetImg('gabon.png', True)
+        ImageCache['GabonLeft'] = QtGui.QPixmap.fromImage(gabon)
+        ImageCache['GabonRight'] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
+        SLib.loadIfNotInImageCache('GabonSpike', 'gabon_spike.png')
+        
+        if 'GabonSnowRight' in ImageCache: return
+        for style in ("Red", "Orange", "Yellow", "Snow"):
+            gabon = SLib.GetImg('gabon_%s.png' % style, True)
+            if gabon is None: return
+            ImageCache['Gabon%sLeft' % style] = QtGui.QPixmap.fromImage(gabon)
+            ImageCache['Gabon%sRight' % style] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
+        
+        if 'GabonBlackSpike' in ImageCache: return
+        for color in ("Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Black"):
+            ImageCache['Gabon%sSpike' % color] = SLib.GetImg('gabon_%s_spike.png' % color)
+
+    def dataChanged(self):
+        throwdir = self.parent.spritedata[5] & 1
+        facing = self.parent.spritedata[4] & 1
+        style = self.parent.spritedata[2]
+        
+        if 'GabonSnowRight' not in ImageCache: return
+        color = ("", "Red", "Orange", "Yellow", "", "Snow")[style % 6]
+        colour = ("", "Red", "Orange", "Yellow", "Green", "", "Purple", "Black")[style & 7]
+        if throwdir == 0:
+            self.image = ImageCache['Gabon%sSpike' % colour]
+            self.offset = (-7, -31) #-11, -47
+        else:
+            self.image = (
+                ImageCache['Gabon%sLeft' % color],
+                ImageCache['Gabon%sRight' % color],
+            )[facing]
+            self.offset = (-8, -33) #-12, -50
+
+        super().dataChanged()
 
 
 class SpriteImage_NewerBowserSwitchSm(SpriteImage_NewerSwitch):  # 478
@@ -1672,6 +2001,8 @@ ImageClasses = {
     26: SpriteImage_NewerUpsideDownSpiny,
     40: SpriteImage_NewerQSwitch,
     42: SpriteImage_NewerExcSwitch,
+    43: SpriteImage_NewerQSwitchBlock,
+    45: SpriteImage_NewerExcSwitchBlock,
     47: SpriteImage_Thwomp,
     48: SpriteImage_GiantThwomp,
     49: SpriteImage_FakeStarCoin,
@@ -1700,6 +2031,7 @@ ImageClasses = {
     209: SpriteImage_BrickBlock,
     210: SpriteImage_Topman,
     213: SpriteImage_CaptainBowser,
+    219: SpriteImage_NewerLineBlock,
     223: SpriteImage_NewerSpringBlock,
     230: SpriteImage_NewerBramball,
     231: SpriteImage_NewerWiggleShroom,
@@ -1713,17 +2045,22 @@ ImageClasses = {
     279: SpriteImage_RockyBoss,
     282: SpriteImage_AngrySun,
     283: SpriteImage_FuzzyBear,
+    286: SpriteImage_NewerWoodCircle,
     290: SpriteImage_Boolossus,
     296: SpriteImage_NewerMegaBuzzy,
+    311: SpriteImage_NewerMegaIcicle,
     319: SpriteImage_Flipblock,
     322: SpriteImage_MegaThwomp,
     324: SpriteImage_Podoboule,
     341: SpriteImage_NewerBigShell,
     351: SpriteImage_ShyGuy,
+    357: SpriteImage_NewerFruit,
+    387: SpriteImage_NewerBush,
     391: SpriteImage_NewerGlowBlock,
     402: SpriteImage_LineQBlock,
     403: SpriteImage_LineBrickBlock,
     410: SpriteImage_GigaGoomba,
+    414: SpriteImage_NewerGabon,
     478: SpriteImage_NewerBowserSwitchSm,
     479: SpriteImage_NewerBowserSwitchLg,
 }

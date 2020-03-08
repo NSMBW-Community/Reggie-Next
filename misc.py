@@ -524,6 +524,14 @@ class SpriteDefinition:
             else:
                 required = None
 
+            # idtypes
+            if 'idtype' in attribs:
+                idtype = attribs['idtype']
+                # Only values and lists support idtypes
+                assert field.tag in ('value', 'list')
+            else:
+                idtype = None
+
             if field.tag == 'checkbox':
                 # parameters: title, bit, mask, comment
                 if 'nybble' in attribs:
@@ -621,7 +629,7 @@ class SpriteDefinition:
 
                 model = SpriteDefinition.ListPropertyModel(entries, existing, max)
                 fields.append(
-                    (1, title, bit, model, comment, required, advanced, comment2, advancedcomment))
+                    (1, title, bit, model, comment, required, advanced, comment2, advancedcomment, idtype))
 
             elif field.tag == 'value':
                 # parameters: title, bit, max, comment
@@ -666,7 +674,7 @@ class SpriteDefinition:
                 if len(bit) == 1:
                     bit = bit[0]
 
-                fields.append((2, attribs['title'], bit, max, comment, required, advanced, comment2, advancedcomment))
+                fields.append((2, attribs['title'], bit, max, comment, required, advanced, comment2, advancedcomment, idtype))
 
             elif field.tag == 'bitfield':
                 # parameters: title, startbit, bitnum, comment

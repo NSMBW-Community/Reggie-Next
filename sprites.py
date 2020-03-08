@@ -1238,7 +1238,7 @@ class SpriteImage_StarCoinRegular(SpriteImage_StarCoin):  # 32
     pass
 
 
-class SpriteImage_QuestionSwitch(common.SpriteImage_Switch):  # 40
+class SpriteImage_QSwitch(common.SpriteImage_Switch):  # 40
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'Q'
@@ -1256,17 +1256,23 @@ class SpriteImage_ExcSwitch(common.SpriteImage_Switch):  # 42
         self.switchType = 'E'
 
 
-class SpriteImage_QuestionSwitchBlock(SLib.SpriteImage_Static):  # 43
-    def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['QSwitchBlock'],
-        )
-
+class SpriteImage_QSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 43
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('QSwitchBlock', 'q_switch_block.png')
+        if 'QSwitchBlock' not in ImageCache:
+            q = SLib.GetImg('q_switch_block.png', True)
+            ImageCache['QSwitchBlock'] = QtGui.QPixmap.fromImage(q)
+            ImageCache['QSwitchBlockU'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
+
+    def dataChanged(self):
+        upsideDown = self.parent.spritedata[5] & 1
+        
+        if upsideDown:
+            self.image = ImageCache['QSwitchBlockU']
+        else:
+            self.image = ImageCache['QSwitchBlock']
+
+        super().dataChanged()
 
 
 class SpriteImage_PSwitchBlock(SLib.SpriteImage_Static):  # 44
@@ -1282,17 +1288,23 @@ class SpriteImage_PSwitchBlock(SLib.SpriteImage_Static):  # 44
         SLib.loadIfNotInImageCache('PSwitchBlock', 'p_switch_block.png')
 
 
-class SpriteImage_ExcSwitchBlock(SLib.SpriteImage_Static):  # 45
-    def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['ESwitchBlock'],
-        )
-
+class SpriteImage_ExcSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 45
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ESwitchBlock', 'e_switch_block.png')
+        if 'ESwitchBlock' not in ImageCache:
+            e = SLib.GetImg('e_switch_block.png', True)
+            ImageCache['ESwitchBlock'] = QtGui.QPixmap.fromImage(e)
+            ImageCache['ESwitchBlockU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
+
+    def dataChanged(self):
+        upsideDown = self.parent.spritedata[5] & 1
+        
+        if upsideDown:
+            self.image = ImageCache['ESwitchBlockU']
+        else:
+            self.image = ImageCache['ESwitchBlock']
+
+        super().dataChanged()
 
 
 class SpriteImage_Podoboo(SLib.SpriteImage_Static):  # 46
@@ -3293,7 +3305,7 @@ class SpriteImage_Porcupuffer(SLib.SpriteImage_Static):  # 151
         SLib.loadIfNotInImageCache('Porcupuffer', 'porcu_puffer.png')
 
 
-class SpriteImage_QuestionSwitchUnused(common.SpriteImage_Switch):  # 153
+class SpriteImage_QSwitchUnused(common.SpriteImage_Switch):  # 153
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'Q'
@@ -3763,7 +3775,7 @@ class SpriteImage_MidwayPoint(SLib.SpriteImage_Static):  # 188
             parent,
             1.5,
             ImageCache['MidwayFlag'],
-            (0, -37),
+            (0, -36),
         )
 
     @staticmethod
@@ -5110,15 +5122,15 @@ class SpriteImage_TowerDoor(SpriteImage_Door):  # 277
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.doorName = 'TowerDoor'
-        self.doorDimensions = (-2, -10.5, 53, 59)
-        self.entranceOffset = (0, 64)
+        self.doorDimensions = (-2, -13, 53, 61)
+        self.entranceOffset = (0, 68)
 
 
 class SpriteImage_CastleDoor(SpriteImage_Door):  # 278
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.doorName = 'CastleDoor'
-        self.doorDimensions = (-2, -13, 53, 62)
+        self.doorDimensions = (-2, -13, 53, 61)
         self.entranceOffset = (0, 68)
 
 
@@ -6492,7 +6504,7 @@ class SpriteImage_Fruit(SLib.SpriteImage_StaticMultiple):  # 357
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Fruit', 'fruit.png')
-        SLib.loadIfNotInImageCache('Cookie', 'cookie.png')
+        SLib.loadIfNotInImageCache('FruitCookie', 'fruit_cookie.png')
 
     def dataChanged(self):
 
@@ -6500,7 +6512,7 @@ class SpriteImage_Fruit(SLib.SpriteImage_StaticMultiple):  # 357
         if style == 0:
             self.image = ImageCache['Fruit']
         else:
-            self.image = ImageCache['Cookie']
+            self.image = ImageCache['FruitCookie']
 
         super().dataChanged()
 
@@ -6691,6 +6703,7 @@ class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
         self.aux[0].setPos(0, -114)
 
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 144, 30))
+        self.aux[1].setIsBehindSprite(False)
 
     @staticmethod
     def loadImages():
@@ -6933,7 +6946,7 @@ class SpriteImage_Bush(SLib.SpriteImage_StaticMultiple):  # 387
     @staticmethod
     def loadImages():
         if 'Bush00' in ImageCache: return
-        for typenum, typestr in enumerate(('green', 'yellow')):
+        for typenum, typestr in enumerate(('green', 'yellowish')):
             for sizenum, sizestr in enumerate(('small', 'med', 'large', 'xlarge')):
                 ImageCache['Bush%d%d' % (typenum, sizenum)] = SLib.GetImg('bush_%s_%s.png' % (typestr, sizestr))
 
@@ -7221,24 +7234,24 @@ class SpriteImage_Gabon(SLib.SpriteImage_StaticMultiple):  # 414
     @staticmethod
     def loadImages():
         if 'GabonLeft' in ImageCache: return
-        ImageCache['GabonLeft'] = SLib.GetImg('gabon_l.png')
-        ImageCache['GabonRight'] = SLib.GetImg('gabon_r.png')
-        ImageCache['GabonDown'] = SLib.GetImg('gabon_d.png')
+        gabon = SLib.GetImg('gabon.png', True)
+        ImageCache['GabonLeft'] = QtGui.QPixmap.fromImage(gabon)
+        ImageCache['GabonRight'] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
+        SLib.loadIfNotInImageCache('GabonSpike', 'gabon_spike.png')
 
     def dataChanged(self):
-
         throwdir = self.parent.spritedata[5] & 1
-        if throwdir == 0:  # down
-            self.image = ImageCache['GabonDown']
-            self.offset = (-5, -29)
-        else:  # left/right
-
-            facing = self.parent.spritedata[4] & 1
+        facing = self.parent.spritedata[4] & 1
+        
+        if throwdir == 0:
+            self.image = ImageCache['GabonSpike']
+            self.offset = (-7, -31) #-11, -47
+        else:
             self.image = (
                 ImageCache['GabonLeft'],
                 ImageCache['GabonRight'],
             )[facing]
-            self.offset = (-7, -31)
+            self.offset = (-8, -33) #-12, -50
 
         super().dataChanged()
 
@@ -7697,12 +7710,12 @@ class SpriteImage_PreSwingingVine(SLib.SpriteImage_Static):  # 444
         super().__init__(
             parent,
             1.5,
-            ImageCache['SwingVine'],
+            ImageCache['PreSwingVine'],
         )
 
-        @staticmethod
-        def loadImages():
-            SLib.loadIfNotInImageCache('SwingVine', 'swing_vine.png')
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('PreSwingVine', 'swing_vine.png')
 
 
 class SpriteImage_CagePeachReal(SLib.SpriteImage_Static):  # 445
@@ -8279,10 +8292,10 @@ ImageClasses = {
     30: SpriteImage_OldStoneBlock_NoSpikes,
     31: SpriteImage_VertMovingPlatform,
     32: SpriteImage_StarCoinRegular,
-    40: SpriteImage_QuestionSwitch,
+    40: SpriteImage_QSwitch,
     41: SpriteImage_PSwitch,
     42: SpriteImage_ExcSwitch,
-    43: SpriteImage_QuestionSwitchBlock,
+    43: SpriteImage_QSwitchBlock,
     44: SpriteImage_PSwitchBlock,
     45: SpriteImage_ExcSwitchBlock,
     46: SpriteImage_Podoboo,
@@ -8383,7 +8396,7 @@ ImageClasses = {
     148: SpriteImage_Spring,
     149: SpriteImage_RotationControllerSpinning,
     151: SpriteImage_Porcupuffer,
-    153: SpriteImage_QuestionSwitchUnused,
+    153: SpriteImage_QSwitchUnused,
     155: SpriteImage_StarCoinLineControlled,
     156: SpriteImage_RedCoinRing,
     157: SpriteImage_BigBrick,
@@ -8597,7 +8610,7 @@ ImageClasses = {
     440: SpriteImage_HorizontalRope,
     441: SpriteImage_MushroomPlatform,
     443: SpriteImage_ReplayBlock,
-    444: SpriteImage_SwingingVine,
+    444: SpriteImage_PreSwingingVine,
     445: SpriteImage_CagePeachReal,
     447: SpriteImage_UnderwaterLamp,
     448: SpriteImage_MetalBar,

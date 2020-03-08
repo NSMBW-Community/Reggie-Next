@@ -1754,7 +1754,7 @@ class SpriteItem(LevelEditorItem):
         self.objx = x
         self.objy = y
         self.spritedata = data
-        self.listitem = None
+        # self.listitem = None
         self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
         self.ChangingPos = False
 
@@ -2215,9 +2215,8 @@ class SpriteItem(LevelEditorItem):
             return
 
         newitem = SpriteItem(self.type, self.objx, self.objy, self.spritedata)
-        newitem.listitem = ListWidgetItem_SortsByOther(newitem, newitem.ListString())
 
-        globals_.mainWindow.spriteList.addItem(newitem.listitem)
+        globals_.mainWindow.spriteList.addSprite(newitem)
         globals_.Area.sprites.append(newitem)
 
         globals_.mainWindow.scene.addItem(newitem)
@@ -2309,13 +2308,11 @@ class SpriteItem(LevelEditorItem):
         """
         Delete the sprite from the level
         """
-        sprlist = globals_.mainWindow.spriteList
         globals_.mainWindow.UpdateFlag = True
-        sprlist.takeItem(sprlist.row(self.listitem))
+        globals_.mainWindow.spriteList.takeSprite(self)
         globals_.mainWindow.UpdateFlag = False
-        sprlist.selectionModel().clearSelection()
+        globals_.mainWindow.spriteList.selectionModel().clearSelection()
         globals_.Area.sprites.remove(self)
-        # self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
         self.scene().update()  # The zone painters need for the whole thing to update
 
 

@@ -233,8 +233,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     spr.positionChanged = mw.HandleSprPosChange
                     mw.scene.addItem(spr)
 
-                    spr.listitem = ListWidgetItem_SortsByOther(spr)
-                    mw.spriteList.addItem(spr.listitem)
+                    mw.spriteList.addSprite(spr)
                     globals_.Area.sprites.append(spr)
 
                     self.dragstamp = False

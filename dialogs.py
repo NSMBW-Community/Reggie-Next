@@ -815,8 +815,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 new.positionChanged = globals_.mainWindow.HandleSprPosChange
                 globals_.mainWindow.scene.addItem(new)
 
-                new.listitem = ListWidgetItem_SortsByOther(new)
-                globals_.mainWindow.spriteList.addItem(new.listitem)
+                globals_.mainWindow.spriteList.addSprite(new)
                 globals_.Area.sprites.append(new)
                 globals_.mainWindow.scene.update()
 

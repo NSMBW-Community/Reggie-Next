@@ -2110,8 +2110,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             mw.scene.addItem(spr)
             globals_.Area.sprites.append(spr)
 
-            spr.listitem = ListWidgetItem_SortsByOther(spr)
-            mw.spriteList.addItem(spr.listitem)
+            mw.spriteList.addSprite(spr)
 
             SetDirty()
             spr.UpdateListItem()

@@ -1,9 +1,12 @@
+import base64
+
 from PyQt5 import QtWidgets, QtGui, QtCore
 
 import globals_
 from tiles import RenderObject, TilesetTile
 from ui import ListWidgetWithToolTipSignal
 from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories
+from spriteeditor import SpriteEditorWidget
 
 class LevelOverviewWidget(QtWidgets.QWidget):
     """
@@ -77,8 +80,6 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         """
         Paints the level overview widget
         """
-        # global globals_.theme
-
         if not hasattr(globals_.Area, 'layers'):
             # fixes race condition where this widget is painted after
             # the level is created, but before it's loaded
@@ -886,61 +887,304 @@ class SpriteList(QtWidgets.QWidget):
     """
     Sprite list viewer
     """
+    # TODO: Make this translatable
+
+    # These are straight from the spritedata xml
+    # Don't translate these
+    idtypes = (
+        "Star Set", "Path Movement", "Rotation", "Two Way Line",
+        "Water Ball", "Mushroom", "Line", "Bolt", "Target Event",
+        "Triggering Event", "Collection", "Location", "Physics",
+        "Message", "Path", "Path Movement", "Red Coin", "Hill",
+        "Stretch", "Ray", "Dragon", "Bubble Cannon", "Burner",
+        "Wiggling", "Panel", "Colony"
+    )
+
+    # This should be translated
+    idtype_names = (
+        "Any",
+        "Star Set ID", "Path Movement ID", "Rotation ID",
+        "Two Way Line ID", "Water Ball ID", "Mushroom ID",
+        "Line ID", "Bolt ID", "Target Event ID", "Triggering " +
+        "Event ID", "Collection ID", "Location ID", "Physics ID",
+        "Message ID", "Path ID", "Path Movement ID", "Red Coin ID",
+        "Hill ID", "Stretch ID", "Ray ID", "Dragon ID",
+        "Bubble Cannon ID", "Burner ID", "Wiggling ID",
+        "Panel ID", "Colony ID"
+    )
 
     def __init__(self):
         super().__init__()
+
         self.searchbox = QtWidgets.QLineEdit()
         self.searchbox.textEdited.connect(self.search)
 
-        layout = QtWidgets.QHBoxLayout()
+        self.filterbox = QtWidgets.QComboBox()
+        self.filterbox.currentIndexChanged.connect(self.filter)
+
+        # Set of row ids
+        self.SearchResults = set()
+
+        self.table = QtWidgets.QTableWidget(0, len(self.idtype_names))
+        headers = ["Name"] + list(self.idtype_names[1:])
+        self.table.setHorizontalHeaderLabels(headers)
+        self.table.verticalHeader().setVisible(False) # hide row numbers
+        self.table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.table.setSortingEnabled(True)
+        self.table.setMouseTracking(True) # for 'entered' signal
+        self.table.itemDoubleClicked.connect(self.moveToSprite)
+        self.table.itemEntered.connect(self.toolTip)
+
+        # populate filter box
+        self.filterbox.addItems(self.idtype_names)
+
+        # Make a layout
+        search_label = QtWidgets.QLabel(globals_.trans.string('Sprites', 19) + ":")
+        filter_label = QtWidgets.QLabel("Filter" + ":")
+
+        layout = QtWidgets.QGridLayout()
         layout.setContentsMargins(0, 0, 0, 0)
 
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('Sprites', 19) + ":"))
-        layout.addWidget(self.searchbox)
+        layout.addWidget(search_label, 0, 0)
+        layout.addWidget(self.searchbox, 0, 1)
 
-        search = QtWidgets.QWidget()
-        search.setLayout(layout)
+        layout.addWidget(filter_label, 1, 0)
+        layout.addWidget(self.filterbox, 1, 1)
 
-        self.list_ = ListWidgetWithToolTipSignal()
+        # colspan = 2, since we want the table to use both
+        # columns
+        layout.addWidget(self.table, 2, 0, 1, 2)
 
-        layout = QtWidgets.QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
-
-        layout.addWidget(search)
-        layout.addWidget(self.list_)
         self.setLayout(layout)
 
     def search(self, text):
         """
-        Search the list.
+        Search the table
         """
-        results = self.list_.findItems(text, QtCore.Qt.MatchContains | QtCore.Qt.MatchRecursive)
+        results = self.table.findItems(text, QtCore.Qt.MatchContains | QtCore.Qt.MatchRecursive)
+        rows = set(item.row() for item in results if item is not None)
 
-        for sprite in self.list_.findItems("", QtCore.Qt.MatchContains | QtCore.Qt.MatchRecursive):
-            sprite.setHidden(True)
+        for row in range(self.table.rowCount()):
+            self.table.setRowHidden(row, row not in rows)
 
-        for sprite in results:
-            sprite.setHidden(False)
+        self.SearchResults = rows
 
-        self.ShownSearchResults = results
+    def filter(self, newidx):
+        """
+        Filters all search results
+        """
+        for row in self.SearchResults:
+            self.filterRow(row, newidx)
+
+        # hide all columns except 0 and newidx
+        for col in range(0, self.table.columnCount()):
+            if col in (0, newidx):
+                self.table.showColumn(col)
+            else:
+                self.table.hideColumn(col)
+
+    def filterRow(self, row, filteridx = 0):
+        """
+        Filters one row of the table.
+        """
+        # Special case: no filtering
+        if filteridx == 0:
+            self.table.setRowHidden(row, False)
+            return
+
+        # Apply _some_ filtering
+        # 1. Get the sprite defintion
+        filtertype = self.idtypes[filteridx - 1]
+        sprite = self.table.item(row, 0)._sprite
+        sdef = globals_.Sprites[sprite.type]
+
+        # 2. Loop over every field of the sprite 
+        #    and hide everything that has no fields
+        #    with the correct idtype.
+        for field in sdef.fields:
+            # Only values (1) and lists (2) have
+            # idtypes - ignore the others
+            if field[0] < 1 or field[0] > 2:
+                continue
+
+            # The idtype is the last element in the
+            # field tuple
+            if field[-1] == filtertype:
+                self.table.setRowHidden(row, False)
+                return
+
+        # No field had the correct id type -> hide
+        self.table.setRowHidden(row, True)
+
+    def updateItems(self):
+        self.search(self.searchbox.text())
+        self.filter(self.filterbox.currentIndex())
+
+    def getRowFor(self, sprite):
+        """
+        Returns the row number for a given
+        sprite, or -1 if it does not exist.
+        """
+        for i in range(self.table.rowCount()):
+            nameitem = self.table.item(i, 0)
+            if nameitem._sprite == sprite:
+                return i
+
+        return -1
+
+    def addSprite(self, sprite):
+        """
+        Adds a sprite to the table
+        """
+        # temporarily disable sorting so our new row
+        # gets added properly
+        self.table.setSortingEnabled(False)
+
+        # add a new row
+        row = self.table.rowCount()
+        self.table.insertRow(row)
+
+        # add the sprite name
+        name_item = QtWidgets.QTableWidgetItem("%d: %s" % (sprite.type, sprite.name))
+        name_item.setFlags(name_item.flags() & ~QtCore.Qt.ItemIsEditable)
+        self.table.setItem(row, 0, name_item)
+        self.table.resizeRowsToContents()
+        self.table.setWordWrap(True)
+
+        # HACK: We're creating a new field here
+        name_item._sprite = sprite
+
+        # add an id for every idtype
+        # these items should not be editable or selectable
+        mask = ~(QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable)
+        ids = self.getIDsFor(sprite)
+        for col, idtype in enumerate(self.idtypes):
+            id_ = ids.get(idtype, "")
+
+            id_item = QtWidgets.QTableWidgetItem(str(id_))
+            # The following line throws:
+            #   DeprecationWarning: an integer is required
+            #   (got type ItemFlags)
+            # Adding an explicit call to int() causes exceptions
+            # so it's probably best to ignore this warning.
+            # It's likely that something on Qt's side is causing
+            # this warning.
+            id_item.setFlags(id_item.flags() & mask)
+            self.table.setItem(row, 1 + col, id_item)
+
+        # re-enable sorting
+        self.table.setSortingEnabled(True)
+        self.updateItems()
+
+    def updateSprite(self, sprite):
+        """
+        Updates the IDs of the given sprite
+        """
+        ids = self.getIDsFor(sprite)
+
+        # temporarily disable sorting so our
+        # updates happen to the same row
+        self.table.setSortingEnabled(False)
+        row = self.getRowFor(sprite)
+
+        # Skip the first column (that's the name)
+        for i in range(1, self.table.columnCount()):
+            id_ = ids.get(self.idtypes[i - 1], "")
+
+            item = self.table.item(row, i)
+            item.setText(str(id_))
+
+        # re-enable sorting
+        self.table.setSortingEnabled(True)
+
+    def takeSprite(self, sprite):
+        """
+        Removes a sprite from the table
+        """
+        row = self.getRowFor(sprite)
+
+        if row < 0:
+            return
+
+        self.table.removeRow(row)
+
+        # Update search results
+        self.updateItems()
 
     def clear(self):
         self.searchbox.setText("")
-        return self.list_.clear()
+        self.filterbox.setCurrentIndex(0)
+        self.table.clearContents()
+        self.SearchResults = set()
+        return
 
+    def toolTip(self, item):
+        """
+        Creates a tooltip for the item
+        """
+        if not hasattr(item, '_sprite'):
+            # no tooltip for items that are not the name
+            return
+
+        img = item._sprite.renderInLevelIcon()
+        byteArray = QtCore.QByteArray()
+        buf = QtCore.QBuffer(byteArray)
+        img.save(buf, 'PNG')
+        byteObj = bytes(byteArray)
+        b64 = base64.b64encode(byteObj).decode('utf-8')
+
+        item.setToolTip(
+            '<img src="data:image/png;base64,' + b64 + '" />'
+        )
+
+    # TODO: Consider moving this to the SpriteItem class
+    @staticmethod
+    def moveToSprite(item):
+        """
+        Moves the view to the sprite and selects it.
+        """
+        if not hasattr(item, '_sprite'):
+            return
+
+        sprite = item._sprite
+        sprite.ensureVisible(xMargin = 192, yMargin = 192)
+        sprite.scene().clearSelection()
+        sprite.setSelected(True)
+
+    @staticmethod
+    def getIDsFor(sprite):
+        """
+        Returns an (idtype, value) dict for every
+        idtype this sprite has
+        """
+        sdef = globals_.Sprites[sprite.type]
+
+        res = {}
+        decoder = SpriteEditorWidget.PropertyDecoder()
+        data = sprite.spritedata
+
+        for field in sdef.fields:
+            # Only values (1) and fields (2) have
+            # idtypes - ignore the others
+            if field[0] < 1 or field[0] > 2:
+                continue
+
+            # The idtype is the last element in the
+            # field tuple, bit is the third element
+            # in the field tuple (for both list and
+            # value).
+            idtype = field[-1]
+            value = decoder.retrieve(data, field[2])
+            res[idtype] = value
+
+        return res
+
+    # Functions that are passed on to self.table
     def selectionModel(self):
-        return self.list_.selectionModel()
+        return self.table.selectionModel()
 
-    def addItem(self, *args):
-        result = self.list_.addItem(*args)
-        self.search(self.searchbox.text())
-        return result
+    def row(self, item):
+        return self.table.row(item)
 
-    def setCurrentItem(self, *args):
-        return self.list_.setCurrentItem(*args)
-
-    def takeItem(self, *args):
-        return self.list_.takeItem(*args)
-
-    def row(self, *args):
-        return self.list_.row(*args)
+    def clearSelection(self):
+        self.table.setCurrentItem(None)
