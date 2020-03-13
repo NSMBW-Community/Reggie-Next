@@ -437,7 +437,8 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
         super().__init__(parent, scale)
         self.spritebox.shown = False
 
-        self.SpikeLength = ((37 * 16) + 41) / 1.5
+        self.HorzSpikeLength = ((36 * 16) + 41) / 1.5
+        self.VertSpikeLength = ((36 * 16) + 39) / 1.5
         # (16 mid sections + an end section), accounting for image/sprite size difference
         self.dir = 'down'
 
@@ -455,25 +456,24 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
 
         rawdistance = self.parent.spritedata[3] >> 4
         distance = (
-            (6, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112),
             (16, 7, 14, 10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16)
-        )[self.dir == "down"][rawdistance]
+        )[rawdistance]
         distance += 1  # In order to hide one side of the track behind the image.
 
-        w = 66
-        L = ((37 * 16) + 41) / 1.5  # (16 mid sections + an end section), accounting for image/sprite size difference
+        L = 615  
+        W = 617  # 16 mid sections + an end section
 
         if self.dir == 'up':
             self.aux[0].setPos(36, 24 - (distance * 24))
             self.aux[0].setSize(16, distance * 16)
         elif self.dir == 'down':
-            self.aux[0].setPos(36, (L * 1.5) - 24)
+            self.aux[0].setPos(36, L - 24)
             self.aux[0].setSize(16, distance * 16)
         elif self.dir == 'left':
             self.aux[0].setPos(24 - (distance * 24), 36)
             self.aux[0].setSize(distance * 16, 16)
         elif self.dir == 'right':
-            self.aux[0].setPos((L * 1.5) - 24, 36)
+            self.aux[0].setPos(W - 24, 36)
             self.aux[0].setSize(distance * 16, 16)
 
     def paint(self, painter):
@@ -488,22 +488,24 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
             end = ImageCache['StakeE0' + self.dir]
 
         tiles = 16
-        tilesize = 37
-        endsize = 41
-        width = 100
+        tilesize = 36
+        endsizeV = 39
+        endsizeH = 41
+        widthV = 98
+        widthH = 99
 
         if self.dir == 'up':
             painter.drawPixmap(0, 0, end)
-            painter.drawTiledPixmap(0, endsize, width, tilesize * tiles, mid)
+            painter.drawTiledPixmap(0, endsizeV, widthV, tilesize * tiles, mid)
         elif self.dir == 'down':
-            painter.drawTiledPixmap(0, 0, width, tilesize * tiles, mid)
-            painter.drawPixmap(0, (self.height * 1.5) - endsize, end)
+            painter.drawTiledPixmap(0, 0, widthV, tilesize * tiles, mid)
+            painter.drawPixmap(0, (self.height * 1.5) - endsizeV, end)
         elif self.dir == 'left':
             painter.drawPixmap(0, 0, end)
-            painter.drawTiledPixmap(endsize, 0, tilesize * tiles, width, mid)
+            painter.drawTiledPixmap(endsizeH, 0, tilesize * tiles, widthH, mid)
         elif self.dir == 'right':
-            painter.drawTiledPixmap(0, 0, tilesize * tiles, width, mid)
-            painter.drawPixmap((self.width * 1.5) - endsize, 0, end)
+            painter.drawTiledPixmap(0, 0, tilesize * tiles, widthH, mid)
+            painter.drawPixmap((self.width * 1.5) - endsizeH, 0, end)
 
 
 class SpriteImage_ScrewMushroom(SLib.SpriteImage):  # 172, 382
@@ -926,6 +928,114 @@ class SpriteImage_RollingHillWithPipe(SLib.SpriteImage):  # 355, 360
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.aux.append(SLib.AuxiliaryCircleOutline(parent, 800))
+
+
+class SpriteImage_LongSpikedStake(SLib.SpriteImage):  # 398, 400
+    def __init__(self, parent, scale=1.5):
+        super().__init__(parent, scale)
+        self.parent.setZValue(24999) # to see sprites behind it easily
+        self.spritebox.shown = False
+
+        # 55 mid sections + an end section = 2021
+        self.dir = 'left'
+
+    @staticmethod
+    def loadImages():
+        if 'LongStakeM0left' in ImageCache: return
+        for dir in ['left', 'right']:
+            ImageCache['LongStakeM0' + dir] = SLib.GetImg('stake_%s_m_0.png' % dir)
+            ImageCache['LongStakeM1' + dir] = SLib.GetImg('stake_%s_m_1.png' % dir)
+            ImageCache['LongStakeE0' + dir] = SLib.GetImg('stake_%s_e_0.png' % dir)
+            ImageCache['LongStakeE1' + dir] = SLib.GetImg('stake_%s_e_1.png' % dir)
+
+    def dataChanged(self):
+        super().dataChanged()
+        
+        color = self.parent.spritedata[3] & 15
+        tiles = 55
+        tilesize = 36
+        endsize = 41
+        width = 99
+        
+        pix = QtGui.QPixmap(2021, 99)
+        pix.fill(Qt.transparent)
+        paint = QtGui.QPainter(pix)
+        
+        if color == 2 or color == 3 or color == 6 or color == 7:
+            mid = ImageCache['LongStakeM1' + self.dir]
+            end = ImageCache['LongStakeE1' + self.dir]
+        else:
+            mid = ImageCache['LongStakeM0' + self.dir]
+            end = ImageCache['LongStakeE0' + self.dir]
+
+        if self.dir == 'left':
+            self.aux[0].setPos(-1896, 36)
+            paint.drawPixmap(0, 0, end)
+            paint.drawTiledPixmap(endsize, 0, tilesize * tiles, width, mid)
+        elif self.dir == 'right':
+            self.aux[0].setPos(171, 36)
+            self.aux[1].setPos(-1829, 0)
+            paint.drawTiledPixmap(0, 0, tilesize * tiles, width, mid)
+            paint.drawPixmap(1980, 0, end)
+        
+        self.aux[1].image = pix
+        self.aux[1].alpha = 0.8
+
+
+class SpriteImage_MassiveSpikedStake(SLib.SpriteImage):  # 401, 404
+    def __init__(self, parent, scale=1.5):
+        super().__init__(parent, scale)
+        self.parent.setZValue(24999) # to see sprites behind it easily
+        self.spritebox.shown = False
+
+        self.SpikeLength = ((72 * 40) + 136) / 1.5
+        # (40 mid sections + an end section), accounting for image/sprite size difference
+        self.dir = 'down'
+
+    @staticmethod
+    def loadImages():
+        if 'MassiveStakeM0up' in ImageCache: return
+        for dir in ['up', 'down']:
+            ImageCache['MassiveStakeM0'] = SLib.GetImg('massive_stake_m_0.png')
+            ImageCache['MassiveStakeM1'] = SLib.GetImg('massive_stake_m_1.png')
+            ImageCache['MassiveStakeE0' + dir] = SLib.GetImg('massive_stake_%s_e_0.png' % dir)
+            ImageCache['MassiveStakeE1' + dir] = SLib.GetImg('massive_stake_%s_e_1.png' % dir)
+
+    def dataChanged(self):
+        super().dataChanged()
+        
+        color = self.parent.spritedata[3] & 15
+        tiles = 40
+        tilesize = 72
+        endsize = 136
+        width = 248
+        
+        pix = QtGui.QPixmap(248, 3016)
+        pix.fill(Qt.transparent)
+        paint = QtGui.QPainter(pix)
+
+        if color == 2 or color == 3 or color == 6 or color == 7:
+            mid = ImageCache['MassiveStakeM1']
+            end = ImageCache['MassiveStakeE1' + self.dir]
+        else:
+            mid = ImageCache['MassiveStakeM0']
+            end = ImageCache['MassiveStakeE0' + self.dir]
+        
+        if self.dir == 'up':
+            self.aux[0].setPos(112, -96)
+            self.aux[1].setPos(4, -2592)
+            paint.drawPixmap(0, 0, end)
+            paint.drawTiledPixmap(0, endsize, width, tilesize * tiles, mid)
+        elif self.dir == 'down':
+            self.aux[0].setPos(112, 184)
+            self.aux[1].setPos(4, 137)
+            self.aux[2].setPos(0, -2808)
+            paint.drawTiledPixmap(0, 0, width, tilesize * tiles, mid)
+            paint.drawPixmap(0, 2880, end)
+        
+        paint = None
+        self.aux[2].image = pix
+        self.aux[2].alpha = 0.9
 
 
 class SpriteImage_ToadHouseBalloon(SLib.SpriteImage_StaticMultiple):  # 411, 412
@@ -3048,7 +3158,7 @@ class SpriteImage_SpikedStakeDown(SpriteImage_SpikedStake):  # 137
         self.dir = 'down'
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 64, SLib.AuxiliaryTrackObject.Vertical))
 
-        self.dimensions = (0, 16 - self.SpikeLength, 66, self.SpikeLength)
+        self.dimensions = (0, 16 - self.VertSpikeLength, 66, self.VertSpikeLength)
 
 
 class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
@@ -3133,7 +3243,7 @@ class SpriteImage_SpikedStakeUp(SpriteImage_SpikedStake):  # 140
         self.dir = 'up'
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 64, SLib.AuxiliaryTrackObject.Vertical))
 
-        self.dimensions = (0, 0, 66, self.SpikeLength)
+        self.dimensions = (0, 0, 66, self.VertSpikeLength)
 
 
 class SpriteImage_SpikedStakeRight(SpriteImage_SpikedStake):  # 141
@@ -3142,7 +3252,7 @@ class SpriteImage_SpikedStakeRight(SpriteImage_SpikedStake):  # 141
         self.dir = 'right'
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 64, 16, SLib.AuxiliaryTrackObject.Horizontal))
 
-        self.dimensions = (16 - self.SpikeLength, 0, self.SpikeLength, 66)
+        self.dimensions = (16 - self.HorzSpikeLength, 0, self.HorzSpikeLength, 66)
 
 
 class SpriteImage_SpikedStakeLeft(SpriteImage_SpikedStake):  # 142
@@ -3151,7 +3261,7 @@ class SpriteImage_SpikedStakeLeft(SpriteImage_SpikedStake):  # 142
         self.dir = 'left'
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 64, 16, SLib.AuxiliaryTrackObject.Horizontal))
 
-        self.dimensions = (0, 0, self.SpikeLength, 66)
+        self.dimensions = (0, 0, self.HorzSpikeLength, 66)
 
 
 class SpriteImage_Arrow(SLib.SpriteImage_StaticMultiple):  # 143
@@ -6711,8 +6821,17 @@ class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
         SLib.loadIfNotInImageCache('FlashlightLamp', 'flashraft_light.png')
 
     def dataChanged(self):
+        pathcontrolled = self.parent.spritedata[5] & 1
         midway = (self.parent.spritedata[5] >> 4) & 1
-        self.alpha = 0.5 if midway else 1
+        
+        self.aux[1].setSize(24, 24, 144, 30) if pathcontrolled else self.aux[1].setSize(0, 0)
+        
+        if midway:
+            self.alpha = 0.5
+            self.aux[0].alpha = 0.5
+        else:
+            self.alpha = 1
+            self.aux[0].alpha = 1
         
         super().dataChanged()
 
@@ -7165,6 +7284,36 @@ class SpriteImage_GhostHouseBox(SLib.SpriteImage):  # 397
         painter.drawTiledPixmap(24, 24, xsize - 48, ysize - 48, ImageCache[prefix + 'M'])
 
 
+class SpriteImage_LongSpikedStakeRight(SpriteImage_LongSpikedStake):  # 398
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.dir = 'right'
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 1296, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(SLib.AuxiliaryImage(parent, 2021, 99))
+
+        self.dimensions = (-112, 0, 128, 66) # 6 mid sections + end section
+
+
+class SpriteImage_LongSpikedStakeLeft(SpriteImage_LongSpikedStake):  # 400
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.dir = 'left'
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 1296, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(SLib.AuxiliaryImage(parent, 2021, 99))
+
+        self.dimensions = (0, 0, 128, 66)
+
+
+class SpriteImage_MassiveSpikedStakeDown(SpriteImage_MassiveSpikedStake):  # 401
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.dir = 'down'
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 80, SLib.AuxiliaryTrackObject.Vertical))
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 240, 2664, 4, 2944))
+        self.aux.append(SLib.AuxiliaryImage(parent, 248, 3016))
+
+        self.dimensions = (-67, -123, 165, 139)
+
 class SpriteImage_LineQBlock(SpriteImage_Block):  # 402
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -7176,6 +7325,17 @@ class SpriteImage_LineBrickBlock(SpriteImage_Block):  # 403
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.tilenum = 48
+
+
+class SpriteImage_MassiveSpikedStakeUp(SpriteImage_MassiveSpikedStake):  # 404
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.dir = 'up'
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 80, SLib.AuxiliaryTrackObject.Vertical))
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 240, 2664, 4, -2592))
+        self.aux.append(SLib.AuxiliaryImage(parent, 248, 3016))
+
+        self.dimensions = (-67, 0, 165, 139)
 
 
 class SpriteImage_BowserJr2ndController(SLib.SpriteImage):  # 405
@@ -8200,8 +8360,8 @@ class SpriteImage_MortonSpikedStake(SLib.SpriteImage):  # 480
     def __init__(self, parent):
         super().__init__(parent)
         self.spritebox.shown = False
-        self.dimensions = (0, -406, 64, 422)
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 36, 608, SLib.AuxiliaryTrackObject.Vertical))
+        self.dimensions = (0, -368, 64, 410)
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 36, 591, SLib.AuxiliaryTrackObject.Vertical))
 
     @staticmethod
     def loadImages():
@@ -8211,14 +8371,14 @@ class SpriteImage_MortonSpikedStake(SLib.SpriteImage):  # 480
     def dataChanged(self):
         super().dataChanged()
 
-        self.aux[0].setPos(36, 608)
+        self.aux[0].setPos(36, 591)
         self.aux[0].setSize(16, 160)
 
     def paint(self, painter):
         super().paint(painter)
 
-        painter.drawTiledPixmap(0, 0, 100, 592, ImageCache['MortonStakeM'])
-        painter.drawPixmap(0, 592, ImageCache['MortonStakeE'])
+        painter.drawTiledPixmap(0, 0, 98, 576, ImageCache['MortonStakeM'])
+        painter.drawPixmap(0, 576, ImageCache['MortonStakeE'])
 
 
 class SpriteImage_FinalBossRubble(SLib.SpriteImage_StaticMultiple):  # 481
@@ -8579,8 +8739,12 @@ ImageClasses = {
     395: SpriteImage_SpinyCheep,
     396: SpriteImage_MoveWhenOn,
     397: SpriteImage_GhostHouseBox,
+    398: SpriteImage_LongSpikedStakeRight,
+    400: SpriteImage_LongSpikedStakeLeft,
+    401: SpriteImage_MassiveSpikedStakeDown,
     402: SpriteImage_LineQBlock,
     403: SpriteImage_LineBrickBlock,
+    404: SpriteImage_MassiveSpikedStakeUp,
     405: SpriteImage_BowserJr2ndController,
     411: SpriteImage_ToadHouseBalloonUnused,
     412: SpriteImage_ToadHouseBalloonUsed,

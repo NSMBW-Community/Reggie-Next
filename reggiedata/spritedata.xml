@@ -1999,8 +1999,8 @@
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
       <entry value="1">7 Blocks</entry>
       <entry value="3">10 Blocks</entry>
-      <entry value="2">14 Blocks</entry>
-      <entry value="0">16 Blocks</entry>
+	  <entry value="2">14 Blocks</entry>
+	  <entry value="0">16 Blocks</entry> <!-- The rest are all 16 Blocks -->
     </list>
     <list bit="19-20" title="Speed" comment="This determines the speed in which the Skewer will cover its Travel Distance.">
       <entry value="3">Stationary</entry>
@@ -2008,8 +2008,8 @@
       <entry value="0">Medium</entry>
       <entry value="1">Fast</entry>
     </list>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
     <value nybble="6" title="Timing Offset" comment="This determines the delay factor relevant to other otherwise identical Skewers." comment2="A value of 8 is expected to have the opposite timing of a value of 0. Other delay values are fractional." advancedcomment="ASM research is required to find the true details of this setting. Nintendo uses values of 0, 1, and 8. Don't be afraid to experiment."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
@@ -2156,22 +2156,10 @@
   <sprite id="140" name="Skewer - Up" sizehacks="True" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
     <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
-      <entry value="0">6 Blocks</entry>
-      <entry value="1">14 Blocks</entry>
-      <entry value="2">21 Blocks</entry>
-      <entry value="3">28 Blocks</entry>
-      <entry value="4">35 Blocks</entry>
-      <entry value="5">42 Blocks</entry>
-      <entry value="6">49 Blocks</entry>
-      <entry value="7">56 Blocks</entry>
-      <entry value="8">63 Blocks</entry>
-      <entry value="9">70 Blocks</entry>
-      <entry value="10">77 Blocks</entry>
-      <entry value="11">84 Blocks</entry>
-      <entry value="12">91 Blocks</entry>
-      <entry value="13">98 Blocks</entry>
-      <entry value="14">105 Blocks</entry>
-      <entry value="15">112 Blocks</entry>
+      <entry value="1">7 Blocks</entry>
+      <entry value="3">10 Blocks</entry>
+	  <entry value="2">14 Blocks</entry>
+	  <entry value="0">16 Blocks</entry> <!-- The rest are all 16 Blocks -->
     </list>
     <list bit="19-20" title="Speed" comment="This determines the speed in which the Skewer will cover its Travel Distance.">
       <entry value="3">Stationary</entry>
@@ -2179,8 +2167,8 @@
       <entry value="0">Medium</entry>
       <entry value="1">Fast</entry>
     </list>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
     <value nybble="6" title="Timing Offset" comment="This determines the delay factor relevant to other otherwise identical Skewers." comment2="A value of 8 is expected to have the opposite timing of a value of 0. Other delay values are fractional." advancedcomment="ASM research is required to find the true details of this setting. Nintendo uses values of 0, 1, and 8. Don't be afraid to experiment."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
@@ -2189,22 +2177,10 @@
   <sprite id="141" name="Skewer - Right" sizehacks="True" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
     <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
-      <entry value="0">6 Blocks</entry>
-      <entry value="1">14 Blocks</entry>
-      <entry value="2">21 Blocks</entry>
-      <entry value="3">28 Blocks</entry>
-      <entry value="4">35 Blocks</entry>
-      <entry value="5">42 Blocks</entry>
-      <entry value="6">49 Blocks</entry>
-      <entry value="7">56 Blocks</entry>
-      <entry value="8">63 Blocks</entry>
-      <entry value="9">70 Blocks</entry>
-      <entry value="10">77 Blocks</entry>
-      <entry value="11">84 Blocks</entry>
-      <entry value="12">91 Blocks</entry>
-      <entry value="13">98 Blocks</entry>
-      <entry value="14">105 Blocks</entry>
-      <entry value="15">112 Blocks</entry>
+      <entry value="1">7 Blocks</entry>
+      <entry value="3">10 Blocks</entry>
+      <entry value="2">14 Blocks</entry>
+	  <entry value="0">16 Blocks</entry> <!-- The rest are all 16 Blocks -->
     </list>
     <list bit="19-20" title="Speed" comment="This determines the speed in which the Skewer will cover its Travel Distance.">
       <entry value="3">Stationary</entry>
@@ -2212,8 +2188,8 @@
       <entry value="0">Medium</entry>
       <entry value="1">Fast</entry>
     </list>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
     <value nybble="6" title="Timing Offset" comment="This determines the delay factor relevant to other otherwise identical Skewers." comment2="A value of 8 is expected to have the opposite timing of a value of 0. Other delay values are fractional." advancedcomment="ASM research is required to find the true details of this setting. Nintendo uses values of 0, 1, and 8. Don't be afraid to experiment."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
@@ -2222,22 +2198,10 @@
   <sprite id="142" name="Skewer - Left" sizehacks="True" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
     <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
-      <entry value="0">6 Blocks</entry>
-      <entry value="1">14 Blocks</entry>
-      <entry value="2">21 Blocks</entry>
-      <entry value="3">28 Blocks</entry>
-      <entry value="4">35 Blocks</entry>
-      <entry value="5">42 Blocks</entry>
-      <entry value="6">49 Blocks</entry>
-      <entry value="7">56 Blocks</entry>
-      <entry value="8">63 Blocks</entry>
-      <entry value="9">70 Blocks</entry>
-      <entry value="10">77 Blocks</entry>
-      <entry value="11">84 Blocks</entry>
-      <entry value="12">91 Blocks</entry>
-      <entry value="13">98 Blocks</entry>
-      <entry value="14">105 Blocks</entry>
-      <entry value="15">112 Blocks</entry>
+      <entry value="1">7 Blocks</entry>
+      <entry value="3">10 Blocks</entry>
+      <entry value="2">14 Blocks</entry>
+	  <entry value="0">16 Blocks</entry> <!-- The rest are all 16 Blocks -->
     </list>
     <list bit="19-20" title="Speed" comment="This determines the speed in which the Skewer will cover its Travel Distance.">
       <entry value="3">Stationary</entry>
@@ -2245,8 +2209,8 @@
       <entry value="0">Medium</entry>
       <entry value="1">Fast</entry>
     </list>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
     <value nybble="6" title="Timing Offset" comment="This determines the delay factor relevant to other otherwise identical Skewers." comment2="A value of 8 is expected to have the opposite timing of a value of 0. Other delay values are fractional." advancedcomment="ASM research is required to find the true details of this setting. Nintendo uses values of 0, 1, and 8. Don't be afraid to experiment."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
@@ -2271,7 +2235,7 @@
     </dependency>
     <value bit="10-16" title="Triggering Event ID" comment="When this Event ID is activated, the Red Coin will appear." idtype="Triggering Event"/>
     <checkbox bit="40" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Red Coin placing it further behind other sprites."/>
-    <value nybble="12" title="Red Coin ID" comment="When the player collects all 8 Red Coins from the same set, the game will reference a Red Ring with the same Red Coin ID to determine which item to award to all players." comment2="&lt;font color=&quot;red&quot;&gt;A game crash will occur if you assign more than 8 Red Coins within the same Red Coin ID&lt;/font&gt;" idtype="Red Coin"/>
+    <value nybble="12" title="Red Coin ID" comment="When the player collects all 8 Red Coins from the same set, the game will reference a Red Ring with the same Red Coin ID to determine which item to award to all players. Value 0 is also a valid ID." comment2="&lt;font color=&quot;red&quot;&gt;A game crash will occur if you assign more than 8 Red Coins within the same Red Coin ID&lt;/font&gt;" idtype="Red Coin"/>
   </sprite> <!-- #144: Red Coin -->
 
   <sprite id="145" name="Floating Barrel" noyoshi="True" notes="A floating barrel that can only be placed on a liquid surface. It will sink while a player is standing on it, but will pop back up once the player jumps off. The barrel can also flow with the unused water current controller.">
@@ -2521,8 +2485,8 @@
     </dependency>
     <value bit="10-16" title="Target Event ID" comment="When the Red Coin Ring is touched, the Target Event will be activated." idtype="Target Event"/>
     <dualbox bit="20" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is activated temporarily or permanently." comment2="Timed events will pause the music and replace it with ticking. It is recommended for normal Red Coin Ring use that the event be timed."/>
-    <value bit="45-48" title="Red Coin ID" comment="When set, the corresponding Red Coin set will have an Item Reward." idtype="Red Coin"/>
-    <list bit="43-44" title="Item Reward" comment="This determines which power-up will appear after collecting 8 coins from the Red Coin ID set above. If a player already has that power-up, it will drop a 1-Up." requiredbit="45-48">
+    <value bit="45-48" title="Red Coin ID" comment="When set, the corresponding Red Coin set will have an Item Reward. Value 0 is also a valid ID." idtype="Red Coin"/>
+    <list bit="43-44" title="Item Reward" comment="This determines which power-up will appear after collecting 8 coins from the Red Coin ID set above. If a player already has that power-up, it will drop a 1-Up.">
       <entry value="0">Fire Flower</entry>
       <entry value="1">Propeller Shroom</entry>
       <entry value="2">Penguin Suit</entry>
@@ -6082,36 +6046,34 @@
     <value nybble="8" title="Speed" comment="This determines the speed the block will move." requiredbit="26" requiredval="0"/>
   </sprite> <!-- #397: Move-When-On Ghost House Box -->
 
-  <!-- Documentation conflict with bit 28 (26??) (nybble 7, 0100, value 4???) on 398, 400, 401, and 404. W4 Castle vs unchecked. Additionally, investigate the use of Layer 0 (foreground) terrain with all four skewers. -->
-  <sprite id="398" name="Long / Massive Skewers - Right" notes="A long spiked pillar that covers a distance of about 80 Blocks to the right. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
-    <dualbox bit="28" title1="Massive Skewer" title2="Long Skewer" comment="This determines which type of Skewer will be used." comment2="A massive Skewer is an extremely wide and intimidating spiked pillar spanning just over 10 blocks in width. It appears in front of all terrain and all other sprites. A long Skewer is the size of a standard spiked pillar and has the same behavior as normal Skewers."/>
-    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position."/>
+  <!-- Documentation conflict with bit 28 (26??)(nybble 7, 0100, value 4???) on 398, 400, 401, and 404. W4 Castle vs unchecked. Additionally, investigate the use of Layer 0 (foreground) terrain with all four skewers. -->
+  <sprite id="398" name="Long Skewer - Right" notes="A long spiked pillar that covers a distance of about 80 Blocks to the right. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
+    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer." advancedcomment="Bug: The last loaded Long Skewer in the Area makes every other Long Skewer the same color."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
-    <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
-  </sprite> <!-- #398: Long / Massive Skewers - Right -->
+    <checkbox bit="30" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Long Skewers at all."/>
+  </sprite> <!-- #398: Long Skewer - Right -->
   
   <sprite id="399" name="Effect - Airship Rocking" notes="When placed in a Zone, the camera will pan up and down about two blocks, used to simulate the effect of being on a ship. It cannot be used alongside the Auto-Scroller.">
   </sprite> <!-- #399: Effect - Airship Rocking -->
   
-  <sprite id="400" name="Long / Massive Skewers - Left" notes="A long spiked pillar that covers a distance of about 80 Blocks to the left. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
-    <dualbox bit="28" title1="Massive Skewer" title2="Long Skewer" comment="This determines which type of Skewer will be used." comment2="A massive Skewer is an extremely wide and intimidating spiked pillar spanning just over 10 blocks in width. It appears in front of all terrain and all other sprites. A long Skewer is the size of a standard spiked pillar and has the same behavior as normal Skewers."/>
-    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position."/>
+  <sprite id="400" name="Long Skewer - Left" notes="A long spiked pillar that covers a distance of about 80 Blocks to the left. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
+    <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer." advancedcomment="Bug: The last loaded Long Skewer in the Area makes every other Long Skewer the same color."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
-    <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
-  </sprite> <!-- #400: Long / Massive Skewers - Left -->
+    <checkbox bit="30" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Long Skewers at all."/>
+  </sprite> <!-- #400: Long Skewer - Left -->
 
-  <sprite id="401" name="Long / Massive Skewers - Down" notes="A long spiked pillar that covers a distance of exactly 108 Blocks downwards. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
-    <dualbox bit="28" title1="Massive Skewer" title2="Long Skewer" comment="This determines which type of Skewer will be used." comment2="A massive Skewer is an extremely wide and intimidating spiked pillar spanning just over 10 blocks in width. It appears in front of all terrain and all other sprites. A long Skewer is the size of a standard spiked pillar and has the same behavior as normal Skewers."/>
+  <sprite id="401" name="Massive Skewer - Down" notes="A massive spiked pillar that covers a distance of exactly 108 Blocks downwards. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed. The line displays the start-up distance of the Skewer, and the rectangle illustrates the Skewer's full path.">
     <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
-    <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
-  </sprite> <!-- #401: Long / Massive Skewers - Down -->
+    <checkbox bit="30" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Massive Skewers at all."/>
+	<checkbox bit="28" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="Used in Retail 07-24 as 1, no clear effect."/>
+  </sprite> <!-- #401: Massive Skewer - Down -->
 
   <sprite id="402" name="Line Controlled ? Block" asmhacks="True" notes="A variant of the ? Block that will ride along Line objects.">
     <dependency notes="This sprite must be paired with a [236] Use Lines movement controller in order to function.">
@@ -6185,14 +6147,14 @@
     </list>
   </sprite> <!-- #403: Line Controlled Brick Block -->
 
-  <sprite id="404" name="Long / Massive Skewers - Up" notes="A long spiked pillar that covers a distance of exactly 108 Blocks upwards. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
-    <dualbox bit="28" title1="Massive Skewer" title2="Long Skewer" comment="This determines which type of Skewer will be used." comment2="A massive Skewer is an extremely wide and intimidating spiked pillar spanning just over 10 blocks in width. It appears in front of all terrain and all other sprites. A long Skewer is the size of a standard spiked pillar and has the same behavior as normal Skewers."/>
+  <sprite id="404" name="Massive Skewer - Up" notes="A massive spiked pillar that covers a distance of exactly 108 Blocks upwards. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed. The line displays the start-up distance of the Skewer, and the rectangle illustrates the Skewer's full path.">
     <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
-    <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
-  </sprite> <!-- #404: Long / Massive Skewers - Up -->
+    <checkbox bit="30" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Massive Skewers at all."/>
+	<checkbox bit="28" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="Used in Retail 07-24 as 1, no clear effect."/>
+  </sprite> <!-- #404: Massive Skewer - Up -->
 
   <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the Second Bowser Jr. boss fight. The white square indicates the placement for the Airship Boss Cutscene controller.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 06-38 A1.">
@@ -7008,8 +6970,8 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." idtype="Triggering Event"/>
   </sprite> <!-- #479: Bowser Switch (Large) -->
 
-  <sprite id="480" name="Morton's Skewer" notes="A spiked pillar for the Morton Koopa Tower Boss fight with a large amount of control over the timing values. It is 4 blocks wide, and 2 blocks tall when retracted. It extends downwards 9 additional blocks for a total of 10 below its placement.">
-    <dependency notes="This spiked pillar will only move once Morton does his start-up animation when paired with his Tower Boss controlelr.">
+  <sprite id="480" name="Morton's Skewer" notes="A spiked pillar for the Morton Koopa Tower Boss fight with a large amount of control over the timing values. It first extends 1 block down, and then goes the rest of the way down after a slight delay.">
+    <dependency notes="This spiked pillar will only move once Morton does his start-up animation when paired with his Tower Boss Controller.">
 	  <suggested sprite="344"/>
       <suggested sprite="363"/>
     </dependency>

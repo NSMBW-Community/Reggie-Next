@@ -653,6 +653,7 @@ class AuxiliaryImage(AuxiliarySpriteItem):
         self.height = height
         self.image = None
         self.hover = True
+        self.alpha = 1
 
     def setSize(self, width, height, xoff=0, yoff=0):
         self.prepareGeometryChange()
@@ -667,7 +668,9 @@ class AuxiliaryImage(AuxiliarySpriteItem):
             painter.setClipRect(option.exposedRect)
 
         if self.image is not None:
+            painter.setOpacity(self.alpha)
             painter.drawPixmap(0, 0, self.image)
+            painter.setOpacity(1)
 
 
 class AuxiliaryImage_FollowsRect(AuxiliaryImage):
