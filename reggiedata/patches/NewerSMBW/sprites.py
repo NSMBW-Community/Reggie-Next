@@ -908,6 +908,67 @@ class SpriteImage_NewerBobomb(SLib.SpriteImage_StaticMultiple):  # 101
         super().dataChanged()
 
 
+class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.spritebox.shown = False
+        self.parent.setZValue(24999)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 100, 252))
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('PokeyTop', 'pokey_top.png')
+        SLib.loadIfNotInImageCache('PokeyMiddle', 'pokey_middle.png')
+        SLib.loadIfNotInImageCache('PokeyBottom', 'pokey_bottom.png')
+        
+        if 'PokeySnowman7' in ImageCache: return
+        for style in ("Pumpkin", "Jungle", "Lava"):
+            for i in range(8):
+                ImageCache['Pokey%sTop' % style] = SLib.GetImg('pokey_%s_top.png' % style)
+                ImageCache['Pokey%sMiddle' % style] = SLib.GetImg('pokey_%s_middle.png' % style)
+                ImageCache['Pokey%sBottom' % style] = SLib.GetImg('pokey_%s_bottom.png' % style)
+                ImageCache['PokeySnowman%d' % i] = SLib.GetImg('pokey_snowman%d.png' % i)
+
+    def dataChanged(self):
+        super().dataChanged()
+        
+        height = self.parent.spritedata[5] % 8
+        style = self.parent.spritedata[2] % 5
+        color = ("", "Pumpkin", "", "Jungle", "Lava")[style]
+        
+        pix = QtGui.QPixmap(100, 252)
+        pix.fill(Qt.transparent)
+        paint = QtGui.QPainter(pix)
+        
+        if style == 2:
+            snowman = ImageCache['PokeySnowman%d' % height]
+            self.aux[0].image = snowman
+            self.offset = (
+                (-4, -31),  # (-6, -46)
+                (-7, -46),  # (-10, -69)
+                (-11, -62), # (-16, -93)
+                (-13, -78), # (-20, -117)
+                (-16, -94), # (-24, -141)
+                (-19, -111),# (-29, -166)
+                (-23, -126),# (-35, -189)
+                (-25, -142) # (-38, -213)
+            )[height]
+            self.size = (snowman.width() / 1.5, snowman.height() / 1.5)
+        
+        else:
+            self.width = 24
+            self.height = (height * 16) + 16 + 25
+            self.offset = (-4, -self.height + 16)
+
+            paint.drawPixmap(0, 0, ImageCache['Pokey%sTop' % color])
+            paint.drawTiledPixmap(0, 37, 36, self.height * 1.5 - 61, ImageCache['Pokey%sMiddle' % color])
+            paint.drawPixmap(0, self.height * 1.5 - 24, ImageCache['Pokey%sBottom' % color])
+            self.aux[0].image = pix
+            
+        paint = None
+
+
 class SpriteImage_NewerFloatingBarrel(SLib.SpriteImage_StaticMultiple):  # 145
     def __init__(self, parent):
         super().__init__(
@@ -2013,6 +2074,7 @@ ImageClasses = {
     63: SpriteImage_NewerSpikeBall,
     98: SpriteImage_GiantSpikeBall,
     101: SpriteImage_NewerBobomb,
+    105: SpriteImage_NewerPokey,
     107: SLib.SpriteImage,
     145: SpriteImage_NewerFloatingBarrel,
     152: SpriteImage_MessageBlock,

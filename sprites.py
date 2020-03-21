@@ -979,7 +979,7 @@ class SpriteImage_LongSpikedStake(SLib.SpriteImage):  # 398, 400
             paint.drawPixmap(1980, 0, end)
         
         self.aux[1].image = pix
-        self.aux[1].alpha = 0.8
+        self.aux[1].alpha = 0.9
 
 
 class SpriteImage_MassiveSpikedStake(SLib.SpriteImage):  # 401, 404
@@ -8097,7 +8097,7 @@ class SpriteImage_EnormousBlock(SLib.SpriteImage):  # 462
         size = (self.parent.spritedata[5] >> 1) & 7
         direction = self.parent.spritedata[2] & 1
         distance = (self.parent.spritedata[4] >> 4) + 1
-        side = self.parent.spritedata[6] & 1
+        side = self.parent.spritedata[5] & 1
 
         # update the platform
         realsize = ((18, 28), (18, 16), (18, 41), (18, 47), (24, 31))[size]
