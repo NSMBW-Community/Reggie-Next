@@ -5,7 +5,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import globals_
 from levelitems import ListWidgetItem_SortsByOther, PathItem, CommentItem, SpriteItem, EntranceItem, LocationItem, ObjectItem, PathEditorLineItem
 from dirty import SetDirty
-from quickpaint import QuickPaintOperations
 
 class LevelScene(QtWidgets.QGraphicsScene):
     """
@@ -147,8 +146,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         short_END.activated.connect(lambda: self.XScrollBar.setValue(self.XScrollBar.value() + self.XScrollBar.pageStep()))
 
         self.currentobj = None
-        self.mouseGridPosition = None  # QUICKPAINT purposes
-        self.prev_mouseGridPosition = None  # QUICKPAINT purposes
 
     def mousePressEvent(self, event):
         """
@@ -170,33 +167,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             self.xButtonScrollTimer.start(100)
 
         elif event.button() == QtCore.Qt.RightButton:
-            if globals_.mainWindow.quickPaint and globals_.mainWindow.quickPaint.QuickPaintMode:
-                mw = globals_.mainWindow
-                ln = globals_.CurrentLayer
-                layer = globals_.Area.layers[globals_.CurrentLayer]
-
-                if len(layer) == 0:
-                    z = (2 - ln) * 8192
-
-                else:
-                    z = layer[-1].zValue() + 1
-
-                if mw.quickPaint.QuickPaintMode == 'PAINT':
-                    for yoffs in (-0.5, +0.5):
-                        for xoffs in (-0.5, +0.5):
-                            QuickPaintOperations.prePaintObject(ln, layer,
-                                int(self.mouseGridPosition[0] + xoffs),
-                                int(self.mouseGridPosition[1] + yoffs), 
-                            z)
-
-                elif mw.quickPaint.QuickPaintMode == 'ERASE':
-                    for yoffs in (-0.5, +0.5):
-                        for xoffs in (-0.5, +0.5):
-                            QuickPaintOperations.preEraseObject(ln, layer,
-                                int(self.mouseGridPosition[0] + xoffs),
-                                int(self.mouseGridPosition[1] + yoffs))
-
-            elif globals_.CurrentPaintType < 4 and globals_.CurrentObject != -1:
+            if globals_.CurrentPaintType < 4 and globals_.CurrentObject != -1:
                 # paint an object
                 clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
                 if clicked.x() < 0: clicked.setX(0)
@@ -467,34 +438,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         if pos.y() < 0: pos.setY(0)
         self.PositionHover.emit(int(pos.x()), int(pos.y()))
 
-        if globals_.mainWindow.quickPaint and globals_.mainWindow.quickPaint.QuickPaintMode:
-            self.mouseGridPosition = ((pos.x()/24), (pos.y()/24))
-            inv = True
-
-        if event.buttons() == QtCore.Qt.RightButton and globals_.mainWindow.quickPaint and globals_.mainWindow.quickPaint.QuickPaintMode:
-                mw = globals_.mainWindow
-                ln = globals_.CurrentLayer
-                layer = globals_.Area.layers[globals_.CurrentLayer]
-
-                if len(layer) == 0:
-                    z = (2 - ln) * 8192
-
-                else:
-                    z = layer[-1].zValue() + 1
-
-                if mw.quickPaint.QuickPaintMode == 'PAINT':
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]-0.5), z)
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]-0.5), z)
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]+0.5), z)
-                    QuickPaintOperations.prePaintObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]+0.5), z)
-
-                elif mw.quickPaint.QuickPaintMode == 'ERASE':
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]-0.5))
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]-0.5))
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]+0.5))
-                    QuickPaintOperations.preEraseObject(ln,layer,int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]+0.5))
-
-        elif event.buttons() == QtCore.Qt.RightButton and self.currentobj is not None and not self.dragstamp:
+        if event.buttons() == QtCore.Qt.RightButton and self.currentobj is not None and not self.dragstamp:
 
             # possibly a small optimization
             type_obj = ObjectItem
@@ -706,16 +650,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Overrides mouse release events if needed
         """
-        if event.button() == QtCore.Qt.RightButton and globals_.mainWindow.quickPaint and globals_.mainWindow.quickPaint.QuickPaintMode:
-            if globals_.mainWindow.quickPaint.QuickPaintMode == 'PAINT':
-                QuickPaintOperations.PaintFromPrePaintedObjects()
-
-            elif globals_.mainWindow.quickPaint.QuickPaintMode == 'ERASE':
-                QuickPaintOperations.EraseFromPreErasedObjects()
-
-            QuickPaintOperations.optimizeObjects()
-
-        elif event.button() in (QtCore.Qt.BackButton, QtCore.Qt.ForwardButton):
+        if event.button() in (QtCore.Qt.BackButton, QtCore.Qt.ForwardButton):
             self.xButtonScrollTimer.stop()
 
         elif event.button() == QtCore.Qt.RightButton:
@@ -735,37 +670,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Draws a foreground grid and other stuff
         """
-        # Draw Paint Tool Helpers
-        if self.mouseGridPosition is not None and globals_.mainWindow.quickPaint is not None and globals_.mainWindow.quickPaint.QuickPaintMode is not None:
-            gridpen = QtGui.QPen()
-            gridpen.setColor(globals_.theme.color('grid'))
-            gridpen.setWidth(4)
-            painter.setPen(gridpen)
-            fillbrush = QtGui.QBrush(globals_.theme.color('object_fill_s'))
-            globals_.mainWindow.quickPaint.scene.drawEmptyBoxCoords('FULL', int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]-0.5), 1, 1, painter, fillbrush)
-            globals_.mainWindow.quickPaint.scene.drawEmptyBoxCoords('FULL', int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]-0.5), 1, 1, painter, fillbrush)
-            globals_.mainWindow.quickPaint.scene.drawEmptyBoxCoords('FULL', int(self.mouseGridPosition[0]-0.5), int(self.mouseGridPosition[1]+0.5), 1, 1, painter, fillbrush)
-            globals_.mainWindow.quickPaint.scene.drawEmptyBoxCoords('FULL', int(self.mouseGridPosition[0]+0.5), int(self.mouseGridPosition[1]+0.5), 1, 1, painter, fillbrush)
-
-        # Draws Pre-painted objects
-        if not QuickPaintOperations.color_shift_mouseGridPosition:
-            QuickPaintOperations.color_shift_mouseGridPosition = self.mouseGridPosition
-
-        if hasattr(QuickPaintOperations, 'prePaintedObjects'):
-            QuickPaintOperations.color_shift += math.sqrt((self.mouseGridPosition[0] - QuickPaintOperations.color_shift_mouseGridPosition[0])**2+(self.mouseGridPosition[1] - QuickPaintOperations.color_shift_mouseGridPosition[1])**2)
-            voidpen = QtGui.QPen()
-            voidpen.setWidth(0)
-            painter.setPen(voidpen)
-
-            for ppobj in QuickPaintOperations.prePaintedObjects:
-                c = QtGui.QColor(QuickPaintOperations.prePaintedObjects[ppobj]['r'],QuickPaintOperations.prePaintedObjects[ppobj]['g'],QuickPaintOperations.prePaintedObjects[ppobj]['b'],127)
-                hsl = c.getHslF()
-                c.setHslF((hsl[0]+QuickPaintOperations.color_shift/16)%1, hsl[1]/2+0.5,hsl[2],0.5)
-                fillbrush = QtGui.QBrush(c)
-                globals_.mainWindow.quickPaint.scene.drawEmptyBoxCoords('FULL', QuickPaintOperations.prePaintedObjects[ppobj]['x'], QuickPaintOperations.prePaintedObjects[ppobj]['y'], 1,1, painter, fillbrush)
-
-        QuickPaintOperations.color_shift_mouseGridPosition = self.mouseGridPosition
-
         # Draws a foreground grid
         if globals_.GridType is None: return
 

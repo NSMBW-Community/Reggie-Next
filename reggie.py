@@ -125,7 +125,6 @@ from zones import ZonesDialog
 from tiles import UnloadTileset, LoadTileset, LoadOverrides
 from area import AreaOptionsDialog
 from level import Level_NSMBW
-from quickpaint import QuickPaintOperations, QuickPaintConfigWidget
 from sidelists import Stamp, StampChooserWidget, SpriteList, SpritePickerWidget, ObjectPickerWidget, LevelOverviewWidget
 from spriteeditor import SpriteEditorWidget
 from editors import LocationEditorWidget, PathNodeEditorWidget, EntranceEditorWidget
@@ -934,20 +933,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if addedButtons:
                 self.toolbar.addSeparator()
 
-    def __QPPaintSet(self):
-        self.quickPaint.PaintModeCheck.setChecked(not self.quickPaint.PaintModeCheck.isChecked())
-        self.quickPaint.SetPaintMode()
-
-        if hasattr(QuickPaintOperations, 'prePaintedObjects'):
-            QuickPaintOperations.prePaintedObjects.clear()
-
-    def __QPEraseSet(self):
-        self.quickPaint.EraseModeCheck.setChecked(not self.quickPaint.EraseModeCheck.isChecked())
-        self.quickPaint.SetEraseMode()
-
-        if hasattr(QuickPaintOperations, 'prePaintedObjects'):
-            QuickPaintOperations.prePaintedObjects.clear()
-
     def SetupDocksAndPanels(self):
         """
         Sets up the dock widgets and panels
@@ -970,32 +955,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         act.setShortcut(QtGui.QKeySequence('Ctrl+M'))
         act.setIcon(GetIcon('overview'))
         act.setStatusTip(globals_.trans.string('MenuItems', 95))
-        self.vmenu.addAction(act)
-
-        # quick paint configuration
-        dock = QtWidgets.QDockWidget(globals_.trans.string('MenuItems', 136), self)
-        dock.setFeatures(
-            QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
-        # dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        dock.setObjectName('quickpaint')  # needed for the state to save/restore correctly #
-
-        self.quickPaint = QuickPaintConfigWidget()
-        #self.quickPaint.moveIt.connect(self.HandleOverviewClick)
-        self.quickPaintDock = dock
-        dock.setWidget(self.quickPaint)
-
-        self.addDockWidget(Qt.RightDockWidgetArea, dock)
-        dock.setVisible(True)
-
-        self.QPPaintShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Alt+P"), self)
-        self.QPPaintShortcut.activated.connect(self.__QPPaintSet)
-        self.QPEraseShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Alt+Shift+P"), self)
-        self.QPEraseShortcut.activated.connect(self.__QPEraseSet)
-
-        act = dock.toggleViewAction()
-        act.setShortcut(QtGui.QKeySequence('Alt+Q'))
-        act.setIcon(GetIcon('quickpaint'))
-        act.setStatusTip(globals_.trans.string('MenuItems', 137))
         self.vmenu.addAction(act)
 
         # create the sprite editor panel
@@ -2201,7 +2160,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Creates and returns a new object and makes sure it's added to
         the right lists.
-        TODO: Make QuickPaint use this function more...
         """
         layer_list = globals_.Area.layers[layer]
         if len(layer_list) == 0:
@@ -3114,13 +3072,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.newLevel()
         else:
             self.LoadLevel_NSMBW(levelData, areaNum)
-
-        # Set up and reset the Quick Paint Tool
-        if hasattr(self, 'quickPaint'):
-            self.quickPaint.reset()  # Reset the QP widget.
-
-        QuickPaintOperations.object_optimize_database = []
-        QuickPaintOperations.object_search_database = {}
 
         # Set the level overview settings
         globals_.mainWindow.levelOverview.maxX = 100

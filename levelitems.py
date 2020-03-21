@@ -7,7 +7,6 @@ import spritelib as SLib
 import globals_
 from tiles import RenderObject
 from ui import GetIcon, clipStr
-from quickpaint import QuickPaintOperations
 from dirty import SetDirty
 from undo import MoveItemUndoAction, SimultaneousUndoAction
 
@@ -504,50 +503,6 @@ class ObjectItem(LevelEditorItem):
         self.updateObjCache()
         self.UpdateTooltip()
 
-    def UpdateSearchDatabase(self):
-        y = 0
-
-        self.RemoveFromSearchDatabase()
-
-        QuickPaintOperations.object_search_database[self] = []
-        if self.width == 1 and self.height == 1:
-            if not QuickPaintOperations.object_search_database.get((self.objx, self.objy, self.layer)):
-                QuickPaintOperations.object_search_database[self.objx, self.objy, self.layer] = []
-
-            if self not in QuickPaintOperations.object_search_database[(self.objx, self.objy, self.layer)]:
-                QuickPaintOperations.object_search_database[(self.objx, self.objy, self.layer)].append(self)
-                QuickPaintOperations.object_search_database[self].append((self.objx, self.objy, self.layer))
-
-        elif self.objdata:
-            for row in self.objdata:
-                x = 0
-                for tile in row:
-                    if tile != -1:
-                        if not QuickPaintOperations.object_search_database.get(
-                                (self.objx + x, self.objy + y, self.layer)):
-                            QuickPaintOperations.object_search_database[
-                                self.objx + x, self.objy + y, self.layer] = []
-
-                        if self not in QuickPaintOperations.object_search_database[
-                            (self.objx + x, self.objy + y, self.layer)]:
-                            QuickPaintOperations.object_search_database[
-                                (self.objx + x, self.objy + y, self.layer)].append(self)
-                            QuickPaintOperations.object_search_database[self].append(
-                                (self.objx + x, self.objy + y, self.layer))
-
-                    x += 1
-
-                y += 1
-
-    def RemoveFromSearchDatabase(self):
-        if self in QuickPaintOperations.object_search_database:
-            for t in QuickPaintOperations.object_search_database[self]:
-                if (QuickPaintOperations.object_search_database.get(t)
-                    and self in QuickPaintOperations.object_search_database[t]):
-                    QuickPaintOperations.object_search_database[t].remove(self)
-
-            del QuickPaintOperations.object_search_database[self]
-
     def SetType(self, tileset, type):
         """
         Sets the type of the object
@@ -573,7 +528,6 @@ class ObjectItem(LevelEditorItem):
         """
         self.objdata = RenderObject(self.tileset, self.type, self.width, self.height)
         self.randomise()
-        self.UpdateSearchDatabase()
 
     def isBottomRowSpecial(self):
         """
@@ -768,8 +722,6 @@ class ObjectItem(LevelEditorItem):
                 self.objdata[y] += new[y]
             self.randomise(self.width, 0, width - self.width, height)
 
-        self.UpdateSearchDatabase()
-
     def UpdateRects(self):
         """
         Recreates the bounding and selection rects
@@ -836,7 +788,6 @@ class ObjectItem(LevelEditorItem):
                 oldy = self.objy
                 self.objx = x
                 self.objy = y
-                self.UpdateSearchDatabase()
                 if self.positionChanged is not None:
                     self.positionChanged(self, oldx, oldy, x, y)
 
@@ -1257,7 +1208,6 @@ class ObjectItem(LevelEditorItem):
         """
         Delete the object from the level
         """
-        self.RemoveFromSearchDatabase()
         globals_.Area.RemoveFromLayer(self)
         self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
 
