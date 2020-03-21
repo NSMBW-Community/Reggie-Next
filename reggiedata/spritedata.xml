@@ -607,8 +607,6 @@
 
   <!-- Redo the Tilt Distances, they got lost in translation somehow? -->
   <sprite id="49" name="(Unused) Seesaw Platform" notes="This is an incomplete platform that functions like a seesaw. Usage is not recommended, as the texture used is incomplete. Otherwise, it functions well.">
-    <value nybble="3-4" title="Triggering Event ID" />
-    <checkbox nybble="5" title="Event Activated" />
     <list nybble="11" title="Tilt Distance" comment="This option determines the maximum amount the platform can be tilted while standing on it. Values are a bit similar to those from the 'length' category. Value 5 and above will cause Mario to slide from the platform if standing on it for too long. From values 6+, the platform can be tilted more than 90&#176;. Exceptions are values 11 and 15 - they will produce stationary platforms. They can be useful if a custom platform with customizable texture and size is needed.">
       <entry value="11">None</entry>
       <entry value="15">None</entry>
@@ -645,6 +643,8 @@
       <entry value="14">28</entry>
       <entry value="15">30</entry>
     </list>
+	<checkbox nybble="5" title="Event Activated" comment="With this checked, the Seesaw Platform will spawn when its listed Event ID is activated, and despawn when it's deactivated."/>
+	<value nybble="3-4" title="Triggering Event ID" comment="Determines the Event ID that spawns the Seesaw Platform when activated, and despawns it when deactivated." requiredbit="17-20" requiredval="1"/>
   </sprite> <!-- #49: (Unused) Seesaw Platform -->
 
   <sprite id="50" name="Fall-When-Touched Platform" notes="This platform will begin to fall when a player first touches it.">
@@ -1307,7 +1307,9 @@
   <!-- SpD1.5 lists Screen Shake as 9-10 instead of just 9...? -->
   <!-- SpD1.5 suggests Loop Last 2 Nodes will actually just reverse the path. What if the Path isn't set to 'Loops'? -->
   <sprite id="91" name="Auto-Scrolling Controller" notes="The Auto-Scroller will lock the game's camera along a specific Path. This path cannot cause the camera to unnaturally leave the Zone's boundaries. The camera's boundary is defined by the left side of the screen, so it is recommended to leave at least one screen's width after the path's final Node. &lt;br&gt; &lt;br&gt;Finally, the Auto-Scroller moves at a set Speed and Acceleration that cannot be altered by Path settings.">
-    <dependency notes="A path is required for the Auto-Scrolling Controller to function."/>
+    <dependency notes="A path is required for the Auto-Scrolling Controller to function.">
+	  <suggested sprite="321"/> <!-- Beta Arrow Block -->
+    </dependency>
     <list bit="25-28" title="Activation Mode" comment="This determines the conditions to activate the Auto-Scroller." comment2="Event Activated: Auto-Scroller only starts when the Triggering Event is activated. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Behaves Incorrectly:&lt;/font&gt; Do not use this option. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;orange&quot;&gt;Activated by Ground-Pounding [321]:&lt;/font&gt; When the Beta Arrow Block is ground-pounded, it sends code to the Auto-Scroller to start. Intended functionality was likely to control the direction as well. &lt;br&gt; &lt;br&gt;Already Activated: Activates without the need to set a Triggering Event.">
       <entry value="0">Event Activated</entry>
       <entry value="1">Behaves Incorrectly</entry>
@@ -2850,7 +2852,7 @@
   <sprite id="184" name="Incomplete Sprite - 'Mask'" notes="Does nothing. &quot;Mask&quot; refers to the secret Layer 0 areas. Maybe in the early stages of development, this sprite needed to be present in the level in order for Layer 0 to create the see-through effect of Spotlight mode.">
   </sprite> <!-- #184: Incomplete Sprite - 'Mask' -->
 
-  <sprite id="185" name="Ambush - Toad Balloon" noyoshi="True" notes="Collecting 8 of these spawns a Toad House Chest. Requires an Ambush Level Controller for the balloons to spawn and function.">
+  <sprite id="185" name="Ambush - Toad Balloon" noyoshi="True" notes="Collecting 8 of these spawns a Toad House Chest. Any additional Toad Balloons are treated as the 8th Balloon. Requires an Ambush Level Controller for the balloons to spawn and function.">
     <dependency notes="The [454] Ambush Controller will allow the Toad Balloons to spawn. When 8 Toad Balloons have been collected, (most) enemies will be killed, and any [203] Item Chests set to spawn from Ambush Controllers will spawn.">
       <required sprite="454"/>
       <required sprite="203"/>
@@ -2987,7 +2989,7 @@
   <sprite id="197" name="Clampy" notes="A clam with tantilizing items inside that will hurt the player if it closes while they are in inside of it.">
     <checkbox bit="44" title="Falls" comment="When enabled, the Clampy will be affected by gravity and environmental effects."/>
     <list nybble="12" title="Contains" comment="This determines what item is inside the Clampy." advancedcomment="Values 5 and higher crash the game upon level load.">
-      <entry value="0">Empty</entry>
+      <entry value="0">Nothing</entry>
       <entry value="1">Star Coin #1</entry>
       <entry value="2">2 Coins</entry>
       <entry value="3">1-Up</entry>
@@ -3017,57 +3019,50 @@
     </dependency>
   </sprite> <!-- #202: Toad House Minigame - Cannon -->
 
-<!-- Test 12 combined with 8 in various combinations. May be Primary Item and Secondary Items, with the Secondary Items list dependent on the Primary Item. -->
-  <sprite id="203" name="Chest" noyoshi="True" notes="A chest that will award some type of inventory item to the player. Note that opening a chest will complete the level with the standard exit." advancednotes="Note that opening a chest will complete the level with the standard exit.&lt;br&gt;&lt;br&gt;Exploit for lazy players: If Mario opens the chest but keeps on running until it goes offscreen (he does indeed have enough time to do this), the trunk will be closed again when he returns. When he returns to the chest, he can open it again! The insidious thing is that for each time Mario opens the chest, the item will be added to the inventory, again and again. This way you can get infinitely many items with just one chest...&lt;br&gt;&lt;br&gt;">
-    <dependency notes="Requires ONE of these two sprites in order to not cause the game to crash. Which one depends on how the Chest is being used. If you're using it as part of an Ambush level, [454] is required. If you're using it without the Ambush arrangement, [432] is required to be placed somewhere in the level, even if it's outside of the active Zones. Additionally, if you allow the player to leave the vicinity of the Chest before it exits the player from the level, they will be able to open it again for another item, so do not allow the player to do this.">
+  <!-- Test 12 combined with 8 in various combinations. May be Primary Item and Secondary Items, with the Secondary Items list dependent on the Primary Item. -->
+  <sprite id="203" name="Chest" noyoshi="True" notes="A chest affected by gravity that will award some type of inventory item to the player. Note that opening a chest will complete the level with the standard exit. Keep in mind that if you allow the player to leave the vicinity of the chest before it exits the player from the level, they will be able to open it again for another item, so do not allow the player to do this.">
+    <dependency notes="Requires ONE of these two sprites in order to not cause the game to crash. Which one depends on how the chest is being used. If you're using it as part of an Ambush level, [454] is required. If you're using it without the Ambush arrangement, [432] is required to be placed somewhere in the level, even if it's outside of the active Zones.">
       <suggested sprite="432"/>
       <suggested sprite="454"/>
     </dependency>
-    <value nybble="3-4" title="Event ID" comment="The chest appears when this event is activated. It will never disappear, even when the event times out." />
-    <value nybble="5" title="Unknown Value 5" comment="0 or 1. No visible change. Used in ambushes in World 6." />
-    <list nybble="8" title="Mushroom Reward Amount" comment="Value + 3. This will only affect the sprite if nybble 10 is set to 1 or 2. Specifying more than 5 mushrooms can cause glitchy behavior, but still works.">
-	    <entry value="0">3 Mushrooms</entry>
+    <checkbox nybble="5" title="Unknown Flag 5 (1)" comment="No visible change. Used in the Ambushes of World 6." />
+    <checkbox nybble="9" title="Unknown Flag 9 (1)" comment="No visible change. Checked in all ambushes except those in Worlds 1 and 2." />
+    <list nybble="10" title="Chest Type" comment="Determines the behaviour and contents of the chest.">
+      <entry value="0">Default</entry>
+      <entry value="1">Triggered by Ambush Controller</entry>
+      <entry value="2">Contains Toad (Unused)</entry>
+    </list>
+	<list nybble="8" title="Mushroom Reward Amount" comment="Determines the number of Mushrooms the chest spawns. Specifying more than 5 Mushrooms can cause glitchy visual behavior, but it still works." requiredbit="37-40" requiredval="1-2"> <!-- Appears Chest Type Value 1-2 -->
+	  <entry value="0">3 Mushrooms</entry>
       <entry value="1">4 Mushrooms</entry>
       <entry value="2">5 Mushrooms</entry>
       <entry value="3">6 Mushrooms</entry>
-	    <entry value="4">7 Mushrooms</entry>
-	    <entry value="5">8 Mushrooms</entry>
-	    <entry value="6">9 Mushrooms</entry>
-	    <entry value="7">10 Mushrooms</entry>
-	    <entry value="8">11 Mushrooms</entry>
-	    <entry value="9">12 Mushrooms</entry>
-	    <entry value="10">13 Mushrooms</entry>
-	    <entry value="11">14 Mushrooms</entry>
-	    <entry value="12">15 Mushrooms</entry>
-	    <entry value="13">16 Mushrooms</entry>
-	    <entry value="14">17 Mushrooms</entry>
-	    <entry value="15">18 Mushrooms</entry>
-	  </list>
-    <checkbox nybble="9" title="Unknown Value 9" comment="0 or 1. No visible changed. Checked in all ambushes except those in Worlds 1 and 2." />
-    <list nybble="10" title="Uses Ambush Controller" comment="&lt;span style=&quot;color:red;&quot;&gt;REQUIRES SPRITE 454 OR 432 TO BE PRESENT. OTHERWISE THE LEVEL WILL CRASH.&lt;/span&gt; When set to 1, the chest will appear when all the toad balloons are collected in a level with an ambush controller.">
-      <entry value="0">Default</entry>
-      <entry value="1">Triggered by Ambush Controller</entry>
-      <entry value="2">Contains Toad (unused)</entry>
-    </list>
-    <list nybble="12" title="Contains" comment="&lt;span style=&quot;color:red;&quot;&gt;Some values can cause a CRASH, if Toad (sprite 432) does not appear in the level.&lt;/span&gt;&lt;br&gt;&lt;b&gt;(*):&lt;/b&gt; Works with the 'Mushroom Reward Amount' setting above.">
-      <entry value="0">Nothing</entry>
-      <entry value="1">Nothing</entry>
-	    <entry value="9">Nothing</entry>
-      <entry value="10">Nothing</entry>
-      <entry value="11">Nothing</entry>
-      <entry value="12">Nothing</entry>
-      <entry value="13">Nothing</entry>
-      <entry value="14">Nothing</entry>
-      <entry value="2">Mushroom*</entry>
+	  <entry value="4">7 Mushrooms</entry>
+	  <entry value="5">8 Mushrooms</entry>
+	  <entry value="6">9 Mushrooms</entry>
+	  <entry value="7">10 Mushrooms</entry>
+	  <entry value="8">11 Mushrooms</entry>
+	  <entry value="9">12 Mushrooms</entry>
+	  <entry value="10">13 Mushrooms</entry>
+	  <entry value="11">14 Mushrooms</entry>
+	  <entry value="12">15 Mushrooms</entry>
+	  <entry value="13">16 Mushrooms</entry>
+	  <entry value="14">17 Mushrooms</entry>
+	  <entry value="15">18 Mushrooms</entry>
+	</list>
+    <list nybble="12" title="Contains" comment="Determines the item in the chest. This only works with the Default Chest Type, as the other settings would just spawn Mushrooms." requiredbit="37-40" requiredval="0"> <!-- Appears only for Default Chests -->
+      <entry value="0">Nothing</entry> <!-- 1, 9-14 is Nothing --> 
+      <entry value="2">Mushroom</entry>
       <entry value="3">Fire Flower</entry>
-	    <entry value="8">Ice Flower</entry>
+      <entry value="8">Ice Flower</entry>
       <entry value="4">Propeller Shroom</entry>
       <entry value="5">Penguin Suit</entry>
       <entry value="6">Mini Mushroom</entry>
       <entry value="7">Star</entry>
       <entry value="15">Random</entry>
     </list>
-  </sprite>
+	<value bit="9-16" title="Triggering Event ID" comment="The chest will only appear when the Triggering Event is 0 or is activated. It will not disappear if the Event is deactivated." idtype="Triggering Event"/>
+   </sprite>
 
    <sprite id="204" name="Rolling Object Spawner" asmhacks="True" notes="A spawner that will create loose Spiked Balls or Rolling Barrels.">
     <dualbox bit="20" title1="Spawns Spiked Balls" title2="Spawns Rolling Barrels" comment="This determines which object the spawner will create."/>
@@ -4856,7 +4851,7 @@
       <entry value="2">Left</entry>
       <entry value="3">Right</entry>
     </list>
-    <checkbox bit="44" title="Ground-Pound Rotate" comment="When enabled, the arrow on the block will rotate when the block is ground-pounded."/>
+    <checkbox bit="44" title="Ground-Pound Rotate" comment="When enabled, the arrow on the block will rotate 90 degrees when the block is ground-pounded."/>
     <dualbox bit="40" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the arrow will rotate." requiredbit="44"/> <!-- Appears if Ground-Pound Rotate is enabled -->
   </sprite> <!-- #321: Beta Arrow Block -->
 
