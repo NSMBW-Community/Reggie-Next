@@ -1011,9 +1011,9 @@
   </sprite> <!-- #168: Thundercloud -->
 
   <!-- Double check Moving Direction, value 0 with ASM. - Grop says Value 0 should be Right and the list should repeat. Why is 0 'Does Not Move'? -->
-  <sprite id="169" name="Magic Platform" asmhacks="True" notes="Magic Platforms are created by assigning tileset data to an invisible block as a new texture, and moving that texture around. While it functions best as a moving platform, the Magic Platform does not have to move in order to perform its function. It can also simply create terrain chunks with a different type of collision than normal.">
+  <sprite id="169" name="Magic Platform" asmhacks="True" notes="Magic Platforms are created by assigning tileset data on Layer 1 to an invisible block as a new texture, and moving that texture around. While it functions best as a moving platform, the Magic Platform does not have to move in order to perform its function. It can also simply create terrain chunks with a different type of collision than normal.">
     <dependency notes="It should be noted that the Magic Platform can only create rectangular shapes. It cannot have slopes, and it cannot have 'unused space' within the location. All tiles will turn into solid blocks."/>
-    <value nybble="11-12" title="Location ID" comment="This determines what the Magic Platform looks like. It will clone the tiles as it sees them within the given Location. This Location does not have to be within the current Zone boundaries."/>
+    <value nybble="11-12" title="Location ID" comment="This determines what the Magic Platform looks like. It will clone the Layer 1 tiles as it sees them within the given Location. This Location does not have to be within the current Zone boundaries."/>
     <list nybble="6" title="Collision" comment="This determines the type of collision.">
       <entry value="0">Solid Block</entry>
       <entry value="1">Permeable (Solid on Top)</entry>
