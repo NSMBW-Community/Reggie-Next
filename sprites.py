@@ -8428,7 +8428,7 @@ class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
             self.aux[0].setPos(-228, -408)
         elif style == 2:
             self.aux[0].setPos(-24, -192)
-
+        
         super().dataChanged()
 
 
