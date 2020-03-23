@@ -1838,8 +1838,8 @@
   <sprite id="120" name="Sledge Bro" sizehacks="True" notes="A large bulky version of the Hammer Brothers enemy that will stomp the ground, stunning players touching the ground, in addition to throwing large hammers.">
   </sprite> <!-- #120: Sledge Bro -->
   
-  <sprite id="121" name="(Unused) Sprite Crashes Game - &quot;En_Reverse&quot;" notes="&lt;font color=&quot;red&quot;&gt;Do NOT use this sprite at this time. It will crash your the game as it tries to load files not actually a part of the game.&lt;/font&gt;" advancednotes="It tries to reference the tobira.bti Texture. Adding this Texture could enable the Sprite's (yet unknown) options.">
-  </sprite> <!-- #121: (Unused) Sprite Crashes Game - "En_Reverse" -->
+  <sprite id="121" name="(Crashes) Collision Switcher" notes="This controller will switch the active collision layer from Layer 1 to Layer 2 when the Player holds up at the sprite's placement. &lt;font color=&quot;red&quot;&gt;This sprite will crash the game without the required texture file &quot;Sample/tobira.bti&quot;  &lt;/font&gt; Adding this texture allows the sprite to function.">
+  </sprite> <!-- #121: (Crashes) Collision Switcher -->
   
   <sprite id="122" name="Basic Platform - One-Way" notes="This platform moves in the specified direction when all players are standing on it.">
     <dualbox bit="35" title1="Normal Model" title2="boss_koopa_lift.arc" advanced="True" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
@@ -6470,16 +6470,17 @@
     </dependency>
   </sprite> <!-- #430: Toad House Minigame - Flip Panel Controller -->
 
-  <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the Retail Bowser battle.">
-    <dependency notes="Most of the final Bowser fight involves hardcoded elements, so directly copying 08-24 A4 is strongly recommended.">
-      <required sprite="439"/>
-      <required sprite="445"/>
-      <required sprite="449"/>
-      <required sprite="456"/>
-      <required sprite="478"/>
-      <required sprite="479"/>
-      <required sprite="482"/>
-      <suggested sprite="436"/>
+  <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the Retail Bowser battle. It will override the Zone's camera settings.">
+    <dependency notes="Most of the final Bowser fight involves hardcoded elements, so directly copying 08-24 A4 is strongly recommended. The Basic Platform listed is required for Bowser half-way in the fight to move onto the 2nd phase. The direction it heads controls the camera until it leaves the Zone. The Locations from the original level do not affect the fight, and were likely included to aid the developers visualize different parts of the fight.">
+      <required sprite="122"/> <!-- Basic Platform - One-Way -->
+      <required sprite="419"/> <!-- Bowser -->
+      <required sprite="439"/> <!-- Peach in Cage - Fake -->
+      <required sprite="445"/> <!-- Peach in Cage - Real -->
+      <suggested sprite="449"/> <!-- Bowser Fireball Spawn Area -->
+      <required sprite="456"/> <!-- Final Boss - Bridge Pieces -->
+      <required sprite="478"/> <!-- Bowser Switch (Small) -->
+      <required sprite="479"/> <!-- Bowser Switch (Large) -->
+      <suggested sprite="482"/> <!-- Final Boss - Pre-Boss Camera Effects -->
     </dependency>
   </sprite> <!-- #431: Boss Controller - Bowser -->
 
