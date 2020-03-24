@@ -1511,7 +1511,7 @@
     </list>
   </sprite> <!-- #101: Bob-Omb -->
 
-  <sprite id="102" name="Broozer" sizehacks="True" notes="A ghost house enemy that behaves similarly to Chargin' Chuck from Super Mario World. He must be stepped on twice in order to be defeated. He will also destroy certain types of blocks and terrain with his flailing attack. Please note that he can only destroy tileset bricks and not sprite bricks.">
+  <sprite id="102" name="Broozer" sizehacks="True" notes="A ghost house enemy that charges towards the Player when they're nearby. He must be stepped on thrice in order to be defeated. He will also destroy certain types of blocks and terrain with his flailing attack. Please note that he can only destroy tileset bricks and not sprite bricks.">
   </sprite> <!-- #102: Broozer -->
   
   <sprite id="103" name="Basic Platform - Spawner" notes="This will endlessly spawn Basic Platforms moving in a specific direction. The platforms will continue for as long as the player rides on one.">
@@ -5895,7 +5895,7 @@
   </sprite> <!-- #393: Propeller Block -->
 
   <sprite id="394" name="Bouncing Lemmy Ball" noyoshi="True" notes="A stand-alone version of the bouncing ball used in the Lemmy Koopa boss fights.">
-    <dualbox bit="20" title1="Starts Bouncing Left" title2="Starts Bouncing Right" comment="This determines the direction the Lemmy Ball will initially be bouncing in."/>
+    <dualbox bit="20" title1="Starts Bouncing Right" title2="Starts Bouncing Left" comment="This determines the direction the Lemmy Ball will initially be bouncing in."/>
   </sprite> <!-- #394: Bouncing Lemmy Ball -->
 
   <!-- See #115 -->
