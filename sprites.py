@@ -306,7 +306,7 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage):  # 30, 81, 82, 83, 84, 85, 86
         painter.drawPixmap(column3x, row3y, ImageCache['OldStoneBR'])
 
 
-class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 64, 138, 139, 216, 358, 374, 435
+class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 374, 435
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -2407,16 +2407,21 @@ class SpriteImage_Broozer(SLib.SpriteImage_Static):  # 102
 
 class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
     # TODO: Add arrows
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.yOffset = 8
+
     def dataChanged(self):
         super().dataChanged()
+
         # get width
-        self.width = (((self.parent.spritedata[5] & 0xF0) >> 4) + 1) << 4
+        self.width = ((self.parent.spritedata[5] & 0xF0) >> 4) << 4
 
         # length=0 becomes length=4
-        if self.width == 16: self.width = 64
+        if self.width == 0: self.width = 64
 
         # override this for the "glitchy" effect caused by length=0
-        if self.width == 32: self.width = 24
+        if self.width == 16: self.width = 24
 
         self.color = 0
 
@@ -5747,8 +5752,9 @@ class SpriteImage_LightCircle(SLib.SpriteImage):  # 305
 
         self.aux.append(SLib.AuxiliaryImage(parent, 128, 128))
         self.aux[0].image = ImageCache['LightCircle']
-        self.aux[0].setPos(-48, -48)
+        self.aux[0].setPos(-60, -60)
         self.aux[0].hover = False
+        self.aux[0].setIsBehindSprite(False)
 
     @staticmethod
     def loadImages():
@@ -6892,6 +6898,35 @@ class SpriteImage_IggyKoopaController(SLib.SpriteImage):  # 372
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('IggyKoopaController', 'boss_controller_iggy.png')
+
+
+class SpriteImage_RaftWater(SpriteImage_LiquidOrFog):  # 373
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.crest = ImageCache['RaftWaterCrest']
+        self.mid = ImageCache['RaftWater']
+
+    @staticmethod
+    def loadImages():
+        if 'RaftWaterCrest' in ImageCache: return
+        ImageCache['RaftWater'] = SLib.GetImg('liquid_water.png')
+        ImageCache['RaftWaterCrest'] = SLib.GetImg('liquid_water_crest.png')
+
+    def dataChanged(self):
+        super().dataChanged()
+
+        self.paintZone = True
+
+        self.parent.scene().update()
+
+    def realViewZone(self, painter, zoneRect, viewRect):
+
+        self.paintZone = True
+        self.top = self.parent.objy
+        self.drawCrest = True
+
+        super().realViewZone(painter, zoneRect, viewRect)
 
 
 class SpriteImage_SnowWind(SpriteImage_LiquidOrFog):  # 374
@@ -8717,6 +8752,7 @@ ImageClasses = {
     370: SpriteImage_CloudBlock,
     371: SpriteImage_RollingHillCoin,
     372: SpriteImage_IggyKoopaController,
+    373: SpriteImage_RaftWater,
     374: SpriteImage_SnowWind,
     375: SpriteImage_WendyKoopaController,
     376: SpriteImage_MovingFence,

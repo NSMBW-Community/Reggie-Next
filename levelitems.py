@@ -1365,7 +1365,7 @@ class ZoneItem(LevelEditorItem):
             viewRect = globals_.mainWindow.view.mapToScene(globals_.mainWindow.view.viewport().rect()).boundingRect()
 
             for sprite in globals_.Area.sprites:
-                if sprite.type in [53, 64, 138, 139, 216, 358, 374, 435]:
+                if sprite.type in [53, 64, 138, 139, 216, 358, 373, 374, 435]:
                     spriteZoneID = SLib.MapPositionToZoneID(globals_.Area.zones, sprite.objx, sprite.objy)
 
                     if self.id == spriteZoneID:
