@@ -6165,7 +6165,7 @@
     </dependency>
   </sprite> <!-- #406: Boss Controller - Bowser Jr. (3rd Battle) -->
 
-  <sprite id="407" name="Cutscene Controller - Castle Boss" noyoshi="True" notes="This controller manages the Castle Boss's cinematics such as the start of the fight and the transition to the Airship segment.">
+  <sprite id="407" name="Cutscene Controller - Castle Boss" noyoshi="True" notes="This controller manages the Castle Boss's cinematics such as the start of the fight and the transition to the Airship segment. It also spawns the two gates in each fight, which are shown in the relevant Castle Bosses' sprite image.">
     <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the desired Castle's Boss Room in the Retail level.">
       <required sprite="408"/>
       <suggested sprite="192"/>
