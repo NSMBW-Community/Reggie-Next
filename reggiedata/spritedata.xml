@@ -1838,7 +1838,7 @@
   <sprite id="120" name="Sledge Bro" sizehacks="True" notes="A large bulky version of the Hammer Brothers enemy that will stomp the ground, stunning players touching the ground, in addition to throwing large hammers.">
   </sprite> <!-- #120: Sledge Bro -->
   
-  <sprite id="121" name="(Crashes) Collision Switcher" notes="This controller will switch the active collision layer from Layer 1 to Layer 2 when the Player holds up at the sprite's placement. &lt;font color=&quot;red&quot;&gt;This sprite will crash the game without the required texture file &quot;Sample/tobira.bti&quot;  &lt;/font&gt; Adding this texture allows the sprite to function.">
+  <sprite id="121" name="(Crashes) Collision Switcher" notes="This controller will switch the active collision layer from Layer 1 to Layer 2 and back when the Player holds up at the sprite's placement. &lt;font color=&quot;red&quot;&gt;This sprite will crash the game without the required texture file &quot;Sample/tobira.bti&quot;  &lt;/font&gt; Adding this texture allows the sprite to function. Note that the texture's dimensions don't affect the 1 block wide collision for switching Layers.">
   </sprite> <!-- #121: (Crashes) Collision Switcher -->
   
   <sprite id="122" name="Basic Platform - One-Way" notes="This platform moves in the specified direction when all players are standing on it.">
@@ -4562,11 +4562,6 @@
   </sprite> <!-- #302: Throwing Wrench -->
 
   <sprite id="303" name="Monty Mole" notes="An energetic mole enemy that will pop out of the terrain after loading on screen and proceed to move quickly after the player. A Monty Hole is left behind after the mole jumps out.">
-    <list nybble="6" title="Color" comment="This determines the color of the Monty Mole.">
-      <entry value="0">Original</entry>
-      <entry value="1">Dark Brown</entry>
-      <entry value="2">Black</entry>
-    </list>
     <checkbox bit="48" title="Loose Monty Mole" comment="When enabled, the Monty Mole will already be out of the wall running around, and does not leave behind a Monty Hole."/>
   </sprite> <!-- #303: Monty Mole -->
 
