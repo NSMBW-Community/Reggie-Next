@@ -1294,11 +1294,11 @@
       <entry value="1">Low</entry>
       <entry value="2">Normal</entry>
       <entry value="3">High</entry>
-    </list> <!-- The following settings will only show if Force of Wind is set to something other than Sandstorm Effects Only. -->
-    <dualbox bit="28" title1="Blows Right" title2="Blows Left" comment="This determines which direction the wind will blow." requiredbit="47-48"/>
-    <value nybble="5" title="Time Active" comment="This sets the amount of time that the wind is on." requiredbit="47-48"/>
-    <value nybble="6" title="Time Deactive" comment="This sets the amount of time that the wind is off." requiredbit="47-48"/>
-    <value nybble="11" title="Physics ID" comment="This will pair the Wind Physics with Physics Coin Controller." requiredbit="47-48" idtype="Physics"/>
+    </list>
+    <dualbox bit="28" title1="Blows Right" title2="Blows Left" comment="This determines which direction the wind will blow."/>
+    <value nybble="5" title="Time Active" comment="This sets the amount of time that the wind is on."/>
+    <value nybble="6" title="Time Inactive" comment="This sets the amount of time that the wind is off."/>
+    <value nybble="11" title="Physics ID" comment="This will pair the Wind Physics with Physics Coin Controller." idtype="Physics"/>
   </sprite> <!-- #90: Effect - Wind Physics and Sound -->
 
   <!-- Research Loop Last 2 Nodes and its accompanying Screen Shake option, as well as the rest of the End Behaviors to confirm their descriptions. With and without 'Loops' -->
@@ -2403,7 +2403,7 @@
     <checkbox bit="39" title="Leave this off" comment="When enabled, the rotation controller will generate a Coin 'Sparkle' sound effect." comment2="It is highly recommended that you don't enable these settings when the controller is set to continuously spin. You will annoy people who play your level unless you're very careful about it." requiredbit="31-32" requiredval="1"/> <!-- Appears only if Always Spinning is selected -->
     <checkbox bit="40" title="Create Fake POW-Block Effect" comment="When enabled, the rotation controller will generate a POW-Block sound effect and screen shake." requiredbit="32" requiredval="0"/> <!-- Appears only when Event Triggered [Activation Modes] are set -->
     <checkbox bit="39" title="Create Coin Sound Effect" comment="When enabled, the rotation controller will generate a Coin 'Sparkle' sound effect." comment2="Requires coins to be a part of the paired rotation items." requiredbit="32" requiredval="0"/> <!-- Appears only when Event Triggered [Activation Modes] are set -->
-    <checkbox bit="38" title="Make it do a weird pointless zoom thing instead???" comment="When enabled, some sort of weird zoom thing happens to the camera that I need people to document a little more clearly." advanced="True"/>
+    <checkbox bit="38" title="Make it do a weird zoom thing instead???" comment="When enabled, the Zone's camera will zoom in and out, fully dependant on Rotation Controller's spin arc and speed. It's fully zoomed out when the arc is at 180 degrees." advanced="True" requiredbit="31-32" requiredval="1"/>
   </sprite> <!-- #149: Rotation Controller - Spinning -->
   
   <sprite id="150" name="(Unused) Jumping Cheep Cheep" sizehacks="True" notes="&lt;font color=&quot;orange&quot;&gt;This sprite is not recommended for use due to incompatibilities with the Ice Flower power-up.&lt;/font&gt;" advancednotes="A Cheep Cheep that will jump out of the water in an attempt to damage the player. If frozen, only half of the Cheep Cheep will be covered by ice, and the other part will stick out.">
@@ -2896,11 +2896,6 @@
     <value bit="9-16" title="Triggering Event ID" comment="When this Event ID is activated, the tiles affected by the Tile God's area will be created or destroyed, depending on the Mode." idtype="Triggering Event"/>
     <value nybble="11" title="Width" comment="This determines the width of the area that is affected."/>
     <value nybble="12" title="Height" comment="This determines the height of the area that is affected."/>
-    <list nybble="16" title="Target Layer" comment="This determines which terrain layer is affected.">
-      <entry value="2">Layer 0</entry>
-      <entry value="0">Layer 1</entry>
-      <entry value="1">Layer 2</entry>
-    </list>
     <dualbox bit="40" title1="Destroys Tiles" title2="Creates Tiles" comment="This determines how the Tile God will act when the Triggering Event is activated." comment2="When creating, the Tile God will place these tiles on top of existing tiles instead of replacing them."/>
     <dualbox bit="20" title1="Reverse Action when Deactivated" title2="Permanent" comment="This determines how the Tile God will act when the Triggering Event is deactivated" comment2="When set to Reverse, previously created tiles will be destroyed, and locations where tiles were destroyed will be filled by the creation settings of the Tile God."/>
     <checkbox bit="30" title="Disable Effects" comment="When enabled, the visual effect for Tile Creation/Destruction will be removed." comment2="You can use the Effect/Sound Spawner (332) to add your own effect in its place."/>

@@ -724,23 +724,6 @@
     <value bit="45-46" title="Nybble 11" />
     <value bit="47-48" title="Nybble 12" />
   </sprite> <!-- #89: Actor Multi-Spawner -->
-
-  <sprite id="90" name="Effect - Wind Physics and Sound" notes="This will generate occasional windy pushbacks and wind sound effects. It is best used in conjunction with the suggested sprites, but they are not required.">
-    <dependency notes="In order to generate sandstorm graphics, [374] Effect - Falling Objects and Wind is required using the Snow setting. To add coins to this effect, [284] Physics Coin Controller must be linked.">
-      <suggested sprite="374"/> <!-- Sandstorm Effects -->
-      <suggested sprite="284"/> <!-- Add coins -->
-    </dependency>
-    <list bit="47-48" title="Force of Wind" comment="This determines how strongly the wind will blow.">
-      <entry value="0">Sandstorm Effects Only</entry>
-      <entry value="1">Low</entry>
-      <entry value="2">Normal</entry>
-      <entry value="3">High</entry>
-    </list> <!-- The following settings will only show if Force of Wind is set to something other than Sandstorm Effects Only. -->
-    <dualbox bit="28" title1="Blows Right" title2="Blows Left" comment="This determines which direction the wind will blow." requiredbit="47-48"/>
-    <value nybble="5" title="Time Active" comment="This sets the amount of time that the wind is on." requiredbit="47-48"/>
-    <value nybble="6" title="Time Inactive" comment="This sets the amount of time that the wind is off." requiredbit="47-48"/>
-    <value nybble="11" title="Physics ID" comment="This will pair the Wind Physics with Physics Coin Controller." requiredbit="47-48" idtype="Physics"/>
-  </sprite> <!-- #90: Effect - Wind Physics and Sound -->
   
   <!-- Research Loop Last 2 Nodes and its accompanying Screen Shake option, as well as the rest of the End Behaviors to confirm their descriptions. With and without 'Loops' -->
   <!-- Confirm that Screen Shake only applies to End Behavior value 1 and not value 4/etc. -->
