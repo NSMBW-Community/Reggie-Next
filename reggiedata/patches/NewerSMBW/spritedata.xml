@@ -689,7 +689,7 @@
     <value bit="33-40" title="Triggering Event ID" idtype="Triggering Event"/>
     <value bit="17-24" title="Target Event ID Start" comment="When the Triggering Event is activated, this Event ID will be activated first. It will then run until it reaches [Target Event ID End]."/>
     <value bit="25-32" title="Target Event ID End" comment="After enabling and disabling this event, if the Triggering Event is still activated, the Looper will return to [Target Event ID Start] and repeat the loop."/>
-    <value nybble="11-12" title="Delay" comment="This determines the amount of time the Looper will wait between activating/deactivating each event." comment2="A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="11-12" title="Delay" comment="This determines the amount of time the Looper will wait between activating/deactivating each event. &lt;br&gt;The code for this specifically is a bit messy. The entered value is multiplied by 10, and then 10 is added. However, it can only be a value from 0-255, and any number past that loops. For example, value 24 would be 250 frames of delay. It's easier to follow these expressions:&lt;br&gt; &lt;br&gt;-0-24 is 'value * 10 + 10' frames&lt;br&gt;-25-50 is (delay - 25) * 10 + 4 frames&lt;br&gt;-51-101 is(delay - 51) * 10 + 8 frames&lt;br&gt;-102-126 is (delay - 102) * 10 + 6.&lt;br&gt; &lt;br&gt;Finally, value 127 would be 0 frames of delay, and values 128-255 are ultimately the same as 0-127. Messy code is messy."  comment2="A value of 6 is approximately 1 second on the game's clock."/>
   </sprite> <!-- #79: Event Looper -->
 
   <!-- Someone look this thing over and make sure I'm not a total idiot. Thanks. -->
@@ -1051,7 +1051,7 @@
   </sprite> <!-- #183: Meteor -->
   
   <sprite id="188" name="Midway Flag" asmhacks="True" notes="A flag that when touched by the player will mark their progress in the level and respawn them at this location when re-entering the level." advancednotes="Only one Midway Flag works properly per level. Let's say there are five Checkpoints in a Zone. If Mario were to activate Checkpoint A through C in that order, and then die, he would respawn at Checkpoint C's Entrance, and all five Checkpoints would be activated.">
-    <list nybble="5-6" title="Logo" comment="NewerSMBW changes the logo placed on the Midway Flag for each sub-world.">
+    <list nybble="5-6" title="Logo" comment="NewerSMBW changes the logo placed on the Midway Flag for each sub-world." comment2="The 2nd Newer Logo at the 45°-ish angle is just another model file, in case you were wondering...">
       <entry value="0">Newer Logo</entry>
       <entry value="1">Yoshi's Island</entry>
       <entry value="2">Goldwood</entry>
@@ -1070,6 +1070,7 @@
       <entry value="15">Sky City</entry>
       <entry value="16">Koopa Planet</entry>
       <entry value="17">Koopa Core</entry>
+	  <entry value="18">Newer Logo at a 45°-ish angle CCW</entry>
     </list>
     <value nybble="7-8" title="Entrance ID" comment="This determines which Entrance the level will load the player into when they respawn." idtype="Entrance"/>
     <dualbox bit="44" title1="Load Facing Right" title2="Load Facing Left" comment="This determines which direction the players will face when they respawn."/>
@@ -1542,10 +1543,10 @@
     <value bit="17-24" title="Set to Zero" comment="If pairing the Invisible Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Invisible Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requiredbit="25-28" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Invisible Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requiredbit="25-28" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
-    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will only release one power-up item.">
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will only release one power-up item. If the invisible block has 10 coins, it will stay in the used block graphic the entire time. Additionally, it won't release the extra few coins if the block is hit multiple times successfully.">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
-      <entry value="10">10-Coin</entry>
+      <entry value="10">10-Coin (buggy)</entry>
       <entry value="14">Mushroom (if small)</entry>
       <entry value="3">Fire Flower</entry>
       <entry value="15">Ice Flower</entry>

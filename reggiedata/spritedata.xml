@@ -350,9 +350,10 @@
     </list>
     <checkbox bit="48" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Star Coin placing it further behind other sprites."/>
     <checkbox bit="36" title="Place Behind Chainlink Fence" comment="When enabled, the Star Coin can only be collected if the player is on the reverse side of a Chainlink Fence."/>
-    <checkbox bit="44" title="Falls when POW is Used" comment="The Star Coin will fall to the ground if a POW effect is triggered."/>
+    <checkbox bit="44" title="Falls when POW is Used" comment="The Star Coin will fall to the ground if a POW effect is triggered. If placed outside the Zone, the Star Coin will not spawn until the POW is hit."/>
     <value bit="2-8" title="Target Event ID" comment="When the Star Coin is collected, the Target Event ID will be activated." idtype="Target Event"/>
     <dualbox bit="28" title1="Triggers a Timed Event" title2="Permanently activates Target Event" comment="This determines if the Target Event is timed or permanent. Timed events will pause the music and replace it with ticking." requiredbit="2-8"/>
+	
     <value bit="19-20" title="Unknown List 5" advanced="True" advancedcomment="ASM shows Nybble 5 might affect something."/>
       <entry value="0">???</entry>
       <entry value="1">???</entry>
@@ -1526,7 +1527,7 @@
     <checkbox bit="48" title="Unknown Flag 12 (1)" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #103: Basic Platform - Spawner -->
   
-  <sprite id="104" name="Amp" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="A stationary floating enemy that will electrocute the player when they touch it.">
+  <sprite id="104" name="Amp" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="A stationary floating enemy that will electrocute the player when they touch it.&lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interupted and Mario will take no damage.">
     <checkbox bit="48" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Amp placing it further behind other sprites."/>
   </sprite> <!-- #104: Amp -->
 
@@ -1568,7 +1569,7 @@
     <value nybble="11-12" title="Rotation ID" comment="Works with both Swaying and Spinning." />
   </sprite>
 
-  <sprite id="108" name="Line Controlled Amp Spawner" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="This will spawn a specified number of Amps along the Line that the sprite is placed on. Once it has spawned the number of Amps it is set to, it will not do anything else even if they fall off.">
+  <sprite id="108" name="Line Controlled Amp Spawner" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="This will spawn a specified number of Amps along the Line that the sprite is placed on. Once it has spawned the number of Amps it is set to, it will not do anything else even if they fall off.&lt;br&gt; &lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interupted and Mario will take no damage.">
     <dependency notes="Place this sprite directly onto the Line guide that you want it to spawn on."/>
     <list nybble="9" title="Number of Amps" comment="This determines how many Amps are spawned on the Line by this Spawner.">
       <entry value="0">1 Amp</entry>
@@ -2022,7 +2023,10 @@
   <!-- title1="Rising Forever while On" title="Falling Forever while On" - True or False? What happens when using a Triggering Event on a permanently rising or permanently falling Moving Water? What happens when before the event activates? What happens when it activates? What happens when it is deactivated? What happens when it's activated again? -->
   <!-- title1="Rising and Falling while On, Returns when Off" - True or Fale? Does it very quickly return or will it instantly (glitchy looking) return to its starting position? -->
   <!-- Dear Dog that took around two hours to sort that mess out piece by piece. It's wonderful what these new display settings can actually accomplish for making this type of information actually usable! -->
-  <sprite id="138" name="Water" noyoshi="True" notes="Place this in the level to generate water. There are many different ways to use this type of Water. &lt;br&gt; &lt;br&gt;&lt;bgt;Underwater Zone:&lt;/bgt; If you just want to create an underwater zone, check Flat Top and leave everything else blank. Then place the Water about 6 blocks above your upper Zone boundary. &lt;br&gt; &lt;br&gt;&lt;bgt;Line of Water:&lt;/bgt; If you want water decorating the bottom of you level, put the Water anywhere along the horizontal line you want it to appear at. Do not change any settings. &lt;br&gt; &lt;br&gt;&lt;bgt;Location Water:&lt;/bgt; If you assign a Location ID, you can cause water to appear only within the chosen Location instead of across the entire stage. &lt;br&gt; &lt;br&gt;&lt;bgt;Moving Water:&lt;/bgt; You can also create water that rises and/or falls. This gets a little complicated, so be sure to read the related settings.">
+  <sprite id="138" name="Water" noyoshi="True" notes="Place this in the level to generate water. There are many different ways to use this type of Water. &lt;br&gt; &lt;br&gt;Underwater Zone: If you just want to create an underwater zone, check Flat Top and leave everything else blank. Then place the Water about 6 blocks above your upper Zone boundary. 
+  &lt;br&gt; &lt;br&gt;Location Water: If you assign a Location ID, you can cause water to appear only within the chosen Location instead of across the entire stage. 
+  &lt;br&gt; &lt;br&gt;Moving Water: You can also create water that rises and/or falls. This gets a little complicated, so be sure to read the related settings.
+  &lt;br&gt; &lt;br&gt;Water Crest's Maximum Length: The crest of Water will stop drawing past 8192 pixels (512 blocks). You can avoid this by creating multiple Locations of Water. Please note the first, left-most Location must be a multiple of 16 pixels long.">
     <dependency notes="When using Moving Water, the Water becomes loaded across the entire Area instead of just the active Zone. Please build your levels with this in mind. Additionally, do not use more than one Moving Water in the same Area as only the top (highest Y-Axis) one will take effect. If you need Moving Water in multiple Zones within the same area, use [253] Rising and Falling Water instead. Also, be sure to reset your Sprite Settings if you switch between different setting groups of Moving Water or Location Water to prevent unusual bugs and behavior.">
       <suggested sprite="317"/> <!-- Lets bubbles exist -->
     </dependency>
@@ -2091,7 +2095,7 @@
   
   <!-- Nope! I'm done! You guys test this crap. *clones Water* I'm moving on... -->
   <!-- Test the 7 Modes through their associated conditions and fully describe them in the same way that Water is described. [Extremely Buggy] is naturally assumed for Falling mixed with the last three types. -->
-  <sprite id="139" name="Lava" noyoshi="True" notes="Place this in the level to generate lava. There are many different ways to use Lava. &lt;br&gt; &lt;br&gt;Line of Lava: If you want lava decorating the bottom of you level, put the Lava anywhere along the horizontal line you want it to appear at, and do not change any settings. &lt;br&gt; &lt;br&gt;Location Lava: If you assign a Location ID, you can cause lava to appear only within the chosen Location instead of across the entire stage. &lt;br&gt; &lt;br&gt;Moving Lava: You can also create lava that rises and/or falls. This gets a little complicated, so be sure to read the related settings.">
+  <sprite id="139" name="Lava" noyoshi="True" notes="Place this in the level to generate lava. There are many different ways to use Lava. &lt;br&gt; &lt;br&gt;Location Lava: If you assign a Location ID, you can cause lava to appear only within the chosen Location instead of across the entire stage. &lt;br&gt; &lt;br&gt;Moving Lava: You can also create lava that rises and/or falls. This gets a little complicated, so be sure to read the related settings.&lt;br&gt; &lt;br&gt;Lava Crest's Maximum Length: The crest of Lava will stop drawing past 8192 pixels (512 blocks). You can avoid this by creating multiple Locations of Lava. Please note the first, left-most Location must be a multiple of 16 pixels long.">">
     <dependency notes="When using Moving Lava, the Lava becomes loaded across the entire Area instead of just the active Zone. Please build your levels with this in mind. Additionally, do not use more than one Moving Lava in the same Area as only the top (highest Y-Axis) one will take effect. Unlike with Moving Water you cannot use Moving Lava in multiple Zones within the same area, unless you place them at the same Y-Axis. Also, be sure to reset your Sprite Settings if you switch between different setting groups of Moving Lava or Location Lava to prevent unusual bugs and behavior."/>
    <!-- The different displays of the Speed option -->
     <list bit="18-20" title="Moving Lava - Rising Speed" comment="This determines the speed at which the Lava will rise, or rise and fall." requiredbit="17" requiredval="0">
@@ -3320,7 +3324,7 @@
   
   <!-- Nope! I'm done! You guys test this crap. *clones Water* I'm moving on... -->
   <!-- Test the 7 Modes through their associated conditions and fully describe them in the same way that Water is described. [Extremely Buggy] is naturally assumed for Falling mixed with the last three types. -->
-  <sprite id="216" name="Poisoned Water" noyoshi="True" notes="Place this in the level to generate poisonous water. There are many different ways to use Poisoned Water. &lt;br&gt; &lt;br&gt;Line of Poisoned Water: If you want poisonous water decorating the bottom of you level, put the Poisoned Water anywhere along the horizontal line you want it to appear at, and do not change any settings. &lt;br&gt; &lt;br&gt;Location Poisoned Water: If you assign a Location ID, you can cause poisonous water to appear only within the chosen Location instead of across the entire stage. &lt;br&gt; &lt;br&gt;Moving Poisoned Water: You can also create posionous water that rises and/or falls. This gets a little complicated, so be sure to read the related settings.">
+  <sprite id="216" name="Poisoned Water" noyoshi="True" notes="Place this in the level to generate poisonous water. There are many different ways to use Poisoned Water. &lt;br&gt; &lt;br&gt;Location Poisoned Water: If you assign a Location ID, you can cause poisonous water to appear only within the chosen Location instead of across the entire stage. &lt;br&gt; &lt;br&gt;Moving Poisoned Water: You can also create posionous water that rises and/or falls. This gets a little complicated, so be sure to read the related settings.&lt;br&gt; &lt;br&gt;Poison Water Crest's Maximum Length: The crest of Poison Water will stop drawing past 8192 pixels (512 blocks). You can avoid this by creating multiple Locations of Poison Water. Please note the first, left-most Location must be a multiple of 16 pixels long.">">
     <dependency notes="When using Moving Poisoned Water, the Poisoned Water becomes loaded across the entire Area instead of just the active Zone. Please build your levels with this in mind. Additionally, do not use more than one Moving Poisoned Water in the same Area as only the top (highest Y-Axis) one will take effect. Unlike with Moving Water you cannot use Moving Poisoned Water in multiple Zones within the same area, unless you place them at the same Y-Axis. Also, be sure to reset your Sprite Settings if you switch between different setting groups of Moving Poisoned Water or Location Poisoned Water to prevent unusual bugs and behavior."/>
    <!-- The different displays of the Speed option -->
     <list bit="18-20" title="Moving Poisoned Water - Rising Speed" comment="This determines the speed at which the Poisoned Water will rise, or rise and fall." requiredbit="17" requiredval="0">
@@ -3445,10 +3449,10 @@
     <value bit="17-24" title="Set to Zero" comment="If pairing the Invisible Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Invisible Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requiredbit="25-28" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Invisible Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requiredbit="25-28" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
-    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will only release one power-up item.">
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will only release one power-up item. If the invisible block has 10 coins, it will stay in the used block graphic the entire time. Additionally, it won't release the extra few coins if the block is hit multiple times successfully.">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
-      <entry value="10">10-Coin</entry>
+      <entry value="10">10-Coin (buggy)</entry>
       <entry value="14">Mushroom (if small)</entry>
       <entry value="2">Fire Flower</entry>
       <entry value="3">Fire Flower</entry>
