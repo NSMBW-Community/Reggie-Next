@@ -20,17 +20,16 @@ class BGDialog(QtWidgets.QDialog):
 
         self.tabWidget = QtWidgets.QTabWidget()
 
-        i = 0
         self.BGTabs = []
-        for z in globals_.Area.zones:
-            i = i + 1
-            BGTabName = globals_.trans.string('BGDlg', 2, '[num]', i)
-            tab = BGTab(z)
+        for i, zone in enumerate(globals_.Area.zones):
+            tab = BGTab(zone)
             self.BGTabs.append(tab)
-            self.tabWidget.addTab(tab, BGTabName)
+
+            name = globals_.trans.string('BGDlg', 2, '[num]', i + 1)
+            self.tabWidget.addTab(tab, name)
 
         if self.tabWidget.count() > 5:
-            for tab in range(0, self.tabWidget.count()):
+            for tab in range(self.tabWidget.count()):
                 self.tabWidget.setTabText(tab, str(tab + 1))
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
