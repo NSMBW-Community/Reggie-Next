@@ -100,10 +100,11 @@ class BGTab(QtWidgets.QWidget):
             for box in self.name_boxes[-1]:
                 box.activated.connect(self.handleNameBox)
 
+            # Fill the name comboboxes with values
             for i, (bfile_raw, bname) in enumerate(bg_names[slot_id]):
                 bfile = int(bfile_raw, 16)
 
-                for name, bg_id in zip(self.name_boxes[-1], bg_vals[slot_id]):
+                for name in self.name_boxes[-1]:
                     name.addItem(
                         globals_.trans.string(
                             'BGDlg', 17,
@@ -113,8 +114,19 @@ class BGTab(QtWidgets.QWidget):
                         bfile
                     )
 
-                    if bfile == bg_id:
-                        name.setCurrentIndex(i)
+            # Find the correct ones to select
+            for name_box, value in zip(self.name_boxes[-1], bg_vals[slot_id]):
+                idx = name_box.findData(value)
+
+                if idx != -1:
+                    # it's a known BG value
+                    name_box.setCurrentIndex(idx)
+                else:
+                    # it's an unknown BG value
+                    lastEntry = name_box.itemText(name_box.count() - 1)
+                    if lastEntry != globals_.trans.string('BGDlg', 18):
+                        name_box.addItem(globals_.trans.string('BGDlg', 18))
+                    name_box.setCurrentIndex(name_box.count() - 1)
 
             # Position
             self.pos_boxes.append((QtWidgets.QSpinBox(), QtWidgets.QSpinBox()))
