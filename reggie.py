@@ -1811,6 +1811,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # global globals_.OverrideSnapping
         globals_.OverrideSnapping = True
 
+        # Remove leading and trailing whitespace
+        encoded = encoded.strip()
+
         if not (encoded.startswith('ReggieClip|') and encoded.endswith('|%')): return
 
         clip = encoded.split('|')[1:-1]
