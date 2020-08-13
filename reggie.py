@@ -4365,9 +4365,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             z.bg2A = tab.hex_boxes[0][1].value()
             z.bg3A = tab.hex_boxes[0][2].value()
 
-            z.bg1B = tab.hex_boxes[0][0].value()
-            z.bg2B = tab.hex_boxes[0][1].value()
-            z.bg3B = tab.hex_boxes[0][2].value()
+            z.bg1B = tab.hex_boxes[1][0].value()
+            z.bg2B = tab.hex_boxes[1][1].value()
+            z.bg3B = tab.hex_boxes[1][2].value()
 
     def HandleScreenshot(self):
         """
