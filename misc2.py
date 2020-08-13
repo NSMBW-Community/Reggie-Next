@@ -146,6 +146,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         short_END.activated.connect(lambda: self.XScrollBar.setValue(self.XScrollBar.value() + self.XScrollBar.pageStep()))
 
         self.currentobj = None
+        self.lastCursorPosForMidButtonScroll = None
 
     def mousePressEvent(self, event):
         """
@@ -404,6 +405,10 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             event.accept()
 
+        elif event.button() == QtCore.Qt.MidButton:
+            self.lastCursorPosForMidButtonScroll = event.pos()
+            QtWidgets.QGraphicsView.mousePressEvent(self, event)
+
         elif (event.button() == QtCore.Qt.LeftButton) and (QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.ShiftModifier):
             mw = globals_.mainWindow
 
@@ -640,6 +645,13 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.setPos(int((newx + obj.ImageObj.xOffset) * 1.5), int((newy + obj.ImageObj.yOffset) * 1.5))
 
             self.scene().update()
+
+        elif event.buttons() == QtCore.Qt.MidButton and self.lastCursorPosForMidButtonScroll is not None:
+            # https://stackoverflow.com/a/15785851
+            delta = event.pos() - self.lastCursorPosForMidButtonScroll
+            self.XScrollBar.setValue(self.XScrollBar.value() + (delta.x() if self.isRightToLeft() else -delta.x()))
+            self.YScrollBar.setValue(self.YScrollBar.value() - delta.y())
+            self.lastCursorPosForMidButtonScroll = event.pos()
 
         else:
             QtWidgets.QGraphicsView.mouseMoveEvent(self, event)
