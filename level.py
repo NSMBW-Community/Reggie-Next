@@ -502,13 +502,13 @@ class Area_NSMBW(AbstractParsedArea):
         """
         Loads block 2, the general options
         """
-        optdata = self.blocks[1]
-        optstruct = struct.Struct('>IxxxxHh?BxxB?Bx')
-        data = optstruct.unpack(optdata)
-        self.defEvents, wrapByte, self.timeLimit, self.creditsFlag, unkVal, self.startEntrance, self.ambushFlag, self.toadHouseType = data
+        data = struct.unpack('>IIHh?BxxB?Bx', self.blocks[1])
+        defEventsA, defEventsB, wrapByte, self.timeLimit, self.creditsFlag, unkVal, self.startEntrance, self.ambushFlag, self.toadHouseType = data
+
         self.wrapFlag = bool(wrapByte & 1)
         self.unkFlag1 = bool(wrapByte >> 3)
-        self.unkFlag2 = bool(unkVal == 100)
+        self.unkFlag2 = unkVal == 100
+        self.defEvents = defEventsA | defEventsB << 32
 
         """
         Loads block 4, the unknown maybe-more-general-options block
@@ -758,20 +758,20 @@ class Area_NSMBW(AbstractParsedArea):
         """
         Saves block 2, the general options
         """
-        optstruct = struct.Struct('>IxxxxHh?BBBB?Bx')
-
         wrapByte = 1 if self.wrapFlag else 0
         if self.unkFlag1: wrapByte |= 8
         unkVal = 100 if self.unkFlag2 else 0
 
-        self.blocks[1] = optstruct.pack(self.defEvents, wrapByte, self.timeLimit, self.creditsFlag, unkVal, unkVal,
-                                        unkVal, self.startEntrance, self.ambushFlag, self.toadHouseType)
+        self.blocks[1] = struct.pack('>IIHh?BBBB?Bx',
+            self.defEvents & 0xFFFFFFFF, self.defEvents >> 32, wrapByte,
+            self.timeLimit, self.creditsFlag, unkVal, unkVal, unkVal,
+            self.startEntrance, self.ambushFlag, self.toadHouseType
+        )
 
         """
         Saves block 4, the unknown maybe-more-general-options block
         """
-        optdata2struct = struct.Struct('>xxHHxx')
-        self.blocks[3] = optdata2struct.pack(self.unkVal1, self.unkVal2)
+        self.blocks[3] = struct.pack('>xxHHxx', self.unkVal1, self.unkVal2)
 
     def SaveLayer(self, idx):
         """

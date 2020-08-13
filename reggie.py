@@ -1247,7 +1247,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.eventChooser.itemClicked.connect(self.handleEventTabItemClick)
         self.eventChooserItems = []
         flags = Qt.ItemIsSelectable | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled
-        for id in range(32):
+        for id in range(64):
             itm = QtWidgets.QTreeWidgetItem()
             itm.setFlags(flags)
             itm.setCheckState(0, Qt.Unchecked)
@@ -1443,7 +1443,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 for char in rawStr: newStr += chr(char)
                 eventTexts[eventId] = newStr
 
-        for id in range(32):
+        for id in range(64):
             item = self.eventChooserItems[id]
             value = 1 << id
             item.setCheckState(0, checked if (defEvents & value) != 0 else unchecked)
@@ -1489,7 +1489,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Save all the events to the metadata
         data = []
-        for id in range(32):
+        for id in range(64):
             idtext = str(self.eventChooserItems[id].text(1))
             if idtext == '': continue
 
