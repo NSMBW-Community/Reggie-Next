@@ -2571,7 +2571,6 @@ class PathItem(LevelEditorItem):
         Creates a path node with specific data
         """
 
-        # global mainWindow
         LevelEditorItem.__init__(self)
 
         self.font = globals_.NumberFont
@@ -2637,8 +2636,6 @@ class PathItem(LevelEditorItem):
         """
         Paints the path node
         """
-        # global theme
-
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
         painter.setClipRect(option.exposedRect)
 
