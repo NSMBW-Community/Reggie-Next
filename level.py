@@ -342,8 +342,8 @@ class AbstractParsedArea(AbstractArea):
 
         rdata = bytearray(self.Metadata.save())
         if len(rdata) % 4 != 0:
-            for i in range(4 - (len(rdata) % 4)):
-                rdata.append(0)
+            rdata += bytes(4 - (len(rdata) % 4))
+
         rdata = bytes(rdata)
 
         # Save the main course file
@@ -355,13 +355,13 @@ class AbstractParsedArea(AbstractArea):
         for block in self.blocks:
             FileLength += len(block)
 
-        course = bytearray()
-        for i in range(FileLength): course.append(0)
+        course = bytearray(FileLength)
         saveblock = struct.Struct('>II')
 
         HeaderOffset = 0
         FileOffset = (14 * 8) + len(rdata)
-        struct.pack_into('{0}s'.format(len(rdata)), course, 0x70, rdata)
+        struct.pack_into('%ds' % len(rdata), course, 0x70, rdata)
+
         for block in self.blocks:
             blocksize = len(block)
             saveblock.pack_into(course, HeaderOffset, FileOffset, blocksize)
@@ -385,8 +385,8 @@ class AbstractParsedArea(AbstractArea):
         layer = self.layers[obj.layer]
         idx = layer.index(obj)
         del layer[idx]
-        for i in range(idx, len(layer)):
-            upd = layer[i]
+
+        for upd in layer[idx:]:
             upd.setZValue(upd.zValue() - 1)
 
     def SortSpritesByZone(self):
@@ -480,11 +480,8 @@ class Area_NSMBW(AbstractParsedArea):
         self.blocks = [None] * 14
         getblock = struct.Struct('>II')
         for i in range(14):
-            data = getblock.unpack_from(course, i * 8)
-            if data[1] == 0:
-                self.blocks[i] = b''
-            else:
-                self.blocks[i] = course[data[0]:data[0] + data[1]]
+            start, length = getblock.unpack_from(course, i * 8)
+            self.blocks[i] = course[start:start + length]
 
         self.block1pos = getblock.unpack_from(course, 0)
 
@@ -492,7 +489,7 @@ class Area_NSMBW(AbstractParsedArea):
         """
         Loads block 1, the tileset names
         """
-        data = struct.unpack_from('32s32s32s32s', self.blocks[0])
+        data = struct.unpack('>32s32s32s32s', self.blocks[0])
         self.tileset0 = data[0].strip(b'\0').decode('latin-1')
         self.tileset1 = data[1].strip(b'\0').decode('latin-1')
         self.tileset2 = data[2].strip(b'\0').decode('latin-1')
@@ -527,11 +524,9 @@ class Area_NSMBW(AbstractParsedArea):
         entstruct = struct.Struct('>HHxxxxBBBBxBBBHxB')
         offset = 0
         entrances = []
-        for i in range(entcount):
+        for _ in range(entcount):
             data = entstruct.unpack_from(entdata, offset)
-            entrances.append(
-                EntranceItem(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9],
-                             data[10]))
+            entrances.append(EntranceItem(*data))
             offset += 20
         self.entrances = entrances
 
@@ -548,9 +543,9 @@ class Area_NSMBW(AbstractParsedArea):
         unpack = sprstruct.unpack_from
         append = sprites.append
         obj = SpriteItem
-        for i in range(sprcount):
+        for _ in range(sprcount):
             data = unpack(spritedata, offset)
-            append(obj(data[0], data[1], data[2], data[3]))
+            append(obj(*data))
             offset += 16
         self.sprites = sprites
 
@@ -559,42 +554,39 @@ class Area_NSMBW(AbstractParsedArea):
         Loads block 3, the bounding preferences
         """
         bdngdata = self.blocks[2]
-        count = len(bdngdata) // 24
         bdngstruct = struct.Struct('>llllxBxBxxxx')
-        offset = 0
         bounding = []
-        for i in range(count):
-            datab = bdngstruct.unpack_from(bdngdata, offset)
-            bounding.append([datab[0], datab[1], datab[2], datab[3], datab[4], datab[5]])
-            offset += 24
+
+        for offset in range(0, len(bdngdata), 24):
+            data = bdngstruct.unpack_from(bdngdata, offset)
+            bounding.append(data)
+
         self.bounding = bounding
 
         """
         Loads block 5, the top level background values
         """
         bgAdata = self.blocks[4]
-        bgAcount = len(bgAdata) // 24
         bgAstruct = struct.Struct('>xBhhhhHHHxxxBxxxx')
-        offset = 0
         bgA = []
-        for i in range(bgAcount):
+
+        for offset in range(0, len(bgAdata), 24):
             data = bgAstruct.unpack_from(bgAdata, offset)
-            bgA.append([data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8]])
-            offset += 24
+            bgA.append(data)
+
         self.bgA = bgA
 
         """
         Loads block 6, the bottom level background values
         """
         bgBdata = self.blocks[5]
-        bgBcount = len(bgBdata) // 24
         bgBstruct = struct.Struct('>xBhhhhHHHxxxBxxxx')
-        offset = 0
         bgB = []
-        for i in range(bgBcount):
-            datab = bgBstruct.unpack_from(bgBdata, offset)
-            bgB.append([datab[0], datab[1], datab[2], datab[3], datab[4], datab[5], datab[6], datab[7], datab[8]])
-            offset += 24
+
+        for offset in range(0, len(bgBdata), 24):
+            data = bgBstruct.unpack_from(bgBdata, offset)
+            bgB.append(data)
+
         self.bgB = bgB
 
         """
@@ -602,23 +594,20 @@ class Area_NSMBW(AbstractParsedArea):
         """
         zonedata = self.blocks[9]
         zonestruct = struct.Struct('>HHHHHHBBBBxBBBBxBB')
-        count = len(zonedata) // 24
-        offset = 0
         zones = []
-        for i in range(count):
+
+        for offset in range(0, len(zonedata), 24):
             dataz = zonestruct.unpack_from(zonedata, offset)
 
             # Find the proper bounding
             boundObj = None
             id = dataz[7]
             for checkb in self.bounding:
-                if checkb[4] == id: boundObj = checkb
+                if checkb[4] == id:
+                    boundObj = checkb
 
-            zones.append(
-                ZoneItem(dataz[0], dataz[1], dataz[2], dataz[3], dataz[4], dataz[5], dataz[6], dataz[7], dataz[8],
-                         dataz[9], dataz[10], dataz[11], dataz[12], dataz[13], dataz[14], dataz[15], boundObj, bgA, bgB,
-                         i))
-            offset += 24
+            zones.append(ZoneItem(*dataz, boundObj, bgA, bgB, offset // 24))
+
         self.zones = zones
 
     def LoadLocations(self):
@@ -627,61 +616,52 @@ class Area_NSMBW(AbstractParsedArea):
         """
         locdata = self.blocks[10]
         locstruct = struct.Struct('>HHHHBxxx')
-        count = len(locdata) // 12
-        offset = 0
         locations = []
-        for i in range(count):
+
+        for offset in range(0, len(locdata), 12):
             data = locstruct.unpack_from(locdata, offset)
-            locations.append(LocationItem(data[0], data[1], data[2], data[3], data[4]))
-            offset += 12
+            locations.append(LocationItem(*data))
+
         self.locations = locations
 
     def LoadLayer(self, idx, layerdata):
         """
         Loads a specific object layer from a string
         """
-        objcount = len(layerdata) // 10
         objstruct = struct.Struct('>HHHHH')
-        offset = 0
         z = (2 - idx) * 8192
 
-        layer = self.layers[idx]
-        append = layer.append
+        append = self.layers[idx].append
         obj = ObjectItem
         unpack = objstruct.unpack_from
-        for i in range(objcount):
+
+        # Ignore the last 2 bytes, because they are always 0xFFFF.
+        for offset in range(0, len(layerdata) - 2, 10):
             data = unpack(layerdata, offset)
-            append(obj(data[0] >> 12, data[0] & 4095, idx, data[1], data[2], data[3], data[4], z))
+            append(obj(data[0] >> 12, data[0] & 4095, idx, *data[1:], z))
             z += 1
-            offset += 10
 
     def LoadPaths(self):
         """
         Loads block 12, the paths
         """
-        # Path struct: >BxHHH
         pathdata = self.blocks[12]
-        pathcount = len(pathdata) // 8
         pathstruct = struct.Struct('>BxHHH')
-        offset = 0
         unpack = pathstruct.unpack_from
         pathinfo = []
         paths = []
-        for i in range(pathcount):
+
+        for offset in range(0, len(pathdata), 8):
             data = unpack(pathdata, offset)
             nodes = self.LoadPathNodes(data[1], data[2])
-            add2p = {'id': int(data[0]),
-                     'nodes': [],
-                     'loops': data[3] == 2
-                     }
-            for node in nodes:
-                add2p['nodes'].append(node)
-            pathinfo.append(add2p)
 
-            offset += 8
+            pathinfo.append({
+                'id': int(data[0]),
+                'nodes': nodes,
+                'loops': data[3] == 2
+            })
 
-        for i in range(pathcount):
-            xpi = pathinfo[i]
+        for xpi in pathinfo:
             for xpj in xpi['nodes']:
                 paths.append(PathItem(xpj['x'], xpj['y'], xpi, xpj))
 
@@ -692,54 +672,56 @@ class Area_NSMBW(AbstractParsedArea):
         """
         Loads block 13, the path nodes
         """
-        # PathNode struct: >HHffhxx
-        ret = []
+        nodes = []
         nodedata = self.blocks[13]
         nodestruct = struct.Struct('>HHffhxx')
-        offset = startindex * 16
         unpack = nodestruct.unpack_from
-        for i in range(count):
+
+        for offset in range(startindex * 16, count * 16, 16):
             data = unpack(nodedata, offset)
-            ret.append({'x': int(data[0]),
-                        'y': int(data[1]),
-                        'speed': float(data[2]),
-                        'accel': float(data[3]),
-                        'delay': int(data[4])
-                        # 'id':i
-                        })
-            offset += 16
-        return ret
+
+            nodes.append({
+                'x': int(data[0]),
+                'y': int(data[1]),
+                'speed': float(data[2]),
+                'accel': float(data[3]),
+                'delay': int(data[4])
+            })
+
+        return nodes
 
     def LoadComments(self):
         """
         Loads the comments from self.Metadata
         """
         self.comments = []
-        b = self.Metadata.binData('InLevelComments_A%d' % self.areanum)
-        if b is None: return
+        data = self.Metadata.binData('InLevelComments_A%d' % self.areanum)
+        if data is None:
+            return
+
         idx = 0
-        while idx < len(b):
-            xpos = b[idx] << 24
-            xpos |= b[idx + 1] << 16
-            xpos |= b[idx + 2] << 8
-            xpos |= b[idx + 3]
+        while idx < len(data):
+            xpos = data[idx] << 24
+            xpos |= data[idx + 1] << 16
+            xpos |= data[idx + 2] << 8
+            xpos |= data[idx + 3]
             idx += 4
-            ypos = b[idx] << 24
-            ypos |= b[idx + 1] << 16
-            ypos |= b[idx + 2] << 8
-            ypos |= b[idx + 3]
+            ypos = data[idx] << 24
+            ypos |= data[idx + 1] << 16
+            ypos |= data[idx + 2] << 8
+            ypos |= data[idx + 3]
             idx += 4
-            tlen = b[idx] << 24
-            tlen |= b[idx + 1] << 16
-            tlen |= b[idx + 2] << 8
-            tlen |= b[idx + 3]
+            tlen = data[idx] << 24
+            tlen |= data[idx + 1] << 16
+            tlen |= data[idx + 2] << 8
+            tlen |= data[idx + 3]
             idx += 4
-            s = ''
+            text = ''
             for char in range(tlen):
-                s += chr(b[idx])
+                text += chr(data[idx])
                 idx += 1
 
-            com = CommentItem(xpos, ypos, s)
+            com = CommentItem(xpos, ypos, text)
             com.listitem = QtWidgets.QListWidgetItem()
 
             self.comments.append(com)
@@ -817,17 +799,17 @@ class Area_NSMBW(AbstractParsedArea):
         Saves the paths back to block 13
         """
         pathstruct = struct.Struct('>BxHHH')
-        nodecount = 0
-        for path in self.pathdata:
-            nodecount += len(path['nodes'])
+        nodecount = sum(len(path['nodes']) for path in self.pathdata)
         nodebuffer = bytearray(nodecount * 16)
         nodeoffset = 0
         nodeindex = 0
         offset = 0
         buffer = bytearray(len(self.pathdata) * 8)
-        # [20:28:38]  [@Treeki] struct Path { unsigned char id; char padding; unsigned short startNodeIndex; unsigned short nodeCount; unsigned short unknown; };
+
         for path in self.pathdata:
-            if (len(path['nodes']) < 1): continue
+            if len(path['nodes']) == 0:
+                continue
+
             self.WritePathNodes(nodebuffer, nodeoffset, path['nodes'])
 
             pathstruct.pack_into(buffer, offset, int(path['id']), int(nodeindex), int(len(path['nodes'])),
@@ -844,8 +826,8 @@ class Area_NSMBW(AbstractParsedArea):
         Writes the path node data to the block 14 bytearray
         """
         offset = int(offst)
-        # [20:29:04]  [@Treeki] struct PathNode { unsigned short x; unsigned short y; float speed; float unknownMaybeAccel; short unknown; char padding[2]; }
         nodestruct = struct.Struct('>HHffhxx')
+
         for node in nodes:
             nodestruct.pack_into(buffer, offset, int(node['x']), int(node['y']), float(node['speed']),
                                  float(node['accel']), int(node['delay']))
@@ -856,13 +838,13 @@ class Area_NSMBW(AbstractParsedArea):
         Saves the sprites back to block 8
         """
         offset = 0
-        sprstruct = struct.Struct('>HHH6sB1sxx')
+        sprstruct = struct.Struct('>HHH6sBcxx')
         buffer = bytearray((len(self.sprites) * 16) + 4)
         f_int = int
         for sprite in self.sprites:
             try:
                 sprstruct.pack_into(buffer, offset, f_int(sprite.type), f_int(sprite.objx), f_int(sprite.objy),
-                                    sprite.spritedata[:6], sprite.zoneID, bytes([sprite.spritedata[7], ]))
+                                    sprite.spritedata[:6], sprite.zoneID, bytes([sprite.spritedata[7]]))
             except:
                 # Hopefully this will solve the mysterious bug, and will
                 # soon no longer be necessary.
@@ -873,7 +855,7 @@ class Area_NSMBW(AbstractParsedArea):
                                  str(sprite.objy) + '\n' + \
                                  str(sprite.spritedata[:6]) + '\n' + \
                                  str(sprite.zoneID) + '\n' + \
-                                 str(bytes([sprite.spritedata[7], ])) + '\n',
+                                 str(bytes([sprite.spritedata[7]])) + '\n',
                                  )
             offset += 16
         buffer[offset] = 0xFF
@@ -886,10 +868,7 @@ class Area_NSMBW(AbstractParsedArea):
         """
         Saves the list of loaded sprites back to block 9
         """
-        ls = []
-        for sprite in self.sprites:
-            if sprite.type not in ls: ls.append(sprite.type)
-        ls.sort()
+        ls = sorted(set(sprite.type for sprite in self.sprites))
 
         offset = 0
         sprstruct = struct.Struct('>Hxx')
@@ -897,6 +876,7 @@ class Area_NSMBW(AbstractParsedArea):
         for s in ls:
             sprstruct.pack_into(buffer, offset, int(s))
             offset += 4
+
         self.blocks[8] = bytes(buffer)
 
     def SaveZones(self):
@@ -907,16 +887,16 @@ class Area_NSMBW(AbstractParsedArea):
         bgAstruct = struct.Struct('>xBhhhhHHHxxxBxxxx')
         bgBstruct = struct.Struct('>xBhhhhHHHxxxBxxxx')
         zonestruct = struct.Struct('>HHHHHHBBBBxBBBBxBB')
-        offset = 0
-        i = 0
+
         zcount = len(globals_.Area.zones)
         buffer2 = bytearray(24 * zcount)
         buffer4 = bytearray(24 * zcount)
         buffer5 = bytearray(24 * zcount)
         buffer9 = bytearray(24 * zcount)
-        for z in globals_.Area.zones:
-            if z.objx < 0: z.objx = 0
-            if z.objy < 0: z.objy = 0
+
+        for i, z in enumerate(globals_.Area.zones):
+            offset = i * 24
+
             bdngstruct.pack_into(buffer2, offset, z.yupperbound, z.ylowerbound, z.yupperbound2, z.ylowerbound2, i, 0xF)
             bgAstruct.pack_into(buffer4, offset, i, z.XscrollA, z.YscrollA, z.YpositionA, z.XpositionA, z.bg1A, z.bg2A,
                                 z.bg3A, z.ZoomA)
@@ -924,8 +904,6 @@ class Area_NSMBW(AbstractParsedArea):
                                 z.bg3B, z.ZoomB)
             zonestruct.pack_into(buffer9, offset, z.objx, z.objy, z.width, z.height, z.modeldark, z.terraindark, i, i,
                                  z.cammode, z.camzoom, z.visibility, i, i, z.camtrack, z.music, z.sfxmod)
-            offset += 24
-            i += 1
 
         self.blocks[2] = bytes(buffer2)
         self.blocks[4] = bytes(buffer4)
@@ -937,25 +915,22 @@ class Area_NSMBW(AbstractParsedArea):
         Saves block 11, the location data
         """
         locstruct = struct.Struct('>HHHHBxxx')
-        offset = 0
-        loc_count = len(globals_.Area.locations)
-        buffer = bytearray(12 * loc_count)
+        buffer = bytearray(12 * len(globals_.Area.locations))
 
-        for l in globals_.Area.locations:
-            locstruct.pack_into(buffer, offset, int(l.objx), int(l.objy), int(l.width), int(l.height), int(l.id))
-            offset += 12
+        for i, l in enumerate(globals_.Area.locations):
+            locstruct.pack_into(buffer, offset * 12, int(l.objx), int(l.objy), int(l.width), int(l.height), int(l.id))
 
         self.blocks[10] = bytes(buffer)
 
     def RemoveFromLayer(self, obj):
         """
-        Removes a specific object from the level and updates Z indexes accordingly
+        Removes a specific object from the level and updates Z indices accordingly
         """
         layer = self.layers[obj.layer]
         idx = layer.index(obj)
         del layer[idx]
-        for i in range(idx, len(layer)):
-            upd = layer[i]
+
+        for upd in layer[idx:]:
             upd.setZValue(upd.zValue() - 1)
 
     def SortSpritesByZone(self):
