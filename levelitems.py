@@ -2585,9 +2585,14 @@ class PathItem(LevelEditorItem):
         self.setFlag(self.ItemIsMovable, not globals_.PathsFrozen)
         self.setFlag(self.ItemIsSelectable, not globals_.PathsFrozen)
 
+        old_snap = globals_.OverrideSnapping
+        globals_.OverrideSnapping = True
+
         globals_.DirtyOverride += 1
         self.setPos(int(objx * 1.5), int(objy * 1.5))
         globals_.DirtyOverride -= 1
+
+        globals_.OverrideSnapping = old_snap
 
         self.setZValue(25002)
         self.UpdateTooltip()
