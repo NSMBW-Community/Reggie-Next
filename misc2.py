@@ -246,11 +246,19 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 selectedpn = None if len(plist.selectedItems()) < 1 else plist.selectedItems()[0]
 
                 if selectedpn is None:
-                    getids = [False for x in range(256)]
+                    getids = [False for _ in range(256)]
                     getids[0] = True
+
                     for pathdatax in globals_.Area.pathdata:
-                        # if(len(pathdatax['nodes']) > 0):
                         getids[int(pathdatax['id'])] = True
+
+                    if False not in getids:
+                        # There already are 255 paths in this area. That should
+                        # be enough. Also, the game doesn't allow path ids greater
+                        # than 255 anyway, so just don't let the user create the
+                        # path.
+                        globals_.mainWindow.levelOverview.update()
+                        return
 
                     newpathid = getids.index(False)
                     newpathdata = {
@@ -421,6 +429,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
         else:
             QtWidgets.QGraphicsView.mousePressEvent(self, event)
+
         globals_.mainWindow.levelOverview.update()
 
     def resizeEvent(self, event):
