@@ -731,9 +731,12 @@ class Area_NSMBW(AbstractParsedArea):
         """
         Saves the tileset names back to block 1
         """
-        self.blocks[0] = ''.join(
-            [self.tileset0.ljust(32, '\0'), self.tileset1.ljust(32, '\0'), self.tileset2.ljust(32, '\0'),
-             self.tileset3.ljust(32, '\0')]).encode('latin-1')
+        self.blocks[0] = struct.pack('>32s32s32s32s',
+            self.tileset0.encode('latin-1'),
+            self.tileset1.encode('latin-1'),
+            self.tileset2.encode('latin-1'),
+            self.tileset3.encode('latin-1')
+        )
 
     def SaveOptions(self):
         """
