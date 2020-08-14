@@ -3991,25 +3991,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
             assignments = ['globals_.Area.tileset0', 'globals_.Area.tileset1', 'globals_.Area.tileset2', 'globals_.Area.tileset3']
             newnames = dlg.TilesetsTab.values()
 
-            toUnload = []
-
             for idx, oldname, assignment, fname in zip(range(4), oldnames, assignments, newnames):
 
                 if fname in ('', None):
-                    toUnload.append(idx)
-                    continue
+                    fname = ''
                 elif fname.startswith(globals_.trans.string('AreaDlg', 16)):
                     fname = fname[len(globals_.trans.string('AreaDlg', 17, '[name]', '')):]
-                    if fname == '': continue
 
                 # TODO: Remove this exec
                 exec(assignment + ' = fname')
-                LoadTileset(idx, fname)
 
-            tilesets = [globals_.Area.tileset0, globals_.Area.tileset1, globals_.Area.tileset2, globals_.Area.tileset3]
-            for idx in toUnload:
-                tilesets[idx] = ''
-                UnloadTileset(idx)
+                if fname != '':
+                    LoadTileset(idx, fname)
+                else:
+                    UnloadTileset(idx)
 
             globals_.mainWindow.objPicker.LoadFromTilesets()
             self.objAllTab.setCurrentIndex(0)
