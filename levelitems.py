@@ -2594,7 +2594,7 @@ class PathItem(LevelEditorItem):
 
         globals_.OverrideSnapping = old_snap
 
-        self.setZValue(25002)
+        self.setZValue(25003)
         self.UpdateTooltip()
 
         self.setVisible(globals_.PathsShown)
