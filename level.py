@@ -520,14 +520,13 @@ class Area_NSMBW(AbstractParsedArea):
         Loads block 7, the entrances
         """
         entdata = self.blocks[6]
-        entcount = len(entdata) // 20
         entstruct = struct.Struct('>HHxxxxBBBBxBBBHxB')
-        offset = 0
+
         entrances = []
-        for _ in range(entcount):
+        for offset in range(0, len(entdata), 20):
             data = entstruct.unpack_from(entdata, offset)
             entrances.append(EntranceItem(*data))
-            offset += 20
+
         self.entrances = entrances
 
     def LoadSprites(self):
@@ -535,18 +534,18 @@ class Area_NSMBW(AbstractParsedArea):
         Loads block 8, the sprites
         """
         spritedata = self.blocks[7]
-        sprcount = len(spritedata) // 16
         sprstruct = struct.Struct('>HHH8sxx')
-        offset = 0
         sprites = []
 
         unpack = sprstruct.unpack_from
         append = sprites.append
         obj = SpriteItem
-        for _ in range(sprcount):
+
+        # Ignore the last 4 bytes because they are always 0xFFFFFFFF
+        for offset in range(0, len(spritedata) - 4, 16):
             data = unpack(spritedata, offset)
             append(obj(*data))
-            offset += 16
+
         self.sprites = sprites
 
     def LoadZones(self):
