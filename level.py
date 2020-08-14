@@ -924,53 +924,6 @@ class Area_NSMBW(AbstractParsedArea):
 
         self.blocks[10] = bytes(buffer)
 
-    def RemoveFromLayer(self, obj):
-        """
-        Removes a specific object from the level and updates Z indices accordingly
-        """
-        layer = self.layers[obj.layer]
-        idx = layer.index(obj)
-        del layer[idx]
-
-        for upd in layer[idx:]:
-            upd.setZValue(upd.zValue() - 1)
-
-    def SortSpritesByZone(self):
-        """
-        Sorts the sprite list by zone ID so it will work in-game
-        """
-
-        split = {}
-        zones = []
-
-        f_MapPositionToZoneID = SLib.MapPositionToZoneID
-        zonelist = self.zones
-
-        for sprite in self.sprites:
-            zone = f_MapPositionToZoneID(zonelist, sprite.objx, sprite.objy)
-            sprite.zoneID = zone
-            if not zone in split:
-                split[zone] = []
-                zones.append(zone)
-            split[zone].append(sprite)
-
-        newlist = []
-        zones.sort()
-        for z in zones:
-            newlist += split[z]
-
-        self.sprites = newlist
-
-    def LoadReggieInfo(self, data):
-        if (data is None) or (len(data) == 0):
-            self.Metadata = Metadata()
-            return
-
-        try:
-            self.Metadata = Metadata(data)
-        except Exception:
-            self.Metadata = Metadata()  # fallback
-
 
 class AbstractBackground:
     """
