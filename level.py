@@ -918,7 +918,7 @@ class Area_NSMBW(AbstractParsedArea):
         buffer = bytearray(12 * len(globals_.Area.locations))
 
         for i, l in enumerate(globals_.Area.locations):
-            locstruct.pack_into(buffer, offset * 12, int(l.objx), int(l.objy), int(l.width), int(l.height), int(l.id))
+            locstruct.pack_into(buffer, i * 12, int(l.objx), int(l.objy), int(l.width), int(l.height), int(l.id))
 
         self.blocks[10] = bytes(buffer)
 
