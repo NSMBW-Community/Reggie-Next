@@ -77,7 +77,7 @@ class LevelScene(QtWidgets.QGraphicsScene):
                     # in the tile map.
                     for i, row in enumerate(item.objdata):
                         destrow = tmap[desty + i]
-                        for j in range(startx, len(row)):
+                        for j in range(startx, startx + len(row)):
                             destrow[j] = -1
 
                     continue
