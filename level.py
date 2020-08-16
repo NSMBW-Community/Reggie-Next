@@ -402,6 +402,14 @@ class AbstractParsedArea(AbstractArea):
 
         for sprite in self.sprites:
             zone = f_MapPositionToZoneID(zonelist, sprite.objx, sprite.objy)
+            if zone == -1:
+                # No zone was found in the level.
+                # Pretend the sprite belongs to zone 0, even though this zone does
+                # not exist. The level won't work in-game anyway, because there
+                # are no zones. This default allows users to save area's without
+                # zones, so it adds greater flexibility.
+                zone = 0
+
             sprite.zoneID = zone
             if not zone in split:
                 split[zone] = []
