@@ -1067,7 +1067,7 @@ class ObjectItem(LevelEditorItem):
                             if newX >= 0 and newX + newWidth == obj.objx + obj.width:
                                 obj.objx = newX
                                 newSize[0] = newWidth
-                                obj.setPos(newX * 24, cy * 24)
+                                obj.setPos(newX * 24, obj.objy * 24)
 
                             else:
                                 self.objsDragging[obj][0] = oldWidth
@@ -1150,7 +1150,7 @@ class ObjectItem(LevelEditorItem):
                             if newX >= 0 and newX + newWidth == obj.objx + obj.width:
                                 obj.objx = newX
                                 newSize[0] = newWidth
-                                obj.setPos(newX * 24, cy * 24)
+                                obj.setPos(newX * 24, obj.objy * 24)
 
                             else:
                                 self.objsDragging[obj][0] = oldWidth
