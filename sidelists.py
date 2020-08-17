@@ -777,6 +777,11 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
             for cnode in nodelist:
                 for i in range(cnode.childCount()):
                     snode = cnode.child(i)
+
+                    if snode == self.NoSpritesFound:
+                        # Don't change the name of the "no sprites found" marker
+                        continue
+
                     id_ = snode.data(0, QtCore.Qt.UserRole)
 
                     if globals_.Sprites[id_] is None:
