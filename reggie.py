@@ -963,6 +963,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable)
         dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         dock.setObjectName('spriteeditor')  # needed for the state to save/restore correctly
+        dock.move(100, 100) # offset the dock from the top-left corner
 
         self.spriteDataEditor = SpriteEditorWidget()
         self.spriteDataEditor.DataUpdate.connect(self.SpriteDataUpdated)
@@ -978,6 +979,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable)
         dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         dock.setObjectName('entranceeditor')  # needed for the state to save/restore correctly
+        dock.move(100, 100) # offset the dock from the top-left corner
 
         self.entranceEditor = EntranceEditorWidget()
         dock.setWidget(self.entranceEditor)
@@ -992,6 +994,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable)
         dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         dock.setObjectName('pathnodeeditor')  # needed for the state to save/restore correctly
+        dock.move(100, 100) # offset the dock from the top-left corner
 
         self.pathEditor = PathNodeEditorWidget()
         dock.setWidget(self.pathEditor)
@@ -1006,6 +1009,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable)
         dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         dock.setObjectName('locationeditor')  # needed for the state to save/restore correctly
+        dock.move(100, 100) # offset the dock from the top-left corner
 
         self.locationEditor = LocationEditorWidget()
         dock.setWidget(self.locationEditor)
@@ -1145,6 +1149,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
         ddock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         ddock.setObjectName('defaultprops')  # needed for the state to save/restore correctly
+        ddock.move(100, 100) # offset the dock from the top-left corner
 
         self.defaultDataEditor = SpriteEditorWidget(True)
         self.defaultDataEditor.setVisible(False)
