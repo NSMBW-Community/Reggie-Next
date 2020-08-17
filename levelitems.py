@@ -2485,7 +2485,6 @@ class EntranceItem(LevelEditorItem):
             painter.setBrush(QtGui.QBrush(globals_.theme.color('entrance_fill')))
             painter.setPen(QtGui.QPen(globals_.theme.color('entrance_lines')))
 
-        self.TypeChange()
         painter.drawRoundedRect(self.RoundedRect, 4, 4)
 
         icontype = 0
