@@ -2458,12 +2458,16 @@ class EntranceItem(LevelEditorItem):
             h = 2
 
         # Now make the rects
+        old_rect = self.getFullRect()
         self.RoundedRect = QtCore.QRectF((x * 24) + 1, (y * 24) + 1, (w * 24) - 2, (h * 24) - 2)
         self.BoundingRect = QtCore.QRectF(x * 24, y * 24, w * 24, h * 24)
         self.LevelRect = QtCore.QRectF(x + (self.objx / 16), y + (self.objy / 16), w, h)
 
         # Update the aux thing
         self.aux.TypeChange()
+
+        # Update the scene
+        globals_.mainWindow.scene.update(old_rect.united(self.getFullRect()))
 
     def paint(self, painter, option, widget):
         """
