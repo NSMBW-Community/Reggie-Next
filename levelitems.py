@@ -1572,16 +1572,14 @@ class LocationItem(LevelEditorItem):
         Updates the location's bounding rectangle
         """
         self.prepareGeometryChange()
-        if self.width == 0: self.width == 1
-        if self.height == 0: self.height == 1
 
         self.BoundingRect = QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5)
-        self.BoundingRect = self.BoundingRect.united(self.TitleRect)
 
         self.SelectionRect = QtCore.QRectF(self.objx * 1.5, self.objy * 1.5, self.width * 1.5, self.height * 1.5)
         self.ZoneRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
         self.DrawRect = QtCore.QRectF(1, 1, (self.width * 1.5) - 2, (self.height * 1.5) - 2)
         self.GrabberRect = QtCore.QRectF(((1.5) * self.width) - 4.8, ((1.5) * self.height) - 4.8, 4.8, 4.8)
+        self.BoundingRect = self.BoundingRect.united(self.TitleRect).united(self.GrabberRect)
         self.UpdateListItem()
 
     def paint(self, painter, option, widget):
@@ -1644,6 +1642,9 @@ class LocationItem(LevelEditorItem):
             if clickedx != dsx or clickedy != dsy:
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
+
+                self.objx = min(cx, clickedx)
+                self.objy = min(cy, clickedy)
 
                 self.width += clickedx - dsx
                 self.height += clickedy - dsy
