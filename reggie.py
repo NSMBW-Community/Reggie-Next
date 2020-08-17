@@ -3260,7 +3260,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.update()
 
     def ReloadSpritedata(self):
-        globals_.Sprites = None
         LoadSpriteData()
 
         # Reload spritedata editor
@@ -3269,6 +3268,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Update list
         self.sprPicker.UpdateSpriteNames()
+
+        # Redo the search if a search was made
+        search = self.spriteSearchTerm.text()
+        if search != "":
+            self.sprPicker.SetSearchString(search)
 
     def ChangeSelectionHandler(self):
         """
