@@ -797,6 +797,14 @@ class Area_NSMBW(AbstractParsedArea):
         zonelist = self.zones
         for entrance in self.entrances:
             zoneID = SLib.MapPositionToZoneID(zonelist, entrance.objx, entrance.objy)
+            if zoneID == -1:
+                # No zone was found in the level.
+                # Pretend the entrance belongs to zone 0, even though this zone
+                # does not exist. The level won't work in-game anyway, because
+                # there are no zones. This default allows users to save areas
+                # without zones, so it adds greater flexibility.
+                zoneID = 0
+
             entstruct.pack_into(buffer, offset, int(entrance.objx), int(entrance.objy),
                                 int(entrance.entid), int(entrance.destarea), int(entrance.destentrance),
                                 int(entrance.enttype), zoneID, int(entrance.entlayer), int(entrance.entpath),
