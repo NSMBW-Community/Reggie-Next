@@ -2750,8 +2750,6 @@ class PathEditorLineItem(LevelEditorItem):
         """
         Paints the path lines
         """
-        # global theme
-
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
         painter.setClipRect(option.exposedRect)
 
@@ -2759,20 +2757,25 @@ class PathEditorLineItem(LevelEditorItem):
         painter.setBrush(QtGui.QBrush(color))
         painter.setPen(QtGui.QPen(color, 3, join=QtCore.Qt.RoundJoin, cap=QtCore.Qt.RoundCap))
 
-        lines = []
+        linepath = QtGui.QPainterPath()
+        curx, cury = self.x(), self.y()
 
-        snl = self.nodelist
-        for j, node in enumerate(snl):
-            if ((j + 1) < len(snl)):
-                a = QtCore.QPointF(float(snl[j]['x'] * 1.5) - self.x(), float(snl[j]['y'] * 1.5) - self.y())
-                b = QtCore.QPointF(float(snl[j + 1]['x'] * 1.5) - self.x(), float(snl[j + 1]['y'] * 1.5) - self.y())
-                lines.append(QtCore.QLineF(a, b))
-            elif self.loops and (j + 1) == len(snl):
-                a = QtCore.QPointF(float(snl[j]['x'] * 1.5) - self.x(), float(snl[j]['y'] * 1.5) - self.y())
-                b = QtCore.QPointF(float(snl[0]['x'] * 1.5) - self.x(), float(snl[0]['y'] * 1.5) - self.y())
-                lines.append(QtCore.QLineF(a, b))
+        points = []
 
-        painter.drawLines(lines)
+        for node in self.nodelist:
+            points.append(QtCore.QPointF(
+                node['x'] * 1.5 - curx, node['y'] * 1.5 - cury
+            ))
+
+        if self.loops and len(points) > 0:
+            points.append(points[0])
+
+        linepath.addPolygon(QtGui.QPolygonF(points))
+
+        stroker = QtGui.QPainterPathStroker()
+        stroker.setWidth(1.5)
+
+        painter.drawPath(stroker.createStroke(linepath).simplified())
 
     def delete(self):
         """
