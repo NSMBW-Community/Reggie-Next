@@ -365,8 +365,8 @@
   <sprite id="33" name="Event Controller - Zone Enter" notes="When the zone is loaded, all 'Zone Enter' Event Controllers will activate and modify the status of their associated Event IDs. Note that Event IDs 1-33 are stored Level-wide, and not per Area or Zone. By using this controller in a midway room, you can clear those Event flags or set them to start activated.">
     <value bit="9-16" title="Target Event ID" comment="This Event ID will be modified when the zone loads." idtype="Target Event"/>
     <dualbox bit="44" title1="Deactivates Target Event" title2="Activates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are activated."/>
-    <value nybble="5-6" title="Time Activated" comment="This determines the amount of time the Target Event will be activated for before deactivating." comment2="A value of 0 will not deactivate on its own." requiredbit="44"/>
-    <checkbox bit="48" title="Does Nothing / Self Destructs" comment="When enabled, the Event Controller will skip its function and delete itself." advanced="True" advancedcomment="Why make this?? Silly Nintendo."/>
+    <value nybble="5-6" title="Time Activated" comment="This determines the amount of time the Target Event will be activated for before deactivating." comment2="A value of 0 will not deactivate on its own. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick. &lt;br&gt; &lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring." requiredbit="44"/>
+    <checkbox bit="48" title="Does Nothing / Self Destructs" comment="When enabled, the Event Controller will skip its function and delete itself." advanced="True"/>
   </sprite> <!-- #33: Event Controller - Zone Enter -->
 
   <sprite id="34" name="Event Controller - &quot;AND&quot; (If X AND Y, do Z)" notes="This Event Controller works by allowing up to 4 Event IDs to be required to modify a single Event. Not all Triggering Event IDs must be set to a relevant value. You can and should leave unused Triggering Event IDs as '0'. You should also fill Triggering IDs in numerical order. Using the same value with multiple Event ID slots may cause issues in the editor.">
@@ -413,7 +413,7 @@
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the Triggering Event is activated." idtype="Target Event"/>
     <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="17-24" requiredval="0"/> <!-- Appears if no Delay is set -->
     <dualbox bit="48" title1="Off; On after Delay" title2="On; Off after Duration" comment="This determines how the Target Event is modified both before and after the delay." requiredbit="17-24"/> <!-- Appears if Delay is set -->
-    <value bit="17-24" title="Activation Delay/Duration" comment="The Target Event will be modified instantly. When this is set to 0, the Target Event will not be modified further. Otherwise, it will place it in the reverse state then wait a specific amount of time before modifying it again." comment2="A value of 6 is approximately 1 second on the game's clock. &lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring."/>
+    <value bit="17-24" title="Activation Delay/Duration" comment="The Target Event will be modified instantly. When this is set to 0, the Target Event will not be modified further. Otherwise, it will place it in the reverse state then wait a specific amount of time before modifying it again." comment2="A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick. &lt;br&gt; &lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring."/>
     <dualbox bit="44" title1="Single Use" title2="Multi-Use" comment="This determines how often the Target Event ID can be modified by the controller." comment2="Single Use: When the condition of the Triggering Event is met, the Target Event will be modified, and the controller will not affect the Target Event again even if the condition of the Triggering Event is subsequently met again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time the condition of the Triggering Event is met, the Target Event will be modified. If the delay is still running, the delay will be refreshed to its full value."/>
   </sprite> <!-- #37: Event Controller - Chainer (If X, do Y) -->
   
@@ -454,8 +454,8 @@
   <sprite id="39" name="Event Controller - Multi-Chainer (If X, do Y THROUGH Z)" notes="This Event Controller will run its code when the Start Event ID is activated. It will then activate each Event ID from ['Start Event ID' + 1] through ['End Event ID']. While you cannot use this to deactivate events directly, if you use the Only While Active mode, activating and then deactivating the Start Event ID will cause the event controller to instead deactivate the events it just activated.">
     <value bit="1-8" title="Start Event ID" comment="The Multi-Chainer will start running when this Event ID is activated." idtype="Triggering Event"/>
     <value bit="9-16" title="End Event ID" comment="The Multi-Chainer will activate all Events from the Start Event ID to this Event ID (including this one)." comment2="The value entered here must be larger than the value entered for 'Start Event ID'" idtype="Target Event"/>
-    <value nybble="5-6" title="Delay" comment="The Multi-Chainer will wait this amount of time between activating each event." comment2="A value of 6 is approximately 1 second on the game's clock." requiredbit="44" requiredval="0"/>
-    <value nybble="5-6" title="Delay" comment="The Multi-Chainer will wait this amount of time between activating/deactivating each event." comment2="A value of 6 is approximately 1 second on the game's clock." requiredbit="44"/> <!-- Appears if Only While Active is selected for better clarification of its effect. -->
+    <value nybble="5-6" title="Delay" comment="The Multi-Chainer will wait this amount of time between activating each event." comment2="A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick. &lt;br&gt; &lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring." requiredbit="44" requiredval="0"/>
+    <value nybble="5-6" title="Delay" comment="The Multi-Chainer will wait this amount of time between activating/deactivating each event." comment2="A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick. &lt;br&gt; &lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring." requiredbit="44"/> <!-- Appears if Only While Active is selected for better clarification of its effect. -->
     <dualbox bit="44" title1="Single Run" title2="Only While Active" comment="This will determine if the Multi-Chainer will only run once, or if it can deactivate the events with the potential to activate them again." comment2="Single Run: When the Start Event ID is first activated, the Multi-Chainer will activate all events through End Event ID and then cease functioning. &lt;br&gt; &lt;br&gt;Only While Active: Every time the Start Event ID is activated, the Multi-Chainer will begin to activate all events through End Event ID. Every time the Start Event ID is deactivated, the Multi-Chainer will begin to deactivate all events through End Event ID."/>
   </sprite> <!-- #39: Event Controller - Multi-Chainer (If X, do Y THROUGH Z) -->
 
@@ -2011,8 +2011,8 @@
       <entry value="0">Medium</entry>
       <entry value="1">Fast</entry>
     </list>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <value nybble="6" title="Timing Offset" comment="This determines the delay factor relevant to other otherwise identical Skewers." comment2="A value of 8 is expected to have the opposite timing of a value of 0. Other delay values are fractional." advancedcomment="ASM research is required to find the true details of this setting. Nintendo uses values of 0, 1, and 8. Don't be afraid to experiment."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
@@ -2173,8 +2173,8 @@
       <entry value="0">Medium</entry>
       <entry value="1">Fast</entry>
     </list>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <value nybble="6" title="Timing Offset" comment="This determines the delay factor relevant to other otherwise identical Skewers." comment2="A value of 8 is expected to have the opposite timing of a value of 0. Other delay values are fractional." advancedcomment="ASM research is required to find the true details of this setting. Nintendo uses values of 0, 1, and 8. Don't be afraid to experiment."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
@@ -2194,8 +2194,8 @@
       <entry value="0">Medium</entry>
       <entry value="1">Fast</entry>
     </list>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <value nybble="6" title="Timing Offset" comment="This determines the delay factor relevant to other otherwise identical Skewers." comment2="A value of 8 is expected to have the opposite timing of a value of 0. Other delay values are fractional." advancedcomment="ASM research is required to find the true details of this setting. Nintendo uses values of 0, 1, and 8. Don't be afraid to experiment."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
@@ -2215,8 +2215,8 @@
       <entry value="0">Medium</entry>
       <entry value="1">Fast</entry>
     </list>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <value nybble="6" title="Timing Offset" comment="This determines the delay factor relevant to other otherwise identical Skewers." comment2="A value of 8 is expected to have the opposite timing of a value of 0. Other delay values are fractional." advancedcomment="ASM research is required to find the true details of this setting. Nintendo uses values of 0, 1, and 8. Don't be afraid to experiment."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
@@ -6038,8 +6038,8 @@
   <!-- Documentation conflict with bit 28 (26??)(nybble 7, 0100, value 4???) on 398, 400, 401, and 404. W4 Castle vs unchecked. Additionally, investigate the use of Layer 0 (foreground) terrain with all four skewers. -->
   <sprite id="398" name="Long Skewer - Right" notes="A long spiked pillar that covers a distance of about 80 Blocks to the right. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
     <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer." advancedcomment="Bug: The last loaded Long Skewer in the Area makes every other Long Skewer the same color."/>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Long Skewers at all."/>
   </sprite> <!-- #398: Long Skewer - Right -->
@@ -6049,16 +6049,16 @@
   
   <sprite id="400" name="Long Skewer - Left" notes="A long spiked pillar that covers a distance of about 80 Blocks to the left. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed.">
     <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer." advancedcomment="Bug: The last loaded Long Skewer in the Area makes every other Long Skewer the same color."/>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Long Skewers at all."/>
   </sprite> <!-- #400: Long Skewer - Left -->
 
   <sprite id="401" name="Massive Skewer - Down" notes="A massive spiked pillar that covers a distance of exactly 108 Blocks downwards. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed. The line displays the start-up distance of the Skewer, and the rectangle illustrates the Skewer's full path.">
     <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Massive Skewers at all."/>
 	<checkbox bit="28" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="Used in Retail 07-24 as 1, no clear effect."/>
@@ -6138,8 +6138,8 @@
 
   <sprite id="404" name="Massive Skewer - Up" notes="A massive spiked pillar that covers a distance of exactly 108 Blocks upwards. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed. The line displays the start-up distance of the Skewer, and the rectangle illustrates the Skewer's full path.">
     <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
-    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 6 is approximately 1 second on the game's clock."/>
-    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 6 is approximately 1 second on the game's clock."/>
+    <value nybble="9-10" title="Delay Before Launch" comment="This determines the delay before the Skewer shoots out in its direction. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
+    <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Massive Skewers at all."/>
 	<checkbox bit="28" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="Used in Retail 07-24 as 1, no clear effect."/>
