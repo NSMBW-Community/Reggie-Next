@@ -1687,7 +1687,7 @@ class SpriteImage_KoopaTroopa(SLib.SpriteImage_StaticMultiple):  # 57
             self.image = ImageCache['KoopaG'] if not red else ImageCache['KoopaR']
         else:
             del self.offset
-            self.image = ImageCache['KoopaShellG'] if not red else ImageCache['KoopaR']
+            self.image = ImageCache['KoopaShellG'] if not red else ImageCache['KoopaShellR']
 
         super().dataChanged()
 
@@ -5158,7 +5158,7 @@ class SpriteImage_ScaredyRat(SLib.SpriteImage):  # 271
     def dataChanged(self):
         super().dataChanged()
 
-        number = self.parent.spritedata[5] >> 4
+        number = (self.parent.spritedata[5] >> 4) & 3
         direction = self.parent.spritedata[5] & 0xF
 
         self.width = (number + 1) * (ImageCache['ScaredyRat'].width() / 1.5)
