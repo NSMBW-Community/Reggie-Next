@@ -4140,13 +4140,13 @@
 
   <sprite id="273" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #273: Unused -->
 
-  <sprite id="274" name="Rotating Metal Castle Gear" notes="A metalic rotating gear object with either 4 or 8 teeth. It can crush the player with an instant-kill if they get trapped between terrain or other solid objects from the rotation.">
-    <dependency notes="The Castle Gear can either rotate on its own power, or can be set to rotate with a rotation controller. It can also be paired with a Swaying controller if you want to be silly. It cannot be used with Event Controlled rotation.">
+  <sprite id="274" name="Rotation Controlled Metal Castle Gear" notes="A metalic rotating gear object with either 4 or 8 teeth. It can crush the player with an instant-kill if they get trapped between terrain or other solid objects from the rotation.">
+    <dependency notes="The Castle Gear can either rotate on its own power, or can be set to rotate with a rotation controller. It can also be paired with a Swaying controller if you want to be silly.&lt;br&gt;Finally, the cogs on the center and teeth all draw in front of Layer 1, but everything else draws behind it.">
       <suggested sprite="96"/>
       <suggested sprite="149"/>
     </dependency>
     <dualbox bit="40" title1="Small Gear" title2="Large Gear" comment="This determines how large the gear is."/>
-    <value bit="41-48" title="Rotation ID" comment="When set, the gear will move under the power of a rotation controller instead of rotating under its own power." comment2="You cannot use Event Controlled rotation options with this gear."/>
+    <value bit="41-48" title="Rotation ID" comment="When set, the gear will move under the power of a rotation controller instead of rotating under its own power." comment2="The gear will rotate in place, regardless of the rotation controller's position."/>
     <dualbox bit="36" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the gear will rotate when rotating under its own power." requiredbit="41-48" requiredval="0"/> <!-- These three options only appear if Rotation ID is not set. -->
     <value nybble="7" title="Rotation Speed (+)" comment="This will increase the speed of the gear's rotation when rotating under its own power." comment2="Only one Rotation Speed should be chosen. A rotation speed of 0 is equal to 'Slow+' on a Spinning rotation controller." requiredbit="41-48" requiredval="0"/>
     <value nybble="8" title="Rotation Speed (-)" comment="This will decrease the speed of the gear's rotation when rotating under its own power." comment2="Only one Rotation Speed should be chosen. A rotation speed of 0 is equal to 'Slow+' on a Spinning rotation controller." requiredbit="41-48" requiredval="0"/>
