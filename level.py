@@ -684,7 +684,7 @@ class Area_NSMBW(AbstractParsedArea):
         nodestruct = struct.Struct('>HHffhxx')
         unpack = nodestruct.unpack_from
 
-        for offset in range(startindex * 16, count * 16, 16):
+        for offset in range(startindex * 16, (startindex + count) * 16, 16):
             data = unpack(nodedata, offset)
 
             nodes.append({
