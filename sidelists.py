@@ -982,7 +982,7 @@ class SpriteList(QtWidgets.QWidget):
             self.filterRow(row, newidx)
 
         # hide all columns except 0 and newidx
-        for col in range(0, self.table.columnCount()):
+        for col in range(self.table.columnCount()):
             if col in (0, newidx):
                 self.table.showColumn(col)
             else:
@@ -1065,6 +1065,9 @@ class SpriteList(QtWidgets.QWidget):
         ids = self.getIDsFor(sprite)
         for col, idtype in enumerate(self.idtypes):
             id_ = ids.get(idtype, "")
+
+            if len(id_) == 1:
+                id_ = id_[0]
 
             id_item = QtWidgets.QTableWidgetItem(str(id_))
             # The following line throws:
@@ -1159,7 +1162,7 @@ class SpriteList(QtWidgets.QWidget):
     @staticmethod
     def getIDsFor(sprite):
         """
-        Returns an (idtype, value) dict for every
+        Returns an (idtype, [values]) dict for every
         idtype this sprite has
         """
         sdef = globals_.Sprites[sprite.type]
@@ -1180,7 +1183,10 @@ class SpriteList(QtWidgets.QWidget):
             # value).
             idtype = field[-1]
             value = decoder.retrieve(data, field[2])
-            res[idtype] = value
+            try:
+                res[idtype].append(value)
+            except KeyError:
+                res[idtype] = [value]
 
         return res
 
