@@ -1046,22 +1046,26 @@ def LoadEntranceNames(reload_=False):
         for path in paths: new.append(path)
         paths = new
 
-    NameList = {}
+    NameList = []
     for path in paths:
-        newNames = {}
+        newNames = []
         with open(path, 'r') as f:
             for line in f.readlines():
-                id_ = int(line.split(':')[0])
-                newNames[id_] = line.split(':')[1].replace('\n', '')
+                id_, name = line.split(':')
+                newNames.append((int(id_), name.replace('\n', '')))
 
-        for idx in newNames:
-            NameList[idx] = newNames[idx]
+        for idx, name in newNames:
+            for j, (k, _) in enumerate(NameList):
+                if k == idx:
+                    NameList[j] = (k, name)
+                    break
+            else:
+                NameList.append((idx, name))
 
-    globals_.EntranceTypeNames = []
-    idx = 0
-    while idx in NameList:
-        globals_.EntranceTypeNames.append(globals_.trans.string('EntranceDataEditor', 28, '[id]', idx, '[name]', NameList[idx]))
-        idx += 1
+    globals_.EntranceTypeNames = [
+        globals_.trans.string('EntranceDataEditor', 28, '[id]', i, '[name]', name)
+        for i, name in NameList
+    ]
 
 
 def LoadTilesetInfo(reload_=False):
