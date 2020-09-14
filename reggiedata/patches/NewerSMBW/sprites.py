@@ -863,6 +863,34 @@ class SpriteImage_NewerBouncyCloud(SLib.SpriteImage_StaticMultiple):  # 78
             self.offset = (-2, -2)
 
         super().dataChanged()
+        
+        
+class SpriteImage_ActorSpawner(SLib.SpriteImage_Static):  # 88
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['ActorSpawner'],
+            (8, 0),
+        )
+        
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('ActorSpawner', 'ActorSpawner.png')
+        
+        
+class SpriteImage_ActorMultiSpawner(SLib.SpriteImage_Static):  # 89
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['ActorMultiSpawner'],
+            (-8, -16),
+        )
+        
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('ActorMultiSpawner', 'ActorMultiSpawner.png')
 
 
 class SpriteImage_GiantSpikeBall(SLib.SpriteImage_StaticMultiple):  # 98
@@ -2072,6 +2100,8 @@ ImageClasses = {
     60: SpriteImage_NewerSpikeTop,
     78: SpriteImage_NewerBouncyCloud,
     63: SpriteImage_NewerSpikeBall,
+    88: SpriteImage_ActorSpawner,
+    89: SpriteImage_ActorMultiSpawner,
     98: SpriteImage_GiantSpikeBall,
     101: SpriteImage_NewerBobomb,
     105: SpriteImage_NewerPokey,
