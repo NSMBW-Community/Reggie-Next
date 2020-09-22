@@ -40,8 +40,8 @@ def module_path():
     """
     if hasattr(sys, 'frozen'):
         return os.path.dirname(sys.executable)
-    if __name__ == '__main__':
-        return os.path.dirname(os.path.abspath(sys.argv[0]))
+    if __name__ == 'misc':
+        return os.path.dirname(os.path.abspath(__file__))
     return None
 
 
