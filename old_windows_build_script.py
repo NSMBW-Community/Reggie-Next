@@ -24,7 +24,7 @@
 # Builds Reggie! to a Windows binary (*.exe)
 # Use the values below to configure the release:
 
-PackageName = 'reggie_next_m4_win32'
+PackageName = 'reggie_next_m4a2_win32'
 Version = '4.2.0'  # This must be a valid float in string format
 
 ################################################################
@@ -95,7 +95,7 @@ setup(
     options={
         'build_exe': {
             'excludes': excludes,
-            'packages': ['sip', 'encodings', 'encodings.hex_codec', 'encodings.utf_8'],
+            'packages': ['PyQt5.sip', 'encodings', 'encodings.hex_codec', 'encodings.utf_8'],
             'build_exe': dir_,
         },
     },
