@@ -2659,7 +2659,6 @@ class PathItem(LevelEditorItem):
         painter.setFont(self.font)
         painter.drawText(4, 11, str(self.pathid))
         painter.drawText(4, 9 + QtGui.QFontMetrics(self.font).height(), str(self.nodeid))
-        painter.drawPoint(self.objx, self.objy)
 
     def delete(self):
         """
