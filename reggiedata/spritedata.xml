@@ -6190,7 +6190,7 @@
     </dependency>
   </sprite> <!-- #405: Boss Controller - Bowser Jr. (2nd Battle) -->
 
-  <sprite id="406" name="Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the rhird Bowser Jr. Boss Fight in World 8.">
+  <sprite id="406" name="Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the third Bowser Jr. Boss Fight in World 8.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 08-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
