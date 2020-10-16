@@ -646,7 +646,7 @@
 	<value nybble="3-4" title="Triggering Event ID" comment="Determines the Event ID that spawns the Seesaw Platform when activated, and despawns it when deactivated." requiredbit="17-20" requiredval="1"/>
   </sprite> <!-- #49: (Unused) Seesaw Platform -->
 
-  <sprite id="50" name="Fall-When-Touched Platform" notes="This platform will begin to fall when a player first touches it.">
+  <sprite id="50" name="Basic Platform - Fall-When-Touched" notes="This platform will begin to fall when a player first touches it.">
     <list bit="27-28" title="Color" comment="This determines the color of the platform.">
       <entry value="0">Normal</entry>
       <entry value="1">Silver</entry>
@@ -657,8 +657,8 @@
     <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="ASM shows Nybble 10 might affect something."/>
   </sprite> <!-- #50: Fall-When-Touched Platform -->
   
-  <sprite id="51" name="Tilt-Controlled Girder" notes="This is the Tilt-Controlled Girder (Beam) platform that is assigned to the first player to touch it. That player will maintain tilt control for as long as they are touching it.">
-  </sprite> <!-- #51: Tilt-Controlled Girder -->
+  <sprite id="51" name="Tilt Controlled Girder" notes="This is the Tilt Controlled Girder (Beam) platform that is assigned to the first player to touch it. That player will maintain tilt control for as long as they are touching it.">
+  </sprite> <!-- #51: Tilt Controlled Girder -->
   
   <sprite id="52" name="Auto-Rotating 4-Platform" asmhacks="True" notes="This platform is similar to the Reznor platforms from Super Mario World. It consists of four 6x1 platforms that rotate around the center point.">
     <dualbox bit="32" title1="Counter-Clockwise" title2="Clockwise" comment="This determines which way the platform will rotate."/>
@@ -696,8 +696,8 @@
     </list>
   </sprite> <!-- #55: (Unused) Rising Tilting Platform -->
   
-  <sprite id="56" name="Rising Tilt-Controlled Girder" notes="This is a Girder platform that can be controlled to move it left and right by tilting the Wii Remote. It will rise up until solid ground blocks its path, or until it reaches the Rising Tilt Lift Controller.">
-    <dependency notes="The [281] Rising Tilt-Controlled Girder Controller is required to be placed in the Zone for this platform to function. The platform must be placed below the Controller.">
+  <sprite id="56" name="Rising Tilt Controlled Girder" notes="This is a Girder platform that can be controlled to move it left and right by tilting the Wii Remote. It will rise up until solid ground blocks its path, or until it reaches the Rising Tilt Lift Controller.">
+    <dependency notes="The [281] Rising Tilt Controlled Girder Controller is required to be placed in the Zone for this platform to function. The platform must be placed below the Controller.">
        <required sprite="281"/> <!-- Requires Controller -->
     </dependency>
     <checkbox bit="20" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites."/>
@@ -709,7 +709,7 @@
       <entry value="2">???</entry>
       <entry value="3">???</entry>
     </list>
-  </sprite> <!-- #56: Rising Tilt-Controlled Girder -->
+  </sprite> <!-- #56: Rising Tilt Controlled Girder -->
 
   <sprite id="57" name="Koopa Troopa" asmhacks="True" sizehacks="True" notes="Your standard Koopa Troopa. Place it in the level and it will walk towards Mario when it loads. It can either be set to walk off ledges, or turn around at ledges.">
     <dualbox bit="48" title1="Walks Off Ledges" title2="Turns Around At Ledges" comment="This determines if the Koopa Troopa will mindlessly walk off of ledges or if it will turn around when it reaches a ledge." comment2="This also changes the color of the Koopa Troopa."/>
@@ -753,7 +753,7 @@
     <value bit="21" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in Retail: 06-01 A1"/>
   </sprite> <!-- #58: Koopa Paratroopa -->
 
-  <sprite id="59" name="Line-Controlled Tilt-Controlled Girder" notes="A platform similar to the Tilt-Controlled Girder that can navigate along Line guides.">
+  <sprite id="59" name="Line Controlled Tilt Controlled Girder" notes="A platform similar to the Tilt Controlled Girder that can navigate along Line guides.">
     <checkbox bit="28" title="Loads at Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point."/>
     <list bit="43-44" title="Activation Mode" comment="This determines when the platform will start moving.">
       <entry value="0">Will Move with One Player</entry>
@@ -764,7 +764,7 @@
     <checkbox bit="31" title="No Rendering?" advanced="True" advancedcomment="Selecting this option will trigger the effect described under [Rendering Related]."/>
     <checkbox bit="40" title="Stays Off" advanced="True" advancedcomment="Activating this will cause the platform to not react/move when a player stands on it. The code hints that it should only prevent this platform from disappearing instead of freezing it altogether."/>
     <value nybble="12" title="Width of the Collision Box" advanced="True" advancedcomment="Value + 6. This option does not change the length of the platform, but instead the length of the (invisible) collision box attached. The collision box ensures that Mario does not fall through the platform. The collision box usually has the same size as the platform itself. The collision box and the platform have the same center point. Per value, the collision box will extend its length 1/2 blocks to the left and right. If you stand on this collision box but outside the platform, then it looks as if you are standing in midair."/>
-  </sprite> <!-- #59: Line Controlled Tilt-Controlled Girder -->
+  </sprite> <!-- #59: Line Controlled Tilt Controlled Girder -->
 
   <sprite id="60" name="Spike Top" asmhacks="True" sizehacks="True" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spiketops don't properly work on slopes.">
     <list bit="43-44" title="Orientation" comment="The Spike Top must be placed against something for it to appear.">
@@ -1543,7 +1543,7 @@
     </list>
   </sprite> <!-- #105: Pokey -->
 
-  <sprite id="106" name="Line Controlled Moving Platform" notes="A standard platform that moves along Line objects. It cannot be paired with Use Lines for movement sycnronization.">
+  <sprite id="106" name="Line Controlled Basic Platform" notes="A standard platform that moves along Line objects. It cannot be paired with Use Lines for movement sycnronization.">
     <dualbox bit="36" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform."/>
     <value nybble="12" title="Width" comment="This determines the width of the platform." comment2="This value needs to be 2 or greater."/>
     <dualbox bit="32" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the platform will move based on the Line that it is connected to."/>
@@ -1561,9 +1561,9 @@
     <value nybble="10" title="Z-Order" comment="This will adjust the Z-Order of the platforms in relation to other objects." comment2="A higher value will place this sprite further towards the background."/>
     <checkbox bit="20" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
-  </sprite> <!-- #106: Line Controlled Moving Platform -->
+  </sprite> <!-- #106: Line Controlled Basic Platform -->
 
-  <sprite id="107" name="(Unused) Rotation-Controlled Solid Platform" notes="&quot;En_Lift_Rotation_Half&quot;. A Rotation Controlled block that works quite well. Flag x08 + x02 (x0A) (Unique Flag).">
+  <sprite id="107" name="(Unused) Rotation Controlled Solid Platform" notes="&quot;En_Lift_Rotation_Half&quot;. A Rotation Controlled block that works quite well. Flag x08 + x02 (x0A) (Unique Flag).">
     <value nybble="9-10" title="Width" comment="Value + 1, in blocks. Values repeat in groups of 32." />
     <value nybble="11-12" title="Rotation ID" comment="Works with both Swaying and Spinning." />
   </sprite>
@@ -1846,8 +1846,8 @@
     <dualbox bit="36" title1="Gold Platform" title2="Silver Platform" comment="This will set the color of the platform." requiredbit="27" requiredval="0"/>
     <dualbox bit="36" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used." requiredbit="27"/>
     <list nybble="12" title="Width" comment="This determines the width of the platform.">
-      <entry value="0">6 Blocks</entry>
-      <entry value="1">6 Blocks</entry>
+      <entry value="0">4 Blocks</entry>
+      <entry value="1">4 Blocks</entry>
       <entry value="2">6 Blocks</entry>
       <entry value="3">8 Blocks</entry>
       <entry value="4">10 Blocks</entry>
@@ -2896,8 +2896,8 @@
     </dependency>
   </sprite> <!-- #189: Larry Koopa -->
 
-  <sprite id="190" name="(Unused) Tilt-Controlled Girder" notes="&lt;font color=&quot;red&quot;&gt;It is not recommended for use due to a collision box not completely matching the model.&lt;/font&gt; Just use [51] instead." advancednotes="This uses the same 3D model as the used Tilt Lift, but this one has collisions that extend two blocks farther on the right side.">
-  </sprite> <!-- #190: (Unused) Tilt-Controlled Girder -->
+  <sprite id="190" name="(Unused) Tilt Controlled Girder" notes="&lt;font color=&quot;red&quot;&gt;It is not recommended for use due to a collision box not completely matching the model.&lt;/font&gt; Just use [51] instead." advancednotes="This uses the same 3D model as the used Tilt Lift, but this one has collisions that extend two blocks farther on the right side.">
+  </sprite> <!-- #190: (Unused) Tilt Controlled Girder -->
 
   <sprite id="191" name="Tile God Event" asmhacks="True" notes="The Tile God can Create / Change / Destroy tiles within a specified area when an Event is activated.">
     <dependency notes="The Tile God sprite can be placed no more than one block outside of the Zone it is being activated in for it to function."/>
@@ -4063,7 +4063,7 @@
     </list>
   </sprite> <!-- #266: Rotating Chainlink Fence Wheel -->
   
-  <sprite id="267" name="Tilt-Controlled Chainlink Fence" notes="A Chainlink Fence object with tilt control that will be assigned to the first player to touch it. Once assigned, it can be moved in a circular manner by tilting the Wiimote.">
+  <sprite id="267" name="Tilt Controlled Chainlink Fence" notes="A Chainlink Fence object with tilt control that will be assigned to the first player to touch it. Once assigned, it can be moved in a circular manner by tilting the Wiimote.">
     <list nybble="12" title="Orientation" comment="This determines the default location of the Chainlink Fence panel.">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
@@ -4082,7 +4082,7 @@
       <entry value="2">180°</entry>
       <entry value="3">No Limit</entry>
     </list>
-  </sprite> <!-- #267: Tilt-Controlled Chainlink Fence -->
+  </sprite> <!-- #267: Tilt Controlled Chainlink Fence -->
   
   <sprite id="268" name="Lava Geyser" notes="An eruption of lava that will block a player's path.">
     <dependency notes="While it is not required, it is recommended to place the geyser partially submerged in Lava of some form.">
@@ -4229,11 +4229,11 @@
     </list>
   </sprite> <!-- #280: Giant Ice Block -->
 
-  <sprite id="281" name="Rising Tilt-Controlled Girder Controller" notes="A controller for the Rising Tilt-Controlled Girder that will place a limit on the vertical ascent of the platform.">
-    <dependency notes="The controller must be placed above a [56] Rising Tilt-Controlled Girder. The placement of this controller will determine the stopping point of the rising girder's vertical ascent.">
+  <sprite id="281" name="Rising Tilt Controlled Girder Controller" notes="A controller for the Rising Tilt Controlled Girder that will place a limit on the vertical ascent of the platform.">
+    <dependency notes="The controller must be placed above a [56] Rising Tilt Controlled Girder. The placement of this controller will determine the stopping point of the rising girder's vertical ascent.">
        <required sprite="56"/> <!-- Requires Grider -->
     </dependency>
-  </sprite> <!-- #281: Rising Tilt-Controlled Girder Controller -->
+  </sprite> <!-- #281: Rising Tilt Controlled Girder Controller -->
 
   <sprite id="282" name="Incomplete Sprite - 'En_WallInsect'" notes="Does nothing.">
   </sprite> <!-- #282: Incomplete Sprite - 'En_WallInsect' -->
@@ -4977,13 +4977,13 @@
   <sprite id="332" name="Incomplete Sprite - 'Lift_Toride_Roll'" notes="Does nothing.">
   </sprite> <!-- #332: Incomplete Sprite - 'Lift_Toride_Roll' -->
 
-  <sprite id="333" name="Line Controlled Player-Block Platform" notes="A tilt-controlled platform that only activates when a player strikes the Player Block. It will zip from one end of a line guide to the other when the controlling player tilts their controller.">
+  <sprite id="333" name="Line Controlled Player-Block Platform" notes="A tilt controlled platform that only activates when a player strikes the Player Block. It will zip from one end of a line guide to the other when the controlling player tilts their controller.">
     <dependency notes="This platform will not move along line objects without the use of [187] Player Block.">
       <requires sprite="187"/>
     </dependency>
   </sprite> <!-- #333: Line Controlled Player-Block Platform -->
 
-  <sprite id="333" name="Line Controlled Player-Block Platform" notes="A tilt-controlled platform that only activates when a player strikes the Player Block. It will zip from one end of a line guide to the other when the controlling player tilts their controller.">
+  <sprite id="333" name="Line Controlled Player-Block Platform" notes="A tilt controlled platform that only activates when a player strikes the Player Block. It will zip from one end of a line guide to the other when the controlling player tilts their controller.">
     <dependency notes="This platform will not move along line objects without the use of [187] Player Block.">
       <required sprite="187"/>
     </dependency>

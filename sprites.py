@@ -2409,7 +2409,7 @@ class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
     # TODO: Add arrows
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.yOffset = 8
+        self.yOffset = 16
 
     def dataChanged(self):
         super().dataChanged()
@@ -2422,6 +2422,10 @@ class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
 
         # override this for the "glitchy" effect caused by length=0
         if self.width == 16: self.width = 24
+        if self.width == 24: 
+            self.xOffset = -8
+        else:
+            self.xOffset = 0
 
         self.color = 0
 
@@ -2476,6 +2480,9 @@ class SpriteImage_LinePlatform(SpriteImage_WoodenPlatform):  # 106
 
         # override this for the "glitchy" effect caused by length=0
         if self.width == 16: self.width = 24
+        
+        # reposition platform
+        self.xOffset = (self.width * -0.5) + 32
 
         color = (self.parent.spritedata[4] & 0xF0) >> 4
         if color > 1: color = 0
@@ -2887,7 +2894,7 @@ class SpriteImage_OneWayPlatform(SpriteImage_WoodenPlatform):  # 122
     def dataChanged(self):
         super().dataChanged()
         width = self.parent.spritedata[5] & 0xF
-        if width < 2: width = 2
+        if width < 2: width = 1
         self.width = width * 32 + 32
 
         self.xOffset = self.width * -0.5
