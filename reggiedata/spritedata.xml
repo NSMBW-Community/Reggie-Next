@@ -3265,7 +3265,7 @@
   <sprite id="210" name="Incomplete Sprite - 'Tarzan_Rope'" notes="Does nothing.">
   </sprite> <!-- #210: Incomplete Sprite - 'Tarzan_Rope' -->
 
-  <sprite id="211" name="Boss Controller - Bowser Jr. (1st Battle)" noyoshi="True" notes="This controls the mechanics for the First Bowser Jr. boss fight. It spawns the backgrounds BgA_0E02 and BgB_3402, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller.">
+  <sprite id="211" name="Boss Controller - Bowser Jr. (1st Battle)" noyoshi="True" notes="This controls the mechanics for the first Bowser Jr. Boss Fight in World 4. It spawns the backgrounds BgA_0E02 and BgB_3402, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 04-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
@@ -5456,9 +5456,9 @@
   </sprite> <!-- #356: Brown Tower Block -->
 
   <sprite id="357" name="Yoshi Fruit" asmhacks="True" sizehacks="True" notes="An edible fruit that Yoshi can grab. Collecting five will cause Yoshi to lay an egg. What's inside the egg will change depending on the player's current power-up. Normal -&gt; Fire -&gt; Ice -&gt; Propeller -&gt; 1-Up.">
-    <list nybble="12" title="Type" comment="This determines if the fruit is a standard berry, or if it is a special fruit that will instantly award a power-up egg.">
+    <list nybble="12" title="Type" comment="This determines if the fruit is a standard berry, or a cookie. They share no functional difference.">
       <entry value="0">Berry</entry>
-      <entry value="1">Cookie (Instantly Awards Egg)</entry>
+      <entry value="1">Cookie</entry>
     </list>
   </sprite> <!-- #357: Yoshi Fruit -->
   
@@ -5732,8 +5732,7 @@
     </dependency>
   </sprite> <!-- #375: Boss Controller - Wendy Koopa -->
 
-  <!-- Block values can be removed when editor has images. -->
-  <sprite id="376" name="Moving Chainlink Fence Panel" noyoshi="True" notes="A climbable chainlink fence panel that can either be paired with a Two Way Line controller or allowed to move independently in a back and forth direction.">
+  <sprite id="376" name="Moving Chainlink Fence Panel - Two Way Line" noyoshi="True" notes="A climbable chainlink fence panel that can either be paired with a Two Way Line controller or allowed to move independently in a back and forth direction.">
     <dependency notes="The Chainlink Fence may be paired with a [260] Two Way Line movement controller to allow for synchronized movement across a Zone. Additionally, it will appear in front of Layer 1, so is must have Layer 0 tiles painted to make it appear behind terrain.">
       <suggested sprite="260"/>
     </dependency>
@@ -5741,7 +5740,7 @@
     <list nybble="9" title="Shape" comment="This determines the size of the Chainlink Fence.">
       <entry value="0">Small Square (4x4)</entry>
       <entry value="1">Tall / Skinny (4x8)</entry>
-      <entry value="2">Taller/Skinny (4x14)</entry>
+      <entry value="2">Taller / Skinny (4x14)</entry>
       <entry value="3">Short / Long (12x4)</entry>
     </list>
     <value bit="41-44" title="Movement Distance" comment="This determines how far the Chainlink Fence will move, if at all." requiredbit="17-24" requiredval="0"/> <!-- This setting and those below will disappear if Two Way Line ID is set -->
@@ -6184,14 +6183,14 @@
 	<checkbox bit="28" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="Used in Retail 07-24 as 1, no clear effect."/>
   </sprite> <!-- #404: Massive Skewer - Up -->
 
-  <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the Second Bowser Jr. boss fight. The white square indicates the placement for the Airship Boss Cutscene controller.">
+  <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the second Bowser Jr. Boss Fight in World 6. The white square indicates the placement for the Airship Boss Cutscene controller.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 06-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
     </dependency>
   </sprite> <!-- #405: Boss Controller - Bowser Jr. (2nd Battle) -->
 
-  <sprite id="406" name="Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the Third Bowser Jr. boss fight.">
+  <sprite id="406" name="Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the rhird Bowser Jr. Boss Fight in World 8.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 08-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>

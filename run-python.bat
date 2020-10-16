@@ -16,4 +16,3 @@ REM
 @echo ON
 
 python reggie.py
-pause
