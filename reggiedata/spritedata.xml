@@ -6742,7 +6742,7 @@
   </sprite> <!-- #459: Crowd Clapping Controller for Coin Collection #1 -->
   
   <sprite id="460" name="Silver Gear Block - Two Way Line" notes="A large rectangular block with a silver gear motif as decoration. It can only be paired for Two Way Line movement." advancednotes="If linked with an Event Activated Two Way Line controller, the Silver Gear Block will only spawn when the event is activated.">
-    <dependency notes="This block must be paired with a [260] Two Way Line movement controller in order to spawn and function.">
+    <dependency notes="This block must be paired with a [260] Two Way Line movement controller in order to spawn and function. ID 0 works with this sprite.">
       <required sprite="260"/>
     </dependency>
     <value nybble="5-6" title="Two Way Line ID" comment="This pairs the block to a matching Two Way Line movement controller." idtype="Two Way Line"/>
@@ -6902,25 +6902,25 @@
     </list>
   </sprite> <!-- #471: Moving Pot on a Bolt Platform -->
 
-  <sprite id="472" name="Ice Flow Generator" noyoshi="True" notes="This generates 'cylindrical' Ice Blocks of a random size that slide across the ground from the right to the left.">
+  <sprite id="472" name="Ice Floe Generator" noyoshi="True" notes="This generates 'cylindrical' Ice Blocks of a random size that slide across the ground from the right to the left.">
     <dependency notes="They will spawn from the sprite's placement and fall to the nearest ground under the sprite placement. They will destroy breakable and explodable blocks placed against the ground line and will come to a complete stop when encountering any other terrain. Following that, they start to stack up, making it preferred that they have a pit to fall through. They are half in the air, half embedded in the ground when interacting with slopes, but they will make use of them."/>
-  </sprite> <!-- #472: Ice Flow Generator -->
+  </sprite> <!-- #472: Ice Floe Generator -->
 
-  <sprite id="473" name="Floating Ice Flow Generator" noyoshi="True" notes="This generates 'cylindrical' Ice Blocks of a random size that float across the surface of a liquid from the right to the left.">
+  <sprite id="473" name="Floating Ice Floe Generator" noyoshi="True" notes="This generates 'cylindrical' Ice Blocks of a random size that float across the surface of a liquid from the right to the left.">
     <dependency notes="They will spawn from the sprite's placement and fall or float to the liquid's surface. They will bob up and down with momentum and weight when they do this. They will move through all terrain. While it does function with Lava, it looks rather strange, thematically. Therefore it is only recommended to use this with Water and Poisoned Water. It does work with Moving Water, as well.">
       <suggested sprite="138"/>
       <suggested sprite="216"/>
     </dependency>
-  </sprite> <!-- #473: Floating Ice Flow Generator -->
+  </sprite> <!-- #473: Floating Ice Floe Generator -->
   
   <sprite id="474" name="Dancing Coin/Block Controller" notes="This is the controller that operates 'Dancing' and 'Dancing (Reversed) standard Coins and Blocks. Dancing Coins/Blocks will quickly sway left to right two blocks in distance while dipping slightly downwards about half a block.">
     <dependency notes="Only one Dancing controller is needed per Zone. It is recommended to place it nearby the Zone's entrance, but it can exist anywhere."/>
   </sprite> <!-- #474: Dancing Coin/Block Controller -->
 
-  <sprite id="475" name="Path Controlled Ice Flow" noyoshi="True" notes="A stand-alone Ice Flow that travels along an assigned Path.">
-    <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the Ice Flow will be linked to." idtype="Path"/>
-    <value nybble="6" title="Starting Node" comment="This determines the Node of the Path that the Ice Flow will appear at and start moving from."/>
-    <list nybble="12" title="Size" comment="This determines the size of the Ice Flow.">
+  <sprite id="475" name="Path Controlled Ice Floe" noyoshi="True" notes="A stand-alone Ice Floe that can travel along an assigned Path.">
+    <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the Ice Floe will be linked to, although the sprite works fine without one. Additionally, the Ice Floe will move at the speed of the Path it's linked to." idtype="Path"/>
+    <value nybble="6" title="Starting Node" comment="This determines the Node of the Path that the Ice Floe will appear at and start moving from."/>
+    <list nybble="12" title="Size" comment="This determines the size of the Ice Floe.">
       <entry value="8">2x4</entry>
       <entry value="11">2x5</entry>
       <entry value="0">3x3</entry>
@@ -6935,8 +6935,8 @@
       <entry value="7">11x8</entry>
       <entry value="6">16x11</entry>
     </list>
-    <checkbox bit="44" title="Floating" comment="When enabled, the Ice Flow will wiggle around as though it is floating on the surface of the water."/>
-  </sprite> <!-- #475: Path Controlled Ice Flow -->
+    <checkbox bit="44" title="Floating" comment="When enabled, the Ice Floe will wiggle around as though it is floating on the surface of the water."/>
+  </sprite> <!-- #475: Path Controlled Ice Floe -->
 
   <!-- Research on Nybble 11, and other Nybbles, is suggested. This includes checking for camera related values, so make sure that the test level has enough room to scroll vertically, or has an Airship Rocking effect. -->
   <sprite id="476" name="Loose Flying Wrench" notes="A stand-alone Rocky Wrench's wrench that will fly across the screen.">
