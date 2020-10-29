@@ -3265,7 +3265,7 @@
   <sprite id="210" name="Incomplete Sprite - 'Tarzan_Rope'" notes="Does nothing.">
   </sprite> <!-- #210: Incomplete Sprite - 'Tarzan_Rope' -->
 
-  <sprite id="211" name="Boss Controller - Bowser Jr. (1st Battle)" noyoshi="True" notes="This controls the mechanics for the first Bowser Jr. Boss Fight in World 4. It spawns the backgrounds BgA_0E02 and BgB_3402, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller.">
+  <sprite id="211" name="Boss Controller - Bowser Jr. (1st Battle)" noyoshi="True" notes="This controls the mechanics for the first Bowser Jr. Boss Fight in World 4. It spawns the backgrounds BgA_5602 and BgB_5302, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 04-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
@@ -6183,14 +6183,14 @@
 	<checkbox bit="28" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="Used in Retail 07-24 as 1, no clear effect."/>
   </sprite> <!-- #404: Massive Skewer - Up -->
 
-  <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the second Bowser Jr. Boss Fight in World 6. The white square indicates the placement for the Airship Boss Cutscene controller.">
+  <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the second Bowser Jr. Boss Fight in World 6. It spawns the backgrounds BgA_0B02 and BgB_5202, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 06-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
     </dependency>
   </sprite> <!-- #405: Boss Controller - Bowser Jr. (2nd Battle) -->
 
-  <sprite id="406" name="Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the third Bowser Jr. Boss Fight in World 8.">
+  <sprite id="406" name="Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the third Bowser Jr. Boss Fight in World 8.  It spawns the backgrounds BgA_5502 and BgB_4C02, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller.">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 08-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
@@ -6250,8 +6250,8 @@
     <list bit="47-48" title="Version" comment="This determines which version of the Bowser Jr. boss fight is being used.">
       <entry value="0">World 4 Airship</entry>
       <entry value="1">World 6 Airship</entry>
-      <entry value="2">World 8 Airship Part 1</entry>
-      <entry value="3">World 8 Airship Part 2</entry>
+      <entry value="2">World 8 Airship Part 1 (Boss Fight)</entry>
+      <entry value="3">World 8 Airship Part 2 (Post-Boss Fight)</entry>
     </list>
   </sprite> <!-- #409: Cutscene Controller - Bowser Jr and Peach at Airship -->
 
