@@ -5808,7 +5808,7 @@
     <value nybble="7-8" title="Unknown Value 7-8" advanced="True" advancedcomment="Used (1) in Retail: 01-05 A1."/>
   </sprite> <!-- #382: Screw Mushroom Platform without Bolt -->
   
-  <sprite id="383" name="Boss Controller - Kamek" notes="This controls the various boss fight mechanics for the Kamek fight in World 8-Tower, such as the boss movement, and level completion.">
+  <sprite id="383" name="Boss Controller - Kamek" notes="This controls the various boss fight mechanics for the Kamek fight in World 8-Tower, such as the boss movement, and level completion. Kamek himself can be placed anywhere within the Zone, but the controller is best used at the very top-left corner of it.">
     <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see 08-22's Boss Room.">
       <required sprite="427"/>
       <suggested sprite="436"/>

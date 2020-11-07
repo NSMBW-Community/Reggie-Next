@@ -4026,7 +4026,7 @@ class SpriteImage_MegaUrchin(SLib.SpriteImage_Static):  # 194
             parent,
             1.5,
             ImageCache['MegaUrchin'],
-            (-40, -46),
+            (-48, -46),
         )
 
         self.aux.append(SLib.AuxiliaryTrackObject(

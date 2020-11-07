@@ -2392,13 +2392,6 @@
     </list> <!-- Appears only if Falling Objects is set -->
   </sprite> <!-- #374: Effect - Falling Objects and Wind -->
 
-  <sprite id="383" name="Boss Controller - Kamek" notes="This controls the various boss fight mechanics for the Kamek fight in World 8-Tower, such as the boss movement, and level completion. &lt;font color=&quot;red&quot;&gt;The Boss Controller crashes NewerSMBW once he loads on-screen.&lt;/font&gt;">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see 08-22's Boss Room.">
-      <required sprite="427"/>
-      <suggested sprite="436"/>
-    </dependency>
-  </sprite> <!-- #383: Boss Controller - Kamek -->
-
   <!-- Color conflicts in recent sprite data, needs rechecked with screenshot. Also check color changes with Size setting. -->
   <sprite id="387" name="Bush" asmhacks="True" sizehacks="True" notes="A decorative leafy bush that appears behind Layer 1 terrain.">
     <dualbox bit="44" title1="Use Bush Color" title2="Yellowish Bush" comment="This determines if the Bush is a yellowish color, or if it uses the color listed in Bush Color instead."/>
@@ -2554,13 +2547,6 @@
     <dependency notes="&lt;font color=&quot;red&quot;&gt;Usable in classic NSMBW only.&lt;/font&gt; All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
     <checkbox bit="48" title="Unknown Flag 12 (1)" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #423: Toad Needs Help - Brick Block -->
-
-  <sprite id="427" name="Kamek" noyoshi="True" notes="Kamek himself, used in the tower boss fight of World 8. He cannot be used without the proper controllers and level setup. &lt;font color=&quot;red&quot;&gt;Kamek crashes NewerSMBW once he loads on-screen.&lt;/font&gt;">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see 08-22's Boss Room.">
-      <required sprite="383"/>
-      <suggested sprite="436"/>
-    </dependency>
-  </sprite> <!-- #427: Kamek -->
   
   <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the Retail Bowser battle.">
     <dependency notes="Most of the final Bowser fight involves hardcoded elements, some of which that were removed in Newer. Directly copying 08-24 A4 from Newer is strongly recommended. Sprites won't spawn if on screen when entering the zone.">
