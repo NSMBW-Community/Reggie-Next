@@ -145,7 +145,7 @@ class LHDecompressor:
 
     def get(self):
         if self.context.destCount > 0 or self.context.headerSize > 0:
-            raise RuntimeError("Tried to readS32 LH decompressed data, but compression is not done!")
+            raise RuntimeError("Tried to read LH decompressed data, but compression is not done!")
 
         return bytes(self.dst)
 
