@@ -15,15 +15,9 @@ import archive
 
 
 # Load libraries
-if globals_.cython_available:
-    import libs.lh_cy as lh
-    import libs.lz77_cy as lz77
-    import libs.tpl_cy as tpl
-
-else:
-    import libs.lh as lh
-    import libs.lz77 as lz77
-    import libs.tpl as tpl
+from libs import lh
+from libs import lz77
+from libs import tpl
 
 ################################################################################
 ################################################################################
@@ -902,9 +896,9 @@ def _LoadTileset(idx, name, reload_=False):
         arcdata = fileobj.read()
 
     if compressed:
-        if lh.IsLHCompressed(bytes(arcdata)):
+        if (arcdata[0] & 0xF0) == 0x40:  # If LH-compressed
             try:
-                arcdata = lh.UncompressLH(bytearray(arcdata))
+                arcdata = lh.UncompressLH(arcdata)
             except IndexError:
                 QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
                                               globals_.trans.string('Err_Decompress', 1, '[file]', name))

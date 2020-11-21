@@ -12,12 +12,7 @@ from ui import GetIcon, ReggieTheme, toQColor, clipStr
 from dirty import setting, setSetting
 from dialogs import DiagnosticToolDialog
 from translation import ReggieTranslation
-
-if globals_.cython_available:
-    import libs.lh_cy as lh
-
-else:
-    import libs.lh as lh
+from libs import lh
 
 ################################################################################
 ################################################################################
@@ -68,9 +63,9 @@ def IsNSMBLevel(filename):
 
     globals_.compressed = False
 
-    if lh.IsLHCompressed(bytes(data)):
+    if (data[0] & 0xF0) == 0x40:  # If LH-compressed
         try:
-            data = lh.UncompressLH(bytearray(data))
+            data = lh.UncompressLH(data)
         except IndexError:
             QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
                                           globals_.trans.string('Err_Decompress', 1, '[file]', filename))

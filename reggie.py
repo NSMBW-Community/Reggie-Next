@@ -107,12 +107,7 @@ else:
 ################################################################################
 ################################################################################
 
-if globals_.cython_available:
-    import libs.lh_cy as lh
-
-else:
-    import libs.lh as lh
-
+from libs import lh
 from ui import GetIcon, SetAppStyle, GetDefaultStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme
 from misc import LoadActionsLists, LoadTilesetNames, LoadBgANames, LoadBgBNames, LoadConstantLists, LoadObjDescriptions, LoadSpriteData, LoadSpriteListData, LoadEntranceNames, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePath, isValidGamePath
 from misc2 import LevelScene, LevelViewWidget
@@ -2271,9 +2266,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         with open(str(fn), 'rb') as fileobj:
             arcdata = fileobj.read()
-        if lh.IsLHCompressed(bytes(arcdata)):
+        if (arcdata[0] & 0xF0) == 0x40:  # If LH-compressed
             try:
-                arcdata = lh.UncompressLH(bytearray(arcdata))
+                arcdata = lh.UncompressLH(arcdata)
             except IndexError:
                 QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
                                               globals_.trans.string('Err_Decompress', 1, '[file]', str(fn)))
@@ -3026,9 +3021,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     levelData = fileobj.read()
 
                 # Decompress, if needed
-                if lh.IsLHCompressed(bytes(levelData)):
+                if (levelData[0] & 0xF0) == 0x40:  # If LH-compressed
                     try:
-                        levelData = lh.UncompressLH(bytearray(levelData))
+                        levelData = lh.UncompressLH(levelData)
                     except IndexError:
                         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
                                                       globals_.trans.string('Err_Decompress', 1, '[file]', name))
