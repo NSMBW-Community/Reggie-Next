@@ -26,9 +26,9 @@
 
 # lz77_huffman_cy.pyx
 # LH (LZ77+Huffman) decompressor in Cython.
-# Decompiled from NSMBW
+# Decompiled from NSMBW and simplified by hand
 
-# Heavily influenced by the sead::SZSDecompressor decompilation:
+# Previously influenced by the sead::SZSDecompressor decompilation:
 # https://github.com/open-ead/sead/blob/master/modules/src/resource/seadSZSDecompressor.cpp
 
 
@@ -52,6 +52,10 @@ ctypedef  int32_t s32
 ctypedef uint32_t u32
 ctypedef  int64_t s64
 ctypedef uint64_t u64
+
+
+# Buffer where the length and offset huffman tables will be stored
+cdef u16 WorkBuffer[1024 + 64]
 
 
 cdef inline u32 Swap32(u32 x):
@@ -117,307 +121,194 @@ cdef inline s64 BitReader_readS64(BitReader* this, u8 nBits):
     return ret
 
 
-cdef struct LHDecompressor_DecompContext:
-    u8* destp
-    s32 destCount
-    s32 forceDestCount
-    u16 lengthHuffTbl[1024]
-    u16 offsetHuffTbl[64]
-    u16* currentNode
-    s32 lengthHuffLen
-    s32 offsetHuffLen
-    u32 currentIdx
-    u32 bitStream
-    u32 bitStreamLen
-    u16 copyLen
-    s8 nOffsetBits
-    u8 headerSize
-
-cdef void LHDecompressor_DecompContext_initialize(LHDecompressor_DecompContext* this, void* dst):  # 0x801d7060, NSMBW PALv1
-    this.destp = <u8*>dst
-    this.destCount = -1
-    this.currentNode = this.lengthHuffTbl + 1
-    this.lengthHuffLen = -1
-    this.offsetHuffLen = -1
-    this.headerSize = 8
-    this.copyLen = 0
-    this.bitStream = 0
-    this.bitStreamLen = 0
-    this.nOffsetBits = -1
-    this.forceDestCount = 0
-
-
-cdef class LHDecompressor:
-    cdef array.array dstArr
-    cdef LHDecompressor_DecompContext context
-
-    def __cinit__(self, bytes dst):
-        self.dstArr = array.array('B', dst)
-        LHDecompressor_DecompContext_initialize(&self.context, self.dstArr.data.as_uchars)
-
-    cdef s32 decomp(self, const void* srcp, u32 len):
-        return LHDecompressor.streamDecomp(&self.context, srcp, len)
-
-    cdef bytes get(self):
-        if self.context.destCount > 0 or self.context.headerSize > 0:
-            raise RuntimeError("Tried to read LH decompressed data, but compression is not done!")
-
-        return self.dstArr.tobytes()
-
-    @staticmethod
-    cdef u32 getDecompSize(const void* srcp):  # 0x801d8290, NSMBW PALv1
-        cdef u32 size = (<u32*>srcp)[0] >> 8
-        if size == 0:
-            size = (<u32*>srcp)[1]
-
-        return size
-
-    @staticmethod
-    cdef s32 streamDecomp(LHDecompressor_DecompContext* context, const void* src, u32 srcSize):  # 0x801d70a0, NSMBW PALv1
-        cdef:
-            s32 bits32
-            s64 bits64
-            u32 sizeAndMagic, offset
-            u16* currentNode
-            u16 copyLen, n, lzOffset
-            u8 shift
-
-            BitReader reader
-
-        reader.srcp = <const u8*>src
-        reader.srcCount = srcSize
-        reader.bitStream = context.bitStream
-        reader.bitStreamLen = context.bitStreamLen
-
-        while context.headerSize > 0:
-            bits64 = BitReader_readS64(&reader, 32)
-            if bits64 < 0:
-                context.bitStream = reader.bitStream
-                context.bitStreamLen = reader.bitStreamLen
-
-                if context.destCount == 0 and context.forceDestCount == 0 and 0x20 < reader.bitStreamLen:
-                    return -3
-
-                return context.destCount
-
-            context.headerSize -= 4
-            if context.headerSize == 4:
-                sizeAndMagic = Swap32(<u32>bits64)
-                if (sizeAndMagic & 0xF0) != 0x40:
-                    return -1
-
-                context.destCount = <s32>(sizeAndMagic >> 8)
-
-                if context.destCount == 0:
-                    context.headerSize = 4
-                    context.destCount = -1
-
-                else:
-                    context.headerSize = 0
-
-            else:
-                context.destCount = <s32>Swap32(<u32>bits64)
-
-            if context.headerSize == 0:
-                if context.forceDestCount > 0 and context.forceDestCount < context.destCount:
-                    context.destCount = context.forceDestCount
-
-        if context.lengthHuffLen < 0:
-            bits32 = BitReader_readS32(&reader, 16)
-            if bits32 < 0:
-                context.bitStream = reader.bitStream
-                context.bitStreamLen = reader.bitStreamLen
-
-                if context.destCount == 0 and context.forceDestCount == 0 and 0x20 < reader.bitStreamLen:
-                    return -3
-
-                return context.destCount
-
-            context.currentIdx = 1
-            context.lengthHuffLen = (Swap16(<u16>bits32) + 1 << 5) - 16
-
-        while context.lengthHuffLen >= 9:
-            bits32 = BitReader_readS32(&reader, 9)
-            if bits32 < 0:
-                context.bitStream = reader.bitStream
-                context.bitStreamLen = reader.bitStreamLen
-
-                if context.destCount == 0 and context.forceDestCount == 0 and 0x20 < reader.bitStreamLen:
-                    return -3
-
-                return context.destCount
-
-            context.lengthHuffTbl[context.currentIdx] = <u16>bits32
-            context.currentIdx += 1
-            context.lengthHuffLen -= 9
-
-        if context.lengthHuffLen > 0:
-            bits32 = BitReader_readS32(&reader, <u8>context.lengthHuffLen)
-            if bits32 < 0:
-                context.bitStream = reader.bitStream
-                context.bitStreamLen = reader.bitStreamLen
-
-                if context.destCount == 0 and context.forceDestCount == 0 and 0x20 < reader.bitStreamLen:
-                    return -3
-
-                return context.destCount
-
-            context.lengthHuffLen = 0
-
-            ### insert table verification(?) here that I'm too lazy to decomp ###
-
-        if context.offsetHuffLen < 0:
-            bits32 = BitReader_readS32(&reader, 8)
-            if bits32 < 0:
-                context.bitStream = reader.bitStream
-                context.bitStreamLen = reader.bitStreamLen
-
-                if context.destCount == 0 and context.forceDestCount == 0 and 0x20 < reader.bitStreamLen:
-                    return -3
-
-                return context.destCount
-
-            context.currentIdx = 1
-            context.offsetHuffLen = (<u16>bits32 + 1 << 5) - 8
-
-        while context.offsetHuffLen >= 5:
-            bits32 = BitReader_readS32(&reader, 5)
-            if bits32 < 0:
-                context.bitStream = reader.bitStream
-                context.bitStreamLen = reader.bitStreamLen
-
-                if context.destCount == 0 and context.forceDestCount == 0 and 0x20 < reader.bitStreamLen:
-                    return -3
-
-                return context.destCount
-
-            context.offsetHuffTbl[context.currentIdx] = <u16>bits32
-            context.currentIdx += 1
-            context.offsetHuffLen -= 5
-
-        if context.offsetHuffLen > 0:
-            bits32 = BitReader_readS32(&reader, <u8>context.offsetHuffLen)
-            if bits32 < 0:
-                context.bitStream = reader.bitStream
-                context.bitStreamLen = reader.bitStreamLen
-
-                if context.destCount == 0 and context.forceDestCount == 0 and 0x20 < reader.bitStreamLen:
-                    return -3
-
-                return context.destCount
-
-            context.offsetHuffLen = 0
-
-            ### insert table verification(?) here that I'm too lazy to decomp ###
-
-        currentNode = context.currentNode
-        copyLen = context.copyLen
-
-        while context.destCount > 0:
-            if copyLen == 0:
-                while True:
-                    bits32 = BitReader_readS32(&reader, 1)
-                    if bits32 < 0:
-                        context.currentNode = currentNode
-                        context.copyLen = copyLen
-                        context.bitStream = reader.bitStream
-                        context.bitStreamLen = reader.bitStreamLen
-
-                        if context.destCount == 0 and context.forceDestCount == 0 and 0x20 < reader.bitStreamLen:
-                            return -3
-
-                        return context.destCount
-
-                    shift = <u8>(bits32 & 1)
-                    offset = ((<u32>currentNode[0] & 0x7F) + 1 << 1) + shift
-
-                    if currentNode[0] & 0x100 >> shift:
-                        copyLen = (<u16*>(<uintptr_t>currentNode & ~<uintptr_t>3))[offset]
-                        currentNode = context.offsetHuffTbl + 1
-                        break
-
-                    else:
-                        currentNode = <u16*>(<uintptr_t>currentNode & ~<uintptr_t>3) + offset
-
-            if copyLen < 0x100:
-                context.destp[0] = <u8>copyLen
-                context.destp += 1
-                context.destCount -= 1
-
-                currentNode = context.lengthHuffTbl + 1
-                copyLen = 0
-
-            else:
-                n = <u16>((copyLen & 0xFF) + 3)
-
-                if context.nOffsetBits < 0:
-                    while True:
-                        bits32 = BitReader_readS32(&reader, 1)
-                        if bits32 < 0:
-                            context.currentNode = currentNode
-                            context.copyLen = copyLen
-                            context.bitStream = reader.bitStream
-                            context.bitStreamLen = reader.bitStreamLen
-
-                            if context.destCount == 0 and context.forceDestCount == 0 and 0x20 < reader.bitStreamLen:
-                                return -3
-
-                            return context.destCount
-
-                        shift = <u8>(bits32 & 1)
-                        offset = ((<u32>currentNode[0] & 7) + 1 << 1) + shift
-
-                        if currentNode[0] & 0x10 >> shift:
-                            currentNode = <u16*>(<uintptr_t>currentNode & ~<uintptr_t>3)
-                            context.nOffsetBits = <s8>currentNode[offset]
-                            break
-
-                        else:
-                            currentNode = <u16*>(<uintptr_t>currentNode & ~<uintptr_t>3) + offset
-
-                if context.nOffsetBits <= 1:
-                    bits32 = context.nOffsetBits
-
-                else:
-                    bits32 = BitReader_readS32(&reader, <u8>(context.nOffsetBits - 1))
-                    if bits32 < 0:
-                        context.currentNode = currentNode
-                        context.copyLen = copyLen
-                        context.bitStream = reader.bitStream
-                        context.bitStreamLen = reader.bitStreamLen
-
-                        if context.destCount == 0 and context.forceDestCount == 0 and 0x20 < reader.bitStreamLen:
-                            return -3
-
-                        return context.destCount
-
-                if context.nOffsetBits >= 2:
-                    bits32 |= 1 << context.nOffsetBits - 1
-
-                context.nOffsetBits = -1
-                lzOffset = <u16>(bits32 + 1)
-
-                if context.destCount < n:
-                    if context.forceDestCount == 0:
-                        return -4
-
-                    n = <u16>context.destCount
-
-                context.destCount -= n
-                while postdecrement(n):
-                    context.destp[0] = context.destp[-lzOffset]
-                    context.destp += 1
-
-                copyLen = 0
-                currentNode = context.lengthHuffTbl + 1
-
-        context.bitStream = reader.bitStream
-        context.bitStreamLen = reader.bitStreamLen
-
-        if context.destCount == 0 and context.forceDestCount == 0 and 0x20 < reader.bitStreamLen:
+cdef u32 LHDecompressor_getDecompSize(const void* src):
+    cdef u32 size = (<u32*>src)[0] >> 8
+    if size == 0:
+        size = (<u32*>src)[1]
+
+    return size
+
+
+cdef s32 LHDecompressor_decomp(u8* dst, const void* src, u32 srcSize):
+    cdef:
+        s32 bits32, destCount, huffLen
+        s64 bits64
+        u32 sizeAndMagic, currentIdx, offset
+        u16 *lengthHuffTbl
+        u16 *offsetHuffTbl
+        u16 *currentNode
+        u16 copyLen, n, lzOffset
+        u8 shift
+        s8 nOffsetBits
+
+        BitReader reader
+
+    reader.srcp = <const u8*>src
+    reader.srcCount = srcSize
+    reader.bitStream = 0
+    reader.bitStreamLen = 0
+
+    bits64 = BitReader_readS64(&reader, 32)
+    if bits64 < 0:
+        return -1
+
+    sizeAndMagic = Swap32(<u32>bits64)
+    if (sizeAndMagic & 0xF0) != 0x40:
+        return -1
+
+    destCount = <s32>(sizeAndMagic >> 8)
+    if destCount == 0:
+        bits64 = BitReader_readS64(&reader, 32)
+        if bits64 < 0:
+            return -1
+
+        destCount = <s32>Swap32(<u32>bits64)
+
+    bits32 = BitReader_readS32(&reader, 16)
+    if bits32 < 0:
+        if destCount == 0 and 0x20 < reader.bitStreamLen:
             return -3
 
-        return context.destCount
+        return destCount
+
+    lengthHuffTbl = WorkBuffer
+    currentIdx = 1
+    huffLen = (Swap16(<u16>bits32) + 1 << 5) - 16
+
+    while huffLen >= 9:
+        bits32 = BitReader_readS32(&reader, 9)
+        if bits32 < 0:
+            if destCount == 0 and 0x20 < reader.bitStreamLen:
+                return -3
+
+            return destCount
+
+        lengthHuffTbl[currentIdx] = <u16>bits32
+        currentIdx += 1
+        huffLen -= 9
+
+    if huffLen > 0:
+        bits32 = BitReader_readS32(&reader, <u8>huffLen)
+        if bits32 < 0:
+            if destCount == 0 and 0x20 < reader.bitStreamLen:
+                return -3
+
+            return destCount
+
+        huffLen = 0
+
+    bits32 = BitReader_readS32(&reader, 8)
+    if bits32 < 0:
+        if destCount == 0 and 0x20 < reader.bitStreamLen:
+            return -3
+
+        return destCount
+
+    offsetHuffTbl = WorkBuffer + 1024
+    currentIdx = 1
+    huffLen = (<u16>bits32 + 1 << 5) - 8
+
+    while huffLen >= 5:
+        bits32 = BitReader_readS32(&reader, 5)
+        if bits32 < 0:
+            if destCount == 0 and 0x20 < reader.bitStreamLen:
+                return -3
+
+            return destCount
+
+        offsetHuffTbl[currentIdx] = <u16>bits32
+        currentIdx += 1
+        huffLen -= 5
+
+    if huffLen > 0:
+        bits32 = BitReader_readS32(&reader, <u8>huffLen)
+        if bits32 < 0:
+            if destCount == 0 and 0x20 < reader.bitStreamLen:
+                return -3
+
+            return destCount
+
+        huffLen = 0
+
+    while destCount > 0:
+        currentNode = lengthHuffTbl + 1
+
+        while True:
+            bits32 = BitReader_readS32(&reader, 1)
+            if bits32 < 0:
+                if destCount == 0 and 0x20 < reader.bitStreamLen:
+                    return -3
+
+                return destCount
+
+            shift = <u8>(bits32 & 1)
+            offset = ((<u32>currentNode[0] & 0x7F) + 1 << 1) + shift
+
+            if currentNode[0] & 0x100 >> shift:
+                copyLen = (<u16*>(<uintptr_t>currentNode & ~<uintptr_t>3))[offset]
+                currentNode = offsetHuffTbl + 1
+                break
+
+            else:
+                currentNode = <u16*>(<uintptr_t>currentNode & ~<uintptr_t>3) + offset
+
+        if copyLen < 0x100:
+            dst[0] = <u8>copyLen
+            dst += 1
+            destCount -= 1
+
+        else:
+            n = <u16>((copyLen & 0xFF) + 3)
+
+            while True:
+                bits32 = BitReader_readS32(&reader, 1)
+                if bits32 < 0:
+                    if destCount == 0 and 0x20 < reader.bitStreamLen:
+                        return -3
+
+                    return destCount
+
+                shift = <u8>(bits32 & 1)
+                offset = ((<u32>currentNode[0] & 7) + 1 << 1) + shift
+
+                if currentNode[0] & 0x10 >> shift:
+                    currentNode = <u16*>(<uintptr_t>currentNode & ~<uintptr_t>3)
+                    nOffsetBits = <s8>currentNode[offset]
+                    break
+
+                else:
+                    currentNode = <u16*>(<uintptr_t>currentNode & ~<uintptr_t>3) + offset
+
+            if nOffsetBits <= 1:
+                bits32 = nOffsetBits
+
+            else:
+                bits32 = BitReader_readS32(&reader, <u8>(nOffsetBits - 1))
+                if bits32 < 0:
+                    if destCount == 0 and 0x20 < reader.bitStreamLen:
+                        return -3
+
+                    return destCount
+
+            if nOffsetBits >= 2:
+                bits32 |= 1 << nOffsetBits - 1
+
+            nOffsetBits = -1
+            lzOffset = <u16>(bits32 + 1)
+
+            if destCount < n:
+                n = <u16>destCount
+
+            destCount -= n
+            while postdecrement(n):
+                dst[0] = dst[-lzOffset]
+                dst += 1
+
+    if 0x20 < reader.bitStreamLen:
+        return -3
+
+    return 0
+
 
 cpdef bytes UncompressLH(src):
     cdef:
@@ -425,12 +316,11 @@ cpdef bytes UncompressLH(src):
         u8* srcp = srcArr.data.as_uchars
         u32 srcSize = len(src)
 
-        u32 dstSize = LHDecompressor.getDecompSize(srcp)
-        LHDecompressor decompressor = LHDecompressor(bytes(dstSize))
-
-        s32 res = decompressor.decomp(srcp, srcSize)
+        u32 dstSize = LHDecompressor_getDecompSize(srcp)
+        array.array dstArr = array.array('B', bytes(dstSize))
+        res = LHDecompressor_decomp(dstArr.data.as_uchars, srcp, srcSize)
 
     if res != 0:
         raise RuntimeError("Failed to uncompress entire LH source data! Error code: %d" % res)
 
-    return decompressor.get()
+    return dstArr.tobytes()
