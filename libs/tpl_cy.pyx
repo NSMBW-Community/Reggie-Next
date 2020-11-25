@@ -89,10 +89,9 @@ cpdef bytes decodeRGB4A3(_src, u32 width, u32 height, s32 noAlpha):
         const u8* src = srcArr.data.as_uchars
 
         u32* dst = <u32*>malloc(width * height * 4)
-        u32* LUT
 
         u32 i, yTile, xTile, y, x
-        u8 r, g, b, a
+        u32* LUT
 
     if noAlpha:
         LUT = RGB4A3LUT_NoAlpha
