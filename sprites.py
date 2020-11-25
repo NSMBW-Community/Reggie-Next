@@ -1152,7 +1152,7 @@ class SpriteImage_ParaGoomba(SLib.SpriteImage_Static):  # 21
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ParaGoomba', 'paragoomba.png')
+        SLib.loadIfNotInImageCache('ParaGoomba', 'para_goomba.png')
 
 
 class SpriteImage_HorzMovingPlatform(SpriteImage_WoodenPlatform):  # 23
