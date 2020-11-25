@@ -1,5 +1,6 @@
-#!/usr/bin/python
-# -*- coding: latin-1 -*-
+#!/usr/bin/env python3
+#cython: language_level=3
+# -*- coding: utf-8 -*-
 
 # Reggie Next - New Super Mario Bros. Wii Level Editor
 # Milestone 4
@@ -24,7 +25,8 @@
 
 
 # tpl_cy.pyx
-# TPL image data encoder and decoder in Cython.
+# TPL image data decoder in Cython.
+# Based on decoder from Reggie Updated.
 
 
 ################################################################
@@ -32,111 +34,81 @@
 
 from cpython cimport array
 from cython cimport view
+from libc.stdint cimport int32_t
+from libc.stdint cimport uint8_t, uint16_t, uint32_t
 from libc.stdlib cimport malloc, free
 
+ctypedef  uint8_t u8
+ctypedef uint16_t u16
+ctypedef  int32_t s32
+ctypedef uint32_t u32
 
-ctypedef unsigned char u8
-ctypedef unsigned short u16
-ctypedef unsigned int u32
+
+cdef u32 RGB4A3LUT[0x10000]
+cdef u32 RGB4A3LUT_NoAlpha[0x10000]
 
 
-# 'data' must be RGBA8 raw data
-cpdef bytes decodeRGB4A3(bytes data, u32 width, u32 height, int noAlpha):
+cdef inline void PrepareRGB4A3LUT(u32 LUT[], s32 hasA):
+    cdef u16 d
+    cdef u8 red, green, blue, alpha
+
+    # RGB4A3
+    for d in range(0x8000):
+        if hasA:
+            alpha = <u8>(d >> 12)
+            alpha = alpha << 5 | alpha << 2 | alpha >> 1
+        else:
+            alpha = 0xFF
+        red = <u8>((d >> 8) & 0xF) * 17
+        green = <u8>((d >> 4) & 0xF) * 17
+        blue = <u8>(d & 0xF) * 17
+        LUT[d] = blue | (<u32>green << 8) | (<u32>red << 16) | (<u32>alpha << 24)
+
+    # RGB555
+    for d in range(0x8000):
+        red = <u8>(d >> 10)
+        red = red << 3 | red >> 2
+        green = <u8>((d >> 5) & 0x1F)
+        green = green << 3 | green >> 2
+        blue = <u8>(d & 0x1F)
+        blue = blue << 3 | blue >> 2
+        LUT[d + 0x8000] = blue | (<u32>green << 8) | (<u32>red << 16) | 0xFF000000U
+
+
+cdef void PrepareRGB4A3LUTs():
+    PrepareRGB4A3LUT(RGB4A3LUT, True)
+    PrepareRGB4A3LUT(RGB4A3LUT_NoAlpha, False)
+
+PrepareRGB4A3LUTs()
+
+
+# '_src' must be RGB4A3 raw data
+cpdef bytes decodeRGB4A3(_src, u32 width, u32 height, s32 noAlpha):
     cdef:
-        array.array dataArr = array.array('B', data)
-        u8 *data_ = dataArr.data.as_uchars
+        array.array srcArr = array.array('B', _src)
+        const u8* src = srcArr.data.as_uchars
 
-        u8 *result = <u8 *>malloc(width * height * 4)
+        u32* dst = <u32*>malloc(width * height * 4)
+        u32* LUT
 
-        u32 i, yTile, xTile, y, x, pos
-        u16 pixel
+        u32 i, yTile, xTile, y, x
         u8 r, g, b, a
 
-    try:
-        i = 0
-        for yTile in range(0, height, 4):
-            for xTile in range(0, width, 4):
-                for y in range(yTile, yTile + 4):
-                    for x in range(xTile, xTile + 4):
-                        pixel = (data_[i] << 8) | data_[i+1]
+    if noAlpha:
+        LUT = RGB4A3LUT_NoAlpha
+    else:
+        LUT = RGB4A3LUT
 
-                        if pixel & 0x8000:
-                            r = (pixel & 0x1F) * 255 // 0x1F
-                            g = ((pixel >> 5) & 0x1F) * 255 // 0x1F
-                            b = ((pixel >> 10) & 0x1F) * 255 // 0x1F
-
-                        else:
-                            r = (pixel & 0xF) * 255 // 0xF
-                            g = ((pixel & 0xF0) >> 4) * 255 // 0xF
-                            b = ((pixel & 0xF00) >> 8) * 255 // 0xF
-
-                        if noAlpha or pixel & 0x8000:
-                            a = 0xFF
-
-                        else:
-                            a = ((pixel & 0x7000) >> 12) * 255 // 0x7
-
-                        pos = (y * width + x) * 4
-
-                        result[pos] = r
-                        result[pos + 1] = g
-                        result[pos + 2] = b
-                        result[pos + 3] = a
-
-                        i += 2 
-
-        return bytes(<u8[:width * height * 4]>result)
-
-    finally:
-        free(result)
-
-
-# 'data' must be RGBA8 raw data
-cpdef bytes encodeRGB4A3(data, u32 width, u32 height):
-    cdef:
-        array.array dataArr = array.array('B', data)
-        u8 *data_ = dataArr.data.as_uchars
-
-        u8 *result = <u8 *>malloc(width * height * 2)
-
-        u32 i, yTile, xTile, y, x, pos
-        u8 r, g, b, a
-        u16 rgb
+    i = 0
+    for yTile in range(0, height, 4):
+        for xTile in range(0, width, 4):
+            for y in range(yTile, yTile + 4U):
+                for x in range(xTile, xTile + 4U):
+                    dst[y * width + x] = LUT[(<u16>src[i] << 8) | src[i+1]]
+                    i += 2 
 
     try:
-        i = 0
-        for yTile in range(0, height, 4):
-            for xTile in range(0, width, 4):
-                for y in range(yTile, yTile + 4):
-                    for x in range(xTile, xTile + 4):
-                        pos = (y * width + x) * 4
-
-                        r = data_[pos]
-                        g = data_[pos + 1]
-                        b = data_[pos + 2]
-                        a = data_[pos + 3]
-
-                        if a < 0xF7:
-                            a //= 32
-                            r //= 16
-                            g //= 16
-                            b //= 16
-
-                            rgb = b | (g << 4) | (r << 8) | (a << 12)
-                    
-                        else:
-                            r //= 8
-                            g //= 8
-                            b //= 8
-                            
-                            rgb = b | (g << 5) | (r << 10) | 0x8000
-                                                                                                                
-                        result[i] = rgb >> 8
-                        result[i + 1] = rgb & 0xFF
-
-                        i += 2
-
-        return bytes(<u8[:width * height * 2]>result)
+        return bytes(<u8[:width * height * 4]>(<u8*>dst))
 
     finally:
-        free(result)
+        free(dst)

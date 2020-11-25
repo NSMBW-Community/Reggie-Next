@@ -314,7 +314,7 @@ cpdef bytes UncompressLH(src):
     cdef:
         array.array srcArr = array.array('B', src)
         u8* srcp = srcArr.data.as_uchars
-        u32 srcSize = len(src)
+        u32 srcSize = <u32>len(src)
 
         u32 dstSize = LHDecompressor_getDecompSize(srcp)
         array.array dstArr = array.array('B', bytes(dstSize))
