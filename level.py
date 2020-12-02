@@ -1,5 +1,4 @@
 import struct
-import pickle
 from PyQt5 import QtWidgets
 
 import globals_
@@ -8,6 +7,7 @@ import archive
 
 from tiles import CreateTilesets, LoadTileset
 from levelitems import EntranceItem, SpriteItem, ZoneItem, LocationItem, ObjectItem, PathItem, CommentItem
+from misc2 import DecodeOldReggieInfo
 
 class AbstractLevel:
     """
@@ -988,20 +988,22 @@ class Metadata:
         Creates a metadata object with the data given
         """
         self.DataDict = {}
+
         if data is None: return
 
         if data[0:4] != b'MD2_':
             # This is old-style metadata - convert it
             try:
-                strdata = ''
-                for d in data: strdata += chr(d)
-                level_info = pickle.loads(strdata)
-                for k, v in level_info.iteritems():
+                info = DecodeOldReggieInfo(data, {
+                    'Creator', 'Title', 'Author', 'Group', 
+                    'Webpage', 'Password'
+                })
+
+                for k, v in info.items():
                     self.setStrData(k, v)
             except Exception:
                 pass
-            if ('Website' not in self.DataDict) and ('Webpage' in self.DataDict):
-                self.DataDict['Website'] = self.DataDict['Webpage']
+
             return
 
         # Iterate through the data
