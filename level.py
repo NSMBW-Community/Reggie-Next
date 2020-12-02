@@ -1063,9 +1063,7 @@ class Metadata:
         """
         data = self.otherData(key, 1)
         if data is None: return
-        s = ''
-        for d in data: s += chr(d)
-        return s
+        return data.decode()
 
     def otherData(self, key, type):
         """
@@ -1085,9 +1083,7 @@ class Metadata:
         """
         Sets string data, overwriting any existing string data with that key
         """
-        data = []
-        for char in value: data.append(ord(char))
-        self.setOtherData(key, 1, data)
+        self.setOtherData(key, 1, bytes(value, "utf-8"))
 
     def setOtherData(self, key, type, value):
         """
@@ -1106,26 +1102,16 @@ class Metadata:
         for dataKey in self.DataDict: dataDictSorted.append((dataKey, self.DataDict[dataKey]))
         dataDictSorted.sort(key=lambda entry: entry[0])
 
-        data = []
-
-        # Add 'MD2_'
-        data.append(ord('M'))
-        data.append(ord('D'))
-        data.append(ord('2'))
-        data.append(ord('_'))
+        data = struct.pack(">4s", b"MD2_")
 
         # Iterate through self.DataDict
         for dataKey, types in dataDictSorted:
 
             # Add the key length (4 bytes)
-            keyLen = len(dataKey)
-            data.append(keyLen >> 24)
-            data.append((keyLen >> 16) & 0xFF)
-            data.append((keyLen >> 8) & 0xFF)
-            data.append(keyLen & 0xFF)
+            data += struct.pack(">I", len(dataKey))
 
             # Add the key (key length bytes)
-            for char in dataKey: data.append(ord(char))
+            data += struct.pack(f">{len(dataKey)}s", bytes(dataKey, "utf-8"))
 
             # Sort the types
             typesSorted = []
@@ -1133,29 +1119,16 @@ class Metadata:
             typesSorted.sort(key=lambda entry: entry[0])
 
             # Add the number of types (4 bytes)
-            typeNum = len(typesSorted)
-            data.append(typeNum >> 24)
-            data.append((typeNum >> 16) & 0xFF)
-            data.append((typeNum >> 8) & 0xFF)
-            data.append(typeNum & 0xFF)
+            data += struct.pack(">I", len(types))
 
             # Iterate through typesSorted
             for type, typeData in typesSorted:
 
                 # Add the type (4 bytes)
-                data.append(type >> 24)
-                data.append((type >> 16) & 0xFF)
-                data.append((type >> 8) & 0xFF)
-                data.append(type & 0xFF)
-
                 # Add the data length (4 bytes)
-                dataLen = len(typeData)
-                data.append(dataLen >> 24)
-                data.append((dataLen >> 16) & 0xFF)
-                data.append((dataLen >> 8) & 0xFF)
-                data.append(dataLen & 0xFF)
+                data += struct.pack(">2I", type, len(typeData))
 
                 # Add the data (data length bytes)
-                for d in typeData: data.append(d)
+                data += typeData
 
         return data
