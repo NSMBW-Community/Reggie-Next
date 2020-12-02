@@ -1083,7 +1083,7 @@ class Metadata:
         """
         Sets string data, overwriting any existing string data with that key
         """
-        self.setOtherData(key, 1, bytes(value, "utf-8"))
+        self.setOtherData(key, 1, value.encode("utf-8"))
 
     def setOtherData(self, key, type, value):
         """
@@ -1098,11 +1098,10 @@ class Metadata:
         """
 
         # Sort self.DataDict
-        dataDictSorted = []
-        for dataKey in self.DataDict: dataDictSorted.append((dataKey, self.DataDict[dataKey]))
+        dataDictSorted = list(self.DataDict.items())
         dataDictSorted.sort(key=lambda entry: entry[0])
 
-        data = struct.pack(">4s", b"MD2_")
+        data = b"MD2_"
 
         # Iterate through self.DataDict
         for dataKey, types in dataDictSorted:
@@ -1111,11 +1110,10 @@ class Metadata:
             data += struct.pack(">I", len(dataKey))
 
             # Add the key (key length bytes)
-            data += struct.pack(f">{len(dataKey)}s", bytes(dataKey, "utf-8"))
+            data += dataKey.encode("utf-8")
 
             # Sort the types
-            typesSorted = []
-            for type in types: typesSorted.append((type, types[type]))
+            typesSorted = list(types.items())
             typesSorted.sort(key=lambda entry: entry[0])
 
             # Add the number of types (4 bytes)
