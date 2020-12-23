@@ -988,7 +988,9 @@
   </sprite> <!-- #167: Shy Guy Giants -->
 
   <sprite id="168" name="Thundercloud" asmhacks="True" notes="This creates an unhappy Thundercloud that is similar to a Lakitu's cloud. It will slingshot around the top of the stage and occasionally shoot down Thunder. This Thunder will turn non-tiny Marios into Mini-Mario, and kill Mini-Marios outright. The Thunder will not reach beneath solid terrain.">
-    <dualbox bit="48" title1="Chases Player" title2="Stationary" comment="This determines if the Thundercloud will chase the player, or if it will remain in a single position."/>
+  <dependency notes="The controller for Bowser Jr's 2nd Fight must be included somewhere in the level for the electricity to draw properly."/>
+  <required sprite="13"/>   
+	<dualbox bit="48" title1="Chases Player" title2="Stationary" comment="This determines if the Thundercloud will chase the player, or if it will remain in a single position."/>
     <value bit="26-32" title="Triggering Event ID (Die)" comment="When the Triggering Event is activated, the Thundercloud will die." requiredbit="48" requiredval="0"/> <!-- Appears if Chases Player is set -->
     <value bit="26-32" title="Triggering Event ID (Thunder)" comment="If a Triggering Event is set, the Thundercloud will only shoot thunder while this Event is activated. If a Triggering Event is not set, it will shoot thunder for 3 seconds on, 1 second off (?)." requiredbit="48"/> <!-- Appears if Stationary is set -->
     <checkbox bit="20" title="Does Not Respawn" comment="When enabled, the Thundercloud will not respawn on its own after being killed by the player. Otherwise the Thundercloud will continue to respawn once loaded until the Triggering Event is activated." requiredbit="48" requiredval="0"/>
