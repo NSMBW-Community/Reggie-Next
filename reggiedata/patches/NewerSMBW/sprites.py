@@ -1786,6 +1786,27 @@ class SpriteImage_Flipblock(SLib.SpriteImage_Static):  # 319
         SLib.loadIfNotInImageCache('Flipblock', 'flipblock.png')
 
 
+class SpriteImage_FallingChestnut(SLib.SpriteImage_StaticMultiple):  # 320
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('ChestnutBrown', 'chestnut_brown.png')
+        SLib.loadIfNotInImageCache('ChestnutYellow', 'chestnut_yellow.png')
+
+    def dataChanged(self):
+        yellow = self.parent.spritedata[5] & 1
+        scale = ((self.parent.spritedata[5] >> 4) & 0xF) + 1
+        if yellow:
+            self.image = ImageCache['ChestnutYellow']
+        else:
+            self.image = ImageCache['ChestnutBrown']
+            
+            
+        self.offset = (-30, -53)
+        
+
+        super().dataChanged()
+
+
 class SpriteImage_MegaThwomp(SLib.SpriteImage):  # 322
     def __init__(self, parent):
         super().__init__(parent)
@@ -2142,6 +2163,7 @@ ImageClasses = {
     296: SpriteImage_NewerMegaBuzzy,
     311: SpriteImage_NewerMegaIcicle,
     319: SpriteImage_Flipblock,
+    320: SpriteImage_FallingChestnut,
     322: SpriteImage_MegaThwomp,
     324: SpriteImage_Podoboule,
     341: SpriteImage_NewerBigShell,
