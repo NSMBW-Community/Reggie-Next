@@ -1815,7 +1815,7 @@ class SpriteImage_FallingChestnut(SLib.SpriteImage_StaticMultiple):  # 320
             395
         )[scale]
         sizeY = (
-            40,#dont divide by 1.5
+            40,
             59,
             80,
             99,

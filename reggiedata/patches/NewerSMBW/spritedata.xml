@@ -2223,10 +2223,8 @@
   <sprite id="319" name="Flip Block" asmhacks="True" notes="A yellow block with two eyes that cannot be destroyed. When struck, it will spin, allowing passage through it for a limited time.">
   </sprite> <!-- #319: Flip Block -->
   
-  <!-- Graphical resources for the editor are missing. -->
   <!-- Research "Nybble 4" -->
-  <!-- Check if Nybble 6 can define the color of "Chestnut Contains", specifically the Goomba and Spiny. -->
-  <sprite id="320" name="Falling Chestnut" asmhacks="True" notes="A hanging Chestnut that can quickly falls upon the player's approach with various potential effects.">
+  <sprite id="320" name="Falling Chestnut" asmhacks="True" notes="A hanging chestnut that can quickly falls upon the player's approach with various potential effects.&lt;br&gt;Please note that these chestnuts can be frozen by ice flowers, regardless of their size. If they're then broken, they will ignore their selected contained object and only release a coin.">
     <dualbox bit="48" title1="Brown" title2="Golden" comment="This determines the color of the Chestnut."/>
     <list nybble="11" title="Size" comment="This determines the size of the Chestnut. Large values will very likely look ugly alongside other level content.">
       <entry value="0">1 Block</entry>
@@ -2246,14 +2244,14 @@
       <entry value="14">15 Blocks</entry>
       <entry value="15">16 Blocks</entry>
     </list>
-    <list bit="30-32" title="Chestnut Contains" comment="This determines what object is inside of the Chestnut.">
+    <list bit="30-32" title="Contains" comment="This determines what object is inside of the Chestnut." advancedcomment="There needs to be at least one Goomba, Spiny, or Star Coin somewhere in the level if selected as the contained object. Otherwise, the game will crash once the chestnut breaks open.">
       <entry value="0">Goomba</entry>
       <entry value="1">Spiny</entry>
       <entry value="2">1 Coin</entry>
       <entry value="3">Fire Flower</entry>
       <entry value="4">Star Coin</entry>
     </list>
-    <checkbox bit="34" title="Falls Earlier" comment="When enabled, the Chestnut will fall if the player is 3 blocks from the sprite placement, instead of directly under it." requiredbit="36" requiredval="0"/> <!-- Appears only if Falls only from POW is not set -->
+    <checkbox bit="34" title="Falls Earlier" comment="When enabled, the Chestnut will fall if the player is 3 blocks from the sprite placement, instead of 1 block from the sprite placement." requiredbit="36" requiredval="0"/> <!-- Appears only if Falls only from POW is not set -->
     <checkbox bit="36" title="Falls only from POW" comment="When enabled, instead of falling from the approach of a player, the Chestnut will only fall if a POW is used."/>
     <checkbox bit="35" title="Breaks Blocks" comment="When enabled, the Chestnut will destroy certain types of blocks and tileset pieces."/>
     <list nybble="10" title="Star Coin Number" comment="This determines which Star Coin will be credited by the coin inside the Chestnut." requiredbit="30">
