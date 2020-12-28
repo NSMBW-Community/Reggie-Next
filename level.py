@@ -860,6 +860,14 @@ class Area_NSMBW(AbstractParsedArea):
         buffer = bytearray((len(self.sprites) * 16) + 4)
         f_int = int
         for sprite in self.sprites:
+            if sprite.zoneID == -1:
+                # No zone was found in the area.
+                # Pretend the entrance belongs to zone 0, even though this zone
+                # does not exist. The area won't work in-game anyway, because
+                # there are no zones. This default allows users to save areas
+                # without zones, so it adds greater flexibility.
+                sprite.zoneID = 0
+
             try:
                 sprstruct.pack_into(buffer, offset, f_int(sprite.type), f_int(sprite.objx), f_int(sprite.objy),
                                     sprite.spritedata[:6], sprite.zoneID, bytes([sprite.spritedata[7]]))
