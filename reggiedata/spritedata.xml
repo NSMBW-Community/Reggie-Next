@@ -1564,7 +1564,7 @@
   </sprite> <!-- #106: Line Controlled Basic Platform -->
 
   <sprite id="107" name="(Unused) Rotation Controlled Solid Platform" notes="&quot;En_Lift_Rotation_Half&quot;. A Rotation Controlled block that works quite well. Flag x08 + x02 (x0A) (Unique Flag).">
-    <value nybble="9-10" title="Width" comment="Value + 1, in blocks. Values repeat in groups of 32." />
+    <value bit="36-40" title="Width" comment="This value sets the width of the platform in blocks. The actual width will be one more than this value." />
     <value nybble="11-12" title="Rotation ID" comment="Works with both Swaying and Spinning." />
   </sprite>
 
