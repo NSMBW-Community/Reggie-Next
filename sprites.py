@@ -4366,6 +4366,7 @@ class SpriteImage_FreefallPlatform(SLib.SpriteImage_Static):  # 214
             1.5,
             ImageCache['FreefallGH'],
         )
+        self.parent.setZValue(24999)
 
     @staticmethod
     def loadImages():
@@ -6348,6 +6349,55 @@ class SpriteImage_IggyKoopa(SLib.SpriteImage_Static):  # 337
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('IggyKoopa', 'Iggy_Koopa.png')
+
+
+# Copied and edited from Miyamoto, credit to mrbengtsson for original code!!!!
+class SpriteImage_MovingBulletBillLauncher(SLib.SpriteImage):  # 172
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.spritebox.shown = False
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('BBLauncherT', 'bullet_launcher_top.png')
+        SLib.loadIfNotInImageCache('BBLauncherM', 'bullet_launcher_middle.png')
+
+
+    def dataChanged(self):
+        self.image = None
+        self.xOffset = 0
+        self.width = 16
+
+        self.cannonHeight = (self.parent.spritedata[5] & 0xF0) >> 4
+        self.cannonHeightTwo = self.parent.spritedata[5] & 0xF
+
+        if self.cannonHeight >= self.cannonHeightTwo:
+            self.height = (self.cannonHeight + 2) * 16
+
+        else:
+            self.height = (self.cannonHeightTwo + 2) * 16
+
+        if self.cannonHeight >= self.cannonHeightTwo:
+            self.yOffset = -(self.cannonHeight + 1) * 16
+
+        else:
+            self.yOffset = -(self.cannonHeightTwo + 1) * 16
+        
+        super().dataChanged()
+
+    def paint(self, painter):
+        if self.cannonHeightTwo > self.cannonHeight:
+            painter.setOpacity(0.5)
+            painter.drawPixmap(0, 0, 24, 48, ImageCache['BBLauncherT'])
+            painter.drawTiledPixmap(0, 48, 24, 24 * self.cannonHeightTwo, ImageCache['BBLauncherM'])
+            painter.setOpacity(1)
+
+            painter.drawPixmap(0, 24 * (self.cannonHeightTwo - self.cannonHeight), 24, 48, ImageCache['BBLauncherT'])
+            painter.drawTiledPixmap(0, 24 * (self.cannonHeightTwo - self.cannonHeight + 2), 24, 48 * self.cannonHeight, ImageCache['BBLauncherM'])
+
+        else:
+            painter.drawPixmap(0, 0, 24, 48, ImageCache['BBLauncherT'])
+            painter.drawTiledPixmap(0, 48, 24, 24 * self.cannonHeight, ImageCache['BBLauncherM'])
 
 
 class SpriteImage_Pipe_MovingUp(SpriteImage_Pipe):  # 339
@@ -8753,6 +8803,7 @@ ImageClasses = {
     334: SpriteImage_CheepGiant,
     336: SpriteImage_WendyKoopa,
     337: SpriteImage_IggyKoopa,
+    338: SpriteImage_MovingBulletBillLauncher,
     339: SpriteImage_Pipe_MovingUp,
     340: SpriteImage_LemmyKoopa,
     341: SpriteImage_BigShell,
