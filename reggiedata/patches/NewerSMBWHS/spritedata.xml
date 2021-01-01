@@ -18,12 +18,12 @@
     <value nybble="11" title="Speed"/>
     <checkbox nybble="12" title="Clockwise" comment="Counter Clockwise if unchecked."/>
   </sprite>
-  
+
   <sprite id="341" name="Giant Turtle Shell Cave">
     <list nybble="12" title="Shell Base" comment="This Turtle Shell Cave is a Layer 0 (Foreground) sprite. To recreate its original function, use invisible blocks, and reference NewerSMBW Holiday Special 1-3">
       <entry value="0">With Snow / Rocks</entry>
       <entry value="1">With Nothing</entry>
     </list>
   </sprite>
-  
+
 </sprites>
