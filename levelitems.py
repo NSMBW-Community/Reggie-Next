@@ -2619,7 +2619,7 @@ class PathItem(LevelEditorItem):
         return globals_.trans.string('Paths', 1, '[path]', self.pathid, '[node]', self.nodeid)
 
     def __lt__(self, other):
-        return (self.pathid * 10000 + self.nodeid) < (other.pathid * 10000 + other.nodeid)
+        return (self.pathid, self.nodeid) < (other.pathid, other.nodeid)
 
     def updatePos(self):
         """
