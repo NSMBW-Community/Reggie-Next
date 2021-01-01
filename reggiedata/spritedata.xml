@@ -2960,7 +2960,7 @@
     </list>
   </sprite> <!-- #191: Tile God Event -->
 
-  <sprite id="192" name="Boss Controller - Larry Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 1 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="192" name="Boss Controller - Larry Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 1 Castle, such as the boss movement, and camera options. From rest, the platform moves 3 tiles up and 1 tile down. The white square indicates the placement for the Castle Boss Cutscene controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room. Do not place a loose Koopaling sprite.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5634,7 +5634,7 @@
     </dependency>
   </sprite> <!-- #364: Boss Controller - Roy Koopa -->
 
-  <sprite id="365" name="Boss Controller - Ludwig von Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 7 Castle, such as the boss movement, and camera options. All tiles the controller spawns are behind Layer 1. The white square indicates the placement for the Castle Boss Cutscene controller. The rectangle indicates the placement of the Brick blocks destroyed during the cutscene. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="365" name="Boss Controller - Ludwig von Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 7 Castle, such as the boss movement, and camera options. All tiles the controller spawns are behind Layer 1. The white square indicates the placement for the Castle Boss Cutscene controller. The rectangle outline indicates the placement of the Brick blocks destroyed during the cutscene. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room.">
       <required sprite="407"/>
       <required sprite="408"/>

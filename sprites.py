@@ -4976,9 +4976,13 @@ class SpriteImage_PoltergeistItem(SLib.SpriteImage):  # 262
         polterblock = SLib.GetImg('polter_qblock.png')
 
         standpainter = QtGui.QPainter(polterstand)
+        blockpainter = QtGui.QPainter(polterblock)
+
         standpainter.drawPixmap(18, 18, ImageCache['GhostHouseStand'])
-        
+        blockpainter.drawPixmap(18, 18, ImageCache['Blocks'][0])
+
         del standpainter
+        del blockpainter
 
         ImageCache['PolterStand'] = polterstand
         ImageCache['PolterQBlock'] = polterblock
@@ -6831,6 +6835,7 @@ class SpriteImage_LudwigVonKoopaController(SLib.SpriteImage):  # 365
 
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 24, 288))
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 528, 24, 72, 264))
+        self.aux[2].fillFlag = False
 
     @staticmethod
     def loadImages():
