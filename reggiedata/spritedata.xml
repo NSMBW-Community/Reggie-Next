@@ -1564,7 +1564,40 @@
   </sprite> <!-- #106: Line Controlled Basic Platform -->
 
   <sprite id="107" name="(Unused) Rotation Controlled Solid Platform" notes="&quot;En_Lift_Rotation_Half&quot;. A Rotation Controlled block that works quite well. Flag x08 + x02 (x0A) (Unique Flag).">
-    <value bit="36-40" title="Width" comment="This value sets the width of the platform in blocks. The actual width will be one more than this value." />
+    <list bit="36-40" title="Width" comment="This determines the width of the platform in blocks.">
+      <entry value="0">1 block</entry>
+      <entry value="1">2 blocks</entry>
+      <entry value="2">3 blocks</entry>
+      <entry value="3">4 blocks</entry>
+      <entry value="4">5 blocks</entry>
+      <entry value="5">6 blocks</entry>
+      <entry value="6">7 blocks</entry>
+      <entry value="7">8 blocks</entry>
+      <entry value="8">9 blocks</entry>
+      <entry value="9">10 blocks</entry>
+      <entry value="10">11 blocks</entry>
+      <entry value="11">12 blocks</entry>
+      <entry value="12">13 blocks</entry>
+      <entry value="13">14 blocks</entry>
+      <entry value="14">15 blocks</entry>
+      <entry value="15">16 blocks</entry>
+      <entry value="16">17 blocks</entry>
+      <entry value="17">18 blocks</entry>
+      <entry value="18">19 blocks</entry>
+      <entry value="19">20 blocks</entry>
+      <entry value="20">21 blocks</entry>
+      <entry value="21">22 blocks</entry>
+      <entry value="22">23 blocks</entry>
+      <entry value="23">24 blocks</entry>
+      <entry value="24">25 blocks</entry>
+      <entry value="25">26 blocks</entry>
+      <entry value="26">27 blocks</entry>
+      <entry value="27">28 blocks</entry>
+      <entry value="28">29 blocks</entry>
+      <entry value="29">30 blocks</entry>
+      <entry value="30">31 blocks</entry>
+      <entry value="31">32 blocks</entry>
+    </list>
     <value nybble="11-12" title="Rotation ID" comment="Works with both Swaying and Spinning." />
   </sprite>
 
