@@ -674,12 +674,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         if event.button() in (QtCore.Qt.BackButton, QtCore.Qt.ForwardButton):
             self.xButtonScrollTimer.stop()
+            return
 
-        elif event.button() == QtCore.Qt.RightButton:
+        if event.button() == QtCore.Qt.RightButton:
             self.currentobj = None
-            event.accept()
-        else:
-            QtWidgets.QGraphicsView.mouseReleaseEvent(self, event)
+
+        QtWidgets.QGraphicsView.mouseReleaseEvent(self, event)
 
     def paintEvent(self, e):
         """
