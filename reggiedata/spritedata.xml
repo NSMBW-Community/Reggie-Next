@@ -1646,9 +1646,12 @@
     </list>
   </sprite> <!-- #109: Spiked Ball on a Chain -->
   
-  <sprite id="110" name="Effect - Sunbeam" notes="This will generate a bright Sunbeam effect from the top right of the camera.">
+  <sprite id="110" name="Effect - Sunbeam" notes="This will generate a bright Sunbeam effect from the top right of the camera. Note that despawning this sprite does not remove the effect.">
     <dependency notes="If this sprite is placed more than once in the same Zone, the game will crash. The placement of this sprite does not change its effects."/>
-    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something. The name of this sprite is &quot;En_Env&quot;, which implies that it may have been intended to have more functions. More ASM research is likely needed to expand what this sprite can do."/>
+    <list nybble="12" title="Type" advanced="True" advancedcomment="The ASM implies that this nybble was once used to select the type of effect. However, there is no code for any type that is not &quot;Sunbream&quot; in the final game, so setting this to any other value will make this sprite do nothing. Interestingly, it does not delete itself, so it continues to use some memory.">
+      <entry value="0">Sunbeam</entry>
+      <entry value="1">None</entry>
+    </list>
   </sprite> <!-- #110: Effect - Sunlight -->
     
   <sprite id="111" name="Blooper" sizehacks="True" notes="An underwater enemy that will chase the player.">
