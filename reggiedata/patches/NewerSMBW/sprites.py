@@ -851,11 +851,11 @@ class SpriteImage_NewerBouncyCloud(SLib.SpriteImage_StaticMultiple):  # 78
                 ImageCache[name] = SLib.GetImg("cloud_trampoline_%s%d.png" % (size.lower(), style))
 
     def dataChanged(self):
-        style = self.parent.spritedata[2] & 0xF
+        style = (self.parent.spritedata[2] & 0xF) % 7
         raw_size = (self.parent.spritedata[4] >> 4) & 1
         size = "Small" if raw_size == 0 else "Big"
 
-        if style == 0 or style > 7:
+        if style == 0 or style > 6:
             self.image = ImageCache['CloudTr%s' % size]
             self.offset = (-2, -2)
         else:
