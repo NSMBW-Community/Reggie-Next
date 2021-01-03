@@ -2380,7 +2380,7 @@
     <checkbox bit="44" title="Shift Spawn Position (NSMB:DS)" comment="When enabled, this moves the Springboard half a block to the right." advanced="True" advancedcomment="This is a leftover setting from the NSMB:DS Springboard where sprites could only be placed exactly on the tile grid. It... really isn't useful."/>
   </sprite> <!-- #148: Springboard -->
 
-  <sprite id="149" name="Rotation and Zoom Controller - Spinning" notes="This controller will create synchronized movement between matched sprites and cause them to spin in a circular movement.
+  <sprite id="149" name="Rotation Controller - Spinning" notes="This controller will create synchronized movement between matched sprites and cause them to spin in a circular movement.
   Additionally, it can control the Zone's Zoom level depending on the rotation controller's current rotation.">
     <dependency notes="A quick note about using this with rotation controlled coins and blocks: Coins and Blocks have a different rotation speed when paired with this controller than with other sprites. If using both coins and blocks, and other sprites, with the same central point of rotation, you will need multiple Spinning controllers in order to have them rotate at the same speed."/>
     <value nybble="11-12" title="Rotation ID" comment="This pairs matching rotation controlled objects to this controller. A rotation ID isn't necessary when using this sprite to control the camera." idtype="Rotation"/>
@@ -2450,7 +2450,7 @@
 	Thus, the camera will transition in accordance with the speed and current arc of the sprite. It supports all Rotation Modes, but works best with [Stops and Returns]. This is the pattern the Zoom Level will follow:
 	&lt;br&gt; &lt;br&gt;0° = Zooms to the Zone's original Zoom Level. &lt;br&gt;22.5° = Zooms out roughly to the next available Zoom Level. &lt;br&gt;45° = Zooms out roughly 70% towards Zoom Level 4. &lt;br&gt;67.5° = Zooms out roughly 95% towards Zoom Level 4. &lt;br&gt;90° = Zooms out exactly to Zoom Level 4. &lt;br&gt;112.5+° = The pattern above loops in reverse, ultimately back to the original Zoom level at 180°."
 	comment2="The controller will still work with a paired sprite, but it's not required. The camera movement won't differ whether it's spinning Clockwise or Counter-Clockwise. &lt;br&gt;Finally, multiple of these sprites using this setting in one Zone can overlap each other and take priority of the camera movement, but it's best for only one to be active at a time."/>
-  </sprite> <!-- #149: Rotation and Zoom Controller - Spinning -->
+  </sprite> <!-- #149: Rotation Controller - Spinning -->
 
   <sprite id="150" name="(Unused) Jumping Cheep Cheep" sizehacks="True" notes="&lt;font color=&quot;orange&quot;&gt;This sprite is not recommended for use due to incompatibilities with the Ice Flower power-up.&lt;/font&gt;" advancednotes="A Cheep Cheep that will jump out of the water in an attempt to damage the player. If frozen, only half of the Cheep Cheep will be covered by ice, and the other part will stick out.">
     <dependency notes="Cannot be used without Water for the Cheep Cheep to live in.">

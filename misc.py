@@ -833,17 +833,38 @@ def LoadSpriteData():
     """
     # global Sprites
 
-    globals_.Sprites = [None] * 483
     errors = []
     errortext = []
+    
+    spriteIds = [-1]
 
     # It works this way so that it can overwrite settings based on order of precedence
     paths = [(globals_.trans.files['spritedata'], None)]
     for pathtuple in globals_.gamedef.multipleRecursiveFiles('spritedata', 'spritenames'):
         paths.append(pathtuple)
+    
+    for sdpath, snpath in paths:            
+        
+        # Add XML sprite data, if there is any
+        if sdpath not in (None, ''):
+            path = sdpath if isinstance(sdpath, str) else sdpath.path
+            tree = ElementTree.parse(path)
+            root = tree.getroot()
 
-    for sdpath, snpath in paths:
+            for sprite in root:
+                if sprite.tag.lower() != 'sprite':
+                    continue
 
+                try:
+                    spriteIds.append(int(sprite.attrib['id']))
+                except ValueError:
+                    continue
+    
+    globals_.NumSprites = max(spriteIds) + 1
+    globals_.Sprites = [None] * globals_.NumSprites
+    
+    for sdpath, snpath in paths:            
+        
         # Add XML sprite data, if there is any
         if sdpath not in (None, ''):
             path = sdpath if isinstance(sdpath, str) else sdpath.path
@@ -858,7 +879,7 @@ def LoadSpriteData():
                     spriteid = int(sprite.attrib['id'])
                 except ValueError:
                     continue
-
+                    
                 spritename = sprite.attrib['name']
                 notes = None
                 relatedObjFiles = None
@@ -951,7 +972,7 @@ def LoadSpriteCategories(reload_=False):
 
     globals_.SpriteCategories = []
     # Add a Search category
-    globals_.SpriteCategories.append((globals_.trans.string('Sprites', 19), [(globals_.trans.string('Sprites', 16), list(range(0, 483)))], []))
+    globals_.SpriteCategories.append((globals_.trans.string('Sprites', 19), [(globals_.trans.string('Sprites', 16), list(range(globals_.NumSprites)))], []))
     globals_.SpriteCategories[-1][1][0][1].append(9999)  # 'no results' special case
     for path in paths:
         tree = ElementTree.parse(path)

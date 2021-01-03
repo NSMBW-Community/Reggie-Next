@@ -37,6 +37,7 @@ LevelNames = None
 LocationsFrozen = False
 LocationsShown = True
 NumberFont = None
+NumSprites = 0
 ObjDesc = None
 ObjectDefinitions = None # 4 tilesets
 ObjectsFrozen = False
