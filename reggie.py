@@ -1488,23 +1488,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         currentItem.setText(1, newText)
 
         # Save all the events to the metadata
-        data = []
+        data = b""
         for id in range(64):
             idtext = str(self.eventChooserItems[id].text(1))
             if idtext == '': continue
 
-            # Add the ID
-            data.append(id)
-
-            # Add the string length
-            strlen = len(idtext)
-            data.append(strlen >> 24)
-            data.append((strlen >> 16) & 0xFF)
-            data.append((strlen >> 8) & 0xFF)
-            data.append(strlen & 0xFF)
+            # Add the ID and string length
+            data += struct.pack(">2I", id, len(idtext))
 
             # Add the string
-            for char in idtext: data.append(ord(char))
+            data += idtext.encode("ascii")
 
         globals_.Area.Metadata.setBinData('EventNotes_A%d' % globals_.Area.areanum, data)
         SetDirty()
@@ -2913,22 +2906,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Saves the comments data back to self.Metadata
         """
-        b = []
+        b = b""
         for com in globals_.Area.comments:
-            xpos, ypos, tlen = com.objx, com.objy, len(com.text)
-            b.append(xpos >> 24)
-            b.append((xpos >> 16) & 0xFF)
-            b.append((xpos >> 8) & 0xFF)
-            b.append(xpos & 0xFF)
-            b.append(ypos >> 24)
-            b.append((ypos >> 16) & 0xFF)
-            b.append((ypos >> 8) & 0xFF)
-            b.append(ypos & 0xFF)
-            b.append(tlen >> 24)
-            b.append((tlen >> 16) & 0xFF)
-            b.append((tlen >> 8) & 0xFF)
-            b.append(tlen & 0xFF)
-            for char in com.text: b.append(ord(char))
+            tlen = len(com.text)
+            b += struct.pack(">3I", com.objx, com.objy, tlen)
+            b += com.text.encode("utf-8")
+
         globals_.Area.Metadata.setBinData('InLevelComments_A%d' % globals_.Area.areanum, b)
 
     def closeEvent(self, event):
