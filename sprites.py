@@ -2655,27 +2655,35 @@ class SpriteImage_Flagpole(SLib.SpriteImage):  # 113
 
     def dataChanged(self):
 
-        # get the info
-        exit = (self.parent.spritedata[2] >> 4) & 1
-        snow = self.parent.spritedata[5] & 1
+        # get the info (mimic the way the game does it)
+        exit_type = self.parent.spritedata[2] >> 4
+        snow_type = self.parent.spritedata[5] & 0xF
+        value = exit_type + snow_type * 2
 
-        if snow == 0:
-            self.aux[0].setPos(356, 97)
+        if value == 0:
+            show_snow = show_secret = False
+        elif value == 1:
+            show_snow = False
+            show_secret = True
+        elif value == 2:
+            show_snow = True
+            show_secret = False
         else:
+            show_snow = show_secret = True
+
+        if show_secret:
+            suffix = "Secret"
+        else:
+            suffix = ""
+
+        self.image = ImageCache['Flagpole' + suffix]
+
+        if show_snow:
+            self.aux[0].image = ImageCache['SnowCastle' + suffix]
             self.aux[0].setPos(356, 91)
-
-        if exit == 0:
-            self.image = ImageCache['Flagpole']
-            if snow == 0:
-                self.aux[0].image = ImageCache['Castle']
-            else:
-                self.aux[0].image = ImageCache['SnowCastle']
         else:
-            self.image = ImageCache['FlagpoleSecret']
-            if snow == 0:
-                self.aux[0].image = ImageCache['CastleSecret']
-            else:
-                self.aux[0].image = ImageCache['SnowCastleSecret']
+            self.aux[0].image = ImageCache['Castle' + suffix]
+            self.aux[0].setPos(356, 97)
 
         super().dataChanged()
 
