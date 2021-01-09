@@ -2676,15 +2676,15 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         x = globals_.mainWindow.selObj.objx + 16
         y = globals_.mainWindow.selObj.objy
+        special_event_id = 246
 
-        sprite = SpriteItem(246, x, y, data)
+        sprite = SpriteItem(special_event_id, x, y, data)
         sprite.positionChanged = globals_.mainWindow.HandleSprPosChange
 
         globals_.mainWindow.scene.addItem(sprite)
+        globals_.mainWindow.spriteList.addSprite(sprite)
         globals_.Area.sprites.append(sprite)
-
-        sprite.listitem = ListWidgetItem_SortsByOther(sprite)
-        globals_.mainWindow.spriteList.addItem(sprite.listitem)
+        globals_.mainWindow.scene.update()
 
         SetDirty()
         sprite.UpdateListItem()
