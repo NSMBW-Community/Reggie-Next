@@ -231,7 +231,6 @@ class TilesetsTab(QtWidgets.QWidget):
 
         value = str(item.text(1))
         self.lineEdits[slot].setText(value)
-        self.trees[slot].scrollToItem(item, QtWidgets.QAbstractItemView.PositionAtCenter)
 
     # Line-edit handlers
     def handleTextEdit0(self):
