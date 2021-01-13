@@ -414,7 +414,13 @@
     <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="17-24" requiredval="0"/> <!-- Appears if no Delay is set -->
     <dualbox bit="48" title1="Off; On after Delay" title2="On; Off after Duration" comment="This determines how the Target Event is modified both before and after the delay." requiredbit="17-24"/> <!-- Appears if Delay is set -->
     <value bit="17-24" title="Activation Delay/Duration" comment="The Target Event will be modified instantly. When this is set to 0, the Target Event will not be modified further. Otherwise, it will place it in the reverse state then wait a specific amount of time before modifying it again." comment2="A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick. &lt;br&gt; &lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring."/>
-    <dualbox bit="44" title1="Single Use" title2="Multi-Use" comment="This determines how often the Target Event ID can be modified by the controller." comment2="Single Use: When the condition of the Triggering Event is met, the Target Event will be modified, and the controller will not affect the Target Event again even if the condition of the Triggering Event is subsequently met again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time the condition of the Triggering Event is met, the Target Event will be modified. If the delay is still running, the delay will be refreshed to its full value."/>
+    <list bit="43-44" title="Usage Mode" comment="This determines how often the Target Event ID can be modified by the controller." comment2="Single Use: When the condition of the Triggering Event is met, the Target Event will be modified, and the controller will not affect the Target Event again even if the condition of the Triggering Event is subsequently met again. 
+	&lt;br&gt; &lt;br&gt;Multi-Use: Each time the condition of the Triggering Event is met, the Target Event will be modified. If the delay is still running, the delay will be refreshed to its full value. &lt;br&gt; &lt;br&gt;Only While Satisfied: While the condition of the Triggering Event is met, the Target Event will be modified. When this condition is no longer met by the Triggering Event, the Target Event will have the opposite state applied to it after the full length of the delay. 
+	&lt;br&gt; &lt;br&gt;In all cases, whenever the condition of the Triggering Event is met (or is no longer met), the Target Event will have the opposite state set immediately, and then it will be set as intended after the delay.">
+      <entry value="0">Single Use</entry>
+      <entry value="1">Multi-Use</entry>
+      <entry value="2">Only While Satisfied</entry>
+    </list>
   </sprite> <!-- #37: Event Controller - Chainer (If X, do Y) -->
 
   <!-- Improve comment2 on bit48, combined with Enemy Location ID. See comment chunk below for existing description. -->
@@ -2572,7 +2578,7 @@
 
 <!-- There's definitely "Movement at 2" in that ghost house. What else is actually going on there that might define what '2' means? Or is 2 just an unused value and in fact has no relevance? Someone should find out. 2 should be Single, 3 should be the same thing Repeating. -->
 <!-- I'm actually not fully sure of the technical differences between 'Single' and 'Repeating'. Should they only use Repeating when the end node overlaps with the start node? Do they have to overlap? Does it just travel directly back to the first node? What if it starts with a Starting Node? What if they use Single combined with a Starting Node? Does it end up at the same starting location or just at the End Node (assumed: End Node) -->
-  <sprite id="159" name="Movement Controller - Use Paths" notes="A movement controller that connects certain sprites so they can be moved by Paths. Paths are a special type of data within the level structure that has speed, acceleration, and delay values built into each Node.">
+  <sprite id="159" name="Movement Controller - Uses Paths" notes="A movement controller that connects certain sprites so they can be moved by Paths. Paths are a special type of data within the level structure that has speed, acceleration, and delay values built into each Node.">
     <dependency notes="The distance of this sprite to the first node of the Path will be imitated by all associated Path Controlled objects. This means that every linked object will be placed the same amount of blocks away from each node, identical to the distance of this sprite to its first node. It is therefore recommended to place this sprite directly on top of the first node, so that all controlled objects follow the path directly as drawn."/>
     <value nybble="11" title="Path Movement ID" comment="This pairs matching 'Path Movement' controlled objects to this controller." idtype="Path Movement"/>
     <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the objects will be linked to." idtype="Path"/>
@@ -2580,7 +2586,7 @@
     <dualbox bit="32" title1="Stops at End Node" title2="Loops" comment="This determines if the linked objects will stop at the end node of the Path or if they will loop." comment2="How do Looping items act? Instant? Reversed? Imaginary connection between end and start? Some setting we don't have identified?"/>
     <dualbox bit="29" title1="Haunted Effect" title2="Exact Movement" comment="This determines if the objects following this path will obtain their movement properties from a random combination of previous nodes and the next node, or from the next node only."/>
     <checkbox bit="31" title="Unknown Flag 8 (2)" advanced="True" advancedcomment="Used in Retail: 03-21 A1."/>
-  </sprite> <!-- #159: Movement Controller - Use Paths" -->
+  </sprite> <!-- #159: Movement Controller - Uses Paths" -->
 
   <sprite id="160" name="(Unused) Path Controlled TEST Platform 2" notes="An untextured unused test platform that is controlled by Path data. Very useful when trying to visually test the Path you are creating, as you can move your starting Entrance and change the Starting Node to test each individual segment. DATA FOR THIS SPRITE MAY BE COMPLETELY WRONG.">
     <dependency notes="A Use Paths Movement Controller is required to make use of this test platform. Also, using the larger sizes is not recommended unless using sizehacks with other sprites.">
@@ -2923,7 +2929,7 @@
     </dependency>
   </sprite> <!-- #187: Player Block -->
 
-  <sprite id="188" name="Midway Flag" asmhacks="True" notes="A flag that when touched by the player will mark their progress in the level and respawn them at this location when re-entering the level." advancednotes="Only one Midway Flag works properly per level. Let's say there are five Checkpoints in a Zone. If Mario were to activate Checkpoint A through C in that order, and then die, he would respawn at Checkpoint C's Entrance, and all five Checkpoints would be activated.">
+  <sprite id="188" name="Midway Flag" asmhacks="True" notes="A flag that when touched by the player will mark their progress in the level and respawn them at this location when re-entering the level." advancednotes="Only one Midway Flag works properly per level. Let's say there are five Checkpoints in a Zone. If Mario were to activate Checkpoint A through C in that order, and then reload the Zone (through death, re-entering from an Entrance, etc), he would respawn at Checkpoint C's Entrance, and all five Checkpoints would be activated.">
     <value nybble="7-8" title="Entrance ID" comment="This determines which Entrance the level will load the player into when they respawn." idtype="Entrance"/>
     <dualbox bit="44" title1="Load Facing Right" title2="Load Facing Left" comment="This determines which direction the players will face when they respawn."/>
   </sprite> <!-- #188: Midway Flag -->
@@ -6779,7 +6785,7 @@
     <value nybble="12" title="Collection ID" comment="This pairs matching Coins with the Crowd Clapper to track their collection." idtype="Collection"/>
   </sprite> <!-- #459: Crowd Clapping Controller for Coin Collection #1 -->
 
-  <sprite id="460" name="Silver Gear Block - Two Way Line" notes="A large rectangular block with a silver gear motif as decoration. It can only be paired for Two Way Line movement." advancednotes="If linked with an Event Activated Two Way Line controller, the Silver Gear Block will only spawn when the event is activated.">
+  <sprite id="460" name="Silver Gear Block - Two Way Line" notes="A large rectangular block with a silver gear motif as decoration. It can only be paired for Two Way Line movement. If linked with an Event Activated Two Way Line controller, the Silver Gear Block will only spawn when the event is activated.">
     <dependency notes="This block must be paired with a [260] Two Way Line movement controller in order to spawn and function. ID 0 works with this sprite.">
       <required sprite="260"/>
     </dependency>
@@ -7055,6 +7061,5 @@
       <entry value="2">Corridor Wall BG</entry>
     </list>
   </sprite> <!-- #482: Final Boss - Pre-Boss Camera Effects -->
-
 </sprites>
 <!-- Thank you so much for a-playing my game! -->

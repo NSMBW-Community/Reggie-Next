@@ -641,6 +641,7 @@ class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.spritebox.shown = False
+        self.parent.setZValue(24999)
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
 
     @staticmethod
@@ -4298,9 +4299,9 @@ class SpriteImage_Zoom(SLib.SpriteImage):  # 206
     def dataChanged(self):
         super().dataChanged()
 
-        w = self.parent.spritedata[5] + 1
-        h = self.parent.spritedata[4] + 1
-        if w == 1 and h == 1:  # no point drawing a 1x1 outline behind the self.parent
+        w = self.parent.spritedata[5]
+        h = self.parent.spritedata[4] 
+        if w == 0 and h == 0:  # no point drawing a 1x1 outline behind the self.parent
             self.aux[0].setSize(0, 0, 0, 0)
             return
         self.aux[0].setSize(w * 24, h * 24, 0, 24 - (h * 24))

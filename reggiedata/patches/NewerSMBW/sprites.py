@@ -1876,7 +1876,7 @@ class SpriteImage_MegaThwomp(SLib.SpriteImage):  # 322
         left_buffer = self.parent.spritedata[2] + 2
         right_buffer = self.parent.spritedata[3] + 2
         top_buffer = self.parent.spritedata[4] + 2
-
+        
         self.aux[1].setSize(left_buffer * 8, 16)
         self.aux[1].setPos((-left_buffer * 12) + 24, 0)
 
@@ -1885,6 +1885,15 @@ class SpriteImage_MegaThwomp(SLib.SpriteImage):  # 322
 
         self.aux[3].setSize(16, top_buffer * 8)
         self.aux[3].setPos(0, (-top_buffer * 12) + 24)
+        
+        if left_buffer == 2:
+            self.aux[1].setSize(0, 0)
+            
+        if right_buffer == 2:
+            self.aux[2].setSize(0, 0)
+        
+        if top_buffer == 2:
+            self.aux[3].setSize(0, 0)
 
     @staticmethod
     def loadImages():
