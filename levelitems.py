@@ -2830,6 +2830,22 @@ class CommentItem(LevelEditorItem):
         self.TextEdit.textChanged.connect(self.handleTextChanged)
         self.reposTextEdit()
 
+    def mousePressEvent(self, e):
+        """
+        Override the mouse press event to delegate it to the text edit
+        if required. This ensures the user can select the first characters of the
+        comment text.
+        """
+        # Also check the position to only allow clicks in the region that
+        # overlaps with the text edit.
+        if self.isSelected() and e.pos().x() > 22 and e.pos().y() > 15:
+            e.ignore()
+            return
+
+        # We're not selected yet. Pass the event to the base class so we get
+        # selected properly.
+        LevelEditorItem.mousePressEvent(self, e)
+
     def UpdateTooltip(self):
         """
         For compatibility, just in case
