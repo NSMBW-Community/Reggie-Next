@@ -45,6 +45,7 @@ if currentRunningVersion < minimum:
 import os.path
 import time
 import traceback
+import struct
 
 # PyQt5: import, and error msg if not installed
 try:
