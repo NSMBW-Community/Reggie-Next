@@ -913,11 +913,11 @@
     <checkbox bit="17" title="Initially Submerged" comment="When enabled, the floating barrel will load partially submerged."/>
   </sprite> <!-- #145: Floating Barrel -->
 
-  <sprite id="152" name="Message Box" notes="A block that the player can hit which will display a custom message. Messages are defined in Message.py.">
+  <sprite id="152" name="Message Box" notes="A block that the player can hit which will display a custom message. Messages are defined in Messages.bin.">
     <dependency notes="The Message Box Controller must be included in each Zone for Message Boxes to function correctly.">
       <required sprite="107"/>
     </dependency>
-    <value nybble="9-12" title="Message ID" comment="Messages defined in Message.py. Add 256 to the value shown in the Newer Message Editor program. (01/10/18)" idtype="Message"/>
+    <value nybble="9-12" title="Message ID" comment="Messages defined in Messages.bin. Add 256 to the value shown in the Newer Message Editor program. (01/10/18)" idtype="Message"/>
   </sprite> <!-- 152: Message Box -->
 
   <sprite id="153" name="(Unused) &quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="An exact duplicate of the normal &quot;?&quot; Switch (Orange).">
@@ -1904,7 +1904,7 @@
       <entry value="2">Yellow Blocks</entry>
       <entry value="3">Blue Blocks</entry>
     </list>
-    <value nybble="9-12" title="Message ID" comment="Messages defined in Message.py" idtype="Message"/>
+    <value nybble="9-12" title="Message ID" comment="Messages defined in Messages.bin" idtype="Message"/>
   </sprite> <!-- #273: Level Exit Controller -->
 
   <sprite id="279" name="World-3 Boss: Balboa Wrench" asmhacks="True" noyoshi="True" notes="The giant Rocky Wrench boss used by NewerSMBW. He must be Ground-Pounded 3 times to be defeated. ">
