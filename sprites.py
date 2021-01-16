@@ -378,20 +378,6 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
             painter.drawTiledPixmap(4, offsetRise, zw - 8, riseToDraw.height(), riseToDraw)
 
 
-class SpriteImage_HammerBro(SLib.SpriteImage_Static):  # 95, 308
-    def __init__(self, parent, scale=1.5):
-        super().__init__(
-            parent,
-            scale,
-            ImageCache['HammerBro'],
-            (-8, -24),
-        )
-
-    @staticmethod
-    def loadImages():
-        SLib.loadIfNotInImageCache('HammerBro', 'hammerbro.png')
-
-
 class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage):  # 97, 107, 132, 160
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
@@ -2284,8 +2270,18 @@ class SpriteImage_BoomerangBro(SLib.SpriteImage_Static):  # 94
         SLib.loadIfNotInImageCache('BoomerangBro', 'boomerangbro.png')
 
 
-class SpriteImage_HammerBroNormal(SpriteImage_HammerBro):  # 95
-    pass
+class SpriteImage_HammerBroNormal(SLib.SpriteImage_Static):  # 95
+    def __init__(self, parent, scale=1.5):
+        super().__init__(
+            parent,
+            scale,
+            ImageCache['HammerBro'],
+            (-4, -21)
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('HammerBro', 'hammerbro.png')
 
 
 class SpriteImage_RotationControllerSwaying(SLib.SpriteImage):  # 96
@@ -5803,7 +5799,7 @@ class SpriteImage_RotSpotlight(SLib.SpriteImage_StaticMultiple):  # 306
         super().dataChanged()
 
 
-class SpriteImage_HammerBroPlatform(SpriteImage_HammerBro):  # 308
+class SpriteImage_HammerBroPlatform(SpriteImage_HammerBroNormal):  # 308
     pass
 
 

@@ -1404,7 +1404,7 @@
   <sprite id="94" name="Boomerang Bro" sizehacks="True" notes="A standard Brothers enemy that throws Boomerangs at the player.">
   </sprite> <!-- #94: Boomerang Bro" -->
 
-  <sprite id="95" name="Hammer Bro Plus" asmhacks="True" sizehacks="True" notes="A standard Brothers enemy that throws hammers (or other objects!) at the player.">
+  <sprite id="95" name="Hammer Bro Plus" asmhacks="True" sizehacks="True" notes="A standard Brothers enemy that throws hammers at the player.">
     <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. With a platform limit of one, he can jump onto any passthrough terrain or brick blocks above this solid ground at a distance of 4. With a platform limit of two, he can jump between this platform and another one above it. When on the top of this platform limit, he will not try and jump upwards. He can also jump down from passthrough terrain set higher than 8 blocks above the solid ground, though he will not be able to return."/>
     <dualbox bit="48" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
   </sprite> <!-- #95: Hammer Bro Plus -->

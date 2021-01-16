@@ -765,7 +765,7 @@
       <entry value="0">Normal</entry>
       <entry value="1">Black</entry>
     </list>
-    <list nybble="10" title="Thrown Object" comment="This determines which object will be thrown by the Hammer Bro Plus.">
+    <list nybble="10" title="Thrown Object" comment="This determines which object will be thrown by the Hammer Bro Plus.&lt;br&gt;For values 1-3 and 5, the corresponding sprite must be in the level. Otherwise, the Hammer Bro will crash game on load.">
       <entry value="0">Hammers</entry>
       <entry value="1">Bob-omb</entry>
       <entry value="2">Goomba</entry>
@@ -2179,7 +2179,7 @@
       <entry value="0">Normal</entry>
       <entry value="1">Black</entry>
     </list>
-    <list nybble="10" title="Thrown Object" comment="This determines which object will be thrown by the Hammer Bro Plus.">
+    <list nybble="10" title="Thrown Object" comment="This determines which object will be thrown by the Hammer Bro Plus.&lt;br&gt;For values 1-3 and 5, the corresponding sprite must be in the level. Otherwise, the Hammer Bro will crash game on load.">
       <entry value="0">Hammers</entry>
       <entry value="1">Bob-omb</entry>
       <entry value="2">Goomba</entry>

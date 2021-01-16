@@ -893,6 +893,23 @@ class SpriteImage_ActorMultiSpawner(SLib.SpriteImage_Static):  # 89
         SLib.loadIfNotInImageCache('ActorMultiSpawner', 'ActorMultiSpawner.png')
 
 
+class SpriteImage_NewerHammerBroNormal(SLib.SpriteImage_StaticMultiple):  # 95
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.offset = (-4, -21)
+        
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('HammerBro', 'hammerbro.png')
+        SLib.loadIfNotInImageCache('HammerBroBlack', 'hammerbro_black.png')
+        
+    def dataChanged(self):
+        black = self.parent.spritedata[2] & 1
+        self.image = ImageCache['HammerBro'] if not black else ImageCache['HammerBroBlack']
+
+        super().dataChanged()
+
+
 class SpriteImage_GiantSpikeBall(SLib.SpriteImage_StaticMultiple):  # 98
     def __init__(self, parent):
         super().__init__(
@@ -1756,6 +1773,10 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
         super().dataChanged()
 
 
+class SpriteImage_NewerHammerBroPlatform(SpriteImage_NewerHammerBroNormal):  # 308
+    pass
+
+
 class SpriteImage_NewerMegaIcicle(SLib.SpriteImage_StaticMultiple):  # 311
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -2184,6 +2205,7 @@ ImageClasses = {
     63: SpriteImage_NewerSpikeBall,
     88: SpriteImage_ActorSpawner,
     89: SpriteImage_ActorMultiSpawner,
+    95: SpriteImage_NewerHammerBroNormal,
     98: SpriteImage_GiantSpikeBall,
     101: SpriteImage_NewerBobomb,
     105: SpriteImage_NewerPokey,
@@ -2222,6 +2244,7 @@ ImageClasses = {
     286: SpriteImage_NewerWoodCircle,
     290: SpriteImage_Boolossus,
     296: SpriteImage_NewerMegaBuzzy,
+    308: SpriteImage_NewerHammerBroPlatform,
     311: SpriteImage_NewerMegaIcicle,
     319: SpriteImage_Flipblock,
     320: SpriteImage_FallingChestnut,
