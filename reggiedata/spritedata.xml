@@ -9,7 +9,7 @@
 <!-- idtypes - Sprites with multiple Target Events or Triggering Events may need a secondary idtype, so that the primary Target/Triggering can be displayed in the sprite's display box. -->
 <!-- idtypes - Sprites with idtypes should have their idtype displayed within their blue box, usually in the lower right corner. (primary) Target Event should usually be in the lower right, and Triggering Event should usually be in the lower left. Secondary values like AND controller's second+ Triggering Event, and IF controller's secondary Location ID should be displayed in the top right corner or otherwise not displayed at all. -->
 <!-- Sample sprite with full settings -->
-<!-- <sprite id="#" name="Sprite Name" asmhacks="True" sizehacks="True" noyoshi="True" yoshinotes="Talk about how it interacts with Yoshi. Advanced Only." notes="Talk about how to use this sprite in a basic sense." advancednotes="Talk about how to use this sprite in an advanced sense. Advanced Only."> -->
+<!-- <sprite id="#" name="Sprite Name" asmhacks="True" noyoshi="True" yoshinotes="Talk about how it interacts with Yoshi. Advanced Only." notes="Talk about how to use this sprite in a basic sense." advancednotes="Talk about how to use this sprite in an advanced sense. Advanced Only."> -->
 <!--   <dependency notes="Talk about the dependencies."> -->
 <!--     <required sprite="#" /> -->
 <!--     <suggested sprite="#" /> -->
@@ -186,7 +186,7 @@
   <sprite id="18" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #18: Unused -->
   <sprite id="19" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #19: Unused -->
 
-  <sprite id="20" name="Goomba" asmhacks="True" sizehacks="True" notes="Your standard Goomba. Place it in the level and it will walk towards Mario when it loads.">
+  <sprite id="20" name="Goomba" notes="Your standard Goomba. Place it in the level and it will walk towards Mario when it loads.">
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the Goomba placing it further behind other sprites."/>
     <list nybble="12" title="Load-In Animation" comment="This value affects the spawning animation of the Goomba. This is useful for Goombas within range of a nearby Entrance. Jumps and Tumble will result in it landing on the platform below where it was initially placed.">
       <entry value="0">Normal</entry>
@@ -198,7 +198,7 @@
     </list>
   </sprite> <!-- #20: Goomba -->
 
-  <sprite id="21" name="Paragoomba" asmhacks="True" sizehacks="True" notes="A Goomba with wings that will flutter towards Mario when it loads.">
+  <sprite id="21" name="Paragoomba" notes="A Goomba with wings that will flutter towards Mario when it loads.">
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the Paragoomba placing it further behind other sprites."/>
   </sprite> <!-- #21: Paragoomba -->
 
@@ -216,12 +216,12 @@
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #23: Basic Platform - Horizontal Movement -->
 
-  <sprite id="24" name="Buzzy Beetle" asmhacks="True" sizehacks="True" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads. It will turn around when it reaches ledges and blocks are treated the same as terrain. It will turn around if it walks into lava, but die if it falls into it.">
+  <sprite id="24" name="Buzzy Beetle" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads. It will turn around when it reaches ledges and blocks are treated the same as terrain. It will turn around if it walks into lava, but die if it falls into it.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Buzzy Beetle will be upside-down and able to cling to and walk on ceilings if placed adjacent to them. If not placed adjacent, he will immediately fall and spin towards the player."/>
     <checkbox bit="47" title="Inside Shell" comment="When enabled, the Buzzy Beetle will spawn inside his shell. He will eventually climb out and resume walking, even if set to be upside-down. Upside-down shells will fall without spinning towards the player."/>
   </sprite> <!-- #24: Buzzy Beetle -->
 
-  <sprite id="25" name="Spiny" asmhacks="True" sizehacks="True" notes="A Spiny that walks along the ground.">
+  <sprite id="25" name="Spiny" notes="A Spiny that walks along the ground.">
     <list bit="47-48" title="Load-In Animation" comment="This will determine which animation state is used by the Spiny when it is first loaded.">
       <entry value="0">Normal (Towards Player)</entry>
       <entry value="1">Balled Up (Lakitu) (Default Direction)</entry>
@@ -232,7 +232,7 @@
   </sprite> <!-- #25: Spiny -->
 
   <!-- Research Unknown Flag 12 -->
-  <sprite id="26" name="Upside-Down Spiny" sizehacks="True" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading.">
+  <sprite id="26" name="Upside-Down Spiny" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading.">
 	<checkbox bit="32" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
     <checkbox bit="48" title="Unknown Flag 12" advanced="True" advancedcomment="Used in Retail: 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
   </sprite> <!-- #26: Upside-Down Spiny -->
@@ -273,7 +273,7 @@
   <sprite id="29" name="Incomplete Platform - Ac_Lift_ObjBg_HMove_Big" notes="This sprite does not load. Settings are the same as in sprite 28. We're currently unsure why this sprite does not load. &lt;br&gt;Needs RE (reverse-engineering) data to figure out the issue.">
   </sprite> <!-- #29: Incomplete Platform - Ac_Lift_ObjBG_HMove_Big -->
 
-  <sprite id="30" name="Grey Tiled Block" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  <sprite id="30" name="Grey Tiled Block" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">2 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -342,7 +342,7 @@
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #31: Basic Platform - Vertical Movement -->
 
-  <sprite id="32" name="Star Coin" sizehacks="True" notes="The Star Coin is a level-wide collectible. The player's goal is to collect all three to complete their savefile.">
+  <sprite id="32" name="Star Coin" notes="The Star Coin is a level-wide collectible. The player's goal is to collect all three to complete their savefile.">
     <list bit="39-40" title="Coin Number" comment="This determines which Star Coin flag will be set for the level when this Star Coin is collected." comment2="Multiple Star Coins with the same [Coin Number] can be placed. However, once one of them is collected, the duplicate entries will not load.">
       <entry value="0">First Coin</entry>
       <entry value="1">Second Coin</entry>
@@ -486,7 +486,7 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #40: "?" Switch (Orange) -->
 
-  <sprite id="41" name="&quot;P&quot; Switch (Blue)" sizehacks="True" notes="This switch is similar to the ? Switch, but it has the additional abilitiy of causing all Blue Coins (tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality. &lt;br&gt; &lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block.">
+  <sprite id="41" name="&quot;P&quot; Switch (Blue)" notes="This switch is similar to the ? Switch, but it has the additional abilitiy of causing all Blue Coins (tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality. &lt;br&gt; &lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block.">
     <dependency notes="Activates 'Pow Block Coin' tileset tiles."/>
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing down. Upside-Down switches cannot be set to fall."/>
     <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms. It does not work with conveyor belts."/>
@@ -508,7 +508,7 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #41: "P" Switch (Blue) -->
 
-  <sprite id="42" name="&quot;!&quot; Switch (Red)" asmhacks="True" sizehacks="True" notes="This switch is similar to the ? Switch, but it has the additional effect of changing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
+  <sprite id="42" name="&quot;!&quot; Switch (Red)" notes="This switch is similar to the ? Switch, but it has the additional effect of changing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
     <dependency notes="Activates 'Red Block Outline A/B' tiles."/>
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
     <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set."/>
@@ -532,7 +532,7 @@
 
   <!-- These notes apply to 43, 44, and 45 -->
   <!-- Make a quick test level to show general functionality of a Brick Block switch with a Triggering Event. Does it appear after being struck if the event is later turned on? Does it only appear if the event is on before the block is struck? -->
-  <sprite id="43" name="Brick Block &quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  <sprite id="43" name="Brick Block &quot;?&quot; Switch (Orange)" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/>
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
@@ -551,7 +551,7 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #43: Brick Block "?" Switch (Orange) -->
 
-  <sprite id="44" name="Brick Block &quot;P&quot; Switch (Blue)" sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (both tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Bug: &lt;/b&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if they were blocks.&lt;/font&gt;" advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  <sprite id="44" name="Brick Block &quot;P&quot; Switch (Blue)" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (both tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Bug: &lt;/b&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if they were blocks.&lt;/font&gt;" advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Blue Coins, or transform blocks and coins." idtype="Target Event"/>
@@ -572,7 +572,7 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #44: Brick Block "P" Switch (Blue) -->
 
-  <sprite id="45" name="Brick Block &quot;!&quot; Switch (Red)" asmhacks="True" sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  <sprite id="45" name="Brick Block &quot;!&quot; Switch (Red)" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/>
@@ -593,19 +593,19 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #45: Brick Block "!" Switch (Red) -->
 
-  <sprite id="46" name="Lava Bubble (Podoboo)" asmhacks="True" sizehacks="True" notes="The Lava Bubble (Podoboo) is a firey enemey that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava.">
+  <sprite id="46" name="Lava Bubble (Podoboo)" notes="The Lava Bubble (Podoboo) is a firey enemey that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava.">
     <dependency notes="The Podoboo requires [139] Lava within 15 blocks underneath it in order to appear.">
       <required sprite="139"/> <!-- Requires Lava -->
     </dependency>
     <value nybble="12" title="Delay Between Jumps" comment="This determines the delay between each of the Podoboo's jumps." comment2="Each value is approximately 1 game second. Podoboos first load in the air at the top of their jump, so a Podoboo with a large delay value may not even interact with the player as they run by."/>
   </sprite> <!-- #46: Lava Bubble (Podoboo) -->
 
-  <sprite id="47" name="Thwomp" asmhacks="True" sizehacks="True" noyoshi="True" notes="A normal sized Thwomp that will try to crush the player when it is nearby or underneath. Thwomps are not capable of destroying tileset objects unless set to Crush Forever.">
+  <sprite id="47" name="Thwomp" noyoshi="True" notes="A normal sized Thwomp that will try to crush the player when it is nearby or underneath. Thwomps are not capable of destroying tileset objects unless set to Crush Forever.">
     <dualbox bit="47" title1="Drop and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop."/>
     <checkbox bit="48" title="Unknown Flag 12 (1)" comment="An unknown setting for Nybble 12." advanced="True" advancedcomment="Bit 47-48 may be a list, but only value 2 has been defined. Value 3 is confirmed to CRASH the game, so do not activate this with Crush Forever. However, value 1 may provide different effects. Experimenting and testing are required."/>
   </sprite> <!-- #47: Thwomp -->
 
-  <sprite id="48" name="Big Thwomp" asmhacks="True" sizehacks="True" noyoshi="True" notes="A larger Thwomp that will try to crush the player when it is nearby or underneath. Big Thwomps are capable of destroying certain types of tileset objects such as brick blocks and grey blocks.">
+  <sprite id="48" name="Big Thwomp" noyoshi="True" notes="A larger Thwomp that will try to crush the player when it is nearby or underneath. Big Thwomps are capable of destroying certain types of tileset objects such as brick blocks and grey blocks.">
     <dualbox bit="47" title1="Crush and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position after crushing up to one row of breakable terrain, or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop."/>
     <checkbox bit="48" title="Unknown Flag 12 (1)" comment="An unknown setting for Nybble 12." advanced="True" advancedcomment="Bit 47-48 may be a list, but only value 2 has been defined. Value 3 is confirmed to CRASH the game, so do not activate this with Crush Forever. However, value 1 may provide different effects. Experimenting and testing are required."/>
   </sprite> <!-- #48: Big Thwomp -->
@@ -666,7 +666,7 @@
   <sprite id="51" name="Tilt Controlled Girder" notes="This is the Tilt Controlled Girder (Beam) platform that is assigned to the first player to touch it. That player will maintain tilt control for as long as they are touching it.">
   </sprite> <!-- #51: Tilt Controlled Girder -->
 
-  <sprite id="52" name="Auto-Rotating 4-Platform" asmhacks="True" notes="This platform is similar to the Reznor platforms from Super Mario World. It consists of four 6x1 platforms that rotate around the center point.">
+  <sprite id="52" name="Auto-Rotating 4-Platform" notes="This platform is similar to the Reznor platforms from Super Mario World. It consists of four 6x1 platforms that rotate around the center point.">
     <dualbox bit="32" title1="Counter-Clockwise" title2="Clockwise" comment="This determines which way the platform will rotate."/>
   </sprite> <!-- #52: Auto-Rotating 4-Platform -->
 
@@ -676,7 +676,7 @@
     <value nybble="11-12" title="Location ID" comment="This determines the Location where the quicksand animation will be created." idtype="Location"/>
   </sprite> <!-- #53: Effect - Quicksand -->
 
-   <sprite id="54" name="Lakitu" sizehacks="True" notes="A stand-alone Lakitu, more useful for small rooms than entire levels. Lakitu will throw Spinies (or coins) at the player and will follow the player until killed.">
+   <sprite id="54" name="Lakitu" notes="A stand-alone Lakitu, more useful for small rooms than entire levels. Lakitu will throw Spinies (or coins) at the player and will follow the player until killed.">
     <dependency notes="The stand-alone Lakitu will spawn at exactly the height that it is placed and will remain at that height as it follows the player. Additionally, as it does not respawn after killed unless re-entering the zone, utilizing it for its cloud riding is not recommended for mandatory progress."/>
     <dualbox bit="40" title1="Spawn from the Side" title2="Spawn from the Background" comment="This will determine which animation state is used by the Lakitu when it is first loaded." comment2="Spawning from the Background means that the Lakitu will fly in from the background, facing the camera."/>
     <dualbox bit="47" title1="Throws Spinies" title2="Throws Coins" comment="This determines what the Lakitu will throw." advancedcomment="ASM shows that odd values may differ from even values. No differences observed."/>
@@ -717,7 +717,7 @@
     </list>
   </sprite> <!-- #56: Rising Tilt Controlled Girder -->
 
-  <sprite id="57" name="Koopa Troopa" asmhacks="True" sizehacks="True" notes="Your standard Koopa Troopa. Place it in the level and it will walk towards Mario when it loads. It can either be set to walk off ledges, or turn around at ledges.">
+  <sprite id="57" name="Koopa Troopa" notes="Your standard Koopa Troopa. Place it in the level and it will walk towards Mario when it loads. It can either be set to walk off ledges, or turn around at ledges.">
     <dualbox bit="48" title1="Walks Off Ledges" title2="Turns Around At Ledges" comment="This determines if the Koopa Troopa will mindlessly walk off of ledges or if it will turn around when it reaches a ledge." comment2="This also changes the color of the Koopa Troopa."/>
     <list bit="19-20" title="Load State" comment="This determines what animation state the Koopa Troopa will load as." comment2="Normal: The Koopa Troopa will be walking normally when loaded. &lt;br&gt; &lt;br&gt;Loads as Shell: The Koopa Troopa will load inside its shell and then return to normal. &lt;br&gt; &lt;br&gt;Stays in Shell: The Koopa Troopa will load inside its shell and not return to normal. However, it cannot be kicked until jumped on and will instead hurt the player.">
       <entry value="0">Normal</entry>
@@ -731,7 +731,7 @@
 
   <!-- Investigate "Glitchy Behavior" further? -->
   <!-- Test Nybble 10 more, something seems to be weird about it. Is it 'start at end of path instead of middle' or .... what, really? What's the value range? -->
-  <sprite id="58" name="Koopa Paratroopa" asmhacks="True" sizehacks="True" notes="Your standard Koopa Paratroopa. Place it in the level and it will jump around or fly. Once stomped, it can either be set to walk off ledges, or turn around at ledges.">
+  <sprite id="58" name="Koopa Paratroopa" notes="Your standard Koopa Paratroopa. Place it in the level and it will jump around or fly. Once stomped, it can either be set to walk off ledges, or turn around at ledges.">
     <list bit="43-44" title="Movement Type" comment="This determines the primary type of movement behavior of the Koopa Paratroopa. Flying Paratroopas move 9 blocks total." advancedcomment="Mode 3 spawns a floating shell that cannot be picked up. When Mario hits it from the side, he takes damage, but when the jumps on it, it falls to the ground and becomes a regular shell that can be picked up.">
       <entry value="0">Jumping</entry>
       <entry value="1">Flying: Left and Right</entry>
@@ -772,7 +772,7 @@
     <value nybble="12" title="Width of the Collision Box" advanced="True" advancedcomment="Value + 6. This option does not change the length of the platform, but instead the length of the (invisible) collision box attached. The collision box ensures that Mario does not fall through the platform. The collision box usually has the same size as the platform itself. The collision box and the platform have the same center point. Per value, the collision box will extend its length 1/2 blocks to the left and right. If you stand on this collision box but outside the platform, then it looks as if you are standing in midair."/>
   </sprite> <!-- #59: Line Controlled Tilt Controlled Girder -->
 
-  <sprite id="60" name="Spike Top" asmhacks="True" sizehacks="True" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spiketops don't properly work on slopes.">
+  <sprite id="60" name="Spike Top" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spiketops don't properly work on slopes.">
     <list bit="43-44" title="Orientation" comment="The Spike Top must be placed against something for it to appear.">
       <entry value="0">Placed on Ground</entry>
       <entry value="1">Placed on Left Wall</entry>
@@ -782,7 +782,7 @@
     <dualbox bit="48" title1="Walks Clockwise" title2="Walks Counter-Clockwise" comment="This determines which direction the Spike Top will walk."/>
   </sprite> <!-- #60: Spike Top -->
 
-  <sprite id="61" name="Big Boo" sizehacks="True" notes="A large version of the Boo enemy.">
+  <sprite id="61" name="Big Boo" notes="A large version of the Boo enemy.">
     <checkbox bit="48" title="Slightly Faster" comment="When enabled, the Big Boo will move slightly faster."/>
     <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #61: Big Boo -->
@@ -813,7 +813,7 @@
     <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, any Chainlink Fence object will cover the Firebar, protecting the player from it unless they are also behind the fence. Exposed Firebar without fence in front of it will still hurt the player. The Block Base will also be hidden by Chainlink Fence."/>
   </sprite> <!-- #62: Spinning Firebar -->
 
-  <sprite id="63" name="Spiked Ball" asmhacks="True" sizehacks="True" notes="A loose Spiked Ball that will also destroy certain types of blocks.">
+  <sprite id="63" name="Spiked Ball" notes="A loose Spiked Ball that will also destroy certain types of blocks.">
     <dualbox bit="44" title1="Starts Rolling Left" title2="Starts Rolling Right" comment="This determines which direction the Spiked Ball will begin rolling in."/>
     <list bit="47-48" title="Speed" comment="This determines how fast the Spiked Ball rolls.">
       <entry value="0">Stopped</entry>
@@ -833,23 +833,23 @@
     <checkbox bit="38" title="Unknown Flag 10 (4)" advanced="True" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function, or this flag may do something else entirely. Or nothing."/>
   </sprite> <!-- #64: Effect - Thick Fog -->
 
-  <sprite id="65" name="Pipe Piranha Plant - Up" sizehacks="True" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one.">
+  <sprite id="65" name="Pipe Piranha Plant - Up" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one.">
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #65: Pipe Piranha Plant - Up -->
 
-  <sprite id="66" name="Pipe Piranha Plant - Down" sizehacks="True" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one.">
+  <sprite id="66" name="Pipe Piranha Plant - Down" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one.">
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #66: Pipe Piranha Plant - Down -->
 
-  <sprite id="67" name="Pipe Piranha Plant - Right" sizehacks="True" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
+  <sprite id="67" name="Pipe Piranha Plant - Right" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #67: Pipe Piranha Plant - Right -->
 
-  <sprite id="68" name="Pipe Piranha Plant - Left" sizehacks="True" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
+  <sprite id="68" name="Pipe Piranha Plant - Left" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #68: Pipe Piranha Plant - Left -->
 
-  <sprite id="69" name="Pipe Fire Piranha Plant - Up" sizehacks="True" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one.">
+  <sprite id="69" name="Pipe Fire Piranha Plant - Up" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one.">
     <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
       <entry value="0">1 Fireball</entry>
       <entry value="1">2 Fireballs</entry>
@@ -859,7 +859,7 @@
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #69: Pipe Fire Piranha Plant - Up -->
 
-  <sprite id="70" name="Pipe Fire Piranha Plant - Down" sizehacks="True" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one.">
+  <sprite id="70" name="Pipe Fire Piranha Plant - Down" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one.">
     <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
       <entry value="0">1 Fireball</entry>
       <entry value="1">2 Fireballs</entry>
@@ -869,7 +869,7 @@
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #70: Pipe Fire Piranha Plant - Down -->
 
-  <sprite id="71" name="Pipe Fire Piranha Plant - Right" sizehacks="True" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
+  <sprite id="71" name="Pipe Fire Piranha Plant - Right" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
     <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
       <entry value="0">1 Fireball</entry>
       <entry value="1">2 Fireballs</entry>
@@ -879,7 +879,7 @@
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #71: Pipe Fire Piranha Plant - Right -->
 
-  <sprite id="72" name="Pipe Fire Piranha Plant - Left" sizehacks="True" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
+  <sprite id="72" name="Pipe Fire Piranha Plant - Left" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
     <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
       <entry value="0">1 Fireball</entry>
       <entry value="1">2 Fireballs</entry>
@@ -889,38 +889,38 @@
      <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
   </sprite> <!-- #72: Pipe Fire Piranha Plant - Left -->
 
-  <sprite id="73" name="Piranha Plant" sizehacks="True" notes="The standard Piranha Plant.">
+  <sprite id="73" name="Piranha Plant" notes="The standard Piranha Plant.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling."/>
     <checkbox bit="44" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="Used in Retail: 5-04 A1"/>
   </sprite> <!-- #73: Piranha Plant -->
 
-  <sprite id="74" name="Big Piranha Plant" sizehacks="True" notes="A large version of the standard Piranha Plant. It takes 3 fireballs to kill.">
+  <sprite id="74" name="Big Piranha Plant" notes="A large version of the standard Piranha Plant. It takes 3 fireballs to kill.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling."/>
     <checkbox bit="44" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="Used in Retail: 5-04 A1"/>
   </sprite> <!-- #74: Big Piranha Plant -->
 
-  <sprite id="75" name="Fire Piranha Plant" sizehacks="True" notes="The Piranha Plant that shoots fireballs.">
+  <sprite id="75" name="Fire Piranha Plant" notes="The Piranha Plant that shoots fireballs.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling."/>
   </sprite> <!-- #75: Fire Piranha Plant -->
 
-  <sprite id="76" name="Big Fire Piranha Plant" sizehacks="True" notes="A large version of the Piranha Plant that shoots fireballs. It takes 3 fireballs to kill.">
+  <sprite id="76" name="Big Fire Piranha Plant" notes="A large version of the Piranha Plant that shoots fireballs. It takes 3 fireballs to kill.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling."/>
   </sprite> <!-- #76: Big Fire Piranha Plant -->
 
   <sprite id="77" name="(Unused) Doomship Key" notes="A key titled the Doomship Key. When collecting this key, it will fly up past the top-left corner of the screen near the Star Coin inventory, but this is the only effect it has. It is entirely useless on its own.">
   </sprite> <!-- #77: (Unused) Doomship Key -->
 
-  <sprite id="78" name="Bouncy Cloud" asmhacks="True" noyoshi="True" notes="A cloud platform with a happy face that the player can bounce on to jump really high.">
+  <sprite id="78" name="Bouncy Cloud" noyoshi="True" notes="A cloud platform with a happy face that the player can bounce on to jump really high.">
     <checkbox bit="36" title="Larger Cloud" comment="When enabled, the Bouncy Cloud will be bigger."/>
   </sprite> <!-- #78: Bouncy Cloud -->
 
   <sprite id="79" name="Incomplete Sprite - 'En_Helpos'" notes="Does nothing.">
     </sprite> <!-- #79: Incomplete Sprite - 'En_Helpos' -->
 
-  <sprite id="80" name="Fire Bro" sizehacks="True" notes="A standard Brothers enemy that shoots fireballs at the player.">
+  <sprite id="80" name="Fire Bro" notes="A standard Brothers enemy that shoots fireballs at the player.">
   </sprite> <!-- #80: Fire Bro -->
 
-  <sprite id="81" name="Grey Tiled Block with Spikes - Left" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  <sprite id="81" name="Grey Tiled Block with Spikes - Left" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">1 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -977,7 +977,7 @@
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #81: Grey Tiled Block with Spikes - Left -->
 
-  <sprite id="82" name="Grey Tiled Block with Spikes - Right" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  <sprite id="82" name="Grey Tiled Block with Spikes - Right" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">1 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -1034,7 +1034,7 @@
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #82: Grey Tiled Block with Spikes - Right -->
 
-  <sprite id="83" name="Grey Tiled Block with Spikes - Left + Right" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  <sprite id="83" name="Grey Tiled Block with Spikes - Left + Right" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">1 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -1091,7 +1091,7 @@
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #83: Grey Tiled Block with Spikes - Left + Right -->
 
-  <sprite id="84" name="Grey Tiled Block with Spikes - Top" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  <sprite id="84" name="Grey Tiled Block with Spikes - Top" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">1 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -1148,7 +1148,7 @@
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #84: Grey Tiled Block with Spikes - Top -->
 
-  <sprite id="85" name="Grey Tiled Block with Spikes - Bottom" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  <sprite id="85" name="Grey Tiled Block with Spikes - Bottom" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">1 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -1205,7 +1205,7 @@
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #85: Grey Tiled Block with Spikes - Bottom -->
 
-  <sprite id="86" name="Grey Tiled Block with Spikes - Top + Bottom" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  <sprite id="86" name="Grey Tiled Block with Spikes - Top + Bottom" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">1 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -1401,10 +1401,10 @@
     <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #93: Banzai Bill Launcher -->
 
-  <sprite id="94" name="Boomerang Bro" sizehacks="True" notes="A standard Brothers enemy that throws Boomerangs at the player.">
+  <sprite id="94" name="Boomerang Bro" notes="A standard Brothers enemy that throws Boomerangs at the player.">
   </sprite> <!-- #94: Boomerang Bro" -->
 
-  <sprite id="95" name="Hammer Bro Plus" asmhacks="True" sizehacks="True" notes="A standard Brothers enemy that throws hammers at the player.">
+  <sprite id="95" name="Hammer Bro Plus" notes="A standard Brothers enemy that throws hammers at the player.">
     <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. With a platform limit of one, he can jump onto any passthrough terrain or brick blocks above this solid ground at a distance of 4. With a platform limit of two, he can jump between this platform and another one above it. When on the top of this platform limit, he will not try and jump upwards. He can also jump down from passthrough terrain set higher than 8 blocks above the solid ground, though he will not be able to return."/>
     <dualbox bit="48" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
   </sprite> <!-- #95: Hammer Bro Plus -->
@@ -1468,7 +1468,7 @@
     <value nybble="11-12" title="Rotation ID" comment="Match this sprite with a Rotation Controller to make this sprite move. Works with both Spinning and Swaying." idtype="Rotation"/>
   </sprite> <!-- #97: (Unused) Rotation Controlled Block -->
 
-  <sprite id="98" name="Giant Spiked Ball" asmhacks="True" sizehacks="True" notes="A large loose Spiked Ball that will also destroy certain types of blocks.">
+  <sprite id="98" name="Giant Spiked Ball" notes="A large loose Spiked Ball that will also destroy certain types of blocks.">
     <dualbox bit="44" title1="Starts Rolling Left" title2="Starts Rolling Right" comment="This determines which direction the Spiked Ball will begin rolling in."/>
     <list bit="47-48" title="Speed" comment="This determines how fast the Spiked Ball rolls.">
       <entry value="0">Stopped</entry>
@@ -1481,7 +1481,7 @@
     </list>
   </sprite> <!-- #98: Giant Spiked Ball -->
 
-  <sprite id="99" name="Pipe Enemy Generator" asmhacks="True" notes="Use this to spawn waves of either Goombas or Bob-Ombs from a pipe.">
+  <sprite id="99" name="Pipe Enemy Generator" notes="Use this to spawn waves of either Goombas or Bob-Ombs from a pipe.">
     <dependency notes="The spawner must be placed on layer 1 tiles set to the core type 'Pipe'."/>
     <dualbox bit="44" title1="Spawns Goombas" title2="Spawns Bob-Ombs" comment="This determines which enemy will be spawned from the pipe."/>
     <list nybble="12" title="Exit Direction" commnet="This determines which direction the enemy will spawn from the pipe." comment2="The spawner must be correctly positioned or it will not function. See Dependency Notes for more information.">
@@ -1496,13 +1496,13 @@
     </list>
   </sprite> <!-- #99: Pipe Enemy Generator -->
 
-  <sprite id="100" name="Swoop" sizehacks="True" notes="A basic cave bat that drops down from the ceiling and flies towards the player.">
+  <sprite id="100" name="Swoop" notes="A basic cave bat that drops down from the ceiling and flies towards the player.">
     <dependency notes="The Swoop must be placed with terrain directly above it in order to spawn. A Swoop will activate when approached within 4 blocks horizontally, and from below at any distance."/>
     <checkbox bit="40" title="Leader" comment="When enabled and paired with a colony, the Leader Swoop will activate all Swoops with the same Colony ID when approached by a player." comment2="If this is set, all non-Leaders will activate only if the Leader does. when the Leader is present."/>
     <value nybble="11-12" title="Colony ID" comment="This determines what colony a Leader will trigger." comment2="If no Leader is present, Swoops with a Colony ID will activate only within ~1 block horizontally, instead of 4 blocks." idtype="Colony"/>
   </sprite> <!-- #100: Swoop -->
 
-  <sprite id="101" name="Bob-Omb" asmhacks="True" sizehacks="True" notes="A standard Bob-Omb enemy. It will spawn walking towards the player and will fall off of ledges. When stepped on or struck with a fireball, it will eventually explode damaging certain types of blocks, terrain, and enemies.">
+  <sprite id="101" name="Bob-Omb" notes="A standard Bob-Omb enemy. It will spawn walking towards the player and will fall off of ledges. When stepped on or struck with a fireball, it will eventually explode damaging certain types of blocks, terrain, and enemies.">
     <list nybble="5" title="Load-In Animation" comment="This determines what animation state is used by the Bob-Omb when it is first loaded. Changing this value is not recommended." comment2="Frozen in Ice (Minus Ice): The Bob-Omb is placed at a random angle in a random spot inside a square of 3x3 blocks, the sprite's placement it the middle block. It appears somewhere between Layer 1 and Layer 2, and cannot be interacted with in any way.">
       <entry value="0">Normal</entry>
       <entry value="1">Pipe Spawn</entry>
@@ -1517,7 +1517,7 @@
     </list>
   </sprite> <!-- #101: Bob-Omb -->
 
-  <sprite id="102" name="Broozer" sizehacks="True" notes="A ghost house enemy that charges towards the Player when they're nearby. He must be stepped on thrice in order to be defeated. He will also destroy certain types of blocks and terrain with his flailing attack. Please note that he can only destroy tileset bricks and not sprite bricks.">
+  <sprite id="102" name="Broozer" notes="A ghost house enemy that charges towards the Player when they're nearby. He must be stepped on thrice in order to be defeated. He will also destroy certain types of blocks and terrain with his flailing attack. Please note that he can only destroy tileset bricks and not sprite bricks.">
   </sprite> <!-- #102: Broozer -->
 
   <sprite id="103" name="Basic Platform - Spawner" notes="This will endlessly spawn Basic Platforms moving in a specific direction. The platforms will continue for as long as the player rides on one.">
@@ -1536,7 +1536,7 @@
     <checkbox bit="48" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Amp placing it further behind other sprites."/>
   </sprite> <!-- #104: Amp -->
 
-  <sprite id="105" name="Pokey" asmhacks="True" notes="A tall segmented enemy whose pieces must be destroyed individually unless the head is defeated first.">
+  <sprite id="105" name="Pokey" notes="A tall segmented enemy whose pieces must be destroyed individually unless the head is defeated first.">
     <list bit="46-48" title="Height" comment="This determines how tall the Pokey is. One piece will be the head, and every other piece is a body piece." comment2="The height value also affects what Yoshi lays when consumed whole.">
       <entry value="0">2 Pieces</entry>
       <entry value="1">3 Pieces</entry>
@@ -1642,7 +1642,7 @@
     <value nybble="12" title="Z-Order" comment="This will adjust the Z-Order of the Amps in relation to other objects." comment2="A higher value will place this sprite further towards the background."/>
   </sprite> <!-- #108: Line Controlled Amp Spawner -->
 
-  <sprite id="109" name="Spiked Ball on a Chain" sizehacks="True" notes="This is a Spiked Ball attached to a chain that rotates on its own.">
+  <sprite id="109" name="Spiked Ball on a Chain" notes="This is a Spiked Ball attached to a chain that rotates on its own.">
     <dualbox bit="44" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the Spiked Ball will rotate."/>
     <list nybble="12" title="Start Direction" comment="This determines which direction the Spiked Ball will appear from the center of the rotation point when it first loads.">
       <entry value="0">Right</entry>
@@ -1660,7 +1660,7 @@
     </list>
   </sprite> <!-- #110: Effect - Sunlight -->
 
-  <sprite id="111" name="Blooper" sizehacks="True" notes="An underwater enemy that will chase the player.">
+  <sprite id="111" name="Blooper" notes="An underwater enemy that will chase the player.">
     <dependency notes="Because the Bloopers can be used without Water, if they are placed in anything but an Underwater style level, they will appear to fly rather than swim and not be confined to Location Water, etc."/>
     <list nybble="3-4" title="Triggering Event ID" idtype="Triggering Event" >
       <entry value="0">Not Event Triggered</entry>
@@ -1711,7 +1711,7 @@
     </list>
   </sprite> <!-- #111: Blooper -->
 
-  <sprite id="112" name="Blooper Nanny with Babies" sizehacks="True" notes="An underwater enemy that will chase the player with a trail of babies in tow.">
+  <sprite id="112" name="Blooper Nanny with Babies" notes="An underwater enemy that will chase the player with a trail of babies in tow.">
     <dependency notes="Because the Bloopers can be used without Water, if they are placed in anything but an Underwater style level, they will appear to fly rather than swim and not be confined to Location Water, etc."/>
     <list nybble="3-4" title="Triggering Event ID" idtype="Triggering Event" >
       <entry value="0">Not Event Triggered</entry>
@@ -1762,7 +1762,7 @@
     </list>
   </sprite> <!-- #112: Blooper Nanny with Babies -->
 
-  <sprite id="113" name="Goal Pole and Fortress" sizehacks="True" notes="This is the Flag Pole that you've seen at the end of almost every Mario level. If you want to actually end your level without any fancy tricks, you need one of these.">
+  <sprite id="113" name="Goal Pole and Fortress" notes="This is the Flag Pole that you've seen at the end of almost every Mario level. If you want to actually end your level without any fancy tricks, you need one of these.">
     <dualbox bit="20" title1="Normal Exit" title2="Secret Exit" comment="This determines which level exit flag will be completed when this Goal Pole is reached."/>
     <checkbox bit="48" title="Snowy Castle" comment="When enabled, the Goal Pole and Fortress will both be decorated with a coating of snow."/>
   </sprite> <!-- #113: Goal Pole and Fortress -->
@@ -1782,7 +1782,7 @@
   <!-- Does the Triggering Event for Type 3 cause the Cheep Cheep to chase the player while the event is active? Any effect at all? -->
   <!-- Any difference between Type 0 and Type 2? -->
   <!-- Copy settings to #333 (334? 395?) -->
-  <sprite id="115" name="Cheep Cheep / Deep Cheep / Eep Cheep" sizehacks="True" notes="A basic Cheep Cheep and its very similar brethren. When placed in water, it will swim along or even swim after the player.">
+  <sprite id="115" name="Cheep Cheep / Deep Cheep / Eep Cheep" notes="A basic Cheep Cheep and its very similar brethren. When placed in water, it will swim along or even swim after the player.">
     <dependency notes="The Cheep Cheep will only spawn if placed within water. In addition, Deep Cheeps and the Eep Cheep only work on non-location water.">
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
@@ -1829,7 +1829,7 @@
   </sprite> <!-- #115: Cheep Cheep / Deep Cheep / Eep Cheep -->
 
   <!-- There may be additional variables that allow this sprite to interact with coins. -->
-  <sprite id="116" name="(Unused) Coin Cheep" sizehacks="True" notes="&lt;font color=&quot;red&quot;&gt;This sprite is not recommended for use.&lt;/font&gt; Just use a regular Cheep Cheep." advancednotes="An incomplete Cheep Cheep that swims in a specific direction. It bobs up and down as it swims. It is supposed to be the Cheep Cheep from NSMB:DS that pulls coins along with it. This functionality may exist within the sprite, but require a specific coin, setting, or controller to accomplish it.">
+  <sprite id="116" name="(Unused) Coin Cheep" notes="&lt;font color=&quot;red&quot;&gt;This sprite is not recommended for use.&lt;/font&gt; Just use a regular Cheep Cheep." advancednotes="An incomplete Cheep Cheep that swims in a specific direction. It bobs up and down as it swims. It is supposed to be the Cheep Cheep from NSMB:DS that pulls coins along with it. This functionality may exist within the sprite, but require a specific coin, setting, or controller to accomplish it.">
     <dependency notes="The Coin Cheep can be placed in both non-location water and location water.">
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
@@ -1870,14 +1870,14 @@
     </list>
   </sprite> <!-- #117: Burner - Pulsating -->
 
-  <sprite id="118" name="Dry Bones" sizehacks="True" notes="A skeletal Koopa Troopa that cannot die from being stomped on. It will also not walk off of platforms.">
+  <sprite id="118" name="Dry Bones" notes="A skeletal Koopa Troopa that cannot die from being stomped on. It will also not walk off of platforms.">
     <checkbox bit="48" title="Immune to Lava" comment="When enabled, the Dry Bones will not 'disappear' when he touches lava."/>
   </sprite> <!-- #118: Dry Bones -->
 
   <sprite id="119" name="Giant Dry Bones" notes="A large version of the Dry Bones enemy that must be ground-pounded in order to be rendered unconscious.">
   </sprite> <!-- #119: Giant Dry Bones -->
 
-  <sprite id="120" name="Sledge Bro" sizehacks="True" notes="A large bulky version of the Hammer Brothers enemy that will stomp the ground, stunning players touching the ground, in addition to throwing large hammers.">
+  <sprite id="120" name="Sledge Bro" notes="A large bulky version of the Hammer Brothers enemy that will stomp the ground, stunning players touching the ground, in addition to throwing large hammers.">
   </sprite> <!-- #120: Sledge Bro -->
 
   <sprite id="121" name="(Crashes) Collision Switcher" notes="This controller will switch the active collision layer from Layer 1 to Layer 2 and back when the Player holds up at the sprite's placement. &lt;font color=&quot;red&quot;&gt;This sprite will crash the game without the required texture file &quot;Sample/tobira.bti&quot;  &lt;/font&gt; Adding this texture allows the sprite to function. Note that the texture's dimensions don't affect the 1 block wide collision for switching Layers.">
@@ -1956,13 +1956,13 @@
     <checkbox bit="24" title="Delay" comment="This flag makes Lakitu throw Spinies less often." advancedcomment="Used in Retail: 04-05 A1."/>
   </sprite> <!-- #124: Lakitu Spawn Area -->
 
-  <sprite id="125" name="Climbing Koopa - Horizontal" sizehacks="True" notes="A Koopa Troopa that clings to and walks around on Chainlink Fence type objects and terrain. This one only moves from left to right.">
+  <sprite id="125" name="Climbing Koopa - Horizontal" notes="A Koopa Troopa that clings to and walks around on Chainlink Fence type objects and terrain. This one only moves from left to right.">
     <dependency notes="The Climbing Koopa requires a Chainlink Fence sprite or Chainlink Fence flagged Terrain objects in order to function. May not function with all types of Chainlink sprites."/>
     <dualbox bit="44" title1="Basic Green" title2="Faster Red" comment="This determines which type of Koopa Troopa will be on the fence. The red ones are slightly faster."/>
     <checkbox bit="48" title="Starts Behind Fence" comment="When enabled, the Climbing Koopa will be placed on the reverse side of the Chainlink Fence."/>
   </sprite> <!-- #125: Climbing Koopa - Horizontal -->
 
-  <sprite id="126" name="Climbing Koopa - Vertical" sizehacks="True" notes="A Koopa Troopa that clings to and walks around on Chainlink Fence type objects and terrain. This one only moves up and down.">
+  <sprite id="126" name="Climbing Koopa - Vertical" notes="A Koopa Troopa that clings to and walks around on Chainlink Fence type objects and terrain. This one only moves up and down.">
     <dependency notes="The Climbing Koopa requires a Chainlink Fence sprite or Chainlink Fence flagged Terrain objects in order to function. May not function with all types of Chainlink sprites."/>
     <dualbox bit="44" title1="Basic Green" title2="Faster Red" comment="This determines which type of Koopa Troopa will be on the fence. The red ones are slightly faster."/>
     <checkbox bit="48" title="Starts Behind Fence" comment="When enabled, the Climbing Koopa will be placed on the reverse side of the Chainlink Fence."/>
@@ -1983,7 +1983,7 @@
   <sprite id="130" name="Wiggler" notes="A normal sized Wiggler enemy. He does Wiggler things. Wiggle wiggle.">
   </sprite> <!-- #130: Wiggler -->
 
-  <sprite id="131" name="Boo" sizehacks="True" notes="A standard loose Boo enemy. The Boo will chase the player when there is no player actively facing the Boo.">
+  <sprite id="131" name="Boo" notes="A standard loose Boo enemy. The Boo will chase the player when there is no player actively facing the Boo.">
     <checkbox bit="48" title="Slightly Faster" comment="When enabled, the Boo will move slightly faster towards the player."/>
     <checkbox bit="44" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="Used in Retail: 03-20 A1/A3, 07-20 A3. May be Z-Order related?"/>
   </sprite> <!-- #131: Boo -->
@@ -2007,7 +2007,7 @@
   <sprite id="133" name="Wobble Rock Platform" noyoshi="True" notes="An 'unstable' platform that requires the player to balance it once touching it in order to keep it from completely falling.">
   </sprite> <!-- #133: Wobble Rock Platform -->
 
-  <sprite id="134" name="Crowber Crow" sizehacks="True" notes="A purple crow enemy called a Crowber that will fly around in the skies above the player.">
+  <sprite id="134" name="Crowber Crow" notes="A purple crow enemy called a Crowber that will fly around in the skies above the player.">
   </sprite> <!-- #134: Crowber Crow -->
 
   <sprite id="135" name="Unstable Hanging Chained Platform" noyoshi="True" notes="An 'unstable' large platform that will fall while a player stands on it, as well as tilt and wobble. The falling distance is 2½ blocks for the first player, and 1½ blocks more for additional players.">
@@ -2038,7 +2038,7 @@
   </sprite> <!-- #136: Rotating Bullet Bill Launcher -->
 
   <!-- Feel free to research the Timing Offset value for information on what it does. There's a few options. It could be a Set ID sort of matching that causes all Skewers of a specific set to be loaded in when any from the set is loaded into memory. If all Skewers are loaded into memory for timing purposes from the start of a level, it could be a fractional offset causing it to simply shift the starting time. It could also be a flat delay rather than a fractional one. Confirmation on its function would be nice. Load yourself up a starman and low zoom level and see what happens across a long stage. For the most part, keep your Skewers otherwise identical on their settings, but also test using a single "Timing Offset" and see what happens when differences between them are added. Or, just dig around in ASM. Your choice. Edit 140-142 and maybe 398-399 with the same findings. -->
-  <sprite id="137" name="Skewer - Down" sizehacks="True" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
+  <sprite id="137" name="Skewer - Down" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
     <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
       <entry value="1">7 Blocks</entry>
@@ -2200,7 +2200,7 @@
     YYYY=Rising and Falling while On, Returns when Off [UNKNOWN] / [BUGGY!]
    -->
 
-  <sprite id="140" name="Skewer - Up" sizehacks="True" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
+  <sprite id="140" name="Skewer - Up" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
     <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
       <entry value="1">7 Blocks</entry>
@@ -2221,7 +2221,7 @@
     <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
   </sprite> <!-- #140: Skewer - Up -->
 
-  <sprite id="141" name="Skewer - Right" sizehacks="True" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
+  <sprite id="141" name="Skewer - Right" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
     <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
       <entry value="1">7 Blocks</entry>
@@ -2242,7 +2242,7 @@
     <checkbox bit="30" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
   </sprite> <!-- #141: Skewer - Right -->
 
-  <sprite id="142" name="Skewer - Left" sizehacks="True" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
+  <sprite id="142" name="Skewer - Left" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
     <dualbox bit="31" title1="Black" title2="Silver" comment="This determines the color of the Skewer."/>
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
       <entry value="1">7 Blocks</entry>
@@ -2276,7 +2276,7 @@
     </list>
   </sprite>
 
-  <sprite id="144" name="Red Coin" sizehacks="True" notes="A red colored coin intended to be used as a counted collectible item that will award the player with a power-up item when they collect all 8.">
+  <sprite id="144" name="Red Coin" notes="A red colored coin intended to be used as a counted collectible item that will award the player with a power-up item when they collect all 8.">
     <dependency notes="The suggested use is to have 8 Red Coins placed with the same Red Coin ID and Event ID as a matching [156] Red Coin Ring. &lt;font color=&quot;red&quot;&gt;A game crash will occur if you assign more than 8 Red Coins within the same Red Coin ID&lt;/font&gt; and it is also not recommended to use either object for a purpose outside of the default, within a normal style level.">
       <suggested sprite="156"/> <!-- Red Coin Ring -->
     </dependency>
@@ -2295,7 +2295,7 @@
     <checkbox bit="17" title="Initially Submerged" comment="When enabled, the floating barrel will load partially submerged."/>
   </sprite> <!-- #145: Floating Barrel -->
 
-  <sprite id="146" name="Chain Chomp" sizehacks="True" notes="A chain chomp enemy tied up to a 3 block pole. The pole must be ground-pounded 3 times to release the Chain Chomp and he will rampage in the direction he is freed destroying all block terrain in his path." advancednotes="We're pretty sure there's no setting to change the height of the pole, but you're welcome to test a few values.">
+  <sprite id="146" name="Chain Chomp" notes="A chain chomp enemy tied up to a 3 block pole. The pole must be ground-pounded 3 times to release the Chain Chomp and he will rampage in the direction he is freed destroying all block terrain in his path." advancednotes="We're pretty sure there's no setting to change the height of the pole, but you're welcome to test a few values.">
   </sprite> <!-- #146: Chain Chomp -->
 
   <!-- Please check Behavior Type combined with ALL Movement Types. Which ones are compatible? Which ones are incompatible? Full list, please. -->
@@ -2307,7 +2307,7 @@
   <!-- ASM Research!: Nybble 8 is related to 'direction' in some manner. This direction is either utilized for various "Behavior Types" or is related to Movement Type 5/6 as a cursory guess -->
   <!-- ASM Research!: Movement Type 2 is related to Behavior Type 0 and 13, somehow. It's suggested it may allow for the coin to endlessly respawn. -->
   <!-- ASM Research!: New values to experiment with in nybble 11 for Movement Types 4, 5, and 7. -->
-  <sprite id="147" name="Coin" sizehacks="True" notes="Your most basic, most flexible, standard golden coin. Did you know that if the player collects 100 of them, he gets an extra life?">
+  <sprite id="147" name="Coin" notes="Your most basic, most flexible, standard golden coin. Did you know that if the player collects 100 of them, he gets an extra life?">
     <dependency notes="If pairing the Coin for movement or other features, you'll likely need one of the sprites listed in the Dependency List. Additionally, if you're using one of the Behavior Types of a coin in a bubble (1, 2, 4) you MUST include [317] Enables Bubbles within each Zone it is used in.">
       <suggested sprite="159"/>
       <suggested sprite="260"/>
@@ -2380,7 +2380,7 @@
     </list>
   </sprite> <!-- #147: Coin -->
 
-  <sprite id="148" name="Springboard" sizehacks="True" notes="A springboard item that the player can bounce on to reach new heights, and can carry around with them.">
+  <sprite id="148" name="Springboard" notes="A springboard item that the player can bounce on to reach new heights, and can carry around with them.">
     <checkbox bit="20" title="Does Not Despawn" comment="When enabled, the Springboard will not despawn from being offscreen." comment2="Normally, the Springboard will vanish if it goes too far offscreen, but with this option it will remember where it was last at and not disappear."/>
     <checkbox bit="40" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Springboard placing it further behind other sprites."/>
     <checkbox bit="44" title="Shift Spawn Position (NSMB:DS)" comment="When enabled, this moves the Springboard half a block to the right." advanced="True" advancedcomment="This is a leftover setting from the NSMB:DS Springboard where sprites could only be placed exactly on the tile grid. It... really isn't useful."/>
@@ -2458,14 +2458,14 @@
 	comment2="The controller will still work with a paired sprite, but it's not required. The camera movement won't differ whether it's spinning Clockwise or Counter-Clockwise. &lt;br&gt;Finally, multiple of these sprites using this setting in one Zone can overlap each other and take priority of the camera movement, but it's best for only one to be active at a time."/>
   </sprite> <!-- #149: Rotation Controller - Spinning -->
 
-  <sprite id="150" name="(Unused) Jumping Cheep Cheep" sizehacks="True" notes="&lt;font color=&quot;orange&quot;&gt;This sprite is not recommended for use due to incompatibilities with the Ice Flower power-up.&lt;/font&gt;" advancednotes="A Cheep Cheep that will jump out of the water in an attempt to damage the player. If frozen, only half of the Cheep Cheep will be covered by ice, and the other part will stick out.">
+  <sprite id="150" name="(Unused) Jumping Cheep Cheep" notes="&lt;font color=&quot;orange&quot;&gt;This sprite is not recommended for use due to incompatibilities with the Ice Flower power-up.&lt;/font&gt;" advancednotes="A Cheep Cheep that will jump out of the water in an attempt to damage the player. If frozen, only half of the Cheep Cheep will be covered by ice, and the other part will stick out.">
     <dependency notes="Cannot be used without Water for the Cheep Cheep to live in.">
       <required sprite="138"/>
     </dependency>
     <checkbox bit="48" title="Alternate Movement" comment="When enabled, after the first jump, the Cheep Cheep will not continue swimming but instead wait at the landing point to jump again." comment2="It ends up looking like the Cheep Cheep is 'stuck' in the water." advanced="True"/>
   </sprite> <!-- #150: (Unused) Jumping Cheep Cheep -->
 
-  <sprite id="151" name="Porcu-Puffer" sizehacks="True" notes="A stand-alone Porcu-Puffer that will chase the player along the water line indefinitely until killed, but will not respawn.">
+  <sprite id="151" name="Porcu-Puffer" notes="A stand-alone Porcu-Puffer that will chase the player along the water line indefinitely until killed, but will not respawn.">
     <dependency notes="Water is required for the Porcu-Puffer to function. It must be non-location water, possibly non-moving water.">
       <required sprite="138"/>
     </dependency>
@@ -2475,7 +2475,7 @@
   <sprite id="152" name="Incomplete Sprite - 'En_Blur'" notes="Does nothing.">
     </sprite> <!-- #152: Incomplete Sprite - 'En_Blur' -->
 
-  <sprite id="153" name="(Unused) &quot;?&quot; Switch (Orange)" asmhacks="True" sizehacks="True" notes="An exact duplicate of the normal &quot;?&quot; Switch (Orange).">
+  <sprite id="153" name="(Unused) &quot;?&quot; Switch (Orange)" notes="An exact duplicate of the normal &quot;?&quot; Switch (Orange).">
     <dependency notes="The game will crash unless a normal orange switch is placed somewhere in the level. It does not have to be within an area that is actually used.">
       <required sprite="40"/>
     </dependency>
@@ -2507,7 +2507,7 @@
     <value nybble="9" title="Respawn Delay" comment="This determines how long it will take for the Porcu-Puffer to respawn after being killed."/>
   </sprite> <!-- #154: Porcu-Puffer Spawn Area -->
 
-  <sprite id="155" name="Line Controlled Star Coin" sizehacks="True" notes="A variant of the Star Coin that will ride along Line objects.">
+  <sprite id="155" name="Line Controlled Star Coin" notes="A variant of the Star Coin that will ride along Line objects.">
     <dependency notes="This sprite must be paired with a [236] Use Lines movement controller in order to function.">
       <required sprite="236"/>
     </dependency>
@@ -2533,7 +2533,7 @@
     <dualbox bit="28" title1="Triggers a Timed Event" title2="Permanently activates Target Event" comment="This determines if the Target Event is timed or permanent. Timed events will pause the music and replace it with ticking." requiredbit="2-8"/>
   </sprite> <!-- #155: Line Controlled Star Coin -->
 
-  <sprite id="156" name="Red Coin Ring" asmhacks="True" sizehacks="True" notes="A glowing red ring that is intended to be used to spawn sets of 8 red coins, and to control the item that the player will receive after collection them.">
+  <sprite id="156" name="Red Coin Ring" notes="A glowing red ring that is intended to be used to spawn sets of 8 red coins, and to control the item that the player will receive after collection them.">
     <dependency notes="The suggested use is to have 8 [144] Red Coins placed with the same Red Coin ID and Event ID as a matching Red Coin Ring. It is not recommended to use more than 1 Red Coin Ring within a single Zone, nor is it recommended to use either object for a purpose outside of the default, within a normal style level.">
       <suggested sprite="144"/> <!-- Obviously it's suggested to utilize Red Coins -->
     </dependency>
@@ -2549,7 +2549,7 @@
     <checkbox bit="40" title="Unknown Flag 10 (1)" advanced="True" advancedcomment="ASM shows Nybble 10 might affect something. No visible or functional change. Likely Z-Order related, or at least intended to be."/>
   </sprite> <!-- #156: Red Coin Ring -->
 
-  <sprite id="157" name="Big Brick Block" asmhacks="True" notes="No matter what is inside, this light-colored 3x3 brick block always breaks open. It can even be broken by small Mario.">
+  <sprite id="157" name="Big Brick Block" notes="No matter what is inside, this light-colored 3x3 brick block always breaks open. It can even be broken by small Mario.">
     <list nybble="12" title="Block Contains" comment="This determines if anything appears from inside the block when it is destroyed.">
       <entry value="0">Empty</entry>
       <entry value="8">Empty</entry>
@@ -2765,7 +2765,7 @@
     </list>
   </sprite> <!-- #174: (Unused) One Way Swinging Gate -->
 
-  <sprite id="175" name="Flying &quot;?&quot; Block" asmhacks="True" noyoshi="True" notes="A '?' Block with wings that flies around until opened, remaining in place afterwards.">
+  <sprite id="175" name="Flying &quot;?&quot; Block" noyoshi="True" notes="A '?' Block with wings that flies around until opened, remaining in place afterwards.">
     <list bit="35-36" title="Color" comment="This determines which color the '?' Block will use.">
       <entry value="0">Overworld (Yellow)</entry>
       <entry value="1">Underground (Blue)</entry>
@@ -2802,7 +2802,7 @@
     </list>
   </sprite> <!-- #176: Roulette Block -->
 
-  <sprite id="177" name="Fire Chomp" sizehacks="True" notes="A stand-alone Fire Chomp that will float after the player, shooting the fireballs from its tail.">
+  <sprite id="177" name="Fire Chomp" notes="A stand-alone Fire Chomp that will float after the player, shooting the fireballs from its tail.">
   </sprite> <!-- #177: Fire Chomp -->
 
   <sprite id="178" name="Basic Platform - Scale" notes="A variant of the basic platform that creates two platforms tied by a rope. This rope will 'break' if one platform is brought to the pulley for more than a moment, causing both platforms to fall.">
@@ -2881,12 +2881,12 @@
   <sprite id="180" name="Cheep-Chomp" sizehack="True" notes="A rather large Cheep enemy that is capable of swallowing the player whole, killing them instantly regardless of their power-up state. Star excluded, of course.">
   </sprite> <!-- #180: Cheep-Chomp -->
 
-  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" asmhacks="True" notes="Assigns a spawn area where Jumping Cheep Cheep will continue to attack the player while they are inside it.">
+  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" notes="Assigns a spawn area where Jumping Cheep Cheep will continue to attack the player while they are inside it.">
     <dualbox bit="24" title1="Spawns Cheep Cheeps" title2="Spawns Fishbones" comment="This determines which type of fish enemy will be spawned."/>
     <value nybble="8-9" title="Location ID" comment="The above type of fish will spawn from below the camera line, attacking the player only while they are within this location." idtype="Location"/>
   </sprite> <!-- #181: Cheep Cheep Spawn Area - Jumping -->
 
-  <sprite id="182" name="Event Triggered Door" sizehacks="True" noyoshi="True" notes="A hidden door that can have an Entrance placed on it. It will only appear when the Triggering Event ID is activated." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
+  <sprite id="182" name="Event Triggered Door" noyoshi="True" notes="A hidden door that can have an Entrance placed on it. It will only appear when the Triggering Event ID is activated." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
     <value bit="10-16" title="Triggering Event ID" idtype="Triggering Event"/>
     <list bit="35-36" title="Orientation" comment="This determines which direction the door will be facing." comment2="A door can only be entered if it is upright. As decoration, this is fine. Actually making it properly associate its corresponding Entrance is either impossible or very functionally strange.">
       <entry value="0">Upright</entry>
@@ -2929,7 +2929,7 @@
     </dependency>
   </sprite> <!-- #187: Player Block -->
 
-  <sprite id="188" name="Midway Flag" asmhacks="True" notes="A flag that when touched by the player will mark their progress in the level and respawn them at this location when re-entering the level." advancednotes="Only one Midway Flag works properly per level. Let's say there are five Checkpoints in a Zone. If Mario were to activate Checkpoint A through C in that order, and then reload the Zone (through death, re-entering from an Entrance, etc), he would respawn at Checkpoint C's Entrance, and all five Checkpoints would be activated.">
+  <sprite id="188" name="Midway Flag" notes="A flag that when touched by the player will mark their progress in the level and respawn them at this location when re-entering the level." advancednotes="Only one Midway Flag works properly per level. Let's say there are five Checkpoints in a Zone. If Mario were to activate Checkpoint A through C in that order, and then reload the Zone (through death, re-entering from an Entrance, etc), he would respawn at Checkpoint C's Entrance, and all five Checkpoints would be activated.">
     <value nybble="7-8" title="Entrance ID" comment="This determines which Entrance the level will load the player into when they respawn." idtype="Entrance"/>
     <dualbox bit="44" title1="Load Facing Right" title2="Load Facing Left" comment="This determines which direction the players will face when they respawn."/>
   </sprite> <!-- #188: Midway Flag -->
@@ -2943,7 +2943,7 @@
   <sprite id="190" name="(Unused) Tilt Controlled Girder" notes="&lt;font color=&quot;red&quot;&gt;It is not recommended for use due to a collision box not completely matching the model.&lt;/font&gt; Just use [51] instead." advancednotes="This uses the same 3D model as the used Tilt Lift, but this one has collisions that extend two blocks farther on the right side.">
   </sprite> <!-- #190: (Unused) Tilt Controlled Girder -->
 
-  <sprite id="191" name="Tile God Event" asmhacks="True" notes="The Tile God can Create / Change / Destroy tiles within a specified area when an Event is activated.">
+  <sprite id="191" name="Tile God Event" notes="The Tile God can Create / Change / Destroy tiles within a specified area when an Event is activated.">
     <dependency notes="The Tile God sprite can be placed no more than one block outside of the Zone it is being activated in for it to function."/>
     <value bit="9-16" title="Triggering Event ID" comment="When this Event ID is activated, the tiles affected by the Tile God's area will be created or destroyed, depending on the Mode." idtype="Triggering Event"/>
     <value nybble="11" title="Width" comment="This determines the width of the area that is affected."/>
@@ -2976,21 +2976,21 @@
     </dependency>
   </sprite> <!-- #192: Boss Controller - Larry Koopa -->
 
-  <sprite id="193" name="Urchin" sizehacks="True" notes="A small spiky ball enemy typically used in Water. Water is not required, however, for it to load and function.">
+  <sprite id="193" name="Urchin" notes="A small spiky ball enemy typically used in Water. Water is not required, however, for it to load and function.">
     <value bit="41-44" title="Movement Distance (*2)" comment="This determines how far the Urchin will move, if at all. Multiply this value by 2."/>
     <dualbox bit="48" title1="Moves Vertically" title2="Moves Horizontally" comment="This determines which direction the Urchin will move. The starting position from their movement is in the center, not at one of the two edges." requiredbit="41-44"/> <!-- Appears only if Movement Distance is set -->
     <dualbox bit="40" title1="Moves Up First" title2="Moves Down First" comment="This determines which direction the Urchin will move first. The starting position from their movement is in the center, not at one of the two edges." requiredbit="41-44, 48" requiredval="1-15, 0"/> <!-- Appears only if Movement Distance is set, and movement is Vertical -->
     <dualbox bit="40" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Urchin will move first. The starting position from their movement is in the center, not at one of the two edges." requiredbit="41-44, 48" requiredval="1-15, 1"/> <!-- Appears only if Movement Distance is set, and movement is Horizontal -->
   </sprite> <!-- #193: Urchin -->
 
-  <sprite id="194" name="Mega Urchin" sizehacks="True" notes="A large spiky ball enemy typically used in Water. Water is not required, however, for it to load and function.">
+  <sprite id="194" name="Mega Urchin" notes="A large spiky ball enemy typically used in Water. Water is not required, however, for it to load and function.">
     <value bit="41-44" title="Movement Distance (x2)" comment="This determines how far the Urchin will move, if at all. Multiply this value by 2."/>
     <dualbox bit="48" title1="Moves Vertically" title2="Moves Horizontally" comment="This determines which direction the Urchin will move." requiredbit="41-44"/> <!-- Appears only if Movement Distance is set -->
     <dualbox bit="40" title1="Moves Up First" title2="Moves Down First" comment="This determines which direction the Urchin will move first." requiredbit="41-44, 48" requiredval="1-15, 0"/> <!-- Appears only if Movement Distance is set, and movement is Vertical -->
     <dualbox bit="40" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Urchin will move first." requiredbit="41-44, 48" requiredval="1-15, 1"/> <!-- Appears only if Movement Distance is set, and movement is Horizontal -->
   </sprite> <!-- #194: Mega Urchin -->
 
-  <sprite id="195" name="Huckit Crab" asmhacks="True" sizehacks="True" notes="A crab enemy that will throw projectiles at the player while occasionally jumping in the air.">
+  <sprite id="195" name="Huckit Crab" notes="A crab enemy that will throw projectiles at the player while occasionally jumping in the air.">
     <list nybble="12" title="Shooting Speed" comment="This determines the speed of the projectile that the Huckit Crab will huck." comment2="Many values are excluded due to abnormal or glitchy behavior.">
       <entry value="6">Very Very Slow</entry>
       <entry value="0">Normal</entry>
@@ -3016,7 +3016,7 @@
     </list>
   </sprite> <!-- #195: Huckit Crab -->
 
-  <sprite id="196" name="Fishbones" sizehacks="True" notes="An undead fish enemy that swims back and forth. It will become enraged upon spotting a player and charge after them. If it hits a wall while in this state, it will fall apart and die.">
+  <sprite id="196" name="Fishbones" notes="An undead fish enemy that swims back and forth. It will become enraged upon spotting a player and charge after them. If it hits a wall while in this state, it will fall apart and die.">
     <dependency notes="Requires non-location non-moving Water in order to appear and function.">
       <required sprite="138"/>
     </dependency>
@@ -3045,16 +3045,16 @@
     <checkbox bit="40" title="Upside-Down P-Switch/Star-Coin Z-Order" comment="This will affect the secondary trait of the P-Switch or Star Coin." advanced="True" advancedcomment="These are both incredibly useless options. An Upside-Down P-Switch cannot be pressed, and the Z-Order puts the Star Coin behind the Clampy."/>
   </sprite> <!-- #197: Clampy -->
 
-  <sprite id="198" name="Giant Goomba" asmhacks="True" notes="A larger version of the Goomba that splits into two regular Goombas when stepped on.">
+  <sprite id="198" name="Giant Goomba" notes="A larger version of the Goomba that splits into two regular Goombas when stepped on.">
   </sprite> <!-- #198: Giant Goomba -->
 
-  <sprite id="199" name="Mega Goomba" asmhacks="True" notes="An even larger version of the Goomba that splits into two Giant Goombas when stepped on.">
+  <sprite id="199" name="Mega Goomba" notes="An even larger version of the Goomba that splits into two Giant Goombas when stepped on.">
   </sprite> <!-- #199: Mega Goomba -->
 
   <sprite id="200" name="Micro Goomba" notes="A very small Goomba that clings to the player until they spin jump to shake them off.">
   </sprite> <!-- #200: Micro Goomba -->
 
-  <sprite id="201" name="Icicle" sizehacks="True" notes="A small hanging icicle that does not fall but can still hurt the player if they touch it.">
+  <sprite id="201" name="Icicle" notes="A small hanging icicle that does not fall but can still hurt the player if they touch it.">
     <dualbox bit="48" title1="Short (1x1)" title2="Long (1x2)" comment="This determines which size the Icicle is."/>
   </sprite> <!-- #201: Icicle -->
 
@@ -3111,7 +3111,7 @@
 	<value bit="9-16" title="Triggering Event ID" comment="The chest will only appear when the Triggering Event is 0 or is activated. It will not disappear if the Event is deactivated." idtype="Triggering Event"/>
    </sprite>
 
-   <sprite id="204" name="Rolling Object Spawner" asmhacks="True" notes="A spawner that will create loose Spiked Balls or Rolling Barrels.">
+   <sprite id="204" name="Rolling Object Spawner" notes="A spawner that will create loose Spiked Balls or Rolling Barrels.">
     <dualbox bit="20" title1="Spawns Spiked Balls" title2="Spawns Rolling Barrels" comment="This determines which object the spawner will create."/>
     <value nybble="3-4" title="Deactivation Event ID" comment="This Triggering Event ID will deactivate the Spiked Ball Spawner." idtype="Triggering Event" requiredbit="20" requiredval="0"/> <!-- Appears only for Spiked Balls -->
     <list nybble="8" title="Speed" comment="This determines the speed of the spawned rolling object." comment2="Stopped rolling objects will still be affected by the terrain they are resting on.">
@@ -3173,7 +3173,7 @@
   </sprite> <!-- #206: Zoom Controller -->
 
   <!-- Test Z-Order Nybble 8 to see if it places the block behind Chainlink Fence objects (Fix 208, too) -->
-  <sprite id="207" name="? Block" asmhacks="True" sizehacks="True" notes="Your most basic, most flexible, standard Question Block. When spawning power-ups, it will spawn enough for every player! Such a generous block~">
+  <sprite id="207" name="? Block" notes="Your most basic, most flexible, standard Question Block. When spawning power-ups, it will spawn enough for every player! Such a generous block~">
     <dependency notes="If pairing the ?-Block for movement or other features, you'll likely need one of the sprites listed in the Dependency List.">
       <suggested sprite="159"/>
       <suggested sprite="260"/>
@@ -3218,7 +3218,7 @@
     <dualbox bit="36" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the ?-Block will move based on the Line that it is connected to." advanced="True" advancedcomment="It is recommended to use [402] Line Controlled ? Block instead."/>
   </sprite> <!-- #207: ? Block -->
 
-  <sprite id="208" name="(Unused) ? Block" asmhacks="True" sizehacks="True" notes="This is a nearly identical version of [207] to the point that you should probably just be using [207]...">
+  <sprite id="208" name="(Unused) ? Block" notes="This is a nearly identical version of [207] to the point that you should probably just be using [207]...">
     <dependency notes="If pairing the ?-Block for movement or other features, you'll likely need one of the sprites listed in the Dependency List.">
       <suggested sprite="159"/>
       <suggested sprite="260"/>
@@ -3261,7 +3261,7 @@
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the ?-Block placing it further behind other sprites." comment2="This will place the ?-Block behind even Chainlink Fence and Layer 1 terrain."  advanced="True" advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
   </sprite> <!-- #208: (Unused) ? Block -->
 
-  <sprite id="209" name="Brick Block" asmhacks="True" sizehacks="True" notes="Your most basic, most flexible, standard brown Brick Block. When spawning power-ups, it will spawn only one, no matter how many players! Such a stingy block~">
+  <sprite id="209" name="Brick Block" notes="Your most basic, most flexible, standard brown Brick Block. When spawning power-ups, it will spawn only one, no matter how many players! Such a stingy block~">
     <dependency notes="If pairing the Brick Block for movement or other features, you'll likely need one of the sprites listed in the Dependency List.">
       <suggested sprite="159"/>
       <suggested sprite="260"/>
@@ -3475,7 +3475,7 @@
 
   <!-- Check if you can use the Z-Order to place the invisible block behind Chainlink -->
   <!-- Confirm if Invisible Block can be paired with movement controllers -->
-  <sprite id="221" name="Invisible Block" asmhacks="True" sizehacks="True" notes="Your most sneaky, most annoying, hidden transparent Invisible Block. When spawning power-ups, it will spawn only one, no matter how many players! Such a rude block~" advancednotes="The tileset-based Invisible Blocks can be destroyed by sprites like Bob-ombs. Sprite-based Invisible Blocks however cannot be destroyed.">
+  <sprite id="221" name="Invisible Block" notes="Your most sneaky, most annoying, hidden transparent Invisible Block. When spawning power-ups, it will spawn only one, no matter how many players! Such a rude block~" advancednotes="The tileset-based Invisible Blocks can be destroyed by sprites like Bob-ombs. Sprite-based Invisible Blocks however cannot be destroyed.">
     <dependency notes="If pairing the Invisible Block for movement or other features, you'll likely need one of the sprites listed in the Dependency List.">
       <suggested sprite="159"/>
       <suggested sprite="260"/>
@@ -3520,15 +3520,15 @@
     <dualbox bit="36" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Invisible Block will move based on the Line that it is connected to." advanced="True" advancedcomment="If this doesn't work, nothing will!"/>
   </sprite> <!-- #221: Invisible Block -->
 
-  <sprite id="222" name="(Unused) Conveyor Belt Spike" asmhacks="True" notes="A loose spike that when placed on a conveyor belt, will rotate around with the belt. It can only move in one direction (clockwise) and one speed. It does not load Zone-wide so it will not sync across multiple sections of a single Zone.">
+  <sprite id="222" name="(Unused) Conveyor Belt Spike" notes="A loose spike that when placed on a conveyor belt, will rotate around with the belt. It can only move in one direction (clockwise) and one speed. It does not load Zone-wide so it will not sync across multiple sections of a single Zone.">
   </sprite> <!-- #222: (Unused) Conveyor Belt Spike -->
 
-  <sprite id="223" name="Checkered Spring Block" asmhacks="True" notes="A block with a spring-like effect that allows the player to jump on it and bounce off of it in order to jump higher.">
+  <sprite id="223" name="Checkered Spring Block" notes="A block with a spring-like effect that allows the player to jump on it and bounce off of it in order to jump higher.">
     <checkbox bit="48" title="Alternate Color Pattern" comment="When enabled, it will use the alternate color."/>
   </sprite> <!-- #223: Checkered Spring Block -->
 
   <!-- Please spend some time working with the timing and delays between this sprite and 235, as well as further checks on Altitude and its range. -->
-  <sprite id="224" name="Jumbo Ray" asmhacks="True" notes="A large manta ray enemy that the player can stand on. It cannot hurt the player and instead functions similarly to a platform.">
+  <sprite id="224" name="Jumbo Ray" notes="A large manta ray enemy that the player can stand on. It cannot hurt the player and instead functions similarly to a platform.">
     <dependency notes="In order for the Jumbo Ray to respawn, you must include a Jumbo Ray Respawner. This sprite's vertical placement is irrelevant - the Jumbo Ray will always spawn from the bottom of the Zone. The sprite still needs to be placed within the Zone, however. For cleanliness sake, you should make the Zone a bit taller and use a Scroll Limiter pair along the bottom in order to hide the lower part of the zone.">
       <suggested sprite="235"/>
       <suggested sprite="162"/>
@@ -3540,7 +3540,7 @@
     <value nybble="12" title="Ray ID" comment="This determines which Jumbo Ray Respawner will influence the respawn of this Jumbo Ray." idtype="Ray"/>
   </sprite> <!-- #224: Jumbo Ray -->
 
-  <sprite id="225" name="Floating Coin" sizehacks="True" notes="A standard Coin that floats on the surface of the Zone's non-Location Water, Poisoned Water, or Lava.">
+  <sprite id="225" name="Floating Coin" notes="A standard Coin that floats on the surface of the Zone's non-Location Water, Poisoned Water, or Lava.">
     <dependency notes="Place this coin at the the horizontal position you want it to load, and it will spawn floating at the surface line of the body of liquid. It only works with non-Location liquids, and it does work with Moving liquids.">
       <suggested sprite="138"/>
       <suggested sprite="139"/>
@@ -3576,7 +3576,7 @@
     </list>
   </sprite> <!-- #227: Pipe Cannon -->
 
-  <sprite id="228" name="Stretching Mushroom Platform" asmhacks="True" notes="A stretching platform that looks like a mushroom with naturally synchronized timing.">
+  <sprite id="228" name="Stretching Mushroom Platform" notes="A stretching platform that looks like a mushroom with naturally synchronized timing.">
     <dualbox bit="40" title1="Long Platform" title2="Short Platform" comment="This determines the width of the Mushroom Platform when expanded."/>
     <dualbox bit="44" title1="Starts Contracted" title2="Starts Expanded" comment="This determines the initial state of the Mushroom Platform."/>
     <list nybble="12" title="Height of Stem" comment="This determines the height of the decorative mushroom stem.">
@@ -3602,7 +3602,7 @@
   <sprite id="229" name="Sand Pillar" notes="A sand pillar that pushes the player upwards and can be stood on.">
   </sprite> <!-- #229: Sand Pillar -->
 
-  <sprite id="230" name="Bramball" asmhacks="True" noyoshi="True" notes="A long-legged enemy with a ball for a body that will flip itself around as it traverses terrain with proper spacing. Rumor has it that if it is struck from below with a Pipe Cannon, a large amount of coins will appear. Kaching!">
+  <sprite id="230" name="Bramball" noyoshi="True" notes="A long-legged enemy with a ball for a body that will flip itself around as it traverses terrain with proper spacing. Rumor has it that if it is struck from below with a Pipe Cannon, a large amount of coins will appear. Kaching!">
     <dependency notes="For a Bramball to want to move, he must have solid terrain exactly 4 blocks from his legs."/>
     <dualbox bit="44" title1="Slow Movement" title2="Fast Movement" comment="This determines how quickly the Bramball will traverse platforms."/>
     <dualbox bit="48" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Bramball will attempt to move first."/>
@@ -3611,7 +3611,7 @@
   <!-- Test Upwards Lift for minimum and maximum value. Used values: 0, 2 -->
   <!-- Test Upwards Lift for any overrides by Tilt Amount. Notes suggested that Tilt above 2 causes Upwards Lift to not function. -->
   <!-- Test Tilts Left First vs Tilts Right First -->
-  <sprite id="231" name="Wiggling Mushroom Platform" asmhacks="True" notes="A mushroom platform that can tilt back and forth.">
+  <sprite id="231" name="Wiggling Mushroom Platform" notes="A mushroom platform that can tilt back and forth.">
     <dependency notes="Wiggling Mushroom Platforms may be paired with [313] Wiggling Mushroom Controller to enable synchronized movement across a Zone.">
       <suggested sprite="313"/>
     </dependency>
@@ -3646,10 +3646,10 @@
     </list>
   </sprite> <!-- 231: Wiggling Mushroom Platform -->
 
-  <sprite id="232" name="Mecha-Koopa" sizehacks="True" noyoshi="True" notes="A mechanical wind-up Koopa that can be picked up after being stomped on and carried around like a shell.">
+  <sprite id="232" name="Mecha-Koopa" noyoshi="True" notes="A mechanical wind-up Koopa that can be picked up after being stomped on and carried around like a shell.">
   </sprite> <!-- #232: Mecha-Koopa -->
 
-  <sprite id="233" name="Bulber, the Glowing Fish" sizehacks="True" notes="An underwater fish that will light up the area nearby him if the lights are off.">
+  <sprite id="233" name="Bulber, the Glowing Fish" notes="An underwater fish that will light up the area nearby him if the lights are off.">
     <dependency notes="Bulbers do not require non-location water in order to spawn, but as it is a fish, water is suggested. Dimmed or dark lighting is also suggested to take advantage of its lighting effect.">
       <suggested sprite="138"/>
     </dependency>
@@ -3687,7 +3687,7 @@
   </sprite> <!-- #236: Movement Controller - Use Lines -->
 
   <!-- Check if you can use the Z-Order to place the blue coin behind Chainlink. -->
-  <sprite id="237" name="Blue P-Switch Coin" sizehacks="True" notes="A blue coin that will only appear while the effects of a P-Switch are active.">
+  <sprite id="237" name="Blue P-Switch Coin" notes="A blue coin that will only appear while the effects of a P-Switch are active.">
     <dependency notes="Players like to be congratulated for their accomplishments. You should pair each Blue Coin together with a Collection Controller so that when all Blue Coins are collected, the player is awarded with a hearty round of applause.">
       <suggested sprite="459"/>
     </dependency>
@@ -3825,7 +3825,7 @@
     <value nybble="10" title="Number of Uses" comment="This determines the number of times the ?-Block can be struck before it becomes 'used'." comment2="If it is set to 0, the block can be hit any number of times."/>
   </sprite> <!-- #252: Rotation Controlled Event Deactivation Block -->
 
-  <sprite id="253" name="Rotation Controlled Coin" sizehacks="True" notes="A standard coin that can be paired with rotation controllers. It does not have any additional features like [147] Coin.">
+  <sprite id="253" name="Rotation Controlled Coin" notes="A standard coin that can be paired with rotation controllers. It does not have any additional features like [147] Coin.">
     <dependency notes="This coin does not function and cannot be collected unless actually paired to a rotation controller.">
       <suggested sprite="96"/>
       <suggested sprite="149"/>
@@ -3888,7 +3888,7 @@
       <entry value="14">42°</entry>
       <entry value="15">45°</entry>
     </list>
-    <dualbox bit="32" title1="Tilts Right" title2="Tilts Left" asmhacks="True" comment="This determines which direction the block will be tilted." /> <!-- Does not disappear if Rotation ID is set -->
+    <dualbox bit="32" title1="Tilts Right" title2="Tilts Left" comment="This determines which direction the block will be tilted." /> <!-- Does not disappear if Rotation ID is set -->
     <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players. Some items, such as the Spring, won't appear if the player strikes the Block while it is actively rotating.">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
@@ -3909,7 +3909,7 @@
     </list>
   </sprite> <!-- #255: Rotation Controlled ? Block -->
 
-  <sprite id="256" name="Rotation Controlled Brick Block" asmhacks="True" notes="A Brick Block that can either be moved by rotation controllers or manually angled.">
+  <sprite id="256" name="Rotation Controlled Brick Block" notes="A Brick Block that can either be moved by rotation controllers or manually angled.">
     <dependency notes="A rotation controller is not required for this sprite to function. You can, instead, set a manual angle for the block.">
       <suggested sprite="96"/>
       <suggested sprite="149"/>
@@ -3994,7 +3994,7 @@
     <value nybble="12" title="Location ID" comment="The Bulbers will spawn from the right side of the screen, swimming across it only while a player is within this location."/>
   </sprite> <!-- #258: Bulber Spawn Area -->
 
-  <sprite id="259" name="D-Pad Door" sizehacks="True" noyoshi="True" notes="A standard door with a D-Pad symbol on it that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
+  <sprite id="259" name="D-Pad Door" noyoshi="True" notes="A standard door with a D-Pad symbol on it that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
     <list bit="35-36" title="Orientation" comment="This determines which direction the door will be facing." comment2="A door can only be entered if it is upright." advancedcomment="As decoration, this is fine. Actually making it properly associate its corresponding Entrance is either impossible or very functionally strange.">
       <entry value="0">Upright</entry>
       <entry value="1">Left</entry>
@@ -4026,7 +4026,7 @@
     <value bit="10-16" title="Triggering Event ID" comment="This determines the Event that, when activated, will enable the Two Way Line movement syncronization." requiredbit="28" idtype="Triggering Event"/> <!-- Appears if Event Activated it set -->
   </sprite> <!-- #260: Movement Controller - Two Way Line -->
 
-  <sprite id="261" name="Grey Tiled Block - Two Way Line" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. This version can have Two Way Line synchronized movement applied to it.">
+  <sprite id="261" name="Grey Tiled Block - Two Way Line" notes="This is a resizable stone block that was not used in retail NSMBW. This version can have Two Way Line synchronized movement applied to it.">
     <dependency notes="This block must be paired with a [260] Two Way Line movement controller in order to appear and function.">
       <required sprite="260"/>
     </dependency>
@@ -4078,7 +4078,7 @@
   <!-- Check if the setting causes it to be 'immune to POW' -->
   <!-- Check if the setting causes it to be an inverted state for the spiked ball -->
   <!-- Determine placement requirements: Water required, yes or no? Placed manually on water surface, yes or no? If placed below the water surface, does it rise to the top or not load? -->
-  *<sprite id="263" name="Lily Piranha Plant" sizehacks="True" notes="A floating piranha plant that balances a spikey spore ball in the air above it.">
+  *<sprite id="263" name="Lily Piranha Plant" notes="A floating piranha plant that balances a spikey spore ball in the air above it.">
     <dependency notes="Unknown">
       <suggested sprite="138"/>
     </dependency>
@@ -4086,7 +4086,7 @@
   </sprite> <!-- #263: Lily Piranha Plant -->
 
   <!-- I know I was told what Flag 9 does but I forget exactly. I know it has something to do with whether a Stalking plant turns around when encountering-?? or not. -->
-  <sprite id="264" name="Stalking Piranha Plant" sizehacks="True" notes="A walking piranha plant that will extend and harass the player, then shrink and wander around for a bit.">
+  <sprite id="264" name="Stalking Piranha Plant" notes="A walking piranha plant that will extend and harass the player, then shrink and wander around for a bit.">
     <dualbox bit="40" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the piranha plant will attempt to move first after shrinking."/>
     <value nybble="12" title="Movement Distance" comment="This determines how far the piranha plant will wander in both directions from its starting point."/>
     <checkbox bit="32" title="Slower in Water" comment="When enabled, the piranha plant will walk more slowly when moving through water."/>
@@ -4154,12 +4154,12 @@
     </list>
   </sprite> <!-- #268: Lava Geyser -->
 
-  <sprite id="269" name="Parachute Bob-Omb" asmhacks="True" sizehacks="True" notes="A parachuting Bob-Omb enemy that will turn into a standard Bob-Omb after it lands.">
+  <sprite id="269" name="Parachute Bob-Omb" notes="A parachuting Bob-Omb enemy that will turn into a standard Bob-Omb after it lands.">
     <dependency notes="The Y-position of the Bob-Omb has no effect. It will always appear directly above the top edge of the screen."/>
   </sprite> <!-- #269: Parachute Bob-Omb -->
 
   <!-- Research Unknown Value 11 -->
-  <sprite id="270" name="Parachute Bob-Omb Spawn Area" asmhacks="True" notes="Assigns a spawn area where parachuting Bob-Ombs will fall from the sky while a player is inside it.">
+  <sprite id="270" name="Parachute Bob-Omb Spawn Area" notes="Assigns a spawn area where parachuting Bob-Ombs will fall from the sky while a player is inside it.">
     <value nybble="12" title="Location ID" comment="The parachuting Bob-Ombs will only spawn while a player is in this location."/>
     <list nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="Used in Retail: 08-05 A1 as 3, 2, 1.">
       <entry value="0">???</entry>
@@ -4169,7 +4169,7 @@
     </list>
   </sprite> <!-- #270: Parachute Bob-Omb Spawn Area -->
 
-  <sprite id="271" name="Scaredy Rat" sizehacks="True" notes="A small relatively harmless rodent that will walk across the stage and fall off platform edes. When in a swarm, if one rat is stepped on, the others will quickly run away from the spot the first one was stomped. If they encounter another rat, they will join together in a larger swarm and stop running. If they encounter a [451] Scaredy Rat Despawner, they will despawn.">
+  <sprite id="271" name="Scaredy Rat" notes="A small relatively harmless rodent that will walk across the stage and fall off platform edes. When in a swarm, if one rat is stepped on, the others will quickly run away from the spot the first one was stomped. If they encounter another rat, they will join together in a larger swarm and stop running. If they encounter a [451] Scaredy Rat Despawner, they will despawn.">
     <dualbox bit="48" title1="Moves Right First" title2="Moves Left First" comment="This determines what the initial movement direction of the rat is."/>
     <list bit="43-44" title="Number in Swarm" comment="This determines how many rats form the swarm." comment2="Don't worry too much about vertical placement. They manage to find a proper home based on the placement of the first rat.">
       <entry value="0">One</entry>
@@ -4179,7 +4179,7 @@
     </list>
   </sprite> <!-- #271: Scaredy Rat -->
 
-  <sprite id="272" name="Ice Bro" sizehacks="True" notes="A standard Brothers enemy that shoots ice balls at the player.">
+  <sprite id="272" name="Ice Bro" notes="A standard Brothers enemy that shoots ice balls at the player.">
   </sprite> <!-- #272: Ice Bro -->
 
   <sprite id="273" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #273: Unused -->
@@ -4228,7 +4228,7 @@
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="May have been intended to be width related but does not seem to do anything. (Retail platform is 24 blocks wide, 3 blocks per segment with 8 segments.)"/>
   </sprite> <!-- #275: Enemy-Counting Raft -->
 
-  <sprite id="276" name="Ghost House Door" sizehacks="True" noyoshi="True" notes="A Ghost House door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
+  <sprite id="276" name="Ghost House Door" noyoshi="True" notes="A Ghost House door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
     <checkbox bit="36" title="Fake Door" comment="When enabled, when the player attempt to enter the door, it will vanish and disperse into 4 harmless Boos."/>
     <list bit="35-36" title="Orientation" comment="This determines which direction the door will be facing." comment2="A door can only be entered if it is upright." advancedcomment="As decoration, this is fine. Actually making it properly associate its corresponding Entrance is either impossible or very functionally strange.">
       <entry value="0">Upright</entry>
@@ -4240,7 +4240,7 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
   </sprite> <!-- #276: Ghose House Door -->
 
-  <sprite id="277" name="Tower Boss Door" sizehacks="True" noyoshi="True" notes="A large red door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
+  <sprite id="277" name="Tower Boss Door" noyoshi="True" notes="A large red door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
     <list bit="35-36" title="Orientation" comment="This determines which direction the door will be facing." comment2="A door can only be entered if it is upright." advancedcomment="As decoration, this is fine. Actually making it properly associate its corresponding Entrance is either impossible or very functionally strange.">
       <entry value="0">Upright</entry>
       <entry value="1">Left</entry>
@@ -4251,7 +4251,7 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
   </sprite> <!-- #277: Tower Boss Door -->
 
-  <sprite id="278" name="Castle Boss Door" sizehacks="True" noyoshi="True" notes="A large blue door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
+  <sprite id="278" name="Castle Boss Door" noyoshi="True" notes="A large blue door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
     <list bit="35-36" title="Orientation" comment="This determines which direction the door will be facing." comment2="A door can only be entered if it is upright." advancedcomment="As decoration, this is fine. Actually making it properly associate its corresponding Entrance is either impossible or very functionally strange.">
       <entry value="0">Upright</entry>
       <entry value="1">Left</entry>
@@ -4265,7 +4265,7 @@
   <sprite id="279" name="Incomplete Sprite - 'Ac_Lift_Ice_Spring'" notes="Does nothing.">
   </sprite> <!-- #279: Incomplete Sprite - 'Ac_Lift_Ice_Spring' -->
 
-  <sprite id="280" name="Giant Ice Block" asmhacks="True" notes="A large 3x3 ice block that can be broken with an explosion.">
+  <sprite id="280" name="Giant Ice Block" notes="A large 3x3 ice block that can be broken with an explosion.">
     <list bit="47-48" title="Frozen Inside" comment="This determines what type of object is frozen inside the block." comment2="Bob-Omb ice blocks will explode to other nearby ice blocks.">
       <entry value="0">Nothing</entry>
       <entry value="1">Bob-Omb</entry>
@@ -4353,7 +4353,7 @@
     </list>
   </sprite> <!-- #285: Rising/Falling Water -->
 
-  <sprite id="286" name="Rotating Wooden Airship Wheel" asmhacks="True" notes="A circular wheel matching the standard airship decor that rotates, making it hard to stand on.">
+  <sprite id="286" name="Rotating Wooden Airship Wheel" notes="A circular wheel matching the standard airship decor that rotates, making it hard to stand on.">
     <list nybble="12" title="Size" comment="This determines the size of the wheel.">
       <entry value="0">4 Blocks Wide</entry>
       <entry value="1">6 Blocks Wide</entry>
@@ -4380,7 +4380,7 @@
   </sprite> <!-- #287: (Unused) Path Controlled Ice Block -->
 
   <!-- Investigate Nybble 12 - Right = 2? If so, then it's suspected that Left = 1 and Towards Player = 0. True or False? -->
-  <sprite id="288" name="Rolling Barrel" asmhacks="True" notes="A barrel that will roll across the terrain breaking certain types of terrain and blocks.">
+  <sprite id="288" name="Rolling Barrel" notes="A barrel that will roll across the terrain breaking certain types of terrain and blocks.">
     <dualbox bit="47" title1="Rolls Left" title2="Rolls Right" comment="This determines which direction the barrel will roll."/>
   </sprite> <!-- #288: Rolling Barrel -->
 
@@ -4419,7 +4419,7 @@
   <!-- Redo and reinvestigate ALL setting values. Do not assume any of the current information is accurate. Test one setting at a time!! -->
   <!-- Test 9 separate between normal and heavy. Remember to test between True Left, True Right, and Faces Player for spawning. Also test the range of Speed. Is the maximum 3, 7, or 15? -->
   <!-- Options still need 'sorted' after ensuring what each one does -->
-  <sprite id="291" name="Para-Beetle" asmhacks="True" sizehacks="True" notes="A small flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below.">
+  <sprite id="291" name="Para-Beetle" notes="A small flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below.">
     <checkbox bit="36" title="Unknown Flag 9 (1)" comment=""/>
     <value nybble="10" title="Speed" comment="This determines how fast the Para-Beetle flies. Value 0 keeps it in place."/>
     <list nybble="11" title="Direction" comment="This determines what direction the Para-Beetle flies.">
@@ -4436,7 +4436,7 @@
     </list>
   </sprite> <!-- #291: Para-Beetle -->
 
-  <sprite id="292" name="Heavy Para-Beetle" asmhacks="True" sizehacks="True" notes="A large flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below.">
+  <sprite id="292" name="Heavy Para-Beetle" notes="A large flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below.">
     <value nybble="10" title="Speed" comment="This determines how fast the Para-Beetle flies."/>
     <list nybble="9" title="???" comment="">
       <entry value="0"/>
@@ -4547,7 +4547,7 @@
     <checkbox bit="47" title="Direction Override: Down, Causes Weird Bugs" advanced="True" advancedcomment="Only the front of the cannon will be changed, and when also set to face left, causes weird influence on the cannonball's trajectory. Highly suggested to not use this setting."/>
   </sprite> <!-- #298: Long Cannonball Cannons -->
 
-  <sprite id="299" name="45° Cannon" asmhacks="True" notes="A cannon that will fire ammo in a 45° direction, and can fire either cannonballs or Bob-Ombs.">
+  <sprite id="299" name="45° Cannon" notes="A cannon that will fire ammo in a 45° direction, and can fire either cannonballs or Bob-Ombs.">
     <list nybble="7" title="Camera Influenced Trajectory" comment="This determines if the cannonball will be influenced by the camera's actions, such as when using [399] Airship Rocking.">
       <entry value="0">No?</entry>
       <entry value="1">Yes?</entry>
@@ -4601,7 +4601,7 @@
   </sprite> <!-- #301: 4-Way Large Cannon with Pipe -->
 
   <!-- So... Umm... It wasn't used anywhere. Ever. What IS it? How does it look in action? What do these options mean? -->
-  <sprite id="302" name="Loose Giant Flying Wrench" asmhacks="True" notes="???">
+  <sprite id="302" name="Loose Giant Flying Wrench" notes="???">
     <checkbox bit="40" title="Place In Front Of Other Sprites" comment=""/>
     <checkbox bit="44" title="Homing" comment="???"/>
     <dualbox bit="48" title1="??? Left" title2="??? Right" comment="???"/>
@@ -4704,7 +4704,7 @@
   </sprite> <!-- #307: Burner - Pulsating (Synchronized) Controller -->
 
   <!-- Do we know what makes this one special compared to #95? -->
-  <sprite id="308" name="Platform Hammer Bro" asmhacks="True" sizehacks="True" notes="'En_Lift_HammerBros' - Likely allows it to be used on places where he shouldn't jump off.">
+  <sprite id="308" name="Platform Hammer Bro" notes="'En_Lift_HammerBros' - Likely allows it to be used on places where he shouldn't jump off.">
     <dualbox bit="48" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
   </sprite> <!-- #308: Platform Hammer Brother -->
 
@@ -4953,7 +4953,7 @@
 
   <!-- Advice on cleaning up this sprite's documentation is appreciated. -->
   <!-- Checking of spawn details regarding "spawning after passing the left edge of the screen." -->
-  <sprite id="326" name="King Bill" sizehacks="True" notes="A very very large Bullet Bill that can only be properly used in levels with an Auto-Scrolling Controller.">
+  <sprite id="326" name="King Bill" notes="A very very large Bullet Bill that can only be properly used in levels with an Auto-Scrolling Controller.">
     <dependency notes="The King Bill will only properly function if used in an Auto-Scrolling level. This is because the King Bill sprite is more of a spawner than a normal enemy. Once the sprite it loaded on screen, it will spawn a single King Bill. If the spawner leaves the screen and then comes back onto the screen, it will spawn another King Bill. This becomes excessively dangerous and unpredictable. Additionally, a King Bill being fired to the right will only spawn after its spawner has passed the left edge of the screen. If you find other restrictions, please post about them so they can be added.">
       <required sprite="91"/>
     </dependency>
@@ -5034,7 +5034,7 @@
   </sprite> <!-- #333: Line Controlled Player-Block Platform -->
 
   <!-- See #115 -->
-  <sprite id="334" name="Big Cheep Cheep / Big Deep Cheep / Big Eep Cheep" sizehacks="True" notes="A larger version of the basic Cheep Cheep and its very similar brethren. When placed in water, it will swim along or even swim after the player.">
+  <sprite id="334" name="Big Cheep Cheep / Big Deep Cheep / Big Eep Cheep" notes="A larger version of the basic Cheep Cheep and its very similar brethren. When placed in water, it will swim along or even swim after the player.">
     <dependency notes="The Cheep Cheep will only spawn if placed within water. In addition, Deep Cheeps and the Eep Cheep only work on non-location water.">
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
@@ -5238,12 +5238,12 @@
     </dependency>
   </sprite> <!-- #340: Lemmy Koopa -->
 
-  <sprite id="341" name="Giant Koopa Shell Cave" asmhacks="True" notes="A decorative large shell that can be used as a cave with the right arrangement of invisible blocks and settings.">
+  <sprite id="341" name="Giant Koopa Shell Cave" notes="A decorative large shell that can be used as a cave with the right arrangement of invisible blocks and settings.">
     <dependency notes="Look in Retail 5-01 A1 for an example of how to use this sprite correctly. You will need to make use of Spotlight Lighting, Layer 0 tiles, and invisible collision blocks in order for it to look correct."/>
     <checkbox bit="48" title="Remove Grass/Rocks" comment="When enabled, this will remove the decoration from the bottom of the Shell Cave."/>
   </sprite> <!-- #341: Giant Turtle Shell Cave -->
 
-  <sprite id="342" name="Muncher" sizehacks="True" yoshinotes="Unlike in SMW, if Yoshi touches a Muncher, he will become hurt and will run away." notes="A black Muncher enemy that cannot be killed.">
+  <sprite id="342" name="Muncher" yoshinotes="Unlike in SMW, if Yoshi touches a Muncher, he will become hurt and will run away." notes="A black Muncher enemy that cannot be killed.">
     <checkbox bit="48" title="Frozen" comment="When enabled, the Muncher will be frozen. It can be thawed with a fireball."/>
   </sprite> <!-- #342: Muncher -->
 
@@ -5499,7 +5499,7 @@
     <value bit="10-16" title="Triggering Event ID" comment="This determines which Event must be activated for the platform to appear." requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #356: Brown Tower Block -->
 
-  <sprite id="357" name="Yoshi Fruit" asmhacks="True" sizehacks="True" notes="An edible fruit that Yoshi can grab. Collecting five will cause Yoshi to lay an egg. What's inside the egg will change depending on the player's current power-up. Normal -&gt; Fire -&gt; Ice -&gt; Propeller -&gt; 1-Up.">
+  <sprite id="357" name="Yoshi Fruit" notes="An edible fruit that Yoshi can grab. Collecting five will cause Yoshi to lay an egg. What's inside the egg will change depending on the player's current power-up. Normal -&gt; Fire -&gt; Ice -&gt; Propeller -&gt; 1-Up.">
     <list nybble="12" title="Type" comment="This determines if the fruit is a standard berry, or a cookie. They share no functional difference.">
       <entry value="0">Berry</entry>
       <entry value="1">Cookie</entry>
@@ -5686,7 +5686,7 @@
     <checkbox bit="32" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="When this flag is enabled along with a Path (regardless of the Use Paths flag), the Raft will go to the indicated Path Node and not move. But, if the Path is set to loop, this doesn't do anything. So uh, Nice Boat."/>
   </sprite> <!-- #368: Path Controlled Flashlight Raft -->
 
-  <sprite id="369" name="Sliding Penguin" sizehacks="True" noyoshi="True" yoshinotes="Yoshi cannot jump on penguins, though he can use the stomp attack and tongue attack to defeat them." notes="A fancy penguin in sunglasses that slides along terrain on his belly and ricochets off walls.">
+  <sprite id="369" name="Sliding Penguin" noyoshi="True" yoshinotes="Yoshi cannot jump on penguins, though he can use the stomp attack and tongue attack to defeat them." notes="A fancy penguin in sunglasses that slides along terrain on his belly and ricochets off walls.">
     <list nybble="12" title="Starting Direction" comment="This determines which direction the Penguin will initially be sliding in.">
       <entry value="0">Towards Mario</entry>
       <entry value="1">Right</entry>
@@ -5761,7 +5761,7 @@
   <!-- Test is 90 continues to function (at all? / correctly?) if Falling Objects is set to something other than Snow. -->
   <!-- Test if 374 is required for 90 to generate pushback (90 Only). Test if 90 is required for 374 to generate sandstorm graphics (374 Only). -->
   <!-- Clean up 90 after finishing research on these questions -->
-  <sprite id="374" name="Effect - Snow and Wind" asmhacks="True" notes="This effect controller will either create falling snow, or it will create a Sandstorm.">
+  <sprite id="374" name="Effect - Snow and Wind" notes="This effect controller will either create falling snow, or it will create a Sandstorm.">
     <dependency notes="If this sprite is placed more than once in the same Zone, the game will crash. If Sandstorm is selected, you must include [90] Wind Physics and Sound.">
       <suggested sprite="90"/>
     </dependency>
@@ -5882,7 +5882,7 @@
   </sprite> <!-- #386: POW Block -->
 
   <!-- Color conflicts in recent sprite data, needs rechecked with screenshot. Also check color changes with Size setting. -->
-  <sprite id="387" name="Bush" asmhacks="True" sizehacks="True" notes="A decorative leafy bush that appears behind Layer 1 terrain.">
+  <sprite id="387" name="Bush" notes="A decorative leafy bush that appears behind Layer 1 terrain.">
     <checkbox bit="44" title="Yellowish Bush" comment="This makes the Bush a yellowish color."/>
     <list bit="47-48" title="Size" comment="This determines the size of the Bush. Larger sizes use different models.">
       <entry value="0">Small</entry>
@@ -5896,7 +5896,7 @@
   </sprite> <!-- #388: Barrel -->
 
   <!-- Test Chainlink / Layer 1 stuff -->
-  <sprite id="389" name="Bolt Controlled Star Coin" sizehacks="True" notes="A Star Coin variant that moves when a matching Bolt is spun.">
+  <sprite id="389" name="Bolt Controlled Star Coin" notes="A Star Coin variant that moves when a matching Bolt is spun.">
     <dependency notes="This sprite must be paired to a [315] Bolt in order to function.">
       <required sprite="315"/>
     </dependency>
@@ -5919,7 +5919,7 @@
     <value nybble="8" title="Unknown Value 8" advanced="True" advancedcomment="ASM shows Nybble 8 might affect something."/>
   </sprite> <!-- #389: Bolt Controlled Star Coin -->
 
-  <sprite id="390" name="Bolt Controlled Coin" sizehacks="True" notes="A standard Coin variant that moves when a matching Bolt is spun.">
+  <sprite id="390" name="Bolt Controlled Coin" notes="A standard Coin variant that moves when a matching Bolt is spun.">
     <dependency notes="This sprite must be paired to a [315] Bolt in order to function.">
       <required sprite="315"/>
     </dependency>
@@ -5934,7 +5934,7 @@
     <checkbox bit="40" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the Platform placing it further behind other sprites."/>
   </sprite> <!-- #390: Bolt Controlled Coin -->
 
-  <sprite id="391" name="Lighting - Glow Block" asmhacks="True" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely dimished as anything other than a weapon of destruction if not using Full Darkness lighting.">
+  <sprite id="391" name="Lighting - Glow Block" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely dimished as anything other than a weapon of destruction if not using Full Darkness lighting.">
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #391: Lighting - Glow Block -->
 
@@ -5977,7 +5977,7 @@
   <!-- See #115 -->
   <!-- Check for any differences. -->
   <!-- Define what makes the Spiny Cheep Cheep behave differently from the regular Cheep Cheep, because I forget... -->
-  <sprite id="395" name="Spiny Cheep Cheep" asmhacks="True" sizehacks="True" notes="A spiky version of the basic Cheep Cheep and its very similar brethren. When placed in water, it will swim along or even swim after the player.">
+  <sprite id="395" name="Spiny Cheep Cheep" notes="A spiky version of the basic Cheep Cheep and its very similar brethren. When placed in water, it will swim along or even swim after the player.">
     <dependency notes="The Cheep Cheep will only spawn if placed within water. In addition, Type 1, 7, and 8 only work on non-location water.">
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
@@ -6146,7 +6146,7 @@
 	<checkbox bit="28" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="Used in Retail 07-24 as 1, no clear effect."/>
   </sprite> <!-- #401: Massive Skewer - Down -->
 
-  <sprite id="402" name="Line Controlled ? Block" asmhacks="True" notes="A variant of the ? Block that will ride along Line objects.">
+  <sprite id="402" name="Line Controlled ? Block" notes="A variant of the ? Block that will ride along Line objects.">
     <dependency notes="This sprite must be paired with a [236] Use Lines movement controller in order to function.">
       <required sprite="236"/>
     </dependency>
@@ -6182,7 +6182,7 @@
     </list>
   </sprite> <!-- #402: Line Controlled ? Block -->
 
-  <sprite id="403" name="Line Controlled Brick Block" asmhacks="True" notes="A variant of the Brick Block that will ride along Line objects.">
+  <sprite id="403" name="Line Controlled Brick Block" notes="A variant of the Brick Block that will ride along Line objects.">
     <dependency notes="This sprite must be paired with a [236] Use Lines movement controller in order to function.">
       <required sprite="236"/>
     </dependency>
@@ -6340,7 +6340,7 @@
     </list>
   </sprite> <!-- #413: Bouncing Wendy Ring -->
 
-  <sprite id="414" name="Spike / Stone Spike" asmhacks="True" sizehacks="True" notes="A strange little koopa that can pull spiked balls from another dimension located inside their stomach and endlessly hurl them towards the player. These spiked balls cannot damage terrain.">
+  <sprite id="414" name="Spike / Stone Spike" notes="A strange little koopa that can pull spiked balls from another dimension located inside their stomach and endlessly hurl them towards the player. These spiked balls cannot damage terrain.">
     <dualbox bit="48" title1="Stone Spike (Throws Down)" title2="Spike (Throws to Side)" comment="This determines the type of enemy that will spawn." comment2="A Stone Spike throws spiked balls downwards, and a Spike throws spiked balls left or right."/>
 	<dualbox bit="40" title1="Faces Left" title2="Faces Right" comment="This determines the initial direction the Spike will face." comment2="This has limited use, as the Spike will turn to face the player when needed. It's most useful when placing the Spike in range of an entrance." requiredbit="48" requiredval="0"/>
     <checkbox bit="44" title="Always Throwing" comment="When enabled, the Spike will always throw spiked balls, even when off-screen." comment2="May only function with Stone Spikes."/>
@@ -6416,7 +6416,7 @@
     </list>
   </sprite> <!-- #424: Palm Tree -->
 
-  <sprite id="425" name="Jellybeam" sizehacks="True" notes="A jellyfish enemy that produces a varying cone of light.">
+  <sprite id="425" name="Jellybeam" notes="A jellyfish enemy that produces a varying cone of light.">
     <dependency notes="Unlike most lighting related sprites, the Jellybeam MUST be accompanied by Full Darkness light mode or else it will cause bugs/glitches. While it can be used without water, the use of water is still suggested."/>
     <list bit="19-20" title="Delay Before Dropping" comment="This determines the delay before the Jellybeam swims downwards.">
       <entry value="2">Short</entry>
@@ -6563,7 +6563,7 @@
   <sprite id="432" name="Toad NPC" notes="A non-interactable Toad that will turn and face the player. A few sprites rely on its presence in a level to work.">
   </sprite> <!-- #432: Toad NPC -->
 
-  <sprite id="433" name="Floating ? Block" asmhacks="True" notes="A slightly-larger-than-normal ? Block that floats on the surface of the Zone's non-Location Water, Poisoned Water, or Lava.">
+  <sprite id="433" name="Floating ? Block" notes="A slightly-larger-than-normal ? Block that floats on the surface of the Zone's non-Location Water, Poisoned Water, or Lava.">
     <dependency notes="Place this block at the horizontal position you want it to load, and it will spawn floating at the surface line of the body of liquid. It only works with non-Location liquids, and it does work with Moving liquids.">
       <suggested sprite="138"/>
       <suggested sprite="139"/>
@@ -6642,7 +6642,7 @@
     <value bit="43-48" title="Length" comment="This determines the length of the rope."/>
   </sprite> <!-- #440: Climbable Horizontal Rope -->
 
-  <sprite id="441" name="Mushroom Platform" asmhacks="True" notes="A mushroom platform with a solid-on-top collision representing the top segment of a large mushroom. The stem portion must be painted with tileset objects.">
+  <sprite id="441" name="Mushroom Platform" notes="A mushroom platform with a solid-on-top collision representing the top segment of a large mushroom. The stem portion must be painted with tileset objects.">
     <dualbox bit="44" title1="Skinny" title2="Thick" comment="This determines the thickness (style) of the mushroom platform."/>
     <dualbox bit="40" title1="Orange" title2="Blue" comment="This determines the color of the Skinny mushroom platform." requiredbit="44" requiredval="0"/> <!-- Appears if Skinny is set -->
     <dualbox bit="40" title1="Red" title2="Green" comment="This determines the color of the Thick mushroom platform." requiredbit="44"/> <!-- Appears if Thick is set -->
@@ -6671,7 +6671,7 @@
     </dependency>
   </sprite> <!-- #445: Peach in Cage - Real -->
 
-  <sprite id="446" name="Effect - Light Cloud Area" asmhacks="True" notes="This adds a light cloud effect to the level. It must use a Location ID.">
+  <sprite id="446" name="Effect - Light Cloud Area" notes="This adds a light cloud effect to the level. It must use a Location ID.">
     <checkbox bit="20" title="Death Clouds" comment="When enabled, the cloud area will produce purple instant death clouds instead of normal white clouds."/>
     <value nybble="11-12" title="Location ID" comment="This determines the location in which the cloud effect will appear."/>
   </sprite> <!-- #446: Effect - Light Cloud Area -->
@@ -6704,14 +6704,14 @@
     <value nybble="9-10" title="Entrance ID" comment="This determines which Entrance is paired with the pipe."/>
   </sprite> <!-- #450: Enterable Warp Pipe - Up -->
 
-  <sprite id="451" name="Scaredy Rat Despawner" asmhacks="True" notes="A decorative mouse hole with a secondary function. It will despawn Scaredy Rats that pass through it.">
+  <sprite id="451" name="Scaredy Rat Despawner" notes="A decorative mouse hole with a secondary function. It will despawn Scaredy Rats that pass through it.">
     <dependency notes="This has the ability to depsawn two different sprites.">
       <suggested sprite="271"/>
       <suggested sprite="101"/>
     </dependency>
   </sprite> <!-- #451: Scaredy Rat Despawner -->
 
-  <sprite id="452" name="Bowser Boss Door" sizehacks="True" noyoshi="True" notes="A very large green door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
+  <sprite id="452" name="Bowser Boss Door" noyoshi="True" notes="A very large green door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
     <list bit="35-36" title="Orientation" comment="This determines which direction the door will be facing." comment2="A door can only be entered if it is upright." advancedcomment="As decoration, this is fine. Actually making it properly associate its corresponding Entrance is either impossible or very functionally strange.">
       <entry value="0">Upright</entry>
       <entry value="1">Left</entry>
@@ -6722,7 +6722,7 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
   </sprite> <!-- #452: Bowser Boss Door -->
 
-  <sprite id="453" name="Seaweed Plant" sizehacks="True" notes="A decorative seaweed plant that sways lightly back and forth.">
+  <sprite id="453" name="Seaweed Plant" notes="A decorative seaweed plant that sways lightly back and forth.">
     <list nybble="12" title="Size" comment="This determines the size of the seaweed.">
       <entry value="0">Small</entry>
       <entry value="1">Medium</entry>
@@ -6994,7 +6994,7 @@
     <checkbox bit="48" title="Loads at Midway" comment="When enabled, the block will only appear if the level has been loaded from a Midway point."/>
   </sprite> <!-- #477: Super Guide Block -->
 
-  <sprite id="478" name="Bowser Switch (Small)" asmhacks="True" sizehacks="True" notes="This switch is nearly identical to the Red ! Switch, but it does not activate outlined Red Blocks. It may have additional bugs. Not recommended for use outside of the final Bowser Boss fight.">
+  <sprite id="478" name="Bowser Switch (Small)" notes="This switch is nearly identical to the Red ! Switch, but it does not activate outlined Red Blocks. It may have additional bugs. Not recommended for use outside of the final Bowser Boss fight.">
     <dependency notes="This sprite has additional hardcoded behavior that may cause bugs when it is used outside of its intended boss fight.">
       <suggested sprite="431"/>
     </dependency>
@@ -7018,7 +7018,7 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #478: Bowser Switch (Small) -->
 
-  <sprite id="479" name="Bowser Switch (Large)" noyoshi="True" sizehacks="True" notes="A much larger, fancier switch that was originally used for the final Bowser Boss fight. It always flashes red.">
+  <sprite id="479" name="Bowser Switch (Large)" noyoshi="True" notes="A much larger, fancier switch that was originally used for the final Bowser Boss fight. It always flashes red.">
     <dependency notes="This sprite has additional hardcoded behavior that may cause bugs when it is used outside of its intended boss fight. Known bugs: It is incompatible with Multi-Use. The Target Event ID must be unique to this Switch.">
       <suggested sprite="431"/>
     </dependency>
