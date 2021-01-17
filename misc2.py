@@ -169,7 +169,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             self.xButtonScrollTimer.start(100)
 
         elif event.button() == QtCore.Qt.RightButton:
-            if globals_.CurrentPaintType < 4 and globals_.CurrentObject != -1:
+            if 0 <= globals_.CurrentPaintType < 4 and globals_.CurrentObject != -1:
                 # paint an object
                 clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
                 if clicked.x() < 0: clicked.setX(0)
@@ -179,7 +179,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedy = int(clicked.y() / 24)
 
                 obj = globals_.mainWindow.CreateObject(
-                    globals_.CurrentPaintType, globals_.CurrentObject, globals_.CurrentLayer, 
+                    globals_.CurrentPaintType, globals_.CurrentObject, globals_.CurrentLayer,
                     clickedx, clickedy
                 )
 

@@ -3460,24 +3460,27 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handles the selected palette tab changing
         """
-        idx = self.creationTabs.currentIndex()
         CPT = -1
-        if idx == 0:  # objects
+
+        if nt == 0:  # objects
             CPT = self.objAllTab.currentIndex()
-        elif idx == 1:  # sprites
-            if self.sprAllTab.currentIndex() != 1: CPT = 4
-        elif idx == 2:
+        elif nt == 1:  # sprites
+            # Ensure the user can't paint sprites
+            # when the 'current sprites' tab is
+            # opened.
+            if self.sprAllTab.currentIndex() != 1:
+                CPT = 4
+        elif nt == 2:
             CPT = 5  # entrances
-        elif idx == 3:
+        elif nt == 3:
             CPT = 7  # locations
-        elif idx == 4:
+        elif nt == 4:
             CPT = 6  # paths
-        elif idx == 6:
+        elif nt == 6:
             CPT = 8  # stamp pad
-        elif idx == 7:
+        elif nt == 7:
             CPT = 9  # comment
 
-        # global globals_.CurrentPaintType
         globals_.CurrentPaintType = CPT
 
     def ObjTabChanged(self, nt):
@@ -3489,7 +3492,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.objPicker.ShowTileset(nt)
                 eval('self.objTS%dTab' % nt).setLayout(self.createObjectLayout)
             self.defaultPropDock.setVisible(False)
-        # global globals_.CurrentPaintType
+
         globals_.CurrentPaintType = nt
 
     def SprTabChanged(self, nt):
@@ -3500,7 +3503,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             cpt = 4
         else:
             cpt = -1
-        # global globals_.CurrentPaintType
+
         globals_.CurrentPaintType = cpt
 
     def LayerChoiceChanged(self, nl):
