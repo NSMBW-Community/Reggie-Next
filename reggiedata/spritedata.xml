@@ -26,7 +26,7 @@
 <!-- Stopped after Line xxxx / 10755 (#x) -->
 
 <sprites>
-  <sprite id="0" name="Mario Jumps! [TESTING ONLY]" notes="This Glitch Mario has been repurposed for use in the level editor as a means of approximating Mario's athletic prowess.">
+  <sprite id="0" name="Mario Jumps! (TESTING ONLY)" notes="This Glitch Mario has been repurposed for use in the level editor as a means of approximating Mario's athletic prowess.">
     <list bit="17-20" title="Powerup Type" comment="This determines which Powerup or Object will be displayed.">
       <entry value="0">Super Mario</entry>
       <!--<entry value="1">Small Mario</entry>-->
