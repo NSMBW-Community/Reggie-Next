@@ -121,60 +121,6 @@
     </list>
   </sprite> <!-- #9: (Unused) Glitch Player Actor -->
 
-  <sprite id="1" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-
-  <sprite id="2" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-
-  <sprite id="3" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-
-  <sprite id="4" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-  <sprite id="5" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-  <sprite id="6" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-  <sprite id="7" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-  <sprite id="8" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-
-  <sprite id="9" name="(Unused) Glitch Player Actor" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is the most stable version of all the &quot;Glitch Marios&quot;.&lt;br&gt;It creates a stationary Player clone that will be shown one tile above the sprite's placement. The clone will not move; nonetheless, the Mario 'twinkle' animation works. Also, this clone can shoot fireballs if Mario has a Fire Flower. Other functions have to be tested. It seems the initial purpose of this sprite was to function as an entrance. Additionally, depending on the position of this sprite relative to an entrance, this Mario can sometimes be controlled instead of the one created by the entrance.">
-    <dualbox bit="24" title1="Faces Right" title2="Faces Left" comment="Determines which way the spawned Player Actor faces." advanced="True"/>
-    <list nybble="7-8" title="Entrance Type" comment="0-255: Same list and order as normal entrances. Every value creates a character at its position. Compared to normal entrances, Mario will be positioned on top of the sprite's placement and not inside it. The 3D model is stationary and does not move." advanced="True">
-      <entry value="0">Normal</entry>
-      <entry value="1">Normal</entry>
-      <entry value="2">Door Exit</entry>
-      <entry value="3">Pipe Facing Up</entry>
-      <entry value="4">Pipe Facing Down</entry>
-      <entry value="5">Pipe Facing Left</entry>
-      <entry value="6">Pipe Facing Right</entry>
-      <entry value="7">Falling (Fast)</entry>
-      <entry value="8">Ground-Pound</entry>
-      <entry value="9">Sliding</entry>
-      <entry value="10">Swimming</entry>
-      <entry value="11">Normal</entry>
-      <entry value="12">Normal</entry>
-      <entry value="13">Normal</entry>
-      <entry value="14">Out of nothing</entry>
-      <entry value="15">Out of nothing</entry>
-      <entry value="16">Mini Pipe Facing Up</entry>
-      <entry value="17">Mini Pipe Facing Down</entry>
-      <entry value="18">Mini Pipe Facing Left</entry>
-      <entry value="19">Mini Pipe Facing Right</entry>
-      <entry value="20">Jumping (Facing Right)</entry>
-      <entry value="21">Beanstalk Entrance</entry>
-      <entry value="22">Pipe Facing Towards Screen</entry>
-      <entry value="23">Boss Entrance (Standing)</entry>
-      <entry value="24">Jumping (Facing Left)</entry>
-      <entry value="25">Boss Entrance (Jumping Right)</entry>
-      <entry value="26">Boss Entrance (Falling Right)</entry>
-      <entry value="27">Door Entrance</entry>
-      <entry value="28">Unknown (CRASH)</entry>
-      <entry value="29">Unknown (FREEZE)</entry>
-    </list>
-    <list bit="47-48" title="Character" comment="Specifies which character will be spawned." advanced="True">
-      <entry value="0">Mario</entry>
-      <entry value="1">Luigi</entry>
-      <entry value="2">Yellow Toad</entry>
-      <entry value="3">Blue Toad</entry>
-    </list>
-  </sprite> <!-- #9: (Unused) Glitch Player Actor -->
-
   <sprite id="10" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #10: Unused -->
   <sprite id="11" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #11: Unused -->
   <sprite id="12" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #12: Unused -->
@@ -4722,20 +4668,6 @@
     <value nybble="11" title="Burner ID" comment="This determines which controller is linked to this flame jet." comment2="The flame jet will not function without a linked controller." idtype="Burner ID"/>
   </sprite> <!-- #309: Burner - Pulsating (Synchronized) -->
 
-  <sprite id="309" name="Burner - Pulsating (Synchronized)" notes="A pulsating flame jet that can be paired with a controller to allow for synchronized activation.">
-    <dependency notes="Synchronized flame jets will only function if associated with a matching controller.">
-      <required sprite="307"/>
-    </dependency>
-    <dualbox bit="40" title1="On in Mode 1" title2="On in Mode 2" comment="This determines which mode the flame jet will be activated during."/>
-    <list bit="47-48" title="Direction" comment="This determines which direction the flame jet is pointing.">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Up</entry>
-      <entry value="3">Down</entry>
-    </list>
-    <value nybble="11" title="Burner ID" comment="This determines which controller is linked to this flame jet." comment2="The flame jet will not function without a linked controller." idtype="Burner ID"/>
-  </sprite> <!-- #309: Burner - Pulsating (Synchronized) -->
-
   <!-- Check if you can use the Z-Order to place the signboard behind Chainlink. -->
   <sprite id="310" name="Signboard - Arrow" notes="A signboard with a red arrow on it, useful for suggesting a player travel in a specific direction.">
     <list nybble="12" title="Direction" comment="This determines which direction the arrow will point in.">
@@ -5024,12 +4956,6 @@
   <sprite id="333" name="Line Controlled Player-Block Platform" notes="A tilt controlled platform that only activates when a player strikes the Player Block. It will zip from one end of a line guide to the other when the controlling player tilts their controller.">
     <dependency notes="This platform will not move along line objects without the use of [187] Player Block.">
       <requires sprite="187"/>
-    </dependency>
-  </sprite> <!-- #333: Line Controlled Player-Block Platform -->
-
-  <sprite id="333" name="Line Controlled Player-Block Platform" notes="A tilt controlled platform that only activates when a player strikes the Player Block. It will zip from one end of a line guide to the other when the controlling player tilts their controller.">
-    <dependency notes="This platform will not move along line objects without the use of [187] Player Block.">
-      <required sprite="187"/>
     </dependency>
   </sprite> <!-- #333: Line Controlled Player-Block Platform -->
 
