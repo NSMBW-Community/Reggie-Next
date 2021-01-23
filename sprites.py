@@ -3968,20 +3968,19 @@ class SpriteImage_TileEvent(common.SpriteImage_TileEvent):  # 191
         return None
 
 
-class SpriteImage_LarryKoopaController(SLib.SpriteImage):  # 192
+class SpriteImage_LarryKoopaCastleBoss(SLib.SpriteImage):  # 192
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 624, 360))
-        self.aux[0].image = ImageCache['LarryKoopaController']
-        self.aux[0].setPos(0, 72)
-
+        self.aux.append(SLib.AuxiliaryImage(parent, 528, 240))
+        self.aux[0].image = ImageCache['LarryKoopaCastleBoss']
+        self.aux[0].setPos(48, 192)
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 288))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LarryKoopaController', 'boss_controller_larry.png')
+        SLib.loadIfNotInImageCache('LarryKoopaCastleBoss', 'larry_castle_boss.png')
 
 
 class SpriteImage_Urchin(SLib.SpriteImage_Static):  # 193
@@ -6564,20 +6563,19 @@ class SpriteImage_LudwigVonKoopa(SLib.SpriteImage_Static):  # 348
         SLib.loadIfNotInImageCache('LudwigVonKoopa', 'Ludwig_Von_Koopa.png')
 
 
-class SpriteImage_MortonKoopaController(SLib.SpriteImage):  # 349
+class SpriteImage_MortonKoopaCastleBoss(SLib.SpriteImage):  # 349
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 648, 408))
-        self.aux[0].image = ImageCache['MortonKoopaController']
-        self.aux[0].setPos(0, 0)
-
+        self.aux.append(SLib.AuxiliaryImage(parent, 552, 408))
+        self.aux[0].image = ImageCache['MortonKoopaCastleBoss']
+        self.aux[0].setPos(48, 0)
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 288))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MortonKoopaController', 'boss_controller_morton.png')
+        SLib.loadIfNotInImageCache('MortonKoopaCastleBoss', 'morton_castle_boss.png')
 
 
 class SpriteImage_RockyWrench(SLib.SpriteImage_Static):  # 352
@@ -6813,38 +6811,36 @@ class SpriteImage_ColoredBox(SLib.SpriteImage):  # 362
         painter.drawTiledPixmap(25, 25, xsize - 50, ysize - 50, ImageCache[prefix + 'M'])
 
 
-class SpriteImage_RoyKoopaController(SLib.SpriteImage):  # 364
+class SpriteImage_RoyKoopaCastleBoss(SLib.SpriteImage):  # 364
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 648, 432))
-        self.aux[0].image = ImageCache['RoyKoopaController']
-        self.aux[0].setSize(648, 432, 0, -96)
-
+        self.aux.append(SLib.AuxiliaryImage(parent, 528, 384))
+        self.aux[0].image = ImageCache['RoyKoopaCastleBoss']
+        self.aux[0].setPos(72, -96)
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 24, 312))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('RoyKoopaController', 'boss_controller_roy.png')
+        SLib.loadIfNotInImageCache('RoyKoopaCastleBoss', 'roy_castle_boss.png')
 
 
-class SpriteImage_LudwigVonKoopaController(SLib.SpriteImage):  # 365
+class SpriteImage_LudwigVonKoopaCastleBoss(SLib.SpriteImage):  # 365
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
         self.aux.append(SLib.AuxiliaryImage(parent, 720, 840))
-        self.aux[0].image = ImageCache['LudwigVonKoopaController']
+        self.aux[0].image = ImageCache['LudwigVonKoopaCastleBoss']
         self.aux[0].setPos(-24, -360)
-
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 24, 288))
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 528, 24, 72, 264))
         self.aux[2].fillFlag = False
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LudwigVonKoopaController', 'boss_controller_ludwig.png')
+        SLib.loadIfNotInImageCache('LudwigVonKoopaCastleBoss', 'ludwig_castle_boss.png')
 
 
 class SpriteImage_CubeKinokoRot(SLib.SpriteImage_StaticMultiple):  # 366
@@ -6951,13 +6947,13 @@ class SpriteImage_RollingHillCoin(SpriteImage_SpecialCoin):  # 371
     pass
 
 
-class SpriteImage_IggyKoopaController(SLib.SpriteImage):  # 372
+class SpriteImage_IggyKoopaCastleBoss(SLib.SpriteImage):  # 372
     def __init__(self, parent):
         super().__init__(parent)
-        self.aux.append(SLib.AuxiliaryImage(parent, 624, 312))
+        self.aux.append(SLib.AuxiliaryImage(parent, 240, 288))
         self.parent.setZValue(24999)
-        self.aux[0].image = ImageCache['IggyKoopaController']
-        self.aux[0].setSize(624, 312, 24, 24)
+        self.aux[0].image = ImageCache['IggyKoopaCastleBoss']
+        self.aux[0].setSize(240, 288, 360, 48)
 
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 24, 312))
 
@@ -6970,7 +6966,7 @@ class SpriteImage_IggyKoopaController(SLib.SpriteImage):  # 372
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('IggyKoopaController', 'boss_controller_iggy.png')
+        SLib.loadIfNotInImageCache('IggyKoopaCastleBoss', 'iggy_castle_boss.png')
 
 
 class SpriteImage_RaftWater(SpriteImage_LiquidOrFog):  # 373
@@ -7025,20 +7021,19 @@ class SpriteImage_SnowWind(SpriteImage_LiquidOrFog):  # 374
         super().realViewZone(painter, zoneRect, viewRect)
 
 
-class SpriteImage_WendyKoopaController(SLib.SpriteImage):  # 375
+class SpriteImage_WendyKoopaCastleBoss(SLib.SpriteImage):  # 375
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
         self.aux.append(SLib.AuxiliaryImage(parent, 648, 528))
-        self.aux[0].image = ImageCache['WendyKoopaController']
+        self.aux[0].image = ImageCache['WendyKoopaCastleBoss']
         self.aux[0].setPos(0, -120)
-
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 288))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('WendyKoopaController', 'boss_controller_wendy.png')
+        SLib.loadIfNotInImageCache('WendyKoopaCastleBoss', 'wendy_castle_boss.png')
 
 
 class SpriteImage_MovingFence(SLib.SpriteImage_StaticMultiple):  # 376
@@ -7103,20 +7098,19 @@ class SpriteImage_Pipe_Left(SpriteImage_PipeStationary):  # 380
         super().dataChanged()
 
 
-class SpriteImage_LemmyKoopaController(SLib.SpriteImage):  # 381
+class SpriteImage_LemmyKoopaCastleBoss(SLib.SpriteImage):  # 381
     def __init__(self, parent):
         super().__init__(parent)
         self.parent.setZValue(24999)
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 648, 288))
-        self.aux[0].image = ImageCache['LemmyKoopaController']
-        self.aux[0].setPos(0, 96)
-
+        self.aux.append(SLib.AuxiliaryImage(parent, 552, 216))
+        self.aux[0].image = ImageCache['LemmyKoopaCastleBoss']
+        self.aux[0].setPos(48, 168)
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 312))
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LemmyKoopaController', 'boss_controller_lemmy.png')
+        SLib.loadIfNotInImageCache('LemmyKoopaCastleBoss', 'lemmy_castle_boss.png')
 
 
 class SpriteImage_ScrewMushroomNoBolt(SpriteImage_ScrewMushroom):  # 382
@@ -7480,6 +7474,52 @@ class SpriteImage_BowserJr3rdController(SLib.SpriteImage):  # 406
         SLib.loadIfNotInImageCache('BowserJr3rdController', 'boss_controller_bowserjr_3.png')
 
 
+class SpriteImage_BossControllerCastleBoss(SLib.SpriteImage):  # 407
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 48, 96))
+        self.aux.append(SLib.AuxiliaryImage(parent, 48, 96))
+        self.aux.append(SLib.AuxiliaryImage(parent, 48, 96))
+        self.aux.append(SLib.AuxiliaryImage(parent, 48, 96))
+        self.aux[0].image = ImageCache['ShutterDoor']
+        self.aux[1].image = ImageCache['ShutterDoor']
+        self.aux[1].alpha = 0.375
+        self.aux[2].image = ImageCache['ShutterDoor']
+        self.aux[3].image = ImageCache['ShutterDoor']
+        self.aux[3].alpha = 0.375
+
+    def dataChanged(self):
+        boss = (self.parent.spritedata[5] & 0xF) % 7
+
+        self.aux[0].setPos(*(
+                (0, -216),
+                (0, -216),
+                (0, -216),
+                (0, -216),
+                (0, -216),
+                (0, -240),
+                (0, -216)
+        )[boss])
+        self.aux[1].setPos(self.aux[0].x(), self.aux[0].y() + 96)
+        self.aux[2].setPos(*(
+                (576, -120),
+                (576, -120),
+                (600, -120),
+                (576, -120),
+                (576, -120),
+                (600, -120),
+                (576, -487)
+            )[boss])
+        self.aux[3].setPos(self.aux[2].x(), self.aux[2].y() - 96)
+
+        super().dataChanged()
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('ShutterDoor', 'shutter_door.png')
+
+
 class SpriteImage_ToadHouseBalloonUnused(SpriteImage_ToadHouseBalloon):  # 411
     def dataChanged(self):
         self.livesNum = (self.parent.spritedata[4] >> 4) & 3
@@ -7740,7 +7780,7 @@ class SpriteImage_BowserController(SLib.SpriteImage):  # 431
         super().__init__(parent)
 
         self.aux.append(SLib.AuxiliaryImage(parent, 48, 288))
-        self.aux[0].image = ImageCache['BowserController']
+        self.aux[0].image = ImageCache['BowserShutterDoor']
         self.aux[0].setPos(1248, -288)
 
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 768, 408, 1248, -336))
@@ -7748,7 +7788,7 @@ class SpriteImage_BowserController(SLib.SpriteImage):  # 431
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BowserController', 'boss_controller_bowser.png')
+        SLib.loadIfNotInImageCache('BowserShutterDoor', 'bowser_shutter_door.png')
 
 
 class SpriteImage_Toad(SLib.SpriteImage_Static):  # 432
@@ -8709,7 +8749,7 @@ ImageClasses = {
     189: SpriteImage_LarryKoopa,
     190: SpriteImage_TiltingGirderUnused,
     191: SpriteImage_TileEvent,
-    192: SpriteImage_LarryKoopaController,
+    192: SpriteImage_LarryKoopaCastleBoss,
     193: SpriteImage_Urchin,
     194: SpriteImage_MegaUrchin,
     195: SpriteImage_HuckitCrab,
@@ -8824,7 +8864,7 @@ ImageClasses = {
     346: SpriteImage_HangingChainPlatform,
     347: SpriteImage_RoyKoopa,
     348: SpriteImage_LudwigVonKoopa,
-    349: SpriteImage_MortonKoopaController,
+    349: SpriteImage_MortonKoopaCastleBoss,
     352: SpriteImage_RockyWrench,
     353: SpriteImage_Pipe_MovingDown,
     354: SpriteImage_BrownBlock,
@@ -8836,24 +8876,24 @@ ImageClasses = {
     360: SpriteImage_RollingHillWith8Pipes,
     361: SpriteImage_CrystalBlock,
     362: SpriteImage_ColoredBox,
-    364: SpriteImage_RoyKoopaController,
-    365: SpriteImage_LudwigVonKoopaController,
+    364: SpriteImage_RoyKoopaCastleBoss,
+    365: SpriteImage_LudwigVonKoopaCastleBoss,
     366: SpriteImage_CubeKinokoRot,
     367: SpriteImage_CubeKinokoLine,
     368: SpriteImage_FlashRaft,
     369: SpriteImage_SlidingPenguin,
     370: SpriteImage_CloudBlock,
     371: SpriteImage_RollingHillCoin,
-    372: SpriteImage_IggyKoopaController,
+    372: SpriteImage_IggyKoopaCastleBoss,
     373: SpriteImage_RaftWater,
     374: SpriteImage_SnowWind,
-    375: SpriteImage_WendyKoopaController,
+    375: SpriteImage_WendyKoopaCastleBoss,
     376: SpriteImage_MovingFence,
     377: SpriteImage_Pipe_Up,
     378: SpriteImage_Pipe_Down,
     379: SpriteImage_Pipe_Right,
     380: SpriteImage_Pipe_Left,
-    381: SpriteImage_LemmyKoopaController,
+    381: SpriteImage_LemmyKoopaCastleBoss,
     382: SpriteImage_ScrewMushroomNoBolt,
     384: SpriteImage_PipeCooliganGenerator,
     385: SpriteImage_IceBlock,
@@ -8876,6 +8916,7 @@ ImageClasses = {
     404: SpriteImage_MassiveSpikedStakeUp,
     405: SpriteImage_BowserJr2ndController,
     406: SpriteImage_BowserJr3rdController,
+    407: SpriteImage_BossControllerCastleBoss,
     411: SpriteImage_ToadHouseBalloonUnused,
     412: SpriteImage_ToadHouseBalloonUsed,
     413: SpriteImage_WendyRing,

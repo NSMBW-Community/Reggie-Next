@@ -1817,46 +1817,26 @@ class SpriteImage_FallingChestnut(SLib.SpriteImage_StaticMultiple):  # 320
         yellow = self.parent.spritedata[5] & 1
         scale = (self.parent.spritedata[5] >> 4) & 0xF
         color = ("Brown", "Yellow")[yellow]
-        sizeX = (
-            45,
-            68,
-            92,
-            115,
-            139,
-            163,
-            185,
-            209,
-            233,
-            255,
-            279,
-            303,
-            325,
-            349,
-            372,
-            395
-        )[scale]
-        sizeY = (
-            40,
-            59,
-            80,
-            99,
-            119,
-            140,
-            159,
-            180,
-            199,
-            219,
-            238,
-            258,
-            278,
-            298,
-            318,
-            338
-        )[scale]
-        
+
         if ImageCache['ChestnutBrown'] is None: return
-        
-        self.image = ImageCache['Chestnut%s' % color].scaled(sizeX, sizeY)
+        self.image = ImageCache['Chestnut%s' % color].scaled(*(
+            (45, 40),
+            (68, 59),
+            (92, 80),
+            (116, 99),
+            (139, 119),
+            (163, 140),
+            (185, 159),
+            (209, 180),
+            (233, 199),
+            (255, 219),
+            (279, 238),
+            (303, 258),
+            (325, 278),
+            (349, 298),
+            (372, 318),
+            (395, 338)
+        )[scale])
         self.offset = (
                 (-6, -11),#divide by 1.5
                 (-14, -26),
@@ -1875,7 +1855,6 @@ class SpriteImage_FallingChestnut(SLib.SpriteImage_StaticMultiple):  # 320
                 (-117, -207),
                 (-125, -221)
             )[scale]
-        
 
         super().dataChanged()
 
