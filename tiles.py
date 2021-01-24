@@ -136,7 +136,7 @@ class TilesetTile:
         """
         self.animFrame = 0
 
-    def getCurrentTile(self):
+    def getCurrentTile(self, show_collision = False):
         """
         Returns the current tile based on the current animation frame
         """
@@ -147,7 +147,7 @@ class TilesetTile:
             result = self.animTiles[self.animFrame]
         result = QtGui.QPixmap(result)
 
-        if globals_.CollisionsShown and (self.collOverlay is not None):
+        if globals_.CollisionsShown and show_collision and (self.collOverlay is not None):
             p = QtGui.QPainter(result)
             p.drawPixmap(0, 0, self.collOverlay)
             del p

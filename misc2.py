@@ -62,7 +62,7 @@ class LevelScene(QtWidgets.QGraphicsScene):
         unkn_tile = globals_.Overrides[globals_.OVERRIDE_UNKNOWN].getCurrentTile()
 
         # create and draw the tilemaps
-        for layer in [layer2, layer1, layer0]:
+        for layer_idx, layer in enumerate([layer2, layer1, layer0]):
             if len(layer) == 0:
                 continue
 
@@ -106,7 +106,9 @@ class LevelScene(QtWidgets.QGraphicsScene):
                         # Draw unknown tiles
                         painter.drawPixmap(destx, desty, unkn_tile)
                     elif tile is not None:
-                        painter.drawPixmap(destx, desty, tiles[tile].getCurrentTile())
+                        # Only show collisions on layer 1 (i.e. layer_idx == 1)
+                        pixmap = tiles[tile].getCurrentTile(layer_idx == 1)
+                        painter.drawPixmap(destx, desty, pixmap)
 
             painter.restore()
 
