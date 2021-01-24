@@ -3943,8 +3943,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         if event.key() == Qt.Key_Delete or event.key() == Qt.Key_Backspace:
             sel = self.scene.selectedItems()
-            self.SelectionUpdateFlag = True
             if len(sel) > 0:
+                self.SelectionUpdateFlag = True
                 for obj in sel:
                     obj.delete()
                     obj.setSelected(False)
