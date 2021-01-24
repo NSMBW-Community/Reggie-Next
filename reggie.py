@@ -3059,6 +3059,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.Layer1Shown = True
         globals_.Layer2Shown = True
 
+        # Also enable things that use 'True' by default
+        SpritesShown = True
+        LocationsShown = True
+
         # Prevent things from snapping when they're created
         globals_.OverrideSnapping = True
 
@@ -3099,6 +3103,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.actions['showlay0'].setChecked(True)
         self.actions['showlay1'].setChecked(True)
         self.actions['showlay2'].setChecked(True)
+        self.actions['showsprites'].setChecked(True)
+        self.actions['showlocations'].setChecked(True)
         self.actions['addarea'].setEnabled(len(globals_.Level.areas) < 4)
         self.actions['importarea'].setEnabled(len(globals_.Level.areas) < 4)
         self.actions['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
