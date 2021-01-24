@@ -5016,7 +5016,7 @@ class SpriteImage_WaterPiranha(SLib.SpriteImage_Static):  # 263
             parent,
             1.5,
             ImageCache['WaterPiranhaBody'],
-            (-8, -25),
+            (-5, -28),
         )
 
         self.aux.append(SLib.AuxiliaryImage(parent, 38, 30))
