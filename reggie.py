@@ -2564,12 +2564,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle activated signals for areaComboBox
         """
-        if self.CheckDirty():
-            self.areaComboBox.setCurrentIndex(globals_.Area.areanum)
+        old_idx = globals_.Area.areanum - 1
+
+        if idx == old_idx:
             return
 
-        if globals_.Area.areanum != idx + 1:
-            self.LoadLevel(None, self.fileSavePath, True, idx + 1)
+        if self.CheckDirty():
+            self.areaComboBox.setCurrentIndex(old_idx)
+            return
+
+        ok = self.LoadLevel(None, self.fileSavePath, True, idx + 1)
+
+        if not ok:
+            # loading the new area failed, so reset the combobox
+            self.areaComboBox.setCurrentIndex(old_idx)
 
     def HandleUpdateLayer0(self, checked):
         """
