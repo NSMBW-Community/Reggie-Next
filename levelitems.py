@@ -5,6 +5,7 @@ import base64
 
 import spritelib as SLib
 import globals_
+import common
 from tiles import RenderObject
 from ui import GetIcon, clipStr
 from dirty import SetDirty
@@ -1615,8 +1616,8 @@ class LocationItem(LevelEditorItem):
         if self.isSelected() and self.GrabberRect.contains(event.pos()):
             # start dragging
             self.dragging = True
-            self.dragstartx = int(event.pos().x() / 1.5)
-            self.dragstarty = int(event.pos().y() / 1.5)
+            self.dragstartx = int(event.scenePos().x() / 1.5)
+            self.dragstarty = int(event.scenePos().y() / 1.5)
             event.accept()
         else:
             LevelEditorItem.mousePressEvent(self, event)
@@ -1627,17 +1628,21 @@ class LocationItem(LevelEditorItem):
         Overrides mouse movement events if needed for resizing
         """
         if event.buttons() != QtCore.Qt.NoButton and self.dragging:
-            # resize it
+            # Resize the location.
+            # NOTE: We never actually use dsx, dsy, self.dragstartx or
+            # self.dragstarty...
             dsx = self.dragstartx
             dsy = self.dragstarty
-            clickedx = event.pos().x() / 1.5
-            clickedy = event.pos().y() / 1.5
+            clickedx = int(event.scenePos().x() / 1.5)
+            clickedy = int(event.scenePos().y() / 1.5)
 
             cx = self.objx
             cy = self.objy
 
-            if clickedx < 0: clickedx = 0
-            if clickedy < 0: clickedy = 0
+            # Prevent the size from going outside the range of the location
+            # editor's fields
+            clickedx = common.clamp(clickedx, cx + 1, 65535)
+            clickedy = common.clamp(clickedy, cy + 1, 65535)
 
             if clickedx != dsx or clickedy != dsy:
                 self.dragstartx = clickedx
@@ -1646,8 +1651,8 @@ class LocationItem(LevelEditorItem):
                 self.objx = min(cx, clickedx)
                 self.objy = min(cy, clickedy)
 
-                self.width += clickedx - dsx
-                self.height += clickedy - dsy
+                self.width = abs(cx - clickedx)
+                self.height = abs(cy - clickedy)
 
                 oldrect = self.BoundingRect
                 oldrect.translate(cx * 1.5, cy * 1.5)
