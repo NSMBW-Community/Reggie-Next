@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
+import collections
 import sys
 import os
 from xml.etree import ElementTree
@@ -1053,31 +1054,22 @@ def LoadEntranceNames(reload_=False):
     """
     Ensures that the entrance names are loaded
     """
-    # global EntranceTypeNames
     if (globals_.EntranceTypeNames is not None) and not reload_: return
 
     paths, isPatch = globals_.gamedef.recursiveFiles('entrancetypes', True)
     if isPatch:
-        new = [globals_.trans.files['entrancetypes']]
-        for path in paths: new.append(path)
-        paths = new
+        paths = [globals_.trans.files['entrancetypes']] + paths
 
-    NameList = {}
+    names = collections.OrderedDict()
     for path in paths:
-        newNames = {}
         with open(path, 'r') as f:
             for line in f.readlines():
-                id_ = int(line.split(':')[0])
-                newNames[id_] = line.split(':')[1].replace('\n', '')
-
-        for idx in newNames:
-            NameList[idx] = newNames[idx]
+                id_, name = line.strip().split(':')
+                names[int(id_)] = name
 
     globals_.EntranceTypeNames = []
-    idx = 0
-    while idx in NameList:
-        globals_.EntranceTypeNames.append(globals_.trans.string('EntranceDataEditor', 28, '[id]', idx, '[name]', NameList[idx]))
-        idx += 1
+    for idx in names:
+        globals_.EntranceTypeNames.append(globals_.trans.string('EntranceDataEditor', 28, '[id]', idx, '[name]', names[idx]))
 
 
 def LoadTilesetInfo(reload_=False):
