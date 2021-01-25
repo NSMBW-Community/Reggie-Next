@@ -770,6 +770,10 @@ class Area_NSMBW(AbstractParsedArea):
         Saves an object layer to a string
         """
         layer = self.layers[idx]
+        if len(layer) == 0:
+            # Don't create a layer file for an empty layer.
+            return None
+
         offset = 0
         objstruct = struct.Struct('>HHHHH')
         buffer = bytearray((len(layer) * 10) + 2)
@@ -783,6 +787,7 @@ class Area_NSMBW(AbstractParsedArea):
                                 f_int(obj.width),
                                 f_int(obj.height))
             offset += 10
+
         buffer[offset] = 0xFF
         buffer[offset + 1] = 0xFF
         return bytes(buffer)
