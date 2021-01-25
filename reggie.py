@@ -3060,8 +3060,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.Layer2Shown = True
 
         # Also enable things that use 'True' by default
-        SpritesShown = True
-        LocationsShown = True
+        globals_.SpritesShown = True
+        globals_.LocationsShown = True
 
         # Prevent things from snapping when they're created
         globals_.OverrideSnapping = True
