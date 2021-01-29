@@ -2925,7 +2925,7 @@
   <sprite id="193" name="Urchin" notes="A small spiky ball enemy typically used in Water. Water is not required, however, for it to load and function.">
     <value bit="41-44" title="Movement Distance (*2)" comment="This determines how far the Urchin will move, if at all. Multiply this value by 2."/>
     <dualbox bit="48" title1="Moves Vertically" title2="Moves Horizontally" comment="This determines which direction the Urchin will move. The starting position from their movement is in the center, not at one of the two edges." requiredbit="41-44"/> <!-- Appears only if Movement Distance is set -->
-    <dualbox bit="40" title1="Moves Up First" title2="Moves Down First" comment="This determines which direction the Urchin will move first. The starting position from their movement is in the center, not at one of the two edges." requiredbit="41-44, 48" requiredval="1-15, 0"/> <!-- Appears only if Movement Distance is set, and movement is Vertical -->
+    <dualbox bit="40" title1="Moves Down First" title2="Moves Up First" comment="This determines which direction the Urchin will move first. The starting position from their movement is in the center, not at one of the two edges." requiredbit="41-44, 48" requiredval="1-15, 0"/> <!-- Appears only if Movement Distance is set, and movement is Vertical -->
     <dualbox bit="40" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Urchin will move first. The starting position from their movement is in the center, not at one of the two edges." requiredbit="41-44, 48" requiredval="1-15, 1"/> <!-- Appears only if Movement Distance is set, and movement is Horizontal -->
   </sprite> <!-- #193: Urchin -->
 
