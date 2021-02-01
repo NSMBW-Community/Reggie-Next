@@ -4,7 +4,7 @@
 
 ----------------------------------------------------------------
 
-Advanced level editor for New Super Mario Bros. Wii originally created by Treeki, Tempus and RoadrunnerWMC using Python, PyQt and Wii.py .
+Advanced level editor for New Super Mario Bros. Wii originally created by Treeki, Tempus and RoadrunnerWMC using Python, PyQt and Wii.py.
 
 "Next" version created by RoadrunnerWMC, based on official release 3. Milestone 4 version is a collaboration of Horizon users and it aims to add more features requested by users.
 
@@ -13,10 +13,10 @@ This release contains many improvements, in addition to code imports from the fo
  * "Reggie! Level Editor Mod (Newer Sprites) 3.8.1" by Kamek64 and MalStar1000
  * "NeweReggie! (Extension to Reggie! Level Editor)" by Treeki and angelsl
  * "Miyamoto!" by AboodXD
- * "Reggie Updated" by RoadRunnerWMC
+ * "Reggie Updated" by RoadrunnerWMC
 
-Source code can be found at:  
-https://github.com/H1dd3nM1nd/Reggie-Next-M4  
+Source code can be found at:
+https://github.com/CLF78/Reggie-Next/
 
 ----------------------------------------------------------------
 
