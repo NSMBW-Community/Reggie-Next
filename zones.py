@@ -58,7 +58,7 @@ class ZonesDialog(QtWidgets.QDialog):
             if result == QtWidgets.QMessageBox.No:
                 return
 
-        a = [0, 0, 0, 0, 0, 0]
+        a = [[0, 0, 0, 0, 0, 15, 0, 0]]
         b = [[0, 0, 0, 0, 0, 10, 10, 10, 0]]
         id = len(self.zoneTabs)
         z = ZoneItem(256, 256, 448, 224, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, a, b, b, id)
@@ -100,15 +100,24 @@ class ZoneTab(QtWidgets.QWidget):
         self.AutoChangingSize = False
 
         self.createDimensions(z)
-        self.createVisibility(z)
-        self.createBounds(z)
+        self.createRendering(z)
         self.createAudio(z)
 
-        mainLayout = QtWidgets.QVBoxLayout()
-        mainLayout.addWidget(self.Dimensions)
-        mainLayout.addWidget(self.Visibility)
-        mainLayout.addWidget(self.Bounds)
-        mainLayout.addWidget(self.Audio)
+        self.createCamera(z)
+        self.createBounds(z)
+
+        leftLayout = QtWidgets.QVBoxLayout()
+        leftLayout.addWidget(self.Dimensions)
+        leftLayout.addWidget(self.Rendering)
+        leftLayout.addWidget(self.Audio)
+
+        rightLayout = QtWidgets.QVBoxLayout()
+        rightLayout.addWidget(self.Camera)
+        rightLayout.addWidget(self.Bounds)
+
+        mainLayout = QtWidgets.QHBoxLayout()
+        mainLayout.addLayout(leftLayout)
+        mainLayout.addLayout(rightLayout)
         self.setLayout(mainLayout)
 
     def createDimensions(self, z):
@@ -143,16 +152,17 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_height.valueChanged.connect(self.PresetDeselected)
 
         # Common retail zone presets
-        # 416 x 224; Zoom Level 0 (used with minigames)
-        # 448 x 224; Zoom Level 0 (used with boss battles)
-        # 512 x 272; Zoom Level 0 (used in many, many places)
-        # 560 x 304; Zoom Level 2
-        # 608 x 320; Zoom Level 2 (actually 609x320; rounded it down myself)
-        # 784 x 320; Zoom Level 2 (not added to list because it's just an expansion of 608x320)
-        # 704 x 384; Zoom Level 3 (used multiple times; therefore it's important)
-        # 944 x 448; Zoom Level 4 (used in 9-3 zone 3)
+        # 416 x 224 (used with minigames)
+        # 448 x 224 (used with boss battles)
+        # 512 x 272 (used in many, many places)
+        # 560 x 304
+        # 608 x 320 (actually 609x320; rounded it down myself)
+        # 784 x 320 (not added to list because it's just an expansion of 608x320)
+        # 704 x 384 (used multiple times; therefore it's important)
+        # 944 x 448 (used in 9-3 zone 3)
         self.Zone_presets_values = (
-        '0: 416x224', '0: 448x224', '0: 512x272', '2: 560x304', '2: 608x320', '3: 704x384', '4: 944x448')
+            '416x224', '448x224', '512x272', '560x304', '608x320', '704x384', '944x448'
+        )
 
         self.Zone_presets = QtWidgets.QComboBox()
         self.Zone_presets.addItems(self.Zone_presets_values)
@@ -286,8 +296,8 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_width.setValue(right)
         self.Zone_height.setValue(bottom)
 
-    def createVisibility(self, z):
-        self.Visibility = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 19))
+    def createRendering(self, z):
+        self.Rendering = QtWidgets.QGroupBox('Rendering')
 
         comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed)
 
@@ -335,6 +345,25 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_vspotlight.clicked.connect(self.ChangeVisibilityList)
         self.Zone_vfulldark.clicked.connect(self.ChangeVisibilityList)
 
+        ZoneRenderingLayout = QtWidgets.QFormLayout()
+        ZoneRenderingLayout.addRow(globals_.trans.string('ZonesDlg', 20), self.Zone_modeldark)
+        ZoneRenderingLayout.addRow(globals_.trans.string('ZonesDlg', 22), self.Zone_terraindark)
+
+        ZoneVisibilityLayout = QtWidgets.QHBoxLayout()
+        ZoneVisibilityLayout.addWidget(self.Zone_vnormal)
+        ZoneVisibilityLayout.addWidget(self.Zone_vspotlight)
+        ZoneVisibilityLayout.addWidget(self.Zone_vfulldark)
+
+        InnerLayout = QtWidgets.QVBoxLayout()
+        InnerLayout.addLayout(ZoneRenderingLayout)
+        InnerLayout.addLayout(ZoneVisibilityLayout)
+        InnerLayout.addWidget(self.Zone_visibility)
+        self.Rendering.setLayout(InnerLayout)
+
+    def createCamera(self, z):
+        self.Camera = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 19))
+
+        comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed)
         self.zm = -1
 
         self.Zone_cammodebuttongroup = QtWidgets.QButtonGroup()
@@ -367,41 +396,41 @@ class ZoneTab(QtWidgets.QWidget):
         self.ChangeCamModeList()
         self.Zone_screenheights.setCurrentIndex(z.camzoom)
 
-        directionmodeValues = globals_.trans.stringList('ZonesDlg', 38)
-        self.Zone_directionmode = QtWidgets.QComboBox()
-        self.Zone_directionmode.addItems(directionmodeValues)
-        self.Zone_directionmode.setToolTip(globals_.trans.string('ZonesDlg', 40))
-        self.Zone_directionmode.setSizePolicy(comboboxSizePolicy)
+        dirs = globals_.trans.stringList('ZonesDlg', 38)
+        self.Zone_direction = QtWidgets.QComboBox()
+        self.Zone_direction.addItems(dirs)
+        self.Zone_direction.setToolTip(globals_.trans.string('ZonesDlg', 40))
+        self.Zone_direction.setSizePolicy(comboboxSizePolicy)
         if z.camtrack < 0: z.camtrack = 0
-        if z.camtrack >= 6: z.camtrack = 6
-        idx = z.camtrack / 2
-        if z.camtrack == 1: idx = 1
-        self.Zone_directionmode.setCurrentIndex(idx)
+        if z.camtrack >= len(dirs): z.camtrack = len(dirs) - 1
+        self.Zone_direction.setCurrentIndex(z.camtrack)
+
+        self.Zone_yrestrict = QtWidgets.QCheckBox()
+        self.Zone_yrestrict.setToolTip('<b>Only Scroll Upwards If Flying:</b><br>Prevents the screen from scrolling upwards unless the player uses a Propeller Suit or Block.<br><br>This feature looks rather glitchy and is not recommended.')
+        self.Zone_yrestrict.setChecked(z.mpcamzoomadjust != 15)
+        self.Zone_yrestrict.stateChanged.connect(self.ChangeMPZoomAdjust)
+
+        self.Zone_mpzoomadjust = QtWidgets.QSpinBox()
+        self.Zone_mpzoomadjust.setRange(0, 14)
+        self.Zone_mpzoomadjust.setToolTip('<b>Multiplayer Screen Size Adjust:</b><br>Increases the height of the screen during multiplayer mode. Requires "Only Scroll Upwards If Flying" to be checked.<br><br>This causes very glitchy behavior if the zone is much taller than the adjusted screen height, if the screen becomes more than 28 tiles tall, or when the camera zooms in during the end-of-level celebration.')
+
+        self.ChangeMPZoomAdjust()
+        if z.mpcamzoomadjust < 15:
+            self.Zone_mpzoomadjust.setValue(z.mpcamzoomadjust)
 
         # Layouts
         ZoneCameraModesLayout = QtWidgets.QGridLayout()
         for i, b in enumerate(cammodebuttons):
             ZoneCameraModesLayout.addWidget(b, i % 4, i // 4)
+
         ZoneCameraLayout = QtWidgets.QFormLayout()
         ZoneCameraLayout.addRow('Camera Mode:', ZoneCameraModesLayout)
         ZoneCameraLayout.addRow('Screen Heights:', self.Zone_screenheights)
-        ZoneCameraLayout.addRow(globals_.trans.string('ZonesDlg', 20), self.Zone_modeldark)
-        ZoneCameraLayout.addRow(globals_.trans.string('ZonesDlg', 22), self.Zone_terraindark)
+        ZoneCameraLayout.addRow(globals_.trans.string('ZonesDlg', 39), self.Zone_direction)
+        ZoneCameraLayout.addRow('Only Scroll Upwards If Flying:', self.Zone_yrestrict)
+        ZoneCameraLayout.addRow('Multiplayer Screen Size Adjust:', self.Zone_mpzoomadjust)
 
-        ZoneVisibilityLayout = QtWidgets.QHBoxLayout()
-        ZoneVisibilityLayout.addWidget(self.Zone_vnormal)
-        ZoneVisibilityLayout.addWidget(self.Zone_vspotlight)
-        ZoneVisibilityLayout.addWidget(self.Zone_vfulldark)
-
-        ZoneDirectionLayout = QtWidgets.QFormLayout()
-        ZoneDirectionLayout.addRow(globals_.trans.string('ZonesDlg', 39), self.Zone_directionmode)
-
-        InnerLayout = QtWidgets.QVBoxLayout()
-        InnerLayout.addLayout(ZoneCameraLayout)
-        InnerLayout.addLayout(ZoneVisibilityLayout)
-        InnerLayout.addWidget(self.Zone_visibility)
-        InnerLayout.addLayout(ZoneDirectionLayout)
-        self.Visibility.setLayout(InnerLayout)
+        self.Camera.setLayout(ZoneCameraLayout)
 
     def ChangeVisibilityList(self):
         VRadioMod = self.zv % 16
@@ -428,6 +457,10 @@ class ZoneTab(QtWidgets.QWidget):
             self.zv &= 0xF0 # clear the bottom 4 bits
         else:
             self.Zone_visibility.setCurrentIndex(VRadioMod)
+
+    def ChangeMPZoomAdjust(self):
+        self.Zone_mpzoomadjust.setEnabled(self.Zone_yrestrict.isChecked())
+        self.Zone_mpzoomadjust.setValue(0)
 
     def ChangeCamModeList(self):
         mode = self.Zone_cammodebuttongroup.checkedId()
@@ -489,42 +522,55 @@ class ZoneTab(QtWidgets.QWidget):
         self.Bounds = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 47))
 
         self.Zone_yboundup = QtWidgets.QSpinBox()
-        self.Zone_yboundup.setRange(-32766, 32767)
+        self.Zone_yboundup.setRange(-32768, 32767)
         self.Zone_yboundup.setToolTip(globals_.trans.string('ZonesDlg', 49))
         self.Zone_yboundup.setSpecialValueText('32')
         self.Zone_yboundup.setValue(z.yupperbound)
 
         self.Zone_ybounddown = QtWidgets.QSpinBox()
-        self.Zone_ybounddown.setRange(-32766, 32767)
+        self.Zone_ybounddown.setRange(-32768, 32767)
         self.Zone_ybounddown.setToolTip(globals_.trans.string('ZonesDlg', 51))
         self.Zone_ybounddown.setValue(z.ylowerbound)
 
         self.Zone_yboundup2 = QtWidgets.QSpinBox()
-        self.Zone_yboundup2.setRange(-32766, 32767)
+        self.Zone_yboundup2.setRange(-32768, 32767)
         self.Zone_yboundup2.setToolTip(globals_.trans.string('ZonesDlg', 71))
         self.Zone_yboundup2.setValue(z.yupperbound2)
 
         self.Zone_ybounddown2 = QtWidgets.QSpinBox()
-        self.Zone_ybounddown2.setRange(-32766, 32767)
+        self.Zone_ybounddown2.setRange(-32768, 32767)
         self.Zone_ybounddown2.setToolTip(globals_.trans.string('ZonesDlg', 73))
         self.Zone_ybounddown2.setValue(z.ylowerbound2)
 
-        self.Zone_boundflg = QtWidgets.QCheckBox()
-        self.Zone_boundflg.setToolTip(globals_.trans.string('ZonesDlg', 75))
-        self.Zone_boundflg.setChecked(z.unknownbnf == 0xF)
+        self.Zone_yboundup3 = QtWidgets.QSpinBox()
+        self.Zone_yboundup3.setRange(-32768, 32767)
+        self.Zone_yboundup3.setToolTip('<b>Multiplayer Upper Bounds Adjust:</b><br>Added to the upper bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.')
+        self.Zone_yboundup3.setSpecialValueText('32')
+        self.Zone_yboundup3.setValue(z.yupperbound3)
+
+        self.Zone_ybounddown3 = QtWidgets.QSpinBox()
+        self.Zone_ybounddown3.setRange(-32768, 32767)
+        self.Zone_ybounddown3.setToolTip('<b>Multiplayer Lower Bounds Adjust:</b><br>Added to the lower bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.')
+        self.Zone_ybounddown3.setValue(z.ylowerbound3)
 
         LA = QtWidgets.QFormLayout()
         LA.addRow(globals_.trans.string('ZonesDlg', 48), self.Zone_yboundup)
         LA.addRow(globals_.trans.string('ZonesDlg', 50), self.Zone_ybounddown)
-        LA.addRow(globals_.trans.string('ZonesDlg', 74), self.Zone_boundflg)
+
         LB = QtWidgets.QFormLayout()
         LB.addRow(globals_.trans.string('ZonesDlg', 70), self.Zone_yboundup2)
         LB.addRow(globals_.trans.string('ZonesDlg', 72), self.Zone_ybounddown2)
-        LC = QtWidgets.QGridLayout()
-        LC.addLayout(LA, 0, 0)
-        LC.addLayout(LB, 0, 1)
 
-        self.Bounds.setLayout(LC)
+        LC = QtWidgets.QHBoxLayout()
+        LC.addLayout(LA)
+        LC.addLayout(LB)
+
+        LD = QtWidgets.QFormLayout()
+        LD.addRow(LC)
+        LD.addRow('Multiplayer Upper Bounds Adjust:', self.Zone_yboundup3)
+        LD.addRow('Multiplayer Lower Bounds Adjust:', self.Zone_ybounddown3)
+
+        self.Bounds.setLayout(LD)
 
     def createAudio(self, z):
         self.Audio = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 52))

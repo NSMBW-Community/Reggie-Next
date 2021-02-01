@@ -4081,9 +4081,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 z.modeldark = tab.Zone_modeldark.currentIndex()
                 z.terraindark = tab.Zone_terraindark.currentIndex()
-
                 z.cammode = tab.Zone_cammodebuttongroup.checkedId()
                 z.camzoom = tab.Zone_screenheights.currentIndex()
+                z.camtrack = tab.Zone_direction.currentIndex()
+
+                if tab.Zone_yrestrict.isChecked():
+                    z.mpcamzoomadjust = tab.Zone_mpzoomadjust.value()
+                else:
+                    z.mpcamzoomadjust = 15
 
                 if tab.Zone_vnormal.isChecked():
                     z.visibility = 0
@@ -4095,22 +4100,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     z.visibility = 32
                     z.visibility = z.visibility + tab.Zone_visibility.currentIndex()
 
-                val = tab.Zone_directionmode.currentIndex() * 2
-                if val == 2: val = 1
-                z.camtrack = val
-
                 z.yupperbound = tab.Zone_yboundup.value()
                 z.ylowerbound = tab.Zone_ybounddown.value()
                 z.yupperbound2 = tab.Zone_yboundup2.value()
                 z.ylowerbound2 = tab.Zone_ybounddown2.value()
-                z.unknownbnf = 0xF if tab.Zone_boundflg.isChecked() else 0
+                z.yupperbound3 = tab.Zone_yboundup3.value()
+                z.ylowerbound3 = tab.Zone_ybounddown3.value()
 
                 z.music = tab.Zone_musicid.value()
-                z.sfxmod = (tab.Zone_sfx.currentIndex() * 16)
+                z.sfxmod = tab.Zone_sfx.currentIndex() << 4
                 if tab.Zone_boss.isChecked():
-                    z.sfxmod = z.sfxmod + 1
+                    z.sfxmod |= 1
 
-                i = i + 1
+                i += 1
 
             self.actions['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
 

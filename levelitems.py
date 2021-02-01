@@ -1228,7 +1228,7 @@ class ZoneItem(LevelEditorItem):
     Level editor item that represents a zone
     """
 
-    def __init__(self, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, bounding, bgA, bgB, id=None):
+    def __init__(self, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, boundings, bgA, bgB, id=None):
         """
         Creates a zone with specific data
         """
@@ -1262,20 +1262,20 @@ class ZoneItem(LevelEditorItem):
 
         self.UpdateTitle()
 
-        if bounding is not None:
-            self.yupperbound = bounding[0]
-            self.ylowerbound = bounding[1]
-            self.yupperbound2 = bounding[2]
-            self.ylowerbound2 = bounding[3]
-            self.entryid = bounding[4]
-            self.unknownbnf = bounding[5]
-        else:
-            self.yupperbound = 0
-            self.ylowerbound = 0
-            self.yupperbound2 = 0
-            self.ylowerbound2 = 0
-            self.entryid = 0
-            self.unknownbnf = 0
+        bounding = None
+        for block in boundings:
+            if block[4] == self.block3id:
+                bounding = block
+                break
+
+        self.yupperbound = bounding[0]
+        self.ylowerbound = bounding[1]
+        self.yupperbound2 = bounding[2]
+        self.ylowerbound2 = bounding[3]
+        self.entryid = bounding[4]
+        self.mpcamzoomadjust = bounding[5]
+        self.yupperbound3 = bounding[6]
+        self.ylowerbound3 = bounding[7]
 
         bgABlock = None
         id = self.block5id

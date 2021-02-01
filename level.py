@@ -561,7 +561,7 @@ class Area_NSMBW(AbstractParsedArea):
         Loads block 3, the bounding preferences
         """
         bdngdata = self.blocks[2]
-        bdngstruct = struct.Struct('>llllxBxBxxxx')
+        bdngstruct = struct.Struct('>4lHHhh')
         bounding = []
 
         for offset in range(0, len(bdngdata), 24):
@@ -605,15 +605,7 @@ class Area_NSMBW(AbstractParsedArea):
 
         for offset in range(0, len(zonedata), 24):
             dataz = zonestruct.unpack_from(zonedata, offset)
-
-            # Find the proper bounding
-            boundObj = None
-            id = dataz[7]
-            for checkb in self.bounding:
-                if checkb[4] == id:
-                    boundObj = checkb
-
-            zones.append(ZoneItem(*dataz, boundObj, bgA, bgB, offset // 24))
+            zones.append(ZoneItem(*dataz, bounding, bgA, bgB, offset // 24))
 
         self.zones = zones
 
