@@ -906,7 +906,7 @@ class Area_NSMBW(AbstractParsedArea):
         """
         Saves blocks 10, 3, 5 and 6, the zone data, boundings, bgA and bgB data respectively
         """
-        bdngstruct = struct.Struct('>llllxBxBxxxx')
+        bdngstruct = struct.Struct('>4lHHhh')
         bgAstruct = struct.Struct('>xBhhhhHHHxxxBxxxx')
         bgBstruct = struct.Struct('>xBhhhhHHHxxxBxxxx')
         zonestruct = struct.Struct('>HHHHHHBBBBxBBBBxBB')
@@ -920,13 +920,35 @@ class Area_NSMBW(AbstractParsedArea):
         for i, z in enumerate(globals_.Area.zones):
             offset = i * 24
 
-            bdngstruct.pack_into(buffer2, offset, z.yupperbound, z.ylowerbound, z.yupperbound2, z.ylowerbound2, i, 0xF)
-            bgAstruct.pack_into(buffer4, offset, i, z.XscrollA, z.YscrollA, z.YpositionA, z.XpositionA, z.bg1A, z.bg2A,
-                                z.bg3A, z.ZoomA)
-            bgBstruct.pack_into(buffer5, offset, i, z.XscrollB, z.YscrollB, z.YpositionB, z.XpositionB, z.bg1B, z.bg2B,
-                                z.bg3B, z.ZoomB)
-            zonestruct.pack_into(buffer9, offset, z.objx, z.objy, z.width, z.height, z.modeldark, z.terraindark, i, i,
-                                 z.cammode, z.camzoom, z.visibility, i, i, z.camtrack, z.music, z.sfxmod)
+            # HACK: This should really only save block 10, and use a
+            # better way of linking the zone data to the bounds and
+            # background data.
+            new_bound_id = i
+            new_bga_id = i
+            new_bgb_id = i
+
+            bdngstruct.pack_into(buffer2, offset,
+                z.yupperbound, z.ylowerbound, z.yupperbound2,
+                z.ylowerbound2, new_bound_id, z.mpcamzoomadjust,
+                z.yupperbound3, z.ylowerbound3
+            )
+
+            bgAstruct.pack_into(buffer4, offset,
+                new_bga_id, z.XscrollA, z.YscrollA, z.YpositionA,
+                z.XpositionA, z.bg1A, z.bg2A, z.bg3A, z.ZoomA
+            )
+
+            bgBstruct.pack_into(buffer5, offset,
+                new_bgb_id, z.XscrollB, z.YscrollB, z.YpositionB,
+                z.XpositionB, z.bg1B, z.bg2B, z.bg3B, z.ZoomB
+            )
+
+            zonestruct.pack_into(buffer9, offset,
+                z.objx, z.objy, z.width, z.height, z.modeldark,
+                z.terraindark, z.id, new_bound_id, z.cammode, z.camzoom,
+                z.visibility, new_bga_id, new_bgb_id, z.camtrack,
+                z.music, z.sfxmod
+            )
 
         self.blocks[2] = bytes(buffer2)
         self.blocks[4] = bytes(buffer4)
