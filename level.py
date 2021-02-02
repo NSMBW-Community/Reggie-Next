@@ -859,7 +859,7 @@ class Area_NSMBW(AbstractParsedArea):
         for sprite in self.sprites:
             if sprite.zoneID == -1:
                 # No zone was found in the area.
-                # Pretend the entrance belongs to zone 0, even though this zone
+                # Pretend the sprite belongs to zone 0, even though this zone
                 # does not exist. The area won't work in-game anyway, because
                 # there are no zones. This default allows users to save areas
                 # without zones, so it adds greater flexibility.
