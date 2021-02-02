@@ -33,6 +33,7 @@
 # Python version: sanity check
 minimum = 3.5
 import sys
+import subprocess
 
 currentRunningVersion = sys.version_info.major + (.1 * sys.version_info.minor)
 if currentRunningVersion < minimum:
@@ -665,6 +666,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         )
 
         self.CreateAction(
+            'openpuzzle', self.OpenPuzzle, GetIcon('reload-tilesets'),
+            globals_.trans.stringOneLine('MenuItems', 140), globals_.trans.stringOneLine('MenuItems', 141),
+            None
+        )
+
+        self.CreateAction(
             'reloadgfx', self.ReloadTilesets, GetIcon('reload-tilesets'),
             globals_.trans.stringOneLine('MenuItems', 84), globals_.trans.stringOneLine('MenuItems', 85),
             QtGui.QKeySequence('Ctrl+Shift+R'),
@@ -790,6 +797,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         lmenu.addAction(self.actions['importarea'])
         lmenu.addAction(self.actions['deletearea'])
         lmenu.addSeparator()
+        lmenu.addAction(self.actions['openpuzzle'])
         lmenu.addAction(self.actions['reloadgfx'])
         lmenu.addAction(self.actions['reloaddata'])
 
@@ -893,6 +901,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 'importarea',
                 'deletearea',
             ), (
+                'openpuzzle',
                 'reloadgfx',
                 'reloaddata',
             ), (
@@ -1043,6 +1052,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.objAllTab = QtWidgets.QTabWidget()
         self.objAllTab.currentChanged.connect(self.ObjTabChanged)
+        self.objAllTab.tabBarDoubleClicked.connect(self.OpenPuzzle)
         tabs.addTab(self.objAllTab, tsicon, '')
         tabs.setTabToolTip(0, globals_.trans.string('Palette', 13))
 
@@ -2393,6 +2403,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         globals_.PaddingLength = dlg.generalTab.psValue.value()
         setSetting('PaddingLength', globals_.PaddingLength)
+        
+        globals_.PuzzleDirectory = dlg.generalTab.puzzleDir.text()
+        setSetting('PuzzleDirectory', globals_.PuzzleDirectory)
+
 
         # Get the Toolbar tab settings
         boxes = (
@@ -3237,6 +3251,18 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.commentList.addItem(com.listitem)
             self.scene.addItem(com)
             com.UpdateListItem()
+
+    def OpenPuzzle(self, tilesetIndex = None):
+        if tilesetIndex is not None:
+            if self.objAllTab.isTabEnabled(tilesetIndex):
+                tilesets = [globals_.Area.tileset0, globals_.Area.tileset1, globals_.Area.tileset2, globals_.Area.tileset3]
+                tilesetDir = " " + globals_.gamedef.GetGamePath() + "/Texture/" + tilesets[tilesetIndex] + ".arc"
+                #print(tilesetDir)
+            else: return
+        else:
+            tilesetDir = ""
+        subprocess.Popen("python " + globals_.PuzzleDirectory + "puzzle.py" + tilesetDir)
+
 
     def ReloadTilesets(self, soft=False):
         """
@@ -4322,6 +4348,7 @@ def main():
     globals_.HideResetSpritedata = setting('HideResetSpritedata', False)
     globals_.EnablePadding = setting('EnablePadding', False)
     globals_.PaddingLength = int(setting('PaddingLength', 0))
+    globals_.PuzzleDirectory = setting('PuzzleDirectory', '')
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game

@@ -531,6 +531,8 @@ class ReggieTranslation:
                 137: 'Show the Properties Window to Configure Quick Paint',
                 138: 'Reload Spritedata',
                 139: 'Reload the spritedata file, including any changes made since the level was loaded',
+                140: 'Open Puzzle',
+                141: 'Open the Puzzle Tileset Editor selected in the settings',
             },
             'Objects': {
                 0: '[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]',
@@ -635,6 +637,7 @@ class ReggieTranslation:
                 34: 'Hide Reset Spritedata button',
                 35: 'Pad level with null bytes',
                 36: 'Fixed level size (bytes)',
+                37: 'Puzzle Directory',
             },
             'ScrShtDlg': {
                 0: 'Choose a Screenshot source',

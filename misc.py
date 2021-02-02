@@ -1619,6 +1619,7 @@ def LoadActionsLists():
         (globals_.trans.string('MenuItems', 78), False, 'addarea'),
         (globals_.trans.string('MenuItems', 80), False, 'importarea'),
         (globals_.trans.string('MenuItems', 82), False, 'deletearea'),
+        (globals_.trans.string('MenuItems', 140), False, 'openpuzzle'),
         (globals_.trans.string('MenuItems', 84), False, 'reloadgfx'),
         (globals_.trans.string('MenuItems', 138), False, 'reloaddata'),
     )
@@ -1722,6 +1723,9 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.psValue = QtWidgets.QSpinBox()
                 self.psValue.setRange(0, 2147483647) # maximum value allowed by qt
 
+                # Puzzle directory
+                self.puzzleDir = QtWidgets.QLineEdit()
+
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
                 L.addRow(globals_.trans.string('PrefsDlg', 14), self.Trans)
@@ -1731,6 +1735,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L.addWidget(self.zEntIndicator)
                 L.addWidget(self.rdhIndicator)
                 L.addWidget(self.erbIndicator)
+                L.addRow(globals_.trans.string('PrefsDlg', 37), self.puzzleDir)
                 self.setLayout(L)
 
                 # Set the buttons
@@ -1765,6 +1770,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.epbIndicator.setChecked(globals_.EnablePadding)
                 self.psValue.setEnabled(globals_.EnablePadding)
                 self.psValue.setValue(globals_.PaddingLength)
+                self.puzzleDir.setText(globals_.PuzzleDirectory)
 
             def ClearRecent(self):
                 """
