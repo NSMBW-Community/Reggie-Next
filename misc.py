@@ -1724,8 +1724,17 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.psValue.setRange(0, 2147483647) # maximum value allowed by qt
 
                 # Puzzle directory
-                self.puzzleDir = QtWidgets.QLineEdit()
-
+                puzzleSelectL = QtWidgets.QGridLayout()
+                self.puzzleSelect = QtWidgets.QWidget()
+                self.puzzlePath = QtWidgets.QLabel()
+                self.puzzlePathSelector = QtWidgets.QPushButton("Select")
+                self.puzzlePathSelector.setMaximumWidth(self.puzzlePathSelector.minimumSizeHint().width())
+                self.puzzlePathSelector.clicked.connect(self.SelectPuzzlePy)
+                puzzleSelectL.addWidget(self.puzzlePath, 0, 0)
+                puzzleSelectL.addWidget(self.puzzlePathSelector, 0, 1)
+                puzzleSelectL.setContentsMargins(0, 0, 0, 0)
+                self.puzzleSelect.setLayout(puzzleSelectL)
+                
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
                 L.addRow(globals_.trans.string('PrefsDlg', 14), self.Trans)
@@ -1735,7 +1744,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L.addWidget(self.zEntIndicator)
                 L.addWidget(self.rdhIndicator)
                 L.addWidget(self.erbIndicator)
-                L.addRow(globals_.trans.string('PrefsDlg', 37), self.puzzleDir)
+                L.addRow(globals_.trans.string('PrefsDlg', 37), self.puzzleSelect)
                 self.setLayout(L)
 
                 # Set the buttons
@@ -1770,7 +1779,11 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.epbIndicator.setChecked(globals_.EnablePadding)
                 self.psValue.setEnabled(globals_.EnablePadding)
                 self.psValue.setValue(globals_.PaddingLength)
-                self.puzzleDir.setText(globals_.PuzzleDirectory)
+                if os.path.isfile(globals_.PuzzlePy):
+                    self.puzzlePath.setText(globals_.PuzzlePy)
+                else:
+                    self.puzzlePath.setText("")
+                    globals_.PuzzlePy = ""
 
             def ClearRecent(self):
                 """
@@ -1779,6 +1792,14 @@ class PreferencesDialog(QtWidgets.QDialog):
                 ans = QtWidgets.QMessageBox.question(None, globals_.trans.string('PrefsDlg', 17), globals_.trans.string('PrefsDlg', 18), QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
                 if ans != QtWidgets.QMessageBox.Yes: return
                 globals_.mainWindow.RecentMenu.clearAll()
+
+            def SelectPuzzlePy(self):
+                """
+                Handle the select Puzzle path button being clicked
+                """
+                path = QtWidgets.QFileDialog.getOpenFileName(self, "Select a puzzle.py", '', "Puzzle (*.py)")[0]
+                if not path: return
+                self.puzzlePath.setText(path)
 
         return GeneralTab()
 

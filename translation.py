@@ -637,7 +637,7 @@ class ReggieTranslation:
                 34: 'Hide Reset Spritedata button',
                 35: 'Pad level with null bytes',
                 36: 'Fixed level size (bytes)',
-                37: 'Puzzle Directory',
+                37: 'Puzzle path',
             },
             'ScrShtDlg': {
                 0: 'Choose a Screenshot source',

@@ -2404,8 +2404,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.PaddingLength = dlg.generalTab.psValue.value()
         setSetting('PaddingLength', globals_.PaddingLength)
         
-        globals_.PuzzleDirectory = dlg.generalTab.puzzleDir.text()
-        setSetting('PuzzleDirectory', globals_.PuzzleDirectory)
+        globals_.PuzzlePy = dlg.generalTab.puzzlePath.text()
+        setSetting('PuzzlePy', globals_.PuzzlePy)
 
 
         # Get the Toolbar tab settings
@@ -3253,15 +3253,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
             com.UpdateListItem()
 
     def OpenPuzzle(self, tilesetIndex = None):
-        if tilesetIndex is not None:
+        if not os.path.isfile(globals_.PuzzlePy):
+            return
+        
+        if type(tilesetIndex) == int:
             if self.objAllTab.isTabEnabled(tilesetIndex):
                 tilesets = [globals_.Area.tileset0, globals_.Area.tileset1, globals_.Area.tileset2, globals_.Area.tileset3]
-                tilesetDir = " " + globals_.gamedef.GetGamePath() + "/Texture/" + tilesets[tilesetIndex] + ".arc"
-                #print(tilesetDir)
+                tilesetDir = " " + os.path.join(globals_.gamedef.GetGamePath(), "Texture/" + tilesets[tilesetIndex] + ".arc")
             else: return
         else:
             tilesetDir = ""
-        subprocess.Popen("python " + globals_.PuzzleDirectory + "puzzle.py" + tilesetDir)
+        subprocess.Popen("python " + globals_.PuzzlePy + tilesetDir)
 
 
     def ReloadTilesets(self, soft=False):
@@ -4348,7 +4350,7 @@ def main():
     globals_.HideResetSpritedata = setting('HideResetSpritedata', False)
     globals_.EnablePadding = setting('EnablePadding', False)
     globals_.PaddingLength = int(setting('PaddingLength', 0))
-    globals_.PuzzleDirectory = setting('PuzzleDirectory', '')
+    globals_.PuzzlePy = setting('PuzzlePy', '')
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game
