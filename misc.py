@@ -1067,9 +1067,9 @@ def LoadEntranceNames(reload_=False):
                 id_, name = line.strip().split(':')
                 names[int(id_)] = name
 
-    globals_.EntranceTypeNames = []
+    globals_.EntranceTypeNames = collections.OrderedDict()
     for idx in names:
-        globals_.EntranceTypeNames.append(globals_.trans.string('EntranceDataEditor', 28, '[id]', idx, '[name]', names[idx]))
+        globals_.EntranceTypeNames[idx] = globals_.trans.string('EntranceDataEditor', 28, '[id]', idx, '[name]', names[idx])
 
 
 def LoadTilesetInfo(reload_=False):

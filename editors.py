@@ -29,7 +29,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.entranceID.valueChanged.connect(self.HandleEntranceIDChanged)
 
         self.entranceType = QtWidgets.QComboBox()
-        self.entranceType.addItems(globals_.EntranceTypeNames)
+        self.entranceType.addItems(globals_.EntranceTypeNames.values())
         self.entranceType.setToolTip(globals_.trans.string('EntranceDataEditor', 3))
         self.entranceType.activated.connect(self.HandleEntranceTypeChanged)
 
@@ -177,10 +177,12 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateListItem()
         self.editingLabel.setText(globals_.trans.string('EntranceDataEditor', 23, '[id]', i))
 
-    def HandleEntranceTypeChanged(self, i):
+    def HandleEntranceTypeChanged(self, new_index):
         """
         Handler for the entrance type changing
         """
+        i = list(globals_.EntranceTypeNames)[new_index]
+
         self.connectedPipeCheckbox.setVisible(i in self.CanUseFlag8)
         self.connectedPipeReverseCheckbox.setVisible(i in self.CanUseFlag8 and ((self.ent.entsettings & 8) != 0))
         self.pathIDLabel.setVisible(i and ((self.ent.entsettings & 8) != 0))
