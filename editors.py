@@ -136,7 +136,9 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.UpdateFlag = True
 
         self.entranceID.setValue(ent.entid)
-        self.entranceType.setCurrentIndex(ent.enttype)
+
+        idx = list(globals_.EntranceTypeNames).index(ent.enttype)
+        self.entranceType.setCurrentIndex(idx)
         self.destArea.setValue(ent.destarea)
         self.destEntrance.setValue(ent.destentrance)
 
