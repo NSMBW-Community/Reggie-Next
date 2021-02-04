@@ -4175,7 +4175,7 @@
   </sprite> <!-- #275: Enemy-Counting Raft -->
 
   <sprite id="276" name="Ghost House Door" noyoshi="True" notes="A Ghost House door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
-    <checkbox bit="36" title="Fake Door" comment="When enabled, when the player attempt to enter the door, it will vanish and disperse into 4 harmless Boos."/>
+    <checkbox bit="32" title="Fake Door" comment="When enabled, when the player attempt to enter the door, it will vanish and disperse into 4 harmless Boos."/>
     <list bit="35-36" title="Orientation" comment="This determines which direction the door will be facing." comment2="A door can only be entered if it is upright." advancedcomment="As decoration, this is fine. Actually making it properly associate its corresponding Entrance is either impossible or very functionally strange.">
       <entry value="0">Upright</entry>
       <entry value="1">Left</entry>
