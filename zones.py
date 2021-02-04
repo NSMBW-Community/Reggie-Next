@@ -640,7 +640,7 @@ class ZoneTab(QtWidgets.QWidget):
         if self.AutoChangingSize: return
 
         if self.Zone_presets.currentText() == globals_.trans.string('ZonesDlg', 60): return
-        w, h = self.Zone_presets.currentText()[3:].split('x')
+        w, h = self.Zone_presets.currentText().split('x')
 
         self.AutoChangingSize = True
         self.Zone_width.setValue(int(w))
@@ -660,19 +660,23 @@ class ZoneTab(QtWidgets.QWidget):
         h = self.Zone_height.value()
         check = str(w) + 'x' + str(h)
 
-        found = None
-        for preset in self.Zone_presets_values:
-            if check == preset[3:]: found = preset
+        custom_size_name = globals_.trans.string('ZonesDlg', 60)
 
-        if found is not None:
-            self.Zone_presets.setCurrentIndex(self.Zone_presets.findText(found))
-            if self.Zone_presets.itemText(0) == globals_.trans.string('ZonesDlg', 60): self.Zone_presets.removeItem(0)
-        else:
-            if self.Zone_presets.itemText(0) != globals_.trans.string('ZonesDlg', 60): self.Zone_presets.insertItem(0,
-                                                                                                           globals_.trans.string(
-                                                                                                               'ZonesDlg',
-                                                                                                               60))
-            self.Zone_presets.setCurrentIndex(0)
+        try:
+            idx = self.Zone_presets_values.index(check)
+        except ValueError:
+            idx = -1
+
+        if idx == -1:
+            if self.Zone_presets.itemText(0) != custom_size_name:
+                self.Zone_presets.insertItem(0, custom_size_name)
+
+            idx = 0
+
+        elif self.Zone_presets.itemText(0) == custom_size_name:
+            self.Zone_presets.removeItem(0)
+
+        self.Zone_presets.setCurrentIndex(idx)
         self.AutoChangingSize = False
 
 
