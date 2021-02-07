@@ -564,6 +564,31 @@ class SpriteImage_NewerExcSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 45
         super().dataChanged()
 
 
+class SpriteImage_NewerPodoboo(SLib.SpriteImage):  # 46
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.spritebox.shown = False
+        self.aux.append(SLib.AuxiliaryImage(parent, 48, 48))
+        self.aux[0].setPos(-6, -6)
+        self.aux[0].hover = False
+        self.dimensions = (-3, 5, 24, 24)
+
+    def loadImages():
+        SLib.loadIfNotInImageCache('Podoboo0', 'podoboo.png')
+        if 'Podoboo1' in ImageCache: return
+        for i in range(1, 9):
+            if i == 2: continue  # skip 2 since it's a duplicate
+            ImageCache['Podoboo%d' % i] = SLib.GetImg('podoboo%d.png' % i)
+
+    def dataChanged(self):
+        style = (self.parent.spritedata[2] & 0xF) % 9
+        if style == 2:
+            self.aux[0].image = ImageCache['Podoboo0']
+        else:
+            self.aux[0].image = ImageCache['Podoboo%d' % style]
+        super().dataChanged()
+
+
 class SpriteImage_Thwomp(SLib.SpriteImage_StaticMultiple):  # 47
     def __init__(self, parent):
         super().__init__(
@@ -2174,6 +2199,7 @@ ImageClasses = {
     42: SpriteImage_NewerExcSwitch,
     43: SpriteImage_NewerQSwitchBlock,
     45: SpriteImage_NewerExcSwitchBlock,
+    46: SpriteImage_NewerPodoboo,
     47: SpriteImage_Thwomp,
     48: SpriteImage_GiantThwomp,
     49: SpriteImage_FakeStarCoin,

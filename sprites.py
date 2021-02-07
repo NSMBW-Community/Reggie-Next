@@ -1404,17 +1404,21 @@ class SpriteImage_ExcSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 45
         super().dataChanged()
 
 
-class SpriteImage_Podoboo(SLib.SpriteImage_Static):  # 46
+class SpriteImage_Podoboo(SLib.SpriteImage):  # 46
     def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['Podoboo'],
-        )
+        super().__init__(parent, 1.5)
+        self.spritebox.shown = False
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 48, 48))
+        self.aux[0].image = ImageCache['Podoboo0']
+        self.aux[0].setPos(-6, -6)
+        self.aux[0].hover = False
+
+        self.dimensions = (-3, 5, 24, 24)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Podoboo', 'podoboo.png')
+        SLib.loadIfNotInImageCache('Podoboo0', 'podoboo.png')
 
 
 class SpriteImage_Thwomp(SLib.SpriteImage_Static):  # 47

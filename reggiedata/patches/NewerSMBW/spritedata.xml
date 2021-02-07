@@ -524,13 +524,12 @@
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
-      <entry value="3">Yellow</entry>
-      <entry value="4">Green</entry>
+      <entry value="3">Cyan</entry>
+      <entry value="4">Lime</entry>
       <entry value="5">Blue</entry>
-      <entry value="6">Violet</entry>
-      <entry value="7">Black</entry>
-      <entry value="8">White</entry>
-      <entry value="9">Pink</entry>
+      <entry value="6">Magenta</entry>
+      <entry value="7">White w/ Gray Eyes</entry>
+      <entry value="8">White w/ Blue Eyes</entry>
     </list>
     <value nybble="12" title="Delay Between Jumps" comment="This determines the delay between each of the Podoboo's jumps." comment2="Each value is approximately 1 game second. Podoboos first load in the air at the top of their jump, so a Podoboo with a large delay value may not even interact with the player as they run by."/>
   </sprite> <!-- #46: Lava Bubble (Podoboo) -->

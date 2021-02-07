@@ -305,14 +305,14 @@
       <entry value="1">???</entry>
       <entry value="2">???</entry>
       <entry value="3">???</entry>
-    <value nybble="8" title="Unknown Value 8" advanced="True" advancedcomment="ASM shows Nybble 8 might affect something."/>
+    <value nybble="8" title="Unknown Value 8" comment="ASM shows Nybble 8 might affect something."/>
   </sprite> <!-- #32: Star Coin -->
 
   <sprite id="33" name="Event Controller - Zone Enter" notes="When the zone is loaded, all 'Zone Enter' Event Controllers will activate and modify the status of their associated Event IDs. Note that Event IDs 1-33 are stored Level-wide, and not per Area or Zone. By using this controller in a midway room, you can clear those Event flags or set them to start activated.">
     <value bit="9-16" title="Target Event ID" comment="This Event ID will be modified when the zone loads." idtype="Target Event"/>
     <dualbox bit="44" title1="Deactivates Target Event" title2="Activates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are activated."/>
     <value nybble="5-6" title="Time Activated" comment="This determines the amount of time the Target Event will be activated for before deactivating." comment2="A value of 0 will not deactivate on its own. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick. &lt;br&gt; &lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring." requiredbit="44"/>
-    <checkbox bit="48" title="Does Nothing / Self Destructs" comment="When enabled, the Event Controller will skip its function and delete itself." advanced="True"/>
+    <checkbox bit="48" title="Does Nothing / Self Destructs" comment="When enabled, the Event Controller will skip its function and delete itself."/>
   </sprite> <!-- #33: Event Controller - Zone Enter -->
 
   <sprite id="34" name="Event Controller - &quot;AND&quot; (If X AND Y, do Z)" notes="This Event Controller works by allowing up to 4 Event IDs to be required to modify a single Event. Not all Triggering Event IDs must be set to a relevant value. You can and should leave unused Triggering Event IDs as '0'. You should also fill Triggering IDs in numerical order. Using the same value with multiple Event ID slots may cause issues in the editor.">
@@ -413,14 +413,14 @@
 
   <!-- Possible additional Usage Mode, Value 2 in Nybble 10 -->
   <sprite id="40" name="&quot;?&quot; Switch (Orange)" notes="This is the basic stand-alone switch. When triggered, it modifies the Target Event.">
-    <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
+    <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing downwards. Upside-Down switches cannot be set to fall."/>
     <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set." />
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/>
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
     <dualbox bit="28" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/>
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." comment2="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/>
     <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -2880,9 +2880,9 @@
     <dualbox bit="44" title1="Load Facing Right" title2="Load Facing Left" comment="This determines which direction the players will face when they respawn."/>
   </sprite> <!-- #188: Midway Flag -->
 
-  <sprite id="189" name="Larry Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around." notes="A loose Larry that only functions when combined with a Tower Boss Controller.">
-    <dependency notes="In order for this boss to function, it must be placed alongside the Tower Boss Controller with the proper settings. See the Retail Tower stage if you still have issues.">
-      <required sprite="363"/>
+  <sprite id="189" name="Larry Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
+    <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged.">
+      <suggested sprite="363"/>
     </dependency>
   </sprite> <!-- #189: Larry Koopa -->
 
@@ -2914,7 +2914,7 @@
     </list>
   </sprite> <!-- #191: Tile God Event -->
 
-  <sprite id="192" name="Larry Koopa - Castle Boss" noyoshi="True" notes="The boss initally has no collision. From rest, the platform moves 3 tiles up and 1 tile down. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="192" name="Larry Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. From rest, the platform moves 3 tiles up and 1 tile down. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -3110,11 +3110,11 @@
       <entry value="6">**All Zoom Levels: 14</entry>
     </list>
     <checkbox bit="17" title="Unknown Flag 5 (8)" advanced="True" advancedcomment="ASM shows Nybble 5 may affect something else."/>
-    <list bit="23-24" title="Triggered if" comment="The Zoom Controller will zoom out if the listed condition is met." comment2="In NSMBU, value 3 zooms out the camera when a Koopa/Buzzy Beetle shell enters the Zoom area. However, they don't seem to activate it in this game.">
+    <list bit="23-24" title="Triggered if" comment="The Zoom Controller will zoom out if the listed condition is met.">
         <entry value="0">At least one player is in the Zoom area</entry>
         <entry value="1">Same as 0 but only works in Single player mode</entry>
         <entry value="2">Same as 0 but only works in Multiplayer mode</entry>
-        <entry value="3">???</entry>
+        <entry value="3">???</entry> <!-- The zoom actives when a Koopa Shell/Buzzy Beetle is sliding inside in NSMBU. This doesn't seem to be the case in NSMBW though. -->
     </list>
   </sprite> <!-- #206: Zoom Controller -->
 
@@ -5047,15 +5047,15 @@
     </list> <!-- Appears if Formation [37-38] == Category 4 [11] -->
   </sprite> <!-- #335: School of Cheep Cheeps -->
 
-  <sprite id="336" name="Wendy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around." notes="A loose Wendy that only functions when combined with a Tower Boss Controller.">
-    <dependency notes="In order for this boss to function, it must be placed alongside the Tower Boss Controller with the proper settings. See the Retail Tower stage if you still have issues.">
-      <required sprite="363"/>
+  <sprite id="336" name="Wendy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
+    <dependency notes="Requires the Tower Boss Controller to start moving on her own and complete the level after she's beat. Otherwise, she will start moving when damaged.">
+      <suggested sprite="363"/>
     </dependency>
   </sprite> <!-- #336: Wendy Koopa -->
 
-  <sprite id="337" name="Iggy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around." notes="A loose Iggy that only functions when combined with a Tower Boss Controller.">
-    <dependency notes="In order for this boss to function, it must be placed alongside the Tower Boss Controller with the proper settings. See the Retail Tower stage if you still have issues.">
-      <required sprite="363"/>
+  <sprite id="337" name="Iggy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
+    <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged.">
+      <suggested sprite="363"/>
     </dependency>
   </sprite> <!-- #337: Iggy Koopa -->
 
@@ -5158,16 +5158,16 @@
     <value nybble="10" title="Rising / Lowering Speed" comment="This determines how quickly the Pipe will move when switching between Height 1 and Height 2." comment2="Values 0-3 are each very different from each other, while Values 4+ have very minimal increases in speed beyond that."/>
   </sprite> <!-- #339: Moving Pipe - Facing Up -->
 
-  <sprite id="340" name="Lemmy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Lemmy's balls won't push Yoshi aside, and Yoshi will slide down if standing on one." notes="A loose Lemmy that only functions when combined with a Tower Boss Controller.">
-    <dependency notes="In order for this boss to function, it must be placed alongside the Tower Boss Controller with the proper settings. See the Retail Tower stage if you still have issues.">
-      <required sprite="363"/>
+  <sprite id="340" name="Lemmy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Lemmy's balls won't push Yoshi aside, and Yoshi will slide down if standing on one. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
+    <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged.">
+      <suggested sprite="363"/>
     </dependency>
   </sprite> <!-- #340: Lemmy Koopa -->
 
   <sprite id="341" name="Giant Koopa Shell Cave" notes="A decorative large shell that can be used as a cave with the right arrangement of invisible blocks and settings.">
     <dependency notes="Look in Retail 5-01 A1 for an example of how to use this sprite correctly. You will need to make use of Spotlight Lighting, Layer 0 tiles, and invisible collision blocks in order for it to look correct."/>
     <checkbox bit="48" title="Remove Grass/Rocks" comment="When enabled, this will remove the decoration from the bottom of the Shell Cave."/>
-  </sprite> <!-- #341: Giant Turtle Shell Cave -->
+  </sprite> <!-- #341: Giant Koopa Shell Cave -->
 
   <sprite id="342" name="Muncher" yoshinotes="Unlike in SMW, if Yoshi touches a Muncher, he will become hurt and will run away." notes="A black Muncher enemy that cannot be killed.">
     <checkbox bit="48" title="Frozen" comment="When enabled, the Muncher will be frozen. It can be thawed with a fireball."/>
@@ -5192,9 +5192,9 @@
     </list>
   </sprite> <!-- #343: Line Controlled Fuzzy / Big Fuzzy -->
 
-  <sprite id="344" name="Morton Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around." notes="A loose Morton that only functions when combined with a Tower Boss Controller.">
-    <dependency notes="In order for this boss to function, it must be placed alongside the Tower Boss Controller with the proper settings. See the Retail Tower stage if you still have issues. Additionally, the Morton fight also allows placement of [480] Morton's Skewer, a much more timing-sensitive spiked pillar.">
-      <required sprite="363"/>
+  <sprite id="344" name="Morton Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
+    <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged. Additionally, the Morton fight allows placement of [480] Morton's Skewer, a much more timing-sensitive spiked pillar.">
+      <suggested sprite="363"/>
       <suggested sprite="480"/>
     </dependency>
   </sprite> <!-- #344: Morton Koopa -->
@@ -5221,19 +5221,19 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #346: Rotation Controlled Hanging Chain Platform -->
 
-  <sprite id="347" name="Roy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around." notes="A loose Roy that only functions when combined with a Tower Boss Controller.">
-    <dependency notes="In order for this boss to function, it must be placed alongside the Tower Boss Controller with the proper settings. See the Retail Tower stage if you still have issues.">
-      <required sprite="363"/>
+  <sprite id="347" name="Roy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
+    <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged.">
+      <suggested sprite="363"/>
     </dependency>
   </sprite> <!-- #347: Roy Koopa -->
 
-  <sprite id="348" name="Ludwig von Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around." notes="A loose Ludwig that only functions when combined with a Tower Boss Controller.">
-    <dependency notes="In order for this boss to function, it must be placed alongside the Tower Boss Controller with the proper settings. See the Retail Tower stage if you still have issues.">
-      <required sprite="363"/>
+  <sprite id="348" name="Ludwig von Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
+    <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged.">
+      <suggested sprite="363"/>
     </dependency>
   </sprite> <!-- #348: Ludwig von Koopa -->
 
-  <sprite id="349" name="Morton Koopa - Castle Boss" noyoshi="True" notes="The boss initally has no collision. The pillars will lower 1 block when the fight begins. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="349" name="Morton Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. The pillars will lower 1 block when the fight begins. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5538,7 +5538,7 @@
     <checkbox bit="24" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Nintendo uses this value, but no effect was observed. Likely a removed setting."/>
   </sprite> <!-- #362: Rotation Controlled Colored Box -->
 
-  <sprite id="363" name="Boss Controller - Tower Boss" noyoshi="True" notes="This controls the level completion for the World 1-7 Tower battles, as well as the listed Koopaling's initial movements. Koopalings function without this controller, but they won't move until hit, and the level won't end when they are defeated.">
+  <sprite id="363" name="Boss Controller - Tower Boss" yoshinotes="Yoshi plays an unused animation when he enters the area from a Boss Entrance. However, he lacks proper compatibility with the bosses themselves." notes="This controls the level completion for the World 1-7 Tower battles, as well as the listed Koopaling's initial movements. Koopalings function without this controller, but they won't move until hit, and the level won't end when they are defeated.">
     <dependency notes="An appropriate loose Koopaling is required in order for the controller to do what it needs to. It's also required to place the sprite on a spot without terrain. See Retail X-22 for suggested room builds for Tower bosses.">
       <suggested sprite="436"/>
       <suggested sprite="189"/>
@@ -5560,15 +5560,15 @@
     </list>
   </sprite> <!-- #363: Boss Controller - Tower Boss -->
 
-  <sprite id="364" name="Boss Controller - Roy Koopa" noyoshi="True" notes="This controls the various boss fight mechanics for the World 2 Castle, such as the boss movement, and camera options. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
-    <dependency notes="For more help in placement of the Boss Controllers and Cutscene Controllers, see the Castle's Boss Room.">
+  <sprite id="364" name="Roy Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
+    <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
       <suggested sprite="436"/>
     </dependency>
-  </sprite> <!-- #364: Boss Controller - Roy Koopa -->
+  </sprite> <!-- #364: Roy Koopa - Castle Boss -->
 
-  <sprite id="365" name="Ludwig von Koopa - Castle Boss" noyoshi="True" notes="The boss initally has no collision. All tiles the sprite spawns are behind Layer 1. The white square indicates the placement for the Castle Boss controller. The rectangle outline indicates the placement of the Brick blocks destroyed during the cutscene. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="365" name="Ludwig von Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. All tiles the sprite spawns are behind Layer 1. The white square indicates the placement for the Castle Boss controller. The rectangular outline indicates the placement of the Brick blocks destroyed during the cutscene. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5670,7 +5670,7 @@
     </list>
   </sprite> <!-- #371: Rolling Hill Coin -->
 
-  <sprite id="372" name="Iggy Koopa - Castle Boss" noyoshi="True" notes="The boss initally has no collision. The rectangular outline shows the path Iggy takes during the fight. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="372" name="Iggy Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. The rectangular outline shows the path Iggy takes during the fight. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5694,7 +5694,7 @@
     <dualbox bit="48" title1="Snow" title2="Sandstorm" comment="This determines the functionality of the sprite."/>
   </sprite> <!-- #374: Effect - Falling Objects and Wind -->
 
-  <sprite id="375" name="Wendy Koopa - Castle Boss" noyoshi="True" notes="The boss initally has no collision. The water spawned draws as long as shown, and has no collision until the fight begins. white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="375" name="Wendy Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Yoshi can't swim, so he will automatically be dismounted when submerged. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. The water spawned draws as long as shown, and has no collision until the fight begins. white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5759,7 +5759,7 @@
     <value nybble="12" title="Length" comment="This determines the length of the Pipe."/>
   </sprite> <!-- #380: Warp Pipe - Left -->
 
-  <sprite id="381" name="Lemmy Koopa - Castle Boss" noyoshi="True" notes="The boss initally has no collision. The 2 blocks on the side will fall when the fight begins. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="381" name="Lemmy Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Lemmy's balls won't push Yoshi aside, and Yoshi will slide down if standing on one. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. The 2 blocks on the side will fall when the fight begins. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5896,7 +5896,7 @@
   <sprite id="393" name="Propeller Block" notes="A grabbable propeller block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. It can also boost the player into the air like a Propeller Cap if the player shakes their controller a second time while holding it. If it is thrown and it hits the ground, it will bounce slightly.">
   </sprite> <!-- #393: Propeller Block -->
 
-  <sprite id="394" name="Bouncing Lemmy Ball" noyoshi="True" notes="A stand-alone version of the bouncing ball used in the Lemmy Koopa boss fights.">
+  <sprite id="394" name="Bouncing Lemmy Ball" noyoshi="True" yoshinotes="Lemmy's balls won't push Yoshi aside, and Yoshi will slide down if standing on one." notes="A stand-alone version of the bouncing ball used in the Lemmy Koopa boss fights.">
     <dualbox bit="20" title1="Starts Bouncing Right" title2="Starts Bouncing Left" comment="This determines the direction the Lemmy Ball will initially be bouncing in."/>
   </sprite> <!-- #394: Bouncing Lemmy Ball -->
 
@@ -6150,7 +6150,7 @@
     <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Massive Skewers at all."/>
-	<checkbox bit="28" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="Used in Retail 07-24 as 1, no clear effect."/>
+	<checkbox bit="28" title="Unknown Flag 7 (1)" comment="Used in Retail 07-24 as 1, no clear effect."/>
   </sprite> <!-- #404: Massive Skewer - Up -->
 
   <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the second Bowser Jr. Boss Fight in World 6. It spawns the backgrounds BgA_0B02 and BgB_5202, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller.">
@@ -6167,7 +6167,7 @@
     </dependency>
   </sprite> <!-- #406: Boss Controller - Bowser Jr. (3rd Battle) -->
 
-  <sprite id="407" name="Boss Controller - Castle Boss" noyoshi="True" notes="This controls the various boss fight mechanics for the corresponding Koopaling boss fight, such as the cutscenes, boss movement, shutter doors, camera options, and boss collision when the fight begins.">
+  <sprite id="407" name="Boss Controller - Castle Boss" yoshinotes="Yoshi plays an unused animation when he enters the area from a Boss Entrance. However, he lacks proper compatibility with the bosses themselves." notes="This controls the various boss fight mechanics for the corresponding Koopaling boss fight, such as the cutscenes, boss movement, shutter doors, camera options, and boss collision when the fight begins.">
     <dependency notes="For help in placement of the Boss Controller and Koopaling Castle Boss, see the desired Castle Boss' room in the retail level.">
       <required sprite="408"/>
       <suggested sprite="192"/>
@@ -6250,7 +6250,7 @@
       <entry value="3">4 Lives</entry>
     </list>
     <dualbox bit="48" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the block will move based on the Line that it is connected to."/>
-    <checkbox bit="32" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="Used in Retail 03-26 as 1, no visible effect."/>
+    <checkbox bit="32" title="Unknown Flag 8 (1)" comment="Used in Retail 03-26 as 1, no visible effect."/>
   </sprite> <!-- #412: Toad House Minigame - Lives Balloon -->
 
   <sprite id="413" name="Bouncing Wendy Ring" noyoshi="True" notes="A stand-alone version of the bouncing ring used in the Wendy Koopa boss fights.">
@@ -6321,12 +6321,12 @@
 
   <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
     <dependency notes="All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
-    <checkbox bit="48" title="Unknown Flag 12 (1)" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
+    <checkbox bit="48" title="Unknown Flag 12 (1)" comment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #422: Toad Needs Help - ? Block -->
 
   <sprite id="423" name="Toad Needs Help - Brick Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
     <dependency notes="All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
-    <checkbox bit="48" title="Unknown Flag 12 (1)" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
+    <checkbox bit="48" title="Unknown Flag 12 (1)" comment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #423: Toad Needs Help - Brick Block -->
 
   <sprite id="424" name="Palm Tree" notes="A palm tree decoration with a solid-on-top collision.">
