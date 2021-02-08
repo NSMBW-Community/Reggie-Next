@@ -5778,8 +5778,9 @@
     <value nybble="7-8" title="Unknown Value 7-8" advanced="True" advancedcomment="Used (1) in Retail: 01-05 A1."/>
   </sprite> <!-- #382: Screw Mushroom Platform without Bolt -->
 
-  <sprite id="383" name="Boss Controller - Kamek" notes="This controls the various boss fight mechanics for the Kamek fight in World 8-Tower, such as the boss movement, and level completion. Kamek himself can be placed anywhere within the Zone, but the controller is best used at the very top-left corner of it.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see 08-22's Boss Room.">
+  <sprite id="383" name="Boss Controller - Kamek" notes="Kamek himself can be placed anywhere within the Zone, as the controller's placement itself determines his spawn position.
+  &lt;br&gt;&lt;br&gt;The blocks move left and despawn when their right edges reach the left border, and respawn from their right edge on the right border.">
+    <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="427"/>
       <suggested sprite="436"/>
     </dependency>
@@ -6376,8 +6377,8 @@
     <dualbox bit="44" title1="Spawns from Right" title2="Spawns from Left" comment="This determines which side of the screen the fireballs will appear from."/>
   </sprite> <!-- #426: Fireball Spawn Area -->
 
-  <sprite id="427" name="Kamek" noyoshi="True" notes="Kamek himself, used in the tower boss fight of World 8. He cannot be used without the proper controllers and level setup.">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see 08-22's Boss Room.">
+  <sprite id="427" name="Kamek" noyoshi="True" notes="Requires his boss controller to function. His spawn position is fixed relative to the boss controller's position, making the placement of the sprite itself irrelevant.">
+    <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="383"/>
       <suggested sprite="436"/>
     </dependency>

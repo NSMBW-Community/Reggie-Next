@@ -7108,6 +7108,21 @@ class SpriteImage_ScrewMushroomNoBolt(SpriteImage_ScrewMushroom):  # 382
         self.hasBolt = False
 
 
+class SpriteImage_KamekController(SLib.SpriteImage):  # 383
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.aux.append(SLib.AuxiliaryImage(parent, 1272, 360))
+        self.parent.setZValue(24999)
+        self.aux[0].image = ImageCache['KamekController']
+        self.aux[0].setPos(-144, 48)
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 1154, 360, 0, 48))
+        self.aux[1].fillFlag = False
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('KamekController', 'boss_controller_kamek.png')
+
+
 class SpriteImage_PipeCooliganGenerator(SLib.SpriteImage):  # 384
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -7742,12 +7757,12 @@ class SpriteImage_Kamek(SLib.SpriteImage_Static):  # 427
             parent,
             1.5,
             ImageCache['Kamek'],
-            (-10, -26),
+            (-19, -15),
         )
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Kamek', 'Kamek.png')
+        SLib.loadIfNotInImageCache('Kamek', 'kamek.png')
 
 
 class SpriteImage_MGPanel(SLib.SpriteImage_Static):  # 428
@@ -8884,6 +8899,7 @@ ImageClasses = {
     380: SpriteImage_Pipe_Left,
     381: SpriteImage_LemmyKoopaCastleBoss,
     382: SpriteImage_ScrewMushroomNoBolt,
+    383: SpriteImage_KamekController,
     384: SpriteImage_PipeCooliganGenerator,
     385: SpriteImage_IceBlock,
     386: SpriteImage_PowBlock,
