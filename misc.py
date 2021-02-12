@@ -836,16 +836,15 @@ def LoadSpriteData():
 
     errors = []
     errortext = []
-    
     spriteIds = [-1]
 
     # It works this way so that it can overwrite settings based on order of precedence
     paths = [(globals_.trans.files['spritedata'], None)]
     for pathtuple in globals_.gamedef.multipleRecursiveFiles('spritedata', 'spritenames'):
         paths.append(pathtuple)
-    
-    for sdpath, snpath in paths:            
-        
+
+    for sdpath, snpath in paths:
+
         # Add XML sprite data, if there is any
         if sdpath not in (None, ''):
             path = sdpath if isinstance(sdpath, str) else sdpath.path
@@ -860,12 +859,12 @@ def LoadSpriteData():
                     spriteIds.append(int(sprite.attrib['id']))
                 except ValueError:
                     continue
-    
+
     globals_.NumSprites = max(spriteIds) + 1
     globals_.Sprites = [None] * globals_.NumSprites
-    
-    for sdpath, snpath in paths:            
-        
+
+    for sdpath, snpath in paths:
+
         # Add XML sprite data, if there is any
         if sdpath not in (None, ''):
             path = sdpath if isinstance(sdpath, str) else sdpath.path
@@ -880,7 +879,7 @@ def LoadSpriteData():
                     spriteid = int(sprite.attrib['id'])
                 except ValueError:
                     continue
-                    
+
                 spritename = sprite.attrib['name']
                 notes = None
                 relatedObjFiles = None
