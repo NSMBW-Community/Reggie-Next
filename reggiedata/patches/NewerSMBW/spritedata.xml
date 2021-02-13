@@ -219,7 +219,7 @@
 
   <sprite id="18" name="Dragon Coaster Platform" asmhacks="True" notes="This creates immobile 'Dragon Coaster' Platforms (1x2). The Sprite's placement represents the right side of the Platform.">
     <dependency notes="The normal Dragon Coaster [297] must be placed somewhere in your level. It does not have to be part of a zone.">
-      <requires sprite="297"/> <!-- Dragon Coaster -->
+      <required sprite="297"/> <!-- Dragon Coaster -->
     </dependency>
     <dualbox bit="20" title1="Horizontal Platform" title2="Angled Platform" comment="This determines if the platform is flat (horizontal), or if it is tilted at an angle."/>
     <dualbox bit="21" title1="Angles Left" title2="Angles Right" comment="This determines which direction the platform will be angled." requiredbit="20"/> <!-- Appears only if Angled is enabled -->

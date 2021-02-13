@@ -4955,7 +4955,7 @@
 
   <sprite id="333" name="Line Controlled Player-Block Platform" notes="A tilt controlled platform that only activates when a player strikes the Player Block. It will zip from one end of a line guide to the other when the controlling player tilts their controller.">
     <dependency notes="This platform will not move along line objects without the use of [187] Player Block.">
-      <requires sprite="187"/>
+      <required sprite="187"/>
     </dependency>
   </sprite> <!-- #333: Line Controlled Player-Block Platform -->
 

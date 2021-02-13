@@ -276,125 +276,56 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             and starts at 1.
             """
             if bits is None:
-                bit = self.bit
+                bits = self.bit
 
-            else:
-                bit = bits
+            value = 0
 
-            if isinstance(bit, list):
-                # multiple ranges. do this recursively.
-                value = 0
+            for ran in bits:
+                bit_len = ran[1] - ran[0]
 
-                for ran in bit:
-                    # find the size of the range
-                    if isinstance(ran, tuple):
-                        l = ran[1] - ran[0]
-
-                    else:
-                        l = 1
-
-                    # shift the value so we don't overwrite
-                    value <<= l
-
-                    # and OR in the value for the range
-                    value |= self.retrieve(data, ran)
-
-                # done
-                return value
-
-            elif isinstance(bit, tuple):
-                if bit[1] == bit[0] + 7 and bit[0] & 1 == 1:
+                if bit_len == 7 and ran[0] & 7 == 1:
                     # optimise if it's just one byte
-                    return data[bit[0] >> 3]
+                    value = (value << bit_len) | data[ran[0] >> 3]
+                    continue
 
-                else:
-                    # we have to calculate it sadly
-                    # just do it by looping, shouldn't be that bad
-                    value = 0
-                    for n in range(bit[0], bit[1]):
-                        n -= 1
-                        value = (value << 1) | ((data[n >> 3] >> (7 - (n & 7))) & 1)
+                # we have to calculate it
+                for n in range(ran[0] - 1, ran[1] - 1):
+                    value <<= 1
+                    value |= (data[n >> 3] >> (7 - (n & 7))) & 1
 
-                    return value
-
-            else:
-                # we just want one bit
-                bit -= 1
-
-                if (bit >> 3) >= len(data):
-                    return 0
-
-                return (data[bit >> 3] >> (7 - (bit & 7))) & 1
+            return value
 
         def insertvalue(self, data, value, bits=None):
             """
             Assigns a value to the specified bit(s)
             """
             if bits is None:
-                bit = self.bit
-
-            else:
-                bit = bits
+                bits = self.bit
 
             sdata = list(data)
 
-            if isinstance(bit, list):
-                # multiple ranges
-                for ran in reversed(bit):
-                    # find the size of the range
-                    if isinstance(ran, tuple):
-                        l = ran[1] - ran[0]
+            for ran in reversed(bits):
+                # find the size of the range
+                l = ran[1] - ran[0]
 
-                    else:
-                        l = 1
+                # Extract the bits that need to be set in this iteration.
+                value, v = value >> l, value & ((1 << l) - 1)
 
-                    # mask the value over this length
-                    mask = (1 << l) - 1
-                    v = value & mask
+                # just one byte, this is easier
+                if l == 7 and ran[0] & 7 == 1:
+                    sdata[ran[0] >> 3] = v & 0xFF
+                    continue
 
-                    # remove these bits from the value
-                    value >>= l
+                # set the value bit by bit
+                for n in reversed(range(ran[0], ran[1])):
+                    off = 1 << (7 - ((n - 1) & 7))
 
-                    # recursively set the value
-                    data = list(self.insertvalue(data, v, ran))
+                    if v & 1 != 0:  # set the bit
+                        sdata[(n - 1) >> 3] |= off
+                    else:  # mask the bit out
+                        sdata[(n - 1) >> 3] &= 0xFF ^ off
 
-                return bytes(data)
-
-            elif isinstance(bit, tuple):
-                if bit[1] == bit[0] + 7 and bit[0] & 1 == 1:
-                    # just one byte, this is easier
-                    sdata[(bit[0] - 1) >> 3] = value & 0xFF
-
-                else:
-                    # complicated stuff
-                    for n in reversed(range(bit[0], bit[1])):
-                        off = 1 << (7 - ((n - 1) & 7))
-
-                        if value & 1:
-                            # set the bit
-                            sdata[(n - 1) >> 3] |= off
-
-                        else:
-                            # mask the bit out
-                            sdata[(n - 1) >> 3] &= 0xFF ^ off
-
-                        value >>= 1
-
-            else:
-                # only overwrite one bit
-                byte = (bit - 1) >> 3
-                if byte >= len(data):
-                    return 0
-
-                off = 1 << (7 - ((bit - 1) & 7))
-
-                if value & 1:
-                    # set the bit
-                    sdata[byte] |= off
-
-                else:
-                    # mask the bit out
-                    sdata[byte] &= 0xFF ^ off
+                    v >>= 1
 
             return bytes(sdata)
 
@@ -406,15 +337,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 return
 
             show = True
-            for requirement in self.required:
-                val = self.retrieve(data, requirement[0])
-                ran = requirement[1]
-
-                if isinstance(ran, tuple):
-                    show = show and ran[0] <= val < ran[1]
-
-                else:
-                    show = show and ran == val
+            for pos, ran in self.required:
+                show = show and ran[0] <= self.retrieve(data, pos) < ran[1]
 
             visibleNow = self.layout.itemAtPosition(self.row, 0).widget().isVisible()
 
@@ -700,14 +624,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.checkReq(data, first)
 
             value = self.retrieve(data)
-            if not self.model.existingLookup[value]:
-                self.widget.setCurrentIndex(-1)
-                return
 
             for i, x in enumerate(self.model.entries):
                 if x[0] == value:
                     self.widget.setCurrentIndex(i)
                     break
+            else:
+                self.widget.setCurrentIndex(-1)
 
         def assign(self, data):
             """
@@ -990,13 +913,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             super().__init__()
 
-            if isinstance(bit, tuple):
-                bitnum = bit[1] - bit[0]
-                startbit = bit[0]
-
-            else:
-                bitnum = 1
-                startbit = bit
+            bitnum = bit[1] - bit[0]
+            startbit = bit[0]
 
             self.bit = bit
             self.startbit = startbit
@@ -1270,7 +1188,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.updateData.emit(self)
 
     class ExternalPropertyDecoder(PropertyDecoder):
-        # (6, title, bit, comment, required, advanced, comment2, advancedcomment, type)
 
         def __init__(self, title, bit, comment, required, advanced, comment2, advancedcomment, type, layout, row, parent):
             """
@@ -1487,6 +1404,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             super().__init__()
 
+            assert len(bit) == 1
+
             self.bit = bit
             self.required = required
             self.advanced = advanced
@@ -1496,14 +1415,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.comment = comment
             self.comment2 = comment2
             self.commentAdv = commentAdv
-
-            if isinstance(bit, tuple):
-                self.bitnum = bit[1] - bit[0]
-                self.startbit = bit[0]
-
-            else:
-                self.bitnum = 1
-                self.startbit = bit
+            self.bitnum = self.bit[0][1] - self.bit[0][0]
+            self.startbit = self.bit[0][0]
 
             self.widgets = []
             DualboxLayout = QtWidgets.QGridLayout()
@@ -2580,9 +2493,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             else:
                 bit = field[2]
 
-            if not isinstance(bit, tuple):
-                bit = ((bit, bit + 1),)
-            elif not isinstance(bit[0], tuple):
+            if not isinstance(bit[0], tuple):
                 bit = (bit,)
 
             # if two ranges (a..b, c..d) overlap, that means that a..b is not

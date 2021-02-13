@@ -415,14 +415,12 @@ class SpriteDefinition:
         Contains all the possible values for a list property on a sprite
         """
 
-        def __init__(self, entries, existingLookup, max):
+        def __init__(self, entries):
             """
             Constructor
             """
             QtCore.QAbstractListModel.__init__(self)
             self.entries = entries
-            self.existingLookup = existingLookup
-            self.max = max
 
         def rowCount(self, parent=None):
             """
@@ -438,7 +436,7 @@ class SpriteDefinition:
                 return None
 
             n = index.row()
-            if n < 0 or n >= len(self.entries):
+            if not 0 <= n < len(self.entries):
                 return None
 
             return '%d: %s' % self.entries[n]
@@ -466,22 +464,17 @@ class SpriteDefinition:
             else:
                 title = "NO TITLE GIVEN!"
 
+            advanced = attribs.get("advanced", "False") == "True"
+            comment = comment2 = advancedcomment = required = idtype = None
+
             if 'comment' in attribs:
                 comment = globals_.trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['comment'])
-            else:
-                comment = None
 
             if 'comment2' in attribs:
                 comment2 = globals_.trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['comment2'])
-            else:
-                comment2 = None
 
             if 'advancedcomment' in attribs:
                 advancedcomment = globals_.trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['advancedcomment'])
-            else:
-                advancedcomment = None
-
-            advanced = 'advanced' in attribs and attribs['advanced'] == "True"
 
             if 'requiredbit' in attribs:
                 required = []
@@ -490,343 +483,142 @@ class SpriteDefinition:
                 if 'requiredval' in attribs:
                     vals = attribs['requiredval'].split(",")
 
+                    if len(bits) != len(vals):
+                        raise ValueError("Required bits and vals have different lengths.")
                 else:
                     vals = [None] * len(bits)
 
                 for sbit, sval in zip(bits, vals):
                     if '-' not in sbit:
-                        bit = int(sbit)
-
+                        a = b = int(sbit)
                     else:
-                        getit = sbit.split('-')
-                        bit = (int(getit[0]), int(getit[1]) + 1)
+                        a, b = map(int, sbit.split('-'))
 
                     if sval is None:
-                        if isinstance(bit, tuple):
-                            val = (1, 1 << (bit[1] - bit[0]))
-
-                        else:
-                            val = 1
-
+                        c = 1
+                        d = (1 << (b - a + 1)) - 1
                     elif '-' not in sval:
-                        val = int(sval)
-
+                        c = d = int(sval)
                     else:
-                        getit = sval.split('-')
-                        val = (int(getit[0]), int(getit[1]) + 1)
+                        c, d = map(int, sval.split('-'))
 
-                    required.append((bit, val))
+                    required.append((((a, b + 1),), (c, d + 1)))
 
-            else:
-                required = None
-
-            # idtypes
             if 'idtype' in attribs:
                 idtype = attribs['idtype']
-                # Only values and lists support idtypes
-                assert field.tag in ('value', 'list')
-            else:
-                idtype = None
 
+                if field.tag not in {'value', 'list'}:
+                    raise ValueError("Only values and lists support idtypes.")
+
+            # Parse the remaining type-specific attributes.
             if field.tag == 'checkbox':
-                # parameters: title, bit, mask, comment
-                if 'nybble' in attribs:
-                    sbit = attribs['nybble']
-                    sft = 2
-
-                else:
-                    sbit = attribs['bit']
-                    sft = 0
-
-                bit = []
-                for ran in sbit.split(','):
-                    if '-' not in ran:
-                        if sft:
-                            # just 4 bits
-                            thing = int(ran) << 2
-                            r_bit = (thing - 3, thing + 1)
-
-                        else:
-                            # just 1 bit
-                            r_bit = int(ran)
-
-                    else:
-                        # different number of bits
-                        getit = ran.split('-')
-                        if sft:
-                            r_bit = ((int(getit[0]) << 2) - 3, (int(getit[1]) << 2) + 1)
-                        else:
-                            r_bit = (int(getit[0]), int(getit[1]) + 1)
-
-                    bit.append(r_bit)
-
-                if len(bit) == 1:
-                    bit = bit[0]
-
-                if 'mask' in attribs:
-                    mask = int(attribs['mask'])
-
-                else:
-                    mask = 1
+                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                mask = int(attribs.get('mask', 1))
 
                 fields.append((0, attribs['title'], bit, mask, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'list':
-                # parameters: title, bit, model, comment
-                if 'nybble' in attribs:
-                    sbit = attribs['nybble']
-                    sft = 2
-
-                else:
-                    sbit = attribs['bit']
-                    sft = 0
-
-                l = 0
-                bit = []
-                for ran in sbit.split(','):
-                    if '-' not in ran:
-                        if sft:
-                            # just 4 bits
-                            thing = int(ran) << 2
-                            r_bit = (thing - 3, thing + 1)
-                            l += 4
-
-                        else:
-                            # just 1 bit
-                            r_bit = int(ran)
-                            l += 1
-
-                    else:
-                        # different number of bits
-                        getit = ran.split('-')
-
-                        if sft:
-                            r_bit = ((int(getit[0]) << 2) - 3, (int(getit[1]) << 2) + 1)
-                        else:
-                            r_bit = (int(getit[0]), int(getit[1]) + 1)
-
-                        l += r_bit[1] - r_bit[0]
-
-                    bit.append(r_bit)
-
-                max = 1 << l
-
-                if len(bit) == 1:
-                    bit = bit[0]
+                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
 
                 entries = []
-                existing = [None for i in range(max)]
                 for e in field:
                     if e.tag != 'entry': continue
 
-                    i = int(e.attrib['value'])
-                    entries.append((i, e.text))
-                    existing[i] = True
+                    entries.append((int(e.attrib['value']), e.text))
 
-                model = SpriteDefinition.ListPropertyModel(entries, existing, max)
-                fields.append(
-                    (1, title, bit, model, comment, required, advanced, comment2, advancedcomment, idtype))
+                model = SpriteDefinition.ListPropertyModel(entries)
+                fields.append((1, title, bit, model, comment, required, advanced, comment2, advancedcomment, idtype))
 
             elif field.tag == 'value':
-                # parameters: title, bit, max, comment
-                if 'nybble' in attribs:
-                    sbit = attribs['nybble']
-                    sft = 2
+                bit, max_ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
 
-                else:
-                    sbit = attribs['bit']
-                    sft = 0
-
-                l = 0
-                bit = []
-                for ran in sbit.split(','):
-                    if '-' not in ran:
-                        if sft:
-                            # just 4 bits
-                            thing = int(ran) << 2
-                            r_bit = (thing - 3, thing + 1)
-                            l += 4
-
-                        else:
-                            # just 1 bit
-                            r_bit = int(ran)
-                            l += 1
-
-                    else:
-                        # different number of bits
-                        getit = ran.split('-')
-
-                        if sft:
-                            r_bit = ((int(getit[0]) << 2) - 3, (int(getit[1]) << 2) + 1)
-                        else:
-                            r_bit = (int(getit[0]), int(getit[1]) + 1)
-
-                        l += r_bit[1] - r_bit[0]
-
-                    bit.append(r_bit)
-
-                max = 1 << l
-
-                if len(bit) == 1:
-                    bit = bit[0]
-
-                fields.append((2, attribs['title'], bit, max, comment, required, advanced, comment2, advancedcomment, idtype))
+                fields.append((2, attribs['title'], bit, max_, comment, required, advanced, comment2, advancedcomment, idtype))
 
             elif field.tag == 'bitfield':
-                # parameters: title, startbit, bitnum, comment
                 startbit = int(attribs['startbit'])
                 bitnum = int(attribs['bitnum'])
 
                 fields.append((3, attribs['title'], startbit, bitnum, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'multibox':
-                # parameters: title, bit, comment
-                if 'nybble' in attribs:
-                    sbit = attribs['nybble']
-                    sft = 2
-
-                else:
-                    sbit = attribs['bit']
-                    sft = 0
-
-                bit = []
-                for ran in sbit.split(','):
-                    if '-' not in ran:
-                        if sft:
-                            # just 4 bits
-                            thing = int(ran) << 2
-                            r_bit = (thing - 3, thing + 1)
-
-                        else:
-                            # just 1 bit
-                            r_bit = int(ran)
-
-                    else:
-                        # different number of bits
-                        getit = ran.split('-')
-
-                        if sft:
-                            r_bit = ((int(getit[0]) << 2) - 3, (int(getit[1]) << 2) + 1)
-                        else:
-                            r_bit = (int(getit[0]), int(getit[1]) + 1)
-
-                    bit.append(r_bit)
-
-                if len(bit) == 1:
-                    bit = bit[0]
+                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
 
                 fields.append((4, attribs['title'], bit, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'dualbox':
-                # parameters title1, title2, bit, comment, required, advanced
-                # ONLY SUPPORTS A SINGLE BIT!
-                bit = int(attribs['bit'])
+                a = int(attribs['bit'])
+                bit = [(a, a + 1)]
 
                 fields.append((5, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'dependency':
+                type_dict = {'required': 0, 'suggested': 1}
+
                 for entry in field:
-                    types = ['required', 'suggested']
-
-                    if entry.tag not in types:
-                        continue
-
-                    if 'sprite' not in entry.attrib:
-                        print(self.id)
-                        continue
-
                     if entry.attrib['sprite'] == "":
                         continue
 
-                    self.dependencies.append((int(entry.attrib['sprite']), types.index(entry.tag)))
+                    self.dependencies.append((int(entry.attrib['sprite']), type_dict[entry.tag]))
 
-                if 'notes' in attribs:
-                    self.dependencynotes = attribs['notes']
-                else:
-                    self.dependencynotes = None
+                self.dependencynotes = attribs.get('notes')
 
             elif field.tag == 'external':
-                # phonebook / external resource.
-                # used for big lists like actors, sound effects etc.
+                # Uses a list from an external resource. This is used for big
+                # lists like actors, sound effects etc.
+                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                type_ = attribs['type']
 
-                # maybe also for easy syncing of ids later
-                # (eg. "click the coins with the same coin id")
-                if 'nybble' in attribs:
-                    sbit = attribs['nybble']
-                    sft = 2
-
-                else:
-                    sbit = attribs['bit']
-                    sft = 0
-
-                bit = []
-                for ran in sbit.split(','):
-                    if '-' not in ran:
-                        if sft:
-                            # just 4 bits
-                            thing = int(ran) << 2
-                            r_bit = (thing - 3, thing + 1)
-
-                        else:
-                            # just 1 bit
-                            r_bit = int(ran)
-
-                    else:
-                        # different number of bits
-                        getit = ran.split('-')
-
-                        if sft:
-                            r_bit = ((int(getit[0]) << 2) - 3, (int(getit[1]) << 2) + 1)
-                        else:
-                            r_bit = (int(getit[0]), int(getit[1]) + 1)
-
-                    bit.append(r_bit)
-
-                if len(bit) == 1:
-                    bit = bit[0]
-
-                type = attribs['type']
-                fields.append((6, title, bit, comment, required, advanced, comment2, advancedcomment, type))
+                fields.append((6, title, bit, comment, required, advanced, comment2, advancedcomment, type_))
 
             elif field.tag == 'multidualbox':
                 # multibox but with dualboxes instead of checkboxes
-
-                if 'nybble' in attribs:
-                    sbit = attribs['nybble']
-                    sft = 2
-
-                else:
-                    sbit = attribs['bit']
-                    sft = 0
-
-                bit = []
-                for ran in sbit.split(','):
-                    if '-' not in ran:
-                        if sft:
-                            # just 4 bits
-                            thing = int(ran) << 2
-                            r_bit = (thing - 3, thing + 1)
-
-                        else:
-                            # just 1 bit
-                            r_bit = int(ran)
-
-                    else:
-                        # different number of bits
-                        getit = ran.split('-')
-
-                        if sft:
-                            r_bit = ((int(getit[0]) << 2) - 3, (int(getit[1]) << 2) + 1)
-                        else:
-                            r_bit = (int(getit[0]), int(getit[1]) + 1)
-
-                    bit.append(r_bit)
-
-                if len(bit) == 1:
-                    bit = bit[0]
+                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
 
                 fields.append((7, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
 
+    def parseBits(self, nybble_val, bits_val):
+        """
+        Parses a description of the bits a setting affects into a tuple of a
+        list of ranges and the number of possible values. Ranges include the
+        start and exclude the end. The most significant bit is considered 1.
+
+        Raises a ValueError if both inputs are None or if any of the specified
+        ranges refer to bits that are not in the first 8 bytes.
+        """
+
+        if nybble_val is None:
+            ranges = bits_val
+        else:
+            ranges = nybble_val
+
+        if ranges is None:
+            raise ValueError("Both bits and nybble are None.")
+
+        # Whether the ranges indicate the nybbles or the bits.
+        is_nybble = nybble_val is not None
+        # The total number of bits that can be controlled.
+        bit_length = 0
+        # A list of tuples (start_bit, end_bit) that represent inclusive ranges.
+        bit_ranges = []
+
+        for range_ in ranges.split(","):
+            if "-" in range_:  # Multiple bits / nybbles
+                a, b = map(int, range_.split("-"))
+            else:  # Just a single bit / nybble
+                a = b = int(range_)
+
+            if is_nybble:
+                a = (a << 2) - 3
+                b <<= 2
+
+            # Check if the resulting range would be valid.
+            if not 1 <= a < b + 1 <= 65:
+                raise ValueError("Indexed bits out of bounds: " + str((a, b + 1)))
+
+            bit_length += b - a + 1
+            bit_ranges.append((a, b + 1))
+
+        return bit_ranges, 1 << bit_length
 
 def LoadSpriteData():
     """
