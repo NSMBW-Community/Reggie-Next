@@ -179,7 +179,7 @@
 
   <!-- Research Unknown Flag 12 -->
   <sprite id="26" name="Upside-Down Spiny" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading.">
-	<checkbox bit="32" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
+    <checkbox bit="32" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
     <checkbox bit="48" title="Unknown Flag 12" advanced="True" advancedcomment="Used in Retail: 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 
@@ -216,7 +216,7 @@
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #28: Stone Block (NSMB-DS) - Horizontal Movement -->
 
-  <sprite id="29" name="Incomplete Platform - Ac_Lift_ObjBg_HMove_Big" notes="This sprite does not load. Settings are the same as in sprite 28. We're currently unsure why this sprite does not load. &lt;br&gt;Needs RE (reverse-engineering) data to figure out the issue.">
+  <sprite id="29" name="Incomplete Platform - Ac_Lift_ObjBg_HMove_Big" notes="This sprite does not load. Settings are the same as in sprite 28. We're currently unsure why this sprite does not load.&lt;br&gt;Needs RE (reverse-engineering) data to figure out the issue.">
   </sprite> <!-- #29: Incomplete Platform - Ac_Lift_ObjBG_HMove_Big -->
 
   <sprite id="30" name="Grey Tiled Block" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
@@ -311,7 +311,7 @@
   <sprite id="33" name="Event Controller - Zone Enter" notes="When the zone is loaded, all 'Zone Enter' Event Controllers will activate and modify the status of their associated Event IDs. Note that Event IDs 1-33 are stored Level-wide, and not per Area or Zone. By using this controller in a midway room, you can clear those Event flags or set them to start activated.">
     <value bit="9-16" title="Target Event ID" comment="This Event ID will be modified when the zone loads." idtype="Target Event"/>
     <dualbox bit="44" title1="Deactivates Target Event" title2="Activates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are activated."/>
-    <value nybble="5-6" title="Time Activated" comment="This determines the amount of time the Target Event will be activated for before deactivating." comment2="A value of 0 will not deactivate on its own. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick. &lt;br&gt; &lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring." requiredbit="44"/>
+    <value nybble="5-6" title="Time Activated" comment="This determines the amount of time the Target Event will be activated for before deactivating." comment2="A value of 0 will not deactivate on its own. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick.&lt;br&gt;&lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring." requiredbit="44"/>
     <checkbox bit="48" title="Does Nothing / Self Destructs" comment="When enabled, the Event Controller will skip its function and delete itself."/>
   </sprite> <!-- #33: Event Controller - Zone Enter -->
 
@@ -322,7 +322,7 @@
     <value bit="17-24" title="Triggering Event ID 2" requiredbit="1-8" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
     <value bit="25-32" title="Triggering Event ID 3" requiredbit="17-24" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
     <value bit="33-40" title="Triggering Event ID 4" requiredbit="25-32" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
-    <list bit="43-44" title="Usage Mode" comment="This will determine how often the Target Event ID will be modified." comment2="Single Use: When all Triggering Events become active, the Target Event will be modified, and the controller will not affect the Target Event again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time all Triggering Events become active, the Target Event will be modified. &lt;br&gt; &lt;br&gt;Only While Active: Each time all Triggering Events become active, the Target Event will be modified. When this condition is no longer met, the Target Event will have the opposite state applied to it.">
+    <list bit="43-44" title="Usage Mode" comment="This will determine how often the Target Event ID will be modified." comment2="Single Use: When all Triggering Events become active, the Target Event will be modified, and the controller will not affect the Target Event again.&lt;br&gt;&lt;br&gt;Multi-Use: Each time all Triggering Events become active, the Target Event will be modified.&lt;br&gt;&lt;br&gt;Only While Active: Each time all Triggering Events become active, the Target Event will be modified. When this condition is no longer met, the Target Event will have the opposite state applied to it.">
       <entry value="0">Single Use</entry>
       <entry value="1">Multi-Use</entry>
       <entry value="2">Only While Active (All)</entry>
@@ -336,21 +336,21 @@
     <value bit="17-24" title="Triggering Event ID 2" requiredbit="1-8" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
     <value bit="25-32" title="Triggering Event ID 3" requiredbit="17-24" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
     <value bit="33-40" title="Triggering Event ID 4" requiredbit="25-32" idtype="Triggering Event"/> <!-- Multiple Triggering Event IDtypes may not function -->
-    <list bit="43-44" title="Usage Mode" comment="This will determine how often the Target Event ID will be modified." comment2="Single Use: When any Triggering Event becomes active, the Target Event will be modified, and the controller will not affect the Target Event again even if a different Triggering Event becomes active. &lt;br&gt; &lt;br&gt;Multi-Use: Each time any Triggering Event becomes active, the Target Event will be modified. &lt;br&gt; &lt;br&gt;Only While Active: When any of the Triggering Events become active, the Target Event will be modified. When this condition is no longer met by any of the Triggering Events, the Target Event will have the opposite state applied to it.">
+    <list bit="43-44" title="Usage Mode" comment="This will determine how often the Target Event ID will be modified." comment2="Single Use: When any Triggering Event becomes active, the Target Event will be modified, and the controller will not affect the Target Event again even if a different Triggering Event becomes active.&lt;br&gt;&lt;br&gt;Multi-Use: Each time any Triggering Event becomes active, the Target Event will be modified.&lt;br&gt;&lt;br&gt;Only While Active: When any of the Triggering Events become active, the Target Event will be modified. When this condition is no longer met by any of the Triggering Events, the Target Event will have the opposite state applied to it.">
       <entry value="0">Single Use</entry>
       <entry value="1">Multi-Use</entry>
       <entry value="2">Only While Active (Any)</entry>
     </list>
   </sprite> <!-- #35: Event Controller - "OR" (If X OR Y, do Z) -->
 
-  <sprite id="36" name="Event Controller - &quot;RANDOM&quot; (If X, do Y OR Z)" notes="This Event Controller can cause one of the four random IDs to trigger if the relevant Event ID has been activated. You do not have to use all four Random ID slots, and you can use the same Event ID on multiple slots. &lt;br&gt;&lt;br&gt;Example: ID A in slot 1, ID A in slot 2 and ID B in slot 3 will cause 2/3 chance of A being activated and 1/3 chance of B.">
+  <sprite id="36" name="Event Controller - &quot;RANDOM&quot; (If X, do Y OR Z)" notes="This Event Controller can cause one of the four random IDs to trigger if the relevant Event ID has been activated. You do not have to use all four Random ID slots, and you can use the same Event ID on multiple slots.&lt;br&gt;&lt;br&gt;Example: ID A in slot 1, ID A in slot 2 and ID B in slot 3 will cause 2/3 chance of A being activated and 1/3 chance of B.">
     <value bit="1-8" title="Target Event ID 1" comment="Not all Target Event IDs are required to be used, and you can affect the probability by using the same Event ID in multiple slots." comment2="If you find yourself experiencing issues, please try resetting this Sprite's Settings." idtype="Target Event"/>
     <value bit="17-24" title="Target Event ID 2" requiredbit="1-8" idtype="Target Event"/> <!-- Multiple Target Event IDtypes may not function -->
     <value bit="25-32" title="Target Event ID 3" requiredbit="17-24" idtype="Target Event"/> <!-- Multiple Target Event IDtypes may not function -->
     <value bit="33-40" title="Target Event ID 4" requiredbit="25-32" idtype="Target Event"/> <!-- Multiple Target Event IDtypes may not function -->
     <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are activated."/>
     <value bit="9-16" title="Triggering Event ID" comment="This event will cause one of the available Target Events to be modified at random." idtype="Triggering Event"/>
-    <dualbox bit="44" title1="Single Use" title2="Multi-Use" comment="This determines how often a Target Event ID can be modified by the controller." comment2="Single Use: When the Triggering Event becomes active, a Target Event will be modified, and the controller will not affect any Target Event again even if the Triggering Event becomes active again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time the Triggering Event becomes active, a Target Event will be modified. This means you must deactivate the Triggering Event ID before the controller can attempt to activate another Target ID."/>
+    <dualbox bit="44" title1="Single Use" title2="Multi-Use" comment="This determines how often a Target Event ID can be modified by the controller." comment2="Single Use: When the Triggering Event becomes active, a Target Event will be modified, and the controller will not affect any Target Event again even if the Triggering Event becomes active again.&lt;br&gt;&lt;br&gt;Multi-Use: Each time the Triggering Event becomes active, a Target Event will be modified. This means you must deactivate the Triggering Event ID before the controller can attempt to activate another Target ID."/>
   </sprite> <!-- #36: Event Controller - "RANDOM" (If X, do Y OR Z) -->
 
   <sprite id="37" name="Event Controller - Chainer (If X, do Y)" notes="This Event Controller will link two events together. When the condition of the Triggering Event ID is met, the Target Event ID will be modified. It's also possible to define a duration the Target Event will stay active, or a delay until the Target Event becomes active.">
@@ -359,10 +359,8 @@
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the Triggering Event is activated." idtype="Target Event"/>
     <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="17-24" requiredval="0"/> <!-- Appears if no Delay is set -->
     <dualbox bit="48" title1="Off; On after Delay" title2="On; Off after Duration" comment="This determines how the Target Event is modified both before and after the delay." requiredbit="17-24"/> <!-- Appears if Delay is set -->
-    <value bit="17-24" title="Activation Delay/Duration" comment="The Target Event will be modified instantly. When this is set to 0, the Target Event will not be modified further. Otherwise, it will place it in the reverse state then wait a specific amount of time before modifying it again." comment2="A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick. &lt;br&gt; &lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring."/>
-    <list bit="43-44" title="Usage Mode" comment="This determines how often the Target Event ID can be modified by the controller." comment2="Single Use: When the condition of the Triggering Event is met, the Target Event will be modified, and the controller will not affect the Target Event again even if the condition of the Triggering Event is subsequently met again. 
-	&lt;br&gt; &lt;br&gt;Multi-Use: Each time the condition of the Triggering Event is met, the Target Event will be modified. If the delay is still running, the delay will be refreshed to its full value. &lt;br&gt; &lt;br&gt;Only While Satisfied: While the condition of the Triggering Event is met, the Target Event will be modified. When this condition is no longer met by the Triggering Event, the Target Event will have the opposite state applied to it after the full length of the delay. 
-	&lt;br&gt; &lt;br&gt;In all cases, whenever the condition of the Triggering Event is met (or is no longer met), the Target Event will have the opposite state set immediately, and then it will be set as intended after the delay.">
+    <value bit="17-24" title="Activation Delay/Duration" comment="The Target Event will be modified instantly. When this is set to 0, the Target Event will not be modified further. Otherwise, it will place it in the reverse state then wait a specific amount of time before modifying it again." comment2="A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick.&lt;br&gt;&lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring."/>
+    <list bit="43-44" title="Usage Mode" comment="This determines how often the Target Event ID can be modified by the controller." comment2="Single Use: When the condition of the Triggering Event is met, the Target Event will be modified, and the controller will not affect the Target Event again even if the condition of the Triggering Event is subsequently met again.&lt;br&gt;&lt;br&gt;Multi-Use: Each time the condition of the Triggering Event is met, the Target Event will be modified. If the delay is still running, the delay will be refreshed to its full value.&lt;br&gt;&lt;br&gt;Only While Satisfied: While the condition of the Triggering Event is met, the Target Event will be modified. When this condition is no longer met by the Triggering Event, the Target Event will have the opposite state applied to it after the full length of the delay.&lt;br&gt;&lt;br&gt;In all cases, whenever the condition of the Triggering Event is met (or is no longer met), the Target Event will have the opposite state set immediately, and then it will be set as intended after the delay.">
       <entry value="0">Single Use</entry>
       <entry value="1">Multi-Use</entry>
       <entry value="2">Only While Satisfied</entry>
@@ -371,12 +369,12 @@
 
   <!-- Improve comment2 on bit48, combined with Enemy Location ID. See comment chunk below for existing description. -->
   <!-- Specifically in regards to the state of the event when the conditions are not met. Must it first be met for it to revert? Expected: Yes, like other controllers it does not affect the event until it has been activated once. -->
-  <sprite id="38" name="Event Controller - &quot;IF&quot; (Uses Locations)" noyoshi="True" notes="This event controller will modify a Target Event ID if matching player or enemy conditions within a predefined location. &lt;br&gt;&lt;br&gt;&lt;b&gt;Note:&lt;/b&gt; Some sprites are not counted as enemies, for example the Spike Ball. 'Loose Coins', on the other hand, are treated as enemies. Use a sprite like [396] to test what the game considers enemies.">
+  <sprite id="38" name="Event Controller - &quot;IF&quot; (Uses Locations)" noyoshi="True" notes="This event controller will modify a Target Event ID if matching player or enemy conditions within a predefined location.&lt;br&gt;&lt;br&gt;&lt;b&gt;Note:&lt;/b&gt; Some sprites are not counted as enemies, for example the Spike Ball. 'Loose Coins', on the other hand, are treated as enemies. Use a sprite like [396] to test what the game considers enemies.">
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the Location ID conditions are satisfied." idtype="Target Event"/>
     <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are satisfied." comment2="For locations with an Enemy Location ID, the reverse status will only be applied when...? For locations with only a Player Location ID, the reverse status will only be applied when...? Specifically, is the reverse condition immediately applied upon level load when it's found to not be met, or will it only apply the reverse condition after the positive condition is met? Or even more confusingly, will the reverse condition be activated when HALF of the condition is temporarily met for the first time?"/>
     <checkbox nybble="5-6" title="Ignore Player Location" mask="255" comment="When enabled, the Event Controller will ignore [Player Status] and [Player Power-up Status] completely when determining if it will modify the Target Event."/>
     <value nybble="5-6" title="Player Location ID" comment="The Target Event will be modified if [Player Status] and [Player Power-up Status] are satisfied while within this Location ID." requiredbit="17-24" requiredval="0-254"/>
-    <list nybble="10" title="Player Status" comment="When [Player Location ID] is set, the Target Event will only be triggered if a player's physical location matches this condition. Measurements will always correspond to the center of the player's feet and the lowest pixel." comment2="Within: The Target Event is only modified if a player is inside the Player Location. &lt;br&gt;&lt;br&gt;Ground: The Target Event is only modified if a player is touching the ground while inside the Player Location.&lt;br&gt;&lt;br&gt;Air: The Target Event is only modified if a player is jumping or otherwise not touching the ground but is still inside the Player Location.&lt;br&gt;&lt;br&gt;Climbing: The Target Event is only modified if a player is in a climbing state, such as on a vine or chainlink fence." requiredbit="17-24" requiredval="0-254">
+    <list nybble="10" title="Player Status" comment="When [Player Location ID] is set, the Target Event will only be triggered if a player's physical location matches this condition. Measurements will always correspond to the center of the player's feet and the lowest pixel." comment2="Within: The Target Event is only modified if a player is inside the Player Location.&lt;br&gt;&lt;br&gt;Ground: The Target Event is only modified if a player is touching the ground while inside the Player Location.&lt;br&gt;&lt;br&gt;Air: The Target Event is only modified if a player is jumping or otherwise not touching the ground but is still inside the Player Location.&lt;br&gt;&lt;br&gt;Climbing: The Target Event is only modified if a player is in a climbing state, such as on a vine or chainlink fence." requiredbit="17-24" requiredval="0-254">
       <entry value="0">Within</entry>
       <entry value="1">Ground</entry>
       <entry value="2">Air</entry>
@@ -395,7 +393,7 @@
     </list>
     <checkbox nybble="7-8" title="Ignore Enemy Location" mask="255" comment="When enabled, the Event Controller will ignore the requirement to have at least one enemy within a Location ID when determining if it will modify the Target Event."/>
     <value nybble="7-8" title="Enemy Location ID" comment="The Target Event is only modified if there is at least one enemy sprite inside this Location ID." requiredbit="25-32" requiredval="0-254"/>
-    <list bit="43-44" title="Usage Mode" comment="This will determine how often the Target Event ID will be modified." comment2="Single Use: When the player and enemy conditions are both satisfied, the Target Event will be modified, and the controller will not affect the Target Event again even if the conditions later become satisfied again. &lt;br&gt; &lt;br&gt;Multi-Use: Each time the player and enemy conditions are both satisfied, the Target Event will be modified. &lt;br&gt; &lt;br&gt;Only While Satisfied: The Target Event will only be modified while the player and enemy conditions are both satisfied. When either or both are not actively being satisfied, the Target Event is set to the opposite state instead. Additionally, this flags the event as 'activated' every frame.">
+    <list bit="43-44" title="Usage Mode" comment="This will determine how often the Target Event ID will be modified." comment2="Single Use: When the player and enemy conditions are both satisfied, the Target Event will be modified, and the controller will not affect the Target Event again even if the conditions later become satisfied again.&lt;br&gt;&lt;br&gt;Multi-Use: Each time the player and enemy conditions are both satisfied, the Target Event will be modified.&lt;br&gt;&lt;br&gt;Only While Satisfied: The Target Event will only be modified while the player and enemy conditions are both satisfied. When either or both are not actively being satisfied, the Target Event is set to the opposite state instead. Additionally, this flags the event as 'activated' every frame.">
       <entry value="0">Single Use</entry>
       <entry value="1">Multi-Use</entry>
       <entry value="2">Only While Satisfied</entry>
@@ -406,9 +404,9 @@
   <sprite id="39" name="Event Controller - Multi-Chainer (If X, do Y THROUGH Z)" notes="This Event Controller will run its code when the Start Event ID is activated. It will then activate each Event ID from ['Start Event ID' + 1] through ['End Event ID']. While you cannot use this to deactivate events directly, if you use the Only While Active mode, activating and then deactivating the Start Event ID will cause the event controller to instead deactivate the events it just activated.">
     <value bit="1-8" title="Start Event ID" comment="The Multi-Chainer will start running when this Event ID is activated." idtype="Triggering Event"/>
     <value bit="9-16" title="End Event ID" comment="The Multi-Chainer will activate all Events from the Start Event ID to this Event ID (including this one)." comment2="The value entered here must be larger than the value entered for 'Start Event ID'" idtype="Target Event"/>
-    <value nybble="5-6" title="Delay" comment="The Multi-Chainer will wait this amount of time between activating each event." comment2="A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick. &lt;br&gt; &lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring." requiredbit="44" requiredval="0"/>
-    <value nybble="5-6" title="Delay" comment="The Multi-Chainer will wait this amount of time between activating/deactivating each event." comment2="A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick. &lt;br&gt; &lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring." requiredbit="44"/> <!-- Appears if Only While Active is selected for better clarification of its effect. -->
-    <dualbox bit="44" title1="Single Run" title2="Only While Active" comment="This will determine if the Multi-Chainer will only run once, or if it can deactivate the events with the potential to activate them again." comment2="Single Run: When the Start Event ID is first activated, the Multi-Chainer will activate all events through End Event ID and then cease functioning. &lt;br&gt; &lt;br&gt;Only While Active: Every time the Start Event ID is activated, the Multi-Chainer will begin to activate all events through End Event ID. Every time the Start Event ID is deactivated, the Multi-Chainer will begin to deactivate all events through End Event ID."/>
+    <value nybble="5-6" title="Delay" comment="The Multi-Chainer will wait this amount of time between activating each event." comment2="A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick.&lt;br&gt;&lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring." requiredbit="44" requiredval="0"/>
+    <value nybble="5-6" title="Delay" comment="The Multi-Chainer will wait this amount of time between activating/deactivating each event." comment2="A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick.&lt;br&gt;&lt;br&gt;A value of 60 is approximately the same as a Timed Switch or Red Ring." requiredbit="44"/> <!-- Appears if Only While Active is selected for better clarification of its effect. -->
+    <dualbox bit="44" title1="Single Run" title2="Only While Active" comment="This will determine if the Multi-Chainer will only run once, or if it can deactivate the events with the potential to activate them again." comment2="Single Run: When the Start Event ID is first activated, the Multi-Chainer will activate all events through End Event ID and then cease functioning.&lt;br&gt;&lt;br&gt;Only While Active: Every time the Start Event ID is activated, the Multi-Chainer will begin to activate all events through End Event ID. Every time the Start Event ID is deactivated, the Multi-Chainer will begin to deactivate all events through End Event ID."/>
   </sprite> <!-- #39: Event Controller - Multi-Chainer (If X, do Y THROUGH Z) -->
 
   <!-- Possible additional Usage Mode, Value 2 in Nybble 10 -->
@@ -420,7 +418,7 @@
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
     <dualbox bit="28" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." comment2="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/>
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." comment2="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/>
     <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -432,17 +430,17 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #40: "?" Switch (Orange) -->
 
-  <sprite id="41" name="&quot;P&quot; Switch (Blue)" notes="This switch is similar to the ? Switch, but it has the additional abilitiy of causing all Blue Coins (tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality. &lt;br&gt; &lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block.">
+  <sprite id="41" name="&quot;P&quot; Switch (Blue)" notes="This switch is similar to the ? Switch, but it has the additional abilitiy of causing all Blue Coins (tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block.">
     <dependency notes="Activates 'Pow Block Coin' tileset tiles."/>
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing down. Upside-Down switches cannot be set to fall."/>
     <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms. It does not work with conveyor belts."/>
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Blue Coins, or transform blocks and coins." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
-	<dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
+    <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
-	<dualbox bit="28" title1="Timed Event" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Blue Coins will not become visible."/>
+    <dualbox bit="28" title1="Timed Event" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Blue Coins will not become visible."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox bit="17" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This will determine if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/>  <!-- Appears only if Timed Event is set -->
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This will determine if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/>  <!-- Appears only if Timed Event is set -->
     <list bit="23-24" title="Delay on Multi-Use" comment="This will set how long the switch takes to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
       <entry value="0">Instantly</entry>
       <entry value="2">Short Delay</entry>
@@ -464,7 +462,7 @@
     <dualbox bit="28" title1="Timed Event &amp; Transform" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Red Blocks will not become solid."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox bit="17" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -485,7 +483,7 @@
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
     <dualbox bit="28" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -497,7 +495,7 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #43: Brick Block "?" Switch (Orange) -->
 
-  <sprite id="44" name="Brick Block &quot;P&quot; Switch (Blue)" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (both tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Bug: &lt;/b&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if they were blocks.&lt;/font&gt;" advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  <sprite id="44" name="Brick Block &quot;P&quot; Switch (Blue)" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (both tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Bug: &lt;/b&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if they were blocks.&lt;/font&gt;" advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Blue Coins, or transform blocks and coins." idtype="Target Event"/>
@@ -506,7 +504,7 @@
     <dualbox bit="28" title1="Timed Event &amp; Transform" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Blue Coins will not become visible."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox bit="17" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -527,7 +525,7 @@
     <dualbox bit="28" title1="Timed Event &amp; Transform" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Red Blocks will not become solid."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox bit="17" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -594,8 +592,8 @@
       <entry value="14">28</entry>
       <entry value="15">30</entry>
     </list>
-	<checkbox nybble="5" title="Event Activated" comment="With this checked, the Seesaw Platform will spawn when its listed Event ID is activated, and despawn when it's deactivated."/>
-	<value nybble="3-4" title="Triggering Event ID" comment="Determines the Event ID that spawns the Seesaw Platform when activated, and despawns it when deactivated." requiredbit="17-20" requiredval="1"/>
+    <checkbox nybble="5" title="Event Activated" comment="With this checked, the Seesaw Platform will spawn when its listed Event ID is activated, and despawn when it's deactivated."/>
+    <value nybble="3-4" title="Triggering Event ID" comment="Determines the Event ID that spawns the Seesaw Platform when activated, and despawns it when deactivated." requiredbit="17-20" requiredval="1"/>
   </sprite> <!-- #49: (Unused) Seesaw Platform -->
 
   <sprite id="50" name="Basic Platform - Fall-When-Touched" notes="This platform will begin to fall when a player first touches it.">
@@ -604,7 +602,7 @@
       <entry value="1">Silver</entry>
       <entry value="3">Bone</entry>
     </list>
-    <value nybble="12" title="Width" comment="This determines the length of the platform." comment2="&lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Do not use a Width of 0.&lt;/font&gt;"/>
+    <value nybble="12" title="Width" comment="This determines the length of the platform." comment2="&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;Do not use a Width of 0.&lt;/font&gt;"/>
     <dualbox bit="44" title1="Instant, Fast Fall" title2="Delayed, Slow Fall" comment="This determines the rate at which the platform will fall when activated."/>
     <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="ASM shows Nybble 10 might affect something."/>
   </sprite> <!-- #50: Fall-When-Touched Platform -->
@@ -617,7 +615,7 @@
   </sprite> <!-- #52: Auto-Rotating 4-Platform -->
 
   <sprite id="53" name="Effect - Quicksand" notes="This will draw the animated quicksand effect over a specific Location ID. The actual quicksand sinking effect is only obtained through a specific tileset object. See Dependency Notes for examples. The quicksand animation is always placed behind Layer 1 objects.">
-    <dependency notes="Pa1_sabaku (Desert): Object 24 &lt;br&gt; &lt;br&gt;Pa_sabaku_chika (Desert Cave): Object 26 &lt;br&gt; &lt;br&gt;Pa1_toride_sabaku (Desert Tower): Object 107"/>
+    <dependency notes="Pa1_sabaku (Desert): Object 24&lt;br&gt;&lt;br&gt;Pa_sabaku_chika (Desert Cave): Object 26&lt;br&gt;&lt;br&gt;Pa1_toride_sabaku (Desert Tower): Object 107"/>
     <checkbox bit="37" title="Flat Top" comment="When enabled, this removes the animated crest effect on the top portion of the quicksand. This will cause a 'square' look." comment2="This should be used when the quicksand connects with a ceiling or other Layer 1 terrain."/>
     <value nybble="11-12" title="Location ID" comment="This determines the Location where the quicksand animation will be created." idtype="Location"/>
   </sprite> <!-- #53: Effect - Quicksand -->
@@ -630,7 +628,7 @@
     <value nybble="7" title="Unknown Value 7" advanced="True" advancedcomment="ASM shows Nybble 7 might affect something."/>
   </sprite> <!-- #54: Lakitu -->
 
-  <sprite id="55" name="(Unused) Rising Tilting Platform" notes="This is a platform imported from New Super Mario Bros. DS. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;It is not recommended for use due to various glitches and a lack of texture.&lt;/font&gt;" advancednotes="Size is 1x7 blocks. The distance covered depends on two factors: Y-position and zone height. See [Movement Distance].">
+  <sprite id="55" name="(Unused) Rising Tilting Platform" notes="This is a platform imported from New Super Mario Bros. DS.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;It is not recommended for use due to various glitches and a lack of texture.&lt;/font&gt;" advancednotes="Size is 1x7 blocks. The distance covered depends on two factors: Y-position and zone height. See [Movement Distance].">
     <checkbox bit="28" title="Loads at Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point." advanced="True"/>
     <list bit="35-36" title="Movement Distance" advanced="True" advancedcomment="This determines the maximum distance this Platform will cover. The platform covers 'Travel Limit' distance at value '0'. After any set amount of time, the platform will start blinking two blocks before the 'Travel Limit' and disappear once the player gets off it. For values marked with an asterisk (*), Mario must leave the platform for the blinking to begin. Once it starts blinking, the platform's disappearance can't be prevented.">
       <entry value="0">No Limit (Travel Limit)</entry>
@@ -640,7 +638,7 @@
     </list>
     <checkbox bit="40" title="Invisible Collision Box" advanced="True" advancedcomment="While strange, this value's function is clear: When the game loads the platform for the first time into view, and the player then leaves the screen, this value tells the game to remember the last position of the platform. It will then spawn an equally large collision box exactly over its last position. Mario cannot fall through this collision box, but he may pass through coming from below. I.e. when loading the platforms back to the original position, Mario is carried by the collision box, if he stands on it. This happens each time the platform leaves the screen. The bad thing is that Mario cannot activate more platforms when he stands exactly over their original position, where they spawned initially."/>
     <dualbox bit="43" title1="Touch to Activate" title2="Activates when Loaded" comment="This determines how the platform begins to move. It can either be set to move only when touched by a player, or it can be set to move automatically when loaded into memory." advanced="True"/>
-    <list bit="47-48" title="Vertical Movement and Direction" advanced="True" advancedcomment="This determines how the platform moves on the Y-axis. If the value is set to '0' or '2', the platform will rise up. With value '1', the platform will fall slowly. The platform stops only after it has reached the 'Travel Limit' line. At this position, an upward-moving platform will stop ; however, a downward-moving platform will move continuously if a value of '1' is used and the platform is positioned below the 'Travel Limit' line. If the platform is placed above the 'Travel Limit' line, it will automatically be moved to the 'Travel Limit' line (no matter which direction it is moving) when it becomes active. The 'Travel Limit' line is located 7.5 Blocks below the upper zone border. &lt;br&gt;&lt;br&gt;This platform functions independently of scroll limits (therefore, the 'Travel Limit' ignores scroll limits).">
+    <list bit="47-48" title="Vertical Movement and Direction" advanced="True" advancedcomment="This determines how the platform moves on the Y-axis. If the value is set to '0' or '2', the platform will rise up. With value '1', the platform will fall slowly. The platform stops only after it has reached the 'Travel Limit' line. At this position, an upward-moving platform will stop ; however, a downward-moving platform will move continuously if a value of '1' is used and the platform is positioned below the 'Travel Limit' line. If the platform is placed above the 'Travel Limit' line, it will automatically be moved to the 'Travel Limit' line (no matter which direction it is moving) when it becomes active. The 'Travel Limit' line is located 7.5 Blocks below the upper zone border.&lt;br&gt;&lt;br&gt;This platform functions independently of scroll limits (therefore, the 'Travel Limit' ignores scroll limits).">
       <entry value="3">No Vertical Movement</entry>
       <entry value="0">Up</entry>
       <entry value="2">Up</entry>
@@ -665,7 +663,7 @@
 
   <sprite id="57" name="Koopa Troopa" notes="Your standard Koopa Troopa. Place it in the level and it will walk towards Mario when it loads. It can either be set to walk off ledges, or turn around at ledges.">
     <dualbox bit="48" title1="Walks Off Ledges" title2="Turns Around At Ledges" comment="This determines if the Koopa Troopa will mindlessly walk off of ledges or if it will turn around when it reaches a ledge." comment2="This also changes the color of the Koopa Troopa."/>
-    <list bit="19-20" title="Load State" comment="This determines what animation state the Koopa Troopa will load as." comment2="Normal: The Koopa Troopa will be walking normally when loaded. &lt;br&gt; &lt;br&gt;Loads as Shell: The Koopa Troopa will load inside its shell and then return to normal. &lt;br&gt; &lt;br&gt;Stays in Shell: The Koopa Troopa will load inside its shell and not return to normal. However, it cannot be kicked until jumped on and will instead hurt the player.">
+    <list bit="19-20" title="Load State" comment="This determines what animation state the Koopa Troopa will load as." comment2="Normal: The Koopa Troopa will be walking normally when loaded.&lt;br&gt;&lt;br&gt;Loads as Shell: The Koopa Troopa will load inside its shell and then return to normal.&lt;br&gt;&lt;br&gt;Stays in Shell: The Koopa Troopa will load inside its shell and not return to normal. However, it cannot be kicked until jumped on and will instead hurt the player.">
       <entry value="0">Normal</entry>
       <entry value="1">Loads as Shell</entry>
       <entry value="2">Stays in Shell</entry>
@@ -861,7 +859,7 @@
   </sprite> <!-- #78: Bouncy Cloud -->
 
   <sprite id="79" name="Incomplete Sprite - 'En_Helpos'" notes="Does nothing.">
-    </sprite> <!-- #79: Incomplete Sprite - 'En_Helpos' -->
+  </sprite> <!-- #79: Incomplete Sprite - 'En_Helpos' -->
 
   <sprite id="80" name="Fire Bro" notes="A standard Brothers enemy that shoots fireballs at the player.">
   </sprite> <!-- #80: Fire Bro -->
@@ -1208,7 +1206,7 @@
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #86: Grey Tiled Block with Spikes - Top + Bottom -->
 
-  <sprite id="87" name="(Unused) Trampoline Wall" notes="This sprite lacks finished textures and as such, is incomplete. Upon contact, the player is thrust in the opposite direction. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;This sprite is not recommended for normal use at this time.&lt;/font&gt;">
+  <sprite id="87" name="(Unused) Trampoline Wall" notes="This sprite lacks finished textures and as such, is incomplete. Upon contact, the player is thrust in the opposite direction.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;This sprite is not recommended for normal use at this time.&lt;/font&gt;">
     <list nybble="12" title="Height" comment="This determines how tall the Trampoline Wall is.">
       <entry value="0">1 Block</entry>
       <entry value="1">2 Blocks</entry>
@@ -1230,10 +1228,10 @@
   </sprite> <!-- #87 (Unused) Trampoline Wall -->
 
   <sprite id="88" name="Incomplete Sprite - 'En_Boyon'" notes="Does nothing.">
-    </sprite> <!-- #88: Incomplete Sprite - 'En_Boyon' -->
+  </sprite> <!-- #88: Incomplete Sprite - 'En_Boyon' -->
 
   <sprite id="89" name="Incomplete Sprite - 'En_Remocon_Torimochi'" notes="Does nothing.">
-    </sprite> <!-- #89: Incomplete Sprite - 'En_Remocon_Torimochi' -->
+  </sprite> <!-- #89: Incomplete Sprite - 'En_Remocon_Torimochi' -->
 
   <sprite id="90" name="Effect - Wind Physics and Sound" notes="This will generate occasional windy pushbacks and wind sound effects. It is best used in conjunction with the suggested sprites, but they are not required.">
     <dependency notes="In order to generate sandstorm graphics, [374] Effect - Falling Objects and Wind is required using the Snow setting. To add coins to this effect, [284] Physics Coin Controller must be linked.">
@@ -1257,18 +1255,18 @@
   <!-- Add full documentation on usage such as path placement and sprite placement. -->
   <!-- SpD1.5 lists Screen Shake as 9-10 instead of just 9...? -->
   <!-- SpD1.5 suggests Loop Last 2 Nodes will actually just reverse the path. What if the Path isn't set to 'Loops'? -->
-  <sprite id="91" name="Auto-Scrolling Controller" notes="The Auto-Scroller will lock the game's camera along a specific Path. This path cannot cause the camera to unnaturally leave the Zone's boundaries. The camera's boundary is defined by the left side of the screen, so it is recommended to leave at least one screen's width after the path's final Node. &lt;br&gt; &lt;br&gt;Finally, the Auto-Scroller moves at a set Speed and Acceleration that cannot be altered by Path settings.">
+  <sprite id="91" name="Auto-Scrolling Controller" notes="The Auto-Scroller will lock the game's camera along a specific Path. This path cannot cause the camera to unnaturally leave the Zone's boundaries. The camera's boundary is defined by the left side of the screen, so it is recommended to leave at least one screen's width after the path's final Node.&lt;br&gt;&lt;br&gt;Finally, the Auto-Scroller moves at a set Speed and Acceleration that cannot be altered by Path settings.">
     <dependency notes="A path is required for the Auto-Scrolling Controller to function.">
-	  <suggested sprite="321"/> <!-- Beta Arrow Block -->
+      <suggested sprite="321"/> <!-- Beta Arrow Block -->
     </dependency>
-    <list bit="25-28" title="Activation Mode" comment="This determines the conditions to activate the Auto-Scroller." comment2="Event Activated: Auto-Scroller only starts when the Triggering Event is activated. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Behaves Incorrectly:&lt;/font&gt; Do not use this option. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;orange&quot;&gt;Activated by Ground-Pounding [321]:&lt;/font&gt; When the Beta Arrow Block is ground-pounded, it sends code to the Auto-Scroller to start. Intended functionality was likely to control the direction as well. &lt;br&gt; &lt;br&gt;Already Activated: Activates without the need to set a Triggering Event.">
+    <list bit="25-28" title="Activation Mode" comment="This determines the conditions to activate the Auto-Scroller." comment2="Event Activated: Auto-Scroller only starts when the Triggering Event is activated.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;Behaves Incorrectly:&lt;/font&gt; Do not use this option.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;orange&quot;&gt;Activated by Ground-Pounding [321]:&lt;/font&gt; When the Beta Arrow Block is ground-pounded, it sends code to the Auto-Scroller to start. Intended functionality was likely to control the direction as well.&lt;br&gt;&lt;br&gt;Already Activated: Activates without the need to set a Triggering Event.">
       <entry value="0">Event Activated</entry>
       <entry value="1">Behaves Incorrectly</entry>
       <entry value="2">Activated by Ground-Pounding [321]</entry>
       <entry value="3">Already Activated</entry>
     </list>
     <value bit="9-16" title="Triggering Event ID" comment="When this Event ID is activated, the Auto-Scroller will activate. Deactivating the event will not deactivate the Auto-Scroller; it will continue until it has reached the final Path Node." requiredbit="25-28" requiredval="0" idtype="Triggering Event"/> <!-- Appears only if set to Event Activated -->
-    <list bit="30-32" title="End Behavior" comment="This determines what the Auto-Scroller will do with the camera when it has reached the final Node of its path." comment2="Release Control: The camera will unlock, and the player can continue wherever they want. The camera may jerk slightly when it first releases.(?) &lt;br&gt; &lt;br&gt;Loop Last 2 Nodes: The Auto-Scroller will continue to scroll between the last two Nodes on the path. &lt;br&gt; &lt;br&gt;Lock Screen: This option will lock the screen at the final path Node. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Unknown Value 2/3:&lt;/font&gt; May have different effects, ASM research is likely required.">
+    <list bit="30-32" title="End Behavior" comment="This determines what the Auto-Scroller will do with the camera when it has reached the final Node of its path." comment2="Release Control: The camera will unlock, and the player can continue wherever they want. The camera may jerk slightly when it first releases.(?)&lt;br&gt;&lt;br&gt;Loop Last 2 Nodes: The Auto-Scroller will continue to scroll between the last two Nodes on the path.&lt;br&gt;&lt;br&gt;Lock Screen: This option will lock the screen at the final path Node.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;Unknown Value 2/3:&lt;/font&gt; May have different effects, ASM research is likely required.">
       <entry value="0">Release Control</entry>
       <entry value="1">Loop Last 2 Nodes</entry>
       <entry value="4">Lock Screen</entry>
@@ -1283,7 +1281,7 @@
     <value bit="1-8" title="Target Event ID" comment="When the Auto-Scroller reaches its final path Node, this Event ID is activated." idtype="Target Event"/>
     <value nybble="12" title="Path ID" comment="This determines which Path the camera will follow while scrolling. [CLARIFY] The upper left corner of the Screen, relative to the Auto-Scroller's placement, is the starting point for the path." idtype="Path"/>
     <value nybble="5-6" title="Midway Start Node ID" comment="If the level was entered from the Midway Point, the Auto-Scroller will begin from this Node instead of the first Node in the Path."/>
-	<checkbox bit="40" title="Unknown Flag 10 (1)" comment="Used in 08-07; might be related to (unused) Path and Dragon Coaster in A1Z1 and A2Z1."/>
+    <checkbox bit="40" title="Unknown Flag 10 (1)" comment="Used in 08-07; might be related to (unused) Path and Dragon Coaster in A1Z1 and A2Z1."/>
     <checkbox bit="44" title="Unknown Flag 11 (1)" comment="Possibly determines behavior relating to [159]. ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #91: Auto-Scrolling Controller -->
 
@@ -1553,7 +1551,7 @@
     <value nybble="11-12" title="Rotation ID" comment="Works with both Swaying and Spinning." />
   </sprite>
 
-  <sprite id="108" name="Line Controlled Amp Spawner" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="This will spawn a specified number of Amps along the Line that the sprite is placed on. Once it has spawned the number of Amps it is set to, it will not do anything else even if they fall off.&lt;br&gt; &lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interupted and Mario will take no damage.">
+  <sprite id="108" name="Line Controlled Amp Spawner" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="This will spawn a specified number of Amps along the Line that the sprite is placed on. Once it has spawned the number of Amps it is set to, it will not do anything else even if they fall off.&lt;br&gt;&lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interupted and Mario will take no damage.">
     <dependency notes="Place this sprite directly onto the Line guide that you want it to spawn on."/>
     <list nybble="9" title="Number of Amps" comment="This determines how many Amps are spawned on the Line by this Spawner.">
       <entry value="0">1 Amp</entry>
@@ -1733,7 +1731,7 @@
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
     <checkbox bit="17" title="Swims Left" comment="If checked, swims to the left. The fish will not swim backwards when you backtrack. If unchecked, the direction the Cheep Cheep swims first depends on the 'Type'. For Types 3, 4, 6 and 7, it swims to the right in general. All other types will cause the Cheep Cheeps to swim first in Mario's direction."/>
-    <list bit="45-48" title="Type" comment="This determines which type of behavior the Cheep Cheep will follow, as well as the type of Cheep Cheep that is spawned." comment2="Specifies the Swimming-'Type' that should be used for this Cheep Cheep. Value 5 is unique. Type-5 Cheep Cheeps will look into the camera until Mario comes close. Furthermore, the direction will be ignored and the Cheep Cheep will always swim in the opposite direction, away from Mario, if Mario is close enough. &lt;br&gt;&lt;br&gt;Values marked ​​with an asterisk &lt;b&gt;(*)&lt;/b&gt; will ignore the speed value set and instead will always use value 1, no matter what is selected there. Also, all values ​​with &lt;b&gt;(*)&lt;/b&gt; will let the Cheep Cheep swim in a wavy line (just as the Coin Cheep Cheep does). &lt;br&gt;&lt;br&gt;The two values ​​with &lt;b&gt;(**)&lt;/b&gt; follow exactly the same behavior as those marked with &lt;b&gt;(*)&lt;/b&gt;, the only difference is its speed. Cheep Cheeps affected will swim slightly faster, both vertical and horizontal.">
+    <list bit="45-48" title="Type" comment="This determines which type of behavior the Cheep Cheep will follow, as well as the type of Cheep Cheep that is spawned." comment2="Specifies the Swimming-'Type' that should be used for this Cheep Cheep. Value 5 is unique. Type-5 Cheep Cheeps will look into the camera until Mario comes close. Furthermore, the direction will be ignored and the Cheep Cheep will always swim in the opposite direction, away from Mario, if Mario is close enough.&lt;br&gt;&lt;br&gt;Values marked ​​with an asterisk &lt;b&gt;(*)&lt;/b&gt; will ignore the speed value set and instead will always use value 1, no matter what is selected there. Also, all values ​​with &lt;b&gt;(*)&lt;/b&gt; will let the Cheep Cheep swim in a wavy line (just as the Coin Cheep Cheep does).&lt;br&gt;&lt;br&gt;The two values ​​with &lt;b&gt;(**)&lt;/b&gt; follow exactly the same behavior as those marked with &lt;b&gt;(*)&lt;/b&gt;, the only difference is its speed. Cheep Cheeps affected will swim slightly faster, both vertical and horizontal.">
       <entry value="0">Cheep Cheep ("Swim"), Swims Straight</entry>
       <entry value="2">Cheep Cheep ("Swim"), Swims Straight</entry>
       <entry value="3">Cheep Cheep ("LrSwim"), Swims Left / Right</entry>
@@ -1771,7 +1769,7 @@
     <checkbox bit="15" title="Positioning Flag (2)" comment="Treeki:&lt;br&gt;Setting Flag 2 and 4 for Nybble 4: This function will create a particular Y position picture of all the Cheep Cheeps, each frame. The 'Cheep Cheep Formation Spawner' that has generated the Cheep Cheeps will store this 'picture'."/>
     <checkbox bit="14" title="Positioning Flag (4)" comment="Treeki:&lt;br&gt; Setting Flag 2 and 4 for Nybble 4: This function will create a particular Y position picture of all the Cheep Cheeps, each frame. The 'Cheep Cheep Formation Spawner' that has generated the Cheep Cheeps will store this 'picture'."/>
     <value nybble="6" title="Positioning" comment="Treeki also commented:&lt;br&gt;'Nybble 6 determines WHICH position is allocated to the fish. This option is only useful for the Cheep Cheep Formation Spawner (247), because 247 uses this nybble for all generated Cheep Cheeps. For everything else, this option seems to be pointless. When you use the two flags for a Cheep Cheep in Reggie!, the corresponding Cheep Cheep won't have 'parents' any more, so it will get some random data for the Y position and might go off the screen. So you can safely ignore this value.'"/>
-    <value nybble="3-4" title="'Dodge' Triggering Event ID" comment="This may look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right). &lt;br&gt;Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'. If it really works is a good question. Try it and report your findings!"/>
+    <value nybble="3-4" title="'Dodge' Triggering Event ID" comment="This may look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right).&lt;br&gt;Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'. If it really works is a good question. Try it and report your findings!"/>
   </sprite> <!-- #115: Cheep Cheep / Deep Cheep / Eep Cheep -->
 
   <!-- There may be additional variables that allow this sprite to interact with coins. -->
@@ -1921,7 +1919,7 @@
   </sprite> <!-- #128: Chainlink Fence Flip Panel - Long -->
 
   <sprite id="129" name="Paddle Wheel Platform" notes="A 4-platform set creating a sort of wheel which will 'spin' and move based on where the players are standing.">
-    <dualbox bit="28" title1="Left and Right" title2="Line Controlled" comment="This determines which type of movement the platform will use." comment2="Left and Right: The platform will move to the left or right as it spins until it hits a wall. When it does, it will stop spinning.  &lt;br&gt; &lt;br&gt;Line Controlled: The platform will move left and right along a Line and when it reaches an end point, it will continue to spin unless blocked by a wall."/>
+    <dualbox bit="28" title1="Left and Right" title2="Line Controlled" comment="This determines which type of movement the platform will use." comment2="Left and Right: The platform will move to the left or right as it spins until it hits a wall. When it does, it will stop spinning. &lt;br&gt;&lt;br&gt;Line Controlled: The platform will move left and right along a Line and when it reaches an end point, it will continue to spin unless blocked by a wall."/>
     <checkbox bit="20" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- 129: Paddle Wheel Platform -->
@@ -1989,8 +1987,8 @@
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
       <entry value="1">7 Blocks</entry>
       <entry value="3">10 Blocks</entry>
-	  <entry value="2">14 Blocks</entry>
-	  <entry value="0">16 Blocks</entry> <!-- The rest are all 16 Blocks -->
+      <entry value="2">14 Blocks</entry>
+      <entry value="0">16 Blocks</entry> <!-- The rest are all 16 Blocks -->
     </list>
     <list bit="19-20" title="Speed" comment="This determines the speed in which the Skewer will cover its Travel Distance.">
       <entry value="3">Stationary</entry>
@@ -2010,10 +2008,10 @@
   <!-- title1="Rising Forever while On" title="Falling Forever while On" - True or False? What happens when using a Triggering Event on a permanently rising or permanently falling Moving Water? What happens when before the event activates? What happens when it activates? What happens when it is deactivated? What happens when it's activated again? -->
   <!-- title1="Rising and Falling while On, Returns when Off" - True or Fale? Does it very quickly return or will it instantly (glitchy looking) return to its starting position? -->
   <!-- Dear Dog that took around two hours to sort that mess out piece by piece. It's wonderful what these new display settings can actually accomplish for making this type of information actually usable! -->
-  <sprite id="138" name="Water" noyoshi="True" notes="Place this in the level to generate water. There are many different ways to use this type of Water. &lt;br&gt; &lt;br&gt;Underwater Zone: If you just want to create an underwater zone, check Flat Top and leave everything else blank. Then place the Water about 6 blocks above your upper Zone boundary.
-  &lt;br&gt; &lt;br&gt;Location Water: If you assign a Location ID, you can cause water to appear only within the chosen Location instead of across the entire stage.
-  &lt;br&gt; &lt;br&gt;Moving Water: You can also create water that rises and/or falls. This gets a little complicated, so be sure to read the related settings.
-  &lt;br&gt; &lt;br&gt;Water Crest's Maximum Length: The crest of Water will stop drawing past 8192 pixels (512 blocks). You can avoid this by creating multiple Locations of Water. Please note the first, left-most Location must be a multiple of 16 pixels long.">
+  <sprite id="138" name="Water" noyoshi="True" notes="Place this in the level to generate water. There are many different ways to use this type of Water.&lt;br&gt;&lt;br&gt;Underwater Zone: If you just want to create an underwater zone, check Flat Top and leave everything else blank. Then place the Water about 6 blocks above your upper Zone boundary.
+ &lt;br&gt;&lt;br&gt;Location Water: If you assign a Location ID, you can cause water to appear only within the chosen Location instead of across the entire stage.
+ &lt;br&gt;&lt;br&gt;Moving Water: You can also create water that rises and/or falls. This gets a little complicated, so be sure to read the related settings.
+ &lt;br&gt;&lt;br&gt;Water Crest's Maximum Length: The crest of Water will stop drawing past 8192 pixels (512 blocks). You can avoid this by creating multiple Locations of Water. Please note the first, left-most Location must be a multiple of 16 pixels long.">
     <dependency notes="When using Moving Water, the Water becomes loaded across the entire Area instead of just the active Zone. Please build your levels with this in mind. Additionally, do not use more than one Moving Water in the same Area as only the top (highest Y-Axis) one will take effect. If you need Moving Water in multiple Zones within the same area, use [253] Rising and Falling Water instead. Also, be sure to reset your Sprite Settings if you switch between different setting groups of Moving Water or Location Water to prevent unusual bugs and behavior.">
       <suggested sprite="317"/> <!-- Lets bubbles exist -->
     </dependency>
@@ -2082,7 +2080,7 @@
 
   <!-- Nope! I'm done! You guys test this crap. *clones Water* I'm moving on... -->
   <!-- Test the 7 Modes through their associated conditions and fully describe them in the same way that Water is described. [Extremely Buggy] is naturally assumed for Falling mixed with the last three types. -->
-  <sprite id="139" name="Lava" noyoshi="True" notes="Place this in the level to generate lava. There are many different ways to use Lava. &lt;br&gt; &lt;br&gt;Location Lava: If you assign a Location ID, you can cause lava to appear only within the chosen Location instead of across the entire stage. &lt;br&gt; &lt;br&gt;Moving Lava: You can also create lava that rises and/or falls. This gets a little complicated, so be sure to read the related settings.&lt;br&gt; &lt;br&gt;Lava Crest's Maximum Length: The crest of Lava will stop drawing past 8192 pixels (512 blocks). You can avoid this by creating multiple Locations of Lava. Please note the first, left-most Location must be a multiple of 16 pixels long.">">
+  <sprite id="139" name="Lava" noyoshi="True" notes="Place this in the level to generate lava. There are many different ways to use Lava.&lt;br&gt;&lt;br&gt;Location Lava: If you assign a Location ID, you can cause lava to appear only within the chosen Location instead of across the entire stage.&lt;br&gt;&lt;br&gt;Moving Lava: You can also create lava that rises and/or falls. This gets a little complicated, so be sure to read the related settings.&lt;br&gt;&lt;br&gt;Lava Crest's Maximum Length: The crest of Lava will stop drawing past 8192 pixels (512 blocks). You can avoid this by creating multiple Locations of Lava. Please note the first, left-most Location must be a multiple of 16 pixels long.">">
     <dependency notes="When using Moving Lava, the Lava becomes loaded across the entire Area instead of just the active Zone. Please build your levels with this in mind. Additionally, do not use more than one Moving Lava in the same Area as only the top (highest Y-Axis) one will take effect. Unlike with Moving Water you cannot use Moving Lava in multiple Zones within the same area, unless you place them at the same Y-Axis. Also, be sure to reset your Sprite Settings if you switch between different setting groups of Moving Lava or Location Lava to prevent unusual bugs and behavior."/>
    <!-- The different displays of the Speed option -->
     <list bit="18-20" title="Moving Lava - Rising Speed" comment="This determines the speed at which the Lava will rise, or rise and fall." requiredbit="17" requiredval="0">
@@ -2151,8 +2149,8 @@
     <list nybble="7" title="Travel Distance" comment="This determines the distance the Skewer will travel.">
       <entry value="1">7 Blocks</entry>
       <entry value="3">10 Blocks</entry>
-	  <entry value="2">14 Blocks</entry>
-	  <entry value="0">16 Blocks</entry> <!-- The rest are all 16 Blocks -->
+      <entry value="2">14 Blocks</entry>
+      <entry value="0">16 Blocks</entry> <!-- The rest are all 16 Blocks -->
     </list>
     <list bit="19-20" title="Speed" comment="This determines the speed in which the Skewer will cover its Travel Distance.">
       <entry value="3">Stationary</entry>
@@ -2173,7 +2171,7 @@
       <entry value="1">7 Blocks</entry>
       <entry value="3">10 Blocks</entry>
       <entry value="2">14 Blocks</entry>
-	  <entry value="0">16 Blocks</entry> <!-- The rest are all 16 Blocks -->
+      <entry value="0">16 Blocks</entry> <!-- The rest are all 16 Blocks -->
     </list>
     <list bit="19-20" title="Speed" comment="This determines the speed in which the Skewer will cover its Travel Distance.">
       <entry value="3">Stationary</entry>
@@ -2194,7 +2192,7 @@
       <entry value="1">7 Blocks</entry>
       <entry value="3">10 Blocks</entry>
       <entry value="2">14 Blocks</entry>
-	  <entry value="0">16 Blocks</entry> <!-- The rest are all 16 Blocks -->
+      <entry value="0">16 Blocks</entry> <!-- The rest are all 16 Blocks -->
     </list>
     <list bit="19-20" title="Speed" comment="This determines the speed in which the Skewer will cover its Travel Distance.">
       <entry value="3">Stationary</entry>
@@ -2285,7 +2283,7 @@
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Coin with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requiredbit="25-28" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
     <value bit="17-24" title="Collection ID" comment="If pairing the Coin with sprite 459/461, match the Collection ID to have the game count this Coin towards the Collection Set." requiredbit="25-28" requiredval="8" idtype="Collection"/> <!-- Appears if [Movement Type] = 8 -->
     <!-- Coin Type Lists -->
-    <list bit="45-48" title="Behavior Type" comment="This determines the additional behavior of the Coin." comment2="Some coin types don't work together with a Movement Controller. &lt;br&gt;&lt;br&gt; 0 - A normal coin.&lt;br&gt; 1 - Drifts horizontally in Mario's direction, inside a bubble.&lt;br&gt; 2 - Sinks quickly in Mario's direction, inside a bubble.&lt;br&gt; 3 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower.&lt;br&gt; 4 - Sinks slowly in Mario's direction, inside a bubble.&lt;br&gt; 5 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower. (May differ from 3?)&lt;br&gt; 6 - Makes the bonus sound from a 10-Coin block bonus when the coin loads&lt;br&gt; 7 - Floats upwards in Mario's direction&lt;br&gt; 8 - Spins faster than a normal coin (?)&lt;br&gt; 9 - Collected automatically when the coin loads&lt;br&gt; 10 - Unknown effect, coin does not show.&lt;br&gt; 11 - A loose coin that seems to fall from the sky&lt;br&gt; 12 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower. (May differ from 3?)&lt;br&gt; 13 - Unknown effect, coin does not show.&lt;br&gt; 14 - Spins much faster than a normal coin&lt;br&gt; 15 - Frozen inside of an ice block (can be melted by fireballs)." advancedcomment="0: StateID_CoinWait; &lt;br&gt;3/5: State_Jump; &lt;br&gt;4: rlwinm Down, uses Nybble 11 (0, 1, 2); &lt;br&gt;6: State_BlockDownJump; &lt;br&gt;7: FiveBlockWait, uses Nybble 11 (0, 1, 2, 3); &lt;br&gt;8: Flags coin, 0/159/260; &lt;br&gt;9: DemoUp, uses Nybble 9 (PlayerID); &lt;br&gt;10: EggBlock; &lt;br&gt;11: State_Jump; &lt;br&gt;12: State_BlockJump; &lt;br&gt;13: StateID_Move, Very Similar to 0?; &lt;br&gt;14: WaterState;">
+    <list bit="45-48" title="Behavior Type" comment="This determines the additional behavior of the Coin." comment2="Some coin types don't work together with a Movement Controller.&lt;br&gt;&lt;br&gt; 0 - A normal coin.&lt;br&gt; 1 - Drifts horizontally in Mario's direction, inside a bubble.&lt;br&gt; 2 - Sinks quickly in Mario's direction, inside a bubble.&lt;br&gt; 3 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower.&lt;br&gt; 4 - Sinks slowly in Mario's direction, inside a bubble.&lt;br&gt; 5 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower. (May differ from 3?)&lt;br&gt; 6 - Makes the bonus sound from a 10-Coin block bonus when the coin loads&lt;br&gt; 7 - Floats upwards in Mario's direction&lt;br&gt; 8 - Spins faster than a normal coin (?)&lt;br&gt; 9 - Collected automatically when the coin loads&lt;br&gt; 10 - Unknown effect, coin does not show.&lt;br&gt; 11 - A loose coin that seems to fall from the sky&lt;br&gt; 12 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower. (May differ from 3?)&lt;br&gt; 13 - Unknown effect, coin does not show.&lt;br&gt; 14 - Spins much faster than a normal coin&lt;br&gt; 15 - Frozen inside of an ice block (can be melted by fireballs)." advancedcomment="0: StateID_CoinWait;&lt;br&gt;3/5: State_Jump;&lt;br&gt;4: rlwinm Down, uses Nybble 11 (0, 1, 2);&lt;br&gt;6: State_BlockDownJump;&lt;br&gt;7: FiveBlockWait, uses Nybble 11 (0, 1, 2, 3);&lt;br&gt;8: Flags coin, 0/159/260;&lt;br&gt;9: DemoUp, uses Nybble 9 (PlayerID);&lt;br&gt;10: EggBlock;&lt;br&gt;11: State_Jump;&lt;br&gt;12: State_BlockJump;&lt;br&gt;13: StateID_Move, Very Similar to 0?;&lt;br&gt;14: WaterState;">
       <entry value="0">Normal</entry>
       <entry value="8">Spinning Faster (150%)</entry>
       <entry value="14">Spinning Much Faster (200%)</entry>
@@ -2332,12 +2330,10 @@
     <checkbox bit="44" title="Shift Spawn Position (NSMB:DS)" comment="When enabled, this moves the Springboard half a block to the right." advanced="True" advancedcomment="This is a leftover setting from the NSMB:DS Springboard where sprites could only be placed exactly on the tile grid. It... really isn't useful."/>
   </sprite> <!-- #148: Springboard -->
 
-  <sprite id="149" name="Rotation Controller - Spinning" notes="This controller will create synchronized movement between matched sprites and cause them to spin in a circular movement.
-  Additionally, it can control the Zone's Zoom level depending on the rotation controller's current rotation.">
+  <sprite id="149" name="Rotation Controller - Spinning" notes="This controller will create synchronized movement between matched sprites and cause them to spin in a circular movement.&lt;br&gt;Additionally, it can control the Zone's Zoom level depending on the rotation controller's current rotation.">
     <dependency notes="A quick note about using this with rotation controlled coins and blocks: Coins and Blocks have a different rotation speed when paired with this controller than with other sprites. If using both coins and blocks, and other sprites, with the same central point of rotation, you will need multiple Spinning controllers in order to have them rotate at the same speed."/>
     <value nybble="11-12" title="Rotation ID" comment="This pairs matching rotation controlled objects to this controller. A rotation ID isn't necessary when using this sprite to control the camera." idtype="Rotation"/>
-    <list nybble="5" title="Starting Rotation" comment="This determines the rotational adjustment for when items are first loaded or before the controller is activated. &lt;br&gt;The starting rotation can also set the Zone's Zoom level when it's loaded, by-passing the initial zoomed in camera."
-	comment2="For coins and blocks, the Starting Rotation value is doubled! This means that a value of 4 will rotate the coin or block 180°.">
+    <list nybble="5" title="Starting Rotation" comment="This determines the rotational adjustment for when items are first loaded or before the controller is activated.&lt;br&gt;The starting rotation can also set the Zone's Zoom level when it's loaded, by-passing the initial zoomed in camera." comment2="For coins and blocks, the Starting Rotation value is doubled! This means that a value of 4 will rotate the coin or block 180°.">
       <entry value="0">0.0°</entry>
       <entry value="1">22.5°</entry>
       <entry value="2">45.0°</entry>
@@ -2368,13 +2364,11 @@
     <dualbox bit="36" title1="Spins Counter-Clockwise" title2="Spins Clockwise" comment="This determines which direction the controller will rotate the attached objects."/>
     <list bit="31-32" title="Rotation Mode" comment="This determines the way the rotation controller functions, including its event-triggered behaviour." comment2="Certain obstacles function best when set to [Always Spin], while rewards for the player often function best when [Stops and Returns]. The other mode, [Spins While Active], allows you to create a staggered continous rotation (e.g., gears,) among other uses." advancedcomment="A note to ASM hackers, there may be a difference between values 2 and 3. Feel free to investigate further.">
       <entry value="0">Stops and Returns</entry>
-	  <entry value="1">Constant Spinning</entry>
+      <entry value="1">Constant Spinning</entry>
       <entry value="2">Spins While Active</entry>
-	  <!--entry value="3">Spins While Active</entry-->
+      <!--entry value="3">Spins While Active</entry-->
     </list>
-    <value bit="9-16" title="Triggering Event ID" comment="When the Triggering Event is activated, the controller will rotate all associated objects according to the mode. Deactivation effects will also differ depending on the mode. See the ! Comment." comment2="Constant Spinning: When activated, the items will decelerate to a stop and accelerate in the opposite direction. 
-	When deactivated, it will reverse back to its set movement in a similar fashion. &lt;br&gt; &lt;br&gt;Stops and Returns: When activated, the items will rotate the Rotation Distance and stop. When deactivated, the items will immediately start to rotate back to their starting positions, even if the initial movement is not completed. &lt;br&gt; &lt;br&gt;Spins While Active:
-	 When activated, the items will rotate continuously. When deactivated, the items will stop at the next multiple of its set Rotation Distance." idtype="Triggering Event"/>
+    <value bit="9-16" title="Triggering Event ID" comment="When the Triggering Event is activated, the controller will rotate all associated objects according to the mode. Deactivation effects will also differ depending on the mode. See the ! Comment." comment2="Constant Spinning: When activated, the items will decelerate to a stop and accelerate in the opposite direction.&lt;br&gt;When deactivated, it will reverse back to its set movement in a similar fashion.&lt;br&gt;&lt;br&gt;Stops and Returns: When activated, the items will rotate the Rotation Distance and stop. When deactivated, the items will immediately start to rotate back to their starting positions, even if the initial movement is not completed.&lt;br&gt;&lt;br&gt;Spins While Active:&lt;br&gt;When activated, the items will rotate continuously. When deactivated, the items will stop at the next multiple of its set Rotation Distance." idtype="Triggering Event"/>
     <list nybble="6" title="Event Triggered - Rotation Distance" comment="This determines the distance the rotation controller will spin the items before stopping, when set to the [Stops and Returns] or [Spins While Active] Rotation Modes." comment2="Coins and blocks have the same Rotation Distance as other sprites." requiredbit="32" requiredval="0">
       <entry value="0">0.0°</entry>
       <entry value="1">22.5°</entry>
@@ -2398,10 +2392,7 @@
     <checkbox bit="40" title="Creates Fake POW-Block Effect" comment="When enabled, the rotation controller will generate a silent POW-Block screen shake." requiredbit="32" requiredval="0"/> <!-- Appears only when Stops and Returns [Rotation Mode] is set -->
     <checkbox bit="39" title="Creates Coin Sound Effect" comment="When enabled, the rotation controller will generate a Coin 'Sparkle' sound effect when linked to a Rotation Controlled Coin that has not been collected yet." comment2="Requires coins to be a part of the paired rotation items." requiredbit="32" requiredval="0"/> <!-- Appears only when Stops and Returns [Rotation Mode] is set -->
     <!-- Zoom effect works with value 4-12 -->
-	<checkbox bit="38" title="Controls the Zone's Zoom Level" comment="When enabled, the Zone's Zoom level will become fully dependant on the rotation controller's current angle.
-	Thus, the camera will transition in accordance with the speed and current arc of the sprite. It supports all Rotation Modes, but works best with [Stops and Returns]. This is the pattern the Zoom Level will follow:
-	&lt;br&gt; &lt;br&gt;0° = Zooms to the Zone's original Zoom Level. &lt;br&gt;22.5° = Zooms out roughly to the next available Zoom Level. &lt;br&gt;45° = Zooms out roughly 70% towards Zoom Level 4. &lt;br&gt;67.5° = Zooms out roughly 95% towards Zoom Level 4. &lt;br&gt;90° = Zooms out exactly to Zoom Level 4. &lt;br&gt;112.5+° = The pattern above loops in reverse, ultimately back to the original Zoom level at 180°."
-	comment2="The controller will still work with a paired sprite, but it's not required. The camera movement won't differ whether it's spinning Clockwise or Counter-Clockwise. &lt;br&gt;Finally, multiple of these sprites using this setting in one Zone can overlap each other and take priority of the camera movement, but it's best for only one to be active at a time."/>
+    <checkbox bit="38" title="Controls the Zone's Zoom Level" comment="When enabled, the Zone's Zoom level will become fully dependant on the rotation controller's current angle. Thus, the camera will transition in accordance with the speed and current arc of the sprite. It supports all Rotation Modes, but works best with [Stops and Returns]. This is the pattern the Zoom Level will follow:&lt;br&gt;&lt;br&gt;0° = Zooms to the Zone's original Zoom Level.&lt;br&gt;22.5° = Zooms out roughly to the next available Zoom Level.&lt;br&gt;45° = Zooms out roughly 70% towards Zoom Level 4.&lt;br&gt;67.5° = Zooms out roughly 95% towards Zoom Level 4.&lt;br&gt;90° = Zooms out exactly to Zoom Level 4.&lt;br&gt;112.5+° = The pattern above loops in reverse, ultimately back to the original Zoom level at 180°." comment2="The controller will still work with a paired sprite, but it's not required. The camera movement won't differ whether it's spinning Clockwise or Counter-Clockwise.&lt;br&gt;Finally, multiple of these sprites using this setting in one Zone can overlap each other and take priority of the camera movement, but it's best for only one to be active at a time."/>
   </sprite> <!-- #149: Rotation Controller - Spinning -->
 
   <sprite id="150" name="(Unused) Jumping Cheep Cheep" notes="&lt;font color=&quot;orange&quot;&gt;This sprite is not recommended for use due to incompatibilities with the Ice Flower power-up.&lt;/font&gt;" advancednotes="A Cheep Cheep that will jump out of the water in an attempt to damage the player. If frozen, only half of the Cheep Cheep will be covered by ice, and the other part will stick out.">
@@ -2419,7 +2410,7 @@
   </sprite> <!-- #151: Porcupuffer -->
 
   <sprite id="152" name="Incomplete Sprite - 'En_Blur'" notes="Does nothing.">
-    </sprite> <!-- #152: Incomplete Sprite - 'En_Blur' -->
+  </sprite> <!-- #152: Incomplete Sprite - 'En_Blur' -->
 
   <sprite id="153" name="(Unused) &quot;?&quot; Switch (Orange)" notes="An exact duplicate of the normal &quot;?&quot; Switch (Orange).">
     <dependency notes="The game will crash unless a normal orange switch is placed somewhere in the level. It does not have to be within an area that is actually used.">
@@ -2432,7 +2423,7 @@
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
     <dualbox bit="28" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/>
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/>
     <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -2661,7 +2652,7 @@
   <sprite id="168" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #168: Unused -->
 
   <sprite id="169" name="Incomplete Sprite - 'En_Slip_Penguin'" notes="Does nothing.">
-    </sprite> <!-- #169: Incomplete Sprite - 'En_Slip_Penguin' -->
+  </sprite> <!-- #169: Incomplete Sprite - 'En_Slip_Penguin' -->
 
   <sprite id="170" name="Chestnut Goomba" yoshinotes="While Yoshi cannot jump on this enemy, any Yoshi Fireball will burn the outer shell releasing the tasty Goomba inside." notes="A spiky brown ball that contians a normal Goomba, which will appear if it is shot with a Fireball. Fire Bro fireballs will also open it, but Fire Chomp fireballs will not.">
   </sprite> <!-- #170: Chestnut Goomba -->
@@ -2814,7 +2805,7 @@
     </list>
     <checkbox bit="32" title="Vine / Climbing Exit" comment="When enabled, the Special Exit Controller will only activate is the player is also climbing while within the specified area."/>
     <checkbox bit="22" title="Exit, Stage Left" comment="When enabled, the Special Exit Controller will eject the players from the current level." comment2="This will not complete the level. The player will be forced to walk left during the transition, and the Exit Transition will be overriden with an iris focused on the left side of the screen. There is no pipe sound for this transition."/>
-    <list bit="19-20" title="Exit Transition" comment="This determines the transition animation used when the screen fades out." comment2="Wavy Transition - Bottom to Top: The screen will go black with a wavy line going from bottom to top. &lt;br&gt; &lt;br&gt;Wavy Transition - Top to Bottom: The screen will go black with a wavy line going from top to bottom. &lt;br&gt; &lt;br&gt;Wavy Transition - Top to Bottom (Delayed): Same as above, but the animation is not triggered immediately upon contact with the warp area, instead taking place after a small delay. &lt;br&gt; &lt;br&gt;Black Iris and Pipe Sound: This option works just like a normal pipe exit, with a black circle enclosing the triggering player's position. At the same time, the sound effect that plays when entering a normal pipe is also played." requiredbit="22" requiredval="0">
+    <list bit="19-20" title="Exit Transition" comment="This determines the transition animation used when the screen fades out." comment2="Wavy Transition - Bottom to Top: The screen will go black with a wavy line going from bottom to top.&lt;br&gt;&lt;br&gt;Wavy Transition - Top to Bottom: The screen will go black with a wavy line going from top to bottom.&lt;br&gt;&lt;br&gt;Wavy Transition - Top to Bottom (Delayed): Same as above, but the animation is not triggered immediately upon contact with the warp area, instead taking place after a small delay.&lt;br&gt;&lt;br&gt;Black Iris and Pipe Sound: This option works just like a normal pipe exit, with a black circle enclosing the triggering player's position. At the same time, the sound effect that plays when entering a normal pipe is also played." requiredbit="22" requiredval="0">
       <entry value="0">Wavy Transition - Bottom to Top</entry>
       <entry value="2">Wavy Transition - Top to Bottom</entry>
       <entry value="1">Wavy Transition - Top to Bottom (Delayed)</entry>
@@ -3025,24 +3016,24 @@
       <entry value="1">Triggered by Ambush Controller</entry>
       <entry value="2">Contains Toad (Unused)</entry>
     </list>
-	<list nybble="8" title="Mushroom Reward Amount" comment="Determines the number of Mushrooms the chest spawns. Specifying more than 5 Mushrooms can cause glitchy visual behavior, but it still works." requiredbit="37-40" requiredval="1-2"> <!-- Appears Chest Type Value 1-2 -->
-	  <entry value="0">3 Mushrooms</entry>
+    <list nybble="8" title="Mushroom Reward Amount" comment="Determines the number of Mushrooms the chest spawns. Specifying more than 5 Mushrooms can cause glitchy visual behavior, but it still works." requiredbit="37-40" requiredval="1-2"> <!-- Appears Chest Type Value 1-2 -->
+      <entry value="0">3 Mushrooms</entry>
       <entry value="1">4 Mushrooms</entry>
       <entry value="2">5 Mushrooms</entry>
       <entry value="3">6 Mushrooms</entry>
-	  <entry value="4">7 Mushrooms</entry>
-	  <entry value="5">8 Mushrooms</entry>
-	  <entry value="6">9 Mushrooms</entry>
-	  <entry value="7">10 Mushrooms</entry>
-	  <entry value="8">11 Mushrooms</entry>
-	  <entry value="9">12 Mushrooms</entry>
-	  <entry value="10">13 Mushrooms</entry>
-	  <entry value="11">14 Mushrooms</entry>
-	  <entry value="12">15 Mushrooms</entry>
-	  <entry value="13">16 Mushrooms</entry>
-	  <entry value="14">17 Mushrooms</entry>
-	  <entry value="15">18 Mushrooms</entry>
-	</list>
+      <entry value="4">7 Mushrooms</entry>
+      <entry value="5">8 Mushrooms</entry>
+      <entry value="6">9 Mushrooms</entry>
+      <entry value="7">10 Mushrooms</entry>
+      <entry value="8">11 Mushrooms</entry>
+      <entry value="9">12 Mushrooms</entry>
+      <entry value="10">13 Mushrooms</entry>
+      <entry value="11">14 Mushrooms</entry>
+      <entry value="12">15 Mushrooms</entry>
+      <entry value="13">16 Mushrooms</entry>
+      <entry value="14">17 Mushrooms</entry>
+      <entry value="15">18 Mushrooms</entry>
+    </list>
     <list nybble="12" title="Contains" comment="Determines the item in the chest. This only works with the Default Chest Type, as the other settings would just spawn Mushrooms." requiredbit="37-40" requiredval="0"> <!-- Appears only for Default Chests -->
       <entry value="0">Nothing</entry> <!-- 1, 9-14 is Nothing -->
       <entry value="2">Mushroom</entry>
@@ -3054,8 +3045,8 @@
       <entry value="7">Star</entry>
       <entry value="15">Random</entry>
     </list>
-	<value bit="9-16" title="Triggering Event ID" comment="The chest will only appear when the Triggering Event is 0 or is activated. It will not disappear if the Event is deactivated." idtype="Triggering Event"/>
-   </sprite>
+    <value bit="9-16" title="Triggering Event ID" comment="The chest will only appear when the Triggering Event is 0 or is activated. It will not disappear if the Event is deactivated." idtype="Triggering Event"/>
+  </sprite>
 
    <sprite id="204" name="Rolling Object Spawner" notes="A spawner that will create loose Spiked Balls or Rolling Barrels.">
     <dualbox bit="20" title1="Spawns Spiked Balls" title2="Spawns Rolling Barrels" comment="This determines which object the spawner will create."/>
@@ -3096,10 +3087,10 @@
     <value nybble="11" title="Distance Moved" comment="This determines the distance the Water Ball will drift in one direction before returning."/>
   </sprite> <!-- #205: Water Ball -->
 
-  <sprite id="206" name="Zoom Controller" notes="A controller that creates an 'area' where the zoom of the camera changes when a player enters it. &lt;br&gt; &lt;br&gt;     For reference, the normal zoom levels, selected under 'Zone Settings', have the following screen sizes (HeightxWidth): &lt;br&gt;     Zoom Level -2: 7x12.5 blocks &lt;br&gt;     Zoom Level -1: 10.5x18.75 blocks &lt;br&gt;     Zoom Level 0: 14x24.75 blocks &lt;br&gt;     Zoom Level 1: 17x30.25 blocks, or 16x28.5 blocks &lt;br&gt;     Zoom Level 2: 20x35.56 blocks, or 19x33.75 blocks &lt;br&gt;     Zoom Level 3: 24x42.67 blocks, or 20x35.5 blocks &lt;br&gt;     Zoom Level 4: 28x49.75 blocks">
+  <sprite id="206" name="Zoom Controller" notes="A controller that creates an 'area' where the zoom of the camera changes when a player enters it.&lt;br&gt;&lt;br&gt;     For reference, the normal zoom levels, selected under 'Zone Settings', have the following screen sizes (HeightxWidth):&lt;br&gt;     Zoom Level -2: 7x12.5 blocks&lt;br&gt;     Zoom Level -1: 10.5x18.75 blocks&lt;br&gt;     Zoom Level 0: 14x24.75 blocks&lt;br&gt;     Zoom Level 1: 17x30.25 blocks, or 16x28.5 blocks&lt;br&gt;     Zoom Level 2: 20x35.56 blocks, or 19x33.75 blocks&lt;br&gt;     Zoom Level 3: 24x42.67 blocks, or 20x35.5 blocks&lt;br&gt;     Zoom Level 4: 28x49.75 blocks">
     <value nybble="9-10" title="Affected Height" comment="This determines the height of the affected area."/>
     <value nybble="11-12" title="Affected Width" comment="This determines the width of the affected area."/>
-    <list bit="18-20" title="Screen's Zoomed Height" comment="This determines what the new screen height will be while a player is within the controller's area." comment2="*: The height is determined by the normal Zoom Level; the value within the brackets will be used if Zone Bias is enabled. &lt;br&gt;&lt;br&gt;**: When a player enters the affected area, the height will 'immediately be set to 10 blocks shorter than the final height and then grows to the correct size, and when the players leave the affected area this process is reversed.'">
+    <list bit="18-20" title="Screen's Zoomed Height" comment="This determines what the new screen height will be while a player is within the controller's area." comment2="*: The height is determined by the normal Zoom Level; the value within the brackets will be used if Zone Bias is enabled.&lt;br&gt;&lt;br&gt;**: When a player enters the affected area, the height will 'immediately be set to 10 blocks shorter than the final height and then grows to the correct size, and when the players leave the affected area this process is reversed.'">
       <entry value="5">All Zoom Levels: 14</entry>
       <entry value="7">All Zoom Levels: 14</entry>
       <entry value="0">All Zoom Levels: 19</entry>
@@ -3172,7 +3163,7 @@
       <suggested sprite="172"/>
       <suggested sprite="382"/>
     </dependency>
-    <list bit="25-28" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown. &lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
+    <list bit="25-28" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown.&lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
       <entry value="0">None / [159] Path Controlled</entry>
       <entry value="1">[260] Two-Way Line</entry>
       <entry value="4">[474] Dancing</entry>
@@ -3215,7 +3206,7 @@
       <suggested sprite="172"/>
       <suggested sprite="382"/>
     </dependency>
-    <list bit="25-28" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown. &lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
+    <list bit="25-28" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown.&lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
       <entry value="0">None / [159] Path Controlled</entry>
       <entry value="1">[260] Two-Way Line</entry>
       <entry value="4">[474] Dancing</entry>
@@ -3276,7 +3267,7 @@
       <entry value="6">14 Blocks (Volcano)</entry>
       <entry value="7">20 Blocks (Volcano)</entry>
     </list>
-	<value nybble="9-10" title="Custom Size" comment="This determines the size of the Rolling Hill when using Flexible Size" requiredbit="26-28" requiredval="0"/>
+    <value nybble="9-10" title="Custom Size" comment="This determines the size of the Rolling Hill when using Flexible Size" requiredbit="26-28" requiredval="0"/>
     <value nybble="11" title="Speed" comment="This determines the rotation speed of the Rolling Hill. A value of 5 matches Mario's running speed, so use of higher values isn't recommended."/>
     <dualbox bit="48" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the Rolling Hill rolls."/>
     <value nybble="8" title="Z-Order" comment="This determines the relative Z-Order placement of the Rolling Hill when compared to other Rolling Hills." comment2="If you have multiple Rolling Hills overlapping each other, you must use this setting to prevent graphical glitches. Rolling Hills with a higher Z-Order number will show behind those with a lower number."/>
@@ -3284,7 +3275,7 @@
   </sprite> <!-- #212: Rolling Hill -->
 
   <sprite id="213" name="Incomplete Sprite - 'Branch'" notes="Does nothing.">
-    </sprite> <!-- #213: Incomplete Sprite - 'Branch' -->
+  </sprite> <!-- #213: Incomplete Sprite - 'Branch' -->
 
   <!-- This big guy could use a nice healthy dose of ASM snooping, as we seem to know almost nothing about it -->
   <sprite id="214" name="Path Controlled Ghost House Platform" notes="A wide path controlled platform that will trigger a spooky sound when it is quickly descending.">
@@ -3318,7 +3309,7 @@
 
   <!-- Nope! I'm done! You guys test this crap. *clones Water* I'm moving on... -->
   <!-- Test the 7 Modes through their associated conditions and fully describe them in the same way that Water is described. [Extremely Buggy] is naturally assumed for Falling mixed with the last three types. -->
-  <sprite id="216" name="Poisoned Water" noyoshi="True" notes="Place this in the level to generate poisonous water. There are many different ways to use Poisoned Water. &lt;br&gt; &lt;br&gt;Location Poisoned Water: If you assign a Location ID, you can cause poisonous water to appear only within the chosen Location instead of across the entire stage. &lt;br&gt; &lt;br&gt;Moving Poisoned Water: You can also create posionous water that rises and/or falls. This gets a little complicated, so be sure to read the related settings.&lt;br&gt; &lt;br&gt;Poison Water Crest's Maximum Length: The crest of Poison Water will stop drawing past 8192 pixels (512 blocks). You can avoid this by creating multiple Locations of Poison Water. Please note the first, left-most Location must be a multiple of 16 pixels long.">">
+  <sprite id="216" name="Poisoned Water" noyoshi="True" notes="Place this in the level to generate poisonous water. There are many different ways to use Poisoned Water.&lt;br&gt;&lt;br&gt;Location Poisoned Water: If you assign a Location ID, you can cause poisonous water to appear only within the chosen Location instead of across the entire stage.&lt;br&gt;&lt;br&gt;Moving Poisoned Water: You can also create posionous water that rises and/or falls. This gets a little complicated, so be sure to read the related settings.&lt;br&gt;&lt;br&gt;Poison Water Crest's Maximum Length: The crest of Poison Water will stop drawing past 8192 pixels (512 blocks). You can avoid this by creating multiple Locations of Poison Water. Please note the first, left-most Location must be a multiple of 16 pixels long.">">
     <dependency notes="When using Moving Poisoned Water, the Poisoned Water becomes loaded across the entire Area instead of just the active Zone. Please build your levels with this in mind. Additionally, do not use more than one Moving Poisoned Water in the same Area as only the top (highest Y-Axis) one will take effect. Unlike with Moving Water you cannot use Moving Poisoned Water in multiple Zones within the same area, unless you place them at the same Y-Axis. Also, be sure to reset your Sprite Settings if you switch between different setting groups of Moving Poisoned Water or Location Poisoned Water to prevent unusual bugs and behavior."/>
    <!-- The different displays of the Speed option -->
     <list bit="18-20" title="Moving Poisoned Water - Rising Speed" comment="This determines the speed at which the Poisoned Water will rise, or rise and fall." requiredbit="17" requiredval="0">
@@ -3429,7 +3420,7 @@
       <suggested sprite="172"/>
       <suggested sprite="382"/>
     </dependency>
-    <list bit="25-28" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown. &lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
+    <list bit="25-28" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown.&lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
       <entry value="0">None / [159] Path Controlled</entry>
       <entry value="1">[260] Two-Way Line</entry>
       <entry value="4">[474] Dancing</entry>
@@ -3609,7 +3600,7 @@
   </sprite> <!-- #233: Bulber, the Glowing Fish -->
 
   <sprite id="234" name="Effect - Cloud Area" notes="This adds decorative patchs of cloud cover with different properties. Most modes required a Location ID, but some do not.">
-    <list nybble="11" title="Cloud Type" comment="This determines which type of cloud will be spawned. See the extra comment for details." comment2="Normal: A light patch of clouds spawns in the Location ID. It is denser than [446]. &lt;br&gt;Dense: A dense patch of clouds spawns in the Location ID. &lt;br&gt;Death Clouds: - A dense patch of purple clouds that will instantly kill the player spawns in the Location ID. They can be cleared away with spin jumps. &lt;br&gt;Drifting Death Clouds: A dense patch of purple clouds that spawns around a specific Location ID, that proceeds to drifts to the right across the entire stage. It cannot be cleared away with a spin jump like other Death Clouds, and it will generate a rumbling sound effect when the player is close to it. (A Location ID may not actually be required.) &lt;br&gt;Falling Clouds: Clouds fall in the background across the entire stage." advancedcomment="1, 3: Used by Foo and cannot be placed. &lt;br&gt;6, 9-15: No clouds spawn.">
+    <list nybble="11" title="Cloud Type" comment="This determines which type of cloud will be spawned. See the extra comment for details." comment2="Normal: A light patch of clouds spawns in the Location ID. It is denser than [446].&lt;br&gt;Dense: A dense patch of clouds spawns in the Location ID.&lt;br&gt;Death Clouds: - A dense patch of purple clouds that will instantly kill the player spawns in the Location ID. They can be cleared away with spin jumps.&lt;br&gt;Drifting Death Clouds: A dense patch of purple clouds that spawns around a specific Location ID, that proceeds to drifts to the right across the entire stage. It cannot be cleared away with a spin jump like other Death Clouds, and it will generate a rumbling sound effect when the player is close to it. (A Location ID may not actually be required.)&lt;br&gt;Falling Clouds: Clouds fall in the background across the entire stage." advancedcomment="1, 3: Used by Foo and cannot be placed.&lt;br&gt;6, 9-15: No clouds spawn.">
       <entry value="7">Normal</entry>
       <entry value="0">Dense</entry>
       <entry value="4">Death Clouds</entry>
@@ -3646,7 +3637,7 @@
   </sprite> <!-- #238: Foo, the Cloud Blower -->
 
   <sprite id="239" name="Incomplete Sprite - 'Mist_Intermittent'" notes="Does nothing.">
-    </sprite> <!-- #239: Incomplete Sprite - 'Mist_Intermittent' -->
+  </sprite> <!-- #239: Incomplete Sprite - 'Mist_Intermittent' -->
 
   <sprite id="240" name="Big Wiggler" noyoshi="True" notes="A very large Wiggler that could not care less what you do to it, so you can safely ride on its back.">
     <checkbox bit="48" title="Moves Slightly Faster" comment="When enabled, the Wiggler will move slightly faster than normal."/>
@@ -3668,20 +3659,20 @@
   </sprite> <!-- #243: (Unused) Water Current Controller -->
 
   <sprite id="244" name="Incomplete Sprite - 'Hana_Mountain'" notes="Does nothing.">
-    </sprite> <!-- #244: Incomplete Sprite - 'Hana_Mountain' -->
+  </sprite> <!-- #244: Incomplete Sprite - 'Hana_Mountain' -->
 
   <sprite id="245" name="Incomplete Sprite - 'River_Mgr'" notes="Does nothing.">
-    </sprite> <!-- #245: Incomplete Sprite - 'River_Mgr' -->
+  </sprite> <!-- #245: Incomplete Sprite - 'River_Mgr' -->
 
   <sprite id="246" name="Incomplete Sprite - 'Tag_Thunder'" notes="Does nothing.">
-    </sprite> <!-- #246: Incomplete Sprite - 'Tag_Thunder' -->
+  </sprite> <!-- #246: Incomplete Sprite - 'Tag_Thunder' -->
 
   <!-- A ReggieResource is required for this sprite showing various combinations in screenshot form or with styles due to the visual complexity of what it does. As such, I'm not going to edit the current documentation. -->
   <sprite id="247" name="(Unused) Cheep Cheep Formation Spawner" notes="This will create groups of Cheep Cheeps with certain creation rules that will generate formations.">
     <dependency notes="This sprite pretty much only works properly with an underwater stage. Placement is determined by the formation used. Its direction should also match the direction the player is most likely to approach from. As such, an auto-scrolling stage is likely most compatible with this sprite.">
       <required sprite="138"/>
     </dependency>
-    <list nybble="12" title="Formation Type" comment="This determines the type or shape of the formation." comment2="The Direction in which the formation points is set by the swimming Direction. Cheep Cheep Formations that swim to the right will appear mirrored. All Values ​​after 4 are exactly the same. The arrow formation Value of 1 is different from the remaining ones. It always includes 3 Cheep Cheeps, no matter what else has been set. &lt;br&gt;Values w/*: This simply means that the number of Cheep Cheeps is ignored (with always only 1 Cheep Cheep per row) when 'Stretch Vertically' is enabled. &lt;br&gt; &lt;br&gt;Original position: &lt;br&gt;0, 1, ≥ 5: The Sprite's placement represents the peak of the arrow formation.&lt;br&gt;2: The Sprite's placement represents the topmost Cheep Cheep in the first row.&lt;br&gt;3, 4: The Sprite's placement represents the Cheep Cheep that swims in first place.">
+    <list nybble="12" title="Formation Type" comment="This determines the type or shape of the formation." comment2="The Direction in which the formation points is set by the swimming Direction. Cheep Cheep Formations that swim to the right will appear mirrored. All Values ​​after 4 are exactly the same. The arrow formation Value of 1 is different from the remaining ones. It always includes 3 Cheep Cheeps, no matter what else has been set.&lt;br&gt;Values w/*: This simply means that the number of Cheep Cheeps is ignored (with always only 1 Cheep Cheep per row) when 'Stretch Vertically' is enabled.&lt;br&gt;&lt;br&gt;Original position:&lt;br&gt;0, 1, ≥ 5: The Sprite's placement represents the peak of the arrow formation.&lt;br&gt;2: The Sprite's placement represents the topmost Cheep Cheep in the first row.&lt;br&gt;3, 4: The Sprite's placement represents the Cheep Cheep that swims in first place.">
       <entry value="0">← (Arrow)</entry>
       <entry value="1">← (Smaller Arrow)</entry>
       <entry value="2">| (Pipe/Straight Line)</entry>
@@ -3757,7 +3748,7 @@
   </sprite> <!-- #249: Horizontal Scroll Limiter - Bottom -->
 
   <sprite id="250" name="Incomplete Sprite - 'Kawanagare'" notes="Does nothing.">
-    </sprite> <!-- #250: Incomplete Sprite 'Kawanagare' -->
+  </sprite> <!-- #250: Incomplete Sprite 'Kawanagare' -->
 
   <sprite id="251" name="Incomplete Sprite - 'Slow_Quick_Tag'" notes="Does nothing.">
   </sprite> <!-- #251: Incomplete Sprite 'Slow_Quick_Tag'" -->
@@ -4348,9 +4339,9 @@
       <entry value="4">Propeller Shroom</entry>
       <entry value="5">Penguin Suit</entry>
       <entry value="6">Mini Mushroom</entry>
-	  <entry value="8">Mushroom / Fire Flower</entry>
-	  <!---<entry value="12">Mushroom / Fire Flower</entry>-->
-	  <!---<entry value="13">Mushroom / Fire Flower</entry>-->
+      <entry value="8">Mushroom / Fire Flower</entry>
+      <!---<entry value="12">Mushroom / Fire Flower</entry>-->
+      <!---<entry value="13">Mushroom / Fire Flower</entry>-->
       <entry value="7">Star</entry>
       <entry value="9">Yoshi Egg + Fire Flower</entry>
       <entry value="11">1-Up</entry>
@@ -4371,14 +4362,14 @@
     <list nybble="11" title="Direction" comment="This determines what direction the Para-Beetle flies.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
-	  <entry value="2">Left</entry>
-	  <entry value="3">Left</entry>
+      <entry value="2">Left</entry>
+      <entry value="3">Left</entry>
     </list>
     <list nybble="12" title="Facing" comment="This determines what direction the Para-Beetle is facing.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
-	  <entry value="2">Right-ish</entry>
-	  <entry value="3">Towards Screen</entry>
+      <entry value="2">Right-ish</entry>
+      <entry value="3">Towards Screen</entry>
     </list>
   </sprite> <!-- #291: Para-Beetle -->
 
@@ -4598,7 +4589,7 @@
       <suggested sprite="159"/>
       <suggested sprite="260"/>
       <suggested sprite="96"/>
-	  <suggested sprite="149"/>
+      <suggested sprite="149"/>
     </dependency>
     <list nybble="8" title="Light's Angle" comment="This determines the angle of the Spotlight." comment2="When paired with a Swaying rotation controller, the light will swing equally to both sides of this value. Other movement controllers will not change the light's angle.">
       <entry value="0">90.0°</entry>
@@ -4622,7 +4613,7 @@
       <entry value="0">[159] Path Controlled</entry>
       <entry value="1">[260] Two Way Line</entry>
       <entry value="2">[96] Swaying</entry>
-	  <entry value="3">[149] Spinning</entry>
+      <entry value="3">[149] Spinning</entry>
     </list>
     <value bit="41-48" title="Path Movement ID" comment="If pairing the Spotlight with Sprite 159, match the Path Movement ID to enable Path controlled movement. It won't spawn without one." requiredbit="39-40" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
     <value bit="41-48" title="Two Way Line ID" comment="If pairing the Spotlight with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement. It won't spawn without one." requiredbit="39-40" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
@@ -4907,9 +4898,9 @@
   notes="This loads a flat texture that says 'temporary' in Japanese letters, and shoots out more of the same. If it's moving up, you can hold the jump button while the player is on the 'bubble' to hold onto it for a very short amount of time. They will despawn if they hit a wall.">
     <value nybble="5" title="Bubble Cannon ID" comment="This pairs the object to a matching Bubble Cannon Controller. It works on its own if left at 0." idtype="Bubble Cannon"/>
     <list nybble="12" title="Bubble Size" comment="This determines the size of the bubble.">
-	  <entry value="0">Small</entry>
+      <entry value="0">Small</entry>
       <entry value="1">Big</entry>
-	</list>
+    </list>
     <list nybble="9" title="Direction" comment="This determines the direction the bubble is launched in, and Mario is pushed">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
@@ -4965,7 +4956,7 @@
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
     <checkbox bit="17" title="Swims Left" comment="If checked, swims to the left. The fish will not swim backwards when you backtrack. If unchecked, it depends on the 'Type' set, in which Direction the Cheep Cheep swims first. For Types 3, 4, 6 and 7, it swims to the right in general. All other Types will cause the Cheep Cheeps to swim in Mario's Direction."/>
-    <list bit="45-48" title="Type" comment="Specifies the Swimming-'Type' that should be used for this Cheep Cheep. Deep Cheeps and Eep Cheeps only work in non-Location water. Value 5 is unique. Type-5 Cheep Cheeps will look into the camera until Mario comes close. Furthermore, the Direction will be ignored and the Cheep Cheep will always swim in the opposite Direction, away from Mario, but only if Mario is close enough. &lt;br&gt;Values marked with an asterisk &lt;b&gt;(*)&lt;/b&gt; will ignore the speed Value set and instead will always use Value 1, no matter what is selected there. Also, all Values with &lt;b&gt;(*)&lt;/b&gt; will let the Cheep Cheep swim in a wavy line (just as the Coin Cheep Cheep does). &lt;br&gt;The two Values with &lt;b&gt;(**)&lt;/b&gt; follow exactly the same behavior as those marked with &lt;b&gt;(*)&lt;/b&gt;, only difference is its speed. Cheep Cheeps affected will swim slightly faster, both vertical and horizontal.&lt;br&gt;&lt;br&gt;&lt;b&gt;New naming scheme as of NSMBU:&lt;/br&gt;&lt;br&gt;Red = Cheep Cheep (normal)&lt;br&gt;Green = Deep Cheep (aggressive)&lt;br&gt;Yellow = Eep Cheep (shy)">
+    <list bit="45-48" title="Type" comment="Specifies the Swimming-'Type' that should be used for this Cheep Cheep. Deep Cheeps and Eep Cheeps only work in non-Location water. Value 5 is unique. Type-5 Cheep Cheeps will look into the camera until Mario comes close. Furthermore, the Direction will be ignored and the Cheep Cheep will always swim in the opposite Direction, away from Mario, but only if Mario is close enough.&lt;br&gt;Values marked with an asterisk &lt;b&gt;(*)&lt;/b&gt; will ignore the speed Value set and instead will always use Value 1, no matter what is selected there. Also, all Values with &lt;b&gt;(*)&lt;/b&gt; will let the Cheep Cheep swim in a wavy line (just as the Coin Cheep Cheep does).&lt;br&gt;The two Values with &lt;b&gt;(**)&lt;/b&gt; follow exactly the same behavior as those marked with &lt;b&gt;(*)&lt;/b&gt;, only difference is its speed. Cheep Cheeps affected will swim slightly faster, both vertical and horizontal.&lt;br&gt;&lt;br&gt;&lt;b&gt;New naming scheme as of NSMBU:&lt;/br&gt;&lt;br&gt;Red = Cheep Cheep (normal)&lt;br&gt;Green = Deep Cheep (aggressive)&lt;br&gt;Yellow = Eep Cheep (shy)">
       <entry value="0">Big Cheep Cheep ("Swim"), Swims Straight</entry>
       <entry value="2">Big Cheep Cheep ("Swim"), Swims Straight</entry>
       <entry value="3">Big Cheep Cheep ("LrSwim"), Swims Left / Right</entry>
@@ -5000,7 +4991,7 @@
       <entry value="14">15 Blocks</entry>
       <entry value="15">16 Blocks</entry>
     </list>
-    <value nybble="3-4" title="'Dodge' Event ID" comment="Right, this does look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right). Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'. &lt;br&gt;If it really works is a good question."/>
+    <value nybble="3-4" title="'Dodge' Event ID" comment="Right, this does look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right). Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'.&lt;br&gt;If it really works is a good question."/>
   </sprite>
 
   <sprite id="335" name="School of Cheep Cheeps" notes="Creates a formation of four Cheep Cheeps.">
@@ -5344,7 +5335,7 @@
   <sprite id="355" name="Rolling Hill - 1 Pipe" noyoshi="True" yoshinotes="Yoshi cannot enter the pipe." notes="A rotating circle with one pipe in it that has the same general appearance as the standard Grass or Underground tilesets.">
     <dependency notes="A functioning entrance is required to be associated with the Rolling Hill or the game will crash. Also, the underside of a Rolling Hill does NOT have collision. Do not place a Rolling Hill in any situation where the player would have contact with the bottom 50% of the hill."/>
     <dualbox bit="28" title1="Grassland" title2="Underground" comment="This determines which texture the Rolling Hill will use."/>
-	<list nybble="6" title="Starting Rotation" comment="This determines the initial angle the hill spawns at before spinning. It measures clockwise.">
+    <list nybble="6" title="Starting Rotation" comment="This determines the initial angle the hill spawns at before spinning. It measures clockwise.">
       <entry value="0">0.0°</entry>
       <entry value="1">22.5°</entry>
       <entry value="2">45.0°</entry>
@@ -5362,7 +5353,7 @@
       <entry value="14">315.0°</entry>
       <entry value="15">337.5°</entry>
     </list>
-	<value nybble="11" title="Speed" comment="This determines the rotation speed of the Rolling Hill. A value of 5 matches Mario's running speed, so use of higher values isn't recommended."/>
+    <value nybble="11" title="Speed" comment="This determines the rotation speed of the Rolling Hill. A value of 5 matches Mario's running speed, so use of higher values isn't recommended."/>
     <dualbox bit="48" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the Rolling Hill rolls."/>
     <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Rolling Hill in relation to other Rolling Hills." comment2="If you have multiple Rolling Hills overlapping each other, you must use this setting to prevent graphical glitches. Rolling Hills with a higher Z-Order number will show behind those with a lower number."/>
     <value nybble="10" title="Entrance ID" comment="This determines the Entrance ID that the pipe will connect with." comment2="It does not have to be placed on the pipe. It can only be used as an exit." idtype="Entrance"/>
@@ -5463,7 +5454,7 @@
       <entry value="14">315.0°</entry>
       <entry value="15">337.5°</entry>
     </list>
-	<value nybble="11" title="Speed" comment="This determines the rotation speed of the Rolling Hill. A value of 5 matches Mario's running speed, so use of higher values isn't recommended."/>
+    <value nybble="11" title="Speed" comment="This determines the rotation speed of the Rolling Hill. A value of 5 matches Mario's running speed, so use of higher values isn't recommended."/>
     <dualbox bit="48" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the Rolling Hill rolls."/>
     <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Rolling Hill in relation to other Rolling Hills." comment2="If you have multiple Rolling Hills overlapping each other, you must use this setting to prevent graphical glitches. Rolling Hills with a higher Z-Order number will show behind those with a lower number."/>
     <value nybble="10" title="Entrance ID" comment="This determines the Entrance ID that the pipe will connect with." comment2="It does not have to be placed on the pipe. It can only be used as an exit." idtype="Entrance"/>
@@ -5601,9 +5592,9 @@
 
   <sprite id="368" name="Path Controlled Flashlight Raft" notes="A floating Raft that travels slowly to the right, or follows along an assigned Path. It also has a flashlight that produces a cone of light on both sides that can be controlled by tilting the controller. It is activated when all players land on it. It's recommended to use a Darkness mode for the Zone's lighting">
     <dependency notes="The sprite's placement is irrelevant if Path Controlled, as the Raft will be located at the listed Starting Path Node (indicated by the white square). A special Water sprite [373] is recommended to be used with the Raft, but it's not required.">
-	  <suggested sprite="373"/>
+      <suggested sprite="373"/>
     </dependency>
-	<checkbox bit="48" title="Uses Paths" comment="When enabled, the Raft will follow the assigned Path. Otherwise, the Raft will move slowly to the right."/>
+    <checkbox bit="48" title="Uses Paths" comment="When enabled, the Raft will follow the assigned Path. Otherwise, the Raft will move slowly to the right."/>
     <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the Raft will be linked to." idtype="Path" requiredbit="48" requiredval="1"/>
     <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the Raft will appear at and start moving from." requiredbit="48" requiredval="1"/>
     <checkbox bit="44" title="Midway Raft" comment="When enabled, this Raft will appear only if the level is loaded from the Midpoint Flag."/>
@@ -5779,7 +5770,7 @@
   </sprite> <!-- #382: Screw Mushroom Platform without Bolt -->
 
   <sprite id="383" name="Boss Controller - Kamek" notes="Kamek himself can be placed anywhere within the Zone, as the controller's placement itself determines his spawn position.
-  &lt;br&gt;&lt;br&gt;The blocks move left and despawn when their right edges reach the left border, and respawn from their right edge on the right border.">
+ &lt;br&gt;&lt;br&gt;The blocks move left and despawn when their right edges reach the left border, and respawn from their right edge on the right border.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="427"/>
       <suggested sprite="436"/>
@@ -5909,7 +5900,7 @@
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
     <checkbox bit="17" title="Swims Left" comment="If checked, swims to the left. The fish will not swim backwards when you backtrack. If unchecked, it depends on the 'Type' set, in which Direction the Cheep Cheep swims first. For Types 3, 4, 6 and 7, it swims to the right in general. All other Types will cause the Cheep Cheeps to swim in Mario's Direction."/>
-    <list bit="45-48" title="Type" comment="Specifies the Swimming-'Type' that should be used for this Cheep Cheep. Deep Cheeps and Eep Cheeps only work in non-Location water. Value 5 is unique. Type-5 Cheep Cheeps will look into the camera until Mario comes close. Furthermore, the Direction will be ignored and the Cheep Cheep will always swim in the opposite Direction, away from Mario, but only if Mario is close enough. &lt;br&gt;Values marked with an asterisk &lt;b&gt;(*)&lt;/b&gt; will ignore the speed Value set and instead will always use Value 1, no matter what is selected there. Also, all Values with &lt;b&gt;(*)&lt;/b&gt; will let the Cheep Cheep swim in a wavy line (just as the Coin Cheep Cheep does). &lt;br&gt;The two Values with &lt;b&gt;(**)&lt;/b&gt; follow exactly the same behavior as those marked with &lt;b&gt;(*)&lt;/b&gt;, only difference is its speed. Cheep Cheeps affected will swim slightly faster, both vertical and horizontal.&lt;br&gt;&lt;br&gt;&lt;b&gt;New naming scheme as of NSMBU:&lt;/br&gt;&lt;br&gt;Red = Cheep Cheep (normal)&lt;br&gt;Green = Deep Cheep (aggressive)&lt;br&gt;Yellow = Eep Cheep (shy)">
+    <list bit="45-48" title="Type" comment="Specifies the Swimming-'Type' that should be used for this Cheep Cheep. Deep Cheeps and Eep Cheeps only work in non-Location water. Value 5 is unique. Type-5 Cheep Cheeps will look into the camera until Mario comes close. Furthermore, the Direction will be ignored and the Cheep Cheep will always swim in the opposite Direction, away from Mario, but only if Mario is close enough.&lt;br&gt;Values marked with an asterisk &lt;b&gt;(*)&lt;/b&gt; will ignore the speed Value set and instead will always use Value 1, no matter what is selected there. Also, all Values with &lt;b&gt;(*)&lt;/b&gt; will let the Cheep Cheep swim in a wavy line (just as the Coin Cheep Cheep does).&lt;br&gt;The two Values with &lt;b&gt;(**)&lt;/b&gt; follow exactly the same behavior as those marked with &lt;b&gt;(*)&lt;/b&gt;, only difference is its speed. Cheep Cheeps affected will swim slightly faster, both vertical and horizontal.&lt;br&gt;&lt;br&gt;&lt;b&gt;New naming scheme as of NSMBU:&lt;/br&gt;&lt;br&gt;Red = Cheep Cheep (normal)&lt;br&gt;Green = Deep Cheep (aggressive)&lt;br&gt;Yellow = Eep Cheep (shy)">
       <entry value="0">Spiny Cheep Cheep ("Swim"), Swims Straight</entry>
       <entry value="2">Spiny Cheep Cheep ("Swim"), Swims Straight</entry>
       <entry value="3">Spiny Cheep Cheep ("LrSwim"), Swims Left / Right</entry>
@@ -5944,7 +5935,7 @@
       <entry value="14">15 Blocks</entry>
       <entry value="15">16 Blocks</entry>
     </list>
-    <value nybble="3-4" title="'Dodge' Event ID" comment="Right, this does look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right). Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'. &lt;br&gt;If it really works is a good question."/>
+    <value nybble="3-4" title="'Dodge' Event ID" comment="Right, this does look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right). Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'.&lt;br&gt;If it really works is a good question."/>
   </sprite> <!-- #395: Spiny Cheep Cheep -->
 
   <sprite id="396" name="Move-When-On Platform" notes="A special platform that will move at any point when a specified number of 'passengers' (players + enemies) are standing on it.">
@@ -6070,7 +6061,7 @@
     <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Massive Skewers at all."/>
-	<checkbox bit="28" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="Used in Retail 07-24 as 1, no clear effect."/>
+    <checkbox bit="28" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="Used in Retail 07-24 as 1, no clear effect."/>
   </sprite> <!-- #401: Massive Skewer - Down -->
 
   <sprite id="402" name="Line Controlled ? Block" notes="A variant of the ? Block that will ride along Line objects.">
@@ -6151,7 +6142,7 @@
     <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <checkbox bit="32" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox bit="30" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Massive Skewers at all."/>
-	<checkbox bit="28" title="Unknown Flag 7 (1)" comment="Used in Retail 07-24 as 1, no clear effect."/>
+    <checkbox bit="28" title="Unknown Flag 7 (1)" comment="Used in Retail 07-24 as 1, no clear effect."/>
   </sprite> <!-- #404: Massive Skewer - Up -->
 
   <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the second Bowser Jr. Boss Fight in World 6. It spawns the backgrounds BgA_0B02 and BgB_5202, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller.">
@@ -6269,7 +6260,7 @@
 
   <sprite id="414" name="Spike / Stone Spike" notes="A strange little koopa that can pull spiked balls from another dimension located inside their stomach and endlessly hurl them towards the player. These spiked balls cannot damage terrain.">
     <dualbox bit="48" title1="Stone Spike (Throws Down)" title2="Spike (Throws to Side)" comment="This determines the type of enemy that will spawn." comment2="A Stone Spike throws spiked balls downwards, and a Spike throws spiked balls left or right."/>
-	<dualbox bit="40" title1="Faces Left" title2="Faces Right" comment="This determines the initial direction the Spike will face." comment2="This has limited use, as the Spike will turn to face the player when needed. It's most useful when placing the Spike in range of an entrance." requiredbit="48" requiredval="0"/>
+    <dualbox bit="40" title1="Faces Left" title2="Faces Right" comment="This determines the initial direction the Spike will face." comment2="This has limited use, as the Spike will turn to face the player when needed. It's most useful when placing the Spike in range of an entrance." requiredbit="48" requiredval="0"/>
     <checkbox bit="44" title="Always Throwing" comment="When enabled, the Spike will always throw spiked balls, even when off-screen." comment2="May only function with Stone Spikes."/>
     <value nybble="5" title="Throwing Delay" comment="This determines the delay between each time the Spike throws their spiked ball." comment2="The amount of delay is inconsistent between increases in value."/>
   </sprite> <!-- #414: Spike / Stone Spike -->
@@ -6933,7 +6924,7 @@
     <dualbox bit="28" title1="Timed Event" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Red Blocks will not become solid."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox bit="17" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <list bit="23-24" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requiredbit="28, 40" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -6957,14 +6948,14 @@
     <dualbox bit="28" title1="Timed Event" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Red Blocks will not become solid."/>
     <checkbox bit="17" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox bit="17" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requiredbit="28"/> <!-- Appears if Permanent Event is set -->
-    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <dualbox bit="40" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requiredbit="28" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." idtype="Triggering Event"/>
   </sprite> <!-- #479: Bowser Switch (Large) -->
 
   <sprite id="480" name="Morton's Skewer" notes="A spiked pillar for the Morton Koopa Tower Boss fight with a large amount of control over the timing values. It first extends 1 block down, and then goes the rest of the way down after a slight delay.">
     <dependency notes="This spiked pillar will only move once Morton does his start-up animation when paired with his Tower Boss Controller.">
-	  <suggested sprite="344"/>
+      <suggested sprite="344"/>
       <suggested sprite="363"/>
     </dependency>
     <value nybble="7-8" title="Initial Launch Delay" comment="This determines the launch delay prior to the first time the pillar moves." comment2="A value of 4 is equal to one game second."/>

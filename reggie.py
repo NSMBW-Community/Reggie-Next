@@ -2201,7 +2201,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         ent = EntranceItem(x, y, id_, 0, 0, 0, 0, 0, 0, 0x80, 0)
         ent.positionChanged = self.HandleEntPosChange
-        
+
         # if it's the first available ID, all the other indices
         # should match, so I can just use the ID to insert
         ent.listitem = ListWidgetItem_SortsByOther(ent)
