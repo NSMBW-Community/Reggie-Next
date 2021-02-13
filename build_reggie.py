@@ -38,7 +38,7 @@ import PyInstaller.__main__
 
 PROJECT_NAME = 'Reggie! Next'
 FULL_PROJECT_NAME = 'Reggie! Next Level Editor'
-PROJECT_VERSION = '4.2.0'
+PROJECT_VERSION = '4.4.0'
 
 WIN_ICON = os.path.join('reggiedata', 'win_icon.ico')
 MAC_ICON = os.path.join('reggiedata', 'reggie.icns')

@@ -220,7 +220,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # set up the window
         QtWidgets.QMainWindow.__init__(self, None)
-        self.setWindowTitle('Reggie Level Editor Next %s' % globals_.ReggieVersionShort)
+        self.setWindowTitle('Reggie! Next Level Editor %s' % globals_.ReggieVersionShort)
         self.setWindowIcon(QtGui.QIcon('reggiedata/icon.png'))
         self.setIconSize(QtCore.QSize(16, 16))
         self.setUnifiedTitleAndToolBarOnMac(True)
@@ -4291,7 +4291,7 @@ def main():
 
     # Set the default window icon (used for random popups and stuff)
     globals_.app.setWindowIcon(GetIcon('reggie'))
-    globals_.app.setApplicationDisplayName('Reggie Next %s' % globals_.ReggieVersionShort)
+    globals_.app.setApplicationDisplayName('Reggie! Next %s' % globals_.ReggieVersionShort)
 
     gt = setting('GridType')
 
