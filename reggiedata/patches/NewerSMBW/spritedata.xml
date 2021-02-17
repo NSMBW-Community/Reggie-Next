@@ -1052,7 +1052,7 @@
     <value nybble="6" title="Z-Order" comment="This will adjust the Z-Order of the Meteors in relation to other objects." comment2="A higher value will place this sprite further towards the background."/>
   </sprite> <!-- #183: Meteor -->
 
-  <sprite id="188" name="Midway Flag" asmhacks="True" notes="A flag that when touched by the player will mark their progress in the level and respawn them at this location when re-entering the level." advancednotes="Only one Midway Flag works properly per level. Let's say there are five Checkpoints in a Zone. If Mario were to activate Checkpoint A through C in that order, and then die, he would respawn at Checkpoint C's Entrance, and all five Checkpoints would be activated.">
+  <sprite id="188" name="Midway Flag" asmhacks="True" notes="A flag that when touched by the player will mark their progress in the level and respawn them at this location when re-entering the level.">
     <list nybble="5-6" title="Logo" comment="NewerSMBW changes the logo placed on the Midway Flag for each sub-world." comment2="The 2nd Newer Logo at the 45°-ish angle is just another model file, in case you were wondering...">
       <entry value="0">Newer Logo</entry>
       <entry value="1">Yoshi's Island</entry>
@@ -1076,6 +1076,7 @@
     </list>
     <value nybble="7-8" title="Entrance ID" comment="This determines which Entrance the level will load the player into when they respawn." idtype="Entrance"/>
     <dualbox bit="44" title1="Load Facing Right" title2="Load Facing Left" comment="This determines which direction the players will face when they respawn."/>
+	<dualbox nybble="12" title="1st Checkpoint" title2="2nd Checkpoint" comment="Once activated, the 1st checkpoint can not be deactivated by the 2nd checkpoint, and vise-versa.">
   </sprite> <!-- #188: Midway Flag -->
 
   <sprite id="191" name="Tile God Event" asmhacks="True" notes="The Tile God can Create / Change / Destroy tiles within a specified area when an Event is activated.">
