@@ -1076,7 +1076,7 @@
     </list>
     <value nybble="7-8" title="Entrance ID" comment="This determines which Entrance the level will load the player into when they respawn." idtype="Entrance"/>
     <dualbox bit="44" title1="Load Facing Right" title2="Load Facing Left" comment="This determines which direction the players will face when they respawn."/>
-	<dualbox nybble="12" title="1st Checkpoint" title2="2nd Checkpoint" comment="Once activated, the 1st checkpoint can not be deactivated by the 2nd checkpoint, and vise-versa.">
+	<dualbox bit="48" title1="1st Checkpoint" title2="2nd Checkpoint" comment="Once activated, the 1st checkpoint can not be deactivated by the 2nd checkpoint, and vise-versa."/>
   </sprite> <!-- #188: Midway Flag -->
 
   <sprite id="191" name="Tile God Event" asmhacks="True" notes="The Tile God can Create / Change / Destroy tiles within a specified area when an Event is activated.">
