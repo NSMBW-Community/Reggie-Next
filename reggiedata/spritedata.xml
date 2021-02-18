@@ -2483,6 +2483,7 @@
       <entry value="2">Penguin Suit</entry>
       <entry value="3">Ice Flower</entry>
     </list>
+    <checkbox bit="48" title="Shift Horizontally" comment="When this checkbox is ticked, the ring is moved half a block to the right. Note that this setting overlaps with the Red Coin ID." />
     <checkbox bit="40" title="Unknown Flag 10 (1)" advanced="True" advancedcomment="ASM shows Nybble 10 might affect something. No visible or functional change. Likely Z-Order related, or at least intended to be."/>
   </sprite> <!-- #156: Red Coin Ring -->
 

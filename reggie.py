@@ -2122,7 +2122,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             # does not really matter.
             all_ids = set(loc.id for loc in globals_.Area.locations)
 
-            for id_ in range(1, 256)
+            for id_ in range(1, 256):
                 if id_ not in all_ids:
                     break
             else:
