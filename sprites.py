@@ -446,7 +446,7 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
         )[rawdistance]
         distance += 1  # In order to hide one side of the track behind the image.
 
-        L = 615  
+        L = 615
         W = 617  # 16 mid sections + an end section
 
         if self.dir == 'up':
@@ -937,17 +937,17 @@ class SpriteImage_LongSpikedStake(SLib.SpriteImage):  # 398, 400
 
     def dataChanged(self):
         super().dataChanged()
-        
+
         color = self.parent.spritedata[3] & 15
         tiles = 55
         tilesize = 36
         endsize = 41
         width = 99
-        
+
         pix = QtGui.QPixmap(2021, 99)
         pix.fill(Qt.transparent)
         paint = QtGui.QPainter(pix)
-        
+
         if color == 2 or color == 3 or color == 6 or color == 7:
             mid = ImageCache['LongStakeM1' + self.dir]
             end = ImageCache['LongStakeE1' + self.dir]
@@ -964,7 +964,7 @@ class SpriteImage_LongSpikedStake(SLib.SpriteImage):  # 398, 400
             self.aux[1].setPos(-1829, 0)
             paint.drawTiledPixmap(0, 0, tilesize * tiles, width, mid)
             paint.drawPixmap(1980, 0, end)
-        
+
         self.aux[1].image = pix
         self.aux[1].alpha = 0.9
 
@@ -990,13 +990,13 @@ class SpriteImage_MassiveSpikedStake(SLib.SpriteImage):  # 401, 404
 
     def dataChanged(self):
         super().dataChanged()
-        
+
         color = self.parent.spritedata[3] & 15
         tiles = 40
         tilesize = 72
         endsize = 136
         width = 248
-        
+
         pix = QtGui.QPixmap(248, 3016)
         pix.fill(Qt.transparent)
         paint = QtGui.QPainter(pix)
@@ -1007,7 +1007,7 @@ class SpriteImage_MassiveSpikedStake(SLib.SpriteImage):  # 401, 404
         else:
             mid = ImageCache['MassiveStakeM0']
             end = ImageCache['MassiveStakeE0' + self.dir]
-        
+
         if self.dir == 'up':
             self.aux[0].setPos(112, -96)
             self.aux[1].setPos(4, -2592)
@@ -1019,7 +1019,7 @@ class SpriteImage_MassiveSpikedStake(SLib.SpriteImage):  # 401, 404
             self.aux[2].setPos(0, -2808)
             paint.drawTiledPixmap(0, 0, width, tilesize * tiles, mid)
             paint.drawPixmap(0, 2880, end)
-        
+
         paint = None
         self.aux[2].image = pix
         self.aux[2].alpha = 0.9
@@ -1363,7 +1363,7 @@ class SpriteImage_QSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 43
 
     def dataChanged(self):
         upsideDown = self.parent.spritedata[5] & 1
-        
+
         if upsideDown:
             self.image = ImageCache['QSwitchBlockU']
         else:
@@ -1395,7 +1395,7 @@ class SpriteImage_ExcSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 45
 
     def dataChanged(self):
         upsideDown = self.parent.spritedata[5] & 1
-        
+
         if upsideDown:
             self.image = ImageCache['ESwitchBlockU']
         else:
@@ -2423,7 +2423,7 @@ class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
 
         # override this for the "glitchy" effect caused by length=0
         if self.width == 16: self.width = 24
-        if self.width == 24: 
+        if self.width == 24:
             self.xOffset = -8
         else:
             self.xOffset = 0
@@ -2481,7 +2481,7 @@ class SpriteImage_LinePlatform(SpriteImage_WoodenPlatform):  # 106
 
         # override this for the "glitchy" effect caused by length=0
         if self.width == 16: self.width = 24
-        
+
         # reposition platform
         self.xOffset = (self.width * -0.5) + 32
 
@@ -3725,10 +3725,10 @@ class SpriteImage_FlyingQBlock(SLib.SpriteImage):  # 175
 
         theme = self.parent.spritedata[4] >> 4
         content = self.parent.spritedata[5] & 0xF
-        
+
         if theme > 3:
             theme = 0
-        
+
         if content == 2:
             content = 17
         elif content in (8, 9, 10, 12, 13, 14):
@@ -4284,7 +4284,7 @@ class SpriteImage_Zoom(SLib.SpriteImage):  # 206
         super().dataChanged()
 
         w = self.parent.spritedata[5]
-        h = self.parent.spritedata[4] 
+        h = self.parent.spritedata[4]
         if w == 0 and h == 0:  # no point drawing a 1x1 outline behind the self.parent
             self.aux[0].setSize(0, 0, 0, 0)
             return
@@ -6379,7 +6379,7 @@ class SpriteImage_MovingBulletBillLauncher(SLib.SpriteImage):  # 172
 
         else:
             self.yOffset = -(self.cannonHeightTwo + 1) * 16
-        
+
         super().dataChanged()
 
     def paint(self, painter):
@@ -6434,7 +6434,7 @@ class SpriteImage_BigShell(SLib.SpriteImage_StaticMultiple):  # 341
 
     def dataChanged(self):
         style = self.parent.spritedata[5] & 1
-        
+
         if style == 0:
             self.image = ImageCache['BigShellGrass']
         else:
@@ -6870,7 +6870,7 @@ class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
             ImageCache['FlashlightRaft'],
             (-16, -20),
         )
-        
+
         self.aux.append(SLib.AuxiliaryImage(parent, 72, 114))
         self.aux[0].image = ImageCache['FlashlightLamp']
         self.aux[0].setPos(0, -114)
@@ -6886,16 +6886,16 @@ class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
     def dataChanged(self):
         pathcontrolled = self.parent.spritedata[5] & 1
         midway = (self.parent.spritedata[5] >> 4) & 1
-        
+
         self.aux[1].setSize(24, 24, 144, 30) if pathcontrolled else self.aux[1].setSize(0, 0)
-        
+
         if midway:
             self.alpha = 0.5
             self.aux[0].alpha = 0.5
         else:
             self.alpha = 1
             self.aux[0].alpha = 1
-        
+
         super().dataChanged()
 
 
@@ -7573,7 +7573,7 @@ class SpriteImage_Gabon(SLib.SpriteImage_StaticMultiple):  # 414
     def dataChanged(self):
         throwdir = self.parent.spritedata[5] & 1
         facing = self.parent.spritedata[4] & 1
-        
+
         if throwdir == 0:
             self.image = ImageCache['GabonSpike']
             self.offset = (-7, -31) #-11, -47
@@ -7747,7 +7747,7 @@ class SpriteImage_Jellybeam(SLib.SpriteImage_Static):  # 425
         distance = self.parent.spritedata[5] & 3
         self.aux[0].setSize(16, (distance * 32) + 108)
         self.aux[0].setPos(self.width * 0.75 - 14, self.height * 0.75 - 16)
-        
+
         super().dataChanged()
 
 
@@ -8220,7 +8220,7 @@ class SpriteImage_SilverGearBlock(SLib.SpriteImage_StaticMultiple):  # 460
     def dataChanged(self):
         style = self.parent.spritedata[5] & 3
         flipped = (self.parent.spritedata[5] >> 4) & 1
-        
+
         if flipped:
             self.image = ImageCache['SilverGearBlockDown%d' % style]
         else:
@@ -8587,19 +8587,19 @@ class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
         if 'FinalBossEffects0' in ImageCache: return
         for i in range(4):
             ImageCache["FinalBossEffects%d" % i] = SLib.GetImg("final_boss_effects_%d.png" % i)
-        
+
     def dataChanged(self):
         style = self.parent.spritedata[5] & 3
-        
+
         self.aux[0].image = ImageCache['FinalBossEffects%d' % style]
-        
+
         if style == 0:
             self.aux[0].setPos(-228, -555)
         elif style == 1:
             self.aux[0].setPos(-228, -408)
         elif style == 2:
             self.aux[0].setPos(-24, -192)
-        
+
         super().dataChanged()
 
 
