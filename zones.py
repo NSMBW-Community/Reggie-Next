@@ -20,17 +20,15 @@ class ZonesDialog(QtWidgets.QDialog):
 
         self.tabWidget = QtWidgets.QTabWidget()
 
-        i = 0
         self.zoneTabs = []
-        for z in globals_.Area.zones:
-            i = i + 1
-            ZoneTabName = globals_.trans.string('ZonesDlg', 3, '[num]', i)
+        for i, z in enumerate(globals_.Area.zones):
+            ZoneTabName = globals_.trans.string('ZonesDlg', 3, '[num]', i + 1)
             tab = ZoneTab(z)
             self.zoneTabs.append(tab)
             self.tabWidget.addTab(tab, ZoneTabName)
 
         if self.tabWidget.count() > 5:
-            for tab in range(0, self.tabWidget.count()):
+            for tab in range(self.tabWidget.count()):
                 self.tabWidget.setTabText(tab, str(tab + 1))
 
         self.NewButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 4))
@@ -75,8 +73,11 @@ class ZonesDialog(QtWidgets.QDialog):
     def DeleteZone(self):
         curindex = self.tabWidget.currentIndex()
         tabamount = self.tabWidget.count()
-        if tabamount == 0: return
+        if tabamount == 0:
+            return
+
         self.tabWidget.removeTab(curindex)
+        self.zoneTabs.pop(curindex)
 
         for tab in range(curindex, tabamount):
             if self.tabWidget.count() < 6:
@@ -84,13 +85,10 @@ class ZonesDialog(QtWidgets.QDialog):
             if self.tabWidget.count() > 5:
                 self.tabWidget.setTabText(tab, str(tab + 1))
 
-        self.zoneTabs.pop(curindex)
-        if self.tabWidget.count() < 6:
-            for tab in range(0, self.tabWidget.count()):
+
+        if tabamount == 5:
+            for tab in range(curindex):
                 self.tabWidget.setTabText(tab, globals_.trans.string('ZonesDlg', 3, '[num]', tab + 1))
-
-                # self.NewButton.setEnabled(len(self.zoneTabs) < 8)
-
 
 class ZoneTab(QtWidgets.QWidget):
     def __init__(self, z):

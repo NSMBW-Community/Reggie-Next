@@ -2111,30 +2111,26 @@ class ReggieWindow(QtWidgets.QMainWindow):
     # Functions that create items
     ###########################################################################
     # Maybe move these as static methods to their respective classes
-    def CreateLocation(self, x, y, width = 16, height = 16, id = None):
+    def CreateLocation(self, x, y, width = 16, height = 16, id_ = None):
         """
         Creates and returns a new location and makes sure it's added to
         the right lists. If 'id' is None, the next id is calculated. This
-        function returns None if 
+        function returns None if there is no free location id available.
         """
-        if id is None:
-            # This can be done more efficiently, but 255 is not that big
-            # a number so it doesn't really matter
+        if id_ is None:
+            # This can be done more efficiently, but 255 is not that big, so it
+            # does not really matter.
             all_ids = set(loc.id for loc in globals_.Area.locations)
 
-            id = 1
-            while id <= 255:
-                if id not in all_ids:
+            for id_ in range(1, 256)
+                if id_ not in all_ids:
                     break
-                id += 1
-
-            if id == 256:
+            else:
                 print("ReggieWindow#CreateLocation: No free location id")
                 return None
 
-        # global globals_.OverrideSnapping
         globals_.OverrideSnapping = True
-        loc = LocationItem(x, y, width, height, id)
+        loc = LocationItem(x, y, width, height, id_)
         globals_.OverrideSnapping = False
 
         loc.positionChanged = self.HandleObjPosChange
