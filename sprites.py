@@ -3462,6 +3462,12 @@ class SpriteImage_RedCoinRing(SLib.SpriteImage):  # 156
     def loadImages():
         SLib.loadIfNotInImageCache('RedCoinRing', 'redcoinring.png')
 
+    def dataChanged(self):
+        shifted = self.parent.spritedata[5] & 1
+        self.xOffset = -2 if shifted else -10
+
+        super().dataChanged()
+
 
 class SpriteImage_BigBrick(SLib.SpriteImage_StaticMultiple):  # 157
     @staticmethod
