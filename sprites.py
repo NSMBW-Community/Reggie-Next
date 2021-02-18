@@ -2416,14 +2416,14 @@ class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
         super().dataChanged()
 
         # get width
-        self.width = ((self.parent.spritedata[5] & 0xF0) >> 4) << 4
+        self.width = self.parent.spritedata[5] & 0xF0
 
-        # length=0 becomes length=4
+        # length 0 results in the same width as length 4
         if self.width == 0: self.width = 64
 
-        # override this for the "glitchy" effect caused by length=0
-        if self.width == 16: self.width = 24
-        if self.width == 24:
+        # override the x offset for the "glitchy" effect caused by length 0
+        if self.width in {16, 24}:
+            self.width = 24
             self.xOffset = -8
         else:
             self.xOffset = 0
@@ -2455,7 +2455,7 @@ class SpriteImage_Pokey(SLib.SpriteImage):  # 105
         # get the height
         height = self.parent.spritedata[5] & 7
         self.height = (height * 16) + 16 + 25
-        self.yOffset = 0 - self.height + 16
+        self.yOffset = 16 - self.height
 
     def paint(self, painter):
         super().paint(painter)
@@ -2483,7 +2483,7 @@ class SpriteImage_LinePlatform(SpriteImage_WoodenPlatform):  # 106
         if self.width == 16: self.width = 24
 
         # reposition platform
-        self.xOffset = (self.width * -0.5) + 32
+        self.xOffset = 32 - (self.width / 2)
 
         color = (self.parent.spritedata[4] & 0xF0) >> 4
         if color > 1: color = 0
