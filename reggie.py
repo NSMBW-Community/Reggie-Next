@@ -88,26 +88,6 @@ import globals_
 ################################################################################
 ################################################################################
 
-# Check if Cython is available
-try:
-    import pyximport
-    pyximport.install()
-
-    import cython_available
-
-except:
-    print("Cython is not available!")
-    print("Expect Reggie to be very slow!\n")
-    globals_.cython_available = False
-
-else:
-    del cython_available
-    globals_.cython_available = True
-
-################################################################################
-################################################################################
-################################################################################
-
 from libs import lh
 from ui import GetIcon, SetAppStyle, GetDefaultStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme
 from misc import LoadActionsLists, LoadTilesetNames, LoadBgANames, LoadBgBNames, LoadConstantLists, LoadObjDescriptions, LoadSpriteData, LoadSpriteListData, LoadEntranceNames, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePath, isValidGamePath

@@ -78,7 +78,6 @@ UpdateURL = ''
 app = None
 arcname = ''
 compressed = False
-cython_available = False
 defaultPalette = None
 defaultStyle = None
 firstLoad = True
