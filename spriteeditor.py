@@ -1195,6 +1195,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             super().__init__()
 
+            assert len(bit) == 1
+
             self.bit = bit
             self.row = row
             self.layout = layout
@@ -1269,7 +1271,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 widget = QtWidgets.QLabel(title + ':')
                 widget.setWordWrap(True)
 
-            bits = bit[1] - bit[0]
+            bits = bit[0][1] - bit[0][0]
 
             # button that contains the current value
             self.button = QtWidgets.QPushButton()
