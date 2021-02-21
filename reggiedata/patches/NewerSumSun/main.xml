@@ -17,7 +17,6 @@
     <file name="bgb" path="bgb.txt" />
     <file name="levelnames" path="levelnames.xml" />
     <file name="music" path="music.txt" />
-    <file name="spritedata" path="spritedata.xml" />
     <file name="spritenames" path="spritenames.txt" />
     <file name="sprites" path="sprites.py" />
     <file name="tilesets" path="tilesets.xml" />
