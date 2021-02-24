@@ -3102,12 +3102,12 @@
       <entry value="3">*-2: 7; -1: 10.5; 0: 19[24]; 1: 20[28]; 2: 22[28]; 3: 24; 4: 28</entry>
       <entry value="6">**All Zoom Levels: 14</entry>
     </list>
-    <checkbox bit="17" title="Unknown Flag 5 (8)" advanced="True" advancedcomment="ASM shows Nybble 5 may affect something else."/>
-    <list bit="23-24" title="Triggered if" comment="The Zoom Controller will zoom out if the listed condition is met.">
-        <entry value="0">At least one player is in the Zoom area</entry>
-        <entry value="1">Same as 0 but only works in Single player mode</entry>
-        <entry value="2">Same as 0 but only works in Multiplayer mode</entry>
-        <entry value="3">???</entry> <!-- The zoom actives when a Koopa Shell/Buzzy Beetle is sliding inside in NSMBU. This doesn't seem to be the case in NSMBW though. -->
+    <checkbox bit="17" title="First Flag" comment="This sets the 'first flag' on the zoomed-in effect. Its precise effects are unknown."/>
+    <list bit="23-24" title="Number of players" comment="The Zoom Controller will be in effect when the right number of people are playing and at least one player is in the specified area.">
+        <entry value="0">Any</entry>
+        <entry value="1">Singleplayer</entry>
+        <entry value="2">Multiplayer</entry>
+        <entry value="3">Multiplayer</entry>
     </list>
   </sprite> <!-- #206: Zoom Controller -->
 
