@@ -2637,11 +2637,12 @@
       <entry value="15">18 Blocks</entry>
     </list>
     <list bit="39-40" title="Speed" comment="This determines the movement speed of the Block Train." requiredbit="28">
-      <entry value="0">Very Slow</entry>
-      <entry value="1">Slow</entry>
-      <entry value="2">Fast</entry>
+      <entry value="0">Very Slow (0.5)</entry>
+      <entry value="1">Slow (1.0)</entry>
+      <entry value="2">Fast (1.4)</entry>
+      <entry value="3">Slow (1.0)</entry>
     </list>
-    <list bit="19-20" title="End Animation" comment="This determines what the Block Train will do when it reaches the final Node of the Path." requiredbit="28">
+    <list nybble="5" title="End Animation" comment="This determines what the Block Train will do when it reaches the final Node of the Path. Values higher than 3 cause a crash." requiredbit="28">
       <entry value="0">Stop</entry>
       <entry value="1">Fall Straight Through Last Node</entry>
       <entry value="2">Stop, Fall Piece by Piece</entry>
