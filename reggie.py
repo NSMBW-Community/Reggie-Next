@@ -2413,9 +2413,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if self.CheckDirty(): return
 
         filetypes = ''
-        filetypes += globals_.trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;'  # *.arc
-        filetypes += globals_.trans.string('FileDlgs', 5) + ' (*' + '.arc' + '.LH);;'  # *.arc.LH
-        filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'  # *
+        filetypes += globals_.trans.string('FileDlgs', 9) + ' (*.arc *.arc.LH);;'   # *.arc, *arc.LH
+        filetypes += globals_.trans.string('FileDlgs', 1) + ' (*.arc);;'            # *.arc
+        filetypes += globals_.trans.string('FileDlgs', 5) + ' (*.arc.LH);;'         # *.arc.LH
+        filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'                  # *
         fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), '', filetypes)[0]
         if fn == '': return
         self.LoadLevel(None, str(fn), True, 1)

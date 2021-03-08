@@ -317,7 +317,7 @@ class ReggieTranslation:
             },
             'FileDlgs': {
                 0: 'Choose a level archive',
-                1: 'NSMBWii Level Archives',
+                1: 'Level Archives',
                 2: 'All Files',
                 3: 'Save As: Choose a new filename',
                 4: 'Portable Network Graphics',
@@ -325,6 +325,7 @@ class ReggieTranslation:
                 6: 'Choose a stamp archive',
                 7: 'Stamps File',
                 8: 'Save Copy: Choose a new filename',
+                9: 'All Supported Level Archives',
             },
             'Gamedefs': {
                 0: 'This game has custom sprite images',
