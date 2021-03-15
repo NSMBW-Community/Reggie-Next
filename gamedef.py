@@ -595,18 +595,32 @@ def LoadGameDef(name=None, dlg=None):
             # First-time usage of this globals_.gamedef. Have the
             # user pick a stage folder so we can load stages
             # and tilesets from there
-            QtWidgets.QMessageBox.information(None, globals_.trans.string('Gamedefs', 2),
-                                              globals_.trans.string('Gamedefs', 3, '[game]', globals_.gamedef.name),
-                                              QtWidgets.QMessageBox.Ok)
+            QtWidgets.QMessageBox.information(None,
+                globals_.trans.string('Gamedefs', 2),
+                globals_.trans.string('Gamedefs', 3, '[game]', globals_.gamedef.name),
+                QtWidgets.QMessageBox.Ok
+            )
+
+            if globals_.mainWindow is None:
+                # This check avoids an error because globals_.mainWindow is None
+                # when first loading the editor. Returning False here avoids a
+                # loop where the user cannot open the editor because the program
+                # closes after returning the error.
+                return False
+
             result = globals_.mainWindow.HandleChangeGamePath(True)
-            if result is not True:
-                QtWidgets.QMessageBox.information(None, globals_.trans.string('Gamedefs', 4),
-                                                  globals_.trans.string('Gamedefs', 5, '[game]', globals_.gamedef.name),
-                                                  QtWidgets.QMessageBox.Ok)
+
+            if result:
+                msg_ids = (6, 7)
             else:
-                QtWidgets.QMessageBox.information(None, globals_.trans.string('Gamedefs', 6),
-                                                  globals_.trans.string('Gamedefs', 7, '[game]', globals_.gamedef.name),
-                                                  QtWidgets.QMessageBox.Ok)
+                msg_ids = (4, 5)
+
+            QtWidgets.QMessageBox.information(None,
+                globals_.trans.string('Gamedefs', msg_ids[0]),
+                globals_.trans.string('Gamedefs', msg_ids[1], '[game]', globals_.gamedef.name),
+                QtWidgets.QMessageBox.Ok
+            )
+
         if dlg: dlg.setValue(1)
 
         # Load spritedata.xml and spritecategories.xml
