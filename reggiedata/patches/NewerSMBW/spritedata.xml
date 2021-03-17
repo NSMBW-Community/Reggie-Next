@@ -312,6 +312,7 @@
     </list>
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Buzzy Beetle will be upside-down and able to cling to and walk on ceilings if placed adjacent to them. If not placed adjacent, he will immediately fall and spin towards the player."/>
     <checkbox bit="47" title="Inside Shell" comment="When enabled, the Buzzy Beetle will spawn inside his shell. He will eventually climb out and resume walking, even if set to be upside-down. Upside-down shells will fall without spinning towards the player."/>
+	<checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
   </sprite> <!-- #24: Buzzy Beetle -->
 
   <sprite id="25" name="Spiny" asmhacks="True" sizehacks="True" notes="A Spiny that walks along the ground.">
@@ -332,6 +333,7 @@
       <entry value="3">Upside-Down Shell (Towards Player)</entry>
     </list>
     <checkbox bit="44" title="Unknown Flag 11" advanced="True" advancedcomment="Unused flag with unknown effects."/>
+	<checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
   </sprite> <!-- #25: Spiny -->
 
   <!-- Research Unknown Flag 12 -->
@@ -348,6 +350,7 @@
     </list>
 	<checkbox bit="32" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
     <checkbox bit="48" title="Unknown Flag 12" advanced="True" advancedcomment="Used in Retail: 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
+	<checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 
   <sprite id="30" name="Grey Tiled Block" asmhacks="True" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
@@ -628,6 +631,7 @@
     <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Paratroopa will be able to move behind Chainlink Fences." advancedcomment="Exact values are 1500.0 unchecked, -2500.0 checked."/>
     <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="Used in Retail: 06-01 A1 as 12"/>
     <value bit="21" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in Retail: 06-01 A1"/>
+	<checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
   </sprite> <!-- #58: Koopa Paratroopa -->
 
   <sprite id="60" name="Spike Top" asmhacks="True" sizehacks="True" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spiketops don't properly work on slopes.">

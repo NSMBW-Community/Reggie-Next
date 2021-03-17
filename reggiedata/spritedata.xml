@@ -165,6 +165,7 @@
   <sprite id="24" name="Buzzy Beetle" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads. It will turn around when it reaches ledges and blocks are treated the same as terrain. It will turn around if it walks into lava, but die if it falls into it.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Buzzy Beetle will be upside-down and able to cling to and walk on ceilings if placed adjacent to them. If not placed adjacent, he will immediately fall and spin towards the player."/>
     <checkbox bit="47" title="Inside Shell" comment="When enabled, the Buzzy Beetle will spawn inside his shell. He will eventually climb out and resume walking, even if set to be upside-down. Upside-down shells will fall without spinning towards the player."/>
+	<checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
   </sprite> <!-- #24: Buzzy Beetle -->
 
   <sprite id="25" name="Spiny" notes="A Spiny that walks along the ground.">
@@ -175,12 +176,14 @@
       <entry value="3">Upside-Down Shell (Towards Player)</entry>
     </list>
     <checkbox bit="44" title="Unknown Flag 11" advanced="True" advancedcomment="Unused flag with unknown effects."/>
+	<checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
   </sprite> <!-- #25: Spiny -->
 
   <!-- Research Unknown Flag 12 -->
   <sprite id="26" name="Upside-Down Spiny" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading.">
     <checkbox bit="32" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
     <checkbox bit="48" title="Unknown Flag 12" advanced="True" advancedcomment="Used in Retail: 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
+	<checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 
   <!-- Confirm Slow Down functions the same as Basic Platform. -->
@@ -701,6 +704,7 @@
     <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Paratroopa will be able to move behind Chainlink Fences." advancedcomment="Exact values are 1500.0 unchecked, -2500.0 checked."/>
     <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="Used in Retail: 06-01 A1 as 12"/>
     <value bit="21" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in Retail: 06-01 A1"/>
+	<checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
   </sprite> <!-- #58: Koopa Paratroopa -->
 
   <sprite id="59" name="Line Controlled Tilt Controlled Girder" notes="A platform similar to the Tilt Controlled Girder that can navigate along Line guides.">
@@ -1900,16 +1904,16 @@
     <checkbox bit="24" title="Delay" comment="This flag makes Lakitu throw Spinies less often." advancedcomment="Used in Retail: 04-05 A1."/>
   </sprite> <!-- #124: Lakitu Spawn Area -->
 
-  <sprite id="125" name="Climbing Koopa - Horizontal" notes="A Koopa Troopa that clings to and walks around on Chainlink Fence type objects and terrain. This one only moves from left to right.">
-    <dependency notes="The Climbing Koopa requires a Chainlink Fence sprite or Chainlink Fence flagged Terrain objects in order to function. May not function with all types of Chainlink sprites."/>
-    <dualbox bit="44" title1="Basic Green" title2="Faster Red" comment="This determines which type of Koopa Troopa will be on the fence. The red ones are slightly faster."/>
-    <checkbox bit="48" title="Starts Behind Fence" comment="When enabled, the Climbing Koopa will be placed on the reverse side of the Chainlink Fence."/>
+  <sprite id="125" name="Climbing Koopa - Horizontal" notes="A Koopa Troopa that clings to and walks around on Chainlink Fence type objects and terrain. This one only moves from left to right.
+  &lt;br&gt;The Climbing Koopa requires a Chainlink Fence sprite or Chainlink Fence flagged Terrain objects in order to function. May not function with all types of Chainlink sprites." yoshinotes="Yoshi can eat these Koopas and spit them out as a normal functioning Green Koopa exclusively.">
+    <dualbox bit="48" title1="Basic Green" title2="Faster Red" comment="This determines which type of Koopa Troopa will be on the fence. The red ones are slightly faster."/>
+    <checkbox bit="44" title="Starts Behind Fence" comment="When enabled, the Climbing Koopa will be placed on the reverse side of the Chainlink Fence."/>
   </sprite> <!-- #125: Climbing Koopa - Horizontal -->
 
-  <sprite id="126" name="Climbing Koopa - Vertical" notes="A Koopa Troopa that clings to and walks around on Chainlink Fence type objects and terrain. This one only moves up and down.">
-    <dependency notes="The Climbing Koopa requires a Chainlink Fence sprite or Chainlink Fence flagged Terrain objects in order to function. May not function with all types of Chainlink sprites."/>
-    <dualbox bit="44" title1="Basic Green" title2="Faster Red" comment="This determines which type of Koopa Troopa will be on the fence. The red ones are slightly faster."/>
-    <checkbox bit="48" title="Starts Behind Fence" comment="When enabled, the Climbing Koopa will be placed on the reverse side of the Chainlink Fence."/>
+  <sprite id="126" name="Climbing Koopa - Vertical" notes="A Koopa Troopa that clings to and walks around on Chainlink Fence type objects and terrain. This one only moves up and down.
+  &lt;br&gt;The Climbing Koopa requires a Chainlink Fence sprite or Chainlink Fence flagged Terrain objects in order to function. May not function with all types of Chainlink sprites." yoshinotes="Yoshi can eat these Koopas and spit them out as a normal functioning Green Koopa exclusively.">
+    <dualbox bit="48" title1="Basic Green" title2="Faster Red" comment="This determines which type of Koopa Troopa will be on the fence. The red ones are slightly faster."/>
+    <checkbox bit="44" title="Starts Behind Fence" comment="When enabled, the Climbing Koopa will be placed on the reverse side of the Chainlink Fence."/>
   </sprite> <!-- #126: Climbing Koopa - Vertical -->
 
   <sprite id="127" name="Chainlink Fence Flip Panel - Small" noyoshi="True" notes="This is the only way to reach the backside of a section of Chainlink Fence.">

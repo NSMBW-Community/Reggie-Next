@@ -2955,7 +2955,7 @@ class SpriteImage_FenceKoopaHorz(SLib.SpriteImage_StaticMultiple):  # 125
 
     def dataChanged(self):
 
-        color = self.parent.spritedata[5] >> 4
+        color = self.parent.spritedata[5] & 1
         if color == 1:
             self.image = ImageCache['FenceKoopaHR']
         else:
@@ -2977,7 +2977,7 @@ class SpriteImage_FenceKoopaVert(SLib.SpriteImage_StaticMultiple):  # 126
 
     def dataChanged(self):
 
-        color = self.parent.spritedata[5] >> 4
+        color = self.parent.spritedata[5] & 1
         if color == 1:
             self.image = ImageCache['FenceKoopaVR']
         else:
