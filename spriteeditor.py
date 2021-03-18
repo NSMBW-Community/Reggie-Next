@@ -5,7 +5,6 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 
 import globals_
 from levelitems import SpriteItem, ListWidgetItem_SortsByOther
-from sliderswitch import QSliderSwitch
 from ui import GetIcon
 from dirty import SetDirty
 
@@ -268,6 +267,15 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Base class for all the sprite data decoder/encoders
         """
         updateData = QtCore.pyqtSignal('PyQt_PyObject')
+
+        bit = None  # list: ranges
+        required = None  # tuple (range, value)
+        layout = None  # QLayout
+        row = None  # int: row in the parent's layout
+        comment = None  # str: comment text
+        comment2 = None  # str: additional comment text
+        commendAdv = None  # str: even more comment text
+        parent = None # SpriteEditorWidget: the widget this belongs to
 
         def retrieve(self, data, bits=None):
             """
