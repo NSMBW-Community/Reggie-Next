@@ -121,8 +121,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.editbox.setFont(font)
         edit = QtWidgets.QLineEdit()
         edit.textEdited.connect(self.HandleRawDataEdited)
-        edit.setMinimumWidth(133 + 10) # width of 'dddd dddd dddd dddd' (widest valid string) + padding
-        edit.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed))
+
+        min_valid_width = QtGui.QFontMetrics(QtGui.QFont()).horizontalAdvance("dddd dddd dddd dddd")
+        edit.setMinimumWidth(min_valid_width + 2 * 11)  # add padding
+        edit.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed))
         self.raweditor = edit
 
         self.resetButton = QtWidgets.QPushButton(globals_.trans.string('SpriteDataEditor', 17))
@@ -130,9 +132,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         editboxlayout = QtWidgets.QHBoxLayout()
         editboxlayout.addWidget(self.resetButton)
-        editboxlayout.addStretch(1)
         editboxlayout.addWidget(self.editbox)
-        editboxlayout.addWidget(edit)
+        editboxlayout.addWidget(edit, QtCore.Qt.AlignRight)
 
         # 'Editing Sprite #' label
         self.spriteLabel = QtWidgets.QLabel('-')
