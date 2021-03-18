@@ -253,7 +253,7 @@ class ReggieGameDefinition:
         self.gamepath = name
 
         # Parse the file (errors are handled by __init__())
-        path = 'reggiedata/patches/' + name + '/main.xml'
+        path = os.path.join("reggiedata", "patches", name, "main.xml")
         tree = etree.parse(path)
         root = tree.getroot()
 
@@ -262,10 +262,10 @@ class ReggieGameDefinition:
         self.name = root.attrib['name']
 
         self.description = globals_.trans.string('Gamedefs', 15)
-        if 'description' in root.attrib: self.description = root.attrib['description'].replace('[', '<').replace(']',
-                                                                                                                 '>')
-        self.version = None
-        if 'version' in root.attrib: self.version = root.attrib['version']
+        if 'description' in root.attrib:
+            self.description = root.attrib['description'].replace('[', '<').replace(']', '>')
+
+        self.version = root.attrib.get('version')
 
         self.base = None
         if 'base' in root.attrib:
