@@ -254,7 +254,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.setLayout(mainLayout)
 
         self.spritetype = -1
-        self.data = b'\0\0\0\0\0\0\0\0'
+        self.data = bytes(8)
         self.fields = []
         self.UpdateFlag = False
         self.DefaultMode = defaultmode
@@ -1126,11 +1126,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             Gets the short form from the xml for a value
             """
+            value = int(value)
 
             # find correct xml
             filename = globals_.gamedef.externalFile(self.type + '.xml')
             if not os.path.isfile(filename):
-                raise Exception # file does not exist
+                raise ValueError("The external xml file cannot be found for type: " + self.type)
 
             # parse the xml
             tree = ElementTree.parse(filename)
@@ -1144,7 +1145,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             option = None
             for option_ in root:
                 # skip if this is not an <option> or it's not for the correct value
-                if option_.tag.lower() == 'option' and int(option_.attrib['value'], 0) == int(value):
+                if option_.tag.lower() == 'option' and int(option_.attrib['value'], 0) == value:
                     option = option_
                     break
 
@@ -1673,7 +1674,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.com_extra.setVisible(False)
             self.com_more.setText(globals_.trans.string('SpriteDataEditor', 13))
             self.com_main.setVisible(True)
-            self.com_dep
 
         else:
             self.com_extra.setVisible(True)
@@ -1730,7 +1730,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         Handles the reset data button being clicked
         """
-        self.data = b'\0\0\0\0\0\0\0\0'
+        self.data = bytes(8)
         data = self.data
 
         self.UpdateFlag = True
@@ -1742,9 +1742,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.DataUpdate.emit(data)
 
-        data = ['0' * 4] * 4
+        data = ["0000"] * 4
         self.raweditor.setText(' '.join(data))
-        self.raweditor.setStyleSheet('QLineEdit { background-color: #ffffff; }')
+        self.raweditor.setStyleSheet('')
 
     def HandleRawDataEdited(self, text):
         """
@@ -1756,26 +1756,25 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         if len(raw) == 16:
             try:
-                data = bytes([int(raw[r:r + 2], 16) for r in range(0, len(raw), 2)])
+                data = bytes.fromhex(text)
                 valid = True
 
-            except Exception:
+            except ValueError:
                 pass
 
-        # if it's valid, let it go
-        if valid:
-            self.raweditor.setStyleSheet('')
-            self.data = data
-
-            self.UpdateFlag = True
-            for f in self.fields: f.update(data)
-            self.UpdateFlag = False
-
-            self.DataUpdate.emit(data)
-            self.raweditor.setStyleSheet('')
-
-        else:
+        if not valid:
             self.raweditor.setStyleSheet('QLineEdit { background-color: #ffd2d2; }')
+            return
+
+        # if it's valid, let it go
+        self.raweditor.setStyleSheet('')
+        self.data = data
+
+        self.UpdateFlag = True
+        for f in self.fields: f.update(data)
+        self.UpdateFlag = False
+
+        self.DataUpdate.emit(data)
 
     def HandleSpritePlaced(self, id_, button_):
         def placeSprite():
@@ -1799,7 +1798,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             # remove this dependency, because it is now fulfilled.
             # get row of button
             idx = self.com_deplist.indexOf(button_)
-            row, _, _, _ = self.com_deplist.getItemPosition(idx)
+            row, *_ = self.com_deplist.getItemPosition(idx)
 
             # remove this row
             l = self.com_deplist
