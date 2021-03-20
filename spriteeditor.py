@@ -701,8 +701,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             label = QtWidgets.QLabel(title + ':')
             # label.setWordWrap(True)
 
+            checkbox_widget = QtWidgets.QWidget()
+            checkbox_widget.setLayout(CheckboxLayout)
+
             layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
-            layout.addLayout(CheckboxLayout, row, 1)
+            layout.addWidget(checkbox_widget, row, 1)
 
             col = 2
             if comment is not None:
@@ -949,10 +952,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             L.addWidget(self.buttons[1])
             L.addWidget(label2)
             L.addStretch(1)
-            L.setContentsMargins(0, 0, 0, 0)
+            # L.setContentsMargins(0, 0, 0, 0)
+
+            widget = QtWidgets.QWidget()
+            widget.setLayout(L)
 
             # span two columns
-            layout.addLayout(L, row, 0, 1, 2)
+            layout.addWidget(widget, row, 0, 1, 2)
 
             col = 2
             if comment is not None:
@@ -1048,13 +1054,16 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             L2 = QtWidgets.QHBoxLayout()
             L2.addWidget(self.button)
             L2.addWidget(self.box)
-            L2.setContentsMargins(0, 0, 0, 0)
+            # L2.setContentsMargins(0, 0, 0, 0)
+
+            widget = QtWidgets.QWidget()
+            widget.setLayout(L2)
 
             label = QtWidgets.QLabel(title)
             # label.setWordWrap(True)
 
             layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
-            layout.addLayout(L2, row, 1)
+            layout.addWidget(widget, row, 1)
 
             col = 2
             if comment is not None:
@@ -1243,8 +1252,14 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             labels.addWidget(label1, 0, 0, QtCore.Qt.AlignRight)
             labels.addWidget(label2, 1, 0, QtCore.Qt.AlignRight)
 
-            layout.addLayout(labels, row, 0, QtCore.Qt.AlignRight)
-            layout.addLayout(DualboxLayout, row, 1)
+            labels_widget = QtWidgets.QWidget()
+            labels_widget.setLayout(labels)
+
+            dualbox_widget = QtWidgets.QWidget()
+            dualbox_widget.setLayout(DualboxLayout)
+
+            layout.addWidget(labels_widget, row, 0, QtCore.Qt.AlignRight)
+            layout.addWidget(dualbox_widget, row, 1)
 
             col = 2
             if comment is not None:
