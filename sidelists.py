@@ -1052,6 +1052,7 @@ class SpriteList(QtWidgets.QWidget):
         Re-enables sorting after a batch adding is finished.
         """
         self.is_batch_add = False
+        self.table.resizeRowsToContents()
         self.table.setSortingEnabled(True)
         self.updateItems()
 
@@ -1072,8 +1073,11 @@ class SpriteList(QtWidgets.QWidget):
         name_item = QtWidgets.QTableWidgetItem("%d: %s" % (sprite.type, sprite.name))
         name_item.setFlags(name_item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.table.setItem(row, 0, name_item)
-        self.table.resizeRowsToContents()
-        self.table.setWordWrap(True)
+
+        if not self.is_batch_add:
+            # Profiling shows that this function is quite expensive, so if we're
+            # in a batch add, don't resize the rows until the very end.
+            self.table.resizeRowsToContents()
 
         # HACK: We're creating a new field here
         name_item._sprite = sprite
