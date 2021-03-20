@@ -968,6 +968,14 @@ class SpriteList(QtWidgets.QWidget):
         """
         Search the table
         """
+        if text == "":
+            # Optimisation for when no search is given -> show everything
+            for row in range(self.table.rowCount()):
+                self.table.setRowHidden(row, False)
+
+            self.SearchResults = set(range(self.table.rowCount()))
+            return
+
         results = self.table.findItems(text, QtCore.Qt.MatchContains | QtCore.Qt.MatchRecursive)
         rows = set(item.row() for item in results if item is not None)
 
@@ -1147,9 +1155,15 @@ class SpriteList(QtWidgets.QWidget):
         """
         Clears the sprite list.
         """
+        # Ensure all rows are removed. For some reason, just calling the
+        # 'clearContents' method does not remove the underlying items, causing
+        # way too many items to be searched after a few Area switches.
+        for i in range(self.table.rowCount() - 1, -1, -1):
+            self.table.removeRow(i)
+
+        self.table.clearContents()
         self.searchbox.setText("")
         self.filterbox.setCurrentIndex(0)
-        self.table.clearContents()
         self.SearchResults = set()
 
     def toolTip(self, item):
