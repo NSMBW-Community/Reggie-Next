@@ -968,28 +968,6 @@ class Area_NSMBW(AbstractParsedArea):
         self.blocks[10] = bytes(buffer)
 
 
-class AbstractBackground:
-    """
-    A class that represents an abstract background for a zone (both bgA and bgB)
-    """
-
-    def __init__(self, xScroll=1, yScroll=1, xPos=1, yPos=1):
-        self.xScroll = xScroll
-        self.yScroll = yScroll
-        self.xPos = xPos
-        self.yPos = yPos
-
-    def save(self, idnum=0):
-        return b''
-
-
-class Background_NSMBW(AbstractBackground):
-    """
-    A class that represents a background from New Super Mario Bros. Wii
-    """
-    pass  # not yet implemented
-
-
 class Metadata:
     """
     Class for the new level metadata system

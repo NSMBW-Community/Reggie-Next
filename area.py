@@ -280,33 +280,3 @@ class TilesetsTab(QtWidgets.QWidget):
         for i in range(4):
             result.append(str(self.lineEdits[i].text()))
         return tuple(result)
-
-
-def SimpleTilesetNames():
-    """
-    simple
-    """
-
-    # Category parser
-    def ParseCategory(items):
-        """
-        Parses a list of strings and returns a tuple of strings
-        """
-        result = []
-        for item in items:
-            if isinstance(item[1], str):
-                # It's a tileset
-                name = item[1]
-                file = item[0]
-                result.append((file, name))
-            else:
-                # It's a category
-                childStrings = ParseCategory(item[1])
-                for child in childStrings:
-                    result.append(child)
-        return result
-
-    return (
-        sorted(ParseCategory(globals_.TilesetNames[i][0]), key=lambda e: e[1])
-        for i in range(4)
-    )
