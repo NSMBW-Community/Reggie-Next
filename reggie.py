@@ -3163,11 +3163,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.scene.addItem(obj)
 
         pcEvent = self.HandleSprPosChange
+
+        self.spriteList.prepareBatchAdd()
         for spr in globals_.Area.sprites:
             spr.positionChanged = pcEvent
             self.spriteList.addSprite(spr)
             self.scene.addItem(spr)
             spr.UpdateListItem()
+
+        self.spriteList.endBatchAdd()
 
         pcEvent = self.HandleEntPosChange
         for ent in globals_.Area.entrances:

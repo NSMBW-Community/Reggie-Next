@@ -927,6 +927,8 @@ class SpriteList(QtWidgets.QWidget):
         self.filterbox = QtWidgets.QComboBox()
         self.filterbox.currentIndexChanged.connect(self.filter)
 
+        self.is_batch_add = False
+
         # Set of row ids
         self.SearchResults = set()
 
@@ -1003,7 +1005,7 @@ class SpriteList(QtWidgets.QWidget):
         sprite = self.table.item(row, 0)._sprite
         sdef = globals_.Sprites[sprite.type]
 
-        # 2. Loop over every field of the sprite 
+        # 2. Loop over every field of the sprite
         #    and hide everything that has no fields
         #    with the correct idtype.
         for field in sdef.fields:
@@ -1037,13 +1039,30 @@ class SpriteList(QtWidgets.QWidget):
 
         return -1
 
+    def prepareBatchAdd(self):
+        """
+        Disables sorting, because sorting every time a new element is added is
+        pretty bad performance-wise. We'll sort them once afterwards.
+        """
+        self.is_batch_add = True
+        self.table.setSortingEnabled(False)
+
+    def endBatchAdd(self):
+        """
+        Re-enables sorting after a batch adding is finished.
+        """
+        self.is_batch_add = False
+        self.table.setSortingEnabled(True)
+        self.updateItems()
+
     def addSprite(self, sprite):
         """
         Adds a sprite to the table
         """
-        # temporarily disable sorting so our new row
-        # gets added properly
-        self.table.setSortingEnabled(False)
+        if not self.is_batch_add:
+            # temporarily disable sorting so our new row
+            # gets added properly
+            self.table.setSortingEnabled(False)
 
         # add a new row
         row = self.table.rowCount()
@@ -1081,8 +1100,9 @@ class SpriteList(QtWidgets.QWidget):
             self.table.setItem(row, 1 + col, id_item)
 
         # re-enable sorting
-        self.table.setSortingEnabled(True)
-        self.updateItems()
+        if not self.is_batch_add:
+            self.table.setSortingEnabled(True)
+            self.updateItems()
 
     def updateSprite(self, sprite):
         """
@@ -1120,11 +1140,13 @@ class SpriteList(QtWidgets.QWidget):
         self.updateItems()
 
     def clear(self):
+        """
+        Clears the sprite list.
+        """
         self.searchbox.setText("")
         self.filterbox.setCurrentIndex(0)
         self.table.clearContents()
         self.SearchResults = set()
-        return
 
     def toolTip(self, item):
         """
