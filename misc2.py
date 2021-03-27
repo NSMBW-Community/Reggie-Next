@@ -129,7 +129,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Constructor
         """
-        QtWidgets.QGraphicsView.__init__(self, scene, parent)
+        super(LevelViewWidget, self).__init__(scene, parent)
 
         self.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         # self.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(119,136,153)))
@@ -456,7 +456,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         self.PositionHover.emit(int(pos.x()), int(pos.y()))
 
         if event.buttons() == QtCore.Qt.RightButton and self.currentobj is not None and not self.dragstamp:
-
             # possibly a small optimization
             type_obj = ObjectItem
             type_spr = SpriteItem

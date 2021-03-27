@@ -871,11 +871,11 @@ class ObjectItem(LevelEditorItem):
         if event.button() == QtCore.Qt.LeftButton:
             if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.ControlModifier:
                 new_item = globals_.mainWindow.CreateObject(
-                    self.tileset, self.type, self.layer, self.objx, 
+                    self.tileset, self.type, self.layer, self.objx,
                     self.objy, self.width, self.height
                 )
 
-                # swap the Z values so it doesn't look like the 
+                # swap the Z values so it doesn't look like the
                 # cloned item is the old one
                 newZ = new_item.zValue()
                 new_item.setZValue(self.zValue())

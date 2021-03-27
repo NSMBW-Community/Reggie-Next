@@ -1000,7 +1000,7 @@ class Metadata:
             # This is old-style metadata - convert it
             try:
                 info = DecodeOldReggieInfo(data, {
-                    'Creator', 'Title', 'Author', 'Group', 
+                    'Creator', 'Title', 'Author', 'Group',
                     'Webpage', 'Password'
                 })
 

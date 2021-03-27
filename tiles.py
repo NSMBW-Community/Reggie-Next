@@ -1068,6 +1068,8 @@ def _LoadTileset(idx, name, reload_=False):
     # Add Tiles to spritelib
     SLib.Tiles = globals_.Tiles
 
+    return True
+
 
 def LoadTexture_NSMBW(tiledata):
     data = tpl.decodeRGB4A3(tiledata, 1024, 256, False)

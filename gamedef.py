@@ -274,26 +274,24 @@ class ReggieGameDefinition:
             self.base = ReggieGameDefinition()
 
         # Parse the nodes
-        addpath = 'reggiedata/patches/' + name + '/'
+        addpath = os.path.join("reggiedata", "patches", name)
         for node in root:
             n = node.tag.lower()
-            if n in ('file', 'folder'):
-                path = addpath + node.attrib['path']
+            if n not in ('file', 'folder'):
+                continue
 
-                if 'patch' in node.attrib:
-                    patch = node.attrib['patch'].lower() == 'true'  # convert to bool
+            path = os.path.join(addpath, node.attrib['path'])
+            patch = node.attrib.get('patch', 'true').lower() == 'true'
+
+            if 'game' in node.attrib:
+                if node.attrib['game'] != globals_.trans.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
+                    def_ = FindGameDef(node.attrib['game'], name)
+                    path = os.path.join('reggiedata', 'patches', def_.gamepath, node.attrib['path'])
                 else:
-                    patch = True  # DEFAULT PATCH VALUE
-                if 'game' in node.attrib:
-                    if node.attrib['game'] != globals_.trans.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
-                        def_ = FindGameDef(node.attrib['game'], name)
-                        path = os.path.join('reggiedata', 'patches', def_.gamepath, node.attrib['path'])
-                    else:
-                        path = os.path.join('reggiedata', node.attrib['path'])
+                    path = os.path.join('reggiedata', node.attrib['path'])
 
-                ListToAddTo = self.files if n == 'file' else self.folders  # self.files or self.folders
-                newdef = self.GameDefinitionFile(path, patch)
-                ListToAddTo[node.attrib['name']] = newdef
+            ListToAddTo = self.files if n == 'file' else self.folders  # self.files or self.folders
+            ListToAddTo[node.attrib['name']] = self.GameDefinitionFile(path, patch)
 
         # Get rid of the XML stuff
         del tree, root

@@ -412,12 +412,10 @@ class ScreenCapChoiceDialog(QtWidgets.QDialog):
         self.setWindowTitle(globals_.trans.string('ScrShtDlg', 0))
         self.setWindowIcon(GetIcon('screenshot'))
 
-        i = 0
         self.zoneCombo = QtWidgets.QComboBox()
         self.zoneCombo.addItem(globals_.trans.string('ScrShtDlg', 1))
         self.zoneCombo.addItem(globals_.trans.string('ScrShtDlg', 2))
-        for z in globals_.Area.zones:
-            i = i + 1
+        for i in range(len(globals_.Area.zones)):
             self.zoneCombo.addItem(globals_.trans.string('ScrShtDlg', 3, '[zone]', i))
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)

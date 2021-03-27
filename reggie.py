@@ -3432,10 +3432,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.locationEditorDock.setVisible(showLocationPanel)
         self.pathEditorDock.setVisible(showPathPanel)
 
-        if len(self.CurrentSelection) > 0:
-            self.actions['deselect'].setEnabled(True)
-        else:
-            self.actions['deselect'].setEnabled(False)
+        self.actions['deselect'].setEnabled(len(self.CurrentSelection) != 0)
 
         if updateModeInfo:
             globals_.DirtyOverride += 1
@@ -3938,18 +3935,23 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         if event.key() == Qt.Key_Delete or event.key() == Qt.Key_Backspace:
             sel = self.scene.selectedItems()
+
             if len(sel) > 0:
+
                 self.SelectionUpdateFlag = True
+
                 for obj in sel:
                     obj.delete()
                     obj.setSelected(False)
                     self.scene.removeItem(obj)
-                    self.levelOverview.update()
+
                 SetDirty()
                 event.accept()
+                self.levelOverview.update()
                 self.SelectionUpdateFlag = False
                 self.ChangeSelectionHandler()
                 return
+
         self.levelOverview.update()
 
         QtWidgets.QMainWindow.keyPressEvent(self, event)
@@ -3959,51 +3961,55 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Pops up the options for Area Dialogue
         """
         dlg = AreaOptionsDialog()
-        if dlg.exec_() == QtWidgets.QDialog.Accepted:
-            SetDirty()
+        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+            return
 
-            globals_.Area.timeLimit = dlg.LoadingTab.timer.value() - 200
-            globals_.Area.startEntrance = dlg.LoadingTab.entrance.value()
-            globals_.Area.toadHouseType = dlg.LoadingTab.toadHouseType.currentIndex()
-            globals_.Area.wrapFlag = dlg.LoadingTab.wrap.isChecked()
-            globals_.Area.creditsFlag = dlg.LoadingTab.credits.isChecked()
-            globals_.Area.ambushFlag = dlg.LoadingTab.ambush.isChecked()
-            globals_.Area.unkFlag1 = dlg.LoadingTab.unk1.isChecked()
-            globals_.Area.unkFlag2 = dlg.LoadingTab.unk2.isChecked()
-            globals_.Area.unkVal1 = dlg.LoadingTab.unk3.value()
-            globals_.Area.unkVal2 = dlg.LoadingTab.unk4.value()
+        SetDirty()
 
-            oldnames = [globals_.Area.tileset0, globals_.Area.tileset1, globals_.Area.tileset2, globals_.Area.tileset3]
-            assignments = ['globals_.Area.tileset0', 'globals_.Area.tileset1', 'globals_.Area.tileset2', 'globals_.Area.tileset3']
-            newnames = dlg.TilesetsTab.values()
+        globals_.Area.timeLimit = dlg.LoadingTab.timer.value() - 200
+        globals_.Area.startEntrance = dlg.LoadingTab.entrance.value()
+        globals_.Area.toadHouseType = dlg.LoadingTab.toadHouseType.currentIndex()
+        globals_.Area.wrapFlag = dlg.LoadingTab.wrap.isChecked()
+        globals_.Area.creditsFlag = dlg.LoadingTab.credits.isChecked()
+        globals_.Area.ambushFlag = dlg.LoadingTab.ambush.isChecked()
+        globals_.Area.unkFlag1 = dlg.LoadingTab.unk1.isChecked()
+        globals_.Area.unkFlag2 = dlg.LoadingTab.unk2.isChecked()
+        globals_.Area.unkVal1 = dlg.LoadingTab.unk3.value()
+        globals_.Area.unkVal2 = dlg.LoadingTab.unk4.value()
 
-            for idx, oldname, assignment, fname in zip(range(4), oldnames, assignments, newnames):
+        for idx, fname in enumerate(dlg.TilesetsTab.values()):
 
-                if fname in ('', None):
-                    fname = ''
-                elif fname.startswith(globals_.trans.string('AreaDlg', 16)):
-                    fname = fname[len(globals_.trans.string('AreaDlg', 17, '[name]', '')):]
+            if fname in ('', None):
+                fname = ''
+            elif fname.startswith(globals_.trans.string('AreaDlg', 16)):
+                fname = fname[len(globals_.trans.string('AreaDlg', 17, '[name]', '')):]
 
-                # TODO: Remove this exec
-                exec(assignment + ' = fname')
+            if idx == 0:
+                globals_.Area.tileset0 = fname
+            elif idx == 1:
+                globals_.Area.tileset1 = fname
+            elif idx == 2:
+                globals_.Area.tileset2 = fname
+            else:
+                globals_.Area.tileset3 = fname
 
-                if fname != '':
-                    LoadTileset(idx, fname)
-                else:
-                    UnloadTileset(idx)
+            if fname != '':
+                LoadTileset(idx, fname)
+            else:
+                UnloadTileset(idx)
 
-            globals_.mainWindow.objPicker.LoadFromTilesets()
-            self.objAllTab.setCurrentIndex(0)
-            self.objAllTab.setTabEnabled(0, (globals_.Area.tileset0 != ''))
-            self.objAllTab.setTabEnabled(1, (globals_.Area.tileset1 != ''))
-            self.objAllTab.setTabEnabled(2, (globals_.Area.tileset2 != ''))
-            self.objAllTab.setTabEnabled(3, (globals_.Area.tileset3 != ''))
+        globals_.mainWindow.objPicker.LoadFromTilesets()
+        self.objAllTab.setCurrentIndex(0)
+        self.objAllTab.setTabEnabled(0, (globals_.Area.tileset0 != ''))
+        self.objAllTab.setTabEnabled(1, (globals_.Area.tileset1 != ''))
+        self.objAllTab.setTabEnabled(2, (globals_.Area.tileset2 != ''))
+        self.objAllTab.setTabEnabled(3, (globals_.Area.tileset3 != ''))
 
-            for layer in globals_.Area.layers:
-                for obj in layer:
-                    obj.updateObjCache()
+        for layer in globals_.Area.layers:
+            for obj in layer:
+                obj.updateObjCache()
 
-            self.scene.update()
+        self.scene.update()
 
     def HandleZones(self):
         """
@@ -4139,70 +4145,71 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
 
         dlg = ScreenCapChoiceDialog()
-        if dlg.exec_() == QtWidgets.QDialog.Accepted:
-            fn = QtWidgets.QFileDialog.getSaveFileName(globals_.mainWindow, globals_.trans.string('FileDlgs', 3), '/untitled.png',
-                                                       globals_.trans.string('FileDlgs', 4) + ' (*.png)')[0]
-            if fn == '': return
-            fn = str(fn)
+        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+            return
 
-            if dlg.zoneCombo.currentIndex() == 0:
-                ScreenshotImage = QtGui.QImage(globals_.mainWindow.view.width(), globals_.mainWindow.view.height(),
-                                               QtGui.QImage.Format_ARGB32)
-                ScreenshotImage.fill(Qt.transparent)
+        fn = QtWidgets.QFileDialog.getSaveFileName(self,
+            globals_.trans.string('FileDlgs', 3), '/untitled.png',
+            globals_.trans.string('FileDlgs', 4) + ' (*.png)')[0]
 
-                RenderPainter = QtGui.QPainter(ScreenshotImage)
-                globals_.mainWindow.view.render(RenderPainter,
-                                       QtCore.QRectF(0, 0, globals_.mainWindow.view.width(), globals_.mainWindow.view.height()),
-                                       QtCore.QRect(QtCore.QPoint(0, 0),
-                                                    QtCore.QSize(globals_.mainWindow.view.width(), globals_.mainWindow.view.height())))
-                RenderPainter.end()
-            elif dlg.zoneCombo.currentIndex() == 1:
-                maxX = maxY = 0
-                minX = minY = 0x0ddba11
-                for z in globals_.Area.zones:
-                    if maxX < ((z.objx * 1.5) + (z.width * 1.5)):
-                        maxX = ((z.objx * 1.5) + (z.width * 1.5))
-                    if maxY < ((z.objy * 1.5) + (z.height * 1.5)):
-                        maxY = ((z.objy * 1.5) + (z.height * 1.5))
-                    if minX > z.objx * 1.5:
-                        minX = z.objx * 1.5
-                    if minY > z.objy * 1.5:
-                        minY = z.objy * 1.5
-                maxX = (1024 * 24 if 1024 * 24 < maxX + 40 else maxX + 40)
-                maxY = (512 * 24 if 512 * 24 < maxY + 40 else maxY + 40)
-                minX = (0 if 40 > minX else minX - 40)
-                minY = (40 if 40 > minY else minY - 40)
+        if fn == '':
+            return
 
-                ScreenshotImage = QtGui.QImage(int(maxX - minX), int(maxY - minY), QtGui.QImage.Format_ARGB32)
-                ScreenshotImage.fill(Qt.transparent)
+        fn = str(fn)
 
-                RenderPainter = QtGui.QPainter(ScreenshotImage)
-                globals_.mainWindow.scene.render(RenderPainter, QtCore.QRectF(0, 0, int(maxX - minX), int(maxY - minY)),
-                                        QtCore.QRectF(int(minX), int(minY), int(maxX - minX), int(maxY - minY)))
-                RenderPainter.end()
+        screenshot_type = dlg.zoneCombo.currentIndex()
 
-            else:
-                i = dlg.zoneCombo.currentIndex() - 2
-                ScreenshotImage = QtGui.QImage(globals_.Area.zones[i].width * 1.5, globals_.Area.zones[i].height * 1.5,
-                                               QtGui.QImage.Format_ARGB32)
-                ScreenshotImage.fill(Qt.transparent)
+        if screenshot_type == 0:
+            img_width = self.view.width()
+            img_height = self.view.height()
+            rect_a = QtCore.QRectF(0, 0, img_width, img_height),
+            rect_b = QtCore.QRect(QtCore.QPoint(0, 0), QtCore.QSize(img_width, img_height))
+            renderer = self.view
 
-                RenderPainter = QtGui.QPainter(ScreenshotImage)
-                globals_.mainWindow.scene.render(RenderPainter,
-                                        QtCore.QRectF(0, 0, globals_.Area.zones[i].width * 1.5, globals_.Area.zones[i].height * 1.5),
-                                        QtCore.QRectF(int(globals_.Area.zones[i].objx) * 1.5, int(globals_.Area.zones[i].objy) * 1.5,
-                                                      globals_.Area.zones[i].width * 1.5, globals_.Area.zones[i].height * 1.5))
-                RenderPainter.end()
+        elif screenshot_type == 1:
+            maxX = maxY = 0
+            minX = minY = 24560
 
-            ScreenshotImage.save(fn, 'PNG', 50)
+            for z in globals_.Area.zones:
+                maxX = max(maxX, (z.objx + z.width) * 1.5)
+                maxY = max(maxY, (z.objy + z.height) * 1.5)
+
+                minX = min(minX, z.objx * 1.5)
+                minY = min(minY, z.objy * 1.5)
+
+            maxX = min(1024 * 24, maxX + 40)
+            maxY = min(512 * 24, maxY + 40)
+            minX = max(0, minX - 40)
+            minY = max(0, minY - 40)
+
+            img_width = int(maxX - minX)
+            img_height = int(maxY - minY)
+            rect_a = QtCore.QRectF(0, 0, img_width, img_height)
+            rect_b = QtCore.QRectF(int(minX), int(minY), img_width, img_height)
+            renderer = self.scene
+
+        else:
+            zone = globals_.Area.zones[screenshot_type - 2]
+
+            img_width = zone.width * 1.5
+            img_height = zone.height * 1.5
+            rect_a = QtCore.QRectF(0, 0, img_width, img_height)
+            rect_b = QtCore.QRectF(zone.objx * 1.5, zone.objy * 1.5, img_width, img_height)
+            renderer = self.scene
+
+        ScreenshotImage = QtGui.QImage(img_width, img_height, QtGui.QImage.Format_ARGB32)
+        ScreenshotImage.fill(Qt.transparent)
+        RenderPainter = QtGui.QPainter(ScreenshotImage)
+        renderer.render(RenderPainter, rect_a, rect_b)
+        RenderPainter.end()
+        ScreenshotImage.save(fn, 'PNG', 50)
 
     @staticmethod
     def HandleDiagnostics():
         """
         Checks the level for any obvious problems and provides options to autofix them
         """
-        dlg = DiagnosticToolDialog()
-        dlg.exec_()
+        DiagnosticToolDialog().exec_()
 
 
 def main():
