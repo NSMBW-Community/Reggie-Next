@@ -740,7 +740,10 @@ def LoadSpriteData():
 
             # Apply it
             for spriteid, name in data:
-                globals_.Sprites[int(spriteid)].name = name
+                spriteid = int(spriteid)
+
+                if 0 <= spriteid < len(globals_.Sprites):
+                    globals_.Sprites[spriteid].name = name
 
     # Warn the user if errors occurred
     if len(errors) > 0:

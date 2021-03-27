@@ -1698,7 +1698,7 @@ class SpriteItem(LevelEditorItem):
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     SelectionRect = QtCore.QRectF(0, 0, 23, 23)
 
-    def __init__(self, type, x, y, data):
+    def __init__(self, type_, x, y, data):
         """
         Creates a sprite with specific data
         """
@@ -1706,7 +1706,7 @@ class SpriteItem(LevelEditorItem):
         self.setZValue(26000)
 
         self.font = globals_.NumberFont
-        self.type = type
+        self.type = type_
         self.objx = x
         self.objy = y
         self.spritedata = data
@@ -1717,11 +1717,10 @@ class SpriteItem(LevelEditorItem):
         SLib.SpriteImage.loadImages()
         self.ImageObj = SLib.SpriteImage(self)
 
-        try:
-            sname = globals_.Sprites[type].name
-            self.name = sname
-        except:
-            self.name = 'UNKNOWN'
+        if 0 <= type_ < len(globals_.Sprites):
+            self.name = globals_.Sprites[type_].name
+        else:
+            self.name = "UNKNOWN"
 
         self.InitializeSprite()
 
@@ -1742,13 +1741,17 @@ class SpriteItem(LevelEditorItem):
             )
         globals_.DirtyOverride -= 1
 
-    def SetType(self, type):
+    def SetType(self, type_):
         """
         Sets the type of the sprite
         """
-        self.name = globals_.Sprites[type].name
-        self.setToolTip(globals_.trans.string('Sprites', 0, '[type]', type, '[name]', self.name))
-        self.type = type
+        if 0 <= type_ < len(globals_.Sprites):
+            self.name = globals_.Sprites[type_].name
+        else:
+            self.name = "UNKNOWN"
+
+        self.setToolTip(globals_.trans.string('Sprites', 0, '[type]', type_, '[name]', self.name))
+        self.type = type_
 
         self.InitializeSprite()
 
@@ -1867,7 +1870,7 @@ class SpriteItem(LevelEditorItem):
 
     def __lt__(self, other):
         # Sort by objx, then objy, then sprite type
-        score = lambda sprite: (sprite.objx * 100000 + sprite.objy) * 1000 + sprite.type
+        score = lambda sprite: (sprite.objx, sprite.objy, sprite.type)
 
         return score(self) < score(other)
 
@@ -1875,20 +1878,18 @@ class SpriteItem(LevelEditorItem):
         """
         Initializes sprite and creates any auxiliary objects needed
         """
-        # global prefs
+        type_ = self.type
 
-        type = self.type
-
-        if type > len(globals_.Sprites):
-            print('Tried to initialize a sprite of type %d, but this is out of range %d.' % (type, len(globals_.Sprites)))
+        if not 0 <= type_ < len(globals_.Sprites):
+            print('Tried to initialize a sprite of type %d, but this is out of range %d.' % (type_, len(globals_.Sprites)))
             return
 
-        self.name = globals_.Sprites[type].name
+        self.name = globals_.Sprites[type_].name
         self.setToolTip(globals_.trans.string('Sprites', 0, '[type]', self.type, '[name]', self.name))
 
         imgs = globals_.gamedef.getImageClasses()
-        if type in imgs:
-            self.setImageObj(imgs[type])
+        if type_ in imgs:
+            self.setImageObj(imgs[type_])
 
     def setImageObj(self, obj):
         """

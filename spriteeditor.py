@@ -1324,17 +1324,16 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             return self.insertvalue(data, value)
 
 
-    def setSprite(self, type, reset=False):
+    def setSprite(self, type_, reset=False):
         """
         Change the sprite type used by the data editor
         """
-        if (self.spritetype == type) and not reset:
+        if (self.spritetype == type_) and not reset:
             return
 
-        self.spritetype = type
-        if type != 1000:
-            sprite = globals_.Sprites[type]
-
+        self.spritetype = type_
+        if type_ != 1000 and 0 <= type_ < len(globals_.Sprites):
+            sprite = globals_.Sprites[type_]
         else:
             sprite = None
 
@@ -1371,16 +1370,16 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # show the raw editor
         self.raweditor.setVisible(True)
         self.editbox.setVisible(True)
-        self.resetButton.setVisible(not globals_.HideResetSpritedata and len(sprite.fields) > 0)
+        self.resetButton.setVisible(not globals_.HideResetSpritedata and (sprite is None or len(sprite.fields) > 0))
 
         # show size stuff
-        self.sizeButton.setVisible(sprite.size)
+        self.sizeButton.setVisible(sprite is not None and sprite.size)
 
         # Nothing is selected, so no comments should appear
         self.com_box.setVisible(False)
 
         if sprite is None:
-            self.spriteLabel.setText(globals_.trans.string('SpriteDataEditor', 5, '[id]', type))
+            self.spriteLabel.setText(globals_.trans.string('SpriteDataEditor', 5, '[id]', type_))
             self.noteButton.setVisible(False)
             self.yoshiInfo.setVisible(False)
             self.advNoteButton.setVisible(False)
@@ -1391,7 +1390,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             return
 
-        self.spriteLabel.setText(globals_.trans.string('SpriteDataEditor', 6, '[id]', type, '[name]', sprite.name))
+        self.spriteLabel.setText(globals_.trans.string('SpriteDataEditor', 6, '[id]', type_, '[name]', sprite.name))
 
         if sprite.notes is not None:
             self.noteButton.setVisible(True)
@@ -2166,7 +2165,10 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         """
         QtWidgets.QDialog.__init__(self)
 
-        self.sprite = globals_.Sprites[spriteid]
+        if 0 <= spriteid < len(globals_.Sprites):
+            self.sprite = globals_.Sprites[spriteid]
+        else:
+            self.sprite = None
 
         text = "Let's resize your sprite. In order to do this, choose one of " \
                "the two slots, based on the below information. Note that some " \
@@ -2272,6 +2274,10 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         nyb7 = (25, 29)
 
         found = {5: [], 7: []}
+
+        if self.sprite is None:
+            return found
+
         for field in self.sprite.fields:
 
             type = field[0]

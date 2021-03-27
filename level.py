@@ -897,7 +897,7 @@ class Area_NSMBW(AbstractParsedArea):
         sprstruct = struct.Struct('>Hxx')
         buffer = bytearray(len(ls) * 4)
         for s in ls:
-            sprstruct.pack_into(buffer, offset, int(s))
+            sprstruct.pack_into(buffer, offset, s & 0xFFFF)
             offset += 4
 
         self.blocks[8] = bytes(buffer)

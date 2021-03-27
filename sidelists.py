@@ -784,10 +784,15 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
 
                     id_ = snode.data(0, QtCore.Qt.UserRole)
 
-                    if globals_.Sprites[id_] is None:
-                        name = 'ERROR'
+                    if 0 <= id_ < len(globals_.Sprites):
+                        sdef = globals_.Sprites[id_]
                     else:
-                        name = globals_.Sprites[id_].name
+                        sdef = None
+
+                    if sdef is None:
+                        name = 'UNKNOWN'
+                    else:
+                        name = sdef.name
 
                     snode.setText(0, globals_.trans.string('Sprites', 18, '[id]', id_, '[name]', name))
 
@@ -809,18 +814,23 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
                     self.SearchResultsCategory = cnode
                     SearchableItems = []
 
-                for id in category:
+                for id_ in category:
                     snode = QtWidgets.QTreeWidgetItem()
-                    if id == 9999:
+                    if id_ == 9999:
                         snode.setText(0, globals_.trans.string('Sprites', 17))
                         snode.setData(0, QtCore.Qt.UserRole, -2)
                         self.NoSpritesFound = snode
                     else:
-                        sdef = globals_.Sprites[id]
+                        if 0 <= id_ < len(globals_.Sprites):
+                            sdef = globals_.Sprites[id_]
+                        else:
+                            sdef = None
+
                         if sdef is None:
-                            sname = 'ERROR'
+                            sname = "UNKNOWN"
                         else:
                             sname = sdef.name
+
                         snode.setText(0, globals_.trans.string('Sprites', 18, '[id]', id, '[name]', sname))
                         snode.setData(0, QtCore.Qt.UserRole, id)
 
@@ -1011,7 +1021,13 @@ class SpriteList(QtWidgets.QWidget):
         # 1. Get the sprite defintion
         filtertype = self.idtypes[filteridx - 1]
         sprite = self.table.item(row, 0)._sprite
-        sdef = globals_.Sprites[sprite.type]
+
+        if 0 <= sprite.type < len(globals_.Sprites):
+            sdef = globals_.Sprites[sprite.type]
+        else:
+            # No sprite definition -> hide
+            self.table.setRowHidden(row, True)
+            return
 
         # 2. Loop over every field of the sprite
         #    and hide everything that has no fields
@@ -1205,7 +1221,10 @@ class SpriteList(QtWidgets.QWidget):
         Returns an (idtype, [values]) dict for every
         idtype this sprite has
         """
-        sdef = globals_.Sprites[sprite.type]
+        if 0 <= sprite.type < len(globals_.Sprites):
+            sdef = globals_.Sprites[sprite.type]
+        else:
+            return {}
 
         res = {}
         decoder = SpriteEditorWidget.PropertyDecoder()
