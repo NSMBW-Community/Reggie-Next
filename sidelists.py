@@ -901,7 +901,7 @@ class SpriteList(QtWidgets.QWidget):
         "Water Ball", "Mushroom", "Line", "Bolt", "Target Event",
         "Triggering Event", "Collection", "Location", "Physics",
         "Message", "Path", "Path Movement", "Red Coin", "Hill",
-        "Stretch", "Ray", "Dragon", "Bubble Cannon", "Burner",
+        "Stretch", "Ray", "Coaster", "Bubble Cannon", "Burner",
         "Wiggling", "Panel", "Colony"
     )
 
@@ -913,7 +913,7 @@ class SpriteList(QtWidgets.QWidget):
         "Line ID", "Bolt ID", "Target Event ID", "Triggering " +
         "Event ID", "Collection ID", "Location ID", "Physics ID",
         "Message ID", "Path ID", "Path Movement ID", "Red Coin ID",
-        "Hill ID", "Stretch ID", "Ray ID", "Dragon ID",
+        "Hill ID", "Stretch ID", "Ray ID", "Coaster ID",
         "Bubble Cannon ID", "Burner ID", "Wiggling ID",
         "Panel ID", "Colony ID"
     )

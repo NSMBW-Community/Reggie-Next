@@ -5,7 +5,7 @@
 <!-- &quot; = " -->
 <!-- &lt;font color=&quot;COLOR&quot;&gt;TEXT TEXT TEXT.&lt;/font&gt; = Colored Text -->
 <!-- Opinion on each dualbox to determine if it should be dualbox or if it should revert to being a list or checkbox. -->
-<!-- idtypes: Star Set, Path Movement, Rotation, Two Way Line, Water Ball, Mushroom, Line, Bolt, Target Event, Triggering Event, Collection, Location, Physics, Message, Path, Path Movement, Red Coin, Hill, Stretch, Ray, Dragon, Bubble Cannon, Burner, Wiggling, Panel, Colony -->
+<!-- idtypes: Star Set, Path Movement, Rotation, Two Way Line, Water Ball, Mushroom, Line, Bolt, Target Event, Triggering Event, Collection, Location, Physics, Message, Path, Path Movement, Red Coin, Hill, Stretch, Ray, Coaster, Bubble Cannon, Burner, Wiggling, Panel, Colony -->
 <!-- idtypes - Sprites with multiple Target Events or Triggering Events may need a secondary idtype, so that the primary Target/Triggering can be displayed in the sprite's display box. -->
 <!-- idtypes - Sprites with idtypes should have their idtype displayed within their blue box, usually in the lower right corner. (primary) Target Event should usually be in the lower right, and Triggering Event should usually be in the lower left. Secondary values like AND controller's second+ Triggering Event, and IF controller's secondary Location ID should be displayed in the top right corner or otherwise not displayed at all. -->
 <!-- Sample sprite with full settings -->
@@ -165,7 +165,7 @@
   <sprite id="24" name="Buzzy Beetle" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads. It will turn around when it reaches ledges and blocks are treated the same as terrain. It will turn around if it walks into lava, but die if it falls into it.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Buzzy Beetle will be upside-down and able to cling to and walk on ceilings if placed adjacent to them. If not placed adjacent, he will immediately fall and spin towards the player."/>
     <checkbox bit="47" title="Inside Shell" comment="When enabled, the Buzzy Beetle will spawn inside his shell. He will eventually climb out and resume walking, even if set to be upside-down. Upside-down shells will fall without spinning towards the player."/>
-	<checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
+	<checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #24: Buzzy Beetle -->
 
   <sprite id="25" name="Spiny" notes="A Spiny that walks along the ground.">
@@ -176,14 +176,14 @@
       <entry value="3">Upside-Down Shell (Towards Player)</entry>
     </list>
     <checkbox bit="44" title="Unknown Flag 11" advanced="True" advancedcomment="Unused flag with unknown effects."/>
-	<checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
+	<checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #25: Spiny -->
 
   <!-- Research Unknown Flag 12 -->
   <sprite id="26" name="Upside-Down Spiny" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading.">
     <checkbox bit="32" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
     <checkbox bit="48" title="Unknown Flag 12" advanced="True" advancedcomment="Used in Retail: 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
-	<checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
+	<checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 
   <!-- Confirm Slow Down functions the same as Basic Platform. -->
@@ -381,7 +381,7 @@
       <entry value="0">Within</entry>
       <entry value="1">Ground</entry>
       <entry value="2">Air</entry>
-      <entry value="3">Climbing</entry>
+      <entry value="3">Climbing a fence</entry>
     </list>
     <list nybble="9" title="Player Power-up Status" comment="When [Player Location ID] is set, the Target Event will only be triggered if the Player's power-up matches the one specified here." comment2="Currently, Ice Flower, Propeller Cap, Penguin Suit, and Hammer Suit are unavailable to check for." requiredbit="17-24" requiredval="0-254">
       <entry value="0">Any Status</entry>
@@ -673,7 +673,7 @@
     </list>
     <checkbox bit="44" title="Empty Shell" comment="When enabled, a empty kickable shell is spawned instead of a Koopa Troopa."/>
     <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Troopa will walk behind Chainlink Fences." advancedcomment="Exact values are 1500.0 unchecked, -2500.0 checked."/>
-    <checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
+    <checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #57: Koopa Troopa -->
 
   <!-- Investigate "Glitchy Behavior" further? -->
@@ -704,7 +704,7 @@
     <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Paratroopa will be able to move behind Chainlink Fences." advancedcomment="Exact values are 1500.0 unchecked, -2500.0 checked."/>
     <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="Used in Retail: 06-01 A1 as 12"/>
     <value bit="21" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in Retail: 06-01 A1"/>
-	<checkbox bit="28" title="Allow the Koopa 1-Up Trick" comment="When enabled, allows the player to perform the classic Koopa 1-Up Staircase trick."/>
+	<checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #58: Koopa Paratroopa -->
 
   <sprite id="59" name="Line Controlled Tilt Controlled Girder" notes="A platform similar to the Tilt Controlled Girder that can navigate along Line guides.">
@@ -1285,7 +1285,7 @@
     <value bit="1-8" title="Target Event ID" comment="When the Auto-Scroller reaches its final path Node, this Event ID is activated." idtype="Target Event"/>
     <value nybble="12" title="Path ID" comment="This determines which Path the camera will follow while scrolling. [CLARIFY] The upper left corner of the Screen, relative to the Auto-Scroller's placement, is the starting point for the path." idtype="Path"/>
     <value nybble="5-6" title="Midway Start Node ID" comment="If the level was entered from the Midway Point, the Auto-Scroller will begin from this Node instead of the first Node in the Path."/>
-    <checkbox bit="40" title="Unknown Flag 10 (1)" comment="Used in 08-07; might be related to (unused) Path and Dragon Coaster in A1Z1 and A2Z1."/>
+    <checkbox bit="40" title="Unknown Flag 10 (1)" comment="Used in 08-07; might be related to (unused) Path and Spine Coaster in A1Z1 and A2Z1."/>
     <checkbox bit="44" title="Unknown Flag 11 (1)" comment="Possibly determines behavior relating to [159]. ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #91: Auto-Scrolling Controller -->
 
@@ -4426,8 +4426,8 @@
     </list>
   </sprite> <!-- #296: Giant Buzzy Beetle -->
 
-  <sprite id="297" name="Dragon Coaster" noyoshi="True" notes="A quick Line guided platform that will screech and clatter as it travels.">
-    <list nybble="12" title="Length" comment="This determines how many platform segments make up the Dragon Coaster.">
+  <sprite id="297" name="Spine Coaster" noyoshi="True" notes="A quick Line guided platform that will screech and clatter as it travels.">
+    <list nybble="12" title="Length" comment="This determines how many platform segments make up the Spine Coaster.">
       <entry value="0">Skull Only</entry>
       <entry value="1">Skull + 1 Platform</entry>
       <entry value="2">Skull + 2 Platforms</entry>
@@ -4437,10 +4437,10 @@
       <entry value="6">Skull + 6 Platforms</entry>
       <entry value="7">Skull + 7 Platforms</entry>
     </list>
-    <value nybble="10" title="Speed" comment="This determines how quickly the Dragon Coaster will travel along the Lines."/>
-    <checkbox bit="44" title="Touch Activated" comment="When enabled, this platform will activate when all players are touching the Dragon Coaster." comment2="When not enabled, this platform will only activate when a platform with the same Dragon ID is activated through Touch Activation."/>
-    <value nybble="5" title="Dragon ID" comment="This will pair multiple Dragon Coasters together so that when one of them starts, they all start at the same time." comment2="Do not pair more than one Dragon Coaster with [Touch Activated] enabled!" idtype="Dragon"/>
-  </sprite> <!-- #297: Dragon Coaster -->
+    <value nybble="10" title="Speed" comment="This determines how quickly the Spine Coaster will travel along the Lines."/>
+    <checkbox bit="44" title="Touch Activated" comment="When enabled, this platform will activate when all players are touching the Spine Coaster." comment2="When not enabled, this platform will only activate when a platform with the same Spine ID is activated through Touch Activation."/>
+    <value nybble="5" title="Coaster ID" comment="This will pair multiple Spine Coasters together so that when one of them starts, they all start at the same time." comment2="Do not pair more than one Spine Coaster with [Touch Activated] enabled!" idtype="Coaster"/>
+  </sprite> <!-- #297: Spine Coaster -->
 
   <!-- All Cannonball sprites need comprehensive testing on the Camera variable, Nybble 7. Test with auto-scrolling controller, zoom controller, and 399 Airship Rocking -->
   <sprite id="298" name="Long Cannonball Cannons" notes="">
