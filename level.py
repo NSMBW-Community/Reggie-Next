@@ -866,7 +866,7 @@ class Area_NSMBW(AbstractParsedArea):
                 sprite.zoneID = 0
 
             try:
-                sprstruct.pack_into(buffer, offset, f_int(sprite.type), f_int(sprite.objx), f_int(sprite.objy),
+                sprstruct.pack_into(buffer, offset, f_int(sprite.type) % 0xFFFF, f_int(sprite.objx), f_int(sprite.objy),
                                     sprite.spritedata[:6], sprite.zoneID, bytes([sprite.spritedata[7]]))
             except:
                 # Hopefully this will solve the mysterious bug, and will
