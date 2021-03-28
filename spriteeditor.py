@@ -952,7 +952,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             L.addWidget(self.buttons[1])
             L.addWidget(label2)
             L.addStretch(1)
-            # L.setContentsMargins(0, 0, 0, 0)
+            L.setContentsMargins(0, 0, 0, 0)
 
             widget = QtWidgets.QWidget()
             widget.setLayout(L)
