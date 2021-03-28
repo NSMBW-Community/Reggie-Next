@@ -831,8 +831,8 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
                         else:
                             sname = sdef.name
 
-                        snode.setText(0, globals_.trans.string('Sprites', 18, '[id]', id, '[name]', sname))
-                        snode.setData(0, QtCore.Qt.UserRole, id)
+                        snode.setText(0, globals_.trans.string('Sprites', 18, '[id]', id_, '[name]', sname))
+                        snode.setData(0, QtCore.Qt.UserRole, id_)
 
                     if isSearch:
                         SearchableItems.append(snode)
@@ -854,7 +854,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         """
         Changes the selected sprite view
         """
-        for i in range(0, self.topLevelItemCount()):
+        for i in range(self.topLevelItemCount()):
             self.topLevelItem(i).setHidden(True)
 
         for node in view[2]:
@@ -865,9 +865,9 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         Throws a signal when the selected object changed
         """
         if current is None: return
-        id = current.data(0, QtCore.Qt.UserRole)
-        if id != -1:
-            self.SpriteChanged.emit(id)
+        id_ = current.data(0, QtCore.Qt.UserRole)
+        if id_ != -1:
+            self.SpriteChanged.emit(id_)
 
     def SetSearchString(self, searchfor):
         """
@@ -890,9 +890,9 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         Throws a signal when the selected sprite is used as a replacement
         """
         if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.AltModifier:
-            id = item.data(0, QtCore.Qt.UserRole)
-            if id != -1:
-                self.SpriteReplace.emit(id)
+            id_ = item.data(0, QtCore.Qt.UserRole)
+            if id_ != -1:
+                self.SpriteReplace.emit(id_)
 
     SpriteChanged = QtCore.pyqtSignal(int)
     SpriteReplace = QtCore.pyqtSignal(int)
