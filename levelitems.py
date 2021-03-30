@@ -1310,6 +1310,8 @@ class ZoneItem(LevelEditorItem):
         self.dragging = False
         self.dragstartx = -1
         self.dragstarty = -1
+        self.ent_indicator_show = False
+        self.ent_indicator_offset = 0
 
         globals_.DirtyOverride += 1
         self.setPos(int(a * 1.5), int(b * 1.5))
@@ -1342,22 +1344,99 @@ class ZoneItem(LevelEditorItem):
         self.GrabberRectBR = QtCore.QRectF(int(self.width * 1.5) - grabberWidth, int(self.height * 1.5) - grabberWidth,
                                            grabberWidth, grabberWidth)
 
+    def getCameraHeight(self):
+        """
+        Returns the applicable camera height(s) for this zone.
+        """
+        if self.cammode in {0, 1, 6, 7}:
+            heights = [[14, 19], [14, 19, 24], [14, 19, 28], [20, 24], [19, 24, 28], [17, 24], [17, 24, 28], [17, 20], [7, 11, 28], [17, 20.5, 24], [17, 20, 28]]
+        elif self.cammode == 2:
+            heights = [[14, 19], [14, 19, 24], [14, 19, 28], [19, 19, 24], [19, 24, 28], [19, 24, 28], [17, 24, 28], [17, 20.5, 24]]
+        else:
+            heights = [[14], [19], [24], [28], [17], [20], [16], [28], [7], [10.5]]
+
+        return heights[self.camzoom]
+
+    def updateEntranceIndicator(self):
+        """
+        Updates the member fields related to the entrance indicator.
+        """
+        # Only show the indicator in area 1.
+        if globals_.Area.areanum != 1:
+            self.ent_indicator_show = False
+            return
+
+        # Only show the indicator when this zone contains the initial entrance.
+        for entrance in globals_.Area.entrances:
+            if entrance.entid == globals_.Area.startEntrance:
+                break
+        else:
+            # The initial entrance does not exist.
+            self.ent_indicator_show = False
+            return
+
+        initial_id = SLib.MapPositionToZoneID(globals_.Area.zones, entrance.objx, entrance.objy, get_id=True)
+        if initial_id != self.id:
+            # The initial entrance is not closest to this zone.
+            self.ent_indicator_show = False
+            return
+
+        # Only show the indicator when this zone does not contain an autoscroller
+        # or ambush controller.
+        for sprite in globals_.Area.sprites:
+            if sprite.type not in {91, 454}:  # {autoscroll, ambush}
+                continue
+
+            zone_id = SLib.MapPositionToZoneID(globals_.Area.zones, sprite.objx, sprite.objy, get_id=True)
+
+            if self.id == zone_id:
+                # The zone contains either an ambush controller or an autoscroller
+                self.ent_indicator_show = False
+                return
+
+        # Only show the indicator when this zone is vertical. This requirement
+        # is a bit weird - maybe change this condition to something related to
+        # zone direction or tracking mode?
+        if self.width < self.height:
+            self.ent_indicator_show = False
+            return
+
+        # Only show the indicator when this zone's size is
+        height = self.getCameraHeight()[0]
+
+        if height in {14, 17}:  # These final heights are too small
+            self.ent_indicator_show = False
+            return
+
+        self.ent_indicator_show = True
+
+        # Multiply the height by the aspect ratio to get the width, divide by 2
+        # to get half of it and by 24 to convert blocks to pixels. This is all
+        # combined to reduce floating point rounding errors.
+        self.ent_indicator_offset = height * 24 * 16 / 18
+
     def paint(self, painter, option, widget):
         """
         Paints the zone on screen
         """
-        # global theme
-
-        # painter.setClipRect(option.exposedRect)
+        painter.setClipRect(option.exposedRect)
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
 
-        # Paint an indicator line to show the leftmost edge of
-        # where entrances can be safely placed
-        if globals_.DrawEntIndicators and (self.camtrack in (0, 1)) and (24 * 13 < self.DrawRect.width()):
-            painter.setPen(QtGui.QPen(globals_.theme.color('zone_entrance_helper'), 2))
-            lineStart = QtCore.QPointF(self.DrawRect.x() + (24 * 13), self.DrawRect.y())
-            lineEnd = QtCore.QPointF(self.DrawRect.x() + (24 * 13), self.DrawRect.y() + self.DrawRect.height())
-            painter.drawLine(lineStart, lineEnd)
+        # Paint an indicator line to show the leftmost edge of where entrances
+        # can be safely placed.
+        if globals_.DrawEntIndicators:
+            # This function could be called only when a sprite or entrance is
+            # moved or created. If this starts giving trouble, do that.
+            self.updateEntranceIndicator()
+
+            # Only draw the indicator if we should
+            if self.ent_indicator_show:
+                offset = self.ent_indicator_offset
+
+                painter.setPen(QtGui.QPen(globals_.theme.color('zone_entrance_helper'), 2))
+                lineStart = QtCore.QPointF(self.DrawRect.x() + offset, self.DrawRect.y())
+                lineEnd = QtCore.QPointF(self.DrawRect.x() + offset, self.DrawRect.y() + self.DrawRect.height())
+                painter.drawLine(lineStart, lineEnd)
 
         # Paint liquids/fog
         if globals_.SpritesShown and globals_.RealViewEnabled:
@@ -1365,10 +1444,10 @@ class ZoneItem(LevelEditorItem):
             viewRect = globals_.mainWindow.view.mapToScene(globals_.mainWindow.view.viewport().rect()).boundingRect()
 
             for sprite in globals_.Area.sprites:
-                if sprite.type in [53, 64, 138, 139, 216, 358, 373, 374, 435]:
-                    spriteZoneID = SLib.MapPositionToZoneID(globals_.Area.zones, sprite.objx, sprite.objy)
+                if sprite.type in {53, 64, 138, 139, 216, 358, 373, 374, 435}:
+                    zone_id = SLib.MapPositionToZoneID(globals_.Area.zones, sprite.objx, sprite.objy, get_id=True)
 
-                    if self.id == spriteZoneID:
+                    if self.id == zone_id:
                         sprite.ImageObj.realViewZone(painter, zoneRect, viewRect)
 
         # Now paint the borders
