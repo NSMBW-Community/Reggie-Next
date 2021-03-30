@@ -105,36 +105,37 @@ def loadIfNotInImageCache(name, filename):
         ImageCache[name] = GetImg(filename)
 
 
-def MapPositionToZoneID(zones, x, y, useid=False):
+def MapPositionToZoneID(zones, x, y, get_id=False):
     """
-    Returns the zone ID containing or nearest the specified position
+    Returns the index of the zone containing or nearest the specified position
+    by default. Set 'get_id' to True to get the actual zone id. Returns -1 on
+    failure.
     """
-    id = 0
-    minimumdist = -1
-    rval = -1
+    minimumdist = match_index = -1
 
-    for zone in zones:
-        r = zone.ZoneRect
-        if r.contains(x, y) and useid:
-            return zone.id
-        elif r.contains(x, y) and not useid:
-            return id
+    for i, zone in enumerate(zones):
+        rect = zone.ZoneRect
+        if rect.contains(x, y):
+            match_index = i
+            break
 
-        xdist = 0
-        ydist = 0
-        if x <= r.left(): xdist = r.left() - x
-        if x >= r.right(): xdist = x - r.right()
-        if y <= r.top(): ydist = r.top() - y
-        if y >= r.bottom(): ydist = y - r.bottom()
+        dist = 0
+        l, t, r, b = rect.getCoords()
 
-        dist = (xdist ** 2 + ydist ** 2) ** 0.5
+        if x < l: dist += (l - x) ** 2
+        elif x > r: dist += (x - r) ** 2
+
+        if y < t: dist += (t - y) ** 2
+        elif y > b: dist += (y - b) ** 2
+
         if dist < minimumdist or minimumdist == -1:
             minimumdist = dist
-            rval = zone.id
+            match_index = i
 
-        id += 1
+    if match_index == -1:
+        return -1
 
-    return rval
+    return zones[match_index].id if get_id else match_index
 
 
 ################################################################

@@ -1228,7 +1228,7 @@ class ZoneItem(LevelEditorItem):
     Level editor item that represents a zone
     """
 
-    def __init__(self, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, boundings, bgA, bgB, id=None):
+    def __init__(self, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, boundings, bgA, bgB, id_=None):
         """
         Creates a zone with specific data
         """
@@ -1257,8 +1257,8 @@ class ZoneItem(LevelEditorItem):
 
         self.aux = set()
 
-        if id is not None:
-            self.id = id
+        if id_ is not None:
+            self.id = id_
 
         self.UpdateTitle()
 
@@ -1311,7 +1311,6 @@ class ZoneItem(LevelEditorItem):
         self.dragstartx = -1
         self.dragstarty = -1
 
-        # global globals_.DirtyOverride
         globals_.DirtyOverride += 1
         self.setPos(int(a * 1.5), int(b * 1.5))
         globals_.DirtyOverride -= 1
@@ -1710,7 +1709,6 @@ class SpriteItem(LevelEditorItem):
         self.objx = x
         self.objy = y
         self.spritedata = data
-        # self.listitem = None
         self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
         self.ChangingPos = False
 
@@ -2186,19 +2184,21 @@ class SpriteItem(LevelEditorItem):
 
     def nearestZone(self, obj=False):
         """
-        Calls a modified MapPositionToZoneID (if obj = True, it returns the actual ZoneItem object)
+        Calls a modified MapPositionToZoneID (if obj = True, it returns the
+        actual ZoneItem object). If the area is not fully loaded yet, or there
+        are no zones, it returns None.
         """
         if not hasattr(globals_.Area, 'zones'):
             return None
 
-        id = SLib.MapPositionToZoneID(globals_.Area.zones, self.objx, self.objy, True)
+        zone_idx = SLib.MapPositionToZoneID(globals_.Area.zones, self.objx, self.objy)
 
-        if obj:
-            for z in globals_.Area.zones:
-                if z.id == id:
-                    return z
-        else:
-            return id
+        if zone_idx == -1:
+            return None
+
+        zone_obj = globals_.Area.zones[zone_idx]
+
+        return zone_obj if obj else zone_obj.id
 
     def updateScene(self):
         """

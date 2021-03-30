@@ -894,7 +894,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks if the main entrance is too close to the left zone edge
         """
-        # global Area
         offset = 24 * 8  # 8 blocks away from the left zone edge
         if len(globals_.Area.zones) == 0: return False
 
@@ -906,11 +905,11 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             if ent.entid == globals_.Area.startEntrance: start = ent
         if start is None: return False
 
-        firstzoneid = SLib.MapPositionToZoneID(globals_.Area.zones, start.objx, start.objy, True)
-        firstzone = None
-        for z in globals_.Area.zones:
-            if z.id == firstzoneid: firstzone = z
-        if firstzone is None: return False
+        firstzone_idx = SLib.MapPositionToZoneID(globals_.Area.zones, start.objx, start.objy)
+
+        if firstzone_idx == -1: return False
+
+        firstzone = globals_.Area.zones[firstzone_idx]
 
         problem = start.objx < firstzone.objx + offset
         if mode == 'c':
@@ -922,18 +921,16 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks if any entrances are not inside of a zone
         """
-        # global Area
         left_offset = 24 * 8  # 8 blocks away from the left zone edge
         if len(globals_.Area.zones) == 0: return False
 
         for ent in globals_.Area.entrances:
             x = ent.objx
             y = ent.objy
-            zoneID = SLib.MapPositionToZoneID(globals_.Area.zones, x, y, True)
-            zone = None
-            for z in globals_.Area.zones:
-                if z.id == zoneID: zone = z
-            if zone is None: return False
+            zone_idx = SLib.MapPositionToZoneID(globals_.Area.zones, x, y)
+
+            if zone_idx == -1: return False
+            zone = globals_.Area.zones[zone_idx]
 
             if x < zone.objx:
                 problem = True
