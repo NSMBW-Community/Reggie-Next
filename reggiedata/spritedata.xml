@@ -6353,7 +6353,7 @@
 
   <sprite id="426" name="Fireball Spawn Area" notes="Assigns a spawn area where loose Fireballs will spawn from the side of the screen while a player is inside it. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
     <dependency notes="The fireballs will spawn from the specified side of the screen at the same vertical height as the sprite's placement, and move across the screen in a horizontal line."/>
-    <value nybble="11" title="Location ID" comment="The Fireballs will only spawn while a player is in this location."/>
+    <value nybble="12" title="Location ID" comment="The Fireballs will only spawn while a player is in this location."/>
     <list nybble="10" title="Rate of Fire" comment="This determines the frequency of fireball spawns." comment2="The delay isn't quite in game seconds, instead each value other than 0 is a fraction of value 1. In retail, Nintendo used 12 and 14.">
       <entry value="0">1/7.3</entry>
       <entry value="1">1/1</entry>
