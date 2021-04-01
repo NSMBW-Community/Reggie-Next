@@ -359,19 +359,20 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
 
         # (0, 0) is the top-left corner of the zone
 
-        zx, zy, zw, zh = zoneRect.topLeft().x(), zoneRect.topLeft().y(), zoneRect.width(), zoneRect.height()
+        zx, zy, zw, zh = zoneRect.getRect()
 
         drawRise = self.risingHeight != 0
         drawCrest = self.drawCrest
 
         # Get positions
         offsetFromTop = (self.top * 1.5) - zy
+        if offsetFromTop > zh:
+            # the sprite is below the zone; don't draw anything
+            return
+
         if offsetFromTop <= 4:
             offsetFromTop = 4
             drawCrest = False  # off the top of the zone; no crest
-        if self.top > (zy + zh) / 1.5:
-            # the sprite is below the zone; don't draw anything
-            return
 
         # If all that fits in the zone is some of the crest, determine how much
         if drawCrest:
@@ -7868,6 +7869,7 @@ class SpriteImage_GhostFog(SpriteImage_LiquidOrFog):  # 435
         super().__init__(parent)
 
         self.mid = ImageCache['GhostFog']
+        self.top = 0
 
     @staticmethod
     def loadImages():
@@ -7881,9 +7883,24 @@ class SpriteImage_GhostFog(SpriteImage_LiquidOrFog):  # 435
         super().dataChanged()
 
     def realViewZone(self, painter, zoneRect, viewRect):
-        self.top = self.parent.objy
+        if not self.paintZone: return
 
+        # This sprite's cutoff works a bit differently. The effect is always
+        # fixed to the top of the zone, but only the part below the sprite image
+        # is rendered. We recreate this by setting the top of the image to the
+        # top of the zoneRect, and moving the painter to start at the sprite's
+        # position.
+        orig_top = zoneRect.top()
+        zoneRect.setTop(self.parent.objy * 1.5)
+
+        # Make sure to save the state of the painter so the other items are not
+        # messed up.
+        painter.save()
+
+        painter.translate(0, zoneRect.top() - orig_top)
         super().realViewZone(painter, zoneRect, viewRect)
+
+        painter.restore()
 
 
 class SpriteImage_PurplePole(SLib.SpriteImage):  # 437
