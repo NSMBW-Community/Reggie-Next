@@ -526,11 +526,7 @@ class AuxiliaryCircleOutline(AuxiliarySpriteItem):
         self.width = width
 
     def paint(self, painter, option, widget=None):
-
-        if option is not None:
-            painter.setClipRect(option.exposedRect)
-            painter.setRenderHint(QtGui.QPainter.Antialiasing)
-
+        painter.setRenderHint(QtGui.QPainter.Antialiasing)
         painter.setPen(OutlinePen)
         painter.setBrush(OutlineBrush)
         painter.drawEllipse(self.BoundingRect)
@@ -555,10 +551,7 @@ class AuxiliaryRotationAreaOutline(AuxiliarySpriteItem):
         self.spanAngle = spanAngle * 16
 
     def paint(self, painter, option, widget=None):
-        if option is not None:
-            painter.setClipRect(option.exposedRect)
-            painter.setRenderHint(QtGui.QPainter.Antialiasing)
-
+        painter.setRenderHint(QtGui.QPainter.Antialiasing)
         painter.setPen(OutlinePen)
         painter.setBrush(OutlineBrush)
         painter.drawPie(self.BoundingRect, self.startAngle, self.spanAngle)
