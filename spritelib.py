@@ -186,6 +186,12 @@ class SpriteImage:
         """
         pass
 
+    def remove(self):
+        """
+        Called whenever the parent is removed
+        """
+        pass
+
     # Offset property
     def getOffset(self):
         return (self.xOffset, self.yOffset)
@@ -848,25 +854,46 @@ class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         self.setFlag(QtWidgets.QGraphicsItem.ItemStacksBehindParent, False)
         self.setParentItem(parent)
         self.hover = False
-        self.BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 
     def setIsBehindLocation(self, behind):
         """
         This allows you to choose whether the auiliary item will display
-        behind the zone or in front of it. Default is for the item to
+        behind the location or in front of it. Default is for the item to
         be in front of the location.
         """
         self.setFlag(QtWidgets.QGraphicsItem.ItemStacksBehindParent, behind)
 
     def alignToLocation(self):
         """
-        Resets the position and size of the AuxiliaryLocationItem to that of the location
+        Resets the position and size of the AuxiliaryLocationItem to that of the
+        location.
         """
         self.setPos(0, 0)
         self.setSize(self.parent.width(), self.parent.height())
+
+    def paint(self, painter, option, widget=None):
+        """
+        Paints the image, tiled to fill the bounding rect of the location it
+        belongs to.
+        """
+        if self.imageObj is None:
+            return
+
+        # painter.setOpacity(self.alpha)
+        painter.drawTiledPixmap(self.boundingRect(), self.imageObj)
+        # painter.setOpacity(1)
+
+    def remove(self):
+        """
+        Removes the auxiliary item.
+        """
+        # Detach this item from its parent so it gets deleted properly. This
+        # causes the last reference to this item to be held by the sprite image
+        # this is an auxiliary item to, which causes it to be deleted properly.
+        self.setParentItem(None)
 
     def boundingRect(self):
         """
         Required for Qt
         """
-        return self.BoundingRect
+        return self.parent.boundingRect()

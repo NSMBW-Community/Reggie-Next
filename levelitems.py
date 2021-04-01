@@ -2344,6 +2344,7 @@ class SpriteItem(LevelEditorItem):
         """
         Delete the sprite from the level
         """
+        self.ImageObj.remove()
         globals_.mainWindow.UpdateFlag = True
         globals_.mainWindow.spriteList.takeSprite(self)
         globals_.mainWindow.UpdateFlag = False

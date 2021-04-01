@@ -39,6 +39,7 @@ Qt = QtCore.Qt
 
 import spritelib as SLib
 import sprites_common as common
+import globals_
 ImageCache = SLib.ImageCache
 
 
@@ -323,12 +324,31 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         self.paintZone = False
         self.paintLoc = False
 
+        self.location_id = None
+
     def positionChanged(self):
         super().positionChanged()
         self.parent.scene().update()
 
     def dataChanged(self):
         super().dataChanged()
+
+        if self.paintLoc and (len(self.aux) == 0 or self.location_id != self.aux[0].parent.id):
+            for loc in self.aux:
+                loc.remove()
+            self.aux.clear()
+
+            for location in globals_.Area.locations:
+                if location.id == self.location_id:
+                    self.aux.append(SLib.AuxiliaryLocationItem(location, self.mid))
+                    self.aux[0].setIsBehindLocation(True)
+                    break
+        elif not self.paintLoc and len(self.aux) != 0:
+            for loc in self.aux:
+                loc.remove()
+
+            self.aux.clear()
+
         self.parent.scene().update()
 
     def realViewZone(self, painter, zoneRect, viewRect):
@@ -377,6 +397,14 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         if drawRise:
             painter.drawTiledPixmap(4, offsetRise, zw - 8, riseToDraw.height(), riseToDraw)
 
+    def remove(self):
+        """
+        Called when the parent sprite is removed. Remove the location auxiliary
+        item.
+        """
+        for loc in self.aux:
+            loc.remove()
+        self.aux.clear()
 
 class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage):  # 97, 107, 132, 160
     def __init__(self, parent, scale=1.5):
@@ -1599,11 +1627,11 @@ class SpriteImage_Sand(SpriteImage_LiquidOrFog):  # 53
         ImageCache['LiquidSandCrest'] = SLib.GetImg('liquid_sand_crest.png')
 
     def dataChanged(self):
-        super().dataChanged()
-
         self.paintZone = self.parent.spritedata[5] == 0
+        self.paintLoc = self.parent.spritedata[5] != 0
+        self.location_id = self.parent.spritedata[5]
 
-        self.parent.scene().update()
+        super().dataChanged()
 
     def realViewZone(self, painter, zoneRect, viewRect):
 
@@ -1882,11 +1910,11 @@ class SpriteImage_OutdoorsFog(SpriteImage_LiquidOrFog):  # 64
         SLib.loadIfNotInImageCache('OutdoorsFog', 'fog_outdoors.png')
 
     def dataChanged(self):
-        super().dataChanged()
-
         self.paintZone = self.parent.spritedata[5] == 0
+        self.paintLoc = self.parent.spritedata[5] != 0
+        self.location_id = self.parent.spritedata[5]
 
-        self.parent.scene().update()
+        super().dataChanged()
 
     def realViewZone(self, painter, zoneRect, viewRect):
         self.paintZone = self.parent.spritedata[5] == 0
@@ -3200,11 +3228,11 @@ class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
         ImageCache['LiquidWaterRiseCrest'] = SLib.GetImg('liquid_water_rise_crest.png')
 
     def dataChanged(self):
+        self.paintZone = (self.parent.spritedata[5] & 0x7F) == 0
+        self.paintLoc = (self.parent.spritedata[5] & 0x7F) != 0
+        self.location_id = self.parent.spritedata[5] & 0x7F
+
         super().dataChanged()
-
-        self.paintZone = self.parent.spritedata[5] == 0
-
-        self.parent.scene().update()
 
     def realViewZone(self, painter, zoneRect, viewRect):
 
@@ -3238,11 +3266,11 @@ class SpriteImage_Lava(SpriteImage_LiquidOrFog):  # 139
         ImageCache['LiquidLavaRiseCrest'] = SLib.GetImg('liquid_lava_rise_crest.png')
 
     def dataChanged(self):
-        super().dataChanged()
-
         self.paintZone = self.parent.spritedata[5] == 0
+        self.paintLoc = self.parent.spritedata[5] != 0
+        self.location_id = self.parent.spritedata[5]
 
-        self.parent.scene().update()
+        super().dataChanged()
 
     def realViewZone(self, painter, zoneRect, viewRect):
 
@@ -4390,11 +4418,11 @@ class SpriteImage_Poison(SpriteImage_LiquidOrFog):  # 216
         ImageCache['LiquidPoisonRiseCrest'] = SLib.GetImg('liquid_poison_rise_crest.png')
 
     def dataChanged(self):
-        super().dataChanged()
-
         self.paintZone = self.parent.spritedata[5] == 0
+        self.paintLoc = self.parent.spritedata[5] != 0
+        self.location_id = self.parent.spritedata[5]
 
-        self.parent.scene().update()
+        super().dataChanged()
 
     def realViewZone(self, painter, zoneRect, viewRect):
 
@@ -7846,14 +7874,13 @@ class SpriteImage_GhostFog(SpriteImage_LiquidOrFog):  # 435
         SLib.loadIfNotInImageCache('GhostFog', 'fog_ghost.png')
 
     def dataChanged(self):
+        self.paintZone = self.parent.spritedata[5] == 0
+        self.paintLoc = self.parent.spritedata[5] != 0
+        self.location_id = self.parent.spritedata[5]
+
         super().dataChanged()
 
-        self.paintZone = self.parent.spritedata[5] == 0
-
-        self.parent.scene().update()
-
     def realViewZone(self, painter, zoneRect, viewRect):
-        self.paintZone = self.parent.spritedata[5] == 0
         self.top = self.parent.objy
 
         super().realViewZone(painter, zoneRect, viewRect)
