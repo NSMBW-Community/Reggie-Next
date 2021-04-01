@@ -6699,6 +6699,7 @@ class SpriteImage_LavaParticles(SpriteImage_LiquidOrFog):  # 358
     def __init__(self, parent):
         super().__init__(parent)
         self.paintZone = True
+        self.paintLoc = False
 
     @staticmethod
     def loadImages():
@@ -6968,6 +6969,9 @@ class SpriteImage_RaftWater(SpriteImage_LiquidOrFog):  # 373
     def __init__(self, parent):
         super().__init__(parent)
 
+        self.paintZone = True
+        self.drawCrest = True
+        self.paintLoc = False
         self.crest = ImageCache['RaftWaterCrest']
         self.mid = ImageCache['RaftWater']
 
@@ -6977,18 +6981,8 @@ class SpriteImage_RaftWater(SpriteImage_LiquidOrFog):  # 373
         ImageCache['RaftWater'] = SLib.GetImg('liquid_water.png')
         ImageCache['RaftWaterCrest'] = SLib.GetImg('liquid_water_crest.png')
 
-    def dataChanged(self):
-        super().dataChanged()
-
-        self.paintZone = True
-
-        self.parent.scene().update()
-
     def realViewZone(self, painter, zoneRect, viewRect):
-
-        self.paintZone = True
         self.top = self.parent.objy
-        self.drawCrest = True
 
         super().realViewZone(painter, zoneRect, viewRect)
 
@@ -7003,17 +6997,9 @@ class SpriteImage_SnowWind(SpriteImage_LiquidOrFog):  # 374
         SLib.loadIfNotInImageCache('SnowEffect', 'snow.png')
 
     def dataChanged(self):
-        super().dataChanged()
-
-        self.paintZone = self.parent.spritedata[5] == 0
-
-        self.parent.scene().update()
-
-    def realViewZone(self, painter, zoneRect, viewRect):
         # For now, we only paint snow
         self.paintZone = self.parent.spritedata[5] == 0
-
-        super().realViewZone(painter, zoneRect, viewRect)
+        super().dataChanged()
 
 
 class SpriteImage_WendyKoopaCastleBoss(SLib.SpriteImage):  # 375
@@ -7299,12 +7285,11 @@ class SpriteImage_MoveWhenOn(SLib.SpriteImage):  # 396
         transform180.rotate(180)
         transform270.rotate(270)
 
-        for direction in ['R''L''U''D']:
-            image = SLib.GetImg('sm_arrow.png', True)
-            ImageCache['SmArrow' + 'R'] = QtGui.QPixmap.fromImage(image)
-            ImageCache['SmArrow' + 'D'] = QtGui.QPixmap.fromImage(image.transformed(transform90))
-            ImageCache['SmArrow' + 'L'] = QtGui.QPixmap.fromImage(image.transformed(transform180))
-            ImageCache['SmArrow' + 'U'] = QtGui.QPixmap.fromImage(image.transformed(transform270))
+        image = SLib.GetImg('sm_arrow.png', True)
+        ImageCache['SmArrowR'] = QtGui.QPixmap.fromImage(image)
+        ImageCache['SmArrowD'] = QtGui.QPixmap.fromImage(image.transformed(transform90))
+        ImageCache['SmArrowL'] = QtGui.QPixmap.fromImage(image.transformed(transform180))
+        ImageCache['SmArrowU'] = QtGui.QPixmap.fromImage(image.transformed(transform270))
 
     def dataChanged(self):
         super().dataChanged()

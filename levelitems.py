@@ -1452,7 +1452,7 @@ class ZoneItem(LevelEditorItem):
 
         # Now paint the borders
         painter.setPen(QtGui.QPen(globals_.theme.color('zone_lines'), 3))
-        if (self.visibility >= 32) and globals_.RealViewEnabled:
+        if (self.visibility & 32 != 0) and globals_.RealViewEnabled:
             painter.setBrush(QtGui.QBrush(globals_.theme.color('zone_dark_fill')))
         painter.drawRect(self.DrawRect)
 
@@ -2000,8 +2000,8 @@ class SpriteItem(LevelEditorItem):
             CurrentAuxRects.append(QtCore.QRectF(
                 auxObj.x() + self.x(),
                 auxObj.y() + self.y(),
-                auxObj.BoundingRect.width(),
-                auxObj.BoundingRect.height(),
+                auxObj.boundingRect().width(),
+                auxObj.boundingRect().height(),
             ))
 
         self.ImageObj.dataChanged()
@@ -2107,7 +2107,7 @@ class SpriteItem(LevelEditorItem):
         )
         for aux in self.ImageObj.aux:
             br = br.united(
-                aux.BoundingRect.translated(
+                aux.boundingRect().translated(
                     aux.x() + self.x(),
                     aux.y() + self.y(),
                 )
@@ -2190,8 +2190,8 @@ class SpriteItem(LevelEditorItem):
                     auxUpdRect = QtCore.QRectF(
                         self.x() + auxObj.x(),
                         self.y() + auxObj.y(),
-                        auxObj.BoundingRect.width(),
-                        auxObj.BoundingRect.height(),
+                        auxObj.boundingRect().width(),
+                        auxObj.boundingRect().height(),
                     )
                     self.scene().update(auxUpdRect)
 
@@ -2244,7 +2244,7 @@ class SpriteItem(LevelEditorItem):
             LevelEditorItem.mousePressEvent(self, event)
 
             if not globals_.SpriteImagesShown:
-                self.setNewObjPos(oldpos[0], oldpos[1])
+                self.setNewObjPos(*oldpos)
 
             return
 
