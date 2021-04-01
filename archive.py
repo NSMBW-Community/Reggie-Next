@@ -254,6 +254,16 @@ class U8(WiiArchive):
                     return ret[1:]
         raise KeyError
 
+    def __contains__(self, key):
+        """
+        Returns whether the archive contains a file with a key
+        """
+        for item, _ in self.files:
+            if item == key:
+                return True
+
+        return False
+
     def __setitem__(self, key, val):
         """
         Handles the request to set a value to an index of the archive
