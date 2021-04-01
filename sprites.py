@@ -7887,20 +7887,10 @@ class SpriteImage_GhostFog(SpriteImage_LiquidOrFog):  # 435
 
         # This sprite's cutoff works a bit differently. The effect is always
         # fixed to the top of the zone, but only the part below the sprite image
-        # is rendered. We recreate this by setting the top of the image to the
-        # top of the zoneRect, and moving the painter to start at the sprite's
-        # position.
-        orig_top = zoneRect.top()
-        zoneRect.setTop(self.parent.objy * 1.5)
-
-        # Make sure to save the state of the painter so the other items are not
-        # messed up.
-        painter.save()
-
-        painter.translate(0, zoneRect.top() - orig_top)
+        # is rendered.
+        # BUG: This is not recreated.
+        self.top = self.parent.objy
         super().realViewZone(painter, zoneRect, viewRect)
-
-        painter.restore()
 
 
 class SpriteImage_PurplePole(SLib.SpriteImage):  # 437
