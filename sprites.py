@@ -2627,11 +2627,16 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
             viewRect = view.mapToScene(view.viewport().rect()).boundingRect()
             bothRect = zoneRect & viewRect
 
+            if bothRect.getRect() == (0, 0, 0, 0):
+                # The zone is out of view -> hide the image
+                self.aux[0].realimage = None
+                return
+
             self.aux[0].realimage = ImageCache['Sunlight']
             self.aux[0].move(bothRect.x(), bothRect.y(), bothRect.width(), bothRect.height())
         except RuntimeError:
             # happens if the parent was deleted
-            del self
+            pass
 
 
 class SpriteImage_Blooper(SLib.SpriteImage_Static):  # 111
