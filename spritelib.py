@@ -879,9 +879,7 @@ class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         if self.imageObj is None:
             return
 
-        # painter.setOpacity(self.alpha)
         painter.drawTiledPixmap(self.boundingRect(), self.imageObj)
-        # painter.setOpacity(1)
 
     def remove(self):
         """
@@ -896,4 +894,4 @@ class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         """
         Required for Qt
         """
-        return self.parent.boundingRect()
+        return self.parent.DrawRect
