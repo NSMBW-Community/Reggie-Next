@@ -1,11 +1,11 @@
 import math
+import pickletools
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import globals_
 from levelitems import ListWidgetItem_SortsByOther, PathItem, CommentItem, SpriteItem, EntranceItem, LocationItem, ObjectItem, PathEditorLineItem
 from dirty import SetDirty
-import pickletools
 
 class LevelScene(QtWidgets.QGraphicsScene):
     """
