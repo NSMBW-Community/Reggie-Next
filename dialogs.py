@@ -234,8 +234,10 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
             for nsmbobj in layer:
                 if nsmbobj.type == from_type and nsmbobj.tileset == from_tileset:
                     nsmbobj.SetType(to_tileset, to_type)
+                    SetDirty()
                 elif do_exchange and nsmbobj.type == to_type and nsmbobj.tileset == to_tileset:
                     nsmbobj.SetType(from_tileset, from_type)
+                    SetDirty()
 
 
 class MetaInfoDialog(QtWidgets.QDialog):
@@ -1020,24 +1022,23 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks if there are no zones in this area
         """
-        # global Area
-
         problem = len(globals_.Area.zones) == 0
         if mode == 'c':
             return problem
-        elif problem:
-            # make a default zone
-            a = []
-            b = []
-            a.append([0, 0, 0, 0, 0, 0])
-            b.append([0, 0, 0, 0, 0, 10, 10, 10, 0])
-            z = ZoneItem(16, 16, 448, 224, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, a, b, b, len(globals_.Area.zones))
 
-            z.UpdateTitle()
-            globals_.Area.zones.append(z)
-            globals_.mainWindow.scene.addItem(z)
-            globals_.mainWindow.scene.update()
-            globals_.mainWindow.levelOverview.update()
+        if not problem:
+            return
+
+        # make a default zone
+        a = []
+        a.append([0, 0, 0, 0, 0, 0])
+        z = ZoneItem(16, 16, 448, 224, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, a, len(globals_.Area.zones))
+
+        z.UpdateTitle()
+        globals_.Area.zones.append(z)
+        globals_.mainWindow.scene.addItem(z)
+        globals_.mainWindow.scene.update()
+        globals_.mainWindow.levelOverview.update()
 
     def ZonesTooClose(self, mode='f'):
         """
