@@ -191,16 +191,51 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         swapLayout.addWidget(self.ToTileset, 1, 3)
 
         # Buttonbox
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
-        buttonBox.accepted.connect(self.accept)
-        buttonBox.rejected.connect(self.reject)
+        self.buttons = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.Close)
+        self.buttons.clicked.connect(self.button_clicked)
 
         # Main layout
         mainLayout = QtWidgets.QVBoxLayout()
         mainLayout.addLayout(swapLayout)
         mainLayout.addWidget(self.DoExchange)
-        mainLayout.addWidget(buttonBox)
+        mainLayout.addWidget(self.buttons)
         self.setLayout(mainLayout)
+
+    def button_clicked(self, button):
+        """
+        Handles one of the buttons being pressed and calls the correct handler.
+        """
+        role = self.buttons.buttonRole(button)
+
+        if role == QtWidgets.QDialogButtonBox.RejectRole:
+            # The close button was pressed
+            self.reject()
+        elif role == QtWidgets.QDialogButtonBox.ApplyRole:
+            # The apply button was pressed
+            self.swap_tiles()
+        else:
+            raise ValueError("ObjectTypeSwapDialog: Unknown role on pressed button. " + repr(role))
+
+    def swap_tiles(self):
+        """
+        Actually does the swapping
+        """
+        from_type = self.FromType.value()
+        from_tileset = self.FromTileset.value() - 1
+        to_type = self.ToType.value()
+        to_tileset = self.ToTileset.value() - 1
+        do_exchange = self.DoExchange.isChecked()
+
+        # If we don't need to do anything, don't do anything.
+        if from_type == to_type and from_tileset == to_tileset:
+            return
+
+        for layer in globals_.Area.layers:
+            for nsmbobj in layer:
+                if nsmbobj.type == from_type and nsmbobj.tileset == from_tileset:
+                    nsmbobj.SetType(to_tileset, to_type)
+                elif do_exchange and nsmbobj.type == to_type and nsmbobj.tileset == to_tileset:
+                    nsmbobj.SetType(from_tileset, from_type)
 
 
 class MetaInfoDialog(QtWidgets.QDialog):

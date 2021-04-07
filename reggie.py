@@ -2040,19 +2040,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Swaps objects' types
         """
-        # global Area
-
-        dlg = ObjectTypeSwapDialog()
-        if dlg.exec_() == QtWidgets.QDialog.Accepted:
-            for layer in globals_.Area.layers:
-                for nsmbobj in layer:
-                    if nsmbobj.type == (dlg.FromType.value()) and nsmbobj.tileset == (dlg.FromTileset.value() - 1):
-                        nsmbobj.SetType(dlg.ToTileset.value() - 1, dlg.ToType.value())
-                    elif nsmbobj.type == (dlg.ToType.value()) and nsmbobj.tileset == (
-                        dlg.ToTileset.value() - 1) and dlg.DoExchange.checkState() == Qt.Checked:
-                        nsmbobj.SetType(dlg.FromTileset.value() - 1, dlg.FromType.value())
-
-            SetDirty()
+        ObjectTypeSwapDialog().exec_()
 
     def MergeLocations(self):
         """
