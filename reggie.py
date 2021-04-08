@@ -4150,7 +4150,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if screenshot_type == 0:
             img_width = self.view.width()
             img_height = self.view.height()
-            rect_a = QtCore.QRectF(0, 0, img_width, img_height),
+            rect_a = QtCore.QRectF(0, 0, img_width, img_height)
             rect_b = QtCore.QRect(QtCore.QPoint(0, 0), QtCore.QSize(img_width, img_height))
             renderer = self.view
 
