@@ -613,21 +613,4 @@
 			<attach sprite="481"/>
 		</category>
 	</view>
-	<view name="Sorted By Number">
-		<category name="0-99">
-			<attach sprite="0-99"/>
-		</category>
-		<category name="100-199">
-			<attach sprite="100-199"/>
-		</category>
-		<category name="200-299">
-			<attach sprite="200-299"/>
-		</category>
-		<category name="300-399">
-			<attach sprite="300-399"/>
-		</category>
-		<category name="400-482">
-			<attach sprite="400-482"/>
-		</category>
-	</view>
 </views>
