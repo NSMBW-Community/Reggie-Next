@@ -504,7 +504,7 @@ class ReggieTranslation:
                 103: None,  # REMOVED: 'Show or hide the Stamp Pad window'
                 104: 'Swap Objects\' Tileset',
                 105: 'Swaps the tileset of objects using a certain tileset',
-                106: 'Swap Objects\' Type',
+                106: 'Swap Objects',
                 107: 'Swaps the type of objects of a certain type',
                 108: 'Tileset Animations',
                 109: 'Play tileset animations if they exist (may cause a slowdown)',

@@ -157,7 +157,7 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         QtWidgets.QDialog.__init__(self)
-        self.setWindowTitle('Swap Objects\' Types')
+        self.setWindowTitle(globals_.trans.string("MenuItems", 106))
         self.setWindowIcon(GetIcon('swap'))
 
         # Create widgets
