@@ -4144,6 +4144,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         screenshot_type = dlg.zoneCombo.currentIndex()
+        hide_background = dlg.hide_background.isChecked()
 
         if screenshot_type == 0:  # Current view
             screenshot_rect = QtCore.QRect(QtCore.QPoint(), self.view.size())
@@ -4172,6 +4173,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         ss_img.fill(Qt.transparent)
         ss_painter = QtGui.QPainter(ss_img)
+
+        if hide_background:
+            # HACK: The painter.fillRect function is only used to paint the
+            # background, so by overwriting this function, we effectively make
+            # the background drawing call a no-op.
+            ss_painter.fillRect = lambda *_: None
 
         renderer.render(ss_painter, source=screenshot_rect)
 
