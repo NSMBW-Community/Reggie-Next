@@ -4136,15 +4136,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec_() != QtWidgets.QDialog.Accepted:
             return
 
-        fn = QtWidgets.QFileDialog.getSaveFileName(self,
-            globals_.trans.string('FileDlgs', 3), '/untitled.png',
-            globals_.trans.string('FileDlgs', 4) + ' (*.png)')[0]
-
-        if fn == '':
-            return
-
         screenshot_type = dlg.zoneCombo.currentIndex()
         hide_background = dlg.hide_background.isChecked()
+        do_save = dlg.save_img.isChecked()
+
+        if do_save:
+            fn = QtWidgets.QFileDialog.getSaveFileName(self,
+                globals_.trans.string('FileDlgs', 3), '/untitled.png',
+                globals_.trans.string('FileDlgs', 4) + ' (*.png)')[0]
+
+            if fn == '':
+                return
 
         if screenshot_type == 0:  # Current view
             screenshot_rect = QtCore.QRect(QtCore.QPoint(), self.view.size())
@@ -4183,7 +4185,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         renderer.render(ss_painter, source=screenshot_rect)
 
         ss_painter.end()
-        ss_img.save(fn, 'PNG', 50)
+
+        if do_save:
+            ss_img.save(fn, 'PNG', 50)
+        else:
+            globals_.app.clipboard().setImage(ss_img)
 
     @staticmethod
     def HandleDiagnostics():

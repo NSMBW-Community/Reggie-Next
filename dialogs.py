@@ -456,6 +456,10 @@ class ScreenCapChoiceDialog(QtWidgets.QDialog):
             self.zoneCombo.addItem(globals_.trans.string('ScrShtDlg', 3, '[zone]', i))
 
         self.hide_background = QtWidgets.QCheckBox()
+        self.save_img = QtWidgets.QRadioButton()
+        self.save_clip = QtWidgets.QRadioButton()
+
+        self.save_img.setChecked(True)
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
 
@@ -465,6 +469,8 @@ class ScreenCapChoiceDialog(QtWidgets.QDialog):
         mainLayout = QtWidgets.QFormLayout()
         mainLayout.addRow("Target", self.zoneCombo)
         mainLayout.addRow("Hide background", self.hide_background)
+        mainLayout.addRow("Save image to file", self.save_img)
+        mainLayout.addRow("Copy image", self.save_clip)
         mainLayout.addRow(buttonBox)
         self.setLayout(mainLayout)
 
