@@ -2049,31 +2049,26 @@ class ReggieWindow(QtWidgets.QMainWindow):
         items = self.scene.selectedItems()
         if len(items) == 0: return
 
-        newx = 999999
-        newy = 999999
-        neww = 0
-        newh = 0
+        new_rect = QtCore.QRectF()
 
         type_loc = LocationItem
         for obj in items:
-            if isinstance(obj, type_loc):
-                if obj.objx < newx:
-                    newx = obj.objx
-                if obj.objy < newy:
-                    newy = obj.objy
-                if obj.width + obj.objx > neww:
-                    neww = obj.width + obj.objx
-                if obj.height + obj.objy > newh:
-                    newh = obj.height + obj.objy
-                obj.delete()
-                obj.setSelected(False)
-                self.scene.removeItem(obj)
-                self.levelOverview.update()
-                SetDirty()
+            if not isinstance(obj, type_loc):
+                continue
 
-        if newx != 999999 and newy != 999999:
-            loc = self.CreateLocation(newx, newy, neww - newx, newh - newy)
-            loc.setSelected(True)
+            new_rect |= obj.ZoneRect
+
+            obj.delete()
+            obj.setSelected(False)
+            self.scene.removeItem(obj)
+            self.levelOverview.update()
+            SetDirty()
+
+        if not new_rect.isValid():
+            return
+
+        loc = self.CreateLocation(*new_rect.getRect())
+        loc.setSelected(True)
 
     ###########################################################################
     # Functions that create items
