@@ -650,7 +650,7 @@ class ReggieTranslation:
                 3: 'X:',
                 4: 'Y:',
                 5: 'Warning',
-                6: 'You are trying to move object(s) by an offset which isn\'t a multiple of 16. It will work, but the objects will not be able to move exactly the same amount as the sprites. Are you sure you want to do this?',
+                6: 'You are trying to move object(s) by an offset which isn\'t a multiple of 16. The offset will be rounded to the nearest multiple of 16. Are you sure you want to do this?',
             },
             'SpriteDataEditor': {
                 0: 'Modify Selected Sprite Properties',

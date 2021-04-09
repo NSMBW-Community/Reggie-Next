@@ -1978,46 +1978,50 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if len(items) == 0: return
 
         dlg = ObjectShiftDialog()
-        if dlg.exec_() == QtWidgets.QDialog.Accepted:
-            xoffset = dlg.XOffset.value()
-            yoffset = dlg.YOffset.value()
-            if xoffset == 0 and yoffset == 0: return
+        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+            return
 
+        xoffset = dlg.XOffset.value()
+        yoffset = dlg.YOffset.value()
+        if xoffset == 0 and yoffset == 0: return
+
+        if ((xoffset % 16) != 0) or ((yoffset % 16) != 0):
+            # warn if any objects exist
+            objectsExist = False
             type_obj = ObjectItem
-            type_spr = SpriteItem
-            type_ent = EntranceItem
-
-            if ((xoffset % 16) != 0) or ((yoffset % 16) != 0):
-                # warn if any objects exist
-                objectsExist = False
-                spritesExist = False
-                for obj in items:
-                    if isinstance(obj, type_obj):
-                        objectsExist = True
-                    elif isinstance(obj, type_spr) or isinstance(obj, type_ent):
-                        spritesExist = True
-
-                if objectsExist and spritesExist:
-                    # no point in warning them if there are only objects
-                    # since then, it will just silently reduce the offset and it won't be noticed
-                    result = QtWidgets.QMessageBox.information(None, globals_.trans.string('ShftItmDlg', 5),
-                                                               globals_.trans.string('ShftItmDlg', 6), QtWidgets.QMessageBox.Yes,
-                                                               QtWidgets.QMessageBox.No)
-                    if result == QtWidgets.QMessageBox.No:
-                        return
-
-            xpoffset = xoffset * 1.5
-            ypoffset = yoffset * 1.5
-
-            # global globals_.OverrideSnapping
-            globals_.OverrideSnapping = True
 
             for obj in items:
-                obj.setPos(obj.x() + xpoffset, obj.y() + ypoffset)
+                if isinstance(obj, type_obj):
+                    objectsExist = True
+                    break
 
-            globals_.OverrideSnapping = False
+            if objectsExist:
+                # Objects are selected and the offset is not a multiple of 16.
+                # We should warn the user that we will round the offset to the
+                # nearest multiple of 16, because objects can only be placed on
+                # the grid.
+                result = QtWidgets.QMessageBox.information(None, globals_.trans.string('ShftItmDlg', 5),
+                                                            globals_.trans.string('ShftItmDlg', 6), QtWidgets.QMessageBox.Yes,
+                                                            QtWidgets.QMessageBox.No)
 
-            SetDirty()
+                if result == QtWidgets.QMessageBox.No:
+                    return
+
+                # Round the offset to the nearest multiple of 16
+                xoffset = 16 * round(xoffset / 16)
+                yoffset = 16 * round(yoffset / 16)
+
+        xpoffset = xoffset * 1.5
+        ypoffset = yoffset * 1.5
+
+        globals_.OverrideSnapping = True
+
+        for obj in items:
+            obj.setPos(obj.x() + xpoffset, obj.y() + ypoffset)
+
+        globals_.OverrideSnapping = False
+
+        SetDirty()
 
     def SwapObjectsTilesets(self):
         """
