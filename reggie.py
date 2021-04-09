@@ -2023,18 +2023,25 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Swaps objects' tilesets
         """
-        # global Area
-
         dlg = ObjectTilesetSwapDialog()
-        if dlg.exec_() == QtWidgets.QDialog.Accepted:
-            for layer in globals_.Area.layers:
-                for nsmbobj in layer:
-                    if nsmbobj.tileset == (dlg.FromTS.value() - 1):
-                        nsmbobj.SetType(dlg.ToTS.value() - 1, nsmbobj.type)
-                    elif nsmbobj.tileset == (dlg.ToTS.value() - 1) and dlg.DoExchange.checkState() == Qt.Checked:
-                        nsmbobj.SetType(dlg.FromTS.value() - 1, nsmbobj.type)
+        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+            return
 
-            SetDirty()
+        from_tileset = dlg.FromTS.value() - 1
+        to_tileset = dlg.ToTS.value() - 1
+        do_exchange = dlg.DoExchange.isChecked()
+
+        if from_tileset == to_tileset:
+            return
+
+        for layer in globals_.Area.layers:
+            for nsmbobj in layer:
+                if nsmbobj.tileset == from_tileset:
+                    nsmbobj.SetType(to_tileset, nsmbobj.type)
+                    SetDirty()
+                elif do_exchange and nsmbobj.tileset == to_tileset:
+                    nsmbobj.SetType(from_tileset, nsmbobj.type)
+                    SetDirty()
 
     def SwapObjectsTypes(self):
         """
