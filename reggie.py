@@ -4143,54 +4143,40 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if fn == '':
             return
 
-        fn = str(fn)
-
         screenshot_type = dlg.zoneCombo.currentIndex()
 
-        if screenshot_type == 0:
-            img_width = self.view.width()
-            img_height = self.view.height()
-            rect_a = QtCore.QRectF(0, 0, img_width, img_height)
-            rect_b = QtCore.QRect(QtCore.QPoint(0, 0), QtCore.QSize(img_width, img_height))
+        if screenshot_type == 0:  # Current view
+            screenshot_rect = QtCore.QRect(QtCore.QPoint(), self.view.size())
             renderer = self.view
-
-        elif screenshot_type == 1:
-            maxX = maxY = 0
-            minX = minY = 24560
-
-            for z in globals_.Area.zones:
-                maxX = max(maxX, (z.objx + z.width) * 1.5)
-                maxY = max(maxY, (z.objy + z.height) * 1.5)
-
-                minX = min(minX, z.objx * 1.5)
-                minY = min(minY, z.objy * 1.5)
-
-            maxX = min(1024 * 24, maxX + 40)
-            maxY = min(512 * 24, maxY + 40)
-            minX = max(0, minX - 40)
-            minY = max(0, minY - 40)
-
-            img_width = int(maxX - minX)
-            img_height = int(maxY - minY)
-            rect_a = QtCore.QRectF(0, 0, img_width, img_height)
-            rect_b = QtCore.QRectF(int(minX), int(minY), img_width, img_height)
-            renderer = self.scene
+            ss_img = QtGui.QImage(screenshot_rect.size(), QtGui.QImage.Format_ARGB32)
 
         else:
-            zone = globals_.Area.zones[screenshot_type - 2]
+            if screenshot_type == 1:  # All zones together
+                screenshot_rect = QtCore.QRectF()
 
-            img_width = zone.width * 1.5
-            img_height = zone.height * 1.5
-            rect_a = QtCore.QRectF(0, 0, img_width, img_height)
-            rect_b = QtCore.QRectF(zone.objx * 1.5, zone.objy * 1.5, img_width, img_height)
+                for z in globals_.Area.zones:
+                    screenshot_rect |= z.ZoneRect
+
+            else:  # One specific zone
+                screenshot_rect = globals_.Area.zones[screenshot_type - 2].ZoneRect
+
+            # Map the zone rects to the scene coordinate system
+            screenshot_rect = (QtGui.QTransform() * 1.5).mapRect(screenshot_rect)
+            # Add 40 pixels of padding on all sides
+            screenshot_rect += QtCore.QMarginsF(40, 40, 40, 40)
+            # Make sure the rectangle doesn't go out of bounds
+            screenshot_rect &= QtCore.QRectF(0, 0, 1024 * 24, 512 * 24)
+
             renderer = self.scene
+            ss_img = QtGui.QImage(screenshot_rect.size().toSize(), QtGui.QImage.Format_ARGB32)
 
-        ScreenshotImage = QtGui.QImage(img_width, img_height, QtGui.QImage.Format_ARGB32)
-        ScreenshotImage.fill(Qt.transparent)
-        RenderPainter = QtGui.QPainter(ScreenshotImage)
-        renderer.render(RenderPainter, rect_a, rect_b)
-        RenderPainter.end()
-        ScreenshotImage.save(fn, 'PNG', 50)
+        ss_img.fill(Qt.transparent)
+        ss_painter = QtGui.QPainter(ss_img)
+
+        renderer.render(ss_painter, source=screenshot_rect)
+
+        ss_painter.end()
+        ss_img.save(fn, 'PNG', 50)
 
     @staticmethod
     def HandleDiagnostics():
