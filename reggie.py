@@ -1381,7 +1381,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Sets the window title accordingly
         """
         # ' - Reggie Next' is added automatically by Qt (see QApplication.setApplicationDisplayName()).
-        self.setWindowTitle('%s%s' % (globals_.mainWindow.fileTitle, (' ' + globals_.trans.string('MainWindow', 0)) if globals_.Dirty else ''))
+        self.setWindowTitle('%s%s' % (self.fileTitle, (' ' + globals_.trans.string('MainWindow', 0)) if globals_.Dirty else ''))
 
     def CheckDirty(self):
         """
@@ -1664,7 +1664,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Select all objects in the current area
         """
         paintRect = QtGui.QPainterPath()
-        paintRect.addRect(float(0), float(0), float(1024 * 24), float(512 * 24))
+        paintRect.addRect(0, 0, 1024 * 24, 512 * 24)
         self.scene.setSelectionArea(paintRect)
 
     def Deselect(self):
@@ -2103,11 +2103,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             # This can be done more efficiently, but 255 is not that big, so it
             # does not really matter.
             all_ids = set(loc.id for loc in globals_.Area.locations)
+            id_ = common.find_first_available_id(all_ids, 256, 1)
 
-            for id_ in range(1, 256):
-                if id_ not in all_ids:
-                    break
-            else:
+            if id_ is None:
                 print("ReggieWindow#CreateLocation: No free location id")
                 return None
 
@@ -2115,14 +2113,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         loc = LocationItem(x, y, width, height, id_)
         globals_.OverrideSnapping = False
 
-        loc.positionChanged = self.HandleObjPosChange
+        loc.positionChanged = self.HandleLocPosChange
         loc.sizeChanged = self.HandleLocSizeChange
         loc.listitem = ListWidgetItem_SortsByOther(loc)
 
         self.locationList.addItem(loc.listitem)
         self.scene.addItem(loc)
         globals_.Area.locations.append(loc)
-        loc.setSelected(True)
 
         loc.UpdateListItem()
 
@@ -2155,36 +2152,28 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
     def CreateEntrance(self, x, y, id_ = None):
         """
-        Creates and returns a new entrance and makes sure it's added to
-        the right lists. This function returns None if no further entrances
-        can be created.
+        Creates and returns a new entrance and makes sure it's added to the
+        right lists. This function returns None if this entrance could not be
+        created.
         """
         if id_ is None:
-            # This can be done more efficiently, but 255 is not that big
-            # a number so it doesn't really matter
             all_ids = set(ent.entid for ent in globals_.Area.entrances)
+            id_ = common.find_fist_available_id(all_ids, 256)
 
-            id_ = 0
-            while id_ <= 255:
-                if id_ not in all_ids:
-                    break
-                id_ += 1
-
-            if id_ == 256:
-                print("ReggieWindow#CreateEntrance: No free entrance id")
-                return None
+        if id_ is None:
+            print("ReggieWindow#CreateEntrance: No free entrance id")
+            return None
         elif id_ in all_ids:
             print("ReggieWindow#CreateEntrance: Given entrance id (%d) already in use" % id_)
             return None
 
         ent = EntranceItem(x, y, id_, 0, 0, 0, 0, 0, 0, 0x80, 0)
         ent.positionChanged = self.HandleEntPosChange
-
-        # if it's the first available ID, all the other indices
-        # should match, so I can just use the ID to insert
         ent.listitem = ListWidgetItem_SortsByOther(ent)
-        self.entranceList.insertItem(id_, ent.listitem)
 
+        # If it's the first available ID, all the other indices should match, so
+        # we can just use the ID to insert.
+        self.entranceList.insertItem(id_, ent.listitem)
         globals_.Area.entrances.insert(id_, ent)
 
         self.scene.addItem(ent)
@@ -3052,8 +3041,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.LoadLevel_NSMBW(levelData, areaNum)
 
         # Set the level overview settings
-        globals_.mainWindow.levelOverview.maxX = 100
-        globals_.mainWindow.levelOverview.maxY = 40
+        self.levelOverview.maxX = 100
+        self.levelOverview.maxY = 40
 
         # Fill up the area list
         self.areaComboBox.clear()
@@ -3108,7 +3097,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         else:
             # Add the path to Recent Files
-            self.RecentMenu.AddToList(globals_.mainWindow.fileSavePath)
+            self.RecentMenu.AddToList(self.fileSavePath)
 
         # If we got this far, everything worked! Return True.
         return True
@@ -3504,61 +3493,65 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handles the selected layer changing
         """
-        # global globals_.CurrentLayer
         globals_.CurrentLayer = nl
 
         # should we replace?
         if QtWidgets.QApplication.keyboardModifiers() == Qt.AltModifier:
-            items = self.scene.selectedItems()
-            type_obj = ObjectItem
-            area = globals_.Area
-            change = []
+            self.ChangeSelectedObjectsLayer(nl)
 
-            if nl == 0:
-                newLayer = area.layers[0]
-            elif nl == 1:
-                newLayer = area.layers[1]
-            else:
-                newLayer = area.layers[2]
+    def ChangeSelectedObjectsLayer(self, new_layer_id):
+        """
+        Changes the layer of the selected objects to the new layer.
+        """
+        assert new_layer_id in (0, 1, 2)
 
-            for x in items:
-                if isinstance(x, type_obj) and x.layer != nl:
-                    change.append(x)
+        items = self.scene.selectedItems()
+        type_obj = ObjectItem
+        area = globals_.Area
+        change = []
 
-            if len(change) > 0:
-                change.sort(key=lambda x: x.zValue())
+        for x in items:
+            if isinstance(x, type_obj) and x.layer != new_layer_id:
+                change.append(x)
 
-                if len(newLayer) == 0:
-                    z = (2 - nl) * 8192
-                else:
-                    z = newLayer[-1].zValue() + 1
+        if len(change) == 0:
+            return
 
-                if nl == 0:
-                    newVisibility = globals_.Layer0Shown
-                elif nl == 1:
-                    newVisibility = globals_.Layer1Shown
-                else:
-                    newVisibility = globals_.Layer2Shown
+        change.sort(key=lambda x: x.zValue())
+        newLayer = area.layers[new_layer_id]
 
-                for item in change:
-                    area.RemoveFromLayer(item)
-                    item.layer = nl
-                    newLayer.append(item)
-                    item.setZValue(z)
-                    item.setVisible(newVisibility)
-                    item.update()
-                    item.UpdateTooltip()
-                    z += 1
+        if len(newLayer) == 0:
+            z_value = (2 - new_layer_id) * 8192
+        else:
+            z_value = newLayer[-1].zValue() + 1
 
-            self.scene.update()
-            SetDirty()
+        if new_layer_id == 0:
+            newVisibility = globals_.Layer0Shown
+        elif new_layer_id == 1:
+            newVisibility = globals_.Layer1Shown
+        else:
+            newVisibility = globals_.Layer2Shown
 
-    def ObjectChoiceChanged(self, type):
+        for item in change:
+            area.RemoveFromLayer(item)
+            item.layer = new_layer_id
+            newLayer.append(item)
+
+            item.setZValue(z_value)
+            item.setVisible(newVisibility)
+            item.update()
+            item.UpdateTooltip()
+
+            z_value += 1
+
+        self.scene.update()
+        SetDirty()
+
+    def ObjectChoiceChanged(self, type_):
         """
         Handles a new object being chosen
         """
-        # global globals_.CurrentObject
-        globals_.CurrentObject = type
+        globals_.CurrentObject = type_
 
     def ObjectReplace(self, type):
         """
@@ -3582,17 +3575,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handles a new sprite being chosen
         """
-        # global globals_.CurrentSprite
         globals_.CurrentSprite = type
+
         if type != 1000 and type >= 0:
             self.defaultDataEditor.setSprite(type)
-            self.defaultDataEditor.data = b'\0\0\0\0\0\0\0\0\0\0'
-            self.defaultDataEditor.update()
+            self.defaultDataEditor.data = bytes(10)
             self.defaultPropButton.setEnabled(True)
         else:
             self.defaultPropButton.setEnabled(False)
             self.defaultPropDock.setVisible(False)
-            self.defaultDataEditor.update()
+
+        self.defaultDataEditor.update()
 
     def SpriteReplace(self, type):
         """
@@ -3760,34 +3753,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         loc.UpdateListItem(True)
 
-    # def HandleSpriteSelectByList(self, item):
-    #     """
-    #     Handle a sprite being selected from the list
-    #     """
-    #     spr = None
-    #     for check in globals_.Area.sprites:
-    #         if check.listitem == item:
-    #             spr = check
-    #             break
-    #     if spr is None: return
-
-    #     spr.ensureVisible(QtCore.QRectF(), 192, 192)
-    #     self.scene.clearSelection()
-    #     spr.setSelected(True)
-
-    # def HandleSpriteToolTipAboutToShow(self, item):
-    #     """
-    #     Handle a sprite being hovered in the list
-    #     """
-    #     spr = None
-    #     for check in globals_.Area.sprites:
-    #         if check.listitem == item:
-    #             spr = check
-    #             break
-    #     if spr is None: return
-
-    #     spr.UpdateListItem(True)
-
     def HandlePathSelectByList(self, item):
         """
         Handle a path node being selected
@@ -3852,6 +3817,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if oldx == x and oldy == y: return
             self.locationEditor.setLocation(loc)
             SetDirty()
+
         loc.UpdateListItem()
         self.levelOverview.update()
 
@@ -3862,6 +3828,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if loc == self.selObj:
             self.locationEditor.setLocation(loc)
             SetDirty()
+
         loc.UpdateListItem()
         self.levelOverview.update()
 
@@ -3898,7 +3865,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         type_peline = PathEditorLineItem
         for item in hovereditems:
             hover = item.hover if hasattr(item, 'hover') else True
-            if (not isinstance(item, type_zone)) and (not isinstance(item, type_peline)) and hover:
+            if (not isinstance(item, (type_zone, type_peline))) and hover:
                 hovered = item
                 break
 
@@ -4000,7 +3967,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             else:
                 UnloadTileset(idx)
 
-        globals_.mainWindow.objPicker.LoadFromTilesets()
+        self.objPicker.LoadFromTilesets()
         self.objAllTab.setCurrentIndex(0)
         self.objAllTab.setTabEnabled(0, (globals_.Area.tileset0 != ''))
         self.objAllTab.setTabEnabled(1, (globals_.Area.tileset1 != ''))
@@ -4082,8 +4049,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             z.sfxmod = tab.Zone_sfx.currentIndex() << 4
             if tab.Zone_boss.isChecked():
                 z.sfxmod |= 1
-
-                i += 1
 
         self.actions['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
         self.levelOverview.update()

@@ -399,19 +399,17 @@ class ZoneTab(QtWidgets.QWidget):
 
     def ChangeVisibilityList(self):
         VRadioMod = self.zv % 16
+        self.Zone_visibility.clear()
 
         if self.Zone_vnormal.isChecked():
-            self.Zone_visibility.clear()
             addList = globals_.trans.stringList('ZonesDlg', 41)
             self.Zone_visibility.addItems(addList)
             self.Zone_visibility.setToolTip(globals_.trans.string('ZonesDlg', 42))
         elif self.Zone_vspotlight.isChecked():
-            self.Zone_visibility.clear()
             addList = globals_.trans.stringList('ZonesDlg', 43)
             self.Zone_visibility.addItems(addList)
             self.Zone_visibility.setToolTip(globals_.trans.string('ZonesDlg', 44))
         elif self.Zone_vfulldark.isChecked():
-            self.Zone_visibility.clear()
             addList = globals_.trans.stringList('ZonesDlg', 45)
             self.Zone_visibility.addItems(addList)
             self.Zone_visibility.setToolTip(globals_.trans.string('ZonesDlg', 46))

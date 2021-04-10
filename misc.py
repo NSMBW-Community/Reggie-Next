@@ -1126,9 +1126,8 @@ class RecentFilesMenu(QtWidgets.QMenu):
         for filename in self.FileList:
             if filename != path:
                 new.append(filename)
-        if len(new) > MaxLength: new = new[:MaxLength]
 
-        self.FileList = new
+        self.FileList = new[:MaxLength]
         self.writeSettings()
         self.updateActionList()
 

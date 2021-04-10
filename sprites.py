@@ -2593,7 +2593,7 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
         # This causes small visual bugs while moving the sprite, but moving this
         # sprite makes little sense, so I guess it's fine.
 
-        slot = lambda: self.moveSunlight()
+        slot = self.moveSunlight
 
         # scrolling
         view = self.parent.scene().views()[0]
@@ -2633,7 +2633,7 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
                 return
 
             self.aux[0].realimage = ImageCache['Sunlight']
-            self.aux[0].move(bothRect.x(), bothRect.y(), bothRect.width(), bothRect.height())
+            self.aux[0].move(*bothRect.getRect())
         except RuntimeError:
             # happens if the parent was deleted
             pass
@@ -7329,8 +7329,8 @@ class SpriteImage_MoveWhenOn(SLib.SpriteImage):  # 396
         super().dataChanged()
 
         # get width
-        raw_size = self.parent.spritedata[5] & 0xF
-        if raw_size == 0:
+        self.raw_size = self.parent.spritedata[5] & 0xF
+        if self.raw_size == 0:
             self.xOffset = -16
             self.width = 32
         else:
@@ -7343,29 +7343,18 @@ class SpriteImage_MoveWhenOn(SLib.SpriteImage):  # 396
     def paint(self, painter):
         super().paint(painter)
 
-        if self.direction == 0:
-            direction = 'R'
-        elif self.direction == 1:
-            direction = 'L'
-        elif self.direction == 2:
-            direction = 'U'
-        elif self.direction == 3:
-            direction = 'D'
-        else:
-            direction = None
+        direction = ("R", "L", "U", "D", None)[self.direction]
 
-        raw_size = self.parent.spritedata[5] & 0xF
-
-        if raw_size == 0:
+        if self.raw_size == 0:
             # hack for the glitchy version
             painter.drawPixmap(0, 2, ImageCache['MoveWhenOnR'])
             painter.drawPixmap(24, 2, ImageCache['MoveWhenOnL'])
-        elif raw_size == 1:
+        elif self.raw_size == 1:
             painter.drawPixmap(0, 2, ImageCache['MoveWhenOnM'])
         else:
             painter.drawPixmap(0, 2, ImageCache['MoveWhenOnL'])
-            if raw_size > 2:
-                painter.drawTiledPixmap(24, 2, (raw_size - 2) * 24, 24, ImageCache['MoveWhenOnM'])
+            if self.raw_size > 2:
+                painter.drawTiledPixmap(24, 2, (self.raw_size - 2) * 24, 24, ImageCache['MoveWhenOnM'])
             painter.drawPixmap((self.width * 1.5) - 24, 2, ImageCache['MoveWhenOnR'])
 
         center = (self.width / 2) * 1.5

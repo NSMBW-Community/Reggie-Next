@@ -348,6 +348,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedy = int(clicked.y() / 1.5)
 
                 loc = globals_.mainWindow.CreateLocation(clickedx, clickedy)
+                loc.setSelected(True)
 
                 self.dragstamp = False
                 self.currentobj = loc
