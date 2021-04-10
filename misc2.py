@@ -558,6 +558,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         height = dsy - clicky + 1
 
                     # if the position changed, set the new one
+                    change = False
                     if cx != x or cy != y:
                         obj.objx = x
                         obj.objy = y
@@ -565,12 +566,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         globals_.OverrideSnapping = True
                         obj.setPos(x * 1.5, y * 1.5)
                         globals_.OverrideSnapping = False
+                        change = True
 
                     # if the size changed, recache it and update the area
                     if cwidth != width or cheight != height:
                         obj.width = width
                         obj.height = height
-                        #                    obj.updateObjCache()
 
                         oldrect = obj.BoundingRect
                         oldrect.translate(cx * 1.5, cy * 1.5)
@@ -579,6 +580,10 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                         obj.UpdateRects()
                         obj.scene().update(updaterect)
+                        change = True
+
+                    if change:  # Update the location editor
+                        globals_.mainWindow.locationEditor.setLocation(obj)
 
                 elif isinstance(obj, type_spr):
                     # move the created sprite
