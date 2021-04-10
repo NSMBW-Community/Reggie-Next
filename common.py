@@ -373,8 +373,11 @@ class WiiHeader(object):
 
 
 def align(x, boundary):
-    while x % boundary != 0:
-        x += 1
+    rem = x % boundary
+
+    if rem != 0:
+        x += boundary - rem
+
     return x
 
 
@@ -384,29 +387,14 @@ def clamp(var, min, max):
     return var
 
 
-def abs(var):
-    if var < 0:
-        var = var + (2 * var)
-    return var
+def find_first_available_id(used: set, maximum: int, minimum: int = 0):
+    """
+    Returns the smallest integer in the range [minimum = 0, maximum) that is
+    not in the given set. If there is no such integer, None is returned.
+    """
+    for i in range(minimum, maximum):
+        if i not in used:
+            return i
 
+    return None
 
-def hexdump(s, sep=' '):  # just dumps hex values
-    return sep.join(map(lambda x: '%02x' % ord(x), s))
-
-
-def hexdump2(src, length=16):  # dumps to a 'hex editor' style output
-    result = []
-    for i in range(0, len(src), length):
-        s = src[i:i + length]
-        if len(s) % 4 == 0:
-            mod = 0
-        else:
-            mod = 1
-        hexa = ''
-        for j in range((len(s) / 4) + mod):
-            hexa += ' '.join(['%02X' % ord(x) for x in s[j * 4:j * 4 + 4]])
-            if j != ((len(s) / 4) + mod) - 1:
-                hexa += '  '
-        printable = s.translate(''.join([(len(repr(chr(x))) == 3) and chr(x) or '.' for x in range(256)]))
-        result.append('0x%04X   %-*s   %s\n' % (i, (length * 3) + 2, hexa, printable))
-    return ''.join(result)
