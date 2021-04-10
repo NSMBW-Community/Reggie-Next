@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 
 import globals_
 from ui import GetIcon
@@ -362,37 +362,9 @@ class ZoneTab(QtWidgets.QWidget):
         self.Camera = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 19))
 
         comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed)
-        self.zm = -1
 
-        self.Zone_cammodebuttongroup = QtWidgets.QButtonGroup()
-        cammodebuttons = []
-        for i, name, tooltip in [
-                    (0, 'Normal', 'The standard camera mode, appropriate for most situations.'),
-                    (3, 'Static Zoom', 'In this mode, the camera will not zoom out during multiplayer.'),
-                    (4, 'Static Zoom, Y Tracking Only', 'In this mode, the camera will not zoom out during multiplayer, and will be centered horizontally in the zone.'),
-                    (5, 'Static Zoom, Event-Controlled', 'In this mode, the camera will not zoom out during multiplayer, and will use event-controlled camera settings (which currently cannot be edited).'),
-                    (6, 'X Tracking Only', 'In this mode, the camera will only move horizontally. It will be aligned to the bottom edge of the zone.'),
-                    (7, 'X Expanding Only', 'In this mode, the camera will only zoom out during multiplayer if the players are far apart horizontally.'),
-                    (1, 'Y Tracking Only', 'In this mode, the camera will only move vertically. It will be centered horizontally in the zone.'),
-                    (2, 'Y Expanding Only', 'In this mode, the camera will zoom out during multiplayer if the players are far apart vertically.'),
-                ]:
-
-            rb = QtWidgets.QRadioButton('%d: %s' % (i, name))
-            rb.setToolTip('<b>' + name + ':</b><br>' + tooltip)
-            self.Zone_cammodebuttongroup.addButton(rb, i)
-            cammodebuttons.append(rb)
-
-            if i == z.cammode:
-                rb.setChecked(True)
-
-            rb.clicked.connect(self.ChangeCamModeList)
-
-        self.Zone_screenheights = QtWidgets.QComboBox()
-        self.Zone_screenheights.setToolTip("<b>Screen Heights:</b><br>Selects screen heights (in blocks) the camera can use during multiplayer. The camera will zoom out if the players are too far apart, and zoom back in when they get closer together. Values represent screen heights, measured in tiles.<br><br>In single-player, only the smallest height will be used.<br><br>Options marked with * or ** are glitchy if zone bounds are set to 0; see the Upper/Lower Bounds tooltips for more info.<br>Options marked with ** are also unplayably glitchy in multiplayer.")
-        self.Zone_screenheights.setSizePolicy(comboboxSizePolicy)
-
-        self.ChangeCamModeList()
-        self.Zone_screenheights.setCurrentIndex(z.camzoom)
+        self.Zone_cammodezoom = CameraModeZoomSettingsLayout(True)
+        self.Zone_cammodezoom.setValues(z.cammode, z.camzoom)
 
         dirs = globals_.trans.stringList('ZonesDlg', 38)
         self.Zone_direction = QtWidgets.QComboBox()
@@ -417,13 +389,8 @@ class ZoneTab(QtWidgets.QWidget):
             self.Zone_mpzoomadjust.setValue(z.mpcamzoomadjust)
 
         # Layouts
-        ZoneCameraModesLayout = QtWidgets.QGridLayout()
-        for i, b in enumerate(cammodebuttons):
-            ZoneCameraModesLayout.addWidget(b, i % 4, i // 4)
-
         ZoneCameraLayout = QtWidgets.QFormLayout()
-        ZoneCameraLayout.addRow('Camera Mode:', ZoneCameraModesLayout)
-        ZoneCameraLayout.addRow('Screen Heights:', self.Zone_screenheights)
+        ZoneCameraLayout.addRow(self.Zone_cammodezoom)
         ZoneCameraLayout.addRow(globals_.trans.string('ZonesDlg', 39), self.Zone_direction)
         ZoneCameraLayout.addRow('Only Scroll Upwards If Flying:', self.Zone_yrestrict)
         ZoneCameraLayout.addRow('Multiplayer Screen Size Adjust:', self.Zone_mpzoomadjust)
@@ -459,62 +426,6 @@ class ZoneTab(QtWidgets.QWidget):
     def ChangeMPZoomAdjust(self):
         self.Zone_mpzoomadjust.setEnabled(self.Zone_yrestrict.isChecked())
         self.Zone_mpzoomadjust.setValue(0)
-
-    def ChangeCamModeList(self):
-        mode = self.Zone_cammodebuttongroup.checkedId()
-
-        oldListChoice = [1, 1, 2, 3, 3, 3, 1, 1][self.zm]
-        newListChoice = [1, 1, 2, 3, 3, 3, 1, 1][mode]
-
-        if self.zm == -1 or oldListChoice != newListChoice:
-
-            if newListChoice == 1:
-                heights = [
-                    ([14, 19], ''),
-                    ([14, 19, 24], ''),
-                    ([14, 19, 28], ''),
-                    ([20, 24], ''),
-                    ([19, 24, 28], ''),
-                    ([17, 24], ''),
-                    ([17, 24, 28], ''),
-                    ([17, 20], ''),
-                    ([7, 11, 28], '**'),
-                    ([17, 20.5, 24], ''),
-                    ([17, 20, 28], ''),
-                ]
-            elif newListChoice == 2:
-                heights = [
-                    ([14, 19], ''),
-                    ([14, 19, 24], ''),
-                    ([14, 19, 28], ''),
-                    ([19, 19, 24], ''),
-                    ([19, 24, 28], ''),
-                    ([19, 24, 28], ''),
-                    ([17, 24, 28], ''),
-                    ([17, 20.5, 24], ''),
-                ]
-            else:
-                heights = [
-                    ([14], ''),
-                    ([19], ''),
-                    ([24], ''),
-                    ([28], ''),
-                    ([17], ''),
-                    ([20], ''),
-                    ([16], ''),
-                    ([28], ''),
-                    ([7], '*'),
-                    ([10.5], '*'),
-                ]
-
-            items = []
-            for i, (options, asterisk) in enumerate(heights):
-                items.append('%d: ' % i + ' -> '.join(('%s blocks' % str(o)) for o in options) + asterisk)
-
-            self.Zone_screenheights.clear()
-            self.Zone_screenheights.addItems(items)
-            self.Zone_screenheights.setCurrentIndex(0)
-            self.zm = mode
 
     def createBounds(self, z):
         self.Bounds = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 47))
@@ -676,6 +587,141 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.Zone_presets.setCurrentIndex(idx)
         self.AutoChangingSize = False
+
+
+class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
+    """
+    A layout that shows the camera mode / zoom settings for editing.
+    """
+    edited = QtCore.pyqtSignal()
+    updating = False
+
+    def __init__(self, show_mode_5):
+        super().__init__()
+        self.updating = True
+
+        comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed)
+
+        self.zm = -1
+
+        self.modeButtonGroup = QtWidgets.QButtonGroup()
+        modebuttons = []
+        for i, name, tooltip in [
+                    (0, 'Normal', 'The standard camera mode, appropriate for most situations.'),
+                    (3, 'Static Zoom', 'In this mode, the camera will not zoom out during multiplayer.'),
+                    (4, 'Static Zoom, Y Tracking Only', 'In this mode, the camera will not zoom out during multiplayer, and will be centered horizontally in the zone.'),
+                    (5, 'Static Zoom, Event-Controlled', 'In this mode, the camera will not zoom out during multiplayer, and will use event-controlled camera settings from the Camera Profiles dialog.'),
+                    (6, 'X Tracking Only', 'In this mode, the camera will only move horizontally. It will be aligned to the bottom edge of the zone.'),
+                    (7, 'X Expanding Only', 'In this mode, the camera will only zoom out during multiplayer if the players are far apart horizontally.'),
+                    (1, 'Y Tracking Only', 'In this mode, the camera will only move vertically. It will be centered horizontally in the zone.'),
+                    (2, 'Y Expanding Only', 'In this mode, the camera will zoom out during multiplayer if the players are far apart vertically.'),
+                ]:
+            rb = QtWidgets.QRadioButton(name)
+            rb.setToolTip('<b>' + name + ':</b><br>' + tooltip)
+            self.modeButtonGroup.addButton(rb, i)
+            modebuttons.append(rb)
+
+            if i == 5 and not show_mode_5:
+                rb.setVisible(False)
+
+            rb.clicked.connect(self.ChangeCamModeList)
+            rb.clicked.connect(self.handleModeChanged)
+
+        self.screenSizes = QtWidgets.QComboBox()
+        self.screenSizes.setToolTip("<b>Screen Heights:</b><br>Selects screen heights (in blocks) the camera can use during multiplayer. The camera will zoom out if the players are too far apart, and zoom back in when they get closer together. Values represent screen heights, measured in tiles.<br><br>In single-player, only the smallest height will be used.<br><br>Options marked with * or ** are glitchy if zone bounds are set to 0; see the Upper/Lower Bounds tooltips for more info.<br>Options marked with ** are also unplayably glitchy in multiplayer.")
+        self.screenSizes.setSizePolicy(comboboxSizePolicy)
+
+        self.screenSizes.currentIndexChanged.connect(self.handleScreenSizesChanged)
+
+        ModesLayout = QtWidgets.QGridLayout()
+        for i, b in enumerate(modebuttons):
+            ModesLayout.addWidget(b, i % 4, i // 4)
+
+        self.addRow(ModesLayout)
+        self.addRow('Screen Heights:', self.screenSizes)
+
+        self.updating = False
+
+    def ChangeCamModeList(self):
+        mode = self.modeButtonGroup.checkedId()
+        oldListChoice = [1, 1, 2, 3, 3, 3, 1, 1][self.zm]
+        newListChoice = [1, 1, 2, 3, 3, 3, 1, 1][mode]
+
+        if self.zm != -1 and oldListChoice == newListChoice:
+            return
+
+        if newListChoice == 1:
+            sizes = [
+                ([14, 19], ''),
+                ([14, 19, 24], ''),
+                ([14, 19, 28], ''),
+                ([20, 24], ''),
+                ([19, 24, 28], ''),
+                ([17, 24], ''),
+                ([17, 24, 28], ''),
+                ([17, 20], ''),
+                ([7, 11, 28], '**'),
+                ([17, 20.5, 24], ''),
+                ([17, 20, 28], ''),
+            ]
+        elif newListChoice == 2:
+            sizes = [
+                ([14, 19], ''),
+                ([14, 19, 24], ''),
+                ([14, 19, 28], ''),
+                ([19, 19, 24], ''),
+                ([19, 24, 28], ''),
+                ([19, 24, 28], ''),
+                ([17, 24, 28], ''),
+                ([17, 20.5, 24], ''),
+            ]
+        else:
+            sizes = [
+                ([14], ''),
+                ([19], ''),
+                ([24], ''),
+                ([28], ''),
+                ([17], ''),
+                ([20], ''),
+                ([16], ''),
+                ([28], ''),
+                ([7], '*'),
+                ([10.5], '*'),
+            ]
+
+        items = []
+        for i, (options, asterisk) in enumerate(sizes):
+            items.append(', '.join(str(o) for o in options) + asterisk)
+
+        self.screenSizes.clear()
+        self.screenSizes.addItems(items)
+        self.screenSizes.setCurrentIndex(0)
+        self.zm = mode
+
+    def setValues(self, cammode, camzoom):
+        self.updating = True
+
+        if cammode < 0: cammode = 0
+        if cammode >= 8: cammode = 7
+
+        self.modeButtonGroup.button(cammode).setChecked(True)
+        self.ChangeCamModeList()
+
+        if camzoom < 0: camzoom = 0
+        if camzoom >= self.screenSizes.count(): camzoom = self.screenSizes.count() - 1
+
+        self.screenSizes.setCurrentIndex(camzoom)
+
+        self.updating = False
+
+    def handleModeChanged(self):
+        if self.updating: return
+        self.ChangeCamModeList()
+        self.edited.emit()
+
+    def handleScreenSizesChanged(self):
+        if self.updating: return
+        self.edited.emit()
 
 
 def getMusic():
