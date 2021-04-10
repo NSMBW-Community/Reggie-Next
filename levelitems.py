@@ -1694,8 +1694,8 @@ class LocationItem(LevelEditorItem):
         if self.isSelected() and self.GrabberRect.contains(event.pos()):
             # start dragging
             self.dragging = True
-            self.dragstartx = int(event.scenePos().x() / 1.5)
-            self.dragstarty = int(event.scenePos().y() / 1.5)
+            self.dragstartx = self.objx
+            self.dragstarty = self.objy
             event.accept()
         else:
             LevelEditorItem.mousePressEvent(self, event)
@@ -1707,38 +1707,9 @@ class LocationItem(LevelEditorItem):
         """
         if event.buttons() != QtCore.Qt.NoButton and self.dragging:
             # Resize the location.
-            # NOTE: We never actually use dsx, dsy, self.dragstartx or
-            # self.dragstarty...
-            dsx = self.dragstartx
-            dsy = self.dragstarty
-            clickedx = int(event.scenePos().x() / 1.5)
-            clickedy = int(event.scenePos().y() / 1.5)
+            change = self.dragResize(event.scenePos(), self.dragstartx, self.dragstarty)
 
-            cx = self.objx
-            cy = self.objy
-
-            # Prevent the size from going outside the range of the location
-            # editor's fields
-            clickedx = common.clamp(clickedx, cx + 1, 65535)
-            clickedy = common.clamp(clickedy, cy + 1, 65535)
-
-            if clickedx != dsx or clickedy != dsy:
-                self.dragstartx = clickedx
-                self.dragstarty = clickedy
-
-                self.objx = min(cx, clickedx)
-                self.objy = min(cy, clickedy)
-
-                self.width = abs(cx - clickedx)
-                self.height = abs(cy - clickedy)
-
-                oldrect = self.BoundingRect
-                oldrect.translate(cx * 1.5, cy * 1.5)
-                newrect = QtCore.QRectF(self.x(), self.y(), self.width * 1.5, self.height * 1.5)
-                updaterect = oldrect.united(newrect)
-
-                self.UpdateRects()
-                self.scene().update(updaterect)
+            if change:
                 SetDirty()
                 globals_.mainWindow.levelOverview.update()
 
@@ -1754,6 +1725,55 @@ class LocationItem(LevelEditorItem):
             event.accept()
         else:
             LevelEditorItem.mouseMoveEvent(self, event)
+
+    def dragResize(self, clicked, dsx, dsy):
+        """
+        Handles resizing the location and returns whether the location was
+        changed.
+        """
+        clickx = common.clamp(int(clicked.x() / 1.5), 0, 65535)
+        clicky = common.clamp(int(clicked.y() / 1.5), 0, 65535)
+
+        # if alt is not held, snap to 8x8 grid
+        if QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.AltModifier:
+            dsx = 8 * round(dsx / 8)
+            dsy = 8 * round(dsy / 8)
+            clickx = 8 * round(clickx / 8)
+            clicky = 8 * round(clicky / 8)
+
+        # Calculate the dimensions of the rectangle from ds(x, y) to
+        # click(x, y)
+        x = min(dsx, clickx)
+        y = min(dsy, clicky)
+        width = max(1, abs(clickx - dsx))
+        height = max(1, abs(clicky - dsy))
+
+        change = False
+
+        # if the position changed, set the new one
+        if self.objx != x or self.objy != y:
+            self.objx = x
+            self.objy = y
+
+            globals_.OverrideSnapping = True
+            self.setPos(x * 1.5, y * 1.5)
+            globals_.OverrideSnapping = False
+            change = True
+
+        if self.width != width or self.height != height:
+            self.width = width
+            self.height = height
+
+            oldrect = self.BoundingRect
+            oldrect.translate(dsx * 1.5, dsy * 1.5)
+            newrect = QtCore.QRectF(self.x(), self.y(), self.width * 1.5, self.height * 1.5)
+            updaterect = oldrect.united(newrect)
+
+            self.UpdateRects()
+            self.scene().update(updaterect)
+            change = True
+
+        return change
 
     def delete(self):
         """

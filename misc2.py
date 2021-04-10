@@ -529,58 +529,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                 elif isinstance(obj, type_loc):
                     # resize/move the current location
-                    cx = obj.objx
-                    cy = obj.objy
-                    cwidth = obj.width
-                    cheight = obj.height
-
-                    dsx = self.dragstartx
-                    dsy = self.dragstarty
-                    clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                    if clicked.x() < 0: clicked.setX(0)
-                    if clicked.y() < 0: clicked.setY(0)
-                    clickx = int(clicked.x() / 1.5)
-                    clicky = int(clicked.y() / 1.5)
-
-                    # allow negative width/height and treat it properly :D
-                    if clickx >= dsx:
-                        x = dsx
-                        width = clickx - dsx + 1
-                    else:
-                        x = clickx
-                        width = dsx - clickx + 1
-
-                    if clicky >= dsy:
-                        y = dsy
-                        height = clicky - dsy + 1
-                    else:
-                        y = clicky
-                        height = dsy - clicky + 1
-
-                    # if the position changed, set the new one
-                    change = False
-                    if cx != x or cy != y:
-                        obj.objx = x
-                        obj.objy = y
-
-                        globals_.OverrideSnapping = True
-                        obj.setPos(x * 1.5, y * 1.5)
-                        globals_.OverrideSnapping = False
-                        change = True
-
-                    # if the size changed, recache it and update the area
-                    if cwidth != width or cheight != height:
-                        obj.width = width
-                        obj.height = height
-
-                        oldrect = obj.BoundingRect
-                        oldrect.translate(cx * 1.5, cy * 1.5)
-                        newrect = QtCore.QRectF(obj.x(), obj.y(), obj.width * 1.5, obj.height * 1.5)
-                        updaterect = oldrect.united(newrect)
-
-                        obj.UpdateRects()
-                        obj.scene().update(updaterect)
-                        change = True
+                    change = obj.dragResize(pos, self.dragstartx, self.dragstarty)
 
                     if change:  # Update the location editor
                         globals_.mainWindow.locationEditor.setLocation(obj)
