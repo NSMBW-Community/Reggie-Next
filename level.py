@@ -284,7 +284,9 @@ class AbstractParsedArea(AbstractArea):
         self.LoadEntrances()  # block 7
         self.LoadZones()  # block 10 (also blocks 3, 5, and 6)
         self.LoadLocations()  # block 11
-        self.LoadPaths()  # block 12 and 13
+        self.LoadCamProfiles()  # block 12
+        self.LoadPaths()  # block 13 and 14
+
         # Load the editor metadata
         if self.block1pos[0] != 0x70:
             rddata = course[0x70:self.block1pos[0]]
@@ -338,7 +340,8 @@ class AbstractParsedArea(AbstractArea):
         self.SaveLoadedSprites()  # block 9
         self.SaveZones()  # block 10 (and 3, 5 and 6)
         self.SaveLocations()  # block 11
-        self.SavePaths()
+        self.SaveCamProfiles()  # block 12
+        self.SavePaths()  # blocks 13 and 14
 
         rdata = bytearray(self.Metadata.save())
         if len(rdata) % 4 != 0:
@@ -475,6 +478,7 @@ class Area_NSMBW(AbstractParsedArea):
         self.bgB = []
         self.zones = []
         self.locations = []
+        self.camprofiles = []
         self.pathdata = []
         self.paths = []
         self.comments = []
@@ -640,9 +644,26 @@ class Area_NSMBW(AbstractParsedArea):
             append(obj(data[0] >> 12, data[0] & 4095, idx, *data[1:], z))
             z += 1
 
+    def LoadCamProfiles(self):
+        """
+        Loads block 12, the camera profiles
+        """
+        profiledata = self.blocks[11]
+        profilestruct = struct.Struct('>xxxxxxxxxxxxBBBBxxBx')
+        offset = 0
+        camprofiles = []
+
+        for offset in range(0, len(profiledata), 20):
+            data = profilestruct.unpack_from(profiledata, offset)
+
+            if offset > 0 or any(data):
+                camprofiles.append([data[4], data[1], data[2]])
+
+        self.camprofiles = camprofiles
+
     def LoadPaths(self):
         """
-        Loads block 12, the paths
+        Loads blocks 13 and 14, the paths and path nodes
         """
         pathdata = self.blocks[12]
         pathstruct = struct.Struct('>BxHHH')
@@ -669,7 +690,7 @@ class Area_NSMBW(AbstractParsedArea):
 
     def LoadPathNodes(self, startindex, count):
         """
-        Loads block 13, the path nodes
+        Loads block 14, the path nodes
         """
         nodes = []
         nodedata = self.blocks[13]
@@ -966,6 +987,38 @@ class Area_NSMBW(AbstractParsedArea):
             locstruct.pack_into(buffer, i * 12, int(l.objx), int(l.objy), int(l.width), int(l.height), int(l.id))
 
         self.blocks[10] = bytes(buffer)
+
+    def SaveCamProfiles(self):
+        """
+        Saves block 12, the camera profiles data.
+        Also appends data to block 3, the bounding data.
+        """
+
+        if len(self.camprofiles) == 0:
+            self.blocks[11] = b''
+            return
+
+        # Camera profiles include a bounding-block ID, but the game only uses it
+        # for one frame before reverting to the zone defaults. So it's not
+        # really useful for anything, but we also need to ensure we don't point
+        # the camera profiles to any invalid or otherwise terrible bounding
+        # settings for that one frame. So we make an extra, all-defaults
+        # bounding block and use it for every camera profile.
+
+        bdngstruct = struct.Struct('>4lHHhh')
+
+        bdngid = (len(self.blocks[2]) + 24) // 24
+        self.blocks[2] += bdngstruct.pack(0, 0, 0, 0, bdngid, 15, 0, 0)
+
+        profilestruct = struct.Struct('>xxxxxxxxxxxxBBBBxxBx')
+        buffer = bytearray(20 * (len(self.camprofiles) + 1))
+
+        offset = 20  # empty first profile to work around game bug
+        for p in self.camprofiles:
+            profilestruct.pack_into(buffer, offset, bdngid, p[1], p[2], 0, p[0])
+            offset += 20
+
+        self.blocks[11] = bytes(buffer)
 
 
 class Metadata:

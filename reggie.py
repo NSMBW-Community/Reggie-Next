@@ -81,6 +81,7 @@ if not hasattr(QtWidgets.QGraphicsItem, 'ItemSendsGeometryChanges'):
 import archive
 import sprites
 import spritelib as SLib
+import common
 
 import globals_
 
@@ -95,7 +96,7 @@ from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import GameDefMenu, LoadGameDef
 from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem
-from dialogs import AutoSavedInfoDialog, DiagnosticToolDialog, ScreenCapChoiceDialog, AreaChoiceDialog, ObjectTypeSwapDialog, ObjectTilesetSwapDialog, ObjectShiftDialog, MetaInfoDialog, AboutDialog
+from dialogs import AutoSavedInfoDialog, DiagnosticToolDialog, ScreenCapChoiceDialog, AreaChoiceDialog, ObjectTypeSwapDialog, ObjectTilesetSwapDialog, ObjectShiftDialog, MetaInfoDialog, AboutDialog, CameraProfilesDialog
 from background import BGDialog
 from zones import ZonesDialog
 from tiles import UnloadTileset, LoadTileset, LoadOverrides
@@ -627,6 +628,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         )
 
         self.CreateAction(
+            'camprofiles', self.HandleCameraProfiles, GetIcon('camprofile'),
+            'Camera Profiles...', 'Edit event-activated camera settings',
+            QtGui.QKeySequence('Ctrl+Alt+C'),
+        )
+
+        self.CreateAction(
             'addarea', self.HandleAddNewArea, GetIcon('add'),
             globals_.trans.stringOneLine('MenuItems', 78), globals_.trans.stringOneLine('MenuItems', 79),
             QtGui.QKeySequence('Ctrl+Alt+N'),
@@ -763,6 +770,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         lmenu = menubar.addMenu(globals_.trans.string('Menubar', 3))
         lmenu.addAction(self.actions['areaoptions'])
+        lmenu.addAction(self.actions['camprofiles'])
         lmenu.addAction(self.actions['zones'])
         lmenu.addAction(self.actions['backgrounds'])
         lmenu.addSeparator()
@@ -4010,93 +4018,74 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Pops up the options for Zone dialog
         """
         dlg = ZonesDialog()
-        if dlg.exec_() == QtWidgets.QDialog.Accepted:
-            SetDirty()
-            i = 0
+        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+            self.levelOverview.update()
+            return
 
-            # resync the zones
-            items = self.scene.items()
-            func_ii = isinstance
-            type_zone = ZoneItem
+        SetDirty()
 
-            for item in items:
-                if func_ii(item, type_zone):
-                    self.scene.removeItem(item)
+        # resync the zones
+        items = self.scene.items()
+        func_ii = isinstance
+        type_zone = ZoneItem
 
-            globals_.Area.zones = []
+        for item in items:
+            if func_ii(item, type_zone):
+                self.scene.removeItem(item)
 
-            for tab in dlg.zoneTabs:
-                z = tab.zoneObj
-                z.id = i
-                z.UpdateTitle()
-                globals_.Area.zones.append(z)
-                self.scene.addItem(z)
+        globals_.Area.zones = []
 
-                if tab.Zone_xpos.value() < 16:
-                    z.objx = 16
-                elif tab.Zone_xpos.value() > 24560:
-                    z.objx = 24560
-                else:
-                    z.objx = tab.Zone_xpos.value()
+        for i, tab in enumerate(dlg.zoneTabs):
+            z = tab.zoneObj
+            z.id = i
+            z.UpdateTitle()
+            globals_.Area.zones.append(z)
+            self.scene.addItem(z)
 
-                if tab.Zone_ypos.value() < 16:
-                    z.objy = 16
-                elif tab.Zone_ypos.value() > 12272:
-                    z.objy = 12272
-                else:
-                    z.objy = tab.Zone_ypos.value()
+            z.objx = common.clamp(16, 24560, tab.Zone_xpos.value())
+            z.objy = common.clamp(16, 12272, tab.Zone_ypos.value())
+            z.width = min(24560 - z.objx, tab.Zone_width.value())
+            z.height = min(12272 - z.objy, tab.Zone_height.value())
 
-                if (tab.Zone_width.value() + tab.Zone_xpos.value()) > 24560:
-                    z.width = 24560 - tab.Zone_xpos.value()
-                else:
-                    z.width = tab.Zone_width.value()
+            z.prepareGeometryChange()
+            z.UpdateRects()
+            z.setPos(z.objx * 1.5, z.objy * 1.5)
 
-                if (tab.Zone_height.value() + tab.Zone_ypos.value()) > 12272:
-                    z.height = 12272 - tab.Zone_ypos.value()
-                else:
-                    z.height = tab.Zone_height.value()
+            z.modeldark = tab.Zone_modeldark.currentIndex()
+            z.terraindark = tab.Zone_terraindark.currentIndex()
+            z.cammode = tab.Zone_cammodezoom.modeButtonGroup.checkedId()
+            z.camzoom = tab.Zone_cammodezoom.screenSizes.currentIndex()
+            z.camtrack = tab.Zone_direction.currentIndex()
 
-                z.prepareGeometryChange()
-                z.UpdateRects()
-                z.setPos(z.objx * 1.5, z.objy * 1.5)
+            if tab.Zone_yrestrict.isChecked():
+                z.mpcamzoomadjust = tab.Zone_mpzoomadjust.value()
+            else:
+                z.mpcamzoomadjust = 15
 
-                z.modeldark = tab.Zone_modeldark.currentIndex()
-                z.terraindark = tab.Zone_terraindark.currentIndex()
-                z.cammode = tab.Zone_cammodebuttongroup.checkedId()
-                z.camzoom = tab.Zone_screenheights.currentIndex()
-                z.camtrack = tab.Zone_direction.currentIndex()
+            if tab.Zone_vnormal.isChecked():
+                z.visibility = 0 << 4
+            elif tab.Zone_vspotlight.isChecked():
+                z.visibility = 1 << 4
+            elif tab.Zone_vfulldark.isChecked():
+                z.visibility = 2 << 4
 
-                if tab.Zone_yrestrict.isChecked():
-                    z.mpcamzoomadjust = tab.Zone_mpzoomadjust.value()
-                else:
-                    z.mpcamzoomadjust = 15
+            z.visibility |= tab.Zone_visibility.currentIndex()
 
-                if tab.Zone_vnormal.isChecked():
-                    z.visibility = 0
-                    z.visibility = z.visibility + tab.Zone_visibility.currentIndex()
-                if tab.Zone_vspotlight.isChecked():
-                    z.visibility = 16
-                    z.visibility = z.visibility + tab.Zone_visibility.currentIndex()
-                if tab.Zone_vfulldark.isChecked():
-                    z.visibility = 32
-                    z.visibility = z.visibility + tab.Zone_visibility.currentIndex()
+            z.yupperbound = tab.Zone_yboundup.value()
+            z.ylowerbound = tab.Zone_ybounddown.value()
+            z.yupperbound2 = tab.Zone_yboundup2.value()
+            z.ylowerbound2 = tab.Zone_ybounddown2.value()
+            z.yupperbound3 = tab.Zone_yboundup3.value()
+            z.ylowerbound3 = tab.Zone_ybounddown3.value()
 
-                z.yupperbound = tab.Zone_yboundup.value()
-                z.ylowerbound = tab.Zone_ybounddown.value()
-                z.yupperbound2 = tab.Zone_yboundup2.value()
-                z.ylowerbound2 = tab.Zone_ybounddown2.value()
-                z.yupperbound3 = tab.Zone_yboundup3.value()
-                z.ylowerbound3 = tab.Zone_ybounddown3.value()
-
-                z.music = tab.Zone_musicid.value()
-                z.sfxmod = tab.Zone_sfx.currentIndex() << 4
-                if tab.Zone_boss.isChecked():
-                    z.sfxmod |= 1
+            z.music = tab.Zone_musicid.value()
+            z.sfxmod = tab.Zone_sfx.currentIndex() << 4
+            if tab.Zone_boss.isChecked():
+                z.sfxmod |= 1
 
                 i += 1
 
-            self.actions['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
-
+        self.actions['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
         self.levelOverview.update()
 
     # Handles setting the backgrounds
@@ -4203,6 +4192,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Checks the level for any obvious problems and provides options to autofix them
         """
         DiagnosticToolDialog().exec_()
+
+    def HandleCameraProfiles(self):
+        """Pops up the options for camera profiles"""
+        dlg = CameraProfilesDialog()
+        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+            return
+
+        camprofiles = []
+        for row in range(dlg.list.count()):
+            item = dlg.list.item(row)
+            camprofiles.append(item.data(QtCore.Qt.UserRole))
+
+        globals_.Area.camprofiles = camprofiles
+        SetDirty()
 
 
 def main():
