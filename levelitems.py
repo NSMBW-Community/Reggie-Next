@@ -1515,13 +1515,14 @@ class ZoneItem(LevelEditorItem):
             x2 = self.draginitialx2
             y2 = self.draginitialy2
 
-            oldx = self.x()
-            oldy = self.y()
-            oldw = self.width * 1.5
-            oldh = self.height * 1.5
-
-            deltax = clickedx - self.dragstartx
-            deltay = clickedy - self.dragstarty
+            # if alt is not held, snap to 8x8 grid
+            if QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.AltModifier:
+                clickedx = 8 * round(clickedx / 8)
+                clickedy = 8 * round(clickedy / 8)
+                x1 = 8 * round(x1 / 8)
+                y1 = 8 * round(y1 / 8)
+                x2 = 8 * round(x2 / 8)
+                y2 = 8 * round(y2 / 8)
 
             MIN_X = 16
             MIN_Y = 16
@@ -1529,32 +1530,41 @@ class ZoneItem(LevelEditorItem):
             MIN_H = 200
 
             if self.dragcorner == 1: # TL
-                x1 += deltax
-                y1 += deltay
+                # rect from (x2, y2) to clicked
+                x1 = clickedx
+                y1 = clickedy
                 if x1 < MIN_X: x1 = MIN_X
                 if y1 < MIN_Y: y1 = MIN_Y
                 if x2 - x1 < MIN_W: x1 = x2 - MIN_W
                 if y2 - y1 < MIN_H: y1 = y2 - MIN_H
 
             elif self.dragcorner == 2: # TR
-                x2 += deltax
-                y1 += deltay
+                # rect from (x1, y2) to clicked
+                x2 = clickedx
+                y1 = clickedy
                 if y1 < MIN_Y: y1 = MIN_Y
                 if x2 - x1 < MIN_W: x2 = x1 + MIN_W
                 if y2 - y1 < MIN_H: y1 = y2 - MIN_H
 
             elif self.dragcorner == 3: # BL
-                x1 += deltax
-                y2 += deltay
+                # rect from (x2, y1) to clicked
+                x1 = clickedx
+                y2 = clickedy
                 if x1 < MIN_X: x1 = MIN_X
                 if x2 - x1 < MIN_W: x1 = x2 - MIN_W
                 if y2 - y1 < MIN_H: y2 = y1 + MIN_H
 
             elif self.dragcorner == 4: # BR
-                x2 += deltax
-                y2 += deltay
+                # rect from (x1, y1) to clicked
+                x2 = clickedx
+                y2 = clickedy
                 if x2 - x1 < MIN_W: x2 = x1 + MIN_W
                 if y2 - y1 < MIN_H: y2 = y1 + MIN_H
+
+            oldx = self.x()
+            oldy = self.y()
+            oldw = self.width * 1.5
+            oldh = self.height * 1.5
 
             self.objx = x1
             self.objy = y1
@@ -1562,15 +1572,14 @@ class ZoneItem(LevelEditorItem):
             self.height = y2 - y1
 
             oldrect = QtCore.QRectF(oldx, oldy, oldw, oldh)
-            newrect = QtCore.QRectF(self.x(), self.y(), self.width * 1.5, self.height * 1.5)
-            updaterect = oldrect.united(newrect)
-            updaterect.setTop(updaterect.top() - 3)
-            updaterect.setLeft(updaterect.left() - 3)
-            updaterect.setRight(updaterect.right() + 3)
-            updaterect.setBottom(updaterect.bottom() + 3)
 
             self.UpdateRects()
             self.setPos(int(self.objx * 1.5), int(self.objy * 1.5))
+
+            newrect = QtCore.QRectF(self.x(), self.y(), self.width * 1.5, self.height * 1.5)
+            updaterect = oldrect.united(newrect)
+            updaterect += QtCore.QMarginsF(-3, -3, 3, 3)
+
             self.scene().update(updaterect)
 
             globals_.mainWindow.levelOverview.update()
