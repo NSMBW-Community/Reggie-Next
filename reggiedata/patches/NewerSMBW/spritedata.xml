@@ -975,6 +975,43 @@
     <value nybble="11" title="Withstands (Needs Multiple Hits)" comment="This determines the number of hits or ground-pounds needed for the block to break. For this function, a texture will be used that has some odd-looking white numbers on it." advanced="True" advancedcomment="This setting may only apply to the original Giant Breakable Brick Block"/>
   </sprite> <!-- #157: Big Pumpkin -->
 
+  <sprite id="166" name="Snake Block" notes="The Icy variant does not have ice collision in Newer.">
+	<dependency notes="The sprite snaps to the Path Node location. From Node-0 to Node-1, it must be a straight horizontal line, and it must be at least as long as the Snake Block itself. Straight lines and exact 45° angles are recommended, as after each Node, the Snake Block will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
+    <checkbox bit="28" title="Icy (Must Be Enabled)" comment="This causes the Snake Block to be icy instead of green. The green version is incomplete and crashes the game, so you MUST use an icy one."/> <!-- All other options are hidden unless this is enabled -->
+    <value nybble="11" title="Path ID" requiredbit="28" idtype="Path"/>
+    <value nybble="8-9" title="Starting Node" comment="This determines the Node of the Path that the Snake Block will start moving from." requiredbit="28"/>
+    <list nybble="12" title="Length" requiredbit="28">
+      <entry value="0">3 Blocks</entry>
+      <entry value="1">4 Blocks</entry>
+      <entry value="2">5 Blocks</entry>
+      <entry value="3">6 Blocks</entry>
+      <entry value="4">7 Blocks</entry>
+      <entry value="5">8 Blocks</entry>
+      <entry value="6">9 Blocks</entry>
+      <entry value="7">10 Blocks</entry>
+      <entry value="8">11 Blocks</entry>
+      <entry value="9">12 Blocks</entry>
+      <entry value="10">13 Blocks</entry>
+      <entry value="11">14 Blocks</entry>
+      <entry value="12">15 Blocks</entry>
+      <entry value="13">16 Blocks</entry>
+      <entry value="14">17 Blocks</entry>
+      <entry value="15">18 Blocks</entry>
+    </list>
+    <list bit="39-40" title="Speed" requiredbit="28">
+      <entry value="0">Very Slow (0.5)</entry>
+      <entry value="1">Slow (1.0)</entry>
+      <entry value="2">Fast (1.4)</entry>
+      <entry value="3">Slow (1.0)</entry>
+    </list>
+    <list nybble="5" title="End Animation" comment="This determines what the Snake Block will do when it reaches the final Node of the Path. Values higher than 3 cause a crash." requiredbit="28">
+      <entry value="0">Stop</entry>
+      <entry value="1">Fall Straight Through Last Node</entry>
+      <entry value="2">Stop, Fall Piece by Piece</entry>
+      <entry value="3">Stop, Fall All at Once</entry>
+    </list>
+  </sprite> <!-- #166: Snake Block -->
+
   <sprite id="167" name="Shy Guy Giants" asmhacks="True" sizehacks="True" notes="A large, or even larger, Shy Guy enemy.">
     <list nybble="5" title="Size" comment="This determines the size of the Shy Guy." comment2="This is separate from SizeHacks.">
       <entry value="0">Big</entry>
@@ -1042,6 +1079,34 @@
       <entry value="15">16 Blocks</entry>
     </list>
   </sprite> <!-- #169: Magic Platform -->
+
+  <sprite id="175" name="Flying ? Block" noyoshi="True">
+    <list bit="35-36" title="Color">
+      <entry value="0">Overworld (Yellow)</entry>
+      <entry value="1">Underground (Blue)</entry>
+      <entry value="2">Snow (Gray)</entry>
+      <entry value="3">Lava (Red)</entry>
+    </list>
+    <list bit="43-44" title="Movement">
+      <entry value="0">Moves Right</entry>
+      <entry value="1">Moves Left and Right</entry>
+      <entry value="2">Moves Up and Down</entry>
+    </list>
+    <checkbox bit="40" title="Reverse Direction"/>
+    <list nybble="12" title="Contains" comment="Unlisted values are Empty.">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="2">Hammer Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="11">1-Up</entry>
+    </list>
+    <checkbox bit="20" title="Unknown Flag 5 (1)" comment="Used in Retail: 06-05 A2. Possibly distance related."/>
+  </sprite> <!-- #175: Flying ? Block -->
 
   <sprite id="183" name="Meteor" asmhacks="True" notes="A floating, spinning, usually safe to stand on Meteor.">
     <value nybble="9-10" title="Size" comment="This determines how large the Meteor is." comment2="A setting of 0 is the same as a setting of 5. 1-255 provide general scaling from 20% to 5100% scaling."/>

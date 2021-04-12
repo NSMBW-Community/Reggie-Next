@@ -2617,12 +2617,12 @@
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite>
 
-  <sprite id="166" name="Icy Block Train" notes="A length of connected icy blocks which travels along an assigned Path.">
-    <dependency notes="The associated Path's Node options have no effect on the Block Train aside from their placement. From Node-0 to Node-1, it must be a straight horizontal line, and it must be at least as long as the Block Train itself. Straight lines and exact 45° angles are recommended, as after each Node, the Block Train will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
-    <checkbox bit="28" title="Must Be Enabled" comment="This must be enabled for the Icy Block Train to function." advancedcomment="This causes the snake block to be icy instead of green. The green version is incomplete and crashes the game, so you MUST use an icy one."/> <!-- All other options are hidden unless this is enabled -->
-    <value nybble="11" title="Path ID" comment="This determines the ID of the Path that the Block Train will be linked to." requiredbit="28" idtype="Path"/>
-    <value nybble="8-9" title="Starting Node" comment="This determines the Node of the Path that the Block Train will start moving from." comment2="This might be useful if using the same path as an Auto-scroller, but generally speaking you want a dedicated Path for your Block Train." requiredbit="28"/>
-    <list nybble="12" title="Length" comment="This determines how long the Block Train is." requiredbit="28">
+  <sprite id="166" name="Snake Block">
+	<dependency notes="The sprite snaps to the Path Node location. From Node-0 to Node-1, it must be a straight horizontal line, and it must be at least as long as the Snake Block itself. Straight lines and exact 45° angles are recommended, as after each Node, the Snake Block will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
+    <checkbox bit="28" title="Icy (Must Be Enabled)" comment="This causes the Snake Block to be icy instead of green. The green version is incomplete and crashes the game, so you MUST use an icy one."/> <!-- All other options are hidden unless this is enabled -->
+    <value nybble="11" title="Path ID" requiredbit="28" idtype="Path"/>
+    <value nybble="8-9" title="Starting Node" comment="This determines the Node of the Path that the Snake Block will start moving from." requiredbit="28"/>
+    <list nybble="12" title="Length" requiredbit="28">
       <entry value="0">3 Blocks</entry>
       <entry value="1">4 Blocks</entry>
       <entry value="2">5 Blocks</entry>
@@ -2640,19 +2640,19 @@
       <entry value="14">17 Blocks</entry>
       <entry value="15">18 Blocks</entry>
     </list>
-    <list bit="39-40" title="Speed" comment="This determines the movement speed of the Block Train." requiredbit="28">
+    <list bit="39-40" title="Speed" requiredbit="28">
       <entry value="0">Very Slow (0.5)</entry>
       <entry value="1">Slow (1.0)</entry>
       <entry value="2">Fast (1.4)</entry>
       <entry value="3">Slow (1.0)</entry>
     </list>
-    <list nybble="5" title="End Animation" comment="This determines what the Block Train will do when it reaches the final Node of the Path. Values higher than 3 cause a crash." requiredbit="28">
+    <list nybble="5" title="End Animation" comment="This determines what the Snake Block will do when it reaches the final Node of the Path. Values higher than 3 cause a crash." requiredbit="28">
       <entry value="0">Stop</entry>
       <entry value="1">Fall Straight Through Last Node</entry>
       <entry value="2">Stop, Fall Piece by Piece</entry>
       <entry value="3">Stop, Fall All at Once</entry>
     </list>
-  </sprite> <!-- #166: Icy Block Train -->
+  </sprite> <!-- #166: Snake Block -->
 
   <sprite id="167" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #167: Unused -->
   <sprite id="168" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #168: Unused -->
@@ -2708,33 +2708,33 @@
     </list>
   </sprite> <!-- #174: (Unused) One Way Swinging Gate -->
 
-  <sprite id="175" name="Flying &quot;?&quot; Block" noyoshi="True" notes="A '?' Block with wings that flies around until opened, remaining in place afterwards.">
-    <list bit="35-36" title="Color" comment="This determines which color the '?' Block will use.">
+  <sprite id="175" name="Flying ? Block" noyoshi="True">
+    <list bit="35-36" title="Color">
       <entry value="0">Overworld (Yellow)</entry>
       <entry value="1">Underground (Blue)</entry>
       <entry value="2">Snow (Gray)</entry>
       <entry value="3">Lava (Red)</entry>
     </list>
-    <list bit="43-44" title="Direction" comment="This determines which direction the '?' Block will fly in.">
-      <entry value="0">Right</entry>
-      <entry value="1">Left + Right</entry>
-      <entry value="2">Up + Down</entry>
+    <list bit="43-44" title="Movement">
+      <entry value="0">Moves Right</entry>
+      <entry value="1">Moves Left and Right</entry>
+      <entry value="2">Moves Up and Down</entry>
     </list>
-    <checkbox bit="40" title="Reverse Direction" comment="When enabled, Direction will be reversed."/>
-    <list nybble="12" title="Contains" comment="This determines what item the '?' Block will contain." advancedcomment="Unlisted values are Empty.">
+    <checkbox bit="40" title="Reverse Direction"/>
+    <list nybble="12" title="Contains" comment="Unlisted values are Empty.">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
+      <entry value="2">Fire Flower</entry>
       <entry value="3">Fire Flower</entry>
       <entry value="15">Ice Flower</entry>
       <entry value="4">Propeller Shroom</entry>
       <entry value="5">Penguin Suit</entry>
-      <entry value="2">Hammer Suit</entry>
       <entry value="6">Mini Mushroom</entry>
       <entry value="7">Star</entry>
       <entry value="11">1-Up</entry>
     </list>
-    <checkbox bit="20" title="Unknown Flag 5 (1)" advanced="True" advancedcomment="Used in Retail: 06-05 A2. Possibly distance related."/>
-  </sprite> <!-- #175: Flying "?" Block -->
+    <checkbox bit="20" title="Unknown Flag 5 (1)" comment="Used in Retail: 06-05 A2. Possibly distance related."/>
+  </sprite> <!-- #175: Flying ? Block -->
 
   <sprite id="176" name="Roulette Block" notes="A large roulette style block that will award either a Star, a 1-Up, a Mushroom, or a specific power-up item. It should be noted that it makes a moderate amount of noise when it's on screen.">
     <list bit="47-48" title="Power-up" comment="This determines which power-up the block can provide.">
