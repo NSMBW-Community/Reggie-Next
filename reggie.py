@@ -2158,7 +2158,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         if id_ is None:
             all_ids = set(ent.entid for ent in globals_.Area.entrances)
-            id_ = common.find_first_available_id(all_ids, 256)
+            id_ = common.find_fist_available_id(all_ids, 256)
 
         if id_ is None:
             print("ReggieWindow#CreateEntrance: No free entrance id")
