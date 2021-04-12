@@ -5610,13 +5610,13 @@
     <checkbox bit="32" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="When this flag is enabled along with a Path (regardless of the Use Paths flag), the Raft will go to the indicated Path Node and not move. But, if the Path is set to loop, this doesn't do anything. So uh, Nice Boat."/>
   </sprite> <!-- #368: Path Controlled Flashlight Raft -->
 
-  <sprite id="369" name="Sliding Penguin" noyoshi="True" yoshinotes="Yoshi cannot jump on penguins, though he can use the stomp attack and tongue attack to defeat them." notes="A fancy penguin in sunglasses that slides along terrain on his belly and ricochets off walls.">
-    <list nybble="12" title="Starting Direction" comment="This determines which direction the Penguin will initially be sliding in.">
+  <sprite id="369" name="Cooligan" noyoshi="True" yoshinotes="Yoshi cannot jump on Cooligans, though he can use the stomp attack and tongue attack to defeat them.">
+    <list nybble="12" title="Starting Direction">
       <entry value="0">Towards Mario</entry>
       <entry value="1">Right</entry>
       <entry value="2">Left</entry>
     </list>
-  </sprite> <!-- #369: Sliding Penguin -->
+  </sprite> <!-- #369: Cooligan -->
 
   <sprite id="370" name="Lakitu Cloud Block" notes="A block that when struck from below will spawn a Lakitu enemy that throws coins instead of Spinies.">
     <value nybble="11" title="Maximum Coins Thrown (*5)" comment="This determines how many coins the Lakitu will throw before flying off." comment2="A value of 1 is equal to 5 coins across 15 game seconds. If set to 0, the Lakitu will never fly off."/>
@@ -5784,9 +5784,9 @@
     </dependency>
   </sprite> <!-- #383: Boss Controller - Kamek -->
 
-  <sprite id="384" name="Sliding Penguin Generator" noyoshi="True" yoshinotes="Yoshi cannot jump on penguins, though he can use the stomp attack and tongue attack to defeat them." notes="Use this to spawn waves of Penguins from this location, usually with a pipe, but other decoration can be used as well.">
+  <sprite id="384" name="Cooligan Spawner" noyoshi="True" yoshinotes="Yoshi cannot jump on penguins, though he can use the stomp attack and tongue attack to defeat them." notes="Pipes are not required for the spawner to work.">
     <dualbox bit="48" title1="Spawns Sliding Right" title2="Spawns Sliding Left" comment="This determines which direction the Penguin will spawn from."/>
-  </sprite> <!-- #384: Sliding Penguin Generator -->
+  </sprite> <!-- #384: Cooligan Spawner -->
 
   <sprite id="385" name="Grabbable Ice Block" notes="A grabbable ice block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. When it is thrown, it will damage enemies (not players) that it hits, and it will shatter.">
     <list nybble="11" title="Height" comment="This determines the vertical size of the block.">
