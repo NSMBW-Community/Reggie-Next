@@ -411,7 +411,7 @@
   </sprite> <!-- #30: Grey Tiled Block -->
 
   <!-- Possible additional Usage Mode, Value 2 in Nybble 10 -->
-  <sprite id="40" name="&quot;?&quot; Switch (Orange)"  sizehacks="True" notes="This is the basic stand-alone switch. When triggered, it modifies the Target Event.">
+  <sprite id="40" name="?-Switch"  sizehacks="True" notes="This is the basic stand-alone switch. When triggered, it modifies the Target Event.">
     <list bit="29-32" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Standard Question Mark (Original)</entry>
       <entry value="1">Standard Question Mark</entry>
@@ -436,9 +436,9 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #40: "?" Switch (Orange) -->
+  </sprite> <!-- #40: ?-Switch -->
 
-  <sprite id="42" name="&quot;!&quot; Switch (Red)"  sizehacks="True" notes="This switch is similar to the ? Switch, but it has the additional effect of changing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
+  <sprite id="42" name="!-Switch"  sizehacks="True" notes="This switch is similar to the ?-Switch, but it has the additional effect of changing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
     <dependency notes="Activates 'Red Block Outline A/B' tiles."/>
     <list bit="29-32" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Red (Original)</entry>
@@ -465,11 +465,11 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #42: "!" Switch (Red) -->
+  </sprite> <!-- #42: !-Switch -->
 
   <!-- These notes apply to 43, 44, and 45 -->
   <!-- Make a quick test level to show general functionality of a Brick Block switch with a Triggering Event. Does it appear after being struck if the event is later turned on? Does it only appear if the event is on before the block is struck? -->
-  <sprite id="43" name="Brick Block &quot;?&quot; Switch (Orange)"  sizehacks="True" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  <sprite id="43" name="Brick Block ?-Switch"  sizehacks="True" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <list bit="29-32" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch.">
       <entry value="0">Standard Question Mark</entry>
 	  <entry value="1">Two Arrows Forming a Circle (Flipper)</entry>
@@ -491,9 +491,9 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #43: Brick Block "?" Switch (Orange) -->
+  </sprite> <!-- #43: Brick Block ?-Switch -->
 
-  <sprite id="45" name="Brick Block &quot;!&quot; Switch (Red)"  sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  <sprite id="45" name="Brick Block !-Switch"  sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
     <list bit="29-32" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks.">
       <entry value="0">Red (Original)</entry>
@@ -517,7 +517,7 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #45: Brick Block "!" Switch (Red) -->
+  </sprite> <!-- #45: Brick Block !-Switch -->
 
   <sprite id="46" name="Lava Bubble (Podoboo)"  sizehacks="True" notes="The Lava Bubble (Podoboo) is a firey enemey that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava.">
     <dependency notes="The Podoboo requires [139] Lava within 15 blocks underneath it in order to appear.">
@@ -912,7 +912,7 @@
     <value nybble="9-12" title="Message ID" comment="Messages defined in Messages.bin. Add 256 to the value shown in the Newer Message Editor program. (01/10/18)" idtype="Message"/>
   </sprite> <!-- 152: Message Box -->
 
-  <sprite id="153" name="(Unused) &quot;?&quot; Switch (Orange)"  sizehacks="True" notes="An exact duplicate of the normal &quot;?&quot; Switch (Orange).">
+  <sprite id="153" name="(Unused) ?-Switch"  sizehacks="True" notes="An exact duplicate of the normal ?-Switch.">
     <dependency notes="The game will crash unless a normal orange switch is placed somewhere in the level. It does not have to be within an area that is actually used.">
       <required sprite="40"/>
     </dependency>
@@ -940,7 +940,7 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #153: (Unused) "?" Switch (Orange) -->
+  </sprite> <!-- #153: (Unused) ?-Switch -->
 
   <sprite id="157" name="Big Pumpkin"  notes="No matter what is inside, the pumpkin can easily be broken with a ground pound. It can even be broken by small Mario.">
     <list nybble="12" title="Block Contains" comment="This determines if anything appears from inside the block when it is destroyed.">
@@ -2022,15 +2022,15 @@
   <sprite id="288" name="(Crashes) Rolling Barrel" notes="&lt;font color=&quot;Red&quot;&gt;This sprite crashes in NewerSMBW.&lt;/font&gt;">
   </sprite> <!-- #288: (Crashes) Rolling Barrel -->
 
-  <sprite id="289" name="Wooden and Metal Boxes" notes="Wooden boxes can be opened if Ground-Pounded, struck from below, etc. and can award the player with an item. Metal boxes can instantly kill the player, cannot be destroyed, and make a POW sound when falling. They also have odd issues when it comes to respawning if they have moved from their original location.">
-    <dualbox bit="40" title1="Wooden Box" title2="Metal Box" comment="This determines the type of box."/>
-    <list bit="43-44" title="Size" comment="This determines the size of the box.">
+  <sprite id="289" name="Wooden/Metal Box" notes="Wooden boxes can be opened if Ground-Pounded, struck from below, etc. and can award the player with an item. Metal boxes can instantly kill the player, cannot be destroyed, and make a POW sound when falling. They also have odd issues when it comes to respawning if they have moved from their original location.">
+    <dualbox bit="40" title1="Wooden Box" title2="Metal Box"/>
+    <list bit="43-44" title="Size">
       <entry value="0">Small Square (2x2)</entry>
       <entry value="1">Long and Short (2x4)</entry>
       <entry value="2">Tall and Skinny (4x2)</entry>
       <entry value="3">Big Square (4x4)</entry>
     </list>
-    <list nybble="12" title="Wooden Box Contains" comment="This determines what the Wooden Box contains." comment2="Unlisted values contain Mushrooms.">
+    <list nybble="12" title="Wooden Box Contains">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
       <entry value="10">5 Coins</entry>
@@ -2041,15 +2041,15 @@
       <entry value="5">Penguin Suit</entry>
       <entry value="6">Mini Mushroom</entry>
 	  <entry value="8">Hammer Suit</entry>
-	  <!---<entry value="12">Mushroom / Hammer Suit</entry>-->
-	  <!---<entry value="13">Mushroom / Hammer Suit</entry>-->
+	  <!---<entry value="12">Mushroom/Hammer Suit</entry>-->
+	  <!---<entry value="13">Mushroom/Hammer Suit</entry>-->
       <entry value="7">Star</entry>
       <entry value="9">Yoshi Egg + Fire Flower</entry>
       <entry value="11">1-Up</entry>
-      <entry value="14">Key</entry>
+      <entry value="14">Key</entry> <!-- Unlisted values contain Mushrooms -->
     </list>
-    <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="ASM shows Nybble 5 might affect something."/>
-  </sprite> <!-- #289: Wooden and Metal Boxes -->
+    <value nybble="5" title="Unknown Value 5" comment="ASM shows Nybble 5 might affect something."/>
+  </sprite> <!-- #289: Wooden/Metal Box -->
 
   <sprite id="290" name="World-6 Boss: Ramboo" noyoshi="True" notes="The extra large Boo boss that is not the least bit shy about continuing to advance towards the player. He can be knocked back with grabbable items and can only be defeated when the specified Event is activated.">
     <dependency notes="">

@@ -413,7 +413,7 @@
   </sprite> <!-- #39: Event Controller - Multi-Chainer (If X, do Y THROUGH Z) -->
 
   <!-- Possible additional Usage Mode, Value 2 in Nybble 10 -->
-  <sprite id="40" name="&quot;?&quot; Switch (Orange)" notes="This is the basic stand-alone switch. When triggered, it modifies the Target Event.">
+  <sprite id="40" name="?-Switch" notes="This is the basic stand-alone switch. When triggered, it modifies the Target Event.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing downwards. Upside-Down switches cannot be set to fall."/>
     <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set." />
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/>
@@ -431,9 +431,9 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #40: "?" Switch (Orange) -->
+  </sprite> <!-- #40: ?-Switch -->
 
-  <sprite id="41" name="&quot;P&quot; Switch (Blue)" notes="This switch is similar to the ? Switch, but it has the additional abilitiy of causing all Blue Coins (tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block.">
+  <sprite id="41" name="P-Switch" notes="This switch is similar to the ? Switch, but it has the additional abilitiy of causing all Blue Coins (tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block.">
     <dependency notes="Activates 'Pow Block Coin' tileset tiles."/>
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing down. Upside-Down switches cannot be set to fall."/>
     <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms. It does not work with conveyor belts."/>
@@ -453,9 +453,9 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Disappears if Multi-Use is set -->
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #41: "P" Switch (Blue) -->
+  </sprite> <!-- #41: P-Switch -->
 
-  <sprite id="42" name="&quot;!&quot; Switch (Red)" notes="This switch is similar to the ? Switch, but it has the additional effect of changing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
+  <sprite id="42" name="!-Switch" notes="This switch is similar to the ? Switch, but it has the additional effect of changing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
     <dependency notes="Activates 'Red Block Outline A/B' tiles."/>
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
     <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set."/>
@@ -475,11 +475,11 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #42: "!" Switch (Red) -->
+  </sprite> <!-- #42: !-Switch -->
 
   <!-- These notes apply to 43, 44, and 45 -->
   <!-- Make a quick test level to show general functionality of a Brick Block switch with a Triggering Event. Does it appear after being struck if the event is later turned on? Does it only appear if the event is on before the block is struck? -->
-  <sprite id="43" name="Brick Block &quot;?&quot; Switch (Orange)" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  <sprite id="43" name="Brick Block ?-Switch" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/>
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
@@ -496,10 +496,10 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #43: Brick Block "?" Switch (Orange) -->
+  </sprite> <!-- #43: Brick Block ?-Switch -->
 
-  <sprite id="44" name="Brick Block &quot;P&quot; Switch (Blue)" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (both tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Bug: &lt;/b&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if they were blocks.&lt;/font&gt;" advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
-    <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
+  <sprite id="44" name="Brick Block P-Switch" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (both tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Bug: &lt;/b&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if they were blocks.&lt;/font&gt;" advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+    <dependency notes="Add Tileset/Puzzle dependency information relating to custom tileset settings."/>
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Blue Coins, or transform blocks and coins." idtype="Target Event"/>
     <dualbox bit="36" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requiredbit="28" requiredval="0"/> <!-- Appears if Timed Event is set -->
@@ -517,9 +517,9 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #44: Brick Block "P" Switch (Blue) -->
+  </sprite> <!-- #44: Brick Block P-Switch -->
 
-  <sprite id="45" name="Brick Block &quot;!&quot; Switch (Red)" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  <sprite id="45" name="Brick Block !-Switch" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/>
@@ -538,7 +538,7 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #45: Brick Block "!" Switch (Red) -->
+  </sprite> <!-- #45: Brick Block !-Switch -->
 
   <sprite id="46" name="Lava Bubble (Podoboo)" notes="The Lava Bubble (Podoboo) is a firey enemey that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava.">
     <dependency notes="The Podoboo requires [139] Lava within 15 blocks underneath it in order to appear.">
@@ -855,8 +855,8 @@
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling."/>
   </sprite> <!-- #76: Big Fire Piranha Plant -->
 
-  <sprite id="77" name="(Unused) Doomship Key" notes="A key titled the Doomship Key. When collecting this key, it will fly up past the top-left corner of the screen near the Star Coin inventory, but this is the only effect it has. It is entirely useless on its own.">
-  </sprite> <!-- #77: (Unused) Doomship Key -->
+  <sprite id="77" name="(Unused) Airship Key" notes="Flies up past the top-left corner of the screen when collected, but has no other purpose.">
+  </sprite> <!-- #77: (Unused) Airship Key -->
 
   <sprite id="78" name="Bouncy Cloud" noyoshi="True" notes="A cloud platform with a happy face that the player can bounce on to jump really high.">
     <checkbox bit="36" title="Larger Cloud" comment="When enabled, the Bouncy Cloud will be bigger."/>
@@ -2416,7 +2416,7 @@
   <sprite id="152" name="Incomplete Sprite - 'En_Blur'" notes="Does nothing.">
   </sprite> <!-- #152: Incomplete Sprite - 'En_Blur' -->
 
-  <sprite id="153" name="(Unused) &quot;?&quot; Switch (Orange)" notes="An exact duplicate of the normal &quot;?&quot; Switch (Orange).">
+  <sprite id="153" name="(Unused) ?-Switch" notes="An exact duplicate of the normal ?-Switch.">
     <dependency notes="The game will crash unless a normal orange switch is placed somewhere in the level. It does not have to be within an area that is actually used.">
       <required sprite="40"/>
     </dependency>
@@ -2437,7 +2437,7 @@
     <checkbox bit="18" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requiredbit="40" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
-  </sprite> <!-- #153: (Unused) "?" Switch (Orange) -->
+  </sprite> <!-- #153: (Unused) ?-Switch -->
 
   <sprite id="154" name="Porcu-Puffer Spawn Area" notes="Assigns a spawn area where Porcu-Puffers will continue to respawn while the player is inside it. Porcu-puffers will follow the player along the water line.">
     <dependency notes="Water is required for the Porcu-Puffer to function. It must be non-location water, possibly non-moving water.">
@@ -3654,8 +3654,8 @@
     <value nybble="11-12" title="Path ID" advanced="True" advancedcomment="This is intended to pair the Mega Wiggler to a Path."/>
   </sprite> <!-- #241: (Unused) Big Wiggler Spawner -->
 
-  <sprite id="242" name="Falling Ledge Bar" noyoshi="True" notes="A cliffwalking donut-style platform that will fall if a player stands on it for too long.">
-  </sprite> <!-- #242: Falling Lege Bar -->
+  <sprite id="242" name="Donut Ledge" noyoshi="True" notes="A cliffwalking donut-style platform that will fall if a player stands on it for too long.">
+  </sprite> <!-- #242: Donut Ledge -->
 
   <sprite id="243" name="(Unused) Water Current Controller" notes="This will cause all Water in the Zone to have a current effect applied to it.">
     <dependency notes="This sprite seems to only function with the [138] version of Water, but will work with Location and Moving versions of it.">
@@ -4325,18 +4325,18 @@
 
   <!-- Investigate Nybble 12 - Right = 2? If so, then it's suspected that Left = 1 and Towards Player = 0. True or False? -->
   <sprite id="288" name="Rolling Barrel">
-    <dualbox bit="47" title1="Rolls Left" title2="Rolls Right" comment="This determines which direction the barrel will roll."/>
+    <dualbox bit="47" title1="Rolls Left" title2="Rolls Right"/>
   </sprite> <!-- #288: Rolling Barrel -->
 
-  <sprite id="289" name="Wooden and Metal Boxes" notes="Wooden boxes can be opened if Ground-Pounded, struck from below, etc. and can award the player with an item. Metal boxes can instantly kill the player, cannot be destroyed, and make a POW sound when falling. They also have odd issues when it comes to respawning if they have moved from their original location.">
-    <dualbox bit="40" title1="Wooden Box" title2="Metal Box" comment="This determines the type of box."/>
-    <list bit="43-44" title="Size" comment="This determines the size of the box.">
+  <sprite id="289" name="Wooden/Metal Box" notes="Wooden boxes can be opened if Ground-Pounded, struck from below, etc. and can award the player with an item. Metal boxes can instantly kill the player, cannot be destroyed, and make a POW sound when falling. They also have odd issues when it comes to respawning if they have moved from their original location.">
+    <dualbox bit="40" title1="Wooden Box" title2="Metal Box"/>
+    <list bit="43-44" title="Size">
       <entry value="0">Small Square (2x2)</entry>
       <entry value="1">Long and Short (2x4)</entry>
       <entry value="2">Tall and Skinny (4x2)</entry>
       <entry value="3">Big Square (4x4)</entry>
     </list>
-    <list nybble="12" title="Wooden Box Contains" comment="This determines what the Wooden Box contains." comment2="Unlisted values contain Mushrooms.">
+    <list nybble="12" title="Wooden Box Contains">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
       <entry value="10">5 Coins</entry>
@@ -4346,16 +4346,16 @@
       <entry value="4">Propeller Shroom</entry>
       <entry value="5">Penguin Suit</entry>
       <entry value="6">Mini Mushroom</entry>
-      <entry value="8">Mushroom / Fire Flower</entry>
-      <!---<entry value="12">Mushroom / Fire Flower</entry>-->
-      <!---<entry value="13">Mushroom / Fire Flower</entry>-->
+      <entry value="8">Mushroom/Fire Flower</entry>
+      <!---<entry value="12">Mushroom/Fire Flower</entry>-->
+      <!---<entry value="13">Mushroom/Fire Flower</entry>-->
       <entry value="7">Star</entry>
       <entry value="9">Yoshi Egg + Fire Flower</entry>
       <entry value="11">1-Up</entry>
-      <entry value="14">Key</entry>
+      <entry value="14">Key</entry> <!-- Unlisted values contain Mushrooms -->
     </list>
-    <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="ASM shows Nybble 5 might affect something."/>
-  </sprite> <!-- #289: Wooden and Metal Boxes -->
+    <value nybble="5" title="Unknown Value 5" comment="ASM shows Nybble 5 might affect something."/>
+  </sprite> <!-- #289: Wooden/Metal Box -->
 
   <sprite id="290" name="Incomplete Sprite - 'En_Iwao'" notes="Does nothing.">
   </sprite> <!-- #290: Incomplete Sprite - 'En_Iwao' -->
