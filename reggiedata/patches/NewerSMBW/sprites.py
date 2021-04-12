@@ -1038,6 +1038,9 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
             
         paint = None
 
+class SpriteImage_ModelLoaderResources(SLib.SpriteImage):  # 143
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
 
 class SpriteImage_NewerFloatingBarrel(SLib.SpriteImage_StaticMultiple):  # 145
     def __init__(self, parent):
@@ -2215,6 +2218,7 @@ ImageClasses = {
     101: SpriteImage_NewerBobomb,
     105: SpriteImage_NewerPokey,
     107: SLib.SpriteImage,
+    143: SpriteImage_ModelLoaderResources,
     145: SpriteImage_NewerFloatingBarrel,
     152: SpriteImage_MessageBlock,
     153: SpriteImage_NewerQSwitchUnused,

@@ -2660,8 +2660,8 @@
   <sprite id="169" name="Incomplete Sprite - 'En_Slip_Penguin'" notes="Does nothing.">
   </sprite> <!-- #169: Incomplete Sprite - 'En_Slip_Penguin' -->
 
-  <sprite id="170" name="Chestnut Goomba" yoshinotes="While Yoshi cannot jump on this enemy, any Yoshi Fireball will burn the outer shell releasing the tasty Goomba inside." notes="A spiky brown ball that contians a normal Goomba, which will appear if it is shot with a Fireball. Fire Bro fireballs will also open it, but Fire Chomp fireballs will not.">
-  </sprite> <!-- #170: Chestnut Goomba -->
+  <sprite id="170" name="Prickly Goomba" notes="A spiky brown ball that contians a normal Goomba, which will appear if it is shot with a Fireball. Fire Bro fireballs will also open it, but Fire Chomp fireballs will not.">
+  </sprite> <!-- #170: Prickly Goomba -->
 
   <sprite id="171" name="Mushroom in a Bubble" notes="&lt;font color=&quot;orange&quot;&gt;This sprite is not recommended for use, and it WILL crash the game if used with invalid settings.&lt;/font&gt;" advancednotes="This is capable of spawning both items and players inside of bubbles. Unfortunately it was not designed to be called on for stand-alone functions.">
     <checkbox bit="40" title="Spawns Mushroom in a Bubble" comment="When enabled, this will spawn a Mushroom floating in a bubble."/>
@@ -3592,18 +3592,19 @@
   <sprite id="232" name="Mecha-Koopa" noyoshi="True" notes="A mechanical wind-up Koopa that can be picked up after being stomped on and carried around like a shell.">
   </sprite> <!-- #232: Mecha-Koopa -->
 
-  <sprite id="233" name="Bulber, the Glowing Fish" notes="An underwater fish that will light up the area nearby him if the lights are off.">
-    <dependency notes="Bulbers do not require non-location water in order to spawn, but as it is a fish, water is suggested. Dimmed or dark lighting is also suggested to take advantage of its lighting effect.">
+  <sprite id="233" name="Lighting - Bulber" notes="An underwater fish that will light up the area nearby him if the lights are off.">
+    <dependency notes="Bulbers do not require non-location water in order to spawn.">
       <suggested sprite="138"/>
     </dependency>
-    <list bit="47-48" title="Movement Direction" comment="This determines which direction and how the Bulber will move." comment2="With Towards Player, the Bulber will move in a single direction after spawning. With Back and Forth, the initial direction will always be towards the player." advancedcomment="Value 3 appears the same as Value 0, but may have other functions. Feel free to experiment.">
-      <entry value="0">Towards Player</entry>
-      <entry value="1">Back and Forth</entry>
-      <entry value="2">Floating in Place</entry>
+    <list bit="47-48" title="Movement">
+      <entry value="0">Moves Towards Player's Spawn Position</entry>
+      <entry value="1">Moves Towards Player</entry>
+      <entry value="2">Floats in Place</entry>
+	  <!-- entry value="3">Towards Player</entry --> <!-- ASM may or may not suggest it's different in some way? -->
     </list>
     <checkbox bit="44" title="Half Movement Speed" comment="When enabled, the Bulber will move at half of its normal speed."/>
-    <value nybble="10" title="Distance" comment="This determines how far to each side of its spawn that the Bulber will move before turning around." requiredbit="48"/> <!-- Only appears if [Movement Direction] is set to Back and Forth -->
-  </sprite> <!-- #233: Bulber, the Glowing Fish -->
+    <value nybble="10" title="Distance" comment="This determines how far to each side of its spawn that the Bulber will move before turning around." requiredbit="48"/> <!-- Only appears if [Movement] is set to Moves Towards Player -->
+  </sprite> <!-- #233: Bulber -->
 
   <sprite id="234" name="Effect - Cloud Area" notes="This adds decorative patchs of cloud cover with different properties. Most modes required a Location ID, but some do not.">
     <list nybble="11" title="Cloud Type" comment="This determines which type of cloud will be spawned. See the extra comment for details." comment2="Normal: A light patch of clouds spawns in the Location ID. It is denser than [446].&lt;br&gt;Dense: A dense patch of clouds spawns in the Location ID.&lt;br&gt;Death Clouds: - A dense patch of purple clouds that will instantly kill the player spawns in the Location ID. They can be cleared away with spin jumps.&lt;br&gt;Drifting Death Clouds: A dense patch of purple clouds that spawns around a specific Location ID, that proceeds to drifts to the right across the entire stage. It cannot be cleared away with a spin jump like other Death Clouds, and it will generate a rumbling sound effect when the player is close to it. (A Location ID may not actually be required.)&lt;br&gt;Falling Clouds: Clouds fall in the background across the entire stage." advancedcomment="1, 3: Used by Foo and cannot be placed.&lt;br&gt;6, 9-15: No clouds spawn.">

@@ -47,8 +47,8 @@
 
   <!-- Establish full list of Dependencies -->
   <sprite id="11" name="Custom Model Loader" asmhacks="True" notes="The Custom Model Loader allows the use of pre-scripted Models and Animations for use in user-created cutscenes. It can also provide new models as decoration for your level. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Warning:&lt;/b&gt; Will CRASH if [Animate Model] is set and no animation is available.&lt;/font&gt;" advancednotes="New Models and Animations can be added to this sprite's functionality specifically for your hack. This requires editing of the game code through Kamek or with the assistance of members of the NEWER team.">
-    <dependency notes="As this sprite will pull Models and Animations from specific .arc files, those sprites are required to be placed within the level to prevent a game crash. The list of required sprites is as follows: &lt;br&gt; &lt;br&gt;0-6: arrow.arc (143) &lt;br&gt;7-16: block_arrow.arc (321) &lt;br&gt;17-24: arrow.arc (143) &lt;br&gt;25-28: cage_boss_koopa.arc (439) &lt;br&gt;29-38: kameck_princess.arc (439) &lt;br&gt;39: CreditsBG.arc (???) &lt;br&gt;40-42: chestnut.arc (320) &lt;br&gt;43-48: OpeningScene.arc (273) &lt;br&gt;49: chestnut.arc (320)">
-      <suggested sprite="143"/> <!-- arrow.arc -->
+    <dependency notes="As this sprite will pull Models and Animations from specific .arc files, those sprites are required to be placed within the level to prevent a game crash.">
+      <suggested sprite="143"/> <!-- Custom Model Loader Resources (arrow.arc) -->
       <suggested sprite="321"/> <!-- block_arrow.arc -->
       <suggested sprite="439"/> <!-- cage_boss_koopa, kameck_princess -->
       <suggested sprite="0"/> <!-- CreditsBG -->
@@ -884,22 +884,11 @@
     </dependency>
   </sprite> <!-- #107: Message Box Controller -->
 
-<!-- Can this still be used as 'an ugly loose arrow' and placed into stages with an editable Arrow Direction? -->
-  <sprite id="143" name="arrow.arc" asmhacks="True" notes="This stores many of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen.">
+  <sprite id="143" name="Custom Model Loader Resources" asmhacks="True" notes="This stores many of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen.">
     <dependency notes="If using option 0-6 or 17-24 of the Custom Model Loader (11), you'll need one of these placed somewhere in the level. It does not have to be within a Zone.">
        <suggested sprite="11"/> <!-- You'll want to use this with the Custom Model Loader. -->
     </dependency>
-    <list bit="46-48" title="Arrow Direction" advanced="True" advancedcomment="If this were still a Loose Arrow, you would be able to set its direction.">
-      <entry value="0">Up</entry>
-      <entry value="1">Up + Left</entry>
-      <entry value="2">Left</entry>
-      <entry value="3">Down + Left</entry>
-      <entry value="4">Down</entry>
-      <entry value="5">Down + Right</entry>
-      <entry value="6">Right</entry>
-      <entry value="7">Up + Right</entry>
-    </list>
-  </sprite> <!-- #143: arrow.arc -->
+  </sprite> <!-- #143: Custom Model Loader Resources -->
 
   <sprite id="145" name="Floating Barrel" noyoshi="True" notes="A floating barrel that can only be placed on a liquid surface. It will sink while a player is standing on it, but will pop back up once the player jumps off. The barrel can also flow with the unused water current controller.">
     <dependency notes="The Floating Barrel will not load when placed on the same screen as an entrance. Place the Floating Barrel where you want it to load using the liquid line, and it will spawn floating at the surface line of that body of liquid. It only works with non-Location liquids, and it does work with Moving liquids when placed correctly. Unlike Floating Coins / ? Blocks, it will also function with Rising/Falling Water. Lastly, it should be noted that the visual splash effect is always made of water.">
