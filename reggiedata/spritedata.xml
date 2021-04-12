@@ -9,7 +9,7 @@
 <!-- idtypes - Sprites with multiple Target Events or Triggering Events may need a secondary idtype, so that the primary Target/Triggering can be displayed in the sprite's display box. -->
 <!-- idtypes - Sprites with idtypes should have their idtype displayed within their blue box, usually in the lower right corner. (primary) Target Event should usually be in the lower right, and Triggering Event should usually be in the lower left. Secondary values like AND controller's second+ Triggering Event, and IF controller's secondary Location ID should be displayed in the top right corner or otherwise not displayed at all. -->
 <!-- Sample sprite with full settings -->
-<!-- <sprite id="#" name="Sprite Name" asmhacks="True" noyoshi="True" yoshinotes="Talk about how it interacts with Yoshi. Advanced Only." notes="Talk about how to use this sprite in a basic sense." advancednotes="Talk about how to use this sprite in an advanced sense. Advanced Only."> -->
+<!-- <sprite id="#" name="Sprite Name"  noyoshi="True" yoshinotes="Talk about how it interacts with Yoshi. Advanced Only." notes="Talk about how to use this sprite in a basic sense." advancednotes="Talk about how to use this sprite in an advanced sense. Advanced Only."> -->
 <!--   <dependency notes="Talk about the dependencies."> -->
 <!--     <required sprite="#" /> -->
 <!--     <suggested sprite="#" /> -->
@@ -3639,8 +3639,8 @@
     <value nybble="12" title="Collection ID" comment="Links this Coin to 459" idtype="Collection"/>
   </sprite> <!-- #237: Blue P-Switch Coin -->
 
-  <sprite id="238" name="Foo, the Cloud Blower" notes="A cloud-puff shaped enemy that will face the player and blow out clouds that conceal the area nearby. It is affected by gravity and will fall if nothing is under it, or move by conveyor belts and platforms.">
-    <checkbox bit="48" title="Does Not Create Clouds" comment="When enabled, the Foo will not create clouds."/>
+  <sprite id="238" name="Foo">
+    <checkbox bit="48" title="Does Not Create Clouds"/>
   </sprite> <!-- #238: Foo, the Cloud Blower -->
 
   <sprite id="239" name="Incomplete Sprite - 'Mist_Intermittent'" notes="Does nothing.">
@@ -4324,7 +4324,7 @@
   </sprite> <!-- #287: (Unused) Path Controlled Ice Block -->
 
   <!-- Investigate Nybble 12 - Right = 2? If so, then it's suspected that Left = 1 and Towards Player = 0. True or False? -->
-  <sprite id="288" name="Rolling Barrel" notes="A barrel that will roll across the terrain breaking certain types of terrain and blocks.">
+  <sprite id="288" name="Rolling Barrel">
     <dualbox bit="47" title1="Rolls Left" title2="Rolls Right" comment="This determines which direction the barrel will roll."/>
   </sprite> <!-- #288: Rolling Barrel -->
 
@@ -6528,7 +6528,7 @@
     <checkbox bit="38" title="Unknown Flag 10 (4)" advanced="True" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function."/>
   </sprite> <!-- #435: Effect - Ghost Fog -->
 
-  <sprite id="436" name="Background Paralax Center Point" notes="This will center the scrolling of the Zone's backgrounds at the placement of the sprite.">
+  <sprite id="436" name="Background Parallax Center Point" notes="This will center the scrolling of the Zone's backgrounds at the placement of the sprite.">
     <dependency notes="This sprite will affect the background's paralax settings by setting the center point at the placement of the sprite. Do not use more than one [436] per Zone."/>
     <list nybble="12" title="Boss Related: Alignment" comment="This will slightly adjust the Y-Axis alignment, and should be set appropriately when creating a boss room. ">
       <entry value="0">Centered</entry>
