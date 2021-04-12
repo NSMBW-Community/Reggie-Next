@@ -162,7 +162,7 @@
       <entry value="14">Gusty Garden Galaxy |*****| (Space)</entry>
       <entry value="15">Unused Slot |     | ()</entry>
     </list>
-    <checkbox bit="44" title="Always used in NewerSMBW" comment="Unknown effect." advanced="True" advancedcomment="While this is always used in NewerSMBW's Music Houses, there's no discernable difference between having this enabled and not."/>
+    <checkbox bit="44" title="Always used in NewerSMBW" comment="Unknown effect. While this is always used in NewerSMBW's Music Houses, there's no discernable difference between having this enabled and not."/>
   </sprite> <!-- #15: Toad House Minigame - Music House -->
 
   <sprite id="16" name="Bomb Drop Controller" yoshinotes="The Bomb Dropper does work with Yoshi. When the player is hit and he's on Yoshi, he will dismount Yoshi." notes="When one of the Triggering Events is activated, this controller will drop a large exploding spiked ball above either Bowser or a specific player straight down from the height of the sprite's placement.
@@ -2299,7 +2299,7 @@
       <entry value="14">15 Blocks</entry>
       <entry value="15">16 Blocks</entry>
     </list>
-    <list bit="30-32" title="Contains" comment="This determines what object is inside of the Chestnut." advancedcomment="There needs to be at least one Goomba, Spiny, or Star Coin somewhere in the level if selected as the contained object. Otherwise, the game will crash once the chestnut breaks open.">
+    <list bit="30-32" title="Contains" comment="There needs to be at least one Goomba, Spiny, or Star Coin somewhere in the level if selected as the contained object. Otherwise, the game will crash once the chestnut breaks open.">
       <entry value="0">Goomba</entry>
       <entry value="1">Spiny</entry>
       <entry value="2">1 Coin</entry>

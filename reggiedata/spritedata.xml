@@ -1289,8 +1289,8 @@
     <checkbox bit="44" title="Unknown Flag 11 (1)" comment="Possibly determines behavior relating to [159]. ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #91: Auto-Scrolling Controller -->
 
-  <sprite id="92" name="Bullet Bill Launcher" notes="This is a Bullet Bill Launcher (Bill Blaster) that will shoot either normal or homing Bullet Bills at the player.">
-    <list nybble="11" title="Height" comment="This determines the height of the Launcher.">
+  <sprite id="92" name="Bill Blaster">
+    <list nybble="11" title="Height">
       <entry value="0">2 Blocks</entry>
       <entry value="1">3 Blocks</entry>
       <entry value="2">4 Blocks</entry>
@@ -1308,46 +1308,46 @@
       <entry value="14">16 Blocks</entry>
       <entry value="15">17 Blocks</entry>
     </list>
-    <list nybble="10" title="Shooting Direction" comment="This determines which direction the Launcher will fire in, either towards the player on either side, or towards one side only.">
+    <list nybble="10" title="Shooting Direction">
       <entry value="0">Towards Player</entry>
       <entry value="1">Left Only</entry>
       <entry value="2">Right Only</entry>
     </list>
-    <value bit="30-32" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers." comment2="For usage examples, see Retail: 07-07 A1 Z5."/>
-    <checkbox bit="48" title="Shoots Homing Missile Bills" comment="When enabled, the Launcher will spawn Bullet Bills that seek out the players instead of moving straight ahead."/>
-    <value nybble="6" title="Homing Missile Bill Limit" comment="The Launcher will not create new Missile Bills unless the amount currently on the screen is less than this number." comment2="Value 0 functions the same as Value 1." requiredbit="48"/>
-  </sprite> <!-- #92: Bullet Bill Launcher -->
+    <value bit="30-32" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see Retail: 07-07 A1 Z5."/>
+    <checkbox bit="48" title="Shoots Homing Bullet Bills"/>
+    <value nybble="6" title="Homing Missile Bill Limit" comment="The Launcher will not create new Homing Bullet Bills unless the amount currently on the screen is less than this number. Value 0 functions the same as Value 1." requiredbit="48"/>
+  </sprite> <!-- #92: Bill Blaster -->
 
 <!-- Could use a few ??? values tested and played with. -->
-  <sprite id="93" name="Banzai Bill Launcher" notes="This is a Bullet Bill Launcher (Bill Blaster) that will shoot larger versions (Banzai) of either normal or homing Bullet Bills at the player.">
-    <list nybble="10" title="Shooting Direction" comment="This determines which direction the Launcher will fire in, either towards the player on either side, or towards one side only.">
+  <sprite id="93" name="Banzai Bill Blaster"">
+    <list nybble="10" title="Shooting Direction">
       <entry value="0">Towards Player</entry>
       <entry value="1">Left Only</entry>
       <entry value="2">Right Only</entry>
     </list>
-    <list nybble="5" title="Shooting Delay" comment="This determines the delay between the firing of Banzai Bills.">
+    <list nybble="5" title="Shooting Delay">
       <entry value="0">Normal</entry>
       <entry value="2">Long</entry>
       <entry value="1">Very Long</entry>
       <entry value="3">???</entry>
     </list>
-    <value bit="30-32" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers" comment2="For usage examples, see Retail: 07-07 A1 Z5."/>
-    <checkbox bit="48" title="Shoots Homing Missile Bills" comment="When enabled, the Launcher will spawn Bullet Bills that seek out the players instead of moving straight ahead." comment2="Using this with Banzai Bills is not recommended, as they only home in on a vertical axis. They will climb or fall vertically and then move towards the player when they have 'locked on'. Instead, use sprite 418."/>
-    <value nybble="6" title="Homing Missile Bill Limit" comment="The Launcher will not create new Missile Banzai Bills unless the amount currently on the screen is less than this number." requiredbit="48"/>
-    <list bit="27-28" title="Unknown Value 7" advanced="True" advancedcomment="ASM shows Nybble 7 might affect something.">
+    <value bit="30-32" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see Retail: 07-07 A1 Z5."/>
+    <checkbox bit="48" title="Shoots Homing Bullet Bills"/>
+    <value nybble="6" title="Homing Banzai Bill Limit" comment="The Blaster will not create new Homing Banzai Bills unless the amount currently on the screen is less than this number." requiredbit="48"/>
+    <list bit="27-28" title="Unknown Value 7" comment="ASM shows Nybble 7 might affect something.">
       <entry value="0">???</entry>
       <entry value="1">???</entry>
       <entry value="2">???</entry>
       <entry value="3">???</entry>
     </list>
-    <list bit="35-36" title="Unknown Value 9" advanced="True" advancedcomment="ASM shows Nybble 8 might affect something.">
+    <list bit="35-36" title="Unknown Value 9" comment="ASM shows Nybble 8 might affect something.">
       <entry value="0">???</entry>
       <entry value="1">???</entry>
       <entry value="2">???</entry>
       <entry value="3">???</entry>
     </list>
-    <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
-  </sprite> <!-- #93: Banzai Bill Launcher -->
+    <value nybble="11" title="Unknown Value 11" comment="ASM shows Nybble 11 might affect something."/>
+  </sprite> <!-- #93: Banzai Bill Blaster -->
 
   <sprite id="94" name="Boomerang Bro" notes="A standard Brothers enemy that throws Boomerangs at the player.">
   </sprite> <!-- #94: Boomerang Bro" -->
@@ -1967,10 +1967,10 @@
     </list>
   </sprite> <!-- #135: Unstable Hanging Chained Platform -->
 
-  <sprite id="136" name="Rotating Bullet Bill Launcher" notes="A Bullet Bill Launcher (Bill Blaster) that consists of up to 8 individual launching segments which must rotate after every time they fire.">
-    <checkbox bit="20" title="Randomize Fire Delay" comment="When enabled, each Cannon Piece will use a different delay."/>
-    <checkbox bit="18" title="Fire while Offscreen" comment="When enabled, the Launcher will fire even while offscreen."/>
-    <list bit="30-32" title="Number of Cannon Pieces" comment="This determines how many segments the Launcher will have. Segments can individually be turned into Cannons, have their starting direction changed, and have the animation when switching direction changed." comment2="The bottom piece, starting at the Sprite's placement, corresponds to the last checkbox for each option below, and the top piece (when set to 7) will correspond to the first checkbox below.">
+  <sprite id="136" name="Rotating Bill Blaster">
+    <checkbox bit="20" title="Randomize Fire Delay"/>
+    <checkbox bit="18" title="Fire while Offscreen"/>
+    <list bit="30-32" title="Number of Cannon Pieces" comment="The bottom piece, starting at the Sprite's placement, corresponds to the last checkbox for each option below, and the top piece (when set to 7) will correspond to the first checkbox below.">
       <entry value="0">1 Piece</entry>
       <entry value="1">2 Pieces</entry>
       <entry value="2">3 Pieces</entry>
@@ -1983,7 +1983,7 @@
     <multidualbox bit="33-40" title1="Cannon" title2="Pole" comment="Top &lt;---&gt; Bottom, Bottom First&lt;br&gt;This determines what type of segment is used." comment2="If set to Cannon, the piece will be a Cannon that fires normal Bullet Bills. If set to Pole, the piece will be turned into a metal pole segment."/>
     <multidualbox bit="41-48" title1="Starts Firing Right" title2="Starts Firing Left" comment="Top &lt;---&gt; Bottom, Bottom First&lt;br&gt;This determines which initial direction the Cannon Piece will face." comment2="Pole segments are not visually affected by this setting."/>
     <multidualbox bit="21-28" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="Top &lt;---&gt; Bottom, Bottom First&lt;br&gt;This determines which direction the piece will rotate as viewed from above."/>
-  </sprite> <!-- #136: Rotating Bullet Bill Launcher -->
+  </sprite> <!-- #136: Rotating Bill Blaster -->
 
   <!-- Feel free to research the Timing Offset value for information on what it does. There's a few options. It could be a Set ID sort of matching that causes all Skewers of a specific set to be loaded in when any from the set is loaded into memory. If all Skewers are loaded into memory for timing purposes from the start of a level, it could be a fractional offset causing it to simply shift the starting time. It could also be a flat delay rather than a fractional one. Confirmation on its function would be nice. Load yourself up a starman and low zoom level and see what happens across a long stage. For the most part, keep your Skewers otherwise identical on their settings, but also test using a single "Timing Offset" and see what happens when differences between them are added. Or, just dig around in ASM. Your choice. Edit 140-142 and maybe 398-399 with the same findings. -->
   <sprite id="137" name="Skewer - Down" notes="A large spiked pillar that visually spins as it launches itself across a specific path.">
@@ -5057,8 +5057,8 @@
     </dependency>
   </sprite> <!-- #337: Iggy Koopa -->
 
-  <sprite id="338" name="Rising / Lowering Bullet Bill Launcher" notes="A Bullet Bill Launcher (Bill Blaster) that changes its height as it fires.">
-    <list nybble="12" title="Height at Shot 1" comment="This determines the height of the Launcher during the first shot.">
+  <sprite id="338" name="Rising/Falling Bill Blaster">
+    <list nybble="12" title="Height at Shot 1">
       <entry value="0">2 Blocks</entry>
       <entry value="1">3 Blocks</entry>
       <entry value="2">4 Blocks</entry>
@@ -5076,7 +5076,7 @@
       <entry value="14">16 Blocks</entry>
       <entry value="15">17 Blocks</entry>
     </list>
-    <list nybble="11" title="Height at Shot 2" comment="This determines the height of the Launcher during the second shot.">
+    <list nybble="11" title="Height at Shot 2">
       <entry value="0">2 Blocks</entry>
       <entry value="1">3 Blocks</entry>
       <entry value="2">4 Blocks</entry>
@@ -5094,21 +5094,21 @@
       <entry value="14">16 Blocks</entry>
       <entry value="15">17 Blocks</entry>
     </list>
-    <value nybble="10" title="Rising / Lowering Speed" comment="This determines how quickly the Launcher will move when switching between Shot 1 and Shot 2." comment2="Values 0-3 are each very different from each other, while Values 4+ have very minimal increases in speed beyond that."/>
-    <list bit="27-28" title="Shooting Direction" comment="This determines which direction the Launcher will shoot in.">
+    <value nybble="10" title="Rising/Falling Speed" comment="Values 0-3 are each very different from each other, while Values 4+ have very minimal increases in speed beyond that."/>
+    <list bit="27-28" title="Shooting Direction">
       <entry value="0">Towards Player</entry>
       <entry value="1">Left Only</entry>
       <entry value="2">Right Only</entry>
     </list>
     <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. See Retail: 07-07 A1 Z5."/>
-    <list nybble="9" title="Shooting Mode" comment="This determines at which heights the Launcher will fire at.">
+    <list nybble="9" title="Shoots at">
       <entry value="0">Shot 1 and 2</entry>
       <entry value="1">Shot 1 Only</entry>
       <entry value="2">Shot 2 Only</entry>
     </list>
-    <value nybble="5-6" title="Unknown Value 5-6" advanced="True" advancedcomment="ASM shows Nybble 5-6 might affect something."/>
-    <value nybble="6" title="Unknown Value 6" advanced="True" advancedcomment="ASM shows Nybble 6 alone might affect something."/>
-  </sprite> <!-- #338: Rising / Lowering Bullet Bill Launcher -->
+    <value nybble="5-6" title="Unknown Value 5-6" comments="ASM shows Nybble 5-6 might affect something."/>
+    <value nybble="6" title="Unknown Value 6" comment="ASM shows Nybble 6 alone might affect something."/>
+  </sprite> <!-- #338: Rising/Falling Bill Blaster -->
 
   <sprite id="339" name="Moving Pipe - Facing Up" notes="An upwards facing Pipe that moves between two heights.">
     <list bit="31-32" title="Color" comment="This determines the color of the Pipe." advancedcomment="Moving Pipes use obj_dokan.arc." >
@@ -6281,9 +6281,9 @@
   <sprite id="417" name="Invisible Spin-Jump Coin" notes="A loose Coin appears if you spin-jump near this sprite, identical to the effect of spin-jumping near a dancing flower.">
   </sprite> <!-- #417: Invisible Spin-Jump Coin -->
 
-  <sprite id="418" name="Banzai Missile Bill Generator" notes="This sprite spawns endless homing Banzai Bills from the sprite's placement. There is no cannon for them to appear from, though the sound effect is played. Once they spawn, they will rise or fall vertically until they lock onto a player, and then they will begin to move forward.">
+  <sprite id="418" name="Homing Banzai Bill Generator" notes="This sprite spawns endless homing Banzai Bills from the sprite's placement. There is no cannon for them to appear from, though the sound effect is played. Once they spawn, they will rise or fall vertically until they lock onto a player, and then they will begin to move forward.">
     <value nybble="5-6" title="Delay Between Firing" comment="This determines how long the game will wait before firing another Banzai Bill." comment2="A value of 16-24 is recommended."/>
-  </sprite> <!-- #418: Banzai Missile Bill Generator -->
+  </sprite> <!-- #418: Homing Banzai Bill Generator -->
 
   <sprite id="419" name="Bowser" noyoshi="True" notes="Bowser himself, used in the final boss fight of World 8. He cannot be used without the proper controllers and level setup. On his own, he has no collision and simply looks at the player.">
     <dependency notes="Most of the final Bowser fight involves hardcoded elements, so directly copying 08-24 A4 is strongly recommended.">
