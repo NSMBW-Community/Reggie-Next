@@ -1108,6 +1108,11 @@
     <checkbox bit="20" title="Unknown Flag 5 (1)" comment="Used in Retail: 06-05 A2. Possibly distance related."/>
   </sprite> <!-- #175: Flying ? Block -->
 
+  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping">
+    <dualbox bit="48" title1="Spawns Cheep Cheeps" title2="Spawns Fishbones" comment="Share no functional difference."/>
+    <value nybble="8-9" title="Location ID" comment="The fish will spawn from below the camera line, attacking the player only while they are within this location." idtype="Location"/>
+  </sprite> <!-- #181: Cheep Cheep Spawn Area - Jumping -->
+
   <sprite id="183" name="Meteor" asmhacks="True" notes="A floating, spinning, usually safe to stand on Meteor.">
     <value nybble="9-10" title="Size" comment="This determines how large the Meteor is." comment2="A setting of 0 is the same as a setting of 5. 1-255 provide general scaling from 20% to 5100% scaling."/>
     <checkbox bit="44" title="Electrified" comment="When enabled, the Meteor will be electrified, and will hurt any player that touches it."/>

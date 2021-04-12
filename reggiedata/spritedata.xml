@@ -1955,8 +1955,8 @@
   <sprite id="133" name="Wobble Rock Platform" noyoshi="True" notes="An 'unstable' platform that requires the player to balance it once touching it in order to keep it from completely falling.">
   </sprite> <!-- #133: Wobble Rock Platform -->
 
-  <sprite id="134" name="Crowber Crow" notes="A purple crow enemy called a Crowber that will fly around in the skies above the player.">
-  </sprite> <!-- #134: Crowber Crow -->
+  <sprite id="134" name="Crowber">
+  </sprite> <!-- #134: Crowber -->
 
   <sprite id="135" name="Unstable Hanging Chained Platform" noyoshi="True" notes="An 'unstable' large platform that will fall while a player stands on it, as well as tilt and wobble. The falling distance is 2½ blocks for the first player, and 1½ blocks more for additional players.">
     <list bit="47-48" title="Tilt Distance" comment="This determines the instability of the platform, defining how many blocks the platform will tilt when a player is standing on the edge of it. This distance is only accurate for a single player, and increases by ~1 block when there are additional players on the middle of the platform.">
@@ -2824,9 +2824,8 @@
   <sprite id="180" name="Cheep-Chomp" sizehack="True" notes="A rather large Cheep enemy that is capable of swallowing the player whole, killing them instantly regardless of their power-up state. Star excluded, of course.">
   </sprite> <!-- #180: Cheep-Chomp -->
 
-  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" notes="Assigns a spawn area where Jumping Cheep Cheep will continue to attack the player while they are inside it.">
-    <dualbox bit="24" title1="Spawns Cheep Cheeps" title2="Spawns Fishbones" comment="This determines which type of fish enemy will be spawned."/>
-    <value nybble="8-9" title="Location ID" comment="The above type of fish will spawn from below the camera line, attacking the player only while they are within this location." idtype="Location"/>
+  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping">
+    <value nybble="8-9" title="Location ID" comment="The Cheep Cheep will spawn from below the camera line, attacking the player only while they are within this location." idtype="Location"/>
   </sprite> <!-- #181: Cheep Cheep Spawn Area - Jumping -->
 
   <sprite id="182" name="Event Triggered Door" noyoshi="True" notes="A hidden door that can have an Entrance placed on it. It will only appear when the Triggering Event ID is activated." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
@@ -2960,7 +2959,7 @@
     </list>
   </sprite> <!-- #195: Huckit Crab -->
 
-  <sprite id="196" name="Fishbones" notes="An undead fish enemy that swims back and forth. It will become enraged upon spotting a player and charge after them. If it hits a wall while in this state, it will fall apart and die.">
+  <sprite id="196" name="Fishbones">
     <dependency notes="Requires non-location non-moving Water in order to appear and function.">
       <required sprite="138"/>
     </dependency>
@@ -2970,11 +2969,11 @@
       <entry value="2">Long</entry>
     </list>
     <list nybble="11" title="Start Direction" comment="This determines the direction the Fishbones will start swimming in." comment2="Swims In Place: The Fishbones will look into the camera, then (from this position) swim one block to the left. If Mario is close while the Fish Bone is swimming left, it will chase Mario while still facing the camera.">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
+      <entry value="0">Left</entry>
+      <entry value="1">Right</entry>
       <entry value="2">Swims In Place (Buggy)</entry>
     </list>
-    <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="ASM shows Nybble 10 might affect something. May relate to Swims In Place."/>
+    <value nybble="10" title="Unknown Value 10" comment="ASM shows Nybble 10 might affect something. May relate to Swims In Place."/>
   </sprite> <!-- #196: Fishbones -->
 
   <sprite id="197" name="Clampy" notes="A clam with tantilizing items inside that will hurt the player if it closes while they are in inside of it.">
