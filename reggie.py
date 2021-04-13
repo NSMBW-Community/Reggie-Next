@@ -2128,11 +2128,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         return loc
 
-    def CreateObject(self, tileset, object_num, layer, x, y, width = 1, height = 1, add_to_scene = True):
+    def CreateObject(self, tileset, object_num, layer, x, y, width = None, height = None, add_to_scene = True):
         """
         Creates and returns a new object and makes sure it's added to
         the right lists.
         """
+        if width is None or height is None:
+            try:
+                tile_def = globals_.ObjectDefinitions[tileset][object_num]
+                width = tile_def.width
+                height = tile_def.height
+            except TypeError:  # Something was None
+                width = height = 1
+
         layer_list = globals_.Area.layers[layer]
         if len(layer_list) == 0:
             z = (2 - layer) * 8192
