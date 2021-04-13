@@ -2617,7 +2617,7 @@
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite>
 
-  <sprite id="166" name="Snake Block">
+  <sprite id="166" name="Snake Block (Ice)">
 	<dependency notes="The sprite snaps to the Path Node location. From Node-0 to Node-1, it must be a straight horizontal line, and it must be at least as long as the Snake Block itself. Straight lines and exact 45° angles are recommended, as after each Node, the Snake Block will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
     <checkbox bit="28" title="Icy (Must Be Enabled)" comment="This causes the Snake Block to be icy instead of green. The green version is incomplete and crashes the game, so you MUST use an icy one."/> <!-- All other options are hidden unless this is enabled -->
     <value nybble="11" title="Path ID" requiredbit="28" idtype="Path"/>
@@ -2652,7 +2652,7 @@
       <entry value="2">Stop, Fall Piece by Piece</entry>
       <entry value="3">Stop, Fall All at Once</entry>
     </list>
-  </sprite> <!-- #166: Snake Block -->
+  </sprite> <!-- #166: Snake Block (Ice) -->
 
   <sprite id="167" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #167: Unused -->
   <sprite id="168" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #168: Unused -->
@@ -4734,7 +4734,7 @@
     </list>
   </sprite> <!-- #314: Effect - Bubble Generator -->
 
-  <sprite id="315" name="Movement Controller - Bolt Object" notes="A wide-head bolt that will cause other sprites to move if the player shakes their controller while standing on top of it.">
+  <sprite id="315" name="Movement Controller - Bolt" notes="A wide-head bolt that will cause other sprites to move if the player shakes their controller while standing on top of it.">
     <dependency notes="This type of Bolt can influence five other sprites.">
       <suggested sprite="316"/>
       <suggested sprite="389"/>
@@ -4744,7 +4744,7 @@
     </dependency>
     <value nybble="5" title="Bolt ID" comment="This pairs matching Bolt Controlled sprites with this Bolt." idtype="Bolt"/>
     <value nybble="12" title="Distance" comment="This determines the maximum number of blocks that other sprites will move when spinning this Bolt."/>
-  </sprite> <!-- #315: Movement Controller - Bolt Object -->
+  </sprite> <!-- #315: Movement Controller - Bolt -->
 
   <sprite id="316" name="Bolt Controlled Metal Block" notes="A metal block that can also be made to move by spinning a Bolt.">
     <dependency notes="This sprite must be paired with a [315] Bolt in order to function.">
@@ -6073,7 +6073,7 @@
 
   <sprite id="402" name="Line Controlled ? Block" notes="A variant of the ? Block that will ride along Line objects.">
     <dependency notes="This sprite must be paired with a [236] Use Lines movement controller in order to function.">
-      <required sprite="236"/>
+      <suggested sprite="236"/>
     </dependency>
     <value bit="17-24" title="Line ID" comment="When pairing the block with sprite 236 and Lines, match the Line ID to enable Line controlled movement." idtype="Line"/>
     <list nybble="7" title="Speed" comment="This determines the speed that the block will travel along the Line." comment2="Line Controlled objects use the same speed setting across all of them.">
@@ -6109,7 +6109,7 @@
 
   <sprite id="403" name="Line Controlled Brick Block" notes="A variant of the Brick Block that will ride along Line objects.">
     <dependency notes="This sprite must be paired with a [236] Use Lines movement controller in order to function.">
-      <required sprite="236"/>
+      <suggested sprite="236"/>
     </dependency>
     <value bit="17-24" title="Line ID" comment="When pairing the block with sprite 236 and Lines, match the Line ID to enable Line controlled movement." idtype="Line"/>
     <list nybble="7" title="Speed" comment="This determines the speed that the block will travel along the Line." comment2="Line Controlled objects use the same speed setting across all of them.">
