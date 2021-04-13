@@ -3661,7 +3661,7 @@
     <dependency notes="This sprite seems to only function with the [138] version of Water, but will work with Location and Moving versions of it.">
       <required sprite="138"/>
     </dependency>
-    <dualbox bit="48" title1="Pushes Left" title2="Pushes Right" comment="This determines the direction of the current." comment2="&lt;font color=&quot;red&quot;&gt;Bug: Penguin suit will always be pushed left.&lt;/font&gt;"/>
+    <dualbox bit="48" title1="Pushes Left" title2="Pushes Right" comment="This determines the direction of the current." comment2="&lt;font color=&quot;red&quot;&gt;Bug: Penguin suit will always be pushed right.&lt;/font&gt;"/>
     <value nybble="5-6" title="Current Force" comment="This determines the strength of the current."/>
   </sprite> <!-- #243: (Unused) Water Current Controller -->
 
