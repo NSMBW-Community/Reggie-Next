@@ -868,16 +868,16 @@ def _LoadTileset(idx, name, reload_=False):
     for path in tileset_paths:
         if path is None: break
 
-        globals_.arcname = path
-        globals_.arcname += '/Texture/'
-        globals_.arcname += name + '.arc'
+        globals_.arcname = os.path.join(path, "Texture", name + ".arc.LH")
 
-        compressed = False
+        # Prioritise .arc.LH over regular .arc, just like the game does.
+        compressed = True
         if os.path.isfile(globals_.arcname):
             found = True
             break
-        globals_.arcname += '.LH'
-        compressed = True
+
+        globals_.arcname = globals_.arcname[:-3]  # strip away the .LH suffix
+        compressed = False
         if os.path.isfile(globals_.arcname):
             found = True
             break
