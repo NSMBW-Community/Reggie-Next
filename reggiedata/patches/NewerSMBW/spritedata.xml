@@ -268,7 +268,7 @@
       <entry value="6">Gray</entry>
       <entry value="7">Santa</entry>
       <entry value="8">Gray Santa</entry>
-    </list> <!-- Update [21] Paragoomba and [99] Pipe Enemy Generator when new items are added to this list! -->
+    </list> <!-- Update [21] Paragoomba and [99] Pipe Enemy Spawner when new items are added to this list! -->
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Goomba placing it further behind other sprites."/>
     <list nybble="12" title="Load-In Animation" comment="This determines what animation state is used by the Goomba when it is first loaded. This is useful for Goombas within range of a nearby Entrance." comment2="Jumps and 'Tumble' will result in it landing on the next platform below where it was initially placed.">
       <entry value="0">Normal</entry>
@@ -795,7 +795,7 @@
     </list>
   </sprite> <!-- #98: Giant Spiked Ball / Snowball -->
 
-  <sprite id="99" name="Pipe Enemy Generator"  notes="Use this to spawn waves of either Goombas or Bob-Ombs from a pipe.">
+  <sprite id="99" name="Pipe Enemy Spawner"  notes="Use this to spawn waves of either Goombas or Bob-Ombs from a pipe.">
     <dependency notes="The spawner must be placed directly on the edge of the pipe in order to function. If spawning Left or Right, place it directly on the bottom square. If spawning Up or Down, place it directly on the left square."/>
     <dualbox bit="44" title1="Spawns Goombas" title2="Spawns Bob-Ombs" comment="This determines which enemy will be spawned from the pipe."/>
     <list nybble="6" title="Color" comment="This determines the color and style of the Spawned Goombas." requiredbit="44" requiredval="0">
@@ -830,7 +830,7 @@
       <entry value="1">2 Enemies, then Delay</entry>
       <entry value="0">3 Enemies, then Delay</entry>
     </list>
-  </sprite> <!-- #99: Pipe Enemy Generator -->
+  </sprite> <!-- #99: Pipe Enemy Spawner -->
 
   <sprite id="101" name="Bob-Omb"  sizehacks="True" notes="A standard Bob-Omb enemy. It will spawn walking towards the player and will fall off of ledges. When stepped on or struck with a fireball, it will eventually explode damaging certain types of blocks, terrain, and enemies.">
     <list nybble="6" title="Color" comment="This determines the color of the Bob-Omb.">
@@ -843,7 +843,7 @@
       <entry value="6">Violet</entry>
       <entry value="7">White</entry>
       <entry value="8">Pink</entry>
-    </list> <!-- Update [99] Pipe Enemy Generator when new items are added to this list! -->
+    </list>
     <list nybble="5" title="Load-In Animation" comment="This determines what animation state is used by the Bob-Omb when it is first loaded. Changing this value is not recommended." comment2="Frozen in Ice (Minus Ice): The Bob-Omb is placed at a random angle in a random spot inside a square of 3x3 blocks, the sprite's placement it the middle block. It appears somewhere between Layer 1 and Layer 2, and cannot be interacted with in any way.">
       <entry value="0">Normal</entry>
       <entry value="1">Pipe Spawn</entry>

@@ -1429,7 +1429,7 @@
     </list>
   </sprite> <!-- #98: Giant Spiked Ball -->
 
-  <sprite id="99" name="Pipe Enemy Generator" notes="Use this to spawn waves of either Goombas or Bob-Ombs from a pipe.">
+  <sprite id="99" name="Pipe Enemy Spawner" notes="Use this to spawn waves of either Goombas or Bob-Ombs from a pipe.">
     <dependency notes="The spawner must be placed on layer 1 tiles set to the core type 'Pipe'."/>
     <dualbox bit="44" title1="Spawns Goombas" title2="Spawns Bob-Ombs" comment="This determines which enemy will be spawned from the pipe."/>
     <list nybble="12" title="Exit Direction" commnet="This determines which direction the enemy will spawn from the pipe." comment2="The spawner must be correctly positioned or it will not function. See Dependency Notes for more information.">
@@ -1442,7 +1442,7 @@
       <entry value="1">2 Enemies, then Delay</entry>
       <entry value="0">3 Enemies, then Delay</entry>
     </list>
-  </sprite> <!-- #99: Pipe Enemy Generator -->
+  </sprite> <!-- #99: Pipe Enemy Spawner -->
 
   <sprite id="100" name="Swoop" notes="A basic cave bat that drops down from the ceiling and flies towards the player.">
     <dependency notes="The Swoop must be placed with terrain directly above it in order to spawn. A Swoop will activate when approached within 4 blocks horizontally, and from below at any distance."/>
@@ -4722,7 +4722,7 @@
     <value nybble="11-12" title="Wiggle Speed" comment="This determines how quickly the platform will tilt from one side to the other." comment2="This will also override the Wiggle Speed setting of all paired platforms."/>
   </sprite> <!-- #313: Wiggling Mushroom Platform Controller -->
 
-  <sprite id="314" name="Effect - Bubble Generator" notes="A Bubble Generator that creates occasional rising air bubbles from the placement of the sprite.">
+  <sprite id="314" name="Effect - Bubble Spawner" notes="A Bubble Spawner that creates occasional rising air bubbles from the placement of the sprite.">
     <dependency notes="[317] Enables Bubbles must exist in the Zone in order for the bubbles to show.">
       <required sprite="317"/>
     </dependency>
@@ -4732,7 +4732,7 @@
       <entry value="3">Tiny</entry>
       <entry value="2">Small</entry>
     </list>
-  </sprite> <!-- #314: Effect - Bubble Generator -->
+  </sprite> <!-- #314: Effect - Bubble Spawner -->
 
   <sprite id="315" name="Movement Controller - Bolt" notes="A wide-head bolt that will cause other sprites to move if the player shakes their controller while standing on top of it.">
     <dependency notes="This type of Bolt can influence five other sprites.">
@@ -4805,10 +4805,10 @@
     </dependency>
   </sprite> <!-- #317: Effect - Enables Bubbles -->
 
-  <sprite id="318" name="Box Generator" notes="A spawner that will create random sizes of boxes.">
+  <sprite id="318" name="Box Spawner" notes="A spawner that will create random sizes of boxes.">
     <dependency notes="The boxes will fall below where the spawner is, so it's recommended to include something to move the boxes after they fall."/>
     <dualbox bit="40" title1="Wooden Box" title2="Metal Box" comment="This determines the type of box."/>
-  </sprite> <!-- #318: Box Generator -->
+  </sprite> <!-- #318: Box Spawner -->
 
 
   <sprite id="319" name="(Unused) Wiimote Controlled Door" notes="Graphically identical to 320. Spawns a giant door that loads in front of Mario. Cannot be forced behind Mario, and he cannot be made to enter it. By tilting the Wii Remote you can make it open. " />
@@ -6281,9 +6281,9 @@
   <sprite id="417" name="Invisible Spin-Jump Coin" notes="A loose Coin appears if you spin-jump near this sprite, identical to the effect of spin-jumping near a dancing flower.">
   </sprite> <!-- #417: Invisible Spin-Jump Coin -->
 
-  <sprite id="418" name="Homing Banzai Bill Generator" notes="This sprite spawns endless homing Banzai Bills from the sprite's placement. There is no cannon for them to appear from, though the sound effect is played. Once they spawn, they will rise or fall vertically until they lock onto a player, and then they will begin to move forward.">
+  <sprite id="418" name="Homing Banzai Bill Spawner" notes="This sprite spawns endless homing Banzai Bills from the sprite's placement. There is no cannon for them to appear from, though the sound effect is played. Once they spawn, they will rise or fall vertically until they lock onto a player, and then they will begin to move forward.">
     <value nybble="5-6" title="Delay Between Firing" comment="This determines how long the game will wait before firing another Banzai Bill." comment2="A value of 16-24 is recommended."/>
-  </sprite> <!-- #418: Homing Banzai Bill Generator -->
+  </sprite> <!-- #418: Homing Banzai Bill Spawner -->
 
   <sprite id="419" name="Bowser" noyoshi="True" notes="Bowser himself, used in the final boss fight of World 8. He cannot be used without the proper controllers and level setup. On his own, he has no collision and simply looks at the player.">
     <dependency notes="Most of the final Bowser fight involves hardcoded elements, so directly copying 08-24 A4 is strongly recommended.">
@@ -6871,16 +6871,16 @@
     </list>
   </sprite> <!-- #471: Moving Pot on a Bolt Platform -->
 
-  <sprite id="472" name="Ice Floe Generator" noyoshi="True" notes="This generates 'cylindrical' Ice Blocks of a random size that slide across the ground from the right to the left.">
+  <sprite id="472" name="Ice Floe Spawner" noyoshi="True" notes="This generates 'cylindrical' Ice Blocks of a random size that slide across the ground from the right to the left.">
     <dependency notes="They will spawn from the sprite's placement and fall to the nearest ground under the sprite placement. They will destroy breakable and explodable blocks placed against the ground line and will come to a complete stop when encountering any other terrain. Following that, they start to stack up, making it preferred that they have a pit to fall through. They are half in the air, half embedded in the ground when interacting with slopes, but they will make use of them."/>
-  </sprite> <!-- #472: Ice Floe Generator -->
+  </sprite> <!-- #472: Ice Floe Spawner -->
 
-  <sprite id="473" name="Floating Ice Floe Generator" noyoshi="True" notes="This generates 'cylindrical' Ice Blocks of a random size that float across the surface of a liquid from the right to the left.">
+  <sprite id="473" name="Floating Ice Floe Spawner" noyoshi="True" notes="This generates 'cylindrical' Ice Blocks of a random size that float across the surface of a liquid from the right to the left.">
     <dependency notes="They will spawn from the sprite's placement and fall or float to the liquid's surface. They will bob up and down with momentum and weight when they do this. They will move through all terrain. While it does function with Lava, it looks rather strange, thematically. Therefore it is only recommended to use this with Water and Poisoned Water. It does work with Moving Water, as well.">
       <suggested sprite="138"/>
       <suggested sprite="216"/>
     </dependency>
-  </sprite> <!-- #473: Floating Ice Floe Generator -->
+  </sprite> <!-- #473: Floating Ice Floe Spawner -->
 
   <sprite id="474" name="Dancing Coin/Block Controller" notes="This is the controller that operates 'Dancing' and 'Dancing (Reversed) standard Coins and Blocks. Dancing Coins/Blocks will quickly sway left to right two blocks in distance while dipping slightly downwards about half a block.">
     <dependency notes="Only one Dancing controller is needed per Zone. It is recommended to place it nearby the Zone's entrance, but it can exist anywhere."/>
