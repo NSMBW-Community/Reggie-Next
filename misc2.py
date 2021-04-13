@@ -466,7 +466,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             type_com = CommentItem
 
             # iterate through the objects if there's more than one
-            if isinstance(self.currentobj, list) or isinstance(self.currentobj, tuple):
+            if isinstance(self.currentobj, (list, tuple)):
                 objlist = self.currentobj
             else:
                 objlist = (self.currentobj,)
@@ -549,7 +549,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.setPos(int((clickedx + obj.ImageObj.xOffset) * 1.5),
                                    int((clickedy + obj.ImageObj.yOffset) * 1.5))
 
-                elif isinstance(obj, type_ent) or isinstance(obj, type_path) or isinstance(obj, type_com):
+                elif isinstance(obj, (type_ent, type_path, type_com)):
                     # move the created entrance/path/comment
                     clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
                     if clicked.x() < 0: clicked.setX(0)

@@ -1587,7 +1587,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         l = self.msg_layout
 
-        for row in range(l.count()):
+        for row in range(l.count() - 1, -1, -1):
             w = l.itemAt(row)
             if w is not None:
                 widget = w.widget()
