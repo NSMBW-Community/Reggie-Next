@@ -1886,8 +1886,8 @@
     </list>
     <value nybble="11" title="Z-Order" comment="This will adjust the Z-Order of the platform in relation to other objects." comment2="A higher value will place this sprite further towards the background."/>
     <checkbox bit="40" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
-    <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
-    <value bit="20" title="Unknown Flag 5 (1)" advanced="True" advancedcomment="Used in Retail: 08-24 A4."/>
+    <value bit="10-16" title="Triggering Event ID" requiredbit="40" idtype="Triggering Event"/>
+    <checkbox bit="20" title="Unknown Flag 5 (1)" comment="Used in Retail: 08-24 A4."/>
   </sprite> <!-- #122: Basic Platform - One-Way -->
 
   <sprite id="123" name="(Unused) Swinging Castle Platform" notes="An unused platform that Nintendo ported from NSMB:DS. It requires certain settings to work correctly. It will swing back and forth as though it were attached to a Rotation Controller.">
