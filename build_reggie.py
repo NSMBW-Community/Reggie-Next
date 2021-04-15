@@ -57,7 +57,7 @@ FINAL_APP_BUNDLE_NAME = FULL_PROJECT_NAME + '.app'
 ################################# Intro ################################
 ########################################################################
 
-DIR = 'distrib'
+DIR = 'distrib/reggie_next_v%s_win32' % PROJECT_VERSION 
 WORKPATH = 'build_temp'
 SPECFILE = SCRIPT_FILE[:-3] + '.spec'
 
