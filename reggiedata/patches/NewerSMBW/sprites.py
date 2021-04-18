@@ -2021,15 +2021,15 @@ class SpriteImage_NewerBush(SLib.SpriteImage_StaticMultiple):  # 387
 
     @staticmethod
     def loadImages():
-        if 'BushGreenSmall' in ImageCache: return
-        for style in ('Green', 'Yellowish', 'Yellow'):
-            for size in ('Small', 'Med', 'Large', 'XLarge'):
-                ImageCache['Bush%s%s' % (style, size)] = SLib.GetImg('bush_%s_%s.png' % (style, size))
+        if 'bushgreensmall' in ImageCache: return
+        for style in ('green', 'yellowish', 'yellow'):
+            for size in ('small', 'med', 'large', 'xlarge'):
+                ImageCache['bush%s%s' % (style, size)] = SLib.GetImg('bush_%s_%s.png' % (style, size))
           
-        if 'BushTreeLeafsXLarge' in ImageCache: return
-        for style in ('Brown', 'DarkRed', 'Yellow', 'DarkBrown', 'Red', 'TreeLeafs'):
-            for size in ('Small', 'Med', 'Large', 'XLarge'):
-                ImageCache['Bush%s%s' % (style, size)] = SLib.GetImg('bush_%s_%s.png' % (style, size))
+        if 'bushtreeleafsxlarge' in ImageCache: return
+        for style in ('brown', 'darkred', 'yellow', 'darkbrown', 'ted', 'treeleafs'):
+            for size in ('small', 'med', 'large', 'xlarge'):
+                ImageCache['bush%s%s' % (style, size)] = SLib.GetImg('bush_%s_%s.png' % (style, size))
 
     def dataChanged(self):
         style = self.parent.spritedata[2] >> 4
@@ -2037,14 +2037,14 @@ class SpriteImage_NewerBush(SLib.SpriteImage_StaticMultiple):  # 387
         size = self.parent.spritedata[5] & 3
         yellowish = (self.parent.spritedata[5] >> 4) & 1
        
-        bush = ("Green", "Brown", "DarkRed", "Yellow", "DarkBrown", "Red")[colors]
-        scale = ("Small", "Med", "Large", "XLarge")[size]
+        bush = ("green", "brown", "darkred", "yellow", "darkbrown", "red")[colors]
+        scale = ("small", "med", "large", "xlarge")[size]
         if yellowish:
-            self.image = ImageCache['BushYellowish%s' % scale]
+            self.image = ImageCache['bushyellowish%s' % scale]
         elif style == 15:
-            self.image = ImageCache['BushTreeLeafs%s' % scale]
+            self.image = ImageCache['bushtreeleafs%s' % scale]
         else:
-            self.image = ImageCache['Bush%s%s' % (bush, scale)]
+            self.image = ImageCache['bush%s%s' % (bush, scale)]
             
         if style == 15:
             self.offset = (
