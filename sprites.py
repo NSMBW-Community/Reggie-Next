@@ -7201,7 +7201,7 @@ class SpriteImage_Bush(SLib.SpriteImage_StaticMultiple):  # 387
         if 'Bush00' in ImageCache: return
         for typenum, typestr in enumerate(('green', 'yellowish')):
             for sizenum, sizestr in enumerate(('small', 'med', 'large', 'xlarge')):
-                ImageCache['bush%d%d' % (typenum, sizenum)] = SLib.GetImg('bush_%s_%s.png' % (typestr, sizestr))
+                ImageCache['Bush%d%d' % (typenum, sizenum)] = SLib.GetImg('bush_%s_%s.png' % (typestr, sizestr))
 
     def dataChanged(self):
 
@@ -7216,7 +7216,7 @@ class SpriteImage_Bush(SLib.SpriteImage_StaticMultiple):  # 387
             (-52, -80),
         )[size]
 
-        self.image = ImageCache['bush%d%d' % (style, size)]
+        self.image = ImageCache['Bush%d%d' % (style, size)]
 
         super().dataChanged()
 

@@ -398,8 +398,8 @@ class SpriteImage_NewerBuzzyBeetle(SLib.SpriteImage_StaticMultiple):  # 24
             ImageCache["BuzzyBeetleShell"] = SLib.GetImg('buzzy_beetle_shell.png')
             ImageCache["BuzzyBeetleShellU"] = SLib.GetImg('buzzy_beetle_shell_u.png')
 
-        if "BuzzyBeetleBlack" not in ImageCache:
-            for colour in ("Black", "Blue", "Green", "Orange", "Purple", "Red", "Yellow"):
+        if "BuzzyBeetleblack" not in ImageCache:
+            for colour in ("black", "blue", "green", "orange", "purple", "red", "yellow"):
                 ImageCache["BuzzyBeetle%s" % colour] = SLib.GetImg('buzzy_beetle_%s.png' % colour.lower())
                 ImageCache["BuzzyBeetle%sU" % colour] = SLib.GetImg('buzzy_beetle_%s_u.png' % colour.lower())
                 ImageCache["BuzzyBeetle%sShell" % colour] = SLib.GetImg('buzzy_beetle_%s_shell.png' % colour.lower())
@@ -412,7 +412,7 @@ class SpriteImage_NewerBuzzyBeetle(SLib.SpriteImage_StaticMultiple):  # 24
         if colour > 7:
             colour = 0
 
-        colour = ("", "Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Black")[colour]
+        colour = ("", "red", "orange", "yellow", "green", "blue", "purple", "black")[colour]
         if orient == 1:
             self.image = ImageCache['BuzzyBeetle%sU' % colour]
             self.yOffset = 0
@@ -437,8 +437,8 @@ class SpriteImage_NewerSpiny(SLib.SpriteImage_StaticMultiple):  # 25
         SLib.loadIfNotInImageCache('SpinyShellU', 'spiny_shell_u.png')
         SLib.loadIfNotInImageCache('SpinyBall', 'spiny_ball.png')
 
-        if 'SpinyOrange' in ImageCache: return
-        for colour in ("Orange", "Yellow", "Green", "Blue", "Violet", "Black", "Sidestepper"):
+        if 'Spinyorange' in ImageCache: return
+        for colour in ("orange", "yellow", "green", "blue", "violet", "black", "sidestepper"):
             ImageCache["Spiny%s" % colour] = SLib.GetImg('spiny_%s.png' % colour.lower())
             ImageCache["Spiny%sShell" % colour] = SLib.GetImg('spiny_%s_shell.png' % colour.lower())
             ImageCache["Spiny%sShellU" % colour] = SLib.GetImg('spiny_%s_shell_u.png' % colour.lower())
@@ -449,7 +449,7 @@ class SpriteImage_NewerSpiny(SLib.SpriteImage_StaticMultiple):  # 25
         if colour > 7:
             colour = 0
 
-        colour = ("", "Orange", "Yellow", "Green", "Blue", "Violet", "Black", "Sidestepper")[colour]
+        colour = ("", "orange", "yellow", "green", "blue", "violet", "black", "sidestepper")[colour]
         if orient == 1:
             self.image = ImageCache['SpinyBall']
             self.yOffset = -2
@@ -470,8 +470,8 @@ class SpriteImage_NewerUpsideDownSpiny(SLib.SpriteImage_StaticMultiple):  # 26
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('SpinyU', 'spiny_u.png')
-        if 'SpinyOrangeU' not in ImageCache:
-            for style in ("Orange", "Yellow", "Green", "Blue", "Violet", "Black", "Sidestepper"):
+        if 'SpinyorangeU' not in ImageCache:
+            for style in ("orange", "yellow", "green", "blue", "violet", "black", "sidestepper"):
                 Spiny = SLib.GetImg('spiny_%s.png' % style, True)
                 
                 if Spiny is None:
@@ -485,7 +485,7 @@ class SpriteImage_NewerUpsideDownSpiny(SLib.SpriteImage_StaticMultiple):  # 26
         if colour > 7:
             colour = 0
 
-        colour = ("", "Orange", "Yellow", "Green", "Blue", "Violet", "Black", "Sidestepper")[colour]
+        colour = ("", "orange", "yellow", "green", "blue", "violet", "black", "sidestepper")[colour]
         # slow patch folder is slow, 2
         if 'SpinyOrangeU' not in ImageCache:
             return
@@ -778,8 +778,8 @@ class SpriteImage_NewerSpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
     @staticmethod
     def loadImages():
         if 'SpikeTop00' in ImageCache: return
-        for style in ("", "_Red", "_Orange", "_Yellow", "_Green", "_Hothead", "_Purple", "_Black"):
-            SpikeTop = SLib.GetImg('spiketop%s.png' % style, True)
+        for style in ("", "_red", "_orange", "_yellow", "_green", "_hothead", "_purple", "_black"):
+            SpikeTop = SLib.GetImg('spiketop_%s.png' % style, True)
             if SpikeTop is None:
                 # happens when the newer patch folder is not loaded yet
                 return
@@ -807,9 +807,9 @@ class SpriteImage_NewerSpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
         direction = self.parent.spritedata[5] & 1
         colour = self.parent.spritedata[2] & 7
         
-        color = ("", "_Red", "_Orange", "_Yellow", "_Green", "_Hothead", "_Purple", "_Black")[colour]
+        color = ("", "_red", "_orange", "_yellow", "_green", "_hothead", "_purple", "_black")[colour]
         # slow patch folder is slow, 2
-        if 'SpikeTop01_Red' not in ImageCache:
+        if 'SpikeTop01_red' not in ImageCache:
             return
         
         self.image = ImageCache['SpikeTop%d%d%s' % (orientation, direction, color)]
@@ -991,28 +991,28 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
         SLib.loadIfNotInImageCache('PokeyTop', 'pokey_top.png')
         SLib.loadIfNotInImageCache('PokeyMiddle', 'pokey_middle.png')
         SLib.loadIfNotInImageCache('PokeyBottom', 'pokey_bottom.png')
-        
-        if 'PokeySnowman7' in ImageCache: return
-        for style in ("Pumpkin", "Jungle", "Lava"):
+
+        if 'PokeyjungleTop' in ImageCache: return
+        for style in ("pumpkin", "jungle", "lava"):
             for i in range(8):
                 ImageCache['Pokey%sTop' % style] = SLib.GetImg('pokey_%s_top.png' % style)
                 ImageCache['Pokey%sMiddle' % style] = SLib.GetImg('pokey_%s_middle.png' % style)
                 ImageCache['Pokey%sBottom' % style] = SLib.GetImg('pokey_%s_bottom.png' % style)
-                ImageCache['PokeySnowman%d' % i] = SLib.GetImg('pokey_snowman%d.png' % i)
-
+                ImageCache['Pokeysnowman%d' % i] = SLib.GetImg('pokey_snowman%d.png' % i)
+        
     def dataChanged(self):
         super().dataChanged()
-        
+
         height = self.parent.spritedata[5] % 8
         style = self.parent.spritedata[2] % 5
-        color = ("", "Pumpkin", "", "Jungle", "Lava")[style]
-        
+        color = ("", "pumpkin", "", "jungle", "lava")[style]
+
         pix = QtGui.QPixmap(100, 252)
         pix.fill(Qt.transparent)
         paint = QtGui.QPainter(pix)
-        
+
         if style == 2:
-            snowman = ImageCache['PokeySnowman%d' % height]
+            snowman = ImageCache['Pokeysnowman%d' % height]
             self.aux[0].image = snowman
             self.offset = (
                 (-4, -31),  # (-6, -46)
@@ -1025,7 +1025,7 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
                 (-25, -142) # (-38, -213)
             )[height]
             self.size = (snowman.width() / 1.5, snowman.height() / 1.5)
-        
+
         else:
             self.width = 24
             self.height = (height * 16) + 16 + 25
@@ -1035,7 +1035,7 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
             paint.drawTiledPixmap(0, 37, 36, self.height * 1.5 - 61, ImageCache['Pokey%sMiddle' % color])
             paint.drawPixmap(0, self.height * 1.5 - 24, ImageCache['Pokey%sBottom' % color])
             self.aux[0].image = pix
-            
+
         paint = None
 
 class SpriteImage_ModelLoaderResources(SLib.SpriteImage):  # 143
@@ -1565,8 +1565,8 @@ class SpriteImage_NewerWiggleShroom(SLib.SpriteImage):  # 231
         ImageCache['WiggleShroomR'] = SLib.GetImg('wiggle_shroom_right.png')
         ImageCache['WiggleShroomS'] = SLib.GetImg('wiggle_shroom_stem.png')
         
-        if 'WiggleShroomRedL' in ImageCache: return
-        for style in ("Red", "Orange", "Green", "Blue"):
+        if 'WiggleShroomredL' in ImageCache: return
+        for style in ("red", "orange", "green", "blue"):
             ImageCache['WiggleShroom%sL' % (style)] = SLib.GetImg('wiggle_shroom_%s_left.png' % (style))
             ImageCache['WiggleShroom%sM' % (style)] = SLib.GetImg('wiggle_shroom_%s_middle.png' % (style))
             ImageCache['WiggleShroom%sR' % (style)] = SLib.GetImg('wiggle_shroom_%s_right.png' % (style))
@@ -1578,7 +1578,7 @@ class SpriteImage_NewerWiggleShroom(SLib.SpriteImage):  # 231
         width = (self.parent.spritedata[4] & 0xF0) >> 4
         stemlength = self.parent.spritedata[3] & 3
         colour = (self.parent.spritedata[2] & 0xF) % 6
-        shroom = ("", "Red", "Orange", "", "Green", "Blue")[colour]
+        shroom = ("", "red", "orange", "", "green", "blue")[colour]
         
         self.wiggleleft = ImageCache['WiggleShroom%sL' % shroom]
         self.wigglemiddle = ImageCache['WiggleShroom%sM' % shroom]
@@ -1763,8 +1763,8 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
         ImageCache['MegaBuzzyL'] = QtGui.QPixmap.fromImage(buzz.mirrored(True, False))
         SLib.loadIfNotInImageCache('MegaBuzzyF', 'megabuzzy_front.png')
         
-        if 'MegaBuzzyRedR' in ImageCache: return
-        for style in ('Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Black', 'ShyGuy', 'Monty'):
+        if 'MegaBuzzyredR' in ImageCache: return
+        for style in ('red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'shyguy', 'monty'):
             buzzy = SLib.GetImg('megabuzzy_%s.png' % style, True)
             if buzzy is None: return
             ImageCache['MegaBuzzy%sR' % style] = QtGui.QPixmap.fromImage(buzzy)
@@ -1776,7 +1776,7 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
         direction = self.parent.spritedata[5] & 3
         style = (self.parent.spritedata[2] & 0xF) % 10
         dir = ("R", "L", "F", "R")[direction]
-        colour = ("", "Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Black", "ShyGuy", "Monty")[style]
+        colour = ("", "red", "orange", "yellow", "green", "blue", "purple", "black", "shyguy", "monty")[style]
         
         if 'MegaBuzzyMontyF' not in ImageCache: return
         self.image = ImageCache['MegaBuzzy%s%s' % (colour, dir)]
@@ -2105,15 +2105,15 @@ class SpriteImage_NewerGabon(SLib.SpriteImage_StaticMultiple):  # 414
         ImageCache['GabonRight'] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
         SLib.loadIfNotInImageCache('GabonSpike', 'gabon_spike.png')
         
-        if 'GabonSnowRight' in ImageCache: return
-        for style in ("Red", "Orange", "Yellow", "Snow"):
+        if 'GabonsnowRight' in ImageCache: return
+        for style in ("red", "orange", "yellow", "snow"):
             gabon = SLib.GetImg('gabon_%s.png' % style, True)
             if gabon is None: return
             ImageCache['Gabon%sLeft' % style] = QtGui.QPixmap.fromImage(gabon)
             ImageCache['Gabon%sRight' % style] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
         
-        if 'GabonBlackSpike' in ImageCache: return
-        for color in ("Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Black"):
+        if 'GabonblackSpike' in ImageCache: return
+        for color in ("red", "orange", "yellow", "green", "blue", "purple", "black"):
             ImageCache['Gabon%sSpike' % color] = SLib.GetImg('gabon_%s_spike.png' % color)
 
     def dataChanged(self):
@@ -2121,9 +2121,9 @@ class SpriteImage_NewerGabon(SLib.SpriteImage_StaticMultiple):  # 414
         facing = self.parent.spritedata[4] & 1
         style = self.parent.spritedata[2]
         
-        if 'GabonSnowRight' not in ImageCache: return
-        color = ("", "Red", "Orange", "Yellow", "", "Snow")[style % 6]
-        colour = ("", "Red", "Orange", "Yellow", "Green", "", "Purple", "Black")[style & 7]
+        if 'GabonsnowRight' not in ImageCache: return
+        color = ("", "red", "orange", "yellow", "", "snow")[style % 6]
+        colour = ("", "red", "orange", "yellow", "green", "", "purple", "black")[style & 7]
         if throwdir == 0:
             self.image = ImageCache['Gabon%sSpike' % colour]
             self.offset = (-7, -31) #-11, -47
