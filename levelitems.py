@@ -1650,7 +1650,7 @@ class LocationItem(LevelEditorItem):
         self.TitleRect = QtCore.QRectF(metrics.boundingRect(self.title))
         self.TitleRect.moveTo(4, 4)
 
-        self.UpdateListItem()
+        self.UpdateRects()
 
     def __lt__(self, other):
         return self.id < other.id
