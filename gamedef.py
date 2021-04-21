@@ -91,25 +91,24 @@ class GameDefSelector(QtWidgets.QWidget):
         row = 0
         col = 0
         current = setting('LastGameDef')
-        id = 0
-        for folder in self.GameDefs:
+
+        for i, folder in enumerate(self.GameDefs):
             def_ = ReggieGameDefinition(folder)
+
             btn = QtWidgets.QRadioButton()
-            if folder == current: btn.setChecked(True)
+            btn.setChecked(folder == current)
             btn.toggled.connect(self.HandleRadioButtonClick)
-            self.group.addButton(btn, id)
+
+            self.group.addButton(btn, i)
+
             btn.setToolTip(def_.description)
-            id += 1
-            L.addWidget(btn, row, col)
 
             name = QtWidgets.QLabel(def_.name)
             name.setToolTip(def_.description)
-            L.addWidget(name, row, col + 1)
 
-            row += 1
-            if row > 2:
-                row = 0
-                col += 2
+            col = (i >> 1) << 1
+            L.addWidget(btn, i & 1, col)
+            L.addWidget(name, i & 1, col + 1)
 
         self.setLayout(L)
 
@@ -152,15 +151,16 @@ class GameDefMenu(QtWidgets.QMenu):
         loadedDef = setting('LastGameDef')
         for folder in self.GameDefs:
             def_ = ReggieGameDefinition(folder)
+
             act = QtWidgets.QAction(self)
             act.setText(def_.name)
             act.setToolTip(def_.description)
             act.setData(folder)
             act.setActionGroup(self.actGroup)
             act.setCheckable(True)
-            if folder == loadedDef:
-                act.setChecked(True)
+            act.setChecked(folder == loadedDef)
             act.toggled.connect(self.handleGameDefClicked)
+
             self.addAction(act)
 
     def handleGameDefClicked(self, checked):
@@ -202,11 +202,12 @@ class ReggieGameDefinition:
         NoneTypes = (None, 'None', 0, '', True, False)
         if name in NoneTypes:
             return
-        else:
-            try:
-                self.InitFromName(name)
-            except Exception:
-                raise  # self.InitAsEmpty()  # revert
+
+        try:
+            self.InitFromName(name)
+        except Exception:
+            self.InitAsEmpty()
+            raise
 
     def InitAsEmpty(self):
         """
@@ -246,7 +247,8 @@ class ReggieGameDefinition:
 
     def InitFromName(self, name):
         """
-        Attempts to open/load a Game Definition from a name string
+        Attempts to open/load a Game Definition from a name string. Just loads
+        the name and description to avoid referring to other game definitions.
         """
         self.custom = True
         name = str(name)
@@ -257,7 +259,8 @@ class ReggieGameDefinition:
         tree = etree.parse(path)
         root = tree.getroot()
 
-        # Add the attributes of root: name, description, base
+        # Add the attributes of root: name, description and version.
+        # base is added in __init2__, only when needed.
         if 'name' not in root.attrib: raise Exception
         self.name = root.attrib['name']
 
@@ -267,14 +270,28 @@ class ReggieGameDefinition:
 
         self.version = root.attrib.get('version')
 
+        del tree, root
+
+    def __init2__(self):
+        """
+        Finishes up initialisation of custom gamedefs. This avoids infinite
+        recursion with gamedefs referring to other gamedefs.
+        """
+        if not self.custom:
+            return
+
+        path = os.path.join("reggiedata", "patches", self.gamepath, "main.xml")
+        tree = etree.parse(path)
+        root = tree.getroot()
+
         self.base = None
         if 'base' in root.attrib:
-            self.base = FindGameDef(root.attrib['base'], name)
+            self.base = FindGameDef(root.attrib['base'], self.gamepath)
         else:
             self.base = ReggieGameDefinition()
 
         # Parse the nodes
-        addpath = os.path.join("reggiedata", "patches", name)
+        addpath = os.path.join("reggiedata", "patches", self.gamepath)
         for node in root:
             n = node.tag.lower()
             if n not in ('file', 'folder'):
@@ -285,7 +302,7 @@ class ReggieGameDefinition:
 
             if 'game' in node.attrib:
                 if node.attrib['game'] != globals_.trans.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
-                    def_ = FindGameDef(node.attrib['game'], name)
+                    def_ = FindGameDef(node.attrib['game'], self.gamepath)
                     path = os.path.join('reggiedata', 'patches', def_.gamepath, node.attrib['path'])
                 else:
                     path = os.path.join('reggiedata', node.attrib['path'])
@@ -590,6 +607,8 @@ def LoadGameDef(name=None, dlg=None):
         if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 1))  # Loading game patch...
         globals_.gamedef = ReggieGameDefinition(name)
         if globals_.gamedef.custom and (not globals_.settings.contains('GamePath_' + globals_.gamedef.name)):
+            globals_.gamedef.__init2__()
+
             # First-time usage of this globals_.gamedef. Have the
             # user pick a stage folder so we can load stages
             # and tilesets from there
@@ -718,8 +737,10 @@ def FindGameDef(name, skip=None):
             continue
 
         def_ = ReggieGameDefinition(folder)
+
+        if def_.name != name:  # Not the one we're looking for, so stop looking.
+            continue
+
+        def_.__init2__()
         globals_.CachedGameDefs[def_.name] = def_
-
-        if def_.name == name and def_.custom:
-            return def_
-
+        return def_
