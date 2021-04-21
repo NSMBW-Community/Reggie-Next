@@ -1661,14 +1661,27 @@ class LocationItem(LevelEditorItem):
         """
         self.prepareGeometryChange()
 
-        self.BoundingRect = QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5)
+        self.BoundingRectWithoutTitleRect = QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5)
 
         self.SelectionRect = QtCore.QRectF(self.objx * 1.5, self.objy * 1.5, self.width * 1.5, self.height * 1.5)
         self.ZoneRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
         self.DrawRect = QtCore.QRectF(1, 1, (self.width * 1.5) - 2, (self.height * 1.5) - 2)
         self.GrabberRect = QtCore.QRectF(((1.5) * self.width) - 4.8, ((1.5) * self.height) - 4.8, 4.8, 4.8)
-        self.BoundingRect = self.BoundingRect.united(self.TitleRect).united(self.GrabberRect)
+        self.BoundingRect = self.BoundingRectWithoutTitleRect.united(self.TitleRect).united(self.GrabberRect)
         self.UpdateListItem()
+
+    def shape(self):
+        """
+        self.BoundingRect is big enough to include self.TitleRect (so
+        the ID text can be painted), but that makes the hit-detection
+        region too large if the rect is small.
+        """
+        # We basically make a vertically-flipped "L" shape if the location
+        # is small, so that you can click on the ID number to select the location
+        qpp = QtGui.QPainterPath()
+        qpp.addRect(self.BoundingRectWithoutTitleRect)
+        qpp.addRect(self.TitleRect)
+        return qpp
 
     def paint(self, painter, option, widget):
         """
