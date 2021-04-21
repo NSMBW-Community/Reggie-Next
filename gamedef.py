@@ -738,7 +738,7 @@ def FindGameDef(name, skip=None):
 
         def_ = ReggieGameDefinition(folder)
 
-        if def_.name != name:  # Not the one we're looking for, so stop looking.
+        if def_.name != name:  # Not the one we're looking for, so stop loading.
             continue
 
         def_.__init2__()
