@@ -4185,13 +4185,25 @@ def main():
     """
     Main startup function for Reggie
     """
+
+    # set High-DPI-Displays-related attributes before creating an application
+    QtGui.QGuiApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    if hasattr(QtGui.QGuiApplication, 'setHighDpiScaleFactorRoundingPolicy'):
+        QtGui.QGuiApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.Round)
+
+    # Create an application
+    globals_.app = QtWidgets.QApplication(sys.argv)
+
     # Go to the script path
     path = module_path()
     if path is not None:
         os.chdir(path)
 
-    # Create an application
-    globals_.app = QtWidgets.QApplication(sys.argv)
+    # Create backup of settings
+    if os.path.isfile('settings.ini'):
+        from shutil import copy2
+        copy2('settings.ini', 'settings.ini.bak')
+        del copy2
 
     # Load the settings
     globals_.settings = QtCore.QSettings('settings.ini', QtCore.QSettings.IniFormat)
@@ -4212,11 +4224,6 @@ def main():
 
     # Load the style
     GetDefaultStyle()
-
-    # go to the script path
-    path = module_path()
-    if path is not None:
-        os.chdir(module_path())
 
     # Check if required files are missing
     if FilesAreMissing():
