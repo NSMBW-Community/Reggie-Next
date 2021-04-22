@@ -396,35 +396,7 @@ class AbstractParsedArea(AbstractArea):
         """
         Sorts the sprite list by zone ID so it will work in-game
         """
-
-        split = {}
-        zones = []
-
-        f_MapPositionToZoneID = SLib.MapPositionToZoneID
-        zonelist = self.zones
-
-        for sprite in self.sprites:
-            zone = f_MapPositionToZoneID(zonelist, sprite.objx, sprite.objy)
-            if zone == -1:
-                # No zone was found in the level.
-                # Pretend the sprite belongs to zone 0, even though this zone does
-                # not exist. The level won't work in-game anyway, because there
-                # are no zones. This default allows users to save area's without
-                # zones, so it adds greater flexibility.
-                zone = 0
-
-            sprite.zoneID = zone
-            if not zone in split:
-                split[zone] = []
-                zones.append(zone)
-            split[zone].append(sprite)
-
-        newlist = []
-        zones.sort()
-        for z in zones:
-            newlist += split[z]
-
-        self.sprites = newlist
+        self.sprites.sort(key = lambda s: SLib.MapPositionToZoneID(self.zones, s.objx, s.objy))
 
     def LoadReggieInfo(self, data):
         if (data is None) or (len(data) == 0):
@@ -932,13 +904,13 @@ class Area_NSMBW(AbstractParsedArea):
         bgBstruct = struct.Struct('>xBhhhhHHHxxxBxxxx')
         zonestruct = struct.Struct('>HHHHHHBBBBxBBBBxBB')
 
-        zcount = len(globals_.Area.zones)
+        zcount = len(self.zones)
         buffer2 = bytearray(24 * zcount)
         buffer4 = bytearray(24 * zcount)
         buffer5 = bytearray(24 * zcount)
         buffer9 = bytearray(24 * zcount)
 
-        for i, z in enumerate(globals_.Area.zones):
+        for i, z in enumerate(self.zones):
             offset = i * 24
 
             # HACK: This should really only save block 10, and use a
@@ -981,7 +953,7 @@ class Area_NSMBW(AbstractParsedArea):
         Saves block 11, the location data
         """
         locstruct = struct.Struct('>HHHHBxxx')
-        buffer = bytearray(12 * len(globals_.Area.locations))
+        buffer = bytearray(12 * len(self.locations))
 
         for i, l in enumerate(globals_.Area.locations):
             locstruct.pack_into(buffer, i * 12, int(l.objx), int(l.objy), int(l.width), int(l.height), int(l.id))
