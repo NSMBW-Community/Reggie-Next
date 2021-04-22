@@ -25,8 +25,25 @@ if has_nsmblib:
     lz77 = types.SimpleNamespace()
     lz77.UncompressLZ77 = nsmblib.decompress11LZS
 
+    # nsmblib does not support decoding tileset images that are not a full
+    # tileset. Reggie Next uses the "decodeRGB4A3" function for decoding tile
+    # animations as well, which are a lot smaller. Thus, we need a non-nsmblib
+    # fallback if the size of the image is not a full image.
+    if has_cython:
+        from . import tpl_cy as _tpl
+    else:
+        from . import tpl as _tpl
+
+    def handler(data, width, height, no_alpha):
+        if width == 1024 and height == 256:
+            if no_alpha:
+                return nsmblib.decodeTilesetNoAlpha(data)
+            else:
+                return nsmblib.decodeTileset(data)
+        return _tpl.decodeRGB4A3(data, width, height, no_alpha)
+
     tpl = types.SimpleNamespace()
-    tpl.decodeRGB4A3 = lambda tiledata, *_: nsmblib.decodeTileset(tiledata)
+    tpl.decodeRGB4A3 = handler
 elif has_cython:
     from . import lz77_cy as lz77
     from . import tpl_cy as tpl
