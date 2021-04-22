@@ -396,7 +396,12 @@ class AbstractParsedArea(AbstractArea):
         """
         Sorts the sprite list by zone ID so it will work in-game
         """
-        self.sprites.sort(key = lambda s: SLib.MapPositionToZoneID(self.zones, s.objx, s.objy))
+        def compKey(zonelist, sprite):
+            id_ = SLib.MapPositionToZoneID(zonelist, sprite.objx, sprite.objy)
+            sprite.zoneID = zonelist[id_].id if id_ != -1 else -1
+            return id_
+
+        self.sprites.sort(key = lambda s: compKey(self.zones, s))
 
     def LoadReggieInfo(self, data):
         if (data is None) or (len(data) == 0):
@@ -849,22 +854,19 @@ class Area_NSMBW(AbstractParsedArea):
         offset = 0
         sprstruct = struct.Struct('>HHH6sBcxx')
         buffer = bytearray((len(self.sprites) * 16) + 4)
-        f_MapPositionToZoneID = SLib.MapPositionToZoneID
-        zonelist = self.zones
         f_int = int
         for sprite in self.sprites:
-            zoneID = f_MapPositionToZoneID(zonelist, sprite.objx, sprite.objy, True)
-            if zoneID == -1:
+            if sprite.zoneID == -1:
                 # No zone was found in the area.
                 # Pretend the sprite belongs to zone 0, even though this zone
                 # does not exist. The area won't work in-game anyway, because
                 # there are no zones. This default allows users to save areas
                 # without zones, so it adds greater flexibility.
-                zoneID = 0
+                sprite.zoneID = 0
 
             try:
                 sprstruct.pack_into(buffer, offset, f_int(sprite.type) % 0xFFFF, f_int(sprite.objx), f_int(sprite.objy),
-                                    sprite.spritedata[:6], zoneID, bytes([sprite.spritedata[7]]))
+                                    sprite.spritedata[:6], sprite.zoneID, bytes([sprite.spritedata[7]]))
             except:
                 # Hopefully this will solve the mysterious bug, and will
                 # soon no longer be necessary.
@@ -874,7 +876,7 @@ class Area_NSMBW(AbstractParsedArea):
                                  str(sprite.objx) + '\n' + \
                                  str(sprite.objy) + '\n' + \
                                  str(sprite.spritedata[:6]) + '\n' + \
-                                 str(zoneID) + '\n' + \
+                                 str(sprite.zoneID) + '\n' + \
                                  str(bytes([sprite.spritedata[7]])) + '\n',
                                  )
             offset += 16
