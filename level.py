@@ -784,9 +784,10 @@ class Area_NSMBW(AbstractParsedArea):
         offset = 0
         entstruct = struct.Struct('>HHxxxxBBBBxBBBHxB')
         buffer = bytearray(len(self.entrances) * 20)
+        f_MapPositionToZoneID = SLib.MapPositionToZoneID
         zonelist = self.zones
         for entrance in self.entrances:
-            zoneID = SLib.MapPositionToZoneID(zonelist, entrance.objx, entrance.objy)
+            zoneID = f_MapPositionToZoneID(zonelist, entrance.objx, entrance.objy, True)
             if zoneID == -1:
                 # No zone was found in the level.
                 # Pretend the entrance belongs to zone 0, even though this zone
@@ -848,19 +849,22 @@ class Area_NSMBW(AbstractParsedArea):
         offset = 0
         sprstruct = struct.Struct('>HHH6sBcxx')
         buffer = bytearray((len(self.sprites) * 16) + 4)
+        f_MapPositionToZoneID = SLib.MapPositionToZoneID
+        zonelist = self.zones
         f_int = int
         for sprite in self.sprites:
-            if sprite.zoneID == -1:
+            zoneID = f_MapPositionToZoneID(zonelist, sprite.objx, sprite.objy, True)
+            if zoneID == -1:
                 # No zone was found in the area.
                 # Pretend the sprite belongs to zone 0, even though this zone
                 # does not exist. The area won't work in-game anyway, because
                 # there are no zones. This default allows users to save areas
                 # without zones, so it adds greater flexibility.
-                sprite.zoneID = 0
+                zoneID = 0
 
             try:
                 sprstruct.pack_into(buffer, offset, f_int(sprite.type) % 0xFFFF, f_int(sprite.objx), f_int(sprite.objy),
-                                    sprite.spritedata[:6], sprite.zoneID, bytes([sprite.spritedata[7]]))
+                                    sprite.spritedata[:6], zoneID, bytes([sprite.spritedata[7]]))
             except:
                 # Hopefully this will solve the mysterious bug, and will
                 # soon no longer be necessary.
@@ -870,7 +874,7 @@ class Area_NSMBW(AbstractParsedArea):
                                  str(sprite.objx) + '\n' + \
                                  str(sprite.objy) + '\n' + \
                                  str(sprite.spritedata[:6]) + '\n' + \
-                                 str(sprite.zoneID) + '\n' + \
+                                 str(zoneID) + '\n' + \
                                  str(bytes([sprite.spritedata[7]])) + '\n',
                                  )
             offset += 16
