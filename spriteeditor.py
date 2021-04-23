@@ -275,7 +275,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         row = None  # int: row in the parent's layout
         comment = None  # str: comment text
         comment2 = None  # str: additional comment text
-        commendAdv = None  # str: even more comment text
+        commentAdv = None  # str: even more comment text
         parent = None # SpriteEditorWidget: the widget this belongs to
 
         def retrieve(self, data, bits=None):
@@ -1765,8 +1765,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.DataUpdate.emit(data)
 
-        data = ["0000"] * 4
-        self.raweditor.setText(' '.join(data))
+        self.raweditor.setText("0000 0000 0000 0000")
         self.raweditor.setStyleSheet('')
 
     def HandleRawDataEdited(self, text):
