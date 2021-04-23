@@ -2061,7 +2061,7 @@
   <!-- Test 9 separate between normal and heavy. Remember to test between True Left, True Right, and Faces Player for spawning. Also test the range of Speed. Is the maximum 3, 7, or 15? -->
   <!-- Options still need 'sorted' after ensuring what each one does -->
   <sprite id="291" name="Para-Beetle" sizehacks="True" notes="A small flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below.">
-    <list nybble="6" title="Color" comment="This determines the color of the Para-Beetle.">
+    <list nybble="6" title="Color">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -2074,24 +2074,27 @@
       <entry value="9">White</entry>
       <entry value="10">Pink</entry>
     </list>
-    <checkbox bit="36" title="Unknown Flag 9 (1)" comment=""/>
-    <value nybble="10" title="Speed" comment="This determines how fast the Para-Beetle flies. Value 0 keeps it in place."/>
-    <list nybble="11" title="Direction" comment="This determines what direction the Para-Beetle flies.">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
-	  <entry value="2">Left</entry>
-	  <entry value="3">Left</entry>
+	<list nybble="9" title="Initial Movement">
+      <entry value="0">Up</entry>
+      <entry value="1">Down</entry>
     </list>
-    <list nybble="12" title="Facing" comment="This determines what direction the Para-Beetle is facing.">
+    <value nybble="10" title="Speed" comment="Value 0 keeps it in place."/>
+    <list nybble="11" title="Movement Direction">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
-	  <entry value="2">Right-ish</entry>
-	  <entry value="3">Towards Screen</entry>
+      <entry value="2">Left</entry>
+      <entry value="3">Left</entry>
+    </list>
+    <list nybble="12" title="Facing" comment="Will fly backwards if facing wrong direction.">
+      <entry value="0">Right</entry>
+      <entry value="1">Left</entry>
+      <entry value="2">Right-ish</entry>
+      <entry value="3">Towards Screen</entry>
     </list>
   </sprite> <!-- #291: Para-Beetle -->
 
-  <sprite id="292" name="Heavy Para-Beetle" sizehacks="True" notes="A large flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below.">
-    <list nybble="6" title="Color" comment="This determines the color of the Para-Beetle.">
+  <sprite id="292" name="Heavy Para-Beetle" notes="A large flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below.">
+    <list nybble="6" title="Color">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -2104,22 +2107,22 @@
       <entry value="9">White</entry>
       <entry value="10">Pink</entry>
     </list>
-    <value nybble="10" title="Speed" comment="This determines how fast the Para-Beetle flies."/>
-    <list nybble="9" title="???" comment="">
-      <entry value="0"/>
-      <entry value="1"/>
+	<list nybble="9" title="Initial Movement">
+      <entry value="0">Up</entry>
+      <entry value="1">Down</entry>
     </list>
-    <list nybble="11" title="Direction or Facing?" comment="">
-      <entry value="0"/>
-      <entry value="1"/>
-      <entry value="2"/>
-      <entry value="3"/>
+	<value nybble="10" title="Speed" comment="Value 0 keeps it in place."/>
+    <list nybble="11" title="Movement Direction">
+      <entry value="0">Right</entry>
+      <entry value="1">Left</entry>
+      <entry value="2">Left</entry>
+      <entry value="3">Left</entry>
     </list>
-    <list nybble="12" title="Direction or Facing?" comment="">
-      <entry value="0"/>
-      <entry value="1"/>
-      <entry value="2"/>
-      <entry value="3"/>
+    <list nybble="12" title="Facing" comment="Will fly backwards if facing wrong direction.">
+      <entry value="0">Right</entry>
+      <entry value="1">Left</entry>
+      <entry value="2">Right-ish</entry>
+      <entry value="3">Towards Screen</entry>
     </list>
   </sprite> <!-- #292: Heavy Para-Beetle -->
 
