@@ -302,12 +302,12 @@
     <checkbox bit="44" title="Falls when POW is Used" comment="The Star Coin will fall to the ground if a POW effect is triggered. If placed outside the Zone, the Star Coin will not spawn until the POW is hit."/>
     <value bit="2-8" title="Target Event ID" comment="When the Star Coin is collected, the Target Event ID will be activated." idtype="Target Event"/>
     <dualbox bit="28" title1="Triggers a Timed Event" title2="Permanently activates Target Event" comment="This determines if the Target Event is timed or permanent. Timed events will pause the music and replace it with ticking." requiredbit="2-8"/>
-
-    <value bit="19-20" title="Unknown List 5" advanced="True" advancedcomment="ASM shows Nybble 5 might affect something."/>
+    <list bit="19-20" title="Unknown List 5" advanced="True" advancedcomment="ASM shows Nybble 5 might affect something.">
       <entry value="0">???</entry>
       <entry value="1">???</entry>
       <entry value="2">???</entry>
       <entry value="3">???</entry>
+	</list>
     <value nybble="8" title="Unknown Value 8" comment="ASM shows Nybble 8 might affect something."/>
   </sprite> <!-- #32: Star Coin -->
 
