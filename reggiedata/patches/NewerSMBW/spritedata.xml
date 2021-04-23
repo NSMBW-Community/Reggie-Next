@@ -1317,10 +1317,6 @@
   <sprite id="204" name="Rolling Object Spawner"  notes="A spawner that will create loose Spiked Balls or Rolling Barrels. &lt;font color=&quot;red&quot;&gt;Only Spiked Balls work in NewerSMBW. Rolling Barrels crash the game.&lt;/font&gt;">
     <dualbox bit="20" title1="Spawns Spiked Balls" title2="Spawns Rolling Barrels (Crashes)" comment="&lt;font color=&quot;Red&quot;&gt;Spawning a rolling barrel will crash the game.&lt;/font&gt;"/>
     <value nybble="3-4" title="Deactivation Event ID" comment="This Triggering Event ID will deactivate the Spiked Ball Spawner." idtype="Triggering Event" requiredbit="20" requiredval="0"/> <!-- Appears only for Spiked Balls -->
-    <list nybble="6" title="Style" comment="This determines the color and style of the spawned Spiked Ball." requiredbit="20" requiredval="0">
-      <entry value="0">Normal</entry>
-      <entry value="1">Snowball</entry>
-    </list> <!-- Appears only for Spiked Balls -->
     <list nybble="8" title="Speed" comment="This determines the speed of the spawned rolling object." comment2="Stopped rolling objects will still be affected by the terrain they are resting on.">
       <entry value="0">Stopped</entry>
       <entry value="1">Slow</entry>
