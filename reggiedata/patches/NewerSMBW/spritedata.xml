@@ -46,8 +46,8 @@
   </sprite> <!-- #10: (Unused) Large Object Thrower -->
 
   <!-- Establish full list of Dependencies -->
-  <sprite id="11" name="Custom Model Loader"  notes="The Custom Model Loader allows the use of pre-scripted Models and Animations for use in user-created cutscenes. It can also provide new models as decoration for your level. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Warning:&lt;/b&gt; Will CRASH if [Animate Model] is set and no animation is available.&lt;/font&gt;" advancednotes="New Models and Animations can be added to this sprite's functionality specifically for your hack. This requires editing of the game code through Kamek or with the assistance of members of the NEWER team.">
-    <dependency notes="As this sprite will pull Models and Animations from specific .arc files, those sprites are required to be placed within the level to prevent a game crash.">
+  <sprite id="11" name="Custom Model Loader"  notes="The Custom Model Loader allows the use of pre-scripted Models and Animations for use in user-created cutscenes. It can also provide new models as decoration for your level. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Warning:&lt;/b&gt; Will CRASH if [Animate Model] is set and no animation is available.&lt;/font&gt;">
+    <dependency notes="As this sprite will pull Models and Animations from specific .arc files, those sprites are required to be placed within the level to prevent a game crash. The list of required sprites is as follows: &lt;br&gt; &lt;br&gt;0-6: arrow.arc (143) &lt;br&gt;7-16: block_arrow.arc (321) &lt;br&gt;17-24: arrow.arc (143) &lt;br&gt;25-28: cage_boss_koopa.arc (439) &lt;br&gt;29-38: kameck_princess.arc (439) &lt;br&gt;39: CreditsBG.arc (???) &lt;br&gt;40-42: chestnut.arc (320) &lt;br&gt;43-48: OpeningScene.arc (273) &lt;br&gt;49: chestnut.arc (320)">
       <suggested sprite="143"/> <!-- Custom Model Loader Resources (arrow.arc) -->
       <suggested sprite="321"/> <!-- block_arrow.arc -->
       <suggested sprite="439"/> <!-- cage_boss_koopa, kameck_princess -->
