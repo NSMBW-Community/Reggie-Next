@@ -223,16 +223,14 @@ class ReggieGameDefinition:
 
         # Add the attributes of root: name, description and version.
         # base is added in __init2__, only when needed.
-        if 'name' not in root.attrib: raise Exception
-        self.name = root.attrib['name']
+        self.name = root.get('name')
 
-        self.description = globals_.trans.string('Gamedefs', 15)
-        if 'description' in root.attrib:
-            self.description = root.attrib['description'].replace('[', '<').replace(']', '>')
+        if self.name is None:
+            raise ValueError("Game definition XML %r has no 'name' attribute on the root node." % path)
 
-        self.version = root.attrib.get('version')
-
-        del tree, root
+        default = globals_.trans.string('Gamedefs', 15)
+        self.description = root.get('description', default).replace('[', '<').replace(']', '>')
+        self.version = root.get('version')
 
     def __init2__(self):
         """
@@ -259,18 +257,19 @@ class ReggieGameDefinition:
             if n not in ('file', 'folder'):
                 continue
 
-            path = os.path.join(addpath, node.attrib['path'])
-            patch = node.attrib.get('patch', 'true').lower() == 'true'
+            patch = node.get('patch', 'true').lower() == 'true'
 
-            if 'game' in node.attrib:
-                if node.attrib['game'] != globals_.trans.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
-                    def_ = FindGameDef(node.attrib['game'], self.gamepath)
-                    path = os.path.join('reggiedata', 'patches', def_.gamepath, node.attrib['path'])
-                else:
-                    path = os.path.join('reggiedata', node.attrib['path'])
+            game = node.get('game')
+            if game is None:
+                path = os.path.join(addpath, node.get('path'))
+            elif game == globals_.trans.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
+                path = os.path.join('reggiedata', node.get('path'))
+            else:
+                def_ = FindGameDef(game, self.gamepath)
+                path = os.path.join('reggiedata', 'patches', def_.gamepath, node.get('path'))
 
-            ListToAddTo = self.files if n == 'file' else self.folders  # self.files or self.folders
-            ListToAddTo[node.attrib['name']] = self.GameDefinitionFile(path, patch)
+            dict_type = self.files if n == 'file' else self.folders  # self.files or self.folders
+            dict_type[node.get('name')] = self.GameDefinitionFile(path, patch)
 
         # Get rid of the XML stuff
         del tree, root
@@ -518,22 +517,22 @@ class ReggieGameDefinition:
 
 
 def getAvailableGameDefs():
-    GameDefs = []
+    game_defs = []
 
     # Add them
     folders = os.listdir(os.path.join('reggiedata', 'patches'))
     for folder in folders:
         if not os.path.isdir(os.path.join('reggiedata', 'patches', folder)): continue
-        inFolder = os.listdir(os.path.join('reggiedata', 'patches', folder))
-        if 'main.xml' not in inFolder: continue
+        if not os.path.isfile(os.path.join('reggiedata', 'patches', folder, 'main.xml')): continue
+
         def_ = ReggieGameDefinition(folder)
-        if def_.custom: GameDefs.append((def_, folder))
+        if def_.custom:
+            game_defs.append((def_.name, folder))
 
     # Alphabetize them, and then add the default
-    GameDefs = sorted(GameDefs, key=lambda def_: def_[0].name)
-    new = [None]
-    for item in GameDefs: new.append(item[1])
-    return new
+    game_defs.sort(key=lambda x: x[0])
+
+    return [None] + list(map(lambda x: x[1], game_defs))
 
 
 def loadNewGameDef(def_):
