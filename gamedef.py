@@ -71,7 +71,7 @@ class GameDefViewer(QtWidgets.QWidget):
 
 class GameDefMenu(QtWidgets.QMenu):
     """
-    A menu which lets the user pick globals_.gamedefs
+    A menu which lets the user pick gamedefs
     """
     gameChanged = QtCore.pyqtSignal()
 
@@ -81,7 +81,7 @@ class GameDefMenu(QtWidgets.QMenu):
         """
         QtWidgets.QMenu.__init__(self)
 
-        # Add the globals_.gamedef viewer widget
+        # Add the gamedef viewer widget
         self.currentView = GameDefViewer()
         self.currentView.setMinimumHeight(100)
         self.gameChanged.connect(self.currentView.updateLabels)
@@ -91,7 +91,7 @@ class GameDefMenu(QtWidgets.QMenu):
         self.addAction(v)
         self.addSeparator()
 
-        # Add entries for each globals_.gamedef
+        # Add entries for each gamedef
         self.GameDefs = getAvailableGameDefs()
 
         self.actGroup = QtWidgets.QActionGroup(self)
@@ -112,7 +112,7 @@ class GameDefMenu(QtWidgets.QMenu):
 
     def handleGameDefClicked(self, checked):
         """
-        Handles the user clicking a globals_.gamedef
+        Handles the user clicking a gamedef
         """
         if not checked: return
 
@@ -123,7 +123,7 @@ class GameDefMenu(QtWidgets.QMenu):
 
 class ReggieGameDefinition:
     """
-    A class that defines a NSMBW hack: songs, tilesets, sprites, songs, etc.
+    A class that defines a NSMBW hack: songs, tilesets, sprites, etc.
     """
 
     # Gamedef File - has 2 values: name (str) and patch (bool)
@@ -163,7 +163,7 @@ class ReggieGameDefinition:
         gdf = self.GameDefinitionFile
 
         self.custom = False
-        self.base = None  # globals_.gamedef to use as a base
+        self.base = None  # gamedef to use as a base
         self.gamepath = None
         self.name = globals_.trans.string('Gamedefs', 13)  # 'New Super Mario Bros. Wii'
         self.description = globals_.trans.string('Gamedefs', 14)  # 'A new Mario adventure!<br>' and the date
@@ -543,7 +543,6 @@ def LoadGameDef(name=None, dlg=None):
     """
     Loads a game definition
     """
-    # # global globals_.gamedef
     if dlg: dlg.setMaximum(7)
 
     # Put the whole thing into a try-except clause
@@ -590,32 +589,42 @@ def LoadGameDef(name=None, dlg=None):
 
         # Load spritedata.xml and spritecategories.xml
         if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 8))  # Loading sprite data...
+
         LoadSpriteData()
         LoadSpriteListData(True)
         LoadSpriteCategories(True)
-        if globals_.mainWindow:
+
+        if globals_.mainWindow is not None:
             globals_.mainWindow.spriteViewPicker.clear()
+
             for cat in globals_.SpriteCategories:
                 globals_.mainWindow.spriteViewPicker.addItem(cat[0])
+
             globals_.mainWindow.sprPicker.LoadItems()  # Reloads the sprite picker list items
             globals_.mainWindow.spriteViewPicker.setCurrentIndex(0)  # Sets the sprite picker to category 0 (enemies)
             globals_.mainWindow.spriteDataEditor.setSprite(globals_.mainWindow.spriteDataEditor.spritetype,
                                                   True)  # Reloads the sprite data editor fields
             globals_.mainWindow.spriteDataEditor.update()
+
         if dlg: dlg.setValue(2)
 
         # Load BgA/BgB names
         if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 9))  # Loading background names...
+
         LoadBgANames(True)
         LoadBgBNames(True)
+
         if dlg: dlg.setValue(3)
 
         # Reload tilesets
         if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 10))  # Reloading tilesets...
+
         LoadObjDescriptions(True)  # reloads ts1_descriptions
-        if globals_.mainWindow is not None: globals_.mainWindow.ReloadTilesets(True)
+        if globals_.mainWindow is not None:
+            globals_.mainWindow.ReloadTilesets(True)
         LoadTilesetNames(True)  # reloads tileset names
         LoadTilesetInfo(True)  # reloads tileset info
+
         if dlg: dlg.setValue(4)
 
         # Load sprites.py
