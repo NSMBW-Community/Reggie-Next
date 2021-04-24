@@ -74,6 +74,7 @@ class GameDefMenu(QtWidgets.QMenu):
     A menu which lets the user pick gamedefs
     """
     gameChanged = QtCore.pyqtSignal()
+    update_flag = False
 
     def __init__(self):
         """
@@ -114,11 +115,25 @@ class GameDefMenu(QtWidgets.QMenu):
         """
         Handles the user clicking a gamedef
         """
-        if not checked: return
+        if not checked or self.update_flag: return
 
         name = self.actGroup.checkedAction().data()
-        loadNewGameDef(name)
-        self.gameChanged.emit()
+        success = loadNewGameDef(name)
+        if success:
+            self.gameChanged.emit()
+            return
+
+        # Setting the new gamedef failed for some reason, so load back the old
+        # game def.
+        real_gamedef = setting('LastGameDef')
+        success = loadNewGameDef(real_gamedef)
+        if not success:
+            raise Exception("Restoring the previous game def (%r) failed after failing to load new game def (%r)" % (real_gamedef, name))
+
+        self.update_flag = True
+        for act in self.actGroup.actions():
+            act.setChecked(act.data() == real_gamedef)
+        self.update_flag = False
 
 
 class ReggieGameDefinition:
@@ -533,10 +548,10 @@ def loadNewGameDef(def_):
     dlg.show()
     dlg.setValue(0)
 
-    LoadGameDef(def_, dlg)
+    res = LoadGameDef(def_, dlg)
 
     dlg.setValue(100)
-    del dlg
+    return res
 
 # Game Definitions
 def LoadGameDef(name=None, dlg=None):
@@ -559,11 +574,14 @@ def LoadGameDef(name=None, dlg=None):
             # First-time usage of this globals_.gamedef. Have the
             # user pick a stage folder so we can load stages
             # and tilesets from there
-            QtWidgets.QMessageBox.information(None,
+            pressed_button = QtWidgets.QMessageBox.information(None,
                 globals_.trans.string('Gamedefs', 2),
                 globals_.trans.string('Gamedefs', 3, '[game]', globals_.gamedef.name),
-                QtWidgets.QMessageBox.Ok
+                QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel
             )
+
+            if pressed_button == QtWidgets.QMessageBox.Cancel:
+                return False
 
             if globals_.mainWindow is None:
                 # This check avoids an error because globals_.mainWindow is None
@@ -584,6 +602,11 @@ def LoadGameDef(name=None, dlg=None):
                 globals_.trans.string('Gamedefs', msg_ids[1], '[game]', globals_.gamedef.name),
                 QtWidgets.QMessageBox.Ok
             )
+
+            if not result:
+                # If the user refused to select a game path, abort the patch
+                # switching process.
+                return False
 
         if dlg: dlg.setValue(1)
 
