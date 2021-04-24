@@ -69,59 +69,6 @@ class GameDefViewer(QtWidgets.QWidget):
         self.descLabel.setText(desc)
 
 
-class GameDefSelector(QtWidgets.QWidget):
-    """
-    Widget which lets you pick a new game definition
-    """
-    gameChanged = QtCore.pyqtSignal()
-
-    def __init__(self):
-        """
-        Initializes the widget
-        """
-        QtWidgets.QWidget.__init__(self)
-
-        # Populate a list of globals_.gamedefs
-        self.GameDefs = getAvailableGameDefs()
-
-        # Add them to the main layout
-        self.group = QtWidgets.QButtonGroup()
-        self.group.setExclusive(True)
-        L = QtWidgets.QGridLayout()
-        row = 0
-        col = 0
-        current = setting('LastGameDef')
-
-        for i, folder in enumerate(self.GameDefs):
-            def_ = ReggieGameDefinition(folder)
-
-            btn = QtWidgets.QRadioButton()
-            btn.setChecked(folder == current)
-            btn.toggled.connect(self.HandleRadioButtonClick)
-
-            self.group.addButton(btn, i)
-
-            btn.setToolTip(def_.description)
-
-            name = QtWidgets.QLabel(def_.name)
-            name.setToolTip(def_.description)
-
-            col = (i >> 1) << 1
-            L.addWidget(btn, i & 1, col)
-            L.addWidget(name, i & 1, col + 1)
-
-        self.setLayout(L)
-
-    def HandleRadioButtonClick(self, checked):
-        """
-        Handles radio button clicks
-        """
-        if not checked: return  # this is called twice; one button is checked, another is unchecked
-
-        loadNewGameDef(self.GameDefs[self.group.checkedId()])
-        self.gameChanged.emit()
-
-
 class GameDefMenu(QtWidgets.QMenu):
     """
     A menu which lets the user pick globals_.gamedefs
