@@ -9,13 +9,7 @@ def LoadTheme():
     """
     Loads the theme
     """
-    id = setting('Theme')
-    if id is None:
-        id = 'Classic'
-
-    # global theme
-    globals_.theme = ReggieTheme(id)
-
+    globals_.theme = ReggieTheme(setting("Theme", "Classic"))
 
 class ReggieTheme:
     """
@@ -368,7 +362,6 @@ def LoadNumberFont():
     """
     Creates a valid font we can use to display the item numbers
     """
-    # global NumberFont
     if globals_.NumberFont is not None: return
 
     # this is a really crappy method, but I can't think of any other way

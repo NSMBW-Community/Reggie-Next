@@ -1332,7 +1332,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             return
 
         self.spritetype = type_
-        if type_ != 1000 and 0 <= type_ < len(globals_.Sprites):
+        if type_ != 1000 and 0 <= type_ < globals_.NumSprites:
             sprite = globals_.Sprites[type_]
         else:
             sprite = None
@@ -2164,7 +2164,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         """
         QtWidgets.QDialog.__init__(self)
 
-        if 0 <= spriteid < len(globals_.Sprites):
+        if 0 <= spriteid < globals_.NumSprites:
             self.sprite = globals_.Sprites[spriteid]
         else:
             self.sprite = None

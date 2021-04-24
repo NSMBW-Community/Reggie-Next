@@ -868,17 +868,17 @@ def _LoadTileset(idx, name, reload_=False):
     for path in tileset_paths:
         if path is None: break
 
-        globals_.arcname = os.path.join(path, "Texture", name + ".arc.LH")
+        arcname = os.path.join(path, "Texture", name + ".arc.LH")
 
         # Prioritise .arc.LH over regular .arc, just like the game does.
         compressed = True
-        if os.path.isfile(globals_.arcname):
+        if os.path.isfile(arcname):
             found = True
             break
 
-        globals_.arcname = globals_.arcname[:-3]  # strip away the .LH suffix
+        arcname = arcname[:-3]  # strip away the .LH suffix
         compressed = False
-        if os.path.isfile(globals_.arcname):
+        if os.path.isfile(arcname):
             found = True
             break
 
@@ -889,10 +889,10 @@ def _LoadTileset(idx, name, reload_=False):
         return False
 
     # if this file's already loaded, return
-    if globals_.TilesetFilesLoaded[idx] == globals_.arcname and not reload_: return
+    if globals_.TilesetFilesLoaded[idx] == arcname and not reload_: return
 
     # get the data
-    with open(globals_.arcname, 'rb') as fileobj:
+    with open(arcname, 'rb') as fileobj:
         arcdata = fileobj.read()
 
     if compressed:
@@ -1063,7 +1063,7 @@ def _LoadTileset(idx, name, reload_=False):
     ProcessOverrides(idx, name)
 
     # Keep track of this filepath
-    globals_.TilesetFilesLoaded[idx] = globals_.arcname
+    globals_.TilesetFilesLoaded[idx] = arcname
 
     # Add Tiles to spritelib
     SLib.Tiles = globals_.Tiles

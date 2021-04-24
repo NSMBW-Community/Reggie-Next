@@ -784,7 +784,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
 
                     id_ = snode.data(0, QtCore.Qt.UserRole)
 
-                    if 0 <= id_ < len(globals_.Sprites):
+                    if 0 <= id_ < globals_.NumSprites:
                         sdef = globals_.Sprites[id_]
                     else:
                         sdef = None
@@ -821,7 +821,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
                         snode.setData(0, QtCore.Qt.UserRole, -2)
                         self.NoSpritesFound = snode
                     else:
-                        if 0 <= id_ < len(globals_.Sprites):
+                        if 0 <= id_ < globals_.NumSprites:
                             sdef = globals_.Sprites[id_]
                         else:
                             sdef = None
@@ -1022,7 +1022,7 @@ class SpriteList(QtWidgets.QWidget):
         filtertype = self.idtypes[filteridx - 1]
         sprite = self.table.item(row, 0)._sprite
 
-        if 0 <= sprite.type < len(globals_.Sprites):
+        if 0 <= sprite.type < globals_.NumSprites:
             sdef = globals_.Sprites[sprite.type]
         else:
             # No sprite definition -> hide
@@ -1221,11 +1221,10 @@ class SpriteList(QtWidgets.QWidget):
         Returns an (idtype, [values]) dict for every
         idtype this sprite has
         """
-        if 0 <= sprite.type < len(globals_.Sprites):
-            sdef = globals_.Sprites[sprite.type]
-        else:
+        if not 0 <= sprite.type < globals_.NumSprites:
             return {}
 
+        sdef = globals_.Sprites[sprite.type]
         res = {}
         decoder = SpriteEditorWidget.PropertyDecoder()
         data = sprite.spritedata

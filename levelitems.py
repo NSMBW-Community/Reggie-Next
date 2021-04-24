@@ -1836,7 +1836,7 @@ class SpriteItem(LevelEditorItem):
         SLib.SpriteImage.loadImages()
         self.ImageObj = SLib.SpriteImage(self)
 
-        if 0 <= type_ < len(globals_.Sprites):
+        if 0 <= type_ < globals_.NumSprites:
             self.name = globals_.Sprites[type_].name
         else:
             self.name = "UNKNOWN"
@@ -1864,7 +1864,7 @@ class SpriteItem(LevelEditorItem):
         """
         Sets the type of the sprite
         """
-        if 0 <= type_ < len(globals_.Sprites):
+        if 0 <= type_ < globals_.NumSprites:
             self.name = globals_.Sprites[type_].name
         else:
             self.name = "UNKNOWN"
@@ -1999,8 +1999,8 @@ class SpriteItem(LevelEditorItem):
         """
         type_ = self.type
 
-        if not 0 <= type_ < len(globals_.Sprites):
-            print('Tried to initialize a sprite of type %d, but this is out of range %d.' % (type_, len(globals_.Sprites)))
+        if not 0 <= type_ < globals_.NumSprites:
+            print('Tried to initialize a sprite of type %d, but this is out of range %d.' % (type_, globals_.NumSprites))
             return
 
         self.name = globals_.Sprites[type_].name
