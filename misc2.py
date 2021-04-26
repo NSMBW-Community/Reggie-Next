@@ -418,6 +418,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             event.accept()
 
         elif event.button() == QtCore.Qt.MidButton:
+            self.setDragMode(QtWidgets.QGraphicsView.NoDrag)
             self.lastCursorPosForMidButtonScroll = event.pos()
             QtWidgets.QGraphicsView.mousePressEvent(self, event)
 
@@ -634,6 +635,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
         if event.button() == QtCore.Qt.RightButton:
             self.currentobj = None
+        elif event.button() == QtCore.Qt.MidButton:
+            self.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
 
         QtWidgets.QGraphicsView.mouseReleaseEvent(self, event)
 
