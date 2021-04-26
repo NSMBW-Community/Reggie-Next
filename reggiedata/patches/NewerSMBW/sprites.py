@@ -2027,7 +2027,7 @@ class SpriteImage_NewerBush(SLib.SpriteImage_StaticMultiple):  # 387
                 ImageCache['bush%s%s' % (style, size)] = SLib.GetImg('bush_%s_%s.png' % (style, size))
           
         if 'bushtreeleafsxlarge' in ImageCache: return
-        for style in ('brown', 'darkred', 'yellow', 'darkbrown', 'ted', 'treeleafs'):
+        for style in ('brown', 'darkred', 'yellow', 'darkbrown', 'red', 'treeleafs'):
             for size in ('small', 'med', 'large', 'xlarge'):
                 ImageCache['bush%s%s' % (style, size)] = SLib.GetImg('bush_%s_%s.png' % (style, size))
 
