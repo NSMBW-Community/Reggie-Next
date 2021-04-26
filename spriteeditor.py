@@ -814,9 +814,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if comment is not None:
                 button_com = QtWidgets.QToolButton()
 
-                if not globals_.AltSettingIcons:
-                    button_com.setIcon(GetIcon('setting-comment'))
-                    button_com.setStyleSheet("border-radius: 50%")
+                button_com.setIcon(GetIcon('setting-comment'))
+                button_com.setStyleSheet("border-radius: 50%")
 
                 button_com.clicked.connect(self.ShowComment)
                 button_com.setAutoRaise(True)
@@ -824,7 +823,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 button_com = None
 
-            if comment2 is not None and not globals_.AltSettingIcons:
+            if comment2 is not None:
                 button_com2 = QtWidgets.QToolButton()
                 button_com2.setIcon(GetIcon('setting-comment2'))
                 button_com2.setStyleSheet("border-radius: 50%")
@@ -837,9 +836,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if commentAdv is not None:
                 button_adv = QtWidgets.QToolButton()
 
-                if not globals_.AltSettingIcons:
-                    button_adv.setIcon(GetIcon('setting-comment-adv'))
-                    button_adv.setStyleSheet("border-radius: 50%")
+                button_adv.setIcon(GetIcon('setting-comment-adv'))
+                button_adv.setStyleSheet("border-radius: 50%")
 
                 button_adv.clicked.connect(self.ShowAdvancedComment)
                 button_adv.setAutoRaise(True)
@@ -1332,7 +1330,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             return
 
         self.spritetype = type_
-        if type_ != 1000 and 0 <= type_ < len(globals_.Sprites):
+        if type_ != 1000 and 0 <= type_ < globals_.NumSprites:
             sprite = globals_.Sprites[type_]
         else:
             sprite = None
@@ -2164,7 +2162,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         """
         QtWidgets.QDialog.__init__(self)
 
-        if 0 <= spriteid < len(globals_.Sprites):
+        if 0 <= spriteid < globals_.NumSprites:
             self.sprite = globals_.Sprites[spriteid]
         else:
             self.sprite = None

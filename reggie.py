@@ -4230,25 +4230,13 @@ def main():
         sys.exit(1)
 
     # Load required stuff
-    # global Sprites
-    # global globals_.SpriteListData
-    globals_.Sprites = None
-    globals_.SpriteListData = None
     LoadGameDef(setting('LastGameDef'))
     LoadActionsLists()
     LoadConstantLists()
-    LoadTilesetNames()
-    LoadObjDescriptions()
-    LoadBgANames()
-    LoadBgBNames()
-    LoadSpriteData()
-    LoadSpriteListData()
-    LoadEntranceNames()
     LoadNumberFont()
     LoadTheme()
     SetAppStyle()
     LoadOverrides()
-    LoadTilesetInfo()
     SLib.OutlineColor = globals_.theme.color('smi')
     SLib.main()
     sprites.LoadBasics()
@@ -4259,14 +4247,10 @@ def main():
 
     gt = setting('GridType')
 
-    if gt == 'checker':
-        globals_.GridType = 'checker'
-
-    elif gt == 'grid':
-        globals_.GridType = 'grid'
-
-    else:
+    if gt not in ('checker', 'grid'):
         globals_.GridType = None
+    else:
+        globals_.GridType = gt
 
     globals_.CollisionsShown = setting('ShowCollisions', False)
     globals_.RealViewEnabled = setting('RealViewEnabled', True)

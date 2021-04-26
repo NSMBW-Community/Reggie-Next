@@ -69,64 +69,12 @@ class GameDefViewer(QtWidgets.QWidget):
         self.descLabel.setText(desc)
 
 
-class GameDefSelector(QtWidgets.QWidget):
-    """
-    Widget which lets you pick a new game definition
-    """
-    gameChanged = QtCore.pyqtSignal()
-
-    def __init__(self):
-        """
-        Initializes the widget
-        """
-        QtWidgets.QWidget.__init__(self)
-
-        # Populate a list of globals_.gamedefs
-        self.GameDefs = getAvailableGameDefs()
-
-        # Add them to the main layout
-        self.group = QtWidgets.QButtonGroup()
-        self.group.setExclusive(True)
-        L = QtWidgets.QGridLayout()
-        row = 0
-        col = 0
-        current = setting('LastGameDef')
-
-        for i, folder in enumerate(self.GameDefs):
-            def_ = ReggieGameDefinition(folder)
-
-            btn = QtWidgets.QRadioButton()
-            btn.setChecked(folder == current)
-            btn.toggled.connect(self.HandleRadioButtonClick)
-
-            self.group.addButton(btn, i)
-
-            btn.setToolTip(def_.description)
-
-            name = QtWidgets.QLabel(def_.name)
-            name.setToolTip(def_.description)
-
-            col = (i >> 1) << 1
-            L.addWidget(btn, i & 1, col)
-            L.addWidget(name, i & 1, col + 1)
-
-        self.setLayout(L)
-
-    def HandleRadioButtonClick(self, checked):
-        """
-        Handles radio button clicks
-        """
-        if not checked: return  # this is called twice; one button is checked, another is unchecked
-
-        loadNewGameDef(self.GameDefs[self.group.checkedId()])
-        self.gameChanged.emit()
-
-
 class GameDefMenu(QtWidgets.QMenu):
     """
-    A menu which lets the user pick globals_.gamedefs
+    A menu which lets the user pick gamedefs
     """
     gameChanged = QtCore.pyqtSignal()
+    update_flag = False
 
     def __init__(self):
         """
@@ -134,7 +82,7 @@ class GameDefMenu(QtWidgets.QMenu):
         """
         QtWidgets.QMenu.__init__(self)
 
-        # Add the globals_.gamedef viewer widget
+        # Add the gamedef viewer widget
         self.currentView = GameDefViewer()
         self.currentView.setMinimumHeight(100)
         self.gameChanged.connect(self.currentView.updateLabels)
@@ -144,7 +92,7 @@ class GameDefMenu(QtWidgets.QMenu):
         self.addAction(v)
         self.addSeparator()
 
-        # Add entries for each globals_.gamedef
+        # Add entries for each gamedef
         self.GameDefs = getAvailableGameDefs()
 
         self.actGroup = QtWidgets.QActionGroup(self)
@@ -165,18 +113,32 @@ class GameDefMenu(QtWidgets.QMenu):
 
     def handleGameDefClicked(self, checked):
         """
-        Handles the user clicking a globals_.gamedef
+        Handles the user clicking a gamedef
         """
-        if not checked: return
+        if not checked or self.update_flag: return
 
         name = self.actGroup.checkedAction().data()
-        loadNewGameDef(name)
-        self.gameChanged.emit()
+        success = loadNewGameDef(name)
+        if success:
+            self.gameChanged.emit()
+            return
+
+        # Setting the new gamedef failed for some reason, so load back the old
+        # game def.
+        real_gamedef = setting('LastGameDef')
+        success = loadNewGameDef(real_gamedef)
+        if not success:
+            raise Exception("Restoring the previous game def (%r) failed after failing to load new game def (%r)" % (real_gamedef, name))
+
+        self.update_flag = True
+        for act in self.actGroup.actions():
+            act.setChecked(act.data() == real_gamedef)
+        self.update_flag = False
 
 
 class ReggieGameDefinition:
     """
-    A class that defines a NSMBW hack: songs, tilesets, sprites, songs, etc.
+    A class that defines a NSMBW hack: songs, tilesets, sprites, etc.
     """
 
     # Gamedef File - has 2 values: name (str) and patch (bool)
@@ -216,7 +178,7 @@ class ReggieGameDefinition:
         gdf = self.GameDefinitionFile
 
         self.custom = False
-        self.base = None  # globals_.gamedef to use as a base
+        self.base = None  # gamedef to use as a base
         self.gamepath = None
         self.name = globals_.trans.string('Gamedefs', 13)  # 'New Super Mario Bros. Wii'
         self.description = globals_.trans.string('Gamedefs', 14)  # 'A new Mario adventure!<br>' and the date
@@ -261,16 +223,14 @@ class ReggieGameDefinition:
 
         # Add the attributes of root: name, description and version.
         # base is added in __init2__, only when needed.
-        if 'name' not in root.attrib: raise Exception
-        self.name = root.attrib['name']
+        self.name = root.get('name')
 
-        self.description = globals_.trans.string('Gamedefs', 15)
-        if 'description' in root.attrib:
-            self.description = root.attrib['description'].replace('[', '<').replace(']', '>')
+        if self.name is None:
+            raise ValueError("Game definition XML %r has no 'name' attribute on the root node." % path)
 
-        self.version = root.attrib.get('version')
-
-        del tree, root
+        default = globals_.trans.string('Gamedefs', 15)
+        self.description = root.get('description', default).replace('[', '<').replace(']', '>')
+        self.version = root.get('version')
 
     def __init2__(self):
         """
@@ -297,18 +257,19 @@ class ReggieGameDefinition:
             if n not in ('file', 'folder'):
                 continue
 
-            path = os.path.join(addpath, node.attrib['path'])
-            patch = node.attrib.get('patch', 'true').lower() == 'true'
+            patch = node.get('patch', 'true').lower() == 'true'
 
-            if 'game' in node.attrib:
-                if node.attrib['game'] != globals_.trans.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
-                    def_ = FindGameDef(node.attrib['game'], self.gamepath)
-                    path = os.path.join('reggiedata', 'patches', def_.gamepath, node.attrib['path'])
-                else:
-                    path = os.path.join('reggiedata', node.attrib['path'])
+            game = node.get('game')
+            if game is None:
+                path = os.path.join(addpath, node.get('path'))
+            elif game == globals_.trans.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
+                path = os.path.join('reggiedata', node.get('path'))
+            else:
+                def_ = FindGameDef(game, self.gamepath)
+                path = os.path.join('reggiedata', 'patches', def_.gamepath, node.get('path'))
 
-            ListToAddTo = self.files if n == 'file' else self.folders  # self.files or self.folders
-            ListToAddTo[node.attrib['name']] = self.GameDefinitionFile(path, patch)
+            dict_type = self.files if n == 'file' else self.folders  # self.files or self.folders
+            dict_type[node.get('name')] = self.GameDefinitionFile(path, patch)
 
         # Get rid of the XML stuff
         del tree, root
@@ -556,22 +517,22 @@ class ReggieGameDefinition:
 
 
 def getAvailableGameDefs():
-    GameDefs = []
+    game_defs = []
 
     # Add them
     folders = os.listdir(os.path.join('reggiedata', 'patches'))
     for folder in folders:
         if not os.path.isdir(os.path.join('reggiedata', 'patches', folder)): continue
-        inFolder = os.listdir(os.path.join('reggiedata', 'patches', folder))
-        if 'main.xml' not in inFolder: continue
+        if not os.path.isfile(os.path.join('reggiedata', 'patches', folder, 'main.xml')): continue
+
         def_ = ReggieGameDefinition(folder)
-        if def_.custom: GameDefs.append((def_, folder))
+        if def_.custom:
+            game_defs.append((def_.name, folder))
 
     # Alphabetize them, and then add the default
-    GameDefs = sorted(GameDefs, key=lambda def_: def_[0].name)
-    new = [None]
-    for item in GameDefs: new.append(item[1])
-    return new
+    game_defs.sort(key=lambda x: x[0])
+
+    return [None] + list(map(lambda x: x[1], game_defs))
 
 
 def loadNewGameDef(def_):
@@ -586,17 +547,16 @@ def loadNewGameDef(def_):
     dlg.show()
     dlg.setValue(0)
 
-    LoadGameDef(def_, dlg)
+    res = LoadGameDef(def_, dlg)
 
     dlg.setValue(100)
-    del dlg
+    return res
 
 # Game Definitions
 def LoadGameDef(name=None, dlg=None):
     """
     Loads a game definition
     """
-    # # global globals_.gamedef
     if dlg: dlg.setMaximum(7)
 
     # Put the whole thing into a try-except clause
@@ -613,11 +573,14 @@ def LoadGameDef(name=None, dlg=None):
             # First-time usage of this globals_.gamedef. Have the
             # user pick a stage folder so we can load stages
             # and tilesets from there
-            QtWidgets.QMessageBox.information(None,
+            pressed_button = QtWidgets.QMessageBox.information(None,
                 globals_.trans.string('Gamedefs', 2),
                 globals_.trans.string('Gamedefs', 3, '[game]', globals_.gamedef.name),
-                QtWidgets.QMessageBox.Ok
+                QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel
             )
+
+            if pressed_button == QtWidgets.QMessageBox.Cancel:
+                return False
 
             if globals_.mainWindow is None:
                 # This check avoids an error because globals_.mainWindow is None
@@ -639,36 +602,51 @@ def LoadGameDef(name=None, dlg=None):
                 QtWidgets.QMessageBox.Ok
             )
 
+            if not result:
+                # If the user refused to select a game path, abort the patch
+                # switching process.
+                return False
+
         if dlg: dlg.setValue(1)
 
         # Load spritedata.xml and spritecategories.xml
         if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 8))  # Loading sprite data...
+
         LoadSpriteData()
         LoadSpriteListData(True)
         LoadSpriteCategories(True)
-        if globals_.mainWindow:
+
+        if globals_.mainWindow is not None:
             globals_.mainWindow.spriteViewPicker.clear()
+
             for cat in globals_.SpriteCategories:
                 globals_.mainWindow.spriteViewPicker.addItem(cat[0])
+
             globals_.mainWindow.sprPicker.LoadItems()  # Reloads the sprite picker list items
             globals_.mainWindow.spriteViewPicker.setCurrentIndex(0)  # Sets the sprite picker to category 0 (enemies)
             globals_.mainWindow.spriteDataEditor.setSprite(globals_.mainWindow.spriteDataEditor.spritetype,
                                                   True)  # Reloads the sprite data editor fields
             globals_.mainWindow.spriteDataEditor.update()
+
         if dlg: dlg.setValue(2)
 
         # Load BgA/BgB names
         if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 9))  # Loading background names...
+
         LoadBgANames(True)
         LoadBgBNames(True)
+
         if dlg: dlg.setValue(3)
 
         # Reload tilesets
         if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 10))  # Reloading tilesets...
+
         LoadObjDescriptions(True)  # reloads ts1_descriptions
-        if globals_.mainWindow is not None: globals_.mainWindow.ReloadTilesets(True)
+        if globals_.mainWindow is not None:
+            globals_.mainWindow.ReloadTilesets(True)
         LoadTilesetNames(True)  # reloads tileset names
         LoadTilesetInfo(True)  # reloads tileset info
+
         if dlg: dlg.setValue(4)
 
         # Load sprites.py
