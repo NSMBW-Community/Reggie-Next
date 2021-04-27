@@ -535,19 +535,11 @@ class ObjectItem(LevelEditorItem):
         Returns whether the bottom row of self.objdata contains the a special
         vdouble top tile
         """
-        if globals_.TilesetFilesLoaded[self.tileset] is None \
-           or globals_.TilesetInfo is None \
-           or globals_.ObjectDefinitions is None \
-           or globals_.ObjectDefinitions[self.tileset] is None \
-           or globals_.ObjectDefinitions[self.tileset][self.type] is None \
-           or globals_.ObjectDefinitions[self.tileset][self.type].rows is None \
-           or globals_.ObjectDefinitions[self.tileset][self.type].rows[0] is None \
-           or globals_.ObjectDefinitions[self.tileset][self.type].rows[0][0] is None \
-           or len(globals_.ObjectDefinitions[self.tileset][self.type].rows[0][0]) == 1:
+        if globals_.TilesetFilesLoaded[self.tileset] is None or globals_.TilesetInfo is None:
             # no randomisation info -> false
             return False
 
-        name = globals_.TilesetFilesLoaded[self.tileset].split("/")[-1].split(".arc")[0]
+        name = self.get_tileset_base_name()
 
         if name not in globals_.TilesetInfo:
             # tileset not randomised -> false
@@ -577,19 +569,11 @@ class ObjectItem(LevelEditorItem):
         # function that returns the tile on the block next to the current tile
         # on a specified layer. Maybe something for the Area class?
 
-        if globals_.TilesetFilesLoaded[self.tileset] is None \
-           or globals_.TilesetInfo is None \
-           or globals_.ObjectDefinitions is None \
-           or globals_.ObjectDefinitions[self.tileset] is None \
-           or globals_.ObjectDefinitions[self.tileset][self.type] is None \
-           or globals_.ObjectDefinitions[self.tileset][self.type].rows is None \
-           or globals_.ObjectDefinitions[self.tileset][self.type].rows[0] is None \
-           or globals_.ObjectDefinitions[self.tileset][self.type].rows[0][0] is None \
-           or len(globals_.ObjectDefinitions[self.tileset][self.type].rows[0][0]) == 1:
+        if globals_.TilesetInfo is None or globals_.TilesetFilesLoaded[self.tileset] is None:
             # no randomisation info -> exit
             return
 
-        name = globals_.TilesetFilesLoaded[self.tileset].split("/")[-1].split(".arc")[0]
+        name = self.get_tileset_base_name()
 
         if name not in globals_.TilesetInfo:
             # tileset not randomised -> exit
@@ -668,6 +652,20 @@ class ObjectItem(LevelEditorItem):
                         # tl;dr: A lot of work to properly implement this.
                         pass
 
+    def get_tileset_base_name(self):
+        """
+        Returns the bare file name of the tileset file this object uses. This
+        file name has all extensions ('.arc' or '.arc.LH') removed.
+        """
+        tileset_path = globals_.TilesetFilesLoaded[self.tileset]
+        filename = os.path.splitext(os.path.basename(tileset_path))[0]
+
+        if "." in filename:
+            # The tileset file is probably LH-compressed.
+            filename = os.path.splitext(filename)[0]
+
+        return filename
+
     def updateObjCacheWH(self, width, height):
         """
         Updates the rendered object data with custom width and height
@@ -689,8 +687,9 @@ class ObjectItem(LevelEditorItem):
             self.width, self.height = save
             return
 
-        name = globals_.TilesetFilesLoaded[self.tileset].split("/")[-1].split(".arc")[0]
+        name = self.get_tileset_base_name()
         tile = globals_.ObjectDefinitions[self.tileset][self.type].rows[0][0][1] & 0xFF
+
         if name not in globals_.TilesetInfo or tile not in globals_.TilesetInfo[name]:
             # no randomisation needed -> exit
             save = (self.width, self.height)
@@ -700,6 +699,7 @@ class ObjectItem(LevelEditorItem):
             return
 
         if width == self.width and height == self.height:
+            # Width and height did not change, so there is nothing to do
             return
 
         if height < self.height:
