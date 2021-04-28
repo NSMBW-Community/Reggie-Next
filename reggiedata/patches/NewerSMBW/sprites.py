@@ -2119,7 +2119,7 @@ class SpriteImage_NewerGabon(SLib.SpriteImage_StaticMultiple):  # 414
     def dataChanged(self):
         throwdir = self.parent.spritedata[5] & 1
         facing = self.parent.spritedata[4] & 1
-        style = self.parent.spritedata[2]
+        style = self.parent.spritedata[2] & 7
         
         if 'GabonsnowRight' not in ImageCache: return
         color = ("", "red", "orange", "yellow", "", "snow")[style % 6]

@@ -2549,8 +2549,8 @@
   <sprite id="411" name="(Unused) Toad House Minigame - Lives Balloon" notes="An unused version of sprite 412 and has no purpose.">
   </sprite> <!-- #411: (Unused) Toad House Minigame - Lives Balloon -->
 
-  <sprite id="414" name="Spike / Stone Spike"  sizehacks="True" notes="A strange little koopa that can pull spiked balls from another dimension located inside their stomach and endlessly hurl them towards the player. These spiked balls cannot damage terrain.">
-    <list nybble="6" title="Color" comment="This determines the color of the Stone Spike." requiredbit="48" requiredval="0">
+  <sprite id="414" name="Spike/Stone Spike" notes="" sizehacks="True">
+    <list nybble="6" title="Color" requiredbit="48" requiredval="0">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -2560,7 +2560,7 @@
       <entry value="6">Violet</entry>
       <entry value="7">Black</entry>
     </list> <!-- Stone Spike colors -->
-	<list nybble="6" title="Color" comment="This determines the color of the Spike." requiredbit="48" requiredval="1">
+	<list nybble="6" title="Color" requiredbit="48" requiredval="1">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -2568,11 +2568,11 @@
       <entry value="4">Green</entry>
       <entry value="5">NSMBDS Snow Spike</entry>
     </list> <!-- Spike colors -->
-    <dualbox bit="48" title1="Stone Spike (Throws Down)" title2="Spike (Throws to Side)" comment="This determines the type of enemy that will spawn." comment2="A Stone Spike throws spiked balls downwards, and a Spike throws spiked balls left or right."/>
-	<dualbox bit="40" title1="Faces Left" title2="Faces Right" comment="This determines the initial direction the Spike will face." comment2="This has limited use, as the Spike will turn to face the player when needed. It's most useful when placing the Spike in range of an entrance." requiredbit="48" requiredval="0"/>
-    <checkbox bit="44" title="Always Throwing" comment="When enabled, the Spike will always throw spiked balls, even when off-screen." comment2="May only function with Stone Spikes."/>
-    <value nybble="5" title="Throwing Delay" comment="This determines the delay between each time the Spike throws their spiked ball." comment2="The amount of delay is inconsistent between increases in value."/>
-  </sprite> <!-- #414: Spike / Stone Spike -->
+    <dualbox bit="48" title1="Stone Spike (Throws Down)" title2="Spike (Throws to Side)"/>
+	<dualbox bit="40" title1="Faces Left" title2="Faces Right" comment="The Spike will turn to face the player when on screen." requiredbit="48" requiredval="1"/>
+    <checkbox bit="44" title="Always Throwing" comment="When enabled, the Spike will always throw spiked balls, even when off-screen. May only function with Stone Spikes."/>
+    <value nybble="5" title="Throwing Delay" comment="The amount of delay is inconsistent between increases in value."/>
+  </sprite> <!-- #414: Spike/Stone Spike -->
 
   <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
     <dependency notes="&lt;font color=&quot;red&quot;&gt;Usable in classic NSMBW only.&lt;/font&gt; All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
