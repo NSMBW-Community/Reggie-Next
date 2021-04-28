@@ -4145,12 +4145,22 @@ class ReggieWindow(QtWidgets.QMainWindow):
         ss_painter = QtGui.QPainter(ss_img)
 
         if hide_background:
-            # HACK: The painter.fillRect function is only used to paint the
-            # background, so by overwriting this function, we effectively make
-            # the background drawing call a no-op.
-            ss_painter.fillRect = lambda *_: None
+            # Remove the background
+            brush = self.scene.backgroundBrush()
+            style = brush.style()
+            brush.setStyle(Qt.NoBrush)
+            self.scene.setBackgroundBrush(brush)
 
-        renderer.render(ss_painter, source=screenshot_rect)
+            # Render
+            renderer.render(ss_painter, source=screenshot_rect)
+
+            # Restore the background
+            brush.setStyle(style)
+            self.scene.setBackgroundBrush(brush)
+
+        else:
+            # Render with background
+            renderer.render(ss_painter, source=screenshot_rect)
 
         ss_painter.end()
 

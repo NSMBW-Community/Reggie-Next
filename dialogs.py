@@ -455,7 +455,7 @@ class ScreenCapChoiceDialog(QtWidgets.QDialog):
         self.zoneCombo.addItem(globals_.trans.string('ScrShtDlg', 1))
         self.zoneCombo.addItem(globals_.trans.string('ScrShtDlg', 2))
         for i in range(len(globals_.Area.zones)):
-            self.zoneCombo.addItem(globals_.trans.string('ScrShtDlg', 3, '[zone]', i))
+            self.zoneCombo.addItem(globals_.trans.string('ScrShtDlg', 3, '[zone]', i + 1))
 
         self.hide_background = QtWidgets.QCheckBox()
         self.save_img = QtWidgets.QRadioButton()

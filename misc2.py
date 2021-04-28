@@ -13,14 +13,14 @@ class LevelScene(QtWidgets.QGraphicsScene):
     """
 
     def __init__(self, *args):
-        self.bgbrush = QtGui.QBrush(globals_.theme.color('bg'))
         QtWidgets.QGraphicsScene.__init__(self, *args)
+        self.setBackgroundBrush(QtGui.QBrush(globals_.theme.color('bg')))
 
     def drawBackground(self, painter, rect):
         """
         Draws all visible tiles
         """
-        painter.fillRect(rect, self.bgbrush)
+        QtWidgets.QGraphicsScene.drawBackground(self, painter, rect)
         if not hasattr(globals_.Area, 'layers'): return
 
         drawrect = QtCore.QRectF(rect.x() / 24, rect.y() / 24, rect.width() / 24 + 1, rect.height() / 24 + 1)
