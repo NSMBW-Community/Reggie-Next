@@ -2665,6 +2665,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.DirtyOverride -= 1
 
         self.scene.update()
+        self.levelOverview.update()
 
     def HandleLocationsVisibility(self, checked):
         """
