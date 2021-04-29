@@ -2939,7 +2939,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Load a level from any game into the editor
         """
         new = name is None
-        same = globals_.levName == os.path.basename(name)  # Just an area change
+        same = not new and globals_.levName == os.path.basename(name)  # Just an area change
 
         # Get the file path, if possible
         if new:
