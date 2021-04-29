@@ -263,9 +263,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if len(sys.argv) > 1 and os.path.isfile(sys.argv[1]) and IsNSMBLevel(sys.argv[1]):
             loaded = self.LoadLevel(None, sys.argv[1], True, 1)
-        elif globals_.settings.contains(('LastLevel_' + globals_.gamedef .name) if globals_.gamedef .custom else 'LastLevel'):
-            lastlevel = str(globals_.gamedef .GetLastLevel())
-            loaded = self.LoadLevel(None, lastlevel, True, 1)
+        else:
+            lastlevel = globals_.gamedef.GetLastLevel()
+            if lastlevel is not None:
+                loaded = self.LoadLevel(None, lastlevel, True, 1)
 
         if not loaded:
             self.LoadLevel(None, '01-01', False, 1)
@@ -2319,13 +2320,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         path = None
         while not isValidGamePath(path):
             path = QtWidgets.QFileDialog.getExistingDirectory(None,
-                                                              globals_.trans.string('ChangeGamePath', 0, '[game]', globals_.gamedef .name))
+                                                              globals_.trans.string('ChangeGamePath', 0, '[game]', globals_.gamedef.name))
             if path == '':
                 return False
 
             path = str(path)
 
-            if (not isValidGamePath(path)) and (not globals_.gamedef .custom):  # custom gamedefs can use incomplete folders
+            if (not isValidGamePath(path)) and (not globals_.gamedef.custom):  # custom gamedefs can use incomplete folders
                 QtWidgets.QMessageBox.information(None, globals_.trans.string('ChangeGamePath', 1),
                                                   globals_.trans.string('ChangeGamePath', 2))
             else:
@@ -2343,9 +2344,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dlg = PreferencesDialog()
         if dlg.exec_() == QtWidgets.QDialog.Rejected:
             return
-
-        # Get the Menubar setting
-        setSetting('Menu', 'Menubar')
 
         # Get the translation
         name = str(dlg.generalTab.Trans.itemData(dlg.generalTab.Trans.currentIndex(), Qt.UserRole))
@@ -2428,7 +2426,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.HandleSaveAs()
             return
 
-        # global globals_.Dirty, globals_.AutoSaveDirty
         data = globals_.Level.save()
 
         # maybe pad with null bytes
@@ -2493,7 +2490,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if fn == '': return
 
         if not copy:
-            # global globals_.Dirty, globals_.AutoSaveDirty
             globals_.AutoSaveDirty = False
             globals_.Dirty = False
 
@@ -2559,13 +2555,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle toggling of layer 0 being shown
         """
-        # global globals_.Layer0Shown
-
         globals_.Layer0Shown = checked
 
-        if globals_.Area is not None:
-            for obj in globals_.Area.layers[0]:
-                obj.setVisible(globals_.Layer0Shown)
+        if globals_.Area is None:
+            return
+
+        for obj in globals_.Area.layers[0]:
+            obj.setVisible(checked)
 
         self.scene.update()
 
@@ -2573,13 +2569,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle toggling of layer 1 being shown
         """
-        # global globals_.Layer1Shown
-
         globals_.Layer1Shown = checked
 
-        if globals_.Area is not None:
-            for obj in globals_.Area.layers[1]:
-                obj.setVisible(globals_.Layer1Shown)
+        if globals_.Area is None:
+            return
+
+        for obj in globals_.Area.layers[1]:
+            obj.setVisible(checked)
 
         self.scene.update()
 
@@ -2587,13 +2583,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle toggling of layer 2 being shown
         """
-        # global globals_.Layer2Shown
-
         globals_.Layer2Shown = checked
 
-        if globals_.Area is not None:
-            for obj in globals_.Area.layers[2]:
-                obj.setVisible(globals_.Layer2Shown)
+        if globals_.Area is None:
+            return
+
+        for obj in globals_.Area.layers[2]:
+            obj.setVisible(checked)
 
         self.scene.update()
 
@@ -2602,6 +2598,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle toggling of tileset animations
         """
         globals_.TilesetsAnimating = checked
+
         for tile in globals_.Tiles:
             if tile is not None: tile.resetAnimation()
 
@@ -2647,21 +2644,25 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         setSetting('ShowSpriteImages', globals_.SpriteImagesShown)
 
-        if globals_.Area is not None:
-            globals_.DirtyOverride += 1
-            for spr in globals_.Area.sprites:
-                spr.UpdateRects()
-                if globals_.SpriteImagesShown and not globals_.Initializing:
-                    spr.setPos(
-                        (spr.objx + spr.ImageObj.xOffset) * 1.5,
-                        (spr.objy + spr.ImageObj.yOffset) * 1.5,
-                    )
-                elif not globals_.Initializing:
-                    spr.setPos(
-                        spr.objx * 1.5,
-                        spr.objy * 1.5,
-                    )
-            globals_.DirtyOverride -= 1
+        if globals_.Area is None:
+            return
+
+        globals_.DirtyOverride += 1
+        for spr in globals_.Area.sprites:
+            spr.UpdateRects()
+
+            if checked and not globals_.Initializing:
+                spr.setPos(
+                    (spr.objx + spr.ImageObj.xOffset) * 1.5,
+                    (spr.objy + spr.ImageObj.yOffset) * 1.5,
+                )
+            elif not globals_.Initializing:
+                spr.setPos(
+                    spr.objx * 1.5,
+                    spr.objy * 1.5,
+                )
+
+        globals_.DirtyOverride -= 1
 
         self.scene.update()
 

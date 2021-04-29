@@ -748,12 +748,12 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
             angle = (self.parent.spritedata[4] & 0xF0) >> 4
             leftTilt = self.parent.spritedata[3] & 1
 
-            angle *= (45.0 / 16.0)
+            angle *= 45 / 16
 
             if leftTilt == 0:
                 transform.rotate(angle)
             else:
-                transform.rotate(360.0 - angle)
+                transform.rotate(360 - angle)
 
             transform.translate(-12, -12)
             self.parent.setTransform(transform)

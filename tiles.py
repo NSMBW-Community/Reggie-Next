@@ -842,7 +842,6 @@ def CreateTilesets():
     globals_.Tiles = [None] * 0x200 * 4
     globals_.Tiles += globals_.Overrides
     globals_.TilesetFilesLoaded = [None, None, None, None]
-    # globals_.TileBehaviours = [0]*1024
     globals_.TilesetAnimTimer = QtCore.QTimer()
     globals_.TilesetAnimTimer.timeout.connect(IncrementTilesetFrame)
     globals_.TilesetAnimTimer.start(90)
@@ -851,15 +850,11 @@ def CreateTilesets():
 
 
 def LoadTileset(idx, name, reload_=False):
-    if not name: return False
-
-    return _LoadTileset(idx, name, reload_)
-
-
-def _LoadTileset(idx, name, reload_=False):
     """
     Load in a tileset into a specific slot
     """
+    if not name:
+        return False
 
     # find the tileset path
     tileset_paths = reversed(globals_.gamedef.GetGamePaths())
@@ -871,14 +866,14 @@ def _LoadTileset(idx, name, reload_=False):
         arcname = os.path.join(path, "Texture", name + ".arc.LH")
 
         # Prioritise .arc.LH over regular .arc, just like the game does.
-        compressed = True
         if os.path.isfile(arcname):
+            compressed = True
             found = True
             break
 
-        arcname = arcname[:-3]  # strip away the .LH suffix
-        compressed = False
+        arcname = os.path.splitext(arcname)[0]  # strip away the .LH suffix
         if os.path.isfile(arcname):
+            compressed = False
             found = True
             break
 

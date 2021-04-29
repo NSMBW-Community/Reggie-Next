@@ -55,15 +55,14 @@ class LevelScene(QtWidgets.QGraphicsScene):
         width = x2 - x1
         height = y2 - y1
 
-        # Assigning global variables to local variables for
-        # performance
+        # Assigning global variables to local variables for performance
         tiles = globals_.Tiles
         odefs = globals_.ObjectDefinitions
         unkn_tile = globals_.Overrides[globals_.OVERRIDE_UNKNOWN].getCurrentTile()
 
         # create and draw the tilemaps
         for layer_idx, layer in enumerate([layer2, layer1, layer0]):
-            if len(layer) == 0:
+            if not layer:
                 continue
 
             tmap = [[None] * width for _ in range(height)]
@@ -74,24 +73,20 @@ class LevelScene(QtWidgets.QGraphicsScene):
 
                 if odefs[item.tileset] is None or \
                         odefs[item.tileset][item.type] is None:
-                    # This is an unknown object, so place -1
-                    # in the tile map.
-                    for i, row in enumerate(item.objdata):
-                        destrow = tmap[desty + i]
+                    # This is an unknown object, so place -1 in the tile map.
+                    for i, row in enumerate(item.objdata, desty):
+                        destrow = tmap[i]
                         for j in range(startx, startx + len(row)):
                             destrow[j] = -1
 
                     continue
 
-                # This is not an unkown object, so update the tile map
-                # normally.
-                for row in item.objdata:
-                    destrow = tmap[desty]
-                    destx = startx
-                    for i, tile in enumerate(row):
+                # This is not an unkown object, so update the tile map normally.
+                for i, row in enumerate(item.objdata, desty):
+                    destrow = tmap[i]
+                    for j, tile in enumerate(row, startx):
                         if tile > 0:
-                            destrow[startx + i] = tile
-                    desty += 1
+                            destrow[j] = tile
 
             painter.save()
             painter.translate(x1 * 24, y1 * 24)

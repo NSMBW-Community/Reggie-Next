@@ -466,7 +466,6 @@ class ObjectItem(LevelEditorItem):
 
         self.tileset = tileset
         self.type = type
-        self.original_type = type
         self.objx = x
         self.objy = y
         self.layer = layer
@@ -479,6 +478,7 @@ class ObjectItem(LevelEditorItem):
 
         self.setFlag(self.ItemIsMovable, not globals_.ObjectsFrozen)
         self.setFlag(self.ItemIsSelectable, not globals_.ObjectsFrozen)
+
         self.UpdateRects()
 
         self.dragging = False
@@ -492,7 +492,6 @@ class ObjectItem(LevelEditorItem):
         globals_.DirtyOverride -= 1
 
         self.setZValue(z)
-        self.UpdateTooltip()
 
         if layer == 0:
             self.setVisible(globals_.Layer0Shown)
@@ -545,12 +544,14 @@ class ObjectItem(LevelEditorItem):
             # tileset not randomised -> false
             return False
 
-        for x in range(0, self.width):
+        tileset_info = globals_.TilesetInfo[name]
+
+        for x in range(self.width):
             # get the special data for this tile
             tile = self.objdata[-1][x] & 0xFF
 
             try:
-                [_, _, special] = globals_.TilesetInfo[name][tile]
+                *_, special = tileset_info[tile]
             except KeyError:
                 # tile not randomised -> continue with next position
                 continue
@@ -565,9 +566,10 @@ class ObjectItem(LevelEditorItem):
         Randomises (a part of) the self.objdata according to the loaded tileset
         info
         """
-        # TODO: Make this work even on the edges of the object. This requires a
-        # function that returns the tile on the block next to the current tile
-        # on a specified layer. Maybe something for the Area class?
+        # TODO: Make the code that prevents two identical tiles next to each
+        # other work even on the edges of the object. This requires a function
+        # that returns the tile on the block next to the current tile on a
+        # specified layer. Maybe something for the Area class?
 
         if globals_.TilesetInfo is None or globals_.TilesetFilesLoaded[self.tileset] is None:
             # no randomisation info -> exit
@@ -579,21 +581,23 @@ class ObjectItem(LevelEditorItem):
             # tileset not randomised -> exit
             return
 
+        tileset_info = globals_.TilesetInfo[name]
+
         if width is None:
             width = self.width
 
         if height is None:
             height = self.height
 
-        # randomise every tile in this thing
+        # randomise every tile in this region
         for y in range(starty, starty + height):
             for x in range(startx, startx + width):
                 # should we randomise this tile?
                 tile = self.objdata[y][x] & 0xFF
 
                 try:
-                    [tiles, direction, special] = globals_.TilesetInfo[name][tile]
-                except:
+                    tiles, direction, special = tileset_info[tile]
+                except KeyError:
                     # tile not randomised -> continue with next position
                     continue
 
@@ -627,7 +631,7 @@ class ObjectItem(LevelEditorItem):
                         pass
 
                 # if we removed all options, just use the original tiles
-                if len(tiles_) == 0:
+                if not tiles_:
                     tiles_ = tiles
 
                 choice = (self.tileset << 8) | random.choice(tiles_)
