@@ -2937,6 +2937,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Load a level from any game into the editor
         """
         new = name is None
+        same = globals_.levName == os.path.basename(name)  # Just an area change
 
         # Get the file path, if possible
         if new:
@@ -2944,7 +2945,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.fileSavePath = False
             self.fileTitle = 'untitled'
 
-        else:
+        elif not same:
             globals_.levName = os.path.basename(name)
 
             checknames = []
@@ -3045,8 +3046,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Load the actual level
         if new:
             self.newLevel()
-        else:
+        elif not same:
             self.LoadLevel_NSMBW(levelData, areaNum)
+        else:
+            # We have already loaded this area's data - it's stored as
+            # AbstractAreas in the Level. This means we do not have to open and
+            # optionally decompress the level file. Hence, we can just relay
+            # this to the level.
+            globals_.Level.changeArea(areaNum)
+            self.ResetPalette()
+
 
         # Set the level overview settings
         self.levelOverview.maxX = 100
@@ -3103,7 +3112,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if new:
             SetDirty()
 
-        else:
+        elif not same:
             # Add the path to Recent Files
             self.RecentMenu.AddToList(self.fileSavePath)
 
@@ -3140,6 +3149,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not globals_.Level.load(levelData, areaNum):
             raise Exception
 
+        self.ResetPalette()
+
+    def ResetPalette(self):
+        """
+        Resets the palette and initialises the scene from the currently loaded
+        Area.
+        """
         # Prepare the object picker
         self.objUseLayer1.setChecked(True)
 

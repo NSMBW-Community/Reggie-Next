@@ -43,6 +43,13 @@ class AbstractLevel:
         del self.areas[number - 1]
         return True
 
+    def changeArea(self, number):
+        """
+        Changes the current area to the specified area in the loaded level
+        archive. Note that number is 1-based, not 0-based.
+        """
+        return False
+
 
 class Level_NSMBW(AbstractLevel):
     """
@@ -54,22 +61,24 @@ class Level_NSMBW(AbstractLevel):
         Initializes the level with default settings
         """
         super().__init__()
-        self.areas.append(Area_NSMBW())
+        self.new(False)
 
-        globals_.Area = self.areas[0]
-
-    def new(self):
+    def new(self, load = True):
         """
         Creates a completely new level
         """
-        # global Area
-
         # Create area objects
         self.areas = []
-        newarea = Area_NSMBW()
-        globals_.Area = newarea
-        SLib.Area = globals_.Area
-        self.areas.append(newarea)
+
+        new_area = Area_NSMBW(1)
+
+        if load:
+            new_area.load_defaults()
+
+        globals_.Area = new_area
+        SLib.Area = new_area
+
+        self.areas.append(new_area)
 
     def load(self, data, areaToLoad):
         """
@@ -77,17 +86,13 @@ class Level_NSMBW(AbstractLevel):
         """
         super().load(data, areaToLoad)
 
-        # global Area
-
         arc = archive.U8.load(data)
 
-        try:
-            arc['course']
-        except KeyError:
+        if "course" not in arc:
             return False
 
         # Sort the area data
-        areaData = {}
+        areaData = [[None, None, None, None], [None, None, None, None], [None, None, None, None], [None, None, None, None]]
         for name, val in arc.files:
             if val is None: continue
             name = name.replace('\\', '/').split('/')[-1]
@@ -104,8 +109,7 @@ class Level_NSMBW(AbstractLevel):
                     continue
                 if not (0 < thisArea < 5): continue
 
-                if thisArea not in areaData: areaData[thisArea] = [None] * 4
-                areaData[thisArea][laynum + 1] = val
+                areaData[thisArea - 1][laynum + 1] = val
             else:
                 # It's the course file
                 if len(name) != 11: continue
@@ -115,30 +119,25 @@ class Level_NSMBW(AbstractLevel):
                     continue
                 if not (0 < thisArea < 5): continue
 
-                if thisArea not in areaData: areaData[thisArea] = [None] * 4
-                areaData[thisArea][0] = val
+                areaData[thisArea - 1][0] = val
 
         # Create area objects
         self.areas = []
-        thisArea = 1
-        while thisArea in areaData:
-            course = areaData[thisArea][0]
-            L0 = areaData[thisArea][1]
-            L1 = areaData[thisArea][2]
-            L2 = areaData[thisArea][3]
+        for i, data in enumerate(areaData, 1):
+            course, L0, L1, L2 = data
 
-            if thisArea == areaToLoad:
-                newarea = Area_NSMBW()
-                globals_.Area = newarea
-                SLib.Area = globals_.Area
+            if course is None:
+                continue
+
+            if i == areaToLoad:
+                new_area = Area_NSMBW(i)
+                globals_.Area = new_area
+                SLib.Area = new_area
             else:
-                newarea = AbstractArea()
+                new_area = AbstractArea(i)
 
-            newarea.areanum = thisArea
-            newarea.load(course, L0, L1, L2)
-            self.areas.append(newarea)
-
-            thisArea += 1
+            new_area.load(course, L0, L1, L2)
+            self.areas.append(new_area)
 
         return True
 
@@ -205,14 +204,41 @@ class Level_NSMBW(AbstractLevel):
         # return the U8 archive data
         return newArchive._dump()
 
+    def changeArea(self, number):
+        """
+        Changes the current area to the specified area in the loaded level
+        archive. Note that number is 1-based, not 0-based.
+        """
+        current_num = globals_.Area.areanum
+
+        # self.areas[current_num - 1] should be "dumbed down" to an AbstractArea.
+        area = self.areas[current_num - 1]
+        current_data = area.course, area.L0, area.L1, area.L2
+        unloaded_area = AbstractArea(current_num)
+        unloaded_area.load(*current_data)
+        self.areas[current_num - 1] = unloaded_area
+
+        # self.areas[number - 1] should be "promoted" to a full Area.
+        area = self.areas[number - 1]
+        new_data = area.course, area.L0, area.L1, area.L2
+        new_area = Area_NSMBW(number)
+        new_area.load(*new_data)
+
+        self.areas[number - 1] = new_area
+
+        # Set the globals properly
+        globals_.Area = new_area
+        SLib.Area = new_area
+
+        return True
 
 class AbstractArea:
     """
     An extremely basic abstract area. Implements the basic function API.
     """
 
-    def __init__(self):
-        self.areanum = 1
+    def __init__(self, area_num):
+        self.areanum = area_num
         self.course = None
         self.L0 = None
         self.L1 = None
@@ -228,55 +254,87 @@ class AbstractArea:
         return (self.course, self.L0, self.L1, self.L2)
 
 
-class AbstractParsedArea(AbstractArea):
+class Area_NSMBW(AbstractArea):
     """
-    An area that is parsed to load sprites, entrances, etc. Still abstracted among games.
-    Don't instantiate this! It could blow up becuase many of the functions are only defined
-    within subclasses. If you want an area object, use a game-specific subclass.
+    Class for a parsed NSMBW level area
     """
 
-    def __init__(self):
+    def __init__(self, area_num):
         """
-        Creates a completely new area
+        Creates a completely new NSMBW area
         """
+        super().__init__(area_num)
 
-        # Default area number
-        self.areanum = 1
+        # Default tileset names for NSMBW
+        self.tileset0 = 'Pa0_jyotyu'
+        self.tileset1 = ''
+        self.tileset2 = ''
+        self.tileset3 = ''
 
-        # Settings
+        self.blocks = [b''] * 14
+        self.blocks[0] = b'Pa0_jyotyu' + bytes(128 - len('Pa0_jyotyu'))
+        self.blocks[1] = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc8\x00\x00\x00\x00\x00\x00\x00\x00'
+        self.blocks[3] = bytes(8)
+        self.blocks[7] = b'\xff\xff\xff\xff'
+
         self.defEvents = 0
-        self.wrapFlag = 0
         self.timeLimit = 200
-        self.unk1 = 0
+        self.creditsFlag = False
         self.startEntrance = 0
-        self.unk2 = 0
-        self.unk3 = 0
+        self.ambushFlag = False
+        self.toadHouseType = 0
+        self.wrapFlag = False
+        self.unkFlag1 = False
+        self.unkFlag2 = False
 
-        # Lists of things
+        self.unkVal1 = 0
+        self.unkVal2 = 0
+
         self.entrances = []
         self.sprites = []
+        self.bounding = []
+        self.bgA = []
+        self.bgB = []
         self.zones = []
         self.locations = []
+        self.camprofiles = []
         self.pathdata = []
         self.paths = []
         self.comments = []
         self.layers = [[], [], []]
 
+        self.MetaData = None
+
+        CreateTilesets()
+
+    def load_defaults(self):
+        """
+        Loads default data.
+        """
         # Metadata
         self.LoadReggieInfo(None)
 
         # Load tilesets
         CreateTilesets()
-        LoadTileset(0, self.tileset0)
-        LoadTileset(1, self.tileset1)
+        if self.tileset0 != '': LoadTileset(0, self.tileset0)
+        if self.tileset1 != '': LoadTileset(1, self.tileset1)
 
     def load(self, course, L0, L1, L2):
         """
         Loads an area from the archive files
         """
+        super().load(course, L0, L1, L2)
 
         # Load in the course file and blocks
         self.LoadBlocks(course)
+
+        # Load the editor metadata
+        if self.block1pos[0] != 0x70:
+            rddata = course[0x70:self.block1pos[0]]
+            self.LoadReggieInfo(rddata)
+        else:
+            self.LoadReggieInfo(None)
+        del self.block1pos
 
         # Load stuff from individual blocks
         self.LoadTilesetNames()  # block 1
@@ -286,14 +344,6 @@ class AbstractParsedArea(AbstractArea):
         self.LoadLocations()  # block 11
         self.LoadCamProfiles()  # block 12
         self.LoadPaths()  # block 13 and 14
-
-        # Load the editor metadata
-        if self.block1pos[0] != 0x70:
-            rddata = course[0x70:self.block1pos[0]]
-            self.LoadReggieInfo(rddata)
-        else:
-            self.LoadReggieInfo(None)
-        del self.block1pos
 
         # Now, load the comments
         self.LoadComments()
@@ -404,7 +454,7 @@ class AbstractParsedArea(AbstractArea):
         self.sprites.sort(key = lambda s: compKey(self.zones, s))
 
     def LoadReggieInfo(self, data):
-        if (data is None) or (len(data) == 0):
+        if not data:
             self.Metadata = Metadata()
             return
 
@@ -412,55 +462,6 @@ class AbstractParsedArea(AbstractArea):
             self.Metadata = Metadata(data)
         except Exception:
             self.Metadata = Metadata()  # fallback
-
-
-class Area_NSMBW(AbstractParsedArea):
-    """
-    Class for a parsed NSMBW level area
-    """
-
-    def __init__(self):
-        """
-        Creates a completely new NSMBW area
-        """
-        # Default tileset names for NSMBW
-        self.tileset0 = 'Pa0_jyotyu'
-        self.tileset1 = ''
-        self.tileset2 = ''
-        self.tileset3 = ''
-
-        self.blocks = [b''] * 14
-        self.blocks[0] = b'Pa0_jyotyu' + bytes(128 - len('Pa0_jyotyu'))
-        self.blocks[1] = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc8\x00\x00\x00\x00\x00\x00\x00\x00'
-        self.blocks[3] = bytes(8)
-        self.blocks[7] = b'\xff\xff\xff\xff'
-
-        self.defEvents = 0
-        self.timeLimit = 200
-        self.creditsFlag = False
-        self.startEntrance = 0
-        self.ambushFlag = False
-        self.toadHouseType = 0
-        self.wrapFlag = False
-        self.unkFlag1 = False
-        self.unkFlag2 = False
-
-        self.unkVal1 = 0
-        self.unkVal2 = 0
-
-        self.entrances = []
-        self.sprites = []
-        self.bounding = []
-        self.bgA = []
-        self.bgB = []
-        self.zones = []
-        self.locations = []
-        self.camprofiles = []
-        self.pathdata = []
-        self.paths = []
-        self.comments = []
-
-        super().__init__()
 
     def LoadBlocks(self, course):
         """
