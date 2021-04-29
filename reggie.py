@@ -56,7 +56,7 @@ except (ImportError, NameError):
 Qt = QtCore.Qt
 
 version = map(int, QtCore.QT_VERSION_STR.split('.'))
-min_version = "5.4.1"
+min_version = "5.11"
 pqt_min = map(int, min_version.split('.'))
 for v, c in zip(version, pqt_min):
     if c > v:
