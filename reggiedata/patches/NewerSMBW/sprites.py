@@ -779,7 +779,7 @@ class SpriteImage_NewerSpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
     def loadImages():
         if 'SpikeTop00' in ImageCache: return
         for style in ("", "_red", "_orange", "_yellow", "_green", "_hothead", "_purple", "_black"):
-            SpikeTop = SLib.GetImg('spiketop_%s.png' % style, True)
+            SpikeTop = SLib.GetImg('spiketop%s.png' % style, True)
             if SpikeTop is None:
                 # happens when the newer patch folder is not loaded yet
                 return
