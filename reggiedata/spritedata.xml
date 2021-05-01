@@ -4547,13 +4547,8 @@
     <checkbox bit="44" title="Upside-Down" comment="When enabled, the cannon is upside-down and can be placed against the ceiling." advanced="True" advancedcomment="The pipe will load on the opposide side alongside a cannon, leaving a hole on one side. As such, this option should not be used."/>
   </sprite> <!-- #301: 4-Way Large Cannon with Pipe -->
 
-  <!-- So... Umm... It wasn't used anywhere. Ever. What IS it? How does it look in action? What do these options mean? -->
-  <sprite id="302" name="Loose Giant Flying Wrench" notes="???">
-    <checkbox bit="40" title="Place In Front Of Other Sprites" comment=""/>
-    <checkbox bit="44" title="Homing" comment="???"/>
-    <dualbox bit="48" title1="??? Left" title2="??? Right" comment="???"/>
-    <dualbox bit="47" title1="??? Ground" title2="??? Upside-Down" comment="???"/>
-  </sprite> <!-- #302: Throwing Wrench -->
+  <sprite id="302" name="Incomplete Sprite - 'En_Gake_Noko'" notes="Does nothing.">
+  </sprite> <!-- #302: Incomplete Sprite - 'En_Gake_Noko' -->
 
   <sprite id="303" name="Monty Mole" notes="An energetic mole enemy that will pop out of the terrain after loading on screen and proceed to move quickly after the player. A Monty Hole is left behind after the mole jumps out.">
     <checkbox bit="48" title="Loose Monty Mole" comment="When enabled, the Monty Mole will already be out of the wall running around, and does not leave behind a Monty Hole."/>
