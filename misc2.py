@@ -213,6 +213,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                     self.scene().update()
 
+                    spr.UpdateDynamicSizing()
                     spr.UpdateListItem()
 
                 SetDirty()
@@ -509,6 +510,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.objx = x
                         obj.objy = y
                         obj.setPos(x * 24, y * 24)
+                        globals_.mainWindow.levelOverview.update()
 
                     # if the size changed, recache it and update the area
                     if cwidth != width or cheight != height:
@@ -523,6 +525,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                         obj.UpdateRects()
                         obj.scene().update(updaterect)
+                        globals_.mainWindow.levelOverview.update()
 
                 elif isinstance(obj, type_loc):
                     # resize/move the current location
@@ -530,6 +533,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                     if change:  # Update the location editor
                         globals_.mainWindow.locationEditor.setLocation(obj)
+                        globals_.mainWindow.levelOverview.update()
 
                 elif isinstance(obj, type_spr):
                     # move the created sprite
@@ -544,6 +548,9 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.objy = clickedy
                         obj.setPos(int((clickedx + obj.ImageObj.xOffset) * 1.5),
                                    int((clickedy + obj.ImageObj.yOffset) * 1.5))
+                        obj.ImageObj.positionChanged()
+                        obj.UpdateListItem()
+                        globals_.mainWindow.levelOverview.update()
 
                 elif isinstance(obj, (type_ent, type_path, type_com)):
                     # move the created entrance/path/comment
@@ -557,6 +564,18 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.objx = clickedx
                         obj.objy = clickedy
                         obj.setPos(int(clickedx * 1.5), int(clickedy * 1.5))
+
+                        if isinstance(obj, type_path):
+                            obj.updatePos()
+                            obj.pathinfo['peline'].nodePosChanged()
+
+                        elif isinstance(obj, type_com):
+                            obj.UpdateTooltip()
+                            obj.handlePosChange(oldx, oldy)
+
+                        obj.UpdateListItem()
+                        globals_.mainWindow.levelOverview.update()
+
             event.accept()
 
         elif event.buttons() == QtCore.Qt.RightButton and self.currentobj is not None and self.dragstamp:

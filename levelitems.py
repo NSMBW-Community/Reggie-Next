@@ -10,6 +10,7 @@ from tiles import RenderObject
 from ui import GetIcon, clipStr
 from dirty import SetDirty
 from undo import MoveItemUndoAction, SimultaneousUndoAction
+#from sprites import SpriteImage_LiquidOrFog
 
 class InstanceDefinition:
     """
@@ -1444,15 +1445,12 @@ class ZoneItem(LevelEditorItem):
 
         # Paint liquids/fog
         if globals_.SpritesShown and globals_.RealViewEnabled:
-            zoneRect = QtCore.QRectF(self.objx * 1.5, self.objy * 1.5, self.width * 1.5, self.height * 1.5)
-            viewRect = globals_.mainWindow.view.mapToScene(globals_.mainWindow.view.viewport().rect()).boundingRect()
+            zoneRect = self.sceneBoundingRect()
+            from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
 
             for sprite in globals_.Area.sprites:
-                if sprite.type in {53, 64, 138, 139, 216, 358, 373, 374, 435}:
-                    zone_id = SLib.MapPositionToZoneID(globals_.Area.zones, sprite.objx, sprite.objy, get_id=True)
-
-                    if self.id == zone_id:
-                        sprite.ImageObj.realViewZone(painter, zoneRect, viewRect)
+                if isinstance(sprite.ImageObj, liquidOrFogType) and sprite.ImageObj.paintZone() and self.id == sprite.ImageObj.zoneId:
+                    sprite.ImageObj.realViewZone(painter, zoneRect)
 
         # Now paint the borders
         painter.setPen(QtGui.QPen(globals_.theme.color('zone_lines'), 3))
@@ -1587,6 +1585,10 @@ class ZoneItem(LevelEditorItem):
             self.scene().update(updaterect)
 
             globals_.mainWindow.levelOverview.update()
+
+            for spr in globals_.Area.sprites:
+                spr.ImageObj.positionChanged()
+
             SetDirty()
 
             event.accept()
@@ -1695,6 +1697,15 @@ class LocationItem(LevelEditorItem):
 
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
 
+        # Paint liquids/fog
+        if globals_.SpritesShown and globals_.RealViewEnabled:
+            zoneRect = self.sceneBoundingRect()
+            from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
+
+            for sprite in globals_.Area.sprites:
+                if isinstance(sprite.ImageObj, liquidOrFogType) and self.id == sprite.ImageObj.locId:
+                    sprite.ImageObj.realViewLocation(painter, zoneRect)
+
         # Draw the purple rectangle
         if not self.isSelected():
             painter.setBrush(QtGui.QBrush(globals_.theme.color('location_fill')))
@@ -1784,8 +1795,10 @@ class LocationItem(LevelEditorItem):
             globals_.OverrideSnapping = True
             self.setPos(x * 1.5, y * 1.5)
             globals_.OverrideSnapping = False
+            self.UpdateListItem()
             change = True
 
+        # if the size changed, recache it and update the area
         if self.width != width or self.height != height:
             self.width = width
             self.height = height
@@ -2028,7 +2041,7 @@ class SpriteItem(LevelEditorItem):
         if (self.type in globals_.gamedef.getImageClasses()) and (self.type not in SLib.SpriteImagesLoaded):
             globals_.gamedef.getImageClasses()[self.type].loadImages()
             SLib.SpriteImagesLoaded.add(self.type)
-        self.ImageObj = obj(self)
+        self.ImageObj = obj(self) if obj else SLib.SpriteImage(self)
 
         # show auxiliary objects properly
         for aux in self.ImageObj.aux:

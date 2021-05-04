@@ -3059,6 +3059,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.ResetPalette()
 
 
+        # Refresh object layouts
+        for layer in globals_.Area.layers:
+            for obj in layer:
+                obj.updateObjCache()
+        for sprite in globals_.Area.sprites:
+            sprite.UpdateDynamicSizing()
+            sprite.ImageObj.positionChanged()
+        self.scene.update()
+
         # Set the level overview settings
         self.levelOverview.maxX = 100
         self.levelOverview.maxY = 40
@@ -4075,6 +4084,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             z.sfxmod = tab.Zone_sfx.currentIndex() << 4
             if tab.Zone_boss.isChecked():
                 z.sfxmod |= 1
+
+        for spr in globals_.Area.sprites:
+            spr.ImageObj.positionChanged()
 
         self.actions['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
         self.levelOverview.update()
