@@ -302,13 +302,9 @@
     <checkbox bit="44" title="Falls when POW is Used" comment="The Star Coin will fall to the ground if a POW effect is triggered. If placed outside the Zone, the Star Coin will not spawn until the POW is hit."/>
     <value bit="2-8" title="Target Event ID" comment="When the Star Coin is collected, the Target Event ID will be activated." idtype="Target Event"/>
     <dualbox bit="28" title1="Triggers a Timed Event" title2="Permanently activates Target Event" comment="This determines if the Target Event is timed or permanent. Timed events will pause the music and replace it with ticking." requiredbit="2-8"/>
-    <list bit="19-20" title="Unknown List 5" advanced="True" advancedcomment="ASM shows Nybble 5 might affect something.">
-      <entry value="0">???</entry>
-      <entry value="1">???</entry>
-      <entry value="2">???</entry>
-      <entry value="3">???</entry>
-	</list>
-    <value nybble="8" title="Unknown Value 8" comment="ASM shows Nybble 8 might affect something."/>
+    <checkbox bit="19-20" title="Unknown Flag 5 Mask 1" mask="1" comment="ASM shows Nybble 5 might affect something."/>
+	<checkbox bit="19-20" title="Unknown Flag 5 Mask 2" mask="2" comment="ASM shows Nybble 5 might affect something."/>
+    <value nybble="8" title="Unknown Value 8" comment="ASM shows Nybble 8 is collision-related."/>
   </sprite> <!-- #32: Star Coin -->
 
   <sprite id="33" name="Event Controller - Zone Enter" notes="When the zone is loaded, all 'Zone Enter' Event Controllers will activate and modify the status of their associated Event IDs. Note that Event IDs 1-33 are stored Level-wide, and not per Area or Zone. By using this controller in a midway room, you can clear those Event flags or set them to start activated.">
@@ -2334,9 +2330,8 @@
     <checkbox bit="44" title="Shift Spawn Position (NSMB:DS)" comment="When enabled, this moves the Springboard half a block to the right." advanced="True" advancedcomment="This is a leftover setting from the NSMB:DS Springboard where sprites could only be placed exactly on the tile grid. It... really isn't useful."/>
   </sprite> <!-- #148: Springboard -->
 
-  <sprite id="149" name="Rotation Controller - Spinning" notes="This controller will create synchronized movement between matched sprites and cause them to spin in a circular movement.&lt;br&gt;Additionally, it can control the Zone's Zoom level depending on the rotation controller's current rotation.">
-    <dependency notes="A quick note about using this with rotation controlled coins and blocks: Coins and Blocks have a different rotation speed when paired with this controller than with other sprites. If using both coins and blocks, and other sprites, with the same central point of rotation, you will need multiple Spinning controllers in order to have them rotate at the same speed."/>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs matching rotation controlled objects to this controller. A rotation ID isn't necessary when using this sprite to control the camera." idtype="Rotation"/>
+  <sprite id="149" name="Rotation Controller - Spinning" notes="This controller will create synchronized movement between matched sprites and cause them to spin in a circular motion. It acts as the center of rotation for most sprites.&lt;br&gt;Additionally, it can control the Zone's Zoom level depending on the rotation controller's current rotation.">
+    <value nybble="11-12" title="Rotation ID" comment="A Rotation ID isn't necessary when using this sprite to control the camera." idtype="Rotation"/>
     <list nybble="5" title="Starting Rotation" comment="This determines the rotational adjustment for when items are first loaded or before the controller is activated.&lt;br&gt;The starting rotation can also set the Zone's Zoom level when it's loaded, by-passing the initial zoomed in camera." comment2="For coins and blocks, the Starting Rotation value is doubled! This means that a value of 4 will rotate the coin or block 180°.">
       <entry value="0">0.0°</entry>
       <entry value="1">22.5°</entry>
@@ -2355,7 +2350,7 @@
       <entry value="14">315.0°</entry>
       <entry value="15">337.5°</entry>
     </list>
-    <list bit="26-28" title="Rotation Speed" comment="This determines the speed at which the rotation controller will complete one spin." comment2="The further the object is away from the controller, the faster the actual object will rotate.">
+    <list bit="26-28" title="Rotation Speed" comment="Coins and Blocks rotate faster than other sprites.">
       <entry value="4">Very Slow</entry>
       <entry value="7">Slow</entry>
       <entry value="0">Slow+</entry>
@@ -2365,15 +2360,15 @@
       <entry value="5">Faster</entry>
       <entry value="6">Very Fast</entry>
     </list>
-    <dualbox bit="36" title1="Spins Counter-Clockwise" title2="Spins Clockwise" comment="This determines which direction the controller will rotate the attached objects."/>
-    <list bit="31-32" title="Rotation Mode" comment="This determines the way the rotation controller functions, including its event-triggered behaviour." comment2="Certain obstacles function best when set to [Always Spin], while rewards for the player often function best when [Stops and Returns]. The other mode, [Spins While Active], allows you to create a staggered continous rotation (e.g., gears,) among other uses." advancedcomment="A note to ASM hackers, there may be a difference between values 2 and 3. Feel free to investigate further.">
+    <dualbox bit="36" title1="Spins Counter-Clockwise" title2="Spins Clockwise"/>
+    <list bit="31-32" title="Rotation Mode" advancedcomment="A note to ASM hackers, there may be a difference between values 2 and 3. Feel free to investigate further.">
       <entry value="0">Stops and Returns</entry>
       <entry value="1">Constant Spinning</entry>
       <entry value="2">Spins While Active</entry>
       <!--entry value="3">Spins While Active</entry-->
     </list>
-    <value bit="9-16" title="Triggering Event ID" comment="When the Triggering Event is activated, the controller will rotate all associated objects according to the mode. Deactivation effects will also differ depending on the mode. See the ! Comment." comment2="Constant Spinning: When activated, the items will decelerate to a stop and accelerate in the opposite direction.&lt;br&gt;When deactivated, it will reverse back to its set movement in a similar fashion.&lt;br&gt;&lt;br&gt;Stops and Returns: When activated, the items will rotate the Rotation Distance and stop. When deactivated, the items will immediately start to rotate back to their starting positions, even if the initial movement is not completed.&lt;br&gt;&lt;br&gt;Spins While Active:&lt;br&gt;When activated, the items will rotate continuously. When deactivated, the items will stop at the next multiple of its set Rotation Distance." idtype="Triggering Event"/>
-    <list nybble="6" title="Event Triggered - Rotation Distance" comment="This determines the distance the rotation controller will spin the items before stopping, when set to the [Stops and Returns] or [Spins While Active] Rotation Modes." comment2="Coins and blocks have the same Rotation Distance as other sprites." requiredbit="32" requiredval="0">
+    <value bit="9-16" title="Triggering Event ID" comment="Constant Spinning: When activated, the items will decelerate to a stop and accelerate in the opposite direction.&lt;br&gt;When deactivated, it will reverse back to its set movement in a similar fashion.&lt;br&gt;&lt;br&gt;Stops and Returns: When activated, the items will rotate the Rotation Distance and stop. When deactivated, the items will immediately start to rotate back to their starting positions, even if the initial movement is not completed.&lt;br&gt;&lt;br&gt;Spins While Active:&lt;br&gt;When activated, the items will rotate continuously. When deactivated, the items will stop at the next multiple of its set Rotation Distance." idtype="Triggering Event"/>
+    <list nybble="6" title="Event Triggered - Rotation Distance" comment="This determines the distance the rotation controller will spin the items before stopping, when set to the [Stops and Returns] or [Spins While Active] Rotation Modes." requiredbit="32" requiredval="0">
       <entry value="0">0.0°</entry>
       <entry value="1">22.5°</entry>
       <entry value="2">45.0°</entry>
@@ -2391,12 +2386,10 @@
       <entry value="14">315.0°</entry>
       <entry value="15">337.5°</entry>
     </list> <!-- Is meant to only appear when Stops and Returns and Spins While Active [Rotation Modes] are set -->
-    <checkbox bit="40" title="Creates Fake POW-Block Effect (Leave this off)" comment="When enabled, the rotation controller will generate a silent POW-Block screen shake." comment2="It is highly recommended that you don't enable these settings when the controller is set to continuously spin. You will annoy people who play your level unless you're very careful about it." requiredbit="31-32" requiredval="1"/> <!-- Is meant to appears only if Stops and Returns [Rotation Mode] is not selected -->
-    <checkbox bit="39" title="Creates Coin Sound Effect (Leave this off)" comment="When enabled, the rotation controller will generate a Coin 'Sparkle' when linked to a Rotation Controlled Coin that has not been collected yet." comment2="It is highly recommended that you don't enable these settings when the controller is set to continuously spin. You will annoy people who play your level unless you're very careful about it." requiredbit="31-32" requiredval = "1"/> <!-- Is meant to appear only if Stops and Returns [Rotation Mode] is not selected -->
-    <checkbox bit="40" title="Creates Fake POW-Block Effect" comment="When enabled, the rotation controller will generate a silent POW-Block screen shake." requiredbit="32" requiredval="0"/> <!-- Appears only when Stops and Returns [Rotation Mode] is set -->
-    <checkbox bit="39" title="Creates Coin Sound Effect" comment="When enabled, the rotation controller will generate a Coin 'Sparkle' sound effect when linked to a Rotation Controlled Coin that has not been collected yet." comment2="Requires coins to be a part of the paired rotation items." requiredbit="32" requiredval="0"/> <!-- Appears only when Stops and Returns [Rotation Mode] is set -->
+    <checkbox bit="40" title="Creates Fake POW-Block Effect" comment="Makes a silent POW-Block screen shake each rotation."/>
+    <checkbox bit="39" title="Creates Coin Sound Effect" comment="Makes a Coin 'Sparkle' sound effect when linked to a Rotation Controlled Coin that has not been collected yet, each time it rotates."/>
     <!-- Zoom effect works with value 4-12 -->
-    <checkbox bit="38" title="Controls the Zone's Zoom Level" comment="When enabled, the Zone's Zoom level will become fully dependant on the rotation controller's current angle. Thus, the camera will transition in accordance with the speed and current arc of the sprite. It supports all Rotation Modes, but works best with [Stops and Returns]. This is the pattern the Zoom Level will follow:&lt;br&gt;&lt;br&gt;0° = Zooms to the Zone's original Zoom Level.&lt;br&gt;22.5° = Zooms out roughly to the next available Zoom Level.&lt;br&gt;45° = Zooms out roughly 70% towards Zoom Level 4.&lt;br&gt;67.5° = Zooms out roughly 95% towards Zoom Level 4.&lt;br&gt;90° = Zooms out exactly to Zoom Level 4.&lt;br&gt;112.5+° = The pattern above loops in reverse, ultimately back to the original Zoom level at 180°." comment2="The controller will still work with a paired sprite, but it's not required. The camera movement won't differ whether it's spinning Clockwise or Counter-Clockwise.&lt;br&gt;Finally, multiple of these sprites using this setting in one Zone can overlap each other and take priority of the camera movement, but it's best for only one to be active at a time."/>
+    <checkbox bit="38" title="Controls the Zone's Zoom Level" comment="When enabled, the Zone's Zoom level will become fully dependant on the rotation controller's current angle. Thus, the camera will transition in accordance with the speed and current arc of the sprite. It supports all Rotation Modes, but works best with [Stops and Returns]. This is the pattern the Zoom Level will follow:&lt;br&gt;&lt;br&gt;0° = Zooms to the Zone's original Zoom Level.&lt;br&gt;22.5° = Zooms out roughly to the next available Zoom Level.&lt;br&gt;45° = Zooms out roughly 70% towards Zoom Level 4.&lt;br&gt;67.5° = Zooms out roughly 95% towards Zoom Level 4.&lt;br&gt;90° = Zooms out exactly to Zoom Level 4.&lt;br&gt;112.5+° = The pattern above loops in reverse, ultimately back to the original Zoom level at 180°."/>
   </sprite> <!-- #149: Rotation Controller - Spinning -->
 
   <sprite id="150" name="(Unused) Jumping Cheep Cheep" notes="&lt;font color=&quot;orange&quot;&gt;This sprite is not recommended for use due to incompatibilities with the Ice Flower power-up.&lt;/font&gt;" advancednotes="A Cheep Cheep that will jump out of the water in an attempt to damage the player. If frozen, only half of the Cheep Cheep will be covered by ice, and the other part will stick out.">

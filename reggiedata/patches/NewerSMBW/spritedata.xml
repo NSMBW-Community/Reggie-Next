@@ -2219,16 +2219,19 @@
     <checkbox bit="47" title="Direction Override: Down, Causes Weird Bugs" advanced="True" advancedcomment="Only the front of the cannon will be changed, and when also set to face left, causes weird influence on the cannonball's trajectory. Highly suggested to not use this setting."/>
   </sprite> <!-- #298: Long Cannonball Cannons -->
   
-  <sprite id="302" name="Throwing Wrench" notes="">
-	<checkbox nybble="10" title="Place In Front Of Other Sprites" />
-	<checkbox nybble="11" title="Homing" />
-	<list nybble="12" title="Direction">
-      <entry value="0">Ground Facing Left</entry>
-	  <entry value="1">Ground Facing Right</entry>
-	  <entry value="2">Upside Down Facing Left</entry>
-	  <entry value="3">Upside Down Facing Right</entry>
+  <sprite id="302" name="Loose Balboa Throwing Wrench" notes="The wrench thrown by Balboa Wrench's boss fight.">
+    <dependency notes="The game will crash without a Rocky Wrench in the level.">
+      <required sprite="352"/> <!-- Rocky Wrench -->
+    </dependency>
+	<checkbox nybble="10" title="Place In Front Of Other Sprites"/>
+	<checkbox nybble="11" title="Big"/>
+	<list nybble="12" title="Direction" comment="The flying arc is randomized.">
+      <entry value="0">Up Right</entry>
+	  <entry value="1">Up Left</entry>
+	  <entry value="2">Up Left (Shorter arc)</entry>
+	  <entry value="3">Up Left (Shorter arc)</entry>
 	</list>
-  </sprite> <!-- #302: Throwing Wrench -->
+  </sprite> <!-- #302: Loose Balboa Throwing Wrench -->
 
   <sprite id="303" name="Monty Mole" notes="An energetic mole enemy that will pop out of the terrain after loading on screen and proceed to move quickly after the player. A Monty Hole is left behind after the mole jumps out.">
     <list nybble="6" title="Color" comment="This determines the color of the Monty Mole.">
