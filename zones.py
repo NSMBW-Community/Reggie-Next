@@ -485,9 +485,8 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.Zone_music = QtWidgets.QComboBox()
         self.Zone_music.setToolTip(globals_.trans.string('ZonesDlg', 54))
-        newItems = getMusic()
-        for a, b in newItems:
-            self.Zone_music.addItem(b, a)  # text, songid
+        for songid, text in getMusic():
+            self.Zone_music.addItem(text, songid)
         self.Zone_music.setCurrentIndex(self.Zone_music.findData(z.music))
         self.Zone_music.currentIndexChanged.connect(self.handleMusicListSelect)
 
@@ -501,7 +500,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_sfx.setToolTip(globals_.trans.string('ZonesDlg', 56))
         newItems3 = globals_.trans.stringList('ZonesDlg', 57)
         self.Zone_sfx.addItems(newItems3)
-        self.Zone_sfx.setCurrentIndex(z.sfxmod / 16)
+        self.Zone_sfx.setCurrentIndex(z.sfxmod // 16)
 
         self.Zone_boss = QtWidgets.QCheckBox()
         self.Zone_boss.setToolTip(globals_.trans.string('ZonesDlg', 59))
