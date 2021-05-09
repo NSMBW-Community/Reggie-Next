@@ -30,11 +30,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         self.entrancebrush = QtGui.QBrush(globals_.theme.color('overview_entrance'))
         self.locationbrush = QtGui.QBrush(globals_.theme.color('overview_location_fill'))
 
-        self.scale = 0.375
-        self.maxX = 1
-        self.maxY = 1
-        self.CalcSize()
-        self.Rescale()
+        self.Reset()
 
         self.Xposlocator = 0
         self.Yposlocator = 0
@@ -46,17 +42,9 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         """
         Resets the max and scale variables
         """
-        self.scale = 0.375
-        self.maxX = 1
-        self.maxY = 1
-        self.CalcSize()
+        self.maxX = 100
+        self.maxY = 40
         self.Rescale()
-
-    def CalcSize(self):
-        """
-        Calculates all the required sizes for this scale
-        """
-        self.posmult = 24.0 / self.scale
 
     def mouseMoveEvent(self, event):
         """
@@ -88,96 +76,95 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         painter = QtGui.QPainter(self)
         painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
 
+        self.CalcSize()
         self.Rescale()
-        painter.scale(self.scale, self.scale)
-        painter.fillRect(0, 0, 1024, 512, self.bgbrush)
 
-        maxX = self.maxX
-        maxY = self.maxY
+        painter.fillRect(event.rect(), self.bgbrush)
+        painter.scale(self.scale, self.scale)
+
+        transform = QtGui.QTransform() / 24
+
         dr = painter.drawRect
         fr = painter.fillRect
-
-        maxX = 0
-        maxY = 0
 
         b = self.viewbrush
         painter.setPen(QtGui.QPen(globals_.theme.color('overview_zone_lines'), 1))
 
         for zone in globals_.Area.zones:
-            x = zone.objx / 16
-            y = zone.objy / 16
-            width = zone.width / 16
-            height = zone.height / 16
-            fr(x, y, width, height, b)
-            dr(x, y, width, height)
-            if x + width > maxX:
-                maxX = x + width
-            if y + height > maxY:
-                maxY = y + height
+            rect = transform.mapRect(zone.sceneBoundingRect())
+            fr(rect, b)
+            dr(rect)
 
         b = self.objbrush
 
         for layer in globals_.Area.layers:
             for obj in layer:
                 fr(obj.LevelRect, b)
-                if obj.objx > maxX:
-                    maxX = obj.objx
-                if obj.objy > maxY:
-                    maxY = obj.objy
 
         b = self.spritebrush
 
         for sprite in globals_.Area.sprites:
             fr(sprite.LevelRect, b)
-            if sprite.objx / 16 > maxX:
-                maxX = sprite.objx / 16
-            if sprite.objy / 16 > maxY:
-                maxY = sprite.objy / 16
 
         b = self.entrancebrush
 
         for ent in globals_.Area.entrances:
             fr(ent.LevelRect, b)
-            if ent.objx / 16 > maxX:
-                maxX = ent.objx / 16
-            if ent.objy / 16 > maxY:
-                maxY = ent.objy / 16
 
         b = self.locationbrush
         painter.setPen(QtGui.QPen(globals_.theme.color('overview_location_lines'), 1))
 
         for location in globals_.Area.locations:
-            x = location.objx / 16
-            y = location.objy / 16
-            width = location.width / 16
-            height = location.height / 16
-            fr(x, y, width, height, b)
-            dr(x, y, width, height)
-            if x + width > maxX:
-                maxX = x + width
-            if y + height > maxY:
-                maxY = y + height
-
-        self.maxX = maxX
-        self.maxY = maxY
+            rect = transform.mapRect(location.sceneBoundingRect())
+            fr(rect, b)
+            dr(rect)
 
         b = self.locationbrush
         painter.setPen(QtGui.QPen(globals_.theme.color('overview_viewbox'), 1))
         painter.drawRect(self.Xposlocator / 24 / self.mainWindowScale, self.Yposlocator / 24 / self.mainWindowScale,
                          self.Wlocator / 24 / self.mainWindowScale, self.Hlocator / 24 / self.mainWindowScale)
 
+    def CalcSize(self):
+        """
+        Calculates self.maxX and self.maxY.
+        """
+        if globals_.Area is None:
+            # fixes race condition where this widget's size is calculated
+            # after the level is created, but before it's loaded
+            self.maxX = 100
+            self.maxY = 40
+            return
+
+        transform = QtGui.QTransform() / 24
+        rect = QtCore.QRectF()
+
+        for zone in globals_.Area.zones:
+            rect |= transform.mapRect(zone.sceneBoundingRect())
+
+        for layer in globals_.Area.layers:
+            for obj in layer:
+                rect |= obj.LevelRect
+
+        for sprite in globals_.Area.sprites:
+            rect |= sprite.LevelRect
+
+        for ent in globals_.Area.entrances:
+            rect |= ent.LevelRect
+
+        for location in globals_.Area.locations:
+            rect |= transform.mapRect(location.sceneBoundingRect())
+
+        _, _, self.maxX, self.maxY = rect.getCoords()
+
     def Rescale(self):
-        self.Xscale = (float(self.width()) / float(self.maxX + 45))
-        self.Yscale = (float(self.height()) / float(self.maxY + 25))
+        """
+        Calculates self.scale and self.posmult.
+        """
+        x_scale = self.width() / (self.maxX + 45)
+        y_scale = self.height() / (self.maxY + 25)
 
-        if self.Xscale <= self.Yscale:
-            self.scale = self.Xscale
-        else:
-            self.scale = self.Yscale
-
-        if self.scale < 0.002: self.scale = 0.002
-
-        self.CalcSize()
+        self.scale = max(0.002, min(x_scale, y_scale))
+        self.posmult = 24 / self.scale
 
 
 class ObjectPickerWidget(QtWidgets.QListView):

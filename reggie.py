@@ -271,8 +271,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not loaded:
             self.LoadLevel(None, '01-01', False, 1)
 
-        QtCore.QTimer.singleShot(100, self.levelOverview.update)
-
         # call each toggle-button handler to set each feature correctly upon
         # startup
         toggleHandlers = {
@@ -2236,6 +2234,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         with open(str(fn), 'rb') as fileobj:
             arcdata = fileobj.read()
+
         if (arcdata[0] & 0xF0) == 0x40:  # If LH-compressed
             try:
                 arcdata = lh.UncompressLH(arcdata)
@@ -3058,27 +3057,23 @@ class ReggieWindow(QtWidgets.QMainWindow):
             globals_.Level.changeArea(areaNum)
             self.ResetPalette()
 
+        # Fill up the area list
+        if not same:
+            self.areaComboBox.clear()
+
+            for area in globals_.Level.areas:
+                self.areaComboBox.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
+
+        self.areaComboBox.setCurrentIndex(areaNum - 1)
 
         # Refresh object layouts
         for layer in globals_.Area.layers:
             for obj in layer:
                 obj.updateObjCache()
+
         for sprite in globals_.Area.sprites:
             sprite.UpdateDynamicSizing()
             sprite.ImageObj.positionChanged()
-        self.scene.update()
-
-        # Set the level overview settings
-        self.levelOverview.maxX = 100
-        self.levelOverview.maxY = 40
-
-        # Fill up the area list
-        self.areaComboBox.clear()
-        for i in range(1, len(globals_.Level.areas) + 1):
-            self.areaComboBox.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', i))
-        self.areaComboBox.setCurrentIndex(areaNum - 1)
-
-        self.levelOverview.update()
 
         # Scroll to the initial entrance
         startEntID = globals_.Area.startEntrance
@@ -3118,7 +3113,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.levelOverview.Reset()
         self.levelOverview.update()
-        QtCore.QTimer.singleShot(20, self.levelOverview.update)
 
         if new:
             SetDirty()
