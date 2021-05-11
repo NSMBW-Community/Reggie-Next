@@ -795,10 +795,9 @@
     </list>
   </sprite> <!-- #98: Giant Spiked Ball / Snowball -->
 
-  <sprite id="99" name="Pipe Enemy Spawner"  notes="Use this to spawn waves of either Goombas or Bob-Ombs from a pipe.">
-    <dependency notes="The spawner must be placed directly on the edge of the pipe in order to function. If spawning Left or Right, place it directly on the bottom square. If spawning Up or Down, place it directly on the left square."/>
-    <dualbox bit="44" title1="Spawns Goombas" title2="Spawns Bob-Ombs" comment="This determines which enemy will be spawned from the pipe."/>
-    <list nybble="6" title="Color" comment="This determines the color and style of the Spawned Goombas." requiredbit="44" requiredval="0">
+  <sprite id="99" name="Pipe Enemy Spawner"  notes="The spawner must be placed on layer 1 tiles set to the core type 'Pipe'.">
+    <dualbox bit="44" title1="Spawns Goombas" title2="Spawns Bob-Ombs"/>
+    <list nybble="6" title="Color" requiredbit="44" requiredval="0">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
       <entry value="2">"Hyper" (Normal color)</entry>
@@ -809,7 +808,7 @@
       <entry value="7">Santa</entry>
       <entry value="8">Gray Santa</entry>
     </list> <!-- Appears when Spawns Goombas is set -->
-    <list nybble="6" title="Color" comment="This determines the color of the Spawned Bob-Ombs." requiredbit="44">
+    <list nybble="6" title="Color" requiredbit="44">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -820,13 +819,13 @@
       <entry value="7">White</entry>
       <entry value="8">Pink</entry>
     </list> <!-- Appears when Spawns Bob-Ombs is set -->
-    <list nybble="12" title="Exit Direction" commnet="This determines which direction the enemy will spawn from the pipe." comment2="The spawner must be correctly positioned or it will not function. See Dependency Notes for more information.">
+    <list nybble="12" title="Exit Direction">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
       <entry value="2">Left</entry>
       <entry value="3">Right</entry>
     </list>
-    <list bit="32" title="Number of Enemies Spawned" comment="This determines how many enemies will be spawned in a row before a delay occurs.">
+    <list bit="32" title="Number of Enemies Spawned">
       <entry value="1">2 Enemies, then Delay</entry>
       <entry value="0">3 Enemies, then Delay</entry>
     </list>

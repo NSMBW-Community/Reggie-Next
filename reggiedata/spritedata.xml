@@ -292,19 +292,23 @@
   </sprite> <!-- #31: Basic Platform - Vertical Movement -->
 
   <sprite id="32" name="Star Coin" notes="The Star Coin is a level-wide collectible. The player's goal is to collect all three to complete their savefile.">
-    <list bit="39-40" title="Coin Number" comment="This determines which Star Coin flag will be set for the level when this Star Coin is collected." comment2="Multiple Star Coins with the same [Coin Number] can be placed. However, once one of them is collected, the duplicate entries will not load.">
+    <list bit="39-40" title="Coin Number" comment="Multiple Star Coins with the same [Coin Number] can be placed. However, once one of them is collected, the duplicate entries will not load.">
       <entry value="0">First Coin</entry>
       <entry value="1">Second Coin</entry>
       <entry value="2">Third Coin</entry>
     </list>
     <checkbox bit="48" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Star Coin placing it further behind other sprites."/>
-    <checkbox bit="36" title="Place Behind Chainlink Fence" comment="When enabled, the Star Coin can only be collected if the player is on the reverse side of a Chainlink Fence."/>
+    <list bit="36" title="Z-Order">
+	  <entry value="0">Above Layer 1</entry>
+      <entry value="1">Above Layer 2 (Behind Chainlink Fence)</entry>
+      <entry value="2">Further above Layer 1</entry>
+	</list>
     <checkbox bit="44" title="Falls when POW is Used" comment="The Star Coin will fall to the ground if a POW effect is triggered. If placed outside the Zone, the Star Coin will not spawn until the POW is hit."/>
     <value bit="2-8" title="Target Event ID" comment="When the Star Coin is collected, the Target Event ID will be activated." idtype="Target Event"/>
-    <dualbox bit="28" title1="Triggers a Timed Event" title2="Permanently activates Target Event" comment="This determines if the Target Event is timed or permanent. Timed events will pause the music and replace it with ticking." requiredbit="2-8"/>
+    <dualbox bit="28" title1="Triggers a Timed Event" title2="Permanently activates Target Event" requiredbit="2-8"/>
     <checkbox bit="19-20" title="Unknown Flag 5 Mask 1" mask="1" comment="ASM shows Nybble 5 might affect something."/>
 	<checkbox bit="19-20" title="Unknown Flag 5 Mask 2" mask="2" comment="ASM shows Nybble 5 might affect something."/>
-    <value nybble="8" title="Unknown Value 8" comment="ASM shows Nybble 8 is collision-related."/>
+    <checkbox nybble="8" title="Shrink bottom hitbox by half a tile"/> <!-- Any non-zero value -->
   </sprite> <!-- #32: Star Coin -->
 
   <sprite id="33" name="Event Controller - Zone Enter" notes="When the zone is loaded, all 'Zone Enter' Event Controllers will activate and modify the status of their associated Event IDs. Note that Event IDs 1-33 are stored Level-wide, and not per Area or Zone. By using this controller in a midway room, you can clear those Event flags or set them to start activated.">
@@ -1425,16 +1429,15 @@
     </list>
   </sprite> <!-- #98: Giant Spiked Ball -->
 
-  <sprite id="99" name="Pipe Enemy Spawner" notes="Use this to spawn waves of either Goombas or Bob-Ombs from a pipe.">
-    <dependency notes="The spawner must be placed on layer 1 tiles set to the core type 'Pipe'."/>
-    <dualbox bit="44" title1="Spawns Goombas" title2="Spawns Bob-Ombs" comment="This determines which enemy will be spawned from the pipe."/>
-    <list nybble="12" title="Exit Direction" commnet="This determines which direction the enemy will spawn from the pipe." comment2="The spawner must be correctly positioned or it will not function. See Dependency Notes for more information.">
+  <sprite id="99" name="Pipe Enemy Spawner" notes="The spawner must be placed on layer 1 tiles set to the core type 'Pipe'.">
+    <dualbox bit="44" title1="Spawns Goombas" title2="Spawns Bob-Ombs"/>
+    <list nybble="12" title="Exit Direction">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
       <entry value="2">Left</entry>
       <entry value="3">Right</entry>
     </list>
-    <list bit="32" title="Number of Enemies Spawned" comment="This determines how many enemies will be spawned in a row before a delay occurs.">
+    <list bit="32" title="Number of Enemies Spawned">
       <entry value="1">2 Enemies, then Delay</entry>
       <entry value="0">3 Enemies, then Delay</entry>
     </list>
@@ -2836,7 +2839,18 @@
   <sprite id="183" name="Incomplete Sprite - 'En_TarzanRope'" notes="Does nothing.">
   </sprite> <!-- #183: Incomplete Sprite - 'En_TarzanRope' -->
 
-  <sprite id="184" name="Incomplete Sprite - 'Mask'" notes="Does nothing. &quot;Mask&quot; refers to the secret Layer 0 areas. Maybe in the early stages of development, this sprite needed to be present in the level in order for Layer 0 to create the see-through effect of Spotlight mode.">
+  <sprite id="184" name="Incomplete Sprite - 'Mask'" notes="Does nothing. &quot;Mask&quot;Original sprite used to create the see-through effect of Layer 0 tiles. The effect was meant to activate once the selected character enters Layer 0 tiles, but this actor is spawned
+  automatically by the game with all 8 options enabled.">
+  <list nybble="12" title="Character" comment="The Yoshi's are numbered by their spawn order.">
+      <entry value="0">Mario</entry>
+      <entry value="1">Luigi</entry>
+      <entry value="2">Blue Toad</entry>
+      <entry value="3">Yellow Toad</entry>
+	  <entry value="4">Yoshi #1</entry>
+      <entry value="5">Yoshi #2</entry>
+      <entry value="6">Yoshi #3</entry>
+      <entry value="7">Yoshi #4</entry>
+    </list>
   </sprite> <!-- #184: Incomplete Sprite - 'Mask' -->
 
   <sprite id="185" name="Ambush - Toad Balloon" noyoshi="True" notes="Collecting 8 of these spawns a Toad House Chest. Any additional Toad Balloons are treated as the 8th Balloon. Requires an Ambush Level Controller for the balloons to spawn and function.">
