@@ -165,7 +165,7 @@
   <sprite id="24" name="Buzzy Beetle" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads. It will turn around when it reaches ledges and blocks are treated the same as terrain. It will turn around if it walks into lava, but die if it falls into it.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Buzzy Beetle will be upside-down and able to cling to and walk on ceilings if placed adjacent to them. If not placed adjacent, he will immediately fall and spin towards the player."/>
     <checkbox bit="47" title="Inside Shell" comment="When enabled, the Buzzy Beetle will spawn inside his shell. He will eventually climb out and resume walking, even if set to be upside-down. Upside-down shells will fall without spinning towards the player."/>
-	<checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
+    <checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #24: Buzzy Beetle -->
 
   <sprite id="25" name="Spiny" notes="A Spiny that walks along the ground.">
@@ -176,14 +176,14 @@
       <entry value="3">Upside-Down Shell (Towards Player)</entry>
     </list>
     <checkbox bit="44" title="Unknown Flag 11" advanced="True" advancedcomment="Unused flag with unknown effects."/>
-	<checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
+    <checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #25: Spiny -->
 
   <!-- Research Unknown Flag 12 -->
   <sprite id="26" name="Upside-Down Spiny" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading.">
     <checkbox bit="32" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
     <checkbox bit="48" title="Unknown Flag 12" advanced="True" advancedcomment="Used in Retail: 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
-	<checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
+    <checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 
   <!-- Confirm Slow Down functions the same as Basic Platform. -->
@@ -299,15 +299,15 @@
     </list>
     <checkbox bit="48" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Star Coin placing it further behind other sprites."/>
     <list bit="35-36" title="Z-Order">
-	  <entry value="0">Above Layer 1</entry>
+    <entry value="0">Above Layer 1</entry>
       <entry value="1">Above Layer 2 (Behind Chainlink Fence)</entry>
       <entry value="2">Further above Layer 1</entry>
-	</list>
+    </list>
     <checkbox bit="44" title="Falls when POW is Used" comment="The Star Coin will fall to the ground if a POW effect is triggered. If placed outside the Zone, the Star Coin will not spawn until the POW is hit."/>
     <value bit="2-8" title="Target Event ID" comment="When the Star Coin is collected, the Target Event ID will be activated." idtype="Target Event"/>
     <dualbox bit="28" title1="Triggers a Timed Event" title2="Permanently activates Target Event" requiredbit="2-8"/>
     <checkbox bit="19-20" title="Unknown Flag 5 Mask 1" mask="1" comment="ASM shows Nybble 5 might affect something."/>
-	<checkbox bit="19-20" title="Unknown Flag 5 Mask 2" mask="2" comment="ASM shows Nybble 5 might affect something."/>
+    <checkbox bit="19-20" title="Unknown Flag 5 Mask 2" mask="2" comment="ASM shows Nybble 5 might affect something."/>
     <checkbox nybble="8" title="Shrink bottom hitbox by half a tile"/> <!-- Any non-zero value -->
   </sprite> <!-- #32: Star Coin -->
 
@@ -704,7 +704,7 @@
     <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Paratroopa will be able to move behind Chainlink Fences." advancedcomment="Exact values are 1500.0 unchecked, -2500.0 checked."/>
     <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="Used in Retail: 06-01 A1 as 12"/>
     <value bit="21" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in Retail: 06-01 A1"/>
-	<checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
+  <checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #58: Koopa Paratroopa -->
 
   <sprite id="59" name="Line Controlled Tilt Controlled Girder" notes="A platform similar to the Tilt Controlled Girder that can navigate along Line guides.">
@@ -2614,7 +2614,7 @@
   </sprite>
 
   <sprite id="166" name="Snake Block (Ice)">
-	<dependency notes="The sprite snaps to the Path Node location. From Node-0 to Node-1, it must be a straight horizontal line, and it must be at least as long as the Snake Block itself. Straight lines and exact 45° angles are recommended, as after each Node, the Snake Block will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
+  <dependency notes="The sprite snaps to the Path Node location. From Node-0 to Node-1, it must be a straight horizontal line, and it must be at least as long as the Snake Block itself. Straight lines and exact 45° angles are recommended, as after each Node, the Snake Block will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
     <checkbox bit="28" title="Icy (Must Be Enabled)" comment="This causes the Snake Block to be icy instead of green. The green version is incomplete and crashes the game, so you MUST use an icy one."/> <!-- All other options are hidden unless this is enabled -->
     <value nybble="11" title="Path ID" requiredbit="28" idtype="Path"/>
     <value nybble="8-9" title="Starting Node" comment="This determines the Node of the Path that the Snake Block will start moving from." requiredbit="28"/>
@@ -2839,14 +2839,13 @@
   <sprite id="183" name="Incomplete Sprite - 'En_TarzanRope'" notes="Does nothing.">
   </sprite> <!-- #183: Incomplete Sprite - 'En_TarzanRope' -->
 
-  <sprite id="184" name="Incomplete Sprite - 'Mask'" notes="Does nothing. &quot;Mask&quot;Original sprite used to create the see-through effect of Layer 0 tiles. The effect was meant to activate once the selected character enters Layer 0 tiles, but this actor is spawned
-  automatically by the game with all 8 options enabled.">
-  <list nybble="12" title="Character" comment="The Yoshi's are numbered by their spawn order.">
+  <sprite id="184" name="Incomplete Sprite - 'Mask'" notes="Does nothing. &quot;Mask&quot;Original sprite used to create the see-through effect of Layer 0 tiles. The effect was meant to activate once the selected character enters Layer 0 tiles, but this actor is spawned automatically by the game with all 8 options enabled.">
+    <list nybble="12" title="Character" comment="The Yoshi's are numbered by their spawn order.">
       <entry value="0">Mario</entry>
       <entry value="1">Luigi</entry>
       <entry value="2">Blue Toad</entry>
       <entry value="3">Yellow Toad</entry>
-	  <entry value="4">Yoshi #1</entry>
+      <entry value="4">Yoshi #1</entry>
       <entry value="5">Yoshi #2</entry>
       <entry value="6">Yoshi #3</entry>
       <entry value="7">Yoshi #4</entry>
@@ -2881,7 +2880,7 @@
   <sprite id="188" name="Midway Flag" notes="A flag that when touched by the player will mark their progress in the level and respawn them at this location when re-entering the level.">
     <value nybble="7-8" title="Entrance ID" comment="This determines which Entrance the level will load the player into when they respawn." idtype="Entrance"/>
     <dualbox bit="44" title1="Load Facing Right" title2="Load Facing Left" comment="This determines which direction the players will face when they respawn."/>
-	<dualbox bit="48" title1="1st Checkpoint" title2="2nd Checkpoint" comment="Once activated, the 1st checkpoint can not be deactivated by the 2nd checkpoint, and vise-versa."/>
+    <dualbox bit="48" title1="1st Checkpoint" title2="2nd Checkpoint" comment="Once activated, the 1st checkpoint can not be deactivated by the 2nd checkpoint, and vise-versa."/>
   </sprite> <!-- #188: Midway Flag -->
 
   <sprite id="189" name="Larry Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
@@ -3607,7 +3606,7 @@
       <entry value="0">Moves Towards Player's Spawn Position</entry>
       <entry value="1">Moves Towards Player</entry>
       <entry value="2">Floats in Place</entry>
-	  <!-- entry value="3">Towards Player</entry --> <!-- ASM may or may not suggest it's different in some way? -->
+      <!-- entry value="3">Towards Player</entry --> <!-- ASM may or may not suggest it's different in some way? -->
     </list>
     <checkbox bit="44" title="Half Movement Speed" comment="When enabled, the Bulber will move at half of its normal speed."/>
     <value nybble="10" title="Distance" comment="This determines how far to each side of its spawn that the Bulber will move before turning around." requiredbit="48"/> <!-- Only appears if [Movement] is set to Moves Towards Player -->
@@ -4395,7 +4394,7 @@
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
     </list>
-	<value nybble="10" title="Speed" comment="Value 0 keeps it in place."/>
+    <value nybble="10" title="Speed" comment="Value 0 keeps it in place."/>
     <list nybble="11" title="Movement Direction">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -4698,7 +4697,7 @@
     <checkbox bit="20" title="Don't Fall" comment="When enabled, the Icicle will not fall."/>
     <checkbox bit="30" title="Use 'Forming' Animation" comment="When enabled, the Icicle will start small when it loads in and grow to its final size."/>
     <value nybble="10" title="(Snake Block?) Fall Delay" comment="It's unsure what exactly this does; in retail, 13 is used." requiredbit="20" requiredval="0"/> <!-- Disappears if Don't Fall is set -->
-    *<list nybble="12" title="Tilt after Falling" comment="When enabled, the Icicle will tilt to the right (?) after it falls." requiredbit="20" requiredval="0">
+    <list nybble="12" title="Tilt after Falling" comment="When enabled, the Icicle will tilt to the right (?) after it falls." requiredbit="20" requiredval="0">
       <entry value="0">No (Straight)</entry>
       <entry value="1">Yes (Tilts Right? Towards Player/Source?)</entry>
     </list> <!-- Disappears if Don't Fall is set -->
@@ -4814,7 +4813,6 @@
     <dependency notes="The boxes will fall below where the spawner is, so it's recommended to include something to move the boxes after they fall."/>
     <dualbox bit="40" title1="Wooden Box" title2="Metal Box" comment="This determines the type of box."/>
   </sprite> <!-- #318: Box Spawner -->
-
 
   <sprite id="319" name="(Unused) Wiimote Controlled Door" notes="Graphically identical to 320. Spawns a giant door that loads in front of Mario. Cannot be forced behind Mario, and he cannot be made to enter it. By tilting the Wii Remote you can make it open. " />
 
@@ -5781,8 +5779,7 @@
     <value nybble="7-8" title="Unknown Value 7-8" advanced="True" advancedcomment="Used (1) in Retail: 01-05 A1."/>
   </sprite> <!-- #382: Screw Mushroom Platform without Bolt -->
 
-  <sprite id="383" name="Boss Controller - Kamek" notes="Kamek himself can be placed anywhere within the Zone, as the controller's placement itself determines his spawn position.
- &lt;br&gt;&lt;br&gt;The blocks move left and despawn when their right edges reach the left border, and respawn from their right edge on the right border.">
+  <sprite id="383" name="Boss Controller - Kamek" notes="Kamek himself can be placed anywhere within the Zone, as the controller's placement itself determines his spawn position.&lt;br&gt;&lt;br&gt;The blocks move left and despawn when their right edges reach the left border, and respawn from their right edge on the right border.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="427"/>
       <suggested sprite="436"/>
