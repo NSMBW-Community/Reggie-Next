@@ -298,7 +298,7 @@
       <entry value="2">Third Coin</entry>
     </list>
     <checkbox bit="48" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Star Coin placing it further behind other sprites."/>
-    <list bit="36" title="Z-Order">
+    <list bit="35-36" title="Z-Order">
 	  <entry value="0">Above Layer 1</entry>
       <entry value="1">Above Layer 2 (Behind Chainlink Fence)</entry>
       <entry value="2">Further above Layer 1</entry>
