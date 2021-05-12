@@ -66,6 +66,7 @@ Developers:
  * joietyfull64 - Sprite Data (NSMBW)
  * MidiGuyDP - Background Images & Names (NewerSMBW)
  * SnakeBlock - Sprite Data (NSMBW)
+ * Danster64 - Sprite Data (NSMBW, NewerSMBW), Sprite Images (NSMBW, NewerSMBW)
 
 Other Testers and Contributors:
  * BulletBillTime, Dirbaio, EdgarAllen, FirePhoenix, GrandMasterJimmy, Mooseknuckle2000, MotherBrainsBrain, RainbowIE, Skawo, Sonicandtails, Tanks, Vibestar, angelsl, ant888, gamesquest1, iZackefx
@@ -91,6 +92,8 @@ See the license file in the distribution for information.
 ----------------------------------------------------------------
 
 ## Changelog
+Release Next (Milestone 4 and beyond): (February 2, 2020)
+https://horizon.miraheze.org/wiki/Reggie_Level_Editor#Changelog
 
 Release Next (Milestone 3 Alpha 2): (November 10, 2017)
  * Added animations rendering for ? blocks, brick blocks, dash coins and conveyors
