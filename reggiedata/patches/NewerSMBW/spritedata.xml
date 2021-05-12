@@ -2162,7 +2162,7 @@
     <list nybble="6" title="Color" comment="This determines the color of the Spine Coaster. The current colors both either show no difference, or crash the game.">
       <entry value="0">Original</entry>
       <entry value="1">Light Blue (No difference)</entry>
-      <entry value="2">Black (CRASHES)</entry>
+      <entry value="2">Black (Crashes)</entry>
     </list>
     <value nybble="10" title="Speed" comment="This determines how quickly the Spine Coaster will travel along the Lines."/>
     <checkbox bit="44" title="Touch Activated" comment="When enabled, this platform will activate when all players are touching the Spine Coaster." comment2="When not enabled, this platform will only activate when a platform with the same Coaster ID is activated through Touch Activation."/>
@@ -2385,10 +2385,10 @@
       <entry value="4">Maple Leaves - Gold</entry>
       <entry value="5">Maple Leaves - Chestnut</entry>
       <entry value="6">Sakura Petals</entry>
-      <entry value="7">Stardust - White</entry>
-      <entry value="8">Stardust - Gold</entry>
-      <entry value="9">Stardust - Purple</entry>
-      <entry value="10">Stardust - Mauve</entry>
+      <entry value="7">Stardust - White (Crashes)</entry>
+      <entry value="8">Stardust - Gold (Crashes)</entry>
+      <entry value="9">Stardust - Purple (Crashes)</entry>
+      <entry value="10">Stardust - Mauve (Crashes)</entry>
     </list> <!-- Appears only if Falling Objects is set -->
   </sprite> <!-- #374: Effect - Falling Objects and Wind -->
 

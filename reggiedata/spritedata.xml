@@ -110,8 +110,8 @@
       <entry value="25">Boss Entrance (Jumping Right)</entry>
       <entry value="26">Boss Entrance (Falling Right)</entry>
       <entry value="27">Door Entrance</entry>
-      <entry value="28">Unknown (CRASH)</entry>
-      <entry value="29">Unknown (FREEZE)</entry>
+      <entry value="28">Unknown (Crashes)</entry>
+      <entry value="29">Unknown (Freezes)</entry>
     </list>
     <list bit="47-48" title="Character" comment="This determines which character will be spawned." advanced="True">
       <entry value="0">Mario</entry>
@@ -3007,9 +3007,8 @@
     <dualbox bit="48" title1="Short (1x1)" title2="Long (1x2)" comment="This determines which size the Icicle is."/>
   </sprite> <!-- #201: Icicle -->
 
-  <!-- Can the cannon be used stand-alone? Also, how does it work again? -->
   <sprite id="202" name="Toad House Minigame - Cannon" notes="">
-    <dependency notes="">
+    <dependency notes="Players shot out of the cannon will pass through all terrain, leave the Zone, and softlock without the controller.">
       <suggested sprite="429"/>
       <suggested sprite="412"/>
     </dependency>
