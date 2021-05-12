@@ -778,7 +778,7 @@
     </list>
   </sprite> <!-- #95: Hammer Bro Plus -->
 
-  <sprite id="98" name="Giant Spiked Ball / Snowball"  sizehacks="True" notes="A large loose Spiked Ball that will also destroy certain types of blocks. Can also be turned into a Snowball.">
+  <sprite id="98" name="Giant Spiked Ball/Snowball"  sizehacks="True" notes="A large loose Spiked Ball that will also destroy certain types of blocks. Can also be turned into a Snowball.">
     <list nybble="6" title="Style" comment="This determines the style of the Giant Spiked Ball.">
       <entry value="0">Normal</entry>
       <entry value="1">Snowball</entry>
@@ -793,7 +793,7 @@
       <entry value="0">Really Slow</entry>
       <entry value="1">Same Momentum</entry>
     </list>
-  </sprite> <!-- #98: Giant Spiked Ball / Snowball -->
+  </sprite> <!-- #98: Giant Spiked Ball/Snowball -->
 
   <sprite id="99" name="Pipe Enemy Spawner"  notes="The spawner must be placed on layer 1 tiles set to the core type 'Pipe'.">
     <dualbox bit="44" title1="Spawns Goombas" title2="Spawns Bob-Ombs"/>
@@ -1000,7 +1000,7 @@
     </list>
   </sprite> <!-- #166: Snake Block -->
 
-  <sprite id="167" name="Big Shy Guy">
+  <sprite id="167" name="Big Shy Guy" notes="">
     <list nybble="5" title="Size" comment="Sizes share no functional difference. This is separate from SizeHacks.">
       <entry value="0">Big</entry>
       <entry value="1">Mega</entry>
@@ -1068,7 +1068,7 @@
     </list>
   </sprite> <!-- #169: Magic Platform -->
 
-  <sprite id="175" name="Flying ? Block" noyoshi="True">
+  <sprite id="175" name="Flying ? Block" notes="" noyoshi="True">
     <list bit="35-36" title="Color">
       <entry value="0">Overworld (Yellow)</entry>
       <entry value="1">Underground (Blue)</entry>
@@ -1096,7 +1096,7 @@
     <checkbox bit="20" title="Unknown Flag 5 (1)" comment="Used in Retail: 06-05 A2. Possibly distance related."/>
   </sprite> <!-- #175: Flying ? Block -->
 
-  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping">
+  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" notes="">
     <dualbox bit="48" title1="Spawns Cheep Cheeps" title2="Spawns Fishbones" comment="Share no functional difference."/>
     <value nybble="8-9" title="Location ID" comment="The fish will spawn from below the camera line, attacking the player only while they are within this location." idtype="Location"/>
   </sprite> <!-- #181: Cheep Cheep Spawn Area - Jumping -->
@@ -2168,55 +2168,6 @@
     <checkbox bit="44" title="Touch Activated" comment="When enabled, this platform will activate when all players are touching the Spine Coaster." comment2="When not enabled, this platform will only activate when a platform with the same Coaster ID is activated through Touch Activation."/>
     <value nybble="5" title="Coaster ID" comment="This will pair multiple Spine Coasters together so that when one of them starts, they all start at the same time." comment2="Do not pair more than one Spine Coaster with [Touch Activated] enabled!" idtype="Coaster"/>
   </sprite> <!-- #297: Spine Coaster -->
-
-  <!-- All Cannonball sprites need comprehensive testing on the Camera variable, Nybble 7. Test with auto-scrolling controller, zoom controller, and 399 Airship Rocking -->
-  <sprite id="298" name="Long Cannonball Cannons" notes="">
-    <list nybble="7" title="Camera Influenced Trajectory" comment="This determines if the cannonball will be influenced by the camera's actions, such as when using [399] Airship Rocking.">
-      <entry value="0">No?</entry>
-      <entry value="1">Yes?</entry> <!-- Likely intended to be used with auto-scroller? -->
-      <entry value="2">???</entry> <!-- Nintendo uses this in 8-Airship, w/[399] Airship Rocking -->
-      <entry value="3">???</entry> <!-- ??? -->
-    </list>
-    <dualbox bit="44" title1="Normal Cannonball Cannon" title2="Giant Cannonball Cannon" comment="This determines the size of the cannon and cannonball."/>
-    <dualbox bit="48" title1="Faces Right" title2="Faces Left" comment="This determines which direction the cannon will face."/>
-    <list nybble="10" requiredbit="44" requiredval="0" title="Normal Cannon Length" comment="This determines how long the cannon is.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
-    <list nybble="10" requiredbit="44" requiredval="1" title="Giant Cannon Length" comment="This determines how long the cannon is. If the cannon is giant, the collision will always be value + 3 blocks long, but the visual will not.">
-      <entry value="0">3 Blocks</entry>
-      <entry value="1">4 Blocks</entry>
-      <entry value="2">5 Blocks</entry>
-      <entry value="3">6 Blocks</entry>
-      <entry value="4">7 Blocks</entry>
-      <entry value="5">8 Blocks</entry>
-      <entry value="6">9 Blocks</entry>
-      <entry value="7">10 Blocks</entry>
-      <entry value="8">11 Blocks</entry>
-      <entry value="9">12 Blocks</entry>
-      <entry value="10">13 Blocks</entry>
-      <entry value="11">14 Blocks</entry>
-      <entry value="12">15 Blocks</entry>
-      <entry value="13">16 Blocks</entry>
-      <entry value="14">17 Blocks</entry>
-      <entry value="15">18 Blocks</entry>
-    </list>
-    <checkbox bit="47" title="Direction Override: Down, Causes Weird Bugs" advanced="True" advancedcomment="Only the front of the cannon will be changed, and when also set to face left, causes weird influence on the cannonball's trajectory. Highly suggested to not use this setting."/>
-  </sprite> <!-- #298: Long Cannonball Cannons -->
   
   <sprite id="302" name="Loose Balboa Throwing Wrench" notes="The wrench thrown by Balboa Wrench's boss fight.">
     <dependency notes="The game will crash without a Rocky Wrench in the level.">

@@ -1289,7 +1289,7 @@
     <checkbox bit="44" title="Unknown Flag 11 (1)" comment="Possibly determines behavior relating to [159]. ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #91: Auto-Scrolling Controller -->
 
-  <sprite id="92" name="Bill Blaster">
+  <sprite id="92" name="Bill Blaster" notes="">
     <list nybble="11" title="Height">
       <entry value="0">2 Blocks</entry>
       <entry value="1">3 Blocks</entry>
@@ -1319,7 +1319,7 @@
   </sprite> <!-- #92: Bill Blaster -->
 
 <!-- Could use a few ??? values tested and played with. -->
-  <sprite id="93" name="Banzai Bill Blaster">
+  <sprite id="93" name="Banzai Bill Blaster" notes="">
     <list nybble="10" title="Shooting Direction">
       <entry value="0">Towards Player</entry>
       <entry value="1">Left Only</entry>
@@ -2704,7 +2704,7 @@
     </list>
   </sprite> <!-- #174: (Unused) One Way Swinging Gate -->
 
-  <sprite id="175" name="Flying ? Block" noyoshi="True">
+  <sprite id="175" name="Flying ? Block" notes="" noyoshi="True">
     <list bit="35-36" title="Color">
       <entry value="0">Overworld (Yellow)</entry>
       <entry value="1">Underground (Blue)</entry>
@@ -2820,7 +2820,7 @@
   <sprite id="180" name="Cheep-Chomp" sizehack="True" notes="A rather large Cheep enemy that is capable of swallowing the player whole, killing them instantly regardless of their power-up state. Star excluded, of course.">
   </sprite> <!-- #180: Cheep-Chomp -->
 
-  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping">
+  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" notes="">
     <value nybble="8-9" title="Location ID" comment="The Cheep Cheep will spawn from below the camera line, attacking the player only while they are within this location." idtype="Location"/>
   </sprite> <!-- #181: Cheep Cheep Spawn Area - Jumping -->
 
@@ -3645,7 +3645,7 @@
     <value nybble="12" title="Collection ID" comment="Links this Coin to 459" idtype="Collection"/>
   </sprite> <!-- #237: Blue P-Switch Coin -->
 
-  <sprite id="238" name="Foo">
+  <sprite id="238" name="Foo" notes="">
     <checkbox bit="48" title="Does Not Create Clouds"/>
   </sprite> <!-- #238: Foo, the Cloud Blower -->
 
@@ -4330,7 +4330,7 @@
   </sprite> <!-- #287: (Unused) Path Controlled Ice Block -->
 
   <!-- Investigate Nybble 12 - Right = 2? If so, then it's suspected that Left = 1 and Towards Player = 0. True or False? -->
-  <sprite id="288" name="Rolling Barrel">
+  <sprite id="288" name="Rolling Barrel" notes="">
     <dualbox bit="47" title1="Rolls Left" title2="Rolls Right"/>
   </sprite> <!-- #288: Rolling Barrel -->
 
@@ -5048,19 +5048,19 @@
     </list> <!-- Appears if Formation [37-38] == Category 4 [11] -->
   </sprite> <!-- #335: School of Cheep Cheeps -->
 
-  <sprite id="336" name="Wendy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
+  <sprite id="336" name="Wendy Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
     <dependency notes="Requires the Tower Boss Controller to start moving on her own and complete the level after she's beat. Otherwise, she will start moving when damaged.">
       <suggested sprite="363"/>
     </dependency>
   </sprite> <!-- #336: Wendy Koopa -->
 
-  <sprite id="337" name="Iggy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
+  <sprite id="337" name="Iggy Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
     <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged.">
       <suggested sprite="363"/>
     </dependency>
   </sprite> <!-- #337: Iggy Koopa -->
 
-  <sprite id="338" name="Rising/Falling Bill Blaster">
+  <sprite id="338" name="Rising/Falling Bill Blaster" notes="">
     <list nybble="12" title="Height at Shot 1">
       <entry value="0">2 Blocks</entry>
       <entry value="1">3 Blocks</entry>
@@ -5159,7 +5159,7 @@
     <value nybble="10" title="Rising / Lowering Speed" comment="This determines how quickly the Pipe will move when switching between Height 1 and Height 2." comment2="Values 0-3 are each very different from each other, while Values 4+ have very minimal increases in speed beyond that."/>
   </sprite> <!-- #339: Moving Pipe - Facing Up -->
 
-  <sprite id="340" name="Lemmy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Lemmy's balls won't push Yoshi aside, and Yoshi will slide down if standing on one. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
+  <sprite id="340" name="Lemmy Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Lemmy's balls won't push Yoshi aside, and Yoshi will slide down if standing on one. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
     <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged.">
       <suggested sprite="363"/>
     </dependency>
@@ -5193,7 +5193,7 @@
     </list>
   </sprite> <!-- #343: Line Controlled Fuzzy / Big Fuzzy -->
 
-  <sprite id="344" name="Morton Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
+  <sprite id="344" name="Morton Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
     <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged. Additionally, the Morton fight allows placement of [480] Morton's Skewer, a much more timing-sensitive spiked pillar.">
       <suggested sprite="363"/>
       <suggested sprite="480"/>
@@ -5222,13 +5222,13 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #346: Rotation Controlled Hanging Chain Platform -->
 
-  <sprite id="347" name="Roy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
+  <sprite id="347" name="Roy Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
     <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged.">
       <suggested sprite="363"/>
     </dependency>
   </sprite> <!-- #347: Roy Koopa -->
 
-  <sprite id="348" name="Ludwig von Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
+  <sprite id="348" name="Ludwig von Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
     <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged.">
       <suggested sprite="363"/>
     </dependency>
@@ -5613,7 +5613,7 @@
     <checkbox bit="32" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="When this flag is enabled along with a Path (regardless of the Use Paths flag), the Raft will go to the indicated Path Node and not move. But, if the Path is set to loop, this doesn't do anything. So uh, Nice Boat."/>
   </sprite> <!-- #368: Path Controlled Flashlight Raft -->
 
-  <sprite id="369" name="Cooligan" noyoshi="True" yoshinotes="Yoshi cannot jump on Cooligans, though he can use the stomp attack and tongue attack to defeat them.">
+  <sprite id="369" name="Cooligan" notes="" noyoshi="True" yoshinotes="Yoshi cannot jump on Cooligans, though he can use the stomp attack and tongue attack to defeat them.">
     <list nybble="12" title="Starting Direction">
       <entry value="0">Towards Mario</entry>
       <entry value="1">Right</entry>
@@ -6753,13 +6753,13 @@
     <dualbox bit="48" title1="Spikes on Right" title2="Spikes on Left" comment="This determines which side of the block has spikes."/>
   </sprite> <!-- #462: Enormous Tower Block with Spikes -->
 
-  <sprite id="463" name="Effect - Glare" comment="This creates a sunbeam effect pointing down and right from the placement of the sprite. Multiple can be used in the same Zone.">
+  <sprite id="463" name="Effect - Glare" notes="">
   </sprite> <!-- #463: Effect - Glare -->
 
-  <sprite id="464" name="Climbable Swinging Vine / Chain" noyoshi="True" notes="A swinging vine or chain that can be grabbed onto by the player and made to swing left and right. This does not count as a climbing animation for the IF Event Controller. It counts as being in the air.">
+  <sprite id="464" name="Climbable Swinging Vine/Chain" noyoshi="True" notes="A swinging vine or chain that can be grabbed onto by the player and made to swing left and right. This does not count as a climbing animation for the IF Event Controller. It counts as being in the air.">
     <dualbox bit="48" title1="Vine" title2="Chain" comment="This determines which type of visuals are used for the swinging object."/>
     <value nybble="6" title="Unknown Value 6" advanced="True" advancedcomment="Nintendo uses value 1 in 5-01 A1. No visible effect."/>
-  </sprite> <!-- #464: Climbable Swinging Vine / Chain -->
+  </sprite> <!-- #464: Climbable Swinging Vine/Chain -->
 
   <!-- Determine if Value 1 Jungle Birds is different from Value 5 Jungle Birds -->
   <!-- Check if it crashes from using more than one different type of ambiance / more than one of the same type of ambiance -->
