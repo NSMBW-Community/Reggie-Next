@@ -261,7 +261,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # now get stuff ready
         loaded = False
 
-        if len(sys.argv) > 1 and os.path.isfile(sys.argv[1]) and IsNSMBLevel(sys.argv[1]):
+        if len(sys.argv) > 1 and IsNSMBLevel(sys.argv[1]):
             loaded = self.LoadLevel(None, sys.argv[1], True, 1)
         else:
             lastlevel = globals_.gamedef.GetLastLevel()
