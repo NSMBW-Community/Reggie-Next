@@ -315,31 +315,20 @@ class ZoneTab(QtWidgets.QWidget):
         if z.terraindark >= len(globals_.ZoneTerrainThemeValues): z.terraindark = len(globals_.ZoneTerrainThemeValues) - 1
         self.Zone_terraindark.setCurrentIndex(z.terraindark)
 
-        self.Zone_vnormal = QtWidgets.QRadioButton(globals_.trans.string('ZonesDlg', 24))
-        self.Zone_vnormal.setToolTip(globals_.trans.string('ZonesDlg', 25))
-
-        self.Zone_vspotlight = QtWidgets.QRadioButton(globals_.trans.string('ZonesDlg', 26))
+        self.Zone_vspotlight = QtWidgets.QCheckBox(globals_.trans.string('ZonesDlg', 26))
         self.Zone_vspotlight.setToolTip(globals_.trans.string('ZonesDlg', 27))
 
-        self.Zone_vfulldark = QtWidgets.QRadioButton(globals_.trans.string('ZonesDlg', 28))
+        self.Zone_vfulldark = QtWidgets.QCheckBox(globals_.trans.string('ZonesDlg', 28))
         self.Zone_vfulldark.setToolTip(globals_.trans.string('ZonesDlg', 29))
 
         self.Zone_visibility = QtWidgets.QComboBox()
 
         self.zv = z.visibility
-        VRadioDiv = self.zv // 16
 
-        if VRadioDiv == 0:
-            self.Zone_vnormal.setChecked(True)
-        elif VRadioDiv == 1:
-            self.Zone_vspotlight.setChecked(True)
-        elif VRadioDiv == 2:
-            self.Zone_vfulldark.setChecked(True)
-        elif VRadioDiv == 3:
-            self.Zone_vfulldark.setChecked(True)
+        self.Zone_vspotlight.setChecked(self.zv & 0x10)
+        self.Zone_vfulldark.setChecked(self.zv & 0x20)
 
         self.ChangeVisibilityList()
-        self.Zone_vnormal.clicked.connect(self.ChangeVisibilityList)
         self.Zone_vspotlight.clicked.connect(self.ChangeVisibilityList)
         self.Zone_vfulldark.clicked.connect(self.ChangeVisibilityList)
 
@@ -348,7 +337,6 @@ class ZoneTab(QtWidgets.QWidget):
         ZoneRenderingLayout.addRow(globals_.trans.string('ZonesDlg', 22), self.Zone_terraindark)
 
         ZoneVisibilityLayout = QtWidgets.QHBoxLayout()
-        ZoneVisibilityLayout.addWidget(self.Zone_vnormal)
         ZoneVisibilityLayout.addWidget(self.Zone_vspotlight)
         ZoneVisibilityLayout.addWidget(self.Zone_vfulldark)
 
@@ -376,13 +364,13 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_direction.setCurrentIndex(z.camtrack)
 
         self.Zone_yrestrict = QtWidgets.QCheckBox()
-        self.Zone_yrestrict.setToolTip('<b>Only Scroll Upwards If Flying:</b><br>Prevents the screen from scrolling upwards unless the player uses a Propeller Suit or Block.<br><br>This feature looks rather glitchy and is not recommended.')
+        self.Zone_yrestrict.setToolTip(globals_.trans.string('ZonesDlg', 78))
         self.Zone_yrestrict.setChecked(z.mpcamzoomadjust != 15)
         self.Zone_yrestrict.stateChanged.connect(self.ChangeMPZoomAdjust)
 
         self.Zone_mpzoomadjust = QtWidgets.QSpinBox()
         self.Zone_mpzoomadjust.setRange(0, 14)
-        self.Zone_mpzoomadjust.setToolTip('<b>Multiplayer Screen Size Adjust:</b><br>Increases the height of the screen during multiplayer mode. Requires "Only Scroll Upwards If Flying" to be checked.<br><br>This causes very glitchy behavior if the zone is much taller than the adjusted screen height, if the screen becomes more than 28 tiles tall, or when the camera zooms in during the end-of-level celebration.')
+        self.Zone_mpzoomadjust.setToolTip(globals_.trans.string('ZonesDlg', 79))
 
         self.ChangeMPZoomAdjust()
         if z.mpcamzoomadjust < 15:
@@ -392,34 +380,33 @@ class ZoneTab(QtWidgets.QWidget):
         ZoneCameraLayout = QtWidgets.QFormLayout()
         ZoneCameraLayout.addRow(self.Zone_cammodezoom)
         ZoneCameraLayout.addRow(globals_.trans.string('ZonesDlg', 39), self.Zone_direction)
-        ZoneCameraLayout.addRow('Only Scroll Upwards If Flying:', self.Zone_yrestrict)
-        ZoneCameraLayout.addRow('Multiplayer Screen Size Adjust:', self.Zone_mpzoomadjust)
+        ZoneCameraLayout.addRow(globals_.trans.string('ZonesDlg', 80), self.Zone_yrestrict)
+        ZoneCameraLayout.addRow(globals_.trans.string('ZonesDlg', 81), self.Zone_mpzoomadjust)
 
         self.Camera.setLayout(ZoneCameraLayout)
 
     def ChangeVisibilityList(self):
-        VRadioMod = self.zv % 16
-        self.Zone_visibility.clear()
+        add_idx = 0
 
-        if self.Zone_vnormal.isChecked():
-            addList = globals_.trans.stringList('ZonesDlg', 41)
-            self.Zone_visibility.addItems(addList)
-            self.Zone_visibility.setToolTip(globals_.trans.string('ZonesDlg', 42))
-        elif self.Zone_vspotlight.isChecked():
-            addList = globals_.trans.stringList('ZonesDlg', 43)
-            self.Zone_visibility.addItems(addList)
-            self.Zone_visibility.setToolTip(globals_.trans.string('ZonesDlg', 44))
-        elif self.Zone_vfulldark.isChecked():
-            addList = globals_.trans.stringList('ZonesDlg', 45)
-            self.Zone_visibility.addItems(addList)
-            self.Zone_visibility.setToolTip(globals_.trans.string('ZonesDlg', 46))
-
-        # Make sure the selected index exists in the list
-        if VRadioMod >= len(addList):
-            self.Zone_visibility.setCurrentIndex(0)
-            self.zv &= 0xF0 # clear the bottom 4 bits
+        if self.Zone_vfulldark.isChecked():
+            if self.Zone_vspotlight.isChecked():
+                add_idx = 82
+            else:
+                add_idx = 45
         else:
-            self.Zone_visibility.setCurrentIndex(VRadioMod)
+            if self.Zone_vspotlight.isChecked():
+                add_idx = 43
+            else:
+                add_idx = 41
+
+        add_list = globals_.trans.stringList('ZonesDlg', add_idx)
+
+        self.Zone_visibility.clear()
+        self.Zone_visibility.addItems(add_list)
+        self.Zone_visibility.setToolTip(globals_.trans.string('ZonesDlg', add_idx + 1))
+
+        choice = min(self.zv & 0xF, len(add_list) - 1)
+        self.Zone_visibility.setCurrentIndex(choice)
 
     def ChangeMPZoomAdjust(self):
         self.Zone_mpzoomadjust.setEnabled(self.Zone_yrestrict.isChecked())

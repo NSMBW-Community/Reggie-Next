@@ -4058,12 +4058,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
             else:
                 z.mpcamzoomadjust = 15
 
-            if tab.Zone_vnormal.isChecked():
-                z.visibility = 0 << 4
-            elif tab.Zone_vspotlight.isChecked():
-                z.visibility = 1 << 4
-            elif tab.Zone_vfulldark.isChecked():
-                z.visibility = 2 << 4
+            z.visibility = 0
+
+            if tab.Zone_vspotlight.isChecked():
+                z.visibility |= 1 << 4
+            if tab.Zone_vfulldark.isChecked():
+                z.visibility |= 1 << 5
 
             z.visibility |= tab.Zone_visibility.currentIndex()
 
