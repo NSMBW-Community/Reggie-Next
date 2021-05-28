@@ -41,6 +41,11 @@ class AbstractLevel:
         so you would pass a 1 if you wanted to delete the first area.
         """
         del self.areas[number - 1]
+
+        # change all later areas to use the correct num
+        for i, area in enumerate(self.areas, 1):
+            area.set_num(i)
+
         return True
 
     def changeArea(self, number):
@@ -63,14 +68,14 @@ class Level_NSMBW(AbstractLevel):
         super().__init__()
         self.new(False)
 
-    def new(self, load = True):
+    def new(self, load=True):
         """
         Creates a completely new level
         """
         # Create area objects
         self.areas = []
 
-        new_area = Area_NSMBW(1)
+        new_area = Area(1)
 
         if load:
             new_area.load_defaults()
@@ -129,15 +134,13 @@ class Level_NSMBW(AbstractLevel):
             if course is None:
                 continue
 
-            if i == areaToLoad:
-                new_area = Area_NSMBW(i)
-                globals_.Area = new_area
-                SLib.Area = new_area
-            else:
-                new_area = AbstractArea(i)
-
-            new_area.load(course, L0, L1, L2)
+            new_area = Area(i)
+            new_area.set_data(course, L0, L1, L2)
             self.areas.append(new_area)
+
+        self.areas[areaToLoad - 1].load()
+        globals_.Area = self.areas[areaToLoad - 1]
+        SLib.Area = self.areas[areaToLoad - 1]
 
         return True
 
@@ -153,56 +156,31 @@ class Level_NSMBW(AbstractLevel):
         newArchive['course'] = None
 
         # Go through the areas, save them and add them back to the archive
-        for areanum, area in enumerate(self.areas):
+        for i, area in enumerate(self.areas):
+            assert area.areanum == i + 1, (area.areanum, i + 1)
+
             course, L0, L1, L2 = area.save()
 
             if course is not None:
-                newArchive['course/course%d.bin' % (areanum + 1)] = course
+                newArchive['course/course%d.bin' % area.areanum] = course
             if L0 is not None:
-                newArchive['course/course%d_bgdatL0.bin' % (areanum + 1)] = L0
+                newArchive['course/course%d_bgdatL0.bin' % area.areanum] = L0
             if L1 is not None:
-                newArchive['course/course%d_bgdatL1.bin' % (areanum + 1)] = L1
+                newArchive['course/course%d_bgdatL1.bin' % area.areanum] = L1
             if L2 is not None:
-                newArchive['course/course%d_bgdatL2.bin' % (areanum + 1)] = L2
+                newArchive['course/course%d_bgdatL2.bin' % area.areanum] = L2
 
         # return the U8 archive data
         return newArchive._dump()
 
-    def saveNewArea(self, course_new, L0_new, L1_new, L2_new):
+    def appendArea(self, course_new, L0_new, L1_new, L2_new):
         """
-        Save the level back to a file
+        Creates a new area and adds it to the current level.
         """
-
-        # Make a new archive
-        newArchive = archive.U8()
-
-        # Create a folder within the archive
-        newArchive['course'] = None
-
-        # Go through the areas, save them and add them back to the archive
-        for areanum, area in enumerate(self.areas):
-            course, L0, L1, L2 = area.save()
-
-            if course is not None:
-                newArchive['course/course%d.bin' % (areanum + 1)] = course
-            if L0 is not None:
-                newArchive['course/course%d_bgdatL0.bin' % (areanum + 1)] = L0
-            if L1 is not None:
-                newArchive['course/course%d_bgdatL1.bin' % (areanum + 1)] = L1
-            if L2 is not None:
-                newArchive['course/course%d_bgdatL2.bin' % (areanum + 1)] = L2
-
-        if course_new is not None:
-            newArchive['course/course%d.bin' % (len(self.areas) + 1)] = course_new
-        if L0_new is not None:
-            newArchive['course/course%d_bgdatL0.bin' % (len(self.areas) + 1)] = L0_new
-        if L1_new is not None:
-            newArchive['course/course%d_bgdatL1.bin' % (len(self.areas) + 1)] = L1_new
-        if L2_new is not None:
-            newArchive['course/course%d_bgdatL2.bin' % (len(self.areas) + 1)] = L2_new
-
-        # return the U8 archive data
-        return newArchive._dump()
+        # Add new area
+        new_area = Area(len(self.areas) + 1)
+        new_area.set_data(course_new, L0_new, L1_new, L2_new)
+        self.areas.append(new_area)
 
     def changeArea(self, number):
         """
@@ -211,50 +189,20 @@ class Level_NSMBW(AbstractLevel):
         """
         current_num = globals_.Area.areanum
 
-        # self.areas[current_num - 1] should be "dumbed down" to an AbstractArea.
-        area = self.areas[current_num - 1]
-        current_data = area.course, area.L0, area.L1, area.L2
-        unloaded_area = AbstractArea(current_num)
-        unloaded_area.load(*current_data)
-        self.areas[current_num - 1] = unloaded_area
-
-        # self.areas[number - 1] should be "promoted" to a full Area.
-        area = self.areas[number - 1]
-        new_data = area.course, area.L0, area.L1, area.L2
-        new_area = Area_NSMBW(number)
-        new_area.load(*new_data)
-
-        self.areas[number - 1] = new_area
+        # self.areas[current_num - 1] should be unloaded.
+        self.areas[current_num - 1].unload()
 
         # Set the globals properly
-        globals_.Area = new_area
-        SLib.Area = new_area
+        globals_.Area = self.areas[number - 1]
+        SLib.Area = self.areas[number - 1]
+
+        # self.areas[number - 1] should be loaded.
+        self.areas[number - 1].load()
 
         return True
 
-class AbstractArea:
-    """
-    An extremely basic abstract area. Implements the basic function API.
-    """
 
-    def __init__(self, area_num):
-        self.areanum = area_num
-        self.course = None
-        self.L0 = None
-        self.L1 = None
-        self.L2 = None
-
-    def load(self, course, L0, L1, L2):
-        self.course = course
-        self.L0 = L0
-        self.L1 = L1
-        self.L2 = L2
-
-    def save(self):
-        return (self.course, self.L0, self.L1, self.L2)
-
-
-class Area_NSMBW(AbstractArea):
+class Area:
     """
     Class for a parsed NSMBW level area
     """
@@ -263,9 +211,13 @@ class Area_NSMBW(AbstractArea):
         """
         Creates a completely new NSMBW area
         """
-        super().__init__(area_num)
+        self.areanum = area_num
+        self.course = None
+        self.L0 = None
+        self.L1 = None
+        self.L2 = None
 
-        # Default tileset names for NSMBW
+        # Default tileset names
         self.tileset0 = 'Pa0_jyotyu'
         self.tileset1 = ''
         self.tileset2 = ''
@@ -304,8 +256,15 @@ class Area_NSMBW(AbstractArea):
         self.layers = [[], [], []]
 
         self.MetaData = None
+        self._is_loaded = False
 
         CreateTilesets()
+
+    def set_num(self, area_num):
+        """
+        Changes the area number of this area.
+        """
+        self.areanum = area_num
 
     def load_defaults(self):
         """
@@ -319,18 +278,61 @@ class Area_NSMBW(AbstractArea):
         if self.tileset0 != '': LoadTileset(0, self.tileset0)
         if self.tileset1 != '': LoadTileset(1, self.tileset1)
 
-    def load(self, course, L0, L1, L2):
+    def set_data(self, course, L0, L1, L2):
+        """
+        Assigns the archive file data to this area.
+        """
+        self.course = course
+        self.L0 = L0
+        self.L1 = L1
+        self.L2 = L2
+
+    def unload(self):
+        """
+        Unloads most of an area, except for the raw data
+        """
+        print(f"Unloading area {self.areanum}")
+        assert self._is_loaded
+
+        del self.blocks
+        del self.layers
+        del self.Metadata
+        del self.tileset0
+        del self.tileset1
+        del self.tileset2
+        del self.tileset3
+        del self.wrapFlag
+        del self.unkFlag1
+        del self.unkFlag2
+        del self.defEvents
+        del self.unkVal1
+        del self.unkVal2
+        del self.entrances
+        del self.sprites
+        del self.bgA
+        del self.bgB
+        del self.zones
+        del self.locations
+        del self.camprofiles
+        del self.pathdata
+        del self.paths
+        del self.comments
+
+        self._is_loaded = False
+
+    def load(self):
         """
         Loads an area from the archive files
         """
-        super().load(course, L0, L1, L2)
+        print(f"Loading area {self.areanum}")
+        assert not self._is_loaded
 
         # Load in the course file and blocks
-        self.LoadBlocks(course)
+        self.LoadBlocks(self.course)
 
         # Load the editor metadata
         if self.block1pos[0] != 0x70:
-            rddata = course[0x70:self.block1pos[0]]
+            rddata = self.course[0x70:self.block1pos[0]]
             self.LoadReggieInfo(rddata)
         else:
             self.LoadReggieInfo(None)
@@ -359,26 +361,28 @@ class Area_NSMBW(AbstractArea):
             # Load the object layers
             globals_.firstLoad = False
 
-        self.LoadSprites()  # block 8
-
         self.layers = [[], [], []]
 
-        if L0 is not None:
-            self.LoadLayer(0, L0)
-        if L1 is not None:
-            self.LoadLayer(1, L1)
-        if L2 is not None:
-            self.LoadLayer(2, L2)
+        if self.L0 is not None:
+            self.LoadLayer(0, self.L0)
+        if self.L1 is not None:
+            self.LoadLayer(1, self.L1)
+        if self.L2 is not None:
+            self.LoadLayer(2, self.L2)
 
-        # Delete self.blocks
-        # del self.blocks
+        self.LoadSprites()  # block 8
 
+        self._is_loaded = True
         return True
 
     def save(self):
         """
         Save the area back to a file
         """
+        # first handle the case that the area is not loaded
+        if not self._is_loaded:
+            return (self.course, self.L0, self.L1, self.L2)
+
         # prepare this because otherwise the game refuses to load some sprites
         self.SortSpritesByZone()
 
@@ -423,13 +427,12 @@ class Area_NSMBW(AbstractArea):
             HeaderOffset += 8
             FileOffset += blocksize
 
-        # return stuff
-        return (
-            bytes(course),
-            self.SaveLayer(0),
-            self.SaveLayer(1),
-            self.SaveLayer(2),
-        )
+        self.course = bytes(course)
+        self.L0 = self.SaveLayer(0)
+        self.L1 = self.SaveLayer(1)
+        self.L2 = self.SaveLayer(2)
+
+        return (self.course, self.L0, self.L1, self.L2)
 
     def RemoveFromLayer(self, obj):
         """

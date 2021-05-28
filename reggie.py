@@ -2211,7 +2211,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         L1 = None
         L2 = None
 
-        if not self.HandleSaveNewArea(course, L0, L1, L2): return
+        globals_.Level.appendArea(course, L0, L1, L2)
+
+        if not self.HandleSave():
+            globals_.Level.deleteArea(newID)
+            return
+
         self.LoadLevel(None, self.fileSavePath, True, newID)
 
     def HandleImportArea(self):
@@ -2287,10 +2292,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     L2 = val
 
         # add them to our level
-        newID = len(globals_.Level.areas) + 1
+        globals_.Level.appendArea(course, L0, L1, L2)
+        new_id = globals_.Level.areas[-1].areanum
 
-        if not self.HandleSaveNewArea(course, L0, L1, L2): return
-        self.LoadLevel(None, self.fileSavePath, True, newID)
+        if not self.HandleSave():
+            globals_.Level.deleteArea(new_id)
+            return
+
+        self.LoadLevel(None, self.fileSavePath, True, new_id)
 
     def HandleDeleteArea(self):
         """
@@ -2301,14 +2310,34 @@ class ReggieWindow(QtWidgets.QMainWindow):
                                                QtWidgets.QMessageBox.No)
         if result == QtWidgets.QMessageBox.No: return
 
+        # Save the current area in case something goes wrong.
         if not self.HandleSave(): return
 
-        globals_.Level.deleteArea(globals_.Area.areanum)
+        area_to_delete = globals_.Area.areanum
+        print("Deleting area:")
+        print(area_to_delete, globals_.Level.areas.index(globals_.Area))
 
-        # no error checking. if it saved last time, it will probably work now
-        with open(self.fileSavePath, 'wb') as f:
-            f.write(globals_.Level.save())
-        self.LoadLevel(None, self.fileSavePath, True, 1)
+        # Temporarily set self.fileSavePath to None so LoadLevel does not load
+        # data from the file on disk.
+        path = self.fileSavePath
+        self.fileSavePath = None
+        self.LoadLevel(None, path, True, 1)
+
+        # Actually delete the area
+        globals_.Level.deleteArea(area_to_delete)
+        self.actions['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
+        self.fileSavePath = path
+
+        # Update the area selection combobox
+        self.areaComboBox.clear()
+
+        for area in globals_.Level.areas:
+            self.areaComboBox.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
+
+        self.areaComboBox.setCurrentIndex(0)
+
+        # Save the level without the area as promised
+        self.HandleSave()
 
     def HandleChangeGamePath(self, auto=False):
         """
@@ -2437,32 +2466,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             data += bytes(pad_length)
 
-        try:
-            with open(self.fileSavePath, 'wb') as f:
-                f.write(data)
-        except IOError as e:
-            QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Save', 0),
-                                          globals_.trans.string('Err_Save', 1, '[err1]', e.args[0], '[err2]', e.args[1]))
-            return False
-
-        globals_.Dirty = False
-        globals_.AutoSaveDirty = False
-        self.UpdateTitle()
-
-        setSetting('AutoSaveFilePath', self.fileSavePath)
-        setSetting('AutoSaveFileData', 'x')
-        return True
-
-    def HandleSaveNewArea(self, course, L0, L1, L2):
-        """
-        Save a level back to the archive
-        """
-        if not self.fileSavePath or self.fileSavePath.endswith('.arc.LH'):
-            self.HandleSaveAs()
-            return
-
-        # global globals_.Dirty, globals_.AutoSaveDirty
-        data = globals_.Level.saveNewArea(course, L0, L1, L2)
         try:
             with open(self.fileSavePath, 'wb') as f:
                 f.write(data)
@@ -3058,11 +3061,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.ResetPalette()
 
         # Fill up the area list
-        if not same:
-            self.areaComboBox.clear()
+        self.areaComboBox.clear()
 
-            for area in globals_.Level.areas:
-                self.areaComboBox.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
+        for area in globals_.Level.areas:
+            self.areaComboBox.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
 
         self.areaComboBox.setCurrentIndex(areaNum - 1)
 
