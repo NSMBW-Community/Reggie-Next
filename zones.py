@@ -56,19 +56,25 @@ class ZonesDialog(QtWidgets.QDialog):
             if result == QtWidgets.QMessageBox.No:
                 return
 
-        a = [[0, 0, 0, 0, 0, 15, 0, 0]]
-        b = [[0, 0, 0, 0, 0, 10, 10, 10, 0]]
+        fake_bounds = [[0, 0, 0, 0, 0, 15, 0, 0]]
         id = len(self.zoneTabs)
-        z = ZoneItem(256, 256, 448, 224, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, a, b, b, id)
-        ZoneTabName = globals_.trans.string('ZonesDlg', 3, '[num]', id + 1)
+
+        z = ZoneItem(256, 256, 448, 224, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, fake_bounds, id)
         tab = ZoneTab(z)
         self.zoneTabs.append(tab)
-        self.tabWidget.addTab(tab, ZoneTabName)
-        if self.tabWidget.count() > 5:
-            for tab in range(0, self.tabWidget.count()):
-                self.tabWidget.setTabText(tab, str(tab + 1))
 
-                # self.NewButton.setEnabled(len(self.zoneTabs) < 8)
+        tabamount = self.tabWidget.count()
+
+        if tabamount < 6:
+            ZoneTabName = globals_.trans.string('ZonesDlg', 3, '[num]', id + 1)
+        else:
+            ZoneTabName = str(id + 1)
+
+        self.tabWidget.addTab(tab, ZoneTabName)
+
+        if tabamount == 6:
+            for tab in range(tabamount):
+                self.tabWidget.setTabText(tab, str(tab.zoneObj.id + 1))
 
     def DeleteZone(self):
         curindex = self.tabWidget.currentIndex()
@@ -79,12 +85,15 @@ class ZonesDialog(QtWidgets.QDialog):
         self.tabWidget.removeTab(curindex)
         self.zoneTabs.pop(curindex)
 
+        # Relabel the ids
         for tab in range(curindex, tabamount):
-            if self.tabWidget.count() < 6:
+            if tabamount < 6:
                 self.tabWidget.setTabText(tab, globals_.trans.string('ZonesDlg', 3, '[num]', tab + 1))
-            if self.tabWidget.count() > 5:
+            elif tabamount > 5:
                 self.tabWidget.setTabText(tab, str(tab + 1))
 
+            # ensure the zone object is also updated
+            tab.zoneObj.id = tab
 
         if tabamount == 5:
             for tab in range(curindex):
@@ -103,6 +112,7 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.createCamera(z)
         self.createBounds(z)
+        self.createBackground(z)
 
         leftLayout = QtWidgets.QVBoxLayout()
         leftLayout.addWidget(self.Dimensions)
@@ -112,6 +122,7 @@ class ZoneTab(QtWidgets.QWidget):
         rightLayout = QtWidgets.QVBoxLayout()
         rightLayout.addWidget(self.Camera)
         rightLayout.addWidget(self.Bounds)
+        rightLayout.addWidget(self.Background)
 
         mainLayout = QtWidgets.QHBoxLayout()
         mainLayout.addLayout(leftLayout)
@@ -293,6 +304,23 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_ypos.setValue(top)
         self.Zone_width.setValue(right)
         self.Zone_height.setValue(bottom)
+
+    def createBackground(self, z):
+        self.Background = QtWidgets.QGroupBox('Background')
+
+        self.Zone_bga = QtWidgets.QSpinBox()
+        self.Zone_bga.setRange(0, 999)
+        self.Zone_bga.setValue(z.bga_id)
+
+        self.Zone_bgb = QtWidgets.QSpinBox()
+        self.Zone_bgb.setRange(0, 999)
+        self.Zone_bgb.setValue(z.bgb_id)
+
+        ZoneBackgroundLayout = QtWidgets.QFormLayout()
+        ZoneBackgroundLayout.addRow("Background A id", self.Zone_bga)
+        ZoneBackgroundLayout.addRow("Background B id", self.Zone_bgb)
+
+        self.Background.setLayout(ZoneBackgroundLayout)
 
     def createRendering(self, z):
         self.Rendering = QtWidgets.QGroupBox('Rendering')

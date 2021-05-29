@@ -4081,8 +4081,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if tab.Zone_boss.isChecked():
                 z.sfxmod |= 1
 
-        for spr in globals_.Area.sprites:
-            spr.ImageObj.positionChanged()
+            z.bga_id = tab.Zone_bga.value()
+            z.bgb_id = tab.Zone_bgb.value()
 
         self.actions['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
         self.levelOverview.update()
@@ -4097,29 +4097,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         SetDirty()
-        for tab, z in zip(dlg.BGTabs, globals_.Area.zones):
-            # first index: BGA/BGB
-            # second index: X/Y
-            z.XpositionA = tab.pos_boxes[0][0].value()
-            z.YpositionA = -tab.pos_boxes[0][1].value()
-            z.XpositionB = tab.pos_boxes[1][0].value()
-            z.YpositionB = -tab.pos_boxes[1][1].value()
-
-            z.XscrollA = tab.scroll_boxes[0][0].currentIndex()
-            z.YscrollA = tab.scroll_boxes[0][1].currentIndex()
-            z.XscrollB = tab.scroll_boxes[1][0].currentIndex()
-            z.YscrollB = tab.scroll_boxes[1][1].currentIndex()
-
-            z.ZoomA = tab.zoom_boxes[0].currentIndex()
-            z.ZoomB = tab.zoom_boxes[1].currentIndex()
-
-            z.bg1A = tab.hex_boxes[0][0].value()
-            z.bg2A = tab.hex_boxes[0][1].value()
-            z.bg3A = tab.hex_boxes[0][2].value()
-
-            z.bg1B = tab.hex_boxes[1][0].value()
-            z.bg2B = tab.hex_boxes[1][1].value()
-            z.bg3B = tab.hex_boxes[1][2].value()
+        for tabs, bgs in zip((dlg.BGATabs, dlg.BGBTabs), (globals_.Area.backgrounds_A, globals_.Area.backgrounds_B)):
+            for tab, bg in zip(tabs, bgs):
+                bg.x_position = tab.pos_boxes[0].value()
+                bg.y_position = -tab.pos_boxes[1].value()
+                bg.x_scroll = tab.scroll_boxes[0].currentIndex()
+                bg.y_scroll = tab.scroll_boxes[1].currentIndex()
+                bg.zoom = tab.zoom_box.currentIndex()
+                bg.bg1 = tab.hex_boxes[0].value()
+                bg.bg2 = tab.hex_boxes[1].value()
+                bg.bg3 = tab.hex_boxes[2].value()
 
     def HandleScreenshot(self):
         """

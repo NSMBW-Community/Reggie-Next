@@ -1232,7 +1232,7 @@ class ZoneItem(LevelEditorItem):
     Level editor item that represents a zone
     """
 
-    def __init__(self, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, boundings, bgA, bgB, id_=None):
+    def __init__(self, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, boundings, id_=None):
         """
         Creates a zone with specific data
         """
@@ -1252,8 +1252,8 @@ class ZoneItem(LevelEditorItem):
         self.cammode = i
         self.camzoom = j
         self.visibility = k
-        self.block5id = l
-        self.block6id = m
+        self.bga_id = l
+        self.bgb_id = m
         self.camtrack = n
         self.music = o
         self.sfxmod = p
@@ -1280,36 +1280,6 @@ class ZoneItem(LevelEditorItem):
         self.mpcamzoomadjust = bounding[5]
         self.yupperbound3 = bounding[6]
         self.ylowerbound3 = bounding[7]
-
-        bgABlock = None
-        id = self.block5id
-        for block in bgA:
-            if block[0] == id: bgABlock = block
-
-        self.entryidA = bgABlock[0]
-        self.XscrollA = bgABlock[1]
-        self.YscrollA = bgABlock[2]
-        self.YpositionA = bgABlock[3]
-        self.XpositionA = bgABlock[4]
-        self.bg1A = bgABlock[5]
-        self.bg2A = bgABlock[6]
-        self.bg3A = bgABlock[7]
-        self.ZoomA = bgABlock[8]
-
-        bgBBlock = None
-        id = self.block6id
-        for block in bgB:
-            if block[0] == id: bgBBlock = block
-
-        self.entryidB = bgBBlock[0]
-        self.XscrollB = bgBBlock[1]
-        self.YscrollB = bgBBlock[2]
-        self.YpositionB = bgBBlock[3]
-        self.XpositionB = bgBBlock[4]
-        self.bg1B = bgBBlock[5]
-        self.bg2B = bgBBlock[6]
-        self.bg3B = bgBBlock[7]
-        self.ZoomB = bgBBlock[8]
 
         self.dragging = False
         self.dragstartx = -1

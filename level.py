@@ -8,6 +8,7 @@ import archive
 from tiles import CreateTilesets, LoadTileset
 from levelitems import EntranceItem, SpriteItem, ZoneItem, LocationItem, ObjectItem, PathItem, CommentItem
 from misc2 import DecodeOldReggieInfo
+from background import Background
 
 class AbstractLevel:
     """
@@ -245,8 +246,8 @@ class Area:
         self.entrances = []
         self.sprites = []
         self.bounding = []
-        self.bgA = []
-        self.bgB = []
+        self.backgrounds_A = []
+        self.backgrounds_B = []
         self.zones = []
         self.locations = []
         self.camprofiles = []
@@ -310,8 +311,9 @@ class Area:
         del self.unkVal2
         del self.entrances
         del self.sprites
-        del self.bgA
-        del self.bgB
+        del self.backgrounds_A
+        del self.backgrounds_B
+        del self.bounding
         del self.zones
         del self.locations
         del self.camprofiles
@@ -342,6 +344,7 @@ class Area:
         self.LoadTilesetNames()  # block 1
         self.LoadOptions()  # block 2
         self.LoadEntrances()  # block 7
+        self.LoadBackgrounds()
         self.LoadZones()  # block 10 (also blocks 3, 5, and 6)
         self.LoadLocations()  # block 11
         self.LoadCamProfiles()  # block 12
@@ -394,6 +397,7 @@ class Area:
         self.SaveEntrances()  # block 7
         self.SaveSprites()  # block 8
         self.SaveLoadedSprites()  # block 9
+        self.SaveBackgrounds()
         self.SaveZones()  # block 10 (and 3, 5 and 6)
         self.SaveLocations()  # block 11
         self.SaveCamProfiles()  # block 12
@@ -543,6 +547,33 @@ class Area:
 
         self.sprites = sprites
 
+    def LoadBackgrounds(self):
+        """
+        Loads block 5, the top level background values
+        """
+        bgAdata = self.blocks[4]
+        bgAstruct = struct.Struct('>xBhhhhHHHxxxBxxxx')
+        bgA = []
+
+        for offset in range(0, len(bgAdata), 24):
+            data = bgAstruct.unpack_from(bgAdata, offset)
+            bgA.append(Background(*data, True))
+
+        self.backgrounds_A = bgA
+
+        """
+        Loads block 6, the bottom level background values
+        """
+        bgBdata = self.blocks[5]
+        bgBstruct = struct.Struct('>xBhhhhHHHxxxBxxxx')
+        bgB = []
+
+        for offset in range(0, len(bgBdata), 24):
+            data = bgBstruct.unpack_from(bgBdata, offset)
+            bgB.append(Background(*data, False))
+
+        self.backgrounds_B = bgB
+
     def LoadZones(self):
         """
         Loads block 3, the bounding preferences
@@ -558,32 +589,6 @@ class Area:
         self.bounding = bounding
 
         """
-        Loads block 5, the top level background values
-        """
-        bgAdata = self.blocks[4]
-        bgAstruct = struct.Struct('>xBhhhhHHHxxxBxxxx')
-        bgA = []
-
-        for offset in range(0, len(bgAdata), 24):
-            data = bgAstruct.unpack_from(bgAdata, offset)
-            bgA.append(data)
-
-        self.bgA = bgA
-
-        """
-        Loads block 6, the bottom level background values
-        """
-        bgBdata = self.blocks[5]
-        bgBstruct = struct.Struct('>xBhhhhHHHxxxBxxxx')
-        bgB = []
-
-        for offset in range(0, len(bgBdata), 24):
-            data = bgBstruct.unpack_from(bgBdata, offset)
-            bgB.append(data)
-
-        self.bgB = bgB
-
-        """
         Loads block 10, the zone data
         """
         zonedata = self.blocks[9]
@@ -592,7 +597,7 @@ class Area:
 
         for offset in range(0, len(zonedata), 24):
             dataz = zonestruct.unpack_from(zonedata, offset)
-            zones.append(ZoneItem(*dataz, bounding, bgA, bgB, offset // 24))
+            zones.append(ZoneItem(*dataz, bounding, offset // 24))
 
         self.zones = zones
 
@@ -907,13 +912,39 @@ class Area:
 
         self.blocks[8] = bytes(buffer)
 
+    def SaveBackgrounds(self):
+        """
+        Saves blocks 5 and 6, the bgA and bgB data.
+        """
+        bg_struct = struct.Struct('>xBhhhhHHHxxxBxxxx')
+        buffer = bytearray(bg_struct.size * len(self.backgrounds_A))
+
+        for i, background in enumerate(self.backgrounds_A):
+            bg_struct.pack_into(buffer, i * bg_struct.size,
+                background.id, background.x_scroll, background.y_scroll,
+                background.y_position, background.x_position,
+                background.bg1, background.bg2, background.bg3,
+                background.zoom
+            )
+
+        self.blocks[4] = bytes(buffer)
+        buffer = bytearray(bg_struct.size * len(self.backgrounds_B))
+
+        for i, background in enumerate(self.backgrounds_B):
+            bg_struct.pack_into(buffer, i * bg_struct.size,
+                background.id, background.x_scroll, background.y_scroll,
+                background.y_position, background.x_position,
+                background.bg1, background.bg2, background.bg3,
+                background.zoom
+            )
+
+        self.blocks[5] = bytes(buffer)
+
     def SaveZones(self):
         """
-        Saves blocks 10, 3, 5 and 6, the zone data, boundings, bgA and bgB data respectively
+        Saves blocks 10 and 3, the zone data and boundings respectively
         """
         bdngstruct = struct.Struct('>4lHHhh')
-        bgAstruct = struct.Struct('>xBhhhhHHHxxxBxxxx')
-        bgBstruct = struct.Struct('>xBhhhhHHHxxxBxxxx')
         zonestruct = struct.Struct('>HHHHHHBBBBxBBBBxBB')
 
         zcount = len(self.zones)
@@ -925,12 +956,9 @@ class Area:
         for i, z in enumerate(self.zones):
             offset = i * 24
 
-            # HACK: This should really only save block 10, and use a
-            # better way of linking the zone data to the bounds and
-            # background data.
+            # HACK: This should really only save block 10, and use a better way
+            # of linking the zone data to the bounds.
             new_bound_id = i
-            new_bga_id = i
-            new_bgb_id = i
 
             bdngstruct.pack_into(buffer2, offset,
                 z.yupperbound, z.ylowerbound, z.yupperbound2,
@@ -938,26 +966,13 @@ class Area:
                 z.yupperbound3, z.ylowerbound3
             )
 
-            bgAstruct.pack_into(buffer4, offset,
-                new_bga_id, z.XscrollA, z.YscrollA, z.YpositionA,
-                z.XpositionA, z.bg1A, z.bg2A, z.bg3A, z.ZoomA
-            )
-
-            bgBstruct.pack_into(buffer5, offset,
-                new_bgb_id, z.XscrollB, z.YscrollB, z.YpositionB,
-                z.XpositionB, z.bg1B, z.bg2B, z.bg3B, z.ZoomB
-            )
-
             zonestruct.pack_into(buffer9, offset,
-                z.objx, z.objy, z.width, z.height, z.modeldark,
-                z.terraindark, z.id, new_bound_id, z.cammode, z.camzoom,
-                z.visibility, new_bga_id, new_bgb_id, z.camtrack,
-                z.music, z.sfxmod
+                z.objx, z.objy, z.width, z.height, z.modeldark, z.terraindark,
+                z.id, new_bound_id, z.cammode, z.camzoom, z.visibility,
+                z.bga_id, z.bgb_id, z.camtrack, z.music, z.sfxmod
             )
 
         self.blocks[2] = bytes(buffer2)
-        self.blocks[4] = bytes(buffer4)
-        self.blocks[5] = bytes(buffer5)
         self.blocks[9] = bytes(buffer9)
 
     def SaveLocations(self):
