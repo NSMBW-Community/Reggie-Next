@@ -275,8 +275,10 @@ class Area:
 
         # Load tilesets
         CreateTilesets()
-        if self.tileset0 != '': LoadTileset(0, self.tileset0)
-        if self.tileset1 != '': LoadTileset(1, self.tileset1)
+        LoadTileset(0, self.tileset0)
+        LoadTileset(1, self.tileset1)
+        LoadTileset(2, self.tileset2)
+        LoadTileset(3, self.tileset3)
 
     def set_data(self, course, L0, L1, L2):
         """
@@ -291,7 +293,6 @@ class Area:
         """
         Unloads most of an area, except for the raw data
         """
-        print(f"Unloading area {self.areanum}")
         assert self._is_loaded
 
         del self.blocks
@@ -324,7 +325,6 @@ class Area:
         """
         Loads an area from the archive files
         """
-        print(f"Loading area {self.areanum}")
         assert not self._is_loaded
 
         # Load in the course file and blocks
@@ -357,10 +357,10 @@ class Area:
             globals_.firstLoad = False
 
         # Load the tilesets
-        if self.tileset0 != '': LoadTileset(0, self.tileset0)
-        if self.tileset1 != '': LoadTileset(1, self.tileset1)
-        if self.tileset2 != '': LoadTileset(2, self.tileset2)
-        if self.tileset3 != '': LoadTileset(3, self.tileset3)
+        LoadTileset(0, self.tileset0)
+        LoadTileset(1, self.tileset1)
+        LoadTileset(2, self.tileset2)
+        LoadTileset(3, self.tileset3)
 
         # Load the object layers
         self.layers = [[], [], []]
@@ -967,7 +967,7 @@ class Area:
         locstruct = struct.Struct('>HHHHBxxx')
         buffer = bytearray(12 * len(self.locations))
 
-        for i, l in enumerate(globals_.Area.locations):
+        for i, l in enumerate(self.locations):
             locstruct.pack_into(buffer, i * 12, int(l.objx), int(l.objy), int(l.width), int(l.height), int(l.id))
 
         self.blocks[10] = bytes(buffer)

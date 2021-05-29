@@ -10,7 +10,6 @@ from tiles import RenderObject
 from ui import GetIcon, clipStr
 from dirty import SetDirty
 from undo import MoveItemUndoAction, SimultaneousUndoAction
-#from sprites import SpriteImage_LiquidOrFog
 
 class InstanceDefinition:
     """

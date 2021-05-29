@@ -2204,7 +2204,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         newID = len(globals_.Level.areas) + 1
 
-        with open('reggiedata/blankcourse.bin', 'rb') as blank:
+        with open(os.path.join("reggiedata", "blankcourse.bin"), 'rb') as blank:
             course = blank.read()
 
         L0 = None

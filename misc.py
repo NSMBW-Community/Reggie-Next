@@ -616,8 +616,6 @@ def LoadSpriteData():
     """
     Ensures that the sprite data info is loaded
     """
-    # global Sprites
-
     errors = []
     errortext = []
     spriteIds = [-1]

@@ -185,36 +185,35 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
 
-            elif globals_.CurrentPaintType == 4 and globals_.CurrentSprite != -1:
+            elif globals_.CurrentPaintType == 4 and globals_.CurrentSprite >= 0:
                 # paint a sprite
                 clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
                 if clicked.x() < 0: clicked.setX(0)
                 if clicked.y() < 0: clicked.setY(0)
 
-                if globals_.CurrentSprite >= 0:
-                    # paint a sprite
-                    clickedx = int((clicked.x() - 12) / 12) * 8
-                    clickedy = int((clicked.y() - 12) / 12) * 8
+                # paint a sprite
+                clickedx = int((clicked.x() - 12) / 12) * 8
+                clickedy = int((clicked.y() - 12) / 12) * 8
 
-                    data = globals_.mainWindow.defaultDataEditor.data
-                    spr = SpriteItem(globals_.CurrentSprite, clickedx, clickedy, data)
+                data = globals_.mainWindow.defaultDataEditor.data
+                spr = SpriteItem(globals_.CurrentSprite, clickedx, clickedy, data)
 
-                    mw = globals_.mainWindow
-                    spr.positionChanged = mw.HandleSprPosChange
-                    mw.scene.addItem(spr)
+                mw = globals_.mainWindow
+                spr.positionChanged = mw.HandleSprPosChange
+                mw.scene.addItem(spr)
 
-                    mw.spriteList.addSprite(spr)
-                    globals_.Area.sprites.append(spr)
+                mw.spriteList.addSprite(spr)
+                globals_.Area.sprites.append(spr)
 
-                    self.dragstamp = False
-                    self.currentobj = spr
-                    self.dragstartx = clickedx
-                    self.dragstarty = clickedy
+                self.dragstamp = False
+                self.currentobj = spr
+                self.dragstartx = clickedx
+                self.dragstarty = clickedy
 
-                    self.scene().update()
+                self.scene().update()
 
-                    spr.UpdateDynamicSizing()
-                    spr.UpdateListItem()
+                spr.UpdateDynamicSizing()
+                spr.UpdateListItem()
 
                 SetDirty()
 
@@ -242,7 +241,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedy = int((clicked.y() - 12) / 1.5)
                 mw = globals_.mainWindow
                 plist = mw.pathList
-                selectedpn = None if len(plist.selectedItems()) < 1 else plist.selectedItems()[0]
+                selectedpn = None if not plist.selectedItems() else plist.selectedItems()[0]
 
                 if selectedpn is None:
                     getids = [False for _ in range(256)]
@@ -424,7 +423,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             pos = mw.view.mapToScene(event.x(), event.y())
             addsel = mw.scene.items(pos)
             for i in addsel:
-                if (int(i.flags()) & i.ItemIsSelectable) != 0:
+                if i.flags() & i.ItemIsSelectable:
                     i.setSelected(not i.isSelected())
                     break
 
@@ -736,6 +735,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 p.drawRect(x, y + (6 * size), size, size)
                 p.drawRect(x + (2 * size), y + (4 * size), size, size)
                 p.drawRect(x + (2 * size), y + (6 * size), size, size)
+
             p.setBrush(QtGui.QBrush(Dark))
             for x, y in ((0, 0), (size, size)):
                 p.drawRect(x, y, size, size)
