@@ -618,7 +618,7 @@ def LoadSpriteData():
     """
     errors = []
     errortext = []
-    spriteIds = [-1]
+    sprite_ids = [-1]
 
     # It works this way so that it can overwrite settings based on order of precedence
     paths = [(globals_.trans.files['spritedata'], None)]
@@ -631,18 +631,18 @@ def LoadSpriteData():
         if sdpath not in (None, ''):
             path = sdpath if isinstance(sdpath, str) else sdpath.path
             tree = ElementTree.parse(path)
-            root = tree.getroot()
 
-            for sprite in root:
-                if sprite.tag.lower() != 'sprite':
-                    continue
+            for sprite in tree.iter("sprite"):
+                id_text = sprite.get("id")
 
                 try:
-                    spriteIds.append(int(sprite.attrib['id']))
+                    id_ = int(id_text)
                 except ValueError:
                     continue
 
-    globals_.NumSprites = max(spriteIds) + 1
+                sprite_ids.append(id_)
+
+    globals_.NumSprites = max(sprite_ids) + 1
     globals_.Sprites = [None] * globals_.NumSprites
 
     for sdpath, snpath in paths:
@@ -653,16 +653,14 @@ def LoadSpriteData():
             tree = ElementTree.parse(path)
             root = tree.getroot()
 
-            for sprite in root:
-                if sprite.tag.lower() != 'sprite':
-                    continue
+            for sprite in tree.iter("sprite"):
 
                 try:
-                    spriteid = int(sprite.attrib['id'])
+                    spriteid = int(sprite.get("id"))
                 except ValueError:
                     continue
 
-                spritename = sprite.attrib['name']
+                spritename = sprite.get("name")
                 notes = None
                 relatedObjFiles = None
                 yoshiNotes = None
@@ -671,28 +669,30 @@ def LoadSpriteData():
                 asm = None
                 advNotes = None
 
-                if 'notes' in sprite.attrib:
-                    notes = globals_.trans.string('SpriteDataEditor', 2, '[notes]', sprite.attrib['notes'])
+                attribs = sprite.keys()
 
-                if 'advancednotes' in sprite.attrib:
-                    advNotes = globals_.trans.string('SpriteDataEditor', 11, '[notes]', sprite.attrib['advancednotes'])
+                if 'notes' in attribs:
+                    notes = globals_.trans.string('SpriteDataEditor', 2, '[notes]', sprite.get('notes'))
 
-                if 'files' in sprite.attrib:
+                if 'advancednotes' in attribs:
+                    advNotes = globals_.trans.string('SpriteDataEditor', 11, '[notes]', sprite.get('advancednotes'))
+
+                if 'files' in attribs:
                     relatedObjFiles = globals_.trans.string('SpriteDataEditor', 8, '[list]',
-                                                   sprite.attrib['files'].replace(';', '<br>'))
+                                                   sprite.get('files').replace(';', '<br>'))
 
-                if 'yoshinotes' in sprite.attrib:
+                if 'yoshinotes' in attribs:
                     yoshiNotes = globals_.trans.string('SpriteDataEditor', 9, '[notes]',
-                                                   sprite.attrib['yoshinotes'])
+                                                   sprite.get('yoshinotes'))
 
-                if 'noyoshi' in sprite.attrib:
-                    noyoshi = sprite.attrib['noyoshi'] == "True"
+                if 'noyoshi' in attribs:
+                    noyoshi = sprite.get('noyoshi') == "True"
 
-                if 'asmhacks' in sprite.attrib:
-                    asm = sprite.attrib['asmhacks'] == "True"
+                if 'asmhacks' in attribs:
+                    asm = sprite.get('asmhacks') == "True"
 
-                if 'sizehacks' in sprite.attrib:
-                    size = sprite.attrib['sizehacks'] == "True"
+                if 'sizehacks' in attribs:
+                    size = sprite.get('sizehacks') == "True"
 
                 sdef = SpriteDefinition()
                 sdef.id = spriteid
