@@ -350,17 +350,19 @@ class Area:
         # Now, load the comments
         self.LoadComments()
 
+        # Reset the tilesets if this is not the first load
         if not globals_.firstLoad:
-            # Load the object layers
             CreateTilesets()
-            if self.tileset0 != '': LoadTileset(0, self.tileset0)
-            if self.tileset1 != '': LoadTileset(1, self.tileset1)
-            if self.tileset2 != '': LoadTileset(2, self.tileset2)
-            if self.tileset3 != '': LoadTileset(3, self.tileset3)
         else:
-            # Load the object layers
             globals_.firstLoad = False
 
+        # Load the tilesets
+        if self.tileset0 != '': LoadTileset(0, self.tileset0)
+        if self.tileset1 != '': LoadTileset(1, self.tileset1)
+        if self.tileset2 != '': LoadTileset(2, self.tileset2)
+        if self.tileset3 != '': LoadTileset(3, self.tileset3)
+
+        # Load the object layers
         self.layers = [[], [], []]
 
         if self.L0 is not None:
