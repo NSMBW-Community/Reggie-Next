@@ -40,7 +40,7 @@ class AboutDialog(QtWidgets.QDialog):
         description += '</style></head><body>'
         description += '<center><h1><i>Reggie Next</i> Level Editor</h1><div class="main">'
         description += '<i>Reggie Next Level Editor</i> is an open-source project, started by Treeki in 2010 and forked by RoadrunnerWMC in 2013, that aims to bring you the fun of designing original New Super Mario Bros. Wii&trade;-compatible levels.<br>'
-        description += 'Interested? Check out <a href="http://horizonwii.net">horizonwii.net</a> to get in touch with the current developer(s).<br>'
+        description += 'Interested? Join the <a href="https://discord.gg/XnQJnwa">Discord server</a> to get in touch with the current developer(s).<br>'
         description += '</div></center></body></html>'
 
         # Description label
