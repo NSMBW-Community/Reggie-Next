@@ -754,6 +754,11 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
             # Must catch this error -> if parent is deleted
             return
 
+        if newx == oldx and newy == oldy:
+            # Don't set the position and update the scene if the item did not
+            # move.
+            return
+
         # Set the pos
         self.setPos(newx, newy)
 
