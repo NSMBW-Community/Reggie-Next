@@ -560,7 +560,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.CreateAction(
             'showcomments', self.HandleCommentsVisibility, GetIcon('comments'),
             globals_.trans.stringOneLine('MenuItems', 116), globals_.trans.stringOneLine('MenuItems', 117),
-            QtGui.QKeySequence('Ctrl+0'), True,
+            None, True,
         )
 
         self.CreateAction(
