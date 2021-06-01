@@ -4046,7 +4046,7 @@
     <dualbox bit="48" title1="Short (1x1)" title2="Long (1x2)" comment="This determines which size the Icicle is."/>
   </sprite> <!-- #265: Falling Icicle -->
 
-  <sprite id="266" name="Rotating Chainlink Fence Wheel" noyoshi="True" notes="A large wheel composed of climbable Chainlink Fence.">
+  <sprite id="266" name="Rotating Chainlink Fence Wheel" noyoshi="True" notes="The fence draws behind Layer 1 by default.">
     <dualbox bit="48" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the wheel will spin in."/>
     <list nybble="11" title="Speed" comment="This determines how fast the wheel will spin.">
       <entry value="3">Stopped</entry>
