@@ -5173,14 +5173,11 @@
     <checkbox bit="48" title="Frozen" comment="When enabled, the Muncher will be frozen. It can be thawed with a fireball."/>
   </sprite> <!-- #342: Muncher -->
 
-  <sprite id="343" name="Line Controlled Fuzzy / Big Fuzzy" yoshinotes="If Yoshi touches a Fuzzy, he doesn't get dizzy, he just runs away. He can still eat them, however." notes="A Fuzzy that will ride along Line objects.">
-    <dependency notes="This sprite must be paired with a [236] Use Lines movement controller in order to function.">
-      <required sprite="236"/>
-    </dependency>
-    <dualbox bit="40" title1="Fuzzy" title2="Big Fuzzy" comment="This determines the size of the Fuzzy."/>
+  <sprite id="343" name="Line Controlled Fuzzy" noyoshi="True" notes="">
+    <dualbox bit="40" title1="Fuzzy" title2="Big Fuzzy"/>
     <value bit="17-24" title="Line ID" comment="This pairs the Fuzzy to a matching Use Lines controller for movement synchronization with other Line objects." idtype="Line"/>
-    <dualbox bit="48" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Fuzzy will move based on the Line that it is connected to."/>
-    <list nybble="11" title="Speed" comment="This determines the speed that the Fuzzy will travel along the Line." comment2="Line Controlled objects use the same speed setting across all of them.">
+    <dualbox bit="48" title1="Start Right/Up" title2="Start Left/Down"/>
+    <list nybble="11" title="Speed" comment="Line Controlled objects use the same speed setting across all of them.">
       <entry value="4">Very Slow</entry>
       <entry value="5">Slow</entry>
       <entry value="6">Slow+</entry>
@@ -5190,7 +5187,7 @@
       <entry value="7">Faster</entry>
       <entry value="3">Very Fast</entry>
     </list>
-  </sprite> <!-- #343: Line Controlled Fuzzy / Big Fuzzy -->
+  </sprite> <!-- #343: Line Controlled Fuzzy -->
 
   <sprite id="344" name="Morton Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game.">
     <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged. Additionally, the Morton fight allows placement of [480] Morton's Skewer, a much more timing-sensitive spiked pillar.">
