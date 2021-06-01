@@ -3782,7 +3782,7 @@ class SpriteImage_RouletteBlock(SLib.SpriteImage_Static):  # 176
             parent,
             1.5,
             ImageCache['RouletteBlock'],
-            (-6, -6),
+            (-6, -8),
         )
 
     @staticmethod
