@@ -280,6 +280,9 @@ class Area:
         LoadTileset(2, self.tileset2)
         LoadTileset(3, self.tileset3)
 
+        # Mark the area as loaded
+        self._is_loaded = True
+
     def set_data(self, course, L0, L1, L2):
         """
         Assigns the archive file data to this area.
