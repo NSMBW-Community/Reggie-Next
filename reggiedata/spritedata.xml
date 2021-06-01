@@ -1966,7 +1966,7 @@
     </list>
   </sprite> <!-- #135: Unstable Hanging Chained Platform -->
 
-  <sprite id="136" name="Rotating Bill Blaster">
+  <sprite id="136" name="Rotating Bill Blaster" notes="">
     <checkbox bit="20" title="Randomize Fire Delay"/>
     <checkbox bit="18" title="Fire while Offscreen"/>
     <list bit="30-32" title="Number of Cannon Pieces" comment="The bottom piece, starting at the Sprite's placement, corresponds to the last checkbox for each option below, and the top piece (when set to 7) will correspond to the first checkbox below.">
