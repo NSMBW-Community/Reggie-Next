@@ -895,7 +895,7 @@ class SpriteList(QtWidgets.QWidget):
     # Don't translate these
     idtypes = (
         "Star Set", "Path Movement", "Rotation", "Two Way Line",
-        "Water Ball", "Mushroom", "Line", "Bolt", "Target Event",
+        "Water Ball", "Mushroom", "Group", "Bolt", "Target Event",
         "Triggering Event", "Collection", "Location", "Physics",
         "Message", "Path", "Path Movement", "Red Coin", "Hill",
         "Stretch", "Ray", "Coaster", "Bubble Cannon", "Burner",
@@ -907,7 +907,7 @@ class SpriteList(QtWidgets.QWidget):
         "Any",
         "Star Set ID", "Path Movement ID", "Rotation ID",
         "Two Way Line ID", "Water Ball ID", "Mushroom ID",
-        "Line ID", "Bolt ID", "Target Event ID", "Triggering " +
+        "Group ID", "Bolt ID", "Target Event ID", "Triggering " +
         "Event ID", "Collection ID", "Location ID", "Physics ID",
         "Message ID", "Path ID", "Path Movement ID", "Red Coin ID",
         "Hill ID", "Stretch ID", "Ray ID", "Coaster ID",

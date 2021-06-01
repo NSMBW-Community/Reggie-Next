@@ -5,7 +5,7 @@
 <!-- &quot; = " -->
 <!-- &lt;font color=&quot;COLOR&quot;&gt;TEXT TEXT TEXT.&lt;/font&gt; = Colored Text -->
 <!-- Opinion on each dualbox to determine if it should be dualbox or if it should revert to being a list or checkbox. -->
-<!-- idtypes: Star Set, Path Movement, Rotation, Two Way Line, Water Ball, Mushroom, Line, Bolt, Target Event, Triggering Event, Collection, Location, Physics, Message, Path, Path Movement, Red Coin, Hill, Stretch, Ray, Coaster, Bubble Cannon, Burner, Wiggling, Panel, Colony -->
+<!-- idtypes: Star Set, Path Movement, Rotation, Two Way Line, Water Ball, Mushroom, Group, Bolt, Target Event, Triggering Event, Collection, Location, Physics, Message, Path, Path Movement, Red Coin, Hill, Stretch, Ray, Coaster, Bubble Cannon, Burner, Wiggling, Panel, Colony -->
 <!-- idtypes - Sprites with multiple Target Events or Triggering Events may need a secondary idtype, so that the primary Target/Triggering can be displayed in the sprite's display box. -->
 <!-- idtypes - Sprites with idtypes should have their idtype displayed within their blue box, usually in the lower right corner. (primary) Target Event should usually be in the lower right, and Triggering Event should usually be in the lower left. Secondary values like AND controller's second+ Triggering Event, and IF controller's secondary Location ID should be displayed in the top right corner or otherwise not displayed at all. -->
 <!-- Sample sprite with full settings -->
@@ -1501,7 +1501,7 @@
     <value nybble="12" title="Width" comment="This determines the width of the platform." comment2="This value needs to be 2 or greater."/>
     <dualbox bit="32" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the platform will move based on the Line that it is connected to."/>
     <checkbox bit="28" title="Starts Moving on Touch" comment="When enabled, the platform will be stationary until touched by a player."/>
-    <list nybble="6" title="Speed" comment="This determines the speed that the platform will travel along the Line." comment2="Line Controlled objects use the same speed setting across all of them.">
+    <list nybble="6" title="Speed" comment="Line Controlled sprites use the same speed setting across all of them.">
       <entry value="4">Very Slow</entry>
       <entry value="5">Slow</entry>
       <entry value="6">Slow+</entry>
@@ -1576,7 +1576,7 @@
     </list>
     <value nybble="10" title="Delay Between Amp Spawns" comment="This determines how long the game will wait between each Amp is spawned, increasing the distance between each Amp."/>
     <dualbox bit="32" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Amps will move based on the Line that they are connected to."/>
-    <list nybble="6" title="Speed" comment="This determines the speed that the Amps will travel along the Line." comment2="Line Controlled objects use the same speed setting across all of them.">
+    <list nybble="6" title="Speed" comment="Line Controlled sprites use the same speed setting across all of them.">
       <entry value="4">Very Slow</entry>
       <entry value="5">Slow</entry>
       <entry value="6">Slow+</entry>
@@ -2453,9 +2453,9 @@
       <entry value="1">Second Coin</entry>
       <entry value="2">Third Coin</entry>
     </list>
-    <value bit="17-24" title="Line ID" comment="When pairing the Star Coin with sprite 236 and Lines, match the Line ID to enable Line controlled movement." idtype="Line"/>
+    <value bit="17-24" title="Group ID" comment="This pairs the Star Coin to a matching Group Controller for spawn synchronization with other Group controlled sprites." idtype="Group"/>
     <dualbox bit="48" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Star Coin will move based on the Line that it is connected to."/>
-    <list nybble="11" title="Speed" comment="This determines the speed that the Star Coin will travel along the Line." comment2="Line Controlled objects use the same speed setting across all of them.">
+    <list nybble="11" title="Speed" comment="Line Controlled sprites use the same speed setting across all of them.">
       <entry value="4">Very Slow</entry>
       <entry value="5">Slow</entry>
       <entry value="6">Slow+</entry>
@@ -3162,8 +3162,8 @@
       <entry value="13">Spring</entry>
     </list>
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the ?-Block placing it further behind other sprites." comment2="This will place the ?-Block behind even Chainlink Fence and Layer 1 terrain."/>
-    <checkbox bit="40" title="Follows Lines" comment="When enabled, the ?-Block will attempt to follow Lines." advanced="True" advancedcomment="It is recommended to use [402] Line Controlled ? Block instead."/>
-    <dualbox bit="36" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the ?-Block will move based on the Line that it is connected to." advanced="True" advancedcomment="It is recommended to use [402] Line Controlled ? Block instead."/>
+    <checkbox bit="40" title="Follows Lines" comment="It is recommended to use [402] Line Controlled ? Block instead."/>
+    <dualbox bit="36" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the ?-Block will move based on the Line that it is connected to."/>
   </sprite> <!-- #207: ? Block -->
 
   <sprite id="208" name="(Unused) ? Block" notes="This is a nearly identical version of [207] to the point that you should probably just be using [207]...">
@@ -3250,8 +3250,8 @@
       <entry value="13">Spring</entry>
     </list>
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Brick Block placing it further behind other sprites." comment2="This will place the Brick Block behind even Chainlink Fence and Layer 1 terrain."  advanced="True" advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
-    <checkbox bit="40" title="Follows Lines" comment="When enabled, the Brick Block will attempt to follow Lines." advanced="True" advancedcomment="It is recommended to use [402] Line Controlled ? Block instead."/>
-    <dualbox bit="36" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Brick Block will move based on the Line that it is connected to." advanced="True" advancedcomment="It is recommended to use [403] Line Controlled Brick Block instead."/>
+    <checkbox bit="40" title="Follows Lines" comment="It is recommended to use [403] Line Controlled Brick Block instead."/>
+    <dualbox bit="36" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Brick Block will move based on the Line that it is connected to."/>
   </sprite> <!-- #209: Brick Block -->
 
   <sprite id="210" name="Incomplete Sprite - 'Tarzan_Rope'" notes="Does nothing.">
@@ -3464,8 +3464,8 @@
       <entry value="13">Spring</entry>
     </list>
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Invisible Block placing it further behind other sprites." comment2="This will place the Invisible Block behind even Chainlink Fence and Layer 1 terrain."/>
-    <checkbox bit="40" title="Follows Lines" comment="When enabled, the Invisible Block will attempt to follow Lines." advanced="True" advancedcomment="It is recommended to use [402] Line Controlled ? Block instead."/>
-    <dualbox bit="36" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Invisible Block will move based on the Line that it is connected to." advanced="True" advancedcomment="If this doesn't work, nothing will!"/>
+    <checkbox bit="40" title="Follows Lines"/>
+    <dualbox bit="36" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Invisible Block will move based on the Line that it is connected to."/>
   </sprite> <!-- #221: Invisible Block -->
 
   <sprite id="222" name="(Unused) Conveyor Belt Spike" notes="A loose spike that when placed on a conveyor belt, will rotate around with the belt. It can only move in one direction (clockwise) and one speed. It does not load Zone-wide so it will not sync across multiple sections of a single Zone.">
@@ -3631,9 +3631,9 @@
     <value nybble="9" title="Unknown Value 9" advanced="True" advancedcomment="Used in Retail: 05-05 A1, 0+F"/>
   </sprite> <!-- #235: Jumbo Ray Respawner -->
 
-  <sprite id="236" name="Movement Controller - Use Lines" notes="This controller will create synchronized movement between matched sprites and cause them to load at the same time so that their paths will always function consistently.">
-    <value bit="17-24" title="Line ID" comment="This pairs matching Line controlled objects to this controller for synchronized movement." idtype="Line"/>
-  </sprite> <!-- #236: Movement Controller - Use Lines -->
+  <sprite id="236" name="Group Controller" notes="This controller will cause linked sprites to spawn at the same time, allowing for consistent synchronized movement. There are no sprites that require this to function.">
+    <value bit="17-24" title="Group ID" idtype="Group"/>
+  </sprite> <!-- #236: Group Controller -->
 
   <!-- Check if you can use the Z-Order to place the blue coin behind Chainlink. -->
   <sprite id="237" name="Blue P-Switch Coin" notes="A blue coin that will only appear while the effects of a P-Switch are active.">
@@ -4583,7 +4583,7 @@
       <entry value="2">Event Activated - On With Event</entry>
     </list>
     <value bit="10-16" title="Triggering Event ID" comment="This determines which Event must be activated for the circle to glow." requiredbit="35-36" idtype="Triggering Event"/>
-    <list bit="39-40" title="Movement Type" comment="This determines the movement behavior of the light circle." comment2="** - Pairing the light circle with a Swaying controller will not generate movement. However, as a movement controller is required for the light circle to spawn, using a Swaying controller is a great way to create a stationary spot of light.">
+    <list bit="39-40" title="Movement Type" comment="** - Pairing the light circle with a Swaying controller will not generate movement. However, as a movement controller is required for the light circle to spawn, using a Swaying controller is a great way to create a stationary spot of light.">
       <entry value="0">[159] Path Controlled</entry>
       <entry value="1">[260] Two Way Line</entry>
       <entry value="2">[96] Swaying**</entry>
@@ -5175,9 +5175,9 @@
 
   <sprite id="343" name="Line Controlled Fuzzy" noyoshi="True" notes="">
     <dualbox bit="40" title1="Fuzzy" title2="Big Fuzzy"/>
-    <value bit="17-24" title="Line ID" comment="This pairs the Fuzzy to a matching Use Lines controller for movement synchronization with other Line objects." idtype="Line"/>
+    <value bit="17-24" title="Group ID" comment="This pairs the Fuzzy to a matching Group Controller for spawn synchronization with other Group controlled sprites." idtype="Group"/>
     <dualbox bit="48" title1="Start Right/Up" title2="Start Left/Down"/>
-    <list nybble="11" title="Speed" comment="Line Controlled objects use the same speed setting across all of them.">
+    <list nybble="11" title="Speed" comment="Line Controlled sprites use the same speed setting across all of them.">
       <entry value="4">Very Slow</entry>
       <entry value="5">Slow</entry>
       <entry value="6">Slow+</entry>
@@ -6070,11 +6070,11 @@
   </sprite> <!-- #401: Massive Skewer - Down -->
 
   <sprite id="402" name="Line Controlled ? Block" notes="A variant of the ? Block that will ride along Line objects.">
-    <dependency notes="This sprite must be paired with a [236] Use Lines movement controller in order to function.">
+    <dependency notes="Use the Group Controller [236] for spawn synchronization with other Group controlled sprites.">
       <suggested sprite="236"/>
     </dependency>
-    <value bit="17-24" title="Line ID" comment="When pairing the block with sprite 236 and Lines, match the Line ID to enable Line controlled movement." idtype="Line"/>
-    <list nybble="7" title="Speed" comment="This determines the speed that the block will travel along the Line." comment2="Line Controlled objects use the same speed setting across all of them.">
+    <value bit="17-24" title="Group ID" comment="This pairs the block to a matching Group Controller for spawn synchronization with other Group controlled sprites." idtype="Group"/>
+    <list nybble="7" title="Speed" comment="Line Controlled sprites use the same speed setting across all of them.">
       <entry value="4">Very Slow</entry>
       <entry value="5">Slow</entry>
       <entry value="6">Slow+</entry>
@@ -6106,11 +6106,11 @@
   </sprite> <!-- #402: Line Controlled ? Block -->
 
   <sprite id="403" name="Line Controlled Brick Block" notes="A variant of the Brick Block that will ride along Line objects.">
-    <dependency notes="This sprite must be paired with a [236] Use Lines movement controller in order to function.">
+    <dependency notes="Use the Group Controller [236] for spawn synchronization with other Group controlled sprites.">
       <suggested sprite="236"/>
     </dependency>
-    <value bit="17-24" title="Line ID" comment="When pairing the block with sprite 236 and Lines, match the Line ID to enable Line controlled movement." idtype="Line"/>
-    <list nybble="7" title="Speed" comment="This determines the speed that the block will travel along the Line." comment2="Line Controlled objects use the same speed setting across all of them.">
+    <value bit="17-24" title="Group ID" comment="This pairs the block to a matching Group Controller for spawn synchronization with other Group controlled sprites." idtype="Group"/>
+    <list nybble="7" title="Speed" comment="Line Controlled sprites use the same speed setting across all of them.">
       <entry value="4">Very Slow</entry>
       <entry value="5">Slow</entry>
       <entry value="6">Slow+</entry>
