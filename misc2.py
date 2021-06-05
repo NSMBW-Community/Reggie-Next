@@ -444,10 +444,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Overrides mouse movement events if needed
         """
-
-        inv = False  # if set to True, invalidates the scene at the end of this function.
-
-        pos = globals_.mainWindow.view.mapToScene(event.x(), event.y())
+        pos = globals_.mainWindow.view.mapToScene(event.pos())
         if pos.x() < 0: pos.setX(0)
         if pos.y() < 0: pos.setY(0)
         self.PositionHover.emit(int(pos.x()), int(pos.y()))
@@ -470,55 +467,44 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             for obj in objlist:
 
                 if isinstance(obj, type_obj):
-                    # resize/move the current object
-                    cx = obj.objx
-                    cy = obj.objy
-                    cwidth = obj.width
-                    cheight = obj.height
-
+                    # Resize the current object. The new object should fill a
+                    # rectangle, with two diagonal corners at self.dragstart and
+                    # pos / 24. This rectangle should contain self.dragstart.
                     dsx = self.dragstartx
                     dsy = self.dragstarty
-                    clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
+                    clicked = pos / 24
 
-                    if clicked.x() < 0:
-                        clicked.setX(0)
+                    clickx = max(0, clicked.x())
+                    clicky = max(0, clicked.y())
 
-                    if clicked.y() < 0:
-                        clicked.setY(0)
+                    # calculate rectangle
+                    x = int(min(dsx, clickx))
+                    width = max(1, int(max(dsx, clickx) + 1 - x))
 
-                    clickx = int(clicked.x() / 24)
-                    clicky = int(clicked.y() / 24)
+                    y = int(min(dsy, clicky))
+                    height = max(1, int(max(dsy, clicky) + 1 - y))
 
-                    # allow negative width/height and treat it properly :D
-                    if clickx >= dsx:
-                        x = dsx
-                        width = clickx - dsx + 1
-                    else:
-                        x = clickx
-                        width = dsx - clickx + 1
-
-                    if clicky >= dsy:
-                        y = dsy
-                        height = clicky - dsy + 1
-                    else:
-                        y = clicky
-                        height = dsy - clicky + 1
+                    # Check if the tile has been moved to full size already. If
+                    # not, don't change the tile's position / size.
+                    if not obj.wasExtended:
+                        obj.wasExtended = (width >= obj.width) and (height >= obj.height)
+                        continue
 
                     # if the position changed, set the new one
-                    if cx != x or cy != y:
+                    if obj.objx != x or obj.objy != y:
                         obj.objx = x
                         obj.objy = y
                         obj.setPos(x * 24, y * 24)
                         globals_.mainWindow.levelOverview.update()
 
                     # if the size changed, recache it and update the area
-                    if cwidth != width or cheight != height:
+                    if obj.width != width or obj.height != height:
                         obj.updateObjCacheWH(width, height)
                         obj.width = width
                         obj.height = height
 
                         oldrect = obj.BoundingRect
-                        oldrect.translate(cx * 24, cy * 24)
+                        oldrect.translate(obj.objx * 24, obj.objy * 24)
                         newrect = QtCore.QRectF(obj.x(), obj.y(), obj.width * 24, obj.height * 24)
                         updaterect = oldrect.united(newrect)
 
@@ -631,8 +617,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
         else:
             QtWidgets.QGraphicsView.mouseMoveEvent(self, event)
-
-        if inv: self.scene().invalidate()
 
     def mouseReleaseEvent(self, event):
         """

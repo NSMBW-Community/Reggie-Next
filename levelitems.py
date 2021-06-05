@@ -473,6 +473,8 @@ class ObjectItem(LevelEditorItem):
         self.height = height
         self.objdata = None
 
+        self.wasExtended = False
+
         self.TLGrabbed = self.TRGrabbed = self.BLGrabbed = self.BRGrabbed = False
         self.MTGrabbed = self.MLGrabbed = self.MBGrabbed = self.MRGrabbed = False
 
