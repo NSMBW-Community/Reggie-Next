@@ -522,11 +522,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                 elif isinstance(obj, type_spr):
                     # move the created sprite
-                    clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                    if clicked.x() < 0: clicked.setX(0)
-                    if clicked.y() < 0: clicked.setY(0)
-                    clickedx = int((clicked.x() - 12) / 1.5)
-                    clickedy = int((clicked.y() - 12) / 1.5)
+                    clickedx = int((pos.x() - 12) / 1.5)
+                    clickedy = int((pos.y() - 12) / 1.5)
 
                     if obj.objx != clickedx or obj.objy != clickedy:
                         obj.setNewObjPos(clickedx, clickedy)
@@ -536,11 +533,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                 elif isinstance(obj, (type_ent, type_path, type_com)):
                     # move the created entrance/path/comment
-                    clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                    if clicked.x() < 0: clicked.setX(0)
-                    if clicked.y() < 0: clicked.setY(0)
-                    clickedx = int((clicked.x() - 12) / 1.5)
-                    clickedy = int((clicked.y() - 12) / 1.5)
+                    clickedx = int((pos.x() - 12) / 1.5)
+                    clickedy = int((pos.y() - 12) / 1.5)
 
                     if obj.objx != clickedx or obj.objy != clickedy:
                         obj.objx = clickedx
@@ -573,19 +567,14 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             else:
                 objlist = (self.currentobj,)
 
+            changex = pos.x() - (self.dragstartx * 1.5)
+            changey = pos.y() - (self.dragstarty * 1.5)
+            changexobj = int(changex / 24)
+            changeyobj = int(changey / 24)
+            changexspr = changex * 2 / 3
+            changeyspr = changey * 2 / 3
+
             for obj in objlist:
-
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
-
-                changex = clicked.x() - (self.dragstartx * 1.5)
-                changey = clicked.y() - (self.dragstarty * 1.5)
-                changexobj = int(changex / 24)
-                changeyobj = int(changey / 24)
-                changexspr = changex * 2 / 3
-                changeyspr = changey * 2 / 3
-
                 if isinstance(obj, type_obj):
                     # move the current object
                     newx = int(obj.dragstartx + changexobj)
