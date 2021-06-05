@@ -1017,14 +1017,12 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks if there are too many zones in this area
         """
-        # global Area
-
-        problem = len(globals_.Area.zones) > 8
+        problem = len(globals_.Area.zones) > 6
 
         if mode == 'c':
             return problem
         elif problem:
-            globals_.Area.zones = globals_.Area.zones[0:8]
+            globals_.Area.zones = globals_.Area.zones[:6]
 
             globals_.mainWindow.scene.update()
             globals_.mainWindow.levelOverview.update()

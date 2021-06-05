@@ -50,7 +50,7 @@ class ZonesDialog(QtWidgets.QDialog):
         self.setLayout(mainLayout)
 
     def NewZone(self):
-        if len(self.zoneTabs) >= 8:
+        if len(self.zoneTabs) >= 6:
             result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('ZonesDlg', 6), globals_.trans.string('ZonesDlg', 7),
                                                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
             if result == QtWidgets.QMessageBox.No:
