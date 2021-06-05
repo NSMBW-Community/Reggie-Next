@@ -543,10 +543,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     clickedy = int((clicked.y() - 12) / 1.5)
 
                     if obj.objx != clickedx or obj.objy != clickedy:
-                        obj.objx = clickedx
-                        obj.objy = clickedy
-                        obj.setPos(int((clickedx + obj.ImageObj.xOffset) * 1.5),
-                                   int((clickedy + obj.ImageObj.yOffset) * 1.5))
+                        obj.setNewObjPos(clickedx, clickedy)
                         obj.ImageObj.positionChanged()
                         obj.UpdateListItem()
                         globals_.mainWindow.levelOverview.update()
@@ -620,9 +617,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     newy = int(obj.dragstarty + changeyspr)
 
                     if obj.objx != newx or obj.objy != newy:
-                        obj.objx = newx
-                        obj.objy = newy
-                        obj.setPos(int((newx + obj.ImageObj.xOffset) * 1.5), int((newy + obj.ImageObj.yOffset) * 1.5))
+                        obj.setNewObjPos(newx, newy)
+                        obj.ImageObj.positionChanged()
 
             self.scene().update()
 
