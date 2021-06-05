@@ -74,8 +74,7 @@ def IsNSMBLevel(filename):
 
         globals_.compressed = True
 
-    if checkContent(data):
-        return True
+    return checkContent(data)
 
 
 def FilesAreMissing():
