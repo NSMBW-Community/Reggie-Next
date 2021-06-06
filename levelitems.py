@@ -2227,18 +2227,27 @@ class SpriteItem(LevelEditorItem):
                     newpos.setX(int(int((newpos.x() + 6 - xOffsetAdjusted) / 12) * 12 + xOffsetAdjusted))
                     newpos.setY(int(int((newpos.y() + 6 - yOffsetAdjusted) / 12) * 12 + yOffsetAdjusted))
 
-            x = newpos.x()
-            y = newpos.y()
 
-            # don't let it get out of the boundaries
-            if x < 0: newpos.setX(0)
-            if x > 24552: newpos.setX(24552)
-            if y < 0: newpos.setY(0)
-            if y > 12264: newpos.setY(12264)
-
-            # update the data
+            # Use the in-game sprite positions for the boundary calculations.
+            # Not taking the sprite image offset into account leads to bugs when
+            # the sprite box is located outside the sprite image.
             x = int(newpos.x() / 1.5 - xOffset)
             y = int(newpos.y() / 1.5 - yOffset)
+
+            # Don't let it get out of the boundaries
+            if x < 0:
+                x = 0
+                newpos.setX(xOffsetAdjusted)
+            elif x > 16368:
+                x = 16368
+                newpos.setX(16368 * 1.5 + xOffsetAdjusted)
+
+            if y < 0:
+                y = 0
+                newpos.setY(yOffsetAdjusted)
+            elif y > 8176:
+                y = 8176
+                newpos.setY(8176 * 1.5 + yOffsetAdjusted)
 
             if x != self.objx or y != self.objy:
                 updRect = QtCore.QRectF(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
