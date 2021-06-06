@@ -2185,11 +2185,13 @@ class SpriteItem(LevelEditorItem):
             if self.ChangingPos: return value
 
             if globals_.SpriteImagesShown:
-                xOffset, xOffsetAdjusted = self.ImageObj.xOffset, self.ImageObj.xOffset * 1.5
-                yOffset, yOffsetAdjusted = self.ImageObj.yOffset, self.ImageObj.yOffset * 1.5
+                xOffset, yOffset = self.ImageObj.getOffset()
             else:
-                xOffset, xOffsetAdjusted = 0, 0
-                yOffset, yOffsetAdjusted = 0, 0
+                # The offsets of the default spritebox
+                xOffset = yOffset = 0
+
+            # Scale the offsets from 16 = 1 block to 24 = 1 block
+            xOffsetAdjusted, yOffsetAdjusted = xOffset * 1.5, yOffset * 1.5
 
             # snap to 24x24
             newpos = value
@@ -2197,35 +2199,40 @@ class SpriteItem(LevelEditorItem):
             # snap even further if Shift isn't held
             # but -only- if OverrideSnapping is off
             if not globals_.OverrideSnapping:
-                objectsSelected = any([isinstance(thing, ObjectItem) for thing in globals_.mainWindow.CurrentSelection])
+                objectsSelected = any(isinstance(thing, ObjectItem) for thing in globals_.mainWindow.CurrentSelection)
+
                 if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.AltModifier:
                     # Alt is held; don't snap
-                    newpos.setX((int((newpos.x() + 0.75) / 1.5) * 1.5))
-                    newpos.setY((int((newpos.y() + 0.75) / 1.5) * 1.5))
+                    pass
                 elif not objectsSelected and self.isSelected() and len(globals_.mainWindow.CurrentSelection) > 1:
                     # Snap to 8x8, but with the dragoffsets
                     dragoffsetx, dragoffsety = int(self.dragoffsetx), int(self.dragoffsety)
+
                     if dragoffsetx < -12: dragoffsetx += 12
                     if dragoffsety < -12: dragoffsety += 12
                     if dragoffsetx == 0: dragoffsetx = -12
                     if dragoffsety == 0: dragoffsety = -12
-                    referenceX = int((newpos.x() + 6 + 12 + dragoffsetx - xOffsetAdjusted) / 12) * 12
-                    referenceY = int((newpos.y() + 6 + 12 + dragoffsety - yOffsetAdjusted) / 12) * 12
-                    newpos.setX(referenceX - (12 + dragoffsetx) + xOffsetAdjusted)
-                    newpos.setY(referenceY - (12 + dragoffsety) + yOffsetAdjusted)
+
+                    referenceX = int((newpos.x() + dragoffsetx - xOffsetAdjusted + 6) / 12) * 12
+                    referenceY = int((newpos.y() + dragoffsety - yOffsetAdjusted + 6) / 12) * 12
+
+                    newpos.setX(referenceX - dragoffsetx + xOffsetAdjusted)
+                    newpos.setY(referenceY - dragoffsety + yOffsetAdjusted)
                 elif objectsSelected and self.isSelected():
                     # Objects are selected, too; move in sync by snapping to whole blocks
                     dragoffsetx, dragoffsety = int(self.dragoffsetx), int(self.dragoffsety)
+
                     if dragoffsetx == 0: dragoffsetx = -24
                     if dragoffsety == 0: dragoffsety = -24
-                    referenceX = int((newpos.x() + 12 + 24 + dragoffsetx - xOffsetAdjusted) / 24) * 24
-                    referenceY = int((newpos.y() + 12 + 24 + dragoffsety - yOffsetAdjusted) / 24) * 24
-                    newpos.setX(referenceX - (24 + dragoffsetx) + xOffsetAdjusted)
-                    newpos.setY(referenceY - (24 + dragoffsety) + yOffsetAdjusted)
+
+                    referenceX = int((newpos.x() + dragoffsetx - xOffsetAdjusted + 12) / 24) * 24
+                    referenceY = int((newpos.y() + dragoffsety - yOffsetAdjusted + 12) / 24) * 24
+                    newpos.setX(referenceX - dragoffsetx + xOffsetAdjusted)
+                    newpos.setY(referenceY - dragoffsety + yOffsetAdjusted)
                 else:
                     # Snap to 8x8
-                    newpos.setX(int(int((newpos.x() + 6 - xOffsetAdjusted) / 12) * 12 + xOffsetAdjusted))
-                    newpos.setY(int(int((newpos.y() + 6 - yOffsetAdjusted) / 12) * 12 + yOffsetAdjusted))
+                    newpos.setX(int(int((newpos.x() - xOffsetAdjusted + 6) / 12) * 12 + xOffsetAdjusted))
+                    newpos.setY(int(int((newpos.y() - yOffsetAdjusted + 6) / 12) * 12 + yOffsetAdjusted))
 
 
             # Use the in-game sprite positions for the boundary calculations.
@@ -2278,6 +2285,7 @@ class SpriteItem(LevelEditorItem):
                 if self.positionChanged is not None:
                     self.positionChanged(self, oldx, oldy, x, y)
 
+                # Add moving this sprite to the undo stack.
                 if len(globals_.mainWindow.CurrentSelection) == 1:
                     act = MoveItemUndoAction(self, oldx, oldy, x, y)
                     globals_.mainWindow.undoStack.addOrExtendAction(act)
@@ -2297,10 +2305,12 @@ class SpriteItem(LevelEditorItem):
         Sets a new position, through objx and objy
         """
         self.objx, self.objy = newobjx, newobjy
+
         if globals_.SpriteImagesShown:
-            self.setPos((newobjx + self.ImageObj.xOffset) * 1.5, (newobjy + self.ImageObj.yOffset) * 1.5)
-        else:
-            self.setPos(newobjx * 1.5, newobjy * 1.5)
+            newobjx += self.ImageObj.xOffset
+            newobjy += self.ImageObj.yOffset
+
+        self.setPos(newobjx * 1.5, newobjy * 1.5)
 
     def mousePressEvent(self, event):
         """
