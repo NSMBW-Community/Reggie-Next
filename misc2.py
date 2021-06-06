@@ -166,7 +166,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             self.xButtonScrollTimer.start(100)
 
         elif event.button() == QtCore.Qt.RightButton:
-            if 0 <= globals_.CurrentPaintType < 4 and globals_.CurrentObject != -1:
+            if 0 <= globals_.CurrentPaintType < 4 and globals_.CurrentObject != -1 and [globals_.Layer0Shown, globals_.Layer1Shown, globals_.Layer2Shown][globals_.CurrentLayer]:
                 # paint an object
                 clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
                 if clicked.x() < 0: clicked.setX(0)
@@ -185,13 +185,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
 
-            elif globals_.CurrentPaintType == 4 and globals_.CurrentSprite >= 0:
+            elif globals_.CurrentPaintType == 4 and globals_.CurrentSprite >= 0 and globals_.SpritesShown:
                 # paint a sprite
                 clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
                 if clicked.x() < 0: clicked.setX(0)
                 if clicked.y() < 0: clicked.setY(0)
 
-                # paint a sprite
                 clickedx = int((clicked.x() - 12) / 12) * 8
                 clickedy = int((clicked.y() - 12) / 12) * 8
 
@@ -232,7 +231,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
 
-            elif globals_.CurrentPaintType == 6:
+            elif globals_.CurrentPaintType == 6 and globals_.PathsShown:
                 # paint a path node
                 clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
                 if clicked.x() < 0: clicked.setX(0)
@@ -333,7 +332,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                     SetDirty()
 
-            elif globals_.CurrentPaintType == 7:
+            elif globals_.CurrentPaintType == 7 and globals_.LocationsShown:
                 # paint a location
                 clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
                 if clicked.x() < 0: clicked.setX(0)
@@ -377,7 +376,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                     SetDirty()
 
-            elif globals_.CurrentPaintType == 9:
+            elif globals_.CurrentPaintType == 9 and globals_.CommentsShown:
                 # paint a comment
 
                 clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())

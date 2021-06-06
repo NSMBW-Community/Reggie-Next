@@ -53,6 +53,7 @@ OverrideSnapping = False
 Overrides = None # 320 tiles, this is put into Tiles usually
 PaddingLength = 0
 PathsFrozen = False
+PathsShown = True
 RealViewEnabled = False
 ReggieID = 'Reggie! Next Level Editor by Treeki, Tempus and RoadrunnerWMC'
 ReggieVersion = 'Milestone 4'

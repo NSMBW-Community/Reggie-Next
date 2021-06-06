@@ -2766,8 +2766,6 @@ class PathItem(LevelEditorItem):
         self.setZValue(25003)
         self.UpdateTooltip()
 
-        self.setVisible(globals_.PathsShown)
-
         # now that we're inited, set
         self.nodeinfo['graphicsitem'] = self
 
@@ -2873,8 +2871,6 @@ class PathEditorLineItem(LevelEditorItem):
         self.computeBoundRectAndPos()
         self.setZValue(25002)
         self.UpdateTooltip()
-
-        self.setVisible(globals_.PathsShown)
 
     def UpdateTooltip(self):
         """
