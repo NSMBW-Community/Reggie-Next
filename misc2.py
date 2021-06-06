@@ -127,11 +127,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         super(LevelViewWidget, self).__init__(scene, parent)
 
         self.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-        # self.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(119,136,153)))
         self.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
-        # self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
         self.setMouseTracking(True)
-        # self.setOptimizationFlags(QtWidgets.QGraphicsView.IndirectPainting)
         self.YScrollBar = QtWidgets.QScrollBar(QtCore.Qt.Vertical, parent)
         self.XScrollBar = QtWidgets.QScrollBar(QtCore.Qt.Horizontal, parent)
         self.setVerticalScrollBar(self.YScrollBar)

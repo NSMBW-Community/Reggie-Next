@@ -2964,11 +2964,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 if os.path.isfile(checkname):
                     found = True
                     break
+
             if not found:
                 QtWidgets.QMessageBox.warning(self, 'Reggie!',
                                               globals_.trans.string('Err_CantFindLevel', 0, '[name]', checkname),
                                               QtWidgets.QMessageBox.Ok)
                 return False
+
             if not IsNSMBLevel(checkname):
                 QtWidgets.QMessageBox.warning(self, 'Reggie!', globals_.trans.string('Err_InvalidLevel', 0),
                                               QtWidgets.QMessageBox.Ok)
