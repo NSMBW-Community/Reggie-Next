@@ -89,7 +89,7 @@ import globals_
 ################################################################################
 ################################################################################
 
-from libs import lh
+from libs import lh, lib_versions
 from ui import GetIcon, SetAppStyle, GetDefaultStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme
 from misc import LoadActionsLists, LoadTilesetNames, LoadBgANames, LoadBgBNames, LoadConstantLists, LoadObjDescriptions, LoadSpriteData, LoadSpriteListData, LoadEntranceNames, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePath, isValidGamePath
 from misc2 import LevelScene, LevelViewWidget
@@ -815,6 +815,24 @@ class ReggieWindow(QtWidgets.QMainWindow):
         menu.addAction(self.actions['tipbox'])
         menu.addSeparator()
         menu.addAction(self.actions['aboutqt'])
+        menu.addSeparator()
+
+        if lib_versions["nsmblib"] is not None:
+            nsmblib_info_text = "Using NSMBLib %d" % lib_versions["nsmblib"]
+        else:
+            nsmblib_info_text = "Not using NSMBLib"
+
+        if lib_versions["cython"] is not None:
+            cython_info_text = "Using Cython %s" % lib_versions["cython"]
+        else:
+            cython_info_text = "Not using Cython"
+
+        menu.addAction("Using Python %d.%d.%d" % sys.version_info[:3]).setEnabled(False)
+        menu.addAction("Using PyQt %s" % QtCore.PYQT_VERSION_STR).setEnabled(False)
+        menu.addAction("Using Qt %s" % QtCore.QT_VERSION_STR).setEnabled(False)
+        menu.addAction(cython_info_text).setEnabled(False)
+        menu.addAction(nsmblib_info_text).setEnabled(False)
+
         return menu
 
     def addToolbarButtons(self):
