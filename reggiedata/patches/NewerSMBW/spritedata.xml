@@ -699,10 +699,9 @@
   <!-- When you're done (me), go back through the list and fix the Sprite Number names. In both places. Then clone it to the other Actor Spawner. Ugh. -->
   <sprite id="88" name="Actor Spawner"  phonebook="Actors" notes="With this sprite, you can spawn anything and everything that exists in the game. Sprite Data can be applied to sprites spawned through this within certain limitations. Please utilize Raw Data (Visible with Advanced Settings enabled) to determine what the settings should be set to. Combine the Actor Spawner with [332] Effect/Sound Spawner to add flair to the spawn effect. &lt;br&gt; &lt;br&gt;Additionally, anything spawned by the Actor Spawner will need to be respawned each time the player changes Zones. If returning from a bonus room, be sure to trigger any relevant spawns. Each Actor Spawner can only trigger once each Zone.">
     <dependency notes="Directly place any sprite you want to spawn with the Actor Spawner somewhere in your level for the game to load the required secondary assets of that sprite."/>
-    <value bit="17-20" title="Triggering Event ID" comment="When this event is activated, the Actor Spawner will create one copy of the Actor at the location of the Spawner. Keep in mind that some sprites have abnormal placement so expect a lot of testing to make sure that everything works correctly." comment2="The Triggering Event ID is limited to only the first 15 Event IDs." idtype="Triggering Event"/>
+    <value bit="17-20" title="Triggering Event ID" comment="When this event is activated, the Actor Spawner will create one copy of the Actor at the location of the Spawner. Keep in mind that some sprites have abnormal placement so expect a lot of testing to make sure that everything works correctly." idtype="Triggering Event"/>
     <checkbox bit="21" title="Automatically Respawn" comment="When the actor spawned by this spawner is deleted or missing, and the event is triggered, another actor with the same settings will be spawened. This also stops the spawned actor from despawning when the event is deactivated."/>
-    <value bit="22-32" title="Actor ID - Number Entry" comment="Please enter the extension that you wish to dial. If your party cannot be reached, please dial a different number. Thank you." comment2="Do not use an Actor ID that does not return a value on the list below." idtype="Actor"/> <!-- ID type is used so that the number can be shown on the sprite display. -->
-    <external type="actors" bit="22-32" title="Actor ID" comment="Use this external window to select your Actor ID." />
+    <external type="actors" bit="22-32" title="Actor ID" comment="Use this external window to select your Actor."/>
     <value bit="33-34" title="Nybble 5" />
     <value bit="35-36" title="Nybble 6" />
     <value bit="37-38" title="Nybble 7" />
@@ -715,9 +714,8 @@
 
   <sprite id="89" name="Actor Multi-Spawner"  phonebook="Actors" notes="With this sprite, you can spawn anything and everything that exists in the game. It will spawn the Actor every 2 seconds while the Triggering Event is on. If you need to spawn them at a faster rate, use an Event Controller to deactivate and activate the Triggering Event. Sprite Data can be applied to sprites spawned through this within certain limitations. Please utilize Raw Data (Visible with Advanced Settings enabled) to determine what the settings should be set to. Combine the Actor Spawner with [332] Effect/Sound Spawner to add flair to the spawn effect. &lt;br&gt; &lt;br&gt;Additionally, anything spawned by the Actor Spawner will need to be respawned each time the player changes Zones. If returning from a bonus room, be sure to trigger any relevant spawns. Each Actor Spawner can only trigger once each Zone.">
     <dependency notes="Directly place any sprite you want to spawn with the Actor Spawner somewhere in your level for the game to load the required secondary assets of that sprite."/>
-    <value bit="17-20" title="Triggering Event ID" comment="While this event is activated, the Actor Spawner will create a copy of the Actor every 2 seconds at the location of the Spawner. Keep in mind that some sprites have abnormal placement so expect a lot of testing to make sure that everything works correctly." comment2="The Triggering Event ID is limited to only the first 15 Event IDs." idtype="Triggering Event"/>
-    <value bit="21-32" title="Actor ID - Number Entry" comment="Please enter the extension that you wish to dial. If your party cannot be reached, please dial a different number. Thank you." comment2="Do not use an Actor ID that does not return a value on one of the lists below." idtype="Actor"/> <!-- ID type is used so that the number can be shown on the sprite display. -->
-    <external type="actors" bit="22-32" title="Actor ID" comment="Use this external window to select your actor id." />
+    <value bit="17-20" title="Triggering Event ID" comment="While this event is activated, the Actor Spawner will create a copy of the Actor every 2 seconds at the location of the Spawner. Keep in mind that some sprites have abnormal placement so expect a lot of testing to make sure that everything works correctly." idtype="Triggering Event"/>
+    <external type="actors" bit="22-32" title="Actor ID" comment="Use this external window to select your Actor."/>
     <value bit="33-34" title="Nybble 5" />
     <value bit="35-36" title="Nybble 6" />
     <value bit="37-38" title="Nybble 7" />
@@ -2304,8 +2302,8 @@
 	  <value nybble="5-6" title="Triggering Event ID" comment="When this Event ID is activated, the associated sound or affect will be played." idtype="Triggering Event"/>
 	  <external type="sfx" nybble="10-12" title="Sfx ID" comment="Use this external window to select your Sound Effect." requiredbit="32" requiredval="0"/>
 	  <external type="gfx" nybble="10-12" title="Gfx ID" comment="Use this external window to select your Graphic Effect." requiredbit="32" requiredval="1"/>
-	  <dualbox bit="32" title1="Sound Effect" title2="Graphical Effect*" comment="This determines if you are spawning a sound effect or a graphical effect. The list of graphical effects is limited to the entries used by Newer. NewerGem does not have this limitation and uses all available 1004 Gfx." comment2="The volume of the sound effect is relative to the distance of the placement of the spawner."/>
-	  <list nybble="7" title="Effect Scale" comment="This determines the size of the spawned graphic effect." requiredbit="32">
+	  <dualbox bit="32" title1="Sound Effect" title2="Graphical Effect*" comment="This determines if you are spawning a sound effect or a graphical effect. The list of graphical effects is limited to the entries used by Newer. The volume of the sound effect is relative to the distance of the placement of the spawner."/>
+	  <list nybble="7" title="Effect Scale" requiredbit="32">
 		  <entry value="1">x0.25 (25%)</entry>
 		  <entry value="2">x0.5 (50%)</entry>
 		  <entry value="3">x0.75 (75%)</entry>
