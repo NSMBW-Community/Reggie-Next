@@ -147,7 +147,7 @@ def LHDecompressor_decomp(dst, src, srcSize):
 
         return destCount
 
-    lengthHuffTbl = [0 for _ in range(1024)]
+    lengthHuffTbl = [0 for _ in range(1024 + 64)]
     currentIdx = 1
     huffLen = (Swap16(bits32) + 1 << 5) - 16
 
