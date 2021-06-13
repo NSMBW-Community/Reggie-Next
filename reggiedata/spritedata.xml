@@ -5205,11 +5205,11 @@
 <!-- Test Place Behind Other Sprites with Chainlink Fence fun stuff -->
   <sprite id="346" name="Rotation Controlled Hanging Chain Platform" notes="A rotation controlled platform that has two hanging hooks on it. These hooks will automatically create chains that lead directly to the rotation point that is used.">
     <dependency notes="Placement of this platform is flexible, but it is recommended that it be placed directly below the rotation controller. Additionally, the platform will generate two chains leading to the rotation controller it is paired with. A [345] Hanging Chain Holder should be placed directly on top of the rotation controller.">
-      <required sprite="345"/>
+      <suggested sprite="345"/>
       <suggested sprite="96"/>
       <suggested sprite="149"/>
     </dependency>
-    <list bit="39-40" title="Width" comment="This determines the width of the platform.">
+    <list bit="39-40" title="Width">
       <entry value="0">Short</entry>
       <entry value="1">Medium</entry>
       <entry value="2">Long</entry>

@@ -6540,20 +6540,19 @@ class SpriteImage_ChainHolder(SLib.SpriteImage_Static):  # 345
 class SpriteImage_HangingChainPlatform(SLib.SpriteImage_StaticMultiple):  # 346
     @staticmethod
     def loadImages():
-        if 'HangingChainPlatformS' in ImageCache: return
-        ImageCache['HangingChainPlatformS'] = SLib.GetImg('hanging_chain_platform_small.png')
-        ImageCache['HangingChainPlatformM'] = SLib.GetImg('hanging_chain_platform_medium.png')
-        ImageCache['HangingChainPlatformL'] = SLib.GetImg('hanging_chain_platform_large.png')
+        if 'HangingChainPlatform0' in ImageCache: return
+        ImageCache['HangingChainPlatform0'] = SLib.GetImg('hanging_chain_platform_small.png')
+        ImageCache['HangingChainPlatform1'] = SLib.GetImg('hanging_chain_platform_medium.png')
+        ImageCache['HangingChainPlatform2'] = SLib.GetImg('hanging_chain_platform_large.png')
 
     def dataChanged(self):
         size = (self.parent.spritedata[4] & 3) % 3
-        size, self.xOffset = (
-            ('S', -26),
-            ('M', -42),
-            ('L', -58),
+        self.offset = (
+            (-26, -10),
+            (-42, -10),
+            (-58, -11),
         )[size]
-
-        self.image = ImageCache['HangingChainPlatform%s' % size]
+        self.image = ImageCache['HangingChainPlatform%d' % size]
 
         super().dataChanged()
 
