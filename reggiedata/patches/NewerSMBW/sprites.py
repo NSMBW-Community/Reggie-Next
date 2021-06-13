@@ -1233,20 +1233,28 @@ class SpriteImage_Meteor(SLib.SpriteImage_StaticMultiple):  # 183
 class SpriteImage_MidwayFlag(SLib.SpriteImage_StaticMultiple):  # 188
     def __init__(self, parent):
         super().__init__(parent)
-        self.yOffset = -36
 
     @staticmethod
     def loadImages():
         if 'MidwayFlag0' in ImageCache: return
+        transform30 = QtGui.QTransform()
+        transform30.rotate(330)
         for i in range(18):
             ImageCache['MidwayFlag%d' % i] = SLib.GetImg('midway_flag_%d.png' % i)
 
+        midwayflag = SLib.GetImg('midway_flag_0.png', True)
+        if midwayflag is None: return
+        ImageCache['MidwayFlag18'] = QtGui.QPixmap.fromImage(midwayflag.transformed(transform30))
+
     def dataChanged(self):
+        style = self.parent.spritedata[2] % 19
 
-        style = self.parent.spritedata[2]
-        if style > 17: style = 0
-
+        if 'MidwayFlag18' not in ImageCache: return
         self.image = ImageCache['MidwayFlag%d' % style]
+        if style == 18:
+            self.offset = (-24, -42)
+        else:
+            self.offset = (0, -38)
 
         super().dataChanged()
 

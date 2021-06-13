@@ -1113,7 +1113,7 @@
   </sprite> <!-- #183: Meteor -->
 
   <sprite id="188" name="Midway Flag"  notes="A flag that when touched by the player will mark their progress in the level and respawn them at this location when re-entering the level.">
-    <list nybble="5-6" title="Logo" comment="NewerSMBW changes the logo placed on the Midway Flag for each sub-world." comment2="The 2nd Newer Logo at the 45°-ish angle is just another model file, in case you were wondering...">
+    <list nybble="5-6" title="Logo">
       <entry value="0">Newer Logo</entry>
       <entry value="1">Yoshi's Island</entry>
       <entry value="2">Goldwood</entry>
@@ -1132,7 +1132,7 @@
       <entry value="15">Sky City</entry>
       <entry value="16">Koopa Planet</entry>
       <entry value="17">Koopa Core</entry>
-	  <entry value="18">Newer Logo at a 45°-ish angle CCW</entry>
+	  <entry value="18">Newer Logo at a 30° angle</entry>
     </list>
     <value nybble="7-8" title="Entrance ID" comment="This determines which Entrance the level will load the player into when they respawn." idtype="Entrance"/>
     <dualbox bit="44" title1="Load Facing Right" title2="Load Facing Left" comment="This determines which direction the players will face when they respawn."/>

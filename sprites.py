@@ -3937,13 +3937,13 @@ class SpriteImage_PlayerBlock(SLib.SpriteImage_Static):  # 187
         SLib.loadIfNotInImageCache('PlayerBlock', 'playerblock.png')
 
 
-class SpriteImage_MidwayPoint(SLib.SpriteImage_Static):  # 188
+class SpriteImage_MidwayFlag(SLib.SpriteImage_Static):  # 188
     def __init__(self, parent):
         super().__init__(
             parent,
             1.5,
             ImageCache['MidwayFlag'],
-            (0, -36),
+            (0, -38),
         )
 
     @staticmethod
@@ -6548,9 +6548,9 @@ class SpriteImage_HangingChainPlatform(SLib.SpriteImage_StaticMultiple):  # 346
     def dataChanged(self):
         size = (self.parent.spritedata[4] & 3) % 3
         self.offset = (
-            (-26, -10),
-            (-42, -10),
-            (-58, -11),
+            (-26, -11),
+            (-42, -11),
+            (-58, -12),
         )[size]
         self.image = ImageCache['HangingChainPlatform%d' % size]
 
@@ -8748,7 +8748,7 @@ ImageClasses = {
     182: SpriteImage_EventDoor,
     185: SpriteImage_ToadBalloon,
     187: SpriteImage_PlayerBlock,
-    188: SpriteImage_MidwayPoint,
+    188: SpriteImage_MidwayFlag,
     189: SpriteImage_LarryKoopa,
     190: SpriteImage_TiltingGirderUnused,
     191: SpriteImage_TileEvent,
