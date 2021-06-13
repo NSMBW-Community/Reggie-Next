@@ -4028,10 +4028,10 @@
   <!-- Check if the setting causes it to be an inverted state for the spiked ball -->
   <!-- Determine placement requirements: Water required, yes or no? Placed manually on water surface, yes or no? If placed below the water surface, does it rise to the top or not load? -->
   *<sprite id="263" name="Lily Piranha Plant" notes="A floating piranha plant that balances a spiky spore ball in the air above it.">
-    <dependency notes="Unknown">
+    <dependency notes="The piranha plant must be placed inside or on the surface of water [138] to spawn. It will snap to the surface when loaded on-screen.">
       <suggested sprite="138"/>
     </dependency>
-    <checkbox bit="48" title="Unknown Flag 12 (1)" advanced="True" advancedcomment="Used in Retail: 05-01 A2."/>
+    <checkbox bit="48" title="Unknown Flag 12 (1)" comment="Used in Retail: 05-01 A2."/>
   </sprite> <!-- #263: Lily Piranha Plant -->
 
   <!-- I know I was told what Flag 9 does but I forget exactly. I know it has something to do with whether a Stalking plant turns around when encountering-?? or not. -->
