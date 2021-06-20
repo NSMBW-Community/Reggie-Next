@@ -489,7 +489,7 @@ class SpriteImage_NewerUpsideDownSpiny(SLib.SpriteImage_StaticMultiple):  # 26
         colour = ("", "orange", "yellow", "green", "blue", "violet", "black", "sidestepper")[colour]
 
         # slow patch folder is slow, 2
-        if 'SpinyOrangeU' not in ImageCache:
+        if 'SpinyorangeU' not in ImageCache:
             return
 
         self.image = ImageCache['Spiny%sU' % colour]
