@@ -1788,7 +1788,7 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
         dir = ("R", "L", "F", "R")[direction]
         colour = ("", "red", "orange", "yellow", "green", "blue", "purple", "black", "shyguy", "monty")[style]
 
-        if 'MegaBuzzyMontyF' not in ImageCache: return
+        if 'MegaBuzzymontyF' not in ImageCache: return
         self.image = ImageCache['MegaBuzzy%s%s' % (colour, dir)]
 
         if style == 8: # Shy Guy's offset
