@@ -1496,7 +1496,7 @@
     </list>
   </sprite> <!-- #105: Pokey -->
 
-  <sprite id="106" name="Line Controlled Basic Platform" notes="A standard platform that moves along Line objects. It cannot be paired with Use Lines for movement sycnronization.">
+  <sprite id="106" name="Line Controlled Basic Platform" notes="">
     <dualbox bit="36" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform."/>
     <value nybble="12" title="Width" comment="This determines the width of the platform." comment2="This value needs to be 2 or greater."/>
     <dualbox bit="32" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the platform will move based on the Line that it is connected to."/>
@@ -2445,8 +2445,8 @@
   </sprite> <!-- #154: Porcu-Puffer Spawn Area -->
 
   <sprite id="155" name="Line Controlled Star Coin" notes="A variant of the Star Coin that will ride along Line objects.">
-    <dependency notes="This sprite must be paired with a [236] Use Lines movement controller in order to function.">
-      <required sprite="236"/>
+    <dependency notes="Use the Group Controller [236] for spawn synchronization with other Group controlled sprites.">
+      <suggested sprite="236"/>
     </dependency>
     <list bit="39-40" title="Coin Number" comment="This determines which Star Coin flag will be set for the level when this Star Coin is collected." comment2="If multiple Star Coins with the same number are placed, duplicate entries will not load if the player has already collected one that attempt.">
       <entry value="0">First Coin</entry>
@@ -5174,6 +5174,9 @@
   </sprite> <!-- #342: Muncher -->
 
   <sprite id="343" name="Line Controlled Fuzzy" noyoshi="True" notes="">
+    <dependency notes="Use the Group Controller [236] for spawn synchronization with other Group controlled sprites.">
+      <suggested sprite="236"/>
+    </dependency>
     <dualbox bit="40" title1="Fuzzy" title2="Big Fuzzy"/>
     <value bit="17-24" title="Group ID" comment="This pairs the Fuzzy to a matching Group Controller for spawn synchronization with other Group controlled sprites." idtype="Group"/>
     <dualbox bit="48" title1="Start Right/Up" title2="Start Left/Down"/>
