@@ -775,8 +775,7 @@
     </list>
   </sprite> <!-- #63: Spiked Ball -->
 
-  <sprite id="64" name="Effect - Thick Fog" notes="This adds a thick rolling fog effect to the level that can be used with or without a Location ID." advancednotes="Please note that Poison Water and Lava will turn into &lt;b&gt;Water&lt;/b&gt; and lose their deadly properties, should this sprite's location and the water location overlap. The player can then swim in Poison/Lava without being killed. The Poison/Lava still looks correct, only their physics are changed.">
-    <dependency notes="A Location ID is NOT required in order for the Thick Fog to function. Without a Location ID set, it will simply fill the entire Zone with the Thick Fog effect."/>
+  <sprite id="64" name="Effect - Thick Fog" notes="This adds a thick rolling fog effect to the level that can be used with or without a Location ID.&lt;br&gt;The fog will make non-location Lava/Poisoned Water function just like Water if it is added into the level after the liquids. You can avoid this by adding the fog and then re-adding the Lava/Poisoned Water, or by placing the liquids in their own separate locations.">
     <value nybble="11-12" title="Location ID" comment="This determines the location in which the Thick Fog will spawn." idtype="Location"/>
     <checkbox bit="38" title="Unknown Flag 10 (4)" advanced="True" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function, or this flag may do something else entirely. Or nothing."/>
   </sprite> <!-- #64: Effect - Thick Fog -->
@@ -6523,8 +6522,7 @@
     </list>
   </sprite> <!-- #434: Warp Cannon -->
 
-  <sprite id="435" name="Effect - Ghost Fog" notes="This adds a thin wispy fog effect to the level that can be used with or without a Location ID." advancednotes="Please note that Poison Water and Lava will turn into &lt;b&gt;Water&lt;/b&gt; and lose their deadly properties, should this sprite's location and the water location overlap. The player can then swim in Poison/Lava without being killed. The Poison/Lava still looks correct, only their physics are changed." >
-    <dependency notes="A Location ID is NOT required in order for the Ghost Fog to function. Without a Location ID set, it will simply fill the entire Zone with the Ghost Fog effect."/>
+  <sprite id="435" name="Effect - Ghost Fog" notes="This adds a thin wispy fog effect to the level that can be used with or without a Location ID.&lt;br&gt;The fog will make non-location Lava/Poisoned Water function just like Water if it is added into the level after the liquids. You can avoid this by adding the fog and then re-adding the Lava/Poisoned Water, or by placing the liquids in their own separate locations.">
     <value nybble="11-12" title="Location ID" comment="This determines the location in which the Ghost Fog will spawn." idtype="Location"/>
     <checkbox bit="38" title="Unknown Flag 10 (4)" advanced="True" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function."/>
   </sprite> <!-- #435: Effect - Ghost Fog -->
