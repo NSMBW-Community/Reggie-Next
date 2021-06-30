@@ -7897,8 +7897,9 @@ class SpriteImage_CageBlocks(SLib.SpriteImage_StaticMultiple):  # 438
     @staticmethod
     def loadImages():
         if 'CageBlock0' in ImageCache: return
-        for type in range(8):
-            ImageCache['CageBlock%d' % type] = SLib.GetImg('cage_block_%d.png' % type)
+
+        for i in range(5):
+            ImageCache['CageBlock%d' % i] = SLib.GetImg('cage_block_%d.png' % i)
 
     def dataChanged(self):
 
