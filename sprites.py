@@ -8594,20 +8594,26 @@ class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
     @staticmethod
     def loadImages():
         if 'FinalBossEffects0' in ImageCache: return
-        for i in range(4):
+
+        for i in range(3):
             ImageCache["FinalBossEffects%d" % i] = SLib.GetImg("final_boss_effects_%d.png" % i)
 
     def dataChanged(self):
-        style = self.parent.spritedata[5] & 3
+        style = self.parent.spritedata[5] & 15
 
-        self.aux[0].image = ImageCache['FinalBossEffects%d' % style]
+        # Styles greater than 2 crash the game
+        if style > 2:
+            self.aux[0].image = None
 
-        if style == 0:
-            self.aux[0].setPos(-228, -555)
-        elif style == 1:
-            self.aux[0].setPos(-228, -408)
-        elif style == 2:
-            self.aux[0].setPos(-24, -192)
+        else:
+            self.aux[0].image = ImageCache['FinalBossEffects%d' % style]
+
+            if style == 0:
+                self.aux[0].setPos(-228, -555)
+            elif style == 1:
+                self.aux[0].setPos(-228, -408)
+            else:
+                self.aux[0].setPos(-24, -192)
 
         super().dataChanged()
 
