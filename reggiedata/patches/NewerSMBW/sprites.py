@@ -1545,9 +1545,11 @@ class SpriteImage_NewerBramball(SLib.SpriteImage_StaticMultiple):  # 230
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Bramball', 'bramball.png')
+
         if 'Bramball1' in ImageCache: return
-        for i in range(6):
-            ImageCache['Bramball%d' % (i + 1)] = SLib.GetImg('bramball_%d.png' % (i + 1))
+
+        for i in range(1, 5):
+            ImageCache['Bramball%d' % i] = SLib.GetImg('bramball_%d.png' % i)
 
     def dataChanged(self):
         colour = (self.parent.spritedata[2] & 0xF) % 5
