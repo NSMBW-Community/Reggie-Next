@@ -75,7 +75,10 @@ def main():
 
 def GetImg(imgname, image=False):
     """
-    Returns the image path from the PNG filename imgname
+    Returns the image as a QImage from the PNG filename 'imgname' from the first
+    matching sprite image folder. If 'image' is False, a QPixmap of this image
+    is returned. If the image could not be found, None is returned and a warning
+    is printed.
     """
     imgname = str(imgname)
 
@@ -94,6 +97,8 @@ def GetImg(imgname, image=False):
             return QtGui.QImage(path)
         else:
             return QtGui.QPixmap(path)
+
+    print("[Warning] Could not load sprite image (%s)!" % imgname)
 
 
 def loadIfNotInImageCache(name, filename):
