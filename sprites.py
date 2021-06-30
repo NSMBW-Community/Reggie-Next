@@ -675,9 +675,11 @@ class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
 
     @staticmethod
     def loadImages():
-        if 'GiantBubble0' not in ImageCache:
-            for shape in range(4):
-                ImageCache['GiantBubble%d' % shape] = SLib.GetImg('giant_bubble_%d.png' % shape)
+        if 'GiantBubble0' in ImageCache:
+            return
+
+        for shape in range(3):
+            ImageCache['GiantBubble%d' % shape] = SLib.GetImg('giant_bubble_%d.png' % shape)
 
     def dataChanged(self):
         super().dataChanged()
@@ -685,9 +687,11 @@ class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
         self.shape = self.parent.spritedata[4] >> 4
         direction = self.parent.spritedata[5] & 15
         distance = (self.parent.spritedata[5] >> 4) + 1
-        arrow = None
 
-        if self.shape == 0 or self.shape > 3:
+        if self.shape > 3:
+            self.shape = 0
+
+        if self.shape == 0:
             self.size = (122, 137)
             HorzOffset = 24
             VertOffset = 20
