@@ -1122,8 +1122,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         spl.addLayout(sspl)
 
         self.spriteSearchLayout = sspl
-        sspl.itemAt(0).widget().setVisible(False)
-        sspl.itemAt(1).widget().setVisible(False)
 
         self.sprPicker = SpritePickerWidget()
         self.sprPicker.SpriteChanged.connect(self.SpriteChoiceChanged)
