@@ -291,9 +291,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if globals_.settings.contains('MainWindowState'):
             self.restoreState(setting('MainWindowState'), 0)
 
-        # Load the most recently used gamedef
-        LoadGameDef(setting('LastGameDef'), False)
-
         # Aaaaaand... initializing is done!
         # global globals_.Initializing
         globals_.Initializing = False
@@ -4289,17 +4286,23 @@ def main():
     if FilesAreMissing():
         sys.exit(1)
 
-    # Load required stuff
-    LoadGameDef(setting('LastGameDef'))
-    LoadActionsLists()
-    LoadConstantLists()
-    LoadNumberFont()
+    # Load some requirements for spritelib
     LoadTheme()
-    SetAppStyle()
     LoadOverrides()
+
+    # Initialise spritelib
     SLib.OutlineColor = globals_.theme.color('smi')
     SLib.main()
     sprites.LoadBasics()
+
+    # Load the gamedef (including sprite image path, for which we need spritelib)
+    LoadGameDef(setting('LastGameDef'))
+
+    # Load remaining requirements
+    LoadActionsLists()
+    LoadConstantLists()
+    LoadNumberFont()
+    SetAppStyle()
 
     # Set the default window icon (used for random popups and stuff)
     globals_.app.setWindowIcon(GetIcon('reggie'))

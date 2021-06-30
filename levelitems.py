@@ -1851,7 +1851,6 @@ class SpriteItem(LevelEditorItem):
         self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
         self.ChangingPos = False
 
-        SLib.SpriteImage.loadImages()
         self.ImageObj = SLib.SpriteImage(self)
 
         if 0 <= type_ < globals_.NumSprites:
@@ -1864,7 +1863,6 @@ class SpriteItem(LevelEditorItem):
         self.setFlag(self.ItemIsMovable, not globals_.SpritesFrozen)
         self.setFlag(self.ItemIsSelectable, not globals_.SpritesFrozen)
 
-        # global globals_.DirtyOverride
         globals_.DirtyOverride += 1
         if globals_.SpriteImagesShown:
             self.setPos(
@@ -2042,6 +2040,7 @@ class SpriteItem(LevelEditorItem):
         if (self.type in globals_.gamedef.getImageClasses()) and (self.type not in SLib.SpriteImagesLoaded):
             globals_.gamedef.getImageClasses()[self.type].loadImages()
             SLib.SpriteImagesLoaded.add(self.type)
+
         self.ImageObj = obj(self) if obj else SLib.SpriteImage(self)
 
         # show auxiliary objects properly

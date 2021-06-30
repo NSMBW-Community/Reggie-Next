@@ -651,9 +651,13 @@ def LoadGameDef(name=None, dlg=None):
 
         # Load sprites.py
         if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 11))  # Loading sprite image data...
-        if globals_.Area is not None:
-            SLib.SpritesFolders = globals_.gamedef.recursiveFiles('sprites', False, True)
 
+        # Always load the sprites folders so the correct sprite images can be
+        # loaded when Reggie is started. This avoids loading all sprite images
+        # again and also simplifies the sprite image code.
+        SLib.SpritesFolders = globals_.gamedef.recursiveFiles('sprites', False, True)
+
+        if globals_.Area is not None:
             SLib.ImageCache.clear()
             SLib.SpriteImagesLoaded.clear()
             sprites.LoadBasics()
