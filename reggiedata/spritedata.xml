@@ -6979,7 +6979,7 @@
   </sprite> <!-- #481: (Unused) Final Boss - Rubble Block -->
 
   <sprite id="482" name="Final Boss - Pre-Boss Camera Effects" notes="A set of special elements utilized by the sections of level leading up to the final Bowser Boss fight.">
-    <list bit="47-48" title="Effect" comment="This determines the type of effect used.">
+    <list nybble="12" title="Effect" comment="This determines the type of effect used. Other values not listed here crash the game.">
       <entry value="0">Door Room Darkness</entry>
       <entry value="1">Corridor Darkness</entry>
       <entry value="2">Corridor Wall BG</entry>
