@@ -8433,12 +8433,17 @@ class SpriteImage_IceFloe(SLib.SpriteImage_StaticMultiple):  # 475
     @staticmethod
     def loadImages():
         if 'IceFloe0' in ImageCache: return
-        for size in range(16):
+
+        for size in range(13):
             ImageCache['IceFloe%d' % size] = SLib.GetImg('ice_floe_%d.png' % size)
 
     def dataChanged(self):
 
         size = self.parent.spritedata[5] & 15
+
+        if size > 12:
+            size = 0
+
         self.offset = (
             (-1, -32),  # 0: 3x3
             (-2, -48),  # 1: 4x4
