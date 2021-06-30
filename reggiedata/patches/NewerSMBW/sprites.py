@@ -2118,14 +2118,18 @@ class SpriteImage_NewerGabon(SLib.SpriteImage_StaticMultiple):  # 414
         SLib.loadIfNotInImageCache('GabonSpike', 'gabon_spike.png')
 
         if 'GabonsnowRight' in ImageCache: return
+
         for style in ("red", "orange", "yellow", "snow"):
             gabon = SLib.GetImg('gabon_%s.png' % style, True)
+
             if gabon is None: return
+
             ImageCache['Gabon%sLeft' % style] = QtGui.QPixmap.fromImage(gabon)
             ImageCache['Gabon%sRight' % style] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
 
         if 'GabonblackSpike' in ImageCache: return
-        for color in ("red", "orange", "yellow", "green", "blue", "purple", "black"):
+
+        for color in ("red", "orange", "yellow", "green", "purple", "black"):
             ImageCache['Gabon%sSpike' % color] = SLib.GetImg('gabon_%s_spike.png' % color)
 
     def dataChanged(self):
