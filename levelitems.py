@@ -533,8 +533,8 @@ class ObjectItem(LevelEditorItem):
 
     def isBottomRowSpecial(self):
         """
-        Returns whether the bottom row of self.objdata contains the a special
-        vdouble top tile
+        Returns whether the bottom row of self.objdata contains the special
+        vdouble top tile.
         """
         if globals_.TilesetFilesLoaded[self.tileset] is None or globals_.TilesetInfo is None:
             # no randomisation info -> false
@@ -575,6 +575,11 @@ class ObjectItem(LevelEditorItem):
 
         if globals_.TilesetInfo is None or globals_.TilesetFilesLoaded[self.tileset] is None:
             # no randomisation info -> exit
+            return
+
+        if globals_.ObjectDefinitions[self.tileset][self.type] is None or \
+                len(globals_.ObjectDefinitions[self.tileset][self.type].rows[0][0]) == 1:
+            # slope -> exit
             return
 
         name = self.get_tileset_base_name()
