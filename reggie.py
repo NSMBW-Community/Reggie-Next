@@ -2146,11 +2146,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         the right lists.
         """
         if width is None or height is None:
-            try:
-                tile_def = globals_.ObjectDefinitions[tileset][object_num]
-                width = tile_def.width
-                height = tile_def.height
-            except TypeError:  # Something was None
+            if globals_.PlaceObjectsAtFullSize:
+                try:
+                    tile_def = globals_.ObjectDefinitions[tileset][object_num]
+                    width = tile_def.width
+                    height = tile_def.height
+                except TypeError:  # Something was None
+                    width = height = 1
+            else:
                 width = height = 1
 
         layer_list = globals_.Area.layers[layer]
@@ -2402,11 +2405,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.HideResetSpritedata = dlg.generalTab.erbIndicator.isChecked()
         setSetting('HideResetSpritedata', globals_.HideResetSpritedata)
 
+        # Padding settings
         globals_.EnablePadding = dlg.generalTab.epbIndicator.isChecked()
         setSetting('EnablePadding', globals_.EnablePadding)
 
         globals_.PaddingLength = dlg.generalTab.psValue.value()
         setSetting('PaddingLength', globals_.PaddingLength)
+
+        # Full object size settings
+        globals_.PlaceObjectsAtFullSize = dlg.generalTab.fullObjSize.isChecked()
+        setSetting('PlaceObjectsAtFullSize', globals_.PlaceObjectsAtFullSize)
 
         # Get the Toolbar tab settings
         boxes = (
@@ -4331,6 +4339,7 @@ def main():
     globals_.HideResetSpritedata = setting('HideResetSpritedata', False)
     globals_.EnablePadding = setting('EnablePadding', False)
     globals_.PaddingLength = int(setting('PaddingLength', 0))
+    globals_.PlaceObjectsAtFullSize = setting('PlaceObjectsAtFullSize', True)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game

@@ -1504,6 +1504,9 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.psValue = QtWidgets.QSpinBox()
                 self.psValue.setRange(0, 2147483647) # maximum value allowed by qt
 
+                # Place objects at full size
+                self.fullObjSize = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 37))
+
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
                 L.addRow(globals_.trans.string('PrefsDlg', 14), self.Trans)
@@ -1513,6 +1516,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L.addWidget(self.zEntIndicator)
                 L.addWidget(self.rdhIndicator)
                 L.addWidget(self.erbIndicator)
+                L.addWidget(self.fullObjSize)
                 self.setLayout(L)
 
                 # Set the buttons
@@ -1547,6 +1551,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.epbIndicator.setChecked(globals_.EnablePadding)
                 self.psValue.setEnabled(globals_.EnablePadding)
                 self.psValue.setValue(globals_.PaddingLength)
+
+                self.fullObjSize.setChecked(globals_.PlaceObjectsAtFullSize)
 
             def ClearRecent(self):
                 """

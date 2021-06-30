@@ -636,6 +636,7 @@ class ReggieTranslation:
                 34: 'Hide Reset Spritedata button',
                 35: 'Pad level with null bytes',
                 36: 'Fixed level size (bytes)',
+                37: 'Place objects at their full size',
             },
             'ScrShtDlg': {
                 0: 'Choose a Screenshot source',
