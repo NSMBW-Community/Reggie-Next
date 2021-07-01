@@ -260,6 +260,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # now get stuff ready
         loaded = False
+        self.fileSavePath = None
 
         if len(sys.argv) > 1 and IsNSMBLevel(sys.argv[1]):
             loaded = self.LoadLevel(None, sys.argv[1], True, 1)
@@ -2962,17 +2963,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Load a level from any game into the editor
         """
         new = name is None
-        same = not new and globals_.levName == os.path.basename(name)  # Just an area change
+        same = not new and self.fileSavePath == name  # Just an area change
 
         # Get the file path, if possible
         if new:
             # Set the filepath variables
-            self.fileSavePath = False
+            self.fileSavePath = None
             self.fileTitle = 'untitled'
 
         elif not same:
-            globals_.levName = os.path.basename(name)
-
             checknames = []
             if isFullPath:
                 checknames = [name]

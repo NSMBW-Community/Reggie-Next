@@ -81,7 +81,6 @@ compressed = False
 defaultPalette = None
 defaultStyle = None
 firstLoad = True
-levName = None
 generateStringsXML = '-generatestringsxml' in sys.argv
 mainWindow = None
 settings = None
