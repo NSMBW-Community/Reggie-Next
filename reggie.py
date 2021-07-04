@@ -2660,12 +2660,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle toggling of sprite visibility
         """
         globals_.SpritesShown = checked
-
-        if globals_.Area is not None:
-            for spr in globals_.Area.sprites:
-                spr.setVisible(globals_.SpritesShown)
-
         setSetting('ShowSprites', globals_.SpritesShown)
+
+        if globals_.Area is None:
+            return
+
+        for spr in globals_.Area.sprites:
+            spr.setVisible(checked)
+
         self.scene.update()
 
     def HandleSpriteImages(self, checked):
@@ -2683,12 +2685,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for spr in globals_.Area.sprites:
             spr.UpdateRects()
 
-            if checked and not globals_.Initializing:
+            if globals_.Initializing:
+                continue
+
+            if checked:
                 spr.setPos(
                     (spr.objx + spr.ImageObj.xOffset) * 1.5,
                     (spr.objy + spr.ImageObj.yOffset) * 1.5,
                 )
-            elif not globals_.Initializing:
+            else:
                 spr.setPos(
                     spr.objx * 1.5,
                     spr.objy * 1.5,
@@ -2704,12 +2709,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle toggling of location visibility
         """
         globals_.LocationsShown = checked
-
-        if globals_.Area is not None:
-            for loc in globals_.Area.locations:
-                loc.setVisible(globals_.LocationsShown)
-
         setSetting('ShowLocations', globals_.LocationsShown)
+
+        if globals_.Area is None:
+            return
+
+        for loc in globals_.Area.locations:
+            loc.setVisible(checked)
+
         self.scene.update()
 
     def HandleCommentsVisibility(self, checked):
@@ -2717,12 +2724,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle toggling of comment visibility
         """
         globals_.CommentsShown = checked
-
-        if globals_.Area is not None:
-            for com in globals_.Area.comments:
-                com.setVisible(globals_.CommentsShown)
-
         setSetting('ShowComments', globals_.CommentsShown)
+
+        if globals_.Area is None:
+            return
+
+        for com in globals_.Area.comments:
+            com.setVisible(checked)
+
         self.scene.update()
 
     def HandlePathsVisibility(self, checked):
@@ -2730,15 +2739,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle toggling of path visibility
         """
         globals_.PathsShown = checked
-
-        if globals_.Area is not None:
-            for node in globals_.Area.paths:
-                node.setVisible(globals_.PathsShown)
-
-            for path in globals_.Area.pathdata:
-                path['peline'].setVisible(globals_.PathsShown)
-
         setSetting('ShowPaths', globals_.PathsShown)
+
+        if globals_.Area is None:
+            return
+
+        for node in globals_.Area.paths:
+            node.setVisible(checked)
+
+        for path in globals_.Area.pathdata:
+            path['peline'].setVisible(checked)
+
         self.scene.update()
 
     def HandleObjectsFreeze(self, checked):
@@ -2746,16 +2757,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle toggling of objects being frozen
         """
         globals_.ObjectsFrozen = checked
+        setSetting('FreezeObjects', globals_.ObjectsFrozen)
+
+        if globals_.Area is None:
+            return
+
         flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
         flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        unfrozen = not checked
 
-        if globals_.Area is not None:
-            for layer in globals_.Area.layers:
-                for obj in layer:
-                    obj.setFlag(flag1, not globals_.ObjectsFrozen)
-                    obj.setFlag(flag2, not globals_.ObjectsFrozen)
+        for layer in globals_.Area.layers:
+            for obj in layer:
+                obj.setFlag(flag1, unfrozen)
+                obj.setFlag(flag2, unfrozen)
 
-        setSetting('FreezeObjects', globals_.ObjectsFrozen)
         self.scene.update()
 
     def HandleSpritesFreeze(self, checked):
@@ -2763,15 +2778,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle toggling of sprites being frozen
         """
         globals_.SpritesFrozen = checked
+        setSetting('FreezeSprites', globals_.SpritesFrozen)
+
+        if globals_.Area is None:
+            return
+
         flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
         flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        unfrozen = not checked
 
-        if globals_.Area is not None:
-            for spr in globals_.Area.sprites:
-                spr.setFlag(flag1, not globals_.SpritesFrozen)
-                spr.setFlag(flag2, not globals_.SpritesFrozen)
+        for spr in globals_.Area.sprites:
+            spr.setFlag(flag1, unfrozen)
+            spr.setFlag(flag2, unfrozen)
 
-        setSetting('FreezeSprites', globals_.SpritesFrozen)
         self.scene.update()
 
     def HandleEntrancesFreeze(self, checked):
@@ -2779,15 +2798,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle toggling of entrances being frozen
         """
         globals_.EntrancesFrozen = checked
+        setSetting('FreezeEntrances', globals_.EntrancesFrozen)
+
+        if globals_.Area is None:
+            return
+
         flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
         flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        unfrozen = not checked
 
-        if globals_.Area is not None:
-            for ent in globals_.Area.entrances:
-                ent.setFlag(flag1, not globals_.EntrancesFrozen)
-                ent.setFlag(flag2, not globals_.EntrancesFrozen)
+        for ent in globals_.Area.entrances:
+            ent.setFlag(flag1, unfrozen)
+            ent.setFlag(flag2, unfrozen)
 
-        setSetting('FreezeEntrances', globals_.EntrancesFrozen)
         self.scene.update()
 
     def HandleLocationsFreeze(self, checked):
@@ -2795,15 +2818,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle toggling of locations being frozen
         """
         globals_.LocationsFrozen = checked
+        setSetting('FreezeLocations', globals_.LocationsFrozen)
+
+        if globals_.Area is None:
+            return
+
         flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
         flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        unfrozen = not checked
 
-        if globals_.Area is not None:
-            for loc in globals_.Area.locations:
-                loc.setFlag(flag1, not globals_.LocationsFrozen)
-                loc.setFlag(flag2, not globals_.LocationsFrozen)
+        for loc in globals_.Area.locations:
+            loc.setFlag(flag1, unfrozen)
+            loc.setFlag(flag2, unfrozen)
 
-        setSetting('FreezeLocations', globals_.LocationsFrozen)
         self.scene.update()
 
     def HandlePathsFreeze(self, checked):
@@ -2811,15 +2838,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle toggling of path nodes being frozen
         """
         globals_.PathsFrozen = checked
+        setSetting('FreezePaths', globals_.PathsFrozen)
+
+        if globals_.Area is None:
+            return
+
         flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
         flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        unfrozen = not checked
 
-        if globals_.Area is not None:
-            for node in globals_.Area.paths:
-                node.setFlag(flag1, not globals_.PathsFrozen)
-                node.setFlag(flag2, not globals_.PathsFrozen)
+        for node in globals_.Area.paths:
+            node.setFlag(flag1, unfrozen)
+            node.setFlag(flag2, unfrozen)
 
-        setSetting('FreezePaths', globals_.PathsFrozen)
         self.scene.update()
 
     def HandleCommentsFreeze(self, checked):
@@ -2827,15 +2858,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle toggling of comments being frozen
         """
         globals_.CommentsFrozen = checked
+        setSetting('FreezeComments', globals_.CommentsFrozen)
+
+        if globals_.Area is None:
+            return
+
         flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
         flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        unfrozen = not checked
 
-        if globals_.Area is not None:
-            for com in globals_.Area.comments:
-                com.setFlag(flag1, not globals_.CommentsFrozen)
-                com.setFlag(flag2, not globals_.CommentsFrozen)
+        for com in globals_.Area.comments:
+            com.setFlag(flag1, unfrozen)
+            com.setFlag(flag2, unfrozen)
 
-        setSetting('FreezeComments', globals_.CommentsFrozen)
         self.scene.update()
 
     def HandleSwitchGrid(self):
@@ -2927,8 +2962,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         b = b""
         for com in globals_.Area.comments:
-            tlen = len(com.text)
-            b += struct.pack(">3I", com.objx, com.objy, tlen)
+            b += struct.pack(">3I", com.objx, com.objy, len(com.text))
             b += com.text.encode("utf-8")
 
         globals_.Area.Metadata.setBinData('InLevelComments_A%d' % globals_.Area.areanum, b)
@@ -4001,6 +4035,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.Area.unkFlag2 = dlg.LoadingTab.unk2.isChecked()
         globals_.Area.unkVal1 = dlg.LoadingTab.unk3.value()
         globals_.Area.unkVal2 = dlg.LoadingTab.unk4.value()
+
+        # Tilesets
 
         for idx, fname in enumerate(dlg.TilesetsTab.values()):
 

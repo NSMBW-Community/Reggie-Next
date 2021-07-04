@@ -869,7 +869,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         for x in results: x.setHidden(False)
         self.ShownSearchResults = results
 
-        self.NoSpritesFound.setHidden((len(results) != 0))
+        self.NoSpritesFound.setHidden(bool(results))
         self.SearchResultsCategory.setExpanded(True)
 
     def HandleSprReplace(self, item, column):

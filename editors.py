@@ -323,8 +323,6 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed))
 
         # create widgets
-        # [20:52:41]  [Angel-SL] 1. (readonly) pathid 2. (readonly) nodeid 3. x 4. y 5. speed (float spinner) 6. accel (float spinner)
-        # not doing [20:52:58]  [Angel-SL] and 2 buttons - 7. 'Move Up' 8. 'Move Down'
         self.speed = QtWidgets.QDoubleSpinBox()
         self.speed.setRange(min(sys.float_info), max(sys.float_info))
         self.speed.setToolTip(globals_.trans.string('PathDataEditor', 3))
@@ -379,9 +377,12 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         Change the path being edited by the editor, update all fields
         """
         if self.path == path: return
+
         self.editingPathLabel.setText(globals_.trans.string('PathDataEditor', 8, '[id]', path.pathid))
         self.editingLabel.setText(globals_.trans.string('PathDataEditor', 9, '[id]', path.nodeid))
+
         self.path = path
+
         self.UpdateFlag = True
 
         self.speed.setValue(path.nodeinfo['speed'])
@@ -395,29 +396,38 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         """
         Handler for the speed changing
         """
-        if self.UpdateFlag: return
-        SetDirty()
+        if self.UpdateFlag or self.path.nodeinfo['speed'] == i:
+            return
+
         self.path.nodeinfo['speed'] = i
+        SetDirty()
 
     def HandleAccelChanged(self, i):
         """
         Handler for the accel changing
         """
-        if self.UpdateFlag: return
-        SetDirty()
+        if self.UpdateFlag or self.path.nodeinfo['accel'] == i:
+            return
+
         self.path.nodeinfo['accel'] = i
+        SetDirty()
 
     def HandleDelayChanged(self, i):
         """
         Handler for the delay changing
         """
-        if self.UpdateFlag: return
-        SetDirty()
+        if self.UpdateFlag or self.path.nodeinfo['delay'] == i:
+            return
+
         self.path.nodeinfo['delay'] = i
+        SetDirty()
 
     def HandleLoopsChanged(self, i):
-        if self.UpdateFlag: return
+        if self.UpdateFlag or self.path.pathinfo['loops'] == (i == QtCore.Qt.Checked):
+            return
+
         SetDirty()
+
         self.path.pathinfo['loops'] = (i == QtCore.Qt.Checked)
         self.path.pathinfo['peline'].loops = (i == QtCore.Qt.Checked)
         globals_.mainWindow.scene.update()
