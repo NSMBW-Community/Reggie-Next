@@ -4025,6 +4025,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         SetDirty()
 
+        # Sprites
+        custom_model = dlg.LoadedSpritesTab.custom_model
+        model = dlg.LoadedSpritesTab.auto_model
+        entries = custom_model.stringList() + model.stringList()
+
+        # Hacky, but it works.
+        nums = [int(desc.split(']')[0][1:]) for desc in entries]
+        globals_.Area.loaded_sprites = set(nums)
+
+        # Settings
         globals_.Area.timeLimit = dlg.LoadingTab.timer.value() - 200
         globals_.Area.startEntrance = dlg.LoadingTab.entrance.value()
         globals_.Area.toadHouseType = dlg.LoadingTab.toadHouseType.currentIndex()
@@ -4037,7 +4047,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.Area.unkVal2 = dlg.LoadingTab.unk4.value()
 
         # Tilesets
-
         for idx, fname in enumerate(dlg.TilesetsTab.values()):
 
             if fname in ('', None):

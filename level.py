@@ -254,6 +254,7 @@ class Area:
         self.paths = []
         self.comments = []
         self.layers = [[], [], []]
+        self.loaded_sprites = set()
 
         self.MetaData = None
         self._is_loaded = False
@@ -345,6 +346,7 @@ class Area:
         self.LoadTilesetNames()  # block 1
         self.LoadOptions()  # block 2
         self.LoadEntrances()  # block 7
+        self.LoadLoadedSprites()  # block 9
         self.LoadZones()  # block 10 (also blocks 3, 5, and 6)
         self.LoadLocations()  # block 11
         self.LoadCamProfiles()  # block 12
@@ -545,6 +547,18 @@ class Area:
             append(obj(*data))
 
         self.sprites = sprites
+
+    def LoadLoadedSprites(self):
+        """
+        Loads block 9, the loaded sprite resources.
+        """
+        self.loaded_sprites = set()
+        loading_data = self.blocks[8]
+        struct_ = struct.Struct('>Hxx')
+
+        for offset in range(0, len(loading_data), 4):
+            sprite_id, = struct_.unpack_from(loading_data, offset)
+            self.loaded_sprites.add(sprite_id)
 
     def LoadZones(self):
         """
@@ -899,7 +913,7 @@ class Area:
         """
         Saves the list of loaded sprites back to block 9
         """
-        ls = sorted(set(sprite.type for sprite in self.sprites))
+        ls = sorted(set(sprite.type for sprite in self.sprites) | self.loaded_sprites)
 
         offset = 0
         sprstruct = struct.Struct('>Hxx')
