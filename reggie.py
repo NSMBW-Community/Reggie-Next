@@ -263,14 +263,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.fileSavePath = None
 
         if len(sys.argv) > 1 and IsNSMBLevel(sys.argv[1]):
-            loaded = self.LoadLevel(None, sys.argv[1], True, 1)
+            loaded = self.LoadLevel(sys.argv[1], True, 1)
         else:
             lastlevel = globals_.gamedef.GetLastLevel()
             if lastlevel is not None:
-                loaded = self.LoadLevel(None, lastlevel, True, 1)
+                loaded = self.LoadLevel(lastlevel, True, 1)
 
         if not loaded:
-            self.LoadLevel(None, '01-01', False, 1)
+            self.LoadLevel('01-01', False, 1)
 
         # call each toggle-button handler to set each feature correctly upon
         # startup
@@ -2237,7 +2237,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             globals_.Level.deleteArea(newID)
             return
 
-        self.LoadLevel(None, self.fileSavePath, True, newID)
+        self.LoadLevel(self.fileSavePath, True, newID)
 
     def HandleImportArea(self):
         """
@@ -2319,7 +2319,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             globals_.Level.deleteArea(new_id)
             return
 
-        self.LoadLevel(None, self.fileSavePath, True, new_id)
+        self.LoadLevel(self.fileSavePath, True, new_id)
 
     def HandleDeleteArea(self):
         """
@@ -2341,7 +2341,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # data from the file on disk.
         path = self.fileSavePath
         self.fileSavePath = None
-        self.LoadLevel(None, path, True, 1)
+        self.LoadLevel(path, True, 1)
 
         # Actually delete the area
         globals_.Level.deleteArea(area_to_delete)
@@ -2381,7 +2381,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 SetGamePath(path)
                 break
 
-        if not auto: self.LoadLevel(None, '01-01', False, 1)
+        if not auto: self.LoadLevel('01-01', False, 1)
         return True
 
     def HandlePreferences(self):
@@ -2443,7 +2443,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Create a new level
         """
         if self.CheckDirty(): return
-        self.LoadLevel(None, None, False, 1)
+        self.LoadLevel(None, False, 1)
 
     def HandleOpenFromName(self):
         """
@@ -2454,7 +2454,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         LoadLevelNames()
         dlg = ChooseLevelNameDialog()
         if dlg.exec_() == QtWidgets.QDialog.Accepted:
-            self.LoadLevel(None, dlg.currentlevel, False, 1)
+            self.LoadLevel(dlg.currentlevel, False, 1)
 
     def HandleOpenFromFile(self):
         """
@@ -2469,7 +2469,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'                  # *
         fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), '', filetypes)[0]
         if fn == '': return
-        self.LoadLevel(None, str(fn), True, 1)
+        self.LoadLevel(str(fn), True, 1)
 
     def HandleSave(self):
         """
@@ -2577,7 +2577,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.areaComboBox.setCurrentIndex(old_idx)
             return
 
-        ok = self.LoadLevel(None, self.fileSavePath, True, idx + 1)
+        ok = self.LoadLevel(self.fileSavePath, True, idx + 1)
 
         if not ok:
             # loading the new area failed, so reset the combobox
@@ -2966,20 +2966,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         event.accept()
 
-    def LoadLevel(self, game, name, isFullPath, areaNum):
+    def LoadLevel(self, name, isFullPath, areaNum):
         """
-        Load a level from any game into the editor
+        Load a level from NSMBW into the editor.
         """
         new = name is None
-        same = not new and self.fileSavePath == name  # Just an area change
+        same = False
 
-        # Get the file path, if possible
-        if new:
-            # Set the filepath variables
-            self.fileSavePath = None
-            self.fileTitle = 'untitled'
-
-        elif not same:
+        if not new:
             checknames = []
             if isFullPath:
                 checknames = [name]
@@ -2987,13 +2981,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 for ext in globals_.FileExtentions:
                     checknames.append(os.path.join(globals_.gamedef.GetGamePath(), name + ext))
 
-            found = False
             for checkname in checknames:
                 if os.path.isfile(checkname):
-                    found = True
                     break
-
-            if not found:
+            else:
                 QtWidgets.QMessageBox.warning(self, 'Reggie!',
                                               globals_.trans.string('Err_CantFindLevel', 0, '[name]', checkname),
                                               QtWidgets.QMessageBox.Ok)
@@ -3005,15 +2996,18 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 return False
 
             name = checkname
+            same = name == self.fileSavePath  # Just an area change
+
+        # Get the file path, if possible
+        if new:
+            # Set the filepath variables
+            self.fileSavePath = None
+            self.fileTitle = 'untitled'
+
+        elif not same:
 
             # Get the data
             if not globals_.RestoredFromAutoSave:
-
-                # Check if there is a file by this name
-                if not os.path.isfile(name):
-                    QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_MissingLevel', 0),
-                                                  globals_.trans.string('Err_MissingLevel', 1, '[file]', name))
-                    return False
 
                 # Set the filepath variables
                 self.fileSavePath = name
@@ -3114,11 +3108,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         startEnt = None
         for ent in globals_.Area.entrances:
             if ent.entid == startEntID:
-                startEnt = ent
+                self.view.centerOn(ent)
                 break
-
-        if startEnt is not None:
-            self.view.centerOn(startEnt.objx * 1.5, startEnt.objy * 1.5)
         else:
             self.view.centerOn(0, 0)
 
@@ -3181,7 +3172,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
     def LoadLevel_NSMBW(self, levelData, areaNum):
         """
         Performs all level-loading tasks specific to New Super Mario Bros. Wii levels.
-        Do not call this directly - use LoadLevel(NewSuperMarioBrosWii, ...) instead!
+        Do not call this directly - use LoadLevel instead!
         """
         # Create the new level object
         globals_.Level = Level_NSMBW()

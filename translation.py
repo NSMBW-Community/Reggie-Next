@@ -302,10 +302,6 @@ class ReggieTranslation:
                 1: 'Sorry, you seem to be missing the required data files for Reggie Next to work. Please redownload your copy of the editor.',
                 2: 'Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor. These are the files you are missing: [files]',
             },
-            'Err_MissingLevel': {
-                0: 'Error',
-                1: 'Cannot find the required level file [file]. Check your Stage folder and make sure it exists.',
-            },
             'Err_MissingTileset': {
                 0: 'Error',
                 1: 'Cannot find the required tileset file [file]. Check your Stage folder and make sure it exists.',
