@@ -1398,9 +1398,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
     def CheckDirty(self):
         """
-        Checks if the level is unsaved and asks for a confirmation if so - if it returns True, Cancel was picked
+        Checks if the level is unsaved and attempts to save it if so.
+        Returns whether the level still contains unsaved changes.
         """
-        if not globals_.Dirty: return False
+        if not globals_.Dirty:
+            return False
 
         msg = QtWidgets.QMessageBox()
         msg.setText(globals_.trans.string('AutoSaveDlg', 2))
@@ -1411,14 +1413,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         ret = msg.exec_()
 
         if ret == QtWidgets.QMessageBox.Save:
-            if not self.HandleSave():
-                # save failed
-                return True
-            return False
-        elif ret == QtWidgets.QMessageBox.Discard:
-            return False
+            # If the save failed, the file is still dirty, so we need to negate
+            # the return value.
+            return not self.HandleSave()
+
         elif ret == QtWidgets.QMessageBox.Cancel:
             return True
+
+        return False
 
     def LoadEventTabFromLevel(self):
         """
@@ -2217,6 +2219,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         if self.CheckDirty():
+            # Level is still dirty
             return
 
         newID = len(globals_.Level.areas) + 1
@@ -2470,17 +2473,18 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
     def HandleSave(self):
         """
-        Save a level back to the archive
+        Save a level back to the archive. Returns whether saving was successful.
         """
         if not self.fileSavePath or self.fileSavePath.endswith('.arc.LH'):
-            self.HandleSaveAs()
-            return
+            # Delegate save to HandleSaveAs function
+            return self.HandleSaveAs()
 
         data = globals_.Level.save()
 
         # maybe pad with null bytes
         if globals_.EnablePadding:
             pad_length = globals_.PaddingLength - len(data)
+
             if pad_length < 0:
                 # err: orig data is longer than padding data
                 QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Save', 0), globals_.trans.string('Err_Save', 2, '[orig-len]', len(data), '[pad-len]', globals_.PaddingLength))
@@ -2506,12 +2510,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
     def HandleSaveAs(self, copy = False):
         """
-        Save a level back to the archive, with a new filename
+        Save a level back to the archive, with a new filename. Returns whether
+        saving was successful.
         """
         fn = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans.string('FileDlgs', 8 if copy else 3), '',
                                                    globals_.trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;' + globals_.trans.string(
                                                        'FileDlgs', 2) + ' (*)')[0]
-        if fn == '': return
+
+        if fn == '':  # No filename given - abort
+            return False
 
         if not copy:
             globals_.AutoSaveDirty = False
@@ -2525,6 +2532,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # maybe pad with null bytes
         if globals_.EnablePadding:
             pad_length = globals_.PaddingLength - len(data)
+
             if pad_length < 0:
                 # err: orig data is longer than padding data
                 QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Save', 0), globals_.trans.string('Err_Save', 2, '[orig-len]', len(data), '[pad-len]', globals_.PaddingLength))
@@ -2535,14 +2543,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         with open(fn, 'wb') as f:
             f.write(data)
 
-        if copy:
-            return
+        if not copy:
+            setSetting('AutoSaveFilePath', fn)
+            setSetting('AutoSaveFileData', 'x')
 
-        setSetting('AutoSaveFilePath', fn)
-        setSetting('AutoSaveFileData', 'x')
+            self.UpdateTitle()
+            self.RecentMenu.AddToList(self.fileSavePath)
 
-        self.UpdateTitle()
-        self.RecentMenu.AddToList(self.fileSavePath)
+        return True
 
     def HandleSaveCopyAs(self):
         """
