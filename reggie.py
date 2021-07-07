@@ -2334,19 +2334,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not self.HandleSave(): return
 
         area_to_delete = globals_.Area.areanum
-        print("Deleting area:")
-        print(area_to_delete, globals_.Level.areas.index(globals_.Area))
+        new_area_one = 1 if area_to_delete != 1 else 2
 
-        # Temporarily set self.fileSavePath to None so LoadLevel does not load
-        # data from the file on disk.
-        path = self.fileSavePath
-        self.fileSavePath = None
-        self.LoadLevel(path, True, 1)
+        # Load the new area 1 before deleting the old area to avoid glitches
+        # when the old area was area 1.
+        self.LoadLevel(self.fileSavePath, True, new_area_one)
 
         # Actually delete the area
         globals_.Level.deleteArea(area_to_delete)
+
         self.actions['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
-        self.fileSavePath = path
 
         # Update the area selection combobox
         self.areaComboBox.clear()
