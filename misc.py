@@ -14,6 +14,7 @@ from dirty import setting, setSetting
 from dialogs import DiagnosticToolDialog
 from translation import ReggieTranslation
 from libs import lh
+from misc2 import LevelViewWidget
 
 ################################################################################
 ################################################################################
@@ -1802,79 +1803,47 @@ class PreferencesDialog(QtWidgets.QDialog):
                 Returns a preview pixmap for the given theme
                 """
 
-                tilewidth = 24
-                width = int(21.875 * tilewidth)
-                height = int(11.5625 * tilewidth)
+                scene = QtWidgets.QGraphicsScene(0, 0, 32 * 16, 17 * 16, self)
+                old_theme = globals_.theme
+                globals_.theme = theme
 
-                # Set up some things
-                px = QtGui.QPixmap(width, height)
+                # Sprite [38] at (11, 4)
+                sprite = globals_.mainWindow.CreateSprite(11 * 16, 4 * 16, 38, add_to_scene=False)
+                scene.addItem(sprite)
+
+                # Sprite [53] at (1, 6)
+                sprite = globals_.mainWindow.CreateSprite(1 * 16, 6 * 16, 53, add_to_scene=False)
+                scene.addItem(sprite)
+
+                # Entrance [0] at (13, 8)
+                ent = globals_.mainWindow.CreateEntrance(13 * 16, 8 * 16, 0, add_to_scene=False)
+
+                # Location [1] at (1, 9) size (6, 2)
+                loc = globals_.mainWindow.CreateLocation(1 * 16, 9 * 16, 6 * 16, 2 * 16, 1, add_to_scene=False)
+                scene.addItem(loc)
+
+                # Zone [1] at (8.5, 3.25) size (16, 7.5)
+                zone = globals_.mainWindow.CreateZone(8.5 * 16, 3.25 * 16, 16 * 16, 7.5 * 16, id_=0, add_to_scene=False)
+                scene.addItem(zone)
+
+                # Take a screenshot
+                px = QtGui.QPixmap(32 * 16, 17 * 16)
                 px.fill(theme.color('bg'))
 
-                paint = QtGui.QPainter(px)
+                rect = QtCore.QRectF(0, 0, 32 * 16, 17 * 16)
 
-                # need to make a new instance to avoid changing global settings
-                font = QtGui.QFont(globals_.NumberFont)
-                font.setPointSize(6)
-                paint.setFont(font)
+                painter = QtGui.QPainter(px)
+                scene.render(painter, rect, rect)
 
-                # Draw the spriteboxes
-                paint.setPen(QtGui.QPen(theme.color('spritebox_lines'), 1))
-                paint.setBrush(QtGui.QBrush(theme.color('spritebox_fill')))
+                # Add grid
+                temp_widget = LevelViewWidget(scene, None)
+                temp_widget.drawForeground(painter, rect)
 
-                paint.drawRoundedRect(11 * tilewidth, 4 * tilewidth, tilewidth, tilewidth, 5, 5)
-                paint.drawText(QtCore.QPointF(11.25 * tilewidth, 4.6875 * tilewidth), '38')
+                painter.end()
 
-                paint.drawRoundedRect(tilewidth, 6 * tilewidth, tilewidth, tilewidth, 5, 5)
-                paint.drawText(QtCore.QPointF(1.25 * tilewidth, 6.6875 * tilewidth), '53')
+                # Restore theme
+                globals_.theme = old_theme
 
-                # Draw the entrance
-                paint.setPen(QtGui.QPen(theme.color('entrance_lines'), 1))
-                paint.setBrush(QtGui.QBrush(theme.color('entrance_fill')))
-
-                paint.drawRoundedRect(13 * tilewidth, 8 * tilewidth, tilewidth, tilewidth, 5, 5)
-                paint.drawText(QtCore.QPointF(13.25 * tilewidth, 8.625 * tilewidth), '0')
-
-                # Draw the location
-                paint.setPen(QtGui.QPen(theme.color('location_lines'), 1))
-                paint.setBrush(QtGui.QBrush(theme.color('location_fill')))
-
-                paint.drawRect(tilewidth, 9 * tilewidth, 6 * tilewidth, 2 * tilewidth)
-                paint.setPen(QtGui.QPen(theme.color('location_text'), 1))
-                paint.drawText(QtCore.QPointF(1.25 * tilewidth, 9.625 * tilewidth), '1')
-
-                # Draw the zone
-                paint.setPen(QtGui.QPen(theme.color('zone_lines'), 3))
-                paint.setBrush(QtGui.QBrush(toQColor(0, 0, 0, 0)))
-                paint.drawRect(8.5 * tilewidth, 3.25 * tilewidth, 16 * tilewidth, 7.5 * tilewidth)
-                paint.setPen(QtGui.QPen(theme.color('zone_corner'), 3))
-                paint.setBrush(QtGui.QBrush(theme.color('zone_corner'), 3))
-                paint.drawRect(8.4375 * tilewidth, 3.1875 * tilewidth, 0.125 * tilewidth, 0.125 * tilewidth)
-                paint.drawRect(8.4375 * tilewidth, 10.6875 * tilewidth, 0.125 * tilewidth, 0.125 * tilewidth)
-                paint.setPen(QtGui.QPen(theme.color('zone_text'), 1))
-                font = QtGui.QFont(globals_.NumberFont)
-                font.setPointSize(5 / 16 * tilewidth)
-                paint.setFont(font)
-                paint.drawText(QtCore.QPointF(8.75 * tilewidth, 3.875 * tilewidth), 'Zone 1')
-
-                # Draw the grid
-                paint.setPen(QtGui.QPen(theme.color('grid'), 1, QtCore.Qt.DotLine))
-                gridcoords = [i for i in range(0, width, tilewidth)]
-                for i in gridcoords:
-                    paint.setPen(QtGui.QPen(theme.color('grid'), 0.75, QtCore.Qt.DotLine))
-                    paint.drawLine(i, 0, i, height)
-                    paint.drawLine(0, i, width, i)
-                    if not (i / tilewidth) % (tilewidth / 4):
-                        paint.setPen(QtGui.QPen(theme.color('grid'), 1.5, QtCore.Qt.DotLine))
-                        paint.drawLine(i, 0, i, height)
-                        paint.drawLine(0, i, width, i)
-
-                    if not (i / tilewidth) % (tilewidth / 2):
-                        paint.setPen(QtGui.QPen(theme.color('grid'), 2.25, QtCore.Qt.DotLine))
-                        paint.drawLine(i, 0, i, height)
-                        paint.drawLine(0, i, width, i)
-
-                # Delete the painter and return the pixmap
-                paint.end()
                 return px
 
         return ThemesTab
