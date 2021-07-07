@@ -2252,7 +2252,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             id_ = len(globals_.Area.zones)
 
         default_bounding = [[0, 0, 0, 0, 0, 15, 0, 0]]
-        default_bgs = [[0, 0, 0, 0, 0, 10, 10, 10, 0]]
+        default_bgs = [[0, 1, 1, 0, 0, 10, 10, 10, 0]]
 
         zone = ZoneItem(x, y, width, height, 0, 0, id_, 0, 0, 0, 0, 0, 0, 0, 0, 0, default_bounding, default_bgs, default_bgs)
 
