@@ -856,16 +856,10 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                         2) + sprite.spritedata[6:]
                     addsprites.append((419, sprite.objx - 128, sprite.objy - 128))
 
-            for id, x, y in addsprites:
-                new = SpriteItem(id, x, y, '\0\0\0\0\0\0\0\0\0\0')
-                new.positionChanged = globals_.mainWindow.HandleSprPosChange
-                globals_.mainWindow.scene.addItem(new)
+            for id_, x, y in addsprites:
+                globals_.mainWindow.CreateSprite(x, y, id_, bytes(8))
 
-                globals_.mainWindow.spriteList.addSprite(new)
-                globals_.Area.sprites.append(new)
-                globals_.mainWindow.scene.update()
-
-                new.UpdateListItem()
+            globals_.mainWindow.scene.update()
 
     def TooManySprites(self, mode='f'):
         """
@@ -1039,15 +1033,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return
 
         # make a default zone
-        a = []
-        a.append([0, 0, 0, 0, 0, 0])
-        z = ZoneItem(16, 16, 448, 224, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, a, len(globals_.Area.zones))
-
-        z.UpdateTitle()
-        globals_.Area.zones.append(z)
-        globals_.mainWindow.scene.addItem(z)
-        globals_.mainWindow.scene.update()
-        globals_.mainWindow.levelOverview.update()
+        globals_.mainWindow.CreateZone(16, 16)
 
     def ZonesTooClose(self, mode='f'):
         """

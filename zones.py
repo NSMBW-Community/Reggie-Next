@@ -56,19 +56,17 @@ class ZonesDialog(QtWidgets.QDialog):
             if result == QtWidgets.QMessageBox.No:
                 return
 
-        a = [[0, 0, 0, 0, 0, 15, 0, 0]]
-        b = [[0, 0, 0, 0, 0, 10, 10, 10, 0]]
-        id = len(self.zoneTabs)
-        z = ZoneItem(256, 256, 448, 224, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, a, b, b, id)
-        ZoneTabName = globals_.trans.string('ZonesDlg', 3, '[num]', id + 1)
+        z = globals_.mainWindow.CreateZone(256, 256)
+        ZoneTabName = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
         tab = ZoneTab(z)
         self.zoneTabs.append(tab)
         self.tabWidget.addTab(tab, ZoneTabName)
-        if self.tabWidget.count() > 5:
-            for tab in range(0, self.tabWidget.count()):
-                self.tabWidget.setTabText(tab, str(tab + 1))
 
-                # self.NewButton.setEnabled(len(self.zoneTabs) < 8)
+        if self.tabWidget.count() <= 5:
+            return
+
+        for tab in range(self.tabWidget.count()):
+            self.tabWidget.setTabText(tab, str(tab + 1))
 
     def DeleteZone(self):
         curindex = self.tabWidget.currentIndex()

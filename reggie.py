@@ -2108,11 +2108,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
     # Functions that create items
     ###########################################################################
     # Maybe move these as static methods to their respective classes
-    def CreateLocation(self, x, y, width = 16, height = 16, id_ = None):
+    def CreateLocation(self, x, y, width = 16, height = 16, id_ = None, add_to_scene = False):
         """
-        Creates and returns a new location and makes sure it's added to
-        the right lists. If 'id' is None, the next id is calculated. This
-        function returns None if there is no free location id available.
+        Creates and returns a new location and makes sure it's added to the
+        right lists, unless 'add_to_scene' is set to False. If 'id' is None, the
+        smallest available id is used.
+        This function returns None if there is no free location id available, and
+        the created location otherwise.
         """
         if id_ is None:
             # This can be done more efficiently, but 255 is not that big, so it
@@ -2132,14 +2134,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
         loc.sizeChanged = self.HandleLocSizeChange
         loc.listitem = ListWidgetItem_SortsByOther(loc)
 
-        self.locationList.addItem(loc.listitem)
-        self.scene.addItem(loc)
-        globals_.Area.locations.append(loc)
+        if add_to_scene:
+            self.locationList.addItem(loc.listitem)
+            self.scene.addItem(loc)
+            globals_.Area.locations.append(loc)
 
-        loc.UpdateListItem()
+            loc.UpdateListItem()
 
-        # We've changed the level, so set the dirty flag
-        SetDirty()
+            # We've changed the level, so set the dirty flag
+            SetDirty()
 
         return loc
 
@@ -2176,20 +2179,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         return obj
 
-    def CreateEntrance(self, x, y, id_ = None):
+    def CreateEntrance(self, x, y, id_ = None, add_to_scene = True):
         """
         Creates and returns a new entrance and makes sure it's added to the
         right lists. This function returns None if this entrance could not be
         created.
         """
+        all_ids = set(ent.entid for ent in globals_.Area.entrances)
         if id_ is None:
-            all_ids = set(ent.entid for ent in globals_.Area.entrances)
             id_ = common.find_first_available_id(all_ids, 256)
 
         if id_ is None:
             print("ReggieWindow#CreateEntrance: No free entrance id")
             return None
-        elif id_ in all_ids:
+        elif id_ in all_ids and add_to_scene:
             print("ReggieWindow#CreateEntrance: Given entrance id (%d) already in use" % id_)
             return None
 
@@ -2197,18 +2200,72 @@ class ReggieWindow(QtWidgets.QMainWindow):
         ent.positionChanged = self.HandleEntPosChange
         ent.listitem = ListWidgetItem_SortsByOther(ent)
 
-        # If it's the first available ID, all the other indices should match, so
-        # we can just use the ID to insert.
-        self.entranceList.insertItem(id_, ent.listitem)
-        globals_.Area.entrances.insert(id_, ent)
+        if add_to_scene:
+            # If it's the first available ID, all the other indices should match, so
+            # we can just use the ID to insert.
+            self.entranceList.insertItem(id_, ent.listitem)
+            globals_.Area.entrances.insert(id_, ent)
 
-        self.scene.addItem(ent)
-        ent.UpdateListItem()
+            self.scene.addItem(ent)
+            ent.UpdateListItem()
 
-        SetDirty()
+            SetDirty()
 
         return ent
 
+    def CreateSprite(self, x, y, id_ = None, data = None, add_to_scene = True):
+        """
+        Creates and returns a new sprite and makes sure it's added to the right
+        lists if 'add_to_scene' is set.
+        If 'id_' is not set, the currently selected sprite id is used.
+        If 'data' is not set, the current data of the default data editor is used.
+        """
+
+        if data is None:
+            data = self.defaultDataEditor.data
+
+        if id_ is None:
+            id_ = globals_.CurrentSprite
+
+        spr = SpriteItem(id_, x, y, data)
+        spr.positionChanged = self.HandleSprPosChange
+
+        if add_to_scene:
+            self.spriteList.addSprite(spr)
+            globals_.Area.sprites.append(spr)
+
+            self.scene.addItem(spr)
+            spr.UpdateListItem()
+
+            SetDirty()
+
+        return spr
+
+    def CreateZone(self, x, y, width = 448, height = 224, id_ = None, add_to_scene = True):
+        """
+        Creates and returns a new zone and makes sure it's added to the right
+        lists if 'add_to_scene' is set.
+        If 'id_' is not set, the current number of zones in this Area is used as
+        an id.
+        """
+        if id_ is None:
+            id_ = len(globals_.Area.zones)
+
+        default_bounding = [[0, 0, 0, 0, 0, 15, 0, 0]]
+        default_bgs = [[0, 0, 0, 0, 0, 10, 10, 10, 0]]
+
+        zone = ZoneItem(x, y, width, height, 0, 0, id_, 0, 0, 0, 0, 0, 0, 0, 0, 0, default_bounding, default_bgs, default_bgs)
+
+        if add_to_scene:
+            globals_.Area.zones.append(zone)
+            self.scene.addItem(zone)
+
+            self.scene.update()
+            self.levelOverview.update()
+
+            SetDirty()
+
+        return zone
 
     def HandleAddNewArea(self):
         """

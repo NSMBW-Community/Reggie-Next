@@ -2331,18 +2331,9 @@ class SpriteItem(LevelEditorItem):
 
             return
 
-        newitem = SpriteItem(self.type, self.objx, self.objy, self.spritedata)
-
-        globals_.mainWindow.spriteList.addSprite(newitem)
-        globals_.Area.sprites.append(newitem)
-
-        globals_.mainWindow.scene.addItem(newitem)
+        globals_.mainWindow.CreateSprite(self.objx, self.objy, self.type, self.spritedata)
         globals_.mainWindow.scene.clearSelection()
-
         self.setSelected(True)
-
-        newitem.UpdateListItem()
-        SetDirty()
 
     def nearestZone(self, obj=False):
         """

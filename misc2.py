@@ -191,15 +191,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int((clicked.x() - 12) / 12) * 8
                 clickedy = int((clicked.y() - 12) / 12) * 8
 
-                data = globals_.mainWindow.defaultDataEditor.data
-                spr = SpriteItem(globals_.CurrentSprite, clickedx, clickedy, data)
-
-                mw = globals_.mainWindow
-                spr.positionChanged = mw.HandleSprPosChange
-                mw.scene.addItem(spr)
-
-                mw.spriteList.addSprite(spr)
-                globals_.Area.sprites.append(spr)
+                spr = globals_.mainWindow.CreateSprite(clickedx, clickedy, globals_.CurrentSprite)
+                spr.UpdateDynamicSizing()
 
                 self.dragstamp = False
                 self.currentobj = spr
@@ -207,11 +200,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 self.dragstarty = clickedy
 
                 self.scene().update()
-
-                spr.UpdateDynamicSizing()
-                spr.UpdateListItem()
-
-                SetDirty()
 
             elif globals_.CurrentPaintType == 5:
                 # paint an entrance

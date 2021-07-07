@@ -1802,18 +1802,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             x_ = mw.selObj.objx + 16
             y_ = mw.selObj.objy
-            data_ = mw.defaultDataEditor.data
-
-            spr = SpriteItem(id_, x_, y_, data_)
-            spr.positionChanged = mw.HandleSprPosChange
-
-            mw.scene.addItem(spr)
-            globals_.Area.sprites.append(spr)
-
-            mw.spriteList.addSprite(spr)
-
-            SetDirty()
-            spr.UpdateListItem()
+            globals_.mainWindow.CreateSprite(x_, y_, id_)
 
             # remove this dependency, because it is now fulfilled.
             # get row of button
@@ -2383,14 +2372,5 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         y = globals_.mainWindow.selObj.objy
         special_event_id = 246
 
-        sprite = SpriteItem(special_event_id, x, y, data)
-        sprite.positionChanged = globals_.mainWindow.HandleSprPosChange
-
-        globals_.mainWindow.scene.addItem(sprite)
-        globals_.mainWindow.spriteList.addSprite(sprite)
-        globals_.Area.sprites.append(sprite)
-        globals_.mainWindow.scene.update()
-
-        SetDirty()
-        sprite.UpdateListItem()
-
+        if globals_.mainWindow.CreateSprite(x, y, special_event_id, data) is not None:
+            globals_.mainWindow.scene.update()
