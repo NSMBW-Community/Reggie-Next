@@ -835,7 +835,7 @@ class ReggieTranslation:
                     'Spotlight: Large',
                     'Spotlight: Extremely Large',
                 ),
-                44: '[b]Visibility:[/b][br]Small - A small, centered spotlight affords visibility through layer 0.[br]Large - A large, centered spotlight affords visibility through layer 0[br]Full Screen - the entire screen is revealed whenever Mario walks behind layer 0',
+                44: '[b]Visibility:[/b][br]Small - A small, centered spotlight affords visibility through layer 0.[br]Large - A large, centered spotlight affords visibility through layer 0[br]Extremely Large - An extremely large, centered spotlight, which spans the whole screen at all but the largest zoom levels, affords visibility through layer 0',
                 45: (
                     'Darkness: Large Foglight',
                     'Darkness: Lightbeam',
