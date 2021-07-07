@@ -2249,12 +2249,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         an id.
         """
         if id_ is None:
-            id_ = len(globals_.Area.zones)
+            id_ = len(globals_.Area.zones) + 1
 
         default_bounding = [[0, 0, 0, 0, 0, 15, 0, 0]]
-        default_bgs = [[0, 1, 1, 0, 0, 10, 10, 10, 0]]
+        default_bga = [[0, 2, 2, 0, 0, 10, 10, 10, 0]]
+        default_bgb = [[0, 1, 1, 0, 0, 10, 10, 10, 0]]
 
-        zone = ZoneItem(x, y, width, height, 0, 0, id_, 0, 0, 0, 0, 0, 0, 0, 0, 0, default_bounding, default_bgs, default_bgs)
+        zone = ZoneItem(x, y, width, height, 0, 0, id_ - 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, default_bounding, default_bga, default_bgb)
 
         if add_to_scene:
             globals_.Area.zones.append(zone)

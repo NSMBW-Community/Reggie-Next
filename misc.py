@@ -1823,7 +1823,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 scene.addItem(loc)
 
                 # Zone [1] at (8.5, 3.25) size (16, 7.5)
-                zone = globals_.mainWindow.CreateZone(8.5 * 16, 3.25 * 16, 16 * 16, 7.5 * 16, id_=0, add_to_scene=False)
+                zone = globals_.mainWindow.CreateZone(8.5 * 16, 3.25 * 16, 16 * 16, 7.5 * 16, id_=1, add_to_scene=False)
                 scene.addItem(zone)
 
                 # Take a screenshot
