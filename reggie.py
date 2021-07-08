@@ -2108,7 +2108,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
     # Functions that create items
     ###########################################################################
     # Maybe move these as static methods to their respective classes
-    def CreateLocation(self, x, y, width = 16, height = 16, id_ = None, add_to_scene = False):
+    def CreateLocation(self, x, y, width = 16, height = 16, id_ = None, add_to_scene = True):
         """
         Creates and returns a new location and makes sure it's added to the
         right lists, unless 'add_to_scene' is set to False. If 'id' is None, the
