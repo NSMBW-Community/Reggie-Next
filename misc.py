@@ -1146,7 +1146,7 @@ class RecentFilesMenu(QtWidgets.QMenu):
         """
         if globals_.mainWindow.CheckDirty(): return
 
-        if not globals_.mainWindow.LoadLevel(None, self.FileList[number], True, 1): self.RemoveFromList(number)
+        if not globals_.mainWindow.LoadLevel(self.FileList[number], True, 1): self.RemoveFromList(number)
 
 
 class DiagnosticWidget(QtWidgets.QWidget):
