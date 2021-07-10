@@ -2614,10 +2614,10 @@
 
   <sprite id="166" name="Snake Block (Ice)">
   <dependency notes="The sprite snaps to the Path Node location. From Node-0 to Node-1, it must be a straight horizontal line, and it must be at least as long as the Snake Block itself. Straight lines and exact 45° angles are recommended, as after each Node, the Snake Block will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
-    <checkbox bit="28" title="Icy (Must Be Enabled)" comment="This causes the Snake Block to be icy instead of green. The green version is incomplete and crashes the game, so you MUST use an icy one."/> <!-- All other options are hidden unless this is enabled -->
-    <value nybble="11" title="Path ID" requiredbit="28" idtype="Path"/>
-    <value nybble="8-9" title="Starting Node" comment="This determines the Node of the Path that the Snake Block will start moving from." requiredbit="28"/>
-    <list nybble="12" title="Length" requiredbit="28">
+    <checkbox bit="28" title="Useless" comment="Enabling this is useless."/>
+    <value nybble="11" title="Path ID" idtype="Path"/>
+    <value nybble="8-9" title="Starting Node" comment="This determines the Node of the Path that the Snake Block will start moving from."/>
+    <list nybble="12" title="Length">
       <entry value="0">3 Blocks</entry>
       <entry value="1">4 Blocks</entry>
       <entry value="2">5 Blocks</entry>
@@ -2635,20 +2635,20 @@
       <entry value="14">17 Blocks</entry>
       <entry value="15">18 Blocks</entry>
     </list>
-    <list bit="39-40" title="Speed" requiredbit="28">
+    <list bit="39-40" title="Speed">
       <entry value="0">Very Slow (0.5)</entry>
       <entry value="1">Slow (1.0)</entry>
       <entry value="2">Fast (1.4)</entry>
       <entry value="3">Slow (1.0)</entry>
     </list>
-    <list nybble="5" title="End Animation" comment="This determines what the Snake Block will do when it reaches the final Node of the Path. Values higher than 3 cause a crash." requiredbit="28">
+    <list nybble="5" title="End Animation" comment="This determines what the Snake Block will do when it reaches the final Node of the Path. Values higher than 3 cause a crash.">
       <entry value="0">Stop</entry>
       <entry value="1">Fall Straight Through Last Node</entry>
       <entry value="2">Stop, Fall Piece by Piece</entry>
       <entry value="3">Stop, Fall All at Once</entry>
     </list>
   </sprite> <!-- #166: Snake Block (Ice) -->
-
+  
   <sprite id="167" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #167: Unused -->
   <sprite id="168" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #168: Unused -->
 
