@@ -2614,7 +2614,6 @@
 
   <sprite id="166" name="Snake Block (Ice)">
   <dependency notes="The sprite snaps to the Path Node location. From Node-0 to Node-1, it must be a straight horizontal line, and it must be at least as long as the Snake Block itself. Straight lines and exact 45° angles are recommended, as after each Node, the Snake Block will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
-    <checkbox bit="28" title="Useless" comment="Enabling this is useless."/>
     <value nybble="11" title="Path ID" idtype="Path"/>
     <value nybble="8-9" title="Starting Node" comment="This determines the Node of the Path that the Snake Block will start moving from."/>
     <list nybble="12" title="Length">
