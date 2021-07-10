@@ -1565,15 +1565,18 @@ class SpriteImage_FallingPlatform(SpriteImage_WoodenPlatform):  # 50
 
         # get width
         raw_width = self.parent.spritedata[5] & 0xF
+        slow = (self.parent.spritedata[5] >> 4) & 1
 
+        self.width = (raw_width + 1) << 4
         if raw_width == 0:
             # override this for the "glitchy" effect caused by length=0
             self.width = 24
             self.xOffset = -4
         else:
-            # set the width and x offset properly
-            self.width = (raw_width + 1) << 4
-            self.xOffset = -16 * (raw_width >> 1)
+            if slow:
+                self.xOffset = 0
+            else:
+                self.xOffset = -16 * (raw_width >> 1)
 
         # set color
         color = (self.parent.spritedata[3] >> 4) & 3
