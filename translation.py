@@ -244,7 +244,7 @@ class ReggieTranslation:
                 12: 'Connected Pipe',
                 13: '[b]Connected Pipe:[/b][br]This box allows you to enable an unused/broken feature in the game. It allows the pipe to function like the pipes in SMB3 where Mario simply goes through the pipe. However, it doesn\'t work correctly.',
                 14: 'Connected Pipe Reverse',
-                15: '[b]Connected Pipe:[/b][br]This box allows you to enable an unused/broken feature in the game. It allows the pipe to function like the pipes in SMB3 where Mario simply goes through the pipe. However, it doesn\'t work correctly.',
+                15: '[b]Connected Pipe Reverse:[/b][br]This box tells the connected pipe whether or not it should follow its path in reverse (backwards).',
                 16: 'Path ID:',
                 17: '[b]Path ID:[/b][br]Use this option to set the path number that the connected pipe will follow.',
                 18: 'Links to Forward Pipe',
