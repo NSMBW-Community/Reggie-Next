@@ -985,7 +985,6 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
         self.parent.setZValue(24999)
-
         self.aux.append(SLib.AuxiliaryImage(parent, 100, 252))
 
     @staticmethod
@@ -994,7 +993,6 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
         SLib.loadIfNotInImageCache('PokeyMiddle', 'pokey_middle.png')
         SLib.loadIfNotInImageCache('PokeyBottom', 'pokey_bottom.png')
 
-        if 'PokeyjungleTop' in ImageCache: return
         for style in ("pumpkin", "jungle", "lava"):
             for i in range(8):
                 ImageCache['Pokey%sTop' % style] = SLib.GetImg('pokey_%s_top.png' % style)
