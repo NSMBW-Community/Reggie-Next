@@ -1512,7 +1512,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         # Create a ReggieClip
         selitems = self.scene.selectedItems()
-        if len(selitems) == 0: return
+        if not selitems: return
         clipboard_o = []
         clipboard_s = []
         ii = isinstance
@@ -1998,7 +1998,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Shifts the selected object(s)
         """
         items = self.scene.selectedItems()
-        if len(items) == 0: return
+        if not items: return
 
         dlg = ObjectShiftDialog()
         if dlg.exec_() != QtWidgets.QDialog.Accepted:
@@ -2081,7 +2081,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Merges selected sprite locations
         """
         items = self.scene.selectedItems()
-        if len(items) == 0: return
+        if not items: return
 
         new_rect = QtCore.QRectF()
 
@@ -2163,7 +2163,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 width = height = 1
 
         layer_list = globals_.Area.layers[layer]
-        if len(layer_list) == 0:
+        if not layer_list:
             z = (2 - layer) * 8192
         else:
             z = layer_list[-1].zValue() + 1
@@ -3428,7 +3428,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         type_path = PathItem
         type_com = CommentItem
 
-        if len(selitems) == 0:
+        if not selitems:
             # nothing is selected
             self.actions['cut'].setEnabled(False)
             self.actions['copy'].setEnabled(False)
@@ -3659,13 +3659,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if isinstance(x, type_obj) and x.layer != new_layer_id:
                 change.append(x)
 
-        if len(change) == 0:
+        if not change:
             return
 
         change.sort(key=lambda x: x.zValue())
         newLayer = area.layers[new_layer_id]
 
-        if len(newLayer) == 0:
+        if not newLayer:
             z_value = (2 - new_layer_id) * 8192
         else:
             z_value = newLayer[-1].zValue() + 1

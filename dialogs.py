@@ -754,15 +754,18 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 elif globals_.ObjectDefinitions[obj.tileset][obj.type] is None:
                     deletions.append(obj)
 
+        has_problem = bool(deletions)
         if mode == 'c':
-            return len(deletions) != 0
-        elif len(deletions) != 0:
-            for obj in deletions:
-                obj.delete()
-                obj.setSelected(False)
-                globals_.mainWindow.scene.removeItem(obj)
+            return has_problem
 
-            globals_.mainWindow.levelOverview.update()
+        if not has_problem: return
+
+        for obj in deletions:
+            obj.delete()
+            obj.setSelected(False)
+            globals_.mainWindow.scene.removeItem(obj)
+
+        globals_.mainWindow.levelOverview.update()
 
     def CrashSprites(self, mode='f'):
         """
@@ -776,7 +779,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             if sprite.type in problems: founds.append(sprite)
 
         if mode == 'c':
-            return len(founds) != 0
+            return bool(founds)
         else:
             for sprite in founds:
                 sprite.delete()
@@ -937,7 +940,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         Checks if the main entrance is too close to the left zone edge
         """
         offset = 24 * 8  # 8 blocks away from the left zone edge
-        if len(globals_.Area.zones) == 0: return False
+        if not globals_.Area.zones: return False
 
         # if the ent isn't even in the zone, return
         if self.EntranceOutsideOfZone('c'): return False
@@ -964,7 +967,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         Checks if any entrances are not inside of a zone
         """
         left_offset = 24 * 8  # 8 blocks away from the left zone edge
-        if len(globals_.Area.zones) == 0: return False
+        if not globals_.Area.zones: return False
 
         for ent in globals_.Area.entrances:
             x = ent.objx
@@ -1025,7 +1028,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks if there are no zones in this area
         """
-        problem = len(globals_.Area.zones) == 0
+        problem = not globals_.Area.zones
         if mode == 'c':
             return problem
 
@@ -1215,7 +1218,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 fixes.append(z)
 
         if mode == 'c':
-            return False if len(fixes) == 0 else True
+            return bool(fixes)
 
         for z in fixes:
             if z.width < MinimumSize[0]: z.width = MinimumSize[0]

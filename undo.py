@@ -32,12 +32,12 @@ class UndoStack:
         """
         Undoes the last action
         """
-        if len(self.pastActions) == 0: return
+        if not self.pastActions: return
 
         act = self.pastActions.pop()
         while act.isNull():
             # Keep popping null actions off
-            if len(self.pastActions) == 0:
+            if not self.pastActions:
                 return
             act = self.pastActions.pop()
 
@@ -50,7 +50,7 @@ class UndoStack:
         """
         Redoes the last undone action
         """
-        if len(self.futureActions) == 0: return
+        if not self.futureActions: return
 
         act = self.futureActions.pop()
         while act.isNull():

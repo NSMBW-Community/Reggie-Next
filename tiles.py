@@ -605,7 +605,7 @@ def RenderObject(tileset, objnum, width, height, fullslope=False):
     except:
         obj = None
 
-    if obj is None or len(obj.rows) == 0:
+    if obj is None or not obj.rows:
         return dest
 
     # diagonal objects are rendered differently
@@ -620,7 +620,8 @@ def RenderObject(tileset, objnum, width, height, fullslope=False):
     afterRepeat = []
 
     for row in obj.rows:
-        if len(row) == 0: continue
+        if not row: continue
+
         if (row[0][0] & 2) != 0:
             repeatFound = True
             inRepeat.append(row)
@@ -1113,7 +1114,7 @@ def CheckTilesetAnimated(tileset):
         animFiles.append(f)
 
     # Quit if there's no animation
-    if len(animFiles) == 0:
+    if not animFiles:
         return False, None
     else:
         # This makes so many assumptions

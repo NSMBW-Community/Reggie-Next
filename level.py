@@ -783,7 +783,7 @@ class Area:
         Saves an object layer to a string
         """
         layer = self.layers[idx]
-        if len(layer) == 0:
+        if not layer:
             # Don't create a layer file for an empty layer.
             return None
 
@@ -995,7 +995,7 @@ class Area:
         Also appends data to block 3, the bounding data.
         """
 
-        if len(self.camprofiles) == 0:
+        if not self.camprofiles:
             self.blocks[11] = b''
             return
 

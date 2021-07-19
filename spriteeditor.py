@@ -2094,7 +2094,7 @@ class ExternalSpriteOptionRow(QtWidgets.QWidget):
 
         self.secondary = []
 
-        if len(secondary) == 0:
+        if not secondary:
             return
 
         placedText = False
@@ -2188,7 +2188,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         header = QtWidgets.QLabel("Slots")
         footer = QtWidgets.QLabel(text2)
 
-        if len(self.present) == 0:
+        if not self.present:
             label = "Create"
         elif len(self.present) == 1:
             label = "Edit"
@@ -2332,7 +2332,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             elif not (slot == -1 or type == 2):
                 thing.append(sprite)
 
-        if len(thing) == 0:
+        if not thing:
             self.placeSpecialResizeEvent()
         elif len(thing) == 1:
             self.editSpecialResizeEvent(thing[0][1])
