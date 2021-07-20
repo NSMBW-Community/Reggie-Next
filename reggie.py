@@ -1488,15 +1488,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Save all the events to the metadata
         data = b""
-        for id in range(64):
-            idtext = str(self.eventChooserItems[id].text(1))
-            if idtext == '': continue
+        for i in range(64):
+            event_note = str(self.eventChooserItems[i].text(1))
+            if not event_note: continue
 
-            # Add the ID and string length
-            data += struct.pack(">2I", id, len(idtext))
+            encoded = event_note.encode()
 
-            # Add the string
-            data += idtext.encode("ascii")
+            # Add the event id, note length and note to the data.
+            data += struct.pack(">2I", i, len(encoded))
+            data += encoded
 
         globals_.Area.Metadata.setBinData('EventNotes_A%d' % globals_.Area.areanum, data)
         SetDirty()
