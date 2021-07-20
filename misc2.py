@@ -529,10 +529,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                             obj.updatePos()
                             obj.pathinfo['peline'].nodePosChanged()
 
-                        elif isinstance(obj, type_com):
-                            obj.UpdateTooltip()
-                            obj.handlePosChange(oldx, oldy)
-
                         obj.UpdateListItem()
                         globals_.mainWindow.levelOverview.update()
 
