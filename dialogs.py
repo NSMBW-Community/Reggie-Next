@@ -820,7 +820,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                     except Exception:
                         pass  # probably already removed it
         checkfor = new
-        if len(checkfor) > 0: problem = True
+        if checkfor: problem = True
 
         if mode == 'c':
             return problem

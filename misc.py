@@ -1752,19 +1752,24 @@ class PreferencesDialog(QtWidgets.QDialog):
 
             @property
             def getAvailableThemes(self):
-                """Searches the Themes folder and returns a list of theme filepaths.
-                Automatically adds 'Classic' to the list."""
-                themes = os.listdir('reggiedata/themes')
-                themeList = [('Classic', ReggieTheme())]
-                for themeName in themes:
-                    if os.path.isdir('reggiedata/themes/' + themeName):
-                        try:
-                            theme = ReggieTheme(themeName)
-                            themeList.append((themeName, theme))
-                        except Exception:
-                            pass
+                """
+                Searches the Themes folder and returns a list of theme filepaths.
+                Automatically adds 'Classic' to the list.
+                """
+                theme_path = os.path.join('reggiedata', 'themes')
+                theme_list = [('Classic', ReggieTheme())]
+                for theme_name in os.listdir(theme_path):
+                    if not os.path.isdir(os.path.join(theme_path, theme_name)):
+                        continue
 
-                return tuple(themeList)
+                    try:
+                        theme = ReggieTheme(theme_name)
+                    except Exception:
+                        continue
+
+                    theme_list.append((theme_name, theme))
+
+                return tuple(theme_list)
 
             def UpdatePreview(self):
                 """

@@ -1710,7 +1710,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         selitems = self.scene.selectedItems()
         self.scene.clearSelection()
 
-        if len(selitems) > 0:
+        if selitems:
             clipboard_o = []
             clipboard_s = []
             ii = isinstance
@@ -1729,7 +1729,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     self.scene.removeItem(obj)
                     clipboard_s.append(obj)
 
-            if len(clipboard_o) > 0 or len(clipboard_s) > 0:
+            if clipboard_o or clipboard_s:
                 SetDirty()
                 self.actions['cut'].setEnabled(False)
                 self.actions['paste'].setEnabled(True)
@@ -1745,7 +1745,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Copies the selected items
         """
         selitems = self.scene.selectedItems()
-        if len(selitems) > 0:
+        if selitems:
             clipboard_o = []
             clipboard_s = []
             ii = isinstance
@@ -1758,7 +1758,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 elif ii(obj, type_spr):
                     clipboard_s.append(obj)
 
-            if len(clipboard_o) > 0 or len(clipboard_s) > 0:
+            if clipboard_o or clipboard_s:
                 self.actions['paste'].setEnabled(True)
                 self.clipboard = self.encodeObjects(clipboard_o, clipboard_s)
                 self.systemClipboard.setText(self.clipboard)
@@ -1805,7 +1805,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         y1 = 512
         y2 = 0
 
-        # global globals_.OverrideSnapping
         globals_.OverrideSnapping = True
 
         # Remove leading and trailing whitespace
@@ -1851,40 +1850,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 added.append(obj)
                 self.scene.addItem(obj)
 
-        layer0, layer1, layer2 = layers
+        for objects, area_layer, z_val in zip(layers, globals_.Area.layers, (16384, 8192, 0)):
 
-        if len(layer0) > 0:
-            AreaLayer = globals_.Area.layers[0]
-            if len(AreaLayer) > 0:
-                z = AreaLayer[-1].zValue() + 1
-            else:
-                z = 16384
-            for obj in layer0:
-                AreaLayer.append(obj)
-                obj.setZValue(z)
-                z += 1
+            if not objects:
+                continue
 
-        if len(layer1) > 0:
-            AreaLayer = globals_.Area.layers[1]
-            if len(AreaLayer) > 0:
-                z = AreaLayer[-1].zValue() + 1
-            else:
-                z = 8192
-            for obj in layer1:
-                AreaLayer.append(obj)
-                obj.setZValue(z)
-                z += 1
+            if area_layer:
+                z_val = int(area_layer[-1].zValue()) + 1
 
-        if len(layer2) > 0:
-            AreaLayer = globals_.Area.layers[2]
-            if len(AreaLayer) > 0:
-                z = AreaLayer[-1].zValue() + 1
-            else:
-                z = 0
-            for obj in layer2:
-                AreaLayer.append(obj)
+            for z, obj in enumerate(objects, z_val):
+                area_layer.append(obj)
                 obj.setZValue(z)
-                z += 1
 
         # now center everything
         zoomscaler = (self.ZoomLevel / 100.0)

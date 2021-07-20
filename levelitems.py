@@ -2853,7 +2853,6 @@ class PathEditorLineItem(LevelEditorItem):
         Creates a path line with specific data
         """
 
-        # global mainWindow
         LevelEditorItem.__init__(self)
 
         self.font = globals_.NumberFont
@@ -2898,6 +2897,7 @@ class PathEditorLineItem(LevelEditorItem):
         globals_.DirtyOverride += 1
         self.setPos(self.objx * 1.5, self.objy * 1.5)
         globals_.DirtyOverride -= 1
+
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(-4, -4, mywidth, myheight)
 
@@ -2913,16 +2913,14 @@ class PathEditorLineItem(LevelEditorItem):
         painter.setPen(QtGui.QPen(color, 3, join=QtCore.Qt.RoundJoin, cap=QtCore.Qt.RoundCap))
 
         linepath = QtGui.QPainterPath()
-        curx, cury = self.x(), self.y()
+        pos = self.pos()
 
         points = []
 
         for node in self.nodelist:
-            points.append(QtCore.QPointF(
-                node['x'] * 1.5 - curx, node['y'] * 1.5 - cury
-            ))
+            points.append(QtCore.QPointF(node['x'] * 1.5, node['y'] * 1.5) - pos)
 
-        if self.loops and len(points) > 0:
+        if self.loops and points:
             points.append(points[0])
 
         linepath.addPolygon(QtGui.QPolygonF(points))
@@ -3020,8 +3018,12 @@ class CommentItem(LevelEditorItem):
         Returns the text of this comment in a format that can be written on one line
         """
         t = str(self.text)
-        if t.replace(' ', '').replace('\n', '') == '': t = globals_.trans.string('Comments', 3)
-        while '\n\n' in t: t = t.replace('\n\n', '\n')
+        if not t.strip():
+            t = globals_.trans.string('Comments', 3)
+
+        while '\n\n' in t:
+            t = t.replace('\n\n', '\n')
+
         t = t.replace('\n', globals_.trans.string('Comments', 2))
 
         f = None
