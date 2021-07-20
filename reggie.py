@@ -1435,17 +1435,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if data is not None:
             # Iterate through the data
             idx = 0
+
             while idx < len(data):
-                eventId = data[idx]
-                idx += 1
-                rawStrLen = data[idx:idx + 4]
-                idx += 4
-                strLen = (rawStrLen[0] << 24) | (rawStrLen[1] << 16) | (rawStrLen[2] << 8) | rawStrLen[3]
-                rawStr = data[idx:idx + strLen]
-                idx += strLen
-                newStr = ''
-                for char in rawStr: newStr += chr(char)
-                eventTexts[eventId] = newStr
+                event_id, str_len = struct.unpack_from(">2I", data, idx)
+                eventTexts[event_id] = data[idx + 8:idx + 8 + str_len].decode()
+
+                idx += 8 + str_len
 
         for id in range(64):
             item = self.eventChooserItems[id]
