@@ -80,7 +80,7 @@
 
   <sprite id="12" name="Toad House Minigame - Silver Star" notes="A collection challenge added in NewerSMBW. The player must collect all of the stars within the time limit in order to succeed and trigger an event.">
     <value nybble="5-6" title="Target Event ID" comment="This determines which Event will be activated when all Collectible Stars in the Zone are collected." idtype="Target Event"/>
-    <list bit="47-48" title="Minimum Number of Players" comment="This determines the minimum number of players required to be present for this start to spawn.">
+    <list bit="47-48" title="Minimum Number of Players" comment="This determines the minimum number of players required to be present for this star to spawn.">
       <entry value="0">1 Player</entry>
       <entry value="1">2 Players</entry>
       <entry value="2">3 Players</entry>
@@ -295,7 +295,7 @@
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Paragoomba placing it further behind other sprites."/>
   </sprite> <!-- #21: Paragoomba -->
 
-  <sprite id="22" name="Pumpkin Goomba"  notes="A Goomba inside a pumpkin.">
+  <sprite id="22" name="Pumpkin Goomba"  notes="A Goomba inside a pumpkin. The pumpkin adds an extra hit point to the Goomba.">
     <dualbox bit="48" title1="Goomba" title2="Paragoomba" comment="This determines if the Pumpkin Goomba behaves like a normal Goomba or like a Paragoomba."/>
   </sprite> <!-- #22: Pumpkin Goomba -->
 
