@@ -2552,15 +2552,15 @@ class EntranceItem(LevelEditorItem):
         self.setFlag(self.ItemIsMovable, not globals_.EntrancesFrozen)
         self.setFlag(self.ItemIsSelectable, not globals_.EntrancesFrozen)
 
+        self.aux = self.AuxEntranceItem(self)
+
         globals_.DirtyOverride += 1
         self.setPos(int(x * 1.5), int(y * 1.5))
         globals_.DirtyOverride -= 1
 
-        self.aux = self.AuxEntranceItem(self)
-
         self.setZValue(27000)
         self.UpdateTooltip()
-        self.TypeChange()
+        self.UpdateRects()
 
     def UpdateTooltip(self):
         """
@@ -2600,11 +2600,10 @@ class EntranceItem(LevelEditorItem):
     def __lt__(self, other):
         return self.entid < other.entid
 
-    def TypeChange(self):
+    def UpdateRects(self):
         """
-        Handles the entrance's type changing
+        Updates the rectangles associated with this entrance.
         """
-
         # Determine the size and position of the entrance
         x, y, w, h = 0, 0, 1, 1
         if self.enttype in (0, 1):
@@ -2618,7 +2617,6 @@ class EntranceItem(LevelEditorItem):
             h = 2
 
         # Now make the rects
-        old_rect = self.getFullRect()
         self.RoundedRect = QtCore.QRectF((x * 24) + 1, (y * 24) + 1, (w * 24) - 2, (h * 24) - 2)
         self.BoundingRect = QtCore.QRectF(x * 24, y * 24, w * 24, h * 24)
         self.LevelRect = QtCore.QRectF(x + (self.objx / 16), y + (self.objy / 16), w, h)
@@ -2626,8 +2624,18 @@ class EntranceItem(LevelEditorItem):
         # Update the aux thing
         self.aux.TypeChange()
 
-        # Update the scene
+    def TypeChange(self):
+        """
+        Handles the entrance's type changing. This updates the associated
+        rectangles and redraws the scene and level overview.
+        """
+        old_rect = self.getFullRect()
+
+        self.UpdateRects()
+
+        # Update the scene and level overview
         globals_.mainWindow.scene.update(old_rect.united(self.getFullRect()))
+        globals_.mainWindow.levelOverview.update()
 
     def paint(self, painter, option, widget):
         """
@@ -2690,15 +2698,10 @@ class EntranceItem(LevelEditorItem):
         Handle movement
         """
         if change == QtWidgets.QGraphicsItem.ItemPositionChange:
-            if self.scene() is None: return value
-
-            updRect = QtCore.QRectF(
-                self.x() + self.aux.x(),
-                self.y() + self.aux.y(),
-                self.aux.BoundingRect.width(),
-                self.aux.BoundingRect.height(),
-            )
-            self.scene().update(updRect)
+            # Make sure the bounding rect and level rects are updated, as well
+            # as the scene and level overview. The TypeChange function already
+            # takes care of this, so we can just call that function.
+            self.TypeChange()
 
         return super().itemChange(change, value)
 
@@ -2708,18 +2711,9 @@ class EntranceItem(LevelEditorItem):
         auxiliary objects.
         """
 
-        br = self.BoundingRect.translated(
-            self.x(),
-            self.y(),
-        )
-        br = br.united(
-            self.aux.BoundingRect.translated(
-                self.aux.x() + self.x(),
-                self.aux.y() + self.y(),
-            )
-        )
+        br = self.BoundingRect | self.aux.BoundingRect.translated(self.aux.pos())
 
-        return br
+        return br.translated(self.pos())
 
 
 class PathItem(LevelEditorItem):
