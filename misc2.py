@@ -564,6 +564,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.objx = newx
                         obj.objy = newy
                         obj.setPos(newx * 24, newy * 24)
+                        obj.UpdateRects()
 
                 elif isinstance(obj, type_spr):
                     # move the created sprite
