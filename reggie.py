@@ -3756,6 +3756,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
             obj.UpdateListItem()
             SetDirty()
 
+            # The sprite has changed position, so its LevelRect changed, so the
+            # level overview needs to be redrawn.
+            self.levelOverview.update()
+
     def SpriteDataUpdated(self, data):
         """
         Handle the current sprite's data being updated
