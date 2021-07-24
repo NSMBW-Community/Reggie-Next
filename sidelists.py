@@ -894,25 +894,22 @@ class SpriteList(QtWidgets.QWidget):
     # These are straight from the spritedata xml
     # Don't translate these
     idtypes = (
-        "Star Set", "Path Movement", "Rotation", "Two Way Line",
-        "Water Ball", "Mushroom", "Group", "Bolt", "Target Event",
-        "Triggering Event", "Collection", "Location", "Physics",
-        "Message", "Path", "Path Movement", "Red Coin", "Hill",
-        "Stretch", "Ray", "Coaster", "Bubble Cannon", "Burner",
-        "Wiggling", "Panel", "Colony"
+        "Star Set", "Rotation", "Two Way Line", "Water Ball", "Mushroom",
+        "Group", "Bolt", "Target Event", "Triggering Event", "Collection",
+        "Location", "Physics", "Message", "Path", "Path Movement", "Red Coin",
+        "Hill", "Stretch", "Ray", "Coaster", "Bubble Cannon", "Burner",
+        "Wiggling", "Panel", "Colony",
     )
 
     # This should be translated
     idtype_names = (
         "Any",
-        "Star Set ID", "Path Movement ID", "Rotation ID",
-        "Two Way Line ID", "Water Ball ID", "Mushroom ID",
-        "Group ID", "Bolt ID", "Target Event ID", "Triggering " +
-        "Event ID", "Collection ID", "Location ID", "Physics ID",
-        "Message ID", "Path ID", "Path Movement ID", "Red Coin ID",
-        "Hill ID", "Stretch ID", "Ray ID", "Coaster ID",
-        "Bubble Cannon ID", "Burner ID", "Wiggling ID",
-        "Panel ID", "Colony ID"
+        "Star Set ID", "Rotation ID", "Two Way Line ID", "Water Ball ID",
+        "Mushroom ID", "Group ID", "Bolt ID", "Target Event ID",
+        "Triggering Event ID", "Collection ID", "Location ID", "Physics ID",
+        "Message ID", "Path ID", "Path Movement ID", "Red Coin ID", "Hill ID",
+        "Stretch ID", "Ray ID", "Coaster ID", "Bubble Cannon ID", "Burner ID",
+        "Wiggling ID", "Panel ID", "Colony ID",
     )
 
     def __init__(self):
