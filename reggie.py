@@ -3764,6 +3764,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             SetDirty()
 
             obj.UpdateDynamicSizing()
+            self.spriteList.updateSprite(obj)
 
     def HandleEntPosChange(self, obj, oldx, oldy, x, y):
         """
