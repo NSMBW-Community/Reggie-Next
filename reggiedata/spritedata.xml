@@ -2369,7 +2369,9 @@
       <entry value="2">Spins While Active</entry>
       <!--entry value="3">Spins While Active</entry-->
     </list>
-    <value bit="9-16" title="Triggering Event ID" comment="Constant Spinning: When activated, the items will decelerate to a stop and accelerate in the opposite direction.&lt;br&gt;When deactivated, it will reverse back to its set movement in a similar fashion.&lt;br&gt;&lt;br&gt;Stops and Returns: When activated, the items will rotate the Rotation Distance and stop. When deactivated, the items will immediately start to rotate back to their starting positions, even if the initial movement is not completed.&lt;br&gt;&lt;br&gt;Spins While Active:&lt;br&gt;When activated, the items will rotate continuously. When deactivated, the items will stop at the next multiple of its set Rotation Distance." idtype="Triggering Event"/>
+    <value bit="9-16" title="Triggering Event ID" comment="When the Triggering Event is activated, the controller will rotate all associated objects according to the mode. Deactivation effects will also differ depending on the mode. See the ! Comment." comment2="Constant Spinning: When activated, the items will decelerate to a stop and accelerate in the opposite direction. 
+	When deactivated, it will reverse back to its set movement in a similar fashion. &lt;br&gt; &lt;br&gt;Stops and Returns: When activated, the items will rotate the Rotation Distance and stop. When deactivated, the items will immediately start to rotate back to their starting positions, even if the initial movement is not completed. &lt;br&gt; &lt;br&gt;Spins While Active:
+	 When activated, the items will rotate continuously. When deactivated, the items will stop at the next multiple of its set Rotation Distance." idtype="Triggering Event"/>
     <list nybble="6" title="Event Triggered - Rotation Distance" comment="This determines the distance the rotation controller will spin the items before stopping, when set to the [Stops and Returns] or [Spins While Active] Rotation Modes." requiredbit="32" requiredval="0">
       <entry value="0">0.0°</entry>
       <entry value="1">22.5°</entry>
