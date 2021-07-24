@@ -1442,20 +1442,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 idx += 8 + str_len
 
-        for id in range(64):
-            item = self.eventChooserItems[id]
-            value = 1 << id
-            item.setCheckState(0, checked if (defEvents & value) != 0 else unchecked)
-            if id in eventTexts:
-                item.setText(1, eventTexts[id])
-            else:
-                item.setText(1, '')
+        for i, item in enumerate(self.eventChooserItems):
+            item.setCheckState(0, checked if (defEvents & (1 << i)) != 0 else unchecked)
+            item.setText(1, eventTexts.get(i, ""))
             item.setSelected(False)
 
         self.eventChooserItems[0].setSelected(True)
-        txt0 = ''
-        if 0 in eventTexts: txt0 = eventTexts[0]
-        self.eventNotesEditor.setText(txt0)
+        self.eventNotesEditor.setText(eventTexts.get(0, ""))
 
     def handleEventTabItemClick(self, item):
         """
