@@ -1124,6 +1124,9 @@ class SpriteList(QtWidgets.QWidget):
         for i in range(1, self.table.columnCount()):
             id_ = ids.get(self.idtypes[i - 1], "")
 
+            if len(id_) == 1:
+                id_ = id_[0]
+
             item = self.table.item(row, i)
             item.setText(str(id_))
 
