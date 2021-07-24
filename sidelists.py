@@ -1104,13 +1104,6 @@ class SpriteList(QtWidgets.QWidget):
                 id_ = id_[0]
 
             id_item = QtWidgets.QTableWidgetItem(str(id_))
-            # The following line throws:
-            #   DeprecationWarning: an integer is required
-            #   (got type ItemFlags)
-            # Adding an explicit call to int() causes exceptions
-            # so it's probably best to ignore this warning.
-            # It's likely that something on Qt's side is causing
-            # this warning.
             id_item.setFlags(id_item.flags() & mask)
             self.table.setItem(row, 1 + col, id_item)
 
