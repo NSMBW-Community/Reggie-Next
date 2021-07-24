@@ -577,6 +577,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.ImageObj.positionChanged()
 
             self.scene().update()
+            globals_.mainWindow.levelOverview.update()
 
         elif event.buttons() == QtCore.Qt.MidButton and self.lastCursorPosForMidButtonScroll is not None:
             # https://stackoverflow.com/a/15785851
