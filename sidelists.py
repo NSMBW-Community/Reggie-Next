@@ -926,8 +926,8 @@ class SpriteList(QtWidgets.QWidget):
         # Set of row ids
         self.SearchResults = set()
 
-        self.table = QtWidgets.QTableWidget(0, len(self.idtype_names))
-        headers = ["Name"] + list(self.idtype_names[1:])
+        self.table = QtWidgets.QTableWidget(0, len(self.idtype_names) + 1)
+        headers = ["ID", "Name"] + list(self.idtype_names[1:])
         self.table.setHorizontalHeaderLabels(headers)
         self.table.verticalHeader().setVisible(False) # hide row numbers
         self.table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
@@ -985,9 +985,9 @@ class SpriteList(QtWidgets.QWidget):
         for row in self.SearchResults:
             self.filterRow(row, newidx)
 
-        # hide all columns except 0 and newidx
+        # Only show columns 0 (id), 1 (name) and newidx + 1 (the filtered column)
         for col in range(self.table.columnCount()):
-            if col in (0, newidx):
+            if col in (0, 1, newidx + 1):
                 self.table.showColumn(col)
             else:
                 self.table.hideColumn(col)
@@ -1001,8 +1001,7 @@ class SpriteList(QtWidgets.QWidget):
             self.table.setRowHidden(row, False)
             return
 
-        # Apply _some_ filtering
-        # 1. Get the sprite defintion
+        # Get the sprite defintion and the id type that is filtered by.
         filtertype = self.idtypes[filteridx - 1]
         sprite = self.table.item(row, 0)._sprite
 
@@ -1013,22 +1012,20 @@ class SpriteList(QtWidgets.QWidget):
             self.table.setRowHidden(row, True)
             return
 
-        # 2. Loop over every field of the sprite
-        #    and hide everything that has no fields
-        #    with the correct idtype.
+        # Loop over every field of the sprite and hide every row whose sprite
+        # has no fields with the correct idtype.
         for field in sdef.fields:
-            # Only values (1) and lists (2) have
-            # idtypes - ignore the others
+            # Only values (1) and lists (2) have idtypes, so ignore the other
+            # fields.
             if field[0] < 1 or field[0] > 2:
                 continue
 
-            # The idtype is the last element in the
-            # field tuple
+            # The idtype is the last element in the field tuple.
             if field[-1] == filtertype:
                 self.table.setRowHidden(row, False)
                 return
 
-        # No field had the correct id type -> hide
+        # No field had the correct id type, so hide this row.
         self.table.setRowHidden(row, True)
 
     def updateItems(self):
@@ -1037,12 +1034,11 @@ class SpriteList(QtWidgets.QWidget):
 
     def getRowFor(self, sprite):
         """
-        Returns the row number for a given
-        sprite, or -1 if it does not exist.
+        Returns the row number for a given sprite, or -1 if no row exists.
         """
         for i in range(self.table.rowCount()):
-            nameitem = self.table.item(i, 0)
-            if nameitem._sprite == sprite:
+            id_item = self.table.item(i, 0)
+            if id_item._sprite == sprite:
                 return i
 
         return -1
@@ -1077,32 +1073,41 @@ class SpriteList(QtWidgets.QWidget):
         row = self.table.rowCount()
         self.table.insertRow(row)
 
-        # add the sprite name
-        name_item = QtWidgets.QTableWidgetItem("%d: %s" % (sprite.type, sprite.name))
+        # Add the sprite id
+        id_item = QtWidgets.QTableWidgetItem()
+        id_item.setData(QtCore.Qt.DisplayRole, sprite.type)
+        id_item.setFlags(id_item.flags() & ~QtCore.Qt.ItemIsEditable)
+        self.table.setItem(row, 0, id_item)
+
+        # Ensure we can get to the spriteitem from the row in the table.
+        # HACK: We're creating a new field here
+        id_item._sprite = sprite
+
+        # Also add the sprite name
+        name_item = QtWidgets.QTableWidgetItem(sprite.name)
         name_item.setFlags(name_item.flags() & ~QtCore.Qt.ItemIsEditable)
-        self.table.setItem(row, 0, name_item)
+        self.table.setItem(row, 1, name_item)
 
         if not self.is_batch_add:
             # Profiling shows that this function is quite expensive, so if we're
             # in a batch add, don't resize the rows until the very end.
             self.table.resizeRowsToContents()
 
-        # HACK: We're creating a new field here
-        name_item._sprite = sprite
-
-        # add an id for every idtype
-        # these items should not be editable or selectable
+        # Add an id for every idtype. These items should not be editable or
+        # selectable.
         mask = ~(QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable)
         ids = self.getIDsFor(sprite)
+
         for col, idtype in enumerate(self.idtypes):
-            id_ = ids.get(idtype, "")
+            id_values = ids.get(idtype, "")
 
-            if len(id_) == 1:
-                id_ = id_[0]
+            if len(id_values) == 1:
+                id_values = id_values[0]
 
-            id_item = QtWidgets.QTableWidgetItem(str(id_))
-            id_item.setFlags(id_item.flags() & mask)
-            self.table.setItem(row, 1 + col, id_item)
+            entry_item = QtWidgets.QTableWidgetItem(str(id_values))
+            entry_item.setFlags(entry_item.flags() & mask)
+
+            self.table.setItem(row, 2 + col, entry_item)
 
         # re-enable sorting
         if not self.is_batch_add:
@@ -1115,20 +1120,19 @@ class SpriteList(QtWidgets.QWidget):
         """
         ids = self.getIDsFor(sprite)
 
-        # temporarily disable sorting so our
-        # updates happen to the same row
+        # Temporarily disable sorting so our updates happen to the same row.
         self.table.setSortingEnabled(False)
         row = self.getRowFor(sprite)
 
-        # Skip the first column (that's the name)
-        for i in range(1, self.table.columnCount()):
-            id_ = ids.get(self.idtypes[i - 1], "")
+        # Skip the first columns (the id and name)
+        for i in range(2, self.table.columnCount()):
+            id_values = ids.get(self.idtypes[i - 2], [""])
 
-            if len(id_) == 1:
-                id_ = id_[0]
+            if len(id_values) == 1:
+                id_values = id_values[0]
 
             item = self.table.item(row, i)
-            item.setText(str(id_))
+            item.setText(str(id_values))
 
         # re-enable sorting
         self.table.setSortingEnabled(True)
@@ -1210,17 +1214,21 @@ class SpriteList(QtWidgets.QWidget):
         data = sprite.spritedata
 
         for field in sdef.fields:
-            # Only values (1) and fields (2) have
-            # idtypes - ignore the others
+            # Only values (1) and fields (2) have idtypes, so ignore all other
+            # fields.
             if field[0] < 1 or field[0] > 2:
                 continue
 
-            # The idtype is the last element in the
-            # field tuple, bit is the third element
-            # in the field tuple (for both list and
-            # value).
+            # The idtype is the last element in the field tuple, bit is the
+            # third element in the field tuple (for both list and value).
             idtype = field[-1]
+
+            # No id type specified
+            if idtype is None:
+                continue
+
             value = decoder.retrieve(data, field[2])
+
             try:
                 res[idtype].append(value)
             except KeyError:
