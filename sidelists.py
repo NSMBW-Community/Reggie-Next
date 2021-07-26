@@ -898,7 +898,7 @@ class SpriteList(QtWidgets.QWidget):
         "Group", "Bolt", "Target Event", "Triggering Event", "Collection",
         "Location", "Physics", "Message", "Path", "Path Movement", "Red Coin",
         "Hill", "Stretch", "Ray", "Coaster", "Bubble Cannon", "Burner",
-        "Wiggling", "Panel", "Colony",
+        "Wiggling", "Panel", "Colony", "Entrance",
     )
 
     # This should be translated
@@ -909,7 +909,7 @@ class SpriteList(QtWidgets.QWidget):
         "Triggering Event ID", "Collection ID", "Location ID", "Physics ID",
         "Message ID", "Path ID", "Path Movement ID", "Red Coin ID", "Hill ID",
         "Stretch ID", "Ray ID", "Coaster ID", "Bubble Cannon ID", "Burner ID",
-        "Wiggling ID", "Panel ID", "Colony ID",
+        "Wiggling ID", "Panel ID", "Colony ID", "Entrance ID",
     )
 
     def __init__(self):
