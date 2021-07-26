@@ -4647,7 +4647,7 @@
       <entry value="6">8 Blocks</entry>
       <entry value="7">9 Blocks</entry>
     </list>
-    <value nybble="12" title="Burner ID" comment="This determines which flame jets are linked to this controller." idtype="Burner ID"/>
+    <value nybble="12" title="Burner ID" comment="This determines which flame jets are linked to this controller." idtype="Burner"/>
   </sprite> <!-- #307: Burner - Pulsating (Synchronized) Controller -->
 
   <!-- Do we know what makes this one special compared to #95? -->
@@ -4666,7 +4666,7 @@
       <entry value="2">Up</entry>
       <entry value="3">Down</entry>
     </list>
-    <value nybble="11" title="Burner ID" comment="This determines which controller is linked to this flame jet." comment2="The flame jet will not function without a linked controller." idtype="Burner ID"/>
+    <value nybble="11" title="Burner ID" comment="This determines which controller is linked to this flame jet." comment2="The flame jet will not function without a linked controller." idtype="Burner"/>
   </sprite> <!-- #309: Burner - Pulsating (Synchronized) -->
 
   <!-- Check if you can use the Z-Order to place the signboard behind Chainlink. -->
