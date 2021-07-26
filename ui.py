@@ -39,6 +39,7 @@ class ReggieTheme:
         self.style = None
         self.forceUiColor = False
         self.forceStyleSheet = False
+        self.useRoundedRectangles = True
         self.overridesFile = os.path.join('reggiedata', 'overrides.png')
 
         # Add the colors                                                       # Descriptions:
@@ -194,22 +195,17 @@ class ReggieTheme:
             return False
 
         # Check for optional attributes
-        self.creator = globals_.trans.string('Themes', 3)
-        self.description = globals_.trans.string('Themes', 4)
-        self.style = None
-        self.forceUiColor = False
-        self.forceStyleSheet = False
-        self.version = 1.0
-        if 'creator' in root.attrib: self.creator = root.attrib['creator']
-        if 'description' in root.attrib: self.description = root.attrib['description']
-        if 'style' in root.attrib: self.style = root.attrib['style']
-        if 'forceUiColor' in root.attrib: self.forceUiColor = True if root.attrib['forceUiColor'] == "true" else False
-        if 'forceStyleSheet' in root.attrib: self.forceStyleSheet = True if root.attrib['forceStyleSheet'] == "true" else False
-        if 'version' in root.attrib:
-            try:
-                self.version = float(root.attrib['version'])
-            except ValueError:
-                pass
+        self.creator = root.get("creator", globals_.trans.string("Themes", 3))
+        self.description = root.get("description", globals_.trans.string("Themes", 4))
+        self.style = root.get("style")
+        self.forceUiColor = root.get("forceUiColor", "false") == "true"
+        self.forceStyleSheet = root.get("forceStyleSheet", "false") == "true"
+        self.useRoundedRectangles = root.get("useRoundedRectangles", "true") == "true"
+
+        try:
+            self.version = float(root.get("version", "1.0"))
+        except ValueError:
+            self.version = 1.0
 
         return True
 

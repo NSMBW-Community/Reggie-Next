@@ -2403,7 +2403,11 @@ class SpriteItem(LevelEditorItem):
             else:
                 painter.setBrush(QtGui.QBrush(globals_.theme.color('spritebox_fill')))
                 painter.setPen(QtGui.QPen(globals_.theme.color('spritebox_lines'), 1))
-            painter.drawRoundedRect(spriteboxRect, 4, 4)
+
+            if globals_.theme.useRoundedRectangles:
+                painter.drawRoundedRect(spriteboxRect, 4, 4)
+            else:
+                painter.drawRect(spriteboxRect)
 
             painter.setFont(self.font)
             painter.drawText(spriteboxRect, QtCore.Qt.AlignCenter, str(self.type))
@@ -2653,7 +2657,10 @@ class EntranceItem(LevelEditorItem):
             painter.setBrush(QtGui.QBrush(globals_.theme.color('entrance_fill')))
             painter.setPen(QtGui.QPen(globals_.theme.color('entrance_lines')))
 
-        painter.drawRoundedRect(self.RoundedRect, 4, 4)
+        if globals_.theme.useRoundedRectangles:
+            painter.drawRoundedRect(self.RoundedRect, 4, 4)
+        else:
+            painter.drawRect(self.RoundedRect)
 
         icontype = 0
         enttype = self.enttype
@@ -2806,7 +2813,11 @@ class PathItem(LevelEditorItem):
         else:
             painter.setBrush(QtGui.QBrush(globals_.theme.color('path_fill')))
             painter.setPen(QtGui.QPen(globals_.theme.color('path_lines')))
-        painter.drawRoundedRect(self.RoundedRect, 4, 4)
+
+        if globals_.theme.useRoundedRectangles:
+            painter.drawRoundedRect(self.RoundedRect, 4, 4)
+        else:
+            painter.drawRect(self.RoundedRect)
 
         painter.setFont(self.font)
         painter.drawText(4, 11, str(self.pathid))
