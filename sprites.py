@@ -394,10 +394,14 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         for zone in globals_.Area.zones:
             if zone.id == self.zoneId:
                 break
+        else:
+            return
 
-        # Only draw in the intersection of the location and the zone. The intersection
-        # needs to be adjusted, because draw offsets are relative to the location.
-        draw_rect = (location_rect & zone.sceneBoundingRect()) - location_rect.pos()
+        # Only draw in the intersection of the location and the zone. The
+        # intersection needs to be translated, because draw offsets are relative
+        # to the location.
+        draw_rect = location_rect & zone.sceneBoundingRect()
+        draw_rect.translate(-location_rect.topLeft())
 
         if draw_rect.isEmpty():
             return
@@ -414,12 +418,12 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         if drawCrest:
             crestHeight -= y
             if crestHeight >= height:
-                painter.drawTiledPixmap(draw_rect, self.crest, x, y)
+                painter.drawTiledPixmap(x, y, width, height, self.crest, x, y)
             else:
                 painter.drawTiledPixmap(x, y, width, crestHeight, self.crest, x, y)
                 painter.drawTiledPixmap(x, y + crestHeight, width, height - crestHeight, self.mid, x)
         else:
-            painter.drawTiledPixmap(draw_rect, self.mid, x, y - crestHeight)
+            painter.drawTiledPixmap(x, y, width, height, self.mid, x, y - crestHeight)
 
 
 class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage):  # 97, 107, 132, 160
