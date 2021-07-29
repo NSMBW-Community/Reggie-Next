@@ -19,17 +19,19 @@ class ZonesDialog(QtWidgets.QDialog):
         self.setWindowIcon(GetIcon('zones'))
 
         self.tabWidget = QtWidgets.QTabWidget()
-
         self.zoneTabs = []
+
+        num_zones = len(globals_.Area.zones)
+
         for i, z in enumerate(globals_.Area.zones):
-            ZoneTabName = globals_.trans.string('ZonesDlg', 3, '[num]', i + 1)
+            if num_zones <= 5:
+                zone_tab_name = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
+            else:
+                zone_tab_name = str(z.id + 1)
+
             tab = ZoneTab(z)
             self.zoneTabs.append(tab)
-            self.tabWidget.addTab(tab, ZoneTabName)
-
-        if self.tabWidget.count() > 5:
-            for tab in range(self.tabWidget.count()):
-                self.tabWidget.setTabText(tab, str(tab + 1))
+            self.tabWidget.addTab(tab, zone_tab_name)
 
         self.NewButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 4))
         self.DeleteButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 5))
@@ -40,7 +42,7 @@ class ZonesDialog(QtWidgets.QDialog):
 
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
-        # self.NewButton.setEnabled(len(self.zoneTabs) < 8)
+
         self.NewButton.clicked.connect(self.NewZone)
         self.DeleteButton.clicked.connect(self.DeleteZone)
 
@@ -57,36 +59,62 @@ class ZonesDialog(QtWidgets.QDialog):
                 return
 
         z = globals_.mainWindow.CreateZone(256, 256)
-        ZoneTabName = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
+
+        if len(self.zoneTabs) + 1 <= 5:
+            zone_tab_name = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
+        else:
+            zone_tab_name = str(z.id + 1)
+
         tab = ZoneTab(z)
         self.zoneTabs.append(tab)
-        self.tabWidget.addTab(tab, ZoneTabName)
+        self.tabWidget.addTab(tab, zone_tab_name)
 
-        if self.tabWidget.count() <= 5:
+        # Re-label zone tabs. This is only needed if the number of zones grows
+        # above 5, as the long names need to be replaced by short names. Since
+        # this function always adds a zone, it can never happen that the short
+        # name needs to be lengthened.
+        tab_amount = self.tabWidget.count()
+
+        if tab_amount != 6:
             return
 
-        for tab in range(self.tabWidget.count()):
-            self.tabWidget.setTabText(tab, str(tab + 1))
+        # No need to do the last one, since that's the one we just added, and
+        # we already set that correctly.
+        for tab in range(tab_amount - 1):
+            widget = self.tabWidget.widget(tab)
+
+            if widget is None:
+                break
+
+            zone_id = widget.zoneObj.id
+            self.tabWidget.setTabText(tab, str(zone_id + 1))
 
     def DeleteZone(self):
-        curindex = self.tabWidget.currentIndex()
-        tabamount = self.tabWidget.count()
-        if tabamount == 0:
+        index = self.tabWidget.currentIndex()
+        tab_amount = self.tabWidget.count()
+        if tab_amount == 0:
             return
 
-        self.tabWidget.removeTab(curindex)
-        self.zoneTabs.pop(curindex)
+        self.tabWidget.removeTab(index)
+        self.zoneTabs.pop(index)
 
-        for tab in range(curindex, tabamount):
-            if self.tabWidget.count() < 6:
-                self.tabWidget.setTabText(tab, globals_.trans.string('ZonesDlg', 3, '[num]', tab + 1))
-            if self.tabWidget.count() > 5:
-                self.tabWidget.setTabText(tab, str(tab + 1))
+        new_tab_amount = tab_amount - 1
 
+        # Re-label zone tabs. This is only needed if the number of zones drops
+        # below 5, as the short names need to be replaced by long names. Since
+        # this function always removes zones, it can never happen that the long
+        # name needs to be shortened.
+        if new_tab_amount != 5:
+            return
 
-        if tabamount == 5:
-            for tab in range(curindex):
-                self.tabWidget.setTabText(tab, globals_.trans.string('ZonesDlg', 3, '[num]', tab + 1))
+        for tab in range(new_tab_amount):
+            widget = self.tabWidget.widget(tab)
+
+            if widget is None:
+                break
+
+            zone_id = widget.zoneObj.id
+            self.tabWidget.setTabText(tab, globals_.trans.string('ZonesDlg', 3, '[num]', zone_id + 1))
 
 class ZoneTab(QtWidgets.QWidget):
     def __init__(self, z):
