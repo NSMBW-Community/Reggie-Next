@@ -384,41 +384,42 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         if drawRise:
             painter.drawTiledPixmap(4, offsetRise, zw - 8, riseToDraw.height(), riseToDraw)
 
-    def realViewLocation(self, painter, zoneRect):
+    def realViewLocation(self, painter, location_rect):
         """
         Real view location painter for liquids/fog
         """
-        zoneId = self.zoneId
-        if zoneId == -1:
+        if self.paintZone():
             return
 
         for zone in globals_.Area.zones:
-            if zone.id == zoneId:
+            if zone.id == self.zoneId:
                 break
 
-        zx, zy = zoneRect.x(), zoneRect.y()
-        zoneRect &= zone.sceneBoundingRect()
-        zx, zy = zoneRect.x() - zx, zoneRect.y() - zy
-        zw, zh = zoneRect.width(), zoneRect.height()
-        if zw <= 0 or zh <= 0:
+        # Only draw in the intersection of the location and the zone. The intersection
+        # needs to be adjusted, because draw offsets are relative to the location.
+        draw_rect = (location_rect & zone.sceneBoundingRect()) - location_rect.pos()
+
+        if draw_rect.isEmpty():
             return
+
+        x, y, width, height = draw_rect.getRect()
 
         drawCrest = False
         crestHeight = 0
 
         if self.drawCrest:
             crestHeight = self.crest.height()
-            drawCrest = zy < crestHeight
+            drawCrest = y < crestHeight
 
         if drawCrest:
-            crestHeight -= zy
-            if crestHeight >= zh:
-                painter.drawTiledPixmap(zx, zy, zw, zh, self.crest, zx, zy)
+            crestHeight -= y
+            if crestHeight >= height:
+                painter.drawTiledPixmap(draw_rect, self.crest, x, y)
             else:
-                painter.drawTiledPixmap(zx, zy, zw, crestHeight, self.crest, zx, zy)
-                painter.drawTiledPixmap(zx, zy + crestHeight, zw, zh - crestHeight, self.mid, zx)
+                painter.drawTiledPixmap(x, y, width, crestHeight, self.crest, x, y)
+                painter.drawTiledPixmap(x, y + crestHeight, width, height - crestHeight, self.mid, x)
         else:
-            painter.drawTiledPixmap(zx, zy, zw, zh, self.mid, zx, zy - crestHeight)
+            painter.drawTiledPixmap(draw_rect, self.mid, x, y - crestHeight)
 
 
 class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage):  # 97, 107, 132, 160
