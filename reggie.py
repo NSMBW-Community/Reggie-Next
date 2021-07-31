@@ -3465,8 +3465,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if func_ii(item, type_path): path += 1
             if func_ii(item, type_com): com += 1
 
-        if loc >= 2:
-            self.actions['mergelocations'].setEnabled(True)
+        self.actions['mergelocations'].setEnabled(loc >= 2)
 
         # write the statusbar label text
         text = ''
