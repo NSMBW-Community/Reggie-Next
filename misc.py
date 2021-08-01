@@ -1108,9 +1108,9 @@ class RecentFilesMenu(QtWidgets.QMenu):
         Adds an entry to the list
         """
         MaxLength = 16
+        path = str(path)
 
-        if path in ('None', 'True', 'False', None, True, False): return  # fixes bugs
-        path = str(path).replace('/', '\\')
+        if path in ('None', 'True', 'False'): return  # fixes bugs
 
         new = [path]
         for filename in self.FileList:
