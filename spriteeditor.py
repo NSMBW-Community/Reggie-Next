@@ -577,6 +577,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 self.widget.setCurrentIndex(-1)
 
+            if first:
+                self.prev_value = value
+
         def assign(self, data):
             """
             Assigns the selected value to the data
@@ -708,6 +711,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             value = self.retrieve(data)
             self.widget.setValue(value)
+
+            if first:
+                self.prev_value = value
 
         def assign(self, data):
             """
