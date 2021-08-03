@@ -1678,7 +1678,7 @@ class LocationItem(LevelEditorItem):
         self.SelectionRect = QtCore.QRectF(self.objx * 1.5, self.objy * 1.5, self.width * 1.5, self.height * 1.5)
         self.ZoneRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
         self.DrawRect = QtCore.QRectF(1, 1, (self.width * 1.5) - 2, (self.height * 1.5) - 2)
-        self.GrabberRect = QtCore.QRectF(((1.5) * self.width) - 4.8, ((1.5) * self.height) - 4.8, 4.8, 4.8)
+        self.GrabberRect = QtCore.QRectF((1.5 * self.width) - 4.8, (1.5 * self.height) - 4.8, 4.8, 4.8)
         self.BoundingRect = self.BoundingRectWithoutTitleRect.united(self.TitleRect).united(self.GrabberRect)
         self.UpdateListItem()
 
@@ -2836,7 +2836,7 @@ class PathItem(LevelEditorItem):
         globals_.Area.paths.remove(self)
         self.pathinfo['nodes'].remove(self.nodeinfo)
 
-        if (len(self.pathinfo['nodes']) < 1):
+        if not self.pathinfo['nodes']:
             globals_.Area.pathdata.remove(self.pathinfo)
             self.scene().removeItem(self.pathinfo['peline'])
 

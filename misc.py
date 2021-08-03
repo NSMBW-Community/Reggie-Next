@@ -95,7 +95,7 @@ def FilesAreMissing():
         if not os.path.isfile('reggiedata/' + check):
             missing.append(check)
 
-    if len(missing) > 0:
+    if missing:
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_MissingFiles', 0),
                                       globals_.trans.string('Err_MissingFiles', 2, '[files]', ', '.join(missing)))
         return True
@@ -662,12 +662,9 @@ def LoadSpriteData():
 
                 spritename = sprite.get("name")
                 notes = None
+                advNotes = None
                 relatedObjFiles = None
                 yoshiNotes = None
-                size = False
-                noyoshi = None
-                asm = None
-                advNotes = None
 
                 attribs = sprite.keys()
 
@@ -685,14 +682,9 @@ def LoadSpriteData():
                     yoshiNotes = globals_.trans.string('SpriteDataEditor', 9, '[notes]',
                                                    sprite.get('yoshinotes'))
 
-                if 'noyoshi' in attribs:
-                    noyoshi = sprite.get('noyoshi') == "True"
-
-                if 'asmhacks' in attribs:
-                    asm = sprite.get('asmhacks') == "True"
-
-                if 'sizehacks' in attribs:
-                    size = sprite.get('sizehacks') == "True"
+                noyoshi = sprite.get('noyoshi', 'False') == "True"
+                asm = sprite.get('asmhacks', 'False') == "True"
+                size = sprite.get('sizehacks', 'False') == "True"
 
                 sdef = SpriteDefinition()
                 sdef.id = spriteid
@@ -736,7 +728,7 @@ def LoadSpriteData():
                     globals_.Sprites[spriteid].name = name
 
     # Warn the user if errors occurred
-    if len(errors) > 0:
+    if errors:
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenSpriteData', 0),
                                       globals_.trans.string('Err_BrokenSpriteData', 1, '[sprites]', ', '.join(errors)),
                                       QtWidgets.QMessageBox.Ok)

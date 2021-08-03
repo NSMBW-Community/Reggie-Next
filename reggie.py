@@ -1167,8 +1167,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         slabel = QtWidgets.QLabel(globals_.trans.string('Palette', 11))
         slabel.setWordWrap(True)
         self.spriteList = SpriteList()
-        # self.spriteList.list_.itemActivated.connect(self.HandleSpriteSelectByList)
-        # self.spriteList.list_.toolTipAboutToShow.connect(self.HandleSpriteToolTipAboutToShow)
 
         spel.addWidget(slabel)
         spel.addWidget(self.spriteList)
@@ -1236,7 +1234,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         tabs.setTabToolTip(5, globals_.trans.string('Palette', 18))
 
         eventel = QtWidgets.QGridLayout(self.eventEditorTab)
-        self.eventEditorLayout = eventel
 
         eventlabel = QtWidgets.QLabel(globals_.trans.string('Palette', 20))
         eventNotesLabel = QtWidgets.QLabel(globals_.trans.string('Palette', 21))
@@ -1318,7 +1315,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         cel = QtWidgets.QVBoxLayout()
         self.commentsTab.setLayout(cel)
-        self.entEditorLayout = cel
 
         clabel = QtWidgets.QLabel(globals_.trans.string('Palette', 34))
         clabel.setWordWrap(True)
@@ -1536,25 +1532,18 @@ class ReggieWindow(QtWidgets.QMainWindow):
         with open(fn, 'r', encoding='utf-8') as file:
             filedata = file.read()
 
-            if not filedata.startswith('stamps\n------\n'): return
+        if not filedata.startswith('stamps\n------\n'): return
 
-            filesplit = filedata.split('\n')[3:]
-            i = 0
-            while i < len(filesplit):
-                try:
-                    # Get data
-                    name = filesplit[i]
-                    rc = filesplit[i + 1]
+        filesplit = filedata.split('\n')[3:]
+        for i in range(0, len(filesplit), 3):
+            try:
+                # Get data
+                name = filesplit[i]
+                rc = filesplit[i + 1]
+            except IndexError:
+                break
 
-                    # Increment the line counter by 3, tp
-                    # account for the blank line
-                    i += 3
-
-                except IndexError:
-                    return
-
-                else:
-                    self.stampChooser.addStamp(Stamp(rc, name))
+            self.stampChooser.addStamp(Stamp(rc, name))
 
     def handleStampsSave(self):
         """
@@ -3480,7 +3469,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.actions['shiftitems'].setEnabled(True)
 
         # turn on the Stamp Add btn if applicable
-        self.stampAddBtn.setEnabled(len(selitems) > 0)
+        self.stampAddBtn.setEnabled(bool(selitems))
 
         # count the # of each type, for the statusbar label
         spr = 0
@@ -3501,7 +3490,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # write the statusbar label text
         text = ''
-        if len(selitems) > 0:
+        if selitems:
             singleitem = len(selitems) == 1
             if singleitem:
                 if obj:
@@ -3548,6 +3537,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                             # above: '[x]', var) can't hurt if var == 1
 
                     text += globals_.trans.string('Statusbar', 22)  # ')'
+
         self.selectionLabel.setText(text)
 
         self.CurrentSelection = selitems
@@ -3563,7 +3553,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.locationEditorDock.setVisible(showLocationPanel)
         self.pathEditorDock.setVisible(showPathPanel)
 
-        self.actions['deselect'].setEnabled(len(self.CurrentSelection) != 0)
+        self.actions['deselect'].setEnabled(bool(selitems))
 
         if updateModeInfo:
             globals_.DirtyOverride += 1
@@ -3842,14 +3832,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         if self.UpdateFlag: return
 
-        ent = None
-        for check in globals_.Area.entrances:
-            if check.listitem == item:
-                ent = check
+        for ent in globals_.Area.entrances:
+            if ent.listitem == item:
                 break
-        if ent is None: return
+        else:
+            return
 
-        ent.ensureVisible(QtCore.QRectF(), 192, 192)
+        ent.ensureVisible(xmargin=192, ymargin=192)
         self.scene.clearSelection()
         ent.setSelected(True)
 
@@ -3857,14 +3846,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle an entrance being hovered in the list
         """
-        ent = None
-        for check in globals_.Area.entrances:
-            if check.listitem == item:
-                ent = check
+        for ent in globals_.Area.entrances:
+            if ent.listitem == item:
+                ent.UpdateListItem(True)
                 break
-        if ent is None: return
-
-        ent.UpdateListItem(True)
 
     def HandleLocationSelectByList(self, item):
         """
@@ -3872,14 +3857,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         if self.UpdateFlag: return
 
-        loc = None
-        for check in globals_.Area.locations:
-            if check.listitem == item:
-                loc = check
+        for loc in globals_.Area.locations:
+            if loc.listitem == item:
                 break
-        if loc is None: return
+        else:
+            return
 
-        loc.ensureVisible(QtCore.QRectF(), 192, 192)
+        loc.ensureVisible(xmargin=192, ymargin=192)
         self.scene.clearSelection()
         loc.setSelected(True)
 
@@ -3887,27 +3871,22 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle a location being hovered in the list
         """
-        loc = None
-        for check in globals_.Area.locations:
-            if check.listitem == item:
-                loc = check
+        for loc in globals_.Area.locations:
+            if loc.listitem == item:
+                loc.UpdateListItem(True)
                 break
-        if loc is None: return
-
-        loc.UpdateListItem(True)
 
     def HandlePathSelectByList(self, item):
         """
         Handle a path node being selected
         """
-        path = None
-        for check in globals_.Area.paths:
-            if check.listitem == item:
-                path = check
+        for path in globals_.Area.paths:
+            if path.listitem == item:
                 break
-        if path is None: return
+        else:
+            return
 
-        path.ensureVisible(QtCore.QRectF(), 192, 192)
+        path.ensureVisible(xmargin=192, ymargin=192)
         self.scene.clearSelection()
         path.setSelected(True)
 
@@ -3915,27 +3894,22 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle a path node being hovered in the list
         """
-        path = None
-        for check in globals_.Area.paths:
-            if check.listitem == item:
-                path = check
+        for path in globals_.Area.paths:
+            if path.listitem == item:
+                path.UpdateListItem(True)
                 break
-        if path is None: return
-
-        path.UpdateListItem(True)
 
     def HandleCommentSelectByList(self, item):
         """
         Handle a comment being selected
         """
-        comment = None
-        for check in globals_.Area.comments:
-            if check.listitem == item:
-                comment = check
+        for comment in globals_.Area.comments:
+            if comment.listitem == item:
                 break
-        if comment is None: return
+        else:
+            return
 
-        comment.ensureVisible(QtCore.QRectF(), 192, 192)
+        comment.ensureVisible(xmargin=192, ymargin=192)
         self.scene.clearSelection()
         comment.setSelected(True)
 
@@ -3943,14 +3917,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle a comment being hovered in the list
         """
-        comment = None
-        for check in globals_.Area.comments:
-            if check.listitem == item:
-                comment = check
+        for comment in globals_.Area.comments:
+            if comment.listitem == item:
+                comment.UpdateListItem(True)
                 break
-        if comment is None: return
-
-        comment.UpdateListItem(True)
 
     def HandleLocPosChange(self, loc, oldx, oldy, x, y):
         """
@@ -4044,7 +4014,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if event.key() == Qt.Key_Delete or event.key() == Qt.Key_Backspace:
             sel = self.scene.selectedItems()
 
-            if len(sel) > 0:
+            if sel:
 
                 self.SelectionUpdateFlag = True
 

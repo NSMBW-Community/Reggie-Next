@@ -176,7 +176,6 @@ class ObjectPickerWidget(QtWidgets.QListView):
         """
         Initializes the widget
         """
-
         QtWidgets.QListView.__init__(self)
         self.setFlow(QtWidgets.QListView.LeftToRight)
         self.setLayoutMode(QtWidgets.QListView.SinglePass)
@@ -184,11 +183,14 @@ class ObjectPickerWidget(QtWidgets.QListView):
         self.setResizeMode(QtWidgets.QListView.Adjust)
         self.setWrapping(True)
 
-        self.m0 = ObjectPickerWidget.ObjectListModel()
-        self.m1 = ObjectPickerWidget.ObjectListModel()
-        self.m2 = ObjectPickerWidget.ObjectListModel()
-        self.m3 = ObjectPickerWidget.ObjectListModel()
-        self.setModel(self.m0)
+        self.models = [
+            ObjectPickerWidget.ObjectListModel(),
+            ObjectPickerWidget.ObjectListModel(),
+            ObjectPickerWidget.ObjectListModel(),
+            ObjectPickerWidget.ObjectListModel(),
+        ]
+
+        self.setModel(self.models[0])
 
         self.setItemDelegate(ObjectPickerWidget.ObjectItemDelegate())
 
@@ -198,20 +200,15 @@ class ObjectPickerWidget(QtWidgets.QListView):
         """
         Renders all the object previews
         """
-        self.m0.LoadFromTileset(0)
-        self.m1.LoadFromTileset(1)
-        self.m2.LoadFromTileset(2)
-        self.m3.LoadFromTileset(3)
+        for i in range(4):
+            self.models[i].LoadFromTileset(i)
 
-    def ShowTileset(self, id):
+    def ShowTileset(self, id_):
         """
         Shows a specific tileset in the picker
         """
         sel = self.currentIndex().row()
-        if id == 0: self.setModel(self.m0)
-        if id == 1: self.setModel(self.m1)
-        if id == 2: self.setModel(self.m2)
-        if id == 3: self.setModel(self.m3)
+        self.setModel(self.models[id_])
         self.setCurrentIndex(self.model().index(sel, 0, QtCore.QModelIndex()))
 
     def currentChanged(self, current, previous):

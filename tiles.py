@@ -786,7 +786,7 @@ def GetSlopeSections(obj):
     currentSection = None
 
     for row in obj.rows:
-        if len(row) > 0 and (row[0][0] & 0x80) != 0:  # begin new section
+        if row and (row[0][0] & 0x80) != 0:  # begin new section
             if currentSection is not None:
                 sections.append(CreateSection(currentSection))
             currentSection = []

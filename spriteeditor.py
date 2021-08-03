@@ -1458,7 +1458,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # show the raw editor
         self.raweditor.setVisible(True)
         self.editbox.setVisible(True)
-        self.resetButton.setVisible(not globals_.HideResetSpritedata and (sprite is None or len(sprite.fields) > 0))
+        self.resetButton.setVisible(not globals_.HideResetSpritedata and (sprite is None or bool(sprite.fields)))
 
         # show size stuff
         self.sizeButton.setVisible(sprite is not None and sprite.size)
@@ -1472,9 +1472,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.yoshiInfo.setVisible(False)
             self.advNoteButton.setVisible(False)
             self.asm.setVisible(False)
-
-            if len(self.fields) > 0:
-                self.fields = []
+            self.fields = []
 
             return
 
@@ -2344,7 +2342,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         mainLayout = QtWidgets.QVBoxLayout()
         mainLayout.addWidget(QtWidgets.QLabel(text))
 
-        if len(self.present) > 0:
+        if self.present:
             mainLayout.addWidget(QtWidgets.QLabel(text3))
             mainLayout.addWidget(QtWidgets.QLabel(str(self.present)))
 

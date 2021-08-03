@@ -22,7 +22,7 @@ class UndoStack:
         """
         Adds an action to the stack, or extends the current one if applicable
         """
-        if len(self.pastActions) > 0 and self.pastActions[-1].isExtentionOf(act):
+        if self.pastActions and self.pastActions[-1].isExtentionOf(act):
             self.pastActions[-1].extend(act)
             self.enableOrDisableMenuItems()
         else:
@@ -66,8 +66,8 @@ class UndoStack:
         """
         Enables or disables the menu items of mainWindow
         """
-        globals_.mainWindow.actions['undo'].setEnabled(len(self.pastActions) > 0)
-        globals_.mainWindow.actions['redo'].setEnabled(len(self.futureActions) > 0)
+        globals_.mainWindow.actions['undo'].setEnabled(bool(self.pastActions))
+        globals_.mainWindow.actions['redo'].setEnabled(bool(self.futureActions))
 
 
 class UndoAction:
