@@ -2427,7 +2427,7 @@ class SpriteItem(LevelEditorItem):
         globals_.mainWindow.spriteList.takeSprite(self)
         globals_.mainWindow.UpdateFlag = False
         globals_.mainWindow.spriteList.selectionModel().clearSelection()
-        globals_.Area.sprites.remove(self)
+        globals_.Area.RemoveSprite(self)
         self.scene().update()  # The zone painters need for the whole thing to update
 
 

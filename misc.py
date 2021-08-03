@@ -1813,11 +1813,11 @@ class PreferencesDialog(QtWidgets.QDialog):
                 globals_.theme = theme
 
                 # Sprite [38] at (11, 4)
-                sprite = globals_.mainWindow.CreateSprite(11 * 16, 4 * 16, 38, add_to_scene=False)
+                sprite = globals_.mainWindow.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(16), add_to_scene=False)
                 scene.addItem(sprite)
 
                 # Sprite [53] at (1, 6)
-                sprite = globals_.mainWindow.CreateSprite(1 * 16, 6 * 16, 53, add_to_scene=False)
+                sprite = globals_.mainWindow.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(16), add_to_scene=False)
                 scene.addItem(sprite)
 
                 # Entrance [0] at (13, 8)

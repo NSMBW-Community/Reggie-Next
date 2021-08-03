@@ -2183,13 +2183,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
         lists if 'add_to_scene' is set.
         If 'id_' is not set, the currently selected sprite id is used.
         If 'data' is not set, the current data of the default data editor is used.
+        If 'data' is not set and the default data editor is configured for another
+        sprite id than the id of the sprite that is created, a ValueError will
+        be raised.
         """
-
-        if data is None:
-            data = self.defaultDataEditor.data
 
         if id_ is None:
             id_ = globals_.CurrentSprite
+
+        if data is None:
+            if self.defaultDataEditor.spritetype != id_:
+                raise ValueError("The default data editor was configured for sprite id %d while trying to use data for sprite id %d" % (self.defaultDataEditor.spritetype, id_))
+
+            data = self.defaultDataEditor.data
 
         spr = SpriteItem(id_, x, y, data)
         spr.positionChanged = self.HandleSprPosChange
@@ -2197,6 +2203,32 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if add_to_scene:
             self.spriteList.addSprite(spr)
             globals_.Area.sprites.append(spr)
+
+            # Add the ids for the idtype count
+            decoder = SpriteEditorWidget.PropertyDecoder()
+            sdef = globals_.Sprites[id_]
+
+            # Find what values are used by this sprite
+            for field in sdef.fields:
+                if field[0] not in (1, 2):
+                    # Only values and lists can be idtypes
+                    continue
+
+                idtype = field[-1]
+                if idtype is None:
+                    # Only look at settings with idtypes
+                    continue
+
+                value = decoder.retrieve(data, field[2])
+
+                # 3. Add the value to self.sprite_idtypes
+                try:
+                    counter = globals_.Area.sprite_idtypes[idtype]
+                except KeyError:
+                    globals_.Area.sprite_idtypes[idtype] = {value: 1}
+                    continue
+
+                counter[value] = counter.get(value, 0) + 1
 
             self.scene.addItem(spr)
             spr.UpdateListItem()
@@ -3686,14 +3718,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.CurrentSprite = type
 
         if type != 1000 and type >= 0:
-            self.defaultDataEditor.setSprite(type)
-            self.defaultDataEditor.data = bytes(10)
+            self.defaultDataEditor.setSprite(type, initial_data=bytes(10))
             self.defaultPropButton.setEnabled(True)
         else:
             self.defaultPropButton.setEnabled(False)
             self.defaultPropDock.setVisible(False)
-
-        self.defaultDataEditor.update()
+            self.defaultDataEditor.update()
 
     def SpriteReplace(self, type):
         """
@@ -3953,11 +3983,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if self.spriteEditorDock.isVisible():
             obj = self.selObj
-            self.spriteDataEditor.setSprite(obj.type)
-            self.spriteDataEditor.data = obj.spritedata
-
-            self.spriteDataEditor.update()
-
+            self.spriteDataEditor.setSprite(obj.type, initial_data=obj.spritedata)
         elif self.entranceEditorDock.isVisible():
             self.entranceEditor.setEntrance(self.selObj)
         elif self.pathEditorDock.isVisible():

@@ -8,6 +8,7 @@ import archive
 from tiles import CreateTilesets, LoadTileset
 from levelitems import EntranceItem, SpriteItem, ZoneItem, LocationItem, ObjectItem, PathItem, CommentItem
 from misc2 import DecodeOldReggieInfo
+from spriteeditor import SpriteEditorWidget
 
 class AbstractLevel:
     """
@@ -255,6 +256,7 @@ class Area:
         self.comments = []
         self.layers = [[], [], []]
         self.loaded_sprites = set()
+        self.sprite_idtypes = {}  # {idtype: {id: number of usages of id}}
 
         self.MetaData = None
         self._is_loaded = False
@@ -322,6 +324,7 @@ class Area:
         del self.pathdata
         del self.paths
         del self.comments
+        del self.sprite_idtypes
 
         self._is_loaded = False
 
@@ -378,6 +381,8 @@ class Area:
             self.LoadLayer(2, self.L2)
 
         self.LoadSprites()  # block 8
+
+        self.InitialiseIdTypes()
 
         self._is_loaded = True
         return True
@@ -1020,6 +1025,73 @@ class Area:
             offset += 20
 
         self.blocks[11] = bytes(buffer)
+
+    def InitialiseIdTypes(self):
+        """
+        Initialises all used id types in this area.
+        """
+
+        self.sprite_idtypes = {}
+        decoder = SpriteEditorWidget.PropertyDecoder()
+
+        for sprite in self.sprites:
+            sdef = globals_.Sprites[sprite.type]
+
+            # Find what values are used by this sprite
+            data = sprite.spritedata
+
+            for field in sdef.fields:
+                if field[0] not in (1, 2):
+                    # Only values and lists can be idtypes
+                    continue
+
+                idtype = field[-1]
+                if idtype is None:
+                    # Only look at settings with idtypes
+                    continue
+
+                value = decoder.retrieve(data, field[2])
+
+                # 3. Add the value to self.sprite_idtypes
+                try:
+                    counter = self.sprite_idtypes[idtype]
+                except KeyError:
+                    self.sprite_idtypes[idtype] = {value: 1}
+                    continue
+
+                counter[value] = counter.get(value, 0) + 1
+
+    def RemoveSprite(self, sprite):
+        """
+        This properly removes a sprite from the area.
+        """
+        # Remove the sprite from the sprites list
+        self.sprites.remove(sprite)
+
+        # Remove the ids the sprite used from the id list
+        decoder = SpriteEditorWidget.PropertyDecoder()
+        sdef = globals_.Sprites[sprite.type]
+
+        # Find what values are used by this sprite
+        for field in sdef.fields:
+            if field[0] not in (1, 2):
+                # Only <value> and <list> tags can have id types
+                continue
+
+            idtype = field[-1]
+            if idtype is None:
+                # Only look at settings with idtypes
+                continue
+
+            value = decoder.retrieve(sprite.spritedata, field[2])
+
+            # 3. Decrement the counter for this idtype
+            counter = self.sprite_idtypes[idtype]
+
+            if counter[value] == 1:
+                del counter[value]
+            else:
+                counter[value] -= 1
 
 
 class Metadata:

@@ -626,7 +626,6 @@ def LoadGameDef(name=None, dlg=None):
             globals_.mainWindow.spriteViewPicker.setCurrentIndex(0)  # Sets the sprite picker to category 0 (enemies)
             globals_.mainWindow.spriteDataEditor.setSprite(globals_.mainWindow.spriteDataEditor.spritetype,
                                                   True)  # Reloads the sprite data editor fields
-            globals_.mainWindow.spriteDataEditor.update()
 
         if dlg: dlg.setValue(2)
 
