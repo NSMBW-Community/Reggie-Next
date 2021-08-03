@@ -1705,12 +1705,12 @@ class LocationItem(LevelEditorItem):
 
         # Paint liquids/fog
         if globals_.SpritesShown and globals_.RealViewEnabled:
-            zoneRect = self.sceneBoundingRect()
+            location_rect = self.sceneTransform().mapRect(self.DrawRect)
             from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
 
             for sprite in globals_.Area.sprites:
                 if isinstance(sprite.ImageObj, liquidOrFogType) and self.id == sprite.ImageObj.locId:
-                    sprite.ImageObj.realViewLocation(painter, zoneRect)
+                    sprite.ImageObj.realViewLocation(painter, location_rect)
 
         # Draw the purple rectangle
         if not self.isSelected():

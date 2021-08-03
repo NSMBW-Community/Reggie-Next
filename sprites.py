@@ -401,7 +401,7 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         # intersection needs to be translated, because draw offsets are relative
         # to the location.
         draw_rect = location_rect & zone.sceneBoundingRect()
-        draw_rect.translate(-location_rect.topLeft())
+        draw_rect.translate(QtCore.QPoint(1, 1) - location_rect.topLeft())
 
         if draw_rect.isEmpty():
             return
