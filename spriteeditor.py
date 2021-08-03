@@ -1136,19 +1136,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.box.setValue(self.dispvalue)
             self.box.valueChanged.connect(self.HandleValueChanged)
 
-            L2 = QtWidgets.QHBoxLayout()
-            L2.addWidget(self.button)
-            L2.addWidget(self.box)
-            # L2.setContentsMargins(0, 0, 0, 0)
-
-            widget = QtWidgets.QWidget()
-            widget.setLayout(L2)
-
-            label = QtWidgets.QLabel(title)
+            label = QtWidgets.QLabel(title + ":")
             # label.setWordWrap(True)
 
             layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
-            layout.addWidget(widget, row, 1, 1, 2)
+            layout.addWidget(self.button, row, 1)
+            layout.addWidget(self.box, row, 2)
 
             col = 3
             if comment is not None:
