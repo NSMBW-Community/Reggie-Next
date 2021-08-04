@@ -711,8 +711,13 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             del p
 
-            painter.drawTiledPixmap(rect, board, QtCore.QPointF(rect.x(), rect.y()))
+            # Adjust the rectangle to align with the grid, so we don't have to
+            # paint pixmaps on non-integer coordinates
+            x, y = rect.getTopLeft().getCoords()
+            mod = board.width()
+            rect.adjust(-(x1 % mod), -(y1 % mod), 0, 0)
 
+            painter.drawTiledPixmap(rect, board)
 
 def DecodeOldReggieInfo(data, validKeys):
     """
