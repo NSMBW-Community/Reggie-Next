@@ -713,9 +713,9 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             # Adjust the rectangle to align with the grid, so we don't have to
             # paint pixmaps on non-integer coordinates
-            x, y = rect.getTopLeft().getCoords()
+            x, y, _, _ = rect.getRect()
             mod = board.width()
-            rect.adjust(-(x1 % mod), -(y1 % mod), 0, 0)
+            rect.adjust(-(x % mod), -(y % mod), 0, 0)
 
             painter.drawTiledPixmap(rect, board)
 
