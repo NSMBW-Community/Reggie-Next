@@ -92,7 +92,7 @@ import globals_
 from libs import lh, lib_versions
 from ui import GetIcon, SetAppStyle, GetDefaultStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme
 from misc import LoadActionsLists, LoadTilesetNames, LoadBgANames, LoadBgBNames, LoadConstantLists, LoadObjDescriptions, LoadSpriteData, LoadSpriteListData, LoadEntranceNames, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePath, isValidGamePath
-from misc2 import LevelScene, LevelViewWidget
+from misc2 import LevelScene, LevelViewWidget, TileLayerRenderer
 from dirty import setting, setSetting, SetDirty
 from gamedef import GameDefMenu, LoadGameDef
 from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem
@@ -1827,17 +1827,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 added.append(obj)
                 self.scene.addItem(obj)
 
-        for objects, area_layer, z_val in zip(layers, globals_.Area.layers, (16384, 8192, 0)):
-
-            if not objects:
-                continue
-
-            if area_layer:
-                z_val = int(area_layer[-1].zValue()) + 1
-
-            for z, obj in enumerate(objects, z_val):
-                area_layer.append(obj)
-                obj.setZValue(z)
+        for objects, area_layer in zip(layers, globals_.Area.layers):
+            area_layer += objects
 
         # now center everything
         zoomscaler = (self.ZoomLevel / 100.0)
@@ -2115,16 +2106,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
             else:
                 width = height = 1
 
-        layer_list = globals_.Area.layers[layer]
-        if not layer_list:
-            z = (2 - layer) * 8192
-        else:
-            z = layer_list[-1].zValue() + 1
-
-        obj = ObjectItem(tileset, object_num, layer, x, y, width, height, z)
+        obj = ObjectItem(tileset, object_num, layer, x, y, width, height)
 
         if add_to_scene:
-            layer_list.append(obj)
+            globals_.Area.layers[layer].append(obj)
             obj.positionChanged = self.HandleObjPosChange
             self.scene.addItem(obj)
 
@@ -2635,6 +2620,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for obj in globals_.Area.layers[0]:
             obj.setVisible(checked)
 
+        self.layer_renderers[0].setVisible(checked)
+
         self.scene.update()
 
     def HandleUpdateLayer1(self, checked):
@@ -2649,6 +2636,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for obj in globals_.Area.layers[1]:
             obj.setVisible(checked)
 
+        self.layer_renderers[1].setVisible(checked)
+
         self.scene.update()
 
     def HandleUpdateLayer2(self, checked):
@@ -2662,6 +2651,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         for obj in globals_.Area.layers[2]:
             obj.setVisible(checked)
+
+        self.layer_renderers[2].setVisible(checked)
 
         self.scene.update()
 
@@ -3125,6 +3116,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         self.CurrentSelection = []
         self.scene.clear()
+
+        self.layer_renderers = [
+            TileLayerRenderer(0),
+            TileLayerRenderer(1),
+            TileLayerRenderer(2),
+        ]
+
+        for renderer in self.layer_renderers:
+            self.scene.addItem(renderer)
 
         # Clear out all level-thing lists
         for thingList in (self.spriteList, self.entranceList, self.locationList, self.pathList, self.commentList):
@@ -3647,20 +3647,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not change:
             return
 
-        change.sort(key=lambda x: x.zValue())
         newLayer = area.layers[new_layer_id]
-
-        if not newLayer:
-            z_value = (2 - new_layer_id) * 8192
-        else:
-            z_value = newLayer[-1].zValue() + 1
 
         if new_layer_id == 0:
             newVisibility = globals_.Layer0Shown
+            z_value = 3299.1
         elif new_layer_id == 1:
             newVisibility = globals_.Layer1Shown
+            z_value = 0.1
         else:
             newVisibility = globals_.Layer2Shown
+            z_value = -3400
 
         for item in change:
             area.RemoveFromLayer(item)
@@ -3671,8 +3668,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             item.setVisible(newVisibility)
             item.update()
             item.UpdateTooltip()
-
-            z_value += 1
 
         self.scene.update()
         SetDirty()

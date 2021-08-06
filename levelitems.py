@@ -458,7 +458,7 @@ class ObjectItem(LevelEditorItem):
     """
     instanceDef = InstanceDefinition_ObjectItem
 
-    def __init__(self, tileset, type, layer, x, y, width, height, z):
+    def __init__(self, tileset, type, layer, x, y, width, height):
         """
         Creates an object with specific data
         """
@@ -488,19 +488,19 @@ class ObjectItem(LevelEditorItem):
         self.dragstarty = -1
         self.objsDragging = {}
 
-        # global globals_.DirtyOverride
         globals_.DirtyOverride += 1
         self.setPos(x * 24, y * 24)
         globals_.DirtyOverride -= 1
 
-        self.setZValue(z)
-
         if layer == 0:
             self.setVisible(globals_.Layer0Shown)
+            self.setZValue(3299.1)
         elif layer == 1:
             self.setVisible(globals_.Layer1Shown)
+            self.setZValue(0.1)
         elif layer == 2:
             self.setVisible(globals_.Layer2Shown)
+            self.setZValue(-3400)
 
         self.updateObjCache()
         self.UpdateTooltip()
@@ -885,12 +885,6 @@ class ObjectItem(LevelEditorItem):
                     self.tileset, self.type, self.layer, self.objx,
                     self.objy, self.width, self.height
                 )
-
-                # swap the Z values so it doesn't look like the
-                # cloned item is the old one
-                newZ = new_item.zValue()
-                new_item.setZValue(self.zValue())
-                self.setZValue(newZ)
 
                 globals_.mainWindow.scene.clearSelection()
                 self.setSelected(True)
@@ -1327,7 +1321,7 @@ class ZoneItem(LevelEditorItem):
         globals_.DirtyOverride += 1
         self.setPos(int(a * 1.5), int(b * 1.5))
         globals_.DirtyOverride -= 1
-        self.setZValue(50000)
+        self.setZValue(5600)
 
     def UpdateTitle(self):
         """
@@ -1642,7 +1636,7 @@ class LocationItem(LevelEditorItem):
         globals_.DirtyOverride -= 1
 
         self.dragging = False
-        self.setZValue(24000)
+        self.setZValue(0.2)
 
     def ListString(self):
         """
@@ -1846,7 +1840,7 @@ class SpriteItem(LevelEditorItem):
         Creates a sprite with specific data
         """
         LevelEditorItem.__init__(self)
-        self.setZValue(26000)
+        self.setZValue(1)  # should be based on area
 
         self.font = globals_.NumberFont
         self.type = type_
@@ -2039,7 +2033,7 @@ class SpriteItem(LevelEditorItem):
             if auxObj.scene() is None: continue
             auxObj.scene().removeItem(auxObj)
 
-        self.setZValue(26000)
+        self.setZValue(1)  # should be based on area
         self.resetTransform()
 
         if (self.type in globals_.gamedef.getImageClasses()) and (self.type not in SLib.SpriteImagesLoaded):
@@ -2562,7 +2556,7 @@ class EntranceItem(LevelEditorItem):
         self.setPos(int(x * 1.5), int(y * 1.5))
         globals_.DirtyOverride -= 1
 
-        self.setZValue(27000)
+        self.setZValue(0.3)
         self.UpdateTooltip()
         self.UpdateRects()
 
@@ -2759,7 +2753,7 @@ class PathItem(LevelEditorItem):
 
         globals_.OverrideSnapping = old_snap
 
-        self.setZValue(25003)
+        self.setZValue(0.5)
         self.UpdateTooltip()
 
         # now that we're inited, set
@@ -2868,7 +2862,7 @@ class PathEditorLineItem(LevelEditorItem):
         self.setFlag(self.ItemIsMovable, False)
         self.setFlag(self.ItemIsSelectable, False)
         self.computeBoundRectAndPos()
-        self.setZValue(25002)
+        self.setZValue(0.4)
         self.UpdateTooltip()
 
     def UpdateTooltip(self):
@@ -2956,9 +2950,6 @@ class CommentItem(LevelEditorItem):
         Creates a in-level comment
         """
         LevelEditorItem.__init__(self)
-        zval = 50000
-        self.zval = zval
-
         self.text = text
 
         self.objx = x
@@ -2974,12 +2965,12 @@ class CommentItem(LevelEditorItem):
         self.setPos(int(x * 1.5), int(y * 1.5))
         globals_.DirtyOverride -= 1
 
-        self.setZValue(zval + 1)
+        self.setZValue(5701)
         self.UpdateTooltip()
 
         self.TextEdit = QtWidgets.QPlainTextEdit()
         self.TextEditProxy = globals_.mainWindow.scene.addWidget(self.TextEdit)
-        self.TextEditProxy.setZValue(self.zval)
+        self.TextEditProxy.setZValue(5700)
         self.TextEditProxy.setCursor(QtCore.Qt.IBeamCursor)
         self.TextEditProxy.boundingRect = lambda self: QtCore.QRectF(0, 0, 4000, 4000)
         self.TextEdit.setVisible(False)
@@ -3075,7 +3066,7 @@ class CommentItem(LevelEditorItem):
             # Therefore, I need to make a new one.
             self.TextEdit = QtWidgets.QPlainTextEdit()
             self.TextEditProxy = globals_.mainWindow.scene.addWidget(self.TextEdit)
-            self.TextEditProxy.setZValue(self.zval)
+            self.TextEditProxy.setZValue(5700)
             self.TextEditProxy.setCursor(QtCore.Qt.IBeamCursor)
             self.TextEditProxy.BoundingRect = QtCore.QRectF(0, 0, 4000, 4000)
             self.TextEditProxy.boundingRect = lambda self: self.BoundingRect

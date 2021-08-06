@@ -16,96 +16,16 @@ class LevelScene(QtWidgets.QGraphicsScene):
         QtWidgets.QGraphicsScene.__init__(self, *args)
         self.setBackgroundBrush(QtGui.QBrush(globals_.theme.color('bg')))
 
+        # This rectangle is used by the layer renderers to minimise the tilemap
+        # that needs to be redrawn.
+        self.dirty_rect = QtCore.QRectF()
+
     def drawBackground(self, painter, rect):
         """
         Draws all visible tiles
         """
+        self.dirty_rect = rect
         QtWidgets.QGraphicsScene.drawBackground(self, painter, rect)
-        if not hasattr(globals_.Area, 'layers'): return
-
-        drawrect = QtCore.QRectF(rect.x() / 24, rect.y() / 24, rect.width() / 24 + 1, rect.height() / 24 + 1)
-        isect = drawrect.intersects
-
-        layer0 = []
-        layer1 = []
-        layer2 = []
-
-        x1 = 1024
-        y1 = 512
-        x2 = 0
-        y2 = 0
-
-        # iterate through each object
-        funcs = [layer0.append, layer1.append, layer2.append]
-        show = [globals_.Layer0Shown, globals_.Layer1Shown, globals_.Layer2Shown]
-        for layer, add, process in zip(globals_.Area.layers, funcs, show):
-            if not process:
-                continue
-
-            for item in layer:
-                if not isect(item.LevelRect):
-                    continue
-
-                add(item)
-                x1 = min(x1, item.objx)
-                x2 = max(x2, item.objx + item.width)
-                y1 = min(y1, item.objy)
-                y2 = max(y2, item.objy + item.height)
-
-        width = x2 - x1
-        height = y2 - y1
-
-        # Assigning global variables to local variables for performance
-        tiles = globals_.Tiles
-        odefs = globals_.ObjectDefinitions
-        unkn_tile = globals_.Overrides[globals_.OVERRIDE_UNKNOWN].getCurrentTile()
-
-        # create and draw the tilemaps
-        for layer_idx, layer in enumerate([layer2, layer1, layer0]):
-            if not layer:
-                continue
-
-            tmap = [[None] * width for _ in range(height)]
-
-            for item in layer:
-                startx = item.objx - x1
-                desty = item.objy - y1
-
-                if odefs[item.tileset] is None or \
-                        odefs[item.tileset][item.type] is None:
-                    # This is an unknown object, so place -1 in the tile map.
-                    for i, row in enumerate(item.objdata, desty):
-                        destrow = tmap[i]
-                        for j in range(startx, startx + len(row)):
-                            destrow[j] = -1
-
-                    continue
-
-                # This is not an unkown object, so update the tile map normally.
-                for i, row in enumerate(item.objdata, desty):
-                    destrow = tmap[i]
-                    for j, tile in enumerate(row, startx):
-                        if tile > 0:
-                            destrow[j] = tile
-
-            painter.save()
-            painter.translate(x1 * 24, y1 * 24)
-
-            desty = -24
-            for row in tmap:
-                desty += 24
-                destx = -24
-                for tile in row:
-                    destx += 24
-                    if tile == -1:
-                        # Draw unknown tiles
-                        painter.drawPixmap(destx, desty, unkn_tile)
-                    elif tile is not None:
-                        # Only show collisions on layer 1 (i.e. layer_idx == 1)
-                        pixmap = tiles[tile].getCurrentTile(layer_idx == 1)
-                        painter.drawPixmap(destx, desty, pixmap)
-
-            painter.restore()
 
     def getMainWindow(self):
         return globals_.mainWindow
@@ -718,6 +638,130 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             rect.adjust(-(x % mod), -(y % mod), 0, 0)
 
             painter.drawTiledPixmap(rect, board)
+
+
+class TileLayerRenderer(QtWidgets.QGraphicsItem):
+    """
+    This class renders the objects that are on a single layer.
+    """
+
+    def __init__(self, layer_num, *args):
+        QtWidgets.QGraphicsItem.__init__(self, *args)
+
+        self._layer_num = layer_num
+
+        # These z-values are chosen in a way such that it's easier for sprites
+        # to use their in-game z-values and appear correctly in Reggie.
+
+        # layer 2: z-value -3401
+        # layer 1: z-value 0
+        # layer 0: z-value 3299
+        if layer_num == 0:
+            self.setZValue(3299)
+        elif layer_num == 1:
+            self.setZValue(0)
+        else:
+            self.setZValue(-3401)
+
+    def boundingRect(self):
+        # This spans the entire scene
+        return QtCore.QRectF(0, 0, 1024 * 24, 512 * 24)
+
+    def paint(self, painter, options, widget):
+        """
+        Render the objects that are visible.
+        """
+        # Get the rectangle that needs to be redrawn
+        rect = globals_.mainWindow.scene.dirty_rect
+
+        # Map it to object coordinates
+        draw_rect = QtCore.QRectF(
+            rect.x() / 24, rect.y() / 24,
+            rect.width() / 24 + 1, rect.height() / 24 + 1
+        )
+
+        # Find the bounding rectangle of all visible objects (for the tilemap)
+        # and reduce the number of items to draw by only drawing the items that
+        # need to be redrawn
+        layer = globals_.Area.layers[self._layer_num]
+
+        bounding_rect = QtCore.QRectF()
+        objects = []
+
+        # Assign functions to variables to increase performance
+        is_visible = draw_rect.intersects
+        add_to_draw = objects.append
+
+        for item in layer:
+            if not is_visible(item.LevelRect):
+                continue
+
+            add_to_draw(item)
+            bounding_rect |= item.LevelRect
+
+        # Get the (integer) position and size of the bounding rectangle
+        x, y, width, height = bounding_rect.getRect()
+        x, y, width, height = int(x), int(y), int(width), int(height)
+
+        # Create a tile map. 0 means nothing should be rendered, -1 means it's
+        # an unknown tile and positive values give the tile index
+        tmap = [[0] * width for _ in range(height)]
+
+        tiles = globals_.Tiles
+        odefs = globals_.ObjectDefinitions
+        unkn_tile = globals_.Overrides[globals_.OVERRIDE_UNKNOWN].getCurrentTile()
+
+        used_tiles = set()
+
+        for item in objects:
+            startx = item.objx - x
+            desty = item.objy - y
+
+            tileset_def = odefs[item.tileset]
+            if tileset_def is None or tileset_def[item.type] is None:
+                # This is an unknown object, so place -1 in the tile map.
+
+                for i, row in enumerate(item.objdata, desty):
+                    destrow = tmap[i]
+                    for j in range(startx, startx + len(row)):
+                        destrow[j] = -1
+
+                continue
+
+            # This is not an unkown object, so update the tile map normally.
+            for i, row in enumerate(item.objdata, desty):
+                destrow = tmap[i]
+                for j, tile in enumerate(row, startx):
+                    destrow[j] = tile
+                    used_tiles.add(tile)
+
+        # Cache all used tiles. This makes drawing the same tile many times more
+        # efficient.
+        pixmap_cache = {}
+        for tile in used_tiles:
+            pixmap_cache[tile] = tiles[tile].getCurrentTile(self._layer_num == 1)
+
+        painter.translate(x * 24, y * 24)
+
+        # Render layer 0 at 0.7 opacity, to not completely hide things behind
+        # layer 0.
+        if self._layer_num == 0:
+            painter.setOpacity(0.7)
+
+        draw_tile = painter.drawPixmap
+
+        desty = 0
+        for row in tmap:
+            destx = 0
+            for tile in row:
+                if tile == -1:
+                    draw_tile(destx, desty, unkn_tile)
+                elif tile:
+                    draw_tile(destx, desty, pixmap_cache[tile])
+
+                destx += 24
+            desty += 24
+
 
 def DecodeOldReggieInfo(data, validKeys):
     """
