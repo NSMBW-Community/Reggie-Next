@@ -450,12 +450,12 @@ class Area:
         """
         Removes a specific object from the level and updates Z-indices accordingly
         """
-        layer = self.layers[obj.layer]
-        idx = layer.index(obj)
-        del layer[idx]
+        self.layers[obj.layer].remove(obj)
 
-        for upd in layer[idx:]:
-            upd.setZValue(upd.zValue() - 1)
+        # idx = layer.index(obj)
+        # del layer[idx]
+        # for upd in layer[idx:]:
+        #     upd.setZValue(upd.zValue() - 1)
 
     def SortSpritesByZone(self):
         """
@@ -637,7 +637,6 @@ class Area:
         Loads a specific object layer from a string
         """
         objstruct = struct.Struct('>HHHHH')
-        z = (2 - idx) * 8192
 
         append = self.layers[idx].append
         obj = ObjectItem
@@ -646,8 +645,7 @@ class Area:
         # Ignore the last 2 bytes, because they are always 0xFFFF.
         for offset in range(0, len(layerdata) - 2, 10):
             data = unpack(layerdata, offset)
-            append(obj(data[0] >> 12, data[0] & 4095, idx, *data[1:], z))
-            z += 1
+            append(obj(data[0] >> 12, data[0] & 0xFFF, idx, *data[1:]))
 
     def LoadCamProfiles(self):
         """
