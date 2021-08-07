@@ -3838,7 +3838,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         else:
             return
 
-        ent.ensureVisible(xmargin=192, ymargin=192)
+        ent.ensureVisible(xMargin=192, yMargin=192)
         self.scene.clearSelection()
         ent.setSelected(True)
 
@@ -3863,7 +3863,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         else:
             return
 
-        loc.ensureVisible(xmargin=192, ymargin=192)
+        loc.ensureVisible(xMargin=192, yMargin=192)
         self.scene.clearSelection()
         loc.setSelected(True)
 
@@ -3886,7 +3886,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         else:
             return
 
-        path.ensureVisible(xmargin=192, ymargin=192)
+        path.ensureVisible(xMargin=192, yMargin=192)
         self.scene.clearSelection()
         path.setSelected(True)
 
@@ -3909,7 +3909,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         else:
             return
 
-        comment.ensureVisible(xmargin=192, ymargin=192)
+        comment.ensureVisible(xMargin=192, yMargin=192)
         self.scene.clearSelection()
         comment.setSelected(True)
 
