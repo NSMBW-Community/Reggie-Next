@@ -732,6 +732,8 @@ class TileLayerRenderer(QtWidgets.QGraphicsItem):
             for i, row in enumerate(item.objdata, desty):
                 destrow = tmap[i]
                 for j, tile in enumerate(row, startx):
+                    if tile <= 0:
+                        continue
                     destrow[j] = tile
                     used_tiles.add(tile)
 
