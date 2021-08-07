@@ -1000,7 +1000,7 @@ class SpriteList(QtWidgets.QWidget):
 
         # Get the sprite defintion and the id type that is filtered by.
         filtertype = self.idtypes[filteridx - 1]
-        sprite = self.table.item(row, 0)._sprite
+        sprite = self.table.item(row, 0).data(QtCore.Qt.UserRole)
 
         if 0 <= sprite.type < globals_.NumSprites:
             sdef = globals_.Sprites[sprite.type]
@@ -1035,7 +1035,7 @@ class SpriteList(QtWidgets.QWidget):
         """
         for i in range(self.table.rowCount()):
             id_item = self.table.item(i, 0)
-            if id_item._sprite == sprite:
+            if id_item.data(QtCore.Qt.UserRole) == sprite:
                 return i
 
         return -1
@@ -1073,15 +1073,13 @@ class SpriteList(QtWidgets.QWidget):
         # Add the sprite id
         id_item = QtWidgets.QTableWidgetItem()
         id_item.setData(QtCore.Qt.DisplayRole, sprite.type)
+        id_item.setData(QtCore.Qt.UserRole, sprite)
         id_item.setFlags(id_item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.table.setItem(row, 0, id_item)
 
-        # Ensure we can get to the spriteitem from the row in the table.
-        # HACK: We're creating a new field here
-        id_item._sprite = sprite
-
         # Also add the sprite name
         name_item = QtWidgets.QTableWidgetItem(sprite.name)
+        name_item.setData(QtCore.Qt.UserRole, sprite)
         name_item.setFlags(name_item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.table.setItem(row, 1, name_item)
 
@@ -1167,11 +1165,12 @@ class SpriteList(QtWidgets.QWidget):
         """
         Creates a tooltip for the item
         """
-        if not hasattr(item, '_sprite'):
-            # no tooltip for items that are not the name
+        sprite = item.data(QtCore.Qt.UserRole)
+
+        if sprite is None:
             return
 
-        img = item._sprite.renderInLevelIcon()
+        img = sprite.renderInLevelIcon()
         byteArray = QtCore.QByteArray()
         buf = QtCore.QBuffer(byteArray)
         img.save(buf, 'PNG')
@@ -1188,11 +1187,12 @@ class SpriteList(QtWidgets.QWidget):
         """
         Moves the view to the sprite and selects it.
         """
-        if not hasattr(item, '_sprite'):
+        sprite = item.data(QtCore.Qt.UserRole)
+
+        if sprite is None:
             return
 
-        sprite = item._sprite
-        sprite.ensureVisible(xMargin = 192, yMargin = 192)
+        sprite.ensureVisible(xMargin=192, yMargin=192)
         sprite.scene().clearSelection()
         sprite.setSelected(True)
 
