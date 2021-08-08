@@ -6859,11 +6859,12 @@ class SpriteImage_RoyKoopaCastleBoss(SLib.SpriteImage):  # 364
 class SpriteImage_LudwigVonKoopaCastleBoss(SLib.SpriteImage):  # 365
     def __init__(self, parent):
         super().__init__(parent)
-        self.parent.setZValue(24999)
+        self.parent.setZValue(-100)
 
         self.aux.append(SLib.AuxiliaryImage(parent, 720, 840))
         self.aux[0].image = ImageCache['LudwigVonKoopaCastleBoss']
         self.aux[0].setPos(-24, -360)
+        self.aux[0].alpha = 0.5
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 24, 288))
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 528, 24, 72, 264))
         self.aux[2].fillFlag = False
