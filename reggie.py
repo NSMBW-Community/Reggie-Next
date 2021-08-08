@@ -2445,6 +2445,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.PlaceObjectsAtFullSize = dlg.generalTab.fullObjSize.isChecked()
         setSetting('PlaceObjectsAtFullSize', globals_.PlaceObjectsAtFullSize)
 
+        globals_.Layer0Opacity = dlg.generalTab.layer_0_opacity.value()
+        setSetting('Layer0Opacity', globals_.Layer0Opacity)
+
         # Get the Toolbar tab settings
         boxes = (
             dlg.toolbarTab.FileBoxes, dlg.toolbarTab.EditBoxes, dlg.toolbarTab.ViewBoxes, dlg.toolbarTab.SettingsBoxes,
@@ -4397,6 +4400,7 @@ def main():
     globals_.EnablePadding = setting('EnablePadding', False)
     globals_.PaddingLength = int(setting('PaddingLength', 0))
     globals_.PlaceObjectsAtFullSize = setting('PlaceObjectsAtFullSize', True)
+    globals_.Layer0Opacity = setting('Layer0Opacity', 7)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game

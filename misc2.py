@@ -745,10 +745,10 @@ class TileLayerRenderer(QtWidgets.QGraphicsItem):
 
         painter.translate(x * 24, y * 24)
 
-        # Render layer 0 at 0.7 opacity, to not completely hide things behind
+        # Render layer 0 at some opacity, to not completely hide things behind
         # layer 0.
         if self._layer_num == 0:
-            painter.setOpacity(0.7)
+            painter.setOpacity(globals_.Layer0Opacity / 10)
 
         draw_tile = painter.drawPixmap
 

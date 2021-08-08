@@ -1500,6 +1500,21 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Place objects at full size
                 self.fullObjSize = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 37))
 
+                # Layer 0 opacity
+                label = QtWidgets.QLabel("70%")
+                label.setAlignment(QtCore.Qt.AlignHCenter)
+
+                self.layer_0_opacity = QtWidgets.QSlider(QtCore.Qt.Horizontal)
+                self.layer_0_opacity.setRange(0, 10)
+                self.layer_0_opacity.setTickPosition(QtWidgets.QSlider.TicksBelow)
+                self.layer_0_opacity.setTickInterval(1)
+                self.layer_0_opacity.valueChanged.connect(lambda v: label.setText(str(v * 10) + "%"))
+
+                layer_0_layout = QtWidgets.QVBoxLayout()
+                layer_0_layout.setContentsMargins(0, 0, 0, 0)
+                layer_0_layout.addWidget(self.layer_0_opacity)
+                layer_0_layout.addWidget(label)
+
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
                 L.addRow(globals_.trans.string('PrefsDlg', 14), self.Trans)
@@ -1510,6 +1525,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L.addWidget(self.rdhIndicator)
                 L.addWidget(self.erbIndicator)
                 L.addWidget(self.fullObjSize)
+                L.addRow(globals_.trans.string('PrefsDlg', 38), layer_0_layout)
                 self.setLayout(L)
 
                 # Set the buttons
@@ -1546,6 +1562,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.psValue.setValue(globals_.PaddingLength)
 
                 self.fullObjSize.setChecked(globals_.PlaceObjectsAtFullSize)
+                self.layer_0_opacity.setValue(globals_.Layer0Opacity)
 
             def ClearRecent(self):
                 """
