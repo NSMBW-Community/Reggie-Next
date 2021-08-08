@@ -1732,6 +1732,11 @@ class SpriteImage_KoopaTroopa(SLib.SpriteImage_StaticMultiple):  # 57
             del self.offset
             self.image = ImageCache['KoopaShellG'] if not red else ImageCache['KoopaShellR']
 
+        if self.parent.spritedata[3] & 1:
+            self.parent.setZValue(-2500)
+        else:
+            self.parent.setZValue(1500)
+
         super().dataChanged()
 
 
@@ -1795,6 +1800,11 @@ class SpriteImage_KoopaParatroopa(SLib.SpriteImage_StaticMultiple):  # 58
         else:
             # hide the track
             self.aux[0].setSize(0, 0)
+
+        if self.parent.spritedata[3] & 1:
+            self.parent.setZValue(-2500)
+        else:
+            self.parent.setZValue(1500)
 
         super().dataChanged()
 
