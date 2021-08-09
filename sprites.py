@@ -8151,7 +8151,7 @@ class SpriteImage_BowserDoor(SpriteImage_Door):  # 452
 class SpriteImage_Seaweed(SLib.SpriteImage_StaticMultiple):  # 453
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.parent.setZValue(24998)
+        self.parent.setZValue(-200)
 
     @staticmethod
     def loadImages():
@@ -8171,6 +8171,11 @@ class SpriteImage_Seaweed(SLib.SpriteImage_StaticMultiple):  # 453
             SeaweedXOffsets[size],
             17 - (self.image.height() / 1.5),
         )
+
+        if self.parent.spritedata[6] == 0:
+            self.parent.setZValue(-200)
+        else:
+            self.parent.setZValue(-3700)
 
         super().dataChanged()
 
