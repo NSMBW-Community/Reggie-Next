@@ -8611,33 +8611,26 @@ class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
     def __init__(self, parent):
         super().__init__(parent)
         self.aux.append(SLib.AuxiliaryImage(parent, 3612, 672))
-        self.aux[0].image = ImageCache['FinalBossEffects0']
-        self.aux[0].setPos(-228, -555)
-        self.parent.setZValue(24999)
 
     @staticmethod
     def loadImages():
         if 'FinalBossEffects0' in ImageCache: return
-
         for i in range(3):
             ImageCache["FinalBossEffects%d" % i] = SLib.GetImg("final_boss_effects_%d.png" % i)
 
     def dataChanged(self):
-        style = self.parent.spritedata[5] & 15
+        style = self.parent.spritedata[5] % 3
 
-        # Styles greater than 2 crash the game
-        if style > 2:
-            self.aux[0].image = None
-
+        self.aux[0].image = ImageCache['FinalBossEffects%d' % style]
+        if style == 0:
+            self.aux[0].setPos(-228, -555)
+            self.parent.setZValue(5500) #7100
+        elif style == 1:
+            self.aux[0].setPos(-228, -408)
+            self.parent.setZValue(5500) #7100
         else:
-            self.aux[0].image = ImageCache['FinalBossEffects%d' % style]
-
-            if style == 0:
-                self.aux[0].setPos(-228, -555)
-            elif style == 1:
-                self.aux[0].setPos(-228, -408)
-            else:
-                self.aux[0].setPos(-24, -192)
+            self.aux[0].setPos(-24, -192)
+            self.parent.setZValue(-3500)
 
         super().dataChanged()
 
