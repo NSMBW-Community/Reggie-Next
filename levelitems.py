@@ -1321,7 +1321,7 @@ class ZoneItem(LevelEditorItem):
         globals_.DirtyOverride += 1
         self.setPos(int(a * 1.5), int(b * 1.5))
         globals_.DirtyOverride -= 1
-        self.setZValue(5600)
+        self.setZValue(5800)
 
     def UpdateTitle(self):
         """
@@ -2556,7 +2556,7 @@ class EntranceItem(LevelEditorItem):
         self.setPos(int(x * 1.5), int(y * 1.5))
         globals_.DirtyOverride -= 1
 
-        self.setZValue(0.3)
+        self.setZValue(5600)
         self.UpdateTooltip()
         self.UpdateRects()
 
@@ -2753,7 +2753,7 @@ class PathItem(LevelEditorItem):
 
         globals_.OverrideSnapping = old_snap
 
-        self.setZValue(0.5)
+        self.setZValue(5701)
         self.UpdateTooltip()
 
         # now that we're inited, set
@@ -2862,7 +2862,7 @@ class PathEditorLineItem(LevelEditorItem):
         self.setFlag(self.ItemIsMovable, False)
         self.setFlag(self.ItemIsSelectable, False)
         self.computeBoundRectAndPos()
-        self.setZValue(0.4)
+        self.setZValue(5700)
         self.UpdateTooltip()
 
     def UpdateTooltip(self):
@@ -2965,12 +2965,12 @@ class CommentItem(LevelEditorItem):
         self.setPos(int(x * 1.5), int(y * 1.5))
         globals_.DirtyOverride -= 1
 
-        self.setZValue(5701)
+        self.setZValue(5901)
         self.UpdateTooltip()
 
         self.TextEdit = QtWidgets.QPlainTextEdit()
         self.TextEditProxy = globals_.mainWindow.scene.addWidget(self.TextEdit)
-        self.TextEditProxy.setZValue(5700)
+        self.TextEditProxy.setZValue(5900)
         self.TextEditProxy.setCursor(QtCore.Qt.IBeamCursor)
         self.TextEditProxy.boundingRect = lambda self: QtCore.QRectF(0, 0, 4000, 4000)
         self.TextEdit.setVisible(False)
@@ -3066,7 +3066,7 @@ class CommentItem(LevelEditorItem):
             # Therefore, I need to make a new one.
             self.TextEdit = QtWidgets.QPlainTextEdit()
             self.TextEditProxy = globals_.mainWindow.scene.addWidget(self.TextEdit)
-            self.TextEditProxy.setZValue(5700)
+            self.TextEditProxy.setZValue(5900)
             self.TextEditProxy.setCursor(QtCore.Qt.IBeamCursor)
             self.TextEditProxy.BoundingRect = QtCore.QRectF(0, 0, 4000, 4000)
             self.TextEditProxy.boundingRect = lambda self: self.BoundingRect
