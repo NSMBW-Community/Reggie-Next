@@ -8624,9 +8624,13 @@ class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
             ImageCache["FinalBossEffects%d" % i] = SLib.GetImg("final_boss_effects_%d.png" % i)
 
     def dataChanged(self):
-        style = self.parent.spritedata[5] % 3
+        style = self.parent.spritedata[5] & 0xF
 
-        self.aux[0].image = ImageCache['FinalBossEffects%d' % style]
+        if style <= 2:
+            self.aux[0].image = ImageCache['FinalBossEffects%d' % style]
+        else:
+            self.aux[0].image = None
+
         if style == 0:
             self.aux[0].setPos(-228, -555)
             self.parent.setZValue(5500) #7100
