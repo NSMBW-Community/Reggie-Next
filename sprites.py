@@ -6016,7 +6016,7 @@ class SpriteImage_Bolt(SLib.SpriteImage_Static):  # 315
             ImageCache['Bolt'],
             (2, 0),
         )
-    self.parent.setZValue(450)
+        self.parent.setZValue(450)
 
     @staticmethod
     def loadImages():
