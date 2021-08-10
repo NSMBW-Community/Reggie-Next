@@ -3369,6 +3369,15 @@ class SpriteImage_RedCoin(SLib.SpriteImage_Static):  # 144
             ImageCache['RedCoin'],
         )
 
+    def dataChanged(self):
+        zorder = self.parent.spritedata[4] & 1
+        if zorder:
+            self.parent.setZValue(-32)
+        else:
+            self.parent.setZValue(500)
+
+        super().dataChanged()
+
 
 class SpriteImage_FloatingBarrel(SLib.SpriteImage_Static):  # 145
     def __init__(self, parent):
@@ -3433,6 +3442,7 @@ class SpriteImage_Coin(SLib.SpriteImage_StaticMultiple):  # 147
 
     def dataChanged(self):
         type = self.parent.spritedata[5] & 0xF
+        zorder = self.parent.spritedata[4] & 3
 
         if type == 0:
             self.image = ImageCache['Coin']
@@ -3446,6 +3456,10 @@ class SpriteImage_Coin(SLib.SpriteImage_StaticMultiple):  # 147
         else:
             self.image = ImageCache['SpecialCoin']
             self.offset = (0, 0)
+        if zorder == 0:
+            self.parent.setZValue(500)
+        else:
+            self.parent.setZValue(-3000)
 
         super().dataChanged()
 
@@ -4875,6 +4889,14 @@ class SpriteImage_PCoin(SLib.SpriteImage_Static):  # 237
             1.5,
             ImageCache['PCoin'],
         )
+    def dataChanged(self):
+        zorder = self.parent.spritedata[4] & 1
+        if zorder:
+            self.parent.setZValue(-3000)
+        else:
+            self.parent.setZValue(500)
+
+        super().dataChanged()
 
 
 class SpriteImage_Foo(SLib.SpriteImage_Static):  # 238
