@@ -1904,6 +1904,7 @@ class SpriteImage_SpinningFirebar(SLib.SpriteImage):  # 62
 
         size = self.parent.spritedata[5] & 0xF
         wideBase = (self.parent.spritedata[3] >> 4) & 1
+        zorder = self.parent.spritedata[3] & 1
 
         width = ((size * 2) + 1) * 12
         self.aux[0].setSize(width)
@@ -1915,6 +1916,11 @@ class SpriteImage_SpinningFirebar(SLib.SpriteImage):  # 62
         self.image = ImageCache['FirebarBase'] if not wideBase else ImageCache['FirebarBaseWide']
         self.xOffset = 0 if not wideBase else -8
         self.width = 16 if not wideBase else 32
+
+        if zorder:
+            self.parent.setZValue(-2500)
+        else:
+            self.parent.setZValue(1500)
 
     def paint(self, painter):
         super().paint(painter)
