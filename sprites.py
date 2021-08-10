@@ -5906,7 +5906,7 @@ class SpriteImage_ArrowSign(SLib.SpriteImage_StaticMultiple):  # 310
         if zorder:
             self.parent.setZValue(-2500)
         else:
-            self.parent.setZValue(0)
+            self.parent.setZValue(1) #0
 
         super().dataChanged()
 
