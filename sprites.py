@@ -5899,9 +5899,14 @@ class SpriteImage_ArrowSign(SLib.SpriteImage_StaticMultiple):  # 310
             ImageCache['ArrowSign%d' % i] = SLib.GetImg('arrow_sign_%d.png' % i)
 
     def dataChanged(self):
-
-        direction = self.parent.spritedata[5] & 0xF
+        direction = self.parent.spritedata[5] & 7
+        zorder = (self.parent.spritedata[5] >> 4) & 1
+        
         self.image = ImageCache['ArrowSign%d' % direction]
+        if zorder:
+            self.parent.setZValue(-2500)
+        else:
+            self.parent.setZValue(0)
 
         super().dataChanged()
 
