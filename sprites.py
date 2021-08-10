@@ -4418,7 +4418,7 @@ class SpriteImage_FreefallPlatform(SLib.SpriteImage_Static):  # 214
             1.5,
             ImageCache['FreefallGH'],
         )
-        self.parent.setZValue(24999)
+        self.parent.setZValue(-256)
 
     @staticmethod
     def loadImages():
