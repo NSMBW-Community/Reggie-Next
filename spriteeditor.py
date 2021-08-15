@@ -1901,7 +1901,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             x_ = mw.selObj.objx + 16
             y_ = mw.selObj.objy
-            globals_.mainWindow.CreateSprite(x_, y_, id_)
+            globals_.mainWindow.CreateSprite(x_, y_, id_, data=bytes(8))
 
             # remove this dependency, because it is now fulfilled.
             # get row of button
