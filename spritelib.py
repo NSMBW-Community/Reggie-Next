@@ -511,6 +511,7 @@ class AuxiliaryCircleOutline(AuxiliarySpriteItem):
         super().__init__(parent)
 
         self.hover = False
+        self.fillFlag = True
         self.alignMode = alignMode
         self.setSize(width)
 
@@ -539,7 +540,10 @@ class AuxiliaryCircleOutline(AuxiliarySpriteItem):
     def paint(self, painter, option, widget=None):
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
         painter.setPen(OutlinePen)
-        painter.setBrush(OutlineBrush)
+
+        if self.fillFlag:
+            painter.setBrush(OutlineBrush)
+
         painter.drawEllipse(self.BoundingRect)
 
 
