@@ -7254,7 +7254,6 @@ class SpriteImage_PowBlock(SLib.SpriteImage_Static):  # 386
 class SpriteImage_Bush(SLib.SpriteImage_StaticMultiple):  # 387
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.parent.setZValue(-200)
 
     @staticmethod
     def loadImages():

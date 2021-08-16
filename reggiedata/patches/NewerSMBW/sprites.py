@@ -701,6 +701,11 @@ class SpriteImage_NewerKoopa(SLib.SpriteImage_StaticMultiple):  # 57
             else:
                 self.image = ImageCache['KoopaShell%d%d' % (red, texhack)]
 
+        if self.parent.spritedata[3] & 1:
+            self.parent.setZValue(-2500)
+        else:
+            self.parent.setZValue(1500)
+
         super().dataChanged()
 
 
@@ -776,6 +781,11 @@ class SpriteImage_NewerParaKoopa(SLib.SpriteImage_StaticMultiple):  # 58
         else:
             # hide the track
             self.aux[0].setSize(0, 0)
+
+        if self.parent.spritedata[3] & 1:
+            self.parent.setZValue(-2500)
+        else:
+            self.parent.setZValue(1500)
 
         super().dataChanged()
 
@@ -2045,7 +2055,6 @@ class SpriteImage_NewerFruit(SLib.SpriteImage_StaticMultiple):  # 357
 class SpriteImage_NewerBush(SLib.SpriteImage_StaticMultiple):  # 387
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.parent.setZValue(24999)
 
     @staticmethod
     def loadImages():
@@ -2064,6 +2073,7 @@ class SpriteImage_NewerBush(SLib.SpriteImage_StaticMultiple):  # 387
         colors = style % 6
         size = self.parent.spritedata[5] & 3
         yellowish = (self.parent.spritedata[5] >> 4) & 1
+        layer = self.parent.spritedata[6]
 
         bush = ("green", "brown", "darkred", "yellow", "darkbrown", "red")[colors]
         scale = ("small", "med", "large", "xlarge")[size]
@@ -2088,6 +2098,11 @@ class SpriteImage_NewerBush(SLib.SpriteImage_StaticMultiple):  # 387
                 (-41, -62),
                 (-52, -80),
             )[size]
+
+        if layer == 0:
+            self.parent.setZValue(-200)
+        else:
+            self.parent.setZValue(-3700)
 
         super().dataChanged()
 
