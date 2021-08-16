@@ -631,24 +631,21 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             starty -= (starty % 24)
             endy = starty + rect.height() + 24
 
-            x = startx - 24
+            x = startx
             while x <= endx:
-                x += 24
                 if x % 192 == 0:
                     painter.setPen(QtGui.QPen(GridColor, 2, QtCore.Qt.DashLine))
                     drawLine(x, starty, x, endy)
-                elif x % 96 == 0:
-                    if Zoom < 25: continue
+                elif x % 96 == 0 and Zoom >= 25:
                     painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DashLine))
                     drawLine(x, starty, x, endy)
-                else:
-                    if Zoom < 50: continue
+                elif Zoom >= 50:
                     painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DotLine))
                     drawLine(x, starty, x, endy)
+                x += 24
 
-            y = starty - 24
+            y = starty
             while y <= endy:
-                y += 24
                 if y % 192 == 0:
                     painter.setPen(QtGui.QPen(GridColor, 2, QtCore.Qt.DashLine))
                     drawLine(startx, y, endx, y)
@@ -658,6 +655,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 elif Zoom >= 50:
                     painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DotLine))
                     drawLine(startx, y, endx, y)
+                y += 24
 
         else:  # draw a checkerboard
             L = 0.2
