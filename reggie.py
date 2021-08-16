@@ -4330,6 +4330,17 @@ def main():
         copy2('settings.ini', 'settings.ini.bak')
         del copy2
 
+    # Try to get the last commit id - if it failed, we're in a build.
+    import subprocess
+
+    try:
+        commit_id = subprocess.check_output(["git", "describe", "--always"]).decode().strip()
+        globals_.ReggieVersionShort += "-" + commit_id
+    except OSError:
+        pass
+
+    del subprocess
+
     # Load the settings
     globals_.settings = QtCore.QSettings('settings.ini', QtCore.QSettings.IniFormat)
 
