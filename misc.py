@@ -1802,8 +1802,9 @@ class PreferencesDialog(QtWidgets.QDialog):
                 """
 
                 scene = QtWidgets.QGraphicsScene(0, 0, 32 * 16, 17 * 16, self)
-                old_theme = globals_.theme
+                old_theme, old_real_view = globals_.theme, globals_.RealViewEnabled
                 globals_.theme = theme
+                globals_.RealViewEnabled = False  # Disable so the zone looks 'plain'
 
                 # Sprite [38] at (11, 4)
                 sprite = globals_.mainWindow.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(8), add_to_scene=False)
@@ -1859,8 +1860,9 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 painter.end()
 
-                # Restore theme
+                # Restore globals that were changed
                 globals_.theme = old_theme
+                globals_.RealViewEnabled = old_real_view
 
                 return px
 
