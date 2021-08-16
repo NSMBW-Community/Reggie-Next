@@ -5304,23 +5304,26 @@ class SpriteImage_IceBro(SLib.SpriteImage_Static):  # 272
         SLib.loadIfNotInImageCache('IceBro', 'icebro.png')
 
 
-class SpriteImage_CastleGear(SLib.SpriteImage_StaticMultiple):  # 274
+class SpriteImage_CastleGear(SLib.SpriteImage):  # 274
     def __init__(self, parent):
         super().__init__(parent)
+        self.aux.append(SLib.AuxiliaryImage(parent, 456, 456))
         self.parent.setZValue(-10)
-    
+
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('CastleGearL', 'castle_gear_large.png')
         SLib.loadIfNotInImageCache('CastleGearS', 'castle_gear_small.png')
 
     def dataChanged(self):
-        isBig = (self.parent.spritedata[4] & 0xF) == 1
-        self.image = ImageCache['CastleGearL'] if isBig else ImageCache['CastleGearS']
-        self.offset = (
-            -(((self.image.width() / 2) - 12) * (2 / 3)),
-            -(((self.image.height() / 2) - 12) * (2 / 3)),
-        )
+        big = (self.parent.spritedata[4] & 0xF) & 1
+
+        if big:
+            self.aux[0].image = ImageCache['CastleGearL']
+            self.aux[0].setPos(-216, -216)
+        else:
+            self.aux[0].image = ImageCache['CastleGearS']
+            self.aux[0].setPos(-144, -144)
 
         super().dataChanged()
 
