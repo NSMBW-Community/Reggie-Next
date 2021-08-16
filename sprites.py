@@ -675,7 +675,7 @@ class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.spritebox.shown = False
-        self.parent.setZValue(24999)
+        self.parent.setZValue(3000)
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
 
     @staticmethod
@@ -5305,6 +5305,10 @@ class SpriteImage_IceBro(SLib.SpriteImage_Static):  # 272
 
 
 class SpriteImage_CastleGear(SLib.SpriteImage_StaticMultiple):  # 274
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent.setZValue(-10)
+    
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('CastleGearL', 'castle_gear_large.png')
