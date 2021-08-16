@@ -339,8 +339,8 @@ class SpriteImage_NewerGoomba(SLib.SpriteImage_StaticMultiple):  # 20
             ImageCache['Goomba%d' % (i + 1)] = SLib.GetImg('goomba_%d.png' % (i + 1))
 
     def dataChanged(self):
-
         color = (self.parent.spritedata[2] & 0xF) % 9
+        zorder = self.parent.spritedata[3] & 1
 
         if color == 0:
             self.image = ImageCache['Goomba']
@@ -348,6 +348,11 @@ class SpriteImage_NewerGoomba(SLib.SpriteImage_StaticMultiple):  # 20
         else:
             self.image = ImageCache['Goomba%d' % color]
             self.offset = (0, -4) if color not in (7, 8) else (0, -5)
+
+        if zorder:
+            self.parent.setZValue(-2500)
+        else:
+            self.parent.setZValue(1500)
 
         super().dataChanged()
 
@@ -363,12 +368,17 @@ class SpriteImage_NewerParaGoomba(SLib.SpriteImage_StaticMultiple):  # 21
     def dataChanged(self):
         colour = (self.parent.spritedata[2] & 0xF) % 9
         self.offset = (-1, -10)
+        zorder = self.parent.spritedata[3] & 1
 
         if colour == 0:
             self.image = ImageCache['ParaGoomba']
-
         else:
             self.image = ImageCache['ParaGoomba%d' % colour]
+
+        if zorder:
+            self.parent.setZValue(-2500)
+        else:
+            self.parent.setZValue(1500)
 
         super().dataChanged()
 
@@ -377,6 +387,7 @@ class SpriteImage_PumpkinGoomba(SLib.SpriteImage_StaticMultiple):  # 22
     def __init__(self, parent):
         super().__init__(parent)
         self.offset = (-4, -48)
+        self.parent.setZValue(1500)
 
     @staticmethod
     def loadImages():
@@ -1332,6 +1343,10 @@ class SpriteImage_NewerHuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
 
 
 class SpriteImage_NewerGiantGoomba(SLib.SpriteImage_StaticMultiple):  # 198
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent.setZValue(1500)
+
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('GiantGoomba', 'giant_goomba.png')
@@ -1340,7 +1355,6 @@ class SpriteImage_NewerGiantGoomba(SLib.SpriteImage_StaticMultiple):  # 198
             ImageCache['GiantGoomba%d' % (i + 1)] = SLib.GetImg('giant_goomba_%d.png' % (i + 1))
 
     def dataChanged(self):
-
         colour = (self.parent.spritedata[2] & 0xF) % 7
 
         if colour == 0:
@@ -1354,6 +1368,10 @@ class SpriteImage_NewerGiantGoomba(SLib.SpriteImage_StaticMultiple):  # 198
 
 
 class SpriteImage_NewerMegaGoomba(SLib.SpriteImage_StaticMultiple):  # 198
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent.setZValue(1500)
+    
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('MegaGoomba', 'mega_goomba.png')
@@ -2100,6 +2118,7 @@ class SpriteImage_GigaGoomba(SLib.SpriteImage_Static):  # 410
             ImageCache['GigaGoomba'],
             (-108, -160),
         )
+        self.parent.setZValue(1500)
 
     @staticmethod
     def loadImages():

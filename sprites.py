@@ -1179,6 +1179,14 @@ class SpriteImage_Goomba(SLib.SpriteImage_Static):  # 20
     def loadImages():
         SLib.loadIfNotInImageCache('Goomba', 'goomba.png')
 
+    def dataChanged(self):
+        zorder = self.parent.spritedata[3] & 1
+        if zorder:
+            self.parent.setZValue(-2500)
+        else:
+            self.parent.setZValue(1500)
+
+        super().dataChanged()
 
 class SpriteImage_ParaGoomba(SLib.SpriteImage_Static):  # 21
     def __init__(self, parent):
@@ -1193,6 +1201,14 @@ class SpriteImage_ParaGoomba(SLib.SpriteImage_Static):  # 21
     def loadImages():
         SLib.loadIfNotInImageCache('ParaGoomba', 'para_goomba.png')
 
+    def dataChanged(self):
+        zorder = self.parent.spritedata[3] & 1
+        if zorder:
+            self.parent.setZValue(-2500)
+        else:
+            self.parent.setZValue(1500)
+
+        super().dataChanged()
 
 class SpriteImage_HorzMovingPlatform(SpriteImage_WoodenPlatform):  # 23
     def __init__(self, parent):
@@ -4271,6 +4287,7 @@ class SpriteImage_GiantGoomba(SLib.SpriteImage_Static):  # 198
             ImageCache['GiantGoomba'],
             (-6, -19),
         )
+        self.parent.setZValue(1500)
 
     @staticmethod
     def loadImages():
@@ -4285,6 +4302,7 @@ class SpriteImage_MegaGoomba(SLib.SpriteImage_Static):  # 199
             ImageCache['MegaGoomba'],
             (-11, -37),
         )
+        self.parent.setZValue(1500)
 
     @staticmethod
     def loadImages():
