@@ -15,6 +15,7 @@ from dialogs import DiagnosticToolDialog
 from translation import ReggieTranslation
 from libs import lh
 from misc2 import LevelViewWidget
+from levelitems import PathItem, PathEditorLineItem, CommentItem
 
 ################################################################################
 ################################################################################
@@ -1805,11 +1806,11 @@ class PreferencesDialog(QtWidgets.QDialog):
                 globals_.theme = theme
 
                 # Sprite [38] at (11, 4)
-                sprite = globals_.mainWindow.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(16), add_to_scene=False)
+                sprite = globals_.mainWindow.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(8), add_to_scene=False)
                 scene.addItem(sprite)
 
                 # Sprite [53] at (1, 6)
-                sprite = globals_.mainWindow.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(16), add_to_scene=False)
+                sprite = globals_.mainWindow.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(8), add_to_scene=False)
                 scene.addItem(sprite)
 
                 # Entrance [0] at (13, 8)
@@ -1822,6 +1823,26 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Zone [1] at (8.5, 3.25) size (16, 7.5)
                 zone = globals_.mainWindow.CreateZone(8.5 * 16, 3.25 * 16, 16 * 16, 7.5 * 16, id_=1, add_to_scene=False)
                 scene.addItem(zone)
+
+                # Path [1] making a rectangle shape between (13, 5) and (18, 9)
+                nodes = [
+                    {'x': 13 * 16, 'y': 5 * 16, 'speed': 0.5, 'accel': 0.5, 'delay': 0},
+                    {'x': 18 * 16, 'y': 5 * 16, 'speed': 0.5, 'accel': 0.5, 'delay': 0},
+                    {'x': 18 * 16, 'y': 9 * 16, 'speed': 0.5, 'accel': 0.5, 'delay': 0},
+                    {'x': 13 * 16, 'y': 9 * 16, 'speed': 0.5, 'accel': 0.5, 'delay': 0},
+                ]
+
+                path_line = PathEditorLineItem(nodes)
+                path_line.loops = True
+                scene.addItem(path_line)
+
+                for node in nodes:
+                    path = PathItem(node['x'], node['y'], {'id': 1, 'nodes': nodes, 'peline': path_line}, node)
+                    scene.addItem(path)
+
+                # Empty comment at (2, 3)
+                comment = CommentItem(2 * 16, 3 * 16, "")
+                scene.addItem(comment)
 
                 # Take a screenshot
                 px = QtGui.QPixmap(32 * 16, 17 * 16)
