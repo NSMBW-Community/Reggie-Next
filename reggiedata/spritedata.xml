@@ -4374,12 +4374,7 @@
       <entry value="1">Down</entry>
     </list>
     <value nybble="10" title="Speed" comment="Value 0 keeps it in place."/>
-    <list nybble="11" title="Movement Direction">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Left</entry>
-      <entry value="3">Left</entry>
-    </list>
+    <dualbox bit="44" title1="Moves Right" title2="Moves Left"/>
     <list nybble="12" title="Facing" comment="Will fly backwards if facing wrong direction.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -4394,12 +4389,7 @@
       <entry value="1">Down</entry>
     </list>
     <value nybble="10" title="Speed" comment="Value 0 keeps it in place."/>
-    <list nybble="11" title="Movement Direction">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Left</entry>
-      <entry value="3">Left</entry>
-    </list>
+    <dualbox bit="44" title1="Moves Right" title2="Moves Left"/>
     <list nybble="12" title="Facing" comment="Will fly backwards if facing wrong direction.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
