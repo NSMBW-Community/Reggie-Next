@@ -2728,6 +2728,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if globals_.Initializing:
                 continue
 
+            # Prevents snapping the sprite to the grid
+            spr.ChangingPos = True
+
             if checked:
                 spr.setPos(
                     (spr.objx + spr.ImageObj.xOffset) * 1.5,
@@ -2738,6 +2741,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     spr.objx * 1.5,
                     spr.objy * 1.5,
                 )
+
+            spr.ChangingPos = False
 
         globals_.DirtyOverride -= 1
 
