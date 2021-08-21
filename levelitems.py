@@ -2113,7 +2113,11 @@ class SpriteItem(LevelEditorItem):
 
         if globals_.SpriteImagesShown:
             unitedRect = imgRect.united(spriteboxRect)
-            unitedOffsetRect = imgOffsetRect.united(spriteboxOffsetRect)
+
+            if self.ImageObj.spritebox.shown:
+                unitedOffsetRect = imgOffsetRect.united(spriteboxOffsetRect)
+            else:
+                unitedOffsetRect = imgOffsetRect
 
             # SelectionRect: Used to determine the size of the
             # "this sprite is selected" translucent white box that
