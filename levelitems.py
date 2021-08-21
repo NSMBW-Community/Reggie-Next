@@ -2128,35 +2128,27 @@ class SpriteItem(LevelEditorItem):
             # the size and position of the sprite in the level.
             # Measured in blocks.
             self.LevelRect = QtCore.QRectF(
-                unitedOffsetRect.topLeft().x() / 24,
-                unitedOffsetRect.topLeft().y() / 24,
-                unitedOffsetRect.width() / 24,
-                unitedOffsetRect.height() / 24,
+                unitedOffsetRect.topLeft() / 24,
+                unitedOffsetRect.size() / 24,
             )
 
             # BoundingRect: The sprite can only paint within
             # this area.
             self.BoundingRect = unitedRect.translated(
-                self.ImageObj.spritebox.BoundingRect.topLeft().x(),
-                self.ImageObj.spritebox.BoundingRect.topLeft().y(),
+                self.ImageObj.spritebox.BoundingRect.topLeft()
             )
 
         else:
             self.SelectionRect = QtCore.QRectF(0.5, 0.5, 23, 23)
 
             self.LevelRect = QtCore.QRectF(
-                spriteboxOffsetRect.topLeft().x() / 24,
-                spriteboxOffsetRect.topLeft().y() / 24,
-                spriteboxOffsetRect.width() / 24,
-                spriteboxOffsetRect.height() / 24,
+                spriteboxOffsetRect.topLeft() / 24,
+                spriteboxOffsetRect.size() / 24,
             )
 
             # BoundingRect: The sprite can only paint within
             # this area.
-            self.BoundingRect = spriteboxRect.translated(
-                self.ImageObj.spritebox.BoundingRect.topLeft().x(),
-                self.ImageObj.spritebox.BoundingRect.topLeft().y(),
-            )
+            self.BoundingRect = self.ImageObj.spritebox.BoundingRect
 
     def getFullRect(self):
         """
