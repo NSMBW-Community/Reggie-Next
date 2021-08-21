@@ -2119,9 +2119,9 @@ class SpriteItem(LevelEditorItem):
             # "this sprite is selected" translucent white box that
             # appears when a sprite with an image is selected.
             self.SelectionRect = QtCore.QRectF(
-                0, 0,
-                imgRect.width(),
-                imgRect.height(),
+                0.5, 0.5,
+                imgRect.width() - 1,
+                imgRect.height() - 1,
             )
 
             # LevelRect: Used by the Level Overview to determine
@@ -2142,7 +2142,7 @@ class SpriteItem(LevelEditorItem):
             )
 
         else:
-            self.SelectionRect = QtCore.QRectF(0, 0, 24, 24)
+            self.SelectionRect = QtCore.QRectF(0.5, 0.5, 23, 23)
 
             self.LevelRect = QtCore.QRectF(
                 spriteboxOffsetRect.topLeft().x() / 24,
@@ -2387,7 +2387,7 @@ class SpriteItem(LevelEditorItem):
 
             # Draw the selected-sprite-image overlay box
             if self.isSelected() and (not drawSpritebox or self.ImageObj.size != (16, 16)):
-                painter.setPen(QtGui.QPen(globals_.theme.color('sprite_lines_s'), 1, QtCore.Qt.DotLine))
+                painter.setPen(QtGui.QPen(globals_.theme.color('sprite_lines_s'), 1, QtCore.Qt.DashLine))
                 painter.drawRect(self.SelectionRect)
                 painter.fillRect(self.SelectionRect, globals_.theme.color('sprite_fill_s'))
 
