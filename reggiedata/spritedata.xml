@@ -1466,16 +1466,17 @@
   <sprite id="102" name="Broozer" notes="A ghost house enemy that charges towards the Player when they're nearby. He must be stepped on thrice in order to be defeated. He will also destroy certain types of blocks and terrain with his flailing attack. Please note that he can only destroy tileset bricks and not sprite bricks.">
   </sprite> <!-- #102: Broozer -->
 
-  <sprite id="103" name="Basic Platform - Spawner" notes="This will endlessly spawn Basic Platforms moving in a specific direction. The platforms will continue for as long as the player rides on one.">
-    <checkbox bit="20" title="Spawner is Always Loaded" comment="When enabled, the Spawner will continue to run its code when not actively on screen. This allows platforms with horizontal movement to spawn from anywhere in the zone. Newly spawned platforms with vertical movement may not reach beyond a certain distance from the Spawner."/>
-    <list bit="31-32" title="Direction" comment="This determines the direction that spawned platforms will travel.">
+  <sprite id="103" name="Basic Platform - Spawner" notes="This sprite will continously spawn platforms moving in a specific direction. By default, spawned platforms will disappear when the Spawner sprite is off-screen.">
+    <checkbox bit="20" title="Platforms Don't Despawn" comment="When enabled, on-screen platforms will not despawn once the Spawner sprite itself is off-screen." requiredbit="31-32" requiredval="0-1"/>
+    <checkbox bit="20" title="Remain Active Off-Screen*" comment="When enabled, the Spawner will continue to spawn platforms off-screen as long as it was loaded on-screen prior. Otherwise, spawned platforms and the Spawner itself will all unload whenever the Spawner sprite is off-screen." requiredbit="31-32" requiredval="2-3"/>
+    <list bit="31-32" title="Direction" comment="The flag of the Spawner will change if the direction is horizontal or vertical.">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
       <entry value="2">Right</entry>
       <entry value="3">Left</entry>
     </list>
-    <value nybble="11" title="Width of Platform" comment="This determines the width of the spawned platform." comment2="This value needs to be set to 2 or greater."/>
-    <checkbox bit="48" title="Unknown Flag 12 (1)" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
+    <value nybble="11" title="Width"/>
+    <checkbox bit="48" title="Don't Spawn with 4 Platforms" comment="Leaving this off will have the sprite spawn with 4 platforms pre-loaded."/>
   </sprite> <!-- #103: Basic Platform - Spawner -->
 
   <sprite id="104" name="Amp" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="A stationary floating enemy that will electrocute the player when they touch it.&lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interupted and Mario will take no damage.">
