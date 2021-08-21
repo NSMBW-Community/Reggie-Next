@@ -1871,13 +1871,13 @@ class SpriteItem(LevelEditorItem):
         globals_.DirtyOverride += 1
         if globals_.SpriteImagesShown:
             self.setPos(
-                int((self.objx + self.ImageObj.xOffset) * 1.5),
-                int((self.objy + self.ImageObj.yOffset) * 1.5),
+                (self.objx + self.ImageObj.xOffset) * 1.5,
+                (self.objy + self.ImageObj.yOffset) * 1.5,
             )
         else:
             self.setPos(
-                int(self.objx * 1.5),
-                int(self.objy * 1.5),
+                self.objx * 1.5,
+                self.objy * 1.5,
             )
         globals_.DirtyOverride -= 1
 
@@ -2074,8 +2074,8 @@ class SpriteItem(LevelEditorItem):
             self.UpdateRects()
             self.ChangingPos = True
             self.setPos(
-                int((self.objx + self.ImageObj.xOffset) * 1.5),
-                int((self.objy + self.ImageObj.yOffset) * 1.5),
+                (self.objx + self.ImageObj.xOffset) * 1.5,
+                (self.objy + self.ImageObj.yOffset) * 1.5,
             )
             self.ChangingPos = False
 
@@ -2184,98 +2184,77 @@ class SpriteItem(LevelEditorItem):
             if self.scene() is None: return value
             if self.ChangingPos: return value
 
+            # The sprite image offset as a point
             if globals_.SpriteImagesShown:
-                xOffset, yOffset = self.ImageObj.getOffset()
+                offset_point = QtCore.QPoint(*self.ImageObj.getOffset())
             else:
-                # The offsets of the default spritebox
-                xOffset = yOffset = 0
+                offset_point = QtCore.QPoint()
 
-            # Scale the offsets from 16 = 1 block to 24 = 1 block
-            xOffsetAdjusted, yOffsetAdjusted = xOffset * 1.5, yOffset * 1.5
+            # Convert the new position from 24 units per block into 16 units per
+            # block
+            new_pos = value / 1.5
 
-            # snap to 24x24
-            newpos = value
+            # Move the position to sprite origin space by subtracting the image
+            # offset
+            origin_pos = (new_pos - offset_point).toPoint()
 
-            # snap even further if Shift isn't held
-            # but -only- if OverrideSnapping is off
-            if not globals_.OverrideSnapping:
-                objectsSelected = any(isinstance(thing, ObjectItem) for thing in globals_.mainWindow.CurrentSelection)
+            # Snap this position to the grid
+            drag_offset = None
+            if globals_.OverrideSnapping or QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.AltModifier:
+                # Snap the smallest amount possible -> 1/16th of a block
+                snap_level = 1
+            elif self.isSelected() and len(globals_.mainWindow.CurrentSelection) > 1:
+                objects_selected = any(isinstance(x, ObjectItem) for x in globals_.mainWindow.CurrentSelection)
 
-                if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.AltModifier:
-                    # Alt is held; don't snap
-                    pass
-                elif not objectsSelected and self.isSelected() and len(globals_.mainWindow.CurrentSelection) > 1:
-                    # Snap to 8x8, but with the dragoffsets
-                    dragoffsetx, dragoffsety = int(self.dragoffsetx), int(self.dragoffsety)
+                # dragoffsetx and y are in 24 = 1 block units, so convert it to
+                # 16 = 1 block units
+                drag_offset = QtCore.QPointF(self.dragoffsetx, self.dragoffsety) / 1.5
 
-                    if dragoffsetx < -12: dragoffsetx += 12
-                    if dragoffsety < -12: dragoffsety += 12
-                    if dragoffsetx == 0: dragoffsetx = -12
-                    if dragoffsety == 0: dragoffsety = -12
+                origin_pos += drag_offset
 
-                    referenceX = int((newpos.x() + dragoffsetx - xOffsetAdjusted + 6) / 12) * 12
-                    referenceY = int((newpos.y() + dragoffsety - yOffsetAdjusted + 6) / 12) * 12
-
-                    newpos.setX(referenceX - dragoffsetx + xOffsetAdjusted)
-                    newpos.setY(referenceY - dragoffsety + yOffsetAdjusted)
-                elif objectsSelected and self.isSelected():
-                    # Objects are selected, too; move in sync by snapping to whole blocks
-                    dragoffsetx, dragoffsety = int(self.dragoffsetx), int(self.dragoffsety)
-
-                    if dragoffsetx == 0: dragoffsetx = -24
-                    if dragoffsety == 0: dragoffsety = -24
-
-                    referenceX = int((newpos.x() + dragoffsetx - xOffsetAdjusted + 12) / 24) * 24
-                    referenceY = int((newpos.y() + dragoffsety - yOffsetAdjusted + 12) / 24) * 24
-                    newpos.setX(referenceX - dragoffsetx + xOffsetAdjusted)
-                    newpos.setY(referenceY - dragoffsety + yOffsetAdjusted)
+                if objects_selected:
+                    # Snap to full blocks (16/16)
+                    snap_level = 16
                 else:
-                    # Snap to 8x8
-                    newpos.setX(int(int((newpos.x() - xOffsetAdjusted + 6) / 12) * 12 + xOffsetAdjusted))
-                    newpos.setY(int(int((newpos.y() - yOffsetAdjusted + 6) / 12) * 12 + yOffsetAdjusted))
+                    # Snap to half blocks, but adjust for drag offset
+                    snap_level = 8
 
+            else:
+                # Snap to half-blocks (8/16)
+                snap_level = 8
 
-            # Use the in-game sprite positions for the boundary calculations.
-            # Not taking the sprite image offset into account leads to bugs when
-            # the sprite box is located outside the sprite image.
-            x = int(newpos.x() / 1.5 - xOffset)
-            y = int(newpos.y() / 1.5 - yOffset)
+            # Make sure the position is in bounds
+            x = common.clamp(origin_pos.x(), 0, 16368)
+            y = common.clamp(origin_pos.y(), 0, 8176)
 
-            # Don't let it get out of the boundaries
-            if x < 0:
-                x = 0
-                newpos.setX(xOffsetAdjusted)
-            elif x > 16368:
-                x = 16368
-                newpos.setX(16368 * 1.5 + xOffsetAdjusted)
+            origin_pos.setX((x // snap_level) * snap_level)
+            origin_pos.setY((y // snap_level) * snap_level)
 
-            if y < 0:
-                y = 0
-                newpos.setY(yOffsetAdjusted)
-            elif y > 8176:
-                y = 8176
-                newpos.setY(8176 * 1.5 + yOffsetAdjusted)
+            if drag_offset is not None:
+                origin_pos -= drag_offset
+
+            # Move position back to sprite image space by adding the image offset
+            # and calculate objx and objy based on the sprite origin position.
+            new_pos = QtCore.QPointF(origin_pos + offset_point) * 1.5
+
+            x = origin_pos.x()
+            y = origin_pos.y()
 
             if x != self.objx or y != self.objy:
                 updRect = QtCore.QRectF(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
                 self.scene().update(updRect)
 
-                self.LevelRect.moveTo((x + xOffset) / 16, (y + yOffset) / 16)
+                self.LevelRect.moveTo(new_pos / 24)
 
                 for auxObj in self.ImageObj.aux:
                     auxUpdRect = QtCore.QRectF(
-                        self.x() + auxObj.x(),
-                        self.y() + auxObj.y(),
-                        auxObj.boundingRect().width(),
-                        auxObj.boundingRect().height(),
+                        self.pos() + auxObj.pos(),
+                        auxObj.boundingRect().size(),
                     )
                     self.scene().update(auxUpdRect)
 
                 self.scene().update(
-                    self.x() + self.ImageObj.spritebox.BoundingRect.topLeft().x(),
-                    self.y() + self.ImageObj.spritebox.BoundingRect.topLeft().y(),
-                    self.ImageObj.spritebox.BoundingRect.width(),
-                    self.ImageObj.spritebox.BoundingRect.height(),
+                    self.ImageObj.spritebox.BoundingRect.translated(self.pos())
                 )
 
                 oldx = self.objx
@@ -2296,7 +2275,7 @@ class SpriteItem(LevelEditorItem):
 
                 SetDirty()
 
-            return newpos
+            return new_pos
 
         return QtWidgets.QGraphicsItem.itemChange(self, change, value)
 
