@@ -2120,8 +2120,8 @@ class SpriteItem(LevelEditorItem):
             # appears when a sprite with an image is selected.
             self.SelectionRect = QtCore.QRectF(
                 0, 0,
-                imgRect.width() - 1,
-                imgRect.height() - 1,
+                imgRect.width(),
+                imgRect.height(),
             )
 
             # LevelRect: Used by the Level Overview to determine
