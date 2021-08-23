@@ -177,7 +177,7 @@ class SpriteImage_NewerWoodCircle(SLib.SpriteImage_StaticMultiple):  # 286
 
     def dataChanged(self):
         super().dataChanged()
-        size = self.parent.spritedata[5] & 3
+        size = (self.parent.spritedata[5] & 0xF) % 3
         gray = self.parent.spritedata[2] & 1
 
         if gray:
