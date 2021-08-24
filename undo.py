@@ -259,8 +259,4 @@ class SimultaneousUndoAction(UndoAction):
         """
         Returns True if this action is effectively a no-op
         """
-        # Hopefully this code is easy enough for you to follow.
-        anythingIsDifferent = False
-        for c in self.children:
-            anythingIsDifferent = anythingIsDifferent or not c.isNull()
-        return not anythingIsDifferent
+        return all(c.isNull() for c in self.children)
