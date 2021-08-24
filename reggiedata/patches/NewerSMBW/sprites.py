@@ -1042,7 +1042,7 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
 
         paint = None
 
-class SpriteImage_ModelLoaderResources(SLib.SpriteImage):  # 143
+class SpriteImage_ModelLoaderResources(SLib.SpriteImage):  # 143, 321
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
@@ -2275,6 +2275,7 @@ ImageClasses = {
     311: SpriteImage_NewerMegaIcicle,
     319: SpriteImage_Flipblock,
     320: SpriteImage_FallingChestnut,
+    321: SpriteImage_ModelLoaderResources,
     322: SpriteImage_MegaThwomp,
     324: SpriteImage_Podoboule,
     341: SpriteImage_NewerBigShell,

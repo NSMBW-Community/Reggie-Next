@@ -878,11 +878,11 @@
     </dependency>
   </sprite> <!-- #107: Message Box Controller -->
 
-  <sprite id="143" name="Custom Model Loader Resources" notes="This stores many of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen.">
-    <dependency notes="If using option 0-6 or 17-24 of the Custom Model Loader (11), you'll need one of these placed somewhere in the level. It does not have to be within a Zone.">
-       <suggested sprite="11"/> <!-- You'll want to use this with the Custom Model Loader. -->
+  <sprite id="143" name="Custom Model Loader Resources (arrow.arc)" notes="This stores some of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen.">
+    <dependency notes="If using option 0-6 or 17-24 of the Custom Model Loader (11), you'll need one of these placed somewhere in the level. It does not have to be within a Zone or in the same Area.">
+       <suggested sprite="11"/>
     </dependency>
-  </sprite> <!-- #143: Custom Model Loader Resources -->
+  </sprite> <!-- #143: Custom Model Loader Resources (arrow.arc) -->
 
   <sprite id="145" name="Floating Barrel" noyoshi="True" notes="A floating barrel that can only be placed on a liquid surface. It will sink while a player is standing on it, but will pop back up once the player jumps off. The barrel can also flow with the unused water current controller.">
     <dependency notes="The Floating Barrel will not load when placed on the same screen as an entrance. Place the Floating Barrel where you want it to load using the liquid line, and it will spawn floating at the surface line of that body of liquid. It only works with non-Location liquids, and it does work with Moving liquids when placed correctly. Unlike Floating Coins / ? Blocks, it will also function with Rising/Falling Water. Lastly, it should be noted that the visual splash effect is always made of water.">
@@ -2273,6 +2273,12 @@
       <entry value="2">3rd Star Coin</entry>
     </list> <!-- Appears only if [Chestnut Contains] == Star Coin -->
   </sprite> <!-- #320: Falling Chestnut -->
+
+  <sprite id="321" name="Custom Model Loader Resources (block_arrow.arc)" notes="This stores some of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen.">
+    <dependency notes="If using option 7-16 of the Custom Model Loader (11), you'll need one of these placed somewhere in the level. It does not have to be within a Zone or in the same Area.">
+       <suggested sprite="11"/>
+    </dependency>
+  </sprite> <!-- #321: Custom Model Loader Resources (block_arrow.arc) -->
 
   <sprite id="322" name="World-2 Boss: Mega Thwomp" notes="A large Thwomp boss used by NewerSMBW. It can be defeated by having it fall through crushable terrain at least 4 blocks wide.">
     <dependency notes="The Mega Thwomp should be placed at ground level on the opposite end of the room from the player's entrance. Also, Kamek and his controller must be included in the Area.">
