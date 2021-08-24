@@ -68,10 +68,7 @@ class InstanceDefinition:
         """
         Returns True if this instance definition matches the specified item
         """
-        matches = True
-        matches = matches and abs(self.objx - other.objx) <= 2
-        matches = matches and abs(self.objy - other.objy) <= 2
-        return matches and self.matchesData(other)
+        return self.objx == other.objx and self.objy == other.objy and self.matchesData(other)
 
     def matchesData(self, other):
         """
