@@ -333,3 +333,10 @@ Level was created by Tobias Amaranth
 
 Text Tileset Addon was created by Valeth and Tobias Amaranth, with the
 base letters originating from texture rips of the Credits font.
+
+-----------------------------------------------
+A few edits by Danster64 made to the level:
+
+-The tilesets were given their own unique names
+-Made a slightly edited copy the level that works in Newer Super Mario Bros Wii.
+
