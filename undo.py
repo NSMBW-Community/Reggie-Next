@@ -175,6 +175,8 @@ class MoveItemUndoAction(UndoAction):
             obj.updatePos()
             obj.pathinfo['peline'].nodePosChanged()
 
+        globals_.mainWindow.levelOverview.update()
+
     def isExtentionOf(self, other):
         """
         Returns True if this MoveItemUndoAction extends another
