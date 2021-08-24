@@ -1447,7 +1447,7 @@ class ZoneItem(LevelEditorItem):
 
         # Paint liquids/fog
         if globals_.SpritesShown and globals_.RealViewEnabled:
-            zoneRect = self.sceneBoundingRect()
+            zoneRect = self.mapRectToScene(self.DrawRect)
             from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
 
             for sprite in globals_.Area.sprites:
