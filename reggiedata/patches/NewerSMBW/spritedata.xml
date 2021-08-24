@@ -2362,7 +2362,7 @@
     </list>
 	<checkbox bit="33-36" title="Starts Walking Right" requiredbit="17-20" requiredval="0-1"/>
 	<checkbox bit="33-36" title="Starts Walking Right" requiredbit="17-20" requiredval="9-15"/> <!-- Any non-zero value -->
-    <value bit="33-36" title="Distance" requiredbit="17-20" requiredval="6-8"/>
+    <value bit="33-36" title="Distance" comment="It takes ballooners 20 seconds (1200 frames) before they return to their starting position." requiredbit="17-20" requiredval="6-8"/>
   </sprite> <!-- #351: Shy Guy -->
 
   <sprite id="357" name="Yoshi Fruit" sizehacks="True" notes="An edible fruit that Yoshi can grab. Collecting five will cause Yoshi to lay an egg. What's inside the egg will change depending on the player's current power-up. Normal -&gt; Fire -&gt; Ice -&gt; Propeller -&gt; 1-Up.">
