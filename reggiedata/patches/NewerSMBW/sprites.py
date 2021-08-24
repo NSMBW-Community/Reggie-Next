@@ -654,18 +654,22 @@ class SpriteImage_FakeStarCoin(SLib.SpriteImage_Static):  # 49
 class SpriteImage_NewerKoopa(SLib.SpriteImage_StaticMultiple):  # 57
     @staticmethod
     def loadImages():
-        if 'KoopaG' in ImageCache: return
-        ImageCache['KoopaG'] = SLib.GetImg('koopa_green.png')
-        ImageCache['KoopaR'] = SLib.GetImg('koopa_red.png')
-        ImageCache['KoopaShellG'] = SLib.GetImg('koopa_green_shell.png')
-        ImageCache['KoopaShellR'] = SLib.GetImg('koopa_red_shell.png')
+        if 'KoopaG' not in ImageCache:
+            ImageCache['KoopaG'] = SLib.GetImg('koopa_green.png')
+            ImageCache['KoopaR'] = SLib.GetImg('koopa_red.png')
+            ImageCache['KoopaShellG'] = SLib.GetImg('koopa_green_shell.png')
+            ImageCache['KoopaShellR'] = SLib.GetImg('koopa_red_shell.png')
+
+        if 'Koopa01' in ImageCache: return
+
         for flag in (0, 1):
-            for style in range(4):
-                ImageCache['Koopa%d%d' % (flag, style + 1)] = \
-                    SLib.GetImg('koopa_%d%d.png' % (flag, style + 1))
-                if style < 3:
-                    ImageCache['KoopaShell%d%d' % (flag, style + 1)] = \
-                        SLib.GetImg('koopa_shell_%d%d.png' % (flag, style + 1))
+            for style in range(1, 5):
+                flag_style = '%d%d' % (flag, style)
+                ImageCache['Koopa%s' % flag_style] = SLib.GetImg('koopa_%s.png' % flag_style)
+
+            for style in range(1, 4):
+                flag_style = '%d%d' % (flag, style)
+                ImageCache['KoopaShell%s' % flag_style] = SLib.GetImg('koopa_shell_%s.png' % flag_style)
 
     def dataChanged(self):
         # get properties
