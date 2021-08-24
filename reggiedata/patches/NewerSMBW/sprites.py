@@ -1989,11 +1989,20 @@ class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
             ImageCache['ShyGuy%d' % i] = SLib.GetImg('shyguy_%d.png' % i)
 
     def dataChanged(self):
-        type = (self.parent.spritedata[2] >> 4) % 9
+        type = (self.parent.spritedata[2] >> 4) & 15
+        distance = (self.parent.spritedata[4] >> 4) & 15
 
-        imgtype = type if type != 7 else 6  # both linear ballooneers have image 6
+        #1 & 6 use the same image as 10 & 7 respectively, the rest use 0
+        if type == 7:
+            imgtype = 6
+        elif type == 10:
+            imgtype = 1
+        elif type == 8 or type in range(1, 7):
+            imgtype = type
+        else:
+            imgtype = 0
+
         self.image = ImageCache['ShyGuy%d' % imgtype]
-
         self.offset = (
             (6, -7),  # 0: red
             (6, -7),  # 1: blue
@@ -2001,10 +2010,10 @@ class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
             (7, -6),  # 3: yellow (jumper)
             (6, -8),  # 4: purple (judo)
             (6, -8),  # 5: green (spike thrower)
-            (2, -9),  # 6: red (ballooneer - vertical)
-            (2, -9),  # 7: red (ballooneer - horizontal)
+            (2, -9),  # 6: red (ballooneer - horizontal)
+            (2, -9),  # 7: red (ballooneer - vertical)
             (2, -9),  # 8: blue (ballooneer - circular)
-        )[type]
+        )[imgtype]
 
         super().dataChanged()
 
