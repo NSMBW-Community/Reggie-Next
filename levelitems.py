@@ -1343,14 +1343,13 @@ class ZoneItem(LevelEditorItem):
             grabberWidth = 4.8
 
         self.prepareGeometryChange()
-        self.BoundingRect = QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5)
+        self.BoundingRect = QtCore.QRectF(-3, -3, self.width * 1.5 + 6, self.height * 1.5 + 6)
         self.ZoneRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
-        self.DrawRect = QtCore.QRectF(3, 3, int(self.width * 1.5) - 6, int(self.height * 1.5) - 6)
-        self.GrabberRectTL = QtCore.QRectF(0, 0, grabberWidth, grabberWidth)
-        self.GrabberRectTR = QtCore.QRectF(int(self.width * 1.5) - grabberWidth, 0, grabberWidth, grabberWidth)
-        self.GrabberRectBL = QtCore.QRectF(0, int(self.height * 1.5) - grabberWidth, grabberWidth, grabberWidth)
-        self.GrabberRectBR = QtCore.QRectF(int(self.width * 1.5) - grabberWidth, int(self.height * 1.5) - grabberWidth,
-                                           grabberWidth, grabberWidth)
+        self.DrawRect = QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5)
+        self.GrabberRectTL = QtCore.QRectF(-3, -3, grabberWidth, grabberWidth)
+        self.GrabberRectTR = QtCore.QRectF(self.width * 1.5 - grabberWidth + 3, -3, grabberWidth, grabberWidth)
+        self.GrabberRectBL = QtCore.QRectF(-3, self.height * 1.5 - grabberWidth + 3, grabberWidth, grabberWidth)
+        self.GrabberRectBR = QtCore.QRectF(self.width * 1.5 - grabberWidth + 3, self.height * 1.5 - grabberWidth + 3, grabberWidth, grabberWidth)
 
     def getCameraHeight(self):
         """
