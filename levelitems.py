@@ -1714,7 +1714,7 @@ class LocationItem(LevelEditorItem):
             painter.setPen(QtGui.QPen(globals_.theme.color('location_lines')))
         else:
             painter.setBrush(QtGui.QBrush(globals_.theme.color('location_fill_s')))
-            painter.setPen(QtGui.QPen(globals_.theme.color('location_lines_s'), 1, QtCore.Qt.DotLine))
+            painter.setPen(QtGui.QPen(globals_.theme.color('location_lines_s'), 1, QtCore.Qt.DashLine))
         painter.drawRect(self.DrawRect)
 
         # Draw the ID
