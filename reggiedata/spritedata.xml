@@ -2840,7 +2840,7 @@
   <sprite id="183" name="Incomplete Sprite - 'En_TarzanRope'" notes="Does nothing.">
   </sprite> <!-- #183: Incomplete Sprite - 'En_TarzanRope' -->
 
-  <sprite id="184" name="Incomplete Sprite - 'Mask'" notes="Does nothing. &quot;Mask&quot;Original sprite used to create the see-through effect of Layer 0 tiles. The effect was meant to activate once the selected character enters Layer 0 tiles, but this actor is spawned automatically by the game with all 8 options enabled.">
+  <sprite id="184" name="Incomplete Sprite - 'Mask'" notes="Does nothing. &quot;Mask&quot; Original sprite used to create the see-through effect of Layer 0 tiles. The effect was meant to activate once the selected character enters Layer 0 tiles, but this actor is spawned automatically by the game with all 8 options enabled.">
     <list nybble="12" title="Character" comment="The Yoshi's are numbered by their spawn order.">
       <entry value="0">Mario</entry>
       <entry value="1">Luigi</entry>
