@@ -878,11 +878,11 @@
     </dependency>
   </sprite> <!-- #107: Message Box Controller -->
 
-  <sprite id="143" name="Custom Model Loader Resources (arrow.arc)" notes="This stores some of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen.">
-    <dependency notes="If using option 0-6 or 17-24 of the Custom Model Loader (11), you'll need one of these placed somewhere in the level. It does not have to be within a Zone or in the same Area.">
-       <suggested sprite="11"/>
+  <sprite id="143" name="Custom Model Loader Resources" notes="This stores many of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen.">
+    <dependency notes="If using option 0-6 or 17-24 of the Custom Model Loader (11), you'll need one of these placed somewhere in the level. It does not have to be within a Zone.">
+       <suggested sprite="11"/> <!-- You'll want to use this with the Custom Model Loader. -->
     </dependency>
-  </sprite> <!-- #143: Custom Model Loader Resources (arrow.arc) -->
+  </sprite> <!-- #143: Custom Model Loader Resources -->
 
   <sprite id="145" name="Floating Barrel" noyoshi="True" notes="A floating barrel that can only be placed on a liquid surface. It will sink while a player is standing on it, but will pop back up once the player jumps off. The barrel can also flow with the unused water current controller.">
     <dependency notes="The Floating Barrel will not load when placed on the same screen as an entrance. Place the Floating Barrel where you want it to load using the liquid line, and it will spawn floating at the surface line of that body of liquid. It only works with non-Location liquids, and it does work with Moving liquids when placed correctly. Unlike Floating Coins / ? Blocks, it will also function with Rising/Falling Water. Lastly, it should be noted that the visual splash effect is always made of water.">
@@ -2274,12 +2274,6 @@
     </list> <!-- Appears only if [Chestnut Contains] == Star Coin -->
   </sprite> <!-- #320: Falling Chestnut -->
 
-  <sprite id="321" name="Custom Model Loader Resources (block_arrow.arc)" notes="This stores some of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen.">
-    <dependency notes="If using option 7-16 of the Custom Model Loader (11), you'll need one of these placed somewhere in the level. It does not have to be within a Zone or in the same Area.">
-       <suggested sprite="11"/>
-    </dependency>
-  </sprite> <!-- #321: Custom Model Loader Resources (block_arrow.arc) -->
-
   <sprite id="322" name="World-2 Boss: Mega Thwomp" notes="A large Thwomp boss used by NewerSMBW. It can be defeated by having it fall through crushable terrain at least 4 blocks wide.">
     <dependency notes="The Mega Thwomp should be placed at ground level on the opposite end of the room from the player's entrance. Also, Kamek and his controller must be included in the Area.">
       <required sprite="427"/> <!-- Kamek -->
@@ -2346,23 +2340,21 @@
     </list>
   </sprite> <!-- #350: Fireball Laser -->
 
-  <sprite id="351" name="Shy Guy" notes="">
-    <list nybble="5" title="Type" notes="Type 9 and 10 spawn T-posed Shy Guys that won't move until hit. Otherwise, they function the same.">
-      <entry value="0">Walker (Walks Off Ledges)</entry>
-      <entry value="1">Pacer (Turns Around At Ledges)</entry>
+<!-- Generate descriptions for the behavior of each type of Shy Guy -->
+<!-- Establish which type of Shy Guy nybble 9 influences, and in what way. -->
+  <sprite id="351" name="Shy Guy">
+    <list nybble="5" title="Type">
+      <entry value="0">Walker</entry>
+      <entry value="1">Pacer</entry>
       <entry value="2">Sleeper</entry>
       <entry value="3">Jumper</entry>
       <entry value="4">Judo Master</entry>
       <entry value="5">Spike Thrower</entry>
-      <entry value="6">Red Ballooneer Horizontal</entry>
-      <entry value="7">Red Ballooneer Vertical</entry>
+      <entry value="6">Red Ballooneer Vertical</entry>
+      <entry value="7">Red Ballooneer Horizontal</entry>
       <entry value="8">Blue Ballooneer Circular</entry>
-	  <entry value="9">Walker (Incomplete)</entry> <!-- 11-15 act like 9 -->
-      <entry value="10">Pacer (Incomplete)</entry>
     </list>
-	<checkbox bit="33-36" title="Starts Walking Right" requiredbit="17-20" requiredval="0-1"/>
-	<checkbox bit="33-36" title="Starts Walking Right" requiredbit="17-20" requiredval="9-15"/> <!-- Any non-zero value -->
-    <value bit="33-36" title="Distance" comment="It takes ballooners 20 seconds (1200 frames) before they return to their starting position." requiredbit="17-20" requiredval="6-8"/>
+    <value nybble="9" title="Unknown Value 9" comment="Probably determines the Distance the Shy Guy will move until he turns around. Free roaming at 0."/>
   </sprite> <!-- #351: Shy Guy -->
 
   <sprite id="357" name="Yoshi Fruit" sizehacks="True" notes="An edible fruit that Yoshi can grab. Collecting five will cause Yoshi to lay an egg. What's inside the egg will change depending on the player's current power-up. Normal -&gt; Fire -&gt; Ice -&gt; Propeller -&gt; 1-Up.">

@@ -68,7 +68,10 @@ class InstanceDefinition:
         """
         Returns True if this instance definition matches the specified item
         """
-        return self.objx == other.objx and self.objy == other.objy and self.matchesData(other)
+        matches = True
+        matches = matches and abs(self.objx - other.objx) <= 2
+        matches = matches and abs(self.objy - other.objy) <= 2
+        return matches and self.matchesData(other)
 
     def matchesData(self, other):
         """
@@ -1343,13 +1346,14 @@ class ZoneItem(LevelEditorItem):
             grabberWidth = 4.8
 
         self.prepareGeometryChange()
-        self.BoundingRect = QtCore.QRectF(-3, -3, self.width * 1.5 + 6, self.height * 1.5 + 6)
+        self.BoundingRect = QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5)
         self.ZoneRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
-        self.DrawRect = QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5)
-        self.GrabberRectTL = QtCore.QRectF(-3, -3, grabberWidth, grabberWidth)
-        self.GrabberRectTR = QtCore.QRectF(self.width * 1.5 - grabberWidth + 3, -3, grabberWidth, grabberWidth)
-        self.GrabberRectBL = QtCore.QRectF(-3, self.height * 1.5 - grabberWidth + 3, grabberWidth, grabberWidth)
-        self.GrabberRectBR = QtCore.QRectF(self.width * 1.5 - grabberWidth + 3, self.height * 1.5 - grabberWidth + 3, grabberWidth, grabberWidth)
+        self.DrawRect = QtCore.QRectF(3, 3, int(self.width * 1.5) - 6, int(self.height * 1.5) - 6)
+        self.GrabberRectTL = QtCore.QRectF(0, 0, grabberWidth, grabberWidth)
+        self.GrabberRectTR = QtCore.QRectF(int(self.width * 1.5) - grabberWidth, 0, grabberWidth, grabberWidth)
+        self.GrabberRectBL = QtCore.QRectF(0, int(self.height * 1.5) - grabberWidth, grabberWidth, grabberWidth)
+        self.GrabberRectBR = QtCore.QRectF(int(self.width * 1.5) - grabberWidth, int(self.height * 1.5) - grabberWidth,
+                                           grabberWidth, grabberWidth)
 
     def getCameraHeight(self):
         """
@@ -1447,7 +1451,7 @@ class ZoneItem(LevelEditorItem):
 
         # Paint liquids/fog
         if globals_.SpritesShown and globals_.RealViewEnabled:
-            zoneRect = self.mapRectToScene(self.DrawRect)
+            zoneRect = self.sceneBoundingRect()
             from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
 
             for sprite in globals_.Area.sprites:
@@ -1714,7 +1718,7 @@ class LocationItem(LevelEditorItem):
             painter.setPen(QtGui.QPen(globals_.theme.color('location_lines')))
         else:
             painter.setBrush(QtGui.QBrush(globals_.theme.color('location_fill_s')))
-            painter.setPen(QtGui.QPen(globals_.theme.color('location_lines_s'), 1, QtCore.Qt.DashLine))
+            painter.setPen(QtGui.QPen(globals_.theme.color('location_lines_s'), 1, QtCore.Qt.DotLine))
         painter.drawRect(self.DrawRect)
 
         # Draw the ID

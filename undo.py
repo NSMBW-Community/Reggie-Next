@@ -145,37 +145,33 @@ class MoveItemUndoAction(UndoAction):
             print('Redo Move Item: Cannot find item instance! ' + str(self.origDef))
 
     @staticmethod
-    def changeObjectPos(obj, newX, newY):
+    def changeObjectPos(object, newX, newY):
         """
         Changes the position of an object
         """
-        from levelitems import SpriteItem, ObjectItem, PathItem
+        # This causes a circular import
+        return
+        # oldBR = object.getFullRect()
 
-        oldBR = obj.getFullRect()
+        # if isinstance(object, SpriteItem):
+        #     # Sprites are weird so they handle this themselves
+        #     object.setNewObjPos(newX, newY)
+        # elif isinstance(object, ObjectItem):
+        #     # Objects use the objx and objy properties differently
+        #     object.objx, object.objy = newX, newY
+        #     object.setPos(newX * 24, newY * 24)
+        # else:
+        #     # Everything else is normal
+        #     object.objx, object.objy = newX, newY
+        #     object.setPos(newX * 1.5, newY * 1.5)
+        # newBR = object.getFullRect()
 
-        if isinstance(obj, SpriteItem):
-            # Sprites are weird so they handle this themselves
-            obj.setNewObjPos(newX, newY)
-        elif isinstance(obj, ObjectItem):
-            # Objects use the objx and objy properties differently
-            obj.objx, obj.objy = newX, newY
-            obj.setPos(newX * 24, newY * 24)
-            obj.UpdateRects()
-        else:
-            # Everything else is normal
-            obj.objx, obj.objy = newX, newY
-            obj.setPos(newX * 1.5, newY * 1.5)
+        # globals_.mainWindow.scene.update(oldBR)
+        # globals_.mainWindow.scene.update(newBR)
 
-        newBR = obj.getFullRect()
-
-        globals_.mainWindow.scene.update(oldBR)
-        globals_.mainWindow.scene.update(newBR)
-
-        if isinstance(obj, PathItem):
-            obj.updatePos()
-            obj.pathinfo['peline'].nodePosChanged()
-
-        globals_.mainWindow.levelOverview.update()
+        # if isinstance(object, PathItem):
+        #     object.updatePos()
+        #     object.pathinfo['peline'].nodePosChanged()
 
     def isExtentionOf(self, other):
         """
@@ -195,7 +191,10 @@ class MoveItemUndoAction(UndoAction):
         """
         Returns True if this action is effectively a no-op
         """
-        return self.origDef.objx == self.finalDef.objx and self.origDef.objy == self.finalDef.objy
+        matches = True
+        matches = matches and abs(self.origDef.objx - self.finalDef.objx) <= 2
+        matches = matches and abs(self.origDef.objy - self.finalDef.objy) <= 2
+        return matches
 
 
 class SimultaneousUndoAction(UndoAction):
@@ -259,4 +258,8 @@ class SimultaneousUndoAction(UndoAction):
         """
         Returns True if this action is effectively a no-op
         """
-        return all(c.isNull() for c in self.children)
+        # Hopefully this code is easy enough for you to follow.
+        anythingIsDifferent = False
+        for c in self.children:
+            anythingIsDifferent = anythingIsDifferent or not c.isNull()
+        return not anythingIsDifferent

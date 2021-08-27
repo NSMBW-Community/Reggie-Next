@@ -343,6 +343,8 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         """
         Real view zone painter for liquids/fog
         """
+        # (0, 0) is the top-left corner of the zone
+
         _, zy, zw, zh = zoneRect.getRect()
 
         drawRise = self.risingHeight != 0
@@ -354,33 +356,33 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
             # the sprite is below the zone; don't draw anything
             return
 
-        if offsetFromTop <= 0:
-            offsetFromTop = 0
+        if offsetFromTop <= 4:
+            offsetFromTop = 4
             drawCrest = False  # off the top of the zone; no crest
 
         # If all that fits in the zone is some of the crest, determine how much
         if drawCrest:
-            crestSizeRemoval = (zy + offsetFromTop + self.crest.height()) - (zy + zh)
+            crestSizeRemoval = (zy + offsetFromTop + self.crest.height()) - (zy + zh) + 4
             if crestSizeRemoval < 0: crestSizeRemoval = 0
             crestHeight = self.crest.height() - crestSizeRemoval
 
         # Determine where to put the rise image
         offsetRise = offsetFromTop - (self.risingHeight * 24)
         riseToDraw = self.rise
-        if offsetRise <= 0:  # close enough to the top zone border
-            offsetRise = 0
+        if offsetRise < 4:  # close enough to the top zone border
+            offsetRise = 4
             riseToDraw = self.riseCrestless
         if not drawCrest:
             riseToDraw = self.riseCrestless
 
         if drawCrest:
-            painter.drawTiledPixmap(0, offsetFromTop, zw, crestHeight, self.crest)
-            painter.drawTiledPixmap(0, offsetFromTop + crestHeight, zw, zh - crestHeight - offsetFromTop,
+            painter.drawTiledPixmap(4, offsetFromTop, zw - 8, crestHeight, self.crest)
+            painter.drawTiledPixmap(4, offsetFromTop + crestHeight, zw - 8, zh - crestHeight - offsetFromTop - 4,
                                     self.mid)
         else:
-            painter.drawTiledPixmap(0, offsetFromTop, zw, zh - offsetFromTop, self.mid)
+            painter.drawTiledPixmap(4, offsetFromTop, zw - 8, zh - offsetFromTop - 4, self.mid)
         if drawRise:
-            painter.drawTiledPixmap(0, offsetRise, zw, riseToDraw.height(), riseToDraw)
+            painter.drawTiledPixmap(4, offsetRise, zw - 8, riseToDraw.height(), riseToDraw)
 
     def realViewLocation(self, painter, location_rect):
         """
@@ -398,7 +400,7 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         # Only draw in the intersection of the location and the zone. The
         # intersection needs to be translated, because draw offsets are relative
         # to the location.
-        draw_rect = location_rect & zone.mapRectToScene(zone.DrawRect)
+        draw_rect = location_rect & zone.sceneBoundingRect()
         draw_rect.translate(QtCore.QPoint(1, 1) - location_rect.topLeft())
 
         if draw_rect.isEmpty():
