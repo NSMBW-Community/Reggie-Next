@@ -654,18 +654,22 @@ class SpriteImage_FakeStarCoin(SLib.SpriteImage_Static):  # 49
 class SpriteImage_NewerKoopa(SLib.SpriteImage_StaticMultiple):  # 57
     @staticmethod
     def loadImages():
-        if 'KoopaG' in ImageCache: return
-        ImageCache['KoopaG'] = SLib.GetImg('koopa_green.png')
-        ImageCache['KoopaR'] = SLib.GetImg('koopa_red.png')
-        ImageCache['KoopaShellG'] = SLib.GetImg('koopa_green_shell.png')
-        ImageCache['KoopaShellR'] = SLib.GetImg('koopa_red_shell.png')
+        if 'KoopaG' not in ImageCache:
+            ImageCache['KoopaG'] = SLib.GetImg('koopa_green.png')
+            ImageCache['KoopaR'] = SLib.GetImg('koopa_red.png')
+            ImageCache['KoopaShellG'] = SLib.GetImg('koopa_green_shell.png')
+            ImageCache['KoopaShellR'] = SLib.GetImg('koopa_red_shell.png')
+
+        if 'Koopa01' in ImageCache: return
+
         for flag in (0, 1):
-            for style in range(4):
-                ImageCache['Koopa%d%d' % (flag, style + 1)] = \
-                    SLib.GetImg('koopa_%d%d.png' % (flag, style + 1))
-                if style < 3:
-                    ImageCache['KoopaShell%d%d' % (flag, style + 1)] = \
-                        SLib.GetImg('koopa_shell_%d%d.png' % (flag, style + 1))
+            for style in range(1, 5):
+                flag_style = '%d%d' % (flag, style)
+                ImageCache['Koopa%s' % flag_style] = SLib.GetImg('koopa_%s.png' % flag_style)
+
+            for style in range(1, 4):
+                flag_style = '%d%d' % (flag, style)
+                ImageCache['KoopaShell%s' % flag_style] = SLib.GetImg('koopa_shell_%s.png' % flag_style)
 
     def dataChanged(self):
         # get properties
@@ -1038,7 +1042,7 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
 
         paint = None
 
-class SpriteImage_ModelLoaderResources(SLib.SpriteImage):  # 143
+class SpriteImage_ModelLoaderResources(SLib.SpriteImage):  # 143, 321
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
@@ -1985,11 +1989,20 @@ class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
             ImageCache['ShyGuy%d' % i] = SLib.GetImg('shyguy_%d.png' % i)
 
     def dataChanged(self):
-        type = (self.parent.spritedata[2] >> 4) % 9
+        type = (self.parent.spritedata[2] >> 4) & 15
+        distance = (self.parent.spritedata[4] >> 4) & 15
 
-        imgtype = type if type != 7 else 6  # both linear ballooneers have image 6
+        #1 & 6 use the same image as 10 & 7 respectively, the rest use 0
+        if type == 7:
+            imgtype = 6
+        elif type == 10:
+            imgtype = 1
+        elif type == 8 or type in range(1, 7):
+            imgtype = type
+        else:
+            imgtype = 0
+
         self.image = ImageCache['ShyGuy%d' % imgtype]
-
         self.offset = (
             (6, -7),  # 0: red
             (6, -7),  # 1: blue
@@ -1997,10 +2010,10 @@ class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
             (7, -6),  # 3: yellow (jumper)
             (6, -8),  # 4: purple (judo)
             (6, -8),  # 5: green (spike thrower)
-            (2, -9),  # 6: red (ballooneer - vertical)
-            (2, -9),  # 7: red (ballooneer - horizontal)
+            (2, -9),  # 6: red (ballooneer - horizontal)
+            (2, -9),  # 7: red (ballooneer - vertical)
             (2, -9),  # 8: blue (ballooneer - circular)
-        )[type]
+        )[imgtype]
 
         super().dataChanged()
 
@@ -2271,6 +2284,7 @@ ImageClasses = {
     311: SpriteImage_NewerMegaIcicle,
     319: SpriteImage_Flipblock,
     320: SpriteImage_FallingChestnut,
+    321: SpriteImage_ModelLoaderResources,
     322: SpriteImage_MegaThwomp,
     324: SpriteImage_Podoboule,
     341: SpriteImage_NewerBigShell,
