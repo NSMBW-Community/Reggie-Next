@@ -31,12 +31,11 @@
 ################################################################
 
 # Python version: sanity check
-minimum = 3.5
+minimum = (3, 5)
 import sys
 
-currentRunningVersion = sys.version_info.major + (.1 * sys.version_info.minor)
-if currentRunningVersion < minimum:
-    errormsg = 'Please update your copy of Python to ' + str(minimum) + \
+if sys.version_info < minimum:
+    errormsg = 'Please update your copy of Python to ' + '.'.join(map(str, minimum)) + \
                ' or greater. Currently running on: ' + sys.version[:5]
 
     raise Exception(errormsg)
