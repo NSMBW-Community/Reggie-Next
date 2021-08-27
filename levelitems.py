@@ -2223,8 +2223,10 @@ class SpriteItem(LevelEditorItem):
             x = common.clamp(origin_pos.x(), 0, 16368)
             y = common.clamp(origin_pos.y(), 0, 8176)
 
-            origin_pos.setX((x // snap_level) * snap_level)
-            origin_pos.setY((y // snap_level) * snap_level)
+            # When snapping, round to the nearest multiple of snap_level. Round
+            # up when two multiples are equally far apart.
+            origin_pos.setX(((x + (snap_level / 2)) // snap_level) * snap_level)
+            origin_pos.setY(((y + (snap_level / 2)) // snap_level) * snap_level)
 
             if drag_offset is not None:
                 origin_pos -= drag_offset
