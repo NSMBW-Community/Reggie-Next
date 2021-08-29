@@ -1863,10 +1863,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         for item in added:
             if isinstance(item, SpriteItem):
-                item.setPos(
-                    (item.objx + xpixeloffset + item.ImageObj.xOffset) * 1.5,
-                    (item.objy + ypixeloffset + item.ImageObj.yOffset) * 1.5,
-                )
+                item.setNewObjPos(item.objx + xpixeloffset, item.objy + ypixeloffset)
             elif isinstance(item, ObjectItem):
                 item.setPos((item.objx + xoffset) * 24, (item.objy + yoffset) * 24)
             if select: item.setSelected(True)
