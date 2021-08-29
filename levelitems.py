@@ -737,31 +737,32 @@ class ObjectItem(LevelEditorItem):
         """
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(0, 0, 24 * self.width, 24 * self.height)
-        self.SelectionRect = QtCore.QRectF(0, 0, (24 * self.width) - 1, (24 * self.height) - 1)
-
-        grabbersize = 4.8 + self.width * self.height * 0.01
+        self.SelectionRect = self.BoundingRect - QtCore.QMarginsF(0.5, 0.5, 0.5, 0.5)
 
         # make sure the grabbers don't overlap
-        grabbersize = min(grabbersize, self.width * 9, self.height * 9)
+        size = min(4.8 + self.width * self.height * 0.01, min(self.width, self.height) * 24 / 3 - 1)
 
-        self.GrabberRectTL = QtCore.QRectF(0, 0, grabbersize, grabbersize)
-        self.GrabberRectTR = QtCore.QRectF((24 * self.width) - grabbersize, 0, grabbersize, grabbersize)
+        corner_offset_width = 24 * self.width - size
+        corner_offset_height = 24 * self.height - size
 
-        self.GrabberRectBL = QtCore.QRectF(0, (24 * self.height) - grabbersize, grabbersize, grabbersize)
-        self.GrabberRectBR = QtCore.QRectF((24 * self.width) - grabbersize, (24 * self.height) - grabbersize, grabbersize, grabbersize)
+        self.GrabberRectTL = QtCore.QRectF(0, 0, size, size)
+        self.GrabberRectTR = QtCore.QRectF(corner_offset_width, 0, size, size)
 
-        self.GrabberRectMT = QtCore.QRectF(((24 * self.width) - grabbersize) / 2, 0, grabbersize, grabbersize)
-        self.GrabberRectML = QtCore.QRectF(0, ((24 * self.height) - grabbersize) / 2, grabbersize, grabbersize)
-        self.GrabberRectMB = QtCore.QRectF(((24 * self.width) - grabbersize) / 2, (24 * self.height) - grabbersize, grabbersize, grabbersize)
-        self.GrabberRectMR = QtCore.QRectF((24 * self.width) - grabbersize, ((24 * self.height) - grabbersize) / 2, grabbersize, grabbersize)
+        self.GrabberRectBL = QtCore.QRectF(0, corner_offset_height, size, size)
+        self.GrabberRectBR = QtCore.QRectF(corner_offset_width, corner_offset_height, size, size)
+
+        self.GrabberRectMT = QtCore.QRectF(corner_offset_width / 2, 0, size, size)
+        self.GrabberRectML = QtCore.QRectF(0, corner_offset_height / 2, size, size)
+        self.GrabberRectMB = QtCore.QRectF(corner_offset_width / 2, corner_offset_height, size, size)
+        self.GrabberRectMR = QtCore.QRectF(corner_offset_width, corner_offset_height / 2, size, size)
 
         # Create rects for the edges
-        longwidth = 24 * self.width - 2 * grabbersize
-        longheight = 24 * self.height - 2 * grabbersize
-        self.GrabberRectMT_ = QtCore.QRectF(grabbersize, 0, longwidth, grabbersize)
-        self.GrabberRectML_ = QtCore.QRectF(0, grabbersize, grabbersize, longheight)
-        self.GrabberRectMB_ = QtCore.QRectF(grabbersize, longheight + grabbersize, longwidth, grabbersize)
-        self.GrabberRectMR_ = QtCore.QRectF(longwidth + grabbersize, grabbersize, grabbersize, longheight)
+        longwidth = 24 * self.width - 2 * size
+        longheight = 24 * self.height - 2 * size
+        self.GrabberRectMT_ = QtCore.QRectF(size, 0, longwidth, size)
+        self.GrabberRectML_ = QtCore.QRectF(0, size, size, longheight)
+        self.GrabberRectMB_ = QtCore.QRectF(size, longheight + size, longwidth, size)
+        self.GrabberRectMR_ = QtCore.QRectF(longwidth + size, size, size, longheight)
 
         self.LevelRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
 
@@ -941,11 +942,11 @@ class ObjectItem(LevelEditorItem):
 
         oldrect = self.BoundingRect
         oldrect.translate(oldX * 24, oldY * 24)
-        newrect = QtCore.QRectF(self.x(), self.y(), newSize[0] * 24, newSize[1] * 24)
-        updaterect = oldrect.united(newrect)
-        self.width, self.height = newSize
 
+        self.width, self.height = newSize
         self.UpdateRects()
+
+        updaterect = oldrect.united(self.BoundingRect.translated(self.objx * 24, self.objy * 24))
         self.scene().update(updaterect)
 
     def mouseMoveEvent(self, event):
