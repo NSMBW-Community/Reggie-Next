@@ -1776,72 +1776,40 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clearSelection()
         added = []
 
-        x1 = 1024
-        x2 = 0
-        y1 = 512
-        y2 = 0
-
-        globals_.OverrideSnapping = True
-
         # Remove leading and trailing whitespace
         encoded = encoded.strip()
 
-        if not (encoded.startswith('ReggieClip|') and encoded.endswith('|%')): return
+        if not (encoded.startswith('ReggieClip|') and encoded.endswith('|%')):
+            self.SelectionUpdateFlag = False
+            return added
 
-        clip = encoded.split('|')[1:-1]
+        clip = encoded.split('|')
 
-        if len(clip) > 300:
+        if len(clip) > 300 + 2:
             result = QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('MainWindow', 1),
                                                    QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
-            if result == QtWidgets.QMessageBox.No: return
+            if result == QtWidgets.QMessageBox.No:
+                self.SelectionUpdateFlag = False
+                return added
+
+        globals_.OverrideSnapping = True
 
         layers, sprites = self.getEncodedObjects(encoded)
 
-        # Go through the sprites
+        # Find the bounding box of all created objects
+        bounding = QtCore.QRectF()
+
         for spr in sprites:
-            x = spr.objx / 16
-            y = spr.objy / 16
-            if x < x1: x1 = x
-            if x > x2: x2 = x
-            if y < y1: y1 = y
-            if y > y2: y2 = y
+            bounding |= spr.LevelRect
 
-            globals_.Area.sprites.append(spr)
-            added.append(spr)
-            self.spriteList.addSprite(spr)
-            self.scene.addItem(spr)
-
-        # Go through the objects
         for layer in layers:
             for obj in layer:
-                xs = obj.objx
-                xe = obj.objx + obj.width - 1
-                ys = obj.objy
-                ye = obj.objy + obj.height - 1
-                if xs < x1: x1 = xs
-                if xe > x2: x2 = xe
-                if ys < y1: y1 = ys
-                if ye > y2: y2 = ye
+                bounding |= obj.LevelRect
 
-                added.append(obj)
-                self.scene.addItem(obj)
-
-        for objects, area_layer, z_val in zip(layers, globals_.Area.layers, (16384, 8192, 0)):
-
-            if not objects:
-                continue
-
-            if area_layer:
-                z_val = int(area_layer[-1].zValue()) + 1
-
-            for z, obj in enumerate(objects, z_val):
-                area_layer.append(obj)
-                obj.setZValue(z)
+        x1, y1, width, height = bounding.getRect()
 
         # now center everything
-        zoomscaler = (self.ZoomLevel / 100.0)
-        width = x2 - x1 + 1
-        height = y2 - y1 + 1
+        zoomscaler = self.ZoomLevel / 100
         viewportx = (self.view.XScrollBar.value() / zoomscaler) / 24
         viewporty = (self.view.YScrollBar.value() / zoomscaler) / 24
         viewportwidth = (self.view.width() / zoomscaler) / 24
@@ -1861,12 +1829,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
             yoffset = int(0 - y1 + (yOverride / 16) - (height / 2))
             ypixeloffset = yoffset * 16
 
-        for item in added:
-            if isinstance(item, SpriteItem):
-                item.setNewObjPos(item.objx + xpixeloffset, item.objy + ypixeloffset)
-            elif isinstance(item, ObjectItem):
-                item.setPos((item.objx + xoffset) * 24, (item.objy + yoffset) * 24)
+        # Center and select everything
+        for item in sprites:
+            item.setNewObjPos(item.objx + xpixeloffset, item.objy + ypixeloffset)
+            item.UpdateRects()
             if select: item.setSelected(True)
+
+        for layer in layers:
+            for item in layer:
+                item.setPos((item.objx + xoffset) * 24, (item.objy + yoffset) * 24)
+                item.UpdateRects()
+                if select: item.setSelected(True)
 
         globals_.OverrideSnapping = False
 
@@ -1874,6 +1847,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         SetDirty()
         self.SelectionUpdateFlag = False
         self.ChangeSelectionHandler()
+
+        # Combine the sprites and layers
+        added = sprites
+        for layer in layers:
+            added += layer
 
         return added
 
@@ -1885,18 +1863,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
         layers = ([], [], [])
         sprites = []
 
-        try:
-            if not (encoded.startswith('ReggieClip|') and encoded.endswith('|%')): return
+        if not (encoded.startswith('ReggieClip|') and encoded.endswith('|%')):
+            return layers, sprites
 
-            clip = encoded[11:-2].split('|')
+        clip = encoded[11:-2].split('|')
 
-            if len(clip) > 300:
-                result = QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('MainWindow', 1),
-                                                       QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
-                if result == QtWidgets.QMessageBox.No:
-                    return
+        self.spriteList.prepareBatchAdd()
+        for item in clip:
 
-            for item in clip:
+            try:
                 # Check to see whether it's an object or sprite
                 # and add it to the correct stack
                 split = item.split(':')
@@ -1921,7 +1896,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     if width < 1 or width > 1023: continue
                     if height < 1 or height > 511: continue
 
-                    newitem = self.CreateObject(tileset, type, layer, objx, objy, width, height, add_to_scene = False)
+                    newitem = self.CreateObject(tileset, type, layer, objx, objy, width, height)  # , add_to_scene = False)
 
                     layers[layer].append(newitem)
 
@@ -1933,12 +1908,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     objy = int(split[3])
                     data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10]]))
 
-                    newitem = SpriteItem(int(split[1]), objx, objy, data)
+                    newitem = self.CreateSprite(objx, objy, int(split[1]), data)
                     sprites.append(newitem)
 
-        except ValueError:
-            # an int() probably failed somewhere
-            pass
+            except ValueError:
+                # an int() probably failed somewhere
+                pass
+
+        self.spriteList.endBatchAdd()
 
         return layers, sprites
 

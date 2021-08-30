@@ -1144,7 +1144,8 @@ class SpriteList(QtWidgets.QWidget):
         self.table.removeRow(row)
 
         # Update search results
-        self.updateItems()
+        if row in self.SearchResults:
+            self.SearchResults = set(x if x < row else x - 1 for x in self.SearchResults if x != row)
 
     def clear(self):
         """
