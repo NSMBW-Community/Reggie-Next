@@ -1960,11 +1960,11 @@
   </sprite> <!-- #273: Level Exit Controller -->
 
   <sprite id="279" name="World-3 Boss: Balboa Wrench" noyoshi="True" notes="The giant Rocky Wrench boss used by NewerSMBW. He must be Ground-Pounded 3 times to be defeated. ">
-    <dependency notes="Kamek and Kamek Controller can be placed in any area. They should be placed in an area on their own, though.">
-      <required sprite="427"/> <!-- Kamek -->
-      <required sprite="383"/> <!-- Kamek Controller -->
-      <required sprite="27"/> <!-- lift_zen.arc from grey block -->
+    <dependency notes="A Rocky Wrench, a NSMBDS Stone Block, Kamek and his controller should be included in the level.">
       <required sprite="352"/> <!-- Rocky Wrench -->
+      <required sprite="27"/> <!-- lift_zen.arc from grey block -->
+	  <required sprite="427"/> <!-- Kamek -->
+      <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
     <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
   </sprite> <!-- #279: World-3 Boss: Balboa Wrench -->
@@ -1984,8 +1984,8 @@
   </sprite> <!-- #282: Angry Sun and Moon -->
 
   <sprite id="283" name="World-1 Boss: Fuzzy Bear" noyoshi="True" notes="The giant Fuzzy boss that jumps around and occasionally rolls after the player. It can only be defeated by having grabbable items thrown at it.">
-    <dependency notes="Kamek and his controller should be included in the Area.">
-      <suggested sprite="391"/>
+    <dependency notes="A Fuzzy, Kamek and his controller should be included in the level.">
+      <suggested sprite="391"/> <!-- Glow Block -->
       <required sprite="427"/> <!-- Kamek -->
       <required sprite="383"/> <!-- Kamek Controller -->
       <required sprite="343"/> <!-- Fuzzy -->
@@ -2289,10 +2289,10 @@
   </sprite> <!-- #322: World-2 Boss: Mega Thwomp -->
 
   <sprite id="324" name="World-5 Boss: Podouble" notes="A pair of large Podoboo bosses used in NewerSMBW. It can only be defeated by using fire or ice attacks against the correct half, and spawns a Yoshi for each player to assist them.">
-    <dependency notes="Both an Ice Podouble and a Fire Podouble are required for this boss fight. The Podouble grows 300% in an upwards direction from the base of the sprite. They can only be damaged by the opposite elemental attack, and a Yoshi is provided automatically to help with this.">
-      <required sprite=""/> <!-- Kamek -->
-      <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite=""/> <!-- ??? -->
+    <dependency notes="A Podoboo, Kamek and his controller must be included in the level. Yoshi is spawned by the boss from a fixed position.">
+      <required sprite="46"/> <!-- Lava Bubble -->
+	  <required sprite="427"/> <!-- Kamek -->
+      <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
     <dualbox bit="20" title1="Ice Podouble" title2="Fire Podouble" comment="This determines which half of the Podouble duo the sprite is." comment2="Fire will always face right, and Ice will always face left."/>
     <value nybble="11-12" title="Falling Offset" comment="This determines the bottom of the Podouble's jump relative to the sprite's placement, calculated in half-blocks."/>
