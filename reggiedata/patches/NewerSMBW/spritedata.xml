@@ -1822,12 +1822,12 @@
   </sprite> <!-- #246: Special Event -->
 
   <sprite id="250" name="Electric Line" notes="A tall electrified wall that will elecrtocute any player that touches it.">
-    <dependency notes="The Boss Controller for Bowser Jr's 2nd Fight must be included in the area to load the line. The game will crash otherwise.">
+    <dependency notes="The Boss Controller for Bowser Jr's 2nd Fight must be included in the level to load the line.">
        <required sprite="405"/> <!-- Bowser Jr. 2nd Fight -->
       </dependency>
     <dualbox bit="44" title1="Always On" title2="Looping" comment="This determines if the Electric Line is always on or if it cycles between on and off."/>
     <value nybble="7-8" title="Delay between Loops" comment="This determines the time the Electric Line will stay on and off during its power looping." comment2="Delay in 1/6ths of a second." requiredbit="44"/> <!-- Appears if Looping -->
-    <dualbox bit="48" title1="Power Nodes Point Right" title2="Power Nodes Point Left" comment="This determines the direction the power node spikes will face."/>
+    <dualbox bit="48" title1="Faces Right" title2="Faces Left"/>
   </sprite> <!-- #250: Electric Line -->
 
   <sprite id="251" name="World-7 Boss: Super Topman" notes="Large Topman boss used by NewerSMBW. It can be beaten by luring it into [250] Electric Lines.">
