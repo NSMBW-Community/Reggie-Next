@@ -1831,12 +1831,12 @@
   </sprite> <!-- #250: Electric Line -->
 
   <sprite id="251" name="World-7 Boss: Super Topman" notes="Large Topman boss used by NewerSMBW. It can be beaten by luring it into [250] Electric Lines.">
-    <dependency notes="Kamek and his controller should be included in the Area.">
+    <dependency notes="Kamek and his controller should be included in the level.">
       <suggested sprite="250"/> <!-- Electric Line -->
-      <required sprite="427"/> <!-- Kamek -->
-      <required sprite="383"/> <!-- Kamek Controller -->
+      <suggested sprite="427"/> <!-- Kamek -->
+      <suggested sprite="383"/> <!-- Kamek Controller -->
     </dependency>
-    <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
+  <checkbox bit="48" title="Low Gravity" comment="When enabled, the Topman will fall much more slowly."/>
   </sprite> <!-- #251: World-7 Boss: Super Topman -->
 
   <sprite id="255" name="Rotation Controlled ? Block" notes="A ?-Block that can either be moved by rotation controllers or manually angled.">
