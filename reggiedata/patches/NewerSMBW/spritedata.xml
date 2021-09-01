@@ -1833,8 +1833,8 @@
   <sprite id="251" name="World-7 Boss: Super Topman" notes="Large Topman boss used by NewerSMBW. It can be beaten by luring it into [250] Electric Lines.">
     <dependency notes="Kamek and his controller should be included in the level.">
       <suggested sprite="250"/> <!-- Electric Line -->
-      <suggested sprite="427"/> <!-- Kamek -->
-      <suggested sprite="383"/> <!-- Kamek Controller -->
+      <required sprite="427"/> <!-- Kamek -->
+      <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
   <checkbox bit="48" title="Low Gravity" comment="When enabled, the Topman will fall much more slowly."/>
   </sprite> <!-- #251: World-7 Boss: Super Topman -->
@@ -2041,10 +2041,9 @@
   </sprite> <!-- #289: Wooden/Metal Box -->
 
   <sprite id="290" name="World-6 Boss: Ramboo" noyoshi="True" notes="The extra large Boo boss that is not the least bit shy about continuing to advance towards the player. He can be knocked back with grabbable items and can only be defeated when the specified Event is activated.">
-    <dependency notes="">
-      <required sprite=""/> <!-- Kamek -->
-      <required sprite=""/> <!-- Kamek Controller -->
-      <required sprite=""/> <!-- ??? -->
+    <dependency notes="Kamek and his controller must be included in the level.">
+      <required sprite="427"/> <!-- Kamek -->
+      <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
     <value bit="26-32" title="Die on Triggering Event ID" comment="When activated, the Ramboo will be killed, completing the level." idtype="Triggering Event"/>
     <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
@@ -2281,8 +2280,8 @@
 
   <sprite id="322" name="World-2 Boss: Thwompa Domp" notes="A large Thwomp boss used by NewerSMBW. It can be defeated by having it fall through crushable terrain at least 4 blocks wide.">
     <dependency notes="Kamek and his controller must be included in the level.">
-      <suggested sprite="427"/> <!-- Kamek -->
-      <suggested sprite="383"/> <!-- Kamek Controller -->
+      <required sprite="427"/> <!-- Kamek -->
+      <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
     <value nybble="5-6" title="Left Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move through from the left side of the sprite's placement, calculated in half-blocks."/>
     <value nybble="7-8" title="Right Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move through from the right side of the sprite's placement, calculated in half-blocks."/>
