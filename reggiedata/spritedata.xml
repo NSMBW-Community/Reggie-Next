@@ -5590,17 +5590,17 @@
     <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="Used by Nintendo in Retail 2-06 A1 as value 7. No visible effect."/>
   </sprite> <!-- #367: Line Controlled Spinning Pink Mushroom Block -->
 
-  <sprite id="368" name="Path Controlled Flashlight Raft" notes="A floating Raft that travels slowly to the right, or follows along an assigned Path. It also has a flashlight that produces a cone of light on both sides that can be controlled by tilting the controller. It is activated when all players land on it. It's recommended to use a Darkness mode for the Zone's lighting">
+  <sprite id="368" name="Lighting - Path Controlled Flashlight Raft" notes="A floating Raft that travels slowly to the right, or follows along an assigned Path. It also has a flashlight that produces a cone of light on both sides that can be controlled by tilting the controller. It is activated when all players land on it.">
     <dependency notes="The sprite's placement is irrelevant if Path Controlled, as the Raft will be located at the listed Starting Path Node (indicated by the white square). A special Water sprite [373] is recommended to be used with the Raft, but it's not required.">
       <suggested sprite="373"/>
     </dependency>
     <checkbox bit="48" title="Uses Paths" comment="When enabled, the Raft will follow the assigned Path. Otherwise, the Raft will move slowly to the right."/>
-    <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the Raft will be linked to." idtype="Path" requiredbit="48" requiredval="1"/>
+    <value nybble="7" title="Path ID" idtype="Path" requiredbit="48" requiredval="1"/>
     <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the Raft will appear at and start moving from." requiredbit="48" requiredval="1"/>
-    <checkbox bit="44" title="Midway Raft" comment="When enabled, this Raft will appear only if the level is loaded from the Midpoint Flag."/>
-    <checkbox bit="36" title="Event Activated Flashlight" comment="When enabled, the Flashlight will only be illuminated when the Triggering Event ID is activated." comment2="The Flashlight can only be controlled by tilting the controller when it is Event Activated. The Flashlight can't be deactivated."/> <!-- Appears only if Use Flashlight is active -->
-    <value bit="10-16" title="Flashlight: Triggering Event ID" comment="The flashlight will be turned on when this Event ID is activated." requiredbit="36" requiredval="1"/> <!-- Appears only if Use Flashlight and Event Activated Flashlight are active -->
-    <checkbox bit="32" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="When this flag is enabled along with a Path (regardless of the Use Paths flag), the Raft will go to the indicated Path Node and not move. But, if the Path is set to loop, this doesn't do anything. So uh, Nice Boat."/>
+	<dualbox bit="44" title1="Spawns Before Midway" title2="Spawns After Midway" comment="This decides whether the Raft will spawn only before the Midway Flag is activated, or only after."/>
+	<checkbox bit="32" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="When this flag is enabled along with a Path (regardless of the Uses Paths flag), the Raft will go to the indicated Path Node and not move. But, if the Path is set to loop, this doesn't do anything."/>
+    <checkbox bit="36" title="Event Activated Flashlight" comment="When enabled, the Flashlight will only be illuminated when the Triggering Event ID is activated. The Flashlight can only be controlled by tilting the controller when it is Event Activated."/> <!-- Appears only if Use Flashlight is active -->
+    <value bit="10-16" title="Triggering Event ID" comment="The Flashlight will be turned on when this Event ID is activated. The Flashlight can't be deactivated." requiredbit="36" requiredval="1"/> <!-- Appears only if Use Flashlight and Event Activated Flashlight are active -->
   </sprite> <!-- #368: Path Controlled Flashlight Raft -->
 
   <sprite id="369" name="Cooligan" notes="" noyoshi="True" yoshinotes="Yoshi cannot jump on Cooligans, though he can use the stomp attack and tongue attack to defeat them.">
