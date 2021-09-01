@@ -251,10 +251,9 @@
     <dualbox bit="28" title1="Faces Left" title2="Faces Right" comment="This determines which direction the platform will face." requiredbit="48" requiredval="0"/> <!-- Only shows when Segment is set to Head or Tail; assumes no effect on Body -->
   </sprite> <!-- #18: Spine Coaster Platform -->
 
-  <!-- Document Dependency. Check for Level/Area/Zone requirements. Ask Treeki about isBigBoss effects. -->
-  <sprite id="19" name="World-4 Boss: Samurshai" noyoshi="True" notes="Samurai Shy Guy boss used by NewerSMBW.">
+  <sprite id="19" name="World-4 Boss: Samurshai" noyoshi="True" notes="">
     <dependency notes="The boss works fine without any other required sprite."></dependency>
-    <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
+    <dualbox bit="20" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics and boss difficulty."/>
   </sprite> <!-- #19: World-4 Boss: Samurshai -->
 
   <sprite id="20" name="Goomba" sizehacks="True" notes="Your standard Goomba. Place it in the level and it will walk towards Mario when it loads.">
