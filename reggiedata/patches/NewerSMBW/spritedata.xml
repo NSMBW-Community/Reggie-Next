@@ -2279,10 +2279,10 @@
     </dependency>
   </sprite> <!-- #321: Custom Model Loader Resources (block_arrow.arc) -->
 
-  <sprite id="322" name="World-2 Boss: Mega Thwomp" notes="A large Thwomp boss used by NewerSMBW. It can be defeated by having it fall through crushable terrain at least 4 blocks wide.">
-    <dependency notes="The Mega Thwomp should be placed at ground level on the opposite end of the room from the player's entrance. Also, Kamek and his controller must be included in the Area.">
-      <required sprite="427"/> <!-- Kamek -->
-      <required sprite="383"/> <!-- Kamek Controller -->
+  <sprite id="322" name="World-2 Boss: Thwompa Domp" notes="A large Thwomp boss used by NewerSMBW. It can be defeated by having it fall through crushable terrain at least 4 blocks wide.">
+    <dependency notes="Kamek and his controller must be included in the level.">
+      <suggested sprite="427"/> <!-- Kamek -->
+      <suggested sprite="383"/> <!-- Kamek Controller -->
     </dependency>
     <value nybble="5-6" title="Left Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move through from the left side of the sprite's placement, calculated in half-blocks."/>
     <value nybble="7-8" title="Right Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move through from the right side of the sprite's placement, calculated in half-blocks."/>
