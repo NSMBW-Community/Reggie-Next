@@ -2289,7 +2289,7 @@
   </sprite> <!-- #322: World-2 Boss: Mega Thwomp -->
 
   <sprite id="324" name="World-5 Boss: Podouble" notes="A pair of large Podoboo bosses used in NewerSMBW. It can only be defeated by using fire or ice attacks against the correct half, and spawns a Yoshi for each player to assist them.">
-    <dependency notes="A Podoboo, Kamek and his controller must be included in the level. Yoshi is spawned by the boss from a fixed position.">
+    <dependency notes="A Podoboo, Kamek and his controller must be included in the level. Yoshis are spawned by the boss at 16 blocks in from the left side of the zone.">
       <required sprite="46"/> <!-- Lava Bubble -->
 	  <required sprite="427"/> <!-- Kamek -->
       <required sprite="383"/> <!-- Kamek Controller -->

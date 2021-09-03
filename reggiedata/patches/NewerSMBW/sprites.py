@@ -1942,15 +1942,25 @@ class SpriteImage_MegaThwomp(SLib.SpriteImage):  # 322
         SLib.loadIfNotInImageCache('MegaThwomp', 'giant_thwomp.png')
 
 
-class SpriteImage_Podoboule(SLib.SpriteImage_StaticMultiple):  # 324
+class SpriteImage_Podouble(SLib.SpriteImage):  # 324
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.aux.append(SLib.AuxiliaryImage(parent, 110, 110))
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
+        self.aux[0].setPos(-45, -67)
+        self.aux[1].setPos(0, -288)
+
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PodobouleFire', 'podoboule_fire.png')
-        SLib.loadIfNotInImageCache('PodobouleIce', 'podoboule_ice.png')
+        SLib.loadIfNotInImageCache('PodoubleFire', 'podouble_fire.png')
+        SLib.loadIfNotInImageCache('PodoubleIce', 'podouble_ice.png')
 
     def dataChanged(self):
         fire = (self.parent.spritedata[2] >> 4) & 1
-        self.image = ImageCache['PodobouleFire' if fire else 'PodobouleIce']
+        distance = self.parent.spritedata[5] & 0xFF
+
+        self.aux[0].image = ImageCache['PodoubleFire' if fire else 'PodoubleIce']
+        self.aux[1].setSize(16, 208 + (distance * 8))
 
         super().dataChanged()
 
@@ -2286,7 +2296,7 @@ ImageClasses = {
     320: SpriteImage_FallingChestnut,
     321: SpriteImage_ModelLoaderResources,
     322: SpriteImage_MegaThwomp,
-    324: SpriteImage_Podoboule,
+    324: SpriteImage_Podouble,
     341: SpriteImage_NewerBigShell,
     351: SpriteImage_ShyGuy,
     357: SpriteImage_NewerFruit,

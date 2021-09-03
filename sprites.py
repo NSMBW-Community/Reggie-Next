@@ -8613,7 +8613,7 @@ class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
     def dataChanged(self):
         style = self.parent.spritedata[5] & 15
 
-        # Styles greater than 2 crash the game
+        # Styles greater than 2 load nothing
         if style > 2:
             self.aux[0].image = None
 
