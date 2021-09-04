@@ -715,15 +715,15 @@ class SpriteImage_NewerParaKoopa(SLib.SpriteImage_StaticMultiple):  # 58
 
         if 'ParaKoopa01' not in ImageCache:
             for flag in (0, 1):
-                for style in range(4):
-                    ImageCache['ParaKoopa%d%d' % (flag, style + 1)] = \
-                        SLib.GetImg('parakoopa_%d%d.png' % (flag, style + 1))
+                for style in range(1, 5):
+                    flag_style = '%d%d' % (flag, style)
+                    ImageCache['ParaKoopa%s' % flag_style] = SLib.GetImg('parakoopa_%s.png' % flag_style)
 
         if 'KoopaShell01' not in ImageCache:
             for flag in (0, 1):
-                for style in range(4):
-                    ImageCache['KoopaShell%d%d' % (flag, style + 1)] = \
-                        SLib.GetImg('koopa_shell_%d%d.png' % (flag, style + 1))
+                for style in range(1, 4):
+                    flag_style = '%d%d' % (flag, style)
+                    ImageCache['KoopaShell%s' % flag_style] = SLib.GetImg('koopa_shell_%s.png' % flag_style)
 
     def dataChanged(self):
         # get properties
