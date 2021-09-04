@@ -741,7 +741,10 @@ class SpriteImage_NewerParaKoopa(SLib.SpriteImage_StaticMultiple):  # 58
         else:
             if mode == 3:
                 del self.offset
-                self.image = ImageCache['KoopaShell%d%d' % (red, texhack)]
+                if texhack in (0, 4):
+                    self.image = ImageCache['KoopaShellG'] if not red else ImageCache['KoopaShellR']
+                else:
+                    self.image = ImageCache['KoopaShell%d%d' % (red, texhack)]
             else:
                 self.offset = (-8, -12)
                 self.image = ImageCache['ParaKoopa%d%d' % (red, texhack)]
