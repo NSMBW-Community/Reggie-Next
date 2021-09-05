@@ -5938,10 +5938,10 @@
   </sprite> <!-- #395: Spiny Cheep Cheep -->
 
   <sprite id="396" name="Move-When-On Platform" notes="A special platform that will move at any point when a specified number of 'passengers' (players + enemies) are standing on it.">
-    <value nybble="12" title="Length" comment="This determines the length of the platform." comment2="This value must be at least 1."/>
-    <checkbox bit="26" title="Does not Move" comment="When enabled, the movement function of this platform will be disabled making the platform into a decorative object."/>
-    <dualbox bit="40" title1="Returns to Original Position" title2="Does not Return" comment="When enabled, the platform's movement will be one-way only." requiredbit="26" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
-    <list nybble="11" title="Moves with Passenger Number" comment="This determines how many 'passengers' are needed for the platform's movement to activate." comment2="A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers. It will change colors from blue to red when this condition is satisfied.">
+    <value nybble="12" title="Length" comment="This Length must be at least 1 to have collision."/>
+    <checkbox bit="26" title="Does not Move"/>
+    <dualbox bit="40" title1="Returns to Original Position" title2="Does not Return" requiredbit="26" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
+    <list nybble="11" title="Moves with Passenger Number" comment="This determines how many 'passengers' are needed for the platform's movement to activate. A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers. It will change colors from blue to red when this condition is satisfied.">
       <entry value="0">1 Passenger</entry>
       <entry value="1">2 Passengers</entry>
       <entry value="2">3 Passengers</entry>
@@ -5959,7 +5959,7 @@
       <entry value="14">15 Passengers</entry>
       <entry value="15">16 Passengers</entry>
     </list>
-    <list bit="27-28" title="Direction" comment="This determines which direction the platform will move when the Passenger Number is satisfied." comment2="It will show an arrow pointing in the direction it is moving, whether it is moving this direction or returning." requiredbit="26" requiredval="0">
+    <list bit="27-28" title="Direction" comment="It will show an arrow pointing in the direction it is moving, whether it is moving this direction or returning." requiredbit="26" requiredval="0">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
       <entry value="2">Up</entry>
