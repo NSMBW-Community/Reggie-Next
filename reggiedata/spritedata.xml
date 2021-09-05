@@ -5938,7 +5938,7 @@
   </sprite> <!-- #395: Spiny Cheep Cheep -->
 
   <sprite id="396" name="Move-When-On Platform" notes="A special platform that will move at any point when a specified number of 'passengers' (players + enemies) are standing on it.">
-    <value nybble="12" title="Length" comment="This Length must be at least 1 to have collision."/>
+    <value nybble="12" title="Length" comment="This value must be at least 1 to have collision."/>
     <checkbox bit="26" title="Does not Move"/>
     <dualbox bit="40" title1="Returns to Original Position" title2="Does not Return" requiredbit="26" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
     <list nybble="11" title="Moves with Passenger Number" comment="This determines how many 'passengers' are needed for the platform's movement to activate. A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers. It will change colors from blue to red when this condition is satisfied.">
@@ -6764,8 +6764,6 @@
     </list>
   </sprite> <!-- #465: Effect - Ambiance Sound Effects -->
 
-  <!-- Test Nybble 11/12 for height/width -->
-  <!-- Test Nybble 5 (Checkbox) and Nybble 3-4 (Event ID) for event activation; referencing Grey Tiled Blocks -->
   <!-- Test Nybble 6 (Value 8) for Start Delay; referencing Grey Tiled Blocks -->
   <sprite id="466" name="Moving Lava Glow Metal Block" notes="A tall block with the glow of lava underneath it that moves back and forth.">
     <list bit="23-24" title="Movement Direction" comment="This determines the initial direction the block will travel.">
@@ -6775,9 +6773,9 @@
       <entry value="3">Down</entry>
     </list>
     <value nybble="7" title="Delay Before Movement" comment="This determines how long the block will wait before making its outwards movement." comment2="Each value is equal to two game seconds."/>
-    <value nybble="9" title="Distance" comment="This defines how many tiles the block will move before returning to its starting position."/>
+    <value nybble="9" title="Distance"/>
     <value nybble="8" title="Delay Before Return" comment="This determines how long the block will wait before making its return movement." comment2="Each value is equal to two game seconds."/>
-    <list bit="39-40" title="Speed" comment="This determines the speed of the block's movement.">
+    <list bit="39-40" title="Speed">
       <entry value="0">Very Slow</entry>
       <entry value="1">Slow</entry>
       <entry value="2">Normal</entry>
@@ -6785,18 +6783,15 @@
     </list>
   </sprite> <!-- #466: Moving Lava Glow Metal Block -->
 
-  <!-- Run additional tests on this sprite's direction setting, including values greater than 3, mixed with the potentially unlisted size settings -->
   <sprite id="467" name="Moving Light Gem Block" notes="A small block with a triangular gem in it that lights up just before it moves from its starting position, and then deactivates instantly when it begins to move back.">
-    <list nybble="6" title="Direction Moved" comment="This determines the initial direction the block will travel. The block's gem will light up when travelling in this direction.">
+    <list nybble="6" title="Initial Direction" comment="This determines the initial direction the block will travel. The block's gem will light up when travelling in this direction.">
       <entry value="0">Up</entry>
-      <entry value="2">Up</entry>
       <entry value="1">Down</entry>
-      <entry value="3">Down</entry>
     </list>
     <value nybble="7" title="Delay Before Movement" comment="This determines how long the block will wait before making its outwards movement." comment2="Each value is equal to two game seconds."/>
-    <value nybble="9" title="Distance" comment="This defines how many tiles the block will move before returning to its starting position."/>
+    <value nybble="9" title="Distance"/>
     <value nybble="8" title="Delay Before Return" comment="This determines how long the block will wait before making its return movement." comment2="Each value is equal to two game seconds."/>
-    <list bit="39-40" title="Speed" comment="This determines the speed of the block's movement.">
+    <list bit="39-40" title="Speed">
       <entry value="0">Very Slow</entry>
       <entry value="1">Slow</entry>
       <entry value="2">Normal</entry>

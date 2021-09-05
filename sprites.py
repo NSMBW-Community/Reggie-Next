@@ -8343,12 +8343,36 @@ class SpriteImage_LavaIronBlock(SLib.SpriteImage_Static):  # 466
             parent,
             1.5,
             ImageCache['LavaIronBlock'],
-            (-2, -1),
+            (-1, -1),
         )
-
+        
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
+    
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('LavaIronBlock', 'lava_iron_block.png')
+
+    def dataChanged(self):
+        direction = self.parent.spritedata[2] & 3
+        distance = (self.parent.spritedata[4] & 0xF0) >> 4
+
+        if direction <= 1: # horizontal
+            self.aux[0].direction = 1
+            self.aux[0].setSize((distance * 16) + 16, 16)
+        else: # vertical
+            self.aux[0].direction = 2
+            self.aux[0].setSize(16, (distance * 16) + 16)
+
+        if direction == 0: # right
+            self.aux[0].setPos(self.width + 48, self.height / 2)
+        elif direction == 1: # left
+            self.aux[0].setPos((-distance * 24) + 2, self.height / 2)
+        elif direction == 2: # up
+            self.aux[0].setPos((self.width * 0.75) - 12, (-distance * 24))
+        else: # down
+            self.aux[0].setPos((self.width * 0.75) - 12, self.height)
+        
+        super().dataChanged()
 
 
 class SpriteImage_MovingGemBlock(SLib.SpriteImage_Static):  # 467
@@ -8359,9 +8383,23 @@ class SpriteImage_MovingGemBlock(SLib.SpriteImage_Static):  # 467
             ImageCache['MovingGemBlock'],
         )
 
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
+
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('MovingGemBlock', 'moving_gem_block.png')
+
+    def dataChanged(self):
+        direction = self.parent.spritedata[2] & 1
+        distance = (self.parent.spritedata[4] & 0xF0) >> 4
+
+        self.aux[0].setSize(16, (distance * 16) + 16)
+        if direction == 0: # up
+            self.aux[0].setPos(self.width / 2, -distance * 24)
+        else: # down
+            self.aux[0].setPos(self.width / 2, self.height - 8)
+        
+        super().dataChanged()
 
 
 class SpriteImage_BoltPlatform(SLib.SpriteImage):  # 469
