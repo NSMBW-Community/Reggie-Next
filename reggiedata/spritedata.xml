@@ -5693,21 +5693,17 @@
     </dependency>
   </sprite> <!-- #375: Wendy Koopa - Castle Boss -->
 
-  <sprite id="376" name="Moving Chainlink Fence Panel - Two Way Line" noyoshi="True" notes="A climbable chainlink fence panel that can either be paired with a Two Way Line controller or allowed to move independently in a back and forth direction.">
-    <dependency notes="The Chainlink Fence may be paired with a [260] Two Way Line movement controller to allow for synchronized movement across a Zone. Additionally, it will appear in front of Layer 1, so is must have Layer 0 tiles painted to make it appear behind terrain.">
-      <suggested sprite="260"/>
-    </dependency>
-    <value bit="17-24" title="Two Way Line ID" comment="This pairs the block to a matching Two Way Line movement controller." idtype="Two Way Line"/>
-    <list nybble="9" title="Shape" comment="This determines the size of the Chainlink Fence.">
+  <sprite id="376" name="Moving Chainlink Fence Panel" noyoshi="True" notes="A climbable chainlink fence panel that can move in a back and forth direction. It will appear in front of Layer 1, so is must have Layer 0 tiles painted to make it appear behind terrain.">
+    <list nybble="9" title="Shape">
       <entry value="0">Small Square (4x4)</entry>
       <entry value="1">Tall / Skinny (4x8)</entry>
       <entry value="2">Taller / Skinny (4x14)</entry>
       <entry value="3">Short / Long (12x4)</entry>
     </list>
-    <value bit="41-44" title="Movement Distance" comment="This determines how far the Chainlink Fence will move, if at all." requiredbit="17-24" requiredval="0"/> <!-- This setting and those below will disappear if Two Way Line ID is set -->
-    <dualbox bit="48" title1="Moves Vertically" title2="Moves Horizontally" comment="This determines which direction the Chainlink Fence will move." requiredbit="17-24, 41-44" requiredval="0, 1-15"/> <!-- Appears only if Movement Distance is set -->
-    <dualbox bit="40" title1="Moves Up First" title2="Moves Down First" comment="This determines which direction the Chainlink Fence will move first." requiredbit="17-24, 41-44" requiredval="0, 1-15"/> <!-- Appears only if Movement Distance is set, and movement is Vertical -->
-    <dualbox bit="40" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Chainlink Fence will move first." requiredbit="17-24, 41-44" requiredval="0, 1-15"/> <!-- Appears only if Movement Distance is set, and movement is Horizontal -->
+    <value bit="41-44" title="Distance"/>
+    <dualbox bit="48" title1="Moves Vertically" title2="Moves Horizontally"/>
+    <dualbox bit="40" title1="Moves Up First" title2="Moves Down First" requiredbit="48" requiredval="0"/> <!-- Appears only if direction is Vertical -->
+    <dualbox bit="40" title1="Moves Left First" title2="Moves Right First" requiredbit="48" requiredval="1"/> <!-- Appears only if direction is Horizontal -->
   </sprite> <!-- #376: Moving Chainlink Fence Panel -->
 
   <sprite id="377" name="Warp Pipe - Up" notes="A non-tileset pipe that cannot be entered. To enter Blue pipes, create a tileset pipe underneath the sprite.">
