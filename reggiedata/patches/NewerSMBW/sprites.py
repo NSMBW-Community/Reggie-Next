@@ -1818,6 +1818,37 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
         super().dataChanged()
 
 
+class SpriteImage_RockyBossWrench(SLib.SpriteImage_StaticMultiple):  # 302
+    @staticmethod
+    def loadImages():
+        if 'RockyBossWrench0' in ImageCache: return
+        for big in (0, 1):
+            for direction in range(3):
+                ImageCache['RockyBossWrench%d%d' % (big, direction)] = SLib.GetImg('rocky_boss_wrench_%d%d.png' % (big, direction))
+
+    def dataChanged(self):
+        big = (self.parent.spritedata[5] >> 4) & 1
+        direction = self.parent.spritedata[5] & 3
+        if direction == 3:
+            direction = 2
+
+        self.image = ImageCache['RockyBossWrench%d%d' % (big, direction)]
+        if big:
+            self.offset = (
+                    (2, -33),
+                    (-5, -33),
+                    (-11, 5)
+                )[direction]
+        else:
+            self.offset = (
+                    (6, -26),
+                    (-1, -26),
+                    (-5, 11)
+                )[direction]
+
+        super().dataChanged()
+
+
 class SpriteImage_NewerHammerBroPlatform(SpriteImage_NewerHammerBroNormal):  # 308
     pass
 
@@ -2293,6 +2324,7 @@ ImageClasses = {
     286: SpriteImage_NewerWoodCircle,
     290: SpriteImage_Boolossus,
     296: SpriteImage_NewerMegaBuzzy,
+    302: SpriteImage_RockyBossWrench,
     308: SpriteImage_NewerHammerBroPlatform,
     311: SpriteImage_NewerMegaIcicle,
     319: SpriteImage_Flipblock,

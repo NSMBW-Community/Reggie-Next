@@ -2162,17 +2162,17 @@
     <value nybble="5" title="Coaster ID" comment="This will pair multiple Spine Coasters together so that when one of them starts, they all start at the same time." comment2="Do not pair more than one Spine Coaster with [Touch Activated] enabled!" idtype="Coaster"/>
   </sprite> <!-- #297: Spine Coaster -->
 
-  <sprite id="302" name="Loose Balboa Throwing Wrench" notes="The wrench thrown by Balboa Wrench's boss fight.">
+  <sprite id="302" name="Loose Balboa Throwing Wrench" notes="The wrenches thrown by Balboa Wrench in his boss fight.">
     <dependency notes="The game will crash without a Rocky Wrench in the level.">
       <required sprite="352"/> <!-- Rocky Wrench -->
     </dependency>
     <checkbox nybble="10" title="Place In Front Of Other Sprites"/>
     <checkbox nybble="11" title="Big"/>
-    <list nybble="12" title="Direction" comment="The flying arc is randomized.">
+    <list nybble="12" title="Direction" comment="The flying arc varies up to about 3 blocks in distance.">
       <entry value="0">Up Right</entry>
       <entry value="1">Up Left</entry>
       <entry value="2">Up Left (Shorter arc)</entry>
-      <entry value="3">Up Left (Shorter arc)</entry>
+      <!--<entry value="3">Up Left (Shorter arc)</entry>-->
     </list>
   </sprite> <!-- #302: Loose Balboa Throwing Wrench -->
 
