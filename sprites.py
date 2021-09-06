@@ -7053,7 +7053,12 @@ class SpriteImage_WendyKoopaCastleBoss(SLib.SpriteImage):  # 375
         SLib.loadIfNotInImageCache('WendyKoopaCastleBoss', 'wendy_castle_boss.png')
 
 
-class SpriteImage_MovingFence(SLib.SpriteImage_StaticMultiple):  # 376
+class SpriteImage_MovingFence(SLib.SpriteImage):  # 376
+    def __init__(self, parent, scale=1.5):
+        super().__init__(parent, scale)
+        self.spritebox.shown = False
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
+
     @staticmethod
     def loadImages():
         if 'MovingFence0' in ImageCache: return
@@ -7061,22 +7066,35 @@ class SpriteImage_MovingFence(SLib.SpriteImage_StaticMultiple):  # 376
             ImageCache['MovingFence%d' % shape] = SLib.GetImg('moving_fence_%d.png' % shape)
 
     def dataChanged(self):
+        super().dataChanged()
 
         self.shape = (self.parent.spritedata[4] >> 4) & 3
-        arrow = None
+        direction = self.parent.spritedata[5] & 1
+        distance = (self.parent.spritedata[5] & 0xF0) >> 4
 
-        size = (
+        self.size = (
             (64, 64),
             (64, 128),
             (64, 224),
-            (192, 64),
+            (192, 64)
         )[self.shape]
 
-        self.xOffset = -size[0] / 2
-        self.yOffset = -size[1] / 2
-        self.image = ImageCache['MovingFence%d' % self.shape]
+        self.xOffset = -self.size[0] / 2
+        self.yOffset = -self.size[1] / 2
 
-        super().dataChanged()
+        if direction == 1: # horizontal
+            self.aux[0].direction = 1
+            self.aux[0].setSize((distance * 32) + self.width, 16)
+            self.aux[0].setPos(-distance * 24, (self.height * 0.75) - 12)
+        else: # vertical
+            self.aux[0].direction = 2
+            self.aux[0].setSize(16, (distance * 32) + self.height)
+            self.aux[0].setPos((self.width * 0.75) - 12, -distance * 24)
+
+    def paint(self, painter):
+        super().paint(painter)
+
+        painter.drawPixmap(0, 0, ImageCache['MovingFence%d' % self.shape])
 
 
 class SpriteImage_Pipe_Up(SpriteImage_PipeStationary):  # 377
