@@ -678,9 +678,7 @@ class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
 
     @staticmethod
     def loadImages():
-        if 'GiantBubble0' in ImageCache:
-            return
-
+        if 'GiantBubble0' in ImageCache: return
         for shape in range(3):
             ImageCache['GiantBubble%d' % shape] = SLib.GetImg('giant_bubble_%d.png' % shape)
 
@@ -689,35 +687,30 @@ class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
 
         self.shape = self.parent.spritedata[4] >> 4
         direction = self.parent.spritedata[5] & 15
-        distance = (self.parent.spritedata[5] >> 4) + 1
+        distance = (self.parent.spritedata[5] & 0xF0) >> 4
 
         if self.shape > 3:
             self.shape = 0
 
-        if self.shape == 0:
-            self.size = (122, 137)
-            HorzOffset = 24
-            VertOffset = 20
-        elif self.shape == 1:
-            self.size = (76, 170)
-            HorzOffset = 28
-            VertOffset = 7
-        elif self.shape == 2:
-            self.size = (160, 81)
-            HorzOffset = 8
-            VertOffset = 28
+        self.size = (
+            (122, 137),
+            (76, 170),
+            (160, 81)
+        )[self.shape]
 
         self.xOffset = -(self.width / 2) + 8
         self.yOffset = -(self.height / 2) + 8
 
-        if direction == 1:  # horizontal
+        if distance == 0:
+            self.aux[0].setSize(0, 0)
+        elif direction == 1:  # horizontal
             self.aux[0].direction = 1
-            self.aux[0].setSize((distance * 32) + self.width - 32, 16)
-            self.aux[0].setPos((-distance * 24) + 24, (self.height / 2) + HorzOffset)
+            self.aux[0].setSize((distance * 32) + self.width, 16)
+            self.aux[0].setPos((-distance * 24), (self.height * 0.75) - 12)
         else:  # vertical
             self.aux[0].direction = 2
-            self.aux[0].setSize(16, (distance * 32) + self.height - 32)
-            self.aux[0].setPos((self.width / 2) + VertOffset, (-distance * 24) + 24)
+            self.aux[0].setSize(16, (distance * 32) + self.height)
+            self.aux[0].setPos((self.width * 0.75) - 12, (-distance * 24))
 
     def paint(self, painter):
         super().paint(painter)
@@ -7082,7 +7075,9 @@ class SpriteImage_MovingFence(SLib.SpriteImage):  # 376
         self.xOffset = -self.size[0] / 2
         self.yOffset = -self.size[1] / 2
 
-        if direction == 1: # horizontal
+        if distance == 0:
+            self.aux[0].setSize(0, 0)
+        elif direction == 1: # horizontal
             self.aux[0].direction = 1
             self.aux[0].setSize((distance * 32) + self.width, 16)
             self.aux[0].setPos(-distance * 24, (self.height * 0.75) - 12)
