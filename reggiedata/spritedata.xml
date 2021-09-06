@@ -2479,7 +2479,7 @@
     <value bit="10-16" title="Target Event ID" comment="When the Red Coin Ring is touched, the Target Event will be activated." idtype="Target Event"/>
     <dualbox bit="20" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is activated temporarily or permanently." comment2="Timed events will pause the music and replace it with ticking. It is recommended for normal Red Coin Ring use that the event be timed."/>
     <value bit="45-48" title="Red Coin ID" comment="When set, the corresponding Red Coin set will have an Item Reward. Value 0 is also a valid ID." idtype="Red Coin"/>
-    <list bit="43-44" title="Item Reward" comment="This determines which power-up will appear after collecting 8 coins from the Red Coin ID set above. If a player already has that power-up, it will drop a 1-Up.">
+    <list bit="43-44" title="Item Reward" comment="This determines which power-up will appear after collecting 8 coins from the Red Coin ID set above. If a player already has a power-up, it will drop a 1-Up.">
       <entry value="0">Fire Flower</entry>
       <entry value="1">Propeller Shroom</entry>
       <entry value="2">Penguin Suit</entry>
