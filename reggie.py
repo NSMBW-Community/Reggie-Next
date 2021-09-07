@@ -4312,9 +4312,9 @@ def main():
     import subprocess
 
     try:
-        commit_id = subprocess.check_output(["git", "describe", "--always"]).decode().strip()
+        commit_id = subprocess.check_output(["git", "describe", "--always"], stderr=subprocess.DEVNULL).decode().strip()
         globals_.ReggieVersionShort += "-" + commit_id
-    except OSError:
+    except (FileNotFoundError, subprocess.CalledProcessError):
         pass
 
     del subprocess
