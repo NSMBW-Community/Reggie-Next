@@ -193,7 +193,7 @@
       <entry value="21">Propeller Mushroom</entry>
       <entry value="25">Mini Mushroom</entry>
     </list>
-    <list nybble="12" title="Color" comment="This determines the color of the glow block. Value 0 has no recolour in the 'block_light.arc' file. If a color (white) was added, it would work fine." requiredbit="44">
+    <list nybble="12" title="Color" comment="This determines the color of the glow block. Value 0 has no recolor in the 'block_light.arc' file. If a color (white) was added, it would work fine." requiredbit="44">
       <entry value="0">Nothing (Crashes)</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -518,7 +518,7 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #45: Brick Block !-Switch -->
 
-  <sprite id="46" name="Lava Bubble (Podoboo)" sizehacks="True" notes="The Lava Bubble (Podoboo) is a firey enemey that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava.">
+  <sprite id="46" name="Lava Bubble (Podoboo)" sizehacks="True" notes="The Lava Bubble (Podoboo) is a firey enemy that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava.">
     <dependency notes="The Podoboo requires [139] Lava within 15 blocks underneath it in order to appear.">
       <required sprite="139"/> <!-- Requires Lava -->
     </dependency>
@@ -633,7 +633,7 @@
     <checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #58: Koopa Paratroopa -->
 
-  <sprite id="60" name="Spike Top" sizehacks="True" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spiketops don't properly work on slopes.">
+  <sprite id="60" name="Spike Top" sizehacks="True" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spike Tops don't properly work on slopes.">
     <list bit="43-44" title="Orientation" comment="The Spike Top must be placed against something for it to appear.">
       <entry value="0">Placed on Ground</entry>
       <entry value="1">Placed on Left Wall</entry>
@@ -696,7 +696,7 @@
   <sprite id="88" name="Actor Spawner" notes="With this sprite, you can spawn anything and everything that exists in the game. Sprite Data can be applied to sprites spawned through this within certain limitations. Please utilize Raw Data (Visible with Advanced Settings enabled) to determine what the settings should be set to. Combine the Actor Spawner with [332] Effect/Sound Spawner to add flair to the spawn effect. &lt;br&gt; &lt;br&gt;Additionally, anything spawned by the Actor Spawner will need to be respawned each time the player changes Zones. If returning from a bonus room, be sure to trigger any relevant spawns. Each Actor Spawner can only trigger once each Zone.">
     <dependency notes="Directly place any sprite you want to spawn with the Actor Spawner somewhere in your level for the game to load the required secondary assets of that sprite."/>
     <value bit="17-20" title="Triggering Event ID" comment="When this event is activated, the Actor Spawner will create one copy of the Actor at the location of the Spawner. Keep in mind that some sprites have abnormal placement so expect a lot of testing to make sure that everything works correctly." idtype="Triggering Event"/>
-    <checkbox bit="21" title="Automatically Respawn" comment="When the actor spawned by this spawner is deleted or missing, and the event is triggered, another actor with the same settings will be spawened. This also stops the spawned actor from despawning when the event is deactivated."/>
+    <checkbox bit="21" title="Automatically Respawn" comment="When the actor spawned by this spawner is deleted or missing, and the event is triggered, another actor with the same settings will be spawned. This also stops the spawned actor from despawning when the event is deactivated."/>
     <external type="actors" bit="22-32" title="Actor ID" comment="Use this external window to select your Actor."/>
     <value bit="33-34" title="Nybble 5" />
     <value bit="35-36" title="Nybble 6" />
@@ -1349,8 +1349,8 @@
     </list>
     <value bit="17-24" title="Path Movement ID" comment="If pairing the ?-Block with Sprite 159, match the Path Movement ID to enable Path controlled movement." requiredbit="25-28" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
     <value bit="17-24" title="Two Way Line ID" comment="If pairing the ?-Block with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requiredbit="25-28" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the ?-Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requiredbit="25-28" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the ?-Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requiredbit="25-28" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
     <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players.">
@@ -1394,8 +1394,8 @@
     </list>
     <value bit="17-24" title="Path Movement ID" comment="If pairing the ?-Block with Sprite 159, match the Path Movement ID to enable Path controlled movement." requiredbit="25-28" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
     <value bit="17-24" title="Two Way Line ID" comment="If pairing the ?-Block with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requiredbit="25-28" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the ?-Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requiredbit="25-28" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the ?-Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requiredbit="25-28" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
     <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players.">
@@ -1437,8 +1437,8 @@
     </list>
     <value bit="17-24" title="Path Movement ID" comment="If pairing the Brick Block with Sprite 159, match the Path Movement ID to enable Path controlled movement." requiredbit="25-28" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
     <value bit="17-24" title="Two Way Line ID" comment="If pairing the Brick Block with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requiredbit="25-28" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the Brick Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the Brick Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the Brick Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the Brick Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Brick Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requiredbit="25-28" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Brick Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requiredbit="25-28" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
     <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release only one power-up item.">
@@ -1532,7 +1532,7 @@
     <value nybble="11" title="Width - Top" comment="This determines the width of the platform when it is in its top position."/>
     <value nybble="12" title="Width - Bottom" comment="This determines the width of the platform when it is in its bottom position."/>
     <dualbox bit="36" title1="Moves Up First" title2="Moves Down First" comment="This determines the initial direction the platform will move."/>
-    <value nybble="5" title="Stretch ID" comment="This pairs the platform to a matching controller for movement sycnronization." idtype="Stretch"/>
+    <value nybble="5" title="Stretch ID" comment="This pairs the platform to a matching controller for movement synchronization." idtype="Stretch"/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance between the top and bottom states of the platform." comment2="The speed is constant and not based on how large the distance is, so larger distances will take longer to travel. Additionally, because the change in the number of blocks is accomplished in the same time period of time that it takes the Stretching Line Block to travel up or down, if the movement distance is 0 then the platform will grow or shrink immediately." requiredbit="17-20" requiredval="0"/> <!-- Appears only if Stretch ID is not set -->
   </sprite> <!-- #219: Stretching Line Block -->
 
@@ -1556,8 +1556,8 @@
     </list>
     <value bit="17-24" title="Path Movement ID" comment="If pairing the Invisible Block with Sprite 159, match the Path Movement ID to enable Path controlled movement." requiredbit="25-28" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
     <value bit="17-24" title="Two Way Line ID" comment="If pairing the Invisible Block with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requiredbit="25-28" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the Invisible Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the Invisible Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the Invisible Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the Invisible Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Invisible Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requiredbit="25-28" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Invisible Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requiredbit="25-28" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
     <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will only release one power-up item. If the invisible block has 10 coins, it will stay in the used block graphic the entire time. Additionally, it won't release the extra few coins if the block is hit multiple times successfully.">
@@ -1690,7 +1690,7 @@
     <value bit="33-40" title="Target Event ID 2" requiredbit="32" idtype="Target Event"/> <!-- May already support 256 Event IDs --> <!-- Appears if affecting Event 2 --> <!-- Multiple Target Event IDtypes may not function -->
   </sprite> <!-- #239: Event Block -->
 
-  <sprite id="244" name="Line God Event" notes="The Line God can hide and unhide Line Guides within a specified area by using Events.">
+  <sprite id="244" name="Line God Event" notes="The Line God can hide and show Line Guides within a specified area by using Events.">
     <dependency notes="The Line God cannot create new Line objects, only determine if the object within its affected area are displayed and functional."/>
     <value bit="17-24" title="Triggering Event ID" comment="When this Event ID is activated, the Line Guides affected by the Line God's area will be hidden or unhidden, depending on the Mode." idtype="Triggering Event"/>
     <value nybble="11" title="Width" comment="Width of the area affected by the Line God."/>
@@ -1719,7 +1719,7 @@
     <checkbox bit="43" title="Time Stop: Players &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Players." comment2="Remember to deactivate the Special Event or else Mario and the other Players will remain frozen. Forever~" requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
     <checkbox bit="42" title="Time Stop: Terrain &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Terrain Animations." requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
     <checkbox bit="41" title="Time Stop: Enemies &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Enemies that support this function." requiredbit="45-48" requiredval="1"/> <!-- Appears if [Type] = 1 -->
-    <list nybble="11" title="Gravity Type" comment="This determines what the altered state of gravity will be while the Special Event is activated." comment2="Anti Gravity is a little strange, not fully documented, and defnitely not recommended for normal use." requiredbit="45-48" requiredval="3"> <!-- Appears if [Type] = 3 -->
+    <list nybble="11" title="Gravity Type" comment="This determines what the altered state of gravity will be while the Special Event is activated." comment2="Anti Gravity is a little strange, not fully documented, and definitely not recommended for normal use." requiredbit="45-48" requiredval="3"> <!-- Appears if [Type] = 3 -->
       <entry value="0">Low Gravity</entry>
       <entry value="1">Anti Gravity</entry>
     </list>
@@ -1821,7 +1821,7 @@
     </list>
   </sprite> <!-- #246: Special Event -->
 
-  <sprite id="250" name="Electric Line" notes="A tall electrified wall that will elecrtocute any player that touches it.">
+  <sprite id="250" name="Electric Line" notes="A tall electrified wall that will electrocute any player that touches it.">
     <dependency notes="The Boss Controller for Bowser Jr's 2nd Fight must be included in the level to load the line.">
        <required sprite="405"/> <!-- Bowser Jr. 2nd Fight -->
       </dependency>
@@ -2299,7 +2299,7 @@
   </sprite> <!-- #324: World-5 Boss: Podouble -->
 
   <!-- Add a page within the level editor where the full list of effects and sounds can be referenced. Additionally, clean up the list so it's not littered with German. :P -->
-  <sprite id="332" name="Sound/Graphic Effects Spawner" phonebook="Effects" notes="Enables event-driven spawning of Sound Effects and Graphic Effects.&lt;br&gt;&lt;u&gt;Limitations&lt;/u&gt;&lt;br&gt; 1) Do not use 1000 or more sounds/effects per area.&lt;br&gt; 2) A single Event ID can only trigger one sound/effect per area&lt;br&gt; 3) Only a specific number of sounds/effects can be active at the same time&lt;br&gt; 4) Only two BRSTMs can be active at the same time." advancednotes="If spawning a Sound Efect, the placement of the sprite is crucial, as the sound is emitted from that position. If the player is ~3 screens away from the sprite, then they won't hear it anymore. Placing multiple sprites with the same settings at different locations is possible.">
+  <sprite id="332" name="Sound/Graphic Effects Spawner" phonebook="Effects" notes="Enables event-driven spawning of Sound Effects and Graphic Effects.&lt;br&gt;&lt;u&gt;Limitations&lt;/u&gt;&lt;br&gt; 1) Do not use 1000 or more sounds/effects per area.&lt;br&gt; 2) A single Event ID can only trigger one sound/effect per area&lt;br&gt; 3) Only a specific number of sounds/effects can be active at the same time&lt;br&gt; 4) Only two BRSTMs can be active at the same time." advancednotes="If spawning a Sound Effect, the placement of the sprite is crucial, as the sound is emitted from that position. If the player is ~3 screens away from the sprite, then they won't hear it anymore. Placing multiple sprites with the same settings at different locations is possible.">
       <value nybble="5-6" title="Triggering Event ID" comment="When this Event ID is activated, the associated sound or affect will be played." idtype="Triggering Event"/>
       <external type="sfx" nybble="10-12" title="Sfx ID" comment="Use this external window to select your Sound Effect." requiredbit="32" requiredval="0"/>
       <external type="gfx" nybble="10-12" title="Gfx ID" comment="Use this external window to select your Graphic Effect." requiredbit="32" requiredval="1"/>
@@ -2413,7 +2413,7 @@
     </list>
   </sprite> <!-- #387: Bush -->
 
-  <sprite id="391" name="Lighting - Glow Block" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely dimished as anything other than a weapon of destruction if not using Full Darkness lighting.">
+  <sprite id="391" name="Lighting - Glow Block" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely diminished as anything other than a weapon of destruction if not using Full Darkness lighting.">
     <list nybble="6" title="Color" advanced="True" comment="A recolor for the Glow Block." advancedcomment="More effects can be added for your hack.">
       <entry value="0">Yellow</entry>
       <entry value="1">Dark Purple</entry>
@@ -2594,7 +2594,7 @@
     <dualbox bit="40" title1="Red" title2="Green" comment="This determines the color of the Thick mushroom platform." requiredbit="44"/> <!-- Appears if Thick is set -->
     <value nybble="12" title="Width" comment="This determines the width of the mushroom platform."/>
     <dualbox bit="20" title1="Horizontal Platform" title2="Angled Platform" comment="This determines if the mushroom platform is flat and horizontal, or if it is tilted at an angle."/>
-    <dualbox bit="21" title1="Angles Left" title2="Anlges Right" comment="This determines which direction the mushroom platform will be angled." requiredbit="20"/> <!-- Appears only if Angled is enabled -->
+    <dualbox bit="21" title1="Angles Left" title2="Angles Right" comment="This determines which direction the mushroom platform will be angled." requiredbit="20"/> <!-- Appears only if Angled is enabled -->
     <list bit="22-24" title="Angle" comment="Angles greater than 45° have glitchy collision and are not recommended." requiredbit="20-21" requiredval="2">
       <entry value="7">11.25°</entry>
       <entry value="6">22.50°</entry>
