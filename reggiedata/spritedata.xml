@@ -5622,8 +5622,8 @@
     </dependency>
     <value nybble="11-12" title="Hill ID" comment="This pairs the coins to a matching standard Rolling Hill." idtype="Hill"/>
     <value nybble="8" title="Distance from Hill Surface" comment="This determines how many blocks away from the surface of the Rolling Hill the coin will rotate at."/>
-    <value nybble="9-10" title="Spacing" comment="This determines the angle of the coin around the Rolling Hill." comment2="Each incriment is equal to 1.40625°, or 1/256 of the circle. A value of 0 places the coin directly above the hill, and it increases in a clockwise direction. Recommended values for complete groupings of coins are factors of 4, 8, 16, or 32. Factors of 1 and 2 are not recommended as the coins will overlap. If not covering the entire hill, any factors can be used, but consistency is recommended."/>
-    <list nybble="9" title="Spacing - Major Parts" comment="This determines the angle of the coin around the Rolling Hill." comment2="Each incriment is equal to 22.5°, with 0 being directly above the hill, and increasing in a clockwise direction.">
+    <value nybble="9-10" title="Spacing" comment="This determines the angle of the coin around the Rolling Hill." comment2="Each increment is equal to 1.40625°, or 1/256 of the circle. A value of 0 places the coin directly above the hill, and it increases in a clockwise direction. Recommended values for complete groupings of coins are factors of 4, 8, 16, or 32. Factors of 1 and 2 are not recommended as the coins will overlap. If not covering the entire hill, any factors can be used, but consistency is recommended."/>
+    <list nybble="9" title="Spacing - Major Parts" comment="This determines the angle of the coin around the Rolling Hill." comment2="Each increment is equal to 22.5°, with 0 being directly above the hill, and increasing in a clockwise direction.">
       <entry value="0">0.0°</entry>
       <entry value="1">22.5°</entry>
       <entry value="2">45.0°</entry>
@@ -5641,7 +5641,7 @@
       <entry value="14">315.0°</entry>
       <entry value="15">337.5°</entry>
     </list>
-    <list nybble="10" title="Spacing - Sub Parts" comment="This determines the angle of the coin around the Rolling Hill." comment2="Each incriment is equal to an increase of 1.40625°, with 0 being the start of the value above, increasing in a clockwise direction.">
+    <list nybble="10" title="Spacing - Sub Parts" comment="This determines the angle of the coin around the Rolling Hill." comment2="Each increment is equal to an increase of 1.40625°, with 0 being the start of the value above, increasing in a clockwise direction.">
       <entry value="0">0.0°</entry>
       <entry value="1">1.41°</entry>
       <entry value="2">2.81°</entry>
