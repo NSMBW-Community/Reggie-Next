@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Version 2020-02-16 -->
 <!-- &lt; = < -->
 <!-- &gt; = > -->
 <!-- &quot; = " -->
@@ -9,7 +8,7 @@
 <!-- idtypes - Sprites with multiple Target Events or Triggering Events may need a secondary idtype, so that the primary Target/Triggering can be displayed in the sprite's display box. -->
 <!-- idtypes - Sprites with idtypes should have their idtype displayed within their blue box, usually in the lower right corner. (primary) Target Event should usually be in the lower right, and Triggering Event should usually be in the lower left. Secondary values like AND controller's second+ Triggering Event, and IF controller's secondary Location ID should be displayed in the top right corner or otherwise not displayed at all. -->
 <!-- Sample sprite with full settings -->
-<!-- <sprite id="#" name="Sprite Name"  noyoshi="True" yoshinotes="Talk about how it interacts with Yoshi. Advanced Only." notes="Talk about how to use this sprite in a basic sense." advancednotes="Talk about how to use this sprite in an advanced sense. Advanced Only."> -->
+<!-- <sprite id="#" name="Sprite Name" noyoshi="True" yoshinotes="Talk about how it interacts with Yoshi. Advanced Only." notes="Talk about how to use this sprite in a basic sense." advancednotes="Talk about how to use this sprite in an advanced sense. Advanced Only."> -->
 <!--   <dependency notes="Talk about the dependencies."> -->
 <!--     <required sprite="#" /> -->
 <!--     <suggested sprite="#" /> -->
@@ -22,7 +21,6 @@
 <!--   </list> -->
 <!--   <multidualbox bit="#-#" title="What it's for." comment="Etc." /> -->
 <!-- </sprite> -->
-<!-- Sizehacks Check - 63, 98, 113, 156, 357 -->
 <!-- Stopped after Line xxxx / 10755 (#x) -->
 
 <sprites>
@@ -79,7 +77,7 @@
   <sprite id="7" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
   <sprite id="8" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
 
-  <sprite id="9" name="(Unused) Glitch Player Actor" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is the most stable version of all the &quot;Glitch Marios.&quot; (#0-#9)&lt;br&gt;It creates a stationary Player clone. The clone will not move, and will shoot Fireballs if the matching player has the Fire Flower powerup. Other possible functions are untested. It's possible the game utilizes this data to create a temporary player actor at Entrances for no-control load-ins before switching to a controlled player actor. Additionally, depending on the position of this sprite relative to an Entrance, this Player Actor can sometimes be controlled instead of the one created by the entrance.">
+  <sprite id="9" name="(Unused) Glitch Player Actor" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is the most stable version of all the &quot;Glitch Marios.&quot; (#0-#9)&lt;br&gt;It creates a stationary Player clone. The clone will not move, and will shoot Fire balls if the matching player has the Fire Flower powerup. Other possible functions are untested. It's possible the game utilizes this data to create a temporary player actor at Entrances for no-control load-ins before switching to a controlled player actor. Additionally, depending on the position of this sprite relative to an Entrance, this Player Actor can sometimes be controlled instead of the one created by the entrance.">
     <dualbox bit="24" title1="Faces Right" title2="Faces Left" comment="This determines which way the spawned Player Actor faces." advanced="True"/>
     <list nybble="7-8" title="Load-In Animation" comment="This determines what animation is used by the spawned Player Actor when it is first loaded." comment2="This value uses the same list and order as normal entrances. Every value creates a character at its position. Compared to normal entrances, Mario will be positioned on top of the sprite's placement and not inside it. The 3D model is stationary and does not move." advanced="True">
       <entry value="0">Normal</entry>
@@ -433,7 +431,7 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #40: ?-Switch -->
 
-  <sprite id="41" name="P-Switch" notes="This switch is similar to the ? Switch, but it has the additional abilitiy of causing all Blue Coins (tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block.">
+  <sprite id="41" name="P-Switch" notes="This switch is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (tileset-based and sprite-based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block.">
     <dependency notes="Activates 'Pow Block Coin' tileset tiles."/>
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the switch will be facing down. Upside-Down switches cannot be set to fall."/>
     <checkbox bit="20" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms. It does not work with conveyor belts."/>
@@ -540,7 +538,7 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #45: Brick Block !-Switch -->
 
-  <sprite id="46" name="Lava Bubble (Podoboo)" notes="The Lava Bubble (Podoboo) is a firey enemey that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava.">
+  <sprite id="46" name="Lava Bubble (Podoboo)" notes="The Lava Bubble (Podoboo) is a firey enemy that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava.">
     <dependency notes="The Podoboo requires [139] Lava within 15 blocks underneath it in order to appear.">
       <required sprite="139"/> <!-- Requires Lava -->
     </dependency>
@@ -618,7 +616,7 @@
   </sprite> <!-- #52: Auto-Rotating 4-Platform -->
 
   <sprite id="53" name="Effect - Quicksand" notes="This will draw the animated quicksand effect over a specific Location ID. The actual quicksand sinking effect is only obtained through a specific tileset object. See Dependency Notes for examples. The quicksand animation is always placed behind Layer 1 objects.&lt;br&gt;&lt;br&gt;Location Quicksand: If you assign a Location ID, you can cause sand to appear only within the chosen Location instead of across the entire stage.&lt;br&gt;&lt;br&gt;Quicksand Crest's Maximum Length: The crest of Quicksand will stop drawing past 8192 pixels (512 blocks). You can avoid this by making multiple instances of Location Quicksand. Make sure that the widths of the locations are no greater than 8192, and that they are multiples of 16.">
-    <dependency notes="Pa1_sabaku (Desert): Object 24&lt;br&gt;&lt;br&gt;Pa_sabaku_chika (Desert Cave): Object 26&lt;br&gt;&lt;br&gt;Pa1_toride_sabaku (Desert Tower): Object 107"/>
+    <dependency notes="Pa1_sabaku (Desert): Object 24&lt;br&gt;&lt;br&gt;Pa1_sabaku_chika (Desert Cave): Object 26&lt;br&gt;&lt;br&gt;Pa1_toride_sabaku (Desert Tower): Object 107"/>
     <checkbox bit="37" title="Flat Top" comment="When enabled, this removes the animated crest effect on the top portion of the quicksand. This will cause a 'square' look." comment2="This should be used when the quicksand connects with a ceiling or other Layer 1 terrain."/>
     <value nybble="11-12" title="Location ID" comment="This determines the Location where the quicksand animation will be created." idtype="Location"/>
   </sprite> <!-- #53: Effect - Quicksand -->
@@ -627,7 +625,7 @@
     <dependency notes="The stand-alone Lakitu will spawn at exactly the height that it is placed and will remain at that height as it follows the player. Additionally, as it does not respawn after killed unless re-entering the zone, utilizing it for its cloud riding is not recommended for mandatory progress."/>
     <dualbox bit="40" title1="Spawn from the Side" title2="Spawn from the Background" comment="This will determine which animation state is used by the Lakitu when it is first loaded." comment2="Spawning from the Background means that the Lakitu will fly in from the background, facing the camera."/>
     <dualbox bit="47" title1="Throws Spinies" title2="Throws Coins" comment="This determines what the Lakitu will throw." advancedcomment="ASM shows that odd values may differ from even values. No differences observed."/>
-    <checkbox bit="8" title="Low Throw Arc" advanced="True" advancedcomment="When enabled, the Lakitu will throw spinies from a low throwing arc. This behavior looks glitchy when the Lakitu is moving quickly. It also should be noted this option is in a space normally used for events, so it may have a deeper function."/>
+    <checkbox bit="8" title="Low Throw Arc" advanced="True" advancedcomment="When enabled, the Lakitu will throw Spinies from a low throwing arc. This behavior looks glitchy when the Lakitu is moving quickly. It also should be noted this option is in a space normally used for events, so it may have a deeper function."/>
     <value nybble="7" title="Unknown Value 7" advanced="True" advancedcomment="ASM shows Nybble 7 might affect something."/>
   </sprite> <!-- #54: Lakitu -->
 
@@ -720,7 +718,7 @@
     <value nybble="12" title="Width of the Collision Box" advanced="True" advancedcomment="Value + 6. This option does not change the length of the platform, but instead the length of the (invisible) collision box attached. The collision box ensures that Mario does not fall through the platform. The collision box usually has the same size as the platform itself. The collision box and the platform have the same center point. Per value, the collision box will extend its length 1/2 blocks to the left and right. If you stand on this collision box but outside the platform, then it looks as if you are standing in midair."/>
   </sprite> <!-- #59: Line Controlled Tilt Controlled Girder -->
 
-  <sprite id="60" name="Spike Top" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spiketops don't properly work on slopes.">
+  <sprite id="60" name="Spike Top" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spike Tops don't properly work on slopes.">
     <list bit="43-44" title="Orientation" comment="The Spike Top must be placed against something for it to appear.">
       <entry value="0">Placed on Ground</entry>
       <entry value="1">Placed on Left Wall</entry>
@@ -735,31 +733,31 @@
     <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #61: Big Boo -->
 
-  <sprite id="62" name="Spinning Firebar" notes="A Spinning Firebar like one you would find in a Castle stage.">
-    <dualbox bit="28" title1="1x1 Block Base" title2="2x1 Block Base" comment="This determines the size of the Block Base. The Firebar will emerge from the center of the base. The base also has no collision, so you will need to place Invisible Collision Blocks or other Tileset pieces behind it to create collision."/>
-    <list nybble="12" title="Length" comment="This determines how many fireballs make up one arm of the Firebar. One fireball adds approximately 0.75 blocks to the length.">
-      <entry value="0">2 Fireballs (~ 1.50 Blocks)</entry>
-      <entry value="1">3 Fireballs (~ 2.25 Blocks)</entry>
-      <entry value="2">4 Fireballs (~ 3.00 Blocks)</entry>
-      <entry value="3">5 Fireballs (~ 3.75 Blocks)</entry>
-      <entry value="4">6 Fireballs (~ 4.50 Blocks)</entry>
-      <entry value="5">7 Fireballs (~ 5.25 Blocks)</entry>
-      <entry value="6">8 Fireballs (~ 6.00 Blocks)</entry>
-      <entry value="7">9 Fireballs (~ 6.75 Blocks)</entry>
-      <entry value="8">10 Fireballs (~ 7.50 Blocks)</entry>
-      <entry value="9">11 Fireballs (~ 8.25 Blocks)</entry>
-      <entry value="10">12 Fireballs (~ 9.00 Blocks)</entry>
-      <entry value="11">13 Fireballs (~ 9.75 Blocks)</entry>
-      <entry value="12">14 Fireballs (~ 10.50 Blocks)</entry>
-      <entry value="13">15 Fireballs (~ 11.25 Blocks)</entry>
-      <entry value="14">16 Fireballs (~ 12.00 Blocks)</entry>
-      <entry value="15">17 Fireballs (~ 12.75 Blocks)</entry>
+  <sprite id="62" name="Spinning Fire Bar" notes="A Spinning Fire Bar like one you would find in a Castle stage.">
+    <dualbox bit="28" title1="1x1 Block Base" title2="2x1 Block Base" comment="This determines the size of the Block Base. The Fire Bar will emerge from the center of the base. The base also has no collision, so you will need to place Invisible Collision Blocks or other Tileset pieces behind it to create collision."/>
+    <list nybble="12" title="Length" comment="This determines how many fireballs make up one arm of the Fire Bar. One fireball adds approximately 0.75 blocks to the length.">
+      <entry value="0">2 Fire balls (~ 1.50 Blocks)</entry>
+      <entry value="1">3 Fire balls (~ 2.25 Blocks)</entry>
+      <entry value="2">4 Fire balls (~ 3.00 Blocks)</entry>
+      <entry value="3">5 Fire balls (~ 3.75 Blocks)</entry>
+      <entry value="4">6 Fire balls (~ 4.50 Blocks)</entry>
+      <entry value="5">7 Fire balls (~ 5.25 Blocks)</entry>
+      <entry value="6">8 Fire balls (~ 6.00 Blocks)</entry>
+      <entry value="7">9 Fire balls (~ 6.75 Blocks)</entry>
+      <entry value="8">10 Fire balls (~ 7.50 Blocks)</entry>
+      <entry value="9">11 Fire balls (~ 8.25 Blocks)</entry>
+      <entry value="10">12 Fire balls (~ 9.00 Blocks)</entry>
+      <entry value="11">13 Fire balls (~ 9.75 Blocks)</entry>
+      <entry value="12">14 Fire balls (~ 10.50 Blocks)</entry>
+      <entry value="13">15 Fire balls (~ 11.25 Blocks)</entry>
+      <entry value="14">16 Fire balls (~ 12.00 Blocks)</entry>
+      <entry value="15">17 Fire balls (~ 12.75 Blocks)</entry>
     </list>
-    <checkbox bit="44" title="Double Firebar" comment="When enabled, the Firebar will extend from both ends of the Block Base."/>
-    <dualbox bit="36" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the Firebar will rotate."/>
-    <dualbox bit="40" title1="Slow" title2="Fast" comment="This determines how fast the Firebar will rotate."/>
-    <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, any Chainlink Fence object will cover the Firebar, protecting the player from it unless they are also behind the fence. Exposed Firebar without fence in front of it will still hurt the player. The Block Base will also be hidden by Chainlink Fence."/>
-  </sprite> <!-- #62: Spinning Firebar -->
+    <checkbox bit="44" title="Double Fire Bar" comment="When enabled, the Fire Bar will extend from both ends of the Block Base."/>
+    <dualbox bit="36" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the Fire Bar will rotate."/>
+    <dualbox bit="40" title1="Slow" title2="Fast" comment="This determines how fast the Fire Bar will rotate."/>
+    <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, any Chainlink Fence object will cover the Fire Bar, protecting the player from it unless they are also behind the fence. Exposed Fire Bars without fence in front of it will still hurt the player. The Block Base will also be hidden by Chainlink Fence."/>
+  </sprite> <!-- #62: Spinning Fire Bar -->
 
   <sprite id="63" name="Spiked Ball" notes="A loose Spiked Ball that will also destroy certain types of blocks.">
     <dualbox bit="44" title1="Starts Rolling Left" title2="Starts Rolling Right" comment="This determines which direction the Spiked Ball will begin rolling in."/>
@@ -781,59 +779,59 @@
   </sprite> <!-- #64: Effect - Thick Fog -->
 
   <sprite id="65" name="Pipe Piranha Plant - Up" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one.">
-     <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
+     <checkbox bit="32" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
   </sprite> <!-- #65: Pipe Piranha Plant - Up -->
 
   <sprite id="66" name="Pipe Piranha Plant - Down" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one.">
-     <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
+     <checkbox bit="32" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
   </sprite> <!-- #66: Pipe Piranha Plant - Down -->
 
   <sprite id="67" name="Pipe Piranha Plant - Right" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
-     <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
+     <checkbox bit="32" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
   </sprite> <!-- #67: Pipe Piranha Plant - Right -->
 
   <sprite id="68" name="Pipe Piranha Plant - Left" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
-     <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
+     <checkbox bit="32" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
   </sprite> <!-- #68: Pipe Piranha Plant - Left -->
 
   <sprite id="69" name="Pipe Fire Piranha Plant - Up" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one.">
-    <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
-      <entry value="0">1 Fireball</entry>
-      <entry value="1">2 Fireballs</entry>
-      <entry value="2">3 Fireballs</entry>
-      <entry value="3">6 Fireballs</entry>
+    <list nybble="12" title="Fire ball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
+      <entry value="0">1 Fire ball</entry>
+      <entry value="1">2 Fire balls</entry>
+      <entry value="2">3 Fire balls</entry>
+      <entry value="3">6 Fire balls</entry>
     </list>
-     <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
+     <checkbox bit="32" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
   </sprite> <!-- #69: Pipe Fire Piranha Plant - Up -->
 
   <sprite id="70" name="Pipe Fire Piranha Plant - Down" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one.">
-    <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
-      <entry value="0">1 Fireball</entry>
-      <entry value="1">2 Fireballs</entry>
-      <entry value="2">3 Fireballs</entry>
-      <entry value="3">6 Fireballs</entry>
+    <list nybble="12" title="Fire ball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
+      <entry value="0">1 Fire ball</entry>
+      <entry value="1">2 Fire balls</entry>
+      <entry value="2">3 Fire balls</entry>
+      <entry value="3">6 Fire balls</entry>
     </list>
-     <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
+     <checkbox bit="32" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
   </sprite> <!-- #70: Pipe Fire Piranha Plant - Down -->
 
   <sprite id="71" name="Pipe Fire Piranha Plant - Right" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
-    <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
-      <entry value="0">1 Fireball</entry>
-      <entry value="1">2 Fireballs</entry>
-      <entry value="2">3 Fireballs</entry>
-      <entry value="3">6 Fireballs</entry>
+    <list nybble="12" title="Fire ball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
+      <entry value="0">1 Fire ball</entry>
+      <entry value="1">2 Fire balls</entry>
+      <entry value="2">3 Fire balls</entry>
+      <entry value="3">6 Fire balls</entry>
     </list>
-     <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
+     <checkbox bit="32" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
   </sprite> <!-- #71: Pipe Fire Piranha Plant - Right -->
 
   <sprite id="72" name="Pipe Fire Piranha Plant - Left" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
-    <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
-      <entry value="0">1 Fireball</entry>
-      <entry value="1">2 Fireballs</entry>
-      <entry value="2">3 Fireballs</entry>
-      <entry value="3">6 Fireballs</entry>
+    <list nybble="12" title="Fire ball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
+      <entry value="0">1 Fire ball</entry>
+      <entry value="1">2 Fire balls</entry>
+      <entry value="2">3 Fire balls</entry>
+      <entry value="3">6 Fire balls</entry>
     </list>
-     <checkbox bit="32" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Iceballs will still freeze it."/>
+     <checkbox bit="32" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
   </sprite> <!-- #72: Pipe Fire Piranha Plant - Left -->
 
   <sprite id="73" name="Piranha Plant" notes="The standard Piranha Plant.">
@@ -1466,7 +1464,7 @@
   <sprite id="102" name="Broozer" notes="A ghost house enemy that charges towards the Player when they're nearby. He must be stepped on thrice in order to be defeated. He will also destroy certain types of blocks and terrain with his flailing attack. Please note that he can only destroy tileset bricks and not sprite bricks.">
   </sprite> <!-- #102: Broozer -->
 
-  <sprite id="103" name="Basic Platform - Spawner" notes="This sprite will continously spawn platforms moving in a specific direction. By default, spawned platforms will disappear when the Spawner sprite is off-screen.">
+  <sprite id="103" name="Basic Platform - Spawner" notes="This sprite will continuously spawn platforms moving in a specific direction. By default, spawned platforms will disappear when the Spawner sprite is off-screen.">
     <checkbox bit="20" title="Platforms Don't Despawn" comment="When enabled, on-screen platforms will not despawn once the Spawner sprite itself is off-screen." requiredbit="31-32" requiredval="0-1"/>
     <checkbox bit="20" title="Remain Active Off-Screen*" comment="When enabled, the Spawner will continue to spawn platforms off-screen as long as it was loaded on-screen prior. Otherwise, spawned platforms and the Spawner itself will all unload whenever the Spawner sprite is off-screen." requiredbit="31-32" requiredval="2-3"/>
     <list bit="31-32" title="Direction" comment="The flag of the Spawner will change if the direction is horizontal or vertical.">
@@ -1479,7 +1477,7 @@
     <checkbox bit="48" title="Don't Spawn with 4 Platforms" comment="Leaving this off will have the sprite spawn with 4 platforms pre-loaded."/>
   </sprite> <!-- #103: Basic Platform - Spawner -->
 
-  <sprite id="104" name="Amp" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="A stationary floating enemy that will electrocute the player when they touch it.&lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interupted and Mario will take no damage.">
+  <sprite id="104" name="Amp" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="A stationary floating enemy that will electrocute the player when they touch it.&lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interrupted and Mario will take no damage.">
     <checkbox bit="48" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Amp placing it further behind other sprites."/>
   </sprite> <!-- #104: Amp -->
 
@@ -1554,7 +1552,7 @@
     <value nybble="11-12" title="Rotation ID" comment="Works with both Swaying and Spinning." />
   </sprite>
 
-  <sprite id="108" name="Line Controlled Amp Spawner" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="This will spawn a specified number of Amps along the Line that the sprite is placed on. Once it has spawned the number of Amps it is set to, it will not do anything else even if they fall off.&lt;br&gt;&lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interupted and Mario will take no damage.">
+  <sprite id="108" name="Line Controlled Amp Spawner" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="This will spawn a specified number of Amps along the Line that the sprite is placed on. Once it has spawned the number of Amps it is set to, it will not do anything else even if they fall off.&lt;br&gt;&lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interrupted and Mario will take no damage.">
     <dependency notes="Place this sprite directly onto the Line guide that you want it to spawn on."/>
     <list nybble="9" title="Number of Amps" comment="This determines how many Amps are spawned on the Line by this Spawner.">
       <entry value="0">1 Amp</entry>
@@ -1948,7 +1946,7 @@
       <entry value="1">Jump to Node</entry>
       <entry value="2">Fall</entry>
     </list>
-    <value nybble="9-10" title="&quot;Jump to&quot; Node" comment="This detemines which Node along the Path the test platform will return to after reaching the end of the Path." requiredbit="31-32" requiredval="1"/> <!-- Appears if Jump to Node is selected -->
+    <value nybble="9-10" title="&quot;Jump to&quot; Node" comment="This determines which Node along the Path the test platform will return to after reaching the end of the Path." requiredbit="31-32" requiredval="1"/> <!-- Appears if Jump to Node is selected -->
   </sprite> <!-- #132: (Unused) Path Controlled TEST Platform 1 -->
 
   <sprite id="133" name="Wobble Rock Platform" noyoshi="True" notes="An 'unstable' platform that requires the player to balance it once touching it in order to keep it from completely falling.">
@@ -2009,7 +2007,7 @@
   <!-- Oh where to begin... -->
   <!-- Moving Water - Delay at Starting Point: Comment, accuracy when involving events. -->
   <!-- title1="Rising Forever while On" title="Falling Forever while On" - True or False? What happens when using a Triggering Event on a permanently rising or permanently falling Moving Water? What happens when before the event activates? What happens when it activates? What happens when it is deactivated? What happens when it's activated again? -->
-  <!-- title1="Rising and Falling while On, Returns when Off" - True or Fale? Does it very quickly return or will it instantly (glitchy looking) return to its starting position? -->
+  <!-- title1="Rising and Falling while On, Returns when Off" - True or False? Does it very quickly return or will it instantly (glitchy looking) return to its starting position? -->
   <!-- Dear Dog that took around two hours to sort that mess out piece by piece. It's wonderful what these new display settings can actually accomplish for making this type of information actually usable! -->
   <sprite id="138" name="Water" noyoshi="True" notes="Place this in the level to generate water. There are many different ways to use this type of Water.&lt;br&gt;&lt;br&gt;Underwater Zone: If you just want to create an underwater zone, check Flat Top and leave everything else blank. Then place the Water about 6 blocks above your upper Zone boundary.
  &lt;br&gt;&lt;br&gt;Location Water: If you assign a Location ID, you can cause water to appear only within the chosen Location instead of across the entire stage.
@@ -2053,7 +2051,7 @@
     <dualbox bit="17" title1="Rising Forever" title2="Falling Forever" comment="This determines which direction the Water will move." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 0, 0, 0"/> <!-- Appears when Speed is set and Distance, Delays, and Triggering Event ID are NOT set -->
     <dualbox bit="17" title1="Rising Forever while On" title2="Falling Forever while On" comment="This determines which direction the Water will move while the Triggering Event is activated." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 0, 0, 1-255"/> <!-- Appears when Speed and Triggering Event ID are set and Distance is NOT set -->
     <dualbox bit="17" title1="Automatically Rising and Falling" title2="[Extremely Buggy]" comment="The Water will automatically rise and fall in accordance with the set delays." requiredbit="18-20, 29-36, 1-8" requiredval="1-7, 1-255, 0"/> <!-- Appears when Speed and Distance are set, and Triggering Event ID is not set. -->
-    <dualbox bit="17" title1="Rises Distance while On, Falls when Off" title2="[Extremely Buggy]" comment="The Water will rise the Distance value once activated, and stay at the top until the Triggering Event is deactivated. If the Triggering Event is deactivated before it rises the full distance, it will finish rising, then immediately start to fall." comment2="This option only applies if Delay values are both set to 0, Distance is set, and Triggering ID is set. Do not use [Extremely Buggy]. No really, don't. It won't help you any." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 1-255, 0, 1-255"/> <!-- Appears when Speed and Distance and Triggering Event ID are set, AND when Delays are NOT set. YEESH! -->
+    <dualbox bit="17" title1="Rises Distance while On, Falls when Off" title2="[Extremely Buggy]" comment="The Water will rise the Distance value once activated, and stay at the top until the Triggering Event is deactivated. If the Triggering Event is deactivated before it rises the full distance, it will finish rising, then immediately start to fall." comment2="This option only applies if Delay values are both set to 0, Distance is set, and Triggering ID is set. Do not use [Extremely Buggy]. No really, don't. It won't help you any." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 1-255, 0, 1-255"/> <!-- Appears when Speed and Distance and Triggering Event ID are set, AND when Delays are NOT set. -->
     <dualbox bit="17" title1="Rising and Falling while On, Glitch-Returns when Off" title2="[Extremely Buggy]" comment="The Water will rise and fall in accordance with the set delays while the Triggering Event is activated." comment2="When the Triggering Event is deactivated, the Water will immediately return to its starting position in a glitchy manner. It is highly recommended to not cause this to happen in your level design. Use Event Chainers with Delays or the Event Looper to get this type of timing instead." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 1-255, 1-255, 1-255"/> <!-- Appears when Speed, Distance, Delays, AND Triggering Event are all set. -->
    <!-- Things that change the Rising vs Falling options -->
     <value bit="29-36" title="Moving Water - Distance" comment="This determines how many blocks the Water will move." comment2="Setting this will drastically change the function of Moving Water. Please keep this in mind." requiredbit="18-20, 17" requiredval="1-7, 0"/> <!-- Appears when Speed is set, disappears if Falling is set. -->
@@ -2120,7 +2118,7 @@
     <dualbox bit="17" title1="[???] Rising Forever" title2="[???] Falling Forever" comment="This determines which direction the Lava will move." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 0, 0, 0"/> <!-- Appears when Speed is set and Distance, Delays, and Triggering Event ID are NOT set -->
     <dualbox bit="17" title1="[???] Rising Forever while On" title2="[???] Falling Forever while On" comment="This determines which direction the Lava will move while the Triggering Event is activated." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 0, 0, 1-255"/> <!-- Appears when Speed and Triggering Event ID are set and Distance is NOT set -->
     <dualbox bit="17" title1="[???] Automatically Rising and Falling" title2="[Extremely Buggy]" comment="The Lava will automatically rise and fall in accordance with the set delays." requiredbit="18-20, 29-36, 1-8" requiredval="1-7, 1-255, 0"/> <!-- Appears when Speed and Distance are set, and Triggering Event ID is not set. -->
-    <dualbox bit="17" title1="[???] Rises Distance while On, Falls when Off" title2="[Extremely Buggy]" comment="The Lava will rise the Distance value once activated, and stay at the top until the Triggering Event is deactivated. If the Triggering Event is deactivated before it rises the full distance, it will finish rising, then immediately start to fall." comment2="This option only applies if Delay values are both set to 0, Distance is set, and Triggering ID is set. Do not use [Extremely Buggy]. No really, don't. It won't help you any." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 1-255, 0, 1-255"/> <!-- Appears when Speed and Distance and Triggering Event ID are set, AND when Delays are NOT set. YEESH! -->
+    <dualbox bit="17" title1="[???] Rises Distance while On, Falls when Off" title2="[Extremely Buggy]" comment="The Lava will rise the Distance value once activated, and stay at the top until the Triggering Event is deactivated. If the Triggering Event is deactivated before it rises the full distance, it will finish rising, then immediately start to fall." comment2="This option only applies if Delay values are both set to 0, Distance is set, and Triggering ID is set. Do not use [Extremely Buggy]. No really, don't. It won't help you any." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 1-255, 0, 1-255"/> <!-- Appears when Speed and Distance and Triggering Event ID are set, AND when Delays are NOT set. -->
     <dualbox bit="17" title1="[???] Rising and Falling while On, Glitch-Returns when Off" title2="[Extremely Buggy]" comment="The Lava will rise and fall in accordance with the set delays while the Triggering Event is activated." comment2="When the Triggering Event is deactivated, the Lava will immediately return to its starting position in a glitchy manner. It is highly recommended to not cause this to happen in your level design. Use Event Chainers with Delays or the Event Looper to get this type of timing instead." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 1-255, 1-255, 1-255"/> <!-- Appears when Speed, Distance, Delays, AND Triggering Event are all set. -->
    <!-- Things that change the Rising vs Falling options -->
     <value bit="29-36" title="Moving Lava - Distance" comment="This determines how many blocks the Lava will move." comment2="Setting this will drastically change the function of Moving Lava. Please keep this in mind." requiredbit="18-20, 17" requiredval="1-7, 0"/> <!-- Appears when Speed is set, disappears if Falling is set. -->
@@ -2280,8 +2278,8 @@
     <value bit="17-24" title="Path Movement ID" comment="If pairing the Coin with Sprite 159, match the Path Movement ID to enable Path controlled movement." requiredbit="25-28" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
     <value bit="17-24" title="Two Way Line ID" comment="If pairing the Coin with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requiredbit="25-28" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
     <value bit="17-24" title="Water Ball ID" comment="If pairing the Coin with sprite 205, match the Water Ball ID to enable Water Ball synchronized movement." requiredbit="25-28" requiredval="3" idtype="Water Ball"/> <!-- Appears if [Movement Type] = 3 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the Coin with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the Coin with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the Coin with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the Coin with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Coin with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requiredbit="25-28" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Coin with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requiredbit="25-28" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
     <value bit="17-24" title="Collection ID" comment="If pairing the Coin with sprite 459/461, match the Collection ID to have the game count this Coin towards the Collection Set." requiredbit="25-28" requiredval="8" idtype="Collection"/> <!-- Appears if [Movement Type] = 8 -->
@@ -2404,8 +2402,8 @@
     <checkbox bit="48" title="Alternate Movement" comment="When enabled, after the first jump, the Cheep Cheep will not continue swimming but instead wait at the landing point to jump again." comment2="It ends up looking like the Cheep Cheep is 'stuck' in the water." advanced="True"/>
   </sprite> <!-- #150: (Unused) Jumping Cheep Cheep -->
 
-  <sprite id="151" name="Porcu-Puffer" notes="A stand-alone Porcu-Puffer that will chase the player along the water line indefinitely until killed, but will not respawn.">
-    <dependency notes="Water is required for the Porcu-Puffer to function. It must be non-location water, possibly non-moving water.">
+  <sprite id="151" name="Porcupuffer" notes="A stand-alone Porcupuffer that will chase the player along the water line indefinitely until killed, but will not respawn.">
+    <dependency notes="Water is required for the Porcupuffer to function. It must be non-location water, possibly non-moving water.">
       <required sprite="138"/>
     </dependency>
     <checkbox bit="44" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
@@ -2437,14 +2435,14 @@
     <value bit="1-8" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requiredbit="40" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #153: (Unused) ?-Switch -->
 
-  <sprite id="154" name="Porcu-Puffer Spawn Area" notes="Assigns a spawn area where Porcu-Puffers will continue to respawn while the player is inside it. Porcu-puffers will follow the player along the water line.">
-    <dependency notes="Water is required for the Porcu-Puffer to function. It must be non-location water, possibly non-moving water.">
+  <sprite id="154" name="Porcupuffer Spawn Area" notes="Assigns a spawn area where Porcupuffers will continue to respawn while the player is inside it. Porcupuffers will follow the player along the water line.">
+    <dependency notes="Water is required for the Porcupuffer to function. It must be non-location water, possibly non-moving water.">
       <required sprite="138"/>
     </dependency>
-    <value nybble="11-12" title="Location ID" comment="Porcu-Puffers respawn and chase the player only while a player is in this location." idtype="Location"/>
-    <value nybble="10" title="Spawn Delay" comment="This determines how long it will take for the Porcu-Puffer to first appear after the player enters the Spawn Area."/>
-    <value nybble="9" title="Respawn Delay" comment="This determines how long it will take for the Porcu-Puffer to respawn after being killed."/>
-  </sprite> <!-- #154: Porcu-Puffer Spawn Area -->
+    <value nybble="11-12" title="Location ID" comment="Porcupuffers respawn and chase the player only while a player is in this location." idtype="Location"/>
+    <value nybble="10" title="Spawn Delay" comment="This determines how long it will take for the Porcupuffer to first appear after the player enters the Spawn Area."/>
+    <value nybble="9" title="Respawn Delay" comment="This determines how long it will take for the Porcupuffer to respawn after being killed."/>
+  </sprite> <!-- #154: Porcupuffer Spawn Area -->
 
   <sprite id="155" name="Line Controlled Star Coin" notes="A variant of the Star Coin that will ride along Line objects.">
     <dependency notes="Use the Group Controller [236] for spawn synchronization with other Group controlled sprites.">
@@ -2657,7 +2655,7 @@
   <sprite id="169" name="Incomplete Sprite - 'En_Slip_Penguin'" notes="Does nothing.">
   </sprite> <!-- #169: Incomplete Sprite - 'En_Slip_Penguin' -->
 
-  <sprite id="170" name="Prickly Goomba" notes="A spiky brown ball that contians a normal Goomba, which will appear if it is shot with a Fireball. Fire Bro fireballs will also open it, but Fire Chomp fireballs will not.">
+  <sprite id="170" name="Prickly Goomba" notes="A spiky brown ball that contains a normal Goomba, which will appear if it is shot with a Fire ball. Fire Bro fireballs will also open it, but Fire Chomp fireballs will not.">
   </sprite> <!-- #170: Prickly Goomba -->
 
   <sprite id="171" name="Mushroom in a Bubble" notes="&lt;font color=&quot;orange&quot;&gt;This sprite is not recommended for use, and it WILL crash the game if used with invalid settings.&lt;/font&gt;" advancednotes="This is capable of spawning both items and players inside of bubbles. Unfortunately it was not designed to be called on for stand-alone functions.">
@@ -2768,7 +2766,6 @@
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #178: Basic Platform - Scale -->
 
-<!-- Consider adding a new 'value type' to Reggie that creates a value range based on either two sets of nybbles or two sets of bits. [04][11-12] or [13-16][41-48] as examples. multivalue or mergedvalue or something. -->
   <sprite id="179" name="Special Exit Controller" notes="A special controller that will activate Entrance transitions when a player enters a specific area.">
     <list nybble="10" title="Width" comment="This determines the width of the area that the Special Exit Controller will check for the player inside of.">
       <entry value="0">1 Block</entry>
@@ -2807,7 +2804,7 @@
       <entry value="15">16 Blocks</entry>
     </list>
     <checkbox bit="32" title="Vine / Climbing Exit" comment="When enabled, the Special Exit Controller will only activate is the player is also climbing while within the specified area."/>
-    <checkbox bit="22" title="Exit, Stage Left" comment="When enabled, the Special Exit Controller will eject the players from the current level." comment2="This will not complete the level. The player will be forced to walk left during the transition, and the Exit Transition will be overriden with an iris focused on the left side of the screen. There is no pipe sound for this transition."/>
+    <checkbox bit="22" title="Exit, Stage Left" comment="When enabled, the Special Exit Controller will eject the players from the current level." comment2="This will not complete the level. The player will be forced to walk left during the transition, and the Exit Transition will be overridden with an iris focused on the left side of the screen. There is no pipe sound for this transition."/>
     <list bit="19-20" title="Exit Transition" comment="This determines the transition animation used when the screen fades out." comment2="Wavy Transition - Bottom to Top: The screen will go black with a wavy line going from bottom to top.&lt;br&gt;&lt;br&gt;Wavy Transition - Top to Bottom: The screen will go black with a wavy line going from top to bottom.&lt;br&gt;&lt;br&gt;Wavy Transition - Top to Bottom (Delayed): Same as above, but the animation is not triggered immediately upon contact with the warp area, instead taking place after a small delay.&lt;br&gt;&lt;br&gt;Black Iris and Pipe Sound: This option works just like a normal pipe exit, with a black circle enclosing the triggering player's position. At the same time, the sound effect that plays when entering a normal pipe is also played." requiredbit="22" requiredval="0">
       <entry value="0">Wavy Transition - Bottom to Top</entry>
       <entry value="2">Wavy Transition - Top to Bottom</entry>
@@ -2818,7 +2815,7 @@
     <value bit="2-8" title="Triggering Event ID" comment="When the Triggering Event is 0, or is currently activated, the Special Exit Controller will also be active. If the Triggering Event is set and the Event is not activated, the Special Exit Controller will not function even when the player is inside it." idtype="Triggering Event"/>
   </sprite> <!-- #179: Special Exit Controller -->
 
-  <sprite id="180" name="Cheep-Chomp" sizehack="True" notes="A rather large Cheep enemy that is capable of swallowing the player whole, killing them instantly regardless of their power-up state. Star excluded, of course.">
+  <sprite id="180" name="Cheep-Chomp" notes="A rather large Cheep enemy that is capable of swallowing the player whole, killing them instantly regardless of their power-up state. Star excluded, of course.">
   </sprite> <!-- #180: Cheep-Chomp -->
 
   <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" notes="">
@@ -2918,7 +2915,7 @@
     </list>
   </sprite> <!-- #191: Tile God Event -->
 
-  <sprite id="192" name="Larry Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. From rest, the platform moves 3 tiles up and 1 tile down. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="192" name="Larry Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initially has no collision. From rest, the platform moves 3 tiles up and 1 tile down. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -2983,7 +2980,7 @@
     <value nybble="10" title="Unknown Value 10" comment="ASM shows Nybble 10 might affect something. May relate to Swims In Place."/>
   </sprite> <!-- #196: Fishbones -->
 
-  <sprite id="197" name="Clampy" notes="A clam with tantilizing items inside that will hurt the player if it closes while they are in inside of it.">
+  <sprite id="197" name="Clampy" notes="A clam with tantalizing items inside that will hurt the player if it closes while they are in inside of it.">
     <checkbox bit="44" title="Falls" comment="When enabled, the Clampy will be affected by gravity and environmental effects."/>
     <list nybble="12" title="Contains" comment="This determines what item is inside the Clampy." advancedcomment="Values 5 and higher crash the game upon level load.">
       <entry value="0">Nothing</entry>
@@ -3023,7 +3020,7 @@
     </dependency>
     <checkbox nybble="5" title="Unknown Flag 5 (1)" comment="No visible change. Used in the Ambushes of World 6." />
     <checkbox nybble="9" title="Unknown Flag 9 (1)" comment="No visible change. Checked in all ambushes except those in Worlds 1 and 2." />
-    <list nybble="10" title="Chest Type" comment="Determines the behaviour and contents of the chest.">
+    <list nybble="10" title="Chest Type" comment="Determines the behavior and contents of the chest.">
       <entry value="0">Default</entry>
       <entry value="1">Triggered by Ambush Controller</entry>
       <entry value="2">Contains Toad (Unused)</entry>
@@ -3099,7 +3096,7 @@
     <value nybble="11" title="Distance Moved" comment="This determines the distance the Water Ball will drift in one direction before returning."/>
   </sprite> <!-- #205: Water Ball -->
 
-  <sprite id="206" name="Zoom Controller" notes="A controller that creates an 'area' where the zoom of the camera changes when a player enters it.&lt;br&gt;&lt;br&gt;     For reference, the normal zoom levels, selected under 'Zone Settings', have the following screen sizes (HeightxWidth):&lt;br&gt;     Zoom Level -2: 7x12.5 blocks&lt;br&gt;     Zoom Level -1: 10.5x18.75 blocks&lt;br&gt;     Zoom Level 0: 14x24.75 blocks&lt;br&gt;     Zoom Level 1: 17x30.25 blocks, or 16x28.5 blocks&lt;br&gt;     Zoom Level 2: 20x35.56 blocks, or 19x33.75 blocks&lt;br&gt;     Zoom Level 3: 24x42.67 blocks, or 20x35.5 blocks&lt;br&gt;     Zoom Level 4: 28x49.75 blocks">
+  <sprite id="206" name="Zoom Controller" notes="A controller that creates an 'area' where the zoom of the camera changes when a player enters it.">
     <value nybble="9-10" title="Affected Height" comment="This determines the height of the affected area."/>
     <value nybble="11-12" title="Affected Width" comment="This determines the width of the affected area."/>
     <list bit="18-20" title="Screen's Zoomed Height" comment="This determines what the new screen height will be while a player is within the controller's area." comment2="*: The height is determined by the normal Zoom Level; the value within the brackets will be used if Zone Bias is enabled.&lt;br&gt;&lt;br&gt;**: When a player enters the affected area, the height will 'immediately be set to 10 blocks shorter than the final height and then grows to the correct size, and when the players leave the affected area this process is reversed.'">
@@ -3115,7 +3112,7 @@
     <checkbox bit="17" title="First Flag" comment="This sets the 'first flag' on the zoomed-in effect. Its precise effects are unknown."/>
     <list bit="23-24" title="Number of players" comment="The Zoom Controller will be in effect when the right number of people are playing and at least one player is in the specified area.">
         <entry value="0">Any</entry>
-        <entry value="1">Singleplayer</entry>
+        <entry value="1">Single player</entry>
         <entry value="2">Multiplayer</entry>
         <entry value="3">Multiplayer</entry>
     </list>
@@ -3140,8 +3137,8 @@
     </list>
     <value bit="17-24" title="Path Movement ID" comment="If pairing the ?-Block with Sprite 159, match the Path Movement ID to enable Path controlled movement." requiredbit="25-28" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
     <value bit="17-24" title="Two Way Line ID" comment="If pairing the ?-Block with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requiredbit="25-28" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the ?-Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requiredbit="25-28" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the ?-Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requiredbit="25-28" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
     <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players.">
@@ -3185,8 +3182,8 @@
     </list>
     <value bit="17-24" title="Path Movement ID" comment="If pairing the ?-Block with Sprite 159, match the Path Movement ID to enable Path controlled movement." requiredbit="25-28" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
     <value bit="17-24" title="Two Way Line ID" comment="If pairing the ?-Block with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requiredbit="25-28" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the ?-Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requiredbit="25-28" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the ?-Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requiredbit="25-28" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
     <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players.">
@@ -3228,8 +3225,8 @@
     </list>
     <value bit="17-24" title="Path Movement ID" comment="If pairing the Brick Block with Sprite 159, match the Path Movement ID to enable Path controlled movement." requiredbit="25-28" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
     <value bit="17-24" title="Two Way Line ID" comment="If pairing the Brick Block with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requiredbit="25-28" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the Brick Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the Brick Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the Brick Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the Brick Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Brick Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requiredbit="25-28" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Brick Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requiredbit="25-28" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
     <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release only one power-up item.">
@@ -3309,7 +3306,7 @@
       <entry value="2">3</entry>
       <entry value="3">4</entry>
     </list>
-    <list nybble="7" title="Spacing Between Groups" comment="This setting seems to be false, unless assuming only this setting is adusted and the player is not moving. In which case, maybe it will tweak the randomness to alternate between low and high." advancedcomment="When used with &quot;Number per Group&quot; this controls the spacing between two groups (horizontally).">
+    <list nybble="7" title="Spacing Between Groups" comment="This setting seems to be false, unless assuming only this setting is adjusted and the player is not moving. In which case, maybe it will tweak the randomness to alternate between low and high." advancedcomment="When used with &quot;Number per Group&quot; this controls the spacing between two groups (horizontally).">
       <entry value="0">0 Blocks</entry>
       <entry value="1">1 Block</entry>
       <entry value="2">2 Blocks</entry>
@@ -3321,7 +3318,7 @@
 
   <!-- Nope! I'm done! You guys test this crap. *clones Water* I'm moving on... -->
   <!-- Test the 7 Modes through their associated conditions and fully describe them in the same way that Water is described. [Extremely Buggy] is naturally assumed for Falling mixed with the last three types. -->
-  <sprite id="216" name="Poisoned Water" noyoshi="True" notes="Place this in the level to generate poisonous water. There are many different ways to use Poisoned Water.&lt;br&gt;&lt;br&gt;Location Poisoned Water: If you assign a Location ID, you can cause poisonous water to appear only within the chosen Location instead of across the entire stage.&lt;br&gt;&lt;br&gt;Moving Poisoned Water: You can also create posionous water that rises and/or falls. This gets a little complicated, so be sure to read the related settings.&lt;br&gt;&lt;br&gt;Poison Water Crest's Maximum Length: The crest of Poison Water will stop drawing past 8192 pixels (512 blocks). You can avoid this by making multiple instances of Location Poisoned Water. Make sure that the widths of the locations are no greater than 8192, and that they are multiples of 16.">
+  <sprite id="216" name="Poisoned Water" noyoshi="True" notes="Place this in the level to generate poisonous water. There are many different ways to use Poisoned Water.&lt;br&gt;&lt;br&gt;Location Poisoned Water: If you assign a Location ID, you can cause poisonous water to appear only within the chosen Location instead of across the entire stage.&lt;br&gt;&lt;br&gt;Moving Poisoned Water: You can also create poisonous water that rises and/or falls. This gets a little complicated, so be sure to read the related settings.&lt;br&gt;&lt;br&gt;Poison Water Crest's Maximum Length: The crest of Poison Water will stop drawing past 8192 pixels (512 blocks). You can avoid this by making multiple instances of Location Poisoned Water. Make sure that the widths of the locations are no greater than 8192, and that they are multiples of 16.">
     <dependency notes="When using Moving Poisoned Water, the Poisoned Water becomes loaded across the entire Area instead of just the active Zone. Please build your levels with this in mind. Additionally, do not use more than one Moving Poisoned Water in the same Area as only the top (highest Y-Axis) one will take effect. Unlike with Moving Water you cannot use Moving Poisoned Water in multiple Zones within the same area, unless you place them at the same Y-Axis. Also, be sure to reset your Sprite Settings if you switch between different setting groups of Moving Poisoned Water or Location Poisoned Water to prevent unusual bugs and behavior."/>
    <!-- The different displays of the Speed option -->
     <list bit="18-20" title="Moving Poisoned Water - Rising Speed" comment="This determines the speed at which the Poisoned Water will rise, or rise and fall." requiredbit="17" requiredval="0">
@@ -3358,7 +3355,7 @@
     <dualbox bit="17" title1="[???] Rising Forever" title2="[???] Falling Forever" comment="This determines which direction the Poisoned Water will move." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 0, 0, 0"/> <!-- Appears when Speed is set and Distance, Delays, and Triggering Event ID are NOT set -->
     <dualbox bit="17" title1="[???] Rising Forever while On" title2="[???] Falling Forever while On" comment="This determines which direction the Poisoned Water will move while the Triggering Event is activated." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 0, 0, 1-255"/> <!-- Appears when Speed and Triggering Event ID are set and Distance is NOT set -->
     <dualbox bit="17" title1="[???] Automatically Rising and Falling" title2="[Extremely Buggy]" comment="The Poisoned Water will automatically rise and fall in accordance with the set delays." requiredbit="18-20, 29-36, 1-8" requiredval="1-7, 1-255, 0"/> <!-- Appears when Speed and Distance are set, and Triggering Event ID is not set. -->
-    <dualbox bit="17" title1="[???] Rises Distance while On, Falls when Off" title2="[Extremely Buggy]" comment="The Poisoned Water will rise the Distance value once activated, and stay at the top until the Triggering Event is deactivated. If the Triggering Event is deactivated before it rises the full distance, it will finish rising, then immediately start to fall." comment2="This option only applies if Delay values are both set to 0, Distance is set, and Triggering ID is set. Do not use [Extremely Buggy]. No really, don't. It won't help you any." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 1-255, 0, 1-255"/> <!-- Appears when Speed and Distance and Triggering Event ID are set, AND when Delays are NOT set. YEESH! -->
+    <dualbox bit="17" title1="[???] Rises Distance while On, Falls when Off" title2="[Extremely Buggy]" comment="The Poisoned Water will rise the Distance value once activated, and stay at the top until the Triggering Event is deactivated. If the Triggering Event is deactivated before it rises the full distance, it will finish rising, then immediately start to fall." comment2="This option only applies if Delay values are both set to 0, Distance is set, and Triggering ID is set. Do not use [Extremely Buggy]. No really, don't. It won't help you any." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 1-255, 0, 1-255"/> <!-- Appears when Speed and Distance and Triggering Event ID are set, AND when Delays are NOT set. -->
     <dualbox bit="17" title1="[???] Rising and Falling while On, Glitch-Returns when Off" title2="[Extremely Buggy]" comment="The Poisoned Water will rise and fall in accordance with the set delays while the Triggering Event is activated." comment2="When the Triggering Event is deactivated, the Poisoned Water will immediately return to its starting position in a glitchy manner. It is highly recommended to not cause this to happen in your level design. Use Event Chainers with Delays or the Event Looper to get this type of timing instead." requiredbit="18-20, 29-36, 21-28, 1-8" requiredval="1-7, 1-255, 1-255, 1-255"/> <!-- Appears when Speed, Distance, Delays, AND Triggering Event are all set. -->
    <!-- Things that change the Rising vs Falling options -->
     <value bit="29-36" title="Moving Poisoned Water - Distance" comment="This determines how many blocks the Poisoned Water will move." comment2="Setting this will drastically change the function of Moving Poisoned Water. Please keep this in mind." requiredbit="18-20, 17" requiredval="1-7, 0"/> <!-- Appears when Speed is set, disappears if Falling is set. -->
@@ -3406,7 +3403,7 @@
     <value nybble="11" title="Width - Top" comment="This determines the width of the platform when it is in its top position."/>
     <value nybble="12" title="Width - Bottom" comment="This determines the width of the platform when it is in its bottom position."/>
     <dualbox bit="36" title1="Moves Up First" title2="Moves Down First" comment="This determines the initial direction the platform will move."/>
-    <value nybble="5" title="Stretch ID" comment="This pairs the platform to a matching controller for movement sycnronization." idtype="Stretch"/>
+    <value nybble="5" title="Stretch ID" comment="This pairs the platform to a matching controller for movement synchronization." idtype="Stretch"/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance between the top and bottom states of the platform." comment2="The speed is constant and not based on how large the distance is, so larger distances will take longer to travel. Additionally, because the change in the number of blocks is accomplished in the same time period of time that it takes the Stretching Line Block to travel up or down, if the movement distance is 0 then the platform will grow or shrink immediately." requiredbit="17-20" requiredval="0"/> <!-- Appears only if Stretch ID is not set -->
   </sprite> <!-- #219: Stretching Line Block -->
 
@@ -3442,8 +3439,8 @@
     </list>
     <value bit="17-24" title="Path Movement ID" comment="If pairing the Invisible Block with Sprite 159, match the Path Movement ID to enable Path controlled movement." requiredbit="25-28" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
     <value bit="17-24" title="Two Way Line ID" comment="If pairing the Invisible Block with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requiredbit="25-28" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the Invisible Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
-    <value bit="17-24" title="Set to Zero" comment="If pairing the Invisible Block with sprite 474, no further action is needed to create Dancing syncronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the Invisible Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
+    <value bit="17-24" title="Set to Zero" comment="If pairing the Invisible Block with sprite 474, no further action is needed to create Dancing synchronized movement." requiredbit="25-28" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Invisible Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requiredbit="25-28" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
     <value bit="17-24" title="Mushroom ID" comment="If pairing the Invisible Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requiredbit="25-28" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
     <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will only release one power-up item. If the invisible block has 10 coins, it will stay in the used block graphic the entire time. Additionally, it won't release the extra few coins if the block is hit multiple times successfully.">
@@ -3551,7 +3548,7 @@
   <sprite id="229" name="Sand Pillar" notes="A sand pillar that pushes the player upwards and can be stood on.">
   </sprite> <!-- #229: Sand Pillar -->
 
-  <sprite id="230" name="Bramball" noyoshi="True" notes="A long-legged enemy with a ball for a body that will flip itself around as it traverses terrain with proper spacing. Rumor has it that if it is struck from below with a Pipe Cannon, a large amount of coins will appear. Kaching!">
+  <sprite id="230" name="Bramball" noyoshi="True" notes="A long-legged enemy with a ball for a body that will flip itself around as it traverses terrain with proper spacing. Rumor has it that if it is struck from below with a Pipe Cannon, a large amount of coins will appear.">
     <dependency notes="For a Bramball to want to move, he must have solid terrain exactly 4 blocks from his legs."/>
     <dualbox bit="44" title1="Slow Movement" title2="Fast Movement" comment="This determines how quickly the Bramball will traverse platforms."/>
     <dualbox bit="48" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Bramball will attempt to move first."/>
@@ -3612,7 +3609,7 @@
     <value nybble="10" title="Distance" comment="This determines how far to each side of its spawn that the Bulber will move before turning around." requiredbit="48"/> <!-- Only appears if [Movement] is set to Moves Towards Player -->
   </sprite> <!-- #233: Bulber -->
 
-  <sprite id="234" name="Effect - Cloud Area" notes="This adds decorative patchs of cloud cover with different properties. Most modes required a Location ID, but some do not.">
+  <sprite id="234" name="Effect - Cloud Area" notes="This adds decorative patches of cloud cover with different properties. Most modes required a Location ID, but some do not.">
     <list nybble="11" title="Cloud Type" comment="This determines which type of cloud will be spawned. See the extra comment for details." comment2="Normal: A light patch of clouds spawns in the Location ID. It is denser than [446].&lt;br&gt;Dense: A dense patch of clouds spawns in the Location ID.&lt;br&gt;Death Clouds: - A dense patch of purple clouds that will instantly kill the player spawns in the Location ID. They can be cleared away with spin jumps.&lt;br&gt;Drifting Death Clouds: A dense patch of purple clouds that spawns around a specific Location ID, that proceeds to drifts to the right across the entire stage. It cannot be cleared away with a spin jump like other Death Clouds, and it will generate a rumbling sound effect when the player is close to it. (A Location ID may not actually be required.)&lt;br&gt;Falling Clouds: Clouds fall in the background across the entire stage." advancedcomment="1, 3: Used by Foo and cannot be placed.&lt;br&gt;6, 9-15: No clouds spawn.">
       <entry value="7">Normal</entry>
       <entry value="0">Dense</entry>
@@ -3660,7 +3657,7 @@
     <value nybble="11-12" title="Path ID" advanced="True" advancedcomment="This is intended to pair the Mega Wiggler to a Path."/>
   </sprite> <!-- #241: (Unused) Big Wiggler Spawner -->
 
-  <sprite id="242" name="Donut Ledge" noyoshi="True" notes="A cliffwalking donut-style platform that will fall if a player stands on it for too long.">
+  <sprite id="242" name="Donut Ledge" noyoshi="True" notes="A cliff-walking donut-style platform that will fall if a player stands on it for too long.">
   </sprite> <!-- #242: Donut Ledge -->
 
   <sprite id="243" name="(Unused) Water Current Controller" notes="This will cause all Water in the Zone to have a current effect applied to it.">
@@ -3973,7 +3970,7 @@
     <value nybble="11" title="Distance Moved" comment="This determines how far the linked objects will move."/>
     <value nybble="10" title="Delay Before Return" comment="This determines how long the linked objects will wait before making their return movement."/>
     <checkbox bit="28" title="Event Activated" comment="This determines if the movement will happen only if a specified Event is activated." comment2="&lt;font color=&quot;red&quot;&gt;An important note about using Event Activation:&lt;/font&gt; Once activated, this movement cannot be turned off unless the player reenters the Zone with the Event deactivated. Additionally, platforms that use Two Way Line movement will not show unless the Event is activated. Coins and Blocks, however, will display."/>
-    <value bit="10-16" title="Triggering Event ID" comment="This determines the Event that, when activated, will enable the Two Way Line movement syncronization." requiredbit="28" idtype="Triggering Event"/> <!-- Appears if Event Activated it set -->
+    <value bit="10-16" title="Triggering Event ID" comment="This determines the Event that, when activated, will enable the Two Way Line movement synchronization." requiredbit="28" idtype="Triggering Event"/> <!-- Appears if Event Activated it set -->
   </sprite> <!-- #260: Movement Controller - Two Way Line -->
 
   <sprite id="261" name="Grey Tiled Block - Two Way Line" notes="This is a resizable stone block that was not used in retail NSMBW. This version can have Two Way Line synchronized movement applied to it.">
@@ -4119,7 +4116,7 @@
     </list>
   </sprite> <!-- #270: Parachute Bob-Omb Spawn Area -->
 
-  <sprite id="271" name="Scaredy Rat" notes="A small relatively harmless rodent that will walk across the stage and fall off platform edes. When in a swarm, if one rat is stepped on, the others will quickly run away from the spot the first one was stomped. If they encounter another rat, they will join together in a larger swarm and stop running. If they encounter a [451] Scaredy Rat Despawner, they will despawn.">
+  <sprite id="271" name="Scaredy Rat" notes="A small relatively harmless rodent that will walk across the stage and fall off platform edges. When in a swarm, if one rat is stepped on, the others will quickly run away from the spot the first one was stomped. If they encounter another rat, they will join together in a larger swarm and stop running. If they encounter a [451] Scaredy Rat Despawner, they will despawn.">
     <dualbox bit="48" title1="Moves Right First" title2="Moves Left First" comment="This determines what the initial movement direction of the rat is."/>
     <list bit="43-44" title="Number in Swarm" comment="This determines how many rats form the swarm." comment2="Don't worry too much about vertical placement. They manage to find a proper home based on the placement of the first rat.">
       <entry value="0">One</entry>
@@ -4134,7 +4131,7 @@
 
   <sprite id="273" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #273: Unused -->
 
-  <sprite id="274" name="Rotation Controlled Metal Castle Gear" notes="A metalic rotating gear object with either 4 or 8 teeth. It can crush the player with an instant-kill if they get trapped between terrain or other solid objects from the rotation.">
+  <sprite id="274" name="Rotation Controlled Metal Castle Gear" notes="A metallic rotating gear object with either 4 or 8 teeth. It can crush the player with an instant-kill if they get trapped between terrain or other solid objects from the rotation.">
     <dependency notes="The Castle Gear can either rotate on its own power, or can be set to rotate with a rotation controller. It can also be paired with a Swaying controller if you want to be silly.&lt;br&gt;Finally, the cogs on the center and teeth all draw in front of Layer 1, but everything else draws behind it.">
       <suggested sprite="96"/>
       <suggested sprite="149"/>
@@ -4188,7 +4185,7 @@
     </list>
     <checkbox bit="40" title="Rotation Controlled (Buggy)" comment="When enabled, the door will only function when paired with a Rotation ID." advanced="True" advancedcomment="'Function' is perhaps misleading. There are only a few ways you can successfully utilize a Rotation Controller door. For starters, you can only enter the door while it is almost fully upright. There is also a peculiarity with how the Entrance is placed. The most reliable way to use a Rotation Controlled Door is to place it with an already activated Spinning controller that returns to its original position when deactivated."/>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
-  </sprite> <!-- #276: Ghose House Door -->
+  </sprite> <!-- #276: Ghost House Door -->
 
   <sprite id="277" name="Tower Boss Door" noyoshi="True" notes="A large red door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
     <list bit="35-36" title="Orientation" comment="This determines which direction the door will be facing." comment2="A door can only be entered if it is upright." advancedcomment="As decoration, this is fine. Actually making it properly associate its corresponding Entrance is either impossible or very functionally strange.">
@@ -4326,7 +4323,7 @@
       <entry value="1">Jump to Node</entry>
       <entry value="2">Fall</entry>
     </list>
-    <value nybble="9-10" title="&quot;Jump to&quot; Node" comment="This detemines which Node along the Path the test platform will return to after reaching the end of the Path." requiredbit="31-32" requiredval="1"/> <!-- Appears if Jump to Node is selected -->
+    <value nybble="9-10" title="&quot;Jump to&quot; Node" comment="This determines which Node along the Path the test platform will return to after reaching the end of the Path." requiredbit="31-32" requiredval="1"/> <!-- Appears if Jump to Node is selected -->
   </sprite> <!-- #287: (Unused) Path Controlled Ice Block -->
 
   <!-- Investigate Nybble 12 - Right = 2? If so, then it's suspected that Left = 1 and Towards Player = 0. True or False? -->
@@ -4400,11 +4397,11 @@
   </sprite> <!-- #292: Heavy Para-Beetle -->
 
   <!-- This seems to have some sort of interaction with the volcano background. What is the extent of this? -->
-  <sprite id="293" name="Volcano Rock Spawn Area" notes="Assigns a spawn area where various sizes of Volcano Rocks will hurl down from the sky destroying certain types of terrain and blocks as well as attempting to hurt the player. However, a location is NOT required, and actually changes the fundemental effects of this sprite.">
+  <sprite id="293" name="Volcano Rock Spawn Area" notes="Assigns a spawn area where various sizes of Volcano Rocks will hurl down from the sky destroying certain types of terrain and blocks as well as attempting to hurt the player. However, a location is NOT required, and actually changes the fundamental effects of this sprite.">
     <value nybble="12" title="Location ID" comment="When set, large amounts of Volcano Rocks will spawn intermittently from the top of the screen only while the player is within this location. Additionally, if using the Volcano background, it will erupt prior to this wave of rocks." comment2="When not set, the Volcano Rocks will still spawn, but they will spawn infrequently and one at a time for the entire zone. It will also not cause an eruption from the Volcano background."/>
   </sprite> <!-- #293: Volcano Rock Spawn Area -->
 
-  <sprite id="294" name="Meltable Ice Cube" notes="A small, 'smoking', slippery ice cube that can be melted with Fireballs.">
+  <sprite id="294" name="Meltable Ice Cube" notes="A small, 'smoking', slippery ice cube that can be melted with Fire balls.">
   </sprite> <!-- #294: Meltable Ice Cube -->
 
   <!-- Does the sprite only unthread to its starting placement (thus giving purpose to Offset Right) or will it unthread until it hits a solid surface? -->
@@ -4517,8 +4514,8 @@
       <entry value="3">???</entry>
     </list>
     <checkbox bit="44" title="Upside-Down" comment="When enabled, the cannon is upside-down and can be placed against the ceiling."/>
-    <dualbox bit="48" title1="Shoots Cardianally First" title2="Shoots Diagonally First" comment="This determines which direction the cannon will fire when it is first loaded."/>
-    <dualbox bit="40" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the cannon will rotate." comment2="This is an aesthetical choice only, and it will not change the functionality of the cannon."/>
+    <dualbox bit="48" title1="Shoots Cardinally First" title2="Shoots Diagonally First" comment="This determines which direction the cannon will fire when it is first loaded."/>
+    <dualbox bit="40" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the cannon will rotate." comment2="This is an aesthetic choice only, and it will not change the functionality of the cannon."/>
   </sprite> <!-- #300: 4-Way Cannon -->
 
   <sprite id="301" name="4-Way Large Cannon with Pipe" noyoshi="True" notes="A large 4-way rotating cannonball launcher that has a pipe in place of one of the four cannons.">
@@ -4540,7 +4537,7 @@
       <entry value="7">315°</entry>
     </list>
     <value nybble="8-9" title="Entrance ID" comment="This determines the Entrance ID that the pipe will connect with." comment2="It does not have to be placed on the pipe. It can only be used as an exit." idtype="Entrance"/>
-    <checkbox bit="44" title="Upside-Down" comment="When enabled, the cannon is upside-down and can be placed against the ceiling." advanced="True" advancedcomment="The pipe will load on the opposide side alongside a cannon, leaving a hole on one side. As such, this option should not be used."/>
+    <checkbox bit="44" title="Upside-Down" comment="When enabled, the cannon is upside-down and can be placed against the ceiling." advanced="True" advancedcomment="The pipe will load on the opposite side alongside a cannon, leaving a hole on one side. As such, this option should not be used."/>
   </sprite> <!-- #301: 4-Way Large Cannon with Pipe -->
 
   <sprite id="302" name="Incomplete Sprite - 'En_Gake_Noko'" notes="Does nothing.">
@@ -5224,7 +5221,7 @@
     </dependency>
   </sprite> <!-- #348: Ludwig von Koopa -->
 
-  <sprite id="349" name="Morton Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. The pillars will lower 1 block when the fight begins. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="349" name="Morton Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initially has no collision. The pillars will lower 1 block when the fight begins. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5551,7 +5548,7 @@
     </list>
   </sprite> <!-- #363: Boss Controller - Tower Boss -->
 
-  <sprite id="364" name="Roy Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="364" name="Roy Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initially has no collision. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5559,7 +5556,7 @@
     </dependency>
   </sprite> <!-- #364: Roy Koopa - Castle Boss -->
 
-  <sprite id="365" name="Ludwig von Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. All tiles the sprite spawns are behind Layer 1. The white square indicates the placement for the Castle Boss controller. The rectangular outline indicates the placement of the Brick blocks destroyed during the cutscene. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="365" name="Ludwig von Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initially has no collision. All tiles the sprite spawns are behind Layer 1. The white square indicates the placement for the Castle Boss controller. The rectangular outline indicates the placement of the Brick blocks destroyed during the cutscene. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5661,7 +5658,7 @@
     </list>
   </sprite> <!-- #371: Rolling Hill Coin -->
 
-  <sprite id="372" name="Iggy Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. The rectangular outline shows the path Iggy takes during the fight. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="372" name="Iggy Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initially has no collision. The rectangular outline shows the path Iggy takes during the fight. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5675,7 +5672,7 @@
     </dependency>
   </sprite> <!-- #373: Flashlight Raft Water -->
 
-  <!-- Test is 90 continues to function (at all? / correctly?) if Falling Objects is set to something other than Snow. -->
+  <!-- Test if 90 continues to function (at all? / correctly?) if Falling Objects is set to something other than Snow. -->
   <!-- Test if 374 is required for 90 to generate pushback (90 Only). Test if 90 is required for 374 to generate sandstorm graphics (374 Only). -->
   <!-- Clean up 90 after finishing research on these questions -->
   <sprite id="374" name="Effect - Snow and Wind" notes="This effect controller will either create falling snow, or it will create a Sandstorm.">
@@ -5685,7 +5682,7 @@
     <dualbox bit="48" title1="Snow" title2="Sandstorm" comment="This determines the functionality of the sprite."/>
   </sprite> <!-- #374: Effect - Falling Objects and Wind -->
 
-  <sprite id="375" name="Wendy Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Yoshi can't swim, so he will automatically be dismounted when submerged. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. The water spawned draws as long as shown, and has no collision until the fight begins. white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="375" name="Wendy Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Yoshi can't swim, so he will automatically be dismounted when submerged. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initially has no collision. The water spawned draws as long as shown, and has no collision until the fight begins. white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5746,7 +5743,7 @@
     <value nybble="12" title="Length" comment="This determines the length of the Pipe."/>
   </sprite> <!-- #380: Warp Pipe - Left -->
 
-  <sprite id="381" name="Lemmy Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Lemmy's balls won't push Yoshi aside, and Yoshi will slide down if standing on one. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initally has no collision. The 2 blocks on the side will fall when the fight begins. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
+  <sprite id="381" name="Lemmy Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Lemmy's balls won't push Yoshi aside, and Yoshi will slide down if standing on one. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initially has no collision. The 2 blocks on the side will fall when the fight begins. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
       <required sprite="407"/>
       <required sprite="408"/>
@@ -5847,13 +5844,13 @@
     <checkbox bit="40" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the Platform placing it further behind other sprites."/>
   </sprite> <!-- #390: Bolt Controlled Coin -->
 
-  <sprite id="391" name="Lighting - Glow Block" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely dimished as anything other than a weapon of destruction if not using Full Darkness lighting.">
+  <sprite id="391" name="Lighting - Glow Block" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely diminished as anything other than a weapon of destruction if not using Full Darkness lighting.">
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #391: Lighting - Glow Block -->
 
-  <sprite id="392" name="Magic Fireball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Koopaling Fireballs will fire from the screen's edge towards the players while a player is inside it. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
-    <value nybble="11" title="Location ID" comment="The Fireballs will only spawn while a player is in this location." comment2="While a Location ID is not required, it is recommended."/>
-    <list bit="31-32" title="Color of Fireball" comment="This determines the color of the fireball." comment2="Different colored fireballs do not have different effects.">
+  <sprite id="392" name="Magic Fire ball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Koopaling Fire balls will fire from the screen's edge towards the players while a player is inside it. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
+    <value nybble="11" title="Location ID" comment="The Fire balls will only spawn while a player is in this location." comment2="While a Location ID is not required, it is recommended."/>
+    <list bit="31-32" title="Color of Fire ball" comment="This determines the color of the fireball." comment2="Different colored fireballs do not have different effects.">
       <entry value="0">Light Blue</entry>
       <entry value="1">Purple</entry>
       <entry value="2">Green</entry>
@@ -5878,7 +5875,7 @@
     </list>
     <dualbox bit="48" title1="Appears from Top" title2="Appears from Right" comment="This determines the portion of the screen the fireballs will appear from." comment2="The fireball will appear from the center of the selected portion, plus or minus about 10 blocks. Placement does not affect this."/>
     <value bit="40" title="Unknown Flag 10 (1)" comment="ASM shows Nybble 10 might affect something. No visible effect."/>
-  </sprite> <!-- #392: Magic Fireball Spawn Area -->
+  </sprite> <!-- #392: Magic Fire ball Spawn Area -->
 
   <sprite id="393" name="Propeller Block" notes="A grabbable propeller block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. It can also boost the player into the air like a Propeller Cap if the player shakes their controller a second time while holding it. If it is thrown and it hits the ground, it will bounce slightly.">
   </sprite> <!-- #393: Propeller Block -->
@@ -6339,9 +6336,9 @@
     <value bit="47-48" title="Distance Dropped" comment="This determines the amount of additional distance the Jellybeam will swim downwards."/>
   </sprite> <!-- #425: Jellybeam -->
 
-  <sprite id="426" name="Fireball Spawn Area" notes="Assigns a spawn area where loose Fireballs will spawn from the side of the screen while a player is inside it. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
+  <sprite id="426" name="Fire ball Spawn Area" notes="Assigns a spawn area where loose Fire balls will spawn from the side of the screen while a player is inside it. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
     <dependency notes="The fireballs will spawn from the specified side of the screen at the same vertical height as the sprite's placement, and move across the screen in a horizontal line."/>
-    <value nybble="12" title="Location ID" comment="The Fireballs will only spawn while a player is in this location."/>
+    <value nybble="12" title="Location ID" comment="The Fire balls will only spawn while a player is in this location."/>
     <list nybble="10" title="Rate of Fire" comment="This determines the frequency of fireball spawns." comment2="The delay isn't quite in game seconds, instead each value other than 0 is a fraction of value 1. In retail, Nintendo used 12 and 14.">
       <entry value="0">1/7.3</entry>
       <entry value="1">1/1</entry>
@@ -6361,7 +6358,7 @@
       <entry value="15">1/15</entry>
     </list>
     <dualbox bit="44" title1="Spawns from Right" title2="Spawns from Left" comment="This determines which side of the screen the fireballs will appear from."/>
-  </sprite> <!-- #426: Fireball Spawn Area -->
+  </sprite> <!-- #426: Fire ball Spawn Area -->
 
   <sprite id="427" name="Kamek" noyoshi="True" notes="Requires his boss controller to function. His spawn position is fixed relative to the boss controller's position, making the placement of the sprite itself irrelevant.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
@@ -6465,7 +6462,7 @@
       <required sprite="419"/> <!-- Bowser -->
       <required sprite="439"/> <!-- Peach in Cage - Fake -->
       <required sprite="445"/> <!-- Peach in Cage - Real -->
-      <suggested sprite="449"/> <!-- Bowser Fireball Spawn Area -->
+      <suggested sprite="449"/> <!-- Bowser Fire ball Spawn Area -->
       <required sprite="456"/> <!-- Final Boss - Bridge Pieces -->
       <required sprite="478"/> <!-- Bowser Switch (Small) -->
       <required sprite="479"/> <!-- Bowser Switch (Large) -->
@@ -6473,7 +6470,7 @@
     </dependency>
   </sprite> <!-- #431: Boss Controller - Bowser -->
 
-  <sprite id="432" name="Toad NPC" notes="A non-interactable Toad that will turn and face the player. A few sprites rely on its presence in a level to work.">
+  <sprite id="432" name="Toad NPC" notes="A non-interactive Toad that will turn and face the player. A few sprites rely on its presence in a level to work.">
   </sprite> <!-- #432: Toad NPC -->
 
   <sprite id="433" name="Floating ? Block" notes="A slightly-larger-than-normal ? Block that floats on the surface of the Zone's non-Location Water, Poisoned Water, or Lava.">
@@ -6516,13 +6513,13 @@
   </sprite> <!-- #435: Effect - Ghost Fog -->
 
   <sprite id="436" name="Background Parallax Center Point" notes="This will center the scrolling of the Zone's backgrounds at the placement of the sprite.">
-    <dependency notes="This sprite will affect the background's paralax settings by setting the center point at the placement of the sprite. Do not use more than one [436] per Zone."/>
+    <dependency notes="This sprite will affect the background's parallax settings by setting the center point at the placement of the sprite. Do not use more than one [436] per Zone."/>
     <list nybble="12" title="Boss Related: Alignment" comment="This will slightly adjust the Y-Axis alignment, and should be set appropriately when creating a boss room. ">
       <entry value="0">Centered</entry>
       <entry value="1">Align as Boss Fight</entry>
       <entry value="2">Align as Bowser Fight</entry>
     </list>
-  </sprite> <!-- #436: Background Paralax Center Point -->
+  </sprite> <!-- #436: Background Parallax Center Point -->
 
   <sprite id="437" name="Climbable Striped Pole" noyoshi="True" notes="A stationary purple striped pole that can be climbed up. This does not count as a climbing animation for the IF Event Controller. It counts as being in the air.">
     <dependency notes="This sprite must be placed evenly on the grid in order to function properly."/>
@@ -6595,15 +6592,15 @@
     <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the block placing it further behind other sprites."/>
   </sprite> <!-- #448: Metal Bar -->
 
-  <sprite id="449" name="Bowser Fireball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Bowser Fireballs will fire from the screen's right edge towards the left  while a player is inside it." advancednotes="&lt;br&gt; - Uses hardcoded location ID 0 (you can have multiple ones in the zone)&lt;br&gt; - They will look awful if Bowser's sprite isn't present in any area of the level&lt;br&gt;&lt;br&gt;&lt;b&gt;Sprite Placement:&lt;/b&gt;&lt;br&gt; - X Position does not matter&lt;br&gt; - Y Position matters, as the sprite will spawn fireballs in a range of 6 tiles below its placement&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Placement:&lt;/b&gt;&lt;br&gt; - Bowser Fireballs start spawning as soon as the left edge of the location enters the screen&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Size (fireballs won't spawn if requirements aren't met):&lt;/b&gt;&lt;br&gt; - X Size: Unknown, but a specific minimal X location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt; - Y Size: At least 120px (5 blocks). A specific minimal Y location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt;" >
+  <sprite id="449" name="Bowser Fire ball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Bowser Fire balls will fire from the screen's right edge towards the left  while a player is inside it." advancednotes="&lt;br&gt; - Uses hardcoded location ID 0 (you can have multiple ones in the zone)&lt;br&gt; - They will look awful if Bowser's sprite isn't present in any area of the level&lt;br&gt;&lt;br&gt;&lt;b&gt;Sprite Placement:&lt;/b&gt;&lt;br&gt; - X Position does not matter&lt;br&gt; - Y Position matters, as the sprite will spawn fireballs in a range of 6 tiles below its placement&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Placement:&lt;/b&gt;&lt;br&gt; - Bowser Fire balls start spawning as soon as the left edge of the location enters the screen&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Size (fireballs won't spawn if requirements aren't met):&lt;/b&gt;&lt;br&gt; - X Size: Unknown, but a specific minimal X location size is required for the Bowser Fire balls to spawn correctly.&lt;br&gt; - Y Size: At least 120px (5 blocks). A specific minimal Y location size is required for the Bowser Fire balls to spawn correctly.&lt;br&gt;" >
     <dependency notes="Almost all settings are hardcoded and the sprite will not function outside of the exact setup used in 8-24 A4. See advanced notes for more information.">
       <required sprite="431"/>
     </dependency>
     <checkbox bit="48" title="Enable Functionality" comment="This must be enabled for the sprite to function."/>
-    <value nybble="7-8" title="Location ID" comment="&lt;b&gt;&lt;font color=&quot;red&quot;&gt;Only works with hardcoded location ID 0!&lt;/font&gt;&lt;/b&gt; The Fireballs will only spawn while a player is in this location." advancedcomment="Or at least, it would, if its behavior had not been hardcoded. " requiredbit="48"/>
-    <value nybble="10" title="Number of Fireballs" comment="This determines the number of fireballs in each wave." comment2="A value of 0 creates 5 fireballs. A value of 1+ creates that number." requiredbit="48"/>
-    <value nybble="11" title="Positioning" comment="Changes position the Fireballs appear in." comment2="A value of 0 creates random patterns. A value of 1 will CRASH the game. A value of 2+ will change the positioning or patterns or something." requiredbit="48"/>
-  </sprite> <!-- #449: Bowser Fireball Spawn Area -->
+    <value nybble="7-8" title="Location ID" comment="&lt;b&gt;&lt;font color=&quot;red&quot;&gt;Only works with hardcoded location ID 0!&lt;/font&gt;&lt;/b&gt; The Fire balls will only spawn while a player is in this location." advancedcomment="Or at least, it would, if its behavior had not been hardcoded. " requiredbit="48"/>
+    <value nybble="10" title="Number of Fire balls" comment="This determines the number of fireballs in each wave." comment2="A value of 0 creates 5 fireballs. A value of 1+ creates that number." requiredbit="48"/>
+    <value nybble="11" title="Positioning" comment="Changes position the Fire balls appear in." comment2="A value of 0 creates random patterns. A value of 1 will CRASH the game. A value of 2+ will change the positioning or patterns or something." requiredbit="48"/>
+  </sprite> <!-- #449: Bowser Fire ball Spawn Area -->
 
   <sprite id="450" name="Enterable Warp Pipe - Up" notes="A non-tileset pipe that can be entered or exited from. Only one facing upwards exists. It does not have to be placed exactly on the grid.">
     <list bit="43-44" title="Color" comment="This determines the color of the Pipe.">
@@ -6617,7 +6614,7 @@
   </sprite> <!-- #450: Enterable Warp Pipe - Up -->
 
   <sprite id="451" name="Scaredy Rat Despawner" notes="A decorative mouse hole with a secondary function. It will despawn Scaredy Rats that pass through it.">
-    <dependency notes="This has the ability to depsawn two different sprites.">
+    <dependency notes="This has the ability to despawn two different sprites.">
       <suggested sprite="271"/>
       <suggested sprite="101"/>
     </dependency>
@@ -6645,7 +6642,7 @@
     </list>
   </sprite> <!-- #453: Seaweed Plant -->
 
-  <sprite id="454" name="Ambush Level Controller" notes="This controls the miscellanous behaviors of an Ambush level, including the Toad Balloons, the Chest, and the destruction of the enemies.">
+  <sprite id="454" name="Ambush Level Controller" notes="This controls the miscellaneous behaviors of an Ambush level, including the Toad Balloons, the Chest, and the destruction of the enemies.">
     <dependency notes="The Ambush Level Controller, 8 Toad Balloons, and a Toad House Chest with proper settings are all required in order for an Ambush to function.">
       <required sprite="185"/>
       <required sprite="203"/>
