@@ -750,7 +750,7 @@
     </list>
     <value bit="1-8" title="Target Event ID" comment="When the Auto-Scroller reaches its final path Node, this Event ID is activated." idtype="Target Event"/>
     <value nybble="12" title="Path ID" comment="This determines which Path the camera will follow while scrolling. [CLARIFY] The upper left corner of the Screen, relative to the Auto-Scroller's placement, is the starting point for the path." idtype="Path"/>
-    <value nybble="5-6" title="Midway Start Node ID" comment="If the level was entered from the Midway Point, the Auto-Scroller will begin from this Node instead of the first Node in the Path."/>
+    <value nybble="5-6" title="Midway Start Node ID" comment="If the level was entered from the Midway Point, the Auto-Scroller will begin from this Node instead of the first Node in the Path." idtype="Path Node"/>
     <checkbox bit="40" title="Unknown Flag 10 (1)" comment="Used in 08-07; might be related to (unused) Path and Spine Coaster in A1Z1 and A2Z1."/>
     <checkbox bit="44" title="Unknown Flag 11 (1)" comment="Possibly determines behavior relating to [159]. ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #91: Auto-Scrolling Controller -->
@@ -1021,7 +1021,7 @@
   <!-- Double check Moving Direction, value 0 with ASM. - Grop says Value 0 should be Right and the list should repeat. Why is 0 'Does Not Move'? -->
   <sprite id="169" name="Magic Platform" notes="Magic Platforms are created by assigning tileset data on Layer 1 to an invisible block as a new texture, and moving that texture around. While it functions best as a moving platform, the Magic Platform does not have to move in order to perform its function. It can also simply create terrain chunks with a different type of collision than normal.">
     <dependency notes="It should be noted that the Magic Platform can only create rectangular shapes. It cannot have slopes, and it cannot have 'unused space' within the location. All tiles will turn into solid blocks."/>
-    <value nybble="11-12" title="Location ID" comment="This determines what the Magic Platform looks like. It will clone the Layer 1 tiles as it sees them within the given Location. This Location does not have to be within the current Zone boundaries."/>
+    <value nybble="11-12" title="Location ID" comment="This determines what the Magic Platform looks like. It will clone the Layer 1 tiles as it sees them within the given Location. This Location does not have to be within the current Zone boundaries." idtype="Location"/>
     <list nybble="6" title="Collision" comment="This determines the type of collision.">
       <entry value="0">Solid Block</entry>
       <entry value="1">Permeable (Solid on Top)</entry>
@@ -1702,7 +1702,7 @@
   </sprite> <!-- #245: Newer Cutscene Controller: Credits -->
 
   <sprite id="246" name="Special Event" notes="This sprite can do all sorts of special functions, such as freezing actors, changing the size of sprites, editing the game Timer, and changing the gravity. This function is restricted to the active Zone. The settings available to each type will appear when selecting that option. Be sure to reset the Sprite Settings when switching between different types in order to prevent any bugs.">
-    <value bit="17-24" title="Triggering Event ID" comment="The Special Event is on as long as this Event is activated."/>
+    <value bit="17-24" title="Triggering Event ID" comment="The Special Event is on as long as this Event is activated." idtype="Triggering Event"/>
     <list bit="45-48" title="Type" comment="This determines the effect of the Special Event." comment2="Time Stop: Freezes some Actors/Elements. &lt;br&gt;Pause Timer: Pauses the Level's Clock, different from Time Stop. &lt;br&gt;Set Timer: Changes the time on the Level's Clock. &lt;br&gt;Change Gravity: Changes player physics to simulate a different type of gravity. &lt;br&gt;Resizer: Changes the size of all sprites affected by this function. &lt;br&gt;Selective Resizer: Changes the size of sprites affected by this function to their specified sizes. &lt;br&gt;Background Resizer: Changes the Background settings. &lt;br&gt;Disable Z-Order Fixes: Deactivates all Z-Order modifications while the Special Event is activated. &lt;br&gt;Disable MP Bubbling: Deactivates the ability to 'bubble' yourself during Multiplayer.">
       <entry value="0">None</entry>                  <!-- 0000 -->
       <entry value="1">Time Stop</entry>             <!-- 0001 -->

@@ -374,7 +374,7 @@
     <value bit="9-16" title="Target Event ID" comment="This event will be modified when the Location ID conditions are satisfied." idtype="Target Event"/>
     <dualbox bit="48" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is set when the conditions for this controller are satisfied." comment2="For locations with an Enemy Location ID, the reverse status will only be applied when...? For locations with only a Player Location ID, the reverse status will only be applied when...? Specifically, is the reverse condition immediately applied upon level load when it's found to not be met, or will it only apply the reverse condition after the positive condition is met? Or even more confusingly, will the reverse condition be activated when HALF of the condition is temporarily met for the first time?"/>
     <checkbox nybble="5-6" title="Ignore Player Location" mask="255" comment="When enabled, the Event Controller will ignore [Player Status] and [Player Power-up Status] completely when determining if it will modify the Target Event."/>
-    <value nybble="5-6" title="Player Location ID" comment="The Target Event will be modified if [Player Status] and [Player Power-up Status] are satisfied while within this Location ID." requiredbit="17-24" requiredval="0-254"/>
+    <value nybble="5-6" title="Player Location ID" comment="The Target Event will be modified if [Player Status] and [Player Power-up Status] are satisfied while within this Location ID." requiredbit="17-24" requiredval="0-254" idtype="Location" />
     <list nybble="10" title="Player Status" comment="When [Player Location ID] is set, the Target Event will only be triggered if a player's physical location matches this condition. Measurements will always correspond to the center of the player's feet and the lowest pixel." comment2="Within: The Target Event is only modified if a player is inside the Player Location.&lt;br&gt;&lt;br&gt;Ground: The Target Event is only modified if a player is touching the ground while inside the Player Location.&lt;br&gt;&lt;br&gt;Air: The Target Event is only modified if a player is jumping or otherwise not touching the ground but is still inside the Player Location.&lt;br&gt;&lt;br&gt;Climbing: The Target Event is only modified if a player is in a climbing state, such as on a vine or chainlink fence." requiredbit="17-24" requiredval="0-254">
       <entry value="0">Within</entry>
       <entry value="1">Ground</entry>
@@ -393,7 +393,7 @@
       <!--<entry value="8">Star (8-15)</entry>-->
     </list>
     <checkbox nybble="7-8" title="Ignore Enemy Location" mask="255" comment="When enabled, the Event Controller will ignore the requirement to have at least one enemy within a Location ID when determining if it will modify the Target Event."/>
-    <value nybble="7-8" title="Enemy Location ID" comment="The Target Event is only modified if there is at least one enemy sprite inside this Location ID." requiredbit="25-32" requiredval="0-254"/>
+    <value nybble="7-8" title="Enemy Location ID" comment="The Target Event is only modified if there is at least one enemy sprite inside this Location ID." requiredbit="25-32" requiredval="0-254" idtype="Location" />
     <list bit="43-44" title="Usage Mode" comment="This will determine how often the Target Event ID will be modified." comment2="Single Use: When the player and enemy conditions are both satisfied, the Target Event will be modified, and the controller will not affect the Target Event again even if the conditions later become satisfied again.&lt;br&gt;&lt;br&gt;Multi-Use: Each time the player and enemy conditions are both satisfied, the Target Event will be modified.&lt;br&gt;&lt;br&gt;Only While Satisfied: The Target Event will only be modified while the player and enemy conditions are both satisfied. When either or both are not actively being satisfied, the Target Event is set to the opposite state instead. Additionally, this flags the event as 'activated' every frame.">
       <entry value="0">Single Use</entry>
       <entry value="1">Multi-Use</entry>
@@ -594,7 +594,7 @@
       <entry value="15">30</entry>
     </list>
     <checkbox nybble="5" title="Event Activated" comment="With this checked, the Seesaw Platform will spawn when its listed Event ID is activated, and despawn when it's deactivated."/>
-    <value nybble="3-4" title="Triggering Event ID" comment="Determines the Event ID that spawns the Seesaw Platform when activated, and despawns it when deactivated." requiredbit="17-20" requiredval="1"/>
+    <value nybble="3-4" title="Triggering Event ID" comment="Determines the Event ID that spawns the Seesaw Platform when activated, and despawns it when deactivated." requiredbit="17-20" requiredval="1" idtype="Triggering Event"/>
   </sprite> <!-- #49: (Unused) Seesaw Platform -->
 
   <sprite id="50" name="Basic Platform - Fall-When-Touched" notes="This platform will begin to fall when a player first touches it.">
@@ -1281,7 +1281,7 @@
     </list>
     <value bit="1-8" title="Target Event ID" comment="When the Auto-Scroller reaches its final path Node, this Event ID is activated." idtype="Target Event"/>
     <value nybble="12" title="Path ID" comment="This determines which Path the camera will follow while scrolling. [CLARIFY] The upper left corner of the Screen, relative to the Auto-Scroller's placement, is the starting point for the path." idtype="Path"/>
-    <value nybble="5-6" title="Midway Start Node ID" comment="If the level was entered from the Midway Point, the Auto-Scroller will begin from this Node instead of the first Node in the Path."/>
+    <value nybble="5-6" title="Midway Start Node ID" comment="If the level was entered from the Midway Point, the Auto-Scroller will begin from this Node instead of the first Node in the Path." idtype="Path Node"/>
     <checkbox bit="40" title="Unknown Flag 10 (1)" comment="Used in 08-07; might be related to (unused) Path and Spine Coaster in A1Z1 and A2Z1."/>
     <checkbox bit="44" title="Unknown Flag 11 (1)" comment="Possibly determines behavior relating to [159]. ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #91: Auto-Scrolling Controller -->
@@ -1549,7 +1549,7 @@
       <entry value="30">31 blocks</entry>
       <entry value="31">32 blocks</entry>
     </list>
-    <value nybble="11-12" title="Rotation ID" comment="Works with both Swaying and Spinning." />
+    <value nybble="11-12" title="Rotation ID" comment="Works with both Swaying and Spinning." idtype="Rotation"/>
   </sprite>
 
   <sprite id="108" name="Line Controlled Amp Spawner" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="This will spawn a specified number of Amps along the Line that the sprite is placed on. Once it has spawned the number of Amps it is set to, it will not do anything else even if they fall off.&lt;br&gt;&lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interrupted and Mario will take no damage.">
@@ -1770,7 +1770,7 @@
     <checkbox bit="15" title="Positioning Flag (2)" comment="Treeki:&lt;br&gt;Setting Flag 2 and 4 for Nybble 4: This function will create a particular Y position picture of all the Cheep Cheeps, each frame. The 'Cheep Cheep Formation Spawner' that has generated the Cheep Cheeps will store this 'picture'."/>
     <checkbox bit="14" title="Positioning Flag (4)" comment="Treeki:&lt;br&gt; Setting Flag 2 and 4 for Nybble 4: This function will create a particular Y position picture of all the Cheep Cheeps, each frame. The 'Cheep Cheep Formation Spawner' that has generated the Cheep Cheeps will store this 'picture'."/>
     <value nybble="6" title="Positioning" comment="Treeki also commented:&lt;br&gt;'Nybble 6 determines WHICH position is allocated to the fish. This option is only useful for the Cheep Cheep Formation Spawner (247), because 247 uses this nybble for all generated Cheep Cheeps. For everything else, this option seems to be pointless. When you use the two flags for a Cheep Cheep in Reggie!, the corresponding Cheep Cheep won't have 'parents' any more, so it will get some random data for the Y position and might go off the screen. So you can safely ignore this value.'"/>
-    <value nybble="3-4" title="'Dodge' Triggering Event ID" comment="This may look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right).&lt;br&gt;Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'. If it really works is a good question. Try it and report your findings!"/>
+    <value nybble="3-4" title="'Dodge' Triggering Event ID" comment="This may look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right).&lt;br&gt;Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'. If it really works is a good question. Try it and report your findings!" idtype="Triggering Event"/>
   </sprite> <!-- #115: Cheep Cheep / Deep Cheep / Eep Cheep -->
 
   <!-- There may be additional variables that allow this sprite to interact with coins. -->
@@ -2058,7 +2058,7 @@
     <value bit="29-36" title="I wouldn't do that if I were you..." comment="This determines how many blocks the Water will move. Normally. But you are a bad person and are trying to set combinations of options that are known not to work. So stop right there and either change this back to zero, or select the option to the left of where it says [Extremely Buggy]." requiredbit="18-20, 17" requiredval="1-7, 1"/> <!-- Appears when you've been a very bad boy and Falling is enabled with Distance set. -->
     <value bit="21-24" title="Moving Water - Delay at Top" comment="This determines the delay when the Water has finished rising." requiredbit="18-20, 29-36" requiredval="1-7, 1-255"/> <!-- Appears when Speed and Distance are set -->
     <value bit="25-28" title="Moving Water - Delay at Bottom" comment="This determines the delay when the Water has returned to its starting position." comment2="The initial delay only can be set by using event-controlled Water. Utilize Event Chainers to fake the delay settings if you need to set an initial delay." requiredbit="18-20, 29-36" requiredval="1-7, 1-255"/> <!-- Appears when Speed and Distance are set -->
-    <value bit="2-8" title="Moving Water - Triggering Event ID" comment="The Moving Water mode will be triggered when this Event is activated." requiredbit="18-20"/> <!-- Appears when Speed is set --> <!-- Needs modified to allow for 256 events. -->
+    <value bit="2-8" title="Moving Water - Triggering Event ID" comment="The Moving Water mode will be triggered when this Event is activated." requiredbit="18-20" idtype="Triggering Event"/> <!-- Appears when Speed is set --> <!-- Needs modified to allow for 256 events. -->
    <!-- Location Water Options -->
     <value bit="42-48" title="Location ID" comment="Match with a Location ID to set a specific area in which to display Water. Note that some sprites only work correctly in Non-Location Water." advancedcomment="Location Water only works properly with Location IDs 0-127. Location IDs 128-255 will cause the Water to constantly move up and down slightly. It's unknown if a use can be found for this, so it remains documented here in the Advanced Comment." idtype="Location"/>
     <checkbox bit="37" title="Underwater Zone - Flat Top" comment="It is suggested to enable this when creating a fully underwater zone." comment2="We're not too sure why this would be important, since it cannot be seen, but Nintendo will always have this checked, so you should do it too." requiredbit="18-20, 42-48" requiredval="0, 0"/> <!-- Appears only if Location ID and Speed are not set -->
@@ -2125,7 +2125,7 @@
     <value bit="29-36" title="I wouldn't do that if I were you..." comment="This determines how many blocks the Lava will move. Normally. But you are a bad person and are trying to set combinations of options that are known not to work. So stop right there and either change this back to zero, or select the option to the left of where it says [Extremely Buggy]." requiredbit="18-20, 17" requiredval="1-7, 1"/> <!-- Appears when you've been a very bad boy and Falling is enabled with Distance set. -->
     <value bit="21-24" title="Moving Lava - Delay at Top" comment="This determines the delay when the Lava has finished rising." requiredbit="18-20, 29-36" requiredval="1-7, 1-255"/> <!-- Appears when Speed and Distance are set -->
     <value bit="25-28" title="Moving Lava - Delay at Bottom" comment="This determines the delay when the Lava has returned to its starting position." comment2="The initial delay only can be set by using event-controlled Lava. Utilize Event Chainers to fake the delay settings if you need to set an initial delay." requiredbit="18-20, 29-36" requiredval="1-7, 1-255"/> <!-- Appears when Speed and Distance are set -->
-    <value bit="2-8" title="Moving Lava - Triggering Event ID" comment="The Moving Lava mode will be triggered when this Event is activated." requiredbit="18-20"/> <!-- Appears when Speed is set --> <!-- Needs modified to allow for 256 events. -->
+    <value bit="2-8" title="Moving Lava - Triggering Event ID" comment="The Moving Lava mode will be triggered when this Event is activated." requiredbit="18-20" idtype="Triggering Event"/> <!-- Appears when Speed is set --> <!-- Needs modified to allow for 256 events. -->
    <!-- Location Lava Options -->
     <value bit="42-48" title="Location Lava - Location ID" comment="Match with a Location ID to set a specific area in which to display Lava." comment2="Note that some sprites only work correctly in Non-Location Lava." advancedcomment="Location Lava only works properly with Location IDs 0-127. Location IDs 128-255 will cause the Lava to constantly move up and down slightly. It's unknown if a use can be found for this, so it remains documented here in the Advanced Comment." requiredbit="18-20" requiredval="0" idtype="Location"/> <!-- Appears only while Speed is not set -->
     <checkbox bit="37" title="Location Lava - Flat Top" comment="When enabled, the animated crest effect on the top portion of the Lava is removed. This creates a 'square' look." comment2="It's recommended to only use this when the Lava is touching a straight ceiling." requiredbit="18-20, 42-48" requiredval="0, 1-255"/> <!-- Appears only if Location ID is set and hides if Speed is set -->
@@ -2368,9 +2368,7 @@
       <entry value="2">Spins While Active</entry>
       <!--entry value="3">Spins While Active</entry-->
     </list>
-    <value bit="9-16" title="Triggering Event ID" comment="When the Triggering Event is activated, the controller will rotate all associated objects according to the mode. Deactivation effects will also differ depending on the mode. See the ! Comment." comment2="Constant Spinning: When activated, the items will decelerate to a stop and accelerate in the opposite direction.
-	When deactivated, it will reverse back to its set movement in a similar fashion. &lt;br&gt; &lt;br&gt;Stops and Returns: When activated, the items will rotate the Rotation Distance and stop. When deactivated, the items will immediately start to rotate back to their starting positions, even if the initial movement is not completed. &lt;br&gt; &lt;br&gt;Spins While Active:
-	 When activated, the items will rotate continuously. When deactivated, the items will stop at the next multiple of its set Rotation Distance." idtype="Triggering Event"/>
+    <value bit="9-16" title="Triggering Event ID" comment="When the Triggering Event is activated, the controller will rotate all associated objects according to the mode. Deactivation effects will also differ depending on the mode. See the ! Comment." comment2="Constant Spinning: When activated, the items will decelerate to a stop and accelerate in the opposite direction.&lt;br&gt;When deactivated, it will reverse back to its set movement in a similar fashion.&lt;br&gt;&lt;br&gt;Stops and Returns: When activated, the items will rotate the Rotation Distance and stop. When deactivated, the items will immediately start to rotate back to their starting positions, even if the initial movement is not completed.&lt;br&gt;&lt;br&gt;Spins While Active:&lt;br&gt;When activated, the items will rotate continuously. When deactivated, the items will stop at the next multiple of its set Rotation Distance." idtype="Triggering Event"/>
     <list nybble="6" title="Event Triggered - Rotation Distance" comment="This determines the distance the rotation controller will spin the items before stopping, when set to the [Stops and Returns] or [Spins While Active] Rotation Modes." requiredbit="32" requiredval="0">
       <entry value="0">0.0°</entry>
       <entry value="1">22.5°</entry>
@@ -3291,7 +3289,7 @@
     <dependency notes="This platform will only function when paired with a Use Paths movement controller.">
       <required sprite="159"/>
     </dependency>
-    <value nybble="11" title="Path Movement ID" comment="This pairs the platform to a matching Use Paths controller."/>
+    <value nybble="11" title="Path Movement ID" comment="This pairs the platform to a matching Use Paths controller." idtype="Path"/>
     <value nybble="9" title="Higher Pitched Falling Sound" comment="This determines something involving the sound that is heard when the platform is falling quickly." comment2="The Path's Speed must be at least 5.0 for this sound to be heard. It's assumed that a higher value will skip further into the music track that plays when the platform is quickly dropping. Retail uses 1 and 5."/>
     <checkbox bit="38" title="Unknown Flag 10 (4)" comment="For whatever reason, this is always checked in Retail levels."/>
   </sprite> <!-- #214: Path Controlled Ghost House Platform -->
@@ -3362,7 +3360,7 @@
     <value bit="29-36" title="I wouldn't do that if I were you..." comment="This determines how many blocks the Poisoned Water will move. Normally. But you are a bad person and are trying to set combinations of options that are known not to work. So stop right there and either change this back to zero, or select the option to the left of where it says [Extremely Buggy]." requiredbit="18-20, 17" requiredval="1-7, 1"/> <!-- Appears when you've been a very bad boy and Falling is enabled with Distance set. -->
     <value bit="21-24" title="Moving Poisoned Water - Delay at Top" comment="This determines the delay when the Poisoned Water has finished rising." requiredbit="18-20, 29-36" requiredval="1-7, 1-255"/> <!-- Appears when Speed and Distance are set -->
     <value bit="25-28" title="Moving Poisoned Water - Delay at Bottom" comment="This determines the delay when the Poisoned Water has returned to its starting position." comment2="The initial delay only can be set by using event-controlled Poisoned Water. Utilize Event Chainers to fake the delay settings if you need to set an initial delay." requiredbit="18-20, 29-36" requiredval="1-7, 1-255"/> <!-- Appears when Speed and Distance are set -->
-    <value bit="2-8" title="Moving Poisoned Water - Triggering Event ID" comment="The Moving Poisoned Water mode will be triggered when this Event is activated." requiredbit="18-20"/> <!-- Appears when Speed is set --> <!-- Needs modified to allow for 256 events. -->
+    <value bit="2-8" title="Moving Poisoned Water - Triggering Event ID" comment="The Moving Poisoned Water mode will be triggered when this Event is activated." requiredbit="18-20" idtype="Triggering Event" /> <!-- Appears when Speed is set --> <!-- Needs modified to allow for 256 events. -->
    <!-- Location Poisoned Water Options -->
     <value bit="42-48" title="Location Poisoned Water - Location ID" comment="Match with a Location ID to set a specific area in which to display Poisoned Water." comment2="Note that some sprites only work correctly in Non-Location Poisoned Water." advancedcomment="Location Poisoned Water only works properly with Location IDs 0-127. Location IDs 128-255 will cause the Poisoned Water to constantly move up and down slightly. It's unknown if a use can be found for this, so it remains documented here in the Advanced Comment." requiredbit="18-20" requiredval="0" idtype="Location"/> <!-- Appears only while Speed is not set -->
     <checkbox bit="37" title="Location Poisoned Water - Flat Top" comment="When enabled, the animated crest effect on the top portion of the Poisoned Water is removed. This creates a 'square' look." comment2="It's recommended to only use this when the Poisoned Water is touching a straight ceiling." requiredbit="18-20, 42-48" requiredval="0, 1-255"/> <!-- Appears only if Location ID is set and hides if Speed is set -->
@@ -3617,7 +3615,7 @@
       <entry value="5">Drifting Death Clouds</entry>
       <entry value="8">Falling Clouds</entry>
     </list>
-    <value nybble="12" title="Location ID" comment="This determines the location in which the cloud effect will appear." requiredbit="41" requiredval="0"/> <!-- Disappears if Falling Clouds or 9+ are selected for Cloud Type -->
+    <value nybble="12" title="Location ID" comment="This determines the location in which the cloud effect will appear." requiredbit="41" requiredval="0" idtype="Location" /> <!-- Disappears if Falling Clouds or 9+ are selected for Cloud Type -->
   </sprite> <!-- #234: Effect - Cloud Area -->
 
   <sprite id="235" name="Jumbo Ray Respawner" notes="A controller that will respawn or otherwise spawn additional Jumbo Rays.">
@@ -3654,7 +3652,7 @@
   </sprite> <!-- #240: Big Wiggler -->
 
   <sprite id="241" name="(Unused) Big Wiggler Spawner" notes="&lt;font color=&quot;red&quot;&gt;Currently non-functioning.&lt;/font&gt;" advancednotes="Appears to need a corresponding Path, and the sprite must be placed to the left of the player's Entrance. Even still, the Sprite doesn't seem to function, possibly due to missing Node ID related functions.">
-    <value nybble="11-12" title="Path ID" advanced="True" advancedcomment="This is intended to pair the Mega Wiggler to a Path."/>
+    <value nybble="11-12" title="Path ID" advanced="True" advancedcomment="This is intended to pair the Mega Wiggler to a Path." idtype="Path"/>
   </sprite> <!-- #241: (Unused) Big Wiggler Spawner -->
 
   <sprite id="242" name="Donut Ledge" noyoshi="True" notes="A cliff-walking donut-style platform that will fall if a player stands on it for too long.">
@@ -3938,7 +3936,7 @@
     <dependency notes="Bulbers do not require non-location water in order to spawn, but as it is a fish, water is suggested. Dimmed or dark lighting is also suggested to take advantage of its lighting effect.">
       <suggested sprite="138"/>
     </dependency>
-    <value nybble="12" title="Location ID" comment="The Bulbers will spawn from the right side of the screen, swimming across it only while a player is within this location."/>
+    <value nybble="12" title="Location ID" comment="The Bulbers will spawn from the right side of the screen, swimming across it only while a player is within this location." idtype="Location"/>
   </sprite> <!-- #258: Bulber Spawn Area -->
 
   <sprite id="259" name="D-Pad Door" noyoshi="True" notes="A standard door with a D-Pad symbol on it that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
@@ -4019,7 +4017,7 @@
   <sprite id="262" name="Poltergeist Item" notes="A haunted item that appears identical to its normal counterparts until a player either comes close enough or until they enter a specific Location.">
     <dualbox bit="48" title1="?-Block" title2="Ghost House Stand" comment="This determines which object will be haunted."/>
     <value nybble="8-9" title="Activation Delay" comment="This determines how long after being triggered the poltergeist will wait before hurling the object at the player." comment2="If you discover the multiple of the delay value that equals one game second, let us know."/>
-    *<value nybble="10-11" title="Location ID" comment="When set, the haunted object will only be activated if a player enters this location." comment2="Assigning a Location is not required. If one is not set, the item will instead be triggered by the proximity of the player."/>
+    <value nybble="10-11" title="Location ID" comment="When set, the haunted object will only be activated if a player enters this location." comment2="Assigning a Location is not required. If one is not set, the item will instead be triggered by the proximity of the player." idtype="Location"/>
   </sprite> <!-- #262: Poltergeist Item -->
 
   <!-- Check if the setting causes it to be 'immune to POW' -->
@@ -4107,7 +4105,7 @@
 
   <!-- Research Unknown Value 11 -->
   <sprite id="270" name="Parachute Bob-Omb Spawn Area" notes="Assigns a spawn area where parachuting Bob-Ombs will fall from the sky while a player is inside it.">
-    <value nybble="12" title="Location ID" comment="The parachuting Bob-Ombs will only spawn while a player is in this location."/>
+    <value nybble="12" title="Location ID" comment="The parachuting Bob-Ombs will only spawn while a player is in this location." idtype="Location"/>
     <list nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="Used in Retail: 08-05 A1 as 3, 2, 1.">
       <entry value="0">???</entry>
       <entry value="1">???</entry>
@@ -4137,7 +4135,7 @@
       <suggested sprite="149"/>
     </dependency>
     <dualbox bit="40" title1="Small Gear" title2="Large Gear" comment="This determines how large the gear is."/>
-    <value bit="41-48" title="Rotation ID" comment="When set, the gear will move under the power of a rotation controller instead of rotating under its own power." comment2="The gear will rotate in place, regardless of the rotation controller's position."/>
+    <value bit="41-48" title="Rotation ID" comment="When set, the gear will move under the power of a rotation controller instead of rotating under its own power." comment2="The gear will rotate in place, regardless of the rotation controller's position." idtype="Rotation"/>
     <dualbox bit="36" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the gear will rotate when rotating under its own power." requiredbit="41-48" requiredval="0"/> <!-- These three options only appear if Rotation ID is not set. -->
     <value nybble="7" title="Rotation Speed (+)" comment="This will increase the speed of the gear's rotation when rotating under its own power." comment2="Only one Rotation Speed should be chosen. A rotation speed of 0 is equal to 'Slow+' on a Spinning rotation controller." requiredbit="41-48" requiredval="0"/>
     <value nybble="8" title="Rotation Speed (-)" comment="This will decrease the speed of the gear's rotation when rotating under its own power." comment2="Only one Rotation Speed should be chosen. A rotation speed of 0 is equal to 'Slow+' on a Spinning rotation controller." requiredbit="41-48" requiredval="0"/>
@@ -4242,7 +4240,7 @@
       <entry value="1">[90] Wind Physics</entry>
     </list>
     <value nybble="12" title="Physics ID" comment="This will pair the Physics Coin Controller with the matching Wind Physics." requiredbit="25-28" requiredval="1" idtype="Physics"/>
-    <value nybble="9-10" title="Location ID" advanced="True" advancedcomment="Can somehow use Location ID, but unknown how it functions."/>
+    <value nybble="9-10" title="Location ID" advanced="True" advancedcomment="Can somehow use Location ID, but unknown how it functions." idtype="Location"/>
     <value nybble="8" title="Unknown Value 8" advanced="True" advancedcomment="Used in Retail: 02-04 A1, as 1."/>
   </sprite> <!-- #284: Physics Coin Controller -->
 
@@ -4398,7 +4396,7 @@
 
   <!-- This seems to have some sort of interaction with the volcano background. What is the extent of this? -->
   <sprite id="293" name="Volcano Rock Spawn Area" notes="Assigns a spawn area where various sizes of Volcano Rocks will hurl down from the sky destroying certain types of terrain and blocks as well as attempting to hurt the player. However, a location is NOT required, and actually changes the fundamental effects of this sprite.">
-    <value nybble="12" title="Location ID" comment="When set, large amounts of Volcano Rocks will spawn intermittently from the top of the screen only while the player is within this location. Additionally, if using the Volcano background, it will erupt prior to this wave of rocks." comment2="When not set, the Volcano Rocks will still spawn, but they will spawn infrequently and one at a time for the entire zone. It will also not cause an eruption from the Volcano background."/>
+    <value nybble="12" title="Location ID" comment="When set, large amounts of Volcano Rocks will spawn intermittently from the top of the screen only while the player is within this location. Additionally, if using the Volcano background, it will erupt prior to this wave of rocks." comment2="When not set, the Volcano Rocks will still spawn, but they will spawn infrequently and one at a time for the entire zone. It will also not cause an eruption from the Volcano background." idtype="Location"/>
   </sprite> <!-- #293: Volcano Rock Spawn Area -->
 
   <sprite id="294" name="Meltable Ice Cube" notes="A small, 'smoking', slippery ice cube that can be melted with Fire balls.">
@@ -4988,7 +4986,7 @@
       <entry value="14">15 Blocks</entry>
       <entry value="15">16 Blocks</entry>
     </list>
-    <value nybble="3-4" title="'Dodge' Event ID" comment="Right, this does look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right). Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'.&lt;br&gt;If it really works is a good question."/>
+    <value nybble="3-4" title="'Dodge' Event ID" comment="Right, this does look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right). Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'.&lt;br&gt;If it really works is a good question." idtype="Triggering Event"/>
   </sprite>
 
   <sprite id="335" name="School of Cheep Cheeps" notes="Creates a formation of four Cheep Cheeps.">
@@ -5597,7 +5595,7 @@
 	<dualbox bit="44" title1="Spawns Before Midway" title2="Spawns After Midway" comment="This decides whether the Raft will spawn only before the Midway Flag is activated, or only after."/>
 	<checkbox bit="32" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="When this flag is enabled along with a Path (regardless of the Uses Paths flag), the Raft will go to the indicated Path Node and not move. But, if the Path is set to loop, this doesn't do anything."/>
     <checkbox bit="36" title="Event Activated Flashlight" comment="When enabled, the Flashlight will only be illuminated when the Triggering Event ID is activated. The Flashlight can only be controlled by tilting the controller when it is Event Activated."/> <!-- Appears only if Use Flashlight is active -->
-    <value bit="10-16" title="Triggering Event ID" comment="The Flashlight will be turned on when this Event ID is activated. The Flashlight can't be deactivated." requiredbit="36" requiredval="1"/> <!-- Appears only if Use Flashlight and Event Activated Flashlight are active -->
+    <value bit="10-16" title="Triggering Event ID" comment="The Flashlight will be turned on when this Event ID is activated. The Flashlight can't be deactivated." requiredbit="36" requiredval="1" idtype="Triggering Event"/> <!-- Appears only if Use Flashlight and Event Activated Flashlight are active -->
   </sprite> <!-- #368: Path Controlled Flashlight Raft -->
 
   <sprite id="369" name="Cooligan" notes="" noyoshi="True" yoshinotes="Yoshi cannot jump on Cooligans, though he can use the stomp attack and tongue attack to defeat them.">
@@ -5849,7 +5847,7 @@
   </sprite> <!-- #391: Lighting - Glow Block -->
 
   <sprite id="392" name="Magic Fire ball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Koopaling Fire balls will fire from the screen's edge towards the players while a player is inside it. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
-    <value nybble="11" title="Location ID" comment="The Fire balls will only spawn while a player is in this location." comment2="While a Location ID is not required, it is recommended."/>
+    <value nybble="11" title="Location ID" comment="The Fire balls will only spawn while a player is in this location." comment2="While a Location ID is not required, it is recommended." idtype="Location"/>
     <list bit="31-32" title="Color of Fire ball" comment="This determines the color of the fireball." comment2="Different colored fireballs do not have different effects.">
       <entry value="0">Light Blue</entry>
       <entry value="1">Purple</entry>
@@ -5927,7 +5925,7 @@
       <entry value="14">15 Blocks</entry>
       <entry value="15">16 Blocks</entry>
     </list>
-    <value nybble="3-4" title="'Dodge' Event ID" comment="Right, this does look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right). Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'.&lt;br&gt;If it really works is a good question."/>
+    <value nybble="3-4" title="'Dodge' Event ID" comment="Right, this does look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right). Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'.&lt;br&gt;If it really works is a good question." idtype="Triggering Event"/>
   </sprite> <!-- #395: Spiny Cheep Cheep -->
 
   <sprite id="396" name="Move-When-On Platform" notes="A special platform that will move at any point when a specified number of 'passengers' (players + enemies) are standing on it.">
@@ -6338,7 +6336,7 @@
 
   <sprite id="426" name="Fire ball Spawn Area" notes="Assigns a spawn area where loose Fire balls will spawn from the side of the screen while a player is inside it. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
     <dependency notes="The fireballs will spawn from the specified side of the screen at the same vertical height as the sprite's placement, and move across the screen in a horizontal line."/>
-    <value nybble="12" title="Location ID" comment="The Fire balls will only spawn while a player is in this location."/>
+    <value nybble="12" title="Location ID" comment="The Fire balls will only spawn while a player is in this location." idtype="Location"/>
     <list nybble="10" title="Rate of Fire" comment="This determines the frequency of fireball spawns." comment2="The delay isn't quite in game seconds, instead each value other than 0 is a fraction of value 1. In retail, Nintendo used 12 and 14.">
       <entry value="0">1/7.3</entry>
       <entry value="1">1/1</entry>
@@ -6582,7 +6580,7 @@
 
   <sprite id="446" name="Effect - Light Cloud Area" notes="This adds a light cloud effect to the level. It must use a Location ID.">
     <checkbox bit="20" title="Death Clouds" comment="When enabled, the cloud area will produce purple instant death clouds instead of normal white clouds."/>
-    <value nybble="11-12" title="Location ID" comment="This determines the location in which the cloud effect will appear."/>
+    <value nybble="11-12" title="Location ID" comment="This determines the location in which the cloud effect will appear." idtype="Location"/>
   </sprite> <!-- #446: Effect - Light Cloud Area -->
 
   <sprite id="447" name="Lighting - Underwater Lamp" notes="A decorative aquatic lamp that generates light around it. It has no collision by default. It does not have to be used with water, it just happens to have a ship motif.">
@@ -6597,7 +6595,7 @@
       <required sprite="431"/>
     </dependency>
     <checkbox bit="48" title="Enable Functionality" comment="This must be enabled for the sprite to function."/>
-    <value nybble="7-8" title="Location ID" comment="&lt;b&gt;&lt;font color=&quot;red&quot;&gt;Only works with hardcoded location ID 0!&lt;/font&gt;&lt;/b&gt; The Fire balls will only spawn while a player is in this location." advancedcomment="Or at least, it would, if its behavior had not been hardcoded. " requiredbit="48"/>
+    <value nybble="7-8" title="Location ID" comment="&lt;b&gt;&lt;font color=&quot;red&quot;&gt;Only works with hardcoded location ID 0!&lt;/font&gt;&lt;/b&gt; The Fire balls will only spawn while a player is in this location." advancedcomment="Or at least, it would, if its behavior had not been hardcoded." requiredbit="48" idtype="Location"/>
     <value nybble="10" title="Number of Fire balls" comment="This determines the number of fireballs in each wave." comment2="A value of 0 creates 5 fireballs. A value of 1+ creates that number." requiredbit="48"/>
     <value nybble="11" title="Positioning" comment="Changes position the Fire balls appear in." comment2="A value of 0 creates random patterns. A value of 1 will CRASH the game. A value of 2+ will change the positioning or patterns or something." requiredbit="48"/>
   </sprite> <!-- #449: Bowser Fire ball Spawn Area -->
@@ -6610,7 +6608,7 @@
       <entry value="3">Blue</entry>
     </list>
     <value nybble="12" title="Length" comment="This determines the length of the Pipe."/>
-    <value nybble="9-10" title="Entrance ID" comment="This determines which Entrance is paired with the pipe."/>
+    <value nybble="9-10" title="Entrance ID" comment="This determines which Entrance is paired with the pipe." idtype="Entrance"/>
   </sprite> <!-- #450: Enterable Warp Pipe - Up -->
 
   <sprite id="451" name="Scaredy Rat Despawner" notes="A decorative mouse hole with a secondary function. It will despawn Scaredy Rats that pass through it.">
