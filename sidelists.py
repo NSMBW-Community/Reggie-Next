@@ -332,13 +332,17 @@ class ObjectPickerWidget(QtWidgets.QListView):
 
                 for row in obj:
                     x = 0
-                    for tile in row:
-                        if tile != -1:
-                            if isinstance(globals_.Tiles[tile].main, QtGui.QImage):
-                                p.drawImage(x, y, globals_.Tiles[tile].main)
+                    for tile_num in row:
+                        if tile_num > 0:
+                            tile = globals_.Tiles[tile_num]
+                            if tile is None:
+                                p.drawPixmap(x, y, globals_.Overrides[globals_.OVERRIDE_UNKNOWN].getCurrentTile())
+                            elif isinstance(tile.main, QtGui.QImage):
+                                p.drawImage(x, y, tile.main)
                             else:
-                                p.drawPixmap(x, y, globals_.Tiles[tile].main)
-                            if isinstance(globals_.Tiles[tile], TilesetTile) and globals_.Tiles[tile].isAnimated: isAnim = True
+                                p.drawPixmap(x, y, tile.main)
+
+                            if isinstance(tile, TilesetTile) and tile.isAnimated: isAnim = True
                         x += 24
                     y += 24
                 p.end()

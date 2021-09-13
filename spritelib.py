@@ -100,6 +100,17 @@ def GetImg(imgname, image=False):
 
     print("[Warning] Could not load sprite image (%s)!" % imgname)
 
+def GetTile(tile_id):
+    """
+    Returns the corresponding tile image if a tile is loaded. Otherwise, it
+    returns the "unknown tile" override.
+    """
+    tile = Tiles[tile_id]
+
+    if tile is None:
+        tile = Tiles[4 * 0x200 + 64]  # The "Unknown Tile" override
+
+    return tile.main
 
 def loadIfNotInImageCache(name, filename):
     """

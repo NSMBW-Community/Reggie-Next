@@ -87,13 +87,7 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
             return
 
         self.spritebox.shown = False
-
-        tile = self.getTileFromType(type_)
-
-        if tile is not None:
-            self.image = tile.main
-        else:
-            self.image = SLib.Tiles[4 * 0x200 + 108].main
+        self.image = self.getTileFromType(type_)
 
     def getTileFromType(self, type):
         """

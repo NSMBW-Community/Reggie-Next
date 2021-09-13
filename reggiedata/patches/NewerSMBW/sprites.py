@@ -122,7 +122,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
 
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
         if self.tilenum < len(SLib.Tiles):
-            painter.drawPixmap(0, 0, SLib.Tiles[self.tilenum].main)
+            painter.drawPixmap(0, 0, SLib.GetTile(self.tilenum))
         painter.drawPixmap(0, 0, self.image)
 
 
@@ -1088,7 +1088,7 @@ class SpriteImage_MessageBlock(SLib.SpriteImage_Static): # 152
         super().__init__(
             parent,
             1.5,
-            SLib.Tiles[0x98].main,
+            SLib.GetTile(0x98),
             (8, 0)
         )
 
@@ -1271,19 +1271,19 @@ class SpriteImage_TileEventNewer(common.SpriteImage_TileEvent):  # 191
 
     def getTileFromType(self, type_):
         if type_ == 0:
-            return SLib.Tiles[55]
+            return SLib.GetTile(55)
 
         if type_ == 1:
-            return SLib.Tiles[48]
+            return SLib.GetTile(48)
 
         if type_ == 3:
-            return SLib.Tiles[52]
+            return SLib.GetTile(52)
 
         if type_ == 4:
-            return SLib.Tiles[51]
+            return SLib.GetTile(51)
 
         if type_ == 6:
-            return SLib.Tiles[45]
+            return SLib.GetTile(45)
 
         if type_ in [8, 9, 10, 11]:
             row = self.parent.spritedata[2] & 0xF
@@ -1292,13 +1292,13 @@ class SpriteImage_TileEventNewer(common.SpriteImage_TileEvent):  # 191
             tilenum = 256 * (type_ - 8)
             tilenum += row * 16 + col
 
-            return SLib.Tiles[tilenum]
+            return SLib.GetTile(tilenum)
 
         if type_ == 12:
-            return SLib.Tiles[256 * 3 + 67]
+            return SLib.GetTile(256 * 3 + 67)
 
         if type_ == 14:
-            return SLib.Tiles[256]
+            return SLib.GetTile(256)
 
         return None
 
@@ -1626,7 +1626,7 @@ class SpriteImage_EventBlock(SLib.SpriteImage_Static): # 239
         super().__init__(
             parent,
             1.5,
-            SLib.Tiles[0x97].main,
+            SLib.GetTile(0x97),
             (-8, -16)
         )
 

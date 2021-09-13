@@ -777,7 +777,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
 
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
         if self.tilenum < len(SLib.Tiles):
-            painter.drawPixmap(0, 0, SLib.Tiles[self.tilenum].main)
+            painter.drawPixmap(0, 0, SLib.GetTile(self.tilenum))
         painter.drawPixmap(0, 0, self.image)
 
 
@@ -3989,25 +3989,25 @@ class SpriteImage_TileEvent(common.SpriteImage_TileEvent):  # 191
 
     def getTileFromType(self, type_):
         if type_ == 0:
-            return SLib.Tiles[55]
+            return SLib.GetTile(55)
 
         if type_ == 1:
-            return SLib.Tiles[48]
+            return SLib.GetTile(48)
 
         if type_ == 3:
-            return SLib.Tiles[52]
+            return SLib.GetTile(52)
 
         if type_ == 4:
-            return SLib.Tiles[51]
+            return SLib.GetTile(51)
 
         if type_ == 6:
-            return SLib.Tiles[45]
+            return SLib.GetTile(45)
 
         if type_ == 12:
-            return SLib.Tiles[256 * 3 + 67]
+            return SLib.GetTile(256 * 3 + 67)
 
         if type_ == 14:
-            return SLib.Tiles[256]
+            return SLib.GetTile(256)
 
         return None
 
@@ -4902,7 +4902,7 @@ class SpriteImage_FallingLedgeBar(SLib.SpriteImage_Static):  # 242
 class SpriteImage_EventDeactivBlock(SLib.SpriteImage_Static):  # 252
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.image = SLib.Tiles[49].main  # ? block
+        self.image = SLib.GetTile(49)  # ? block
 
 
 class SpriteImage_RotControlledCoin(SpriteImage_SpecialCoin):  # 253
@@ -5633,7 +5633,7 @@ class SpriteImage_LongCannon(SLib.SpriteImage_StaticMultiple):  # 298
         big_s = 'B' if self.big else ''
 
         middle = ImageCache[big_s + 'LongCannonM']
-        solid = SLib.Tiles[1].main
+        solid = SLib.GetTile(1)
         if self.dir == 0: # right
             front = ImageCache[big_s + 'LongCannonFR']
             end = ImageCache[big_s + 'LongCannonEL']
@@ -8358,9 +8358,9 @@ class SpriteImage_LavaIronBlock(SLib.SpriteImage_Static):  # 466
             ImageCache['LavaIronBlock'],
             (-1, -1),
         )
-        
+
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
-    
+
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('LavaIronBlock', 'lava_iron_block.png')
@@ -8384,7 +8384,7 @@ class SpriteImage_LavaIronBlock(SLib.SpriteImage_Static):  # 466
             self.aux[0].setPos((self.width * 0.75) - 12, (-distance * 24))
         else: # down
             self.aux[0].setPos((self.width * 0.75) - 12, self.height)
-        
+
         super().dataChanged()
 
 
@@ -8411,7 +8411,7 @@ class SpriteImage_MovingGemBlock(SLib.SpriteImage_Static):  # 467
             self.aux[0].setPos(self.width / 2, -distance * 24)
         else: # down
             self.aux[0].setPos(self.width / 2, self.height - 8)
-        
+
         super().dataChanged()
 
 
