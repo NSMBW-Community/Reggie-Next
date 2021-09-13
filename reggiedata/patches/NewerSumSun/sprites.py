@@ -20,7 +20,7 @@ class SpriteImage_CustomModelSprite(SLib.SpriteImage_StaticMultiple):  # 11
 
     def dataChanged(self):
 
-        # Get all neccessary values: anim, type, and multiplier
+        # Get all necessary values: anim, type, and multiplier
         anim = self.parent.spritedata[4] & 1
         type = self.parent.spritedata[5]
         if (type in (0, 8, 9)) or (type > 0x11): type = None
