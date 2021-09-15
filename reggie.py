@@ -2394,7 +2394,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 SetGamePath(path)
                 break
 
-        if not auto: self.LoadLevel('01-01', False, 1)
+        if not auto:
+            # Try loading 01-01. If that fails, load up an empty canvas.
+            ok = self.LoadLevel('01-01', False, 1)
+            if not ok:
+                self.LoadLevel(None, False, 1)
+
         return True
 
     def HandlePreferences(self):
