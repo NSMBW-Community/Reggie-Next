@@ -1060,7 +1060,8 @@ class ReggieTranslation:
 
     def stringOneLine(self, *args):
         """
-        Works like string(), but gurantees that the resulting string will have no line breaks or <br>s.
+        Works like string(), but guarantees that the resulting string will have
+        no line breaks or <br>s.
         """
         newstr = self.string(*args)
         return newstr.replace('\n', ' ').replace('<br>', ' ')
@@ -1078,16 +1079,7 @@ class ReggieTranslation:
         """
         Returns the path to the file indicated by key
         """
-        try:
-            return self.files[key]
-        except Exception:
-            # (print, save, return) an error message
-            text = 'ReggieTranslation.path() ERROR: ' + key
-            print(text)
-            F = open('ReggieErrors.txt', 'w')
-            F.write(text)
-            F.close()
-            raise SystemExit
+        return self.files[key]
 
     def generateXML(self):
         """
