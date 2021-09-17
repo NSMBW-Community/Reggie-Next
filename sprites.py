@@ -1383,17 +1383,29 @@ class SpriteImage_QSwitch(common.SpriteImage_Switch):  # 40
         super().__init__(parent, 1.5)
         self.switchType = 'Q'
 
+    def dataChanged(self):
+        self.offset = (0, 0)
+        super().dataChanged()
+
 
 class SpriteImage_PSwitch(common.SpriteImage_Switch):  # 41
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'P'
 
+    def dataChanged(self):
+        self.offset = (0, 0)
+        super().dataChanged()
+
 
 class SpriteImage_ExcSwitch(common.SpriteImage_Switch):  # 42
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'E'
+
+    def dataChanged(self):
+        self.offset = (0, 0)
+        super().dataChanged()
 
 
 class SpriteImage_QSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 43
@@ -3474,6 +3486,10 @@ class SpriteImage_QSwitchUnused(common.SpriteImage_Switch):  # 153
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.switchType = 'Q'
+
+    def dataChanged(self):
+        self.offset = (0, 0)
+        super().dataChanged()
 
 
 class SpriteImage_StarCoinLineControlled(SpriteImage_StarCoin):  # 155

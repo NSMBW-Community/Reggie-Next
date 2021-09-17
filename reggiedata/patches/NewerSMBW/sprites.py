@@ -20,7 +20,7 @@ class SpriteImage_NewerSwitch(common.SpriteImage_Switch):
 
     @staticmethod
     def loadImages():
-        common.SpriteImage_Switch.loadImages()
+        super().loadImages()
 
         if 'QSwitch2' not in ImageCache:
             for i in range(2, 5):
