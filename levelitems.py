@@ -829,7 +829,7 @@ class ObjectItem(LevelEditorItem):
         if not self.isSelected():
             return
 
-        painter.setPen(QtGui.QPen(globals_.theme.color('object_lines_s'), 1, QtCore.Qt.DotLine))
+        painter.setPen(QtGui.QPen(globals_.theme.color('object_lines_s'), 1, QtCore.Qt.DashLine))
         painter.drawRect(self.SelectionRect)
         painter.fillRect(self.SelectionRect, globals_.theme.color('object_fill_s'))
 
