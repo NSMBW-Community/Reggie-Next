@@ -322,20 +322,25 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed))
 
+        # Some single point float constants. Note that we cannot use the ones
+        # provided by sys.float_info, since those relate to double precision
+        # floats, and the speed and acceleration fields are single precision
+        # floats. As such, we just hardcode these values.
+        FLT_DIG = 6
+        FLT_MAX = -3.402823466e+38
+
         # create widgets
         self.speed = QtWidgets.QDoubleSpinBox()
-        self.speed.setRange(min(sys.float_info), max(sys.float_info))
+        self.speed.setRange(-FLT_MAX, FLT_MAX)
         self.speed.setToolTip(globals_.trans.string('PathDataEditor', 3))
-        self.speed.setDecimals(int(sys.float_info.__getattribute__('dig')))
+        self.speed.setDecimals(FLT_DIG)
         self.speed.valueChanged.connect(self.HandleSpeedChanged)
-        self.speed.setMaximumWidth(256)
 
         self.accel = QtWidgets.QDoubleSpinBox()
-        self.accel.setRange(min(sys.float_info), max(sys.float_info))
+        self.accel.setRange(-FLT_MAX, FLT_MAX)
         self.accel.setToolTip(globals_.trans.string('PathDataEditor', 5))
-        self.accel.setDecimals(int(sys.float_info.__getattribute__('dig')))
+        self.accel.setDecimals(FLT_DIG)
         self.accel.valueChanged.connect(self.HandleAccelChanged)
-        self.accel.setMaximumWidth(256)
 
         self.delay = QtWidgets.QSpinBox()
         self.delay.setRange(0, 65535)
