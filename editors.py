@@ -327,7 +327,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         # floats, and the speed and acceleration fields are single precision
         # floats. As such, we just hardcode these values.
         FLT_DIG = 6
-        FLT_MAX = -3.402823466e+38
+        FLT_MAX = 3.402823466e+38
 
         # create widgets
         self.speed = QtWidgets.QDoubleSpinBox()
