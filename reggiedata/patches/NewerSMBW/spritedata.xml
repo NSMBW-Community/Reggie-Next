@@ -1486,7 +1486,7 @@
     <value nybble="9-10" title="Custom Size" comment="This determines the size of the Rolling Hill when using Flexible Size" requiredbit="26-28" requiredval="0"/>
     <list nybble="9-10" title="Custom Style A" comment="This determines the tiling used on the Rolling Hill." comment2="If nothing is selected, your game will crash. Please choose a value from the list or change [Style /Size]." requiredbit="26-28" requiredval="1-3"> <!-- Appears only if [Style / Size] is Value 1-3 -->
       <entry value="0">Nohara (Original Grassland)</entry>
-      <entry value="1">New Nohara (Wii U Grassland)</entry>
+      <entry value="1">New Nohara (Bombard Cliffs)</entry>
       <entry value="2">Graveyard</entry>
       <entry value="3">Jungle Ruins</entry>
       <entry value="4">Mt. Mushroom</entry>
