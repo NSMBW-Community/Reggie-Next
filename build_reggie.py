@@ -38,7 +38,7 @@ import PyInstaller.__main__
 
 PROJECT_NAME = 'Reggie! Next'
 FULL_PROJECT_NAME = 'Reggie! Next Level Editor'
-PROJECT_VERSION = '4.5.0'
+PROJECT_VERSION = '4.7.0'
 
 WIN_ICON = os.path.join('reggiedata', 'win_icon.ico')
 MAC_ICON = os.path.join('reggiedata', 'reggie.icns')
@@ -140,7 +140,7 @@ print('>> Populating excludes and includes...')
 print('>>')
 
 # Excludes
-excludes = ['calendar', 'datetime', 'doctest', 'pdb', 'unittest', 'difflib', 'inspect',
+excludes = ['doctest', 'pdb', 'unittest', 'difflib',
             'os2emxpath', 'optpath', 'multiprocessing', 'ssl',
             'PyQt5.QtWebKit', 'PyQt5.QtNetwork']
 

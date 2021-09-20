@@ -4317,7 +4317,7 @@ def main():
     import subprocess
 
     try:
-        commit_id = subprocess.check_output(["git", "describe", "--always"], stderr=subprocess.DEVNULL).decode().strip()
+        commit_id = subprocess.check_output(["git", "describe", "--always"], stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL).decode().strip()
         globals_.ReggieVersionShort += "-" + commit_id
     except (FileNotFoundError, subprocess.CalledProcessError):
         pass
