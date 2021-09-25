@@ -2764,7 +2764,7 @@
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #178: Basic Platform - Scale -->
 
-  <sprite id="179" name="Special Exit Controller" notes="A special controller that will activate Entrance transitions when a player enters a specific area.">
+  <sprite id="179" name="Special Exit Controller" notes="A special controller that will activate Entrance transitions when a player enters a specific area." noyoshi="True" yoshinotes="Yoshi can eat the entire collision box of the special exit controller.">
     <list nybble="10" title="Width" comment="This determines the width of the area that the Special Exit Controller will check for the player inside of.">
       <entry value="0">1 Block</entry>
       <entry value="1">2 Blocks</entry>
