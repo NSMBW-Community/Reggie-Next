@@ -1282,7 +1282,7 @@
     <value bit="1-8" title="Target Event ID" comment="When the Auto-Scroller reaches its final path Node, this Event ID is activated." idtype="Target Event"/>
     <value nybble="12" title="Path ID" comment="This determines which Path the camera will follow while scrolling. [CLARIFY] The upper left corner of the Screen, relative to the Auto-Scroller's placement, is the starting point for the path." idtype="Path"/>
     <value nybble="5-6" title="Midway Start Node ID" comment="If the level was entered from the Midway Point, the Auto-Scroller will begin from this Node instead of the first Node in the Path." idtype="Path Node"/>
-    <checkbox bit="40" title="Unknown Flag 10 (1)" comment="Used in 08-07; might be related to (unused) Path and Spine Coaster in A1Z1 and A2Z1."/>
+    <checkbox bit="40" title="Unknown Flag 10 (1)" comment="Used in Retail 08-07; might be related to (unused) Path and Spine Coaster in A1Z1 and A2Z1."/>
     <checkbox bit="44" title="Unknown Flag 11 (1)" comment="Possibly determines behavior relating to [159]. ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #91: Auto-Scrolling Controller -->
 
@@ -6587,7 +6587,9 @@
   </sprite> <!-- #447: Lighting - Underwater Lamp -->
 
   <sprite id="448" name="Metal Bar" notes="A metal bar that is essentially just a 5x2 block.">
-    <checkbox bit="32" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the block placing it further behind other sprites."/>
+    <checkbox bit="32" title="Place Behind Chainlink Fence" comment="When enabled, every part of the metal bar that is touching a fence tile has no collision on the frontside of chainlink fences. This also changes the relative Z-Order of the bar placing it further behind other sprites."/>
+	<value nybble="11" title="Unknown Value 11" comment="Used in Retail: 04-24 A1"/>
+	<checkbox bit="48" title="Unknown Flag 12 (1)" comment="Used in Retail: 04-24 A1"/>
   </sprite> <!-- #448: Metal Bar -->
 
   <sprite id="449" name="Bowser Fire ball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Bowser Fire balls will fire from the screen's right edge towards the left  while a player is inside it." advancednotes="&lt;br&gt; - Uses hardcoded location ID 0 (you can have multiple ones in the zone)&lt;br&gt; - They will look awful if Bowser's sprite isn't present in any area of the level&lt;br&gt;&lt;br&gt;&lt;b&gt;Sprite Placement:&lt;/b&gt;&lt;br&gt; - X Position does not matter&lt;br&gt; - Y Position matters, as the sprite will spawn fireballs in a range of 6 tiles below its placement&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Placement:&lt;/b&gt;&lt;br&gt; - Bowser Fire balls start spawning as soon as the left edge of the location enters the screen&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Size (fireballs won't spawn if requirements aren't met):&lt;/b&gt;&lt;br&gt; - X Size: Unknown, but a specific minimal X location size is required for the Bowser Fire balls to spawn correctly.&lt;br&gt; - Y Size: At least 120px (5 blocks). A specific minimal Y location size is required for the Bowser Fire balls to spawn correctly.&lt;br&gt;" >
