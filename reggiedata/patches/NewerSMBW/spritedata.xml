@@ -298,7 +298,7 @@
     <dualbox bit="48" title1="Goomba" title2="Paragoomba" comment="This determines if the Pumpkin Goomba behaves like a normal Goomba or like a Paragoomba."/>
   </sprite> <!-- #22: Pumpkin Goomba -->
 
-  <sprite id="24" name="Buzzy Beetle" sizehacks="True" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads. It will turn around when it reaches ledges and blocks are treated the same as terrain. It will turn around if it walks into lava, but die if it falls into it.">
+  <sprite id="24" name="Buzzy Beetle" sizehacks="True" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads.">
     <list nybble="6" title="Color" comment="This determines the color of the Buzzy Beetle.">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
@@ -2118,9 +2118,8 @@
     </list>
   </sprite> <!-- #292: Heavy Para-Beetle -->
 
-  <!-- Retest 'Nybble 12' with loading tests, and see if he turns around properly when reaching a wall or not. Honestly, something about the current documentation sounds incorrect -->
-  <sprite id="296" name="Giant Buzzy Beetle" notes="A very large Buzzy Beetle that isn't especially pretty, but will carry the player around on its back. It can still hurt the player from the side." advancednotes="Giant Buzz Beetles don't fall down if placed in the air. They will follow the ground and slopes, if snapped to the ground. Finally, they will move in a straight line if they reach a 90° drop.">
-    <list nybble="6" title="Color" comment="This determines the color of the Giant Buzzy Beetle." advancedcomment="More colors and styles can be added for your hack.">
+  <sprite id="296" name="Giant Buzzy Beetle" notes="A very large Buzzy Beetle that isn't especially pretty, but will carry the player around on its back. It can still hurt the player from the side.&lt;br&gt;Giant Buzzys don't fall down if placed in the air. They will follow the ground and slopes if snapped to the ground. Finally, they will move in a straight line if they reach a 90° drop.">
+    <list nybble="6" title="Style" comment="This determines the style of the Giant Buzzy Beetle. More colors and styles can be added for your hack.">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -2132,12 +2131,11 @@
       <entry value="8">Giant Shy Guy</entry>
       <entry value="9">Giant Monty Mole</entry>
     </list>
-    <value nybble="11" title="Speed" comment="This determines how quickly the Buzzy Beetle will move." comment2="When the speed value is set to 15, the Buzzy Beetle will sometimes not load. When the speed is 0, the Beetle won't move."/>
-    <list nybble="12" title="???" comment="???" comment2="&quot;At You&quot; - Looking at the camera while walking to the left. The perspective does not change the Direction the beetle walks. No movement at 0 (looks strange).">
-      <entry value="0">???</entry>
-      <entry value="1">???</entry>
-      <entry value="2">???</entry>
-      <entry value="3">???</entry>
+    <value nybble="11" title="Speed" comment="When the speed is 0, the Beetle won't move. Very high values may make the Beetle not spawn."/>
+    <list nybble="12" title="Facing" comment="This also indicates the starting direction of the Beetle. Value 2+ starts walking left, but sometimes has difficulty turning at walls and ledges.">
+      <entry value="0">Right</entry>
+      <entry value="1">Left</entry>
+      <entry value="2">Towards Screen</entry>
     </list>
   </sprite> <!-- #296: Giant Buzzy Beetle -->
 

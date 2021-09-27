@@ -160,7 +160,7 @@
     <value bit="10-16" title="Triggering Event ID" requiredbit="20" idtype="Triggering Event"/>
   </sprite> <!-- #23: Basic Platform - Horizontal Movement -->
 
-  <sprite id="24" name="Buzzy Beetle" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads. It will turn around when it reaches ledges and blocks are treated the same as terrain. It will turn around if it walks into lava, but die if it falls into it.">
+  <sprite id="24" name="Buzzy Beetle" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads.">
     <checkbox bit="48" title="Upside-Down" comment="When enabled, the Buzzy Beetle will be upside-down and able to cling to and walk on ceilings if placed adjacent to them. If not placed adjacent, he will immediately fall and spin towards the player."/>
     <checkbox bit="47" title="Inside Shell" comment="When enabled, the Buzzy Beetle will spawn inside his shell. He will eventually climb out and resume walking, even if set to be upside-down. Upside-down shells will fall without spinning towards the player."/>
     <checkbox bit="28" title="Allow the Koopa 1-Up Trick"/>
@@ -4409,14 +4409,12 @@
     <checkbox bit="44" title="Offset Down .5 Blocks" advanced="True" advancedcomment="A holdover setting from development and not important."/>
   </sprite> <!-- #295: Airship Nut Platform -->
 
-  <!-- Retest 'Nybble 12' with loading tests, and see if he turns around properly when reaching a wall or not. Honestly, something about the current documentation sounds incorrect -->
-  <sprite id="296" name="Giant Buzzy Beetle" notes="A very large Buzzy Beetle that isn't especially pretty, but will carry the player around on its back. It can still hurt the player from the side." advancednotes="Giant Buzz Beetles don't fall down if placed in the air. They will follow the ground and slopes, if snapped to the ground. Finally, they will move in a straight line if they reach a 90° drop.">
-    <value nybble="11" title="Speed" comment="This determines how quickly the Buzzy Beetle will move." comment2="When the speed value is set to 15, the Buzzy Beetle will sometimes not load. When the speed is 0, the Beetle won't move."/>
-    <list nybble="12" title="???" comment="???" comment2="&quot;At You&quot; - Looking at the camera while walking to the left. The perspective does not change the Direction the beetle walks. No movement at 0 (looks strange).">
-      <entry value="0">???</entry>
-      <entry value="1">???</entry>
-      <entry value="2">???</entry>
-      <entry value="3">???</entry>
+  <sprite id="296" name="Giant Buzzy Beetle" notes="A very large Buzzy Beetle that isn't especially pretty, but will carry the player around on its back. It can still hurt the player from the side.&lt;br&gt;Giant Buzzys don't fall down if placed in the air. They will follow the ground and slopes if snapped to the ground. Finally, they will move in a straight line if they reach a 90° drop.">
+    <value nybble="11" title="Speed" comment="When the speed is 0, the Beetle won't move. Very high values may make the Beetle not spawn."/>
+    <list nybble="12" title="Facing" comment="This also indicates the starting direction of the Beetle. Value 2+ starts walking left, but sometimes has difficulty turning at walls and ledges.">
+      <entry value="0">Right</entry>
+      <entry value="1">Left</entry>
+      <entry value="2">Towards Screen</entry>
     </list>
   </sprite> <!-- #296: Giant Buzzy Beetle -->
 
