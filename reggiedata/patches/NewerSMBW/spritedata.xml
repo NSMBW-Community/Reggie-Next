@@ -722,39 +722,6 @@
     <value bit="47-48" title="Nybble 12" />
   </sprite> <!-- #89: Actor Multi-Spawner -->
 
-  <!-- Research Loop Last 2 Nodes and its accompanying Screen Shake option, as well as the rest of the End Behaviors to confirm their descriptions. With and without 'Loops' -->
-  <!-- Confirm that Screen Shake only applies to End Behavior value 1 and not value 4/etc. -->
-  <!-- Add full documentation on usage such as path placement and sprite placement. -->
-  <!-- SpD1.5 lists Screen Shake as 9-10 instead of just 9...? -->
-  <!-- SpD1.5 suggests Loop Last 2 Nodes will actually just reverse the path. What if the Path isn't set to 'Loops'? -->
-  <sprite id="91" name="Auto-Scrolling Controller" notes="The Auto-Scroller will lock the game's camera along a specific Path. This path cannot cause the camera to unnaturally leave the Zone's boundaries. The camera's boundary is defined by the left side of the screen, so it is recommended to leave at least one screen's width after the path's final Node. &lt;br&gt; &lt;br&gt;Finally, you can alter the Speed and Acceleration of the Auto-Scroller with the Path settings in NewerSMBW.">
-    <dependency notes="A path is required for the Auto-Scrolling Controller to function."/>
-    <list bit="25-28" title="Activation Mode" comment="This determines the conditions to activate the Auto-Scroller." comment2="Event Activated: Auto-Scroller only starts when the Triggering Event is activated. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Behaves Incorrectly:&lt;/font&gt; Do not use this option. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;orange&quot;&gt;Activated by Ground-Pounding [321]:&lt;/font&gt; When the Beta Arrow Block is ground-pounded, it sends code to the Auto-Scroller to start. Intended functionality was likely to control the direction as well. &lt;br&gt; &lt;br&gt;Already Activated: Activates without the need to set a Triggering Event.">
-      <entry value="0">Event Activated</entry>
-      <entry value="1">Behaves Incorrectly</entry>
-      <entry value="2">Activated by Ground-Pounding [321]</entry>
-      <entry value="3">Already Activated</entry>
-    </list>
-    <value bit="9-16" title="Triggering Event ID" comment="When this Event ID is activated, the Auto-Scroller will activate. Deactivating the event will not deactivate the Auto-Scroller; it will continue until it has reached the final Path Node." requiredbit="25-28" requiredval="0" idtype="Triggering Event"/> <!-- Appears only if set to Event Activated -->
-    <list bit="30-32" title="End Behavior" comment="This determines what the Auto-Scroller will do with the camera when it has reached the final Node of its path." comment2="Release Control: The camera will unlock, and the player can continue wherever they want. The camera may jerk slightly when it first releases.(?) &lt;br&gt; &lt;br&gt;Loop Last 2 Nodes: The Auto-Scroller will continue to scroll between the last two Nodes on the path. &lt;br&gt; &lt;br&gt;Lock Screen: This option will lock the screen at the final path Node. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Unknown Value 2/3:&lt;/font&gt; May have different effects, ASM research is likely required.">
-      <entry value="0">Release Control</entry>
-      <entry value="1">Loop Last 2 Nodes</entry>
-      <entry value="4">Lock Screen</entry>
-      <entry value="2">Unknown Value 2</entry>
-      <entry value="3">Unknown Value 3</entry>
-    </list>
-    <list nybble="9" title="End Behavior: Add Screen Shake" comment="As an additional effect to looping the last 2 nodes, you can add a rocking motion to the screen." requiredbit="30-32" requiredval="1">
-      <entry value="0">No Screen Shake</entry>
-      <entry value="1">Light Screen Shake</entry>
-      <entry value="2">Faster Screen Shake</entry>
-    </list>
-    <value bit="1-8" title="Target Event ID" comment="When the Auto-Scroller reaches its final path Node, this Event ID is activated." idtype="Target Event"/>
-    <value nybble="12" title="Path ID" comment="This determines which Path the camera will follow while scrolling. [CLARIFY] The upper left corner of the Screen, relative to the Auto-Scroller's placement, is the starting point for the path." idtype="Path"/>
-    <value nybble="5-6" title="Midway Start Node ID" comment="If the level was entered from the Midway Point, the Auto-Scroller will begin from this Node instead of the first Node in the Path." idtype="Path Node"/>
-    <checkbox bit="40" title="Unknown Flag 10 (1)" comment="Used in 08-07; might be related to (unused) Path and Spine Coaster in A1Z1 and A2Z1."/>
-    <checkbox bit="44" title="Unknown Flag 11 (1)" comment="Possibly determines behavior relating to [159]. ASM shows Nybble 11 might affect something."/>
-  </sprite> <!-- #91: Auto-Scrolling Controller -->
-
   <sprite id="95" name="Hammer Bro Plus" sizehacks="True" notes="A standard Brothers enemy that throws hammers (or other objects!) at the player.">
     <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. With a platform limit of one, he can jump onto any passthrough terrain or brick blocks above this solid ground at a distance of 4. With a platform limit of two, he can jump between this platform and another one above it. When on the top of this platform limit, he will not try and jump upwards. He can also jump down from passthrough terrain set higher than 8 blocks above the solid ground, though he will not be able to return."/>
     <dualbox bit="48" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
