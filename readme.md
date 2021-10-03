@@ -71,6 +71,7 @@ Developers:
 Other Testers and Contributors:
  * BulletBillTime, Dirbaio, EdgarAllen, FirePhoenix, GrandMasterJimmy, Mooseknuckle2000, MotherBrainsBrain, RainbowIE, Skawo, Sonicandtails, Tanks, Vibestar, angelsl, ant888, gamesquest1, iZackefx
  * Tobias and Valeth - Text Tileset Addon
+ * Meorge and grishhung - The Reggie Next Icons (Windows and Mac)
 
 
 ### Dependencies/Libraries/Resources
