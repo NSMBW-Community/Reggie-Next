@@ -854,7 +854,7 @@ class ReggieTranslation:
                 53: 'Background Music:',
                 54: '[b]Background Music:[/b][br]Changes the background music',
                 55: 'Sound Modulation:',
-                56: '[b]Sound Modulation:[/b][br]Changes the sound effect modulation to fit the appropriate theme.[br][b]Note:[/b] The settings with an asterisk are identical to the setting with no asterisk. "Cavern Echo*" is used in Retail 05-01, whereas "None*" is unused.',
+                56: '[b]Sound Modulation:[/b][br]Changes the sound effect modulation to fit the appropriate theme.[br][b]Note:[/b] The settings with an asterisk are identical to the setting with no asterisk. "Cavern Echo*" is used in Retail 02-03, whereas "None*" is unused.',
                 57: (
                     'None',
                     'Cavern Echo',
