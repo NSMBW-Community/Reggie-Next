@@ -4025,7 +4025,7 @@
     <dependency notes="The piranha plant must be placed inside or on the surface of water [138] to spawn. It will snap to the surface when loaded on-screen.">
       <suggested sprite="138"/>
     </dependency>
-    <checkbox bit="48" title="Unknown Flag 12 (1)" comment="Used in Retail: 05-01 A2."/>
+    <checkbox nybble="12" title="Disable Collisions After Death" comment="When Lily Piranhas die and sink, they bounce when they hit a solid tile, such as a wall. This flag disables that behavior."/>
   </sprite> <!-- #263: Lily Piranha Plant -->
 
   <!-- I know I was told what Flag 9 does but I forget exactly. I know it has something to do with whether a Stalking plant turns around when encountering-?? or not. -->
