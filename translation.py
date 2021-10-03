@@ -796,7 +796,7 @@ class ReggieTranslation:
                 18: '[b]Preset:[/b][br]Snaps the zone to common sizes.',
                 19: 'Rendering and Camera',
                 20: 'Zone Theme:',
-                21: '[b]Zone Theme:[/b][br]Changes the way models and parts of the background are rendered (for blurring, darkness, lava effects, and so on).',
+                21: '[b]Zone Theme:[/b][br]Changes the way models and parts of the background are rendered (for blurring, darkness, lava effects, and so on).[br]Certain Zone Themes may have additional affects. For example, when "Ghost House" is selected, blocks with items jumping out of them make a Boo laugh.[br][b]Note:[/b] Settings with an asterisk appear to the look the same as "Overworld".',
                 22: 'Terrain Lighting:',
                 23: '[b]Terrain Lighting:[/b][br]Changes the way the terrain is rendered. It also affects the parts of the background which the normal theme doesn\'t change.',
                 24: 'Normal',
