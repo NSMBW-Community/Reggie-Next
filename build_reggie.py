@@ -57,7 +57,7 @@ FINAL_APP_BUNDLE_NAME = FULL_PROJECT_NAME + '.app'
 ################################# Intro ################################
 ########################################################################
 
-DIR = 'distrib/reggie_next_v%s_win32' % PROJECT_VERSION 
+DIR = 'distrib/reggie_next_v%s_win32' % PROJECT_VERSION
 WORKPATH = 'build_temp'
 SPECFILE = SCRIPT_FILE[:-3] + '.spec'
 
@@ -270,6 +270,7 @@ with open(SPECFILE, 'r', encoding='utf-8') as f:
 
 # Iterate over its lines, and potentially add new ones
 new_lines = []
+insert_info_plist = False
 for line in lines:
     if 'PYZ(' in line and excludes_binaries:
         new_lines.append('EXCLUDES = ' + repr(excludes_binaries))
@@ -285,8 +286,15 @@ for line in lines:
 
     new_lines.append(line)
 
+    if insert_info_plist:
+        new_lines.append('    info_plist=' + json.dumps(info_plist) + ',')
+        insert_info_plist = False
+
     if sys.platform == 'darwin' and 'BUNDLE(' in line:
-        new_lines.append('info_plist=' + json.dumps(info_plist) + ',')
+        # We cannot insert the info_plist keyword argument now, as the next
+        # argument is not a keyword argument. As such, we set a flag to add it
+        # after the next line.
+        insert_info_plist = True
 
 # Save new specfile
 with open(SPECFILE, 'w', encoding='utf-8') as f:
