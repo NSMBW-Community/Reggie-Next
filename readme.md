@@ -44,6 +44,17 @@ Then, you can run Reggie by simply executing the following command in a command 
 
 You can replace `python3` with the path to your Python executable, including the executable name and `reggie.py` with the path to `reggie.py` (including the filename).
 
+macOS Troubleshooting
+=====================
+
+If you get the error "Reggie! Next Level Editor is damaged and can't be opened.",
+it's because the release builds are unsigned. To fix it, launch a Terminal
+window and run
+
+    sudo xattr -rd com.apple.quarantine /Applications/Reggie\!\ Next\ Level\ Editor.app
+    
+which will override the application signature requirement. Then you should be
+able to launch the app.
 
 ### Reggie! Team
 
