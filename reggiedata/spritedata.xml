@@ -730,7 +730,7 @@
 
   <sprite id="61" name="Big Boo" notes="A large version of the Boo enemy.">
     <checkbox bit="48" title="Slightly Faster" comment="When enabled, the Big Boo will move slightly faster."/>
-    <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
+    <checkbox bit="44" title="Always Despawn" comment="When disabled, the Big Boo will only despawn if it's off-screen and not moving. When enabled, it will despawn when it's off screen regardless of whether it's moving."/>
   </sprite> <!-- #61: Big Boo -->
 
   <sprite id="62" name="Spinning Fire Bar" notes="A Spinning Fire Bar like one you would find in a Castle stage.">
@@ -1928,7 +1928,7 @@
 
   <sprite id="131" name="Boo" notes="A standard loose Boo enemy. The Boo will chase the player when there is no player actively facing the Boo.">
     <checkbox bit="48" title="Slightly Faster" comment="When enabled, the Boo will move slightly faster towards the player."/>
-    <checkbox bit="44" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="Used in Retail: 03-20 A1/A3, 07-20 A3. May be Z-Order related?"/>
+    <checkbox bit="44" title="Always Despawn" comment="When enabled, the Boo will despawn when it's off screen regardless of whether it's moving. When disabled, the Boo will only despawn if it's off-screen and not moving."/>
   </sprite> <!-- #131: Boo -->
 
   <sprite id="132" name="(Unused) Path Controlled TEST Platform 1" notes="An untextured unused test platform that is controlled by Path data. Very useful when trying to visually test the Path you are creating, as you can move your starting Entrance and change the Starting Node to test each individual segment.">
