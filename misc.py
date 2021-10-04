@@ -483,33 +483,30 @@ class SpriteDefinition:
             if 'advancedcomment' in attribs:
                 advancedcomment = globals_.trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['advancedcomment'])
 
-            if 'requiredbit' in attribs:
+            if 'requirednybble' in attribs:
+                bit_ranges, _ = self.parseBits(attribs.get("requirednybble"))
                 required = []
-                bits = attribs['requiredbit'].split(",")
 
                 if 'requiredval' in attribs:
                     vals = attribs['requiredval'].split(",")
 
-                    if len(bits) != len(vals):
+                    if len(bit_ranges) != len(vals):
                         raise ValueError("Required bits and vals have different lengths.")
                 else:
-                    vals = [None] * len(bits)
+                    vals = [None] * len(bit_ranges)
 
-                for sbit, sval in zip(bits, vals):
-                    if '-' not in sbit:
-                        a = b = int(sbit)
-                    else:
-                        a, b = map(int, sbit.split('-'))
-
+                # The associated values are a comma-separated list of values or
+                # (inclusive) ranges.
+                for bit_range, sval in zip(bit_ranges, vals):
                     if sval is None:
-                        c = 1
-                        d = (1 << (b - a + 1)) - 1
+                        a = 1
+                        b = (1 << (bit_range[1] - bit_range[0] + 1)) - 1
                     elif '-' not in sval:
-                        c = d = int(sval)
+                        a = b = int(sval)
                     else:
-                        c, d = map(int, sval.split('-'))
+                        a, b = map(int, sval.split('-'))
 
-                    required.append((((a, b + 1),), (c, d + 1)))
+                    required.append(((bit_range,), (a, b + 1)))
 
             if 'idtype' in attribs:
                 idtype = attribs['idtype']
@@ -519,13 +516,13 @@ class SpriteDefinition:
 
             # Parse the remaining type-specific attributes.
             if field.tag == 'checkbox':
-                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                bit, _ = self.parseBits(attribs.get("nybble"))
                 mask = int(attribs.get('mask', 1))
 
                 fields.append((0, attribs['title'], bit, mask, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'list':
-                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                bit, _ = self.parseBits(attribs.get("nybble"))
 
                 entries = []
                 for e in field:
@@ -537,7 +534,7 @@ class SpriteDefinition:
                 fields.append((1, title, bit, model, comment, required, advanced, comment2, advancedcomment, idtype))
 
             elif field.tag == 'value':
-                bit, max_ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                bit, max_ = self.parseBits(attribs.get("nybble"))
 
                 fields.append((2, attribs['title'], bit, max_, comment, required, advanced, comment2, advancedcomment, idtype))
 
@@ -548,13 +545,12 @@ class SpriteDefinition:
                 fields.append((3, attribs['title'], startbit, bitnum, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'multibox':
-                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                bit, _ = self.parseBits(attribs.get("nybble"))
 
                 fields.append((4, attribs['title'], bit, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'dualbox':
-                a = int(attribs['bit'])
-                bit = [(a, a + 1)]
+                bit, _ = self.parseBits(attribs.get("nybble"))
 
                 fields.append((5, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
 
@@ -572,55 +568,62 @@ class SpriteDefinition:
             elif field.tag == 'external':
                 # Uses a list from an external resource. This is used for big
                 # lists like actors, sound effects etc.
-                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                bit, _ = self.parseBits(attribs.get("nybble"))
                 type_ = attribs['type']
 
                 fields.append((6, title, bit, comment, required, advanced, comment2, advancedcomment, type_))
 
             elif field.tag == 'multidualbox':
                 # multibox but with dualboxes instead of checkboxes
-                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                bit, _ = self.parseBits(attribs.get("nybble"))
 
                 fields.append((7, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
 
-    def parseBits(self, nybble_val, bits_val):
+    def parseBits(self, nybble_val):
         """
         Parses a description of the bits a setting affects into a tuple of a
         list of ranges and the number of possible values. Ranges include the
         start and exclude the end. The most significant bit is considered 1.
+        Precise bits can be specified by adding a period after the number,
+        followed by a number from 1 to 4, where 1 is the most significant bit in
+        a nybble, and 4 the least significant bit.
 
-        Raises a ValueError if both inputs are None or if any of the specified
+        Raises a ValueError if 'nybble_val' is None or if any of the specified
         ranges refer to bits that are not in the first 8 bytes.
         """
-
         if nybble_val is None:
-            ranges = bits_val
-        else:
-            ranges = nybble_val
+            raise ValueError("No nybble specification given.")
 
-        if ranges is None:
-            raise ValueError("Both bits and nybble are None.")
-
-        # Whether the ranges indicate the nybbles or the bits.
-        is_nybble = nybble_val is not None
         # The total number of bits that can be controlled.
         bit_length = 0
         # A list of tuples (start_bit, end_bit) that represent inclusive ranges.
         bit_ranges = []
 
-        for range_ in ranges.split(","):
-            if "-" in range_:  # Multiple bits / nybbles
-                a, b = map(int, range_.split("-"))
-            else:  # Just a single bit / nybble
-                a = b = int(range_)
+        for range_ in nybble_val.split(","):
+            if "-" in range_:
+                # Multiple nybbles
+                a, b = range_.split("-")
+            else:
+                # Just a nybble
+                a = b = range_
 
-            if is_nybble:
-                a = (a << 2) - 3
-                b <<= 2
+            if "." in a:
+                nybble, bits = map(int, a.split("."))
+            else:
+                nybble, bits = int(a), 1
+
+            a = 4 * (nybble - 1) + bits
+
+            if "." in b:
+                nybble, bits = map(int, b.split("."))
+            else:
+                nybble, bits = int(b), 4
+
+            b = 4 * (nybble - 1) + bits
 
             # Check if the resulting range would be valid.
             if not 1 <= a < b + 1 <= 65:
-                raise ValueError("Indexed bits out of bounds: " + str((a, b + 1)))
+                raise ValueError("Indexed bits out of bounds: " + str(range_) + "->" + str((a, b + 1)))
 
             bit_length += b - a + 1
             bit_ranges.append((a, b + 1))
