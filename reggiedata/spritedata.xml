@@ -4018,10 +4018,7 @@
     <value nybble="10-11" title="Location ID" comment="When set, the haunted object will only be activated if a player enters this location." comment2="Assigning a Location is not required. If one is not set, the item will instead be triggered by the proximity of the player." idtype="Location"/>
   </sprite> <!-- #262: Poltergeist Item -->
 
-  <!-- Check if the setting causes it to be 'immune to POW' -->
-  <!-- Check if the setting causes it to be an inverted state for the spiked ball -->
-  <!-- Determine placement requirements: Water required, yes or no? Placed manually on water surface, yes or no? If placed below the water surface, does it rise to the top or not load? -->
-  *<sprite id="263" name="Lily Piranha Plant" notes="A floating piranha plant that balances a spiky spore ball in the air above it.">
+  <sprite id="263" name="Lily Piranha Plant" notes="A floating piranha plant that balances a spiky spore ball in the air above it.">
     <dependency notes="The piranha plant must be placed inside or on the surface of water [138] to spawn. It will snap to the surface when loaded on-screen.">
       <suggested sprite="138"/>
     </dependency>
