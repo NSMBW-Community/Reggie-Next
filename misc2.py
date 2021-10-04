@@ -128,6 +128,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
         self.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
+        self.setRenderHint(QtGui.QPainter.Antialiasing)
         self.setMouseTracking(True)
         self.YScrollBar = QtWidgets.QScrollBar(QtCore.Qt.Vertical, parent)
         self.XScrollBar = QtWidgets.QScrollBar(QtCore.Qt.Horizontal, parent)
@@ -163,12 +164,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             self.xButtonScrollTimer.start(100)
 
         elif event.button() == QtCore.Qt.RightButton:
+            clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
+            if clicked.x() < 0: clicked.setX(0)
+            if clicked.y() < 0: clicked.setY(0)
+
             if 0 <= globals_.CurrentPaintType < 4 and globals_.CurrentObject != -1 and [globals_.Layer0Shown, globals_.Layer1Shown, globals_.Layer2Shown][globals_.CurrentLayer]:
                 # paint an object
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
-
                 clickedx = int(clicked.x() / 24)
                 clickedy = int(clicked.y() / 24)
 
@@ -184,10 +185,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             elif globals_.CurrentPaintType == 4 and globals_.CurrentSprite >= 0 and globals_.SpritesShown:
                 # paint a sprite
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
-
                 clickedx = int((clicked.x() - 12) / 12) * 8
                 clickedy = int((clicked.y() - 12) / 12) * 8
 
@@ -203,9 +200,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             elif globals_.CurrentPaintType == 5:
                 # paint an entrance
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
                 clickedx = int((clicked.x() - 12) / 1.5)
                 clickedy = int((clicked.y() - 12) / 1.5)
 
@@ -218,9 +212,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             elif globals_.CurrentPaintType == 6 and globals_.PathsShown:
                 # paint a path node
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
                 clickedx = int((clicked.x() - 12) / 1.5)
                 clickedy = int((clicked.y() - 12) / 1.5)
                 mw = globals_.mainWindow
@@ -319,10 +310,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             elif globals_.CurrentPaintType == 7 and globals_.LocationsShown:
                 # paint a location
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
-
                 clickedx = int(clicked.x() / 1.5)
                 clickedy = int(clicked.y() / 1.5)
 
@@ -335,9 +322,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             elif globals_.CurrentPaintType == 8:
                 # paint a stamp
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
 
                 clickedx = int(clicked.x() / 1.5)
                 clickedy = int(clicked.y() / 1.5)
@@ -362,10 +346,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             elif globals_.CurrentPaintType == 9 and globals_.CommentsShown:
                 # paint a comment
-
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
                 clickedx = int((clicked.x() - 12) / 1.5)
                 clickedy = int((clicked.y() - 12) / 1.5)
 

@@ -346,7 +346,6 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         self.delay.setRange(0, 65535)
         self.delay.setToolTip(globals_.trans.string('PathDataEditor', 7))
         self.delay.valueChanged.connect(self.HandleDelayChanged)
-        self.delay.setMaximumWidth(256)
 
         self.loops = QtWidgets.QCheckBox()
         self.loops.setToolTip(globals_.trans.string('PathDataEditor', 1))

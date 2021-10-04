@@ -25,7 +25,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         self.bgbrush = QtGui.QBrush(globals_.theme.color('bg'))
         self.objbrush = QtGui.QBrush(globals_.theme.color('overview_object'))
         self.viewbrush = QtGui.QBrush(globals_.theme.color('overview_zone_fill'))
-        self.view = QtCore.QRectF(0, 0, 0, 0)
+        self.view = QtCore.QRectF()
         self.spritebrush = QtGui.QBrush(globals_.theme.color('overview_sprite'))
         self.entrancebrush = QtGui.QBrush(globals_.theme.color('overview_entrance'))
         self.locationbrush = QtGui.QBrush(globals_.theme.color('overview_location_fill'))

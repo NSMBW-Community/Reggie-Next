@@ -89,7 +89,7 @@ import globals_
 ################################################################################
 
 from libs import lh, lib_versions
-from ui import GetIcon, SetAppStyle, GetDefaultStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme
+from ui import GetIcon, SetAppStyle, GetDefaultStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, IconsOnlyTabBar
 from misc import LoadActionsLists, LoadTilesetNames, LoadBgANames, LoadBgBNames, LoadConstantLists, LoadObjDescriptions, LoadSpriteData, LoadSpriteListData, LoadEntranceNames, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePath, isValidGamePath
 from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
@@ -1035,6 +1035,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # add tabs to it
         tabs = QtWidgets.QTabWidget()
+        tabs.setTabBar(IconsOnlyTabBar())
         tabs.setIconSize(QtCore.QSize(16, 16))
         tabs.currentChanged.connect(self.CreationTabChanged)
         dock.setWidget(tabs)
@@ -2692,8 +2693,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for spr in globals_.Area.sprites:
             spr.setVisible(checked)
 
-        self.scene.update()
-
     def HandleSpriteImages(self, checked):
         """
         Handle toggling of sprite images
@@ -2727,10 +2726,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 )
 
             spr.ChangingPos = False
+            spr.update()
 
         globals_.DirtyOverride -= 1
 
-        self.scene.update()
         self.levelOverview.update()
 
     def HandleLocationsVisibility(self, checked):
@@ -2746,8 +2745,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for loc in globals_.Area.locations:
             loc.setVisible(checked)
 
-        self.scene.update()
-
     def HandleCommentsVisibility(self, checked):
         """
         Handle toggling of comment visibility
@@ -2760,8 +2757,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         for com in globals_.Area.comments:
             com.setVisible(checked)
-
-        self.scene.update()
 
     def HandlePathsVisibility(self, checked):
         """
@@ -2800,8 +2795,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 obj.setFlag(flag1, unfrozen)
                 obj.setFlag(flag2, unfrozen)
 
-        self.scene.update()
-
     def HandleSpritesFreeze(self, checked):
         """
         Handle toggling of sprites being frozen
@@ -2819,8 +2812,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for spr in globals_.Area.sprites:
             spr.setFlag(flag1, unfrozen)
             spr.setFlag(flag2, unfrozen)
-
-        self.scene.update()
 
     def HandleEntrancesFreeze(self, checked):
         """
@@ -2840,8 +2831,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             ent.setFlag(flag1, unfrozen)
             ent.setFlag(flag2, unfrozen)
 
-        self.scene.update()
-
     def HandleLocationsFreeze(self, checked):
         """
         Handle toggling of locations being frozen
@@ -2859,8 +2848,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for loc in globals_.Area.locations:
             loc.setFlag(flag1, unfrozen)
             loc.setFlag(flag2, unfrozen)
-
-        self.scene.update()
 
     def HandlePathsFreeze(self, checked):
         """
@@ -2899,8 +2886,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for com in globals_.Area.comments:
             com.setFlag(flag1, unfrozen)
             com.setFlag(flag2, unfrozen)
-
-        self.scene.update()
 
     def HandleSwitchGrid(self):
         """
@@ -3199,7 +3184,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.UpdateTitle()
 
         # Update UI things
-        self.scene.update(0, 0, self.scene.width(), self.scene.height())
+        self.scene.update()
 
         self.levelOverview.Reset()
         self.levelOverview.update()
@@ -3828,12 +3813,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         if self.UpdateFlag: return
 
-        for ent in globals_.Area.entrances:
-            if ent.listitem == item:
-                break
-        else:
-            return
-
+        ent = item.reference
         ent.ensureVisible(xMargin=192, yMargin=192)
         self.scene.clearSelection()
         ent.setSelected(True)
@@ -3853,12 +3833,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         if self.UpdateFlag: return
 
-        for loc in globals_.Area.locations:
-            if loc.listitem == item:
-                break
-        else:
-            return
-
+        loc = item.reference
         loc.ensureVisible(xMargin=192, yMargin=192)
         self.scene.clearSelection()
         loc.setSelected(True)
@@ -3867,44 +3842,29 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle a location being hovered in the list
         """
-        for loc in globals_.Area.locations:
-            if loc.listitem == item:
-                loc.UpdateListItem(True)
-                break
+        item.reference.UpdateListItem(True)
 
     def HandlePathSelectByList(self, item):
         """
         Handle a path node being selected
         """
-        for path in globals_.Area.paths:
-            if path.listitem == item:
-                break
-        else:
-            return
+        path_item = item.reference
 
-        path.ensureVisible(xMargin=192, yMargin=192)
+        path_item.ensureVisible(xMargin=192, yMargin=192)
         self.scene.clearSelection()
-        path.setSelected(True)
+        path_item.setSelected(True)
 
     def HandlePathToolTipAboutToShow(self, item):
         """
         Handle a path node being hovered in the list
         """
-        for path in globals_.Area.paths:
-            if path.listitem == item:
-                path.UpdateListItem(True)
-                break
+        item.reference.UpdateListItem(True)
 
     def HandleCommentSelectByList(self, item):
         """
         Handle a comment being selected
         """
-        for comment in globals_.Area.comments:
-            if comment.listitem == item:
-                break
-        else:
-            return
-
+        comment = item.reference
         comment.ensureVisible(xMargin=192, yMargin=192)
         self.scene.clearSelection()
         comment.setSelected(True)
