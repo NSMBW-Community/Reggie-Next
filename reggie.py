@@ -1067,11 +1067,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.objUseLayer1.setToolTip(globals_.trans.string('Palette', 2))
         self.objUseLayer2 = QtWidgets.QRadioButton('2')
         self.objUseLayer2.setToolTip(globals_.trans.string('Palette', 3))
+
+        self.layerChangeButton = QtWidgets.QPushButton("Change Layer")
+        self.layerChangeButton.clicked.connect(self.ChangeSelectionLayer)
+        self.layerChangeButton.setEnabled(False)
+
         ll.addWidget(QtWidgets.QLabel(globals_.trans.string('Palette', 0)))
         ll.addWidget(self.objUseLayer0)
         ll.addWidget(self.objUseLayer1)
         ll.addWidget(self.objUseLayer2)
         ll.addStretch(1)
+        ll.addWidget(self.layerChangeButton)
         oel.addLayout(ll)
 
         lbg = QtWidgets.QButtonGroup(self)
@@ -3470,6 +3476,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if func_ii(item, type_com): com += 1
 
         self.actions['mergelocations'].setEnabled(loc >= 2)
+        self.layerChangeButton.setEnabled(obj != 0)
 
         # write the statusbar label text
         text = ''
@@ -3601,6 +3608,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
             cpt = -1
 
         globals_.CurrentPaintType = cpt
+
+    def ChangeSelectionLayer(self, checked):
+        """
+        Changes the layer of the selection to the current layer.
+        """
+        self.ChangeSelectedObjectsLayer(globals_.CurrentLayer)
 
     def LayerChoiceChanged(self, nl):
         """
