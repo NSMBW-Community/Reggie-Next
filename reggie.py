@@ -2445,6 +2445,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.PlaceObjectsAtFullSize = dlg.generalTab.fullObjSize.isChecked()
         setSetting('PlaceObjectsAtFullSize', globals_.PlaceObjectsAtFullSize)
 
+        # Insert Path Node setting
+        globals_.InsertPathNode = dlg.generalTab.insertPathNode.isChecked()
+        setSetting('InsertPathNode', globals_.InsertPathNode)
+
         # Get the Toolbar tab settings
         boxes = (
             dlg.toolbarTab.FileBoxes, dlg.toolbarTab.EditBoxes, dlg.toolbarTab.ViewBoxes, dlg.toolbarTab.SettingsBoxes,
@@ -2768,13 +2772,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if globals_.Area is None:
             return
 
-        for node in globals_.Area.paths:
-            node.setVisible(checked)
-
-        for path in globals_.Area.pathdata:
-            path['peline'].setVisible(checked)
-
-        self.scene.update()
+        for path in globals_.Area.paths:
+            path.setVisible(checked)
 
     def HandleObjectsFreeze(self, checked):
         """
@@ -2859,15 +2858,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if globals_.Area is None:
             return
 
-        flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
-        unfrozen = not checked
-
-        for node in globals_.Area.paths:
-            node.setFlag(flag1, unfrozen)
-            node.setFlag(flag2, unfrozen)
-
-        self.scene.update()
+        for path in globals_.Area.paths:
+            path.set_freeze(checked)
 
     def HandleCommentsFreeze(self, checked):
         """
@@ -3291,20 +3283,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             location.UpdateListItem()
 
         for path in globals_.Area.paths:
-            path.positionChanged = self.HandlePathPosChange
-            path.listitem = ListWidgetItem_SortsByOther(path)
-            self.pathList.addItem(path.listitem)
-            self.scene.addItem(path)
-            path.UpdateListItem()
-
-        for path in globals_.Area.pathdata:
-            peline = PathEditorLineItem(path['nodes'])
-            path['peline'] = peline
-            self.scene.addItem(peline)
-            peline.loops = path['loops']
-
-        for path in globals_.Area.paths:
-            path.UpdateListItem()
+            path.add_to_scene()
 
         for com in globals_.Area.comments:
             com.positionChanged = self.HandleComPosChange
@@ -3780,8 +3759,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle the path being dragged
         """
         if oldx == x and oldy == y: return
-        obj.updatePos()
-        obj.pathinfo['peline'].nodePosChanged()
+        obj.path.node_moved(obj)
         obj.UpdateListItem()
         if obj == self.selObj:
             SetDirty()
@@ -4369,6 +4347,7 @@ def main():
     globals_.EnablePadding = setting('EnablePadding', False)
     globals_.PaddingLength = int(setting('PaddingLength', 0))
     globals_.PlaceObjectsAtFullSize = setting('PlaceObjectsAtFullSize', True)
+    globals_.InsertPathNode = setting('InsertPathNode', False)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game

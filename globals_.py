@@ -29,6 +29,7 @@ ErrMsg = ''
 FileExtentions = ('.arc', '.arc.LH')
 GridType = None
 HideResetSpritedata = False
+InsertPathNode = False
 Layer0Shown = True
 Layer1Shown = True
 Layer2Shown = True

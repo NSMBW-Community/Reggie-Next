@@ -151,29 +151,32 @@ class MoveItemUndoAction(UndoAction):
         """
         from levelitems import SpriteItem, ObjectItem, PathItem
 
-        oldBR = obj.getFullRect()
-
         if isinstance(obj, SpriteItem):
             # Sprites are weird so they handle this themselves
             obj.setNewObjPos(newX, newY)
+
         elif isinstance(obj, ObjectItem):
             # Objects use the objx and objy properties differently
+            oldBR = obj.getFullRect()
+
             obj.objx, obj.objy = newX, newY
             obj.setPos(newX * 24, newY * 24)
             obj.UpdateRects()
+
+            newBR = obj.getFullRect()
+
+            globals_.mainWindow.scene.update(oldBR)
+            globals_.mainWindow.scene.update(newBR)
+
+        elif isinstance(obj, PathItem):
+            obj.objx, obj.objy = newX, newY
+            obj.setPos(newX * 1.5, newY * 1.5)
+            obj.updatePos()
+
         else:
             # Everything else is normal
             obj.objx, obj.objy = newX, newY
             obj.setPos(newX * 1.5, newY * 1.5)
-
-        newBR = obj.getFullRect()
-
-        globals_.mainWindow.scene.update(oldBR)
-        globals_.mainWindow.scene.update(newBR)
-
-        if isinstance(obj, PathItem):
-            obj.updatePos()
-            obj.pathinfo['peline'].nodePosChanged()
 
         globals_.mainWindow.levelOverview.update()
 

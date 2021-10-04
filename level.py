@@ -251,7 +251,6 @@ class Area:
         self.zones = []
         self.locations = []
         self.camprofiles = []
-        self.pathdata = []
         self.paths = []
         self.comments = []
         self.layers = [[], [], []]
@@ -321,7 +320,6 @@ class Area:
         del self.zones
         del self.locations
         del self.camprofiles
-        del self.pathdata
         del self.paths
         del self.comments
         del self.sprite_idtypes
@@ -673,24 +671,21 @@ class Area:
         pathdata = self.blocks[12]
         pathstruct = struct.Struct('>BxHHH')
         unpack = pathstruct.unpack_from
-        pathinfo = []
         paths = []
+
+        from levelitems import Path
 
         for offset in range(0, len(pathdata), 8):
             data = unpack(pathdata, offset)
             nodes = self.LoadPathNodes(data[1], data[2])
 
-            pathinfo.append({
-                'id': int(data[0]),
-                'nodes': nodes,
-                'loops': data[3] == 2
-            })
+            path = Path(int(data[0]), globals_.mainWindow.scene, data[3] == 2)
 
-        for xpi in pathinfo:
-            for xpj in xpi['nodes']:
-                paths.append(PathItem(xpj['x'], xpj['y'], xpi, xpj))
+            for node in nodes:
+                path.add_node(node['x'], node['y'], node['speed'], node['accel'], node['delay'], add_to_scene=False)
 
-        self.pathdata = pathinfo
+            paths.append(path)
+
         self.paths = paths
 
     def LoadPathNodes(self, startindex, count):
@@ -841,38 +836,36 @@ class Area:
         Saves the paths back to block 13
         """
         pathstruct = struct.Struct('>BxHHH')
-        nodecount = sum(len(path['nodes']) for path in self.pathdata)
+        nodecount = sum(len(path) for path in self.paths)
         nodebuffer = bytearray(nodecount * 16)
         nodeoffset = 0
         nodeindex = 0
         offset = 0
-        buffer = bytearray(len(self.pathdata) * 8)
+        buffer = bytearray(len(self.paths) * 8)
 
-        for path in self.pathdata:
-            if len(path['nodes']) == 0:
+        for path in self.paths:
+            if not len(path):
                 continue
 
-            self.WritePathNodes(nodebuffer, nodeoffset, path['nodes'])
+            self.WritePathNodes(nodebuffer, nodeoffset, path)
 
-            pathstruct.pack_into(buffer, offset, int(path['id']), int(nodeindex), int(len(path['nodes'])),
-                                 2 if path['loops'] else 0)
+            pathstruct.pack_into(buffer, offset, path._id, nodeindex, len(path), 2 if path._loops else 0)
+
             offset += 8
-            nodeoffset += len(path['nodes']) * 16
-            nodeindex += len(path['nodes'])
+            nodeoffset += len(path) * 16
+            nodeindex += len(path)
 
         self.blocks[12] = bytes(buffer)
         self.blocks[13] = bytes(nodebuffer)
 
-    def WritePathNodes(self, buffer, offst, nodes):
+    def WritePathNodes(self, buffer, offset, path):
         """
         Writes the path node data to the block 14 bytearray
         """
-        offset = int(offst)
         nodestruct = struct.Struct('>HHffhxx')
 
-        for node in nodes:
-            nodestruct.pack_into(buffer, offset, int(node['x']), int(node['y']), float(node['speed']),
-                                 float(node['accel']), int(node['delay']))
+        for i in range(len(path)):
+            nodestruct.pack_into(buffer, offset, *path.get_node_data(i))
             offset += 16
 
     def SaveSprites(self):

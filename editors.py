@@ -352,89 +352,121 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         self.loops.stateChanged.connect(self.HandleLoopsChanged)
 
         # create a layout
-        layout = QtWidgets.QGridLayout()
+        layout = QtWidgets.QFormLayout()
         self.setLayout(layout)
 
         # 'Editing Path #' label
         self.editingLabel = QtWidgets.QLabel('-')
         self.editingPathLabel = QtWidgets.QLabel('-')
-        layout.addWidget(self.editingLabel, 3, 0, 1, 2, QtCore.Qt.AlignTop)
-        layout.addWidget(self.editingPathLabel, 0, 0, 1, 2, QtCore.Qt.AlignTop)
+
+        self.path_id = QtWidgets.QSpinBox()
+        self.path_id.setRange(0, 255)
+        self.path_id.valueChanged.connect(self.HandlePathIdChanged)
+
+        self.node_id = QtWidgets.QSpinBox()
+        self.node_id.setRange(0, 255)
+        self.node_id.valueChanged.connect(self.HandleNodeIdChanged)
+
+        layout.addRow(self.editingPathLabel)
+
         # add labels
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('PathDataEditor', 0)), 1, 0, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('PathDataEditor', 2)), 4, 0, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('PathDataEditor', 4)), 5, 0, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('PathDataEditor', 6)), 6, 0, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(createHorzLine(), 2, 0, 1, 2)
+        layout.addRow("Id", self.path_id)
+        layout.addRow(globals_.trans.string('PathDataEditor', 0), self.loops)
+        layout.addRow(createHorzLine())
 
-        # add the widgets
-        layout.addWidget(self.loops, 1, 1)
-        layout.addWidget(self.speed, 4, 1)
-        layout.addWidget(self.accel, 5, 1)
-        layout.addWidget(self.delay, 6, 1)
+        layout.addRow(self.editingLabel)
+        layout.addRow("Id", self.node_id)
+        layout.addRow(globals_.trans.string('PathDataEditor', 2), self.speed)
+        layout.addRow(globals_.trans.string('PathDataEditor', 4), self.accel)
+        layout.addRow(globals_.trans.string('PathDataEditor', 6), self.delay)
 
-        self.path = None
+        self.path_node = None
         self.UpdateFlag = False
 
-    def setPath(self, path):
+    def setPath(self, path_item):
         """
         Change the path being edited by the editor, update all fields
         """
-        if self.path == path: return
+        if self.path_node == path_item: return
 
-        self.editingPathLabel.setText(globals_.trans.string('PathDataEditor', 8, '[id]', path.pathid))
-        self.editingLabel.setText(globals_.trans.string('PathDataEditor', 9, '[id]', path.nodeid))
+        self.path_node = path_item
 
-        self.path = path
+        self.editingPathLabel.setText(globals_.trans.string('PathDataEditor', 8, '[id]', path_item.pathid))
+        self.editingLabel.setText(globals_.trans.string('PathDataEditor', 9, '[id]', path_item.nodeid))
+
+        speed, accel, delay = path_item.path.get_data_for_node(path_item.nodeid)
+        loops = path_item.path.get_loops()
+        path_len = len(path_item.path)
 
         self.UpdateFlag = True
 
-        self.speed.setValue(path.nodeinfo['speed'])
-        self.accel.setValue(path.nodeinfo['accel'])
-        self.delay.setValue(path.nodeinfo['delay'])
-        self.loops.setChecked(path.pathinfo['loops'])
+        self.node_id.setRange(0, path_len - 1)
+        self.node_id.setEnabled(path_len > 1)
+        self.node_id.setValue(path_item.nodeid)
+        self.path_id.setValue(path_item.pathid)
+        self.speed.setValue(speed)
+        self.accel.setValue(accel)
+        self.delay.setValue(delay)
+        self.loops.setChecked(loops)
 
         self.UpdateFlag = False
+
+    def UpdatePathLength(self):
+        """
+        The length of the path changed, so update the range of the node id editor.
+        """
+        self.node_id.setRange(0, len(self.path_node.path) - 1)
 
     def HandleSpeedChanged(self, i):
         """
         Handler for the speed changing
         """
-        if self.UpdateFlag or self.path.nodeinfo['speed'] == i:
+        if self.UpdateFlag:
             return
 
-        self.path.nodeinfo['speed'] = i
-        SetDirty()
+        if self.path_node.path.set_node_data(self.path_node, speed=i):
+            SetDirty()
 
     def HandleAccelChanged(self, i):
         """
         Handler for the accel changing
         """
-        if self.UpdateFlag or self.path.nodeinfo['accel'] == i:
+        if self.UpdateFlag:
             return
 
-        self.path.nodeinfo['accel'] = i
-        SetDirty()
+        if self.path_node.path.set_node_data(self.path_node, accel=i):
+            SetDirty()
 
     def HandleDelayChanged(self, i):
         """
         Handler for the delay changing
         """
-        if self.UpdateFlag or self.path.nodeinfo['delay'] == i:
+        if self.UpdateFlag:
             return
 
-        self.path.nodeinfo['delay'] = i
-        SetDirty()
+        if self.path_node.path.set_node_data(self.path_node, delay=i):
+            SetDirty()
 
     def HandleLoopsChanged(self, i):
-        if self.UpdateFlag or self.path.pathinfo['loops'] == (i == QtCore.Qt.Checked):
+        if self.UpdateFlag or self.path_node.path._loops == (i == QtCore.Qt.Checked):
             return
 
+        if self.path_node.path.set_loops(i == QtCore.Qt.Checked):
+            SetDirty()
+
+    def HandlePathIdChanged(self, i):
+        if self.UpdateFlag or self.path_node.pathid == i:
+            return
+
+        self.path_node.path.set_id(i)
         SetDirty()
 
-        self.path.pathinfo['loops'] = (i == QtCore.Qt.Checked)
-        self.path.pathinfo['peline'].loops = (i == QtCore.Qt.Checked)
-        globals_.mainWindow.scene.update()
+    def HandleNodeIdChanged(self, i):
+        if self.UpdateFlag or self.path_node.nodeid == i:
+            return
+
+        self.path_node.path.move_node(self.path_node, i)
+        SetDirty()
 
 
 class LocationEditorWidget(QtWidgets.QWidget):

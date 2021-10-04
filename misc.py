@@ -15,7 +15,7 @@ from dialogs import DiagnosticToolDialog
 from translation import ReggieTranslation
 from libs import lh
 from misc2 import LevelViewWidget
-from levelitems import PathItem, PathEditorLineItem, CommentItem
+from levelitems import Path, CommentItem
 
 ################################################################################
 ################################################################################
@@ -1518,6 +1518,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Place objects at full size
                 self.fullObjSize = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 37))
 
+                self.insertPathNode = QtWidgets.QCheckBox("Insert new path node after selected node")
+
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
                 L.addRow(globals_.trans.string('PrefsDlg', 14), self.Trans)
@@ -1528,6 +1530,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L.addWidget(self.rdhIndicator)
                 L.addWidget(self.erbIndicator)
                 L.addWidget(self.fullObjSize)
+                L.addWidget(self.insertPathNode)
                 self.setLayout(L)
 
                 # Set the buttons
@@ -1564,6 +1567,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.psValue.setValue(globals_.PaddingLength)
 
                 self.fullObjSize.setChecked(globals_.PlaceObjectsAtFullSize)
+                self.insertPathNode.setChecked(globals_.InsertPathNode)
 
             def ClearRecent(self):
                 """
@@ -1843,20 +1847,10 @@ class PreferencesDialog(QtWidgets.QDialog):
                 scene.addItem(zone)
 
                 # Path [1] making a rectangle shape between (13, 5) and (18, 9)
-                nodes = [
-                    {'x': 13 * 16, 'y': 5 * 16, 'speed': 0.5, 'accel': 0.5, 'delay': 0},
-                    {'x': 18 * 16, 'y': 5 * 16, 'speed': 0.5, 'accel': 0.5, 'delay': 0},
-                    {'x': 18 * 16, 'y': 9 * 16, 'speed': 0.5, 'accel': 0.5, 'delay': 0},
-                    {'x': 13 * 16, 'y': 9 * 16, 'speed': 0.5, 'accel': 0.5, 'delay': 0},
-                ]
+                path = Path(1, scene, loops=True)
 
-                path_line = PathEditorLineItem(nodes)
-                path_line.loops = True
-                scene.addItem(path_line)
-
-                for node in nodes:
-                    path = PathItem(node['x'], node['y'], {'id': 1, 'nodes': nodes, 'peline': path_line}, node)
-                    scene.addItem(path)
+                for x, y in ((13, 5), (18, 5), (18, 9), (13, 9)):
+                    path.add_node(x * 16, y * 16)
 
                 # Empty comment at (2, 3)
                 comment = CommentItem(2 * 16, 3 * 16, "")
