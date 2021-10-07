@@ -53,8 +53,8 @@
 124:Cliffs
 125:Autumn
 126:Crystal Caves
-127:Ghost House
-128:Graveyard
+127:Graveyard
+128:Ghost House
 129:Jungle
 130:Tropical
 131:Sky City
