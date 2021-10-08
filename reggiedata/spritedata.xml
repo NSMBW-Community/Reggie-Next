@@ -2452,14 +2452,14 @@
     <value nybble="5-6" title="Group ID" comment="This pairs the Star Coin to a matching Group Controller for spawn synchronization with other Group controlled sprites." idtype="Group"/>
     <dualbox nybble="12.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Star Coin will move based on the Line that it is connected to."/>
     <list nybble="11" title="Speed" comment="Line Controlled sprites use the same speed setting across all of them.">
-      <entry value="4">Very Slow</entry>
-      <entry value="5">Slow</entry>
-      <entry value="6">Slow+</entry>
-      <entry value="0">Medium</entry>
-      <entry value="1">Medium+</entry>
-      <entry value="2">Fast</entry>
-      <entry value="7">Faster</entry>
-      <entry value="3">Very Fast</entry>
+      <entry value="4">Very Slow (0.25)</entry>
+      <entry value="5">Slow (0.5)</entry>
+      <entry value="6">Slow+ (0.75)</entry>
+      <entry value="0">Medium (1.0)</entry>
+      <entry value="1">Medium+ (1.5)</entry>
+      <entry value="2">Fast (2.0)</entry>
+      <entry value="7">Faster (2.5)</entry>
+      <entry value="3">Very Fast (3.2)</entry>
     </list>
     <checkbox nybble="9.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Star Coin placing it further behind other sprites."/>
     <value nybble="1.2-2.4" title="Target Event ID" comment="When the Star Coin is collected, the Target Event ID will be activated." idtype="Target Event"/>
