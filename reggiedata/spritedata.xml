@@ -295,17 +295,17 @@
       <entry value="1">Second Coin</entry>
       <entry value="2">Third Coin</entry>
     </list>
-    <checkbox nybble="12.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Star Coin placing it further behind other sprites."/>
-    <list nybble="9.3-9.4" title="Z-Order">
-    <entry value="0">Above Layer 1</entry>
+    <checkbox nybble="12" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Star Coin placing it further behind other sprites."/>
+    <list nybble="9" title="Z-Order">
+      <entry value="0">Above Layer 1</entry>
       <entry value="1">Above Layer 2 (Behind Chainlink Fence)</entry>
       <entry value="2">Further above Layer 1</entry>
     </list>
     <checkbox nybble="11.4" title="Falls when POW is Used" comment="The Star Coin will fall to the ground if a POW effect is triggered. If placed outside the Zone, the Star Coin will not spawn until the POW is hit."/>
     <value nybble="1.2-2.4" title="Target Event ID" comment="When the Star Coin is collected, the Target Event ID will be activated." idtype="Target Event"/>
     <dualbox nybble="7.4" title1="Triggers a Timed Event" title2="Permanently activates Target Event" requirednybble="1.2-2.4"/>
-    <checkbox nybble="5.3-5.4" title="Unknown Flag 5 Mask 1" mask="1" comment="ASM shows Nybble 5 might affect something."/>
-    <checkbox nybble="5.3-5.4" title="Unknown Flag 5 Mask 2" mask="2" comment="ASM shows Nybble 5 might affect something."/>
+    <checkbox nybble="5" title="Unknown Flag 5 Mask 1" mask="1" comment="ASM shows Nybble 5 might affect something."/>
+    <checkbox nybble="5" title="Move up and down on liquid surface" mask="2" comment="If the Star Coin is placed submerged in zone-wide (poisoned) water or lava, the Star Coin will snap to the surface and move up and down there."/>
     <checkbox nybble="8" title="Shrink bottom hitbox by half a tile"/> <!-- Any non-zero value -->
   </sprite> <!-- #32: Star Coin -->
 
