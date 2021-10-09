@@ -5304,7 +5304,7 @@ class SpriteImage_TowerDoor(SpriteImage_Door):  # 277
         super().__init__(parent, 1.5)
         self.doorName = 'TowerDoor'
         self.doorDimensions = (-2, -13, 53, 61)
-        self.entranceOffset = (0, 68)
+        self.entranceOffset = (15, 68)
 
 
 class SpriteImage_CastleDoor(SpriteImage_Door):  # 278
@@ -5312,7 +5312,7 @@ class SpriteImage_CastleDoor(SpriteImage_Door):  # 278
         super().__init__(parent, 1.5)
         self.doorName = 'CastleDoor'
         self.doorDimensions = (-2, -13, 53, 61)
-        self.entranceOffset = (0, 68)
+        self.entranceOffset = (15, 68)
 
 
 class SpriteImage_GiantIceBlock(SLib.SpriteImage_StaticMultiple):  # 280
@@ -8162,7 +8162,7 @@ class SpriteImage_BowserDoor(SpriteImage_Door):  # 452
         super().__init__(parent, 1.5)
         self.doorName = 'BowserDoor'
         self.doorDimensions = (-53, -134, 156, 183)
-        self.entranceOffset = (104, 250)
+        self.entranceOffset = (92, 250)
 
 
 class SpriteImage_Seaweed(SLib.SpriteImage_StaticMultiple):  # 453
