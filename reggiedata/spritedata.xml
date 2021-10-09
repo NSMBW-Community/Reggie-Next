@@ -2675,7 +2675,11 @@
     <value nybble="5" title="Mushroom ID" comment="This pairs matching 'Mushroom' controlled objects to this platform's Bolt." comment2="You cannot have more than one pair of Screw Platforms with the same Mushroom ID." idtype="Mushroom"/>
     <dualbox nybble="6.4" title1="Moves Up" title2="Moves Down" comment="This determines which direction the platform will move when the Bolt is spun."/>
     <value nybble="9-10" title="Distance" comment="This determines how far the platform will move when the Bolt is spun."/>
-    <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
+    <list nybble="11" title="Movement Speed" comment="This determines the speed of the platform in the direction specified above. The 'returning' speed (0.2) is unaffected.">
+      <entry value="1">Slow (0.43)</entry>
+      <entry value="2">Medium (0.86)</entry>
+      <entry value="0">Fast (1.3)</entry>
+    </list>
     <value nybble="7-8" title="Unknown Value 7-8" advanced="True" advancedcomment="Used (1) in Retail: 01-05 A1."/>
   </sprite> <!-- #172: Screw Mushroom Platform with Bolt -->
 
@@ -5749,7 +5753,11 @@
     <value nybble="5" title="Mushroom ID" comment="This pairs the platform to a matching Mushroom Platform with a Bolt." comment2="You cannot have more than one pair of Screw Platforms with the same Mushroom ID." idtype="Mushroom"/>
     <dualbox nybble="6.4" title1="Moves Up" title2="Moves Down" comment="This determines which direction the platform will move when the matching Bolt is spun."/>
     <value nybble="9-10" title="Distance" comment="This determines how far the platform will move when the matching Bolt is spun."/>
-    <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
+    <list nybble="11" title="Movement Speed" comment="This determines the speed of the platform in the direction specified above. The 'returning' speed (0.2) is unaffected.">
+      <entry value="1">Slow (0.43)</entry>
+      <entry value="2">Medium (0.86)</entry>
+      <entry value="0">Fast (1.3)</entry>
+    </list>
     <value nybble="7-8" title="Unknown Value 7-8" advanced="True" advancedcomment="Used (1) in Retail: 01-05 A1."/>
   </sprite> <!-- #382: Screw Mushroom Platform without Bolt -->
 
