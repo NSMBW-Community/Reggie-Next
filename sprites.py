@@ -580,7 +580,7 @@ class SpriteImage_ScrewMushroom(SLib.SpriteImage):  # 172, 382
         painter.drawPixmap(76, y + 253, ImageCache['ScrewShroomB'])
 
 
-class SpriteImage_Door(SLib.SpriteImage):  # 182, 259, 276, 277, 278, 421, 452
+class SpriteImage_Door(SLib.SpriteImage):  # 182, 259, 276, 277, 278
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.spritebox.shown = False
@@ -595,8 +595,7 @@ class SpriteImage_Door(SLib.SpriteImage):  # 182, 259, 276, 277, 278, 421, 452
     @staticmethod
     def loadImages():
         if 'DoorU' in ImageCache: return
-        doors = {'Door': 'door', 'GhostDoor': 'ghost_door', 'TowerDoor': 'tower_door', 'CastleDoor': 'castle_door',
-                 'BowserDoor': 'bowser_door'}
+        doors = {'Door': 'door', 'GhostDoor': 'ghost_door', 'TowerDoor': 'tower_door', 'CastleDoor': 'castle_door'}
         transform90 = QtGui.QTransform()
         transform180 = QtGui.QTransform()
         transform270 = QtGui.QTransform()
@@ -8157,12 +8156,21 @@ class SpriteImage_ScaredyRatDespawner(SLib.SpriteImage_Static):  # 451
         SLib.loadIfNotInImageCache('ScaredyRatDespawner', 'scaredy_rat_despawner.png')
 
 
-class SpriteImage_BowserDoor(SpriteImage_Door):  # 452
+class SpriteImage_BowserDoor(SLib.SpriteImage_Static):  # 452
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
-        self.doorName = 'BowserDoor'
-        self.doorDimensions = (-53, -134, 156, 183)
-        self.entranceOffset = (92, 250)
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['BowserDoor'],
+            (-53, -134),
+        )
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24))
+        self.aux[0].setIsBehindSprite(False)
+        self.aux[0].setPos(91, 249)
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('BowserDoor', 'bowser_door.png')
 
 
 class SpriteImage_Seaweed(SLib.SpriteImage_StaticMultiple):  # 453

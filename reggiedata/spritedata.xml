@@ -6621,15 +6621,7 @@
     </dependency>
   </sprite> <!-- #451: Scaredy Rat Despawner -->
 
-  <sprite id="452" name="Bowser Boss Door" noyoshi="True" notes="A very large green door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
-    <list nybble="9.3-9.4" title="Orientation" comment="This determines which direction the door will be facing." comment2="A door can only be entered if it is upright." advancedcomment="As decoration, this is fine. Actually making it properly associate its corresponding Entrance is either impossible or very functionally strange.">
-      <entry value="0">Upright</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Down</entry>
-      <entry value="3">Right</entry>
-    </list>
-    <checkbox nybble="10.4" title="Rotation Controlled (Buggy)" comment="When enabled, the door will only function when paired with a Rotation ID." advanced="True" advancedcomment="'Function' is perhaps misleading. There are only a few ways you can successfully utilize a Rotation Controller door. For starters, you can only enter the door while it is almost fully upright. There is also a peculiarity with how the Entrance is placed. The most reliable way to use a Rotation Controlled Door is to place it with an already activated Spinning controller that returns to its original position when deactivated."/>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
+  <sprite id="452" name="Bowser Boss Door" noyoshi="True" notes="A very large green door that can have an Entrance placed on it.">
   </sprite> <!-- #452: Bowser Boss Door -->
 
   <sprite id="453" name="Seaweed Plant" notes="A decorative seaweed plant that sways lightly back and forth.">
