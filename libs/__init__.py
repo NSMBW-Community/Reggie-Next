@@ -21,6 +21,7 @@ except ModuleNotFoundError:
 lib_versions = {
     "cython": None,
     "nsmblib": None,
+    "nsmblib-updated": None,
 }
 
 if has_nsmblib:
@@ -51,6 +52,12 @@ if has_nsmblib:
     tpl.decodeRGB4A3 = handler
 
     lib_versions["nsmblib"] = nsmblib.getVersion()
+
+    # NSMBLib Updated 2021.10.14.1 adds a new function that keeps track of the
+    # Updated version
+    if hasattr(nsmblib, 'getUpdatedVersion'):
+        lib_versions["nsmblib-updated"] = nsmblib.getUpdatedVersion()
+
     del types
 
 elif has_cython:

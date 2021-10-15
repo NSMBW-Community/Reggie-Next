@@ -814,7 +814,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         menu.addAction(self.actions['aboutqt'])
         menu.addSeparator()
 
-        if lib_versions["nsmblib"] is not None:
+        if lib_versions["nsmblib-updated"] is not None:
+            value = str(lib_versions["nsmblib-updated"])
+            version = int(value[:4]), int(value[4:6]), int(value[6:8]), int(value[8:10])
+            nsmblib_info_text = "Using NSMBLib Updated %d.%d.%d.%d" % version
+        elif lib_versions["nsmblib"] is not None:
             nsmblib_info_text = "Using NSMBLib %d" % lib_versions["nsmblib"]
         else:
             nsmblib_info_text = "Not using NSMBLib"
