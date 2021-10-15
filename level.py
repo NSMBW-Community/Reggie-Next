@@ -332,16 +332,21 @@ class Area:
         """
         assert not self._is_loaded
 
-        # Load in the course file and blocks
-        self.LoadBlocks(self.course)
+        # Load in the course file and blocks - if the course file is None, we
+        # just create a new area with the default settings (as stored in the
+        # already initialised self.blocks)
+        if self.course is not None:
+            self.LoadBlocks(self.course)
 
         # Load the editor metadata
-        if self.block1pos[0] != 0x70:
+        if self.course is not None and self.block1pos[0] != 0x70:
             rddata = self.course[0x70:self.block1pos[0]]
             self.LoadReggieInfo(rddata)
         else:
             self.LoadReggieInfo(None)
-        del self.block1pos
+
+        if hasattr(self, "block1pos"):
+            del self.block1pos
 
         # Load stuff from individual blocks
         self.LoadTilesetNames()  # block 1

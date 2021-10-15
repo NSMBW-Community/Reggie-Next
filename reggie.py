@@ -2250,15 +2250,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         newID = len(globals_.Level.areas) + 1
-
-        with open(os.path.join("reggiedata", "blankcourse.bin"), 'rb') as blank:
-            course = blank.read()
-
-        L0 = None
-        L1 = None
-        L2 = None
-
-        globals_.Level.appendArea(course, L0, L1, L2)
+        globals_.Level.appendArea(None, None, None, None)
 
         if not self.HandleSave():
             globals_.Level.deleteArea(newID)
