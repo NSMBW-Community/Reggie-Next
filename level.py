@@ -226,12 +226,12 @@ class Area:
 
         self.blocks = [b''] * 14
         self.blocks[0] = b'Pa0_jyotyu' + bytes(128 - len('Pa0_jyotyu'))
-        self.blocks[1] = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc8\x00\x00\x00\x00\x00\x00\x00\x00'
+        self.blocks[1] = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x2c\x00\x00\x00\x00\x00\x00\x00\x00'
         self.blocks[3] = bytes(8)
         self.blocks[7] = b'\xff\xff\xff\xff'
 
         self.defEvents = 0
-        self.timeLimit = 200
+        self.timeLimit = 300
         self.creditsFlag = False
         self.startEntrance = 0
         self.ambushFlag = False
