@@ -5036,12 +5036,12 @@ class SpriteImage_PoltergeistItem(SLib.SpriteImage):  # 262
 
         style = self.parent.spritedata[5] & 15
         if style == 0:
-            self.yOffset = 0
+            self.offset = (0, 0)
             self.height = 16
             self.aux[0].setSize(60, 60)
             self.aux[0].image = ImageCache['PolterQBlock']
         else:
-            self.yOffset = -16
+            self.offset = (8, -16)
             self.height = 32
             self.aux[0].setSize(60, 84)
             self.aux[0].image = ImageCache['PolterStand']
@@ -6154,7 +6154,7 @@ class SpriteImage_GhostHouseStand(SLib.SpriteImage_Static):  # 325
             parent,
             1.5,
             ImageCache['GhostHouseStand'],
-            (0, -16),
+            (8, -16),
         )
 
     @staticmethod
