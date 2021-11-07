@@ -121,8 +121,12 @@ class LevelOverviewWidget(QtWidgets.QWidget):
 
         b = self.locationbrush
         painter.setPen(QtGui.QPen(globals_.theme.color('overview_viewbox'), 1))
-        painter.drawRect(self.Xposlocator / 24 / self.mainWindowScale, self.Yposlocator / 24 / self.mainWindowScale,
-                         self.Wlocator / 24 / self.mainWindowScale, self.Hlocator / 24 / self.mainWindowScale)
+
+        scalar = 1 / (24 * self.mainWindowScale)
+        painter.drawRect(QtCore.QRectF(
+            scalar * self.Xposlocator, scalar * self.Yposlocator,
+            scalar * self.Wlocator, scalar * self.Hlocator
+        ))
 
     def CalcSize(self):
         """
