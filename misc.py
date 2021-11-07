@@ -1743,9 +1743,10 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.NonWinStyle = QtWidgets.QComboBox()
                 self.NonWinStyle.setToolTip(globals_.trans.string('PrefsDlg', 24))
                 self.NonWinStyle.addItems(keys)
-                uistyle = setting('uiStyle', "Fusion")
-                if uistyle is not None:
-                    self.NonWinStyle.setCurrentIndex(keys.index(setting('uiStyle', "Fusion")))
+                ui_style = setting('uiStyle', "Fusion")
+
+                if ui_style in keys:
+                    self.NonWinStyle.setCurrentIndex(keys.index(ui_style))
 
                 # Create the options groupbox
                 L = QtWidgets.QVBoxLayout()
@@ -1789,26 +1790,6 @@ class PreferencesDialog(QtWidgets.QDialog):
                 """
                 Updates the preview and theme box
                 """
-                theme = self.themeBox.currentText()
-                style = self.NonWinStyle.currentText()
-
-                themeObj = ReggieTheme(theme)
-                keys = QtWidgets.QStyleFactory().keys()
-
-                if themeObj.color('ui') is not None and not themeObj.forceStyleSheet:
-                    styles = ["WindowsXP", "WindowsVista"]
-                    for _style in styles:
-                        for key in _style, _style.lower():
-                            if key in keys:
-                                keys.remove(key)
-
-                    if style in styles + [_style.lower() for _style in styles]:
-                        style = "Fusion"
-
-                self.NonWinStyle.clear()
-                self.NonWinStyle.addItems(keys)
-                self.NonWinStyle.setCurrentIndex(keys.index(style))
-
                 for name, themeObj in self.themes:
                     if name == self.themeBox.currentText():
                         t = themeObj
