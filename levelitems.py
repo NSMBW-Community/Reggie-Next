@@ -2227,8 +2227,8 @@ class SpriteItem(LevelEditorItem):
 
             # When snapping, round to the nearest multiple of snap_level. Round
             # up when two multiples are equally far apart.
-            origin_pos.setX(((x + (snap_level / 2)) // snap_level) * snap_level)
-            origin_pos.setY(((y + (snap_level / 2)) // snap_level) * snap_level)
+            origin_pos.setX(int((x + (snap_level / 2)) // snap_level) * snap_level)
+            origin_pos.setY(int((y + (snap_level / 2)) // snap_level) * snap_level)
 
             if drag_offset is not None:
                 origin_pos -= drag_offset
