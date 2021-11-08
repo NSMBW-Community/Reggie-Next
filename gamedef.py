@@ -279,9 +279,10 @@ class ReggieGameDefinition:
             with open(self.files['sprites'].path, 'r') as f:
                 filedata = f.read()
 
-            # https://stackoverflow.com/questions/5362771/load-module-from-string-in-python
-            # with modifications
-            new_module = importlib.types.ModuleType(self.name + '->sprites')
+            # https://stackoverflow.com/a/53080237 with modifications
+            spec = importlib.util.spec_from_loader(self.name + "->sprites", loader=None)
+            new_module = importlib.util.module_from_spec(spec)
+
             exec(filedata, new_module.__dict__)
             sys.modules[new_module.__name__] = new_module
             self.sprites = new_module
