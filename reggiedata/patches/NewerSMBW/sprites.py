@@ -1198,7 +1198,7 @@ class SpriteImage_Meteor(SLib.SpriteImage_StaticMultiple):  # 183
         ImageCache['MeteorElectric'] = SLib.GetImg('meteor_electric.png')
 
     def dataChanged(self):
-        multiplier = self.parent.spritedata[4] / 20.0
+        multiplier = self.parent.spritedata[4] / 20
         if multiplier == 0: multiplier = 0.01
         isElectric = (self.parent.spritedata[5] >> 4) & 1
 
@@ -1224,8 +1224,8 @@ class SpriteImage_Meteor(SLib.SpriteImage_StaticMultiple):  # 183
             return
 
         self.image = base.scaled(
-            (base.width() * multiplier) + 8,
-            (base.height() * multiplier) + 8,
+            int(base.width() * multiplier) + 8,
+            int(base.height() * multiplier) + 8,
         )
         self.offset = (
             (relXoff * multiplier) + absXoff,

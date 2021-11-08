@@ -444,7 +444,7 @@ class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage):  # 97, 107, 132, 160
 
         pixmap = ImageCache['UnusedPlatformDark'] if self.isDark else ImageCache['UnusedPlatform']
         pixmap = pixmap.scaled(
-            self.width * 1.5, self.height * 1.5,
+            int(self.width * 1.5), int(self.height * 1.5),
             Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
         )
         painter.drawPixmap(0, 0, pixmap)
@@ -1525,7 +1525,7 @@ class SpriteImage_UnusedSeesaw(SLib.SpriteImage):  # 49
         else:
             self.width = w * 32
         self.image = ImageCache['UnusedPlatformDark'].scaled(
-            self.width * 1.5, self.height * 1.5,
+            int(self.width * 1.5), int(self.height * 1.5),
             Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
         )
         self.xOffset = (8 * 16) - (self.width / 2)
@@ -2984,7 +2984,7 @@ class SpriteImage_UnusedCastlePlatform(SLib.SpriteImage_StaticMultiple):  # 123
         topRadiusInBlocks = widthInBlocks / 10
         heightInBlocks = widthInBlocks + topRadiusInBlocks
 
-        self.image = ImageCache['UnusedCastlePlatform'].scaled(widthInBlocks * 24, heightInBlocks * 24)
+        self.image = ImageCache['UnusedCastlePlatform'].scaled(widthInBlocks * 24, int(heightInBlocks * 24))
 
         self.offset = (
             -(self.image.width() / 1.5) / 2,

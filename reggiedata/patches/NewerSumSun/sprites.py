@@ -76,9 +76,7 @@ class SpriteImage_CustomModelSprite(SLib.SpriteImage_StaticMultiple):  # 11
 
         # Pick an image and scale it
         img = ImageCache['Model%s%02X' % ('Anim' if anim else '', type)]
-        w = img.width() * multiplier
-        h = img.height() * multiplier
-        img = img.scaled(w, h)
+        img = img.scaled(int(img.width() * multiplier), int(img.height() * multiplier))
         self.image = img
 
         # Set up the image position and size
