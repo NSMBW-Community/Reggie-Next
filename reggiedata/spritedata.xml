@@ -1445,17 +1445,23 @@
   </sprite> <!-- #100: Swoop -->
 
   <sprite id="101" name="Bob-Omb" notes="A standard Bob-Omb enemy. It will spawn walking towards the player and will fall off of ledges. When stepped on or struck with a fireball, it will eventually explode damaging certain types of blocks, terrain, and enemies.">
-    <list nybble="5" title="Load-In Animation" comment="This determines what animation state is used by the Bob-Omb when it is first loaded. Changing this value is not recommended." comment2="Frozen in Ice (Minus Ice): The Bob-Omb is placed at a random angle in a random spot inside a square of 3x3 blocks, the sprite's placement it the middle block. It appears somewhere between Layer 1 and Layer 2, and cannot be interacted with in any way.">
+    <list nybble="5" title="Load-In Animation" comment="This determines what animation state is used by the Bob-Omb when it is first loaded. This is used by the sprite indicated, so refer to them for more information." comment2="Frozen in Ice (Minus Ice): The Bob-Omb is static and lacks collision.&lt;br&gt;Pipe Spawn: The spawn-in animation is in front of Layer 1.">
       <entry value="0">Normal</entry>
-      <entry value="1">Pipe Spawn</entry>
-      <entry value="2">Frozen in Ice (Minus Ice)</entry>
-      <entry value="3">Cannon Spawn</entry>
+      <entry value="1">Pipe Spawn [99]</entry>
+      <entry value="2">Frozen in Ice (Minus Ice) [280]</entry>
+      <entry value="3">Cannon Spawn [299]</entry>
     </list>
-    <list nybble="12.3-12.4" title="Unknown Value 12" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something.">
-      <entry value="0">???</entry>
-      <entry value="1">???</entry>
-      <entry value="2">???</entry>
-      <entry value="3">???</entry>
+	<list nybble="7.3-7.4" title="Spawn Direction" requirednybble="5" requiredval="3">
+	  <entry value="0">Up Right</entry>
+	  <entry value="1">Up Left</entry>
+	  <entry value="2">Down Right</entry>
+	  <entry value="3">Down Left</entry> <!-- 4-7 are supposed to be at higher arcs, but it acts the same -->
+	</list>
+    <list nybble="12.3-12.4" title="Spawn Direction" requirednybble="5" requiredval="1">
+      <entry value="0">Up</entry>
+      <entry value="1">Down</entry>
+      <entry value="2">Left</entry>
+      <entry value="3">Right</entry>
     </list>
   </sprite> <!-- #101: Bob-Omb -->
 
@@ -4488,17 +4494,17 @@
       <entry value="1">Bob-Omb; Low arc</entry>
       <entry value="2">Bob-Omb; High arc</entry>
     </list>
-	<list nybble="7" title="Camera Influenced Trajectory" comment="This determines how the cannonball is influenced by the camera." requirednybble="9.3-9.4" requiredval="0">
+	<list nybble="7" title="Camera Influence" comment="This determines how the cannonball moves relative to the camera." requirednybble="9.3-9.4" requiredval="0">
       <entry value="0">Unaffected by Camera</entry>
-      <entry value="1">Moves with Camera in All Directions</entry>
+      <entry value="1">Affected by All Camera Movements</entry>
       <entry value="2">Affected by Vertical Camera Movements</entry>
       <entry value="3">Affected by Horizontal Camera Movements</entry>
     </list>
     <value nybble="8" title="Bob-Omb Delay" comment="This determines how long the cannon will wait between each time it launches a Bob-Omb. This value is measured in game seconds." requirednybble="9.3-9.4"/>
-    <checkbox nybble="11.4" title="Upside-Down"/>
+    <checkbox nybble="11.4" title="Upside-Down" comment2="The cannon is able to shoot left, right, up and down by editing both nybble 11 and 12. However, the sprite was not intended to these settings. As a result, all unlisted settings do not work properly."/>
     <checkbox nybble="10.4" title="Rotating Cannon" comment="When enabled, the cannon will rotate in the opposite direction after each time it fires."/>
-    <dualbox nybble="12.4" title1="Faces Right" title2="Faces Left" comment="This determines which direction the cannon will face." requirednybble="10.4" requiredval="0"/>
-    <dualbox nybble="12.4" title1="Faces Right First" title2="Faces Left First" comment="This determines which direction the cannon will fire first." requirednybble="10.4"/>
+    <dualbox nybble="12.4" title1="Faces Right" title2="Faces Left" requirednybble="10.4" requiredval="0"/>
+    <dualbox nybble="12.4" title1="Faces Right First" title2="Faces Left First" requirednybble="10.4"/>
   </sprite> <!-- #299: 45° Cannon -->
 
   <sprite id="300" name="4-Way Cannon" notes="A small 4-way rotating cannonball launcher.">

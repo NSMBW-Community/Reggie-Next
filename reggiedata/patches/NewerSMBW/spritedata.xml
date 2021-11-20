@@ -804,17 +804,23 @@
       <entry value="7">White</entry>
       <entry value="8">Pink</entry>
     </list>
-    <list nybble="5" title="Load-In Animation" comment="This determines what animation state is used by the Bob-Omb when it is first loaded. Changing this value is not recommended." comment2="Frozen in Ice (Minus Ice): The Bob-Omb is placed at a random angle in a random spot inside a square of 3x3 blocks, the sprite's placement it the middle block. It appears somewhere between Layer 1 and Layer 2, and cannot be interacted with in any way.">
+    <list nybble="5" title="Load-In Animation" comment="This determines what animation state is used by the Bob-Omb when it is first loaded. This is used by the sprite indicated, so refer to them for more information." comment2="Frozen in Ice (Minus Ice): The Bob-Omb is static and lacks collision.&lt;br&gt;Pipe Spawn: The spawn-in animation is in front of Layer 1.">
       <entry value="0">Normal</entry>
-      <entry value="1">Pipe Spawn</entry>
-      <entry value="2">Frozen in Ice (Minus Ice)</entry>
-      <entry value="3">Cannon Spawn</entry>
+      <entry value="1">Pipe Spawn [99]</entry>
+      <entry value="2">Frozen in Ice (Minus Ice) [280]</entry>
+      <entry value="3">Cannon Spawn [299]</entry>
     </list>
-    <list nybble="12.3-12.4" title="Unknown Value 12" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something.">
-      <entry value="0">???</entry>
-      <entry value="1">???</entry>
-      <entry value="2">???</entry>
-      <entry value="3">???</entry>
+	<list nybble="7.3-7.4" title="Spawn Direction" requirednybble="5" requiredval="3">
+	  <entry value="0">Up Right</entry>
+	  <entry value="1">Up Left</entry>
+	  <entry value="2">Down Right</entry>
+	  <entry value="3">Down Left</entry> <!-- 4-7 are supposed to be at higher arcs, but it acts the same -->
+	</list>
+    <list nybble="12.3-12.4" title="Spawn Direction" requirednybble="5" requiredval="1">
+      <entry value="0">Up</entry>
+      <entry value="1">Down</entry>
+      <entry value="2">Left</entry>
+      <entry value="3">Right</entry>
     </list>
   </sprite> <!-- #101: Bob-Omb -->
 
