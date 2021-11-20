@@ -4400,7 +4400,7 @@ class SpriteImage_RollingHill(SLib.SpriteImage):  # 212
         if size != 0:
             realSize = self.RollingHillSizes[size]
         else:
-            adjust = self.parent.spritedata[4] & 0xF
+            adjust = self.parent.spritedata[4]
             realSize = 32 * (adjust + 1)
 
         self.aux[0].setSize(realSize)
@@ -5697,33 +5697,27 @@ class SpriteImage_LongCannon(SLib.SpriteImage_StaticMultiple):  # 298
 class SpriteImage_CannonMulti(SLib.SpriteImage_StaticMultiple):  # 299
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.offset = (-8, -11)
 
     @staticmethod
     def loadImages():
-        if 'CannonMultiUR' in ImageCache: return
-        ImageCache['CannonMultiUR'] = SLib.GetImg('cannon_multi_0.png')
-        ImageCache['CannonMultiUL'] = SLib.GetImg('cannon_multi_1.png')
-        ImageCache['CannonMultiDR'] = SLib.GetImg('cannon_multi_10.png')
-        ImageCache['CannonMultiDL'] = SLib.GetImg('cannon_multi_11.png')
+        if 'CannonMultiU0' in ImageCache: return
+        CannonUR = SLib.GetImg('cannon_multi_0.png', True)
+        CannonUL = SLib.GetImg('cannon_multi_1.png', True)
+        ImageCache['CannonMultiU0'] = QtGui.QPixmap.fromImage(CannonUR)
+        ImageCache['CannonMultiU1'] = QtGui.QPixmap.fromImage(CannonUL)
+        ImageCache['CannonMultiD0'] = QtGui.QPixmap.fromImage(CannonUR.mirrored(False, True))
+        ImageCache['CannonMultiD1'] = QtGui.QPixmap.fromImage(CannonUL.mirrored(False, True))
 
     def dataChanged(self):
+        left = self.parent.spritedata[5] & 1
+        upsideDown = (self.parent.spritedata[5] >> 4) & 1
 
-        number = self.parent.spritedata[5]
-        direction = 'UR'
-
-        if number == 0x00:
-            direction = 'UR'
-        elif number == 0x01:
-            direction = 'UL'
-        elif number == 0x10:
-            direction = 'DR'
-        elif number == 0x11:
-            direction = 'DL'
+        if upsideDown:
+            self.image = ImageCache['CannonMultiD%d' % left]
+            self.offset = (-8, -1)
         else:
-            direction = 'UR'
-
-        self.image = ImageCache['CannonMulti%s' % direction]
+            self.image = ImageCache['CannonMultiU%d' % left]
+            self.offset = (-8, -11)
 
         super().dataChanged()
 

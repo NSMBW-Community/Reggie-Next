@@ -4483,19 +4483,19 @@
   </sprite> <!-- #298: Long Cannonball Cannons -->
 
   <sprite id="299" name="45° Cannon" notes="A cannon that will fire ammo in a 45° direction, and can fire either cannonballs or Bob-Ombs.">
-    <list nybble="7" title="Camera Influenced Trajectory" comment="This determines if the cannonball will be influenced by the camera's actions, such as when using [399] Airship Rocking.">
-      <entry value="0">No?</entry>
-      <entry value="1">Yes?</entry>
-      <entry value="2">???</entry> <!-- Nintendo uses this in 8-Airship -->
-      <entry value="3">???</entry>
-    </list>
-    <list nybble="9.3-9.4" title="Ammo Type" comment="This determines what the cannon will fire. One Cannon will only let out 8 Bob-ombs at a time.">
+    <list nybble="9.3-9.4" title="Ammo Type" comment="This determines what the cannon will fire. One cannon will only let out 8 Bob-ombs at a time.">
       <entry value="0">Cannon Ball</entry>
       <entry value="1">Bob-Omb; Low arc</entry>
       <entry value="2">Bob-Omb; High arc</entry>
     </list>
-    <value nybble="8" title="Bob-Omb Delay" comment="This determines how long the cannon will wait between each time it launches a Bob-Omb." comment2="This value is measured in game seconds." requirednybble="9.3-9.4"/>
-    <checkbox nybble="11.4" title="Upside-Down" comment="When enabled, the cannon is upside-down and can be placed against the ceiling."/>
+	<list nybble="7" title="Camera Influenced Trajectory" comment="This determines how the cannonball is influenced by the camera." requirednybble="9.3-9.4" requiredval="0">
+      <entry value="0">Unaffected by Camera</entry>
+      <entry value="1">Moves with Camera in All Directions</entry>
+      <entry value="2">Affected by Vertical Camera Movements</entry>
+      <entry value="3">Affected by Horizontal Camera Movements</entry>
+    </list>
+    <value nybble="8" title="Bob-Omb Delay" comment="This determines how long the cannon will wait between each time it launches a Bob-Omb. This value is measured in game seconds." requirednybble="9.3-9.4"/>
+    <checkbox nybble="11.4" title="Upside-Down"/>
     <checkbox nybble="10.4" title="Rotating Cannon" comment="When enabled, the cannon will rotate in the opposite direction after each time it fires."/>
     <dualbox nybble="12.4" title1="Faces Right" title2="Faces Left" comment="This determines which direction the cannon will face." requirednybble="10.4" requiredval="0"/>
     <dualbox nybble="12.4" title1="Faces Right First" title2="Faces Left First" comment="This determines which direction the cannon will fire first." requirednybble="10.4"/>
