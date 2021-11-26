@@ -1072,7 +1072,7 @@
     <value nybble="9-10" title="Size" comment="This determines how large the Meteor is." comment2="A setting of 0 is the same as a setting of 5. 1-255 provide general scaling from 20% to 5100% scaling."/>
     <checkbox nybble="11.4" title="Electrified" comment="When enabled, the Meteor will be electrified, and will hurt any player that touches it."/>
     <value nybble="7-8" title="Rotation Speed" comment="This determines how fast the Meteor will rotate, if at all."/>
-    <dualbox nybble="12.4" title1="Spins Counter-Clockwise" title2="Spins Clockwise" comment="This determines which direction the Meteor will spin." requirednybble="7-8"/> <!-- Appears if Rotation Speed > 0 -->
+    <dualbox nybble="12.4" title1="Spins Clockwise" title2="Spins Counter-Clockwise" comment="This determines which direction the Meteor will spin." requirednybble="7-8"/> <!-- Appears if Rotation Speed > 0 -->
     <list nybble="5" title="Spawn Item when Destroyed" comment="This determines if an item will appear when the Meteor is destroyed." comment2="The Meteor can only be destroyed by the Rideable Clowncar. The Mushroom Bubbles will float in from the right of the screen after the Meteor is destroyed.">
       <entry value="0">Nothing</entry>
       <!--<entry value="1">1 Coin</entry>-->
@@ -1817,8 +1817,8 @@
       <suggested sprite="96"/>
       <suggested sprite="149"/>
     </dependency>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the ?-Block to a matching rotation controller." idtype="Rotation"/>
-    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted."> <!-- Does not disappear if Rotation ID is set -->
+    <value nybble="11-12" title="Rotation ID" comment="This pairs the ?-Block to a matching rotation controller." requirednybble="9" requiredval="0" idtype="Rotation"/>
+    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tiled blocks can't be rotation controlled.">
       <entry value="0">0°</entry>
       <entry value="1">3°</entry>
       <entry value="2">6°</entry>
@@ -1836,7 +1836,7 @@
       <entry value="14">42°</entry>
       <entry value="15">45°</entry>
     </list>
-    <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left" comment="This determines which direction the block will be tilted." /> <!-- Does not disappear if Rotation ID is set -->
+    <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left"/> 
     <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players. Some items, such as the Spring, won't appear if the player strikes the Block while it is actively rotating.">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
@@ -1862,8 +1862,8 @@
       <suggested sprite="96"/>
       <suggested sprite="149"/>
     </dependency>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the ?-Block to a matching rotation controller." idtype="Rotation"/>
-    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted." > <!-- Does not disappear if Rotation ID is set -->
+    <value nybble="11-12" title="Rotation ID" comment="This pairs the Brick Block to a matching rotation controller." requirednybble="9" requiredval="0" idtype="Rotation"/>
+    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tilted blocks can not be rotation controlled.">
       <entry value="0">0°</entry>
       <entry value="1">3°</entry>
       <entry value="2">6°</entry>
@@ -1881,7 +1881,7 @@
       <entry value="14">42°</entry>
       <entry value="15">45°</entry>
     </list>
-    <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left" comment="This determines which direction the block will be tilted." /> <!-- Does not disappear if Rotation ID is set -->
+    <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left"/>
     <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will only release one power-up item. Some items, such as the Spring, won't appear if the player strikes the Block while it is actively rotating.">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
