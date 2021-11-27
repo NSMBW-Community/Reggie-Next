@@ -5170,8 +5170,8 @@
     <checkbox nybble="12.4" title="Remove Grass/Rocks" comment="When enabled, this will remove the decoration from the bottom of the Shell Cave."/>
   </sprite> <!-- #341: Giant Koopa Shell Cave -->
 
-  <sprite id="342" name="Muncher" yoshinotes="Unlike in SMW, if Yoshi touches a Muncher, he will become hurt and will run away." notes="A black Muncher enemy that cannot be killed.">
-    <checkbox nybble="12.4" title="Frozen" comment="When enabled, the Muncher will be frozen. It can be thawed with a fireball."/>
+  <sprite id="342" name="Muncher" yoshinotes="Unlike in SMW, if Yoshi touches a Muncher, he will become hurt and will run away." notes="This sprite spawns the invisible spike tile from Pa0 as its collision. As a result, the Muncher must be placed on the tile grid for the hitbox to work properly. This also means the Muncher only has a hurtbox on the top by default. Off-grid Munchers spawn the spike tile at the top left grid position.">
+    <checkbox nybble="12.4" title="Frozen" comment="When enabled, the Muncher will be frozen. It can be thawed with a fireball. Yhe ice collision matches with off-grid frozen Munchers until they are melted."/>
   </sprite> <!-- #342: Muncher -->
 
   <sprite id="343" name="Line Controlled Fuzzy" noyoshi="True" notes="">
