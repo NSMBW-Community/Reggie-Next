@@ -266,7 +266,7 @@ class BGTab(QtWidgets.QWidget):
                     filename = os.path.join('reggiedata', ['bga', 'bgb'][slot_id], 'no_preview.png')
 
                 pix = QtGui.QPixmap(filename)
-                pix = pix.scaled(pix.width() * scale, pix.height() * scale)
+                pix = pix.scaled(int(pix.width() * scale), int(pix.height() * scale))
                 previews[slot_id][box_num].setPixmap(pix)
 
             # Alignment mode

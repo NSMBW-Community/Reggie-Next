@@ -109,7 +109,7 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
         painter.setRenderHint(painter.SmoothPixmapTransform)
 
         if self.pattern == 0 and self.shouldTile:
-            painter.drawTiledPixmap(0, 0, self.width * 1.5, self.height * 1.5, self.image)
+            painter.drawTiledPixmap(QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5), self.image)
         elif self.pattern == 1 and self.shouldTile:
             for y_ in range(self.height >> 4):
                 y = y_ * 24
