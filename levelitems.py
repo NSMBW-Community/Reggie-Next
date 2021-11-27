@@ -2500,7 +2500,7 @@ class EntranceItem(LevelEditorItem):
             """
             return self.BoundingRect
 
-    def __init__(self, x, y, id, destarea, destentrance, type, zone, layer, path, settings, cpd):
+    def __init__(self, x, y, id, destarea, destentrance, type, zone, layer, path, settings, leave_level_val, cpd):
         """
         Creates an entrance with specific data
         """
@@ -2525,8 +2525,9 @@ class EntranceItem(LevelEditorItem):
         self.entlayer = layer
         self.entpath = path
         self.listitem = None
-        self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
+        self.leave_level = (leave_level_val != 0)
         self.cpdirection = cpd
+        self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
 
         self.setFlag(self.ItemIsMovable, not globals_.EntrancesFrozen)
         self.setFlag(self.ItemIsSelectable, not globals_.EntrancesFrozen)
@@ -2552,11 +2553,12 @@ class EntranceItem(LevelEditorItem):
 
         if (self.entsettings & 0x80) != 0:
             destination = globals_.trans.string('Entrances', 2)
+        elif self.leave_level:
+            destination = globals_.trans.string('Entrances', 7)
+        elif self.destarea == 0:
+            destination = globals_.trans.string('Entrances', 3, '[id]', self.destentrance)
         else:
-            if self.destarea == 0:
-                destination = globals_.trans.string('Entrances', 3, '[id]', self.destentrance)
-            else:
-                destination = globals_.trans.string('Entrances', 4, '[id]', self.destentrance, '[area]', self.destarea)
+            destination = globals_.trans.string('Entrances', 4, '[id]', self.destentrance, '[area]', self.destarea)
 
         self.name = name
         self.destination = destination

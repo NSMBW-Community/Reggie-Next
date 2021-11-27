@@ -2133,7 +2133,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             print("ReggieWindow#CreateEntrance: Given entrance id (%d) already in use" % id_)
             return None
 
-        ent = EntranceItem(x, y, id_, 0, 0, 0, 0, 0, 0, 0x80, 0)
+        ent = EntranceItem(x, y, id_, 0, 0, 0, 0, 0, 0, 0x80, 0, 0)
         ent.positionChanged = self.HandleEntPosChange
         ent.listitem = ListWidgetItem_SortsByOther(ent)
 

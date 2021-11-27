@@ -263,6 +263,8 @@ class ReggieTranslation:
                     'Right',
                 ),
                 28: '([id]) [name]',
+                29: 'Send to World Map',
+                30: '[b]Send to World Map:[/b][br]If checked, the player will be sent to the world map when entering this entrance.',
             },
             'Entrances': {
                 0: '[b]Entrance [ent]:[/b][br]Type: [type][br][i][dest][/i]',
@@ -271,7 +273,8 @@ class ReggieTranslation:
                 3: '(arrives at entrance [id] in this area)',
                 4: '(arrives at entrance [id] in area [area])',
                 5: '[id]: [name] (cannot be entered) at [x], [y]',
-                6: '[id]: [name] (enterable) at [x], [y]'
+                6: '[id]: [name] (enterable) at [x], [y]',
+                7: '(goes to world map)',
             },
             'Err_BrokenSpriteData': {
                 0: 'Warning',

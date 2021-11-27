@@ -528,7 +528,7 @@ class Area:
         Loads block 7, the entrances
         """
         entdata = self.blocks[6]
-        entstruct = struct.Struct('>HHxxxxBBBBxBBBHxB')
+        entstruct = struct.Struct('>HHxxxxBBBBxBBBHBB')
 
         entrances = []
         for offset in range(0, len(entdata), 20):
@@ -815,7 +815,7 @@ class Area:
         Saves the entrances back to block 7
         """
         offset = 0
-        entstruct = struct.Struct('>HHxxxxBBBBxBBBHxB')
+        entstruct = struct.Struct('>HHxxxxBBBBxBBBHBB')
         buffer = bytearray(len(self.entrances) * 20)
         f_MapPositionToZoneID = SLib.MapPositionToZoneID
         zonelist = self.zones
@@ -832,7 +832,7 @@ class Area:
             entstruct.pack_into(buffer, offset, int(entrance.objx), int(entrance.objy),
                                 int(entrance.entid), int(entrance.destarea), int(entrance.destentrance),
                                 int(entrance.enttype), zoneID, int(entrance.entlayer), int(entrance.entpath),
-                                int(entrance.entsettings), int(entrance.cpdirection))
+                                int(entrance.entsettings), int(entrance.leave_level), int(entrance.cpdirection))
             offset += 20
         self.blocks[6] = bytes(buffer)
 

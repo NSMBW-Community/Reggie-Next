@@ -73,6 +73,10 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.activeLayer.setToolTip(globals_.trans.string('EntranceDataEditor', 22))
         self.activeLayer.activated.connect(self.HandleActiveLayerChanged)
 
+        self.exit_level_checkbox = QtWidgets.QCheckBox(globals_.trans.string('EntranceDataEditor', 29))
+        self.exit_level_checkbox.setToolTip(globals_.trans.string('EntranceDataEditor', 30))
+        self.exit_level_checkbox.clicked.connect(self.HandleExitLevelCheckboxClicked)
+
         self.cpDirection = QtWidgets.QComboBox()
         self.cpDirection.addItems(globals_.trans.stringList('EntranceDataEditor', 27))
         self.cpDirection.setToolTip(globals_.trans.string('EntranceDataEditor', 26))
@@ -105,22 +109,23 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         layout.addWidget(self.entranceType, 1, 1, 1, 3)
 
         layout.addWidget(self.destEntrance, 3, 3, 1, 1)
+        layout.addWidget(self.activeLayer, 4, 1, 1, 1)
         layout.addWidget(self.destArea, 4, 3, 1, 1)
         layout.addWidget(createHorzLine(), 5, 0, 1, 4)
         layout.addWidget(self.allowEntryCheckbox, 6, 0, 1, 2)  # , QtCore.Qt.AlignRight)
         layout.addWidget(self.unknownFlagCheckbox, 6, 2, 1, 2)  # , QtCore.Qt.AlignRight)
-        layout.addWidget(self.forwardPipeCheckbox, 7, 0, 1, 2)  # , QtCore.Qt.AlignRight)
-        layout.addWidget(self.connectedPipeCheckbox, 7, 2, 1, 2)  # , QtCore.Qt.AlignRight)
+        layout.addWidget(self.exit_level_checkbox, 7, 0, 1, 4)
+        layout.addWidget(self.forwardPipeCheckbox, 8, 0, 1, 2)  # , QtCore.Qt.AlignRight)
+        layout.addWidget(self.connectedPipeCheckbox, 8, 2, 1, 2)  # , QtCore.Qt.AlignRight)
 
         self.cpHorzLine = createHorzLine()
-        layout.addWidget(self.cpHorzLine, 8, 0, 1, 4)
-        layout.addWidget(self.connectedPipeReverseCheckbox, 9, 0, 1, 2)  # , QtCore.Qt.AlignRight)
-        layout.addWidget(self.pathID, 9, 3, 1, 1)
-        layout.addWidget(self.pathIDLabel, 9, 2, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(self.cpHorzLine, 9, 0, 1, 4)
+        layout.addWidget(self.connectedPipeReverseCheckbox, 10, 0, 1, 2)  # , QtCore.Qt.AlignRight)
+        layout.addWidget(self.pathID, 10, 3, 1, 1)
+        layout.addWidget(self.pathIDLabel, 10, 2, 1, 1, QtCore.Qt.AlignRight)
 
-        layout.addWidget(self.activeLayer, 4, 1, 1, 1)
-        layout.addWidget(self.cpDirectionLabel, 10, 0, 1, 2, QtCore.Qt.AlignRight)
-        layout.addWidget(self.cpDirection, 10, 2, 1, 2)
+        layout.addWidget(self.cpDirectionLabel, 11, 0, 1, 2, QtCore.Qt.AlignRight)
+        layout.addWidget(self.cpDirection, 11, 2, 1, 2)
 
         self.ent = None
         self.UpdateFlag = False
@@ -144,6 +149,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
 
         self.allowEntryCheckbox.setChecked(((ent.entsettings & 0x80) == 0))
         self.unknownFlagCheckbox.setChecked(((ent.entsettings & 2) != 0))
+        self.exit_level_checkbox.setChecked(ent.leave_level)
 
         self.connectedPipeCheckbox.setVisible(ent.enttype in self.CanUseFlag8)
         self.connectedPipeCheckbox.setChecked(((ent.entsettings & 8) != 0))
@@ -245,6 +251,16 @@ class EntranceEditorWidget(QtWidgets.QWidget):
             self.ent.entsettings |= 2
         else:
             self.ent.entsettings &= ~2
+
+    def HandleExitLevelCheckboxClicked(self, checked):
+        """
+        Handle the Send to World Map checkbox being clicked
+        """
+        if self.UpdateFlag or self.ent.leave_level == checked: return
+        SetDirty()
+        self.ent.leave_level = checked
+        self.ent.UpdateTooltip()
+        self.ent.UpdateListItem()
 
     def HandleConnectedPipeClicked(self, checked):
         """
