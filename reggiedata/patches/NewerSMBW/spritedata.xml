@@ -1609,29 +1609,22 @@
     <dualbox nybble="12.4" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Bramball will attempt to move first."/>
   </sprite> <!-- #230: Bramball -->
 
-  <!-- Test Upwards Lift for minimum and maximum value. Used values: 0, 2 -->
-  <!-- Test Upwards Lift for any overrides by Tilt Amount. Notes suggested that Tilt above 2 causes Upwards Lift to not function. -->
-  <!-- Test Tilts Left First vs Tilts Right First -->
   <sprite id="231" name="Wiggling Mushroom Platform" notes="A mushroom platform that can tilt back and forth.">
     <dependency notes="Wiggling Mushroom Platforms may be paired with [313] Wiggling Mushroom Controller to enable synchronized movement across a Zone.">
       <suggested sprite="313"/>
     </dependency>
-    <value nybble="5" title="Wiggling Mushroom ID" comment="This pairs the platform to a matching Wiggling Mushroom Controller for synchronized movement." comment2="If an ID is set, that ID will control and override all matching Wiggle Speeds." idtype="Wiggling"/>
-    <value nybble="11-12" title="Wiggle Speed" comment="This determines how quickly the platform will tilt from one side to the other." comment2="If set to 0 the platform will not wiggle at all, but can still have Upwards Lift." requirednybble="5" requiredval="0"/> <!-- Disappears if Wiggling Mushroom ID is set -->
-    <value nybble="10.2-10.4" title="Tilt Distance" comment="This determines how much the platform will tilt." comment2="A value of 1 or 2 is recommended." requirednybble="11-12"/>
-    <dualbox nybble="8.2" title1="Tilts Left First" title2="Tilts Right First" comment="This determines the initial direction the platform will tilt in." requirednybble="11-12"/>
-    <value nybble="7" title="Upwards Lift" comment="This determines how much vertical movement is mixed into the tilting motion." comment2="May have combination restrictions."/>
+	<dualbox nybble="7.3" title1="Doesn't Extend" title2="Extends" comment="This determines whether or not the platform extends and contracts."/>
+    <value nybble="5" title="Wiggling Mushroom ID" comment="This pairs the platform to a matching Wiggling Mushroom Controller for synchronized movement. If an ID is set, that ID will control and override all matching Wiggle Speeds." idtype="Wiggling"/>
+    <value nybble="11-12" title="Wiggle Speed" requirednybble="5" requiredval="0"/>
+    <value nybble="10.2-10.4" title="Tilt Distance" comment="This determines how much the platform will tilt. A value of 1 or 2 is recommended."/>
     <list nybble="6" title="Color" comment="This determines the color of the Mushroom Platform.">
       <entry value="0">Metal Pink</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
-      <!-- <entry value="3">Yellow</entry> Not in Newer -->
       <entry value="4">Green</entry>
       <entry value="5">Blue</entry>
-      <!-- <entry value="6">Violet</entry> Not in Newer -->
-      <!-- <entry value="7">Black</entry> Not in Newer -->
     </list>
-    <list nybble="9" title="Width of Platform" comment="This determines the width of the mushroom platform.">
+    <list nybble="9" title="Width of Platform">
       <entry value="0">3 Blocks</entry>
       <entry value="1">4 Blocks</entry>
       <entry value="2">5 Blocks</entry>
@@ -1649,12 +1642,19 @@
       <entry value="14">17 Blocks</entry>
       <entry value="15">18 Blocks</entry>
     </list>
-    <list nybble="8.3-8.4" title="Length of Stem" comment="This determines the length of the decorative mushroom stem.">
+    <list nybble="8.3-8.4" title="Extend Distance" requirednybble="7.3">
+      <entry value="0">0 Blocks</entry>
+      <entry value="1">1 Blocks</entry>
+      <entry value="2">2 Blocks</entry>
+      <entry value="3">3 Blocks</entry>
+    </list>
+    <list nybble="8.3-8.4" title="Stem Length" requirednybble="7.3" requiredval="0">
       <entry value="0">3 Blocks</entry>
       <entry value="1">4 Blocks</entry>
       <entry value="2">5 Blocks</entry>
       <entry value="3">6 Blocks</entry>
     </list>
+    <dualbox nybble="8.2" title1="Short Stem" title2="Long Stem" comment="This determines the length of the stem when the platform is contracted." requirednybble="7.3"/>
   </sprite> <!-- 231: Wiggling Mushroom Platform -->
 
   <sprite id="239" name="Event Block" notes="A red or green block that, when struck, will affect the state of the Target Event(s). Events that are deactivated will become activated, and those that are activated will become deactivated." advancednotes="Kamek code references the events by the opposite number.">
@@ -2533,11 +2533,12 @@
     </dependency>
   </sprite> <!-- #431: Boss Controller - Bowser -->
 
-  <sprite id="433" name="Floating ? Block" notes="A slightly-larger-than-normal ? Block that floats on the surface of the Zone's non-Location Water, Poisoned Water, or Lava.">
-    <dependency notes="Place this block at the horizontal position you want it to load, and it will spawn floating at the surface line of the body of liquid. It only works with non-Location liquids, and it does work with Moving liquids.">
+  <sprite id="433" name="Floating ? Block" notes="A slightly-larger-than-normal ? Block that floats on the surface of the Zone's non-Location Water, Raft Water, Poisoned Water, or Lava.">
+    <dependency notes="Place this block at the horizontal position you want it to load, and it will spawn floating at the surface line of the body of liquid. It only works with the non-Location liquid sprites listed below.">
       <suggested sprite="138"/>
       <suggested sprite="139"/>
       <suggested sprite="216"/>
+      <suggested sprite="373"/>
     </dependency>
     <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players.">
       <entry value="0">Empty</entry>

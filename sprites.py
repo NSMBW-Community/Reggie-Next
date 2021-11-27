@@ -4803,6 +4803,8 @@ class SpriteImage_WiggleShroom(SLib.SpriteImage):  # 231
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
+        self.parent.setZValue(24999)
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
 
     @staticmethod
     def loadImages():
@@ -4814,24 +4816,37 @@ class SpriteImage_WiggleShroom(SLib.SpriteImage):  # 231
 
     def dataChanged(self):
         super().dataChanged()
-
         width = (self.parent.spritedata[4] & 0xF0) >> 4
-        stemlength = self.parent.spritedata[3] & 3
+        long = (self.parent.spritedata[3] >> 2) & 1
+        extends = (self.parent.spritedata[3] >> 5) & 1
+        distance = self.parent.spritedata[3] & 3 # this is also the stem length
 
         self.xOffset = -(width * 8) - 20
         self.width = (width * 16) + 56
-        self.height = (stemlength * 16) + 64
+        self.wiggleleft = ImageCache['WiggleShroomL']
+        self.wigglemiddle = ImageCache['WiggleShroomM']
+        self.wiggleright = ImageCache['WiggleShroomR']
+        self.wigglestem = ImageCache['WiggleShroomS']
 
-        self.parent.setZValue(24999)
+        if extends:
+            self.aux[0].setPos((self.width * 0.75) - 12, (-distance * 24))
+            self.aux[0].setSize(16, (distance * 32))
+            if long:
+                self.height = 96
+            else:
+                self.height = 64
+        else:
+            self.aux[0].setSize(0, 0)
+            self.height = (distance * 16) + 64
 
     def paint(self, painter):
         super().paint(painter)
 
         xsize = self.width * 1.5
-        painter.drawPixmap(0, 0, ImageCache['WiggleShroomL'])
-        painter.drawTiledPixmap(18, 0, xsize - 36, 24, ImageCache['WiggleShroomM'])
-        painter.drawPixmap(xsize - 18, 0, ImageCache['WiggleShroomR'])
-        painter.drawTiledPixmap((xsize / 2) - 12, 24, 24, (self.height * 1.5) - 24, ImageCache['WiggleShroomS'])
+        painter.drawPixmap(0, 0, self.wiggleleft)
+        painter.drawTiledPixmap(18, 0, xsize - 36, 24, self.wigglemiddle)
+        painter.drawPixmap(xsize - 18, 0, self.wiggleright)
+        painter.drawTiledPixmap((xsize / 2) - 12, 24, 24, (self.height * 1.5) - 24, self.wigglestem)
 
 
 class SpriteImage_MechaKoopa(SLib.SpriteImage_Static):  # 232
@@ -6400,8 +6415,8 @@ class SpriteImage_IggyKoopa(SLib.SpriteImage_Static):  # 337
         SLib.loadIfNotInImageCache('IggyKoopa', 'Iggy_Koopa.png')
 
 
-# Copied and edited from Miyamoto, credit to mrbengtsson for original code!!!!
-class SpriteImage_MovingBulletBillLauncher(SLib.SpriteImage):  # 172
+# Copied and edited from Miyamoto, credit to mrbengtsson for original code
+class SpriteImage_MovingBulletBillLauncher(SLib.SpriteImage):  # 338
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spritebox.shown = False

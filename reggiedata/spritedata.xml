@@ -3572,19 +3572,15 @@
     <dualbox nybble="12.4" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Bramball will attempt to move first."/>
   </sprite> <!-- #230: Bramball -->
 
-  <!-- Test Upwards Lift for minimum and maximum value. Used values: 0, 2 -->
-  <!-- Test Upwards Lift for any overrides by Tilt Amount. Notes suggested that Tilt above 2 causes Upwards Lift to not function. -->
-  <!-- Test Tilts Left First vs Tilts Right First -->
   <sprite id="231" name="Wiggling Mushroom Platform" notes="A mushroom platform that can tilt back and forth.">
     <dependency notes="Wiggling Mushroom Platforms may be paired with [313] Wiggling Mushroom Controller to enable synchronized movement across a Zone.">
       <suggested sprite="313"/>
     </dependency>
-    <value nybble="5" title="Wiggling Mushroom ID" comment="This pairs the platform to a matching Wiggling Mushroom Controller for synchronized movement." comment2="If an ID is set, that ID will control and override all matching Wiggle Speeds." idtype="Wiggling"/>
-    <value nybble="11-12" title="Wiggle Speed" comment="This determines how quickly the platform will tilt from one side to the other." comment2="If set to 0 the platform will not wiggle at all, but can still have Upwards Lift." requirednybble="5" requiredval="0"/> <!-- Disappears if Wiggling Mushroom ID is set -->
-    <value nybble="10.2-10.4" title="Tilt Distance" comment="This determines how much the platform will tilt." comment2="A value of 1 or 2 is recommended." requirednybble="11-12"/>
-    <dualbox nybble="8.2" title1="Tilts Left First" title2="Tilts Right First" comment="This determines the initial direction the platform will tilt in." requirednybble="11-12"/>
-    <value nybble="7" title="Upwards Lift" comment="This determines how much vertical movement is mixed into the tilting motion." comment2="May have combination restrictions."/>
-    <list nybble="9" title="Width of Platform" comment="This determines the width of the mushroom platform.">
+	<dualbox nybble="7.3" title1="Doesn't Extend" title2="Extends" comment="This determines whether or not the platform extends and contracts."/>
+    <value nybble="5" title="Wiggling Mushroom ID" comment="This pairs the platform to a matching Wiggling Mushroom Controller for synchronized movement. If an ID is set, that ID will control and override all matching Wiggle Speeds." idtype="Wiggling"/>
+    <value nybble="11-12" title="Wiggle Speed" requirednybble="5" requiredval="0"/>
+    <value nybble="10.2-10.4" title="Tilt Distance" comment="This determines how much the platform will tilt. A value of 1 or 2 is recommended."/>
+    <list nybble="9" title="Width of Platform">
       <entry value="0">3 Blocks</entry>
       <entry value="1">4 Blocks</entry>
       <entry value="2">5 Blocks</entry>
@@ -3602,12 +3598,19 @@
       <entry value="14">17 Blocks</entry>
       <entry value="15">18 Blocks</entry>
     </list>
-    <list nybble="8.3-8.4" title="Length of Stem" comment="This determines the length of the decorative mushroom stem.">
+    <list nybble="8.3-8.4" title="Extend Distance" requirednybble="7.3">
+      <entry value="0">0 Blocks</entry>
+      <entry value="1">1 Blocks</entry>
+      <entry value="2">2 Blocks</entry>
+      <entry value="3">3 Blocks</entry>
+    </list>
+    <list nybble="8.3-8.4" title="Stem Length" requirednybble="7.3" requiredval="0">
       <entry value="0">3 Blocks</entry>
       <entry value="1">4 Blocks</entry>
       <entry value="2">5 Blocks</entry>
       <entry value="3">6 Blocks</entry>
     </list>
+    <dualbox nybble="8.2" title1="Short Stem" title2="Long Stem" comment="This determines the length of the stem when the platform is contracted." requirednybble="7.3"/>
   </sprite> <!-- 231: Wiggling Mushroom Platform -->
 
   <sprite id="232" name="Mecha-Koopa" noyoshi="True" notes="A mechanical wind-up Koopa that can be picked up after being stomped on and carried around like a shell.">
@@ -4723,7 +4726,7 @@
       <required sprite="231"/>
     </dependency>
     <value nybble="5" title="Wiggling Mushroom ID" comment="This pairs matching platforms to this controller for movement synchronization." idtype="Wiggling"/>
-    <value nybble="11-12" title="Wiggle Speed" comment="This determines how quickly the platform will tilt from one side to the other." comment2="This will also override the Wiggle Speed setting of all paired platforms."/>
+    <value nybble="11-12" title="Wiggle Speed" comment="This speed will override the Wiggle Speed setting of all paired platforms."/>
   </sprite> <!-- #313: Wiggling Mushroom Platform Controller -->
 
   <sprite id="314" name="Effect - Bubble Spawner" notes="A Bubble Spawner that creates occasional rising air bubbles from the placement of the sprite.">
@@ -5171,7 +5174,7 @@
   </sprite> <!-- #341: Giant Koopa Shell Cave -->
 
   <sprite id="342" name="Muncher" yoshinotes="Unlike in SMW, if Yoshi touches a Muncher, he will become hurt and will run away." notes="This sprite spawns the invisible spike tile from Pa0 as its collision. As a result, the Muncher must be placed on the tile grid for the hitbox to work properly. This also means the Muncher only has a hurtbox on the top by default. Off-grid Munchers spawn the spike tile at the top left grid position.">
-    <checkbox nybble="12.4" title="Frozen" comment="When enabled, the Muncher will be frozen. It can be thawed with a fireball. Yhe ice collision matches with off-grid frozen Munchers until they are melted."/>
+    <checkbox nybble="12.4" title="Frozen" comment="When enabled, the Muncher will be frozen. It can be thawed with a fireball. The ice collision matches with off-grid frozen Munchers until they are melted."/>
   </sprite> <!-- #342: Muncher -->
 
   <sprite id="343" name="Line Controlled Fuzzy" noyoshi="True" notes="">
@@ -6490,11 +6493,12 @@
   <sprite id="432" name="Toad NPC" notes="A non-interactive Toad that will turn and face the player. A few sprites rely on its presence in a level to work.">
   </sprite> <!-- #432: Toad NPC -->
 
-  <sprite id="433" name="Floating ? Block" notes="A slightly-larger-than-normal ? Block that floats on the surface of the Zone's non-Location Water, Poisoned Water, or Lava.">
-    <dependency notes="Place this block at the horizontal position you want it to load, and it will spawn floating at the surface line of the body of liquid. It only works with non-Location liquids, and it does work with Moving liquids.">
+  <sprite id="433" name="Floating ? Block" notes="A slightly-larger-than-normal ? Block that floats on the surface of the Zone's non-Location Water, Raft Water, Poisoned Water, or Lava.">
+    <dependency notes="Place this block at the horizontal position you want it to load, and it will spawn floating at the surface line of the body of liquid. It only works with the non-Location liquid sprites listed below.">
       <suggested sprite="138"/>
       <suggested sprite="139"/>
       <suggested sprite="216"/>
+      <suggested sprite="373"/>
     </dependency>
     <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players.">
       <entry value="0">Empty</entry>

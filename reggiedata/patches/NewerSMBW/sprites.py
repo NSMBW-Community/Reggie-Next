@@ -1573,6 +1573,8 @@ class SpriteImage_NewerWiggleShroom(SLib.SpriteImage):  # 231
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
+        self.parent.setZValue(24999)
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
 
     @staticmethod
     def loadImages():
@@ -1591,12 +1593,15 @@ class SpriteImage_NewerWiggleShroom(SLib.SpriteImage):  # 231
 
     def dataChanged(self):
         super().dataChanged()
-
         width = (self.parent.spritedata[4] & 0xF0) >> 4
-        stemlength = self.parent.spritedata[3] & 3
+        long = (self.parent.spritedata[3] >> 2) & 1
+        extends = (self.parent.spritedata[3] >> 5) & 1
+        distance = self.parent.spritedata[3] & 3 # this is also the stem length
         colour = (self.parent.spritedata[2] & 0xF) % 6
         shroom = ("", "red", "orange", "", "green", "blue")[colour]
 
+        self.xOffset = -(width * 8) - 20
+        self.width = (width * 16) + 56
         self.wiggleleft = ImageCache['WiggleShroom%sL' % shroom]
         self.wigglemiddle = ImageCache['WiggleShroom%sM' % shroom]
         self.wiggleright = ImageCache['WiggleShroom%sR' % shroom]
@@ -1605,11 +1610,16 @@ class SpriteImage_NewerWiggleShroom(SLib.SpriteImage):  # 231
         else:
             self.wigglestem = ImageCache['WiggleShroomS']
 
-        self.xOffset = -(width * 8) - 20
-        self.width = (width * 16) + 56
-        self.height = (stemlength * 16) + 64
-
-        self.parent.setZValue(24999)
+        if extends:
+            self.aux[0].setPos((self.width * 0.75) - 12, (-distance * 24))
+            self.aux[0].setSize(16, (distance * 32))
+            if long:
+                self.height = 96
+            else:
+                self.height = 64
+        else:
+            self.aux[0].setSize(0, 0)
+            self.height = (distance * 16) + 64
 
     def paint(self, painter):
         super().paint(painter)
