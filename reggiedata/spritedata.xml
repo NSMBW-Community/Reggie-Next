@@ -598,14 +598,26 @@
   </sprite> <!-- #49: (Unused) Seesaw Platform -->
 
   <sprite id="50" name="Basic Platform - Fall-When-Touched" notes="This platform will begin to fall when a player first touches it.">
-    <list nybble="7.3-7.4" title="Color" comment="This determines the color of the platform.">
+    <list nybble="7" title="Color" comment="This determines the color of the platform. Values not listed here result in 'Normal'.">
       <entry value="0">Normal</entry>
       <entry value="1">Silver</entry>
       <entry value="3">Bone</entry>
     </list>
     <value nybble="12" title="Width" comment="This determines the length of the platform." comment2="&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;Do not use a Width of 0.&lt;/font&gt;"/>
     <dualbox nybble="11.4" title1="Instant, Fast Fall" title2="Delayed, Slow Fall" comment="This determines the rate at which the platform will fall when activated."/>
-    <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="ASM shows Nybble 10 might affect something."/>
+    <list nybble="10" title="Minimum number of players" comment="The platform immediately despawns if there are fewer players than specified here. Setting this nybble to even higher values causes the platform to always despawn, since there can be at most 4 players.">
+      <entry value="0">1 Player</entry>
+      <entry value="1">2 Players</entry>
+      <entry value="2">3 Players</entry>
+      <entry value="3">4 Players</entry>
+    </list>
+    <list nybble="9" title="Minimum number of players for platform to fall" comment="The platform falls when there are at least the number of players specified here on top of it. Setting this nybble to even higher values causes the platform to never fall, since there can be at most 4 players.">
+      <entry value="0">1 Player</entry>
+      <entry value="1">2 Players</entry>
+      <entry value="2">3 Players</entry>
+      <entry value="3">4 Players</entry>
+      <entry value="4">5 Players (never falls)</entry>
+    </list>
   </sprite> <!-- #50: Fall-When-Touched Platform -->
 
   <sprite id="51" name="Tilt Controlled Girder" notes="This is the Tilt Controlled Girder (Beam) platform that is assigned to the first player to touch it. That player will maintain tilt control for as long as they are touching it.">
