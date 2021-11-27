@@ -19,6 +19,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed))
 
         LoadEntranceNames()
+        self.CanUseFlag40 = {0, 1, 7, 8, 9, 12, 20, 21, 22, 23, 24, 27}
         self.CanUseFlag8 = {3, 4, 5, 6, 16, 17, 18, 19}
         self.CanUseFlag4 = {3, 4, 5, 6}
 
@@ -77,6 +78,10 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.exit_level_checkbox.setToolTip(globals_.trans.string('EntranceDataEditor', 30))
         self.exit_level_checkbox.clicked.connect(self.HandleExitLevelCheckboxClicked)
 
+        self.spawnHalfTileLeftCheckbox = QtWidgets.QCheckBox(globals_.trans.string('EntranceDataEditor', 31))
+        self.spawnHalfTileLeftCheckbox.setToolTip(globals_.trans.string('EntranceDataEditor', 32))
+        self.spawnHalfTileLeftCheckbox.clicked.connect(self.HandleSpawnHalfTileLeftClicked)
+
         self.cpDirection = QtWidgets.QComboBox()
         self.cpDirection.addItems(globals_.trans.stringList('EntranceDataEditor', 27))
         self.cpDirection.setToolTip(globals_.trans.string('EntranceDataEditor', 26))
@@ -114,7 +119,8 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         layout.addWidget(createHorzLine(), 5, 0, 1, 4)
         layout.addWidget(self.allowEntryCheckbox, 6, 0, 1, 2)  # , QtCore.Qt.AlignRight)
         layout.addWidget(self.unknownFlagCheckbox, 6, 2, 1, 2)  # , QtCore.Qt.AlignRight)
-        layout.addWidget(self.exit_level_checkbox, 7, 0, 1, 4)
+        layout.addWidget(self.exit_level_checkbox, 7, 0, 1, 2)
+        layout.addWidget(self.spawnHalfTileLeftCheckbox, 7, 2, 1, 2)
         layout.addWidget(self.forwardPipeCheckbox, 8, 0, 1, 2)  # , QtCore.Qt.AlignRight)
         layout.addWidget(self.connectedPipeCheckbox, 8, 2, 1, 2)  # , QtCore.Qt.AlignRight)
 
@@ -151,6 +157,9 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.unknownFlagCheckbox.setChecked(((ent.entsettings & 2) != 0))
         self.exit_level_checkbox.setChecked(ent.leave_level)
 
+        self.spawnHalfTileLeftCheckbox.setVisible(ent.enttype in self.CanUseFlag40)
+        self.spawnHalfTileLeftCheckbox.setChecked(((ent.entsettings & 0x40) != 0))
+
         self.connectedPipeCheckbox.setVisible(ent.enttype in self.CanUseFlag8)
         self.connectedPipeCheckbox.setChecked(((ent.entsettings & 8) != 0))
 
@@ -185,12 +194,24 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateListItem()
         self.editingLabel.setText(globals_.trans.string('EntranceDataEditor', 23, '[id]', i))
 
+    def HandleSpawnHalfTileLeftClicked(self, checked):
+        """
+        Handle for the Spawn Half a Tile Left checkbox being clicked
+        """
+        if self.UpdateFlag: return
+        SetDirty()
+        if checked:
+            self.ent.entsettings |= 0x40
+        else:
+            self.ent.entsettings &= ~0x40
+
     def HandleEntranceTypeChanged(self, new_index):
         """
         Handler for the entrance type changing
         """
         i = list(globals_.EntranceTypeNames)[new_index]
 
+        self.spawnHalfTileLeftCheckbox.setVisible(i in self.CanUseFlag40)
         self.connectedPipeCheckbox.setVisible(i in self.CanUseFlag8)
         self.connectedPipeReverseCheckbox.setVisible(i in self.CanUseFlag8 and ((self.ent.entsettings & 8) != 0))
         self.pathIDLabel.setVisible(i and ((self.ent.entsettings & 8) != 0))
