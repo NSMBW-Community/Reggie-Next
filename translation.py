@@ -293,6 +293,7 @@ class ReggieTranslation:
             'Err_Decompress': {
                 0: 'Error',
                 1: 'Failed to decompress the LH-compressed file [file].',
+                2: 'Failed to decompress the LZ-compressed file [file].',
             },
             'Err_InvalidLevel': {
                 0: 'This file doesn\'t seem to be a valid level.',
@@ -317,11 +318,12 @@ class ReggieTranslation:
                 2: 'All Files',
                 3: 'Save As: Choose a new filename',
                 4: 'Portable Network Graphics',
-                5: 'Compressed Level Archives',
+                5: 'LH-Compressed Level Archives',
                 6: 'Choose a stamp archive',
                 7: 'Stamps File',
                 8: 'Save Copy: Choose a new filename',
                 9: 'All Supported Level Archives',
+                10: 'LZ-Compressed Level Archives',
             },
             'Gamedefs': {
                 0: 'This game has custom sprite images',

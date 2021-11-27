@@ -88,7 +88,7 @@ import globals_
 ################################################################################
 ################################################################################
 
-from libs import lh, lib_versions
+from libs import lh, lib_versions, lz77
 from ui import GetIcon, SetAppStyle, GetDefaultStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, IconsOnlyTabBar
 from misc import LoadActionsLists, LoadTilesetNames, LoadBgANames, LoadBgBNames, LoadConstantLists, LoadObjDescriptions, LoadSpriteData, LoadSpriteListData, LoadEntranceNames, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePath, isValidGamePath
 from misc2 import LevelScene, LevelViewWidget
@@ -2272,6 +2272,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         filetypes = ''
         filetypes += globals_.trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;'  # *.arc
         filetypes += globals_.trans.string('FileDlgs', 5) + ' (*' + '.arc' + '.LH);;'  # *.arc.LH
+        filetypes += globals_.trans.string('FileDlgs', 10) + ' (*' + '.arc' + '.LZ);;'  # *.arc.LZ
         filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'  # *
         fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), '', filetypes)[0]
         if fn == '': return
@@ -2488,9 +2489,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if self.CheckDirty(): return
 
         filetypes = ''
-        filetypes += globals_.trans.string('FileDlgs', 9) + ' (*.arc *.arc.LH);;'   # *.arc, *arc.LH
+        filetypes += globals_.trans.string('FileDlgs', 9) + ' (*.arc *.arc.LH *.arc.LZ);;'   # *.arc, *arc.LH, *.arc.LZ
         filetypes += globals_.trans.string('FileDlgs', 1) + ' (*.arc);;'            # *.arc
         filetypes += globals_.trans.string('FileDlgs', 5) + ' (*.arc.LH);;'         # *.arc.LH
+        filetypes += globals_.trans.string('FileDlgs', 10) + ' (*.arc.LZ);;'         # *.arc.LZ
         filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'                  # *
         fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), '', filetypes)[0]
         if fn == '': return
@@ -3060,6 +3062,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     except IndexError:
                         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
                                                       globals_.trans.string('Err_Decompress', 1, '[file]', name))
+                        return False
+                elif not levelData.startswith(b"U\xAA8-"):  # If LZ-compressed
+                    try:
+                        levelData = lz77.UncompressLZ77(levelData)
+                    except IndexError:
+                        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
+                                                      globals_.trans.string('Err_Decompress', 2, '[file]', name))
                         return False
 
             else:

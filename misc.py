@@ -80,15 +80,9 @@ def IsNSMBLevel(filename):
 
     globals_.compressed = False
 
-    if (data[0] & 0xF0) == 0x40:  # If LH-compressed
-        try:
-            data = lh.UncompressLH(data)
-        except IndexError:
-            QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
-                                          globals_.trans.string('Err_Decompress', 1, '[file]', filename))
-            return False
-
+    if (data[0] & 0xF0) == 0x40 or not data.startswith(b"U\xAA8-"):  # If LH-compressed or LZ-compressed
         globals_.compressed = True
+        return True
 
     return checkContent(data)
 
