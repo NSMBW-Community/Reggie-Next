@@ -491,22 +491,26 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
             (16, 7, 14, 10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16)
         )[rawdistance]
         distance += 1  # In order to hide one side of the track behind the image.
+        speed = (self.parent.spritedata[2] >> 4) & 3
 
         L = 615
         W = 617  # 16 mid sections + an end section
 
-        if self.dir == 'up':
-            self.aux[0].setPos(36, 24 - (distance * 24))
-            self.aux[0].setSize(16, distance * 16)
-        elif self.dir == 'down':
-            self.aux[0].setPos(36, L - 24)
-            self.aux[0].setSize(16, distance * 16)
-        elif self.dir == 'left':
-            self.aux[0].setPos(24 - (distance * 24), 36)
-            self.aux[0].setSize(distance * 16, 16)
-        elif self.dir == 'right':
-            self.aux[0].setPos(W - 24, 36)
-            self.aux[0].setSize(distance * 16, 16)
+        if speed == 3:
+            self.aux[0].setSize(0, 0)
+        else:    
+            if self.dir == 'up':
+                self.aux[0].setPos(36, 24 - (distance * 24))
+                self.aux[0].setSize(16, distance * 16)
+            elif self.dir == 'down':
+                self.aux[0].setPos(36, L - 24)
+                self.aux[0].setSize(16, distance * 16)
+            elif self.dir == 'left':
+                self.aux[0].setPos(24 - (distance * 24), 36)
+                self.aux[0].setSize(distance * 16, 16)
+            else:
+                self.aux[0].setPos(W - 24, 36)
+                self.aux[0].setSize(distance * 16, 16)
 
     def paint(self, painter):
         super().paint(painter)
