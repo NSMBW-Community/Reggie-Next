@@ -83,6 +83,7 @@ Other Testers and Contributors:
  * Tobias and Valeth - Text Tileset Addon
  * Meorge and grishhung - The Reggie Next Icons (Windows and Mac)
  * Toms - Mac Builds
+ * Vaati456, Shudfly, N-I-N-0, B1Gaming, Stage13-10, techmuse8 - Miscellaneous Contributions
 
 
 ### Dependencies/Libraries/Resources
