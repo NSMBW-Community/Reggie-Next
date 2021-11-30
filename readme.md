@@ -22,9 +22,9 @@ https://github.com/CLF78/Reggie-Next/
 
 ### Getting Started
 
-If you're on Windows and don't care about having the bleeding-edge latest features, you can use the official release. This is by far the easiest setup method.
+If you're on Windows or Mac and don't care about having the bleeding-edge latest features, you can use the official release. This is by far the easiest setup method.
 
-If you are not on Windows or you want the very latest features, you'll need to run Reggie! from source.
+If you are not on those systems or you want the very latest features, you'll need to run Reggie! from source.
 
 
 ### How to Run Reggie! from Source
@@ -76,12 +76,13 @@ Developers:
  * joietyfull64 - Sprite Data (NSMBW)
  * MidiGuyDP - Background Images & Names (NewerSMBW)
  * SnakeBlock - Sprite Data (NSMBW)
- * Danster64 - Sprite Data (NSMBW, NewerSMBW), Sprite Images (NSMBW, NewerSMBW)
+ * Danster64 - Sprite Data (NSMBW, NewerSMBW), Sprite Images (NSMBW, NewerSMBW), Windows Builds
 
 Other Testers and Contributors:
  * BulletBillTime, Dirbaio, EdgarAllen, FirePhoenix, GrandMasterJimmy, Mooseknuckle2000, MotherBrainsBrain, RainbowIE, Skawo, Sonicandtails, Tanks, Vibestar, angelsl, ant888, gamesquest1, iZackefx
  * Tobias and Valeth - Text Tileset Addon
  * Meorge and grishhung - The Reggie Next Icons (Windows and Mac)
+ * Toms - Mac Builds
 
 
 ### Dependencies/Libraries/Resources
