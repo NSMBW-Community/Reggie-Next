@@ -339,45 +339,75 @@ class ReggieGameDefinition:
         # Use the fallback
         return fallback
 
-    def GetGamePath(self):
+    def GetTextureGamePath(self):
         """
-        Returns the game path
+        Returns the texture game path
         """
-        if not self.custom: return setting('GamePath')
-        name = 'GamePath_' + self.name
+        if not self.custom:
+            return setting('TextureGamePath')
+
+        name = 'TextureGamePath_' + self.name
         setname = setting(name)
 
         # Use the default if there are no settings for this yet
         if setname is None:
-            return setting('GamePath')
+            return setting('TextureGamePath')
         else:
             return str(setname)
 
-    def SetGamePath(self, path):
+    def SetTextureGamePath(self, path):
         """
-        Sets the game path
+        Sets the texture game path
         """
         if not self.custom:
-            setSetting('GamePath', path)
+            setSetting('TextureGamePath', path)
         else:
-            name = 'GamePath_' + self.name
+            name = 'TextureGamePath_' + self.name
             setSetting(name, path)
 
-    def GetGamePaths(self):
+    def GetStageGamePath(self):
         """
-        Returns game paths of this globals_.gamedef and its bases
+        Returns the stage game path
         """
-        mainpath = setting('GamePath')
-        if not self.custom: return [mainpath, ]
+        if not self.custom:
+            return setting('StageGamePath')
 
-        name = 'GamePath_' + self.name
-        stg = setting(name)
-        if self.base is None:
-            return [mainpath, stg]
+        name = 'StageGamePath_' + self.name
+        setname = setting(name)
+
+        # Use the default if there are no settings for this yet
+        if setname is None:
+            return setting('StageGamePath')
         else:
-            paths = self.base.GetGamePaths()
-            paths.append(stg)
+            return str(setname)
+
+    def SetStageGamePath(self, path):
+        """
+        Sets the stage game path
+        """
+        if not self.custom:
+            setSetting('StageGamePath', path)
+        else:
+            name = 'StageGamePath_' + self.name
+            setSetting(name, path)
+
+    def GetTexturePaths(self):
+        """
+        Returns the texture game paths of this globals_.gamedef and its bases
+        """
+        paths = [setting('TextureGamePath')]
+
+        if not self.custom:
             return paths
+
+        stg = setting('TextureGamePath_' + self.name)
+
+        if self.base is not None:
+            paths = self.base.GetTexturePaths()
+
+        paths.append(stg)
+
+        return paths
 
     def GetLastLevel(self):
         """

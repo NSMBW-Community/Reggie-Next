@@ -185,6 +185,7 @@ class ReggieTranslation:
                 1: 'Error',
                 2: 'This folder doesn\'t have all of the files from the extracted New Super Mario Bros. Wii Stage folder.',
                 3: 'This folder doesn\'t seem to have the required files. In order to use Reggie Next in New Super Mario Bros Wii mode, you need the Stage folder from New Super Mario Bros. Wii, including the Texture folder and the level files contained within it.',
+                4: 'Choose the Texture folder from [game]',
             },
             'Comments': {
                 0: '[x], [y]: [text]',

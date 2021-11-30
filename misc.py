@@ -112,30 +112,39 @@ def FilesAreMissing():
     return False
 
 
-def SetGamePath(newpath):
+def SetGamePaths(new_stage_path, new_texture_path):
     """
     Sets the NSMBWii game path
     """
-    # you know what's fun?
-    # isValidGamePath crashes in os.path.join if QString is used..
-    # so we must change it to a Python string manually
-    globals_.gamedef.SetGamePath(str(newpath))
+    # os.path.join crashes if QStrings are used, so we must change the paths to
+    # a Python string manually
+    globals_.gamedef.SetStageGamePath(str(new_stage_path))
+    globals_.gamedef.SetTextureGamePath(str(new_texture_path))
 
 
-def isValidGamePath(check='ug'):
+def areValidGamePaths(stage_check='ug', texture_check='ug'):
     """
     Checks to see if the path for NSMBWii contains a valid game
     """
-    if check == 'ug': check = globals_.gamedef.GetGamePath()
+    if stage_check == 'ug':
+        stage_check = globals_.gamedef.GetStageGamePath()
 
-    if check is None or check == '': return False
-    if not os.path.isdir(check): return False
-    if not os.path.isdir(os.path.join(check, 'Texture')): return False
-    if not (os.path.isfile(os.path.join(check, '01-01.arc'))
-            or os.path.isfile(os.path.join(check, '01-01.arc.LH'))): return False
+    if texture_check == 'ug':
+        texture_check = globals_.gamedef.GetTextureGamePath()
 
-    return True
+    if not stage_check or not texture_check:
+        return False
 
+    # Check that both the stage and texture folders exist
+    if not os.path.isdir(stage_check) or not os.path.isdir(texture_check):
+        return False
+
+    # Check that a readable 01-01 file is located in the stage folder
+    for ext in globals_.FileExtentions:
+        if os.path.isfile(os.path.join(stage_check, "01-01" + ext)):
+            return True
+
+    return False
 
 def LoadLevelNames():
     """

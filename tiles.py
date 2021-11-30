@@ -858,13 +858,13 @@ def LoadTileset(idx, name, reload_=False):
         return False
 
     # find the tileset path
-    tileset_paths = reversed(globals_.gamedef.GetGamePaths())
+    tileset_paths = reversed(globals_.gamedef.GetTexturePaths())
 
     found = False
     for path in tileset_paths:
         if path is None: break
 
-        arcname = os.path.join(path, "Texture", name + ".arc.LH")
+        arcname = os.path.join(path, name + ".arc.LH")
 
         # Prioritise .arc.LH over regular .arc, just like the game does.
         if os.path.isfile(arcname):

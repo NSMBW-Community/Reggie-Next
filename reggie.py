@@ -90,7 +90,7 @@ import globals_
 
 from libs import lh, lib_versions, lz77
 from ui import GetIcon, SetAppStyle, GetDefaultStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, IconsOnlyTabBar
-from misc import LoadActionsLists, LoadTilesetNames, LoadBgANames, LoadBgBNames, LoadConstantLists, LoadObjDescriptions, LoadSpriteData, LoadSpriteListData, LoadEntranceNames, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePath, isValidGamePath
+from misc import LoadActionsLists, LoadTilesetNames, LoadBgANames, LoadBgBNames, LoadConstantLists, LoadObjDescriptions, LoadSpriteData, LoadSpriteListData, LoadEntranceNames, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePaths, areValidGamePaths
 from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import GameDefMenu, LoadGameDef
@@ -2382,20 +2382,34 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         if self.CheckDirty(): return
 
-        path = None
-        while not isValidGamePath(path):
-            path = QtWidgets.QFileDialog.getExistingDirectory(None,
-                                                              globals_.trans.string('ChangeGamePath', 0, '[game]', globals_.gamedef.name))
-            if path == '':
+        while True:
+            stage_path = QtWidgets.QFileDialog.getExistingDirectory(
+                None,
+                globals_.trans.string('ChangeGamePath', 0, '[game]', globals_.gamedef.name)
+            )
+
+            if stage_path == '':
                 return False
 
-            path = str(path)
+            stage_path = str(stage_path)
+            texture_path = os.path.join(stage_path, "Texture")
 
-            if (not isValidGamePath(path)) and (not globals_.gamedef.custom):  # custom gamedefs can use incomplete folders
-                QtWidgets.QMessageBox.information(None, globals_.trans.string('ChangeGamePath', 1),
-                                                  globals_.trans.string('ChangeGamePath', 2))
+            while not os.path.isdir(texture_path):
+                texture_path = QtWidgets.QFileDialog.getExistingDirectory(
+                    None,
+                    globals_.trans.string('ChangeGamePath', 4, '[game]', globals_.gamedef.name)
+                )
+
+                if texture_path == "":
+                    return False
+
+            if (not areValidGamePaths(stage_path, texture_path)) and (not globals_.gamedef.custom):  # custom gamedefs can use incomplete folders
+                QtWidgets.QMessageBox.information(
+                    None, globals_.trans.string('ChangeGamePath', 1),
+                    globals_.trans.string('ChangeGamePath', 2)
+                )
             else:
-                SetGamePath(path)
+                SetGamePaths(stage_path, texture_path)
                 break
 
         if not auto:
@@ -3017,7 +3031,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 checknames = [name]
             else:
                 for ext in globals_.FileExtentions:
-                    checknames.append(os.path.join(globals_.gamedef.GetGamePath(), name + ext))
+                    checknames.append(os.path.join(globals_.gamedef.GetStageGamePath(), name + ext))
 
             for checkname in checknames:
                 if os.path.isfile(checkname):
@@ -4357,19 +4371,36 @@ def main():
 
     # Choose a folder for the game
     # Let the user pick a folder without restarting the editor if they fail
-    while not isValidGamePath():
-        path = QtWidgets.QFileDialog.getExistingDirectory(None,
-                                                          globals_.trans.string('ChangeGamePath', 0, '[game]', globals_.gamedef.name))
-        if path == '':
+    while not areValidGamePaths():
+        stage_path = QtWidgets.QFileDialog.getExistingDirectory(
+            None,
+            globals_.trans.string('ChangeGamePath', 0, '[game]', globals_.gamedef.name)
+        )
+
+        if stage_path == '':
             sys.exit(0)
 
-        SetGamePath(path)
-        if not isValidGamePath():
-            QtWidgets.QMessageBox.information(None, globals_.trans.string('ChangeGamePath', 1),
-                                              globals_.trans.string('ChangeGamePath', 3))
-        else:
+        stage_path = str(stage_path)
+        texture_path = os.path.join(stage_path, "Texture")
+
+        while not os.path.isdir(texture_path):
+            stage_path = QtWidgets.QFileDialog.getExistingDirectory(
+                None,
+                globals_.trans.string('ChangeGamePath', 4, '[game]', globals_.gamedef.name)
+            )
+
+            if texture_path == "":
+                sys.exit(0)
+
+        SetGamePaths(stage_path, texture_path)
+        if areValidGamePaths():
             setSetting('GamePath', path)
             break
+
+        QtWidgets.QMessageBox.information(
+            None, globals_.trans.string('ChangeGamePath', 1),
+            globals_.trans.string('ChangeGamePath', 3)
+        )
 
     # Check to see if we have anything saved
     autofile = setting('AutoSaveFilePath')
