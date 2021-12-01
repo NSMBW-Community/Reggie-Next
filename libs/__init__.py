@@ -16,7 +16,7 @@ try:
 except ModuleNotFoundError:
     has_cython = False
 
-# Now use whether we have nsmblib and/or python to do the actual imports.
+# Now use whether we have nsmblib and/or cython to do the actual imports.
 
 lib_versions = {
     "cython": None,
@@ -30,6 +30,7 @@ if has_nsmblib:
     import types
     lz77 = types.SimpleNamespace()
     lz77.UncompressLZ77 = nsmblib.decompress11LZS
+    lz77.CompressLZ77 = nsmblib.compress11LZS
 
     # nsmblib does not support decoding tileset images that are not a full
     # tileset. Reggie Next uses the "decodeRGB4A3" function for decoding tile
@@ -62,7 +63,11 @@ if has_nsmblib:
 
 elif has_cython:
     from . import lz77_cy as lz77
+    from . import lz77 as lz77_py
     from . import tpl_cy as tpl
+
+    # Fall back to python, since cython does not have this implemented
+    lz77.CompressLZ77 = lz77_py.CompressLZ77
 
 else:
     from . import lz77

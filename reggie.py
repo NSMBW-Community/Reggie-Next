@@ -2522,6 +2522,22 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         data = globals_.Level.save()
 
+        # maybe need to compress the data
+        if self.fileSavePath.endswith(".arc.LZ"):
+            compressed = lz77.CompressLZ77(data)
+
+            if compressed is None:
+                # Error during compression
+                QtWidgets.QMessageBox.warning(None,
+                    globals_.trans.string('Err_Save', 0),
+                    globals_.trans.string('Err_Save', 3, '[file-size]', len(data))
+                )
+
+                # Delegate to HandleSaveAs
+                return self.HandleSaveAs()
+
+            data = compressed
+
         # maybe pad with null bytes
         if globals_.EnablePadding:
             pad_length = globals_.PaddingLength - len(data)
@@ -2554,9 +2570,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Save a level back to the archive, with a new filename. Returns whether
         saving was successful.
         """
-        fn = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans.string('FileDlgs', 8 if copy else 3), '',
-                                                   globals_.trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;' + globals_.trans.string(
-                                                       'FileDlgs', 2) + ' (*)')[0]
+        fn = QtWidgets.QFileDialog.getSaveFileName(self,
+            globals_.trans.string('FileDlgs', 8 if copy else 3),
+            '',
+            globals_.trans.string('FileDlgs', 1) + ' (*' + '.arc' + ');;' +
+            globals_.trans.string('FileDlgs', 10) + ' (*' + '.arc.LZ'+ ');;' +
+            globals_.trans.string('FileDlgs', 2) + ' (*)'
+        )[0]
 
         if fn == '':  # No filename given - abort
             return False
@@ -2569,6 +2589,21 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.fileTitle = os.path.basename(fn)
 
         data = globals_.Level.save()
+
+        # maybe need to compress the data
+        if fn.endswith(".arc.LZ"):
+            compressed = lz77.CompressLZ77(data)
+
+            if compressed is None:
+                # Error during compression
+                QtWidgets.QMessageBox.warning(None,
+                    globals_.trans.string('Err_Save', 0),
+                    globals_.trans.string('Err_Save', 3, '[file-size]', len(data))
+                )
+
+                return False
+
+            data = compressed
 
         # maybe pad with null bytes
         if globals_.EnablePadding:
