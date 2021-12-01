@@ -413,22 +413,25 @@ class ReggieGameDefinition:
         """
         Returns the last loaded level
         """
-        if not self.custom: return setting('LastLevel')
+        if not self.custom:
+            return setting('LastLevel')
+
         name = 'LastLevel_' + self.name
         stg = setting(name)
 
         # Use the default if there are no settings for this yet
         if stg is None:
             return setting('LastLevel')
-        else:
-            return stg
+
+        return stg
 
     def SetLastLevel(self, path):
         """
         Sets the last loaded level
         """
-        if path in (None, 'None', 'none', True, 'True', 'true', False, 'False', 'false', 0, 1, ''): return
-        print('Last loaded level set to ' + str(path))
+        if path in {None, 'None', 'none', True, 'True', 'true', False, 'False', 'false', 0, 1, ''}:
+            return
+
         if not self.custom:
             setSetting('LastLevel', path)
         else:
@@ -553,7 +556,6 @@ def getAvailableGameDefs():
     # Add them
     folders = os.listdir(os.path.join('reggiedata', 'patches'))
     for folder in folders:
-        if not os.path.isdir(os.path.join('reggiedata', 'patches', folder)): continue
         if not os.path.isfile(os.path.join('reggiedata', 'patches', folder, 'main.xml')): continue
 
         def_ = ReggieGameDefinition(folder)
@@ -561,9 +563,9 @@ def getAvailableGameDefs():
             game_defs.append((def_.name, folder))
 
     # Alphabetize them, and then add the default
-    game_defs.sort(key=lambda x: x[0])
+    game_defs.sort()
 
-    return [None] + list(map(lambda x: x[1], game_defs))
+    return [None] + [folder for _, folder in game_defs]
 
 
 def loadNewGameDef(def_):

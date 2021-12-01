@@ -87,10 +87,10 @@ class ReggieTranslation:
                 15: 'None',
                 16: '[CUSTOM]',
                 17: '[CUSTOM] [name]',
-                18: 'Custom filename... [name]',
-                19: '[name] ([file])',
-                20: 'Enter a Filename',
-                21: 'Enter the name of a custom tileset file to use. It must be placed in the game\'s Stage\\Texture or Unit folder in order for Reggie to recognize it. Do not add the \'.arc\' or \'.arc.LH\' extension at the end of the filename.',
+                18: None,  # REMOVED: 'Custom filename... [name]',
+                19: None,  # REMOVED: '[name] ([file])',
+                20: None,  # REMOVED: 'Enter a Filename',
+                21: None,  # REMOVED: 'Enter the name of a custom tileset file to use. It must be placed in the game\'s Stage\\Texture or Unit folder in order for Reggie to recognize it. Do not add the \'.arc\' or \'.arc.LH\' extension at the end of the filename.',
                 22: None,  # REMOVED: 'Unknown Value 1:'
                 23: None,  # REMOVED: 'Unknown Value 2:'
                 24: None,  # REMOVED: 'Unknown Value 3:'
