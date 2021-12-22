@@ -2821,7 +2821,7 @@
       <entry value="14">15 Blocks</entry>
       <entry value="15">16 Blocks</entry>
     </list>
-    <checkbox nybble="8.4" title="Vine / Climbing Exit" comment="When enabled, the Special Exit Controller will only activate is the player is also climbing while within the specified area."/>
+    <checkbox nybble="8.4" title="Vine / Climbing Exit" comment="When enabled, the Special Exit Controller will only activate if the player is also climbing while within the specified area."/>
     <checkbox nybble="6.2" title="Exit, Stage Left" comment="When enabled, the Special Exit Controller will eject the players from the current level." comment2="This will not complete the level. The player will be forced to walk left during the transition, and the Exit Transition will be overridden with an iris focused on the left side of the screen. There is no pipe sound for this transition."/>
     <list nybble="5.3-5.4" title="Exit Transition" comment="This determines the transition animation used when the screen fades out." comment2="Wavy Transition - Bottom to Top: The screen will go black with a wavy line going from bottom to top.&lt;br&gt;&lt;br&gt;Wavy Transition - Top to Bottom: The screen will go black with a wavy line going from top to bottom.&lt;br&gt;&lt;br&gt;Wavy Transition - Top to Bottom (Delayed): Same as above, but the animation is not triggered immediately upon contact with the warp area, instead taking place after a small delay.&lt;br&gt;&lt;br&gt;Black Iris and Pipe Sound: This option works just like a normal pipe exit, with a black circle enclosing the triggering player's position. At the same time, the sound effect that plays when entering a normal pipe is also played." requirednybble="6.2" requiredval="0">
       <entry value="0">Wavy Transition - Bottom to Top</entry>
@@ -2829,7 +2829,7 @@
       <entry value="1">Wavy Transition - Top to Bottom (Delayed)</entry>
       <entry value="3">Black Iris and Pipe Sound</entry>
     </list>
-    <value nybble="7,12" title="Entrance ID" comment="This determines the Entrance ID that the Exit Controller will run when triggered." requirednybble="6.2" requiredval="0" idtype="Entrance"/>
+    <value nybble="7,12" title="Entrance ID" comment="This determines the Entrance ID that the Special Exit Controller links to. When triggered, the player will go to the Destination of the linked Entrance." requirednybble="6.2" requiredval="0" idtype="Entrance"/>
     <value nybble="1.2-2.4" title="Triggering Event ID" comment="When the Triggering Event is 0, or is currently activated, the Special Exit Controller will also be active. If the Triggering Event is set and the Event is not activated, the Special Exit Controller will not function even when the player is inside it." idtype="Triggering Event"/>
   </sprite> <!-- #179: Special Exit Controller -->
 
