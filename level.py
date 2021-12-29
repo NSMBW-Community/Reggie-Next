@@ -255,6 +255,7 @@ class Area:
         self.comments = []
         self.layers = [[], [], []]
         self.loaded_sprites = set()
+        self.force_loaded_sprites = set()
         self.sprite_idtypes = {}  # {idtype: {id: number of usages of id}}
 
         self.MetaData = None
@@ -539,7 +540,9 @@ class Area:
 
     def LoadSprites(self):
         """
-        Loads block 8, the sprites
+        Loads block 8, the sprites. This needs to be called after
+        'LoadLoadedSprites', because this relies on the loaded sprite ids being
+        loaded for calculating the sprites that are forced to load.
         """
         spritedata = self.blocks[7]
         sprstruct = struct.Struct('>HHH8sxx')
@@ -555,6 +558,7 @@ class Area:
             append(obj(*data))
 
         self.sprites = sprites
+        self.force_loaded_sprites = self.loaded_sprites - set(sprite.type for sprite in sprites)
 
     def LoadLoadedSprites(self):
         """
@@ -916,7 +920,7 @@ class Area:
         """
         Saves the list of loaded sprites back to block 9
         """
-        ls = sorted(set(sprite.type for sprite in self.sprites) | self.loaded_sprites)
+        ls = sorted(set(sprite.type for sprite in self.sprites) | self.force_loaded_sprites)
 
         offset = 0
         sprstruct = struct.Struct('>Hxx')

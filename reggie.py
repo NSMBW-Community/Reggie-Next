@@ -4033,13 +4033,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         SetDirty()
 
         # Sprites
-        custom_model = dlg.LoadedSpritesTab.custom_model
-        model = dlg.LoadedSpritesTab.auto_model
-        entries = custom_model.stringList() + model.stringList()
-
-        # Hacky, but it works.
-        nums = [int(desc.split(']')[0][1:]) for desc in entries]
-        globals_.Area.loaded_sprites = set(nums)
+        # Extracting the sprite id from the sprite name is hacky, but it works.
+        globals_.Area.loaded_sprites = set(int(desc.split(']')[0][1:]) for desc in dlg.LoadedSpritesTab.auto_model.stringList())
+        globals_.Area.force_loaded_sprites = set(int(desc.split(']')[0][1:]) for desc in dlg.LoadedSpritesTab.custom_model.stringList())
 
         # Settings
         globals_.Area.timeLimit = dlg.LoadingTab.timer.value() - 200

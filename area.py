@@ -369,9 +369,7 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         if globals_.Area is None:
             return []
 
-        forced_sprites = globals_.Area.loaded_sprites - set(sprite.type for sprite in globals_.Area.sprites)
-
-        return self._stringify_sprites(sorted(forced_sprites))
+        return self._stringify_sprites(sorted(globals_.Area.force_loaded_sprites))
 
     def _stringify_sprites(self, list_of_sprites):
         """
