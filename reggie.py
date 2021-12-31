@@ -4415,7 +4415,7 @@ def main():
         texture_path = os.path.join(stage_path, "Texture")
 
         while not os.path.isdir(texture_path):
-            stage_path = QtWidgets.QFileDialog.getExistingDirectory(
+            texture_path = QtWidgets.QFileDialog.getExistingDirectory(
                 None,
                 globals_.trans.string('ChangeGamePath', 4, '[game]', globals_.gamedef.name)
             )
@@ -4425,7 +4425,6 @@ def main():
 
         SetGamePaths(stage_path, texture_path)
         if areValidGamePaths():
-            setSetting('GamePath', path)
             break
 
         QtWidgets.QMessageBox.information(
