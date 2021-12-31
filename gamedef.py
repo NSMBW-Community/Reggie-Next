@@ -602,7 +602,7 @@ def LoadGameDef(name=None, dlg=None):
         globals_.gamedef = ReggieGameDefinition(name)
         globals_.gamedef.__init2__()
 
-        if globals_.gamedef.custom and (not globals_.settings.contains('GamePath_' + globals_.gamedef.name)):
+        if globals_.gamedef.custom and (not globals_.settings.contains('StageGamePath_' + globals_.gamedef.name)):
             # First-time usage of this globals_.gamedef. Have the
             # user pick a stage folder so we can load stages
             # and tilesets from there
