@@ -2940,23 +2940,23 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('GridType', globals_.GridType)
         self.scene.update()
 
-    def HandleZoomIn(self):
+    def HandleZoomIn(self, *, towardsCursor=False):
         """
         Handle zooming in
         """
         z = self.ZoomLevel
         zi = self.ZoomLevels.index(z) + 1
         if zi < len(self.ZoomLevels):
-            self.ZoomTo(self.ZoomLevels[zi])
+            self.ZoomTo(self.ZoomLevels[zi], towardsCursor=towardsCursor)
 
-    def HandleZoomOut(self):
+    def HandleZoomOut(self, *, towardsCursor=False):
         """
         Handle zooming out
         """
         z = self.ZoomLevel
         zi = self.ZoomLevels.index(z) - 1
         if zi >= 0:
-            self.ZoomTo(self.ZoomLevels[zi])
+            self.ZoomTo(self.ZoomLevels[zi], towardsCursor=towardsCursor)
 
     def HandleZoomActual(self):
         """
@@ -2976,15 +2976,22 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         self.ZoomTo(self.ZoomLevels[-1])
 
-    def ZoomTo(self, z):
+    def ZoomTo(self, z, *, towardsCursor=False):
         """
         Zoom to a specific level
         """
+        if towardsCursor:
+            self.view.setTransformationAnchor(QtWidgets.QGraphicsView.ViewportAnchor.AnchorUnderMouse)
+
         tr = QtGui.QTransform()
         tr.scale(z / 100.0, z / 100.0)
         self.ZoomLevel = z
         self.view.setTransform(tr)
         self.levelOverview.mainWindowScale = z / 100.0
+
+        if towardsCursor:
+            # (reset back to original transformation anchor)
+            self.view.setTransformationAnchor(QtWidgets.QGraphicsView.ViewportAnchor.AnchorViewCenter)
 
         zi = self.ZoomLevels.index(z)
         self.actions['zoommax'].setEnabled(zi < len(self.ZoomLevels) - 1)

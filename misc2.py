@@ -543,6 +543,19 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
         QtWidgets.QGraphicsView.mouseReleaseEvent(self, event)
 
+    def wheelEvent(self, event):
+        """
+        Handle wheel events for zooming in/out
+        """
+        if event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier:
+            if event.angleDelta().y() > 0:
+                globals_.mainWindow.HandleZoomIn(towardsCursor=True)
+            else:
+                globals_.mainWindow.HandleZoomOut(towardsCursor=True)
+
+        else:
+            super().wheelEvent(event)
+
     def paintEvent(self, e):
         """
         Handles paint events and fires a signal
