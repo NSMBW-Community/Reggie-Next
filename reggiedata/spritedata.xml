@@ -1320,34 +1320,39 @@
       <entry value="1">Left Only</entry>
       <entry value="2">Right Only</entry>
     </list>
+    <list nybble="7" title="Camera Influence" comment="This determines how the Bullet Bills move relative to the camera.">
+      <entry value="0">Unaffected by Camera</entry>
+      <entry value="1">Affected by All Camera Movements</entry>
+      <entry value="2">Affected by Vertical Camera Movements</entry>
+      <entry value="3">Affected by Horizontal Camera Movements</entry>
+    </list>
     <value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see Retail: 07-07 A1 Z5."/>
     <checkbox nybble="12.4" title="Shoots Homing Bullet Bills"/>
-    <value nybble="6" title="Homing Missile Bill Limit" comment="The Launcher will not create new Homing Bullet Bills unless the amount currently on the screen is less than this number. Value 0 functions the same as Value 1." requirednybble="12.4"/>
+    <value nybble="6" title="Homing Bullet Bill Limit" comment="The Blaster will not create new Homing Bullet Bills unless the amount currently on the screen is less than this number. Value 0 functions the same as Value 1." requirednybble="12.4"/>
   </sprite> <!-- #92: Bill Blaster -->
 
-<!-- Could use a few ??? values tested and played with. -->
   <sprite id="93" name="Banzai Bill Blaster" notes="">
-    <list nybble="10" title="Shooting Direction">
+    <list nybble="7" title="Camera Influence" comment="This determines how the Banzai Bills move relative to the camera." requirednybble="12.4" requiredval="0">
+      <entry value="0">Unaffected by Camera</entry>
+      <entry value="1">Affected by All Camera Movements</entry>
+      <entry value="2">Affected by Vertical Camera Movements</entry>
+      <entry value="3">Affected by Horizontal Camera Movements</entry>
+    </list>
+	<list nybble="10" title="Shooting Direction">
       <entry value="0">Towards Player</entry>
       <entry value="1">Left Only</entry>
       <entry value="2">Right Only</entry>
     </list>
-    <list nybble="5" title="Shooting Delay">
+	<list nybble="5" title="Shooting Delay">
       <entry value="0">Normal</entry>
       <entry value="2">Long</entry>
       <entry value="1">Very Long</entry>
       <entry value="3">???</entry>
     </list>
-    <value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see Retail: 07-07 A1 Z5."/>
-    <checkbox nybble="12.4" title="Shoots Homing Bullet Bills"/>
+    <checkbox nybble="12.4" title="(Broken) Shoots Homing Banzai Bills" comment="The Banzai Bills do not home on the player but instead only move up and left, regardless of the shooting direction. Use the Homing Banzai Bill Spawner sprite instead."/>
     <value nybble="6" title="Homing Banzai Bill Limit" comment="The Blaster will not create new Homing Banzai Bills unless the amount currently on the screen is less than this number." requirednybble="12.4"/>
-    <list nybble="7.3-7.4" title="Unknown Value 7" comment="ASM shows Nybble 7 might affect something.">
-      <entry value="0">???</entry>
-      <entry value="1">???</entry>
-      <entry value="2">???</entry>
-      <entry value="3">???</entry>
-    </list>
-    <list nybble="9.3-9.4" title="Unknown Value 9" comment="ASM shows Nybble 8 might affect something.">
+	<value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see Retail: 07-07 A1 Z5."/>
+	<list nybble="9.3-9.4" title="Unknown Value 9" comment="ASM shows Nybble 8 might affect something.">
       <entry value="0">???</entry>
       <entry value="1">???</entry>
       <entry value="2">???</entry>
@@ -4456,11 +4461,11 @@
 
   <!-- All Cannonball sprites need comprehensive testing on the Camera variable, Nybble 7. Test with auto-scrolling controller, zoom controller, and 399 Airship Rocking -->
   <sprite id="298" name="Long Cannonball Cannons" notes="">
-    <list nybble="7" title="Camera Influenced Trajectory" comment="This determines if the cannonball will be influenced by the camera's actions, such as when using [399] Airship Rocking.">
-      <entry value="0">No?</entry>
-      <entry value="1">Yes?</entry> <!-- Likely intended to be used with auto-scroller? -->
-      <entry value="2">???</entry> <!-- Nintendo uses this in 8-Airship, w/[399] Airship Rocking -->
-      <entry value="3">???</entry> <!-- ??? -->
+    <list nybble="7" title="Camera Influence" comment="This determines how the cannonball moves relative to the camera.">
+      <entry value="0">Unaffected by Camera</entry>
+      <entry value="1">Affected by All Camera Movements</entry>
+      <entry value="2">Affected by Vertical Camera Movements</entry>
+      <entry value="3">Affected by Horizontal Camera Movements</entry>
     </list>
     <dualbox nybble="11.4" title1="Normal Cannonball Cannon" title2="Giant Cannonball Cannon" comment="This determines the size of the cannon and cannonball."/>
     <dualbox nybble="12.4" title1="Faces Right" title2="Faces Left" comment="This determines which direction the cannon will face."/>
@@ -4523,11 +4528,11 @@
   </sprite> <!-- #299: 45° Cannon -->
 
   <sprite id="300" name="4-Way Cannon" notes="A small 4-way rotating cannonball launcher.">
-    <list nybble="7" title="Camera Influenced Trajectory" comment="This determines if the cannonball will be influenced by the camera's actions, such as when using [399] Airship Rocking.">
-      <entry value="0">No?</entry>
-      <entry value="1">Yes?</entry>
-      <entry value="2">???</entry> <!-- Nintendo uses this in 8-Airship -->
-      <entry value="3">???</entry>
+    <list nybble="7" title="Camera Influence" comment="This determines how the cannonball moves relative to the camera.">
+      <entry value="0">Unaffected by Camera</entry>
+      <entry value="1">Affected by All Camera Movements</entry>
+      <entry value="2">Affected by Vertical Camera Movements</entry>
+      <entry value="3">Affected by Horizontal Camera Movements</entry>
     </list>
     <checkbox nybble="11.4" title="Upside-Down" comment="When enabled, the cannon is upside-down and can be placed against the ceiling."/>
     <dualbox nybble="12.4" title1="Shoots Cardinally First" title2="Shoots Diagonally First" comment="This determines which direction the cannon will fire when it is first loaded."/>
@@ -4535,11 +4540,11 @@
   </sprite> <!-- #300: 4-Way Cannon -->
 
   <sprite id="301" name="4-Way Large Cannon with Pipe" noyoshi="True" notes="A large 4-way rotating cannonball launcher that has a pipe in place of one of the four cannons.">
-    <list nybble="7" title="Camera Influenced Trajectory" comment="This determines if the cannonball will be influenced by the camera's actions, such as when using [399] Airship Rocking.">
-      <entry value="0">No?</entry>
-      <entry value="1">Yes?</entry>
-      <entry value="2">???</entry> <!-- Nintendo uses this in 8-Airship -->
-      <entry value="3">???</entry>
+    <list nybble="7" title="Camera Influence" comment="This determines how the cannonball moves relative to the camera.">
+      <entry value="0">Unaffected by Camera</entry>
+      <entry value="1">Affected by All Camera Movements</entry>
+      <entry value="2">Affected by Vertical Camera Movements</entry>
+      <entry value="3">Affected by Horizontal Camera Movements</entry>
     </list>
     <dualbox nybble="10.4" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the cannon and pipe will rotate."/>
     <list nybble="12" title="Pipe Position at Load" comment="This determines the pipe's position when the cannon first loads on the screen.">
