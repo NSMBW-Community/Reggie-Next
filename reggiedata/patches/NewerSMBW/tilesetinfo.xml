@@ -163,4 +163,7 @@
     <group names="Pa1_risingsun">
         <random list="0x19, 0x1A, 0x29, 0x2A, 0xA3, 0xA6" />
     </group>
+	<group names="Pa1_nohara_glitched">
+		<random range="0, 0xFF" direction="horizontal"/>
+	</group>
 </tilesets>
