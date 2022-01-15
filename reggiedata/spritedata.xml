@@ -630,7 +630,7 @@
   <sprite id="53" name="Effect - Quicksand" notes="This will draw the animated quicksand effect over a specific Location ID. The actual quicksand sinking effect is only obtained through a specific tileset object. See Dependency Notes for examples. The quicksand animation is always placed behind Layer 0 objects.&lt;br&gt;&lt;br&gt;Location Quicksand: If you assign a Location ID, you can cause sand to appear only within the chosen Location instead of across the entire stage.&lt;br&gt;&lt;br&gt;Quicksand Crest's Maximum Length: The crest of Quicksand will stop drawing past 8192 pixels (512 blocks). You can avoid this by making multiple instances of Location Quicksand. Make sure that the widths of the locations are no greater than 8192, and that they are multiples of 16.">
     <dependency notes="Pa1_sabaku (Desert): Object 24&lt;br&gt;&lt;br&gt;Pa1_sabaku_chika (Desert Cave): Object 26&lt;br&gt;&lt;br&gt;Pa1_toride_sabaku (Desert Tower): Object 107"/>
     <checkbox nybble="10.1" title="Flat Top" comment="When enabled, this removes the animated crest effect on the top portion of the quicksand. This will cause a 'square' look." comment2="This should be used when the quicksand connects with a ceiling or other Layer 1 terrain."/>
-    <value nybble="11-12" title="Location ID" comment="This determines the Location where the quicksand animation will be created." idtype="Location"/>
+    <value nybble="11.2-12.4" title="Location ID" comment="This determines the Location where the quicksand animation will be created." idtype="Location"/>
   </sprite> <!-- #53: Effect - Quicksand -->
 
    <sprite id="54" name="Lakitu" notes="A stand-alone Lakitu, more useful for small rooms than entire levels. Lakitu will throw Spinies (or coins) at the player and will follow the player until killed.">
@@ -785,9 +785,8 @@
     </list>
   </sprite> <!-- #63: Spiked Ball -->
 
-  <sprite id="64" name="Effect - Thick Fog" notes="This adds a thick rolling fog effect to the level that can be used with or without a Location ID.&lt;br&gt;The fog will make non-location Lava/Poisoned Water function just like Water if it is added into the level after the liquids. You can avoid this by adding the fog and then re-adding the Lava/Poisoned Water, or by placing the liquids in their own separate locations.">
-    <value nybble="11-12" title="Location ID" comment="This determines the location in which the Thick Fog will spawn." idtype="Location"/>
-    <checkbox nybble="10.2" title="Unknown Flag 10 (4)" advanced="True" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function, or this flag may do something else entirely. Or nothing."/>
+  <sprite id="64" name="Effect - Thick Fog" notes="This adds a thick rolling fog effect to the level that can be used with or without a Location ID.&lt;br&gt;The fog will make Non-location Lava/Poisoned Water function just like Water if it is added into the level after the liquids. You can avoid this by adding the fog and then re-adding the Lava/Poisoned Water, or by placing the liquids in their own separate locations.">
+    <value nybble="11.2-12.4" title="Location ID" comment="This determines the location in which the Thick Fog will spawn." idtype="Location"/>
   </sprite> <!-- #64: Effect - Thick Fog -->
 
   <sprite id="65" name="Pipe Piranha Plant - Up" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one.">
@@ -1950,9 +1949,8 @@
   <!-- title1="Rising and Falling while On, Returns when Off" - True or False? Does it very quickly return or will it instantly (glitchy looking) return to its starting position? -->
   <!-- Dear Dog that took around two hours to sort that mess out piece by piece. It's wonderful what these new display settings can actually accomplish for making this type of information actually usable! -->
   <sprite id="138" name="Water" noyoshi="True" notes="Place this in the level to generate water. There are many different ways to use this type of Water.&lt;br&gt;&lt;br&gt;Underwater Zone: If you just want to create an underwater zone, check Flat Top and leave everything else blank. Then place the Water about 6 blocks above your upper Zone boundary.
- &lt;br&gt;&lt;br&gt;Location Water: If you assign a Location ID, you can cause water to appear only within the chosen Location instead of across the entire stage.
  &lt;br&gt;&lt;br&gt;Moving Water: You can also create water that rises and/or falls. This gets a little complicated, so be sure to read the related settings.
- &lt;br&gt;&lt;br&gt;Water Crest's Maximum Length: The crest of Water will stop drawing past 8192 pixels (512 blocks). You can avoid this by making multiple instances of Location Water. Make sure that the widths of the locations are no greater than 8192, and that they are multiples of 16.">
+ &lt;br&gt;&lt;br&gt;Water Crest's Maximum Length: The crest of Water will stop drawing past 8192 pixels (512 blocks). You can avoid this by making multiple instances of Water in Locations. Make sure that the widths of the locations are no greater than 8192, and that they are multiples of 16.">
     <dependency notes="When using Moving Water, the Water becomes loaded across the entire Area instead of just the active Zone. Please build your levels with this in mind. Additionally, do not use more than one Moving Water in the same Area as only the top (highest Y-Axis) one will take effect. If you need Moving Water in multiple Zones within the same area, use [285] Rising and Falling Water instead. Also, be sure to reset your Sprite Settings if you switch between different setting groups of Moving Water or Location Water to prevent unusual bugs and behavior.">
       <suggested sprite="317"/> <!-- Lets bubbles exist -->
     </dependency>
@@ -1999,19 +1997,20 @@
     <value nybble="6" title="Moving Water - Delay at Top" comment="This determines the delay when the Water has finished rising." requirednybble="5.2-5.4,8-9" requiredval="1-7, 1-255"/> <!-- Appears when Speed and Distance are set -->
     <value nybble="7" title="Moving Water - Delay at Bottom" comment="This determines the delay when the Water has returned to its starting position." comment2="The initial delay only can be set by using event-controlled Water. Utilize Event Chainers to fake the delay settings if you need to set an initial delay." requirednybble="5.2-5.4,8-9" requiredval="1-7, 1-255"/> <!-- Appears when Speed and Distance are set -->
     <value nybble="1.2-2.4" title="Moving Water - Triggering Event ID" comment="The Moving Water mode will be triggered when this Event is activated." requirednybble="5.2-5.4" idtype="Triggering Event"/> <!-- Appears when Speed is set --> <!-- Needs modified to allow for 256 events. -->
-   <!-- Location Water Options -->
-    <value nybble="11.2-12.4" title="Location ID" comment="Match with a Location ID to set a specific area in which to display Water. Note that some sprites only work correctly in Non-Location Water." comment2="Location Water only works properly with Location IDs 0-127. Location IDs 128-255 will cause the Water to constantly move up and down slightly." idtype="Location"/>
-    <checkbox nybble="10.1" title="Underwater Zone - Flat Top" comment="It is suggested to enable this when creating a fully underwater zone." comment2="We're not too sure why this would be important, since it cannot be seen, but Nintendo will always have this checked, so you should do it too." requirednybble="5.2-5.4,11.2-12.4" requiredval="0, 0"/> <!-- Appears only if Location ID and Speed are not set -->
-    <checkbox nybble="10.1" title="Location Water - Flat Top" comment="When enabled, the animated crest effect on the top portion of the Water is removed. This creates a 'square' look." comment2="It's recommended to only use this when the Water is touching a straight ceiling." requirednybble="5.2-5.4,11.2-12.4" requiredval="0, 1-255"/> <!-- Appears only if Location ID is set and hides if Speed is set -->
-    <checkbox nybble="10.2" title="Location Water - Place Behind Layer 0" comment="When enabled, the Z-Order of the water will be moved slightly so that it appears behind Layer 0 terrain." comment2="In order for this to work, 'Layer 0 spotlight' must be turned off in the zone's settings." requirednybble="5.2-5.4,11.2-12.4" requiredval="0, 1-255"/> <!-- Appears only if Location ID is set and hides if Speed is set -->
+    <value nybble="11.2-12.4" title="Location ID" comment="Match with a Location ID to set a specific area in which to display Water. Note that some sprites only work correctly in Non-Location Water." idtype="Location"/>
+    <checkbox nybble="10.1" title="Higher Transparency and Flat Top" comment="When enabled, the animated crest effect on the top portion of the Water is removed, and the Non-Location Water becomes almost transparent." requirednybble="11.2-12.4" requiredval="0"/> <!--Appears when a Location ID is not set. -->
+	<checkbox nybble="10.1" title="Flat Top" requirednybble="11.2-12.4"/> <!-- Appears when a Location ID is set. -->
+    <checkbox nybble="10.2" title="Place Behind Layer 0" comment="For this to work, 'Layer 0 Spotlight' must be turned off in the zone's settings." requirednybble="11.2-12.4"/> <!-- Appears when a Location ID is set. -->
+	<checkbox nybble="11.1" title="Unknown Flag 11.1" comment="This flag makes the Water function differently to some degree. It is known to move up and down 1 tile on a cycle when this setting is used with a few others."/>
   </sprite> <!-- #138: Water -->
 
   <!-- Mode Cheat Sheet
-    Speed 18-20
-    |Distance 29-36
-    ||Delays 21-28
-    |||Triggering Event 1-8
-    ||||=Mode 17 Off / On
+    Speed 5.2-5.4
+    |Distance 8-9
+    ||Delays 6-7
+    |||Triggering Event 1-4
+    ||||Mode 5.1 Off / On
+	|||||"Bopping" 11.1
     YNNN=Rising Forever / Falling Forever
     YNNY=Rising Forever while On / Falling Forever While On [UNKNOWN]
     YY?N=Automatically Rising and Falling / [BUGGY!]
@@ -2069,7 +2068,6 @@
    <!-- Location Lava Options -->
     <value nybble="11.2-12.4" title="Location Lava - Location ID" comment="Match with a Location ID to set a specific area in which to display Lava." comment2="Note that some sprites only work correctly in Non-Location Lava." advancedcomment="Location Lava only works properly with Location IDs 0-127. Location IDs 128-255 will cause the Lava to constantly move up and down slightly. It's unknown if a use can be found for this, so it remains documented here in the Advanced Comment." requirednybble="5.2-5.4" requiredval="0" idtype="Location"/> <!-- Appears only while Speed is not set -->
     <checkbox nybble="10.1" title="Location Lava - Flat Top" comment="When enabled, the animated crest effect on the top portion of the Lava is removed. This creates a 'square' look." comment2="It's recommended to only use this when the Lava is touching a straight ceiling." requirednybble="5.2-5.4,11.2-12.4" requiredval="0, 1-255"/> <!-- Appears only if Location ID is set and hides if Speed is set -->
-    <checkbox nybble="10.2" title="Location Lava - Place Behind Layer 0" comment="When enabled, the Z-Order of the lava will be moved slightly so that it appears behind Layer 0 terrain." comment2="In order for this to work, 'Layer 0 spotlight' must be turned off in the zone's settings." requirednybble="5.2-5.4,11.2-12.4" requiredval="0, 1-255"/> <!-- Appears only if Location ID is set and hides if Speed is set -->
   </sprite> <!-- #139: Lava -->
 
   <!-- Mode Cheat Sheet
@@ -3308,7 +3306,6 @@
    <!-- Location Poisoned Water Options -->
     <value nybble="11.2-12.4" title="Location Poisoned Water - Location ID" comment="Match with a Location ID to set a specific area in which to display Poisoned Water." comment2="Note that some sprites only work correctly in Non-Location Poisoned Water." advancedcomment="Location Poisoned Water only works properly with Location IDs 0-127. Location IDs 128-255 will cause the Poisoned Water to constantly move up and down slightly. It's unknown if a use can be found for this, so it remains documented here in the Advanced Comment." requirednybble="5.2-5.4" requiredval="0" idtype="Location"/> <!-- Appears only while Speed is not set -->
     <checkbox nybble="10.1" title="Location Poisoned Water - Flat Top" comment="When enabled, the animated crest effect on the top portion of the Poisoned Water is removed. This creates a 'square' look." comment2="It's recommended to only use this when the Poisoned Water is touching a straight ceiling." requirednybble="5.2-5.4,11.2-12.4" requiredval="0, 1-255"/> <!-- Appears only if Location ID is set and hides if Speed is set -->
-    <checkbox nybble="10.2" title="Location Poisoned Water - Place Behind Layer 0" comment="When enabled, the Z-Order of the water will be moved slightly so that it appears behind Layer 0 terrain." comment2="In order for this to work, 'Layer 0 spotlight' must be turned off in the zone's settings." requirednybble="5.2-5.4,11.2-12.4" requiredval="0, 1-255"/> <!-- Appears only if Location ID is set and hides if Speed is set -->
   </sprite> <!-- #216: Poisoned Water -->
 
   <!-- Mode Cheat Sheet
@@ -6457,7 +6454,7 @@
   </sprite> <!-- #434: Warp Cannon -->
 
   <sprite id="435" name="Effect - Ghost Fog" notes="This adds a thin wispy fog effect to the level that can be used with or without a Location ID.&lt;br&gt;The fog will make non-location Lava/Poisoned Water function just like Water if it is added into the level after the liquids. You can avoid this by adding the fog and then re-adding the Lava/Poisoned Water, or by placing the liquids in their own separate locations.">
-    <value nybble="11-12" title="Location ID" comment="This determines the location in which the Ghost Fog will spawn." idtype="Location"/>
+    <value nybble="11.2-12.4" title="Location ID" comment="This determines the location in which the Ghost Fog will spawn." idtype="Location"/>
     <checkbox nybble="10.2" title="Unknown Flag 10 (4)" advanced="True" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function."/>
   </sprite> <!-- #435: Effect - Ghost Fog -->
 

@@ -1653,7 +1653,7 @@ class SpriteImage_Quicksand(SpriteImage_LiquidOrFog):  # 53
         self.crest = ImageCache['LiquidSandCrest']
         self.mid = ImageCache['LiquidSand']
 
-        self.top = self.parent.objy
+        self.top = self.parent.objy + 8
 
     @staticmethod
     def loadImages():
@@ -1662,13 +1662,23 @@ class SpriteImage_Quicksand(SpriteImage_LiquidOrFog):  # 53
         ImageCache['LiquidSandCrest'] = SLib.GetImg('liquid_sand_crest.png')
 
     def dataChanged(self):
-        self.locId = self.parent.spritedata[5]
+        self.locId = self.parent.spritedata[5] & 0x7F
         self.drawCrest = self.parent.spritedata[4] & 8 == 0
+
+        if self.drawCrest:
+            self.top = self.parent.objy + 8
+        else:
+            self.top = self.parent.objy
 
         super().dataChanged()
 
     def positionChanged(self):
-        self.top = self.parent.objy
+        if self.drawCrest:
+            self.top = self.parent.objy + 8
+        else:
+            self.top = self.parent.objy
+
+        self.parent.scene().update()
         super().positionChanged()
 
 
@@ -1941,7 +1951,7 @@ class SpriteImage_OutdoorsFog(SpriteImage_LiquidOrFog):  # 64
         SLib.loadIfNotInImageCache('OutdoorsFog', 'fog_outdoors.png')
 
     def dataChanged(self):
-        self.locId = self.parent.spritedata[5]
+        self.locId = self.parent.spritedata[5] & 0x7F
         super().dataChanged()
 
     def positionChanged(self):
@@ -3257,13 +3267,20 @@ class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
         ImageCache['LiquidWaterRiseCrest'] = SLib.GetImg('liquid_water_rise_crest.png')
 
     def dataChanged(self):
-        self.locId = self.parent.spritedata[5]
+        self.locId = self.parent.spritedata[5] & 0x7F
         self.drawCrest = self.parent.spritedata[4] & 8 == 0
 
         self.risingHeight = (self.parent.spritedata[3] & 0xF) << 4
         self.risingHeight |= self.parent.spritedata[4] >> 4
         if self.parent.spritedata[2] & 15 > 7:  # falling
             self.risingHeight = -self.risingHeight
+        
+        if not self.drawCrest and self.locId == 0:
+            self.top = self.parent.objy + 20
+            self.mid.alpha = 0.1
+        else:
+            self.top = self.parent.objy
+            self.mid.alpha = 1
 
         super().dataChanged()
 
@@ -3292,7 +3309,7 @@ class SpriteImage_Lava(SpriteImage_LiquidOrFog):  # 139
         ImageCache['LiquidLavaRiseCrest'] = SLib.GetImg('liquid_lava_rise_crest.png')
 
     def dataChanged(self):
-        self.locId = self.parent.spritedata[5]
+        self.locId = self.parent.spritedata[5] & 0x7F
         self.drawCrest = self.parent.spritedata[4] & 8 == 0
 
         self.risingHeight = (self.parent.spritedata[3] & 0xF) << 4
@@ -4445,7 +4462,7 @@ class SpriteImage_Poison(SpriteImage_LiquidOrFog):  # 216
         ImageCache['LiquidPoisonRiseCrest'] = SLib.GetImg('liquid_poison_rise_crest.png')
 
     def dataChanged(self):
-        self.locId = self.parent.spritedata[5]
+        self.locId = self.parent.spritedata[5] & 0x7F
         self.drawCrest = self.parent.spritedata[4] & 8 == 0
 
         self.risingHeight = (self.parent.spritedata[3] & 0xF) << 4
@@ -7912,7 +7929,7 @@ class SpriteImage_GhostFog(SpriteImage_LiquidOrFog):  # 435
         SLib.loadIfNotInImageCache('GhostFog', 'fog_ghost.png')
 
     def dataChanged(self):
-        self.locId = self.parent.spritedata[5]
+        self.locId = self.parent.spritedata[5] & 0x7F
         super().dataChanged()
 
     def positionChanged(self):
