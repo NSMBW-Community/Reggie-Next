@@ -2666,7 +2666,7 @@ class SpriteImage_Blooper(SLib.SpriteImage_Static):  # 111
             parent,
             1.5,
             ImageCache['Blooper'],
-            (-3, -2),
+            (-3, -10),
         )
 
     @staticmethod
@@ -2680,7 +2680,7 @@ class SpriteImage_BlooperBabies(SLib.SpriteImage_Static):  # 112
             parent,
             1.5,
             ImageCache['BlooperBabies'],
-            (-5, -2),
+            (-5, -10),
         )
 
     @staticmethod

@@ -1628,104 +1628,24 @@
 
   <sprite id="111" name="Blooper" notes="An underwater enemy that will chase the player.">
     <dependency notes="Because the Bloopers can be used without Water, if they are placed in anything but an Underwater style level, they will appear to fly rather than swim and not be confined to Location Water, etc."/>
-    <list nybble="3-4" title="Triggering Event ID" idtype="Triggering Event" >
-      <entry value="0">Not Event Triggered</entry>
-      <entry value="1">Event ID 1</entry>
-      <entry value="2">Event ID 2</entry>
-      <entry value="4">Event ID 4</entry>
-      <entry value="6">Event ID 6</entry>
-      <entry value="8">Event ID 8</entry>
-      <entry value="10">Event ID 10</entry>
-      <entry value="12">Event ID 12</entry>
-      <entry value="14">Event ID 14</entry>
-      <entry value="16">Event ID 16</entry>
-      <entry value="18">Event ID 18</entry>
-      <entry value="20">Event ID 20</entry>
-      <entry value="22">Event ID 22</entry>
-      <entry value="24">Event ID 24</entry>
-      <entry value="26">Event ID 26</entry>
-      <entry value="28">Event ID 28</entry>
-      <entry value="30">Event ID 30</entry>
-      <entry value="32">Event ID 32</entry>
-      <entry value="34">Event ID 34</entry>
-      <entry value="36">Event ID 36</entry>
-      <entry value="38">Event ID 38</entry>
-      <entry value="40">Event ID 40</entry>
-      <entry value="42">Event ID 42</entry>
-      <entry value="44">Event ID 44</entry>
-      <entry value="46">Event ID 46</entry>
-      <entry value="48">Event ID 48</entry>
-      <entry value="50">Event ID 50</entry>
-      <entry value="52">Event ID 52</entry>
-      <entry value="54">Event ID 54</entry>
-      <entry value="56">Event ID 56</entry>
-      <entry value="58">Event ID 58</entry>
-      <entry value="60">Event ID 60</entry>
-      <entry value="62">Event ID 62</entry>
-      <entry value="64">Event ID 64</entry>
-    </list>
     <list nybble="5.3-5.4" title="Hiding In Wait" comment="When this is set to an option other than the default, the Blooper will wait for the player to approach before shooting out from behind the terrain.">
       <entry value="0">Already Moving</entry>
       <entry value="3">Shoots Up and Left</entry>
       <entry value="1">Shoots Upwards</entry>
       <entry value="2">Shoots Up and Right</entry>
     </list>
-    <dualbox nybble="5.4" title1="In Front of Layer 1" title2="Behind Layer 1" />
-    <list nybble="12" title="Start Direction" comment="This determines the Blooper's initial movement direction. It then follows Mario as far as it can." requirednybble="5.3-5.4" requiredval="0">
-      <entry value="0">Left</entry>
-      <entry value="1">Right</entry>
-    </list>
+    <dualbox nybble="12" title1="Moves Towards Player" title2="Moves Direction Player is Facing"/>
   </sprite> <!-- #111: Blooper -->
 
   <sprite id="112" name="Blooper Nanny with Babies" notes="An underwater enemy that will chase the player with a trail of babies in tow.">
     <dependency notes="Because the Bloopers can be used without Water, if they are placed in anything but an Underwater style level, they will appear to fly rather than swim and not be confined to Location Water, etc."/>
-    <list nybble="3-4" title="Triggering Event ID" idtype="Triggering Event" >
-      <entry value="0">Not Event Triggered</entry>
-      <entry value="1">Event ID 1</entry>
-      <entry value="2">Event ID 2</entry>
-      <entry value="4">Event ID 4</entry>
-      <entry value="6">Event ID 6</entry>
-      <entry value="8">Event ID 8</entry>
-      <entry value="10">Event ID 10</entry>
-      <entry value="12">Event ID 12</entry>
-      <entry value="14">Event ID 14</entry>
-      <entry value="16">Event ID 16</entry>
-      <entry value="18">Event ID 18</entry>
-      <entry value="20">Event ID 20</entry>
-      <entry value="22">Event ID 22</entry>
-      <entry value="24">Event ID 24</entry>
-      <entry value="26">Event ID 26</entry>
-      <entry value="28">Event ID 28</entry>
-      <entry value="30">Event ID 30</entry>
-      <entry value="32">Event ID 32</entry>
-      <entry value="34">Event ID 34</entry>
-      <entry value="36">Event ID 36</entry>
-      <entry value="38">Event ID 38</entry>
-      <entry value="40">Event ID 40</entry>
-      <entry value="42">Event ID 42</entry>
-      <entry value="44">Event ID 44</entry>
-      <entry value="46">Event ID 46</entry>
-      <entry value="48">Event ID 48</entry>
-      <entry value="50">Event ID 50</entry>
-      <entry value="52">Event ID 52</entry>
-      <entry value="54">Event ID 54</entry>
-      <entry value="56">Event ID 56</entry>
-      <entry value="58">Event ID 58</entry>
-      <entry value="60">Event ID 60</entry>
-      <entry value="62">Event ID 62</entry>
-      <entry value="64">Event ID 64</entry>
-    </list>
     <list nybble="5.3-5.4" title="Hiding In Wait" comment="When this is set to an option other than the default, the Blooper will wait for the player to approach before shooting out from behind the terrain.">
       <entry value="0">Already Moving</entry>
       <entry value="3">Shoots Up and Left</entry>
       <entry value="1">Shoots Upwards</entry>
       <entry value="2">Shoots Up and Right</entry>
     </list>
-    <dualbox nybble="5.4" title1="In Front of Layer 1" title2="Behind Layer 1" />
-    <list nybble="12" title="Start Direction" comment="This determines the Blooper's initial movement direction. It then follows Mario as far as it can." requirednybble="5.3-5.4" requiredval="0">
-      <entry value="0">Left</entry>
-      <entry value="1">Right</entry>
-    </list>
+    <dualbox nybble="12" title1="Moves Towards Player" title2="Moves Direction Player is Facing"/>
   </sprite> <!-- #112: Blooper Nanny with Babies -->
 
   <sprite id="113" name="Goal Pole and Fortress" notes="The invisible wall does not extend below the Goal Pole.">
@@ -2025,7 +1945,6 @@
     <checkbox nybble="8.2" title="Silent" comment="When enabled, the Skewer will not create any sound effects." comment2="When having two Skewers 'collide', it's recommended that one of them has this setting enabled."/>
   </sprite> <!-- #137: Skewer - Down -->
 
-  <!-- Oh where to begin... -->
   <!-- Moving Water - Delay at Starting Point: Comment, accuracy when involving events. -->
   <!-- title1="Rising Forever while On" title="Falling Forever while On" - True or False? What happens when using a Triggering Event on a permanently rising or permanently falling Moving Water? What happens when before the event activates? What happens when it activates? What happens when it is deactivated? What happens when it's activated again? -->
   <!-- title1="Rising and Falling while On, Returns when Off" - True or False? Does it very quickly return or will it instantly (glitchy looking) return to its starting position? -->
@@ -2058,7 +1977,7 @@
       <entry value="2">Very Fast</entry>
       <entry value="3">Very Fast</entry>
     </list> <!-- This version of the list shows when Falling Water is set, and Distance is not set. You're okay... for now. -->
-    <list nybble="5.2-5.4" title="I really wouldn't do that if I were you..." comment="Right now, you've selected [Extremely Buggy]. You've made a terrible mistake somewhere and have combined the wrong settings." comment2="Please don't try to set Distance or Delays while using Falling Water. You will not like the results. Please trust me." advancedcomment="Oh, so you turned on Advanced, did you? You think you're so smart... Well fine, I'll share the limited documentation we have on why you shouldn't use these settings: Falling Water works in a peculiar way. When the appropriate event has not been activated, or there is no corresponding event, [Never ON] then the water surface will appear [Distance] blocks higher. The water will then sink this many blocks, respecting any delays. After waiting for the delay at the bottom, the water surface will not rise again. Not exactly. Instead, it will 'skip' the rising part and 'jump' to immediately to the top. Additionally, using this with events will cause the water to rise, instead of falling. [ON] But the starting point is the same higher distance. The difference is that the water rises continuously as long as the event is enabled. [Endless Rising] If it is disabled, [OFF after ON] the water surface will 'jump' back to where it started and remain there until the event is re-enabled. [Why bother?] Additionally, 1-5 on Movement Speed values have some additional odd glitchiness. Supposedly. So please, stop trying to combine settings like this. Or your level will suck." requirednybble="5.1,8-9" requiredval="1, 1-255">
+    <list nybble="5.2-5.4" title="I really wouldn't do that if I were you..." comment="Falling Water works in a peculiar way. When the appropriate event has not been activated, or there is no corresponding event, [Never ON] then the water surface will appear [Distance] blocks higher. The water will then sink this many blocks, respecting any delays. After waiting for the delay at the bottom, the water surface will not rise again. Not exactly. Instead, it will 'skip' the rising part and 'jump' to immediately to the top. Additionally, using this with events will cause the water to rise, instead of falling. [ON] But the starting point is the same higher distance. The difference is that the water rises continuously as long as the event is enabled. [Endless Rising] If it is disabled, [OFF after ON] the water surface will 'jump' back to where it started and remain there until the event is re-enabled. [Why bother?] Additionally, 1-5 on Movement Speed values have some additional odd glitchiness. Supposedly. So please, stop trying to combine settings like this. Or your level will suck." requirednybble="5.1,8-9" requiredval="1, 1-255">
       <entry value="0">Reset Sprite Settings!</entry>
       <entry value="5">Really Not Recommended</entry>
       <entry value="6">Slow (Standard) (Not Recommended)</entry>
