@@ -4511,7 +4511,6 @@
       <entry value="1">Event Activated - Turns On</entry>
       <entry value="2">Event Activated - On With Event</entry>
     </list>
-    <value nybble="3.2-4.4" title="Triggering Event ID" comment="This determines which Event must be activated for the circle to glow." requirednybble="9.3-9.4" idtype="Triggering Event"/>
     <list nybble="10.3-10.4" title="Movement Type" comment="** - Pairing the light circle with a Swaying controller will not generate movement. However, as a movement controller is required for the light circle to spawn, using a Swaying controller is a great way to create a stationary spot of light.">
       <entry value="0">[159] Path Controlled</entry>
       <entry value="1">[260] Two Way Line</entry>
@@ -4521,6 +4520,8 @@
     <value nybble="11-12" title="Path Movement ID" comment="If pairing the light circle with Sprite 159, match the Path Movement ID to enable Path controlled movement." requirednybble="10.3-10.4" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
     <value nybble="11-12" title="Two Way Line ID" comment="If pairing the light circle with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requirednybble="10.3-10.4" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
     <value nybble="11-12" title="Rotation ID" comment="If pairing the light circle with sprite 96 or 149, match the Rotation ID to allow the light circle to function." comment2="Only pairing it with a Spinning controller will actually allow movement. Swaying controllers will create a stationary spot of light." requirednybble="10.3-10.4" requiredval="2-3" idtype="Rotation"/> <!-- Appears if [Movement Type] = 2/3 -->
+    <value nybble="1.2-2.4" title="Triggering Event ID 1" comment="This determines which single Event must be activated for the circle to glow. If this one is set, the other Triggering Event ID will be completely ignored." requirednybble="9.3-9.4" idtype="Triggering Event"/>
+	<value nybble="3.2-4.4" title="Triggering Event ID 2" comment="This setting can also determine the single Event ID that controls the circle's glow." requirednybble="9.3-9.4, 1.2-2.4" requiredval="1-127, 0" idtype="Triggering Event"/>
   </sprite> <!-- #305: Lighting - Circle -->
 
   <sprite id="306" name="Lighting - Rotation Controlled Spotlight" notes="A hanging spotlight lamp with a decorative vertical support that generates a cone of light.">
