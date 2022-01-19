@@ -12,7 +12,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
     """
     Widget that shows an overview of the level and can be clicked to move the view
     """
-    moveIt = QtCore.pyqtSignal(int, int)
+    moveIt = QtCore.pyqtSignal(float, float)
 
     def __init__(self):
         """

@@ -1039,8 +1039,8 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
             self.offset = (-4, -self.height + 16)
 
             paint.drawPixmap(0, 0, ImageCache['Pokey%sTop' % color])
-            paint.drawTiledPixmap(0, 37, 36, self.height * 1.5 - 61, ImageCache['Pokey%sMiddle' % color])
-            paint.drawPixmap(0, self.height * 1.5 - 24, ImageCache['Pokey%sBottom' % color])
+            paint.drawTiledPixmap(0, 37, 36, int(self.height * 1.5 - 61), ImageCache['Pokey%sMiddle' % color])
+            paint.drawPixmap(0, int(self.height * 1.5 - 24), ImageCache['Pokey%sBottom' % color])
             self.aux[0].image = pix
 
         paint = None
@@ -1626,9 +1626,9 @@ class SpriteImage_NewerWiggleShroom(SLib.SpriteImage):  # 231
 
         xsize = self.width * 1.5
         painter.drawPixmap(0, 0, self.wiggleleft)
-        painter.drawTiledPixmap(18, 0, xsize - 36, 24, self.wigglemiddle)
-        painter.drawPixmap(xsize - 18, 0, self.wiggleright)
-        painter.drawTiledPixmap((xsize / 2) - 12, 24, 24, (self.height * 1.5) - 24, self.wigglestem)
+        painter.drawTiledPixmap(18, 0, int(xsize - 36), 24, self.wigglemiddle)
+        painter.drawPixmap(int(xsize - 18), 0, self.wiggleright)
+        painter.drawTiledPixmap(int((xsize / 2) - 12), 24, 24, int((self.height * 1.5) - 24), self.wigglestem)
 
 
 class SpriteImage_EventBlock(SLib.SpriteImage_Static): # 239

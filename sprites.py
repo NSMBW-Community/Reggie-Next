@@ -121,7 +121,7 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
             color = 'Bone'
 
         if self.width > 32:
-            painter.drawTiledPixmap(27, 0, ((self.width * 1.5) - 51), 24, ImageCache[color + 'PlatformM'])
+            painter.drawTiledPixmap(27, 0, int((self.width * 1.5) - 51), 24, ImageCache[color + 'PlatformM'])
 
         if self.width == 24:
             # replicate glitch effect foRotControlled by sprite 50
@@ -129,7 +129,7 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
             painter.drawPixmap(8, 0, ImageCache[color + 'PlatformL'])
         else:
             # normal rendering
-            painter.drawPixmap((self.width - 16) * 1.5, 0, ImageCache[color + 'PlatformR'])
+            painter.drawPixmap(int((self.width - 16) * 1.5), 0, ImageCache[color + 'PlatformR'])
             painter.drawPixmap(0, 0, ImageCache[color + 'PlatformL'])
 
 
@@ -163,10 +163,10 @@ class SpriteImage_DSStoneBlock(SLib.SpriteImage):  # 27, 28
     def paint(self, painter):
         super().paint(painter)
 
-        middle_width = (self.width - 32) * 1.5
-        middle_height = (self.height * 1.5) - 16
-        bottom_y = (self.height * 1.5) - 8
-        right_x = (self.width - 16) * 1.5
+        middle_width = int((self.width - 32) * 1.5)
+        middle_height = int((self.height * 1.5) - 16)
+        bottom_y = int((self.height * 1.5) - 8)
+        right_x = int((self.width - 16) * 1.5)
 
         painter.drawPixmap(0, 0, ImageCache['DSBlockTopLeft'])
         painter.drawTiledPixmap(24, 0, middle_width, 8, ImageCache['DSBlockTop'])
@@ -275,35 +275,35 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage):  # 30, 81, 82, 83, 84, 85, 86
         height = self.height * 1.5
 
         if self.spikesL:  # left spikes
-            painter.drawTiledPixmap(0, 0, 24, height, ImageCache['SpikeL'])
+            painter.drawTiledPixmap(0, 0, 24, int(height), ImageCache['SpikeL'])
             blockX = 24
             width -= 24
         if self.spikesT:  # top spikes
-            painter.drawTiledPixmap(0, 0, width, 24, ImageCache['SpikeU'])
+            painter.drawTiledPixmap(0, 0, int(width), 24, ImageCache['SpikeU'])
             blockY = 24
             height -= 24
         if self.spikesR:  # right spikes
-            painter.drawTiledPixmap(blockX + width - 24, 0, 24, height, ImageCache['SpikeR'])
+            painter.drawTiledPixmap(int(blockX + width - 24), 0, 24, int(height), ImageCache['SpikeR'])
             width -= 24
         if self.spikesB:  # bottom spikes
-            painter.drawTiledPixmap(0, blockY + height - 24, width, 24, ImageCache['SpikeD'])
+            painter.drawTiledPixmap(0, int(blockY + height - 24), int(width), 24, ImageCache['SpikeD'])
             height -= 24
 
         column2x = blockX + 24
-        column3x = blockX + width - 24
+        column3x = int(blockX + width - 24)
         row2y = blockY + 24
-        row3y = blockY + height - 24
+        row3y = int(blockY + height - 24)
 
         painter.drawPixmap(blockX, blockY, ImageCache['OldStoneTL'])
-        painter.drawTiledPixmap(column2x, blockY, width - 48, 24, ImageCache['OldStoneT'])
+        painter.drawTiledPixmap(column2x, blockY, int(width - 48), 24, ImageCache['OldStoneT'])
         painter.drawPixmap(column3x, blockY, ImageCache['OldStoneTR'])
 
-        painter.drawTiledPixmap(blockX, row2y, 24, height - 48, ImageCache['OldStoneL'])
-        painter.drawTiledPixmap(column2x, row2y, width - 48, height - 48, ImageCache['OldStoneM'])
-        painter.drawTiledPixmap(column3x, row2y, 24, height - 48, ImageCache['OldStoneR'])
+        painter.drawTiledPixmap(blockX, row2y, 24, int(height - 48), ImageCache['OldStoneL'])
+        painter.drawTiledPixmap(column2x, row2y, int(width - 48), int(height - 48), ImageCache['OldStoneM'])
+        painter.drawTiledPixmap(column3x, row2y, 24, int(height - 48), ImageCache['OldStoneR'])
 
         painter.drawPixmap(blockX, row3y, ImageCache['OldStoneBL'])
-        painter.drawTiledPixmap(column2x, row3y, width - 48, 24, ImageCache['OldStoneB'])
+        painter.drawTiledPixmap(column2x, row3y, int(width - 48), 24, ImageCache['OldStoneB'])
         painter.drawPixmap(column3x, row3y, ImageCache['OldStoneBR'])
 
 
@@ -343,44 +343,57 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         """
         Real view zone painter for liquids/fog
         """
-        _, zy, zw, zh = zoneRect.getRect()
-
         drawRise = self.risingHeight != 0
         drawCrest = self.drawCrest
 
-        # Get positions
-        offsetFromTop = (self.top * 1.5) - zy
-        if offsetFromTop > zh:
+        crest_rect = QtCore.QRectF()
+        rise_rect = QtCore.QRectF()
+
+        # Create the fill_rect (the area where the water should be) by
+        fill_rect = QtCore.QRectF(zoneRect)
+        fill_rect.setTop(self.top * 1.5)
+
+        zoneRect.moveTo(0, 0)
+        fill_rect.moveBottomLeft(zoneRect.bottomLeft())
+        fill_rect &= zoneRect
+
+        if fill_rect.isEmpty():
             # the sprite is below the zone; don't draw anything
             return
 
-        if offsetFromTop <= 0:
-            offsetFromTop = 0
+        if fill_rect.top() <= 0:
             drawCrest = False  # off the top of the zone; no crest
 
         # If all that fits in the zone is some of the crest, determine how much
         if drawCrest:
-            crestSizeRemoval = (zy + offsetFromTop + self.crest.height()) - (zy + zh)
-            if crestSizeRemoval < 0: crestSizeRemoval = 0
-            crestHeight = self.crest.height() - crestSizeRemoval
+            crest_rect = QtCore.QRectF(0, fill_rect.top(), zoneRect.width(), self.crest.height())
+            crest_rect &= zoneRect
 
-        # Determine where to put the rise image
-        offsetRise = offsetFromTop - (self.risingHeight * 24)
-        riseToDraw = self.rise
-        if offsetRise <= 0:  # close enough to the top zone border
-            offsetRise = 0
-            riseToDraw = self.riseCrestless
-        if not drawCrest:
-            riseToDraw = self.riseCrestless
+            # Adjust the fill rect
+            fill_rect.setTop(crest_rect.bottom())
+
+        # # Determine where to put the rise image
+        # if drawRise:
+        #     rise_rect = QtCore.QRectF(0, fill_rect.top() - 24 * self.risingHeight, zoneRect.width(), 1)
+        #     rise_rect &= zoneRect
+
+        #     riseToDraw = self.rise
+
+        #     if not drawCrest or rise_rect.top() <= zoneRect.top():
+        #         # close enough to the top zone border
+        #         riseToDraw = self.riseCrestless
+
+        #     rise_rect.setHeight(riseToDraw.height())
+
+        print(f"{drawCrest} {drawRise} {crest_rect} {fill_rect} {rise_rect}")
 
         if drawCrest:
-            painter.drawTiledPixmap(0, offsetFromTop, zw, crestHeight, self.crest)
-            painter.drawTiledPixmap(0, offsetFromTop + crestHeight, zw, zh - crestHeight - offsetFromTop,
-                                    self.mid)
-        else:
-            painter.drawTiledPixmap(0, offsetFromTop, zw, zh - offsetFromTop, self.mid)
+            painter.drawTiledPixmap(crest_rect, self.crest)
+
+        painter.drawTiledPixmap(fill_rect, self.mid)
+
         if drawRise:
-            painter.drawTiledPixmap(0, offsetRise, zw, riseToDraw.height(), riseToDraw)
+            painter.drawTiledPixmap(rise_rect, riseToDraw)
 
     def realViewLocation(self, painter, location_rect):
         """
@@ -414,14 +427,16 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
             drawCrest = y < crestHeight
 
         if drawCrest:
-            crestHeight -= y
-            if crestHeight >= height:
-                painter.drawTiledPixmap(x, y, width, height, self.crest, x, y)
+            if (crestHeight - y) >= height:
+                painter.drawTiledPixmap(draw_rect, self.crest, draw_rect.topLeft())
             else:
-                painter.drawTiledPixmap(x, y, width, crestHeight, self.crest, x, y)
-                painter.drawTiledPixmap(x, y + crestHeight, width, height - crestHeight, self.mid, x)
+                draw_rect.setBottom(crestHeight - y)
+                painter.drawTiledPixmap(draw_rect, self.crest, draw_rect.topLeft())
+                draw_rect.setTop(crestHeight - y)
+                draw_rect.setHeight(height - crestHeight + y)
+                painter.drawTiledPixmap(draw_rect, self.mid, draw_rect.topLeft())
         else:
-            painter.drawTiledPixmap(x, y, width, height, self.mid, x, y - crestHeight)
+            painter.drawTiledPixmap(draw_rect, self.mid, draw_rect.topLeft())
 
 
 class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage):  # 97, 107, 132, 160
@@ -498,7 +513,7 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
 
         if speed == 3:
             self.aux[0].setSize(0, 0)
-        else:    
+        else:
             if self.dir == 'up':
                 self.aux[0].setPos(36, 24 - (distance * 24))
                 self.aux[0].setSize(16, distance * 16)
@@ -535,13 +550,13 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
             painter.drawTiledPixmap(0, endsizeV, widthV, tilesize * tiles, mid)
         elif self.dir == 'down':
             painter.drawTiledPixmap(0, 0, widthV, tilesize * tiles, mid)
-            painter.drawPixmap(0, (self.height * 1.5) - endsizeV, end)
+            painter.drawPixmap(0, int((self.height * 1.5) - endsizeV), end)
         elif self.dir == 'left':
             painter.drawPixmap(0, 0, end)
             painter.drawTiledPixmap(endsizeH, 0, tilesize * tiles, widthH, mid)
         elif self.dir == 'right':
             painter.drawTiledPixmap(0, 0, tilesize * tiles, widthH, mid)
-            painter.drawPixmap((self.width * 1.5) - endsizeH, 0, end)
+            painter.drawPixmap(int((self.width * 1.5) - endsizeH), 0, end)
 
 
 class SpriteImage_ScrewMushroom(SLib.SpriteImage):  # 172, 382
@@ -877,13 +892,13 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
                 # draw semi-transparent pipe
                 painter.save()
                 painter.setOpacity(0.5)
-                painter.drawPixmap(0, y2, ImageCache['PipeTop%s' % color])
-                painter.drawTiledPixmap(0, y2 + 24, 48, high - 24, ImageCache['PipeMiddleV%s' % color])
+                painter.drawPixmap(0, int(y2), ImageCache['PipeTop%s' % color])
+                painter.drawTiledPixmap(0, int(y2 + 24), 48, int(high - 24), ImageCache['PipeMiddleV%s' % color])
                 painter.restore()
 
             # draw opaque pipe
-            painter.drawPixmap(0, y1, ImageCache['PipeTop%s' % color])
-            painter.drawTiledPixmap(0, y1 + 24, 48, low - 24, ImageCache['PipeMiddleV%s' % color])
+            painter.drawPixmap(0, int(y1), ImageCache['PipeTop%s' % color])
+            painter.drawTiledPixmap(0, int(y1 + 24), 48, int(low - 24), ImageCache['PipeMiddleV%s' % color])
 
         elif self.direction == 'D':
 
@@ -891,13 +906,13 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
                 # draw semi-transparent pipe
                 painter.save()
                 painter.setOpacity(0.5)
-                painter.drawTiledPixmap(0, 0, 48, high - 24, ImageCache['PipeMiddleV%s' % color])
-                painter.drawPixmap(0, high - 24, ImageCache['PipeBottom%s' % color])
+                painter.drawTiledPixmap(0, 0, 48, int(high - 24), ImageCache['PipeMiddleV%s' % color])
+                painter.drawPixmap(0, int(high - 24), ImageCache['PipeBottom%s' % color])
                 painter.restore()
 
             # draw opaque pipe
-            painter.drawTiledPixmap(0, 0, 48, low - 24, ImageCache['PipeMiddleV%s' % color])
-            painter.drawPixmap(0, low - 24, ImageCache['PipeBottom%s' % color])
+            painter.drawTiledPixmap(0, 0, 48, int(low - 24), ImageCache['PipeMiddleV%s' % color])
+            painter.drawPixmap(0, int(low - 24), ImageCache['PipeBottom%s' % color])
 
         elif self.direction == 'R':
 
@@ -905,13 +920,13 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
                 # draw semi-transparent pipe
                 painter.save()
                 painter.setOpacity(0.5)
-                painter.drawPixmap(high, 0, ImageCache['PipeRight%s' % color])
-                painter.drawTiledPixmap(0, 0, high - 24, 48, ImageCache['PipeMiddleH%s' % color])
+                painter.drawPixmap(int(high), 0, ImageCache['PipeRight%s' % color])
+                painter.drawTiledPixmap(0, 0, int(high - 24), 48, ImageCache['PipeMiddleH%s' % color])
                 painter.restore()
 
             # draw opaque pipe
-            painter.drawPixmap(low - 24, 0, ImageCache['PipeRight%s' % color])
-            painter.drawTiledPixmap(0, 0, low - 24, 48, ImageCache['PipeMiddleH%s' % color])
+            painter.drawPixmap(int(low - 24), 0, ImageCache['PipeRight%s' % color])
+            painter.drawTiledPixmap(0, 0, int(low - 24), 48, ImageCache['PipeMiddleH%s' % color])
 
         else:  # left
 
@@ -919,12 +934,12 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
                 # draw semi-transparent pipe
                 painter.save()
                 painter.setOpacity(0.5)
-                painter.drawTiledPixmap(0, 0, high - 24, 48, ImageCache['PipeMiddleH%s' % color])
-                painter.drawPixmap(high - 24, 0, ImageCache['PipeLeft%s' % color])
+                painter.drawTiledPixmap(0, 0, int(high - 24), 48, ImageCache['PipeMiddleH%s' % color])
+                painter.drawPixmap(int(high - 24), 0, ImageCache['PipeLeft%s' % color])
                 painter.restore()
 
             # draw opaque pipe
-            painter.drawTiledPixmap(24, 0, low - 24, 48, ImageCache['PipeMiddleH%s' % color])
+            painter.drawTiledPixmap(24, 0, int(low - 24), 48, ImageCache['PipeMiddleH%s' % color])
             painter.drawPixmap(0, 0, ImageCache['PipeLeft%s' % color])
 
 
@@ -2303,7 +2318,7 @@ class SpriteImage_BulletBillLauncher(SLib.SpriteImage):  # 92
         super().paint(painter)
 
         painter.drawPixmap(0, 0, ImageCache['BBLauncherT'])
-        painter.drawTiledPixmap(0, 48, 24, self.height * 1.5 - 48, ImageCache['BBLauncherM'])
+        painter.drawTiledPixmap(0, 48, 24, int(self.height * 1.5 - 48), ImageCache['BBLauncherM'])
 
 
 class SpriteImage_BanzaiBillLauncher(SLib.SpriteImage_Static):  # 93
@@ -2521,8 +2536,8 @@ class SpriteImage_Pokey(SLib.SpriteImage):  # 105
         super().paint(painter)
 
         painter.drawPixmap(0, 0, ImageCache['PokeyTop'])
-        painter.drawTiledPixmap(0, 37, 36, self.height * 1.5 - 61, ImageCache['PokeyMiddle'])
-        painter.drawPixmap(0, self.height * 1.5 - 24, ImageCache['PokeyBottom'])
+        painter.drawTiledPixmap(0, 37, 36, int(self.height * 1.5 - 61), ImageCache['PokeyMiddle'])
+        painter.drawPixmap(0, int(self.height * 1.5 - 24), ImageCache['PokeyBottom'])
 
 
 class SpriteImage_LinePlatform(SpriteImage_WoodenPlatform):  # 106
@@ -3225,17 +3240,17 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
 
         for piece in range(pieces):
             bitpos = 1 << (piece & 3)
-            if pivots[int(piece / 4)] & bitpos:
-                painter.drawPixmap(5, ysize - (piece * 24) - 24, ImageCache['RotLauncherPivot'])
+            if pivots[piece // 4] & bitpos:
+                painter.drawPixmap(5, int(ysize - (piece - 1) * 24), ImageCache['RotLauncherPivot'])
             else:
                 xo = 6
                 image = ImageCache['RotLauncherCannon']
-                if startleft[int(piece / 4)] & bitpos:
+                if startleft[piece // 4] & bitpos:
                     transform = QtGui.QTransform()
                     transform.rotate(180)
                     image = QtGui.QPixmap(image.transformed(transform))
                     xo = 0
-                painter.drawPixmap(xo, ysize - (piece + 1) * 24, image)
+                painter.drawPixmap(xo, int(ysize - (piece + 1) * 24), image)
 
 
 class SpriteImage_SpikedStakeDown(SpriteImage_SpikedStake):  # 137
@@ -3274,7 +3289,7 @@ class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
         self.risingHeight |= self.parent.spritedata[4] >> 4
         if self.parent.spritedata[2] & 15 > 7:  # falling
             self.risingHeight = -self.risingHeight
-        
+
         if not self.drawCrest and self.locId == 0:
             self.top = self.parent.objy + 20
             self.mid.alpha = 0.1
@@ -3672,8 +3687,8 @@ class SpriteImage_BlockTrain(SLib.SpriteImage):  # 166
 
         endpiece = ImageCache['BlockTrain']
         painter.drawPixmap(0, 0, endpiece)
-        painter.drawTiledPixmap(24, 0, (self.width * 1.5) - 48, 24, ImageCache['BlockTrain'])
-        painter.drawPixmap((self.width * 1.5) - 24, 0, endpiece)
+        painter.drawTiledPixmap(24, 0, int((self.width * 1.5) - 48), 24, ImageCache['BlockTrain'])
+        painter.drawPixmap(int((self.width * 1.5) - 24), 0, endpiece)
 
 
 class SpriteImage_ChestnutGoomba(SLib.SpriteImage_Static):  # 170
@@ -3885,16 +3900,16 @@ class SpriteImage_ScalePlatform(SLib.SpriteImage):  # 178
         super().paint(painter)
 
         # this is FUN!! (not)
-        ropeLeft = self.parent.ropeLengthLeft * 24 + 4
+        ropeLeft = int(self.parent.ropeLengthLeft * 24 + 4)
         if self.parent.ropeLengthLeft == 0: ropeLeft += 12
 
-        ropeRight = self.parent.ropeLengthRight * 24 + 4
+        ropeRight = int(self.parent.ropeLengthRight * 24 + 4)
         if self.parent.ropeLengthRight == 0: ropeRight += 12
 
-        ropeWidth = self.parent.ropeWidth * 24 + 8
-        platformWidth = (self.parent.platformWidth + 3) * 24
+        ropeWidth = int(self.parent.ropeWidth * 24 + 8)
+        platformWidth = int((self.parent.platformWidth + 3) * 24)
 
-        ropeX = platformWidth / 2 - 4
+        ropeX = int(platformWidth / 2 - 4)
 
         painter.drawTiledPixmap(ropeX + 8, 0, ropeWidth - 16, 8, ImageCache['ScaleRopeH'])
 
@@ -4778,15 +4793,15 @@ class SpriteImage_ExtendShroom(SLib.SpriteImage):  # 228
             painter.drawPixmap(0, 0, self.indicator)
             painter.restore()
 
-            painter.drawPixmap((self.width * 1.5) / 2 - 24, 0, self.image)
+            painter.drawPixmap(int(self.width * 1.5 / 2 - 24), 0, self.image)
         else:
             painter.drawPixmap(0, 0, self.image)
 
         painter.drawTiledPixmap(
-            (self.width * 1.5) / 2 - 14,
+            int((self.width * 1.5) / 2 - 14),
             48,
             28,
-            (self.height * 1.5) - 48,
+            int((self.height * 1.5) - 48),
             ImageCache['ExtendShroomStem'],
         )
 
@@ -4865,9 +4880,9 @@ class SpriteImage_WiggleShroom(SLib.SpriteImage):  # 231
 
         xsize = self.width * 1.5
         painter.drawPixmap(0, 0, self.wiggleleft)
-        painter.drawTiledPixmap(18, 0, xsize - 36, 24, self.wigglemiddle)
-        painter.drawPixmap(xsize - 18, 0, self.wiggleright)
-        painter.drawTiledPixmap((xsize / 2) - 12, 24, 24, (self.height * 1.5) - 24, self.wigglestem)
+        painter.drawTiledPixmap(18, 0, int(xsize - 36), 24, self.wigglemiddle)
+        painter.drawPixmap(int(xsize - 18), 0, self.wiggleright)
+        painter.drawTiledPixmap(int((xsize / 2) - 12), 24, 24, int((self.height * 1.5) - 24), self.wigglestem)
 
 
 class SpriteImage_MechaKoopa(SLib.SpriteImage_Static):  # 232
@@ -5273,7 +5288,7 @@ class SpriteImage_ScaredyRat(SLib.SpriteImage):  # 271
             rat = QtGui.QImage(rat)
             rat = QtGui.QPixmap.fromImage(rat.mirrored(True, False))
 
-        painter.drawTiledPixmap(0, 0, self.width * 1.5, 24, rat)
+        painter.drawTiledPixmap(0, 0, int(self.width * 1.5), 24, rat)
 
 
 class SpriteImage_IceBro(SLib.SpriteImage_Static):  # 272
@@ -5605,9 +5620,9 @@ class SpriteImage_DragonCoaster(SLib.SpriteImage):  # 297
             painter.drawPixmap(48, 0, ImageCache['DragonHead'])
             painter.drawPixmap(0, 0, ImageCache['DragonTail'])
         else:
-            painter.drawPixmap((self.width * 1.5) - 48, 0, ImageCache['DragonHead'])
+            painter.drawPixmap(int((self.width * 1.5) - 48), 0, ImageCache['DragonHead'])
             if raw_size > 1:
-                painter.drawTiledPixmap(48, 0, (self.width * 1.5) - 96, 24, ImageCache['DragonBody'])
+                painter.drawTiledPixmap(48, 0, int((self.width * 1.5) - 96), 24, ImageCache['DragonBody'])
             painter.drawPixmap(0, 0, ImageCache['DragonTail'])
 
 
@@ -6049,8 +6064,8 @@ class SpriteImage_BoltBox(SLib.SpriteImage):  # 316
     def paint(self, painter):
         super().paint(painter)
 
-        xsize = self.width * 1.5
-        ysize = self.height * 1.5
+        xsize = int(self.width * 1.5)
+        ysize = int(self.height * 1.5)
 
         painter.drawPixmap(0, 0, ImageCache['BoltBoxTL'])
         painter.drawTiledPixmap(24, 0, xsize - 48, 24, ImageCache['BoltBoxT'])
@@ -6165,13 +6180,13 @@ class SpriteImage_BooCircle(SLib.SpriteImage):  # 323
             # Find the abs pos, and paint the ghost at its inner position
             x = math.sin(angle) * ((inrad * radiusMultiplier) + radiusConstant) - offsetX
             y = -(math.cos(angle) * ((inrad * radiusMultiplier) + radiusConstant)) - offsetY
-            paint.drawPixmap(x + 512, y + 512, boo)
+            paint.drawPixmap(int(x + 512), int(y + 512), boo)
 
             # Paint it at its outer position if it has one
             if differentRads:
                 x = math.sin(angle) * ((outrad * radiusMultiplier) + radiusConstant) - offsetX
                 y = -(math.cos(angle) * ((outrad * radiusMultiplier) + radiusConstant)) - offsetY
-                paint.drawPixmap(x + 512, y + 512, boo)
+                paint.drawPixmap(int(x + 512), int(y + 512), boo)
 
         # Finish it
         paint = None
@@ -6738,13 +6753,13 @@ class SpriteImage_BrownBlock(SLib.SpriteImage):  # 356
         blockX = 0
         blockY = 0
 
-        width = self.width * 1.5
-        height = self.height * 1.5
+        width = int(self.width * 1.5)
+        height = int(self.height * 1.5)
 
         column2x = blockX + 24
-        column3x = blockX + width - 24
+        column3x = int(blockX + width - 24)
         row2y = blockY + 24
-        row3y = blockY + height - 24
+        row3y = int(blockY + height - 24)
 
         painter.drawPixmap(blockX, blockY, ImageCache['BrownBlockTL'])
         painter.drawTiledPixmap(column2x, blockY, width - 48, 24, ImageCache['BrownBlockTM'])
@@ -6867,8 +6882,8 @@ class SpriteImage_ColoredBox(SLib.SpriteImage):  # 362
         super().paint(painter)
 
         prefix = 'CBox%d' % self.color
-        xsize = self.width * 1.5
-        ysize = self.height * 1.5
+        xsize = int(self.width * 1.5)
+        ysize = int(self.height * 1.5)
 
         painter.drawPixmap(0, 0, ImageCache[prefix + 'TL'])
         painter.drawPixmap(xsize - 25, 0, ImageCache[prefix + 'TR'])
@@ -7415,9 +7430,9 @@ class SpriteImage_MoveWhenOn(SLib.SpriteImage):  # 396
             painter.drawPixmap(0, 2, ImageCache['MoveWhenOnL'])
             if self.raw_size > 2:
                 painter.drawTiledPixmap(24, 2, (self.raw_size - 2) * 24, 24, ImageCache['MoveWhenOnM'])
-            painter.drawPixmap((self.width * 1.5) - 24, 2, ImageCache['MoveWhenOnR'])
+            painter.drawPixmap(int((self.width * 1.5) - 24), 2, ImageCache['MoveWhenOnR'])
 
-        center = (self.width / 2) * 1.5
+        center = int((self.width / 2) * 1.5)
         painter.drawPixmap(center - 14, 0, ImageCache['MoveWhenOnC'])
         if direction is not None:
             painter.drawPixmap(center - 12, 1, ImageCache['SmArrow%s' % direction])
@@ -7447,8 +7462,8 @@ class SpriteImage_GhostHouseBox(SLib.SpriteImage):  # 397
         super().paint(painter)
 
         prefix = 'GHBox'
-        xsize = self.width * 1.5
-        ysize = self.height * 1.5
+        xsize = int(self.width * 1.5)
+        ysize = int(self.height * 1.5)
 
         # Corners
         painter.drawPixmap(0, 0, ImageCache[prefix + 'TL'])
@@ -7963,8 +7978,8 @@ class SpriteImage_PurplePole(SLib.SpriteImage):  # 437
         super().paint(painter)
 
         painter.drawPixmap(0, 0, ImageCache['VertPoleTop'])
-        painter.drawTiledPixmap(0, 24, 24, self.height * 1.5 - 48, ImageCache['VertPole'])
-        painter.drawPixmap(0, self.height * 1.5 - 24, ImageCache['VertPoleBottom'])
+        painter.drawTiledPixmap(0, 24, 24, int(self.height * 1.5 - 48), ImageCache['VertPole'])
+        painter.drawPixmap(0, int(self.height * 1.5 - 24), ImageCache['VertPoleBottom'])
 
 
 class SpriteImage_CageBlocks(SLib.SpriteImage_StaticMultiple):  # 438
@@ -8027,8 +8042,8 @@ class SpriteImage_HorizontalRope(SLib.SpriteImage):  # 440
 
         endpiece = ImageCache['HorzRopeEnd']
         painter.drawPixmap(0, 0, endpiece)
-        painter.drawTiledPixmap(24, 0, self.width * 1.5 - 48, 24, ImageCache['HorzRope'])
-        painter.drawPixmap(self.width * 1.5 - 24, 0, endpiece)
+        painter.drawTiledPixmap(24, 0, int(self.width * 1.5 - 48), 24, ImageCache['HorzRope'])
+        painter.drawPixmap(int(self.width * 1.5 - 24), 0, endpiece)
 
 
 class SpriteImage_MushroomPlatform(SLib.SpriteImage):  # 441
@@ -8091,9 +8106,9 @@ class SpriteImage_MushroomPlatform(SLib.SpriteImage):  # 441
                 color = 'Green'
 
         painter.drawPixmap(0, 0, ImageCache[color + 'ShroomL'])
-        painter.drawTiledPixmap(tilesize, 0, (self.width * 1.5) - (tilesize * 2), tilesize,
+        painter.drawTiledPixmap(tilesize, 0, int((self.width * 1.5) - (tilesize * 2)), tilesize,
                                 ImageCache[color + 'ShroomM'])
-        painter.drawPixmap((self.width * 1.5) - tilesize, 0, ImageCache[color + 'ShroomR'])
+        painter.drawPixmap(int(self.width * 1.5) - tilesize, 0, ImageCache[color + 'ShroomR'])
 
 
 class SpriteImage_ReplayBlock(SLib.SpriteImage_Static):  # 443
@@ -8491,8 +8506,8 @@ class SpriteImage_BoltPlatform(SLib.SpriteImage):  # 469
         super().paint(painter)
 
         painter.drawPixmap(0, 0, ImageCache['BoltPlatformL'])
-        painter.drawTiledPixmap(24, 3, self.width * 1.5 - 48, 24, ImageCache['BoltPlatformM'])
-        painter.drawPixmap(self.width * 1.5 - 24, 0, ImageCache['BoltPlatformR'])
+        painter.drawTiledPixmap(24, 3, int(self.width * 1.5) - 48, 24, ImageCache['BoltPlatformM'])
+        painter.drawPixmap(int(self.width * 1.5) - 24, 0, ImageCache['BoltPlatformR'])
 
 
 class SpriteImage_BoltPlatformWire(SLib.SpriteImage_Static):  # 470

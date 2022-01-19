@@ -503,15 +503,15 @@ class AuxiliaryTrackObject(AuxiliarySpriteItem):
         painter.setPen(OutlinePen)
 
         if self.direction == self.Horizontal:
-            lineY = self.height * 0.75
-            painter.drawLine(20, lineY, (self.width * 1.5) - 20, lineY)
+            lineY = int(self.height * 0.75)
+            painter.drawLine(20, lineY, int((self.width * 1.5) - 20), lineY)
             painter.drawEllipse(8, lineY - 4, 8, 8)
-            painter.drawEllipse((self.width * 1.5) - 16, lineY - 4, 8, 8)
+            painter.drawEllipse(int((self.width * 1.5) - 16), lineY - 4, 8, 8)
         else:
-            lineX = self.width * 0.75
-            painter.drawLine(lineX, 20, lineX, (self.height * 1.5) - 20)
+            lineX = int(self.width * 0.75)
+            painter.drawLine(lineX, 20, lineX, int((self.height * 1.5) - 20))
             painter.drawEllipse(lineX - 4, 8, 8, 8)
-            painter.drawEllipse(lineX - 4, (self.height * 1.5) - 16, 8, 8)
+            painter.drawEllipse(lineX - 4, int((self.height * 1.5) - 16), 8, 8)
 
 
 class AuxiliaryCircleOutline(AuxiliarySpriteItem):
@@ -580,7 +580,7 @@ class AuxiliaryRotationAreaOutline(AuxiliarySpriteItem):
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
         painter.setPen(OutlinePen)
         painter.setBrush(OutlineBrush)
-        painter.drawPie(self.BoundingRect, self.startAngle, self.spanAngle)
+        painter.drawPie(self.BoundingRect, int(self.startAngle), int(self.spanAngle))
 
 
 class AuxiliaryRectOutline(AuxiliarySpriteItem):
@@ -745,7 +745,7 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
             changedSize = True
         if self.realimage is not None:
             if changedSize:
-                self.image = self.realimage.copy(0, 0, w, h)
+                self.image = self.realimage.copy(0, 0, int(w), int(h))
             else:
                 self.image = self.realimage
 
