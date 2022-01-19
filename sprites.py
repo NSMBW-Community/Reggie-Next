@@ -364,6 +364,20 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         if fill_rect.top() <= 0:
             drawCrest = False  # off the top of the zone; no crest
 
+        # Determine where to put the rise image
+        if drawRise:
+            rise_rect = QtCore.QRectF(0, fill_rect.top() - 24 * self.risingHeight, zoneRect.width(), 0)
+
+            # Determine what image to draw for the rise indicator
+            rise_img = self.rise
+            if not drawCrest or rise_rect.top() <= 0:
+                # close enough to the top zone border
+                rise_rect.setTop(0)
+                rise_img = self.riseCrestless
+
+            # Set the correct height
+            rise_rect.setHeight(rise_img.height())
+
         # If all that fits in the zone is some of the crest, determine how much
         if drawCrest:
             crest_rect = QtCore.QRectF(0, fill_rect.top(), zoneRect.width(), self.crest.height())
@@ -372,28 +386,14 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
             # Adjust the fill rect
             fill_rect.setTop(crest_rect.bottom())
 
-        # # Determine where to put the rise image
-        # if drawRise:
-        #     rise_rect = QtCore.QRectF(0, fill_rect.top() - 24 * self.risingHeight, zoneRect.width(), 1)
-        #     rise_rect &= zoneRect
-
-        #     riseToDraw = self.rise
-
-        #     if not drawCrest or rise_rect.top() <= zoneRect.top():
-        #         # close enough to the top zone border
-        #         riseToDraw = self.riseCrestless
-
-        #     rise_rect.setHeight(riseToDraw.height())
-
-        print(f"{drawCrest} {drawRise} {crest_rect} {fill_rect} {rise_rect}")
-
+        # Draw everything
         if drawCrest:
             painter.drawTiledPixmap(crest_rect, self.crest)
 
         painter.drawTiledPixmap(fill_rect, self.mid)
 
         if drawRise:
-            painter.drawTiledPixmap(rise_rect, riseToDraw)
+            painter.drawTiledPixmap(rise_rect, rise_img)
 
     def realViewLocation(self, painter, location_rect):
         """
