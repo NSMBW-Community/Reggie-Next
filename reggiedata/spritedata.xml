@@ -77,7 +77,7 @@
   <sprite id="7" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
   <sprite id="8" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
 
-  <sprite id="9" name="(Unused) Glitch Player Actor" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is the most stable version of all the &quot;Glitch Marios.&quot; (#0-#9)&lt;br&gt;It creates a stationary Player clone. The clone will not move, and will shoot Fire balls if the matching player has the Fire Flower powerup. Other possible functions are untested. It's possible the game utilizes this data to create a temporary player actor at Entrances for no-control load-ins before switching to a controlled player actor. Additionally, depending on the position of this sprite relative to an Entrance, this Player Actor can sometimes be controlled instead of the one created by the entrance.">
+  <sprite id="9" name="(Unused) Glitch Player Actor" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is the most stable version of all the &quot;Glitch Marios.&quot; (#0-#9)&lt;br&gt;It creates a stationary Player clone. The clone will not move, and will shoot Fireballs if the matching player has the Fire Flower powerup. Other possible functions are untested. It's possible the game utilizes this data to create a temporary player actor at Entrances for no-control load-ins before switching to a controlled player actor. Additionally, depending on the position of this sprite relative to an Entrance, this Player Actor can sometimes be controlled instead of the one created by the entrance.">
     <dualbox nybble="6.4" title1="Faces Right" title2="Faces Left" comment="This determines which way the spawned Player Actor faces." advanced="True"/>
     <list nybble="7-8" title="Load-In Animation" comment="This determines what animation is used by the spawned Player Actor when it is first loaded." comment2="This value uses the same list and order as normal entrances. Every value creates a character at its position. Compared to normal entrances, Mario will be positioned on top of the sprite's placement and not inside it. The 3D model is stationary and does not move." advanced="True">
       <entry value="0">Normal</entry>
@@ -748,22 +748,22 @@
   <sprite id="62" name="Spinning Fire Bar" notes="A Spinning Fire Bar like one you would find in a Castle stage.">
     <dualbox nybble="7.4" title1="1x1 Block Base" title2="2x1 Block Base" comment="This determines the size of the Block Base. The Fire Bar will emerge from the center of the base. The base also has no collision, so you will need to place Invisible Collision Blocks or other Tileset pieces behind it to create collision."/>
     <list nybble="12" title="Length" comment="This determines how many fireballs make up one arm of the Fire Bar. One fireball adds approximately 0.75 blocks to the length.">
-      <entry value="0">2 Fire balls (~ 1.50 Blocks)</entry>
-      <entry value="1">3 Fire balls (~ 2.25 Blocks)</entry>
-      <entry value="2">4 Fire balls (~ 3.00 Blocks)</entry>
-      <entry value="3">5 Fire balls (~ 3.75 Blocks)</entry>
-      <entry value="4">6 Fire balls (~ 4.50 Blocks)</entry>
-      <entry value="5">7 Fire balls (~ 5.25 Blocks)</entry>
-      <entry value="6">8 Fire balls (~ 6.00 Blocks)</entry>
-      <entry value="7">9 Fire balls (~ 6.75 Blocks)</entry>
-      <entry value="8">10 Fire balls (~ 7.50 Blocks)</entry>
-      <entry value="9">11 Fire balls (~ 8.25 Blocks)</entry>
-      <entry value="10">12 Fire balls (~ 9.00 Blocks)</entry>
-      <entry value="11">13 Fire balls (~ 9.75 Blocks)</entry>
-      <entry value="12">14 Fire balls (~ 10.50 Blocks)</entry>
-      <entry value="13">15 Fire balls (~ 11.25 Blocks)</entry>
-      <entry value="14">16 Fire balls (~ 12.00 Blocks)</entry>
-      <entry value="15">17 Fire balls (~ 12.75 Blocks)</entry>
+      <entry value="0">2 Fireballs (~ 1.50 Blocks)</entry>
+      <entry value="1">3 Fireballs (~ 2.25 Blocks)</entry>
+      <entry value="2">4 Fireballs (~ 3.00 Blocks)</entry>
+      <entry value="3">5 Fireballs (~ 3.75 Blocks)</entry>
+      <entry value="4">6 Fireballs (~ 4.50 Blocks)</entry>
+      <entry value="5">7 Fireballs (~ 5.25 Blocks)</entry>
+      <entry value="6">8 Fireballs (~ 6.00 Blocks)</entry>
+      <entry value="7">9 Fireballs (~ 6.75 Blocks)</entry>
+      <entry value="8">10 Fireballs (~ 7.50 Blocks)</entry>
+      <entry value="9">11 Fireballs (~ 8.25 Blocks)</entry>
+      <entry value="10">12 Fireballs (~ 9.00 Blocks)</entry>
+      <entry value="11">13 Fireballs (~ 9.75 Blocks)</entry>
+      <entry value="12">14 Fireballs (~ 10.50 Blocks)</entry>
+      <entry value="13">15 Fireballs (~ 11.25 Blocks)</entry>
+      <entry value="14">16 Fireballs (~ 12.00 Blocks)</entry>
+      <entry value="15">17 Fireballs (~ 12.75 Blocks)</entry>
     </list>
     <checkbox nybble="11.4" title="Double Fire Bar" comment="When enabled, the Fire Bar will extend from both ends of the Block Base."/>
     <dualbox nybble="9.4" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the Fire Bar will rotate."/>
@@ -790,59 +790,59 @@
   </sprite> <!-- #64: Effect - Thick Fog -->
 
   <sprite id="65" name="Pipe Piranha Plant - Up" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one.">
-     <checkbox nybble="8.4" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
+     <checkbox nybble="8.4" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Ice balls will still freeze it."/>
   </sprite> <!-- #65: Pipe Piranha Plant - Up -->
 
   <sprite id="66" name="Pipe Piranha Plant - Down" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one.">
-     <checkbox nybble="8.4" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
+     <checkbox nybble="8.4" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Ice balls will still freeze it."/>
   </sprite> <!-- #66: Pipe Piranha Plant - Down -->
 
   <sprite id="67" name="Pipe Piranha Plant - Right" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
-     <checkbox nybble="8.4" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
+     <checkbox nybble="8.4" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Ice balls will still freeze it."/>
   </sprite> <!-- #67: Pipe Piranha Plant - Right -->
 
   <sprite id="68" name="Pipe Piranha Plant - Left" notes="A standard Piranha Plant that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
-     <checkbox nybble="8.4" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
+     <checkbox nybble="8.4" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Ice balls will still freeze it."/>
   </sprite> <!-- #68: Pipe Piranha Plant - Left -->
 
   <sprite id="69" name="Pipe Fire Piranha Plant - Up" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one.">
-    <list nybble="12" title="Fire ball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
-      <entry value="0">1 Fire ball</entry>
-      <entry value="1">2 Fire balls</entry>
-      <entry value="2">3 Fire balls</entry>
-      <entry value="3">6 Fire balls</entry>
+    <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
+      <entry value="0">1 Fireball</entry>
+      <entry value="1">2 Fireballs</entry>
+      <entry value="2">3 Fireballs</entry>
+      <entry value="3">6 Fireballs</entry>
     </list>
-     <checkbox nybble="8.4" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
+     <checkbox nybble="8.4" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Ice balls will still freeze it."/>
   </sprite> <!-- #69: Pipe Fire Piranha Plant - Up -->
 
   <sprite id="70" name="Pipe Fire Piranha Plant - Down" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one.">
-    <list nybble="12" title="Fire ball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
-      <entry value="0">1 Fire ball</entry>
-      <entry value="1">2 Fire balls</entry>
-      <entry value="2">3 Fire balls</entry>
-      <entry value="3">6 Fire balls</entry>
+    <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
+      <entry value="0">1 Fireball</entry>
+      <entry value="1">2 Fireballs</entry>
+      <entry value="2">3 Fireballs</entry>
+      <entry value="3">6 Fireballs</entry>
     </list>
-     <checkbox nybble="8.4" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
+     <checkbox nybble="8.4" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Ice balls will still freeze it."/>
   </sprite> <!-- #70: Pipe Fire Piranha Plant - Down -->
 
   <sprite id="71" name="Pipe Fire Piranha Plant - Right" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
-    <list nybble="12" title="Fire ball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
-      <entry value="0">1 Fire ball</entry>
-      <entry value="1">2 Fire balls</entry>
-      <entry value="2">3 Fire balls</entry>
-      <entry value="3">6 Fire balls</entry>
+    <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
+      <entry value="0">1 Fireball</entry>
+      <entry value="1">2 Fireballs</entry>
+      <entry value="2">3 Fireballs</entry>
+      <entry value="3">6 Fireballs</entry>
     </list>
-     <checkbox nybble="8.4" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
+     <checkbox nybble="8.4" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Ice balls will still freeze it."/>
   </sprite> <!-- #71: Pipe Fire Piranha Plant - Right -->
 
   <sprite id="72" name="Pipe Fire Piranha Plant - Left" notes="A Piranha Plant able to shoot fireballs that will appear from a pipe when placed adjacent to one. When placing this Piranha Plant underwater, it must be placed one block away from the pipe's edge.">
-    <list nybble="12" title="Fire ball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
-      <entry value="0">1 Fire ball</entry>
-      <entry value="1">2 Fire balls</entry>
-      <entry value="2">3 Fire balls</entry>
-      <entry value="3">6 Fire balls</entry>
+    <list nybble="12" title="Fireball Ammo" comment="This determines how many fireballs the Piranha Plant will shoot before retreating back into the pipe.">
+      <entry value="0">1 Fireball</entry>
+      <entry value="1">2 Fireballs</entry>
+      <entry value="2">3 Fireballs</entry>
+      <entry value="3">6 Fireballs</entry>
     </list>
-     <checkbox nybble="8.4" title="Immune to Fire balls" comment="When enabled, the Piranha Plant cannot be damaged by Fire balls. Ice balls will still freeze it."/>
+     <checkbox nybble="8.4" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Ice balls will still freeze it."/>
   </sprite> <!-- #72: Pipe Fire Piranha Plant - Left -->
 
   <sprite id="73" name="Piranha Plant" notes="The standard Piranha Plant.">
@@ -2591,7 +2591,7 @@
   <sprite id="169" name="Incomplete Sprite - 'En_Slip_Penguin'" notes="Does nothing.">
   </sprite> <!-- #169: Incomplete Sprite - 'En_Slip_Penguin' -->
 
-  <sprite id="170" name="Prickly Goomba" notes="A spiky brown ball that contains a normal Goomba, which will appear if it is shot with a Fire ball. Fire Bro fireballs will also open it, but Fire Chomp fireballs will not.">
+  <sprite id="170" name="Prickly Goomba" notes="A spiky brown ball that contains a normal Goomba, which will appear if it is shot with a Fireball. Fire Bro fireballs will also open it, but Fire Chomp fireballs will not.">
   </sprite> <!-- #170: Prickly Goomba -->
 
   <sprite id="171" name="Mushroom in a Bubble" notes="&lt;font color=&quot;orange&quot;&gt;This sprite is not recommended for use, and it WILL crash the game if used with invalid settings.&lt;/font&gt;" advancednotes="This is capable of spawning both items and players inside of bubbles. Unfortunately it was not designed to be called on for stand-alone functions.">
@@ -4344,7 +4344,7 @@
     <value nybble="12" title="Location ID" comment="When set, large amounts of Volcano Rocks will spawn intermittently from the top of the screen only while the player is within this location. Additionally, if using the Volcano background, it will erupt prior to this wave of rocks." comment2="When not set, the Volcano Rocks will still spawn, but they will spawn infrequently and one at a time for the entire zone. It will also not cause an eruption from the Volcano background." idtype="Location"/>
   </sprite> <!-- #293: Volcano Rock Spawn Area -->
 
-  <sprite id="294" name="Meltable Ice Cube" notes="A small, 'smoking', slippery ice cube that can be melted with Fire balls.">
+  <sprite id="294" name="Meltable Ice Cube" notes="A small, 'smoking', slippery ice cube that can be melted with Fireballs.">
   </sprite> <!-- #294: Meltable Ice Cube -->
 
   <!-- Does the sprite only unthread to its starting placement (thus giving purpose to Offset Right) or will it unthread until it hits a solid surface? -->
@@ -5794,18 +5794,18 @@
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
   </sprite> <!-- #391: Lighting - Glow Block -->
 
-  <sprite id="392" name="Magic Fire ball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Koopaling Fire balls will fire from the screen's edge towards the players while a player is inside it. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
-    <value nybble="11" title="Location ID" comment="The Fire balls will only spawn while a player is in this location." comment2="While a Location ID is not required, it is recommended." idtype="Location"/>
-    <list nybble="8.3-8.4" title="Color of Fire ball" comment="This determines the color of the fireball." comment2="Different colored fireballs do not have different effects.">
+  <sprite id="392" name="Magic Fireball Spawn Area" noyoshi="True" notes="This sprite spawns Koopaling Fireballs from the screen's edge towards the players. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
+    <value nybble="11" title="Location ID" comment="The fireballs will only spawn while a player is in this Location. However, this sprite works without a Location." idtype="Location"/>
+    <list nybble="8.3-8.4" title="Color of Fireballs" comment="This determines the color of the fireball. Different colored fireballs do not have different effects.">
       <entry value="0">Light Blue</entry>
       <entry value="1">Purple</entry>
       <entry value="2">Green</entry>
     </list>
-    <list nybble="9" title="Rate of Fire" comment="This determines the frequency of the fireball spawns, in game seconds." comment2="In retail levels, Nintendo used 12 and 14.">
+    <list nybble="9" title="Rate of Fire" comment="This determines the frequency of the fireball spawns, in real seconds. In retail levels, Nintendo used 12 and 14.">
       <entry value="1">1</entry>
       <entry value="2">2</entry>
+      <entry value="0">2.3</entry>
       <entry value="3">3</entry>
-      <entry value="0">3.3</entry>
       <entry value="4">4</entry>
       <entry value="5">5</entry>
       <entry value="6">6</entry>
@@ -5819,9 +5819,9 @@
       <entry value="14">14</entry>
       <entry value="15">15</entry>
     </list>
-    <dualbox nybble="12.4" title1="Appears from Top" title2="Appears from Right" comment="This determines the portion of the screen the fireballs will appear from." comment2="The fireball will appear from the center of the selected portion, plus or minus about 10 blocks. Placement does not affect this."/>
-    <value nybble="10.4" title="Unknown Flag 10 (1)" comment="ASM shows Nybble 10 might affect something. No visible effect."/>
-  </sprite> <!-- #392: Magic Fire ball Spawn Area -->
+    <dualbox nybble="12.4" title1="Appears from Top" title2="Appears from Right" comment="This determines the portion of the screen the fireballs will appear from. The fireballs will appear from the opposite side of Mario's position on the screen."/>
+    <checkbox nybble="10.4" title="Always Appear from Above" comment="When this is set, the fireballs will always spawn just above the center of the screen. Otherwise, they will appear from the top or bottom side of the screen opposite to Mario's position." requirednybble="12.4"/>
+  </sprite> <!-- #392: Magic Fireball Spawn Area -->
 
   <sprite id="393" name="Propeller Block" notes="A grabbable propeller block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. It can also boost the player into the air like a Propeller Cap if the player shakes their controller a second time while holding it. If it is thrown and it hits the ground, it will bounce slightly.">
   </sprite> <!-- #393: Propeller Block -->
@@ -6282,9 +6282,9 @@
     <value nybble="12.3-12.4" title="Distance Dropped" comment="This determines the amount of additional distance the Jellybeam will swim downwards."/>
   </sprite> <!-- #425: Jellybeam -->
 
-  <sprite id="426" name="Fire ball Spawn Area" notes="Assigns a spawn area where loose Fire balls will spawn from the side of the screen while a player is inside it. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
+  <sprite id="426" name="Fireball Spawn Area" notes="Assigns a spawn area where loose Fireballs will spawn from the side of the screen while a player is inside it. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
     <dependency notes="The fireballs will spawn from the specified side of the screen at the same vertical height as the sprite's placement, and move across the screen in a horizontal line."/>
-    <value nybble="12" title="Location ID" comment="The Fire balls will only spawn while a player is in this location." idtype="Location"/>
+    <value nybble="12" title="Location ID" comment="The Fireballs will only spawn while a player is in this location." idtype="Location"/>
     <list nybble="10" title="Rate of Fire" comment="This determines the frequency of fireball spawns." comment2="The delay isn't quite in game seconds, instead each value other than 0 is a fraction of value 1. In retail, Nintendo used 12 and 14.">
       <entry value="0">1/7.3</entry>
       <entry value="1">1/1</entry>
@@ -6304,7 +6304,7 @@
       <entry value="15">1/15</entry>
     </list>
     <dualbox nybble="11.4" title1="Spawns from Right" title2="Spawns from Left" comment="This determines which side of the screen the fireballs will appear from."/>
-  </sprite> <!-- #426: Fire ball Spawn Area -->
+  </sprite> <!-- #426: Fireball Spawn Area -->
 
   <sprite id="427" name="Kamek" noyoshi="True" notes="Requires his boss controller to function. His spawn position is fixed relative to the boss controller's position, making the placement of the sprite itself irrelevant.">
     <dependency notes="For more help setting up the boss room, see the zone from the original game.">
@@ -6408,7 +6408,7 @@
       <required sprite="419"/> <!-- Bowser -->
       <required sprite="439"/> <!-- Peach in Cage - Fake -->
       <required sprite="445"/> <!-- Peach in Cage - Real -->
-      <suggested sprite="449"/> <!-- Bowser Fire ball Spawn Area -->
+      <suggested sprite="449"/> <!-- Bowser Fireball Spawn Area -->
       <required sprite="456"/> <!-- Final Boss - Bridge Pieces -->
       <required sprite="478"/> <!-- Bowser Switch (Small) -->
       <required sprite="479"/> <!-- Bowser Switch (Large) -->
@@ -6541,15 +6541,15 @@
 	<checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="Used in Retail: 04-24 A1"/>
   </sprite> <!-- #448: Metal Bar -->
 
-  <sprite id="449" name="Bowser Fire ball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Bowser Fire balls will fire from the screen's right edge towards the left  while a player is inside it." advancednotes="&lt;br&gt; - Uses hardcoded location ID 0 (you can have multiple ones in the zone)&lt;br&gt; - They will look awful if Bowser's sprite isn't present in any area of the level&lt;br&gt;&lt;br&gt;&lt;b&gt;Sprite Placement:&lt;/b&gt;&lt;br&gt; - X Position does not matter&lt;br&gt; - Y Position matters, as the sprite will spawn fireballs in a range of 6 tiles below its placement&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Placement:&lt;/b&gt;&lt;br&gt; - Bowser Fire balls start spawning as soon as the left edge of the location enters the screen&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Size (fireballs won't spawn if requirements aren't met):&lt;/b&gt;&lt;br&gt; - X Size: Unknown, but a specific minimal X location size is required for the Bowser Fire balls to spawn correctly.&lt;br&gt; - Y Size: At least 120px (5 blocks). A specific minimal Y location size is required for the Bowser Fire balls to spawn correctly.&lt;br&gt;" >
+  <sprite id="449" name="Bowser Fireball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Bowser Fireballs will fire from the screen's right edge towards the left  while a player is inside it." advancednotes="&lt;br&gt; - Uses hardcoded location ID 0 (you can have multiple ones in the zone)&lt;br&gt; - They will look awful if Bowser's sprite isn't present in any area of the level&lt;br&gt;&lt;br&gt;&lt;b&gt;Sprite Placement:&lt;/b&gt;&lt;br&gt; - X Position does not matter&lt;br&gt; - Y Position matters, as the sprite will spawn fireballs in a range of 6 tiles below its placement&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Placement:&lt;/b&gt;&lt;br&gt; - Bowser Fireballs start spawning as soon as the left edge of the location enters the screen&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Size (fireballs won't spawn if requirements aren't met):&lt;/b&gt;&lt;br&gt; - X Size: Unknown, but a specific minimal X location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt; - Y Size: At least 120px (5 blocks). A specific minimal Y location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt;" >
     <dependency notes="Almost all settings are hardcoded and the sprite will not function outside of the exact setup used in 8-24 A4. See advanced notes for more information.">
       <required sprite="431"/>
     </dependency>
     <checkbox nybble="12.4" title="Enable Functionality" comment="This must be enabled for the sprite to function."/>
-    <value nybble="7-8" title="Location ID" comment="&lt;b&gt;&lt;font color=&quot;red&quot;&gt;Only works with hardcoded location ID 0!&lt;/font&gt;&lt;/b&gt; The Fire balls will only spawn while a player is in this location." advancedcomment="Or at least, it would, if its behavior had not been hardcoded." requirednybble="12.4" idtype="Location"/>
-    <value nybble="10" title="Number of Fire balls" comment="This determines the number of fireballs in each wave." comment2="A value of 0 creates 5 fireballs. A value of 1+ creates that number." requirednybble="12.4"/>
-    <value nybble="11" title="Positioning" comment="Changes position the Fire balls appear in." comment2="A value of 0 creates random patterns. A value of 1 will CRASH the game. A value of 2+ will change the positioning or patterns or something." requirednybble="12.4"/>
-  </sprite> <!-- #449: Bowser Fire ball Spawn Area -->
+    <value nybble="7-8" title="Location ID" comment="&lt;b&gt;&lt;font color=&quot;red&quot;&gt;Only works with hardcoded location ID 0!&lt;/font&gt;&lt;/b&gt; The Fireballs will only spawn while a player is in this location." advancedcomment="Or at least, it would, if its behavior had not been hardcoded." requirednybble="12.4" idtype="Location"/>
+    <value nybble="10" title="Number of Fireballs" comment="This determines the number of fireballs in each wave." comment2="A value of 0 creates 5 fireballs. A value of 1+ creates that number." requirednybble="12.4"/>
+    <value nybble="11" title="Positioning" comment="Changes position the Fireballs appear in." comment2="A value of 0 creates random patterns. A value of 1 will CRASH the game. A value of 2+ will change the positioning or patterns or something." requirednybble="12.4"/>
+  </sprite> <!-- #449: Bowser Fireball Spawn Area -->
 
   <sprite id="450" name="Enterable Warp Pipe - Up" notes="A non-tileset pipe that can be entered or exited from. Only one facing upwards exists. It does not have to be placed exactly on the grid.">
     <list nybble="11.3-11.4" title="Color" comment="This determines the color of the Pipe.">

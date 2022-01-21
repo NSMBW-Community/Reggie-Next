@@ -1701,7 +1701,7 @@
       <entry value="1">Anti Gravity</entry>
     </list>
     <value nybble="7-10" title="Set Time to..." comment="This determines what the Level's Clock will be set to when the Special Event is activated." comment2="Do not use a value higher than 999." requirednybble="12" requiredval="4"/> <!-- Appears if [Type] = 4 -->
-    <list nybble="11" title="Scale / Size (Global)" comment="The Special Event will resize all Enemies in the Zone that support this function." requirednybble="12" requiredval="5"> <!-- Appears if [Type] = 5 -->
+    <list nybble="11" title="Scale / Size (Global)" comment="The Special Event will resize all affected sprites in the Zone that support this function." requirednybble="12" requiredval="5"> <!-- Appears if [Type] = 5 -->
       <entry value="0">x1.0 (normal)</entry>
       <entry value="1">x0.25</entry>
       <entry value="2">x0.5</entry>
@@ -1719,9 +1719,9 @@
       <entry value="14">x8.0</entry>
       <entry value="15">x10.0</entry>
     </list>
-    <list nybble="11" title="Scale / Size (Selective)" comment="The Special Event will resize all Enemies in the Zone according to this individual setting found in each sprite, even if that data is also controlling another function. Be sure to enable the level setting in Reggie to display Size Hacks for Data A or B." requirednybble="12" requiredval="6"> <!-- Appears if [Type] = 6 -->
-      <entry value="0">Use Data A</entry>
-      <entry value="1">Use Data B</entry>
+    <list nybble="11" title="Scale / Size (Selective)" comment="The Special Event will resize all affected sprites in the Zone following the list below using nybble 5 or 7. Keep in mind that these nybbles may control other functions in the sprites themselves.&lt;br&gt;4 = x0.25&lt;br&gt;5 = x0.5&lt;br&gt;6 = x0.75&lt;br&gt;0-3 = x1.0&lt;br&gt;7 = x1.25&lt;br&gt;8 = x1.5&lt;br&gt;9 = x2.0&lt;br&gt;10 = x2.5&lt;br&gt;11 = x3.0&lt;br&gt;12 = x4.0&lt;br&gt;13 = x5.0&lt;br&gt;14 = x6.0&lt;br&gt;15 = x10.0" requirednybble="12" requiredval="6"> <!-- Appears if [Type] = 6 -->
+      <entry value="0">Use Nybble 5</entry>
+      <entry value="1">Use Nybble 7</entry>
     </list>
     <!-- 1001 -->
     <list nybble="7" title="bgA (Scenery) X Size" comment="The Special Event will resize the 'Scenery' background picture horizontally. Higher Values = Bigger Size" requirednybble="12" requiredval="9"> <!-- Appears if [Type] = 9 -->
