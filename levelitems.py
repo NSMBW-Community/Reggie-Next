@@ -421,7 +421,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         br.setHeight(br.height() + marginY)
 
         # Take the screenshot
-        ScreenshotImage = QtGui.QImage(br.width(), br.height(), QtGui.QImage.Format_ARGB32)
+        ScreenshotImage = QtGui.QImage(br.size().toSize(), QtGui.QImage.Format_ARGB32)
         ScreenshotImage.fill(QtCore.Qt.transparent)
 
         RenderPainter = QtGui.QPainter(ScreenshotImage)
@@ -2185,9 +2185,9 @@ class SpriteItem(LevelEditorItem):
 
             # The sprite image offset as a point
             if globals_.SpriteImagesShown:
-                offset_point = QtCore.QPoint(*self.ImageObj.getOffset())
+                offset_point = QtCore.QPointF(*self.ImageObj.getOffset())
             else:
-                offset_point = QtCore.QPoint()
+                offset_point = QtCore.QPointF()
 
             # Convert the new position from 24 units per block into 16 units per
             # block

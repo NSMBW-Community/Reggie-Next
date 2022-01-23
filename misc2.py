@@ -587,26 +587,26 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             while x <= endx:
                 if x % 192 == 0:
                     painter.setPen(QtGui.QPen(GridColor, 2, QtCore.Qt.DashLine))
-                    drawLine(x, starty, x, endy)
+                    drawLine(QtCore.QPointF(x, starty), QtCore.QPointF(x, endy))
                 elif x % 96 == 0 and Zoom >= 25:
                     painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DashLine))
-                    drawLine(x, starty, x, endy)
+                    drawLine(QtCore.QPointF(x, starty), QtCore.QPointF(x, endy))
                 elif Zoom >= 50:
                     painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DotLine))
-                    drawLine(x, starty, x, endy)
+                    drawLine(QtCore.QPointF(x, starty), QtCore.QPointF(x, endy))
                 x += 24
 
             y = starty
             while y <= endy:
                 if y % 192 == 0:
                     painter.setPen(QtGui.QPen(GridColor, 2, QtCore.Qt.DashLine))
-                    drawLine(startx, y, endx, y)
+                    drawLine(QtCore.QPointF(startx, y), QtCore.QPointF(endx, y))
                 elif y % 96 == 0 and Zoom >= 25:
                     painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DashLine))
-                    drawLine(startx, y, endx, y)
+                    drawLine(QtCore.QPointF(startx, y), QtCore.QPointF(endx, y))
                 elif Zoom >= 50:
                     painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DotLine))
-                    drawLine(startx, y, endx, y)
+                    drawLine(QtCore.QPointF(startx, y), QtCore.QPointF(endx, y))
                 y += 24
 
         else:  # draw a checkerboard
