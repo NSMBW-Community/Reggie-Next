@@ -69,12 +69,13 @@ class ZonesDialog(QtWidgets.QDialog):
         self.zoneTabs.append(tab)
         self.tabWidget.addTab(tab, zone_tab_name)
 
+        tab_amount = self.tabWidget.count()
+        self.tabWidget.setCurrentIndex(tab_amount - 1)
+
         # Re-label zone tabs. This is only needed if the number of zones grows
         # above 5, as the long names need to be replaced by short names. Since
         # this function always adds a zone, it can never happen that the short
         # name needs to be lengthened.
-        tab_amount = self.tabWidget.count()
-
         if tab_amount != 6:
             return
 
