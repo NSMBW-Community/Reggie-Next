@@ -143,6 +143,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
         self.currentobj = None
         self.lastCursorPosForMidButtonScroll = None
+        self.cursorEdgeScrollTimer = None
 
     def mousePressEvent(self, event):
         """
@@ -372,7 +373,58 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         if pos.y() < 0: pos.setY(0)
         self.PositionHover.emit(int(pos.x()), int(pos.y()))
 
-        if event.buttons() == QtCore.Qt.RightButton and self.currentobj is not None and not self.dragstamp:
+        if ((event.buttons() & (QtCore.Qt.MouseButton.LeftButton | QtCore.Qt.MouseButton.RightButton))
+                and not self.cursorEdgeScrollTimer):
+            # We set this up here instead of in mousePressEvent because
+            # otherwise the view would jerk to one side if you clicked
+            # near its edge. This way, it'll only scroll if you click
+            # and drag.
+            self.cursorEdgeScrollTimer = QtCore.QTimer()
+            self.cursorEdgeScrollTimer.timeout.connect(self.scrollIfCursorNearEdge)
+            self.cursorEdgeScrollTimer.start(1000 // 60)  # ~ 60 fps
+
+        if self.updatePaintDraggedItems():
+            event.accept()
+
+        elif event.buttons() == QtCore.Qt.MouseButton.MiddleButton and self.lastCursorPosForMidButtonScroll is not None:
+            # https://stackoverflow.com/a/15785851
+            delta = event.pos() - self.lastCursorPosForMidButtonScroll
+            self.XScrollBar.setValue(self.XScrollBar.value() + (delta.x() if self.isRightToLeft() else -delta.x()))
+            self.YScrollBar.setValue(self.YScrollBar.value() - delta.y())
+            self.lastCursorPosForMidButtonScroll = event.pos()
+
+        else:
+            QtWidgets.QGraphicsView.mouseMoveEvent(self, event)
+
+    def mouseReleaseEvent(self, event):
+        """
+        Overrides mouse release events if needed
+        """
+        if event.button() in (QtCore.Qt.BackButton, QtCore.Qt.ForwardButton):
+            self.xButtonScrollTimer.stop()
+            return
+
+        if event.button() == QtCore.Qt.RightButton:
+            self.currentobj = None
+        elif event.button() == QtCore.Qt.MidButton:
+            self.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
+
+        if self.cursorEdgeScrollTimer:
+            self.cursorEdgeScrollTimer.stop()
+            self.cursorEdgeScrollTimer = None
+
+        QtWidgets.QGraphicsView.mouseReleaseEvent(self, event)
+
+    def updatePaintDraggedItems(self):
+        """Update items that are being paint-dragged (painted with
+        right-click, and dragged while it's still held down). Returns
+        True if any items are being paint-dragged, False otherwise"""
+        if globals_.app.mouseButtons() != QtCore.Qt.MouseButton.RightButton or self.currentobj is None:
+            return False
+
+        obj = self.currentobj
+
+        if not self.dragstamp:
             # possibly a small optimization
             type_obj = ObjectItem
             type_spr = SpriteItem
@@ -473,7 +525,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             event.accept()
 
-        elif event.buttons() == QtCore.Qt.RightButton and self.currentobj is not None and self.dragstamp:
+        else:
             # The user is dragging a stamp - many objects.
 
             # possibly a small optimization
@@ -518,30 +570,35 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             self.scene().update()
             globals_.mainWindow.levelOverview.update()
 
-        elif event.buttons() == QtCore.Qt.MidButton and self.lastCursorPosForMidButtonScroll is not None:
-            # https://stackoverflow.com/a/15785851
-            delta = event.pos() - self.lastCursorPosForMidButtonScroll
-            self.XScrollBar.setValue(self.XScrollBar.value() + (delta.x() if self.isRightToLeft() else -delta.x()))
-            self.YScrollBar.setValue(self.YScrollBar.value() - delta.y())
-            self.lastCursorPosForMidButtonScroll = event.pos()
+    def scrollIfCursorNearEdge(self):
+        """Scroll the view if the cursor is dragging and near the edge"""
+        pos = self.mapFromGlobal(QtGui.QCursor.pos())
 
-        else:
-            QtWidgets.QGraphicsView.mouseMoveEvent(self, event)
+        distFromL = pos.x()
+        distFromR = self.width() - self.YScrollBar.width() - pos.x()
+        distFromT = pos.y()
+        distFromB = self.height() - self.XScrollBar.height() - pos.y()
 
-    def mouseReleaseEvent(self, event):
-        """
-        Overrides mouse release events if needed
-        """
-        if event.button() in (QtCore.Qt.BackButton, QtCore.Qt.ForwardButton):
-            self.xButtonScrollTimer.stop()
-            return
+        EDGE_PAD = 60
+        SCALE_FACTOR = 0.3
 
-        if event.button() == QtCore.Qt.RightButton:
-            self.currentobj = None
-        elif event.button() == QtCore.Qt.MidButton:
-            self.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
+        scrollDx = scrollDy = 0
 
-        QtWidgets.QGraphicsView.mouseReleaseEvent(self, event)
+        if distFromL < EDGE_PAD:
+            scrollDx = -(EDGE_PAD - distFromL) * SCALE_FACTOR
+        if distFromR < EDGE_PAD:
+            scrollDx = (EDGE_PAD - distFromR) * SCALE_FACTOR
+        if distFromT < EDGE_PAD:
+            scrollDy = -(EDGE_PAD - distFromT) * SCALE_FACTOR
+        if distFromB < EDGE_PAD:
+            scrollDy = (EDGE_PAD - distFromB) * SCALE_FACTOR
+
+        if scrollDx:
+            self.XScrollBar.setValue(int(self.XScrollBar.value() + scrollDx))
+        if scrollDy:
+            self.YScrollBar.setValue(int(self.YScrollBar.value() + scrollDy))
+
+        self.updatePaintDraggedItems()
 
     def wheelEvent(self, event):
         """
