@@ -367,7 +367,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Overrides mouse movement events if needed
         """
-        pos = globals_.mainWindow.view.mapToScene(event.pos())
+        pos = self.mapToScene(event.pos())
         if pos.x() < 0: pos.setX(0)
         if pos.y() < 0: pos.setY(0)
         self.PositionHover.emit(int(pos.x()), int(pos.y()))

@@ -2809,13 +2809,6 @@ class Path:
     def get_index(self, node):
         return self._nodes.index(node)
 
-    def get_data(self):
-        """
-        Returns a bytes object containing the data belonging to this path.
-        """
-        raise NotImplementedError()
-        return b""
-
     def get_node_data(self, index):
         """
         Returns a tuple containing the data required for the binary representation
@@ -2974,7 +2967,7 @@ class PathItem(LevelEditorItem):
 
         self.listitem = ListWidgetItem_SortsByOther(self, self.ListString())
 
-        self.LevelRect = (QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5))
+        self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
         self.setFlag(self.ItemIsMovable, not globals_.PathsFrozen)
         self.setFlag(self.ItemIsSelectable, not globals_.PathsFrozen)
 
