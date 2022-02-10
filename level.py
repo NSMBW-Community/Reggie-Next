@@ -864,7 +864,7 @@ class Area:
             nodeoffset += len(path) * 16
             nodeindex += len(path)
 
-        self.blocks[12] = bytes(buffer)
+        self.blocks[12] = bytes(buffer[:offset])
         self.blocks[13] = bytes(nodebuffer)
 
     def WritePathNodes(self, buffer, offset, path):
