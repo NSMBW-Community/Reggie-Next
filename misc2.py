@@ -422,6 +422,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         if globals_.app.mouseButtons() != QtCore.Qt.MouseButton.RightButton or self.currentobj is None:
             return False
 
+        pos = self.mapToScene(self.mapFromGlobal(QtGui.QCursor.pos()))
         obj = self.currentobj
 
         if not self.dragstamp:
@@ -522,8 +523,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                         obj.UpdateListItem()
                         globals_.mainWindow.levelOverview.update()
-
-            event.accept()
 
         else:
             # The user is dragging a stamp - many objects.
