@@ -237,11 +237,11 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     from levelitems import Path
 
                     path = Path(newpathid, globals_.mainWindow.scene)
-                    path.add_node(clickedx, clickedy)
+                    new_node = path.add_node(clickedx, clickedy)
 
-                    path._nodes[0].listitem.setSelected(True)
-                    path._nodes[0].setSelected(True)
-                    path._nodes[0].positionChanged = globals_.mainWindow.HandlePathPosChange
+                    new_node.listitem.setSelected(True)
+                    new_node.setSelected(True)
+                    new_node.positionChanged = globals_.mainWindow.HandlePathPosChange
 
                     globals_.Area.paths.append(path)
 
@@ -255,15 +255,14 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     else:
                         idx = len(path)
 
-                    path.add_node(clickedx, clickedy, index=idx)
+                    new_node = path.add_node(clickedx, clickedy, index=idx)
+                    new_node.positionChanged = globals_.mainWindow.HandlePathPosChange
 
                     # The path length changed, so update the editor's maximums
                     globals_.mainWindow.pathEditor.UpdatePathLength()
 
-                    path._nodes[idx].positionChanged = globals_.mainWindow.HandlePathPosChange
-
                 self.dragstamp = False
-                self.currentobj = None
+                self.currentobj = new_node
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
 
@@ -518,8 +517,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.setPos(int(clickedx * 1.5), int(clickedy * 1.5))
 
                         if isinstance(obj, type_path):
-                            obj.updatePos()
-                            obj.pathinfo['peline'].nodePosChanged()
+                            obj.path.node_moved(obj)
 
                         obj.UpdateListItem()
                         globals_.mainWindow.levelOverview.update()

@@ -2877,6 +2877,8 @@ class Path:
 
         self._line_item.update_path()
 
+        return node
+
     def remove_node(self, index):
         """
         Removes the node at a given index. Returns whether the path is empty after
