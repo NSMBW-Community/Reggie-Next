@@ -119,7 +119,6 @@ class LevelOverviewWidget(QtWidgets.QWidget):
             fr(rect, b)
             dr(rect)
 
-        b = self.locationbrush
         painter.setPen(QtGui.QPen(globals_.theme.color('overview_viewbox'), 1))
 
         scalar = 1 / (24 * self.mainWindowScale)
@@ -708,13 +707,13 @@ class Stamp:
         totalHeight = prevIcon.height() + 2 + textSize.height()
 
         # Make a pixmap and painter
-        pix = QtGui.QPixmap(totalWidth, totalHeight)
+        pix = QtGui.QPixmap(int(totalWidth), int(totalHeight))
         pix.fill(QtCore.Qt.transparent)
         painter = QtGui.QPainter(pix)
 
         # Draw the preview
         iconXOffset = (totalWidth - prevIcon.width()) / 2
-        painter.drawPixmap(iconXOffset, 0, prevIcon)
+        painter.drawPixmap(int(iconXOffset), 0, prevIcon)
 
         # Draw the text
         textRect = QtCore.QRectF(0, prevIcon.height() + 2, totalWidth, textSize.height())
