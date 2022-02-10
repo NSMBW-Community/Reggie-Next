@@ -1693,7 +1693,6 @@ class SpriteImage_Quicksand(SpriteImage_LiquidOrFog):  # 53
         else:
             self.top = self.parent.objy
 
-        self.parent.scene().update()
         super().positionChanged()
 
 
