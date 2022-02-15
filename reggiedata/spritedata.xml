@@ -3978,12 +3978,11 @@
     <checkbox nybble="12" title="Disable Collisions After Death" comment="When Lily Piranhas die and sink, they bounce when they hit a solid tile, such as a wall. This flag disables that behavior."/>
   </sprite> <!-- #263: Lily Piranha Plant -->
 
-  <!-- I know I was told what Flag 9 does but I forget exactly. I know it has something to do with whether a Stalking plant turns around when encountering-?? or not. -->
   <sprite id="264" name="Stalking Piranha Plant" notes="A walking piranha plant that will extend and harass the player, then shrink and wander around for a bit.">
     <dualbox nybble="10.4" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the piranha plant will attempt to move first after shrinking."/>
     <value nybble="12" title="Movement Distance" comment="This determines how far the piranha plant will wander in both directions from its starting point."/>
     <checkbox nybble="8.4" title="Slower in Water" comment="When enabled, the piranha plant will walk more slowly when moving through water."/>
-    <checkbox nybble="9.4" title="Unknown Flag 9 (1)" comment=""/>
+    <checkbox nybble="9.4" title="Increase Z-pos by 200" comment="When ticked, the piranha plant's z position will be 200 higher."/>
   </sprite> <!-- #264: Stalking Piranha Plant -->
 
   <sprite id="265" name="Falling Icicle" notes="A small hanging icicle that will fall when the player comes too close to it.">
