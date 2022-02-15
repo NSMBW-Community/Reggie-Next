@@ -2450,16 +2450,19 @@
     <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #158: Fire Snake -->
 
-<!-- There's definitely "Movement at 2" in that ghost house. What else is actually going on there that might define what '2' means? Or is 2 just an unused value and in fact has no relevance? Someone should find out. 2 should be Single, 3 should be the same thing Repeating. -->
-<!-- I'm actually not fully sure of the technical differences between 'Single' and 'Repeating'. Should they only use Repeating when the end node overlaps with the start node? Do they have to overlap? Does it just travel directly back to the first node? What if it starts with a Starting Node? What if they use Single combined with a Starting Node? Does it end up at the same starting location or just at the End Node (assumed: End Node) -->
   <sprite id="159" name="Movement Controller - Uses Paths" notes="A movement controller that connects certain sprites so they can be moved by Paths. Paths are a special type of data within the level structure that has speed, acceleration, and delay values built into each Node.">
     <dependency notes="The distance of this sprite to the first node of the Path will be imitated by all associated Path Controlled objects. This means that every linked object will be placed the same amount of blocks away from each node, identical to the distance of this sprite to its first node. It is therefore recommended to place this sprite directly on top of the first node, so that all controlled objects follow the path directly as drawn."/>
     <value nybble="11" title="Path Movement ID" comment="This pairs matching 'Path Movement' controlled objects to this controller." idtype="Path Movement"/>
     <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the objects will be linked to." idtype="Path"/>
-    <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the objects will start moving from."/>
-    <dualbox nybble="8.4" title1="Stops at End Node" title2="Loops" comment="This determines if the linked objects will stop at the end node of the Path or if they will loop." comment2="How do Looping items act? Instant? Reversed? Imaginary connection between end and start? Some setting we don't have identified?"/>
-    <dualbox nybble="8.1" title1="Haunted Effect" title2="Exact Movement" comment="This determines if the objects following this path will obtain their movement properties from a random combination of previous nodes and the next node, or from the next node only."/>
-    <checkbox nybble="8.3" title="Unknown Flag 8 (2)" advanced="True" advancedcomment="Used in Retail: 03-21 A1."/>
+    <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the objects will start moving from." idtype="Path Node"/>
+    <dualbox nybble="8.1" title1="Haunted Effect" title2="Exact Movement" comment="This determines if the objects following this path will obtain their movement properties from a complex combination of previous nodes and the next node, or from the next node only."/>
+    <list nybble="8.3-8.4" title="At the end..." comment="This determines if the linked objects will stop at the end node of the Path or if they will loop (from a specifc node)" comment2="Stops: The objects stop moving.[br]Loops: The objects follow a straight line to the node indicated by 'Starting Node (Loop)', and then continue from there.[br]Stops (Intended Drop): A vertical acceleration of -0.15 is applied until the terminal velocity is reached. Note that this does not actually drop the objects, because the terminal velocity of this sprite has been set to 0.[br]???: Seems like unintended behaviour - the next node's data is read out of bounds. This could be the data of the next path node, or just garbage data. Depending on how the path data is stored in the level archive, this setting will connect all final nodes of path x with the initial node of path (x+1). The final node of the final path will connect with an imaginary path node at the top left of the canvas. However, it's best not to rely on this behaviour.">
+      <entry value="0">Stops</entry>
+      <entry value="1">Goes back to specific node</entry>
+      <entry value="2">Stops (Intended Drop)</entry>
+      <entry value="3">Continues at next path (Glitchy)</entry>
+    </list>
+    <value nybble="10" title="Starting Node (Loop)" comment="When the linked objects reach the end of the path, they will continue going in a straight line to this Node." requirednybble="8.3-8.4" requiredval="1" idtype="Path Node"/>
   </sprite> <!-- #159: Movement Controller - Uses Paths" -->
 
   <sprite id="160" name="(Unused) Path Controlled TEST Platform 2" notes="An untextured unused test platform that is controlled by Path data. Very useful when trying to visually test the Path you are creating, as you can move your starting Entrance and change the Starting Node to test each individual segment. DATA FOR THIS SPRITE MAY BE COMPLETELY WRONG.">
