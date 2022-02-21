@@ -62,8 +62,8 @@ if has_nsmblib:
     del types
 
 elif has_cython:
-    from . import lz77_cy as lz77
     from . import lz77 as lz77_py
+    from . import lz77_cy as lz77
     from . import tpl_cy as tpl
 
     # Fall back to python, since cython does not have this implemented
