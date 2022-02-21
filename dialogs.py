@@ -619,7 +619,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             L.setPixmap(GetIcon('warning', True).pixmap(64, 64))
             self.header.addWidget(L, 1, 0)
 
-            px = QtGui.QPixmap(128, pointsize * 3 / 2)
+            px = QtGui.QPixmap(128, int(pointsize * 3 / 2))
             px.fill(QtGui.QColor(0, 0, 0, 0))
             p = QtGui.QPainter(px)
             f = p.font()
