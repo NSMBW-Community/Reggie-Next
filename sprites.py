@@ -6743,26 +6743,23 @@ class SpriteImage_BrownBlock(SLib.SpriteImage):  # 356
     def paint(self, painter):
         super().paint(painter)
 
-        blockX = 0
-        blockY = 0
-
         width = int(self.width * 1.5)
         height = int(self.height * 1.5)
 
-        column2x = blockX + 24
-        column3x = int(blockX + width - 24)
-        row2y = blockY + 24
-        row3y = int(blockY + height - 24)
+        column2x = 24
+        column3x = width - 24
+        row2y = 24
+        row3y = height - 24
 
-        painter.drawPixmap(blockX, blockY, ImageCache['BrownBlockTL'])
+        painter.drawPixmap(0, 0, ImageCache['BrownBlockTL'])
         painter.drawTiledPixmap(column2x, blockY, width - 48, 24, ImageCache['BrownBlockTM'])
-        painter.drawPixmap(column3x, blockY, ImageCache['BrownBlockTR'])
+        painter.drawPixmap(column3x, 0, ImageCache['BrownBlockTR'])
 
-        painter.drawTiledPixmap(blockX, row2y, 24, height - 48, ImageCache['BrownBlockML'])
+        painter.drawTiledPixmap(0, row2y, 24, height - 48, ImageCache['BrownBlockML'])
         painter.drawTiledPixmap(column2x, row2y, width - 48, height - 48, ImageCache['BrownBlockMM'])
         painter.drawTiledPixmap(column3x, row2y, 24, height - 48, ImageCache['BrownBlockMR'])
 
-        painter.drawPixmap(blockX, row3y, ImageCache['BrownBlockBL'])
+        painter.drawPixmap(0, row3y, ImageCache['BrownBlockBL'])
         painter.drawTiledPixmap(column2x, row3y, width - 48, 24, ImageCache['BrownBlockBM'])
         painter.drawPixmap(column3x, row3y, ImageCache['BrownBlockBR'])
 
