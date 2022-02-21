@@ -6752,7 +6752,7 @@ class SpriteImage_BrownBlock(SLib.SpriteImage):  # 356
         row3y = height - 24
 
         painter.drawPixmap(0, 0, ImageCache['BrownBlockTL'])
-        painter.drawTiledPixmap(column2x, blockY, width - 48, 24, ImageCache['BrownBlockTM'])
+        painter.drawTiledPixmap(column2x, 0, width - 48, 24, ImageCache['BrownBlockTM'])
         painter.drawPixmap(column3x, 0, ImageCache['BrownBlockTR'])
 
         painter.drawTiledPixmap(0, row2y, 24, height - 48, ImageCache['BrownBlockML'])
