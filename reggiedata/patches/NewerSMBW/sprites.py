@@ -1478,8 +1478,8 @@ class SpriteImage_NewerLineBlock(SLib.SpriteImage):  # 219
                 xB = j * 24 * ((widthB - 1) / (totalWidth - 1))
 
                 # now actually paint it
-                painterA.drawPixmap(xA, 0, blockimg)
-                painterB.drawPixmap(xB, 0, blockimg)
+                painterA.drawPixmap(int(xA), 0, blockimg)
+                painterB.drawPixmap(int(xB), 0, blockimg)
         else:
             # special-case to avoid ZeroDivisionError
             painterA.drawPixmap(0, 0, blockimg)
