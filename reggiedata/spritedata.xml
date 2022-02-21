@@ -4062,7 +4062,12 @@
   </sprite> <!-- #270: Parachute Bob-Omb Spawn Area -->
 
   <sprite id="271" name="Scaredy Rat" notes="A small relatively harmless rodent that will walk across the stage and fall off platform edges. When in a swarm, if one rat is stepped on, the others will quickly run away from the spot the first one was stomped. If they encounter another rat, they will join together in a larger swarm and stop running. If they encounter a [451] Scaredy Rat Despawner, they will despawn.">
-    <dualbox nybble="12.4" title1="Moves Right First" title2="Moves Left First" comment="This determines what the initial movement direction of the rat is."/>
+    <list nybble="12" title1="Direction" comment="This determines what the initial movement direction of the rat is." comment2="Values higher than 3 give the same behaviour as 3.">
+      <entry value="0">Right</entry>
+      <entry value="1">Left</entry>
+      <entry value="2">Random</entry>
+      <entry value="3">Towards closest player</entry>
+    </list>
     <list nybble="11.3-11.4" title="Number in Swarm" comment="This determines how many rats form the swarm." comment2="Don't worry too much about vertical placement. They manage to find a proper home based on the placement of the first rat.">
       <entry value="0">One</entry>
       <entry value="1">Two</entry>
