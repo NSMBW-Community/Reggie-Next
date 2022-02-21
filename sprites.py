@@ -6005,7 +6005,6 @@ class SpriteImage_BubbleGen(SLib.SpriteImage):  # 314
         distanceFromTop = (self.parent.objy * 1.5) - zoneRect.topLeft().y()
         random.seed(distanceFromTop + self.parent.objx)  # looks ridiculous without this
 
-        coords = []
         numOfBubbles = int(distanceFromTop * bubbleFrequency)
         for num in range(numOfBubbles):
             xmod = (random.random() * 2 * bubbleEccentricityX) - bubbleEccentricityX
@@ -6013,12 +6012,7 @@ class SpriteImage_BubbleGen(SLib.SpriteImage):  # 314
             x = ((self.parent.objx * 1.5) - zoneRect.topLeft().x()) + xmod + 12 - (Image.width() / 2.0)
             y = ((num * 1.0 / numOfBubbles) * distanceFromTop) + ymod
             if not (0 < y < self.parent.objy * 1.5): continue
-            coords.append([x, y])
-
-        for x, y in coords:
-            painter.drawPixmap(x, y, Image)
-
-        super().realViewZone(painter, zoneRect)
+            painter.drawPixmap(int(x), int(y), Image)
 
 
 class SpriteImage_Bolt(SLib.SpriteImage_Static):  # 315

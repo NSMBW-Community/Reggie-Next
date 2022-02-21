@@ -1451,9 +1451,12 @@ class ZoneItem(LevelEditorItem):
         if globals_.SpritesShown and globals_.RealViewEnabled:
             zoneRect = self.mapRectToScene(self.DrawRect)
             from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
+            from sprites import SpriteImage_BubbleGen as bubbleGenType
 
             for sprite in globals_.Area.sprites:
                 if isinstance(sprite.ImageObj, liquidOrFogType) and sprite.ImageObj.paintZone() and self.id == sprite.ImageObj.zoneId:
+                    sprite.ImageObj.realViewZone(painter, zoneRect)
+                if isinstance(sprite.ImageObj, bubbleGenType) and hasattr(sprite, 'zoneID') and self.id == sprite.zoneID:
                     sprite.ImageObj.realViewZone(painter, zoneRect)
 
         # Now paint the borders
