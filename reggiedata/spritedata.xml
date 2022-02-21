@@ -2213,7 +2213,7 @@
       <entry value="2">[???] Floats Endlessly Upwards???</entry>
     </list>
     <!-- Movement ID modes -->
-    <value nybble="5-6" title="Path Movement ID" comment="If pairing the Coin with Sprite 159, match the Path Movement ID to enable Path controlled movement." requirednybble="7" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
+    <value nybble="5-6" title="Path Movement ID" comment="If pairing the Coin with sprite 159, match the Path Movement ID to enable Path controlled movement." requirednybble="7" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
     <value nybble="5-6" title="Two Way Line ID" comment="If pairing the Coin with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requirednybble="7" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
     <value nybble="5-6" title="Water Ball ID" comment="If pairing the Coin with sprite 205, match the Water Ball ID to enable Water Ball synchronized movement." requirednybble="7" requiredval="3" idtype="Water Ball"/> <!-- Appears if [Movement Type] = 3 -->
     <value nybble="5-6" title="Set to Zero" comment="If pairing the Coin with sprite 474, no further action is needed to create Dancing synchronized movement." requirednybble="7" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
