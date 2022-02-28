@@ -2437,6 +2437,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.DrawEntIndicators = dlg.generalTab.zEntIndicator.isChecked()
         setSetting('ZoneEntIndicators', globals_.DrawEntIndicators)
 
+        # Get the Zone Bounds Indicators setting
+        globals_.BoundsDrawn = dlg.generalTab.zBndIndicator.isChecked()
+        setSetting('ZoneBoundIndicators', globals_.BoundsDrawn)
+
         # Get the reset data when hiding setting
         globals_.ResetDataWhenHiding = dlg.generalTab.rdhIndicator.isChecked()
         setSetting('ResetDataWhenHiding', globals_.ResetDataWhenHiding)
@@ -4399,6 +4403,7 @@ def main():
     globals_.CommentsShown = setting('ShowComments', True)
     globals_.PathsShown = setting('ShowPaths', True)
     globals_.DrawEntIndicators = setting('ZoneEntIndicators', False)
+    globals_.BoundsDrawn = setting('ZoneBoundIndicators', False)
     globals_.ResetDataWhenHiding = setting('ResetDataWhenHiding', False)
     globals_.HideResetSpritedata = setting('HideResetSpritedata', False)
     globals_.EnablePadding = setting('EnablePadding', False)

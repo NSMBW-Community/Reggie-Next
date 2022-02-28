@@ -1477,6 +1477,20 @@ class ZoneItem(LevelEditorItem):
         painter.fillRect(self.GrabberRectBL, GrabberColor)
         painter.fillRect(self.GrabberRectBR, GrabberColor)
 
+        # Draw the bounds indicator rectangle
+        if globals_.BoundsDrawn:
+            painter.setBrush(QtGui.QBrush(QtGui.QColor.fromRgb(255,255,255,42)))
+            painter.setPen(QtCore.Qt.NoPen)
+            r1 = QtCore.QRectF(self.DrawRect)
+            r1.setHeight((self.yupperbound + 80) * 1.5)
+            r1.moveTop(self.DrawRect.bottom() - (self.getCameraHeight()[0] * 24))
+            painter.drawRect(r1)
+
+            r2 = QtCore.QRectF(self.DrawRect)
+            r2.setHeight((72 - self.ylowerbound) * 1.5)
+            r2.moveBottom(self.DrawRect.bottom())
+            painter.drawRect(r2)
+
     def mousePressEvent(self, event):
         """
         Overrides mouse pressing events if needed for resizing

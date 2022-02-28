@@ -642,6 +642,7 @@ class ReggieTranslation:
                 35: 'Pad level with null bytes',
                 36: 'Fixed level size (bytes)',
                 37: 'Place objects at their full size',
+                38: 'Display rectangles indicating the zone bounds',
             },
             'ScrShtDlg': {
                 0: 'Choose a Screenshot source',

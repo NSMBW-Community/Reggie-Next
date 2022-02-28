@@ -11,6 +11,7 @@ BgANames = None
 BgBNames = None
 BgScrollRates = [0.0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0, 0.0, 1.2, 1.5, 2.0, 4.0]
 BgScrollRateStrings = None
+BoundsDrawn = False
 CachedGameDefs = {}
 CommentsFrozen = False
 CommentsShown = True

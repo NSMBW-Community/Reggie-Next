@@ -1502,6 +1502,9 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Add the Zone Entrance Indicator checkbox
                 self.zEntIndicator = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 31))
 
+                # Add the Zone Bounds Indicator checkbox
+                self.zBndIndicator = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 38))
+
                 # Reset data when hide checkbox
                 self.rdhIndicator = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 33))
 
@@ -1530,6 +1533,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L.addWidget(self.epbIndicator)
                 L.addRow(globals_.trans.string('PrefsDlg', 36), self.psValue)
                 L.addWidget(self.zEntIndicator)
+                L.addWidget(self.zBndIndicator)
                 L.addWidget(self.rdhIndicator)
                 L.addWidget(self.erbIndicator)
                 L.addWidget(self.fullObjSize)
@@ -1562,6 +1566,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                     i += 1
 
                 self.zEntIndicator.setChecked(globals_.DrawEntIndicators)
+                self.zBndIndicator.setChecked(globals_.BoundsDrawn)
                 self.rdhIndicator.setChecked(globals_.ResetDataWhenHiding)
                 self.erbIndicator.setChecked(globals_.HideResetSpritedata)
 
