@@ -1439,7 +1439,7 @@ class ZoneItem(LevelEditorItem):
             self.updateEntranceIndicator()
 
             # Only draw the indicator if we should
-            if self.ent_indicator_show:
+            if self.ent_indicator_show and self.ent_indicator_offset < self.DrawRect.width():
                 offset = self.ent_indicator_offset
 
                 painter.setPen(QtGui.QPen(globals_.theme.color('zone_entrance_helper'), 2))
@@ -1461,7 +1461,7 @@ class ZoneItem(LevelEditorItem):
 
         # Now paint the borders
         painter.setPen(QtGui.QPen(globals_.theme.color('zone_lines'), 3))
-        if (self.visibility & 32 != 0) and globals_.RealViewEnabled:
+        if self.visibility >= 32 and globals_.RealViewEnabled:
             painter.setBrush(QtGui.QBrush(globals_.theme.color('zone_dark_fill')))
         painter.drawRect(self.DrawRect)
 
