@@ -131,8 +131,8 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
         # Swap layouts
         swapLayout = QtWidgets.QFormLayout()
 
-        swapLayout.addRow('From tileset:', self.FromTS)
-        swapLayout.addRow('To tileset:', self.ToTS)
+        swapLayout.addRow('From Tileset:', self.FromTS)
+        swapLayout.addRow('To Tileset:', self.ToTS)
 
         self.DoExchange = QtWidgets.QCheckBox('Exchange (perform 2-way conversion)')
 
@@ -180,16 +180,16 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         # Swap layout
         swapLayout = QtWidgets.QGridLayout()
 
-        swapLayout.addWidget(QtWidgets.QLabel('From tile type:'), 0, 0)
+        swapLayout.addWidget(QtWidgets.QLabel('From Object:'), 0, 0)
         swapLayout.addWidget(self.FromType, 0, 1)
 
-        swapLayout.addWidget(QtWidgets.QLabel('From tileset:'), 1, 0)
+        swapLayout.addWidget(QtWidgets.QLabel('From Tileset:'), 1, 0)
         swapLayout.addWidget(self.FromTileset, 1, 1)
 
-        swapLayout.addWidget(QtWidgets.QLabel('To tile type:'), 0, 2)
+        swapLayout.addWidget(QtWidgets.QLabel('To Object:'), 0, 2)
         swapLayout.addWidget(self.ToType, 0, 3)
 
-        swapLayout.addWidget(QtWidgets.QLabel('To tileset:'), 1, 2)
+        swapLayout.addWidget(QtWidgets.QLabel('To Tileset:'), 1, 2)
         swapLayout.addWidget(self.ToTileset, 1, 3)
 
         # Buttonbox
