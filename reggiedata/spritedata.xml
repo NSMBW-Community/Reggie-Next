@@ -1775,9 +1775,11 @@
   </sprite> <!-- #121: (Crashes) Collision Switcher -->
 
   <sprite id="122" name="Basic Platform - One-Way" notes="This platform moves in the specified direction when all players are standing on it.">
-    <dualbox nybble="9.3" title1="Normal Model" title2="boss_koopa_lift.arc" advanced="True" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
-    <dualbox nybble="9.4" title1="Gold Platform" title2="Silver Platform" comment="This will set the color of the platform." requirednybble="7.3" requiredval="0"/>
-    <dualbox nybble="9.4" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used." requirednybble="7.3"/>
+    <list nybble="9" title="Model" comment="This will set the color of the platform." advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform.">
+      <entry value="0">Gold Platform</entry>
+      <entry value="1">Silver Platform</entry>
+      <entry value="2">boss_koopa_lift.arc</entry>
+    </list>
     <list nybble="12" title="Width" comment="This determines the width of the platform.">
       <entry value="0">4 Blocks</entry>
       <entry value="1">4 Blocks</entry>
@@ -1796,7 +1798,7 @@
       <entry value="14">30 Blocks</entry>
       <entry value="15">32 Blocks</entry>
     </list>
-    <list nybble="8.2-8.4" title="Direction" comment="This determines which direction the platform will move." comment2="The only diagonal direction the platform can travel is Down and Right, sorry.">
+    <list nybble="8.2-8.4" title="Direction" comment="This determines which direction the platform will move. Note that in the case of Down And Right, the movement distance is calculated on one axis. So, for a movement distance of 14 blocks, the platform will move 14 blocks down and 14 blocks right.">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
       <entry value="2">Right</entry>
@@ -1821,14 +1823,13 @@
       <entry value="14">224 Blocks</entry>
       <entry value="15">240 Blocks</entry>
     </list>
-    <list nybble="6.3-6.4" title="Speed" comment="This determines the speed the platform will travel.">
+    <list nybble="6.3-6.4" title="Speed" comment="This determines the speed the platform will travel." comment2="Note that higher values are the same as 2. For the diagonal direction, the speed is the same on both axes. The exact values in the directions that there is movement are as follows:[br]Fast: 1[br]Medium-Slow: 0.5[br]Slow: 0.25">
       <entry value="0">Fast</entry>
       <entry value="1">Medium-Slow</entry>
       <entry value="2">Slow</entry>
-      <entry value="3">Slow</entry>
     </list>
-    <value nybble="11" title="Z-Order" comment="This will adjust the Z-Order of the platform in relation to other objects." comment2="A higher value will place this sprite further towards the background."/>
-    <checkbox nybble="10.4" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
+    <checkbox nybble="11" title="Z-Order" comment="This will adjust the Z-Order of the platform in relation to other objects." comment2="Any non-zero value for this nybble will place the platform at Z-position -30."/>
+    <checkbox nybble="10.4" title="Event Activated" comment="When enabled, the platform will only appear while the Triggering Event ID is activated."/>
     <value nybble="3.2-4.4" title="Triggering Event ID" requirednybble="10.4" idtype="Triggering Event"/>
     <checkbox nybble="5.4" title="Unknown Flag 5 (1)" comment="Used in Retail: 08-24 A4."/>
   </sprite> <!-- #122: Basic Platform - One-Way -->
