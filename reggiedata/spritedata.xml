@@ -546,13 +546,19 @@
   </sprite> <!-- #46: Lava Bubble (Podoboo) -->
 
   <sprite id="47" name="Thwomp" noyoshi="True" notes="A normal sized Thwomp that will try to crush the player when it is nearby or underneath. Thwomps are not capable of destroying tileset objects unless set to Crush Forever.">
-    <dualbox nybble="12.3" title1="Drop and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop."/>
-    <checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="An unknown setting for Nybble 12." advanced="True" advancedcomment="Bit 47-48 may be a list, but only value 2 has been defined. Value 3 is confirmed to CRASH the game, so do not activate this with Crush Forever. However, value 1 may provide different effects. Experimenting and testing are required."/>
+    <list nybble="12" title="Behaviour" comment="This determines if the Thwomp will return to its starting position or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop. Values higher than 2 default to 'Drop and Return'.[br]*: There is an extra collision type for which the Thwomp stops dropping and returns (SENSOR_JUMPDAI), but its precise effects are unknown.">
+      <entry value="0">Drop and Return</entry>
+      <entry value="1">Drop and Return (*)</entry>
+      <entry value="2">Crush Forever</entry>
+    </list>
   </sprite> <!-- #47: Thwomp -->
 
   <sprite id="48" name="Big Thwomp" noyoshi="True" notes="A larger Thwomp that will try to crush the player when it is nearby or underneath. Big Thwomps are capable of destroying certain types of tileset objects such as brick blocks and grey blocks.">
-    <dualbox nybble="12.3" title1="Crush and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position after crushing up to one row of breakable terrain, or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop."/>
-    <checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="An unknown setting for Nybble 12." advanced="True" advancedcomment="Bit 47-48 may be a list, but only value 2 has been defined. Value 3 is confirmed to CRASH the game, so do not activate this with Crush Forever. However, value 1 may provide different effects. Experimenting and testing are required."/>
+    <list nybble="12" title="Behaviour" comment="This determines if the Thwomp will return to its starting position or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop. Values higher than 2 default to 'Drop and Return'.[br]*: There is an extra collision type for which the Thwomp stops dropping and returns (SENSOR_JUMPDAI), but its precise effects are unknown.">
+      <entry value="0">Drop and Return</entry>
+      <entry value="1">Drop and Return (*)</entry>
+      <entry value="2">Crush Forever</entry>
+    </list>
   </sprite> <!-- #48: Big Thwomp -->
 
   <!-- Redo the Tilt Distances, they got lost in translation somehow? -->
