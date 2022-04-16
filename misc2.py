@@ -238,10 +238,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                     path = Path(newpathid, globals_.mainWindow.scene)
                     new_node = path.add_node(clickedx, clickedy)
-
-                    new_node.listitem.setSelected(True)
                     new_node.setSelected(True)
-                    new_node.positionChanged = globals_.mainWindow.HandlePathPosChange
+                    new_node.listitem.setSelected(True)
 
                     globals_.Area.paths.append(path)
 
@@ -256,10 +254,15 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         idx = len(path)
 
                     new_node = path.add_node(clickedx, clickedy, index=idx)
-                    new_node.positionChanged = globals_.mainWindow.HandlePathPosChange
+
+                    if globals_.InsertPathNode:
+                        path_node.setSelected(False)
+                        new_node.setSelected(True)
 
                     # The path length changed, so update the editor's maximums
                     globals_.mainWindow.pathEditor.UpdatePathLength()
+
+                new_node.positionChanged = globals_.mainWindow.HandlePathPosChange
 
                 self.dragstamp = False
                 self.currentobj = new_node

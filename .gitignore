@@ -106,3 +106,7 @@ log.txt
 settings.ini
 settings.ini.bak
 reggiedata/patches/NewerSMBW/tilesetinfo.xml
+reggiedata/themes/Dark NSMBU/
+autotile.py
+LHTool.py
+test_lh.py

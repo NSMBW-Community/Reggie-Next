@@ -1250,3 +1250,79 @@ class SpriteList(QtWidgets.QWidget):
 
     def clearSelection(self):
         self.table.setCurrentItem(None)
+
+
+class EntranceList(QtWidgets.QWidget):
+    """
+    ...
+    """
+    def __init__(self):
+        super().__init__()
+
+        layout = QtWidgets.QVBoxLayout(self)
+
+        label = QtWidgets.QLabel(globals_.trans.string('Palette', 8))
+        label.setWordWrap(True)
+
+        self.enterables = ListWidgetWithToolTipSignal()
+        self.enterables.itemActivated.connect(self._handle_select)
+        self.enterables.toolTipAboutToShow.connect(self._handle_tooltip)
+        self.enterables.setSortingEnabled(True)
+
+        self.unenterables = ListWidgetWithToolTipSignal()
+        self.unenterables.itemActivated.connect(self._handle_select)
+        self.unenterables.toolTipAboutToShow.connect(self._handle_tooltip)
+        self.unenterables.setSortingEnabled(True)
+
+        layout.addWidget(label)
+        layout.addWidget(self.enterables)
+        layout.addWidget(self.unenterables)
+
+    def add(self, entrance):
+        """
+        Adds an entrance to the list.
+        """
+        if entrance.entsettings & 0x80:
+            self.enterables.insertItem(entrance.entid, entrance.listitem)
+        else:
+            self.unenterables.insertItem(entrance.entid, entrance.listitem)
+
+    def remove(self, entrance):
+        """
+        Removes an entrance from the list.
+        """
+        list_ = self.enterables if entrance.entsettings & 0x80 else self.unenterables
+
+        list_.takeItem(list_.row(entrance.listitem))
+        list_.selectionModel().clearSelection()
+
+    def clear(self):
+        """
+        Removes all items and removes focus.
+        """
+        self.enterables.clear()
+        self.unenterables.clear()
+        self.enterables.selectionModel().setCurrentIndex(QtCore.QModelIndex(), QtCore.QItemSelectionModel.Clear)
+        self.unenterables.selectionModel().setCurrentIndex(QtCore.QModelIndex(), QtCore.QItemSelectionModel.Clear)
+
+    def select(self, entrance):
+        """
+        Selects an entrance.
+        """
+        if entrance is None:
+            self.enterables.setCurrentItem(None)
+            self.unenterables.setCurrentItem(None)
+            return
+
+        list_ = self.enterables if entrance.entsettings & 0x80 else self.unenterables
+        list_.setCurrentItem(entrance.listitem)
+
+    def _handle_select(self, *args):
+        """
+        Handles an item being selected.
+        """
+        return globals_.mainWindow.HandleEntranceSelectByList(*args)
+
+    def _handle_tooltip(self, *args):
+        return globals_.mainWindow.HandleEntranceToolTipAboutToShow(*args)
+

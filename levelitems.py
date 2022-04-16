@@ -68,6 +68,10 @@ class InstanceDefinition:
         """
         Returns True if this instance definition matches the specified item
         """
+        # Paths are higher-level structures that do not have objx and objy fields
+        if isinstance(self, Path):
+            return isinstance(other, Path) and self.matchesData(other)
+
         return self.objx == other.objx and self.objy == other.objy and self.matchesData(other)
 
     def matchesData(self, other):
@@ -2687,13 +2691,8 @@ class EntranceItem(LevelEditorItem):
         """
         Delete the entrance from the level
         """
-        elist = globals_.mainWindow.entranceList
-        globals_.mainWindow.UpdateFlag = True
-        elist.takeItem(elist.row(self.listitem))
-        globals_.mainWindow.UpdateFlag = False
-        elist.selectionModel().clearSelection()
+        globals_.mainWindow.entranceList.remove(self)
         globals_.Area.entrances.remove(self)
-        self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
 
     def itemChange(self, change, value):
         """
