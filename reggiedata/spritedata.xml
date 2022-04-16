@@ -4287,9 +4287,12 @@
     <value nybble="9-10" title="&quot;Jump to&quot; Node" comment="This determines which Node along the Path the test platform will return to after reaching the end of the Path." requirednybble="8.3-8.4" requiredval="1"/> <!-- Appears if Jump to Node is selected -->
   </sprite> <!-- #287: (Unused) Path Controlled Ice Block -->
 
-  <!-- Investigate Nybble 12 - Right = 2? If so, then it's suspected that Left = 1 and Towards Player = 0. True or False? -->
   <sprite id="288" name="Rolling Barrel" notes="">
-    <dualbox nybble="12.3" title1="Rolls Left" title2="Rolls Right"/>
+    <list nybble="12.3-12.4" title="Intial Rolling Direction" comment2="Value 3 is the same as value 0.">
+      <entry value="0">Towards closest player</entry>
+      <entry value="1">Left</entry>
+      <entry value="2">Right</entry>
+    </list>
   </sprite> <!-- #288: Rolling Barrel -->
 
   <sprite id="289" name="Wooden/Metal Box" notes="Wooden boxes can be opened if Ground-Pounded, struck from below, etc. and can award the player with an item. Metal boxes can instantly kill the player, cannot be destroyed, and make a POW sound when falling. They also have odd issues when it comes to respawning if they have moved from their original location.">
