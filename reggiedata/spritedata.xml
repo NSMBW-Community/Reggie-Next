@@ -4093,10 +4093,14 @@
       <suggested sprite="96"/>
       <suggested sprite="149"/>
     </dependency>
-    <dualbox nybble="10.4" title1="Small Gear" title2="Large Gear" comment="This determines how large the gear is."/>
+    <list nybble="10" title="Size" comment="This determines how large the gear is." comment2="Values larger than 1 crash the game.">
+      <entry value="0">Small Gear</entry>
+      <entry value="1">Large Gear</entry>
+    </list>
     <value nybble="11-12" title="Rotation ID" comment="When set, the gear will move under the power of a rotation controller instead of rotating under its own power." comment2="The gear will rotate in place, regardless of the rotation controller's position." idtype="Rotation"/>
     <dualbox nybble="9.4" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the gear will rotate when rotating under its own power." requirednybble="11-12" requiredval="0"/> <!-- These three options only appear if Rotation ID is not set. -->
     <value nybble="7" title="Rotation Speed (+)" comment="This will increase the speed of the gear's rotation when rotating under its own power." comment2="Only one Rotation Speed should be chosen. A rotation speed of 0 is equal to 'Slow+' on a Spinning rotation controller." requirednybble="11-12" requiredval="0"/>
+    <!-- Nyb8 seems to be zorder related instead of speed... -->
     <value nybble="8" title="Rotation Speed (-)" comment="This will decrease the speed of the gear's rotation when rotating under its own power." comment2="Only one Rotation Speed should be chosen. A rotation speed of 0 is equal to 'Slow+' on a Spinning rotation controller." requirednybble="11-12" requiredval="0"/>
   </sprite> <!-- #274: Rotating Metal Castle Gear -->
 
