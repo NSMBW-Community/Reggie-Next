@@ -101,7 +101,7 @@ from zones import ZonesDialog
 from tiles import UnloadTileset, LoadTileset, LoadOverrides
 from area import AreaOptionsDialog
 from level import Level_NSMBW
-from sidelists import Stamp, StampChooserWidget, SpriteList, SpritePickerWidget, ObjectPickerWidget, LevelOverviewWidget, EntranceList
+from sidelists import Stamp, StampChooserWidget, SpriteList, SpritePickerWidget, ObjectPickerWidget, LevelOverviewWidget
 from spriteeditor import SpriteEditorWidget
 from editors import LocationEditorWidget, PathNodeEditorWidget, EntranceEditorWidget
 from undo import UndoStack
@@ -777,15 +777,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         lmenu.addAction(self.actions['reloadgfx'])
         lmenu.addAction(self.actions['reloaddata'])
 
-        pmenu = menubar.addMenu("Game Patch")
-        pmenu.addAction("Add Patch")
-        pmenu.addAction("Configure Patch")
-        pmenu.addAction("Remove Patch")
-        pmenu.addSeparator()
-        pmenu.addAction("Set Patch to NSMBW")
-        pmenu.addAction("Set Patch to Newer")
-        pmenu.addAction("Set Patch to [...]")
-
         hmenu = menubar.addMenu(globals_.trans.string('Menubar', 4))
         self.SetupHelpMenu(hmenu)
 
@@ -1191,9 +1182,22 @@ class ReggieWindow(QtWidgets.QMainWindow):
         spel.addWidget(self.spriteList)
 
         # entrance tab
-        self.entranceList = EntranceList()
-        tabs.addTab(self.entranceList, GetIcon('entrances'), '')
+        self.entEditorTab = QtWidgets.QWidget()
+        tabs.addTab(self.entEditorTab, GetIcon('entrances'), '')
         tabs.setTabToolTip(2, globals_.trans.string('Palette', 15))
+
+        eel = QtWidgets.QVBoxLayout(self.entEditorTab)
+        self.entEditorLayout = eel
+
+        elabel = QtWidgets.QLabel(globals_.trans.string('Palette', 8))
+        elabel.setWordWrap(True)
+        self.entranceList = ListWidgetWithToolTipSignal()
+        self.entranceList.itemActivated.connect(self.HandleEntranceSelectByList)
+        self.entranceList.toolTipAboutToShow.connect(self.HandleEntranceToolTipAboutToShow)
+        self.entranceList.setSortingEnabled(True)
+
+        eel.addWidget(elabel)
+        eel.addWidget(self.entranceList)
 
         # locations tab
         self.locEditorTab = QtWidgets.QWidget()
@@ -2134,10 +2138,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         ent.listitem = ListWidgetItem_SortsByOther(ent)
 
         if add_to_scene:
-            self.entranceList.add(ent)
-
             # If it's the first available ID, all the other indices should match, so
             # we can just use the ID to insert.
+            self.entranceList.insertItem(id_, ent.listitem)
             globals_.Area.entrances.insert(id_, ent)
 
             self.scene.addItem(ent)
@@ -2511,18 +2514,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'                  # *
         fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), '', filetypes)[0]
         if fn == '': return
-
-        # import cProfile
-        # print(f"Profiling loading {fn!r} 5 times...")
-
-        # with cProfile.Profile() as pr:
-        #     for _ in range(5):
-        #         pr.enable()
-        #         self.LoadLevel(str(fn), True, 1)
-        #         pr.disable()
-        #         self.fileSavePath = ""
-
-        # pr.print_stats(sort="cumtime")
         self.LoadLevel(str(fn), True, 1)
 
     def HandleSave(self):
@@ -3167,11 +3158,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clear()
 
         # Clear out all level-thing lists
-        for thingList in (self.spriteList, self.locationList, self.pathList, self.commentList):
+        for thingList in (self.spriteList, self.entranceList, self.locationList, self.pathList, self.commentList):
             thingList.clear()
             thingList.selectionModel().setCurrentIndex(QtCore.QModelIndex(), QtCore.QItemSelectionModel.Clear)
-
-        self.entranceList.clear()
 
         # Reset these here, because if they are set after
         # creating the objects, they use the old values.
@@ -3341,7 +3330,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             ent.positionChanged = pcEvent
             ent.listitem = ListWidgetItem_SortsByOther(ent)
             ent.listitem.entid = ent.entid
-            self.entranceList.add(ent)
+            self.entranceList.addItem(ent.listitem)
             self.scene.addItem(ent)
             ent.UpdateListItem()
 
@@ -3428,7 +3417,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.selObjs = None
 
         self.spriteList.clearSelection()
-        self.entranceList.select(None)
+        self.entranceList.setCurrentItem(None)
         self.locationList.setCurrentItem(None)
         self.pathList.setCurrentItem(None)
         self.commentList.setCurrentItem(None)
@@ -3464,7 +3453,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             elif func_ii(item, type_ent):
                 self.creationTabs.setCurrentIndex(2)
                 self.UpdateFlag = True
-                self.entranceList.select(item)
+                self.entranceList.setCurrentItem(item.listitem)
                 self.UpdateFlag = False
                 showEntrancePanel = True
                 updateModeInfo = True

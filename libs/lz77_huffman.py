@@ -57,7 +57,6 @@ def loadLHPiece(output_buffer: bytes, inData: bytes, entry_size: u8) -> int:
     bytes_queue = u32(0)  # The 4-byte queue of half-parsed entries
     queue_size = u32(0)  # Number of bits in the queue
     entry_mask = u32(r6 - 1)  # The bitmask for an entry in the header
-    entry = u32(0)
     r30 = u32(r6 << 1)
 
     bytes_read = u32()  # The number of header bytes that are read
@@ -87,18 +86,18 @@ def loadLHPiece(output_buffer: bytes, inData: bytes, entry_size: u8) -> int:
             bytes_read.value += r6
             queue_size.value += r6 << 3
 
-        # An entry was extracted, so reduce the queue size
-        queue_size.value -= entry_size.value
-
         if saved_entries.value < r30.value:
             # Save the value as a short into the output buffer.
-            entry.value = (bytes_queue.value >> queue_size.value) & entry_mask.value
+            entry = (bytes_queue.value >> (queue_size.value - entry_size.value)) & entry_mask.value
 
             output_buffer[out_index.value] = entry >> 8
             output_buffer[out_index.value + 1] = entry & 0xFF
 
             out_index.value += 2
             saved_entries.value += 1
+
+        # An entry was extracted, so reduce the queue size
+        queue_size.value -= entry_size.value
 
     return bytes_read.value
 
@@ -127,6 +126,8 @@ def UncompressLH(inData: bytes) -> bytes:
     inBuf = inBuf[loadLHPiece(context.buf1, inBuf, u8(9)):]
     inBuf = inBuf[loadLHPiece(context.buf2, inBuf, u8(5)):]
 
+    r0 = u32(0x10)
+    r3 = u32(0x100)
     r4 = u32(0)
     r5 = u32(0)
     r6 = u32(0)
@@ -153,7 +154,7 @@ def UncompressLH(inData: bytes) -> bytes:
             r6.value -= 1
             r9.value = (r5.value >> r6.value) & 1
 
-            flag = (r11.value & (0x100 >> r9.value) == 0)
+            flag = (r11.value & (r3.value >> r9.value) == 0)
             r9.value |= ((r11.value & 0x7F) + 1) << 1
 
             if flag:
@@ -176,14 +177,9 @@ def UncompressLH(inData: bytes) -> bytes:
         r7.value &= 0xFFFF # r7 is really an ushort, probably
         r8.value = r4.value # used as an offset into inBuf
 
-        # inBuf is actually a u16 array
-        # r5 countains (part of) the current byte
-        # r6 is the number of bits in r5
-        # r4 does ???
-        # r8 is the index in the inBuf
-        # enter = True
-        while True:
-            # enter = False
+        enter = True
+        while enter or flag:
+            enter = False
 
             if r6.value == 0:
                 r5.value = inBuf[r8.value]
@@ -191,35 +187,21 @@ def UncompressLH(inData: bytes) -> bytes:
                 r4.value += 1
                 r8.value += 1
 
+            r12.value = (context.buf2[r25.value] << 8) | context.buf2[r25.value + 1]
             r6.value -= 1
+            r10.value = (r5.value >> r6.value) & 1
+            r11.value = r12.value & 7
 
-            # FIXME: Causes IndexErrors (r25 is too large)
-            # r12.value == currentNode[0]
-            try:
-                r12.value = (context.buf2[r25.value] << 8) | context.buf2[r25.value + 1]
-            except IndexError:
-                print(r25.value)
-                raise
-            r10.value = (r5.value >> r6.value) & 1  # shift
-            r11.value = r12.value & 7  # nOffsetBits
+            flag = (r12.value & (r0.value >> r10.value) == 0)
+            r10.value |= (r11.value + 1) << 1
 
-            flag = (r12.value & (0x10 >> r10.value) == 0)
-            r10.value |= (r11.value + 1) << 1  # offset
-
-            # if not flag:
-            #     r9.value = (r25.value & ~3) & 0xFFFF_FFFF
-            #     r8.value = r10.value << 1
-            #     r11.value = (context.buf2[r9.value + r8.value] << 8) | context.buf2[r9.value + r8.value + 1]  # nOffsetBits
-            #     break
-
-            if not flag:
+            if flag:
+                r25.value &= ~3
+                r25.value += r10.value << 1
+            else:
                 r9.value = r25.value & ~3
                 r8.value = r10.value << 1
                 r11.value = (context.buf2[r9.value + r8.value] << 8) | context.buf2[r9.value + r8.value + 1]
-                break
-            else:
-                r25.value &= ~3
-                r25.value += r10.value << 1
 
         r10.value = 0
         if r11.value != 0:
@@ -239,16 +221,11 @@ def UncompressLH(inData: bytes) -> bytes:
             r7.value &= 0xFFFF
 
         r10.value = (r10.value + 1) & 0xFFFF
-        n = (r7.value & 0xFFFF)
-
-        # If we need to write more than we have space for, truncate the output.
-        # if r10.value - n <= outIndex.value - outSize.value:
-        #     n = outSize.value - outIndex.value
 
         # Block copy loop
-        for x in range(outIndex.value, outIndex.value + n):
+        for x in range(outIndex.value, outIndex.value + (r7.value & 0xFFFF)):
             outBuf[x] = outBuf[x - r10.value]
 
-        outIndex.value += n
+        outIndex.value += r7.value & 0xFFFF
 
     return bytes(outBuf)

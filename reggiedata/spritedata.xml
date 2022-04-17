@@ -4637,25 +4637,27 @@
 
   <!-- In what way does Yoshi not interact with this sprite? -->
   <!-- Testing needed with Second Falling Animation - Tile God, platforms, etc. May only function with Snake Block, but even that needs additional testing. -->
+  <!-- Further describe Use 'Forming' Animation (and maybe suggest another name for it) -->
+  <!-- Extensive testing needed for Nybble 9 and 10 -->
   <!-- More testing is needed for Tilt after Falling, too. In retail it tilts Right during the one instance it is used, but was listed as Left in previous documentation. -->
   <sprite id="311" name="Mega Icicle" noyoshi="True" notes="A large hanging icicle that can fall if the player comes too close to it. It can also be triggered by a Snake Block.">
     <dependency notes="The Mega Icicle has several options that function specifically with the Snake Block.">
       <suggested sprite="166"/>
     </dependency>
-    <dualbox nybble="5" title1="Parent" title2="Child" comment="When set to Child, the icicle will not fall, because a child icicle waits for its parent to fall. Parent icicles create their own child with their own settings, with nybble 5 forced turned on."/>
-    <checkbox nybble="9" title="Parent: Delete after Child fell" comment="If unchecked, the parent actor stays around, doing nothing" comment2="Parent goes into ParentCreateWait after telling child to fall if 0, deletes itself instead otherwise. ParentCreateWait is an empty state though - it just waits and does nothing. It was possibly confused with the 'ParentWait' state, which is set up in a way that would allow it to create an icicle every time. This behaviour would also explain the weird (and currently useless) design of parent / child icicle actors."  requirednybble="5" requiredval="0" />
-    <checkbox nybble="6" title="Use Growing Animation" comment="Any nonzero value causes it to go into a growing animation." comment2="During the animation, the scale is increased from 0 to 1 in 4 frames: 0, 0.4, 0.8, 1" />
-    <list nybble="8" title="Second Falling Animation" comment="This determines the animation the Icicle uses after falling off the Snake Block, or the terrain underneath it is otherwise removed." comment2="If set to 0 or 1, the Icicle will fall through any other terrain and despawn. If set to 2, it will still interact with other Layer 1 terrain after falling." requirednybble="5" requiredval="0">
+    <checkbox nybble="5.4" title="Don't Fall" comment="When enabled, the Icicle will not fall."/>
+    <checkbox nybble="8.2" title="Use 'Forming' Animation" comment="When enabled, the Icicle will start small when it loads in and grow to its final size."/>
+    <value nybble="10" title="(Snake Block?) Fall Delay" comment="It's unsure what exactly this does; in retail, 13 is used." requirednybble="5.4" requiredval="0"/> <!-- Disappears if Don't Fall is set -->
+    <list nybble="12" title="Tilt after Falling" comment="When enabled, the Icicle will tilt to the right (?) after it falls." requirednybble="5.4" requiredval="0">
+      <entry value="0">No (Straight)</entry>
+      <entry value="1">Yes (Tilts Right? Towards Player/Source?)</entry>
+    </list> <!-- Disappears if Don't Fall is set -->
+    <checkbox nybble="11.4" title="Falls onto a Snake Block" comment="When enabled, only a Snake Block will cause the Icicle to fall." requirednybble="5.4" requiredval="0"/> <!-- Disappears if Don't Fall is set -->
+    <list nybble="8" title="Second Falling Animation" comment="This determines the animation the Icicle uses after falling off the Snake Block, or the terrain underneath it is otherwise removed." comment2="If set to 0 or 1, the Icicle will fall through any other terrain and despawn. If set to 2, it will still interact with other Layer 1 terrain after falling." requirednybble="5.4" requiredval="0">
       <entry value="0">Dies, with Tilting Drop</entry>
       <entry value="1">Dies, with Upright Drop</entry>
       <entry value="2">Lives, Falls Straight Down</entry>
-    </list> <!-- Disappears if 'Child' is set -->
-    <dualbox nybble="11" title1="Activated by Player" title2="Activated by Snake Block" comment="If player: Any player needs to be closer than 8 blocks horizontally. If snake block: The horizontal distance can be configured." requirednybble="5" requiredval="0" />  <!-- Disappears if 'Child' is set -->
-    <value nybble="10" title="Snake Block: Fall Distance" comment="Number of blocks" requirednybble="5, 11" requiredval="0, 1" />  <!-- Appears if 'Snake Block' is set and 'Child' is not -->
-    <list nybble="12" title="Tilt after Falling" comment="When enabled, the Icicle will tilt to the right (?) after it falls." requirednybble="5" requiredval="0">
-      <entry value="0">No (Straight)</entry>
-      <entry value="1">Yes (Tilts Right? Towards Player/Source?)</entry>
-    </list> <!-- Disappears if 'Child' is set -->
+    </list> <!-- Disappears if Don't Fall is set -->
+    <value nybble="9" title="Unknown Value 9" advanced="True" advancedcomment="ASM shows Nybble 9 might affect something."/>
   </sprite> <!-- #311: Mega Icicle -->
 
   <sprite id="312" name="Stretching Line Block Controller" notes="A controller that allows you to link the movement patterns of Stretching Line Blocks together for predictable jumping.">
