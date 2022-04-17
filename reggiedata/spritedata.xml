@@ -5047,11 +5047,11 @@
     </list>
     <value nybble="10" title="Rising/Falling Speed" comment="Values 0-3 are each very different from each other, while Values 4+ have very minimal increases in speed beyond that."/>
     <list nybble="7.3-7.4" title="Shooting Direction">
-      <entry value="0">Towards Player</entry>
+      <entry value="0">Towards closest Player</entry>
       <entry value="1">Left Only</entry>
       <entry value="2">Right Only</entry>
     </list>
-    <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. See Retail: 07-07 A1 Z5."/>
+    <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. See Retail: 07-07 A1 Z5." comment2="The z-order is 400 - 32 * value" />
     <list nybble="9" title="Shoots at">
       <entry value="0">Shot 1 and 2</entry>
       <entry value="1">Shot 1 Only</entry>
@@ -5810,7 +5810,7 @@
   </sprite> <!-- #390: Bolt Controlled Coin -->
 
   <sprite id="391" name="Lighting - Glow Block" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely diminished as anything other than a weapon of destruction if not using Full Darkness lighting.">
-    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
+    <checkbox nybble="12" title="Do not despawn" comment="If ticked, the glow block does not despawn once it has gone off-screen." comment2="Every nonzero value has the same effect." />
   </sprite> <!-- #391: Lighting - Glow Block -->
 
   <sprite id="392" name="Magic Fireball Spawn Area" noyoshi="True" notes="This sprite spawns Koopaling Fireballs from the screen's edge towards the players. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
