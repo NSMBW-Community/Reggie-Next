@@ -6199,7 +6199,7 @@
       <entry value="3">4 Lives</entry>
     </list>
     <dualbox nybble="12.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the block will move based on the Line that it is connected to."/>
-    <checkbox nybble="8.4" title="Unknown Flag 8 (1)" comment="Used in Retail 03-26 as 1, no visible effect."/>
+    <checkbox nybble="8.4" title="Positional Offset" comment="If set, the balloon is moved half a block to the right and half a block to the top." />
   </sprite> <!-- #412: Toad House Minigame - Lives Balloon -->
 
   <sprite id="413" name="Bouncing Wendy Ring" noyoshi="True" notes="A stand-alone version of the bouncing ring used in the Wendy Koopa boss fights.">
