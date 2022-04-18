@@ -2951,8 +2951,11 @@
   <sprite id="200" name="Micro Goomba" notes="A very small Goomba that clings to the player until they spin jump to shake them off.">
   </sprite> <!-- #200: Micro Goomba -->
 
-  <sprite id="201" name="Icicle" notes="A small hanging icicle that does not fall but can still hurt the player if they touch it.">
-    <dualbox nybble="12.4" title1="Short (1x1)" title2="Long (1x2)" comment="This determines which size the Icicle is."/>
+  <sprite id="201" name="Icicle" notes="A small hanging icicle that does not fall but can still hurt the player if they touch it. When touched by [388] Barrel, the Barrel breaks. Note that this is unlike [265] Falling Icicle, where the Falling Icicle breaks instead of the Barrel.">
+    <list nybble="12" title="Size" comment2="Higher values cause crashes.">
+      <entry value="0">Short (1x1)</entry>
+      <entry value="1">Long (1x2)</entry>
+    </list>
   </sprite> <!-- #201: Icicle -->
 
   <sprite id="202" name="Toad House Minigame - Cannon" notes="">
@@ -3992,8 +3995,16 @@
     <checkbox nybble="9.4" title="Increase Z-pos by 200" comment="When ticked, the piranha plant's z position will be 200 higher."/>
   </sprite> <!-- #264: Stalking Piranha Plant -->
 
-  <sprite id="265" name="Falling Icicle" notes="A small hanging icicle that will fall when the player comes too close to it.">
-    <dualbox nybble="12.4" title1="Short (1x1)" title2="Long (1x2)" comment="This determines which size the Icicle is."/>
+  <sprite id="265" name="Falling Icicle" notes="A small hanging icicle that will fall when the player comes too close (8 blocks horizontally) to it. It will hurt the player, regardless of where he touches it. When hit by a [388] Barrel, a nice break effect is used. Shells can also break them, but don't use a break effect.">
+    <list nybble="5" title="Parent / Child" comment="Parent icicles will fall, Child icicles will never fall." comment2="Any nonzero value causes 'child' behaviour. Parent icicles are actually invisible and never fall either. Instead, parent icicles create child icicles that they activate when a player gets nearby.">
+      <entry value="0">Parent</entry>
+      <entry value="1">Child</entry>
+    </list>
+    <checkbox nybble="6" title="Growing animation" comment="When ticked, the icicle uses an initial growing animation." comment2="Each frame, the scale is increased by 1/240. So it takes 240 frames (4 seconds) to grow." />
+    <list nybble="12" title="Size" comment="The size of the icicle. Higher values cause crashes.">
+      <entry value="0">Short (1x1)</entry>
+      <entry value="1">Long (1x2)</entry>
+    </list>
   </sprite> <!-- #265: Falling Icicle -->
 
   <sprite id="266" name="Rotating Chainlink Fence Wheel" noyoshi="True" notes="The fence draws behind Layer 1 by default.">
@@ -4651,7 +4662,7 @@
       <entry value="2">Lives, Falls Straight Down</entry>
     </list> <!-- Disappears if 'Child' is set -->
     <dualbox nybble="11" title1="Activated by Player" title2="Activated by Snake Block" comment="If player: Any player needs to be closer than 8 blocks horizontally. If snake block: The horizontal distance can be configured." requirednybble="5" requiredval="0" />  <!-- Disappears if 'Child' is set -->
-    <value nybble="10" title="Snake Block: Fall Distance" comment="Number of blocks" requirednybble="5, 11" requiredval="0, 1" />  <!-- Appears if 'Snake Block' is set and 'Child' is not -->
+    <value nybble="10" title="Snake Block: Fall Distance" comment="Number of blocks" requirednybble="5, 11" requiredval="0, 1-15" />  <!-- Appears if 'Snake Block' and 'Parent' are set -->
     <list nybble="12" title="Tilt after Falling" comment="When enabled, the Icicle will tilt to the right (?) after it falls." requirednybble="5" requiredval="0">
       <entry value="0">No (Straight)</entry>
       <entry value="1">Yes (Tilts Right? Towards Player/Source?)</entry>
