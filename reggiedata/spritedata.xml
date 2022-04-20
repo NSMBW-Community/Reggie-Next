@@ -1343,12 +1343,12 @@
       <entry value="2">Affected by Vertical Camera Movements</entry>
       <entry value="3">Affected by Horizontal Camera Movements</entry>
     </list>
-	<list nybble="10" title="Shooting Direction">
+    <list nybble="10" title="Shooting Direction">
       <entry value="0">Towards Player</entry>
       <entry value="1">Left Only</entry>
       <entry value="2">Right Only</entry>
     </list>
-	<list nybble="5" title="Shooting Delay">
+    <list nybble="5" title="Shooting Delay">
       <entry value="0">Normal</entry>
       <entry value="2">Long</entry>
       <entry value="1">Very Long</entry>
@@ -1356,8 +1356,8 @@
     </list>
     <checkbox nybble="12.4" title="(Broken) Shoots Homing Banzai Bills" comment="The Banzai Bills do not home on the player but instead only move up and left, regardless of the shooting direction. Use the Homing Banzai Bill Spawner sprite instead."/>
     <value nybble="6" title="Homing Banzai Bill Limit" comment="The Blaster will not create new Homing Banzai Bills unless the amount currently on the screen is less than this number." requirednybble="12.4"/>
-	<value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see Retail: 07-07 A1 Z5."/>
-	<list nybble="9.3-9.4" title="Unknown Value 9" comment="ASM shows Nybble 8 might affect something.">
+    <value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see Retail: 07-07 A1 Z5."/>
+    <list nybble="9.3-9.4" title="Unknown Value 9" comment="ASM shows Nybble 8 might affect something.">
       <entry value="0">???</entry>
       <entry value="1">???</entry>
       <entry value="2">???</entry>
@@ -1473,12 +1473,12 @@
       <entry value="2">Frozen in Ice (Minus Ice) [280]</entry>
       <entry value="3">Cannon Spawn [299]</entry>
     </list>
-	<list nybble="7.3-7.4" title="Spawn Direction" requirednybble="5" requiredval="3">
-	  <entry value="0">Up Right</entry>
-	  <entry value="1">Up Left</entry>
-	  <entry value="2">Down Right</entry>
-	  <entry value="3">Down Left</entry> <!-- 4-7 are supposed to be at higher arcs, but it acts the same -->
-	</list>
+    <list nybble="7.3-7.4" title="Spawn Direction" requirednybble="5" requiredval="3">
+      <entry value="0">Up Right</entry>
+      <entry value="1">Up Left</entry>
+      <entry value="2">Down Right</entry>
+      <entry value="3">Down Left</entry> <!-- 4-7 are supposed to be at higher arcs, but it acts the same -->
+    </list>
     <list nybble="12.3-12.4" title="Spawn Direction" requirednybble="5" requiredval="1">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
@@ -2006,9 +2006,9 @@
     <value nybble="1.2-2.4" title="Moving Water - Triggering Event ID" comment="The Moving Water mode will be triggered when this Event is activated." requirednybble="5.2-5.4" idtype="Triggering Event"/> <!-- Appears when Speed is set --> <!-- Needs modified to allow for 256 events. -->
     <value nybble="11.2-12.4" title="Location ID" comment="Match with a Location ID to set a specific area in which to display Water. Note that some sprites only work correctly in Non-Location Water." idtype="Location"/>
     <checkbox nybble="10.1" title="Higher Transparency and Flat Top" comment="When enabled, the animated crest effect on the top portion of the Water is removed, and the Non-Location Water becomes almost transparent." requirednybble="11.2-12.4" requiredval="0"/> <!--Appears when a Location ID is not set. -->
-	<checkbox nybble="10.1" title="Flat Top" requirednybble="11.2-12.4"/> <!-- Appears when a Location ID is set. -->
+    <checkbox nybble="10.1" title="Flat Top" requirednybble="11.2-12.4"/> <!-- Appears when a Location ID is set. -->
     <checkbox nybble="10.2" title="Place Behind Layer 0" comment="For this to work, 'Layer 0 Spotlight' must be turned off in the zone's settings." requirednybble="11.2-12.4"/> <!-- Appears when a Location ID is set. -->
-	<checkbox nybble="11.1" title="Unknown Flag 11.1" comment="This flag makes the Water function differently to some degree. It is known to move up and down 1 tile on a cycle when this setting is used with a few others."/>
+    <checkbox nybble="11.1" title="Unknown Flag 11.1" comment="This flag makes the Water function differently to some degree. It is known to move up and down 1 tile on a cycle when this setting is used with a few others."/>
   </sprite> <!-- #138: Water -->
 
   <!-- Mode Cheat Sheet
@@ -2017,7 +2017,7 @@
     ||Delays 6-7
     |||Triggering Event 1-4
     ||||Mode 5.1 Off / On
-	|||||"Bopping" 11.1
+    |||||"Bopping" 11.1
     YNNN=Rising Forever / Falling Forever
     YNNY=Rising Forever while On / Falling Forever While On [UNKNOWN]
     YY?N=Automatically Rising and Falling / [BUGGY!]
@@ -3507,14 +3507,14 @@
       <entry value="0">Towards Player</entry>
       <entry value="1">Moves Right</entry>
       <entry value="2">Moves Left</entry>
-	</list>
+    </list>
   </sprite> <!-- #230: Bramball -->
 
   <sprite id="231" name="Wiggling Mushroom Platform" notes="A mushroom platform that can tilt back and forth.">
     <dependency notes="Wiggling Mushroom Platforms may be paired with [313] Wiggling Mushroom Controller to enable synchronized movement across a Zone.">
       <suggested sprite="313"/>
     </dependency>
-	<dualbox nybble="7.3" title1="Doesn't Extend" title2="Extends" comment="This determines whether or not the platform extends and contracts."/>
+    <dualbox nybble="7.3" title1="Doesn't Extend" title2="Extends" comment="This determines whether or not the platform extends and contracts."/>
     <value nybble="5" title="Wiggling Mushroom ID" comment="This pairs the platform to a matching Wiggling Mushroom Controller for synchronized movement. If an ID is set, that ID will control and override all matching Wiggle Speeds." idtype="Wiggling"/>
     <value nybble="11-12" title="Wiggle Speed" requirednybble="5" requiredval="0"/>
     <value nybble="10.2-10.4" title="Tilt Distance" comment="This determines how much the platform will tilt. A value of 1 or 2 is recommended."/>
@@ -4466,7 +4466,7 @@
       <entry value="1">Bob-Omb; Low arc</entry>
       <entry value="2">Bob-Omb; High arc</entry>
     </list>
-	<list nybble="7" title="Camera Influence" comment="This determines how the cannonball moves relative to the camera." requirednybble="9.3-9.4" requiredval="0">
+    <list nybble="7" title="Camera Influence" comment="This determines how the cannonball moves relative to the camera." requirednybble="9.3-9.4" requiredval="0">
       <entry value="0">Unaffected by Camera</entry>
       <entry value="1">Affected by All Camera Movements</entry>
       <entry value="2">Affected by Vertical Camera Movements</entry>
@@ -4553,7 +4553,7 @@
     <value nybble="11-12" title="Two Way Line ID" comment="If pairing the light circle with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requirednybble="10.3-10.4" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
     <value nybble="11-12" title="Rotation ID" comment="If pairing the light circle with sprite 96 or 149, match the Rotation ID to allow the light circle to function." comment2="Only pairing it with a Spinning controller will actually allow movement. Swaying controllers will create a stationary spot of light." requirednybble="10.3-10.4" requiredval="2-3" idtype="Rotation"/> <!-- Appears if [Movement Type] = 2/3 -->
     <value nybble="1.2-2.4" title="Triggering Event ID 1" comment="This determines which single Event must be activated for the circle to glow. If this one is set, the other Triggering Event ID will be completely ignored." requirednybble="9.3-9.4" idtype="Triggering Event"/>
-	<value nybble="3.2-4.4" title="Triggering Event ID 2" comment="This setting can also determine the single Event ID that controls the circle's glow." requirednybble="9.3-9.4, 1.2-2.4" requiredval="1-127, 0" idtype="Triggering Event"/>
+    <value nybble="3.2-4.4" title="Triggering Event ID 2" comment="This setting can also determine the single Event ID that controls the circle's glow." requirednybble="9.3-9.4, 1.2-2.4" requiredval="1-127, 0" idtype="Triggering Event"/>
   </sprite> <!-- #305: Lighting - Circle -->
 
   <sprite id="306" name="Lighting - Rotation Controlled Spotlight" notes="A hanging spotlight lamp with a decorative vertical support that generates a cone of light.">
@@ -5566,8 +5566,8 @@
     <checkbox nybble="12.4" title="Uses Paths" comment="When enabled, the Raft will follow the assigned Path. Otherwise, the Raft will move slowly to the right."/>
     <value nybble="7" title="Path ID" idtype="Path" requirednybble="12.4" requiredval="1"/>
     <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the Raft will appear at and start moving from." requirednybble="12.4" requiredval="1"/>
-	<dualbox nybble="11.4" title1="Spawns Before Midway" title2="Spawns After Midway" comment="This decides whether the Raft will spawn only before the Midway Flag is activated, or only after."/>
-	<checkbox nybble="8.4" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="When this flag is enabled along with a Path (regardless of the Uses Paths flag), the Raft will go to the indicated Path Node and not move. But, if the Path is set to loop, this doesn't do anything."/>
+    <dualbox nybble="11.4" title1="Spawns Before Midway" title2="Spawns After Midway" comment="This decides whether the Raft will spawn only before the Midway Flag is activated, or only after."/>
+    <checkbox nybble="8.4" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="When this flag is enabled along with a Path (regardless of the Uses Paths flag), the Raft will go to the indicated Path Node and not move. But, if the Path is set to loop, this doesn't do anything."/>
     <checkbox nybble="9.4" title="Event Activated Flashlight" comment="When enabled, the Flashlight will only be illuminated when the Triggering Event ID is activated. The Flashlight can only be controlled by tilting the controller when it is Event Activated."/> <!-- Appears only if Use Flashlight is active -->
     <value nybble="3.2-4.4" title="Triggering Event ID" comment="The Flashlight will be turned on when this Event ID is activated. The Flashlight can't be deactivated." requirednybble="9.4" requiredval="1" idtype="Triggering Event"/> <!-- Appears only if Use Flashlight and Event Activated Flashlight are active -->
   </sprite> <!-- #368: Path Controlled Flashlight Raft -->
@@ -6567,8 +6567,8 @@
 
   <sprite id="448" name="Metal Bar" notes="A metal bar that is essentially just a 5x2 block.">
     <checkbox nybble="8.4" title="Place Behind Chainlink Fence" comment="When enabled, every part of the metal bar that is touching a fence tile has no collision on the frontside of chainlink fences. This also changes the relative Z-Order of the bar placing it further behind other sprites."/>
-	<value nybble="11" title="Unknown Value 11" comment="Used in Retail: 04-24 A1"/>
-	<checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="Used in Retail: 04-24 A1"/>
+    <value nybble="11" title="Unknown Value 11" comment="Used in Retail: 04-24 A1"/>
+    <checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="Used in Retail: 04-24 A1"/>
   </sprite> <!-- #448: Metal Bar -->
 
   <sprite id="449" name="Bowser Fireball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Bowser Fireballs will fire from the screen's right edge towards the left  while a player is inside it." advancednotes="&lt;br&gt; - Uses hardcoded location ID 0 (you can have multiple ones in the zone)&lt;br&gt; - They will look awful if Bowser's sprite isn't present in any area of the level&lt;br&gt;&lt;br&gt;&lt;b&gt;Sprite Placement:&lt;/b&gt;&lt;br&gt; - X Position does not matter&lt;br&gt; - Y Position matters, as the sprite will spawn fireballs in a range of 6 tiles below its placement&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Placement:&lt;/b&gt;&lt;br&gt; - Bowser Fireballs start spawning as soon as the left edge of the location enters the screen&lt;br&gt;&lt;br&gt;&lt;b&gt;Location Size (fireballs won't spawn if requirements aren't met):&lt;/b&gt;&lt;br&gt; - X Size: Unknown, but a specific minimal X location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt; - Y Size: At least 120px (5 blocks). A specific minimal Y location size is required for the Bowser Fireballs to spawn correctly.&lt;br&gt;" >
