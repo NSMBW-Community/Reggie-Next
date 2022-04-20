@@ -1775,7 +1775,7 @@
   </sprite> <!-- #121: (Crashes) Collision Switcher -->
 
   <sprite id="122" name="Basic Platform - One-Way" notes="This platform moves in the specified direction when all players are standing on it.">
-    <list nybble="9" title="Model" comment="This will set the color of the platform." advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform.">
+    <list nybble="9" title="Model" comment="This will set the color of the platform. Higher values are the same as 0." advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform.">
       <entry value="0">Gold Platform</entry>
       <entry value="1">Silver Platform</entry>
       <entry value="2">boss_koopa_lift.arc</entry>
@@ -1798,7 +1798,7 @@
       <entry value="14">30 Blocks</entry>
       <entry value="15">32 Blocks</entry>
     </list>
-    <list nybble="8.2-8.4" title="Direction" comment="This determines which direction the platform will move. Note that in the case of Down And Right, the movement distance is calculated on one axis. So, for a movement distance of 14 blocks, the platform will move 14 blocks down and 14 blocks right.">
+    <list nybble="8.2-8.4" title="Direction" comment="This determines which direction the platform will move. Values higher than 4 behave the same as 4. Note that in the case of Down And Right, the movement distance is calculated on one axis. So, for a movement distance of 14 blocks, the platform will move 14 blocks down and 14 blocks right.">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
       <entry value="2">Right</entry>
@@ -1831,7 +1831,7 @@
     <checkbox nybble="11" title="Z-Order" comment="This will adjust the Z-Order of the platform in relation to other objects." comment2="Any non-zero value for this nybble will place the platform at Z-position -30."/>
     <checkbox nybble="10.4" title="Event Activated" comment="When enabled, the platform will only appear while the Triggering Event ID is activated."/>
     <value nybble="3.2-4.4" title="Triggering Event ID" requirednybble="10.4" idtype="Triggering Event"/>
-    <checkbox nybble="5.4" title="Unknown Flag 5 (1)" comment="Used in Retail: 08-24 A4."/>
+    <checkbox nybble="5.4" title="Move on Touch" comment="Requires only a single player (as opposed to all players) to touch the platform before it starts moving."/>
   </sprite> <!-- #122: Basic Platform - One-Way -->
 
   <sprite id="123" name="(Unused) Swinging Castle Platform" notes="An unused platform that Nintendo ported from NSMB:DS. It requires certain settings to work correctly. It will swing back and forth as though it were attached to a Rotation Controller.">
