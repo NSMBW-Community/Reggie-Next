@@ -1835,11 +1835,11 @@
   </sprite> <!-- #122: Basic Platform - One-Way -->
 
   <sprite id="123" name="(Unused) Swinging Castle Platform" notes="An unused platform that Nintendo ported from NSMB:DS. It requires certain settings to work correctly. It will swing back and forth as though it were attached to a Rotation Controller.">
-    <dependency notes="Speed and Swing Arc must be set to at least 2. Using large sizes is not recommended unless using sizehacks with other sprites."/>
+    <dependency notes="Using large sizes is not recommended unless using sizehacks with other sprites."/>
     <value nybble="9" title="Size" comment="This determines how large the platform is." comment2="A setting of 0 is the same as a setting of 2. 1-15 provide general scaling from 50% to 750% scaling."/>
-    <value nybble="11" title="Speed" comment="This determines how quickly the platform will swing back and forth." comment2="Must be 2 or higher. Specifics are unknown."/>
-    <value nybble="12" title="Swing Arc" comment="This determines how widely the platform will swing." comment2="Must be 2 or higher. Specifics are unknown."/>
-    <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="ASM shows Nybble 10 might affect something."/>
+    <value nybble="11" title="Speed" comment="This determines how quickly the platform will swing back and forth."/>
+    <value nybble="12" title="Swing Arc" comment="This determines how widely the platform will swing."/>
+    <value nybble="10" title="Initial Angle" comment="This determines the initial angle of the platform."/>
   </sprite> <!-- #123: (Unused) Swinging Castle Platform -->
 
   <!-- If a chance arises, test Super Guide with 04-05 setting Flag 6 to 0. -->
