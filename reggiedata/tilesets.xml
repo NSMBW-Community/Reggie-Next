@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <tilesets>
 	<slot num="0" sorted="true">
-		<tileset filename="Pa0_jyotyu" name="Standard" override="Pa0" />
-		<tileset filename="Pa0_jyotyu_chika" name="Underground" override="Pa0" />
-		<tileset filename="Pa0_jyotyu_setsugen" name="Snow" override="Pa0" />
-		<tileset filename="Pa0_jyotyu_yougan" name="Lava" override="Pa0" />
-		<tileset filename="Pa0_jyotyu_staffRoll" name="Credits" override="Pa0" />
+		<tileset filename="Pa0_jyotyu" name="Standard" />
+		<tileset filename="Pa0_jyotyu_chika" name="Underground" />
+		<tileset filename="Pa0_jyotyu_setsugen" name="Snow" />
+		<tileset filename="Pa0_jyotyu_yougan" name="Lava" />
+		<tileset filename="Pa0_jyotyu_staffRoll" name="Credits" />
 	</slot>
 	<slot num="1">
 		<category name="Overworld">

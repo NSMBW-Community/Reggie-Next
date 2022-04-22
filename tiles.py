@@ -1153,7 +1153,9 @@ def ProcessOverrides(idx, name):
 
     tsidx = globals_.OverriddenTilesets
 
-    if name in tsidx["Pa0"]:
+    # Automatically apply the Pa0 override if the tileset name starts with 'Pa0_'
+    # and the tileset is not excluded by setting 'override="no-Pa0"'
+    if name in tsidx["Pa0"] or (name.startswith("Pa0_") and name not in tsidx["no-Pa0"]):
         defs = globals_.ObjectDefinitions[idx]
         t = globals_.Tiles
 

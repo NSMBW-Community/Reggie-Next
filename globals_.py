@@ -45,6 +45,7 @@ ObjectDefinitions = None # 4 tilesets
 ObjectsFrozen = False
 OverriddenTilesets = {
     "Pa0": set(),
+    "no-Pa0": set(),
     "Flowers": set(),
     "Forest Flowers": set(),
     "Lines": set(),
