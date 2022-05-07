@@ -3026,8 +3026,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         b = b""
         for com in globals_.Area.comments:
-            b += struct.pack(">3I", com.objx, com.objy, len(com.text))
-            b += com.text.encode("utf-8")
+            text_data = com.text.encode("utf-8")
+            # A previous version of this format used the third integer to store
+            # the length (number of characters) of the comment string. This
+            # makes reading comments back very hard, as a single character can
+            # consist of multiple points.
+            # So, to indicate we're using the new version, we set a length of
+            # 2 ** 32 - 1, and we add an extra int to store the number of bytes
+            # in the utf-8 encoding of the comment text.
+            b += struct.pack(">4I", com.objx, com.objy, 0xFFFF_FFFF, len(text_data))
+            b += text_data
 
         globals_.Area.Metadata.setBinData('InLevelComments_A%d' % globals_.Area.areanum, b)
 

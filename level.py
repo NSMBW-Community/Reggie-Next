@@ -730,25 +730,32 @@ class Area:
 
         idx = 0
         while idx < len(data):
-            xpos = data[idx] << 24
-            xpos |= data[idx + 1] << 16
-            xpos |= data[idx + 2] << 8
-            xpos |= data[idx + 3]
-            idx += 4
-            ypos = data[idx] << 24
-            ypos |= data[idx + 1] << 16
-            ypos |= data[idx + 2] << 8
-            ypos |= data[idx + 3]
-            idx += 4
-            tlen = data[idx] << 24
-            tlen |= data[idx + 1] << 16
-            tlen |= data[idx + 2] << 8
-            tlen |= data[idx + 3]
-            idx += 4
-            text = ''
-            for char in range(tlen):
-                text += chr(data[idx])
-                idx += 1
+            xpos, ypos, tlen_maybe = struct.unpack_from(">3I", data, idx)
+            if tlen_maybe == 0xFFFF_FFFF:
+                # Updated version - the number of code points is stored in the
+                # next int.
+                tlen = struct.unpack_from(">I", data, idx + 3 * 4)
+                text = data[idx + 4 * 4: idx + 4 * 4 + tlen].decode("utf-8")
+                idx += 3 * 4 + tlen
+            else:
+                # Old version provided for compatibility. Also tries to properly
+                # load non-ascii comments, but that might not work out...
+                tlen = tlen_maybe
+                try:
+                    text = data[idx + 3 * 4: idx + 3 * 4 + tlen].decode("ascii")
+                    idx += 3 * 4 + tlen
+                except UnicodeDecodeError:
+                    # You used non-ascii characters... Try to save the comment
+                    # The xpos is probably not > 2 ** 24, so the next comment
+                    # starts with a null byte. We can use that to find the end
+                    # of our string
+                    null_idx = data.find(b"\0", idx + 3 * 4)
+                    if null_idx == -1:
+                        # This is probably the last comment...
+                        null_idx = len(data)
+
+                    text = data[idx + 3 * 4: null_idx].decode("utf-8")[:tlen]
+                    idx = null_idx
 
             com = CommentItem(xpos, ypos, text)
             com.listitem = QtWidgets.QListWidgetItem()
