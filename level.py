@@ -731,30 +731,32 @@ class Area:
         idx = 0
         while idx < len(data):
             xpos, ypos, tlen_maybe = struct.unpack_from(">3I", data, idx)
+            idx += 3 * 4
+
             if tlen_maybe == 0xFFFF_FFFF:
                 # Updated version - the number of code points is stored in the
                 # next int.
-                tlen = struct.unpack_from(">I", data, idx + 3 * 4)
-                text = data[idx + 4 * 4: idx + 4 * 4 + tlen].decode("utf-8")
-                idx += 3 * 4 + tlen
+                tlen, = struct.unpack_from(">I", data, idx)
+                text = data[idx + 4: idx + 4 + tlen].decode("utf-8")
+                idx += 4 + tlen
             else:
                 # Old version provided for compatibility. Also tries to properly
                 # load non-ascii comments, but that might not work out...
                 tlen = tlen_maybe
                 try:
-                    text = data[idx + 3 * 4: idx + 3 * 4 + tlen].decode("ascii")
-                    idx += 3 * 4 + tlen
+                    text = data[idx: idx + tlen].decode("ascii")
+                    idx += tlen
                 except UnicodeDecodeError:
                     # You used non-ascii characters... Try to save the comment
                     # The xpos is probably not > 2 ** 24, so the next comment
                     # starts with a null byte. We can use that to find the end
                     # of our string
-                    null_idx = data.find(b"\0", idx + 3 * 4)
+                    null_idx = data.find(b"\0", idx)
                     if null_idx == -1:
                         # This is probably the last comment...
                         null_idx = len(data)
 
-                    text = data[idx + 3 * 4: null_idx].decode("utf-8")[:tlen]
+                    text = data[idx: null_idx].decode("utf-8")[:tlen]
                     idx = null_idx
 
             com = CommentItem(xpos, ypos, text)
