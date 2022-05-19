@@ -4901,8 +4901,8 @@
     </list>
   </sprite> <!-- #330: Rope Ladder -->
 
-  <sprite id="331" name="Rotation Controlled Dish Platform" notes="A bowl shaped platform that can be paired with rotation controllers.">
-    <dependency notes="This platform does not appear unless actually paired to a rotation controller.">
+  <sprite id="331" name="Rotation Controlled Dish Platform" notes="A bowl shaped platform that can be paired to rotation controllers.">
+    <dependency notes="This platform can be paired to a rotation controller.">
       <suggested sprite="96"/>
       <suggested sprite="149"/>
     </dependency>
