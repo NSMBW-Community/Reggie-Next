@@ -1639,7 +1639,7 @@
       <entry value="1">Shoots Upwards</entry>
       <entry value="2">Shoots Up and Right</entry>
     </list>
-    <dualbox nybble="12" title1="Moves Towards Player" title2="Moves Direction Player is Facing"/>
+    <dualbox nybble="12.4" title1="Moves Towards Player" title2="Moves Direction Player is Facing"/>
   </sprite> <!-- #111: Blooper -->
 
   <sprite id="112" name="Blooper Nanny with Babies" notes="An underwater enemy that will chase the player with a trail of babies in tow.">
@@ -1650,7 +1650,7 @@
       <entry value="1">Shoots Upwards</entry>
       <entry value="2">Shoots Up and Right</entry>
     </list>
-    <dualbox nybble="12" title1="Moves Towards Player" title2="Moves Direction Player is Facing"/>
+    <dualbox nybble="12.4" title1="Moves Towards Player" title2="Moves Direction Player is Facing"/>
   </sprite> <!-- #112: Blooper Nanny with Babies -->
 
   <sprite id="113" name="Goal Pole and Fortress" notes="The invisible wall does not extend below the Goal Pole.">
