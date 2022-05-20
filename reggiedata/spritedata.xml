@@ -3012,25 +3012,20 @@
 
    <sprite id="204" name="Rolling Object Spawner" notes="A spawner that will create loose Spiked Balls or Rolling Barrels.">
     <dualbox nybble="5.4" title1="Spawns Spiked Balls" title2="Spawns Rolling Barrels" comment="This determines which object the spawner will create."/>
-    <value nybble="3-4" title="Deactivation Event ID" comment="This Triggering Event ID will deactivate the Spiked Ball Spawner." idtype="Triggering Event" requirednybble="5.4" requiredval="0"/> <!-- Appears only for Spiked Balls -->
-    <list nybble="8" title="Speed" comment="This determines the speed of the spawned rolling object." comment2="Stopped rolling objects will still be affected by the terrain they are resting on.">
+    <value nybble="3-4" title="Deactivation Event ID" comment="While this Event ID is triggered, the spawner will not spawn any Spiked Balls." idtype="Triggering Event" requirednybble="5.4" requiredval="0"/> <!-- Appears only for Spiked Balls -->
+    <list nybble="8.3-8.4" title="Speed" comment="This determines the speed of the spawned spike ball." comment2="Stopped spike balls will still be affected by the terrain they are resting on. This corresponds to nybble 12 on sprite [63]." requirednybble="5.4" requiredval="0"> <!-- Appears only for Spiked Balls -->
       <entry value="0">Stopped</entry>
       <entry value="1">Slow</entry>
-      <entry value="2">Fast</entry>
+      <entry value="2">Medium</entry>
+      <entry value="3">Fast</entry>
     </list>
-    <list nybble="9" title="Direction" comment="This determines the direction in which the spawned objects will roll in relation to the spawner." requirednybble="8">
+    <list nybble="9.3-9.4" title="Direction" comment="This determines the direction in which the spawned objects will roll in." comment2="Value 3 is identical to value 2. Higher values than 3 for the Rolling Barrels cause an out-of-bounds read, which probably leads to unexpected results." requirednybble="8">
       <entry value="0">Left</entry>
       <entry value="1">Right</entry>
-      <entry value="2">Toward Mario</entry>
+      <entry value="2">Toward closest player</entry>
     </list> <!-- Appears only if Speed > 0 -->
-    <value nybble="10" title="Number of Objects Spawned" comment="This determines how many of the rolling object will spawn." comment2="If set to 0, it will continuously spawn objects."/>
-    <list nybble="12" title="Grouping Mode" comment="This determines the rate at which the objects will spawn." advancedcomment="Other values need to be tested. Also try to find out if there's a difference between values 3 and 4.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Spawn three items, then long pause</entry>
-      <entry value="2">Spawn three items, then short pause</entry>
-      <entry value="3">Spawn one item, then long pause</entry>
-      <entry value="4">Spawn one item, then long pause</entry>
-    </list>
+    <value nybble="10" title="Maximum Number of Objects" comment="If there are more than this number of rolling objects loaded, the spawner will not spawn any new ones. Note that this includes all instances of the rolling object, even if they were not spawned by this spawner." comment2="If set to 0, it will continuously spawn objects."/>
+    <value nybble="11-12" title="Delay" comment="This is the delay between consecutive objects. The unit is half a second (30 frames), with a default of 3 seconds (180 frames). Note that these are real seconds, not in-game timer ticks" comment2="Note that this is the number of frames when there are no(?) objects of the specified type loaded."/>
   </sprite> <!-- #204: Rolling Object Spawner -->
 
   <sprite id="205" name="Water Ball" noyoshi="True" notes="A floating ball of water that can move around and synchronize its movement with Coins.">
