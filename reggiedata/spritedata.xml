@@ -3336,10 +3336,10 @@
   </sprite> <!-- #217: Fire Chomp Spawn Area -->
 
   <sprite id="218" name="(Unused) Invisible Block" notes="Creates an invisible block. When hit, it will release a coin and move one tile up. The settings seem to be hardcoded, making this sprite almost fully unusable.">
+    <value nybble="9" title="Unknown Value 9" advanced="True" advancedcomment="Setting this and nybble 11 to something nonzero might influence the collision of the block."/>
+    <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="Setting this and nybble 9 to something nonzero might influence the collision of the block."/>
     <value nybble="8" title="Unknown Value 8" advanced="True" advancedcomment="Does nothing."/>
-    <value nybble="9" title="Unknown Value 9" advanced="True" advancedcomment="Does nothing."/>
     <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="Does nothing."/>
-    <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="Does nothing."/>
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="Does nothing."/>
   </sprite> <!-- #218: (Unused) Invisible Block -->
 
