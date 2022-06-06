@@ -4063,14 +4063,13 @@
     <dependency notes="The Y-position of the Bob-Omb has no effect. It will always appear directly above the top edge of the screen."/>
   </sprite> <!-- #269: Parachute Bob-Omb -->
 
-  <!-- Research Unknown Value 11 -->
   <sprite id="270" name="Parachute Bob-Omb Spawn Area" notes="Assigns a spawn area where parachuting Bob-Ombs will fall from the sky while a player is inside it.">
     <value nybble="12" title="Location ID" comment="The parachuting Bob-Ombs will only spawn while a player is in this location." idtype="Location"/>
-    <list nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="Used in Retail: 08-05 A1 as 3, 2, 1.">
-      <entry value="0">???</entry>
-      <entry value="1">???</entry>
-      <entry value="2">???</entry>
-      <entry value="3">???</entry>
+    <list nybble="11" title="Spawn Delay" comment="This determines the number of frames between consecutive bombs that are spawned in the same wave. Every wave consists of 3 Bob-ombs that are spawned at a random x coordinate in the right 3/4ths of the screen. There are 360 frames between consecutive waves.">
+      <entry value="0">60 frames</entry>
+      <entry value="1">90 frames</entry>
+      <entry value="2">120 frames</entry>
+      <entry value="3">150 frames</entry>
     </list>
   </sprite> <!-- #270: Parachute Bob-Omb Spawn Area -->
 
