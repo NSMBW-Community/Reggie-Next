@@ -644,7 +644,7 @@
     <dualbox nybble="10.4" title1="Spawn from the Side" title2="Spawn from the Background" comment="This will determine which animation state is used by the Lakitu when it is first loaded." comment2="Spawning from the Background means that the Lakitu will fly in from the background, facing the camera."/>
     <dualbox nybble="12.3" title1="Throws Spinies" title2="Throws Coins" comment="This determines what the Lakitu will throw." advancedcomment="ASM shows that odd values may differ from even values. No differences observed."/>
     <checkbox nybble="2.4" title="Low Throw Arc" advanced="True" advancedcomment="When enabled, the Lakitu will throw Spinies from a low throwing arc. This behavior looks glitchy when the Lakitu is moving quickly. It also should be noted this option is in a space normally used for events, so it may have a deeper function."/>
-    <value nybble="7" title="Unknown Value 7" advanced="True" advancedcomment="ASM shows Nybble 7 might affect something."/>
+    <value nybble="7" title="Unknown Value 7" advanced="True" advancedcomment="Related to target height when the Lakitu spawns in block form."/>
   </sprite> <!-- #54: Lakitu -->
 
   <sprite id="55" name="(Unused) Rising Tilting Platform" notes="This is a platform imported from New Super Mario Bros. DS.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;It is not recommended for use due to various glitches and a lack of texture.&lt;/font&gt;" advancednotes="Size is 1x7 blocks. The distance covered depends on two factors: Y-position and zone height. See [Movement Distance].">
@@ -4074,7 +4074,7 @@
   </sprite> <!-- #270: Parachute Bob-Omb Spawn Area -->
 
   <sprite id="271" name="Scaredy Rat" notes="A small relatively harmless rodent that will walk across the stage and fall off platform edges. When in a swarm, if one rat is stepped on, the others will quickly run away from the spot the first one was stomped. If they encounter another rat, they will join together in a larger swarm and stop running. If they encounter a [451] Scaredy Rat Despawner, they will despawn.">
-    <list nybble="12" title1="Direction" comment="This determines what the initial movement direction of the rat is." comment2="Values higher than 3 give the same behaviour as 3.">
+    <list nybble="12" title="Direction" comment="This determines what the initial movement direction of the rat is." comment2="Values higher than 3 give the same behaviour as 3.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
       <entry value="2">Random</entry>
@@ -6918,9 +6918,12 @@
     <dependency notes="While it can be placed, it only has two variants, has no collision, and requires Bowser in the level in order to function. It may be indirectly called on during the actual Bowser battle, however.">
       <required sprite="419"/>
     </dependency>
-    <dualbox nybble="12.4" title1="2x1 Block" title2="3x2 Block" comment="This determines the size of the decoration"/>
-    <value nybble="7-8" title="Unknown Value 7-8" advanced="True" advancedcomment="ASM shows Nybble 7-8 might affect something."/>
-    <value nybble="9-10" title="Unknown Value 9-10" advanced="True" advancedcomment="ASM shows Nybble 9-10 might affect something."/>
+    <list nybble="12" title="Size" comment="This determines the size of the decoration" comment2="Higher values crash the game.">
+      <entry value="0">2x1 Block</entry>
+      <entry value="1">3x2 Block</entry>
+    </list>
+    <value nybble="7-8" title="Horizontal 'Jump' speed" comment="ASM shows Nybble 7-8 might affect something."/>
+    <value nybble="9-10" title="Vertical 'Jump' speed" comment="ASM shows Nybble 9-10 might affect something."/>
   </sprite> <!-- #481: (Unused) Final Boss - Rubble Block -->
 
   <sprite id="482" name="Final Boss - Pre-Boss Camera Effects" notes="A set of special elements utilized by the sections of level leading up to the final Bowser Boss fight.">
