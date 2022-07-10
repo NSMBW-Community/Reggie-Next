@@ -6275,7 +6275,7 @@
 
   <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
     <dependency notes="All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
-    <checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="ASM shows Nybble 12 might affect something."/>
+    <checkbox nybble="12.4" title="Small Size" comment="Changes the size of the Toad to be small (1 tile large)."/>
   </sprite> <!-- #422: Toad Needs Help - ? Block -->
 
   <sprite id="423" name="Toad Needs Help - Brick Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
