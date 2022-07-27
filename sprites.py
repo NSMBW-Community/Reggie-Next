@@ -5112,7 +5112,7 @@ class SpriteImage_WaterPiranha(SLib.SpriteImage_Static):  # 263
 
         self.aux.append(SLib.AuxiliaryImage(parent, 38, 30))
         self.aux[0].image = ImageCache['WaterPiranhaBall']
-        self.aux[0].setPos(3, -180)
+        self.aux[0].setPos(0, -165)
         self.aux[0].hover = True
 
     @staticmethod
