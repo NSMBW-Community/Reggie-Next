@@ -875,7 +875,7 @@
     <dependency notes="The Message Box Controller must be included in each Zone for Message Boxes to function correctly.">
       <required sprite="107"/>
     </dependency>
-    <value nybble="9-12" title="Message ID" comment="Messages defined in Messages.bin. Add 256 to the value shown in the Newer Message Editor program. (01/10/18)" idtype="Message"/>
+    <value nybble="9-12" title="Message ID" comment="Messages defined in Messages.bin. Add 256 to the ID of the message in the Newer Messages Editor program." idtype="Message"/>
   </sprite> <!-- 152: Message Box -->
 
   <sprite id="153" name="(Unused) ?-Switch" sizehacks="True" notes="An exact duplicate of the normal ?-Switch.">
