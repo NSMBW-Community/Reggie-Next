@@ -6,7 +6,7 @@ from xml.etree import ElementTree as etree
 from PyQt5 import QtWidgets, QtCore, QtGui
 
 from ui import GetIcon, createVertLine
-from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames
+from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadZoneThemes
 from dirty import setting, setSetting
 
 import globals_
@@ -199,6 +199,7 @@ class ReggieGameDefinition:
             'tilesets': gdf(None, False),
             'tilesetinfo': gdf(None, False),
             'ts1_descriptions': gdf(None, False),
+            'zonethemes': gdf(None, False),
         }
         self.folders = {
             'bga': gdf(None, False),
@@ -667,6 +668,10 @@ def LoadGameDef(name=None, dlg=None):
 
         LoadBgANames(True)
         LoadBgBNames(True)
+        if globals_.gamedef.recursiveFiles('zonethemes', True)[0]:
+            LoadZoneThemes(True)
+        else:
+            globals_.ZoneThemeValues = globals_.trans.stringList('ZonesDlg', 1)
 
         if dlg: dlg.setValue(3)
 

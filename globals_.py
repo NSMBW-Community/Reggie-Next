@@ -88,3 +88,4 @@ generateStringsXML = '-generatestringsxml' in sys.argv
 mainWindow = None
 settings = None
 theme = None
+ZoneThemeValues = None

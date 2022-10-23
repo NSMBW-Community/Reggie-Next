@@ -406,12 +406,27 @@ def LoadBgBNames(reload_=False):
         globals_.BgBNames = sorted(globals_.BgBNames, key=lambda entry: int(entry[0], 16))
 
 
+def LoadZoneThemes(reload_=False):
+    """
+    Ensures that custom zone themes get loaded
+    """
+    if (globals_.ZoneThemeValues is not None) and not reload_: return
+
+    paths, isPatch = globals_.gamedef.recursiveFiles('zonethemes', True)
+
+    globals_.ZoneThemeValues = []
+    for path in paths:
+        f = open(path)
+        raw = [x.strip() for x in f.readlines()]
+        f.close()
+
+        globals_.ZoneThemeValues.extend(raw)
+
 def LoadConstantLists():
     """
     Loads some lists of constants
     """
     globals_.BgScrollRateStrings = globals_.trans.stringList('BGDlg', 1)
-    globals_.ZoneThemeValues = globals_.trans.stringList('ZonesDlg', 1)
     globals_.ZoneTerrainThemeValues = globals_.trans.stringList('ZonesDlg', 2)
 
 
