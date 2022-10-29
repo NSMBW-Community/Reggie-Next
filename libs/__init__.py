@@ -44,9 +44,9 @@ if has_nsmblib:
     def handler(data, width, height, no_alpha):
         if width == 1024 and height == 256:
             if no_alpha:
-                return nsmblib.decodeTilesetNoAlpha(data)
+                rgbdata = nsmblib.decodeTilesetNoAlpha(data)
             else:
-                return nsmblib.decodeTileset(data)
+                rgbdata = nsmblib.decodeTileset(data)
         return _tpl.decodeRGB4A3(data, width, height, no_alpha)
 
     tpl = types.SimpleNamespace()
