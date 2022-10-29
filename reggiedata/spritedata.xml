@@ -851,14 +851,14 @@
      <checkbox nybble="8.4" title="Immune to Fireballs" comment="When enabled, the Piranha Plant cannot be damaged by Fireballs. Ice balls will still freeze it."/>
   </sprite> <!-- #72: Pipe Fire Piranha Plant - Left -->
 
-  <sprite id="73" name="Piranha Plant" notes="The standard Piranha Plant.">
-    <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling."/>
-    <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="Used in Retail: 5-04 A1"/>
+  <sprite id="73" name="Piranha Plant" notes="The standard Piranha Plant. It is affected by gravity.">
+    <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling." comment2="It isn't affected by gravity when upside-down."/>
+    <checkbox nybble="11.4" title="Shift Half-Tile when Falling" comment="When the Piranha Plant falls, it will shift over half a tile to the left." comment2="Used in Retail: 5-04 A1"/>
   </sprite> <!-- #73: Piranha Plant -->
 
-  <sprite id="74" name="Big Piranha Plant" notes="A large version of the standard Piranha Plant. It takes 3 fireballs to kill.">
+  <sprite id="74" name="Big Piranha Plant" notes="A large version of the standard Piranha Plant that takes 3 fireballs to kill. It is affected by gravity.">
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling."/>
-    <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="Used in Retail: 5-04 A1"/>
+    <checkbox nybble="11.4" title="Shift Half-Tile when Falling" comment="When the Piranha Plant falls, it will shift over half a tile to the left." comment2="Used in Retail: 5-04 A1"/>
   </sprite> <!-- #74: Big Piranha Plant -->
 
   <sprite id="75" name="Fire Piranha Plant" notes="The Piranha Plant that shoots fireballs.">
@@ -4326,7 +4326,7 @@
       <entry value="11">1-Up</entry>
       <entry value="14">Key</entry> <!-- Unlisted values contain Mushrooms -->
     </list>
-    <value nybble="5" title="Unknown Value 5" comment="ASM shows Nybble 5 might affect something."/>
+    <value nybble="5" title="Z-Order" comment="Changes the Z-Order of the box. See the 2nd comment for a list of values." comment2="Observed effects:[br]* Value 0: On layer 1, behind layer 0[br]* Value 1: Behind layer 1, above layer 2[br]* Values 2-15: Above layer 1, below layer 0"/>
   </sprite> <!-- #289: Wooden/Metal Box -->
 
   <sprite id="290" name="Incomplete Sprite - 'En_Iwao'" notes="Does nothing.">
