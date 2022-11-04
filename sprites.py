@@ -943,7 +943,7 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
             painter.drawPixmap(0, 0, ImageCache['PipeLeft%s' % color])
 
 
-class SpriteImage_PipeStationary(SpriteImage_Pipe):  # 254, 377, 378, 379, 380, 450
+class SpriteImage_PipeStationary(SpriteImage_Pipe):  # 377, 378, 379, 380, 450
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.length = 4
@@ -4974,9 +4974,9 @@ class SpriteImage_RotControlledCoin(SpriteImage_SpecialCoin):  # 253
     pass
 
 
-class SpriteImage_RotControlledPipe(SpriteImage_PipeStationary):  # 254
+class SpriteImage_RotControlledPipe(SpriteImage_Pipe):  # 254
     def dataChanged(self):
-        self.length = (self.parent.spritedata[4] >> 4) + 2
+        self.length1 = self.length2 = (self.parent.spritedata[4] >> 4) + 2
         dir = self.parent.spritedata[4] & 3
         self.direction = 'URDL'[dir]
         super().dataChanged()
