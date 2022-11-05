@@ -349,13 +349,12 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         crest_rect = QtCore.QRectF()
         rise_rect = QtCore.QRectF()
 
-        # Create the fill_rect (the area where the water should be) by
+        # Create the fill_rect (the area where the liquid or fog should be)
         fill_rect = QtCore.QRectF(zoneRect)
         fill_rect.setTop(self.top * 1.5)
 
-        zoneRect.moveTo(0, 0)
-        fill_rect.moveBottomLeft(zoneRect.bottomLeft())
-        fill_rect &= zoneRect
+        # Translate the fill_rect to be relative to the zone
+        fill_rect.translate(-zoneRect.topLeft())
 
         if fill_rect.isEmpty():
             # the sprite is below the zone; don't draw anything
@@ -366,7 +365,7 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
 
         # Determine where to put the rise image
         if drawRise:
-            rise_rect = QtCore.QRectF(0, fill_rect.top() - 24 * self.risingHeight, zoneRect.width(), 0)
+            rise_rect = fill_rect.translated(0, -24 * self.risingHeight)
 
             # Determine what image to draw for the rise indicator
             rise_img = self.rise
@@ -380,8 +379,8 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
 
         # If all that fits in the zone is some of the crest, determine how much
         if drawCrest:
-            crest_rect = QtCore.QRectF(0, fill_rect.top(), zoneRect.width(), self.crest.height())
-            crest_rect &= zoneRect
+            crest_rect = QtCore.QRectF(fill_rect)
+            crest_rect.setHeight(self.crest.height())
 
             # Adjust the fill rect
             fill_rect.setTop(crest_rect.bottom())
