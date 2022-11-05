@@ -175,3 +175,102 @@ class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153
                 self.yOffset -= 2
 
         super().dataChanged()
+
+
+class SpriteImage_LineBlock(SLib.SpriteImage):  # 219
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.spritebox.shown = False
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 24, 24))
+        self.aux[0].setPos(0, 32)
+
+    def setLineBlockImage(self, block_img):
+        """
+        Sets the correct images for the line block, given the image of a single
+        block.
+        """
+
+        direction = self.parent.spritedata[4] >> 4
+        width_a = self.parent.spritedata[5] & 0xF
+        width_b = self.parent.spritedata[5] >> 4
+        distance = self.parent.spritedata[4] & 0xF
+
+        # maybe flip _a and _b so _a is opaque, _b is not opaque
+        if direction & 1:
+            width_a, width_b = width_b, width_a
+
+        # If any width is set to 0, decrease the opacity of that line and draw
+        # at least 1 block
+        no_width_a = width_a == 0
+        if no_width_a:
+            width_a = 1
+            alpha_a = 0.25
+        else:
+            alpha_a = 1
+
+        no_width_b = width_b == 0
+        if no_width_b:
+            width_b = 1
+            alpha_b = 0.25
+        else:
+            alpha_b = 0.5
+
+        num_blocks = max(width_a, width_b)
+
+        # Create two images, one for each line of blocks.
+        img_a = QtGui.QPixmap(width_a * 24, 24)
+        img_b = QtGui.QPixmap(width_b * 24, 24)
+        img_a.fill(Qt.transparent)
+        img_b.fill(Qt.transparent)
+
+        painter_a = QtGui.QPainter(img_a)
+        painter_b = QtGui.QPainter(img_b)
+        painter_a.setOpacity(alpha_a)
+        painter_b.setOpacity(1)  # The alpha value of this is set later
+
+        if num_blocks == 1:
+            # special-case to avoid dividing by 0
+            painter_a.drawPixmap(0, 0, block_img)
+            painter_b.drawPixmap(0, 0, block_img)
+
+        else:
+            squish_factor_a = (width_a - 1) / (num_blocks - 1)
+            squish_factor_b = (width_b - 1) / (num_blocks - 1)
+
+            for i in range(num_blocks):
+                # The pixmaps are not drawn linearly, so the smaller side has
+                # blocks that are on top of each other, similar to how they are
+                # rendered in-game.
+                if i & 1:
+                    j = num_blocks - 1 - (i // 2)
+                else:
+                    j = i // 2
+
+                painter_a.drawPixmap(QtCore.QPointF(j * 24 * squish_factor_a, 0), block_img)
+                painter_b.drawPixmap(QtCore.QPointF(j * 24 * squish_factor_b, 0), block_img)
+
+        del painter_a, painter_b
+
+        xposA = (1 - width_a) * 8
+        xposB = (width_a - width_b) * 12
+
+        # Use the direction to position the platform that is less opaque
+        if direction & 1:
+            # going down, so the opaque platform should be on top
+            yposB = distance * 24
+        else:
+            # going up, so the opaque platform should be below
+            yposB = -distance * 24
+
+        self.image = img_a
+        self.width = width_a * 16
+        self.xOffset = xposA
+
+        self.aux[0].setSize(img_b.width(), img_b.height(), xposB, yposB)
+        self.aux[0].image = img_b
+        self.aux[0].alpha = alpha_b
+
+    def paint(self, painter):
+        super().paint(painter)
+        painter.drawPixmap(0, 0, self.image)
