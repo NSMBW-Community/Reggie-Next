@@ -669,7 +669,7 @@
     <dependency notes="The [281] Rising Tilt Controlled Girder Controller is required to be placed in the Zone for this platform to function. The platform must be placed below the Controller.">
        <required sprite="281"/> <!-- Requires Controller -->
     </dependency>
-    <checkbox nybble="5.4" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites."/>
+    <checkbox nybble="5.4" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites." advancedcomment="Exact values are 80.0 unchecked, 450.0 checked."/>
     <checkbox nybble="12.4" title="Loads at Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point."/>
     <checkbox nybble="10.4" title="Unknown Flag 10 (1)" comment="Might affect the platform's direction properties." advanced="True" advancedcomment="ASM shows Nybble 10 might affect something."/>
     <list nybble="11.3-11.4" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something.">
