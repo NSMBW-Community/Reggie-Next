@@ -2296,22 +2296,22 @@
       <entry value="14">315.0°</entry>
       <entry value="15">337.5°</entry>
     </list>
-    <list nybble="7.2-7.4" title="Rotation Speed" comment="Coins and Blocks rotate faster than other sprites.">
-      <entry value="4">Very Slow</entry>
-      <entry value="7">Slow</entry>
-      <entry value="0">Slow+</entry>
-      <entry value="1">Medium</entry>
-      <entry value="2">Medium+</entry>
-      <entry value="3">Fast</entry>
-      <entry value="5">Faster</entry>
-      <entry value="6">Very Fast</entry>
+    <list nybble="7.2-7.4" title="Rotation Speed" comment="Coins and Blocks rotate faster than other sprites." comment2="The angular velocity is shown in parentheses, where 1 corresponds to 1/1024th pi radians per frame. That is, with speed 'Very Slow', a full rotation takes 2048 frames.">
+      <entry value="4">(1) Very Slow</entry>
+      <entry value="0">(2) Slow</entry>
+      <entry value="7">(2) Slow</entry>
+      <entry value="1">(4) Medium</entry>
+      <entry value="2">(6) Medium-Fast</entry>
+      <entry value="3">(8) Fast</entry>
+      <entry value="5">(16) Faster</entry>
+      <entry value="6">(32) Very Fast</entry>
     </list>
     <dualbox nybble="9.4" title1="Spins Counter-Clockwise" title2="Spins Clockwise"/>
-    <list nybble="8.3-8.4" title="Rotation Mode" advancedcomment="A note to ASM hackers, there may be a difference between values 2 and 3. Feel free to investigate further.">
+    <list nybble="8.3-8.4" title="Rotation Mode">
       <entry value="0">Stops and Returns</entry>
       <entry value="1">Constant Spinning</entry>
       <entry value="2">Spins While Active</entry>
-      <!--entry value="3">Spins While Active</entry-->
+      <!--entry value="3">Spins While Active</entry> <- Identical to 2 -->
     </list>
     <value nybble="3-4" title="Triggering Event ID" comment="When the Triggering Event is activated, the controller will rotate all associated objects according to the mode. Deactivation effects will also differ depending on the mode. See the ! Comment." comment2="Constant Spinning: When activated, the items will decelerate to a stop and accelerate in the opposite direction.&lt;br&gt;When deactivated, it will reverse back to its set movement in a similar fashion.&lt;br&gt;&lt;br&gt;Stops and Returns: When activated, the items will rotate the Rotation Distance and stop. When deactivated, the items will immediately start to rotate back to their starting positions, even if the initial movement is not completed.&lt;br&gt;&lt;br&gt;Spins While Active:&lt;br&gt;When activated, the items will rotate continuously. When deactivated, the items will stop at the next multiple of its set Rotation Distance." idtype="Triggering Event"/>
     <list nybble="6" title="Event Triggered - Rotation Distance" comment="This determines the distance the rotation controller will spin the items before stopping, when set to the [Stops and Returns] or [Spins While Active] Rotation Modes." requirednybble="8.4" requiredval="0">
