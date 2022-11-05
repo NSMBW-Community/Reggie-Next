@@ -16,7 +16,7 @@ class BGDialog(QtWidgets.QDialog):
         """
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle(globals_.trans.string('BGDlg', 0))
-        self.setWindowIcon(GetIcon('backgrounds'))
+        self.setWindowIcon(GetIcon('background'))
 
         self.tabWidget = QtWidgets.QTabWidget()
 
