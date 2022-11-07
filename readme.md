@@ -16,7 +16,7 @@ This release contains many improvements, in addition to code imports from the fo
  * "Reggie Updated" by RoadrunnerWMC
 
 Source code can be found at:
-https://github.com/CLF78/Reggie-Next/
+https://github.com/NSMBW-Community/Reggie-Next/
 
 ----------------------------------------------------------------
 
