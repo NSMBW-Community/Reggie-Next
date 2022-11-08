@@ -140,7 +140,7 @@ class ReggieTranslation:
                     '0.875x',
                     '1x',
                     'None',
-                    '1.25x',
+                    '1.2x',
                     '1.5x',
                     '2x',
                     '4x',
