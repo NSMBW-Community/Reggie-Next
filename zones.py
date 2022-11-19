@@ -165,13 +165,13 @@ class ZoneTab(QtWidgets.QWidget):
         self.snapButton16.clicked.connect(lambda: self.HandleSnapTo16x16Grid(z))
 
         self.Zone_width = QtWidgets.QSpinBox()
-        self.Zone_width.setRange(300, 65535)
+        self.Zone_width.setRange(204, 65535)
         self.Zone_width.setToolTip(globals_.trans.string('ZonesDlg', 14))
         self.Zone_width.setValue(z.width)
         self.Zone_width.valueChanged.connect(self.PresetDeselected)
 
         self.Zone_height = QtWidgets.QSpinBox()
-        self.Zone_height.setRange(200, 65535)
+        self.Zone_height.setRange(112, 65535)
         self.Zone_height.setToolTip(globals_.trans.string('ZonesDlg', 16))
         self.Zone_height.setValue(z.height)
         self.Zone_height.valueChanged.connect(self.PresetDeselected)
@@ -186,7 +186,7 @@ class ZoneTab(QtWidgets.QWidget):
         # 704 x 384 (used multiple times; therefore it's important)
         # 944 x 448 (used in 9-3 zone 3)
         self.Zone_presets_values = (
-            '416x224', '448x224', '512x272', '560x304', '608x320', '704x384', '944x448'
+            '204x112', '308x168', '408x224', '468x256', '496x272', '556x304', '584x320', '700x384', '816x448'
         )
 
         self.Zone_presets = QtWidgets.QComboBox()

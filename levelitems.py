@@ -1549,8 +1549,8 @@ class ZoneItem(LevelEditorItem):
 
             MIN_X = 16
             MIN_Y = 16
-            MIN_W = 300
-            MIN_H = 200
+            MIN_W = 204
+            MIN_H = 112
 
             if self.dragcorner == 1: # TL
                 # rect from (x2, y2) to clicked

@@ -1097,8 +1097,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                                 check.width -= 1
                             else:
                                 check.height -= 1
-                            if check.width < 300: check.width = 300
-                            if check.height < 200: check.height = 200
+                            if check.width < 204: check.width = 204
+                            if check.height < 112: check.height = 112
 
                             check.UpdateRects()
                             check.setPos(int(check.objx * 1.5), int(check.objy * 1.5))
