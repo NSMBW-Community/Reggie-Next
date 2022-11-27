@@ -2210,7 +2210,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         return spr
 
-    def CreateZone(self, x, y, width = 448, height = 224, id_ = None, add_to_scene = True):
+    def CreateZone(self, x, y, width = 408, height = 224, id_ = None, add_to_scene = True):
         """
         Creates and returns a new zone and makes sure it's added to the right
         lists if 'add_to_scene' is set.
