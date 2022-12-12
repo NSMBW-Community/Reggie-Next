@@ -29,9 +29,8 @@ class ReggieTranslation:
         self.InitAsEnglish()
 
         # Try to load it from an XML
-        try:
-            self.InitFromXML(name)
-        except Exception:
+        ok = self.InitFromXML(name)
+        if not ok:
             self.InitAsEnglish()
 
     def InitAsEnglish(self):
@@ -919,27 +918,32 @@ class ReggieTranslation:
 
     def InitFromXML(self, name):
         """
-        Parses the translation XML
+        Parses the translation XML - returns True if successful, False if not.
         """
         if name in ('', None, 'None'): return
         name = str(name)
         MaxVer = 1.0
 
-        # Parse the file (errors are handled by __init__())
+        # Parse the file
         path = 'reggiedata/translations/' + name + '/main.xml'
-        tree = ElementTree.parse(path)
+
+        try:
+            tree = ElementTree.parse(path)
+        except FileNotFoundError:
+            return False
+
         root = tree.getroot()
 
         # Add attributes
         # Name
-        if 'name' not in root.attrib: raise Exception
+        if 'name' not in root.attrib: return False
         self.name = root.attrib['name']
         # Version
-        if 'version' not in root.attrib: raise Exception
+        if 'version' not in root.attrib: return False
         self.version = float(root.attrib['version'])
-        if self.version > MaxVer: raise Exception
+        if self.version > MaxVer: return False
         # Translator
-        if 'translator' not in root.attrib: raise Exception
+        if 'translator' not in root.attrib: return False
         self.translator = root.attrib['translator']
 
         # Parse the nodes
@@ -963,7 +967,7 @@ class ReggieTranslation:
         for index in files: self.files[index] = files[index]
 
         # Check for a strings node
-        if not strings: raise Exception
+        if not strings: return False
 
         # Parse the strings
         tree = ElementTree.parse(strings)
@@ -982,14 +986,14 @@ class ReggieTranslation:
                 if not hasattr(string, 'attrib'): continue
                 strValue = None
                 if string.tag.lower() == 'string':
-                    # String node; this is easy
-                    strValue = string[0]
+                    # String node
+                    strValue = string.text
                 elif string.tag.lower() == 'stringlist':
                     # Not as easy, but not hard
                     strValue = []
                     for entry in string:
                         if entry.tag.lower() == 'entry':
-                            strValue.append(entry[0])
+                            strValue.append(entry.text)
                     strValue = tuple(strValue)
 
                 # Add this string to sectionStrings
@@ -1004,6 +1008,8 @@ class ReggieTranslation:
             if index not in self.strings: self.strings[index] = {}
             for index2 in strings[index]:
                 self.strings[index][index2] = strings[index][index2]
+
+        return True
 
     def string(self, *args):
         """
