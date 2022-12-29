@@ -264,7 +264,7 @@ class ReggieTheme:
         """
         Loads a style.qss file
         """
-        with open(file) as inf:
+        with open(file, 'r', encoding='utf-8') as inf:
             style = inf.read()
 
         self.styleSheet = style

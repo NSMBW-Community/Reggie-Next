@@ -332,9 +332,8 @@ def LoadObjDescriptions(reload_=False):
 
     globals_.ObjDesc = {}
     for path in paths:
-        f = open(path)
-        raw = [x.strip() for x in f.readlines()]
-        f.close()
+        with open(path, 'r', encoding='utf-8') as f:
+            raw = [x.strip() for x in f.readlines()]
 
         for line in raw:
             w = line.split('=')
@@ -356,9 +355,8 @@ def LoadBgANames(reload_=False):
 
     globals_.BgANames = []
     for path in paths:
-        f = open(path)
-        raw = [x.strip() for x in f.readlines()]
-        f.close()
+        with open(path, 'r', encoding='utf-8') as f:
+            raw = [x.strip() for x in f.readlines()]
 
         for line in raw:
             w = line.split('=')
@@ -388,9 +386,8 @@ def LoadBgBNames(reload_=False):
 
     globals_.BgBNames = []
     for path in paths:
-        f = open(path)
-        raw = [x.strip() for x in f.readlines()]
-        f.close()
+        with open(path, 'r', encoding='utf-8') as f:
+            raw = [x.strip() for x in f.readlines()]
 
         for line in raw:
             w = line.split('=')
@@ -416,9 +413,8 @@ def LoadZoneThemes(reload_=False):
 
     globals_.ZoneThemeValues = []
     for path in paths:
-        f = open(path)
-        raw = [x.strip() for x in f.readlines()]
-        f.close()
+        with open(path, 'r', encoding='utf-8') as f:
+            raw = [x.strip() for x in f.readlines()]
 
         globals_.ZoneThemeValues.extend(raw)
 
@@ -748,7 +744,7 @@ def LoadSpriteData():
         # gamedef is loaded, because spritenames.txt
         # is a file only ever used by custom gamedefs.
         if (snpath is not None) and (snpath.path is not None):
-            with open(snpath.path) as snfile:
+            with open(snpath.path, 'r', encoding='utf-8') as snfile:
                 data = snfile.read()
 
             # Split the data
@@ -843,7 +839,7 @@ def LoadSpriteListData(reload_=False):
 
     globals_.SpriteListData = [[] for _ in range(24)]
     for path in paths:
-        with open(path) as f:
+        with open(path, 'r', encoding='utf-8') as f:
             data = f.read()
 
         split = data.replace('\n', '').split(';')
@@ -874,7 +870,7 @@ def LoadEntranceNames(reload_=False):
 
     names = collections.OrderedDict()
     for path in paths:
-        with open(path, 'r') as f:
+        with open(path, 'r', encoding='utf-8') as f:
             for line in f.readlines():
                 id_, name = line.strip().split(':')
                 names[int(id_)] = name

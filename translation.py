@@ -1029,7 +1029,7 @@ class ReggieTranslation:
             else:
                 mode = 'a'
 
-            with open('ReggieErrors.txt', mode) as f:
+            with open('ReggieErrors.txt', mode, encoding='utf-8') as f:
                 f.write(text)
 
             return text

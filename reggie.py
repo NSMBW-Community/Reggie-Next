@@ -132,7 +132,7 @@ def _excepthook(*exc_info):
     globals_.ErrMsg += msg
 
     try:
-        with open(logFile, "w") as f:
+        with open(logFile, "w", encoding="utf-8") as f:
             f.write(globals_.ErrMsg)
 
     except IOError:
@@ -1444,7 +1444,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             while idx < len(data):
                 event_id, str_len = struct.unpack_from(">2I", data, idx)
-                eventTexts[event_id] = data[idx + 8:idx + 8 + str_len].decode()
+                eventTexts[event_id] = data[idx + 8:idx + 8 + str_len].decode('utf-8')
 
                 idx += 8 + str_len
 
@@ -1491,7 +1491,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             event_note = str(self.eventChooserItems[i].text(1))
             if not event_note: continue
 
-            encoded = event_note.encode()
+            encoded = event_note.encode('utf-8')
 
             # Add the event id, note length and note to the data.
             data += struct.pack(">2I", i, len(encoded))
@@ -4337,7 +4337,7 @@ def main():
     import subprocess
 
     try:
-        commit_id = subprocess.check_output(["git", "describe", "--always"], stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL).decode().strip()
+        commit_id = subprocess.check_output(["git", "describe", "--always"], stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL).decode('utf-8').strip()
         globals_.ReggieVersionShort += "-" + commit_id
     except (FileNotFoundError, subprocess.CalledProcessError):
         pass

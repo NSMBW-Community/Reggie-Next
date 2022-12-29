@@ -277,7 +277,7 @@ class ReggieGameDefinition:
 
         # Load sprites.py if provided
         if 'sprites' in self.files:
-            with open(self.files['sprites'].path, 'r') as f:
+            with open(self.files['sprites'].path, 'r', encoding='utf-8') as f:
                 filedata = f.read()
 
             # https://stackoverflow.com/a/53080237 with modifications

@@ -750,9 +750,9 @@ def getMusic():
 
     songs = []
     for path in paths:
-        musicfile = open(path)
-        data = musicfile.read()
-        musicfile.close()
+        with open(path, 'r', encoding='utf-8') as musicfile:
+            data = musicfile.read()
+
         del musicfile
 
         # Split the data

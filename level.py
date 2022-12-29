@@ -1205,7 +1205,7 @@ class Metadata:
         """
         data = self.otherData(key, 1)
         if data is None: return
-        return data.decode()
+        return data.decode('utf-8')
 
     def otherData(self, key, type):
         """
@@ -1225,7 +1225,7 @@ class Metadata:
         """
         Sets string data, overwriting any existing string data with that key
         """
-        self.setOtherData(key, 1, value.encode("utf-8"))
+        self.setOtherData(key, 1, value.encode('utf-8'))
 
     def setOtherData(self, key, type, value):
         """

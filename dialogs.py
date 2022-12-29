@@ -24,7 +24,7 @@ class AboutDialog(QtWidgets.QDialog):
 
         # Open the readme file
         readme = ""
-        with open('readme.md', 'r') as f:
+        with open('readme.md', 'r', encoding='utf-8') as f:
             readme = f.read()
 
         # Logo
