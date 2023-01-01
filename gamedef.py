@@ -294,7 +294,7 @@ class ReggieGameDefinition:
         """
         # Name will be of the format '0000.png'
         fallback = os.path.join('reggiedata', 'bg' + layer, name)
-        filename = 'bg%s/%s' % (layer, name)
+        filename = os.path.join('bg' + layer, name)
 
         # See if it was defined specifically
         if filename in self.files:

@@ -925,7 +925,7 @@ class ReggieTranslation:
         MaxVer = 1.0
 
         # Parse the file
-        path = 'reggiedata/translations/' + name + '/main.xml'
+        path = os.path.join('reggiedata', 'translations', name, 'main.xml')
 
         try:
             tree = ElementTree.parse(path)
@@ -949,16 +949,16 @@ class ReggieTranslation:
         # Parse the nodes
         files = {}
         strings = False
-        addpath = 'reggiedata/translations/' + name + '/'
+        addpath = os.path.join('reggiedata', 'translations', name)
         for node in root:
             if node.tag.lower() == 'file':
                 # It's a file node
                 name = node.attrib['name']
-                path = addpath + node.attrib['path']
+                path = os.path.join(addpath, node.attrib['path'])
                 files[name] = path
             elif node.tag.lower() == 'strings':
                 # It's a strings node
-                strings = addpath + node.attrib['path']
+                strings = os.path.join(addpath, node.attrib['path'])
 
         # Get rid of the XML stuff
         del tree, root
