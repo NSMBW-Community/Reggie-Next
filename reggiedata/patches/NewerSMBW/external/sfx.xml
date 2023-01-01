@@ -1,11 +1,11 @@
 <!--
-    All NSMBW Sound Effects for sprite 332 Sound and Effect Spawner. This list needs to be updated, but at least it's not in the
-    spritedata xml anymore.
-	
+	All NSMBW Sound Effects for sprite 332 Sound and Effect Spawner. This list needs to be updated, but at least it's not in the
+	spritedata xml anymore.
+
 	Properties:
 		- RAW Name	 		RAW Name of the sound effect
 	Future:
-		- Loops    			Does it loop properly
+		- Loops				Does it loop properly
 		- Description		A description of the sfx
 		- Problems			Any problems when spawning the sfx
 

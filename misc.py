@@ -146,6 +146,7 @@ def areValidGamePaths(stage_check='ug', texture_check='ug'):
 
     return False
 
+
 def LoadLevelNames():
     """
     Ensures that the level name info is loaded
@@ -418,6 +419,7 @@ def LoadZoneThemes(reload_=False):
 
         globals_.ZoneThemeValues.extend(raw)
 
+
 def LoadConstantLists():
     """
     Loads some lists of constants
@@ -643,6 +645,7 @@ class SpriteDefinition:
             bit_ranges.append((a, b + 1))
 
         return bit_ranges, 1 << bit_length
+
 
 def LoadSpriteData():
     """
