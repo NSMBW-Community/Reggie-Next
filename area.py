@@ -20,8 +20,10 @@ class AreaOptionsDialog(QtWidgets.QDialog):
         self.tabWidget = QtWidgets.QTabWidget()
         self.LoadingTab = LoadingTab()
         self.TilesetsTab = TilesetsTab()
+        self.LoadedSpritesTab = LoadedSpritesTab()
         self.tabWidget.addTab(self.TilesetsTab, globals_.trans.string('AreaDlg', 1))
         self.tabWidget.addTab(self.LoadingTab, globals_.trans.string('AreaDlg', 2))
+        self.tabWidget.addTab(self.LoadedSpritesTab, "Loaded Sprites")
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
 
@@ -280,3 +282,136 @@ class TilesetsTab(QtWidgets.QWidget):
         for i in range(4):
             result.append(str(self.lineEdits[i].text()))
         return tuple(result)
+
+
+class LoadedSpritesTab(QtWidgets.QWidget):
+    """
+    Tab widget that represents the list of loaded sprites.
+    """
+
+    class StaticModel(QtCore.QStringListModel):
+        """
+        Unselectable, uneditable string list model
+        """
+
+        def flags(self, index):
+            return QtCore.Qt.ItemNeverHasChildren
+
+    def __init__(self):
+        QtWidgets.QWidget.__init__(self)
+
+        sprites_layout = QtWidgets.QGridLayout()
+
+        self.custom_model = QtCore.QStringListModel(self.get_extra_sprite_names())
+
+        self.custom_list = QtWidgets.QListView()
+        self.custom_list.setModel(self.custom_model)
+        self.custom_list.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        model = self.custom_list.selectionModel()
+        model.selectionChanged.connect(
+            lambda *_: self.remove_button.setEnabled(bool(len(model.selectedIndexes())))
+        )
+
+        self.sprite_input = QtWidgets.QLineEdit()
+        self.sprite_input.textChanged.connect(self.handle_input_change)
+
+        self.add_button = QtWidgets.QPushButton("Add Sprite")
+        self.add_button.clicked.connect(self.handle_add_sprite)
+        self.add_button.setEnabled(False)
+
+        self.remove_button = QtWidgets.QPushButton("Remove Selected Sprite")
+        self.remove_button.clicked.connect(self.handle_remove_sprite)
+        self.remove_button.setEnabled(False)
+
+        custom_layout = QtWidgets.QGridLayout()
+        custom_layout.addWidget(self.sprite_input, 0, 0)
+        custom_layout.addWidget(self.add_button, 0, 1)
+        custom_layout.addWidget(self.remove_button, 1, 0, 1, 2)
+        custom_layout.addWidget(self.custom_list, 2, 0, 1, 2)
+
+        self.auto_model = LoadedSpritesTab.StaticModel(self.get_all_sprite_names())
+
+        auto_list = QtWidgets.QListView()
+        auto_list.setModel(self.auto_model)
+        auto_list.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+
+        sprites_layout.addWidget(QtWidgets.QLabel("Default"), 0, 0)
+        sprites_layout.addWidget(QtWidgets.QLabel("Custom"), 0, 1)
+        sprites_layout.addWidget(auto_list, 1, 0)
+        sprites_layout.addLayout(custom_layout, 1, 1)
+
+        explanation = QtWidgets.QLabel("On the left is a list of sprites already present in the level. On the right, you can add more sprites you'd like to load.")
+        explanation.setWordWrap(True)
+
+        layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(explanation)
+        layout.addLayout(sprites_layout)
+        self.setLayout(layout)
+
+    def get_all_sprite_names(self):
+        """
+        Returns a list of strings with the names of all sprites in the current
+        area.
+        """
+
+        if globals_.Area is None:
+            return []
+
+        used_ids = set(sprite.type for sprite in globals_.Area.sprites)
+
+        return self._stringify_sprites(sorted(used_ids))
+
+    def get_extra_sprite_names(self):
+        """
+        Returns a list of strings with the names of all sprites that are forced
+        to load in the current area.
+        """
+        if globals_.Area is None:
+            return []
+
+        return self._stringify_sprites(sorted(globals_.Area.force_loaded_sprites))
+
+    def _stringify_sprites(self, list_of_sprites):
+        """
+        Turns a list of sprite ids into a list of strings representing the
+        sprites.
+
+        The precise format of this string is relied on by the code that reads
+        and saves the entered values in reggie.py. This code is pretty hacky,
+        but at least it works.
+        """
+        return ["[%d] %s" % (x, globals_.Sprites[x].name if 0 <= x < globals_.NumSprites else "UNKNOWN") for x in list_of_sprites]
+
+    def handle_add_sprite(self, _):
+        """
+        Add a sprite to the list of sprites whose resources are forced to load.
+        """
+        text = self.sprite_input.text()
+
+        try:
+            sprite_id = int(text) & 0xFFFF  # Restrict value to unsigned short
+        except ValueError:
+            return
+
+        # Add a row to the end that represents the entered sprite.
+        if not self.custom_model.insertRow(self.custom_model.rowCount()):
+            return
+
+        index = self.custom_model.index(self.custom_model.rowCount() - 1, 0)
+        self.custom_model.setData(index, "[%d] %s" % (sprite_id, globals_.Sprites[sprite_id].name if 0 <= sprite_id < globals_.NumSprites else "UNKNOWN"))
+
+        # Clear the input so the user can enter a new sprite number
+        self.sprite_input.clear()
+
+    def handle_remove_sprite(self, _):
+        """
+        Remove the currently selected sprite.
+        """
+        selected_index = self.custom_list.currentIndex()
+        self.custom_model.removeRow(selected_index.row())
+
+    def handle_input_change(self, new_text):
+        """
+        Enable "add" button when the text is changed to something not empty.
+        """
+        self.add_button.setEnabled(bool(new_text))

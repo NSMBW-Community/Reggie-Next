@@ -127,11 +127,9 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         super(LevelViewWidget, self).__init__(scene, parent)
 
         self.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-        # self.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(119,136,153)))
         self.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
-        # self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
+        self.setRenderHint(QtGui.QPainter.Antialiasing)
         self.setMouseTracking(True)
-        # self.setOptimizationFlags(QtWidgets.QGraphicsView.IndirectPainting)
         self.YScrollBar = QtWidgets.QScrollBar(QtCore.Qt.Vertical, parent)
         self.XScrollBar = QtWidgets.QScrollBar(QtCore.Qt.Horizontal, parent)
         self.setVerticalScrollBar(self.YScrollBar)
@@ -145,6 +143,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
         self.currentobj = None
         self.lastCursorPosForMidButtonScroll = None
+        self.cursorEdgeScrollTimer = None
 
     def mousePressEvent(self, event):
         """
@@ -166,12 +165,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             self.xButtonScrollTimer.start(100)
 
         elif event.button() == QtCore.Qt.RightButton:
-            if 0 <= globals_.CurrentPaintType < 4 and globals_.CurrentObject != -1:
-                # paint an object
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
+            clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
+            if clicked.x() < 0: clicked.setX(0)
+            if clicked.y() < 0: clicked.setY(0)
 
+            if 0 <= globals_.CurrentPaintType < 4 and globals_.CurrentObject != -1 and [globals_.Layer0Shown, globals_.Layer1Shown, globals_.Layer2Shown][globals_.CurrentLayer]:
+                # paint an object
                 clickedx = int(clicked.x() / 24)
                 clickedy = int(clicked.y() / 24)
 
@@ -185,25 +184,13 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
 
-            elif globals_.CurrentPaintType == 4 and globals_.CurrentSprite >= 0:
-                # paint a sprite
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
-
+            elif globals_.CurrentPaintType == 4 and globals_.CurrentSprite >= 0 and globals_.SpritesShown:
                 # paint a sprite
                 clickedx = int((clicked.x() - 12) / 12) * 8
                 clickedy = int((clicked.y() - 12) / 12) * 8
 
-                data = globals_.mainWindow.defaultDataEditor.data
-                spr = SpriteItem(globals_.CurrentSprite, clickedx, clickedy, data)
-
-                mw = globals_.mainWindow
-                spr.positionChanged = mw.HandleSprPosChange
-                mw.scene.addItem(spr)
-
-                mw.spriteList.addSprite(spr)
-                globals_.Area.sprites.append(spr)
+                spr = globals_.mainWindow.CreateSprite(clickedx, clickedy, globals_.CurrentSprite)
+                spr.UpdateDynamicSizing()
 
                 self.dragstamp = False
                 self.currentobj = spr
@@ -212,16 +199,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                 self.scene().update()
 
-                spr.UpdateDynamicSizing()
-                spr.UpdateListItem()
-
-                SetDirty()
-
             elif globals_.CurrentPaintType == 5:
                 # paint an entrance
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
                 clickedx = int((clicked.x() - 12) / 1.5)
                 clickedy = int((clicked.y() - 12) / 1.5)
 
@@ -232,118 +211,69 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
 
-            elif globals_.CurrentPaintType == 6:
+            elif globals_.CurrentPaintType == 6 and globals_.PathsShown:
                 # paint a path node
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
                 clickedx = int((clicked.x() - 12) / 1.5)
                 clickedy = int((clicked.y() - 12) / 1.5)
-                mw = globals_.mainWindow
-                plist = mw.pathList
+                plist = globals_.mainWindow.pathList
                 selectedpn = None if not plist.selectedItems() else plist.selectedItems()[0]
 
                 if selectedpn is None:
                     getids = [False for _ in range(256)]
                     getids[0] = True
 
-                    for pathdatax in globals_.Area.pathdata:
-                        getids[int(pathdatax['id'])] = True
+                    for path in globals_.Area.paths:
+                        getids[path._id] = True
 
                     if False not in getids:
                         # There already are 255 paths in this area. That should
                         # be enough. Also, the game doesn't allow path ids greater
                         # than 255 anyway, so just don't let the user create the
                         # path.
-                        globals_.mainWindow.levelOverview.update()
                         return
 
                     newpathid = getids.index(False)
-                    newpathdata = {
-                        'id': newpathid,
-                        'nodes': [{'x': clickedx, 'y': clickedy, 'speed': 0.5, 'accel': 0.00498, 'delay': 0}],
-                        'loops': False,
-                    }
-                    globals_.Area.pathdata.append(newpathdata)
-                    newnode = PathItem(clickedx, clickedy, newpathdata, newpathdata['nodes'][0])
-                    newnode.positionChanged = mw.HandlePathPosChange
 
-                    mw.scene.addItem(newnode)
+                    from levelitems import Path
 
-                    peline = PathEditorLineItem(newpathdata['nodes'])
-                    newpathdata['peline'] = peline
-                    mw.scene.addItem(peline)
+                    path = Path(newpathid, globals_.mainWindow.scene)
+                    new_node = path.add_node(clickedx, clickedy)
 
-                    globals_.Area.pathdata.sort(key=lambda path: int(path['id']))
+                    new_node.listitem.setSelected(True)
+                    new_node.setSelected(True)
+                    new_node.positionChanged = globals_.mainWindow.HandlePathPosChange
 
-                    newnode.listitem = ListWidgetItem_SortsByOther(newnode)
-                    plist.clear()
-                    for fpath in globals_.Area.pathdata:
-                        for fpnode in fpath['nodes']:
-                            fpnode['graphicsitem'].listitem = ListWidgetItem_SortsByOther(fpnode['graphicsitem'],
-                                                                                          fpnode[
-                                                                                              'graphicsitem'].ListString())
-                            plist.addItem(fpnode['graphicsitem'].listitem)
-                            fpnode['graphicsitem'].updateId()
-                    newnode.listitem.setSelected(True)
-                    globals_.Area.paths.append(newnode)
+                    globals_.Area.paths.append(path)
 
-                    self.dragstamp = False
-                    self.currentobj = newnode
-                    self.dragstartx = clickedx
-                    self.dragstarty = clickedy
-
-                    newnode.UpdateListItem()
-
-                    SetDirty()
                 else:
-                    pathd = None
-                    for pathnode in globals_.Area.paths:
-                        if pathnode.listitem == selectedpn:
-                            pathd = pathnode.pathinfo
+                    path_node = selectedpn.reference
 
-                    if not pathd: return  # shouldn't happen
+                    path = path_node.path
 
-                    newnodedata = {'x': clickedx, 'y': clickedy, 'speed': 0.5, 'accel': 0.00498, 'delay': 0}
-                    pathd['nodes'].append(newnodedata)
+                    if globals_.InsertPathNode:
+                        idx = path.get_index(path_node) + 1
+                    else:
+                        idx = len(path)
 
-                    newnode = PathItem(clickedx, clickedy, pathd, newnodedata)
+                    new_node = path.add_node(clickedx, clickedy, index=idx)
+                    new_node.positionChanged = globals_.mainWindow.HandlePathPosChange
 
-                    newnode.positionChanged = mw.HandlePathPosChange
-                    mw.scene.addItem(newnode)
+                    # The path length changed, so update the editor's maximums
+                    globals_.mainWindow.pathEditor.UpdatePathLength()
 
-                    newnode.listitem = ListWidgetItem_SortsByOther(newnode)
-                    plist.clear()
-                    for fpath in globals_.Area.pathdata:
-                        for fpnode in fpath['nodes']:
-                            fpnode['graphicsitem'].listitem = QtWidgets.QListWidgetItem(
-                                fpnode['graphicsitem'].ListString())
-                            plist.addItem(fpnode['graphicsitem'].listitem)
-                            fpnode['graphicsitem'].updateId()
-                    newnode.listitem.setSelected(True)
+                self.dragstamp = False
+                self.currentobj = new_node
+                self.dragstartx = clickedx
+                self.dragstarty = clickedy
 
-                    globals_.Area.paths.append(newnode)
-                    pathd['peline'].nodePosChanged()
-                    self.dragstamp = False
-                    self.currentobj = newnode
-                    self.dragstartx = clickedx
-                    self.dragstarty = clickedy
+                SetDirty()
 
-                    newnode.UpdateListItem()
-
-                    SetDirty()
-
-            elif globals_.CurrentPaintType == 7:
+            elif globals_.CurrentPaintType == 7 and globals_.LocationsShown:
                 # paint a location
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
-
                 clickedx = int(clicked.x() / 1.5)
                 clickedy = int(clicked.y() / 1.5)
 
                 loc = globals_.mainWindow.CreateLocation(clickedx, clickedy)
-                loc.setSelected(True)
 
                 self.dragstamp = False
                 self.currentobj = loc
@@ -352,9 +282,6 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             elif globals_.CurrentPaintType == 8:
                 # paint a stamp
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
 
                 clickedx = int(clicked.x() / 1.5)
                 clickedy = int(clicked.y() / 1.5)
@@ -377,12 +304,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                     SetDirty()
 
-            elif globals_.CurrentPaintType == 9:
+            elif globals_.CurrentPaintType == 9 and globals_.CommentsShown:
                 # paint a comment
-
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
                 clickedx = int((clicked.x() - 12) / 1.5)
                 clickedy = int((clicked.y() - 12) / 1.5)
 
@@ -444,15 +367,64 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Overrides mouse movement events if needed
         """
-
-        inv = False  # if set to True, invalidates the scene at the end of this function.
-
-        pos = globals_.mainWindow.view.mapToScene(event.x(), event.y())
+        pos = self.mapToScene(event.pos())
         if pos.x() < 0: pos.setX(0)
         if pos.y() < 0: pos.setY(0)
         self.PositionHover.emit(int(pos.x()), int(pos.y()))
 
-        if event.buttons() == QtCore.Qt.RightButton and self.currentobj is not None and not self.dragstamp:
+        if ((event.buttons() & (QtCore.Qt.MouseButton.LeftButton | QtCore.Qt.MouseButton.RightButton))
+                and not self.cursorEdgeScrollTimer):
+            # We set this up here instead of in mousePressEvent because
+            # otherwise the view would jerk to one side if you clicked
+            # near its edge. This way, it'll only scroll if you click
+            # and drag.
+            self.cursorEdgeScrollTimer = QtCore.QTimer()
+            self.cursorEdgeScrollTimer.timeout.connect(self.scrollIfCursorNearEdge)
+            self.cursorEdgeScrollTimer.start(1000 // 60)  # ~ 60 fps
+
+        if self.updatePaintDraggedItems():
+            event.accept()
+
+        elif event.buttons() == QtCore.Qt.MouseButton.MiddleButton and self.lastCursorPosForMidButtonScroll is not None:
+            # https://stackoverflow.com/a/15785851
+            delta = event.pos() - self.lastCursorPosForMidButtonScroll
+            self.XScrollBar.setValue(self.XScrollBar.value() + (delta.x() if self.isRightToLeft() else -delta.x()))
+            self.YScrollBar.setValue(self.YScrollBar.value() - delta.y())
+            self.lastCursorPosForMidButtonScroll = event.pos()
+
+        else:
+            QtWidgets.QGraphicsView.mouseMoveEvent(self, event)
+
+    def mouseReleaseEvent(self, event):
+        """
+        Overrides mouse release events if needed
+        """
+        if event.button() in (QtCore.Qt.BackButton, QtCore.Qt.ForwardButton):
+            self.xButtonScrollTimer.stop()
+            return
+
+        if event.button() == QtCore.Qt.RightButton:
+            self.currentobj = None
+        elif event.button() == QtCore.Qt.MidButton:
+            self.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
+
+        if self.cursorEdgeScrollTimer:
+            self.cursorEdgeScrollTimer.stop()
+            self.cursorEdgeScrollTimer = None
+
+        QtWidgets.QGraphicsView.mouseReleaseEvent(self, event)
+
+    def updatePaintDraggedItems(self):
+        """Update items that are being paint-dragged (painted with
+        right-click, and dragged while it's still held down). Returns
+        True if any items are being paint-dragged, False otherwise"""
+        if globals_.app.mouseButtons() != QtCore.Qt.MouseButton.RightButton or self.currentobj is None:
+            return False
+
+        pos = self.mapToScene(self.mapFromGlobal(QtGui.QCursor.pos()))
+        obj = self.currentobj
+
+        if not self.dragstamp:
             # possibly a small optimization
             type_obj = ObjectItem
             type_spr = SpriteItem
@@ -470,55 +442,44 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             for obj in objlist:
 
                 if isinstance(obj, type_obj):
-                    # resize/move the current object
-                    cx = obj.objx
-                    cy = obj.objy
-                    cwidth = obj.width
-                    cheight = obj.height
-
+                    # Resize the current object. The new object should fill a
+                    # rectangle, with two diagonal corners at self.dragstart and
+                    # pos / 24. This rectangle should contain self.dragstart.
                     dsx = self.dragstartx
                     dsy = self.dragstarty
-                    clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
+                    clicked = pos / 24
 
-                    if clicked.x() < 0:
-                        clicked.setX(0)
+                    clickx = max(0, clicked.x())
+                    clicky = max(0, clicked.y())
 
-                    if clicked.y() < 0:
-                        clicked.setY(0)
+                    # calculate rectangle
+                    x = int(min(dsx, clickx))
+                    width = max(1, int(max(dsx, clickx) + 1 - x))
 
-                    clickx = int(clicked.x() / 24)
-                    clicky = int(clicked.y() / 24)
+                    y = int(min(dsy, clicky))
+                    height = max(1, int(max(dsy, clicky) + 1 - y))
 
-                    # allow negative width/height and treat it properly :D
-                    if clickx >= dsx:
-                        x = dsx
-                        width = clickx - dsx + 1
-                    else:
-                        x = clickx
-                        width = dsx - clickx + 1
-
-                    if clicky >= dsy:
-                        y = dsy
-                        height = clicky - dsy + 1
-                    else:
-                        y = clicky
-                        height = dsy - clicky + 1
+                    # Check if the tile has been moved to full size already. If
+                    # not, don't change the tile's position / size.
+                    if not obj.wasExtended:
+                        obj.wasExtended = (width >= obj.width) and (height >= obj.height)
+                        continue
 
                     # if the position changed, set the new one
-                    if cx != x or cy != y:
+                    if obj.objx != x or obj.objy != y:
                         obj.objx = x
                         obj.objy = y
                         obj.setPos(x * 24, y * 24)
                         globals_.mainWindow.levelOverview.update()
 
                     # if the size changed, recache it and update the area
-                    if cwidth != width or cheight != height:
+                    if obj.width != width or obj.height != height:
                         obj.updateObjCacheWH(width, height)
                         obj.width = width
                         obj.height = height
 
                         oldrect = obj.BoundingRect
-                        oldrect.translate(cx * 24, cy * 24)
+                        oldrect.translate(obj.objx * 24, obj.objy * 24)
                         newrect = QtCore.QRectF(obj.x(), obj.y(), obj.width * 24, obj.height * 24)
                         updaterect = oldrect.united(newrect)
 
@@ -536,28 +497,19 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                 elif isinstance(obj, type_spr):
                     # move the created sprite
-                    clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                    if clicked.x() < 0: clicked.setX(0)
-                    if clicked.y() < 0: clicked.setY(0)
-                    clickedx = int((clicked.x() - 12) / 1.5)
-                    clickedy = int((clicked.y() - 12) / 1.5)
+                    clickedx = int((pos.x() - 12) / 1.5)
+                    clickedy = int((pos.y() - 12) / 1.5)
 
                     if obj.objx != clickedx or obj.objy != clickedy:
-                        obj.objx = clickedx
-                        obj.objy = clickedy
-                        obj.setPos(int((clickedx + obj.ImageObj.xOffset) * 1.5),
-                                   int((clickedy + obj.ImageObj.yOffset) * 1.5))
+                        obj.setNewObjPos(clickedx, clickedy)
                         obj.ImageObj.positionChanged()
                         obj.UpdateListItem()
                         globals_.mainWindow.levelOverview.update()
 
                 elif isinstance(obj, (type_ent, type_path, type_com)):
                     # move the created entrance/path/comment
-                    clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                    if clicked.x() < 0: clicked.setX(0)
-                    if clicked.y() < 0: clicked.setY(0)
-                    clickedx = int((clicked.x() - 12) / 1.5)
-                    clickedy = int((clicked.y() - 12) / 1.5)
+                    clickedx = int((pos.x() - 12) / 1.5)
+                    clickedy = int((pos.y() - 12) / 1.5)
 
                     if obj.objx != clickedx or obj.objy != clickedy:
                         obj.objx = clickedx
@@ -565,19 +517,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.setPos(int(clickedx * 1.5), int(clickedy * 1.5))
 
                         if isinstance(obj, type_path):
-                            obj.updatePos()
-                            obj.pathinfo['peline'].nodePosChanged()
-
-                        elif isinstance(obj, type_com):
-                            obj.UpdateTooltip()
-                            obj.handlePosChange(oldx, oldy)
+                            obj.path.node_moved(obj)
 
                         obj.UpdateListItem()
                         globals_.mainWindow.levelOverview.update()
 
-            event.accept()
-
-        elif event.buttons() == QtCore.Qt.RightButton and self.currentobj is not None and self.dragstamp:
+        else:
             # The user is dragging a stamp - many objects.
 
             # possibly a small optimization
@@ -590,19 +535,14 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             else:
                 objlist = (self.currentobj,)
 
+            changex = pos.x() - (self.dragstartx * 1.5)
+            changey = pos.y() - (self.dragstarty * 1.5)
+            changexobj = int(changex / 24)
+            changeyobj = int(changey / 24)
+            changexspr = changex * 2 / 3
+            changeyspr = changey * 2 / 3
+
             for obj in objlist:
-
-                clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
-                if clicked.x() < 0: clicked.setX(0)
-                if clicked.y() < 0: clicked.setY(0)
-
-                changex = clicked.x() - (self.dragstartx * 1.5)
-                changey = clicked.y() - (self.dragstarty * 1.5)
-                changexobj = int(changex / 24)
-                changeyobj = int(changey / 24)
-                changexspr = changex * 2 / 3
-                changeyspr = changey * 2 / 3
-
                 if isinstance(obj, type_obj):
                     # move the current object
                     newx = int(obj.dragstartx + changexobj)
@@ -612,6 +552,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.objx = newx
                         obj.objy = newy
                         obj.setPos(newx * 24, newy * 24)
+                        obj.UpdateRects()
 
                 elif isinstance(obj, type_spr):
                     # move the created sprite
@@ -620,38 +561,54 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     newy = int(obj.dragstarty + changeyspr)
 
                     if obj.objx != newx or obj.objy != newy:
-                        obj.objx = newx
-                        obj.objy = newy
-                        obj.setPos(int((newx + obj.ImageObj.xOffset) * 1.5), int((newy + obj.ImageObj.yOffset) * 1.5))
+                        obj.setNewObjPos(newx, newy)
+                        obj.ImageObj.positionChanged()
 
             self.scene().update()
+            globals_.mainWindow.levelOverview.update()
 
-        elif event.buttons() == QtCore.Qt.MidButton and self.lastCursorPosForMidButtonScroll is not None:
-            # https://stackoverflow.com/a/15785851
-            delta = event.pos() - self.lastCursorPosForMidButtonScroll
-            self.XScrollBar.setValue(self.XScrollBar.value() + (delta.x() if self.isRightToLeft() else -delta.x()))
-            self.YScrollBar.setValue(self.YScrollBar.value() - delta.y())
-            self.lastCursorPosForMidButtonScroll = event.pos()
+    def scrollIfCursorNearEdge(self):
+        """Scroll the view if the cursor is dragging and near the edge"""
+        pos = self.mapFromGlobal(QtGui.QCursor.pos())
+
+        distFromL = pos.x()
+        distFromR = self.width() - self.YScrollBar.width() - pos.x()
+        distFromT = pos.y()
+        distFromB = self.height() - self.XScrollBar.height() - pos.y()
+
+        EDGE_PAD = 60
+        SCALE_FACTOR = 0.3
+
+        scrollDx = scrollDy = 0
+
+        if distFromL < EDGE_PAD:
+            scrollDx = -(EDGE_PAD - distFromL) * SCALE_FACTOR
+        if distFromR < EDGE_PAD:
+            scrollDx = (EDGE_PAD - distFromR) * SCALE_FACTOR
+        if distFromT < EDGE_PAD:
+            scrollDy = -(EDGE_PAD - distFromT) * SCALE_FACTOR
+        if distFromB < EDGE_PAD:
+            scrollDy = (EDGE_PAD - distFromB) * SCALE_FACTOR
+
+        if scrollDx:
+            self.XScrollBar.setValue(int(self.XScrollBar.value() + scrollDx))
+        if scrollDy:
+            self.YScrollBar.setValue(int(self.YScrollBar.value() + scrollDy))
+
+        self.updatePaintDraggedItems()
+
+    def wheelEvent(self, event):
+        """
+        Handle wheel events for zooming in/out
+        """
+        if event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier:
+            if event.angleDelta().y() > 0:
+                globals_.mainWindow.HandleZoomIn(towardsCursor=True)
+            else:
+                globals_.mainWindow.HandleZoomOut(towardsCursor=True)
 
         else:
-            QtWidgets.QGraphicsView.mouseMoveEvent(self, event)
-
-        if inv: self.scene().invalidate()
-
-    def mouseReleaseEvent(self, event):
-        """
-        Overrides mouse release events if needed
-        """
-        if event.button() in (QtCore.Qt.BackButton, QtCore.Qt.ForwardButton):
-            self.xButtonScrollTimer.stop()
-            return
-
-        if event.button() == QtCore.Qt.RightButton:
-            self.currentobj = None
-        elif event.button() == QtCore.Qt.MidButton:
-            self.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
-
-        QtWidgets.QGraphicsView.mouseReleaseEvent(self, event)
+            super().wheelEvent(event)
 
     def paintEvent(self, e):
         """
@@ -680,33 +637,31 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             starty -= (starty % 24)
             endy = starty + rect.height() + 24
 
-            x = startx - 24
+            x = startx
             while x <= endx:
-                x += 24
                 if x % 192 == 0:
                     painter.setPen(QtGui.QPen(GridColor, 2, QtCore.Qt.DashLine))
-                    drawLine(x, starty, x, endy)
-                elif x % 96 == 0:
-                    if Zoom < 25: continue
+                    drawLine(QtCore.QPointF(x, starty), QtCore.QPointF(x, endy))
+                elif x % 96 == 0 and Zoom >= 25:
                     painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DashLine))
-                    drawLine(x, starty, x, endy)
-                else:
-                    if Zoom < 50: continue
-                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DotLine))
-                    drawLine(x, starty, x, endy)
-
-            y = starty - 24
-            while y <= endy:
-                y += 24
-                if y % 192 == 0:
-                    painter.setPen(QtGui.QPen(GridColor, 2, QtCore.Qt.DashLine))
-                    drawLine(startx, y, endx, y)
-                elif y % 96 == 0 and Zoom >= 25:
-                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DashLine))
-                    drawLine(startx, y, endx, y)
+                    drawLine(QtCore.QPointF(x, starty), QtCore.QPointF(x, endy))
                 elif Zoom >= 50:
                     painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DotLine))
-                    drawLine(startx, y, endx, y)
+                    drawLine(QtCore.QPointF(x, starty), QtCore.QPointF(x, endy))
+                x += 24
+
+            y = starty
+            while y <= endy:
+                if y % 192 == 0:
+                    painter.setPen(QtGui.QPen(GridColor, 2, QtCore.Qt.DashLine))
+                    drawLine(QtCore.QPointF(startx, y), QtCore.QPointF(endx, y))
+                elif y % 96 == 0 and Zoom >= 25:
+                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DashLine))
+                    drawLine(QtCore.QPointF(startx, y), QtCore.QPointF(endx, y))
+                elif Zoom >= 50:
+                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DotLine))
+                    drawLine(QtCore.QPointF(startx, y), QtCore.QPointF(endx, y))
+                y += 24
 
         else:  # draw a checkerboard
             L = 0.2
@@ -760,8 +715,13 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             del p
 
-            painter.drawTiledPixmap(rect, board, QtCore.QPointF(rect.x(), rect.y()))
+            # Adjust the rectangle to align with the grid, so we don't have to
+            # paint pixmaps on non-integer coordinates
+            x, y, _, _ = rect.getRect()
+            mod = board.width()
+            rect.adjust(-(x % mod), -(y % mod), 0, 0)
 
+            painter.drawTiledPixmap(rect, board)
 
 def DecodeOldReggieInfo(data, validKeys):
     """

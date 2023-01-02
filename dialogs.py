@@ -1,3 +1,4 @@
+import os
 
 from PyQt5 import QtWidgets, QtGui, QtCore
 
@@ -24,11 +25,11 @@ class AboutDialog(QtWidgets.QDialog):
 
         # Open the readme file
         readme = ""
-        with open('readme.md', 'r') as f:
+        with open('readme.md', 'r', encoding='utf-8') as f:
             readme = f.read()
 
         # Logo
-        logo = QtGui.QPixmap('reggiedata/about.png')
+        logo = QtGui.QPixmap(os.path.join('reggiedata', 'about.png'))
         logoLabel = QtWidgets.QLabel()
         logoLabel.setPixmap(logo)
         logoLabel.setContentsMargins(16, 4, 32, 4)
@@ -131,8 +132,8 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
         # Swap layouts
         swapLayout = QtWidgets.QFormLayout()
 
-        swapLayout.addRow('From tileset:', self.FromTS)
-        swapLayout.addRow('To tileset:', self.ToTS)
+        swapLayout.addRow('From Tileset:', self.FromTS)
+        swapLayout.addRow('To Tileset:', self.ToTS)
 
         self.DoExchange = QtWidgets.QCheckBox('Exchange (perform 2-way conversion)')
 
@@ -180,16 +181,16 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         # Swap layout
         swapLayout = QtWidgets.QGridLayout()
 
-        swapLayout.addWidget(QtWidgets.QLabel('From tile type:'), 0, 0)
+        swapLayout.addWidget(QtWidgets.QLabel('From Object:'), 0, 0)
         swapLayout.addWidget(self.FromType, 0, 1)
 
-        swapLayout.addWidget(QtWidgets.QLabel('From tileset:'), 1, 0)
+        swapLayout.addWidget(QtWidgets.QLabel('From Tileset:'), 1, 0)
         swapLayout.addWidget(self.FromTileset, 1, 1)
 
-        swapLayout.addWidget(QtWidgets.QLabel('To tile type:'), 0, 2)
+        swapLayout.addWidget(QtWidgets.QLabel('To Object:'), 0, 2)
         swapLayout.addWidget(self.ToType, 0, 3)
 
-        swapLayout.addWidget(QtWidgets.QLabel('To tileset:'), 1, 2)
+        swapLayout.addWidget(QtWidgets.QLabel('To Tileset:'), 1, 2)
         swapLayout.addWidget(self.ToTileset, 1, 3)
 
         # Buttonbox
@@ -619,7 +620,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             L.setPixmap(GetIcon('warning', True).pixmap(64, 64))
             self.header.addWidget(L, 1, 0)
 
-            px = QtGui.QPixmap(128, pointsize * 3 / 2)
+            px = QtGui.QPixmap(128, int(pointsize * 3 / 2))
             px.fill(QtGui.QColor(0, 0, 0, 0))
             p = QtGui.QPainter(px)
             f = p.font()
@@ -731,8 +732,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 pass  # fail silently
             self.errorList.takeItem(item.row())
 
-            total = len(self.errorList.selectedIndexes()[:])
-            if total != 0: pleasewait.setValue(int(float(index) / total * 100))
+            total = len(self.errorList.selectedIndexes())
+            if total != 0: pleasewait.setValue(int(index / total * 100))
 
         # Remove the 'Fixing...' box
         pleasewait.setValue(100)
@@ -754,15 +755,18 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 elif globals_.ObjectDefinitions[obj.tileset][obj.type] is None:
                     deletions.append(obj)
 
+        has_problem = bool(deletions)
         if mode == 'c':
-            return len(deletions) != 0
-        elif len(deletions) != 0:
-            for obj in deletions:
-                obj.delete()
-                obj.setSelected(False)
-                globals_.mainWindow.scene.removeItem(obj)
+            return has_problem
 
-            globals_.mainWindow.levelOverview.update()
+        if not has_problem: return
+
+        for obj in deletions:
+            obj.delete()
+            obj.setSelected(False)
+            globals_.mainWindow.scene.removeItem(obj)
+
+        globals_.mainWindow.levelOverview.update()
 
     def CrashSprites(self, mode='f'):
         """
@@ -776,7 +780,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             if sprite.type in problems: founds.append(sprite)
 
         if mode == 'c':
-            return len(founds) != 0
+            return bool(founds)
         else:
             for sprite in founds:
                 sprite.delete()
@@ -817,7 +821,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                     except Exception:
                         pass  # probably already removed it
         checkfor = new
-        if len(checkfor) > 0: problem = True
+        if checkfor: problem = True
 
         if mode == 'c':
             return problem
@@ -856,16 +860,10 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                         2) + sprite.spritedata[6:]
                     addsprites.append((419, sprite.objx - 128, sprite.objy - 128))
 
-            for id, x, y in addsprites:
-                new = SpriteItem(id, x, y, '\0\0\0\0\0\0\0\0\0\0')
-                new.positionChanged = globals_.mainWindow.HandleSprPosChange
-                globals_.mainWindow.scene.addItem(new)
+            for id_, x, y in addsprites:
+                globals_.mainWindow.CreateSprite(x, y, id_, bytes(8))
 
-                globals_.mainWindow.spriteList.addSprite(new)
-                globals_.Area.sprites.append(new)
-                globals_.mainWindow.scene.update()
-
-                new.UpdateListItem()
+            globals_.mainWindow.scene.update()
 
     def TooManySprites(self, mode='f'):
         """
@@ -943,7 +941,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         Checks if the main entrance is too close to the left zone edge
         """
         offset = 24 * 8  # 8 blocks away from the left zone edge
-        if len(globals_.Area.zones) == 0: return False
+        if not globals_.Area.zones: return False
 
         # if the ent isn't even in the zone, return
         if self.EntranceOutsideOfZone('c'): return False
@@ -970,7 +968,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         Checks if any entrances are not inside of a zone
         """
         left_offset = 24 * 8  # 8 blocks away from the left zone edge
-        if len(globals_.Area.zones) == 0: return False
+        if not globals_.Area.zones: return False
 
         for ent in globals_.Area.entrances:
             x = ent.objx
@@ -1017,14 +1015,12 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks if there are too many zones in this area
         """
-        # global Area
-
-        problem = len(globals_.Area.zones) > 8
+        problem = len(globals_.Area.zones) > 6
 
         if mode == 'c':
             return problem
         elif problem:
-            globals_.Area.zones = globals_.Area.zones[0:8]
+            globals_.Area.zones = globals_.Area.zones[:6]
 
             globals_.mainWindow.scene.update()
             globals_.mainWindow.levelOverview.update()
@@ -1033,7 +1029,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks if there are no zones in this area
         """
-        problem = len(globals_.Area.zones) == 0
+        problem = not globals_.Area.zones
         if mode == 'c':
             return problem
 
@@ -1041,15 +1037,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return
 
         # make a default zone
-        a = []
-        a.append([0, 0, 0, 0, 0, 0])
-        z = ZoneItem(16, 16, 448, 224, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, a, len(globals_.Area.zones))
-
-        z.UpdateTitle()
-        globals_.Area.zones.append(z)
-        globals_.mainWindow.scene.addItem(z)
-        globals_.mainWindow.scene.update()
-        globals_.mainWindow.levelOverview.update()
+        globals_.mainWindow.CreateZone(16, 16)
 
     def ZonesTooClose(self, mode='f'):
         """
@@ -1110,8 +1098,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                                 check.width -= 1
                             else:
                                 check.height -= 1
-                            if check.width < 300: check.width = 300
-                            if check.height < 200: check.height = 200
+                            if check.width < 204: check.width = 204
+                            if check.height < 112: check.height = 112
 
                             check.UpdateRects()
                             check.setPos(int(check.objx * 1.5), int(check.objy * 1.5))
@@ -1231,7 +1219,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 fixes.append(z)
 
         if mode == 'c':
-            return False if len(fixes) == 0 else True
+            return bool(fixes)
 
         for z in fixes:
             if z.width < MinimumSize[0]: z.width = MinimumSize[0]

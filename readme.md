@@ -16,15 +16,15 @@ This release contains many improvements, in addition to code imports from the fo
  * "Reggie Updated" by RoadrunnerWMC
 
 Source code can be found at:
-https://github.com/CLF78/Reggie-Next/
+https://github.com/NSMBW-Community/Reggie-Next/
 
 ----------------------------------------------------------------
 
 ### Getting Started
 
-If you're on Windows and don't care about having the bleeding-edge latest features, you can use the official release. This is by far the easiest setup method.
+If you're on Windows or Mac and don't care about having the bleeding-edge latest features, you can use the official release. This is by far the easiest setup method.
 
-If you are not on Windows or you want the very latest features, you'll need to run Reggie! from source.
+If you are not on those systems or you want the very latest features, you'll need to run Reggie! from source.
 
 
 ### How to Run Reggie! from Source
@@ -44,6 +44,16 @@ Then, you can run Reggie by simply executing the following command in a command 
 
 You can replace `python3` with the path to your Python executable, including the executable name and `reggie.py` with the path to `reggie.py` (including the filename).
 
+### macOS Troubleshooting
+
+If you get the error "Reggie! Next Level Editor is damaged and can't be opened.",
+it's because the release builds are unsigned. To fix it, launch a Terminal
+window and run
+
+    sudo xattr -rd com.apple.quarantine /Applications/Reggie\!\ Next\ Level\ Editor.app
+    
+which will override the application signature requirement. Then you should be
+able to launch the app.
 
 ### Reggie! Team
 
@@ -66,11 +76,14 @@ Developers:
  * joietyfull64 - Sprite Data (NSMBW)
  * MidiGuyDP - Background Images & Names (NewerSMBW)
  * SnakeBlock - Sprite Data (NSMBW)
- * Danster64 - Sprite Data (NSMBW, NewerSMBW), Sprite Images (NSMBW, NewerSMBW)
+ * Danster64 - Sprite Data (NSMBW, NewerSMBW), Sprite Images (NSMBW, NewerSMBW), Windows Builds
 
 Other Testers and Contributors:
  * BulletBillTime, Dirbaio, EdgarAllen, FirePhoenix, GrandMasterJimmy, Mooseknuckle2000, MotherBrainsBrain, RainbowIE, Skawo, Sonicandtails, Tanks, Vibestar, angelsl, ant888, gamesquest1, iZackefx
  * Tobias and Valeth - Text Tileset Addon
+ * Meorge and grishhung - The Reggie Next Icons (Windows and Mac)
+ * Toms - Mac Builds
+ * MandyIGuess, Shudfly, N-I-N-0, B1Gaming, Stage13-10, techmuse8 - Miscellaneous Contributions
 
 
 ### Dependencies/Libraries/Resources

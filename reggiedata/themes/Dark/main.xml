@@ -5,11 +5,10 @@
 		version="1.0"
 		creator="JasonP27"
 		description="A dark-colored Reggie theme."
-		forceUiColor="true"
 		>
-		
+
 	<colors file="levelview.xml" />
 	<icons size="sm" folder="icosm" />
 	<icons size="lg" folder="icolg" />
-	
+
 </theme>

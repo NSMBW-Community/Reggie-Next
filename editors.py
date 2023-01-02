@@ -19,6 +19,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed))
 
         LoadEntranceNames()
+        self.CanUseFlag40 = {0, 1, 7, 8, 9, 12, 20, 21, 22, 23, 24, 27}
         self.CanUseFlag8 = {3, 4, 5, 6, 16, 17, 18, 19}
         self.CanUseFlag4 = {3, 4, 5, 6}
 
@@ -73,6 +74,14 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.activeLayer.setToolTip(globals_.trans.string('EntranceDataEditor', 22))
         self.activeLayer.activated.connect(self.HandleActiveLayerChanged)
 
+        self.exit_level_checkbox = QtWidgets.QCheckBox(globals_.trans.string('EntranceDataEditor', 29))
+        self.exit_level_checkbox.setToolTip(globals_.trans.string('EntranceDataEditor', 30))
+        self.exit_level_checkbox.clicked.connect(self.HandleExitLevelCheckboxClicked)
+
+        self.spawnHalfTileLeftCheckbox = QtWidgets.QCheckBox(globals_.trans.string('EntranceDataEditor', 31))
+        self.spawnHalfTileLeftCheckbox.setToolTip(globals_.trans.string('EntranceDataEditor', 32))
+        self.spawnHalfTileLeftCheckbox.clicked.connect(self.HandleSpawnHalfTileLeftClicked)
+
         self.cpDirection = QtWidgets.QComboBox()
         self.cpDirection.addItems(globals_.trans.stringList('EntranceDataEditor', 27))
         self.cpDirection.setToolTip(globals_.trans.string('EntranceDataEditor', 26))
@@ -105,22 +114,24 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         layout.addWidget(self.entranceType, 1, 1, 1, 3)
 
         layout.addWidget(self.destEntrance, 3, 3, 1, 1)
+        layout.addWidget(self.activeLayer, 4, 1, 1, 1)
         layout.addWidget(self.destArea, 4, 3, 1, 1)
         layout.addWidget(createHorzLine(), 5, 0, 1, 4)
         layout.addWidget(self.allowEntryCheckbox, 6, 0, 1, 2)  # , QtCore.Qt.AlignRight)
         layout.addWidget(self.unknownFlagCheckbox, 6, 2, 1, 2)  # , QtCore.Qt.AlignRight)
-        layout.addWidget(self.forwardPipeCheckbox, 7, 0, 1, 2)  # , QtCore.Qt.AlignRight)
-        layout.addWidget(self.connectedPipeCheckbox, 7, 2, 1, 2)  # , QtCore.Qt.AlignRight)
+        layout.addWidget(self.exit_level_checkbox, 7, 0, 1, 2)
+        layout.addWidget(self.spawnHalfTileLeftCheckbox, 7, 2, 1, 2)
+        layout.addWidget(self.forwardPipeCheckbox, 8, 0, 1, 2)  # , QtCore.Qt.AlignRight)
+        layout.addWidget(self.connectedPipeCheckbox, 8, 2, 1, 2)  # , QtCore.Qt.AlignRight)
 
         self.cpHorzLine = createHorzLine()
-        layout.addWidget(self.cpHorzLine, 8, 0, 1, 4)
-        layout.addWidget(self.connectedPipeReverseCheckbox, 9, 0, 1, 2)  # , QtCore.Qt.AlignRight)
-        layout.addWidget(self.pathID, 9, 3, 1, 1)
-        layout.addWidget(self.pathIDLabel, 9, 2, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(self.cpHorzLine, 9, 0, 1, 4)
+        layout.addWidget(self.connectedPipeReverseCheckbox, 10, 0, 1, 2)  # , QtCore.Qt.AlignRight)
+        layout.addWidget(self.pathID, 10, 3, 1, 1)
+        layout.addWidget(self.pathIDLabel, 10, 2, 1, 1, QtCore.Qt.AlignRight)
 
-        layout.addWidget(self.activeLayer, 4, 1, 1, 1)
-        layout.addWidget(self.cpDirectionLabel, 10, 0, 1, 2, QtCore.Qt.AlignRight)
-        layout.addWidget(self.cpDirection, 10, 2, 1, 2)
+        layout.addWidget(self.cpDirectionLabel, 11, 0, 1, 2, QtCore.Qt.AlignRight)
+        layout.addWidget(self.cpDirection, 11, 2, 1, 2)
 
         self.ent = None
         self.UpdateFlag = False
@@ -144,6 +155,10 @@ class EntranceEditorWidget(QtWidgets.QWidget):
 
         self.allowEntryCheckbox.setChecked(((ent.entsettings & 0x80) == 0))
         self.unknownFlagCheckbox.setChecked(((ent.entsettings & 2) != 0))
+        self.exit_level_checkbox.setChecked(ent.leave_level)
+
+        self.spawnHalfTileLeftCheckbox.setVisible(ent.enttype in self.CanUseFlag40)
+        self.spawnHalfTileLeftCheckbox.setChecked(((ent.entsettings & 0x40) != 0))
 
         self.connectedPipeCheckbox.setVisible(ent.enttype in self.CanUseFlag8)
         self.connectedPipeCheckbox.setChecked(((ent.entsettings & 8) != 0))
@@ -179,12 +194,24 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent.UpdateListItem()
         self.editingLabel.setText(globals_.trans.string('EntranceDataEditor', 23, '[id]', i))
 
+    def HandleSpawnHalfTileLeftClicked(self, checked):
+        """
+        Handle for the Spawn Half a Tile Left checkbox being clicked
+        """
+        if self.UpdateFlag: return
+        SetDirty()
+        if checked:
+            self.ent.entsettings |= 0x40
+        else:
+            self.ent.entsettings &= ~0x40
+
     def HandleEntranceTypeChanged(self, new_index):
         """
         Handler for the entrance type changing
         """
         i = list(globals_.EntranceTypeNames)[new_index]
 
+        self.spawnHalfTileLeftCheckbox.setVisible(i in self.CanUseFlag40)
         self.connectedPipeCheckbox.setVisible(i in self.CanUseFlag8)
         self.connectedPipeReverseCheckbox.setVisible(i in self.CanUseFlag8 and ((self.ent.entsettings & 8) != 0))
         self.pathIDLabel.setVisible(i and ((self.ent.entsettings & 8) != 0))
@@ -245,6 +272,16 @@ class EntranceEditorWidget(QtWidgets.QWidget):
             self.ent.entsettings |= 2
         else:
             self.ent.entsettings &= ~2
+
+    def HandleExitLevelCheckboxClicked(self, checked):
+        """
+        Handle the Send to World Map checkbox being clicked
+        """
+        if self.UpdateFlag or self.ent.leave_level == checked: return
+        SetDirty()
+        self.ent.leave_level = checked
+        self.ent.UpdateTooltip()
+        self.ent.UpdateListItem()
 
     def HandleConnectedPipeClicked(self, checked):
         """
@@ -322,105 +359,151 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed))
 
+        # Some single point float constants. Note that we cannot use the ones
+        # provided by sys.float_info, since those relate to double precision
+        # floats, and the speed and acceleration fields are single precision
+        # floats. As such, we just hardcode these values.
+        FLT_DIG = 6
+        FLT_MAX = 3.402823466e+38
+
         # create widgets
-        # [20:52:41]  [Angel-SL] 1. (readonly) pathid 2. (readonly) nodeid 3. x 4. y 5. speed (float spinner) 6. accel (float spinner)
-        # not doing [20:52:58]  [Angel-SL] and 2 buttons - 7. 'Move Up' 8. 'Move Down'
         self.speed = QtWidgets.QDoubleSpinBox()
-        self.speed.setRange(min(sys.float_info), max(sys.float_info))
+        self.speed.setRange(-FLT_MAX, FLT_MAX)
         self.speed.setToolTip(globals_.trans.string('PathDataEditor', 3))
-        self.speed.setDecimals(int(sys.float_info.__getattribute__('dig')))
+        self.speed.setDecimals(FLT_DIG)
         self.speed.valueChanged.connect(self.HandleSpeedChanged)
-        self.speed.setMaximumWidth(256)
 
         self.accel = QtWidgets.QDoubleSpinBox()
-        self.accel.setRange(min(sys.float_info), max(sys.float_info))
+        self.accel.setRange(-FLT_MAX, FLT_MAX)
         self.accel.setToolTip(globals_.trans.string('PathDataEditor', 5))
-        self.accel.setDecimals(int(sys.float_info.__getattribute__('dig')))
+        self.accel.setDecimals(FLT_DIG)
         self.accel.valueChanged.connect(self.HandleAccelChanged)
-        self.accel.setMaximumWidth(256)
 
         self.delay = QtWidgets.QSpinBox()
         self.delay.setRange(0, 65535)
         self.delay.setToolTip(globals_.trans.string('PathDataEditor', 7))
         self.delay.valueChanged.connect(self.HandleDelayChanged)
-        self.delay.setMaximumWidth(256)
 
         self.loops = QtWidgets.QCheckBox()
         self.loops.setToolTip(globals_.trans.string('PathDataEditor', 1))
         self.loops.stateChanged.connect(self.HandleLoopsChanged)
 
         # create a layout
-        layout = QtWidgets.QGridLayout()
+        layout = QtWidgets.QFormLayout()
         self.setLayout(layout)
 
         # 'Editing Path #' label
         self.editingLabel = QtWidgets.QLabel('-')
         self.editingPathLabel = QtWidgets.QLabel('-')
-        layout.addWidget(self.editingLabel, 3, 0, 1, 2, QtCore.Qt.AlignTop)
-        layout.addWidget(self.editingPathLabel, 0, 0, 1, 2, QtCore.Qt.AlignTop)
+
+        self.path_id = QtWidgets.QSpinBox()
+        self.path_id.setRange(0, 255)
+        self.path_id.valueChanged.connect(self.HandlePathIdChanged)
+
+        self.node_id = QtWidgets.QSpinBox()
+        self.node_id.setRange(0, 255)
+        self.node_id.valueChanged.connect(self.HandleNodeIdChanged)
+
+        layout.addRow(self.editingPathLabel)
+
         # add labels
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('PathDataEditor', 0)), 1, 0, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('PathDataEditor', 2)), 4, 0, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('PathDataEditor', 4)), 5, 0, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('PathDataEditor', 6)), 6, 0, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(createHorzLine(), 2, 0, 1, 2)
+        layout.addRow("Id", self.path_id)
+        layout.addRow(globals_.trans.string('PathDataEditor', 0), self.loops)
+        layout.addRow(createHorzLine())
 
-        # add the widgets
-        layout.addWidget(self.loops, 1, 1)
-        layout.addWidget(self.speed, 4, 1)
-        layout.addWidget(self.accel, 5, 1)
-        layout.addWidget(self.delay, 6, 1)
+        layout.addRow(self.editingLabel)
+        layout.addRow("Id", self.node_id)
+        layout.addRow(globals_.trans.string('PathDataEditor', 2), self.speed)
+        layout.addRow(globals_.trans.string('PathDataEditor', 4), self.accel)
+        layout.addRow(globals_.trans.string('PathDataEditor', 6), self.delay)
 
-        self.path = None
+        self.path_node = None
         self.UpdateFlag = False
 
-    def setPath(self, path):
+    def setPath(self, path_item):
         """
         Change the path being edited by the editor, update all fields
         """
-        if self.path == path: return
-        self.editingPathLabel.setText(globals_.trans.string('PathDataEditor', 8, '[id]', path.pathid))
-        self.editingLabel.setText(globals_.trans.string('PathDataEditor', 9, '[id]', path.nodeid))
-        self.path = path
+        if self.path_node == path_item: return
+
+        self.path_node = path_item
+
+        self.editingPathLabel.setText(globals_.trans.string('PathDataEditor', 8, '[id]', path_item.pathid))
+        self.editingLabel.setText(globals_.trans.string('PathDataEditor', 9, '[id]', path_item.nodeid))
+
+        speed, accel, delay = path_item.path.get_data_for_node(path_item.nodeid)
+        loops = path_item.path.get_loops()
+        path_len = len(path_item.path)
+
         self.UpdateFlag = True
 
-        self.speed.setValue(path.nodeinfo['speed'])
-        self.accel.setValue(path.nodeinfo['accel'])
-        self.delay.setValue(path.nodeinfo['delay'])
-        self.loops.setChecked(path.pathinfo['loops'])
+        self.node_id.setRange(0, path_len - 1)
+        self.node_id.setEnabled(path_len > 1)
+        self.node_id.setValue(path_item.nodeid)
+        self.path_id.setValue(path_item.pathid)
+        self.speed.setValue(speed)
+        self.accel.setValue(accel)
+        self.delay.setValue(delay)
+        self.loops.setChecked(loops)
 
         self.UpdateFlag = False
+
+    def UpdatePathLength(self):
+        """
+        The length of the path changed, so update the range of the node id editor.
+        """
+        self.node_id.setRange(0, len(self.path_node.path) - 1)
 
     def HandleSpeedChanged(self, i):
         """
         Handler for the speed changing
         """
-        if self.UpdateFlag: return
-        SetDirty()
-        self.path.nodeinfo['speed'] = i
+        if self.UpdateFlag:
+            return
+
+        if self.path_node.path.set_node_data(self.path_node, speed=i):
+            SetDirty()
 
     def HandleAccelChanged(self, i):
         """
         Handler for the accel changing
         """
-        if self.UpdateFlag: return
-        SetDirty()
-        self.path.nodeinfo['accel'] = i
+        if self.UpdateFlag:
+            return
+
+        if self.path_node.path.set_node_data(self.path_node, accel=i):
+            SetDirty()
 
     def HandleDelayChanged(self, i):
         """
         Handler for the delay changing
         """
-        if self.UpdateFlag: return
-        SetDirty()
-        self.path.nodeinfo['delay'] = i
+        if self.UpdateFlag:
+            return
+
+        if self.path_node.path.set_node_data(self.path_node, delay=i):
+            SetDirty()
 
     def HandleLoopsChanged(self, i):
-        if self.UpdateFlag: return
+        if self.UpdateFlag or self.path_node.path._loops == (i == QtCore.Qt.Checked):
+            return
+
+        if self.path_node.path.set_loops(i == QtCore.Qt.Checked):
+            SetDirty()
+
+    def HandlePathIdChanged(self, i):
+        if self.UpdateFlag or self.path_node.pathid == i:
+            return
+
+        self.path_node.path.set_id(i)
         SetDirty()
-        self.path.pathinfo['loops'] = (i == QtCore.Qt.Checked)
-        self.path.pathinfo['peline'].loops = (i == QtCore.Qt.Checked)
-        globals_.mainWindow.scene.update()
+
+    def HandleNodeIdChanged(self, i):
+        if self.UpdateFlag or self.path_node.nodeid == i:
+            return
+
+        self.path_node.path.move_node(self.path_node, i)
+        SetDirty()
 
 
 class LocationEditorWidget(QtWidgets.QWidget):

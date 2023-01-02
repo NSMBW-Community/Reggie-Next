@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <tilesets>
 	<slot num="0" sorted="true">
-		<tileset filename="Pa0_jyotyu" name="Standard" override="Pa0" />
-		<tileset filename="Pa0_jyotyu_chika" name="Underground" override="Pa0" />
-		<tileset filename="Pa0_jyotyu_setsugen" name="Snow" override="Pa0" />
-		<tileset filename="Pa0_jyotyu_yougan" name="Lava" override="Pa0" />
-		<tileset filename="Pa0_jyotyu_staffRoll" name="Credits" override="Pa0" />
+		<tileset filename="Pa0_jyotyu" name="Standard" />
+		<tileset filename="Pa0_jyotyu_chika" name="Underground" />
+		<tileset filename="Pa0_jyotyu_setsugen" name="Snow" />
+		<tileset filename="Pa0_jyotyu_yougan" name="Lava" />
+		<tileset filename="Pa0_jyotyu_staffRoll" name="Credits" />
 	</slot>
 	<slot num="1">
 		<category name="Overworld">
@@ -74,8 +74,8 @@
 			<tileset filename="Pa2_doukutu4" name="Blue Rock (Wavy)" />
 			<tileset filename="Pa2_doukutu5" name="Brown Rock (Wavy) (Dark)" />
 			<tileset filename="Pa2_doukutu6" name="Blue Rock (Wavy) (Dark)" />
-			<tileset filename="Pa2_gake"     name="Sandstone (Brown)" />
-			<tileset filename="Pa2_doukutu7" name="Sandstone (Blue)" />
+			<tileset filename="Pa2_gake"     name="Mountain Rock (Brown)" />
+			<tileset filename="Pa2_doukutu7" name="Mountain Rock (Blue)" />
 		</category>
 		<category name="Airship">
 			<tileset filename="Pa2_hikousen" name="Airship (Brown)" />

@@ -22,7 +22,7 @@ class UndoStack:
         """
         Adds an action to the stack, or extends the current one if applicable
         """
-        if len(self.pastActions) > 0 and self.pastActions[-1].isExtentionOf(act):
+        if self.pastActions and self.pastActions[-1].isExtentionOf(act):
             self.pastActions[-1].extend(act)
             self.enableOrDisableMenuItems()
         else:
@@ -32,12 +32,12 @@ class UndoStack:
         """
         Undoes the last action
         """
-        if len(self.pastActions) == 0: return
+        if not self.pastActions: return
 
         act = self.pastActions.pop()
         while act.isNull():
             # Keep popping null actions off
-            if len(self.pastActions) == 0:
+            if not self.pastActions:
                 return
             act = self.pastActions.pop()
 
@@ -50,7 +50,7 @@ class UndoStack:
         """
         Redoes the last undone action
         """
-        if len(self.futureActions) == 0: return
+        if not self.futureActions: return
 
         act = self.futureActions.pop()
         while act.isNull():
@@ -66,8 +66,8 @@ class UndoStack:
         """
         Enables or disables the menu items of mainWindow
         """
-        globals_.mainWindow.actions['undo'].setEnabled(len(self.pastActions) > 0)
-        globals_.mainWindow.actions['redo'].setEnabled(len(self.futureActions) > 0)
+        globals_.mainWindow.actions['undo'].setEnabled(bool(self.pastActions))
+        globals_.mainWindow.actions['redo'].setEnabled(bool(self.futureActions))
 
 
 class UndoAction:
@@ -145,33 +145,40 @@ class MoveItemUndoAction(UndoAction):
             print('Redo Move Item: Cannot find item instance! ' + str(self.origDef))
 
     @staticmethod
-    def changeObjectPos(object, newX, newY):
+    def changeObjectPos(obj, newX, newY):
         """
         Changes the position of an object
         """
-        # This causes a circular import
-        return
-        # oldBR = object.getFullRect()
+        from levelitems import SpriteItem, ObjectItem, PathItem
 
-        # if isinstance(object, SpriteItem):
-        #     # Sprites are weird so they handle this themselves
-        #     object.setNewObjPos(newX, newY)
-        # elif isinstance(object, ObjectItem):
-        #     # Objects use the objx and objy properties differently
-        #     object.objx, object.objy = newX, newY
-        #     object.setPos(newX * 24, newY * 24)
-        # else:
-        #     # Everything else is normal
-        #     object.objx, object.objy = newX, newY
-        #     object.setPos(newX * 1.5, newY * 1.5)
-        # newBR = object.getFullRect()
+        if isinstance(obj, SpriteItem):
+            # Sprites are weird so they handle this themselves
+            obj.setNewObjPos(newX, newY)
 
-        # globals_.mainWindow.scene.update(oldBR)
-        # globals_.mainWindow.scene.update(newBR)
+        elif isinstance(obj, ObjectItem):
+            # Objects use the objx and objy properties differently
+            oldBR = obj.getFullRect()
 
-        # if isinstance(object, PathItem):
-        #     object.updatePos()
-        #     object.pathinfo['peline'].nodePosChanged()
+            obj.objx, obj.objy = newX, newY
+            obj.setPos(newX * 24, newY * 24)
+            obj.UpdateRects()
+
+            newBR = obj.getFullRect()
+
+            globals_.mainWindow.scene.update(oldBR)
+            globals_.mainWindow.scene.update(newBR)
+
+        elif isinstance(obj, PathItem):
+            obj.objx, obj.objy = newX, newY
+            obj.setPos(newX * 1.5, newY * 1.5)
+            obj.updatePos()
+
+        else:
+            # Everything else is normal
+            obj.objx, obj.objy = newX, newY
+            obj.setPos(newX * 1.5, newY * 1.5)
+
+        globals_.mainWindow.levelOverview.update()
 
     def isExtentionOf(self, other):
         """
@@ -191,10 +198,7 @@ class MoveItemUndoAction(UndoAction):
         """
         Returns True if this action is effectively a no-op
         """
-        matches = True
-        matches = matches and abs(self.origDef.objx - self.finalDef.objx) <= 2
-        matches = matches and abs(self.origDef.objy - self.finalDef.objy) <= 2
-        return matches
+        return self.origDef.objx == self.finalDef.objx and self.origDef.objy == self.finalDef.objy
 
 
 class SimultaneousUndoAction(UndoAction):
@@ -258,8 +262,4 @@ class SimultaneousUndoAction(UndoAction):
         """
         Returns True if this action is effectively a no-op
         """
-        # Hopefully this code is easy enough for you to follow.
-        anythingIsDifferent = False
-        for c in self.children:
-            anythingIsDifferent = anythingIsDifferent or not c.isNull()
-        return not anythingIsDifferent
+        return all(c.isNull() for c in self.children)

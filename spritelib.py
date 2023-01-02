@@ -75,7 +75,10 @@ def main():
 
 def GetImg(imgname, image=False):
     """
-    Returns the image path from the PNG filename imgname
+    Returns the image as a QImage from the PNG filename 'imgname' from the first
+    matching sprite image folder. If 'image' is False, a QPixmap of this image
+    is returned. If the image could not be found, None is returned and a warning
+    is printed.
     """
     imgname = str(imgname)
 
@@ -95,6 +98,19 @@ def GetImg(imgname, image=False):
         else:
             return QtGui.QPixmap(path)
 
+    print("[Warning] Could not load sprite image (%s)!" % imgname)
+
+def GetTile(tile_id):
+    """
+    Returns the corresponding tile image if a tile is loaded. Otherwise, it
+    returns the "unknown tile" override.
+    """
+    tile = Tiles[tile_id]
+
+    if tile is None:
+        tile = Tiles[4 * 0x200 + 64]  # The "Unknown Tile" override
+
+    return tile.main
 
 def loadIfNotInImageCache(name, filename):
     """
@@ -487,15 +503,15 @@ class AuxiliaryTrackObject(AuxiliarySpriteItem):
         painter.setPen(OutlinePen)
 
         if self.direction == self.Horizontal:
-            lineY = self.height * 0.75
-            painter.drawLine(20, lineY, (self.width * 1.5) - 20, lineY)
+            lineY = int(self.height * 0.75)
+            painter.drawLine(20, lineY, int((self.width * 1.5) - 20), lineY)
             painter.drawEllipse(8, lineY - 4, 8, 8)
-            painter.drawEllipse((self.width * 1.5) - 16, lineY - 4, 8, 8)
+            painter.drawEllipse(int((self.width * 1.5) - 16), lineY - 4, 8, 8)
         else:
-            lineX = self.width * 0.75
-            painter.drawLine(lineX, 20, lineX, (self.height * 1.5) - 20)
+            lineX = int(self.width * 0.75)
+            painter.drawLine(lineX, 20, lineX, int((self.height * 1.5) - 20))
             painter.drawEllipse(lineX - 4, 8, 8, 8)
-            painter.drawEllipse(lineX - 4, (self.height * 1.5) - 16, 8, 8)
+            painter.drawEllipse(lineX - 4, int((self.height * 1.5) - 16), 8, 8)
 
 
 class AuxiliaryCircleOutline(AuxiliarySpriteItem):
@@ -506,6 +522,7 @@ class AuxiliaryCircleOutline(AuxiliarySpriteItem):
         super().__init__(parent)
 
         self.hover = False
+        self.fillFlag = True
         self.alignMode = alignMode
         self.setSize(width)
 
@@ -534,7 +551,10 @@ class AuxiliaryCircleOutline(AuxiliarySpriteItem):
     def paint(self, painter, option, widget=None):
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
         painter.setPen(OutlinePen)
-        painter.setBrush(OutlineBrush)
+
+        if self.fillFlag:
+            painter.setBrush(OutlineBrush)
+
         painter.drawEllipse(self.BoundingRect)
 
 
@@ -560,7 +580,7 @@ class AuxiliaryRotationAreaOutline(AuxiliarySpriteItem):
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
         painter.setPen(OutlinePen)
         painter.setBrush(OutlineBrush)
-        painter.drawPie(self.BoundingRect, self.startAngle, self.spanAngle)
+        painter.drawPie(self.BoundingRect, int(self.startAngle), int(self.spanAngle))
 
 
 class AuxiliaryRectOutline(AuxiliarySpriteItem):
@@ -725,7 +745,7 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
             changedSize = True
         if self.realimage is not None:
             if changedSize:
-                self.image = self.realimage.copy(0, 0, w, h)
+                self.image = self.realimage.copy(0, 0, int(w), int(h))
             else:
                 self.image = self.realimage
 
@@ -752,6 +772,11 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
             newy = newy - parent.y()
         except RuntimeError:
             # Must catch this error -> if parent is deleted
+            return
+
+        if newx == oldx and newy == oldy:
+            # Don't set the position and update the scene if the item did not
+            # move.
             return
 
         # Set the pos

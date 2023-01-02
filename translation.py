@@ -29,9 +29,8 @@ class ReggieTranslation:
         self.InitAsEnglish()
 
         # Try to load it from an XML
-        try:
-            self.InitFromXML(name)
-        except Exception:
+        ok = self.InitFromXML(name)
+        if not ok:
             self.InitAsEnglish()
 
     def InitAsEnglish(self):
@@ -42,7 +41,7 @@ class ReggieTranslation:
         self.version = 1.0
         self.translator = 'Treeki, Tempus'
 
-        self.files = {
+        self.files = { None: {
             'bga': os.path.join('reggiedata', 'bga.txt'),
             'bgb': os.path.join('reggiedata', 'bgb.txt'),
             'entrancetypes': os.path.join('reggiedata', 'entrancetypes.txt'),
@@ -54,7 +53,7 @@ class ReggieTranslation:
             'tilesetinfo': os.path.join('reggiedata', 'tilesetinfo.xml'),
             'ts1_descriptions': os.path.join('reggiedata', 'ts1_descriptions.txt'),
             'external-actors': os.path.join('reggiedata', 'external', 'actors.xml')
-        }
+        }}
 
         self.strings = {
             'AboutDlg': {
@@ -87,10 +86,10 @@ class ReggieTranslation:
                 15: 'None',
                 16: '[CUSTOM]',
                 17: '[CUSTOM] [name]',
-                18: 'Custom filename... [name]',
-                19: '[name] ([file])',
-                20: 'Enter a Filename',
-                21: 'Enter the name of a custom tileset file to use. It must be placed in the game\'s Stage\\Texture or Unit folder in order for Reggie to recognize it. Do not add the \'.arc\' or \'.arc.LH\' extension at the end of the filename.',
+                18: None,  # REMOVED: 'Custom filename... [name]',
+                19: None,  # REMOVED: '[name] ([file])',
+                20: None,  # REMOVED: 'Enter a Filename',
+                21: None,  # REMOVED: 'Enter the name of a custom tileset file to use. It must be placed in the game\'s Stage\\Texture or Unit folder in order for Reggie to recognize it. Do not add the \'.arc\' or \'.arc.LH\' extension at the end of the filename.',
                 22: None,  # REMOVED: 'Unknown Value 1:'
                 23: None,  # REMOVED: 'Unknown Value 2:'
                 24: None,  # REMOVED: 'Unknown Value 3:'
@@ -140,7 +139,7 @@ class ReggieTranslation:
                     '0.875x',
                     '1x',
                     'None',
-                    '1.25x',
+                    '1.2x',
                     '1.5x',
                     '2x',
                     '4x',
@@ -154,8 +153,8 @@ class ReggieTranslation:
                 8: 'Y:',
                 9: '[b]Position (Y):[/b][br]Sets the vertical offset of your background',
                 10: 'Scroll Rate:',
-                11: '[b]Scroll Rate (X):[/b][br]Changes the rate that the background moves in[br]relation to Mario when he moves horizontally.[br]Values higher than 1x may be glitchy!',
-                12: '[b]Scroll Rate (Y):[/b][br]Changes the rate that the background moves in[br]relation to Mario when he moves vertically.[br]Values higher than 1x may be glitchy!',
+                11: '[b]Scroll Rate (X):[/b][br]Changes the rate that the background moves in relation to Mario when he moves horizontally.[br]Values higher than 1x may be glitchy!',
+                12: '[b]Scroll Rate (Y):[/b][br]Changes the rate that the background moves in relation to Mario when he moves vertically.[br]Values higher than 1x may be glitchy!',
                 13: 'Zoom:',
                 14: '[b]Zoom:[/b][br]Sets the zoom level of the background image',
                 15: (
@@ -185,6 +184,7 @@ class ReggieTranslation:
                 1: 'Error',
                 2: 'This folder doesn\'t have all of the files from the extracted New Super Mario Bros. Wii Stage folder.',
                 3: 'This folder doesn\'t seem to have the required files. In order to use Reggie Next in New Super Mario Bros Wii mode, you need the Stage folder from New Super Mario Bros. Wii, including the Texture folder and the level files contained within it.',
+                4: 'Choose the Texture folder from [game]',
             },
             'Comments': {
                 0: '[x], [y]: [text]',
@@ -207,7 +207,7 @@ class ReggieTranslation:
                 7: 'There is no start entrance in this area.',
                 8: 'The start entrance is too close to the left edge of the zone.',
                 9: 'An entrance is outside of a zone.',
-                10: 'There are more than 8 zones in this area.',
+                10: 'There are more than 6 zones in this area.',
                 11: 'There are no zones in this area.',
                 12: 'Some zones are positioned too close together.',
                 13: 'A zone is positioned too close to the edges of this area.',
@@ -244,7 +244,7 @@ class ReggieTranslation:
                 12: 'Connected Pipe',
                 13: '[b]Connected Pipe:[/b][br]This box allows you to enable an unused/broken feature in the game. It allows the pipe to function like the pipes in SMB3 where Mario simply goes through the pipe. However, it doesn\'t work correctly.',
                 14: 'Connected Pipe Reverse',
-                15: '[b]Connected Pipe:[/b][br]This box allows you to enable an unused/broken feature in the game. It allows the pipe to function like the pipes in SMB3 where Mario simply goes through the pipe. However, it doesn\'t work correctly.',
+                15: '[b]Connected Pipe Reverse:[/b][br]This box tells the connected pipe whether or not it should follow its path in reverse (backwards).',
                 16: 'Path ID:',
                 17: '[b]Path ID:[/b][br]Use this option to set the path number that the connected pipe will follow.',
                 18: 'Links to Forward Pipe',
@@ -263,6 +263,10 @@ class ReggieTranslation:
                     'Right',
                 ),
                 28: '([id]) [name]',
+                29: 'Send to World Map',
+                30: '[b]Send to World Map:[/b][br]If this is checked, the player will be sent to the world map when entering this entrance.',
+                31: 'Spawn Half a Tile Left',
+                32: '[b]Spawn Half a Tile Left:[/b][br]If this is checked, the entrance will spawn Mario half a tile to the left.',
             },
             'Entrances': {
                 0: '[b]Entrance [ent]:[/b][br]Type: [type][br][i][dest][/i]',
@@ -271,7 +275,8 @@ class ReggieTranslation:
                 3: '(arrives at entrance [id] in this area)',
                 4: '(arrives at entrance [id] in area [area])',
                 5: '[id]: [name] (cannot be entered) at [x], [y]',
-                6: '[id]: [name] (enterable) at [x], [y]'
+                6: '[id]: [name] (enterable) at [x], [y]',
+                7: '(goes to world map)',
             },
             'Err_BrokenSpriteData': {
                 0: 'Warning',
@@ -293,6 +298,7 @@ class ReggieTranslation:
             'Err_Decompress': {
                 0: 'Error',
                 1: 'Failed to decompress the LH-compressed file [file].',
+                2: 'Failed to decompress the LZ-compressed file [file].',
             },
             'Err_InvalidLevel': {
                 0: 'This file doesn\'t seem to be a valid level.',
@@ -302,10 +308,6 @@ class ReggieTranslation:
                 1: 'Sorry, you seem to be missing the required data files for Reggie Next to work. Please redownload your copy of the editor.',
                 2: 'Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor. These are the files you are missing: [files]',
             },
-            'Err_MissingLevel': {
-                0: 'Error',
-                1: 'Cannot find the required level file [file]. Check your Stage folder and make sure it exists.',
-            },
             'Err_MissingTileset': {
                 0: 'Error',
                 1: 'Cannot find the required tileset file [file]. Check your Stage folder and make sure it exists.',
@@ -314,6 +316,7 @@ class ReggieTranslation:
                 0: 'Error',
                 1: 'Error while Reggie was trying to save the level:[br](#[err1]) [err2][br][br](Your work has not been saved! Try saving it under a different filename or in a different folder.)',
                 2: 'Error while Reggie was trying to save the level:[br]The original file data ([orig-len] bytes) exceeded the fixed length ([pad-len] bytes).[br][br](Your work has not been saved! Increase the fixed length in the Preferences Dialog.)',
+                3: 'Error while Reggie was trying to save the level:[br]An error occurred while compressing the level. Is it too big? The uncompressed size is [file-size] bytes.[br][br](Your work has not been saved! Try saving without compression or removing elements from your level.)',
             },
             'FileDlgs': {
                 0: 'Choose a level archive',
@@ -321,11 +324,12 @@ class ReggieTranslation:
                 2: 'All Files',
                 3: 'Save As: Choose a new filename',
                 4: 'Portable Network Graphics',
-                5: 'Compressed Level Archives',
+                5: 'LH-Compressed Level Archives',
                 6: 'Choose a stamp archive',
                 7: 'Stamps File',
                 8: 'Save Copy: Choose a new filename',
                 9: 'All Supported Level Archives',
+                10: 'LZ-Compressed Level Archives',
             },
             'Gamedefs': {
                 0: 'This game has custom sprite images',
@@ -623,7 +627,7 @@ class ReggieTranslation:
                 21: 'Available Themes',
                 22: 'Preview',
                 23: 'Use Nonstandard Window Style',
-                24: '[b]Use Nonstandard Window Style[/b][br]If this is checkable, the selected theme specifies a[br]window style other than the default. In most cases, you[br]should leave this checked. Uncheck this if you dislike[br]the style this theme uses.',
+                24: '[b]Use Nonstandard Window Style[/b][br]If this is checkable, the selected theme specifies a window style other than the default. In most cases, you should leave this checked. Uncheck this if you dislike the style this theme uses.',
                 25: 'Options',
                 26: '[b][name][/b][br]By [creator][br][description]',
                 27: None,  # REMOVED: 'Tilesets:',
@@ -636,6 +640,8 @@ class ReggieTranslation:
                 34: 'Hide Reset Spritedata button',
                 35: 'Pad level with null bytes',
                 36: 'Fixed level size (bytes)',
+                37: 'Place objects at their full size',
+                38: 'Display rectangles indicating the zone bounds',
             },
             'ScrShtDlg': {
                 0: 'Choose a Screenshot source',
@@ -785,7 +791,7 @@ class ReggieTranslation:
                 4: 'New',
                 5: 'Delete',
                 6: 'Warning',
-                7: 'You are trying to add more than 8 zones to a level - keep in mind that without the proper fix to the game, this will cause your level to [b]crash[/b] or have other strange issues![br][br]Are you sure you want to do this?',
+                7: 'You are trying to add more than 6 zones to a level - keep in mind that without the proper fix to the game, this will cause your level to [b]crash[/b] or have other strange issues![br][br]Are you sure you want to do this?',
                 8: 'Dimensions',
                 9: 'X position:',
                 10: '[b]X position:[/b][br]Sets the X Position of the upper left corner',
@@ -799,15 +805,15 @@ class ReggieTranslation:
                 18: '[b]Preset:[/b][br]Snaps the zone to common sizes.',
                 19: 'Rendering and Camera',
                 20: 'Zone Theme:',
-                21: '[b]Zone Theme:[/b][br]Changes the way models and parts of the background are rendered (for blurring, darkness, lava effects, and so on).',
+                21: '[b]Zone Theme:[/b][br]Changes the way models and parts of the background are rendered (for blurring, darkness, lava effects, and so on).[br]Certain Zone Themes may have additional affects. For example, when "Ghost House" is selected, blocks with items jumping out of them make a Boo laugh.[br][b]Note:[/b] Settings with an asterisk appear to the look the same as "Overworld".',
                 22: 'Terrain Lighting:',
                 23: '[b]Terrain Lighting:[/b][br]Changes the way the terrain is rendered. It also affects the parts of the background which the normal theme doesn\'t change.',
                 24: 'Normal',
                 25: '[b]Visibility - Normal:[/b][br]Sets the visibility mode to normal.',
                 26: 'Layer 0 Spotlight',
-                27: '[b]Visibility - Layer 0 Spotlight:[/b][br]Sets the visibility mode to spotlight. In Spotlight mode,[br]moving behind layer 0 objects enables a spotlight that[br]follows Mario around.',
+                27: '[b]Visibility - Layer 0 Spotlight:[/b][br]Sets the visibility mode to spotlight. In Spotlight mode, moving behind layer 0 objects enables a spotlight that follows Mario around.',
                 28: 'Full Darkness',
-                29: '[b]Visibility - Full Darkness:[/b][br]Sets the visibility mode to full darkness. In full dark mode,[br]the screen is completely black and visibility is only provided[br]by the available spotlight effect. Stars and some sprites[br]can enhance the default visibility.',
+                29: '[b]Visibility - Full Darkness:[/b][br]Sets the visibility mode to full darkness. In full dark mode, the screen is completely black and visibility is only provided by the available spotlight effect. Stars and some sprites can enhance the default visibility.',
                 30: None,  # REMOVED: 'X Tracking:',
                 31: None,  # REMOVED: '[b]X Tracking:[/b][br]Allows the camera to track Mario across the X dimension.[br]Turning off this option centers the screen horizontally in the view, producing a stationary camera mode.',
                 32: None,  # REMOVED: 'Y Tracking:',
@@ -838,7 +844,7 @@ class ReggieTranslation:
                     'Spotlight: Large',
                     'Spotlight: Extremely Large',
                 ),
-                44: '[b]Visibility:[/b][br]Small - A small, centered spotlight affords visibility through layer 0.[br]Large - A large, centered spotlight affords visibility through layer 0[br]Full Screen - the entire screen is revealed whenever Mario walks behind layer 0',
+                44: '[b]Visibility:[/b][br]Small - A small, centered spotlight affords visibility through layer 0.[br]Large - A large, centered spotlight affords visibility through layer 0[br]Extremely Large - An extremely large, centered spotlight, which spans the whole screen at all but the largest zoom levels, affords visibility through layer 0',
                 45: (
                     'Darkness: Large Foglight',
                     'Darkness: Lightbeam',
@@ -857,24 +863,24 @@ class ReggieTranslation:
                 53: 'Background Music:',
                 54: '[b]Background Music:[/b][br]Changes the background music',
                 55: 'Sound Modulation:',
-                56: '[b]Sound Modulation:[/b][br]Changes the sound effect modulation',
+                56: '[b]Sound Modulation:[/b][br]Changes the sound effect modulation to fit the appropriate theme.[br][b]Note:[/b] The settings with an asterisk are identical to the setting with no asterisk. "Cavern Echo*" is used in Retail 02-03, whereas "None*" is unused.',
                 57: (
-                    'Normal',
-                    'Wall Echo',
-                    'Room Echo',
-                    'Double Echo',
-                    'Cave Echo',
+                    'None',
+                    'Cavern Echo',
+                    'Cavern Echo 2',
                     'Underwater Echo',
-                    'Triple Echo',
-                    'High Pitch Echo',
-                    'Metal Echo',
-                    'Flat',
-                    'Dull',
-                    'Wall Echo',
-                    'Rich',
-                    'Triple Underwater',
-                    'Ring Echo',
-                    'Normal',
+                    'Boss Room Echo',
+                    'Tower Echo',
+                    'Castle Echo',
+                    'Ghost House Indoor Echo',
+                    'Sewer Echo',
+                    'Mountain Echo',
+                    'Item House/Credits Echo',
+                    'Cavern Echo*',
+                    'Airship Indoor Echo',
+                    'River Cavern Echo',
+                    'Lava Cavern Echo',
+                    'None*',
                 ),
                 58: 'Boss Flag:',
                 59: '[b]Boss Flag:[/b][br]Set for bosses to allow proper music switching by sprites',
@@ -912,51 +918,60 @@ class ReggieTranslation:
 
     def InitFromXML(self, name):
         """
-        Parses the translation XML
+        Parses the translation XML - returns True if successful, False if not.
         """
         if name in ('', None, 'None'): return
         name = str(name)
         MaxVer = 1.0
 
-        # Parse the file (errors are handled by __init__())
-        path = 'reggiedata/translations/' + name + '/main.xml'
-        tree = ElementTree.parse(path)
+        # Parse the file
+        path = os.path.join('reggiedata', 'translations', name, 'main.xml')
+
+        try:
+            tree = ElementTree.parse(path)
+        except FileNotFoundError:
+            return False
+
         root = tree.getroot()
 
         # Add attributes
         # Name
-        if 'name' not in root.attrib: raise Exception
+        if 'name' not in root.attrib: return False
         self.name = root.attrib['name']
         # Version
-        if 'version' not in root.attrib: raise Exception
+        if 'version' not in root.attrib: return False
         self.version = float(root.attrib['version'])
-        if self.version > MaxVer: raise Exception
+        if self.version > MaxVer: return False
         # Translator
-        if 'translator' not in root.attrib: raise Exception
+        if 'translator' not in root.attrib: return False
         self.translator = root.attrib['translator']
 
         # Parse the nodes
-        files = {}
         strings = False
-        addpath = 'reggiedata/translations/' + name + '/'
+        base_path = os.path.join('reggiedata', 'translations', name)
         for node in root:
             if node.tag.lower() == 'file':
                 # It's a file node
                 name = node.attrib['name']
-                path = addpath + node.attrib['path']
-                files[name] = path
+                path = os.path.join(base_path, node.attrib['path'])
+                self.files[None][name] = path
             elif node.tag.lower() == 'strings':
                 # It's a strings node
-                strings = addpath + node.attrib['path']
+                strings = os.path.join(base_path, node.attrib['path'])
+            elif node.tag.lower() == 'for':
+                # Translation for other gamedefs
+                target = node.attrib['name']
+                self.files[target] = {}
+                for child in node:
+                    if child.tag.lower() == 'file':
+                        name = child.attrib['name']
+                        self.files[target][name] = os.path.join(base_path, child.attrib['path'])
 
         # Get rid of the XML stuff
-        del tree, root
-
-        # Overwrite self.files with files
-        for index in files: self.files[index] = files[index]
+        del tree, root, node, child
 
         # Check for a strings node
-        if not strings: raise Exception
+        if not strings: return False
 
         # Parse the strings
         tree = ElementTree.parse(strings)
@@ -975,14 +990,14 @@ class ReggieTranslation:
                 if not hasattr(string, 'attrib'): continue
                 strValue = None
                 if string.tag.lower() == 'string':
-                    # String node; this is easy
-                    strValue = string[0]
+                    # String node
+                    strValue = string.text
                 elif string.tag.lower() == 'stringlist':
                     # Not as easy, but not hard
                     strValue = []
                     for entry in string:
                         if entry.tag.lower() == 'entry':
-                            strValue.append(entry[0])
+                            strValue.append(entry.text)
                     strValue = tuple(strValue)
 
                 # Add this string to sectionStrings
@@ -997,6 +1012,8 @@ class ReggieTranslation:
             if index not in self.strings: self.strings[index] = {}
             for index2 in strings[index]:
                 self.strings[index][index2] = strings[index][index2]
+
+        return True
 
     def string(self, *args):
         """
@@ -1016,7 +1033,7 @@ class ReggieTranslation:
             else:
                 mode = 'a'
 
-            with open('ReggieErrors.txt', mode) as f:
+            with open('ReggieErrors.txt', mode, encoding='utf-8') as f:
                 f.write(text)
 
             return text
@@ -1063,7 +1080,8 @@ class ReggieTranslation:
 
     def stringOneLine(self, *args):
         """
-        Works like string(), but gurantees that the resulting string will have no line breaks or <br>s.
+        Works like string(), but guarantees that the resulting string will have
+        no line breaks or <br>s.
         """
         newstr = self.string(*args)
         return newstr.replace('\n', ' ').replace('<br>', ' ')
@@ -1077,20 +1095,23 @@ class ReggieTranslation:
         except Exception:
             return ('ReggieTranslation.stringList() ERROR:', section, numcode)
 
-    def path(self, key):
+    def path(self, key, gamedef=None):
         """
         Returns the path to the file indicated by key
         """
+        if gamedef == self.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
+            gamedef = None
+
         try:
-            return self.files[key]
-        except Exception:
-            # (print, save, return) an error message
-            text = 'ReggieTranslation.path() ERROR: ' + key
-            print(text)
-            F = open('ReggieErrors.txt', 'w')
-            F.write(text)
-            F.close()
-            raise SystemExit
+            return self.files[gamedef][key]
+        except KeyError:
+            return None
+
+    def paths(self, key, gamedef_names=None):
+        if gamedef_names is None:
+            return [self.path(key)]
+
+        return [self.path(key, name) for name in gamedef_names]
 
     def generateXML(self):
         """

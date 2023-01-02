@@ -24,276 +24,208 @@
 
 
 # lz77_huffman.py
-# LH (LZ77+Huffman) decompressor in Python.
-# Decompiled from NSMBW and simplified by hand
-
-# Previously influenced by the sead::SZSDecompressor decompilation:
-# https://github.com/open-ead/sead/blob/master/modules/src/resource/seadSZSDecompressor.cpp
+# Pure-Python decompressing functions for LH-compressed files
 
 
 ################################################################
 ################################################################
 
+import ctypes
+import sys
 
-from struct import unpack_from
+u8 = ctypes.c_ubyte
+u32 = ctypes.c_uint
 
-
-def U8toS8(x):
-    x &= 0xFF
-    return x - ((x & 0x80) << 1)
-
-
-def U32toS32(x):
-    x &= 0xFFFFFFFF
-    return x - ((x & 0x80000000) << 1)
-
-
-def U64toS64(x):
-    x &= 0xFFFFFFFFFFFFFFFF
-    return x - ((x & 0x8000000000000000) << 1)
+class LHContext():
+    """
+    A storage place for LH data while decompressing
+    """
+    def __init__(self):
+        self.buf1 = bytearray(0x800)
+        self.buf2 = bytearray(0x80)
 
 
-def Swap32(x):
-    x &= 0xFFFFFFFF
-    return (x << 24 |
-           (x & 0xFF00) << 8 |
-            x >> 24 |
-            x >> 8 & 0xFF00) & 0xFFFFFFFF
+def loadLHPiece(output_buffer: bytes, inData: bytes, entry_size: u8) -> int:
+    """
+    Loads an LH header from 'inData' into 'output_buffer'. Each entry in the header has
+    'entry_size' bits. Returns the number of bytes read.
+    """
+    r6 = 1 << entry_size.value
+
+    out_index = u32(2)  # The index at which the next entry should be written
+    saved_entries = u32(1)  # The number of entries that are saved in the out buffer
+    bytes_queue = u32(0)  # The 4-byte queue of half-parsed entries
+    queue_size = u32(0)  # Number of bits in the queue
+    entry_mask = u32(r6 - 1)  # The bitmask for an entry in the header
+    r30 = u32(r6 << 1)
+
+    bytes_read = u32()  # The number of header bytes that are read
+
+    if entry_size.value <= 8:
+        r6 = inData[0]
+        bytes_read.value = 1
+    else:
+        r6 = inData[0] | (inData[1] << 8)
+        bytes_read.value = 2
+
+    data_size = u32((r6 + 1) << 2)  # The header length in bytes
+
+    while bytes_read.value < data_size.value:
+        # If the queue is not full enough to extract an entry, fill it until it
+        # is full enough
+        if queue_size.value < entry_size.value:
+            # Calculate the number of bytes that need to be added
+            r6 = (entry_size.value - queue_size.value + 7) >> 3
+
+            # Load the input in Big Endian into the bytes queue
+            for byte in inData[bytes_read.value : bytes_read.value + r6]:
+                bytes_queue.value <<= 8
+                bytes_queue.value |= byte
+
+            # Update the copied amount and queue size
+            bytes_read.value += r6
+            queue_size.value += r6 << 3
+
+        if saved_entries.value < r30.value:
+            # Save the value as a short into the output buffer.
+            entry = (bytes_queue.value >> (queue_size.value - entry_size.value)) & entry_mask.value
+
+            output_buffer[out_index.value] = entry >> 8
+            output_buffer[out_index.value + 1] = entry & 0xFF
+
+            out_index.value += 2
+            saved_entries.value += 1
+
+        # An entry was extracted, so reduce the queue size
+        queue_size.value -= entry_size.value
+
+    return bytes_read.value
 
 
-def Swap16(x):
-    x &= 0xFFFF
-    return (x << 8 | x >> 8) & 0xFFFF
+def UncompressLH(inData: bytes) -> bytes:
+    """
+    Decompresses LH data. Argument should be a bytes or bytearray object.
+    """
+    # Make context to store some buffers that are needed during decompression.
+    context = LHContext()
 
+    # Make a memory view for efficient slicing of the input data
+    inBuf = memoryview(inData)
 
-class BitReader:
-    def __init__(self, srcp, srcCount, bitStream, bitStreamLen, srcpOffs=0):
-        self.srcp = srcp
-        self.srcpOffs = srcpOffs
-        self.srcCount = srcCount
-        self.bitStream = bitStream
-        self.bitStreamLen = bitStreamLen
+    # Read the header to figure out how large the decompressed file is
+    outSize = u32(inBuf[1] | (inBuf[2] << 8) | (inBuf[3] << 16))
+    inBuf = inBuf[4:]
 
-    def readS32(self, nBits):
-        while self.bitStreamLen < nBits:
-            if self.srcCount == 0:
-                return -1
+    if outSize.value == 0:
+        outSize = inBuf[0] | (inBuf[1] << 8) | (inBuf[2] << 16) | (inBuf[3] << 24)
+        inBuf = inBuf[4:]
 
-            self.bitStream <<= 8
-            self.bitStream += self.srcp[self.srcpOffs]
-            self.srcpOffs += 1
-            self.srcCount -= 1
-            self.bitStreamLen += 8
+    # Make a buffer to store the decompressed file
+    outBuf = bytearray(outSize.value)
 
-        ret = U32toS32(self.bitStream >> self.bitStreamLen - nBits & (1 << nBits) - 1)
-        self.bitStreamLen -= nBits
+    inBuf = inBuf[loadLHPiece(context.buf1, inBuf, u8(9)):]
+    inBuf = inBuf[loadLHPiece(context.buf2, inBuf, u8(5)):]
 
-        return ret
+    r0 = u32(0x10)
+    r3 = u32(0x100)
+    r4 = u32(0)
+    r5 = u32(0)
+    r6 = u32(0)
+    r7, r8, r9, r10, r11, r12, r25 = [u32() for i in range(7)]
+    outIndex = u32(0)
+    flag = False
 
-    def readS64(self, nBits):
-        overflow = 0
+    while outIndex.value < outSize.value:
 
-        while self.bitStreamLen < nBits:
-            if self.srcCount == 0:
-                return -1
+        r12.value = 2 # Used as an offset into context.buf1
+        r7.value = r4.value # Used as an offset into inBuf
 
-            if self.bitStreamLen > 24:
-                overflow = self.bitStream >> 24 & 0xFF
+        enter = True
+        while flag or enter:
+            enter = False
 
-            self.bitStream <<= 8
-            self.bitStream += self.srcp[self.srcpOffs]
-            self.srcpOffs += 1
-            self.srcCount -= 1
-            self.bitStreamLen += 8
+            if r6.value == 0:
+                r5.value = inBuf[r7.value]
+                r6.value = 8
+                r4.value += 1
+                r7.value += 1
 
-        ret = self.bitStream
-        ret |= overflow << 32
-        ret = U64toS64(ret >> self.bitStreamLen - nBits & (1 << nBits) - 1)
-        self.bitStreamLen -= nBits
+            r11.value = (context.buf1[r12.value] << 8) | context.buf1[r12.value + 1]
+            r6.value -= 1
+            r9.value = (r5.value >> r6.value) & 1
 
-        return ret
+            flag = (r11.value & (r3.value >> r9.value) == 0)
+            r9.value |= ((r11.value & 0x7F) + 1) << 1
 
-
-def LHDecompressor_getDecompSize(srcp):
-    size = unpack_from('<I', srcp, 0)[0] >> 8
-    if size == 0:
-        size = unpack_from('<I', srcp, 4)[0]
-
-    return size
-
-def LHDecompressor_decomp(dst, src, srcSize):
-    reader = BitReader(src, srcSize, 0, 0)
-
-    bits64 = reader.readS64(32)
-    if bits64 < 0:
-        return -1
-
-    sizeAndMagic = Swap32(bits64)
-    if (sizeAndMagic & 0xF0) != 0x40:
-        return -1
-
-    destCount = U32toS32(sizeAndMagic >> 8)
-    if destCount == 0:
-        bits64 = reader.readS64(32)
-        if bits64 < 0:
-            return -1
-
-        destCount = U32toS32(Swap32(bits64))
-
-    bits32 = reader.readS32(16)
-    if bits32 < 0:
-        if destCount == 0 and 0x20 < reader.bitStreamLen:
-            return -3
-
-        return destCount
-
-    lengthHuffTbl = [0 for _ in range(1024)]
-    currentIdx = 1
-    huffLen = (Swap16(bits32) + 1 << 5) - 16
-
-    while huffLen >= 9:
-        bits32 = reader.readS32(9)
-        if bits32 < 0:
-            if destCount == 0 and 0x20 < reader.bitStreamLen:
-                return -3
-
-            return destCount
-
-        lengthHuffTbl[currentIdx] = bits32 & 0xFFFF
-        currentIdx += 1
-        huffLen -= 9
-
-    if huffLen > 0:
-        bits32 = reader.readS32(huffLen & 0xFF)
-        if bits32 < 0:
-            if destCount == 0 and 0x20 < reader.bitStreamLen:
-                return -3
-
-            return destCount
-
-        huffLen = 0
-
-    bits32 = reader.readS32(8)
-    if bits32 < 0:
-        if destCount == 0 and 0x20 < reader.bitStreamLen:
-            return -3
-
-        return destCount
-
-    offsetHuffTbl = [0 for _ in range(64)]
-    currentIdx = 1
-    huffLen = ((bits32 & 0xFFFF) + 1 << 5) - 8
-
-    while huffLen >= 5:
-        bits32 = reader.readS32(5)
-        if bits32 < 0:
-            if destCount == 0 and 0x20 < reader.bitStreamLen:
-                return -3
-
-            return destCount
-
-        offsetHuffTbl[currentIdx] = bits32 & 0xFFFF
-        currentIdx += 1
-        huffLen -= 5
-
-    if huffLen > 0:
-        bits32 = reader.readS32(huffLen & 0xFF)
-        if bits32 < 0:
-            if destCount == 0 and 0x20 < reader.bitStreamLen:
-                return -3
-
-            return destCount
-
-        huffLen = 0
-
-    dstOffs = 0
-
-    while destCount > 0:
-        currentNode = lengthHuffTbl; currentNodeOffs = 1
-
-        while True:
-            bits32 = reader.readS32(1)
-            if bits32 < 0:
-                if destCount == 0 and 0x20 < reader.bitStreamLen:
-                    return -3
-
-                return destCount
-
-            shift = bits32 & 1
-            offset = ((currentNode[currentNodeOffs] & 0x7F) + 1 << 1) + shift
-
-            if currentNode[currentNodeOffs] & (0x100 >> shift):
-                copyLen = currentNode[(currentNodeOffs * 2 & ~3) // 2 + offset]
-                currentNode = offsetHuffTbl; currentNodeOffs = 1
-                break
-
+            if flag:
+                r12.value &= ~3
+                r8.value = r9.value << 1
+                r12.value += r8.value
             else:
-                currentNodeOffs = (currentNodeOffs * 2 & ~3) // 2 + offset
+                r8.value = (r12.value & ~3) + (r9.value << 1)
+                r7.value = (context.buf1[r8.value] << 8) | context.buf1[r8.value + 1]
 
-        if copyLen < 0x100:
-            dst[dstOffs] = copyLen & 0xFF
-            dstOffs += 1
-            destCount -= 1
+        if r7.value < 0x100:
+            outBuf[outIndex.value] = u8(r7.value).value
+            outIndex.value += 1
+            continue
 
-        else:
-            n = (copyLen & 0xFF) + 3 & 0xFFFF
+        # block copy?
+        r7.value &= 0xFF
+        r25.value = 2
+        r7.value += 3
+        r7.value &= 0xFFFF # r7 is really an ushort, probably
+        r8.value = r4.value # used as an offset into inBuf
 
-            while True:
-                bits32 = reader.readS32(1)
-                if bits32 < 0:
-                    if destCount == 0 and 0x20 < reader.bitStreamLen:
-                        return -3
+        enter = True
+        while enter or flag:
+            enter = False
 
-                    return destCount
+            if r6.value == 0:
+                r5.value = inBuf[r8.value]
+                r6.value = 8
+                r4.value += 1
+                r8.value += 1
 
-                shift = bits32 & 1
-                offset = ((currentNode[currentNodeOffs] & 7) + 1 << 1) + shift
+            r12.value = (context.buf2[r25.value] << 8) | context.buf2[r25.value + 1]
+            r6.value -= 1
+            r10.value = (r5.value >> r6.value) & 1
+            r11.value = r12.value & 7
 
-                if currentNode[currentNodeOffs] & (0x10 >> shift):
-                    currentNodeOffs = (currentNodeOffs * 2 & ~3) // 2
-                    nOffsetBits = U8toS8(currentNode[currentNodeOffs + offset])
-                    break
+            flag = (r12.value & (r0.value >> r10.value) == 0)
+            r10.value |= (r11.value + 1) << 1
 
-                else:
-                    currentNodeOffs = (currentNodeOffs * 2 & ~3) // 2 + offset
-
-            if nOffsetBits <= 1:
-                bits32 = nOffsetBits
-
+            if flag:
+                r25.value &= ~3
+                r25.value += r10.value << 1
             else:
-                bits32 = reader.readS32(nOffsetBits - 1 & 0xFF)
-                if bits32 < 0:
-                    if destCount == 0 and 0x20 < reader.bitStreamLen:
-                        return -3
+                r9.value = r25.value & ~3
+                r8.value = r10.value << 1
+                r11.value = (context.buf2[r9.value + r8.value] << 8) | context.buf2[r9.value + r8.value + 1]
 
-                    return destCount
+        r10.value = 0
+        if r11.value != 0:
+            r10.value = 1
 
-            if nOffsetBits >= 2:
-                bits32 |= 1 << (nOffsetBits - 1)
+            for _ in range((r11.value - 1) & 0xFFFF):
+                if r6.value == 0:
+                    r6.value = 8
+                    r5.value = inBuf[r4.value]
+                    r4.value += 1
 
-            nOffsetBits = -1
-            lzOffset = bits32 + 1 & 0xFFFF
+                r6.value -= 1
+                r10.value = ((r10.value << 1) & 0xFFFF) | ((r5.value >> r6.value) & 1)
 
-            if destCount < n:
-                n = destCount & 0xFFFF
+        if (outIndex.value + r7.value) > outSize.value:
+            r7.value = outSize.value - outIndex.value
+            r7.value &= 0xFFFF
 
-            destCount -= n
-            for _ in range(n, 0, -1):
-                dst[dstOffs] = dst[dstOffs - lzOffset]
-                dstOffs += 1
+        r10.value = (r10.value + 1) & 0xFFFF
 
-    if 0x20 < reader.bitStreamLen:
-        return -3
+        # Block copy loop
+        for x in range(outIndex.value, outIndex.value + (r7.value & 0xFFFF)):
+            outBuf[x] = outBuf[x - r10.value]
 
-    return 0
+        outIndex.value += r7.value & 0xFFFF
 
-
-def UncompressLH(src):
-    dstSize = LHDecompressor_getDecompSize(src)
-    dst = bytearray(dstSize)
-
-    res = LHDecompressor_decomp(dst, src, len(src))
-    if res != 0:
-        raise RuntimeError("Failed to uncompress entire LH source data! Error code: %d" % res)
-
-    return bytes(dst)
+    return bytes(outBuf)

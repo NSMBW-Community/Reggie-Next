@@ -17,7 +17,7 @@ class BGDialog(QtWidgets.QDialog):
         """
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle(globals_.trans.string('BGDlg', 0))
-        self.setWindowIcon(GetIcon('backgrounds'))
+        self.setWindowIcon(GetIcon('background'))
 
         self.inner_layout = QtWidgets.QVBoxLayout()
         self.bga_tabWidget = QtWidgets.QTabWidget()
@@ -336,7 +336,7 @@ class BGTab(QtWidgets.QWidget):
                 filename = os.path.join("reggiedata", "bga" if self.is_bga else "bgb", "no_preview.png")
 
             pix = QtGui.QPixmap(filename)
-            pix = pix.scaled(pix.width() * scale, pix.height() * scale)
+            pix = pix.scaled(int(pix.width() * scale), int(pix.height() * scale))
             self.preview[box_num].setPixmap(pix)
 
         # Alignment mode

@@ -605,7 +605,7 @@ def RenderObject(tileset, objnum, width, height, fullslope=False):
     except:
         obj = None
 
-    if obj is None or len(obj.rows) == 0:
+    if obj is None or not obj.rows:
         return dest
 
     # diagonal objects are rendered differently
@@ -620,7 +620,8 @@ def RenderObject(tileset, objnum, width, height, fullslope=False):
     afterRepeat = []
 
     for row in obj.rows:
-        if len(row) == 0: continue
+        if not row: continue
+
         if (row[0][0] & 2) != 0:
             repeatFound = True
             inRepeat.append(row)
@@ -785,7 +786,7 @@ def GetSlopeSections(obj):
     currentSection = None
 
     for row in obj.rows:
-        if len(row) > 0 and (row[0][0] & 0x80) != 0:  # begin new section
+        if row and (row[0][0] & 0x80) != 0:  # begin new section
             if currentSection is not None:
                 sections.append(CreateSection(currentSection))
             currentSection = []
@@ -857,13 +858,13 @@ def LoadTileset(idx, name, reload_=False):
         return False
 
     # find the tileset path
-    tileset_paths = reversed(globals_.gamedef.GetGamePaths())
+    tileset_paths = reversed(globals_.gamedef.GetTexturePaths())
 
     found = False
     for path in tileset_paths:
         if path is None: break
 
-        arcname = os.path.join(path, "Texture", name + ".arc.LH")
+        arcname = os.path.join(path, name + ".arc.LH")
 
         # Prioritise .arc.LH over regular .arc, just like the game does.
         if os.path.isfile(arcname):
@@ -1113,7 +1114,7 @@ def CheckTilesetAnimated(tileset):
         animFiles.append(f)
 
     # Quit if there's no animation
-    if len(animFiles) == 0:
+    if not animFiles:
         return False, None
     else:
         # This makes so many assumptions
@@ -1152,7 +1153,9 @@ def ProcessOverrides(idx, name):
 
     tsidx = globals_.OverriddenTilesets
 
-    if name in tsidx["Pa0"]:
+    # Automatically apply the Pa0 override if the tileset name starts with 'Pa0_'
+    # and the tileset is not excluded by setting 'override="no-Pa0"'
+    if name in tsidx["Pa0"] or (name.startswith("Pa0_") and name not in tsidx["no-Pa0"]):
         defs = globals_.ObjectDefinitions[idx]
         t = globals_.Tiles
 

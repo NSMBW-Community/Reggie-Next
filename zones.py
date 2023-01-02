@@ -19,17 +19,19 @@ class ZonesDialog(QtWidgets.QDialog):
         self.setWindowIcon(GetIcon('zones'))
 
         self.tabWidget = QtWidgets.QTabWidget()
-
         self.zoneTabs = []
+
+        num_zones = len(globals_.Area.zones)
+
         for i, z in enumerate(globals_.Area.zones):
-            ZoneTabName = globals_.trans.string('ZonesDlg', 3, '[num]', i + 1)
+            if num_zones <= 5:
+                zone_tab_name = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
+            else:
+                zone_tab_name = str(z.id + 1)
+
             tab = ZoneTab(z)
             self.zoneTabs.append(tab)
-            self.tabWidget.addTab(tab, ZoneTabName)
-
-        if self.tabWidget.count() > 5:
-            for tab in range(self.tabWidget.count()):
-                self.tabWidget.setTabText(tab, str(tab + 1))
+            self.tabWidget.addTab(tab, zone_tab_name)
 
         self.NewButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 4))
         self.DeleteButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 5))
@@ -40,7 +42,7 @@ class ZonesDialog(QtWidgets.QDialog):
 
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
-        # self.NewButton.setEnabled(len(self.zoneTabs) < 8)
+
         self.NewButton.clicked.connect(self.NewZone)
         self.DeleteButton.clicked.connect(self.DeleteZone)
 
@@ -50,54 +52,71 @@ class ZonesDialog(QtWidgets.QDialog):
         self.setLayout(mainLayout)
 
     def NewZone(self):
-        if len(self.zoneTabs) >= 8:
+        if len(self.zoneTabs) >= 6:
             result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('ZonesDlg', 6), globals_.trans.string('ZonesDlg', 7),
                                                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
             if result == QtWidgets.QMessageBox.No:
                 return
 
-        fake_bounds = [[0, 0, 0, 0, 0, 15, 0, 0]]
-        id = len(self.zoneTabs)
+        z = globals_.mainWindow.CreateZone(256, 256)
 
-        z = ZoneItem(256, 256, 448, 224, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, fake_bounds, id)
+        if len(self.zoneTabs) + 1 <= 5:
+            zone_tab_name = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
+        else:
+            zone_tab_name = str(z.id + 1)
+
         tab = ZoneTab(z)
         self.zoneTabs.append(tab)
+        self.tabWidget.addTab(tab, zone_tab_name)
 
-        tabamount = self.tabWidget.count()
+        tab_amount = self.tabWidget.count()
+        self.tabWidget.setCurrentIndex(tab_amount - 1)
 
-        if tabamount < 6:
-            ZoneTabName = globals_.trans.string('ZonesDlg', 3, '[num]', id + 1)
-        else:
-            ZoneTabName = str(id + 1)
 
-        self.tabWidget.addTab(tab, ZoneTabName)
-
-        if tabamount == 6:
-            for tab in range(tabamount):
-                self.tabWidget.setTabText(tab, str(tab.zoneObj.id + 1))
-
-    def DeleteZone(self):
-        curindex = self.tabWidget.currentIndex()
-        tabamount = self.tabWidget.count()
-        if tabamount == 0:
+        # Re-label zone tabs. This is only needed if the number of zones grows
+        # above 5, as the long names need to be replaced by short names. Since
+        # this function always adds a zone, it can never happen that the short
+        # name needs to be lengthened.
+        if tab_amount != 6:
             return
 
-        self.tabWidget.removeTab(curindex)
-        self.zoneTabs.pop(curindex)
+        # No need to do the last one, since that's the one we just added, and
+        # we already set that correctly.
+        for tab in range(tab_amount - 1):
+            widget = self.tabWidget.widget(tab)
 
-        # Relabel the ids
-        for tab in range(curindex, tabamount):
-            if tabamount < 6:
-                self.tabWidget.setTabText(tab, globals_.trans.string('ZonesDlg', 3, '[num]', tab + 1))
-            elif tabamount > 5:
-                self.tabWidget.setTabText(tab, str(tab + 1))
+            if widget is None:
+                break
 
-            # ensure the zone object is also updated
-            tab.zoneObj.id = tab
+            zone_id = widget.zoneObj.id
+            self.tabWidget.setTabText(tab, str(zone_id + 1))
 
-        if tabamount == 5:
-            for tab in range(curindex):
-                self.tabWidget.setTabText(tab, globals_.trans.string('ZonesDlg', 3, '[num]', tab + 1))
+    def DeleteZone(self):
+        index = self.tabWidget.currentIndex()
+        tab_amount = self.tabWidget.count()
+        if tab_amount == 0:
+            return
+
+        self.tabWidget.removeTab(index)
+        self.zoneTabs.pop(index)
+
+        new_tab_amount = tab_amount - 1
+
+        # Re-label zone tabs. This is only needed if the number of zones drops
+        # below 5, as the short names need to be replaced by long names. Since
+        # this function always removes zones, it can never happen that the long
+        # name needs to be shortened.
+        if new_tab_amount != 5:
+            return
+
+        for tab in range(new_tab_amount):
+            widget = self.tabWidget.widget(tab)
+
+            if widget is None:
+                break
+
+            zone_id = widget.zoneObj.id
+            self.tabWidget.setTabText(tab, globals_.trans.string('ZonesDlg', 3, '[num]', zone_id + 1))
 
 class ZoneTab(QtWidgets.QWidget):
     def __init__(self, z):
@@ -149,13 +168,13 @@ class ZoneTab(QtWidgets.QWidget):
         self.snapButton16.clicked.connect(lambda: self.HandleSnapTo16x16Grid(z))
 
         self.Zone_width = QtWidgets.QSpinBox()
-        self.Zone_width.setRange(300, 65535)
+        self.Zone_width.setRange(204, 65535)
         self.Zone_width.setToolTip(globals_.trans.string('ZonesDlg', 14))
         self.Zone_width.setValue(z.width)
         self.Zone_width.valueChanged.connect(self.PresetDeselected)
 
         self.Zone_height = QtWidgets.QSpinBox()
-        self.Zone_height.setRange(200, 65535)
+        self.Zone_height.setRange(112, 65535)
         self.Zone_height.setToolTip(globals_.trans.string('ZonesDlg', 16))
         self.Zone_height.setValue(z.height)
         self.Zone_height.valueChanged.connect(self.PresetDeselected)
@@ -170,7 +189,7 @@ class ZoneTab(QtWidgets.QWidget):
         # 704 x 384 (used multiple times; therefore it's important)
         # 944 x 448 (used in 9-3 zone 3)
         self.Zone_presets_values = (
-            '416x224', '448x224', '512x272', '560x304', '608x320', '704x384', '944x448'
+            '204x112', '308x168', '408x224', '468x256', '496x272', '556x304', '584x320', '700x384', '816x448'
         )
 
         self.Zone_presets = QtWidgets.QComboBox()
@@ -500,7 +519,7 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.Zone_music = QtWidgets.QComboBox()
         self.Zone_music.setToolTip(globals_.trans.string('ZonesDlg', 54))
-        for songid, text in getMusic():
+        for songid, text in globals_.MusicInfo:
             self.Zone_music.addItem(text, songid)
         self.Zone_music.setCurrentIndex(self.Zone_music.findData(z.music))
         self.Zone_music.currentIndexChanged.connect(self.handleMusicListSelect)
@@ -734,42 +753,3 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
     def handleScreenSizesChanged(self):
         if self.updating: return
         self.edited.emit()
-
-
-def getMusic():
-    """
-    Uses the current gamedef + translation to get the music data, and returns it as a list of tuples
-    """
-
-    transsong = globals_.trans.files['music']
-    gamedefsongs, isPatch = globals_.gamedef.recursiveFiles('music', True)
-    if isPatch:
-        paths = [transsong]
-        for path in gamedefsongs: paths.append(path)
-    else:
-        paths = gamedefsongs
-
-    songs = []
-    for path in paths:
-        musicfile = open(path)
-        data = musicfile.read()
-        musicfile.close()
-        del musicfile
-
-        # Split the data
-        data = data.split('\n')
-        while '' in data: data.remove('')
-        for i, line in enumerate(data): data[i] = line.split(':')
-
-        # Apply it
-        for songid, name in data:
-            found = False
-            for song in songs:
-                if song[0] == songid:
-                    song[1] = name
-                    found = True
-            if not found:
-                songs.append([songid, name])
-
-    return sorted(songs, key=lambda song: int(song[0]))
-

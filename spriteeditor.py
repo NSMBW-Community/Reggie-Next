@@ -7,6 +7,7 @@ import globals_
 from levelitems import SpriteItem, ListWidgetItem_SortsByOther
 from ui import GetIcon
 from dirty import SetDirty
+import common
 
 class DualBox(QtWidgets.QWidget):
     """
@@ -276,7 +277,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         comment = None  # str: comment text
         comment2 = None  # str: additional comment text
         commentAdv = None  # str: even more comment text
-        parent = None # SpriteEditorWidget: the widget this belongs to
+        parent = None  # SpriteEditorWidget: the widget this belongs to
+        idtype = None  # str: the idtype of this property
 
         def retrieve(self, data, bits=None):
             """
@@ -428,7 +430,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
             layout.addWidget(self.widget, row, 1)
 
-            col = 2
+            col = 3
             if comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
@@ -492,7 +494,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a combobox
         """
 
-        def __init__(self, title, bit, model, comment, required, _, comment2, commentAdv, layout, row, parent):
+        def __init__(self, title, bit, model, comment, required, _, comment2, commentAdv, idtype, layout, row, parent):
             """
             Creates the widget
             """
@@ -506,6 +508,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.comment = comment
             self.comment2 = comment2
             self.commentAdv = commentAdv
+            self.idtype = idtype
+            self.prev_value = 0
 
             self.widget = QtWidgets.QComboBox()
             self.widget.setModel(model)
@@ -517,9 +521,17 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             # label.setWordWrap(True)
 
             layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
-            layout.addWidget(self.widget, row, 1)
 
-            col = 2
+            if idtype is not None:
+                next_free_button = QtWidgets.QPushButton("Next Free")
+                next_free_button.clicked.connect(self.handle_next_free)
+
+                layout.addWidget(self.widget, row, 1)
+                layout.addWidget(next_free_button, row, 2)
+            else:
+                layout.addWidget(self.widget, row, 1, 1, 2)
+
+            col = 3
             if comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
@@ -565,6 +577,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 self.widget.setCurrentIndex(-1)
 
+            if first:
+                self.prev_value = value
+
         def assign(self, data):
             """
             Assigns the selected value to the data
@@ -580,12 +595,49 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.updateData.emit(self)
 
+            value = self.model.entries[index][0]
+            old_value = self.prev_value
+            self.prev_value = value
+
+            # No idtype is set, the widget is updating because of an automatic
+            # change in spritedata or this is the default data editor.
+            if self.idtype is None or self.parent.AutoFlag or self.parent.DefaultMode:
+                return
+
+            # Increment the count of the new value
+            used_ids = globals_.Area.sprite_idtypes[self.idtype]
+            used_ids[value] = used_ids.get(value, 0) + 1
+
+            # Decrement (and remove if 0) the count of the old value
+            if used_ids[old_value] == 1:
+                del used_ids[old_value]
+            else:
+                used_ids[old_value] -= 1
+
+        def handle_next_free(self):
+            """
+            Sets the value to the next free id of the id type of this property.
+            """
+            if self.idtype is None: return
+
+            used_ids = globals_.Area.sprite_idtypes[self.idtype]
+            current_value = self.model.entries[self.widget.currentIndex()][0]
+            values = [value for value, text in self.model.entries]
+
+            for next_id, value in enumerate(values):
+                if value > current_value and value not in used_ids:
+                    break
+            else:
+                return
+
+            self.widget.setCurrentIndex(next_id)
+
     class ValuePropertyDecoder(PropertyDecoder):
         """
         Class that decodes/encodes sprite data to/from a spinbox
         """
 
-        def __init__(self, title, bit, max_, comment, required, _, comment2, commentAdv, layout, row, parent):
+        def __init__(self, title, bit, max_, comment, required, _, comment2, commentAdv, idtype, layout, row, parent):
             """
             Creates the widget
             """
@@ -601,16 +653,26 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.comment = comment
             self.comment2 = comment2
             self.commentAdv = commentAdv
+            self.idtype = idtype
             self.layout = layout
             self.row = row
+            self.prev_value = None
 
             label = QtWidgets.QLabel(title + ':')
             # label.setWordWrap(True)
 
             layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
-            layout.addWidget(self.widget, row, 1)
 
-            col = 2
+            if idtype is not None:
+                next_free_button = QtWidgets.QPushButton("Next Free")
+                next_free_button.clicked.connect(self.handle_next_free)
+
+                layout.addWidget(self.widget, row, 1)
+                layout.addWidget(next_free_button, row, 2)
+            else:
+                layout.addWidget(self.widget, row, 1, 1, 2)
+
+            col = 3
             if comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
@@ -640,7 +702,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
                 layout.addWidget(button_adv, row, col)
 
-
         def update(self, data, first=False):
             """
             Updates the value shown by the widget
@@ -650,6 +711,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             value = self.retrieve(data)
             self.widget.setValue(value)
+
+            if first:
+                self.prev_value = value
 
         def assign(self, data):
             """
@@ -662,6 +726,35 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             Handle the value changing in the spinbox
             """
             self.updateData.emit(self)
+
+            old_value = self.prev_value
+            self.prev_value = value
+
+            # No idtype is set, the widget is updating because of an automatic
+            # change in spritedata or this is the default data editor.
+            if self.idtype is None or self.parent.AutoFlag or self.parent.DefaultMode:
+                return
+
+            # Increment the count of the new value
+            used_ids = globals_.Area.sprite_idtypes[self.idtype]
+            used_ids[value] = used_ids.get(value, 0) + 1
+
+            # Decrement (and remove if 0) the count of the old value
+            if used_ids[old_value] == 1:
+                del used_ids[old_value]
+            else:
+                used_ids[old_value] -= 1
+
+        def handle_next_free(self):
+            """
+            Sets the value to the next free id of the id type of this property.
+            """
+            if self.idtype is None: return
+
+            used_ids = globals_.Area.sprite_idtypes[self.idtype]
+            next_id = common.find_first_available_id(used_ids, self.widget.maximum(), self.widget.value() + 1)
+
+            self.widget.setValue(next_id)
 
     # UNUSED
     class BitfieldPropertyDecoder(PropertyDecoder):
@@ -705,9 +798,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             checkbox_widget.setLayout(CheckboxLayout)
 
             layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
-            layout.addWidget(checkbox_widget, row, 1)
+            layout.addWidget(checkbox_widget, row, 1, 1, 2)
 
-            col = 2
+            col = 3
             if comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
@@ -872,7 +965,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 widget.setWordWrap(True)
 
             layout.addWidget(widget, row, 0, QtCore.Qt.AlignRight)
-            layout.addWidget(w, row, 1)
+            layout.addWidget(w, row, 1, 1, 2)
 
             self.layout = layout
             self.row = row
@@ -955,10 +1048,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             widget = QtWidgets.QWidget()
             widget.setLayout(L)
 
-            # span two columns
-            layout.addWidget(widget, row, 0, 1, 2)
+            # span three columns
+            layout.addWidget(widget, row, 0, 1, 3)
 
-            col = 2
+            col = 3
             if comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
@@ -1049,21 +1142,14 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.box.setValue(self.dispvalue)
             self.box.valueChanged.connect(self.HandleValueChanged)
 
-            L2 = QtWidgets.QHBoxLayout()
-            L2.addWidget(self.button)
-            L2.addWidget(self.box)
-            # L2.setContentsMargins(0, 0, 0, 0)
-
-            widget = QtWidgets.QWidget()
-            widget.setLayout(L2)
-
-            label = QtWidgets.QLabel(title)
+            label = QtWidgets.QLabel(title + ":")
             # label.setWordWrap(True)
 
             layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
-            layout.addWidget(widget, row, 1)
+            layout.addWidget(self.button, row, 1)
+            layout.addWidget(self.box, row, 2)
 
-            col = 2
+            col = 3
             if comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
@@ -1257,9 +1343,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             dualbox_widget.setLayout(DualboxLayout)
 
             layout.addWidget(labels_widget, row, 0, QtCore.Qt.AlignRight)
-            layout.addWidget(dualbox_widget, row, 1)
+            layout.addWidget(dualbox_widget, row, 1, 1, 2)
 
-            col = 2
+            col = 3
             if comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
@@ -1322,11 +1408,15 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             return self.insertvalue(data, value)
 
 
-    def setSprite(self, type_, reset=False):
+    def setSprite(self, type_, reset=False, initial_data=None):
         """
         Change the sprite type used by the data editor
         """
-        if (self.spritetype == type_) and not reset:
+        if self.spritetype == type_ and not reset:
+            if initial_data is not None:
+                self.data = initial_data
+                self.update(True)
+
             return
 
         self.spritetype = type_
@@ -1368,7 +1458,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # show the raw editor
         self.raweditor.setVisible(True)
         self.editbox.setVisible(True)
-        self.resetButton.setVisible(not globals_.HideResetSpritedata and (sprite is None or len(sprite.fields) > 0))
+        self.resetButton.setVisible(not globals_.HideResetSpritedata and (sprite is None or bool(sprite.fields)))
 
         # show size stuff
         self.sizeButton.setVisible(sprite is not None and sprite.size)
@@ -1382,9 +1472,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.yoshiInfo.setVisible(False)
             self.advNoteButton.setVisible(False)
             self.asm.setVisible(False)
-
-            if len(self.fields) > 0:
-                self.fields = []
+            self.fields = []
 
             return
 
@@ -1494,10 +1582,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
 
             elif f[0] == 1:
-                nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+                nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
 
             elif f[0] == 2:
-                nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+                nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
 
             elif f[0] == 3:
                 nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
@@ -1519,6 +1607,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             row += 1
 
         self.fields = fields
+
+        if initial_data is not None:
+            self.data = initial_data
+
         self.update(True)
 
     def addMessage(self, text, action = None, level = 0, close = "x"):
@@ -1626,8 +1718,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         Updates all the fields to display the appropriate info
         """
-        self.UpdateFlag = True
-
         data = self.data
 
         self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
@@ -1637,10 +1727,14 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.raweditor.setStyleSheet('')
 
+        self.UpdateFlag = True
+        self.AutoFlag = True
+
         # Go through all the data
         for f in self.fields:
             f.update(data, first)
 
+        self.AutoFlag = False
         self.UpdateFlag = False
 
         # minimise height
@@ -1733,38 +1827,49 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         if self.UpdateFlag: return
 
         data = field.assign(self.data)
-        self.data = data
 
         self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
             data[0], data[1], data[2], data[3],
             data[4], data[5], data[6], data[7],
         ))
-
         self.raweditor.setStyleSheet('')
 
-        for f in self.fields:
-            if f != field: f.update(data)
-
-        self.DataUpdate.emit(data)
+        self.UpdateData(data, exclude_update_field=field, do_update=False, was_automatic=False)
 
     def HandleResetData(self):
         """
         Handles the reset data button being clicked
         """
-        self.data = bytes(8)
-        data = self.data
-
-        self.UpdateFlag = True
-
-        for f in self.fields:
-            f.update(data)
-
-        self.UpdateFlag = False
-
-        self.DataUpdate.emit(data)
+        self.UpdateData(bytes(8), was_automatic=False)
 
         self.raweditor.setText("0000 0000 0000 0000")
         self.raweditor.setStyleSheet('')
+
+    def UpdateData(self, new_data, exclude_update_field = None, do_update = True, was_automatic = True):
+        """
+        Updates all fields (optionally excluding one field) with the new sprite
+        data. If do_update is not set, the UpdateFlag is not changed. If was_automatic
+        is set, a flag is set to indicate the change was caused by the user.
+        """
+        self.data = new_data
+
+        if do_update:
+            self.UpdateFlag = True
+
+        if was_automatic:
+            self.AutoFlag = True
+
+        for f in self.fields:
+            if f != exclude_update_field:
+                f.update(new_data)
+
+        if was_automatic:
+            self.AutoFlag = True
+
+        if do_update:
+            self.UpdateFlag = False
+
+        self.DataUpdate.emit(new_data)
 
     def HandleRawDataEdited(self, text):
         """
@@ -1788,13 +1893,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         # if it's valid, let it go
         self.raweditor.setStyleSheet('')
-        self.data = data
-
-        self.UpdateFlag = True
-        for f in self.fields: f.update(data)
-        self.UpdateFlag = False
-
-        self.DataUpdate.emit(data)
+        self.UpdateData(data, was_automatic=False)
 
     def HandleSpritePlaced(self, id_, button_):
         def placeSprite():
@@ -1802,18 +1901,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             x_ = mw.selObj.objx + 16
             y_ = mw.selObj.objy
-            data_ = mw.defaultDataEditor.data
-
-            spr = SpriteItem(id_, x_, y_, data_)
-            spr.positionChanged = mw.HandleSprPosChange
-
-            mw.scene.addItem(spr)
-            globals_.Area.sprites.append(spr)
-
-            mw.spriteList.addSprite(spr)
-
-            SetDirty()
-            spr.UpdateListItem()
+            globals_.mainWindow.CreateSprite(x_, y_, id_, data=bytes(8))
 
             # remove this dependency, because it is now fulfilled.
             # get row of button
@@ -2105,7 +2193,7 @@ class ExternalSpriteOptionRow(QtWidgets.QWidget):
 
         self.secondary = []
 
-        if len(secondary) == 0:
+        if not secondary:
             return
 
         placedText = False
@@ -2199,7 +2287,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         header = QtWidgets.QLabel("Slots")
         footer = QtWidgets.QLabel(text2)
 
-        if len(self.present) == 0:
+        if not self.present:
             label = "Create"
         elif len(self.present) == 1:
             label = "Edit"
@@ -2254,7 +2342,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         mainLayout = QtWidgets.QVBoxLayout()
         mainLayout.addWidget(QtWidgets.QLabel(text))
 
-        if len(self.present) > 0:
+        if self.present:
             mainLayout.addWidget(QtWidgets.QLabel(text3))
             mainLayout.addWidget(QtWidgets.QLabel(str(self.present)))
 
@@ -2343,7 +2431,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             elif not (slot == -1 or type == 2):
                 thing.append(sprite)
 
-        if len(thing) == 0:
+        if not thing:
             self.placeSpecialResizeEvent()
         elif len(thing) == 1:
             self.editSpecialResizeEvent(thing[0][1])
@@ -2383,14 +2471,5 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         y = globals_.mainWindow.selObj.objy
         special_event_id = 246
 
-        sprite = SpriteItem(special_event_id, x, y, data)
-        sprite.positionChanged = globals_.mainWindow.HandleSprPosChange
-
-        globals_.mainWindow.scene.addItem(sprite)
-        globals_.mainWindow.spriteList.addSprite(sprite)
-        globals_.Area.sprites.append(sprite)
-        globals_.mainWindow.scene.update()
-
-        SetDirty()
-        sprite.UpdateListItem()
-
+        if globals_.mainWindow.CreateSprite(x, y, special_event_id, data) is not None:
+            globals_.mainWindow.scene.update()

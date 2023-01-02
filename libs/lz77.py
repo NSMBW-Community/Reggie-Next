@@ -49,7 +49,7 @@ def UncompressLZ77(inData):
     inLength = len(inData)
     outLength, offset = GetUncompressedSize(inData)
     outData = bytearray(outLength)
-    
+
     outIndex = 0
 
     while outIndex < outLength and offset < inLength:
@@ -97,3 +97,108 @@ def UncompressLZ77(inData):
                 outIndex += 1
 
     return bytes(outData)
+
+def CompressLZ77(inData):
+    dcsize = len(inData)
+    cbuffer = bytearray()
+
+    src = 0
+    dest = 4
+
+    if dcsize > 0xFFFFFF:
+        return None
+
+    cbuffer.append(0x11)
+    cbuffer.append(dcsize & 0xFF)
+    cbuffer.append((dcsize >> 8) & 0xFF)
+    cbuffer.append((dcsize >> 16) & 0xFF)
+
+    flagrange = [7, 6, 5, 4, 3, 2, 1, 0]
+
+    while src < dcsize:
+        flag = 0
+        flagpos = dest
+        cbuffer.append(flag)
+        dest += 1
+
+        for i in flagrange:
+            matchOffs, matchLen = CompressionSearch(inData, src, dcsize, 0x1000, 0xFFFF + 273)
+            if matchLen > 0:
+                flag |= (1 << i)
+
+                matchOffsM1 = matchOffs - 1
+                if matchLen <= 0x10:
+                    cbuffer.append((((matchLen - 1) & 0xF) << 4) | ((matchOffsM1 >> 8) & 0xF))
+                    cbuffer.append(matchOffsM1 & 0xFF)
+                    dest += 2
+                elif matchLen <= 0x110:
+                    matchLenM17 = matchLen - 17
+                    cbuffer.append((matchLenM17 & 0xFF) >> 4)
+                    cbuffer.append(((matchLenM17 & 0xF) << 4) | ((matchOffsM1 & 0xFFF) >> 8))
+                    cbuffer.append(matchOffsM1 & 0xFF)
+                    dest += 3
+                else:
+                    matchLenM273 = matchLen - 273
+                    cbuffer.append(0x10 | ((matchLenM273 >> 12) & 0xF))
+                    cbuffer.append((matchLenM273 >> 4) & 0xFF)
+                    cbuffer.append(((matchLenM273 & 0xF) << 4) | ((matchOffsM1 >> 8) & 0xF))
+                    cbuffer.append(matchOffsM1 & 0xFF)
+                    dest += 4
+
+                src += matchLen
+            else:
+                cbuffer.append(inData[src])
+
+                src += 1
+                dest += 1
+
+            if src >= dcsize: break
+
+        cbuffer[flagpos] = flag
+
+    return cbuffer
+
+def CompressionSearch(data, offset, totalLength, windowSize=0x1000, maxMatchAmount=18):
+    """
+    Find the longest possible match (in the current window) of the
+    data in "data" (which has total length "length") at offset
+    "offset".
+    Return the offset of the match relative to "offset", and its
+    length.
+    This function is ported from ndspy.
+    """
+
+    if windowSize > offset:
+        windowSize = offset
+    start = offset - windowSize
+
+    if windowSize < maxMatchAmount:
+        maxMatchAmount = windowSize
+    if (totalLength - offset) < maxMatchAmount:
+        maxMatchAmount = totalLength - offset
+
+    # Strategy: do a binary search of potential match sizes, to
+    # find the longest match that exists in the data.
+
+    lower = 3
+    upper = maxMatchAmount
+
+    recordMatchOffset = recordMatchLen = 0
+    while lower <= upper:
+        # Attempt to find a match at the middle length
+        matchLen = (lower + upper) // 2
+        match = data[offset : offset + matchLen]
+        matchOffset = data.rfind(match, start, offset)
+
+        if matchOffset == -1:
+            # No such match -- any matches will be smaller than this
+            upper = matchLen - 1
+        else:
+            # Match found!
+            if matchLen > recordMatchLen:
+                recordMatchOffset, recordMatchLen = matchOffset, matchLen
+            lower = matchLen + 1
+
+    if recordMatchLen == 0:
+        return 0, 0
+    return offset - recordMatchOffset, recordMatchLen

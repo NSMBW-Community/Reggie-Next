@@ -6,7 +6,7 @@ from xml.etree import ElementTree as etree
 from PyQt5 import QtWidgets, QtCore, QtGui
 
 from ui import GetIcon, createVertLine
-from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames
+from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo
 from dirty import setting, setSetting
 
 import globals_
@@ -55,12 +55,16 @@ class GameDefViewer(QtWidgets.QWidget):
         """
         Updates all labels
         """
-        empty = QtGui.QPixmap(16, 16)
-        empty.fill(QtGui.QColor(0, 0, 0, 0))
-        img = GetIcon('sprites', False).pixmap(16, 16) if (
-        (globals_.gamedef.recursiveFiles('sprites', False, True) != []) or (not globals_.gamedef.custom)) else empty
-        ver = '' if globals_.gamedef.version is None else '<i><p style="font-size:10px;">v' + str(globals_.gamedef.version) + '</p></i>'
-        title = '<b>' + str(globals_.gamedef.name) + '</b>'
+        sprite_folders = globals_.gamedef.recursiveFiles('sprites', is_folder=True)[0]
+
+        if not globals_.gamedef.custom or sprite_folders:
+            img = GetIcon('sprites', False).pixmap(16, 16)
+        else:
+            img = QtGui.QPixmap(16, 16)
+            img.fill(QtGui.QColor(0, 0, 0, 0))
+
+        ver = '' if globals_.gamedef.version is None else '<i><p style="font-size:10px;">v%s</p></i>' % str(globals_.gamedef.version)
+        title = '<b>%s</b>' % str(globals_.gamedef.name)
         desc = str(globals_.gamedef.description)
 
         self.imgLabel.setPixmap(img)
@@ -187,18 +191,17 @@ class ReggieGameDefinition:
         self.sprites = sprites
 
         self.files = {
-            'bga': gdf(None, False),
-            'bgb': gdf(None, False),
-            'entrancetypes': gdf(None, False),
-            'levelnames': gdf(None, False),
-            'music': gdf(None, False),
-            'spritecategories': gdf(None, False),
-            'spritedata': gdf(None, False),
-            'spritelistdata': gdf(None, False),
-            'spritenames': gdf(None, False),
-            'tilesets': gdf(None, False),
-            'tilesetinfo': gdf(None, False),
-            'ts1_descriptions': gdf(None, False),
+            'bga': gdf(os.path.join('reggiedata', 'bga.txt'), False),
+            'bgb': gdf(os.path.join('reggiedata', 'bgb.txt'), False),
+            'entrancetypes': gdf(os.path.join('reggiedata', 'entrancetypes.txt'), False),
+            'levelnames': gdf(os.path.join('reggiedata', 'levelnames.xml'), False),
+            'music': gdf(os.path.join('reggiedata', 'music.txt'), False),
+            'spritecategories': gdf(os.path.join('reggiedata', 'spritecategories.xml'), False),
+            'spritedata': gdf(os.path.join('reggiedata', 'spritedata.xml'), False),
+            'spritelistdata': gdf(os.path.join('reggiedata', 'spritelistdata.txt'), False),
+            'tilesetinfo': gdf(os.path.join('reggiedata', 'tilesetinfo.xml'), False),
+            'tilesets': gdf(os.path.join('reggiedata', 'tilesets.xml'), False),
+            'ts1_descriptions': gdf(os.path.join('reggiedata', 'ts1_descriptions.txt'), False),
         }
         self.folders = {
             'bga': gdf(None, False),
@@ -276,12 +279,13 @@ class ReggieGameDefinition:
 
         # Load sprites.py if provided
         if 'sprites' in self.files:
-            with open(self.files['sprites'].path, 'r') as f:
+            with open(self.files['sprites'].path, 'r', encoding='utf-8') as f:
                 filedata = f.read()
 
-            # https://stackoverflow.com/questions/5362771/load-module-from-string-in-python
-            # with modifications
-            new_module = importlib.types.ModuleType(self.name + '->sprites')
+            # https://stackoverflow.com/a/53080237 with modifications
+            spec = importlib.util.spec_from_loader(self.name + "->sprites", loader=None)
+            new_module = importlib.util.module_from_spec(spec)
+
             exec(filedata, new_module.__dict__)
             sys.modules[new_module.__name__] = new_module
             self.sprites = new_module
@@ -292,7 +296,7 @@ class ReggieGameDefinition:
         """
         # Name will be of the format '0000.png'
         fallback = os.path.join('reggiedata', 'bg' + layer, name)
-        filename = 'bg%s/%s' % (layer, name)
+        filename = os.path.join('bg' + layer, name)
 
         # See if it was defined specifically
         if filename in self.files:
@@ -301,7 +305,7 @@ class ReggieGameDefinition:
 
         # See if it's in one of self.folders
         if self.folders['bg%s' % layer].path is not None:
-            trypath = self.folders['bg%s' % layer].path + '/' + name
+            trypath = os.path.join(self.folders['bg%s' % layer].path, name)
             if os.path.isfile(trypath): return trypath
 
         # If there's a base, return self.base.bgFile
@@ -338,154 +342,140 @@ class ReggieGameDefinition:
         # Use the fallback
         return fallback
 
-    def GetGamePath(self):
+    def GetTextureGamePath(self):
         """
-        Returns the game path
+        Returns the texture game path
         """
-        if not self.custom: return setting('GamePath')
-        name = 'GamePath_' + self.name
+        if not self.custom:
+            return setting('TextureGamePath')
+
+        name = 'TextureGamePath_' + self.name
         setname = setting(name)
 
         # Use the default if there are no settings for this yet
         if setname is None:
-            return setting('GamePath')
+            return setting('TextureGamePath')
         else:
             return str(setname)
 
-    def SetGamePath(self, path):
+    def SetTextureGamePath(self, path):
         """
-        Sets the game path
+        Sets the texture game path
         """
         if not self.custom:
-            setSetting('GamePath', path)
+            setSetting('TextureGamePath', path)
         else:
-            name = 'GamePath_' + self.name
+            name = 'TextureGamePath_' + self.name
             setSetting(name, path)
 
-    def GetGamePaths(self):
+    def GetStageGamePath(self):
         """
-        Returns game paths of this globals_.gamedef and its bases
+        Returns the stage game path
         """
-        mainpath = setting('GamePath')
-        if not self.custom: return [mainpath, ]
+        if not self.custom:
+            return setting('StageGamePath')
 
-        name = 'GamePath_' + self.name
-        stg = setting(name)
-        if self.base is None:
-            return [mainpath, stg]
+        name = 'StageGamePath_' + self.name
+        setname = setting(name)
+
+        # Use the default if there are no settings for this yet
+        if setname is None:
+            return setting('StageGamePath')
         else:
-            paths = self.base.GetGamePaths()
-            paths.append(stg)
+            return str(setname)
+
+    def SetStageGamePath(self, path):
+        """
+        Sets the stage game path
+        """
+        if not self.custom:
+            setSetting('StageGamePath', path)
+        else:
+            name = 'StageGamePath_' + self.name
+            setSetting(name, path)
+
+    def GetTexturePaths(self):
+        """
+        Returns the texture game paths of this globals_.gamedef and its bases
+        """
+        paths = [setting('TextureGamePath')]
+
+        if not self.custom:
             return paths
+
+        stg = setting('TextureGamePath_' + self.name)
+
+        if self.base is not None:
+            paths = self.base.GetTexturePaths()
+
+        paths.append(stg)
+
+        return paths
 
     def GetLastLevel(self):
         """
         Returns the last loaded level
         """
-        if not self.custom: return setting('LastLevel')
+        if not self.custom:
+            return setting('LastLevel')
+
         name = 'LastLevel_' + self.name
         stg = setting(name)
 
         # Use the default if there are no settings for this yet
         if stg is None:
             return setting('LastLevel')
-        else:
-            return stg
+
+        return stg
 
     def SetLastLevel(self, path):
         """
         Sets the last loaded level
         """
-        if path in (None, 'None', 'none', True, 'True', 'true', False, 'False', 'false', 0, 1, ''): return
-        print('Last loaded level set to ' + str(path))
+        if path in {None, 'None', 'none', True, 'True', 'true', False, 'False', 'false', 0, 1, ''}:
+            return
+
         if not self.custom:
             setSetting('LastLevel', path)
         else:
             name = 'LastLevel_' + self.name
             setSetting(name, path)
 
-    def recursiveFiles(self, name, isPatch=False, folder=False):
+    def recursiveFiles(self, name, is_folder=False):
         """
         Checks each base of this globals_.gamedef and returns a list of successive file paths
         """
-        ListToCheckIn = self.files if not folder else self.folders
-
-        # This can be handled 4 ways: if we do or don't have a base, and if we do or don't have a copy of the file.
-        if self.base is None:
-            if ListToCheckIn[name].path is None:  # No base, no file
-
-                if isPatch:
-                    return [], True
-                else:
-                    return []
-
-            else:  # No base, file
-
-                alist = []
-                alist.append(ListToCheckIn[name].path)
-                if isPatch:
-                    return alist, ListToCheckIn[name].patch
-                else:
-                    return alist
-
+        if is_folder:
+            entry = self.folders[name]
         else:
+            entry = self.files[name]
 
-            if isPatch:
-                listUpToNow, wasPatch = self.base.recursiveFiles(name, True, folder)
+        if self.base is None or not entry.patch:
+            # We don't have a base to fall back to, so we need to provide the
+            # file ourselves.
+            was_patch = False
+
+            if entry.path is None:
+                current_list = []
+                names = []
             else:
-                listUpToNow = self.base.recursiveFiles(name, False, folder)
+                current_list = [entry.path]
+                names = [self.name]
 
-            if ListToCheckIn[name].path is None:  # Base, no file
-
-                if isPatch:
-                    return listUpToNow, wasPatch
-                else:
-                    return listUpToNow
-
-            else:  # Base, file
-
-                # If it's a patch, just add it to the end of the list
-                if ListToCheckIn[name].patch:
-                    listUpToNow.append(ListToCheckIn[name].path)
-
-                # If it's not (it's free-standing), make a new list and start over
-                else:
-                    newlist = []
-                    newlist.append(ListToCheckIn[name].path)
-                    if isPatch:
-                        return newlist, False
-                    else:
-                        return newlist
-
-                # Return
-                if isPatch:
-                    return listUpToNow, wasPatch
-                else:
-                    return listUpToNow
-
-    def multipleRecursiveFiles(self, *args):
-        """
-        Returns multiple recursive files in order of least recent to most recent as a list of tuples, one list per globals_.gamedef base
-        """
-
-        # This should be very simple
-        # Each arg should be a file name
-        if self.base is None:
-            main = []  # start a new level
         else:
-            main = self.base.multipleRecursiveFiles(*args)
+            # We do have a base to fall back to - we know that the last step
+            # came from a patch, so we set 'was_patch' to True and we set 'isPatch'
+            # in the recursive call to False - it doesn't matter whether the
+            # previous recursive step was a patch or not.
+            was_patch = True
+            current_list, _, names = self.base.recursiveFiles(name, is_folder)
 
-        # Add the values from this level, and then return it
-        result = []
-        for name in args:
-            try:
-                file = self.files[name]
-                if file.path is None: raise KeyError
-                result.append(self.files[name])
-            except KeyError:
-                result.append(None)
-        main.append(tuple(result))
-        return main
+            if entry.path is not None:
+                # We have something to add to the base
+                current_list.append(entry.path)
+                names.append(self.name)
+
+        return current_list, was_patch, names
 
     def file(self, name):
         """
@@ -522,7 +512,6 @@ def getAvailableGameDefs():
     # Add them
     folders = os.listdir(os.path.join('reggiedata', 'patches'))
     for folder in folders:
-        if not os.path.isdir(os.path.join('reggiedata', 'patches', folder)): continue
         if not os.path.isfile(os.path.join('reggiedata', 'patches', folder, 'main.xml')): continue
 
         def_ = ReggieGameDefinition(folder)
@@ -530,9 +519,9 @@ def getAvailableGameDefs():
             game_defs.append((def_.name, folder))
 
     # Alphabetize them, and then add the default
-    game_defs.sort(key=lambda x: x[0])
+    game_defs.sort()
 
-    return [None] + list(map(lambda x: x[1], game_defs))
+    return [None] + [folder for _, folder in game_defs]
 
 
 def loadNewGameDef(def_):
@@ -569,7 +558,7 @@ def LoadGameDef(name=None, dlg=None):
         globals_.gamedef = ReggieGameDefinition(name)
         globals_.gamedef.__init2__()
 
-        if globals_.gamedef.custom and (not globals_.settings.contains('GamePath_' + globals_.gamedef.name)):
+        if globals_.gamedef.custom and (not globals_.settings.contains('StageGamePath_' + globals_.gamedef.name)):
             # First-time usage of this globals_.gamedef. Have the
             # user pick a stage folder so we can load stages
             # and tilesets from there
@@ -626,7 +615,6 @@ def LoadGameDef(name=None, dlg=None):
             globals_.mainWindow.spriteViewPicker.setCurrentIndex(0)  # Sets the sprite picker to category 0 (enemies)
             globals_.mainWindow.spriteDataEditor.setSprite(globals_.mainWindow.spriteDataEditor.spritetype,
                                                   True)  # Reloads the sprite data editor fields
-            globals_.mainWindow.spriteDataEditor.update()
 
         if dlg: dlg.setValue(2)
 
@@ -635,6 +623,7 @@ def LoadGameDef(name=None, dlg=None):
 
         LoadBgANames(True)
         LoadBgBNames(True)
+        LoadMusicInfo(True)  # reloads the music names
 
         if dlg: dlg.setValue(3)
 
@@ -651,9 +640,13 @@ def LoadGameDef(name=None, dlg=None):
 
         # Load sprites.py
         if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 11))  # Loading sprite image data...
-        if globals_.Area is not None:
-            SLib.SpritesFolders = globals_.gamedef.recursiveFiles('sprites', False, True)
 
+        # Always load the sprites folders so the correct sprite images can be
+        # loaded when Reggie is started. This avoids loading all sprite images
+        # again and also simplifies the sprite image code.
+        SLib.SpritesFolders = globals_.gamedef.recursiveFiles('sprites', is_folder=True)[0]
+
+        if globals_.Area is not None:
             SLib.ImageCache.clear()
             SLib.SpriteImagesLoaded.clear()
             sprites.LoadBasics()

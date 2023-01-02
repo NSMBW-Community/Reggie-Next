@@ -31,6 +31,7 @@ A602=Child Forest (Night)
 AA02=Rocky Hills (Orange Sky)
 ABCD=Overworld Hills (Distant Red)
 B00B=Forest Hills (P. Hills O. Sky)
+B602=Flower Forest (Sunset)
 B6B2=Child Forest + Clouds
 C02C=Mountains (Magenta)
 C02E=Mountains (Cyan)

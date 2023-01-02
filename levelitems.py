@@ -68,10 +68,7 @@ class InstanceDefinition:
         """
         Returns True if this instance definition matches the specified item
         """
-        matches = True
-        matches = matches and abs(self.objx - other.objx) <= 2
-        matches = matches and abs(self.objy - other.objy) <= 2
-        return matches and self.matchesData(other)
+        return self.objx == other.objx and self.objy == other.objy and self.matchesData(other)
 
     def matchesData(self, other):
         """
@@ -210,8 +207,9 @@ class InstanceDefinition_PathItem(InstanceDefinition):
     Definition of an instance of PathItem
     """
     fieldNames = (
-        'pathinfo',
-        'nodeinfo',
+        'pathid',
+        'nodeid',
+        'path',
     )
 
     @staticmethod
@@ -423,7 +421,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         br.setHeight(br.height() + marginY)
 
         # Take the screenshot
-        ScreenshotImage = QtGui.QImage(br.width(), br.height(), QtGui.QImage.Format_ARGB32)
+        ScreenshotImage = QtGui.QImage(br.size().toSize(), QtGui.QImage.Format_ARGB32)
         ScreenshotImage.fill(QtCore.Qt.transparent)
 
         RenderPainter = QtGui.QPainter(ScreenshotImage)
@@ -472,6 +470,8 @@ class ObjectItem(LevelEditorItem):
         self.width = width
         self.height = height
         self.objdata = None
+
+        self.wasExtended = False
 
         self.TLGrabbed = self.TRGrabbed = self.BLGrabbed = self.BRGrabbed = False
         self.MTGrabbed = self.MLGrabbed = self.MBGrabbed = self.MRGrabbed = False
@@ -531,8 +531,8 @@ class ObjectItem(LevelEditorItem):
 
     def isBottomRowSpecial(self):
         """
-        Returns whether the bottom row of self.objdata contains the a special
-        vdouble top tile
+        Returns whether the bottom row of self.objdata contains the special
+        vdouble top tile.
         """
         if globals_.TilesetFilesLoaded[self.tileset] is None or globals_.TilesetInfo is None:
             # no randomisation info -> false
@@ -573,6 +573,11 @@ class ObjectItem(LevelEditorItem):
 
         if globals_.TilesetInfo is None or globals_.TilesetFilesLoaded[self.tileset] is None:
             # no randomisation info -> exit
+            return
+
+        if globals_.ObjectDefinitions[self.tileset][self.type] is None or \
+                len(globals_.ObjectDefinitions[self.tileset][self.type].rows[0][0]) == 1:
+            # slope -> exit
             return
 
         name = self.get_tileset_base_name()
@@ -733,31 +738,32 @@ class ObjectItem(LevelEditorItem):
         """
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(0, 0, 24 * self.width, 24 * self.height)
-        self.SelectionRect = QtCore.QRectF(0, 0, (24 * self.width) - 1, (24 * self.height) - 1)
-
-        grabbersize = 4.8 + self.width * self.height * 0.01
+        self.SelectionRect = self.BoundingRect - QtCore.QMarginsF(0.5, 0.5, 0.5, 0.5)
 
         # make sure the grabbers don't overlap
-        grabbersize = min(grabbersize, self.width * 9, self.height * 9)
+        size = min(4.8 + self.width * self.height * 0.01, min(self.width, self.height) * 24 / 3 - 1)
 
-        self.GrabberRectTL = QtCore.QRectF(0, 0, grabbersize, grabbersize)
-        self.GrabberRectTR = QtCore.QRectF((24 * self.width) - grabbersize, 0, grabbersize, grabbersize)
+        corner_offset_width = 24 * self.width - size
+        corner_offset_height = 24 * self.height - size
 
-        self.GrabberRectBL = QtCore.QRectF(0, (24 * self.height) - grabbersize, grabbersize, grabbersize)
-        self.GrabberRectBR = QtCore.QRectF((24 * self.width) - grabbersize, (24 * self.height) - grabbersize, grabbersize, grabbersize)
+        self.GrabberRectTL = QtCore.QRectF(0, 0, size, size)
+        self.GrabberRectTR = QtCore.QRectF(corner_offset_width, 0, size, size)
 
-        self.GrabberRectMT = QtCore.QRectF(((24 * self.width) - grabbersize) / 2, 0, grabbersize, grabbersize)
-        self.GrabberRectML = QtCore.QRectF(0, ((24 * self.height) - grabbersize) / 2, grabbersize, grabbersize)
-        self.GrabberRectMB = QtCore.QRectF(((24 * self.width) - grabbersize) / 2, (24 * self.height) - grabbersize, grabbersize, grabbersize)
-        self.GrabberRectMR = QtCore.QRectF((24 * self.width) - grabbersize, ((24 * self.height) - grabbersize) / 2, grabbersize, grabbersize)
+        self.GrabberRectBL = QtCore.QRectF(0, corner_offset_height, size, size)
+        self.GrabberRectBR = QtCore.QRectF(corner_offset_width, corner_offset_height, size, size)
+
+        self.GrabberRectMT = QtCore.QRectF(corner_offset_width / 2, 0, size, size)
+        self.GrabberRectML = QtCore.QRectF(0, corner_offset_height / 2, size, size)
+        self.GrabberRectMB = QtCore.QRectF(corner_offset_width / 2, corner_offset_height, size, size)
+        self.GrabberRectMR = QtCore.QRectF(corner_offset_width, corner_offset_height / 2, size, size)
 
         # Create rects for the edges
-        longwidth = 24 * self.width - 2 * grabbersize
-        longheight = 24 * self.height - 2 * grabbersize
-        self.GrabberRectMT_ = QtCore.QRectF(grabbersize, 0, longwidth, grabbersize)
-        self.GrabberRectML_ = QtCore.QRectF(0, grabbersize, grabbersize, longheight)
-        self.GrabberRectMB_ = QtCore.QRectF(grabbersize, longheight + grabbersize, longwidth, grabbersize)
-        self.GrabberRectMR_ = QtCore.QRectF(longwidth + grabbersize, grabbersize, grabbersize, longheight)
+        longwidth = 24 * self.width - 2 * size
+        longheight = 24 * self.height - 2 * size
+        self.GrabberRectMT_ = QtCore.QRectF(size, 0, longwidth, size)
+        self.GrabberRectML_ = QtCore.QRectF(0, size, size, longheight)
+        self.GrabberRectMB_ = QtCore.QRectF(size, longheight + size, longwidth, size)
+        self.GrabberRectMR_ = QtCore.QRectF(longwidth + size, size, size, longheight)
 
         self.LevelRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
 
@@ -824,7 +830,7 @@ class ObjectItem(LevelEditorItem):
         if not self.isSelected():
             return
 
-        painter.setPen(QtGui.QPen(globals_.theme.color('object_lines_s'), 1, QtCore.Qt.DotLine))
+        painter.setPen(QtGui.QPen(globals_.theme.color('object_lines_s'), 1, QtCore.Qt.DashLine))
         painter.drawRect(self.SelectionRect)
         painter.fillRect(self.SelectionRect, globals_.theme.color('object_fill_s'))
 
@@ -937,11 +943,11 @@ class ObjectItem(LevelEditorItem):
 
         oldrect = self.BoundingRect
         oldrect.translate(oldX * 24, oldY * 24)
-        newrect = QtCore.QRectF(self.x(), self.y(), newSize[0] * 24, newSize[1] * 24)
-        updaterect = oldrect.united(newrect)
-        self.width, self.height = newSize
 
+        self.width, self.height = newSize
         self.UpdateRects()
+
+        updaterect = oldrect.united(self.BoundingRect.translated(self.objx * 24, self.objy * 24))
         self.scene().update(updaterect)
 
     def mouseMoveEvent(self, event):
@@ -1309,14 +1315,13 @@ class ZoneItem(LevelEditorItem):
             grabberWidth = 4.8
 
         self.prepareGeometryChange()
-        self.BoundingRect = QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5)
+        self.BoundingRect = QtCore.QRectF(-3, -3, self.width * 1.5 + 6, self.height * 1.5 + 6)
         self.ZoneRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
-        self.DrawRect = QtCore.QRectF(3, 3, int(self.width * 1.5) - 6, int(self.height * 1.5) - 6)
-        self.GrabberRectTL = QtCore.QRectF(0, 0, grabberWidth, grabberWidth)
-        self.GrabberRectTR = QtCore.QRectF(int(self.width * 1.5) - grabberWidth, 0, grabberWidth, grabberWidth)
-        self.GrabberRectBL = QtCore.QRectF(0, int(self.height * 1.5) - grabberWidth, grabberWidth, grabberWidth)
-        self.GrabberRectBR = QtCore.QRectF(int(self.width * 1.5) - grabberWidth, int(self.height * 1.5) - grabberWidth,
-                                           grabberWidth, grabberWidth)
+        self.DrawRect = QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5)
+        self.GrabberRectTL = QtCore.QRectF(-3, -3, grabberWidth, grabberWidth)
+        self.GrabberRectTR = QtCore.QRectF(self.width * 1.5 - grabberWidth + 3, -3, grabberWidth, grabberWidth)
+        self.GrabberRectBL = QtCore.QRectF(-3, self.height * 1.5 - grabberWidth + 3, grabberWidth, grabberWidth)
+        self.GrabberRectBR = QtCore.QRectF(self.width * 1.5 - grabberWidth + 3, self.height * 1.5 - grabberWidth + 3, grabberWidth, grabberWidth)
 
     def getCameraHeight(self):
         """
@@ -1404,7 +1409,7 @@ class ZoneItem(LevelEditorItem):
             self.updateEntranceIndicator()
 
             # Only draw the indicator if we should
-            if self.ent_indicator_show:
+            if self.ent_indicator_show and self.ent_indicator_offset < self.DrawRect.width():
                 offset = self.ent_indicator_offset
 
                 painter.setPen(QtGui.QPen(globals_.theme.color('zone_entrance_helper'), 2))
@@ -1414,16 +1419,19 @@ class ZoneItem(LevelEditorItem):
 
         # Paint liquids/fog
         if globals_.SpritesShown and globals_.RealViewEnabled:
-            zoneRect = self.sceneBoundingRect()
+            zoneRect = self.mapRectToScene(self.DrawRect)
             from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
+            from sprites import SpriteImage_BubbleGen as bubbleGenType
 
             for sprite in globals_.Area.sprites:
                 if isinstance(sprite.ImageObj, liquidOrFogType) and sprite.ImageObj.paintZone() and self.id == sprite.ImageObj.zoneId:
                     sprite.ImageObj.realViewZone(painter, zoneRect)
+                if isinstance(sprite.ImageObj, bubbleGenType) and hasattr(sprite, 'zoneID') and self.id == sprite.zoneID:
+                    sprite.ImageObj.realViewZone(painter, zoneRect)
 
         # Now paint the borders
         painter.setPen(QtGui.QPen(globals_.theme.color('zone_lines'), 3))
-        if (self.visibility & 32 != 0) and globals_.RealViewEnabled:
+        if self.visibility >= 32 and globals_.RealViewEnabled:
             painter.setBrush(QtGui.QBrush(globals_.theme.color('zone_dark_fill')))
         painter.drawRect(self.DrawRect)
 
@@ -1438,6 +1446,20 @@ class ZoneItem(LevelEditorItem):
         painter.fillRect(self.GrabberRectTR, GrabberColor)
         painter.fillRect(self.GrabberRectBL, GrabberColor)
         painter.fillRect(self.GrabberRectBR, GrabberColor)
+
+        # Draw the bounds indicator rectangle
+        if globals_.BoundsDrawn:
+            painter.setBrush(QtGui.QBrush(QtGui.QColor.fromRgb(255,255,255,42)))
+            painter.setPen(QtCore.Qt.NoPen)
+            r1 = QtCore.QRectF(self.DrawRect)
+            r1.setHeight((self.yupperbound + 80) * 1.5)
+            r1.moveTop(self.DrawRect.bottom() - (self.getCameraHeight()[0] * 24))
+            painter.drawRect(r1)
+
+            r2 = QtCore.QRectF(self.DrawRect)
+            r2.setHeight((72 - self.ylowerbound) * 1.5)
+            r2.moveBottom(self.DrawRect.bottom())
+            painter.drawRect(r2)
 
     def mousePressEvent(self, event):
         """
@@ -1497,8 +1519,8 @@ class ZoneItem(LevelEditorItem):
 
             MIN_X = 16
             MIN_Y = 16
-            MIN_W = 300
-            MIN_H = 200
+            MIN_W = 204
+            MIN_H = 112
 
             if self.dragcorner == 1: # TL
                 # rect from (x2, y2) to clicked
@@ -1641,7 +1663,7 @@ class LocationItem(LevelEditorItem):
         self.SelectionRect = QtCore.QRectF(self.objx * 1.5, self.objy * 1.5, self.width * 1.5, self.height * 1.5)
         self.ZoneRect = QtCore.QRectF(self.objx, self.objy, self.width, self.height)
         self.DrawRect = QtCore.QRectF(1, 1, (self.width * 1.5) - 2, (self.height * 1.5) - 2)
-        self.GrabberRect = QtCore.QRectF(((1.5) * self.width) - 4.8, ((1.5) * self.height) - 4.8, 4.8, 4.8)
+        self.GrabberRect = QtCore.QRectF((1.5 * self.width) - 4.8, (1.5 * self.height) - 4.8, 4.8, 4.8)
         self.BoundingRect = self.BoundingRectWithoutTitleRect.united(self.TitleRect).united(self.GrabberRect)
         self.UpdateListItem()
 
@@ -1654,6 +1676,7 @@ class LocationItem(LevelEditorItem):
         # We basically make a vertically-flipped "L" shape if the location
         # is small, so that you can click on the ID number to select the location
         qpp = QtGui.QPainterPath()
+        qpp.setFillRule(QtCore.Qt.WindingFill)
         qpp.addRect(self.BoundingRectWithoutTitleRect)
         qpp.addRect(self.TitleRect)
         return qpp
@@ -1668,12 +1691,12 @@ class LocationItem(LevelEditorItem):
 
         # Paint liquids/fog
         if globals_.SpritesShown and globals_.RealViewEnabled:
-            zoneRect = self.sceneBoundingRect()
+            location_rect = self.sceneTransform().mapRect(self.DrawRect)
             from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
 
             for sprite in globals_.Area.sprites:
                 if isinstance(sprite.ImageObj, liquidOrFogType) and self.id == sprite.ImageObj.locId:
-                    sprite.ImageObj.realViewLocation(painter, zoneRect)
+                    sprite.ImageObj.realViewLocation(painter, location_rect)
 
         # Draw the purple rectangle
         if not self.isSelected():
@@ -1681,7 +1704,7 @@ class LocationItem(LevelEditorItem):
             painter.setPen(QtGui.QPen(globals_.theme.color('location_lines')))
         else:
             painter.setBrush(QtGui.QBrush(globals_.theme.color('location_fill_s')))
-            painter.setPen(QtGui.QPen(globals_.theme.color('location_lines_s'), 1, QtCore.Qt.DotLine))
+            painter.setPen(QtGui.QPen(globals_.theme.color('location_lines_s'), 1, QtCore.Qt.DashLine))
         painter.drawRect(self.DrawRect)
 
         # Draw the ID
@@ -1819,7 +1842,6 @@ class SpriteItem(LevelEditorItem):
         self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
         self.ChangingPos = False
 
-        SLib.SpriteImage.loadImages()
         self.ImageObj = SLib.SpriteImage(self)
 
         if 0 <= type_ < globals_.NumSprites:
@@ -1832,17 +1854,16 @@ class SpriteItem(LevelEditorItem):
         self.setFlag(self.ItemIsMovable, not globals_.SpritesFrozen)
         self.setFlag(self.ItemIsSelectable, not globals_.SpritesFrozen)
 
-        # global globals_.DirtyOverride
         globals_.DirtyOverride += 1
         if globals_.SpriteImagesShown:
             self.setPos(
-                int((self.objx + self.ImageObj.xOffset) * 1.5),
-                int((self.objy + self.ImageObj.yOffset) * 1.5),
+                (self.objx + self.ImageObj.xOffset) * 1.5,
+                (self.objy + self.ImageObj.yOffset) * 1.5,
             )
         else:
             self.setPos(
-                int(self.objx * 1.5),
-                int(self.objy * 1.5),
+                self.objx * 1.5,
+                self.objy * 1.5,
             )
         globals_.DirtyOverride -= 1
 
@@ -2010,6 +2031,7 @@ class SpriteItem(LevelEditorItem):
         if (self.type in globals_.gamedef.getImageClasses()) and (self.type not in SLib.SpriteImagesLoaded):
             globals_.gamedef.getImageClasses()[self.type].loadImages()
             SLib.SpriteImagesLoaded.add(self.type)
+
         self.ImageObj = obj(self) if obj else SLib.SpriteImage(self)
 
         # show auxiliary objects properly
@@ -2038,8 +2060,8 @@ class SpriteItem(LevelEditorItem):
             self.UpdateRects()
             self.ChangingPos = True
             self.setPos(
-                int((self.objx + self.ImageObj.xOffset) * 1.5),
-                int((self.objy + self.ImageObj.yOffset) * 1.5),
+                (self.objx + self.ImageObj.xOffset) * 1.5,
+                (self.objy + self.ImageObj.yOffset) * 1.5,
             )
             self.ChangingPos = False
 
@@ -2077,13 +2099,17 @@ class SpriteItem(LevelEditorItem):
 
         if globals_.SpriteImagesShown:
             unitedRect = imgRect.united(spriteboxRect)
-            unitedOffsetRect = imgOffsetRect.united(spriteboxOffsetRect)
+
+            if self.ImageObj.spritebox.shown:
+                unitedOffsetRect = imgOffsetRect.united(spriteboxOffsetRect)
+            else:
+                unitedOffsetRect = imgOffsetRect
 
             # SelectionRect: Used to determine the size of the
             # "this sprite is selected" translucent white box that
             # appears when a sprite with an image is selected.
             self.SelectionRect = QtCore.QRectF(
-                0, 0,
+                0.5, 0.5,
                 imgRect.width() - 1,
                 imgRect.height() - 1,
             )
@@ -2092,35 +2118,27 @@ class SpriteItem(LevelEditorItem):
             # the size and position of the sprite in the level.
             # Measured in blocks.
             self.LevelRect = QtCore.QRectF(
-                unitedOffsetRect.topLeft().x() / 24,
-                unitedOffsetRect.topLeft().y() / 24,
-                unitedOffsetRect.width() / 24,
-                unitedOffsetRect.height() / 24,
+                unitedOffsetRect.topLeft() / 24,
+                unitedOffsetRect.size() / 24,
             )
 
             # BoundingRect: The sprite can only paint within
             # this area.
             self.BoundingRect = unitedRect.translated(
-                self.ImageObj.spritebox.BoundingRect.topLeft().x(),
-                self.ImageObj.spritebox.BoundingRect.topLeft().y(),
+                self.ImageObj.spritebox.BoundingRect.topLeft()
             )
 
         else:
-            self.SelectionRect = QtCore.QRectF(0, 0, 24, 24)
+            self.SelectionRect = QtCore.QRectF(0.5, 0.5, 23, 23)
 
             self.LevelRect = QtCore.QRectF(
-                spriteboxOffsetRect.topLeft().x() / 24,
-                spriteboxOffsetRect.topLeft().y() / 24,
-                spriteboxOffsetRect.width() / 24,
-                spriteboxOffsetRect.height() / 24,
+                spriteboxOffsetRect.topLeft() / 24,
+                spriteboxOffsetRect.size() / 24,
             )
 
             # BoundingRect: The sprite can only paint within
             # this area.
-            self.BoundingRect = spriteboxRect.translated(
-                self.ImageObj.spritebox.BoundingRect.topLeft().x(),
-                self.ImageObj.spritebox.BoundingRect.topLeft().y(),
-            )
+            self.BoundingRect = self.ImageObj.spritebox.BoundingRect
 
     def getFullRect(self):
         """
@@ -2152,82 +2170,79 @@ class SpriteItem(LevelEditorItem):
             if self.scene() is None: return value
             if self.ChangingPos: return value
 
+            # The sprite image offset as a point
             if globals_.SpriteImagesShown:
-                xOffset, xOffsetAdjusted = self.ImageObj.xOffset, self.ImageObj.xOffset * 1.5
-                yOffset, yOffsetAdjusted = self.ImageObj.yOffset, self.ImageObj.yOffset * 1.5
+                offset_point = QtCore.QPointF(*self.ImageObj.getOffset())
             else:
-                xOffset, xOffsetAdjusted = 0, 0
-                yOffset, yOffsetAdjusted = 0, 0
+                offset_point = QtCore.QPointF()
 
-            # snap to 24x24
-            newpos = value
+            # Convert the new position from 24 units per block into 16 units per
+            # block
+            new_pos = value / 1.5
 
-            # snap even further if Shift isn't held
-            # but -only- if OverrideSnapping is off
-            if not globals_.OverrideSnapping:
-                objectsSelected = any([isinstance(thing, ObjectItem) for thing in globals_.mainWindow.CurrentSelection])
-                if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.AltModifier:
-                    # Alt is held; don't snap
-                    newpos.setX((int((newpos.x() + 0.75) / 1.5) * 1.5))
-                    newpos.setY((int((newpos.y() + 0.75) / 1.5) * 1.5))
-                elif not objectsSelected and self.isSelected() and len(globals_.mainWindow.CurrentSelection) > 1:
-                    # Snap to 8x8, but with the dragoffsets
-                    dragoffsetx, dragoffsety = int(self.dragoffsetx), int(self.dragoffsety)
-                    if dragoffsetx < -12: dragoffsetx += 12
-                    if dragoffsety < -12: dragoffsety += 12
-                    if dragoffsetx == 0: dragoffsetx = -12
-                    if dragoffsety == 0: dragoffsety = -12
-                    referenceX = int((newpos.x() + 6 + 12 + dragoffsetx - xOffsetAdjusted) / 12) * 12
-                    referenceY = int((newpos.y() + 6 + 12 + dragoffsety - yOffsetAdjusted) / 12) * 12
-                    newpos.setX(referenceX - (12 + dragoffsetx) + xOffsetAdjusted)
-                    newpos.setY(referenceY - (12 + dragoffsety) + yOffsetAdjusted)
-                elif objectsSelected and self.isSelected():
-                    # Objects are selected, too; move in sync by snapping to whole blocks
-                    dragoffsetx, dragoffsety = int(self.dragoffsetx), int(self.dragoffsety)
-                    if dragoffsetx == 0: dragoffsetx = -24
-                    if dragoffsety == 0: dragoffsety = -24
-                    referenceX = int((newpos.x() + 12 + 24 + dragoffsetx - xOffsetAdjusted) / 24) * 24
-                    referenceY = int((newpos.y() + 12 + 24 + dragoffsety - yOffsetAdjusted) / 24) * 24
-                    newpos.setX(referenceX - (24 + dragoffsetx) + xOffsetAdjusted)
-                    newpos.setY(referenceY - (24 + dragoffsety) + yOffsetAdjusted)
+            # Move the position to sprite origin space by subtracting the image
+            # offset
+            origin_pos = (new_pos - offset_point).toPoint()
+
+            # Snap this position to the grid
+            drag_offset = None
+            if globals_.OverrideSnapping or QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.AltModifier:
+                # Snap the smallest amount possible -> 1/16th of a block
+                snap_level = 1
+            elif self.isSelected() and len(globals_.mainWindow.CurrentSelection) > 1:
+                objects_selected = any(isinstance(x, ObjectItem) for x in globals_.mainWindow.CurrentSelection)
+
+                # dragoffsetx and y are in 24 = 1 block units, so convert it to
+                # 16 = 1 block units
+                drag_offset = QtCore.QPointF(self.dragoffsetx, self.dragoffsety) / 1.5
+
+                origin_pos += drag_offset
+
+                if objects_selected:
+                    # Snap to full blocks (16/16)
+                    snap_level = 16
                 else:
-                    # Snap to 8x8
-                    newpos.setX(int(int((newpos.x() + 6 - xOffsetAdjusted) / 12) * 12 + xOffsetAdjusted))
-                    newpos.setY(int(int((newpos.y() + 6 - yOffsetAdjusted) / 12) * 12 + yOffsetAdjusted))
+                    # Snap to half blocks, but adjust for drag offset
+                    snap_level = 8
 
-            x = newpos.x()
-            y = newpos.y()
+            else:
+                # Snap to half-blocks (8/16)
+                snap_level = 8
 
-            # don't let it get out of the boundaries
-            if x < 0: newpos.setX(0)
-            if x > 24552: newpos.setX(24552)
-            if y < 0: newpos.setY(0)
-            if y > 12264: newpos.setY(12264)
+            # Make sure the position is in bounds
+            x = common.clamp(origin_pos.x(), 0, 16368)
+            y = common.clamp(origin_pos.y(), 0, 8176)
 
-            # update the data
-            x = int(newpos.x() / 1.5 - xOffset)
-            y = int(newpos.y() / 1.5 - yOffset)
+            # When snapping, round to the nearest multiple of snap_level. Round
+            # up when two multiples are equally far apart.
+            origin_pos.setX(int((x + (snap_level / 2)) // snap_level) * snap_level)
+            origin_pos.setY(int((y + (snap_level / 2)) // snap_level) * snap_level)
+
+            if drag_offset is not None:
+                origin_pos -= drag_offset
+
+            # Move position back to sprite image space by adding the image offset
+            # and calculate objx and objy based on the sprite origin position.
+            new_pos = QtCore.QPointF(origin_pos + offset_point) * 1.5
+
+            x = origin_pos.x()
+            y = origin_pos.y()
 
             if x != self.objx or y != self.objy:
                 updRect = QtCore.QRectF(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
                 self.scene().update(updRect)
 
-                self.LevelRect.moveTo((x + xOffset) / 16, (y + yOffset) / 16)
+                self.LevelRect.moveTo(new_pos / 24)
 
                 for auxObj in self.ImageObj.aux:
                     auxUpdRect = QtCore.QRectF(
-                        self.x() + auxObj.x(),
-                        self.y() + auxObj.y(),
-                        auxObj.boundingRect().width(),
-                        auxObj.boundingRect().height(),
+                        self.pos() + auxObj.pos(),
+                        auxObj.boundingRect().size(),
                     )
                     self.scene().update(auxUpdRect)
 
                 self.scene().update(
-                    self.x() + self.ImageObj.spritebox.BoundingRect.topLeft().x(),
-                    self.y() + self.ImageObj.spritebox.BoundingRect.topLeft().y(),
-                    self.ImageObj.spritebox.BoundingRect.width(),
-                    self.ImageObj.spritebox.BoundingRect.height(),
+                    self.ImageObj.spritebox.BoundingRect.translated(self.pos())
                 )
 
                 oldx = self.objx
@@ -2237,6 +2252,7 @@ class SpriteItem(LevelEditorItem):
                 if self.positionChanged is not None:
                     self.positionChanged(self, oldx, oldy, x, y)
 
+                # Add moving this sprite to the undo stack.
                 if len(globals_.mainWindow.CurrentSelection) == 1:
                     act = MoveItemUndoAction(self, oldx, oldy, x, y)
                     globals_.mainWindow.undoStack.addOrExtendAction(act)
@@ -2247,7 +2263,7 @@ class SpriteItem(LevelEditorItem):
 
                 SetDirty()
 
-            return newpos
+            return new_pos
 
         return QtWidgets.QGraphicsItem.itemChange(self, change, value)
 
@@ -2256,10 +2272,12 @@ class SpriteItem(LevelEditorItem):
         Sets a new position, through objx and objy
         """
         self.objx, self.objy = newobjx, newobjy
+
         if globals_.SpriteImagesShown:
-            self.setPos((newobjx + self.ImageObj.xOffset) * 1.5, (newobjy + self.ImageObj.yOffset) * 1.5)
-        else:
-            self.setPos(newobjx * 1.5, newobjy * 1.5)
+            newobjx += self.ImageObj.xOffset
+            newobjy += self.ImageObj.yOffset
+
+        self.setPos(newobjx * 1.5, newobjy * 1.5)
 
     def mousePressEvent(self, event):
         """
@@ -2276,18 +2294,9 @@ class SpriteItem(LevelEditorItem):
 
             return
 
-        newitem = SpriteItem(self.type, self.objx, self.objy, self.spritedata)
-
-        globals_.mainWindow.spriteList.addSprite(newitem)
-        globals_.Area.sprites.append(newitem)
-
-        globals_.mainWindow.scene.addItem(newitem)
+        globals_.mainWindow.CreateSprite(self.objx, self.objy, self.type, self.spritedata)
         globals_.mainWindow.scene.clearSelection()
-
         self.setSelected(True)
-
-        newitem.UpdateListItem()
-        SetDirty()
 
     def nearestZone(self, obj=False):
         """
@@ -2341,7 +2350,7 @@ class SpriteItem(LevelEditorItem):
 
             # Draw the selected-sprite-image overlay box
             if self.isSelected() and (not drawSpritebox or self.ImageObj.size != (16, 16)):
-                painter.setPen(QtGui.QPen(globals_.theme.color('sprite_lines_s'), 1, QtCore.Qt.DotLine))
+                painter.setPen(QtGui.QPen(globals_.theme.color('sprite_lines_s'), 1, QtCore.Qt.DashLine))
                 painter.drawRect(self.SelectionRect)
                 painter.fillRect(self.SelectionRect, globals_.theme.color('sprite_fill_s'))
 
@@ -2357,7 +2366,11 @@ class SpriteItem(LevelEditorItem):
             else:
                 painter.setBrush(QtGui.QBrush(globals_.theme.color('spritebox_fill')))
                 painter.setPen(QtGui.QPen(globals_.theme.color('spritebox_lines'), 1))
-            painter.drawRoundedRect(spriteboxRect, 4, 4)
+
+            if globals_.theme.useRoundedRectangles:
+                painter.drawRoundedRect(spriteboxRect, 4, 4)
+            else:
+                painter.drawRect(spriteboxRect)
 
             painter.setFont(self.font)
             painter.drawText(spriteboxRect, QtCore.Qt.AlignCenter, str(self.type))
@@ -2377,7 +2390,7 @@ class SpriteItem(LevelEditorItem):
         globals_.mainWindow.spriteList.takeSprite(self)
         globals_.mainWindow.UpdateFlag = False
         globals_.mainWindow.spriteList.selectionModel().clearSelection()
-        globals_.Area.sprites.remove(self)
+        globals_.Area.RemoveSprite(self)
         self.scene().update()  # The zone painters need for the whole thing to update
 
 
@@ -2475,7 +2488,7 @@ class EntranceItem(LevelEditorItem):
             """
             return self.BoundingRect
 
-    def __init__(self, x, y, id, destarea, destentrance, type, zone, layer, path, settings, cpd):
+    def __init__(self, x, y, id, destarea, destentrance, type, zone, layer, path, settings, leave_level_val, cpd):
         """
         Creates an entrance with specific data
         """
@@ -2500,21 +2513,22 @@ class EntranceItem(LevelEditorItem):
         self.entlayer = layer
         self.entpath = path
         self.listitem = None
-        self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
+        self.leave_level = (leave_level_val != 0)
         self.cpdirection = cpd
+        self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
 
         self.setFlag(self.ItemIsMovable, not globals_.EntrancesFrozen)
         self.setFlag(self.ItemIsSelectable, not globals_.EntrancesFrozen)
+
+        self.aux = self.AuxEntranceItem(self)
 
         globals_.DirtyOverride += 1
         self.setPos(int(x * 1.5), int(y * 1.5))
         globals_.DirtyOverride -= 1
 
-        self.aux = self.AuxEntranceItem(self)
-
         self.setZValue(27000)
         self.UpdateTooltip()
-        self.TypeChange()
+        self.UpdateRects()
 
     def UpdateTooltip(self):
         """
@@ -2527,11 +2541,12 @@ class EntranceItem(LevelEditorItem):
 
         if (self.entsettings & 0x80) != 0:
             destination = globals_.trans.string('Entrances', 2)
+        elif self.leave_level:
+            destination = globals_.trans.string('Entrances', 7)
+        elif self.destarea == 0:
+            destination = globals_.trans.string('Entrances', 3, '[id]', self.destentrance)
         else:
-            if self.destarea == 0:
-                destination = globals_.trans.string('Entrances', 3, '[id]', self.destentrance)
-            else:
-                destination = globals_.trans.string('Entrances', 4, '[id]', self.destentrance, '[area]', self.destarea)
+            destination = globals_.trans.string('Entrances', 4, '[id]', self.destentrance, '[area]', self.destarea)
 
         self.name = name
         self.destination = destination
@@ -2554,11 +2569,10 @@ class EntranceItem(LevelEditorItem):
     def __lt__(self, other):
         return self.entid < other.entid
 
-    def TypeChange(self):
+    def UpdateRects(self):
         """
-        Handles the entrance's type changing
+        Updates the rectangles associated with this entrance.
         """
-
         # Determine the size and position of the entrance
         x, y, w, h = 0, 0, 1, 1
         if self.enttype in (0, 1):
@@ -2572,7 +2586,6 @@ class EntranceItem(LevelEditorItem):
             h = 2
 
         # Now make the rects
-        old_rect = self.getFullRect()
         self.RoundedRect = QtCore.QRectF((x * 24) + 1, (y * 24) + 1, (w * 24) - 2, (h * 24) - 2)
         self.BoundingRect = QtCore.QRectF(x * 24, y * 24, w * 24, h * 24)
         self.LevelRect = QtCore.QRectF(x + (self.objx / 16), y + (self.objy / 16), w, h)
@@ -2580,8 +2593,18 @@ class EntranceItem(LevelEditorItem):
         # Update the aux thing
         self.aux.TypeChange()
 
-        # Update the scene
+    def TypeChange(self):
+        """
+        Handles the entrance's type changing. This updates the associated
+        rectangles and redraws the scene and level overview.
+        """
+        old_rect = self.getFullRect()
+
+        self.UpdateRects()
+
+        # Update the scene and level overview
         globals_.mainWindow.scene.update(old_rect.united(self.getFullRect()))
+        globals_.mainWindow.levelOverview.update()
 
     def paint(self, painter, option, widget):
         """
@@ -2599,7 +2622,10 @@ class EntranceItem(LevelEditorItem):
             painter.setBrush(QtGui.QBrush(globals_.theme.color('entrance_fill')))
             painter.setPen(QtGui.QPen(globals_.theme.color('entrance_lines')))
 
-        painter.drawRoundedRect(self.RoundedRect, 4, 4)
+        if globals_.theme.useRoundedRectangles:
+            painter.drawRoundedRect(self.RoundedRect, 4, 4)
+        else:
+            painter.drawRect(self.RoundedRect)
 
         icontype = 0
         enttype = self.enttype
@@ -2644,15 +2670,10 @@ class EntranceItem(LevelEditorItem):
         Handle movement
         """
         if change == QtWidgets.QGraphicsItem.ItemPositionChange:
-            if self.scene() is None: return value
-
-            updRect = QtCore.QRectF(
-                self.x() + self.aux.x(),
-                self.y() + self.aux.y(),
-                self.aux.BoundingRect.width(),
-                self.aux.BoundingRect.height(),
-            )
-            self.scene().update(updRect)
+            # Make sure the bounding rect and level rects are updated, as well
+            # as the scene and level overview. The TypeChange function already
+            # takes care of this, so we can just call that function.
+            self.TypeChange()
 
         return super().itemChange(change, value)
 
@@ -2662,18 +2683,252 @@ class EntranceItem(LevelEditorItem):
         auxiliary objects.
         """
 
-        br = self.BoundingRect.translated(
-            self.x(),
-            self.y(),
-        )
-        br = br.united(
-            self.aux.BoundingRect.translated(
-                self.aux.x() + self.x(),
-                self.aux.y() + self.y(),
-            )
-        )
+        br = self.BoundingRect | self.aux.BoundingRect.translated(self.aux.pos())
 
-        return br
+        return br.translated(self.pos())
+
+
+class Path:
+    """
+    Class that manages a path and the line that connects the nodes.
+    """
+
+    class NodeData:
+        """
+        A simple class to store the data belonging to a node.
+        """
+        def __init__(self, speed, accel, delay):
+            self.speed = speed
+            self.accel = accel
+            self.delay = delay
+
+    def __init__(self, path_id, scene, loops = False):
+        self._id = path_id
+        self._scene = scene
+        self._loops = loops
+        self._nodes = []
+        self._node_data = []
+        self._line_item = PathEditorLineItem(self)
+        self._has_line = False
+
+    def add_to_scene(self):
+        """
+        This adds all nodes to the scene. This function mainly exists to keep
+        the API of this class similar to the LevelItem classes.
+        """
+        for node in self._nodes:
+            self._scene.addItem(node)
+
+        if not self._has_line:
+            self._scene.addItem(self._line_item)
+            self._has_line = True
+
+    def set_id(self, new_id):
+        """
+        Changes the path's id and returns whether the path's id changed.
+        """
+        if self._id == new_id:
+            return False
+
+        self._id = new_id
+
+        for node in self._nodes:
+            node.set_path_id(new_id)
+
+        return True
+
+    def set_node_data(self, node, speed=None, accel=None, delay=None):
+        """
+        This function can change the speed, accel and delay values associated
+        with a specific node. It only changes the parameters that are given, and
+        returns whether a change was made.
+        """
+        data = self._node_data[self.get_index(node)]
+
+        old_data = (data.speed, data.accel, data.delay)
+
+        if speed is not None:
+            data.speed = speed
+        if accel is not None:
+            data.accel = accel
+        if delay is not None:
+            data.delay = delay
+
+        return (data.speed, data.accel, data.delay) != old_data
+
+    def set_loops(self, value):
+        """
+        Changes whether the path loops or not. Returns True if the value was
+        changed.
+        """
+        if self._loops == value:
+            return False
+
+        self._loops = value
+        self._line_item.update_path()
+
+        return True
+
+    def set_freeze(self, frozen):
+        """
+        (Un)freezes this path, based on the boolean argument. Passing True causes
+        all nodes to not be selectable or movable. Passing False does the opposite.
+        """
+        flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+
+        for node in self._nodes:
+            node.setFlag(flag1, not frozen)
+            node.setFlag(flag2, not frozen)
+
+    def setVisible(self, value):
+        """
+        Shows or hides the path.
+        """
+        for node in self._nodes:
+            node.setVisible(value)
+
+        self._line_item.setVisible(value)
+
+    def get_loops(self):
+        return self._loops
+
+    def get_index(self, node):
+        return self._nodes.index(node)
+
+    def get_node_data(self, index):
+        """
+        Returns a tuple containing the data required for the binary representation
+        of the node at the specified index: x, y, speed, accel, delay.
+        """
+        node = self._nodes[index]
+        data = self._node_data[index]
+
+        return node.objx, node.objy, data.speed, data.accel, data.delay
+
+    def get_points(self):
+        """
+        Returns a list of the positions of the nodes of this path. If this path
+        loops, the first node's position is also the last position in the list.
+        """
+        points = []
+
+        for node in self._nodes:
+            points.append(QtCore.QPointF(node.objx, node.objy) * 1.5)
+
+        if self._loops and points:
+            points.append(points[0])
+
+        return points
+
+    def get_data_for_node(self, node_id):
+        data = self._node_data[node_id]
+        return data.speed, data.accel, data.delay
+
+    def add_node(self, x, y, speed = 0.5, accel = 0.00498, delay = 0, index = None, add_to_list = True, add_to_scene = True):
+        """
+        Adds a node to the path at the specified position. If no index is given,
+        the node is appended to the end of the path.
+        """
+
+        if index is None:
+            index = len(self._nodes)
+
+        node = PathItem(x, y, self._id, index, self)
+
+        self._nodes.insert(index, node)
+        self._node_data.insert(index, Path.NodeData(speed, accel, delay))
+
+        if add_to_scene:
+            self._scene.addItem(node)
+
+        if add_to_list:
+            node.positionChanged = globals_.mainWindow.HandlePathPosChange
+            globals_.mainWindow.pathList.addItem(node.listitem)
+
+        # Update ids of all nodes after the newly created node
+        for new_id, later_node in enumerate(self._nodes[index + 1:], index + 1):
+            later_node.update_id(new_id)
+
+        # Update line item
+        if not self._has_line:
+            self._scene.addItem(self._line_item)
+            self._has_line = True
+
+        self._line_item.update_path()
+
+        return node
+
+    def remove_node(self, index):
+        """
+        Removes the node at a given index. Returns whether the path is empty after
+        this node has been removed.
+        """
+        node = self._nodes[index]
+
+        # hacky stuff
+        plist = globals_.mainWindow.pathList
+
+        globals_.mainWindow.UpdateFlag = True
+        plist.takeItem(plist.row(node.listitem))
+        globals_.mainWindow.UpdateFlag = False
+
+        plist.selectionModel().clearSelection()
+
+        # Remove node from internal lists
+        del self._nodes[index]
+        del self._node_data[index]
+
+        # Update ids of later nodes
+        for new_id, later_node in enumerate(self._nodes[index:], index):
+            later_node.nodeid = new_id
+            later_node.update()
+
+        # Update line item
+        self._line_item.update_path()
+
+        return len(self._nodes) == 0
+
+    def move_node(self, node, new_id):
+        """
+        This function moves a given node to a new position in the path. All items
+        between the original position of the given node and the new id are shifted
+        by 1 position.
+        """
+        old_id = self.get_index(node)
+
+        if old_id == new_id:
+            return
+
+        node_data = self._node_data[old_id]
+
+        if old_id < new_id:
+            # Move all nodes [old_id: new_id] one position back
+            self._nodes[old_id:new_id] = self._nodes[old_id + 1:new_id + 1]
+            self._node_data[old_id:new_id] = self._node_data[old_id + 1:new_id + 1]
+        else:
+            # Move all nodes [new_id: old_id] one position forward
+            self._nodes[new_id + 1:old_id + 1] = self._nodes[new_id:old_id]
+            self._node_data[new_id + 1:old_id + 1] = self._node_data[new_id:old_id]
+
+        # Move node to position new_id
+        self._nodes[new_id] = node
+        self._node_data[new_id] = node_data
+
+        # Update all the nodes that moved, and the line item
+        for new_id, node in enumerate(self._nodes):
+            node.update_id(new_id)
+
+        self._line_item.update_path()
+
+    def node_moved(self, node):
+        self._line_item.update_path()
+
+    def __len__(self):
+        """
+        Returns the number of nodes.
+        """
+        return len(self._nodes)
 
 
 class PathItem(LevelEditorItem):
@@ -2684,22 +2939,22 @@ class PathItem(LevelEditorItem):
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     RoundedRect = QtCore.QRectF(1, 1, 22, 22)
 
-    def __init__(self, objx, objy, pathinfo, nodeinfo):
+    def __init__(self, objx, objy, path_id, node_id, parent):
         """
         Creates a path node with specific data
         """
-
         LevelEditorItem.__init__(self)
 
         self.font = globals_.NumberFont
         self.objx = objx
         self.objy = objy
-        self.pathid = pathinfo['id']
-        self.nodeid = pathinfo['nodes'].index(nodeinfo)
-        self.pathinfo = pathinfo
-        self.nodeinfo = nodeinfo
-        self.listitem = None
-        self.LevelRect = (QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5))
+        self.pathid = path_id
+        self.nodeid = node_id
+        self.path = parent
+
+        self.listitem = ListWidgetItem_SortsByOther(self, self.ListString())
+
+        self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
         self.setFlag(self.ItemIsMovable, not globals_.PathsFrozen)
         self.setFlag(self.ItemIsSelectable, not globals_.PathsFrozen)
 
@@ -2707,18 +2962,21 @@ class PathItem(LevelEditorItem):
         globals_.OverrideSnapping = True
 
         globals_.DirtyOverride += 1
-        self.setPos(int(objx * 1.5), int(objy * 1.5))
+        self.setPos(objx * 1.5, objy * 1.5)
         globals_.DirtyOverride -= 1
 
         globals_.OverrideSnapping = old_snap
 
         self.setZValue(25003)
         self.UpdateTooltip()
+        self.UpdateListItem()
 
-        self.setVisible(globals_.PathsShown)
+    def set_path_id(self, new_id):
+        self.pathid = new_id
 
-        # now that we're inited, set
-        self.nodeinfo['graphicsitem'] = self
+        self.UpdateTooltip()
+        self.listitem.setText(self.ListString())
+        self.update()
 
     def UpdateTooltip(self):
         """
@@ -2739,21 +2997,16 @@ class PathItem(LevelEditorItem):
         """
         Our x/y was changed, update path info
         """
-        self.pathinfo['nodes'][self.nodeid]['x'] = self.objx
-        self.pathinfo['nodes'][self.nodeid]['y'] = self.objy
+        print("Deprecated: PathItem.updatePos was called")
 
-    def updateId(self):
+    def update_id(self, new_id):
         """
         Path was changed, find our new node id
         """
-        # called when 1. add node 2. delete node 3. change node order
-        # hacky code but it works. considering how pathnodes are stored.
-        self.nodeid = self.pathinfo['nodes'].index(self.nodeinfo)
+        self.nodeid = new_id
         self.UpdateTooltip()
-        self.scene().update()
         self.UpdateListItem()
-
-        # if node doesn't exist, let Reggie implode!
+        self.update()
 
     def paint(self, painter, option, widget):
         """
@@ -2768,7 +3021,11 @@ class PathItem(LevelEditorItem):
         else:
             painter.setBrush(QtGui.QBrush(globals_.theme.color('path_fill')))
             painter.setPen(QtGui.QPen(globals_.theme.color('path_lines')))
-        painter.drawRoundedRect(self.RoundedRect, 4, 4)
+
+        if globals_.theme.useRoundedRectangles:
+            painter.drawRoundedRect(self.RoundedRect, 4, 4)
+        else:
+            painter.drawRect(self.RoundedRect)
 
         painter.setFont(self.font)
         painter.drawText(4, 11, str(self.pathid))
@@ -2778,123 +3035,53 @@ class PathItem(LevelEditorItem):
         """
         Delete the path from the level
         """
-        # global mainWindow
-        plist = globals_.mainWindow.pathList
-        globals_.mainWindow.UpdateFlag = True
-        plist.takeItem(plist.row(self.listitem))
-        globals_.mainWindow.UpdateFlag = False
-        plist.selectionModel().clearSelection()
-        globals_.Area.paths.remove(self)
-        self.pathinfo['nodes'].remove(self.nodeinfo)
+        was_last = self.path.remove_node(self.path.get_index(self))
 
-        if (len(self.pathinfo['nodes']) < 1):
-            globals_.Area.pathdata.remove(self.pathinfo)
-            self.scene().removeItem(self.pathinfo['peline'])
-
-        # update other nodes' IDs
-        for pathnode in self.pathinfo['nodes']:
-            pathnode['graphicsitem'].updateId()
-
-        self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+        if was_last:
+            globals_.Area.paths.remove(self.path)
 
 
-class PathEditorLineItem(LevelEditorItem):
+class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
     """
-    Level editor item to draw a line between two path nodes
+    Level editor item to draw a line between the path nodes that belong to the
+    same path.
     """
-    BoundingRect = QtCore.QRectF(0, 0, 1, 1)  # compute later
 
-    def __init__(self, nodelist):
+    def __init__(self, path):
         """
-        Creates a path line with specific data
+        Creates a path line that belongs to a given path.
         """
+        super().__init__()
 
-        # global mainWindow
-        LevelEditorItem.__init__(self)
+        self._path = path
 
-        self.font = globals_.NumberFont
-        self.objx = 0
-        self.objy = 0
-        self.nodelist = nodelist
-        self.loops = False
         self.setFlag(self.ItemIsMovable, False)
         self.setFlag(self.ItemIsSelectable, False)
-        self.computeBoundRectAndPos()
-        self.setZValue(25002)
-        self.UpdateTooltip()
-
-        self.setVisible(globals_.PathsShown)
-
-    def UpdateTooltip(self):
-        """
-        For compatibility, just in case
-        """
-        self.setToolTip('')
-
-    def ListString(self):
-        """
-        Returns an empty string
-        """
-        return ''
-
-    def nodePosChanged(self):
-        self.computeBoundRectAndPos()
-        self.scene().update()
-
-    def computeBoundRectAndPos(self):
-        xcoords = []
-        ycoords = []
-        for node in self.nodelist:
-            xcoords.append(int(node['x']))
-            ycoords.append(int(node['y']))
-        self.objx = (min(xcoords) - 4)
-        self.objy = (min(ycoords) - 4)
-
-        mywidth = (8 + (max(xcoords) - self.objx)) * 1.5
-        myheight = (8 + (max(ycoords) - self.objy)) * 1.5
-
-        globals_.DirtyOverride += 1
-        self.setPos(self.objx * 1.5, self.objy * 1.5)
-        globals_.DirtyOverride -= 1
-        self.prepareGeometryChange()
-        self.BoundingRect = QtCore.QRectF(-4, -4, mywidth, myheight)
-
-    def paint(self, painter, option, widget):
-        """
-        Paints the path lines
-        """
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
-        painter.setClipRect(option.exposedRect)
 
         color = globals_.theme.color('path_connector')
-        painter.setBrush(QtGui.QBrush(color))
-        painter.setPen(QtGui.QPen(color, 3, join=QtCore.Qt.RoundJoin, cap=QtCore.Qt.RoundCap))
+        self.setPen(QtGui.QPen(color, 3, join=QtCore.Qt.RoundJoin, cap=QtCore.Qt.RoundCap))
 
-        linepath = QtGui.QPainterPath()
-        curx, cury = self.x(), self.y()
+        self.update_path()
+        self.setZValue(25002)
 
-        points = []
-
-        for node in self.nodelist:
-            points.append(QtCore.QPointF(
-                node['x'] * 1.5 - curx, node['y'] * 1.5 - cury
-            ))
-
-        if self.loops and len(points) > 0:
-            points.append(points[0])
-
-        linepath.addPolygon(QtGui.QPolygonF(points))
-
-        stroker = QtGui.QPainterPathStroker()
-        stroker.setWidth(1.5)
-
-        painter.drawPath(stroker.createStroke(linepath).simplified())
-
-    def delete(self):
+    def update_path(self):
         """
-        Delete the line from the level
+        Updates the path. This should be called whenever at least one of the
+        nodes of the path moves, is added or is deleted.
         """
-        self.scene().update()
+        points = self._path.get_points()
+
+        line_path = QtGui.QPainterPath()
+        line_path.addPolygon(QtGui.QPolygonF(points))
+
+        old_rect = self.boundingRect()
+
+        self.setPath(line_path)
+
+        # Bug in Qt? The old rect of the path is not updated, so artifacts
+        # remain on the scene if we do not update the scene manually...
+        if old_rect:
+            globals_.mainWindow.scene.update(old_rect)
 
 
 class CommentItem(LevelEditorItem):
@@ -2978,8 +3165,12 @@ class CommentItem(LevelEditorItem):
         Returns the text of this comment in a format that can be written on one line
         """
         t = str(self.text)
-        if t.replace(' ', '').replace('\n', '') == '': t = globals_.trans.string('Comments', 3)
-        while '\n\n' in t: t = t.replace('\n\n', '\n')
+        if not t.strip():
+            t = globals_.trans.string('Comments', 3)
+
+        while '\n\n' in t:
+            t = t.replace('\n\n', '\n')
+
         t = t.replace('\n', globals_.trans.string('Comments', 2))
 
         f = None

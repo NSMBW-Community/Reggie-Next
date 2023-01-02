@@ -16,7 +16,7 @@
             <random range="0x2A, 0x2F" direction="horizontal" />
         </type>
     </types>
-    <group names="Pa1_chika, Pa1_setsugen, Pa1_shiro, Pa1_suichu, Pa1_daishizen, Pa1_sabaku_chika, Pa1_nohara2, Pa1_kurayami_chika, Pa1_shiro_yogan, Pa1_koopa_out, Pa1_shiro_koopa, Pa1_gake_yougan, Pa2_doukutu, Pa2_doukutu2, Pa2_doukutu3, Pa2_doukutu4, Pa2_doukutu5, Pa2_doukutu6, Pa2_doukutu8">
+    <group names="Pa1_chika, Pa1_daishizen, Pa1_gake_yougan, Pa1_koopa_out, Pa1_kurayami_chika, Pa1_nohara2, Pa1_sabaku_chika, Pa1_setsugen, Pa1_shiro, Pa1_shiro_koopa, Pa1_shiro_yogan, Pa1_suichu, Pa2_doukutu, Pa2_doukutu2, Pa2_doukutu3, Pa2_doukutu4, Pa2_doukutu5, Pa2_doukutu6, Pa2_doukutu8">
         <random name="regular-terrain" />
     </group>
     <group names="Pa1_nohara">
@@ -36,9 +36,19 @@
     </group>
     <group names="Pa1_kaigan">
         <random name="regular-terrain" />
+        <random range="0x08, 0x0B" />
         <random range="0x18, 0x1B" />
         <random range="0x28, 0x2A" />
         <random range="0x3A, 0x3D" />
+    </group>
+    <group names="Pa1_korichika">
+        <random name="regular-terrain" />
+        <random range="0x6A, 0x6F" direction="horizontal" />
+        <random range="0x7A, 0x7F" />
+        <random range="0x8A, 0x8F" direction="horizontal" />
+        <random range="0x9A, 0x9F" direction="horizontal" />
+        <random range="0xAA, 0xAF" />
+        <random range="0xBA, 0xBF" direction="horizontal" />
     </group>
     <group names="Pa1_obake_soto">
         <random range="10, 15" direction="horizontal" />

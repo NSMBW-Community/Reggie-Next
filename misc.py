@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
 import collections
+import itertools
 import sys
 import os
 from xml.etree import ElementTree
@@ -14,30 +15,35 @@ from dirty import setting, setSetting
 from dialogs import DiagnosticToolDialog
 from translation import ReggieTranslation
 from libs import lh
+from misc2 import LevelViewWidget
+from levelitems import Path, CommentItem
 
 ################################################################################
 ################################################################################
 ################################################################################
-
-def GetPath(id_):
-    """
-    Checks the game definition and the translation and returns the appropriate path
-    """
-    # If there's a custom globals_.gamedef, use that
-    if globals_.gamedef.custom and globals_.gamedef.file(id_) is not None:
-        return globals_.gamedef.file(id_)
-    else:
-        return globals_.trans.path(id_)
-
 
 def module_path():
     """
-    This will get us the program's directory, even if we are frozen using cx_Freeze
+    This will get us the program's directory, even if we are frozen using
+    PyInstaller.
     """
-    if hasattr(sys, 'frozen'):
-        return os.path.dirname(sys.executable)
+    if hasattr(sys, 'frozen') and hasattr(sys, '_MEIPASS'):  # PyInstaller
+        if sys.platform == 'darwin':  # macOS
+            # sys.executable is /x/y/z/reggie.app/Contents/MacOS/reggie
+            # We need to return /x/y/z/reggie.app/Contents/Resources/
+
+            macos = os.path.dirname(sys.executable)
+            if os.path.basename(macos) != 'MacOS':
+                return None
+
+            return os.path.join(os.path.dirname(macos), 'Resources')
+
+        else:  # Windows, Linux
+            return os.path.dirname(sys.executable)
+
     if __name__ == 'misc':
         return os.path.dirname(os.path.abspath(__file__))
+
     return None
 
 
@@ -64,18 +70,11 @@ def IsNSMBLevel(filename):
 
     globals_.compressed = False
 
-    if (data[0] & 0xF0) == 0x40:  # If LH-compressed
-        try:
-            data = lh.UncompressLH(data)
-        except IndexError:
-            QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
-                                          globals_.trans.string('Err_Decompress', 1, '[file]', filename))
-            return False
-
+    if (data[0] & 0xF0) == 0x40 or not data.startswith(b"U\xAA8-"):  # If LH-compressed or LZ-compressed
         globals_.compressed = True
-
-    if checkContent(data):
         return True
+
+    return checkContent(data)
 
 
 def FilesAreMissing():
@@ -92,10 +91,10 @@ def FilesAreMissing():
     missing = []
 
     for check in required:
-        if not os.path.isfile('reggiedata/' + check):
+        if not os.path.isfile(os.path.join('reggiedata', check)):
             missing.append(check)
 
-    if len(missing) > 0:
+    if missing:
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_MissingFiles', 0),
                                       globals_.trans.string('Err_MissingFiles', 2, '[files]', ', '.join(missing)))
         return True
@@ -103,41 +102,74 @@ def FilesAreMissing():
     return False
 
 
-def SetGamePath(newpath):
+def SetGamePaths(new_stage_path, new_texture_path):
     """
     Sets the NSMBWii game path
     """
-    # you know what's fun?
-    # isValidGamePath crashes in os.path.join if QString is used..
-    # so we must change it to a Python string manually
-    globals_.gamedef.SetGamePath(str(newpath))
+    # os.path.join crashes if QStrings are used, so we must change the paths to
+    # a Python string manually
+    globals_.gamedef.SetStageGamePath(str(new_stage_path))
+    globals_.gamedef.SetTextureGamePath(str(new_texture_path))
 
 
-def isValidGamePath(check='ug'):
+def areValidGamePaths(stage_check='ug', texture_check='ug'):
     """
     Checks to see if the path for NSMBWii contains a valid game
     """
-    if check == 'ug': check = globals_.gamedef.GetGamePath()
+    if stage_check == 'ug':
+        stage_check = globals_.gamedef.GetStageGamePath()
 
-    if check is None or check == '': return False
-    if not os.path.isdir(check): return False
-    if not os.path.isdir(os.path.join(check, 'Texture')): return False
-    if not (os.path.isfile(os.path.join(check, '01-01.arc'))
-            or os.path.isfile(os.path.join(check, '01-01.arc.LH'))): return False
+    if texture_check == 'ug':
+        texture_check = globals_.gamedef.GetTextureGamePath()
 
-    return True
+    if not stage_check or not texture_check:
+        return False
+
+    # Check that both the stage and texture folders exist
+    if not os.path.isdir(stage_check) or not os.path.isdir(texture_check):
+        return False
+
+    # Check that a readable 01-01 file is located in the stage folder
+    for ext in globals_.FileExtentions:
+        if os.path.isfile(os.path.join(stage_check, "01-01" + ext)):
+            return True
+
+    return False
+
+
+def getResourcePaths(res_name):
+    """
+    Returns an iterable containing the paths that have the specified resource.
+    The paths are included in order from general to specific. That is, the base
+    comes before the patch.
+    """
+    # To make sure that the gamedef is translatable as well, we first need to
+    # figure out what paths the gamedef loads its files from
+    gamedef_files, is_patch, gamedef_names = globals_.gamedef.recursiveFiles(res_name)
+
+    # Then, we ask the current translation to give a path for each of those
+    # gamedefs. If there is no translation for a specific resource and gamedef,
+    # the corresponding entry will have the value 'None'.
+    trans_files = globals_.trans.paths(res_name, gamedef_names)
+
+    # Combine the gamedef_files and trans_files lists to get them in the right
+    # order.
+    #   [gamedef_files[0], trans_files[0], ..., gamedef[i], trans_files[i]]
+    # If any entry (gamedef or translation) has no value, it will have None. As
+    # such, we also need to filter out the None values from the final iterable.
+    return filter(lambda x: x is not None, itertools.chain.from_iterable(zip(gamedef_files, trans_files)))
 
 
 def LoadLevelNames():
     """
     Ensures that the level name info is loaded
     """
-    # Parse the file
-    tree = ElementTree.parse(GetPath('levelnames'))
-    root = tree.getroot()
+    for path in getResourcePaths('levelnames'):
+        tree = ElementTree.parse(path)
+        root = tree.getroot()
 
-    # Parse the nodes (root acts like a large category)
-    globals_.LevelNames = LoadLevelNames_Category(root)
+        # Parse the nodes (root acts like a large category)
+        globals_.LevelNames = LoadLevelNames_Category(root)
 
 
 def LoadLevelNames_Category(node):
@@ -160,11 +192,7 @@ def LoadTilesetNames(reload_=False):
     if (globals_.TilesetNames is not None) and (not reload_): return
 
     # Get paths
-    paths = globals_.gamedef.recursiveFiles('tilesets')
-    new = []
-    new.append(globals_.trans.files['tilesets'])
-    for path in paths: new.append(path)
-    paths = new
+    paths = getResourcePaths('tilesets')
 
     # Read each file
     globals_.TilesetNames = [[[], False], [[], False], [[], False], [[], False]]
@@ -305,18 +333,12 @@ def LoadObjDescriptions(reload_=False):
     """
     if (globals_.ObjDesc is not None) and not reload_: return
 
-    paths, isPatch = globals_.gamedef.recursiveFiles('ts1_descriptions', True)
-    if isPatch:
-        new = []
-        new.append(globals_.trans.files['ts1_descriptions'])
-        for path in paths: new.append(path)
-        paths = new
+    paths = getResourcePaths('ts1_descriptions')
 
     globals_.ObjDesc = {}
     for path in paths:
-        f = open(path)
-        raw = [x.strip() for x in f.readlines()]
-        f.close()
+        with open(path, 'r', encoding='utf-8') as f:
+            raw = [x.strip() for x in f.readlines()]
 
         for line in raw:
             w = line.split('=')
@@ -329,18 +351,12 @@ def LoadBgANames(reload_=False):
     """
     if (globals_.BgANames is not None) and not reload_: return
 
-    paths, isPatch = globals_.gamedef.recursiveFiles('bga', True)
-    if isPatch:
-        new = []
-        new.append(globals_.trans.files['bga'])
-        for path in paths: new.append(path)
-        paths = new
+    paths = getResourcePaths('bga')
 
     globals_.BgANames = []
     for path in paths:
-        f = open(path)
-        raw = [x.strip() for x in f.readlines()]
-        f.close()
+        with open(path, 'r', encoding='utf-8') as f:
+            raw = [x.strip() for x in f.readlines()]
 
         for line in raw:
             w = line.split('=')
@@ -353,7 +369,7 @@ def LoadBgANames(reload_=False):
 
             if not found: globals_.BgANames.append([w[0], w[1]])
 
-        globals_.BgANames = sorted(globals_.BgANames, key=lambda entry: int(entry[0], 16))
+        globals_.BgANames.sort(key=lambda entry: int(entry[0], 16))
 
 
 def LoadBgBNames(reload_=False):
@@ -362,17 +378,12 @@ def LoadBgBNames(reload_=False):
     """
     if (globals_.BgBNames is not None) and not reload_: return
 
-    paths, isPatch = globals_.gamedef.recursiveFiles('bgb', True)
-    if isPatch:
-        new = [globals_.trans.files['bgb']]
-        for path in paths: new.append(path)
-        paths = new
+    paths = getResourcePaths('bgb')
 
     globals_.BgBNames = []
     for path in paths:
-        f = open(path)
-        raw = [x.strip() for x in f.readlines()]
-        f.close()
+        with open(path, 'r', encoding='utf-8') as f:
+            raw = [x.strip() for x in f.readlines()]
 
         for line in raw:
             w = line.split('=')
@@ -385,7 +396,8 @@ def LoadBgBNames(reload_=False):
 
             if not found: globals_.BgBNames.append([w[0], w[1]])
 
-        globals_.BgBNames = sorted(globals_.BgBNames, key=lambda entry: int(entry[0], 16))
+        globals_.BgBNames.sort(key=lambda entry: int(entry[0], 16))
+
 
 
 def LoadConstantLists():
@@ -468,33 +480,30 @@ class SpriteDefinition:
             if 'advancedcomment' in attribs:
                 advancedcomment = globals_.trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['advancedcomment'])
 
-            if 'requiredbit' in attribs:
+            if 'requirednybble' in attribs:
+                bit_ranges, _ = self.parseBits(attribs.get("requirednybble"))
                 required = []
-                bits = attribs['requiredbit'].split(",")
 
                 if 'requiredval' in attribs:
                     vals = attribs['requiredval'].split(",")
 
-                    if len(bits) != len(vals):
+                    if len(bit_ranges) != len(vals):
                         raise ValueError("Required bits and vals have different lengths.")
                 else:
-                    vals = [None] * len(bits)
+                    vals = [None] * len(bit_ranges)
 
-                for sbit, sval in zip(bits, vals):
-                    if '-' not in sbit:
-                        a = b = int(sbit)
-                    else:
-                        a, b = map(int, sbit.split('-'))
-
+                # The associated values are a comma-separated list of values or
+                # (inclusive) ranges.
+                for bit_range, sval in zip(bit_ranges, vals):
                     if sval is None:
-                        c = 1
-                        d = (1 << (b - a + 1)) - 1
+                        a = 1
+                        b = (1 << (bit_range[1] - bit_range[0] + 1)) - 1
                     elif '-' not in sval:
-                        c = d = int(sval)
+                        a = b = int(sval)
                     else:
-                        c, d = map(int, sval.split('-'))
+                        a, b = map(int, sval.split('-'))
 
-                    required.append((((a, b + 1),), (c, d + 1)))
+                    required.append(((bit_range,), (a, b + 1)))
 
             if 'idtype' in attribs:
                 idtype = attribs['idtype']
@@ -504,13 +513,13 @@ class SpriteDefinition:
 
             # Parse the remaining type-specific attributes.
             if field.tag == 'checkbox':
-                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                bit, _ = self.parseBits(attribs.get("nybble"))
                 mask = int(attribs.get('mask', 1))
 
                 fields.append((0, attribs['title'], bit, mask, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'list':
-                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                bit, _ = self.parseBits(attribs.get("nybble"))
 
                 entries = []
                 for e in field:
@@ -522,7 +531,7 @@ class SpriteDefinition:
                 fields.append((1, title, bit, model, comment, required, advanced, comment2, advancedcomment, idtype))
 
             elif field.tag == 'value':
-                bit, max_ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                bit, max_ = self.parseBits(attribs.get("nybble"))
 
                 fields.append((2, attribs['title'], bit, max_, comment, required, advanced, comment2, advancedcomment, idtype))
 
@@ -533,13 +542,12 @@ class SpriteDefinition:
                 fields.append((3, attribs['title'], startbit, bitnum, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'multibox':
-                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                bit, _ = self.parseBits(attribs.get("nybble"))
 
                 fields.append((4, attribs['title'], bit, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'dualbox':
-                a = int(attribs['bit'])
-                bit = [(a, a + 1)]
+                bit, _ = self.parseBits(attribs.get("nybble"))
 
                 fields.append((5, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
 
@@ -557,60 +565,68 @@ class SpriteDefinition:
             elif field.tag == 'external':
                 # Uses a list from an external resource. This is used for big
                 # lists like actors, sound effects etc.
-                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                bit, _ = self.parseBits(attribs.get("nybble"))
                 type_ = attribs['type']
 
                 fields.append((6, title, bit, comment, required, advanced, comment2, advancedcomment, type_))
 
             elif field.tag == 'multidualbox':
                 # multibox but with dualboxes instead of checkboxes
-                bit, _ = self.parseBits(attribs.get("nybble"), attribs.get("bit"))
+                bit, _ = self.parseBits(attribs.get("nybble"))
 
                 fields.append((7, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
 
-    def parseBits(self, nybble_val, bits_val):
+    def parseBits(self, nybble_val):
         """
         Parses a description of the bits a setting affects into a tuple of a
         list of ranges and the number of possible values. Ranges include the
         start and exclude the end. The most significant bit is considered 1.
+        Precise bits can be specified by adding a period after the number,
+        followed by a number from 1 to 4, where 1 is the most significant bit in
+        a nybble, and 4 the least significant bit.
 
-        Raises a ValueError if both inputs are None or if any of the specified
+        Raises a ValueError if 'nybble_val' is None or if any of the specified
         ranges refer to bits that are not in the first 8 bytes.
         """
-
         if nybble_val is None:
-            ranges = bits_val
-        else:
-            ranges = nybble_val
+            raise ValueError("No nybble specification given.")
 
-        if ranges is None:
-            raise ValueError("Both bits and nybble are None.")
-
-        # Whether the ranges indicate the nybbles or the bits.
-        is_nybble = nybble_val is not None
         # The total number of bits that can be controlled.
         bit_length = 0
         # A list of tuples (start_bit, end_bit) that represent inclusive ranges.
         bit_ranges = []
 
-        for range_ in ranges.split(","):
-            if "-" in range_:  # Multiple bits / nybbles
-                a, b = map(int, range_.split("-"))
-            else:  # Just a single bit / nybble
-                a = b = int(range_)
+        for range_ in nybble_val.split(","):
+            if "-" in range_:
+                # Multiple nybbles
+                a, b = range_.split("-")
+            else:
+                # Just a nybble
+                a = b = range_
 
-            if is_nybble:
-                a = (a << 2) - 3
-                b <<= 2
+            if "." in a:
+                nybble, bits = map(int, a.split("."))
+            else:
+                nybble, bits = int(a), 1
+
+            a = 4 * (nybble - 1) + bits
+
+            if "." in b:
+                nybble, bits = map(int, b.split("."))
+            else:
+                nybble, bits = int(b), 4
+
+            b = 4 * (nybble - 1) + bits
 
             # Check if the resulting range would be valid.
             if not 1 <= a < b + 1 <= 65:
-                raise ValueError("Indexed bits out of bounds: " + str((a, b + 1)))
+                raise ValueError("Indexed bits out of bounds: " + str(range_) + "->" + str((a, b + 1)))
 
             bit_length += b - a + 1
             bit_ranges.append((a, b + 1))
 
         return bit_ranges, 1 << bit_length
+
 
 def LoadSpriteData():
     """
@@ -618,125 +634,98 @@ def LoadSpriteData():
     """
     errors = []
     errortext = []
-    spriteIds = [-1]
+    sprite_ids = [-1]
 
-    # It works this way so that it can overwrite settings based on order of precedence
-    paths = [(globals_.trans.files['spritedata'], None)]
-    for pathtuple in globals_.gamedef.multipleRecursiveFiles('spritedata', 'spritenames'):
-        paths.append(pathtuple)
+    # Convert the iterable to list, because we need to iterate over it twice
+    paths = list(getResourcePaths('spritedata'))
 
-    for sdpath, snpath in paths:
+    for path in paths:
 
         # Add XML sprite data, if there is any
-        if sdpath not in (None, ''):
-            path = sdpath if isinstance(sdpath, str) else sdpath.path
-            tree = ElementTree.parse(path)
-            root = tree.getroot()
+        if not isinstance(path, str):
+            path = path.path
 
-            for sprite in root:
-                if sprite.tag.lower() != 'sprite':
-                    continue
+        tree = ElementTree.parse(path)
 
-                try:
-                    spriteIds.append(int(sprite.attrib['id']))
-                except ValueError:
-                    continue
+        for sprite in tree.iter("sprite"):
+            id_text = sprite.get("id")
 
-    globals_.NumSprites = max(spriteIds) + 1
+            try:
+                id_ = int(id_text)
+            except ValueError:
+                continue
+
+            sprite_ids.append(id_)
+
+    globals_.NumSprites = max(sprite_ids) + 1
     globals_.Sprites = [None] * globals_.NumSprites
 
-    for sdpath, snpath in paths:
+    for sdpath in paths:
 
         # Add XML sprite data, if there is any
-        if sdpath not in (None, ''):
-            path = sdpath if isinstance(sdpath, str) else sdpath.path
-            tree = ElementTree.parse(path)
-            root = tree.getroot()
+        if sdpath in (None, ''):
+            continue
 
-            for sprite in root:
-                if sprite.tag.lower() != 'sprite':
-                    continue
+        path = sdpath if isinstance(sdpath, str) else sdpath.path
+        tree = ElementTree.parse(path)
+        root = tree.getroot()
 
-                try:
-                    spriteid = int(sprite.attrib['id'])
-                except ValueError:
-                    continue
+        for sprite in tree.iter("sprite"):
 
-                spritename = sprite.attrib['name']
-                notes = None
-                relatedObjFiles = None
-                yoshiNotes = None
-                size = False
-                noyoshi = None
-                asm = None
-                advNotes = None
+            try:
+                spriteid = int(sprite.get("id"))
+            except ValueError:
+                continue
 
-                if 'notes' in sprite.attrib:
-                    notes = globals_.trans.string('SpriteDataEditor', 2, '[notes]', sprite.attrib['notes'])
+            spritename = sprite.get("name")
+            notes = None
+            advNotes = None
+            relatedObjFiles = None
+            yoshiNotes = None
 
-                if 'advancednotes' in sprite.attrib:
-                    advNotes = globals_.trans.string('SpriteDataEditor', 11, '[notes]', sprite.attrib['advancednotes'])
+            attribs = sprite.keys()
 
-                if 'files' in sprite.attrib:
-                    relatedObjFiles = globals_.trans.string('SpriteDataEditor', 8, '[list]',
-                                                   sprite.attrib['files'].replace(';', '<br>'))
+            if 'notes' in attribs:
+                notes = globals_.trans.string('SpriteDataEditor', 2, '[notes]', sprite.get('notes'))
 
-                if 'yoshinotes' in sprite.attrib:
-                    yoshiNotes = globals_.trans.string('SpriteDataEditor', 9, '[notes]',
-                                                   sprite.attrib['yoshinotes'])
+            if 'advancednotes' in attribs:
+                advNotes = globals_.trans.string('SpriteDataEditor', 11, '[notes]', sprite.get('advancednotes'))
 
-                if 'noyoshi' in sprite.attrib:
-                    noyoshi = sprite.attrib['noyoshi'] == "True"
+            if 'files' in attribs:
+                relatedObjFiles = globals_.trans.string('SpriteDataEditor', 8, '[list]',
+                                                sprite.get('files').replace(';', '<br>'))
 
-                if 'asmhacks' in sprite.attrib:
-                    asm = sprite.attrib['asmhacks'] == "True"
+            if 'yoshinotes' in attribs:
+                yoshiNotes = globals_.trans.string('SpriteDataEditor', 9, '[notes]',
+                                                sprite.get('yoshinotes'))
 
-                if 'sizehacks' in sprite.attrib:
-                    size = sprite.attrib['sizehacks'] == "True"
+            noyoshi = sprite.get('noyoshi', 'False') == "True"
+            asm = sprite.get('asmhacks', 'False') == "True"
+            size = sprite.get('sizehacks', 'False') == "True"
 
-                sdef = SpriteDefinition()
-                sdef.id = spriteid
-                sdef.name = spritename
-                sdef.notes = notes
-                sdef.advNotes = advNotes
-                sdef.relatedObjFiles = relatedObjFiles
-                sdef.yoshiNotes = yoshiNotes
-                sdef.noyoshi = noyoshi
-                sdef.asm = asm
-                sdef.size = size
-                sdef.dependencies = []
-                sdef.dependencynotes = None
+            sdef = SpriteDefinition()
+            sdef.id = spriteid
+            sdef.name = spritename
+            sdef.notes = notes
+            sdef.advNotes = advNotes
+            sdef.relatedObjFiles = relatedObjFiles
+            sdef.yoshiNotes = yoshiNotes
+            sdef.noyoshi = noyoshi
+            sdef.asm = asm
+            sdef.size = size
+            sdef.dependencies = []
+            sdef.dependencynotes = None
 
-                try:
-                    sdef.loadFrom(sprite)
-                except Exception as e:
-                    errors.append(str(spriteid))
-                    errortext.append(str(e))
+            try:
+                sdef.loadFrom(sprite)
+            except Exception as e:
+                errors.append(str(spriteid))
+                errortext.append(str(e))
 
-                globals_.Sprites[spriteid] = sdef
-
-        # Add TXT sprite names, if there are any
-        # This code is only ever run when a custom
-        # gamedef is loaded, because spritenames.txt
-        # is a file only ever used by custom gamedefs.
-        if (snpath is not None) and (snpath.path is not None):
-            with open(snpath.path) as snfile:
-                data = snfile.read()
-
-            # Split the data
-            data = data.split('\n')
-            for i, line in enumerate(data):
-                data[i] = line.split(':')
-
-            # Apply it
-            for spriteid, name in data:
-                spriteid = int(spriteid)
-
-                if 0 <= spriteid < globals_.NumSprites:
-                    globals_.Sprites[spriteid].name = name
+            globals_.Sprites[spriteid] = sdef
 
     # Warn the user if errors occurred
-    if len(errors) > 0:
+    if errors:
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenSpriteData', 0),
                                       globals_.trans.string('Err_BrokenSpriteData', 1, '[sprites]', ', '.join(errors)),
                                       QtWidgets.QMessageBox.Ok)
@@ -749,11 +738,7 @@ def LoadSpriteCategories(reload_=False):
     """
     if (globals_.SpriteCategories is not None) and not reload_: return
 
-    paths, isPatch = globals_.gamedef.recursiveFiles('spritecategories', True)
-    if isPatch:
-        new = [globals_.trans.files['spritecategories']]
-        for path in paths: new.append(path)
-        paths = new
+    paths = getResourcePaths('spritecategories')
 
     globals_.SpriteCategories = []
     # Add a Search category
@@ -808,14 +793,11 @@ def LoadSpriteListData(reload_=False):
     # global SpriteListData
     if (globals_.SpriteListData is not None) and not reload_: return
 
-    paths = globals_.gamedef.recursiveFiles('spritelistdata')
-    new = [os.path.join('reggiedata', 'spritelistdata.txt')]
-    for path in paths: new.append(path)
-    paths = new
+    paths = getResourcePaths('spritelistdata')
 
     globals_.SpriteListData = [[] for _ in range(24)]
     for path in paths:
-        with open(path) as f:
+        with open(path, 'r', encoding='utf-8') as f:
             data = f.read()
 
         split = data.replace('\n', '').split(';')
@@ -840,13 +822,11 @@ def LoadEntranceNames(reload_=False):
     """
     if (globals_.EntranceTypeNames is not None) and not reload_: return
 
-    paths, isPatch = globals_.gamedef.recursiveFiles('entrancetypes', True)
-    if isPatch:
-        paths = [globals_.trans.files['entrancetypes']] + paths
+    paths = getResourcePaths('entrancetypes')
 
     names = collections.OrderedDict()
     for path in paths:
-        with open(path, 'r') as f:
+        with open(path, 'r', encoding='utf-8') as f:
             for line in f.readlines():
                 id_, name = line.strip().split(':')
                 names[int(id_)] = name
@@ -909,14 +889,7 @@ def LoadTilesetInfo(reload_=False):
     if (globals_.TilesetInfo is not None) and not reload_:
         return
 
-    paths, isPatch = globals_.gamedef.recursiveFiles('tilesetinfo', True)
-    if isPatch:
-        new = [globals_.trans.files['tilesetinfo']]
-
-        for path in paths:
-            new.append(path)
-
-        paths = new
+    paths = getResourcePaths('tilesetinfo')
 
     # go through the types
     types = {}
@@ -953,6 +926,37 @@ def LoadTilesetInfo(reload_=False):
         del root
 
     globals_.TilesetInfo = info
+
+
+def LoadMusicInfo(reload_=False):
+    """
+    Uses the current gamedef + translation to load the music data, and saves it
+    in the MusicInfo global.
+    """
+    if (globals_.MusicInfo is not None) and not reload_:
+        return
+
+    paths = getResourcePaths('music')
+
+    songs = {}
+    for path in paths:
+        with open(path, 'r', encoding='utf-8') as musicfile:
+            data = musicfile.read()
+
+        del musicfile
+
+        # Apply the data
+        for line in data.split('\n'):
+            line_items = line.strip().split(':')
+
+            if len(line_items) != 2:
+                # Ignore lines that do not follow the <songid>:<name> format
+                continue
+
+            songid, name = line_items
+            songs[songid] = name
+
+    globals_.MusicInfo = sorted(songs.items(), key=lambda kv: int(kv[0]))
 
 
 class ChooseLevelNameDialog(QtWidgets.QDialog):
@@ -1108,9 +1112,9 @@ class RecentFilesMenu(QtWidgets.QMenu):
         Adds an entry to the list
         """
         MaxLength = 16
+        path = str(path)
 
-        if path in ('None', 'True', 'False', None, True, False): return  # fixes bugs
-        path = str(path).replace('/', '\\')
+        if path in ('None', 'True', 'False'): return  # fixes bugs
 
         new = [path]
         for filename in self.FileList:
@@ -1146,7 +1150,7 @@ class RecentFilesMenu(QtWidgets.QMenu):
         """
         if globals_.mainWindow.CheckDirty(): return
 
-        if not globals_.mainWindow.LoadLevel(None, self.FileList[number], True, 1): self.RemoveFromList(number)
+        if not globals_.mainWindow.LoadLevel(self.FileList[number], True, 1): self.RemoveFromList(number)
 
 
 class DiagnosticWidget(QtWidgets.QWidget):
@@ -1489,6 +1493,9 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Add the Zone Entrance Indicator checkbox
                 self.zEntIndicator = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 31))
 
+                # Add the Zone Bounds Indicator checkbox
+                self.zBndIndicator = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 38))
+
                 # Reset data when hide checkbox
                 self.rdhIndicator = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 33))
 
@@ -1505,6 +1512,11 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.psValue = QtWidgets.QSpinBox()
                 self.psValue.setRange(0, 2147483647) # maximum value allowed by qt
 
+                # Place objects at full size
+                self.fullObjSize = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 37))
+
+                self.insertPathNode = QtWidgets.QCheckBox("Insert new path node after selected node")
+
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
                 L.addRow(globals_.trans.string('PrefsDlg', 14), self.Trans)
@@ -1512,8 +1524,11 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L.addWidget(self.epbIndicator)
                 L.addRow(globals_.trans.string('PrefsDlg', 36), self.psValue)
                 L.addWidget(self.zEntIndicator)
+                L.addWidget(self.zBndIndicator)
                 L.addWidget(self.rdhIndicator)
                 L.addWidget(self.erbIndicator)
+                L.addWidget(self.fullObjSize)
+                L.addWidget(self.insertPathNode)
                 self.setLayout(L)
 
                 # Set the buttons
@@ -1527,10 +1542,10 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.Trans.setItemData(0, None, QtCore.Qt.UserRole)
                 self.Trans.setCurrentIndex(0)
                 i = 1
-                for trans in os.listdir('reggiedata/translations'):
+                for trans in os.listdir(os.path.join('reggiedata', 'translations')):
                     if trans.lower() == 'english': continue
 
-                    fp = 'reggiedata/translations/' + trans + '/main.xml'
+                    fp = os.path.join('reggiedata', 'translations', trans, 'main.xml')
                     if not os.path.isfile(fp): continue
 
                     transobj = ReggieTranslation(trans)
@@ -1542,12 +1557,16 @@ class PreferencesDialog(QtWidgets.QDialog):
                     i += 1
 
                 self.zEntIndicator.setChecked(globals_.DrawEntIndicators)
+                self.zBndIndicator.setChecked(globals_.BoundsDrawn)
                 self.rdhIndicator.setChecked(globals_.ResetDataWhenHiding)
                 self.erbIndicator.setChecked(globals_.HideResetSpritedata)
 
                 self.epbIndicator.setChecked(globals_.EnablePadding)
                 self.psValue.setEnabled(globals_.EnablePadding)
                 self.psValue.setValue(globals_.PaddingLength)
+
+                self.fullObjSize.setChecked(globals_.PlaceObjectsAtFullSize)
+                self.insertPathNode.setChecked(globals_.InsertPathNode)
 
             def ClearRecent(self):
                 """
@@ -1586,10 +1605,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                 else:
                     # Get the settings from the .ini
                     toggled = setting('ToolbarActs')
-                    newToggled = {}  # here, I'm replacing QStrings w/ python strings
-                    for key in toggled:
-                        newToggled[str(key)] = toggled[key]
-                    toggled = newToggled
+                    # Replace the QString keys with python string keys
+                    toggled = {str(key): toggled[key] for key in toggled}
 
                 # Create some data
                 self.FileBoxes = []
@@ -1723,9 +1740,10 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.NonWinStyle = QtWidgets.QComboBox()
                 self.NonWinStyle.setToolTip(globals_.trans.string('PrefsDlg', 24))
                 self.NonWinStyle.addItems(keys)
-                uistyle = setting('uiStyle', "Fusion")
-                if uistyle is not None:
-                    self.NonWinStyle.setCurrentIndex(keys.index(setting('uiStyle', "Fusion")))
+                ui_style = setting('uiStyle', "Fusion")
+
+                if ui_style in keys:
+                    self.NonWinStyle.setCurrentIndex(keys.index(ui_style))
 
                 # Create the options groupbox
                 L = QtWidgets.QVBoxLayout()
@@ -1746,44 +1764,29 @@ class PreferencesDialog(QtWidgets.QDialog):
 
             @property
             def getAvailableThemes(self):
-                """Searches the Themes folder and returns a list of theme filepaths.
-                Automatically adds 'Classic' to the list."""
-                themes = os.listdir('reggiedata/themes')
-                themeList = [('Classic', ReggieTheme())]
-                for themeName in themes:
-                    if os.path.isdir('reggiedata/themes/' + themeName):
-                        try:
-                            theme = ReggieTheme(themeName)
-                            themeList.append((themeName, theme))
-                        except Exception:
-                            pass
+                """
+                Searches the Themes folder and returns a list of theme filepaths.
+                Automatically adds 'Classic' to the list.
+                """
+                theme_path = os.path.join('reggiedata', 'themes')
+                theme_list = [('Classic', ReggieTheme())]
+                for theme_name in os.listdir(theme_path):
+                    if not os.path.isdir(os.path.join(theme_path, theme_name)):
+                        continue
 
-                return tuple(themeList)
+                    try:
+                        theme = ReggieTheme(theme_name)
+                    except Exception:
+                        continue
+
+                    theme_list.append((theme_name, theme))
+
+                return tuple(theme_list)
 
             def UpdatePreview(self):
                 """
                 Updates the preview and theme box
                 """
-                theme = self.themeBox.currentText()
-                style = self.NonWinStyle.currentText()
-
-                themeObj = ReggieTheme(theme)
-                keys = QtWidgets.QStyleFactory().keys()
-
-                if themeObj.color('ui') is not None and not themeObj.forceStyleSheet:
-                    styles = ["WindowsXP", "WindowsVista"]
-                    for _style in styles:
-                        for key in _style, _style.lower():
-                            if key in keys:
-                                keys.remove(key)
-
-                    if style in styles + [_style.lower() for _style in styles]:
-                        style = "Fusion"
-
-                self.NonWinStyle.clear()
-                self.NonWinStyle.addItems(keys)
-                self.NonWinStyle.setCurrentIndex(keys.index(style))
-
                 for name, themeObj in self.themes:
                     if name == self.themeBox.currentText():
                         t = themeObj
@@ -1797,79 +1800,59 @@ class PreferencesDialog(QtWidgets.QDialog):
                 Returns a preview pixmap for the given theme
                 """
 
-                tilewidth = 24
-                width = int(21.875 * tilewidth)
-                height = int(11.5625 * tilewidth)
+                scene = QtWidgets.QGraphicsScene(0, 0, 32 * 16, 17 * 16, self)
+                old_theme, old_real_view = globals_.theme, globals_.RealViewEnabled
+                globals_.theme = theme
+                globals_.RealViewEnabled = False  # Disable so the zone looks 'plain'
 
-                # Set up some things
-                px = QtGui.QPixmap(width, height)
-                px.fill(globals_.theme.color('bg'))
+                # Sprite [38] at (11, 4)
+                sprite = globals_.mainWindow.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(8), add_to_scene=False)
+                scene.addItem(sprite)
 
-                paint = QtGui.QPainter(px)
+                # Sprite [53] at (1, 6)
+                sprite = globals_.mainWindow.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(8), add_to_scene=False)
+                scene.addItem(sprite)
 
-                # global globals_.NumberFont
-                font = QtGui.QFont(globals_.NumberFont) # need to make a new instance to avoid changing global settings
-                font.setPointSize(6)
-                paint.setFont(font)
+                # Entrance [0] at (13, 8)
+                ent = globals_.mainWindow.CreateEntrance(13 * 16, 8 * 16, 0, add_to_scene=False)
 
-                # Draw the spriteboxes
-                paint.setPen(QtGui.QPen(globals_.theme.color('spritebox_lines'), 1))
-                paint.setBrush(QtGui.QBrush(globals_.theme.color('spritebox_fill')))
+                # Location [1] at (1, 9) size (6, 2)
+                loc = globals_.mainWindow.CreateLocation(1 * 16, 9 * 16, 6 * 16, 2 * 16, 1, add_to_scene=False)
+                scene.addItem(loc)
 
-                paint.drawRoundedRect(11 * tilewidth, 4 * tilewidth, tilewidth, tilewidth, 5, 5)
-                paint.drawText(QtCore.QPointF(11.25 * tilewidth, 4.6875 * tilewidth), '38')
+                # Zone [1] at (8.5, 3.25) size (16, 7.5)
+                zone = globals_.mainWindow.CreateZone(8.5 * 16, 3.25 * 16, 16 * 16, 7.5 * 16, id_=1, add_to_scene=False)
+                scene.addItem(zone)
 
-                paint.drawRoundedRect(tilewidth, 6 * tilewidth, tilewidth, tilewidth, 5, 5)
-                paint.drawText(QtCore.QPointF(1.25 * tilewidth, 6.6875 * tilewidth), '53')
+                # Path [1] making a rectangle shape between (13, 5) and (18, 9)
+                path = Path(1, scene, loops=True)
 
-                # Draw the entrance
-                paint.setPen(QtGui.QPen(globals_.theme.color('entrance_lines'), 1))
-                paint.setBrush(QtGui.QBrush(globals_.theme.color('entrance_fill')))
+                for x, y in ((13, 5), (18, 5), (18, 9), (13, 9)):
+                    path.add_node(x * 16, y * 16)
 
-                paint.drawRoundedRect(13 * tilewidth, 8 * tilewidth, tilewidth, tilewidth, 5, 5)
-                paint.drawText(QtCore.QPointF(13.25 * tilewidth, 8.625 * tilewidth), '0')
+                # Empty comment at (2, 3)
+                comment = CommentItem(2 * 16, 3 * 16, "")
+                scene.addItem(comment)
 
-                # Draw the location
-                paint.setPen(QtGui.QPen(globals_.theme.color('location_lines'), 1))
-                paint.setBrush(QtGui.QBrush(globals_.theme.color('location_fill')))
+                # Take a screenshot
+                px = QtGui.QPixmap(32 * 16, 17 * 16)
+                px.fill(theme.color('bg'))
 
-                paint.drawRect(tilewidth, 9 * tilewidth, 6 * tilewidth, 2 * tilewidth)
-                paint.setPen(QtGui.QPen(globals_.theme.color('location_text'), 1))
-                paint.drawText(QtCore.QPointF(1.25 * tilewidth, 9.625 * tilewidth), '1')
+                rect = QtCore.QRectF(0, 0, 32 * 16, 17 * 16)
 
-                # Draw the zone
-                paint.setPen(QtGui.QPen(globals_.theme.color('zone_lines'), 3))
-                paint.setBrush(QtGui.QBrush(toQColor(0, 0, 0, 0)))
-                paint.drawRect(8.5 * tilewidth, 3.25 * tilewidth, 16 * tilewidth, 7.5 * tilewidth)
-                paint.setPen(QtGui.QPen(globals_.theme.color('zone_corner'), 3))
-                paint.setBrush(QtGui.QBrush(globals_.theme.color('zone_corner'), 3))
-                paint.drawRect(8.4375 * tilewidth, 3.1875 * tilewidth, 0.125 * tilewidth, 0.125 * tilewidth)
-                paint.drawRect(8.4375 * tilewidth, 10.6875 * tilewidth, 0.125 * tilewidth, 0.125 * tilewidth)
-                paint.setPen(QtGui.QPen(globals_.theme.color('zone_text'), 1))
-                font = QtGui.QFont(globals_.NumberFont)
-                font.setPointSize(5 / 16 * tilewidth)
-                paint.setFont(font)
-                paint.drawText(QtCore.QPointF(8.75 * tilewidth, 3.875 * tilewidth), 'Zone 1')
+                painter = QtGui.QPainter(px)
+                scene.render(painter, rect, rect)
 
-                # Draw the grid
-                paint.setPen(QtGui.QPen(globals_.theme.color('grid'), 1, QtCore.Qt.DotLine))
-                gridcoords = [i for i in range(0, width, tilewidth)]
-                for i in gridcoords:
-                    paint.setPen(QtGui.QPen(globals_.theme.color('grid'), 0.75, QtCore.Qt.DotLine))
-                    paint.drawLine(i, 0, i, height)
-                    paint.drawLine(0, i, width, i)
-                    if not (i / tilewidth) % (tilewidth / 4):
-                        paint.setPen(QtGui.QPen(globals_.theme.color('grid'), 1.5, QtCore.Qt.DotLine))
-                        paint.drawLine(i, 0, i, height)
-                        paint.drawLine(0, i, width, i)
+                # Add grid
+                temp_widget = LevelViewWidget(scene, None)
+                temp_widget.drawForeground(painter, rect)
 
-                    if not (i / tilewidth) % (tilewidth / 2):
-                        paint.setPen(QtGui.QPen(globals_.theme.color('grid'), 2.25, QtCore.Qt.DotLine))
-                        paint.drawLine(i, 0, i, height)
-                        paint.drawLine(0, i, width, i)
+                painter.end()
 
-                # Delete the painter and return the pixmap
-                paint.end()
+                # Restore globals that were changed
+                globals_.theme = old_theme
+                globals_.RealViewEnabled = old_real_view
+
                 return px
 
         return ThemesTab

@@ -39,6 +39,7 @@ class ReggieTheme:
         self.style = None
         self.forceUiColor = False
         self.forceStyleSheet = False
+        self.useRoundedRectangles = True
         self.overridesFile = os.path.join('reggiedata', 'overrides.png')
 
         # Add the colors                                                       # Descriptions:
@@ -129,7 +130,7 @@ class ReggieTheme:
                 # Load the icons
                 for iconfilename in fileList:
                     iconname = iconfilename
-                    if not iconname.startswith(foldername + '/'): continue
+                    if not iconname.startswith(foldername + os.sep): continue
                     iconname = iconname[len(foldername) + 1:]
                     if len(iconname) <= len('icon-.png'): continue
                     if not iconname.startswith('icon-') or not iconname.endswith('.png'): continue
@@ -194,22 +195,17 @@ class ReggieTheme:
             return False
 
         # Check for optional attributes
-        self.creator = globals_.trans.string('Themes', 3)
-        self.description = globals_.trans.string('Themes', 4)
-        self.style = None
-        self.forceUiColor = False
-        self.forceStyleSheet = False
-        self.version = 1.0
-        if 'creator' in root.attrib: self.creator = root.attrib['creator']
-        if 'description' in root.attrib: self.description = root.attrib['description']
-        if 'style' in root.attrib: self.style = root.attrib['style']
-        if 'forceUiColor' in root.attrib: self.forceUiColor = True if root.attrib['forceUiColor'] == "true" else False
-        if 'forceStyleSheet' in root.attrib: self.forceStyleSheet = True if root.attrib['forceStyleSheet'] == "true" else False
-        if 'version' in root.attrib:
-            try:
-                self.version = float(root.attrib['version'])
-            except ValueError:
-                pass
+        self.creator = root.get("creator", globals_.trans.string("Themes", 3))
+        self.description = root.get("description", globals_.trans.string("Themes", 4))
+        self.style = root.get("style")
+        self.forceUiColor = root.get("forceUiColor", "false") == "true"
+        self.forceStyleSheet = root.get("forceStyleSheet", "false") == "true"
+        self.useRoundedRectangles = root.get("useRoundedRectangles", "true") == "true"
+
+        try:
+            self.version = float(root.get("version", "1.0"))
+        except ValueError:
+            self.version = 1.0
 
         return True
 
@@ -268,7 +264,7 @@ class ReggieTheme:
         """
         Loads a style.qss file
         """
-        with open(file) as inf:
+        with open(file, 'r', encoding='utf-8') as inf:
             style = inf.read()
 
         self.styleSheet = style
@@ -291,12 +287,29 @@ class ReggieTheme:
         cache = self.iconCacheLg if big else self.iconCacheSm
 
         if name not in cache:
-            path = 'reggiedata/ico/lg/icon-' if big else 'reggiedata/ico/sm/icon-'
+            path = os.path.join('reggiedata', 'ico', 'lg' if big else 'sm', 'icon-')
             path += name
             cache[name] = QtGui.QIcon(path)
 
         return cache[name]
 
+
+class IconsOnlyTabBar(QtWidgets.QTabBar):
+    """
+    A QTabBar subclass that is designed to only display icons.
+
+    On macOS Mojave (and probably other versions around there),
+    QTabWidget tabs are way too wide when only displaying icons.
+    This ultimately causes the Reggie palette itself to have a really
+    high minimum width.
+
+    This subclass limits tab widths to fix the problem.
+    """
+    def tabSizeHint(self, index):
+        res = super(IconsOnlyTabBar, self).tabSizeHint(index)
+        if globals_.app.style().metaObject().className() == 'QMacStyle':
+            res.setWidth(res.height() * 2)
+        return res
 
 # Related functions
 def toQColor(*args):

@@ -12,7 +12,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
     """
     Widget that shows an overview of the level and can be clicked to move the view
     """
-    moveIt = QtCore.pyqtSignal(int, int)
+    moveIt = QtCore.pyqtSignal(float, float)
 
     def __init__(self):
         """
@@ -25,7 +25,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         self.bgbrush = QtGui.QBrush(globals_.theme.color('bg'))
         self.objbrush = QtGui.QBrush(globals_.theme.color('overview_object'))
         self.viewbrush = QtGui.QBrush(globals_.theme.color('overview_zone_fill'))
-        self.view = QtCore.QRectF(0, 0, 0, 0)
+        self.view = QtCore.QRectF()
         self.spritebrush = QtGui.QBrush(globals_.theme.color('overview_sprite'))
         self.entrancebrush = QtGui.QBrush(globals_.theme.color('overview_entrance'))
         self.locationbrush = QtGui.QBrush(globals_.theme.color('overview_location_fill'))
@@ -119,10 +119,13 @@ class LevelOverviewWidget(QtWidgets.QWidget):
             fr(rect, b)
             dr(rect)
 
-        b = self.locationbrush
         painter.setPen(QtGui.QPen(globals_.theme.color('overview_viewbox'), 1))
-        painter.drawRect(self.Xposlocator / 24 / self.mainWindowScale, self.Yposlocator / 24 / self.mainWindowScale,
-                         self.Wlocator / 24 / self.mainWindowScale, self.Hlocator / 24 / self.mainWindowScale)
+
+        scalar = 1 / (24 * self.mainWindowScale)
+        painter.drawRect(QtCore.QRectF(
+            scalar * self.Xposlocator, scalar * self.Yposlocator,
+            scalar * self.Wlocator, scalar * self.Hlocator
+        ))
 
     def CalcSize(self):
         """
@@ -176,7 +179,6 @@ class ObjectPickerWidget(QtWidgets.QListView):
         """
         Initializes the widget
         """
-
         QtWidgets.QListView.__init__(self)
         self.setFlow(QtWidgets.QListView.LeftToRight)
         self.setLayoutMode(QtWidgets.QListView.SinglePass)
@@ -184,11 +186,14 @@ class ObjectPickerWidget(QtWidgets.QListView):
         self.setResizeMode(QtWidgets.QListView.Adjust)
         self.setWrapping(True)
 
-        self.m0 = ObjectPickerWidget.ObjectListModel()
-        self.m1 = ObjectPickerWidget.ObjectListModel()
-        self.m2 = ObjectPickerWidget.ObjectListModel()
-        self.m3 = ObjectPickerWidget.ObjectListModel()
-        self.setModel(self.m0)
+        self.models = [
+            ObjectPickerWidget.ObjectListModel(),
+            ObjectPickerWidget.ObjectListModel(),
+            ObjectPickerWidget.ObjectListModel(),
+            ObjectPickerWidget.ObjectListModel(),
+        ]
+
+        self.setModel(self.models[0])
 
         self.setItemDelegate(ObjectPickerWidget.ObjectItemDelegate())
 
@@ -198,20 +203,15 @@ class ObjectPickerWidget(QtWidgets.QListView):
         """
         Renders all the object previews
         """
-        self.m0.LoadFromTileset(0)
-        self.m1.LoadFromTileset(1)
-        self.m2.LoadFromTileset(2)
-        self.m3.LoadFromTileset(3)
+        for i in range(4):
+            self.models[i].LoadFromTileset(i)
 
-    def ShowTileset(self, id):
+    def ShowTileset(self, id_):
         """
         Shows a specific tileset in the picker
         """
         sel = self.currentIndex().row()
-        if id == 0: self.setModel(self.m0)
-        if id == 1: self.setModel(self.m1)
-        if id == 2: self.setModel(self.m2)
-        if id == 3: self.setModel(self.m3)
+        self.setModel(self.models[id_])
         self.setCurrentIndex(self.model().index(sel, 0, QtCore.QModelIndex()))
 
     def currentChanged(self, current, previous):
@@ -335,13 +335,17 @@ class ObjectPickerWidget(QtWidgets.QListView):
 
                 for row in obj:
                     x = 0
-                    for tile in row:
-                        if tile != -1:
-                            if isinstance(globals_.Tiles[tile].main, QtGui.QImage):
-                                p.drawImage(x, y, globals_.Tiles[tile].main)
+                    for tile_num in row:
+                        if tile_num > 0:
+                            tile = globals_.Tiles[tile_num]
+                            if tile is None:
+                                p.drawPixmap(x, y, globals_.Overrides[globals_.OVERRIDE_UNKNOWN].getCurrentTile())
+                            elif isinstance(tile.main, QtGui.QImage):
+                                p.drawImage(x, y, tile.main)
                             else:
-                                p.drawPixmap(x, y, globals_.Tiles[tile].main)
-                            if isinstance(globals_.Tiles[tile], TilesetTile) and globals_.Tiles[tile].isAnimated: isAnim = True
+                                p.drawPixmap(x, y, tile.main)
+
+                            if isinstance(tile, TilesetTile) and tile.isAnimated: isAnim = True
                         x += 24
                     y += 24
                 p.end()
@@ -703,13 +707,13 @@ class Stamp:
         totalHeight = prevIcon.height() + 2 + textSize.height()
 
         # Make a pixmap and painter
-        pix = QtGui.QPixmap(totalWidth, totalHeight)
+        pix = QtGui.QPixmap(int(totalWidth), int(totalHeight))
         pix.fill(QtCore.Qt.transparent)
         painter = QtGui.QPainter(pix)
 
         # Draw the preview
         iconXOffset = (totalWidth - prevIcon.width()) / 2
-        painter.drawPixmap(iconXOffset, 0, prevIcon)
+        painter.drawPixmap(int(iconXOffset), 0, prevIcon)
 
         # Draw the text
         textRect = QtCore.QRectF(0, prevIcon.height() + 2, totalWidth, textSize.height())
@@ -869,7 +873,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         for x in results: x.setHidden(False)
         self.ShownSearchResults = results
 
-        self.NoSpritesFound.setHidden((len(results) != 0))
+        self.NoSpritesFound.setHidden(bool(results))
         self.SearchResultsCategory.setExpanded(True)
 
     def HandleSprReplace(self, item, column):
@@ -894,25 +898,22 @@ class SpriteList(QtWidgets.QWidget):
     # These are straight from the spritedata xml
     # Don't translate these
     idtypes = (
-        "Star Set", "Path Movement", "Rotation", "Two Way Line",
-        "Water Ball", "Mushroom", "Line", "Bolt", "Target Event",
-        "Triggering Event", "Collection", "Location", "Physics",
-        "Message", "Path", "Path Movement", "Red Coin", "Hill",
-        "Stretch", "Ray", "Coaster", "Bubble Cannon", "Burner",
-        "Wiggling", "Panel", "Colony"
+        "Star Set", "Rotation", "Two Way Line", "Water Ball", "Mushroom",
+        "Group", "Bolt", "Target Event", "Triggering Event", "Collection",
+        "Location", "Physics", "Message", "Path", "Path Movement", "Red Coin",
+        "Hill", "Stretch", "Ray", "Coaster", "Bubble Cannon", "Burner",
+        "Wiggling", "Panel", "Colony", "Entrance", "Path Node"
     )
 
     # This should be translated
     idtype_names = (
         "Any",
-        "Star Set ID", "Path Movement ID", "Rotation ID",
-        "Two Way Line ID", "Water Ball ID", "Mushroom ID",
-        "Line ID", "Bolt ID", "Target Event ID", "Triggering " +
-        "Event ID", "Collection ID", "Location ID", "Physics ID",
-        "Message ID", "Path ID", "Path Movement ID", "Red Coin ID",
-        "Hill ID", "Stretch ID", "Ray ID", "Coaster ID",
-        "Bubble Cannon ID", "Burner ID", "Wiggling ID",
-        "Panel ID", "Colony ID"
+        "Star Set ID", "Rotation ID", "Two Way Line ID", "Water Ball ID",
+        "Mushroom ID", "Group ID", "Bolt ID", "Target Event ID",
+        "Triggering Event ID", "Collection ID", "Location ID", "Physics ID",
+        "Message ID", "Path ID", "Path Movement ID", "Red Coin ID", "Hill ID",
+        "Stretch ID", "Ray ID", "Coaster ID", "Bubble Cannon ID", "Burner ID",
+        "Wiggling ID", "Panel ID", "Colony ID", "Entrance ID", "Path Node ID"
     )
 
     def __init__(self):
@@ -929,8 +930,8 @@ class SpriteList(QtWidgets.QWidget):
         # Set of row ids
         self.SearchResults = set()
 
-        self.table = QtWidgets.QTableWidget(0, len(self.idtype_names))
-        headers = ["Name"] + list(self.idtype_names[1:])
+        self.table = QtWidgets.QTableWidget(0, len(self.idtype_names) + 1)
+        headers = ["ID", "Name"] + list(self.idtype_names[1:])
         self.table.setHorizontalHeaderLabels(headers)
         self.table.verticalHeader().setVisible(False) # hide row numbers
         self.table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
@@ -988,9 +989,9 @@ class SpriteList(QtWidgets.QWidget):
         for row in self.SearchResults:
             self.filterRow(row, newidx)
 
-        # hide all columns except 0 and newidx
+        # Only show columns 0 (id), 1 (name) and newidx + 1 (the filtered column)
         for col in range(self.table.columnCount()):
-            if col in (0, newidx):
+            if col in (0, 1, newidx + 1):
                 self.table.showColumn(col)
             else:
                 self.table.hideColumn(col)
@@ -1004,10 +1005,9 @@ class SpriteList(QtWidgets.QWidget):
             self.table.setRowHidden(row, False)
             return
 
-        # Apply _some_ filtering
-        # 1. Get the sprite defintion
+        # Get the sprite defintion and the id type that is filtered by.
         filtertype = self.idtypes[filteridx - 1]
-        sprite = self.table.item(row, 0)._sprite
+        sprite = self.table.item(row, 0).data(QtCore.Qt.UserRole)
 
         if 0 <= sprite.type < globals_.NumSprites:
             sdef = globals_.Sprites[sprite.type]
@@ -1016,22 +1016,20 @@ class SpriteList(QtWidgets.QWidget):
             self.table.setRowHidden(row, True)
             return
 
-        # 2. Loop over every field of the sprite
-        #    and hide everything that has no fields
-        #    with the correct idtype.
+        # Loop over every field of the sprite and hide every row whose sprite
+        # has no fields with the correct idtype.
         for field in sdef.fields:
-            # Only values (1) and lists (2) have
-            # idtypes - ignore the others
+            # Only values (1) and lists (2) have idtypes, so ignore the other
+            # fields.
             if field[0] < 1 or field[0] > 2:
                 continue
 
-            # The idtype is the last element in the
-            # field tuple
+            # The idtype is the last element in the field tuple.
             if field[-1] == filtertype:
                 self.table.setRowHidden(row, False)
                 return
 
-        # No field had the correct id type -> hide
+        # No field had the correct id type, so hide this row.
         self.table.setRowHidden(row, True)
 
     def updateItems(self):
@@ -1040,12 +1038,11 @@ class SpriteList(QtWidgets.QWidget):
 
     def getRowFor(self, sprite):
         """
-        Returns the row number for a given
-        sprite, or -1 if it does not exist.
+        Returns the row number for a given sprite, or -1 if no row exists.
         """
         for i in range(self.table.rowCount()):
-            nameitem = self.table.item(i, 0)
-            if nameitem._sprite == sprite:
+            id_item = self.table.item(i, 0)
+            if id_item.data(QtCore.Qt.UserRole) == sprite:
                 return i
 
         return -1
@@ -1080,39 +1077,39 @@ class SpriteList(QtWidgets.QWidget):
         row = self.table.rowCount()
         self.table.insertRow(row)
 
-        # add the sprite name
-        name_item = QtWidgets.QTableWidgetItem("%d: %s" % (sprite.type, sprite.name))
+        # Add the sprite id
+        id_item = QtWidgets.QTableWidgetItem()
+        id_item.setData(QtCore.Qt.DisplayRole, sprite.type)
+        id_item.setData(QtCore.Qt.UserRole, sprite)
+        id_item.setFlags(id_item.flags() & ~QtCore.Qt.ItemIsEditable)
+        self.table.setItem(row, 0, id_item)
+
+        # Also add the sprite name
+        name_item = QtWidgets.QTableWidgetItem(sprite.name)
+        name_item.setData(QtCore.Qt.UserRole, sprite)
         name_item.setFlags(name_item.flags() & ~QtCore.Qt.ItemIsEditable)
-        self.table.setItem(row, 0, name_item)
+        self.table.setItem(row, 1, name_item)
 
         if not self.is_batch_add:
             # Profiling shows that this function is quite expensive, so if we're
             # in a batch add, don't resize the rows until the very end.
             self.table.resizeRowsToContents()
 
-        # HACK: We're creating a new field here
-        name_item._sprite = sprite
-
-        # add an id for every idtype
-        # these items should not be editable or selectable
+        # Add an id for every idtype. These items should not be editable or
+        # selectable.
         mask = ~(QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable)
         ids = self.getIDsFor(sprite)
+
         for col, idtype in enumerate(self.idtypes):
-            id_ = ids.get(idtype, "")
+            id_values = ids.get(idtype, "")
 
-            if len(id_) == 1:
-                id_ = id_[0]
+            if len(id_values) == 1:
+                id_values = id_values[0]
 
-            id_item = QtWidgets.QTableWidgetItem(str(id_))
-            # The following line throws:
-            #   DeprecationWarning: an integer is required
-            #   (got type ItemFlags)
-            # Adding an explicit call to int() causes exceptions
-            # so it's probably best to ignore this warning.
-            # It's likely that something on Qt's side is causing
-            # this warning.
-            id_item.setFlags(id_item.flags() & mask)
-            self.table.setItem(row, 1 + col, id_item)
+            entry_item = QtWidgets.QTableWidgetItem(str(id_values))
+            entry_item.setFlags(entry_item.flags() & mask)
+
+            self.table.setItem(row, 2 + col, entry_item)
 
         # re-enable sorting
         if not self.is_batch_add:
@@ -1125,17 +1122,19 @@ class SpriteList(QtWidgets.QWidget):
         """
         ids = self.getIDsFor(sprite)
 
-        # temporarily disable sorting so our
-        # updates happen to the same row
+        # Temporarily disable sorting so our updates happen to the same row.
         self.table.setSortingEnabled(False)
         row = self.getRowFor(sprite)
 
-        # Skip the first column (that's the name)
-        for i in range(1, self.table.columnCount()):
-            id_ = ids.get(self.idtypes[i - 1], "")
+        # Skip the first columns (the id and name)
+        for i in range(2, self.table.columnCount()):
+            id_values = ids.get(self.idtypes[i - 2], [""])
+
+            if len(id_values) == 1:
+                id_values = id_values[0]
 
             item = self.table.item(row, i)
-            item.setText(str(id_))
+            item.setText(str(id_values))
 
         # re-enable sorting
         self.table.setSortingEnabled(True)
@@ -1152,7 +1151,8 @@ class SpriteList(QtWidgets.QWidget):
         self.table.removeRow(row)
 
         # Update search results
-        self.updateItems()
+        if row in self.SearchResults:
+            self.SearchResults = set(x if x < row else x - 1 for x in self.SearchResults if x != row)
 
     def clear(self):
         """
@@ -1173,11 +1173,12 @@ class SpriteList(QtWidgets.QWidget):
         """
         Creates a tooltip for the item
         """
-        if not hasattr(item, '_sprite'):
-            # no tooltip for items that are not the name
+        sprite = item.data(QtCore.Qt.UserRole)
+
+        if sprite is None:
             return
 
-        img = item._sprite.renderInLevelIcon()
+        img = sprite.renderInLevelIcon()
         byteArray = QtCore.QByteArray()
         buf = QtCore.QBuffer(byteArray)
         img.save(buf, 'PNG')
@@ -1194,11 +1195,12 @@ class SpriteList(QtWidgets.QWidget):
         """
         Moves the view to the sprite and selects it.
         """
-        if not hasattr(item, '_sprite'):
+        sprite = item.data(QtCore.Qt.UserRole)
+
+        if sprite is None:
             return
 
-        sprite = item._sprite
-        sprite.ensureVisible(xMargin = 192, yMargin = 192)
+        sprite.ensureVisible(xMargin=192, yMargin=192)
         sprite.scene().clearSelection()
         sprite.setSelected(True)
 
@@ -1217,17 +1219,21 @@ class SpriteList(QtWidgets.QWidget):
         data = sprite.spritedata
 
         for field in sdef.fields:
-            # Only values (1) and fields (2) have
-            # idtypes - ignore the others
+            # Only values (1) and fields (2) have idtypes, so ignore all other
+            # fields.
             if field[0] < 1 or field[0] > 2:
                 continue
 
-            # The idtype is the last element in the
-            # field tuple, bit is the third element
-            # in the field tuple (for both list and
-            # value).
+            # The idtype is the last element in the field tuple, bit is the
+            # third element in the field tuple (for both list and value).
             idtype = field[-1]
+
+            # No id type specified
+            if idtype is None:
+                continue
+
             value = decoder.retrieve(data, field[2])
+
             try:
                 res[idtype].append(value)
             except KeyError:

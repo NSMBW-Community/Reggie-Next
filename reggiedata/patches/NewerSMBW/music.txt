@@ -1,31 +1,31 @@
 0:None
-1:Overworld
-2:Underground
-3:Underwater
-4:Mushrooms/Athletic
-5:Ghost House
-6:Pyramids
-7:Snow
-8:Lava
-9:Tower
-10:Castle
-11:Airship
-12:Bonus Area
-13:Drum Rolls
+1:World Map Drums
+2:World Map Drums
+3:Underwater [NSMBW]
+4:Mushrooms/Athletic [NSMBW]
+5:Ghost House [NSMBW]
+6:Pyramids [NSMBW]
+7:Snow [NSMBW]
+8:Lava [NSMBW]
+9:Opening Cutscene
+10:Castle [NSMBW]
+11:Airship [NSMBW]
+12:Bonus Area [NSMBW]
+13:Drum Rolls [NSMBW]
 14:Tower Boss
-15:Castle Boss
-16:Toad House
-17:Airship Boss
-18:Forest
-19:Enemy Ambush
-20:Beach
-21:Lava Cave
-22:Peach's Castle
+15:Castle Boss [NSMBW]
+16:Toad House [NSMBW]
+17:Airship Boss [NSMBW]
+18:Forest [NSMBW]
+19:Enemy Ambush [NSMBW]
+20:Beach [NSMBW]
+21:Lava Cave [NSMBW]
+22:Peach's Castle [NSMBW]
 23:Credits Jazz
-24:Airship Drums
-25:Bowser
-26:Mega Bowser
-27:Epilogue
+24:Airship Drums [NSMBW]
+25:Bowser Bridge
+26:Mega Bowser [NSMBW]
+27:Epilogue [NSMBW]
 100:Airship
 101:Tower Boss
 102:Menu
@@ -53,8 +53,8 @@
 124:Cliffs
 125:Autumn
 126:Crystal Caves
-127:Ghost House
-128:Graveyard
+127:Graveyard
+128:Ghost House
 129:Jungle
 130:Tropical
 131:Sky City

@@ -9,6 +9,7 @@ from tiles import CreateTilesets, LoadTileset
 from levelitems import EntranceItem, SpriteItem, ZoneItem, LocationItem, ObjectItem, PathItem, CommentItem
 from misc2 import DecodeOldReggieInfo
 from background import Background
+from spriteeditor import SpriteEditorWidget
 
 class AbstractLevel:
     """
@@ -226,12 +227,12 @@ class Area:
 
         self.blocks = [b''] * 14
         self.blocks[0] = b'Pa0_jyotyu' + bytes(128 - len('Pa0_jyotyu'))
-        self.blocks[1] = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc8\x00\x00\x00\x00\x00\x00\x00\x00'
+        self.blocks[1] = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x2c\x00\x00\x00\x00\x00\x00\x00\x00'
         self.blocks[3] = bytes(8)
         self.blocks[7] = b'\xff\xff\xff\xff'
 
         self.defEvents = 0
-        self.timeLimit = 200
+        self.timeLimit = 300
         self.creditsFlag = False
         self.startEntrance = 0
         self.ambushFlag = False
@@ -251,10 +252,12 @@ class Area:
         self.zones = []
         self.locations = []
         self.camprofiles = []
-        self.pathdata = []
         self.paths = []
         self.comments = []
         self.layers = [[], [], []]
+        self.loaded_sprites = set()
+        self.force_loaded_sprites = set()
+        self.sprite_idtypes = {}  # {idtype: {id: number of usages of id}}
 
         self.MetaData = None
         self._is_loaded = False
@@ -280,6 +283,9 @@ class Area:
         LoadTileset(1, self.tileset1)
         LoadTileset(2, self.tileset2)
         LoadTileset(3, self.tileset3)
+
+        # Mark the area as loaded
+        self._is_loaded = True
 
     def set_data(self, course, L0, L1, L2):
         """
@@ -317,9 +323,9 @@ class Area:
         del self.zones
         del self.locations
         del self.camprofiles
-        del self.pathdata
         del self.paths
         del self.comments
+        del self.sprite_idtypes
 
         self._is_loaded = False
 
@@ -329,22 +335,28 @@ class Area:
         """
         assert not self._is_loaded
 
-        # Load in the course file and blocks
-        self.LoadBlocks(self.course)
+        # Load in the course file and blocks - if the course file is None, we
+        # just create a new area with the default settings (as stored in the
+        # already initialised self.blocks)
+        if self.course is not None:
+            self.LoadBlocks(self.course)
 
         # Load the editor metadata
-        if self.block1pos[0] != 0x70:
+        if self.course is not None and self.block1pos[0] != 0x70:
             rddata = self.course[0x70:self.block1pos[0]]
             self.LoadReggieInfo(rddata)
         else:
             self.LoadReggieInfo(None)
-        del self.block1pos
+
+        if hasattr(self, "block1pos"):
+            del self.block1pos
 
         # Load stuff from individual blocks
         self.LoadTilesetNames()  # block 1
         self.LoadOptions()  # block 2
         self.LoadEntrances()  # block 7
         self.LoadBackgrounds()
+        self.LoadLoadedSprites()  # block 9
         self.LoadZones()  # block 10 (also blocks 3, 5, and 6)
         self.LoadLocations()  # block 11
         self.LoadCamProfiles()  # block 12
@@ -376,6 +388,8 @@ class Area:
             self.LoadLayer(2, self.L2)
 
         self.LoadSprites()  # block 8
+
+        self.InitialiseIdTypes()
 
         self._is_loaded = True
         return True
@@ -519,7 +533,7 @@ class Area:
         Loads block 7, the entrances
         """
         entdata = self.blocks[6]
-        entstruct = struct.Struct('>HHxxxxBBBBxBBBHxB')
+        entstruct = struct.Struct('>HHxxxxBBBBxBBBHBB')
 
         entrances = []
         for offset in range(0, len(entdata), 20):
@@ -530,7 +544,9 @@ class Area:
 
     def LoadSprites(self):
         """
-        Loads block 8, the sprites
+        Loads block 8, the sprites. This needs to be called after
+        'LoadLoadedSprites', because this relies on the loaded sprite ids being
+        loaded for calculating the sprites that are forced to load.
         """
         spritedata = self.blocks[7]
         sprstruct = struct.Struct('>HHH8sxx')
@@ -546,6 +562,19 @@ class Area:
             append(obj(*data))
 
         self.sprites = sprites
+        self.force_loaded_sprites = self.loaded_sprites - set(sprite.type for sprite in sprites)
+
+    def LoadLoadedSprites(self):
+        """
+        Loads block 9, the loaded sprite resources.
+        """
+        self.loaded_sprites = set()
+        loading_data = self.blocks[8]
+        struct_ = struct.Struct('>Hxx')
+
+        for offset in range(0, len(loading_data), 4):
+            sprite_id, = struct_.unpack_from(loading_data, offset)
+            self.loaded_sprites.add(sprite_id)
 
     def LoadBackgrounds(self):
         """
@@ -656,24 +685,21 @@ class Area:
         pathdata = self.blocks[12]
         pathstruct = struct.Struct('>BxHHH')
         unpack = pathstruct.unpack_from
-        pathinfo = []
         paths = []
+
+        from levelitems import Path
 
         for offset in range(0, len(pathdata), 8):
             data = unpack(pathdata, offset)
             nodes = self.LoadPathNodes(data[1], data[2])
 
-            pathinfo.append({
-                'id': int(data[0]),
-                'nodes': nodes,
-                'loops': data[3] == 2
-            })
+            path = Path(int(data[0]), globals_.mainWindow.scene, data[3] == 2)
 
-        for xpi in pathinfo:
-            for xpj in xpi['nodes']:
-                paths.append(PathItem(xpj['x'], xpj['y'], xpi, xpj))
+            for node in nodes:
+                path.add_node(node['x'], node['y'], node['speed'], node['accel'], node['delay'], add_to_scene=False)
 
-        self.pathdata = pathinfo
+            paths.append(path)
+
         self.paths = paths
 
     def LoadPathNodes(self, startindex, count):
@@ -709,25 +735,34 @@ class Area:
 
         idx = 0
         while idx < len(data):
-            xpos = data[idx] << 24
-            xpos |= data[idx + 1] << 16
-            xpos |= data[idx + 2] << 8
-            xpos |= data[idx + 3]
-            idx += 4
-            ypos = data[idx] << 24
-            ypos |= data[idx + 1] << 16
-            ypos |= data[idx + 2] << 8
-            ypos |= data[idx + 3]
-            idx += 4
-            tlen = data[idx] << 24
-            tlen |= data[idx + 1] << 16
-            tlen |= data[idx + 2] << 8
-            tlen |= data[idx + 3]
-            idx += 4
-            text = ''
-            for char in range(tlen):
-                text += chr(data[idx])
-                idx += 1
+            xpos, ypos, tlen_maybe = struct.unpack_from(">3I", data, idx)
+            idx += 3 * 4
+
+            if tlen_maybe == 0xFFFF_FFFF:
+                # Updated version - the number of code points is stored in the
+                # next int.
+                tlen, = struct.unpack_from(">I", data, idx)
+                text = data[idx + 4: idx + 4 + tlen].decode("utf-8")
+                idx += 4 + tlen
+            else:
+                # Old version provided for compatibility. Also tries to properly
+                # load non-ascii comments, but that might not work out...
+                tlen = tlen_maybe
+                try:
+                    text = data[idx: idx + tlen].decode("ascii")
+                    idx += tlen
+                except UnicodeDecodeError:
+                    # You used non-ascii characters... Try to save the comment
+                    # The xpos is probably not > 2 ** 24, so the next comment
+                    # starts with a null byte. We can use that to find the end
+                    # of our string
+                    null_idx = data.find(b"\0", idx)
+                    if null_idx == -1:
+                        # This is probably the last comment...
+                        null_idx = len(data)
+
+                    text = data[idx: null_idx].decode("utf-8")[:tlen]
+                    idx = null_idx
 
             com = CommentItem(xpos, ypos, text)
             com.listitem = QtWidgets.QListWidgetItem()
@@ -771,7 +806,7 @@ class Area:
         Saves an object layer to a string
         """
         layer = self.layers[idx]
-        if len(layer) == 0:
+        if not layer:
             # Don't create a layer file for an empty layer.
             return None
 
@@ -798,7 +833,7 @@ class Area:
         Saves the entrances back to block 7
         """
         offset = 0
-        entstruct = struct.Struct('>HHxxxxBBBBxBBBHxB')
+        entstruct = struct.Struct('>HHxxxxBBBBxBBBHBB')
         buffer = bytearray(len(self.entrances) * 20)
         f_MapPositionToZoneID = SLib.MapPositionToZoneID
         zonelist = self.zones
@@ -815,7 +850,7 @@ class Area:
             entstruct.pack_into(buffer, offset, int(entrance.objx), int(entrance.objy),
                                 int(entrance.entid), int(entrance.destarea), int(entrance.destentrance),
                                 int(entrance.enttype), zoneID, int(entrance.entlayer), int(entrance.entpath),
-                                int(entrance.entsettings), int(entrance.cpdirection))
+                                int(entrance.entsettings), int(entrance.leave_level), int(entrance.cpdirection))
             offset += 20
         self.blocks[6] = bytes(buffer)
 
@@ -824,38 +859,36 @@ class Area:
         Saves the paths back to block 13
         """
         pathstruct = struct.Struct('>BxHHH')
-        nodecount = sum(len(path['nodes']) for path in self.pathdata)
+        nodecount = sum(len(path) for path in self.paths)
         nodebuffer = bytearray(nodecount * 16)
         nodeoffset = 0
         nodeindex = 0
         offset = 0
-        buffer = bytearray(len(self.pathdata) * 8)
+        buffer = bytearray(len(self.paths) * 8)
 
-        for path in self.pathdata:
-            if len(path['nodes']) == 0:
+        for path in self.paths:
+            if not len(path):
                 continue
 
-            self.WritePathNodes(nodebuffer, nodeoffset, path['nodes'])
+            self.WritePathNodes(nodebuffer, nodeoffset, path)
 
-            pathstruct.pack_into(buffer, offset, int(path['id']), int(nodeindex), int(len(path['nodes'])),
-                                 2 if path['loops'] else 0)
+            pathstruct.pack_into(buffer, offset, path._id, nodeindex, len(path), 2 if path._loops else 0)
+
             offset += 8
-            nodeoffset += len(path['nodes']) * 16
-            nodeindex += len(path['nodes'])
+            nodeoffset += len(path) * 16
+            nodeindex += len(path)
 
-        self.blocks[12] = bytes(buffer)
+        self.blocks[12] = bytes(buffer[:offset])
         self.blocks[13] = bytes(nodebuffer)
 
-    def WritePathNodes(self, buffer, offst, nodes):
+    def WritePathNodes(self, buffer, offset, path):
         """
         Writes the path node data to the block 14 bytearray
         """
-        offset = int(offst)
         nodestruct = struct.Struct('>HHffhxx')
 
-        for node in nodes:
-            nodestruct.pack_into(buffer, offset, int(node['x']), int(node['y']), float(node['speed']),
-                                 float(node['accel']), int(node['delay']))
+        for i in range(len(path)):
+            nodestruct.pack_into(buffer, offset, *path.get_node_data(i))
             offset += 16
 
     def SaveSprites(self):
@@ -901,7 +934,7 @@ class Area:
         """
         Saves the list of loaded sprites back to block 9
         """
-        ls = sorted(set(sprite.type for sprite in self.sprites))
+        ls = sorted(set(sprite.type for sprite in self.sprites) | self.force_loaded_sprites)
 
         offset = 0
         sprstruct = struct.Struct('>Hxx')
@@ -993,7 +1026,7 @@ class Area:
         Also appends data to block 3, the bounding data.
         """
 
-        if len(self.camprofiles) == 0:
+        if not self.camprofiles:
             self.blocks[11] = b''
             return
 
@@ -1018,6 +1051,73 @@ class Area:
             offset += 20
 
         self.blocks[11] = bytes(buffer)
+
+    def InitialiseIdTypes(self):
+        """
+        Initialises all used id types in this area.
+        """
+
+        self.sprite_idtypes = {}
+        decoder = SpriteEditorWidget.PropertyDecoder()
+
+        for sprite in self.sprites:
+            sdef = globals_.Sprites[sprite.type]
+
+            # Find what values are used by this sprite
+            data = sprite.spritedata
+
+            for field in sdef.fields:
+                if field[0] not in (1, 2):
+                    # Only values and lists can be idtypes
+                    continue
+
+                idtype = field[-1]
+                if idtype is None:
+                    # Only look at settings with idtypes
+                    continue
+
+                value = decoder.retrieve(data, field[2])
+
+                # 3. Add the value to self.sprite_idtypes
+                try:
+                    counter = self.sprite_idtypes[idtype]
+                except KeyError:
+                    self.sprite_idtypes[idtype] = {value: 1}
+                    continue
+
+                counter[value] = counter.get(value, 0) + 1
+
+    def RemoveSprite(self, sprite):
+        """
+        This properly removes a sprite from the area.
+        """
+        # Remove the sprite from the sprites list
+        self.sprites.remove(sprite)
+
+        # Remove the ids the sprite used from the id list
+        decoder = SpriteEditorWidget.PropertyDecoder()
+        sdef = globals_.Sprites[sprite.type]
+
+        # Find what values are used by this sprite
+        for field in sdef.fields:
+            if field[0] not in (1, 2):
+                # Only <value> and <list> tags can have id types
+                continue
+
+            idtype = field[-1]
+            if idtype is None:
+                # Only look at settings with idtypes
+                continue
+
+            value = decoder.retrieve(sprite.spritedata, field[2])
+
+            # 3. Decrement the counter for this idtype
+            counter = self.sprite_idtypes[idtype]
+
+            if counter[value] == 1:
+                del counter[value]
+            else:
+                counter[value] -= 1
 
 
 class Metadata:
@@ -1120,7 +1220,7 @@ class Metadata:
         """
         data = self.otherData(key, 1)
         if data is None: return
-        return data.decode()
+        return data.decode('utf-8')
 
     def otherData(self, key, type):
         """
@@ -1140,7 +1240,7 @@ class Metadata:
         """
         Sets string data, overwriting any existing string data with that key
         """
-        self.setOtherData(key, 1, value.encode("utf-8"))
+        self.setOtherData(key, 1, value.encode('utf-8'))
 
     def setOtherData(self, key, type, value):
         """
