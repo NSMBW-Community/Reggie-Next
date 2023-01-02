@@ -85,9 +85,14 @@ class BGDialog(QtWidgets.QDialog):
             backgrounds = globals_.Area.backgrounds_B
 
         used_ids = sorted([bg.id for bg in backgrounds])
-        id_ = next(i for i, e in enumerate(used_ids + [None]) if i != e)
+        bg_id = next(i for i, e in enumerate(used_ids + [None]) if i != e)
 
-        default_background = Background(id_, 0, 0, 0, 0, 10, 10, 10, 0, is_bga)
+        if bg_id >= 255:
+            # The bg_id is only a single byte, so we can have at most 256
+            # different backgrounds.
+            return
+
+        default_background = Background(bg_id, 0, 0, 0, 0, 10, 10, 10, 0, is_bga)
         backgrounds.append(default_background)
 
         tab = BGTab(default_background, is_bga)
@@ -96,9 +101,9 @@ class BGDialog(QtWidgets.QDialog):
         tabamount = tabwidget.count()
 
         if tabamount < 6:
-            name = globals_.trans.string('BGDlg', 2, '[num]', id_)
+            name = globals_.trans.string('BGDlg', 2, '[num]', bg_id)
         else:
-            name = str(id_)
+            name = str(bg_id)
 
         tabwidget.addTab(tab, name)
 
