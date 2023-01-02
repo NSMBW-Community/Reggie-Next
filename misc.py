@@ -369,7 +369,7 @@ def LoadBgANames(reload_=False):
 
             if not found: globals_.BgANames.append([w[0], w[1]])
 
-        globals_.BgANames = sorted(globals_.BgANames, key=lambda entry: int(entry[0], 16))
+        globals_.BgANames.sort(key=lambda entry: int(entry[0], 16))
 
 
 def LoadBgBNames(reload_=False):
@@ -396,7 +396,7 @@ def LoadBgBNames(reload_=False):
 
             if not found: globals_.BgBNames.append([w[0], w[1]])
 
-        globals_.BgBNames = sorted(globals_.BgBNames, key=lambda entry: int(entry[0], 16))
+        globals_.BgBNames.sort(key=lambda entry: int(entry[0], 16))
 
 
 
@@ -1605,10 +1605,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                 else:
                     # Get the settings from the .ini
                     toggled = setting('ToolbarActs')
-                    newToggled = {}  # here, I'm replacing QStrings w/ python strings
-                    for key in toggled:
-                        newToggled[str(key)] = toggled[key]
-                    toggled = newToggled
+                    # Replace the QString keys with python string keys
+                    toggled = {str(key): toggled[key] for key in toggled}
 
                 # Create some data
                 self.FileBoxes = []

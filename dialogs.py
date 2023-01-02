@@ -732,8 +732,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 pass  # fail silently
             self.errorList.takeItem(item.row())
 
-            total = len(self.errorList.selectedIndexes()[:])
-            if total != 0: pleasewait.setValue(int(float(index) / total * 100))
+            total = len(self.errorList.selectedIndexes())
+            if total != 0: pleasewait.setValue(int(index / total * 100))
 
         # Remove the 'Fixing...' box
         pleasewait.setValue(100)
