@@ -90,7 +90,7 @@ class BGDialog(QtWidgets.QDialog):
         default_background = Background(id_, 0, 0, 0, 0, 10, 10, 10, 0, is_bga)
         backgrounds.append(default_background)
 
-        tab = BGTab(default_background, True)
+        tab = BGTab(default_background, is_bga)
         tablist.append(tab)
 
         tabamount = tabwidget.count()
