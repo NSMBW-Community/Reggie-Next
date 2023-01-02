@@ -1,3 +1,4 @@
+import os
 
 from PyQt5 import QtWidgets, QtGui, QtCore
 
@@ -28,7 +29,7 @@ class AboutDialog(QtWidgets.QDialog):
             readme = f.read()
 
         # Logo
-        logo = QtGui.QPixmap('reggiedata/about.png')
+        logo = QtGui.QPixmap(os.path.join('reggiedata', 'about.png'))
         logoLabel = QtWidgets.QLabel()
         logoLabel.setPixmap(logo)
         logoLabel.setContentsMargins(16, 4, 32, 4)

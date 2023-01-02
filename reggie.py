@@ -4228,7 +4228,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if do_save:
             fn = QtWidgets.QFileDialog.getSaveFileName(self,
-                globals_.trans.string('FileDlgs', 3), '/untitled.png',
+                os.path.join(globals_.trans.string('FileDlgs', 3), 'untitled.png'),
                 globals_.trans.string('FileDlgs', 4) + ' (*.png)')[0]
 
             if fn == '':

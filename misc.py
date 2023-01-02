@@ -101,7 +101,7 @@ def FilesAreMissing():
     missing = []
 
     for check in required:
-        if not os.path.isfile('reggiedata/' + check):
+        if not os.path.isfile(os.path.join('reggiedata', check)):
             missing.append(check)
 
     if missing:
@@ -1565,10 +1565,10 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.Trans.setItemData(0, None, QtCore.Qt.UserRole)
                 self.Trans.setCurrentIndex(0)
                 i = 1
-                for trans in os.listdir('reggiedata/translations'):
+                for trans in os.listdir(os.path.join('reggiedata', 'translations')):
                     if trans.lower() == 'english': continue
 
-                    fp = 'reggiedata/translations/' + trans + '/main.xml'
+                    fp = os.path.join('reggiedata', 'translations', trans, 'main.xml')
                     if not os.path.isfile(fp): continue
 
                     transobj = ReggieTranslation(trans)

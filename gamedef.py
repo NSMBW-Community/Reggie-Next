@@ -303,7 +303,7 @@ class ReggieGameDefinition:
 
         # See if it's in one of self.folders
         if self.folders['bg%s' % layer].path is not None:
-            trypath = self.folders['bg%s' % layer].path + '/' + name
+            trypath = os.path.join(self.folders['bg%s' % layer].path, name)
             if os.path.isfile(trypath): return trypath
 
         # If there's a base, return self.base.bgFile

@@ -130,7 +130,7 @@ class ReggieTheme:
                 # Load the icons
                 for iconfilename in fileList:
                     iconname = iconfilename
-                    if not iconname.startswith(foldername + '/'): continue
+                    if not iconname.startswith(foldername + os.sep): continue
                     iconname = iconname[len(foldername) + 1:]
                     if len(iconname) <= len('icon-.png'): continue
                     if not iconname.startswith('icon-') or not iconname.endswith('.png'): continue
@@ -287,7 +287,7 @@ class ReggieTheme:
         cache = self.iconCacheLg if big else self.iconCacheSm
 
         if name not in cache:
-            path = 'reggiedata/ico/lg/icon-' if big else 'reggiedata/ico/sm/icon-'
+            path = os.path.join('reggiedata', 'ico', 'lg' if big else 'sm', 'icon-')
             path += name
             cache[name] = QtGui.QIcon(path)
 
