@@ -144,7 +144,7 @@ class ReggieTranslation:
                     '2x',
                     '4x',
                 ),
-                2: 'Zone [num]',
+                2: 'Background [num]',
                 3: 'Scenery',
                 4: 'Backdrop',
                 5: 'Position:',
