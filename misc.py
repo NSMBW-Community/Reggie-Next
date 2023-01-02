@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
 import collections
+import itertools
 import sys
 import os
 from xml.etree import ElementTree
@@ -20,17 +21,6 @@ from levelitems import Path, CommentItem
 ################################################################################
 ################################################################################
 ################################################################################
-
-def GetPath(id_):
-    """
-    Checks the game definition and the translation and returns the appropriate path
-    """
-    # If there's a custom globals_.gamedef, use that
-    if globals_.gamedef.custom and globals_.gamedef.file(id_) is not None:
-        return globals_.gamedef.file(id_)
-    else:
-        return globals_.trans.path(id_)
-
 
 def module_path():
     """
@@ -147,16 +137,39 @@ def areValidGamePaths(stage_check='ug', texture_check='ug'):
     return False
 
 
+def getResourcePaths(res_name):
+    """
+    Returns an iterable containing the paths that have the specified resource.
+    The paths are included in order from general to specific. That is, the base
+    comes before the patch.
+    """
+    # To make sure that the gamedef is translatable as well, we first need to
+    # figure out what paths the gamedef loads its files from
+    gamedef_files, is_patch, gamedef_names = globals_.gamedef.recursiveFiles(res_name)
+
+    # Then, we ask the current translation to give a path for each of those
+    # gamedefs. If there is no translation for a specific resource and gamedef,
+    # the corresponding entry will have the value 'None'.
+    trans_files = globals_.trans.paths(res_name, gamedef_names)
+
+    # Combine the gamedef_files and trans_files lists to get them in the right
+    # order.
+    #   [gamedef_files[0], trans_files[0], ..., gamedef[i], trans_files[i]]
+    # If any entry (gamedef or translation) has no value, it will have None. As
+    # such, we also need to filter out the None values from the final iterable.
+    return filter(lambda x: x is not None, itertools.chain.from_iterable(zip(gamedef_files, trans_files)))
+
+
 def LoadLevelNames():
     """
     Ensures that the level name info is loaded
     """
-    # Parse the file
-    tree = ElementTree.parse(GetPath('levelnames'))
-    root = tree.getroot()
+    for path in getResourcePaths('levelnames'):
+        tree = ElementTree.parse(path)
+        root = tree.getroot()
 
-    # Parse the nodes (root acts like a large category)
-    globals_.LevelNames = LoadLevelNames_Category(root)
+        # Parse the nodes (root acts like a large category)
+        globals_.LevelNames = LoadLevelNames_Category(root)
 
 
 def LoadLevelNames_Category(node):
@@ -179,11 +192,7 @@ def LoadTilesetNames(reload_=False):
     if (globals_.TilesetNames is not None) and (not reload_): return
 
     # Get paths
-    paths = globals_.gamedef.recursiveFiles('tilesets')
-    new = []
-    new.append(globals_.trans.files['tilesets'])
-    for path in paths: new.append(path)
-    paths = new
+    paths = getResourcePaths('tilesets')
 
     # Read each file
     globals_.TilesetNames = [[[], False], [[], False], [[], False], [[], False]]
@@ -324,12 +333,7 @@ def LoadObjDescriptions(reload_=False):
     """
     if (globals_.ObjDesc is not None) and not reload_: return
 
-    paths, isPatch = globals_.gamedef.recursiveFiles('ts1_descriptions', True)
-    if isPatch:
-        new = []
-        new.append(globals_.trans.files['ts1_descriptions'])
-        for path in paths: new.append(path)
-        paths = new
+    paths = getResourcePaths('ts1_descriptions')
 
     globals_.ObjDesc = {}
     for path in paths:
@@ -347,12 +351,7 @@ def LoadBgANames(reload_=False):
     """
     if (globals_.BgANames is not None) and not reload_: return
 
-    paths, isPatch = globals_.gamedef.recursiveFiles('bga', True)
-    if isPatch:
-        new = []
-        new.append(globals_.trans.files['bga'])
-        for path in paths: new.append(path)
-        paths = new
+    paths = getResourcePaths('bga')
 
     globals_.BgANames = []
     for path in paths:
@@ -379,11 +378,7 @@ def LoadBgBNames(reload_=False):
     """
     if (globals_.BgBNames is not None) and not reload_: return
 
-    paths, isPatch = globals_.gamedef.recursiveFiles('bgb', True)
-    if isPatch:
-        new = [globals_.trans.files['bgb']]
-        for path in paths: new.append(path)
-        paths = new
+    paths = getResourcePaths('bgb')
 
     globals_.BgBNames = []
     for path in paths:
@@ -404,27 +399,13 @@ def LoadBgBNames(reload_=False):
         globals_.BgBNames = sorted(globals_.BgBNames, key=lambda entry: int(entry[0], 16))
 
 
-def LoadZoneThemes(reload_=False):
-    """
-    Ensures that custom zone themes get loaded
-    """
-    if (globals_.ZoneThemeValues is not None) and not reload_: return
-
-    paths, isPatch = globals_.gamedef.recursiveFiles('zonethemes', True)
-
-    globals_.ZoneThemeValues = []
-    for path in paths:
-        with open(path, 'r', encoding='utf-8') as f:
-            raw = [x.strip() for x in f.readlines()]
-
-        globals_.ZoneThemeValues.extend(raw)
-
 
 def LoadConstantLists():
     """
     Loads some lists of constants
     """
     globals_.BgScrollRateStrings = globals_.trans.stringList('BGDlg', 1)
+    globals_.ZoneThemeValues = globals_.trans.stringList('ZonesDlg', 1)
     globals_.ZoneTerrainThemeValues = globals_.trans.stringList('ZonesDlg', 2)
 
 
@@ -655,112 +636,93 @@ def LoadSpriteData():
     errortext = []
     sprite_ids = [-1]
 
-    # It works this way so that it can overwrite settings based on order of precedence
-    paths = [(globals_.trans.files['spritedata'], None)]
-    for pathtuple in globals_.gamedef.multipleRecursiveFiles('spritedata', 'spritenames'):
-        paths.append(pathtuple)
+    # Convert the iterable to list, because we need to iterate over it twice
+    paths = list(getResourcePaths('spritedata'))
 
-    for sdpath, snpath in paths:
+    for path in paths:
 
         # Add XML sprite data, if there is any
-        if sdpath not in (None, ''):
-            path = sdpath if isinstance(sdpath, str) else sdpath.path
-            tree = ElementTree.parse(path)
+        if not isinstance(path, str):
+            path = path.path
 
-            for sprite in tree.iter("sprite"):
-                id_text = sprite.get("id")
+        tree = ElementTree.parse(path)
 
-                try:
-                    id_ = int(id_text)
-                except ValueError:
-                    continue
+        for sprite in tree.iter("sprite"):
+            id_text = sprite.get("id")
 
-                sprite_ids.append(id_)
+            try:
+                id_ = int(id_text)
+            except ValueError:
+                continue
+
+            sprite_ids.append(id_)
 
     globals_.NumSprites = max(sprite_ids) + 1
     globals_.Sprites = [None] * globals_.NumSprites
 
-    for sdpath, snpath in paths:
+    for sdpath in paths:
 
         # Add XML sprite data, if there is any
-        if sdpath not in (None, ''):
-            path = sdpath if isinstance(sdpath, str) else sdpath.path
-            tree = ElementTree.parse(path)
-            root = tree.getroot()
+        if sdpath in (None, ''):
+            continue
 
-            for sprite in tree.iter("sprite"):
+        path = sdpath if isinstance(sdpath, str) else sdpath.path
+        tree = ElementTree.parse(path)
+        root = tree.getroot()
 
-                try:
-                    spriteid = int(sprite.get("id"))
-                except ValueError:
-                    continue
+        for sprite in tree.iter("sprite"):
 
-                spritename = sprite.get("name")
-                notes = None
-                advNotes = None
-                relatedObjFiles = None
-                yoshiNotes = None
+            try:
+                spriteid = int(sprite.get("id"))
+            except ValueError:
+                continue
 
-                attribs = sprite.keys()
+            spritename = sprite.get("name")
+            notes = None
+            advNotes = None
+            relatedObjFiles = None
+            yoshiNotes = None
 
-                if 'notes' in attribs:
-                    notes = globals_.trans.string('SpriteDataEditor', 2, '[notes]', sprite.get('notes'))
+            attribs = sprite.keys()
 
-                if 'advancednotes' in attribs:
-                    advNotes = globals_.trans.string('SpriteDataEditor', 11, '[notes]', sprite.get('advancednotes'))
+            if 'notes' in attribs:
+                notes = globals_.trans.string('SpriteDataEditor', 2, '[notes]', sprite.get('notes'))
 
-                if 'files' in attribs:
-                    relatedObjFiles = globals_.trans.string('SpriteDataEditor', 8, '[list]',
-                                                   sprite.get('files').replace(';', '<br>'))
+            if 'advancednotes' in attribs:
+                advNotes = globals_.trans.string('SpriteDataEditor', 11, '[notes]', sprite.get('advancednotes'))
 
-                if 'yoshinotes' in attribs:
-                    yoshiNotes = globals_.trans.string('SpriteDataEditor', 9, '[notes]',
-                                                   sprite.get('yoshinotes'))
+            if 'files' in attribs:
+                relatedObjFiles = globals_.trans.string('SpriteDataEditor', 8, '[list]',
+                                                sprite.get('files').replace(';', '<br>'))
 
-                noyoshi = sprite.get('noyoshi', 'False') == "True"
-                asm = sprite.get('asmhacks', 'False') == "True"
-                size = sprite.get('sizehacks', 'False') == "True"
+            if 'yoshinotes' in attribs:
+                yoshiNotes = globals_.trans.string('SpriteDataEditor', 9, '[notes]',
+                                                sprite.get('yoshinotes'))
 
-                sdef = SpriteDefinition()
-                sdef.id = spriteid
-                sdef.name = spritename
-                sdef.notes = notes
-                sdef.advNotes = advNotes
-                sdef.relatedObjFiles = relatedObjFiles
-                sdef.yoshiNotes = yoshiNotes
-                sdef.noyoshi = noyoshi
-                sdef.asm = asm
-                sdef.size = size
-                sdef.dependencies = []
-                sdef.dependencynotes = None
+            noyoshi = sprite.get('noyoshi', 'False') == "True"
+            asm = sprite.get('asmhacks', 'False') == "True"
+            size = sprite.get('sizehacks', 'False') == "True"
 
-                try:
-                    sdef.loadFrom(sprite)
-                except Exception as e:
-                    errors.append(str(spriteid))
-                    errortext.append(str(e))
+            sdef = SpriteDefinition()
+            sdef.id = spriteid
+            sdef.name = spritename
+            sdef.notes = notes
+            sdef.advNotes = advNotes
+            sdef.relatedObjFiles = relatedObjFiles
+            sdef.yoshiNotes = yoshiNotes
+            sdef.noyoshi = noyoshi
+            sdef.asm = asm
+            sdef.size = size
+            sdef.dependencies = []
+            sdef.dependencynotes = None
 
-                globals_.Sprites[spriteid] = sdef
+            try:
+                sdef.loadFrom(sprite)
+            except Exception as e:
+                errors.append(str(spriteid))
+                errortext.append(str(e))
 
-        # Add TXT sprite names, if there are any
-        # This code is only ever run when a custom
-        # gamedef is loaded, because spritenames.txt
-        # is a file only ever used by custom gamedefs.
-        if (snpath is not None) and (snpath.path is not None):
-            with open(snpath.path, 'r', encoding='utf-8') as snfile:
-                data = snfile.read()
-
-            # Split the data
-            data = data.split('\n')
-            for i, line in enumerate(data):
-                data[i] = line.split(':')
-
-            # Apply it
-            for spriteid, name in data:
-                spriteid = int(spriteid)
-
-                if 0 <= spriteid < globals_.NumSprites:
-                    globals_.Sprites[spriteid].name = name
+            globals_.Sprites[spriteid] = sdef
 
     # Warn the user if errors occurred
     if errors:
@@ -776,11 +738,7 @@ def LoadSpriteCategories(reload_=False):
     """
     if (globals_.SpriteCategories is not None) and not reload_: return
 
-    paths, isPatch = globals_.gamedef.recursiveFiles('spritecategories', True)
-    if isPatch:
-        new = [globals_.trans.files['spritecategories']]
-        for path in paths: new.append(path)
-        paths = new
+    paths = getResourcePaths('spritecategories')
 
     globals_.SpriteCategories = []
     # Add a Search category
@@ -835,10 +793,7 @@ def LoadSpriteListData(reload_=False):
     # global SpriteListData
     if (globals_.SpriteListData is not None) and not reload_: return
 
-    paths = globals_.gamedef.recursiveFiles('spritelistdata')
-    new = [os.path.join('reggiedata', 'spritelistdata.txt')]
-    for path in paths: new.append(path)
-    paths = new
+    paths = getResourcePaths('spritelistdata')
 
     globals_.SpriteListData = [[] for _ in range(24)]
     for path in paths:
@@ -867,9 +822,7 @@ def LoadEntranceNames(reload_=False):
     """
     if (globals_.EntranceTypeNames is not None) and not reload_: return
 
-    paths, isPatch = globals_.gamedef.recursiveFiles('entrancetypes', True)
-    if isPatch:
-        paths = [globals_.trans.files['entrancetypes']] + paths
+    paths = getResourcePaths('entrancetypes')
 
     names = collections.OrderedDict()
     for path in paths:
@@ -936,14 +889,7 @@ def LoadTilesetInfo(reload_=False):
     if (globals_.TilesetInfo is not None) and not reload_:
         return
 
-    paths, isPatch = globals_.gamedef.recursiveFiles('tilesetinfo', True)
-    if isPatch:
-        new = [globals_.trans.files['tilesetinfo']]
-
-        for path in paths:
-            new.append(path)
-
-        paths = new
+    paths = getResourcePaths('tilesetinfo')
 
     # go through the types
     types = {}
@@ -980,6 +926,37 @@ def LoadTilesetInfo(reload_=False):
         del root
 
     globals_.TilesetInfo = info
+
+
+def LoadMusicInfo(reload_=False):
+    """
+    Uses the current gamedef + translation to load the music data, and saves it
+    in the MusicInfo global.
+    """
+    if (globals_.MusicInfo is not None) and not reload_:
+        return
+
+    paths = getResourcePaths('music')
+
+    songs = {}
+    for path in paths:
+        with open(path, 'r', encoding='utf-8') as musicfile:
+            data = musicfile.read()
+
+        del musicfile
+
+        # Apply the data
+        for line in data.split('\n'):
+            line_items = line.strip().split(':')
+
+            if len(line_items) != 2:
+                # Ignore lines that do not follow the <songid>:<name> format
+                continue
+
+            songid, name = line_items
+            songs[songid] = name
+
+    globals_.MusicInfo = sorted(songs.items(), key=lambda kv: int(kv[0]))
 
 
 class ChooseLevelNameDialog(QtWidgets.QDialog):

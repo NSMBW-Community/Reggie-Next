@@ -499,7 +499,7 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.Zone_music = QtWidgets.QComboBox()
         self.Zone_music.setToolTip(globals_.trans.string('ZonesDlg', 54))
-        for songid, text in getMusic():
+        for songid, text in globals_.MusicInfo:
             self.Zone_music.addItem(text, songid)
         self.Zone_music.setCurrentIndex(self.Zone_music.findData(z.music))
         self.Zone_music.currentIndexChanged.connect(self.handleMusicListSelect)
@@ -733,42 +733,3 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
     def handleScreenSizesChanged(self):
         if self.updating: return
         self.edited.emit()
-
-
-def getMusic():
-    """
-    Uses the current gamedef + translation to get the music data, and returns it as a list of tuples
-    """
-
-    transsong = globals_.trans.files['music']
-    gamedefsongs, isPatch = globals_.gamedef.recursiveFiles('music', True)
-    if isPatch:
-        paths = [transsong]
-        for path in gamedefsongs: paths.append(path)
-    else:
-        paths = gamedefsongs
-
-    songs = []
-    for path in paths:
-        with open(path, 'r', encoding='utf-8') as musicfile:
-            data = musicfile.read()
-
-        del musicfile
-
-        # Split the data
-        data = data.split('\n')
-        while '' in data: data.remove('')
-        for i, line in enumerate(data): data[i] = line.split(':')
-
-        # Apply it
-        for songid, name in data:
-            found = False
-            for song in songs:
-                if song[0] == songid:
-                    song[1] = name
-                    found = True
-            if not found:
-                songs.append([songid, name])
-
-    return sorted(songs, key=lambda song: int(song[0]))
-

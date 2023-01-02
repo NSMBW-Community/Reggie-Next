@@ -41,7 +41,7 @@ class ReggieTranslation:
         self.version = 1.0
         self.translator = 'Treeki, Tempus'
 
-        self.files = {
+        self.files = { None: {
             'bga': os.path.join('reggiedata', 'bga.txt'),
             'bgb': os.path.join('reggiedata', 'bgb.txt'),
             'entrancetypes': os.path.join('reggiedata', 'entrancetypes.txt'),
@@ -53,7 +53,7 @@ class ReggieTranslation:
             'tilesetinfo': os.path.join('reggiedata', 'tilesetinfo.xml'),
             'ts1_descriptions': os.path.join('reggiedata', 'ts1_descriptions.txt'),
             'external-actors': os.path.join('reggiedata', 'external', 'actors.xml')
-        }
+        }}
 
         self.strings = {
             'AboutDlg': {
@@ -947,24 +947,28 @@ class ReggieTranslation:
         self.translator = root.attrib['translator']
 
         # Parse the nodes
-        files = {}
         strings = False
-        addpath = os.path.join('reggiedata', 'translations', name)
+        base_path = os.path.join('reggiedata', 'translations', name)
         for node in root:
             if node.tag.lower() == 'file':
                 # It's a file node
                 name = node.attrib['name']
-                path = os.path.join(addpath, node.attrib['path'])
-                files[name] = path
+                path = os.path.join(base_path, node.attrib['path'])
+                self.files[None][name] = path
             elif node.tag.lower() == 'strings':
                 # It's a strings node
-                strings = os.path.join(addpath, node.attrib['path'])
+                strings = os.path.join(base_path, node.attrib['path'])
+            elif node.tag.lower() == 'for':
+                # Translation for other gamedefs
+                target = node.attrib['name']
+                self.files[target] = {}
+                for child in node:
+                    if child.tag.lower() == 'file':
+                        name = child.attrib['name']
+                        self.files[target][name] = os.path.join(base_path, child.attrib['path'])
 
         # Get rid of the XML stuff
-        del tree, root
-
-        # Overwrite self.files with files
-        for index in files: self.files[index] = files[index]
+        del tree, root, node, child
 
         # Check for a strings node
         if not strings: return False
@@ -1091,11 +1095,23 @@ class ReggieTranslation:
         except Exception:
             return ('ReggieTranslation.stringList() ERROR:', section, numcode)
 
-    def path(self, key):
+    def path(self, key, gamedef=None):
         """
         Returns the path to the file indicated by key
         """
-        return self.files[key]
+        if gamedef == self.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
+            gamedef = None
+
+        try:
+            return self.files[gamedef][key]
+        except KeyError:
+            return None
+
+    def paths(self, key, gamedef_names=None):
+        if gamedef_names is None:
+            return [self.path(key)]
+
+        return [self.path(key, name) for name in gamedef_names]
 
     def generateXML(self):
         """

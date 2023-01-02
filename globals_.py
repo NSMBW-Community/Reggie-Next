@@ -38,6 +38,7 @@ Level = None
 LevelNames = None
 LocationsFrozen = False
 LocationsShown = True
+MusicInfo = None
 NumberFont = None
 NumSprites = 0
 ObjDesc = None
