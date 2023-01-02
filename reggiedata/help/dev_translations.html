@@ -75,6 +75,17 @@
 					&lt;/translation&gt;
 				</div>
 				<p>Add the name of the language between the quotes of the <i>name</i> attribute in the <i>&lt;translation&gt;</i> tag and add your name between the quotes of the <i>translator</i> attribute.</p>
+				<p>If you want to translate other game patches, such as the included <i>Newer Super Mario Bros. Wii</i> patch, you need to include a <i>&lt;for&gt;</i> tag and specify the name of the target game patch using the <i>name</i> attribute.</p>
+				<p>An example <i>main.xml</i> of a translation that translates the <i>music.txt</i> file of the <i>Newer Super Mario Bros. Wii</i> patch is shown below. Inside the <i>&lt;for&gt;</i> tag, all <i>&lt;file&gt;</i> tags that can be used outside the <i>&lt;for&gt;</i> tag can be used as well.</p>
+				<div class="code">
+					&lt;?xml version="1.0"?&gt;<br>
+					&lt;translation name="" version="1.0" translator=""&gt;<br>
+					&nbsp;&nbsp;&nbsp;&nbsp;&lt;strings path="strings.xml" /&gt;<br>
+					&nbsp;&nbsp;&nbsp;&nbsp;&lt;for name="Newer Super Mario Bros. Wii"&gt;<br>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;file name="music" path="music.txt" /&gt;<br>
+					&nbsp;&nbsp;&nbsp;&nbsp;&lt;/for&gt;<br>
+					&lt;/translation&gt;
+				</div>
 
 			<!-- Adding Files -->
 			<a name="AddingFiles"></a>

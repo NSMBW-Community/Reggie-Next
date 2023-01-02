@@ -46,7 +46,6 @@
 				<a href="#AddingEntriesToMainXml">Adding Entries to main.xml</a><br>
 				<a href="#GamePatchBases">Game Patch Bases</a><br>
 				<a href="#ImportingIndividualFiles">Importing Individual Files</a><br>
-				<a href="#SpritenamesTxt">Spritenames.txt: The File that Doesn't Exist</a><br>
 				<a href="#EditReference">Edit Reference</a><br>
 				<a href="#FileFolderReference">File/Folder Reference</a><br>
 				</p>
@@ -129,22 +128,6 @@
 				</div>
 				<p>where "Some Other Game Name" would be something like "Another Super Mario Bros. Wii" or "Newer Super Mario Bros. Wii". As with game patch bases, Reggie! will search every game patch until it finds one with a matching <i>name</i>. If no matching game patch is found, the entire tag is ignored.</p>
 
-			<!-- Spritenames.txt: The File that Doesn't Exist -->
-			<a name="SpritenamesTxt"></a>
-			<h2><b>Spritenames.txt: The File that Doesn't Exist</b></h2>
-				<p>One file which Reggie! allows you to patch is spritenames.txt . In the <a href="#FileFolderReference">File/Folder Reference</a>, you'll notice that it has a filename of &quot;<i>None (spritenames.txt)</i>.&quot; None? What does that mean? It means that there is no file named spritenames.txt that Reggie! uses normally. It can only hold the names of sprites, which are usually stored in spritedata.xml . "Why, then, can I patch this nonexistent and redundant file?" you wonder. The simple answer is that if you wanted to change only the sprite name for a complicated sprite without using this file, you would have to copy its entire entry in spritedata.xml into a custom one, which can both cause your spritedata.xml to become very cluttered and cause your game patch to become obsolete. (If new settings are discovered for this sprite, your game patch will not reflect those.) The solution is to create a spritenames.txt, which solves both of these problems at the same time.</p>
-				<p>The format of spritenames.txt is very simple. If you want to change the names of Goombas, Podoboos and Bowser to Fire Goombas, Icy Podoboos and Dry Bowser, respectively, you write:</p>
-				<div class="code">
-					20: Fire Goombas<br>
-					46: Icy Podoboos<br>
-					419: Dry Bowser<br>
-				</div>
-				<p>Some other things to note:<ul>
-					<li>It's good practice to order the entries numerically, though it's not required.</li>
-					<li>If you add a name entry for a sprite in both spritenames.txt and spritedata.xml, the name in spritenames.txt takes precedence and will be used.</li>
-					<li>If you want to change settings for a sprite along with its name, go ahead and patch reggiedata/spritenames.xml.</li>
-				</ul>
-
 			<!-- Edit Reference -->
 			<a name="EditReference"></a>
 			<h2><b>Edit Reference</b></h2>
@@ -159,7 +142,7 @@
 					<li><b>... added and/or edited backgrounds.</b><br>
 						Replace <i>reggiedata/bga.txt</i> and/or <i>reggiedata/bga.txt</i>, and add corresponding screenshots to <i>reggiedata/bga/</i> and/or <i>reggiedata/bgb/</i>. You can patch the entire <i>reggiedata/bga/</i> and/or <i>reggiedata/bgb/</i> folder(s) at once by using a folder tag instead of many file tags.</li>
 					<li><b>... edited the textures or models of one or more sprites.</b><br>
-						Replace <i>reggiedata/spritenames.txt</i> and the corresponding sprite image in <i>reggiedata/sprites/</i>. See the above <a href="#SpritenamesTxt">section on spritenames.txt</a>.</li>
+						Replace the corresponding sprite image in <i>reggiedata/sprites/</i>.</li>
 					<li><b>... added and/or edited one or more sprites using assembly code.</b><br>
 						Edit <i>reggiedata/spritedata.xml</i>, and replace the corresponding sprite image using the procedure described on the <a href="dev_spriteimgs.html">Sprite Images</a> page. You may also want to add your sprite to one or more categories by editing <i>reggiedata/spritecategories.xml</i>.</li>
 				</ul></p>
@@ -234,8 +217,8 @@
 						<td>&check;</td>
 					</tr>
 					<tr class="alt">
-						<td><i>None (spritenames.txt)</i></td>
-						<td>spritenames</td>
+						<td>reggiedata/spritelistdata.txt</td>
+						<td>spritelistdata</td>
 						<td />
 						<td>&check;</td>
 					</tr>
@@ -246,12 +229,18 @@
 						<td>&check;</td>
 					</tr>
 					<tr class="alt">
+						<td>reggiedata/tilesetinfo.xml</td>
+						<td>tilesetinfo</td>
+						<td />
+						<td>&check;</td>
+					</tr>
+					<tr>
 						<td>reggiedata/tilesets.xml</td>
 						<td>tilesets</td>
 						<td />
 						<td>&check;</td>
 					</tr>
-					<tr>
+					<tr class="alt">
 						<td>reggiedata/ts1_descriptions.txt</td>
 						<td>ts1_descriptions</td>
 						<td>&check;</td>
