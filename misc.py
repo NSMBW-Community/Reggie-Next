@@ -10,7 +10,7 @@ from xml.etree import ElementTree
 ################################################################################
 
 import globals_
-from ui import GetIcon, ReggieTheme, toQColor, clipStr
+from ui import GetIcon, ReggieTheme, clipStr
 from dirty import setting, setSetting
 from dialogs import DiagnosticToolDialog
 from translation import ReggieTranslation
