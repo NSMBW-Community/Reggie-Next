@@ -1,4 +1,3 @@
-import math
 import pickletools
 
 from PyQt5 import QtCore, QtGui, QtWidgets
