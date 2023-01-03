@@ -1,6 +1,7 @@
 import os
 import sys
 import importlib
+import functools
 from xml.etree import ElementTree as etree
 
 from PyQt5 import QtWidgets, QtCore, QtGui
@@ -694,14 +695,12 @@ def LoadGameDef(name=None, dlg=None):
     if dlg: setSetting('LastGameDef', name)
     return True
 
+@functools.lru_cache(maxsize=None)
 def FindGameDef(name, skip=None):
     """
     Helper function to find a game def with a specific name.
     Skip will be skipped
     """
-    if name in globals_.CachedGameDefs:
-        return globals_.CachedGameDefs[name]
-
     patches_path = os.path.join('reggiedata', 'patches')
 
     for folder in os.listdir(patches_path):
@@ -714,5 +713,4 @@ def FindGameDef(name, skip=None):
             continue
 
         def_.__init2__()
-        globals_.CachedGameDefs[def_.name] = def_
         return def_

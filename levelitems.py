@@ -486,7 +486,6 @@ class ObjectItem(LevelEditorItem):
         self.dragstarty = -1
         self.objsDragging = {}
 
-        # global globals_.DirtyOverride
         globals_.DirtyOverride += 1
         self.setPos(x * 24, y * 24)
         globals_.DirtyOverride -= 1
@@ -825,8 +824,6 @@ class ObjectItem(LevelEditorItem):
         """
         Paints the object
         """
-        # global theme
-
         if not self.isSelected():
             return
 
@@ -1651,7 +1648,6 @@ class LocationItem(LevelEditorItem):
         self.setFlag(self.ItemIsMovable, not globals_.LocationsFrozen)
         self.setFlag(self.ItemIsSelectable, not globals_.LocationsFrozen)
 
-        # global globals_.DirtyOverride
         globals_.DirtyOverride += 1
         self.setPos(int(x * 1.5), int(y * 1.5))
         globals_.DirtyOverride -= 1
@@ -1715,8 +1711,6 @@ class LocationItem(LevelEditorItem):
         """
         Paints the location on screen
         """
-        # global theme
-
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
 
         # Paint liquids/fog
@@ -1919,7 +1913,6 @@ class SpriteItem(LevelEditorItem):
         """
         baseString = globals_.trans.string('Sprites', 1, '[name]', self.name, '[x]', self.objx, '[y]', self.objy)
 
-        # global globals_.SpriteListData
         SpritesThatActivateAnEvent = set(globals_.SpriteListData[0])
         SpritesThatActivateAnEventNyb0 = set(globals_.SpriteListData[1])
         SpritesTriggeredByAnEventNyb1 = set(globals_.SpriteListData[2])
@@ -2640,8 +2633,6 @@ class EntranceItem(LevelEditorItem):
         """
         Paints the entrance
         """
-        # global theme
-
         painter.setClipRect(option.exposedRect)
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
 
@@ -3141,7 +3132,6 @@ class CommentItem(LevelEditorItem):
         self.setFlag(self.ItemIsMovable, not globals_.CommentsFrozen)
         self.setFlag(self.ItemIsSelectable, not globals_.CommentsFrozen)
 
-        # global globals_.DirtyOverride
         globals_.DirtyOverride += 1
         self.setPos(int(x * 1.5), int(y * 1.5))
         globals_.DirtyOverride -= 1
@@ -3214,8 +3204,6 @@ class CommentItem(LevelEditorItem):
         """
         Paints the comment
         """
-        # global theme
-
         painter.setClipRect(option.exposedRect)
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
 

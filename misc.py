@@ -68,10 +68,7 @@ def IsNSMBLevel(filename):
     with open(filename, 'rb') as f:
         data = f.read()
 
-    globals_.compressed = False
-
     if (data[0] & 0xF0) == 0x40 or not data.startswith(b"U\xAA8-"):  # If LH-compressed or LZ-compressed
-        globals_.compressed = True
         return True
 
     return checkContent(data)
@@ -397,16 +394,6 @@ def LoadBgBNames(reload_=False):
             if not found: globals_.BgBNames.append([w[0], w[1]])
 
         globals_.BgBNames.sort(key=lambda entry: int(entry[0], 16))
-
-
-
-def LoadConstantLists():
-    """
-    Loads some lists of constants
-    """
-    globals_.BgScrollRateStrings = globals_.trans.stringList('BGDlg', 1)
-    globals_.ZoneThemeValues = globals_.trans.stringList('ZonesDlg', 1)
-    globals_.ZoneTerrainThemeValues = globals_.trans.stringList('ZonesDlg', 2)
 
 
 class SpriteDefinition:
@@ -790,7 +777,6 @@ def LoadSpriteListData(reload_=False):
     """
     Ensures that the sprite list modifier data is loaded
     """
-    # global SpriteListData
     if (globals_.SpriteListData is not None) and not reload_: return
 
     paths = getResourcePaths('spritelistdata')

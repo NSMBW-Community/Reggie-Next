@@ -312,23 +312,10 @@ class IconsOnlyTabBar(QtWidgets.QTabBar):
         return res
 
 # Related functions
-def toQColor(*args):
-    """
-    Usage: toQColor(r, g, b[, a]) OR toQColor((r, g, b[, a]))
-    """
-    if len(args) == 1: args = args[0]
-    r = args[0]
-    g = args[1]
-    b = args[2]
-    a = args[3] if len(args) == 4 else 255
-    return QtGui.QColor(r, g, b, a)
-
-
 def SetAppStyle(styleKey=''):
     """
     Set the application window color
     """
-    # # global theme, app
     # Change the color if applicable
     if globals_.theme.color('ui') is not None and not globals_.theme.forceStyleSheet:
         globals_.app.setPalette(QtGui.QPalette(globals_.theme.color('ui')))
@@ -462,17 +449,6 @@ class HexSpinBox(QtWidgets.QSpinBox):
 
     def valueFromText(self, value):
         return int(str(value), 16)
-
-
-def GetDefaultStyle():
-    """
-    Stores a copy of the default app style upon launch, which can then be accessed later
-    """
-    if globals_.defaultStyle != None and globals_.defaultPalette != None:
-        return
-
-    globals_.defaultStyle = globals_.app.style()
-    globals_.defaultPalette = QtGui.QPalette(globals_.app.palette())
 
 
 class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):

@@ -10,11 +10,13 @@ def LoadTranslation():
     Loads the translation
     """
     name = setting('Translation')
-    eng = (None, 'None', 'English', '', 0)
-    if name in eng:
-        globals_.trans = ReggieTranslation(None)
-    else:
-        globals_.trans = ReggieTranslation(name)
+
+    # The default value is English and can be represented in the settings in
+    # several ways.
+    if name in (None, 'None', 'English', '', 0):
+        name = None
+
+    globals_.trans = ReggieTranslation(name)
 
 
 class ReggieTranslation:

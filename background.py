@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtGui
 import os
 
+import common
 import globals_
 from ui import GetIcon, HexSpinBox
 
@@ -62,8 +63,6 @@ class BGTab(QtWidgets.QWidget):
         """
         Creates the BG Settings for BGA and BGB
         """
-        clamp = lambda v, mi, ma: min(max(v, mi), ma)
-
         self.BGASettings = QtWidgets.QGroupBox(
             globals_.trans.string('BGDlg', 3)  # 'Scenery'
         )
@@ -138,10 +137,14 @@ class BGTab(QtWidgets.QWidget):
             # Scrolling
             self.scroll_boxes.append((QtWidgets.QComboBox(), QtWidgets.QComboBox()))
 
+            # The list of background scroll rate names
+            scroll_names = globals_.trans.stringList('BGDlg', 1)
+
             for scroll_box, val in zip(self.scroll_boxes[-1], bg_scroll_vals[slot_id]):
-                val = clamp(val, 0, len(globals_.BgScrollRates))
-                scroll_box.addItems(globals_.BgScrollRateStrings)
+                scroll_box.addItems(scroll_names)
                 scroll_box.setToolTip(globals_.trans.string('BGDlg', 11))
+
+                val = common.clamp(val, 0, len(scroll_names) - 1)
                 scroll_box.setCurrentIndex(val)
 
             # Zoom

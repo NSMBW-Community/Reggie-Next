@@ -918,7 +918,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Determines if there is a start entrance or not
         """
-        # global Area
         if globals_.Area.areanum != 1:
             return False
 
@@ -1043,7 +1042,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks for any zones which are too close together or are overlapping
         """
-        # global Area
         padding = 4  # minimum blocks between zones
 
         for check in reversed(
@@ -1117,7 +1115,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks for any zones which are too close to the area edges, and moves them
         """
-        # global Area
         areaw = 16384
         areah = 8192
 
@@ -1139,7 +1136,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks for any zones which do not have bias enabled
         """
-        # global Area
         fix = {'0 0': (0, 1),
                '0 7': (0, 6),
                '0 11': (0, 4),
@@ -1169,7 +1165,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks for any zones which may be too large
         """
-        # global Area
         maxarea = 16384  # blocks (approximated value)
 
         for z in globals_.Area.zones:
@@ -1190,7 +1185,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks for any zones which may be too small for their zoom level
         """
-        # global Area
         MinimumSize = (484, 272)
         ##                        (484, 272), # -1
         ##                        (484, 272), # 0

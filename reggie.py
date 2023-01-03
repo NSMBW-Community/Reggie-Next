@@ -89,8 +89,8 @@ import globals_
 ################################################################################
 
 from libs import lh, lib_versions, lz77
-from ui import GetIcon, SetAppStyle, GetDefaultStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, IconsOnlyTabBar
-from misc import LoadActionsLists, LoadTilesetNames, LoadBgANames, LoadBgBNames, LoadConstantLists, LoadObjDescriptions, LoadSpriteData, LoadSpriteListData, LoadEntranceNames, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePaths, areValidGamePaths
+from ui import GetIcon, SetAppStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, IconsOnlyTabBar
+from misc import LoadActionsLists, LoadTilesetNames, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadSpriteData, LoadSpriteListData, LoadEntranceNames, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePaths, areValidGamePaths
 from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import GameDefMenu, LoadGameDef
@@ -142,7 +142,6 @@ def _excepthook(*exc_info):
     errorbox.setText(notice + msg)
     errorbox.exec_()
 
-    # global globals_.DirtyOverride
     globals_.DirtyOverride = 0
 
 
@@ -180,7 +179,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Editor window constructor
         """
-        # global globals_.Initializing
         globals_.Initializing = True
 
         # Reggie Version number goes below here. 64 char max (32 if non-ascii).
@@ -292,7 +290,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.restoreState(setting('MainWindowState'), 0)
 
         # Aaaaaand... initializing is done!
-        # global globals_.Initializing
         globals_.Initializing = False
 
     def SetupActionsAndMenus(self):
@@ -1351,7 +1348,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Auto saves the level
         """
-        # global globals_.AutoSaveDirty
         if not globals_.AutoSaveDirty: return
 
         data = globals_.Level.save()
@@ -4361,9 +4357,6 @@ def main():
     # Load the translation (needs to happen first)
     LoadTranslation()
 
-    # Load the style
-    GetDefaultStyle()
-
     # Check if required files are missing
     if FilesAreMissing():
         sys.exit(1)
@@ -4382,7 +4375,6 @@ def main():
 
     # Load remaining requirements
     LoadActionsLists()
-    LoadConstantLists()
     LoadNumberFont()
     SetAppStyle()
 
@@ -4458,7 +4450,6 @@ def main():
     if autofile is not None and autofiledata != 'x':
         result = AutoSavedInfoDialog(autofile).exec_()
         if result == QtWidgets.QDialog.Accepted:
-            # global globals_.RestoredFromAutoSave, globals_.AutoSavePath, globals_.AutoSaveData
             globals_.RestoredFromAutoSave = True
             globals_.AutoSavePath = autofile
             globals_.AutoSaveData = bytes(autofiledata)
@@ -4470,7 +4461,8 @@ def main():
     globals_.mainWindow = ReggieWindow()
     globals_.mainWindow.__init2__()  # fixes bugs
     globals_.mainWindow.show()
-    if globals_.generateStringsXML:
+
+    if '-generatestringsxml' in sys.argv:
         globals_.trans.generateXML()
 
     exitcodesys = globals_.app.exec_()

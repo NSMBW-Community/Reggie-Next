@@ -2458,8 +2458,6 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         """
         Places a Special Event [246] and sets the settings so the correct slot.
         """
-        # global globals_.mainWindow, globals_.Area
-
         slot = self.buttongroup.checkedId()
         data = bytearray(8)
         if slot == -1:

@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
 
+import common
 import globals_
 from ui import GetIcon
 from levelitems import ZoneItem
@@ -326,20 +327,23 @@ class ZoneTab(QtWidgets.QWidget):
 
         comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed)
 
+        zone_theme_values = globals_.trans.stringList('ZonesDlg', 1)
+        zone_terrain_theme_values = globals_.trans.stringList('ZonesDlg', 2)
+
         self.Zone_modeldark = QtWidgets.QComboBox()
-        self.Zone_modeldark.addItems(globals_.ZoneThemeValues)
+        self.Zone_modeldark.addItems(zone_theme_values)
         self.Zone_modeldark.setToolTip(globals_.trans.string('ZonesDlg', 21))
         self.Zone_modeldark.setSizePolicy(comboboxSizePolicy)
-        if z.modeldark < 0: z.modeldark = 0
-        if z.modeldark >= len(globals_.ZoneThemeValues): z.modeldark = len(globals_.ZoneThemeValues) - 1
+
+        z.modeldark = common.clamp(z.modeldark, 0, len(zone_theme_values))
         self.Zone_modeldark.setCurrentIndex(z.modeldark)
 
         self.Zone_terraindark = QtWidgets.QComboBox()
-        self.Zone_terraindark.addItems(globals_.ZoneTerrainThemeValues)
+        self.Zone_terraindark.addItems(zone_terrain_theme_values)
         self.Zone_terraindark.setToolTip(globals_.trans.string('ZonesDlg', 23))
         self.Zone_terraindark.setSizePolicy(comboboxSizePolicy)
-        if z.terraindark < 0: z.terraindark = 0
-        if z.terraindark >= len(globals_.ZoneTerrainThemeValues): z.terraindark = len(globals_.ZoneTerrainThemeValues) - 1
+
+        z.terraindark = common.clamp(z.terraindark, 0, len(zone_terrain_theme_values))
         self.Zone_terraindark.setCurrentIndex(z.terraindark)
 
         self.Zone_vspotlight = QtWidgets.QCheckBox(globals_.trans.string('ZonesDlg', 26))
