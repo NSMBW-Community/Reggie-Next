@@ -13,11 +13,7 @@ import globals_
 import spritelib as SLib
 import archive
 
-
-# Load libraries
-from libs import lh
-from libs import lz77
-from libs import tpl
+from libs import lh, lz77, tpl, lib_versions
 
 ################################################################################
 ################################################################################
@@ -1069,8 +1065,17 @@ def LoadTileset(idx, name, reload_=False):
 
 def LoadTexture_NSMBW(tiledata):
     data = tpl.decodeRGB4A3(tiledata, 1024, 256, False)
-    img = QtGui.QImage(data, 1024, 256, 4096, QtGui.QImage.Format_ARGB32)
-    return img
+
+    # nsmblib returns the image data with premultiplied alpha, while the cython
+    # and python implementations do not. As such, we have to set the correct
+    # format for Qt - ARGB32 premultiplied if nsmblib is used, and ARGB32 by
+    # default.
+    if lib_versions["nsmblib"] is not None:
+        data_format = QtGui.QImage.Format_ARGB32_Premultiplied
+    else:
+        data_format = QtGui.QImage.Format_ARGB32
+
+    return QtGui.QImage(data, 1024, 256, 4096, data_format)
 
 
 def IncrementTilesetFrame():
