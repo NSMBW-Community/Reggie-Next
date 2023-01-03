@@ -875,7 +875,8 @@ def LoadTilesetInfo(reload_=False):
     if (globals_.TilesetInfo is not None) and not reload_:
         return
 
-    paths = getResourcePaths('tilesetinfo')
+    # Convert the iterable to list, because we need to iterate over it twice
+    paths = list(getResourcePaths('tilesetinfo'))
 
     # go through the types
     types = {}
