@@ -1331,7 +1331,7 @@
       <entry value="2">Affected by Vertical Camera Movements</entry>
       <entry value="3">Affected by Horizontal Camera Movements</entry>
     </list>
-    <value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see Retail: 07-07 A1 Z5."/>
+    <value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see Retail: 07-04 A1 Z5."/>
     <checkbox nybble="12.4" title="Shoots Homing Bullet Bills"/>
     <value nybble="6" title="Homing Bullet Bill Limit" comment="The Blaster will not create new Homing Bullet Bills unless the amount currently on the screen is less than this number. Value 0 functions the same as Value 1." requirednybble="12.4"/>
   </sprite> <!-- #92: Bill Blaster -->
@@ -1356,7 +1356,7 @@
     </list>
     <checkbox nybble="12.4" title="(Broken) Shoots Homing Banzai Bills" comment="The Banzai Bills do not home on the player but instead only move up and left, regardless of the shooting direction. Use the Homing Banzai Bill Spawner sprite instead."/>
     <value nybble="6" title="Homing Banzai Bill Limit" comment="The Blaster will not create new Homing Banzai Bills unless the amount currently on the screen is less than this number." requirednybble="12.4"/>
-    <value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see Retail: 07-07 A1 Z5."/>
+    <value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see Retail: 07-04 A1 Z5."/>
     <list nybble="9.3-9.4" title="Unknown Value 9" comment="ASM shows Nybble 8 might affect something.">
       <entry value="0">???</entry>
       <entry value="1">???</entry>
@@ -5056,7 +5056,7 @@
       <entry value="1">Left Only</entry>
       <entry value="2">Right Only</entry>
     </list>
-    <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. See Retail: 07-07 A1 Z5." comment2="The z-order is 400 - 32 * value" />
+    <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. See Retail: 07-04 A1 Z5." comment2="The z-order is 400 - 32 * value" />
     <list nybble="9" title="Shoots at">
       <entry value="0">Shot 1 and 2</entry>
       <entry value="1">Shot 1 Only</entry>
