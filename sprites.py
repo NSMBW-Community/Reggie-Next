@@ -3859,6 +3859,7 @@ class SpriteImage_FireChomp(SLib.SpriteImage_Static):  # 177
 class SpriteImage_ScalePlatform(SLib.SpriteImage):  # 178
     def __init__(self, parent):
         super().__init__(parent, 1.5)
+        self.offset = (0, -8)
         self.spritebox.shown = False
 
     @staticmethod
