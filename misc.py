@@ -1324,7 +1324,7 @@ class ZoomStatusWidget(QtWidgets.QWidget):
         self.layout = QtWidgets.QHBoxLayout()
         self.layout.addWidget(self.label)
         self.layout.setContentsMargins(4, 0, 8, 0)
-        self.setMaximumWidth(56)
+        self.setMaximumWidth(57)
 
         self.setLayout(self.layout)
 
