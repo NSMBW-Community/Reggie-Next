@@ -1687,6 +1687,84 @@ class SpriteImage_Boolossus(SLib.SpriteImage_Static):  # 290
         SLib.loadIfNotInImageCache('Boolossus', 'boolossus.png')
 
 
+class SpriteImage_NewerParabeetle(SLib.SpriteImage_StaticMultiple):  # 291
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('ParabeetleRight', 'parabeetle_right.png')
+        SLib.loadIfNotInImageCache('ParabeetleLeft', 'parabeetle_left.png')
+        SLib.loadIfNotInImageCache('ParabeetleMoreRight', 'parabeetle_moreright.png')
+        SLib.loadIfNotInImageCache('ParabeetleAtYou', 'parabeetle_atyou.png')
+
+        if 'ParabeetleredRight' in ImageCache: return
+        for colour in ("red", "orange", "yellow", "green", "skyblue", "blue", "purple", "black", "white", "pink"):
+            ImageCache["Parabeetle%sRight" % colour] = SLib.GetImg('parabeetle_%s_right.png' % colour.lower())
+            ImageCache["Parabeetle%sLeft" % colour] = SLib.GetImg('parabeetle_%s_left.png' % colour.lower())
+            ImageCache["Parabeetle%sMoreRight" % colour] = SLib.GetImg('parabeetle_%s_moreright.png' % colour.lower())
+            ImageCache["Parabeetle%sAtYou" % colour] = SLib.GetImg('parabeetle_%s_atyou.png' % colour.lower())
+
+    def dataChanged(self):
+        
+        direction = self.parent.spritedata[5] & 3
+        colour = self.parent.spritedata[2] & 15
+        if colour > 10:
+            colour = 0
+
+        colour = ("", "red", "orange", "yellow", "green", "skyblue", "blue", "purple", "black", "white", "pink")[colour]
+        if direction == 0 or direction > 3:  # right
+            self.xOffset = -12
+            self.image = ImageCache['Parabeetle%sRight' % colour]
+        elif direction == 1:  # left
+            self.xOffset = -10
+            self.image = ImageCache['Parabeetle%sLeft' % colour]
+        elif direction == 2:  # more right
+            self.xOffset = -12
+            self.image = ImageCache['Parabeetle%sMoreRight' % colour]
+        elif direction == 3:  # at you
+            self.xOffset = -26
+            self.image = ImageCache['Parabeetle%sAtYou' % colour]
+            
+        super().dataChanged()
+
+
+class SpriteImage_NewerHeavyParabeetle(SLib.SpriteImage_StaticMultiple):  # 292
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('HeavyParabeetleRight', 'heavy_parabeetle_right.png')
+        SLib.loadIfNotInImageCache('HeavyParabeetleLeft', 'heavy_parabeetle_left.png')
+        SLib.loadIfNotInImageCache('HeavyParabeetleMoreRight', 'heavy_parabeetle_moreright.png')
+        SLib.loadIfNotInImageCache('HeavyParabeetleAtYou', 'heavy_parabeetle_atyou.png')
+        
+        if 'HeavyParabeetleredRight' in ImageCache: return
+        for colour in ("red", "orange", "yellow", "green", "skyblue", "blue", "purple", "black", "white", "pink"):
+            ImageCache["HeavyParabeetle%sRight" % colour] = SLib.GetImg('heavy_parabeetle_%s_right.png' % colour.lower())
+            ImageCache["HeavyParabeetle%sLeft" % colour] = SLib.GetImg('heavy_parabeetle_%s_left.png' % colour.lower())
+            ImageCache["HeavyParabeetle%sMoreRight" % colour] = SLib.GetImg('heavy_parabeetle_%s_moreright.png' % colour.lower())
+            ImageCache["HeavyParabeetle%sAtYou" % colour] = SLib.GetImg('heavy_parabeetle_%s_atyou.png' % colour.lower())
+
+    def dataChanged(self):
+
+        direction = self.parent.spritedata[5] & 3
+        colour = self.parent.spritedata[2] & 15
+        if colour > 10:
+            colour = 0
+
+        colour = ("", "red", "orange", "yellow", "green", "skyblue", "blue", "purple", "black", "white", "pink")[colour]
+        if direction == 0 or direction > 3:  # right
+            self.xOffset = -38
+            self.image = ImageCache['HeavyParabeetle%sRight' % colour]
+        elif direction == 1:  # left
+            self.xOffset = -38
+            self.image = ImageCache['HeavyParabeetle%sLeft' % colour]
+        elif direction == 2:  # more right
+            self.xOffset = -38
+            self.image = ImageCache['HeavyParabeetle%sMoreRight' % colour]
+        elif direction == 3:  # at you
+            self.xOffset = -52
+            self.image = ImageCache['HeavyParabeetle%sAtYou' % colour]
+
+        super().dataChanged()
+
+
 class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
     @staticmethod
     def loadImages():
@@ -2239,6 +2317,8 @@ ImageClasses = {
     283: SpriteImage_FuzzyBear,
     286: SpriteImage_NewerWoodCircle,
     290: SpriteImage_Boolossus,
+    291: SpriteImage_NewerParabeetle,
+    292: SpriteImage_NewerHeavyParabeetle,
     296: SpriteImage_NewerMegaBuzzy,
     302: SpriteImage_RockyBossWrench,
     308: SpriteImage_NewerHammerBroPlatform,
