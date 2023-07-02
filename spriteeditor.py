@@ -102,6 +102,117 @@ class DualBox(QtWidgets.QWidget):
         self.toggled.emit(self)
 
 
+class IntSpinBox(QtWidgets.QAbstractSpinBox):
+    """
+    A spin box that can handle integers of arbitrary size.
+    """
+    _value: int
+    _minimum: int
+    _maximum: int
+
+    valueChanged = QtCore.pyqtSignal('int')
+
+    def __init__(self, parent=None):
+        QtWidgets.QAbstractSpinBox.__init__(self, parent)
+        self.editingFinished.connect(self.interpretText)
+
+        self._value = None
+        self._minimum = 0
+        self._maximum = 1 << 32
+
+        self.setValue(0)
+
+    def interpretText(self):
+        """
+        Reimplements interpretText.
+        """
+        # The text has already been validated - it's either a number or the
+        # empty string
+        text = self.lineEdit().text()
+        if not text:
+            text = "0"
+
+        self.setValue(self.valueFromText(text))
+
+    def validate(self, text: str, pos: int):
+        """
+        Checks whether the currently entered text is valid.
+        """
+        if not text:
+            # The empty string is a prefix of a valid input
+            return (QtGui.QValidator.Intermediate, text, pos)
+
+        try:
+            val = int(text, 10)
+        except ValueError:
+            return (QtGui.QValidator.Invalid, text, pos)
+
+        # This implementation really only works well if all prefixes of numbers
+        # between the minimum and maximum are themselves numbers between the
+        # minimum and maximum...
+        if not self._minimum <= val <= self._maximum:
+            return (QtGui.QValidator.Invalid, text, pos)
+
+        return (QtGui.QValidator.Acceptable, text, pos)
+
+    def stepEnabled(self):
+        """
+        Returns a flag indicating in which directions the value can be stepped.
+        """
+        flag = QtWidgets.QAbstractSpinBox.StepNone
+
+        if self._value < self._maximum:
+            flag |= QtWidgets.QAbstractSpinBox.StepUpEnabled
+        if self._minimum < self._value:
+            flag |= QtWidgets.QAbstractSpinBox.StepDownEnabled
+
+        return flag
+
+    def value(self) -> int:
+        return self._value
+
+    def setMaximum(self, val: int):
+        self._maximum = val
+    def maximum(self) -> int:
+        return self._maximum
+
+    def setMinimum(self, val: int):
+        self._minimum = val
+    def minimum(self) -> int:
+        return self._minimum
+
+    def setRange(self, min_: int, max_: int):
+        self.setMinimum(min_)
+        self.setMaximum(max_)
+
+    def stepBy(self, steps: int):
+        """
+        Add 'steps' to the current value.
+        """
+        self.setValue(
+            common.clamp(self._value + steps, self._minimum, self._maximum)
+        )
+
+    def valueFromText(self, text: str) -> int:
+        return int(text)
+
+    def textFromValue(self, val: int) -> str:
+        return str(val)
+
+    def setValue(self, val: int):
+        """
+        Updates the value shown by the line edit and emits a signal when the
+        value represented by the text of the line edit has changed.
+        """
+        if self._value == val:
+            if val == 0:
+                self.lineEdit().setText("0")
+            return
+
+        self.lineEdit().setText(self.textFromValue(val))
+        self._value = val
+        self.valueChanged.emit(val)
+
 class SpriteEditorWidget(QtWidgets.QWidget):
     """
     Widget for editing sprite data
@@ -643,7 +754,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             super().__init__()
 
-            self.widget = QtWidgets.QSpinBox()
+            self.widget = IntSpinBox()
             self.widget.setRange(0, max_ - 1)
             self.widget.valueChanged.connect(self.HandleValueChanged)
 
