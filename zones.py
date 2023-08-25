@@ -327,7 +327,7 @@ class ZoneTab(QtWidgets.QWidget):
 
         comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed)
 
-        zone_theme_values = globals_.trans.stringList('ZonesDlg', 1)
+        zone_theme_values = globals_.ZoneThemeValues
         zone_terrain_theme_values = globals_.trans.stringList('ZonesDlg', 2)
 
         self.Zone_modeldark = QtWidgets.QComboBox()

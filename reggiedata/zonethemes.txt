@@ -1,0 +1,23 @@
+Overworld
+Underground
+Underwater
+Lava Underground
+Desert
+Beach
+Forest
+Snow Overworld
+Sky/Bonus*
+Mountains
+Tower
+Castle
+Ghost House
+River Cave
+Ghost House Exit
+Underwater Cave
+Desert Cave
+Icy Cave*
+Lava
+Final Battle
+World 8 Tower/Castle
+World 8 Airship*
+World 7 Tower Indoors

@@ -7,7 +7,7 @@ from xml.etree import ElementTree as etree
 from PyQt5 import QtWidgets, QtCore, QtGui
 
 from ui import GetIcon, createVertLine
-from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo
+from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo, LoadZoneThemes
 from dirty import setting, setSetting
 
 import globals_
@@ -203,6 +203,7 @@ class ReggieGameDefinition:
             'tilesetinfo': gdf(os.path.join('reggiedata', 'tilesetinfo.xml'), False),
             'tilesets': gdf(os.path.join('reggiedata', 'tilesets.xml'), False),
             'ts1_descriptions': gdf(os.path.join('reggiedata', 'ts1_descriptions.txt'), False),
+            'zonethemes': gdf(os.path.join('reggiedata', 'zonethemes.txt'), False),
         }
         self.folders = {
             'bga': gdf(None, False),
@@ -624,6 +625,7 @@ def LoadGameDef(name=None, dlg=None):
 
         LoadBgANames(True)
         LoadBgBNames(True)
+        LoadZoneThemes(True)
         LoadMusicInfo(True)  # reloads the music names
 
         if dlg: dlg.setValue(3)

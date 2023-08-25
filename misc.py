@@ -396,6 +396,16 @@ def LoadBgBNames(reload_=False):
         globals_.BgBNames.sort(key=lambda entry: int(entry[0], 16))
 
 
+def LoadZoneThemes(reload_=False):
+    """
+    Ensures that custom zone themes get loaded
+    """
+    if (globals_.ZoneThemeValues is not None) and not reload_: return
+
+    with open(globals_.gamedef.file('zonethemes'), 'r', encoding='utf-8') as f:
+        globals_.ZoneThemeValues = [x.strip() for x in f]
+
+
 class SpriteDefinition:
     """
     Stores and manages the data info for a specific sprite
