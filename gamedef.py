@@ -7,7 +7,7 @@ from xml.etree import ElementTree as etree
 from PyQt5 import QtWidgets, QtCore, QtGui
 
 from ui import GetIcon, createVertLine
-from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo
+from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo, LoadZoneThemes
 from dirty import setting, setSetting
 
 import globals_
@@ -81,6 +81,43 @@ class GameDefMenu(QtWidgets.QMenu):
     gameChanged = QtCore.pyqtSignal()
     update_flag = False
 
+
+    def add_reggie_patch(self):
+        def select_reggie_patch_folder():
+            src_path = QtWidgets.QFileDialog.getExistingDirectory(None, "Select Reggie Patch Folder ...")
+            return src_path
+
+        def create_symlink(src_path, dst_path):
+            try:
+                os.symlink(src_path, dst_path)
+                return True
+            except:
+                return False
+
+        def restart_reggie_info():
+            # Warn the user that they may need to restart
+            QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 0), globals_.trans.string('PrefsDlg', 30))
+
+        if sys.platform == 'win32':
+            import subprocess
+            child = subprocess.Popen(os.path.join(os.getcwd(), 'add_reggie_patch.exe'), stdout=subprocess.PIPE)
+            streamdata = child.communicate()[0]
+            rc = child.returncode
+            del subprocess
+            if rc == 0:
+                restart_reggie_info()
+
+        else:
+            src_path = select_reggie_patch_folder()
+            if src_path == "":
+                return
+
+            dst_path = os.path.join(os.getcwd(), 'reggiedata', 'patches', os.path.basename(src_path))
+            src_path = os.path.normpath(src_path)
+            if create_symlink(src_path, dst_path):
+                restart_reggie_info()
+
+
     def __init__(self):
         """
         Creates and initializes the menu
@@ -115,6 +152,20 @@ class GameDefMenu(QtWidgets.QMenu):
             act.toggled.connect(self.handleGameDefClicked)
 
             self.addAction(act)
+
+        # add button
+        self.addSeparator()
+
+        act = QtWidgets.QAction(self)
+        act.setText("Add a Reggie Patch Folder")
+        act.setToolTip("Creates a symlink in the /reggiedata/patches folder using add_reggie_patch")
+        act.setActionGroup(self.actGroup)
+        act.setCheckable(False)
+        act.setChecked(False)
+        act.triggered.connect(self.add_reggie_patch)
+
+        self.addAction(act)
+
 
     def handleGameDefClicked(self, checked):
         """
@@ -203,6 +254,7 @@ class ReggieGameDefinition:
             'tilesetinfo': gdf(os.path.join('reggiedata', 'tilesetinfo.xml'), False),
             'tilesets': gdf(os.path.join('reggiedata', 'tilesets.xml'), False),
             'ts1_descriptions': gdf(os.path.join('reggiedata', 'ts1_descriptions.txt'), False),
+            'zonethemes': gdf(os.path.join('reggiedata', 'zonethemes.txt'), False),
         }
         self.folders = {
             'bga': gdf(None, False),
@@ -624,6 +676,7 @@ def LoadGameDef(name=None, dlg=None):
 
         LoadBgANames(True)
         LoadBgBNames(True)
+        LoadZoneThemes(True)
         LoadMusicInfo(True)  # reloads the music names
 
         if dlg: dlg.setValue(3)

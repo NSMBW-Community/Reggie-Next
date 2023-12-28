@@ -77,6 +77,7 @@ TilesetInfo = None
 TilesetNames = None
 TilesetsAnimating = False
 ViewActions = None
+ZoneThemeValues = None
 
 app = None
 firstLoad = True
