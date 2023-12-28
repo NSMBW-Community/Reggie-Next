@@ -6236,6 +6236,7 @@ class SpriteImage_RopeLadder(SLib.SpriteImage_StaticMultiple):  # 330
         if size > 2: size = 0
 
         self.image = ImageCache['RopeLadder%d' % size]
+        self.offset = (-3, -2)
 
         super().dataChanged()
 
