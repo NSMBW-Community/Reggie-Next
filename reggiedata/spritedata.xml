@@ -5903,7 +5903,7 @@
   <sprite id="396" name="Move-When-On Platform" notes="A special platform that will move at any point when a specified number of 'passengers' (players + enemies) are standing on it.">
     <value nybble="12" title="Length" comment="This value must be at least 1 to have collision."/>
     <checkbox nybble="7.2" title="Does not Move"/>
-    <dualbox nybble="10.4" title1="Returns to Original Position" title2="Does not Return" requirednybble="7.2" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
+    <dualbox nybble="10.4" title1="Returns to Original Position" title2="Does not Return" comment="When 'Does not Return' is checked, the platform will not stop moving once activated." requirednybble="7.2" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
     <list nybble="11" title="Moves with Passenger Number" comment="This determines how many 'passengers' are needed for the platform's movement to activate. A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers. It will change colors from blue to red when this condition is satisfied.">
       <entry value="0">1 Passenger</entry>
       <entry value="1">2 Passengers</entry>
@@ -5969,7 +5969,7 @@
       <entry value="15">17 Blocks</entry>
     </list>
     <checkbox nybble="7.2" title="Does not Move" comment="When enabled, the movement function of this block will be disabled making the block into a decorative object."/>
-    <dualbox nybble="8.4" title1="Returns to Original Position" title2="Does not Return" comment="When enabled, the block's movement will be one-way only." requirednybble="7.2" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
+    <dualbox nybble="10.4" title1="Returns to Original Position" title2="Does not Return" comment="When 'Does not Return' is checked, the block will not stop moving once activated." requirednybble="7.2" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
     <list nybble="11" title="Moves with Passenger Number" comment="This determines how many 'passengers' are needed for the platform's movement to activate." comment2="A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers." requirednybble="7.2" requiredval="0">
       <entry value="0">1 Passenger</entry>
       <entry value="1">2 Passengers</entry>
