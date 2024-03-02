@@ -2190,7 +2190,7 @@ class SpriteImage_ShipKey(SLib.SpriteImage_Static):  # 77
             parent,
             1.5,
             ImageCache['ShipKey'],
-            (-1, -8),
+            (0, -8),
         )
 
     @staticmethod
@@ -4808,7 +4808,7 @@ class SpriteImage_Bulber(SLib.SpriteImage):  # 233
         self.aux[0].image = ImageCache['Bulber']
         self.aux[0].setPos(-8, 0)
 
-        self.dimensions = (2, -4, 50, 43)
+        self.dimensions = (2, -4, 59, 50)
 
     @staticmethod
     def loadImages():
@@ -5464,9 +5464,8 @@ class SpriteImage_MegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
     @staticmethod
     def loadImages():
         if 'MegaBuzzyR' in ImageCache: return
-        buzzy = SLib.GetImg('megabuzzy.png', True)
-        ImageCache['MegaBuzzyR'] = QtGui.QPixmap.fromImage(buzzy)
-        ImageCache['MegaBuzzyL'] = QtGui.QPixmap.fromImage(buzzy.mirrored(True, False))
+        ImageCache['MegaBuzzyR'] = SLib.GetImg('megabuzzy_right.png')
+        ImageCache['MegaBuzzyL'] = SLib.GetImg('megabuzzy_left.png')
         SLib.loadIfNotInImageCache('MegaBuzzyF', 'megabuzzy_front.png')
 
     def dataChanged(self):
@@ -5774,7 +5773,7 @@ class SpriteImage_LightCircle(SLib.SpriteImage):  # 305
 class SpriteImage_RotSpotlight(SLib.SpriteImage_StaticMultiple):  # 306
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.offset = (-24, -64)
+        self.offset = (-22, -64)
 
     @staticmethod
     def loadImages():
@@ -6441,7 +6440,7 @@ class SpriteImage_BigShell(SLib.SpriteImage_StaticMultiple):  # 341
         super().dataChanged()
 
 
-class SpriteImage_Muncher(SLib.SpriteImage_StaticMultiple):  # 342
+class SpriteImage_Muncher(SLib.SpriteImage_StaticMultiple):  # 342    
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Muncher', 'muncher.png')
@@ -6452,8 +6451,10 @@ class SpriteImage_Muncher(SLib.SpriteImage_StaticMultiple):  # 342
         frozen = self.parent.spritedata[5] & 1
         if frozen == 1:
             self.image = ImageCache['MuncherF']
+            self.offset = (0, 0)
         else:
             self.image = ImageCache['Muncher']
+            self.offset = (0, -1)
 
         super().dataChanged()
 
@@ -6512,8 +6513,8 @@ class SpriteImage_HangingChainPlatform(SLib.SpriteImage_StaticMultiple):  # 346
     def dataChanged(self):
         size = (self.parent.spritedata[4] & 3) % 3
         self.offset = (
-            (-26, -11),
-            (-42, -11),
+            (-26, -12),
+            (-42, -12),
             (-58, -12),
         )[size]
         self.image = ImageCache['HangingChainPlatform%d' % size]
@@ -8099,11 +8100,11 @@ class SpriteImage_BowserDoor(SLib.SpriteImage_Static):  # 452
             parent,
             1.5,
             ImageCache['BowserDoor'],
-            (-53, -134),
+            (-53, -130),
         )
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24))
         self.aux[0].setIsBehindSprite(False)
-        self.aux[0].setPos(91, 249)
+        self.aux[0].setPos(91, 243)
 
     @staticmethod
     def loadImages():
@@ -8123,7 +8124,7 @@ class SpriteImage_Seaweed(SLib.SpriteImage_StaticMultiple):  # 453
 
     def dataChanged(self):
         SeaweedSizes = [0, 1, 2, 2, 3, 3]
-        SeaweedXOffsets = [-26, -22, -31, -42]
+        SeaweedXOffsets = [-15, -25, -29, -38]
 
         style = (self.parent.spritedata[5] & 0xF) % 6
         size = SeaweedSizes[style]
@@ -8131,7 +8132,7 @@ class SpriteImage_Seaweed(SLib.SpriteImage_StaticMultiple):  # 453
         self.image = ImageCache['Seaweed%d' % size]
         self.offset = (
             SeaweedXOffsets[size],
-            17 - (self.image.height() / 1.5),
+            16 - (self.image.height() / 1.5),
         )
 
         super().dataChanged()
@@ -8177,7 +8178,7 @@ class SpriteImage_SpinningThinBars(SLib.SpriteImage_Static):  # 457
             parent,
             1.5,
             ImageCache['SpinningThinBars'],
-            (-114, -112),
+            (-115.4, -115.4),
         )
 
     @staticmethod
@@ -8597,10 +8598,6 @@ class SpriteImage_FinalBossRubble(SLib.SpriteImage_StaticMultiple):  # 481
 
     def dataChanged(self):
         size = self.parent.spritedata[5] & 1
-        self.offset = (
-            (-13, -7),
-            (-19, -13),
-        )[size]
 
         self.image = ImageCache['FinalBossRubble%d' % size]
 
