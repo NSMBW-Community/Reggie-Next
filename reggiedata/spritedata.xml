@@ -4375,7 +4375,7 @@
 
   <!-- Does the sprite only unthread to its starting placement (thus giving purpose to Offset Right) or will it unthread until it hits a solid surface? -->
   <sprite id="295" name="Airship Nut Platform" noyoshi="True" notes="A platform made up of 6 connected nuts that will spin and 'thread' itself left when jumped on, but also attempting to drop the player beneath it. It will stop advancing if it reaches a solid wall, and it will travel backwards if it has not been jumped on recently. It can despawn if the player leaves the screen with it.">
-    <dependency notes="While not required, it is suggested to use some sort of terrain alongside this sprite, usually the 'wire' terrain object (#15) from the Airship decorations in Pa_1 or some variant on it."/>
+    <dependency notes="While not required, it is suggested to use some sort of terrain alongside this sprite, usually the 'wire' terrain object (#15) from the Airship decorations in Pa1 or some variant on it."/>
     <value nybble="12.2-12.4" title="Offset Right" comment="This determines how far 'forward' the nut will be already spun. This affects the maximum return distance of the nut platform."/>
     <checkbox nybble="11.4" title="Offset Down .5 Blocks" advanced="True" advancedcomment="A holdover setting from development and not important."/>
   </sprite> <!-- #295: Airship Nut Platform -->
