@@ -2325,7 +2325,7 @@ class SpriteImage_BanzaiBillLauncher(SLib.SpriteImage_Static):  # 93
             parent,
             1.5,
             ImageCache['BanzaiLauncher'],
-            (-32, -68),
+            (-32, -66.7),
         )
 
     @staticmethod
