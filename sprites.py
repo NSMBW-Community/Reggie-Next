@@ -121,7 +121,7 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
             color = 'Bone'
 
         if self.width > 32:
-            painter.drawTiledPixmap(27, 0, int((self.width * 1.5) - 51), 24, ImageCache[color + 'PlatformM'])
+            painter.drawTiledPixmap(24, 0, int((self.width * 1.5) - 48), int(self.height * 1.5), ImageCache[color + 'PlatformM'])
 
         if self.width == 24:
             # replicate glitch effect foRotControlled by sprite 50
@@ -1609,6 +1609,7 @@ class SpriteImage_FallingPlatform(SpriteImage_WoodenPlatform):  # 50
             self.color = 1
         elif color == 3:
             self.color = 2
+            self.height = 20
         else:
             self.color = 0
 
@@ -3834,7 +3835,7 @@ class SpriteImage_RouletteBlock(SLib.SpriteImage_Static):  # 176
             parent,
             1.5,
             ImageCache['RouletteBlock'],
-            (-6, -8),
+            (-4, -8),
         )
 
     @staticmethod
