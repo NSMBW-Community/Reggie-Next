@@ -3924,7 +3924,7 @@ class SpriteImage_ScalePlatform(SLib.SpriteImage):  # 178
         platforms = [(0, ropeLeft), (ropeX + ropeWidth - int(platformWidth / 2) - 4, ropeRight)]
         for x, y in platforms:
             painter.drawPixmap(x, y, ImageCache['WoodenPlatformL'])
-            painter.drawTiledPixmap(x + 27, y, (platformWidth - 51), 24, ImageCache['WoodenPlatformM'])
+            painter.drawTiledPixmap(x + 24, y, (platformWidth - 48), 24, ImageCache['WoodenPlatformM'])
             painter.drawPixmap(x + platformWidth - 24, y, ImageCache['WoodenPlatformR'])
 
 
