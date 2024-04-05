@@ -3496,9 +3496,9 @@
   </sprite> <!-- #229: Sand Pillar -->
 
   <sprite id="230" name="Bramball" noyoshi="True" notes="A long-legged enemy with a ball for a body that will flip itself around as it traverses terrain with proper spacing. Rumor has it that if it is struck from below with a Pipe Cannon, a large amount of coins will appear.">
-    <dependency notes="For a Bramball to want to move, he must have solid terrain exactly 4 blocks from his legs."/>
+    <dependency notes="A Bramball must have solid terrain exactly 4 tile and no more than a 1 tile change in elevation to move."/>
     <dualbox nybble="11.4" title1="Slow Movement" title2="Fast Movement" comment="This determines how quickly the Bramball will traverse platforms."/>
-    <list nybble="12.3-12.4" title="Initial Movement" comment="This determines which direction the Bramball will attempt to move first.">
+    <list nybble="12.3-12.4" title="Initial Direction" comment="This determines which direction the Bramball will attempt to move first.">
       <entry value="0">Towards Player</entry>
       <entry value="1">Moves Right</entry>
       <entry value="2">Moves Left</entry>
