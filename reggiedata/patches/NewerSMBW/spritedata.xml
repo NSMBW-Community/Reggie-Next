@@ -2344,11 +2344,8 @@
     </list>
   </sprite> <!-- #357: Yoshi Fruit -->
 
-  <!-- Test is 90 continues to function (at all? / correctly?) if Falling Objects is set to something other than Snow. -->
-  <!-- Test if 374 is required for 90 to generate pushback (90 Only). Test if 90 is required for 374 to generate sandstorm graphics (374 Only). -->
-  <!-- Clean up 90 after finishing research on these questions -->
   <sprite id="374" name="Effect - Falling Objects and Wind" notes="This effect controller will either create a falling particle effect, or it will create a Sandstorm.">
-    <dependency notes="If this sprite is placed more than once in the same Zone, the game will crash. If Sandstorm is selected, you must include [90] Wind Physics and Sound.">
+    <dependency notes="Placing this sprite more than once in the same zone will overlay the effect. If Sandstorm is selected, you must include [90] Wind Physics and Sound for the graphics to appear.">
       <suggested sprite="90"/>
     </dependency>
     <dualbox nybble="12.4" title1="Falling Objects" title2="Sandstorm" comment="This determines the functionality of the sprite."/>

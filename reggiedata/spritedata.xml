@@ -1252,7 +1252,7 @@
   </sprite> <!-- #89: Incomplete Sprite - 'En_Remocon_Torimochi' -->
 
   <sprite id="90" name="Effect - Wind Physics and Sound" notes="This will generate occasional windy pushbacks and wind sound effects. It is best used in conjunction with the suggested sprites, but they are not required.">
-    <dependency notes="In order to generate sandstorm graphics, [374] Effect - Falling Objects and Wind is required using the Snow setting. To add coins to this effect, [284] Physics Coin Controller must be linked.">
+    <dependency notes="In order to generate sandstorm graphics, [374] Effect - Falling Objects and Wind is required using the Sandstorm setting. To add coins to this effect, [284] Physics Coin Controller must be linked.">
       <suggested sprite="374"/> <!-- Sandstorm Effects -->
       <suggested sprite="284"/> <!-- Add coins -->
     </dependency>
@@ -1264,7 +1264,7 @@
     </list>
     <dualbox nybble="7.4" title1="Blows Right" title2="Blows Left" comment="This determines which direction the wind will blow."/>
     <value nybble="5" title="Time Active" comment="This sets the amount of time that the wind is on."/>
-    <value nybble="6" title="Time Inactive" comment="This sets the amount of time that the wind is off."/>
+    <value nybble="6" title="Time Inactive" comment="This sets the amount of time that the wind is off. Setting this to 0 will enable the wind indefinitely."/>
     <value nybble="11" title="Physics ID" comment="This will pair the Wind Physics with Physics Coin Controller." idtype="Physics"/>
   </sprite> <!-- #90: Effect - Wind Physics and Sound -->
 
@@ -5638,12 +5638,9 @@
     </dependency>
   </sprite> <!-- #373: Flashlight Raft Water -->
 
-  <!-- Test if 90 continues to function (at all? / correctly?) if Falling Objects is set to something other than Snow. -->
-  <!-- Test if 374 is required for 90 to generate pushback (90 Only). Test if 90 is required for 374 to generate sandstorm graphics (374 Only). -->
-  <!-- Clean up 90 after finishing research on these questions -->
   <sprite id="374" name="Effect - Snow and Wind" notes="This effect controller will either create falling snow, or it will create a Sandstorm.">
-    <dependency notes="If this sprite is placed more than once in the same Zone, the game will crash. If Sandstorm is selected, you must include [90] Wind Physics and Sound.">
-      <suggested sprite="90"/>
+    <dependency notes="Placing this sprite more than once in the same zone will overlay the effect. If Sandstorm is selected, you must include [90] Wind Physics and Sound for the graphics to appear.">
+      <suggested sprite="90"/> <!-- Wind Physics and Sound -->
     </dependency>
     <dualbox nybble="12.4" title1="Snow" title2="Sandstorm" comment="This determines the functionality of the sprite."/>
   </sprite> <!-- #374: Effect - Falling Objects and Wind -->
