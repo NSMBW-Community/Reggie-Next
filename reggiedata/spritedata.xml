@@ -153,7 +153,7 @@
     <dualbox nybble="7.4" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requirednybble="7.3" requiredval="0"/>
     <dualbox nybble="7.4" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used. The default texture model is the Gold Platform." advanced="True" requirednybble="7.3"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
-    <dualbox nybble="8.4" title1="Starts moving Right" title2="Starts moving Left" comment="This determines which direction the platform will initially start moving in."/>
+    <dualbox nybble="8.4" title1="Starts Moving Right" title2="Starts Moving Left" comment="This determines which direction the platform will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the platform will move."/>
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the platform will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
@@ -194,7 +194,7 @@
     </list>
     <value nybble="12.2-12.4" title="Width" comment="This determines the width of the block. Width should not be used unless [Height] is set to 1 Tile." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requirednybble="9.3-9.4" requiredval="0"/>
     <value nybble="12.2-12.4" title="Width (Buggy)" comment="This determines the width of the block." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requirednybble="9.3-9.4"/>
-    <dualbox nybble="8.4" title1="Starts moving Up" title2="Starts moving Down" comment="This determines which direction the block will initially start moving in."/>
+    <dualbox nybble="8.4" title1="Starts Moving Up" title2="Starts Moving Down" comment="This determines which direction the block will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the block will move."/>
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the block will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated."/>
@@ -210,7 +210,7 @@
     </list>
     <value nybble="12.2-12.4" title="Width" comment="This determines the width of the block. Width should not be used unless [Height] is set to 1 Tile." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requirednybble="9.3-9.4" requiredval="0"/>
     <value nybble="12.2-12.4" title="Width (Buggy)" comment="This determines the width of the block." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requirednybble="9.3-9.4"/>
-    <dualbox nybble="8.4" title1="Starts moving Right" title2="Starts moving Left" comment="This determines which direction the block will initially start moving in."/>
+    <dualbox nybble="8.4" title1="Starts Moving Right" title2="Starts Moving Left" comment="This determines which direction the block will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the block will move."/>
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the block will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated."/>
@@ -282,7 +282,7 @@
     <dualbox nybble="7.4" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requirednybble="7.3" requiredval="0"/>
     <dualbox nybble="7.4" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used." requirednybble="7.3"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
-    <dualbox nybble="8.4" title1="Stars moving Up" title2="Starts moving Down" comment="This determines which direction the platform will initially start moving in."/>
+    <dualbox nybble="8.4" title1="Starts Moving Up" title2="Starts Moving Down" comment="This determines which direction the platform will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the platform will move."/>
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the platform will move." advancedcomment="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
