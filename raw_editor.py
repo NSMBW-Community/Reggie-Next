@@ -206,6 +206,7 @@ class RawEditor(QWidget):
 
         layout = QHBoxLayout()
         layout.addWidget(self._data_widget)
+        self.setLayout(layout)
 
 
     @property
