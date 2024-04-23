@@ -242,6 +242,7 @@ class Area:
 
         self.unkVal1 = 0
         self.unkVal2 = 0
+        self.spriteSettings = []
 
         self.entrances = []
         self.sprites = []
@@ -314,6 +315,7 @@ class Area:
         del self.defEvents
         del self.unkVal1
         del self.unkVal2
+        del self.spriteSettings
         del self.entrances
         del self.sprites
         del self.bgA
@@ -517,12 +519,30 @@ class Area:
         self.defEvents = defEventsA | defEventsB << 32
 
         """
-        Loads block 4, the unknown maybe-more-general-options block
+        Loads block 4, the unknown maybe-more-general-options block + extended settings
         """
-        optdata2 = self.blocks[3]
+        optdata2 = self.blocks[3][:8]
         optdata2struct = struct.Struct('>xxHHxx')
         data = optdata2struct.unpack(optdata2)
         self.unkVal1, self.unkVal2 = data
+
+        def LoadOneSetting(data):
+            length = struct.unpack('>I', data[:4])[0]
+            settingArray = []
+            for i in range(length):
+                settingArray.append(struct.unpack('>I', data[4+4*i:8+4*i])[0])
+            return [length, settingArray]
+
+        self.spriteSettings = []
+        if len(self.blocks[3]) <= 8:
+            amountOfSettings = 0
+        else:
+            amountOfSettings = struct.unpack('>I', self.blocks[3][8:12])[0]
+
+        for i in range(amountOfSettings):
+            offset = struct.unpack('>I', self.blocks[3][12+4*i:16+4*i])[0]
+            setting = LoadOneSetting(self.blocks[3][offset:])
+            self.spriteSettings.append(setting)
 
     def LoadEntrances(self):
         """
@@ -792,9 +812,37 @@ class Area:
         )
 
         """
-        Saves block 4, the unknown maybe-more-general-options block
+        Saves block 4, the unknown maybe-more-general-options block + extended settings
         """
         self.blocks[3] = struct.pack('>xxHHxx', self.unkVal1, self.unkVal2)
+
+        def SaveOneSetting(length, settingArray):
+            data = struct.pack('>I', length)
+            for setting in settingArray:
+                data += struct.pack('>I', setting)
+            return data
+
+        data = struct.pack('>I', len(self.spriteSettings))
+
+        settings = []
+        offsets = []
+
+        currentOffset = 12 + 4*len(self.spriteSettings)
+        for setting in self.spriteSettings:
+            oneSetting = SaveOneSetting(setting[0], setting[1])
+            settings.append(oneSetting)
+            offsets.append(currentOffset)
+            currentOffset += len(oneSetting)
+
+        for i in range(len(self.spriteSettings)):
+            data += struct.pack('>I', offsets[i])
+
+        for i in range(len(self.spriteSettings)):
+            data += settings[i]
+
+        self.blocks[3] += data
+
+
 
     def SaveLayer(self, idx):
         """

@@ -699,6 +699,7 @@ def LoadSpriteData():
             noyoshi = sprite.get('noyoshi', 'False') == "True"
             asm = sprite.get('asmhacks', 'False') == "True"
             size = sprite.get('sizehacks', 'False') == "True"
+            extendedSettings = sprite.get('extended', 'False') == "True"
 
             sdef = SpriteDefinition()
             sdef.id = spriteid
@@ -710,6 +711,7 @@ def LoadSpriteData():
             sdef.noyoshi = noyoshi
             sdef.asm = asm
             sdef.size = size
+            sdef.extendedSettings = extendedSettings
             sdef.dependencies = []
             sdef.dependencynotes = None
 
