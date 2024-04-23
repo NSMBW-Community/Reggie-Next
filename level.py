@@ -822,25 +822,26 @@ class Area:
                 data += struct.pack('>I', setting)
             return data
 
-        data = struct.pack('>I', len(self.spriteSettings))
+        if len(self.spriteSettings) > 0:
+            data = struct.pack('>I', len(self.spriteSettings))
 
-        settings = []
-        offsets = []
+            settings = []
+            offsets = []
 
-        currentOffset = 12 + 4*len(self.spriteSettings)
-        for setting in self.spriteSettings:
-            oneSetting = SaveOneSetting(setting[0], setting[1])
-            settings.append(oneSetting)
-            offsets.append(currentOffset)
-            currentOffset += len(oneSetting)
+            currentOffset = 12 + 4*len(self.spriteSettings)
+            for setting in self.spriteSettings:
+                oneSetting = SaveOneSetting(setting[0], setting[1])
+                settings.append(oneSetting)
+                offsets.append(currentOffset)
+                currentOffset += len(oneSetting)
 
-        for i in range(len(self.spriteSettings)):
-            data += struct.pack('>I', offsets[i])
+            for i in range(len(self.spriteSettings)):
+                data += struct.pack('>I', offsets[i])
 
-        for i in range(len(self.spriteSettings)):
-            data += settings[i]
+            for i in range(len(self.spriteSettings)):
+                data += settings[i]
 
-        self.blocks[3] += data
+            self.blocks[3] += data
 
 
 
