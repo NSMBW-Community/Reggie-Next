@@ -16,6 +16,8 @@ def build_raw_edit(size: int) -> QLineEdit:
     edit.setMinimumWidth(min_valid_width + 2 * 11)  # add padding
     edit.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed))
 
+    return edit
+
 
 def is_raw_data_valid(text: str, size: int) -> bool:
     '''
