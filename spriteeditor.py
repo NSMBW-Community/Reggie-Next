@@ -5,6 +5,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 
 import globals_
 from levelitems import SpriteItem, ListWidgetItem_SortsByOther
+from raw_editor import RawEditor, RawData
 from ui import GetIcon
 from dirty import SetDirty
 import common
@@ -213,11 +214,12 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         self._value = val
         self.valueChanged.emit(val)
 
+
 class SpriteEditorWidget(QtWidgets.QWidget):
     """
     Widget for editing sprite data
     """
-    DataUpdate = QtCore.pyqtSignal('PyQt_PyObject')
+    DataUpdate = QtCore.pyqtSignal(RawData)
 
     def __init__(self, defaultmode=False):
         """
@@ -231,21 +233,22 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         font.setPointSize(8)
         self.editbox = QtWidgets.QLabel(globals_.trans.string('SpriteDataEditor', 3))
         self.editbox.setFont(font)
-        edit = QtWidgets.QLineEdit()
-        edit.textEdited.connect(self.HandleRawDataEdited)
 
-        min_valid_width = QtGui.QFontMetrics(QtGui.QFont()).horizontalAdvance("dddd dddd dddd dddd")
-        edit.setMinimumWidth(min_valid_width + 2 * 11)  # add padding
-        edit.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed))
-        self.raweditor = edit
+        edit_frame = QtWidgets.QStackedWidget()
+        edit_frame.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed))
+        self._edit_frame = edit_frame
+
+        self.raweditor = RawEditor()
 
         self.resetButton = QtWidgets.QPushButton(globals_.trans.string('SpriteDataEditor', 17))
         self.resetButton.clicked.connect(self.HandleResetData)
 
+        self.raweditor.data_edited.connect(self.HandleRawDataEdited)
+
         editboxlayout = QtWidgets.QHBoxLayout()
         editboxlayout.addWidget(self.resetButton)
         editboxlayout.addWidget(self.editbox)
-        editboxlayout.addWidget(edit, QtCore.Qt.AlignRight)
+        editboxlayout.addWidget(self.raweditor, QtCore.Qt.AlignRight)
 
         # 'Editing Sprite #' label
         self.spriteLabel = QtWidgets.QLabel('-')
@@ -366,7 +369,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.setLayout(mainLayout)
 
         self.spritetype = -1
-        self.data = bytes(8)
+        self.data = RawData(bytes(16), format = RawData.Format.Old)
         self.fields = []
         self.UpdateFlag = False
         self.DefaultMode = defaultmode
@@ -382,6 +385,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         updateData = QtCore.pyqtSignal('PyQt_PyObject')
 
         bit = None  # list: ranges
+        block: int = None  # int: block number
         required = None  # tuple (range, value)
         layout = None  # QLayout
         row = None  # int: row in the parent's layout
@@ -391,7 +395,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         parent = None  # SpriteEditorWidget: the widget this belongs to
         idtype = None  # str: the idtype of this property
 
-        def retrieve(self, data, bits=None):
+        def retrieve(self, data: RawData, bits=None):
             """
             Extracts the value from the specified bit(s). Bit numbering is ltr BE
             and starts at 1.
@@ -581,7 +585,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             value = ((self.retrieve(data) & self.mask) == self.mask)
             self.widget.setChecked(value)
 
-        def assign(self, data):
+        def assign(self, data: RawData) -> RawData:
             """
             Assigns the selected value to the data
             """
@@ -1519,12 +1523,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             return self.insertvalue(data, value)
 
 
-    def setSprite(self, type_, reset=False, initial_data=None):
+    def setSprite(self, type_, reset: bool = False, initial_data: RawData = None) -> None:
         """
         Change the sprite type used by the data editor
         """
         if self.spritetype == type_ and not reset:
             if initial_data is not None:
+                assert isinstance(initial_data, RawData)
                 self.data = initial_data
                 self.update(True)
 
@@ -1831,12 +1836,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         data = self.data
 
-        self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
-            data[0], data[1], data[2], data[3],
-            data[4], data[5], data[6], data[7],
-        ))
-
-        self.raweditor.setStyleSheet('')
+        self.raweditor.data = data
 
         self.UpdateFlag = True
         self.AutoFlag = True
@@ -1939,24 +1939,25 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         data = field.assign(self.data)
 
-        self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
-            data[0], data[1], data[2], data[3],
-            data[4], data[5], data[6], data[7],
-        ))
-        self.raweditor.setStyleSheet('')
+        self.raweditor.data = data
 
         self.UpdateData(data, exclude_update_field=field, do_update=False, was_automatic=False)
 
-    def HandleResetData(self):
+
+    def HandleResetData(self) -> None:
         """
         Handles the reset data button being clicked
         """
-        self.UpdateData(bytes(8), was_automatic=False)
+        data = self.raweditor.data
+        self.raweditor.data = RawData(
+            bytes(data.format.value),
+            *(bytes(8) for _ in range(len(data.blocks)))
+        )
 
-        self.raweditor.setText("0000 0000 0000 0000")
-        self.raweditor.setStyleSheet('')
+        self.UpdateData(self.raweditor.data, was_automatic = False)
 
-    def UpdateData(self, new_data, exclude_update_field = None, do_update = True, was_automatic = True):
+
+    def UpdateData(self, new_data: RawData, exclude_update_field: list = None, do_update: bool = True, was_automatic: bool = True) -> None:
         """
         Updates all fields (optionally excluding one field) with the new sprite
         data. If do_update is not set, the UpdateFlag is not changed. If was_automatic
@@ -1982,29 +1983,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.DataUpdate.emit(new_data)
 
-    def HandleRawDataEdited(self, text):
+    def HandleRawDataEdited(self, data: RawData) -> None:
         """
         Triggered when the raw data textbox is edited
         """
-
-        raw = text.replace(' ', '')
-        valid = False
-
-        if len(raw) == 16:
-            try:
-                data = bytes.fromhex(text)
-                valid = True
-
-            except ValueError:
-                pass
-
-        if not valid:
-            self.raweditor.setStyleSheet('QLineEdit { background-color: #ffd2d2; }')
-            return
-
-        # if it's valid, let it go
-        self.raweditor.setStyleSheet('')
-        self.UpdateData(data, was_automatic=False)
+        self.UpdateData(data, was_automatic = False)
 
     def HandleSpritePlaced(self, id_, button_):
         def placeSprite():
