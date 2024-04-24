@@ -265,8 +265,8 @@ class SpriteImage_Static(SpriteImage):
         self.spritebox.shown = False
 
         if self.image is not None:
-            self.width = (self.image.width() / self.scale) + 1
-            self.height = (self.image.height() / self.scale) + 2
+            self.width = (self.image.width() / self.scale)
+            self.height = (self.image.height() / self.scale)
         if offset is not None:
             self.xOffset = offset[0]
             self.yOffset = offset[1]
@@ -276,8 +276,8 @@ class SpriteImage_Static(SpriteImage):
 
         if self.image is not None:
             self.size = (
-                (self.image.width() / self.scale) + 1,
-                (self.image.height() / self.scale) + 2,
+                (self.image.width() / self.scale),
+                (self.image.height() / self.scale),
             )
         else:
             del self.size
@@ -289,7 +289,6 @@ class SpriteImage_Static(SpriteImage):
         painter.save()
         painter.setOpacity(self.alpha)
         painter.scale(1.5 / self.scale, 1.5 / self.scale)  # rescale images not based on a 24x24 block size
-        painter.setRenderHint(painter.SmoothPixmapTransform)
         painter.drawPixmap(0, 0, self.image)
         painter.restore()
 
