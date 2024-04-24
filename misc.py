@@ -477,6 +477,15 @@ class SpriteDefinition:
             if 'advancedcomment' in attribs:
                 advancedcomment = globals_.trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['advancedcomment'])
 
+
+            if not field.tag == 'dependency':
+                if "extended" in elem.attrib and elem.attrib["extended"] == "True":
+                    block = int(attribs.get("block"))
+                    if block <= 0:
+                        raise ValueError("Extended spritedata need block values >= 1")
+                else:
+                    block = 0
+
             if 'requirednybble' in attribs:
                 bit_ranges, _ = self.parseBits(attribs.get("requirednybble"))
                 required = []
@@ -513,7 +522,7 @@ class SpriteDefinition:
                 bit, _ = self.parseBits(attribs.get("nybble"))
                 mask = int(attribs.get('mask', 1))
 
-                fields.append((0, attribs['title'], bit, mask, comment, required, advanced, comment2, advancedcomment))
+                fields.append((0, attribs['title'], bit, mask, comment, required, advanced, comment2, advancedcomment, block))
 
             elif field.tag == 'list':
                 bit, _ = self.parseBits(attribs.get("nybble"))
@@ -525,28 +534,28 @@ class SpriteDefinition:
                     entries.append((int(e.attrib['value']), e.text))
 
                 model = SpriteDefinition.ListPropertyModel(entries)
-                fields.append((1, title, bit, model, comment, required, advanced, comment2, advancedcomment, idtype))
+                fields.append((1, title, bit, model, comment, required, advanced, comment2, advancedcomment, idtype, block))
 
             elif field.tag == 'value':
                 bit, max_ = self.parseBits(attribs.get("nybble"))
 
-                fields.append((2, attribs['title'], bit, max_, comment, required, advanced, comment2, advancedcomment, idtype))
+                fields.append((2, attribs['title'], bit, max_, comment, required, advanced, comment2, advancedcomment, idtype, block))
 
             elif field.tag == 'bitfield':
                 startbit = int(attribs['startbit'])
                 bitnum = int(attribs['bitnum'])
 
-                fields.append((3, attribs['title'], startbit, bitnum, comment, required, advanced, comment2, advancedcomment))
+                fields.append((3, attribs['title'], startbit, bitnum, comment, required, advanced, comment2, advancedcomment, block))
 
             elif field.tag == 'multibox':
                 bit, _ = self.parseBits(attribs.get("nybble"))
 
-                fields.append((4, attribs['title'], bit, comment, required, advanced, comment2, advancedcomment))
+                fields.append((4, attribs['title'], bit, comment, required, advanced, comment2, advancedcomment, block))
 
             elif field.tag == 'dualbox':
                 bit, _ = self.parseBits(attribs.get("nybble"))
 
-                fields.append((5, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
+                fields.append((5, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment, block))
 
             elif field.tag == 'dependency':
                 type_dict = {'required': 0, 'suggested': 1}

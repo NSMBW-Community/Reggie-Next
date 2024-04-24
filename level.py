@@ -1118,7 +1118,7 @@ class Area:
                     # Only values and lists can be idtypes
                     continue
 
-                idtype = field[-1]
+                idtype = field[-2]
                 if idtype is None:
                     # Only look at settings with idtypes
                     continue
