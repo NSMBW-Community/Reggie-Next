@@ -10,6 +10,8 @@ from levelitems import EntranceItem, SpriteItem, ZoneItem, LocationItem, ObjectI
 from misc2 import DecodeOldReggieInfo
 from spriteeditor import SpriteEditorWidget
 
+from raw_data import RawData
+
 class AbstractLevel:
     """
     Class for an abstract level from any game. Defines the API.
@@ -575,7 +577,18 @@ class Area:
         # Ignore the last 4 bytes because they are always 0xFFFFFFFF
         for offset in range(0, len(spritedata) - 4, 16):
             data = unpack(spritedata, offset)
-            append(obj(*data))
+            type_, x, y, sd = data
+            append(
+                obj(
+                    type_,
+                    x,
+                    y,
+                    RawData( # TODO: detect if the sprite is extended or not and use the appropriate format
+                        sd,
+                        format = RawData.Format.Vanilla
+                    )
+                )
+            )
 
         self.sprites = sprites
         self.force_loaded_sprites = self.loaded_sprites - set(sprite.type for sprite in sprites)

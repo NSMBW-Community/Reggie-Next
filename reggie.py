@@ -142,6 +142,8 @@ def _excepthook(*exc_info):
     errorbox.setText(notice + msg)
     errorbox.exec_()
 
+    traceback.print_exception(*exc_info) # TODO: remove this line before pull request
+
     globals_.DirtyOverride = 0
 
 

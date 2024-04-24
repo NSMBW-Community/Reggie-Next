@@ -369,7 +369,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.setLayout(mainLayout)
 
         self.spritetype = -1
-        self.data = RawData(bytes(16), format = RawData.Format.Old)
+        self.data = RawData(bytes(16), format = RawData.Format.Vanilla)
         self.fields = []
         self.UpdateFlag = False
         self.DefaultMode = defaultmode
@@ -395,13 +395,18 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         parent = None  # SpriteEditorWidget: the widget this belongs to
         idtype = None  # str: the idtype of this property
 
-        def retrieve(self, data: RawData, bits=None):
+        def retrieve(self, data: RawData, bits=None, block=None):
             """
             Extracts the value from the specified bit(s). Bit numbering is ltr BE
             and starts at 1.
             """
             if bits is None:
                 bits = self.bit
+
+            if block is None:
+                block = self.block
+
+            byte_data = data.blocks[block] if data.format == RawData.Format.Extended else data.events
 
             value = 0
 
@@ -410,22 +415,27 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
                 if bit_len == 7 and ran[0] & 7 == 1:
                     # optimise if it's just one byte
-                    value = (value << bit_len) | data[ran[0] >> 3]
+                    value = (value << bit_len) | byte_data[ran[0] >> 3]
                     continue
 
                 # we have to calculate it
                 for n in range(ran[0] - 1, ran[1] - 1):
                     value <<= 1
-                    value |= (data[n >> 3] >> (7 - (n & 7))) & 1
+                    value |= (byte_data[n >> 3] >> (7 - (n & 7))) & 1
 
             return value
 
-        def insertvalue(self, data, value, bits=None):
+        def insertvalue(self, data: RawData, value, bits=None, block=None):
             """
             Assigns a value to the specified bit(s)
             """
             if bits is None:
                 bits = self.bit
+
+            if block is None:
+                block = self.block
+
+            # byte_data = list(data.blocks[block]) if data.format == RawData.Format.Extended else list(data.events)
 
             sdata = list(data)
 

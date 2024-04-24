@@ -43,7 +43,7 @@ class OldSpriteRawEditor(QWidget):
     def __init__(self) -> None:
         super().__init__()
 
-        self._data = build_raw_edit(RawData.Format.Old.value)
+        self._data = build_raw_edit(RawData.Format.Vanilla.value)
         self._data.textEdited.connect(self._data_edited)
 
         layout = QHBoxLayout()
@@ -90,7 +90,7 @@ class NewSpriteRawEditor(QWidget):
         super().__init__()
         self._size = 0
 
-        self._events = build_raw_edit(RawData.Format.New.value)
+        self._events = build_raw_edit(RawData.Format.Extended.value)
         self._events.textEdited.connect(self._events_edited)
 
         self._block_combo = QComboBox()
@@ -221,10 +221,12 @@ class RawEditor(QWidget):
         '''
         Sets the data
         '''
-        self.layout().removeWidget(self._data_widget)
-        self._data_widget.deleteLater()
+        try:
+            self.layout().removeWidget(self._data_widget)
+            self._data_widget.deleteLater()
+        except: pass
 
-        if data.format == RawData.Format.Old: self._data_widget = OldSpriteRawEditor()
+        if data.format == RawData.Format.Vanilla: self._data_widget = OldSpriteRawEditor()
         else: self._data_widget = NewSpriteRawEditor()
 
         self._data_widget.data = data
