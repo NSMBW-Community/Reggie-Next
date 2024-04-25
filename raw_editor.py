@@ -56,14 +56,14 @@ class OldSpriteRawEditor(QWidget):
         '''
         Returns the data
         '''
-        return RawData(bytes.fromhex(self._data.text()), b'')
+        return RawData(bytes.fromhex(self._data.text()), format = RawData.Format.Vanilla)
 
     @data.setter
     def data(self, data: RawData) -> None:
         '''
         Sets the data
         '''
-        self._data.setText(data.events.hex())
+        self._data.setText(data.blocks[0].hex())
 
 
     def _data_edited(self, text: str) -> None:
@@ -71,7 +71,7 @@ class OldSpriteRawEditor(QWidget):
         Emits the data_edited signal
         '''
         if is_raw_data_valid(text, 16):
-            self.data_edited.emit(text)
+            self.data_edited.emit(self.data)
             self._data.setStyleSheet('')
 
         else:
@@ -136,7 +136,8 @@ class NewSpriteRawEditor(QWidget):
         '''
         return RawData(
             bytes.fromhex(self._events.text()),
-            *(bytes.fromhex(self._stack.widget(i).text()) for i in range(self._size))
+            *(bytes.fromhex(self._stack.widget(i).text()) for i in range(self._size)),
+            format = RawData.Format.Extended
         )
 
 
@@ -145,10 +146,10 @@ class NewSpriteRawEditor(QWidget):
         '''
         Sets the data
         '''
-        self._set_size(len(data.blocks))
+        self._set_size(len(data.blocks) - 1)
 
         self._events.setText(data.events.hex())
-        for i, block in enumerate(data.blocks):
+        for i, block in enumerate(data.blocks[1:]):
             self._stack.widget(i).setText(block.hex())
 
 
@@ -157,13 +158,11 @@ class NewSpriteRawEditor(QWidget):
         Emits the data_edited signal
         '''
         if is_raw_data_valid(text, 8):
-            self.data_edited.emit(-1, text)
+            self.data_edited.emit(-1, self.data)
             self._events.setStyleSheet('')
 
         else:
             self._events.setStyleSheet('background-color: #ffd2d2;')
-
-        self.data_edited.emit(-1, text)
 
 
     def _block_changed(self, index: int) -> None:

@@ -385,7 +385,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         updateData = QtCore.pyqtSignal('PyQt_PyObject')
 
         bit = None  # list: ranges
-        block: int = None  # int: block number
+        block: int = 0  # int: block number
         required = None  # tuple (range, value)
         layout = None  # QLayout
         row = None  # int: row in the parent's layout
@@ -395,7 +395,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         parent = None  # SpriteEditorWidget: the widget this belongs to
         idtype = None  # str: the idtype of this property
 
-        def retrieve(self, data: RawData, bits=None, block=None):
+        def retrieve(self, data: RawData, bits: list[int] = None, block: int = None) -> int:
             """
             Extracts the value from the specified bit(s). Bit numbering is ltr BE
             and starts at 1.
@@ -406,7 +406,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if block is None:
                 block = self.block
 
-            byte_data = data.blocks[block] if data.format == RawData.Format.Extended else data.events
+            byte_data = data.blocks[block]
 
             value = 0
 
@@ -425,7 +425,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             return value
 
-        def insertvalue(self, data: RawData, value, bits=None, block=None):
+        def insertvalue(self, data: RawData, value: int, bits: list[int] = None, block: int = None) -> RawData:
             """
             Assigns a value to the specified bit(s)
             """
@@ -435,9 +435,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if block is None:
                 block = self.block
 
-            # byte_data = list(data.blocks[block]) if data.format == RawData.Format.Extended else list(data.events)
+            byte_data = list(data.blocks[block])
 
-            sdata = list(data)
+            sdata = list(byte_data)
 
             for ran in reversed(bits):
                 # find the size of the range
@@ -462,9 +462,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
                     v >>= 1
 
-            return bytes(sdata)
+            new_data = data.copy()
+            new_data.blocks[block] = bytes(sdata)
 
-        def checkReq(self, data, first=False):
+            return new_data
+
+        def checkReq(self, data: RawData, first=False) -> None:
             """
             Checks the requirements
             """
@@ -526,7 +529,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a checkbox
         """
 
-        def __init__(self, title, bit, mask, comment, required, _, comment2, commentAdv, layout, row, parent):
+        def __init__(self, title, bit, mask, comment, required, _, comment2, commentAdv, layout, row, parent, block: int = 0):
             """
             Creates the widget
             """
@@ -539,6 +542,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.widget.clicked.connect(self.HandleClick)
 
             self.bit = bit
+            self.block = block
             self.required = required
             self.comment = comment
             self.comment2 = comment2
@@ -619,7 +623,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a combobox
         """
 
-        def __init__(self, title, bit, model, comment, required, _, comment2, commentAdv, idtype, layout, row, parent):
+        def __init__(self, title, bit, model, comment, required, _, comment2, commentAdv, idtype, layout, row, parent, block: int = 0):
             """
             Creates the widget
             """
@@ -627,6 +631,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.parent = parent
             self.bit = bit
+            self.block = block
             self.required = required
             self.row = row
             self.layout = layout
@@ -762,7 +767,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a spinbox
         """
 
-        def __init__(self, title, bit, max_, comment, required, _, comment2, commentAdv, idtype, layout, row, parent):
+        def __init__(self, title, bit, max_, comment, required, _, comment2, commentAdv, idtype, layout, row, parent, block: int = 0):
             """
             Creates the widget
             """
@@ -773,6 +778,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.widget.valueChanged.connect(self.HandleValueChanged)
 
             self.bit = bit
+            self.block = block
             self.required = required
             self.parent = parent
             self.comment = comment
@@ -887,13 +893,14 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a bitfield
         """
 
-        def __init__(self, title, startbit, bitnum, comment, required, _, comment2, commentAdv, layout, row, parent):
+        def __init__(self, title, startbit, bitnum, comment, required, _, comment2, commentAdv, layout, row, parent, block: int = 0):
             """
             Creates the widget
             """
             super().__init__()
 
             self.bit = [(startbit, startbit + bitnum)]
+            self.block = block
             self.required = required
             self.parent = parent
             self.comment = comment
@@ -995,7 +1002,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a multibox
         """
 
-        def __init__(self, title, bit, comment, required, advanced, comment2, commentAdv, layout, row, parent):
+        def __init__(self, title, bit, comment, required, advanced, comment2, commentAdv, layout, row, parent, block: int = 0):
             """
             Creates the widget
             """
@@ -1005,6 +1012,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             startbit = bit[0]
 
             self.bit = bit
+            self.block = block
             self.startbit = startbit
             self.bitnum = bitnum
             self.required = required
@@ -1134,7 +1142,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a dualbox
         """
 
-        def __init__(self, title1, title2, bit, comment, required, _, comment2, commentAdv, layout, row, parent):
+        def __init__(self, title1, title2, bit, comment, required, _, comment2, commentAdv, layout, row, parent, block: int = 0):
             """
             Creates the widget
             """
@@ -1235,7 +1243,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
     class ExternalPropertyDecoder(PropertyDecoder):
 
-        def __init__(self, title, bit, comment, required, _, comment2, commentAdv, type_, layout, row, parent):
+        def __init__(self, title, bit, comment, required, _, comment2, commentAdv, type_, layout, row, parent, block: int = 0):
             """
             Creates the widget
             """
@@ -1244,6 +1252,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             assert len(bit) == 1
 
             self.bit = bit
+            self.block = block
             self.row = row
             self.layout = layout
             self.parent = parent
@@ -1410,7 +1419,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a row of dualboxes
         """
 
-        def __init__(self, title1, title2, bit, comment, required, advanced, comment2, commentAdv, layout, row, parent):
+        def __init__(self, title1, title2, bit, comment, required, advanced, comment2, commentAdv, layout, row, parent, block: int = 0):
             """
             Creates the widget
             """
@@ -1419,6 +1428,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             assert len(bit) == 1
 
             self.bit = bit
+            self.block = block
             self.required = required
             self.advanced = advanced
             self.parent = parent
@@ -1960,8 +1970,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         data = self.raweditor.data
         self.raweditor.data = RawData(
-            bytes(data.format.value),
-            *(bytes(8) for _ in range(len(data.blocks)))
+            *([bytes(4) for _ in range(len(data.blocks))] if data.format == RawData.Format.Extended else [bytes(8)]),
+            format = data.format
         )
 
         self.UpdateData(self.raweditor.data, was_automatic = False)
