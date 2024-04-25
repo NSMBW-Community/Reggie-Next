@@ -532,7 +532,7 @@ class Area:
             length = struct.unpack('>I', data[:4])[0]
             settingArray = []
             for i in range(length):
-                settingArray.append(struct.unpack('>I', data[4+4*i:8+4*i])[0])
+                settingArray.append(data[4+4*i:8+4*i])
             return [length, settingArray]
 
         self.spriteSettings = []
@@ -578,6 +578,10 @@ class Area:
         for offset in range(0, len(spritedata) - 4, 16):
             data = unpack(spritedata, offset)
             type_, x, y, sd = data
+            is_extended = globals_.Sprites[type_].extendedSettings
+            extended_id = int.from_bytes(sd, 'big')
+            extended_settings = self.spriteSettings[extended_id] if is_extended else []
+
             append(
                 obj(
                     type_,
@@ -585,7 +589,8 @@ class Area:
                     y,
                     RawData( # TODO: detect if the sprite is extended or not and use the appropriate format
                         sd,
-                        format = RawData.Format.Vanilla
+                        format = RawData.Format.Extended if is_extended else RawData.Format.Vanilla,
+                        extended_blocks = extended_settings
                     )
                 )
             )
@@ -827,12 +832,17 @@ class Area:
         """
         Saves block 4, the unknown maybe-more-general-options block + extended settings
         """
+        for sprite in self.sprites:
+            if sprite.spritedata._format == RawData.Format.Extended:
+                sprite.spritedata = sprite.spritedata[0:4] + len(self.spriteSettings).to_bytes(8, 'big') + sprite.spritedata[12:]
+                self.spriteSettings.append(sprite.blocks)
+
         self.blocks[3] = struct.pack('>xxHHxx', self.unkVal1, self.unkVal2)
 
         def SaveOneSetting(length, settingArray):
             data = struct.pack('>I', length)
             for setting in settingArray:
-                data += struct.pack('>I', setting)
+                data += setting
             return data
 
         if len(self.spriteSettings) > 0:
@@ -1151,7 +1161,7 @@ class Area:
                 # Only <value> and <list> tags can have id types
                 continue
 
-            idtype = field[-1]
+            idtype = field[-2]
             if idtype is None:
                 # Only look at settings with idtypes
                 continue
