@@ -1149,6 +1149,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             super().__init__()
 
             self.bit = bit
+            self.block = block
             self.required = required
             self.parent = parent
             self.comment = comment
