@@ -1,3 +1,4 @@
+import typing
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLineEdit, QStackedWidget, QSizePolicy, QComboBox
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QFontMetrics, QFont
@@ -5,18 +6,27 @@ from PyQt5.QtGui import QFontMetrics, QFont
 from raw_data import RawData
 
 
+class FormattedLineEdit(QLineEdit):
+    def __init__(self, size: int) -> None:
+        super().__init__()
+        self._size = size
 
-def build_raw_edit(size: int) -> QLineEdit:
-    edit = QLineEdit()
+        text_format = (('x' * min(size, 4) + ' ') * (size // 4) + 'x' * (size % 4)).strip()
 
-    min_valid_width = QFontMetrics(QFont()).horizontalAdvance(
-        # 'd' * size, but with a ' ' every 4 characters
-        (('d' * min(size, 4) + ' ') * (size // 4) + 'd' * (size % 4)).strip()
-    )
-    edit.setMinimumWidth(min_valid_width + 2 * 11)  # add padding
-    edit.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed))
+        min_valid_width = QFontMetrics(QFont()).horizontalAdvance(text_format)
+        # self.setInputMask(text_format)
 
-    return edit
+        self.setMinimumWidth(min_valid_width + 2 * 11)  # add padding
+        self.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed))
+
+
+    def text(self) -> str:
+        return super().text().replace(' ', '')
+
+
+    def setText(self, text: str) -> None:
+        text = text.replace(' ', '')
+        super().setText((' '.join(text[i:i + 4] for i in range(0, len(text), 4))).strip())
 
 
 def is_raw_data_valid(text: str, size: int) -> bool:
@@ -43,7 +53,7 @@ class OldSpriteRawEditor(QWidget):
     def __init__(self) -> None:
         super().__init__()
 
-        self._data = build_raw_edit(RawData.Format.Vanilla.value)
+        self._data = FormattedLineEdit(RawData.Format.Vanilla.value)
         self._data.textEdited.connect(self._data_edited)
 
         layout = QHBoxLayout()
@@ -90,7 +100,7 @@ class NewSpriteRawEditor(QWidget):
         super().__init__()
         self._size = 0
 
-        self._events = build_raw_edit(RawData.Format.Extended.value)
+        self._events = FormattedLineEdit(RawData.Format.Extended.value)
         self._events.textEdited.connect(self._events_edited)
 
         self._block_combo = QComboBox()
@@ -119,7 +129,7 @@ class NewSpriteRawEditor(QWidget):
 
         self._stack.clear()
         for i in range(size):
-            self._stack.addWidget(build_raw_edit(8))
+            self._stack.addWidget(FormattedLineEdit(8))
 
         if size > 0:
             self._block_combo.setCurrentIndex(0)
