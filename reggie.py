@@ -54,6 +54,8 @@ except (ImportError, NameError):
     raise Exception(errormsg)
 Qt = QtCore.Qt
 
+from raw_data import RawData
+
 version = map(int, QtCore.QT_VERSION_STR.split('.'))
 min_version = "5.11"
 pqt_min = map(int, min_version.split('.'))
@@ -1917,7 +1919,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     objy = int(split[3])
                     data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10]]))
 
-                    newitem = self.CreateSprite(objx, objy, int(split[1]), data)
+                    newitem = self.CreateSprite(objx, objy, int(split[1]), RawData.from_sprite_id(int(split[1])))
                     sprites.append(newitem)
 
             except ValueError:
@@ -3739,7 +3741,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.CurrentSprite = type
 
         if type != 1000 and type >= 0:
-            self.defaultDataEditor.setSprite(type, initial_data=bytes(10))
+            self.defaultDataEditor.setSprite(
+                type,
+                initial_data = RawData.from_sprite_id(type)
+            )
             self.defaultPropButton.setEnabled(True)
         else:
             self.defaultPropButton.setEnabled(False)

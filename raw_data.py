@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import Callable
+import globals_
 
 
 
@@ -66,3 +67,14 @@ class RawData:
 
     def copy(self) -> 'RawData':
         return RawData(self._original, *self._blocks, format = self._format)
+
+
+    @staticmethod
+    def from_sprite_id(sprite_id: int) -> 'RawData':
+        extended_settings = globals_.Sprites[sprite_id].extendedSettings
+
+        return RawData(
+            bytes(8),
+            *(bytes(4) for _ in range(extended_settings)),
+            format = RawData.Format.Extended if extended_settings else RawData.Format.Vanilla,
+        )

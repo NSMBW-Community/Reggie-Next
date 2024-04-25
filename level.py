@@ -587,10 +587,10 @@ class Area:
                     type_,
                     x,
                     y,
-                    RawData( # TODO: detect if the sprite is extended or not and use the appropriate format
+                    RawData(
                         sd,
+                        *extended_settings,
                         format = RawData.Format.Extended if is_extended else RawData.Format.Vanilla,
-                        extended_blocks = extended_settings
                     )
                 )
             )
@@ -833,9 +833,11 @@ class Area:
         Saves block 4, the unknown maybe-more-general-options block + extended settings
         """
         for sprite in self.sprites:
-            if sprite.spritedata._format == RawData.Format.Extended:
-                sprite.spritedata = sprite.spritedata[0:4] + len(self.spriteSettings).to_bytes(8, 'big') + sprite.spritedata[12:]
-                self.spriteSettings.append(sprite.blocks)
+            sprite: SpriteItem # type hint
+
+            if sprite.spritedata.format == RawData.Format.Extended:
+                sprite.spritedata.original = sprite.spritedata[0:4] + len(self.spriteSettings).to_bytes(8, 'big') + sprite.spritedata[12:]
+                self.spriteSettings.append(sprite.spritedata.blocks)
 
         self.blocks[3] = struct.pack('>xxHHxx', self.unkVal1, self.unkVal2)
 

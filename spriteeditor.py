@@ -369,7 +369,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.setLayout(mainLayout)
 
         self.spritetype = -1
-        self.data = RawData(bytes(16), format = RawData.Format.Vanilla)
+        self._data = RawData(bytes(16), format = RawData.Format.Vanilla)
         self.fields = []
         self.UpdateFlag = False
         self.DefaultMode = defaultmode
@@ -378,6 +378,17 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.relatedObjFiles = None
         self.dependencyNotes = None
 
+
+    @property
+    def data(self) -> RawData:
+        return self._data
+
+    @data.setter
+    def data(self, data: RawData) -> None:
+        assert isinstance(data, RawData)
+        self._data = data
+
+
     class PropertyDecoder(QtCore.QObject):
         """
         Base class for all the sprite data decoder/encoders
@@ -385,7 +396,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         updateData = QtCore.pyqtSignal('PyQt_PyObject')
 
         bit = None  # list: ranges
-        block: int = None  # int: block number
+        block: int = 0  # int: block number
         required = None  # tuple (range, value)
         layout = None  # QLayout
         row = None  # int: row in the parent's layout
@@ -395,7 +406,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         parent = None  # SpriteEditorWidget: the widget this belongs to
         idtype = None  # str: the idtype of this property
 
-        def retrieve(self, data: RawData, bits: list[int] = None, block: int = None) -> int:
+        def retrieve(self, data: RawData, bits: list[int] = None, block: int = 0) -> int:
             """
             Extracts the value from the specified bit(s). Bit numbering is ltr BE
             and starts at 1.
@@ -403,7 +414,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if bits is None:
                 bits = self.bit
 
-            if block is None:
+            if not block:
                 byte_data = data.original
 
             else:
@@ -426,18 +437,18 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             return value
 
-        def insertvalue(self, data: RawData, value: int, bits: list[int] = None, block: int = None) -> RawData:
+        def insertvalue(self, data: RawData, value: int, bits: list[int] = None, block: int = 0) -> RawData:
             """
             Assigns a value to the specified bit(s)
             """
             if bits is None:
                 bits = self.bit
 
-            if block is None:
+            if not block:
                 byte_data = list(data.original)
 
             else:
-                byte_data = list(data.blocks[block])
+                byte_data = list(data.blocks[block - 1])
 
             sdata = list(byte_data)
 
@@ -465,7 +476,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     v >>= 1
 
             new_data = data.copy()
-            if block is None:
+            if not block:
                 new_data.original = bytes(sdata)
 
             else:
@@ -1977,7 +1988,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         data = self.raweditor.data
         self.raweditor.data = RawData(
-            *([bytes(4) for _ in range(len(data.blocks))] if data.format == RawData.Format.Extended else [bytes(8)]),
+            bytes(8),
+            *([bytes(4) for _ in range(len(data.blocks))]),
             format = data.format
         )
 
@@ -2022,7 +2034,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             x_ = mw.selObj.objx + 16
             y_ = mw.selObj.objy
-            globals_.mainWindow.CreateSprite(x_, y_, id_, data=bytes(8))
+            globals_.mainWindow.CreateSprite(
+                x_,
+                y_,
+                id_,
+                data = RawData.from_sprite_id(id_)
+            )
 
             # remove this dependency, because it is now fulfilled.
             # get row of button
@@ -2590,5 +2607,5 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         y = globals_.mainWindow.selObj.objy
         special_event_id = 246
 
-        if globals_.mainWindow.CreateSprite(x, y, special_event_id, data) is not None:
+        if globals_.mainWindow.CreateSprite(x, y, special_event_id, RawData(data, format = RawData.Format.Vanilla)) is not None:
             globals_.mainWindow.scene.update()

@@ -1,23 +1,28 @@
-import typing
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLineEdit, QStackedWidget, QSizePolicy, QComboBox
 from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QFontMetrics, QFont
+from PyQt5.QtGui import QFontMetrics, QFont, QFocusEvent
 
 from raw_data import RawData
 
 
 class FormattedLineEdit(QLineEdit):
+    data_edited = pyqtSignal()
+
+
     def __init__(self, size: int) -> None:
         super().__init__()
         self._size = size
 
         text_format = (('x' * min(size, 4) + ' ') * (size // 4) + 'x' * (size % 4)).strip()
+        self._last_good_text = text_format.replace('x', '0')
 
         min_valid_width = QFontMetrics(QFont()).horizontalAdvance(text_format)
         # self.setInputMask(text_format)
 
         self.setMinimumWidth(min_valid_width + 2 * 11)  # add padding
         self.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed))
+
+        self.textEdited.connect(self._text_edited)
 
 
     def text(self) -> str:
@@ -27,20 +32,40 @@ class FormattedLineEdit(QLineEdit):
     def setText(self, text: str) -> None:
         text = text.replace(' ', '')
         super().setText((' '.join(text[i:i + 4] for i in range(0, len(text), 4))).strip())
+        self._last_good_text = text
+        self.setStyleSheet('')
 
 
-def is_raw_data_valid(text: str, size: int) -> bool:
-    '''
-    Triggered when the raw data textbox is edited
-    '''
+    def _text_edited(self, text: str) -> None:
+        if self._is_raw_data_valid(text):
+            self.data_edited.emit()
+            self.setStyleSheet('')
 
-    raw = text.replace(' ', '')
-    if len(raw) != size: return False
+        else:
+            self.setStyleSheet('background-color: #ffd2d2;')
 
-    try: _ = bytes.fromhex(text)
-    except ValueError: return False
 
-    return True
+    def _is_raw_data_valid(self, text: str) -> bool:
+        '''
+        Triggered when the raw data textbox is edited
+        '''
+
+        raw = text.replace(' ', '')
+        if len(raw) != self._size: return False
+
+        try: _ = bytes.fromhex(text)
+        except ValueError: return False
+
+        self._last_good_text = text
+
+        return True
+
+
+    def focusOutEvent(self, a0: QFocusEvent) -> None:
+        if not self._is_raw_data_valid(self.text()):
+            self.setText(self._last_good_text)
+
+        return super().focusOutEvent(a0)
 
 
 
@@ -54,7 +79,7 @@ class OldSpriteRawEditor(QWidget):
         super().__init__()
 
         self._data = FormattedLineEdit(RawData.Format.Vanilla.value)
-        self._data.textEdited.connect(self._data_edited)
+        self._data.data_edited.connect(lambda: self.data_edited.emit(self.data))
 
         layout = QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -78,18 +103,6 @@ class OldSpriteRawEditor(QWidget):
         self._data.setText(data.original.hex())
 
 
-    def _data_edited(self, text: str) -> None:
-        '''
-        Emits the data_edited signal
-        '''
-        if is_raw_data_valid(text, 16):
-            self.data_edited.emit(self.data)
-            self._data.setStyleSheet('')
-
-        else:
-            self._data.setStyleSheet('background-color: #ffd2d2;')
-
-
 
 class NewSpriteRawEditor(QWidget):
     '''
@@ -102,15 +115,15 @@ class NewSpriteRawEditor(QWidget):
         super().__init__()
         self._size = 0
 
-        self._events = FormattedLineEdit(RawData.Format.Extended.value)
-        self._events.textEdited.connect(self._events_edited)
+        self._events = FormattedLineEdit(RawData.Format.Vanilla.value)
+        self._events.textEdited.connect(self.data_edited.emit)
 
         self._block_combo = QComboBox()
         self._block_combo.currentIndexChanged.connect(self._block_changed)
         self._block_combo.setSizePolicy(QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed))
 
         self._stack = QStackedWidget()
-        self._stack.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding))
+        self._stack.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed))
 
         layout = QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -131,9 +144,13 @@ class NewSpriteRawEditor(QWidget):
         for i in range(size):
             self._block_combo.addItem(f'Block {i}')
 
-        self._stack.clear()
+        for i in range(self._stack.count()):
+            self._stack.removeWidget(self._stack.widget(0))
+
         for i in range(size):
-            self._stack.addWidget(FormattedLineEdit(8))
+            w = FormattedLineEdit(8)
+            self._stack.addWidget(w)
+            w.data_edited.connect(lambda: self.data_edited.emit(self.data))
 
         if size > 0:
             self._block_combo.setCurrentIndex(0)
@@ -167,37 +184,11 @@ class NewSpriteRawEditor(QWidget):
             self._stack.widget(i).setText(block.hex())
 
 
-    def _events_edited(self, text: str) -> None:
-        '''
-        Emits the data_edited signal
-        '''
-        if is_raw_data_valid(text, 8):
-            self.data_edited.emit(self.data)
-            self._events.setStyleSheet('')
-
-        else:
-            self._events.setStyleSheet('background-color: #ffd2d2;')
-
-
     def _block_changed(self, index: int) -> None:
         '''
         Shows the block at the new index
         '''
         self._stack.setCurrentIndex(index)
-
-
-    def _block_edited(self, index: int, text: str) -> None:
-        '''
-        Emits the data_edited signal
-        '''
-        if is_raw_data_valid(text, 8):
-            self.data_edited.emit(index, text)
-            self._stack.widget(index).setStyleSheet('')
-
-        else:
-            self._stack.widget(index).setStyleSheet('background-color: #ffd2d2;')
-
-        self.data_edited.emit(index, text)
 
 
 
@@ -243,5 +234,5 @@ class RawEditor(QWidget):
         else: self._data_widget = NewSpriteRawEditor()
 
         self._data_widget.data = data
-        self._data_widget.data_edited.connect(self.data_edited)
+        self._data_widget.data_edited.connect(lambda: self.data_edited.emit(self.data))
         self.layout().addWidget(self._data_widget)

@@ -177,14 +177,14 @@ class InstanceDefinition_SpriteItem(InstanceDefinition):
         return globals_.Area.sprites
 
     def createNew(self):
+        data = RawData.from_sprite_id(self.fields[0][1])
+        data.original = self.fields[1][1]
+
         return SpriteItem(
             self.fields[0][1],
             self.objx,
             self.objy,
-            RawData( # TODO: detect if the sprite is extended or not and use the appropriate format
-                self.fields[1][1],
-                format = RawData.Format.Vanilla
-            )
+            data
         )
 
 
@@ -1872,7 +1872,7 @@ class SpriteItem(LevelEditorItem):
         self.type = type_
         self.objx = x
         self.objy = y
-        self.spritedata: RawData = data
+        self._spritedata: RawData = data
         self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
         self.ChangingPos = False
 
@@ -1900,6 +1900,17 @@ class SpriteItem(LevelEditorItem):
                 self.objy * 1.5,
             )
         globals_.DirtyOverride -= 1
+
+
+    @property
+    def spritedata(self) -> RawData:
+        return self._spritedata
+
+    @spritedata.setter
+    def spritedata(self, value: RawData):
+        assert isinstance(value, RawData)
+        self._spritedata = value
+
 
     def SetType(self, type_):
         """

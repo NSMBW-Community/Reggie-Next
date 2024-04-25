@@ -17,6 +17,7 @@ from translation import ReggieTranslation
 from libs import lh
 from misc2 import LevelViewWidget
 from levelitems import Path, CommentItem
+from raw_data import RawData
 
 ################################################################################
 ################################################################################
@@ -720,7 +721,15 @@ def LoadSpriteData():
             sdef.noyoshi = noyoshi
             sdef.asm = asm
             sdef.size = size
-            sdef.extendedSettings = extendedSettings
+            sdef.extendedSettings = 0
+            if extendedSettings:
+                block_count = 1
+                for elem in sprite:
+                    if 'block' in elem.attrib:
+                        block_count = max(block_count, int(elem.attrib['block']))
+
+                sdef.extendedSettings = block_count
+
             sdef.dependencies = []
             sdef.dependencynotes = None
 
@@ -1814,11 +1823,11 @@ class PreferencesDialog(QtWidgets.QDialog):
                 globals_.RealViewEnabled = False  # Disable so the zone looks 'plain'
 
                 # Sprite [38] at (11, 4)
-                sprite = globals_.mainWindow.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(8), add_to_scene=False)
+                sprite = globals_.mainWindow.CreateSprite(11 * 16, 4 * 16, 38, data = RawData.from_sprite_id(38), add_to_scene=False)
                 scene.addItem(sprite)
 
                 # Sprite [53] at (1, 6)
-                sprite = globals_.mainWindow.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(8), add_to_scene=False)
+                sprite = globals_.mainWindow.CreateSprite(1 * 16, 6 * 16, 53, data = RawData.from_sprite_id(53), add_to_scene=False)
                 scene.addItem(sprite)
 
                 # Entrance [0] at (13, 8)
