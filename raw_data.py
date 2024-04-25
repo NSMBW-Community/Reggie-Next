@@ -11,7 +11,7 @@ class RawData:
         Extended = 8
 
 
-    def __init__(self, *blocks: bytes, format: Format) -> None:
+    def __init__(self, *blocks: bytes, format: Format, extended_blocks: list[bytes] = []) -> None:
         assert all(isinstance(block, bytes) for block in blocks)
 
         self._blocks = list(blocks)
