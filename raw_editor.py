@@ -57,6 +57,8 @@ class OldSpriteRawEditor(QWidget):
         self._data.textEdited.connect(self._data_edited)
 
         layout = QHBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
         layout.addWidget(self._data)
         self.setLayout(layout)
 
@@ -111,6 +113,8 @@ class NewSpriteRawEditor(QWidget):
         self._stack.setSizePolicy(QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding))
 
         layout = QHBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(10)
         layout.addWidget(self._events)
         layout.addWidget(self._block_combo)
         layout.addWidget(self._stack)
