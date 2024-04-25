@@ -75,7 +75,7 @@ class OldSpriteRawEditor(QWidget):
         '''
         Sets the data
         '''
-        self._data.setText(data.blocks[0].hex())
+        self._data.setText(data.original.hex())
 
 
     def _data_edited(self, text: str) -> None:
@@ -160,10 +160,10 @@ class NewSpriteRawEditor(QWidget):
         '''
         Sets the data
         '''
-        self._set_size(len(data.blocks) - 1)
+        self._set_size(len(data.blocks))
 
-        self._events.setText(data.events.hex())
-        for i, block in enumerate(data.blocks[1:]):
+        self._events.setText(data.original.hex())
+        for i, block in enumerate(data.blocks):
             self._stack.widget(i).setText(block.hex())
 
 
@@ -172,7 +172,7 @@ class NewSpriteRawEditor(QWidget):
         Emits the data_edited signal
         '''
         if is_raw_data_valid(text, 8):
-            self.data_edited.emit(-1, self.data)
+            self.data_edited.emit(self.data)
             self._events.setStyleSheet('')
 
         else:

@@ -385,7 +385,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         updateData = QtCore.pyqtSignal('PyQt_PyObject')
 
         bit = None  # list: ranges
-        block: int = 0  # int: block number
+        block: int = None  # int: block number
         required = None  # tuple (range, value)
         layout = None  # QLayout
         row = None  # int: row in the parent's layout
@@ -404,9 +404,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 bits = self.bit
 
             if block is None:
-                block = self.block
+                byte_data = data.original
 
-            byte_data = data.blocks[block]
+            else:
+                byte_data = data.blocks[block]
 
             value = 0
 
@@ -433,9 +434,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 bits = self.bit
 
             if block is None:
-                block = self.block
+                byte_data = list(data.original)
 
-            byte_data = list(data.blocks[block])
+            else:
+                byte_data = list(data.blocks[block])
 
             sdata = list(byte_data)
 
@@ -463,7 +465,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     v >>= 1
 
             new_data = data.copy()
-            new_data.blocks[block] = bytes(sdata)
+            if block is None:
+                new_data.original = bytes(sdata)
+
+            else:
+                new_data.blocks[block] = bytes(sdata)
 
             return new_data
 
