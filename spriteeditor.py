@@ -406,13 +406,17 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         parent = None  # SpriteEditorWidget: the widget this belongs to
         idtype = None  # str: the idtype of this property
 
-        def retrieve(self, data: RawData, bits: list[int] = None, block: int = 0) -> int:
+        def retrieve(self, data: RawData, bits: list[int] = None, block: int = None) -> int:
             """
             Extracts the value from the specified bit(s). Bit numbering is ltr BE
             and starts at 1.
             """
             if bits is None:
                 bits = self.bit
+
+            if block is None:
+                block = self.block
+
 
             if not block:
                 byte_data = data.original
@@ -437,12 +441,16 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             return value
 
-        def insertvalue(self, data: RawData, value: int, bits: list[int] = None, block: int = 0) -> RawData:
+        def insertvalue(self, data: RawData, value: int, bits: list[int] = None, block: int = None) -> RawData:
             """
             Assigns a value to the specified bit(s)
             """
             if bits is None:
                 bits = self.bit
+
+            if block is None:
+                block = self.block
+
 
             if not block:
                 byte_data = list(data.original)
