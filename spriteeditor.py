@@ -418,11 +418,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 block = self.block
 
 
-            if not block:
+            if block == 0:
                 byte_data = data.original
 
             else:
-                byte_data = data.blocks[block]
+                byte_data = data.blocks[block - 1]
 
             value = 0
 
@@ -452,7 +452,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 block = self.block
 
 
-            if not block:
+            if block == 0:
                 byte_data = list(data.original)
 
             else:
@@ -484,11 +484,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     v >>= 1
 
             new_data = data.copy()
-            if not block:
+            if block == 0:
                 new_data.original = bytes(sdata)
 
             else:
-                new_data.blocks[block] = bytes(sdata)
+                new_data.blocks[block - 1] = bytes(sdata)
 
             return new_data
 

@@ -139,10 +139,11 @@ class NewSpriteRawEditor(QWidget):
         Sets the size of the sprite data
         '''
         self._size = size
+        last_selected_index = self._block_combo.currentIndex()
 
         self._block_combo.clear()
         for i in range(size):
-            self._block_combo.addItem(f'Block {i}')
+            self._block_combo.addItem(f'Block {i + 1}')
 
         for i in range(self._stack.count()):
             self._stack.removeWidget(self._stack.widget(0))
@@ -158,6 +159,8 @@ class NewSpriteRawEditor(QWidget):
 
         self._block_combo.setDisabled(size == 0)
         self._stack.setDisabled(size == 0)
+
+        self._block_combo.setCurrentIndex(min(last_selected_index, size - 1) if last_selected_index != -1 else 0)
 
 
     @property
@@ -177,7 +180,7 @@ class NewSpriteRawEditor(QWidget):
         '''
         Sets the data
         '''
-        self._set_size(len(data.blocks))
+        if len(data.blocks) != len(self.data.blocks): self._set_size(len(data.blocks))
 
         self._events.setText(data.original.hex())
         for i, block in enumerate(data.blocks):
@@ -225,14 +228,16 @@ class RawEditor(QWidget):
         '''
         Sets the data
         '''
-        try:
-            self.layout().removeWidget(self._data_widget)
-            self._data_widget.deleteLater()
-        except: pass
+        if self._data_widget.data.format != data.format:
+            try:
+                self.layout().removeWidget(self._data_widget)
+                self._data_widget.deleteLater()
+            except: pass
 
-        if data.format == RawData.Format.Vanilla: self._data_widget = OldSpriteRawEditor()
-        else: self._data_widget = NewSpriteRawEditor()
+            if data.format == RawData.Format.Vanilla: self._data_widget = OldSpriteRawEditor()
+            else: self._data_widget = NewSpriteRawEditor()
+
+            self._data_widget.data_edited.connect(lambda: self.data_edited.emit(self.data))
+            self.layout().addWidget(self._data_widget)
 
         self._data_widget.data = data
-        self._data_widget.data_edited.connect(lambda: self.data_edited.emit(self.data))
-        self.layout().addWidget(self._data_widget)

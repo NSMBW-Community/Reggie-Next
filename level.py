@@ -836,7 +836,7 @@ class Area:
             sprite: SpriteItem # type hint
 
             if sprite.spritedata.format == RawData.Format.Extended:
-                sprite.spritedata.original = sprite.spritedata[0:4] + len(self.spriteSettings).to_bytes(8, 'big') + sprite.spritedata[12:]
+                sprite.spritedata.original = sprite.spritedata[0:2] + len(self.spriteSettings).to_bytes(4, 'big') + sprite.spritedata[6:]
                 self.spriteSettings.append(sprite.spritedata.blocks)
 
         self.blocks[3] = struct.pack('>xxHHxx', self.unkVal1, self.unkVal2)

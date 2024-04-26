@@ -27,6 +27,7 @@ class RawData:
     @original.setter
     def original(self, value: bytes) -> None:
         assert isinstance(value, bytes)
+        assert len(value) == 8, f'Expected 8 bytes, got {len(value)}'
 
         self._original = value
 
