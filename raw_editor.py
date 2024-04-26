@@ -116,7 +116,7 @@ class NewSpriteRawEditor(QWidget):
         self._size = 0
 
         self._events = FormattedLineEdit(RawData.Format.Vanilla.value)
-        self._events.textEdited.connect(self.data_edited.emit)
+        self._events.data_edited.connect(lambda: self.data_edited.emit(self.data))
 
         self._block_combo = QComboBox()
         self._block_combo.currentIndexChanged.connect(self._block_changed)

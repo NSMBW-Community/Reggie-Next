@@ -415,7 +415,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 bits = self.bit
 
             if block is None:
-                block = self.block
+                block = self.block if self.block is not None else 0
 
 
             if block == 0:
@@ -449,7 +449,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 bits = self.bit
 
             if block is None:
-                block = self.block
+                block = self.block if self.block is not None else 0
 
 
             if block == 0:
