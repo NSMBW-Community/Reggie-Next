@@ -1773,8 +1773,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # get sprites
         for item in clipboard_s:
             data = item.spritedata
-            convclip.append('1:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d' % (
-            item.type, item.objx, item.objy, data[0], data[1], data[2], data[3], data[4], data[5], data[7]))
+
+            is_extended = globals_.Sprites[item.type].extendedSettings
+            extended_id = int.from_bytes(data[2:6], 'big')
+            extended_settings = globals_.Area.spriteSettings[extended_id] if is_extended else []
+            extended_string = ':' if len(extended_settings) > 0 else ''
+            for block in extended_settings:
+                extended_string += block.hex()
+
+            clip_string = '1:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d' % (item.type, item.objx, item.objy, data[0], data[1], data[2], data[3], data[4], data[5], data[7])
+            convclip.append(clip_string + extended_string)
 
         convclip.append('%')
         return '|'.join(convclip)
@@ -1913,14 +1921,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 elif split[0] == '1':
                     # sprite
-                    if len(split) != 11: continue
+                    if 11 <= len(split) <= 12:
+                        is_extended = True if len(split) == 12 else False
+                        extended_settings = [bytes.fromhex(split[11][i:i+8]) for i in range(0, len(split[11]), 8)] if is_extended else []
 
-                    objx = int(split[2])
-                    objy = int(split[3])
-                    data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10]]))
+                        objx = int(split[2])
+                        objy = int(split[3])
+                        data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10]]))
 
-                    newitem = self.CreateSprite(objx, objy, int(split[1]), RawData.from_sprite_id(int(split[1])))
-                    sprites.append(newitem)
+                        newitem = self.CreateSprite(objx, objy, int(split[1]), RawData(
+                            data,
+                            *extended_settings,
+                            format = RawData.Format.Extended if is_extended else RawData.Format.Vanilla))
+                        sprites.append(newitem)
 
             except ValueError:
                 # an int() probably failed somewhere
