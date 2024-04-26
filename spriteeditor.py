@@ -1577,6 +1577,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if initial_data is not None:
                 assert isinstance(initial_data, RawData)
                 self.data = initial_data
+                self.raweditor.changed_sprite()
                 self.update(True)
 
             return

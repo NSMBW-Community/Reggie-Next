@@ -204,6 +204,13 @@ class NewSpriteRawEditor(QWidget):
         self._stack.setCurrentIndex(index)
 
 
+    def changed_sprite(self) -> None:
+        '''
+        Triggered when the number of sprites changes
+        '''
+        if self._size > 0: self._block_combo.setCurrentIndex(0)
+
+
 
 class RawEditor(QWidget):
     '''
@@ -251,3 +258,10 @@ class RawEditor(QWidget):
             self.layout().addWidget(self._data_widget)
 
         self._data_widget.data = data
+
+
+    def changed_sprite(self) -> None:
+        '''
+        Triggered when the number of sprites changes
+        '''
+        self._data_widget.changed_sprite()
