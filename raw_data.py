@@ -21,6 +21,30 @@ class RawData:
 
 
     @property
+    def events(self) -> bytes:
+        return self._original[:2] + self._original[6:]
+
+    @events.setter
+    def events(self, value: bytes) -> None:
+        assert isinstance(value, bytes)
+        assert len(value) == 4, f'Expected 4 bytes, got {len(value)}'
+
+        self._original = self._original[:2] + value + self._original[6:]
+
+
+    @property
+    def settings(self) -> bytes:
+        return self._original[2:6]
+
+    @settings.setter
+    def settings(self, value: bytes) -> None:
+        assert isinstance(value, bytes)
+        assert len(value) == 4, f'Expected 4 bytes, got {len(value)}'
+
+        self._original = self._original[:2] + value + self._original[6:]
+
+
+    @property
     def original(self) -> bytes:
         return self._original
 

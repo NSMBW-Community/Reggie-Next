@@ -114,9 +114,10 @@ class NewSpriteRawEditor(QWidget):
     def __init__(self) -> None:
         super().__init__()
         self._size = 0
+        self._settings = bytes(4)
 
-        self._events = FormattedLineEdit(RawData.Format.Vanilla.value)
-        self._events.data_edited.connect(lambda: self.data_edited.emit(self.data))
+        self._events = FormattedLineEdit(RawData.Format.Extended.value)
+        self._events.data_edited.connect(self._events_edited)
 
         self._block_combo = QComboBox()
         self._block_combo.currentIndexChanged.connect(self._block_changed)
@@ -168,8 +169,9 @@ class NewSpriteRawEditor(QWidget):
         '''
         Returns the data
         '''
+        events = bytes.fromhex(self._events.text())
         return RawData(
-            bytes.fromhex(self._events.text()),
+            events[:2] + self._settings + events[2:],
             *(bytes.fromhex(self._stack.widget(i).text()) for i in range(self._size)),
             format = RawData.Format.Extended
         )
@@ -182,9 +184,17 @@ class NewSpriteRawEditor(QWidget):
         '''
         if len(data.blocks) != len(self.data.blocks): self._set_size(len(data.blocks))
 
-        self._events.setText(data.original.hex())
+        self._settings = data.settings
+        self._events.setText(data.events.hex())
         for i, block in enumerate(data.blocks):
             self._stack.widget(i).setText(block.hex())
+
+
+    def _events_edited(self) -> None:
+        '''
+        Triggered when the events textbox is edited
+        '''
+        self.data_edited.emit(self.data)
 
 
     def _block_changed(self, index: int) -> None:
