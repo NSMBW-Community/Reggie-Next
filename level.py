@@ -533,7 +533,7 @@ class Area:
             settingArray = []
             for i in range(length):
                 settingArray.append(data[4+4*i:8+4*i])
-            return [length, settingArray]
+            return settingArray
 
         self.spriteSettings = []
         if len(self.blocks[3]) <= 8:
@@ -855,7 +855,7 @@ class Area:
 
             currentOffset = 12 + 4*len(self.spriteSettings)
             for setting in self.spriteSettings:
-                oneSetting = SaveOneSetting(setting[0], setting[1])
+                oneSetting = SaveOneSetting(len(setting), setting)
                 settings.append(oneSetting)
                 offsets.append(currentOffset)
                 currentOffset += len(oneSetting)
