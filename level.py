@@ -579,7 +579,7 @@ class Area:
             data = unpack(spritedata, offset)
             type_, x, y, sd = data
             is_extended = globals_.Sprites[type_].extendedSettings
-            extended_id = int.from_bytes(sd, 'big')
+            extended_id = int.from_bytes(sd[2:6], 'big')
             extended_settings = self.spriteSettings[extended_id] if is_extended else []
 
             append(
