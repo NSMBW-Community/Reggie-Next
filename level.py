@@ -832,6 +832,7 @@ class Area:
         """
         Saves block 4, the unknown maybe-more-general-options block + extended settings
         """
+        self.spriteSettings = []
         for sprite in self.sprites:
             sprite: SpriteItem # type hint
 
