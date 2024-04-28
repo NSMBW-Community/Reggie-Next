@@ -575,13 +575,13 @@ class SpriteDefinition:
                 bit, _ = self.parseBits(attribs.get("nybble"))
                 type_ = attribs['type']
 
-                fields.append((6, title, bit, comment, required, advanced, comment2, advancedcomment, type_))
+                fields.append((6, title, bit, comment, required, advanced, comment2, advancedcomment, type_, block))
 
             elif field.tag == 'multidualbox':
                 # multibox but with dualboxes instead of checkboxes
                 bit, _ = self.parseBits(attribs.get("nybble"))
 
-                fields.append((7, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
+                fields.append((7, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment, block))
 
     def parseBits(self, nybble_val):
         """
