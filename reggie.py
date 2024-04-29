@@ -1768,6 +1768,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
             convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
             item.tileset, item.type, item.layer, item.objx, item.objy, item.width, item.height))
 
+        globals_.Area.spriteSettings = []
+        for sprite in globals_.Area.sprites:
+            sprite: SpriteItem # type hint
+
+            if sprite.spritedata.format == RawData.Format.Extended:
+                sprite.spritedata.original = sprite.spritedata[0:2] + len(globals_.Area.spriteSettings).to_bytes(4, 'big') + sprite.spritedata[6:]
+                globals_.Area.spriteSettings.append(sprite.spritedata.blocks)
+
         # get sprites
         for item in clipboard_s:
             data = item.spritedata
