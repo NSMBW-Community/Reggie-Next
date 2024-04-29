@@ -397,7 +397,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         bit = None  # list: ranges
         block: int = 0  # int: block number
-        required = None  # tuple (range, value)
+        required = None  # tuple (range, value, block)
         layout = None  # QLayout
         row = None  # int: row in the parent's layout
         comment = None  # str: comment text
@@ -500,8 +500,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 return
 
             show = True
-            for pos, ran in self.required:
-                show = show and ran[0] <= self.retrieve(data, pos) < ran[1]
+            for pos, ran, block in self.required:
+                show = show and ran[0] <= self.retrieve(data, pos, block) < ran[1]
 
             visibleNow = self.layout.itemAtPosition(self.row, 0).widget().isVisible()
 

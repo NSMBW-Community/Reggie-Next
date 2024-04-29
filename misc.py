@@ -499,6 +499,15 @@ class SpriteDefinition:
                 else:
                     vals = [None] * len(bit_ranges)
 
+                if 'requiredblock' in attribs:
+                    blocks = [abs(int(x.strip())) for x in attribs['requiredblock'].split(',')] if attribs['requiredblock'] else [0] * len(bit_ranges)
+
+                    if len(blocks) != len(bit_ranges):
+                        raise ValueError("Required bits and blocks have different lengths.")
+                    
+                else:
+                    blocks = [0] * len(bit_ranges)
+
                 # The associated values are a comma-separated list of values or
                 # (inclusive) ranges.
                 for bit_range, sval in zip(bit_ranges, vals):
@@ -510,7 +519,7 @@ class SpriteDefinition:
                     else:
                         a, b = map(int, sval.split('-'))
 
-                    required.append(((bit_range,), (a, b + 1)))
+                    required.append(((bit_range,), (a, b + 1), blocks.pop(0)))
 
             if 'idtype' in attribs:
                 idtype = attribs['idtype']
