@@ -466,7 +466,7 @@ class SpriteDefinition:
             else:
                 title = "NO TITLE GIVEN!"
 
-            advanced = attribs.get("advanced", "False") == "True"
+            advanced = attribs.get("advanced", "False").lower() == "true"
             comment = comment2 = advancedcomment = required = idtype = None
 
             if 'comment' in attribs:
@@ -480,10 +480,17 @@ class SpriteDefinition:
 
 
             if not field.tag == 'dependency':
-                if "extended" in elem.attrib and elem.attrib["extended"] == "True":
-                    block = int(attribs.get("block"))
-                    if block <= 0:
-                        raise ValueError("Extended spritedata need block values >= 1")
+                if "extended" in elem.attrib and elem.attrib["extended"].lower() == "true":
+                    block = attribs.get("block", None)
+
+                    if block:
+                        block = int(block)
+                        if block <= 0:
+                            raise ValueError("Extended spritedata need block values >= 1")
+
+                    else:
+                        block = 0
+
                 else:
                     block = 0
 
@@ -715,10 +722,10 @@ def LoadSpriteData():
                 yoshiNotes = globals_.trans.string('SpriteDataEditor', 9, '[notes]',
                                                 sprite.get('yoshinotes'))
 
-            noyoshi = sprite.get('noyoshi', 'False') == "True"
-            asm = sprite.get('asmhacks', 'False') == "True"
-            size = sprite.get('sizehacks', 'False') == "True"
-            extendedSettings = sprite.get('extended', 'False') == "True"
+            noyoshi = sprite.get('noyoshi', 'False').lower() == "true"
+            asm = sprite.get('asmhacks', 'False').lower() == "true"
+            size = sprite.get('sizehacks', 'False').lower() == "true"
+            extendedSettings = sprite.get('extended', 'False').lower() == "true"
 
             sdef = SpriteDefinition()
             sdef.id = spriteid
@@ -745,6 +752,7 @@ def LoadSpriteData():
             try:
                 sdef.loadFrom(sprite)
             except Exception as e:
+                import traceback; traceback.print_exc() # TODO: [EXTENDED] Temp, remove this line later
                 errors.append(str(spriteid))
                 errortext.append(str(e))
 

@@ -131,6 +131,8 @@ def _excepthook(*exc_info):
     sections = [separator, timeString, separator, e]
     msg = '\n'.join(sections)
 
+    import traceback; traceback.print_exc() # TODO: [EXTENDED] Temp, remove this line later
+
     globals_.ErrMsg += msg
 
     try:
