@@ -103,6 +103,13 @@ class OldSpriteRawEditor(QWidget):
         self._data.setText(data.original.hex())
 
 
+    def changed_sprite(self) -> None:
+        '''
+        Triggered when the number of sprites changes
+        '''
+        pass
+
+
 
 class NewSpriteRawEditor(QWidget):
     '''
