@@ -189,7 +189,7 @@ class NewSpriteRawEditor(QWidget):
         '''
         Sets the data
         '''
-        if len(data.blocks) != len(self.data.blocks): self._set_size(len(data.blocks))
+        if len(data.blocks) != self._size: self._set_size(len(data.blocks))
 
         self._settings = data.settings
         self._events.setText(data.events.hex())

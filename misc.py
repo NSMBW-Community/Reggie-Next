@@ -752,7 +752,6 @@ def LoadSpriteData():
             try:
                 sdef.loadFrom(sprite)
             except Exception as e:
-                import traceback; traceback.print_exc() # TODO: [EXTENDED] Temp, remove this line later
                 errors.append(str(spriteid))
                 errortext.append(str(e))
 
