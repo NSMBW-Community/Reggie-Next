@@ -60,6 +60,11 @@ class RawData:
     def blocks(self) -> list[bytes]:
         return self._blocks
 
+    @blocks.setter
+    def blocks(self, value: list[bytes]) -> None:
+        assert all(isinstance(block, bytes) for block in value)
+        self._blocks = value
+
 
     @property
     def format(self) -> Format:
