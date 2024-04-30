@@ -598,6 +598,18 @@ class Area:
         self.sprites = sprites
         self.force_loaded_sprites = self.loaded_sprites - set(sprite.type for sprite in sprites)
 
+        # Adjust block counts for extended sprites
+        for sprite in self.sprites:
+            sprite: SpriteItem # type hint
+            block_count = globals_.Sprites[sprite.type].extendedSettings
+            if block_count > 0:
+                current_block_count = len(sprite.spritedata.blocks)
+                if current_block_count > block_count:
+                    sprite.spritedata.blocks = sprite.spritedata.blocks[:block_count]
+                elif current_block_count < block_count:
+                    sprite.spritedata.blocks = sprite.spritedata.blocks + [bytes(4)] * (block_count-current_block_count)
+
+
     def LoadLoadedSprites(self):
         """
         Loads block 9, the loaded sprite resources.
