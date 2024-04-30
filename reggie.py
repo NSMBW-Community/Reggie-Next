@@ -1702,16 +1702,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
             type_obj = ObjectItem
             type_spr = SpriteItem
 
+            to_be_deleted = []
             for obj in selitems:
                 if ii(obj, type_obj):
-                    obj.delete()
-                    obj.setSelected(False)
-                    self.scene.removeItem(obj)
+                    to_be_deleted.append(obj)
                     clipboard_o.append(obj)
                 elif ii(obj, type_spr):
-                    obj.delete()
-                    obj.setSelected(False)
-                    self.scene.removeItem(obj)
+                    to_be_deleted.append(obj)
                     clipboard_s.append(obj)
 
             if clipboard_o or clipboard_s:
@@ -1720,6 +1717,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.actions['paste'].setEnabled(True)
                 self.clipboard = self.encodeObjects(clipboard_o, clipboard_s)
                 self.systemClipboard.setText(self.clipboard)
+
+            for obj in to_be_deleted:
+                obj.delete()
+                obj.setSelected(False)
+                self.scene.removeItem(obj)
 
         self.levelOverview.update()
         self.SelectionUpdateFlag = False
