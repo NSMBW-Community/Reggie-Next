@@ -436,6 +436,35 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10.4" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #40: ?-Switch -->
+  
+  <sprite id="41" name="P-Switch" notes="This switch is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (tileset-based and sprite-based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block.">
+    <dependency notes="Activates 'Pow Block Coin' tileset tiles."/>
+	<list nybble="8" title="Style" comment="This determines which style is seen on the switch. While the P-Switch supports SpriteTex, there aren't any custom textures for it." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
+      <entry value="0">Standard P Icon (Original)</entry>
+      <entry value="1">SpriteTex Slot 01</entry>
+      <entry value="2">SpriteTex Slot 02</entry>
+      <entry value="3">SpriteTex Slot 03</entry>
+      <entry value="4">SpriteTex Slot 04</entry>
+    </list>
+    <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will be facing down. Upside-Down switches cannot be set to fall."/>
+    <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms. It does not work with conveyor belts."/>
+    <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Blue Coins, or transform blocks and coins." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
+    <dualbox nybble="9.4" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requirednybble="7.4" requiredval="0"/> <!-- Appears if Timed Event is set -->
+    <dualbox nybble="9.4" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requirednybble="7.4"/> <!-- Appears if Permanent Event is set -->
+    <dualbox nybble="7.4" title1="Timed Event" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Blue Coins will not become visible."/>
+    <checkbox nybble="5.1" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <checkbox nybble="5.1" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requirednybble="7.4"/> <!-- Appears if Permanent Event is set -->
+    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This will determine if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/>  <!-- Appears only if Timed Event is set -->
+    <list nybble="6.3-6.4" title="Delay on Multi-Use" comment="This will set how long the switch takes to pop up after the timer expires on a Timed Multi-Use switch." requirednybble="7.4,10.4" requiredval="0, 1">
+      <entry value="0">Instantly</entry>
+      <entry value="2">Short Delay</entry>
+      <entry value="3">Long Delay</entry>
+      <entry value="1">Very Long Delay</entry>
+    </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
+    <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
+    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10.4" requiredval="0" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Disappears if Multi-Use is set -->
+    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+  </sprite> <!-- #41: P-Switch -->
 
   <sprite id="42" name="!-Switch" sizehacks="True" notes="This switch is similar to the ?-Switch, but it has the additional effect of changing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
     <dependency notes="Activates 'Red Block Outline A/B' tiles."/>
