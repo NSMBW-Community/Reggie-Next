@@ -863,6 +863,14 @@ def LoadEntranceNames(reload_=False):
                 id_, name = line.strip().split(':')
                 names[int(id_)] = name
 
+        if os.path.exists(os.path.join(os.path.dirname(path), 'entrances.png')):
+            ei = []
+            src = QtGui.QPixmap(os.path.join(os.path.dirname(path), 'entrances.png'))
+            img_count = (src.width() // 24) + (1 if src.width() % 24 != 0 else 0)
+            for i in range(img_count):
+                ei.append(src.copy(i * 24, 0, 24, 24))
+            globals_.EntranceImages = ei
+
     globals_.EntranceTypeNames = collections.OrderedDict()
     for idx in names:
         globals_.EntranceTypeNames[idx] = globals_.trans.string('EntranceDataEditor', 28, '[id]', idx, '[name]', names[idx])

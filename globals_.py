@@ -18,6 +18,7 @@ DrawEntIndicators = False
 EditActions = None
 EnablePadding = False
 EntranceTypeNames = None
+EntranceImages = None
 EntrancesFrozen = False
 ErrMsg = ''
 FileActions = None

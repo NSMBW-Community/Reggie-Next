@@ -2445,7 +2445,6 @@ class EntranceItem(LevelEditorItem):
     instanceDef = InstanceDefinition_EntranceItem
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     RoundedRect = QtCore.QRectF(1, 1, 22, 22)
-    EntranceImages = None
 
     class AuxEntranceItem(QtWidgets.QGraphicsItem):
         """
@@ -2536,12 +2535,14 @@ class EntranceItem(LevelEditorItem):
         """
         Creates an entrance with specific data
         """
-        if EntranceItem.EntranceImages is None:
+        if globals_.EntranceImages is None:
+            print('Loading entrance images')
             ei = []
             src = QtGui.QPixmap(os.path.join('reggiedata', 'entrances.png'))
-            for i in range(18):
+            img_count = (src.width() // 24) + (1 if src.width() % 24 != 0 else 0)
+            for i in range(img_count):
                 ei.append(src.copy(i * 24, 0, 24, 24))
-            EntranceItem.EntranceImages = ei
+            globals_.EntranceImages = ei
 
         LevelEditorItem.__init__(self)
 
@@ -2669,28 +2670,7 @@ class EntranceItem(LevelEditorItem):
         else:
             painter.drawRect(self.RoundedRect)
 
-        icontype = 0
-        enttype = self.enttype
-        if enttype == 0 or enttype == 1: icontype = 1  # normal
-        if enttype == 2: icontype = 2  # door exit
-        if enttype == 3: icontype = 4  # pipe up
-        if enttype == 4: icontype = 5  # pipe down
-        if enttype == 5: icontype = 6  # pipe left
-        if enttype == 6: icontype = 7  # pipe right
-        if enttype == 8: icontype = 12  # ground pound
-        if enttype == 9: icontype = 13  # sliding
-        # 0F/15 is unknown?
-        if enttype == 16: icontype = 8  # mini pipe up
-        if enttype == 17: icontype = 9  # mini pipe down
-        if enttype == 18: icontype = 10  # mini pipe left
-        if enttype == 19: icontype = 11  # mini pipe right
-        if enttype == 20: icontype = 15  # jump out facing right
-        if enttype == 21: icontype = 17  # vine entrance
-        if enttype == 23: icontype = 14  # boss battle entrance
-        if enttype == 24: icontype = 16  # jump out facing left
-        if enttype == 27: icontype = 3  # door entrance
-
-        painter.drawPixmap(0, 0, EntranceItem.EntranceImages[icontype])
+        painter.drawPixmap(0, 0, globals_.EntranceImages[self.enttype])
 
         painter.setFont(self.font)
         painter.drawText(3, 12, str(self.entid))
