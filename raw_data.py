@@ -121,6 +121,10 @@ class RawData:
             self.blocks.append(bytes(4))
 
         while len(self.blocks) > block_count:
+            # Only remove empty blocks
+            if self.blocks[-1] != bytes(4):
+                break
+
             self.blocks.pop(-1)
 
 
