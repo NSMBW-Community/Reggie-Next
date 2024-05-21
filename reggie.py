@@ -2197,9 +2197,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             data = self.defaultDataEditor.data.copy()
 
-        if (id_ == 545): print('blocks before:', data.blocks)
         data.fix_size_if_needed(id_)
-        if (id_ == 545): print('blocks after:', data.blocks)
 
         spr = SpriteItem(id_, x, y, data)
         spr.positionChanged = self.HandleSprPosChange

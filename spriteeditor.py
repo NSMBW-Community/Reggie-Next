@@ -5,7 +5,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 
 import globals_
 from levelitems import SpriteItem, ListWidgetItem_SortsByOther
-from raw_editor import RawEditor, RawData
+from raw_editor import RawEditor, RawData, FormattedLineEdit
 from ui import GetIcon
 from dirty import SetDirty
 import common
@@ -406,7 +406,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         parent = None  # SpriteEditorWidget: the widget this belongs to
         idtype = None  # str: the idtype of this property
 
-        def retrieve(self, data: RawData, bits: list[int] = None, block: int = None) -> int:
+        def retrieve(self, data: RawData, bits: list[list[int]] = None, block: int = None) -> int:
             """
             Extracts the value from the specified bit(s). Bit numbering is ltr BE
             and starts at 1.
@@ -1569,6 +1569,292 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             return self.insertvalue(data, value)
 
 
+    class DynamicBlockValuesPropertyDecoder(PropertyDecoder):
+        """
+        Class that decodes/encodes sprite data to/from a row of dualboxes
+        """
+
+        def __init__(self, title, comment, required, advanced, comment2, commentAdv, layout, row, parent, block: int = 1, block_count: int = 1):
+            """
+            Creates the widget
+            """
+            super().__init__()
+
+            assert block > 0
+
+            self._block_count = block_count
+            self._block_data_offset = 0
+
+            self.bit = [(0, 32)]
+            self.block = block
+            self.required = required
+            self.advanced = advanced
+            self.parent = parent
+            self.layout = layout
+            self.row = row
+            self.comment = comment
+            self.comment2 = comment2
+            self.commentAdv = commentAdv
+            self.bitnum = self.bit[0][1] - self.bit[0][0]
+            self.startbit = self.bit[0][0]
+
+            self._labels = []
+            self._widgets = []
+            dbv_main_layout = QtWidgets.QGridLayout()
+            dbv_main_layout.setContentsMargins(0, 0, 0, 0)
+
+            self._dbv_content_layout = QtWidgets.QGridLayout()
+            self._dbv_content_layout.setContentsMargins(0, 0, 0, 0)
+
+            for _ in range(self._block_count):
+                self._create_block()
+
+            title_label = QtWidgets.QLabel(title + ':')
+            layout.addWidget(title_label, row, 0, QtCore.Qt.AlignRight | QtCore.Qt.AlignTop)
+
+            dbv_widget = QtWidgets.QWidget()
+            dbv_widget.setLayout(dbv_main_layout)
+
+            dbv_widget_content_widget = QtWidgets.QWidget()
+            dbv_widget_content_widget.setLayout(self._dbv_content_layout)
+            dbv_main_layout.addWidget(dbv_widget_content_widget, 0, 0)
+
+            button_group_layout = QtWidgets.QGridLayout()
+            button_group_layout.setContentsMargins(0, 0, 0, 0)
+            button_group_layout.setSpacing(10)
+
+            add_button = QtWidgets.QPushButton('Add')
+            add_button.clicked.connect(self._add_block)
+            button_group_layout.addWidget(add_button, 0, 0)
+
+            remove_button = QtWidgets.QPushButton('Remove')
+            remove_button.clicked.connect(self._remove_block)
+            button_group_layout.addWidget(remove_button, 0, 1)
+
+            button_group_widget = QtWidgets.QWidget()
+            button_group_widget.setLayout(button_group_layout)
+            dbv_main_layout.addWidget(button_group_widget, 1, 0)
+
+            layout.addWidget(dbv_widget, row, 1)
+
+            col = 3
+            if comment is not None:
+                button_com = QtWidgets.QToolButton()
+                button_com.setIcon(GetIcon('setting-comment'))
+                button_com.setStyleSheet("border-radius: 50%")
+                button_com.clicked.connect(self.ShowComment)
+                button_com.setAutoRaise(True)
+
+                layout.addWidget(button_com, row, col)
+                col += 1
+
+            if comment2 is not None:
+                button_com2 = QtWidgets.QToolButton()
+                button_com2.setIcon(GetIcon('setting-comment2'))
+                button_com2.setStyleSheet("border-radius: 50%")
+                button_com2.clicked.connect(self.ShowComment2)
+                button_com2.setAutoRaise(True)
+
+                layout.addWidget(button_com2, row, col)
+                col += 1
+
+            if commentAdv is not None:
+                button_adv = QtWidgets.QToolButton()
+                button_adv.setIcon(GetIcon('setting-comment-adv'))
+                button_adv.setStyleSheet("border-radius: 50%")
+                button_adv.clicked.connect(self.ShowAdvancedComment)
+                button_adv.setAutoRaise(True)
+
+                layout.addWidget(button_adv, row, col)
+
+        def _create_block(self) -> FormattedLineEdit:
+            row = self._dbv_content_layout.rowCount()
+
+            label = QtWidgets.QLabel('Block ' + str(row) + ':')
+            self._dbv_content_layout.addWidget(label, row, 0)
+            self._labels.append(label)
+
+            hex_edit = FormattedLineEdit(RawData.Format.Extended.value)
+            hex_edit.data_edited.connect(self._handle_data_changed)
+            self._widgets.append(hex_edit)
+            self._dbv_content_layout.addWidget(hex_edit, row, 1)
+
+            return hex_edit
+
+        def _add_block(self) -> None:
+            """
+            Adds a block to the widget
+            """
+            self._create_block()
+
+            self._block_count += 1
+            self._block_data_offset += 1
+
+            self._handle_data_changed()
+
+        def _remove_block(self) -> None:
+            """
+            Removes a block from the widget
+            """
+            if self._block_count == 1:
+                return
+
+            label = self._labels.pop()
+            label.deleteLater()
+
+            hex_edit = self._widgets.pop()
+            hex_edit.deleteLater()
+
+            self._block_count -= 1
+            self._block_data_offset -= 1
+
+            self._handle_data_changed()
+
+        def _handle_data_changed(self) -> None:
+            """
+            Handles the data being changed
+            """
+            self.updateData.emit(self)
+
+        def _fix_block_size(self, data: RawData) -> None:
+            while self._block_data_offset < 0:
+                data.blocks.pop(-1)
+                self._block_data_offset += 1
+
+            while self._block_data_offset > 0:
+                data.blocks.append(bytes(4))
+                self._block_data_offset -= 1
+
+        def update(self, data: RawData, first: bool = False) -> None:
+            """
+            Updates the value shown by the widget
+            """
+            self._fix_block_size(data)
+            self.checkReq(data, first)
+
+            for i in range(self._block_count):
+                value = data.blocks[self.block + i - 1]
+                self._widgets[i].blockSignals(True)
+                self._widgets[i].setText(value.hex())
+                self._widgets[i].blockSignals(False)
+
+        def assign(self, data: RawData) -> RawData:
+            """
+            Assigns the value states to the data
+            """
+            self._fix_block_size(data)
+
+            for i in range(self._block_count):
+                value = bytes.fromhex(self._widgets[i].text())
+
+                if len(value) != 4:
+                    value = bytes(4)
+                    self._widgets[i].setText(value.hex())
+
+                data.blocks[self.block + i - 1] = value
+
+            return data
+
+
+
+
+
+
+
+
+
+
+
+    class HexValuePropertyDecoder(PropertyDecoder):
+        """
+        Class that decodes/encodes sprite data to/from a spinbox
+        """
+
+        def __init__(self, title, bit, comment, required, _, comment2, commentAdv, idtype, layout, row, parent, block: int = 0):
+            """
+            Creates the widget
+            """
+            super().__init__()
+
+            self._nybble_count = (bit[0][1] - bit[0][0]) // 4
+
+            self.widget = FormattedLineEdit(self._nybble_count)
+            self.widget.data_edited.connect(self.HandleValueChanged)
+
+            self.bit = bit
+            self.block = block
+            self.required = required
+            self.parent = parent
+            self.comment = comment
+            self.comment2 = comment2
+            self.commentAdv = commentAdv
+            self.idtype = idtype
+            self.layout = layout
+            self.row = row
+            self.prev_value = None
+
+            label = QtWidgets.QLabel(title + ':')
+
+            layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
+
+            layout.addWidget(self.widget, row, 1, 1, 2)
+
+            col = 3
+            if comment is not None:
+                button_com = QtWidgets.QToolButton()
+                button_com.setIcon(GetIcon('setting-comment'))
+                button_com.setStyleSheet("border-radius: 50%")
+                button_com.clicked.connect(self.ShowComment)
+                button_com.setAutoRaise(True)
+
+                layout.addWidget(button_com, row, col)
+                col += 1
+
+            if comment2 is not None:
+                button_com2 = QtWidgets.QToolButton()
+                button_com2.setIcon(GetIcon('setting-comment2'))
+                button_com2.setStyleSheet("border-radius: 50%")
+                button_com2.clicked.connect(self.ShowComment2)
+                button_com2.setAutoRaise(True)
+
+                layout.addWidget(button_com2, row, col)
+                col += 1
+
+            if commentAdv is not None:
+                button_adv = QtWidgets.QToolButton()
+                button_adv.setIcon(GetIcon('setting-comment-adv'))
+                button_adv.setStyleSheet("border-radius: 50%")
+                button_adv.clicked.connect(self.ShowAdvancedComment)
+                button_adv.setAutoRaise(True)
+
+                layout.addWidget(button_adv, row, col)
+
+        def update(self, data, first=False):
+            """
+            Updates the value shown by the widget
+            """
+            # check if requirements are met
+            self.checkReq(data, first)
+
+            value = self.retrieve(data)
+            self.widget.setText(f'{value:0{self._nybble_count}X}')
+
+        def assign(self, data):
+            """
+            Assigns the selected value to the data
+            """
+            return self.insertvalue(data, int(self.widget.text(), 16))
+
+        def HandleValueChanged(self):
+            """
+            Handle the value changing in the spinbox
+            """
+            self.updateData.emit(self)
+
+
+
+
+
     def setSprite(self, type_, reset: bool = False, initial_data: RawData = None) -> None:
         """
         Change the sprite type used by the data editor
@@ -1764,6 +2050,15 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             elif f[0] == 7:
                 nf = SpriteEditorWidget.MultiDualboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self, f[-1])
+
+            elif f[0] == 8:
+                block_count = 1
+                if initial_data is not None:
+                    block_count += len(initial_data.blocks) - f[-1]
+                nf = SpriteEditorWidget.DynamicBlockValuesPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], layout, row, self, f[-1], block_count = block_count)
+
+            elif f[0] == 9:
+                nf = SpriteEditorWidget.HexValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self, f[-1])
 
             nf.updateData.connect(self.HandleFieldUpdate)
             fields.append(nf)

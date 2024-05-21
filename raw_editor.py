@@ -30,6 +30,7 @@ class FormattedLineEdit(QLineEdit):
 
 
     def setText(self, text: str) -> None:
+        text = text.replace('0x', '')
         text = text.replace(' ', '')
         super().setText((' '.join(text[i:i + 4] for i in range(0, len(text), 4))).strip())
         self._last_good_text = text
@@ -37,7 +38,7 @@ class FormattedLineEdit(QLineEdit):
 
 
     def _text_edited(self, text: str) -> None:
-        if self._is_raw_data_valid(text):
+        if self._is_raw_data_valid(text.replace(' ', '')):
             self.data_edited.emit()
             self.setStyleSheet('')
 
@@ -157,7 +158,7 @@ class NewSpriteRawEditor(QWidget):
             self._stack.removeWidget(self._stack.widget(0))
 
         for i in range(size):
-            w = FormattedLineEdit(8)
+            w = FormattedLineEdit(RawData.Format.Extended.value)
             self._stack.addWidget(w)
             w.data_edited.connect(lambda: self.data_edited.emit(self.data))
 
