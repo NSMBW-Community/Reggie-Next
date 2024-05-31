@@ -164,12 +164,14 @@ class Level_NSMBW(AbstractLevel):
 
             course, L0, L1, L2 = area.save()
 
-            if course is not None:
-                newArchive['course/course%d.bin' % area.areanum] = course
+            # Layers 0 and 2 are optional, but the game assumes that the course
+            # file and layer 1 will always exist (see dBg_c::CheckExistLayer())
+            newArchive['course/course%d.bin' % area.areanum] = course
+            newArchive['course/course%d_bgdatL1.bin' % area.areanum] = L1
+
             if L0 is not None:
                 newArchive['course/course%d_bgdatL0.bin' % area.areanum] = L0
-            if L1 is not None:
-                newArchive['course/course%d_bgdatL1.bin' % area.areanum] = L1
+
             if L2 is not None:
                 newArchive['course/course%d_bgdatL2.bin' % area.areanum] = L2
 
@@ -601,13 +603,7 @@ class Area:
         # Adjust block counts for extended sprites
         for sprite in self.sprites:
             sprite: SpriteItem # type hint
-            block_count = globals_.Sprites[sprite.type].extendedSettings
-            if block_count > 0:
-                current_block_count = len(sprite.spritedata.blocks)
-                if current_block_count > block_count:
-                    sprite.spritedata.blocks = sprite.spritedata.blocks[:block_count]
-                elif current_block_count < block_count:
-                    sprite.spritedata.blocks = sprite.spritedata.blocks + [bytes(4)] * (block_count-current_block_count)
+            sprite.spritedata.fix_size_if_needed(sprite.type)
 
 
     def LoadLoadedSprites(self):
@@ -850,14 +846,14 @@ class Area:
 
             if sprite.spritedata.format == RawData.Format.Extended:
                 sprite.spritedata.original = sprite.spritedata[0:2] + len(self.spriteSettings).to_bytes(4, 'big') + sprite.spritedata[6:]
-                self.spriteSettings.append(sprite.spritedata.blocks)
+                self.spriteSettings.append(sprite.spritedata.optimized.blocks)
 
         self.blocks[3] = struct.pack('>xxHHxx', self.unkVal1, self.unkVal2)
 
         def SaveOneSetting(length, settingArray):
             data = struct.pack('>I', length)
-            for setting in settingArray:
-                data += setting
+            for sett in settingArray:
+                data += sett
             return data
 
         if len(self.spriteSettings) > 0:
@@ -866,7 +862,7 @@ class Area:
             settings = []
             offsets = []
 
-            currentOffset = 12 + 4*len(self.spriteSettings)
+            currentOffset = 12 + 4 * len(self.spriteSettings)
             for setting in self.spriteSettings:
                 oneSetting = SaveOneSetting(len(setting), setting)
                 settings.append(oneSetting)

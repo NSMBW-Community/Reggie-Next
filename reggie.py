@@ -1937,10 +1937,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
                         objy = int(split[3])
                         data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10]]))
 
-                        newitem = self.CreateSprite(objx, objy, int(split[1]), RawData(
-                            data,
-                            *extended_settings,
-                            format = RawData.Format.Extended if is_extended else RawData.Format.Vanilla))
+                        newitem = self.CreateSprite(
+                            objx,
+                            objy,
+                            int(split[1]),
+                            RawData(
+                                data,
+                                *extended_settings,
+                                format = RawData.Format.Extended if is_extended else RawData.Format.Vanilla
+                            )
+                        )
                         sprites.append(newitem)
 
             except ValueError:
@@ -2189,7 +2195,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if self.defaultDataEditor.spritetype != id_:
                 raise ValueError("The default data editor was configured for sprite id %d while trying to use data for sprite id %d" % (self.defaultDataEditor.spritetype, id_))
 
-            data = self.defaultDataEditor.data
+            data = self.defaultDataEditor.data.copy()
+
+        data.fix_size_if_needed(id_)
 
         spr = SpriteItem(id_, x, y, data)
         spr.positionChanged = self.HandleSprPosChange

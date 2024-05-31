@@ -96,7 +96,11 @@ class RawData:
 
 
     def copy(self) -> 'RawData':
-        return RawData(self._original, *self._blocks, format = self._format)
+        return RawData(
+            self._original,
+            *self._blocks,
+            format = self._format
+        )
 
 
     @staticmethod
@@ -108,3 +112,26 @@ class RawData:
             *(bytes(4) for _ in range(extended_settings)),
             format = RawData.Format.Extended if extended_settings else RawData.Format.Vanilla,
         )
+
+
+    def fix_size_if_needed(self, sprite_id: int) -> None:
+        block_count = globals_.Sprites[sprite_id].extendedSettings
+
+        while len(self.blocks) < block_count:
+            self.blocks.append(bytes(4))
+
+        while len(self.blocks) > block_count:
+            # Only remove empty blocks
+            if self.blocks[-1] != bytes(4):
+                break
+
+            self.blocks.pop(-1)
+
+
+    @property
+    def optimized(self) -> 'RawData':
+        copy = self.copy()
+        while copy.blocks and copy.blocks[-1] == bytes(4):
+            copy.blocks.pop(-1)
+
+        return copy

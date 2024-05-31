@@ -450,8 +450,19 @@ class SpriteDefinition:
         """
         self.fields = []
         fields = self.fields
-        allowed = ['checkbox', 'list', 'value', 'bitfield', 'multibox', 'dualbox',
-                   'dependency', 'external', 'multidualbox']
+        allowed = [
+            'checkbox',
+            'list',
+            'value',
+            'bitfield',
+            'multibox',
+            'dualbox',
+            'dependency',
+            'external',
+            'multidualbox',
+            'dynamicblockvalues',
+            'hexvalue'
+        ]
 
         for field in elem:
             if field.tag not in allowed:
@@ -599,7 +610,18 @@ class SpriteDefinition:
 
                 fields.append((7, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment, block))
 
-    def parseBits(self, nybble_val):
+            elif field.tag == 'dynamicblockvalues':
+                fields.append((8, attribs['title'], comment, required, advanced, comment2, advancedcomment, idtype, block))
+
+            elif field.tag == 'hexvalue':
+                bit, _ = self.parseBits(attribs.get("nybble"))
+
+                round_bit0 = bit[0][0] // 4 * 4 + 1
+                round_bit1 = bit[0][1] // 4 * 4 + 1
+
+                fields.append((9, attribs['title'], [(round_bit0, round_bit1)], comment, required, advanced, comment2, advancedcomment, block))
+
+    def parseBits(self, nybble_val: str) -> tuple[list[tuple[int, int]], int]:
         """
         Parses a description of the bits a setting affects into a tuple of a
         list of ranges and the number of possible values. Ranges include the
