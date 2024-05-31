@@ -17,6 +17,7 @@ from translation import ReggieTranslation
 from libs import lh
 from misc2 import LevelViewWidget
 from levelitems import Path, CommentItem
+from raw_data import RawData
 
 ################################################################################
 ################################################################################
@@ -449,8 +450,19 @@ class SpriteDefinition:
         """
         self.fields = []
         fields = self.fields
-        allowed = ['checkbox', 'list', 'value', 'bitfield', 'multibox', 'dualbox',
-                   'dependency', 'external', 'multidualbox']
+        allowed = [
+            'checkbox',
+            'list',
+            'value',
+            'bitfield',
+            'multibox',
+            'dualbox',
+            'dependency',
+            'external',
+            'multidualbox',
+            'dynamicblockvalues',
+            'hexvalue'
+        ]
 
         for field in elem:
             if field.tag not in allowed:
@@ -465,7 +477,7 @@ class SpriteDefinition:
             else:
                 title = "NO TITLE GIVEN!"
 
-            advanced = attribs.get("advanced", "False") == "True"
+            advanced = attribs.get("advanced", "False").lower() == "true"
             comment = comment2 = advancedcomment = required = idtype = None
 
             if 'comment' in attribs:
@@ -476,6 +488,22 @@ class SpriteDefinition:
 
             if 'advancedcomment' in attribs:
                 advancedcomment = globals_.trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['advancedcomment'])
+
+
+            if not field.tag == 'dependency':
+                if "extended" in elem.attrib and elem.attrib["extended"].lower() == "true":
+                    block = attribs.get("block", None)
+
+                    if block:
+                        block = int(block)
+                        if block <= 0:
+                            raise ValueError("Extended spritedata need block values >= 1")
+
+                    else:
+                        block = 0
+
+                else:
+                    block = 0
 
             if 'requirednybble' in attribs:
                 bit_ranges, _ = self.parseBits(attribs.get("requirednybble"))
@@ -489,6 +517,15 @@ class SpriteDefinition:
                 else:
                     vals = [None] * len(bit_ranges)
 
+                if 'requiredblock' in attribs:
+                    blocks = [abs(int(x.strip())) for x in attribs['requiredblock'].split(',')] if attribs['requiredblock'] else [0] * len(bit_ranges)
+
+                    if len(blocks) != len(bit_ranges):
+                        raise ValueError("Required bits and blocks have different lengths.")
+                    
+                else:
+                    blocks = [0] * len(bit_ranges)
+
                 # The associated values are a comma-separated list of values or
                 # (inclusive) ranges.
                 for bit_range, sval in zip(bit_ranges, vals):
@@ -500,7 +537,7 @@ class SpriteDefinition:
                     else:
                         a, b = map(int, sval.split('-'))
 
-                    required.append(((bit_range,), (a, b + 1)))
+                    required.append(((bit_range,), (a, b + 1), blocks.pop(0)))
 
             if 'idtype' in attribs:
                 idtype = attribs['idtype']
@@ -513,7 +550,7 @@ class SpriteDefinition:
                 bit, _ = self.parseBits(attribs.get("nybble"))
                 mask = int(attribs.get('mask', 1))
 
-                fields.append((0, attribs['title'], bit, mask, comment, required, advanced, comment2, advancedcomment))
+                fields.append((0, attribs['title'], bit, mask, comment, required, advanced, comment2, advancedcomment, block))
 
             elif field.tag == 'list':
                 bit, _ = self.parseBits(attribs.get("nybble"))
@@ -525,28 +562,28 @@ class SpriteDefinition:
                     entries.append((int(e.attrib['value']), e.text))
 
                 model = SpriteDefinition.ListPropertyModel(entries)
-                fields.append((1, title, bit, model, comment, required, advanced, comment2, advancedcomment, idtype))
+                fields.append((1, title, bit, model, comment, required, advanced, comment2, advancedcomment, idtype, block))
 
             elif field.tag == 'value':
                 bit, max_ = self.parseBits(attribs.get("nybble"))
 
-                fields.append((2, attribs['title'], bit, max_, comment, required, advanced, comment2, advancedcomment, idtype))
+                fields.append((2, attribs['title'], bit, max_, comment, required, advanced, comment2, advancedcomment, idtype, block))
 
             elif field.tag == 'bitfield':
                 startbit = int(attribs['startbit'])
                 bitnum = int(attribs['bitnum'])
 
-                fields.append((3, attribs['title'], startbit, bitnum, comment, required, advanced, comment2, advancedcomment))
+                fields.append((3, attribs['title'], startbit, bitnum, comment, required, advanced, comment2, advancedcomment, block))
 
             elif field.tag == 'multibox':
                 bit, _ = self.parseBits(attribs.get("nybble"))
 
-                fields.append((4, attribs['title'], bit, comment, required, advanced, comment2, advancedcomment))
+                fields.append((4, attribs['title'], bit, comment, required, advanced, comment2, advancedcomment, block))
 
             elif field.tag == 'dualbox':
                 bit, _ = self.parseBits(attribs.get("nybble"))
 
-                fields.append((5, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
+                fields.append((5, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment, block))
 
             elif field.tag == 'dependency':
                 type_dict = {'required': 0, 'suggested': 1}
@@ -565,15 +602,26 @@ class SpriteDefinition:
                 bit, _ = self.parseBits(attribs.get("nybble"))
                 type_ = attribs['type']
 
-                fields.append((6, title, bit, comment, required, advanced, comment2, advancedcomment, type_))
+                fields.append((6, title, bit, comment, required, advanced, comment2, advancedcomment, type_, block))
 
             elif field.tag == 'multidualbox':
                 # multibox but with dualboxes instead of checkboxes
                 bit, _ = self.parseBits(attribs.get("nybble"))
 
-                fields.append((7, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
+                fields.append((7, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment, block))
 
-    def parseBits(self, nybble_val):
+            elif field.tag == 'dynamicblockvalues':
+                fields.append((8, attribs['title'], comment, required, advanced, comment2, advancedcomment, idtype, block))
+
+            elif field.tag == 'hexvalue':
+                bit, _ = self.parseBits(attribs.get("nybble"))
+
+                round_bit0 = bit[0][0] // 4 * 4 + 1
+                round_bit1 = bit[0][1] // 4 * 4 + 1
+
+                fields.append((9, attribs['title'], [(round_bit0, round_bit1)], comment, required, advanced, comment2, advancedcomment, block))
+
+    def parseBits(self, nybble_val: str) -> tuple[list[tuple[int, int]], int]:
         """
         Parses a description of the bits a setting affects into a tuple of a
         list of ranges and the number of possible values. Ranges include the
@@ -696,9 +744,10 @@ def LoadSpriteData():
                 yoshiNotes = globals_.trans.string('SpriteDataEditor', 9, '[notes]',
                                                 sprite.get('yoshinotes'))
 
-            noyoshi = sprite.get('noyoshi', 'False') == "True"
-            asm = sprite.get('asmhacks', 'False') == "True"
-            size = sprite.get('sizehacks', 'False') == "True"
+            noyoshi = sprite.get('noyoshi', 'False').lower() == "true"
+            asm = sprite.get('asmhacks', 'False').lower() == "true"
+            size = sprite.get('sizehacks', 'False').lower() == "true"
+            extendedSettings = sprite.get('extended', 'False').lower() == "true"
 
             sdef = SpriteDefinition()
             sdef.id = spriteid
@@ -710,6 +759,15 @@ def LoadSpriteData():
             sdef.noyoshi = noyoshi
             sdef.asm = asm
             sdef.size = size
+            sdef.extendedSettings = 0
+            if extendedSettings:
+                block_count = 1
+                for elem in sprite:
+                    if 'block' in elem.attrib:
+                        block_count = max(block_count, int(elem.attrib['block']))
+
+                sdef.extendedSettings = block_count
+
             sdef.dependencies = []
             sdef.dependencynotes = None
 
@@ -1803,11 +1861,11 @@ class PreferencesDialog(QtWidgets.QDialog):
                 globals_.RealViewEnabled = False  # Disable so the zone looks 'plain'
 
                 # Sprite [38] at (11, 4)
-                sprite = globals_.mainWindow.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(8), add_to_scene=False)
+                sprite = globals_.mainWindow.CreateSprite(11 * 16, 4 * 16, 38, data = RawData.from_sprite_id(38), add_to_scene=False)
                 scene.addItem(sprite)
 
                 # Sprite [53] at (1, 6)
-                sprite = globals_.mainWindow.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(8), add_to_scene=False)
+                sprite = globals_.mainWindow.CreateSprite(1 * 16, 6 * 16, 53, data = RawData.from_sprite_id(53), add_to_scene=False)
                 scene.addItem(sprite)
 
                 # Entrance [0] at (13, 8)

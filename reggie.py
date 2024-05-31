@@ -54,6 +54,8 @@ except (ImportError, NameError):
     raise Exception(errormsg)
 Qt = QtCore.Qt
 
+from raw_data import RawData
+
 version = map(int, QtCore.QT_VERSION_STR.split('.'))
 min_version = "5.11"
 pqt_min = map(int, min_version.split('.'))
@@ -1700,16 +1702,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
             type_obj = ObjectItem
             type_spr = SpriteItem
 
+            to_be_deleted = []
             for obj in selitems:
                 if ii(obj, type_obj):
-                    obj.delete()
-                    obj.setSelected(False)
-                    self.scene.removeItem(obj)
+                    to_be_deleted.append(obj)
                     clipboard_o.append(obj)
                 elif ii(obj, type_spr):
-                    obj.delete()
-                    obj.setSelected(False)
-                    self.scene.removeItem(obj)
+                    to_be_deleted.append(obj)
                     clipboard_s.append(obj)
 
             if clipboard_o or clipboard_s:
@@ -1718,6 +1717,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.actions['paste'].setEnabled(True)
                 self.clipboard = self.encodeObjects(clipboard_o, clipboard_s)
                 self.systemClipboard.setText(self.clipboard)
+
+            for obj in to_be_deleted:
+                obj.delete()
+                obj.setSelected(False)
+                self.scene.removeItem(obj)
 
         self.levelOverview.update()
         self.SelectionUpdateFlag = False
@@ -1766,11 +1770,27 @@ class ReggieWindow(QtWidgets.QMainWindow):
             convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
             item.tileset, item.type, item.layer, item.objx, item.objy, item.width, item.height))
 
+        globals_.Area.spriteSettings = []
+        for sprite in globals_.Area.sprites:
+            sprite: SpriteItem # type hint
+
+            if sprite.spritedata.format == RawData.Format.Extended:
+                sprite.spritedata.original = sprite.spritedata[0:2] + len(globals_.Area.spriteSettings).to_bytes(4, 'big') + sprite.spritedata[6:]
+                globals_.Area.spriteSettings.append(sprite.spritedata.blocks)
+
         # get sprites
         for item in clipboard_s:
             data = item.spritedata
-            convclip.append('1:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d' % (
-            item.type, item.objx, item.objy, data[0], data[1], data[2], data[3], data[4], data[5], data[7]))
+
+            is_extended = globals_.Sprites[item.type].extendedSettings
+            extended_id = int.from_bytes(data[2:6], 'big')
+            extended_settings = globals_.Area.spriteSettings[extended_id] if is_extended else []
+            extended_string = ':' if len(extended_settings) > 0 else ''
+            for block in extended_settings:
+                extended_string += block.hex()
+
+            clip_string = '1:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d' % (item.type, item.objx, item.objy, data[0], data[1], data[2], data[3], data[4], data[5], data[7])
+            convclip.append(clip_string + extended_string)
 
         convclip.append('%')
         return '|'.join(convclip)
@@ -1909,14 +1929,25 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 elif split[0] == '1':
                     # sprite
-                    if len(split) != 11: continue
+                    if 11 <= len(split) <= 12:
+                        is_extended = True if len(split) == 12 else False
+                        extended_settings = [bytes.fromhex(split[11][i:i+8]) for i in range(0, len(split[11]), 8)] if is_extended else []
 
-                    objx = int(split[2])
-                    objy = int(split[3])
-                    data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10]]))
+                        objx = int(split[2])
+                        objy = int(split[3])
+                        data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10]]))
 
-                    newitem = self.CreateSprite(objx, objy, int(split[1]), data)
-                    sprites.append(newitem)
+                        newitem = self.CreateSprite(
+                            objx,
+                            objy,
+                            int(split[1]),
+                            RawData(
+                                data,
+                                *extended_settings,
+                                format = RawData.Format.Extended if is_extended else RawData.Format.Vanilla
+                            )
+                        )
+                        sprites.append(newitem)
 
             except ValueError:
                 # an int() probably failed somewhere
@@ -2164,7 +2195,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if self.defaultDataEditor.spritetype != id_:
                 raise ValueError("The default data editor was configured for sprite id %d while trying to use data for sprite id %d" % (self.defaultDataEditor.spritetype, id_))
 
-            data = self.defaultDataEditor.data
+            data = self.defaultDataEditor.data.copy()
+
+        data.fix_size_if_needed(id_)
 
         spr = SpriteItem(id_, x, y, data)
         spr.positionChanged = self.HandleSprPosChange
@@ -2183,7 +2216,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     # Only values and lists can be idtypes
                     continue
 
-                idtype = field[-1]
+                idtype = field[-2]
                 if idtype is None:
                     # Only look at settings with idtypes
                     continue
@@ -3384,6 +3417,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
     def ReloadSpritedata(self):
         LoadSpriteData()
 
+        # Adjust block counts for extended sprites
+        for sprite in globals_.Area.sprites:
+            sprite: SpriteItem # type hint
+            block_count = globals_.Sprites[sprite.type].extendedSettings
+            if block_count > 0:
+                current_block_count = len(sprite.spritedata.blocks)
+                if current_block_count > block_count:
+                    sprite.spritedata.blocks = sprite.spritedata.blocks[:block_count]
+                elif current_block_count < block_count:
+                    sprite.spritedata.blocks = sprite.spritedata.blocks + [bytes(4)] * (block_count-current_block_count)
+
         # Reload spritedata editor
         cur_sel_sprite = self.spriteDataEditor.spritetype
         self.spriteDataEditor.setSprite(cur_sel_sprite, True)
@@ -3737,7 +3781,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.CurrentSprite = type
 
         if type != 1000 and type >= 0:
-            self.defaultDataEditor.setSprite(type, initial_data=bytes(10))
+            self.defaultDataEditor.setSprite(
+                type,
+                initial_data = RawData.from_sprite_id(type)
+            )
             self.defaultPropButton.setEnabled(True)
         else:
             self.defaultPropButton.setEnabled(False)

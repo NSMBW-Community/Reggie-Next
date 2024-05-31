@@ -11,6 +11,8 @@ from ui import GetIcon, clipStr
 from dirty import SetDirty
 from undo import MoveItemUndoAction, SimultaneousUndoAction
 
+from raw_data import RawData
+
 class InstanceDefinition:
     """
     ABC for a definition of an instance of a LevelEditorItem class, used for persistence and comparisons
@@ -175,7 +177,15 @@ class InstanceDefinition_SpriteItem(InstanceDefinition):
         return globals_.Area.sprites
 
     def createNew(self):
-        return SpriteItem(self.fields[0][1], self.objx, self.objy, self.fields[1][1])
+        data = RawData.from_sprite_id(self.fields[0][1])
+        data.original = self.fields[1][1]
+
+        return SpriteItem(
+            self.fields[0][1],
+            self.objx,
+            self.objy,
+            data
+        )
 
 
 class InstanceDefinition_EntranceItem(InstanceDefinition):
@@ -1851,7 +1861,7 @@ class SpriteItem(LevelEditorItem):
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     SelectionRect = QtCore.QRectF(0, 0, 23, 23)
 
-    def __init__(self, type_, x, y, data):
+    def __init__(self, type_, x, y, data: RawData):
         """
         Creates a sprite with specific data
         """
@@ -1862,7 +1872,7 @@ class SpriteItem(LevelEditorItem):
         self.type = type_
         self.objx = x
         self.objy = y
-        self.spritedata = data
+        self._spritedata: RawData = data
         self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
         self.ChangingPos = False
 
@@ -1890,6 +1900,17 @@ class SpriteItem(LevelEditorItem):
                 self.objy * 1.5,
             )
         globals_.DirtyOverride -= 1
+
+
+    @property
+    def spritedata(self) -> RawData:
+        return self._spritedata
+
+    @spritedata.setter
+    def spritedata(self, value: RawData):
+        assert isinstance(value, RawData)
+        self._spritedata = value
+
 
     def SetType(self, type_):
         """

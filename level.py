@@ -10,6 +10,8 @@ from levelitems import EntranceItem, SpriteItem, ZoneItem, LocationItem, ObjectI
 from misc2 import DecodeOldReggieInfo
 from spriteeditor import SpriteEditorWidget
 
+from raw_data import RawData
+
 class AbstractLevel:
     """
     Class for an abstract level from any game. Defines the API.
@@ -244,6 +246,7 @@ class Area:
 
         self.unkVal1 = 0
         self.unkVal2 = 0
+        self.spriteSettings = []
 
         self.entrances = []
         self.sprites = []
@@ -316,6 +319,7 @@ class Area:
         del self.defEvents
         del self.unkVal1
         del self.unkVal2
+        del self.spriteSettings
         del self.entrances
         del self.sprites
         del self.bgA
@@ -519,12 +523,30 @@ class Area:
         self.defEvents = defEventsA | defEventsB << 32
 
         """
-        Loads block 4, the unknown maybe-more-general-options block
+        Loads block 4, the unknown maybe-more-general-options block + extended settings
         """
-        optdata2 = self.blocks[3]
+        optdata2 = self.blocks[3][:8]
         optdata2struct = struct.Struct('>xxHHxx')
         data = optdata2struct.unpack(optdata2)
         self.unkVal1, self.unkVal2 = data
+
+        def LoadOneSetting(data):
+            length = struct.unpack('>I', data[:4])[0]
+            settingArray = []
+            for i in range(length):
+                settingArray.append(data[4+4*i:8+4*i])
+            return settingArray
+
+        self.spriteSettings = []
+        if len(self.blocks[3]) <= 8:
+            amountOfSettings = 0
+        else:
+            amountOfSettings = struct.unpack('>I', self.blocks[3][8:12])[0]
+
+        for i in range(amountOfSettings):
+            offset = struct.unpack('>I', self.blocks[3][12+4*i:16+4*i])[0]
+            setting = LoadOneSetting(self.blocks[3][offset:])
+            self.spriteSettings.append(setting)
 
     def LoadEntrances(self):
         """
@@ -557,10 +579,32 @@ class Area:
         # Ignore the last 4 bytes because they are always 0xFFFFFFFF
         for offset in range(0, len(spritedata) - 4, 16):
             data = unpack(spritedata, offset)
-            append(obj(*data))
+            type_, x, y, sd = data
+            is_extended = globals_.Sprites[type_].extendedSettings
+            extended_id = int.from_bytes(sd[2:6], 'big')
+            extended_settings = self.spriteSettings[extended_id] if is_extended else []
+
+            append(
+                obj(
+                    type_,
+                    x,
+                    y,
+                    RawData(
+                        sd,
+                        *extended_settings,
+                        format = RawData.Format.Extended if is_extended else RawData.Format.Vanilla,
+                    )
+                )
+            )
 
         self.sprites = sprites
         self.force_loaded_sprites = self.loaded_sprites - set(sprite.type for sprite in sprites)
+
+        # Adjust block counts for extended sprites
+        for sprite in self.sprites:
+            sprite: SpriteItem # type hint
+            sprite.spritedata.fix_size_if_needed(sprite.type)
+
 
     def LoadLoadedSprites(self):
         """
@@ -794,9 +838,46 @@ class Area:
         )
 
         """
-        Saves block 4, the unknown maybe-more-general-options block
+        Saves block 4, the unknown maybe-more-general-options block + extended settings
         """
+        self.spriteSettings = []
+        for sprite in self.sprites:
+            sprite: SpriteItem # type hint
+
+            if sprite.spritedata.format == RawData.Format.Extended:
+                sprite.spritedata.original = sprite.spritedata[0:2] + len(self.spriteSettings).to_bytes(4, 'big') + sprite.spritedata[6:]
+                self.spriteSettings.append(sprite.spritedata.optimized.blocks)
+
         self.blocks[3] = struct.pack('>xxHHxx', self.unkVal1, self.unkVal2)
+
+        def SaveOneSetting(length, settingArray):
+            data = struct.pack('>I', length)
+            for sett in settingArray:
+                data += sett
+            return data
+
+        if len(self.spriteSettings) > 0:
+            data = struct.pack('>I', len(self.spriteSettings))
+
+            settings = []
+            offsets = []
+
+            currentOffset = 12 + 4 * len(self.spriteSettings)
+            for setting in self.spriteSettings:
+                oneSetting = SaveOneSetting(len(setting), setting)
+                settings.append(oneSetting)
+                offsets.append(currentOffset)
+                currentOffset += len(oneSetting)
+
+            for i in range(len(self.spriteSettings)):
+                data += struct.pack('>I', offsets[i])
+
+            for i in range(len(self.spriteSettings)):
+                data += settings[i]
+
+            self.blocks[3] += data
+
+
 
     def SaveLayer(self, idx):
         """
@@ -1058,7 +1139,7 @@ class Area:
                     # Only values and lists can be idtypes
                     continue
 
-                idtype = field[-1]
+                idtype = field[-2]
                 if idtype is None:
                     # Only look at settings with idtypes
                     continue
@@ -1091,7 +1172,7 @@ class Area:
                 # Only <value> and <list> tags can have id types
                 continue
 
-            idtype = field[-1]
+            idtype = field[-2]
             if idtype is None:
                 # Only look at settings with idtypes
                 continue
