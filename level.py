@@ -162,12 +162,14 @@ class Level_NSMBW(AbstractLevel):
 
             course, L0, L1, L2 = area.save()
 
-            if course is not None:
-                newArchive['course/course%d.bin' % area.areanum] = course
+            # Layers 0 and 2 are optional, but the game assumes that the course
+            # file and layer 1 will always exist (see dBg_c::CheckExistLayer())
+            newArchive['course/course%d.bin' % area.areanum] = course
+            newArchive['course/course%d_bgdatL1.bin' % area.areanum] = L1
+
             if L0 is not None:
                 newArchive['course/course%d_bgdatL0.bin' % area.areanum] = L0
-            if L1 is not None:
-                newArchive['course/course%d_bgdatL1.bin' % area.areanum] = L1
+
             if L2 is not None:
                 newArchive['course/course%d_bgdatL2.bin' % area.areanum] = L2
 
