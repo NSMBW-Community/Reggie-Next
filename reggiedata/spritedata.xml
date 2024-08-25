@@ -2931,6 +2931,7 @@
   </sprite> <!-- #196: Fishbones -->
 
   <sprite id="197" name="Clampy" notes="A clam with tantalizing items inside that will hurt the player if it closes while they are in inside of it.">
+    <dependency notes="Clampies need to be placed inside of a grid space. Otherwise they will not appear during gameplay." />
     <checkbox nybble="11.4" title="Falls" comment="When enabled, the Clampy will be affected by gravity and environmental effects."/>
     <list nybble="12" title="Contains" comment="This determines what item is inside the Clampy." advancedcomment="Values 5 and higher crash the game upon level load.">
       <entry value="0">Nothing</entry>
