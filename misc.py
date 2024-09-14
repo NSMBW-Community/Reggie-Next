@@ -880,7 +880,7 @@ def LoadEntranceNames(reload_=False):
 
     names = collections.OrderedDict()
     for path in paths:
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path, 'r', encoding = 'utf-8') as f:
             for line in f.readlines():
                 id_, name = line.strip().split(':')
                 names[int(id_)] = name
@@ -888,10 +888,17 @@ def LoadEntranceNames(reload_=False):
         if os.path.exists(os.path.join(os.path.dirname(path), 'entrances.png')):
             ei = []
             src = QtGui.QPixmap(os.path.join(os.path.dirname(path), 'entrances.png'))
-            img_count = (src.width() // 24) + (1 if src.width() % 24 != 0 else 0)
+            img_w = src.width()
+            img_w_count = img_w // 24
+            img_count = img_w_count * (src.height() // 24)
             for i in range(img_count):
-                ei.append(src.copy(i * 24, 0, 24, 24))
+                ei.append(src.copy((i * 24) % img_w, (i // img_w_count) * 24, 24, 24))
             globals_.EntranceImages = ei
+
+        for _ in range(len(globals_.EntranceImages), len(names)):
+            img = QtGui.QImage(24, 24, QtGui.QImage.Format_ARGB32_Premultiplied)
+            img.fill(QtGui.QColor(0, 0, 0, 0))
+            globals_.EntranceImages.append(QtGui.QPixmap.fromImage(img))
 
     globals_.EntranceTypeNames = collections.OrderedDict()
     for idx in names:

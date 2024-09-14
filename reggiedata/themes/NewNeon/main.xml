@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<theme
+		format="1.0"
+		name="New Neon"
+		version="1.0"
+		creator="Synel"
+		description="A very dark theme with brightly colored accents."
+		forceUiColor="true"
+		>
+		
+	<colors file="levelview.xml" />
+	
+</theme>

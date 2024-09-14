@@ -2539,9 +2539,10 @@ class EntranceItem(LevelEditorItem):
             print('Loading entrance images')
             ei = []
             src = QtGui.QPixmap(os.path.join('reggiedata', 'entrances.png'))
-            img_count = (src.width() // 24) + (1 if src.width() % 24 != 0 else 0)
+            img_w_count = src.width() // 24
+            img_count = img_w_count * (src.height() // 24)
             for i in range(img_count):
-                ei.append(src.copy(i * 24, 0, 24, 24))
+                ei.append(src.copy(i * 24 % img_w_count, i * 24 // img_w_count, 24, 24))
             globals_.EntranceImages = ei
 
         LevelEditorItem.__init__(self)
