@@ -153,7 +153,7 @@
     <dualbox nybble="7.4" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requirednybble="7.3" requiredval="0"/>
     <dualbox nybble="7.4" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used. The default texture model is the Gold Platform." advanced="True" requirednybble="7.3"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
-    <dualbox nybble="8.4" title1="Starts moving Right" title2="Starts moving Left" comment="This determines which direction the platform will initially start moving in."/>
+    <dualbox nybble="8.4" title1="Starts Moving Right" title2="Starts Moving Left" comment="This determines which direction the platform will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the platform will move."/>
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the platform will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
@@ -194,7 +194,7 @@
     </list>
     <value nybble="12.2-12.4" title="Width" comment="This determines the width of the block. Width should not be used unless [Height] is set to 1 Tile." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requirednybble="9.3-9.4" requiredval="0"/>
     <value nybble="12.2-12.4" title="Width (Buggy)" comment="This determines the width of the block." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requirednybble="9.3-9.4"/>
-    <dualbox nybble="8.4" title1="Starts moving Up" title2="Starts moving Down" comment="This determines which direction the block will initially start moving in."/>
+    <dualbox nybble="8.4" title1="Starts Moving Up" title2="Starts Moving Down" comment="This determines which direction the block will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the block will move."/>
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the block will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated."/>
@@ -210,7 +210,7 @@
     </list>
     <value nybble="12.2-12.4" title="Width" comment="This determines the width of the block. Width should not be used unless [Height] is set to 1 Tile." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requirednybble="9.3-9.4" requiredval="0"/>
     <value nybble="12.2-12.4" title="Width (Buggy)" comment="This determines the width of the block." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requirednybble="9.3-9.4"/>
-    <dualbox nybble="8.4" title1="Starts moving Right" title2="Starts moving Left" comment="This determines which direction the block will initially start moving in."/>
+    <dualbox nybble="8.4" title1="Starts Moving Right" title2="Starts Moving Left" comment="This determines which direction the block will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the block will move."/>
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the block will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated."/>
@@ -282,7 +282,7 @@
     <dualbox nybble="7.4" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requirednybble="7.3" requiredval="0"/>
     <dualbox nybble="7.4" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used." requirednybble="7.3"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
-    <dualbox nybble="8.4" title1="Stars moving Up" title2="Starts moving Down" comment="This determines which direction the platform will initially start moving in."/>
+    <dualbox nybble="8.4" title1="Starts Moving Up" title2="Starts Moving Down" comment="This determines which direction the platform will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the platform will move."/>
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the platform will move." advancedcomment="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
@@ -1252,7 +1252,7 @@
   </sprite> <!-- #89: Incomplete Sprite - 'En_Remocon_Torimochi' -->
 
   <sprite id="90" name="Effect - Wind Physics and Sound" notes="This will generate occasional windy pushbacks and wind sound effects. It is best used in conjunction with the suggested sprites, but they are not required.">
-    <dependency notes="In order to generate sandstorm graphics, [374] Effect - Falling Objects and Wind is required using the Snow setting. To add coins to this effect, [284] Physics Coin Controller must be linked.">
+    <dependency notes="In order to generate sandstorm graphics, [374] Effect - Falling Objects and Wind is required using the Sandstorm setting. To add coins to this effect, [284] Physics Coin Controller must be linked.">
       <suggested sprite="374"/> <!-- Sandstorm Effects -->
       <suggested sprite="284"/> <!-- Add coins -->
     </dependency>
@@ -1264,7 +1264,7 @@
     </list>
     <dualbox nybble="7.4" title1="Blows Right" title2="Blows Left" comment="This determines which direction the wind will blow."/>
     <value nybble="5" title="Time Active" comment="This sets the amount of time that the wind is on."/>
-    <value nybble="6" title="Time Inactive" comment="This sets the amount of time that the wind is off."/>
+    <value nybble="6" title="Time Inactive" comment="This sets the amount of time that the wind is off. Setting this to 0 will enable the wind indefinitely."/>
     <value nybble="11" title="Physics ID" comment="This will pair the Wind Physics with Physics Coin Controller." idtype="Physics"/>
   </sprite> <!-- #90: Effect - Wind Physics and Sound -->
 
@@ -3497,9 +3497,9 @@
   </sprite> <!-- #229: Sand Pillar -->
 
   <sprite id="230" name="Bramball" noyoshi="True" notes="A long-legged enemy with a ball for a body that will flip itself around as it traverses terrain with proper spacing. Rumor has it that if it is struck from below with a Pipe Cannon, a large amount of coins will appear.">
-    <dependency notes="For a Bramball to want to move, he must have solid terrain exactly 4 blocks from his legs."/>
+    <dependency notes="A Bramball must have solid terrain exactly 4 tile and no more than a 1 tile change in elevation to move."/>
     <dualbox nybble="11.4" title1="Slow Movement" title2="Fast Movement" comment="This determines how quickly the Bramball will traverse platforms."/>
-    <list nybble="12.3-12.4" title="Initial Movement" comment="This determines which direction the Bramball will attempt to move first.">
+    <list nybble="12.3-12.4" title="Initial Direction" comment="This determines which direction the Bramball will attempt to move first.">
       <entry value="0">Towards Player</entry>
       <entry value="1">Moves Right</entry>
       <entry value="2">Moves Left</entry>
@@ -5639,12 +5639,9 @@
     </dependency>
   </sprite> <!-- #373: Flashlight Raft Water -->
 
-  <!-- Test if 90 continues to function (at all? / correctly?) if Falling Objects is set to something other than Snow. -->
-  <!-- Test if 374 is required for 90 to generate pushback (90 Only). Test if 90 is required for 374 to generate sandstorm graphics (374 Only). -->
-  <!-- Clean up 90 after finishing research on these questions -->
   <sprite id="374" name="Effect - Snow and Wind" notes="This effect controller will either create falling snow, or it will create a Sandstorm.">
-    <dependency notes="If this sprite is placed more than once in the same Zone, the game will crash. If Sandstorm is selected, you must include [90] Wind Physics and Sound.">
-      <suggested sprite="90"/>
+    <dependency notes="Placing this sprite more than once in the same zone will overlay the effect. If Sandstorm is selected, you must include [90] Wind Physics and Sound for the graphics to appear.">
+      <suggested sprite="90"/> <!-- Wind Physics and Sound -->
     </dependency>
     <dualbox nybble="12.4" title1="Snow" title2="Sandstorm" comment="This determines the functionality of the sprite."/>
   </sprite> <!-- #374: Effect - Falling Objects and Wind -->
@@ -6274,9 +6271,9 @@
   <sprite id="421" name="(Unused) Fake Ghost House Door" noyoshi="True" notes="A stand-alone version of the 'Fake Door' effect from the normal Ghost House Door.">
   </sprite> <!-- #421: (Unused) Fake Ghost House Door -->
 
-  <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
+  <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in the retail game's singleplayer mode where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
     <dependency notes="All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
-    <checkbox nybble="12.4" title="Small Size" comment="Changes the size of the Toad to be small (1 tile large)."/>
+    <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small (1 tile large)."/>
   </sprite> <!-- #422: Toad Needs Help - ? Block -->
 
   <sprite id="423" name="Toad Needs Help - Brick Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
