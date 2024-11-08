@@ -66,6 +66,10 @@ class RawData:
         self._blocks = value
 
 
+    def get_block(self, index: int) -> list[bytes]:
+        return self._blocks[index] if index < len(self._blocks) else [0] * 8
+
+
     @property
     def format(self) -> Format:
         return self._format
