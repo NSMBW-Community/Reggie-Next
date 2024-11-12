@@ -173,8 +173,8 @@
       <entry value="0">Bowser</entry>
       <entry value="1">Mario (P1)</entry>
       <entry value="2">Luigi (P2)</entry>
-      <entry value="3">ToadA (P3)</entry>
-      <entry value="4">ToadB (P4)</entry>
+      <entry value="3">Blue Toad (P3)</entry>
+      <entry value="4">Yellow Toad (P4)</entry>
     </list>
   </sprite> <!-- #16: Bomb Drop Controller -->
 

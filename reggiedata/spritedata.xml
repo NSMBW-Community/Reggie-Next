@@ -2265,8 +2265,8 @@
     <list nybble="9" title="Awarded Player" comment="This determines which player will be awarded with the coin." requirednybble="12" requiredval="9">
       <entry value="0">Mario</entry>
       <entry value="1">Luigi</entry>
-      <entry value="2">ToadA</entry>
-      <entry value="3">ToadB</entry>
+      <entry value="2">Blue Toad</entry>
+      <entry value="3">Yellow Toad</entry>
     </list>
   </sprite> <!-- #147: Coin -->
 
@@ -2610,8 +2610,8 @@
     <list nybble="12.3-12.4" title="Spawns Player in a Bubble" advanced="True" advancedcomment="Unfortunately, this doesn't work as cleanly as it needs to in order to be usable. If the right player doesn't exist when this loads, the game will crash. It could potentially respawn a dead player who has zero lives, or with the multiplayer bubbles deactivated, except that there is no way to only load the players you actually need. Thus, this function is completely and totally unreliable unless requiring all 4 players to play a particular level." requirednybble="10.4" requiredval="0">
       <entry value="0">Spawns Mario</entry>
       <entry value="1">Spawns Luigi</entry>
-      <entry value="2">Spawns ToadA</entry>
-      <entry value="3">Spawns ToadB</entry>
+      <entry value="2">Spawns Blue Toad</entry>
+      <entry value="3">Spawns Yellow Toad</entry>
     </list>
   </sprite> <!-- #171: Mushroom in a Bubble -->
 
