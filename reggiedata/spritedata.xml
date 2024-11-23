@@ -5561,8 +5561,8 @@
     <checkbox nybble="12.4" title="Uses Paths" comment="When enabled, the Raft will follow the assigned Path. Otherwise, the Raft will move slowly to the right."/>
     <value nybble="7" title="Path ID" idtype="Path" requirednybble="12.4" requiredval="1"/>
     <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the Raft will appear at and start moving from." requirednybble="12.4" requiredval="1"/>
+	<checkbox nybble="8.4" title="Reverse Direction" comment="When enabled, the Raft will follow the path in reverse." requirednybble="12.4" requiredval="1"/>
     <dualbox nybble="11.4" title1="Spawns Before Midway" title2="Spawns After Midway" comment="This decides whether the Raft will spawn only before the Midway Flag is activated, or only after."/>
-    <checkbox nybble="8.4" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="When this flag is enabled along with a Path (regardless of the Uses Paths flag), the Raft will go to the indicated Path Node and not move. But, if the Path is set to loop, this doesn't do anything."/>
     <checkbox nybble="9.4" title="Event Activated Flashlight" comment="When enabled, the Flashlight will only be illuminated when the Triggering Event ID is activated. The Flashlight can only be controlled by tilting the controller when it is Event Activated."/> <!-- Appears only if Use Flashlight is active -->
     <value nybble="3.2-4.4" title="Triggering Event ID" comment="The Flashlight will be turned on when this Event ID is activated. The Flashlight can't be deactivated." requirednybble="9.4" requiredval="1" idtype="Triggering Event"/> <!-- Appears only if Use Flashlight and Event Activated Flashlight are active -->
   </sprite> <!-- #368: Path Controlled Flashlight Raft -->
