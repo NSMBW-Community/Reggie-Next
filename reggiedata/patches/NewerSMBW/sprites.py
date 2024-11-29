@@ -1781,17 +1781,14 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
     @staticmethod
     def loadImages():
         if 'MegaBuzzyR' in ImageCache: return
-        buzz = SLib.GetImg('megabuzzy.png', True)
-        ImageCache['MegaBuzzyR'] = QtGui.QPixmap.fromImage(buzz)
-        ImageCache['MegaBuzzyL'] = QtGui.QPixmap.fromImage(buzz.mirrored(True, False))
+        ImageCache['MegaBuzzyR'] = SLib.GetImg('megabuzzy_right.png')
+        ImageCache['MegaBuzzyL'] = SLib.GetImg('megabuzzy_left.png')
         SLib.loadIfNotInImageCache('MegaBuzzyF', 'megabuzzy_front.png')
 
         if 'MegaBuzzyredR' in ImageCache: return
         for style in ('red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'shyguy', 'monty'):
-            buzzy = SLib.GetImg('megabuzzy_%s.png' % style, True)
-            if buzzy is None: return
-            ImageCache['MegaBuzzy%sR' % style] = QtGui.QPixmap.fromImage(buzzy)
-            ImageCache['MegaBuzzy%sL' % style] = QtGui.QPixmap.fromImage(buzzy.mirrored(True, False))
+            ImageCache['MegaBuzzy%sR' % style] = SLib.GetImg('megabuzzy_%s_right.png' % style)
+            ImageCache['MegaBuzzy%sL' % style] = SLib.GetImg('megabuzzy_%s_left.png' % style)
             ImageCache['MegaBuzzy%sF' % style] = SLib.GetImg('megabuzzy_%s_front.png' % style)
 
     def dataChanged(self):
