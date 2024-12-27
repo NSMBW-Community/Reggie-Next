@@ -73,7 +73,7 @@
 	</slot>
 	<slot num="2">
 		<category name="Rocks" sorted="true">
-			<tileset filename="Ghost Rocks" name="Purple Rock (Wavy) (Dark)" />
+			<tileset filename="ghostrocks" name="Purple Rock (Wavy) (Dark)" />
 			<tileset filename="Pa2_darkcave" name="Brown Rock (Newer)" />
 			<tileset filename="Pa2_doukutu_prpl" name="Purple Rock (Very Dark)" />
 			<tileset filename="Pa2_volcanobg" name="Volcano Rock" />
