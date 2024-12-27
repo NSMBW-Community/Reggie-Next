@@ -6021,7 +6021,7 @@
     <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <checkbox nybble="8.4" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox nybble="8.2" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Massive Skewers at all."/>
-    <checkbox nybble="7.4" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="Used in Retail 07-24 as 1, no clear effect."/>
+    <checkbox nybble="7.4" title="Limited sound range" comment="When enabled, the sounds of the Skewer can only be heard within a certain range of the sprite." comment2="It is recommended to always enable this setting to prevent the Skewer from being heard throughout the entire zone. However, if used in a vertical level, this setting should be disabled to help the players time their actions when progressing in the level."/>
   </sprite> <!-- #401: Massive Skewer - Down -->
 
   <sprite id="402" name="Line Controlled ? Block" notes="A variant of the ? Block that will ride along Line objects.">
@@ -6102,7 +6102,7 @@
     <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <checkbox nybble="8.4" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox nybble="8.2" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Massive Skewers at all."/>
-    <checkbox nybble="7.4" title="Unknown Flag 7 (1)" comment="Used in Retail 07-24 as 1, no clear effect."/>
+    <checkbox nybble="7.4" title="Limited sound range" comment="When enabled, the sounds of the Skewer can only be heard within a certain range of the sprite." comment2="It is recommended to always enable this setting to prevent the Skewer from being heard throughout the entire zone. However, if used in a vertical level, this setting should be disabled to help the players time their actions when progressing in the level."/>
   </sprite> <!-- #404: Massive Skewer - Up -->
 
   <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the second Bowser Jr. Boss Fight in World 6. It spawns the backgrounds BgA_0B02 and BgB_5202, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller.">
