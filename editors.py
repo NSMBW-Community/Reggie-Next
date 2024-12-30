@@ -407,12 +407,12 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         layout.addRow(self.editingPathLabel)
 
         # add labels
-        layout.addRow("Id", self.path_id)
+        layout.addRow(globals_.trans.string('PathDataEditor', 11), self.path_id)
         layout.addRow(globals_.trans.string('PathDataEditor', 0), self.loops)
         layout.addRow(createHorzLine())
 
         layout.addRow(self.editingLabel)
-        layout.addRow("Id", self.node_id)
+        layout.addRow(globals_.trans.string('PathDataEditor', 11), self.node_id)
         layout.addRow(globals_.trans.string('PathDataEditor', 2), self.speed)
         layout.addRow(globals_.trans.string('PathDataEditor', 4), self.accel)
         layout.addRow(globals_.trans.string('PathDataEditor', 6), self.delay)

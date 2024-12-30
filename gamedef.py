@@ -157,8 +157,8 @@ class GameDefMenu(QtWidgets.QMenu):
         self.addSeparator()
 
         act = QtWidgets.QAction(self)
-        act.setText("Add a Reggie Patch Folder")
-        act.setToolTip("Creates a symlink in the /reggiedata/patches folder using add_reggie_patch")
+        act.setText(globals_.trans.string('Gamedefs', 19))
+        act.setToolTip(globals_.trans.string('Gamedefs', 20))
         act.setActionGroup(self.actGroup)
         act.setCheckable(False)
         act.setChecked(False)

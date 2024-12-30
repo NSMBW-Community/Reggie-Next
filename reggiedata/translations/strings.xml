@@ -1,6 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Reggie! Next sample translations XML -->
+<!-- &lt;   = < -->
+<!-- &gt;   = > -->
+<!-- &quot; = " -->
+<!-- &lt;font color=&quot;COLOR&quot;&gt;TEXT TEXT TEXT.&lt;/font&gt; = Colored Text -->
+<!-- Bracketed placeholders (such as [id], [num], [x], [y], etc.) should not be changed in any way, as the editor replaces these with proper data -->
+
+<!-- The contents of this file are based on (and should be identical to) the default English strings in translation.py -->
+<!-- Removed strings are self-closing and do not contain any text. These can be ignored while translating -->
+
 <strings>
 	<section id="AboutDlg">
 		<string id="0">About Reggie Next</string>
+		<string id="1">[i]Reggie Next[/i] Level Editor</string>
+		<string id="2">[i]Reggie Next Level Editor[/i] is an open-source project, started by Treeki in 2010 and forked by RoadrunnerWMC in 2013, that aims to bring you the fun of designing original New Super Mario Bros. Wii[tm]-compatible levels.[br]</string>
+		<string id="3">Interested? Join the [a href="https://discord.gg/XnQJnwa"]Discord server[/a] to get in touch with the current developer(s).[br]</string>
+	</section>
+	<section id="ErrorDlg">
+		<string id="0">An unhandled exception occurred. Please report the problem in the Horizon Discord server.[br]A log will be written to "[log]"[br][br]Error information:[br]</string>
 	</section>
 	<section id="AreaChoiceDlg">
 		<string id="0">Choose an Area</string>
@@ -62,6 +79,12 @@
 		<string id="43">[b]Unknown Option 3:[/b] We haven't managed to figure out what this does, or if it does anything.</string>
 		<string id="44">Unknown Option 4</string>
 		<string id="45">[b]Unknown Option 4:[/b] We haven't managed to figure out what this does, or if it does anything.</string>
+		<string id="46">Loaded Sprites</string>
+		<string id="47">Add Sprite</string>
+		<string id="48">Remove Selected Sprite</string>
+		<string id="49">Default</string>
+		<string id="50">Custom</string>
+		<string id="51">On the left is a list of sprites already present in the level. On the right, you can add more sprites you'd like to load.</string>
 	</section>
 	<section id="AutoSaveDlg">
 		<string id="0">Auto-saved backup found</string>
@@ -143,8 +166,8 @@
 		<string id="0">Level Diagnostics Tool</string>
 		<string id="1" />
 		<string id="2">Some objects in the level are not found in the tileset files.</string>
-		<string id="3">There are sprites in this area which are known to cause NSMBWii to crash.</string>
-		<string id="4">There are sprites in this area which have settings which are known to cause NSMBWii to crash.</string>
+		<string id="3">There are sprites in this area which are known to cause the game to crash.</string>
+		<string id="4">There are sprites in this area which have settings which are known to cause the game to crash.</string>
 		<string id="5">There are too many sprites in this area.</string>
 		<string id="6">There are entrances with duplicate IDs.</string>
 		<string id="7">There is no start entrance in this area.</string>
@@ -193,7 +216,8 @@
 		<string id="18">Links to Forward Pipe</string>
 		<string id="19">[b]Links to Forward Pipe:[/b][br]If this option is set on a pipe, the destination entrance/area values will be ignored - Mario will pass through the pipe and then reappear several tiles ahead, coming out of a forward-facing pipe.</string>
 		<string id="20">Layer:</string>
-		<stringlist id="21"><entry>Layer 1</entry>
+		<stringlist id="21">
+			<entry>Layer 1</entry>
 			<entry>Layer 2</entry>
 			<entry>Layer 0</entry>
 		</stringlist>
@@ -297,6 +321,8 @@
 		<string id="16">Loading entrance names...</string>
 		<string id="17">Error</string>
 		<string id="18">An error occurred while attempting to load this game patch. It will now be unloaded. Here's the specific error:[br][error]</string>
+		<string id="19">Add a Reggie Patch Folder...</string>
+		<string id="20">Creates a symlink in the /reggiedata/patches folder using add_reggie_patch</string>
 	</section>
 	<section id="InfoDlg">
 		<string id="0">Level Information</string>
@@ -339,6 +365,14 @@
 		<string id="0">[unsaved]</string>
 		<string id="1">You're trying to paste over 300 items at once.[br]This may take a while (depending on your computer speed), are you sure you want to continue?</string>
 	</section>
+	<section id="Menubar">
+		<string id="0">&amp;File</string>
+		<string id="1">&amp;Edit</string>
+		<string id="2">&amp;View</string>
+		<string id="3">&amp;Settings</string>
+		<string id="4">&amp;Help</string>
+		<string id="5">Editor Toolbar</string>
+	</section>
 	<section id="MenuItems">
 		<string id="0">New Level</string>
 		<string id="1">Create a new, blank level</string>
@@ -370,7 +404,8 @@
 		<string id="27">Cut out the current selection to the clipboard</string>
 		<string id="28">Copy</string>
 		<string id="29">Copy the current selection to the clipboard</string>
-		<string id="30">Paste</string><string id="31">Paste items from the clipboard</string>
+		<string id="30">Paste</string>
+		<string id="31">Paste items from the clipboard</string>
 		<string id="32">Shift Items...</string>
 		<string id="33">Move all selected items by an offset</string>
 		<string id="34">Merge Locations</string>
@@ -443,16 +478,16 @@
 		<string id="101" />
 		<string id="102" />
 		<string id="103" />
-		<string id="104">Swap Objects' Tileset</string>
+		<string id="104">Swap Objects' Tileset...</string>
 		<string id="105">Swaps the tileset of objects using a certain tileset</string>
-		<string id="106">Swap Objects</string>
+		<string id="106">Swap Objects...</string>
 		<string id="107">Swaps the type of objects of a certain type</string>
 		<string id="108">Tileset Animations</string>
 		<string id="109">Play tileset animations if they exist (may cause a slowdown)</string>
 		<string id="110">Tileset Collisions</string>
 		<string id="111">View tileset collisions for existing objects</string>
 		<string id="112">Open Level...</string>
-		<string id="113" />
+		<string id="113" /> <!-- This keeps the even-odd pattern going, since 112 uses description 3 -->
 		<string id="114">Freeze Comments</string>
 		<string id="115">Make comments non-selectable</string>
 		<string id="116">Show Comments</string>
@@ -473,14 +508,8 @@
 		<string id="137">Show the Properties Window to Configure Quick Paint</string>
 		<string id="138">Reload Spritedata</string>
 		<string id="139">Reload the spritedata file, including any changes made since the level was loaded</string>
-	</section>
-	<section id="Menubar">
-		<string id="0">&amp;File</string>
-		<string id="1">&amp;Edit</string>
-		<string id="2">&amp;View</string>
-		<string id="3">&amp;Settings</string>
-		<string id="4">&amp;Help</string>
-		<string id="5">Editor Toolbar</string>
+		<string id="140">Camera Profiles...</string>
+		<string id="141">Edit event-activated camera settings</string>
 	</section>
 	<section id="Objects">
 		<string id="0">[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]</string>
@@ -529,6 +558,7 @@
 		<string id="33">Comments</string>
 		<string id="34">Comments currently in this area:[br](Double-click one to jump to it instantly)</string>
 		<string id="35">Name:</string>
+		<string id="36">Change Layer</string>
 	</section>
 	<section id="PathDataEditor">
 		<string id="0">Loops:</string>
@@ -542,6 +572,7 @@
 		<string id="8">[b]Path [id][/b]</string>
 		<string id="9">[b]Node [id][/b]</string>
 		<string id="10">Modify Selected Path Node Properties</string>
+		<string id="11">ID</string>
 	</section>
 	<section id="Paths">
 		<string id="0">[b]Path [path][/b][br]Node [node]</string>
@@ -571,8 +602,8 @@
 		<string id="20">Reset</string>
 		<string id="21">Available Themes</string>
 		<string id="22">Preview</string>
-		<string id="23">Use Nonstandard Window Style</string>
-		<string id="24">[b]Use Nonstandard Window Style[/b][br]If this is checkable, the selected theme specifies a window style other than the default. In most cases, you should leave this checked. Uncheck this if you dislike the style this theme uses.</string>
+		<string id="23" />
+		<string id="24">[b]Window Style[/b][br]This changes what style Reggie's UI uses. Note that this may cause issues with certain themes.</string>
 		<string id="25">Options</string>
 		<string id="26">[b][name][/b][br]By [creator][br][description]</string>
 		<string id="27" />
@@ -587,12 +618,19 @@
 		<string id="36">Fixed level size (bytes)</string>
 		<string id="37">Place objects at their full size</string>
 		<string id="38">Display rectangles indicating the zone bounds</string>
+		<string id="39">Insert new path node after selected node</string>
+		<string id="40">Themes</string>
+		<string id="41">Theme:</string>
 	</section>
 	<section id="ScrShtDlg">
 		<string id="0">Choose a Screenshot source</string>
 		<string id="1">Current Screen</string>
 		<string id="2">All Zones</string>
 		<string id="3">Zone [zone]</string>
+		<string id="4">Target</string>
+		<string id="5">Hide background</string>
+		<string id="6">Save image to file</string>
+		<string id="7">Copy image</string>
 	</section>
 	<section id="ShftItmDlg">
 		<string id="0">Shift Items</string>
@@ -602,6 +640,20 @@
 		<string id="4">Y:</string>
 		<string id="5">Warning</string>
 		<string id="6">You are trying to move object(s) by an offset which isn't a multiple of 16. The offset will be rounded to the nearest multiple of 16. Are you sure you want to do this?</string>
+	</section>
+	<section id="SwapObjTilesDlg">
+		<string id="0">Swap Objects' Tilesets</string>
+		<string id="1">From Tileset:</string>
+		<string id="2">To Tileset:</string>
+		<string id="3">Exchange (perform 2-way conversion)</string>
+	</section>
+	<section id="SwapObjDlg">
+		<string id="0">Swap Objects</string>
+		<string id="1">From Object:</string>
+		<string id="2">From Tileset:</string>
+		<string id="3">To Object:</string>
+		<string id="4">To Tileset:</string>
+		<string id="5">Exchange (perform 2-way conversion)</string>
 	</section>
 	<section id="SpriteDataEditor">
 		<string id="0">Modify Selected Sprite Properties</string>
@@ -652,6 +704,39 @@
 		<string id="17">No sprites found</string>
 		<string id="18">[id]: [name]</string>
 		<string id="19">Search</string>
+		<string id="20">Filter</string>
+		<string id="21">ID</string>
+		<string id="22">Name</string>
+		<stringlist id="23">
+			<entry>Any</entry>
+			<entry>Star Set ID</entry>
+			<entry>Rotation ID</entry>
+			<entry>Two Way Line ID</entry>
+			<entry>Water Ball ID</entry>
+			<entry>Mushroom ID</entry>
+			<entry>Group ID</entry>
+			<entry>Bolt ID</entry>
+			<entry>Target Event ID</entry>
+			<entry>Triggering Event ID</entry>
+			<entry>Collection ID</entry>
+			<entry>Location ID</entry>
+			<entry>Physics ID</entry>
+			<entry>Message ID</entry>
+			<entry>Path ID</entry>
+			<entry>Path Movement ID</entry>
+			<entry>Red Coin ID</entry>
+			<entry>Hill ID</entry>
+			<entry>Stretch ID</entry>
+			<entry>Ray ID</entry>
+			<entry>Coaster ID</entry>
+			<entry>Bubble Cannon ID</entry>
+			<entry>Burner ID</entry>
+			<entry>Wiggling ID</entry>
+			<entry>Panel ID</entry>
+			<entry>Colony ID</entry>
+			<entry>Entrance ID</entry>
+			<entry>Path Node ID</entry>
+		</stringlist>
 	</section>
 	<section id="Statusbar">
 		<string id="0">- 1 object selected</string>
@@ -699,12 +784,9 @@
 	<section id="WindowTitle">
 		<string id="0">Untitled</string>
 	</section>
-	<section id="Zones">
-		<string id="0">Zone [num]</string>
-	</section>
 	<section id="ZonesDlg">
 		<string id="0">Zones</string>
-		<string id="1" />
+		<string id="1" /> <!-- Formerly a list of zone theme values. Moved to reggidata/zonethemes.txt -->
 		<stringlist id="2">
 			<entry>Normal/Overworld</entry>
 			<entry>Underground</entry>
@@ -834,5 +916,41 @@
 			<entry>Small Spotlight and Small Focus Light</entry>
 		</stringlist>
 		<string id="83">[b]Visibility[/b][br]Small Spotlight and Small Focus Light - A small, centered spotlight affords visibility through layer 0, and a small spotlight which changes size based on player movement provides visibility through darkness</string>
+		<string id="84">Rendering</string>
+		<string id="85">Normal</string>
+		<string id="86">The standard camera mode, appropriate for most situations.</string>
+		<string id="87">Static Zoom</string>
+		<string id="88">In this mode, the camera will not zoom out during multiplayer.</string>
+		<string id="89">Static Zoom, Y Tracking Only</string>
+		<string id="90">In this mode, the camera will not zoom out during multiplayer, and will be centered horizontally in the zone.</string>
+		<string id="91">Static Zoom, Event-Controlled</string>
+		<string id="92">In this mode, the camera will not zoom out during multiplayer, and will use event-controlled camera settings from the Camera Profiles dialog.</string>
+		<string id="93">X Tracking Only</string>
+		<string id="94">In this mode, the camera will only move horizontally. It will be aligned to the bottom edge of the zone.</string>
+		<string id="95">X Expanding Only</string>
+		<string id="96">In this mode, the camera will only zoom out during multiplayer if the players are far apart horizontally.</string>
+		<string id="97">Y Tracking Only</string>
+		<string id="98">In this mode, the camera will only move vertically. It will be centered horizontally in the zone.</string>
+		<string id="99">Y Expanding Only</string>
+		<string id="100">In this mode, the camera will zoom out during multiplayer if the players are far apart vertically. The largest screen size will only be used if a player is flying with a Propeller Suit or Block.</string>
+		<string id="101">Screen Heights:</string>
+		<string id="102">[b]Screen Heights:[/b][br]Selects screen heights (in blocks) the camera can use during multiplayer. The camera will zoom out if the players are too far apart, and zoom back in when they get closer together. Values represent screen heights, measured in tiles.[br][br]In single-player, only the smallest height will be used.[br][br]Options marked with * or ** are glitchy if zone bounds are set to 0; see the Upper/Lower Bounds tooltips for more info.[br]Options marked with ** are also unplayably glitchy in multiplayer.</string>
+		<string id="103">Multiplayer Upper Bounds Adjust:</string>
+		<string id="104">[b]Multiplayer Upper Bounds Adjust:[/b][br]Added to the upper bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.</string>
+		<string id="105">Multiplayer Lower Bounds Adjust:</string>
+		<string id="106">[b]Multiplayer Lower Bounds Adjust:[/b][br]Added to the lower bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.</string>
+	</section>
+	<section id="Zones">
+		<string id="0">Zone [num]</string>
+	</section>
+	<section id="CamProfsDlg">
+		<string id="0">Camera Profiles</string>
+		<string id="1">Add</string>
+		<string id="2">Remove</string>
+		<string id="3">Modify Selected Camera Profile Properties</string>
+		<string id="4">[b]Modify Selected Camera Profile Properties:[/b][br]Camera Profiles can only be used with the "Event-Controlled" camera mode in the "Zones" dialog.[br][br]Transitions between zoom levels are instant, but can be hidden through careful use of zoom sprites (206).</string>
+		<string id="5">Triggering Event ID:</string>
+		<string id="6">[b]Triggering Event ID:[/b][br]Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile\'s event ID will be automatically deactivated (so the game doesn\'t instantly switch back to it).</string>
+		<string id="7">Camera Profile on Event [id]</string>
 	</section>
 </strings>
