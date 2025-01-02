@@ -173,8 +173,8 @@
       <entry value="0">Bowser</entry>
       <entry value="1">Mario (P1)</entry>
       <entry value="2">Luigi (P2)</entry>
-      <entry value="3">ToadA (P3)</entry>
-      <entry value="4">ToadB (P4)</entry>
+      <entry value="3">Blue Toad (P3)</entry>
+      <entry value="4">Yellow Toad (P4)</entry>
     </list>
   </sprite> <!-- #16: Bomb Drop Controller -->
 
@@ -466,7 +466,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #41: P-Switch -->
 
-  <sprite id="42" name="!-Switch" sizehacks="True" notes="This switch is similar to the ?-Switch, but it has the additional effect of changing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
+  <sprite id="42" name="!-Switch" sizehacks="True" notes="This switch is similar to the ?-Switch, but it has the additional effect of changing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
     <dependency notes="Activates 'Red Block Outline A/B' tiles."/>
     <list nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Red (Original)</entry>
@@ -521,7 +521,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #43: Brick Block ?-Switch -->
 
-  <sprite id="45" name="Brick Block !-Switch" sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  <sprite id="45" name="Brick Block !-Switch" sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
     <list nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks.">
       <entry value="0">Red (Original)</entry>

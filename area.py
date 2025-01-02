@@ -23,7 +23,7 @@ class AreaOptionsDialog(QtWidgets.QDialog):
         self.LoadedSpritesTab = LoadedSpritesTab()
         self.tabWidget.addTab(self.TilesetsTab, globals_.trans.string('AreaDlg', 1))
         self.tabWidget.addTab(self.LoadingTab, globals_.trans.string('AreaDlg', 2))
-        self.tabWidget.addTab(self.LoadedSpritesTab, "Loaded Sprites")
+        self.tabWidget.addTab(self.LoadedSpritesTab, globals_.trans.string('AreaDlg', 46))
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
 
@@ -315,11 +315,11 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         self.sprite_input = QtWidgets.QLineEdit()
         self.sprite_input.textChanged.connect(self.handle_input_change)
 
-        self.add_button = QtWidgets.QPushButton("Add Sprite")
+        self.add_button = QtWidgets.QPushButton(globals_.trans.string('AreaDlg', 47))
         self.add_button.clicked.connect(self.handle_add_sprite)
         self.add_button.setEnabled(False)
 
-        self.remove_button = QtWidgets.QPushButton("Remove Selected Sprite")
+        self.remove_button = QtWidgets.QPushButton(globals_.trans.string('AreaDlg', 48))
         self.remove_button.clicked.connect(self.handle_remove_sprite)
         self.remove_button.setEnabled(False)
 
@@ -335,12 +335,12 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         auto_list.setModel(self.auto_model)
         auto_list.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
 
-        sprites_layout.addWidget(QtWidgets.QLabel("Default"), 0, 0)
-        sprites_layout.addWidget(QtWidgets.QLabel("Custom"), 0, 1)
+        sprites_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 49)), 0, 0)
+        sprites_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 50)), 0, 1)
         sprites_layout.addWidget(auto_list, 1, 0)
         sprites_layout.addLayout(custom_layout, 1, 1)
 
-        explanation = QtWidgets.QLabel("On the left is a list of sprites already present in the level. On the right, you can add more sprites you'd like to load.")
+        explanation = QtWidgets.QLabel(globals_.trans.string('AreaDlg', 51))
         explanation.setWordWrap(True)
 
         layout = QtWidgets.QVBoxLayout()

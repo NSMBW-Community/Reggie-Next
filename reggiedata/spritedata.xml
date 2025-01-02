@@ -453,7 +453,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #41: P-Switch -->
 
-  <sprite id="42" name="!-Switch" notes="This switch is similar to the ? Switch, but it has the additional effect of changing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
+  <sprite id="42" name="!-Switch" notes="This switch is similar to the ? Switch, but it has the additional effect of changing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
     <dependency notes="Activates 'Red Block Outline A/B' tiles."/>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
     <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set."/>
@@ -517,7 +517,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #44: Brick Block P-Switch -->
 
-  <sprite id="45" name="Brick Block !-Switch" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  <sprite id="45" name="Brick Block !-Switch" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/>
@@ -2229,7 +2229,7 @@
     <value nybble="5-6" title="Mushroom ID" comment="If pairing the Coin with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requirednybble="7" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
     <value nybble="5-6" title="Collection ID" comment="If pairing the Coin with sprite 459/461, match the Collection ID to have the game count this Coin towards the Collection Set." requirednybble="7" requiredval="8" idtype="Collection"/> <!-- Appears if [Movement Type] = 8 -->
     <!-- Coin Type Lists -->
-    <list nybble="12" title="Behavior Type" comment="This determines the additional behavior of the Coin." comment2="Some coin types don't work together with a Movement Controller.&lt;br&gt;&lt;br&gt; 0 - A normal coin.&lt;br&gt; 1 - Drifts horizontally in Mario's direction, inside a bubble.&lt;br&gt; 2 - Sinks quickly in Mario's direction, inside a bubble.&lt;br&gt; 3 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower.&lt;br&gt; 4 - Sinks slowly in Mario's direction, inside a bubble.&lt;br&gt; 5 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower. (May differ from 3?)&lt;br&gt; 6 - Makes the bonus sound from a 10-Coin block bonus when the coin loads&lt;br&gt; 7 - Floats upwards in Mario's direction&lt;br&gt; 8 - Spins faster than a normal coin (?)&lt;br&gt; 9 - Collected automatically when the coin loads&lt;br&gt; 10 - Unknown effect, coin does not show.&lt;br&gt; 11 - A loose coin that seems to fall from the sky&lt;br&gt; 12 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower. (May differ from 3?)&lt;br&gt; 13 - Unknown effect, coin does not show.&lt;br&gt; 14 - Spins much faster than a normal coin&lt;br&gt; 15 - Frozen inside of an ice block (can be melted by fireballs)." advancedcomment="0: StateID_CoinWait;&lt;br&gt;3/5: State_Jump;&lt;br&gt;4: rlwinm Down, uses Nybble 11 (0, 1, 2);&lt;br&gt;6: State_BlockDownJump;&lt;br&gt;7: FiveBlockWait, uses Nybble 11 (0, 1, 2, 3);&lt;br&gt;8: Flags coin, 0/159/260;&lt;br&gt;9: DemoUp, uses Nybble 9 (PlayerID);&lt;br&gt;10: EggBlock;&lt;br&gt;11: State_Jump;&lt;br&gt;12: State_BlockJump;&lt;br&gt;13: StateID_Move, Very Similar to 0?;&lt;br&gt;14: WaterState;">
+    <list nybble="12" title="Behavior Type" comment="This determines the additional behavior of the Coin." comment2="Some coin types don't work together with a Movement Controller.&lt;br&gt;&lt;br&gt; 0 - A normal coin.&lt;br&gt; 1 - Drifts horizontally in Mario's direction, inside a bubble.&lt;br&gt; 2 - Sinks quickly in Mario's direction, inside a bubble.&lt;br&gt; 3 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower.&lt;br&gt; 4 - Sinks slowly in Mario's direction, inside a bubble.&lt;br&gt; 5 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower. (May differ from 3?)&lt;br&gt; 6 - Makes the bonus sound from a 10-Coin block bonus when the coin loads&lt;br&gt; 7 - Floats upwards in Mario's direction&lt;br&gt; 8 - Spins faster than a normal coin (?)&lt;br&gt; 9 - Collected automatically when the coin loads&lt;br&gt; 10 - Unknown effect, coin does not show.&lt;br&gt; 11 - A loose coin that seems to fall from the sky&lt;br&gt; 12 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower. (May differ from 3?)&lt;br&gt; 13 - Used for the two coins spawned by [197] Clampy.&lt;br&gt; 14 - Spins much faster than a normal coin&lt;br&gt; 15 - Frozen inside of an ice block (can be melted by fireballs)." advancedcomment="0: StateID_CoinWait;&lt;br&gt;3/5: State_Jump;&lt;br&gt;4: rlwinm Down, uses Nybble 11 (0, 1, 2);&lt;br&gt;6: State_BlockDownJump;&lt;br&gt;7: FiveBlockWait, uses Nybble 11 (0, 1, 2, 3);&lt;br&gt;8: Flags coin, 0/159/260;&lt;br&gt;9: DemoUp, uses Nybble 9 (PlayerID);&lt;br&gt;10: EggBlock;&lt;br&gt;11: State_Jump;&lt;br&gt;12: State_BlockJump;&lt;br&gt;13: StateID_Move, Very Similar to 0?;&lt;br&gt;14: WaterState;">
       <entry value="0">Normal</entry>
       <entry value="8">Spinning Faster (150%)</entry>
       <entry value="14">Spinning Much Faster (200%)</entry>
@@ -2245,7 +2245,7 @@
       <entry value="9">Automatically Collected for Player#</entry>
       <entry value="11">Glitchy Loose Coin</entry>
       <entry value="10">Doesn't Show</entry>
-      <entry value="13">Doesn't Show</entry>
+      <entry value="13">Used for Clampy, Doesn't Show</entry>
     </list> <!-- Eventually this list will be divided based on what Behavior Types work with which Movement Types -->
     <checkbox nybble="10.4" title="Place Behind Chainlink Fence" comment="When enabled, this modifies the placement of the Coin so that the player must be on the other side of a Chainlink Fence to collect it." comment2="[What movement types does this work with? What movement types totally don't work with this? We need answers, MAN!]"/>
     <checkbox nybble="10.3" title="Place Behind Layer 1" comment="When enabled, this modifies the Z-Order of the coin where it will be hidden behind all Layer 1 objects." comment2="[This is similar to the above option, but we have no clue how it differs or if this is just a normal Z-Order VALUE option.]"/>
@@ -2265,8 +2265,8 @@
     <list nybble="9" title="Awarded Player" comment="This determines which player will be awarded with the coin." requirednybble="12" requiredval="9">
       <entry value="0">Mario</entry>
       <entry value="1">Luigi</entry>
-      <entry value="2">ToadA</entry>
-      <entry value="3">ToadB</entry>
+      <entry value="2">Blue Toad</entry>
+      <entry value="3">Yellow Toad</entry>
     </list>
   </sprite> <!-- #147: Coin -->
 
@@ -2610,8 +2610,8 @@
     <list nybble="12.3-12.4" title="Spawns Player in a Bubble" advanced="True" advancedcomment="Unfortunately, this doesn't work as cleanly as it needs to in order to be usable. If the right player doesn't exist when this loads, the game will crash. It could potentially respawn a dead player who has zero lives, or with the multiplayer bubbles deactivated, except that there is no way to only load the players you actually need. Thus, this function is completely and totally unreliable unless requiring all 4 players to play a particular level." requirednybble="10.4" requiredval="0">
       <entry value="0">Spawns Mario</entry>
       <entry value="1">Spawns Luigi</entry>
-      <entry value="2">Spawns ToadA</entry>
-      <entry value="3">Spawns ToadB</entry>
+      <entry value="2">Spawns Blue Toad</entry>
+      <entry value="3">Spawns Yellow Toad</entry>
     </list>
   </sprite> <!-- #171: Mushroom in a Bubble -->
 
@@ -5561,8 +5561,8 @@
     <checkbox nybble="12.4" title="Uses Paths" comment="When enabled, the Raft will follow the assigned Path. Otherwise, the Raft will move slowly to the right."/>
     <value nybble="7" title="Path ID" idtype="Path" requirednybble="12.4" requiredval="1"/>
     <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the Raft will appear at and start moving from." requirednybble="12.4" requiredval="1"/>
+	<checkbox nybble="8.4" title="Reverse Direction" comment="When enabled, the Raft will follow the path in reverse." requirednybble="12.4" requiredval="1"/>
     <dualbox nybble="11.4" title1="Spawns Before Midway" title2="Spawns After Midway" comment="This decides whether the Raft will spawn only before the Midway Flag is activated, or only after."/>
-    <checkbox nybble="8.4" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="When this flag is enabled along with a Path (regardless of the Uses Paths flag), the Raft will go to the indicated Path Node and not move. But, if the Path is set to loop, this doesn't do anything."/>
     <checkbox nybble="9.4" title="Event Activated Flashlight" comment="When enabled, the Flashlight will only be illuminated when the Triggering Event ID is activated. The Flashlight can only be controlled by tilting the controller when it is Event Activated."/> <!-- Appears only if Use Flashlight is active -->
     <value nybble="3.2-4.4" title="Triggering Event ID" comment="The Flashlight will be turned on when this Event ID is activated. The Flashlight can't be deactivated." requirednybble="9.4" requiredval="1" idtype="Triggering Event"/> <!-- Appears only if Use Flashlight and Event Activated Flashlight are active -->
   </sprite> <!-- #368: Path Controlled Flashlight Raft -->
