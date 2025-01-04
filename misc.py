@@ -102,7 +102,7 @@ def FilesAreMissing():
 
 def SetGamePaths(new_stage_path, new_texture_path):
     """
-    Sets the NSMBWii game path
+    Sets the NSMBW game path
     """
     # os.path.join crashes if QStrings are used, so we must change the paths to
     # a Python string manually
@@ -112,7 +112,7 @@ def SetGamePaths(new_stage_path, new_texture_path):
 
 def areValidGamePaths(stage_check='ug', texture_check='ug'):
     """
-    Checks to see if the path for NSMBWii contains a valid game
+    Checks to see if the path for NSMBW contains a valid game
     """
     if stage_check == 'ug':
         stage_check = globals_.gamedef.GetStageGamePath()
@@ -402,9 +402,12 @@ def LoadZoneThemes(reload_=False):
     Ensures that custom zone themes get loaded
     """
     if (globals_.ZoneThemeValues is not None) and not reload_: return
+    
+    paths = getResourcePaths('zonethemes')
 
-    with open(globals_.gamedef.file('zonethemes'), 'r', encoding='utf-8') as f:
-        globals_.ZoneThemeValues = [x.strip() for x in f]
+    for path in paths:
+        with open(path, 'r', encoding='utf-8') as f:
+            globals_.ZoneThemeValues = [x.strip() for x in f]
 
 
 class SpriteDefinition:
@@ -1585,7 +1588,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Place objects at full size
                 self.fullObjSize = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 37))
 
-                self.insertPathNode = QtWidgets.QCheckBox("Insert new path node after selected node")
+                # Insert new path node
+                self.insertPathNode = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 39))
 
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
@@ -1788,9 +1792,9 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 self.themeBox.currentIndexChanged.connect(self.UpdatePreview)
 
-                boxGB = QtWidgets.QGroupBox('Themes')
+                boxGB = QtWidgets.QGroupBox(globals_.trans.string('PrefsDlg', 40))
                 L = QtWidgets.QFormLayout()
-                L.addRow('Theme:', self.themeBox)
+                L.addRow(globals_.trans.string('PrefsDlg', 41), self.themeBox)
                 L2 = QtWidgets.QGridLayout()
                 L2.addLayout(L, 0, 0)
                 boxGB.setLayout(L2)

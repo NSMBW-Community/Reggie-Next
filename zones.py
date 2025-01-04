@@ -323,7 +323,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_height.setValue(bottom)
 
     def createRendering(self, z):
-        self.Rendering = QtWidgets.QGroupBox('Rendering')
+        self.Rendering = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 84))
 
         comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed)
 
@@ -469,13 +469,13 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.Zone_yboundup3 = QtWidgets.QSpinBox()
         self.Zone_yboundup3.setRange(-32768, 32767)
-        self.Zone_yboundup3.setToolTip('<b>Multiplayer Upper Bounds Adjust:</b><br>Added to the upper bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.')
+        self.Zone_yboundup3.setToolTip(globals_.trans.string('ZonesDlg', 104))
         self.Zone_yboundup3.setSpecialValueText('32')
         self.Zone_yboundup3.setValue(z.yupperbound3)
 
         self.Zone_ybounddown3 = QtWidgets.QSpinBox()
         self.Zone_ybounddown3.setRange(-32768, 32767)
-        self.Zone_ybounddown3.setToolTip('<b>Multiplayer Lower Bounds Adjust:</b><br>Added to the lower bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.')
+        self.Zone_ybounddown3.setToolTip(globals_.trans.string('ZonesDlg', 106))
         self.Zone_ybounddown3.setValue(z.ylowerbound3)
 
         LA = QtWidgets.QFormLayout()
@@ -492,8 +492,8 @@ class ZoneTab(QtWidgets.QWidget):
 
         LD = QtWidgets.QFormLayout()
         LD.addRow(LC)
-        LD.addRow('Multiplayer Upper Bounds Adjust:', self.Zone_yboundup3)
-        LD.addRow('Multiplayer Lower Bounds Adjust:', self.Zone_ybounddown3)
+        LD.addRow(globals_.trans.string('ZonesDlg', 103), self.Zone_yboundup3)
+        LD.addRow(globals_.trans.string('ZonesDlg', 105), self.Zone_ybounddown3)
 
         self.Bounds.setLayout(LD)
 
@@ -622,14 +622,14 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
         self.modeButtonGroup = QtWidgets.QButtonGroup()
         modebuttons = []
         for i, name, tooltip in [
-                    (0, 'Normal', 'The standard camera mode, appropriate for most situations.'),
-                    (3, 'Static Zoom', 'In this mode, the camera will not zoom out during multiplayer.'),
-                    (4, 'Static Zoom, Y Tracking Only', 'In this mode, the camera will not zoom out during multiplayer, and will be centered horizontally in the zone.'),
-                    (5, 'Static Zoom, Event-Controlled', 'In this mode, the camera will not zoom out during multiplayer, and will use event-controlled camera settings from the Camera Profiles dialog.'),
-                    (6, 'X Tracking Only', 'In this mode, the camera will only move horizontally. It will be aligned to the bottom edge of the zone.'),
-                    (7, 'X Expanding Only', 'In this mode, the camera will only zoom out during multiplayer if the players are far apart horizontally.'),
-                    (1, 'Y Tracking Only', 'In this mode, the camera will only move vertically. It will be centered horizontally in the zone.'),
-                    (2, 'Y Expanding Only', 'In this mode, the camera will zoom out during multiplayer if the players are far apart vertically. The largest screen size will only be used if a player is flying with a Propeller Suit or Block.'),
+                    (0, globals_.trans.string('ZonesDlg', 85), globals_.trans.string('ZonesDlg', 86)),
+                    (3, globals_.trans.string('ZonesDlg', 87), globals_.trans.string('ZonesDlg', 88)),
+                    (4, globals_.trans.string('ZonesDlg', 89), globals_.trans.string('ZonesDlg', 90)),
+                    (5, globals_.trans.string('ZonesDlg', 91), globals_.trans.string('ZonesDlg', 92)),
+                    (6, globals_.trans.string('ZonesDlg', 93), globals_.trans.string('ZonesDlg', 94)),
+                    (7, globals_.trans.string('ZonesDlg', 95), globals_.trans.string('ZonesDlg', 96)),
+                    (1, globals_.trans.string('ZonesDlg', 97), globals_.trans.string('ZonesDlg', 98)),
+                    (2, globals_.trans.string('ZonesDlg', 99), globals_.trans.string('ZonesDlg', 100)),
                 ]:
             rb = QtWidgets.QRadioButton(name)
             rb.setToolTip('<b>' + name + ':</b><br>' + tooltip)
@@ -643,7 +643,7 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
             rb.clicked.connect(self.handleModeChanged)
 
         self.screenSizes = QtWidgets.QComboBox()
-        self.screenSizes.setToolTip("<b>Screen Heights:</b><br>Selects screen heights (in blocks) the camera can use during multiplayer. The camera will zoom out if the players are too far apart, and zoom back in when they get closer together. Values represent screen heights, measured in tiles.<br><br>In single-player, only the smallest height will be used.<br><br>Options marked with * or ** are glitchy if zone bounds are set to 0; see the Upper/Lower Bounds tooltips for more info.<br>Options marked with ** are also unplayably glitchy in multiplayer.")
+        self.screenSizes.setToolTip(globals_.trans.string('ZonesDlg', 102))
         self.screenSizes.setSizePolicy(comboboxSizePolicy)
 
         self.screenSizes.currentIndexChanged.connect(self.handleScreenSizesChanged)
@@ -653,7 +653,7 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
             ModesLayout.addWidget(b, i % 4, i // 4)
 
         self.addRow(ModesLayout)
-        self.addRow('Screen Heights:', self.screenSizes)
+        self.addRow(globals_.trans.string('ZonesDlg', 101), self.screenSizes)
 
         self.updating = False
 

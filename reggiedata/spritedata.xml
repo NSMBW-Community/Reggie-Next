@@ -153,7 +153,7 @@
     <dualbox nybble="7.4" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requirednybble="7.3" requiredval="0"/>
     <dualbox nybble="7.4" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used. The default texture model is the Gold Platform." advanced="True" requirednybble="7.3"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
-    <dualbox nybble="8.4" title1="Starts moving Right" title2="Starts moving Left" comment="This determines which direction the platform will initially start moving in."/>
+    <dualbox nybble="8.4" title1="Starts Moving Right" title2="Starts Moving Left" comment="This determines which direction the platform will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the platform will move."/>
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the platform will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
@@ -194,7 +194,7 @@
     </list>
     <value nybble="12.2-12.4" title="Width" comment="This determines the width of the block. Width should not be used unless [Height] is set to 1 Tile." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requirednybble="9.3-9.4" requiredval="0"/>
     <value nybble="12.2-12.4" title="Width (Buggy)" comment="This determines the width of the block." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requirednybble="9.3-9.4"/>
-    <dualbox nybble="8.4" title1="Starts moving Up" title2="Starts moving Down" comment="This determines which direction the block will initially start moving in."/>
+    <dualbox nybble="8.4" title1="Starts Moving Up" title2="Starts Moving Down" comment="This determines which direction the block will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the block will move."/>
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the block will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated."/>
@@ -210,7 +210,7 @@
     </list>
     <value nybble="12.2-12.4" title="Width" comment="This determines the width of the block. Width should not be used unless [Height] is set to 1 Tile." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requirednybble="9.3-9.4" requiredval="0"/>
     <value nybble="12.2-12.4" title="Width (Buggy)" comment="This determines the width of the block." comment2="Width should not be used unless [Height] is set to 1 Tile. When [Height] is set above 1 Tile, the center of the block will not be textured." requirednybble="9.3-9.4"/>
-    <dualbox nybble="8.4" title1="Starts moving Right" title2="Starts moving Left" comment="This determines which direction the block will initially start moving in."/>
+    <dualbox nybble="8.4" title1="Starts Moving Right" title2="Starts Moving Left" comment="This determines which direction the block will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the block will move."/>
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the block will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated."/>
@@ -282,7 +282,7 @@
     <dualbox nybble="7.4" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requirednybble="7.3" requiredval="0"/>
     <dualbox nybble="7.4" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used." requirednybble="7.3"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
-    <dualbox nybble="8.4" title1="Stars moving Up" title2="Starts moving Down" comment="This determines which direction the platform will initially start moving in."/>
+    <dualbox nybble="8.4" title1="Starts Moving Up" title2="Starts Moving Down" comment="This determines which direction the platform will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the platform will move."/>
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the platform will move." advancedcomment="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
@@ -453,7 +453,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #41: P-Switch -->
 
-  <sprite id="42" name="!-Switch" notes="This switch is similar to the ? Switch, but it has the additional effect of changing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
+  <sprite id="42" name="!-Switch" notes="This switch is similar to the ? Switch, but it has the additional effect of changing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
     <dependency notes="Activates 'Red Block Outline A/B' tiles."/>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
     <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set."/>
@@ -517,7 +517,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #44: Brick Block P-Switch -->
 
-  <sprite id="45" name="Brick Block !-Switch" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa1_ Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  <sprite id="45" name="Brick Block !-Switch" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
     <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/>
@@ -1252,7 +1252,7 @@
   </sprite> <!-- #89: Incomplete Sprite - 'En_Remocon_Torimochi' -->
 
   <sprite id="90" name="Effect - Wind Physics and Sound" notes="This will generate occasional windy pushbacks and wind sound effects. It is best used in conjunction with the suggested sprites, but they are not required.">
-    <dependency notes="In order to generate sandstorm graphics, [374] Effect - Falling Objects and Wind is required using the Snow setting. To add coins to this effect, [284] Physics Coin Controller must be linked.">
+    <dependency notes="In order to generate sandstorm graphics, [374] Effect - Falling Objects and Wind is required using the Sandstorm setting. To add coins to this effect, [284] Physics Coin Controller must be linked.">
       <suggested sprite="374"/> <!-- Sandstorm Effects -->
       <suggested sprite="284"/> <!-- Add coins -->
     </dependency>
@@ -1264,7 +1264,7 @@
     </list>
     <dualbox nybble="7.4" title1="Blows Right" title2="Blows Left" comment="This determines which direction the wind will blow."/>
     <value nybble="5" title="Time Active" comment="This sets the amount of time that the wind is on."/>
-    <value nybble="6" title="Time Inactive" comment="This sets the amount of time that the wind is off."/>
+    <value nybble="6" title="Time Inactive" comment="This sets the amount of time that the wind is off. Setting this to 0 will enable the wind indefinitely."/>
     <value nybble="11" title="Physics ID" comment="This will pair the Wind Physics with Physics Coin Controller." idtype="Physics"/>
   </sprite> <!-- #90: Effect - Wind Physics and Sound -->
 
@@ -1275,11 +1275,11 @@
   <!-- SpD1.5 suggests Loop Last 2 Nodes will actually just reverse the path. What if the Path isn't set to 'Loops'? -->
   <sprite id="91" name="Auto-Scrolling Controller" notes="The Auto-Scroller will lock the game's camera along a specific Path. This path cannot cause the camera to unnaturally leave the Zone's boundaries. The camera's boundary is defined by the left side of the screen, so it is recommended to leave at least one screen's width after the path's final Node. &lt;br&gt; &lt;br&gt;Finally, you can alter the Speed and Acceleration of the Auto-Scroller with the Path settings.">
     <dependency notes="A path is required for the Auto-Scrolling Controller to function."/>
-    <list nybble="7" title="Activation Mode" comment="This determines the conditions to activate the Auto-Scroller." comment2="Event Activated: Auto-Scroller only starts when the Triggering Event is activated. End Behaviors only work with this setting.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;Behaves Incorrectly:&lt;/font&gt; Do not use this option. &lt;br&gt;&lt;br&gt;&lt;font color=&quot;orange&quot;&gt;Activated by Ground-Pounding [321]:&lt;/font&gt; When the Beta Arrow Block is ground-pounded, it sends code to the Auto-Scroller to start. Intended functionality was likely to control the direction as well. &lt;br&gt;&lt;br&gt;Already Activated (Buggy): Activates without the need to set a Triggering Event. However, the camera tends to center the players on the screen whenever they get hit or an item.">
-      <entry value="0">Event Activated</entry>
-      <entry value="1">Behaves Incorrectly</entry>
-      <entry value="2">Activated by Ground-Pounding [321]</entry>
-      <entry value="3">Already Activated (Buggy)</entry>
+    <list nybble="7" title="Activation Mode" comment="This determines the conditions to activate the Auto-Scroller." comment2="Event Activated, X and Y: Auto-Scroller only starts when the Triggering Event is activated. &lt;br&gt; &lt;br&gt;Event Activated, X only: Sends only vertical movement to the autoscroller, while the player can cause the screen to move up and down. &lt;br&gt; &lt;br&gt;Event Activated, Y only: Sends only horizontal movement to the autoscroller, while the player can cause the screen to move left and right. When the Beta Arrow Block is ground-pounded, it sends code to the Auto-Scroller to start. Intended functionality was likely to control the direction as well. &lt;br&gt; &lt;br&gt;Already Activated: Activates without the need to set a Triggering Event.">
+      <entry value="0">Event Activated, X and Y</entry>
+      <entry value="1">Event Activated, X only</entry>
+      <entry value="2">Event Activated, Y only</entry>
+      <entry value="3">Already Activated</entry>
     </list>
     <value nybble="3-4" title="Triggering Event ID" comment="When this Event ID is activated, the Auto-Scroller will activate. Deactivating the event will not deactivate the Auto-Scroller; it will continue until it has reached the final Path Node." requirednybble="7" requiredval="0" idtype="Triggering Event"/> <!-- Appears only if set to Event Activated -->
     <list nybble="8.2-8.4" title="End Behavior" comment="This determines what the Auto-Scroller will do with the camera when it has reached the final Node of its path." comment2="Release Control and Activate Event: The camera will unlock, activate the Target Event ID, and the player can continue wherever they want. The camera may jerk slightly when it first releases.&lt;br&gt;&lt;br&gt;Loop Last 2 Nodes: The Auto-Scroller will continue to scroll between the last two Nodes on the path.&lt;br&gt;&lt;br&gt;Lock Screen: This option will lock the screen at the final path Node.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;Unknown Value 2/3:&lt;/font&gt; May have different effects, ASM research is likely required." requirednybble="7" requiredval="0"> <!-- Appears only if set to Event Activated -->
@@ -2229,7 +2229,7 @@
     <value nybble="5-6" title="Mushroom ID" comment="If pairing the Coin with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requirednybble="7" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
     <value nybble="5-6" title="Collection ID" comment="If pairing the Coin with sprite 459/461, match the Collection ID to have the game count this Coin towards the Collection Set." requirednybble="7" requiredval="8" idtype="Collection"/> <!-- Appears if [Movement Type] = 8 -->
     <!-- Coin Type Lists -->
-    <list nybble="12" title="Behavior Type" comment="This determines the additional behavior of the Coin." comment2="Some coin types don't work together with a Movement Controller.&lt;br&gt;&lt;br&gt; 0 - A normal coin.&lt;br&gt; 1 - Drifts horizontally in Mario's direction, inside a bubble.&lt;br&gt; 2 - Sinks quickly in Mario's direction, inside a bubble.&lt;br&gt; 3 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower.&lt;br&gt; 4 - Sinks slowly in Mario's direction, inside a bubble.&lt;br&gt; 5 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower. (May differ from 3?)&lt;br&gt; 6 - Makes the bonus sound from a 10-Coin block bonus when the coin loads&lt;br&gt; 7 - Floats upwards in Mario's direction&lt;br&gt; 8 - Spins faster than a normal coin (?)&lt;br&gt; 9 - Collected automatically when the coin loads&lt;br&gt; 10 - Unknown effect, coin does not show.&lt;br&gt; 11 - A loose coin that seems to fall from the sky&lt;br&gt; 12 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower. (May differ from 3?)&lt;br&gt; 13 - Unknown effect, coin does not show.&lt;br&gt; 14 - Spins much faster than a normal coin&lt;br&gt; 15 - Frozen inside of an ice block (can be melted by fireballs)." advancedcomment="0: StateID_CoinWait;&lt;br&gt;3/5: State_Jump;&lt;br&gt;4: rlwinm Down, uses Nybble 11 (0, 1, 2);&lt;br&gt;6: State_BlockDownJump;&lt;br&gt;7: FiveBlockWait, uses Nybble 11 (0, 1, 2, 3);&lt;br&gt;8: Flags coin, 0/159/260;&lt;br&gt;9: DemoUp, uses Nybble 9 (PlayerID);&lt;br&gt;10: EggBlock;&lt;br&gt;11: State_Jump;&lt;br&gt;12: State_BlockJump;&lt;br&gt;13: StateID_Move, Very Similar to 0?;&lt;br&gt;14: WaterState;">
+    <list nybble="12" title="Behavior Type" comment="This determines the additional behavior of the Coin." comment2="Some coin types don't work together with a Movement Controller.&lt;br&gt;&lt;br&gt; 0 - A normal coin.&lt;br&gt; 1 - Drifts horizontally in Mario's direction, inside a bubble.&lt;br&gt; 2 - Sinks quickly in Mario's direction, inside a bubble.&lt;br&gt; 3 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower.&lt;br&gt; 4 - Sinks slowly in Mario's direction, inside a bubble.&lt;br&gt; 5 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower. (May differ from 3?)&lt;br&gt; 6 - Makes the bonus sound from a 10-Coin block bonus when the coin loads&lt;br&gt; 7 - Floats upwards in Mario's direction&lt;br&gt; 8 - Spins faster than a normal coin (?)&lt;br&gt; 9 - Collected automatically when the coin loads&lt;br&gt; 10 - Unknown effect, coin does not show.&lt;br&gt; 11 - A loose coin that seems to fall from the sky&lt;br&gt; 12 - A loose coin, similar to those created when Mario kills an enemy with a Fire Flower. (May differ from 3?)&lt;br&gt; 13 - Used for the two coins spawned by [197] Clampy.&lt;br&gt; 14 - Spins much faster than a normal coin&lt;br&gt; 15 - Frozen inside of an ice block (can be melted by fireballs)." advancedcomment="0: StateID_CoinWait;&lt;br&gt;3/5: State_Jump;&lt;br&gt;4: rlwinm Down, uses Nybble 11 (0, 1, 2);&lt;br&gt;6: State_BlockDownJump;&lt;br&gt;7: FiveBlockWait, uses Nybble 11 (0, 1, 2, 3);&lt;br&gt;8: Flags coin, 0/159/260;&lt;br&gt;9: DemoUp, uses Nybble 9 (PlayerID);&lt;br&gt;10: EggBlock;&lt;br&gt;11: State_Jump;&lt;br&gt;12: State_BlockJump;&lt;br&gt;13: StateID_Move, Very Similar to 0?;&lt;br&gt;14: WaterState;">
       <entry value="0">Normal</entry>
       <entry value="8">Spinning Faster (150%)</entry>
       <entry value="14">Spinning Much Faster (200%)</entry>
@@ -2245,7 +2245,7 @@
       <entry value="9">Automatically Collected for Player#</entry>
       <entry value="11">Glitchy Loose Coin</entry>
       <entry value="10">Doesn't Show</entry>
-      <entry value="13">Doesn't Show</entry>
+      <entry value="13">Used for Clampy, Doesn't Show</entry>
     </list> <!-- Eventually this list will be divided based on what Behavior Types work with which Movement Types -->
     <checkbox nybble="10.4" title="Place Behind Chainlink Fence" comment="When enabled, this modifies the placement of the Coin so that the player must be on the other side of a Chainlink Fence to collect it." comment2="[What movement types does this work with? What movement types totally don't work with this? We need answers, MAN!]"/>
     <checkbox nybble="10.3" title="Place Behind Layer 1" comment="When enabled, this modifies the Z-Order of the coin where it will be hidden behind all Layer 1 objects." comment2="[This is similar to the above option, but we have no clue how it differs or if this is just a normal Z-Order VALUE option.]"/>
@@ -2265,8 +2265,8 @@
     <list nybble="9" title="Awarded Player" comment="This determines which player will be awarded with the coin." requirednybble="12" requiredval="9">
       <entry value="0">Mario</entry>
       <entry value="1">Luigi</entry>
-      <entry value="2">ToadA</entry>
-      <entry value="3">ToadB</entry>
+      <entry value="2">Blue Toad</entry>
+      <entry value="3">Yellow Toad</entry>
     </list>
   </sprite> <!-- #147: Coin -->
 
@@ -2610,8 +2610,8 @@
     <list nybble="12.3-12.4" title="Spawns Player in a Bubble" advanced="True" advancedcomment="Unfortunately, this doesn't work as cleanly as it needs to in order to be usable. If the right player doesn't exist when this loads, the game will crash. It could potentially respawn a dead player who has zero lives, or with the multiplayer bubbles deactivated, except that there is no way to only load the players you actually need. Thus, this function is completely and totally unreliable unless requiring all 4 players to play a particular level." requirednybble="10.4" requiredval="0">
       <entry value="0">Spawns Mario</entry>
       <entry value="1">Spawns Luigi</entry>
-      <entry value="2">Spawns ToadA</entry>
-      <entry value="3">Spawns ToadB</entry>
+      <entry value="2">Spawns Blue Toad</entry>
+      <entry value="3">Spawns Yellow Toad</entry>
     </list>
   </sprite> <!-- #171: Mushroom in a Bubble -->
 
@@ -2931,6 +2931,7 @@
   </sprite> <!-- #196: Fishbones -->
 
   <sprite id="197" name="Clampy" notes="A clam with tantalizing items inside that will hurt the player if it closes while they are in inside of it.">
+    <dependency notes="Clampies need to be placed inside of a grid space. Otherwise they will not appear during gameplay." />
     <checkbox nybble="11.4" title="Falls" comment="When enabled, the Clampy will be affected by gravity and environmental effects."/>
     <list nybble="12" title="Contains" comment="This determines what item is inside the Clampy." advancedcomment="Values 5 and higher crash the game upon level load.">
       <entry value="0">Nothing</entry>
@@ -3496,9 +3497,9 @@
   </sprite> <!-- #229: Sand Pillar -->
 
   <sprite id="230" name="Bramball" noyoshi="True" notes="A long-legged enemy with a ball for a body that will flip itself around as it traverses terrain with proper spacing. Rumor has it that if it is struck from below with a Pipe Cannon, a large amount of coins will appear.">
-    <dependency notes="For a Bramball to want to move, he must have solid terrain exactly 4 blocks from his legs."/>
+    <dependency notes="A Bramball must have solid terrain exactly 4 tile and no more than a 1 tile change in elevation to move."/>
     <dualbox nybble="11.4" title1="Slow Movement" title2="Fast Movement" comment="This determines how quickly the Bramball will traverse platforms."/>
-    <list nybble="12.3-12.4" title="Initial Movement" comment="This determines which direction the Bramball will attempt to move first.">
+    <list nybble="12.3-12.4" title="Initial Direction" comment="This determines which direction the Bramball will attempt to move first.">
       <entry value="0">Towards Player</entry>
       <entry value="1">Moves Right</entry>
       <entry value="2">Moves Left</entry>
@@ -5560,8 +5561,8 @@
     <checkbox nybble="12.4" title="Uses Paths" comment="When enabled, the Raft will follow the assigned Path. Otherwise, the Raft will move slowly to the right."/>
     <value nybble="7" title="Path ID" idtype="Path" requirednybble="12.4" requiredval="1"/>
     <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the Raft will appear at and start moving from." requirednybble="12.4" requiredval="1"/>
+	<checkbox nybble="8.4" title="Reverse Direction" comment="When enabled, the Raft will follow the path in reverse." requirednybble="12.4" requiredval="1"/>
     <dualbox nybble="11.4" title1="Spawns Before Midway" title2="Spawns After Midway" comment="This decides whether the Raft will spawn only before the Midway Flag is activated, or only after."/>
-    <checkbox nybble="8.4" title="Unknown Flag 8 (1)" advanced="True" advancedcomment="When this flag is enabled along with a Path (regardless of the Uses Paths flag), the Raft will go to the indicated Path Node and not move. But, if the Path is set to loop, this doesn't do anything."/>
     <checkbox nybble="9.4" title="Event Activated Flashlight" comment="When enabled, the Flashlight will only be illuminated when the Triggering Event ID is activated. The Flashlight can only be controlled by tilting the controller when it is Event Activated."/> <!-- Appears only if Use Flashlight is active -->
     <value nybble="3.2-4.4" title="Triggering Event ID" comment="The Flashlight will be turned on when this Event ID is activated. The Flashlight can't be deactivated." requirednybble="9.4" requiredval="1" idtype="Triggering Event"/> <!-- Appears only if Use Flashlight and Event Activated Flashlight are active -->
   </sprite> <!-- #368: Path Controlled Flashlight Raft -->
@@ -5638,12 +5639,9 @@
     </dependency>
   </sprite> <!-- #373: Flashlight Raft Water -->
 
-  <!-- Test if 90 continues to function (at all? / correctly?) if Falling Objects is set to something other than Snow. -->
-  <!-- Test if 374 is required for 90 to generate pushback (90 Only). Test if 90 is required for 374 to generate sandstorm graphics (374 Only). -->
-  <!-- Clean up 90 after finishing research on these questions -->
   <sprite id="374" name="Effect - Snow and Wind" notes="This effect controller will either create falling snow, or it will create a Sandstorm.">
-    <dependency notes="If this sprite is placed more than once in the same Zone, the game will crash. If Sandstorm is selected, you must include [90] Wind Physics and Sound.">
-      <suggested sprite="90"/>
+    <dependency notes="Placing this sprite more than once in the same zone will overlay the effect. If Sandstorm is selected, you must include [90] Wind Physics and Sound for the graphics to appear.">
+      <suggested sprite="90"/> <!-- Wind Physics and Sound -->
     </dependency>
     <dualbox nybble="12.4" title1="Snow" title2="Sandstorm" comment="This determines the functionality of the sprite."/>
   </sprite> <!-- #374: Effect - Falling Objects and Wind -->
@@ -6023,7 +6021,7 @@
     <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <checkbox nybble="8.4" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox nybble="8.2" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Massive Skewers at all."/>
-    <checkbox nybble="7.4" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="Used in Retail 07-24 as 1, no clear effect."/>
+    <checkbox nybble="7.4" title="Limited sound range" comment="When enabled, the sounds of the Skewer can only be heard within a certain range of the sprite." comment2="It is recommended to always enable this setting to prevent the Skewer from being heard throughout the entire zone. However, if used in a vertical level, this setting should be disabled to help the players time their actions when progressing in the level."/>
   </sprite> <!-- #401: Massive Skewer - Down -->
 
   <sprite id="402" name="Line Controlled ? Block" notes="A variant of the ? Block that will ride along Line objects.">
@@ -6104,7 +6102,7 @@
     <value nybble="11-12" title="Delay Before Return" comment="This determines the delay before the Skewer returns to its starting position. A value of 1 is 10 frames of delay. A reminder that the game runs at 60 frames per second, and the game's clock is 44 frames per tick."/>
     <checkbox nybble="8.4" title="Make Sparks At End" comment="When enabled, the Skewer will throw off sparks when it reaches the end of its Travel Distance." comment2="When having two Skewers 'collide', it's recommended that only one have this setting."/>
     <checkbox nybble="8.2" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Massive Skewers at all."/>
-    <checkbox nybble="7.4" title="Unknown Flag 7 (1)" comment="Used in Retail 07-24 as 1, no clear effect."/>
+    <checkbox nybble="7.4" title="Limited sound range" comment="When enabled, the sounds of the Skewer can only be heard within a certain range of the sprite." comment2="It is recommended to always enable this setting to prevent the Skewer from being heard throughout the entire zone. However, if used in a vertical level, this setting should be disabled to help the players time their actions when progressing in the level."/>
   </sprite> <!-- #404: Massive Skewer - Up -->
 
   <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the second Bowser Jr. Boss Fight in World 6. It spawns the backgrounds BgA_0B02 and BgB_5202, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller.">
@@ -6273,9 +6271,9 @@
   <sprite id="421" name="(Unused) Fake Ghost House Door" noyoshi="True" notes="A stand-alone version of the 'Fake Door' effect from the normal Ghost House Door.">
   </sprite> <!-- #421: (Unused) Fake Ghost House Door -->
 
-  <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
+  <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in the retail game's singleplayer mode where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
     <dependency notes="All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
-    <checkbox nybble="12.4" title="Small Size" comment="Changes the size of the Toad to be small (1 tile large)."/>
+    <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small (1 tile large)."/>
   </sprite> <!-- #422: Toad Needs Help - ? Block -->
 
   <sprite id="423" name="Toad Needs Help - Brick Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">

@@ -40,9 +40,11 @@ class AboutDialog(QtWidgets.QDialog):
         description += 'body {font-family: Calibri}'
         description += '.main {font-size: 12px}'
         description += '</style></head><body>'
-        description += '<center><h1><i>Reggie Next</i> Level Editor</h1><div class="main">'
-        description += '<i>Reggie Next Level Editor</i> is an open-source project, started by Treeki in 2010 and forked by RoadrunnerWMC in 2013, that aims to bring you the fun of designing original New Super Mario Bros. Wii&trade;-compatible levels.<br>'
-        description += 'Interested? Join the <a href="https://discord.gg/XnQJnwa">Discord server</a> to get in touch with the current developer(s).<br>'
+        description += '<center><h1>'
+        description += globals_.trans.string('AboutDlg', 1)
+        description += '</h1><div class="main">'
+        description += globals_.trans.string('AboutDlg', 2)
+        description += globals_.trans.string('AboutDlg', 3)
         description += '</div></center></body></html>'
 
         # Description label
@@ -120,7 +122,7 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         QtWidgets.QDialog.__init__(self)
-        self.setWindowTitle('Swap Objects\' Tilesets')
+        self.setWindowTitle(globals_.trans.string('SwapObjTilesDlg', 0))
         self.setWindowIcon(GetIcon('swap'))
 
         # Create widgets
@@ -133,10 +135,10 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
         # Swap layouts
         swapLayout = QtWidgets.QFormLayout()
 
-        swapLayout.addRow('From Tileset:', self.FromTS)
-        swapLayout.addRow('To Tileset:', self.ToTS)
+        swapLayout.addRow(globals_.trans.string('SwapObjTilesDlg', 1), self.FromTS)
+        swapLayout.addRow(globals_.trans.string('SwapObjTilesDlg', 2), self.ToTS)
 
-        self.DoExchange = QtWidgets.QCheckBox('Exchange (perform 2-way conversion)')
+        self.DoExchange = QtWidgets.QCheckBox(globals_.trans.string('SwapObjTilesDlg', 3))
 
         # Buttonbox
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
@@ -161,7 +163,7 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         QtWidgets.QDialog.__init__(self)
-        self.setWindowTitle(globals_.trans.string("MenuItems", 106))
+        self.setWindowTitle(globals_.trans.string('SwapObjTilesDlg', 0))
         self.setWindowIcon(GetIcon('swap'))
 
         # Create widgets
@@ -177,21 +179,21 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         self.ToTileset = QtWidgets.QSpinBox()
         self.ToTileset.setRange(1, 4)
 
-        self.DoExchange = QtWidgets.QCheckBox('Exchange (perform 2-way conversion)')
+        self.DoExchange = QtWidgets.QCheckBox(globals_.trans.string('SwapObjTilesDlg', 5))
 
         # Swap layout
         swapLayout = QtWidgets.QGridLayout()
 
-        swapLayout.addWidget(QtWidgets.QLabel('From Object:'), 0, 0)
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjTilesDlg', 1)), 0, 0)
         swapLayout.addWidget(self.FromType, 0, 1)
 
-        swapLayout.addWidget(QtWidgets.QLabel('From Tileset:'), 1, 0)
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjTilesDlg', 2)), 1, 0)
         swapLayout.addWidget(self.FromTileset, 1, 1)
 
-        swapLayout.addWidget(QtWidgets.QLabel('To Object:'), 0, 2)
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjTilesDlg', 3)), 0, 2)
         swapLayout.addWidget(self.ToType, 0, 3)
 
-        swapLayout.addWidget(QtWidgets.QLabel('To Tileset:'), 1, 2)
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjTilesDlg', 4)), 1, 2)
         swapLayout.addWidget(self.ToTileset, 1, 3)
 
         # Buttonbox
@@ -471,10 +473,10 @@ class ScreenCapChoiceDialog(QtWidgets.QDialog):
         buttonBox.rejected.connect(self.reject)
 
         mainLayout = QtWidgets.QFormLayout()
-        mainLayout.addRow("Target", self.zoneCombo)
-        mainLayout.addRow("Hide background", self.hide_background)
-        mainLayout.addRow("Save image to file", self.save_img)
-        mainLayout.addRow("Copy image", self.save_clip)
+        mainLayout.addRow(globals_.trans.string('ScrShtDlg', 4), self.zoneCombo)
+        mainLayout.addRow(globals_.trans.string('ScrShtDlg', 5), self.hide_background)
+        mainLayout.addRow(globals_.trans.string('ScrShtDlg', 6), self.save_img)
+        mainLayout.addRow(globals_.trans.string('ScrShtDlg', 7), self.save_clip)
         mainLayout.addRow(buttonBox)
         self.setLayout(mainLayout)
 
@@ -1309,7 +1311,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         Creates and initialises the dialog
         """
         super(CameraProfilesDialog, self).__init__()
-        self.setWindowTitle('Camera Profiles')
+        self.setWindowTitle(globals_.trans.string('CamProfsDlg', 0))
         self.setWindowIcon(GetIcon('camprofile'))
         self.setMinimumHeight(450)
 
@@ -1317,9 +1319,9 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         self.list.itemSelectionChanged.connect(self.handleSelectionChanged)
         self.list.setSortingEnabled(True)
 
-        self.addButton = QtWidgets.QPushButton('Add')
+        self.addButton = QtWidgets.QPushButton(globals_.trans.string('CamProfsDlg', 1))
         self.addButton.clicked.connect(self.handleAdd)
-        self.removeButton = QtWidgets.QPushButton('Remove')
+        self.removeButton = QtWidgets.QPushButton(globals_.trans.string('CamProfsDlg', 2))
         self.removeButton.clicked.connect(self.handleRemove)
         self.removeButton.setEnabled(False)
 
@@ -1330,7 +1332,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
 
         self.eventid = QtWidgets.QSpinBox()
         self.eventid.setRange(0, 255)
-        self.eventid.setToolTip("<b>Triggering Event ID:</b><br>Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile's event ID will be automatically deactivated (so the game doesn't instantly switch back to it).")
+        self.eventid.setToolTip(globals_.trans.string('CamProfsDlg', 6))
         self.eventid.valueChanged.connect(self.handleEventIDChanged)
 
         self.camsettings = CameraModeZoomSettingsLayout(False)
@@ -1338,14 +1340,14 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         self.camsettings.edited.connect(self.handleCamSettingsChanged)
 
         profileLayout = QtWidgets.QFormLayout()
-        profileLayout.addRow('Triggering Event ID:', self.eventid)
+        profileLayout.addRow(globals_.trans.string('CamProfsDlg', 5), self.eventid)
         profileLayout.addRow(createHorzLine())
         profileLayout.addRow(self.camsettings)
 
-        self.profileBox = QtWidgets.QGroupBox('Modify Selected Camera Profile Properties')
+        self.profileBox = QtWidgets.QGroupBox(globals_.trans.string('CamProfsDlg', 3))
         self.profileBox.setLayout(profileLayout)
         self.profileBox.setEnabled(False)
-        self.profileBox.setToolTip('<b>Modify Selected Camera Profile Properties:</b><br>Camera Profiles can only be used with the "Event-Controlled" camera mode in the "Zones" dialog.<br><br>Transitions between zoom levels are instant, but can be hidden through careful use of zoom sprites (206).')
+        self.profileBox.setToolTip(globals_.trans.string('CamProfsDlg', 4))
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
 
@@ -1411,4 +1413,4 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         selItem.setData(QtCore.Qt.UserRole, values)
 
     def updateItemTitle(self, item):
-        item.setText('Camera Profile on Event %d' % item.data(QtCore.Qt.UserRole)[0])
+        item.setText(globals_.trans.string('CamProfsDlg', 7, '[id]', item.data(QtCore.Qt.UserRole)[0]))

@@ -54,12 +54,19 @@ class ReggieTranslation:
             'tilesets': os.path.join('reggiedata', 'tilesets.xml'),
             'tilesetinfo': os.path.join('reggiedata', 'tilesetinfo.xml'),
             'ts1_descriptions': os.path.join('reggiedata', 'ts1_descriptions.txt'),
+            'zonethemes': os.path.join('reggiedata', 'zonethemes.txt'),
             'external-actors': os.path.join('reggiedata', 'external', 'actors.xml')
         }}
 
         self.strings = {
             'AboutDlg': {
                 0: 'About Reggie Next',
+                1: '[i]Reggie Next[/i] Level Editor',
+                2: '[i]Reggie Next Level Editor[/i] is an open-source project, started by Treeki in 2010 and forked by RoadrunnerWMC in 2013, that aims to bring you the fun of designing original New Super Mario Bros. Wii[tm]-compatible levels.[br]',
+                3: 'Interested? Join the [a href="https://discord.gg/XnQJnwa"]Discord server[/a] to get in touch with the current developer(s).[br]',
+            },
+            'ErrorDlg': {
+                0: 'An unhandled exception occurred. Please report the problem in the Horizon Discord server.[br]A log will be written to "[log]".[br][br]Error information:[br]',
             },
             'AreaChoiceDlg': {
                 0: 'Choose an Area',
@@ -121,6 +128,12 @@ class ReggieTranslation:
                 43: '[b]Unknown Option 3:[/b] We haven\'t managed to figure out what this does, or if it does anything.',
                 44: 'Unknown Option 4',
                 45: '[b]Unknown Option 4:[/b] We haven\'t managed to figure out what this does, or if it does anything.',
+                46: 'Loaded Sprites',
+                47: 'Add Sprite',
+                48: 'Remove Selected Sprite',
+                49: 'Default',
+                50: 'Custom',
+                51: 'On the left is a list of sprites already present in the level. On the right, you can add more sprites you\'d like to load.',
             },
             'AutoSaveDlg': {
                 0: 'Auto-saved backup found',
@@ -202,8 +215,8 @@ class ReggieTranslation:
                 0: 'Level Diagnostics Tool',
                 1: None,  # REMOVED: 'This level references tilesets not used in NSMBWii.',
                 2: 'Some objects in the level are not found in the tileset files.',
-                3: 'There are sprites in this area which are known to cause NSMBWii to crash.',
-                4: 'There are sprites in this area which have settings which are known to cause NSMBWii to crash.',
+                3: 'There are sprites in this area which are known to cause the game to crash.',
+                4: 'There are sprites in this area which have settings which are known to cause the game to crash.',
                 5: 'There are too many sprites in this area.',
                 6: 'There are entrances with duplicate IDs.',
                 7: 'There is no start entrance in this area.',
@@ -252,7 +265,11 @@ class ReggieTranslation:
                 18: 'Links to Forward Pipe',
                 19: '[b]Links to Forward Pipe:[/b][br]If this option is set on a pipe, the destination entrance/area values will be ignored - Mario will pass through the pipe and then reappear several tiles ahead, coming out of a forward-facing pipe.',
                 20: 'Layer:',
-                21: ('Layer 1', 'Layer 2', 'Layer 0'),
+                21: (
+                    'Layer 1',
+                    'Layer 2',
+                    'Layer 0'
+                ),
                 22: '[b]Layer:[/b][br]Allows you to change the collision layer which this entrance is active on. This option is very glitchy and not used in the default levels - for almost all normal cases, you will want to use layer 1.',
                 23: '[b]Entrance [id]:[/b]',
                 24: 'Modify Selected Entrance Properties',
@@ -353,6 +370,8 @@ class ReggieTranslation:
                 16: 'Loading entrance names...',
                 17: 'Error',
                 18: 'An error occurred while attempting to load this game patch. It will now be unloaded. Here\'s the specific error:[br][error]',
+                19: 'Add a Reggie Patch Folder...',
+                20: 'Creates a symlink in the /reggiedata/patches folder using add_reggie_patch',
             },
             'InfoDlg': {
                 0: 'Level Information',
@@ -508,9 +527,9 @@ class ReggieTranslation:
                 101: None,  # REMOVED: 'Show or hide the Island Generator window',
                 102: None,  # REMOVED: 'Stamp Pad'
                 103: None,  # REMOVED: 'Show or hide the Stamp Pad window'
-                104: 'Swap Objects\' Tileset',
+                104: 'Swap Objects\' Tileset...',
                 105: 'Swaps the tileset of objects using a certain tileset',
-                106: 'Swap Objects',
+                106: 'Swap Objects...',
                 107: 'Swaps the type of objects of a certain type',
                 108: 'Tileset Animations',
                 109: 'Play tileset animations if they exist (may cause a slowdown)',
@@ -538,6 +557,8 @@ class ReggieTranslation:
                 137: 'Show the Properties Window to Configure Quick Paint',
                 138: 'Reload Spritedata',
                 139: 'Reload the spritedata file, including any changes made since the level was loaded',
+                140: 'Camera Profiles...',
+                141: 'Edit event-activated camera settings',
             },
             'Objects': {
                 0: '[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]',
@@ -586,6 +607,7 @@ class ReggieTranslation:
                 33: 'Comments',
                 34: 'Comments currently in this area:[br](Double-click one to jump to it instantly)',
                 35: 'Name:',
+                36: 'Change Layer'
             },
             'PathDataEditor': {
                 0: 'Loops:',
@@ -599,6 +621,7 @@ class ReggieTranslation:
                 8: '[b]Path [id][/b]',
                 9: '[b]Node [id][/b]',
                 10: 'Modify Selected Path Node Properties',
+                11: 'ID',
             },
             'Paths': {
                 0: '[b]Path [path][/b][br]Node [node]',
@@ -628,9 +651,9 @@ class ReggieTranslation:
                 20: 'Reset',
                 21: 'Available Themes',
                 22: 'Preview',
-                23: 'Use Nonstandard Window Style',
-                24: '[b]Use Nonstandard Window Style[/b][br]If this is checkable, the selected theme specifies a window style other than the default. In most cases, you should leave this checked. Uncheck this if you dislike the style this theme uses.',
-                25: 'Options',
+                23: None,
+                24: '[b]Window Style[/b][br]This changes what style Reggie\'s UI uses. Note that this may cause issues with certain themes.',
+                25: 'Window Style',
                 26: '[b][name][/b][br]By [creator][br][description]',
                 27: None,  # REMOVED: 'Tilesets:',
                 28: None,  # REMOVED: 'Use Default Tileset Picker (recommended)',
@@ -644,12 +667,19 @@ class ReggieTranslation:
                 36: 'Fixed level size (bytes)',
                 37: 'Place objects at their full size',
                 38: 'Display rectangles indicating the zone bounds',
+                39: 'Insert new path node after selected node',
+                40: 'Themes',
+                41: 'Theme:',
             },
             'ScrShtDlg': {
                 0: 'Choose a Screenshot source',
                 1: 'Current Screen',
                 2: 'All Zones',
                 3: 'Zone [zone]',
+                4: 'Target',
+                5: 'Hide background',
+                6: 'Save image to file',
+                7: 'Copy image',
             },
             'ShftItmDlg': {
                 0: 'Shift Items',
@@ -659,6 +689,20 @@ class ReggieTranslation:
                 4: 'Y:',
                 5: 'Warning',
                 6: 'You are trying to move object(s) by an offset which isn\'t a multiple of 16. The offset will be rounded to the nearest multiple of 16. Are you sure you want to do this?',
+            },
+            'SwapObjTilesDlg': {
+                0: 'Swap Objects\' Tilesets',
+                1: 'From Tileset:',
+                2: 'To Tileset:',
+                3: 'Exchange (perform 2-way conversion)',
+            },
+            'SwapObjDlg': {
+                0: 'Swap Objects',
+                1: 'From Object:',
+                2: 'From Tileset:',
+                3: 'To Object:',
+                4: 'To Tileset:',
+                5: 'Exchange (perform 2-way conversion)',
             },
             'SpriteDataEditor': {
                 0: 'Modify Selected Sprite Properties',
@@ -709,6 +753,39 @@ class ReggieTranslation:
                 17: 'No sprites found',
                 18: '[id]: [name]',
                 19: 'Search',
+                20: 'Filter',
+                21: 'ID',
+                22: 'Name',
+                23: (
+                    'Any',
+                    'Star Set ID',
+                    'Rotation ID',
+                    'Two Way Line ID',
+                    'Water Ball ID',
+                    'Mushroom ID',
+                    'Group ID',
+                    'Bolt ID',
+                    'Target Event ID',
+                    'Triggering Event ID',
+                    'Collection ID',
+                    'Location ID',
+                    'Physics ID',
+                    'Message ID',
+                    'Path ID',
+                    'Path Movement ID',
+                    'Red Coin ID',
+                    'Hill ID',
+                    'Stretch ID',
+                    'Ray ID',
+                    'Coaster ID',
+                    'Bubble Cannon ID',
+                    'Burner ID',
+                    'Wiggling ID',
+                    'Panel ID',
+                    'Colony ID',
+                    'Entrance ID',
+                    'Path Node ID',
+                ),
             },
             'Statusbar': {
                 0: '- 1 object selected',
@@ -888,10 +965,43 @@ class ReggieTranslation:
                     'Small Spotlight and Small Focus Light',
                 ),
                 83: '[b]Visibility[/b][br]Small Spotlight and Small Focus Light - A small, centered spotlight affords visibility through layer 0, and a small spotlight which changes size based on player movement provides visibility through darkness',
+                84: 'Rendering',
+                85: 'Normal',
+                86: 'The standard camera mode, appropriate for most situations.',
+                87: 'Static Zoom',
+                88: 'In this mode, the camera will not zoom out during multiplayer.',
+                89: 'Static Zoom, Y Tracking Only',
+                90: 'In this mode, the camera will not zoom out during multiplayer, and will be centered horizontally in the zone.',
+                91: 'Static Zoom, Event-Controlled',
+                92: 'In this mode, the camera will not zoom out during multiplayer, and will use event-controlled camera settings from the Camera Profiles dialog.',
+                93: 'X Tracking Only',
+                94: 'In this mode, the camera will only move horizontally. It will be aligned to the bottom edge of the zone.',
+                95: 'X Expanding Only',
+                96: 'In this mode, the camera will only zoom out during multiplayer if the players are far apart horizontally.',
+                97: 'Y Tracking Only',
+                98: 'In this mode, the camera will only move vertically. It will be centered horizontally in the zone.',
+                99: 'Y Expanding Only',
+                100: 'In this mode, the camera will zoom out during multiplayer if the players are far apart vertically. The largest screen size will only be used if a player is flying with a Propeller Suit or Block.',
+                101: 'Screen Heights:',
+                102: '[b]Screen Heights:[/b][br]Selects screen heights (in blocks) the camera can use during multiplayer. The camera will zoom out if the players are too far apart, and zoom back in when they get closer together. Values represent screen heights, measured in tiles.[br][br]In single-player, only the smallest height will be used.[br][br]Options marked with * or ** are glitchy if zone bounds are set to 0; see the Upper/Lower Bounds tooltips for more info.[br]Options marked with ** are also unplayably glitchy in multiplayer.',
+                103: 'Multiplayer Upper Bounds Adjust:',
+                104: '[b]Multiplayer Upper Bounds Adjust:[/b][br]Added to the upper bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.',
+                105: 'Multiplayer Lower Bounds Adjust:',
+                106: '[b]Multiplayer Lower Bounds Adjust:[/b][br]Added to the lower bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.',
             },
             'Zones': {
                 0: 'Zone [num]',
             },
+            'CamProfsDlg': {
+                0: 'Camera Profiles',
+                1: 'Add',
+                2: 'Remove',
+                3: 'Modify Selected Camera Profile Properties',
+                4: '[b]Modify Selected Camera Profile Properties:[/b][br]Camera Profiles can only be used with the "Event-Controlled" camera mode in the "Zones" dialog.[br][br]Transitions between zoom levels are instant, but can be hidden through careful use of zoom sprites (206).',
+                5: 'Triggering Event ID:',
+                6: '[b]Triggering Event ID:[/b][br]Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile\'s event ID will be automatically deactivated (so the game doesn\'t instantly switch back to it).',
+                7: 'Camera Profile on Event [id]',
+            }
         }
 
     def InitFromXML(self, name):
@@ -946,7 +1056,7 @@ class ReggieTranslation:
                         self.files[target][name] = os.path.join(base_path, child.attrib['path'])
 
         # Get rid of the XML stuff
-        del tree, root, node, child
+        del tree, root
 
         # Check for a strings node
         if not strings: return False
@@ -1049,6 +1159,7 @@ class ReggieTranslation:
             '[/a]': '</a>',
             '\\n': '\n',
             '//n': '\n',
+            '[tm]': '™',
         }
         for old in replace:
             astring = astring.replace(old, replace[old])

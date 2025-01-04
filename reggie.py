@@ -119,11 +119,7 @@ def _excepthook(*exc_info):
     """
     separator = '-' * 80
     logFile = "log.txt"
-    notice = \
-        """An unhandled exception occurred. Please report the problem """\
-        """in the Horizon Discord server.\n"""\
-        """A log will be written to "%s"."""\
-        """\n\nError information:\n""" % logFile
+    notice = globals_.trans.string('ErrorDlg', 0, '[log]', logFile)
 
     timeString = time.strftime("%Y-%m-%d, %H:%M:%S")
 
@@ -624,7 +620,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.CreateAction(
             'camprofiles', self.HandleCameraProfiles, GetIcon('camprofile'),
-            'Camera Profiles...', 'Edit event-activated camera settings',
+            globals_.trans.stringOneLine('MenuItems', 140), globals_.trans.stringOneLine('MenuItems', 141),
             QtGui.QKeySequence('Ctrl+Alt+C'),
         )
 
@@ -1072,7 +1068,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.objUseLayer2 = QtWidgets.QRadioButton('2')
         self.objUseLayer2.setToolTip(globals_.trans.string('Palette', 3))
 
-        self.layerChangeButton = QtWidgets.QPushButton("Change Layer")
+        self.layerChangeButton = QtWidgets.QPushButton(globals_.trans.string('Palette', 36))
         self.layerChangeButton.clicked.connect(self.ChangeSelectionLayer)
         self.layerChangeButton.setEnabled(False)
 
@@ -4273,7 +4269,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if do_save:
             fn = QtWidgets.QFileDialog.getSaveFileName(self,
-                os.path.join(globals_.trans.string('FileDlgs', 3), 'untitled.png'),
+                globals_.trans.string('FileDlgs', 3), 'untitled.png',
                 globals_.trans.string('FileDlgs', 4) + ' (*.png)')[0]
 
             if fn == '':
