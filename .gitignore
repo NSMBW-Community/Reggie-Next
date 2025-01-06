@@ -105,3 +105,8 @@ $RECYCLE.BIN/
 log.txt
 settings.ini
 settings.ini.bak
+
+# Ignore symlink patches but accept folder ones
+reggiedata/patches/*
+!reggiedata/patches/*/
+!reggiedata/patches/*.*

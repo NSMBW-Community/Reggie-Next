@@ -1013,7 +1013,7 @@ class SpriteList(QtWidgets.QWidget):
                 continue
 
             # The idtype is the last element in the field tuple.
-            if field[-1] == filtertype:
+            if field[-2] == filtertype:
                 self.table.setRowHidden(row, False)
                 return
 
@@ -1214,7 +1214,7 @@ class SpriteList(QtWidgets.QWidget):
 
             # The idtype is the last element in the field tuple, bit is the
             # third element in the field tuple (for both list and value).
-            idtype = field[-1]
+            idtype = field[-2]
 
             # No id type specified
             if idtype is None:

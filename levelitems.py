@@ -11,6 +11,8 @@ from ui import GetIcon, clipStr
 from dirty import SetDirty
 from undo import MoveItemUndoAction, SimultaneousUndoAction
 
+from raw_data import RawData
+
 class InstanceDefinition:
     """
     ABC for a definition of an instance of a LevelEditorItem class, used for persistence and comparisons
@@ -175,7 +177,15 @@ class InstanceDefinition_SpriteItem(InstanceDefinition):
         return globals_.Area.sprites
 
     def createNew(self):
-        return SpriteItem(self.fields[0][1], self.objx, self.objy, self.fields[1][1])
+        data = RawData.from_sprite_id(self.fields[0][1])
+        data.original = self.fields[1][1]
+
+        return SpriteItem(
+            self.fields[0][1],
+            self.objx,
+            self.objy,
+            data
+        )
 
 
 class InstanceDefinition_EntranceItem(InstanceDefinition):
@@ -1851,7 +1861,7 @@ class SpriteItem(LevelEditorItem):
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     SelectionRect = QtCore.QRectF(0, 0, 23, 23)
 
-    def __init__(self, type_, x, y, data):
+    def __init__(self, type_, x, y, data: RawData):
         """
         Creates a sprite with specific data
         """
@@ -1862,7 +1872,7 @@ class SpriteItem(LevelEditorItem):
         self.type = type_
         self.objx = x
         self.objy = y
-        self.spritedata = data
+        self._spritedata: RawData = data
         self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
         self.ChangingPos = False
 
@@ -1890,6 +1900,17 @@ class SpriteItem(LevelEditorItem):
                 self.objy * 1.5,
             )
         globals_.DirtyOverride -= 1
+
+
+    @property
+    def spritedata(self) -> RawData:
+        return self._spritedata
+
+    @spritedata.setter
+    def spritedata(self, value: RawData):
+        assert isinstance(value, RawData)
+        self._spritedata = value
+
 
     def SetType(self, type_):
         """
@@ -2424,7 +2445,6 @@ class EntranceItem(LevelEditorItem):
     instanceDef = InstanceDefinition_EntranceItem
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     RoundedRect = QtCore.QRectF(1, 1, 22, 22)
-    EntranceImages = None
 
     class AuxEntranceItem(QtWidgets.QGraphicsItem):
         """
@@ -2515,12 +2535,15 @@ class EntranceItem(LevelEditorItem):
         """
         Creates an entrance with specific data
         """
-        if EntranceItem.EntranceImages is None:
+        if globals_.EntranceImages is None:
+            print('Loading entrance images')
             ei = []
             src = QtGui.QPixmap(os.path.join('reggiedata', 'entrances.png'))
-            for i in range(18):
-                ei.append(src.copy(i * 24, 0, 24, 24))
-            EntranceItem.EntranceImages = ei
+            img_w_count = src.width() // 24
+            img_count = img_w_count * (src.height() // 24)
+            for i in range(img_count):
+                ei.append(src.copy(i * 24 % img_w_count, i * 24 // img_w_count, 24, 24))
+            globals_.EntranceImages = ei
 
         LevelEditorItem.__init__(self)
 
@@ -2648,28 +2671,7 @@ class EntranceItem(LevelEditorItem):
         else:
             painter.drawRect(self.RoundedRect)
 
-        icontype = 0
-        enttype = self.enttype
-        if enttype == 0 or enttype == 1: icontype = 1  # normal
-        if enttype == 2: icontype = 2  # door exit
-        if enttype == 3: icontype = 4  # pipe up
-        if enttype == 4: icontype = 5  # pipe down
-        if enttype == 5: icontype = 6  # pipe left
-        if enttype == 6: icontype = 7  # pipe right
-        if enttype == 8: icontype = 12  # ground pound
-        if enttype == 9: icontype = 13  # sliding
-        # 0F/15 is unknown?
-        if enttype == 16: icontype = 8  # mini pipe up
-        if enttype == 17: icontype = 9  # mini pipe down
-        if enttype == 18: icontype = 10  # mini pipe left
-        if enttype == 19: icontype = 11  # mini pipe right
-        if enttype == 20: icontype = 15  # jump out facing right
-        if enttype == 21: icontype = 17  # vine entrance
-        if enttype == 23: icontype = 14  # boss battle entrance
-        if enttype == 24: icontype = 16  # jump out facing left
-        if enttype == 27: icontype = 3  # door entrance
-
-        painter.drawPixmap(0, 0, EntranceItem.EntranceImages[icontype])
+        painter.drawPixmap(0, 0, globals_.EntranceImages[self.enttype])
 
         painter.setFont(self.font)
         painter.drawText(3, 12, str(self.entid))
