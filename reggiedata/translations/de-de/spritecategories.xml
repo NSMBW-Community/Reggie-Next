@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <views>
 	<view name="Enemies">
-		<category name="Classic Enemies">
+		<category name="Klassische Gegner">
 			<attach sprite="20-21"/> <!-- Goombas -->
 			<attach sprite="200"/> <!-- Goomba Mini -->
 			<attach sprite="198-199"/> <!-- Goomba Big -->
@@ -31,7 +31,7 @@
 			<attach sprite="326"/> <!-- King Bill -->
 			<attach sprite="99"/> <!-- Pipe Enemy -->
 		</category>
-		<category name="Overworld and Skies">
+		<category name="Oberwelt und Himmel">
 			<attach sprite="130"/> <!-- Wiggler -->
 			<attach sprite="240"/> <!-- Wiggler Big -->
 			<attach sprite="230"/> <!-- Bramball -->
@@ -53,7 +53,7 @@
 			<attach sprite="235"/> <!-- Ray Spawn -->
 			<attach sprite="291-292"/> <!-- Parabeetle -->
 		</category>
-		<category name="Desert and Underground">
+		<category name="Wüste und Untergrund">
 			<attach sprite="105"/> <!-- Pokey -->
 			<attach sprite="158"/> <!-- Fire Snake -->
 			<attach sprite="414"/> <!-- Gabon -->
@@ -62,7 +62,7 @@
 			<attach sprite="25-26"/> <!-- Spinys -->
 			<attach sprite="100"/> <!-- Swooper -->
 		</category>
-		<category name="Water">
+		<category name="Wasser">
 			<attach sprite="138"/> <!-- Water -->
 			<attach sprite="317"/> <!-- Water Controller -->
 			<attach sprite="263"/> <!-- Wplant -->
@@ -84,7 +84,7 @@
 			<attach sprite="111-112"/> <!-- Bloopers -->
 			<attach sprite="197"/> <!-- Clam -->
 		</category>
-		<category name="Castle and Volcano">
+		<category name="Schloss und Vulkan">
 			<attach sprite="46"/> <!-- Podobo -->
 			<attach sprite="118-119"/> <!-- Bones -->
 			<attach sprite="101"/> <!-- BobOmb -->
@@ -99,7 +99,7 @@
 			<attach sprite="394"/> <!-- Lemmy Ball -->
 			<attach sprite="413"/> <!-- Wendy Ring -->
 		</category>
-		<category name="Ghost House">
+		<category name="Geisterhaus">
 			<attach sprite="131"/> <!-- Boo -->
 			<attach sprite="61"/> <!-- Big Boo -->
 			<attach sprite="323"/> <!-- Boo Circle -->
@@ -109,7 +109,7 @@
 			<attach sprite="271"/> <!-- Mouser -->
 			<attach sprite="451"/> <!-- Mouser Despawn -->
 		</category>
-		<category name="Doomship">
+		<category name="Luftschiff">
 			<attach sprite="232"/> <!-- Mecha -->
 			<attach sprite="101"/> <!-- BobOmb -->
 			<attach sprite="269-270"/> <!-- ParaOmb -->
@@ -122,7 +122,7 @@
 			<attach sprite="307"/> <!-- 'Flame Cannon4' Sync -->
 			<attach sprite="298-301"/> <!-- Cannons -->
 		</category>
-		<category name="Spawners">
+		<category name="Spawner">
 			<attach sprite="99"/> <!-- Pipe Enemy -->
 			<attach sprite="220"/> <!-- Cheep-Spawn -->
 			<attach sprite="181"/> <!-- Jumping Cheep Spawn -->
@@ -142,7 +142,7 @@
 			<attach sprite="318"/> <!-- Wood/Metal Box Gen -->
 			<attach sprite="472"/> <!-- Ice Flow Gen -->
 		</category>
-		<category name="Giant">
+		<category name="Riesig">
 			<attach sprite="198-199"/> <!-- Goomba -->
 			<attach sprite="296"/> <!-- Buzzy -->
 			<attach sprite="120"/> <!-- Brother -->
@@ -158,7 +158,7 @@
 			<attach sprite="292"/> <!-- Parabeetle -->
 			<attach sprite="343"/> <!-- Line Fuzzy -->
 		</category>
-		<category name="Special and Other">
+		<category name="Speziell und Andere">
 			<attach sprite="125-126"/> <!-- Chain Koopa -->
 			<attach sprite="108"/> <!-- Line Amp Gen -->
 			<attach sprite="343"/> <!-- Line Fuzzy -->
@@ -175,8 +175,8 @@
 			<attach sprite="445"/> <!-- Real Peach -->
 		</category>
 	</view>
-	<view name="Platforms and Hazards">
-		<category name="Basic Platforms - Flat">
+	<view name="Platformem und Bedrohungen">
+		<category name="Standard Platformen - Flach">
 			<attach sprite="23"/> <!-- HMove -->
 			<attach sprite="31"/> <!-- VMove -->
 			<attach sprite="50"/> <!-- TouchFall -->
@@ -188,7 +188,7 @@
 			<attach sprite="441"/> <!-- Mush Reg -->
 			<attach sprite="228"/> <!-- Mush Stretch -->
 		</category>
-		<category name="Basic Platforms - Blocks">
+		<category name="Standard Platformen - Blöcke">
 			<attach sprite="27-28"/> <!-- Stone Block -->
 			<attach sprite="356"/> <!-- Brown Tower -->
 			<attach sprite="30"/> <!-- Stone Tower -->
@@ -201,7 +201,7 @@
 			<attach sprite="467"/> <!-- Light Gem Block -->
 			<attach sprite="462"/> <!-- Huge Spiked Block -->
 		</category>
-		<category name="Wiimote Platforms">
+		<category name="Wiimote Platformen">
 			<attach sprite="51"/> <!-- Tilt -->
 			<attach sprite="190"/> <!-- Tilt2 -->
 			<attach sprite="59"/> <!-- Line Tilt -->
@@ -211,7 +211,7 @@
 			<attach sprite="187"/> <!-- Player Block -->
 			<attach sprite="333"/> <!-- Line Player Plat -->
 		</category>
-		<category name="Uses Line Objects">
+		<category name="Benutzt Schienen-Objekte (Lines/Rails)">
 			<attach sprite="106"/> <!-- Line Plat -->
 			<attach sprite="59"/> <!-- Line Tilt Plat -->
 			<attach sprite="327"/> <!-- Line Bolt Plat -->
@@ -225,7 +225,7 @@
 			<attach sprite="403"/> <!-- Line Brick -->
 			<attach sprite="343"/> <!-- Line Fuzzy -->
 		</category>
-		<category name="Rotation Controlled">
+		<category name="Rotation Gesteuert">
 			<attach sprite="96"/> <!-- Swaying -->
 			<attach sprite="149"/> <!-- Spinning -->
 			<attach sprite="253"/> <!-- Rotate Coin -->
@@ -249,7 +249,7 @@
 			<attach sprite="252"/> <!-- Odd Block -->
 			<attach sprite="254"/> <!-- Rotate Pipe -->
 		</category>
-		<category name="Movement Controlled">
+		<category name="Bewegung Gesteuert">
 			<attach sprite="147"/> <!-- Coin -->
 			<attach sprite="207-209"/> <!-- Blocks -->
 			<attach sprite="221"/> <!-- Invis -->
@@ -273,7 +273,7 @@
 			<attach sprite="373"/> <!-- Rail Water? -->
 			<attach sprite="91"/> <!-- Auto Scroller -->
 		</category>
-		<category name="Movement Synced">
+		<category name="Bewegung Synchronisiert">
 			<attach sprite="212"/> <!-- Rolling -->
 			<attach sprite="371"/> <!-- Rolling Coin -->
 			<attach sprite="219"/> <!-- Stretching -->
@@ -289,7 +289,7 @@
 			<attach sprite="390"/> <!-- Bolt Coin -->
 			<attach sprite="389"/> <!-- Bolt StarCoin -->
 		</category>
-		<category name="Environmental Hazards - General">
+		<category name="Umweltgefahren - Allgemein">
 			<attach sprite="212"/> <!-- Rolling Normal -->
 			<attach sprite="355"/> <!-- Rolling 1-Pipe -->
 			<attach sprite="360"/> <!-- Rolling 8-Pipe -->
@@ -320,7 +320,7 @@
 			<attach sprite="123"/> <!-- Old Swing -->
 			<attach sprite="174"/> <!-- 1-Way Gate -->
 		</category>
-		<category name="Environmental Hazards - Water Based">
+		<category name="Umweltgefahren - Wasserbasiert">
 			<attach sprite="138"/> <!-- Water -->
 			<attach sprite="317"/> <!-- Bubble Controller -->
 			<attach sprite="216"/> <!-- Poison Water -->
@@ -331,7 +331,7 @@
 			<attach sprite="205"/> <!-- Float Bubble -->
 			<attach sprite="226"/> <!-- Float Bubble2 -->
 		</category>
-		<category name="Environmental Hazards - Lava and Airship">
+		<category name="Umweltgefahren - Lava und Luftschiff">
 			<attach sprite="139"/> <!-- Lava -->
 			<attach sprite="358"/> <!-- Lava Particle -->
 			<attach sprite="268"/> <!-- Lava Geyser -->
@@ -347,7 +347,7 @@
 			<attach sprite="289"/> <!-- Wood/Metal Box -->
 			<attach sprite="318"/> <!-- Wood/Metal Box Gen -->
 		</category>
-		<category name="Environmental Effects and Doodads">
+		<category name="Umwelteinflüsse und Doodads">
 			<attach sprite="64"/> <!-- Outdoors Fog -->
 			<attach sprite="435"/> <!-- Ghost Fog -->
 			<attach sprite="446"/> <!-- Light Cloud -->
@@ -375,7 +375,7 @@
 			<attach sprite="453"/> <!-- Underwater Plant -->
 			<attach sprite="387"/> <!-- Bush -->
 		</category>
-		<category name="Coins and Blocks">
+		<category name="Münzen und Blöcke">
 			<attach sprite="32"/> <!-- StarCoin -->
 			<attach sprite="155"/> <!-- Line StarCoin -->
 			<attach sprite="389"/> <!-- Bolt StarCoin -->
@@ -410,7 +410,7 @@
 			<attach sprite="289"/> <!-- Wood/Metal Box -->
 			<attach sprite="370"/> <!-- Lakitu Block -->
 		</category>
-		<category name="Level Mechanics">
+		<category name="Level Mechanik">
 			<attach sprite="188"/> <!-- Midway -->
 			<attach sprite="113"/> <!-- Flagpole -->
 			<attach sprite="179"/> <!-- Special Exit -->
@@ -443,11 +443,11 @@
 			<attach sprite="77"/> <!-- DoomKey -->
 		</category>
 	</view>
-	<view name="Events and Special">
-		<category name="Main Event Controllers">
+	<view name="Events and Speziell">
+		<category name="Haupt Event Kontroller">
 			<attach sprite="33-39"/> <!-- All Event Dealies -->
 		</category>
-		<category name="Switches and Other Event Activators">
+		<category name="Schalter und andere Event Aktivatoren">
 			<attach sprite="40-45"/> <!-- Main Switches -->
 			<attach sprite="153"/> <!-- Switch -->
 			<attach sprite="478-479"/> <!-- Bowser Switches -->
@@ -459,7 +459,7 @@
 			<attach sprite="252"/> <!-- Odd Block -->
 			<attach sprite="367"/> <!-- Line Pink Block -->
 		</category>
-		<category name="Event Controllable Objects">
+		<category name="Durch Events kontrollierbare Objekte">
 			<attach sprite="40-45"/> <!-- Switch -->
 			<attach sprite="153"/> <!-- Switch -->
 			<attach sprite="478-479"/> <!-- Bowser Switches -->
@@ -487,7 +487,7 @@
 			<attach sprite="30"/> <!-- Stone Tower -->
 			<attach sprite="81-86"/> <!-- Stone Tower Spiked -->
 		</category>
-		<category name="Lighting">
+		<category name="Beleuchtung">
 			<attach sprite="359"/> <!-- Lamp -->
 			<attach sprite="447"/> <!-- Underwater Lamp -->
 			<attach sprite="305"/> <!-- Light Circle -->
@@ -500,7 +500,7 @@
 			<attach sprite="258"/> <!-- Bulber Spawn -->
 			<attach sprite="425"/> <!-- Jellybeam -->
 		</category>
-		<category name="Bonus Stage Stuff">
+		<category name="Bonus-Level Items">
 			<attach sprite="454"/> <!-- Ambush - Controller -->
 			<attach sprite="185"/> <!-- Ambush - Balloon -->
 			<attach sprite="203"/> <!-- Toad - Chest -->
@@ -516,7 +516,7 @@
 			<attach sprite="442"/> <!-- Hint - Super Vid Controller -->
 			<attach sprite="477"/> <!-- Hint - Exclamation Block -->
 		</category>
-		<category name="Boss and Cutscene Controllers">
+		<category name="Boss- und Cutscene-Controller">
 			<attach sprite="363"/> <!-- Tower Boss -->
 			<attach sprite="407"/> <!-- Boss Castle Cutscene -->
 			<attach sprite="192"/> <!-- Larry Boss -->
@@ -537,7 +537,7 @@
 			<attach sprite="431"/> <!-- Final Boss -->
 			<attach sprite="468"/> <!-- Credits -->
 		</category>
-		<category name="Camera/Scrolling Related">
+		<category name="Kamera/Scrolling bezogen">
 			<attach sprite="162-165"/> <!-- Border Related -->
 			<attach sprite="248-249"/> <!-- Border Related2 -->
 			<attach sprite="206"/> <!-- Zoom -->
@@ -548,7 +548,7 @@
 			<attach sprite="374"/> <!-- Snow/Wind -->
 			<attach sprite="358"/> <!-- Lava Particle -->
 		</category>
-		<category name="Misc Controllers">
+		<category name="Untersch. Kontroller">
 			<attach sprite="90"/> <!-- Wind Physics -->
 			<attach sprite="179"/> <!-- Special Exit -->
 			<attach sprite="186"/> <!-- Mini-Mario Collision Switch -->
@@ -580,7 +580,7 @@
 			<attach sprite="350"/>
 			<attach sprite="351"/>
     	</category>
-    	<category name="Incomplete / Beta">
+    	<category name="Unvollständig / Beta">
 			<attach sprite="29"/>
 			<attach sprite="49"/>
 			<attach sprite="52"/>
