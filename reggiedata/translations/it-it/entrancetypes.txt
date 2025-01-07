@@ -1,21 +1,21 @@
-0:Normalee
+0:Normale
 27:Entrata su Porta
 2:Uscita da Porta
-3:Tubo Facciato Su
-4:Tubo Facciato Giù
-5:Tubo Facciato a Sinistra
-6:Tubo Facciato a Destra
-16:Mini Tubo Facciato Su
-17:Mini Tubo Facciato Giù
-18:Mini Tubo Facciato Sinistra
-19:Mini Tubo Facciato Destre
-22:Pipe Facciato Verso lo Schermo
+3:Tubo Rivolto Su
+4:Tubo Rivolto Giù
+5:Tubo Rivolto a Sinistra
+6:Tubo Rivolto a Destra
+16:Mini Tubo Rivolto Su
+17:Mini Tubo Rivolto Giù
+18:Mini Tubo Rivolto Sinistra
+19:Mini Tubo Rivolto Destre
+22:Pipe Rivolto Verso lo Schermo
 7:Caduta Veloce
 8:Schianto a Terra
 9:Scivolo
 10:Nuoto
-20:Salto (Facciato a Destra)
-24:Salto (Facciato a Sinistra)
+20:Salto (Rivolto a Destra)
+24:Salto (Rivolto a Sinistra)
 21:Entrata su Pianta
 23:Entrata al Boss (Fermo)
 25:Entrata Boss (Saltando a Destra)
