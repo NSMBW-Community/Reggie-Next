@@ -8293,7 +8293,7 @@ class SpriteImage_Glare(SLib.SpriteImage):  # 463
         super().__init__(parent)
         self.aux.append(SLib.AuxiliaryImage(parent, 1000, 1000))
         self.aux[0].image = ImageCache['SunGlare']
-        self.aux[0].setSize(9 * 24, 9 * 24, -4 * 24, -4 * 24)
+        self.aux[0].setSize(9 * 24, 9 * 24, -4 * 24 - 5, -4 * 24 - 20)
 
     @staticmethod
     def loadImages():
