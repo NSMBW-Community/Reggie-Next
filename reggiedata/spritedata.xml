@@ -4004,6 +4004,7 @@
   </sprite> <!-- #265: Falling Icicle -->
 
   <sprite id="266" name="Rotating Chainlink Fence Wheel" noyoshi="True" notes="The fence draws behind Layer 1 by default.">
+    <dependency notes="It is recommended to cover up the circular hole in the center as it does have collsion despite not looking like it."/>
     <dualbox nybble="12.4" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the wheel will spin in."/>
     <list nybble="11" title="Speed" comment="This determines how fast the wheel will spin.">
       <entry value="3">Stopped</entry>
