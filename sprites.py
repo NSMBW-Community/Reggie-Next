@@ -3988,7 +3988,7 @@ class SpriteImage_PlayerBlock(SLib.SpriteImage_Static):  # 187
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('PlayerBlock', 'playerblock.png')
+        SLib.loadIfNotInImageCache('PlayerBlock', 'player_block.png')
 
 
 class SpriteImage_MidwayFlag(SLib.SpriteImage_Static):  # 188
@@ -4216,7 +4216,7 @@ class SpriteImage_Fishbones(SLib.SpriteImage_StaticMultiple):  # 196
 class SpriteImage_Clam(SLib.SpriteImage_StaticMultiple):  # 197
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.offset = (-26, -53)
+        self.offset = (-29, -54)
 
     @staticmethod
     def loadImages():
@@ -8293,7 +8293,7 @@ class SpriteImage_Glare(SLib.SpriteImage):  # 463
         super().__init__(parent)
         self.aux.append(SLib.AuxiliaryImage(parent, 1000, 1000))
         self.aux[0].image = ImageCache['SunGlare']
-        self.aux[0].setSize(9 * 24, 9 * 24, -4 * 24, -4 * 24)
+        self.aux[0].setSize(9 * 24, 9 * 24, -4 * 24 - 5, -4 * 24 - 20)
 
     @staticmethod
     def loadImages():
