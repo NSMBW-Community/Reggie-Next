@@ -8391,6 +8391,7 @@ class SpriteImage_BoltPlatform(SLib.SpriteImage):  # 469
         ImageCache['BoltPlatformR'] = SLib.GetImg('bolt_platform_right.png')
 
     def dataChanged(self):
+        self.offset = (0, -2)
         super().dataChanged()
 
         length = self.parent.spritedata[5] & 0xF
