@@ -5722,7 +5722,7 @@ class SpriteImage_MontyMole(SLib.SpriteImage_StaticMultiple):  # 303
         notInCave = self.parent.spritedata[5] & 1
         if not notInCave:  # wow, that looks weird
             self.image = ImageCache['MoleCave']
-            del self.offset
+            self.offset = (-6, -5)
         else:
             self.image = ImageCache['Mole']
             self.offset = (3.5, -4)
@@ -8391,6 +8391,7 @@ class SpriteImage_BoltPlatform(SLib.SpriteImage):  # 469
         ImageCache['BoltPlatformR'] = SLib.GetImg('bolt_platform_right.png')
 
     def dataChanged(self):
+        self.offset = (0, -2)
         super().dataChanged()
 
         length = self.parent.spritedata[5] & 0xF
