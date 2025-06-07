@@ -2125,10 +2125,10 @@ class SpriteImage_NewerBush(SLib.SpriteImage_StaticMultiple):  # 387
             )[size]
         else:
             self.offset = (
-                (-22, -26),
-                (-28, -46),
-                (-41, -62),
-                (-52, -80),
+                (-22, -25),
+                (-30, -44),
+                (-40, -60),
+                (-53, -78),
             )[size]
 
         super().dataChanged()

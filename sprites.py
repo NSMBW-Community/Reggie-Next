@@ -2326,7 +2326,7 @@ class SpriteImage_BanzaiBillLauncher(SLib.SpriteImage_Static):  # 93
             parent,
             1.5,
             ImageCache['BanzaiLauncher'],
-            (-32, -66.7),
+            (-32, -67),
         )
 
     @staticmethod
@@ -4232,8 +4232,8 @@ class SpriteImage_Clam(SLib.SpriteImage_StaticMultiple):  # 197
         overlays = (
             (26, 22, 'Star', ImageCache['StarCoin']),
             (40, 42, '1Up', ImageCache['BlockContents'][11]),
-            (40, 42, 'PSwitch', ImageCache['PSwitch']),
-            (40, 42, 'PSwitchU', ImageCache['PSwitchU']),
+            (42, 42, 'PSwitch', ImageCache['PSwitch']),
+            (42, 42, 'PSwitchU', ImageCache['PSwitchU']),
         )
         for x, y, clamName, overlayImage in overlays:
             newPix = QtGui.QPixmap(ImageCache['ClamEmpty'])
@@ -6860,12 +6860,12 @@ class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
             parent,
             1.5,
             ImageCache['FlashlightRaft'],
-            (-16, -20),
+            (-11, -20),
         )
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 72, 114))
+        self.aux.append(SLib.AuxiliaryImage(parent, 132, 120))
         self.aux[0].image = ImageCache['FlashlightLamp']
-        self.aux[0].setPos(0, -114)
+        self.aux[0].setPos(-22, -91)
 
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 144, 30))
         self.aux[1].setIsBehindSprite(False)
@@ -6879,7 +6879,7 @@ class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
         pathcontrolled = self.parent.spritedata[5] & 1
         midway = (self.parent.spritedata[5] >> 4) & 1
 
-        self.aux[1].setSize(24, 24, 144, 30) if pathcontrolled else self.aux[1].setSize(0, 0)
+        self.aux[1].setSize(24, 24, 136, 30) if pathcontrolled else self.aux[1].setSize(0, 0)
 
         if midway:
             self.alpha = 0.5
@@ -7179,10 +7179,10 @@ class SpriteImage_Bush(SLib.SpriteImage_StaticMultiple):  # 387
         size = props & 3
 
         self.offset = (
-            (-22, -26),
-            (-28, -46),
-            (-41, -62),
-            (-52, -80),
+            (-22, -25),
+            (-30, -44),
+            (-40, -60),
+            (-53, -78),
         )[size]
 
         self.image = ImageCache['Bush%d%d' % (style, size)]
@@ -7232,7 +7232,7 @@ class SpriteImage_PropellerBlock(SLib.SpriteImage_Static):  # 393
             parent,
             1.5,
             ImageCache['PropellerBlock'],
-            (-1, -6),
+            (-3, -6),
         )
 
     @staticmethod
@@ -8425,23 +8425,12 @@ class SpriteImage_PotPlatform(SLib.SpriteImage_Static):  # 471
             parent,
             1.5,
             ImageCache['PotPlatform'],
-            (-12, -2),
+            (-9, -3),
         )
 
     @staticmethod
     def loadImages():
-        if 'PotPlatform' in ImageCache: return
-        top = SLib.GetImg('pot_platform_top.png')
-        mid = SLib.GetImg('pot_platform_middle.png')
-        full = QtGui.QPixmap(77, 722)
-
-        full.fill(Qt.transparent)
-        painter = QtGui.QPainter(full)
-        painter.drawPixmap(0, 0, top)
-        painter.drawTiledPixmap(12, 143, 52, 579, mid)
-        del painter
-
-        ImageCache['PotPlatform'] = full
+        SLib.loadIfNotInImageCache('PotPlatform', 'pot_platform.png')
 
 
 class SpriteImage_IceFloeGenerator(SLib.SpriteImage):  # 472
@@ -8555,7 +8544,7 @@ class SpriteImage_BowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
         upsideDown = self.parent.spritedata[5] & 1
         if not upsideDown:
             self.image = ImageCache['ELSwitch']
-            self.offset = (-15, -24)
+            self.offset = (-15, -25)
         else:
             self.image = ImageCache['ELSwitchU']
             self.offset = (-15, 0)

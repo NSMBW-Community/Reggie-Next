@@ -165,14 +165,13 @@ class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153
             self.image = ImageCache[self.switchType + 'SwitchU' + style]
 
             if self.switchType != 'E':
-                self.xOffset -= 1
                 self.yOffset -= 1
         else:
             self.image = ImageCache[self.switchType + 'Switch' + style]
             if self.switchType == 'E':
                 self.yOffset -= 3
             else:
-                self.yOffset -= 2
+                self.yOffset -= 3
 
         super().dataChanged()
 
