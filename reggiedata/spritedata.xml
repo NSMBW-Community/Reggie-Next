@@ -2185,7 +2185,7 @@
     <checkbox nybble="5.1" title="Initially Submerged" comment="When enabled, the floating barrel will load partially submerged."/>
   </sprite> <!-- #145: Floating Barrel -->
 
-  <sprite id="146" name="Chain Chomp" notes="A chain chomp enemy tied up to a 3 block pole. The pole must be ground-pounded 3 times to release the Chain Chomp and he will rampage in the direction he is freed destroying all block terrain in his path." advancednotes="We're pretty sure there's no setting to change the height of the pole, but you're welcome to test a few values.">
+  <sprite id="146" name="Chain Chomp" notes="A chain chomp enemy tied up to a 3 block pole. The pole must be ground-pounded 3 times to release the Chain Chomp and he will rampage in the direction he is freed destroying all block terrain in his path.">
   </sprite> <!-- #146: Chain Chomp -->
 
   <!-- Please check Behavior Type combined with ALL Movement Types. Which ones are compatible? Which ones are incompatible? Full list, please. -->
