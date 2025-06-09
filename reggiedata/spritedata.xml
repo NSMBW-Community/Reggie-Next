@@ -6850,10 +6850,10 @@
     <checkbox nybble="11.4" title="Floating" comment="When enabled, the Ice Floe will wiggle around as though it is floating on the surface of the water."/>
   </sprite> <!-- #475: Path Controlled Ice Floe -->
 
-  <!-- Research on Nybble 11, and other Nybbles, is suggested. This includes checking for camera related values, so make sure that the test level has enough room to scroll vertically, or has an Airship Rocking effect. -->
+  <!-- Research on other Nybbles is suggested. This includes checking for camera related values, so make sure that the test level has enough room to scroll vertically, or has an Airship Rocking effect. -->
   <sprite id="476" name="Loose Flying Wrench" notes="A stand-alone Rocky Wrench's wrench that will fly across the screen.">
     <dualbox nybble="12.4" title1="Moves Right" title2="Moves Left" comment="This determines which direction the wrench flies in when it loads."/>
-    <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="Unknown."/>
+    <checkbox nybble="11.4" title="Owned by Rocky Wrench" advanced="True" comment="Enabled on wrenches thrown by [352] Rocky Wrench." advancedcomment="This makes the wrench despawn if the parent Rocky Wrench doesn't exist. Since this wrench is standalone, it will always despawn."/>
   </sprite> <!-- #476: Loose Flying Wrench -->
 
   <sprite id="477" name="Super Guide Block" notes="A block that activates a special Luigi replay where Luigi will complete the level as minimally as possible with as little running or wall jumping as he can get away with.">
