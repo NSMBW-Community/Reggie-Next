@@ -4180,7 +4180,7 @@
   <sprite id="279" name="Incomplete Sprite - 'Ac_Lift_Ice_Spring'" notes="Does nothing.">
   </sprite> <!-- #279: Incomplete Sprite - 'Ac_Lift_Ice_Spring' -->
 
-  <sprite id="280" name="Giant Ice Block" notes="A large 3x3 ice block that can be broken with an explosion.">
+  <sprite id="280" name="Giant Ice Block" notes="A large 4x4 ice block that can be broken with an explosion.">
     <list nybble="12.3-12.4" title="Frozen Inside" comment="This determines what type of object is frozen inside the block." comment2="Bob-Omb ice blocks will explode to other nearby ice blocks.">
       <entry value="0">Nothing</entry>
       <entry value="1">Bob-Omb</entry>
