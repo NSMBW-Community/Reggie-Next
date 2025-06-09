@@ -1605,6 +1605,7 @@ class SpriteImage_FallingPlatform(SpriteImage_WoodenPlatform):  # 50
 
         # set color
         color = (self.parent.spritedata[3] >> 4) & 3
+        self.height = 16 # reset so the image isn't too big after using the bone platform
         if color == 1:
             self.color = 1
         elif color == 3:
