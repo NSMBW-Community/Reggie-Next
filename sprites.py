@@ -1228,8 +1228,8 @@ class SpriteImage_HorzMovingPlatform(SpriteImage_WoodenPlatform):  # 23
             # platform goes left
             self.aux[0].setPos(-distance * 1.5, 0)
 
-        # set color
-        self.color = (self.parent.spritedata[3] >> 4) & 1
+        # set color, silver is only used for a value of 1
+        self.color = (self.parent.spritedata[3] >> 4) == 1
 
         self.aux[0].update()
 
@@ -1385,8 +1385,8 @@ class SpriteImage_VertMovingPlatform(SpriteImage_WoodenPlatform):  # 31
             # platform goes down
             self.aux[0].setPos(0, 0)
 
-        # set color
-        self.color = (self.parent.spritedata[3] >> 4) & 1
+        # set color, silver is only used for a value of 1
+        self.color = (self.parent.spritedata[3] >> 4) == 1
 
         self.aux[0].update()
 

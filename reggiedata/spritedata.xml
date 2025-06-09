@@ -151,7 +151,6 @@
   <sprite id="23" name="Basic Platform - Horizontal Movement" notes="The most basic platform in the game. Moves on its own from left to right.">
     <dualbox nybble="7.3" title1="Normal Model" title2="boss_koopa_lift.arc" advanced="True" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
     <dualbox nybble="7.4" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requirednybble="7.3" requiredval="0"/>
-    <dualbox nybble="7.4" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used. The default texture model is the Gold Platform." advanced="True" requirednybble="7.3"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
     <dualbox nybble="8.4" title1="Starts Moving Right" title2="Starts Moving Left" comment="This determines which direction the platform will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the platform will move."/>
@@ -280,7 +279,6 @@
   <sprite id="31" name="Basic Platform - Vertical Movement" notes="The most basic platform in the game. Moves on its own, upwards and downwards.">
     <dualbox nybble="7.3" title1="Normal Model" title2="boss_koopa_lift.arc" advanced="True" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
     <dualbox nybble="7.4" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requirednybble="7.3" requiredval="0"/>
-    <dualbox nybble="7.4" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used." requirednybble="7.3"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
     <dualbox nybble="8.4" title1="Starts Moving Up" title2="Starts Moving Down" comment="This determines which direction the platform will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the platform will move."/>
@@ -604,10 +602,11 @@
   </sprite> <!-- #49: (Unused) Seesaw Platform -->
 
   <sprite id="50" name="Basic Platform - Fall-When-Touched" notes="This platform will begin to fall when a player first touches it.">
-    <list nybble="7" title="Color" comment="This determines the color of the platform. Values not listed here result in 'Normal'.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Silver</entry>
-      <entry value="3">Bone</entry>
+    <list nybble="7" title="Model" comment="This determines the model used by the platform. Values not listed here result in 'Gold Platform'.">
+      <entry value="0">Gold Platform</entry>
+      <entry value="1">Silver Platform</entry>
+      <entry value="2">boss_koopa_lift.arc</entry>
+      <entry value="3">Bone Platform</entry>
     </list>
     <value nybble="12" title="Width" comment="This determines the length of the platform." comment2="&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;Do not use a Width of 0.&lt;/font&gt;"/>
     <dualbox nybble="11.4" title1="Instant, Fast Fall" title2="Delayed, Slow Fall" comment="This determines the rate at which the platform will fall when activated."/>
