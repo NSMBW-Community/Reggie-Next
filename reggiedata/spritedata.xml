@@ -3623,11 +3623,11 @@
     <value nybble="5-6" title="Current Force" comment="This determines the strength of the current."/>
   </sprite> <!-- #243: (Unused) Water Current Controller -->
 
-  <sprite id="244" name="Incomplete Sprite - 'Hana_Mountain'" notes="Does nothing.">
-  </sprite> <!-- #244: Incomplete Sprite - 'Hana_Mountain' -->
+  <sprite id="244" name="Incomplete Sprite - 'River_Mgr'" notes="Does nothing.">
+  </sprite> <!-- #244: Incomplete Sprite - 'River_Mgr' -->
 
-  <sprite id="245" name="Incomplete Sprite - 'River_Mgr'" notes="Does nothing.">
-  </sprite> <!-- #245: Incomplete Sprite - 'River_Mgr' -->
+  <sprite id="245" name="Incomplete Sprite - 'Hana_Mountain'" notes="Does nothing.">
+  </sprite> <!-- #245: Incomplete Sprite - 'Hana_Mountain' -->
 
   <sprite id="246" name="Incomplete Sprite - 'Tag_Thunder'" notes="Does nothing.">
   </sprite> <!-- #246: Incomplete Sprite - 'Tag_Thunder' -->
