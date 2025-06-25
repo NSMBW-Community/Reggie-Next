@@ -5376,6 +5376,7 @@ class SpriteImage_Parabeetle(SLib.SpriteImage_StaticMultiple):  # 291
 
         direction = self.parent.spritedata[5] & 3
         self.image = ImageCache['Parabeetle%d' % direction]
+        self.yOffset = -6
 
         if direction == 0 or direction > 3:  # right
             self.xOffset = -12
@@ -5402,6 +5403,7 @@ class SpriteImage_HeavyParabeetle(SLib.SpriteImage_StaticMultiple):  # 292
 
         direction = self.parent.spritedata[5] & 3
         self.image = ImageCache['HeavyParabeetle%d' % direction]
+        self.yOffset = -60
 
         if direction == 0 or direction > 3:  # right
             self.xOffset = -38

@@ -1716,6 +1716,7 @@ class SpriteImage_NewerParabeetle(SLib.SpriteImage_StaticMultiple):  # 291
 
     def dataChanged(self):
         
+        self.yOffset = -6
         direction = self.parent.spritedata[5] & 3
         colour = self.parent.spritedata[2] & 15
         if colour > 10:
@@ -1755,6 +1756,7 @@ class SpriteImage_NewerHeavyParabeetle(SLib.SpriteImage_StaticMultiple):  # 292
 
     def dataChanged(self):
 
+        self.yOffset = -60
         direction = self.parent.spritedata[5] & 3
         colour = self.parent.spritedata[2] & 15
         if colour > 10:
