@@ -1,5 +1,5 @@
 import struct
-from PyQt5 import QtWidgets
+from PyQt6 import QtWidgets
 
 import globals_
 import spritelib as SLib

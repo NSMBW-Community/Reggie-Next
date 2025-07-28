@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt6 import QtWidgets, QtCore
 
 import common
 import globals_
@@ -37,9 +37,9 @@ class ZonesDialog(QtWidgets.QDialog):
         self.NewButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 4))
         self.DeleteButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 5))
 
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
-        buttonBox.addButton(self.NewButton, buttonBox.ActionRole)
-        buttonBox.addButton(self.DeleteButton, buttonBox.ActionRole)
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        buttonBox.addButton(self.NewButton, buttonBox.ButtonRole.ActionRole)
+        buttonBox.addButton(self.DeleteButton, buttonBox.ButtonRole.ActionRole)
 
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
@@ -55,8 +55,8 @@ class ZonesDialog(QtWidgets.QDialog):
     def NewZone(self):
         if len(self.zoneTabs) >= 6:
             result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('ZonesDlg', 6), globals_.trans.string('ZonesDlg', 7),
-                                                   QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-            if result == QtWidgets.QMessageBox.No:
+                                                   QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+            if result == QtWidgets.QMessageBox.StandardButton.No:
                 return
 
         z = globals_.mainWindow.CreateZone(256, 256)
@@ -325,7 +325,7 @@ class ZoneTab(QtWidgets.QWidget):
     def createRendering(self, z):
         self.Rendering = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 84))
 
-        comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed)
+        comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed)
 
         zone_theme_values = globals_.ZoneThemeValues
         zone_terrain_theme_values = globals_.trans.stringList('ZonesDlg', 2)
@@ -380,7 +380,7 @@ class ZoneTab(QtWidgets.QWidget):
     def createCamera(self, z):
         self.Camera = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 19))
 
-        comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed)
+        comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed)
 
         self.Zone_cammodezoom = CameraModeZoomSettingsLayout(True)
         self.Zone_cammodezoom.setValues(z.cammode, z.camzoom)
@@ -615,7 +615,7 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
         super().__init__()
         self.updating = True
 
-        comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed)
+        comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed)
 
         self.zm = -1
 

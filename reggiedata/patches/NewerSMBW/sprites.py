@@ -126,7 +126,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
     def paint(self, painter):
         super().paint(painter)
 
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         if self.tilenum < len(SLib.Tiles):
             painter.drawPixmap(0, 0, SLib.GetTile(self.tilenum))
         painter.drawPixmap(0, 0, self.image)
@@ -1027,7 +1027,7 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
         color = ("", "pumpkin", "", "jungle", "lava")[style]
 
         pix = QtGui.QPixmap(100, 252)
-        pix.fill(Qt.transparent)
+        pix.fill(Qt.GlobalColor.transparent)
         paint = QtGui.QPainter(pix)
 
         if style == 2:
@@ -1124,7 +1124,7 @@ class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
 
         if 'YoshiFire' not in ImageCache:
             pix = QtGui.QPixmap(48, 24)
-            pix.fill(Qt.transparent)
+            pix.fill(Qt.GlobalColor.transparent)
             paint = QtGui.QPainter(pix)
             paint.drawPixmap(0, 0, ImageCache['BlockContents'][9])
             paint.drawPixmap(24, 0, ImageCache['BlockContents'][3])

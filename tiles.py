@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 import os
 import struct
 
@@ -85,7 +85,7 @@ class TilesetTile:
         for frame in range(numberOfFrames):
             framedata = data[frame * 2048: (frame * 2048) + 2048]
             newdata = tpl.decodeRGB4A3(framedata, 32, 32, False)
-            img = QtGui.QImage(newdata, 32, 32, 128, QtGui.QImage.Format_ARGB32)
+            img = QtGui.QImage(newdata, 32, 32, 128, QtGui.QImage.Format.Format_ARGB32)
             pix = QtGui.QPixmap.fromImage(img.copy(4, 4, 24, 24))
             animTiles.append(pix)
 
@@ -206,11 +206,11 @@ class TilesetTile:
 
         # Sets Brush style for fills
         if CD[2] & 4:  # Climbing Grid
-            style = QtCore.Qt.DiagCrossPattern
+            style = QtCore.Qt.BrushStyle.DiagCrossPattern
         elif (CD[3] & 16) or (CD[3] & 4) or (CD[3] & 8):  # Breakable
-            style = QtCore.Qt.Dense5Pattern
+            style = QtCore.Qt.BrushStyle.Dense5Pattern
         else:
-            style = QtCore.Qt.SolidPattern
+            style = QtCore.Qt.BrushStyle.SolidPattern
 
         brush = QtGui.QBrush(color, style)
         pen = QtGui.QPen(QtGui.QColor(0, 0, 0, 128))
@@ -219,7 +219,7 @@ class TilesetTile:
         painter = QtGui.QPainter(collPix)
         painter.setBrush(brush)
         painter.setPen(pen)
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         # Paints shape based on other stuff
         if CD[3] & 32:  # Slope
@@ -1064,9 +1064,9 @@ def LoadTexture_NSMBW(tiledata):
     # format for Qt - ARGB32 premultiplied if nsmblib is used, and ARGB32 by
     # default.
     if lib_versions["nsmblib"] is not None:
-        data_format = QtGui.QImage.Format_ARGB32_Premultiplied
+        data_format = QtGui.QImage.Format.Format_ARGB32_Premultiplied
     else:
-        data_format = QtGui.QImage.Format_ARGB32
+        data_format = QtGui.QImage.Format.Format_ARGB32
 
     return QtGui.QImage(data, 1024, 256, 4096, data_format)
 
@@ -1141,7 +1141,7 @@ def ProcessOverrides(idx, name):
 
     def overlay(base, overlay):
         img = QtGui.QPixmap(base.width(), base.height())
-        img.fill(QtCore.Qt.transparent)
+        img.fill(QtCore.Qt.GlobalColor.transparent)
 
         p = QtGui.QPainter(img)
         p.drawPixmap(0, 0, base)

@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt6 import QtCore, QtWidgets, QtGui
 import collections
 import itertools
 import sys
@@ -432,11 +432,11 @@ class SpriteDefinition:
             """
             return len(self.entries)
 
-        def data(self, index, role=QtCore.Qt.DisplayRole):
+        def data(self, index, role=QtCore.Qt.ItemDataRole.DisplayRole):
             """
             Get what we have for a specific row
             """
-            if not index.isValid() or role != QtCore.Qt.DisplayRole:
+            if not index.isValid() or role != QtCore.Qt.ItemDataRole.DisplayRole:
                 return None
 
             n = index.row()
@@ -989,8 +989,8 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
         self.leveltree = tree
 
         # create the buttons
-        self.buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
-        self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(False)
+        self.buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.StandardButton.Ok).setEnabled(False)
 
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
@@ -1017,7 +1017,7 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
             # see if it's a category or a level
             if isinstance(item[1], str):
                 # it's a level
-                node.setData(0, QtCore.Qt.UserRole, item[1])
+                node.setData(0, QtCore.Qt.ItemDataRole.UserRole, item[1])
                 node.setToolTip(0, item[1])
             else:
                 # it's a category
@@ -1032,18 +1032,18 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
         """
         Catch the selected level and enable/disable OK button as needed
         """
-        self.currentlevel = current.data(0, QtCore.Qt.UserRole)
+        self.currentlevel = current.data(0, QtCore.Qt.ItemDataRole.UserRole)
         if self.currentlevel is None:
-            self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(False)
+            self.buttonBox.button(QtWidgets.QDialogButtonBox.StandardButton.Ok).setEnabled(False)
         else:
-            self.buttonBox.button(QtWidgets.QDialogButtonBox.Ok).setEnabled(True)
+            self.buttonBox.button(QtWidgets.QDialogButtonBox.StandardButton.Ok).setEnabled(True)
             self.currentlevel = str(self.currentlevel)
 
     def HandleItemActivated(self, item, column):
         """
         Handle a doubleclick on a level
         """
-        self.currentlevel = item.data(0, QtCore.Qt.UserRole)
+        self.currentlevel = item.data(0, QtCore.Qt.ItemDataRole.UserRole)
         if self.currentlevel is not None:
             self.currentlevel = str(self.currentlevel)
             self.accept()
@@ -1098,7 +1098,7 @@ class RecentFilesMenu(QtWidgets.QMenu):
             short = clipStr(filename, 72)
             if short is not None: filename = short + '...'
 
-            act = QtWidgets.QAction(ico, filename, self)
+            act = QtGui.QAction(ico, filename, self)
             if i <= 9: act.setShortcut(QtGui.QKeySequence('Ctrl+Alt+%d' % i))
             act.setToolTip(str(self.FileList[i]))
 
@@ -1259,7 +1259,7 @@ class ZoomWidget(QtWidgets.QWidget):
         maxwidth = 512 - 128
         maxheight = 20
 
-        self.slider = QtWidgets.QSlider(QtCore.Qt.Horizontal)
+        self.slider = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal)
         self.minLabel = QtWidgets.QPushButton()
         self.minusLabel = QtWidgets.QPushButton()
         self.plusLabel = QtWidgets.QPushButton()
@@ -1269,7 +1269,7 @@ class ZoomWidget(QtWidgets.QWidget):
         self.slider.setMinimum(0)
         self.slider.setMaximum(len(globals_.mainWindow.ZoomLevels) - 1)
         self.slider.setTickInterval(2)
-        self.slider.setTickPosition(self.slider.TicksAbove)
+        self.slider.setTickPosition(self.slider.TickPosition.TicksAbove)
         self.slider.setPageStep(1)
         self.slider.setTracking(True)
         self.slider.setSliderPosition(self.findIndexOfLevel(100))
@@ -1444,7 +1444,7 @@ class PreferencesDialog(QtWidgets.QDialog):
         self.tabWidget.addTab(self.themesTab, globals_.trans.string('PrefsDlg', 3))
 
         # Create the buttonbox
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 
@@ -1540,7 +1540,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 Read the preferences and check the respective boxes
                 """
                 self.Trans.addItem('English')
-                self.Trans.setItemData(0, None, QtCore.Qt.UserRole)
+                self.Trans.setItemData(0, None, QtCore.Qt.ItemDataRole.UserRole)
                 self.Trans.setCurrentIndex(0)
                 i = 1
                 for trans in os.listdir(os.path.join('reggiedata', 'translations')):
@@ -1552,7 +1552,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                     transobj = ReggieTranslation(trans)
                     name = transobj.name
                     self.Trans.addItem(name)
-                    self.Trans.setItemData(i, trans, QtCore.Qt.UserRole)
+                    self.Trans.setItemData(i, trans, QtCore.Qt.ItemDataRole.UserRole)
                     if trans == str(setting('Translation')):
                         self.Trans.setCurrentIndex(i)
                     i += 1
@@ -1573,8 +1573,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                 """
                 Handle the Clear Recent Files button being clicked
                 """
-                ans = QtWidgets.QMessageBox.question(None, globals_.trans.string('PrefsDlg', 17), globals_.trans.string('PrefsDlg', 18), QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
-                if ans != QtWidgets.QMessageBox.Yes: return
+                ans = QtWidgets.QMessageBox.question(None, globals_.trans.string('PrefsDlg', 17), globals_.trans.string('PrefsDlg', 18), QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
+                if ans != QtWidgets.QMessageBox.StandardButton.Yes: return
                 globals_.mainWindow.RecentMenu.clearAll()
 
         return GeneralTab()
@@ -1713,7 +1713,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 for name, themeObj in self.themes:
                     self.themeBox.addItem(name)
 
-                index = self.themeBox.findText(setting('Theme'), QtCore.Qt.MatchFixedString)
+                index = self.themeBox.findText(setting('Theme'), QtCore.Qt.MatchFlag.MatchFixedString)
                 if index >= 0:
                      self.themeBox.setCurrentIndex(index)
 
