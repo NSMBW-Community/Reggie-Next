@@ -2353,7 +2353,6 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
     """
     # TODO: Think critically about the design/behaviour/goal of this dialog
     # TODO: Add size selector to the sprite editor
-    # TODO: Make this translatable
 
     def __init__(self, spriteid):
         """
@@ -2366,20 +2365,9 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         else:
             self.sprite = None
 
-        text = "Let's resize your sprite. In order to do this, choose one of " \
-               "the two slots, based on the below information. Note that some " \
-               "choices can overlap with other settings, leading to undesired " \
-               "effects."
-
-        text2 = "Click the button below to create a Special Event sprite with " \
-                "the selected slot."
-
-        text3 = "Please note that there already is a resizer sprite that affects " \
-                "this sprite. All changes made here will apply to the entire zone/area " \
-                "so be careful."
-
-        text4 = "More than 1 resizer is a <b>very</b> bad idea. Please don't do " \
-                "this and remove the extra resizers."
+        text  = globals_.trans.string('ResizeChoiceDlg', 0)
+        text2 = globals_.trans.string('ResizeChoiceDlg', 1)
+        text3 = globals_.trans.string('ResizeChoiceDlg', 2)
 
         ## Slots
         used = self.getNyb5And7Availability()
@@ -2395,22 +2383,22 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         self.radio3 = QtWidgets.QRadioButton()
         self.buttongroup.addButton(self.radio3, -1)
 
-        header = QtWidgets.QLabel("Slots")
+        header = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 3))
         footer = QtWidgets.QLabel(text2)
 
         if not self.present:
-            label = "Create"
+            label = globals_.trans.string('ResizeChoiceDlg', 4)
         elif len(self.present) == 1:
-            label = "Edit"
+            label = globals_.trans.string('ResizeChoiceDlg', 5)
         else:
-            label = "Nothing."
+            label = globals_.trans.string('ResizeChoiceDlg', 6)
 
         createButton = QtWidgets.QPushButton(label)
         createButton.clicked.connect(self.doAThing)
 
-        a_label = QtWidgets.QLabel("A")
-        b_label = QtWidgets.QLabel("B")
-        g_label = QtWidgets.QLabel("Global")
+        a_label = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 7))
+        b_label = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 8))
+        g_label = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 9))
 
         slotsLayout = QtWidgets.QGridLayout()
         slotsLayout.setContentsMargins(0, 0, 0, 0)
@@ -2422,14 +2410,16 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         slotsLayout.addWidget(g_label,     1, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
         slotsLayout.addWidget(self.radio3, 2, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
 
+        noneLabel = globals_.trans.string('ResizeChoiceDlg', 10)
+
         if len(used[5]) == 0:
-            slotsLayout.addWidget(QtWidgets.QLabel("None"), 3, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+            slotsLayout.addWidget(QtWidgets.QLabel(noneLabel), 3, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
         else:
             for offset, conflict in enumerate(used[5]):
                 slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
 
         if len(used[7]) == 0:
-            slotsLayout.addWidget(QtWidgets.QLabel("None"), 3, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+            slotsLayout.addWidget(QtWidgets.QLabel(noneLabel), 3, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
         else:
             for offset, conflict in enumerate(used[7]):
                 slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
