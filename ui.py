@@ -1,4 +1,4 @@
-from PyQt5 import QtGui, QtWidgets, QtCore
+from PyQt6 import QtGui, QtWidgets, QtCore
 from xml.etree import ElementTree
 import os
 
@@ -348,13 +348,13 @@ def GetIcon(name, big=False):
 
 def createHorzLine():
     f = QtWidgets.QFrame()
-    f.setFrameStyle(QtWidgets.QFrame.HLine | QtWidgets.QFrame.Sunken)
+    f.setFrameStyle(QtWidgets.QFrame.Shape.HLine | QtWidgets.QFrame.Shadow.Sunken)
     return f
 
 
 def createVertLine():
     f = QtWidgets.QFrame()
-    f.setFrameStyle(QtWidgets.QFrame.VLine | QtWidgets.QFrame.Sunken)
+    f.setFrameStyle(QtWidgets.QFrame.Shape.VLine | QtWidgets.QFrame.Shadow.Sunken)
     return f
 
 
@@ -380,14 +380,14 @@ def clipStr(text, idealWidth, font=None):
     Returns a shortened string, or None if it need not be shortened
     """
     if font is None: font = QtGui.QFont()
-    width = QtGui.QFontMetrics(font).width(text)
+    width = QtGui.QFontMetrics(font).horizontalAdvance(text)
     if width <= idealWidth: return None
 
     # note that Qt has a builtin function for this:
     # QFontMetricsF::elidedText(text, Qt.TextElideMode.ElideNone, idealWidth)
     while width > idealWidth:
         text = text[:-1]
-        width = QtGui.QFontMetrics(font).width(text)
+        width = QtGui.QFontMetrics(font).horizontalAdvance(text)
 
     return text
 
@@ -404,23 +404,23 @@ class HexSpinBox(QtWidgets.QSpinBox):
             try:
                 input = str(input).lower()
             except Exception:
-                return (self.Invalid, input, pos)
+                return (self.State.Invalid, input, pos)
             valid = self.valid
 
             for char in input:
                 if char not in valid:
-                    return (self.Invalid, input, pos)
+                    return (self.State.Invalid, input, pos)
 
             try:
                 value = int(input, 16)
             except ValueError:
                 # If value == '' it raises ValueError
-                return (self.Invalid, input, pos)
+                return (self.State.Invalid, input, pos)
 
             if value < self.min or value > self.max:
-                return (self.Intermediate, input, pos)
+                return (self.State.Intermediate, input, pos)
 
-            return (self.Acceptable, input, pos)
+            return (self.State.Acceptable, input, pos)
 
     def __init__(self, format='%04X', *args):
         self.format = format
@@ -464,7 +464,7 @@ class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
         """
         Handles viewport events
         """
-        if e.type() == e.ToolTip:
+        if e.type() == e.Type.ToolTip:
             item = self.itemFromIndex(self.indexAt(e.pos()))
             if item is not None:
                 self.toolTipAboutToShow.emit(item)

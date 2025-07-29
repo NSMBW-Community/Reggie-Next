@@ -34,7 +34,7 @@
 import math
 import random
 
-from PyQt5 import QtCore, QtGui
+from PyQt6 import QtCore, QtGui
 Qt = QtCore.Qt
 
 import spritelib as SLib
@@ -459,7 +459,7 @@ class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage):  # 97, 107, 132, 160
         pixmap = ImageCache['UnusedPlatformDark'] if self.isDark else ImageCache['UnusedPlatform']
         pixmap = pixmap.scaled(
             int(self.width * 1.5), int(self.height * 1.5),
-            Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
+            Qt.AspectRatioMode.IgnoreAspectRatio, Qt.TransformationMode.SmoothTransformation,
         )
         painter.drawPixmap(0, 0, pixmap)
 
@@ -792,7 +792,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
     def paint(self, painter):
         super().paint(painter)
 
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         if self.tilenum < len(SLib.Tiles):
             painter.drawPixmap(0, 0, SLib.GetTile(self.tilenum))
         painter.drawPixmap(0, 0, self.image)
@@ -1005,7 +1005,7 @@ class SpriteImage_LongSpikedStake(SLib.SpriteImage):  # 398, 400
         width = 99
 
         pix = QtGui.QPixmap(2021, 99)
-        pix.fill(Qt.transparent)
+        pix.fill(Qt.GlobalColor.transparent)
         paint = QtGui.QPainter(pix)
 
         if color == 2 or color == 3 or color == 6 or color == 7:
@@ -1058,7 +1058,7 @@ class SpriteImage_MassiveSpikedStake(SLib.SpriteImage):  # 401, 404
         width = 248
 
         pix = QtGui.QPixmap(248, 3016)
-        pix.fill(Qt.transparent)
+        pix.fill(Qt.GlobalColor.transparent)
         paint = QtGui.QPainter(pix)
 
         if color == 2 or color == 3 or color == 6 or color == 7:
@@ -1544,7 +1544,7 @@ class SpriteImage_UnusedSeesaw(SLib.SpriteImage):  # 49
             self.width = w * 32
         self.image = ImageCache['UnusedPlatformDark'].scaled(
             int(self.width * 1.5), int(self.height * 1.5),
-            Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
+            Qt.AspectRatioMode.IgnoreAspectRatio, Qt.TransformationMode.SmoothTransformation,
         )
         self.xOffset = (8 * 16) - (self.width / 2)
 
@@ -1652,10 +1652,10 @@ class SpriteImage_UnusedRotPlatforms(SLib.SpriteImage):  # 52
 
         platform = ImageCache['UnusedPlatformDark'].scaled(
             144, 24,
-            Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
+            Qt.AspectRatioMode.IgnoreAspectRatio, Qt.TransformationMode.SmoothTransformation,
         )
         img = QtGui.QPixmap(144, 24)
-        img.fill(Qt.transparent)
+        img.fill(Qt.GlobalColor.transparent)
         paint = QtGui.QPainter(img)
         paint.setOpacity(0.8)
         paint.drawPixmap(0, 0, platform)
@@ -1718,7 +1718,7 @@ class SpriteImage_UnusedRisingSeesaw(SLib.SpriteImage_Static):  # 55
             1.5,
             ImageCache['UnusedPlatformDark'].scaled(
                 377, 24,
-                Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
+                Qt.AspectRatioMode.IgnoreAspectRatio, Qt.TransformationMode.SmoothTransformation,
             ),
         )
 
@@ -1913,7 +1913,7 @@ class SpriteImage_SpinningFirebar(SLib.SpriteImage):  # 62
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
-        self.aux.append(SLib.AuxiliaryCircleOutline(parent, 12, Qt.AlignCenter))
+        self.aux.append(SLib.AuxiliaryCircleOutline(parent, 12, Qt.AlignmentFlag.AlignCenter))
 
     @staticmethod
     def loadImages():
@@ -2290,7 +2290,7 @@ class SpriteImage_TrampolineWall(SLib.SpriteImage_StaticMultiple):  # 87
 
         self.image = ImageCache['UnusedPlatformDark'].scaled(
             24, height * 24,
-            Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
+            Qt.AspectRatioMode.IgnoreAspectRatio, Qt.TransformationMode.SmoothTransformation,
         )
         self.height = height * 16
 
@@ -2629,7 +2629,7 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
         i = ImageCache['Sunlight']
         self.aux.append(SLib.AuxiliaryImage_FollowsRect(parent, i.width(), i.height()))
         self.aux[0].realimage = i
-        self.aux[0].alignment = Qt.AlignTop | Qt.AlignRight
+        self.aux[0].alignment = Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight
         self.aux[0].hover = False
 
         # Moving the sunlight when a repaint occured is overkill and causes an
@@ -3448,7 +3448,7 @@ class SpriteImage_Coin(SLib.SpriteImage_StaticMultiple):  # 147
         if 'CoinF' in ImageCache: return
 
         pix = QtGui.QPixmap(24, 24)
-        pix.fill(Qt.transparent)
+        pix.fill(Qt.GlobalColor.transparent)
         paint = QtGui.QPainter(pix)
         paint.setOpacity(0.9)
         paint.drawPixmap(0, 0, SLib.GetImg('iceblock00.png'))
@@ -3563,7 +3563,7 @@ class SpriteImage_BigBrick(SLib.SpriteImage_StaticMultiple):  # 157
 
         if 'YoshiFire' not in ImageCache:
             pix = QtGui.QPixmap(48, 24)
-            pix.fill(Qt.transparent)
+            pix.fill(Qt.GlobalColor.transparent)
             paint = QtGui.QPainter(pix)
             paint.drawPixmap(0, 0, ImageCache['BlockContents'][9])
             paint.drawPixmap(24, 0, ImageCache['BlockContents'][3])
@@ -3775,7 +3775,7 @@ class SpriteImage_OneWayGate(SLib.SpriteImage_StaticMultiple):  # 174
                     ypos = -height
 
                 dest = QtGui.QPixmap(xsize, ysize)
-                dest.fill(Qt.transparent)
+                dest.fill(Qt.GlobalColor.transparent)
                 p = QtGui.QPainter(dest)
                 p.rotate(rotValue)
                 p.drawPixmap(xpos, ypos, newgate)
@@ -6020,7 +6020,7 @@ class SpriteImage_BooCircle(SLib.SpriteImage):  # 323
         super().__init__(parent, 1.5)
 
         self.BooAuxImage = QtGui.QPixmap(1024, 1024)
-        self.BooAuxImage.fill(Qt.transparent)
+        self.BooAuxImage.fill(Qt.GlobalColor.transparent)
         self.aux.append(SLib.AuxiliaryImage(parent, 1024, 1024))
         self.aux[0].image = self.BooAuxImage
         offsetX = ImageCache['Boo1'].width() / 4
@@ -6051,13 +6051,13 @@ class SpriteImage_BooCircle(SLib.SpriteImage):  # 323
         # Give up if the data is invalid
         if inrad > outrad:
             null = QtGui.QPixmap(2, 2)
-            null.fill(Qt.transparent)
+            null.fill(Qt.GlobalColor.transparent)
             self.aux[0].image = null
             return
 
         # Create a pixmap
         pix = QtGui.QPixmap(1024, 1024)
-        pix.fill(Qt.transparent)
+        pix.fill(Qt.GlobalColor.transparent)
         paint = QtGui.QPainter(pix)
         paint.setOpacity(opacity)
 

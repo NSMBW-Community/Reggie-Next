@@ -142,7 +142,7 @@ print('>>')
 # Excludes
 excludes = ['doctest', 'pdb', 'unittest', 'difflib',
             'os2emxpath', 'optpath', 'multiprocessing', 'ssl',
-            'PyQt5.QtWebKit', 'PyQt5.QtNetwork']
+            'PyQt6.QtWebKit', 'PyQt6.QtNetwork']
 
 if sys.platform == 'nt':
     excludes.append('posixpath')
@@ -152,10 +152,10 @@ if sys.platform == 'nt':
 unneededQtModules = ['Designer', 'Network', 'OpenGL', 'Qml', 'Script', 'Sql', 'Test', 'WebKit', 'Xml']
 neededQtModules = ['Core', 'Gui', 'Widgets']
 
-targetQt = 'PyQt' + str(4 if sys.version_info.major < 3 else 5)
+targetQt = 'PyQt' + str(5 if sys.version_info.major < 3 else 6)
 print('>> Targeting ' + targetQt)
 
-for qt in ['PySide2', 'PyQt4', 'PyQt5']:
+for qt in ['PySide2', 'PyQt5', 'PyQt6']:
     # Exclude all the stuff we don't use
     for m in unneededQtModules:
         excludes.append(qt + '.Qt' + m)
@@ -176,8 +176,8 @@ excludes_binaries = []
 if sys.platform == 'win32':
     excludes_binaries = [
         # Qt stuff
-        'Qt5Network.dll', 'Qt5Qml.dll', 'Qt5QmlModels.dll',
-        'Qt5Quick.dll', 'Qt5WebSockets.dll',
+        'Qt6Network.dll', 'Qt6Qml.dll', 'Qt6QmlModels.dll',
+        'Qt6Quick.dll', 'Qt6WebSockets.dll',
         # Other stuff
         'opengl32sw.dll',
         'd3dcompiler_',  # currently (2020-09-25) "d3dcompiler_47.dll",
@@ -202,8 +202,8 @@ elif sys.platform == 'linux':
         # Currently (2020-09-25) these all end with ".so.5", but that
         # may change, so we exclude anything that starts with these
         # substrings
-        'libQt5Network.so', 'libQt5Qml.so', 'libQt5QmlModels.so',
-        'libQt5Quick.so', 'libQt5WebSockets.so',
+        'libQt6Network.so', 'libQt6Qml.so', 'libQt6QmlModels.so',
+        'libQt6Quick.so', 'libQt6WebSockets.so',
         # Other stuff
         'libgtk-3.so',
     ]

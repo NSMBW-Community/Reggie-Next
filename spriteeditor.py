@@ -1,7 +1,7 @@
 import os
 from xml.etree import ElementTree
 
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt6 import QtWidgets, QtCore, QtGui
 
 import globals_
 from levelitems import SpriteItem, ListWidgetItem_SortsByOther
@@ -49,7 +49,7 @@ class DualBox(QtWidgets.QWidget):
             label.setStyleSheet("""QPushButton {border:0; background:0; margin:0; padding:0}""")
             label.clicked.connect(self.toggle)
             if direction == 0:
-                layout.addWidget(label, 0, QtCore.Qt.AlignRight)
+                layout.addWidget(label, 0, QtCore.Qt.AlignmentFlag.AlignRight)
             else:
                 layout.addWidget(label)
 
@@ -140,31 +140,31 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         """
         if not text:
             # The empty string is a prefix of a valid input
-            return (QtGui.QValidator.Intermediate, text, pos)
+            return (QtGui.QValidator.State.Intermediate, text, pos)
 
         try:
             val = int(text, 10)
         except ValueError:
-            return (QtGui.QValidator.Invalid, text, pos)
+            return (QtGui.QValidator.State.Invalid, text, pos)
 
         # This implementation really only works well if all prefixes of numbers
         # between the minimum and maximum are themselves numbers between the
         # minimum and maximum...
         if not self._minimum <= val <= self._maximum:
-            return (QtGui.QValidator.Invalid, text, pos)
+            return (QtGui.QValidator.State.Invalid, text, pos)
 
-        return (QtGui.QValidator.Acceptable, text, pos)
+        return (QtGui.QValidator.State.Acceptable, text, pos)
 
     def stepEnabled(self):
         """
         Returns a flag indicating in which directions the value can be stepped.
         """
-        flag = QtWidgets.QAbstractSpinBox.StepNone
+        flag = QtWidgets.QAbstractSpinBox.StepEnabledFlag.StepNone
 
         if self._value < self._maximum:
-            flag |= QtWidgets.QAbstractSpinBox.StepUpEnabled
+            flag |= QtWidgets.QAbstractSpinBox.StepEnabledFlag.StepUpEnabled
         if self._minimum < self._value:
-            flag |= QtWidgets.QAbstractSpinBox.StepDownEnabled
+            flag |= QtWidgets.QAbstractSpinBox.StepEnabledFlag.StepDownEnabled
 
         return flag
 
@@ -224,7 +224,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Constructor
         """
         super().__init__()
-        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred))
+        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred))
 
         # create the raw editor
         font = QtGui.QFont()
@@ -236,7 +236,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         min_valid_width = QtGui.QFontMetrics(QtGui.QFont()).horizontalAdvance("dddd dddd dddd dddd")
         edit.setMinimumWidth(min_valid_width + 2 * 11)  # add padding
-        edit.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed))
+        edit.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed))
         self.raweditor = edit
 
         self.resetButton = QtWidgets.QPushButton(globals_.trans.string('SpriteDataEditor', 17))
@@ -245,7 +245,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         editboxlayout = QtWidgets.QHBoxLayout()
         editboxlayout.addWidget(self.resetButton)
         editboxlayout.addWidget(self.editbox)
-        editboxlayout.addWidget(edit, QtCore.Qt.AlignRight)
+        editboxlayout.addWidget(edit, QtCore.Qt.AlignmentFlag.AlignRight)
 
         # 'Editing Sprite #' label
         self.spriteLabel = QtWidgets.QLabel('-')
@@ -254,35 +254,35 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.noteButton = QtWidgets.QToolButton()
         self.noteButton.setIcon(GetIcon('note'))
         self.noteButton.setText(globals_.trans.string('SpriteDataEditor', 4))
-        self.noteButton.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.noteButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.noteButton.setAutoRaise(True)
         self.noteButton.clicked.connect(self.ShowNoteTooltip)
 
         self.depButton = QtWidgets.QToolButton()
         self.depButton.setIcon(GetIcon('dependency-notes'))
         self.depButton.setText(globals_.trans.string('SpriteDataEditor', 4))
-        self.depButton.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.depButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.depButton.setAutoRaise(True)
         self.depButton.clicked.connect(self.ShowDependencies)
 
         self.relatedObjFilesButton = QtWidgets.QToolButton()
         self.relatedObjFilesButton.setIcon(GetIcon('data'))
         self.relatedObjFilesButton.setText(globals_.trans.string('SpriteDataEditor', 7))
-        self.relatedObjFilesButton.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.relatedObjFilesButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.relatedObjFilesButton.setAutoRaise(True)
         self.relatedObjFilesButton.clicked.connect(self.ShowRelatedObjFilesTooltip)
 
         self.advNoteButton = QtWidgets.QToolButton()
         self.advNoteButton.setIcon(GetIcon('note-advanced'))
         self.advNoteButton.setText(globals_.trans.string('SpriteDataEditor', 10))
-        self.advNoteButton.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.advNoteButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.advNoteButton.setAutoRaise(True)
         self.advNoteButton.clicked.connect(self.ShowAdvancedNoteTooltip)
 
         self.yoshiIcon = QtWidgets.QLabel()
 
         self.yoshiInfo = QtWidgets.QToolButton()
-        self.yoshiInfo.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.yoshiInfo.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.yoshiInfo.setText(globals_.trans.string('SpriteDataEditor', 12))
         self.yoshiInfo.setAutoRaise(True)
         self.yoshiInfo.clicked.connect(self.ShowYoshiTooltip)
@@ -293,7 +293,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.sizeButton = QtWidgets.QToolButton()
         self.sizeButton.setIcon(GetIcon('reggie')) # TODO: find a proper icon
         self.sizeButton.setText("Resize") # TODO: Add this to the translation
-        self.sizeButton.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.sizeButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.sizeButton.setAutoRaise(True)
         self.sizeButton.clicked.connect(self.HandleSizeButtonClicked)
 
@@ -538,7 +538,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             label = QtWidgets.QLabel(title + ':')
             # label.setWordWrap(True)
 
-            layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
+            layout.addWidget(label, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
             layout.addWidget(self.widget, row, 1)
 
             col = 3
@@ -631,7 +631,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             label = QtWidgets.QLabel(title + ':')
             # label.setWordWrap(True)
 
-            layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
+            layout.addWidget(label, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
 
             if idtype is not None:
                 next_free_button = QtWidgets.QPushButton("Next Free")
@@ -772,7 +772,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             label = QtWidgets.QLabel(title + ':')
             # label.setWordWrap(True)
 
-            layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
+            layout.addWidget(label, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
 
             if idtype is not None:
                 next_free_button = QtWidgets.QPushButton("Next Free")
@@ -900,7 +900,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 self.widgets.append(c)
 
                 CheckboxLayout.addWidget(c, 0, i)
-                CheckboxLayout.addWidget(QtWidgets.QLabel(str(i + 1)), 1, i, QtCore.Qt.AlignHCenter)
+                CheckboxLayout.addWidget(QtWidgets.QLabel(str(i + 1)), 1, i, QtCore.Qt.AlignmentFlag.AlignHCenter)
 
             label = QtWidgets.QLabel(title + ':')
             # label.setWordWrap(True)
@@ -908,7 +908,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             checkbox_widget = QtWidgets.QWidget()
             checkbox_widget.setLayout(CheckboxLayout)
 
-            layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
+            layout.addWidget(label, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
             layout.addWidget(checkbox_widget, row, 1, 1, 2)
 
             col = 3
@@ -1075,7 +1075,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 widget = QtWidgets.QLabel(title + ':')
                 widget.setWordWrap(True)
 
-            layout.addWidget(widget, row, 0, QtCore.Qt.AlignRight)
+            layout.addWidget(widget, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
             layout.addWidget(w, row, 1, 1, 2)
 
             self.layout = layout
@@ -1256,7 +1256,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             label = QtWidgets.QLabel(title + ":")
             # label.setWordWrap(True)
 
-            layout.addWidget(label, row, 0, QtCore.Qt.AlignRight)
+            layout.addWidget(label, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
             layout.addWidget(self.button, row, 1)
             layout.addWidget(self.box, row, 2)
 
@@ -1314,7 +1314,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             dlg = ExternalSpriteOptionDialog(self.type, self.dispvalue)
 
             # only contine if the user pressed "OK"
-            if dlg.exec_() != QtWidgets.QDialog.Accepted:
+            if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
                 return
 
             # read set value from dlg and update self.dispwidget
@@ -1444,8 +1444,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             # label2.setWordWrap(True)
 
             labels = QtWidgets.QGridLayout()
-            labels.addWidget(label1, 0, 0, QtCore.Qt.AlignRight)
-            labels.addWidget(label2, 1, 0, QtCore.Qt.AlignRight)
+            labels.addWidget(label1, 0, 0, QtCore.Qt.AlignmentFlag.AlignRight)
+            labels.addWidget(label2, 1, 0, QtCore.Qt.AlignmentFlag.AlignRight)
 
             labels_widget = QtWidgets.QWidget()
             labels_widget.setLayout(labels)
@@ -1453,7 +1453,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             dualbox_widget = QtWidgets.QWidget()
             dualbox_widget.setLayout(DualboxLayout)
 
-            layout.addWidget(labels_widget, row, 0, QtCore.Qt.AlignRight)
+            layout.addWidget(labels_widget, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
             layout.addWidget(dualbox_widget, row, 1, 1, 2)
 
             col = 3
@@ -2038,7 +2038,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         dlg = ResizeChoiceDialog(self.spritetype)
 
         # only contine if the user pressed "OK"
-        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
 
@@ -2095,7 +2095,7 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         search.setLayout(L)
 
         # create layout
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
@@ -2107,7 +2107,7 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         mainLayout = QtWidgets.QVBoxLayout()
         mainLayout.addWidget(search)
         mainLayout.addWidget(scrollWidget)
-        mainLayout.addWidget(buttonBox, 0, QtCore.Qt.AlignBottom)
+        mainLayout.addWidget(buttonBox, 0, QtCore.Qt.AlignmentFlag.AlignBottom)
 
         self.setLayout(mainLayout)
 
@@ -2414,28 +2414,28 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         slotsLayout = QtWidgets.QGridLayout()
         slotsLayout.setContentsMargins(0, 0, 0, 0)
-        slotsLayout.addWidget(header,      0, 0, 1, 3, QtCore.Qt.AlignHCenter)
-        slotsLayout.addWidget(a_label,     1, 0, 1, 1, QtCore.Qt.AlignHCenter)
-        slotsLayout.addWidget(self.radio1, 2, 0, 1, 1, QtCore.Qt.AlignHCenter)
-        slotsLayout.addWidget(b_label,     1, 1, 1, 1, QtCore.Qt.AlignHCenter)
-        slotsLayout.addWidget(self.radio2, 2, 1, 1, 1, QtCore.Qt.AlignHCenter)
-        slotsLayout.addWidget(g_label,     1, 2, 1, 1, QtCore.Qt.AlignHCenter)
-        slotsLayout.addWidget(self.radio3, 2, 2, 1, 1, QtCore.Qt.AlignHCenter)
+        slotsLayout.addWidget(header,      0, 0, 1, 3, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        slotsLayout.addWidget(a_label,     1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        slotsLayout.addWidget(self.radio1, 2, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        slotsLayout.addWidget(b_label,     1, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        slotsLayout.addWidget(self.radio2, 2, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        slotsLayout.addWidget(g_label,     1, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        slotsLayout.addWidget(self.radio3, 2, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
 
         if len(used[5]) == 0:
-            slotsLayout.addWidget(QtWidgets.QLabel("None"), 3, 0, 1, 1, QtCore.Qt.AlignHCenter)
+            slotsLayout.addWidget(QtWidgets.QLabel("None"), 3, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
         else:
             for offset, conflict in enumerate(used[5]):
-                slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 0, 1, 1, QtCore.Qt.AlignHCenter)
+                slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
 
         if len(used[7]) == 0:
-            slotsLayout.addWidget(QtWidgets.QLabel("None"), 3, 1, 1, 1, QtCore.Qt.AlignHCenter)
+            slotsLayout.addWidget(QtWidgets.QLabel("None"), 3, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
         else:
             for offset, conflict in enumerate(used[7]):
-                slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 1, 1, 1, QtCore.Qt.AlignHCenter)
+                slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
 
         slotsLayout.addWidget(footer,       4 + rows, 0, 1, 3)
-        slotsLayout.addWidget(createButton, 5 + rows, 0, 1, 3, QtCore.Qt.AlignHCenter)
+        slotsLayout.addWidget(createButton, 5 + rows, 0, 1, 3, QtCore.Qt.AlignmentFlag.AlignHCenter)
 
         # Proposing the best option
         # Maybe change this to set the option that is already applied?
@@ -2445,7 +2445,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             self.radio2.setChecked(True)
 
         # create layout
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
@@ -2458,7 +2458,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             mainLayout.addWidget(QtWidgets.QLabel(str(self.present)))
 
         mainLayout.addLayout(slotsLayout)
-        mainLayout.addWidget(buttonBox, 0, QtCore.Qt.AlignBottom)
+        mainLayout.addWidget(buttonBox, 0, QtCore.Qt.AlignmentFlag.AlignBottom)
 
         self.setLayout(mainLayout)
 
