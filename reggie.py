@@ -3903,10 +3903,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle a comment being selected
         """
-        comment = item.reference
-        comment.ensureVisible(xMargin=192, yMargin=192)
-        self.scene.clearSelection()
-        comment.setSelected(True)
+        for comment in globals_.Area.comments:
+            if comment.listitem == item:
+                comment.ensureVisible(xMargin=192, yMargin=192)
+                self.scene.clearSelection()
+                comment.setSelected(True)
+                break
 
     def HandleCommentToolTipAboutToShow(self, item):
         """
