@@ -6175,7 +6175,7 @@
   </sprite> <!-- #408: Cutscene Controller - Bowser Jr and Peach at Castle -->
 
   <sprite id="409" name="Cutscene Controller - Bowser Jr and Peach at Airship" noyoshi="True" notes="This controller manages the Bowser Jr. cinematics and level completion, as well as the World 8 Airship transition segment. This sprite will be used twice in the Third Bowser Jr. Fight's arrangement.">
-    <dependency notes="Specific room settings are likely required. Please reference the original Retail levels, 04-, 06-, and 08-38 A1.">
+    <dependency notes="Specific room settings are likely required. Please reference the original Retail levels, 04-38 A1, 06-38 A1, and 08-38 A1.">
       <suggested sprite="211"/>
       <suggested sprite="405"/>
       <suggested sprite="406"/>
