@@ -3,7 +3,7 @@
 # By Kamek64, MalStar1000, RoadrunnerWMC
 
 
-from PyQt5 import QtCore, QtGui
+from PyQt6 import QtCore, QtGui
 Qt = QtCore.Qt
 
 import spritelib as SLib

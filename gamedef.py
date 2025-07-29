@@ -618,10 +618,10 @@ def LoadGameDef(name=None, dlg=None):
             pressed_button = QtWidgets.QMessageBox.information(None,
                 globals_.trans.string('Gamedefs', 2),
                 globals_.trans.string('Gamedefs', 3, '[game]', globals_.gamedef.name),
-                QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel
+                QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel
             )
 
-            if pressed_button == QtWidgets.QMessageBox.Cancel:
+            if pressed_button == QtWidgets.QMessageBox.StandardButton.Cancel:
                 return False
 
             if globals_.mainWindow is None:

@@ -3081,12 +3081,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
             else:
                 QtWidgets.QMessageBox.warning(self, 'Reggie!',
                                               globals_.trans.string('Err_CantFindLevel', 0, '[name]', checkname),
-                                              QtWidgets.QMessageBox.Ok)
+                                              QtWidgets.QMessageBox.StandardButton.Ok)
                 return False
 
             if not IsNSMBLevel(checkname):
                 QtWidgets.QMessageBox.warning(self, 'Reggie!', globals_.trans.string('Err_InvalidLevel', 0),
-                                              QtWidgets.QMessageBox.Ok)
+                                              QtWidgets.QMessageBox.StandardButton.Ok)
                 return False
 
             name = checkname

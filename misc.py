@@ -728,7 +728,7 @@ def LoadSpriteData():
     if errors:
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenSpriteData', 0),
                                       globals_.trans.string('Err_BrokenSpriteData', 1, '[sprites]', ', '.join(errors)),
-                                      QtWidgets.QMessageBox.Ok)
+                                      QtWidgets.QMessageBox.StandardButton.Ok)
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenSpriteData', 2), repr(errortext))
 
 
