@@ -6575,7 +6575,7 @@ class SpriteImage_RockyWrench(SLib.SpriteImage_Static):  # 352
             parent,
             1.5,
             ImageCache['RockyWrench'],
-            (4, -41),
+            (-2, -41),
         )
 
     @staticmethod
