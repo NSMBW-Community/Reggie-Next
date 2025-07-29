@@ -4374,11 +4374,22 @@
   <sprite id="294" name="Meltable Ice Cube" notes="A small, 'smoking', slippery ice cube that can be melted with Fireballs.">
   </sprite> <!-- #294: Meltable Ice Cube -->
 
-  <!-- Does the sprite only unthread to its starting placement (thus giving purpose to Offset Right) or will it unthread until it hits a solid surface? -->
-  <sprite id="295" name="Airship Nut Platform" noyoshi="True" notes="A platform made up of 6 connected nuts that will spin and 'thread' itself left when jumped on, but also attempting to drop the player beneath it. It will stop advancing if it reaches a solid wall, and it will travel backwards if it has not been jumped on recently. It can despawn if the player leaves the screen with it.">
-    <dependency notes="While not required, it is suggested to use some sort of terrain alongside this sprite, usually the 'wire' terrain object (#15) from the Airship decorations in Pa1 or some variant on it."/>
-    <value nybble="12.2-12.4" title="Offset Right" comment="This determines how far 'forward' the nut will be already spun. This affects the maximum return distance of the nut platform."/>
-    <checkbox nybble="11.4" title="Offset Down .5 Blocks" advanced="True" advancedcomment="A holdover setting from development and not important."/>
+  <sprite id="295" name="Airship Nut Platform" noyoshi="True" notes="A platform made of 6 connected nuts that will spin and 'thread' itself when jumped on, but also attempt to drop the player beneath it. It will stop advancing if it reaches a solid wall, and it will travel backwards if it has not been jumped on recently, until it reaches another wall. It can despawn if the player leaves the screen with it.">
+    <dependency notes="While not required, it is suggested to use some sort of terrain alongside this sprite, usually the 'wire' terrain object (#15) from the Airship decorations in Pa1 or some variant of it."/>
+    <list nybble="12" title="(Broken) Width" comment="This setting (always set to '6 Tiles' in retail) affects the platform's collision and initial position, but not its model or wall-detection logic, which are always 6 tiles wide.">
+      <entry value="0">4 Tiles</entry>
+      <entry value="1">5 Tiles</entry>
+      <entry value="2">6 Tiles (Recommended)</entry>
+      <entry value="3">7 Tiles</entry>
+      <entry value="4">8 Tiles</entry>
+      <entry value="5">9 Tiles</entry>
+      <entry value="6">10 Tiles</entry>
+      <entry value="7">11 Tiles</entry>
+    </list>
+    <list nybble="11" title="(Broken) Height" comment="This unused setting (always set to '2 Tiles' in retail) affects the platform's collision, initial position, and wall-detection logic, but not its model, which is always 2 tiles tall.">
+      <entry value="0">1 Tile</entry>
+      <entry value="1">2 Tiles (Recommended)</entry>
+    </list>
   </sprite> <!-- #295: Airship Nut Platform -->
 
   <sprite id="296" name="Giant Buzzy Beetle" notes="A very large Buzzy Beetle that isn't especially pretty, but will carry the player around on its back. It can still hurt the player from the side.&lt;br&gt;Giant Buzzys don't fall down if placed in the air. They will follow the ground and slopes if snapped to the ground. Finally, they will move in a straight line if they reach a 90° drop.">
