@@ -411,7 +411,7 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         # intersection needs to be translated, because draw offsets are relative
         # to the location.
         draw_rect = location_rect & zone.mapRectToScene(zone.DrawRect)
-        draw_rect.translate(QtCore.QPoint(1, 1) - location_rect.topLeft())
+        draw_rect.translate(QtCore.QPointF(1, 1) - location_rect.topLeft())
 
         if draw_rect.isEmpty():
             return
@@ -4600,52 +4600,52 @@ class SpriteImage_PipeCannon(SLib.SpriteImage):  # 227
         if fireDirection == 0:
             # 30 deg to the right
             self.aux[0].setSize(84, 101, 0, -5)
-            path = QtGui.QPainterPath(QtCore.QPoint(0, 184))
-            path.cubicTo(QtCore.QPoint(152, -24), QtCore.QPoint(168, -24), QtCore.QPoint(264, 48))
-            path.lineTo(QtCore.QPoint(480, 216))
+            path = QtGui.QPainterPath(QtCore.QPointF(0, 184))
+            path.cubicTo(QtCore.QPointF(152, -24), QtCore.QPointF(168, -24), QtCore.QPointF(264, 48))
+            path.lineTo(QtCore.QPointF(480, 216))
             self.aux[1].setSize(480, 216, 24, -120)
         elif fireDirection == 1:
             # 30 deg to the left
             self.aux[0].setSize(85, 101, -36, -5)
-            path = QtGui.QPainterPath(QtCore.QPoint(480 - 0, 184))
-            path.cubicTo(QtCore.QPoint(480 - 152, -24), QtCore.QPoint(480 - 168, -24), QtCore.QPoint(480 - 264, 48))
-            path.lineTo(QtCore.QPoint(480 - 480, 216))
+            path = QtGui.QPainterPath(QtCore.QPointF(480 - 0, 184))
+            path.cubicTo(QtCore.QPointF(480 - 152, -24), QtCore.QPointF(480 - 168, -24), QtCore.QPointF(480 - 264, 48))
+            path.lineTo(QtCore.QPointF(480 - 480, 216))
             self.aux[1].setSize(480, 216, -480 + 24, -120)
         elif fireDirection == 2:
             # 15 deg to the right
             self.aux[0].setSize(60, 102, 0, -6)
-            path = QtGui.QPainterPath(QtCore.QPoint(0, 188))
-            path.cubicTo(QtCore.QPoint(36, -36), QtCore.QPoint(60, -36), QtCore.QPoint(96, 84))
-            path.lineTo(QtCore.QPoint(144, 252))
+            path = QtGui.QPainterPath(QtCore.QPointF(0, 188))
+            path.cubicTo(QtCore.QPointF(36, -36), QtCore.QPointF(60, -36), QtCore.QPointF(96, 84))
+            path.lineTo(QtCore.QPointF(144, 252))
             self.aux[1].setSize(144, 252, 30, -156)
         elif fireDirection == 3:
             # 15 deg to the left
             self.aux[0].setSize(61, 102, -12, -6)
-            path = QtGui.QPainterPath(QtCore.QPoint(144 - 0, 188))
-            path.cubicTo(QtCore.QPoint(144 - 36, -36), QtCore.QPoint(144 - 60, -36), QtCore.QPoint(144 - 96, 84))
-            path.lineTo(QtCore.QPoint(144 - 144, 252))
+            path = QtGui.QPainterPath(QtCore.QPointF(144 - 0, 188))
+            path.cubicTo(QtCore.QPointF(144 - 36, -36), QtCore.QPointF(144 - 60, -36), QtCore.QPointF(144 - 96, 84))
+            path.lineTo(QtCore.QPointF(144 - 144, 252))
             self.aux[1].setSize(144, 252, -144 + 18, -156)
         elif fireDirection == 4:
             # Straight up
             self.aux[0].setSize(135, 132, -43, -35)
-            path = QtGui.QPainterPath(QtCore.QPoint(26, 0))
-            path.lineTo(QtCore.QPoint(26, 656))
+            path = QtGui.QPainterPath(QtCore.QPointF(26, 0))
+            path.lineTo(QtCore.QPointF(26, 656))
             self.aux[1].setSize(48, 656, 0, -632)
         elif fireDirection == 5:
             # 45 deg to the right
             self.aux[0].setSize(90, 98, 0, -1)
-            path = QtGui.QPainterPath(QtCore.QPoint(0, 320))
-            path.lineTo(QtCore.QPoint(264, 64))
-            path.cubicTo(QtCore.QPoint(348, -14), QtCore.QPoint(420, -14), QtCore.QPoint(528, 54))
-            path.lineTo(QtCore.QPoint(1036, 348))
+            path = QtGui.QPainterPath(QtCore.QPointF(0, 320))
+            path.lineTo(QtCore.QPointF(264, 64))
+            path.cubicTo(QtCore.QPointF(348, -14), QtCore.QPointF(420, -14), QtCore.QPointF(528, 54))
+            path.lineTo(QtCore.QPointF(1036, 348))
             self.aux[1].setSize(1036, 348, 24, -252)
         elif fireDirection == 6:
             # 45 deg to the left
             self.aux[0].setSize(91, 98, -42, -1)
-            path = QtGui.QPainterPath(QtCore.QPoint(1036 - 0, 320))
-            path.lineTo(QtCore.QPoint(1036 - 264, 64))
-            path.cubicTo(QtCore.QPoint(1036 - 348, -14), QtCore.QPoint(1036 - 420, -14), QtCore.QPoint(1036 - 528, 54))
-            path.lineTo(QtCore.QPoint(1036 - 1036, 348))
+            path = QtGui.QPainterPath(QtCore.QPointF(1036 - 0, 320))
+            path.lineTo(QtCore.QPointF(1036 - 264, 64))
+            path.cubicTo(QtCore.QPointF(1036 - 348, -14), QtCore.QPointF(1036 - 420, -14), QtCore.QPointF(1036 - 528, 54))
+            path.lineTo(QtCore.QPointF(1036 - 1036, 348))
             self.aux[1].setSize(1036, 348, -1036 + 24, -252)
         self.aux[1].setPath(path)
 

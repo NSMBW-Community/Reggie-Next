@@ -2475,9 +2475,9 @@ class EntranceItem(LevelEditorItem):
             if self.parent.enttype == 20:
                 # Jumping facing right
 
-                path = QtGui.QPainterPath(QtCore.QPoint(12, 276))
-                path.cubicTo(QtCore.QPoint(40, -24), QtCore.QPoint(50, -24), QtCore.QPoint(60, 36))
-                path.lineTo(QtCore.QPoint(96, 300))
+                path = QtGui.QPainterPath(QtCore.QPointF(12, 276))
+                path.cubicTo(QtCore.QPointF(40, -24), QtCore.QPointF(50, -24), QtCore.QPointF(60, 36))
+                path.lineTo(QtCore.QPointF(96, 300))
 
                 painter.setPen(SLib.OutlinePen)
                 painter.drawPath(path)
@@ -2498,9 +2498,9 @@ class EntranceItem(LevelEditorItem):
             elif self.parent.enttype == 24:
                 # Jumping facing left
 
-                path = QtGui.QPainterPath(QtCore.QPoint(86, 276))
-                path.cubicTo(QtCore.QPoint(58, -24), QtCore.QPoint(48, -24), QtCore.QPoint(38, 36))
-                path.lineTo(QtCore.QPoint(2, 300))
+                path = QtGui.QPainterPath(QtCore.QPointF(86, 276))
+                path.cubicTo(QtCore.QPointF(58, -24), QtCore.QPointF(48, -24), QtCore.QPointF(38, 36))
+                path.lineTo(QtCore.QPointF(2, 300))
 
                 painter.setPen(SLib.OutlinePen)
                 painter.drawPath(path)
