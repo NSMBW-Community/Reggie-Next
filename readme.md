@@ -31,7 +31,7 @@ If you are not on those systems or you want the very latest features, you'll nee
 
 Download and install the following:
  * Python 3.5 (or newer) - http://www.python.org
- * PyQt 5.4.1 (or newer) - http://www.riverbankcomputing.co.uk/software/pyqt/intro
+ * PyQt 6.9 (or newer) - http://www.riverbankcomputing.co.uk/software/pyqt/intro
 
 Optional dependencies:
  * MinGW (for Windows only) - http://tdm-gcc.tdragon.net
@@ -89,8 +89,8 @@ Other Testers and Contributors:
 ### Dependencies/Libraries/Resources
 
  * Python 3 - Python Software Foundation (https://www.python.org)
- * Qt 5 - Nokia (http://qt.nokia.com)
- * PyQt5 - Riverbank Computing (http://www.riverbankcomputing.co.uk/software/pyqt/intro)
+ * Qt 6 - Nokia (http://qt.nokia.com)
+ * PyQt6 - Riverbank Computing (http://www.riverbankcomputing.co.uk/software/pyqt/intro)
  * NSMBLib - NSMBLib Updated (https://github.com/RoadrunnerWMC/NSMBLib-Updated)
  * MinGW - http://www.mingw.org/
  * Cython - http://cython.org/

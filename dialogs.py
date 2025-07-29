@@ -162,7 +162,7 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         QtWidgets.QDialog.__init__(self)
-        self.setWindowTitle(globals_.trans.string('SwapObjTilesDlg', 0))
+        self.setWindowTitle(globals_.trans.string('SwapObjDlg', 0))
         self.setWindowIcon(GetIcon('swap'))
 
         # Create widgets
@@ -178,25 +178,25 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         self.ToTileset = QtWidgets.QSpinBox()
         self.ToTileset.setRange(1, 4)
 
-        self.DoExchange = QtWidgets.QCheckBox(globals_.trans.string('SwapObjTilesDlg', 5))
+        self.DoExchange = QtWidgets.QCheckBox(globals_.trans.string('SwapObjDlg', 5))
 
         # Swap layout
         swapLayout = QtWidgets.QGridLayout()
 
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjTilesDlg', 1)), 0, 0)
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 1)), 0, 0)
         swapLayout.addWidget(self.FromType, 0, 1)
 
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjTilesDlg', 2)), 1, 0)
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 2)), 1, 0)
         swapLayout.addWidget(self.FromTileset, 1, 1)
 
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjTilesDlg', 3)), 0, 2)
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 3)), 0, 2)
         swapLayout.addWidget(self.ToType, 0, 3)
 
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjTilesDlg', 4)), 1, 2)
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 4)), 1, 2)
         swapLayout.addWidget(self.ToTileset, 1, 3)
 
         # Buttonbox
-        self.buttons = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.Close)
+        self.buttons = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Apply | QtWidgets.QDialogButtonBox.StandardButton.Close)
         self.buttons.clicked.connect(self.button_clicked)
 
         # Main layout
@@ -212,10 +212,10 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         """
         role = self.buttons.buttonRole(button)
 
-        if role == QtWidgets.QDialogButtonBox.RejectRole:
+        if role == QtWidgets.QDialogButtonBox.ButtonRole.RejectRole:
             # The close button was pressed
             self.reject()
-        elif role == QtWidgets.QDialogButtonBox.ApplyRole:
+        elif role == QtWidgets.QDialogButtonBox.ButtonRole.ApplyRole:
             # The apply button was pressed
             self.swap_tiles()
         else:
@@ -398,7 +398,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
                 self.Cancel = QtWidgets.QDialogButtonBox.StandardButton.Cancel
 
                 buttonBox = QtWidgets.QDialogButtonBox()
-                buttonBox.addButton(self.Ok, buttonBox.AcceptRole)
+                buttonBox.addButton(self.Ok, buttonBox.ButtonRole.AcceptRole)
                 buttonBox.addButton(self.Cancel)
 
                 buttonBox.accepted.connect(self.accept)
@@ -669,7 +669,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         self.buttonHandlers = []
 
         self.errorList = QtWidgets.QListWidget()
-        self.errorList.setSelectionMode(self.errorList.MultiSelection)
+        self.errorList.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.MultiSelection)
 
         foundAnything = False
         foundCritical = False
@@ -711,8 +711,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         # Ask the user to make sure
         btn = QtWidgets.QMessageBox.warning(None, globals_.trans.string('Diag', 27), globals_.trans.string('Diag', 28),
-                                            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        if btn != QtWidgets.QMessageBox.Yes: return
+                                            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+        if btn != QtWidgets.QMessageBox.StandardButton.Yes: return
 
         # Show the 'Fixing...' box while fixing
         pleasewait = QtWidgets.QProgressDialog()
