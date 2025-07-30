@@ -608,7 +608,7 @@
       <entry value="2">boss_koopa_lift.arc</entry>
       <entry value="3">Bone Platform</entry>
     </list>
-    <value nybble="12" title="Width" comment="This determines the length of the platform." comment2="&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;Do not use a Width of 0.&lt;/font&gt;"/>
+    <value nybble="12" title="Width" comment="This determines the length of the platform." comment2="Do not use a Width of 0."/>
     <dualbox nybble="11.4" title1="Instant, Fast Fall" title2="Delayed, Slow Fall" comment="This determines the rate at which the platform will fall when activated."/>
     <list nybble="10" title="Minimum number of players" comment="The platform immediately despawns if there are fewer players than specified here. Setting this nybble to even higher values causes the platform to always despawn, since there can be at most 4 players.">
       <entry value="0">1 Player</entry>
@@ -2677,7 +2677,7 @@
       <entry value="7">Star</entry>
       <entry value="11">1-Up</entry>
     </list>
-    <checkbox nybble="5.4" title="Unknown Flag 5 (1)" comment="Used in Retail: 06-05 A2. Possibly distance related."/>
+    <checkbox nybble="5.4" title="Does Not Despawn" comment="When enabled, the hit block will not despawn when off-screen. Used in retail 06-05 A2."/>
   </sprite> <!-- #175: Flying ? Block -->
 
   <sprite id="176" name="Roulette Block" notes="A large roulette style block that will award either a Star, a 1-Up, a Mushroom, or a specific power-up item. It should be noted that it makes a moderate amount of noise when it's on screen.">
@@ -2873,7 +2873,7 @@
   </sprite> <!-- #192: Larry Koopa - Castle Boss -->
 
   <sprite id="193" name="Urchin" notes="A small spiky ball enemy typically used in Water. Water is not required, however, for it to load and function.">
-    <value nybble="11" title="Movement Distance (*2)" comment="This determines how far the Urchin will move, if at all. Multiply this value by 2."/>
+    <value nybble="11" title="Movement Distance (x2)" comment="This determines how far the Urchin will move, if at all. Multiply this value by 2."/>
     <dualbox nybble="12.4" title1="Moves Vertically" title2="Moves Horizontally" comment="This determines which direction the Urchin will move. The starting position from their movement is in the center, not at one of the two edges." requirednybble="11"/> <!-- Appears only if Movement Distance is set -->
     <dualbox nybble="10.4" title1="Moves Down First" title2="Moves Up First" comment="This determines which direction the Urchin will move first. The starting position from their movement is in the center, not at one of the two edges." requirednybble="11,12.4" requiredval="1-15, 0"/> <!-- Appears only if Movement Distance is set, and movement is Vertical -->
     <dualbox nybble="10.4" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Urchin will move first. The starting position from their movement is in the center, not at one of the two edges." requirednybble="11,12.4" requiredval="1-15, 1"/> <!-- Appears only if Movement Distance is set, and movement is Horizontal -->
@@ -2971,7 +2971,7 @@
       <suggested sprite="432"/>
       <suggested sprite="454"/>
     </dependency>
-    <checkbox nybble="5" title="Unknown Flag 5 (1)" comment="No visible change. Used in the Ambushes of World 6." />
+    <checkbox nybble="5" title="Shift Down 2 Units" comment="Shifts the chest model down by 2 units. Used in the World 6 Ambushes to align the chest with the top of the pipe tiles." />
     <checkbox nybble="9" title="Unknown Flag 9 (1)" comment="No visible change. Checked in all ambushes except those in Worlds 1 and 2." />
     <list nybble="10" title="Chest Type" comment="Determines the behavior and contents of the chest.">
       <entry value="0">Default</entry>
@@ -5587,7 +5587,7 @@
   </sprite> <!-- #369: Cooligan -->
 
   <sprite id="370" name="Lakitu Cloud Block" notes="A block that when struck from below will spawn a Lakitu enemy that throws coins instead of Spinies.">
-    <value nybble="11" title="Maximum Coins Thrown (*5)" comment="This determines how many coins the Lakitu will throw before flying off." comment2="A value of 1 is equal to 5 coins across 15 game seconds. If set to 0, the Lakitu will never fly off."/>
+    <value nybble="11" title="Maximum Coins Thrown (x5)" comment="This determines how many coins the Lakitu will throw before flying off." comment2="A value of 1 is equal to 5 coins across 15 game seconds. If set to 0, the Lakitu will never fly off."/>
     <value nybble="12" title="Spawn Height" comment="This determines the distance relative to the bottom border of the Zone, in which the Lakitu will float upwards before it begins to throw coins." comment2="At value 0, the top of the Lakitu's shell will reach 12 blocks above the bottom Zone border. Each additional value increases this by two blocks. A value of 4 is equal to the standard height of a [134] Lakitu Spawn Area's Lakitu spawn."/>
   </sprite> <!-- #370: Lakitu Cloud Block -->
 
@@ -6284,12 +6284,12 @@
 
   <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in the retail game's singleplayer mode where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
     <dependency notes="All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
-    <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small (1 tile large)."/>
+    <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small."/>
   </sprite> <!-- #422: Toad Needs Help - ? Block -->
 
   <sprite id="423" name="Toad Needs Help - Brick Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
     <dependency notes="All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
-    <checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="ASM shows Nybble 12 might affect something."/>
+    <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small."/>
   </sprite> <!-- #423: Toad Needs Help - Brick Block -->
 
   <sprite id="424" name="Palm Tree" notes="A palm tree decoration with a solid-on-top collision.">

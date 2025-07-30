@@ -1372,7 +1372,7 @@ class SpriteImage_NewerGiantGoomba(SLib.SpriteImage_StaticMultiple):  # 198
         super().dataChanged()
 
 
-class SpriteImage_NewerMegaGoomba(SLib.SpriteImage_StaticMultiple):  # 198
+class SpriteImage_NewerMegaGoomba(SLib.SpriteImage_StaticMultiple):  # 199
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('MegaGoomba', 'mega_goomba.png')
