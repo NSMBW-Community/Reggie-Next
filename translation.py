@@ -1017,6 +1017,10 @@ class ReggieTranslation:
                 9: 'Global',
                 10: 'None',
                 11: 'Sprite Resizer',
+            },
+            'SpriteUpgradeDlg': {
+                0: 'Sprite Upgrader',
+                1: 'Reggie Next has detected that the game patch\'s sprites.py file is outdated, and must be upgraded to PyQt6 in order to work correctly.[br][br]Would you like to upgrade?[br]A copy of the old file will remain in the game patch folder.',
             }
         }
 

@@ -1413,3 +1413,31 @@ class CameraProfilesDialog(QtWidgets.QDialog):
 
     def updateItemTitle(self, item):
         item.setText(globals_.trans.string('CamProfsDlg', 7, '[id]', item.data(QtCore.Qt.ItemDataRole.UserRole)[0]))
+
+
+class SpriteUpgradeDialog(QtWidgets.QDialog):
+    """
+    Dialog for upgrading a gamedef's sprites.py from PyQt5 to PyQt6
+    """
+    def __init__(self):
+        QtWidgets.QDialog.__init__(self)
+        self.setWindowTitle(globals_.trans.string('SpriteUpgradeDlg', 0))
+        self.setWindowIcon(GetIcon('upgrade'))
+
+        mainlayout = QtWidgets.QVBoxLayout(self)
+
+        hlayout = QtWidgets.QHBoxLayout()
+
+        icon = QtWidgets.QLabel()
+        hlayout.addWidget(icon)
+
+        label = QtWidgets.QLabel(globals_.trans.string('SpriteUpgradeDlg', 1))
+        hlayout.addWidget(label)
+        hlayout.setStretch(1, 1)
+
+        buttonbox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.No | QtWidgets.QDialogButtonBox.StandardButton.Yes)
+        buttonbox.accepted.connect(self.accept)
+        buttonbox.rejected.connect(self.reject)
+
+        mainlayout.addLayout(hlayout)
+        mainlayout.addWidget(buttonbox)

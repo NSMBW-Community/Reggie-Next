@@ -969,4 +969,8 @@
 		<string id="10">None</string>
 		<string id="11">Sprite Resizer</string>
 	</section>
+	<section id="SpriteUpgradeDlg">
+		<string id="0">Sprite Upgrader</string>
+		<string id="1">Reggie Next has detected that the game patch\'s sprites.py file is outdated, and must be upgraded to PyQt6 in order to work correctly.[br][br]Would you like to upgrade?[br]A copy of the old file will remain in the game patch folder.</string>
+	</section>
 </strings>
