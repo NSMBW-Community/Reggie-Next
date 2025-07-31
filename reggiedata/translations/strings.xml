@@ -478,7 +478,7 @@
 		<string id="101" />
 		<string id="102" />
 		<string id="103" />
-		<string id="104">Swap Objects' Tileset...</string>
+		<string id="104">Swap Objects' Tilesets...</string>
 		<string id="105">Swaps the tileset of objects using a certain tileset</string>
 		<string id="106">Swap Objects...</string>
 		<string id="107">Swaps the type of objects of a certain type</string>
@@ -682,6 +682,8 @@
 		<string id="23">Sprite [id]: suggested in zone</string>
 		<string id="24" />
 		<string id="25">This sprite has the following dependencies:</string>
+		<string id="26">Add Sprite</string>
+		<string id="27">Resize</string>
 	</section>
 	<section id="Sprites">
 		<string id="0">[b]Sprite [type]:[/b][br][name]</string>
@@ -965,5 +967,6 @@
 		<string id="8">B</string>
 		<string id="9">Global</string>
 		<string id="10">None</string>
+		<string id="11">Sprite Resizer</string>
 	</section>
 </strings>

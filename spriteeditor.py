@@ -291,8 +291,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.asm.setPixmap(GetIcon("asm").pixmap(64, 64))
 
         self.sizeButton = QtWidgets.QToolButton()
-        self.sizeButton.setIcon(GetIcon('reggie')) # TODO: find a proper icon
-        self.sizeButton.setText("Resize") # TODO: Add this to the translation
+        self.sizeButton.setIcon(GetIcon('resize'))
+        self.sizeButton.setText(globals_.trans.string('SpriteDataEditor', 27))
         self.sizeButton.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.sizeButton.setAutoRaise(True)
         self.sizeButton.clicked.connect(self.HandleSizeButtonClicked)
@@ -1625,7 +1625,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # if there are missing things
         for missingSprite in missing[0]:
             name = globals_.trans.string('SpriteDataEditor', 20, '[id]', missingSprite)
-            action = 'Add Sprite' # TODO: Make this translatable
+            action = globals_.trans.string('SpriteDataEditor', 26)
             addButton = QtWidgets.QPushButton(action)
 
             message = self.addMessage(name, level = 0, close = action)
@@ -1641,7 +1641,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         for missingSprite in missing[1]:
             name = globals_.trans.string('SpriteDataEditor', 21, '[id]', missingSprite)
-            action = 'Add Sprite' # TODO: Make this translatable
+            action = globals_.trans.string('SpriteDataEditor', 26)
 
             addButton = QtWidgets.QPushButton(action)
             addButton.clicked.connect(self.HandleSpritePlaced(missingSprite, addButton))
@@ -2359,6 +2359,8 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         Initialise the dialog
         """
         QtWidgets.QDialog.__init__(self)
+        self.setWindowTitle(globals_.trans.string('ResizeChoiceDlg', 11))
+        self.setWindowIcon(GetIcon('resize'))
 
         if 0 <= spriteid < globals_.NumSprites:
             self.sprite = globals_.Sprites[spriteid]

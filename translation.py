@@ -527,7 +527,7 @@ class ReggieTranslation:
                 101: None,  # REMOVED: 'Show or hide the Island Generator window',
                 102: None,  # REMOVED: 'Stamp Pad'
                 103: None,  # REMOVED: 'Show or hide the Stamp Pad window'
-                104: 'Swap Objects\' Tileset...',
+                104: 'Swap Objects\' Tilesets...',
                 105: 'Swaps the tileset of objects using a certain tileset',
                 106: 'Swap Objects...',
                 107: 'Swaps the type of objects of a certain type',
@@ -731,6 +731,8 @@ class ReggieTranslation:
                 23: 'Sprite [id]: suggested in zone',
                 24: None,  # REMOVED: 'Show raw data',
                 25: 'This sprite has the following dependencies:',
+                26: 'Add Sprite',
+                27: 'Resize',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
@@ -1014,6 +1016,7 @@ class ReggieTranslation:
                 8: 'B',
                 9: 'Global',
                 10: 'None',
+                11: 'Sprite Resizer',
             }
         }
 
