@@ -588,10 +588,10 @@ class LocationEditorWidget(QtWidgets.QWidget):
 
         self.FixTitle()
         self.locationID.setValue(loc.id)
-        self.locationX.setValue(loc.objx)
-        self.locationY.setValue(loc.objy)
-        self.locationWidth.setValue(loc.width)
-        self.locationHeight.setValue(loc.height)
+        self.locationX.setValue(int(loc.objx))
+        self.locationY.setValue(int(loc.objy))
+        self.locationWidth.setValue(int(loc.width))
+        self.locationHeight.setValue(int(loc.height))
 
         self.UpdateFlag = False
 
