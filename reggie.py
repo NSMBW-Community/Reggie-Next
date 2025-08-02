@@ -1458,7 +1458,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             # Turn a bit on
             globals_.Area.defEvents |= 1 << selIdx
             SetDirty()
-        elif item.checkState(0) == Qt.Unchecked and isOn:
+        elif item.checkState(0) == Qt.CheckState.Unchecked and isOn:
             # Turn a bit off (mask out 1 bit)
             globals_.Area.defEvents &= ~(1 << selIdx)
             SetDirty()

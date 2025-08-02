@@ -463,10 +463,12 @@ class SpriteDefinition:
 
             if field.tag == 'dualbox':
                 title = attribs['title1'] + " / " + attribs['title2']
+            elif field.tag == 'multidualbox':
+                title = attribs['title1'] + " / " + attribs['title2']
             elif 'title' in attribs:
                 title = attribs['title']
             else:
-                title = "NO TITLE GIVEN!"
+                title = globals_.trans.string('SpriteDataEditor', 28)
 
             advanced = attribs.get("advanced", "False") == "True"
             comment = comment2 = advancedcomment = required = idtype = None

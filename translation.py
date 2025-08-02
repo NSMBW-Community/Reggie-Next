@@ -733,6 +733,7 @@ class ReggieTranslation:
                 25: 'This sprite has the following dependencies:',
                 26: 'Add Sprite',
                 27: 'Resize',
+                28: 'NO TITLE GIVEN!',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',

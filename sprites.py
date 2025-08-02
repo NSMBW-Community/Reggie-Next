@@ -2979,7 +2979,16 @@ class SpriteImage_SledgeBro(SLib.SpriteImage_Static):  # 120
         SLib.loadIfNotInImageCache('SledgeBro', 'sledgebro.png')
 
 
+# TODO: Properly implement 'down & right' track
 class SpriteImage_OneWayPlatform(SpriteImage_WoodenPlatform):  # 122
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        width = self.parent.spritedata[5] & 0xF
+        if width < 2: width = 1
+        self.width = width * 32 + 32
+
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, self.width, 16, SLib.AuxiliaryTrackObject.Horizontal))
+
     def dataChanged(self):
         super().dataChanged()
         width = self.parent.spritedata[5] & 0xF
@@ -2989,6 +2998,39 @@ class SpriteImage_OneWayPlatform(SpriteImage_WoodenPlatform):  # 122
         self.xOffset = self.width * -0.5
 
         self.color = ((self.parent.spritedata[4] & 0xF0) >> 4) & 1
+
+        distance = (self.parent.spritedata[3] & 0xF0) >> 4
+        direction = self.parent.spritedata[3] & 0xF
+
+        if distance != 0 or direction != 4:
+            if distance == 1:
+                increment = 14
+            else:
+                increment = 16
+
+            self.aux[0].setRotation(0)
+
+            if direction <= 1:  # horizontal
+                self.aux[0].direction = 2
+                self.aux[0].setSize(self.width, self.height + (distance * 16 * increment))
+            elif direction <= 3:  # vertical
+                self.aux[0].direction = 1
+                self.aux[0].setSize(self.width + (distance * 16 * increment), self.height)
+            else:  # down & right
+                self.aux[0].direction = 1
+                self.aux[0].setSize((self.width - (16 * width)) + (distance * 16 * increment), self.height)
+                self.aux[0].setRotation(45)
+
+            if direction == 1 or direction == 2:  # right, down
+                self.aux[0].setPos(0, 0)
+            elif direction == 3:  # left
+                self.aux[0].setPos(-(distance * increment) * 24, 0)
+            elif direction == 0:  # up
+                self.aux[0].setPos(0, -(distance * increment) * 24)
+            else: # down & right
+                self.aux[0].setPos(self.width + (16 * width), -8)
+        else:
+            self.aux[0].setSize(0, 0)
 
 
 class SpriteImage_UnusedCastlePlatform(SLib.SpriteImage_StaticMultiple):  # 123
@@ -3241,7 +3283,7 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
         for piece in range(pieces):
             bitpos = 1 << (piece & 3)
             if pivots[piece // 4] & bitpos:
-                painter.drawPixmap(5, int(ysize - (piece - 1) * 24), ImageCache['RotLauncherPivot'])
+                painter.drawPixmap(5, int(ysize - (piece + 1) * 24), ImageCache['RotLauncherPivot'])
             else:
                 xo = 6
                 image = ImageCache['RotLauncherCannon']

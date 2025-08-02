@@ -1765,6 +1765,7 @@
   </sprite> <!-- #118: Dry Bones -->
 
   <sprite id="119" name="Giant Dry Bones" notes="A large version of the Dry Bones enemy that must be ground-pounded in order to be rendered unconscious.">
+    <checkbox nybble="12.4" title="Immune to Lava" comment="When enabled, the Dry Bones will not 'disappear' when he touches lava."/>
   </sprite> <!-- #119: Giant Dry Bones -->
 
   <sprite id="120" name="Sledge Bro" notes="A large bulky version of the Hammer Brothers enemy that will stomp the ground, stunning players touching the ground, in addition to throwing large hammers.">
