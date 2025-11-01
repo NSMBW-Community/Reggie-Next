@@ -5290,23 +5290,23 @@ class SpriteImage_GhostDoor(SpriteImage_Door):  # 276
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.doorName = 'GhostDoor'
-        self.doorDimensions = (0, 0, 32, 48)
+        self.doorDimensions = (0, 0, 34, 48)
 
 
 class SpriteImage_TowerDoor(SpriteImage_Door):  # 277
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.doorName = 'TowerDoor'
-        self.doorDimensions = (-2, -13, 53, 61)
-        self.entranceOffset = (15, 68)
+        self.doorDimensions = (-2, -12, 53, 61)
+        self.entranceOffset = (15, 66)
 
 
 class SpriteImage_CastleDoor(SpriteImage_Door):  # 278
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.doorName = 'CastleDoor'
-        self.doorDimensions = (-2, -13, 53, 61)
-        self.entranceOffset = (15, 68)
+        self.doorDimensions = (-2, -12, 53, 61)
+        self.entranceOffset = (15, 66)
 
 
 class SpriteImage_GiantIceBlock(SLib.SpriteImage_StaticMultiple):  # 280
