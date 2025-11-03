@@ -1948,6 +1948,7 @@ class SpriteImage_SpikeBall(SLib.SpriteImage_Static):  # 63
             parent,
             1.5,
             ImageCache['SpikeBall'],
+            (0, 16)
         )
 
     @staticmethod
@@ -2412,7 +2413,7 @@ class SpriteImage_GiantSpikeBall(SLib.SpriteImage_Static):  # 98
             parent,
             1.5,
             ImageCache['GiantSpikeBall'],
-            (-24, -24),
+            (-24, -16),
         )
 
     @staticmethod
