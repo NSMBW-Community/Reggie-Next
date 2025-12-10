@@ -1,6 +1,6 @@
 import pickletools
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 import globals_
 from levelitems import ListWidgetItem_SortsByOther, PathItem, CommentItem, SpriteItem, EntranceItem, LocationItem, ObjectItem, PathEditorLineItem
@@ -125,19 +125,19 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         super(LevelViewWidget, self).__init__(scene, parent)
 
-        self.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-        self.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
-        self.setRenderHint(QtGui.QPainter.Antialiasing)
+        self.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
+        self.setDragMode(QtWidgets.QGraphicsView.DragMode.RubberBandDrag)
+        self.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         self.setMouseTracking(True)
-        self.YScrollBar = QtWidgets.QScrollBar(QtCore.Qt.Vertical, parent)
-        self.XScrollBar = QtWidgets.QScrollBar(QtCore.Qt.Horizontal, parent)
+        self.YScrollBar = QtWidgets.QScrollBar(QtCore.Qt.Orientation.Vertical, parent)
+        self.XScrollBar = QtWidgets.QScrollBar(QtCore.Qt.Orientation.Horizontal, parent)
         self.setVerticalScrollBar(self.YScrollBar)
         self.setHorizontalScrollBar(self.XScrollBar)
 
-        short_HOME = QtWidgets.QShortcut(QtGui.QKeySequence.MoveToStartOfLine, self.XScrollBar)
+        short_HOME = QtGui.QShortcut(QtGui.QKeySequence.StandardKey.MoveToStartOfLine, self.XScrollBar)
         short_HOME.activated.connect(lambda: self.XScrollBar.setValue(self.XScrollBar.value() - self.XScrollBar.pageStep()))
 
-        short_END = QtWidgets.QShortcut(QtGui.QKeySequence.MoveToEndOfLine, self.XScrollBar)
+        short_END = QtGui.QShortcut(QtGui.QKeySequence.StandardKey.MoveToEndOfLine, self.XScrollBar)
         short_END.activated.connect(lambda: self.XScrollBar.setValue(self.XScrollBar.value() + self.XScrollBar.pageStep()))
 
         self.currentobj = None
@@ -149,22 +149,22 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         Overrides mouse pressing events if needed
         """
 
-        if event.button() == QtCore.Qt.BackButton:
+        if event.button() == QtCore.Qt.MouseButton.BackButton:
             self.xButtonScrollTimer = QtCore.QTimer()
             self.xButtonScrollTimer.timeout.connect(
                 lambda: self.XScrollBar.setValue(self.XScrollBar.value() - self.XScrollBar.singleStep())
             )
             self.xButtonScrollTimer.start(100)
 
-        elif event.button() == QtCore.Qt.ForwardButton:
+        elif event.button() == QtCore.Qt.MouseButton.ForwardButton:
             self.xButtonScrollTimer = QtCore.QTimer()
             self.xButtonScrollTimer.timeout.connect(
                 lambda: self.XScrollBar.setValue(self.XScrollBar.value() + self.XScrollBar.singleStep())
             )
             self.xButtonScrollTimer.start(100)
 
-        elif event.button() == QtCore.Qt.RightButton:
-            clicked = globals_.mainWindow.view.mapToScene(event.x(), event.y())
+        elif event.button() == QtCore.Qt.MouseButton.RightButton:
+            clicked = globals_.mainWindow.view.mapToScene(event.pos().x(), event.pos().y())
             if clicked.x() < 0: clicked.setX(0)
             if clicked.y() < 0: clicked.setY(0)
 
@@ -334,18 +334,18 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             event.accept()
 
-        elif event.button() == QtCore.Qt.MidButton:
-            self.setDragMode(QtWidgets.QGraphicsView.NoDrag)
+        elif event.button() == QtCore.Qt.MouseButton.MiddleButton:
+            self.setDragMode(QtWidgets.QGraphicsView.DragMode.NoDrag)
             self.lastCursorPosForMidButtonScroll = event.pos()
             QtWidgets.QGraphicsView.mousePressEvent(self, event)
 
-        elif (event.button() == QtCore.Qt.LeftButton) and (QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.ShiftModifier):
+        elif (event.button() == QtCore.Qt.MouseButton.LeftButton) and (QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ShiftModifier):
             mw = globals_.mainWindow
 
-            pos = mw.view.mapToScene(event.x(), event.y())
+            pos = mw.view.mapToScene(event.pos().x(), event.pos().y())
             addsel = mw.scene.items(pos)
             for i in addsel:
-                if i.flags() & i.ItemIsSelectable:
+                if i.flags() & i.GraphicsItemFlag.ItemIsSelectable:
                     i.setSelected(not i.isSelected())
                     break
 
@@ -398,14 +398,14 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Overrides mouse release events if needed
         """
-        if event.button() in (QtCore.Qt.BackButton, QtCore.Qt.ForwardButton):
+        if event.button() in (QtCore.Qt.MouseButton.BackButton, QtCore.Qt.MouseButton.ForwardButton):
             self.xButtonScrollTimer.stop()
             return
 
-        if event.button() == QtCore.Qt.RightButton:
+        if event.button() == QtCore.Qt.MouseButton.RightButton:
             self.currentobj = None
-        elif event.button() == QtCore.Qt.MidButton:
-            self.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
+        elif event.button() == QtCore.Qt.MouseButton.MiddleButton:
+            self.setDragMode(QtWidgets.QGraphicsView.DragMode.RubberBandDrag)
 
         if self.cursorEdgeScrollTimer:
             self.cursorEdgeScrollTimer.stop()
@@ -639,26 +639,26 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             x = startx
             while x <= endx:
                 if x % 192 == 0:
-                    painter.setPen(QtGui.QPen(GridColor, 2, QtCore.Qt.DashLine))
+                    painter.setPen(QtGui.QPen(GridColor, 2, QtCore.Qt.PenStyle.DashLine))
                     drawLine(QtCore.QPointF(x, starty), QtCore.QPointF(x, endy))
                 elif x % 96 == 0 and Zoom >= 25:
-                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DashLine))
+                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.PenStyle.DashLine))
                     drawLine(QtCore.QPointF(x, starty), QtCore.QPointF(x, endy))
                 elif Zoom >= 50:
-                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DotLine))
+                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.PenStyle.DotLine))
                     drawLine(QtCore.QPointF(x, starty), QtCore.QPointF(x, endy))
                 x += 24
 
             y = starty
             while y <= endy:
                 if y % 192 == 0:
-                    painter.setPen(QtGui.QPen(GridColor, 2, QtCore.Qt.DashLine))
+                    painter.setPen(QtGui.QPen(GridColor, 2, QtCore.Qt.PenStyle.DashLine))
                     drawLine(QtCore.QPointF(startx, y), QtCore.QPointF(endx, y))
                 elif y % 96 == 0 and Zoom >= 25:
-                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DashLine))
+                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.PenStyle.DashLine))
                     drawLine(QtCore.QPointF(startx, y), QtCore.QPointF(endx, y))
                 elif Zoom >= 50:
-                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.DotLine))
+                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.PenStyle.DotLine))
                     drawLine(QtCore.QPointF(startx, y), QtCore.QPointF(endx, y))
                 y += 24
 
@@ -676,7 +676,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             board = QtGui.QPixmap(8 * size, 8 * size)
             board.fill(QtGui.QColor(0, 0, 0, 0))
             p = QtGui.QPainter(board)
-            p.setPen(QtCore.Qt.NoPen)
+            p.setPen(QtCore.Qt.PenStyle.NoPen)
 
             p.setBrush(QtGui.QBrush(Light))
             for x, y in ((0, size), (size, 0)):

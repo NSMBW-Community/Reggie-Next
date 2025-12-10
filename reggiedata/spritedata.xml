@@ -151,7 +151,6 @@
   <sprite id="23" name="Basic Platform - Horizontal Movement" notes="The most basic platform in the game. Moves on its own from left to right.">
     <dualbox nybble="7.3" title1="Normal Model" title2="boss_koopa_lift.arc" advanced="True" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
     <dualbox nybble="7.4" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requirednybble="7.3" requiredval="0"/>
-    <dualbox nybble="7.4" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used. The default texture model is the Gold Platform." advanced="True" requirednybble="7.3"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
     <dualbox nybble="8.4" title1="Starts Moving Right" title2="Starts Moving Left" comment="This determines which direction the platform will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the platform will move."/>
@@ -280,7 +279,6 @@
   <sprite id="31" name="Basic Platform - Vertical Movement" notes="The most basic platform in the game. Moves on its own, upwards and downwards.">
     <dualbox nybble="7.3" title1="Normal Model" title2="boss_koopa_lift.arc" advanced="True" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
     <dualbox nybble="7.4" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requirednybble="7.3" requiredval="0"/>
-    <dualbox nybble="7.4" title1="Model#1" title2="Model#2" comment="This determines which model within boss_koopa_lift.arc will be used." requirednybble="7.3"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
     <dualbox nybble="8.4" title1="Starts Moving Up" title2="Starts Moving Down" comment="This determines which direction the platform will initially start moving in."/>
     <value nybble="10" title="Movement Distance" comment="This determines the distance the platform will move."/>
@@ -604,12 +602,13 @@
   </sprite> <!-- #49: (Unused) Seesaw Platform -->
 
   <sprite id="50" name="Basic Platform - Fall-When-Touched" notes="This platform will begin to fall when a player first touches it.">
-    <list nybble="7" title="Color" comment="This determines the color of the platform. Values not listed here result in 'Normal'.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Silver</entry>
-      <entry value="3">Bone</entry>
+    <list nybble="7" title="Model" comment="This determines the model used by the platform. Values not listed here result in 'Gold Platform'.">
+      <entry value="0">Gold Platform</entry>
+      <entry value="1">Silver Platform</entry>
+      <entry value="2">boss_koopa_lift.arc</entry>
+      <entry value="3">Bone Platform</entry>
     </list>
-    <value nybble="12" title="Width" comment="This determines the length of the platform." comment2="&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;Do not use a Width of 0.&lt;/font&gt;"/>
+    <value nybble="12" title="Width" comment="This determines the length of the platform." comment2="Do not use a Width of 0."/>
     <dualbox nybble="11.4" title1="Instant, Fast Fall" title2="Delayed, Slow Fall" comment="This determines the rate at which the platform will fall when activated."/>
     <list nybble="10" title="Minimum number of players" comment="The platform immediately despawns if there are fewer players than specified here. Setting this nybble to even higher values causes the platform to always despawn, since there can be at most 4 players.">
       <entry value="0">1 Player</entry>
@@ -1766,6 +1765,7 @@
   </sprite> <!-- #118: Dry Bones -->
 
   <sprite id="119" name="Giant Dry Bones" notes="A large version of the Dry Bones enemy that must be ground-pounded in order to be rendered unconscious.">
+    <checkbox nybble="12.4" title="Immune to Lava" comment="When enabled, the Dry Bones will not 'disappear' when he touches lava."/>
   </sprite> <!-- #119: Giant Dry Bones -->
 
   <sprite id="120" name="Sledge Bro" notes="A large bulky version of the Hammer Brothers enemy that will stomp the ground, stunning players touching the ground, in addition to throwing large hammers.">
@@ -2185,7 +2185,7 @@
     <checkbox nybble="5.1" title="Initially Submerged" comment="When enabled, the floating barrel will load partially submerged."/>
   </sprite> <!-- #145: Floating Barrel -->
 
-  <sprite id="146" name="Chain Chomp" notes="A chain chomp enemy tied up to a 3 block pole. The pole must be ground-pounded 3 times to release the Chain Chomp and he will rampage in the direction he is freed destroying all block terrain in his path." advancednotes="We're pretty sure there's no setting to change the height of the pole, but you're welcome to test a few values.">
+  <sprite id="146" name="Chain Chomp" notes="A chain chomp enemy tied up to a 3 block pole. The pole must be ground-pounded 3 times to release the Chain Chomp and he will rampage in the direction he is freed destroying all block terrain in his path.">
   </sprite> <!-- #146: Chain Chomp -->
 
   <!-- Please check Behavior Type combined with ALL Movement Types. Which ones are compatible? Which ones are incompatible? Full list, please. -->
@@ -2678,7 +2678,7 @@
       <entry value="7">Star</entry>
       <entry value="11">1-Up</entry>
     </list>
-    <checkbox nybble="5.4" title="Unknown Flag 5 (1)" comment="Used in Retail: 06-05 A2. Possibly distance related."/>
+    <checkbox nybble="5.4" title="Does Not Despawn" comment="When enabled, the hit block will not despawn when off-screen. Used in retail 06-05 A2."/>
   </sprite> <!-- #175: Flying ? Block -->
 
   <sprite id="176" name="Roulette Block" notes="A large roulette style block that will award either a Star, a 1-Up, a Mushroom, or a specific power-up item. It should be noted that it makes a moderate amount of noise when it's on screen.">
@@ -2874,7 +2874,7 @@
   </sprite> <!-- #192: Larry Koopa - Castle Boss -->
 
   <sprite id="193" name="Urchin" notes="A small spiky ball enemy typically used in Water. Water is not required, however, for it to load and function.">
-    <value nybble="11" title="Movement Distance (*2)" comment="This determines how far the Urchin will move, if at all. Multiply this value by 2."/>
+    <value nybble="11" title="Movement Distance (x2)" comment="This determines how far the Urchin will move, if at all. Multiply this value by 2."/>
     <dualbox nybble="12.4" title1="Moves Vertically" title2="Moves Horizontally" comment="This determines which direction the Urchin will move. The starting position from their movement is in the center, not at one of the two edges." requirednybble="11"/> <!-- Appears only if Movement Distance is set -->
     <dualbox nybble="10.4" title1="Moves Down First" title2="Moves Up First" comment="This determines which direction the Urchin will move first. The starting position from their movement is in the center, not at one of the two edges." requirednybble="11,12.4" requiredval="1-15, 0"/> <!-- Appears only if Movement Distance is set, and movement is Vertical -->
     <dualbox nybble="10.4" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Urchin will move first. The starting position from their movement is in the center, not at one of the two edges." requirednybble="11,12.4" requiredval="1-15, 1"/> <!-- Appears only if Movement Distance is set, and movement is Horizontal -->
@@ -2972,7 +2972,7 @@
       <suggested sprite="432"/>
       <suggested sprite="454"/>
     </dependency>
-    <checkbox nybble="5" title="Unknown Flag 5 (1)" comment="No visible change. Used in the Ambushes of World 6." />
+    <checkbox nybble="5" title="Shift Down 2 Units" comment="Shifts the chest model down by 2 units. Used in the World 6 Ambushes to align the chest with the top of the pipe tiles." />
     <checkbox nybble="9" title="Unknown Flag 9 (1)" comment="No visible change. Checked in all ambushes except those in Worlds 1 and 2." />
     <list nybble="10" title="Chest Type" comment="Determines the behavior and contents of the chest.">
       <entry value="0">Default</entry>
@@ -3332,8 +3332,8 @@
 
   <sprite id="217" name="Fire Chomp Spawn Area" notes="Assigns a spawn area where Fire Chomps will continue to respawn while the player is inside it. Fire Chomps will float after the player shooting the fireballs from its tail, and explode when they run out of ammo.">
     <value nybble="12" title="Location ID" comment="Fire Chomps respawn and chase the player only while a player is in this location." idtype="Location"/>
-    <value nybble="11" title="Spawn Delay" comment="This determines the amount of time the game will wait before spawning another Fire Chomp."/>
-    <checkbox nybble="10.4" title="Unknown Flag 10 (1)" advanced="True" advancedcomment="Used in Retail: 02-06 A1"/>
+    <value nybble="11" title="Spawn Delay" comment="This determines the amount of time the game will wait before spawning another Fire Chomp." comment2="Each value is equal to one second."/>
+    <checkbox nybble="10.4" title="Unused Flag 10 (1)" advanced="True" comment="This value is not used by the game in any way. Nintendo toggles this in 02-06 A1."/>
   </sprite> <!-- #217: Fire Chomp Spawn Area -->
 
   <sprite id="218" name="(Unused) Invisible Block" notes="Creates an invisible block. When hit, it will release a coin and move one tile up. The settings seem to be hardcoded, making this sprite almost fully unusable.">
@@ -3580,8 +3580,7 @@
       <required sprite="235"/>
     </dependency>
     <value nybble="12" title="Ray ID" comment="This determines which Jumbo Rays will be respawned by this controller." idtype="Ray"/>
-    <value nybble="8" title="Spawn Delay (Set Above 0!)" comment="This determines how soon after the launch of the initial Jumbo Ray that another one will be spawned." comment2="A value of 1 is equal to about the width of one Jumbo Ray. &lt;font color=&quot;red&quot;&gt;Do not use a value of 0 or the game will crash.&lt;/font&gt;"/>
-    <value nybble="9" title="Unknown Value 9" advanced="True" advancedcomment="Used in Retail: 05-05 A1, 0+F"/>
+    <value nybble="7-9" title="Spawn Delay (Set Above 0!)" comment="This determines how soon after the launch of the initial Jumbo Ray that another one will be spawned." comment2="A value of 1 is equal to about the width of one Jumbo Ray. &lt;font color=&quot;red&quot;&gt;Do not use a value of 0 or the game will crash.&lt;/font&gt;"/>
   </sprite> <!-- #235: Jumbo Ray Respawner -->
 
   <sprite id="236" name="Group Controller" notes="This controller will cause linked sprites to spawn at the same time, allowing for consistent synchronized movement. There are no sprites that require this to function.">
@@ -3623,11 +3622,11 @@
     <value nybble="5-6" title="Current Force" comment="This determines the strength of the current."/>
   </sprite> <!-- #243: (Unused) Water Current Controller -->
 
-  <sprite id="244" name="Incomplete Sprite - 'Hana_Mountain'" notes="Does nothing.">
-  </sprite> <!-- #244: Incomplete Sprite - 'Hana_Mountain' -->
+  <sprite id="244" name="Incomplete Sprite - 'River_Mgr'" notes="Does nothing.">
+  </sprite> <!-- #244: Incomplete Sprite - 'River_Mgr' -->
 
-  <sprite id="245" name="Incomplete Sprite - 'River_Mgr'" notes="Does nothing.">
-  </sprite> <!-- #245: Incomplete Sprite - 'River_Mgr' -->
+  <sprite id="245" name="Incomplete Sprite - 'Hana_Mountain'" notes="Does nothing.">
+  </sprite> <!-- #245: Incomplete Sprite - 'Hana_Mountain' -->
 
   <sprite id="246" name="Incomplete Sprite - 'Tag_Thunder'" notes="Does nothing.">
   </sprite> <!-- #246: Incomplete Sprite - 'Tag_Thunder' -->
@@ -4111,17 +4110,15 @@
     <value nybble="8" title="Rotation Speed (-)" comment="This will decrease the speed of the gear's rotation when rotating under its own power." comment2="Only one Rotation Speed should be chosen. A rotation speed of 0 is equal to 'Slow+' on a Spinning rotation controller." requirednybble="11-12" requiredval="0"/>
   </sprite> <!-- #274: Rotating Metal Castle Gear -->
 
-  <!-- Test Starts Moving on Touch with a value greater than 1 (May require more players?) -->
-  <!-- Re-test Direction values 2 and 3 with unused nybbles set to 1, 3, and f -->
-  <sprite id="275" name="5-Enemy-Max Raft" notes="A large raft that counts from 0 to 5 for each enemy that is riding on top of it, and will stop when it reaches 5. While the value it stops at can be changed, its visuals are hard-coded.">
+  <sprite id="275" name="5-Enemy-Max Raft" notes="A large raft that counts from 0 to 5 for each enemy that is riding on top of it, and will stop when it reaches 5. While the value it stops at can be changed, its visuals are hardcoded.">
     <dependency notes="The raft can function without any form of liquid, as it does not snap to the top of Water or other liquids. However, aesthetically, it is recommended to utilize one of the liquids. Moving Water modes and other similar sprites will not interact with the raft.">
       <suggested sprite="138"/>
       <suggested sprite="139"/>
       <suggested sprite="216"/>
     </dependency>
-    <checkbox nybble="8.4" title="Moves Faster" comment="When enabled, the raft will move twice as fast as normal." comment2="The raft will normally move about 10 blocks in 7 game seconds."/>
-    <dualbox nybble="9.4" title1="Moves Right" title2="Moves Left" comment="This determines which direction the raft will move in when it is actively moving." advancedcomment="Values 2 and 3 both cause the raft to not move. May have an alternate use but unlikely."/>
-    <checkbox nybble="10.4" title="Starts Moving on Touch" comment="When enabled, the Platform will start moving when any player touches it. Otherwise, it will begin moving when loaded."/>
+    <checkbox nybble="8.4" title="Moves Faster" comment="When enabled, the raft will move twice as fast as normal." comment2="The raft will normally move 1 tile every 32 frames."/>
+    <dualbox nybble="9.3-9.4" title1="Moves Right" title2="Moves Left" comment="This determines which direction the raft will move in when it is actively moving." comment2="Values 2 and 3 both make the raft stationary. It's possible these may have served another purpose during development (such as alternate movement speeds)."/>
+    <checkbox nybble="10.4" title="Starts Moving on Touch" comment="When enabled, the raft will start moving when any player touches it. Otherwise, it will begin moving when loaded."/>
     <list nybble="11" title="Amount of Sprites to Stop" comment="This determines the number of enemies and other non-player sprites needed to cause the raft to stop moving." comment2="This will not change the visible functions of the displayed counter.">
       <entry value="0">1 Sprite</entry>
       <entry value="1">2 Sprites</entry>
@@ -4140,8 +4137,8 @@
       <entry value="14">15 Sprites</entry>
       <entry value="15">16 Sprites</entry>
     </list>
-    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="May have been intended to be width related but does not seem to do anything. (Retail platform is 24 blocks wide, 3 blocks per segment with 8 segments.)"/>
-  </sprite> <!-- #275: Enemy-Counting Raft -->
+    <value nybble="12" title="Unused Value 12" advanced="True" comment="This value is not used by the game in any way. Nintendo sets this as 12 in retail 05-04 A1."/>
+  </sprite> <!-- #275: 5-Enemy-Max Raft -->
 
   <sprite id="276" name="Ghost House Door" noyoshi="True" notes="A Ghost House door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors.">
     <checkbox nybble="8.4" title="Fake Door" comment="When enabled, when the player attempt to enter the door, it will vanish and disperse into 4 harmless Boos."/>
@@ -4180,7 +4177,7 @@
   <sprite id="279" name="Incomplete Sprite - 'Ac_Lift_Ice_Spring'" notes="Does nothing.">
   </sprite> <!-- #279: Incomplete Sprite - 'Ac_Lift_Ice_Spring' -->
 
-  <sprite id="280" name="Giant Ice Block" notes="A large 3x3 ice block that can be broken with an explosion.">
+  <sprite id="280" name="Giant Ice Block" notes="A large 4x4 ice block that can be broken with an explosion.">
     <list nybble="12.3-12.4" title="Frozen Inside" comment="This determines what type of object is frozen inside the block." comment2="Bob-Omb ice blocks will explode to other nearby ice blocks.">
       <entry value="0">Nothing</entry>
       <entry value="1">Bob-Omb</entry>
@@ -4375,11 +4372,22 @@
   <sprite id="294" name="Meltable Ice Cube" notes="A small, 'smoking', slippery ice cube that can be melted with Fireballs.">
   </sprite> <!-- #294: Meltable Ice Cube -->
 
-  <!-- Does the sprite only unthread to its starting placement (thus giving purpose to Offset Right) or will it unthread until it hits a solid surface? -->
-  <sprite id="295" name="Airship Nut Platform" noyoshi="True" notes="A platform made up of 6 connected nuts that will spin and 'thread' itself left when jumped on, but also attempting to drop the player beneath it. It will stop advancing if it reaches a solid wall, and it will travel backwards if it has not been jumped on recently. It can despawn if the player leaves the screen with it.">
-    <dependency notes="While not required, it is suggested to use some sort of terrain alongside this sprite, usually the 'wire' terrain object (#15) from the Airship decorations in Pa1 or some variant on it."/>
-    <value nybble="12.2-12.4" title="Offset Right" comment="This determines how far 'forward' the nut will be already spun. This affects the maximum return distance of the nut platform."/>
-    <checkbox nybble="11.4" title="Offset Down .5 Blocks" advanced="True" advancedcomment="A holdover setting from development and not important."/>
+  <sprite id="295" name="Airship Nut Platform" noyoshi="True" notes="A platform made of 6 connected nuts that will spin and 'thread' itself when jumped on, but also attempt to drop the player beneath it. It will stop advancing if it reaches a solid wall, and it will travel backwards if it has not been jumped on recently, until it reaches another wall. It can despawn if the player leaves the screen with it.">
+    <dependency notes="While not required, it is suggested to use some sort of terrain alongside this sprite, usually the 'wire' terrain object (#15) from the Airship decorations in Pa1 or some variant of it."/>
+    <list nybble="12" title="(Broken) Width" comment="This setting (always set to '6 Tiles' in retail) affects the platform's collision and initial position, but not its model or wall-detection logic, which are always 6 tiles wide.">
+      <entry value="0">4 Tiles</entry>
+      <entry value="1">5 Tiles</entry>
+      <entry value="2">6 Tiles (Recommended)</entry>
+      <entry value="3">7 Tiles</entry>
+      <entry value="4">8 Tiles</entry>
+      <entry value="5">9 Tiles</entry>
+      <entry value="6">10 Tiles</entry>
+      <entry value="7">11 Tiles</entry>
+    </list>
+    <list nybble="11" title="(Broken) Height" comment="This unused setting (always set to '2 Tiles' in retail) affects the platform's collision, initial position, and wall-detection logic, but not its model, which is always 2 tiles tall.">
+      <entry value="0">1 Tile</entry>
+      <entry value="1">2 Tiles (Recommended)</entry>
+    </list>
   </sprite> <!-- #295: Airship Nut Platform -->
 
   <sprite id="296" name="Giant Buzzy Beetle" notes="A very large Buzzy Beetle that isn't especially pretty, but will carry the player around on its back. It can still hurt the player from the side.&lt;br&gt;Giant Buzzys don't fall down if placed in the air. They will follow the ground and slopes if snapped to the ground. Finally, they will move in a straight line if they reach a 90° drop.">
@@ -5577,7 +5585,7 @@
   </sprite> <!-- #369: Cooligan -->
 
   <sprite id="370" name="Lakitu Cloud Block" notes="A block that when struck from below will spawn a Lakitu enemy that throws coins instead of Spinies.">
-    <value nybble="11" title="Maximum Coins Thrown (*5)" comment="This determines how many coins the Lakitu will throw before flying off." comment2="A value of 1 is equal to 5 coins across 15 game seconds. If set to 0, the Lakitu will never fly off."/>
+    <value nybble="11" title="Maximum Coins Thrown (x5)" comment="This determines how many coins the Lakitu will throw before flying off." comment2="A value of 1 is equal to 5 coins across 15 game seconds. If set to 0, the Lakitu will never fly off."/>
     <value nybble="12" title="Spawn Height" comment="This determines the distance relative to the bottom border of the Zone, in which the Lakitu will float upwards before it begins to throw coins." comment2="At value 0, the top of the Lakitu's shell will reach 12 blocks above the bottom Zone border. Each additional value increases this by two blocks. A value of 4 is equal to the standard height of a [134] Lakitu Spawn Area's Lakitu spawn."/>
   </sprite> <!-- #370: Lakitu Cloud Block -->
 
@@ -5902,7 +5910,7 @@
   <sprite id="396" name="Move-When-On Platform" notes="A special platform that will move at any point when a specified number of 'passengers' (players + enemies) are standing on it.">
     <value nybble="12" title="Length" comment="This value must be at least 1 to have collision."/>
     <checkbox nybble="7.2" title="Does not Move"/>
-    <dualbox nybble="10.4" title1="Returns to Original Position" title2="Does not Return" comment="When 'Does not Return' is checked, the platform will not stop moving once activated." requirednybble="7.2" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
+    <dualbox nybble="10.4" title1="Returns to Original Position" title2="Does not Return" comment="When 'Does not Return' is checked, the platform will not stop moving once activated. Alongside that, the arrow on the platform will remain invisible after the platform has been touched with this setting checked." requirednybble="7.2" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
     <list nybble="11" title="Moves with Passenger Number" comment="This determines how many 'passengers' are needed for the platform's movement to activate. A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers. It will change colors from blue to red when this condition is satisfied.">
       <entry value="0">1 Passenger</entry>
       <entry value="1">2 Passengers</entry>
@@ -5921,7 +5929,7 @@
       <entry value="14">15 Passengers</entry>
       <entry value="15">16 Passengers</entry>
     </list>
-    <list nybble="7.3-7.4" title="Direction" comment="It will show an arrow pointing in the direction it is moving, whether it is moving this direction or returning." requirednybble="7.2" requiredval="0">
+    <list nybble="7.3-7.4" title="Direction" comment="Determines the direction the platform will move in when touched." comment2="The arrow on the platform will always point down when the platform is touched and up when it is going back to its original position. Therefore only value 3 can be used without any visual side effects." requirednybble="7.2" requiredval="0">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
       <entry value="2">Up</entry>
@@ -6165,7 +6173,7 @@
   </sprite> <!-- #408: Cutscene Controller - Bowser Jr and Peach at Castle -->
 
   <sprite id="409" name="Cutscene Controller - Bowser Jr and Peach at Airship" noyoshi="True" notes="This controller manages the Bowser Jr. cinematics and level completion, as well as the World 8 Airship transition segment. This sprite will be used twice in the Third Bowser Jr. Fight's arrangement.">
-    <dependency notes="Specific room settings are likely required. Please reference the original Retail levels, 04-, 06-, and 08-38 A1.">
+    <dependency notes="Specific room settings are likely required. Please reference the original Retail levels, 04-38 A1, 06-38 A1, and 08-38 A1.">
       <suggested sprite="211"/>
       <suggested sprite="405"/>
       <suggested sprite="406"/>
@@ -6274,12 +6282,12 @@
 
   <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in the retail game's singleplayer mode where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
     <dependency notes="All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
-    <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small (1 tile large)."/>
+    <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small."/>
   </sprite> <!-- #422: Toad Needs Help - ? Block -->
 
   <sprite id="423" name="Toad Needs Help - Brick Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
     <dependency notes="All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
-    <checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="ASM shows Nybble 12 might affect something."/>
+    <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small."/>
   </sprite> <!-- #423: Toad Needs Help - Brick Block -->
 
   <sprite id="424" name="Palm Tree" notes="A palm tree decoration with a solid-on-top collision.">
@@ -6850,10 +6858,10 @@
     <checkbox nybble="11.4" title="Floating" comment="When enabled, the Ice Floe will wiggle around as though it is floating on the surface of the water."/>
   </sprite> <!-- #475: Path Controlled Ice Floe -->
 
-  <!-- Research on Nybble 11, and other Nybbles, is suggested. This includes checking for camera related values, so make sure that the test level has enough room to scroll vertically, or has an Airship Rocking effect. -->
+  <!-- Research on other Nybbles is suggested. This includes checking for camera related values, so make sure that the test level has enough room to scroll vertically, or has an Airship Rocking effect. -->
   <sprite id="476" name="Loose Flying Wrench" notes="A stand-alone Rocky Wrench's wrench that will fly across the screen.">
     <dualbox nybble="12.4" title1="Moves Right" title2="Moves Left" comment="This determines which direction the wrench flies in when it loads."/>
-    <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="Unknown."/>
+    <checkbox nybble="11.4" title="Owned by Rocky Wrench" advanced="True" comment="Enabled on wrenches thrown by [352] Rocky Wrench." advancedcomment="This makes the wrench despawn if the parent Rocky Wrench doesn't exist. Since this wrench is standalone, it will always despawn."/>
   </sprite> <!-- #476: Loose Flying Wrench -->
 
   <sprite id="477" name="Super Guide Block" notes="A block that activates a special Luigi replay where Luigi will complete the level as minimally as possible with as little running or wall jumping as he can get away with.">

@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt6 import QtWidgets, QtCore
 
 import globals_
 from ui import GetIcon
@@ -25,7 +25,7 @@ class AreaOptionsDialog(QtWidgets.QDialog):
         self.tabWidget.addTab(self.LoadingTab, globals_.trans.string('AreaDlg', 2))
         self.tabWidget.addTab(self.LoadedSpritesTab, globals_.trans.string('AreaDlg', 46))
 
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
@@ -169,7 +169,7 @@ class TilesetsTab(QtWidgets.QWidget):
                         # It's a category
                         node.setText(0, item[0])
                         node.setToolTip(0, item[0])
-                        node.setFlags(QtCore.Qt.ItemIsEnabled)
+                        node.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
                         children = ParseCategory(item[1])
                         for cnode in children:
                             node.addChild(cnode)
@@ -200,7 +200,7 @@ class TilesetsTab(QtWidgets.QWidget):
 
         # Set up the tab widget
         T = QtWidgets.QTabWidget()
-        T.setTabPosition(T.West)
+        T.setTabPosition(T.TabPosition.West)
         T.setUsesScrollButtons(False)
         T.addTab(self.widgets[0], globals_.trans.string('AreaDlg', 11))  # 'Standard Suite'
         T.addTab(self.widgets[1], globals_.trans.string('AreaDlg', 12))  # 'Stage Suite'
@@ -295,7 +295,7 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         """
 
         def flags(self, index):
-            return QtCore.Qt.ItemNeverHasChildren
+            return QtCore.Qt.ItemFlag.ItemNeverHasChildren
 
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
@@ -306,7 +306,7 @@ class LoadedSpritesTab(QtWidgets.QWidget):
 
         self.custom_list = QtWidgets.QListView()
         self.custom_list.setModel(self.custom_model)
-        self.custom_list.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.custom_list.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         model = self.custom_list.selectionModel()
         model.selectionChanged.connect(
             lambda *_: self.remove_button.setEnabled(bool(len(model.selectedIndexes())))
@@ -333,7 +333,7 @@ class LoadedSpritesTab(QtWidgets.QWidget):
 
         auto_list = QtWidgets.QListView()
         auto_list.setModel(self.auto_model)
-        auto_list.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        auto_list.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
 
         sprites_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 49)), 0, 0)
         sprites_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 50)), 0, 1)

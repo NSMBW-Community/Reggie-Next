@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt6 import QtWidgets, QtCore
 import sys
 
 import globals_
@@ -16,7 +16,7 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         Constructor
         """
         QtWidgets.QWidget.__init__(self)
-        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed))
+        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed))
 
         LoadEntranceNames()
         self.CanUseFlag40 = {0, 1, 7, 8, 9, 12, 20, 21, 22, 23, 24, 27}
@@ -93,18 +93,18 @@ class EntranceEditorWidget(QtWidgets.QWidget):
 
         # 'Editing Entrance #' label
         self.editingLabel = QtWidgets.QLabel('-')
-        layout.addWidget(self.editingLabel, 0, 0, 1, 4, QtCore.Qt.AlignTop)
+        layout.addWidget(self.editingLabel, 0, 0, 1, 4, QtCore.Qt.AlignmentFlag.AlignTop)
 
         # add labels
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('EntranceDataEditor', 0)), 3, 0, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('EntranceDataEditor', 2)), 1, 0, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('EntranceDataEditor', 0)), 3, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('EntranceDataEditor', 2)), 1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
         layout.addWidget(createHorzLine(), 2, 0, 1, 4)
 
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('EntranceDataEditor', 4)), 3, 2, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('EntranceDataEditor', 6)), 4, 2, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('EntranceDataEditor', 4)), 3, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('EntranceDataEditor', 6)), 4, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('EntranceDataEditor', 20)), 4, 0, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('EntranceDataEditor', 20)), 4, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
         self.pathIDLabel = QtWidgets.QLabel(globals_.trans.string('EntranceDataEditor', 16))
         self.cpDirectionLabel = QtWidgets.QLabel(globals_.trans.string('EntranceDataEditor', 25))
@@ -117,20 +117,20 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         layout.addWidget(self.activeLayer, 4, 1, 1, 1)
         layout.addWidget(self.destArea, 4, 3, 1, 1)
         layout.addWidget(createHorzLine(), 5, 0, 1, 4)
-        layout.addWidget(self.allowEntryCheckbox, 6, 0, 1, 2)  # , QtCore.Qt.AlignRight)
-        layout.addWidget(self.unknownFlagCheckbox, 6, 2, 1, 2)  # , QtCore.Qt.AlignRight)
+        layout.addWidget(self.allowEntryCheckbox, 6, 0, 1, 2)  # , QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(self.unknownFlagCheckbox, 6, 2, 1, 2)  # , QtCore.Qt.AlignmentFlag.AlignRight)
         layout.addWidget(self.exit_level_checkbox, 7, 0, 1, 2)
         layout.addWidget(self.spawnHalfTileLeftCheckbox, 7, 2, 1, 2)
-        layout.addWidget(self.forwardPipeCheckbox, 8, 0, 1, 2)  # , QtCore.Qt.AlignRight)
-        layout.addWidget(self.connectedPipeCheckbox, 8, 2, 1, 2)  # , QtCore.Qt.AlignRight)
+        layout.addWidget(self.forwardPipeCheckbox, 8, 0, 1, 2)  # , QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(self.connectedPipeCheckbox, 8, 2, 1, 2)  # , QtCore.Qt.AlignmentFlag.AlignRight)
 
         self.cpHorzLine = createHorzLine()
         layout.addWidget(self.cpHorzLine, 9, 0, 1, 4)
-        layout.addWidget(self.connectedPipeReverseCheckbox, 10, 0, 1, 2)  # , QtCore.Qt.AlignRight)
+        layout.addWidget(self.connectedPipeReverseCheckbox, 10, 0, 1, 2)  # , QtCore.Qt.AlignmentFlag.AlignRight)
         layout.addWidget(self.pathID, 10, 3, 1, 1)
-        layout.addWidget(self.pathIDLabel, 10, 2, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(self.pathIDLabel, 10, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
-        layout.addWidget(self.cpDirectionLabel, 11, 0, 1, 2, QtCore.Qt.AlignRight)
+        layout.addWidget(self.cpDirectionLabel, 11, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignRight)
         layout.addWidget(self.cpDirection, 11, 2, 1, 2)
 
         self.ent = None
@@ -357,7 +357,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         Constructor
         """
         QtWidgets.QWidget.__init__(self)
-        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed))
+        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed))
 
         # Some single point float constants. Note that we cannot use the ones
         # provided by sys.float_info, since those relate to double precision
@@ -485,10 +485,10 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
             SetDirty()
 
     def HandleLoopsChanged(self, i):
-        if self.UpdateFlag or self.path_node.path._loops == (i == QtCore.Qt.Checked):
+        if self.UpdateFlag or self.path_node.path._loops == (i == QtCore.Qt.CheckState.Checked):
             return
 
-        if self.path_node.path.set_loops(i == QtCore.Qt.Checked):
+        if self.path_node.path.set_loops(i == QtCore.Qt.CheckState.Checked):
             SetDirty()
 
     def HandlePathIdChanged(self, i):
@@ -516,7 +516,7 @@ class LocationEditorWidget(QtWidgets.QWidget):
         Constructor
         """
         QtWidgets.QWidget.__init__(self)
-        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed))
+        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed))
 
         # create widgets
         self.locationID = QtWidgets.QSpinBox()
@@ -553,18 +553,18 @@ class LocationEditorWidget(QtWidgets.QWidget):
 
         # 'Editing Location #' label
         self.editingLabel = QtWidgets.QLabel('-')
-        layout.addWidget(self.editingLabel, 0, 0, 1, 4, QtCore.Qt.AlignTop)
+        layout.addWidget(self.editingLabel, 0, 0, 1, 4, QtCore.Qt.AlignmentFlag.AlignTop)
 
         # add labels
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('LocationDataEditor', 0)), 1, 0, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('LocationDataEditor', 0)), 1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
         layout.addWidget(createHorzLine(), 2, 0, 1, 4)
 
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('LocationDataEditor', 2)), 3, 0, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('LocationDataEditor', 4)), 4, 0, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('LocationDataEditor', 2)), 3, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('LocationDataEditor', 4)), 4, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('LocationDataEditor', 6)), 3, 2, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('LocationDataEditor', 8)), 4, 2, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('LocationDataEditor', 6)), 3, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(QtWidgets.QLabel(globals_.trans.string('LocationDataEditor', 8)), 4, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignRight)
 
         # add the widgets
         layout.addWidget(self.locationID, 1, 1, 1, 1)
@@ -588,10 +588,10 @@ class LocationEditorWidget(QtWidgets.QWidget):
 
         self.FixTitle()
         self.locationID.setValue(loc.id)
-        self.locationX.setValue(loc.objx)
-        self.locationY.setValue(loc.objy)
-        self.locationWidth.setValue(loc.width)
-        self.locationHeight.setValue(loc.height)
+        self.locationX.setValue(int(loc.objx))
+        self.locationY.setValue(int(loc.objy))
+        self.locationWidth.setValue(int(loc.width))
+        self.locationHeight.setValue(int(loc.height))
 
         self.UpdateFlag = False
 

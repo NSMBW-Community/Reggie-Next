@@ -33,7 +33,7 @@
 # Imports
 import os.path
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 Qt = QtCore.Qt
 
@@ -444,9 +444,9 @@ class AuxiliarySpriteItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         """
         super().__init__(parent)
         self.parent = parent
-        self.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, False)
-        self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, False)
-        self.setFlag(QtWidgets.QGraphicsItem.ItemStacksBehindParent, True)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, False)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, False)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, True)
         self.setParentItem(parent)
         self.hover = False
 
@@ -458,7 +458,7 @@ class AuxiliarySpriteItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         behind the sprite or in front of it. Default is for the item to
         be behind the sprite.
         """
-        self.setFlag(QtWidgets.QGraphicsItem.ItemStacksBehindParent, behind)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, behind)
 
     def boundingRect(self):
         """
@@ -497,7 +497,7 @@ class AuxiliaryTrackObject(AuxiliarySpriteItem):
 
         if option is not None:
             painter.setClipRect(option.exposedRect)
-            painter.setRenderHint(QtGui.QPainter.Antialiasing)
+            painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         painter.setPen(OutlinePen)
 
@@ -514,7 +514,7 @@ class AuxiliaryTrackObject(AuxiliarySpriteItem):
 
 
 class AuxiliaryCircleOutline(AuxiliarySpriteItem):
-    def __init__(self, parent, width, alignMode=Qt.AlignHCenter):
+    def __init__(self, parent, width, alignMode=Qt.AlignmentFlag.AlignHCenter):
         """
         Constructor
         """
@@ -533,22 +533,22 @@ class AuxiliaryCircleOutline(AuxiliarySpriteItem):
         fullOffset = -(width * 1.5) + 24
 
         xval = 0
-        if self.alignMode & Qt.AlignHCenter:
+        if self.alignMode & Qt.AlignmentFlag.AlignHCenter:
             xval = centerOffset
-        elif self.alignMode & Qt.AlignRight:
+        elif self.alignMode & Qt.AlignmentFlag.AlignRight:
             xval = fullOffset
 
         yval = 0
-        if self.alignMode & Qt.AlignVCenter:
+        if self.alignMode & Qt.AlignmentFlag.AlignVCenter:
             yval = centerOffset
-        elif self.alignMode & Qt.AlignBottom:
+        elif self.alignMode & Qt.AlignmentFlag.AlignBottom:
             yval = fullOffset
 
         self.setPos(xval, yval)
         self.width = width
 
     def paint(self, painter, option, widget=None):
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         painter.setPen(OutlinePen)
 
         if self.fillFlag:
@@ -576,7 +576,7 @@ class AuxiliaryRotationAreaOutline(AuxiliarySpriteItem):
         self.spanAngle = spanAngle * 16
 
     def paint(self, painter, option, widget=None):
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         painter.setPen(OutlinePen)
         painter.setBrush(OutlineBrush)
         painter.drawPie(self.BoundingRect, int(self.startAngle), int(self.spanAngle))
@@ -608,7 +608,7 @@ class AuxiliaryRectOutline(AuxiliarySpriteItem):
     def paint(self, painter, option, widget=None):
         if option is not None:
             painter.setClipRect(option.exposedRect)
-            painter.setRenderHint(QtGui.QPainter.Antialiasing)
+            painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         if self.color is None:
             painter.setPen(OutlinePen)
@@ -654,7 +654,7 @@ class AuxiliaryPainterPath(AuxiliarySpriteItem):
 
         if option is not None:
             painter.setClipRect(option.exposedRect)
-            painter.setRenderHint(QtGui.QPainter.Antialiasing)
+            painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         painter.setPen(OutlinePen)
         if self.fillFlag: painter.setBrush(OutlineBrush)
@@ -698,7 +698,7 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
         Constructor
         """
         super().__init__(parent, width, height)
-        self.alignment = Qt.AlignTop | Qt.AlignLeft
+        self.alignment = Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft
         self.realwidth = self.width
         self.realheight = self.height
         self.realimage = None
@@ -749,17 +749,17 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
                 self.image = self.realimage
 
         # Find the absolute X-coord
-        if self.flagPresent(self.alignment, Qt.AlignLeft):
+        if self.flagPresent(self.alignment, Qt.AlignmentFlag.AlignLeft):
             newx = x
-        elif self.flagPresent(self.alignment, Qt.AlignRight):
+        elif self.flagPresent(self.alignment, Qt.AlignmentFlag.AlignRight):
             newx = x + w - self.width
         else:
             newx = x + (w / 2) - (self.width / 2)
 
         # Find the absolute Y-coord
-        if self.flagPresent(self.alignment, Qt.AlignTop):
+        if self.flagPresent(self.alignment, Qt.AlignmentFlag.AlignTop):
             newy = y
-        elif self.flagPresent(self.alignment, Qt.AlignBottom):
+        elif self.flagPresent(self.alignment, Qt.AlignmentFlag.AlignBottom):
             newy = y + h - self.height
         else:
             newy = y + (h / 2) - (self.height / 2)
@@ -798,9 +798,9 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         super().__init__(parent)
         self.parent = parent
         self.imageObj = imageObj
-        self.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, False)
-        self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, False)
-        self.setFlag(QtWidgets.QGraphicsItem.ItemStacksBehindParent, False)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, False)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, False)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, False)
         self.setParentItem(parent)
         self.hover = False
 
@@ -815,7 +815,7 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         behind the zone or in front of it. Default is for the item to
         be in front of the zone.
         """
-        self.setFlag(QtWidgets.QGraphicsItem.ItemStacksBehindParent, behind)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, behind)
 
     def setZoneID(self, id):
         """
@@ -873,9 +873,9 @@ class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         super().__init__(parent)
         self.parent = parent
         self.imageObj = imageObj
-        self.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, False)
-        self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, False)
-        self.setFlag(QtWidgets.QGraphicsItem.ItemStacksBehindParent, False)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, False)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, False)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, False)
         self.setParentItem(parent)
         self.hover = False
 
@@ -885,7 +885,7 @@ class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         behind the location or in front of it. Default is for the item to
         be in front of the location.
         """
-        self.setFlag(QtWidgets.QGraphicsItem.ItemStacksBehindParent, behind)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, behind)
 
     def alignToLocation(self):
         """

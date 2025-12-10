@@ -1,6 +1,6 @@
 import base64
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtWidgets, QtGui, QtCore
 
 import globals_
 from tiles import RenderObject, TilesetTile
@@ -20,7 +20,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         """
         QtWidgets.QWidget.__init__(self)
         self.setSizePolicy(
-            QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding))
+            QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.MinimumExpanding))
 
         self.bgbrush = QtGui.QBrush(globals_.theme.color('bg'))
         self.objbrush = QtGui.QBrush(globals_.theme.color('overview_object'))
@@ -52,7 +52,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         """
         QtWidgets.QWidget.mouseMoveEvent(self, event)
 
-        if event.buttons() == QtCore.Qt.LeftButton:
+        if event.buttons() == QtCore.Qt.MouseButton.LeftButton:
             self.moveIt.emit(event.pos().x() * self.posmult, event.pos().y() * self.posmult)
 
     def mousePressEvent(self, event):
@@ -61,7 +61,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         """
         QtWidgets.QWidget.mousePressEvent(self, event)
 
-        if event.button() == QtCore.Qt.LeftButton:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
             self.moveIt.emit(event.pos().x() * self.posmult, event.pos().y() * self.posmult)
 
     def paintEvent(self, event):
@@ -74,7 +74,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
             return
 
         painter = QtGui.QPainter(self)
-        painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing, True)
 
         self.CalcSize()
         self.Rescale()
@@ -180,10 +180,10 @@ class ObjectPickerWidget(QtWidgets.QListView):
         Initializes the widget
         """
         QtWidgets.QListView.__init__(self)
-        self.setFlow(QtWidgets.QListView.LeftToRight)
-        self.setLayoutMode(QtWidgets.QListView.SinglePass)
-        self.setMovement(QtWidgets.QListView.Static)
-        self.setResizeMode(QtWidgets.QListView.Adjust)
+        self.setFlow(QtWidgets.QListView.Flow.LeftToRight)
+        self.setLayoutMode(QtWidgets.QListView.LayoutMode.SinglePass)
+        self.setMovement(QtWidgets.QListView.Movement.Static)
+        self.setResizeMode(QtWidgets.QListView.ResizeMode.Adjust)
         self.setWrapping(True)
 
         self.models = [
@@ -224,7 +224,7 @@ class ObjectPickerWidget(QtWidgets.QListView):
         """
         Throws a signal when the selected object is used as a replacement
         """
-        if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.AltModifier:
+        if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.AltModifier:
             self.ObjReplace.emit(index.row())
 
     ObjChanged = QtCore.pyqtSignal(int)
@@ -245,10 +245,10 @@ class ObjectPickerWidget(QtWidgets.QListView):
             """
             Paints an object
             """
-            if option.state & QtWidgets.QStyle.State_Selected:
+            if option.state & QtWidgets.QStyle.StateFlag.State_Selected:
                 painter.fillRect(option.rect, option.palette.highlight())
 
-            p = index.model().data(index, QtCore.Qt.DecorationRole)
+            p = index.model().data(index, QtCore.Qt.ItemDataRole.DecorationRole)
             painter.drawPixmap(option.rect.x() + 2, option.rect.y() + 2, p)
             # painter.drawText(option.rect, str(index.row()))
 
@@ -256,7 +256,7 @@ class ObjectPickerWidget(QtWidgets.QListView):
             """
             Returns the size for the object
             """
-            p = index.model().data(index, QtCore.Qt.UserRole)
+            p = index.model().data(index, QtCore.Qt.ItemDataRole.UserRole)
             return p
             # return QtCore.QSize(76,76)
 
@@ -284,7 +284,7 @@ class ObjectPickerWidget(QtWidgets.QListView):
             """
             return len(self.items)
 
-        def data(self, index, role=QtCore.Qt.DisplayRole):
+        def data(self, index, role=QtCore.Qt.ItemDataRole.DisplayRole):
             """
             Get what we have for a specific row
             """
@@ -293,16 +293,16 @@ class ObjectPickerWidget(QtWidgets.QListView):
             if n < 0: return None
             if n >= len(self.items): return None
 
-            if role == QtCore.Qt.DecorationRole:
+            if role == QtCore.Qt.ItemDataRole.DecorationRole:
                 return self.ritems[n]
 
-            if role == QtCore.Qt.BackgroundRole:
-                return QtWidgets.qApp.palette().base()
+            if role == QtCore.Qt.ItemDataRole.BackgroundRole:
+                return QtWidgets.QApplication.instance().palette().base()
 
-            if role == QtCore.Qt.UserRole:
+            if role == QtCore.Qt.ItemDataRole.UserRole:
                 return self.itemsize[n]
 
-            if role == QtCore.Qt.ToolTipRole:
+            if role == QtCore.Qt.ItemDataRole.ToolTipRole:
                 return self.tooltips[n]
 
             return None
@@ -327,7 +327,7 @@ class ObjectPickerWidget(QtWidgets.QListView):
                 self.items.append(obj)
 
                 pm = QtGui.QPixmap(defs[i].width * 24, defs[i].height * 24)
-                pm.fill(QtCore.Qt.transparent)
+                pm.fill(QtCore.Qt.GlobalColor.transparent)
                 p = QtGui.QPainter()
                 p.begin(pm)
                 y = 0
@@ -377,10 +377,10 @@ class StampChooserWidget(QtWidgets.QListView):
         """
         QtWidgets.QListView.__init__(self)
 
-        self.setFlow(QtWidgets.QListView.LeftToRight)
-        self.setLayoutMode(QtWidgets.QListView.SinglePass)
-        self.setMovement(QtWidgets.QListView.Static)
-        self.setResizeMode(QtWidgets.QListView.Adjust)
+        self.setFlow(QtWidgets.QListView.Flow.LeftToRight)
+        self.setLayoutMode(QtWidgets.QListView.LayoutMode.SinglePass)
+        self.setMovement(QtWidgets.QListView.Movement.Static)
+        self.setResizeMode(QtWidgets.QListView.ResizeMode.Adjust)
         self.setWrapping(True)
 
         self.model = StampListModel()
@@ -409,7 +409,7 @@ class StampChooserWidget(QtWidgets.QListView):
             """
             Sets the data for the stamp name editor from the data at index
             """
-            editor.setText(index.model().data(index, QtCore.Qt.UserRole + 1))
+            editor.setText(index.model().data(index, QtCore.Qt.ItemDataRole.UserRole + 1))
 
         def setModelData(self, editor, model, index):
             """
@@ -422,16 +422,16 @@ class StampChooserWidget(QtWidgets.QListView):
             Paints a stamp
             """
 
-            if option.state & QtWidgets.QStyle.State_Selected:
+            if option.state & QtWidgets.QStyle.StateFlag.State_Selected:
                 painter.fillRect(option.rect, option.palette.highlight())
 
-            painter.drawPixmap(option.rect.x() + 2, option.rect.y() + 2, index.model().data(index, QtCore.Qt.DecorationRole))
+            painter.drawPixmap(option.rect.x() + 2, option.rect.y() + 2, index.model().data(index, QtCore.Qt.ItemDataRole.DecorationRole))
 
         def sizeHint(self, option, index):
             """
             Returns the size for the stamp
             """
-            return index.model().data(index, QtCore.Qt.DecorationRole).size() + QtCore.QSize(4, 4)
+            return index.model().data(index, QtCore.Qt.ItemDataRole.DecorationRole).size() + QtCore.QSize(4, 4)
 
     def addStamp(self, stamp):
         """
@@ -481,7 +481,7 @@ class StampListModel(QtCore.QAbstractListModel):
         """
         return len(self.items)
 
-    def data(self, index, role=QtCore.Qt.DisplayRole):
+    def data(self, index, role=QtCore.Qt.ItemDataRole.DisplayRole):
         """
         Get what we have for a specific row
         """
@@ -490,22 +490,22 @@ class StampListModel(QtCore.QAbstractListModel):
         if n < 0: return None
         if n >= len(self.items): return None
 
-        if role == QtCore.Qt.DecorationRole:
+        if role == QtCore.Qt.ItemDataRole.DecorationRole:
             return self.items[n].Icon
 
-        elif role == QtCore.Qt.BackgroundRole:
-            return QtWidgets.qApp.palette().base()
+        elif role == QtCore.Qt.ItemDataRole.BackgroundRole:
+            return QtWidgets.QApplication.instance().palette().base()
 
-        elif role == QtCore.Qt.UserRole:
+        elif role == QtCore.Qt.ItemDataRole.UserRole:
             return self.items[n].Name
 
-        elif role == QtCore.Qt.StatusTipRole:
+        elif role == QtCore.Qt.ItemDataRole.StatusTipRole:
             return self.items[n].Name
 
         else:
             return None
 
-    def setData(self, index, value, role=QtCore.Qt.DisplayRole):
+    def setData(self, index, value, role=QtCore.Qt.ItemDataRole.DisplayRole):
         """
         Set data for a specific row
         """
@@ -514,7 +514,7 @@ class StampListModel(QtCore.QAbstractListModel):
         if n < 0: return None
         if n >= len(self.items): return None
 
-        if role == QtCore.Qt.UserRole:
+        if role == QtCore.Qt.ItemDataRole.UserRole:
             self.items[n].Name = value
 
     def addStamp(self, stamp):
@@ -617,9 +617,9 @@ class Stamp:
 
         # Create the pixmap, and a painter
         pix = QtGui.QPixmap(pixmapSize[0], pixmapSize[1])
-        pix.fill(QtCore.Qt.transparent)
+        pix.fill(QtCore.Qt.GlobalColor.transparent)
         painter = QtGui.QPainter(pix)
-        painter.setRenderHint(painter.Antialiasing)
+        painter.setRenderHint(painter.RenderHint.Antialiasing)
 
         # Paint all objects
         objw, objh = int(pixmapSize[0] // 24) + 1, int(pixmapSize[1] // 24) + 1
@@ -708,7 +708,7 @@ class Stamp:
 
         # Make a pixmap and painter
         pix = QtGui.QPixmap(int(totalWidth), int(totalHeight))
-        pix.fill(QtCore.Qt.transparent)
+        pix.fill(QtCore.Qt.GlobalColor.transparent)
         painter = QtGui.QPainter(pix)
 
         # Draw the preview
@@ -718,7 +718,7 @@ class Stamp:
         # Draw the text
         textRect = QtCore.QRectF(0, prevIcon.height() + 2, totalWidth, textSize.height())
         painter.setFont(QtGui.QFont())
-        painter.drawText(textRect, QtCore.Qt.AlignTop | QtCore.Qt.TextWordWrap, self.Name)
+        painter.drawText(textRect, QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.TextFlag.TextWordWrap, self.Name)
 
         # Return the pixmap
         return pix
@@ -729,7 +729,7 @@ class Stamp:
         Calculates the size of text. Crops to 96 pixels wide.
         """
         fontMetrics = QtGui.QFontMetrics(QtGui.QFont())
-        fontRect = fontMetrics.boundingRect(QtCore.QRect(0, 0, 96, 48), QtCore.Qt.TextWordWrap, text)
+        fontRect = fontMetrics.boundingRect(QtCore.QRect(0, 0, 96, 48), QtCore.Qt.TextFlag.TextWordWrap, text)
         w, h = fontRect.width(), fontRect.height()
         return QtCore.QSizeF(min(w, 96), h)
 
@@ -773,7 +773,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
                         # Don't change the name of the "no sprites found" marker
                         continue
 
-                    id_ = snode.data(0, QtCore.Qt.UserRole)
+                    id_ = snode.data(0, QtCore.Qt.ItemDataRole.UserRole)
 
                     if 0 <= id_ < globals_.NumSprites:
                         sdef = globals_.Sprites[id_]
@@ -798,7 +798,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
             for catname, category in view:
                 cnode = QtWidgets.QTreeWidgetItem()
                 cnode.setText(0, catname)
-                cnode.setData(0, QtCore.Qt.UserRole, -1)
+                cnode.setData(0, QtCore.Qt.ItemDataRole.UserRole, -1)
 
                 isSearch = (catname == globals_.trans.string('Sprites', 16))
                 if isSearch:
@@ -809,7 +809,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
                     snode = QtWidgets.QTreeWidgetItem()
                     if id_ == 9999:
                         snode.setText(0, globals_.trans.string('Sprites', 17))
-                        snode.setData(0, QtCore.Qt.UserRole, -2)
+                        snode.setData(0, QtCore.Qt.ItemDataRole.UserRole, -2)
                         self.NoSpritesFound = snode
                     else:
                         if 0 <= id_ < globals_.NumSprites:
@@ -823,7 +823,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
                             sname = sdef.name
 
                         snode.setText(0, globals_.trans.string('Sprites', 18, '[id]', id_, '[name]', sname))
-                        snode.setData(0, QtCore.Qt.UserRole, id_)
+                        snode.setData(0, QtCore.Qt.ItemDataRole.UserRole, id_)
 
                     if isSearch:
                         SearchableItems.append(snode)
@@ -856,7 +856,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         Throws a signal when the selected object changed
         """
         if current is None: return
-        id_ = current.data(0, QtCore.Qt.UserRole)
+        id_ = current.data(0, QtCore.Qt.ItemDataRole.UserRole)
         if id_ != -1:
             self.SpriteChanged.emit(id_)
 
@@ -866,7 +866,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         """
         check = self.SearchResultsCategory
 
-        rawresults = self.findItems(searchfor, QtCore.Qt.MatchContains | QtCore.Qt.MatchRecursive)
+        rawresults = self.findItems(searchfor, QtCore.Qt.MatchFlag.MatchContains | QtCore.Qt.MatchFlag.MatchRecursive)
         results = list(filter((lambda x: x.parent() == check), rawresults))
 
         for x in self.ShownSearchResults: x.setHidden(True)
@@ -880,8 +880,8 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         """
         Throws a signal when the selected sprite is used as a replacement
         """
-        if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.AltModifier:
-            id_ = item.data(0, QtCore.Qt.UserRole)
+        if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.AltModifier:
+            id_ = item.data(0, QtCore.Qt.ItemDataRole.UserRole)
             if id_ != -1:
                 self.SpriteReplace.emit(id_)
 
@@ -922,7 +922,7 @@ class SpriteList(QtWidgets.QWidget):
         headers = [globals_.trans.string('Sprites', 21), globals_.trans.string('Sprites', 22)] + list(globals_.trans.stringList('Sprites', 23)[1:])
         self.table.setHorizontalHeaderLabels(headers)
         self.table.verticalHeader().setVisible(False) # hide row numbers
-        self.table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
         self.table.setSortingEnabled(True)
         self.table.setMouseTracking(True) # for 'entered' signal
         self.table.itemDoubleClicked.connect(self.moveToSprite)
@@ -962,7 +962,7 @@ class SpriteList(QtWidgets.QWidget):
             self.SearchResults = set(range(self.table.rowCount()))
             return
 
-        results = self.table.findItems(text, QtCore.Qt.MatchContains | QtCore.Qt.MatchRecursive)
+        results = self.table.findItems(text, QtCore.Qt.MatchFlag.MatchContains | QtCore.Qt.MatchFlag.MatchRecursive)
         rows = set(item.row() for item in results if item is not None)
 
         for row in range(self.table.rowCount()):
@@ -995,7 +995,7 @@ class SpriteList(QtWidgets.QWidget):
 
         # Get the sprite defintion and the id type that is filtered by.
         filtertype = self.idtypes[filteridx - 1]
-        sprite = self.table.item(row, 0).data(QtCore.Qt.UserRole)
+        sprite = self.table.item(row, 0).data(QtCore.Qt.ItemDataRole.UserRole)
 
         if 0 <= sprite.type < globals_.NumSprites:
             sdef = globals_.Sprites[sprite.type]
@@ -1030,7 +1030,7 @@ class SpriteList(QtWidgets.QWidget):
         """
         for i in range(self.table.rowCount()):
             id_item = self.table.item(i, 0)
-            if id_item.data(QtCore.Qt.UserRole) == sprite:
+            if id_item.data(QtCore.Qt.ItemDataRole.UserRole) == sprite:
                 return i
 
         return -1
@@ -1067,15 +1067,15 @@ class SpriteList(QtWidgets.QWidget):
 
         # Add the sprite id
         id_item = QtWidgets.QTableWidgetItem()
-        id_item.setData(QtCore.Qt.DisplayRole, sprite.type)
-        id_item.setData(QtCore.Qt.UserRole, sprite)
-        id_item.setFlags(id_item.flags() & ~QtCore.Qt.ItemIsEditable)
+        id_item.setData(QtCore.Qt.ItemDataRole.DisplayRole, sprite.type)
+        id_item.setData(QtCore.Qt.ItemDataRole.UserRole, sprite)
+        id_item.setFlags(id_item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
         self.table.setItem(row, 0, id_item)
 
         # Also add the sprite name
         name_item = QtWidgets.QTableWidgetItem(sprite.name)
-        name_item.setData(QtCore.Qt.UserRole, sprite)
-        name_item.setFlags(name_item.flags() & ~QtCore.Qt.ItemIsEditable)
+        name_item.setData(QtCore.Qt.ItemDataRole.UserRole, sprite)
+        name_item.setFlags(name_item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
         self.table.setItem(row, 1, name_item)
 
         if not self.is_batch_add:
@@ -1085,7 +1085,7 @@ class SpriteList(QtWidgets.QWidget):
 
         # Add an id for every idtype. These items should not be editable or
         # selectable.
-        mask = ~(QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable)
+        mask = ~(QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsSelectable)
         ids = self.getIDsFor(sprite)
 
         for col, idtype in enumerate(self.idtypes):
@@ -1161,7 +1161,7 @@ class SpriteList(QtWidgets.QWidget):
         """
         Creates a tooltip for the item
         """
-        sprite = item.data(QtCore.Qt.UserRole)
+        sprite = item.data(QtCore.Qt.ItemDataRole.UserRole)
 
         if sprite is None:
             return
@@ -1183,7 +1183,7 @@ class SpriteList(QtWidgets.QWidget):
         """
         Moves the view to the sprite and selects it.
         """
-        sprite = item.data(QtCore.Qt.UserRole)
+        sprite = item.data(QtCore.Qt.ItemDataRole.UserRole)
 
         if sprite is None:
             return

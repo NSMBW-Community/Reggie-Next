@@ -32,7 +32,7 @@
 ################################################################
 
 # Imports
-from PyQt5 import QtCore, QtGui
+from PyQt6 import QtCore, QtGui
 Qt = QtCore.Qt
 
 import spritelib as SLib
@@ -99,14 +99,14 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
             "getTileFromType method."
         )
 
-    def paint(self, painter):
+    def paint(self, painter: QtGui.QPainter):
         if self.image is None:
             return
 
         painter.save()
 
         painter.setOpacity(self.alpha)
-        painter.setRenderHint(painter.SmoothPixmapTransform)
+        painter.setRenderHint(painter.RenderHint.SmoothPixmapTransform)
 
         if self.pattern == 0 and self.shouldTile:
             painter.drawTiledPixmap(QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5), self.image)
@@ -165,14 +165,13 @@ class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153
             self.image = ImageCache[self.switchType + 'SwitchU' + style]
 
             if self.switchType != 'E':
-                self.xOffset -= 1
                 self.yOffset -= 1
         else:
             self.image = ImageCache[self.switchType + 'Switch' + style]
             if self.switchType == 'E':
                 self.yOffset -= 3
             else:
-                self.yOffset -= 2
+                self.yOffset -= 3
 
         super().dataChanged()
 
@@ -221,8 +220,8 @@ class SpriteImage_LineBlock(SLib.SpriteImage):  # 219
         # Create two images, one for each line of blocks.
         img_a = QtGui.QPixmap(width_a * 24, 24)
         img_b = QtGui.QPixmap(width_b * 24, 24)
-        img_a.fill(Qt.transparent)
-        img_b.fill(Qt.transparent)
+        img_a.fill(Qt.GlobalColor.transparent)
+        img_b.fill(Qt.GlobalColor.transparent)
 
         painter_a = QtGui.QPainter(img_a)
         painter_b = QtGui.QPainter(img_b)

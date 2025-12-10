@@ -66,7 +66,7 @@ class ReggieTranslation:
                 3: 'Interested? Join the [a href="https://discord.gg/XnQJnwa"]Discord server[/a] to get in touch with the current developer(s).[br]',
             },
             'ErrorDlg': {
-                0: 'An unhandled exception occurred. Please report the problem in the Horizon Discord server.[br]A log will be written to "[log]".[br][br]Error information:[br]',
+                0: 'An unhandled exception occurred. Please report the problem in the Horizon Discord server.\nA log will be written to \"[log]\".\n\nError information:\n',
             },
             'AreaChoiceDlg': {
                 0: 'Choose an Area',
@@ -527,7 +527,7 @@ class ReggieTranslation:
                 101: None,  # REMOVED: 'Show or hide the Island Generator window',
                 102: None,  # REMOVED: 'Stamp Pad'
                 103: None,  # REMOVED: 'Show or hide the Stamp Pad window'
-                104: 'Swap Objects\' Tileset...',
+                104: 'Swap Objects\' Tilesets...',
                 105: 'Swaps the tileset of objects using a certain tileset',
                 106: 'Swap Objects...',
                 107: 'Swaps the type of objects of a certain type',
@@ -731,6 +731,9 @@ class ReggieTranslation:
                 23: 'Sprite [id]: suggested in zone',
                 24: None,  # REMOVED: 'Show raw data',
                 25: 'This sprite has the following dependencies:',
+                26: 'Add Sprite',
+                27: 'Resize',
+                28: 'NO TITLE GIVEN!',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
@@ -1001,6 +1004,24 @@ class ReggieTranslation:
                 5: 'Triggering Event ID:',
                 6: '[b]Triggering Event ID:[/b][br]Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile\'s event ID will be automatically deactivated (so the game doesn\'t instantly switch back to it).',
                 7: 'Camera Profile on Event [id]',
+            },
+            'ResizeChoiceDlg': {
+                0: 'Let\'s resize your sprite. In order to do this, choose one of the two slots, based on the below information. Note that some choices can overlap with other settings, leading to undesired effects.',
+                1: 'Click the button below to create a Special Event sprite with the selected slot.',
+                2: 'Please note that there already is a resizer sprite that affects this sprite. All changes made here will apply to the entire zone/area so be careful.',
+                3: 'Slots',
+                4: 'Create',
+                5: 'Edit',
+                6: 'Nothing.',
+                7: 'A',
+                8: 'B',
+                9: 'Global',
+                10: 'None',
+                11: 'Sprite Resizer',
+            },
+            'SpriteUpgradeDlg': {
+                0: 'Sprite Upgrader',
+                1: 'Reggie Next has detected that the game patch\'s sprites.py file is outdated, and must be upgraded to PyQt6 in order to work correctly.[br][br]Would you like to upgrade?[br]A copy of the old file will remain in the game patch folder.',
             }
         }
 

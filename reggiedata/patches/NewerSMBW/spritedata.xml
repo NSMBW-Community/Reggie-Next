@@ -1974,14 +1974,6 @@
     <dualbox nybble="5.4" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
   </sprite> <!-- #279: World-3 Boss: Balboa Wrench -->
 
-  <sprite id="280" name="Giant Ice Block" notes="A large 3x3 ice block that can be broken with an explosion.">
-    <list nybble="12.3-12.4" title="Frozen Inside" comment="This determines what type of object is frozen inside the block." comment2="Bob-Omb ice blocks will explode to other nearby ice blocks.">
-      <entry value="0">Nothing</entry>
-      <entry value="1">Bob-Omb</entry>
-      <entry value="2">Spiked Ball</entry>
-    </list>
-  </sprite> <!-- #280: Giant Ice Block -->
-
   <sprite id="282" name="Angry Sun and Moon" notes="A recreation of the Angry Sun enemy from Super Mario Bros. 3 that will chase the player indefinitely unless the Triggering Event is activated.">
     <dualbox nybble="12.4" title1="Angry Sun" title2="Angry Moon" comment="This determines which model the enemy will use."/>
     <value nybble="7.2-8.4" title="Die on Triggering Event ID" comment="Disappears, when this Event ID is activated." idtype="Triggering Event"/>
@@ -2541,12 +2533,12 @@
 
   <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in the retail game's singleplayer mode where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
     <dependency notes="&lt;font color=&quot;red&quot;&gt;Usable in retail NSMBW only.&lt;/font&gt; All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
-    <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small (1 tile large)."/>
+    <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small."/>
   </sprite> <!-- #422: Toad Needs Help - ? Block -->
 
   <sprite id="423" name="Toad Needs Help - Brick Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
-    <dependency notes="&lt;font color=&quot;red&quot;&gt;Usable in classic NSMBW only.&lt;/font&gt; All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
-    <checkbox nybble="12.4" title="Unknown Flag 12 (1)" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
+    <dependency notes="&lt;font color=&quot;red&quot;&gt;Usable in retail NSMBW only.&lt;/font&gt; All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
+    <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small."/>
   </sprite> <!-- #423: Toad Needs Help - Brick Block -->
 
   <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the Retail Bowser battle.">

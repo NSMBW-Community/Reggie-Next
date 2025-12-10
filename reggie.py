@@ -46,16 +46,16 @@ import time
 import traceback
 import struct
 
-# PyQt5: import, and error msg if not installed
+# PyQt6: import, and error msg if not installed
 try:
-    from PyQt5 import QtCore, QtGui, QtWidgets
+    from PyQt6 import QtCore, QtGui, QtWidgets
 except (ImportError, NameError):
-    errormsg = 'PyQt5 is not installed for this Python installation. Go online and download it.'
+    errormsg = 'PyQt6 is not installed for this Python installation. Go online and download it.'
     raise Exception(errormsg)
 Qt = QtCore.Qt
 
 version = map(int, QtCore.QT_VERSION_STR.split('.'))
-min_version = "5.11"
+min_version = "6.9"
 pqt_min = map(int, min_version.split('.'))
 for v, c in zip(version, pqt_min):
     if c > v:
@@ -67,10 +67,6 @@ for v, c in zip(version, pqt_min):
     elif c < v:
         # higher version
         break
-
-if not hasattr(QtWidgets.QGraphicsItem, 'ItemSendsGeometryChanges'):
-    # enables itemChange being called on QGraphicsItem
-    QtWidgets.QGraphicsItem.ItemSendsGeometryChanges = QtWidgets.QGraphicsItem.GraphicsItemFlag(0x800)
 
 ################################################################################
 ################################################################################
@@ -136,7 +132,7 @@ def _excepthook(*exc_info):
 
     errorbox = QtWidgets.QMessageBox()
     errorbox.setText(notice + msg)
-    errorbox.exec_()
+    errorbox.exec()
 
     globals_.DirtyOverride = 0
 
@@ -159,9 +155,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
 
         if icon is not None:
-            act = QtWidgets.QAction(icon, text, self)
+            act = QtGui.QAction(icon, text, self)
         else:
-            act = QtWidgets.QAction(text, self)
+            act = QtGui.QAction(text, self)
 
         if shortcut is not None: act.setShortcut(shortcut)
         if statustext is not None: act.setStatusTip(statustext)
@@ -201,7 +197,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # create the level view
         self.scene = LevelScene(0, 0, 1024 * 24, 512 * 24, self)
-        self.scene.setItemIndexMethod(QtWidgets.QGraphicsScene.NoIndex)
+        self.scene.setItemIndexMethod(QtWidgets.QGraphicsScene.ItemIndexMethod.NoIndex)
         self.scene.selectionChanged.connect(self.ChangeSelectionHandler)
 
         self.view = LevelViewWidget(self.scene, self)
@@ -308,13 +304,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.CreateAction(
             'newlevel', self.HandleNewLevel, GetIcon('new'),
             globals_.trans.stringOneLine('MenuItems', 0), globals_.trans.stringOneLine('MenuItems', 1),
-            QtGui.QKeySequence.New,
+            QtGui.QKeySequence.StandardKey.New,
         )
 
         self.CreateAction(
             'openfromname', self.HandleOpenFromName, GetIcon('open'),
             globals_.trans.stringOneLine('MenuItems', 2), globals_.trans.stringOneLine('MenuItems', 3),
-            QtGui.QKeySequence.Open,
+            QtGui.QKeySequence.StandardKey.Open,
         )
 
         self.CreateAction(
@@ -332,13 +328,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.CreateAction(
             'save', self.HandleSave, GetIcon('save'),
             globals_.trans.stringOneLine('MenuItems', 8), globals_.trans.stringOneLine('MenuItems', 9),
-            QtGui.QKeySequence.Save,
+            QtGui.QKeySequence.StandardKey.Save,
         )
 
         self.CreateAction(
             'saveas', self.HandleSaveAs, GetIcon('saveas'),
             globals_.trans.stringOneLine('MenuItems', 10), globals_.trans.stringOneLine('MenuItems', 11),
-            QtGui.QKeySequence.SaveAs,
+            QtGui.QKeySequence.StandardKey.SaveAs,
         )
 
         self.CreateAction(
@@ -387,7 +383,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.CreateAction(
             'selectall', self.SelectAll, GetIcon('selectall'),
             globals_.trans.stringOneLine('MenuItems', 22), globals_.trans.stringOneLine('MenuItems', 23),
-            QtGui.QKeySequence.SelectAll,
+            QtGui.QKeySequence.StandardKey.SelectAll,
         )
 
         self.CreateAction(
@@ -399,31 +395,31 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.CreateAction(
             'undo', self.Undo, GetIcon('undo'),
             globals_.trans.stringOneLine('MenuItems', 124), globals_.trans.stringOneLine('MenuItems', 125),
-            QtGui.QKeySequence.Undo,
+            QtGui.QKeySequence.StandardKey.Undo,
         )
 
         self.CreateAction(
             'redo', self.Redo, GetIcon('redo'),
             globals_.trans.stringOneLine('MenuItems', 126), globals_.trans.stringOneLine('MenuItems', 127),
-            QtGui.QKeySequence.Redo,
+            QtGui.QKeySequence.StandardKey.Redo,
         )
 
         self.CreateAction(
             'cut', self.Cut, GetIcon('cut'),
             globals_.trans.stringOneLine('MenuItems', 26), globals_.trans.stringOneLine('MenuItems', 27),
-            QtGui.QKeySequence.Cut,
+            QtGui.QKeySequence.StandardKey.Cut,
         )
 
         self.CreateAction(
             'copy', self.Copy, GetIcon('copy'),
             globals_.trans.stringOneLine('MenuItems', 28), globals_.trans.stringOneLine('MenuItems', 29),
-            QtGui.QKeySequence.Copy,
+            QtGui.QKeySequence.StandardKey.Copy,
         )
 
         self.CreateAction(
             'paste', self.Paste, GetIcon('paste'),
             globals_.trans.stringOneLine('MenuItems', 30), globals_.trans.stringOneLine('MenuItems', 31),
-            QtGui.QKeySequence.Paste,
+            QtGui.QKeySequence.StandardKey.Paste,
         )
 
         self.CreateAction(
@@ -574,7 +570,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.CreateAction(
             'zoomin', self.HandleZoomIn, GetIcon('zoomin'),
             globals_.trans.stringOneLine('MenuItems', 64), globals_.trans.stringOneLine('MenuItems', 65),
-            QtGui.QKeySequence.ZoomIn,
+            QtGui.QKeySequence.StandardKey.ZoomIn,
         )
 
         self.CreateAction(
@@ -586,7 +582,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.CreateAction(
             'zoomout', self.HandleZoomOut, GetIcon('zoomout'),
             globals_.trans.stringOneLine('MenuItems', 68), globals_.trans.stringOneLine('MenuItems', 69),
-            QtGui.QKeySequence.ZoomOut,
+            QtGui.QKeySequence.StandardKey.ZoomOut,
         )
 
         self.CreateAction(
@@ -795,7 +791,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                           globals_.trans.string('MenuItems', 89), QtGui.QKeySequence('Ctrl+Shift+H'))
         self.CreateAction('tipbox', self.TipBox, GetIcon('tips'), globals_.trans.stringOneLine('MenuItems', 90),
                           globals_.trans.string('MenuItems', 91), QtGui.QKeySequence('Ctrl+Shift+T'))
-        self.CreateAction('aboutqt', QtWidgets.qApp.aboutQt, GetIcon('qt'), globals_.trans.stringOneLine('MenuItems', 92),
+        self.CreateAction('aboutqt', QtWidgets.QApplication.instance().aboutQt, GetIcon('qt'), globals_.trans.stringOneLine('MenuItems', 92),
                           globals_.trans.string('MenuItems', 93), QtGui.QKeySequence('Ctrl+Shift+Q'))
 
         if menu is None:
@@ -935,7 +931,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # level overview
         dock = QtWidgets.QDockWidget(globals_.trans.string('MenuItems', 94), self)
         dock.setFeatures(
-            QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
+            QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable)
         # dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         dock.setObjectName('leveloverview')  # needed for the state to save/restore correctly
 
@@ -944,7 +940,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.levelOverviewDock = dock
         dock.setWidget(self.levelOverview)
 
-        self.addDockWidget(Qt.RightDockWidgetArea, dock)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setVisible(True)
         act = dock.toggleViewAction()
         act.setShortcut(QtGui.QKeySequence('Ctrl+M'))
@@ -955,8 +951,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # create the sprite editor panel
         dock = QtWidgets.QDockWidget(globals_.trans.string('SpriteDataEditor', 0), self)
         dock.setVisible(False)
-        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable)
-        dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable)
+        dock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
         dock.setObjectName('spriteeditor')  # needed for the state to save/restore correctly
         dock.move(100, 100) # offset the dock from the top-left corner
 
@@ -965,14 +961,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setWidget(self.spriteDataEditor)
         self.spriteEditorDock = dock
 
-        self.addDockWidget(Qt.RightDockWidgetArea, dock)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setFloating(True)
 
         # create the entrance editor panel
         dock = QtWidgets.QDockWidget(globals_.trans.string('EntranceDataEditor', 24), self)
         dock.setVisible(False)
-        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable)
-        dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable)
+        dock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
         dock.setObjectName('entranceeditor')  # needed for the state to save/restore correctly
         dock.move(100, 100) # offset the dock from the top-left corner
 
@@ -980,14 +976,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setWidget(self.entranceEditor)
         self.entranceEditorDock = dock
 
-        self.addDockWidget(Qt.RightDockWidgetArea, dock)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setFloating(True)
 
         # create the path node editor panel
         dock = QtWidgets.QDockWidget(globals_.trans.string('PathDataEditor', 10), self)
         dock.setVisible(False)
-        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable)
-        dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable)
+        dock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
         dock.setObjectName('pathnodeeditor')  # needed for the state to save/restore correctly
         dock.move(100, 100) # offset the dock from the top-left corner
 
@@ -995,14 +991,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setWidget(self.pathEditor)
         self.pathEditorDock = dock
 
-        self.addDockWidget(Qt.RightDockWidgetArea, dock)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setFloating(True)
 
         # create the location editor panel
         dock = QtWidgets.QDockWidget(globals_.trans.string('LocationDataEditor', 12), self)
         dock.setVisible(False)
-        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable)
-        dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable)
+        dock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
         dock.setObjectName('locationeditor')  # needed for the state to save/restore correctly
         dock.move(100, 100) # offset the dock from the top-left corner
 
@@ -1010,14 +1006,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setWidget(self.locationEditor)
         self.locationEditorDock = dock
 
-        self.addDockWidget(Qt.RightDockWidgetArea, dock)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setFloating(True)
 
         # create the palette
         dock = QtWidgets.QDockWidget(globals_.trans.string('MenuItems', 96), self)
         dock.setFeatures(
-            QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
-        dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+            QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable)
+        dock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
         dock.setObjectName('palette')  # needed for the state to save/restore correctly
 
         self.creationDock = dock
@@ -1027,7 +1023,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         act.setStatusTip(globals_.trans.string('MenuItems', 97))
         self.vmenu.addAction(act)
 
-        self.addDockWidget(Qt.RightDockWidgetArea, dock)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setVisible(True)
 
         # add tabs to it
@@ -1082,7 +1078,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         lbg.addButton(self.objUseLayer0, 0)
         lbg.addButton(self.objUseLayer1, 1)
         lbg.addButton(self.objUseLayer2, 2)
-        lbg.buttonClicked[int].connect(self.LayerChoiceChanged)
+        lbg.buttonClicked.connect(lambda button: self.LayerChoiceChanged(lbg.id(button)))
         self.LayerButtonGroup = lbg
 
         self.objPicker = ObjectPickerWidget()
@@ -1146,8 +1142,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # default sprite data editor
         ddock = QtWidgets.QDockWidget(globals_.trans.string('Palette', 7), self)
         ddock.setFeatures(
-            QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
-        ddock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+            QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable)
+        ddock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
         ddock.setObjectName('defaultprops')  # needed for the state to save/restore correctly
         ddock.move(100, 100) # offset the dock from the top-left corner
 
@@ -1155,7 +1151,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.defaultDataEditor.setVisible(False)
         ddock.setWidget(self.defaultDataEditor)
 
-        self.addDockWidget(Qt.RightDockWidgetArea, ddock)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, ddock)
         ddock.setVisible(False)
         ddock.setFloating(True)
         self.defaultPropDock = ddock
@@ -1248,11 +1244,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.eventChooser.setHeaderLabels((globals_.trans.string('Palette', 22), globals_.trans.string('Palette', 23)))
         self.eventChooser.itemClicked.connect(self.handleEventTabItemClick)
         self.eventChooserItems = []
-        flags = Qt.ItemIsSelectable | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled
+        flags = Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled
         for id in range(64):
             itm = QtWidgets.QTreeWidgetItem()
             itm.setFlags(flags)
-            itm.setCheckState(0, Qt.Unchecked)
+            itm.setCheckState(0, Qt.CheckState.Unchecked)
             itm.setText(0, globals_.trans.string('Palette', 24, '[id]', str(id + 1)))
             itm.setText(1, '')
             self.eventChooser.addTopLevelItem(itm)
@@ -1281,12 +1277,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.stampRemoveBtn = stampRemoveBtn  # so we can enable/disable it later
 
         menu = QtWidgets.QMenu()
-        menu.addAction(globals_.trans.string('Palette', 31), self.handleStampsOpen, 0)  # Open Set...
-        menu.addAction(globals_.trans.string('Palette', 32), self.handleStampsSave, 0)  # Save Set As...
+        menu.addAction(globals_.trans.string('Palette', 31), self.handleStampsOpen)  # Open Set...
+        menu.addAction(globals_.trans.string('Palette', 32), self.handleStampsSave)  # Save Set As...
         stampToolsBtn = QtWidgets.QToolButton()
         stampToolsBtn.setText(globals_.trans.string('Palette', 30))
         stampToolsBtn.setMenu(menu)
-        stampToolsBtn.setPopupMode(QtWidgets.QToolButton.InstantPopup)
+        stampToolsBtn.setPopupMode(QtWidgets.QToolButton.ToolButtonPopupMode.InstantPopup)
         stampToolsBtn.setSizePolicy(stampAddBtn.sizePolicy())
         stampToolsBtn.setMinimumHeight(stampAddBtn.height() // 20)
 
@@ -1406,16 +1402,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         msg.setText(globals_.trans.string('AutoSaveDlg', 2))
         msg.setInformativeText(globals_.trans.string('AutoSaveDlg', 3))
         msg.setStandardButtons(
-            QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard | QtWidgets.QMessageBox.Cancel)
-        msg.setDefaultButton(QtWidgets.QMessageBox.Save)
-        ret = msg.exec_()
+            QtWidgets.QMessageBox.StandardButton.Save | QtWidgets.QMessageBox.StandardButton.Discard | QtWidgets.QMessageBox.StandardButton.Cancel)
+        msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Save)
+        ret = msg.exec()
 
-        if ret == QtWidgets.QMessageBox.Save:
+        if ret == QtWidgets.QMessageBox.StandardButton.Save:
             # If the save failed, the file is still dirty, so we need to negate
             # the return value.
             return not self.HandleSave()
 
-        elif ret == QtWidgets.QMessageBox.Cancel:
+        elif ret == QtWidgets.QMessageBox.StandardButton.Cancel:
             return True
 
         return False
@@ -1425,8 +1421,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Configures the Events tab from the data in globals_.Area.defEvents
         """
         defEvents = globals_.Area.defEvents
-        checked = Qt.Checked
-        unchecked = Qt.Unchecked
+        checked = Qt.CheckState.Checked
+        unchecked = Qt.CheckState.Unchecked
 
         data = globals_.Area.Metadata.binData('EventNotes_A%d' % globals_.Area.areanum)
         eventTexts = {}
@@ -1458,11 +1454,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         selIdx = self.eventChooserItems.index(item)
         isOn = (globals_.Area.defEvents & 1 << selIdx) == 1 << selIdx
-        if item.checkState(0) == Qt.Checked and not isOn:
+        if item.checkState(0) == Qt.CheckState.Checked and not isOn:
             # Turn a bit on
             globals_.Area.defEvents |= 1 << selIdx
             SetDirty()
-        elif item.checkState(0) == Qt.Unchecked and isOn:
+        elif item.checkState(0) == Qt.CheckState.Unchecked and isOn:
             # Turn a bit off (mask out 1 bit)
             globals_.Area.defEvents &= ~(1 << selIdx)
             SetDirty()
@@ -1604,7 +1600,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Shows the about box
         """
-        AboutDialog().exec_()
+        AboutDialog().exec()
 
     def HandleInfo(self):
         """
@@ -1612,7 +1608,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         if globals_.Area.areanum == 1:
             dlg = MetaInfoDialog()
-            if dlg.exec_() == QtWidgets.QDialog.Accepted:
+            if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
                 globals_.Area.Metadata.setStrData('Title', dlg.levelName.text())
                 globals_.Area.Metadata.setStrData('Author', dlg.Author.text())
                 globals_.Area.Metadata.setStrData('Group', dlg.Group.text())
@@ -1623,7 +1619,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         else:
             dlg = QtWidgets.QMessageBox()
             dlg.setText(globals_.trans.string('InfoDlg', 14))
-            dlg.exec_()
+            dlg.exec()
 
     def HelpBox(self):
         """
@@ -1790,8 +1786,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if len(clip) > 300 + 2:
             result = QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('MainWindow', 1),
-                                                   QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
-            if result == QtWidgets.QMessageBox.No:
+                                                   QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
+            if result == QtWidgets.QMessageBox.StandardButton.No:
                 self.SelectionUpdateFlag = False
                 return added
 
@@ -1930,7 +1926,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not items: return
 
         dlg = ObjectShiftDialog()
-        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
         xoffset = dlg.XOffset.value()
@@ -1953,10 +1949,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 # nearest multiple of 16, because objects can only be placed on
                 # the grid.
                 result = QtWidgets.QMessageBox.information(None, globals_.trans.string('ShftItmDlg', 5),
-                                                            globals_.trans.string('ShftItmDlg', 6), QtWidgets.QMessageBox.Yes,
-                                                            QtWidgets.QMessageBox.No)
+                                                            globals_.trans.string('ShftItmDlg', 6), QtWidgets.QMessageBox.StandardButton.Yes,
+                                                            QtWidgets.QMessageBox.StandardButton.No)
 
-                if result == QtWidgets.QMessageBox.No:
+                if result == QtWidgets.QMessageBox.StandardButton.No:
                     return
 
                 # Round the offset to the nearest multiple of 16
@@ -1980,7 +1976,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Swaps objects' tilesets
         """
         dlg = ObjectTilesetSwapDialog()
-        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
         from_tileset = dlg.FromTS.value() - 1
@@ -2003,7 +1999,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Swaps objects' types
         """
-        ObjectTypeSwapDialog().exec_()
+        ObjectTypeSwapDialog().exec()
 
     def MergeLocations(self):
         """
@@ -2295,7 +2291,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # choose one
         dlg = AreaChoiceDialog(areacount)
-        if dlg.exec_() == QtWidgets.QDialog.Rejected:
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Rejected:
             return
 
         area = dlg.areaCombo.currentIndex() + 1
@@ -2338,9 +2334,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Deletes the current area
         """
         result = QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('DeleteArea', 0),
-                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                                               QtWidgets.QMessageBox.No)
-        if result == QtWidgets.QMessageBox.No: return
+                                               QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+                                               QtWidgets.QMessageBox.StandardButton.No)
+        if result == QtWidgets.QMessageBox.StandardButton.No: return
 
         # Save the current area in case something goes wrong.
         if not self.HandleSave(): return
@@ -2418,11 +2414,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         # Show the dialog
         dlg = PreferencesDialog()
-        if dlg.exec_() == QtWidgets.QDialog.Rejected:
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Rejected:
             return
 
         # Get the translation
-        name = str(dlg.generalTab.Trans.itemData(dlg.generalTab.Trans.currentIndex(), Qt.UserRole))
+        name = str(dlg.generalTab.Trans.itemData(dlg.generalTab.Trans.currentIndex(), Qt.ItemDataRole.UserRole))
         setSetting('Translation', name)
 
         # Get the Zone Entrance Indicators setting
@@ -2489,7 +2485,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         LoadLevelNames()
         dlg = ChooseLevelNameDialog()
-        if dlg.exec_() == QtWidgets.QDialog.Accepted:
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             self.LoadLevel(dlg.currentlevel, False, 1)
 
     def HandleOpenFromFile(self):
@@ -2828,8 +2824,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if globals_.Area is None:
             return
 
-        flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
         unfrozen = not checked
 
         for layer in globals_.Area.layers:
@@ -2847,8 +2843,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if globals_.Area is None:
             return
 
-        flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
         unfrozen = not checked
 
         for spr in globals_.Area.sprites:
@@ -2865,8 +2861,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if globals_.Area is None:
             return
 
-        flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
         unfrozen = not checked
 
         for ent in globals_.Area.entrances:
@@ -2883,8 +2879,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if globals_.Area is None:
             return
 
-        flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
         unfrozen = not checked
 
         for loc in globals_.Area.locations:
@@ -2914,8 +2910,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if globals_.Area is None:
             return
 
-        flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
         unfrozen = not checked
 
         for com in globals_.Area.comments:
@@ -3085,12 +3081,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
             else:
                 QtWidgets.QMessageBox.warning(self, 'Reggie!',
                                               globals_.trans.string('Err_CantFindLevel', 0, '[name]', checkname),
-                                              QtWidgets.QMessageBox.Ok)
+                                              QtWidgets.QMessageBox.StandardButton.Ok)
                 return False
 
             if not IsNSMBLevel(checkname):
                 QtWidgets.QMessageBox.warning(self, 'Reggie!', globals_.trans.string('Err_InvalidLevel', 0),
-                                              QtWidgets.QMessageBox.Ok)
+                                              QtWidgets.QMessageBox.StandardButton.Ok)
                 return False
 
             name = checkname
@@ -3160,7 +3156,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Clear out all level-thing lists
         for thingList in (self.spriteList, self.entranceList, self.locationList, self.pathList, self.commentList):
             thingList.clear()
-            thingList.selectionModel().setCurrentIndex(QtCore.QModelIndex(), QtCore.QItemSelectionModel.Clear)
+            thingList.selectionModel().setCurrentIndex(QtCore.QModelIndex(), QtCore.QItemSelectionModel.SelectionFlag.Clear)
 
         # Reset these here, because if they are set after
         # creating the objects, they use the old values.
@@ -3651,7 +3647,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.CurrentLayer = nl
 
         # should we replace?
-        if QtWidgets.QApplication.keyboardModifiers() == Qt.AltModifier:
+        if QtWidgets.QApplication.keyboardModifiers() == Qt.KeyboardModifier.AltModifier:
             self.ChangeSelectedObjectsLayer(nl)
 
     def ChangeSelectedObjectsLayer(self, new_layer_id):
@@ -3907,10 +3903,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle a comment being selected
         """
-        comment = item.reference
-        comment.ensureVisible(xMargin=192, yMargin=192)
-        self.scene.clearSelection()
-        comment.setSelected(True)
+        for comment in globals_.Area.comments:
+            if comment.listitem == item:
+                comment.ensureVisible(xMargin=192, yMargin=192)
+                self.scene.clearSelection()
+                comment.setSelected(True)
+                break
 
     def HandleCommentToolTipAboutToShow(self, item):
         """
@@ -4010,7 +4008,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handles key press events for the main window if needed
         """
-        if event.key() == Qt.Key_Delete or event.key() == Qt.Key_Backspace:
+        if event.key() == Qt.Key.Key_Delete or event.key() == Qt.Key.Key_Backspace:
             sel = self.scene.selectedItems()
 
             if sel:
@@ -4038,7 +4036,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Pops up the options for Area Dialogue
         """
         dlg = AreaOptionsDialog()
-        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
         SetDirty()
@@ -4102,7 +4100,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         LoadZoneThemes()
 
         dlg = ZonesDialog()
-        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             self.levelOverview.update()
             return
 
@@ -4179,7 +4177,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Pops up the Background settings Dialog
         """
         dlg = BGDialog()
-        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
         SetDirty()
@@ -4213,7 +4211,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
 
         dlg = ScreenCapChoiceDialog()
-        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
         screenshot_type = dlg.zoneCombo.currentIndex()
@@ -4231,7 +4229,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if screenshot_type == 0:  # Current view
             screenshot_rect = QtCore.QRect(QtCore.QPoint(), self.view.size())
             renderer = self.view
-            ss_img = QtGui.QImage(screenshot_rect.size(), QtGui.QImage.Format_ARGB32)
+            ss_img = QtGui.QImage(screenshot_rect.size(), QtGui.QImage.Format.Format_ARGB32)
 
         else:
             if screenshot_type == 1:  # All zones together
@@ -4251,16 +4249,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
             screenshot_rect &= QtCore.QRectF(0, 0, 1024 * 24, 512 * 24)
 
             renderer = self.scene
-            ss_img = QtGui.QImage(screenshot_rect.size().toSize(), QtGui.QImage.Format_ARGB32)
+            ss_img = QtGui.QImage(screenshot_rect.size().toSize(), QtGui.QImage.Format.Format_ARGB32)
 
-        ss_img.fill(Qt.transparent)
+        ss_img.fill(Qt.GlobalColor.transparent)
         ss_painter = QtGui.QPainter(ss_img)
 
         if hide_background:
             # Remove the background
             brush = self.scene.backgroundBrush()
             style = brush.style()
-            brush.setStyle(Qt.NoBrush)
+            brush.setStyle(Qt.BrushStyle.NoBrush)
             self.scene.setBackgroundBrush(brush)
 
             # Render
@@ -4286,18 +4284,18 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Checks the level for any obvious problems and provides options to autofix them
         """
-        DiagnosticToolDialog().exec_()
+        DiagnosticToolDialog().exec()
 
     def HandleCameraProfiles(self):
         """Pops up the options for camera profiles"""
         dlg = CameraProfilesDialog()
-        if dlg.exec_() != QtWidgets.QDialog.Accepted:
+        if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
         camprofiles = []
         for row in range(dlg.list.count()):
             item = dlg.list.item(row)
-            camprofiles.append(item.data(QtCore.Qt.UserRole))
+            camprofiles.append(item.data(QtCore.Qt.ItemDataRole.UserRole))
 
         globals_.Area.camprofiles = camprofiles
         SetDirty()
@@ -4309,7 +4307,7 @@ def main():
     """
 
     # set High-DPI-Displays-related attributes before creating an application
-    QtGui.QGuiApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    # QtGui.QGuiApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     if hasattr(QtGui.QGuiApplication, 'setHighDpiScaleFactorRoundingPolicy'):
         QtGui.QGuiApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.Round)
 
@@ -4339,7 +4337,7 @@ def main():
     del subprocess
 
     # Load the settings
-    globals_.settings = QtCore.QSettings('settings.ini', QtCore.QSettings.IniFormat)
+    globals_.settings = QtCore.QSettings('settings.ini', QtCore.QSettings.Format.IniFormat)
 
     # Check the version and set the UI style to Fusion by default
     if setting("ReggieVersion") is None:
@@ -4348,8 +4346,8 @@ def main():
 
     # 4.0 -> oldest version with settings.ini compatible with the current version
     if setting("ReggieVersion") < 4.0 or setting("ReggieVersion") > globals_.ReggieVersionFloat:
-        warningBox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.NoIcon, 'Unsupported settings file', 'Your settings.ini file is unsupported. Please remove it and run Reggie again.')
-        warningBox.exec_()
+        warningBox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Icon.NoIcon, 'Unsupported settings file', 'Your settings.ini file is unsupported. Please remove it and run Reggie again.')
+        warningBox.exec()
         sys.exit(1)
 
     # Load the translation (needs to happen first)
@@ -4446,8 +4444,8 @@ def main():
     autofile = setting('AutoSaveFilePath')
     autofiledata = setting('AutoSaveFileData', 'x')
     if autofile is not None and autofiledata != 'x':
-        result = AutoSavedInfoDialog(autofile).exec_()
-        if result == QtWidgets.QDialog.Accepted:
+        result = AutoSavedInfoDialog(autofile).exec()
+        if result == QtWidgets.QDialog.DialogCode.Accepted:
             globals_.RestoredFromAutoSave = True
             globals_.AutoSavePath = autofile
             globals_.AutoSaveData = bytes(autofiledata)
@@ -4463,7 +4461,7 @@ def main():
     if '-generatestringsxml' in sys.argv:
         globals_.trans.generateXML()
 
-    exitcodesys = globals_.app.exec_()
+    exitcodesys = globals_.app.exec()
     globals_.app.deleteLater()
     sys.exit(exitcodesys)
 

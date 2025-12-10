@@ -4,11 +4,12 @@ import importlib
 import functools
 from xml.etree import ElementTree as etree
 
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt6 import QtWidgets, QtCore, QtGui
 
 from ui import GetIcon, createVertLine
 from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo, LoadZoneThemes
 from dirty import setting, setSetting
+from dialogs import SpriteUpgradeDialog
 
 import globals_
 import spritelib as SLib
@@ -137,12 +138,12 @@ class GameDefMenu(QtWidgets.QMenu):
         # Add entries for each gamedef
         self.GameDefs = getAvailableGameDefs()
 
-        self.actGroup = QtWidgets.QActionGroup(self)
+        self.actGroup = QtGui.QActionGroup(self)
         loadedDef = setting('LastGameDef')
         for folder in self.GameDefs:
             def_ = ReggieGameDefinition(folder)
 
-            act = QtWidgets.QAction(self)
+            act = QtGui.QAction(self)
             act.setText(def_.name)
             act.setToolTip(def_.description)
             act.setData(folder)
@@ -156,7 +157,7 @@ class GameDefMenu(QtWidgets.QMenu):
         # add button
         self.addSeparator()
 
-        act = QtWidgets.QAction(self)
+        act = QtGui.QAction(self)
         act.setText(globals_.trans.string('Gamedefs', 19))
         act.setToolTip(globals_.trans.string('Gamedefs', 20))
         act.setActionGroup(self.actGroup)
@@ -334,6 +335,16 @@ class ReggieGameDefinition:
         if 'sprites' in self.files:
             with open(self.files['sprites'].path, 'r', encoding='utf-8') as f:
                 filedata = f.read()
+            
+            # Check if the file uses PyQt5 and prompt the user to upgrade it
+            if filedata.find("PyQt5") != -1:
+                result = SpriteUpgradeDialog().exec()
+                if result == QtWidgets.QDialog.DialogCode.Accepted:
+                    UpgradeSpritesFile(self.files['sprites'].path, self.gamepath)
+
+                    # Reload the file since we just changed it
+                    with open(self.files['sprites'].path, 'r', encoding='utf-8') as f:
+                        filedata = f.read()
 
             # https://stackoverflow.com/a/53080237 with modifications
             spec = importlib.util.spec_from_loader(self.name + "->sprites", loader=None)
@@ -618,10 +629,10 @@ def LoadGameDef(name=None, dlg=None):
             pressed_button = QtWidgets.QMessageBox.information(None,
                 globals_.trans.string('Gamedefs', 2),
                 globals_.trans.string('Gamedefs', 3, '[game]', globals_.gamedef.name),
-                QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel
+                QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel
             )
 
-            if pressed_button == QtWidgets.QMessageBox.Cancel:
+            if pressed_button == QtWidgets.QMessageBox.StandardButton.Cancel:
                 return False
 
             if globals_.mainWindow is None:
@@ -641,7 +652,7 @@ def LoadGameDef(name=None, dlg=None):
             QtWidgets.QMessageBox.information(None,
                 globals_.trans.string('Gamedefs', msg_ids[0]),
                 globals_.trans.string('Gamedefs', msg_ids[1], '[game]', globals_.gamedef.name),
-                QtWidgets.QMessageBox.Ok
+                QtWidgets.QMessageBox.StandardButton.Ok
             )
 
             if not result:
@@ -767,3 +778,36 @@ def FindGameDef(name, skip=None):
 
         def_.__init2__()
         return def_
+
+
+def UpgradeSpritesFile(filename, folderpath):
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            orig_data = f.read()
+
+        # First off, change the import
+        new_data = orig_data.replace("PyQt5", "PyQt6")
+
+        # Replacement time
+        strings = [
+            ("QPainter.Antialiasing", "QPainter.RenderHint.Antialiasing"),
+            ("SmoothTransformation",  "TransformationMode.SmoothTransformation"),
+            ("IgnoreAspectRatio",     "AspectRatioMode.IgnoreAspectRatio"),
+            ("QPoint(",               "QPointF("), # Parenthesis to skip existing instances of QPointF
+            ("Qt.transparent",        "Qt.GlobalColor.transparent"),
+            ("Qt.Align",              "Qt.AlignmentFlag.Align"),
+        ]
+        for old, new in strings:
+            #print(f"Replacing '{old}' with '{new}'")
+            new_data = new_data.replace(old, new)
+
+        # Update the file
+        with open(filename, 'w') as fileOut:
+            fileOut.write(new_data)
+
+        # Now backup the old file
+        with open(os.path.join("reggiedata", "patches", folderpath, "sprites_old.py"), 'w') as fileOrig:
+            fileOrig.write(orig_data)
+
+    except Exception as error:
+        print(f"Sprite Upgrader -- Exception occurred: {error}")

@@ -1,6 +1,6 @@
 import os
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtWidgets, QtGui, QtCore
 
 from ui import GetIcon, clipStr
 import globals_
@@ -58,7 +58,7 @@ class AboutDialog(QtWidgets.QDialog):
         readmeView.setReadOnly(True)
 
         # Buttonbox
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok)
         buttonBox.accepted.connect(self.accept)
 
         # Main layout
@@ -91,7 +91,7 @@ class ObjectShiftDialog(QtWidgets.QDialog):
         self.YOffset = QtWidgets.QSpinBox()
         self.YOffset.setRange(-8192, 8191)
 
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 
@@ -140,7 +140,7 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
         self.DoExchange = QtWidgets.QCheckBox(globals_.trans.string('SwapObjTilesDlg', 3))
 
         # Buttonbox
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 
@@ -162,7 +162,7 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         Creates and initializes the dialog
         """
         QtWidgets.QDialog.__init__(self)
-        self.setWindowTitle(globals_.trans.string('SwapObjTilesDlg', 0))
+        self.setWindowTitle(globals_.trans.string('SwapObjDlg', 0))
         self.setWindowIcon(GetIcon('swap'))
 
         # Create widgets
@@ -178,25 +178,25 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         self.ToTileset = QtWidgets.QSpinBox()
         self.ToTileset.setRange(1, 4)
 
-        self.DoExchange = QtWidgets.QCheckBox(globals_.trans.string('SwapObjTilesDlg', 5))
+        self.DoExchange = QtWidgets.QCheckBox(globals_.trans.string('SwapObjDlg', 5))
 
         # Swap layout
         swapLayout = QtWidgets.QGridLayout()
 
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjTilesDlg', 1)), 0, 0)
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 1)), 0, 0)
         swapLayout.addWidget(self.FromType, 0, 1)
 
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjTilesDlg', 2)), 1, 0)
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 2)), 1, 0)
         swapLayout.addWidget(self.FromTileset, 1, 1)
 
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjTilesDlg', 3)), 0, 2)
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 3)), 0, 2)
         swapLayout.addWidget(self.ToType, 0, 3)
 
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjTilesDlg', 4)), 1, 2)
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 4)), 1, 2)
         swapLayout.addWidget(self.ToTileset, 1, 3)
 
         # Buttonbox
-        self.buttons = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.Close)
+        self.buttons = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Apply | QtWidgets.QDialogButtonBox.StandardButton.Close)
         self.buttons.clicked.connect(self.button_clicked)
 
         # Main layout
@@ -212,10 +212,10 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         """
         role = self.buttons.buttonRole(button)
 
-        if role == QtWidgets.QDialogButtonBox.RejectRole:
+        if role == QtWidgets.QDialogButtonBox.ButtonRole.RejectRole:
             # The close button was pressed
             self.reject()
-        elif role == QtWidgets.QDialogButtonBox.ApplyRole:
+        elif role == QtWidgets.QDialogButtonBox.ButtonRole.ApplyRole:
             # The apply button was pressed
             self.swap_tiles()
         else:
@@ -309,8 +309,8 @@ class MetaInfoDialog(QtWidgets.QDialog):
             self.Website.setReadOnly(False)
             self.changepw.setDisabled(False)
 
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
-        buttonBox.addButton(self.changepw, buttonBox.ActionRole)
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        buttonBox.addButton(self.changepw, buttonBox.ButtonRole.ActionRole)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
         self.changepw.clicked.connect(self.ChangeButton)
@@ -395,10 +395,10 @@ class MetaInfoDialog(QtWidgets.QDialog):
                 self.Verify.setMinimumWidth(320)
 
                 self.Ok = QtWidgets.QPushButton('OK')
-                self.Cancel = QtWidgets.QDialogButtonBox.Cancel
+                self.Cancel = QtWidgets.QDialogButtonBox.StandardButton.Cancel
 
                 buttonBox = QtWidgets.QDialogButtonBox()
-                buttonBox.addButton(self.Ok, buttonBox.AcceptRole)
+                buttonBox.addButton(self.Ok, buttonBox.ButtonRole.AcceptRole)
                 buttonBox.addButton(self.Cancel)
 
                 buttonBox.accepted.connect(self.accept)
@@ -412,7 +412,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
                 infoGroupBox = QtWidgets.QGroupBox(globals_.trans.string('InfoDlg', 12))
 
                 infoLabel = QtWidgets.QVBoxLayout()
-                infoLabel.addWidget(QtWidgets.QLabel(globals_.trans.string('InfoDlg', 13)), 0, QtCore.Qt.AlignCenter)
+                infoLabel.addWidget(QtWidgets.QLabel(globals_.trans.string('InfoDlg', 13)), 0, QtCore.Qt.AlignmentFlag.AlignCenter)
                 infoLabel.addLayout(infoLayout)
                 infoGroupBox.setLayout(infoLabel)
 
@@ -425,7 +425,7 @@ class MetaInfoDialog(QtWidgets.QDialog):
                 self.Ok.setDisabled(self.New.text() != self.Verify.text() and self.New.text() != '')
 
         dlg = ChangePWDialog()
-        if dlg.exec_() == QtWidgets.QDialog.Accepted:
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             self.lockedLabel.setVisible(True)
             self.Password.setVisible(True)
             self.PasswordLabel.setVisible(True)
@@ -466,7 +466,7 @@ class ScreenCapChoiceDialog(QtWidgets.QDialog):
 
         self.save_img.setChecked(True)
 
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
@@ -505,7 +505,7 @@ class AutoSavedInfoDialog(QtWidgets.QDialog):
         hlayout.addWidget(label)
         hlayout.setStretch(1, 1)
 
-        buttonbox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.No | QtWidgets.QDialogButtonBox.Yes)
+        buttonbox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.No | QtWidgets.QDialogButtonBox.StandardButton.Yes)
         buttonbox.accepted.connect(self.accept)
         buttonbox.rejected.connect(self.reject)
 
@@ -530,7 +530,7 @@ class AreaChoiceDialog(QtWidgets.QDialog):
         for i in range(areacount):
             self.areaCombo.addItem(globals_.trans.string('AreaChoiceDlg', 1, '[num]', i + 1))
 
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
@@ -580,7 +580,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         hW = QtWidgets.QWidget()
         hW.setLayout(self.header)
 
-        self.buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        self.buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
 
@@ -669,7 +669,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         self.buttonHandlers = []
 
         self.errorList = QtWidgets.QListWidget()
-        self.errorList.setSelectionMode(self.errorList.MultiSelection)
+        self.errorList.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.MultiSelection)
 
         foundAnything = False
         foundCritical = False
@@ -711,8 +711,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         # Ask the user to make sure
         btn = QtWidgets.QMessageBox.warning(None, globals_.trans.string('Diag', 27), globals_.trans.string('Diag', 28),
-                                            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        if btn != QtWidgets.QMessageBox.Yes: return
+                                            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+        if btn != QtWidgets.QMessageBox.StandardButton.Yes: return
 
         # Show the 'Fixing...' box while fixing
         pleasewait = QtWidgets.QProgressDialog()
@@ -1348,7 +1348,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         self.profileBox.setEnabled(False)
         self.profileBox.setToolTip(globals_.trans.string('CamProfsDlg', 4))
 
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
@@ -1361,7 +1361,7 @@ class CameraProfilesDialog(QtWidgets.QDialog):
 
         for profile in globals_.Area.camprofiles:
             item = CustomSortableListWidgetItem()
-            item.setData(QtCore.Qt.UserRole, profile)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, profile)
             item.sortKey = profile[0]
             self.updateItemTitle(item)
             self.list.addItem(item)
@@ -1372,11 +1372,11 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         new_id = 1
         for row in range(self.list.count()):
             item = self.list.item(row)
-            values = item.data(QtCore.Qt.UserRole)
+            values = item.data(QtCore.Qt.ItemDataRole.UserRole)
             new_id = max(new_id, values[0] + 1)
 
         item = CustomSortableListWidgetItem()
-        item.setData(QtCore.Qt.UserRole, [new_id, 0, 0])
+        item.setData(QtCore.Qt.ItemDataRole.UserRole, [new_id, 0, 0])
         self.updateItemTitle(item)
         self.list.addItem(item)
 
@@ -1391,25 +1391,53 @@ class CameraProfilesDialog(QtWidgets.QDialog):
 
         if selItems:
             selItem = selItems[0]
-            values = selItem.data(QtCore.Qt.UserRole)
+            values = selItem.data(QtCore.Qt.ItemDataRole.UserRole)
 
             self.eventid.setValue(values[0])
             self.camsettings.setValues(values[1], values[2])
 
     def handleEventIDChanged(self, eventid):
         selItem = self.list.selectedItems()[0]
-        values = selItem.data(QtCore.Qt.UserRole)
+        values = selItem.data(QtCore.Qt.ItemDataRole.UserRole)
         values[0] = eventid
-        selItem.setData(QtCore.Qt.UserRole, values)
+        selItem.setData(QtCore.Qt.ItemDataRole.UserRole, values)
         selItem.sortKey = eventid
         self.updateItemTitle(selItem)
 
     def handleCamSettingsChanged(self):
         selItem = self.list.selectedItems()[0]
-        values = selItem.data(QtCore.Qt.UserRole)
+        values = selItem.data(QtCore.Qt.ItemDataRole.UserRole)
         values[1] = self.camsettings.modeButtonGroup.checkedId()
         values[2] = self.camsettings.screenSizes.currentIndex()
-        selItem.setData(QtCore.Qt.UserRole, values)
+        selItem.setData(QtCore.Qt.ItemDataRole.UserRole, values)
 
     def updateItemTitle(self, item):
-        item.setText(globals_.trans.string('CamProfsDlg', 7, '[id]', item.data(QtCore.Qt.UserRole)[0]))
+        item.setText(globals_.trans.string('CamProfsDlg', 7, '[id]', item.data(QtCore.Qt.ItemDataRole.UserRole)[0]))
+
+
+class SpriteUpgradeDialog(QtWidgets.QDialog):
+    """
+    Dialog for upgrading a gamedef's sprites.py from PyQt5 to PyQt6
+    """
+    def __init__(self):
+        QtWidgets.QDialog.__init__(self)
+        self.setWindowTitle(globals_.trans.string('SpriteUpgradeDlg', 0))
+        self.setWindowIcon(GetIcon('upgrade'))
+
+        mainlayout = QtWidgets.QVBoxLayout(self)
+
+        hlayout = QtWidgets.QHBoxLayout()
+
+        icon = QtWidgets.QLabel()
+        hlayout.addWidget(icon)
+
+        label = QtWidgets.QLabel(globals_.trans.string('SpriteUpgradeDlg', 1))
+        hlayout.addWidget(label)
+        hlayout.setStretch(1, 1)
+
+        buttonbox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.No | QtWidgets.QDialogButtonBox.StandardButton.Yes)
+        buttonbox.accepted.connect(self.accept)
+        buttonbox.rejected.connect(self.reject)
+
+        mainlayout.addLayout(hlayout)
+        mainlayout.addWidget(buttonbox)

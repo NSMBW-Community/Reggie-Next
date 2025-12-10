@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 import os
 import random
 import base64
@@ -265,7 +265,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         Generic constructor for level editor items
         """
         QtWidgets.QGraphicsItem.__init__(self)
-        self.setFlag(self.ItemSendsGeometryChanges, True)
+        self.setFlag(self.GraphicsItemFlag.ItemSendsGeometryChanges, True)
 
     def __lt__(self, other):
         if self.objx != other.objx:
@@ -277,7 +277,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         Makes sure positions don't go out of bounds and updates them as necessary
         """
 
-        if change == QtWidgets.QGraphicsItem.ItemPositionChange:
+        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange:
             # snap to 24x24
             newpos = value
 
@@ -288,7 +288,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
                     objectsSelected = False
                 else:
                     objectsSelected = any([isinstance(thing, ObjectItem) for thing in globals_.mainWindow.CurrentSelection])
-                if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.AltModifier:
+                if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.AltModifier:
                     # Alt is held; don't snap
                     newpos.setX(int(int((newpos.x() + 0.75) / 1.5) * 1.5))
                     newpos.setY(int(int((newpos.y() + 0.75) / 1.5) * 1.5))
@@ -421,8 +421,8 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         br.setHeight(br.height() + marginY)
 
         # Take the screenshot
-        ScreenshotImage = QtGui.QImage(br.size().toSize(), QtGui.QImage.Format_ARGB32)
-        ScreenshotImage.fill(QtCore.Qt.transparent)
+        ScreenshotImage = QtGui.QImage(br.size().toSize(), QtGui.QImage.Format.Format_ARGB32)
+        ScreenshotImage.fill(QtCore.Qt.GlobalColor.transparent)
 
         RenderPainter = QtGui.QPainter(ScreenshotImage)
         globals_.mainWindow.scene.render(
@@ -437,8 +437,8 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         if ScreenshotImage.width() > maxSize.width() or ScreenshotImage.height() > maxSize.height():
             final = ScreenshotImage.scaled(
                 maxSize,
-                QtCore.Qt.KeepAspectRatio,
-                QtCore.Qt.SmoothTransformation,
+                QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+                QtCore.Qt.TransformationMode.SmoothTransformation,
             )
 
         return final
@@ -476,8 +476,8 @@ class ObjectItem(LevelEditorItem):
         self.TLGrabbed = self.TRGrabbed = self.BLGrabbed = self.BRGrabbed = False
         self.MTGrabbed = self.MLGrabbed = self.MBGrabbed = self.MRGrabbed = False
 
-        self.setFlag(self.ItemIsMovable, not globals_.ObjectsFrozen)
-        self.setFlag(self.ItemIsSelectable, not globals_.ObjectsFrozen)
+        self.setFlag(self.GraphicsItemFlag.ItemIsMovable, not globals_.ObjectsFrozen)
+        self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, not globals_.ObjectsFrozen)
 
         self.UpdateRects()
 
@@ -771,7 +771,7 @@ class ObjectItem(LevelEditorItem):
         Makes sure positions don't go out of bounds and updates them as necessary
         """
 
-        if change == QtWidgets.QGraphicsItem.ItemPositionChange:
+        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange:
             scene = self.scene()
             if scene is None: return value
 
@@ -813,7 +813,7 @@ class ObjectItem(LevelEditorItem):
                 # scene.invalidate(updRect)
 
                 scene.invalidate(self.x(), self.y(), self.width * 24, self.height * 24,
-                                 QtWidgets.QGraphicsScene.BackgroundLayer)
+                                 QtWidgets.QGraphicsScene.SceneLayer.BackgroundLayer)
                 # scene.invalidate(newpos.x(), newpos.y(), self.width*24, self.height*24, QtWidgets.QGraphicsScene.BackgroundLayer)
 
             return newpos
@@ -827,7 +827,7 @@ class ObjectItem(LevelEditorItem):
         if not self.isSelected():
             return
 
-        painter.setPen(QtGui.QPen(globals_.theme.color('object_lines_s'), 1, QtCore.Qt.DashLine))
+        painter.setPen(QtGui.QPen(globals_.theme.color('object_lines_s'), 1, QtCore.Qt.PenStyle.DashLine))
         painter.drawRect(self.SelectionRect)
         painter.fillRect(self.SelectionRect, globals_.theme.color('object_fill_s'))
 
@@ -875,8 +875,8 @@ class ObjectItem(LevelEditorItem):
         """
         Overrides mouse pressing events if needed for resizing
         """
-        if event.button() == QtCore.Qt.LeftButton:
-            if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.ControlModifier:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
+            if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
                 new_item = globals_.mainWindow.CreateObject(
                     self.tileset, self.type, self.layer, self.objx,
                     self.objy, self.width, self.height
@@ -951,7 +951,7 @@ class ObjectItem(LevelEditorItem):
         """
         Overrides mouse movement events if needed for resizing
         """
-        if event.buttons() != QtCore.Qt.NoButton and self.dragging:
+        if event.buttons() != QtCore.Qt.MouseButton.NoButton and self.dragging:
             # resize it
             dsx = self.dragstartx
             dsy = self.dragstarty
@@ -1426,7 +1426,7 @@ class ZoneItem(LevelEditorItem):
         Paints the zone on screen
         """
         painter.setClipRect(option.exposedRect)
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         # Paint an indicator line to show the leftmost edge of where entrances
         # can be safely placed.
@@ -1477,7 +1477,7 @@ class ZoneItem(LevelEditorItem):
         # Draw the bounds indicator rectangle
         if globals_.BoundsDrawn:
             painter.setBrush(QtGui.QBrush(QtGui.QColor.fromRgb(255,255,255,42)))
-            painter.setPen(QtCore.Qt.NoPen)
+            painter.setPen(QtCore.Qt.PenStyle.NoPen)
             r1 = QtCore.QRectF(self.DrawRect)
             r1.setHeight((self.yupperbound + 80) * 1.5)
             r1.moveTop(self.DrawRect.bottom() - (self.getCameraHeight()[0] * 24))
@@ -1525,7 +1525,7 @@ class ZoneItem(LevelEditorItem):
         Overrides mouse movement events if needed for resizing
         """
 
-        if event.buttons() != QtCore.Qt.NoButton and self.dragging:
+        if event.buttons() != QtCore.Qt.MouseButton.NoButton and self.dragging:
             # resize it
             clickedx = int(event.scenePos().x() / 1.5)
             clickedy = int(event.scenePos().y() / 1.5)
@@ -1536,7 +1536,7 @@ class ZoneItem(LevelEditorItem):
             y2 = self.draginitialy2
 
             # if alt is not held, snap to 8x8 grid
-            if QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.AltModifier:
+            if QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.KeyboardModifier.AltModifier:
                 clickedx = 8 * round(clickedx / 8)
                 clickedy = 8 * round(clickedy / 8)
                 x1 = 8 * round(x1 / 8)
@@ -1645,8 +1645,8 @@ class LocationItem(LevelEditorItem):
         self.UpdateTitle()
         self.UpdateRects()
 
-        self.setFlag(self.ItemIsMovable, not globals_.LocationsFrozen)
-        self.setFlag(self.ItemIsSelectable, not globals_.LocationsFrozen)
+        self.setFlag(self.GraphicsItemFlag.ItemIsMovable, not globals_.LocationsFrozen)
+        self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, not globals_.LocationsFrozen)
 
         globals_.DirtyOverride += 1
         self.setPos(int(x * 1.5), int(y * 1.5))
@@ -1702,7 +1702,7 @@ class LocationItem(LevelEditorItem):
         # We basically make a vertically-flipped "L" shape if the location
         # is small, so that you can click on the ID number to select the location
         qpp = QtGui.QPainterPath()
-        qpp.setFillRule(QtCore.Qt.WindingFill)
+        qpp.setFillRule(QtCore.Qt.FillRule.WindingFill)
         qpp.addRect(self.BoundingRectWithoutTitleRect)
         qpp.addRect(self.TitleRect)
         return qpp
@@ -1711,7 +1711,7 @@ class LocationItem(LevelEditorItem):
         """
         Paints the location on screen
         """
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         # Paint liquids/fog
         if globals_.SpritesShown and globals_.RealViewEnabled:
@@ -1728,7 +1728,7 @@ class LocationItem(LevelEditorItem):
             painter.setPen(QtGui.QPen(globals_.theme.color('location_lines')))
         else:
             painter.setBrush(QtGui.QBrush(globals_.theme.color('location_fill_s')))
-            painter.setPen(QtGui.QPen(globals_.theme.color('location_lines_s'), 1, QtCore.Qt.DashLine))
+            painter.setPen(QtGui.QPen(globals_.theme.color('location_lines_s'), 1, QtCore.Qt.PenStyle.DashLine))
         painter.drawRect(self.DrawRect)
 
         # Draw the ID
@@ -1758,7 +1758,7 @@ class LocationItem(LevelEditorItem):
         """
         Overrides mouse movement events if needed for resizing
         """
-        if event.buttons() != QtCore.Qt.NoButton and self.dragging:
+        if event.buttons() != QtCore.Qt.MouseButton.NoButton and self.dragging:
             # Resize the location.
             change = self.dragResize(event.scenePos(), self.dragstartx, self.dragstarty)
 
@@ -1788,7 +1788,7 @@ class LocationItem(LevelEditorItem):
         clicky = common.clamp(int(clicked.y() / 1.5), 0, 65535)
 
         # if alt is not held, snap to 8x8 grid
-        if QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.AltModifier:
+        if QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.KeyboardModifier.AltModifier:
             dsx = 8 * round(dsx / 8)
             dsy = 8 * round(dsy / 8)
             clickx = 8 * round(clickx / 8)
@@ -1875,8 +1875,8 @@ class SpriteItem(LevelEditorItem):
 
         self.InitializeSprite()
 
-        self.setFlag(self.ItemIsMovable, not globals_.SpritesFrozen)
-        self.setFlag(self.ItemIsSelectable, not globals_.SpritesFrozen)
+        self.setFlag(self.GraphicsItemFlag.ItemIsMovable, not globals_.SpritesFrozen)
+        self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, not globals_.SpritesFrozen)
 
         globals_.DirtyOverride += 1
         if globals_.SpriteImagesShown:
@@ -2189,7 +2189,7 @@ class SpriteItem(LevelEditorItem):
         Makes sure positions don't go out of bounds and updates them as necessary
         """
 
-        if change == QtWidgets.QGraphicsItem.ItemPositionChange:
+        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange:
             if self.scene() is None: return value
             if self.ChangingPos: return value
 
@@ -2209,7 +2209,7 @@ class SpriteItem(LevelEditorItem):
 
             # Snap this position to the grid
             drag_offset = None
-            if globals_.OverrideSnapping or QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.AltModifier:
+            if globals_.OverrideSnapping or QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.AltModifier:
                 # Snap the smallest amount possible -> 1/16th of a block
                 snap_level = 1
             elif self.isSelected() and len(globals_.mainWindow.CurrentSelection) > 1:
@@ -2219,7 +2219,7 @@ class SpriteItem(LevelEditorItem):
                 # 16 = 1 block units
                 drag_offset = QtCore.QPointF(self.dragoffsetx, self.dragoffsety) / 1.5
 
-                origin_pos += drag_offset
+                origin_pos = (QtCore.QPointF(origin_pos) + drag_offset).toPoint()
 
                 if objects_selected:
                     # Snap to full blocks (16/16)
@@ -2242,11 +2242,11 @@ class SpriteItem(LevelEditorItem):
             origin_pos.setY(int((y + (snap_level / 2)) // snap_level) * snap_level)
 
             if drag_offset is not None:
-                origin_pos -= drag_offset
+                origin_pos = (QtCore.QPointF(origin_pos) - drag_offset).toPoint()
 
             # Move position back to sprite image space by adding the image offset
             # and calculate objx and objy based on the sprite origin position.
-            new_pos = QtCore.QPointF(origin_pos + offset_point) * 1.5
+            new_pos = QtCore.QPointF(QtCore.QPointF(origin_pos) + offset_point) * 1.5
 
             x = origin_pos.x()
             y = origin_pos.y()
@@ -2306,7 +2306,7 @@ class SpriteItem(LevelEditorItem):
         """
         Overrides mouse pressing events if needed for cloning
         """
-        if event.button() != QtCore.Qt.LeftButton or QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.ControlModifier:
+        if event.button() != QtCore.Qt.MouseButton.LeftButton or QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.KeyboardModifier.ControlModifier:
             if not globals_.SpriteImagesShown:
                 oldpos = (self.objx, self.objy)
 
@@ -2356,7 +2356,7 @@ class SpriteItem(LevelEditorItem):
         # Setup stuff
         if option is not None:
             painter.setClipRect(option.exposedRect)
-            painter.setRenderHint(QtGui.QPainter.Antialiasing)
+            painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         # Turn aux things on or off
         for aux in self.ImageObj.aux:
@@ -2373,7 +2373,7 @@ class SpriteItem(LevelEditorItem):
 
             # Draw the selected-sprite-image overlay box
             if self.isSelected() and (not drawSpritebox or self.ImageObj.size != (16, 16)):
-                painter.setPen(QtGui.QPen(globals_.theme.color('sprite_lines_s'), 1, QtCore.Qt.DashLine))
+                painter.setPen(QtGui.QPen(globals_.theme.color('sprite_lines_s'), 1, QtCore.Qt.PenStyle.DashLine))
                 painter.drawRect(self.SelectionRect)
                 painter.fillRect(self.SelectionRect, globals_.theme.color('sprite_fill_s'))
 
@@ -2396,7 +2396,7 @@ class SpriteItem(LevelEditorItem):
                 painter.drawRect(spriteboxRect)
 
             painter.setFont(self.font)
-            painter.drawText(spriteboxRect, QtCore.Qt.AlignCenter, str(self.type))
+            painter.drawText(spriteboxRect, QtCore.Qt.AlignmentFlag.AlignCenter, str(self.type))
 
     def scene(self):
         """
@@ -2438,9 +2438,9 @@ class EntranceItem(LevelEditorItem):
             """
             super().__init__(parent)
             self.parent = parent
-            self.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, False)
-            self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, False)
-            self.setFlag(QtWidgets.QGraphicsItem.ItemStacksBehindParent, True)
+            self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, False)
+            self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, False)
+            self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, True)
             self.setParentItem(parent)
             self.hover = False
 
@@ -2470,14 +2470,14 @@ class EntranceItem(LevelEditorItem):
             """
 
             painter.setClipRect(option.exposedRect)
-            painter.setRenderHint(QtGui.QPainter.Antialiasing)
+            painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
             if self.parent.enttype == 20:
                 # Jumping facing right
 
-                path = QtGui.QPainterPath(QtCore.QPoint(12, 276))
-                path.cubicTo(QtCore.QPoint(40, -24), QtCore.QPoint(50, -24), QtCore.QPoint(60, 36))
-                path.lineTo(QtCore.QPoint(96, 300))
+                path = QtGui.QPainterPath(QtCore.QPointF(12, 276))
+                path.cubicTo(QtCore.QPointF(40, -24), QtCore.QPointF(50, -24), QtCore.QPointF(60, 36))
+                path.lineTo(QtCore.QPointF(96, 300))
 
                 painter.setPen(SLib.OutlinePen)
                 painter.drawPath(path)
@@ -2498,9 +2498,9 @@ class EntranceItem(LevelEditorItem):
             elif self.parent.enttype == 24:
                 # Jumping facing left
 
-                path = QtGui.QPainterPath(QtCore.QPoint(86, 276))
-                path.cubicTo(QtCore.QPoint(58, -24), QtCore.QPoint(48, -24), QtCore.QPoint(38, 36))
-                path.lineTo(QtCore.QPoint(2, 300))
+                path = QtGui.QPainterPath(QtCore.QPointF(86, 276))
+                path.cubicTo(QtCore.QPointF(58, -24), QtCore.QPointF(48, -24), QtCore.QPointF(38, 36))
+                path.lineTo(QtCore.QPointF(2, 300))
 
                 painter.setPen(SLib.OutlinePen)
                 painter.drawPath(path)
@@ -2540,8 +2540,8 @@ class EntranceItem(LevelEditorItem):
         self.cpdirection = cpd
         self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
 
-        self.setFlag(self.ItemIsMovable, not globals_.EntrancesFrozen)
-        self.setFlag(self.ItemIsSelectable, not globals_.EntrancesFrozen)
+        self.setFlag(self.GraphicsItemFlag.ItemIsMovable, not globals_.EntrancesFrozen)
+        self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, not globals_.EntrancesFrozen)
 
         self.aux = self.AuxEntranceItem(self)
 
@@ -2634,7 +2634,7 @@ class EntranceItem(LevelEditorItem):
         Paints the entrance
         """
         painter.setClipRect(option.exposedRect)
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         if self.isSelected():
             painter.setBrush(QtGui.QBrush(globals_.theme.color('entrance_fill_s')))
@@ -2690,7 +2690,7 @@ class EntranceItem(LevelEditorItem):
         """
         Handle movement
         """
-        if change == QtWidgets.QGraphicsItem.ItemPositionChange:
+        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange:
             # Make sure the bounding rect and level rects are updated, as well
             # as the scene and level overview. The TypeChange function already
             # takes care of this, so we can just call that function.
@@ -2795,8 +2795,8 @@ class Path:
         (Un)freezes this path, based on the boolean argument. Passing True causes
         all nodes to not be selectable or movable. Passing False does the opposite.
         """
-        flag1 = QtWidgets.QGraphicsItem.ItemIsSelectable
-        flag2 = QtWidgets.QGraphicsItem.ItemIsMovable
+        flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
+        flag2 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
 
         for node in self._nodes:
             node.setFlag(flag1, not frozen)
@@ -2976,8 +2976,8 @@ class PathItem(LevelEditorItem):
         self.listitem = ListWidgetItem_SortsByOther(self, self.ListString())
 
         self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
-        self.setFlag(self.ItemIsMovable, not globals_.PathsFrozen)
-        self.setFlag(self.ItemIsSelectable, not globals_.PathsFrozen)
+        self.setFlag(self.GraphicsItemFlag.ItemIsMovable, not globals_.PathsFrozen)
+        self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, not globals_.PathsFrozen)
 
         old_snap = globals_.OverrideSnapping
         globals_.OverrideSnapping = True
@@ -3033,7 +3033,7 @@ class PathItem(LevelEditorItem):
         """
         Paints the path node
         """
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         painter.setClipRect(option.exposedRect)
 
         if self.isSelected():
@@ -3076,11 +3076,11 @@ class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
 
         self._path = path
 
-        self.setFlag(self.ItemIsMovable, False)
-        self.setFlag(self.ItemIsSelectable, False)
+        self.setFlag(self.GraphicsItemFlag.ItemIsMovable, False)
+        self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, False)
 
         color = globals_.theme.color('path_connector')
-        self.setPen(QtGui.QPen(color, 3, join=QtCore.Qt.RoundJoin, cap=QtCore.Qt.RoundCap))
+        self.setPen(QtGui.QPen(color, 3, join=QtCore.Qt.PenJoinStyle.RoundJoin, cap=QtCore.Qt.PenCapStyle.RoundCap))
 
         self.update_path()
         self.setZValue(25002)
@@ -3129,8 +3129,8 @@ class CommentItem(LevelEditorItem):
         self.listitem = None
         self.LevelRect = (QtCore.QRectF(self.objx / 16, self.objy / 16, 2.25, 2.25))
 
-        self.setFlag(self.ItemIsMovable, not globals_.CommentsFrozen)
-        self.setFlag(self.ItemIsSelectable, not globals_.CommentsFrozen)
+        self.setFlag(self.GraphicsItemFlag.ItemIsMovable, not globals_.CommentsFrozen)
+        self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, not globals_.CommentsFrozen)
 
         globals_.DirtyOverride += 1
         self.setPos(int(x * 1.5), int(y * 1.5))
@@ -3142,7 +3142,7 @@ class CommentItem(LevelEditorItem):
         self.TextEdit = QtWidgets.QPlainTextEdit()
         self.TextEditProxy = globals_.mainWindow.scene.addWidget(self.TextEdit)
         self.TextEditProxy.setZValue(self.zval)
-        self.TextEditProxy.setCursor(QtCore.Qt.IBeamCursor)
+        self.TextEditProxy.setCursor(QtCore.Qt.CursorShape.IBeamCursor)
         self.TextEditProxy.boundingRect = lambda self: QtCore.QRectF(0, 0, 4000, 4000)
         self.TextEdit.setVisible(False)
         self.TextEdit.setMaximumWidth(192)
@@ -3205,7 +3205,7 @@ class CommentItem(LevelEditorItem):
         Paints the comment
         """
         painter.setClipRect(option.exposedRect)
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         if self.isSelected():
             painter.setBrush(QtGui.QBrush(globals_.theme.color('comment_fill_s')))
@@ -3236,7 +3236,7 @@ class CommentItem(LevelEditorItem):
             self.TextEdit = QtWidgets.QPlainTextEdit()
             self.TextEditProxy = globals_.mainWindow.scene.addWidget(self.TextEdit)
             self.TextEditProxy.setZValue(self.zval)
-            self.TextEditProxy.setCursor(QtCore.Qt.IBeamCursor)
+            self.TextEditProxy.setCursor(QtCore.Qt.CursorShape.IBeamCursor)
             self.TextEditProxy.BoundingRect = QtCore.QRectF(0, 0, 4000, 4000)
             self.TextEditProxy.boundingRect = lambda self: self.BoundingRect
             self.TextEdit.setMaximumWidth(192)

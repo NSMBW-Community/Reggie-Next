@@ -34,7 +34,7 @@
 import math
 import random
 
-from PyQt5 import QtCore, QtGui
+from PyQt6 import QtCore, QtGui
 Qt = QtCore.Qt
 
 import spritelib as SLib
@@ -411,7 +411,7 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         # intersection needs to be translated, because draw offsets are relative
         # to the location.
         draw_rect = location_rect & zone.mapRectToScene(zone.DrawRect)
-        draw_rect.translate(QtCore.QPoint(1, 1) - location_rect.topLeft())
+        draw_rect.translate(QtCore.QPointF(1, 1) - location_rect.topLeft())
 
         if draw_rect.isEmpty():
             return
@@ -459,7 +459,7 @@ class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage):  # 97, 107, 132, 160
         pixmap = ImageCache['UnusedPlatformDark'] if self.isDark else ImageCache['UnusedPlatform']
         pixmap = pixmap.scaled(
             int(self.width * 1.5), int(self.height * 1.5),
-            Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
+            Qt.AspectRatioMode.IgnoreAspectRatio, Qt.TransformationMode.SmoothTransformation,
         )
         painter.drawPixmap(0, 0, pixmap)
 
@@ -792,7 +792,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
     def paint(self, painter):
         super().paint(painter)
 
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         if self.tilenum < len(SLib.Tiles):
             painter.drawPixmap(0, 0, SLib.GetTile(self.tilenum))
         painter.drawPixmap(0, 0, self.image)
@@ -1005,7 +1005,7 @@ class SpriteImage_LongSpikedStake(SLib.SpriteImage):  # 398, 400
         width = 99
 
         pix = QtGui.QPixmap(2021, 99)
-        pix.fill(Qt.transparent)
+        pix.fill(Qt.GlobalColor.transparent)
         paint = QtGui.QPainter(pix)
 
         if color == 2 or color == 3 or color == 6 or color == 7:
@@ -1058,7 +1058,7 @@ class SpriteImage_MassiveSpikedStake(SLib.SpriteImage):  # 401, 404
         width = 248
 
         pix = QtGui.QPixmap(248, 3016)
-        pix.fill(Qt.transparent)
+        pix.fill(Qt.GlobalColor.transparent)
         paint = QtGui.QPainter(pix)
 
         if color == 2 or color == 3 or color == 6 or color == 7:
@@ -1228,8 +1228,8 @@ class SpriteImage_HorzMovingPlatform(SpriteImage_WoodenPlatform):  # 23
             # platform goes left
             self.aux[0].setPos(-distance * 1.5, 0)
 
-        # set color
-        self.color = (self.parent.spritedata[3] >> 4) & 1
+        # set color, silver is only used for a value of 1
+        self.color = (self.parent.spritedata[3] >> 4) == 1
 
         self.aux[0].update()
 
@@ -1385,8 +1385,8 @@ class SpriteImage_VertMovingPlatform(SpriteImage_WoodenPlatform):  # 31
             # platform goes down
             self.aux[0].setPos(0, 0)
 
-        # set color
-        self.color = (self.parent.spritedata[3] >> 4) & 1
+        # set color, silver is only used for a value of 1
+        self.color = (self.parent.spritedata[3] >> 4) == 1
 
         self.aux[0].update()
 
@@ -1544,7 +1544,7 @@ class SpriteImage_UnusedSeesaw(SLib.SpriteImage):  # 49
             self.width = w * 32
         self.image = ImageCache['UnusedPlatformDark'].scaled(
             int(self.width * 1.5), int(self.height * 1.5),
-            Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
+            Qt.AspectRatioMode.IgnoreAspectRatio, Qt.TransformationMode.SmoothTransformation,
         )
         self.xOffset = (8 * 16) - (self.width / 2)
 
@@ -1605,6 +1605,7 @@ class SpriteImage_FallingPlatform(SpriteImage_WoodenPlatform):  # 50
 
         # set color
         color = (self.parent.spritedata[3] >> 4) & 3
+        self.height = 16 # reset so the image isn't too big after using the bone platform
         if color == 1:
             self.color = 1
         elif color == 3:
@@ -1651,10 +1652,10 @@ class SpriteImage_UnusedRotPlatforms(SLib.SpriteImage):  # 52
 
         platform = ImageCache['UnusedPlatformDark'].scaled(
             144, 24,
-            Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
+            Qt.AspectRatioMode.IgnoreAspectRatio, Qt.TransformationMode.SmoothTransformation,
         )
         img = QtGui.QPixmap(144, 24)
-        img.fill(Qt.transparent)
+        img.fill(Qt.GlobalColor.transparent)
         paint = QtGui.QPainter(img)
         paint.setOpacity(0.8)
         paint.drawPixmap(0, 0, platform)
@@ -1717,7 +1718,7 @@ class SpriteImage_UnusedRisingSeesaw(SLib.SpriteImage_Static):  # 55
             1.5,
             ImageCache['UnusedPlatformDark'].scaled(
                 377, 24,
-                Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
+                Qt.AspectRatioMode.IgnoreAspectRatio, Qt.TransformationMode.SmoothTransformation,
             ),
         )
 
@@ -1912,7 +1913,7 @@ class SpriteImage_SpinningFirebar(SLib.SpriteImage):  # 62
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
-        self.aux.append(SLib.AuxiliaryCircleOutline(parent, 12, Qt.AlignCenter))
+        self.aux.append(SLib.AuxiliaryCircleOutline(parent, 12, Qt.AlignmentFlag.AlignCenter))
 
     @staticmethod
     def loadImages():
@@ -1947,6 +1948,7 @@ class SpriteImage_SpikeBall(SLib.SpriteImage_Static):  # 63
             parent,
             1.5,
             ImageCache['SpikeBall'],
+            (0, 16)
         )
 
     @staticmethod
@@ -2289,7 +2291,7 @@ class SpriteImage_TrampolineWall(SLib.SpriteImage_StaticMultiple):  # 87
 
         self.image = ImageCache['UnusedPlatformDark'].scaled(
             24, height * 24,
-            Qt.IgnoreAspectRatio, Qt.SmoothTransformation,
+            Qt.AspectRatioMode.IgnoreAspectRatio, Qt.TransformationMode.SmoothTransformation,
         )
         self.height = height * 16
 
@@ -2326,7 +2328,7 @@ class SpriteImage_BanzaiBillLauncher(SLib.SpriteImage_Static):  # 93
             parent,
             1.5,
             ImageCache['BanzaiLauncher'],
-            (-32, -66.7),
+            (-32, -67),
         )
 
     @staticmethod
@@ -2411,7 +2413,7 @@ class SpriteImage_GiantSpikeBall(SLib.SpriteImage_Static):  # 98
             parent,
             1.5,
             ImageCache['GiantSpikeBall'],
-            (-24, -24),
+            (-24, -16),
         )
 
     @staticmethod
@@ -2628,7 +2630,7 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
         i = ImageCache['Sunlight']
         self.aux.append(SLib.AuxiliaryImage_FollowsRect(parent, i.width(), i.height()))
         self.aux[0].realimage = i
-        self.aux[0].alignment = Qt.AlignTop | Qt.AlignRight
+        self.aux[0].alignment = Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight
         self.aux[0].hover = False
 
         # Moving the sunlight when a repaint occured is overkill and causes an
@@ -2978,7 +2980,16 @@ class SpriteImage_SledgeBro(SLib.SpriteImage_Static):  # 120
         SLib.loadIfNotInImageCache('SledgeBro', 'sledgebro.png')
 
 
+# TODO: Properly implement 'down & right' track
 class SpriteImage_OneWayPlatform(SpriteImage_WoodenPlatform):  # 122
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        width = self.parent.spritedata[5] & 0xF
+        if width < 2: width = 1
+        self.width = width * 32 + 32
+
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, self.width, 16, SLib.AuxiliaryTrackObject.Horizontal))
+
     def dataChanged(self):
         super().dataChanged()
         width = self.parent.spritedata[5] & 0xF
@@ -2988,6 +2999,39 @@ class SpriteImage_OneWayPlatform(SpriteImage_WoodenPlatform):  # 122
         self.xOffset = self.width * -0.5
 
         self.color = ((self.parent.spritedata[4] & 0xF0) >> 4) & 1
+
+        distance = (self.parent.spritedata[3] & 0xF0) >> 4
+        direction = self.parent.spritedata[3] & 0xF
+
+        if distance != 0 or direction != 4:
+            if distance == 1:
+                increment = 14
+            else:
+                increment = 16
+
+            self.aux[0].setRotation(0)
+
+            if direction <= 1:  # horizontal
+                self.aux[0].direction = 2
+                self.aux[0].setSize(self.width, self.height + (distance * 16 * increment))
+            elif direction <= 3:  # vertical
+                self.aux[0].direction = 1
+                self.aux[0].setSize(self.width + (distance * 16 * increment), self.height)
+            else:  # down & right
+                self.aux[0].direction = 1
+                self.aux[0].setSize((self.width - (16 * width)) + (distance * 16 * increment), self.height)
+                self.aux[0].setRotation(45)
+
+            if direction == 1 or direction == 2:  # right, down
+                self.aux[0].setPos(0, 0)
+            elif direction == 3:  # left
+                self.aux[0].setPos(-(distance * increment) * 24, 0)
+            elif direction == 0:  # up
+                self.aux[0].setPos(0, -(distance * increment) * 24)
+            else: # down & right
+                self.aux[0].setPos(self.width + (16 * width), -8)
+        else:
+            self.aux[0].setSize(0, 0)
 
 
 class SpriteImage_UnusedCastlePlatform(SLib.SpriteImage_StaticMultiple):  # 123
@@ -3240,7 +3284,7 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
         for piece in range(pieces):
             bitpos = 1 << (piece & 3)
             if pivots[piece // 4] & bitpos:
-                painter.drawPixmap(5, int(ysize - (piece - 1) * 24), ImageCache['RotLauncherPivot'])
+                painter.drawPixmap(5, int(ysize - (piece + 1) * 24), ImageCache['RotLauncherPivot'])
             else:
                 xo = 6
                 image = ImageCache['RotLauncherCannon']
@@ -3447,7 +3491,7 @@ class SpriteImage_Coin(SLib.SpriteImage_StaticMultiple):  # 147
         if 'CoinF' in ImageCache: return
 
         pix = QtGui.QPixmap(24, 24)
-        pix.fill(Qt.transparent)
+        pix.fill(Qt.GlobalColor.transparent)
         paint = QtGui.QPainter(pix)
         paint.setOpacity(0.9)
         paint.drawPixmap(0, 0, SLib.GetImg('iceblock00.png'))
@@ -3562,7 +3606,7 @@ class SpriteImage_BigBrick(SLib.SpriteImage_StaticMultiple):  # 157
 
         if 'YoshiFire' not in ImageCache:
             pix = QtGui.QPixmap(48, 24)
-            pix.fill(Qt.transparent)
+            pix.fill(Qt.GlobalColor.transparent)
             paint = QtGui.QPainter(pix)
             paint.drawPixmap(0, 0, ImageCache['BlockContents'][9])
             paint.drawPixmap(24, 0, ImageCache['BlockContents'][3])
@@ -3774,7 +3818,7 @@ class SpriteImage_OneWayGate(SLib.SpriteImage_StaticMultiple):  # 174
                     ypos = -height
 
                 dest = QtGui.QPixmap(xsize, ysize)
-                dest.fill(Qt.transparent)
+                dest.fill(Qt.GlobalColor.transparent)
                 p = QtGui.QPainter(dest)
                 p.rotate(rotValue)
                 p.drawPixmap(xpos, ypos, newgate)
@@ -4232,8 +4276,8 @@ class SpriteImage_Clam(SLib.SpriteImage_StaticMultiple):  # 197
         overlays = (
             (26, 22, 'Star', ImageCache['StarCoin']),
             (40, 42, '1Up', ImageCache['BlockContents'][11]),
-            (40, 42, 'PSwitch', ImageCache['PSwitch']),
-            (40, 42, 'PSwitchU', ImageCache['PSwitchU']),
+            (42, 42, 'PSwitch', ImageCache['PSwitch']),
+            (42, 42, 'PSwitchU', ImageCache['PSwitchU']),
         )
         for x, y, clamName, overlayImage in overlays:
             newPix = QtGui.QPixmap(ImageCache['ClamEmpty'])
@@ -4599,52 +4643,52 @@ class SpriteImage_PipeCannon(SLib.SpriteImage):  # 227
         if fireDirection == 0:
             # 30 deg to the right
             self.aux[0].setSize(84, 101, 0, -5)
-            path = QtGui.QPainterPath(QtCore.QPoint(0, 184))
-            path.cubicTo(QtCore.QPoint(152, -24), QtCore.QPoint(168, -24), QtCore.QPoint(264, 48))
-            path.lineTo(QtCore.QPoint(480, 216))
+            path = QtGui.QPainterPath(QtCore.QPointF(0, 184))
+            path.cubicTo(QtCore.QPointF(152, -24), QtCore.QPointF(168, -24), QtCore.QPointF(264, 48))
+            path.lineTo(QtCore.QPointF(480, 216))
             self.aux[1].setSize(480, 216, 24, -120)
         elif fireDirection == 1:
             # 30 deg to the left
             self.aux[0].setSize(85, 101, -36, -5)
-            path = QtGui.QPainterPath(QtCore.QPoint(480 - 0, 184))
-            path.cubicTo(QtCore.QPoint(480 - 152, -24), QtCore.QPoint(480 - 168, -24), QtCore.QPoint(480 - 264, 48))
-            path.lineTo(QtCore.QPoint(480 - 480, 216))
+            path = QtGui.QPainterPath(QtCore.QPointF(480 - 0, 184))
+            path.cubicTo(QtCore.QPointF(480 - 152, -24), QtCore.QPointF(480 - 168, -24), QtCore.QPointF(480 - 264, 48))
+            path.lineTo(QtCore.QPointF(480 - 480, 216))
             self.aux[1].setSize(480, 216, -480 + 24, -120)
         elif fireDirection == 2:
             # 15 deg to the right
             self.aux[0].setSize(60, 102, 0, -6)
-            path = QtGui.QPainterPath(QtCore.QPoint(0, 188))
-            path.cubicTo(QtCore.QPoint(36, -36), QtCore.QPoint(60, -36), QtCore.QPoint(96, 84))
-            path.lineTo(QtCore.QPoint(144, 252))
+            path = QtGui.QPainterPath(QtCore.QPointF(0, 188))
+            path.cubicTo(QtCore.QPointF(36, -36), QtCore.QPointF(60, -36), QtCore.QPointF(96, 84))
+            path.lineTo(QtCore.QPointF(144, 252))
             self.aux[1].setSize(144, 252, 30, -156)
         elif fireDirection == 3:
             # 15 deg to the left
             self.aux[0].setSize(61, 102, -12, -6)
-            path = QtGui.QPainterPath(QtCore.QPoint(144 - 0, 188))
-            path.cubicTo(QtCore.QPoint(144 - 36, -36), QtCore.QPoint(144 - 60, -36), QtCore.QPoint(144 - 96, 84))
-            path.lineTo(QtCore.QPoint(144 - 144, 252))
+            path = QtGui.QPainterPath(QtCore.QPointF(144 - 0, 188))
+            path.cubicTo(QtCore.QPointF(144 - 36, -36), QtCore.QPointF(144 - 60, -36), QtCore.QPointF(144 - 96, 84))
+            path.lineTo(QtCore.QPointF(144 - 144, 252))
             self.aux[1].setSize(144, 252, -144 + 18, -156)
         elif fireDirection == 4:
             # Straight up
             self.aux[0].setSize(135, 132, -43, -35)
-            path = QtGui.QPainterPath(QtCore.QPoint(26, 0))
-            path.lineTo(QtCore.QPoint(26, 656))
+            path = QtGui.QPainterPath(QtCore.QPointF(26, 0))
+            path.lineTo(QtCore.QPointF(26, 656))
             self.aux[1].setSize(48, 656, 0, -632)
         elif fireDirection == 5:
             # 45 deg to the right
             self.aux[0].setSize(90, 98, 0, -1)
-            path = QtGui.QPainterPath(QtCore.QPoint(0, 320))
-            path.lineTo(QtCore.QPoint(264, 64))
-            path.cubicTo(QtCore.QPoint(348, -14), QtCore.QPoint(420, -14), QtCore.QPoint(528, 54))
-            path.lineTo(QtCore.QPoint(1036, 348))
+            path = QtGui.QPainterPath(QtCore.QPointF(0, 320))
+            path.lineTo(QtCore.QPointF(264, 64))
+            path.cubicTo(QtCore.QPointF(348, -14), QtCore.QPointF(420, -14), QtCore.QPointF(528, 54))
+            path.lineTo(QtCore.QPointF(1036, 348))
             self.aux[1].setSize(1036, 348, 24, -252)
         elif fireDirection == 6:
             # 45 deg to the left
             self.aux[0].setSize(91, 98, -42, -1)
-            path = QtGui.QPainterPath(QtCore.QPoint(1036 - 0, 320))
-            path.lineTo(QtCore.QPoint(1036 - 264, 64))
-            path.cubicTo(QtCore.QPoint(1036 - 348, -14), QtCore.QPoint(1036 - 420, -14), QtCore.QPoint(1036 - 528, 54))
-            path.lineTo(QtCore.QPoint(1036 - 1036, 348))
+            path = QtGui.QPainterPath(QtCore.QPointF(1036 - 0, 320))
+            path.lineTo(QtCore.QPointF(1036 - 264, 64))
+            path.cubicTo(QtCore.QPointF(1036 - 348, -14), QtCore.QPointF(1036 - 420, -14), QtCore.QPointF(1036 - 528, 54))
+            path.lineTo(QtCore.QPointF(1036 - 1036, 348))
             self.aux[1].setSize(1036, 348, -1036 + 24, -252)
         self.aux[1].setPath(path)
 
@@ -5247,23 +5291,23 @@ class SpriteImage_GhostDoor(SpriteImage_Door):  # 276
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.doorName = 'GhostDoor'
-        self.doorDimensions = (0, 0, 32, 48)
+        self.doorDimensions = (0, 0, 34, 48)
 
 
 class SpriteImage_TowerDoor(SpriteImage_Door):  # 277
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.doorName = 'TowerDoor'
-        self.doorDimensions = (-2, -13, 53, 61)
-        self.entranceOffset = (15, 68)
+        self.doorDimensions = (-2, -12, 53, 61)
+        self.entranceOffset = (15, 66)
 
 
 class SpriteImage_CastleDoor(SpriteImage_Door):  # 278
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.doorName = 'CastleDoor'
-        self.doorDimensions = (-2, -13, 53, 61)
-        self.entranceOffset = (15, 68)
+        self.doorDimensions = (-2, -12, 53, 61)
+        self.entranceOffset = (15, 66)
 
 
 class SpriteImage_GiantIceBlock(SLib.SpriteImage_StaticMultiple):  # 280
@@ -5375,6 +5419,7 @@ class SpriteImage_Parabeetle(SLib.SpriteImage_StaticMultiple):  # 291
 
         direction = self.parent.spritedata[5] & 3
         self.image = ImageCache['Parabeetle%d' % direction]
+        self.yOffset = -6
 
         if direction == 0 or direction > 3:  # right
             self.xOffset = -12
@@ -5401,6 +5446,7 @@ class SpriteImage_HeavyParabeetle(SLib.SpriteImage_StaticMultiple):  # 292
 
         direction = self.parent.spritedata[5] & 3
         self.image = ImageCache['HeavyParabeetle%d' % direction]
+        self.yOffset = -60
 
         if direction == 0 or direction > 3:  # right
             self.xOffset = -38
@@ -6017,7 +6063,7 @@ class SpriteImage_BooCircle(SLib.SpriteImage):  # 323
         super().__init__(parent, 1.5)
 
         self.BooAuxImage = QtGui.QPixmap(1024, 1024)
-        self.BooAuxImage.fill(Qt.transparent)
+        self.BooAuxImage.fill(Qt.GlobalColor.transparent)
         self.aux.append(SLib.AuxiliaryImage(parent, 1024, 1024))
         self.aux[0].image = self.BooAuxImage
         offsetX = ImageCache['Boo1'].width() / 4
@@ -6048,13 +6094,13 @@ class SpriteImage_BooCircle(SLib.SpriteImage):  # 323
         # Give up if the data is invalid
         if inrad > outrad:
             null = QtGui.QPixmap(2, 2)
-            null.fill(Qt.transparent)
+            null.fill(Qt.GlobalColor.transparent)
             self.aux[0].image = null
             return
 
         # Create a pixmap
         pix = QtGui.QPixmap(1024, 1024)
-        pix.fill(Qt.transparent)
+        pix.fill(Qt.GlobalColor.transparent)
         paint = QtGui.QPainter(pix)
         paint.setOpacity(opacity)
 
@@ -6572,7 +6618,7 @@ class SpriteImage_RockyWrench(SLib.SpriteImage_Static):  # 352
             parent,
             1.5,
             ImageCache['RockyWrench'],
-            (4, -41),
+            (-2, -41),
         )
 
     @staticmethod
@@ -6860,12 +6906,12 @@ class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
             parent,
             1.5,
             ImageCache['FlashlightRaft'],
-            (-16, -20),
+            (-11, -20),
         )
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 72, 114))
+        self.aux.append(SLib.AuxiliaryImage(parent, 132, 120))
         self.aux[0].image = ImageCache['FlashlightLamp']
-        self.aux[0].setPos(0, -114)
+        self.aux[0].setPos(-22, -91)
 
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 144, 30))
         self.aux[1].setIsBehindSprite(False)
@@ -6879,7 +6925,7 @@ class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
         pathcontrolled = self.parent.spritedata[5] & 1
         midway = (self.parent.spritedata[5] >> 4) & 1
 
-        self.aux[1].setSize(24, 24, 144, 30) if pathcontrolled else self.aux[1].setSize(0, 0)
+        self.aux[1].setSize(24, 24, 136, 30) if pathcontrolled else self.aux[1].setSize(0, 0)
 
         if midway:
             self.alpha = 0.5
@@ -7179,10 +7225,10 @@ class SpriteImage_Bush(SLib.SpriteImage_StaticMultiple):  # 387
         size = props & 3
 
         self.offset = (
-            (-22, -26),
-            (-28, -46),
-            (-41, -62),
-            (-52, -80),
+            (-22, -25),
+            (-30, -44),
+            (-40, -60),
+            (-53, -78),
         )[size]
 
         self.image = ImageCache['Bush%d%d' % (style, size)]
@@ -7232,7 +7278,7 @@ class SpriteImage_PropellerBlock(SLib.SpriteImage_Static):  # 393
             parent,
             1.5,
             ImageCache['PropellerBlock'],
-            (-1, -6),
+            (-3, -6),
         )
 
     @staticmethod
@@ -8425,23 +8471,12 @@ class SpriteImage_PotPlatform(SLib.SpriteImage_Static):  # 471
             parent,
             1.5,
             ImageCache['PotPlatform'],
-            (-12, -2),
+            (-9, -3),
         )
 
     @staticmethod
     def loadImages():
-        if 'PotPlatform' in ImageCache: return
-        top = SLib.GetImg('pot_platform_top.png')
-        mid = SLib.GetImg('pot_platform_middle.png')
-        full = QtGui.QPixmap(77, 722)
-
-        full.fill(Qt.transparent)
-        painter = QtGui.QPainter(full)
-        painter.drawPixmap(0, 0, top)
-        painter.drawTiledPixmap(12, 143, 52, 579, mid)
-        del painter
-
-        ImageCache['PotPlatform'] = full
+        SLib.loadIfNotInImageCache('PotPlatform', 'pot_platform.png')
 
 
 class SpriteImage_IceFloeGenerator(SLib.SpriteImage):  # 472
@@ -8555,7 +8590,7 @@ class SpriteImage_BowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
         upsideDown = self.parent.spritedata[5] & 1
         if not upsideDown:
             self.image = ImageCache['ELSwitch']
-            self.offset = (-15, -24)
+            self.offset = (-15, -25)
         else:
             self.image = ImageCache['ELSwitchU']
             self.offset = (-15, 0)

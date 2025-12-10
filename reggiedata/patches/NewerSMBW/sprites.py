@@ -3,7 +3,7 @@
 # By Kamek64, MalStar1000, RoadrunnerWMC
 
 
-from PyQt5 import QtCore, QtGui
+from PyQt6 import QtCore, QtGui
 Qt = QtCore.Qt
 
 import spritelib as SLib
@@ -126,7 +126,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
     def paint(self, painter):
         super().paint(painter)
 
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         if self.tilenum < len(SLib.Tiles):
             painter.drawPixmap(0, 0, SLib.GetTile(self.tilenum))
         painter.drawPixmap(0, 0, self.image)
@@ -1027,7 +1027,7 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
         color = ("", "pumpkin", "", "jungle", "lava")[style]
 
         pix = QtGui.QPixmap(100, 252)
-        pix.fill(Qt.transparent)
+        pix.fill(Qt.GlobalColor.transparent)
         paint = QtGui.QPainter(pix)
 
         if style == 2:
@@ -1124,7 +1124,7 @@ class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
 
         if 'YoshiFire' not in ImageCache:
             pix = QtGui.QPixmap(48, 24)
-            pix.fill(Qt.transparent)
+            pix.fill(Qt.GlobalColor.transparent)
             paint = QtGui.QPainter(pix)
             paint.drawPixmap(0, 0, ImageCache['BlockContents'][9])
             paint.drawPixmap(24, 0, ImageCache['BlockContents'][3])
@@ -1372,7 +1372,7 @@ class SpriteImage_NewerGiantGoomba(SLib.SpriteImage_StaticMultiple):  # 198
         super().dataChanged()
 
 
-class SpriteImage_NewerMegaGoomba(SLib.SpriteImage_StaticMultiple):  # 198
+class SpriteImage_NewerMegaGoomba(SLib.SpriteImage_StaticMultiple):  # 199
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('MegaGoomba', 'mega_goomba.png')
@@ -1716,6 +1716,7 @@ class SpriteImage_NewerParabeetle(SLib.SpriteImage_StaticMultiple):  # 291
 
     def dataChanged(self):
         
+        self.yOffset = -6
         direction = self.parent.spritedata[5] & 3
         colour = self.parent.spritedata[2] & 15
         if colour > 10:
@@ -1755,6 +1756,7 @@ class SpriteImage_NewerHeavyParabeetle(SLib.SpriteImage_StaticMultiple):  # 292
 
     def dataChanged(self):
 
+        self.yOffset = -60
         direction = self.parent.spritedata[5] & 3
         colour = self.parent.spritedata[2] & 15
         if colour > 10:
@@ -2125,10 +2127,10 @@ class SpriteImage_NewerBush(SLib.SpriteImage_StaticMultiple):  # 387
             )[size]
         else:
             self.offset = (
-                (-22, -26),
-                (-28, -46),
-                (-41, -62),
-                (-52, -80),
+                (-22, -25),
+                (-30, -44),
+                (-40, -60),
+                (-53, -78),
             )[size]
 
         super().dataChanged()
