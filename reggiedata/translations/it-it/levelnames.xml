@@ -12,9 +12,9 @@
       <level file="01-24" name="Mondo 1-Castello" />
       <level file="01-36" name="Mondo 1-Cannone" />
       <level file="01-41" name="Castello di Peach" />
-      <level file="01-26" name="Casa Toad - Esplosione 1UP" />
-      <level file="01-27" name="Casa Toad - Pannelli Potenziamento (1)" />
-      <level file="01-29" name="Casa Toad - Pannelli Potenziamento (2)" />
+      <level file="01-26" name="Casa Toad - Esplosione 1-Up" />
+      <level file="01-27" name="Casa Toad - Pannelli Power-Up (1)" />
+      <level file="01-29" name="Casa Toad - Pannelli Power-Up (2)" />
       <level file="01-28" name="Casa Toad - Cassa Stella" />
       <level file="01-33" name="Imboscata Goomba 1" />
       <level file="01-34" name="Imboscata Goomba 2" />
@@ -31,8 +31,8 @@
       <level file="02-06" name="Mondo 2-6" />
       <level file="02-24" name="Mondo 2-Castello" />
       <level file="02-36" name="Mondo 2-Cannone" />
-      <level file="02-26" name="Casa Toad - Esplosione 1UP" />
-      <level file="02-27" name="Casa Toad - Pannelli Potenziamento" />
+      <level file="02-26" name="Casa Toad - Esplosione 1-Up" />
+      <level file="02-27" name="Casa Toad - Pannelli Power-Up" />
       <level file="02-28" name="Casa Toad - Cassa Stella" />
       <level file="02-33" name="Imboscata della Trappola su Sabbia 1" />
       <level file="02-34" name="Imboscata della Trappola su Sabbia 2" />
@@ -49,9 +49,9 @@
       <level file="03-05" name="Mondo 3-5" />
       <level file="03-24" name="Mondo 3-Castello" />
       <level file="03-36" name="Mondo 3-Cannone" />
-      <level file="03-26" name="Casa Toad - Esplosione 1UP" />
-      <level file="03-27" name="Casa Toad - Pannelli Potenziamento (1)" />
-      <level file="03-29" name="Casa Toad - Pannelli Potenziamento (2)" />
+      <level file="03-26" name="Casa Toad - Esplosione 1-Up" />
+      <level file="03-27" name="Casa Toad - Pannelli Power-Up (1)" />
+      <level file="03-29" name="Casa Toad - Pannelli Power-Up (2)" />
       <level file="03-28" name="Casa Toad - Cassa Stella" />
       <level file="03-33" name="Imboscata dei Fratelli Ghiaccio 1" />
       <level file="03-34" name="Imboscata dei Fratelli Ghiaccio 2" />
@@ -69,8 +69,8 @@
       <level file="04-24" name="Mondo 4-Castello" />
       <level file="04-38" name="Mondo 4-Nave" />
       <level file="04-36" name="Mondo 4-Cannone" />
-      <level file="04-26" name="Casa Toad - Esplosione 1UP" />
-      <level file="04-27" name="Casa Toad - Pannelli Potenziamento" />
+      <level file="04-26" name="Casa Toad - Esplosione 1-Up" />
+      <level file="04-27" name="Casa Toad - Pannelli Power-Up" />
       <level file="04-28" name="Casa Toad - Cassa Stella (1)" />
       <level file="04-29" name="Casa Toad - Cassa Stella (2)" />
       <level file="04-33" name="Imboscata Pesce Spino 1" />
@@ -88,9 +88,9 @@
       <level file="05-05" name="Mondo 5-5" />
       <level file="05-24" name="Mondo 5-Castello" />
       <level file="05-36" name="Mondo 5-Cannone" />
-      <level file="05-26" name="Casa Toad - Esplosione 1UP" />
-      <level file="05-27" name="Casa Toad - Pannelli Potenziamento (1)" />
-      <level file="05-29" name="Casa Toad - Pannelli Potenziamento (2)" />
+      <level file="05-26" name="Casa Toad - Esplosione 1-Up" />
+      <level file="05-27" name="Casa Toad - Pannelli Power-Up (1)" />
+      <level file="05-29" name="Casa Toad - Pannelli Power-Up (2)" />
       <level file="05-28" name="Casa Toad - Cassa Stella" />
       <level file="05-33" name="Imboscata Pianta Piranha 1" />
       <level file="05-34" name="Imboscata Pianta Piranha 2" />
@@ -108,8 +108,8 @@
       <level file="06-24" name="Mondo 6-Castello" />
       <level file="06-38" name="Mondo 6-Nave" />
       <level file="06-36" name="Mondo 6-Cannone" />
-      <level file="06-26" name="Casa Toad - Esplosione 1UP" />
-      <level file="06-27" name="Casa Toad - Pannelli Potenziamento" />
+      <level file="06-26" name="Casa Toad - Esplosione 1-Up" />
+      <level file="06-27" name="Casa Toad - Pannelli Power-Up" />
       <level file="06-28" name="Casa Toad - Cassa Stella" />
       <level file="06-33" name="Imboscata Pallottolo Bill 1" />
       <level file="06-34" name="Imboscata Pallottolo Bill 2" />
@@ -126,8 +126,8 @@
       <level file="07-05" name="Mondo 7-5" />
       <level file="07-06" name="Mondo 7-6" />
       <level file="07-24" name="Mondo 7-Castello" />
-      <level file="07-26" name="Casa Toad - Esplosione 1UP" />
-      <level file="07-27" name="Casa Toad - Pannelli Potenziamento" />
+      <level file="07-26" name="Casa Toad - Esplosione 1-Up" />
+      <level file="07-27" name="Casa Toad - Pannelli Power-Up" />
       <level file="07-28" name="Casa Toad - Cassa Stella (1)" />
       <level file="07-29" name="Casa Toad - Cassa Stella (2)" />
       <level file="07-33" name="Imboscata Lakitu 1" />
@@ -146,8 +146,8 @@
       <level file="08-07" name="Mondo 8-7" />
       <level file="08-38" name="Mondo 8-Nave" />
       <level file="08-24" name="Mondo 8-Castello" />
-      <level file="08-26" name="Casa Toad - Esplosione 1UP" />
-      <level file="08-27" name="Casa Toad - Pannelli Potenziamento" />
+      <level file="08-26" name="Casa Toad - Esplosione 1-Up" />
+      <level file="08-27" name="Casa Toad - Pannelli Power-Up" />
       <level file="08-28" name="Casa Toad - Cassa Stella" />
       <level file="08-33" name="Imboscata Fiammetto 1" />
       <level file="08-34" name="Imboscata Fiammetto 2" />
@@ -163,8 +163,8 @@
       <level file="09-06" name="Mondo 9-6" />
       <level file="09-07" name="Mondo 9-7" />
       <level file="09-08" name="Mondo 9-8" />
-      <level file="09-26" name="Casa Toad - Esplosione 1UP" />
-      <level file="09-27" name="Casa Toad - Pannelli Potenziamento" />
+      <level file="09-26" name="Casa Toad - Esplosione 1-Up" />
+      <level file="09-27" name="Casa Toad - Pannelli Power-Up" />
       <level file="09-28" name="Casa Toad - Cassa Stella" />
    </category>
 

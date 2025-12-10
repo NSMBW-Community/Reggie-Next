@@ -9,8 +9,8 @@
 17:Mini Tubo Rivolto Giù
 18:Mini Tubo Rivolto Sinistra
 19:Mini Tubo Rivolto Destre
-22:Pipe Rivolto Verso lo Schermo
-7:Caduta Veloce
+22:Tubo Rivolto Verso lo Schermo
+7:Caduta Rapida
 8:Schianto a Terra
 9:Scivolo
 10:Nuoto
@@ -18,13 +18,13 @@
 24:Salto (Rivolto a Sinistra)
 21:Entrata su Pianta
 23:Entrata al Boss (Fermo)
-25:Entrata Boss (Saltando a Destra)
-26:Entrata Boss (Cadendo verso Destra)
+25:Entrata al Boss (Saltando a Destra)
+26:Entrata al Boss (Cadendo verso Destra)
 1:Normale?
 11:Normale (Spostato Lievemente)
 12:Normale (Spostato Lievemente)
 13:Normale (Spostato Lievemente)
-14:Sconosciuto
-15:Sconosciuto
-28:Sconosciuto (Crash)
-29:Sconosciuto (Freeze)
+14:Unknown
+15:Unknown
+28:Unknown (Crash)
+29:Unknown (Freeze)
