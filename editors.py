@@ -386,7 +386,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
 
         self.loops = QtWidgets.QCheckBox()
         self.loops.setToolTip(globals_.trans.string('PathDataEditor', 1))
-        self.loops.stateChanged.connect(self.HandleLoopsChanged)
+        self.loops.clicked.connect(self.HandleLoopsChanged)
 
         # create a layout
         layout = QtWidgets.QFormLayout()
@@ -484,12 +484,11 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         if self.path_node.path.set_node_data(self.path_node, delay=i):
             SetDirty()
 
-    def HandleLoopsChanged(self, i):
-        if self.UpdateFlag or self.path_node.path._loops == (i == QtCore.Qt.CheckState.Checked):
-            return
+    def HandleLoopsChanged(self, checked):
+        if self.UpdateFlag or self.path_node.path._loops == checked: return
 
-        if self.path_node.path.set_loops(i == QtCore.Qt.CheckState.Checked):
-            SetDirty()
+        self.path_node.path.set_loops(checked)
+        SetDirty()
 
     def HandlePathIdChanged(self, i):
         if self.UpdateFlag or self.path_node.pathid == i:
