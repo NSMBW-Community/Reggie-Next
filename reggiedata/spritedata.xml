@@ -6477,8 +6477,8 @@
     </list>
   </sprite> <!-- #433: Floating ? Block -->
 
-  <sprite id="434" name="Warp Cannon" notes="A large cannon that will flag a level for completion.">
-    <list nybble="12.3-12.4" title="Inscription" comment="This determines which number is printed on the side of the giant cannon." comment2="The level that the cannon actually travels to is hardcoded in Retail NSMBW based on its course ID. Changing this setting will not change the destination.">
+  <sprite id="434" name="Warp Cannon" notes="A large cannon that will flag a level for completion. The cannon will only send the player to a different world if placed in an XX-36 level slot.">
+    <list nybble="12.3-12.4" title="Inscription" comment="This determines which number is printed on the side of the cannon." comment2="A fourth texture can be used by setting nybble 12 to 3 and adding another texture to the animation in the model." advancedcomment="The world that the cannon actually travels to is hardcoded based on this level's world ID. Changing this setting will not change the destination.">
       <entry value="0">World 5</entry>
       <entry value="1">World 6</entry>
       <entry value="2">World 8</entry>
