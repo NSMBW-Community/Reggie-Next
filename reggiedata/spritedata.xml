@@ -6715,11 +6715,9 @@
     <value nybble="6" title="Unknown Value 6" advanced="True" advancedcomment="Nintendo uses value 1 in 5-01 A1. No visible effect."/>
   </sprite> <!-- #464: Climbable Swinging Vine/Chain -->
 
-  <!-- Determine if Value 1 Jungle Birds is different from Value 5 Jungle Birds -->
-  <!-- Check if it crashes from using more than one different type of ambiance / more than one of the same type of ambiance -->
   <sprite id="465" name="Effect - Ambiance Sound Effects" notes="This generates various ambiance effects for the Zone, such as birds and thunder.">
-    <dependency notes="If this sprite is placed more than once in the same Zone, the game will crash."/>
-    <list nybble="12" title="Type" comment="This determines the ambiance used in the Zone.">
+    <dependency notes="Only one ambient sound can be played at a time, placing multiple of this sprite will result in only one of them playing a sound. Other ambient sounds, such as rising/falling lava, or boss room ambience, will usually override this sprite's sound."/>
+    <list nybble="12" title="Type" comment="This determines the ambiance used in the Zone." comment2="Values other than those listed are the same as Jungle Birds.">
       <entry value="0">Lava Rumbling</entry>
       <entry value="1">Jungle Birds</entry>
       <entry value="2">Thunder</entry>
