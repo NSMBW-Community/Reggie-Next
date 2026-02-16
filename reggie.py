@@ -1905,9 +1905,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                     objx = int(split[2])
                     objy = int(split[3])
+                    type = int(split[1])
                     data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10]]))
 
-                    newitem = self.CreateSprite(objx, objy, int(split[1]), data)
+                    # Check if sprite data exists for this type
+                    if not (0 <= type < globals_.NumSprites) or globals_.Sprites[type] is None:
+                        # Unknown sprite, skip it
+                        continue
+
+                    newitem = self.CreateSprite(objx, objy, type, data)
                     sprites.append(newitem)
 
             except ValueError:
@@ -2162,6 +2168,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         spr.positionChanged = self.HandleSprPosChange
 
         if add_to_scene:
+            # Check if sprite data exists for this type
+            if not (0 <= id_ < globals_.NumSprites) or globals_.Sprites[id_] is None:
+                # Unknown sprite, don't create
+                return
+
             self.spriteList.addSprite(spr)
             globals_.Area.sprites.append(spr)
 
@@ -3281,6 +3292,22 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Load it
         if not globals_.Level.load(levelData, areaNum):
             raise Exception
+
+        # https://github.com/Zement/Reggie/blob/master/reggie.py#L3630-L3637
+        # Check for unknown sprite IDs and show warning message
+        if hasattr(globals_.Area, 'unknown_sprite_ids') and globals_.Area.unknown_sprite_ids is not None:
+            sprite_ids = sorted(globals_.Area.unknown_sprite_ids)
+
+            title = globals_.trans.string('Err_UnknownSprite', 0)
+            if len(sprite_ids) == 1:
+                msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
+            else:
+                if map(str, sprite_ids) is not None:
+                    msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
+                else:
+                    # This means we have unknown sprites, but in a different Area
+                    msg = globals_.trans.string('Err_UnknownSprite', 3)
+            QtWidgets.QMessageBox.warning(None, title, msg)
 
         self.ResetPalette()
 

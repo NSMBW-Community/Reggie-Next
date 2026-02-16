@@ -732,6 +732,27 @@ def LoadGameDef(name=None, dlg=None):
                 else:
                     s.setImageObj(SLib.SpriteImage)
 
+            # https://github.com/Zement/Reggie/blob/master/gamedef.py#L1036-L1053
+            # Recalculate unknown sprite IDs based on current patch's sprite definitions
+            unknown_sprite_ids = set()
+            for sprite in globals_.Area.sprites:
+                if sprite.type >= globals_.NumSprites or globals_.Sprites[sprite.type] is None:
+                    unknown_sprite_ids.add(sprite.type)
+
+            # Update the Area's unknown_sprite_ids
+            globals_.Area.unknown_sprite_ids = unknown_sprite_ids
+            
+            # Check for unknown sprite IDs and show warning icon in status bar
+            if unknown_sprite_ids:
+                sprite_ids = sorted(unknown_sprite_ids)
+
+                title = globals_.trans.string('Err_UnknownSprite', 0)
+                if len(sprite_ids) == 1:
+                    msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
+                else:
+                    msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
+                QtWidgets.QMessageBox.warning(None, title, msg)
+
         if dlg: dlg.setValue(5)
 
         # Reload the sprite-picker text

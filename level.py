@@ -549,6 +549,7 @@ class Area:
         spritedata = self.blocks[7]
         sprstruct = struct.Struct('>HHH8sxx')
         sprites = []
+        unknown_sprite_ids = set()
 
         unpack = sprstruct.unpack_from
         append = sprites.append
@@ -558,9 +559,20 @@ class Area:
         for offset in range(0, len(spritedata) - 4, 16):
             data = unpack(spritedata, offset)
             append(obj(*data))
+            type_, x, y, sd = data
+
+            # Check if sprite ID is valid
+            if 0 <= type_ < globals_.NumSprites and globals_.Sprites[type_] is not None:
+                pass
+            else:
+                # Unknown sprite ID - track it and use default settings
+                unknown_sprite_ids.add(type_)
 
         self.sprites = sprites
         self.force_loaded_sprites = self.loaded_sprites - set(sprite.type for sprite in sprites)
+
+        # Store unknown sprite IDs for later warning
+        self.unknown_sprite_ids = unknown_sprite_ids
 
     def LoadLoadedSprites(self):
         """
@@ -1048,6 +1060,11 @@ class Area:
         decoder = SpriteEditorWidget.PropertyDecoder()
 
         for sprite in self.sprites:
+            # Check if sprite data exists for this type
+            if not (0 <= sprite.type < globals_.NumSprites) or globals_.Sprites[sprite.type] is None:
+                # Unknown sprite, skip it
+                continue
+
             sdef = globals_.Sprites[sprite.type]
 
             # Find what values are used by this sprite

@@ -1022,7 +1022,13 @@ class ReggieTranslation:
             'SpriteUpgradeDlg': {
                 0: 'Sprite Upgrader',
                 1: 'Reggie Next has detected that the game patch\'s sprites.py file is outdated, and must be upgraded to PyQt6 in order to work correctly.[br][br]Would you like to upgrade?[br]A copy of the old file will remain in the game patch folder.',
-            }
+            },
+            'Err_UnknownSprite': {
+                0: 'Error',
+                1: 'Warning: This level contains a sprite ID [id] which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.',
+                2: 'Warning: This level contains sprite IDs ([ids]) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.',
+                3: 'Warning: This level contains sprite IDs (in another Area) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.',
+            },
         }
 
     def InitFromXML(self, name):
