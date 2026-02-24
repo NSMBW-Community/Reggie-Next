@@ -3304,9 +3304,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             else:
                 if map(str, sprite_ids) is not None:
                     msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
-                else:
-                    # This means we have unknown sprites, but in a different Area
-                    msg = globals_.trans.string('Err_UnknownSprite', 3)
             QtWidgets.QMessageBox.warning(None, title, msg)
 
         self.ResetPalette()

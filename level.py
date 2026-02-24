@@ -549,7 +549,7 @@ class Area:
         spritedata = self.blocks[7]
         sprstruct = struct.Struct('>HHH8sxx')
         sprites = []
-        unknown_sprite_ids = set()
+        unknown_sprite_ids = None
 
         unpack = sprstruct.unpack_from
         append = sprites.append
@@ -566,6 +566,7 @@ class Area:
                 pass
             else:
                 # Unknown sprite ID - track it and use default settings
+                unknown_sprite_ids = set()
                 unknown_sprite_ids.add(type_)
 
         self.sprites = sprites
