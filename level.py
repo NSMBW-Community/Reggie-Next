@@ -1099,6 +1099,10 @@ class Area:
         # Remove the sprite from the sprites list
         self.sprites.remove(sprite)
 
+        # Skip unknown sprites
+        if sprite.type >= globals_.NumSprites or globals_.Sprites[sprite.type] is None:
+            return
+
         # Remove the ids the sprite used from the id list
         decoder = SpriteEditorWidget.PropertyDecoder()
         sdef = globals_.Sprites[sprite.type]
