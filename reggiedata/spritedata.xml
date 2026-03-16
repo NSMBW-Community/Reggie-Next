@@ -2560,8 +2560,9 @@
   </sprite>
 
   <sprite id="166" name="Snake Block (Ice)">
-  <dependency notes="The sprite snaps to the Path Node location. From Node-0 to Node-1, it must be a straight horizontal line, and it must be at least as long as the Snake Block itself. Straight lines and exact 45° angles are recommended, as after each Node, the Snake Block will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
-    <value nybble="11" title="Path ID" idtype="Path"/>
+  <dependency notes="The sprite snaps to the Path Node location. From Node 0 to Node 1, it must be a straight horizontal line, and it must be at least as long as the Snake Block itself. Straight lines and exact 45° angles are recommended, as after each Node, the Snake Block will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
+    <checkbox nybble="7.4" title="Useless Flag 7 (1)" comment="This value is read by the game, but never used for anything. Used in retail 03-24 A1."/>
+	<value nybble="11" title="Path ID" idtype="Path"/>
     <value nybble="8-9" title="Starting Node" comment="This determines the Node of the Path that the Snake Block will start moving from."/>
     <list nybble="12" title="Length">
       <entry value="0">3 Blocks</entry>
@@ -2581,13 +2582,13 @@
       <entry value="14">17 Blocks</entry>
       <entry value="15">18 Blocks</entry>
     </list>
-    <list nybble="10.3-10.4" title="Speed">
+    <list nybble="10.3-10.4" title="Speed" comment2="Due to a bug, Fast will cause Snake Blocks shorter than 7 blocks to crash.">
       <entry value="0">Very Slow (0.5)</entry>
       <entry value="1">Slow (1.0)</entry>
       <entry value="2">Fast (1.4)</entry>
       <entry value="3">Slow (1.0)</entry>
     </list>
-    <list nybble="5" title="End Animation" comment="This determines what the Snake Block will do when it reaches the final Node of the Path. Values higher than 3 cause a crash.">
+    <list nybble="5" title="End Animation" comment="This determines what the Snake Block will do when it reaches the final Node of the Path. For modes other than 0, the Snake Block will shake for 60 frames before falling. Additionally, the blocks lose collision when they start falling.[br][br][b]Stop:[/b] The Snake Block will stop at the end of the Path, and remain stationary.[br][b]Fall Straight Through Last Node:[/b] The blocks will individually move to the position of the starting block, and fall straight down.[br][b]Stop, Fall Piece by Piece[/b]: The blocks will individually fall, beginning with the starting block (right to left).[br][b]Stop, Fall All at Once:[/b] The Snake Block will fall as one entire piece." advancedcomment="Values higher than 3 cause a crash.">
       <entry value="0">Stop</entry>
       <entry value="1">Fall Straight Through Last Node</entry>
       <entry value="2">Stop, Fall Piece by Piece</entry>
