@@ -69,8 +69,8 @@
 		</stringlist>
 		<string id="34">Credits</string>
 		<string id="35">[b]Credits:[/b][br]Activates the game's Credits mode for this area</string>
-		<string id="36">Ambush</string>
-		<string id="37">[b]Ambush:[/b][br]Activates the game's Ambush mode for this area</string>
+		<string id="36">Spawn Facing Left</string>
+		<string id="37">[b]Spawn Facing Left:[/b][br]Spawns all players facing left instead of right. Enabled in all Ambush stages.</string>
 		<string id="38">Unknown Option 1</string>
 		<string id="39">[b]Unknown Option 1:[/b] We haven't managed to figure out what this does, or if it does anything. This option is turned off in most levels.</string>
 		<string id="40">Unknown Option 2</string>

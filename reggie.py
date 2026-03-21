@@ -4076,7 +4076,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.Area.toadHouseType = dlg.LoadingTab.toadHouseType.currentIndex()
         globals_.Area.wrapFlag = dlg.LoadingTab.wrap.isChecked()
         globals_.Area.creditsFlag = dlg.LoadingTab.credits.isChecked()
-        globals_.Area.ambushFlag = dlg.LoadingTab.ambush.isChecked()
+        globals_.Area.faceLeftFlag = dlg.LoadingTab.faceLeft.isChecked()
         globals_.Area.unkFlag1 = dlg.LoadingTab.unk1.isChecked()
         globals_.Area.unkFlag2 = dlg.LoadingTab.unk2.isChecked()
         globals_.Area.unkVal1 = dlg.LoadingTab.unk3.value()

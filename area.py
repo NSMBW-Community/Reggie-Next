@@ -62,9 +62,9 @@ class LoadingTab(QtWidgets.QWidget):
         self.credits.setToolTip(globals_.trans.string('AreaDlg', 35))
         self.credits.setChecked(globals_.Area.creditsFlag)
 
-        self.ambush = QtWidgets.QCheckBox(globals_.trans.string('AreaDlg', 36))
-        self.ambush.setToolTip(globals_.trans.string('AreaDlg', 37))
-        self.ambush.setChecked(globals_.Area.ambushFlag)
+        self.faceLeft = QtWidgets.QCheckBox(globals_.trans.string('AreaDlg', 36))
+        self.faceLeft.setToolTip(globals_.trans.string('AreaDlg', 37))
+        self.faceLeft.setChecked(globals_.Area.faceLeftFlag)
 
         self.unk1 = QtWidgets.QCheckBox(globals_.trans.string('AreaDlg', 38))
         self.unk1.setToolTip(globals_.trans.string('AreaDlg', 39))
@@ -90,7 +90,7 @@ class LoadingTab(QtWidgets.QWidget):
         settingsLayout.addRow(globals_.trans.string('AreaDlg', 32), self.toadHouseType)
         settingsLayout.addRow(self.wrap)
         settingsLayout.addRow(self.credits)
-        settingsLayout.addRow(self.ambush)
+        settingsLayout.addRow(self.faceLeft)
         settingsLayout.addRow(self.unk1)
         settingsLayout.addRow(self.unk2)
         settingsLayout.addRow(globals_.trans.string('AreaDlg', 42), self.unk3)

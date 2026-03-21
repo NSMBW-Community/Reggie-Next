@@ -236,7 +236,7 @@ class Area:
         self.timeLimit = 300
         self.creditsFlag = False
         self.startEntrance = 0
-        self.ambushFlag = False
+        self.faceLeftFlag = False
         self.toadHouseType = 0
         self.wrapFlag = False
         self.unkFlag1 = False
@@ -511,7 +511,7 @@ class Area:
         Loads block 2, the general options
         """
         data = struct.unpack('>IIHh?BxxB?Bx', self.blocks[1])
-        defEventsA, defEventsB, wrapByte, self.timeLimit, self.creditsFlag, unkVal, self.startEntrance, self.ambushFlag, self.toadHouseType = data
+        defEventsA, defEventsB, wrapByte, self.timeLimit, self.creditsFlag, unkVal, self.startEntrance, self.faceLeftFlag, self.toadHouseType = data
 
         self.wrapFlag = bool(wrapByte & 1)
         self.unkFlag1 = bool(wrapByte >> 3)
@@ -803,7 +803,7 @@ class Area:
         self.blocks[1] = struct.pack('>IIHh?BBBB?Bx',
             self.defEvents & 0xFFFFFFFF, self.defEvents >> 32, wrapByte,
             self.timeLimit, self.creditsFlag, unkVal, unkVal, unkVal,
-            self.startEntrance, self.ambushFlag, self.toadHouseType
+            self.startEntrance, self.faceLeftFlag, self.toadHouseType
         )
 
         """
