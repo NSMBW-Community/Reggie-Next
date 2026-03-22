@@ -1231,7 +1231,7 @@
   </sprite> <!-- #200: Micro Goomba -->
 
   <sprite id="203" name="Chest" noyoshi="True" notes="A chest that will award some type of inventory item to the player. Note that opening a chest will complete the level with the standard exit.">
-    <dependency notes="NewerSMBW rewrote this sprite's settings data in a way that breaks Ambush levels. As such the following information is outdated. [432] is still required, however.&lt;br&gt;&lt;br&gt;Requires ONE of these two sprites in order to not cause the game to crash. Which one depends on how the Chest is being used. If you're using it as part of an Ambush level, [454] is required. If you're using it without the Ambush arrangement, [432] is required to be placed somewhere in the level, even if it's outside of the active Zones. Additionally, if you allow the player to leave the vicinity of the Chest before it exits the player from the level, they will be able to open it again for another item, so do not allow the player to do this.">
+    <dependency notes="NewerSMBW rewrote this sprite's settings data in a way that breaks Ambush levels. [432] is still required, however.">
       <suggested sprite="432"/>
       <!--<suggested sprite="454" />-->
     </dependency>

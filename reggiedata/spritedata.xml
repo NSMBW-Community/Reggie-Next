@@ -2974,7 +2974,7 @@
       <suggested sprite="454"/>
     </dependency>
     <checkbox nybble="5" title="Shift Down 2 Units" comment="Shifts the chest model down by 2 units. Used in the World 6 Ambushes to align the chest with the top of the pipe tiles." />
-    <checkbox nybble="9" title="Unknown Flag 9 (1)" comment="No visible change. Checked in all ambushes except those in Worlds 1 and 2." />
+    <checkbox nybble="9" title="Useless Flag 9 (1)" comment="This value is read by the game, but never used for anything. Enabled on all ambushes outside of Worlds 1 and 2." />
     <list nybble="10" title="Chest Type" comment="Determines the behavior and contents of the chest.">
       <entry value="0">Default</entry>
       <entry value="1">Triggered by Ambush Controller</entry>
