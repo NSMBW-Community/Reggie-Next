@@ -6620,7 +6620,6 @@
       <required sprite="185"/>
       <required sprite="203"/>
     </dependency>
-    <value nybble="11-12" title="Unknown Value 11-12" advanced="True" advancedcomment="ASM shows Nybble 11-12 might affect something. Value 0-254."/>
   </sprite> <!-- #454: Ambush Level Controller -->
 
   <sprite id="455" name="Rotation Controlled Hanging Sledge Block" notes="A hanging sledge hammer type block that can be paired with rotation controllers.">
