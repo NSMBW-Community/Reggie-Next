@@ -1274,7 +1274,7 @@ class SpriteImage_Spiny(SLib.SpriteImage_StaticMultiple):  # 25
         orient = self.parent.spritedata[5] & 15
         if orient == 1:
             self.image = ImageCache['SpinyBall']
-            self.yOffset = -2
+            self.yOffset = 8
         elif orient == 2:
             self.image = ImageCache['SpinyShell']
             self.yOffset = 1

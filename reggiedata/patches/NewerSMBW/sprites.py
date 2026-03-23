@@ -459,7 +459,7 @@ class SpriteImage_NewerSpiny(SLib.SpriteImage_StaticMultiple):  # 25
         colour = ("", "orange", "yellow", "green", "blue", "violet", "black", "sidestepper")[colour]
         if orient == 1:
             self.image = ImageCache['SpinyBall']
-            self.yOffset = -2
+            self.yOffset = 8
         elif orient == 2:
             self.image = ImageCache['Spiny%sShell' % colour]
             self.yOffset = 1

@@ -172,7 +172,7 @@
       <entry value="2">Shell (Towards Player)</entry>
       <entry value="3">Upside-Down Shell (Towards Player)</entry>
     </list>
-    <checkbox nybble="11.4" title="Unknown Flag 11" advanced="True" advancedcomment="Unused flag with unknown effects."/>
+    <checkbox nybble="11.4" title="Die if Hit from Below" comment="If enabled, and if the Spiny lands on a block, hitting it while the Spiny is balled up will kill it." comment2="This behavior can be enabled on Lakitus by setting its nybble 12 value to 1." requirednybble="12" requiredval="1"/>
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #25: Spiny -->
 
