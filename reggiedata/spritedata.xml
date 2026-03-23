@@ -641,9 +641,16 @@
    <sprite id="54" name="Lakitu" notes="A stand-alone Lakitu, more useful for small rooms than entire levels. Lakitu will throw Spinies (or coins) at the player and will follow the player until killed.">
     <dependency notes="The stand-alone Lakitu will spawn at exactly the height that it is placed and will remain at that height as it follows the player. Additionally, as it does not respawn after killed unless re-entering the zone, utilizing it for its cloud riding is not recommended for mandatory progress."/>
     <dualbox nybble="10.4" title1="Spawn from the Side" title2="Spawn from the Background" comment="This will determine which animation state is used by the Lakitu when it is first loaded." comment2="Spawning from the Background means that the Lakitu will fly in from the background, facing the camera."/>
-    <dualbox nybble="12.3" title1="Throws Spinies" title2="Throws Coins" comment="This determines what the Lakitu will throw." advancedcomment="ASM shows that odd values may differ from even values. No differences observed."/>
-    <checkbox nybble="2.4" title="Low Throw Arc" advanced="True" advancedcomment="When enabled, the Lakitu will throw Spinies from a low throwing arc. This behavior looks glitchy when the Lakitu is moving quickly. It also should be noted this option is in a space normally used for events, so it may have a deeper function."/>
-    <value nybble="7" title="Unknown Value 7" advanced="True" advancedcomment="Related to target height when the Lakitu spawns in block form."/>
+    <list nybble="12.3-12.4" title="Thrown Item" comment="This determines what the Lakitu will throw." comment2="A value of 1 throws a Spiny with its nybble 11 flag enabled.">
+      <entry value="0">Throws Spinies</entry>
+      <entry value="1">Throws Spinies (Dies if hit from below on a block)</entry>
+      <entry value="2">Throws Coins</entry>
+    </list>
+    <checkbox nybble="2.4" title="Low Throw Arc" advanced="True" comment="When enabled, the Lakitu will throw Spinies from a low throwing arc. This behavior looks glitchy when the Lakitu is moving quickly." advancedcomment="It also should be noted this option is in a space normally used for events, so it may have a deeper function."/>
+    <checkbox nybble="6.4" title="Longer Throw Delay" comment="If enabled, the Lakitu will wait longer before throwing the first Spiny after previously hitting the max limit of 4." comment2="Exact values are 280 frames checked, 140 unchecked."/>
+    <value nybble="7" title="Spawn Height (Useless)" comment2="This value determines the spawning height for Coin Lakitus spawned from [370] Lakitu Cloud Block. As this Lakitu is not spawned from a block, this option is rather useless." requirednybble="12" requiredval="2"/>
+    <value nybble="8" title="Lifespan (Useless)" comment="This would determine how long the Lakitu will exist before flying off. However, a stand-alone Lakitu cannot meet the requirements for this timer to be processed, making this option useless." requirednybble="12" requiredval="2"/>
+    <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advancedcomment="Related to flying off-screen, however the exact behavior is unknown."/>
   </sprite> <!-- #54: Lakitu -->
 
   <sprite id="55" name="(Unused) Rising Tilting Platform" notes="This is a platform imported from New Super Mario Bros. DS.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;It is not recommended for use due to various glitches and a lack of texture.&lt;/font&gt;" advancednotes="Size is 1x7 blocks. The distance covered depends on two factors: Y-position and zone height. See [Movement Distance].">
@@ -5586,7 +5593,7 @@
   </sprite> <!-- #369: Cooligan -->
 
   <sprite id="370" name="Lakitu Cloud Block" notes="A block that when struck from below will spawn a Lakitu enemy that throws coins instead of Spinies.">
-    <value nybble="11" title="Maximum Coins Thrown (x5)" comment="This determines how many coins the Lakitu will throw before flying off." comment2="A value of 1 is equal to 5 coins across 15 game seconds. If set to 0, the Lakitu will never fly off."/>
+    <value nybble="11" title="Lifespan" comment="This determines how long the Lakitu will exist before flying off." comment2="The exact increment is 600 frames. A value of 1 is equal to 10 seconds. If set to 0, the Lakitu will never fly off."/>
     <value nybble="12" title="Spawn Height" comment="This determines the distance relative to the bottom border of the Zone, in which the Lakitu will float upwards before it begins to throw coins." comment2="At value 0, the top of the Lakitu's shell will reach 12 blocks above the bottom Zone border. Each additional value increases this by two blocks. A value of 4 is equal to the standard height of a [134] Lakitu Spawn Area's Lakitu spawn."/>
   </sprite> <!-- #370: Lakitu Cloud Block -->
 
