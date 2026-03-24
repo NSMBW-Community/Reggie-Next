@@ -700,12 +700,11 @@
   <!-- Investigate "Glitchy Behavior" further? -->
   <!-- Test Nybble 10 more, something seems to be weird about it. Is it 'start at end of path instead of middle' or .... what, really? What's the value range? -->
   <sprite id="58" name="Koopa Paratroopa" notes="Your standard Koopa Paratroopa. Place it in the level and it will jump around or fly. Once stomped, it can either be set to walk off ledges, or turn around at ledges.">
-    <list nybble="11.3-11.4" title="Movement Type" comment="This determines the primary type of movement behavior of the Koopa Paratroopa. Flying Paratroopas move 9 blocks total." advancedcomment="Mode 3 spawns a floating shell that cannot be picked up. When Mario hits it from the side, he takes damage, but when the jumps on it, it falls to the ground and becomes a regular shell that can be picked up.">
+    <list nybble="11.3-11.4" title="Movement Type" comment="This determines the primary type of movement behavior of the Koopa Paratroopa. Flying Paratroopas move 9 blocks total." comment2="Mode 3 spawns a floating shell that cannot be picked up. When Mario hits it from the side, he takes damage, but when the jumps on it, it falls to the ground and becomes a regular shell that can be picked up.">
       <entry value="0">Jumping</entry>
       <entry value="1">Flying: Left and Right</entry>
       <entry value="2">Flying: Up and Down</entry>
       <entry value="3">No Movement (Shell Only)</entry>
-      <!--<entry value="3">Shell Only</entry> Not Useful-->
     </list>
     <list nybble="9.3-9.4" title="Start Direction" comment="This determines how the Paratroopa will move upon load." advancedcomment="Glitchy Behavior: The Paratroopa will bounce [] while facing the opposite direction. Once de-winged, the Koopa Troopa will walk in place while continuing to face the same direction." requirednybble="11.3-11.4" requiredval="0-1">
       <entry value="0">Start Going Towards Player</entry>
@@ -858,12 +857,12 @@
 
   <sprite id="73" name="Piranha Plant" notes="The standard Piranha Plant. It is affected by gravity.">
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling." comment2="It isn't affected by gravity when upside-down."/>
-    <checkbox nybble="11.4" title="Shift Half-Tile when Falling" comment="When the Piranha Plant falls, it will shift over half a tile to the left." comment2="Used in Retail: 5-04 A1"/>
+    <checkbox nybble="11.4" title="Shift Half-Tile when Falling" comment="When the Piranha Plant falls, it will shift over half a tile to the left." comment2="Used in Retail 05-04 A1"/>
   </sprite> <!-- #73: Piranha Plant -->
 
   <sprite id="74" name="Big Piranha Plant" notes="A large version of the standard Piranha Plant that takes 3 fireballs to kill. It is affected by gravity.">
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling."/>
-    <checkbox nybble="11.4" title="Shift Half-Tile when Falling" comment="When the Piranha Plant falls, it will shift over half a tile to the left." comment2="Used in Retail: 5-04 A1"/>
+    <checkbox nybble="11.4" title="Shift Half-Tile when Falling" comment="When the Piranha Plant falls, it will shift over half a tile to the left." comment2="Used in Retail 05-04 A1"/>
   </sprite> <!-- #74: Big Piranha Plant -->
 
   <sprite id="75" name="Fire Piranha Plant" notes="The Piranha Plant that shoots fireballs.">
@@ -6544,14 +6543,14 @@
     <checkbox nybble="9.4" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites." comment2="The player will jump behind the mushroom platform when passing through from underneath."/>
   </sprite> <!-- #441: Mushroom Platform -->
 
-  <sprite id="442" name="Hint Movie Block Controller" notes="A controller for the Hint Movie block.">
+  <sprite id="442" name="Hint Movie Block Controller" notes="A controller for [443] Hint Movie Block.">
     <dependency notes="As it is currently impossible to meet the replay dependency, this sprite should not be used.">
       <required sprite="443"/>
     </dependency>
   </sprite> <!-- #442: Hint Movie Block Controller -->
 
   <sprite id="443" name="Hint Movie Block" notes="A block that loads a menu of special replays.">
-    <dependency notes="As it is currently impossible to meet the replay dependency, this sprite should not be used.">
+    <dependency notes="The game will crash unless [442] Hint Movie Block Controller is present. Additionally, this is hardcoded to only function in Peach's Castle, hitting it in any other stage will stop the game like usual, but without the displaying the menu (essentially softlocking the player).">
       <required sprite="442"/>
     </dependency>
   </sprite> <!-- #443: Hint Movie Block -->
