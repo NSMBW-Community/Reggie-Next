@@ -677,12 +677,11 @@
     </dependency>
     <checkbox nybble="5.4" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites." advancedcomment="Exact values are 80.0 unchecked, 450.0 checked."/>
     <checkbox nybble="12.4" title="Loads at Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point."/>
-    <checkbox nybble="10.4" title="Unknown Flag 10 (1)" comment="Might affect the platform's direction properties." advanced="True" advancedcomment="ASM shows Nybble 10 might affect something."/>
-    <list nybble="11.3-11.4" title="Unknown Value 11" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something.">
-      <entry value="0">???</entry>
-      <entry value="1">???</entry>
-      <entry value="2">???</entry>
-      <entry value="3">???</entry>
+    <checkbox nybble="10.4" title="Useless Flag 10 (1)" comment="Seems to be for keeping the collision active even after the sprite is deleted, however the game doesn't allow for this, making this option useless."/>
+    <list nybble="11.3-11.4" title="Activation Mode" comment="This controls the movement behavior of the platform, specifically how many players need to be on the platform for it to begin ascending." comment2="A value of 2 seems to have been meant for making the platform move automatically, however the platform is designed to not move without any riders, rendering the option useless. A value of 3 is supported, however it functions the same as 0.">
+      <entry value="0">Will Move with One Player</entry>
+      <entry value="1">Will Move ONLY with All Players</entry>
+      <entry value="2">Will Move Automatically? (Useless)</entry>
     </list>
   </sprite> <!-- #56: Rising Tilt Controlled Girder -->
 
@@ -4193,9 +4192,9 @@
     </list>
   </sprite> <!-- #280: Giant Ice Block -->
 
-  <sprite id="281" name="Rising Tilt Controlled Girder Controller" notes="A controller for the Rising Tilt Controlled Girder that will place a limit on the vertical ascent of the platform.">
+  <sprite id="281" name="Rising Tilt Controlled Girder Controller" notes="A controller for the Rising Tilt Controlled Girder that will place a limit on the vertical ascent of the platform. The horizontal movement limit is controlled by the pulley box itself (placed here, however it is a part of Sprite 56), it can freely move left or right until colliding with a solid tile.">
     <dependency notes="The controller must be placed above a [56] Rising Tilt Controlled Girder. The placement of this controller will determine the stopping point of the rising girder's vertical ascent.">
-       <required sprite="56"/> <!-- Requires Grider -->
+       <required sprite="56"/> <!-- Requires Girder -->
     </dependency>
   </sprite> <!-- #281: Rising Tilt Controlled Girder Controller -->
 
