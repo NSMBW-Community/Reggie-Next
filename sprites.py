@@ -3145,7 +3145,7 @@ class SpriteImage_4Spinner(SLib.SpriteImage_Static):  # 129
             parent,
             1.5,
             ImageCache['4Spinner'],
-            (-62, -48),
+            (-65.33, -48),
         )
 
     @staticmethod
