@@ -57,7 +57,14 @@ FINAL_APP_BUNDLE_NAME = FULL_PROJECT_NAME + '.app'
 ################################# Intro ################################
 ########################################################################
 
-DIR = os.path.join('distrib', 'reggie_next_v%s_win32' % PROJECT_VERSION)
+if sys.platform == 'win32':
+    platform = 'win64'
+elif sys.platform == 'darwin':
+    platform = 'macos'
+else:
+    platform = sys.platform
+
+DIR = os.path.join('distrib', 'reggie_next_v%s_%s' % (PROJECT_VERSION, platform))
 WORKPATH = 'build_temp'
 SPECFILE = SCRIPT_FILE[:-3] + '.spec'
 
