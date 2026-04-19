@@ -310,9 +310,7 @@ with open(SPECFILE, 'w', encoding='utf-8') as f:
 # run with minimal arguments this time.
 
 args = [
-    '--windowed',
     '--upx-dir=/path/to/upx',
-    '--upx-exclude=vcruntime140.dll',
     '--distpath=' + DIR,
     '--workpath=' + WORKPATH,
     SPECFILE,
