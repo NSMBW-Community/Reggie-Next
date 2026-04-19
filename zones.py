@@ -35,17 +35,22 @@ class ZonesDialog(QtWidgets.QDialog):
             self.tabWidget.addTab(tab, zone_tab_name)
 
         self.NewButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 4))
+        self.CopyButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 107))
         self.DeleteButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 5))
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         buttonBox.addButton(self.NewButton, buttonBox.ButtonRole.ActionRole)
+        buttonBox.addButton(self.CopyButton, buttonBox.ButtonRole.ActionRole)
         buttonBox.addButton(self.DeleteButton, buttonBox.ButtonRole.ActionRole)
 
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 
         self.NewButton.clicked.connect(self.NewZone)
+        self.CopyButton.clicked.connect(self.CopyZone)
         self.DeleteButton.clicked.connect(self.DeleteZone)
+
+        self.UpdateCopyDelete()
 
         mainLayout = QtWidgets.QVBoxLayout()
         mainLayout.addWidget(self.tabWidget)
@@ -72,6 +77,49 @@ class ZonesDialog(QtWidgets.QDialog):
 
         tab_amount = self.tabWidget.count()
         self.tabWidget.setCurrentIndex(tab_amount - 1)
+        self.UpdateCopyDelete()
+
+        # Re-label zone tabs. This is only needed if the number of zones grows
+        # above 5, as the long names need to be replaced by short names. Since
+        # this function always adds a zone, it can never happen that the short
+        # name needs to be lengthened.
+        if tab_amount != 6:
+            return
+
+        # No need to do the last one, since that's the one we just added, and
+        # we already set that correctly.
+        for tab in range(tab_amount - 1):
+            widget = self.tabWidget.widget(tab)
+
+            if widget is None:
+                break
+
+            zone_id = widget.zoneObj.id
+            self.tabWidget.setTabText(tab, str(zone_id + 1))
+    
+    def CopyZone(self):
+        if len(self.zoneTabs) >= 6:
+            result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('ZonesDlg', 6), globals_.trans.string('ZonesDlg', 7),
+                                                   QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+            if result == QtWidgets.QMessageBox.StandardButton.No:
+                return
+
+        z = globals_.mainWindow.CreateZone(256, 256)
+        widget = self.tabWidget.widget(self.tabWidget.currentIndex())
+        widget.copyZoneData(z)
+
+        if len(self.zoneTabs) + 1 <= 5:
+            zone_tab_name = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
+        else:
+            zone_tab_name = str(z.id + 1)
+
+        tab = ZoneTab(z)
+        self.zoneTabs.append(tab)
+        self.tabWidget.addTab(tab, zone_tab_name)
+
+        tab_amount = self.tabWidget.count()
+        self.tabWidget.setCurrentIndex(tab_amount - 1)
+        self.UpdateCopyDelete()
 
         # Re-label zone tabs. This is only needed if the number of zones grows
         # above 5, as the long names need to be replaced by short names. Since
@@ -99,6 +147,7 @@ class ZonesDialog(QtWidgets.QDialog):
 
         self.tabWidget.removeTab(index)
         self.zoneTabs.pop(index)
+        self.UpdateCopyDelete()
 
         new_tab_amount = tab_amount - 1
 
@@ -117,6 +166,11 @@ class ZonesDialog(QtWidgets.QDialog):
 
             zone_id = widget.zoneObj.id
             self.tabWidget.setTabText(tab, globals_.trans.string('ZonesDlg', 3, '[num]', zone_id + 1))
+
+    def UpdateCopyDelete(self):
+        tab_amount = self.tabWidget.count()
+        self.CopyButton.setEnabled(tab_amount != 0)
+        self.DeleteButton.setEnabled(tab_amount != 0)
 
 class ZoneTab(QtWidgets.QWidget):
     def __init__(self, z):
@@ -602,6 +656,51 @@ class ZoneTab(QtWidgets.QWidget):
 
         self.Zone_presets.setCurrentIndex(idx)
         self.AutoChangingSize = False
+
+    def copyZoneData(self, z):
+        """
+        Copies data from one zone into another
+        """
+        z.objx = common.clamp(16, 24560, self.Zone_xpos.value())
+        z.objy = common.clamp(16, 12272, self.Zone_ypos.value())
+        z.width = min(24560 - z.objx, self.Zone_width.value())
+        z.height = min(12272 - z.objy, self.Zone_height.value())
+
+        z.prepareGeometryChange()
+        z.UpdateRects()
+        z.setPos(z.objx * 1.5, z.objy * 1.5)
+
+        z.modeldark = self.Zone_modeldark.currentIndex()
+        z.terraindark = self.Zone_terraindark.currentIndex()
+        z.cammode = self.Zone_cammodezoom.modeButtonGroup.checkedId()
+        z.camzoom = self.Zone_cammodezoom.screenSizes.currentIndex()
+        z.camtrack = self.Zone_direction.currentIndex()
+
+        if self.Zone_yrestrict.isChecked():
+            z.mpcamzoomadjust = self.Zone_mpzoomadjust.value()
+        else:
+            z.mpcamzoomadjust = 15
+
+        z.visibility = 0
+
+        if self.Zone_vspotlight.isChecked():
+            z.visibility |= 1 << 4
+        if self.Zone_vfulldark.isChecked():
+            z.visibility |= 1 << 5
+
+        z.visibility |= self.Zone_visibility.currentIndex()
+
+        z.yupperbound = self.Zone_yboundup.value()
+        z.ylowerbound = self.Zone_ybounddown.value()
+        z.yupperbound2 = self.Zone_yboundup2.value()
+        z.ylowerbound2 = self.Zone_ybounddown2.value()
+        z.yupperbound3 = self.Zone_yboundup3.value()
+        z.ylowerbound3 = self.Zone_ybounddown3.value()
+
+        z.music = self.Zone_musicid.value()
+        z.sfxmod = self.Zone_sfx.currentIndex() << 4
+        if self.Zone_boss.isChecked():
+            z.sfxmod |= 1
 
 
 class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):

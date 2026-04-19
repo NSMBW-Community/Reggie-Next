@@ -991,6 +991,7 @@ class ReggieTranslation:
                 104: '[b]Multiplayer Upper Bounds Adjust:[/b][br]Added to the upper bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.',
                 105: 'Multiplayer Lower Bounds Adjust:',
                 106: '[b]Multiplayer Lower Bounds Adjust:[/b][br]Added to the lower bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.',
+                107: 'Duplicate',
             },
             'Zones': {
                 0: 'Zone [num]',
