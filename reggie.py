@@ -4369,7 +4369,7 @@ def main():
         setSetting('uiStyle', "Fusion")
 
     # 4.0 -> oldest version with settings.ini compatible with the current version
-    if setting("ReggieVersion") < 4.0 or setting("ReggieVersion") > globals_.ReggieVersionFloat:
+    if setting("ReggieVersion") < 4.0:
         warningBox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Icon.NoIcon, 'Unsupported settings file', 'Your settings.ini file is unsupported. Please remove it and run Reggie again.')
         warningBox.exec()
         sys.exit(1)
