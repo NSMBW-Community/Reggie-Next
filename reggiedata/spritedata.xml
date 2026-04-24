@@ -4202,18 +4202,20 @@
   <sprite id="283" name="Incomplete Sprite - 'WallInsect_Mgr'" notes="Does nothing.">
   </sprite> <!-- #283: Incomplete Sprite - 'WallInsect_Mgr' -->
 
-  <!-- ASM Research is suggested. -->
-  <sprite id="284" name="Physics Coin Controller" notes="A coin related controller that currently is only known to be paired with [90] Wind Physics. It may have other functions, or it may have had all secondary functions scrapped during development.">
-    <dependency notes="Can add coins to the [90] Wind Physics and Sound effect.">
+  <sprite id="284" name="Physics Coin Controller" notes="A coin related controller that currently is only known to be paired with [90] Wind Physics.">
+    <dependency notes="This sprite can spawn coins alongside the [90] Wind Physics and Sound effect sprite.">
       <suggested sprite="90"/> <!-- Wind Physics -->
     </dependency>
-    <list nybble="7" title="Type" comment="This determines which movement type will be used.">
-      <entry value="0">???</entry>
+    <list nybble="7" title="Type" comment="This determines which spawning behavior will be used." comment2="Type 0 will spawn Brick Blocks or Coins just past the right edge of the screen. This behaves standalone from [90] Physics and Wind Controller, but the sprite must be present or else the spawned coins will crash the game.">
+      <entry value="0">Spawn Bricks and Coins</entry>
       <entry value="1">[90] Wind Physics</entry>
     </list>
-    <value nybble="12" title="Physics ID" comment="This will pair the Physics Coin Controller with the matching Wind Physics." requirednybble="7" requiredval="1" idtype="Physics"/>
-    <value nybble="9-10" title="Location ID" advanced="True" advancedcomment="Can somehow use Location ID, but unknown how it functions." idtype="Location"/>
-    <value nybble="8" title="Unknown Value 8" advanced="True" advancedcomment="Used in Retail: 02-04 A1, as 1."/>
+    <value nybble="11-12" title="Activation Location ID" comment="When set, the specified object will be created when a player inhabits this location." requirednybble="7" requiredval="0" idtype="Location"/>
+    <value nybble="9-10" title="Spawn Area Location ID" comment="This specifies the rough vertical area where the blocks can spawn within." requirednybble="7" requiredval="0" idtype="Location"/>
+    <list nybble="8" title="Object Type" comment="Determines what object is created. Set to 1 in Retail 02-04 A1, despite this not affecting Type 1." requirednybble="7" requiredval="0">
+      <entry value="0">Brick Blocks</entry>
+      <entry value="1">Coins</entry>
+    </list>
   </sprite> <!-- #284: Physics Coin Controller -->
 
   <sprite id="285" name="Rising/Falling Water" notes="Unlike normal [138] Water, Rising/Falling Water contains many functions of Moving Water in a stand-alone form. Similar compatibility issues still exist, and in particular it should be noted that this functions by moving a fixed depth 'block' of water up and down.">
