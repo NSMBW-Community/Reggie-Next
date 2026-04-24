@@ -2411,7 +2411,7 @@
       <entry value="0">Yellow</entry>
       <entry value="1">Dark Purple</entry>
     </list>
-    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="ASM shows Nybble 12 might affect something."/>
+    <checkbox nybble="12" title="Cannot Despawn" comment="If enabled, the Glow Block will not despawn if it goes off-screen." />
   </sprite> <!-- #391: Lighting - Glow Block -->
 
   <sprite id="402" name="Line Controlled ? Block" notes="A variant of the ? Block that will ride along Line objects.">

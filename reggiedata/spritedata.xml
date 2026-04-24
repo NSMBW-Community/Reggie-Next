@@ -5837,7 +5837,7 @@
   </sprite> <!-- #390: Bolt Controlled Coin -->
 
   <sprite id="391" name="Lighting - Glow Block" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely diminished as anything other than a weapon of destruction if not using Full Darkness lighting.">
-    <checkbox nybble="12" title="Do not despawn" comment="If ticked, the glow block does not despawn once it has gone off-screen." comment2="Every nonzero value has the same effect." />
+    <checkbox nybble="12" title="Cannot Despawn" comment="If enabled, the Glow Block will not despawn if it goes off-screen." />
   </sprite> <!-- #391: Lighting - Glow Block -->
 
   <sprite id="392" name="Magic Fireball Spawn Area" noyoshi="True" notes="This sprite spawns Koopaling Fireballs from the screen's edge towards the players. The fireballs are unaffected by terrain and will travel across the entire screen unhindered.">
