@@ -5573,7 +5573,7 @@
     <value nybble="9" title="Rotation Speed" comment="This determines the speed the mushroom block will rotate." comment2="The mushroom block will always rotate even at a speed value of 0."/>
     <value nybble="10" title="Travel Speed" comment="This determines the speed the mushroom block will travel along Line objects."/>
     <checkbox nybble="6.4" title="Bounce Back" comment="When enabled, the mushroom block will reverse its course along the Line guide when it reaches an end point." comment2="The mushroom block will always rotate in the same direction, even when traveling in reverse."/>
-    <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="Used by Nintendo in Retail 2-06 A1 as value 7. No visible effect."/>
+    <value nybble="11" title="Useless Value 11" comment="Used by Nintendo in Retail 2-06 A1 as value 7, however the game never reads this value"/>
   </sprite> <!-- #367: Line Controlled Spinning Pink Mushroom Block -->
 
   <sprite id="368" name="Lighting - Path Controlled Flashlight Raft" notes="A floating Raft that travels slowly to the right, or follows along an assigned Path. It also has a flashlight that produces a cone of light on both sides that can be controlled by tilting the controller. It is activated when all players land on it.">
