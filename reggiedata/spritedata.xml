@@ -3241,14 +3241,13 @@
   <sprite id="213" name="Incomplete Sprite - 'Branch'" notes="Does nothing.">
   </sprite> <!-- #213: Incomplete Sprite - 'Branch' -->
 
-  <!-- This big guy could use a nice healthy dose of ASM snooping, as we seem to know almost nothing about it -->
   <sprite id="214" name="Path Controlled Ghost House Platform" notes="A wide path controlled platform that will trigger a spooky sound when it is quickly descending.">
     <dependency notes="This platform will only function when paired with a Use Paths movement controller.">
       <required sprite="159"/>
     </dependency>
     <value nybble="11" title="Path Movement ID" comment="This pairs the platform to a matching Use Paths controller." idtype="Path"/>
-    <value nybble="9" title="Higher Pitched Falling Sound" comment="This determines something involving the sound that is heard when the platform is falling quickly." comment2="The Path's Speed must be at least 5.0 for this sound to be heard. It's assumed that a higher value will skip further into the music track that plays when the platform is quickly dropping. Retail uses 1 and 5."/>
-    <checkbox nybble="10.2" title="Unknown Flag 10 (4)" comment="For whatever reason, this is always checked in Retail levels."/>
+    <value nybble="9" title="Useless Value 9" comment="This serves no purpose, however the retail game sets it to 1 or 5."/>
+    <checkbox nybble="10.2" title="Useless Flag 10 (4)" comment="This is checked in all retail levels, however it serves no purpose."/>
   </sprite> <!-- #214: Path Controlled Ghost House Platform -->
 
   <!-- Umm. What? Only two values here make sense to me. Location ID and Number of Bullet Bills. The rest don't really explain themselves properly. -->
