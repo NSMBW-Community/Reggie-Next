@@ -4574,6 +4574,12 @@
       <suggested sprite="96"/>
       <suggested sprite="149"/>
     </dependency>
+    <list nybble="9.3-9.4" title="Activation Mode" comment="This determines if the Spotlight is naturally on, or if it is event controlled.">
+      <entry value="0">Always On</entry>
+      <entry value="1">Event Activated - Turns On</entry>
+      <entry value="2">Event Activated - On With Event</entry>
+    </list>
+    <value nybble="3.2-4.4" title="Triggering Event ID" comment="This determines which Event must be activated for the Spotlight to glow." idtype="Triggering Event"/>
     <list nybble="8" title="Light's Angle" comment="This determines the angle of the Spotlight." comment2="When paired with a Swaying rotation controller, the light will swing equally to both sides of this value. Other movement controllers will not change the light's angle.">
       <entry value="0">90.0°</entry>
       <entry value="1">112.5°</entry>
@@ -4601,7 +4607,7 @@
     <value nybble="11-12" title="Path Movement ID" comment="If pairing the Spotlight with Sprite 159, match the Path Movement ID to enable Path controlled movement. It won't spawn without one." requirednybble="10.3-10.4" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
     <value nybble="11-12" title="Two Way Line ID" comment="If pairing the Spotlight with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement. It won't spawn without one." requirednybble="10.3-10.4" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
     <value nybble="11-12" title="Rotation ID" comment="If pairing the Spotlight with sprite 96 or 149, match the Rotation ID to enable Swaying or Spinning movement. It won't spawn without one." comment2="When using sprite 149, be sure to place the controller at the Spotlight's exact position. Otherwise, the entire sprite will rotate around the controller awkwardly." requirednybble="10.3-10.4" requiredval="2-3" idtype="Rotation"/> <!-- Appears if [Movement Type] = 2 or 3 -->
-    <checkbox nybble="7.4" title="Unknown Flag 7 (1)" advanced="True" advancedcomment="ASM shows Nybble 7 might affect something."/>
+    <checkbox nybble="7.4" title="Tilt With Wii Remote" comment="If enabled, the player who activated the Spotlight will be able to tilt it using the Wii Remote." comment2="The Spotlight must be activated by a player hitting a switch, as that is the only way for them to take control of the spotlight." requirednybble="9.3-9.4"/>
   </sprite> <!-- #306: Lighting - Rotation Controlled Spotlight -->
 
    <sprite id="307" name="Burner - Pulsating (Synchronized) Controller" notes="A controller that allows creation of synchronized waves of pulsating flame jets.">
@@ -6272,7 +6278,7 @@
       <entry value="1">Event Activated - Turns On</entry>
       <entry value="2">Event Activated - On With Event</entry>
     </list>
-    <value nybble="3.2-4.4" title="Triggering Event ID (VALUE REQUIRED)" comment="This determines which Event must be activated for the block to glow, and it must be set to at least 1 event if the Activation Mode is set to Always On." idtype="Triggering Event"/>
+    <value nybble="3.2-4.4" title="Triggering Event ID" comment="This determines which Event must be activated for the block to glow." idtype="Triggering Event"/>
     <list nybble="10.3-10.4" title="Movement Type" comment="This determines the movement behavior of the glow block." comment2="All movement types require a matching movement controller, and at least one type of movement controller is required for the sprite to function.">
       <entry value="0">[159] Path Controlled</entry>
       <entry value="1">[260] Two Way Line</entry>
