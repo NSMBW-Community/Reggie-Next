@@ -313,6 +313,7 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         )
 
         self.sprite_input = QtWidgets.QLineEdit()
+        self.sprite_input.setPlaceholderText(globals_.trans.string('AreaDlg', 52))
         self.sprite_input.textChanged.connect(self.handle_input_change)
 
         self.add_button = QtWidgets.QPushButton(globals_.trans.string('AreaDlg', 47))

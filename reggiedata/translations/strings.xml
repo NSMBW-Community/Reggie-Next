@@ -85,6 +85,7 @@
 		<string id="49">Default</string>
 		<string id="50">Custom</string>
 		<string id="51">On the left is a list of sprites already present in the level. On the right, you can add more sprites you'd like to load.</string>
+		<string id="51">Type a Sprite ID...</string>
 	</section>
 	<section id="AutoSaveDlg">
 		<string id="0">Auto-saved backup found</string>

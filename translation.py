@@ -133,7 +133,8 @@ class ReggieTranslation:
                 48: 'Remove Selected Sprite',
                 49: 'Default',
                 50: 'Custom',
-                51: 'On the left is a list of sprites already present in the level. On the right, you can add more sprites you\'d like to load.',
+                51: 'On the left is a list of sprites already present in the level. On the right, you can add more sprites you\'d like to load the resources for.',
+                52: 'Type a Sprite ID...',
             },
             'AutoSaveDlg': {
                 0: 'Auto-saved backup found',
