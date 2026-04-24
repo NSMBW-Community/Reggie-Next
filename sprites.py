@@ -577,12 +577,11 @@ class SpriteImage_ScrewMushroom(SLib.SpriteImage):  # 172, 382
     def dataChanged(self):
         super().dataChanged()
 
-        # I wish I knew what this does
-        SomeOffset = self.parent.spritedata[3]
-        if SomeOffset == 0 or SomeOffset > 8: SomeOffset = 8
+        posOffset = self.parent.spritedata[3]
+        if posOffset == 0: posOffset = 8
 
         self.height = 206 if self.hasBolt else 190
-        self.yOffset = SomeOffset * -16
+        self.yOffset = posOffset * -16
         if self.hasBolt:
             self.yOffset -= 16
 

@@ -2636,7 +2636,8 @@
       <entry value="2">Medium (0.86)</entry>
       <entry value="0">Fast (1.3)</entry>
     </list>
-    <value nybble="7-8" title="Unknown Value 7-8" advanced="True" advancedcomment="Used (1) in Retail: 01-05 A1."/>
+    <value nybble="7-8" title="Position Offset" comment="This is rather strange, setting it to 1 will first shift the platform down by 7 tiles. Setting it to a higher value will shift the platform up by a tile for each value." requirednybble="5" requiredval="0"/>
+    <checkbox nybble="8.4" title="Shift down by 7 tiles" comment="If enabled, the platform will be shifted down 7 tiles from its current position." requirednybble="5"/>
   </sprite> <!-- #172: Screw Mushroom Platform with Bolt -->
 
   <sprite id="173" name="Giant Floating Log" noyoshi="True" yoshinotes="Yoshi can't jump off of the log, and instead rides it to the bottom. Also, he can eat the whole thing." notes="A very large log that will slowly try to dump the player into the liquid below.">
@@ -5749,7 +5750,8 @@
       <entry value="2">Medium (0.86)</entry>
       <entry value="0">Fast (1.3)</entry>
     </list>
-    <value nybble="7-8" title="Unknown Value 7-8" advanced="True" advancedcomment="Used (1) in Retail: 01-05 A1."/>
+    <value nybble="7-8" title="Position Offset" comment="This is rather strange, setting it to 1 will first shift the platform down by 7 tiles. Setting it to a higher value will shift the platform up by a tile for each value." requirednybble="5" requiredval="0"/>
+    <checkbox nybble="8.4" title="Shift down by 7 tiles" comment="If enabled, the platform will be shifted down 7 tiles from its current position." requirednybble="5"/>
   </sprite> <!-- #382: Screw Mushroom Platform without Bolt -->
 
   <sprite id="383" name="Boss Controller - Kamek" notes="Kamek himself can be placed anywhere within the Zone, as the controller's placement itself determines his spawn position.&lt;br&gt;&lt;br&gt;The blocks move left and despawn when their right edges reach the left border, and respawn from their right edge on the right border.">
