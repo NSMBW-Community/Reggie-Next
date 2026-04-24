@@ -2933,7 +2933,7 @@
       <entry value="1">Right</entry>
       <entry value="2">Swims In Place (Buggy)</entry>
     </list>
-    <value nybble="10" title="Unknown Value 10" comment="ASM shows Nybble 10 might affect something. May relate to Swims In Place."/>
+    <value nybble="10" title="Z-Order" comment="Adjusts the Z-Order relative to other Fishbones." comment2="The in-game Z-Order value is 1532 units subtracted by (value * 16)"/>
   </sprite> <!-- #196: Fishbones -->
 
   <sprite id="197" name="Clampy" notes="A clam with tantalizing items inside that will hurt the player if it closes while they are in inside of it.">
