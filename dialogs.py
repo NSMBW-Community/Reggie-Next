@@ -698,6 +698,11 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         self.errorLayout.addWidget(self.errorList)
         self.errorLayout.addWidget(self.fixBtn)
 
+        # Automatically select first item since its "focused" by default, which makes it
+        # look selected, and it can be super confusing
+        if self.errorList.count() is not 0:
+            self.errorList.item(0).setSelected(True)
+
         if foundCritical:
             return True, len(self.buttonHandlers)
         elif foundAnything:
