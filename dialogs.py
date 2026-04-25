@@ -700,7 +700,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         # Automatically select first item since its "focused" by default, which makes it
         # look selected, and it can be super confusing
-        if self.errorList.count() is not 0:
+        if self.errorList.count() != 0:
             self.errorList.item(0).setSelected(True)
 
         if foundCritical:
