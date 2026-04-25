@@ -220,6 +220,7 @@ class TilesetTile:
         painter.setBrush(brush)
         painter.setPen(pen)
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
+        painter.setOpacity(1.0)
 
         # Paints shape based on other stuff
         if CD[3] & 32:  # Slope
@@ -249,6 +250,24 @@ class TilesetTile:
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 12),
                                                     QtCore.QPoint(24, 24),
                                                     QtCore.QPoint(0, 24)]))
+            elif CD[7] == 6:
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
+                                                    QtCore.QPoint(12, 0),
+                                                    QtCore.QPoint(24, 0),
+                                                    QtCore.QPoint(24, 24)]))
+            elif CD[7] == 7:
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(12, 24),
+                                                    QtCore.QPoint(24, 0),
+                                                    QtCore.QPoint(24, 24)]))
+            elif CD[7] == 8:
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
+                                                    QtCore.QPoint(12, 0),
+                                                    QtCore.QPoint(24, 24),
+                                                    QtCore.QPoint(0, 24)]))
+            elif CD[7] == 9:
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
+                                                    QtCore.QPoint(0, 24),
+                                                    QtCore.QPoint(12, 24)]))
             elif CD[7] == 10:
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
                                                     QtCore.QPoint(0, 24),
@@ -320,6 +339,24 @@ class TilesetTile:
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 12),
                                                     QtCore.QPoint(0, 0),
                                                     QtCore.QPoint(24, 0)]))
+            elif CD[7] == 6:
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
+                                                    QtCore.QPoint(24, 0),
+                                                    QtCore.QPoint(24, 24),
+                                                    QtCore.QPoint(12, 24)]))
+            elif CD[7] == 7:
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(12, 0),
+                                                    QtCore.QPoint(24, 0),
+                                                    QtCore.QPoint(24, 24)]))
+            elif CD[7] == 8:
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
+                                                    QtCore.QPoint(24, 0),
+                                                    QtCore.QPoint(12, 24),
+                                                    QtCore.QPoint(0, 24)]))
+            elif CD[7] == 9:
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
+                                                    QtCore.QPoint(12, 0),
+                                                    QtCore.QPoint(0, 24)]))
             elif CD[7] == 10:
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
                                                     QtCore.QPoint(0, 24),
@@ -523,6 +560,45 @@ class TilesetTile:
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
                                                     QtCore.QPoint(24, 0),
                                                     QtCore.QPoint(12, 24)]))
+            if CD[7] == 7:
+                # Center Fill
+                painter.drawRect(7, 7, 10, 10)
+                # Top Left
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
+                                                    QtCore.QPoint(10, 6),
+                                                    QtCore.QPoint(6, 10)]))
+                # Top Right
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 0),
+                                                    QtCore.QPoint(14, 6),
+                                                    QtCore.QPoint(18, 10)]))
+                # Bottom Left
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
+                                                    QtCore.QPoint(10, 18),
+                                                    QtCore.QPoint(6, 14)]))
+                # Bottom Right
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 24),
+                                                    QtCore.QPoint(14, 18),
+                                                    QtCore.QPoint(18, 14)]))
+                # Top Middle
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(12, -1),
+                                                    QtCore.QPoint(8, 8),
+                                                    QtCore.QPoint(16, 8)]))
+                # Bottom Middle
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(12, 25),
+                                                    QtCore.QPoint(8, 16),
+                                                    QtCore.QPoint(16, 16)]))
+                # Left Middle
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(-1, 12),
+                                                    QtCore.QPoint(8, 8),
+                                                    QtCore.QPoint(8, 16)]))
+                # Right Middle
+                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(25, 12),
+                                                    QtCore.QPoint(16, 8),
+                                                    QtCore.QPoint(16, 16)]))
+
+        elif CD[1] & 2: # Donut Blocks
+            painter.setOpacity(0.471) # A:120
+            painter.drawPixmap(0, 0, globals_.Overrides[26 * 1 + 12].main) # Donut
 
             ##        elif CD[3] & 4: # QBlock
             ##            if CD[7] == 0:
@@ -558,8 +634,6 @@ class TilesetTile:
             ##            if CD[7] == 3:
             ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Explode/Red.png'))
             ##
-            ##        elif CD[1] & 2: # Falling
-            ##            painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Prop/Fall.png'))
 
             #                elif CD[5] == 4 or 5: # Conveyor
             #                    d
