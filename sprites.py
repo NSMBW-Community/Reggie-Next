@@ -745,6 +745,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         self.eightIsMushroom = False
         self.twelveIsMushroom = False
         self.rotates = False
+        self.flipOverride = False
 
     def dataChanged(self):
         super().dataChanged()
@@ -787,6 +788,11 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
 
             transform.translate(-12, -12)
             self.parent.setTransform(transform)
+
+        # Flip a switch override
+        if self.flipOverride:
+            flip = self.image.toImage().mirrored(True, True)
+            self.image = self.image.fromImage(flip)
 
     def paint(self, painter):
         super().paint(painter)
@@ -1424,54 +1430,39 @@ class SpriteImage_ExcSwitch(common.SpriteImage_Switch):  # 42
         super().dataChanged()
 
 
-class SpriteImage_QSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 43
-    @staticmethod
-    def loadImages():
-        if 'QSwitchBlock' not in ImageCache:
-            q = SLib.GetImg('q_switch_block.png', True)
-            ImageCache['QSwitchBlock'] = QtGui.QPixmap.fromImage(q)
-            ImageCache['QSwitchBlockU'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
+class SpriteImage_QSwitchBlock(SpriteImage_Block):  # 43
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.tilenum = 48
+        self.contentsOverride = 17
 
     def dataChanged(self):
         upsideDown = self.parent.spritedata[5] & 1
-
-        if upsideDown:
-            self.image = ImageCache['QSwitchBlockU']
-        else:
-            self.image = ImageCache['QSwitchBlock']
-
+        self.flipOverride = upsideDown
         super().dataChanged()
 
 
-class SpriteImage_PSwitchBlock(SLib.SpriteImage_Static):  # 44
+class SpriteImage_PSwitchBlock(SpriteImage_Block):  # 44
     def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['PSwitchBlock'],
-        )
-
-    @staticmethod
-    def loadImages():
-        SLib.loadIfNotInImageCache('PSwitchBlock', 'p_switch_block.png')
-
-
-class SpriteImage_ExcSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 45
-    @staticmethod
-    def loadImages():
-        if 'ESwitchBlock' not in ImageCache:
-            e = SLib.GetImg('e_switch_block.png', True)
-            ImageCache['ESwitchBlock'] = QtGui.QPixmap.fromImage(e)
-            ImageCache['ESwitchBlockU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
+        super().__init__(parent, 1.5)
+        self.tilenum = 48
+        self.contentsOverride = 18
 
     def dataChanged(self):
         upsideDown = self.parent.spritedata[5] & 1
+        self.flipOverride = upsideDown
+        super().dataChanged()
 
-        if upsideDown:
-            self.image = ImageCache['ESwitchBlockU']
-        else:
-            self.image = ImageCache['ESwitchBlock']
 
+class SpriteImage_ExcSwitchBlock(SpriteImage_Block):  # 45
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.tilenum = 48
+        self.contentsOverride = 19
+
+    def dataChanged(self):
+        upsideDown = self.parent.spritedata[5] & 1
+        self.flipOverride = upsideDown
         super().dataChanged()
 
 

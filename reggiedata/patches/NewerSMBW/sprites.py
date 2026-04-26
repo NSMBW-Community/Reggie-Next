@@ -80,6 +80,15 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         self.eightIsMushroom = False
         self.twelveIsMushroom = False
         self.rotates = False
+        self.flipOverride = False
+
+        # Load a new one
+        ContentImage = SLib.GetImg('block_contents.png')
+        Blocks = []
+        count = ContentImage.width() // 24
+        for i in range(count):
+            Blocks.append(ContentImage.copy(i * 24, 0, 24, 24))
+        ImageCache['BlockContents'] = Blocks
 
     def dataChanged(self):
         super().dataChanged()
@@ -88,7 +97,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         # In the blocks.png file:
         # 0 = Empty, 1 = Coin, 2 = Mushroom, 3 = Fire Flower, 4 = Propeller, 5 = Penguin Suit,
         # 6 = Mini Shroom, 7 = Star, 8 = Continuous Star, 9 = Yoshi Egg, 10 = 10 Coins,
-        # 11 = 1-up, 12 = Vine, 13 = Spring, 14 = Shroom/Coin, 15 = Ice Flower, 16 = Toad, 17 = Hammer
+        # 11 = 1-up, 12 = Vine, 13 = Spring, 14 = Shroom/Coin, 15 = Ice Flower, 16 = Toad, 20 = Hammer
 
         if self.contentsOverride is not None:
             contents = self.contentsOverride
@@ -96,7 +105,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
             contents = self.parent.spritedata[self.contentsNybble] & 0xF
 
         if contents == 2:  # Hammer
-            contents = 17
+            contents = 20
 
         if contents == 12 and self.twelveIsMushroom:
             contents = 2  # 12 is a mushroom on some types
@@ -122,6 +131,11 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
 
             transform.translate(-12, -12)
             self.parent.setTransform(transform)
+
+        # Flip a switch override
+        if self.flipOverride:
+            flip = self.image.toImage().mirrored(True, True)
+            self.image = self.image.fromImage(flip)
 
     def paint(self, painter):
         super().paint(painter)
@@ -521,60 +535,37 @@ class SpriteImage_NewerExcSwitch(SpriteImage_NewerSwitch):  # 42
         self.switchType = 'E'
 
 
-class SpriteImage_NewerQSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 43
-    @staticmethod
-    def loadImages():
-        if 'QSwitchBlock' in ImageCache: return
-        q = SLib.GetImg('q_switch_block.png', True)
-        ImageCache['QSwitchBlock'] = QtGui.QPixmap.fromImage(q)
-        ImageCache['QSwitchBlockU'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
-
-        if 'QSwitchBlock3' in ImageCache: return
-        q = SLib.GetImg('q_switch_block3.png', True)
-        if q is None: return
-        ImageCache['QSwitchBlock3'] = QtGui.QPixmap.fromImage(q)
-        ImageCache['QSwitchBlock3U'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
+class SpriteImage_NewerQSwitchBlock(SpriteImage_Block):  # 43
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.tilenum = 48
 
     def dataChanged(self):
         upsideDown = self.parent.spritedata[5] & 1
-        style = self.parent.spritedata[3] & 3
+        self.flipOverride = upsideDown
 
-        if 'QSwitchBlock3U' not in ImageCache: return
-
-        if style == 0:
-            self.image = ImageCache['QSwitchBlock'] if not upsideDown else ImageCache['QSwitchBlockU']
+        color = self.parent.spritedata[3] & 3
+        if color == 0:
+            self.contentsOverride = 17
         else:
-            self.image = ImageCache['QSwitchBlock3'] if not upsideDown else ImageCache['QSwitchBlock3U']
-
-
+            self.contentsOverride = 21
         super().dataChanged()
 
 
-class SpriteImage_NewerExcSwitchBlock(SLib.SpriteImage_StaticMultiple):  # 45
-    @staticmethod
-    def loadImages():
-        if 'ESwitchBlock' in ImageCache: return
-        e = SLib.GetImg('e_switch_block.png', True)
-        ImageCache['ESwitchBlock'] = QtGui.QPixmap.fromImage(e)
-        ImageCache['ESwitchBlockU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
-
-        if 'ESwitchBlock3' in ImageCache: return
-        e = SLib.GetImg('e_switch_block3.png', True)
-        if e is None: return
-        ImageCache['ESwitchBlock3'] = QtGui.QPixmap.fromImage(e)
-        ImageCache['ESwitchBlock3U'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
+class SpriteImage_NewerExcSwitchBlock(SpriteImage_Block):  # 45
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.tilenum = 48
 
     def dataChanged(self):
         upsideDown = self.parent.spritedata[5] & 1
+        self.flipOverride = upsideDown
+
         color = self.parent.spritedata[3] & 3
-
-        if 'ESwitchBlock3U' not in ImageCache: return
-
         if color == 0:
-            self.image = ImageCache['ESwitchBlock'] if not upsideDown else ImageCache['ESwitchBlockU']
+            self.contentsOverride = 19
         else:
-            self.image = ImageCache['ESwitchBlock3'] if not upsideDown else ImageCache['ESwitchBlock3U']
-
+            self.contentsOverride = 22
         super().dataChanged()
 
 
