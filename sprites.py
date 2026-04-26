@@ -5055,10 +5055,18 @@ class SpriteImage_WaterPiranha(SLib.SpriteImage_Static):  # 263
             (-5, -28),
         )
 
+        # High point
         self.aux.append(SLib.AuxiliaryImage(parent, 38, 30))
         self.aux[0].image = ImageCache['WaterPiranhaBall']
-        self.aux[0].setPos(0, -165)
+        self.aux[0].setPos(0, -170)
         self.aux[0].hover = True
+
+        # Low point
+        self.aux.append(SLib.AuxiliaryImage(parent, 38, 30))
+        self.aux[1].image = ImageCache['WaterPiranhaBall']
+        self.aux[1].setPos(0, -32)
+        self.aux[1].alpha = 0.5
+        self.aux[1].hover = True
 
     @staticmethod
     def loadImages():
@@ -5072,12 +5080,28 @@ class SpriteImage_WalkingPiranha(SLib.SpriteImage_Static):  # 264
             parent,
             1.5,
             ImageCache['WalkPiranha'],
-            (-4, -50),
+            (0, -50),
         )
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, self.width, 16, SLib.AuxiliaryTrackObject.Horizontal))
+        self.aux.append(SLib.AuxiliaryTrackObject(parent, self.width, 16, SLib.AuxiliaryTrackObject.Horizontal))
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('WalkPiranha', 'walk_piranha.png')
+
+    def dataChanged(self):
+        distance = self.parent.spritedata[5] & 0xF
+        sideLen = (distance + 2) * 16
+
+        self.aux[0].setPos(0, 76)
+        self.aux[0].setSize(sideLen, 16)
+
+        self.aux[1].setPos(-(sideLen * 1.5) + 24, 76)
+        self.aux[1].setSize(sideLen, 16)
+
+        self.aux[0].update()
+        self.aux[1].update()
+        super().dataChanged()
 
 
 class SpriteImage_FallingIcicle(SLib.SpriteImage_StaticMultiple):  # 265

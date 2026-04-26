@@ -3982,18 +3982,21 @@
     <value nybble="10-11" title="Location ID" comment="When set, the haunted object will only be activated if a player enters this location." comment2="Assigning a Location is not required. If one is not set, the item will instead be triggered by the proximity of the player." idtype="Location"/>
   </sprite> <!-- #262: Poltergeist Item -->
 
-  <sprite id="263" name="Lily Piranha Plant" notes="A floating piranha plant that balances a spiky spore ball in the air above it.">
-    <dependency notes="The piranha plant must be placed inside or on the surface of water [138] to spawn. It will snap to the surface when loaded on-screen.">
+  <sprite id="263" name="Lily Piranha Plant" notes="A floating Piranha Plant that balances a spiky spore ball in the air above it.">
+    <dependency notes="The Piranha Plant must be placed inside or on the surface of a liquid to spawn. It will snap to the surface when loaded on-screen. Additionally, it will not load if placed on the same screen as an entrance.">
       <suggested sprite="138"/>
+      <suggested sprite="139"/>
+      <suggested sprite="216"/>
+      <suggested sprite="373"/>
     </dependency>
     <checkbox nybble="12" title="Disable Collisions After Death" comment="When Lily Piranhas die and sink, they bounce when they hit a solid tile, such as a wall. This flag disables that behavior."/>
   </sprite> <!-- #263: Lily Piranha Plant -->
 
-  <sprite id="264" name="Stalking Piranha Plant" notes="A walking piranha plant that will extend and harass the player, then shrink and wander around for a bit.">
-    <dualbox nybble="10.4" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the piranha plant will attempt to move first after shrinking."/>
-    <value nybble="12" title="Movement Distance" comment="This determines how far the piranha plant will wander in both directions from its starting point."/>
-    <checkbox nybble="8.4" title="Slower in Water" comment="When enabled, the piranha plant will walk more slowly when moving through water."/>
-    <checkbox nybble="9.4" title="Increase Z-pos by 200" comment="When ticked, the piranha plant's z position will be 200 higher."/>
+  <sprite id="264" name="Stalking Piranha Plant" notes="A walking Piranha Plant that will extend and harass the player, then shrink and wander around for a bit.">
+    <dualbox nybble="10.4" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Piranha Plant will attempt to move first after shrinking."/>
+    <value nybble="12" title="Movement Distance" comment="This determines how far the Piranha Plant will wander in both directions from its starting point."/>
+    <checkbox nybble="8.4" title="Useless Flag 8 (1)" comment="Enabled by Nintendo in Retail 06-03 A2, however the game never reads this value."/>
+    <checkbox nybble="9.4" title="Increase Z-Order by 200" comment="When ticked, the Piranha Plant's Z-Order will be increased by 200 units."/>
   </sprite> <!-- #264: Stalking Piranha Plant -->
 
   <sprite id="265" name="Falling Icicle" notes="A small hanging icicle that will fall when the player comes too close (8 blocks horizontally) to it. It will hurt the player, regardless of where he touches it. When hit by a [388] Barrel, a nice break effect is used. Shells can also break them, but don't use a break effect.">
