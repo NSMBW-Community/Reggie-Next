@@ -5770,7 +5770,7 @@ class SpriteImage_MontyMole(SLib.SpriteImage_StaticMultiple):  # 303
             self.offset = (-6, -5)
         else:
             self.image = ImageCache['Mole']
-            self.offset = (3.5, -4)
+            self.offset = (-1.75, -4)
 
         super().dataChanged()
 
