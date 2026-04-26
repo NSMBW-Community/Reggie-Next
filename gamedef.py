@@ -222,11 +222,10 @@ class ReggieGameDefinition:
         if name in NoneTypes:
             return
 
-        try:
-            self.InitFromName(name)
-        except Exception:
+        result = self.InitFromName(name)
+        if not result:
             self.InitAsEmpty()
-            raise
+            setSetting('LastGameDef', None)
 
     def InitAsEmpty(self):
         """
@@ -275,7 +274,10 @@ class ReggieGameDefinition:
 
         # Parse the file (errors are handled by __init__())
         path = os.path.join("reggiedata", "patches", name, "main.xml")
-        tree = etree.parse(path)
+        try:
+            tree = etree.parse(path)
+        except FileNotFoundError:
+            return False
         root = tree.getroot()
 
         # Add the attributes of root: name, description and version.
@@ -288,6 +290,7 @@ class ReggieGameDefinition:
         default = globals_.trans.string('Gamedefs', 15)
         self.description = root.get('description', default).replace('[', '<').replace(']', '>')
         self.version = root.get('version')
+        return True
 
     def __init2__(self):
         """
@@ -298,7 +301,10 @@ class ReggieGameDefinition:
             return
 
         path = os.path.join("reggiedata", "patches", self.gamepath, "main.xml")
-        tree = etree.parse(path)
+        try:
+            tree = etree.parse(path)
+        except FileNotFoundError:
+            return
         root = tree.getroot()
 
         self.base = None
