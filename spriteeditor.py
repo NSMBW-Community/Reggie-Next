@@ -205,7 +205,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         Updates the value shown by the line edit and emits a signal when the
         value represented by the text of the line edit has changed.
         """
-        if val is None and val is not 0:
+        if val is None and val != 0:
             val = self._maximum
 
         if self._value == val:
