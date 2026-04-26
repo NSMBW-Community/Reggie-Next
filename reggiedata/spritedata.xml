@@ -5230,7 +5230,7 @@
 
   <!-- More research is needed alongside 302 and 476 -->
   <sprite id="352" name="Rocky Wrench" notes="A small mole that will hide under a metal cover and throw wrenches at the player. It can be defeated with a ground pound or fireball, or it can be frozen.">
-    <dependency notes="The Rocky Wrench must be placed with its feet touching the ground."/>
+    <dependency notes="The Rocky Wrench should be placed with its feet touching the ground for it to look visually correct."/>
   </sprite> <!-- #352: Rocky Wrench -->
 
   <sprite id="353" name="Moving Pipe - Facing Down" notes="A downwards facing Pipe that moves between two heights.">
