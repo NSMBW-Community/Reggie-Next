@@ -1,9 +1,9 @@
 0C03=Volcano Smoke
+1003=Sunset Beach
 3DC2=Toad House Lobby (Blue)
 3F03=Star Haven
 3FE2=Mossdeep Greens
 3FF2=Pumpkin Boneyard
-1003=Sunset Beach
 9986=Pyramid Castle
 9989=Autumn Forest
 9990=Desert (Sunset)

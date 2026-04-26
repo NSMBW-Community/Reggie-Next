@@ -1,10 +1,10 @@
 0CA2=Rocky Hills (Blue Sky)
+1003=Sunset Beach
 3FE2=Mossdeep Greens
 3FF2=Pumpkin Boneyard
 43A2=Mountains (Orange Prairie)
-52AA=Yellow Clouds (New File Titlescreen)
-1003=Sunset Beach
 5212=Sky City Gears (Unused)
+52AA=Yellow Clouds (New File Titlescreen)
 6000=Stone Ruins
 6001=Gold Bricks
 6005=Dirt
