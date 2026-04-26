@@ -3246,6 +3246,16 @@ class CommentItem(LevelEditorItem):
             self.reposTextEdit()
             self.TextEdit.setVisible(shouldBeVisible)
 
+        # Stop focusing on the textbox. Comments cannot be deleted
+        # while the textbox is focused, which is rather annoying
+        if not self.isSelected():
+            # Stop selecting any highlighted text
+            cursor = self.TextEdit.textCursor()
+            cursor.clearSelection()
+            self.TextEdit.setTextCursor(cursor)
+
+            self.TextEdit.clearFocus()
+
     def handleTextChanged(self):
         """
         Handles the text being changed
