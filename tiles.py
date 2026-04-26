@@ -1209,6 +1209,7 @@ def ProcessOverrides(idx, name):
     """
     Load overridden tiles if there are any
     """
+    tsOffs = idx * 256
 
     if globals_.OverriddenTilesets is None:
         raise ValueError("Overridden tilesets not yet initialised")
@@ -1266,19 +1267,19 @@ def ProcessOverrides(idx, name):
             replace += 1
 
         # now the extra stuff (invisible collisions etc)
-        # @ row i, col j => globals_.Overrides[25 * i + j]
+        # @ row i, col j => globals_.Overrides[26 * i + j]
 
-        t[1].main = globals_.Overrides[26 * 4].main  # solid
-        t[2].main = globals_.Overrides[26 + 10].main  # vine stopper
+        t[1].main = globals_.Overrides[26 * 4].main        # solid
+        t[2].main = globals_.Overrides[26 + 10].main       # vine stopper
         t[11].main = globals_.Overrides[26 * 3 + 13].main  # jumpthrough platform
-        t[12].main = globals_.Overrides[26 * 3 + 12].main  # 16x8 roof platform
+        t[12].main = globals_.Overrides[26 * 3 + 12].main  # mini mario passageway
 
         t[16].main = globals_.Overrides[26 * 4 + 11].main  # 1x1 slope going up
         t[17].main = globals_.Overrides[26 * 4 + 12].main  # 1x1 slope going down
-        t[18].main = globals_.Overrides[26 * 4 + 1].main  # 2x1 slope going up (part 1)
-        t[19].main = globals_.Overrides[26 * 4 + 2].main  # 2x1 slope going up (part 2)
-        t[20].main = globals_.Overrides[26 * 4 + 3].main  # 2x1 slope going down (part 1)
-        t[21].main = globals_.Overrides[26 * 4 + 4].main  # 2x1 slope going down (part 2)
+        t[18].main = globals_.Overrides[26 * 4 + 1].main   # 2x1 slope going up (part 1)
+        t[19].main = globals_.Overrides[26 * 4 + 2].main   # 2x1 slope going up (part 2)
+        t[20].main = globals_.Overrides[26 * 4 + 3].main   # 2x1 slope going down (part 1)
+        t[21].main = globals_.Overrides[26 * 4 + 4].main   # 2x1 slope going down (part 2)
         t[22].main = globals_.Overrides[26 * 4 + 21].main  # 4x1 slope going up (part 1)
         t[23].main = globals_.Overrides[26 * 4 + 22].main  # 4x1 slope going up (part 2)
         t[24].main = globals_.Overrides[26 * 4 + 23].main  # 4x1 slope going up (part 3)
@@ -1287,14 +1288,14 @@ def ProcessOverrides(idx, name):
         t[27].main = globals_.Overrides[26 * 4 - 3].main   # 4x1 slope going down (part 2)
         t[28].main = globals_.Overrides[26 * 4 - 2].main   # 4x1 slope going down (part 3)
         t[29].main = globals_.Overrides[26 * 4 - 1].main   # 4x1 slope going down (part 4)
-        t[30].main = globals_.Overrides[1].main    # coin
+        t[30].main = globals_.Overrides[1].main            # coin
 
-        t[32].main = globals_.Overrides[26 * 4 + 9].main  # 1x1 roof going down
+        t[32].main = globals_.Overrides[26 * 4 + 9].main   # 1x1 roof going down
         t[33].main = globals_.Overrides[26 * 4 + 10].main  # 1x1 roof going up
-        t[34].main = globals_.Overrides[26 * 4 + 5].main  # 2x1 roof going down (part 1)
-        t[35].main = globals_.Overrides[26 * 4 + 6].main  # 2x1 roof going down (part 2)
-        t[36].main = globals_.Overrides[26 * 4 + 7].main  # 2x1 roof going up (part 1)
-        t[37].main = globals_.Overrides[26 * 4 + 8].main  # 2x1 roof going up (part 2)
+        t[34].main = globals_.Overrides[26 * 4 + 5].main   # 2x1 roof going down (part 1)
+        t[35].main = globals_.Overrides[26 * 4 + 6].main   # 2x1 roof going down (part 2)
+        t[36].main = globals_.Overrides[26 * 4 + 7].main   # 2x1 roof going up (part 1)
+        t[37].main = globals_.Overrides[26 * 4 + 8].main   # 2x1 roof going up (part 2)
         t[38].main = globals_.Overrides[26 * 4 + 13].main  # 4x1 roof going down (part 1)
         t[39].main = globals_.Overrides[26 * 4 + 14].main  # 4x1 roof going down (part 2)
         t[40].main = globals_.Overrides[26 * 4 + 15].main  # 4x1 roof going down (part 3)
@@ -1303,38 +1304,38 @@ def ProcessOverrides(idx, name):
         t[43].main = globals_.Overrides[26 * 4 + 18].main  # 4x1 roof going up (part 2)
         t[44].main = globals_.Overrides[26 * 4 + 19].main  # 4x1 roof going up (part 3)
         t[45].main = globals_.Overrides[26 * 4 + 20].main  # 4x1 roof going up (part 4)
-        t[46].main = globals_.Overrides[26 + 11].main  # P-switch coins
+        t[46].main = globals_.Overrides[26 + 11].main      # P-switch coin
 
-        t[53].main = globals_.Overrides[26 + 12].main  # donut lift
-        t[61].main = globals_.Overrides[26 + 9].main  # multiplayer coin
-        t[63].main = globals_.Overrides[26 * 2 + 13].main  # instant death tile
+        t[53].main = globals_.Overrides[26 + 12].main      # donut lift
+        t[61].main = globals_.Overrides[26 + 9].main       # multiplayer coin
+        t[63].main = globals_.Overrides[26 * 2 + 13].main  # invisible damage tile
 
     elif name in tsidx["Flowers"] or name in tsidx["Forest Flowers"]:
         # flowers
         t = globals_.Tiles
-        t[416].main = globals_.Overrides_safe[26 + 4].main  # grass
-        t[417].main = globals_.Overrides_safe[26 + 5].main
-        t[418].main = globals_.Overrides[26 + 6].main
-        t[419].main = globals_.Overrides[26 + 7].main
-        t[420].main = globals_.Overrides[26 + 8].main
+        t[tsOffs + 0xA0].main = globals_.Overrides_safe[26 + 4].main     # grass
+        t[tsOffs + 0xA1].main = globals_.Overrides_safe[26 + 5].main
+        t[tsOffs + 0xA2].main = globals_.Overrides[26 + 6].main
+        t[tsOffs + 0xA3].main = globals_.Overrides[26 + 7].main
+        t[tsOffs + 0xA4].main = globals_.Overrides[26 + 8].main
 
         if name in tsidx["Flowers"]:
-            t[432].main = globals_.Overrides[26 * 2 + 9].main  # flowers
-            t[433].main = globals_.Overrides[26 * 2 + 10].main  # flowers
-            t[434].main = globals_.Overrides[26 * 2 + 11].main  # flowers
+            t[tsOffs + 0xB0].main = globals_.Overrides[26 * 2 + 9].main  # flowers
+            t[tsOffs + 0xB1].main = globals_.Overrides[26 * 2 + 10].main
+            t[tsOffs + 0xB2].main = globals_.Overrides[26 * 2 + 11].main
 
-            t[448].main = globals_.Overrides[26 * 2 + 6].main  # flowers on grass
-            t[449].main = globals_.Overrides[26 * 2 + 7].main
-            t[450].main = globals_.Overrides[26 * 2 + 8].main
+            t[tsOffs + 0xC0].main = globals_.Overrides[26 * 2 + 6].main  # flowers on grass
+            t[tsOffs + 0xC1].main = globals_.Overrides[26 * 2 + 7].main
+            t[tsOffs + 0xC2].main = globals_.Overrides[26 * 2 + 8].main
         elif name in tsidx["Forest Flowers"]:
             # forest flowers
-            t[432].main = globals_.Overrides[26 * 3 + 9].main  # flowers
-            t[433].main = globals_.Overrides[26 * 3 + 10].main  # flowers
-            t[434].main = globals_.Overrides[26 * 3 + 11].main  # flowers
+            t[tsOffs + 0xB0].main = globals_.Overrides[26 * 3 + 9].main  # flowers
+            t[tsOffs + 0xB1].main = globals_.Overrides[26 * 3 + 10].main
+            t[tsOffs + 0xB2].main = globals_.Overrides[26 * 3 + 11].main
 
-            t[448].main = globals_.Overrides[26 * 3 + 6].main  # flowers on grass
-            t[449].main = globals_.Overrides[26 * 3 + 7].main
-            t[450].main = globals_.Overrides[26 * 3 + 8].main
+            t[tsOffs + 0xC0].main = globals_.Overrides[26 * 3 + 6].main  # flowers on grass
+            t[tsOffs + 0xC1].main = globals_.Overrides[26 * 3 + 7].main
+            t[tsOffs + 0xC2].main = globals_.Overrides[26 * 3 + 8].main
 
     elif name in tsidx["Lines"] or name in tsidx["Full Lines"]:
         # These are the line guides
@@ -1343,128 +1344,128 @@ def ProcessOverrides(idx, name):
         t = globals_.Tiles
 
         # use Overrides_safe here because the beginning of Overrides is overwritten
-        t[768].main = globals_.Overrides_safe[26].main  # horizontal line
-        t[769].main = globals_.Overrides_safe[26 + 1].main  # vertical line
-        t[770].main = globals_.Overrides_safe[26 + 2].main  # bottom-right corner
-        t[771].main = globals_.Overrides_safe[26 + 3].main  # top-left corner
+        t[tsOffs].main = globals_.Overrides_safe[26].main             # horizontal line
+        t[tsOffs + 1].main = globals_.Overrides_safe[26 + 1].main     # vertical line
+        t[tsOffs + 2].main = globals_.Overrides_safe[26 + 2].main     # bottom-right corner
+        t[tsOffs + 3].main = globals_.Overrides_safe[26 + 3].main     # top-left corner
 
-        t[784].main = globals_.Overrides[26 * 2].main  # left red blob (part 1)
-        t[785].main = globals_.Overrides[26 * 2 + 1].main  # top red blob (part 1)
-        t[786].main = globals_.Overrides[26 * 2 + 2].main  # top red blob (part 2)
-        t[787].main = globals_.Overrides[26 * 2 + 3].main  # right red blob (part 1)
-        t[788].main = globals_.Overrides[26 * 2 + 4].main  # top-left red blob
-        t[789].main = globals_.Overrides[26 * 2 + 5].main  # top-right red blob
+        t[tsOffs + 0x10].main = globals_.Overrides[26 * 2].main       # left red blob (part 1)
+        t[tsOffs + 0x11].main = globals_.Overrides[26 * 2 + 1].main   # top red blob (part 1)
+        t[tsOffs + 0x12].main = globals_.Overrides[26 * 2 + 2].main   # top red blob (part 2)
+        t[tsOffs + 0x13].main = globals_.Overrides[26 * 2 + 3].main   # right red blob (part 1)
+        t[tsOffs + 0x14].main = globals_.Overrides[26 * 2 + 4].main   # top-left red blob
+        t[tsOffs + 0x15].main = globals_.Overrides[26 * 2 + 5].main   # top-right red blob
 
-        t[800].main = globals_.Overrides[26 * 3].main  # left red blob (part 2)
-        t[801].main = globals_.Overrides[26 * 3 + 1].main  # bottom red blob (part 1)
-        t[802].main = globals_.Overrides[26 * 3 + 2].main  # bottom red blob (part 2)
-        t[803].main = globals_.Overrides[26 * 3 + 3].main  # right red blob (part 2)
-        t[804].main = globals_.Overrides[26 * 3 + 4].main  # bottom-left red blob
-        t[805].main = globals_.Overrides[26 * 3 + 5].main  # bottom-right red blob
+        t[tsOffs + 0x20].main = globals_.Overrides[26 * 3].main       # left red blob (part 2)
+        t[tsOffs + 0x21].main = globals_.Overrides[26 * 3 + 1].main   # bottom red blob (part 1)
+        t[tsOffs + 0x22].main = globals_.Overrides[26 * 3 + 2].main   # bottom red blob (part 2)
+        t[tsOffs + 0x23].main = globals_.Overrides[26 * 3 + 3].main   # right red blob (part 2)
+        t[tsOffs + 0x24].main = globals_.Overrides[26 * 3 + 4].main   # bottom-left red blob
+        t[tsOffs + 0x25].main = globals_.Overrides[26 * 3 + 5].main   # bottom-right red blob
 
         # Those are all for normal lines
         if name in tsidx["Lines"]: return
 
-        t[816].main = globals_.Overrides_safe[14].main  # 1x2 diagonal going up (top edge)
-        t[817].main = globals_.Overrides_safe[15].main  # 1x2 diagonal going down (top edge)
+        t[tsOffs + 0x30].main = globals_.Overrides_safe[14].main      # 1x2 diagonal going up (top edge)
+        t[tsOffs + 0x31].main = globals_.Overrides_safe[15].main      # 1x2 diagonal going down (top edge)
 
-        t[832].main = globals_.Overrides[26 + 14].main  # 1x2 diagonal going up (part 1)
-        t[833].main = globals_.Overrides[26 + 15].main  # 1x2 diagonal going down (part 1)
-        t[834].main = globals_.Overrides[26 * 2 + 19].main  # 1x1 diagonal going up
-        t[835].main = globals_.Overrides[26 * 2 + 20].main  # 1x1 diagonal going down
-        #t[836].main = globals_.Overrides[ + 1058].main  # 2x1 diagonal going up (part 1) nothing
-        t[837].main = globals_.Overrides[20].main  # 2x1 diagonal going up (part 2)
-        t[838].main = globals_.Overrides_safe[21].main  # 2x1 diagonal going down (part 1)
-        #t[839].main = globals_.Overrides[ + 1061].main  # 2x1 diagonal going down (part 2) nothing
+        t[tsOffs + 0x40].main = globals_.Overrides[26 + 14].main      # 1x2 diagonal going up (part 1)
+        t[tsOffs + 0x41].main = globals_.Overrides[26 + 15].main      # 1x2 diagonal going down (part 1)
+        t[tsOffs + 0x42].main = globals_.Overrides[26 * 2 + 19].main  # 1x1 diagonal going up
+        t[tsOffs + 0x43].main = globals_.Overrides[26 * 2 + 20].main  # 1x1 diagonal going down
+        #t[tsOffs + 0x44].main = globals_.Overrides[ + 1058].main     # 2x1 diagonal going up (part 1) nothing
+        t[tsOffs + 0x45].main = globals_.Overrides[20].main           # 2x1 diagonal going up (part 2)
+        t[tsOffs + 0x46].main = globals_.Overrides_safe[21].main      # 2x1 diagonal going down (part 1)
+        #t[tsOffs + 0x47].main = globals_.Overrides[ + 1061].main     # 2x1 diagonal going down (part 2) nothing
 
-        t[848].main = globals_.Overrides[26 * 2 + 14].main  # 1x2 diagonal going up (part 2)
-        t[849].main = globals_.Overrides[26 * 2 + 15].main  # 1x2 diagonal going down (part 2)
-        t[850].main = globals_.Overrides[26 * 3 + 14].main  # 1x1 diagonal going up
-        t[851].main = globals_.Overrides[26 * 3 + 15].main  # 1x1 diagonal going down
-        t[852].main = globals_.Overrides[26 + 19].main  # 2x1 diagonal going up (part 1)
-        t[853].main = globals_.Overrides[26 + 20].main  # 2x1 diagonal going up (part 2)
-        t[854].main = globals_.Overrides[26 + 21].main  # 2x1 diagonal going down (part 1)
-        t[855].main = globals_.Overrides[26 + 22].main  # 2x1 diagonal going down (part 2)
+        t[tsOffs + 0x50].main = globals_.Overrides[26 * 2 + 14].main  # 1x2 diagonal going up (part 2)
+        t[tsOffs + 0x51].main = globals_.Overrides[26 * 2 + 15].main  # 1x2 diagonal going down (part 2)
+        t[tsOffs + 0x52].main = globals_.Overrides[26 * 3 + 14].main  # 1x1 diagonal going up
+        t[tsOffs + 0x53].main = globals_.Overrides[26 * 3 + 15].main  # 1x1 diagonal going down
+        t[tsOffs + 0x54].main = globals_.Overrides[26 + 19].main      # 2x1 diagonal going up (part 1)
+        t[tsOffs + 0x55].main = globals_.Overrides[26 + 20].main      # 2x1 diagonal going up (part 2)
+        t[tsOffs + 0x56].main = globals_.Overrides[26 + 21].main      # 2x1 diagonal going down (part 1)
+        t[tsOffs + 0x57].main = globals_.Overrides[26 + 22].main      # 2x1 diagonal going down (part 2)
 
-        t[866].main = globals_.Overrides[26 * 3 + 17].main  # big circle piece 1st row
-        t[867].main = globals_.Overrides[26 * 3 + 18].main  # big circle piece 1st row
-        t[870].main = globals_.Overrides_safe[17].main  # medium circle piece 1st row
-        t[871].main = globals_.Overrides_safe[18].main  # medium circle piece 1st row
+        t[tsOffs + 0x62].main = globals_.Overrides[26 * 3 + 17].main  # big circle piece 1st row
+        t[tsOffs + 0x63].main = globals_.Overrides[26 * 3 + 18].main  # big circle piece 1st row
+        t[tsOffs + 0x66].main = globals_.Overrides_safe[17].main      # medium circle piece 1st row
+        t[tsOffs + 0x67].main = globals_.Overrides_safe[18].main      # medium circle piece 1st row
 
-        t[881].main = globals_.Overrides[26 * 3 + 20].main  # big circle piece 2nd row
-        t[882].main = globals_.Overrides_safe[23].main  # big circle piece 2nd row
-        t[883].main = globals_.Overrides_safe[24].main  # big circle piece 2nd row
-        t[884].main = globals_.Overrides_safe[25].main  # big circle piece 2nd row
-        t[885].main = globals_.Overrides[26 + 16].main  # medium circle piece 2nd row
-        t[886].main = globals_.Overrides[26 + 17].main  # medium circle piece 2nd row
-        t[887].main = globals_.Overrides[26 + 18].main  # medium circle piece 2nd row
-        t[888].main = globals_.Overrides[26 + 13].main  # small circle
+        t[tsOffs + 0x71].main = globals_.Overrides[26 * 3 + 20].main  # big circle piece 2nd row
+        t[tsOffs + 0x72].main = globals_.Overrides_safe[23].main      # big circle piece 2nd row
+        t[tsOffs + 0x73].main = globals_.Overrides_safe[24].main      # big circle piece 2nd row
+        t[tsOffs + 0x74].main = globals_.Overrides_safe[25].main      # big circle piece 2nd row
+        t[tsOffs + 0x75].main = globals_.Overrides[26 + 16].main      # medium circle piece 2nd row
+        t[tsOffs + 0x76].main = globals_.Overrides[26 + 17].main      # medium circle piece 2nd row
+        t[tsOffs + 0x77].main = globals_.Overrides[26 + 18].main      # medium circle piece 2nd row
+        t[tsOffs + 0x78].main = globals_.Overrides[26 + 13].main      # small circle
 
-        t[896].main = globals_.Overrides[26 * 2 + 21].main  # big circle piece 3rd row
-        t[897].main = globals_.Overrides[26 * 2 + 22].main  # big circle piece 3rd row
-        t[900].main = globals_.Overrides[26 * 2 + 24].main  # big circle piece 3rd row
-        t[901].main = globals_.Overrides[26 * 2 + 16].main  # medium circle piece 3rd row
-        t[902].main = globals_.Overrides[26 * 2 + 17].main  # medium circle piece 3rd row
-        t[903].main = globals_.Overrides[26 * 2 + 18].main  # medium circle piece 3rd row
+        t[tsOffs + 0x80].main = globals_.Overrides[26 * 2 + 21].main  # big circle piece 3rd row
+        t[tsOffs + 0x81].main = globals_.Overrides[26 * 2 + 22].main  # big circle piece 3rd row
+        t[tsOffs + 0x84].main = globals_.Overrides[26 * 2 + 24].main  # big circle piece 3rd row
+        t[tsOffs + 0x85].main = globals_.Overrides[26 * 2 + 16].main  # medium circle piece 3rd row
+        t[tsOffs + 0x86].main = globals_.Overrides[26 * 2 + 17].main  # medium circle piece 3rd row
+        t[tsOffs + 0x87].main = globals_.Overrides[26 * 2 + 18].main  # medium circle piece 3rd row
 
-        t[912].main = globals_.Overrides[26 * 3 + 21].main  # big circle piece 4th row
-        t[913].main = globals_.Overrides[26 * 3 + 22].main  # big circle piece 4th row
-        t[916].main = globals_.Overrides[26 * 2 + 25].main  # big circle piece 4th row
+        t[tsOffs + 0x90].main = globals_.Overrides[26 * 3 + 21].main  # big circle piece 4th row
+        t[tsOffs + 0x91].main = globals_.Overrides[26 * 3 + 22].main  # big circle piece 4th row
+        t[tsOffs + 0x94].main = globals_.Overrides[26 * 2 + 25].main  # big circle piece 4th row
 
-        t[929].main = globals_.Overrides[26 * 2 + 23].main  # big circle piece 5th row
-        t[930].main = globals_.Overrides[26 + 23].main  # big circle piece 5th row
-        t[931].main = globals_.Overrides[26 + 24].main  # big circle piece 5th row
-        t[932].main = globals_.Overrides[26 + 25].main  # big circle piece 5th row
+        t[tsOffs + 0xA1].main = globals_.Overrides[26 * 2 + 23].main  # big circle piece 5th row
+        t[tsOffs + 0xA2].main = globals_.Overrides[26 + 23].main      # big circle piece 5th row
+        t[tsOffs + 0xA3].main = globals_.Overrides[26 + 24].main      # big circle piece 5th row
+        t[tsOffs + 0xA4].main = globals_.Overrides[26 + 25].main      # big circle piece 5th row
 
     elif name in tsidx["Minigame Lines"]:
         t = globals_.Tiles
 
-        t[832].main = globals_.Overrides_safe[26].main  # horizontal line
-        t[833].main = globals_.Overrides_safe[26 + 2].main  # bottom-right corner
-        t[834].main = globals_.Overrides_safe[26].main  # horizontal line
+        t[tsOffs + 0x40].main = globals_.Overrides_safe[26].main      # horizontal line
+        t[tsOffs + 0x41].main = globals_.Overrides_safe[26 + 2].main  # bottom-right corner
+        t[tsOffs + 0x42].main = globals_.Overrides_safe[26].main      # horizontal line
 
-        t[848].main = globals_.Overrides_safe[26 + 1].main  # vertical line
-        t[849].main = globals_.Overrides_safe[26 + 1].main  # vertical line
-        t[850].main = globals_.Overrides_safe[26 + 3].main  # top-left corner
+        t[tsOffs + 0x50].main = globals_.Overrides_safe[26 + 1].main  # vertical line
+        t[tsOffs + 0x51].main = globals_.Overrides_safe[26 + 1].main  # vertical line
+        t[tsOffs + 0x52].main = globals_.Overrides_safe[26 + 3].main  # top-left corner
 
-        t[835].main = globals_.Overrides[26 * 2].main  # left red blob (part 1)
-        t[836].main = globals_.Overrides[26 * 2 + 1].main  # top red blob (part 1)
-        t[837].main = globals_.Overrides[26 * 2 + 2].main  # top red blob (part 2)
-        t[838].main = globals_.Overrides[26 * 2 + 3].main  # right red blob (part 1)
+        t[tsOffs + 0x43].main = globals_.Overrides[26 * 2].main       # left red blob (part 1)
+        t[tsOffs + 0x44].main = globals_.Overrides[26 * 2 + 1].main   # top red blob (part 1)
+        t[tsOffs + 0x45].main = globals_.Overrides[26 * 2 + 2].main   # top red blob (part 2)
+        t[tsOffs + 0x46].main = globals_.Overrides[26 * 2 + 3].main   # right red blob (part 1)
 
-        t[851].main = globals_.Overrides[26 * 3].main  # left red blob (part 2)
-        t[852].main = globals_.Overrides[26 * 3 + 1].main  # bottom red blob (part 1)
-        t[853].main = globals_.Overrides[26 * 3 + 2].main  # bottom red blob (part 2)
-        t[854].main = globals_.Overrides[26 * 3 + 3].main  # right red blob (part 2)
+        t[tsOffs + 0x53].main = globals_.Overrides[26 * 3].main       # left red blob (part 2)
+        t[tsOffs + 0x54].main = globals_.Overrides[26 * 3 + 1].main   # bottom red blob (part 1)
+        t[tsOffs + 0x55].main = globals_.Overrides[26 * 3 + 2].main   # bottom red blob (part 2)
+        t[tsOffs + 0x56].main = globals_.Overrides[26 * 3 + 3].main   # right red blob (part 2)
 
-        t[866].main = globals_.Overrides[26 * 3 + 17].main  # big circle piece 1st row
-        t[867].main = globals_.Overrides[26 * 3 + 18].main  # big circle piece 1st row
-        t[870].main = globals_.Overrides_safe[17].main  # medium circle piece 1st row
-        t[871].main = globals_.Overrides_safe[18].main  # medium circle piece 1st row
+        t[tsOffs + 0x62].main = globals_.Overrides[26 * 3 + 17].main  # big circle piece 1st row
+        t[tsOffs + 0x63].main = globals_.Overrides[26 * 3 + 18].main  # big circle piece 1st row
+        t[tsOffs + 0x66].main = globals_.Overrides_safe[17].main      # medium circle piece 1st row
+        t[tsOffs + 0x67].main = globals_.Overrides_safe[18].main      # medium circle piece 1st row
 
-        t[881].main = globals_.Overrides[26 * 3 + 20].main  # big circle piece 2nd row
-        t[882].main = globals_.Overrides_safe[23].main  # big circle piece 2nd row
-        t[883].main = globals_.Overrides_safe[24].main  # big circle piece 2nd row
-        t[884].main = globals_.Overrides_safe[25].main  # big circle piece 2nd row
-        t[885].main = globals_.Overrides[26 + 16].main  # medium circle piece 2nd row
-        t[886].main = globals_.Overrides[26 + 17].main  # medium circle piece 2nd row
-        t[887].main = globals_.Overrides[26 + 18].main  # medium circle piece 2nd row
+        t[tsOffs + 0x71].main = globals_.Overrides[26 * 3 + 20].main  # big circle piece 2nd row
+        t[tsOffs + 0x72].main = globals_.Overrides_safe[23].main      # big circle piece 2nd row
+        t[tsOffs + 0x73].main = globals_.Overrides_safe[24].main      # big circle piece 2nd row
+        t[tsOffs + 0x74].main = globals_.Overrides_safe[25].main      # big circle piece 2nd row
+        t[tsOffs + 0x75].main = globals_.Overrides[26 + 16].main      # medium circle piece 2nd row
+        t[tsOffs + 0x76].main = globals_.Overrides[26 + 17].main      # medium circle piece 2nd row
+        t[tsOffs + 0x77].main = globals_.Overrides[26 + 18].main      # medium circle piece 2nd row
 
-        t[896].main = globals_.Overrides[26 * 2 + 21].main  # big circle piece 3rd row
-        t[897].main = globals_.Overrides[26 * 2 + 22].main  # big circle piece 3rd row
-        t[900].main = globals_.Overrides[26 * 2 + 24].main  # big circle piece 3rd row
-        t[901].main = globals_.Overrides[26 * 2 + 16].main  # medium circle piece 3rd row
-        t[902].main = globals_.Overrides[26 * 2 + 17].main  # medium circle piece 3rd row
-        t[903].main = globals_.Overrides[26 * 2 + 18].main  # medium circle piece 3rd row
+        t[tsOffs + 0x80].main = globals_.Overrides[26 * 2 + 21].main  # big circle piece 3rd row
+        t[tsOffs + 0x81].main = globals_.Overrides[26 * 2 + 22].main  # big circle piece 3rd row
+        t[tsOffs + 0x84].main = globals_.Overrides[26 * 2 + 24].main  # big circle piece 3rd row
+        t[tsOffs + 0x85].main = globals_.Overrides[26 * 2 + 16].main  # medium circle piece 3rd row
+        t[tsOffs + 0x86].main = globals_.Overrides[26 * 2 + 17].main  # medium circle piece 3rd row
+        t[tsOffs + 0x87].main = globals_.Overrides[26 * 2 + 18].main  # medium circle piece 3rd row
 
-        t[912].main = globals_.Overrides[26 * 3 + 21].main  # big circle piece 4th row
-        t[913].main = globals_.Overrides[26 * 3 + 22].main  # big circle piece 4th row
-        t[916].main = globals_.Overrides[26 * 2 + 25].main  # big circle piece 4th row
+        t[tsOffs + 0x90].main = globals_.Overrides[26 * 3 + 21].main  # big circle piece 4th row
+        t[tsOffs + 0x91].main = globals_.Overrides[26 * 3 + 22].main  # big circle piece 4th row
+        t[tsOffs + 0x94].main = globals_.Overrides[26 * 2 + 25].main  # big circle piece 4th row
 
-        t[929].main = globals_.Overrides[26 * 2 + 23].main  # big circle piece 5th row
-        t[930].main = globals_.Overrides[26 + 23].main  # big circle piece 5th row
-        t[931].main = globals_.Overrides[26 + 24].main  # big circle piece 5th row
-        t[932].main = globals_.Overrides[26 + 25].main  # big circle piece 5th row
+        t[tsOffs + 0xA1].main = globals_.Overrides[26 * 2 + 23].main  # big circle piece 5th row
+        t[tsOffs + 0xA2].main = globals_.Overrides[26 + 23].main      # big circle piece 5th row
+        t[tsOffs + 0xA3].main = globals_.Overrides[26 + 24].main      # big circle piece 5th row
+        t[tsOffs + 0xA4].main = globals_.Overrides[26 + 25].main      # big circle piece 5th row
 
 
 def LoadOverrides():
