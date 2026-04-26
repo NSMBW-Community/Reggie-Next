@@ -741,6 +741,7 @@ class ReggieTranslation:
                 26: 'Add Sprite',
                 27: 'Resize',
                 28: 'NO TITLE GIVEN!',
+                29: 'Next Free',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',

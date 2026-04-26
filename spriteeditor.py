@@ -161,10 +161,11 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         """
         flag = QtWidgets.QAbstractSpinBox.StepEnabledFlag.StepNone
 
-        if self._value < self._maximum:
-            flag |= QtWidgets.QAbstractSpinBox.StepEnabledFlag.StepUpEnabled
-        if self._minimum < self._value:
-            flag |= QtWidgets.QAbstractSpinBox.StepEnabledFlag.StepDownEnabled
+        if self._value is not None:
+            if self._value < self._maximum:
+                flag |= QtWidgets.QAbstractSpinBox.StepEnabledFlag.StepUpEnabled
+            if self._minimum < self._value:
+                flag |= QtWidgets.QAbstractSpinBox.StepEnabledFlag.StepDownEnabled
 
         return flag
 
@@ -204,6 +205,9 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         Updates the value shown by the line edit and emits a signal when the
         value represented by the text of the line edit has changed.
         """
+        if val is None and val is not 0:
+            val = self._maximum
+
         if self._value == val:
             if val == 0:
                 self.lineEdit().setText("0")
@@ -634,7 +638,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(label, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
 
             if idtype is not None:
-                next_free_button = QtWidgets.QPushButton("Next Free")
+                next_free_button = QtWidgets.QPushButton(globals_.trans.string('SpriteDataEditor', 29))
                 next_free_button.clicked.connect(self.handle_next_free)
 
                 layout.addWidget(self.widget, row, 1)
@@ -775,7 +779,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(label, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
 
             if idtype is not None:
-                next_free_button = QtWidgets.QPushButton("Next Free")
+                next_free_button = QtWidgets.QPushButton(globals_.trans.string('SpriteDataEditor', 29))
                 next_free_button.clicked.connect(self.handle_next_free)
 
                 layout.addWidget(self.widget, row, 1)
