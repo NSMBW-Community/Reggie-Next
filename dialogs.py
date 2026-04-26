@@ -460,6 +460,18 @@ class ScreenCapChoiceDialog(QtWidgets.QDialog):
         for i in range(len(globals_.Area.zones)):
             self.zoneCombo.addItem(globals_.trans.string('ScrShtDlg', 3, '[zone]', i + 1))
 
+        self.gridCombo = QtWidgets.QComboBox()
+        self.gridCombo.addItems(globals_.trans.stringList('ScrShtDlg', 9))
+
+        currGrid = 0
+        if globals_.GridType is not None:
+            if globals_.GridType == 'grid':
+                currGrid = 1
+            else:
+                currGrid = 2
+
+        self.gridCombo.setCurrentIndex(currGrid)
+
         self.hide_background = QtWidgets.QCheckBox()
         self.save_img = QtWidgets.QRadioButton()
         self.save_clip = QtWidgets.QRadioButton()
@@ -473,6 +485,7 @@ class ScreenCapChoiceDialog(QtWidgets.QDialog):
 
         mainLayout = QtWidgets.QFormLayout()
         mainLayout.addRow(globals_.trans.string('ScrShtDlg', 4), self.zoneCombo)
+        mainLayout.addRow(globals_.trans.string('ScrShtDlg', 8), self.gridCombo)
         mainLayout.addRow(globals_.trans.string('ScrShtDlg', 5), self.hide_background)
         mainLayout.addRow(globals_.trans.string('ScrShtDlg', 6), self.save_img)
         mainLayout.addRow(globals_.trans.string('ScrShtDlg', 7), self.save_clip)

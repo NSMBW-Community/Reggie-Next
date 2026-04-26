@@ -624,14 +624,20 @@
 		<string id="41">Theme:</string>
 	</section>
 	<section id="ScrShtDlg">
-		<string id="0">Choose a Screenshot source</string>
+		<string id="0">Level Screenshot</string>
 		<string id="1">Current Screen</string>
 		<string id="2">All Zones</string>
 		<string id="3">Zone [zone]</string>
-		<string id="4">Target</string>
-		<string id="5">Hide background</string>
-		<string id="6">Save image to file</string>
-		<string id="7">Copy image</string>
+		<string id="4">Target:</string>
+		<string id="5">Hide Background:</string>
+		<string id="6">Save Image to File:</string>
+		<string id="7">Copy Image:</string>
+		<string id="8">Grid Type:</string>
+		<stringlist id="9">
+			<entry>None</entry>
+			<entry>Standard</entry>
+			<entry>Checker</entry>
+		</stringlist>
 	</section>
 	<section id="ShftItmDlg">
 		<string id="0">Shift Items</string>
