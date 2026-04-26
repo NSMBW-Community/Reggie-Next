@@ -1366,6 +1366,7 @@ def LoadActionsLists():
         (globals_.trans.string('MenuItems', 10), False, 'saveas'),
         (globals_.trans.string('MenuItems', 128), False, 'savecopyas'),
         (globals_.trans.string('MenuItems', 12), False, 'metainfo'),
+        (globals_.trans.string('MenuItems', 98), False, 'changegamedef'),
         (globals_.trans.string('MenuItems', 14), True, 'screenshot'),
         (globals_.trans.string('MenuItems', 16), False, 'changegamepath'),
         (globals_.trans.string('MenuItems', 18), False, 'preferences'),
@@ -1390,6 +1391,9 @@ def LoadActionsLists():
         (globals_.trans.string('MenuItems', 48), True, 'showlay0'),
         (globals_.trans.string('MenuItems', 50), True, 'showlay1'),
         (globals_.trans.string('MenuItems', 52), True, 'showlay2'),
+        (globals_.trans.string('MenuItems', 108), False, 'tileanim'),
+        (globals_.trans.string('MenuItems', 110), False, 'collisions'),
+        (globals_.trans.string('MenuItems', 118), False, 'realview'),
         (globals_.trans.string('MenuItems', 54), True, 'showsprites'),
         (globals_.trans.string('MenuItems', 56), False, 'showspriteimages'),
         (globals_.trans.string('MenuItems', 58), True, 'showlocations'),
@@ -1403,6 +1407,7 @@ def LoadActionsLists():
     )
     globals_.SettingsActions = (
         (globals_.trans.string('MenuItems', 72), True, 'areaoptions'),
+        (globals_.trans.string('MenuItems', 140), False, 'camprofiles'),
         (globals_.trans.string('MenuItems', 74), True, 'zones'),
         (globals_.trans.string('MenuItems', 76), True, 'backgrounds'),
         (globals_.trans.string('MenuItems', 78), False, 'addarea'),

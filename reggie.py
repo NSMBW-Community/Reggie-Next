@@ -738,8 +738,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         vmenu.addAction(self.actions['showsprites'])
         vmenu.addAction(self.actions['showspriteimages'])
         vmenu.addAction(self.actions['showlocations'])
-        vmenu.addAction(self.actions['showcomments'])
         vmenu.addAction(self.actions['showpaths'])
+        vmenu.addAction(self.actions['showcomments'])
         vmenu.addSeparator()
         vmenu.addAction(self.actions['grid'])
         vmenu.addSeparator()
@@ -840,6 +840,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 'saveas',
                 'savecopyas',
                 'metainfo',
+                'changegamedef',
                 'screenshot',
                 'changegamepath',
                 'preferences',
@@ -874,6 +875,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 'showlay0',
                 'showlay1',
                 'showlay2',
+                'tileanim',
+                'collisions',
+                'realview',
             ), (
                 'showsprites',
                 'showspriteimages',
@@ -881,6 +885,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 'showpaths',
             ), (
                 'areaoptions',
+                'camprofiles',
                 'zones',
                 'backgrounds',
             ), (

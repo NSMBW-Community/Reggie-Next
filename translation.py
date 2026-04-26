@@ -484,7 +484,7 @@ class ReggieTranslation:
                 57: 'Toggle viewing of sprite images',
                 58: 'Show Locations',
                 59: 'Toggle viewing of locations',
-                60: 'Switch\nGrid',
+                60: 'Switch Grid',
                 61: 'Cycle through available grid views',
                 62: 'Zoom to Maximum',
                 63: 'Zoom in all the way',
@@ -635,7 +635,7 @@ class ReggieTranslation:
                 3: 'Themes',
                 4: '[b]Reggie Preferences[/b][br]Customize Reggie Next by changing these settings.[br]Use the tabs below to view even more settings.[br]Reggie Next must be restarted before certain changes can take effect.',
                 5: '[b]Toolbar Preferences[/b][br]Choose menu items you would like to appear on the toolbar.[br]Reggie Next must be restarted before the toolbar can be updated.[br]',
-                6: '[b]Reggie Themes[/b][br]Pick a theme below to change application colors and icons.[br]Reggie Next must be restarted before the theme can be changed.',
+                6: '[b]Reggie Themes[/b][br]Pick a theme below to change application colors and icons.[br]Reggie Next must be restarted before the theme can be changed.[br]',
                 7: None,  # REMOVED: 'Show the splash screen:'
                 8: None,  # REMOVED: 'If TPLLib cannot use a fast backend (recommended)'
                 9: None,  # REMOVED: 'Always'

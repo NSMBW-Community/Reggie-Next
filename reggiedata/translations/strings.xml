@@ -586,7 +586,7 @@
 		<string id="3">Themes</string>
 		<string id="4">[b]Reggie Preferences[/b][br]Customize Reggie Next by changing these settings.[br]Use the tabs below to view even more settings.[br]Reggie Next must be restarted before certain changes can take effect.</string>
 		<string id="5">[b]Toolbar Preferences[/b][br]Choose menu items you would like to appear on the toolbar.[br]Reggie Next must be restarted before the toolbar can be updated.[br]</string>
-		<string id="6">[b]Reggie Themes[/b][br]Pick a theme below to change application colors and icons.[br]Reggie Next must be restarted before the theme can be changed.</string>
+		<string id="6">[b]Reggie Themes[/b][br]Pick a theme below to change application colors and icons.[br]Reggie Next must be restarted before the theme can be changed.[br]</string>
 		<string id="7" />
 		<string id="8" />
 		<string id="9" />
