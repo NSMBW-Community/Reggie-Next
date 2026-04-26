@@ -5973,12 +5973,13 @@ class SpriteImage_BubbleGen(SLib.SpriteImage):  # 314
         Image = Image.scaledToWidth(int(Image.width() * pct / 100))
 
         distanceFromTop = (self.parent.objy * 1.5) - zoneRect.topLeft().y()
-        random.seed(distanceFromTop + self.parent.objx)  # looks ridiculous without this
+        rndGen = random.Random()
+        rndGen.seed(distanceFromTop + self.parent.objx)  # looks ridiculous without this
 
         numOfBubbles = int(distanceFromTop * bubbleFrequency)
         for num in range(numOfBubbles):
-            xmod = (random.random() * 2 * bubbleEccentricityX) - bubbleEccentricityX
-            ymod = (random.random() * 2 * bubbleEccentricityY) - bubbleEccentricityY
+            xmod = (rndGen.random() * 2 * bubbleEccentricityX) - bubbleEccentricityX
+            ymod = (rndGen.random() * 2 * bubbleEccentricityY) - bubbleEccentricityY
             x = ((self.parent.objx * 1.5) - zoneRect.topLeft().x()) + xmod + 12 - (Image.width() / 2.0)
             y = ((num * 1.0 / numOfBubbles) * distanceFromTop) + ymod
             if not (0 < y < self.parent.objy * 1.5): continue
