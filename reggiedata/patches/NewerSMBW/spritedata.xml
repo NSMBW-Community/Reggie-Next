@@ -1698,7 +1698,7 @@
     <dualbox nybble="12.4" title1="Hides when Active" title2="Shows when Active" comment="This determines how the Line God will act when the Triggering Event is activated." comment2="When the event is not active, the Line Guides will exist in the opposite state from what's listed."/>
   </sprite> <!-- #244: Line God Event -->
 
-  <sprite id="245" name="Newer Cutscene Controller - Ending" notes="This controller manages the ending cutscene shown after the Captain Bowser fight." advancednotes="This sprite is predominately hardcoded in how it functions. Itt requires a very specific level setup to work properly (see 08-41.arc).">
+  <sprite id="245" name="Newer Cutscene Controller - Ending" notes="This controller manages the ending cutscene shown after the Captain Bowser fight." advancednotes="This sprite is predominately hardcoded in how it functions. It requires a very specific level setup to work properly (see 08-41.arc).">
   </sprite> <!-- #245: Newer Cutscene Controller - Ending -->
 
   <sprite id="246" name="Special Event" notes="This sprite can do all sorts of special functions, such as freezing actors, changing the size of sprites, editing the game Timer, and changing the gravity. This function is restricted to the active Zone. The settings available to each type will appear when selecting that option. Be sure to reset the Sprite Settings when switching between different types in order to prevent any bugs.">
