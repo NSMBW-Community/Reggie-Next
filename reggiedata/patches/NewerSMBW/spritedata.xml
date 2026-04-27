@@ -1698,8 +1698,8 @@
     <dualbox nybble="12.4" title1="Hides when Active" title2="Shows when Active" comment="This determines how the Line God will act when the Triggering Event is activated." comment2="When the event is not active, the Line Guides will exist in the opposite state from what's listed."/>
   </sprite> <!-- #244: Line God Event -->
 
-  <sprite id="245" name="Newer Cutscene Controller: Credits" notes="&lt;font color=&quot;red&quot;&gt;This sprite is predominately hardcoded in how it functions. Custom usage is not recommended.&lt;/font&gt;" advancednotes="It needs a very specific level set-up to function. Shows the Bowser cutscene that runs in a separate level.">
-  </sprite> <!-- #245: Newer Cutscene Controller: Credits -->
+  <sprite id="245" name="Newer Cutscene Controller - Ending" notes="This controller manages the ending cutscene shown after the Captain Bowser fight." advancednotes="This sprite is predominately hardcoded in how it functions. Itt requires a very specific level setup to work properly (see 08-41.arc).">
+  </sprite> <!-- #245: Newer Cutscene Controller - Ending -->
 
   <sprite id="246" name="Special Event" notes="This sprite can do all sorts of special functions, such as freezing actors, changing the size of sprites, editing the game Timer, and changing the gravity. This function is restricted to the active Zone. The settings available to each type will appear when selecting that option. Be sure to reset the Sprite Settings when switching between different types in order to prevent any bugs.">
     <value nybble="5-6" title="Triggering Event ID" comment="The Special Event is on as long as this Event is activated." idtype="Triggering Event"/>
@@ -2605,6 +2605,9 @@
     </list> <!-- Appears only if Angled + Right is enabled -->
     <checkbox nybble="9.4" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites." comment2="The player will jump behind the mushroom platform when passing through from underneath."/>
   </sprite> <!-- #441: Mushroom Platform -->
+
+  <sprite id="468" name="Newer Cutscene Controller - Credits" notes="This controller manages the game's credits and staffroll after the ending cutscene. The credits sequence and staffroll text are defined in NewerStaffRoll.bin.">
+  </sprite> <!-- #468: Newer Cutscene Controller - Credits -->
 
   <sprite id="478" name="Bowser Switch (Small)" sizehacks="True" notes="This switch is nearly identical to the Red ! Switch, but it does not activate outlined Red Blocks. It may have additional bugs. Not recommended for use outside of the final Bowser Boss fight.">
     <dependency notes="This sprite has additional hardcoded behavior that may cause bugs when it is used outside of its intended boss fight.">
