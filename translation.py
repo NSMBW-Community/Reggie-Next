@@ -63,7 +63,7 @@ class ReggieTranslation:
                 0: 'About Reggie Next',
                 1: '[i]Reggie Next[/i] Level Editor',
                 2: '[i]Reggie Next Level Editor[/i] is an open-source project, started by Treeki in 2010 and forked by RoadrunnerWMC in 2013, that aims to bring you the fun of designing original New Super Mario Bros. Wii[tm]-compatible levels.[br]',
-                3: 'Interested? Join the [a href="https://discord.gg/XnQJnwa"]Discord server[/a] to get in touch with the current developer(s).[br]',
+                3: 'Interested? Join the [a href="[discord]"]Discord server[/a] to get in touch with the current developer(s).[br]',
             },
             'ErrorDlg': {
                 0: 'An unhandled exception occurred. Please report the problem in the Horizon Discord server.\nA log will be written to \"[log]\".\n\nError information:\n',

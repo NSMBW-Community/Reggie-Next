@@ -34,6 +34,8 @@ class AboutDialog(QtWidgets.QDialog):
         logoLabel.setPixmap(logo)
         logoLabel.setContentsMargins(16, 4, 32, 4)
 
+        discord = 'https://discord.gg/Quvaj2Ufhb'
+
         # Description
         description = '<html><head><style type="text/CSS">'
         description += 'body {font-family: Calibri}'
@@ -43,13 +45,14 @@ class AboutDialog(QtWidgets.QDialog):
         description += globals_.trans.string('AboutDlg', 1)
         description += '</h1><div class="main">'
         description += globals_.trans.string('AboutDlg', 2)
-        description += globals_.trans.string('AboutDlg', 3)
+        description += globals_.trans.string('AboutDlg', 3, '[discord]', discord)
         description += '</div></center></body></html>'
 
         # Description label
         descLabel = QtWidgets.QLabel()
         descLabel.setText(description)
         descLabel.setMinimumWidth(512)
+        descLabel.setOpenExternalLinks(True)
         descLabel.setWordWrap(True)
 
         # Readme.md viewer
