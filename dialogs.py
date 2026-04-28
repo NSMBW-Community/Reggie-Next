@@ -21,7 +21,7 @@ class AboutDialog(QtWidgets.QDialog):
         """
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle(globals_.trans.string('AboutDlg', 0))
-        self.setWindowIcon(GetIcon('reggie'))
+
 
         # Open the readme file
         readme = ""
@@ -29,7 +29,7 @@ class AboutDialog(QtWidgets.QDialog):
             readme = f.read()
 
         # Logo
-        logo = QtGui.QPixmap(os.path.join('reggiedata', 'about.png'))
+        logo = QtGui.QPixmap(os.path.join('reggiedata', 'icon.png'))
         logoLabel = QtWidgets.QLabel()
         logoLabel.setPixmap(logo)
         logoLabel.setContentsMargins(16, 4, 32, 4)

@@ -83,7 +83,7 @@ def FilesAreMissing():
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_MissingFiles', 0), globals_.trans.string('Err_MissingFiles', 1))
         return True
 
-    required = ['icon.png', 'about.png', ]
+    required = ['icon.png', ]
 
     missing = []
 
