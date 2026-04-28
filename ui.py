@@ -338,6 +338,9 @@ def SetAppStyle(styleKey=''):
                 background-color: %s;
             }""" % bgColor)
 
+        # Fix disabled menubar items being nearly unreadable in some cases
+        # (mainly in dark mode and/or when the UI color is overriden)
+        globals_.app.setStyleSheet("""QMenu::item:disabled{color: #646464;}""")
 
 def GetIcon(name, big=False):
     """
