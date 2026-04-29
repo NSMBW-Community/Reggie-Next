@@ -1823,6 +1823,7 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 # Entrance [0] at (13, 8)
                 ent = globals_.mainWindow.CreateEntrance(13 * 16, 8 * 16, 0, add_to_scene=False)
+                scene.addItem(ent)
 
                 # Location [1] at (1, 9) size (6, 2)
                 loc = globals_.mainWindow.CreateLocation(1 * 16, 9 * 16, 6 * 16, 2 * 16, 1, add_to_scene=False)
