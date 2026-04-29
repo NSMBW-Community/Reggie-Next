@@ -6309,6 +6309,7 @@ class SpriteImage_DishPlatform(SLib.SpriteImage_StaticMultiple):  # 331
         SLib.loadIfNotInImageCache('DishPlatform1', 'dish_platform_long.png')
 
     def dataChanged(self):
+        self.yOffset = -8
 
         size = self.parent.spritedata[4] & 15
         if size == 0:
