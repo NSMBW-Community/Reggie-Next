@@ -1986,6 +1986,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.DataUpdate.emit(new_data)
 
+        # Fix window not shrinking after fields are hidden
+        if globals_.mainWindow.spriteEditorDock.isFloating():
+            self.window().resize(self.width(), 0)
+
     def HandleRawDataEdited(self, text):
         """
         Triggered when the raw data textbox is edited
