@@ -622,6 +622,9 @@
 		<string id="39">Insert new path node after selected node</string>
 		<string id="40">Themes</string>
 		<string id="41">Theme:</string>
+		<string id="42">Translation Info</string>
+        <string id="43">[b][name][/b][br]Default language for Reggie Next.</string>
+        <string id="44">[b][name][/b] - Version [version][br]Translators: [translator]</string>
 	</section>
 	<section id="ScrShtDlg">
 		<string id="0">Level Screenshot</string>

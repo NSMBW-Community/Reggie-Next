@@ -1493,9 +1493,22 @@ class PreferencesDialog(QtWidgets.QDialog):
                 ClearRecentBtn.setMaximumWidth(ClearRecentBtn.minimumSizeHint().width())
                 ClearRecentBtn.clicked.connect(self.ClearRecent)
 
+                # Setup translation info
+                self.translations = self.getAvailableTranslations
+
                 # Add the Translation Language setting
                 self.Trans = QtWidgets.QComboBox()
                 self.Trans.setMaximumWidth(256)
+                self.Trans.currentIndexChanged.connect(self.UpdateTransInfo)
+
+                self.transDesc = QtWidgets.QLabel()
+
+                boxGB = QtWidgets.QGroupBox(globals_.trans.string('PrefsDlg', 42))
+                L = QtWidgets.QFormLayout()
+                L.addRow(self.transDesc)
+                L2 = QtWidgets.QGridLayout()
+                L2.addLayout(L, 0, 0)
+                boxGB.setLayout(L2)
 
                 # Add the Zone Entrance Indicator checkbox
                 self.zEntIndicator = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 31))
@@ -1528,6 +1541,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
                 L.addRow(globals_.trans.string('PrefsDlg', 14), self.Trans)
+                L.addRow('', boxGB) # Blank label so this right-aligns
                 L.addRow(globals_.trans.string('PrefsDlg', 15), ClearRecentBtn)
                 L.addWidget(self.epbIndicator)
                 L.addRow(globals_.trans.string('PrefsDlg', 36), self.psValue)
@@ -1564,6 +1578,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                         self.Trans.setCurrentIndex(i)
                     i += 1
 
+                self.UpdateTransInfo()
+
                 self.zEntIndicator.setChecked(globals_.DrawEntIndicators)
                 self.zBndIndicator.setChecked(globals_.BoundsDrawn)
                 self.rdhIndicator.setChecked(globals_.ResetDataWhenHiding)
@@ -1583,6 +1599,42 @@ class PreferencesDialog(QtWidgets.QDialog):
                 ans = QtWidgets.QMessageBox.question(None, globals_.trans.string('PrefsDlg', 17), globals_.trans.string('PrefsDlg', 18), QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
                 if ans != QtWidgets.QMessageBox.StandardButton.Yes: return
                 globals_.mainWindow.RecentMenu.clearAll()
+
+            @property
+            def getAvailableTranslations(self):
+                """
+                Searches the Translations folder and returns a list of filepaths.
+                Automatically adds 'English' to the list.
+                """
+                trans_path = os.path.join('reggiedata', 'translations')
+                trans_list = [('English', ReggieTranslation(None))]
+                for trans_name in os.listdir(trans_path):
+                    if not os.path.isdir(os.path.join(trans_path, trans_name)):
+                        continue
+
+                    try:
+                        trans = ReggieTranslation(trans_name)
+                    except Exception:
+                        continue
+
+                    trans_list.append((trans_name, trans))
+
+                return tuple(trans_list)
+
+            def UpdateTransInfo(self):
+                """
+                Updates the translation info
+                """
+                for name, transObj in self.translations:
+                    if name == self.Trans.currentText():
+                        if name == 'English':
+                            t = transObj
+                            text = globals_.trans.string('PrefsDlg', 43, '[name]', t.name)
+                            self.transDesc.setText(text)
+                        else:
+                            t = transObj
+                            text = globals_.trans.string('PrefsDlg', 44, '[name]', t.name, '[version]', t.version, '[translator]', t.translator)
+                            self.transDesc.setText(text)
 
         return GeneralTab()
 

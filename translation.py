@@ -671,6 +671,9 @@ class ReggieTranslation:
                 39: 'Insert new path node after selected node',
                 40: 'Themes',
                 41: 'Theme:',
+                42: 'Translation Info',
+                43: '[b][name][/b][br]Default language for Reggie Next.',
+                44: '[b][name][/b] - Version [version][br]Translators: [translator]',
             },
             'ScrShtDlg': {
                 0: 'Level Screenshot',
