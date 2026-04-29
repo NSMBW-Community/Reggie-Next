@@ -918,7 +918,15 @@ class SpriteList(QtWidgets.QWidget):
         # Set of row ids
         self.SearchResults = set()
 
-        self.table = QtWidgets.QTableWidget(0, len(globals_.trans.stringList('Sprites', 23)) + 1)
+        # Probably not the bext way to do this?
+        class SpriteTableWidget(QtWidgets.QTableWidget):
+            def keyPressEvent(self, event):
+                if event.key() == QtCore.Qt.Key.Key_Space or event.key() == QtCore.Qt.Key.Key_Return:
+                    SpriteList().moveToSprite(self.currentItem())
+
+                super().keyPressEvent(event)
+
+        self.table = SpriteTableWidget(0, len(globals_.trans.stringList('Sprites', 23)) + 1)
         headers = [globals_.trans.string('Sprites', 21), globals_.trans.string('Sprites', 22)] + list(globals_.trans.stringList('Sprites', 23)[1:])
         self.table.setHorizontalHeaderLabels(headers)
         self.table.verticalHeader().setVisible(False) # hide row numbers
@@ -1235,6 +1243,3 @@ class SpriteList(QtWidgets.QWidget):
 
     def row(self, item):
         return self.table.row(item)
-
-    def clearSelection(self):
-        self.table.setCurrentItem(None)
