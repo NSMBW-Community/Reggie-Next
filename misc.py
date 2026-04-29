@@ -1799,8 +1799,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                     if name == self.themeBox.currentText():
                         t = themeObj
                         self.preview.setPixmap(self.drawPreview(t))
-                        text = globals_.trans.string('PrefsDlg', 26, '[name]', t.themeName, '[creator]', t.creator,
-                                            '[description]', t.description)
+                        text = globals_.trans.string('PrefsDlg', 26, '[name]', t.themeName, '[version]', t.version,
+                                            '[creator]', t.creator, '[description]', t.description)
                         self.description.setText(text)
 
             def drawPreview(self, theme):

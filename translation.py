@@ -655,7 +655,7 @@ class ReggieTranslation:
                 23: None,
                 24: '[b]Window Style[/b][br]This changes what style Reggie\'s UI uses. Note that this may cause issues with certain themes.',
                 25: 'Window Style',
-                26: '[b][name][/b][br]By [creator][br][description]',
+                26: '[b][name][/b] - Version [version][br]By [creator][br][description]',
                 27: None,  # REMOVED: 'Tilesets:',
                 28: None,  # REMOVED: 'Use Default Tileset Picker (recommended)',
                 29: None,  # REMOVED: 'Use Old Tileset Picker',
