@@ -2381,9 +2381,8 @@ class SpriteImage_RotationControlledSolidBetaPlatform(SpriteImage_UnusedBlockPla
         self.isDark = True
 
     def dataChanged(self):
-        size = self.parent.spritedata[4]
-        width = size >> 4
-        height = size & 0xF
+        width = (self.parent.spritedata[3] & 1) << 4 | (self.parent.spritedata[4] >> 4)
+        height = self.parent.spritedata[4] & 0xF
 
         if width == 0 or height == 0:
             self.spritebox.shown = True

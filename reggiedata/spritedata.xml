@@ -1425,15 +1425,18 @@
     </list>
   </sprite> <!-- #96: Rotation Controller - Swaying -->
 
-  <sprite id="97" name="(Unused) Rotation Controlled Block" notes="This is a block platform that is able to be controlled by a Rotation Controller. It is incomplete, so you may encounter issues when using it." advancednotes="The class name is 'En_Lift_Rotation_Full' if you want to change the texture.">
+  <sprite id="97" name="(Unused) Rotation Controlled Block" notes="This is a block platform that is able to be controlled by a Rotation Controller.">
+    <dependency notes="This block must be paired with a Rotation Controller in order to be visible, however it will still have collision and function otherwise.">
+      <suggested sprite="96"/>  <!-- Rotation Controller - Swaying -->
+      <suggested sprite="149"/> <!-- Rotation Controller - Spinning -->
+    </dependency>
     <list nybble="5-6" title="Z-Order" comment="This this changes the relative Z-Order of the block platform.">
-      <entry value="3">20</entry>
-      <entry value="0">0</entry>
+      <entry value="0">20</entry>
       <entry value="1">-20</entry>
       <entry value="2">-40</entry>
     </list>
-    <value nybble="8.4-9.4" title="Width" comment="This determines the width of the block. It must be set to at least one."/>
-    <value nybble="10" title="Height" comment="This determines the height of the block. It must be set to at least one."/>
+    <value nybble="8.4-9.4" title="Width" comment="This determines the width of the block. It must be set to at least 1 to be visible."/>
+    <value nybble="10" title="Height" comment="This determines the height of the block. It must be set to at least 1 to be visible."/>
     <value nybble="11-12" title="Rotation ID" comment="Match this sprite with a Rotation Controller to make this sprite move. Works with both Spinning and Swaying." idtype="Rotation"/>
   </sprite> <!-- #97: (Unused) Rotation Controlled Block -->
 
