@@ -336,6 +336,10 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         auto_list.setModel(self.auto_model)
         auto_list.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
 
+        # Dark mode readability fixes
+        self.custom_list.setStyleSheet("color: #7f7f7f;}")
+        auto_list.setStyleSheet("color: #7f7f7f;}")
+
         sprites_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 49)), 0, 0)
         sprites_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 50)), 0, 1)
         sprites_layout.addWidget(auto_list, 1, 0)
