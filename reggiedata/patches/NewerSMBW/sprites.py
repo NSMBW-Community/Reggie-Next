@@ -329,11 +329,19 @@ class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple): # 18
             transform.translate(24, 15)
             transform.rotate(angle)
             transform.translate(-24, -15)
+        else:
+            # Reset angle
+            transform = QtGui.QTransform()
+            transform.rotate(0)
 
         if transform is not None:
             self.parent.setTransform(transform)
 
         super().dataChanged()
+
+    def paint(self, painter):
+        painter.setRenderHint(QtGui.QPainter.RenderHint.SmoothPixmapTransform)
+        super().paint(painter)
 
 
 class SpriteImage_SamuraiGuy(SLib.SpriteImage_Static):  # 19
