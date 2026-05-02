@@ -4414,7 +4414,7 @@
   </sprite> <!-- #296: Giant Buzzy Beetle -->
 
   <sprite id="297" name="Spine Coaster" noyoshi="True" notes="A quick Line guided platform that will screech and clatter as it travels.">
-    <list nybble="12" title="Length" comment="This determines how many platform segments make up the Spine Coaster.">
+    <list nybble="12" title="Length" comment="This determines how many platform segments make up the Spine Coaster." comment2="You must use a Length of 1 or greater, or else the game will crash if the platform is ground-pounded.">
       <entry value="0">Skull Only</entry>
       <entry value="1">Skull + 1 Platform</entry>
       <entry value="2">Skull + 2 Platforms</entry>
