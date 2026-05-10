@@ -184,7 +184,7 @@
   </sprite> <!-- #26: Upside-Down Spiny -->
 
   <!-- Confirm Slow Down functions the same as Basic Platform. -->
-  <sprite id="27" name="Stone Block (NSMB-DS) - Vertical Movement" notes="An unused Stone Block style moving platform. It is solid so it cannot be jumped through. It was originally used in NSMB DS and the code was added to NSMBW but not used.">
+  <sprite id="27" name="Stone Block (NSMBDS) - Vertical Movement" notes="An unused Stone Block style moving platform. It is solid so it cannot be jumped through. It was originally used in NSMBDS and the code was added to NSMBW but not used.">
     <list nybble="9.3-9.4" title="Height" comment="This determines the height of the block.">
       <entry value="0">1 Tile</entry>
       <entry value="1">2 Tiles</entry>
@@ -198,9 +198,9 @@
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the block will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated."/>
     <value nybble="3.2-4.4" title="Triggering Event ID" requirednybble="5.4" idtype="Triggering Event"/>
-  </sprite> <!-- #27: Stone Block (NSMB-DS) - Vertical Movement -->
+  </sprite> <!-- #27: Stone Block (NSMBDS) - Vertical Movement -->
 
-  <sprite id="28" name="Stone Block (NSMB-DS) - Horizontal Movement" notes="An unused Stone Block style moving platform. It is solid so it cannot be jumped through. It was originally used in NSMB DS and the code was added to NSMBW but not used.">
+  <sprite id="28" name="Stone Block (NSMBDS) - Horizontal Movement" notes="An unused Stone Block style moving platform. It is solid so it cannot be jumped through. It was originally used in NSMBDS and the code was added to NSMBW but not used.">
     <list nybble="9.3-9.4" title="Height" comment="This determines the height of the block.">
       <entry value="0">1 Tile</entry>
       <entry value="1">2 Tiles</entry>
@@ -214,7 +214,7 @@
     <dualbox nybble="6.4" title1="Fast" title2="Slow" comment="This determines the speed the block will move." comment2="The exact speed difference between the two speeds is a 5:9 ratio."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated."/>
     <value nybble="3.2-4.4" title="Triggering Event ID" requirednybble="5.4" idtype="Triggering Event"/>
-  </sprite> <!-- #28: Stone Block (NSMB-DS) - Horizontal Movement -->
+  </sprite> <!-- #28: Stone Block (NSMBDS) - Horizontal Movement -->
 
   <sprite id="29" name="Incomplete Platform - Ac_Lift_ObjBg_HMove_Big" notes="This sprite does not load. Settings are the same as in sprite 28. We're currently unsure why this sprite does not load.&lt;br&gt;Needs RE (reverse-engineering) data to figure out the issue.">
   </sprite> <!-- #29: Incomplete Platform - Ac_Lift_ObjBG_HMove_Big -->
@@ -1727,7 +1727,7 @@
   </sprite> <!-- #115: Cheep Cheep / Deep Cheep / Eep Cheep -->
 
   <!-- There may be additional variables that allow this sprite to interact with coins. -->
-  <sprite id="116" name="(Unused) Coin Cheep" notes="&lt;font color=&quot;red&quot;&gt;This sprite is not recommended for use.&lt;/font&gt; Just use a regular Cheep Cheep." advancednotes="An incomplete Cheep Cheep that swims in a specific direction. It bobs up and down as it swims. It is supposed to be the Cheep Cheep from NSMB:DS that pulls coins along with it. This functionality may exist within the sprite, but require a specific coin, setting, or controller to accomplish it.">
+  <sprite id="116" name="(Unused) Coin Cheep" notes="&lt;font color=&quot;red&quot;&gt;This sprite is not recommended for use.&lt;/font&gt; Just use a regular Cheep Cheep." advancednotes="An incomplete Cheep Cheep that swims in a specific direction. It bobs up and down as it swims. It is supposed to be the Cheep Cheep from NSMBDS that pulls coins along with it. This functionality may exist within the sprite, but require a specific coin, setting, or controller to accomplish it.">
     <dependency notes="The Coin Cheep can be placed in both non-location water and location water.">
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
@@ -1842,7 +1842,7 @@
     <checkbox nybble="5.4" title="Move on Touch" comment="Requires only a single player (as opposed to all players) to touch the platform before it starts moving."/>
   </sprite> <!-- #122: Basic Platform - One-Way -->
 
-  <sprite id="123" name="(Unused) Swinging Castle Platform" notes="An unused platform that Nintendo ported from NSMB:DS. It requires certain settings to work correctly. It will swing back and forth as though it were attached to a Rotation Controller.">
+  <sprite id="123" name="(Unused) Swinging Castle Platform" notes="An unused platform that Nintendo ported from NSMBDS. It requires certain settings to work correctly. It will swing back and forth as though it were attached to a Rotation Controller.">
     <dependency notes="Using large sizes is not recommended unless using sizehacks with other sprites."/>
     <value nybble="9" title="Size" comment="This determines how large the platform is." comment2="A setting of 0 is the same as a setting of 2. 1-15 provide general scaling from 50% to 750% scaling."/>
     <value nybble="11" title="Speed" comment="This determines how quickly the platform will swing back and forth."/>
@@ -2281,7 +2281,7 @@
   <sprite id="148" name="Springboard" notes="A springboard item that the player can bounce on to reach new heights, and can carry around with them.">
     <checkbox nybble="5.4" title="Does Not Despawn" comment="When enabled, the Springboard will not despawn from being offscreen." comment2="Normally, the Springboard will vanish if it goes too far offscreen, but with this option it will remember where it was last at and not disappear."/>
     <checkbox nybble="10.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Springboard placing it further behind other sprites."/>
-    <checkbox nybble="11.4" title="Shift Spawn Position (NSMB:DS)" comment="When enabled, this moves the Springboard half a block to the right." advanced="True" advancedcomment="This is a leftover setting from the NSMB:DS Springboard where sprites could only be placed exactly on the tile grid. It... really isn't useful."/>
+    <checkbox nybble="11.4" title="Shift Spawn Position (NSMBDS)" comment="When enabled, this moves the Springboard half a block to the right." advanced="True" advancedcomment="This is a leftover setting from the NSMBDS Springboard where sprites could only be placed exactly on the tile grid. It... really isn't useful."/>
   </sprite> <!-- #148: Springboard -->
 
   <sprite id="149" name="Rotation Controller - Spinning" notes="This controller will create synchronized movement between matched sprites and cause them to spin in a circular motion. It acts as the center of rotation for most sprites.&lt;br&gt;Additionally, it can control the Zone's Zoom level depending on the rotation controller's current rotation.">
@@ -2647,7 +2647,7 @@
     <dependency notes="While this is not dependent on liquid in order to spawn, it should be noted that it only has collision along the top. While the player is along the top two blocks of the log, the log will generate spinning momentum and try to drop the player below it. Once the player passes those top two blocks, they will instantly fall no matter how fast the log is spinning."/>
   </sprite> <!-- #173: Giant Floating Log -->
 
-  <sprite id="174" name="(Unused) One Way Swinging Gate" notes="Another sprite ported from NSMB:DS, this gate will open when the player comes from a specific direction, rotate open 90°, and close shortly after the player has passed through it. It's somewhat buggy and not recommended for use in most levels, especially when multiple players are involved.">
+  <sprite id="174" name="(Unused) One Way Swinging Gate" notes="Another sprite ported from NSMBDS, this gate will open when the player comes from a specific direction, rotate open 90°, and close shortly after the player has passed through it. It's somewhat buggy and not recommended for use in most levels, especially when multiple players are involved.">
     <dualbox nybble="11.4" title1="Opens Clockwise" title2="Opens Counter-Clockwise" comment="This will determine which way the gate will swing open."/>
     <list nybble="12" title="Direction" comment="This determines which way the gate will open." comment2="Values 2 and 3 are slightly buggy." requirednybble="11.4" requiredval="0">
       <entry value="0">Enter from Left; Swings Down</entry>
