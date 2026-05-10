@@ -1835,9 +1835,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         data = self.data
 
+        # data[6] is the sprite's zone ID. Modifying it is unnecessary since Reggie sets it automatically,
+        # and overwrites whatever you change it to. If anything, it seems to just confuse everybody who
+        # sees it, so we're just going to hide the value from the user
         self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
             data[0], data[1], data[2], data[3],
-            data[4], data[5], data[6], data[7],
+            data[4], data[5], 0x00, data[7],
         ))
 
         self.raweditor.setStyleSheet('')
