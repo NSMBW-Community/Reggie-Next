@@ -29,7 +29,7 @@
 <!-- Stopped after Line 7046 / 10755 (#230) -->
 
 <sprites>
-  <sprite id="10" name="(Unused) Large Object Thrower" notes="Used in the Newer Final Boss Fight. This is spawned through Captain Bowser's code. It will throw a larger version of the Projectile at a 45° arc. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is best made use of by spawning it through the Actor Spawner. Projectiles have a very high velocity. It will spawn the object around 5 blocks above the placement of the sprite.">
+  <sprite id="10" name="(Unused) Large Object Thrower" notes="Used in the Newer Final Boss Fight. This is spawned through Captain Bowser's code. It will throw a larger version of the Projectile at a 45° arc. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is best made use of by spawning it through the Actor Spawner. Projectiles have a very high velocity. It will spawn the object around 5 blocks above the placement of the sprite." files="choropoo.arc;koopa_clown_bomb.arc;dossun.arc;KoopaShip.arc">
     <dependency notes="[95] Hammer Bros is required to be placed in the level if using this sprite with the Object: Hammer setting.">
       <suggested sprite="95"/> <!-- Requires Hammer Bros if Hammer is used -->
     </dependency>
@@ -88,14 +88,14 @@
     </list>
   </sprite> <!-- #12: Toad House Minigame - Silver Star -->
 
-  <sprite id="13" name="Rideable Clowncar with Cannon" noyoshi="True" notes="Used in the NewerSMBW Final Boss Fight. The player can fly around freely and shoot a cannon at a fixed angle. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Not recommended for use outside of the Final Boss Fight.&lt;/font&gt;" advancedcomment="If you do choose to use this vehicle outside of the boss fight, please keep in mind there is no documentation for what issues you might encounter. Be sure to test your level for crashes and glitches. Cannon shots behave similarly but not identically to Bob-omb explosions. Water causes it to react similarly to Yoshi, with the player jumping off and the Clowncar sinking.">
+  <sprite id="13" name="Rideable Clowncar with Cannon" noyoshi="True" notes="Used in the NewerSMBW Final Boss Fight. The player can fly around freely and shoot a cannon at a fixed angle. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Not recommended for use outside of the Final Boss Fight.&lt;/font&gt;" advancedcomment="If you do choose to use this vehicle outside of the boss fight, please keep in mind there is no documentation for what issues you might encounter. Be sure to test your level for crashes and glitches. Cannon shots behave similarly but not identically to Bob-omb explosions. Water causes it to react similarly to Yoshi, with the player jumping off and the Clowncar sinking." files="koopaJr_clown_ply.arc">
     <value nybble="12" title="Minimum Number of Players" comment="This determines the number of players required for the Clowncar to load. A value of 4 will only load if there are 4 players." advanced="True"/>
   </sprite> <!-- #13: Rideable Clowncar with Cannon -->
 
   <sprite id="14" name="(Unused) Captain Bowser Flame Breath" notes="Captain Bowser uses this in the NewerSMBW Final Boss Fight. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Cannot be placed as an individual sprite.&lt;/font&gt;">
   </sprite> <!-- #14: (Unused) Captain Bowser Flame Breath -->
 
-  <sprite id="15" name="Toad House Minigame - Music House" noyoshi="True" notes="This sprite is used to generate the Music House bonus game from NewerSMBW. The blocks will spawn centered on the sprite's placement. Playing the mini-game to completion will cause the level to end in completion." advancednotes="Additional songs can be added with a little adjustment to the sprite's code. Simple edits can allow for new songs in your hack.">
+  <sprite id="15" name="Toad House Minigame - Music House" noyoshi="True" notes="This sprite is used to generate the Music House bonus game from NewerSMBW. The blocks will spawn centered on the sprite's placement. Playing the mini-game to completion will cause the level to end in completion." advancednotes="Additional songs can be added with a little adjustment to the sprite's code. Simple edits can allow for new songs in your hack." files="obj_coin.arc;I_hammer.arc;I_star.arc;block_light.arc;block_light_color.arc;I_kinoko_bundle.arc">
     <list nybble="5" title="1st Chord Prize" comment="This determines the prize awarded for passing the first Chord of the song.">
       <entry value="0">Mushroom</entry>
       <entry value="1">Fire Flower</entry>
@@ -166,7 +166,7 @@
   </sprite> <!-- #15: Toad House Minigame - Music House -->
 
   <sprite id="16" name="Bomb Drop Controller" yoshinotes="The Bomb Dropper does work with Yoshi. When the player is hit and he's on Yoshi, he will dismount Yoshi." notes="When one of the Triggering Events is activated, this controller will drop a large exploding spiked ball above either Bowser or a specific player straight down from the height of the sprite's placement.
-  &lt;br&gt;It will then activate the consecutive Event ID for the Triggered Event after the bomb explodes. The bomb has the same model that Bowser Jr uses in his 3rd boss fight." advancednotes="Feeling adventurous? Try making a multiplayer level that uses this sprite to create a versus style game which disables player respawn and triggers an event when only one player is left alive.">
+  &lt;br&gt;It will then activate the consecutive Event ID for the Triggered Event after the bomb explodes. The bomb has the same model that Bowser Jr uses in his 3rd boss fight." advancednotes="Feeling adventurous? Try making a multiplayer level that uses this sprite to create a versus style game which disables player respawn and triggers an event when only one player is left alive." files="koopa_clown_bomb.arc">
     <value nybble="5.2-6.4" title="Triggering Event ID #1" comment="Activating this Event will drop a bomb on the specified target, and then activate the numerical consecutive Event ID. Finally, the Event ID will be immediately deactivated, and can be reactivated again." idtype="Triggering Event"/>
     <value nybble="7.2-8.4" title="Triggering Event ID #2" comment="Activating this Event will drop a bomb on the specified target, and then activate the numerical consecutive Event ID. Finally, the Event ID will be immediately deactivated, and can be reactivated again." idtype="Triggering Event"/>
     <list nybble="12" title="Target" comment="This determines which target the bomb will drop above. Players have the ability to outrun the bomb.">
@@ -178,7 +178,7 @@
     </list>
   </sprite> <!-- #16: Bomb Drop Controller -->
 
-  <sprite id="17" name="Lighting - Music House Glow Block" notes="These are the colored Glow Blocks that act like normal blocks. They can be spawned by [15] in NewerSMBW's Music Houses. They can either be used as decoration, or as an item block.">
+  <sprite id="17" name="Lighting - Music House Glow Block" notes="These are the colored Glow Blocks that act like normal blocks. They can be spawned by [15] in NewerSMBW's Music Houses. They can either be used as decoration, or as an item block." files="obj_coin.arc;I_hammer.arc;I_star.arc;block_light.arc;block_light_color.arc;I_kinoko_bundle.arc">
     <dualbox nybble="11.4" title1="Plays a Musical Note" title2="Awards an Item" comment="This determines if the glow block will play a note when struck or award an item."/>
     <list nybble="7-8" title="Item" comment="This determines the item rewarded." comment2="[Bug] Block will award unlimited items." advancedcomment="The block can be set to both award an item and play a musical note, but it is not recommended." requirednybble="11.4">
       <entry value="0">None</entry>
@@ -218,7 +218,7 @@
   </sprite> <!-- #17: Music House Glow Block -->
 
   <sprite id="18" name="Spine Coaster Platform" notes="This creates immobile 'Spine Coaster' Platforms (1x2). The Sprite's placement represents the right side of the Platform.">
-    <dependency notes="The normal Spine Coaster [297] must be placed somewhere in your level. It does not have to be part of a zone.">
+    <dependency notes="The normal Spine Coaster [297] must be placed somewhere in your level or in the Loaded Sprites list, or else the game will crash.">
       <required sprite="297"/> <!-- Spine Coaster -->
     </dependency>
     <dualbox nybble="5.4" title1="Horizontal Platform" title2="Angled Platform" comment="This determines if the platform is flat (horizontal), or if it is tilted at an angle."/>
@@ -251,12 +251,12 @@
     <dualbox nybble="7.4" title1="Faces Left" title2="Faces Right" comment="This determines which direction the platform will face." requirednybble="12.4" requiredval="0"/> <!-- Only shows when Segment is set to Head or Tail; assumes no effect on Body -->
   </sprite> <!-- #18: Spine Coaster Platform -->
 
-  <sprite id="19" name="World-4 Boss: Samurshai" noyoshi="True" notes="">
+  <sprite id="19" name="World-4 Boss: Samurshai" noyoshi="True" notes="" files="Shynja.arc">
     <dependency notes="The boss works fine without any other required sprite."></dependency>
     <dualbox nybble="5.4" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics and boss difficulty."/>
   </sprite> <!-- #19: World-4 Boss: Samurshai -->
 
-  <sprite id="20" name="Goomba" sizehacks="True" notes="Your standard Goomba. Place it in the level and it will walk towards Mario when it loads.">
+  <sprite id="20" name="Goomba" sizehacks="True" notes="Your standard Goomba. Place it in the level and it will walk towards Mario when it loads." files="kuribo.arc">
     <list nybble="6" title="Color" comment="This determines the color and style of the Goomba.">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
@@ -279,7 +279,7 @@
     </list>
   </sprite> <!-- #20: Goomba -->
 
-  <sprite id="21" name="Paragoomba" sizehacks="True" notes="A Goomba with wings that will flutter towards Mario when it loads.">
+  <sprite id="21" name="Paragoomba" sizehacks="True" notes="A Goomba with wings that will flutter towards Mario when it loads." files="kuribo.arc;wing.arc">
     <list nybble="6" title="Color" comment="This determines the color and style of the Paragoomba.">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
@@ -294,11 +294,11 @@
     <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Paragoomba placing it further behind other sprites."/>
   </sprite> <!-- #21: Paragoomba -->
 
-  <sprite id="22" name="Pumpkin Goomba" notes="A Goomba inside a pumpkin. The pumpkin adds an extra hit point to the Goomba.">
+  <sprite id="22" name="Pumpkin Goomba" notes="A Goomba inside a pumpkin. The pumpkin adds an extra hit point to the Goomba." files="kuribo.arc;pumpkin.arc;wing.arc">
     <dualbox nybble="12.4" title1="Goomba" title2="Paragoomba" comment="This determines if the Pumpkin Goomba behaves like a normal Goomba or like a Paragoomba."/>
   </sprite> <!-- #22: Pumpkin Goomba -->
 
-  <sprite id="24" name="Buzzy Beetle" sizehacks="True" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads.">
+  <sprite id="24" name="Buzzy Beetle" sizehacks="True" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads." files="met.arc">
     <list nybble="6" title="Color" comment="This determines the color of the Buzzy Beetle.">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
@@ -314,7 +314,7 @@
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #24: Buzzy Beetle -->
 
-  <sprite id="25" name="Spiny" sizehacks="True" notes="A Spiny that walks along the ground.">
+  <sprite id="25" name="Spiny" sizehacks="True" notes="A Spiny that walks along the ground." files="togezo.arc;paipo.arc">
     <list nybble="6" title="Color" comment="This determines the color and style of the Spiny." comment2="Any Spiny that uses the Balled Up animation will initially use the original red color. Additionally, the Sidestepper's shell has no texture, so it flickers through all the other colors.">
       <entry value="0">Original</entry>
       <entry value="1">Orange</entry>
@@ -336,7 +336,7 @@
   </sprite> <!-- #25: Spiny -->
 
   <!-- Research Unknown Flag 12 -->
-  <sprite id="26" name="Upside-Down Spiny" sizehacks="True" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading.">
+  <sprite id="26" name="Upside-Down Spiny" sizehacks="True" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading." files="togezo.arc;paipo.arc">
     <list nybble="6" title="Color" comment="This determines the color and style of the Spiny.">
       <entry value="0">Original</entry>
       <entry value="1">Orange</entry>
@@ -352,7 +352,7 @@
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 
-  <sprite id="30" name="Grey Tiled Block" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes.">
+  <sprite id="30" name="Grey Tiled Block" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc">
     <list nybble="11" title="Height" comment="This determines how tall the block is.">
       <entry value="0">2 Blocks</entry>
       <entry value="1">2 Blocks</entry>
@@ -410,7 +410,7 @@
   </sprite> <!-- #30: Grey Tiled Block -->
 
   <!-- Possible additional Usage Mode, Value 2 in Nybble 10 -->
-  <sprite id="40" name="?-Switch" sizehacks="True" notes="This is the basic stand-alone switch. When triggered, it modifies the Target Event.">
+  <sprite id="40" name="?-Switch" sizehacks="True" notes="This is the basic stand-alone switch. When triggered, it modifies the Target Event." files="switch.arc">
     <list nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Standard Question Mark (Original)</entry>
       <entry value="1">Standard Question Mark</entry>
@@ -437,7 +437,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #40: ?-Switch -->
   
-  <sprite id="41" name="P-Switch" notes="This switch is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (tileset-based and sprite-based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block.">
+  <sprite id="41" name="P-Switch" notes="This switch is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (tileset-based and sprite-based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block." files="switch.arc">
     <dependency notes="Activates 'Pow Block Coin' tileset tiles."/>
 	<list nybble="8" title="Style" comment="This determines which style is seen on the switch. While the P-Switch supports SpriteTex, there aren't any custom textures for it." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Standard P Icon (Original)</entry>
@@ -466,7 +466,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- This value needs expanded to support 256 Event IDs --> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #41: P-Switch -->
 
-  <sprite id="42" name="!-Switch" sizehacks="True" notes="This switch is similar to the ?-Switch, but it has the additional effect of changing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.">
+  <sprite id="42" name="!-Switch" sizehacks="True" notes="This switch is similar to the ?-Switch, but it has the additional effect of changing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." files="switch.arc">
     <dependency notes="Activates 'Red Block Outline A/B' tiles."/>
     <list nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Red (Original)</entry>
@@ -497,7 +497,7 @@
 
   <!-- These notes apply to 43, 44, and 45 -->
   <!-- Make a quick test level to show general functionality of a Brick Block switch with a Triggering Event. Does it appear after being struck if the event is later turned on? Does it only appear if the event is on before the block is struck? -->
-  <sprite id="43" name="Brick Block ?-Switch" sizehacks="True" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  <sprite id="43" name="Brick Block ?-Switch" sizehacks="True" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
     <list nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch.">
       <entry value="0">Standard Question Mark</entry>
       <entry value="1">Two Arrows Forming a Circle (Flipper)</entry>
@@ -521,7 +521,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #43: Brick Block ?-Switch -->
 
-  <sprite id="45" name="Brick Block !-Switch" sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists.">
+  <sprite id="45" name="Brick Block !-Switch" sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
     <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
     <list nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks.">
       <entry value="0">Red (Original)</entry>
@@ -547,7 +547,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #45: Brick Block !-Switch -->
 
-  <sprite id="46" name="Lava Bubble (Podoboo)" sizehacks="True" notes="The Lava Bubble (Podoboo) is a firey enemy that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava.">
+  <sprite id="46" name="Lava Bubble (Podoboo)" sizehacks="True" notes="The Lava Bubble (Podoboo) is a firey enemy that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava." files="bubble.arc">
     <dependency notes="The Podoboo requires [139] Lava within 15 blocks underneath it in order to appear.">
       <required sprite="139"/> <!-- Requires Lava -->
     </dependency>
@@ -565,7 +565,7 @@
     <value nybble="12" title="Delay Between Jumps" comment="This determines the delay between each of the Podoboo's jumps." comment2="Each value is approximately 1 game second. Podoboos first load in the air at the top of their jump, so a Podoboo with a large delay value may not even interact with the player as they run by."/>
   </sprite> <!-- #46: Lava Bubble (Podoboo) -->
 
-  <sprite id="47" name="Thwomp" sizehacks="True" noyoshi="True" notes="A normal sized Thwomp that will try to crush the player when it is nearby or underneath. Thwomps are not capable of destroying tileset objects unless set to Crush Forever.">
+  <sprite id="47" name="Thwomp" sizehacks="True" noyoshi="True" notes="A normal sized Thwomp that will try to crush the player when it is nearby or underneath. Thwomps are not capable of destroying tileset objects unless set to Crush Forever." files="dossun.arc">
     <dualbox nybble="12.3" title1="Drop and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop."/>
     <list nybble="6" title="Style" comment="This determines the style of the Thwomp.">
       <entry value="0">Normal</entry>
@@ -574,7 +574,7 @@
     <checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="An unknown setting for Nybble 12." advanced="True" advancedcomment="Bit 47-48 may be a list, but only value 2 has been defined. Value 3 is confirmed to CRASH the game, so do not activate this with Crush Forever. However, value 1 may provide different effects. Experimenting and testing are required."/>
   </sprite> <!-- #47: Thwomp -->
 
-  <sprite id="48" name="Big Thwomp" sizehacks="True" noyoshi="True" notes="A larger Thwomp that will try to crush the player when it is nearby or underneath. Big Thwomps are capable of destroying certain types of tileset objects such as brick blocks and grey blocks.">
+  <sprite id="48" name="Big Thwomp" sizehacks="True" noyoshi="True" notes="A larger Thwomp that will try to crush the player when it is nearby or underneath. Big Thwomps are capable of destroying certain types of tileset objects such as brick blocks and grey blocks." files="dossun.arc">
     <dualbox nybble="12.3" title1="Crush and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position after crushing up to one row of breakable terrain, or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop."/>
     <list nybble="6" title="Style" comment="This determines the style of the Big Thwomp.">
       <entry value="0">Normal</entry>
@@ -583,15 +583,15 @@
     <checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="An unknown setting for Nybble 12." advanced="True" advancedcomment="Bit 47-48 may be a list, but only value 2 has been defined. Value 3 is confirmed to CRASH the game, so do not activate this with Crush Forever. However, value 1 may provide different effects. Experimenting and testing are required."/>
   </sprite> <!-- #48: Big Thwomp -->
 
-  <sprite id="49" name="Fake Star Coin" sizehacks="True" notes="This coin an appearance similar to a normal Star Coin, but when the player tries to collect it, it will vanish and disperse into 4 harmless Boos like a Fake Door.">
-    <dependency notes="A real Star Coin must be placed within the same Zone.">
+  <sprite id="49" name="Fake Star Coin" sizehacks="True" notes="This coin an appearance similar to a normal Star Coin, but when the player tries to collect it, it will vanish and disperse into 4 harmless Boos like a Fake Door." files="test_lift.arc">
+    <dependency notes="A real Star Coin must be placed within the same Zone (or set in the Loaded Sprites list) or the game will crash.">
       <required sprite="32"/> <!-- Requires at least one Star Coin in the Zone -->
       <suggested sprite="155"/>
       <suggested sprite="389"/>
     </dependency>
   </sprite> <!-- #49: Fake Star Coin -->
 
-  <sprite id="57" name="Koopa Troopa" sizehacks="True" notes="Your standard Koopa Troopa. Place it in the level and it will walk towards Mario when it loads. It can either be set to walk off ledges, or turn around at ledges.">
+  <sprite id="57" name="Koopa Troopa" sizehacks="True" notes="Your standard Koopa Troopa. Place it in the level and it will walk towards Mario when it loads. It can either be set to walk off ledges, or turn around at ledges." files="nokonokoA.arc;wing.arc">
     <dualbox nybble="12.4" title1="Walks Off Ledges" title2="Turns Around At Ledges" comment="This determines if the Koopa Troopa will mindlessly walk off of ledges or if it will turn around when it reaches a ledge." comment2="This also changes the color of the Koopa Troopa."/>
     <list nybble="6" title="Color" comment="This determines the color of the Koopa Troopa." requirednybble="12.4" requiredval="0">
       <entry value="0">Green</entry>
@@ -619,7 +619,7 @@
 
   <!-- Investigate "Glitchy Behavior" further? -->
   <!-- Test Nybble 10 more, something seems to be weird about it. Is it 'start at end of path instead of middle' or .... what, really? What's the value range? -->
-  <sprite id="58" name="Koopa Paratroopa" sizehacks="True" notes="Your standard Koopa Paratroopa. Place it in the level and it will jump around or fly. Once stomped, it can either be set to walk off ledges, or turn around at ledges.">
+  <sprite id="58" name="Koopa Paratroopa" sizehacks="True" notes="Your standard Koopa Paratroopa. Place it in the level and it will jump around or fly. Once stomped, it can either be set to walk off ledges, or turn around at ledges." files="nokonokoA.arc;wing.arc">
     <list nybble="11.3-11.4" title="Movement Type" comment="This determines the primary type of movement behavior of the Koopa Paratroopa. Flying Paratroopas move 9 blocks total." advancedcomment="Mode 3 spawns a floating shell that cannot be picked up. When Mario hits it from the side, he takes damage, but when the jumps on it, it falls to the ground and becomes a regular shell that can be picked up.">
       <entry value="0">Jumping</entry>
       <entry value="1">Flying: Left and Right</entry>
@@ -662,7 +662,7 @@
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #58: Koopa Paratroopa -->
 
-  <sprite id="60" name="Spike Top" sizehacks="True" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spike Tops don't properly work on slopes.">
+  <sprite id="60" name="Spike Top" sizehacks="True" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spike Tops don't properly work on slopes." files="met_toge.arc">
     <list nybble="11.3-11.4" title="Orientation" comment="The Spike Top must be placed against something for it to appear.">
       <entry value="0">Placed on Ground</entry>
       <entry value="1">Placed on Left Wall</entry>
@@ -682,7 +682,7 @@
     </list>
   </sprite> <!-- #60: Spike Top -->
 
-  <sprite id="63" name="Spiked Ball / Snowball" sizehacks="True" notes="A loose Spiked Ball that will also destroy certain types of blocks. It can also be turned into a Snowball.">
+  <sprite id="63" name="Spiked Ball / Snowball" sizehacks="True" notes="A loose Spiked Ball that will also destroy certain types of blocks. It can also be turned into a Snowball." files="iron_ball.arc">
     <list nybble="6" title="Style" comment="This determines the style of the Spiked Ball.">
       <entry value="0">Normal</entry>
       <entry value="1">Snowball</entry>
@@ -700,7 +700,7 @@
     </list>
   </sprite> <!-- #63: Spiked Ball / Snowball -->
 
-  <sprite id="78" name="Bouncy Cloud" noyoshi="True" notes="A cloud platform with a happy face that the player can bounce on to jump really high. NewerSMBW adds more style options including Mushrooms and Checkered Block.">
+  <sprite id="78" name="Bouncy Cloud" noyoshi="True" notes="A cloud platform with a happy face that the player can bounce on to jump really high. NewerSMBW adds more style options including Mushrooms and Checkered Block." files="lift_trampoline.arc">
     <list nybble="6" title="Style" comment="This determines the color and style of the Bouncy Cloud." comment2="If you want the Angry Cloud to hurt players, you have to add an invisible tileset piece to do that for you. Sorry.">
       <entry value="0">Normal</entry>
       <entry value="1">Angry</entry>
@@ -751,7 +751,7 @@
     <value nybble="12.3-12.4" title="Nybble 12" />
   </sprite> <!-- #89: Actor Multi-Spawner -->
 
-  <sprite id="95" name="Hammer Bro Plus" sizehacks="True" notes="A standard Brothers enemy that throws hammers (or other objects!) at the player.">
+  <sprite id="95" name="Hammer Bro Plus" sizehacks="True" notes="A standard Brothers enemy that throws hammers (or other objects!) at the player." files="bros.arc">
     <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. With a platform limit of one, he can jump onto any passthrough terrain or brick blocks above this solid ground at a distance of 4. With a platform limit of two, he can jump between this platform and another one above it. When on the top of this platform limit, he will not try and jump upwards. He can also jump down from passthrough terrain set higher than 8 blocks above the solid ground, though he will not be able to return."/>
     <dualbox nybble="12.4" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
     <list nybble="6" title="Color" comment="This determines the color of the Hammer Bro.">
@@ -768,7 +768,7 @@
     </list>
   </sprite> <!-- #95: Hammer Bro Plus -->
 
-  <sprite id="98" name="Giant Spiked Ball/Snowball" sizehacks="True" notes="A large loose Spiked Ball that will also destroy certain types of blocks. Can also be turned into a Snowball.">
+  <sprite id="98" name="Giant Spiked Ball/Snowball" sizehacks="True" notes="A large loose Spiked Ball that will also destroy certain types of blocks. Can also be turned into a Snowball." files="iron_ball.arc">
     <list nybble="6" title="Style" comment="This determines the style of the Giant Spiked Ball.">
       <entry value="0">Normal</entry>
       <entry value="1">Snowball</entry>
@@ -785,7 +785,7 @@
     </list>
   </sprite> <!-- #98: Giant Spiked Ball/Snowball -->
 
-  <sprite id="99" name="Pipe Enemy Spawner" notes="The spawner must be placed on layer 1 tiles set to the core type 'Pipe'.">
+  <sprite id="99" name="Pipe Enemy Spawner" notes="The spawner must be placed on layer 1 tiles set to the core type 'Pipe'." files="kuribo.arc;bombhei.arc">
     <dualbox nybble="11.4" title1="Spawns Goombas" title2="Spawns Bob-Ombs"/>
     <list nybble="6" title="Color" requirednybble="11.4" requiredval="0">
       <entry value="0">Normal</entry>
@@ -821,7 +821,7 @@
     </list>
   </sprite> <!-- #99: Pipe Enemy Spawner -->
 
-  <sprite id="101" name="Bob-Omb" sizehacks="True" notes="A standard Bob-Omb enemy. It will spawn walking towards the player and will fall off of ledges. When stepped on or struck with a fireball, it will eventually explode damaging certain types of blocks, terrain, and enemies.">
+  <sprite id="101" name="Bob-Omb" sizehacks="True" notes="A standard Bob-Omb enemy. It will spawn walking towards the player and will fall off of ledges. When stepped on or struck with a fireball, it will eventually explode damaging certain types of blocks, terrain, and enemies." files="bombhei.arc">
     <list nybble="6" title="Color" comment="This determines the color of the Bob-Omb.">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
@@ -853,7 +853,7 @@
     </list>
   </sprite> <!-- #101: Bob-Omb -->
 
-  <sprite id="105" name="Pokey" notes="A tall segmented enemy whose pieces must be destroyed individually unless the head is defeated first.">
+  <sprite id="105" name="Pokey" notes="A tall segmented enemy whose pieces must be destroyed individually unless the head is defeated first." files="sanbo.arc">
     <list nybble="12.2-12.4" title="Height" comment="This determines how tall the Pokey is. One piece will be the head, and every other piece is a body piece." comment2="The height value also affects what Yoshi lays when consumed whole.">
       <entry value="0">2 Pieces</entry>
       <entry value="1">3 Pieces</entry>
@@ -873,19 +873,19 @@
     </list>
   </sprite> <!-- #105: Pokey -->
 
-  <sprite id="107" name="Message Box Controller" notes="This controller is required for all Message Boxes to function correctly. It must be placed in every Zone that uses a Message Box.">
+  <sprite id="107" name="Message Box Controller" notes="This controller is required for all Message Boxes to function correctly. It must be placed in every Zone that uses a Message Box." files="test_lift.arc">
     <dependency notes="This is used alongside [152] Message Box to produce blocks capable of spawning a pop-up Message Box.">
       <suggested sprite="152"/>
     </dependency>
   </sprite> <!-- #107: Message Box Controller -->
 
-  <sprite id="143" name="Custom Model Loader Resources (arrow.arc)" notes="This stores some of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen.">
+  <sprite id="143" name="Custom Model Loader Resources (arrow.arc)" notes="This stores some of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen." files="arrow.arc">
     <dependency notes="If using option 0-6 or 17-24 of the Custom Model Loader (11), you'll need one of these placed somewhere in the level. It does not have to be within a Zone or in the same Area.">
-       <suggested sprite="11"/>
+      <suggested sprite="11"/>
     </dependency>
   </sprite> <!-- #143: Custom Model Loader Resources (arrow.arc) -->
 
-  <sprite id="145" name="Floating Barrel" noyoshi="True" notes="A floating barrel that can only be placed on a liquid surface. It will sink while a player is standing on it, but will pop back up once the player jumps off. The barrel can also flow with the unused water current controller.">
+  <sprite id="145" name="Floating Barrel" noyoshi="True" notes="A floating barrel that can only be placed on a liquid surface. It will sink while a player is standing on it, but will pop back up once the player jumps off. The barrel can also flow with the unused water current controller." files="lift_taru.arc">
     <dependency notes="The Floating Barrel will not load when placed on the same screen as an entrance. Place the Floating Barrel where you want it to load using the liquid line, and it will spawn floating at the surface line of that body of liquid. It only works with non-Location liquids, and it does work with Moving liquids when placed correctly. Unlike Floating Coins / ? Blocks, it will also function with Rising/Falling Water. Lastly, it should be noted that the visual splash effect is always made of water.">
       <suggested sprite="138"/>
       <suggested sprite="139"/>
@@ -908,7 +908,7 @@
   </sprite> <!-- 152: Message Box -->
 
   <sprite id="153" name="(Unused) ?-Switch" sizehacks="True" notes="An exact duplicate of the normal ?-Switch.">
-    <dependency notes="The game will crash unless a normal orange switch is placed somewhere in the level. It does not have to be within an area that is actually used.">
+    <dependency notes="The game will crash unless a normal ?-Switch is placed somewhere in the level, or set in the Loaded Sprites list. It does not have to be within an area that is actually used.">
       <required sprite="40"/>
     </dependency>
     <list nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
@@ -937,7 +937,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #153: (Unused) ?-Switch -->
 
-  <sprite id="157" name="Big Pumpkin" notes="No matter what is inside, the pumpkin can easily be broken with a ground pound. It can even be broken by small Mario.">
+  <sprite id="157" name="Big Pumpkin" notes="No matter what is inside, the pumpkin can easily be broken with a ground pound. It can even be broken by small Mario." files="big_renga_block.arc;I_ship_key.arc">
     <list nybble="12" title="Block Contains" comment="This determines if anything appears from inside the block when it is destroyed.">
       <entry value="0">Empty</entry>
       <entry value="8">Empty</entry>
@@ -959,7 +959,7 @@
     <value nybble="11" title="Withstands (Needs Multiple Hits)" comment="This determines the number of hits or ground-pounds needed for the block to break. For this function, a texture will be used that has some odd-looking white numbers on it." advanced="True" advancedcomment="This setting may only apply to the original Giant Breakable Brick Block"/>
   </sprite> <!-- #157: Big Pumpkin -->
 
-  <sprite id="166" name="Snake Block (Ice)" notes="Snake Blocks do not have ice collision in Newer.">
+  <sprite id="166" name="Snake Block (Ice)" notes="Snake Blocks do not have ice collision in Newer." files="obj_turara_rakka_Big.arc">
     <dependency notes="The sprite snaps to the Path Node location. From Node 0 to Node 1, it must be a straight horizontal line, and it must be at least as long as the Snake Block itself. Straight lines and exact 45° angles are recommended, as after each Node, the Snake Block will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
     <checkbox nybble="7.4" title="Useless Flag 7 (1)" comment="This value is read by the game, but never used for anything. Used in retail 03-24 A1."/>
     <value nybble="11" title="Path ID" idtype="Path"/>
@@ -996,8 +996,8 @@
     </list>
   </sprite> <!-- #166: Snake Block (Ice) -->
 
-  <sprite id="167" name="Big Shy Guy" notes="">
-    <list nybble="5" title="Size" comment="Sizes share no functional difference. This is separate from SizeHacks.">
+  <sprite id="167" name="Big Shy Guy" notes="" files="shyguy.arc">
+    <list nybble="5" title="Size" comment="Sizes share no functional difference. This is separate from the size hacks.">
       <entry value="0">Big</entry>
       <entry value="1">Mega</entry>
       <entry value="2">Colossal</entry>
@@ -1011,7 +1011,7 @@
     </list>
   </sprite> <!-- #167: Big Shy Guy -->
 
-  <sprite id="168" name="Thundercloud" notes="This creates an unhappy Thundercloud that is similar to a Lakitu's cloud. It will slingshot around the top of the stage and occasionally shoot down Thunder. This Thunder will turn non-tiny Marios into Mini-Mario, and kill Mini-Marios outright. The Thunder will not reach beneath solid terrain.">
+  <sprite id="168" name="Thundercloud" notes="This creates an unhappy Thundercloud that is similar to a Lakitu's cloud. It will slingshot around the top of the stage and occasionally shoot down Thunder. This Thunder will turn non-tiny Marios into Mini-Mario, and kill Mini-Marios outright. The Thunder will not reach beneath solid terrain." files="tcloud.arc">
   <dependency notes="The controller for Bowser Jr's 2nd Fight must be included somewhere in the level for the electricity to draw properly."/>
   <required sprite="13"/>
     <dualbox nybble="12.4" title1="Chases Player" title2="Stationary" comment="This determines if the Thundercloud will chase the player, or if it will remain in a single position."/>
@@ -1064,7 +1064,7 @@
     </list>
   </sprite> <!-- #169: Magic Platform -->
 
-  <sprite id="175" name="Flying ? Block" notes="" noyoshi="True">
+  <sprite id="175" name="Flying ? Block" notes="" noyoshi="True" files="block_pata.arc">
     <list nybble="9.3-9.4" title="Color">
       <entry value="0">Overworld (Yellow)</entry>
       <entry value="1">Underground (Blue)</entry>
@@ -1092,12 +1092,12 @@
     <checkbox nybble="5.4" title="Unknown Flag 5 (1)" comment="Used in Retail: 06-05 A2. Possibly distance related."/>
   </sprite> <!-- #175: Flying ? Block -->
 
-  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" notes="">
+  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" notes="" files="pukupuku.arc">
     <dualbox nybble="12.4" title1="Spawns Cheep Cheeps" title2="Spawns Fishbones" comment="Share no functional difference."/>
     <value nybble="8-9" title="Location ID" comment="The fish will spawn from below the camera line, attacking the player only while they are within this location." idtype="Location"/>
   </sprite> <!-- #181: Cheep Cheep Spawn Area - Jumping -->
 
-  <sprite id="183" name="Meteor" notes="A floating, spinning, usually safe to stand on Meteor.">
+  <sprite id="183" name="Meteor" notes="A floating, spinning, usually safe to stand on Meteor." files="kazan_rock.arc">
     <value nybble="9-10" title="Size" comment="This determines how large the Meteor is." comment2="A setting of 0 is the same as a setting of 5. 1-255 provide general scaling from 20% to 5100% scaling."/>
     <checkbox nybble="11.4" title="Electrified" comment="When enabled, the Meteor will be electrified, and will hurt any player that touches it."/>
     <value nybble="7-8" title="Rotation Speed" comment="This determines how fast the Meteor will rotate, if at all."/>
@@ -1110,7 +1110,7 @@
     <value nybble="6" title="Z-Order" comment="This will adjust the Z-Order of the Meteors in relation to other objects." comment2="A higher value will place this sprite further towards the background."/>
   </sprite> <!-- #183: Meteor -->
 
-  <sprite id="188" name="Midway Flag" notes="A flag that when touched by the player will mark their progress in the level and respawn them at this location when re-entering the level.">
+  <sprite id="188" name="Midway Flag" notes="A flag that when touched by the player will mark their progress in the level and respawn them at this location when re-entering the level." files="middle_flag.arc">
     <list nybble="5-6" title="Logo">
       <entry value="0">Newer Logo</entry>
       <entry value="1">Yoshi's Island</entry>
@@ -1173,7 +1173,7 @@
     <value nybble="7" title="Tileset Column" comment="When using [Block Type: Tile from Pa(x)], you can spawn every tile from the tileset by selecting it from a grid formation. Each tileset contains 16 Rows (0-15), and 16 Columns (0-15). The first tile in the top left is 0,0 and the last tile in the bottom right is 15,15." comment2="Some common examples for Pa0: &lt;br&gt; &lt;i&gt;Coin: 1,14 | Coin Outline: 1,15 | ?-Block: 3,1 | Used Block: 3,2 | Wooden Block: 3,3 | Stone Block: 3,4 | Donut Lift: 3,5 | Steel Block: 3,6" requirednybble="9" requiredval="8-11"/> <!-- Appears only if Block Type (Tile) = 8-11 -->
   </sprite> <!-- #191: Tile God Event -->
 
-  <sprite id="195" name="Huckit Crab" sizehacks="True" notes="A crab enemy that will throw projectiles at the player while occasionally jumping in the air.">
+  <sprite id="195" name="Huckit Crab" sizehacks="True" notes="A crab enemy that will throw projectiles at the player while occasionally jumping in the air." files="kanibo.arc">
     <list nybble="6" title="Color" comment="This determines the color and style of the Huckit Crab.">
       <entry value="0">Normal</entry>
       <entry value="1">White (Snowballs)</entry>
@@ -1203,7 +1203,7 @@
     </list>
   </sprite> <!-- #195: Huckit Crab -->
 
-  <sprite id="198" name="Giant Goomba" notes="A larger version of the Goomba that splits into two regular Goombas when stepped on.">
+  <sprite id="198" name="Giant Goomba" notes="A larger version of the Goomba that splits into two regular Goombas when stepped on." files="kuribo.arc;kuriboBig.arc">
     <list nybble="6" title="Color" comment="This determines the color and style of the Giant Goomba." comment2="The smaller Goombas spawned correspond to it's recolor of the same value. This means that all smaller Goombas are the same color, except for Green, which is the normal brown at the smallest size.">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
@@ -1215,7 +1215,7 @@
     </list>
   </sprite> <!-- #198: Giant Goomba -->
 
-  <sprite id="199" name="Mega Goomba" notes="An even larger version of the Goomba that splits into two Giant Goombas when stepped on.">
+  <sprite id="199" name="Mega Goomba" notes="An even larger version of the Goomba that splits into two Giant Goombas when stepped on." files="kuribo.arc;kuriboBig.arc">
     <list nybble="6" title="Color" comment="This determines the color and style of the Mega Goomba." comment2="The smaller Goombas spawned correspond to it's recolor of the same value. This means that all smaller Goombas are the same color, except for Green, which is the normal Brown at the smallest size.">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
@@ -1227,10 +1227,7 @@
     </list>
   </sprite> <!-- #199: Mega Goomba -->
 
-  <sprite id="200" name="Micro Goomba" notes="A very small Goomba that clings to the player until they spin jump to shake them off.">
-  </sprite> <!-- #200: Micro Goomba -->
-
-  <sprite id="203" name="Chest" noyoshi="True" notes="A chest that will award some type of inventory item to the player. Note that opening a chest will complete the level with the standard exit.">
+  <sprite id="203" name="Chest" noyoshi="True" notes="A chest that will award some type of inventory item to the player. Note that opening a chest will complete the level with the standard exit." files="treasure_box.arc">
     <dependency notes="NewerSMBW rewrote this sprite's settings in a way that breaks Ambush levels. [432] is still required, however.">
       <required sprite="432"/>
     </dependency>
@@ -1303,7 +1300,7 @@
     </list>
   </sprite> <!-- #203: Chest -->
 
-  <sprite id="204" name="Rolling Object Spawner" notes="A spawner that will create loose Spiked Balls or Rolling Barrels. &lt;font color=&quot;red&quot;&gt;Only Spiked Balls work in NewerSMBW. Rolling Barrels crash the game.&lt;/font&gt;">
+  <sprite id="204" name="Rolling Object Spawner" notes="A spawner that will create loose Spiked Balls or Rolling Barrels. &lt;font color=&quot;red&quot;&gt;Only Spiked Balls work in NewerSMBW. Rolling Barrels crash the game.&lt;/font&gt;" files="iron_ball.arc;lift_taru.arc">
     <dualbox nybble="5.4" title1="Spawns Spiked Balls" title2="Spawns Rolling Barrels (Crashes)" comment="&lt;font color=&quot;Red&quot;&gt;Spawning a rolling barrel will crash the game.&lt;/font&gt;"/>
     <value nybble="3-4" title="Deactivation Event ID" comment="This Triggering Event ID will deactivate the Spiked Ball Spawner." idtype="Triggering Event" requirednybble="5.4" requiredval="0"/> <!-- Appears only for Spiked Balls -->
     <list nybble="8" title="Speed" comment="This determines the speed of the spawned rolling object." comment2="Stopped rolling objects will still be affected by the terrain they are resting on.">
@@ -1460,12 +1457,12 @@
     <dualbox nybble="9.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Brick Block will move based on the Line that it is connected to."/>
   </sprite> <!-- #209: Brick Block -->
 
-  <sprite id="210" name="Topman" notes="An enemy from Super Mario Galaxy that looks like a UFO with a spike on his head. He will walk off of platform edges and turn around at walls.">
+  <sprite id="210" name="Topman" notes="An enemy from Super Mario Galaxy that looks like a UFO with a spike on his head. He will walk off of platform edges and turn around at walls." files="topman.arc">
     <checkbox nybble="11.4" title="Stands Still" comment="When enabled, the Topman will not walk towards the player."/>
     <checkbox nybble="12.4" title="Low Gravity" comment="When enabled, the Topman will fall much more slowly."/>
   </sprite> <!-- #210: Topman -->
 
-  <sprite id="212" name="Rolling Hill" notes="A rotating circle that has the same general appearance as various tilesets.">
+  <sprite id="212" name="Rolling Hill" notes="A rotating circle that has the same general appearance as various tilesets." files="circle_ground.arc;circle_ground_chika.arc;circle_ground_koopa.arc">
     <dependency notes="The underside of a Rolling Hill does NOT have collision. Do not place a Rolling Hill in any situation where the player would have contact with the bottom 50% of the hill.">
       <suggested sprite="212"/>
     </dependency>
@@ -1504,13 +1501,13 @@
   </sprite> <!-- #212: Rolling Hill -->
 
   <!-- Research all dependencies -->
-  <sprite id="213" name="Captain Bowser" noyoshi="True" notes="NewerSMBW's Final Boss fight features Bowser riding a small airship while lobbing junk at the players.">
+  <sprite id="213" name="Captain Bowser" noyoshi="True" notes="NewerSMBW's Final Boss fight features Bowser riding a small airship while lobbing junk at the players." files="KoopaShip.arc;koopa.arc;choropoo.arc;koopa_clown_bomb.arc;dossun.arc">
     <dependency notes="Captain Bowser requires a lot of stuff hidden off in a corner of the level in order to function properly and without crashes. Beyond those, you will need a Clowncar with Cannon to damage him.">
       <required sprite="13"/> <!-- Clowncar to damage him --> <!-- Plus ?????? to avoid crashes -->
     </dependency>
   </sprite> <!-- #213: Captain Bowser -->
 
-  <sprite id="219" name="Stretching Line Block" notes="A platform made up of orange or other-colored blocks that shrinks and expands while moving up and down.">
+  <sprite id="219" name="Stretching Line Block" notes="A platform made up of orange or other-colored blocks that shrinks and expands while moving up and down." files="block_slide.arc">
     <dependency notes="This platform can be paired with [312] Stretching Line Block Controller in order to synchronize movement across multiple platforms.">
       <suggested sprite="312"/>
     </dependency>
@@ -1579,7 +1576,7 @@
     <dualbox nybble="9.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Invisible Block will move based on the Line that it is connected to."/>
   </sprite> <!-- #221: Invisible Block -->
 
-  <sprite id="223" name="Checkered Spring Block" notes="A block with a spring-like effect that allows the player to jump on it and bounce off of it in order to jump higher.">
+  <sprite id="223" name="Checkered Spring Block" notes="A block with a spring-like effect that allows the player to jump on it and bounce off of it in order to jump higher." files="obj_block.arc;block_jump.arc">
     <list nybble="6" title="Color" comment="This determines the color and style of the Spring Block." requirednybble="12.4" requiredval="0">
       <entry value="0">Green Checkers</entry>
       <entry value="1">♪</entry>
@@ -1595,7 +1592,7 @@
     <checkbox nybble="12.4" title="Alternate Color Pattern" comment="When enabled, it will use the alternate color." comment2="Using an Inverted Checkers variant allows you to string together a line of Spring Blocks and have them look nice."/>
   </sprite> <!-- #223: Checkered Spring Block -->
 
-  <sprite id="224" name="Jumbo Ray" notes="A large manta ray enemy that the player can stand on. It cannot hurt the player and instead functions similarly to a platform.">
+  <sprite id="224" name="Jumbo Ray" notes="A large manta ray enemy that the player can stand on. It cannot hurt the player and instead functions similarly to a platform." files="manjirou.arc">
     <dependency notes="In order for the Jumbo Ray to respawn, you must include a Jumbo Ray Respawner. This sprite's vertical placement is irrelevant - the Jumbo Ray will always spawn from the bottom of the Zone. The sprite still needs to be placed within the Zone, however. For cleanliness sake, you should make the Zone a bit taller and use a Scroll Limiter pair along the bottom in order to hide the lower part of the zone.">
       <suggested sprite="235"/>
       <suggested sprite="162"/>
@@ -1619,7 +1616,7 @@
     <value nybble="12" title="Ray ID" comment="This determines which Jumbo Ray Respawner will influence the respawn of this Jumbo Ray." idtype="Ray"/>
   </sprite> <!-- #224: Jumbo Ray -->
 
-  <sprite id="230" name="Bramball" noyoshi="True" notes="A long-legged enemy with a ball for a body that will flip itself around as it traverses terrain with proper spacing. Rumor has it that if it is struck from below with a Pipe Cannon, a large amount of coins will appear. Kaching!">
+  <sprite id="230" name="Bramball" noyoshi="True" notes="A long-legged enemy with a ball for a body that will flip itself around as it traverses terrain with proper spacing. Rumor has it that if it is struck from below with a Pipe Cannon, a large amount of coins will appear. Kaching!" files="ibaramushi.arc">
     <dependency notes="A Bramball must have solid terrain exactly 4 tiles and no more than a 1 tile change in elevation to move."/>
     <list nybble="6" title="Style" comment="This determines the color and style of the Bramball.">
       <entry value="0">Original</entry>
@@ -1636,7 +1633,7 @@
 	</list>
   </sprite> <!-- #230: Bramball -->
 
-  <sprite id="231" name="Wiggling Mushroom Platform" notes="A mushroom platform that can tilt back and forth.">
+  <sprite id="231" name="Wiggling Mushroom Platform" notes="A mushroom platform that can tilt back and forth." files="lift_yogan_kinoko.arc">
     <dependency notes="Wiggling Mushroom Platforms may be paired with [313] Wiggling Mushroom Controller to enable synchronized movement across a Zone.">
       <suggested sprite="313"/>
     </dependency>
@@ -1830,7 +1827,7 @@
     <dualbox nybble="12.4" title1="Faces Right" title2="Faces Left"/>
   </sprite> <!-- #250: Electric Line -->
 
-  <sprite id="251" name="World-7 Boss: Super Topman" notes="Large Topman boss used by NewerSMBW. It can be beaten by luring it into [250] Electric Lines.">
+  <sprite id="251" name="World-7 Boss: Super Topman" notes="Large Topman boss used by NewerSMBW. It can be beaten by luring it into [250] Electric Lines." files="topman.arc">
     <dependency notes="Kamek and his controller should be included in the level.">
       <suggested sprite="250"/> <!-- Electric Line -->
       <required sprite="427"/> <!-- Kamek -->
@@ -1929,7 +1926,7 @@
     </list>
   </sprite> <!-- #256: Rotation Controlled Brick Block -->
 
-  <sprite id="269" name="Parachute Bob-Omb" sizehacks="True" notes="A parachuting Bob-Omb enemy that will turn into a standard Bob-Omb after it lands.">
+  <sprite id="269" name="Parachute Bob-Omb" sizehacks="True" notes="A parachuting Bob-Omb enemy that will turn into a standard Bob-Omb after it lands." files="bombhei.arc">
     <dependency notes="The Y-position of the Bob-Omb has no effect. It will always appear directly above the top edge of the screen."/>
     <list nybble="6" title="Color" comment="This determines the color of the Bob-Omb.">
       <entry value="0">Original</entry>
@@ -1945,7 +1942,7 @@
   </sprite> <!-- #269: Parachute Bob-Omb -->
 
   <!-- Conflicting information on sprite settings with newer spritedata, needs further research. -->
-  <sprite id="273" name="Level Exit Controller" notes="Upon activation by a Triggering Event, the Level Exit Controller will display a message box for a fixed amount of time and then complete the current level. It can also set world flags for the Switch Palaces.">
+  <sprite id="273" name="Level Exit Controller" notes="Upon activation by a Triggering Event, the Level Exit Controller will display a message box for a fixed amount of time and then complete the current level. It can also set world flags for the Switch Palaces." files="OpeningScene.arc">
     <dependency notes="While there are no dependencies for the Level Exit Controller, not even the Message Box Controller, this sprite does function as loading Opening_Scene.arc in regards to [11]."/>
     <value nybble="3-4" title="Triggering Event ID" comment="The Level Exit Controller will begin to eject the player from the level when the Triggering Event is activated." idtype="Triggering Event"/>
     <checkbox nybble="6.4" title="Level Intro" comment="When enabled, the Level Exit Controller will show a message box for 1020 time units. It will then eject you from the level and set a hardcoded flag in the world settings that Newer uses when starting the game for the first time. The game will also be saved." comment2="It's not recommended to use this unless directly editing the NewerSMBW pack."/>
@@ -1969,7 +1966,7 @@
     <dualbox nybble="5.4" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
   </sprite> <!-- #279: World-3 Boss: Balboa Wrench -->
 
-  <sprite id="282" name="Angry Sun and Moon" notes="A recreation of the Angry Sun enemy from Super Mario Bros. 3 that will chase the player indefinitely unless the Triggering Event is activated.">
+  <sprite id="282" name="Angry Sun and Moon" notes="A recreation of the Angry Sun enemy from Super Mario Bros. 3 that will chase the player indefinitely unless the Triggering Event is activated." files="mrsun.arc">
     <dualbox nybble="12.4" title1="Angry Sun" title2="Angry Moon" comment="This determines which model the enemy will use."/>
     <value nybble="7.2-8.4" title="Die on Triggering Event ID" comment="Disappears, when this Event ID is activated." idtype="Triggering Event"/>
     <checkbox nybble="5.4" title="Never Respawns" comment="When enabled, the enemy will not respawn after being defeated or after leaving the screen." comment2="If this is not enabled, the enemy will continue to respawn once loaded until the Triggering Event is activated. One way to manage this with locations is to use an IF controller that deactivates the Triggering Event while a player is inside the specified location."/>
@@ -1985,7 +1982,7 @@
     <dualbox nybble="5.4" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
   </sprite> <!-- #283: World-1 Boss: Fuzzy Bear -->
 
-  <sprite id="286" name="Rotating Wooden Airship Wheel" notes="A circular wheel matching the standard airship decor that rotates, making it hard to stand on.">
+  <sprite id="286" name="Rotating Wooden Airship Wheel" notes="A circular wheel matching the standard airship decor that rotates, making it hard to stand on." files="obj_Hgear.arc">
     <list nybble="12" title="Size" comment="This determines the size of the wheel.">
       <entry value="0">4 Blocks Wide</entry>
       <entry value="1">6 Blocks Wide</entry>
@@ -2000,10 +1997,15 @@
   </sprite> <!-- #286: Rotating Wooden Airship Wheel -->
 
   <!-- Investigate Nybble 12 - Right = 2? If so, then it's suspected that Left = 1 and Towards Player = 0. True or False? -->
-  <sprite id="288" name="(Crashes) Rolling Barrel" notes="&lt;font color=&quot;Red&quot;&gt;This sprite crashes in NewerSMBW.&lt;/font&gt;">
+  <sprite id="288" name="(Crashes) Rolling Barrel" notes="&lt;font color=&quot;Red&quot;&gt;This sprite crashes in NewerSMBW.&lt;/font&gt;" files="lift_taru.arc">
+    <list nybble="12.3-12.4" title="Intial Rolling Direction" comment2="Value 3 is the same as value 0.">
+      <entry value="0">Towards closest player</entry>
+      <entry value="1">Left</entry>
+      <entry value="2">Right</entry>
+    </list>
   </sprite> <!-- #288: (Crashes) Rolling Barrel -->
 
-  <sprite id="289" name="Wooden/Metal Box" notes="Wooden boxes can be opened if Ground-Pounded, struck from below, etc. and can award the player with an item. Metal boxes can instantly kill the player, cannot be destroyed, and make a POW sound when falling. They also have odd issues when it comes to respawning if they have moved from their original location.">
+  <sprite id="289" name="Wooden/Metal Box" notes="Wooden boxes can be opened if Ground-Pounded, struck from below, etc. and can award the player with an item. Metal boxes can instantly kill the player, cannot be destroyed, and make a POW sound when falling. They also have odd issues when it comes to respawning if they have moved from their original location." files="box_wood.arc;box_iron.arc;big_renga_block.arc;I_ship_key.arc">
     <dualbox nybble="10.4" title1="Wooden Box" title2="Metal Box"/>
     <list nybble="11.3-11.4" title="Size">
       <entry value="0">Small Square (2x2)</entry>
@@ -2029,7 +2031,7 @@
       <entry value="11">1-Up</entry>
       <entry value="14">Key</entry> <!-- Unlisted values contain Mushrooms -->
     </list>
-    <value nybble="5" title="Unknown Value 5" comment="ASM shows Nybble 5 might affect something."/>
+    <value nybble="5" title="Z-Order" comment="Changes the Z-Order of the box. See the 2nd comment for a list of values." comment2="Observed effects:[br]* Value 0: On layer 1, behind layer 0[br]* Value 1: Behind layer 1, above layer 2[br]* Values 2-15: Above layer 1, below layer 0"/>
   </sprite> <!-- #289: Wooden/Metal Box -->
 
   <sprite id="290" name="World-6 Boss: Ramboo" noyoshi="True" notes="The extra large Boo boss that is not the least bit shy about continuing to advance towards the player. He can be knocked back with grabbable items and can only be defeated when the specified Event is activated.">
@@ -2044,7 +2046,7 @@
   <!-- Redo and reinvestigate ALL setting values. Do not assume any of the current information is accurate. Test one setting at a time!! -->
   <!-- Test 9 separate between normal and heavy. Remember to test between True Left, True Right, and Faces Player for spawning. Also test the range of Speed. Is the maximum 3, 7, or 15? -->
   <!-- Options still need 'sorted' after ensuring what each one does -->
-  <sprite id="291" name="Para-Beetle" sizehacks="True" notes="A small flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below.">
+  <sprite id="291" name="Para-Beetle" sizehacks="True" notes="A small flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below." files="met_pata.arc">
     <list nybble="6" title="Color">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
@@ -2077,7 +2079,7 @@
     </list>
   </sprite> <!-- #291: Para-Beetle -->
 
-  <sprite id="292" name="Heavy Para-Beetle" notes="A large flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below.">
+  <sprite id="292" name="Heavy Para-Beetle" notes="A large flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below." files="met_pataBig.arc">
     <list nybble="6" title="Color">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
@@ -2110,7 +2112,7 @@
     </list>
   </sprite> <!-- #292: Heavy Para-Beetle -->
 
-  <sprite id="296" name="Giant Buzzy Beetle" notes="A very large Buzzy Beetle that isn't especially pretty, but will carry the player around on its back. It can still hurt the player from the side.&lt;br&gt;Giant Buzzys don't fall down if placed in the air. They will follow the ground and slopes if snapped to the ground. Finally, they will move in a straight line if they reach a 90° drop.">
+  <sprite id="296" name="Giant Buzzy Beetle" notes="A very large Buzzy Beetle that isn't especially pretty, but will carry the player around on its back. It can still hurt the player from the side.&lt;br&gt;Giant Buzzys don't fall down if placed in the air. They will follow the ground and slopes if snapped to the ground. Finally, they will move in a straight line if they reach a 90° drop." files="met.arc">
     <list nybble="6" title="Style" comment="This determines the style of the Giant Buzzy Beetle. More colors and styles can be added for your hack.">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
@@ -2131,8 +2133,8 @@
     </list>
   </sprite> <!-- #296: Giant Buzzy Beetle -->
 
-  <sprite id="297" name="Spine Coaster" noyoshi="True" notes="A quick Line guided platform that will screech and clatter as it travels.">
-    <list nybble="12" title="Length" comment="This determines how many platform segments make up the Spine Coaster.">
+  <sprite id="297" name="Spine Coaster" noyoshi="True" notes="A quick Line guided platform that will screech and clatter as it travels." files="lift_torokko.arc">
+    <list nybble="12" title="Length" comment="This determines how many platform segments make up the Spine Coaster." comment2="You must use a Length of 1 or greater, or else the game will crash if the platform is ground-pounded.">
       <entry value="0">Skull Only</entry>
       <entry value="1">Skull + 1 Platform</entry>
       <entry value="2">Skull + 2 Platforms</entry>
@@ -2152,8 +2154,8 @@
     <value nybble="5" title="Coaster ID" comment="This will pair multiple Spine Coasters together so that when one of them starts, they all start at the same time." comment2="Do not pair more than one Spine Coaster with [Touch Activated] enabled!" idtype="Coaster"/>
   </sprite> <!-- #297: Spine Coaster -->
 
-  <sprite id="302" name="Loose Balboa Throwing Wrench" notes="The wrenches thrown by Balboa Wrench in his boss fight.">
-    <dependency notes="The game will crash without a Rocky Wrench in the level.">
+  <sprite id="302" name="Loose Balboa Throwing Wrench" notes="The wrenches thrown by Balboa Wrench in his boss fight." files="nokonokoB.arc">
+    <dependency notes="The game will crash without a Rocky Wrench in the level, or in the Loaded Sprites list.">
       <required sprite="352"/> <!-- Rocky Wrench -->
     </dependency>
     <checkbox nybble="10" title="Place In Front Of Other Sprites"/>
@@ -2166,7 +2168,7 @@
     </list>
   </sprite> <!-- #302: Loose Balboa Throwing Wrench -->
 
-  <sprite id="303" name="Monty Mole" notes="An energetic mole enemy that will pop out of the terrain after loading on screen and proceed to move quickly after the player. A Monty Hole is left behind after the mole jumps out.">
+  <sprite id="303" name="Monty Mole" notes="An energetic mole enemy that will pop out of the terrain after loading on screen and proceed to move quickly after the player. A Monty Hole is left behind after the mole jumps out." files="choropoo.arc">
     <list nybble="6" title="Color" comment="This determines the color of the Monty Mole.">
       <entry value="0">Original</entry>
       <entry value="1">Dark Brown</entry>
@@ -2176,7 +2178,7 @@
   </sprite> <!-- #303: Monty Mole -->
 
   <!-- Do we know what makes this one special compared to #95? -->
-  <sprite id="308" name="Platform Hammer Bro" sizehacks="True" notes="'En_Lift_HammerBros' - Likely allows it to be used on places where he shouldn't jump off.">
+  <sprite id="308" name="Platform Hammer Bro" sizehacks="True" notes="'En_Lift_HammerBros' - Likely allows it to be used on places where he shouldn't jump off." files="bros.arc">
     <dualbox nybble="12.4" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
     <list nybble="6" title="Color" comment="This determines the color of the Hammer Bro.">
       <entry value="0">Normal</entry>
@@ -2197,7 +2199,7 @@
   <!-- Further describe Use 'Forming' Animation (and maybe suggest another name for it) -->
   <!-- Extensive testing needed for Nybble 9 and 10 -->
   <!-- More testing is needed for Tilt after Falling, too. In retail it tilts Right during the one instance it is used, but was listed as Left in previous documentation. -->
-  <sprite id="311" name="Mega Icicle" noyoshi="True" notes="A large hanging icicle that can fall if the player comes too close to it. It can also be triggered by a Snake Block.">
+  <sprite id="311" name="Mega Icicle" noyoshi="True" notes="A large hanging icicle that can fall if the player comes too close to it. It can also be triggered by a Snake Block." files="obj_turara_rakka_Big.arc">
     <dependency notes="The Mega Icicle has several options that function specifically with the Snake Block.">
       <suggested sprite="166"/>
     </dependency>
@@ -2221,11 +2223,11 @@
     <value nybble="9" title="Unknown Value 9" advanced="True" advancedcomment="ASM shows Nybble 9 might affect something."/>
   </sprite> <!-- #311: Mega Icicle -->
 
-  <sprite id="319" name="Flip Block" notes="A yellow block with two eyes that cannot be destroyed. When struck, it will spin, allowing passage through it for a limited time.">
+  <sprite id="319" name="Flip Block" notes="A yellow block with two eyes that cannot be destroyed. When struck, it will spin, allowing passage through it for a limited time." files="block_rotate.arc">
   </sprite> <!-- #319: Flip Block -->
 
   <!-- Research "Nybble 4" -->
-  <sprite id="320" name="Falling Chestnut" notes="A hanging chestnut that can quickly falls upon the player's approach with various potential effects. They can also be triggered from a POW block.&lt;br&gt;Please note that these chestnuts can be frozen by ice flowers, regardless of their size. If they're then broken, they will ignore their selected contained object and only release a coin.">
+  <sprite id="320" name="Falling Chestnut" notes="A hanging chestnut that can quickly falls upon the player's approach with various potential effects. They can also be triggered from a POW block.&lt;br&gt;Please note that these chestnuts can be frozen by ice flowers, regardless of their size. If they're then broken, they will ignore their selected contained object and only release a coin." files="chestnut.arc">
     <dualbox nybble="12.4" title1="Brown" title2="Golden" comment="This determines the color of the Chestnut."/>
     <list nybble="11" title="Size" comment="This determines the size of the Chestnut. Large values will very likely look ugly alongside other level content.">
       <entry value="0">1 Block</entry>
@@ -2245,7 +2247,7 @@
       <entry value="14">15 Blocks</entry>
       <entry value="15">16 Blocks</entry>
     </list>
-    <list nybble="8.2-8.4" title="Contains" comment="There needs to be at least one Goomba, Spiny, or Star Coin somewhere in the level if selected as the contained object. Otherwise, the game will crash once the chestnut breaks open.">
+    <list nybble="8.2-8.4" title="Contains" comment="There needs to be at least one Goomba, Spiny, or Star Coin somewhere in the level (or in the Loaded Sprites list) if selected as the contained object. Otherwise, the game will crash once the chestnut breaks open.">
       <entry value="0">Goomba</entry>
       <entry value="1">Spiny</entry>
       <entry value="2">1 Coin</entry>
@@ -2262,7 +2264,7 @@
     </list> <!-- Appears only if [Chestnut Contains] == Star Coin -->
   </sprite> <!-- #320: Falling Chestnut -->
 
-  <sprite id="321" name="Custom Model Loader Resources (block_arrow.arc)" notes="This stores some of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen.">
+  <sprite id="321" name="Custom Model Loader Resources (block_arrow.arc)" notes="This stores some of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen." files="block_arrow.arc">
     <dependency notes="If using option 7-16 of the Custom Model Loader (11), you'll need one of these placed somewhere in the level. It does not have to be within a Zone or in the same Area.">
        <suggested sprite="11"/>
     </dependency>
@@ -2314,7 +2316,7 @@
       <value nybble="9" title="Loop Delay" comment="This determines the number of seconds between activations of the sound or graphic effect." comment2="The effect will only activate once if the delay is left at 0."/>
   </sprite> <!-- #332: Effect/Sound Spawner -->
 
-  <sprite id="341" name="Giant Koopa Shell Cave" notes="A decorative large shell that can be used as a cave with the right arrangement of invisible blocks and settings.">
+  <sprite id="341" name="Giant Koopa Shell Cave" notes="A decorative large shell that can be used as a cave with the right arrangement of invisible blocks and settings." files="big_shell.arc">
     <dependency notes="Look in Retail 5-01 A1 for an example of how to use this sprite correctly. You will need to make use of Spotlight Lighting, Layer 0 tiles, and invisible collision blocks in order for it to look correct."/>
     <dualbox nybble="6.4" title1="Green" title2="Red" comment="This determines the color of the Shell Cave."/>
     <checkbox nybble="12.4" title="Remove Grass/Rocks" comment="When enabled, this will remove the decoration from the bottom of the Shell Cave."/>
@@ -2334,7 +2336,7 @@
     </list>
   </sprite> <!-- #350: Fireball Laser -->
 
-  <sprite id="351" name="Shy Guy" notes="">
+  <sprite id="351" name="Shy Guy" notes="" files="shyguy.arc;iron_ball.arc">
     <list nybble="5" title="Type" notes="Type 9 and 10 spawn T-posed Shy Guys that won't move until hit. Otherwise, they function the same.">
       <entry value="0">Walker (Walks Off Ledges)</entry>
       <entry value="1">Pacer (Turns Around At Ledges)</entry>
@@ -2345,7 +2347,7 @@
       <entry value="6">Red Ballooneer Horizontal</entry>
       <entry value="7">Red Ballooneer Vertical</entry>
       <entry value="8">Blue Ballooneer Circular</entry>
-	  <entry value="9">Walker (Incomplete)</entry> <!-- 11-15 act like 9 -->
+	    <entry value="9">Walker (Incomplete)</entry> <!-- 11-15 act like 9 -->
       <entry value="10">Pacer (Incomplete)</entry>
     </list>
 	<checkbox nybble="9" title="Starts Walking Right" requirednybble="5" requiredval="0-1"/>
@@ -2353,14 +2355,14 @@
     <value nybble="9" title="Distance" comment="It takes ballooners 20 seconds (1200 frames) before they return to their starting position." requirednybble="5" requiredval="6-8"/>
   </sprite> <!-- #351: Shy Guy -->
 
-  <sprite id="357" name="Yoshi Fruit" sizehacks="True" notes="An edible fruit that Yoshi can grab. Collecting five will cause Yoshi to lay an egg. What's inside the egg will change depending on the player's current power-up. Normal -&gt; Fire -&gt; Ice -&gt; Propeller -&gt; 1-Up.">
+  <sprite id="357" name="Yoshi Fruit" sizehacks="True" notes="An edible fruit that Yoshi can grab. Collecting five will cause Yoshi to lay an egg. What's inside the egg will change depending on the player's current power-up. Normal -&gt; Fire -&gt; Ice -&gt; Propeller -&gt; 1-Up." files="fruit.arc;fruit_cookie.arc">
     <list nybble="12" title="Type" comment="This determines if the fruit is a standard berry, or a cherry. They share no functional difference.">
       <entry value="0">Berry</entry>
       <entry value="1">Cherry</entry>
     </list>
   </sprite> <!-- #357: Yoshi Fruit -->
 
-  <sprite id="374" name="Effect - Falling Objects and Wind" notes="This effect controller will either create a falling particle effect, or it will create a Sandstorm.">
+  <sprite id="374" name="Effect - Falling Objects and Wind" notes="This effect controller will either create a falling particle effect, or it will create a Sandstorm." files="env_snow.arc;env_leaf.arc;env_petal.arc;env_stardust.arc">
     <dependency notes="Placing this sprite more than once in the same zone will overlay the effect. If Sandstorm is selected, you must include [90] Wind Physics and Sound for the graphics to appear.">
       <suggested sprite="90"/>
     </dependency>
@@ -2381,7 +2383,7 @@
   </sprite> <!-- #374: Effect - Falling Objects and Wind -->
 
   <!-- Color conflicts in recent sprite data, needs rechecked with screenshot. Also check color changes with Size setting. -->
-  <sprite id="387" name="Bush" sizehacks="True" notes="A decorative leafy bush that appears behind Layer 1 terrain.">
+  <sprite id="387" name="Bush" sizehacks="True" notes="A decorative leafy bush that appears behind Layer 1 terrain." files="fruits_kusa.arc;fruits_kusa_gake.arc">
     <dualbox nybble="11.4" title1="Use Bush Color" title2="Yellowish Bush" comment="This determines if the Bush is a yellowish color, or if it uses the color listed in Bush Color instead."/>
     <list nybble="5" title="Bush Style" comment="This determines the style of the Bush. The Forest Tree Leafs specifically are in front of Layer 1, but behind Layer 0." requirednybble="11.4" requiredval="0">
       <entry value="0">Green</entry>
@@ -2390,7 +2392,7 @@
       <entry value="3">Yellow</entry>
       <entry value="4">Dark Brown</entry>
       <entry value="5">Red</entry>
-      <entry value="15">Forest Tree Leafs</entry>
+      <entry value="15">Forest Tree Leaves</entry>
     </list> <!-- Appears only if Use Bush Color is set -->
     <list nybble="12.3-12.4" title="Size" comment="This determines the size of the Bush. Larger sizes use different models.">
       <entry value="0">Small</entry>
@@ -2400,7 +2402,7 @@
     </list>
   </sprite> <!-- #387: Bush -->
 
-  <sprite id="391" name="Lighting - Glow Block" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely diminished as anything other than a weapon of destruction if not using Full Darkness lighting.">
+  <sprite id="391" name="Lighting - Glow Block" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely diminished as anything other than a weapon of destruction if not using Full Darkness lighting." files="block_light.arc">
     <list nybble="6" title="Color" advanced="True" comment="A recolor for the Glow Block." advancedcomment="More effects can be added for your hack.">
       <entry value="0">Yellow</entry>
       <entry value="1">Dark Purple</entry>
@@ -2480,28 +2482,25 @@
     </list>
   </sprite> <!-- #403: Line Controlled Brick Block -->
 
-  <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the second Bowser Jr. Boss Fight in World 6. It spawns the backgrounds BgA_0B02 and BgB_5202, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller. The cannon used in Newer's final boss fight is included on the clown car, but don't damage Bowser Jr.">
+  <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the second Bowser Jr. Boss Fight in World 6. It spawns the backgrounds BgA_0B02 and BgB_5202, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller. The cannon used in Newer's final boss fight is included on the clown car, but don't damage Bowser Jr." files="koopaJr.arc;koopaJr_clown.arc;koopaJr_clown_ply.arc;boss_ef_attack.arc;boss_koopaJr_toge.arc;boss_koopaJr_down_asiba.arc;W6_Fly_Boss.arc">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 06-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
     </dependency>
   </sprite> <!-- #405: Boss Controller - Bowser Jr. (2nd Battle) -->
 
-  <sprite id="406" name="(Crashes) Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the third Bowser Jr. Boss Fight in World 8. It spawns the backgrounds BgA_5502 and BgB_4C02, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;This fight crashes randomly in Newer.&lt;/font&gt;">
+  <sprite id="406" name="(Crashes) Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the third Bowser Jr. Boss Fight in World 8. It spawns the backgrounds BgA_5502 and BgB_4C02, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;This fight crashes randomly in Newer.&lt;/font&gt;" files="koopaJr.arc;koopa_clown.arc;koopaJr_clown.arc;boss_ef_attack.arc;koopa_clown_bomb.arc;boss_koopaJr_move_asiba.arc;W8_Fly_Boss.arc">
     <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 08-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
     </dependency>
   </sprite> <!-- #406: Boss Controller - Bowser Jr. (3rd Battle) -->
 
-  <sprite id="410" name="Giga Goomba" notes="An extremely large Goomba added by Newer that will stun the player and shake the screen with each step.">
+  <sprite id="410" name="Giga Goomba" notes="An extremely large Goomba added by Newer that will stun the player and shake the screen with each step." files="kuriboBig.arc;kuriboBoss.arc">
     <checkbox nybble="12.4" title="Longer Stuns" comment="When enabled, the stun duration will be longer."/>
   </sprite> <!-- #410: Giga Goomba -->
 
-  <sprite id="411" name="(Unused) Toad House Minigame - Lives Balloon" notes="An unused version of sprite 412 and has no purpose.">
-  </sprite> <!-- #411: (Unused) Toad House Minigame - Lives Balloon -->
-
-  <sprite id="414" name="Spike/Stone Spike" notes="" sizehacks="True">
+  <sprite id="414" name="Spike/Stone Spike" notes="" sizehacks="True" files="gabon_rock.arc;gabon.arc">
     <list nybble="6" title="Color" requirednybble="12.4" requiredval="0">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
@@ -2527,16 +2526,16 @@
   </sprite> <!-- #414: Spike/Stone Spike -->
 
   <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in the retail game's singleplayer mode where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
-    <dependency notes="&lt;font color=&quot;red&quot;&gt;Usable in retail NSMBW only.&lt;/font&gt; All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
+    <dependency notes="Usable in retail NSMBW only."/>
     <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small."/>
   </sprite> <!-- #422: Toad Needs Help - ? Block -->
 
-  <sprite id="423" name="Toad Needs Help - Brick Block" notes="A feature used in Retail's Single Player where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
-    <dependency notes="&lt;font color=&quot;red&quot;&gt;Usable in retail NSMBW only.&lt;/font&gt; All normal levels can have a Toad Needs Help block and end up needing rescued, but they will not appear for Ghost House, Tower, Castle, or Airship levels."/>
+  <sprite id="423" name="Toad Needs Help - Brick Block" notes="A feature used in the retail game's singleplayer mode where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
+    <dependency notes="Usable in retail NSMBW only."/>
     <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small."/>
   </sprite> <!-- #423: Toad Needs Help - Brick Block -->
 
-  <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the Retail Bowser battle.">
+  <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the Retail Bowser battle." files="boss_shutter_koopa.arc">
     <dependency notes="Most of the final Bowser fight involves hardcoded elements, some of which that were removed in Newer. Directly copying 08-24 A4 from Newer is strongly recommended. Sprites won't spawn if on screen when entering the zone.">
       <required sprite="439"/>
       <required sprite="445"/>
@@ -2576,7 +2575,7 @@
     </list>
   </sprite> <!-- #433: Floating ? Block -->
 
-  <sprite id="441" name="Mushroom Platform" notes="A mushroom platform with a solid-on-top collision representing the top segment of a large mushroom. The stem portion must be painted with tileset objects.">
+  <sprite id="441" name="Mushroom Platform" notes="A mushroom platform with a solid-on-top collision representing the top segment of a large mushroom. The stem portion must be painted with tileset objects." files="obj_kinoko.arc">
     <dualbox nybble="11.4" title1="Skinny" title2="Thick" comment="This determines the thickness (style) of the mushroom platform."/>
     <dualbox nybble="10.4" title1="Orange" title2="Blue" comment="This determines the color of the Skinny mushroom platform." requirednybble="11.4" requiredval="0"/> <!-- Appears if Skinny is set -->
     <dualbox nybble="10.4" title1="Red" title2="Green" comment="This determines the color of the Thick mushroom platform." requirednybble="11.4"/> <!-- Appears if Thick is set -->
@@ -2606,10 +2605,10 @@
     <checkbox nybble="9.4" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites." comment2="The player will jump behind the mushroom platform when passing through from underneath."/>
   </sprite> <!-- #441: Mushroom Platform -->
 
-  <sprite id="468" name="Newer Cutscene Controller - Credits" notes="This controller manages the game's credits and staffroll after the ending cutscene. The credits sequence and staffroll text are defined in NewerStaffRoll.bin.">
+  <sprite id="468" name="Newer Cutscene Controller - Credits" notes="This controller manages the game's credits and staffroll after the ending cutscene. The credits sequence and staffroll text are defined in NewerStaffRoll.bin." files="CreditsBG.arc">
   </sprite> <!-- #468: Newer Cutscene Controller - Credits -->
 
-  <sprite id="478" name="Bowser Switch (Small)" sizehacks="True" notes="This switch is nearly identical to the Red ! Switch, but it does not activate outlined Red Blocks. It may have additional bugs. Not recommended for use outside of the final Bowser Boss fight.">
+  <sprite id="478" name="Bowser Switch (Small)" sizehacks="True" notes="This switch is nearly identical to the Red ! Switch, but it does not activate outlined Red Blocks. It may have additional bugs. Not recommended for use outside of the final Bowser Boss fight." files="switch.arc;switch_koopa.arc">
     <dependency notes="This sprite has additional hardcoded behavior that may cause bugs when it is used outside of its intended boss fight.">
       <suggested sprite="431"/>
     </dependency>
@@ -2640,7 +2639,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #478: Bowser Switch (Small) -->
 
-  <sprite id="479" name="Bowser Switch (Large)" noyoshi="True" sizehacks="True" notes="A much larger, fancier switch that was originally used for the final Bowser Boss fight, and Switch Palaces. It always flashes red.">
+  <sprite id="479" name="Bowser Switch (Large)" noyoshi="True" sizehacks="True" notes="A much larger, fancier switch that was originally used for the final Bowser Boss fight, and Switch Palaces. It always flashes red." files="switch.arc;switch_koopa.arc">
     <dependency notes="This sprite has additional hardcoded behavior that may cause bugs when it is used outside of its intended boss fight. Known bugs: It is incompatible with Multi-Use. The Target Event ID must be unique to this Switch.">
       <suggested sprite="431"/>
     </dependency>
