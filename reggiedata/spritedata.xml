@@ -1843,7 +1843,6 @@
   </sprite> <!-- #122: Basic Platform - One-Way -->
 
   <sprite id="123" name="(Unused) Swinging Castle Platform" notes="An unused platform that Nintendo ported from NSMBDS. It requires certain settings to work correctly. It will swing back and forth as though it were attached to a Rotation Controller." files="lift_buranko.arc">
-    <dependency notes="Using large sizes is not recommended unless using sizehacks with other sprites."/>
     <value nybble="9" title="Size" comment="This determines how large the platform is." comment2="A setting of 0 is the same as a setting of 2. 1-15 provide general scaling from 50% to 750% scaling."/>
     <value nybble="11" title="Speed" comment="This determines how quickly the platform will swing back and forth."/>
     <value nybble="12" title="Swing Arc" comment="This determines how widely the platform will swing."/>
@@ -1889,7 +1888,7 @@
   </sprite> <!-- #131: Boo -->
 
   <sprite id="132" name="(Unused) Path Controlled TEST Platform 1" notes="An untextured unused test platform that is controlled by Path data. Very useful when trying to visually test the Path you are creating, as you can move your starting Entrance and change the Starting Node to test each individual segment." files="test_lift.arc">
-    <dependency notes="A Use Paths Movement Controller is required to make use of this test platform. Also, using the larger sizes is not recommended unless using sizehacks with other sprites.">
+    <dependency notes="A Use Paths Movement Controller is required to make use of this test platform.">
       <required sprite="159"/>
     </dependency>
     <value nybble="11" title="Height" comment="This determines the height of the test platform."/>
@@ -2481,7 +2480,7 @@
   </sprite> <!-- #159: Movement Controller - Uses Paths" -->
 
   <sprite id="160" name="(Unused) Path Controlled TEST Platform 2" notes="An untextured unused test platform that is controlled by Path data. Very useful when trying to visually test the Path you are creating, as you can move your starting Entrance and change the Starting Node to test each individual segment. DATA FOR THIS SPRITE MAY BE COMPLETELY WRONG." files="test_lift.arc">
-    <dependency notes="A Use Paths Movement Controller is required to make use of this test platform. Also, using the larger sizes is not recommended unless using sizehacks with other sprites.">
+    <dependency notes="A Use Paths Movement Controller is required to make use of this test platform.">
       <required sprite="159"/>
     </dependency>
     <value nybble="9" title="Height" comment="This determines the height of the test platform."/>
@@ -4288,7 +4287,7 @@
   </sprite> <!-- #286: Rotating Wooden Airship Wheel -->
 
   <sprite id="287" name="(Unused) Path Controlled Ice Block" notes="A slippery block of ice that can be paired with a Path." files="ice.arc">
-    <dependency notes="A Use Paths Movement Controller is required to make use of this ice block. Also, using the larger sizes is not recommended unless using sizehacks with other sprites.">
+    <dependency notes="A Use Paths Movement Controller is required to make use of this ice block.">
       <required sprite="159"/>
     </dependency>
     <value nybble="11" title="Height" comment="This determines the height of the ice block." comment2="Large values will very likely look ugly alongside other level content."/>
