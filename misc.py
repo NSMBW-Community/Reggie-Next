@@ -695,7 +695,7 @@ def LoadSpriteData():
 
             if 'files' in attribs:
                 relatedObjFiles = globals_.trans.string('SpriteDataEditor', 8, '[list]',
-                                                sprite.get('files').replace(';', '<br>'))
+                                                sprite.get('files').replace(';', '<br>* '))
 
             if 'yoshinotes' in attribs:
                 yoshiNotes = globals_.trans.string('SpriteDataEditor', 9, '[notes]',

@@ -210,8 +210,8 @@
 		<string id="11">[b]Unknown Flag:[/b][br]This box is checked on a few entrances in the game, but we haven't managed to figure out what it does (or if it does anything).</string>
 		<string id="12">Connected Pipe</string>
 		<string id="13">[b]Connected Pipe:[/b][br]This box allows you to enable an unused/broken feature in the game. It allows the pipe to function like the pipes in SMB3 where Mario simply goes through the pipe. However, it doesn't work correctly.</string>
-		<string id="14">Connected Pipe Reverse</string>
-		<string id="15">[b]Connected Pipe Reverse:[/b][br]This box tells the connected pipe whether or not it should follow its path in reverse (backwards).</string>
+		<string id="14">Reverse Path</string>
+		<string id="15">[b]Reverse Path:[/b][br]This box tells the connected pipe whether or not it should follow its path in reverse (backwards).</string>
 		<string id="16">Path ID:</string>
 		<string id="17">[b]Path ID:[/b][br]Use this option to set the path number that the connected pipe will follow.</string>
 		<string id="18">Links to Forward Pipe</string>
@@ -225,8 +225,8 @@
 		<string id="22">[b]Layer:[/b][br]Allows you to change the collision layer which this entrance is active on. This option is very glitchy and not used in the default levels - for almost all normal cases, you will want to use layer 1.</string>
 		<string id="23">[b]Entrance [id]:[/b]</string>
 		<string id="24">Modify Selected Entrance Properties</string>
-		<string id="25">CP Exit Direction:</string>
-		<string id="26">[b]CP Exit Direction:[/b][br]Set the direction the player will exit out of a connected pipe.</string>
+		<string id="25">Exit Direction:</string>
+		<string id="26">[b]Exit Direction:[/b][br]Set the direction the player will exit out of a connected pipe.</string>
 		<stringlist id="27">
 			<entry>Up</entry>
 			<entry>Down</entry>
@@ -674,7 +674,7 @@
 		<string id="5">[b]Unidentified/Unknown Sprite ([id])[/b]</string>
 		<string id="6">[b]Sprite [id]:[br][name][/b]</string>
 		<string id="7">Object Files</string>
-		<string id="8">[b]This sprite uses:[/b][br][list]</string>
+		<string id="8">[b]This sprite loads:[/b][br]* [list]</string>
 		<string id="9">[b]Yoshi Notes:[/b] [notes]</string>
 		<string id="10">Advanced Notes</string>
 		<string id="11">[b]Advanced Notes:[/b] [notes]</string>
