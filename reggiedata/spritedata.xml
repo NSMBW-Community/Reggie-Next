@@ -641,7 +641,7 @@
    <sprite id="54" name="Lakitu" notes="A stand-alone Lakitu, more useful for small rooms than entire levels. Lakitu will throw Spinies (or coins) at the player and will follow the player until killed." files="jugem.arc;togezo.arc;paipo.arc">
     <dependency notes="The stand-alone Lakitu will spawn at exactly the height that it is placed and will remain at that height as it follows the player. Additionally, as it does not respawn after killed unless re-entering the zone, utilizing it for its cloud riding is not recommended for mandatory progress."/>
     <dualbox nybble="10.4" title1="Spawn from the Side" title2="Spawn from the Background" comment="This will determine which animation state is used by the Lakitu when it is first loaded." comment2="Spawning from the Background means that the Lakitu will fly in from the background, facing the camera."/>
-    <list nybble="12.3-12.4" title="Thrown Item" comment="This determines what the Lakitu will throw." comment2="A value of 1 throws a Spiny with its nybble 11 flag enabled.">
+    <list nybble="12.3-12.4" title="Thrown Item" comment="This determines what the Lakitu will throw." comment2="A value of 1 throws a Spiny that can be killed if hit from below on a block, but only while balled up.">
       <entry value="0">Throws Spinies</entry>
       <entry value="1">Throws Spinies (Dies if hit from below on a block)</entry>
       <entry value="2">Throws Coins</entry>
@@ -650,7 +650,7 @@
     <checkbox nybble="6.4" title="Longer Throw Delay" comment="If enabled, the Lakitu will wait longer before throwing the first Spiny after previously hitting the max limit of 4." comment2="Exact values are 280 frames checked, 140 unchecked."/>
     <value nybble="7" title="Spawn Height (Useless)" comment2="This value determines the spawning height for Coin Lakitus spawned from [370] Lakitu Cloud Block. As this Lakitu is not spawned from a block, this option is rather useless." requirednybble="12" requiredval="2"/>
     <value nybble="8" title="Lifespan (Useless)" comment="This would determine how long the Lakitu will exist before flying off. However, a stand-alone Lakitu cannot meet the requirements for this timer to be processed, making this option useless." requirednybble="12" requiredval="2"/>
-    <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advancedcomment="Related to flying off-screen, however the exact behavior is unknown."/>
+    <checkbox nybble="11.4" title="Flies Off-Screen (Useless)" comment="Enabling this will allow the Lakitu to fly away after a certain period of time. However, this option is rather useless as stand-alone Lakitus cannot meet the requirements for this to occur." comment2="This is set on all Lakitus spawned from [124] Lakitu Spawn Area and [370] Lakitu Cloud Block."/>
   </sprite> <!-- #54: Lakitu -->
 
   <sprite id="55" name="(Unused) Rising Tilting Platform" notes="This is a platform imported from New Super Mario Bros. DS.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;It is not recommended for use due to various glitches and a lack of texture.&lt;/font&gt;" advancednotes="Size is 1x7 blocks. The distance covered depends on two factors: Y-position and zone height. See [Movement Distance]." files="test_lift.arc">
@@ -1849,10 +1849,14 @@
     <value nybble="10" title="Initial Angle" comment="This determines the initial angle of the platform."/>
   </sprite> <!-- #123: (Unused) Swinging Castle Platform -->
 
-  <!-- If a chance arises, test Super Guide with 04-05 setting Flag 6 to 0. -->
   <sprite id="124" name="Lakitu Spawn Area" notes="Assigns a spawn area where Lakitu will continue to respawn while the player is inside it. Lakitu will follow the player along the top of the camera line and toss Spiny balls at the player to hinder their progress. The sprite's vertical position is used for Lakitu's height." files="jugem.arc;togezo.arc;paipo.arc">
     <value nybble="9-10" title="Location ID" comment="Lakitu respawn and chase the player only while a player is in this location." idtype="Location"/>
-    <checkbox nybble="6.4" title="Delay" comment="This flag makes Lakitu throw Spinies less often." advancedcomment="Used in Retail: 04-05 A1."/>
+    <list nybble="11" title="Thrown Item" comment="This determines what the Lakitu will throw." comment2="A value of 1 throws a Spiny that can be killed if hit from below on a block, but only while balled up.">
+      <entry value="0">Throws Spinies</entry>
+      <entry value="1">Throws Spinies (Dies if hit from below on a block)</entry>
+      <entry value="2">Throws Coins</entry>
+    </list>
+    <checkbox nybble="6.4" title="Longer Throw Delay" comment="If enabled, the Lakitu will wait longer before throwing the first Spiny after previously hitting the max limit of 4." comment2="Exact values are 280 frames checked, 140 unchecked." advancedcomment="Used in Retail 04-05 A1."/>
   </sprite> <!-- #124: Lakitu Spawn Area -->
 
   <sprite id="125" name="Climbing Koopa - Horizontal" notes="A Koopa Troopa that clings to and walks around on Chainlink Fence type objects and terrain. This one only moves from left to right.
