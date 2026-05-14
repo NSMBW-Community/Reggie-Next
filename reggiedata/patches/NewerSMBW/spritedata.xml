@@ -937,8 +937,8 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #153: (Unused) ?-Switch -->
 
-  <sprite id="157" name="Big Pumpkin" notes="No matter what is inside, the pumpkin can easily be broken with a ground pound. It can even be broken by small Mario." files="big_renga_block.arc;I_ship_key.arc">
-    <list nybble="12" title="Block Contains" comment="This determines if anything appears from inside the block when it is destroyed.">
+  <sprite id="157" name="Big Pumpkin" notes="No matter what is inside, this pumpkin always breaks open. It can even be broken by small Mario." files="big_renga_block.arc;I_ship_key.arc">
+    <list nybble="12" title="Pumpkin Contains" comment="This determines if anything appears from inside the pumpkin when it is destroyed.">
       <entry value="0">Empty</entry>
       <entry value="8">Empty</entry>
       <entry value="12">Empty</entry>
@@ -956,7 +956,14 @@
       <entry value="11">1-Up</entry>
       <entry value="14">Key</entry>
     </list>
-    <value nybble="11" title="Withstands (Needs Multiple Hits)" comment="This determines the number of hits or ground-pounds needed for the block to break. For this function, a texture will be used that has some odd-looking white numbers on it." advanced="True" advancedcomment="This setting may only apply to the original Giant Breakable Brick Block"/>
+    <list nybble="11" title="Number of Hits" comment="This determines the number of hits or ground-pounds needed for the pumpkin to break. For this function, a texture will be used that has some odd-looking white numbers on it." advancedcomment="Values above 5 will crash the game as it does not try to load a model.">
+      <entry value="0">1 Hit</entry>
+      <entry value="1">1 Hit</entry>
+      <entry value="2">2 Hits</entry>
+      <entry value="3">3 Hits</entry>
+      <entry value="4">4 Hits</entry>
+      <entry value="5">5 Hits</entry>
+    </list>
   </sprite> <!-- #157: Big Pumpkin -->
 
   <sprite id="166" name="Snake Block (Ice)" notes="Snake Blocks do not have ice collision in Newer." files="obj_turara_rakka_Big.arc">

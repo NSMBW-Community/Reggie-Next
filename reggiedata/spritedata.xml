@@ -2460,7 +2460,14 @@
       <entry value="11">1-Up</entry>
       <entry value="14">Key</entry>
     </list>
-    <value nybble="11" title="Withstands (Needs Multiple Hits)" comment="This determines the number of hits or ground-pounds needed for the block to break. For this function, a texture will be used that has some odd-looking white numbers on it."/>
+    <list nybble="11" title="Number of Hits" comment="This determines the number of hits or ground-pounds needed for the block to break. For this function, a texture will be used that has some odd-looking white numbers on it." advancedcomment="Values above 5 will crash the game as it does not try to load a model.">
+      <entry value="0">1 Hit</entry>
+      <entry value="1">1 Hit</entry>
+      <entry value="2">2 Hits</entry>
+      <entry value="3">3 Hits</entry>
+      <entry value="4">4 Hits</entry>
+      <entry value="5">5 Hits</entry>
+    </list>
   </sprite> <!-- #157: Big Brick Block -->
 
   <sprite id="158" name="Fire Snake" yoshinotes="While Yoshi cannot safely jump on this enemy, if he eats one he will spit out a fireball." notes="A hopping fire enemy that will also affect the lighting in a dark Zone." files="fire_snake.arc">
