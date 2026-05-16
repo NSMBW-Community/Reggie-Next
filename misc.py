@@ -453,7 +453,7 @@ class SpriteDefinition:
         self.fields = []
         fields = self.fields
         allowed = ['checkbox', 'list', 'value', 'bitfield', 'multibox', 'dualbox',
-                   'dependency', 'external', 'multidualbox']
+                   'dependency', 'external', 'multidualbox', 'spritetex']
 
         for field in elem:
             if field.tag not in allowed:
@@ -577,6 +577,18 @@ class SpriteDefinition:
                 bit, _ = self.parseBits(attribs.get("nybble"))
 
                 fields.append((7, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
+
+            elif field.tag == 'spritetex':
+                bit, max_ = self.parseBits(attribs.get("nybble"))
+
+                entries = []
+                for e in field:
+                    if e.tag != 'entry': continue
+
+                    entries.append((int(e.attrib['value']), e.text))
+
+                model = SpriteDefinition.ListPropertyModel(entries)
+                fields.append((8, title, bit, model, max_, comment, required, advanced, comment2, advancedcomment))
 
     def parseBits(self, nybble_val):
         """

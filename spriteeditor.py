@@ -1522,6 +1522,136 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             return self.insertvalue(data, value)
 
+    class SpriteTexPropertyDecoder(PropertyDecoder):
+        """
+        Class that decodes/encodes sprite data to/from a SpriteTex element (valuebox + list)
+        """
+
+        def __init__(self, title, bit, model, max_, comment, required, _, comment2, commentAdv, layout, row, parent):
+            """
+            Creates the widgets
+            """
+            super().__init__()
+
+            self.spinBox = IntSpinBox()
+            self.spinBox.setRange(0, max_ - 1)
+            self.spinBox.valueChanged.connect(self.HandleValueChanged)
+
+            self.comboBox = QtWidgets.QComboBox()
+            self.comboBox.setModel(model)
+            self.comboBox.currentIndexChanged.connect(self.HandleIndexChanged)
+
+            self.model = model
+
+            self.bit = bit
+            self.required = required
+            self.parent = parent
+            self.comment = comment
+            self.comment2 = comment2
+            self.commentAdv = commentAdv
+            self.layout = layout
+            self.row = row
+            self.prev_value = None
+            self.editWidget = 0 # 0 = spin box, 1 = combo box
+
+            label = QtWidgets.QLabel(title + ':')
+
+            #texIdLayout = QtWidgets.QFormLayout()
+            #texIdLayout.addRow('Raw ID:', self.spinBox)
+            #layout.addLayout(texIdLayout, row, 2, 1, 1)
+
+            layout.addWidget(label, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
+            layout.addWidget(self.comboBox, row, 1, 1, 1)
+            layout.addWidget(self.spinBox,  row, 2, 1, 1)
+
+            col = 3
+            if comment is not None:
+                button_com = QtWidgets.QToolButton()
+                button_com.setIcon(GetIcon('setting-comment'))
+                button_com.setStyleSheet("border-radius: 50%")
+                button_com.clicked.connect(self.ShowComment)
+                button_com.setAutoRaise(True)
+
+                layout.addWidget(button_com, row, col)
+                col += 1
+
+            if comment2 is not None:
+                button_com2 = QtWidgets.QToolButton()
+                button_com2.setIcon(GetIcon('setting-comment2'))
+                button_com2.setStyleSheet("border-radius: 50%")
+                button_com2.clicked.connect(self.ShowComment2)
+                button_com2.setAutoRaise(True)
+
+                layout.addWidget(button_com2, row, col)
+                col += 1
+
+            if commentAdv is not None:
+                button_adv = QtWidgets.QToolButton()
+                button_adv.setIcon(GetIcon('setting-comment-adv'))
+                button_adv.setStyleSheet("border-radius: 50%")
+                button_adv.clicked.connect(self.ShowAdvancedComment)
+                button_adv.setAutoRaise(True)
+
+                layout.addWidget(button_adv, row, col)
+
+        def update(self, data, first=False):
+            """
+            Updates the value shown by the widgets
+            """
+            # check if requirements are met
+            self.checkReq(data, first)
+
+            value = self.retrieve(data)
+            self.spinBox.setValue(value)
+
+            for i, x in enumerate(self.model.entries):
+                if x[0] == value:
+                    self.comboBox.setCurrentIndex(i)
+                    break
+            else:
+                self.comboBox.setCurrentIndex(-1)
+
+        def assign(self, data):
+            """
+            Assigns the selected value to the data
+            """
+            if self.editWidget == 0:
+                return self.insertvalue(data, self.spinBox.value())
+            else:
+                return self.insertvalue(data, self.model.entries[self.comboBox.currentIndex()][0])
+
+        def HandleDataChanged(self, value):
+            """
+            Handle the data changing in either widget
+            """
+            self.updateData.emit(self)
+            self.spinBox.setValue(value)
+
+            for i, x in enumerate(self.model.entries):
+                if x[0] == value:
+                    self.comboBox.setCurrentIndex(i)
+                    break
+            else:
+                self.comboBox.setPlaceholderText(str(value) + ': Undefined Entry')
+                self.comboBox.setCurrentIndex(-1)
+
+        def HandleValueChanged(self, value):
+            """
+            Handle the value changing in the spinbox
+            """
+            self.editWidget = 0
+            self.HandleDataChanged(value)
+
+        def HandleIndexChanged(self, index):
+            """
+            Handle the current index changing in the combobox
+            """
+            if index < 0:
+                return
+
+            self.editWidget = 1
+            self.HandleDataChanged(self.model.entries[index][0])
+
 
     def setSprite(self, type_, reset=False, initial_data=None):
         """
@@ -1716,6 +1846,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             elif f[0] == 7:
                 nf = SpriteEditorWidget.MultiDualboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+
+            elif f[0] == 8:
+                nf = SpriteEditorWidget.SpriteTexPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
 
             nf.updateData.connect(self.HandleFieldUpdate)
             fields.append(nf)
@@ -1946,9 +2079,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         data = field.assign(self.data)
 
+        # data[6] is the sprite's zone ID. Modifying it is unnecessary since Reggie sets it automatically,
+        # and overwrites whatever you change it to. If anything, it seems to just confuse everybody who
+        # sees it, so we're just going to hide the value from the user
         self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
             data[0], data[1], data[2], data[3],
-            data[4], data[5], data[6], data[7],
+            data[4], data[5], 0x00, data[7],
         ))
         self.raweditor.setStyleSheet('')
 

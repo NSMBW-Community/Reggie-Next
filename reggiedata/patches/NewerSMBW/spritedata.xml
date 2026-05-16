@@ -257,7 +257,7 @@
   </sprite> <!-- #19: World-4 Boss: Samurshai -->
 
   <sprite id="20" name="Goomba" sizehacks="True" notes="Your standard Goomba. Place it in the level and it will walk towards Mario when it loads." files="kuribo.arc">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Goomba.">
+    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Goomba.">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
       <entry value="2">"Hyper" (Normal color)</entry>
@@ -267,7 +267,7 @@
       <entry value="6">Gray</entry>
       <entry value="7">Santa</entry>
       <entry value="8">Gray Santa</entry>
-    </list> <!-- Update [21] Paragoomba and [99] Pipe Enemy Spawner when new items are added to this list! -->
+    </spritetex> <!-- Update [21] Paragoomba and [99] Pipe Enemy Spawner when new items are added to this list! -->
     <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Goomba placing it further behind other sprites."/>
     <list nybble="12" title="Load-In Animation" comment="This determines what animation state is used by the Goomba when it is first loaded. This is useful for Goombas within range of a nearby Entrance." comment2="Jumps and 'Tumble' will result in it landing on the next platform below where it was initially placed.">
       <entry value="0">Normal</entry>
@@ -280,7 +280,7 @@
   </sprite> <!-- #20: Goomba -->
 
   <sprite id="21" name="Paragoomba" sizehacks="True" notes="A Goomba with wings that will flutter towards Mario when it loads." files="kuribo.arc;wing.arc">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Paragoomba.">
+    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Paragoomba.">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
       <entry value="2">"Hyper" (Normal color)</entry>
@@ -290,7 +290,7 @@
       <entry value="6">Gray</entry>
       <entry value="7">Santa (No Wings)</entry>
       <entry value="8">Gray Santa (No Wings)</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Paragoomba placing it further behind other sprites."/>
   </sprite> <!-- #21: Paragoomba -->
 
@@ -299,7 +299,7 @@
   </sprite> <!-- #22: Pumpkin Goomba -->
 
   <sprite id="24" name="Buzzy Beetle" sizehacks="True" notes="A standard Buzzy Beetle enemy that walks towards the player when it loads." files="met.arc">
-    <list nybble="6" title="Color" comment="This determines the color of the Buzzy Beetle.">
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Buzzy Beetle.">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -308,14 +308,14 @@
       <entry value="5">Blue</entry>
       <entry value="6">Violet</entry>
       <entry value="7">Black</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the Buzzy Beetle will be upside-down and able to cling to and walk on ceilings if placed adjacent to them. If not placed adjacent, he will immediately fall and spin towards the player."/>
     <checkbox nybble="12.3" title="Inside Shell" comment="When enabled, the Buzzy Beetle will spawn inside his shell. He will eventually climb out and resume walking, even if set to be upside-down. Upside-down shells will fall without spinning towards the player."/>
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #24: Buzzy Beetle -->
 
   <sprite id="25" name="Spiny" sizehacks="True" notes="A Spiny that walks along the ground." files="togezo.arc;paipo.arc">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Spiny." comment2="Any Spiny that uses the Balled Up animation will initially use the original red color. Additionally, the Sidestepper's shell has no texture, so it flickers through all the other colors.">
+    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Spiny." comment2="Any Spiny that uses the Balled Up animation will initially use the original red color. Additionally, the Sidestepper's shell has no texture, so it flickers through all the other colors.">
       <entry value="0">Original</entry>
       <entry value="1">Orange</entry>
       <entry value="2">Yellow</entry>
@@ -324,7 +324,7 @@
       <entry value="5">Violet</entry>
       <entry value="6">Black</entry>
       <entry value="7">Sidestepper</entry>
-    </list>
+    </spritetex>
     <list nybble="12.3-12.4" title="Load-In Animation" comment="This will determine which animation state is used by the Spiny when it is first loaded.">
       <entry value="0">Normal (Towards Player)</entry>
       <entry value="1">Balled Up (Lakitu) (Default Direction)</entry>
@@ -337,7 +337,7 @@
 
   <!-- Research Unknown Flag 12 -->
   <sprite id="26" name="Upside-Down Spiny" sizehacks="True" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading." files="togezo.arc;paipo.arc">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Spiny.">
+    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Spiny.">
       <entry value="0">Original</entry>
       <entry value="1">Orange</entry>
       <entry value="2">Yellow</entry>
@@ -346,7 +346,7 @@
       <entry value="5">Violet</entry>
       <entry value="6">Black</entry>
       <entry value="7">Sidestepper</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="8.4" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
     <checkbox nybble="12.4" title="Unknown Flag 12" advanced="True" advancedcomment="Used in Retail: 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
@@ -411,13 +411,13 @@
 
   <!-- Possible additional Usage Mode, Value 2 in Nybble 10 -->
   <sprite id="40" name="?-Switch" sizehacks="True" notes="This is the basic stand-alone switch. When triggered, it modifies the Target Event." files="switch.arc">
-    <list nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
+    <spritetex nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Standard Question Mark (Original)</entry>
       <entry value="1">Standard Question Mark</entry>
       <entry value="2">! with Explosion (Tile God)</entry>
       <entry value="3">Two Arrows Forming a Circle (Flipper)</entry>
       <entry value="4">Up and Down Arrows (Raise + Lower)</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
     <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set."/>
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/>
@@ -439,13 +439,9 @@
   
   <sprite id="41" name="P-Switch" notes="This switch is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (tileset-based and sprite-based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block." files="switch.arc">
     <dependency notes="Activates 'Pow Block Coin' tileset tiles."/>
-	<list nybble="8" title="Style" comment="This determines which style is seen on the switch. While the P-Switch supports SpriteTex, there aren't any custom textures for it." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
+	  <spritetex nybble="8" title="Style" comment="This determines which style is seen on the switch. While the P-Switch supports SpriteTex, there aren't any custom textures for it." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Standard P Icon (Original)</entry>
-      <entry value="1">SpriteTex Slot 01</entry>
-      <entry value="2">SpriteTex Slot 02</entry>
-      <entry value="3">SpriteTex Slot 03</entry>
-      <entry value="4">SpriteTex Slot 04</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will be facing down. Upside-Down switches cannot be set to fall."/>
     <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms. It does not work with conveyor belts."/>
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Blue Coins, or transform blocks and coins." idtype="Target Event"/> <!-- This value needs expanded to support 256 Event IDs -->
@@ -468,13 +464,13 @@
 
   <sprite id="42" name="!-Switch" sizehacks="True" notes="This switch is similar to the ?-Switch, but it has the additional effect of changing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." files="switch.arc">
     <dependency notes="Activates 'Red Block Outline A/B' tiles."/>
-    <list nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
+    <spritetex nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Red (Original)</entry>
       <entry value="1">Red</entry>
       <entry value="2">Yellow</entry>
       <entry value="3">Green</entry>
       <entry value="4">Blue</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
     <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set."/>
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/>
@@ -498,11 +494,11 @@
   <!-- These notes apply to 43, 44, and 45 -->
   <!-- Make a quick test level to show general functionality of a Brick Block switch with a Triggering Event. Does it appear after being struck if the event is later turned on? Does it only appear if the event is on before the block is struck? -->
   <sprite id="43" name="Brick Block ?-Switch" sizehacks="True" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
-    <list nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch.">
+    <spritetex nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch.">
       <entry value="0">Standard Question Mark</entry>
       <entry value="1">Two Arrows Forming a Circle (Flipper)</entry>
       <entry value="2">Two Arrows Forming a Circle (Flipper)</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/>
     <dualbox nybble="9.4" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requirednybble="7.4" requiredval="0"/> <!-- Appears if Timed Event is set -->
@@ -523,11 +519,11 @@
 
   <sprite id="45" name="Brick Block !-Switch" sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
     <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
-    <list nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks.">
+    <spritetex nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks.">
       <entry value="0">Red (Original)</entry>
       <entry value="1">Green</entry>
       <entry value="2">Green</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/>
     <dualbox nybble="9.4" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requirednybble="7.4" requiredval="0"/> <!-- Appears if Timed Event is set -->
@@ -551,7 +547,7 @@
     <dependency notes="The Podoboo requires [139] Lava within 15 blocks underneath it in order to appear.">
       <required sprite="139"/> <!-- Requires Lava -->
     </dependency>
-    <list nybble="6" title="Color" comment="This determines the color of the Podoboo.">
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Podoboo.">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -561,25 +557,25 @@
       <entry value="6">Magenta</entry>
       <entry value="7">White w/ Gray Eyes</entry>
       <entry value="8">White w/ Blue Eyes</entry>
-    </list>
+    </spritetex>
     <value nybble="12" title="Delay Between Jumps" comment="This determines the delay between each of the Podoboo's jumps." comment2="Each value is approximately 1 game second. Podoboos first load in the air at the top of their jump, so a Podoboo with a large delay value may not even interact with the player as they run by."/>
   </sprite> <!-- #46: Lava Bubble (Podoboo) -->
 
   <sprite id="47" name="Thwomp" sizehacks="True" noyoshi="True" notes="A normal sized Thwomp that will try to crush the player when it is nearby or underneath. Thwomps are not capable of destroying tileset objects unless set to Crush Forever." files="dossun.arc">
     <dualbox nybble="12.3" title1="Drop and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop."/>
-    <list nybble="6" title="Style" comment="This determines the style of the Thwomp.">
+    <spritetex nybble="6" title="Style" comment="This determines the style of the Thwomp.">
       <entry value="0">Normal</entry>
       <entry value="1">Icy</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="An unknown setting for Nybble 12." advanced="True" advancedcomment="Bit 47-48 may be a list, but only value 2 has been defined. Value 3 is confirmed to CRASH the game, so do not activate this with Crush Forever. However, value 1 may provide different effects. Experimenting and testing are required."/>
   </sprite> <!-- #47: Thwomp -->
 
   <sprite id="48" name="Big Thwomp" sizehacks="True" noyoshi="True" notes="A larger Thwomp that will try to crush the player when it is nearby or underneath. Big Thwomps are capable of destroying certain types of tileset objects such as brick blocks and grey blocks." files="dossun.arc">
     <dualbox nybble="12.3" title1="Crush and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position after crushing up to one row of breakable terrain, or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop."/>
-    <list nybble="6" title="Style" comment="This determines the style of the Big Thwomp.">
+    <spritetex nybble="6" title="Style" comment="This determines the style of the Big Thwomp.">
       <entry value="0">Normal</entry>
       <entry value="1">Icy</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="An unknown setting for Nybble 12." advanced="True" advancedcomment="Bit 47-48 may be a list, but only value 2 has been defined. Value 3 is confirmed to CRASH the game, so do not activate this with Crush Forever. However, value 1 may provide different effects. Experimenting and testing are required."/>
   </sprite> <!-- #48: Big Thwomp -->
 
@@ -593,20 +589,20 @@
 
   <sprite id="57" name="Koopa Troopa" sizehacks="True" notes="Your standard Koopa Troopa. Place it in the level and it will walk towards Mario when it loads. It can either be set to walk off ledges, or turn around at ledges." files="nokonokoA.arc;wing.arc">
     <dualbox nybble="12.4" title1="Walks Off Ledges" title2="Turns Around At Ledges" comment="This determines if the Koopa Troopa will mindlessly walk off of ledges or if it will turn around when it reaches a ledge." comment2="This also changes the color of the Koopa Troopa."/>
-    <list nybble="6" title="Color" comment="This determines the color of the Koopa Troopa." requirednybble="12.4" requiredval="0">
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Koopa Troopa." requirednybble="12.4" requiredval="0">
       <entry value="0">Green</entry>
       <entry value="1">Blue</entry>
       <entry value="2">Orange</entry>
       <entry value="3">Black</entry>
       <entry value="4">Green with Blue Coat</entry>
-    </list>
-    <list nybble="6" title="Color" comment="This determines the color of the Koopa Troopa." requirednybble="12.4">
+    </spritetex>
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Koopa Troopa." requirednybble="12.4">
       <entry value="0">Red</entry>
       <entry value="1">Yellow</entry>
       <entry value="2">Violet</entry>
       <entry value="3">White</entry>
       <entry value="4">Red with Blue Coat</entry>
-    </list>
+    </spritetex>
     <list nybble="5.3-5.4" title="Load State" comment="This determines what animation state the Koopa Troopa will load as." comment2="Normal: The Koopa Troopa will be walking normally when loaded. &lt;br&gt; &lt;br&gt;Loads as Shell: The Koopa Troopa will load inside its shell and then return to normal. &lt;br&gt; &lt;br&gt;Stays in Shell: The Koopa Troopa will load inside its shell and not return to normal. However, it cannot be kicked until jumped on and will instead hurt the player.">
       <entry value="0">Normal</entry>
       <entry value="1">Loads as Shell</entry>
@@ -642,20 +638,20 @@
     <dualbox nybble="10.4" title1="Moves in specified direction (4 blocks), then turns around" title2="Moves in opposite direction immediately" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 9 Blocks, so this only sets the initial movement distance on load." requirednybble="11.3-11.4" requiredval="1"/> <!-- Only appears when Flying: Left and Right is selected -->
     <dualbox nybble="10.4" title1="Moves in specified direction (4 blocks), then turns around" title2="Moves in opposite direction immediately" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 9 Blocks, so this only sets the initial movement distance on load." requirednybble="11.3-11.4" requiredval="2"/> <!-- Only appears when Flying: Up and Down is selected -->
     <dualbox nybble="12.4" title1="Walks Off Ledges" title2="Turns Around At Ledges" comment="This determines if the Koopa Troopa, once stepped on and de-winged, will mindlessly walk off of ledges or if it will turn around when it reaches a ledge." comment2="This also changes the color of the Koopa Troopa."/>
-    <list nybble="6" title="Color" comment="This determines the color of the Koopa Paratroopa." requirednybble="12.4" requiredval="0">
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Koopa Paratroopa." requirednybble="12.4" requiredval="0">
       <entry value="0">Green</entry>
       <entry value="1">Blue</entry>
       <entry value="2">Orange</entry>
       <entry value="3">Black</entry>
       <entry value="4">Green w/Blue Coat (No Wings)</entry>
-    </list>
-    <list nybble="6" title="Color" comment="This determines the color of the Koopa Paratroopa." requirednybble="12.4">
+    </spritetex>
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Koopa Paratroopa." requirednybble="12.4">
       <entry value="0">Red</entry>
       <entry value="1">Yellow</entry>
       <entry value="2">Violet</entry>
       <entry value="3">White</entry>
       <entry value="4">Red w/Blue Coat (No Wings)</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="8.4" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Paratroopa will be able to move behind Chainlink Fences." advancedcomment="Exact values are 1500.0 unchecked, -2500.0 checked."/>
     <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="Used in Retail: 06-01 A1 as 12"/>
     <value nybble="6.1" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in Retail: 06-01 A1"/>
@@ -670,7 +666,7 @@
       <entry value="3">Placed on Right Wall</entry>
     </list>
     <dualbox nybble="12.4" title1="Walks Clockwise" title2="Walks Counter-Clockwise" comment="This determines which direction the Spike Top will walk."/>
-    <list nybble="6" title="Color" comment="This determines the color and style of the Spike Top." comment2="Value 5 will turn the Spike Top into a Lil'Sparky. Use Sizehacks if you want a Hothead.">
+    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Spike Top." comment2="Value 5 will turn the Spike Top into a Lil'Sparky. Use Sizehacks if you want a Hothead.">
       <entry value="0">Original</entry>
       <entry value="1">Bright Red</entry>
       <entry value="2">Orange</entry>
@@ -679,14 +675,14 @@
       <entry value="5">Lil'Sparky/Hothead</entry>
       <entry value="6">Violet</entry>
       <entry value="7">Black</entry>
-    </list>
+    </spritetex>
   </sprite> <!-- #60: Spike Top -->
 
   <sprite id="63" name="Spiked Ball / Snowball" sizehacks="True" notes="A loose Spiked Ball that will also destroy certain types of blocks. It can also be turned into a Snowball." files="iron_ball.arc">
-    <list nybble="6" title="Style" comment="This determines the style of the Spiked Ball.">
+    <spritetex nybble="6" title="Style" comment="This determines the style of the Spiked Ball.">
       <entry value="0">Normal</entry>
       <entry value="1">Snowball</entry>
-    </list>
+    </spritetex>
     <dualbox nybble="11.4" title1="Starts Rolling Left" title2="Starts Rolling Right" comment="This determines which direction the Spiked Ball will begin rolling in."/>
     <list nybble="12.3-12.4" title="Speed" comment="This determines how fast the Spiked Ball rolls.">
       <entry value="0">Stopped</entry>
@@ -701,7 +697,7 @@
   </sprite> <!-- #63: Spiked Ball / Snowball -->
 
   <sprite id="78" name="Bouncy Cloud" noyoshi="True" notes="A cloud platform with a happy face that the player can bounce on to jump really high. NewerSMBW adds more style options including Mushrooms and Checkered Block." files="lift_trampoline.arc">
-    <list nybble="6" title="Style" comment="This determines the color and style of the Bouncy Cloud." comment2="If you want the Angry Cloud to hurt players, you have to add an invisible tileset piece to do that for you. Sorry.">
+    <spritetex nybble="6" title="Style" comment="This determines the color and style of the Bouncy Cloud." comment2="If you want the Angry Cloud to hurt players, you have to add an invisible tileset piece to do that for you. Sorry.">
       <entry value="0">Normal</entry>
       <entry value="1">Angry</entry>
       <entry value="2">Green Mushroom</entry>
@@ -709,7 +705,7 @@
       <entry value="4">Blue Mushroom</entry>
       <entry value="5">Yellow Mushroom</entry>
       <entry value="6">Big Checkered Block</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="9.4" title="Larger Cloud" comment="When enabled, the Bouncy Cloud will be bigger."/>
   </sprite> <!-- #78: Bouncy Cloud -->
 
@@ -754,10 +750,10 @@
   <sprite id="95" name="Hammer Bro Plus" sizehacks="True" notes="A standard Brothers enemy that throws hammers (or other objects!) at the player." files="bros.arc">
     <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. With a platform limit of one, he can jump onto any passthrough terrain or brick blocks above this solid ground at a distance of 4. With a platform limit of two, he can jump between this platform and another one above it. When on the top of this platform limit, he will not try and jump upwards. He can also jump down from passthrough terrain set higher than 8 blocks above the solid ground, though he will not be able to return."/>
     <dualbox nybble="12.4" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
-    <list nybble="6" title="Color" comment="This determines the color of the Hammer Bro.">
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Hammer Bro.">
       <entry value="0">Normal</entry>
       <entry value="1">Black</entry>
-    </list>
+    </spritetex>
     <list nybble="10" title="Thrown Object" comment="This determines which object will be thrown by the Hammer Bro Plus.&lt;br&gt;For values 1-3 and 5, the corresponding sprite must be in the level. Otherwise, the Hammer Bro will crash game on load.">
       <entry value="0">Hammers</entry>
       <entry value="1">Bob-omb</entry>
@@ -769,10 +765,10 @@
   </sprite> <!-- #95: Hammer Bro Plus -->
 
   <sprite id="98" name="Giant Spiked Ball/Snowball" sizehacks="True" notes="A large loose Spiked Ball that will also destroy certain types of blocks. Can also be turned into a Snowball." files="iron_ball.arc">
-    <list nybble="6" title="Style" comment="This determines the style of the Giant Spiked Ball.">
+    <spritetex nybble="6" title="Style" comment="This determines the style of the Giant Spiked Ball.">
       <entry value="0">Normal</entry>
       <entry value="1">Snowball</entry>
-    </list>
+    </spritetex>
     <dualbox nybble="11.4" title1="Starts Rolling Left" title2="Starts Rolling Right" comment="This determines which direction the Spiked Ball will begin rolling in."/>
     <list nybble="12.3-12.4" title="Speed" comment="This determines how fast the Spiked Ball rolls.">
       <entry value="0">Stopped</entry>
@@ -787,7 +783,7 @@
 
   <sprite id="99" name="Pipe Enemy Spawner" notes="The spawner must be placed on layer 1 tiles set to the core type 'Pipe'." files="kuribo.arc;bombhei.arc">
     <dualbox nybble="11.4" title1="Spawns Goombas" title2="Spawns Bob-Ombs"/>
-    <list nybble="6" title="Color" requirednybble="11.4" requiredval="0">
+    <spritetex nybble="6" title="Color" requirednybble="11.4" requiredval="0">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
       <entry value="2">"Hyper" (Normal color)</entry>
@@ -797,8 +793,8 @@
       <entry value="6">Gray</entry>
       <entry value="7">Santa</entry>
       <entry value="8">Gray Santa</entry>
-    </list> <!-- Appears when Spawns Goombas is set -->
-    <list nybble="6" title="Color" requirednybble="11.4">
+    </spritetex> <!-- Appears when Spawns Goombas is set -->
+    <spritetex nybble="6" title="Color" requirednybble="11.4">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -808,7 +804,7 @@
       <entry value="6">Violet</entry>
       <entry value="7">White</entry>
       <entry value="8">Pink</entry>
-    </list> <!-- Appears when Spawns Bob-Ombs is set -->
+    </spritetex> <!-- Appears when Spawns Bob-Ombs is set -->
     <list nybble="12" title="Exit Direction">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
@@ -822,7 +818,7 @@
   </sprite> <!-- #99: Pipe Enemy Spawner -->
 
   <sprite id="101" name="Bob-Omb" sizehacks="True" notes="A standard Bob-Omb enemy. It will spawn walking towards the player and will fall off of ledges. When stepped on or struck with a fireball, it will eventually explode damaging certain types of blocks, terrain, and enemies." files="bombhei.arc">
-    <list nybble="6" title="Color" comment="This determines the color of the Bob-Omb.">
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Bob-Omb.">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -832,7 +828,7 @@
       <entry value="6">Violet</entry>
       <entry value="7">White</entry>
       <entry value="8">Pink</entry>
-    </list>
+    </spritetex>
     <list nybble="5" title="Load-In Animation" comment="This determines what animation state is used by the Bob-Omb when it is first loaded. This is used by the sprite indicated, so refer to them for more information." comment2="Frozen in Ice (Minus Ice): The Bob-Omb is static and lacks collision.&lt;br&gt;Pipe Spawn: The spawn-in animation is in front of Layer 1.">
       <entry value="0">Normal</entry>
       <entry value="1">Pipe Spawn [99]</entry>
@@ -864,13 +860,13 @@
       <entry value="6">8 Pieces</entry>
       <entry value="7">9 Pieces</entry>
     </list>
-    <list nybble="6" title="Style" comment="This determines the color and style of the Pokey.">
+    <spritetex nybble="6" title="Style" comment="This determines the color and style of the Pokey.">
       <entry value="0">Original</entry>
       <entry value="1">Pumpkin</entry>
       <entry value="2">Snowman</entry>
       <entry value="3">Jungle</entry>
       <entry value="4">Lava</entry>
-    </list>
+    </spritetex>
   </sprite> <!-- #105: Pokey -->
 
   <sprite id="107" name="Message Box Controller" notes="This controller is required for all Message Boxes to function correctly. It must be placed in every Zone that uses a Message Box." files="test_lift.arc">
@@ -892,11 +888,11 @@
       <suggested sprite="216"/>
       <suggested sprite="285"/>
     </dependency>
-    <list nybble="6" title="Style" comment="This determines the style of the Floating Barrel.">
+    <spritetex nybble="6" title="Style" comment="This determines the style of the Floating Barrel.">
       <entry value="0">Wooden</entry>
       <entry value="1">Metal</entry>
       <entry value="2">Oil Drum</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="5.1" title="Initially Submerged" comment="When enabled, the floating barrel will load partially submerged."/>
   </sprite> <!-- #145: Floating Barrel -->
 
@@ -911,13 +907,13 @@
     <dependency notes="The game will crash unless a normal ?-Switch is placed somewhere in the level, or set in the Loaded Sprites list. It does not have to be within an area that is actually used.">
       <required sprite="40"/>
     </dependency>
-    <list nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
+    <spritetex nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Standard Question Mark (Original)</entry>
       <entry value="1">Standard Question Mark</entry>
       <entry value="2">! with Explosion (Tile God)</entry>
       <entry value="3">Two Arrows Forming a Circle (Flipper)</entry>
       <entry value="4">Up and Down Arrows (Raise + Lower)</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
     <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set." requirednybble="12.4" requiredval="0"/> <!-- Disappears if Upside-Down is enabled -->
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/>
@@ -1096,7 +1092,7 @@
       <entry value="7">Star</entry>
       <entry value="11">1-Up</entry>
     </list>
-    <checkbox nybble="5.4" title="Unknown Flag 5 (1)" comment="Used in Retail: 06-05 A2. Possibly distance related."/>
+    <checkbox nybble="5.4" title="Does Not Despawn" comment="When enabled, the hit block will not despawn when off-screen. Used in retail 06-05 A2."/>
   </sprite> <!-- #175: Flying ? Block -->
 
   <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" notes="" files="pukupuku.arc">
@@ -1118,7 +1114,7 @@
   </sprite> <!-- #183: Meteor -->
 
   <sprite id="188" name="Midway Flag" notes="A flag that when touched by the player will mark their progress in the level and respawn them at this location when re-entering the level." files="middle_flag.arc">
-    <list nybble="5-6" title="Logo">
+    <spritetex nybble="5-6" title="Logo">
       <entry value="0">Newer Logo</entry>
       <entry value="1">Yoshi's Island</entry>
       <entry value="2">Goldwood</entry>
@@ -1138,7 +1134,7 @@
       <entry value="16">Koopa Planet</entry>
       <entry value="17">Koopa Core</entry>
       <entry value="18">Newer Logo at a 30° angle</entry>
-    </list>
+    </spritetex>
     <value nybble="7-8" title="Entrance ID" comment="This determines which Entrance the level will load the player into when they respawn." idtype="Entrance"/>
     <dualbox nybble="11.4" title1="Load Facing Right" title2="Load Facing Left" comment="This determines which direction the players will face when they respawn."/>
     <dualbox nybble="12.4" title1="1st Checkpoint" title2="2nd Checkpoint" comment="Once activated, the 1st checkpoint can not be deactivated by the 2nd checkpoint, and vise-versa."/>
@@ -1181,10 +1177,10 @@
   </sprite> <!-- #191: Tile God Event -->
 
   <sprite id="195" name="Huckit Crab" sizehacks="True" notes="A crab enemy that will throw projectiles at the player while occasionally jumping in the air." files="kanibo.arc">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Huckit Crab.">
+    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Huckit Crab.">
       <entry value="0">Normal</entry>
       <entry value="1">White (Snowballs)</entry>
-    </list>
+    </spritetex>
     <list nybble="12" title="Shooting Speed" comment="This determines the speed of the projectile that the Huckit Crab will huck." comment2="Many values are excluded due to abnormal or glitchy behavior.">
       <entry value="6">Very Very Slow</entry>
       <entry value="0">Normal</entry>
@@ -1211,7 +1207,7 @@
   </sprite> <!-- #195: Huckit Crab -->
 
   <sprite id="198" name="Giant Goomba" notes="A larger version of the Goomba that splits into two regular Goombas when stepped on." files="kuribo.arc;kuriboBig.arc">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Giant Goomba." comment2="The smaller Goombas spawned correspond to it's recolor of the same value. This means that all smaller Goombas are the same color, except for Green, which is the normal brown at the smallest size.">
+    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Giant Goomba." comment2="The smaller Goombas spawned correspond to it's recolor of the same value. This means that all smaller Goombas are the same color, except for Green, which is the normal brown at the smallest size.">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
       <entry value="2">Green</entry>
@@ -1219,11 +1215,11 @@
       <entry value="4">Red</entry>
       <entry value="5">Blue</entry>
       <entry value="6">Gray</entry>
-    </list>
+    </spritetex>
   </sprite> <!-- #198: Giant Goomba -->
 
   <sprite id="199" name="Mega Goomba" notes="An even larger version of the Goomba that splits into two Giant Goombas when stepped on." files="kuribo.arc;kuriboBig.arc">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Mega Goomba." comment2="The smaller Goombas spawned correspond to it's recolor of the same value. This means that all smaller Goombas are the same color, except for Green, which is the normal Brown at the smallest size.">
+    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Mega Goomba." comment2="The smaller Goombas spawned correspond to it's recolor of the same value. This means that all smaller Goombas are the same color, except for Green, which is the normal Brown at the smallest size.">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
       <entry value="2">Green</entry>
@@ -1231,7 +1227,7 @@
       <entry value="4">Red</entry>
       <entry value="5">Blue</entry>
       <entry value="6">Gray</entry>
-    </list>
+    </spritetex>
   </sprite> <!-- #199: Mega Goomba -->
 
   <sprite id="203" name="Chest" noyoshi="True" notes="A chest that will award some type of inventory item to the player. Note that opening a chest will complete the level with the standard exit." files="treasure_box.arc">
@@ -1295,7 +1291,7 @@
       <entry value="4">Mini Mushroom</entry>
       <entry value="5">Star</entry>
     </list>
-    <list nybble="6" title="Item 7" comment2="[Bug] Item 6 is misplaced and appears partially inside the chest." requirednybble="8.2-8.4" requiredval="7">
+    <list nybble="6" title="Item 7" comment2="[Bug] Item 7 is misplaced and appears partially inside the chest." requirednybble="8.2-8.4" requiredval="7">
       <entry value="0">Mushroom</entry>
       <entry value="1">Fire Flower</entry>
       <entry value="3">Ice Flower</entry>
@@ -1484,7 +1480,7 @@
       <entry value="7">20 Blocks (Volcano)</entry>
     </list>
     <value nybble="9-10" title="Custom Size" comment="This determines the size of the Rolling Hill when using Flexible Size" requirednybble="7.2-7.4" requiredval="0"/>
-    <list nybble="9-10" title="Custom Style A" comment="This determines the tiling used on the Rolling Hill." comment2="If nothing is selected, your game will crash. Please choose a value from the list or change [Style /Size]." requirednybble="7.2-7.4" requiredval="1-3"> <!-- Appears only if [Style / Size] is Value 1-3 -->
+    <spritetex nybble="9-10" title="Custom Style A" comment="This determines the tiling used on the Rolling Hill." comment2="If nothing is selected, your game will crash. Please choose a value from the list or change [Style /Size]." requirednybble="7.2-7.4" requiredval="1-3"> <!-- Appears only if [Style / Size] is Value 1-3 -->
       <entry value="0">Nohara (Original Grassland)</entry>
       <entry value="1">New Nohara (Bombard Cliffs)</entry>
       <entry value="2">Graveyard</entry>
@@ -1494,12 +1490,12 @@
       <entry value="6">Desert</entry>
       <entry value="7">Japan Land</entry>
       <entry value="8">Star Road (Sky City)</entry>
-    </list>
-    <list nybble="9-10" title="Custom Style B" comment="This determines the tiling used on the Rolling Hill." comment2="If nothing is selected, your game will crash. Please choose a value from the list or change [Style /Size]." requirednybble="7.2-7.4" requiredval="5-7"> <!-- Appears only if [Style / Size] is Value 5-7 -->
+    </spritetex>
+    <spritetex nybble="9-10" title="Custom Style B" comment="This determines the tiling used on the Rolling Hill." comment2="If nothing is selected, your game will crash. Please choose a value from the list or change [Style /Size]." requirednybble="7.2-7.4" requiredval="5-7"> <!-- Appears only if [Style / Size] is Value 5-7 -->
       <entry value="0">Volcano</entry>
       <entry value="1">Snow Rocks</entry>
       <entry value="2">Freeze Flame</entry>
-    </list>
+    </spritetex>
     <value nybble="9-10" title="Set me to 0 or the game will CRASH" comment="[64 Blocks (Underground)] is not compatible with Custom Size/Style and will cause your game to crash if this is not set to 0." requirednybble="7.2-7.4" requiredval="4"/> <!-- Appears only if [Style / Size] is Value 4 -->
     <value nybble="11" title="Speed" comment="This determines the rotation speed of the Rolling Hill. A value of 5 matches Mario's running speed, so use of higher values isn't recommended."/>
     <dualbox nybble="12.4" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the Rolling Hill rolls."/>
@@ -1518,7 +1514,7 @@
     <dependency notes="This platform can be paired with [312] Stretching Line Block Controller in order to synchronize movement across multiple platforms.">
       <suggested sprite="312"/>
     </dependency>
-    <list nybble="6" title="Color" comment="This determines the color and style of the Stretching Line Block.">
+    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Stretching Line Block.">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -1528,7 +1524,7 @@
       <entry value="6">Violet</entry>
       <entry value="7">Black</entry>
       <entry value="8">Gray</entry>
-    </list>
+    </spritetex>
     <value nybble="11" title="Width - Top" comment="This determines the width of the platform when it is in its top position."/>
     <value nybble="12" title="Width - Bottom" comment="This determines the width of the platform when it is in its bottom position."/>
     <dualbox nybble="9.4" title1="Moves Up First" title2="Moves Down First" comment="This determines the initial direction the platform will move."/>
@@ -1584,18 +1580,18 @@
   </sprite> <!-- #221: Invisible Block -->
 
   <sprite id="223" name="Checkered Spring Block" notes="A block with a spring-like effect that allows the player to jump on it and bounce off of it in order to jump higher." files="obj_block.arc;block_jump.arc">
-    <list nybble="6" title="Color" comment="This determines the color and style of the Spring Block." requirednybble="12.4" requiredval="0">
+    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Spring Block." requirednybble="12.4" requiredval="0">
       <entry value="0">Green Checkers</entry>
       <entry value="1">♪</entry>
       <entry value="2">Red Checkers</entry>
       <entry value="3">Blue Diamonds</entry>
-    </list>
-    <list nybble="6" title="Alternate Color" comment="This determines the color and style of the Spring Block when the Alternate Color Pattern is enabled." requirednybble="12.4">
+    </spritetex>
+    <spritetex nybble="6" title="Alternate Color" comment="This determines the color and style of the Spring Block when the Alternate Color Pattern is enabled." requirednybble="12.4">
       <entry value="0">Green Inverted Checkers</entry>
       <entry value="1">♫</entry>
       <entry value="2">Red Inverted Checkers</entry>
       <entry value="3">Light Blue Dots</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12.4" title="Alternate Color Pattern" comment="When enabled, it will use the alternate color." comment2="Using an Inverted Checkers variant allows you to string together a line of Spring Blocks and have them look nice."/>
   </sprite> <!-- #223: Checkered Spring Block -->
 
@@ -1605,7 +1601,7 @@
       <suggested sprite="162"/>
       <suggested sprite="163"/>
     </dependency>
-    <list nybble="6" title="Color" comment="This determines the color of the Jumbo Rays.">
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Jumbo Rays.">
       <entry value="0">Normal</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -1616,7 +1612,7 @@
       <entry value="7">Purple</entry>
       <entry value="8">Black</entry>
       <entry value="9">Gray</entry>
-    </list>
+    </spritetex>
     <value nybble="8-9" title="Initial Delay?" comment="Definitely not measured in Mario seconds."/>
     <dualbox nybble="10.4" title1="Flies Left to Right" title2="Flies Right to Left" comment="This determines the direction the Jumbo Ray will travel across the screen."/>
     <value nybble="11" title="Altitude (Flight Route)" comment="This determines how high the Jumbo Ray will fly up from the bottom of the screen." comment2="More research is required on the exact details of each number, but Retail levels use 1 and 2 with 2 being higher, while Newer also uses 0 which also seems to be fairly high."/>
@@ -1625,13 +1621,13 @@
 
   <sprite id="230" name="Bramball" noyoshi="True" notes="A long-legged enemy with a ball for a body that will flip itself around as it traverses terrain with proper spacing. Rumor has it that if it is struck from below with a Pipe Cannon, a large amount of coins will appear. Kaching!" files="ibaramushi.arc">
     <dependency notes="A Bramball must have solid terrain exactly 4 tiles and no more than a 1 tile change in elevation to move."/>
-    <list nybble="6" title="Style" comment="This determines the color and style of the Bramball.">
+    <spritetex nybble="6" title="Style" comment="This determines the color and style of the Bramball.">
       <entry value="0">Original</entry>
       <entry value="1">Pumpkin</entry>
       <entry value="2">Snowman</entry>
       <entry value="3">Jungle</entry>
       <entry value="4">Lava</entry>
-    </list>
+    </spritetex>
     <dualbox nybble="11.4" title1="Slow Movement" title2="Fast Movement" comment="This determines how quickly the Bramball will traverse platforms."/>
     <list nybble="12.3-12.4" title="Initial Direction" comment="This determines which direction the Bramball will attempt to move first.">
       <entry value="0">Towards Player</entry>
@@ -1644,17 +1640,17 @@
     <dependency notes="Wiggling Mushroom Platforms may be paired with [313] Wiggling Mushroom Controller to enable synchronized movement across a Zone.">
       <suggested sprite="313"/>
     </dependency>
-	<dualbox nybble="7.3" title1="Doesn't Extend" title2="Extends" comment="This determines whether or not the platform extends and contracts."/>
+	  <dualbox nybble="7.3" title1="Doesn't Extend" title2="Extends" comment="This determines whether or not the platform extends and contracts."/>
     <value nybble="5" title="Wiggling Mushroom ID" comment="This pairs the platform to a matching Wiggling Mushroom Controller for synchronized movement. If an ID is set, that ID will control and override all matching Wiggle Speeds." idtype="Wiggling"/>
     <value nybble="11-12" title="Wiggle Speed" requirednybble="5" requiredval="0"/>
     <value nybble="10.2-10.4" title="Tilt Distance" comment="This determines how much the platform will tilt. A value of 1 or 2 is recommended."/>
-    <list nybble="6" title="Color" comment="This determines the color of the Mushroom Platform.">
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Mushroom Platform.">
       <entry value="0">Metal Pink</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
       <entry value="4">Green</entry>
       <entry value="5">Blue</entry>
-    </list>
+    </spritetex>
     <list nybble="9" title="Width of Platform">
       <entry value="0">3 Blocks</entry>
       <entry value="1">4 Blocks</entry>
@@ -1827,8 +1823,8 @@
 
   <sprite id="250" name="Electric Line" notes="A tall electrified wall that will electrocute any player that touches it.">
     <dependency notes="The Boss Controller for Bowser Jr's 2nd Fight must be included in the level to load the line.">
-       <required sprite="405"/> <!-- Bowser Jr. 2nd Fight -->
-      </dependency>
+      <required sprite="405"/> <!-- Bowser Jr. 2nd Fight -->
+    </dependency>
     <dualbox nybble="11.4" title1="Always On" title2="Looping" comment="This determines if the Electric Line is always on or if it cycles between on and off."/>
     <value nybble="7-8" title="Delay between Loops" comment="This determines the time the Electric Line will stay on and off during its power looping." comment2="Delay in 1/6ths of a second." requirednybble="11.4"/> <!-- Appears if Looping -->
     <dualbox nybble="12.4" title1="Faces Right" title2="Faces Left"/>
@@ -1840,7 +1836,7 @@
       <required sprite="427"/> <!-- Kamek -->
       <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
-  <checkbox nybble="12.4" title="Low Gravity" comment="When enabled, the Topman will fall much more slowly."/>
+    <checkbox nybble="12.4" title="Low Gravity" comment="When enabled, the Topman will fall much more slowly."/>
   </sprite> <!-- #251: World-7 Boss: Super Topman -->
 
   <sprite id="255" name="Rotation Controlled ? Block" notes="A ?-Block that can either be moved by rotation controllers or manually angled.">
@@ -1935,7 +1931,7 @@
 
   <sprite id="269" name="Parachute Bob-Omb" sizehacks="True" notes="A parachuting Bob-Omb enemy that will turn into a standard Bob-Omb after it lands." files="bombhei.arc">
     <dependency notes="The Y-position of the Bob-Omb has no effect. It will always appear directly above the top edge of the screen."/>
-    <list nybble="6" title="Color" comment="This determines the color of the Bob-Omb.">
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Bob-Omb.">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -1945,7 +1941,7 @@
       <entry value="6">Violet</entry>
       <entry value="7">White</entry>
       <entry value="8">Pink</entry>
-    </list>
+    </spritetex>
   </sprite> <!-- #269: Parachute Bob-Omb -->
 
   <!-- Conflicting information on sprite settings with newer spritedata, needs further research. -->
@@ -1966,8 +1962,8 @@
   <sprite id="279" name="World-3 Boss: Balboa Wrench" noyoshi="True" notes="The giant Rocky Wrench boss used by NewerSMBW. He must be Ground-Pounded 3 times to be defeated. ">
     <dependency notes="A Rocky Wrench, a NSMBDS Stone Block, Kamek and his controller should be included in the level.">
       <required sprite="352"/> <!-- Rocky Wrench -->
-      <required sprite="27"/> <!-- lift_zen.arc from grey block -->
-	  <required sprite="427"/> <!-- Kamek -->
+      <required sprite="27"/>  <!-- lift_zen.arc from grey block -->
+	    <required sprite="427"/> <!-- Kamek -->
       <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
     <dualbox nybble="5.4" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
@@ -1995,10 +1991,10 @@
       <entry value="1">6 Blocks Wide</entry>
       <entry value="2">8 Blocks Wide</entry>
     </list>
-    <list nybble="6" title="Color" comment="This determines the color and style of the wheel." advancedcomment="More colors and styles can be added for your hack.">
+    <spritetex nybble="6" title="Color" comment="This determines the color and style of the wheel.">
       <entry value="0">Normal</entry>
       <entry value="1">Grey</entry>
-    </list>
+    </spritetex>
     <dualbox nybble="11.4" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines the direction the wheel will rotate in."/>
     <value nybble="10" title="Speed" comment="This determines the speed of the wheel's rotation. A speed of 0 still moves, just very slowly."/>
   </sprite> <!-- #286: Rotating Wooden Airship Wheel -->
@@ -2054,7 +2050,7 @@
   <!-- Test 9 separate between normal and heavy. Remember to test between True Left, True Right, and Faces Player for spawning. Also test the range of Speed. Is the maximum 3, 7, or 15? -->
   <!-- Options still need 'sorted' after ensuring what each one does -->
   <sprite id="291" name="Para-Beetle" sizehacks="True" notes="A small flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below." files="met_pata.arc">
-    <list nybble="6" title="Color">
+    <spritetex nybble="6" title="Color">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -2066,7 +2062,7 @@
       <entry value="8">Black</entry>
       <entry value="9">White</entry>
       <entry value="10">Pink</entry>
-    </list>
+    </spritetex>
     <list nybble="9" title="Initial Movement">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
@@ -2087,7 +2083,7 @@
   </sprite> <!-- #291: Para-Beetle -->
 
   <sprite id="292" name="Heavy Para-Beetle" notes="A large flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below." files="met_pataBig.arc">
-    <list nybble="6" title="Color">
+    <spritetex nybble="6" title="Color">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -2099,7 +2095,7 @@
       <entry value="8">Black</entry>
       <entry value="9">White</entry>
       <entry value="10">Pink</entry>
-    </list>
+    </spritetex>
     <list nybble="9" title="Initial Movement">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
@@ -2120,7 +2116,7 @@
   </sprite> <!-- #292: Heavy Para-Beetle -->
 
   <sprite id="296" name="Giant Buzzy Beetle" notes="A very large Buzzy Beetle that isn't especially pretty, but will carry the player around on its back. It can still hurt the player from the side.&lt;br&gt;Giant Buzzys don't fall down if placed in the air. They will follow the ground and slopes if snapped to the ground. Finally, they will move in a straight line if they reach a 90° drop." files="met.arc">
-    <list nybble="6" title="Style" comment="This determines the style of the Giant Buzzy Beetle. More colors and styles can be added for your hack.">
+    <spritetex nybble="6" title="Style" comment="This determines the style of the Giant Buzzy Beetle.">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -2131,7 +2127,7 @@
       <entry value="7">Black</entry>
       <entry value="8">Giant Shy Guy</entry>
       <entry value="9">Giant Monty Mole</entry>
-    </list>
+    </spritetex>
     <value nybble="11" title="Speed" comment="When the speed is 0, the Beetle won't move. Very high values may make the Beetle not spawn."/>
     <list nybble="12" title="Facing" comment="This also indicates the starting direction of the Beetle. Value 2+ starts walking left, but sometimes has difficulty turning at walls and ledges.">
       <entry value="0">Right</entry>
@@ -2151,11 +2147,11 @@
       <entry value="6">Skull + 6 Platforms</entry>
       <entry value="7">Skull + 7 Platforms</entry>
     </list>
-    <list nybble="6" title="Color" comment="This determines the color of the Spine Coaster. The current colors both either show no difference, or crash the game.">
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Spine Coaster. The current colors both show no difference in-game.">
       <entry value="0">Original</entry>
       <entry value="1">Light Blue (No difference)</entry>
-      <entry value="2">Black (Crashes)</entry>
-    </list>
+      <entry value="2">Black (No difference)</entry>
+    </spritetex>
     <value nybble="10" title="Speed" comment="This determines how quickly the Spine Coaster will travel along the Lines."/>
     <checkbox nybble="11.4" title="Touch Activated" comment="When enabled, this platform will activate when all players are touching the Spine Coaster." comment2="When not enabled, this platform will only activate when a platform with the same Coaster ID is activated through Touch Activation."/>
     <value nybble="5" title="Coaster ID" comment="This will pair multiple Spine Coasters together so that when one of them starts, they all start at the same time." comment2="Do not pair more than one Spine Coaster with [Touch Activated] enabled!" idtype="Coaster"/>
@@ -2176,21 +2172,21 @@
   </sprite> <!-- #302: Loose Balboa Throwing Wrench -->
 
   <sprite id="303" name="Monty Mole" notes="An energetic mole enemy that will pop out of the terrain after loading on screen and proceed to move quickly after the player. A Monty Hole is left behind after the mole jumps out." files="choropoo.arc">
-    <list nybble="6" title="Color" comment="This determines the color of the Monty Mole.">
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Monty Mole.">
       <entry value="0">Original</entry>
       <entry value="1">Dark Brown</entry>
       <entry value="2">Black</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12.4" title="Loose Monty Mole" comment="When enabled, the Monty Mole will already be out of the wall running around, and does not leave behind a Monty Hole."/>
   </sprite> <!-- #303: Monty Mole -->
 
   <!-- Do we know what makes this one special compared to #95? -->
   <sprite id="308" name="Platform Hammer Bro" sizehacks="True" notes="'En_Lift_HammerBros' - Likely allows it to be used on places where he shouldn't jump off." files="bros.arc">
     <dualbox nybble="12.4" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
-    <list nybble="6" title="Color" comment="This determines the color of the Hammer Bro.">
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Hammer Bro.">
       <entry value="0">Normal</entry>
       <entry value="1">Black</entry>
-    </list>
+    </spritetex>
     <list nybble="10" title="Thrown Object" comment="This determines which object will be thrown by the Hammer Bro Plus.&lt;br&gt;For values 1-3 and 5, the corresponding sprite must be in the level. Otherwise, the Hammer Bro will crash game on load.">
       <entry value="0">Hammers</entry>
       <entry value="1">Bob-omb</entry>
@@ -2210,14 +2206,14 @@
     <dependency notes="The Mega Icicle has several options that function specifically with the Snake Block.">
       <suggested sprite="166"/>
     </dependency>
-    <list nybble="7" title="Style" comment="This sets the style of the Mega Icicle.">
+    <spritetex nybble="7" title="Style" comment="This sets the style of the Mega Icicle.">
       <entry value="0">Icicle (Original)</entry>
       <entry value="1">Crystal</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="5.4" title="Don't Fall" comment="When enabled, the Icicle will not fall."/>
     <checkbox nybble="8.2" title="Use 'Forming' Animation" comment="When enabled, the Icicle will start small when it loads in and grow to its final size."/>
     <value nybble="10" title="(Snake Block?) Fall Delay" comment="It's unsure what exactly this does; in retail, 13 is used." requirednybble="5.4" requiredval="0"/> <!-- Disappears if Don't Fall is set -->
-    *<list nybble="12" title="Tilt after Falling" comment="When enabled, the Icicle will tilt to the right (?) after it falls." requirednybble="5.4" requiredval="0">
+    <list nybble="12" title="Tilt after Falling" comment="When enabled, the Icicle will tilt to the right (?) after it falls." requirednybble="5.4" requiredval="0">
       <entry value="0">No (Straight)</entry>
       <entry value="1">Yes (Tilts Right? Towards Player/Source?)</entry>
     </list> <!-- Disappears if Don't Fall is set -->
@@ -2235,7 +2231,10 @@
 
   <!-- Research "Nybble 4" -->
   <sprite id="320" name="Falling Chestnut" notes="A hanging chestnut that can quickly falls upon the player's approach with various potential effects. They can also be triggered from a POW block.&lt;br&gt;Please note that these chestnuts can be frozen by ice flowers, regardless of their size. If they're then broken, they will ignore their selected contained object and only release a coin." files="chestnut.arc">
-    <dualbox nybble="12.4" title1="Brown" title2="Golden" comment="This determines the color of the Chestnut."/>
+    <spritetex nybble="12" title="Color" comment="This determines the color of the Chestnut.">
+      <entry value="0">Brown</entry>
+      <entry value="1">Golden</entry>
+    </spritetex>
     <list nybble="11" title="Size" comment="This determines the size of the Chestnut. Large values will very likely look ugly alongside other level content.">
       <entry value="0">1 Block</entry>
       <entry value="1">2 Blocks</entry>
@@ -2273,7 +2272,7 @@
 
   <sprite id="321" name="Custom Model Loader Resources (block_arrow.arc)" notes="This stores some of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen." files="block_arrow.arc">
     <dependency notes="If using option 7-16 of the Custom Model Loader (11), you'll need one of these placed somewhere in the level. It does not have to be within a Zone or in the same Area.">
-       <suggested sprite="11"/>
+      <suggested sprite="11"/>
     </dependency>
   </sprite> <!-- #321: Custom Model Loader Resources (block_arrow.arc) -->
 
@@ -2290,42 +2289,44 @@
   <sprite id="324" name="World-5 Boss: Podouble" notes="A pair of large Podoboo bosses used in NewerSMBW. It can only be defeated by using fire or ice attacks against the correct half, and spawns a Yoshi for each player to assist them.">
     <dependency notes="A Podoboo, Kamek and his controller must be included in the level. Yoshis are spawned by the boss at 16 blocks in from the left side of the zone.">
       <required sprite="46"/> <!-- Lava Bubble -->
-	  <required sprite="427"/> <!-- Kamek -->
+	    <required sprite="427"/> <!-- Kamek -->
       <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
     <dualbox nybble="5.4" title1="Ice Podouble" title2="Fire Podouble" comment="This determines which half of the Podouble duo the sprite is." comment2="Fire will always face right, and Ice will always face left."/>
     <value nybble="11-12" title="Falling Offset" comment="This determines the bottom of the Podouble's jump relative to the sprite's placement, calculated in half-blocks."/>
   </sprite> <!-- #324: World-5 Boss: Podouble -->
 
-  <!-- Add a page within the level editor where the full list of effects and sounds can be referenced. Additionally, clean up the list so it's not littered with German. :P -->
   <sprite id="332" name="Sound/Graphic Effects Spawner" phonebook="Effects" notes="Enables event-driven spawning of Sound Effects and Graphic Effects.&lt;br&gt;&lt;u&gt;Limitations&lt;/u&gt;&lt;br&gt; 1) Do not use 1000 or more sounds/effects per area.&lt;br&gt; 2) A single Event ID can only trigger one sound/effect per area&lt;br&gt; 3) Only a specific number of sounds/effects can be active at the same time&lt;br&gt; 4) Only two BRSTMs can be active at the same time." advancednotes="If spawning a Sound Effect, the placement of the sprite is crucial, as the sound is emitted from that position. If the player is ~3 screens away from the sprite, then they won't hear it anymore. Placing multiple sprites with the same settings at different locations is possible.">
-      <value nybble="5-6" title="Triggering Event ID" comment="When this Event ID is activated, the associated sound or affect will be played." idtype="Triggering Event"/>
-      <external type="sfx" nybble="10-12" title="Sfx ID" comment="Use this external window to select your Sound Effect." requirednybble="8.4" requiredval="0"/>
-      <external type="gfx" nybble="10-12" title="Gfx ID" comment="Use this external window to select your Graphic Effect." requirednybble="8.4" requiredval="1"/>
-      <dualbox nybble="8.4" title1="Sound Effect" title2="Graphical Effect*" comment="This determines if you are spawning a sound effect or a graphical effect. The list of graphical effects is limited to the entries used by Newer. The volume of the sound effect is relative to the distance of the placement of the spawner."/>
-      <list nybble="7" title="Effect Scale" requirednybble="8.4">
-          <entry value="1">x0.25 (25%)</entry>
-          <entry value="2">x0.5 (50%)</entry>
-          <entry value="3">x0.75 (75%)</entry>
-          <entry value="0">x1.0 (100%)</entry>
-          <entry value="5">x1.25</entry>
-          <entry value="6">x1.5</entry>
-          <entry value="7">x1.75</entry>
-          <entry value="8">x2.0 (200%)</entry>
-          <entry value="9">x2.25</entry>
-          <entry value="10">x2.5</entry>
-          <entry value="11">x2.75</entry>
-          <entry value="12">x3.0 (300%)</entry>
-          <entry value="13">x3.25</entry>
-          <entry value="14">x3.5</entry>
-          <entry value="15">x3.75</entry>
-      </list>
-      <value nybble="9" title="Loop Delay" comment="This determines the number of seconds between activations of the sound or graphic effect." comment2="The effect will only activate once if the delay is left at 0."/>
+    <value nybble="5-6" title="Triggering Event ID" comment="When this Event ID is activated, the associated sound or affect will be played." idtype="Triggering Event"/>
+    <external type="sfx" nybble="10-12" title="Sfx ID" comment="Use this external window to select your Sound Effect." requirednybble="8.4" requiredval="0"/>
+    <external type="gfx" nybble="10-12" title="Gfx ID" comment="Use this external window to select your Graphic Effect." requirednybble="8.4" requiredval="1"/>
+    <dualbox nybble="8.4" title1="Sound Effect" title2="Graphical Effect*" comment="This determines if you are spawning a sound effect or a graphical effect. The list of graphical effects is limited to the entries used by Newer. The volume of the sound effect is relative to the distance of the placement of the spawner."/>
+    <list nybble="7" title="Effect Scale" requirednybble="8.4">
+      <entry value="1">x0.25 (25%)</entry>
+      <entry value="2">x0.5 (50%)</entry>
+      <entry value="3">x0.75 (75%)</entry>
+      <entry value="0">x1.0 (100%)</entry>
+      <entry value="5">x1.25</entry>
+      <entry value="6">x1.5</entry>
+      <entry value="7">x1.75</entry>
+      <entry value="8">x2.0 (200%)</entry>
+      <entry value="9">x2.25</entry>
+      <entry value="10">x2.5</entry>
+      <entry value="11">x2.75</entry>
+      <entry value="12">x3.0 (300%)</entry>
+      <entry value="13">x3.25</entry>
+      <entry value="14">x3.5</entry>
+      <entry value="15">x3.75</entry>
+    </list>
+    <value nybble="9" title="Loop Delay" comment="This determines the number of seconds between activations of the sound or graphic effect." comment2="The effect will only activate once if the delay is left at 0."/>
   </sprite> <!-- #332: Effect/Sound Spawner -->
 
   <sprite id="341" name="Giant Koopa Shell Cave" notes="A decorative large shell that can be used as a cave with the right arrangement of invisible blocks and settings." files="big_shell.arc">
     <dependency notes="Look in Retail 5-01 A1 for an example of how to use this sprite correctly. You will need to make use of Spotlight Lighting, Layer 0 tiles, and invisible collision blocks in order for it to look correct."/>
-    <dualbox nybble="6.4" title1="Green" title2="Red" comment="This determines the color of the Shell Cave."/>
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Shell Cave.">
+      <entry value="0">Green</entry>
+      <entry value="1">Red</entry>
+    </spritetex>
     <checkbox nybble="12.4" title="Remove Grass/Rocks" comment="When enabled, this will remove the decoration from the bottom of the Shell Cave."/>
   </sprite> <!-- #341: Giant Turtle Shell Cave -->
 
@@ -2357,8 +2358,8 @@
 	    <entry value="9">Walker (Incomplete)</entry> <!-- 11-15 act like 9 -->
       <entry value="10">Pacer (Incomplete)</entry>
     </list>
-	<checkbox nybble="9" title="Starts Walking Right" requirednybble="5" requiredval="0-1"/>
-	<checkbox nybble="9" title="Starts Walking Right" requirednybble="5" requiredval="9-15"/> <!-- Any non-zero value -->
+	  <checkbox nybble="9" title="Starts Walking Right" requirednybble="5" requiredval="0-1"/>
+	  <checkbox nybble="9" title="Starts Walking Right" requirednybble="5" requiredval="9-15"/> <!-- Any non-zero value -->
     <value nybble="9" title="Distance" comment="It takes ballooners 20 seconds (1200 frames) before they return to their starting position." requirednybble="5" requiredval="6-8"/>
   </sprite> <!-- #351: Shy Guy -->
 
@@ -2392,7 +2393,7 @@
   <!-- Color conflicts in recent sprite data, needs rechecked with screenshot. Also check color changes with Size setting. -->
   <sprite id="387" name="Bush" sizehacks="True" notes="A decorative leafy bush that appears behind Layer 1 terrain." files="fruits_kusa.arc;fruits_kusa_gake.arc">
     <dualbox nybble="11.4" title1="Use Bush Color" title2="Yellowish Bush" comment="This determines if the Bush is a yellowish color, or if it uses the color listed in Bush Color instead."/>
-    <list nybble="5" title="Bush Style" comment="This determines the style of the Bush. The Forest Tree Leafs specifically are in front of Layer 1, but behind Layer 0." requirednybble="11.4" requiredval="0">
+    <spritetex nybble="5" title="Bush Style" comment="This determines the style of the Bush. The Forest Tree Leaves specifically are in front of Layer 1, but behind Layer 0." requirednybble="11.4" requiredval="0">
       <entry value="0">Green</entry>
       <entry value="1">Brown</entry>
       <entry value="2">Dark Red</entry>
@@ -2400,7 +2401,7 @@
       <entry value="4">Dark Brown</entry>
       <entry value="5">Red</entry>
       <entry value="15">Forest Tree Leaves</entry>
-    </list> <!-- Appears only if Use Bush Color is set -->
+    </spritetex> <!-- Appears only if Use Bush Color is set -->
     <list nybble="12.3-12.4" title="Size" comment="This determines the size of the Bush. Larger sizes use different models.">
       <entry value="0">Small</entry>
       <entry value="1">Medium</entry>
@@ -2410,10 +2411,10 @@
   </sprite> <!-- #387: Bush -->
 
   <sprite id="391" name="Lighting - Glow Block" notes="A grabbable glowing block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. If it is thrown and it hits the ground, it will bounce slightly. Its effect is severely diminished as anything other than a weapon of destruction if not using Full Darkness lighting." files="block_light.arc">
-    <list nybble="6" title="Color" advanced="True" comment="A recolor for the Glow Block." advancedcomment="More effects can be added for your hack.">
+    <spritetex nybble="6" title="Color" comment="This determines the color of the Glow Block.">
       <entry value="0">Yellow</entry>
       <entry value="1">Dark Purple</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12" title="Cannot Despawn" comment="If enabled, the Glow Block will not despawn if it goes off-screen." />
   </sprite> <!-- #391: Lighting - Glow Block -->
 
@@ -2508,7 +2509,7 @@
   </sprite> <!-- #410: Giga Goomba -->
 
   <sprite id="414" name="Spike/Stone Spike" notes="" sizehacks="True" files="gabon_rock.arc;gabon.arc">
-    <list nybble="6" title="Color" requirednybble="12.4" requiredval="0">
+    <spritetex nybble="6" title="Color" requirednybble="12.4" requiredval="0">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -2517,28 +2518,26 @@
       <entry value="5">Blue</entry>
       <entry value="6">Violet</entry>
       <entry value="7">Black</entry>
-    </list> <!-- Stone Spike colors -->
-    <list nybble="6" title="Color" requirednybble="12.4" requiredval="1">
+    </spritetex> <!-- Stone Spike colors -->
+    <spritetex nybble="6" title="Color" requirednybble="12.4" requiredval="1">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
       <entry value="3">Yellow</entry>
       <entry value="4">Green</entry>
       <entry value="5">NSMBDS Snow Spike</entry>
-    </list> <!-- Spike colors -->
+    </spritetex> <!-- Spike colors -->
     <dualbox nybble="12.4" title1="Stone Spike (Throws Down)" title2="Spike (Throws to Side)"/>
     <dualbox nybble="10.4" title1="Faces Left" title2="Faces Right" comment="The Spike will turn to face the player when on screen." requirednybble="12.4" requiredval="1"/>
     <checkbox nybble="11.4" title="Always Throwing" comment="When enabled, the Spike will always throw spiked balls, even when off-screen. May only function with Stone Spikes."/>
     <value nybble="5" title="Throwing Delay" comment="The amount of delay is inconsistent between increases in value."/>
   </sprite> <!-- #414: Spike/Stone Spike -->
 
-  <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in the retail game's singleplayer mode where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
-    <dependency notes="Usable in retail NSMBW only."/>
+  <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in the retail game's singleplayer mode where a Toad bubble will appear on the world map and signal that it needs rescued. This is not usable in NewerSMBW.">
     <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small."/>
   </sprite> <!-- #422: Toad Needs Help - ? Block -->
 
-  <sprite id="423" name="Toad Needs Help - Brick Block" notes="A feature used in the retail game's singleplayer mode where a Toad bubble will appear on the world map and signal that it needs rescued. Playing and completing that level by finding this Toad will award Mario three 1-Ups if he is carried to the goal flag in Super Form, and one 1-Up in Small Form. Also, when Toad is saved, a Toad House will open at the starting point of the world. The type of house that appears depends on the last digit in the time limit when Toad and/or Mario touches the flagpole.">
-    <dependency notes="Usable in retail NSMBW only."/>
+  <sprite id="423" name="Toad Needs Help - Brick Block" notes="A feature used in the retail game's singleplayer mode where a Toad bubble will appear on the world map and signal that it needs rescued. This is not usable in NewerSMBW.">
     <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small."/>
   </sprite> <!-- #423: Toad Needs Help - Brick Block -->
 
@@ -2619,13 +2618,13 @@
     <dependency notes="This sprite has additional hardcoded behavior that may cause bugs when it is used outside of its intended boss fight.">
       <suggested sprite="431"/>
     </dependency>
-    <list nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should.">
+    <spritetex nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should.">
       <entry value="0">Red (Original)</entry>
       <entry value="1">Red</entry>
       <entry value="2">Yellow</entry>
       <entry value="3">Green</entry>
       <entry value="4">Blue</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
     <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set."/>
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/>
@@ -2650,14 +2649,14 @@
     <dependency notes="This sprite has additional hardcoded behavior that may cause bugs when it is used outside of its intended boss fight. Known bugs: It is incompatible with Multi-Use. The Target Event ID must be unique to this Switch.">
       <suggested sprite="431"/>
     </dependency>
-    <list nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
+    <spritetex nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Orange (Original)</entry>
       <entry value="1">Red</entry>
       <entry value="2">Yellow</entry>
       <entry value="3">Green</entry>
       <entry value="4">Blue</entry>
       <entry value="5">Orange w/? Mark</entry>
-    </list>
+    </spritetex>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
     <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set."/>
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/>
