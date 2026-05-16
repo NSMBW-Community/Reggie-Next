@@ -2008,6 +2008,7 @@
     </list>
   </sprite> <!-- #288: (Crashes) Rolling Barrel -->
 
+  <!-- Look more in-depth at Nybble 5, it's more than Z-Order, and the exact behavior seems to depend on the box type -->
   <sprite id="289" name="Wooden/Metal Box" notes="Wooden boxes can be opened if Ground-Pounded, struck from below, etc. and can award the player with an item. Metal boxes can instantly kill the player, cannot be destroyed, and make a POW sound when falling. They also have odd issues when it comes to respawning if they have moved from their original location." files="box_wood.arc;box_iron.arc;big_renga_block.arc;I_ship_key.arc">
     <dualbox nybble="10.4" title1="Wooden Box" title2="Metal Box"/>
     <list nybble="11.3-11.4" title="Size">
@@ -2016,7 +2017,7 @@
       <entry value="2">Tall and Skinny (4x2)</entry>
       <entry value="3">Big Square (4x4)</entry>
     </list>
-    <list nybble="12" title="Wooden Box Contains">
+    <list nybble="12" title="Box Contains" comment="This determines what item will be inside the box." requirednybble="10.4" requiredval="0">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
       <entry value="10">5 Coins</entry>
@@ -2032,9 +2033,9 @@
       <entry value="7">Star</entry>
       <entry value="9">Yoshi Egg + Fire Flower</entry>
       <entry value="11">1-Up</entry>
-      <entry value="14">Key</entry> <!-- Unlisted values contain Mushrooms -->
+      <entry value="14">Key</entry>
     </list>
-    <value nybble="5" title="Z-Order" comment="Changes the Z-Order of the box. See the 2nd comment for a list of values." comment2="Observed effects:[br]* Value 0: On layer 1, behind layer 0[br]* Value 1: Behind layer 1, above layer 2[br]* Values 2-15: Above layer 1, below layer 0"/>
+    <value nybble="5" title="Z-Order" comment="Changes the Z-Order of the box." comment2="Observed effects:[br]* Value 0: On layer 1, behind layer 0[br]* Value 1: Behind layer 1, above layer 2[br]* Values 2-15: Above layer 1, below layer 0"/>
   </sprite> <!-- #289: Wooden/Metal Box -->
 
   <sprite id="290" name="World-6 Boss: Ramboo" noyoshi="True" notes="The extra large Boo boss that is not the least bit shy about continuing to advance towards the player. He can be knocked back with grabbable items and can only be defeated when the specified Event is activated.">

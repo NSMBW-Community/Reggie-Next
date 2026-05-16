@@ -5427,17 +5427,65 @@ class SpriteImage_OldBarrel(SLib.SpriteImage_Static):  # 288
 class SpriteImage_Box(SLib.SpriteImage_StaticMultiple):  # 289
     @staticmethod
     def loadImages():
+        SLib.loadIfNotInImageCache('ShipKey', 'ship_key.png')
+        SLib.loadIfNotInImageCache('5Coin', '5_coin.png')
+
+        if 'YoshiFire' not in ImageCache:
+            pix = QtGui.QPixmap(48, 24)
+            pix.fill(Qt.GlobalColor.transparent)
+            paint = QtGui.QPainter(pix)
+            paint.drawPixmap(0, 0, ImageCache['BlockContents'][9])
+            paint.drawPixmap(24, 0, ImageCache['BlockContents'][3])
+            del paint
+            ImageCache['YoshiFire'] = pix
+
         if 'Box00' in ImageCache: return
         for style, stylestr in ((0, 'wood'), (1, 'metal')):
             for size, sizestr in zip(range(4), ('small', 'wide', 'tall', 'big')):
                 ImageCache['Box%d%d' % (style, size)] = SLib.GetImg('box_%s_%s.png' % (stylestr, sizestr))
 
+                items = (
+                    (12, 12, 'Coin',  ImageCache['BlockContents'][1]),
+                    (12, 12, 'Mush',  ImageCache['BlockContents'][2]),
+                    (12, 12, 'Fire',  ImageCache['BlockContents'][3]),
+                    (12, 12, 'Prop',  ImageCache['BlockContents'][4]),
+                    (12, 12, 'Peng',  ImageCache['BlockContents'][5]),
+                    (12, 12, 'Mini',  ImageCache['BlockContents'][6]),
+                    (12, 12, 'Star',  ImageCache['BlockContents'][7]),
+                    (0,  12, 'EggF',  ImageCache['YoshiFire']),
+                    (12, 12, '5Coin', ImageCache['5Coin']),
+                    (12, 12, '1Up',   ImageCache['BlockContents'][11]),
+                    (8,  6,  'Key',   ImageCache['ShipKey']),
+                    (12, 12, 'Ice',   ImageCache['BlockContents'][15]),
+                )
+                for x, y, itemName, overlayImage in items:
+                    newPix = QtGui.QPixmap(ImageCache['Box%d%d' % (style, size)])
+                    painter = QtGui.QPainter(newPix)
+                    painter.setOpacity(0.8)
+
+                    sizeOffs = (
+                        (0,  0),
+                        (24, 0),
+                        (0,  24),
+                        (24, 24),
+                    )
+                    painter.drawPixmap(x + sizeOffs[size][0], y + sizeOffs[size][1], overlayImage)
+                    del painter
+                    ImageCache['Box%d%d' % (style, size) + itemName] = newPix
+
     def dataChanged(self):
 
         style = self.parent.spritedata[4] & 1
         size = (self.parent.spritedata[5] >> 4) & 3
+        item = self.parent.spritedata[5] & 0xF
 
-        self.image = ImageCache['Box%d%d' % (style, size)]
+        itemStr = ''
+        if style != 1:
+            itemNames = ('', 'Coin', 'Mush', 'Fire', 'Prop', 'Peng', 'Mini', 'Star',
+                        'Mush', 'EggF', '5Coin', '1Up', 'Mush', 'Mush', 'Key', 'Ice')
+            itemStr = itemNames[item]
+
+        self.image = ImageCache['Box%d%d' % (style, size) + itemStr]
 
         super().dataChanged()
 
