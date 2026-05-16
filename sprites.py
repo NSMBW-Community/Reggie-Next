@@ -4398,6 +4398,26 @@ class SpriteImage_MGChest(SLib.SpriteImage_Static):  # 203
         SLib.loadIfNotInImageCache('MGChest', 'mg_chest.png')
 
 
+class SpriteImage_RollObjSpawner(SLib.SpriteImage_StaticMultiple):  # 204
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.yOffset = -16
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('SpikeBall', 'spike_ball.png')
+        SLib.loadIfNotInImageCache('OldBarrel', 'old_barrel.png')
+
+    def dataChanged(self):
+        barrel = (self.parent.spritedata[2] >> 4) & 1
+        if barrel:
+            self.image = ImageCache['OldBarrel']
+        else:
+            self.image = ImageCache['SpikeBall']
+
+        super().dataChanged()
+
+
 class SpriteImage_GiantBubbleNormal(SpriteImage_GiantBubble):  # 205
     pass
 
@@ -8856,6 +8876,7 @@ ImageClasses = {
     201: SpriteImage_Icicle,
     202: SpriteImage_MGCannon,
     203: SpriteImage_MGChest,
+    204: SpriteImage_RollObjSpawner,
     205: SpriteImage_GiantBubbleNormal,
     206: SpriteImage_Zoom,
     207: SpriteImage_QBlock,
