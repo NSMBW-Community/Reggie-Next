@@ -2649,6 +2649,9 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
 
     def moveSunlight(self):
         try:
+            if 'Sunlight' not in ImageCache:
+                SLib.loadIfNotInImageCache('Sunlight', 'sunlight.png')
+
             if not SLib.RealViewEnabled:
                 self.aux[0].realimage = None
                 return
