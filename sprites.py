@@ -3582,9 +3582,26 @@ class SpriteImage_RedCoinRing(SLib.SpriteImage):  # 156
     def loadImages():
         SLib.loadIfNotInImageCache('RedCoinRing', 'redcoinring.png')
 
+        overlays = (
+            ('Fire', ImageCache['BlockContents'][3]),
+            ('Prop', ImageCache['BlockContents'][4]),
+            ('Peng', ImageCache['BlockContents'][5]),
+            ('IceF', ImageCache['BlockContents'][15]),
+        )
+        for name, image in overlays:
+            newPix = QtGui.QPixmap(ImageCache['RedCoinRing'])
+            painter = QtGui.QPainter(newPix)
+            painter.drawPixmap(26, 36, image)
+            del painter
+            ImageCache['RedCoinRing' + name] = newPix
+
     def dataChanged(self):
+        item = (self.parent.spritedata[5] >> 4) & 0x3
         shifted = self.parent.spritedata[5] & 1
         self.xOffset = -2 if shifted else -10
+
+        itemStrs = ('Fire', 'Prop', 'Peng', 'IceF')
+        self.aux[0].image = ImageCache['RedCoinRing' + itemStrs[item]]
 
         super().dataChanged()
 
@@ -3881,8 +3898,8 @@ class SpriteImage_RouletteBlock(SLib.SpriteImage_StaticMultiple):  # 176
         overlays = (
             ('Fire', ImageCache['BlockContents'][3]),
             ('Prop', ImageCache['BlockContents'][4]),
-            ('IceF', ImageCache['BlockContents'][5]),
-            ('Peng', ImageCache['BlockContents'][15]),
+            ('IceF', ImageCache['BlockContents'][15]),
+            ('Peng', ImageCache['BlockContents'][5]),
         )
         for name, image in overlays:
             newPix = QtGui.QPixmap(ImageCache['RouletteBlock'])
@@ -3892,7 +3909,7 @@ class SpriteImage_RouletteBlock(SLib.SpriteImage_StaticMultiple):  # 176
             ImageCache['RouletteBlock' + name] = newPix
 
     def dataChanged(self):
-        item = self.parent.spritedata[5] & 0xF
+        item = self.parent.spritedata[5] & 0x3
 
         itemStrs = ('Fire', 'Prop', 'IceF', 'Peng')
         self.image = ImageCache['RouletteBlock' + itemStrs[item]]
