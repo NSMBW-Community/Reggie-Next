@@ -2212,6 +2212,56 @@ class SpriteImage_NewerGabon(SLib.SpriteImage_StaticMultiple):  # 414
         super().dataChanged()
 
 
+class SpriteImage_NewerFloatingQBlock(SLib.SpriteImage_StaticMultiple):  # 433
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['FloatingQBlock'],
+            (-6, -6),
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('FloatingQBlock', 'floating_qblock.png')
+    
+        items = (
+            ('Coin',   ImageCache['BlockContents'][1]),
+            ('Hamr',   ImageCache['BlockContents'][20]),
+            ('Fire',   ImageCache['BlockContents'][3]),
+            ('Prop',   ImageCache['BlockContents'][4]),
+            ('Peng',   ImageCache['BlockContents'][5]),
+            ('Mini',   ImageCache['BlockContents'][6]),
+            ('Star',   ImageCache['BlockContents'][7]),
+            ('StarC',  ImageCache['BlockContents'][8]),
+            ('Egg',    ImageCache['BlockContents'][9]),
+            ('10Coin', ImageCache['BlockContents'][10]),
+            ('1Up',    ImageCache['BlockContents'][11]),
+            ('Mush',   ImageCache['BlockContents'][2]),
+            ('Spring', ImageCache['BlockContents'][13]),
+            ('MushC',  ImageCache['BlockContents'][14]),
+            ('Ice',    ImageCache['BlockContents'][15]),
+        )
+        for itemName, overlayImage in items:
+            newPix = QtGui.QPixmap(ImageCache['FloatingQBlock'])
+            painter = QtGui.QPainter(newPix)
+
+            painter.drawPixmap(8, 8, overlayImage)
+            del painter
+            ImageCache['FloatingQBlock' + itemName] = newPix
+
+    def dataChanged(self):
+        item = self.parent.spritedata[5] & 0xF
+
+        itemNames = ('', 'Coin', 'Hamr', 'Fire', 'Prop', 'Peng', 'Mini', 'Star',
+                        'StarC', 'Egg', '10Coin', '1Up', 'Mush', 'Spring', 'MushC', 'Ice')
+        itemStr = itemNames[item]
+
+        self.image = ImageCache['FloatingQBlock' + itemStr]
+
+        super().dataChanged()
+
+
 class SpriteImage_NewerBowserSwitchSm(SpriteImage_NewerSwitch):  # 478
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -2348,6 +2398,7 @@ ImageClasses = {
     403: SpriteImage_LineBrickBlock,
     410: SpriteImage_GigaGoomba,
     414: SpriteImage_NewerGabon,
+    433: SpriteImage_NewerFloatingQBlock,
     478: SpriteImage_NewerBowserSwitchSm,
     479: SpriteImage_NewerBowserSwitchLg,
 }
