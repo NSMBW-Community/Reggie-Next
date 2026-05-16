@@ -6534,7 +6534,7 @@
     <value nybble="12" title="Height" comment="This determines the height of the pole."/>
   </sprite> <!-- #437: Climbable Striped Pole -->
 
-  <sprite id="438" name="Rotation Controlled Cage Blocks" notes="A large textured block meant for use with a Spinning rotation controller. It has several different shapes and poses a challenging obstacle when trying to climb it." files="lift_zen_kaiten.arc">
+  <sprite id="438" name="Rotation Controlled Shape Block" notes="A large textured block meant for use with a Spinning rotation controller. It has several different shapes and poses a challenging obstacle when trying to climb it." files="lift_zen_kaiten.arc">
     <dependency notes="This block does not appear unless actually paired to a rotation controller.">
       <suggested sprite="96"/>
       <suggested sprite="149"/>
