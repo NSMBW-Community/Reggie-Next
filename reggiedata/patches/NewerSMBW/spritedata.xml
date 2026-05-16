@@ -2008,7 +2008,6 @@
     </list>
   </sprite> <!-- #288: (Crashes) Rolling Barrel -->
 
-  <!-- Look more in-depth at Nybble 5, it's more than Z-Order, and the exact behavior seems to depend on the box type -->
   <sprite id="289" name="Wooden/Metal Box" notes="Wooden boxes can be opened if Ground-Pounded, struck from below, etc. and can award the player with an item. Metal boxes can instantly kill the player, cannot be destroyed, and make a POW sound when falling. They also have odd issues when it comes to respawning if they have moved from their original location." files="box_wood.arc;box_iron.arc;big_renga_block.arc;I_ship_key.arc">
     <dualbox nybble="10.4" title1="Wooden Box" title2="Metal Box"/>
     <list nybble="11.3-11.4" title="Size">
@@ -2035,7 +2034,7 @@
       <entry value="11">1-Up</entry>
       <entry value="14">Key</entry>
     </list>
-    <value nybble="5" title="Z-Order" comment="Changes the Z-Order of the box." comment2="Observed effects:[br]* Value 0: On layer 1, behind layer 0[br]* Value 1: Behind layer 1, above layer 2[br]* Values 2-15: Above layer 1, below layer 0"/>
+    <checkbox nybble="5" title="Made by Box Spawner" comment="Changes the Z-Order of the box to appear behind the spawner model, and slightly adjusts the collision." comment2="Set on all boxes spawned by [318] Box Spawner."/>
   </sprite> <!-- #289: Wooden/Metal Box -->
 
   <sprite id="290" name="World-6 Boss: Ramboo" noyoshi="True" notes="The extra large Boo boss that is not the least bit shy about continuing to advance towards the player. He can be knocked back with grabbable items and can only be defeated when the specified Event is activated.">
