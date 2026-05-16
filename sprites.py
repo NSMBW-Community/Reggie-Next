@@ -3865,7 +3865,7 @@ class SpriteImage_FlyingQBlock(SLib.SpriteImage):  # 175
         painter.drawPixmap(18, 23, ImageCache['BlockContents'][content])
 
 
-class SpriteImage_RouletteBlock(SLib.SpriteImage_Static):  # 176
+class SpriteImage_RouletteBlock(SLib.SpriteImage_StaticMultiple):  # 176
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -3877,6 +3877,27 @@ class SpriteImage_RouletteBlock(SLib.SpriteImage_Static):  # 176
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('RouletteBlock', 'roulette.png')
+
+        overlays = (
+            ('Fire', ImageCache['BlockContents'][3]),
+            ('Prop', ImageCache['BlockContents'][4]),
+            ('IceF', ImageCache['BlockContents'][5]),
+            ('Peng', ImageCache['BlockContents'][15]),
+        )
+        for name, image in overlays:
+            newPix = QtGui.QPixmap(ImageCache['RouletteBlock'])
+            painter = QtGui.QPainter(newPix)
+            painter.drawPixmap(6, 6, image)
+            del painter
+            ImageCache['RouletteBlock' + name] = newPix
+
+    def dataChanged(self):
+        item = self.parent.spritedata[5] & 0xF
+
+        itemStrs = ('Fire', 'Prop', 'IceF', 'Peng')
+        self.image = ImageCache['RouletteBlock' + itemStrs[item]]
+
+        super().dataChanged()
 
 
 class SpriteImage_FireChomp(SLib.SpriteImage_Static):  # 177
