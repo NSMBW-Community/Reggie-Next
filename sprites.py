@@ -3591,6 +3591,7 @@ class SpriteImage_RedCoinRing(SLib.SpriteImage):  # 156
         for name, image in overlays:
             newPix = QtGui.QPixmap(ImageCache['RedCoinRing'])
             painter = QtGui.QPainter(newPix)
+            painter.setOpacity(0.8)
             painter.drawPixmap(26, 36, image)
             del painter
             ImageCache['RedCoinRing' + name] = newPix
@@ -5499,7 +5500,6 @@ class SpriteImage_Box(SLib.SpriteImage_StaticMultiple):  # 289
                 for x, y, itemName, overlayImage in items:
                     newPix = QtGui.QPixmap(ImageCache['Box%d%d' % (style, size)])
                     painter = QtGui.QPainter(newPix)
-                    painter.setOpacity(0.8)
 
                     sizeOffs = (
                         (0,  0),
