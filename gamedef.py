@@ -30,6 +30,7 @@ class GameDefViewer(QtWidgets.QWidget):
         self.imgLabel.setPixmap(GetIcon('sprites', False).pixmap(16, 16))
         self.versionLabel = QtWidgets.QLabel()
         self.titleLabel = QtWidgets.QLabel()
+        self.titleLabel.setWordWrap(True)
         self.descLabel = QtWidgets.QLabel()
         self.descLabel.setWordWrap(True)
         self.descLabel.setMinimumHeight(40)
@@ -49,6 +50,7 @@ class GameDefViewer(QtWidgets.QWidget):
         main.addLayout(right)
         main.setStretch(2, 1)
         self.setLayout(main)
+        self.setMinimumWidth(235)
         self.setMaximumWidth(256 + 64)
 
         self.updateLabels()
