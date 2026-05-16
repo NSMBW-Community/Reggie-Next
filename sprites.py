@@ -6105,18 +6105,36 @@ class SpriteImage_BoltBox(SLib.SpriteImage):  # 316
         painter.drawPixmap(xsize - 24, ysize - 24, ImageCache['BoltBoxBR'])
 
 
-class SpriteImage_BoxGenerator(SLib.SpriteImage_Static):  # 318
+class SpriteImage_BoxGenerator(SLib.SpriteImage_StaticMultiple):  # 318
     def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['BoxGenerator'],
-            (0, -64),
-        )
+        super().__init__(parent, 1.5)
+        self.yOffset = -64
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 96, 48))
+        self.aux[0].setPos(0, 64)
+        self.aux[0].alpha = 0.5
+        self.aux[0].hover = True
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('BoxGenerator', 'box_generator.png')
+
+        SLib.loadIfNotInImageCache('Box01', 'box_wood_wide.png')
+        SLib.loadIfNotInImageCache('Box11', 'box_metal_wide.png')
+
+    def dataChanged(self):
+        boxType = self.parent.spritedata[4] & 1
+
+        if boxType == 0:
+            typeStr = 'Box01'
+        else:
+            typeStr = 'Box11'
+
+        self.aux[0].image = ImageCache[typeStr]
+
+        self.image = ImageCache['BoxGenerator']
+
+        super().dataChanged()
 
 
 class SpriteImage_UnusedWiimoteDoor(SpriteImage_UnusedGiantDoor):  # 319
