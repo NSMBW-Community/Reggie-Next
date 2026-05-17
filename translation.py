@@ -745,6 +745,8 @@ class ReggieTranslation:
                 27: 'Resize',
                 28: 'NO TITLE GIVEN!',
                 29: 'Next Free',
+                30: 'Sprite [id]: required resource',
+                31: 'Add to Loaded Sprites',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',

@@ -554,7 +554,7 @@ class SpriteDefinition:
                 fields.append((5, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
 
             elif field.tag == 'dependency':
-                type_dict = {'required': 0, 'suggested': 1}
+                type_dict = {'required': 0, 'suggested': 1, 'resource': 2}
 
                 for entry in field:
                     if entry.attrib['sprite'] == "":

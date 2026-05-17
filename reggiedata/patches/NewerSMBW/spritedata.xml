@@ -219,7 +219,7 @@
 
   <sprite id="18" name="Spine Coaster Platform" notes="This creates immobile 'Spine Coaster' Platforms (1x2). The Sprite's placement represents the right side of the Platform.">
     <dependency notes="The normal Spine Coaster [297] must be placed somewhere in your level or in the Loaded Sprites list, or else the game will crash.">
-      <required sprite="297"/> <!-- Spine Coaster -->
+      <resource sprite="297"/> <!-- Spine Coaster -->
     </dependency>
     <dualbox nybble="5.4" title1="Horizontal Platform" title2="Angled Platform" comment="This determines if the platform is flat (horizontal), or if it is tilted at an angle."/>
     <dualbox nybble="6.1" title1="Angles Left" title2="Angles Right" comment="This determines which direction the platform will be angled." requirednybble="5.4"/> <!-- Appears only if Angled is enabled -->
@@ -581,7 +581,7 @@
 
   <sprite id="49" name="Fake Star Coin" sizehacks="True" notes="This coin an appearance similar to a normal Star Coin, but when the player tries to collect it, it will vanish and disperse into 4 harmless Boos like a Fake Door." files="test_lift.arc">
     <dependency notes="A real Star Coin must be placed within the same Zone (or set in the Loaded Sprites list) or the game will crash.">
-      <required sprite="32"/> <!-- Requires at least one Star Coin in the Zone -->
+      <resource sprite="32"/> <!-- Requires at least one Star Coin in the Zone -->
       <suggested sprite="155"/>
       <suggested sprite="389"/>
     </dependency>
@@ -905,7 +905,7 @@
 
   <sprite id="153" name="(Unused) ?-Switch" sizehacks="True" notes="An exact duplicate of the normal ?-Switch.">
     <dependency notes="The game will crash unless a normal ?-Switch is placed somewhere in the level, or set in the Loaded Sprites list. It does not have to be within an area that is actually used.">
-      <required sprite="40"/>
+      <resource sprite="40"/>
     </dependency>
     <spritetex nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Standard Question Mark (Original)</entry>
@@ -1015,8 +1015,9 @@
   </sprite> <!-- #167: Big Shy Guy -->
 
   <sprite id="168" name="Thundercloud" notes="This creates an unhappy Thundercloud that is similar to a Lakitu's cloud. It will slingshot around the top of the stage and occasionally shoot down Thunder. This Thunder will turn non-tiny Marios into Mini-Mario, and kill Mini-Marios outright. The Thunder will not reach beneath solid terrain." files="tcloud.arc">
-  <dependency notes="The controller for Bowser Jr's 2nd Fight must be included somewhere in the level for the electricity to draw properly."/>
-  <required sprite="13"/>
+    <dependency notes="The controller for Bowser Jr's 2nd Fight must be included somewhere in the level for the electricity to draw properly.">
+      <resource sprite="405"/>
+    </dependency>
     <dualbox nybble="12.4" title1="Chases Player" title2="Stationary" comment="This determines if the Thundercloud will chase the player, or if it will remain in a single position."/>
     <value nybble="7.2-8.4" title="Triggering Event ID (Die)" comment="When the Triggering Event is activated, the Thundercloud will die." requirednybble="12.4" requiredval="0"/> <!-- Appears if Chases Player is set -->
     <value nybble="7.2-8.4" title="Triggering Event ID (Thunder)" comment="If a Triggering Event is set, the Thundercloud will only shoot thunder while this Event is activated. If a Triggering Event is not set, it will shoot thunder for 3 seconds on, 1 second off (?)." requirednybble="12.4"/> <!-- Appears if Stationary is set -->
@@ -2159,7 +2160,7 @@
 
   <sprite id="302" name="Loose Balboa Throwing Wrench" notes="The wrenches thrown by Balboa Wrench in his boss fight." files="nokonokoB.arc">
     <dependency notes="The game will crash without a Rocky Wrench in the level, or in the Loaded Sprites list.">
-      <required sprite="352"/> <!-- Rocky Wrench -->
+      <resource sprite="352"/> <!-- Rocky Wrench -->
     </dependency>
     <checkbox nybble="10" title="Place In Front Of Other Sprites"/>
     <checkbox nybble="11" title="Big"/>
@@ -2229,8 +2230,12 @@
   <sprite id="319" name="Flip Block" notes="A yellow block with two eyes that cannot be destroyed. When struck, it will spin, allowing passage through it for a limited time." files="block_rotate.arc">
   </sprite> <!-- #319: Flip Block -->
 
-  <!-- Research "Nybble 4" -->
   <sprite id="320" name="Falling Chestnut" notes="A hanging chestnut that can quickly falls upon the player's approach with various potential effects. They can also be triggered from a POW block.&lt;br&gt;Please note that these chestnuts can be frozen by ice flowers, regardless of their size. If they're then broken, they will ignore their selected contained object and only release a coin." files="chestnut.arc">
+    <dependency notes="The following sprites must be present somewhere in the level (or in the Loaded Sprites list), or the game will crash.">
+      <resource sprite="20"/>
+      <resource sprite="25"/>
+      <resource sprite="32"/>
+    </dependency>
     <spritetex nybble="12" title="Color" comment="This determines the color of the Chestnut.">
       <entry value="0">Brown</entry>
       <entry value="1">Golden</entry>
@@ -2253,7 +2258,7 @@
       <entry value="14">15 Blocks</entry>
       <entry value="15">16 Blocks</entry>
     </list>
-    <list nybble="8" title="Contains" comment="There needs to be at least one Goomba, Spiny, or Star Coin somewhere in the level (or in the Loaded Sprites list) if selected as the contained object. Otherwise, the game will crash once the chestnut breaks open." comment2="Values above 4 will crash the game.">
+    <list nybble="8" title="Contains" comment="This determines what item will be released when the chestnut falls and breaks open." comment2="Values above 4 will crash the game.">
       <entry value="0">Goomba</entry>
       <entry value="1">Spiny</entry>
       <entry value="2">1 Coin</entry>

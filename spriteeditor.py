@@ -1737,6 +1737,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.advNoteButton.setVisible(sprite.advNotes is not None)
         self.advNotes = sprite.advNotes
 
+        # object files
         self.relatedObjFilesButton.setVisible(sprite.relatedObjFiles is not None)
         self.relatedObjFiles = sprite.relatedObjFiles
 
@@ -1749,12 +1750,16 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         rownum = 0
 
         # (sprite id, importance level)
-        # importance level is 0 for 'required', 1 for 'suggested'
-        missing = [[], []]
+        # importance level is 0 for 'required', 1 for 'suggested', 2 for 'resource'
+        missing = [[], [], []]
         cur_sprites = [s.type for s in globals_.Area.sprites]
         for dependency, importance in sprite.dependencies:
             if dependency not in cur_sprites:
-                missing[importance].append(dependency)
+                if importance == 2:
+                    if dependency not in globals_.Area.force_loaded_sprites:
+                        missing[importance].append(dependency)
+                else:
+                    missing[importance].append(dependency)
 
         # if there are missing things
         for missingSprite in missing[0]:
@@ -1782,6 +1787,22 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.com_deplist.addWidget(QtWidgets.QLabel(name), rownum, 0)
             self.com_deplist.addWidget(addButton, rownum, 1)
+            rownum += 1
+        
+        for missingSprite in missing[2]:
+            name = globals_.trans.string('SpriteDataEditor', 30, '[id]', missingSprite)
+            action = globals_.trans.string('SpriteDataEditor', 31)
+            addButton = QtWidgets.QPushButton(action)
+
+            message = self.addMessage(name, level = 3, close = action)
+            callback = self.closeMessageCallback(message, self.HandleAppendToLoadList(missingSprite, addButton))
+            self.addCallbackToMessage(message, callback)
+
+            addButton.clicked.connect(callback)
+
+            self.com_deplist.addWidget(QtWidgets.QLabel(name), rownum, 0)
+            self.com_deplist.addWidget(addButton, rownum, 1)
+
             rownum += 1
 
         # dependency notes
@@ -2177,6 +2198,28 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
 
         return placeSprite
+
+    def HandleAppendToLoadList(self, id_, button_):
+        def addToLoadList():
+            globals_.Area.force_loaded_sprites.add(id_)
+            SetDirty()
+
+            # remove this dependency, because it is now fulfilled.
+            # get row of button
+            idx = self.com_deplist.indexOf(button_)
+            row, *_ = self.com_deplist.getItemPosition(idx)
+
+            # remove this row
+            l = self.com_deplist
+            for column in range(l.columnCount()):
+                w = l.itemAtPosition(row, column)
+                if w is not None:
+                    widget = w.widget()
+                    l.removeWidget(widget)
+                    widget.setParent(None)
+
+
+        return addToLoadList
 
     def HandleSizeButtonClicked(self, e):
         """

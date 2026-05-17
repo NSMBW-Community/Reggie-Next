@@ -2367,8 +2367,8 @@
   </sprite> <!-- #152: Incomplete Sprite - 'En_Blur' -->
 
   <sprite id="153" name="(Unused) ?-Switch" notes="An exact duplicate of the normal ?-Switch.">
-    <dependency notes="The game will crash unless a normal ?-Switch is placed somewhere in the level, or set in the Loaded Sprites list. It does not have to be within an area that is actually used.">
-      <required sprite="40"/>
+    <dependency notes="The game will crash unless a normal ?-Switch is placed somewhere in the level, or set in the Loaded Sprites list.">
+      <resource sprite="40"/>
     </dependency>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
     <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set." requirednybble="12.4" requiredval="0"/> <!-- Disappears if Upside-Down is enabled -->
@@ -2989,8 +2989,8 @@
 
   <!-- Test 12 combined with 8 in various combinations. May be Primary Item and Secondary Items, with the Secondary Items list dependent on the Primary Item. -->
   <sprite id="203" name="Chest" noyoshi="True" notes="A chest affected by gravity that will award some type of inventory item to the player. Note that opening a chest will complete the level with the standard exit. Keep in mind that if you allow the player to leave the vicinity of the chest before it exits the player from the level, they will be able to open it again for another item, so do not allow the player to do this." files="treasure_box.arc">
-    <dependency notes="Requires ONE of these two sprites in order to not cause the game to crash. Which one depends on how the chest is being used. If you're using it as part of an Ambush level, [454] is required. If you're using it without the Ambush arrangement, [432] is required to be placed somewhere in the level, even if it's outside of the active Zones.">
-      <suggested sprite="432"/>
+    <dependency notes="Requires one of these two sprites somewhere in the level (or in the Loaded Sprites list) in order to not cause the game to crash. Besides that, if you're using the chest as part of an Ambush level, [454] is required.">
+      <resource sprite="432"/>
       <suggested sprite="454"/>
     </dependency>
     <checkbox nybble="5" title="Shift Down 2 Units" comment="Shifts the chest model down by 2 units. Used in the World 6 Ambushes to align the chest with the top of the pipe tiles." />
