@@ -82,14 +82,6 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         self.rotates = False
         self.flipOverride = False
 
-        # Load a new one
-        ContentImage = SLib.GetImg('block_contents.png')
-        Blocks = []
-        count = ContentImage.width() // 24
-        for i in range(count):
-            Blocks.append(ContentImage.copy(i * 24, 0, 24, 24))
-        ImageCache['BlockContents'] = Blocks
-
     def dataChanged(self):
         super().dataChanged()
 

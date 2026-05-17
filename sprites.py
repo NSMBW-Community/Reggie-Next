@@ -45,49 +45,7 @@ ImageCache = SLib.ImageCache
 
 ################################################################
 ################################################################
-
-
-def LoadBasics():
-    """
-    Loads basic images used in NSMBW
-    """
-    # Load some coins, because coins are in almost every Mario level ever
-    ImageCache['Coin'] = SLib.GetImg('coin.png')
-    ImageCache['SpecialCoin'] = SLib.GetImg('special_coin.png')
-    ImageCache['PCoin'] = SLib.GetImg('p_coin.png')
-    ImageCache['RedCoin'] = SLib.GetImg('redcoin.png')
-    ImageCache['StarCoin'] = SLib.GetImg('starcoin.png')
-
-    # Load block contents
-    ContentImage = SLib.GetImg('block_contents.png')
-    Blocks = []
-    count = ContentImage.width() // 24
-    for i in range(count):
-        Blocks.append(ContentImage.copy(i * 24, 0, 24, 24))
-    ImageCache['BlockContents'] = Blocks
-
-    # Load the blocks
-    BlockImage = SLib.GetImg('blocks.png')
-    Blocks = []
-    count = BlockImage.width() // 24
-    for i in range(count):
-        Blocks.append(BlockImage.copy(i * 24, 0, 24, 24))
-    ImageCache['Blocks'] = Blocks
-
-    # Load the characters
-    for num in range(4):
-        for direction in 'lr':
-            ImageCache['Character%d%s' % (num + 1, direction.upper())] = \
-                SLib.GetImg('character_%d_%s.png' % (num + 1, direction))
-
-    # Load vines, because these are used by entrances
-    SLib.loadIfNotInImageCache('VineTop', 'vine_top.png')
-    SLib.loadIfNotInImageCache('VineMid', 'vine_mid.png')
-    SLib.loadIfNotInImageCache('VineBtm', 'vine_btm.png')
-
-
 # ---- Low-Level Classes ----
-
 
 class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
     def __init__(self, parent, scale=1.5):

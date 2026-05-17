@@ -76,6 +76,7 @@ for v, c in zip(version, pqt_min):
 import archive
 import sprites
 import spritelib as SLib
+from sprites_common import LoadBasics
 import common
 
 import globals_
@@ -4401,10 +4402,10 @@ def main():
     # Initialise spritelib
     SLib.OutlineColor = globals_.theme.color('smi')
     SLib.main()
-    sprites.LoadBasics()
 
     # Load the gamedef (including sprite image path, for which we need spritelib)
     LoadGameDef(setting('LastGameDef'))
+    LoadBasics()
 
     # Load remaining requirements
     LoadActionsLists()

@@ -10,6 +10,7 @@ from ui import GetIcon, createVertLine
 from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo, LoadZoneThemes
 from dirty import setting, setSetting
 from dialogs import SpriteUpgradeDialog
+from sprites_common import LoadBasics
 
 import globals_
 import spritelib as SLib
@@ -722,7 +723,7 @@ def LoadGameDef(name=None, dlg=None):
         if globals_.Area is not None:
             SLib.ImageCache.clear()
             SLib.SpriteImagesLoaded.clear()
-            sprites.LoadBasics()
+            LoadBasics()
 
             spriteClasses = globals_.gamedef.getImageClasses()
 
