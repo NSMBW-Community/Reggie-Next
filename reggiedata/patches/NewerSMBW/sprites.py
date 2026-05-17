@@ -1882,16 +1882,47 @@ class SpriteImage_Flipblock(SLib.SpriteImage_Static):  # 319
 class SpriteImage_FallingChestnut(SLib.SpriteImage_StaticMultiple):  # 320
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('ChestnutBrown', 'chestnut_brown.png')
-        SLib.loadIfNotInImageCache('ChestnutYellow', 'chestnut_yellow.png')
+        SLib.loadIfNotInImageCache('Goomba', 'goomba.png')
+        SLib.loadIfNotInImageCache('Spiny', 'spiny.png')
+        SLib.loadIfNotInImageCache('StarCoin', 'starcoin.png')
+
+        if 'ChestnutBrown' in ImageCache: return
+        for color in ('Brown', 'Yellow'):
+            ImageCache['Chestnut%s' % color] = SLib.GetImg('chestnut_%s.png' % color)
+
+            items = (
+                (4, 'Goomba',   ImageCache['Goomba']),
+                (4, 'Spiny',    ImageCache['Spiny']),
+                (4, 'Coin',     ImageCache['BlockContents'][1]),
+                (4, 'Fire',     ImageCache['BlockContents'][3]),
+                (3, 'StarCoin', ImageCache['StarCoin']),
+            )
+            for scaleF, itemName, overlayImage in items:
+                newPix = QtGui.QPixmap(ImageCache['Chestnut%s' % color])
+                painter = QtGui.QPainter(newPix)
+
+                w = overlayImage.width()
+                h = overlayImage.height()
+
+                painter.drawPixmap(113 - w, 119 - h, int(w * scaleF), int(h * scaleF), overlayImage)
+                del painter
+                ImageCache['Chestnut%s' % color + itemName] = newPix
 
     def dataChanged(self):
         yellow = self.parent.spritedata[5] & 1
         scale = (self.parent.spritedata[5] >> 4) & 0xF
+        item = self.parent.spritedata[3] & 0xF
+
         color = ("Brown", "Yellow")[yellow]
+        itemName = ('Goomba', 'Spiny', 'Coin', 'Fire', 'StarCoin')
+
+        if item >= len(itemName):
+            itemStr = ''
+        else:
+            itemStr = itemName[item]
 
         if ImageCache['ChestnutBrown'] is None: return
-        self.image = ImageCache['Chestnut%s' % color].scaled(*(
+        self.image = ImageCache['Chestnut%s' % color + itemStr].scaled(*(
             (45, 40),
             (68, 59),
             (92, 80),

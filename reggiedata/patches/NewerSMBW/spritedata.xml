@@ -2253,7 +2253,7 @@
       <entry value="14">15 Blocks</entry>
       <entry value="15">16 Blocks</entry>
     </list>
-    <list nybble="8.2-8.4" title="Contains" comment="There needs to be at least one Goomba, Spiny, or Star Coin somewhere in the level (or in the Loaded Sprites list) if selected as the contained object. Otherwise, the game will crash once the chestnut breaks open.">
+    <list nybble="8" title="Contains" comment="There needs to be at least one Goomba, Spiny, or Star Coin somewhere in the level (or in the Loaded Sprites list) if selected as the contained object. Otherwise, the game will crash once the chestnut breaks open." comment2="Values above 4 will crash the game.">
       <entry value="0">Goomba</entry>
       <entry value="1">Spiny</entry>
       <entry value="2">1 Coin</entry>
