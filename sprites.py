@@ -7932,7 +7932,7 @@ class SpriteImage_Toad(SLib.SpriteImage_Static):  # 432
             parent,
             1.5,
             ImageCache['Toad'],
-            (-1, -16),
+            (8, -16),
         )
 
     @staticmethod
