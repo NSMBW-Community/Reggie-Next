@@ -6853,7 +6853,7 @@
     <dependency notes="They will spawn from the sprite's placement and fall to the nearest ground under the sprite placement. They will destroy breakable and explodable blocks placed against the ground line and will come to a complete stop when encountering any other terrain. Following that, they start to stack up, making it preferred that they have a pit to fall through. They are half in the air, half embedded in the ground when interacting with slopes, but they will make use of them."/>
   </sprite> <!-- #472: Ice Floe Spawner -->
 
-  <sprite id="473" name="Floating Ice Floe Spawner" noyoshi="True" notes="This generates 'cylindrical' Ice Blocks of a random size that float across the surface of a liquid from the right to the left." files="lift_ice_ashiba.arc">
+  <sprite id="473" name="Floating Ice Floe Spawner" noyoshi="True" notes="This generates 'cylindrical' Ice Blocks of a random size that float across the surface of a liquid from the right to the left." advancednotes="They are hardcoded to sink exactly 64 tiles from the left edge of the Area." files="lift_ice_ashiba.arc">
     <dependency notes="They will spawn from the sprite's placement and fall or float to the liquid's surface. They will bob up and down with momentum and weight when they do this. They will move through all terrain. While it does function with Lava, it looks rather strange, thematically. Therefore it is only recommended to use this with Water and Poisoned Water. It does work with Moving Water, as well.">
       <suggested sprite="138"/>
       <suggested sprite="216"/>
