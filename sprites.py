@@ -4124,6 +4124,7 @@ class SpriteImage_Urchin(SLib.SpriteImage_Static):  # 193
             parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical
         ))
         self.aux[0].setPos(self.width * 0.75 - 12, self.height * 0.75 - 12)
+        self.aux[0].setIsBehindSprite(False)
 
     @staticmethod
     def loadImages():
@@ -4157,6 +4158,7 @@ class SpriteImage_MegaUrchin(SLib.SpriteImage_Static):  # 194
             parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical
         ))
         self.aux[0].setPos(self.width * 0.75 - 12, self.height * 0.75 - 12)
+        self.aux[0].setIsBehindSprite(False)
 
     @staticmethod
     def loadImages():
