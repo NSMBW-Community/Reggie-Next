@@ -2468,7 +2468,7 @@
   </sprite> <!-- #157: Big Brick Block -->
 
   <sprite id="158" name="Fire Snake" yoshinotes="While Yoshi cannot safely jump on this enemy, if he eats one he will spit out a fireball." notes="A hopping fire enemy that will also affect the lighting in a dark Zone." files="fire_snake.arc">
-    <checkbox nybble="12.4" title="Hides and Waits" comment="When enabled, the Fire Snake will be a stationary ball of fire until the player approaches it."/>
+    <checkbox nybble="12.4" title="Hides and Waits" comment="When enabled, the Fire Snake will be a stationary ball of fire until a player is within 6 blocks of it."/>
     <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #158: Fire Snake -->
 
