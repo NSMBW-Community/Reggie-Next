@@ -3638,6 +3638,8 @@ class SpriteImage_UnusedBlockPlatform2(SpriteImage_UnusedBlockPlatform):  # 160
     def dataChanged(self):
         self.width = ((self.parent.spritedata[4] & 0xF) + 1) * 16
         self.height = ((self.parent.spritedata[4] >> 4) + 1) * 16
+        self.xOffset = (self.parent.spritedata[3] & 0xF)
+        self.yOffset = ((self.parent.spritedata[3] >> 4) & 0xF)
         super().dataChanged()
 
 

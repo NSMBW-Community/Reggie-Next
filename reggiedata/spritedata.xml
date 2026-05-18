@@ -1891,20 +1891,17 @@
     <checkbox nybble="11.4" title="Always Despawn" comment="When enabled, the Boo will despawn when it's off screen regardless of whether it's moving. When disabled, the Boo will only despawn if it's off-screen and not moving."/>
   </sprite> <!-- #131: Boo -->
 
-  <sprite id="132" name="(Unused) Path Controlled TEST Platform 1" notes="An untextured unused test platform that is controlled by Path data. Very useful when trying to visually test the Path you are creating, as you can move your starting Entrance and change the Starting Node to test each individual segment." files="test_lift.arc">
-    <dependency notes="A Use Paths Movement Controller is required to make use of this test platform.">
-      <required sprite="159"/>
-    </dependency>
-    <value nybble="11" title="Height" comment="This determines the height of the test platform."/>
-    <value nybble="12" title="Width" comment="This determines the width of the test platform."/>
-    <value nybble="7" title="Path Movement ID" comment="Match the Path Movement ID with Sprite 159 in order to use this test platform." idtype="Path Movement"/>
-    <value nybble="5-6" title="Starting Node" comment="This determines which Node along the Path the test platform will start on."/>
-    <list nybble="8.3-8.4" title="At the End..." comment="This determines what the behavior of the test platform will be when it reaches the final Node of the Path it is travelling.">
+  <sprite id="132" name="(Unused) Path Controlled Platform" notes="An untextured and unused test platform that is controlled by Path data. The platform will move in an arc-like shape when changing directions, instead of directly following the Path lines." files="test_lift.arc">
+    <value nybble="11" title="Height" comment="This determines the height of the platform."/>
+    <value nybble="12" title="Width" comment="This determines the width of the platform."/>
+    <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the platform will be linked to." idtype="Path"/>
+    <value nybble="5-6" title="Starting Node" comment="This determines which Node along the Path the platform will start on."/>
+    <list nybble="8.3-8.4" title="Ending Behavior" comment="This determines the behavior of the platform when it reaches the final Node of the Path." comment2="A value of 3 is possible, however it does not have any defined behavior, and will have unpredictable results in-game.">
       <entry value="0">Stop</entry>
-      <entry value="1">Jump to Node</entry>
+      <entry value="1">Return to Node and Continue</entry>
       <entry value="2">Fall</entry>
     </list>
-    <value nybble="9-10" title="&quot;Jump to&quot; Node" comment="This determines which Node along the Path the test platform will return to after reaching the end of the Path." requirednybble="8.3-8.4" requiredval="1"/> <!-- Appears if Jump to Node is selected -->
+    <value nybble="9-10" title="Return Node" comment="This determines which Node along the Path the platform will return to after reaching the end of the Path. The platform will continue along the Path beginning from this Node." requirednybble="8.3-8.4" requiredval="1"/> <!-- Appears if Jump to Node is selected -->
   </sprite> <!-- #132: (Unused) Path Controlled TEST Platform 1 -->
 
   <sprite id="133" name="Wobble Rock Platform" noyoshi="True" notes="An 'unstable' platform that requires the player to balance it once touching it in order to keep it from completely falling." files="lift_guraIwa.arc">
@@ -2481,30 +2478,24 @@
     <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the objects will be linked to." idtype="Path"/>
     <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the objects will start moving from." idtype="Path Node"/>
     <dualbox nybble="8.1" title1="Haunted Effect" title2="Exact Movement" comment="This determines if the objects following this path will obtain their movement properties from a complex combination of previous nodes and the next node, or from the next node only."/>
-    <list nybble="8.3-8.4" title="At the end..." comment="This determines if the linked objects will stop at the end node of the Path or if they will loop (from a specifc node)" comment2="Stops: The objects stop moving.[br]Loops: The objects follow a straight line to the node indicated by 'Starting Node (Loop)', and then continue from there.[br]Stops (Intended Drop): A vertical acceleration of -0.15 is applied until the terminal velocity is reached. Note that this does not actually drop the objects, because the terminal velocity of this sprite has been set to 0.[br]???: Seems like unintended behaviour - the next node's data is read out of bounds. This could be the data of the next path node, or just garbage data. Depending on how the path data is stored in the level archive, this setting will connect all final nodes of path x with the initial node of path (x+1). The final node of the final path will connect with an imaginary path node at the top left of the canvas. However, it's best not to rely on this behaviour.">
+    <list nybble="8.3-8.4" title="Ending Behavior" comment="This determines if the linked objects will stop at the end node of the Path or if they will loop (from a specifc node)" comment2="A value of 3 is possible, however it does not have any defined behavior, and will have unpredictable results in-game.">
       <entry value="0">Stops</entry>
-      <entry value="1">Goes back to specific node</entry>
-      <entry value="2">Stops (Intended Drop)</entry>
-      <entry value="3">Continues at next path (Glitchy)</entry>
+      <entry value="1">Return to Node and Continue</entry>
+      <entry value="2">Fall</entry>
     </list>
-    <value nybble="10" title="Starting Node (Loop)" comment="When the linked objects reach the end of the path, they will continue going in a straight line to this Node." requirednybble="8.3-8.4" requiredval="1" idtype="Path Node"/>
+    <value nybble="10" title="Return Node" comment="When the linked objects reach the end of the path, they will continue going in a straight line to this Node." requirednybble="8.3-8.4" requiredval="1" idtype="Path Node"/>
   </sprite> <!-- #159: Movement Controller - Uses Paths" -->
 
-  <!-- Sinks 3 blocks before it begins moving? -->
-  <sprite id="160" name="(Unused) Path Controlled TEST Platform 2" notes="An untextured unused test platform that is controlled by Path data. Very useful when trying to visually test the Path you are creating, as you can move your starting Entrance and change the Starting Node to test each individual segment. DATA FOR THIS SPRITE MAY BE COMPLETELY WRONG." files="test_lift.arc">
-    <dependency notes="A Use Paths Movement Controller is required to make use of this test platform.">
+  <sprite id="160" name="(Unused) Path Movement Controlled Platform" notes="An untextured and unused test platform that is controlled by Path data." files="test_lift.arc">
+    <dependency notes="A Path Movement Controller is required to make use of this platform. The platform will move based on the position of this sprite, the Movement Controller, and the Path Node, so it's recommended to place both sprites overtop the starting Node.">
       <required sprite="159"/>
     </dependency>
-    <value nybble="9" title="Height" comment="This determines the height of the test platform."/>
-    <value nybble="10" title="Width" comment="This determines the width of the test platform."/>
-    <value nybble="11" title="Path Movement ID" comment="Match the Path Movement ID with Sprite 159 in order to use this test platform." idtype="Path Movement"/>
-    <value nybble="5-6" title="Starting Node" comment="This determines which Node along the Path the test platform will start on."/>
-    <list nybble="8.3-8.4" title="At the End..." comment="This determines what the behavior of the test platform will be when it reaches the final Node of the Path it is travelling.">
-      <entry value="0">???</entry>
-      <entry value="1">???</entry>
-      <entry value="2">???</entry>
-      <entry value="3">???</entry>
-    </list>
+    <value nybble="9" title="Height" comment="This determines the height of the platform."/>
+    <value nybble="10" title="Width" comment="This determines the width of the platform."/>
+    <value nybble="8" title="X Offset" comment="This will shift the X position of the platform right. The amount it is offset by is in units, not blocks."/>
+    <value nybble="7" title="Y Offset" comment="This will shift the Y position of the platform down. The amount it is offset by is in units, not blocks."/>
+    <value nybble="11" title="Path Movement ID" comment="Match the Path Movement ID with Sprite 159 in order to use this platform." idtype="Path Movement"/>
+    <checkbox nybble="6" title="Increase Jump Speed" comment="If enabled, players who jump off of the platform will have slightly increased jumping speed, allowing them to jump further."/>
   </sprite> <!-- #160: (Unused) Path Controlled TEST Platform 2 -->
 
   <sprite id="161" name="Pipe Bubbles" notes="A stream of bubbles that pushes the player away when underwater, as well as push a 'spin-jumped' Propeller power-up. It will also influence a normal spin jump for extra height." files="waterbubble.arc">
