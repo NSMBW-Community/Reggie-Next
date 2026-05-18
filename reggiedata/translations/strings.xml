@@ -322,8 +322,6 @@
 		<string id="16">Loading entrance names...</string>
 		<string id="17">Error</string>
 		<string id="18">An error occurred while attempting to load this game patch. It will now be unloaded. Here's the specific error:[br][error]</string>
-		<string id="19">Add a Reggie Patch Folder...</string>
-		<string id="20">Creates a symlink in the /reggiedata/patches folder using add_reggie_patch</string>
 	</section>
 	<section id="InfoDlg">
 		<string id="0">Level Information</string>

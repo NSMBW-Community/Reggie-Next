@@ -371,8 +371,6 @@ class ReggieTranslation:
                 16: 'Loading entrance names...',
                 17: 'Error',
                 18: 'An error occurred while attempting to load this game patch. It will now be unloaded. Here\'s the specific error:[br][error]',
-                19: 'Add a Reggie Patch Folder...',
-                20: 'Creates a symlink in the /reggiedata/patches folder using add_reggie_patch',
             },
             'InfoDlg': {
                 0: 'Level Information',

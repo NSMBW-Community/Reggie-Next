@@ -58,7 +58,7 @@ FINAL_APP_BUNDLE_NAME = FULL_PROJECT_NAME + '.app'
 ########################################################################
 
 if sys.platform == 'win32':
-    platform = 'win64'
+    platform = 'windows'
 elif sys.platform == 'darwin':
     platform = 'macos'
 else:
