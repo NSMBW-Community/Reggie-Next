@@ -2419,6 +2419,7 @@
     <checkbox nybble="9.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Star Coin placing it further behind other sprites."/>
     <value nybble="1.2-2.4" title="Target Event ID" comment="When the Star Coin is collected, the Target Event ID will be activated." idtype="Target Event"/>
     <dualbox nybble="7.4" title1="Triggers a Timed Event" title2="Permanently activates Target Event" comment="This determines if the Target Event is timed or permanent. Timed events will pause the music and replace it with ticking." requirednybble="1.2-2.4"/>
+    <checkbox nybble="8" title="Shrink bottom hitbox by half a tile"/> <!-- Any non-zero value -->
   </sprite> <!-- #155: Line Controlled Star Coin -->
 
   <sprite id="156" name="Red Coin Ring" notes="A glowing red ring that is intended to be used to spawn sets of 8 red coins, and to control the item that the player will receive after collection them." files="red_ring.arc">
@@ -5824,7 +5825,7 @@
     <checkbox nybble="9.4" title="Place Behind Chainlink Fence" comment="When enabled, the Star Coin can only be collected if the player is on the reverse side of a Chainlink Fence."/>
     <value nybble="1.2-2.4" title="Target Event ID" comment="When the Star Coin is collected, the Target Event ID will be activated." idtype="Target Event"/>
     <dualbox nybble="7.4" title1="Triggers a Timed Event" title2="Permanently activates Target Event" comment="This determines if the Target Event is timed or permanent. Timed events will pause the music and replace it with ticking." requirednybble="1.2-2.4"/>
-    <value nybble="8" title="Unknown Value 8" advanced="True" advancedcomment="ASM shows Nybble 8 might affect something."/>
+    <checkbox nybble="8" title="Shrink bottom hitbox by half a tile"/> <!-- Any non-zero value -->
   </sprite> <!-- #389: Bolt Controlled Star Coin -->
 
   <sprite id="390" name="Bolt Controlled Coin" notes="A standard Coin variant that moves when a matching Bolt is spun.">
