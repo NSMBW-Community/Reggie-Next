@@ -79,6 +79,11 @@ TilesetsAnimating = False
 ViewActions = None
 ZoneThemeValues = None
 
+# Config settings
+DispConnectedPipeDir = False
+SpecialEventSpriteID = 0
+AllowSizeHacks = False
+
 app = None
 firstLoad = True
 gamedef = None

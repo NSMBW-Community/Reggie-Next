@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config>
+    <option key="DispConnectPipeDir" value="false" /> <!-- Determines if the Exit Direction setting is visible. Only exists in NewerSMBW's fix for connected pipes. -->
+    <option key="SpecialEventID"     value="0" />     <!-- Sprite ID for the "Special Event" sprite, used when created by the Sprite Resizer dialog -->
+    <option key="AllowSizeHacks"     value="false" /> <!-- Determines if the Sprite Resizer dialog is available -->
+</config>

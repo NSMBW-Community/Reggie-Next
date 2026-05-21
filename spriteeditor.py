@@ -1706,7 +1706,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.resetButton.setVisible(not globals_.HideResetSpritedata and (sprite is None or bool(sprite.fields)))
 
         # show size stuff
-        self.sizeButton.setVisible(sprite is not None and sprite.size)
+        self.sizeButton.setVisible(sprite is not None and sprite.size and globals_.AllowSizeHacks)
 
         # Nothing is selected, so no comments should appear
         self.com_box.setVisible(False)
@@ -2225,6 +2225,12 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         Handles the 'resize' button being clicked
         """
+        # In the event that the user somehow is able to click this when SizeHacks are disabled,
+        # show a generic message saying the feature is unavailable.
+        if not globals_.AllowSizeHacks:
+            QtWidgets.QMessageBox.warning(None, globals_.trans.string('ResizeChoiceDlg', 11), globals_.trans.string('ResizeChoiceDlg', 12))
+            return
+
         dlg = ResizeChoiceDialog(self.spritetype)
 
         # only contine if the user pressed "OK"
@@ -2689,13 +2695,13 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
     def getSpecialEventAvailability(self):
         """
-        Find Special Event [246] and then check if it has resize set.
+        Find Special Event and then check if it has resize set.
         Returns a list of (slot, sprite) pairs, where slot = 2 means it is a global
         resize.
         """
         slots = []
         for sprite in globals_.Area.sprites:
-            if sprite.type != 246:
+            if sprite.type != globals_.SpecialEventSpriteID:
                 continue
 
             type = sprite.spritedata[5] & 0xF
@@ -2749,7 +2755,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
     def placeSpecialResizeEvent(self):
         """
-        Places a Special Event [246] and sets the settings so the correct slot.
+        Places a Special Event and sets the settings so the correct slot.
         """
         slot = self.buttongroup.checkedId()
         data = bytearray(8)
@@ -2760,7 +2766,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         x = globals_.mainWindow.selObj.objx + 16
         y = globals_.mainWindow.selObj.objy
-        special_event_id = 246
+        special_event_id = globals_.SpecialEventSpriteID
 
         if globals_.mainWindow.CreateSprite(x, y, special_event_id, data) is not None:
             globals_.mainWindow.scene.update()

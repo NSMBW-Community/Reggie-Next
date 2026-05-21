@@ -1030,6 +1030,7 @@ class ReggieTranslation:
                 9: 'Global',
                 10: 'None',
                 11: 'Sprite Resizer',
+                12: 'This feature is not available for the current game patch.',
             },
             'SpriteUpgradeDlg': {
                 0: 'Sprite Upgrader',

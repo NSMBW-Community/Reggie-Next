@@ -981,6 +981,7 @@
 		<string id="9">Global</string>
 		<string id="10">None</string>
 		<string id="11">Sprite Resizer</string>
+		<string id="12">This feature is not available for the current game patch.</string>
 	</section>
 	<section id="SpriteUpgradeDlg">
 		<string id="0">Sprite Upgrader</string>

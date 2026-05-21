@@ -7,7 +7,7 @@ from xml.etree import ElementTree as etree
 from PyQt6 import QtWidgets, QtCore, QtGui
 
 from ui import GetIcon, createVertLine
-from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo, LoadZoneThemes
+from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo, LoadZoneThemes, LoadConfig
 from dirty import setting, setSetting
 from dialogs import SpriteUpgradeDialog
 from sprites_common import LoadBasics
@@ -199,6 +199,7 @@ class ReggieGameDefinition:
         self.files = {
             'bga': gdf(os.path.join('reggiedata', 'bga.txt'), False),
             'bgb': gdf(os.path.join('reggiedata', 'bgb.txt'), False),
+            'config': gdf(os.path.join('reggiedata', 'config.xml'), False),
             'entrancetypes': gdf(os.path.join('reggiedata', 'entrancetypes.txt'), False),
             'levelnames': gdf(os.path.join('reggiedata', 'levelnames.xml'), False),
             'music': gdf(os.path.join('reggiedata', 'music.txt'), False),
@@ -649,6 +650,7 @@ def LoadGameDef(name=None, dlg=None):
         LoadBgBNames(True)
         LoadZoneThemes(True)
         LoadMusicInfo(True)  # reloads the music names
+        LoadConfig()
 
         if dlg: dlg.setValue(3)
 

@@ -173,9 +173,9 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.pathID.setValue(ent.entpath)
         self.pathIDLabel.setVisible(ent.enttype in self.CanUseFlag8 and ((ent.entsettings & 8) != 0))
 
-        self.cpDirection.setVisible(ent.enttype in self.CanUseFlag8 and ((ent.entsettings & 8) != 0))
+        self.cpDirection.setVisible(ent.enttype in self.CanUseFlag8 and ((ent.entsettings & 8) != 0) and globals_.DispConnectedPipeDir)
         self.cpDirection.setCurrentIndex(ent.cpdirection)
-        self.cpDirectionLabel.setVisible(ent.enttype in self.CanUseFlag8 and ((ent.entsettings & 8) != 0))
+        self.cpDirectionLabel.setVisible(ent.enttype in self.CanUseFlag8 and ((ent.entsettings & 8) != 0) and globals_.DispConnectedPipeDir)
         self.cpHorzLine.setVisible(ent.enttype in self.CanUseFlag8 and ((ent.entsettings & 8) != 0))
 
         self.activeLayer.setCurrentIndex(ent.entlayer)
@@ -216,8 +216,8 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.connectedPipeReverseCheckbox.setVisible(i in self.CanUseFlag8 and ((self.ent.entsettings & 8) != 0))
         self.pathIDLabel.setVisible(i and ((self.ent.entsettings & 8) != 0))
         self.pathID.setVisible(i and ((self.ent.entsettings & 8) != 0))
-        self.cpDirection.setVisible(self.ent.enttype in self.CanUseFlag8 and ((self.ent.entsettings & 8) != 0))
-        self.cpDirectionLabel.setVisible(self.ent.enttype in self.CanUseFlag8 and ((self.ent.entsettings & 8) != 0))
+        self.cpDirection.setVisible(self.ent.enttype in self.CanUseFlag8 and ((self.ent.entsettings & 8) != 0) and globals_.DispConnectedPipeDir)
+        self.cpDirectionLabel.setVisible(self.ent.enttype in self.CanUseFlag8 and ((self.ent.entsettings & 8) != 0) and globals_.DispConnectedPipeDir)
         self.cpHorzLine.setVisible(self.ent.enttype in self.CanUseFlag8 and ((self.ent.entsettings & 8) != 0))
         self.forwardPipeCheckbox.setVisible(i in self.CanUseFlag4)
         if self.UpdateFlag: return
@@ -290,8 +290,8 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.connectedPipeReverseCheckbox.setVisible(checked)
         self.pathID.setVisible(checked)
         self.pathIDLabel.setVisible(checked)
-        self.cpDirection.setVisible(checked)
-        self.cpDirectionLabel.setVisible(checked)
+        self.cpDirection.setVisible(checked and globals_.DispConnectedPipeDir)
+        self.cpDirectionLabel.setVisible(checked and globals_.DispConnectedPipeDir)
         self.cpHorzLine.setVisible(checked)
         if self.UpdateFlag: return
         SetDirty()

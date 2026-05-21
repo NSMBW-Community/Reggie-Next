@@ -409,6 +409,26 @@ def LoadZoneThemes(reload_=False):
             globals_.ZoneThemeValues = [x.strip() for x in f]
 
 
+def LoadConfig():
+    """
+    Ensures that gamedef-specific config info is loaded
+    """
+    for path in getResourcePaths('config'):
+        tree = ElementTree.parse(path)
+
+        for node in tree.getroot():
+            if node.tag.lower() == 'option':
+                opt = node.attrib['key']
+                value = node.attrib['value']
+
+                if opt == 'DispConnectPipeDir':
+                    globals_.DispConnectedPipeDir = value.strip().lower() == 'true'
+                elif opt == 'SpecialEventID':
+                    globals_.SpecialEventSpriteID = int(value)
+                elif opt == 'AllowSizeHacks':
+                    globals_.AllowSizeHacks = value.strip().lower() == 'true'
+
+
 class SpriteDefinition:
     """
     Stores and manages the data info for a specific sprite

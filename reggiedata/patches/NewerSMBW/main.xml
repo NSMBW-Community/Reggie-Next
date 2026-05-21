@@ -7,12 +7,10 @@
     <folder name="sprites" path="sprites" />
     <folder name="external" path="external" />
 
-    <!-- Background imports -->
-    <!-- None yet... -->
-
     <!-- Files -->
     <file name="bga" path="bga.txt" />
     <file name="bgb" path="bgb.txt" />
+    <file name="config" path="config.xml" />
     <file name="levelnames" path="levelnames.xml" patch="False" />
     <file name="music" path="music.txt" patch="False" />
     <file name="spritedata" path="spritedata.xml" />
