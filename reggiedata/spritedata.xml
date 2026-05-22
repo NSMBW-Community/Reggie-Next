@@ -6951,8 +6951,8 @@
   </sprite> <!-- #480: Morton's Skewer -->
 
   <sprite id="481" name="(Unused) Final Boss - Rubble Block" notes="These are the decorative blocks that fall from the ceiling when completing the final Bowser Boss fight. The sprite is not directly used, the game instead spawns the actor manually.">
-    <dependency notes="While it can be placed, it only has two variants, has no collision, and requires Bowser in the level in order to load its model">
-      <required sprite="419"/>
+    <dependency notes="While it can be placed, it only has two variants and lacks collision. Additionally, [419] Bowser must be present in the Loaded Sprites list (or in the level) for its model to be loaded.">
+      <resource sprite="419"/>
     </dependency>
     <list nybble="12" title="Size" comment="This determines the size of the block." comment2="Higher values crash the game.">
       <entry value="0">2x1 Block</entry>
