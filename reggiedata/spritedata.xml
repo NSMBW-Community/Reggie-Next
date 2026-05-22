@@ -6211,10 +6211,21 @@
   <sprite id="410" name="Incomplete Sprite - 'Ac_Block_Group'" notes="Does nothing.">
   </sprite> <!-- #410: Incomplete Sprite - 'Ac_Block_Group' -->
 
-  <sprite id="411" name="(Unused) Toad House Minigame - Lives Balloon" notes="An unused version of sprite 412 and has no purpose." files="MG_balloon.arc">
+  <sprite id="411" name="(Unused) Toad House Minigame - Lives Balloon" notes="The balloon seen in 1-Up Blast minigames. This sprite is not used directly, it is instead spawned automatically by [412] Toad House Minigame - Lives Balloon." files="MG_balloon.arc">
+    <dependency notes="It can be placed with or without Line objects. It requires both a Toad Cannon and a Cannon Minigame Controller in order to function properly.">
+      <required sprite="202"/>
+      <required sprite="429"/>
+    </dependency>
+    <list nybble="9" title="Number of Lives">
+      <entry value="0">1 Life</entry>
+      <entry value="1">2 Lives</entry>
+      <entry value="2">3 Lives</entry>
+      <entry value="3">4 Lives</entry>
+    </list>
+    <checkbox nybble="11.4" title="Alternate Idle Animation" comment="When enabled, the balloon will use the alternate idle animation for balloons that do not have an attached handle."/>
   </sprite> <!-- #411: (Unused) Toad House Minigame - Lives Balloon -->
 
-  <sprite id="412" name="Toad House Minigame - Lives Balloon" notes="A colored balloon with a number on it that will award extra lives when shot by a Toad Cannon." files="MG_balloon.arc">
+  <sprite id="412" name="Toad House Minigame - Lives Balloon" notes="A colored balloon with a number on it that will award extra lives when shot by a Toad Cannon." advancednotes="This sprite is actually just the handle that manages following along the Line objects, the balloon itself is sprite [411] which is automatically spawned by this sprite." files="MG_balloon.arc">
     <dependency notes="It can be placed with or without Line objects. It requires both a Toad Cannon and a Cannon Minigame Controller in order to function properly.">
       <required sprite="202"/>
       <required sprite="429"/>
