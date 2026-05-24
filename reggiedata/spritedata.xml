@@ -802,17 +802,18 @@
   </sprite> <!-- #62: Spinning Fire Bar -->
 
   <sprite id="63" name="Spiked Ball" notes="A loose Spiked Ball that will also destroy certain types of blocks." files="iron_ball.arc">
-    <dualbox nybble="11.4" title1="Starts Rolling Left" title2="Starts Rolling Right" comment="This determines which direction the Spiked Ball will begin rolling in."/>
-    <list nybble="12.3-12.4" title="Speed" comment="This determines how fast the Spiked Ball rolls.">
+    <dualbox nybble="11.4" title1="Starts Rolling Left" title2="Starts Rolling Right" comment="This determines which direction the Spiked Ball will begin rolling in." requirednybble="5.3" requiredval="0"/>
+    <list nybble="12.3-12.4" title="Speed" comment="This determines how fast the Spiked Ball rolls." requirednybble="5.3" requiredval="0">
       <entry value="0">Stopped</entry>
       <entry value="1">Slow</entry>
       <entry value="2">Medium</entry>
       <entry value="3">Fast</entry>
     </list>
-    <list nybble="9.4" title="Speed After Hitting Wall" comment="This determines if the Spiked Ball will slow down after hitting a wall.">
+    <list nybble="9.4" title="Speed After Hitting Wall" comment="This determines if the Spiked Ball will slow down after hitting a wall." requirednybble="5.3" requiredval="0">
       <entry value="0">Really Slow</entry>
       <entry value="1">Same Momentum</entry>
     </list>
+    <checkbox nybble="5.3" title="Spawned by Giant Ice Block" comment="When enabled, the Spiked Ball will lack collision and cannot be moved." comment2="This is enabled on all Spiked Balls created by [280] Giant Ice Block."/>
   </sprite> <!-- #63: Spiked Ball -->
 
   <sprite id="64" name="Effect - Thick Fog" notes="This adds a thick rolling fog effect to the level that can be used with or without a Location ID.&lt;br&gt;The fog will make Non-location Lava/Poisoned Water function just like Water if it is added into the level after the liquids. You can avoid this by adding the fog and then re-adding the Lava/Poisoned Water, or by placing the liquids in their own separate locations." files="obj_envfog.arc">
@@ -4211,10 +4212,17 @@
   </sprite> <!-- #279: Incomplete Sprite - 'Ac_Lift_Ice_Spring' -->
 
   <sprite id="280" name="Giant Ice Block" notes="A large 4x4 ice block that can be broken with an explosion." files="lift_icebox.arc;bombhei.arc;iron_ball.arc">
-    <list nybble="12.3-12.4" title="Frozen Inside" comment="This determines what type of object is frozen inside the block." comment2="Bob-Omb ice blocks will explode to other nearby ice blocks.">
+    <list nybble="12" title="Frozen Inside" comment="This determines what type of object is frozen inside the block." comment2="Bob-Omb ice blocks will explode to other nearby ice blocks.">
       <entry value="0">Nothing</entry>
       <entry value="1">Bob-Omb</entry>
       <entry value="2">Spiked Ball</entry>
+    </list>
+    <dualbox nybble="10.4" title1="Starts Rolling Left" title2="Starts Rolling Right" comment="This determines which direction the Spiked Ball will begin rolling in." requirednybble="12" requiredval="2"/>
+    <list nybble="11.3-11.4" title="Speed" comment="This determines how fast the Spiked Ball rolls." requirednybble="12" requiredval="2">
+      <entry value="0">Stopped</entry>
+      <entry value="1">Slow</entry>
+      <entry value="2">Medium</entry>
+      <entry value="3">Fast</entry>
     </list>
   </sprite> <!-- #280: Giant Ice Block -->
 
