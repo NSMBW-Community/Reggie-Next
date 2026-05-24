@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Version 2020-02-16 -->
 <!-- &lt; = < -->
 <!-- &gt; = > -->
 <!-- $amp; = & -->
@@ -7,26 +6,45 @@
 <!-- &lt;font color=&quot;COLOR&quot;&gt;TEXT TEXT TEXT.&lt;/font&gt; = Colored Text -->
 <!-- &lt;bgt;TEXT TEXT TEXT.&lt;/b&gt; = Bold Text -->
 <!-- &lt;br&gt; = New Line -->
-<!-- Opinion on each dualbox to determine if it should be dualbox or if it should revert to being a list or checkbox. -->
+
 <!-- idtypes: Star Set, Path Movement, Rotation, Two Way Line, Water Ball, Mushroom, Group, Bolt, Target Event, Triggering Event, Collection, Location, Physics, Message, Path, Path Movement, Red Coin, Hill, Stretch, Ray, Coaster, Bubble Cannon, Burner, Wiggling, Panel, Colony -->
 <!-- idtypes - Sprites with multiple Target Events or Triggering Events may need a secondary idtype, so that the primary Target/Triggering can be displayed in the sprite's display box. -->
 <!-- idtypes - Sprites with idtypes should have their idtype displayed within their blue box, usually in the lower right corner. (primary) Target Event should usually be in the lower right, and Triggering Event should usually be in the lower left. Secondary values like AND controller's second+ Triggering Event, and IF controller's secondary Location ID should be displayed in the top right corner or otherwise not displayed at all. -->
-<!-- Sample sprite with full settings -->
-<!-- <sprite id="#" name="Sprite Name" sizehacks="True" phonebook="Actors/Effects" noyoshi="True" yoshinotes="Talk about how it interacts with Yoshi. Advanced Only." notes="Talk about how to use this sprite in a basic sense." advancednotes="Talk about how to use this sprite in an advanced sense. Advanced Only."> -->
-<!--   <dependency notes="Talk about the dependencies."> -->
-<!--     <required sprite="#" /> -->
-<!--     <suggested sprite="#" /> -->
-<!--   </dependency> -->
-<!--   <checkbox bit="#" title="What it does when checked." comment="Information about it." comment2="Another bit of commentary." advanced="True" advancedcomment="Wordy complicated information about it. Advanced Only." idtype="ID Type etc." requiredbit="#-#, #-#" requiredval="#-#, #-#" /> Checkbox is ALWAYS bit - EXCEPT: #38, IF Controller, when setting 'ignore player/enemy'... -->
-<!--   <dualbox bit="#" title1="What it does when unchecked." title2="What it does when checked." comment="All of that stuff above here is an option." /> -->
-<!--   <value bit="#-# or" nybble="# or" multibit="#-#, #-#" title="What it's for." comment="Etc." /> -->
-<!--   <list bit="#-# or" nybble="#" title="What it's for." comment="Etc."> -->
-<!--     <entry value="#">Name</entry> -->
-<!--   </list> -->
-<!--   <multidualbox bit="#-#" title="What it's for." comment="Etc." /> -->
-<!-- </sprite> -->
-<!-- Sizehacks Check - 63, 98, 113, 156, 357 -->
-<!-- Stopped after Line 7046 / 10755 (#230) -->
+
+<!-- Nybble format:
+  Nybble 1-2   : Triggering Event ID (usually)
+  Nybble 3-4   : Target Event ID (usually)
+  Nybble 5-12  : General sprite settings
+
+  Nybble 13/14 : Sprite's Zone ID, hidden from user and cannot be modified
+  Nybble 15/16 : Sprites's Layer ID, can be modified but support is not guaranteed
+
+  In the spritedata, nybbles can be specified in multiple ways:
+   1. nybble="8"        : Setting covers entire nybble
+   2. nybble="5.4"      : Setting covers a single bit
+   3. nybble="6-8"      : Setting covers range of nybbles
+   4. nybble="9.2-10.4" : Setting covers range of bits (doesn't have to cover multiple nybbles)
+-->
+
+<!-- Sample sprite with full settings:
+  <sprite id="#" name="Sprite Name" sizehacks="True" noyoshi="True" yoshinotes="Talk about how it interacts with Yoshi." notes="Talk about how to use this sprite in a basic sense." advancednotes="Talk about how to use this sprite in an advanced sense." files="Files loaded by the sprite;Semi-colon serves as a line break">
+    <dependency notes="Talk about the dependencies.">
+      <required sprite="#"/>
+      <resource sprite="#"/>
+      <suggested sprite="#"/>
+    </dependency>
+    <checkbox nybble="#" title="What it does when checked." comment="Information about it." comment2="Another bit of commentary." advancedcomment="Wordy complicated information about it." idtype="ID Type etc." requirednybble="#-#, #-#" requiredval="#-#, #-#" />
+    <dualbox nybble="#" title1="What it does when unchecked." title2="What it does when checked." comment="All of that stuff above here is an option."/>
+    <value nybble="#" title="What it's for." comment="Etc."/>
+    <list nybble="#" title="What it's for." comment="Etc.">
+      <entry value="#">Name</entry>
+    </list>
+    <spritetex nybble="#" title="What it's for." comment="Etc.">
+      <entry value="#">Name</entry>
+    </spritetex>
+    <multidualbox nybble="#-#" title1="What it does when untoggled." title2="What it does when toggled." comment="Etc."/>
+  </sprite>
+-->
 
 <sprites>
   <sprite id="10" name="(Unused) Large Object Thrower" notes="Used in the Newer Final Boss Fight. This is spawned through Captain Bowser's code. It will throw a larger version of the Projectile at a 45° arc. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is best made use of by spawning it through the Actor Spawner. Projectiles have a very high velocity. It will spawn the object around 5 blocks above the placement of the sprite." files="choropoo.arc;koopa_clown_bomb.arc;dossun.arc;KoopaShip.arc">
