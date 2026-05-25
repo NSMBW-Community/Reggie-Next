@@ -238,7 +238,7 @@ class SpriteImage_ClownCar(SLib.SpriteImage_Static):  # 13
             parent,
             1.5,
             ImageCache['ClownCar'],
-            (16, -28),
+            (-20, -36),
         )
 
     @staticmethod
