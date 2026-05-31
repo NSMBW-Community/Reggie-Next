@@ -6591,7 +6591,7 @@ class SpriteImage_BigShell(SLib.SpriteImage_StaticMultiple):  # 341
         super().dataChanged()
 
 
-class SpriteImage_Muncher(SLib.SpriteImage_StaticMultiple):  # 342    
+class SpriteImage_Muncher(SLib.SpriteImage_StaticMultiple):  # 342
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Muncher', 'muncher.png')
@@ -7867,7 +7867,7 @@ class SpriteImage_Jellybeam(SLib.SpriteImage_Static):  # 425
             parent,
             1.5,
             ImageCache['Jellybeam'],
-            (-6, 0),
+            (-8.67, -8),
         )
 
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
@@ -7954,7 +7954,7 @@ class SpriteImage_FloatingQBlock(SLib.SpriteImage_StaticMultiple):  # 433
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('FloatingQBlock', 'floating_qblock.png')
-    
+
         items = (
             ('Coin',   ImageCache['BlockContents'][1]),
             ('Fire',   ImageCache['BlockContents'][3]),
