@@ -3581,18 +3581,18 @@
   <sprite id="232" name="Mecha-Koopa" noyoshi="True" notes="A mechanical wind-up Koopa that can be picked up after being stomped on and carried around like a shell." files="mecha_koopa.arc">
   </sprite> <!-- #232: Mecha-Koopa -->
 
-  <sprite id="233" name="Lighting - Bulber" notes="An underwater fish that will light up the area nearby him if the lights are off." files="ankou.arc">
+  <sprite id="233" name="Lighting - Bulber" notes="An anglerfish that will light up the area near him." files="ankou.arc">
     <dependency notes="Bulbers do not require non-location water in order to spawn.">
       <suggested sprite="138"/>
     </dependency>
-    <list nybble="12.3-12.4" title="Movement">
-      <entry value="0">Moves Towards Player's Spawn Position</entry>
-      <entry value="1">Moves Towards Player</entry>
+    <list nybble="12.3-12.4" title="Movement" comment="This determines the movement pattern of the Bulber." comment2="Values 0 and 2 will always start facing towards the player. Value 1 always starts facing right." advancedcomment="While Value 1 works as intended, the Bulber's rotation snaps abruptly once it is finished changing direction.">
+      <entry value="0">Swims Straight (Towards Player)</entry>
+      <entry value="1">Swims Left / Right</entry>
       <entry value="2">Floats in Place</entry>
       <!-- entry value="3">Towards Player</entry --> <!-- ASM may or may not suggest it's different in some way? -->
     </list>
     <checkbox nybble="11.4" title="Half Movement Speed" comment="When enabled, the Bulber will move at half of its normal speed."/>
-    <value nybble="10" title="Distance" comment="This determines how far to each side of its spawn that the Bulber will move before turning around." requirednybble="12.4"/> <!-- Only appears if [Movement] is set to Moves Towards Player -->
+    <value nybble="10" title="Distance" comment="This determines how far to each side of its spawn that the Bulber will move before turning around." requirednybble="12.4"/> <!-- Only appears if [Movement] is set to Swims Left / Right -->
   </sprite> <!-- #233: Bulber -->
 
   <sprite id="234" name="Effect - Cloud Area" notes="This adds decorative patches of cloud cover with different properties. Most modes required a Location ID, but some do not." files="env_mist.arc">

@@ -4857,20 +4857,37 @@ class SpriteImage_MechaKoopa(SLib.SpriteImage_Static):  # 232
         SLib.loadIfNotInImageCache('MechaKoopa', 'mechakoopa.png')
 
 
-class SpriteImage_Bulber(SLib.SpriteImage):  # 233
+class SpriteImage_Bulber(SLib.SpriteImage_StaticMultiple):  # 233
     def __init__(self, parent):
-        super().__init__(parent, 1.5)
+        super().__init__(parent, 1.5, None, (-100,-100))
         self.spritebox.shown = False
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 243, 248))
-        self.aux[0].image = ImageCache['Bulber']
-        self.aux[0].setPos(-8, 0)
+        self.dimensions = (-23.33, -17.33, 59, 50)
 
-        self.dimensions = (2, -4, 59, 50)
+        self.aux.append(SLib.AuxiliaryTrackObject(self.parent, 244, 244, SLib.AuxiliaryTrackObject.Horizontal))
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 243, 248))
+        self.aux[1].image = ImageCache['BulberL']
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('Bulber', 'bulber.png')
+        if 'BulberL' in ImageCache: return
+        Bulber = SLib.GetImg('bulber.png', True)
+        ImageCache['BulberL'] = QtGui.QPixmap.fromImage(Bulber)
+        ImageCache['BulberR'] = QtGui.QPixmap.fromImage(Bulber.mirrored(True, False))
+
+    def dataChanged(self):
+        type = self.parent.spritedata[5] & 0xF
+        if type == 1:
+            distance = ((self.parent.spritedata[4] & 0xF) + 1) * 16
+            self.aux[0].setSize((distance * 2) + 48, 16)
+            self.aux[0].setPos((-distance * 1.5) + self.width - 48, self.height)
+            self.aux[1].image = ImageCache['BulberR']
+            self.aux[1].setPos(6, 0)
+        else:
+            self.aux[0].setSize(0, 24)
+            self.aux[1].image = ImageCache['BulberL']
+            self.aux[1].setPos(-8, 0)
 
 
 class SpriteImage_PCoin(SLib.SpriteImage_Static):  # 237
