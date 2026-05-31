@@ -7884,7 +7884,7 @@ class SpriteImage_Jellybeam(SLib.SpriteImage_Static):  # 425
             parent,
             1.5,
             ImageCache['Jellybeam'],
-            (-8.67, -8),
+            (-8.67, -7.33),
         )
 
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
@@ -7895,8 +7895,8 @@ class SpriteImage_Jellybeam(SLib.SpriteImage_Static):  # 425
 
     def dataChanged(self):
         distance = self.parent.spritedata[5] & 3
-        self.aux[0].setSize(16, (distance * 32) + 108)
-        self.aux[0].setPos(self.width * 0.75 - 14, self.height * 0.75 - 16)
+        self.aux[0].setSize(16, (distance * 32) + 118)
+        self.aux[0].setPos(self.width * 0.75 - 12, self.height * 0.75 - 16)
 
         super().dataChanged()
 
