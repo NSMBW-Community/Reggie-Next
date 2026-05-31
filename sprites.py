@@ -3934,6 +3934,8 @@ class SpriteImage_ScalePlatform(SLib.SpriteImage):  # 178
     def paint(self, painter):
         super().paint(painter)
 
+        ropeThickness = 6
+
         # this is FUN!! (not)
         ropeLeft = int(self.parent.ropeLengthLeft * 24 + 4)
         if self.parent.ropeLengthLeft == 0: ropeLeft += 12
@@ -3944,17 +3946,17 @@ class SpriteImage_ScalePlatform(SLib.SpriteImage):  # 178
         ropeWidth = int(self.parent.ropeWidth * 24 + 8)
         platformWidth = int((self.parent.platformWidth + 3) * 24)
 
-        ropeX = int(platformWidth / 2 - 4)
+        ropeX = int(platformWidth / 2 - 3)
 
-        painter.drawTiledPixmap(ropeX + 8, 0, ropeWidth - 16, 8, ImageCache['ScaleRopeH'])
+        painter.drawTiledPixmap(ropeX + 10, 0, ropeWidth - 22, ropeThickness, ImageCache['ScaleRopeH'])
 
         ropeVertImage = ImageCache['ScaleRopeV']
-        painter.drawTiledPixmap(ropeX, 8, 8, ropeLeft - 8, ropeVertImage)
-        painter.drawTiledPixmap(ropeX + ropeWidth - 8, 8, 8, ropeRight - 8, ropeVertImage)
+        painter.drawTiledPixmap(ropeX, 10, ropeThickness, ropeLeft - ropeThickness, ropeVertImage)
+        painter.drawTiledPixmap(ropeX + ropeWidth - 8, 10, ropeThickness, ropeRight - ropeThickness, ropeVertImage)
 
         pulleyImage = ImageCache['ScalePulley']
         painter.drawPixmap(ropeX, 0, pulleyImage)
-        painter.drawPixmap(ropeX + ropeWidth - 20, 0, pulleyImage)
+        painter.drawPixmap(ropeX + ropeWidth - 22, 0, pulleyImage)
 
         platforms = [(0, ropeLeft), (ropeX + ropeWidth - int(platformWidth / 2) - 4, ropeRight)]
         for x, y in platforms:
