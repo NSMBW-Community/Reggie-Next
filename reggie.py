@@ -426,7 +426,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.CreateAction(
             'shiftitems', self.ShiftItems, GetIcon('move'),
             globals_.trans.stringOneLine('MenuItems', 32), globals_.trans.stringOneLine('MenuItems', 33),
-            QtGui.QKeySequence('Ctrl+Shift+S'),
+            QtGui.QKeySequence('Ctrl+Alt+Shift+S'),
         )
 
         self.CreateAction(
