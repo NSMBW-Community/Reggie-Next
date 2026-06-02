@@ -6598,6 +6598,7 @@ class SpriteImage_BigShell(SLib.SpriteImage_StaticMultiple):  # 341
     def loadImages():
         SLib.loadIfNotInImageCache('BigShell', 'bigshell_green.png')
         SLib.loadIfNotInImageCache('BigShellGrass', 'bigshell_green_grass.png')
+        SLib.loadIfNotInImageCache('BigShellInside', 'bigshell_inside.png')
 
     def dataChanged(self):
         style = self.parent.spritedata[5] & 1
@@ -6608,6 +6609,12 @@ class SpriteImage_BigShell(SLib.SpriteImage_StaticMultiple):  # 341
             self.image = ImageCache['BigShell']
 
         super().dataChanged()
+
+    def paint(self, painter):
+        if globals_.Layer0Shown:
+            painter.drawPixmap(0, 0, self.image.width(), self.image.height(), self.image)
+        else:
+            painter.drawPixmap(0, 0, 322, 247, ImageCache['BigShellInside'])
 
 
 class SpriteImage_Muncher(SLib.SpriteImage_StaticMultiple):  # 342

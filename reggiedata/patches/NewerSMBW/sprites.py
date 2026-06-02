@@ -8,6 +8,7 @@ Qt = QtCore.Qt
 
 import spritelib as SLib
 import sprites_common as common
+import globals_
 
 ImageCache = SLib.ImageCache
 
@@ -2037,6 +2038,7 @@ class SpriteImage_NewerBigShell(SLib.SpriteImage_StaticMultiple):  # 341
         SLib.loadIfNotInImageCache('BigShellGreenGrass', 'bigshell_green_grass.png')
         SLib.loadIfNotInImageCache('BigShellRed', 'bigshell_red.png')
         SLib.loadIfNotInImageCache('BigShellRedGrass', 'bigshell_red_grass.png')
+        SLib.loadIfNotInImageCache('BigShellInside', 'bigshell_inside.png')
 
     def dataChanged(self):
         style = self.parent.spritedata[5] & 1
@@ -2049,6 +2051,12 @@ class SpriteImage_NewerBigShell(SLib.SpriteImage_StaticMultiple):  # 341
             self.image = ImageCache['BigShell%s' % colour]
 
         super().dataChanged()
+
+    def paint(self, painter):
+        if globals_.Layer0Shown:
+            painter.drawPixmap(0, 0, self.image.width(), self.image.height(), self.image)
+        else:
+            painter.drawPixmap(0, 0, 322, 247, ImageCache['BigShellInside'])
 
 
 class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
