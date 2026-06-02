@@ -1750,8 +1750,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         rownum = 0
 
         # (sprite id, importance level)
-        # importance level is 0 for 'required', 1 for 'suggested', 2 for 'resource'
-        missing = [[], [], []]
+        # importance level is 0 for 'required', 1 for 'suggested', 2 for 'resource', 3 for 'suggestedresource'
+        missing = [[], [], [], []]
         cur_sprites = [s.type for s in globals_.Area.sprites]
         for dependency, importance in sprite.dependencies:
             if dependency not in cur_sprites:
@@ -1762,6 +1762,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     missing[importance].append(dependency)
 
         # if there are missing things
+        # Required
         for missingSprite in missing[0]:
             name = globals_.trans.string('SpriteDataEditor', 20, '[id]', missingSprite)
             action = globals_.trans.string('SpriteDataEditor', 26)
@@ -1778,6 +1779,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             rownum += 1
 
+        # Suggested
         for missingSprite in missing[1]:
             name = globals_.trans.string('SpriteDataEditor', 21, '[id]', missingSprite)
             action = globals_.trans.string('SpriteDataEditor', 26)
@@ -1788,7 +1790,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.com_deplist.addWidget(QtWidgets.QLabel(name), rownum, 0)
             self.com_deplist.addWidget(addButton, rownum, 1)
             rownum += 1
-        
+
+        # Resource
         for missingSprite in missing[2]:
             name = globals_.trans.string('SpriteDataEditor', 30, '[id]', missingSprite)
             action = globals_.trans.string('SpriteDataEditor', 31)
@@ -1803,6 +1806,18 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.com_deplist.addWidget(QtWidgets.QLabel(name), rownum, 0)
             self.com_deplist.addWidget(addButton, rownum, 1)
 
+            rownum += 1
+
+        # Suggested Resource
+        for missingSprite in missing[3]:
+            name = globals_.trans.string('SpriteDataEditor', 30, '[id]', missingSprite)
+            action = globals_.trans.string('SpriteDataEditor', 31)
+
+            addButton = QtWidgets.QPushButton(action)
+            addButton.clicked.connect(self.HandleAppendToLoadList(missingSprite, addButton))
+
+            self.com_deplist.addWidget(QtWidgets.QLabel(name), rownum, 0)
+            self.com_deplist.addWidget(addButton, rownum, 1)
             rownum += 1
 
         # dependency notes
@@ -2579,7 +2594,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         self.radio2 = QtWidgets.QRadioButton()
         self.buttongroup.addButton(self.radio2, 1)
         self.radio3 = QtWidgets.QRadioButton()
-        self.buttongroup.addButton(self.radio3, -1)
+        self.buttongroup.addButton(self.radio3, 2)
 
         header = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 3))
         footer = QtWidgets.QLabel(text2)
@@ -2633,8 +2648,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             self.radio2.setChecked(True)
 
         # create layout
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
-
+        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Close)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 
@@ -2724,10 +2738,10 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         thing = []
         for type, sprite in self.present:
-            if slot == -1 and type == 2:
+            if slot == 2 and type == 2:
                 thing.append(sprite)
 
-            elif not (slot == -1 or type == 2):
+            elif not (slot == 2 or type == 2):
                 thing.append(sprite)
 
         if not thing:
@@ -2744,7 +2758,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         data = list(sprite.spritedata)
 
         slot = self.buttongroup.checkedId()
-        if slot == -1:
+        if slot == 2:
             # global
             data[5] = (data[5] & 0xF0) | 5
         else:
@@ -2759,7 +2773,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         """
         slot = self.buttongroup.checkedId()
         data = bytearray(8)
-        if slot == -1:
+        if slot == 2:
             data[5] = 5
         else:
             data[5] = (slot << 4) | 6

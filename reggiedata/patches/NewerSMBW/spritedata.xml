@@ -47,12 +47,12 @@
 -->
 
 <sprites>
-  <sprite id="10" name="(Unused) Large Object Thrower" notes="Used in the Newer Final Boss Fight. This is spawned through Captain Bowser's code. It will throw a larger version of the Projectile at a 45° arc. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is best made use of by spawning it through the Actor Spawner. Projectiles have a very high velocity. It will spawn the object around 5 blocks above the placement of the sprite." files="choropoo.arc;koopa_clown_bomb.arc;dossun.arc;KoopaShip.arc">
-    <dependency notes="[95] Hammer Bros is required to be placed in the level if using this sprite with the Object: Hammer setting.">
-      <suggested sprite="95"/> <!-- Requires Hammer Bros if Hammer is used -->
+  <sprite id="10" name="(Unused) Large Object Thrower" notes="Used in Newer's Final Boss Fight. This is spawned through Captain Bowser's code. It will throw a larger version of the Projectile at a 45° arc. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is best made use of by spawning it through the Actor Spawner. Projectiles have a very high velocity. It will spawn the object around 5 blocks above the placement of the sprite." files="choropoo.arc;koopa_clown_bomb.arc;dossun.arc;KoopaShip.arc">
+    <dependency notes="[95] Hammer Bros is required to be placed in the level (or in the Loaded Sprites list) if using this sprite with the Object: Hammer setting.">
+      <resource sprite="95"/> <!-- Requires Hammer Bros if Hammer is used -->
     </dependency>
-    <dualbox nybble="10.4" title1="Place in Front" title2="Place Behind" comment="This determines the Z-Order of the thrown object." advanced="True" advancedcomment="Place in Front: +3300 to the Z-Order.&lt;br&gt;Place Behind: -1804 to the Z-Order."/>
-    <list nybble="11" title="Object" comment="This determines what object is thrown. These objects are larger than the normal versions." advanced="True">
+    <dualbox nybble="10.4" title1="Place in Front" title2="Place Behind" comment="This determines the Z-Order of the thrown object." advancedcomment="Place in Front: +3300 to the Z-Order.&lt;br&gt;Place Behind: -1804 to the Z-Order."/>
+    <list nybble="11" title="Object" comment="This determines what object is thrown. These objects are larger than the normal versions.">
       <entry value="0">Wrench</entry>
       <entry value="1">Exploding Wrench</entry>
       <entry value="2">Bowser Bomb</entry>
@@ -60,24 +60,23 @@
       <entry value="4">Thwomp</entry>
       <entry value="5">Mushroom Present Box</entry>
     </list>
-    <dualbox nybble="12.4" title1="Throws Left" title2="Throws Right" comment="This determines which direction the object will be thrown." advanced="True"/>
+    <dualbox nybble="12.4" title1="Throws Left" title2="Throws Right" comment="This determines which direction the object will be thrown."/>
   </sprite> <!-- #10: (Unused) Large Object Thrower -->
 
-  <!-- Establish full list of Dependencies -->
   <sprite id="11" name="Custom Model Loader" notes="The Custom Model Loader allows the use of pre-scripted Models and Animations for use in user-created cutscenes. It can also provide new models as decoration for your level. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Warning:&lt;/b&gt; Will CRASH if [Animate Model] is set and no animation is available.&lt;/font&gt;">
-    <dependency notes="As this sprite will pull Models and Animations from specific .arc files, those sprites are required to be placed within the level to prevent a game crash. The list of required sprites is as follows: &lt;br&gt; &lt;br&gt;0-6: arrow.arc (143) &lt;br&gt;7-16: block_arrow.arc (321) &lt;br&gt;17-24: arrow.arc (143) &lt;br&gt;25-28: cage_boss_koopa.arc (439) &lt;br&gt;29-38: kameck_princess.arc (439) &lt;br&gt;39: CreditsBG.arc (???) &lt;br&gt;40-42: chestnut.arc (320) &lt;br&gt;43-48: OpeningScene.arc (273) &lt;br&gt;49: chestnut.arc (320)">
-      <suggested sprite="143"/> <!-- Custom Model Loader Resources (arrow.arc) -->
-      <suggested sprite="321"/> <!-- block_arrow.arc -->
-      <suggested sprite="439"/> <!-- cage_boss_koopa, kameck_princess -->
-      <suggested sprite="0"/> <!-- CreditsBG -->
-      <suggested sprite="320"/> <!-- chestnut -->
-      <suggested sprite="273"/> <!-- OpeningScene -->
+    <dependency notes="As this sprite will pull Models and Animations from specific .arc files, those sprites are required to be placed within the level to prevent a game crash. The list of required sprites is as follows: &lt;br&gt; &lt;br&gt;0-6: arrow.arc (143) &lt;br&gt;7-16: block_arrow.arc (321) &lt;br&gt;17-24: arrow.arc (143) &lt;br&gt;25-28: cage_boss_koopa.arc (439) &lt;br&gt;29-38: kameck_princess.arc (439) &lt;br&gt;39: CreditsBG.arc (468) &lt;br&gt;40-42: chestnut.arc (320) &lt;br&gt;43-48: OpeningScene.arc (273) &lt;br&gt;49: chestnut.arc (320)">
+      <suggestedresource sprite="143"/> <!-- Custom Model Loader Resources (arrow.arc) -->
+      <suggestedresource sprite="273"/> <!-- OpeningScene -->
+      <suggestedresource sprite="320"/> <!-- chestnut -->
+      <suggestedresource sprite="321"/> <!-- block_arrow.arc -->
+      <suggestedresource sprite="439"/> <!-- cage_boss_koopa, kameck_princess -->
+      <suggestedresource sprite="468"/> <!-- CreditsBG -->
     </dependency>
     <external type="models" nybble="11-12" title="Model ID" comment="Use this external window to select your Model.&lt;br&gt;&lt;br&gt;This determines which Model will be used. If [Animate Model] is checked, then the Models will run their coded animation instead of standing still. Values with '---' were not used in Newer levels." />
     <value nybble="5-6" title="Scale: Value/4.0" comment="This determines the scale of the Model." comment2="Value 0 creates an original-sized Model (100%). Values above 0 are divided by 4 to determine the Model Size. 1=25%, 2=50%, 8=200%, etc." advancedcomment="Value limit unknown. Maximum value suspected to be 24, or 600%"/>
     <checkbox nybble="10.4" title="Animate Model" comment="When enabled, the loaded model will activate its attached animation, otherwise the loaded model will be stationary." comment2="&lt;font color=&quot;red&quot;&gt;Will CRASH if Animation not present and this is checked.&lt;/font&gt; &lt;br&gt; &lt;br&gt;Known values that must have [Animate Model] left unchecked: &lt;br&gt;17: Perfect Title Peach's Castle &lt;br&gt;40-42, 49: Tree Canopy A/B/C/D"/>
     <list nybble="8" title="Z-Order" comment="This determines the Z-Order of the model." comment2="Some in-game Z-Order values: &lt;br&gt;Background: -5500.0 &lt;br&gt;Layer 2: -3300.0 &lt;br&gt;Layer 1: 0.0 &lt;br&gt;Player: 300.0 &lt;br&gt;Foreground: 1200.0 &lt;br&gt;Layer 0: 3300.0 &lt;br&gt;Above Layer 0: 5500.0">
-      <entry value="0">Use Default Z-Order for Custom Model</entry>
+      <entry value="0">-6500.0</entry>
       <entry value="1">-5000.0</entry>
       <entry value="2">-4500.0</entry>
       <entry value="3">-2000.0</entry>
@@ -110,10 +109,10 @@
     <value nybble="12" title="Minimum Number of Players" comment="This determines the number of players required for the Clowncar to load. A value of 4 will only load if there are 4 players." advanced="True"/>
   </sprite> <!-- #13: Rideable Clowncar with Cannon -->
 
-  <sprite id="14" name="(Unused) Captain Bowser Flame Breath" notes="Captain Bowser uses this in the NewerSMBW Final Boss Fight. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Cannot be placed as an individual sprite.&lt;/font&gt;">
+  <sprite id="14" name="(Unused) Captain Bowser Flame Breath" notes="Captain Bowser uses this in the NewerSMBW Final Boss Fight. The game will crash if this is placed as an individual sprite.">
   </sprite> <!-- #14: (Unused) Captain Bowser Flame Breath -->
 
-  <sprite id="15" name="Toad House Minigame - Music House" noyoshi="True" notes="This sprite is used to generate the Music House bonus game from NewerSMBW. The blocks will spawn centered on the sprite's placement. Playing the mini-game to completion will cause the level to end in completion." advancednotes="Additional songs can be added with a little adjustment to the sprite's code. Simple edits can allow for new songs in your hack." files="obj_coin.arc;I_hammer.arc;I_star.arc;block_light.arc;block_light_color.arc;I_kinoko_bundle.arc">
+  <sprite id="15" name="Toad House Minigame - Music House" noyoshi="True" notes="This sprite is used to generate the Music House minigame from NewerSMBW. The blocks will spawn centered on the sprite's placement. Playing the minigame to completion will clear the level." advancednotes="Additional songs can be added with a little adjustment to the sprite's code. Simple edits can allow for new songs in your hack." files="obj_coin.arc;I_hammer.arc;I_star.arc;block_light.arc;block_light_color.arc;I_kinoko_bundle.arc">
     <list nybble="5" title="1st Chord Prize" comment="This determines the prize awarded for passing the first Chord of the song.">
       <entry value="0">Mushroom</entry>
       <entry value="1">Fire Flower</entry>
@@ -180,19 +179,19 @@
       <entry value="14">Gusty Garden Galaxy |*****| (Space)</entry>
       <entry value="15">Unused Slot |     | ()</entry>
     </list>
-    <checkbox nybble="11.4" title="Always used in NewerSMBW" comment="Unknown effect. While this is always used in NewerSMBW's Music Houses, there's no discernable difference between having this enabled and not."/>
+    <checkbox nybble="11.4" title="Useless Flag 11 (1)" comment="This is enabled in all of Newer's Music Houses, however the code never reads this value."/>
   </sprite> <!-- #15: Toad House Minigame - Music House -->
 
-  <sprite id="16" name="Bomb Drop Controller" yoshinotes="The Bomb Dropper does work with Yoshi. When the player is hit and he's on Yoshi, he will dismount Yoshi." notes="When one of the Triggering Events is activated, this controller will drop a large exploding spiked ball above either Bowser or a specific player straight down from the height of the sprite's placement.
-  &lt;br&gt;It will then activate the consecutive Event ID for the Triggered Event after the bomb explodes. The bomb has the same model that Bowser Jr uses in his 3rd boss fight." advancednotes="Feeling adventurous? Try making a multiplayer level that uses this sprite to create a versus style game which disables player respawn and triggers an event when only one player is left alive." files="koopa_clown_bomb.arc">
+  <sprite id="16" name="Bomb Drop Controller" noyoshi="True" yoshinotes="The Bomb Dropper does work with Yoshi. Players hit while on Yoshi will simply dismount him." notes="When one of the Triggering Events is activated, this controller will drop a large exploding spiked ball above either Bowser or a specific player straight down from the height of the sprite's placement.
+  &lt;br&gt;It will then activate the consecutive Event ID for the Triggered Event after the bomb explodes." advancednotes="Feeling adventurous? Try making a multiplayer level that uses this sprite to create a versus style game which disables player respawn and triggers an event when only one player is left alive." files="koopa_clown_bomb.arc">
     <value nybble="5.2-6.4" title="Triggering Event ID #1" comment="Activating this Event will drop a bomb on the specified target, and then activate the numerical consecutive Event ID. Finally, the Event ID will be immediately deactivated, and can be reactivated again." idtype="Triggering Event"/>
     <value nybble="7.2-8.4" title="Triggering Event ID #2" comment="Activating this Event will drop a bomb on the specified target, and then activate the numerical consecutive Event ID. Finally, the Event ID will be immediately deactivated, and can be reactivated again." idtype="Triggering Event"/>
     <list nybble="12" title="Target" comment="This determines which target the bomb will drop above. Players have the ability to outrun the bomb.">
       <entry value="0">Bowser</entry>
-      <entry value="1">Mario (P1)</entry>
-      <entry value="2">Luigi (P2)</entry>
-      <entry value="3">Blue Toad (P3)</entry>
-      <entry value="4">Yellow Toad (P4)</entry>
+      <entry value="1">Mario</entry>
+      <entry value="2">Luigi</entry>
+      <entry value="3">Blue Toad</entry>
+      <entry value="4">Yellow Toad</entry>
     </list>
   </sprite> <!-- #16: Bomb Drop Controller -->
 
@@ -235,7 +234,7 @@
     </list>
   </sprite> <!-- #17: Music House Glow Block -->
 
-  <sprite id="18" name="Spine Coaster Platform" notes="This creates immobile 'Spine Coaster' Platforms (1x2). The Sprite's placement represents the right side of the Platform.">
+  <sprite id="18" name="Spine Coaster Platform" notes="This creates immobile 'Spine Coaster' Platforms (1x2) that can be rotated for use as platforms.">
     <dependency notes="The normal Spine Coaster [297] must be placed somewhere in your level or in the Loaded Sprites list, or else the game will crash.">
       <resource sprite="297"/> <!-- Spine Coaster -->
     </dependency>
@@ -269,8 +268,7 @@
     <dualbox nybble="7.4" title1="Faces Left" title2="Faces Right" comment="This determines which direction the platform will face." requirednybble="12.4" requiredval="0"/> <!-- Only shows when Segment is set to Head or Tail; assumes no effect on Body -->
   </sprite> <!-- #18: Spine Coaster Platform -->
 
-  <sprite id="19" name="World-4 Boss: Samurshai" noyoshi="True" notes="" files="Shynja.arc">
-    <dependency notes="The boss works fine without any other required sprite."></dependency>
+  <sprite id="19" name="World-4 Boss: Samurshai" noyoshi="True" notes="Newer's Shy Guy boss found in World 4." files="Shynja.arc">
     <dualbox nybble="5.4" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics and boss difficulty."/>
   </sprite> <!-- #19: World-4 Boss: Samurshai -->
 
@@ -312,7 +310,7 @@
     <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Paragoomba placing it further behind other sprites."/>
   </sprite> <!-- #21: Paragoomba -->
 
-  <sprite id="22" name="Pumpkin Goomba" notes="A Goomba inside a pumpkin. The pumpkin adds an extra hit point to the Goomba." files="kuribo.arc;pumpkin.arc;wing.arc">
+  <sprite id="22" name="(Unused) Pumpkin Goomba" notes="A Goomba inside a pumpkin. The pumpkin acts a 'shield', requiring the player to stomp the Goomba twice to defeat it." advancednotes="This sprite is unfinished and quite buggy. The Paragoomba lacks collision, and the pumpkin sometimes attaches itself to the wrong sprite, or none at all." files="kuribo.arc;pumpkin.arc;wing.arc">
     <dualbox nybble="12.4" title1="Goomba" title2="Paragoomba" comment="This determines if the Pumpkin Goomba behaves like a normal Goomba or like a Paragoomba."/>
   </sprite> <!-- #22: Pumpkin Goomba -->
 
@@ -353,7 +351,6 @@
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #25: Spiny -->
 
-  <!-- Research Unknown Flag 12 -->
   <sprite id="26" name="Upside-Down Spiny" sizehacks="True" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading." files="togezo.arc;paipo.arc">
     <spritetex nybble="6" title="Color" comment="This determines the color and style of the Spiny.">
       <entry value="0">Original</entry>
@@ -370,63 +367,6 @@
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 
-  <sprite id="30" name="Grey Tiled Block" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc">
-    <list nybble="11" title="Height" comment="This determines how tall the block is.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
-    <list nybble="12" title="Width" comment="This determines how wide the block is.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
-    <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Up</entry>
-      <entry value="3">Down</entry>
-    </list>
-    <checkbox nybble="6.1" title="Offset Delay" comment="When enabled, the block will wait two game seconds before moving the first time. This is important for adjusting timing in athletic levels."/>
-    <value nybble="7" title="Delay Before Movement" comment="This determines how long the block will wait before making its outwards movement." comment2="Each value is equal to two game seconds."/>
-    <value nybble="9" title="Distance" comment="This defines how many tiles the block will move before returning to its starting position."/>
-    <value nybble="8" title="Delay Before Return" comment="This determines how long the block will wait before making its return movement." comment2="Each value is equal to two game seconds."/>
-    <list nybble="10.3-10.4" title="Speed" comment="This determines the speed of the block's movement.">
-      <entry value="0">Very Slow</entry>
-      <entry value="1">Slow</entry>
-      <entry value="2">Normal</entry>
-      <entry value="3">Fast</entry>
-    </list>
-    <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated, for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
-    <value nybble="3.2-4.4" title="Triggering Event ID" comment="This determines which Event must be activated for the platform to appear." requirednybble="5.4" idtype="Triggering Event"/>
-  </sprite> <!-- #30: Grey Tiled Block -->
-
   <!-- Possible additional Usage Mode, Value 2 in Nybble 10 -->
   <sprite id="40" name="?-Switch" sizehacks="True" notes="This is the basic stand-alone switch. When triggered, it modifies the Target Event." files="switch.arc">
     <spritetex nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
@@ -436,14 +376,14 @@
       <entry value="3">Two Arrows Forming a Circle (Flipper)</entry>
       <entry value="4">Up and Down Arrows (Raise + Lower)</entry>
     </spritetex>
-    <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
-    <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set."/>
+    <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will be facing downwards. Upside-Down switches cannot be set to fall."/>
+    <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set." />
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/>
     <dualbox nybble="9.4" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requirednybble="7.4" requiredval="0"/> <!-- Appears if Timed Event is set -->
     <dualbox nybble="9.4" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requirednybble="7.4"/> <!-- Appears if Permanent Event is set -->
     <dualbox nybble="7.4" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use."/>
     <checkbox nybble="5.1" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/>
+    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." comment2="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/>
     <list nybble="6.3-6.4" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requirednybble="7.4,10.4" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -497,7 +437,7 @@
     <dualbox nybble="7.4" title1="Timed Event &amp; Transform" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Red Blocks will not become solid."/>
     <checkbox nybble="5.1" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox nybble="5.1" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requirednybble="7.4"/> <!-- Appears if Permanent Event is set -->
-    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <list nybble="6.3-6.4" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requirednybble="7.4,10.4" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -523,7 +463,7 @@
     <dualbox nybble="9.4" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requirednybble="7.4"/> <!-- Appears if Permanent Event is set -->
     <dualbox nybble="7.4" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use."/>
     <checkbox nybble="5.1" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <list nybble="6.3-6.4" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requirednybble="7.4,10.4" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -536,7 +476,7 @@
   </sprite> <!-- #43: Brick Block ?-Switch -->
 
   <sprite id="45" name="Brick Block !-Switch" sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
-    <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
+    <dependency notes="Activates 'Red Block Outline A/B' tiles."/>
     <spritetex nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks.">
       <entry value="0">Red (Original)</entry>
       <entry value="1">Green</entry>
@@ -549,7 +489,7 @@
     <dualbox nybble="7.4" title1="Timed Event &amp; Transform" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Red Blocks will not become solid."/>
     <checkbox nybble="5.1" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox nybble="5.1" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requirednybble="7.4"/> <!-- Appears if Permanent Event is set -->
-    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <list nybble="6.3-6.4" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requirednybble="7.4,10.4" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -580,21 +520,27 @@
   </sprite> <!-- #46: Lava Bubble (Podoboo) -->
 
   <sprite id="47" name="Thwomp" sizehacks="True" noyoshi="True" notes="A normal sized Thwomp that will try to crush the player when it is nearby or underneath. Thwomps are not capable of destroying tileset objects unless set to Crush Forever." files="dossun.arc">
-    <dualbox nybble="12.3" title1="Drop and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop."/>
     <spritetex nybble="6" title="Style" comment="This determines the style of the Thwomp.">
       <entry value="0">Normal</entry>
       <entry value="1">Icy</entry>
     </spritetex>
-    <checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="An unknown setting for Nybble 12." advanced="True" advancedcomment="Bit 47-48 may be a list, but only value 2 has been defined. Value 3 is confirmed to CRASH the game, so do not activate this with Crush Forever. However, value 1 may provide different effects. Experimenting and testing are required."/>
+    <list nybble="12" title="Behaviour" comment="This determines if the Thwomp will return to its starting position or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop. Values higher than 2 default to 'Drop and Return'.[br]*: There is an extra collision type for which the Thwomp stops dropping and returns (SENSOR_JUMPDAI), but its precise effects are unknown.">
+      <entry value="0">Drop and Return</entry>
+      <entry value="1">Drop and Return (*)</entry>
+      <entry value="2">Crush Forever</entry>
+    </list>
   </sprite> <!-- #47: Thwomp -->
 
   <sprite id="48" name="Big Thwomp" sizehacks="True" noyoshi="True" notes="A larger Thwomp that will try to crush the player when it is nearby or underneath. Big Thwomps are capable of destroying certain types of tileset objects such as brick blocks and grey blocks." files="dossun.arc">
-    <dualbox nybble="12.3" title1="Crush and Return" title2="Crush Forever" comment="This determines if the Thwomp will return to its starting position after crushing up to one row of breakable terrain, or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop."/>
     <spritetex nybble="6" title="Style" comment="This determines the style of the Big Thwomp.">
       <entry value="0">Normal</entry>
       <entry value="1">Icy</entry>
     </spritetex>
-    <checkbox nybble="12.4" title="Unknown Flag 12 (1)" comment="An unknown setting for Nybble 12." advanced="True" advancedcomment="Bit 47-48 may be a list, but only value 2 has been defined. Value 3 is confirmed to CRASH the game, so do not activate this with Crush Forever. However, value 1 may provide different effects. Experimenting and testing are required."/>
+    <list nybble="12" title="Behaviour" comment="This determines if the Thwomp will return to its starting position or if it will continue to crush the terrain until dropping out of the level." comment2="If you use Crush Forever, the Thwomp must be able to fall completely through and well beyond the bottom border of the Zone, or the falling sound effect and rumble will not stop. Values higher than 2 default to 'Drop and Return'.[br]*: There is an extra collision type for which the Thwomp stops dropping and returns (SENSOR_JUMPDAI), but its precise effects are unknown.">
+      <entry value="0">Drop and Return</entry>
+      <entry value="1">Drop and Return (*)</entry>
+      <entry value="2">Crush Forever</entry>
+    </list>
   </sprite> <!-- #48: Big Thwomp -->
 
   <sprite id="49" name="Fake Star Coin" sizehacks="True" notes="This coin an appearance similar to a normal Star Coin, but when the player tries to collect it, it will vanish and disperse into 4 harmless Boos like a Fake Door." files="test_lift.arc">
@@ -621,7 +567,7 @@
       <entry value="3">White</entry>
       <entry value="4">Red with Blue Coat</entry>
     </spritetex>
-    <list nybble="5.3-5.4" title="Load State" comment="This determines what animation state the Koopa Troopa will load as." comment2="Normal: The Koopa Troopa will be walking normally when loaded. &lt;br&gt; &lt;br&gt;Loads as Shell: The Koopa Troopa will load inside its shell and then return to normal. &lt;br&gt; &lt;br&gt;Stays in Shell: The Koopa Troopa will load inside its shell and not return to normal. However, it cannot be kicked until jumped on and will instead hurt the player.">
+    <list nybble="5.3-5.4" title="Load State" comment="This determines what animation state the Koopa Troopa will load as." comment2="Normal: The Koopa Troopa will be walking normally when loaded.&lt;br&gt;&lt;br&gt;Loads as Shell: The Koopa Troopa will load inside its shell and then return to normal.&lt;br&gt;&lt;br&gt;Stays in Shell: The Koopa Troopa will load inside its shell and not return to normal. However, it cannot be kicked until jumped on and will instead hurt the player.">
       <entry value="0">Normal</entry>
       <entry value="1">Loads as Shell</entry>
       <entry value="2">Stays in Shell</entry>
@@ -634,12 +580,11 @@
   <!-- Investigate "Glitchy Behavior" further? -->
   <!-- Test Nybble 10 more, something seems to be weird about it. Is it 'start at end of path instead of middle' or .... what, really? What's the value range? -->
   <sprite id="58" name="Koopa Paratroopa" sizehacks="True" notes="Your standard Koopa Paratroopa. Place it in the level and it will jump around or fly. Once stomped, it can either be set to walk off ledges, or turn around at ledges." files="nokonokoA.arc;wing.arc">
-    <list nybble="11.3-11.4" title="Movement Type" comment="This determines the primary type of movement behavior of the Koopa Paratroopa. Flying Paratroopas move 9 blocks total." advancedcomment="Mode 3 spawns a floating shell that cannot be picked up. When Mario hits it from the side, he takes damage, but when the jumps on it, it falls to the ground and becomes a regular shell that can be picked up.">
+    <list nybble="11.3-11.4" title="Movement Type" comment="This determines the primary type of movement behavior of the Koopa Paratroopa. Flying Paratroopas move 9 blocks total." comment2="Mode 3 spawns a floating shell that cannot be picked up. When Mario hits it from the side, he takes damage, but when the jumps on it, it falls to the ground and becomes a regular shell that can be picked up.">
       <entry value="0">Jumping</entry>
       <entry value="1">Flying: Left and Right</entry>
       <entry value="2">Flying: Up and Down</entry>
       <entry value="3">No Movement (Shell Only)</entry>
-      <!--<entry value="3">Shell Only</entry> Not Useful-->
     </list>
     <list nybble="9.3-9.4" title="Start Direction" comment="This determines how the Paratroopa will move upon load." advancedcomment="Glitchy Behavior: The Paratroopa will bounce [] while facing the opposite direction. Once de-winged, the Koopa Troopa will walk in place while continuing to face the same direction." requirednybble="11.3-11.4" requiredval="0-1">
       <entry value="0">Start Going Towards Player</entry>
@@ -677,13 +622,6 @@
   </sprite> <!-- #58: Koopa Paratroopa -->
 
   <sprite id="60" name="Spike Top" sizehacks="True" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spike Tops don't properly work on slopes." files="met_toge.arc">
-    <list nybble="11.3-11.4" title="Orientation" comment="The Spike Top must be placed against something for it to appear.">
-      <entry value="0">Placed on Ground</entry>
-      <entry value="1">Placed on Left Wall</entry>
-      <entry value="2">Placed on Ceiling</entry>
-      <entry value="3">Placed on Right Wall</entry>
-    </list>
-    <dualbox nybble="12.4" title1="Walks Clockwise" title2="Walks Counter-Clockwise" comment="This determines which direction the Spike Top will walk."/>
     <spritetex nybble="6" title="Color" comment="This determines the color and style of the Spike Top." comment2="Value 5 will turn the Spike Top into a Lil'Sparky. Use Sizehacks if you want a Hothead.">
       <entry value="0">Original</entry>
       <entry value="1">Bright Red</entry>
@@ -694,6 +632,13 @@
       <entry value="6">Violet</entry>
       <entry value="7">Black</entry>
     </spritetex>
+    <list nybble="11.3-11.4" title="Orientation" comment="The Spike Top must be placed against something for it to appear.">
+      <entry value="0">Placed on Ground</entry>
+      <entry value="1">Placed on Left Wall</entry>
+      <entry value="2">Placed on Ceiling</entry>
+      <entry value="3">Placed on Right Wall</entry>
+    </list>
+    <dualbox nybble="12.4" title1="Walks Clockwise" title2="Walks Counter-Clockwise" comment="This determines which direction the Spike Top will walk."/>
   </sprite> <!-- #60: Spike Top -->
 
   <sprite id="63" name="Spiked Ball / Snowball" sizehacks="True" notes="A loose Spiked Ball that will also destroy certain types of blocks. It can also be turned into a Snowball." files="iron_ball.arc">
@@ -701,17 +646,18 @@
       <entry value="0">Normal</entry>
       <entry value="1">Snowball</entry>
     </spritetex>
-    <dualbox nybble="11.4" title1="Starts Rolling Left" title2="Starts Rolling Right" comment="This determines which direction the Spiked Ball will begin rolling in."/>
-    <list nybble="12.3-12.4" title="Speed" comment="This determines how fast the Spiked Ball rolls.">
+    <dualbox nybble="11.4" title1="Starts Rolling Left" title2="Starts Rolling Right" comment="This determines which direction the Spiked Ball will begin rolling in." requirednybble="5.3" requiredval="0"/>
+    <list nybble="12.3-12.4" title="Speed" comment="This determines how fast the Spiked Ball rolls." requirednybble="5.3" requiredval="0">
       <entry value="0">Stopped</entry>
       <entry value="1">Slow</entry>
       <entry value="2">Medium</entry>
       <entry value="3">Fast</entry>
     </list>
-    <list nybble="9.4" title="Speed After Hitting Wall" comment="This determines if the Spiked Ball will slow down after hitting a wall.">
+    <list nybble="9.4" title="Speed After Hitting Wall" comment="This determines if the Spiked Ball will slow down after hitting a wall." requirednybble="5.3" requiredval="0">
       <entry value="0">Really Slow</entry>
       <entry value="1">Same Momentum</entry>
     </list>
+    <checkbox nybble="5.3" title="Spawned by Giant Ice Block" comment="When enabled, the Spiked Ball will lack collision and cannot be moved." comment2="This is enabled on all Spiked Balls created by [280] Giant Ice Block."/>
   </sprite> <!-- #63: Spiked Ball / Snowball -->
 
   <sprite id="78" name="Bouncy Cloud" noyoshi="True" notes="A cloud platform with a happy face that the player can bounce on to jump really high. NewerSMBW adds more style options including Mushrooms and Checkered Block." files="lift_trampoline.arc">
@@ -736,7 +682,7 @@
     <value nybble="11-12" title="Delay" comment="This determines the amount of frames the Looper will wait between activating/deactivating each event. &lt;br&gt; &lt;br&gt; The code for this specifically is a bit messy. The entered value is multiplied by 10, and then 10 is added. However, it can only be a value from 0-255, and any number past that loops. For example, value 24 would be 250 frames of delay.&lt;br&gt;It's easier to follow these expressions:&lt;br&gt;&lt;br&gt;0-24 is 'value * 10 + 10' frames&lt;br&gt;25-50 is (value - 25) * 10 + 4 frames&lt;br&gt;51-101 is (value - 51) * 10 + 8 frames&lt;br&gt;102-126 is (value - 102) * 10 + 6.&lt;br&gt; &lt;br&gt;Finally, value 127 would be 0 frames of delay, and values 128-255 are essentially the same as 0-127."/>
   </sprite> <!-- #79: Event Looper -->
 
-  <sprite id="88" name="Actor Spawner" notes="With this sprite, you can spawn anything and everything that exists in the game. Sprite Data can be applied to sprites spawned through this within certain limitations. Please utilize Raw Data (Visible with Advanced Settings enabled) to determine what the settings should be set to. Combine the Actor Spawner with [332] Effect/Sound Spawner to add flair to the spawn effect. &lt;br&gt; &lt;br&gt;Additionally, anything spawned by the Actor Spawner will need to be respawned each time the player changes Zones. If returning from a bonus room, be sure to trigger any relevant spawns. Each Actor Spawner can only trigger once each Zone.">
+  <sprite id="88" name="Actor Spawner" notes="With this sprite, you can spawn anything and everything that exists in the game. Sprite Data can be applied to sprites spawned through this within certain limitations. Please utilize Raw Data to determine what the settings should be set to. Combine the Actor Spawner with [332] Effect/Sound Spawner to add flair to the spawn effect. &lt;br&gt; &lt;br&gt;Additionally, anything spawned by the Actor Spawner will need to be respawned each time the player changes Zones. If returning from a bonus room, be sure to trigger any relevant spawns. Each Actor Spawner can only trigger once each Zone.">
     <dependency notes="Directly place any sprite you want to spawn with the Actor Spawner somewhere in your level for the game to load the required secondary assets of that sprite."/>
     <value nybble="5" title="Triggering Event ID" comment="When this event is activated, the Actor Spawner will create one copy of the Actor at the location of the Spawner. Keep in mind that some sprites have abnormal placement so expect a lot of testing to make sure that everything works correctly." idtype="Triggering Event"/>
     <checkbox nybble="6.1" title="Automatically Respawn" comment="When the actor spawned by this spawner is deleted or missing, and the event is triggered, another actor with the same settings will be spawned. This also stops the spawned actor from despawning when the event is deactivated."/>
@@ -751,7 +697,7 @@
     <value nybble="12.3-12.4" title="Nybble 12" />
   </sprite> <!-- #88: Actor Spawner -->
 
-  <sprite id="89" name="Actor Multi-Spawner" notes="With this sprite, you can spawn anything and everything that exists in the game. It will spawn the Actor every 2 seconds while the Triggering Event is on. If you need to spawn them at a faster rate, use an Event Controller to deactivate and activate the Triggering Event. Sprite Data can be applied to sprites spawned through this within certain limitations. Please utilize Raw Data (Visible with Advanced Settings enabled) to determine what the settings should be set to. Combine the Actor Spawner with [332] Effect/Sound Spawner to add flair to the spawn effect. &lt;br&gt; &lt;br&gt;Additionally, anything spawned by the Actor Spawner will need to be respawned each time the player changes Zones. If returning from a bonus room, be sure to trigger any relevant spawns. Each Actor Spawner can only trigger once each Zone.">
+  <sprite id="89" name="Actor Multi-Spawner" notes="With this sprite, you can spawn anything and everything that exists in the game. It will spawn the Actor every 2 seconds while the Triggering Event is on. If you need to spawn them at a faster rate, use an Event Controller to deactivate and activate the Triggering Event. Sprite Data can be applied to sprites spawned through this within certain limitations. Please utilize Raw Data to determine what the settings should be set to. Combine the Actor Spawner with [332] Effect/Sound Spawner to add flair to the spawn effect. &lt;br&gt; &lt;br&gt;Additionally, anything spawned by the Actor Spawner will need to be respawned each time the player changes Zones. If returning from a bonus room, be sure to trigger any relevant spawns. Each Actor Spawner can only trigger once each Zone.">
     <dependency notes="Directly place any sprite you want to spawn with the Actor Spawner somewhere in your level for the game to load the required secondary assets of that sprite."/>
     <value nybble="5" title="Triggering Event ID" comment="While this event is activated, the Actor Spawner will create a copy of the Actor every 2 seconds at the location of the Spawner. Keep in mind that some sprites have abnormal placement so expect a lot of testing to make sure that everything works correctly." idtype="Triggering Event"/>
     <external type="actors" nybble="6.2-8.4" title="Actor ID" comment="Use this external window to select your Actor."/>
@@ -766,13 +712,17 @@
   </sprite> <!-- #89: Actor Multi-Spawner -->
 
   <sprite id="95" name="Hammer Bro Plus" sizehacks="True" notes="A standard Brothers enemy that throws hammers (or other objects!) at the player." files="bros.arc">
-    <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. With a platform limit of one, he can jump onto any passthrough terrain or brick blocks above this solid ground at a distance of 4. With a platform limit of two, he can jump between this platform and another one above it. When on the top of this platform limit, he will not try and jump upwards. He can also jump down from passthrough terrain set higher than 8 blocks above the solid ground, though he will not be able to return."/>
-    <dualbox nybble="12.4" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
+    <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. With a platform limit of one, he can jump onto any passthrough terrain or brick blocks above this solid ground at a distance of 4. With a platform limit of two, he can jump between this platform and another one above it. When on the top of this platform limit, he will not try and jump upwards. He can also jump down from passthrough terrain set higher than 8 blocks above the solid ground, though he will not be able to return.">
+      <suggestedresource sprite="20"/>
+      <suggestedresource sprite="25"/>
+      <suggestedresource sprite="101"/>
+      <suggestedresource sprite="394"/>
+    </dependency>
     <spritetex nybble="6" title="Color" comment="This determines the color of the Hammer Bro.">
       <entry value="0">Normal</entry>
       <entry value="1">Black</entry>
     </spritetex>
-    <list nybble="10" title="Thrown Object" comment="This determines which object will be thrown by the Hammer Bro Plus.&lt;br&gt;For values 1-3 and 5, the corresponding sprite must be in the level. Otherwise, the Hammer Bro will crash game on load.">
+    <list nybble="10" title="Thrown Object" comment="This determines which object will be thrown by the Hammer Bro Plus.&lt;br&gt;For values 1-3 and 5, the corresponding sprite must be in the level (or in the Loaded Sprites list). Otherwise, the Hammer Bro will crash game on load.">
       <entry value="0">Hammers</entry>
       <entry value="1">Bob-omb</entry>
       <entry value="2">Goomba</entry>
@@ -780,6 +730,7 @@
       <entry value="4">Coins/Random Power-up</entry>
       <entry value="5">Lemmy Ball</entry>
     </list>
+    <dualbox nybble="12.4" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
   </sprite> <!-- #95: Hammer Bro Plus -->
 
   <sprite id="98" name="Giant Spiked Ball/Snowball" sizehacks="True" notes="A large loose Spiked Ball that will also destroy certain types of blocks. Can also be turned into a Snowball." files="iron_ball.arc">
@@ -799,8 +750,8 @@
     </list>
   </sprite> <!-- #98: Giant Spiked Ball/Snowball -->
 
-  <sprite id="99" name="Pipe Enemy Spawner" notes="The spawner must be placed on layer 1 tiles set to the core type 'Pipe'." files="kuribo.arc;bombhei.arc">
-    <dualbox nybble="11.4" title1="Spawns Goombas" title2="Spawns Bob-Ombs"/>
+  <sprite id="99" name="Pipe Enemy Spawner" notes="A simple spawner that can spawn Goombas or Bob-Ombs out of pipes. The spawner must be placed on layer 1 tiles with a Pipe core type in order to work. It can only spawn up to 8 enemies at once before existing ones must be killed." files="kuribo.arc;bombhei.arc">
+    <dualbox nybble="11.4" title1="Spawns Goombas" title2="Spawns Bob-Ombs" comment2="Goombas are spawned in cycles, with the very first cycle spawning 2 before a long delay, and every other spawning 3. Bob-Ombs do not spawn in cycles, and have a consistent spawn delay of 339 frames."/>
     <spritetex nybble="6" title="Color" requirednybble="11.4" requiredval="0">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
@@ -829,10 +780,7 @@
       <entry value="2">Left</entry>
       <entry value="3">Right</entry>
     </list>
-    <list nybble="8.4" title="Number of Enemies Spawned">
-      <entry value="1">2 Enemies, then Delay</entry>
-      <entry value="0">3 Enemies, then Delay</entry>
-    </list>
+    <checkbox nybble="8.4" title="Longer Spawn Delay" comment="When enabled, the Goombas will have a longer delay between spawns." comment2="The initial delay before spawning the very first Goomba is 59 frames. The delay based on this setting is 113 frames unchecked, and 150 frames when checked. The last Goomba in a cycle is always followed by a longer delay of 226 frames." requirednybble="11.4" requiredval="0"/>
   </sprite> <!-- #99: Pipe Enemy Spawner -->
 
   <sprite id="101" name="Bob-Omb" sizehacks="True" notes="A standard Bob-Omb enemy. It will spawn walking towards the player and will fall off of ledges. When stepped on or struck with a fireball, it will eventually explode damaging certain types of blocks, terrain, and enemies." files="bombhei.arc">
@@ -853,12 +801,12 @@
       <entry value="2">Frozen in Ice (Minus Ice) [280]</entry>
       <entry value="3">Cannon Spawn [299]</entry>
     </list>
-	<list nybble="7.3-7.4" title="Spawn Direction" requirednybble="5" requiredval="3">
-	  <entry value="0">Up Right</entry>
-	  <entry value="1">Up Left</entry>
-	  <entry value="2">Down Right</entry>
-	  <entry value="3">Down Left</entry> <!-- 4-7 are supposed to be at higher arcs, but it acts the same -->
-	</list>
+    <list nybble="7.3-7.4" title="Spawn Direction" requirednybble="5" requiredval="3">
+      <entry value="0">Up Right</entry>
+      <entry value="1">Up Left</entry>
+      <entry value="2">Down Right</entry>
+      <entry value="3">Down Left</entry> <!-- 4-7 are supposed to be at higher arcs, but it acts the same -->
+    </list>
     <list nybble="12.3-12.4" title="Spawn Direction" requirednybble="5" requiredval="1">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
@@ -868,6 +816,13 @@
   </sprite> <!-- #101: Bob-Omb -->
 
   <sprite id="105" name="Pokey" notes="A tall segmented enemy whose pieces must be destroyed individually unless the head is defeated first." files="sanbo.arc">
+    <spritetex nybble="6" title="Style" comment="This determines the color and style of the Pokey.">
+      <entry value="0">Original</entry>
+      <entry value="1">Pumpkin</entry>
+      <entry value="2">Snowman</entry>
+      <entry value="3">Jungle</entry>
+      <entry value="4">Lava</entry>
+    </spritetex>
     <list nybble="12.2-12.4" title="Height" comment="This determines how tall the Pokey is. One piece will be the head, and every other piece is a body piece." comment2="The height value also affects what Yoshi lays when consumed whole.">
       <entry value="0">2 Pieces</entry>
       <entry value="1">3 Pieces</entry>
@@ -878,13 +833,6 @@
       <entry value="6">8 Pieces</entry>
       <entry value="7">9 Pieces</entry>
     </list>
-    <spritetex nybble="6" title="Style" comment="This determines the color and style of the Pokey.">
-      <entry value="0">Original</entry>
-      <entry value="1">Pumpkin</entry>
-      <entry value="2">Snowman</entry>
-      <entry value="3">Jungle</entry>
-      <entry value="4">Lava</entry>
-    </spritetex>
   </sprite> <!-- #105: Pokey -->
 
   <sprite id="107" name="Message Box Controller" notes="This controller is required for all Message Boxes to function correctly. It must be placed in every Zone that uses a Message Box." files="test_lift.arc">
@@ -894,7 +842,7 @@
   </sprite> <!-- #107: Message Box Controller -->
 
   <sprite id="143" name="Custom Model Loader Resources (arrow.arc)" notes="This stores some of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen." files="arrow.arc">
-    <dependency notes="If using option 0-6 or 17-24 of the Custom Model Loader (11), you'll need one of these placed somewhere in the level. It does not have to be within a Zone or in the same Area.">
+    <dependency notes="If using option 0-6 or 17-24 of [11], Custom Model Loader, you'll need one of these placed somewhere in the level. It does not have to be within a Zone or in the same Area.">
       <suggested sprite="11"/>
     </dependency>
   </sprite> <!-- #143: Custom Model Loader Resources (arrow.arc) -->
@@ -918,11 +866,11 @@
     <dependency notes="The Message Box Controller must be included in each Zone for Message Boxes to function correctly.">
       <required sprite="107"/>
     </dependency>
-    <value nybble="9-12" title="Message ID" comment="Messages defined in Messages.bin. Add 256 to the ID of the message in the Newer Messages Editor program." idtype="Message"/>
+    <value nybble="9-12" title="Message ID" comment="You must add 256 to the message ID found in the Newer Messages Editor, or else the message will not appear." idtype="Message"/>
   </sprite> <!-- 152: Message Box -->
 
-  <sprite id="153" name="(Unused) ?-Switch" sizehacks="True" notes="An exact duplicate of the normal ?-Switch.">
-    <dependency notes="The game will crash unless a normal ?-Switch is placed somewhere in the level, or set in the Loaded Sprites list. It does not have to be within an area that is actually used.">
+  <sprite id="153" name="(Unused) ?-Switch" notes="An exact duplicate of the normal ?-Switch.">
+    <dependency notes="The game will crash unless a normal ?-Switch is placed somewhere in the level, or set in the Loaded Sprites list.">
       <resource sprite="40"/>
     </dependency>
     <spritetex nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
@@ -939,7 +887,7 @@
     <dualbox nybble="9.4" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." requirednybble="7.4"/> <!-- Appears if Permanent Event is set -->
     <dualbox nybble="7.4" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use."/>
     <checkbox nybble="5.1" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
-    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/>
+    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/>
     <list nybble="6.3-6.4" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requirednybble="7.4,10.4" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -970,7 +918,7 @@
       <entry value="11">1-Up</entry>
       <entry value="14">Key</entry>
     </list>
-    <list nybble="11" title="Number of Hits" comment="This determines the number of hits or ground-pounds needed for the pumpkin to break. For this function, a texture will be used that has some odd-looking white numbers on it." advancedcomment="Values above 5 will crash the game as it does not try to load a model.">
+    <list nybble="11" title="Number of Hits" comment="This determines the number of hits or ground-pounds needed for the pumpkin to break. The sprite reverts back to the original Giant Brick Block model multiple hits are reqired to break it" advancedcomment="Values above 5 will crash the game as it does not try to load a model.">
       <entry value="0">1 Hit</entry>
       <entry value="1">1 Hit</entry>
       <entry value="2">2 Hits</entry>
@@ -980,7 +928,7 @@
     </list>
   </sprite> <!-- #157: Big Pumpkin -->
 
-  <sprite id="166" name="Snake Block (Ice)" notes="Snake Blocks do not have ice collision in Newer." files="obj_turara_rakka_Big.arc">
+  <sprite id="166" name="(Crashes) Snake Block" notes="Snake Blocks crash in Newer due to a code hack that is supposed to remove the TexSRT animation from the model. Besides that, they do not have ice collision." files="block_snake.arc;block_snake_ice.arc">
     <dependency notes="The sprite snaps to the Path Node location. From Node 0 to Node 1, it must be a straight horizontal line, and it must be at least as long as the Snake Block itself. Straight lines and exact 45° angles are recommended, as after each Node, the Snake Block will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
     <checkbox nybble="7.4" title="Useless Flag 7 (1)" comment="This value is read by the game, but never used for anything. Used in retail 03-24 A1."/>
     <value nybble="11" title="Path ID" idtype="Path"/>
@@ -1115,7 +1063,10 @@
   </sprite> <!-- #175: Flying ? Block -->
 
   <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" notes="" files="pukupuku.arc">
-    <dualbox nybble="12.4" title1="Spawns Cheep Cheeps" title2="Spawns Fishbones" comment="Share no functional difference."/>
+    <spritetex nybble="12" title="Style" comment="This determines the style of the spawned fish.">
+      <entry value="0">Cheep Cheep</entry>
+      <entry value="1">Fishbones</entry>
+    </spritetex>
     <value nybble="8-9" title="Location ID" comment="The fish will spawn from below the camera line, attacking the player only while they are within this location." idtype="Location"/>
   </sprite> <!-- #181: Cheep Cheep Spawn Area - Jumping -->
 
@@ -1164,11 +1115,6 @@
     <value nybble="3-4" title="Triggering Event ID" comment="When this Event ID is activated, the tiles affected by the Tile God's area will be created or destroyed, depending on the Mode." idtype="Triggering Event"/>
     <value nybble="11" title="Width" comment="This determines the width of the area that is affected."/>
     <value nybble="12" title="Height" comment="This determines the height of the area that is affected."/>
-    <list nybble="16" title="Target Layer" comment="This determines which terrain layer is affected.">
-      <entry value="2">Layer 0</entry>
-      <entry value="0">Layer 1</entry>
-      <entry value="1">Layer 2</entry>
-    </list>
     <dualbox nybble="10.4" title1="Destroys Tiles" title2="Creates Tiles" comment="This determines how the Tile God will act when the Triggering Event is activated." comment2="When creating, the Tile God will place these tiles on top of existing tiles instead of replacing them."/>
     <dualbox nybble="5.4" title1="Reverse Action when Deactivated" title2="Permanent" comment="This determines how the Tile God will act when the Triggering Event is deactivated" comment2="When set to Reverse, previously created tiles will be destroyed, and locations where tiles were destroyed will be filled by the creation settings of the Tile God."/>
     <checkbox nybble="8.2" title="Disable Effects" comment="When enabled, the visual effect for Tile Creation/Destruction will be removed." comment2="You can use the Effect/Sound Spawner (332) to add your own effect in its place."/>
@@ -1191,8 +1137,8 @@
       <entry value="14">Pa1 0,0</entry>
       <entry value="12">Pa3 4,3</entry>
     </list>
-    <value nybble="6" title="Tileset Row" comment="When using [Tile: Tile from Pa(x)], you can spawn every tile from the tileset by selecting it from a grid formation. Each tileset contains 16 Rows (0-15), and 16 Columns (0-15). The first tile in the top left is 0,0 and the last tile in the bottom right is 15,15." comment2="Some common examples for Pa0: &lt;br&gt; &lt;i&gt;Coin: 1,14 | Coin Outline: 1,15 | ?-Block: 3,1 | Used Block: 3,2 | Wooden Block: 3,3 | Stone Block: 3,4 | Donut Lift: 3,5 | Steel Block: 3,6" requirednybble="9" requiredval="8-11"/> <!-- Appears only if Block Type (Tile) = 8-11 -->
-    <value nybble="7" title="Tileset Column" comment="When using [Block Type: Tile from Pa(x)], you can spawn every tile from the tileset by selecting it from a grid formation. Each tileset contains 16 Rows (0-15), and 16 Columns (0-15). The first tile in the top left is 0,0 and the last tile in the bottom right is 15,15." comment2="Some common examples for Pa0: &lt;br&gt; &lt;i&gt;Coin: 1,14 | Coin Outline: 1,15 | ?-Block: 3,1 | Used Block: 3,2 | Wooden Block: 3,3 | Stone Block: 3,4 | Donut Lift: 3,5 | Steel Block: 3,6" requirednybble="9" requiredval="8-11"/> <!-- Appears only if Block Type (Tile) = 8-11 -->
+    <value nybble="6" title="Tileset Row" comment="When using Tile from Pa(x), you can spawn any tile from the tileset by selecting it from a grid formation. Each tileset contains 16 Rows (0-15), and 16 Columns (0-15). The first tile in the top left is 0,0 and the last tile in the bottom right is 15,15." comment2="Some common examples for Pa0: &lt;br&gt; &lt;i&gt;Coin: 1,14 | Coin Outline: 1,15 | ?-Block: 3,1 | Used Block: 3,2 | Wooden Block: 3,3 | Stone Block: 3,4 | Donut Lift: 3,5 | Steel Block: 3,6" requirednybble="9" requiredval="8-11"/> <!-- Appears only if Tile = 8-11 -->
+    <value nybble="7" title="Tileset Column" comment="When using Tile from Pa(x), you can spawn any tile from the tileset by selecting it from a grid formation. Each tileset contains 16 Rows (0-15), and 16 Columns (0-15). The first tile in the top left is 0,0 and the last tile in the bottom right is 15,15." comment2="Some common examples for Pa0: &lt;br&gt; &lt;i&gt;Coin: 1,14 | Coin Outline: 1,15 | ?-Block: 3,1 | Used Block: 3,2 | Wooden Block: 3,3 | Stone Block: 3,4 | Donut Lift: 3,5 | Steel Block: 3,6" requirednybble="9" requiredval="8-11"/> <!-- Appears only if Tile = 8-11 -->
   </sprite> <!-- #191: Tile God Event -->
 
   <sprite id="195" name="Huckit Crab" sizehacks="True" notes="A crab enemy that will throw projectiles at the player while occasionally jumping in the air." files="kanibo.arc">
@@ -1226,7 +1172,7 @@
   </sprite> <!-- #195: Huckit Crab -->
 
   <sprite id="198" name="Giant Goomba" notes="A larger version of the Goomba that splits into two regular Goombas when stepped on." files="kuribo.arc;kuriboBig.arc">
-    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Giant Goomba." comment2="The smaller Goombas spawned correspond to it's recolor of the same value. This means that all smaller Goombas are the same color, except for Green, which is the normal brown at the smallest size.">
+    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Giant Goomba." comment2="When stomped, the smaller Goombas that it splits into will retain this color.">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
       <entry value="2">Green</entry>
@@ -1238,7 +1184,7 @@
   </sprite> <!-- #198: Giant Goomba -->
 
   <sprite id="199" name="Mega Goomba" notes="An even larger version of the Goomba that splits into two Giant Goombas when stepped on." files="kuribo.arc;kuriboBig.arc">
-    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Mega Goomba." comment2="The smaller Goombas spawned correspond to it's recolor of the same value. This means that all smaller Goombas are the same color, except for Green, which is the normal Brown at the smallest size.">
+    <spritetex nybble="6" title="Color" comment="This determines the color and style of the Mega Goomba." comment2="When stomped, the smaller Goombas that it splits into will retain this color.">
       <entry value="0">Normal</entry>
       <entry value="1">Gloomba</entry>
       <entry value="2">Green</entry>
@@ -1250,8 +1196,8 @@
   </sprite> <!-- #199: Mega Goomba -->
 
   <sprite id="203" name="Chest" noyoshi="True" notes="A chest that will award some type of inventory item to the player. Note that opening a chest will complete the level with the standard exit." files="treasure_box.arc">
-    <dependency notes="NewerSMBW rewrote this sprite's settings in a way that breaks Ambush levels. [432] is still required, however.">
-      <required sprite="432"/>
+    <dependency notes="NewerSMBW rewrote this sprite's settings in a way that breaks Ambush levels. [432] is still required to load the Toad model.">
+      <resource sprite="432"/>
     </dependency>
     <value nybble="3.2-4.4" title="Triggering Event ID" comment="The Chest will only appear when the Triggering Event is 0 or is activated. It will not disappear if the Event is deactivated." idtype="Triggering Event"/>
     <value nybble="8.2-8.4" title="Number of Items Awarded" comment="This determines the number of different items awarded." comment2="[Bug] Item 5 mistakenly uses this value, so keep in mind this limits the possible awards. &lt;br&gt;&lt;br&gt;If awarding 5 items, the 5th item must be a Star. &lt;br&gt;If awarding 6 items, the 5th item must be a Penguin Suit. &lt;br&gt;If awarding 7 items, the 5th item must be a Hammer. &lt;br&gt;You cannot award 8 items."/>
@@ -1322,27 +1268,22 @@
     </list>
   </sprite> <!-- #203: Chest -->
 
-  <sprite id="204" name="Rolling Object Spawner" notes="A spawner that will create loose Spiked Balls or Rolling Barrels. &lt;font color=&quot;red&quot;&gt;Only Spiked Balls work in NewerSMBW. Rolling Barrels crash the game.&lt;/font&gt;" files="iron_ball.arc;lift_taru.arc">
-    <dualbox nybble="5.4" title1="Spawns Spiked Balls" title2="Spawns Rolling Barrels (Crashes)" comment="&lt;font color=&quot;Red&quot;&gt;Spawning a rolling barrel will crash the game.&lt;/font&gt;"/>
-    <value nybble="3-4" title="Deactivation Event ID" comment="This Triggering Event ID will deactivate the Spiked Ball Spawner." idtype="Triggering Event" requirednybble="5.4" requiredval="0"/> <!-- Appears only for Spiked Balls -->
-    <list nybble="8" title="Speed" comment="This determines the speed of the spawned rolling object." comment2="Stopped rolling objects will still be affected by the terrain they are resting on.">
+  <sprite id="204" name="Rolling Object Spawner" notes="A spawner that will create loose Spiked Balls. Rolling Barrels do not work in Newer, and instead crash the game." files="iron_ball.arc;lift_taru.arc">
+    <dualbox nybble="5.4" title1="Spawns Spiked Balls" title2="Spawns Rolling Barrels (Crashes)" comment="This determines which object the spawner will create. Spawning a rolling barrel will crash the game."/>
+    <value nybble="3-4" title="Deactivation Event ID" comment="While this Event ID is triggered, the spawner will not spawn any Spiked Balls." idtype="Triggering Event" requirednybble="5.4" requiredval="0"/> <!-- Appears only for Spiked Balls -->
+    <list nybble="8.3-8.4" title="Speed" comment="This determines the speed of the spawned spike ball." comment2="Stopped spike balls will still be affected by the terrain they are resting on. This corresponds to nybble 12 on sprite [63]." requirednybble="5.4" requiredval="0"> <!-- Appears only for Spiked Balls -->
       <entry value="0">Stopped</entry>
       <entry value="1">Slow</entry>
-      <entry value="2">Fast</entry>
+      <entry value="2">Medium</entry>
+      <entry value="3">Fast</entry>
     </list>
-    <list nybble="9" title="Direction" comment="This determines the direction in which the spawned objects will roll in relation to the spawner." requirednybble="8">
+    <list nybble="9.3-9.4" title="Direction" comment="This determines the direction in which the spawned objects will roll in." comment2="Value 3 is identical to value 2. Higher values than 3 for the Rolling Barrels cause an out-of-bounds read, which probably leads to unexpected results." requirednybble="8">
       <entry value="0">Left</entry>
       <entry value="1">Right</entry>
-      <entry value="2">Toward Mario</entry>
+      <entry value="2">Toward closest player</entry>
     </list> <!-- Appears only if Speed > 0 -->
-    <value nybble="10" title="Number of Objects Spawned" comment="This determines how many of the rolling object will spawn." comment2="If set to 0, it will continuously spawn objects."/>
-    <list nybble="12" title="Grouping Mode" comment="This determines the rate at which the objects will spawn." advancedcomment="Other values need to be tested. Also try to find out if there's a difference between values 3 and 4.">
-      <entry value="0">Normal</entry>
-      <entry value="1">Spawn three items, then long pause</entry>
-      <entry value="2">Spawn three items, then short pause</entry>
-      <entry value="3">Spawn one item, then long pause</entry>
-      <entry value="4">Spawn one item, then long pause</entry>
-    </list>
+    <value nybble="10" title="Maximum Number of Objects" comment="If there are more than this number of rolling objects loaded, the spawner will not spawn any new ones. Note that this includes all instances of the rolling object, even if they were not spawned by this spawner." comment2="If set to 0, it will continuously spawn objects."/>
+    <value nybble="11-12" title="Delay" comment="This is the delay between consecutive objects. The unit is half a second (30 frames), with a default of 3 seconds (180 frames). Note that these are real seconds, not in-game timer ticks" comment2="Note that this is the number of frames when there are no(?) objects of the specified type loaded."/>
   </sprite> <!-- #204: Rolling Object Spawner -->
 
   <!-- Test Z-Order Nybble 8 to see if it places the block behind Chainlink Fence objects (Fix 208, too) -->
@@ -1399,7 +1340,7 @@
       <suggested sprite="172"/>
       <suggested sprite="382"/>
     </dependency>
-    <list nybble="7" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown. &lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
+    <list nybble="7" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown.&lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
       <entry value="0">None / [159] Path Controlled</entry>
       <entry value="1">[260] Two-Way Line</entry>
       <entry value="4">[474] Dancing</entry>
@@ -1434,7 +1375,7 @@
     <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the ?-Block placing it further behind other sprites." comment2="This will place the ?-Block behind even Chainlink Fence and Layer 1 terrain." advanced="True" advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
   </sprite> <!-- #208: (Unused) ? Block -->
 
-  <sprite id="209" name="Brick Block" sizehacks="True" notes="Your most basic, most flexible, standard brown Brick Block. When spawning power-ups, it will spawn only one, no matter how many players! Such a stingy block~">
+  <sprite id="209" name="Brick Block" sizehacks="True" notes="Your most basic, most flexible, standard brown Brick Block. When spawning power-ups, it will spawn only one, no matter how many players! Such a stingy block~" files="I_ship_key.arc">
     <dependency notes="If pairing the Brick Block for movement or other features, you'll likely need one of the sprites listed in the Dependency List.">
       <suggested sprite="159"/>
       <suggested sprite="260"/>
@@ -1442,7 +1383,7 @@
       <suggested sprite="172"/>
       <suggested sprite="382"/>
     </dependency>
-    <list nybble="7" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown. &lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
+    <list nybble="7" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown.&lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
       <entry value="0">None / [159] Path Controlled</entry>
       <entry value="1">[260] Two-Way Line</entry>
       <entry value="4">[474] Dancing</entry>
@@ -1485,9 +1426,7 @@
   </sprite> <!-- #210: Topman -->
 
   <sprite id="212" name="Rolling Hill" notes="A rotating circle that has the same general appearance as various tilesets." files="circle_ground.arc;circle_ground_chika.arc;circle_ground_koopa.arc">
-    <dependency notes="The underside of a Rolling Hill does NOT have collision. Do not place a Rolling Hill in any situation where the player would have contact with the bottom 50% of the hill.">
-      <suggested sprite="212"/>
-    </dependency>
+    <dependency notes="The underside of a Rolling Hill does NOT have collision. Do not place a Rolling Hill in any situation where the player would have contact with the bottom 50% of the hill."/>
     <list nybble="7.2-7.4" title="Style / Size" comment="This determines the style and size of the Rolling Hill.">
       <entry value="0">Flexible Size (Grassland)</entry>
       <entry value="1">18 Blocks (Overworld)</entry>
@@ -1561,7 +1500,7 @@
       <suggested sprite="172"/>
       <suggested sprite="382"/>
     </dependency>
-    <list nybble="7" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown. &lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
+    <list nybble="7" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown.&lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
       <entry value="0">None / [159] Path Controlled</entry>
       <entry value="1">[260] Two-Way Line</entry>
       <entry value="4">[474] Dancing</entry>
@@ -1638,7 +1577,7 @@
     <value nybble="12" title="Ray ID" comment="This determines which Jumbo Ray Respawner will influence the respawn of this Jumbo Ray." idtype="Ray"/>
   </sprite> <!-- #224: Jumbo Ray -->
 
-  <sprite id="230" name="Bramball" noyoshi="True" notes="A long-legged enemy with a ball for a body that will flip itself around as it traverses terrain with proper spacing. Rumor has it that if it is struck from below with a Pipe Cannon, a large amount of coins will appear. Kaching!" files="ibaramushi.arc">
+  <sprite id="230" name="Bramball" noyoshi="True" notes="A long-legged enemy with a ball for a body that will flip itself around as it traverses terrain with proper spacing. Rumor has it that if it is struck from below with a Pipe Cannon, a large amount of coins will appear." files="ibaramushi.arc">
     <dependency notes="A Bramball must have solid terrain exactly 4 tiles and no more than a 1 tile change in elevation to move."/>
     <spritetex nybble="6" title="Style" comment="This determines the color and style of the Bramball.">
       <entry value="0">Original</entry>
@@ -1652,14 +1591,14 @@
       <entry value="0">Towards Player</entry>
       <entry value="1">Moves Right</entry>
       <entry value="2">Moves Left</entry>
-	</list>
+    </list>
   </sprite> <!-- #230: Bramball -->
 
   <sprite id="231" name="Wiggling Mushroom Platform" notes="A mushroom platform that can tilt back and forth." files="lift_yogan_kinoko.arc">
     <dependency notes="Wiggling Mushroom Platforms may be paired with [313] Wiggling Mushroom Controller to enable synchronized movement across a Zone.">
       <suggested sprite="313"/>
     </dependency>
-	  <dualbox nybble="7.3" title1="Doesn't Extend" title2="Extends" comment="This determines whether or not the platform extends and contracts."/>
+    <dualbox nybble="7.3" title1="Doesn't Extend" title2="Extends" comment="This determines whether or not the platform extends and contracts."/>
     <value nybble="5" title="Wiggling Mushroom ID" comment="This pairs the platform to a matching Wiggling Mushroom Controller for synchronized movement. If an ID is set, that ID will control and override all matching Wiggle Speeds." idtype="Wiggling"/>
     <value nybble="11-12" title="Wiggle Speed" requirednybble="5" requiredval="0"/>
     <value nybble="10.2-10.4" title="Tilt Distance" comment="This determines how much the platform will tilt. A value of 1 or 2 is recommended."/>
@@ -1842,7 +1781,7 @@
 
   <sprite id="250" name="Electric Line" notes="A tall electrified wall that will electrocute any player that touches it.">
     <dependency notes="The Boss Controller for Bowser Jr's 2nd Fight must be included in the level to load the line.">
-      <required sprite="405"/> <!-- Bowser Jr. 2nd Fight -->
+      <resource sprite="405"/> <!-- Bowser Jr. 2nd Fight -->
     </dependency>
     <dualbox nybble="11.4" title1="Always On" title2="Looping" comment="This determines if the Electric Line is always on or if it cycles between on and off."/>
     <value nybble="7-8" title="Delay between Loops" comment="This determines the time the Electric Line will stay on and off during its power looping." comment2="Delay in 1/6ths of a second." requirednybble="11.4"/> <!-- Appears if Looping -->
@@ -1864,7 +1803,7 @@
       <suggested sprite="149"/>
     </dependency>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the ?-Block to a matching rotation controller." requirednybble="9" requiredval="0" idtype="Rotation"/>
-    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tiled blocks can't be rotation controlled.">
+    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tilted blocks can not be rotation controlled.">
       <entry value="0">0°</entry>
       <entry value="1">3°</entry>
       <entry value="2">6°</entry>
@@ -1882,7 +1821,7 @@
       <entry value="14">42°</entry>
       <entry value="15">45°</entry>
     </list>
-    <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left"/> 
+    <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left"/>
     <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players. Some items, such as the Spring, won't appear if the player strikes the Block while it is actively rotating.">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
@@ -1963,9 +1902,7 @@
     </spritetex>
   </sprite> <!-- #269: Parachute Bob-Omb -->
 
-  <!-- Conflicting information on sprite settings with newer spritedata, needs further research. -->
   <sprite id="273" name="Level Exit Controller" notes="Upon activation by a Triggering Event, the Level Exit Controller will display a message box for a fixed amount of time and then complete the current level. It can also set world flags for the Switch Palaces." files="OpeningScene.arc">
-    <dependency notes="While there are no dependencies for the Level Exit Controller, not even the Message Box Controller, this sprite does function as loading Opening_Scene.arc in regards to [11]."/>
     <value nybble="3-4" title="Triggering Event ID" comment="The Level Exit Controller will begin to eject the player from the level when the Triggering Event is activated." idtype="Triggering Event"/>
     <checkbox nybble="6.4" title="Level Intro" comment="When enabled, the Level Exit Controller will show a message box for 1020 time units. It will then eject you from the level and set a hardcoded flag in the world settings that Newer uses when starting the game for the first time. The game will also be saved." comment2="It's not recommended to use this unless directly editing the NewerSMBW pack."/>
     <list nybble="5" title="Palace Activation" comment="This determines which colored blocks will be enabled after the player exits. If not using the Level Exit Controller as a Switch Palace, set it to value 8. Additionally, the message will be displayed for 270 time units and cannot be skipped, and the level will be completed." requirednybble="6.4" requiredval="0">
@@ -1975,13 +1912,13 @@
       <entry value="2">Yellow Blocks</entry>
       <entry value="3">Blue Blocks</entry>
     </list>
-    <value nybble="9-12" title="Message ID" comment="Messages defined in Messages.bin" idtype="Message"/>
+    <value nybble="7-12" title="Message ID" comment="Messages defined in Messages.bin" idtype="Message"/>
   </sprite> <!-- #273: Level Exit Controller -->
 
   <sprite id="279" name="World-3 Boss: Balboa Wrench" noyoshi="True" notes="The giant Rocky Wrench boss used by NewerSMBW. He must be Ground-Pounded 3 times to be defeated. ">
     <dependency notes="A Rocky Wrench, a NSMBDS Stone Block, Kamek and his controller should be included in the level.">
-      <required sprite="352"/> <!-- Rocky Wrench -->
-      <required sprite="27"/>  <!-- lift_zen.arc from grey block -->
+      <resource sprite="352"/> <!-- Rocky Wrench -->
+      <resource sprite="27"/>  <!-- lift_zen.arc from grey block -->
 	    <required sprite="427"/> <!-- Kamek -->
       <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
@@ -2018,8 +1955,7 @@
     <value nybble="10" title="Speed" comment="This determines the speed of the wheel's rotation. A speed of 0 still moves, just very slowly."/>
   </sprite> <!-- #286: Rotating Wooden Airship Wheel -->
 
-  <!-- Investigate Nybble 12 - Right = 2? If so, then it's suspected that Left = 1 and Towards Player = 0. True or False? -->
-  <sprite id="288" name="(Crashes) Rolling Barrel" notes="&lt;font color=&quot;Red&quot;&gt;This sprite crashes in NewerSMBW.&lt;/font&gt;" files="lift_taru.arc">
+  <sprite id="288" name="(Crashes) Rolling Barrel" notes="This sprite crashes in NewerSMBW." files="lift_taru.arc">
     <list nybble="12.3-12.4" title="Intial Rolling Direction" comment2="Value 3 is the same as value 0.">
       <entry value="0">Towards closest player</entry>
       <entry value="1">Left</entry>
@@ -2087,12 +2023,7 @@
       <entry value="1">Down</entry>
     </list>
     <value nybble="10" title="Speed" comment="Value 0 keeps it in place."/>
-    <list nybble="11" title="Movement Direction">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Left</entry>
-      <entry value="3">Left</entry>
-    </list>
+    <dualbox nybble="11.4" title1="Moves Right" title2="Moves Left"/>
     <list nybble="12" title="Facing" comment="Will fly backwards if facing wrong direction.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -2120,12 +2051,7 @@
       <entry value="1">Down</entry>
     </list>
     <value nybble="10" title="Speed" comment="Value 0 keeps it in place."/>
-    <list nybble="11" title="Movement Direction">
-      <entry value="0">Right</entry>
-      <entry value="1">Left</entry>
-      <entry value="2">Left</entry>
-      <entry value="3">Left</entry>
-    </list>
+    <dualbox nybble="11.4" title1="Moves Right" title2="Moves Left"/>
     <list nybble="12" title="Facing" comment="Will fly backwards if facing wrong direction.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -2172,7 +2098,7 @@
       <entry value="2">Black (No difference)</entry>
     </spritetex>
     <value nybble="10" title="Speed" comment="This determines how quickly the Spine Coaster will travel along the Lines."/>
-    <checkbox nybble="11.4" title="Touch Activated" comment="When enabled, this platform will activate when all players are touching the Spine Coaster." comment2="When not enabled, this platform will only activate when a platform with the same Coaster ID is activated through Touch Activation."/>
+    <checkbox nybble="11.4" title="Touch Activated" comment="When enabled, this platform will activate when all players are touching the Spine Coaster." comment2="When not enabled, this platform will only activate when a platform with the same Spine ID is activated through Touch Activation."/>
     <value nybble="5" title="Coaster ID" comment="This will pair multiple Spine Coasters together so that when one of them starts, they all start at the same time." comment2="Do not pair more than one Spine Coaster with [Touch Activated] enabled!" idtype="Coaster"/>
   </sprite> <!-- #297: Spine Coaster -->
 
@@ -2201,12 +2127,18 @@
 
   <!-- Do we know what makes this one special compared to #95? -->
   <sprite id="308" name="Platform Hammer Bro" sizehacks="True" notes="'En_Lift_HammerBros' - Likely allows it to be used on places where he shouldn't jump off." files="bros.arc">
+    <dependency notes="Thrown Object types 1-3, and 5 need the corresponding sprite present in the level (or in the Loaded Sprites list), or else the game will crash.">
+      <suggestedresource sprite="20"/>
+      <suggestedresource sprite="25"/>
+      <suggestedresource sprite="101"/>
+      <suggestedresource sprite="394"/>
+    </dependency>
     <dualbox nybble="12.4" title1="Uses 2 Platforms" title2="Uses 1 Platform" comment="This determines the number of Platforms the AI of the Hammer Bro tries to make use of. See Dependency Notes for more information."/>
     <spritetex nybble="6" title="Color" comment="This determines the color of the Hammer Bro.">
       <entry value="0">Normal</entry>
       <entry value="1">Black</entry>
     </spritetex>
-    <list nybble="10" title="Thrown Object" comment="This determines which object will be thrown by the Hammer Bro Plus.&lt;br&gt;For values 1-3 and 5, the corresponding sprite must be in the level. Otherwise, the Hammer Bro will crash game on load.">
+    <list nybble="10" title="Thrown Object" comment="This determines which object will be thrown by the Hammer Bro Plus.">
       <entry value="0">Hammers</entry>
       <entry value="1">Bob-omb</entry>
       <entry value="2">Goomba</entry>
@@ -2229,20 +2161,20 @@
       <entry value="0">Icicle (Original)</entry>
       <entry value="1">Crystal</entry>
     </spritetex>
-    <checkbox nybble="5.4" title="Don't Fall" comment="When enabled, the Icicle will not fall."/>
-    <checkbox nybble="8.2" title="Use 'Forming' Animation" comment="When enabled, the Icicle will start small when it loads in and grow to its final size."/>
-    <value nybble="10" title="(Snake Block?) Fall Delay" comment="It's unsure what exactly this does; in retail, 13 is used." requirednybble="5.4" requiredval="0"/> <!-- Disappears if Don't Fall is set -->
-    <list nybble="12" title="Tilt after Falling" comment="When enabled, the Icicle will tilt to the right (?) after it falls." requirednybble="5.4" requiredval="0">
-      <entry value="0">No (Straight)</entry>
-      <entry value="1">Yes (Tilts Right? Towards Player/Source?)</entry>
-    </list> <!-- Disappears if Don't Fall is set -->
-    <checkbox nybble="11.4" title="Falls onto a Snake Block" comment="When enabled, only a Snake Block will cause the Icicle to fall." requirednybble="5.4" requiredval="0"/> <!-- Disappears if Don't Fall is set -->
-    <list nybble="8" title="Second Falling Animation" comment="This determines the animation the Icicle uses after falling off the Snake Block, or the terrain underneath it is otherwise removed." comment2="If set to 0 or 1, the Icicle will fall through any other terrain and despawn. If set to 2, it will still interact with other Layer 1 terrain after falling." requirednybble="5.4" requiredval="0">
+    <dualbox nybble="5" title1="Parent" title2="Child" comment="When set to Child, the icicle will not fall, because a child icicle waits for its parent to fall. Parent icicles create their own child with their own settings, with nybble 5 forced turned on."/>
+    <checkbox nybble="9" title="Parent: Delete after Child fell" comment="If unchecked, the parent actor stays around, doing nothing" comment2="Parent goes into ParentCreateWait after telling child to fall if 0, deletes itself instead otherwise. ParentCreateWait is an empty state though - it just waits and does nothing. It was possibly confused with the 'ParentWait' state, which is set up in a way that would allow it to create an icicle every time. This behaviour would also explain the weird (and currently useless) design of parent / child icicle actors."  requirednybble="5" requiredval="0" />
+    <checkbox nybble="6" title="Use Growing Animation" comment="Any nonzero value causes it to go into a growing animation." comment2="During the animation, the scale is increased from 0 to 1 in 4 frames: 0, 0.4, 0.8, 1" />
+    <list nybble="8" title="Second Falling Animation" comment="This determines the animation the Icicle uses after falling off the Snake Block, or the terrain underneath it is otherwise removed." comment2="If set to 0 or 1, the Icicle will fall through any other terrain and despawn. If set to 2, it will still interact with other Layer 1 terrain after falling." requirednybble="5" requiredval="0">
       <entry value="0">Dies, with Tilting Drop</entry>
       <entry value="1">Dies, with Upright Drop</entry>
       <entry value="2">Lives, Falls Straight Down</entry>
-    </list> <!-- Disappears if Don't Fall is set -->
-    <value nybble="9" title="Unknown Value 9" advanced="True" advancedcomment="ASM shows Nybble 9 might affect something."/>
+    </list> <!-- Disappears if 'Child' is set -->
+    <dualbox nybble="11" title1="Activated by Player" title2="Activated by Snake Block" comment="If player: Any player needs to be closer than 8 blocks horizontally. If snake block: The horizontal distance can be configured." requirednybble="5" requiredval="0" />  <!-- Disappears if 'Child' is set -->
+    <value nybble="10" title="Snake Block: Fall Distance" comment="Number of blocks" requirednybble="5, 11" requiredval="0, 1-15" />  <!-- Appears if 'Snake Block' and 'Parent' are set -->
+    <list nybble="12" title="Tilt after Falling" comment="When enabled, the Icicle will tilt to the right (?) after it falls." requirednybble="5" requiredval="0">
+      <entry value="0">No (Straight)</entry>
+      <entry value="1">Yes (Tilts Right? Towards Player/Source?)</entry>
+    </list> <!-- Disappears if 'Child' is set -->
   </sprite> <!-- #311: Mega Icicle -->
 
   <sprite id="319" name="Flip Block" notes="A yellow block with two eyes that cannot be destroyed. When struck, it will spin, allowing passage through it for a limited time." files="block_rotate.arc">
@@ -2250,9 +2182,9 @@
 
   <sprite id="320" name="Falling Chestnut" notes="A hanging chestnut that can quickly falls upon the player's approach with various potential effects. They can also be triggered from a POW block.&lt;br&gt;Please note that these chestnuts can be frozen by ice flowers, regardless of their size. If they're then broken, they will ignore their selected contained object and only release a coin." files="chestnut.arc">
     <dependency notes="The following sprites must be present somewhere in the level (or in the Loaded Sprites list), or the game will crash.">
-      <resource sprite="20"/>
-      <resource sprite="25"/>
-      <resource sprite="32"/>
+      <suggestedresource sprite="20"/>
+      <suggestedresource sprite="25"/>
+      <suggestedresource sprite="32"/>
     </dependency>
     <spritetex nybble="12" title="Color" comment="This determines the color of the Chestnut.">
       <entry value="0">Brown</entry>
@@ -2311,7 +2243,7 @@
 
   <sprite id="324" name="World-5 Boss: Podouble" notes="A pair of large Podoboo bosses used in NewerSMBW. It can only be defeated by using fire or ice attacks against the correct half, and spawns a Yoshi for each player to assist them.">
     <dependency notes="A Podoboo, Kamek and his controller must be included in the level. Yoshis are spawned by the boss at 16 blocks in from the left side of the zone.">
-      <required sprite="46"/> <!-- Lava Bubble -->
+      <resource sprite="46"/> <!-- Lava Bubble -->
 	    <required sprite="427"/> <!-- Kamek -->
       <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
@@ -2344,14 +2276,14 @@
     <value nybble="9" title="Loop Delay" comment="This determines the number of seconds between activations of the sound or graphic effect." comment2="The effect will only activate once if the delay is left at 0."/>
   </sprite> <!-- #332: Effect/Sound Spawner -->
 
-  <sprite id="341" name="Giant Koopa Shell Cave" notes="A decorative large shell that can be used as a cave with the right arrangement of invisible blocks and settings." files="big_shell.arc">
-    <dependency notes="Look in Retail 5-01 A1 for an example of how to use this sprite correctly. You will need to make use of Spotlight Lighting, Layer 0 tiles, and invisible collision blocks in order for it to look correct."/>
+  <sprite id="341" name="Giant Koopa Shell Cave" notes="A decorative large shell that can be used as a cave with the right arrangement of invisible blocks and settings. Toggle viewing of Layer 0 to see inside the shell!" files="big_shell.arc">
+    <dependency notes="Look in Retail 05-01 A1 for an example of how to use this sprite correctly. You will need to make use of Spotlight Lighting, Layer 0 tiles, and invisible collision blocks in order for it to look correct."/>
     <spritetex nybble="6" title="Color" comment="This determines the color of the Shell Cave.">
       <entry value="0">Green</entry>
       <entry value="1">Red</entry>
     </spritetex>
     <checkbox nybble="12.4" title="Remove Grass/Rocks" comment="When enabled, this will remove the decoration from the bottom of the Shell Cave."/>
-  </sprite> <!-- #341: Giant Turtle Shell Cave -->
+  </sprite> <!-- #341: Giant Koopa Shell Cave -->
 
   <sprite id="350" name="Fireball Laser" notes="A controller that creates a constant stream of fireballs in a specific direction. These fireballs will not pass through terrain. They spawn at the top left corner of the sprite's placement.">
     <value nybble="7-8" title="Triggering Event ID" comment="While this Event ID is activated, the controller will create fireballs." idtype="Triggering Event"/>
@@ -2395,7 +2327,7 @@
 
   <sprite id="374" name="Effect - Falling Objects and Wind" notes="This effect controller will either create a falling particle effect, or it will create a Sandstorm." files="env_snow.arc;env_leaf.arc;env_petal.arc;env_stardust.arc">
     <dependency notes="Placing this sprite more than once in the same zone will overlay the effect. If Sandstorm is selected, you must include [90] Wind Physics and Sound for the graphics to appear.">
-      <suggested sprite="90"/>
+      <suggested sprite="90"/> <!-- Wind Physics and Sound -->
     </dependency>
     <dualbox nybble="12.4" title1="Falling Objects" title2="Sandstorm" comment="This determines the functionality of the sprite."/>
     <list nybble="6" title="Falling Object Type" comment="This determines the particle effect used as stage decoration." requirednybble="12.4" requiredval="0">
@@ -2641,13 +2573,6 @@
     <dependency notes="This sprite has additional hardcoded behavior that may cause bugs when it is used outside of its intended boss fight.">
       <suggested sprite="431"/>
     </dependency>
-    <spritetex nybble="8" title="Color" comment="This determines what color the switch is. Different colored switches do not activate different colors of blocks." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should.">
-      <entry value="0">Red (Original)</entry>
-      <entry value="1">Red</entry>
-      <entry value="2">Yellow</entry>
-      <entry value="3">Green</entry>
-      <entry value="4">Blue</entry>
-    </spritetex>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will be facing downwards." comment2="Upside-Down switches cannot be set to fall."/>
     <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set."/>
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/>
@@ -2656,7 +2581,7 @@
     <dualbox nybble="7.4" title1="Timed Event" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Red Blocks will not become solid."/>
     <checkbox nybble="5.1" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox nybble="5.1" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requirednybble="7.4"/> <!-- Appears if Permanent Event is set -->
-    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <list nybble="6.3-6.4" title="Delay on Multi-Use" comment="This determines how long the switch will take to pop up after the timer expires on a Timed Multi-Use switch." requirednybble="7.4,10.4" requiredval="0, 1">
       <entry value="0">Instant</entry>
       <entry value="2">Short Delay</entry>
@@ -2688,7 +2613,7 @@
     <dualbox nybble="7.4" title1="Timed Event" title2="Permanent Event [Buggy]" comment="This determines if the Target Event is modified temporarily or permanently." comment2="Permanent Event cannot be used with Multi-Use. Additionally, Permanent Event will also permanently deactivate the background music for the zone, and Red Blocks will not become solid."/>
     <checkbox nybble="5.1" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox nybble="5.1" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requirednybble="7.4"/> <!-- Appears if Permanent Event is set -->
-    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed. &lt;br&gt; &lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. &lt;br&gt; &lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
+    <dualbox nybble="10.4" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." idtype="Triggering Event"/>
   </sprite> <!-- #479: Bowser Switch (Large) -->
