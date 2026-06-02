@@ -1390,7 +1390,7 @@ class SpriteImage_Topman(SLib.SpriteImage_Static):  # 210
             parent,
             1.5,
             ImageCache['Topman'],
-            (-22, -32),
+            (-14, -34),
         )
 
     @staticmethod
