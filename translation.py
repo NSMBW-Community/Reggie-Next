@@ -663,7 +663,7 @@ class ReggieTranslation:
                 33: 'Reset sprite data when hiding sprite fields',
                 34: 'Hide Reset Spritedata button',
                 35: 'Pad level with null bytes',
-                36: 'Fixed level size (bytes)',
+                36: 'Fixed level size (bytes):',
                 37: 'Place objects at their full size',
                 38: 'Display rectangles indicating the zone bounds',
                 39: 'Insert new path node after selected node',

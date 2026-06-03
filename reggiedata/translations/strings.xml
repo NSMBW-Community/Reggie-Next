@@ -614,7 +614,7 @@
 		<string id="33">Reset sprite data when hiding sprite fields</string>
 		<string id="34">Hide Reset Spritedata button</string>
 		<string id="35">Pad level with null bytes</string>
-		<string id="36">Fixed level size (bytes)</string>
+		<string id="36">Fixed level size (bytes):</string>
 		<string id="37">Place objects at their full size</string>
 		<string id="38">Display rectangles indicating the zone bounds</string>
 		<string id="39">Insert new path node after selected node</string>
