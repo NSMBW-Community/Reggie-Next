@@ -4459,7 +4459,7 @@
   </sprite> <!-- #297: Spine Coaster -->
 
   <!-- All Cannonball sprites need comprehensive testing on the Camera variable, Nybble 7. Test with auto-scrolling controller, zoom controller, and 399 Airship Rocking -->
-  <sprite id="298" name="Long Cannonball Cannons" notes="" files="houdai.arc;houdai_ball.arc">
+  <sprite id="298" name="Long Cannonball Cannon" notes="" files="houdai.arc;houdai_ball.arc">
     <list nybble="7" title="Camera Influence" comment="This determines how the cannonball moves relative to the camera.">
       <entry value="0">Unaffected by Camera</entry>
       <entry value="1">Affected by All Camera Movements</entry>
