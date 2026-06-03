@@ -2028,7 +2028,7 @@ class SpriteImage_Podouble(SLib.SpriteImage):  # 324
 class SpriteImage_NewerBigShell(SLib.SpriteImage_StaticMultiple):  # 341
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.offset = (-97, -145)
+        self.offset = (-149 / 1.5, -217 / 1.5)
 
     @staticmethod
     def loadImages():
@@ -2054,7 +2054,7 @@ class SpriteImage_NewerBigShell(SLib.SpriteImage_StaticMultiple):  # 341
         if globals_.Layer0Shown:
             painter.drawPixmap(0, 0, self.image.width(), self.image.height(), self.image)
         else:
-            painter.drawPixmap(0, 0, 322, 247, ImageCache['BigShellInside'])
+            painter.drawPixmap(0, 0, 322, 248, ImageCache['BigShellInside'])
 
 
 class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
