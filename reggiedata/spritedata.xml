@@ -4008,7 +4008,7 @@
   </sprite> <!-- #262: Poltergeist Item -->
 
   <sprite id="263" name="Lily Piranha Plant" notes="A floating Piranha Plant that balances a spiky spore ball in the air above it." files="pakkun_water.arc">
-    <dependency notes="The Piranha Plant must be placed inside or on the surface of a liquid to spawn. It will snap to the surface when loaded on-screen. Additionally, it will not load if placed on the same screen as an entrance.">
+    <dependency notes="The Piranha Plant must be placed inside or on the surface of a liquid to spawn. It will snap to the surface when loaded on-screen. It will not interact with moving liquids. Additionally, it will not load if placed on the same screen as an entrance.">
       <suggested sprite="138"/>
       <suggested sprite="139"/>
       <suggested sprite="216"/>
