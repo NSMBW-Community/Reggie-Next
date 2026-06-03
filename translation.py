@@ -630,10 +630,10 @@ class ReggieTranslation:
                 0: 'Reggie Next Preferences',
                 1: 'General',
                 2: 'Toolbar',
-                3: 'Themes',
+                3: 'Appearance',
                 4: '[b]Reggie Preferences[/b][br]Customize Reggie Next by changing these settings.[br]Use the tabs below to view even more settings.[br]Reggie Next must be restarted before certain changes can take effect.',
                 5: '[b]Toolbar Preferences[/b][br]Choose menu items you would like to appear on the toolbar.[br]Reggie Next must be restarted before the toolbar can be updated.[br]',
-                6: '[b]Reggie Themes[/b][br]Pick a theme below to change application colors and icons.[br]Reggie Next must be restarted before the theme can be changed.[br]',
+                6: '[b]Reggie Apppearance[/b][br]Customize the appearance of Reggie Next by changing these settings.[br]Reggie Next must be restarted before the theme can be changed.[br]',
                 7: None,  # REMOVED: 'Show the splash screen:'
                 8: None,  # REMOVED: 'If TPLLib cannot use a fast backend (recommended)'
                 9: None,  # REMOVED: 'Always'
@@ -667,7 +667,7 @@ class ReggieTranslation:
                 37: 'Place objects at their full size',
                 38: 'Display rectangles indicating the zone bounds',
                 39: 'Insert new path node after selected node',
-                40: 'Themes',
+                40: 'Style',
                 41: 'Theme:',
                 42: 'Translation Info',
                 43: '[b][name][/b][br]Default language for Reggie Next.',

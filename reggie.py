@@ -2482,11 +2482,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('ToolbarActs', ToolbarSettings)
 
         # Get the theme settings
-        setSetting('Theme', dlg.themesTab.themeBox.currentText())
-        setSetting('uiStyle', dlg.themesTab.windowStyle.currentText())
+        setSetting('Theme', dlg.appearaceTab.themeBox.currentText())
+        setSetting('uiStyle', dlg.appearaceTab.windowStyle.currentText())
 
-        globals_.UseRoundedRectangles = dlg.themesTab.roundedRects.isChecked()
-        globals_.DarkMode = dlg.themesTab.darkMode.isChecked()
+        globals_.UseRoundedRectangles = dlg.appearaceTab.roundedRects.isChecked()
+        globals_.DarkMode = dlg.appearaceTab.darkMode.isChecked()
 
         setSetting('UseRoundedRectangles', globals_.UseRoundedRectangles)
         setSetting('DarkMode', globals_.DarkMode)

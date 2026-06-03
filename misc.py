@@ -1477,10 +1477,10 @@ class PreferencesDialog(QtWidgets.QDialog):
         self.infoLabel = QtWidgets.QLabel()
         self.generalTab = self.getGeneralTab()
         self.toolbarTab = self.getToolbarTab()
-        self.themesTab = self.getThemesTab(QtWidgets.QWidget)()
+        self.appearaceTab = self.getAppearanceTab(QtWidgets.QWidget)()
         self.tabWidget.addTab(self.generalTab, globals_.trans.string('PrefsDlg', 1))
         self.tabWidget.addTab(self.toolbarTab, globals_.trans.string('PrefsDlg', 2))
-        self.tabWidget.addTab(self.themesTab, globals_.trans.string('PrefsDlg', 3))
+        self.tabWidget.addTab(self.appearaceTab, globals_.trans.string('PrefsDlg', 3))
 
         # Create the buttonbox
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
@@ -1778,14 +1778,14 @@ class PreferencesDialog(QtWidgets.QDialog):
         return ToolbarTab()
 
     @staticmethod
-    def getThemesTab(parent):
+    def getAppearanceTab(parent):
         """
-        Returns the Themes Tab
+        Returns the Appearance Tab
         """
 
-        class ThemesTab(parent):
+        class AppearanceTab(parent):
             """
-            Themes Tab
+            Appearance Tab
             """
             info = globals_.trans.string('PrefsDlg', 6)
 
@@ -1956,5 +1956,5 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 return px
 
-        return ThemesTab
+        return AppearanceTab
 
