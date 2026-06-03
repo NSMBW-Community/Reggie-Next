@@ -1707,8 +1707,7 @@ class SpriteImage_NewerParabeetle(SLib.SpriteImage_StaticMultiple):  # 291
             ImageCache["Parabeetle%sAtYou" % colour] = SLib.GetImg('parabeetle_%s_atyou.png' % colour.lower())
 
     def dataChanged(self):
-        
-        self.yOffset = -6
+        self.yOffset = -8
         direction = self.parent.spritedata[5] & 3
         colour = self.parent.spritedata[2] & 15
         if colour > 10:
@@ -1725,9 +1724,9 @@ class SpriteImage_NewerParabeetle(SLib.SpriteImage_StaticMultiple):  # 291
             self.xOffset = -12
             self.image = ImageCache['Parabeetle%sMoreRight' % colour]
         elif direction == 3:  # at you
-            self.xOffset = -26
+            self.xOffset = -24
             self.image = ImageCache['Parabeetle%sAtYou' % colour]
-            
+
         super().dataChanged()
 
 
@@ -1747,7 +1746,6 @@ class SpriteImage_NewerHeavyParabeetle(SLib.SpriteImage_StaticMultiple):  # 292
             ImageCache["HeavyParabeetle%sAtYou" % colour] = SLib.GetImg('heavy_parabeetle_%s_atyou.png' % colour.lower())
 
     def dataChanged(self):
-
         self.yOffset = -60
         direction = self.parent.spritedata[5] & 3
         colour = self.parent.spritedata[2] & 15

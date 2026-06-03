@@ -5519,10 +5519,9 @@ class SpriteImage_Parabeetle(SLib.SpriteImage_StaticMultiple):  # 291
         ImageCache['Parabeetle3'] = SLib.GetImg('parabeetle_atyou.png')
 
     def dataChanged(self):
-
         direction = self.parent.spritedata[5] & 3
         self.image = ImageCache['Parabeetle%d' % direction]
-        self.yOffset = -6
+        self.yOffset = -8
 
         if direction == 0 or direction > 3:  # right
             self.xOffset = -12
@@ -5531,7 +5530,7 @@ class SpriteImage_Parabeetle(SLib.SpriteImage_StaticMultiple):  # 291
         elif direction == 2:  # more right
             self.xOffset = -12
         elif direction == 3:  # at you
-            self.xOffset = -26
+            self.xOffset = -24
 
         super().dataChanged()
 
