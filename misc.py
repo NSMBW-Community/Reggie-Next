@@ -1806,18 +1806,35 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 index = self.themeBox.findText(setting('Theme'), QtCore.Qt.MatchFlag.MatchFixedString)
                 if index >= 0:
-                     self.themeBox.setCurrentIndex(index)
+                    self.themeBox.setCurrentIndex(index)
 
                 self.themeBox.currentIndexChanged.connect(self.UpdatePreview)
 
-                # Used Rounded Rectangles
+                # Create the options box options
+                keys = QtWidgets.QStyleFactory().keys()
+                self.windowStyle = QtWidgets.QComboBox()
+                self.windowStyle.setToolTip(globals_.trans.string('PrefsDlg', 24))
+                self.windowStyle.addItems(keys)
+                ui_style = setting('uiStyle', "Fusion")
+                if ui_style in keys:
+                    self.windowStyle.setCurrentIndex(keys.index(ui_style))
+
+                # Use Rounded Rectangles
                 self.roundedRects = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 45))
                 self.roundedRects.setToolTip(globals_.trans.string('PrefsDlg', 46))
                 self.roundedRects.setChecked(globals_.UseRoundedRectangles)
+                self.roundedRects.clicked.connect(self.UpdatePreview)
+
+                # Dark Mode
+                self.darkMode = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 47))
+                self.darkMode.setToolTip(globals_.trans.string('PrefsDlg', 48))
+                self.darkMode.setChecked(globals_.DarkMode)
 
                 boxGB = QtWidgets.QGroupBox(globals_.trans.string('PrefsDlg', 40))
                 L = QtWidgets.QFormLayout()
                 L.addRow(globals_.trans.string('PrefsDlg', 41), self.themeBox)
+                L.addRow(globals_.trans.string('PrefsDlg', 25), self.windowStyle)
+                L.addRow(self.darkMode)
                 L.addRow(self.roundedRects)
                 L2 = QtWidgets.QGridLayout()
                 L2.addLayout(L, 0, 0)
@@ -1833,27 +1850,10 @@ class PreferencesDialog(QtWidgets.QDialog):
                 previewGB = QtWidgets.QGroupBox(globals_.trans.string('PrefsDlg', 22))
                 previewGB.setLayout(L)
 
-                # Create the options box options
-                keys = QtWidgets.QStyleFactory().keys()
-                self.NonWinStyle = QtWidgets.QComboBox()
-                self.NonWinStyle.setToolTip(globals_.trans.string('PrefsDlg', 24))
-                self.NonWinStyle.addItems(keys)
-                ui_style = setting('uiStyle', "Fusion")
-
-                if ui_style in keys:
-                    self.NonWinStyle.setCurrentIndex(keys.index(ui_style))
-
-                # Create the options groupbox
-                L = QtWidgets.QVBoxLayout()
-                L.addWidget(self.NonWinStyle)
-                optionsGB = QtWidgets.QGroupBox(globals_.trans.string('PrefsDlg', 25))
-                optionsGB.setLayout(L)
-
                 # Create a main layout
                 Layout = QtWidgets.QGridLayout()
                 Layout.addWidget(boxGB, 0, 0)
-                Layout.addWidget(optionsGB, 0, 1)
-                Layout.addWidget(previewGB, 1, 1)
+                Layout.addWidget(previewGB, 0, 1)
                 Layout.setRowStretch(1, 1)
                 self.setLayout(Layout)
 
@@ -1899,8 +1899,9 @@ class PreferencesDialog(QtWidgets.QDialog):
                 """
 
                 scene = QtWidgets.QGraphicsScene(0, 0, 32 * 16, 17 * 16, self)
-                old_theme, old_real_view = globals_.theme, globals_.RealViewEnabled
+                old_theme, old_real_view, old_round_rect = globals_.theme, globals_.RealViewEnabled, globals_.UseRoundedRectangles
                 globals_.theme = theme
+                globals_.UseRoundedRectangles = self.roundedRects.isChecked()
                 globals_.RealViewEnabled = False  # Disable so the zone looks 'plain'
 
                 # Sprite [38] at (11, 4)
@@ -1951,6 +1952,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Restore globals that were changed
                 globals_.theme = old_theme
                 globals_.RealViewEnabled = old_real_view
+                globals_.UseRoundedRectangles = old_round_rect
 
                 return px
 

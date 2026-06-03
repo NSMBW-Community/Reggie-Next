@@ -86,7 +86,7 @@ import globals_
 ################################################################################
 
 from libs import lh, lib_versions, lz77
-from ui import GetIcon, SetAppStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, IconsOnlyTabBar
+from ui import GetIcon, SetAppStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, IconsOnlyTabBar, SetColorScheme
 from misc import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePaths, areValidGamePaths, LoadZoneThemes
 from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
@@ -2483,10 +2483,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Get the theme settings
         setSetting('Theme', dlg.themesTab.themeBox.currentText())
-        setSetting('uiStyle', dlg.themesTab.NonWinStyle.currentText())
+        setSetting('uiStyle', dlg.themesTab.windowStyle.currentText())
 
         globals_.UseRoundedRectangles = dlg.themesTab.roundedRects.isChecked()
+        globals_.DarkMode = dlg.themesTab.darkMode.isChecked()
+
         setSetting('UseRoundedRectangles', globals_.UseRoundedRectangles)
+        setSetting('DarkMode', globals_.DarkMode)
+
+        # Update mode
+        SetColorScheme()
 
         # Warn the user that they may need to restart
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 0), globals_.trans.string('PrefsDlg', 30))
@@ -4449,6 +4455,7 @@ def main():
     globals_.PlaceObjectsAtFullSize = setting('PlaceObjectsAtFullSize', True)
     globals_.InsertPathNode = setting('InsertPathNode', False)
     globals_.UseRoundedRectangles = setting('UseRoundedRectangles', True)
+    globals_.DarkMode = setting('DarkMode', False)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game
@@ -4495,6 +4502,9 @@ def main():
         else:
             setSetting('AutoSaveFilePath', None)
             setSetting('AutoSaveFileData', 'x')
+    
+    # Toggle light/dark mode
+    SetColorScheme()
 
     # Create and show the main window
     globals_.mainWindow = ReggieWindow()

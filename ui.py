@@ -340,6 +340,12 @@ def SetAppStyle(styleKey=''):
         # (mainly in dark mode and/or when the UI color is overriden)
         globals_.app.setStyleSheet("""QMenu::item:disabled{color: #646464;}""")
 
+def SetColorScheme():
+    if globals_.DarkMode:
+        globals_.app.styleHints().setColorScheme(QtCore.Qt.ColorScheme.Dark)
+    else:
+        globals_.app.styleHints().setColorScheme(QtCore.Qt.ColorScheme.Light)
+
 def GetIcon(name, big=False):
     """
     Helper function to grab a specific icon

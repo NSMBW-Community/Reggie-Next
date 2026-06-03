@@ -79,6 +79,7 @@ TilesetsAnimating = False
 ViewActions = None
 ZoneThemeValues = None
 UseRoundedRectangles = True
+DarkMode = False
 
 # Config settings
 DispConnectedPipeDir = False

@@ -652,7 +652,7 @@ class ReggieTranslation:
                 22: 'Preview',
                 23: None,
                 24: '[b]Window Style[/b][br]This changes what style Reggie\'s UI uses. Note that this may cause issues with certain themes.',
-                25: 'Window Style',
+                25: 'Window Style:',
                 26: '[b][name][/b] - Version [version][br]By [creator][br][description]',
                 27: None,  # REMOVED: 'Tilesets:',
                 28: None,  # REMOVED: 'Use Default Tileset Picker (recommended)',
@@ -674,6 +674,8 @@ class ReggieTranslation:
                 44: '[b][name][/b] - Version [version][br]Translators: [translator]',
                 45: 'Use Rounded Rectangles',
                 46: '[b]Use Rounded Rectangles[/b][br]This makes the corners of sprites, entrances, and path nodes appear rounded instead of sharp.',
+                47: 'Dark Mode',
+                48: '[b]Dark Mode[/b][br]This determines the overall color style Reggie uses, independent from the current theme.[br][br]Note that this may cause issues with certain themes.'
             },
             'ScrShtDlg': {
                 0: 'Level Screenshot',
