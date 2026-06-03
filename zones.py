@@ -106,7 +106,7 @@ class ZonesDialog(QtWidgets.QDialog):
 
         z = globals_.mainWindow.CreateZone(256, 256)
         widget = self.tabWidget.widget(self.tabWidget.currentIndex())
-        widget.copyZoneData(z)
+        widget.copyZoneData(z, self.tabWidget.currentIndex())
 
         if len(self.zoneTabs) + 1 <= 5:
             zone_tab_name = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
@@ -657,7 +657,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.Zone_presets.setCurrentIndex(idx)
         self.AutoChangingSize = False
 
-    def copyZoneData(self, z):
+    def copyZoneData(self, z, cur_id):
         """
         Copies data from one zone into another
         """
@@ -701,6 +701,33 @@ class ZoneTab(QtWidgets.QWidget):
         z.sfxmod = self.Zone_sfx.currentIndex() << 4
         if self.Zone_boss.isChecked():
             z.sfxmod |= 1
+
+        # For convenience, let's copy the background data too
+
+        # Since the BG dialog isn't open, we must copy data directly from the selected zone
+        for zone in globals_.Area.zones:
+            if (zone.id == cur_id):
+                curZone = zone
+
+        # bgA first
+        z.XscrollA = curZone.XscrollA
+        z.YscrollA = curZone.YscrollA
+        z.YpositionA = curZone.YpositionA
+        z.XpositionA = curZone.XpositionA
+        z.bg1A = curZone.bg1A
+        z.bg2A = curZone.bg2A
+        z.bg3A = curZone.bg3A
+        z.ZoomA = curZone.ZoomA
+
+        # And the bgB
+        z.XscrollB = curZone.XscrollB
+        z.YscrollB = curZone.YscrollB
+        z.YpositionB = curZone.YpositionB
+        z.XpositionB = curZone.XpositionB
+        z.bg1B = curZone.bg1B
+        z.bg2B = curZone.bg2B
+        z.bg3B = curZone.bg3B
+        z.ZoomB = curZone.ZoomB
 
 
 class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
