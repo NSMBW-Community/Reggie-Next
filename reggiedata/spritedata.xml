@@ -1520,7 +1520,7 @@
 
   <sprite id="103" name="Basic Platform - Spawner" notes="This sprite will continuously spawn platforms moving in a specific direction. By default, spawned platforms will disappear when the Spawner sprite is off-screen." files="lift_han_wood.arc;lift_han_stone.arc;boss_koopa_lift.arc;boss_koopa_lift_down.arc">
     <checkbox nybble="5.4" title="Platforms Don't Despawn" comment="When enabled, on-screen platforms will not despawn once the Spawner sprite itself is off-screen." requirednybble="8.3-8.4" requiredval="0-1"/>
-    <checkbox nybble="5.4" title="Remain Active Off-Screen*" comment="When enabled, the Spawner will continue to spawn platforms off-screen as long as it was loaded on-screen prior. Otherwise, spawned platforms and the Spawner itself will all unload whenever the Spawner sprite is off-screen." requirednybble="8.3-8.4" requiredval="2-3"/>
+    <checkbox nybble="5.4" title="Remain Active Off-Screen" comment="When enabled, the Spawner will continue to spawn platforms off-screen as long as it was loaded on-screen prior. Otherwise, spawned platforms and the Spawner itself will all unload whenever the Spawner sprite is off-screen." requirednybble="8.3-8.4" requiredval="2-3"/>
     <list nybble="8.3-8.4" title="Direction" comment="The flag of the Spawner will change if the direction is horizontal or vertical.">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
@@ -1528,7 +1528,7 @@
       <entry value="3">Left</entry>
     </list>
     <value nybble="11" title="Width"/>
-    <checkbox nybble="12.4" title="Don't Spawn with 4 Platforms" comment="Leaving this off will have the sprite spawn with 4 platforms pre-loaded."/>
+    <dualbox nybble="12.4" title1="Spawn With 4 Platforms" title2="Spawn 1 Platform" comment="This determines if the sprite will spawn with 4 platforms already created, or only spawn one platform." comment2="When spawning just one, the platform will not be visible on-screen until it begins moving."/>
   </sprite> <!-- #103: Basic Platform - Spawner -->
 
   <sprite id="104" name="Amp" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="A stationary floating enemy that will electrocute the player when they touch it.&lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interrupted and Mario will take no damage." files="bilikyu.arc">

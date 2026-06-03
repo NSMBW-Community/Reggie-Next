@@ -82,13 +82,20 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
             painter.drawTiledPixmap(24, 0, int((self.width * 1.5) - 48), int(self.height * 1.5), ImageCache[color + 'PlatformM'])
 
         if self.width == 24:
-            # replicate glitch effect foRotControlled by sprite 50
+            # replicate glitch effect for some platforms
             painter.drawPixmap(0, 0, ImageCache[color + 'PlatformR'])
             painter.drawPixmap(8, 0, ImageCache[color + 'PlatformL'])
         else:
             # normal rendering
             painter.drawPixmap(int((self.width - 16) * 1.5), 0, ImageCache[color + 'PlatformR'])
             painter.drawPixmap(0, 0, ImageCache[color + 'PlatformL'])
+
+        # show an arrow for 103
+        if self.showArrow:
+            dirStr = ('Up', 'Down', 'Right', 'Left')[self.arrowDir]
+            image = ImageCache['DirectionArrow%s' % dirStr]
+            painter.setOpacity(0.25)
+            painter.drawPixmap(int(((self.width - 16) / 2) * 1.5), 0, image)
 
 
 class SpriteImage_DSStoneBlock(SLib.SpriteImage):  # 27, 28
@@ -2430,7 +2437,6 @@ class SpriteImage_Broozer(SLib.SpriteImage_Static):  # 102
 
 
 class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
-    # TODO: Add arrows
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.yOffset = 16
@@ -2438,8 +2444,20 @@ class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
     def dataChanged(self):
         super().dataChanged()
 
-        # get width
         self.width = self.parent.spritedata[5] & 0xF0
+        direction = self.parent.spritedata[3] & 0xF
+
+        # adjust offset since each direction is slightly different
+        if direction == 0: # up
+            self.yOffset = 16
+        elif direction == 1: # down
+            self.yOffset = -16
+        else: # right, left
+            self.yOffset = 0
+
+        # setup direction preview arrow
+        self.showArrow = True
+        self.arrowDir = direction
 
         # length 0 results in the same width as length 4
         if self.width == 0: self.width = 64

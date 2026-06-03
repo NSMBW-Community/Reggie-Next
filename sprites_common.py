@@ -79,6 +79,12 @@ def LoadBasics():
     SLib.loadIfNotInImageCache('VineMid', 'vine_mid.png')
     SLib.loadIfNotInImageCache('VineBtm', 'vine_btm.png')
 
+    # Load some arrows for previewing movement directions of platforms and stuff
+    SLib.loadIfNotInImageCache('DirectionArrowUp', 'direction_arrow_up.png')
+    SLib.loadIfNotInImageCache('DirectionArrowDown', 'direction_arrow_down.png')
+    SLib.loadIfNotInImageCache('DirectionArrowRight', 'direction_arrow_right.png')
+    SLib.loadIfNotInImageCache('DirectionArrowLeft', 'direction_arrow_left.png')
+
 
 class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
     def __init__(self, parent):
