@@ -3113,7 +3113,7 @@ class SpriteImage_4Spinner(SLib.SpriteImage_Static):  # 129
             parent,
             1.5,
             ImageCache['4Spinner'],
-            (-65.33, -48),
+            (-97 / 1.5, -48),
         )
 
     @staticmethod
@@ -4879,10 +4879,10 @@ class SpriteImage_MechaKoopa(SLib.SpriteImage_Static):  # 232
 
 class SpriteImage_Bulber(SLib.SpriteImage_StaticMultiple):  # 233
     def __init__(self, parent):
-        super().__init__(parent, 1.5, None, (-100,-100))
+        super().__init__(parent, 1.5)
         self.spritebox.shown = False
 
-        self.dimensions = (-23.33, -17.33, 59, 50)
+        self.dimensions = (-35 / 1.5, -26 / 1.5, 59, 50)
 
         self.aux.append(SLib.AuxiliaryTrackObject(self.parent, 244, 244, SLib.AuxiliaryTrackObject.Horizontal))
 
@@ -5888,10 +5888,10 @@ class SpriteImage_MontyMole(SLib.SpriteImage_StaticMultiple):  # 303
         notInCave = self.parent.spritedata[5] & 1
         if not notInCave:  # wow, that looks weird
             self.image = ImageCache['MoleCave']
-            self.offset = (-6, -5)
+            self.offset = (-6, -8 / 1.5)
         else:
             self.image = ImageCache['Mole']
-            self.offset = (-1.75, -4)
+            self.offset = (-2, -4)
 
         super().dataChanged()
 
@@ -7910,7 +7910,7 @@ class SpriteImage_Jellybeam(SLib.SpriteImage_Static):  # 425
             parent,
             1.5,
             ImageCache['Jellybeam'],
-            (-8.67, -7.33),
+            (-13 / 1.5, -11 / 1,5),
         )
 
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
