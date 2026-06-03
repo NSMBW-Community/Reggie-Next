@@ -531,7 +531,7 @@ class AutoSavedInfoDialog(QtWidgets.QDialog):
 
 class AreaChoiceDialog(QtWidgets.QDialog):
     """
-    Dialog which lets you choose an area
+    Dialog which lets you choose an area to import
     """
 
     def __init__(self, areacount):
@@ -540,7 +540,7 @@ class AreaChoiceDialog(QtWidgets.QDialog):
         """
         QtWidgets.QDialog.__init__(self)
         self.setWindowTitle(globals_.trans.string('AreaChoiceDlg', 0))
-        self.setWindowIcon(GetIcon('areas'))
+        self.setWindowIcon(GetIcon('area'))
 
         self.areaCombo = QtWidgets.QComboBox()
         for i in range(areacount):
