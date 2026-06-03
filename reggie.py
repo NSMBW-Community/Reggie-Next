@@ -2485,6 +2485,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('Theme', dlg.themesTab.themeBox.currentText())
         setSetting('uiStyle', dlg.themesTab.NonWinStyle.currentText())
 
+        globals_.UseRoundedRectangles = dlg.themesTab.roundedRects.isChecked()
+        setSetting('UseRoundedRectangles', globals_.UseRoundedRectangles)
+
         # Warn the user that they may need to restart
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 0), globals_.trans.string('PrefsDlg', 30))
 
@@ -4445,6 +4448,7 @@ def main():
     globals_.PaddingLength = int(setting('PaddingLength', 0))
     globals_.PlaceObjectsAtFullSize = setting('PlaceObjectsAtFullSize', True)
     globals_.InsertPathNode = setting('InsertPathNode', False)
+    globals_.UseRoundedRectangles = setting('UseRoundedRectangles', True)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game

@@ -1810,9 +1810,15 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 self.themeBox.currentIndexChanged.connect(self.UpdatePreview)
 
+                # Used Rounded Rectangles
+                self.roundedRects = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 45))
+                self.roundedRects.setToolTip(globals_.trans.string('PrefsDlg', 46))
+                self.roundedRects.setChecked(globals_.UseRoundedRectangles)
+
                 boxGB = QtWidgets.QGroupBox(globals_.trans.string('PrefsDlg', 40))
                 L = QtWidgets.QFormLayout()
                 L.addRow(globals_.trans.string('PrefsDlg', 41), self.themeBox)
+                L.addRow(self.roundedRects)
                 L2 = QtWidgets.QGridLayout()
                 L2.addLayout(L, 0, 0)
                 boxGB.setLayout(L2)

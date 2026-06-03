@@ -39,7 +39,6 @@ class ReggieTheme:
         self.style = None
         self.forceUiColor = False
         self.forceStyleSheet = False
-        self.useRoundedRectangles = True
         self.overridesFile = os.path.join('reggiedata', 'overrides.png')
 
         # Add the colors                                                       # Descriptions:
@@ -200,7 +199,6 @@ class ReggieTheme:
         self.style = root.get("style")
         self.forceUiColor = root.get("forceUiColor", "false") == "true"
         self.forceStyleSheet = root.get("forceStyleSheet", "false") == "true"
-        self.useRoundedRectangles = root.get("useRoundedRectangles", "true") == "true"
 
         try:
             self.version = float(root.get("version", "1.0"))

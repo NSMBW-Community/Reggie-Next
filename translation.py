@@ -672,6 +672,8 @@ class ReggieTranslation:
                 42: 'Translation Info',
                 43: '[b][name][/b][br]Default language for Reggie Next.',
                 44: '[b][name][/b] - Version [version][br]Translators: [translator]',
+                45: 'Use Rounded Rectangles',
+                46: '[b]Use Rounded Rectangles[/b][br]This makes the corners of sprites, entrances, and path nodes appear rounded instead of sharp.',
             },
             'ScrShtDlg': {
                 0: 'Level Screenshot',

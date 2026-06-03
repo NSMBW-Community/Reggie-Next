@@ -623,6 +623,8 @@
 		<string id="42">Translation Info</string>
         <string id="43">[b][name][/b][br]Default language for Reggie Next.</string>
         <string id="44">[b][name][/b] - Version [version][br]Translators: [translator]</string>
+		<string id="45">Use Rounded Rectangles</string>
+        <string id="46">[b]Use Rounded Rectangles[/b][br]This makes the corners of sprites, entrances, and path nodes appear rounded instead of sharp.</string>
 	</section>
 	<section id="ScrShtDlg">
 		<string id="0">Level Screenshot</string>
