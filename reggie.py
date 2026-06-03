@@ -1615,6 +1615,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if globals_.Area.areanum == 1:
             dlg = MetaInfoDialog()
             if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+                globals_.Area.Metadata.setStrData('Creator', 'Reggie! Next %s' % globals_.ReggieVersionShort)
                 globals_.Area.Metadata.setStrData('Title', dlg.levelName.text())
                 globals_.Area.Metadata.setStrData('Author', dlg.Author.text())
                 globals_.Area.Metadata.setStrData('Group', dlg.Group.text())
