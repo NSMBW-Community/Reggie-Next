@@ -1523,7 +1523,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Add the Clear Recent Files button
                 ClearRecentBtn = QtWidgets.QPushButton(globals_.trans.string('PrefsDlg', 16))
                 ClearRecentBtn.setMaximumWidth(ClearRecentBtn.minimumSizeHint().width())
-                ClearRecentBtn.clicked.connect(globals_.trans.generateXML)
+                ClearRecentBtn.clicked.connect(self.ClearRecent)
 
                 # Setup translation info
                 self.translations = self.getAvailableTranslations
