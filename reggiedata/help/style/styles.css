@@ -1,4 +1,3 @@
-
 body {
 	text-align: center;
 	font-size: 0.75em;
@@ -13,14 +12,6 @@ body {
 img {
 	border-style: none;
 }
-
-.image-left {
-	float: left;
-}
-
-.image-right {
-	float: right;
-}
 	
 .clearer {
 	clear: both;
@@ -28,7 +19,9 @@ img {
 
 #container {
 	width: 684px;
-	background: repeat-y  url(images/container_bg.png);	margin: 0px auto;	text-align: left;
+	background: repeat-y  url(images/container_bg.png);
+	margin: 0px auto;
+	text-align: left;
 	text-shadow: 0px 1px 0px #ffffff;
 	line-height: 1.5em;
 }
@@ -54,9 +47,6 @@ p {
 	background: url(images/header_bg.png) repeat-x;
 	height: 47px;
 	text-align: left;
-}
-
-#pageHeader img {
 }
 
 #pageHeader h1 {
@@ -104,108 +94,13 @@ p {
 	font-size: 0.9em;
 }
 
-#footer a:link, #footer a:visited {
-}
-
-#footer a:hover, #footer a:active {
-}
-	
-
-/* Navbar */
-
 #navcontainer {
-	height: 33px;
+	height: 17px;
 	width: 676px;
 	padding: 0;
-	margin: 0px 4px 40px 4px;
-	background: url(images/navcontainer_bg.png) repeat-x;
+	margin: 0px 4px 0px 4px;
+	background: repeat-x url(images/navcontainer_bg.png);
 	position: relative;
-}
-
-#navcontainer #current {
-	font-weight: bold;
-}
-
-#navcontainer .currentAncestor {
-	font-weight: bold;
-}
-
-/* Parent - Level 0 */
-
-#navcontainer ul{
-	list-style: none;
-	padding: 0;
-	margin: 0 0 0 10px;
-}
-
-#navcontainer li {
-	display: inline;
-	float: left;
-}
-
-#navcontainer a{
-	width: 130px;
-	height: 32px;
-	display: block;
-	margin: 0;
-	text-align: center;
-	text-decoration: none;
-	text-shadow: 0px 1px 0px #ffffff;
-	padding: 5px 0px 0px 0px;
-	font-weight: bold;
-}
-
-#navcontainer a:hover {
-	font-weight: bold;
-}
-
-#navcontainer a:active {
-
-}
-
-/* Child - Level 1 */
-
-#navcontainer ul ul {
-	position: absolute;
-	left: 0;
-	top: 30px;
-	margin: 0;
-	width: 666px;
-	margin-left: 10px;
-}
-
-#navcontainer ul ul li {
-	display: inline;
-	float: left;
-}
-
-#navcontainer ul ul a {
-	background: none;
-	text-align: center;
-}
-
-#navcontainer ul ul a:hover {
-	background: none;
-}
-
-#navcontainer ul ul #current {
-	background: none;
-}
-
-/* Child - Level 2 */
-
-#navcontainer ul ul ul {
-	display: none;
-}
-
-/* end */
-
-
-blockquote {
-	color: #000000;
-	font-style: italic;
-	margin-left: 10px;
-	margin-right: 10px;
 }
 
 h1 {
@@ -217,26 +112,6 @@ h2 {
 	font-size: 1.4em;
 	margin: 0 0 3px;
 }
-
-h3 {
-	font-size: 1.2em;
-	margin: 0 0 3px;
-}
-
-h4 {
-	font-size: 1em;
-	margin: 0 0 3px;
-}
-
-/* Main content area unordered list styles */
-#contentContainer #content ul {
-}
-
-#contentContainer #content li {
-}
-
-
-
 
 /* Table Styles */
 table {
@@ -251,17 +126,18 @@ td {
 }
 
 
-/* Tips */
-ul#tips li {
-	margin: 8px 20px 8px 0px;
-	padding-top: 8px;
-	border-top: 1px solid #adadad;
-	line-height: 1.4em;
+small {
+	font-size: 1em;
 }
 
-/* Code */
-#contentContainer #content #code {
-	/*background: #e2e2e2; */
-	font-style: italic;
-	color: #000000;
-	}
+a:link, a:visited {
+	color: #cc0000;
+}
+
+a:hover, a:active {
+	color: #ff0000;
+}
+
+#pageHeader h2 {
+	color: #cc0000;
+}
