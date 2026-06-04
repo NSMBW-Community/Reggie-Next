@@ -67,23 +67,25 @@ Developers:
  * Tobias - Sprite Data (NSMBW), Event Example Stage
  * AboodXD - Programmer, Optimization
  * Grop - Programmer, Sprite Data (NSMBW)
- * John10v10 - Quick Paint Tool Creator
  * RoadrunnerWMC - Reggie! Next Developer: Programmer, UI, Data, Sprite Images (NSMBW), Other
  * JasonP27 - ReggieMod Developer, Programmer, UI, Sprite Images (NSMBW)
  * Kinnay (Kamek64) - Reggie! Newer Sprites Developer, Programmer, Sprite Images (NSMBW, NewerSMBW)
  * ZementBlock - Sprite Data (NSMBW)
  * MalStar1000 - Sprite Images (NSMBW, NewerSMBW), Other
  * joietyfull64 - Sprite Data (NSMBW)
- * MidiGuyDP - Background Images & Names (NewerSMBW)
+ * MidiGuyDP - (Old) Background Images & Names (NewerSMBW)
  * SnakeBlock - Sprite Data (NSMBW)
  * Danster64 - Sprite Data (NSMBW, NewerSMBW), Sprite Images (NSMBW, NewerSMBW), Windows Builds
+ * MandyIGuess - Programmer, UI, Sprite Data (NSMBW, NewerSMBW), Sprite Images (NSMBW, NewerSMBW), Data, RE
+ * B1Gaming - Sprite Data (NSMBW, NewerSMBW), Sprite Images (NSMBW, NewerSMBW)
 
 Other Testers and Contributors:
  * BulletBillTime, Dirbaio, EdgarAllen, FirePhoenix, GrandMasterJimmy, Mooseknuckle2000, MotherBrainsBrain, RainbowIE, Skawo, Sonicandtails, Tanks, Vibestar, angelsl, ant888, gamesquest1, iZackefx
  * Tobias and Valeth - Text Tileset Addon
  * Meorge and grishhung - The Reggie Next Icons (Windows and Mac)
  * Toms - Mac Builds
- * MandyIGuess, Shudfly, N-I-N-0, B1Gaming, Stage13-10, techmuse8 - Miscellaneous Contributions
+ * Stage13-10 - Background Images
+ * Shudfly, N-I-N-0, techmuse8 - Miscellaneous Contributions
 
 
 ### Dependencies/Libraries/Resources
