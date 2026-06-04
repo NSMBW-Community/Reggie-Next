@@ -5407,6 +5407,78 @@ class SpriteImage_GiantIceBlock(SLib.SpriteImage_StaticMultiple):  # 280
         super().dataChanged()
 
 
+class SpriteImage_RiseFallWater(SpriteImage_LiquidOrFog):  # 285
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.crest = ImageCache['LiquidWaterCrest']
+        self.mid = ImageCache['LiquidWater']
+        self.rise = ImageCache['LiquidWaterRiseCrest']
+        self.riseCrestless = ImageCache['LiquidWaterRise']
+
+        self.top = self.parent.objy
+        self.depth = 48
+
+    @staticmethod
+    def loadImages():
+        if 'LiquidWater' in ImageCache: return
+        ImageCache['LiquidWater'] = SLib.GetImg('liquid_water.png')
+        ImageCache['LiquidWaterCrest'] = SLib.GetImg('liquid_water_crest.png')
+        ImageCache['LiquidWaterRise'] = SLib.GetImg('liquid_water_rise.png')
+        ImageCache['LiquidWaterRiseCrest'] = SLib.GetImg('liquid_water_rise_crest.png')
+
+    def dataChanged(self):
+
+        self.risingHeight = ((self.parent.spritedata[5] >> 4) & 0xF)* 2 + 2 # distance
+        self.depth = (self.parent.spritedata[5] & 0xF) * 2 + 2
+        
+        if self.parent.spritedata[3] & 8:  # it Fall
+            self.risingHeight = -self.risingHeight
+
+        super().dataChanged()
+    
+    def realViewZone(self, painter, zoneRect): 
+        crest_rect = QtCore.QRectF()
+        rise_rect = QtCore.QRectF()
+
+        # Create the fill_rect (the area where the liquid or fog should be)
+        fill_rect = QtCore.QRectF(zoneRect)
+        fill_rect.setTop(self.top * 1.5)
+
+        # Translate the fill_rect to be relative to the zone
+        fill_rect.translate(-zoneRect.topLeft())
+
+        # Determine where to put the rise image
+        rise_rect = fill_rect.translated(0, -24 * self.risingHeight)
+
+        # Determine what image to draw for the rise indicator
+        rise_img = self.rise
+
+        # Set the correct height
+        rise_rect.setHeight(rise_img.height())
+
+        # Determine crest & fill's dimensions
+        crest_rect = QtCore.QRectF(fill_rect)
+        
+        # Limit the crest to not draw past its maximum dimensions
+        if (self.depth*24 < self.crest.height()):
+            crest_rect.setHeight(self.depth*24)
+        else:
+            crest_rect.setHeight(self.crest.height())
+        fill_rect.setTop(crest_rect.bottom())
+        fill_rect.setHeight(self.depth*24 - self.crest.height())
+
+        # Draw everything
+        painter.drawTiledPixmap(crest_rect, self.crest)
+        painter.drawTiledPixmap(rise_rect, rise_img)
+        painter.drawTiledPixmap(fill_rect, self.mid)
+        
+
+    def positionChanged(self):
+        self.top = self.parent.objy
+        super().positionChanged()
+
+
 class SpriteImage_WoodCircle(SLib.SpriteImage_StaticMultiple):  # 286
     @staticmethod
     def loadImages():
@@ -9073,6 +9145,7 @@ ImageClasses = {
     277: SpriteImage_TowerDoor,
     278: SpriteImage_CastleDoor,
     280: SpriteImage_GiantIceBlock,
+    285: SpriteImage_RiseFallWater,
     286: SpriteImage_WoodCircle,
     287: SpriteImage_PathIceBlock,
     288: SpriteImage_OldBarrel,
