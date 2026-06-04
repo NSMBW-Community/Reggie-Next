@@ -80,6 +80,7 @@ ViewActions = None
 ZoneThemeValues = None
 UseRoundedRectangles = True
 DarkMode = False
+UseFullFilepath = False
 
 # Config settings
 DispConnectedPipeDir = False

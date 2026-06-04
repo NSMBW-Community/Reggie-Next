@@ -2469,6 +2469,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Insert Path Node setting
         globals_.InsertPathNode = dlg.generalTab.insertPathNode.isChecked()
         setSetting('InsertPathNode', globals_.InsertPathNode)
+        
+        globals_.UseFullFilepath = dlg.generalTab.fullFileTitle.isChecked()
+        setSetting('UseFullFilepath', globals_.UseFullFilepath)
+
+        # Update window title
+        if globals_.UseFullFilepath:
+            self.fileTitle = self.fileSavePath
+        else:
+            self.fileTitle = os.path.basename(self.fileSavePath)
+        self.UpdateTitle()
 
         # Get the Toolbar tab settings
         boxes = (
@@ -2605,7 +2615,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
             globals_.Dirty = False
 
             self.fileSavePath = fn
-            self.fileTitle = os.path.basename(fn)
+            if globals_.UseFullFilepath:
+                self.fileTitle = fn
+            else:
+                self.fileTitle = os.path.basename(fn)
 
         data = globals_.Level.save()
 
@@ -3132,7 +3145,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 # Set the filepath variables
                 self.fileSavePath = name
-                self.fileTitle = os.path.basename(self.fileSavePath)
+                if globals_.UseFullFilepath:
+                    self.fileTitle = self.fileSavePath
+                else:
+                    self.fileTitle = os.path.basename(self.fileSavePath)
 
                 # Open the file
                 with open(self.fileSavePath, 'rb') as fileobj:
@@ -3162,7 +3178,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     self.fileTitle = globals_.trans.string('WindowTitle', 0)
                 else:
                     self.fileSavePath = globals_.AutoSavePath
-                    self.fileTitle = os.path.basename(name)
+                    if globals_.UseFullFilepath:
+                        self.fileTitle = self.fileSavePath
+                    else:
+                        self.fileTitle = os.path.basename(name)
 
                 # Get the level data
                 levelData = globals_.AutoSaveData
@@ -4456,6 +4475,7 @@ def main():
     globals_.InsertPathNode = setting('InsertPathNode', False)
     globals_.UseRoundedRectangles = setting('UseRoundedRectangles', True)
     globals_.DarkMode = setting('DarkMode', False)
+    globals_.UseFullFilepath = setting('UseFullFilepath', False)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game

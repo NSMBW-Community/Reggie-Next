@@ -43,6 +43,7 @@ class ReggieTranslation:
         self.version = 1.0
         self.translator = 'Treeki, Tempus'
 
+        # TODO: Add support for translating "external" folder XMLs
         self.files = { None: {
             'bga': os.path.join('reggiedata', 'bga.txt'),
             'bgb': os.path.join('reggiedata', 'bgb.txt'),
@@ -52,7 +53,6 @@ class ReggieTranslation:
             'spritecategories': os.path.join('reggiedata', 'spritecategories.xml'),
             'spritedata': os.path.join('reggiedata', 'spritedata.xml'),
             'tilesets': os.path.join('reggiedata', 'tilesets.xml'),
-            'tilesetinfo': os.path.join('reggiedata', 'tilesetinfo.xml'),
             'ts1_descriptions': os.path.join('reggiedata', 'ts1_descriptions.txt'),
             'zonethemes': os.path.join('reggiedata', 'zonethemes.txt'),
             'external-actors': os.path.join('reggiedata', 'external', 'actors.xml')
@@ -675,7 +675,8 @@ class ReggieTranslation:
                 45: 'Use Rounded Rectangles',
                 46: '[b]Use Rounded Rectangles[/b][br]This makes the corners of sprites, entrances, and path nodes appear rounded instead of sharp.',
                 47: 'Dark Mode',
-                48: '[b]Dark Mode[/b][br]This determines the overall color style Reggie uses, independent from the current theme.[br][br]Note that this may cause issues with certain themes.'
+                48: '[b]Dark Mode[/b][br]This determines the overall color style Reggie uses, independent from the current theme.[br][br]Note that this may cause issues with certain themes.',
+                49: 'Display full filepath of opened level',
             },
             'ScrShtDlg': {
                 0: 'Level Screenshot',
