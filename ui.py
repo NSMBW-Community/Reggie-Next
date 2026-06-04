@@ -94,7 +94,12 @@ class ReggieTheme:
         """
         folder = os.path.join('reggiedata', 'themes', folder)
 
-        fileList = os.listdir(folder)
+        try:
+            fileList = os.listdir(folder)
+        except FileNotFoundError:
+            # Return if the theme cannot be found
+            # (default theme is already inited)
+            return
 
         # Create a XML ElementTree
         maintree = ElementTree.parse(os.path.join(folder, 'main.xml'))
