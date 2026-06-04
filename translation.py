@@ -1053,7 +1053,6 @@ class ReggieTranslation:
         """
         if name in ('', None, 'None'): return
         name = str(name)
-        MaxVer = 1.0
 
         # Parse the file
         path = os.path.join('reggiedata', 'translations', name, 'main.xml')
@@ -1072,7 +1071,6 @@ class ReggieTranslation:
         # Version
         if 'version' not in root.attrib: return False
         self.version = float(root.attrib['version'])
-        if self.version > MaxVer: return False
         # Translator
         if 'translator' not in root.attrib: return False
         self.translator = root.attrib['translator']

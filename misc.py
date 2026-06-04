@@ -1658,13 +1658,12 @@ class PreferencesDialog(QtWidgets.QDialog):
                 Updates the translation info
                 """
                 for name, transObj in self.translations:
-                    if name == self.Trans.currentText():
-                        if name == 'English':
-                            t = transObj
+                    t = transObj
+                    if t.name == self.Trans.currentText():
+                        if t.name == 'English':
                             text = globals_.trans.string('PrefsDlg', 43, '[name]', t.name)
                             self.transDesc.setText(text)
                         else:
-                            t = transObj
                             text = globals_.trans.string('PrefsDlg', 44, '[name]', t.name, '[version]', t.version, '[translator]', t.translator)
                             self.transDesc.setText(text)
 
