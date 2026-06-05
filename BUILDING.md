@@ -9,7 +9,7 @@ Building without Cython will slow down the program a bit when it deals with anyt
 1. You need to have at least Python 3.5, so make sure to install it and add it to `PATH` on Windows.
 1. Run the following command to install the required modules:
    ```
-   pip install PyQt5 nsmblib https://github.com/pyinstaller/pyinstaller/archive/develop.zip
+   pip install PyQt6 nsmblib https://github.com/pyinstaller/pyinstaller/archive/develop.zip
    ```
 1. In `libs/__init__.py`, change the line `has_cython = True` to `has_cython = False`.
 1. (Optional) You can change the version by editing the value of `PROJECT_VERSION` value in the file `build_reggie.py` and by editing the three `ReggieVersion` values in the file `globals_.py`.
@@ -23,7 +23,7 @@ Building with Cython will speed up the program a bit when it deals with anything
 1. You **need** to use Python 3.7, so make sure to install it and add it to `PATH` on Windows.
 1. On that version, run this command to add the required modules. On Windows, you can replace `python` with `py -3.7` to make sure the modules are installed on the right version.
    ```
-   python -m pip install PyQt5 nsmblib Cython https://github.com/pyinstaller/pyinstaller/archive/develop.zip
+   python -m pip install PyQt6 nsmblib Cython https://github.com/pyinstaller/pyinstaller/archive/develop.zip
    ```
 1. In `libs/__init__.py`, remove the lines:
    ```
