@@ -51,7 +51,6 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.spritebox.shown = False
-        self.showArrow = False
 
     @staticmethod
     def loadImages():
@@ -90,14 +89,6 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
             # normal rendering
             painter.drawPixmap(int((self.width - 16) * 1.5), 0, ImageCache[color + 'PlatformR'])
             painter.drawPixmap(0, 0, ImageCache[color + 'PlatformL'])
-
-        # show an arrow for 103
-        if self.showArrow:
-            dirStr = ('Up', 'Down', 'Right', 'Left')[self.arrowDir]
-            image = ImageCache['DirectionArrow%s' % dirStr]
-            painter.setOpacity(0.25)
-            painter.drawPixmap(int(((self.width - 16) / 2) * 1.5), 0, image)
-            painter.setOpacity(1)
 
 
 class SpriteImage_DSStoneBlock(SLib.SpriteImage):  # 27, 28
@@ -2442,6 +2433,7 @@ class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.yOffset = 16
+        self.aux.append(SLib.AuxiliaryImage(parent, 24, 24))
 
     def dataChanged(self):
         super().dataChanged()
@@ -2472,6 +2464,15 @@ class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
             self.xOffset = 0
 
         self.color = 0
+
+        # Draw a direction arrow
+        dirStr = ('Up', 'Down', 'Right', 'Left')[self.arrowDir % 3]
+        self.aux[0].image = ImageCache['DirectionArrow%s' % dirStr]
+        self.aux[0].setPos(int(((self.width - 16) / 2) * 1.5), 0)
+        
+        self.aux[0].setIsBehindSprite(False)
+        self.aux[0].alpha = 0.25
+        self.aux[0].hover = False
 
 
 class SpriteImage_AmpNormal(SpriteImage_Amp):  # 104
