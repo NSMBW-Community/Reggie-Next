@@ -13,6 +13,7 @@ Building without Cython will slow down the program a bit when it deals with anyt
    ```
 1. In `libs/__init__.py`, change the line `has_cython = True` to `has_cython = False`.
 1. (Optional) You can change the version by editing the value of `PROJECT_VERSION` value in the file `build_reggie.py` and by editing the three `ReggieVersion` values in the file `globals_.py`.
+1. (Optional) You can install [UPX][https://upx.github.io/] and in `build_reggie.py`, replace the `--upx-dir=/path/to/upx/` lines with the path to the directory containing UPX. This will significantly decrease the size of the built executable.
 1. If you're in Windows, you can run the `build_reggie.bat` script. On other platforms, you have to run the following command in the folder `build_reggie.bat` is in: `python -OO build_reggie.py`
 
 After the script finishes, the executable can be found in the `distrib` folder.
