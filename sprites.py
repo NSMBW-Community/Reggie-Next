@@ -51,6 +51,7 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.spritebox.shown = False
+        self.showArrow = False
 
     @staticmethod
     def loadImages():
