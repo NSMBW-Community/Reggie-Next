@@ -97,6 +97,7 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
             image = ImageCache['DirectionArrow%s' % dirStr]
             painter.setOpacity(0.25)
             painter.drawPixmap(int(((self.width - 16) / 2) * 1.5), 0, image)
+            painter.setOpacity(1)
 
 
 class SpriteImage_DSStoneBlock(SLib.SpriteImage):  # 27, 28
