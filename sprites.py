@@ -2469,7 +2469,7 @@ class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
         dirStr = ('Up', 'Down', 'Right', 'Left')[self.arrowDir % 3]
         self.aux[0].image = ImageCache['DirectionArrow%s' % dirStr]
         self.aux[0].setPos(int(((self.width - 16) / 2) * 1.5), 0)
-        
+
         self.aux[0].setIsBehindSprite(False)
         self.aux[0].alpha = 0.25
         self.aux[0].hover = False
@@ -4430,12 +4430,12 @@ class SpriteImage_RollObjSpawner(SLib.SpriteImage_StaticMultiple):  # 204
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('SpikeBall', 'spike_ball.png')
-        SLib.loadIfNotInImageCache('OldBarrel', 'old_barrel.png')
+        SLib.loadIfNotInImageCache('RollingBarrel', 'barrel_rolling.png')
 
     def dataChanged(self):
         barrel = (self.parent.spritedata[2] >> 4) & 1
         if barrel:
-            self.image = ImageCache['OldBarrel']
+            self.image = ImageCache['RollingBarrel']
         else:
             self.image = ImageCache['SpikeBall']
 
@@ -5434,13 +5434,13 @@ class SpriteImage_RiseFallWater(SpriteImage_LiquidOrFog):  # 285
 
         self.risingHeight = ((self.parent.spritedata[5] >> 4) & 0xF)* 2 + 2 # distance
         self.depth = (self.parent.spritedata[5] & 0xF) * 2 + 2
-        
+
         if self.parent.spritedata[3] & 8:  # it Fall
             self.risingHeight = -self.risingHeight
 
         super().dataChanged()
-    
-    def realViewZone(self, painter, zoneRect): 
+
+    def realViewZone(self, painter, zoneRect):
         crest_rect = QtCore.QRectF()
         rise_rect = QtCore.QRectF()
 
@@ -5462,7 +5462,7 @@ class SpriteImage_RiseFallWater(SpriteImage_LiquidOrFog):  # 285
 
         # Determine crest & fill's dimensions
         crest_rect = QtCore.QRectF(fill_rect)
-        
+
         # Limit the crest to not draw past its maximum dimensions
         if (self.depth*24 < self.crest.height()):
             crest_rect.setHeight(self.depth*24)
@@ -5475,7 +5475,7 @@ class SpriteImage_RiseFallWater(SpriteImage_LiquidOrFog):  # 285
         painter.drawTiledPixmap(crest_rect, self.crest)
         painter.drawTiledPixmap(rise_rect, rise_img)
         painter.drawTiledPixmap(fill_rect, self.mid)
-        
+
 
     def positionChanged(self):
         self.top = self.parent.objy
@@ -5523,18 +5523,18 @@ class SpriteImage_PathIceBlock(SLib.SpriteImage_StaticMultiple):  # 287
         super().dataChanged()
 
 
-class SpriteImage_OldBarrel(SLib.SpriteImage_Static):  # 288
+class SpriteImage_RollingBarrel(SLib.SpriteImage_Static):  # 288
     def __init__(self, parent):
         super().__init__(
             parent,
             1.5,
-            ImageCache['OldBarrel'],
-            (1, -7),
+            ImageCache['RollingBarrel'],
+            (2 / 1.5, -14 / 1.5),
         )
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('OldBarrel', 'old_barrel.png')
+        SLib.loadIfNotInImageCache('RollingBarrel', 'barrel_rolling.png')
 
 
 class SpriteImage_Box(SLib.SpriteImage_StaticMultiple):  # 289
@@ -9151,7 +9151,7 @@ ImageClasses = {
     285: SpriteImage_RiseFallWater,
     286: SpriteImage_WoodCircle,
     287: SpriteImage_PathIceBlock,
-    288: SpriteImage_OldBarrel,
+    288: SpriteImage_RollingBarrel,
     289: SpriteImage_Box,
     291: SpriteImage_Parabeetle,
     292: SpriteImage_HeavyParabeetle,
