@@ -536,7 +536,7 @@
   </sprite> <!-- #44: Brick Block P-Switch -->
 
   <sprite id="45" name="Brick Block !-Switch" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
-    <dependency notes="Add Tileset / Puzzle dependency information relating to custom tileset settings."/>
+    <dependency notes="Activates 'Red Block Outline A/B' tiles."/>
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed. An event is not required if simply using the switch to activate Red Blocks." idtype="Target Event"/>
     <dualbox nybble="9.4" title1="Activates Target Event" title2="Deactivates Target Event" comment="This determines how the Target Event is modified." comment2="The Target Event will be modified to the opposite state when the Timed effect expires." requirednybble="7.4" requiredval="0"/> <!-- Appears if Timed Event is set -->
@@ -744,7 +744,7 @@
     <checkbox nybble="8.4" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Paratroopa will be able to move behind Chainlink Fences." advancedcomment="Exact values are 1500.0 unchecked, -2500.0 checked."/>
     <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="Used in Retail: 06-01 A1 as 12"/>
     <value nybble="6.1" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in Retail: 06-01 A1"/>
-  <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
+    <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #58: Koopa Paratroopa -->
 
   <sprite id="59" name="Line Controlled Tilt Controlled Girder" notes="A platform similar to the Tilt Controlled Girder that can navigate along Line guides." files="remo_lift_line.arc">
@@ -1474,19 +1474,16 @@
     </list>
   </sprite> <!-- #98: Giant Spiked Ball -->
 
-  <sprite id="99" name="Pipe Enemy Spawner" notes="The spawner must be placed on layer 1 tiles set to the core type 'Pipe'." files="kuribo.arc;bombhei.arc">
-    <dualbox nybble="11.4" title1="Spawns Goombas" title2="Spawns Bob-Ombs"/>
+  <sprite id="99" name="Pipe Enemy Spawner" notes="The spawner must be placed on layer 1 tiles with a Pipe core type in order to work. It can only spawn up to 8 enemies at once before existing ones must be killed." files="kuribo.arc;bombhei.arc">
+    <dualbox nybble="11.4" title1="Spawns Goombas" title2="Spawns Bob-Ombs" comment2="Goombas are spawned in cycles, with the very first cycle spawning 2 before a long delay, and every other spawning 3. Bob-Ombs do not spawn in cycles, and have a consistent spawn delay of 339 frames."/>
     <list nybble="12" title="Exit Direction">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
       <entry value="2">Left</entry>
       <entry value="3">Right</entry>
     </list>
-    <list nybble="8.4" title="Number of Enemies Spawned">
-      <entry value="1">2 Enemies, then Delay</entry>
-      <entry value="0">3 Enemies, then Delay</entry>
-    </list>
-  </sprite> <!-- #99: Pipe Enemy Spawner -->
+    <checkbox nybble="8.4" title="Longer Spawn Delay" comment="When enabled, the Goombas will have a longer delay between spawns." comment2="The initial delay before spawning the very first Goomba is 59 frames. The delay based on this setting is 113 frames unchecked, and 150 frames when checked. The last Goomba in a cycle is always followed by a longer delay of 226 frames." requirednybble="11.4" requiredval="0"/>
+   </sprite> <!-- #99: Pipe Enemy Spawner -->
 
   <sprite id="100" name="Swoop" notes="A basic cave bat that drops down from the ceiling and flies towards the player." files="basabasa.arc">
     <dependency notes="The Swoop must be placed with terrain directly above it in order to spawn. A Swoop will activate when approached within 4 blocks horizontally, and from below at any distance."/>
@@ -2594,7 +2591,7 @@
   <sprite id="166" name="Snake Block (Ice)" notes="" files="block_snake.arc;block_snake_ice.arc">
   <dependency notes="The sprite snaps to the Path Node location. From Node 0 to Node 1, it must be a straight horizontal line, and it must be at least as long as the Snake Block itself. Straight lines and exact 45° angles are recommended, as after each Node, the Snake Block will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
     <checkbox nybble="7.4" title="Useless Flag 7 (1)" comment="This value is read by the game, but never used for anything. Used in retail 03-24 A1."/>
-	<value nybble="11" title="Path ID" idtype="Path"/>
+    <value nybble="11" title="Path ID" idtype="Path"/>
     <value nybble="8-9" title="Starting Node" comment="This determines the Node of the Path that the Snake Block will start moving from."/>
     <list nybble="12" title="Length">
       <entry value="0">3 Blocks</entry>
@@ -3528,7 +3525,7 @@
   </sprite> <!-- #229: Sand Pillar -->
 
   <sprite id="230" name="Bramball" noyoshi="True" notes="A long-legged enemy with a ball for a body that will flip itself around as it traverses terrain with proper spacing. Rumor has it that if it is struck from below with a Pipe Cannon, a large amount of coins will appear." files="ibaramushi.arc">
-    <dependency notes="A Bramball must have solid terrain exactly 4 tile and no more than a 1 tile change in elevation to move."/>
+    <dependency notes="A Bramball must have solid terrain exactly 4 tiles and no more than a 1 tile change in elevation to move."/>
     <dualbox nybble="11.4" title1="Slow Movement" title2="Fast Movement" comment="This determines how quickly the Bramball will traverse platforms."/>
     <list nybble="12.3-12.4" title="Initial Direction" comment="This determines which direction the Bramball will attempt to move first.">
       <entry value="0">Towards Player</entry>
@@ -4407,7 +4404,6 @@
     </list>
   </sprite> <!-- #292: Heavy Para-Beetle -->
 
-  <!-- This seems to have some sort of interaction with the volcano background. What is the extent of this? -->
   <sprite id="293" name="Volcano Rock Spawn Area" notes="Assigns a spawn area where various sizes of Volcano Rocks will hurl down from the sky destroying certain types of terrain and blocks as well as attempting to hurt the player. However, a location is NOT required, and actually changes the fundamental effects of this sprite." files="kazan_rock.arc">
     <value nybble="12" title="Location ID" comment="When set, large amounts of Volcano Rocks will spawn intermittently from the top of the screen only while the player is within this location. Additionally, if using the Volcano background, it will erupt prior to this wave of rocks." comment2="When not set, the Volcano Rocks will still spawn, but they will spawn infrequently and one at a time for the entire zone. It will also not cause an eruption from the Volcano background." idtype="Location"/>
   </sprite> <!-- #293: Volcano Rock Spawn Area -->
