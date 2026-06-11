@@ -3702,14 +3702,14 @@ class SpriteImage_PipeBubbles(SLib.SpriteImage_StaticMultiple):  # 161
         super().dataChanged()
 
 
-class SpriteImage_BlockTrain(SLib.SpriteImage):  # 166
+class SpriteImage_SnakeBlock(SLib.SpriteImage):  # 166
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('BlockTrain', 'block_train.png')
+        SLib.loadIfNotInImageCache('SnakeBlock', 'snake_block.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -3719,9 +3719,9 @@ class SpriteImage_BlockTrain(SLib.SpriteImage):  # 166
     def paint(self, painter):
         super().paint(painter)
 
-        endpiece = ImageCache['BlockTrain']
+        endpiece = ImageCache['SnakeBlock']
         painter.drawPixmap(0, 0, endpiece)
-        painter.drawTiledPixmap(24, 0, int((self.width * 1.5) - 48), 24, ImageCache['BlockTrain'])
+        painter.drawTiledPixmap(24, 0, int((self.width * 1.5) - 48), 24, ImageCache['SnakeBlock'])
         painter.drawPixmap(int((self.width * 1.5) - 24), 0, endpiece)
 
 
@@ -9064,7 +9064,7 @@ ImageClasses = {
     158: SpriteImage_FireSnake,
     160: SpriteImage_UnusedBlockPlatform2,
     161: SpriteImage_PipeBubbles,
-    166: SpriteImage_BlockTrain,
+    166: SpriteImage_SnakeBlock,
     170: SpriteImage_ChestnutGoomba,
     171: SpriteImage_PowerupBubble,
     172: SpriteImage_ScrewMushroomWithBolt,
