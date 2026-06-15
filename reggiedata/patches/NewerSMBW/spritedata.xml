@@ -2488,12 +2488,12 @@
     <value nybble="5" title="Throwing Delay" comment="The amount of delay is inconsistent between increases in value."/>
   </sprite> <!-- #414: Spike/Stone Spike -->
 
-  <sprite id="422" name="Toad Needs Help - ? Block" notes="A feature used in the retail game's singleplayer mode where a Toad bubble will appear on the world map and signal that it needs rescued. This is not usable in NewerSMBW.">
-    <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small."/>
+  <sprite id="422" name="Toad Needs Help - ? Block" notes="This block only ever contains a coin, as NewerSMBW does not implement Toad Rescues.">
+    <checkbox nybble="12.4" title="Small Form" comment="If enabled, the Toad will be small."/>
   </sprite> <!-- #422: Toad Needs Help - ? Block -->
 
-  <sprite id="423" name="Toad Needs Help - Brick Block" notes="A feature used in the retail game's singleplayer mode where a Toad bubble will appear on the world map and signal that it needs rescued. This is not usable in NewerSMBW.">
-    <checkbox nybble="12.4" title="Small Form" comment="Changes the size of the Toad to be small."/>
+  <sprite id="423" name="(Unused) Toad Needs Help - Brick Block" notes="This block only breaks (or contains a coin if small), as NewerSMBW does not implement Toad Rescues.">
+    <checkbox nybble="12.4" title="Small Form" comment="If enabled, the Toad will be small."/>
   </sprite> <!-- #423: Toad Needs Help - Brick Block -->
 
   <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the Retail Bowser battle." files="boss_shutter_koopa.arc">
