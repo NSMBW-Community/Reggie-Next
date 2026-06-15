@@ -126,10 +126,14 @@ def areValidGamePaths(stage_check='ug', texture_check='ug'):
     if not os.path.isdir(stage_check) or not os.path.isdir(texture_check):
         return False
 
-    # Check that a readable 01-01 file is located in the stage folder
-    for ext in globals_.FileExtentions:
-        if os.path.isfile(os.path.join(stage_check, "01-01" + ext)):
-            return True
+    # Check that at least one readable level is located in the stage folder
+    files = [f for f in os.listdir(stage_check) if os.path.isfile(os.path.join(stage_check, f))]
+    for fname in files:
+        if os.path.isfile(os.path.join(stage_check, fname)):
+            name, ext = os.path.splitext(os.path.join(stage_check, fname))
+            if ext in globals_.FileExtentions:
+                globals_.FirstStageFilename = name 
+                return True
 
     return False
 

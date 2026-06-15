@@ -81,6 +81,7 @@ ZoneThemeValues = None
 UseRoundedRectangles = True
 DarkMode = False
 UseFullFilepath = False
+FirstStageFilename = None
 
 # Config settings
 DispConnectedPipeDir = False

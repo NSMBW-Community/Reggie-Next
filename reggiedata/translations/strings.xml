@@ -150,7 +150,7 @@
 		<string id="0">Choose the Stage folder from [game]</string>
 		<string id="1">Error</string>
 		<string id="2">This folder doesn't have all of the files from the extracted New Super Mario Bros. Wii Stage folder.</string>
-		<string id="3">This folder doesn't seem to have the required files. In order to use Reggie Next in New Super Mario Bros Wii mode, you need the Stage folder from New Super Mario Bros. Wii, including the Texture folder and the level files contained within it.</string>
+		<string id="3">This folder doesn't seem to have the required files. In order to use the [game] game patch, you need the Stage folder, including the Texture folder and the level files contained within it.</string>
 		<string id="4">Choose the Texture folder from [game]</string>
 	</section>
 	<section id="Comments">
