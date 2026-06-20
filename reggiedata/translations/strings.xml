@@ -969,27 +969,34 @@
 		<string id="3">Modify Selected Camera Profile Properties</string>
 		<string id="4">[b]Modify Selected Camera Profile Properties:[/b][br]Camera Profiles can only be used with the "Event-Controlled" camera mode in the "Zones" dialog.[br][br]Transitions between zoom levels are instant, but can be hidden through careful use of zoom sprites (206).</string>
 		<string id="5">Triggering Event ID:</string>
-		<string id="6">[b]Triggering Event ID:[/b][br]Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile\'s event ID will be automatically deactivated (so the game doesn\'t instantly switch back to it).</string>
+		<string id="6">[b]Triggering Event ID:[/b][br]Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile's event ID will be automatically deactivated (so the game doesn\'t instantly switch back to it).</string>
 		<string id="7">Camera Profile on Event [id]</string>
 	</section>
 	<section id="ResizeChoiceDlg">
-		<string id="0">Let\'s resize your sprite. In order to do this, choose one of the two slots, based on the below information. Note that some choices can overlap with other settings, leading to undesired effects.</string>
-		<string id="1">Click the button below to create a Special Event sprite with the selected slot.</string>
+		<string id="0">Let's resize your sprite. In order to do this, choose one of the two modes, based on the below information. Note that some choices can overlap with other settings, leading to undesired effects.</string>
+		<string id="1" />
 		<string id="2">Please note that there already is a resizer sprite that affects this sprite. All changes made here will apply to the entire zone/area so be careful.</string>
-		<string id="3">Slots</string>
-		<string id="4">Create</string>
-		<string id="5">Edit</string>
-		<string id="6">Nothing.</string>
+		<string id="3">Choose from either the Selective or Global Resizer modes:</string>
+        <string id="4">Create Resizer</string>
+        <string id="5">Update Resizer</string>
+		<string id="6" />
 		<string id="7">Nybble 5</string>
 		<string id="8">Nybble 7</string>
 		<string id="9">Global</string>
-		<string id="10">None</string>
+		<string id="10" />
 		<string id="11">Sprite Resizer</string>
 		<string id="12">This feature is not available for the current game patch.</string>
+		<string id="13">The Selective Resizer will resize individual sprites based on its Nybble 5 or 7 value, allowing control over which sprites are resized,[br]as well as the scale of each sprite. Choose whichever nybble is not occupied by an existing setting on this sprite.</string>
+        <string id="14">The Global Resizer will change the size of [i]every[/i] sprite that supports this feature.[br]</string>
+        <string id="15">Selective Resizer</string>
+        <string id="16">Global Resizer</string>
+        <string id="17">Global Resizer Scale:</string>
+        <string id="18">Warning: This sprite has one or more settings that overlap Nybble [id].</string>
+        <string id="19">Warning: This sprite has one or more settings that overlap both Nybbles 5 and 7.</string>
 	</section>
 	<section id="SpriteUpgradeDlg">
 		<string id="0">Sprite Upgrader</string>
-		<string id="1">Reggie Next has detected that the game patch\'s sprites.py file is outdated, and must be upgraded to PyQt6 in order to work correctly.[br][br]Would you like to upgrade?[br]A copy of the old file will remain in the game patch folder.</string>
+		<string id="1">Reggie Next has detected that the game patch's sprites.py file is outdated, and must be upgraded to PyQt6 in order to work correctly.[br][br]Would you like to upgrade?[br]A copy of the old file will remain in the game patch folder.</string>
 	</section>
 	<section id="Err_UnknownSprite">
 		<string id="0">Warning</string>

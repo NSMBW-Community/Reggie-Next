@@ -1723,8 +1723,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         self.spriteLabel.setText(globals_.trans.string('SpriteDataEditor', 6, '[id]', type_, '[name]', sprite.name))
 
+        self.noteButton.setVisible(sprite.notes is not None)
         if sprite.notes is not None:
-            self.noteButton.setVisible(True)
             self.com_main.setText(sprite.notes)
             self.com_main.setVisible(True)
             self.com_more.setVisible(False)
@@ -2562,9 +2562,6 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
     """
     Dialog for the resize option.
     """
-    # TODO: Think critically about the design/behaviour/goal of this dialog
-    # TODO: Add size selector to the sprite editor
-
     def __init__(self, spriteid):
         """
         Initialise the dialog
@@ -2573,21 +2570,19 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         self.setWindowTitle(globals_.trans.string('ResizeChoiceDlg', 11))
         self.setWindowIcon(GetIcon('resize'))
 
+        # Scale levels used by both Resizer modes
+        self.scaleLevels =  [1.0, 0.25, 0.5, 0.75, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 10.0]
+
         if 0 <= spriteid < globals_.NumSprites:
             self.sprite = globals_.Sprites[spriteid]
         else:
             self.sprite = None
 
-        text  = globals_.trans.string('ResizeChoiceDlg', 0)
-        text2 = globals_.trans.string('ResizeChoiceDlg', 1)
-        text3 = globals_.trans.string('ResizeChoiceDlg', 2)
-
         ## Slots
         used = self.getNyb5And7Availability()
-        self.present = self.getSpecialEventAvailability()
+        self.present = self.checkSpecialEvent()
 
-        rows = max(len(used[5]), len(used[7]), 1)
-
+        # Setup buttons
         self.buttongroup = QtWidgets.QButtonGroup()
         self.radio1 = QtWidgets.QRadioButton()
         self.buttongroup.addButton(self.radio1, 0)
@@ -2595,69 +2590,134 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         self.buttongroup.addButton(self.radio2, 1)
         self.radio3 = QtWidgets.QRadioButton()
         self.buttongroup.addButton(self.radio3, 2)
-
-        header = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 3))
-        footer = QtWidgets.QLabel(text2)
-
-        if not self.present:
-            label = globals_.trans.string('ResizeChoiceDlg', 4)
-        elif len(self.present) == 1:
-            label = globals_.trans.string('ResizeChoiceDlg', 5)
-        else:
-            label = globals_.trans.string('ResizeChoiceDlg', 6)
-
-        createButton = QtWidgets.QPushButton(label)
-        createButton.clicked.connect(self.doAThing)
+        self.buttongroup.buttonClicked.connect(self.toggleGlbResizerScale)
 
         a_label = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 7))
         b_label = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 8))
         g_label = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 9))
 
+        selDesc = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 13))
+        glbDesc = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 14))
+
+        # Display a warning if this sprite has settings on Nybbles 5 or 7
+        isDispWarning = True
+        warnLabel = QtWidgets.QLabel('')
+        warnLabel.setStyleSheet("color: orange;")
+
+        # Check if there are conflicts
+        if len(used[5]) != 0 and len(used[7]) != 0: # Both are occupied
+            warnLabel.setText(globals_.trans.string('ResizeChoiceDlg', 19))
+            warnLabel.setStyleSheet("color: red;")
+        elif len(used[5]) != 0: # Only 5
+            warnLabel.setText(globals_.trans.string('ResizeChoiceDlg', 18, '[id]', 5))
+        elif len(used[7]) != 0: # Only 7
+            warnLabel.setText(globals_.trans.string('ResizeChoiceDlg', 18, '[id]', 7))
+        else: # Both are available
+            isDispWarning = False
+
+        selectiveBox = QtWidgets.QGroupBox(globals_.trans.string('ResizeChoiceDlg', 15))
+        selLyt = QtWidgets.QGridLayout()
+        selLyt.addWidget(selDesc,     0, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        selLyt.addWidget(a_label,     1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        selLyt.addWidget(self.radio1, 2, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        selLyt.addWidget(b_label,     1, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        selLyt.addWidget(self.radio2, 2, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        if isDispWarning:
+            selLyt.addWidget(warnLabel, 3, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        selectiveBox.setLayout(selLyt)
+
+        globalBox = QtWidgets.QGroupBox(globals_.trans.string('ResizeChoiceDlg', 16))
+        glbLyt = QtWidgets.QGridLayout()
+        glbLyt.addWidget(glbDesc,     0, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        glbLyt.addWidget(g_label,     1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        glbLyt.addWidget(self.radio3, 2, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        if isDispWarning: # Alignment so this looks better
+            glbLyt.addWidget(QtWidgets.QLabel(''), 3, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        globalBox.setLayout(glbLyt)
+
+        # Global Resizer scale
+        sliderLabel = QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 17))
+        self.sliderVal = QtWidgets.QLabel('x' + str(self.scaleLevels[0]))
+
+        self.slider = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal)
+        self.slider.setMaximumHeight(20)
+        self.slider.setMinimum(0)
+        self.slider.setMaximum(len(self.scaleLevels) - 1)
+        self.slider.setTickInterval(2)
+        self.slider.setTickPosition(self.slider.TickPosition.TicksAbove)
+        self.slider.setPageStep(1)
+        self.slider.setTracking(True)
+        self.slider.setSliderPosition(0)
+        self.slider.valueChanged.connect(self.sliderMoved)
+        if self.present:
+            self.slider.setValue(self.getGlobalScale())
+
+        glbSclLyt = QtWidgets.QHBoxLayout()
+        glbSclLyt.addWidget(sliderLabel)
+        glbSclLyt.addWidget(self.slider)
+        glbSclLyt.addWidget(self.sliderVal)
+
+        # This allows us to toggle the entire thing
+        self.glbScaleWidget = QtWidgets.QWidget()
+        self.glbScaleWidget.setLayout(glbSclLyt)
+        self.glbScaleWidget.setEnabled(False)
+
         slotsLayout = QtWidgets.QGridLayout()
         slotsLayout.setContentsMargins(0, 0, 0, 0)
-        slotsLayout.addWidget(header,      0, 0, 1, 3, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        slotsLayout.addWidget(a_label,     1, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        slotsLayout.addWidget(self.radio1, 2, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        slotsLayout.addWidget(b_label,     1, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        slotsLayout.addWidget(self.radio2, 2, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        slotsLayout.addWidget(g_label,     1, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        slotsLayout.addWidget(self.radio3, 2, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        slotsLayout.addWidget(selectiveBox,        0, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        slotsLayout.addWidget(globalBox,           0, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        slotsLayout.addWidget(self.glbScaleWidget, 1, 0, 1, 3)
 
-        noneLabel = globals_.trans.string('ResizeChoiceDlg', 10)
+        # Auto-select the relevant button
+        if self.present:
+            # Select our current resizer type
 
-        if len(used[5]) == 0:
-            slotsLayout.addWidget(QtWidgets.QLabel(noneLabel), 3, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        else:
-            for offset, conflict in enumerate(used[5]):
-                slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
-
-        if len(used[7]) == 0:
-            slotsLayout.addWidget(QtWidgets.QLabel(noneLabel), 3, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        else:
-            for offset, conflict in enumerate(used[7]):
-                slotsLayout.addWidget(QtWidgets.QLabel(conflict[1]), 3 + offset, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
-
-        slotsLayout.addWidget(footer,       4 + rows, 0, 1, 3)
-        slotsLayout.addWidget(createButton, 5 + rows, 0, 1, 3, QtCore.Qt.AlignmentFlag.AlignHCenter)
-
-        # Proposing the best option
-        # Maybe change this to set the option that is already applied?
-        if len(used[5]) <= len(used[7]):
+            # Just in case we can't find it for whatever reason
             self.radio1.setChecked(True)
-        else:
-            self.radio2.setChecked(True)
 
-        # create layout
+            for type, sprite in self.present:
+                if sprite.type != globals_.SpecialEventSpriteID:
+                    continue
+
+                type = sprite.spritedata[5] & 0xF
+                if type == 5:
+                    self.radio3.setChecked(True)
+                    self.glbScaleWidget.setEnabled(True)
+                elif type == 6:
+                    if (sprite.spritedata[5] >> 4) != 0:
+                        self.radio2.setChecked(True)
+                    else:
+                        self.radio1.setChecked(True)
+        else:
+            # Offer the user the 'best' option in this case
+            if len(used[5]) != 0 and len(used[7]) != 0:
+                self.radio3.setChecked(True)
+                self.glbScaleWidget.setEnabled(True)
+            elif len(used[5]) <= len(used[7]):
+                self.radio1.setChecked(True)
+            else:
+                self.radio2.setChecked(True)
+        
+        # Action button (does the create/update behavior)
+        if not self.present:
+            btnText = globals_.trans.string('ResizeChoiceDlg', 4)
+        else:
+            btnText = globals_.trans.string('ResizeChoiceDlg', 5)
+
+        spriteButton = QtWidgets.QPushButton(btnText)
+        spriteButton.clicked.connect(self.handleResizer)
+
+        # Create layout
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Close)
-        buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
+        buttonBox.addButton(spriteButton, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
 
         mainLayout = QtWidgets.QVBoxLayout()
-        mainLayout.addWidget(QtWidgets.QLabel(text))
+        mainLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 0)))
 
+        # Warn the user if a Special Event exists
         if self.present:
-            mainLayout.addWidget(QtWidgets.QLabel(text3))
-            mainLayout.addWidget(QtWidgets.QLabel(str(self.present)))
+            mainLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('ResizeChoiceDlg', 2)))
 
         mainLayout.addLayout(slotsLayout)
         mainLayout.addWidget(buttonBox, 0, QtCore.Qt.AlignmentFlag.AlignBottom)
@@ -2666,7 +2726,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
     def getNyb5And7Availability(self):
         """
-        Gets whether nybble 5 or 7 or both or none is free.
+        Gets whether nybbles 5 or 7 (or both/none) are occupied by spritedata or not
         """
         nyb5 = (17, 21) # excludes end
         nyb7 = (25, 29)
@@ -2707,7 +2767,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         return found
 
-    def getSpecialEventAvailability(self):
+    def checkSpecialEvent(self):
         """
         Find Special Event and then check if it has resize set.
         Returns a list of (slot, sprite) pairs, where slot = 2 means it is a global
@@ -2719,9 +2779,8 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
                 continue
 
             type = sprite.spritedata[5] & 0xF
-
             if type == 5:
-                # Resizer
+                # Global resizer
                 slots.append((2, sprite))
             elif type == 6:
                 # Selective resizer
@@ -2730,53 +2789,46 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         return slots
 
-    def doAThing(self):
+    def handleResizer(self):
         """
         Either places a new special event or changes the old one.
         """
-        slot = self.buttongroup.checkedId()
-
-        thing = []
-        for type, sprite in self.present:
-            if slot == 2 and type == 2:
-                thing.append(sprite)
-
-            elif not (slot == 2 or type == 2):
-                thing.append(sprite)
-
-        if not thing:
-            self.placeSpecialResizeEvent()
-        elif len(thing) == 1:
-            self.editSpecialResizeEvent(thing[0][1])
+        if not self.present:
+            self.createResizer()
         else:
-            # TODO: figure out what to do here
-            ...
+            for type, sprite in self.present:
+                if sprite.type == globals_.SpecialEventSpriteID:
+                    self.editResizer(sprite)
+                    break
 
         return self.accept()
 
-    def editSpecialResizeEvent(self, sprite):
+    def editResizer(self, sprite):
+        """
+        Updates the existing Special Event
+        """
         data = list(sprite.spritedata)
 
         slot = self.buttongroup.checkedId()
-        if slot == 2:
-            # global
-            data[5] = (data[5] & 0xF0) | 5
-        else:
-            # only slot
+        if slot == 2: # global
+            data[5] = (self.slider.value() << 4) | 5
+        else: # only slot
             data[5] = (slot << 4) | 6
 
         sprite.spritedata = bytes(data)
 
-    def placeSpecialResizeEvent(self):
+    def createResizer(self):
         """
         Places a Special Event and sets the settings so the correct slot.
         """
         slot = self.buttongroup.checkedId()
+        size = self.slider.value()
         data = bytearray(8)
-        if slot == 2:
-            data[5] = 5
-        else:
-            data[5] = (slot << 4) | 6
+
+        if slot == 2: # Global
+            data[5] = (size << 4) | 5
+        else: # Selective
+            data[5] = (slot << 4) | 6 
 
         x = globals_.mainWindow.selObj.objx + 16
         y = globals_.mainWindow.selObj.objy
@@ -2784,3 +2836,32 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
 
         if globals_.mainWindow.CreateSprite(x, y, special_event_id, data) is not None:
             globals_.mainWindow.scene.update()
+
+    def getGlobalScale(self):
+        """
+        Get the scale for the Global Resizer
+        """
+        for sprite in globals_.Area.sprites:
+            if sprite.type != globals_.SpecialEventSpriteID:
+                continue
+
+            type = sprite.spritedata[5] & 0xF
+            if type == 5:
+                return (sprite.spritedata[5] >> 4)
+            else:
+                return 0
+
+    def sliderMoved(self):
+        """
+        Handle the slider being moved
+        """
+        self.sliderVal.setText('x' + str(self.scaleLevels[self.slider.value()]))
+
+    def toggleGlbResizerScale(self, button):
+        """
+        Toggles the global resizer scale
+        """
+        if not button.isEnabled():
+            return
+
+        self.glbScaleWidget.setEnabled(self.buttongroup.id(button) == 2)
