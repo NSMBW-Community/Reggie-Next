@@ -2297,9 +2297,9 @@
   </sprite> <!-- #147: Coin -->
 
   <sprite id="148" name="Springboard" notes="A springboard item that the player can bounce on to reach new heights, and can carry around with them.">
-    <checkbox nybble="5.4" title="Does Not Despawn" comment="When enabled, the Springboard will not despawn from being offscreen." comment2="Normally, the Springboard will vanish if it goes too far offscreen, but with this option it will remember where it was last at and not disappear."/>
+    <checkbox nybble="5.4" title="Does Not Despawn" comment="When enabled, the Springboard will not despawn from being offscreen. This is enabled on Springboards spawned from item blocks."/>
     <checkbox nybble="10.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Springboard placing it further behind other sprites."/>
-    <checkbox nybble="11.4" title="Shift Spawn Position (NSMBDS)" comment="When enabled, this moves the Springboard half a block to the right." advanced="True" advancedcomment="This is a leftover setting from the NSMBDS Springboard where sprites could only be placed exactly on the tile grid. It... really isn't useful."/>
+    <checkbox nybble="11.4" title="Shift Spawn Position" comment="When enabled, this moves the Springboard half a block to the right. Likely a leftover from NSMBDS."/>
   </sprite> <!-- #148: Springboard -->
 
   <sprite id="149" name="Rotation Controller - Spinning" notes="This controller will create synchronized movement between matched sprites and cause them to spin in a circular motion. It acts as the center of rotation for most sprites.&lt;br&gt;Additionally, it can control the Zone's Zoom level depending on the rotation controller's current rotation.">
@@ -3144,7 +3144,7 @@
     <dualbox nybble="9.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the ?-Block will move based on the Line that it is connected to."/>
   </sprite> <!-- #207: ? Block -->
 
-  <sprite id="208" name="(Unused) ? Block" notes="This is a nearly identical version of [207] to the point that you should probably just be using [207]...">
+  <sprite id="208" name="(Unused) ? Block" notes="This is nearly identical to [207], with the only difference being it cannot contain a Continuous Star.">
     <dependency notes="If pairing the ?-Block for movement or other features, you'll likely need one of the sprites listed in the Dependency List.">
       <suggested sprite="159"/>
       <suggested sprite="260"/>
