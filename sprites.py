@@ -7522,18 +7522,27 @@ class SpriteImage_LemmyBall(SLib.SpriteImage_Static):  # 394
         SLib.loadIfNotInImageCache('LemmyBall', 'lemmyball.png')
 
 
-class SpriteImage_SpinyCheep(SLib.SpriteImage_Static):  # 395
+class SpriteImage_SpinyCheep(SLib.SpriteImage_StaticMultiple):  # 395
     def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['SpinyCheep'],
-            (-1, -2),
-        )
+        super().__init__(parent, 1.5)
+        self.xOffset = -2
+        self.yOffset = -4
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('SpinyCheep', 'cheep_spiny.png')
+        SLib.loadIfNotInImageCache('SpinyCheepRight', 'cheep_spiny_right.png')
+    
+    def dataChanged(self):
+        super().dataChanged()
+        # It can face right if set to chase players, but not when forced to face left
+        chasePly = self.parent.spritedata[5] & 0xF
+        forceLeft = (self.parent.spritedata[2] >> 4) & 8
+
+        if chasePly and not forceLeft:
+            self.image = ImageCache['SpinyCheepRight']
+        else:
+            self.image = ImageCache['SpinyCheep']
 
 
 class SpriteImage_MoveWhenOn(SLib.SpriteImage):  # 396

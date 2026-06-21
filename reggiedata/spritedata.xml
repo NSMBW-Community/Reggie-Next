@@ -5907,50 +5907,14 @@
     <dualbox nybble="5.4" title1="Starts Bouncing Right" title2="Starts Bouncing Left" comment="This determines the direction the Lemmy Ball will initially be bouncing in."/>
   </sprite> <!-- #394: Bouncing Lemmy Ball -->
 
-  <!-- See #115 -->
-  <!-- Check for any differences. -->
-  <!-- Define what makes the Spiny Cheep Cheep behave differently from the regular Cheep Cheep, because I forget... -->
-  <sprite id="395" name="Spiny Cheep Cheep" notes="A spiky version of the basic Cheep Cheep and its very similar brethren. When placed in water, it will swim along or even swim after the player." files="pukupuku_toge.arc">
-    <dependency notes="The Cheep Cheep will only spawn if placed within water. In addition, Type 1, 7, and 8 only work on non-location water.">
+  <sprite id="395" name="Spiny Cheep Cheep" notes="A spiked Cheep Cheep that will chase after players." files="pukupuku_toge.arc">
+    <dependency notes="The Spiny Cheep Cheep will only spawn if water is present in the zone. If placed outside of water, it will snap to the surface.">
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
-    <checkbox nybble="5.1" title="Swims Left" comment="If checked, swims to the left. The fish will not swim backwards when you backtrack. If unchecked, it depends on the 'Type' set, in which Direction the Cheep Cheep swims first. For Types 3, 4, 6 and 7, it swims to the right in general. All other Types will cause the Cheep Cheeps to swim in Mario's Direction."/>
-    <list nybble="12" title="Type" comment="Specifies the Swimming-'Type' that should be used for this Cheep Cheep. Deep Cheeps and Eep Cheeps only work in non-Location water. Value 5 is unique. Type-5 Cheep Cheeps will look into the camera until Mario comes close. Furthermore, the Direction will be ignored and the Cheep Cheep will always swim in the opposite Direction, away from Mario, but only if Mario is close enough.&lt;br&gt;Values marked with an asterisk &lt;b&gt;(*)&lt;/b&gt; will ignore the speed Value set and instead will always use Value 1, no matter what is selected there. Also, all Values with &lt;b&gt;(*)&lt;/b&gt; will let the Cheep Cheep swim in a wavy line (just as the Coin Cheep Cheep does).&lt;br&gt;The two Values with &lt;b&gt;(**)&lt;/b&gt; follow exactly the same behavior as those marked with &lt;b&gt;(*)&lt;/b&gt;, only difference is its speed. Cheep Cheeps affected will swim slightly faster, both vertical and horizontal.&lt;br&gt;&lt;br&gt;&lt;b&gt;New naming scheme as of NSMBU:&lt;/br&gt;&lt;br&gt;Red = Cheep Cheep (normal)&lt;br&gt;Green = Deep Cheep (aggressive)&lt;br&gt;Yellow = Eep Cheep (shy)">
-      <entry value="0">Spiny Cheep Cheep ("Swim"), Swims Straight</entry>
-      <entry value="2">Spiny Cheep Cheep ("Swim"), Swims Straight</entry>
-      <entry value="3">Spiny Cheep Cheep ("LrSwim"), Swims Left / Right</entry>
-      <entry value="4">Spiny Cheep Cheep ("Swim"), Swims Straight**</entry>
-      <entry value="5">Spiny Cheep Cheep ("WaterWait"), Waits, Then Swims Straight**</entry>
-      <entry value="6">Spiny Cheep Cheep ("Swim"), Swims Straight</entry>
-      <entry value="1">Spiny Deep Cheep ("SrcSwim"), Follows Player Slightly*</entry>
-      <entry value="7">Spiny Deep Cheep ("ScrSwim"), Follows Player Slightly*</entry>
-      <entry value="8">Spiny Eep Cheep ("ReverseSrcSwim"), Dodges Player*</entry>
-    </list>
-    <list nybble="9.3-9.4" title="Swim Speed" comment="This determines the swimming speed of [?????] Types of Cheep Cheep." comment2="Note: Type-3 Cheep Cheeps (Swims Left / Right) have the same speed as values 1 and 2. [Both? What? Slow and Medium-Slow?]">
-      <entry value="3">Slower</entry>
-      <entry value="1">Slow</entry>
-      <entry value="2">Medium - Slow</entry>
-      <entry value="0">Medium</entry>
-    </list>
-    <list nybble="8" title="Swim Distance" comment="This determines the distance that a Type 3 Cheep Cheep will swim in both directions from its initial placement." requirednybble="12" requiredval="3">
-      <entry value="0">1 Block</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
-    <value nybble="3-4" title="'Dodge' Event ID" comment="Right, this does look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right). Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'.&lt;br&gt;If it really works is a good question." idtype="Triggering Event"/>
+    <dualbox nybble="5.1" title1="Face Towards Player" title2="Face Left" comment="This determines the direction the Cheep Cheep will face and swim in." requirednybble="12" requiredval="0"/>
+    <checkbox nybble="12" title="Always Chase Player" comment="If enabled, the Cheep Cheep will chase the player regardless of where they go. Otherwise, it will chase players in front of it, but stop once they're behind it, similar to a Deep Cheep." comment2="Freezing a Spiny Cheep Cheep will trigger this behavior when the ice breaks."/>
+    <value nybble="3-4" title="'No Spawn' Event ID" comment="If this event is triggered, the Cheep Cheep will not spawn. It must be enabled prior to the Cheep Cheep becoming visible on-screen, as this only stops it from spawning." idtype="Triggering Event" requirednybble="12" requiredval="0"/>
+    <value nybble="3-4" title="Escape Event ID" comment="If this event is triggered, the Cheep Cheep will immediately stop chasing and swim off-screen. It will not respawn after this." idtype="Triggering Event" requirednybble="12"/>
   </sprite> <!-- #395: Spiny Cheep Cheep -->
 
   <sprite id="396" name="Move-When-On Platform" notes="A special platform that will move at any point when a specified number of 'passengers' (players + enemies) are standing on it." files="lift_up_down.arc">
