@@ -39,7 +39,7 @@ class SpriteImage_NewerSwitch(common.SpriteImage_Switch):
                 p = SLib.GetImg('P_switch%d.png' % i, True)
                 ImageCache['PSwitch%d' % i] = QtGui.QPixmap.fromImage(p)
                 ImageCache['PSwitchU%d' % i] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
-        
+
         if 'ESwitch2' not in ImageCache:
             for i in range(2, 5):
                 p = SLib.GetImg('e_switch%d.png' % i, True)
@@ -1457,6 +1457,10 @@ class SpriteImage_NewerSpringBlock(SLib.SpriteImage_StaticMultiple):  # 223
 
 
 class SpriteImage_NewerBramball(SLib.SpriteImage_StaticMultiple):  # 230
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.offset = (-50 / 1.5, -71 / 1.5)
+
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Bramball', 'bramball.png')
@@ -1471,10 +1475,8 @@ class SpriteImage_NewerBramball(SLib.SpriteImage_StaticMultiple):  # 230
 
         if colour == 0:
             self.image = ImageCache['Bramball']
-            self.offset = (-32, -48)
         else:
             self.image = ImageCache['Bramball%d' % colour]
-            self.offset = (-33, -47)
 
         super().dataChanged()
 
@@ -1737,7 +1739,7 @@ class SpriteImage_NewerHeavyParabeetle(SLib.SpriteImage_StaticMultiple):  # 292
         SLib.loadIfNotInImageCache('HeavyParabeetleLeft', 'heavy_parabeetle_left.png')
         SLib.loadIfNotInImageCache('HeavyParabeetleMoreRight', 'heavy_parabeetle_moreright.png')
         SLib.loadIfNotInImageCache('HeavyParabeetleAtYou', 'heavy_parabeetle_atyou.png')
-        
+
         if 'HeavyParabeetleredRight' in ImageCache: return
         for colour in ("red", "orange", "yellow", "green", "skyblue", "blue", "purple", "black", "white", "pink"):
             ImageCache["HeavyParabeetle%sRight" % colour] = SLib.GetImg('heavy_parabeetle_%s_right.png' % colour.lower())
@@ -2253,7 +2255,7 @@ class SpriteImage_NewerFloatingQBlock(SLib.SpriteImage_StaticMultiple):  # 433
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('FloatingQBlock', 'floating_qblock.png')
-    
+
         items = (
             ('Coin',   ImageCache['BlockContents'][1]),
             ('Hamr',   ImageCache['BlockContents'][20]),

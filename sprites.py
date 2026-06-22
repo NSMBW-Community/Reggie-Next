@@ -4808,7 +4808,7 @@ class SpriteImage_Bramball(SLib.SpriteImage_Static):  # 230
             parent,
             1.5,
             ImageCache['Bramball'],
-            (-32, -48),
+            (-50 / 1.5, -71 / 1.5),
         )
 
     @staticmethod
