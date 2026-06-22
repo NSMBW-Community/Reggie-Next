@@ -5016,44 +5016,17 @@
     <dualbox nybble="5.1" title1="Swims Towards Player" title2="Swims Left" comment="This determines which direction the Cheep Cheeps will swim in when they spawn."/>
     <checkbox nybble="11.4" title="Slower" comment="When enabled, the Cheep Cheeps will swim much slower while maintaining their formation."/>
     <value nybble="9.3-9.4" title="# of Big Cheep Cheeps" comment="This determines the number of Big Cheep Cheeps in the formation."/>
-    <list nybble="10" title="Formation Categories" comment="This determines which Formation Types and sets sub-variants of the formation selected are available." comment2="Some formation types and variants will have issues. Experiment to find the one best for your level.">
-      <entry value="0">Category 1, Random</entry>
-      <entry value="1">Category 1, Variant 1</entry>
-      <entry value="2">Category 1, Variant 2</entry>
-      <entry value="3">Category 1, Variant 3</entry>
-      <entry value="4">Category 2, Random</entry>
-      <entry value="5">Category 2, Variant 1</entry>
-      <entry value="6">Category 2, Variant 2</entry>
-      <entry value="7">Category 2, Variant 3</entry>
-      <entry value="8">Category 3, Random</entry>
-      <entry value="9">Category 3, Variant 1</entry>
-      <entry value="10">Category 3, Variant 2</entry>
-      <entry value="11">Category 3, Variant 3</entry>
-      <entry value="12">Category 4, Random</entry>
-      <entry value="13">Category 4, Variant 1</entry>
-      <entry value="14">Category 4, Variant 2</entry>
-      <entry value="15">Category 4, Variant 3</entry>
+    <list nybble="10" title="Formation" comment="This determines the formation of the Cheep Cheeps." comment2="Values above 3 are not intended for use and will result in broken or incorrect positions.">
+      <entry value="0">Random</entry>
+      <entry value="1">Formation 1</entry>
+      <entry value="2">Formation 2</entry>
+      <entry value="3">Formation 3</entry>
     </list>
-    <list nybble="12.3-12.4" title="Formation Type: Category 1" comment="The Sprite's placement represents the topmost Cheep Cheep from the group." requirednybble="10.1-10.2" requiredval="0">
-      <entry value="0">Circular</entry>
-      <entry value="1">Linear</entry>
-      <entry value="2">Horizontal</entry>
-    </list> <!-- Appears if Formation [37-38] == Category 1 [00] -->
-    <list nybble="12.3-12.4" title="Formation Type: Category 2" comment="The Sprite's placement represents the bottom-most Cheep Cheep from the group." requirednybble="10.1-10.2" requiredval="1">
-      <entry value="0">Circular</entry>
-      <entry value="1">Linear</entry>
-      <entry value="2">Horizontal</entry>
-    </list> <!-- Appears if Formation [37-38] == Category 2 [01] -->
-    <list nybble="12.3-12.4" title="Formation Type: Category 3" comment="For Values 0 and 1, the Sprite's placement represents the left-most/bottom-most Cheep Cheep from the group. For Value 2, the Sprite's placement is located 5 Blocks above the bottom-most Cheep Cheep." requirednybble="10.1-10.2" requiredval="2">
-      <entry value="0">Horizontal</entry>
-      <entry value="1">Vertical</entry>
-      <entry value="2">Vertical (Scattered)</entry>
-    </list> <!-- Appears if Formation [37-38] == Category 3 [10] -->
-    <list nybble="12.3-12.4" title="Formation Type: Category 4" comment="For Values 0 and 1, the Sprite's placement represents the bottom-most Cheep Cheep from the group. For Value 2, the Sprite's placement is located 5 Blocks above the bottom-most Cheep Cheep." requirednybble="10.1-10.2" requiredval="3">
+    <list nybble="12.3-12.4" title="Formation Shape" comment="This determines the overall shape of the Cheep Cheep formation. Values above 2 will act the same as Vertical.">
       <entry value="0">Circular</entry>
       <entry value="1">Horizontal</entry>
-      <entry value="2">Horizontal (Scattered)</entry>
-    </list> <!-- Appears if Formation [37-38] == Category 4 [11] -->
+      <entry value="2">Vertical</entry>
+    </list>
   </sprite> <!-- #335: School of Cheep Cheeps -->
 
   <sprite id="336" name="Wendy Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." files="wendy.arc">

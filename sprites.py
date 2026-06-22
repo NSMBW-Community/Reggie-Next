@@ -6579,6 +6579,63 @@ class SpriteImage_CheepGiant(SLib.SpriteImage):  # 334
         painter.drawPixmap(0, 0, self.image)
 
 
+
+class SpriteImage_CheepSchool(SLib.SpriteImage_Static):  # 335
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.spritebox.shown = True
+
+        # Make 4 auxiliaries for our formation Cheeps
+        self.aux.append(SLib.AuxiliaryImage(parent, 26, 24))
+        self.aux.append(SLib.AuxiliaryImage(parent, 26, 24))
+        self.aux.append(SLib.AuxiliaryImage(parent, 26, 24))
+        self.aux.append(SLib.AuxiliaryImage(parent, 26, 24))
+
+    @staticmethod
+    def loadImages():
+        if 'CheepRedLeft' in ImageCache: return
+        ImageCache['CheepRedLeft'] = SLib.GetImg('cheep_red.png')
+
+    def dataChanged(self):
+        formation = self.parent.spritedata[4] & 0xF
+        shape = self.parent.spritedata[5] & 0xF
+        noPreview = formation == 0 or formation > 3
+
+        for aux in self.aux:
+            aux.image = ImageCache['CheepRedLeft']
+            aux.setIsBehindSprite(False)
+            aux.hover = False
+            # Hide them if its random or an invalid ID
+            aux.alpha = 0.0 if noPreview else 1.0
+        if noPreview: return
+
+        if shape > 2:
+            shape = 2
+
+        positions = [
+        ( # Shape 0
+            # Aux 0   # Aux 1   # Aux 2   # Aux 3
+            (), # Dummy space for random option
+            ((16, 36), (32, 8), (28, 64), (48, 32)),
+            ((16, 8), (32, 36), (48, 4), (64, 39)),
+            ((16, 36), (32, 8), (48, 40), (64, 12)),
+        ), ( # Shape 1
+            (),
+            ((8, 20), (36, 8), (64, 18), (92, 3)),
+            ((8, 18), (36, 4), (64, 8), (92, 20)),
+            ((8, 5), (36, 20), (64, 18), (92, 8)),
+        ), ( # Shape 2
+            (),
+            ((8, 8), (24, 36), (5, 64), (20, 92)),
+            ((20, 8), (13, 36), (8, 64), (24, 92)),
+            ((8, 8), (28, 36), (24, 64), (4, 92)),
+        )]
+
+        for idx, aux in enumerate(self.aux):
+            aux.setPos((positions[shape][formation][idx][0]-8) * 1.5, (positions[shape][formation][idx][1]-8) * 1.5)
+        super().dataChanged()
+
+
 class SpriteImage_WendyKoopa(SLib.SpriteImage_Static):  # 336
     def __init__(self, parent):
         super().__init__(
@@ -9197,6 +9254,7 @@ ImageClasses = {
     331: SpriteImage_DishPlatform,
     333: SpriteImage_PlayerBlockPlatform,
     334: SpriteImage_CheepGiant,
+    335: SpriteImage_CheepSchool,
     336: SpriteImage_WendyKoopa,
     337: SpriteImage_IggyKoopa,
     338: SpriteImage_MovingBulletBillLauncher,
