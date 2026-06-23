@@ -3663,9 +3663,9 @@
     <dependency notes="The direction must match the one the player approaches from, or the Cheep Cheeps will not appear. As such, its recommended to use this sprite in an auto-scroller stage.">
       <suggested sprite="91"/>
     </dependency>
-    <list nybble="12" title="Formation Type" comment="This determines the type or shape of the formation." comment2="">
+    <list nybble="12" title="Formation Type" comment="This determines the type or shape of the formation." comment2="Filled Arrow ignores the number of Cheep Cheeps, and is entirely controlled by the number of repeated formations.">
       <entry value="0">Arrow</entry>
-      <entry value="1">Smaller Arrow</entry>
+      <entry value="1">Filled Arrow</entry>
       <entry value="2">Vertical Line</entry>
       <entry value="3">Diagonal Line</entry>
       <entry value="4">Reverse-Diagonal Line</entry>

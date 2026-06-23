@@ -4963,6 +4963,73 @@ class SpriteImage_FallingLedgeBar(SLib.SpriteImage_Static):  # 242
         SLib.loadIfNotInImageCache('FallingLedgeBar', 'falling_ledge_bar.png')
 
 
+# TODO: Make 'Filled Arrow' preview; Consider if it would be worth it to preview the formation repeats
+class SpriteImage_CheepFormation(SLib.SpriteImage_Static):  # 247
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.spritebox.shown = True
+
+        # Create auxes
+        for i in range(16):
+            self.aux.append(SLib.AuxiliaryImage(parent, 26, 24))
+            self.aux[i].image = ImageCache['CheepRedLeft']
+            self.aux[i].setIsBehindSprite(False)
+            self.aux[i].hover = False
+
+    @staticmethod
+    def loadImages():
+        if 'CheepRedLeft' in ImageCache: return
+        ImageCache['CheepRedLeft'] = SLib.GetImg('cheep_red.png')
+        ImageCache['CheepRedRight'] = QtGui.QPixmap.fromImage(SLib.GetImg('cheep_red.png', True).mirrored(True, False))
+
+    def dataChanged(self):
+        isLeft = (self.parent.spritedata[4] >> 4) & 0x1
+        cheepNum = self.parent.spritedata[4] & 0xF
+        doStretch = self.parent.spritedata[3] & 0x1
+        formation = self.parent.spritedata[5] & 0xF
+        if formation > 4:
+            formation = 0
+
+        # Setup stuff
+        for i, aux in enumerate(self.aux):
+            dirs = ['CheepRedRight', 'CheepRedLeft']
+            aux.image = ImageCache[dirs[isLeft]]
+            aux.alpha = 1.0 if i <= cheepNum else 0.0
+
+        if formation == 0: # Arrow
+            positions = [
+                0,
+                32, -32,
+                64, -64,
+                96, -96,
+                128, -128,
+                160, -160,
+                192, -192,
+                224, -224,
+                256, -256
+            ]
+
+            for i, aux in enumerate(self.aux):
+                yAdj = 0.75 if doStretch else 0.5
+                xAdj = 1 if isLeft else -1
+                aux.setPos(abs(positions[i])*1.5 * xAdj, -positions[i]*1.5 * yAdj)
+        elif formation == 1: # Filled Arrow
+            for aux in self.aux:
+                aux.alpha = 0.0
+        else: # Vertical, Diagonals
+            for i, aux in enumerate(self.aux):
+                xAdj = 1 if isLeft else -1
+                yAdj = 0.75 if doStretch else 1
+                yVal = (i * 32) * 1.5
+                xVal = 0 if formation == 2 else yVal
+
+                if formation == 3: # Upwards Diagonal
+                    yAdj *= -1
+                aux.setPos(xVal*xAdj, yVal*yAdj)
+
+        super().dataChanged()
+
+
 class SpriteImage_EventDeactivBlock(SLib.SpriteImage_Static):  # 252
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -6577,7 +6644,6 @@ class SpriteImage_CheepGiant(SLib.SpriteImage):  # 334
     def paint(self, painter):
         super().paint(painter)
         painter.drawPixmap(0, 0, self.image)
-
 
 
 class SpriteImage_CheepSchool(SLib.SpriteImage_Static):  # 335
@@ -9190,6 +9256,7 @@ ImageClasses = {
     238: SpriteImage_Foo,
     240: SpriteImage_GiantWiggler,
     242: SpriteImage_FallingLedgeBar,
+    247: SpriteImage_CheepFormation,
     252: SpriteImage_EventDeactivBlock,
     253: SpriteImage_RotControlledCoin,
     254: SpriteImage_RotControlledPipe,
