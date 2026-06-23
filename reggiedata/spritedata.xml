@@ -1703,7 +1703,7 @@
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
     <checkbox nybble="5.1" title="Swims Left" comment="If checked, swims to the left. The fish will not swim backwards when you backtrack. If unchecked, the direction the Cheep Cheep swims first depends on the 'Type'. For Types 3, 4, 6 and 7, it swims to the right in general. All other types will cause the Cheep Cheeps to swim first in Mario's direction."/>
-    <list nybble="12" title="Type" comment="This determines which type of behavior the Cheep Cheep will follow, as well as the type of Cheep Cheep that is spawned." comment2="Specifies the Swimming-'Type' that should be used for this Cheep Cheep. Value 5 is unique. Type-5 Cheep Cheeps will look into the camera until Mario comes close. Furthermore, the direction will be ignored and the Cheep Cheep will always swim in the opposite direction, away from Mario, if Mario is close enough.&lt;br&gt;&lt;br&gt;Values marked ​​with an asterisk &lt;b&gt;(*)&lt;/b&gt; will ignore the speed value set and instead will always use value 1, no matter what is selected there. Also, all values ​​with &lt;b&gt;(*)&lt;/b&gt; will let the Cheep Cheep swim in a wavy line (just as the Coin Cheep Cheep does).&lt;br&gt;&lt;br&gt;The two values ​​with &lt;b&gt;(**)&lt;/b&gt; follow exactly the same behavior as those marked with &lt;b&gt;(*)&lt;/b&gt;, the only difference is its speed. Cheep Cheeps affected will swim slightly faster, both vertical and horizontal.">
+    <list nybble="12" title="Type" comment="This determines which type of behavior the Cheep Cheep will follow, as well as the type of Cheep Cheep that is spawned." comment2="Type 5 Cheep Cheeps will look into the camera until Mario comes close. Furthermore, the direction will be ignored and the Cheep Cheep will always swim in the opposite direction, away from Mario, if Mario is close enough.&lt;br&gt;&lt;br&gt;Values marked ​​with an asterisk &lt;b&gt;(*)&lt;/b&gt; will ignore the speed value set and instead will always use value 1, no matter what is selected there. Also, all values ​​with &lt;b&gt;(*)&lt;/b&gt; will let the Cheep Cheep swim in a wavy line (just as the Coin Cheep Cheep does).&lt;br&gt;&lt;br&gt;The two values ​​with &lt;b&gt;(**)&lt;/b&gt; follow exactly the same behavior as those marked with &lt;b&gt;(*)&lt;/b&gt;, the only difference is its speed. Cheep Cheeps affected will swim slightly faster, both vertical and horizontal.">
       <entry value="0">Cheep Cheep ("Swim"), Swims Straight</entry>
       <entry value="2">Cheep Cheep ("Swim"), Swims Straight</entry>
       <entry value="3">Cheep Cheep ("LrSwim"), Swims Left / Right</entry>
@@ -1715,9 +1715,9 @@
       <entry value="8">Eep Cheep ("ReverseSrcSwim"), Dodges Player*</entry>
     </list>
     <list nybble="9.3-9.4" title="Swim Speed" comment="This determines the swimming speed of [?????] Types of Cheep Cheep." comment2="Note: Type-3 Cheep Cheeps (Swims Left / Right) have the same speed as values 1 and 2. [Both? What? Slow and Medium-Slow?]">
-      <entry value="3">Slower</entry>
-      <entry value="1">Slow</entry>
-      <entry value="2">Slow+</entry>
+      <entry value="3">Slowest</entry>
+      <entry value="1">Slower</entry>
+      <entry value="2">Slow</entry>
       <entry value="0">Medium</entry>
     </list>
     <list nybble="8" title="Swim Distance" comment="This determines the distance that a Type 3 Cheep Cheep will swim in both directions from its initial placement." requirednybble="12" requiredval="3">
@@ -1738,10 +1738,10 @@
       <entry value="14">15 Blocks</entry>
       <entry value="15">16 Blocks</entry>
     </list> <!-- Appears only if Type = 3 -->
-    <checkbox nybble="4.3" title="Positioning Flag (2)" comment="Treeki:&lt;br&gt;Setting Flag 2 and 4 for Nybble 4: This function will create a particular Y position picture of all the Cheep Cheeps, each frame. The 'Cheep Cheep Formation Spawner' that has generated the Cheep Cheeps will store this 'picture'."/>
-    <checkbox nybble="4.2" title="Positioning Flag (4)" comment="Treeki:&lt;br&gt; Setting Flag 2 and 4 for Nybble 4: This function will create a particular Y position picture of all the Cheep Cheeps, each frame. The 'Cheep Cheep Formation Spawner' that has generated the Cheep Cheeps will store this 'picture'."/>
-    <value nybble="6" title="Positioning" comment="Treeki also commented:&lt;br&gt;'Nybble 6 determines WHICH position is allocated to the fish. This option is only useful for the Cheep Cheep Formation Spawner (247), because 247 uses this nybble for all generated Cheep Cheeps. For everything else, this option seems to be pointless. When you use the two flags for a Cheep Cheep in Reggie!, the corresponding Cheep Cheep won't have 'parents' any more, so it will get some random data for the Y position and might go off the screen. So you can safely ignore this value.'"/>
-    <value nybble="3-4" title="'Dodge' Triggering Event ID" comment="This may look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right).&lt;br&gt;Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'. If it really works is a good question. Try it and report your findings!" idtype="Triggering Event"/>
+    <checkbox nybble="5.2" title="Increase Visible Range" comment="If enabled, the Cheep Cheep will be able to go further off-screen before despawning."/>
+    <checkbox nybble="5.4" title="Created by Formation Spawner" comment="Enabled on all Cheep Cheeps spawned by [247] Cheep Cheep Formation Spawner."/>
+    <checkbox nybble="5.3" title="Stretch Vertically" comment="This is set by the the Formation Spawner to make the formation expand and contract. Does nothing on its own." requirednybble="5.4"/>
+    <value nybble="6" title="Formation Index" comment="Determines the index of this Cheep Cheep in the formation. Doesn't serve any purpose on its own." requirednybble="5.4"/>
   </sprite> <!-- #115: Cheep Cheep / Deep Cheep / Eep Cheep -->
 
   <!-- There may be additional variables that allow this sprite to interact with coins. -->
@@ -3659,20 +3659,18 @@
   <sprite id="246" name="Incomplete Sprite - 'Tag_Thunder'" notes="Does nothing.">
   </sprite> <!-- #246: Incomplete Sprite - 'Tag_Thunder' -->
 
-  <!-- A ReggieResource is required for this sprite showing various combinations in screenshot form or with styles due to the visual complexity of what it does. As such, I'm not going to edit the current documentation. -->
-  <sprite id="247" name="(Unused) Cheep Cheep Formation Spawner" notes="This will create groups of Cheep Cheeps with certain creation rules that will generate formations." files="pukupuku.arc">
-    <dependency notes="This sprite pretty much only works properly with an underwater stage. Placement is determined by the formation used. Its direction should also match the direction the player is most likely to approach from. As such, an auto-scrolling stage is likely most compatible with this sprite.">
-      <required sprite="138"/>
+  <sprite id="247" name="(Unused) Cheep Cheep Formation Spawner" notes="This creates groups of Cheep Cheeps that generate formation shapes." files="pukupuku.arc">
+    <dependency notes="The direction must match the one the player approaches from, or the Cheep Cheeps will not appear. As such, its recommended to use this sprite in an auto-scroller stage.">
+      <suggested sprite="91"/>
     </dependency>
-    <list nybble="12" title="Formation Type" comment="This determines the type or shape of the formation." comment2="The Direction in which the formation points is set by the swimming Direction. Cheep Cheep Formations that swim to the right will appear mirrored. All Values ​​after 4 are exactly the same. The arrow formation Value of 1 is different from the remaining ones. It always includes 3 Cheep Cheeps, no matter what else has been set.&lt;br&gt;Values w/*: This simply means that the number of Cheep Cheeps is ignored (with always only 1 Cheep Cheep per row) when 'Stretch Vertically' is enabled.&lt;br&gt;&lt;br&gt;Original position:&lt;br&gt;0, 1, ≥ 5: The Sprite's placement represents the peak of the arrow formation.&lt;br&gt;2: The Sprite's placement represents the topmost Cheep Cheep in the first row.&lt;br&gt;3, 4: The Sprite's placement represents the Cheep Cheep that swims in first place.">
-      <entry value="0">← (Arrow)</entry>
-      <entry value="1">← (Smaller Arrow)</entry>
-      <entry value="2">| (Pipe/Straight Line)</entry>
-      <entry value="3">/ (Diagonal Line)</entry>
-      <entry value="4">\ (Diagonal Line Reversed)</entry>
-      <entry value="5">← (Arrow)*</entry>
+    <list nybble="12" title="Formation Type" comment="This determines the type or shape of the formation." comment2="">
+      <entry value="0">Arrow</entry>
+      <entry value="1">Smaller Arrow</entry>
+      <entry value="2">Vertical Line</entry>
+      <entry value="3">Diagonal Line</entry>
+      <entry value="4">Reverse-Diagonal Line</entry>
     </list>
-    <list nybble="11" title="Formation Repeat" comment="Value + 1. Sets how many groups (rows) appear in succession. 0 = 1 group, 1 = 2 groups with the same pattern appear one after the other, 2 = 3 groups, etc. For groups with an arrow pattern (0 ≥ 5, 1) there is a space of 3 Blocks between groups. For other Values (2, 3, 4) there is only 1 Block of free space between two groups.">
+    <list nybble="11" title="Number of Formations" comment="This determines how many groups of the formation will appear.">
       <entry value="0">1 Group/Row</entry>
       <entry value="1">2 Groups/Rows</entry>
       <entry value="2">3 Groups/Rows</entry>
@@ -3690,7 +3688,7 @@
       <entry value="14">15 Groups/Rows</entry>
       <entry value="15">16 Groups/Rows</entry>
     </list>
-    <list nybble="10" title="Cheep Cheeps per Formation" comment="Value + 1. Number of Cheep Cheeps in a row of each formation (pattern). Every new Cheep Cheeps will either be placed under the last Cheep Cheep (Formation: 2) or after the last Cheep Cheep with a shift on the Y-axis (Formation: 0, 1, 3, 4, 5). The vertical and horizontal distance between the new and the previous Cheep Cheep is one Block. Only for the arrow formations, the shift of the next Cheep Cheeps on the Y-axis is halved.">
+    <list nybble="10" title="Number of Cheep Cheeps" comment="This determines how many Cheep Cheeps will appear in the formation.">
       <entry value="0">1 Cheep Cheep</entry>
       <entry value="1">2 Cheep Cheeps</entry>
       <entry value="2">3 Cheep Cheeps</entry>
@@ -3708,8 +3706,9 @@
       <entry value="14">15 Cheep Cheeps</entry>
       <entry value="15">16 Cheep Cheeps</entry>
     </list>
-    <dualbox nybble="9.4" title1="Swims Right" title2="Swims Left" comment="This determines which direction the formation will swim in." comment2="The formation will only spawn correctly if the player approaches it from the direction the formation wants to swim in."/> <!-- May be incorrect -->
-    <checkbox nybble="8.4" title="Stretch Vertically" comment="This option determines the displacement of the individual Cheep Cheeps on the Y-axis. If this option is selected, the vertical spacing varies between adjacent Cheep Cheeps It changes periodically (IE, repeatedly) between 0 Blocks and one Block back and forth. The Cheep Cheep will swims straight at the height of the Sprite's placement. Needs about 6 ticks of the level's clock for one pass (IE, once back and forth)."/>
+    <dualbox nybble="9.4" title1="Swims Right" title2="Swims Left" comment="This determines which direction the formation will swim in." comment2="The formation will only spawn if the player approaches it from the same direction."/>
+    <checkbox nybble="8.4" title="Stretch Vertically" comment="If enabled, the Cheep Cheeps will continuously move up and down by roughly 2 tiles while swimming."/>
+    <checkbox nybble="7.4" title="Slower" comment="When enabled, the Cheep Cheeps will swim slower."/>
   </sprite> <!-- #247: (Unused) Cheep Cheep Formation Spawner -->
 
   <!-- Seems to have the same exact settings as 162-165. Needs the same research done with it to ensure everything is functional in the same manner. It may be easier to research 248-249 than 162-165 due to the exactness of horizontal movement. -->
@@ -4974,7 +4973,7 @@
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
     <checkbox nybble="5.1" title="Swims Left" comment="If checked, swims to the left. The fish will not swim backwards when you backtrack. If unchecked, it depends on the 'Type' set, in which Direction the Cheep Cheep swims first. For Types 3, 4, 6 and 7, it swims to the right in general. All other Types will cause the Cheep Cheeps to swim in Mario's Direction."/>
-    <list nybble="12" title="Type" comment="Specifies the Swimming-'Type' that should be used for this Cheep Cheep. Deep Cheeps and Eep Cheeps only work in non-Location water. Value 5 is unique. Type-5 Cheep Cheeps will look into the camera until Mario comes close. Furthermore, the Direction will be ignored and the Cheep Cheep will always swim in the opposite Direction, away from Mario, but only if Mario is close enough.&lt;br&gt;Values marked with an asterisk &lt;b&gt;(*)&lt;/b&gt; will ignore the speed Value set and instead will always use Value 1, no matter what is selected there. Also, all Values with &lt;b&gt;(*)&lt;/b&gt; will let the Cheep Cheep swim in a wavy line (just as the Coin Cheep Cheep does).&lt;br&gt;The two Values with &lt;b&gt;(**)&lt;/b&gt; follow exactly the same behavior as those marked with &lt;b&gt;(*)&lt;/b&gt;, only difference is its speed. Cheep Cheeps affected will swim slightly faster, both vertical and horizontal.&lt;br&gt;&lt;br&gt;&lt;b&gt;New naming scheme as of NSMBU:&lt;/br&gt;&lt;br&gt;Red = Cheep Cheep (normal)&lt;br&gt;Green = Deep Cheep (aggressive)&lt;br&gt;Yellow = Eep Cheep (shy)">
+    <list nybble="12" title="Type" comment="This determines which type of behavior the Cheep Cheep will follow, as well as the type of Cheep Cheep that is spawned." comment2="Type 5 Cheep Cheeps will look into the camera until Mario comes close. Furthermore, the direction will be ignored and the Cheep Cheep will always swim in the opposite direction, away from Mario, if Mario is close enough.&lt;br&gt;&lt;br&gt;Values marked ​​with an asterisk &lt;b&gt;(*)&lt;/b&gt; will ignore the speed value set and instead will always use value 1, no matter what is selected there. Also, all values ​​with &lt;b&gt;(*)&lt;/b&gt; will let the Cheep Cheep swim in a wavy line (just as the Coin Cheep Cheep does).&lt;br&gt;&lt;br&gt;The two values ​​with &lt;b&gt;(**)&lt;/b&gt; follow exactly the same behavior as those marked with &lt;b&gt;(*)&lt;/b&gt;, the only difference is its speed. Cheep Cheeps affected will swim slightly faster, both vertical and horizontal.">
       <entry value="0">Big Cheep Cheep ("Swim"), Swims Straight</entry>
       <entry value="2">Big Cheep Cheep ("Swim"), Swims Straight</entry>
       <entry value="3">Big Cheep Cheep ("LrSwim"), Swims Left / Right</entry>
@@ -4986,9 +4985,9 @@
       <entry value="8">Big Eep Cheep ("ReverseSrcSwim"), Dodges Player*</entry>
     </list>
     <list nybble="9.3-9.4" title="Swim Speed" comment="This determines the swimming speed of [?????] Types of Cheep Cheep." comment2="Note: Type-3 Cheep Cheeps (Swims Left / Right) have the same speed as values 1 and 2. [Both? What? Slow and Medium-Slow?]">
-      <entry value="3">Slower</entry>
-      <entry value="1">Slow</entry>
-      <entry value="2">Medium - Slow</entry>
+      <entry value="3">Slowest</entry>
+      <entry value="1">Slower</entry>
+      <entry value="2">Slow</entry>
       <entry value="0">Medium</entry>
     </list>
     <list nybble="8" title="Swim Distance" comment="This determines the distance that a Type 3 Cheep Cheep will swim in both directions from its initial placement." requirednybble="12" requiredval="3">
@@ -5009,7 +5008,10 @@
       <entry value="14">15 Blocks</entry>
       <entry value="15">16 Blocks</entry>
     </list>
-    <value nybble="3-4" title="'Dodge' Event ID" comment="Right, this does look weird at first glance, but it seems as if this function should work. It definitely has to do with Type 3 (Swims Left / Right). Treeki wrote this: 'LrSwim (Type 3) accepts an Event that will make the Cheep Cheep follow the player (turning state LrSwim into state LrSrcSwim)'.&lt;br&gt;If it really works is a good question." idtype="Triggering Event"/>
+    <checkbox nybble="5.2" title="Increase Visible Range" comment="If enabled, the Cheep Cheep will be able to go further off-screen before despawning."/>
+    <checkbox nybble="5.4" title="Created by Formation Spawner" comment="Enabled on all Cheep Cheeps spawned by [247] Cheep Cheep Formation Spawner."/>
+    <checkbox nybble="5.3" title="Stretch Vertically" comment="This is set by the the Formation Spawner to make the formation expand and contract. Does nothing on its own." requirednybble="5.4"/>
+    <value nybble="6" title="Formation Index" comment="Determines the index of this Cheep Cheep in the formation. Doesn't serve any purpose on its own." requirednybble="5.4"/>
   </sprite>
 
   <sprite id="335" name="School of Cheep Cheeps" notes="Creates a formation of four Cheep Cheeps." files="pukupuku.arc">
