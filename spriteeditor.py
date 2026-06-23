@@ -201,7 +201,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
     def valueFromText(self, text: str) -> int:
         # Fix divide by 0 errors
         div = 1 if (self._increment == 0) else self._increment
-        return (int(text) - self._start) / div
+        return (int(text) - self._start) // div
 
     def textFromValue(self, val: int) -> str:
         return str(val)
