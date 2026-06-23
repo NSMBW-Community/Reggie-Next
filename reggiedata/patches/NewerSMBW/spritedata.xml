@@ -35,7 +35,7 @@
     </dependency>
     <checkbox nybble="#" title="What it does when checked." comment="Information about it." comment2="Another bit of commentary." advancedcomment="Wordy complicated information about it." idtype="ID Type etc." requirednybble="#-#, #-#" requiredval="#-#, #-#" />
     <dualbox nybble="#" title1="What it does when unchecked." title2="What it does when checked." comment="All of that stuff above here is an option."/>
-    <value nybble="#" title="What it's for." comment="Etc."/>
+    <value nybble="#" start="Visual start index." increment="#" title="What it's for." comment="Etc."/>
     <list nybble="#" title="What it's for." comment="Etc.">
       <entry value="#">Name</entry>
     </list>
@@ -97,12 +97,7 @@
 
   <sprite id="12" name="Toad House Minigame - Silver Star" notes="A collection challenge added in NewerSMBW. The player must collect all of the stars within the time limit in order to succeed and trigger an event.">
     <value nybble="5-6" title="Target Event ID" comment="This determines which Event will be activated when all Collectible Stars in the Zone are collected." idtype="Target Event"/>
-    <list nybble="12.3-12.4" title="Minimum Number of Players" comment="This determines the minimum number of players required to be present for this star to spawn.">
-      <entry value="0">1 Player</entry>
-      <entry value="1">2 Players</entry>
-      <entry value="2">3 Players</entry>
-      <entry value="3">4 Players</entry>
-    </list>
+    <value nybble="12.3-12.4" start="1" title="Minimum Number of Players" comment="This determines the minimum number of players required to be present for this star to spawn."/>
   </sprite> <!-- #12: Toad House Minigame - Silver Star -->
 
   <sprite id="13" name="Rideable Clowncar with Cannon" noyoshi="True" notes="Used in the NewerSMBW Final Boss Fight. The player can fly around freely and shoot a cannon at a fixed angle. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Not recommended for use outside of the Final Boss Fight.&lt;/font&gt;" advancedcomment="If you do choose to use this vehicle outside of the boss fight, please keep in mind there is no documentation for what issues you might encounter. Be sure to test your level for crashes and glitches. Cannon shots behave similarly but not identically to Bob-omb explosions. Water causes it to react similarly to Yoshi, with the player jumping off and the Clowncar sinking." files="koopaJr_clown_ply.arc">
@@ -823,16 +818,7 @@
       <entry value="3">Jungle</entry>
       <entry value="4">Lava</entry>
     </spritetex>
-    <list nybble="12.2-12.4" title="Height" comment="This determines how tall the Pokey is. One piece will be the head, and every other piece is a body piece." comment2="The height value also affects what Yoshi lays when consumed whole.">
-      <entry value="0">2 Pieces</entry>
-      <entry value="1">3 Pieces</entry>
-      <entry value="2">4 Pieces</entry>
-      <entry value="3">5 Pieces</entry>
-      <entry value="4">6 Pieces</entry>
-      <entry value="5">7 Pieces</entry>
-      <entry value="6">8 Pieces</entry>
-      <entry value="7">9 Pieces</entry>
-    </list>
+    <value nybble="12.2-12.4" start="2" title="Height" comment="This determines how tall the Pokey is. One piece will be the head, and every other piece is a body piece." comment2="The height value also affects what Yoshi lays when consumed whole."/>
   </sprite> <!-- #105: Pokey -->
 
   <sprite id="107" name="Message Box Controller" notes="This controller is required for all Message Boxes to function correctly. It must be placed in every Zone that uses a Message Box." files="test_lift.arc">
@@ -933,24 +919,7 @@
     <checkbox nybble="7.4" title="Useless Flag 7 (1)" comment="This value is read by the game, but never used for anything. Used in retail 03-24 A1."/>
     <value nybble="11" title="Path ID" idtype="Path"/>
     <value nybble="8-9" title="Starting Node" comment="This determines the Node of the Path that the Snake Block will start moving from."/>
-    <list nybble="12" title="Length">
-      <entry value="0">3 Blocks</entry>
-      <entry value="1">4 Blocks</entry>
-      <entry value="2">5 Blocks</entry>
-      <entry value="3">6 Blocks</entry>
-      <entry value="4">7 Blocks</entry>
-      <entry value="5">8 Blocks</entry>
-      <entry value="6">9 Blocks</entry>
-      <entry value="7">10 Blocks</entry>
-      <entry value="8">11 Blocks</entry>
-      <entry value="9">12 Blocks</entry>
-      <entry value="10">13 Blocks</entry>
-      <entry value="11">14 Blocks</entry>
-      <entry value="12">15 Blocks</entry>
-      <entry value="13">16 Blocks</entry>
-      <entry value="14">17 Blocks</entry>
-      <entry value="15">18 Blocks</entry>
-    </list>
+    <value nybble="12" start="3" title="Length"/>
     <list nybble="10.3-10.4" title="Speed" comment2="Due to a bug, Fast will cause Snake Blocks shorter than 7 blocks to crash.">
       <entry value="0">Very Slow (0.5)</entry>
       <entry value="1">Slow (1.0)</entry>
@@ -1014,24 +983,7 @@
     </list>
     <value nybble="10" title="Speed" comment="This determines the speed at which the Magic Platform will move." comment2="The speed increases by a factor of .2 per increment. It must be set greater than 0 for the Magic Platform to move at all." requirednybble="2.4-4.4"/>
     <checkbox nybble="5.4" title="Move Forever" comment="When enabled, the Magic Platform will move in the assigned direction while the Triggering Event is activated, and will move in the opposite direction while the Triggering Event is deactivated." requirednybble="2.4-4.4"/>
-    <list nybble="8" title="Distance" comment="This determines how far the Magic Platform will be moved when the Triggering Event is activated." requirednybble="2.4-4.4,5.4" requiredval="1-255, 0">
-      <entry value="0">1 Block</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
+    <value nybble="8" start="1" title="Distance" comment="This determines how far the Magic Platform will be moved when the Triggering Event is activated." requirednybble="2.4-4.4,5.4" requiredval="1-255, 0"/>
   </sprite> <!-- #169: Magic Platform -->
 
   <sprite id="175" name="Flying ? Block" notes="" noyoshi="True" files="block_pata.arc">
@@ -1609,36 +1561,9 @@
       <entry value="4">Green</entry>
       <entry value="5">Blue</entry>
     </spritetex>
-    <list nybble="9" title="Width of Platform">
-      <entry value="0">3 Blocks</entry>
-      <entry value="1">4 Blocks</entry>
-      <entry value="2">5 Blocks</entry>
-      <entry value="3">6 Blocks</entry>
-      <entry value="4">7 Blocks</entry>
-      <entry value="5">8 Blocks</entry>
-      <entry value="6">9 Blocks</entry>
-      <entry value="7">10 Blocks</entry>
-      <entry value="8">11 Blocks</entry>
-      <entry value="9">12 Blocks</entry>
-      <entry value="10">13 Blocks</entry>
-      <entry value="11">14 Blocks</entry>
-      <entry value="12">15 Blocks</entry>
-      <entry value="13">16 Blocks</entry>
-      <entry value="14">17 Blocks</entry>
-      <entry value="15">18 Blocks</entry>
-    </list>
-    <list nybble="8.3-8.4" title="Extend Distance" requirednybble="7.3">
-      <entry value="0">0 Blocks</entry>
-      <entry value="1">1 Blocks</entry>
-      <entry value="2">2 Blocks</entry>
-      <entry value="3">3 Blocks</entry>
-    </list>
-    <list nybble="8.3-8.4" title="Stem Length" requirednybble="7.3" requiredval="0">
-      <entry value="0">3 Blocks</entry>
-      <entry value="1">4 Blocks</entry>
-      <entry value="2">5 Blocks</entry>
-      <entry value="3">6 Blocks</entry>
-    </list>
+    <value nybble="9" start="3" title="Width of Platform"/>
+    <value nybble="8.3-8.4" title="Extend Width" requirednybble="7.3"/>
+    <value nybble="8.3-8.4" start="3" title="Stem Height" requirednybble="7.3" requiredval="0"/>
     <dualbox nybble="8.2" title1="Short Stem" title2="Long Stem" comment="This determines the length of the stem when the platform is contracted." requirednybble="7.3"/>
   </sprite> <!-- 231: Wiggling Mushroom Platform -->
 
@@ -1667,7 +1592,7 @@
       <entry value="2">Pause Timer</entry>           <!-- 0010 -->
       <entry value="4">Set Timer</entry>             <!-- 0100 -->
       <entry value="3">Change Gravity</entry>        <!-- 0011 -->
-      <entry value="5">Resizer</entry>               <!-- 0101 -->
+      <entry value="5">Global Resizer</entry>        <!-- 0101 -->
       <entry value="6">Selective Resizer</entry>     <!-- 0110 -->
       <entry value="9">Background Resizer</entry>    <!-- 1001 -->
       <entry value="7">Disable Z-Order Fixes</entry> <!-- 0111 -->
@@ -1677,10 +1602,7 @@
     <checkbox nybble="11.3" title="Time Stop: Players &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Players." comment2="Remember to deactivate the Special Event or else Mario and the other Players will remain frozen. Forever~" requirednybble="12" requiredval="1"/> <!-- Appears if [Type] = 1 -->
     <checkbox nybble="11.2" title="Time Stop: Terrain &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Terrain Animations." requirednybble="12" requiredval="1"/> <!-- Appears if [Type] = 1 -->
     <checkbox nybble="11.1" title="Time Stop: Enemies &lt;font color=&quot;red&quot;&gt;(Disabled)&lt;/font&gt;" comment="When enabled, the Special Event will freeze all Enemies that support this function." requirednybble="12" requiredval="1"/> <!-- Appears if [Type] = 1 -->
-    <list nybble="11" title="Gravity Type" comment="This determines what the altered state of gravity will be while the Special Event is activated." comment2="Anti Gravity is a little strange, not fully documented, and definitely not recommended for normal use." requirednybble="12" requiredval="3"> <!-- Appears if [Type] = 3 -->
-      <entry value="0">Low Gravity</entry>
-      <entry value="1">Anti Gravity</entry>
-    </list>
+    <dualbox nybble="11" title1="Low Gravity" title2="Anti Gravity" comment="This determines what the altered state of gravity will be while the Special Event is activated." comment2="Anti Gravity is a little strange, not fully documented, and definitely not recommended for normal use." requirednybble="12" requiredval="3"/> <!-- Appears if [Type] = 3 -->
     <value nybble="7-10" title="Set Time to..." comment="This determines what the Level's Clock will be set to when the Special Event is activated." comment2="Do not use a value higher than 999." requirednybble="12" requiredval="4"/> <!-- Appears if [Type] = 4 -->
     <list nybble="11" title="Scale / Size (Global)" comment="The Special Event will resize all affected sprites in the Zone that support this function." requirednybble="12" requiredval="5"> <!-- Appears if [Type] = 5 -->
       <entry value="0">x1.0 (normal)</entry>
@@ -1803,24 +1725,7 @@
       <suggested sprite="149"/>
     </dependency>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the ?-Block to a matching rotation controller." requirednybble="9" requiredval="0" idtype="Rotation"/>
-    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tilted blocks can not be rotation controlled.">
-      <entry value="0">0°</entry>
-      <entry value="1">3°</entry>
-      <entry value="2">6°</entry>
-      <entry value="3">9°</entry>
-      <entry value="4">12°</entry>
-      <entry value="5">15°</entry>
-      <entry value="6">18°</entry>
-      <entry value="7">21°</entry>
-      <entry value="8">24°</entry>
-      <entry value="9">27°</entry>
-      <entry value="10">30°</entry>
-      <entry value="11">33°</entry>
-      <entry value="12">36°</entry>
-      <entry value="13">39°</entry>
-      <entry value="14">42°</entry>
-      <entry value="15">45°</entry>
-    </list>
+    <value nybble="9" increment="3" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tilted blocks can not be rotation controlled."/>
     <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left"/>
     <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players. Some items, such as the Spring, won't appear if the player strikes the Block while it is actively rotating.">
       <entry value="0">Empty</entry>
@@ -1848,24 +1753,7 @@
       <suggested sprite="149"/>
     </dependency>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the Brick Block to a matching rotation controller." requirednybble="9" requiredval="0" idtype="Rotation"/>
-    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tilted blocks can not be rotation controlled.">
-      <entry value="0">0°</entry>
-      <entry value="1">3°</entry>
-      <entry value="2">6°</entry>
-      <entry value="3">9°</entry>
-      <entry value="4">12°</entry>
-      <entry value="5">15°</entry>
-      <entry value="6">18°</entry>
-      <entry value="7">21°</entry>
-      <entry value="8">24°</entry>
-      <entry value="9">27°</entry>
-      <entry value="10">30°</entry>
-      <entry value="11">33°</entry>
-      <entry value="12">36°</entry>
-      <entry value="13">39°</entry>
-      <entry value="14">42°</entry>
-      <entry value="15">45°</entry>
-    </list>
+    <value nybble="9" increment="3" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tilted blocks can not be rotation controlled."/>
     <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left"/>
     <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will only release one power-up item. Some items, such as the Spring, won't appear if the player strikes the Block while it is actively rotating.">
       <entry value="0">Empty</entry>
@@ -2082,16 +1970,7 @@
   </sprite> <!-- #296: Giant Buzzy Beetle -->
 
   <sprite id="297" name="Spine Coaster" noyoshi="True" notes="A quick Line guided platform that will screech and clatter as it travels." files="lift_torokko.arc">
-    <list nybble="12" title="Length" comment="This determines how many platform segments make up the Spine Coaster." comment2="You must use a Length of 1 or greater, or else the game will crash if the platform is ground-pounded.">
-      <entry value="0">Skull Only</entry>
-      <entry value="1">Skull + 1 Platform</entry>
-      <entry value="2">Skull + 2 Platforms</entry>
-      <entry value="3">Skull + 3 Platforms</entry>
-      <entry value="4">Skull + 4 Platforms</entry>
-      <entry value="5">Skull + 5 Platforms</entry>
-      <entry value="6">Skull + 6 Platforms</entry>
-      <entry value="7">Skull + 7 Platforms</entry>
-    </list>
+    <value nybble="12.2-12.4" start="1" title="Length" comment="This determines how many platform segments make up the Spine Coaster." comment2="You must use a Length of 2 or greater, or else the game will crash if the platform is ground-pounded."/>
     <spritetex nybble="6" title="Color" comment="This determines the color of the Spine Coaster. The current colors both show no difference in-game.">
       <entry value="0">Original</entry>
       <entry value="1">Light Blue (No difference)</entry>
@@ -2190,24 +2069,7 @@
       <entry value="0">Brown</entry>
       <entry value="1">Golden</entry>
     </spritetex>
-    <list nybble="11" title="Size" comment="This determines the size of the Chestnut. Large values will very likely look ugly alongside other level content.">
-      <entry value="0">1 Block</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
+    <value nybble="11" start="1" title="Size" comment="This determines the size of the Chestnut. Large values will very likely look ugly alongside other level content."/>
     <list nybble="8" title="Contains" comment="This determines what item will be released when the chestnut falls and breaks open." comment2="Values above 4 will crash the game.">
       <entry value="0">Goomba</entry>
       <entry value="1">Spiny</entry>
@@ -2319,10 +2181,7 @@
   </sprite> <!-- #351: Shy Guy -->
 
   <sprite id="357" name="Yoshi Fruit" sizehacks="True" notes="An edible fruit that Yoshi can grab. Collecting five will cause Yoshi to lay an egg. What's inside the egg will change depending on the player's current power-up. Normal -&gt; Fire -&gt; Ice -&gt; Propeller -&gt; 1-Up." files="fruit.arc;fruit_cookie.arc">
-    <list nybble="12" title="Type" comment="This determines if the fruit is a standard berry, or a cherry. They share no functional difference.">
-      <entry value="0">Berry</entry>
-      <entry value="1">Cherry</entry>
-    </list>
+    <dualbox nybble="12" title1="Berry" title2="Cherry" comment="They share no functional difference."/>
   </sprite> <!-- #357: Yoshi Fruit -->
 
   <sprite id="374" name="Effect - Falling Objects and Wind" notes="This effect controller will either create a falling particle effect, or it will create a Sandstorm." files="env_snow.arc;env_leaf.arc;env_petal.arc;env_stardust.arc">

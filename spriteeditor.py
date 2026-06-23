@@ -109,16 +109,20 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
     _value: int
     _minimum: int
     _maximum: int
+    _start: int
+    _increment: int
 
     valueChanged = QtCore.pyqtSignal('int')
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, start=0, increment=1):
         QtWidgets.QAbstractSpinBox.__init__(self, parent)
         self.editingFinished.connect(self.interpretText)
 
         self._value = None
         self._minimum = 0
         self._maximum = 1 << 32
+        self._start = start
+        self._increment = increment
 
         self.setValue(0)
 
@@ -195,7 +199,9 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         )
 
     def valueFromText(self, text: str) -> int:
-        return int(text)
+        # Fix divide by 0 errors
+        div = 1 if (self._increment == 0) else self._increment
+        return (int(text) - self._start) / div
 
     def textFromValue(self, val: int) -> str:
         return str(val)
@@ -210,10 +216,10 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
 
         if self._value == val:
             if val == 0:
-                self.lineEdit().setText("0")
+                self.lineEdit().setText(self.textFromValue(self._start))
             return
 
-        self.lineEdit().setText(self.textFromValue(val))
+        self.lineEdit().setText(self.textFromValue((val * self._increment) + self._start))
         self._value = val
         self.valueChanged.emit(val)
 
@@ -752,13 +758,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a spinbox
         """
 
-        def __init__(self, title, bit, max_, comment, required, _, comment2, commentAdv, idtype, layout, row, parent):
+        def __init__(self, title, bit, max_, comment, required, _, comment2, commentAdv, start, increment, idtype, layout, row, parent):
             """
             Creates the widget
             """
             super().__init__()
 
-            self.widget = IntSpinBox()
+            self.widget = IntSpinBox(None, start, increment)
             self.widget.setRange(0, max_ - 1)
             self.widget.valueChanged.connect(self.HandleValueChanged)
 
@@ -769,6 +775,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.comment2 = comment2
             self.commentAdv = commentAdv
             self.idtype = idtype
+            self.start = start
+            self.increment = increment
             self.layout = layout
             self.row = row
             self.prev_value = None
@@ -1866,7 +1874,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
 
             elif f[0] == 2:
-                nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
+                nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], f[10], f[11], layout, row, self)
 
             elif f[0] == 3:
                 nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
@@ -2268,6 +2276,12 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         # each of these functions should assign the editing thing to self.widget
         self.type = type
 
+        # Set appropriate window title
+        types = ['actors', 'models', 'sfx', 'gfx']
+        for idx, extType in enumerate(types):
+            if extType == self.type:
+                self.setWindowTitle(globals_.trans.string('ExternalOptionDlg', idx))
+
         items, order = self.loadItemsFromXML()
         self.fillWidgetFromItems(items, order)
 
@@ -2299,7 +2313,7 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         searchbar.textEdited.connect(self.search)
 
         L = QtWidgets.QHBoxLayout()
-        L.addWidget(QtWidgets.QLabel("Search:"))
+        L.addWidget(QtWidgets.QLabel(globals_.trans.string('ExternalOptionDlg', 4)))
         L.addWidget(searchbar)
 
         search = QtWidgets.QWidget()

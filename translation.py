@@ -730,7 +730,7 @@ class ReggieTranslation:
                 9: '[b]Yoshi Notes:[/b] [notes]',
                 10: 'Advanced Notes',
                 11: '[b]Advanced Notes:[/b] [notes]',
-                12: 'Yoshi',
+                12: 'Notes',
                 13: 'Read more...',
                 14: 'Read less...',
                 15: 'This sprite works properly with Yoshi.',
@@ -1052,6 +1052,13 @@ class ReggieTranslation:
                 0: 'Warning',
                 1: 'This level contains sprite ID [id], which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.',
                 2: 'This level contains sprite IDs ([ids]) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.',
+            },
+            'ExternalOptionDlg': {
+                0: 'Actors',
+                1: 'Models',
+                2: 'Sound Effects',
+                3: 'Graphical Effects',
+                4: 'Search:',
             },
         }
 

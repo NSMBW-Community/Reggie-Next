@@ -35,7 +35,7 @@
     </dependency>
     <checkbox nybble="#" title="What it does when checked." comment="Information about it." comment2="Another bit of commentary." advancedcomment="Wordy complicated information about it." idtype="ID Type etc." requirednybble="#-#, #-#" requiredval="#-#, #-#" />
     <dualbox nybble="#" title1="What it does when unchecked." title2="What it does when checked." comment="All of that stuff above here is an option."/>
-    <value nybble="#" title="What it's for." comment="Etc."/>
+    <value nybble="#" start="Visual start index." increment="#" title="What it's for." comment="Etc."/>
     <list nybble="#" title="What it's for." comment="Etc.">
       <entry value="#">Name</entry>
     </list>
@@ -630,19 +630,8 @@
     </list>
     <value nybble="12" title="Width" comment="This determines the length of the platform."/>
     <dualbox nybble="11.4" title1="Instant, Fast Fall" title2="Delayed, Slow Fall" comment="This determines the rate at which the platform will fall when activated."/>
-    <list nybble="10" title="Minimum number of players" comment="The platform immediately despawns if there are fewer players than specified here. Setting this nybble to even higher values causes the platform to always despawn, since there can be at most 4 players.">
-      <entry value="0">1 Player</entry>
-      <entry value="1">2 Players</entry>
-      <entry value="2">3 Players</entry>
-      <entry value="3">4 Players</entry>
-    </list>
-    <list nybble="9" title="Minimum number of players for platform to fall" comment="The platform falls when there are at least the number of players specified here on top of it. Setting this nybble to even higher values causes the platform to never fall, since there can be at most 4 players.">
-      <entry value="0">1 Player</entry>
-      <entry value="1">2 Players</entry>
-      <entry value="2">3 Players</entry>
-      <entry value="3">4 Players</entry>
-      <entry value="4">5 Players (never falls)</entry>
-    </list>
+    <value nybble="10" start="1" title="Minimum number of players" comment="The platform immediately despawns if there are fewer players than specified here. Setting this nybble to even higher values causes the platform to always despawn, since there can be at most 4 players."/>
+    <value nybble="9" start="1" title="Minimum number of players for platform to fall" comment="The platform falls when there are at least the number of players specified here on top of it. Setting this nybble to even higher values causes the platform to never fall, since there can be at most 4 players."/>
   </sprite> <!-- #50: Fall-When-Touched Platform -->
 
   <sprite id="51" name="Tilt Controlled Girder" notes="This is the Tilt Controlled Girder (Beam) platform that is assigned to the first player to touch it. That player will maintain tilt control for as long as they are touching it." files="remo_lift.arc">
@@ -777,24 +766,7 @@
 
   <sprite id="62" name="Spinning Fire Bar" notes="A Spinning Fire Bar like one you would find in a Castle stage." files="center_firebar.arc">
     <dualbox nybble="7.4" title1="1x1 Block Base" title2="2x1 Block Base" comment="This determines the size of the Block Base. The Fire Bar will emerge from the center of the base. The base also has no collision, so you will need to place Invisible Collision Blocks or other Tileset pieces behind it to create collision."/>
-    <list nybble="12" title="Length" comment="This determines how many fireballs make up one arm of the Fire Bar. One fireball adds approximately 0.75 blocks to the length.">
-      <entry value="0">2 Fireballs (~ 1.50 Blocks)</entry>
-      <entry value="1">3 Fireballs (~ 2.25 Blocks)</entry>
-      <entry value="2">4 Fireballs (~ 3.00 Blocks)</entry>
-      <entry value="3">5 Fireballs (~ 3.75 Blocks)</entry>
-      <entry value="4">6 Fireballs (~ 4.50 Blocks)</entry>
-      <entry value="5">7 Fireballs (~ 5.25 Blocks)</entry>
-      <entry value="6">8 Fireballs (~ 6.00 Blocks)</entry>
-      <entry value="7">9 Fireballs (~ 6.75 Blocks)</entry>
-      <entry value="8">10 Fireballs (~ 7.50 Blocks)</entry>
-      <entry value="9">11 Fireballs (~ 8.25 Blocks)</entry>
-      <entry value="10">12 Fireballs (~ 9.00 Blocks)</entry>
-      <entry value="11">13 Fireballs (~ 9.75 Blocks)</entry>
-      <entry value="12">14 Fireballs (~ 10.50 Blocks)</entry>
-      <entry value="13">15 Fireballs (~ 11.25 Blocks)</entry>
-      <entry value="14">16 Fireballs (~ 12.00 Blocks)</entry>
-      <entry value="15">17 Fireballs (~ 12.75 Blocks)</entry>
-    </list>
+    <value nybble="12" start="2" title="Length" comment="This determines how many fireballs make up one arm of the Fire Bar. One fireball adds approximately 0.75 blocks to the length."/>
     <checkbox nybble="11.4" title="Double Fire Bar" comment="When enabled, the Fire Bar will extend from both ends of the Block Base."/>
     <dualbox nybble="9.4" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the Fire Bar will rotate."/>
     <dualbox nybble="10.4" title1="Slow" title2="Fast" comment="This determines how fast the Fire Bar will rotate."/>
@@ -908,42 +880,8 @@
   </sprite> <!-- #80: Fire Bro -->
 
   <sprite id="81" name="Grey Tiled Block with Spikes - Left" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
-    <list nybble="11" title="Height" comment="This determines how tall the block is.">
-      <entry value="0">1 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
-    <list nybble="12" title="Width" comment="This determines how wide the block is.">
-      <entry value="0">1 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
+    <value nybble="11" start="1" title="Height" comment="This determines how tall the block is."/>
+    <value nybble="12" start="1" title="Width" comment="This determines how wide the block is."/>
     <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -965,42 +903,8 @@
   </sprite> <!-- #81: Grey Tiled Block with Spikes - Left -->
 
   <sprite id="82" name="Grey Tiled Block with Spikes - Right" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
-    <list nybble="11" title="Height" comment="This determines how tall the block is.">
-      <entry value="0">1 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
-    <list nybble="12" title="Width" comment="This determines how wide the block is.">
-      <entry value="0">1 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
+    <value nybble="11" start="1" title="Height" comment="This determines how tall the block is."/>
+    <value nybble="12" start="1" title="Width" comment="This determines how wide the block is."/>
     <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -1022,42 +926,8 @@
   </sprite> <!-- #82: Grey Tiled Block with Spikes - Right -->
 
   <sprite id="83" name="Grey Tiled Block with Spikes - Left + Right" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
-    <list nybble="11" title="Height" comment="This determines how tall the block is.">
-      <entry value="0">1 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
-    <list nybble="12" title="Width" comment="This determines how wide the block is.">
-      <entry value="0">1 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
+    <value nybble="11" start="1" title="Height" comment="This determines how tall the block is."/>
+    <value nybble="12" start="1" title="Width" comment="This determines how wide the block is."/>
     <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -1079,42 +949,8 @@
   </sprite> <!-- #83: Grey Tiled Block with Spikes - Left + Right -->
 
   <sprite id="84" name="Grey Tiled Block with Spikes - Top" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
-    <list nybble="11" title="Height" comment="This determines how tall the block is.">
-      <entry value="0">1 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
-    <list nybble="12" title="Width" comment="This determines how wide the block is.">
-      <entry value="0">1 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
+    <value nybble="11" start="1" title="Height" comment="This determines how tall the block is."/>
+    <value nybble="12" start="1" title="Width" comment="This determines how wide the block is."/>
     <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -1136,42 +972,8 @@
   </sprite> <!-- #84: Grey Tiled Block with Spikes - Top -->
 
   <sprite id="85" name="Grey Tiled Block with Spikes - Bottom" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
-    <list nybble="11" title="Height" comment="This determines how tall the block is.">
-      <entry value="0">1 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
-    <list nybble="12" title="Width" comment="This determines how wide the block is.">
-      <entry value="0">1 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
+    <value nybble="11" start="1" title="Height" comment="This determines how tall the block is."/>
+    <value nybble="12" start="1" title="Width" comment="This determines how wide the block is."/>
     <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -1193,42 +995,8 @@
   </sprite> <!-- #85: Grey Tiled Block with Spikes - Bottom -->
 
   <sprite id="86" name="Grey Tiled Block with Spikes - Top + Bottom" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
-    <list nybble="11" title="Height" comment="This determines how tall the block is.">
-      <entry value="0">1 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
-    <list nybble="12" title="Width" comment="This determines how wide the block is.">
-      <entry value="0">1 Blocks</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
+    <value nybble="11" start="1" title="Height" comment="This determines how tall the block is."/>
+    <value nybble="12" start="1" title="Width" comment="This determines how wide the block is."/>
     <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -1250,24 +1018,7 @@
   </sprite> <!-- #86: Grey Tiled Block with Spikes - Top + Bottom -->
 
   <sprite id="87" name="(Unused) Trampoline Wall" notes="This sprite lacks finished textures and as such, is incomplete. Upon contact, the player is thrust in the opposite direction.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;This sprite is not recommended for normal use at this time.&lt;/font&gt;" files="test_lift.arc">
-    <list nybble="12" title="Height" comment="This determines how tall the Trampoline Wall is.">
-      <entry value="0">1 Block</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
+    <value start="1" nybble="12" title="Height" comment="This determines how tall the Trampoline Wall is."/>
   </sprite> <!-- #87 (Unused) Trampoline Wall -->
 
   <sprite id="88" name="Incomplete Sprite - 'En_Boyon'" notes="Does nothing.">
@@ -1327,24 +1078,7 @@
   </sprite> <!-- #91: Auto-Scrolling Controller -->
 
   <sprite id="92" name="Bill Blaster" notes="" files="killer_houdai.arc;killer.arc">
-    <list nybble="11" title="Height">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
+    <value nybble="11" start="2" title="Height"/>
     <list nybble="10" title="Shooting Direction">
       <entry value="0">Towards Player</entry>
       <entry value="1">Left Only</entry>
@@ -1533,16 +1267,7 @@
   </sprite> <!-- #104: Amp -->
 
   <sprite id="105" name="Pokey" notes="A tall segmented enemy whose pieces must be destroyed individually unless the head is defeated first." files="sanbo.arc">
-    <list nybble="12.2-12.4" title="Height" comment="This determines how tall the Pokey is. One piece will be the head, and every other piece is a body piece." comment2="The height value also affects what Yoshi lays when consumed whole.">
-      <entry value="0">2 Pieces</entry>
-      <entry value="1">3 Pieces</entry>
-      <entry value="2">4 Pieces</entry>
-      <entry value="3">5 Pieces</entry>
-      <entry value="4">6 Pieces</entry>
-      <entry value="5">7 Pieces</entry>
-      <entry value="6">8 Pieces</entry>
-      <entry value="7">9 Pieces</entry>
-    </list>
+    <value nybble="12.2-12.4" start="2" title="Height" comment="This determines how tall the Pokey is. One piece will be the head, and every other piece is a body piece." comment2="The height value also affects what Yoshi lays when consumed whole."/>
   </sprite> <!-- #105: Pokey -->
 
   <sprite id="106" name="Line Controlled Basic Platform" notes="" files="lift_han_wood.arc;lift_han_stone.arc;boss_koopa_lift.arc;boss_koopa_lift_down.arc">
@@ -1566,63 +1291,13 @@
   </sprite> <!-- #106: Line Controlled Basic Platform -->
 
   <sprite id="107" name="(Unused) Rotation Controlled Solid Platform" notes="&quot;En_Lift_Rotation_Half&quot;. A Rotation Controlled block that works quite well. Flag x08 + x02 (x0A) (Unique Flag)." files="test_lift.arc">
-    <list nybble="9.4-10.4" title="Width" comment="This determines the width of the platform in blocks.">
-      <entry value="0">1 block</entry>
-      <entry value="1">2 blocks</entry>
-      <entry value="2">3 blocks</entry>
-      <entry value="3">4 blocks</entry>
-      <entry value="4">5 blocks</entry>
-      <entry value="5">6 blocks</entry>
-      <entry value="6">7 blocks</entry>
-      <entry value="7">8 blocks</entry>
-      <entry value="8">9 blocks</entry>
-      <entry value="9">10 blocks</entry>
-      <entry value="10">11 blocks</entry>
-      <entry value="11">12 blocks</entry>
-      <entry value="12">13 blocks</entry>
-      <entry value="13">14 blocks</entry>
-      <entry value="14">15 blocks</entry>
-      <entry value="15">16 blocks</entry>
-      <entry value="16">17 blocks</entry>
-      <entry value="17">18 blocks</entry>
-      <entry value="18">19 blocks</entry>
-      <entry value="19">20 blocks</entry>
-      <entry value="20">21 blocks</entry>
-      <entry value="21">22 blocks</entry>
-      <entry value="22">23 blocks</entry>
-      <entry value="23">24 blocks</entry>
-      <entry value="24">25 blocks</entry>
-      <entry value="25">26 blocks</entry>
-      <entry value="26">27 blocks</entry>
-      <entry value="27">28 blocks</entry>
-      <entry value="28">29 blocks</entry>
-      <entry value="29">30 blocks</entry>
-      <entry value="30">31 blocks</entry>
-      <entry value="31">32 blocks</entry>
-    </list>
+    <value nybble="9.4-10.4" start="1" title="Width" comment="This determines the width of the platform in blocks."/>
     <value nybble="11-12" title="Rotation ID" comment="Works with both Swaying and Spinning." idtype="Rotation"/>
   </sprite>
 
   <sprite id="108" name="Line Controlled Amp Spawner" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="This will spawn a specified number of Amps along the Line that the sprite is placed on. Once it has spawned the number of Amps it is set to, it will not do anything else even if they fall off.&lt;br&gt;&lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interrupted and Mario will take no damage." files="bilikyu.arc">
     <dependency notes="Place this sprite directly onto the Line guide that you want it to spawn on."/>
-    <list nybble="9" title="Number of Amps" comment="This determines how many Amps are spawned on the Line by this Spawner.">
-      <entry value="0">1 Amp</entry>
-      <entry value="1">2 Amps</entry>
-      <entry value="2">3 Amps</entry>
-      <entry value="3">4 Amps</entry>
-      <entry value="4">5 Amps</entry>
-      <entry value="5">6 Amps</entry>
-      <entry value="6">7 Amps</entry>
-      <entry value="7">8 Amps</entry>
-      <entry value="8">9 Amps</entry>
-      <entry value="9">10 Amps</entry>
-      <entry value="10">11 Amps</entry>
-      <entry value="11">12 Amps</entry>
-      <entry value="12">13 Amps</entry>
-      <entry value="13">14 Amps</entry>
-      <entry value="14">15 Amps</entry>
-      <entry value="15">16 Amps</entry>
-    </list>
+    <value nybble="9" start="1" title="Number of Amps" comment="This determines how many Amps are spawned on the Line by this Spawner."/>
     <value nybble="10" title="Delay Between Amp Spawns" comment="This determines how long the game will wait between each Amp is spawned, increasing the distance between each Amp."/>
     <dualbox nybble="8.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Amps will move based on the Line that they are connected to."/>
     <list nybble="6" title="Speed" comment="Line Controlled sprites use the same speed setting across all of them.">
@@ -1720,24 +1395,7 @@
       <entry value="2">Slow</entry>
       <entry value="0">Medium</entry>
     </list>
-    <list nybble="8" title="Swim Distance" comment="This determines the distance that a Type 3 Cheep Cheep will swim in both directions from its initial placement." requirednybble="12" requiredval="3">
-      <entry value="0">1 Block</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list> <!-- Appears only if Type = 3 -->
+    <value nybble="8" start="1" title="Swim Distance" comment="This determines the distance that a Type 3 Cheep Cheep will swim in both directions from its initial placement." requirednybble="12" requiredval="3"/> <!-- Appears only if Type = 3 -->
     <checkbox nybble="5.2" title="Increase Visible Range" comment="If enabled, the Cheep Cheep will be able to go further off-screen before despawning."/>
     <checkbox nybble="5.4" title="Created by Formation Spawner" comment="Enabled on all Cheep Cheeps spawned by [247] Cheep Cheep Formation Spawner."/>
     <checkbox nybble="5.3" title="Stretch Vertically" comment="This is set by the the Formation Spawner to make the formation expand and contract. Does nothing on its own." requirednybble="5.4"/>
@@ -1940,16 +1598,7 @@
   <sprite id="136" name="Rotating Bill Blaster" notes="" files="killer_rot_houdai.arc;killer.arc">
     <checkbox nybble="5.4" title="Randomize Fire Delay"/>
     <checkbox nybble="5.2" title="Fire while Offscreen"/>
-    <list nybble="8.2-8.4" title="Number of Cannon Pieces" comment="The bottom piece, starting at the Sprite's placement, corresponds to the last checkbox for each option below, and the top piece (when set to 7) will correspond to the first checkbox below.">
-      <entry value="0">1 Piece</entry>
-      <entry value="1">2 Pieces</entry>
-      <entry value="2">3 Pieces</entry>
-      <entry value="3">4 Pieces</entry>
-      <entry value="4">5 Pieces</entry>
-      <entry value="5">6 Pieces</entry>
-      <entry value="6">7 Pieces</entry>
-      <entry value="7">8 Pieces</entry>
-    </list>
+    <value nybble="8.2-8.4" start="1" title="Number of Cannon Pieces" comment="The bottom piece, starting at the Sprite's placement, corresponds to the last checkbox for each option below, and the top piece (when set to 7) will correspond to the first checkbox below."/>
     <multidualbox nybble="9-10" title1="Cannon" title2="Pole" comment="Top &lt;---&gt; Bottom, Bottom First&lt;br&gt;This determines what type of segment is used." comment2="If set to Cannon, the piece will be a Cannon that fires normal Bullet Bills. If set to Pole, the piece will be turned into a metal pole segment."/>
     <multidualbox nybble="11-12" title1="Starts Firing Right" title2="Starts Firing Left" comment="Top &lt;---&gt; Bottom, Bottom First&lt;br&gt;This determines which initial direction the Cannon Piece will face." comment2="Pole segments are not visually affected by this setting."/>
     <multidualbox nybble="6-7" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="Top &lt;---&gt; Bottom, Bottom First&lt;br&gt;This determines which direction the piece will rotate as viewed from above."/>
@@ -2593,24 +2242,7 @@
     <checkbox nybble="7.4" title="Useless Flag 7 (1)" comment="This value is read by the game, but never used for anything. Used in retail 03-24 A1."/>
     <value nybble="11" title="Path ID" idtype="Path"/>
     <value nybble="8-9" title="Starting Node" comment="This determines the Node of the Path that the Snake Block will start moving from."/>
-    <list nybble="12" title="Length">
-      <entry value="0">3 Blocks</entry>
-      <entry value="1">4 Blocks</entry>
-      <entry value="2">5 Blocks</entry>
-      <entry value="3">6 Blocks</entry>
-      <entry value="4">7 Blocks</entry>
-      <entry value="5">8 Blocks</entry>
-      <entry value="6">9 Blocks</entry>
-      <entry value="7">10 Blocks</entry>
-      <entry value="8">11 Blocks</entry>
-      <entry value="9">12 Blocks</entry>
-      <entry value="10">13 Blocks</entry>
-      <entry value="11">14 Blocks</entry>
-      <entry value="12">15 Blocks</entry>
-      <entry value="13">16 Blocks</entry>
-      <entry value="14">17 Blocks</entry>
-      <entry value="15">18 Blocks</entry>
-    </list>
+    <value nybble="12" start="3" title="Length"/>
     <list nybble="10.3-10.4" title="Speed" comment2="Due to a bug, Fast will cause Snake Blocks shorter than 7 blocks to crash.">
       <entry value="0">Very Slow (0.5)</entry>
       <entry value="1">Slow (1.0)</entry>
@@ -2728,62 +2360,14 @@
     <value nybble="12" title="Pulley Width" comment="This determines how far apart the two pulleys are from each other." comment2="A value of 0 is not recommended for fairly obvious reasons."/>
     <value nybble="10" title="Rope Length - Left Side" comment="This determines the starting length of rope attached to the left platform."/>
     <value nybble="11" title="Rope Length - Right Side" comment="This determines the starting length of rope attached to the right platform."/>
-    <list nybble="9" title="Platform Width" comment="This determines the width of the two platforms." advancedcomment="Values 13-15 are glitchy and do not work correctly in the game.">
-      <entry value="0">3 Blocks</entry>
-      <entry value="1">4 Blocks</entry>
-      <entry value="2">5 Blocks</entry>
-      <entry value="3">6 Blocks</entry>
-      <entry value="4">7 Blocks</entry>
-      <entry value="5">8 Blocks</entry>
-      <entry value="6">9 Blocks</entry>
-      <entry value="7">10 Blocks</entry>
-      <entry value="8">11 Blocks</entry>
-      <entry value="9">12 Blocks</entry>
-      <entry value="10">13 Blocks</entry>
-      <entry value="11">14 Blocks</entry>
-      <entry value="12">15 Blocks</entry>
-    </list>
+    <value nybble="9" start="3" title="Platform Width" comment="This determines the width of the two platforms." advancedcomment="Values 13-15 are glitchy and do not work correctly in the game."/>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the platform will only appear if the Triggering Event ID is activated."/>
     <value nybble="3.2-4.4" title="Triggering Event ID" requirednybble="5.4" idtype="Triggering Event"/>
   </sprite> <!-- #178: Basic Platform - Scale -->
 
   <sprite id="179" name="Special Exit Controller" notes="A special controller that will activate Entrance transitions when a player enters a specific area." noyoshi="True" yoshinotes="Yoshi can eat the entire collision box of the special exit controller.">
-    <list nybble="10" title="Width" comment="This determines the width of the area that the Special Exit Controller will check for the player inside of.">
-      <entry value="0">1 Block</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
-    <list nybble="11" title="Height" comment="This determines the height of the area that the Special Exit Controller will check for the player inside of.">
-      <entry value="0">1 Block</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
+    <value nybble="10" start="1" title="Width" comment="This determines the width of the area that the Special Exit Controller will check for the player inside of."/>
+    <value nybble="11" start="1" title="Height" comment="This determines the height of the area that the Special Exit Controller will check for the player inside of."/>
     <checkbox nybble="8.4" title="Vine / Climbing Exit" comment="When enabled, the Special Exit Controller will only activate if the player is also climbing while within the specified area."/>
     <checkbox nybble="6.2" title="Exit, Stage Left" comment="When enabled, the Special Exit Controller will eject the players from the current level." comment2="This will not complete the level. The player will be forced to walk left during the transition, and the Exit Transition will be overridden with an iris focused on the left side of the screen. There is no pipe sound for this transition."/>
     <list nybble="5.3-5.4" title="Exit Transition" comment="This determines the transition animation used when the screen fades out." comment2="Wavy Transition - Bottom to Top: The screen will go black with a wavy line going from bottom to top.&lt;br&gt;&lt;br&gt;Wavy Transition - Top to Bottom: The screen will go black with a wavy line going from top to bottom.&lt;br&gt;&lt;br&gt;Wavy Transition - Top to Bottom (Delayed): Same as above, but the animation is not triggered immediately upon contact with the warp area, instead taking place after a small delay.&lt;br&gt;&lt;br&gt;Black Iris and Pipe Sound: This option works just like a normal pipe exit, with a black circle enclosing the triggering player's position. At the same time, the sound effect that plays when entering a normal pipe is also played." requirednybble="6.2" requiredval="0">
@@ -3010,24 +2594,7 @@
       <entry value="1">Triggered by Ambush Controller</entry>
       <entry value="2">Contains Toad (Unused)</entry>
     </list>
-    <list nybble="8" title="Mushroom Reward Amount" comment="Determines the number of Mushrooms the chest spawns. Specifying more than 5 Mushrooms can cause glitchy visual behavior, but it still works." requirednybble="10" requiredval="1-2"> <!-- Appears Chest Type Value 1-2 -->
-      <entry value="0">3 Mushrooms</entry>
-      <entry value="1">4 Mushrooms</entry>
-      <entry value="2">5 Mushrooms</entry>
-      <entry value="3">6 Mushrooms</entry>
-      <entry value="4">7 Mushrooms</entry>
-      <entry value="5">8 Mushrooms</entry>
-      <entry value="6">9 Mushrooms</entry>
-      <entry value="7">10 Mushrooms</entry>
-      <entry value="8">11 Mushrooms</entry>
-      <entry value="9">12 Mushrooms</entry>
-      <entry value="10">13 Mushrooms</entry>
-      <entry value="11">14 Mushrooms</entry>
-      <entry value="12">15 Mushrooms</entry>
-      <entry value="13">16 Mushrooms</entry>
-      <entry value="14">17 Mushrooms</entry>
-      <entry value="15">18 Mushrooms</entry>
-    </list>
+    <value nybble="8" start="3" title="Mushroom Reward Amount" comment="Determines the number of Mushrooms the chest spawns. Specifying more than 5 Mushrooms can cause glitchy visual behavior, but it still works." requirednybble="10" requiredval="1-2"/> <!-- Appears Chest Type Value 1-2 -->
     <list nybble="12" title="Contains" comment="Determines the item in the chest. This only works with the Default Chest Type, as the other settings would just spawn Mushrooms." requirednybble="10" requiredval="0"> <!-- Appears only for Default Chests -->
       <entry value="0">Nothing</entry> <!-- 1, 9-14 is Nothing -->
       <entry value="2">Mushroom</entry>
@@ -3091,10 +2658,10 @@
     </list>
     <checkbox nybble="5.1" title="First Flag" comment="This sets the 'first flag' on the zoomed-in effect. Its precise effects are unknown."/>
     <list nybble="6.3-6.4" title="Number of players" comment="The Zoom Controller will be in effect when the right number of people are playing and at least one player is in the specified area.">
-        <entry value="0">Any</entry>
-        <entry value="1">Single player</entry>
-        <entry value="2">Multiplayer</entry>
-        <entry value="3">Multiplayer</entry>
+      <entry value="0">Any</entry>
+      <entry value="1">Single player</entry>
+      <entry value="2">Multiplayer</entry>
+      <entry value="3">Multiplayer</entry>
     </list>
   </sprite> <!-- #206: Zoom Controller -->
 
@@ -3277,18 +2844,8 @@
   <!-- Check for an unused value for 'left side spawn'. -->
   <sprite id="215" name="Bullet Bill Spawn Area" notes="Assigns a spawn area where waves of Bullet Bills will continue to be fired at the player while they are inside it." files="killer.arc">
     <value nybble="9-10" title="Location ID" comment="Groups of Bullet Bills are fired across the screen only while a player is in this location." idtype="Location"/>
-    <list nybble="8" title="Number of Bullet Bills" comment="This determines how many Bullet Bills will be fired during each wave." comment2="Each Bullet Bill will have two blocks of empty space between it and the next one.">
-      <entry value="0">1</entry>
-      <entry value="1">2</entry>
-      <entry value="2">3</entry>
-      <entry value="3">4</entry>
-    </list>
-    <list nybble="7" title="Spacing Between Groups" comment="This setting seems to be false, unless assuming only this setting is adjusted and the player is not moving. In which case, maybe it will tweak the randomness to alternate between low and high." advancedcomment="When used with &quot;Number per Group&quot; this controls the spacing between two groups (horizontally).">
-      <entry value="0">0 Blocks</entry>
-      <entry value="1">1 Block</entry>
-      <entry value="2">2 Blocks</entry>
-      <entry value="3">3 Blocks</entry>
-    </list>
+    <value nybble="8" start="1" title="Number of Bullet Bills" comment="This determines how many Bullet Bills will be fired during each wave." comment2="Each Bullet Bill will have two blocks of empty space between it and the next one."/>
+    <value nybble="7" title="Spacing Between Groups" comment="This setting seems to be false, unless assuming only this setting is adjusted and the player is not moving. In which case, maybe it will tweak the randomness to alternate between low and high." advancedcomment="When used with &quot;Number per Group&quot; this controls the spacing between two groups (horizontally)."/>
     <value nybble="11" title="Alignment" comment="This seems like it affects how much randomness there is in where the bullet bill can spawn within the zone." advancedcomment="(S) 0-15. Has to do with vertical alignment. Needs further info."/>
     <value nybble="12" title="Y (Height) Offset" comment="Does this define the 'center' of the area the bullet bills spawn or does this allow for the game to track the location when Mario is flying in the air above the camera? What is the point of this?" advancedcomment="(S) 0-15  Used with bottom alignment. Higher values raise height of spawn area."/>
   </sprite> <!-- #215: Bullet Bill Spawn Area -->
@@ -3501,24 +3058,7 @@
   <sprite id="228" name="Stretching Mushroom Platform" notes="A stretching platform that looks like a mushroom with naturally synchronized timing." files="lift_kinoko_yoko.arc">
     <dualbox nybble="10.4" title1="Long Platform" title2="Short Platform" comment="This determines the width of the Mushroom Platform when expanded."/>
     <dualbox nybble="11.4" title1="Starts Contracted" title2="Starts Expanded" comment="This determines the initial state of the Mushroom Platform."/>
-    <list nybble="12" title="Height of Stem" comment="This determines the height of the decorative mushroom stem.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
+    <value nybble="12" start="2" title="Stem Height" comment="This determines the height of the decorative mushroom stem."/>
   </sprite> <!-- #228: Stretching Mushroom Platform -->
 
   <sprite id="229" name="Sand Pillar" notes="A sand pillar that pushes the player upwards and can be stood on." files="sandpillar.arc">
@@ -3542,36 +3082,9 @@
     <value nybble="5" title="Wiggling Mushroom ID" comment="This pairs the platform to a matching Wiggling Mushroom Controller for synchronized movement. If an ID is set, that ID will control and override all matching Wiggle Speeds." idtype="Wiggling"/>
     <value nybble="11-12" title="Wiggle Speed" requirednybble="5" requiredval="0"/>
     <value nybble="10.2-10.4" title="Tilt Distance" comment="This determines how much the platform will tilt. A value of 1 or 2 is recommended."/>
-    <list nybble="9" title="Width of Platform">
-      <entry value="0">3 Blocks</entry>
-      <entry value="1">4 Blocks</entry>
-      <entry value="2">5 Blocks</entry>
-      <entry value="3">6 Blocks</entry>
-      <entry value="4">7 Blocks</entry>
-      <entry value="5">8 Blocks</entry>
-      <entry value="6">9 Blocks</entry>
-      <entry value="7">10 Blocks</entry>
-      <entry value="8">11 Blocks</entry>
-      <entry value="9">12 Blocks</entry>
-      <entry value="10">13 Blocks</entry>
-      <entry value="11">14 Blocks</entry>
-      <entry value="12">15 Blocks</entry>
-      <entry value="13">16 Blocks</entry>
-      <entry value="14">17 Blocks</entry>
-      <entry value="15">18 Blocks</entry>
-    </list>
-    <list nybble="8.3-8.4" title="Extend Distance" requirednybble="7.3">
-      <entry value="0">0 Blocks</entry>
-      <entry value="1">1 Blocks</entry>
-      <entry value="2">2 Blocks</entry>
-      <entry value="3">3 Blocks</entry>
-    </list>
-    <list nybble="8.3-8.4" title="Stem Length" requirednybble="7.3" requiredval="0">
-      <entry value="0">3 Blocks</entry>
-      <entry value="1">4 Blocks</entry>
-      <entry value="2">5 Blocks</entry>
-      <entry value="3">6 Blocks</entry>
-    </list>
+    <value nybble="9" start="3" title="Width of Platform"/>
+    <value nybble="8.3-8.4" title="Extend Width" requirednybble="7.3"/>
+    <value nybble="8.3-8.4" start="3" title="Stem Height" requirednybble="7.3" requiredval="0"/>
     <dualbox nybble="8.2" title1="Short Stem" title2="Long Stem" comment="This determines the length of the stem when the platform is contracted." requirednybble="7.3"/>
   </sprite> <!-- 231: Wiggling Mushroom Platform -->
 
@@ -3670,42 +3183,8 @@
       <entry value="3">Diagonal Line</entry>
       <entry value="4">Reverse-Diagonal Line</entry>
     </list>
-    <list nybble="11" title="Number of Formations" comment="This determines how many groups of the formation will appear.">
-      <entry value="0">1 Group/Row</entry>
-      <entry value="1">2 Groups/Rows</entry>
-      <entry value="2">3 Groups/Rows</entry>
-      <entry value="3">4 Groups/Rows</entry>
-      <entry value="4">5 Groups/Rows</entry>
-      <entry value="5">6 Groups/Rows</entry>
-      <entry value="6">7 Groups/Rows</entry>
-      <entry value="7">8 Groups/Rows</entry>
-      <entry value="8">9 Groups/Rows</entry>
-      <entry value="9">10 Groups/Rows</entry>
-      <entry value="10">11 Groups/Rows</entry>
-      <entry value="11">12 Groups/Rows</entry>
-      <entry value="12">13 Groups/Rows</entry>
-      <entry value="13">14 Groups/Rows</entry>
-      <entry value="14">15 Groups/Rows</entry>
-      <entry value="15">16 Groups/Rows</entry>
-    </list>
-    <list nybble="10" title="Number of Cheep Cheeps" comment="This determines how many Cheep Cheeps will appear in the formation.">
-      <entry value="0">1 Cheep Cheep</entry>
-      <entry value="1">2 Cheep Cheeps</entry>
-      <entry value="2">3 Cheep Cheeps</entry>
-      <entry value="3">4 Cheep Cheeps</entry>
-      <entry value="4">5 Cheep Cheeps</entry>
-      <entry value="5">6 Cheep Cheeps</entry>
-      <entry value="6">7 Cheep Cheeps</entry>
-      <entry value="7">8 Cheep Cheeps</entry>
-      <entry value="8">9 Cheep Cheeps</entry>
-      <entry value="9">10 Cheep Cheeps</entry>
-      <entry value="10">11 Cheep Cheeps</entry>
-      <entry value="11">12 Cheep Cheeps</entry>
-      <entry value="12">13 Cheep Cheeps</entry>
-      <entry value="13">14 Cheep Cheeps</entry>
-      <entry value="14">15 Cheep Cheeps</entry>
-      <entry value="15">16 Cheep Cheeps</entry>
-    </list>
+    <value nybble="11" start="1" title="Number of Formations" comment="This determines how many groups of the formation will appear."/>
+    <value nybble="10" start="1" title="Number of Cheep Cheeps" comment="This determines how many Cheep Cheeps will appear in the formation."/>
     <dualbox nybble="9.4" title1="Swims Right" title2="Swims Left" comment="This determines which direction the formation will swim in." comment2="The formation will only spawn if the player approaches it from the same direction."/>
     <checkbox nybble="8.4" title="Stretch Vertically" comment="If enabled, the Cheep Cheeps will continuously move up and down by roughly 2 tiles while swimming."/>
     <checkbox nybble="7.4" title="Slower" comment="When enabled, the Cheep Cheeps will swim slower."/>
@@ -3772,24 +3251,7 @@
       <entry value="2">Down</entry>
       <entry value="3">Left</entry>
     </list>
-    <list nybble="9" title="Length" comment="This determines the length of the pipe.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
+    <value nybble="9" start="2" title="Length" comment="This determines the length of the pipe."/>
   </sprite> <!-- #254: Rotation Controlled Pipe (Buggy) -->
 
   <sprite id="255" name="Rotation Controlled ? Block" notes="A ?-Block that can either be moved by rotation controllers or manually angled.">
@@ -3798,24 +3260,7 @@
       <suggested sprite="149"/>
     </dependency>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the ?-Block to a matching rotation controller." requirednybble="9" requiredval="0" idtype="Rotation"/>
-    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tilted blocks can not be rotation controlled.">
-      <entry value="0">0°</entry>
-      <entry value="1">3°</entry>
-      <entry value="2">6°</entry>
-      <entry value="3">9°</entry>
-      <entry value="4">12°</entry>
-      <entry value="5">15°</entry>
-      <entry value="6">18°</entry>
-      <entry value="7">21°</entry>
-      <entry value="8">24°</entry>
-      <entry value="9">27°</entry>
-      <entry value="10">30°</entry>
-      <entry value="11">33°</entry>
-      <entry value="12">36°</entry>
-      <entry value="13">39°</entry>
-      <entry value="14">42°</entry>
-      <entry value="15">45°</entry>
-    </list>
+    <value nybble="9" increment="3" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tilted blocks can not be rotation controlled."/>
     <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left"/>
     <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players. Some items, such as the Spring, won't appear if the player strikes the Block while it is actively rotating.">
       <entry value="0">Empty</entry>
@@ -3843,24 +3288,7 @@
       <suggested sprite="149"/>
     </dependency>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the Brick Block to a matching rotation controller." requirednybble="9" requiredval="0" idtype="Rotation"/>
-    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tilted blocks can not be rotation controlled.">
-      <entry value="0">0°</entry>
-      <entry value="1">3°</entry>
-      <entry value="2">6°</entry>
-      <entry value="3">9°</entry>
-      <entry value="4">12°</entry>
-      <entry value="5">15°</entry>
-      <entry value="6">18°</entry>
-      <entry value="7">21°</entry>
-      <entry value="8">24°</entry>
-      <entry value="9">27°</entry>
-      <entry value="10">30°</entry>
-      <entry value="11">33°</entry>
-      <entry value="12">36°</entry>
-      <entry value="13">39°</entry>
-      <entry value="14">42°</entry>
-      <entry value="15">45°</entry>
-    </list>
+    <value nybble="9" increment="3" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tilted blocks can not be rotation controlled."/>
     <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left"/>
     <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will only release one power-up item. Some items, such as the Spring, won't appear if the player strikes the Block while it is actively rotating.">
       <entry value="0">Empty</entry>
@@ -3888,24 +3316,7 @@
       <entry value="1">Medium</entry>
       <entry value="2">Large</entry>
     </list>
-    <list nybble="11" title="Moves with Passenger Number" comment="This determines how many 'passengers' are needed for the block's movement to activate." comment2="A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers.">
-      <entry value="0">1 Passenger</entry>
-      <entry value="1">2 Passengers</entry>
-      <entry value="2">3 Passengers</entry>
-      <entry value="3">4 Passengers</entry>
-      <entry value="4">5 Passengers</entry>
-      <entry value="5">6 Passengers</entry>
-      <entry value="6">7 Passengers</entry>
-      <entry value="7">8 Passengers</entry>
-      <entry value="8">9 Passengers</entry>
-      <entry value="9">10 Passengers</entry>
-      <entry value="10">11 Passengers</entry>
-      <entry value="11">12 Passengers</entry>
-      <entry value="12">13 Passengers</entry>
-      <entry value="13">14 Passengers</entry>
-      <entry value="14">15 Passengers</entry>
-      <entry value="15">16 Passengers</entry>
-    </list>
+    <value nybble="11" start="1" title="Required Passengers" comment="This determines how many passengers are needed for the block's movement to activate." comment2="A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers."/>
     <list nybble="7" title="Direction" comment="This determines which direction the block will move while moving.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -4111,12 +3522,7 @@
       <entry value="2">Random</entry>
       <entry value="3">Towards closest player</entry>
     </list>
-    <list nybble="11.3-11.4" title="Number in Swarm" comment="This determines how many rats form the swarm." comment2="Don't worry too much about vertical placement. They manage to find a proper home based on the placement of the first rat.">
-      <entry value="0">One</entry>
-      <entry value="1">Two</entry>
-      <entry value="2">Three</entry>
-      <entry value="3">Four</entry>
-    </list>
+    <value nybble="11.3-11.4" start="1" title="Number in Swarm" comment="This determines how many rats form the swarm." comment2="Don't worry too much about vertical placement. They manage to find a proper home based on the placement of the first rat."/>
   </sprite> <!-- #271: Scaredy Rat -->
 
   <sprite id="272" name="Ice Bro" notes="A standard Brothers enemy that shoots ice balls at the player." files="bros.arc">
@@ -4129,10 +3535,7 @@
       <suggested sprite="96"/>
       <suggested sprite="149"/>
     </dependency>
-    <list nybble="10" title="Size" comment="This determines how large the gear is." comment2="Values larger than 1 crash the game.">
-      <entry value="0">Small Gear</entry>
-      <entry value="1">Large Gear</entry>
-    </list>
+    <dualbox nybble="10" title1="Small Gear" title2="Large Gear"/>
     <value nybble="11-12" title="Rotation ID" comment="When set, the gear will move under the power of a rotation controller instead of rotating under its own power." comment2="The gear will rotate in place, regardless of the rotation controller's position." idtype="Rotation"/>
     <dualbox nybble="9.4" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the gear will rotate when rotating under its own power." requirednybble="11-12" requiredval="0"/> <!-- These three options only appear if Rotation ID is not set. -->
     <value nybble="7" title="Rotation Speed (+)" comment="This will increase the speed of the gear's rotation when rotating under its own power." comment2="Only one Rotation Speed should be chosen. A rotation speed of 0 is equal to 'Slow+' on a Spinning rotation controller." requirednybble="11-12" requiredval="0"/>
@@ -4149,24 +3552,7 @@
     <checkbox nybble="8.4" title="Moves Faster" comment="When enabled, the raft will move twice as fast as normal." comment2="The raft will normally move 1 tile every 32 frames."/>
     <dualbox nybble="9.3-9.4" title1="Moves Right" title2="Moves Left" comment="This determines which direction the raft will move in when it is actively moving." comment2="Values 2 and 3 both make the raft stationary. It's possible these may have served another purpose during development (such as alternate movement speeds)."/>
     <checkbox nybble="10.4" title="Starts Moving on Touch" comment="When enabled, the raft will start moving when any player touches it. Otherwise, it will begin moving when loaded."/>
-    <list nybble="11" title="Amount of Sprites to Stop" comment="This determines the number of enemies and other non-player sprites needed to cause the raft to stop moving." comment2="This will not change the visible functions of the displayed counter.">
-      <entry value="0">1 Sprite</entry>
-      <entry value="1">2 Sprites</entry>
-      <entry value="2">3 Sprites</entry>
-      <entry value="3">4 Sprites</entry>
-      <entry value="4">5 Sprites [Highly Recommended]</entry>
-      <entry value="5">6 Sprites</entry>
-      <entry value="6">7 Sprites</entry>
-      <entry value="7">8 Sprites</entry>
-      <entry value="8">9 Sprites</entry>
-      <entry value="9">10 Sprites</entry>
-      <entry value="10">11 Sprites</entry>
-      <entry value="11">12 Sprites</entry>
-      <entry value="12">13 Sprites</entry>
-      <entry value="13">14 Sprites</entry>
-      <entry value="14">15 Sprites</entry>
-      <entry value="15">16 Sprites</entry>
-    </list>
+    <value nybble="11" start="1" title="Maximum Passengers" comment="This determines the number of enemies and other non-player sprites needed to cause the raft to stop moving. A value of 5 is recommended, as this does change the colors or sounds of the counter."/>
     <value nybble="12" title="Unused Value 12" advanced="True" comment="This value is not used by the game in any way. Nintendo sets this as 12 in retail 05-04 A1."/>
   </sprite> <!-- #275: 5-Enemy-Max Raft -->
 
@@ -4266,42 +3652,8 @@
     </list>
     <value nybble="9" title="Delay at Top" comment="This determines the delay when the Water has finished rising."/>
     <value nybble="10" title="Delay at Bottom" comment="This determines the delay when the Water has finished falling."/>
-    <list nybble="11" title="Movement Distance" comment="This determines how far the Water will move.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">4 Blocks</entry>
-      <entry value="2">6 Blocks</entry>
-      <entry value="3">8 Blocks</entry>
-      <entry value="4">10 Blocks</entry>
-      <entry value="5">12 Blocks</entry>
-      <entry value="6">14 Blocks</entry>
-      <entry value="7">16 Blocks</entry>
-      <entry value="8">18 Blocks</entry>
-      <entry value="9">20 Blocks</entry>
-      <entry value="10">22 Blocks</entry>
-      <entry value="11">24 Blocks</entry>
-      <entry value="12">26 Blocks</entry>
-      <entry value="13">28 Blocks</entry>
-      <entry value="14">30 Blocks</entry>
-      <entry value="15">32 Blocks</entry>
-    </list>
-    <list nybble="12" title="Depth of Water" comment="This determines how deep the Water is, counting the wavy crest on the top." comment2="If the water is not set deep enough, the players will be able to see 'air' at the bottom, or they can potentially fall out of the Water completely.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">4 Blocks</entry>
-      <entry value="2">6 Blocks</entry>
-      <entry value="3">8 Blocks</entry>
-      <entry value="4">10 Blocks</entry>
-      <entry value="5">12 Blocks</entry>
-      <entry value="6">14 Blocks</entry>
-      <entry value="7">16 Blocks</entry>
-      <entry value="8">18 Blocks</entry>
-      <entry value="9">20 Blocks</entry>
-      <entry value="10">22 Blocks</entry>
-      <entry value="11">24 Blocks</entry>
-      <entry value="12">26 Blocks</entry>
-      <entry value="13">28 Blocks</entry>
-      <entry value="14">30 Blocks</entry>
-      <entry value="15">32 Blocks</entry>
-    </list>
+    <value nybble="11" start="2" increment="2" title="Movement Distance" comment="This determines how many blocks the Water will move."/>
+    <value nybble="12" start="2" increment="2" title="Depth of Water" comment="This determines how deep the Water is, counting the wavy crest on the top." comment2="If the water is not set deep enough, the players will be able to see 'air' at the bottom, or they can potentially fall out of the Water completely."/>
   </sprite> <!-- #285: Rising/Falling Water -->
 
   <sprite id="286" name="Rotating Wooden Airship Wheel" notes="A circular wheel matching the standard airship decor that rotates, making it hard to stand on." files="obj_Hgear.arc">
@@ -4412,20 +3764,8 @@
 
   <sprite id="295" name="Airship Nut Platform" noyoshi="True" notes="A platform made of 6 connected nuts that will spin and 'thread' itself when jumped on, but also attempt to drop the player beneath it. It will stop advancing if it reaches a solid wall, and it will travel backwards if it has not been jumped on recently, until it reaches another wall. It can despawn if the player leaves the screen with it." files="obj_nut.arc">
     <dependency notes="While not required, it is suggested to use some sort of terrain alongside this sprite, usually the 'wire' terrain object (#15) from the Airship decorations in Pa1 or some variant of it."/>
-    <list nybble="12" title="(Broken) Width" comment="This setting (always set to '6 Tiles' in retail) affects the platform's collision and initial position, but not its model or wall-detection logic, which are always 6 tiles wide.">
-      <entry value="0">4 Tiles</entry>
-      <entry value="1">5 Tiles</entry>
-      <entry value="2">6 Tiles (Recommended)</entry>
-      <entry value="3">7 Tiles</entry>
-      <entry value="4">8 Tiles</entry>
-      <entry value="5">9 Tiles</entry>
-      <entry value="6">10 Tiles</entry>
-      <entry value="7">11 Tiles</entry>
-    </list>
-    <list nybble="11" title="(Broken) Height" comment="This unused setting (always set to '2 Tiles' in retail) affects the platform's collision, initial position, and wall-detection logic, but not its model, which is always 2 tiles tall.">
-      <entry value="0">1 Tile</entry>
-      <entry value="1">2 Tiles (Recommended)</entry>
-    </list>
+    <value nybble="12.2-12.4" start="4" title="(Broken) Width" comment="This setting (always set to '6 Tiles' in retail) affects the platform's collision and initial position, but not its model or wall-detection logic, which are always 6 tiles wide."/>
+    <value nybble="11.4" start="1" title="(Broken) Height" comment="This unused setting (always set to '2 Tiles' in retail) affects the platform's collision, initial position, and wall-detection logic, but not its model, which is always 2 tiles tall."/>
   </sprite> <!-- #295: Airship Nut Platform -->
 
   <sprite id="296" name="Giant Buzzy Beetle" notes="A very large Buzzy Beetle that isn't especially pretty, but will carry the player around on its back. It can still hurt the player from the side.&lt;br&gt;Giant Buzzys don't fall down if placed in the air. They will follow the ground and slopes if snapped to the ground. Finally, they will move in a straight line if they reach a 90° drop." files="met.arc">
@@ -4438,16 +3778,7 @@
   </sprite> <!-- #296: Giant Buzzy Beetle -->
 
   <sprite id="297" name="Spine Coaster" noyoshi="True" notes="A quick Line guided platform that will screech and clatter as it travels." files="lift_torokko.arc">
-    <list nybble="12" title="Length" comment="This determines how many platform segments make up the Spine Coaster." comment2="You must use a Length of 1 or greater, or else the game will crash if the platform is ground-pounded.">
-      <entry value="0">Skull Only</entry>
-      <entry value="1">Skull + 1 Platform</entry>
-      <entry value="2">Skull + 2 Platforms</entry>
-      <entry value="3">Skull + 3 Platforms</entry>
-      <entry value="4">Skull + 4 Platforms</entry>
-      <entry value="5">Skull + 5 Platforms</entry>
-      <entry value="6">Skull + 6 Platforms</entry>
-      <entry value="7">Skull + 7 Platforms</entry>
-    </list>
+    <value nybble="12" start="1" title="Length" comment="This determines how many platform segments make up the Spine Coaster." comment2="You must use a Length of 2 or greater, or else the game will crash if the platform is ground-pounded."/>
     <value nybble="10" title="Speed" comment="This determines how quickly the Spine Coaster will travel along the Lines."/>
     <checkbox nybble="11.4" title="Touch Activated" comment="When enabled, this platform will activate when all players are touching the Spine Coaster." comment2="When not enabled, this platform will only activate when a platform with the same Spine ID is activated through Touch Activation."/>
     <value nybble="5" title="Coaster ID" comment="This will pair multiple Spine Coasters together so that when one of them starts, they all start at the same time." comment2="Do not pair more than one Spine Coaster with [Touch Activated] enabled!" idtype="Coaster"/>
@@ -4463,42 +3794,8 @@
     </list>
     <dualbox nybble="11.4" title1="Normal Cannonball Cannon" title2="Giant Cannonball Cannon" comment="This determines the size of the cannon and cannonball."/>
     <dualbox nybble="12.4" title1="Faces Right" title2="Faces Left" comment="This determines which direction the cannon will face."/>
-    <list nybble="10" requirednybble="11.4" requiredval="0" title="Normal Cannon Length" comment="This determines how long the cannon is.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
-    <list nybble="10" requirednybble="11.4" requiredval="1" title="Giant Cannon Length" comment="This determines how long the cannon is. If the cannon is giant, the collision will always be value + 3 blocks long, but the visual will not.">
-      <entry value="0">3 Blocks</entry>
-      <entry value="1">4 Blocks</entry>
-      <entry value="2">5 Blocks</entry>
-      <entry value="3">6 Blocks</entry>
-      <entry value="4">7 Blocks</entry>
-      <entry value="5">8 Blocks</entry>
-      <entry value="6">9 Blocks</entry>
-      <entry value="7">10 Blocks</entry>
-      <entry value="8">11 Blocks</entry>
-      <entry value="9">12 Blocks</entry>
-      <entry value="10">13 Blocks</entry>
-      <entry value="11">14 Blocks</entry>
-      <entry value="12">15 Blocks</entry>
-      <entry value="13">16 Blocks</entry>
-      <entry value="14">17 Blocks</entry>
-      <entry value="15">18 Blocks</entry>
-    </list>
+    <value nybble="10" start="2" title="Normal Cannon Length" comment="This determines how long the cannon is." requirednybble="11.4" requiredval="0"/>
+    <value nybble="10" start="3" title="Giant Cannon Length" comment="This determines how long the cannon is. If the cannon is giant, the collision will always be value + 3 blocks long, but the visual will not." requirednybble="11.4" requiredval="1"/>
     <checkbox nybble="12.3" title="Direction Override: Down, Causes Weird Bugs" advanced="True" advancedcomment="Only the front of the cannon will be changed, and when also set to face left, causes weird influence on the cannonball's trajectory. Highly suggested to not use this setting."/>
   </sprite> <!-- #298: Long Cannonball Cannons -->
 
@@ -4541,16 +3838,7 @@
       <entry value="3">Affected by Horizontal Camera Movements</entry>
     </list>
     <dualbox nybble="10.4" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the cannon and pipe will rotate."/>
-    <list nybble="12" title="Pipe Position at Load" comment="This determines the pipe's position when the cannon first loads on the screen.">
-      <entry value="0">0°</entry>
-      <entry value="1">45°</entry>
-      <entry value="2">90°</entry>
-      <entry value="3">135°</entry>
-      <entry value="4">180°</entry>
-      <entry value="5">225°</entry>
-      <entry value="6">270°</entry>
-      <entry value="7">315°</entry>
-    </list>
+    <value nybble="12.2-12.4" increment="45" title="Pipe Position at Load" comment="This determines the pipe's position when the cannon first loads on the screen."/>
     <value nybble="8-9" title="Entrance ID" comment="This determines the Entrance ID that the pipe will connect with." comment2="It does not have to be placed on the pipe. It can only be used as an exit." idtype="Entrance"/>
     <checkbox nybble="11.4" title="Upside-Down" comment="When enabled, the cannon is upside-down and can be placed against the ceiling." advanced="True" advancedcomment="The pipe will load on the opposite side alongside a cannon, leaving a hole on one side. As such, this option should not be used."/>
   </sprite> <!-- #301: 4-Way Large Cannon with Pipe -->
@@ -4647,16 +3935,7 @@
     </dependency>
     <value nybble="7-8" title="Time Active (Mode 1)" comment="This determines how long the flame jet will stay active in Mode 1." comment2="A value of 64 is equal to one game second."/>
     <value nybble="9-10" title="Time Active (Mode 2)" comment="This determines how long the flame jet will stay active in Mode 2." comment2="A value of 64 is equal to one game second."/>
-    <list nybble="11.2-11.4" title="Length" comment="This determines the length of the flame created by linked flame jets.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-    </list>
+    <value nybble="11.2-11.4" start="2" title="Length" comment="This determines the length of the flame created by linked flame jets."/>
     <value nybble="12" title="Burner ID" comment="This determines which flame jets are linked to this controller." idtype="Burner"/>
   </sprite> <!-- #307: Burner - Pulsating (Synchronized) Controller -->
 
@@ -4769,42 +4048,8 @@
       <entry value="2">Up</entry>
       <entry value="3">Down</entry>
     </list> <!-- Appears if Moves from Bolt is set -->
-    <list nybble="11" title="Height" comment="This determines the height of the block.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
-    <list nybble="12" title="Width" comment="This determines the width of the block.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
+    <value nybble="11" start="2" title="Height" comment="This determines the height of the block."/>
+    <value nybble="12" start="2" title="Width" comment="This determines the width of the block."/>
   </sprite> <!-- #316: Bolt Controlled Metal Block -->
 
   <sprite id="317" name="Effect - Enables Bubbles" notes="This sprite must be placed in order for certain types of effects involving bubbles to function properly." files="env_underwater.arc">
@@ -4841,24 +4086,7 @@
   </sprite> <!-- #322: Incomplete Sprite - "En_Ghost_Jugem" -->
 
   <sprite id="323" name="Boo Circle" notes="A circle of Boos that can rotate along a central point. It will always have one opening for the player to pass through.">
-    <list nybble="8" title="# of Boos">
-      <entry value="0">1 Boo</entry>
-      <entry value="1">2 Boos</entry>
-      <entry value="2">3 Boos</entry>
-      <entry value="3">4 Boos</entry>
-      <entry value="4">5 Boos</entry>
-      <entry value="5">6 Boos</entry>
-      <entry value="6">7 Boos</entry>
-      <entry value="7">8 Boos</entry>
-      <entry value="8">9 Boos</entry>
-      <entry value="9">10 Boos</entry>
-      <entry value="10">11 Boos</entry>
-      <entry value="11">12 Boos</entry>
-      <entry value="12">13 Boos</entry>
-      <entry value="13">14 Boos</entry>
-      <entry value="14">15 Boos</entry>
-      <entry value="15">16 Boos</entry>
-    </list>
+    <value nybble="8" start="1" title="Number of Boos"/>
     <value nybble="6" title="Greater Radius Distance" comment="This determines the maximum radius of the Boo Circle. It must be larger or equal to the Lesser Radius."/>
     <value nybble="7" title="Lesser Radius Distance" comment="This determines the minimum radius of the Boo Circle. It must be smaller or equal to the Greater Radius."/>
     <value nybble="9" title="Shrink/Expand Delay" comment="This determines the delay between shrinking/expanding, if the Radius Distances are not equal. A value of 1 is approximately equal to one game second."/>
@@ -4914,10 +4142,7 @@
   <sprite id="328" name="(Unused) (Incomplete) Bubble Cannon" noyoshi="True" yoshinotes="The game will crash if Yoshi flutters while touching a 'bubble.'"
   notes="This loads a flat texture that says 'temporary' in Japanese letters, and shoots out more of the same. If it's moving up, you can hold the jump button while the player is on the 'bubble' to hold onto it for a very short amount of time. They will despawn if they hit a wall." files="waterbubble.arc">
     <value nybble="5" title="Bubble Cannon ID" comment="This pairs the object to a matching Bubble Cannon Controller. It works on its own if left at 0." idtype="Bubble Cannon"/>
-    <list nybble="12" title="Bubble Size" comment="This determines the size of the bubble.">
-      <entry value="0">Small</entry>
-      <entry value="1">Big</entry>
-    </list>
+    <dualbox nybble="12" title1="Small" title2="Large" comment="This determines the size of the bubble."/>
     <list nybble="9" title="Direction" comment="This determines the direction the bubble is launched in, and Mario is pushed">
       <entry value="0">Up</entry>
       <entry value="1">Down</entry>
@@ -4990,24 +4215,7 @@
       <entry value="2">Slow</entry>
       <entry value="0">Medium</entry>
     </list>
-    <list nybble="8" title="Swim Distance" comment="This determines the distance that a Type 3 Cheep Cheep will swim in both directions from its initial placement." requirednybble="12" requiredval="3">
-      <entry value="0">1 Block</entry>
-      <entry value="1">2 Blocks</entry>
-      <entry value="2">3 Blocks</entry>
-      <entry value="3">4 Blocks</entry>
-      <entry value="4">5 Blocks</entry>
-      <entry value="5">6 Blocks</entry>
-      <entry value="6">7 Blocks</entry>
-      <entry value="7">8 Blocks</entry>
-      <entry value="8">9 Blocks</entry>
-      <entry value="9">10 Blocks</entry>
-      <entry value="10">11 Blocks</entry>
-      <entry value="11">12 Blocks</entry>
-      <entry value="12">13 Blocks</entry>
-      <entry value="13">14 Blocks</entry>
-      <entry value="14">15 Blocks</entry>
-      <entry value="15">16 Blocks</entry>
-    </list>
+    <value nybble="8" start="1" title="Swim Distance" comment="This determines the distance that a Type 3 Cheep Cheep will swim in both directions from its initial placement." requirednybble="12" requiredval="3"/>
     <checkbox nybble="5.2" title="Increase Visible Range" comment="If enabled, the Cheep Cheep will be able to go further off-screen before despawning."/>
     <checkbox nybble="5.4" title="Created by Formation Spawner" comment="Enabled on all Cheep Cheeps spawned by [247] Cheep Cheep Formation Spawner."/>
     <checkbox nybble="5.3" title="Stretch Vertically" comment="This is set by the the Formation Spawner to make the formation expand and contract. Does nothing on its own." requirednybble="5.4"/>
@@ -5044,42 +4252,8 @@
   </sprite> <!-- #337: Iggy Koopa -->
 
   <sprite id="338" name="Rising/Falling Bill Blaster" notes="" files="killer_houdai.arc;killer.arc">
-    <list nybble="12" title="Height at Shot 1">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
-    <list nybble="11" title="Height at Shot 2">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
+    <value nybble="12" start="2" title="Height at Shot 1"/>
+    <value nybble="11" start="2" title="Height at Shot 2"/>
     <value nybble="10" title="Rising/Falling Speed" comment="Values 0-3 are each very different from each other, while Values 4+ have very minimal increases in speed beyond that."/>
     <list nybble="7.3-7.4" title="Shooting Direction">
       <entry value="0">Towards closest Player</entry>
@@ -5103,42 +4277,8 @@
       <entry value="2">Yellow</entry>
       <entry value="3">Blue</entry>
     </list>
-    <list nybble="12" title="Height 1" comment="This determines the height of the Pipe during the first state.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
-    <list nybble="11" title="Height 2" comment="This determines the height of the Pipe during the second state.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
+    <value nybble="12" start="2" title="Height 1" comment="This determines the height of the Pipe during the first state."/>
+    <value nybble="11" start="2" title="Height 2" comment="This determines the height of the Pipe during the second state."/>
     <value nybble="10" title="Rising / Lowering Speed" comment="This determines how quickly the Pipe will move when switching between Height 1 and Height 2." comment2="Values 0-3 are each very different from each other, while Values 4+ have very minimal increases in speed beyond that."/>
   </sprite> <!-- #339: Moving Pipe - Facing Up -->
 
@@ -5243,42 +4383,8 @@
       <entry value="2">Yellow</entry>
       <entry value="3">Blue</entry>
     </list>
-    <list nybble="12" title="Height 1" comment="This determines the height of the Pipe during the first state.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
-    <list nybble="11" title="Height 2" comment="This determines the height of the Pipe during the second state.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
+    <value nybble="12" start="2" title="Height 1" comment="This determines the height of the Pipe during the first state."/>
+    <value nybble="11" start="2" title="Height 2" comment="This determines the height of the Pipe during the second state."/>
     <value nybble="10" title="Rising / Lowering Speed" comment="This determines how quickly the Pipe will move when switching between Height 1 and Height 2." comment2="Values 0-3 are each very different from each other, while Values 4+ have very minimal increases in speed beyond that."/>
   </sprite> <!-- #353: Moving Pipe - Facing Down -->
 
@@ -5410,10 +4516,7 @@
   </sprite> <!-- #356: Brown Tower Block -->
 
   <sprite id="357" name="Yoshi Fruit" notes="An edible fruit that Yoshi can grab. Collecting five will cause Yoshi to lay an egg. What's inside the egg will change depending on the player's current power-up. Normal -&gt; Fire -&gt; Ice -&gt; Propeller -&gt; 1-Up." files="fruit.arc;fruit_cookie.arc">
-    <list nybble="12" title="Type" comment="This determines if the fruit is a standard berry, or a cookie. They share no functional difference.">
-      <entry value="0">Berry</entry>
-      <entry value="1">Cookie</entry>
-    </list>
+    <dualbox nybble="12" title1="Berry" title2="Cookie" comment="They share no functional difference."/>
   </sprite> <!-- #357: Yoshi Fruit -->
 
   <sprite id="358" name="Effect - Rising Lava Particle" notes="An effects controller that creates small red particles that rise from the bottom of the screen. The density of the effect is increased for every instance of the sprite placed in the zone. It can be used alongside other effects." files="obj_magmadeco.arc">
@@ -5475,42 +4578,8 @@
       <suggested sprite="96"/>
       <suggested sprite="149"/>
     </dependency>
-    <list nybble="10" title="Height" comment="This determines how tall the block is.">
-      <entry value="0">3 Blocks</entry>
-      <entry value="1">4 Blocks</entry>
-      <entry value="2">5 Blocks</entry>
-      <entry value="3">6 Blocks</entry>
-      <entry value="4">7 Blocks</entry>
-      <entry value="5">8 Blocks</entry>
-      <entry value="6">9 Blocks</entry>
-      <entry value="7">10 Blocks</entry>
-      <entry value="8">11 Blocks</entry>
-      <entry value="9">12 Blocks</entry>
-      <entry value="10">13 Blocks</entry>
-      <entry value="11">14 Blocks</entry>
-      <entry value="12">15 Blocks</entry>
-      <entry value="13">16 Blocks</entry>
-      <entry value="14">17 Blocks</entry>
-      <entry value="15">18 Blocks</entry>
-    </list>
-    <list nybble="9" title="Width" comment="This determines how wide the block is.">
-      <entry value="0">3 Blocks</entry>
-      <entry value="1">4 Blocks</entry>
-      <entry value="2">5 Blocks</entry>
-      <entry value="3">6 Blocks</entry>
-      <entry value="4">7 Blocks</entry>
-      <entry value="5">8 Blocks</entry>
-      <entry value="6">9 Blocks</entry>
-      <entry value="7">10 Blocks</entry>
-      <entry value="8">11 Blocks</entry>
-      <entry value="9">12 Blocks</entry>
-      <entry value="10">13 Blocks</entry>
-      <entry value="11">14 Blocks</entry>
-      <entry value="12">15 Blocks</entry>
-      <entry value="13">16 Blocks</entry>
-      <entry value="14">17 Blocks</entry>
-      <entry value="15">18 Blocks</entry>
-    </list>
+    <value nybble="10" start="3" title="Height" comment="This determines how tall the block is."/>
+    <value nybble="9" start="3" title="Width" comment="This determines how wide the block is."/>
     <list nybble="7" title="Color" comment="This determines which color the block is.">
       <entry value="0">Red</entry>
       <entry value="1">Blue</entry>
@@ -5565,10 +4634,7 @@
       <suggested sprite="96"/>
       <suggested sprite="149"/>
     </dependency>
-    <list nybble="10" title="Type" comment="This determines the color and size of the block.">
-      <entry value="0">Red (5x5)</entry>
-      <entry value="1">Green (15x15)</entry>
-    </list>
+    <dualbox nybble="10" title1="Red (5x5)" title2="Green (15x15)" comment="This determines the color and size of the block."/>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #366: Rotation Controlled Mushroom Block -->
 
@@ -5896,24 +4962,7 @@
     <value nybble="12" title="Length" comment="This value must be at least 1 to have collision."/>
     <checkbox nybble="7.2" title="Does not Move"/>
     <dualbox nybble="10.4" title1="Returns to Original Position" title2="Does not Return" comment="When 'Does not Return' is checked, the platform will not stop moving once activated. Alongside that, the arrow on the platform will remain invisible after the platform has been touched with this setting checked." requirednybble="7.2" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
-    <list nybble="11" title="Moves with Passenger Number" comment="This determines how many 'passengers' are needed for the platform's movement to activate. A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers. It will change colors from blue to red when this condition is satisfied.">
-      <entry value="0">1 Passenger</entry>
-      <entry value="1">2 Passengers</entry>
-      <entry value="2">3 Passengers</entry>
-      <entry value="3">4 Passengers</entry>
-      <entry value="4">5 Passengers</entry>
-      <entry value="5">6 Passengers</entry>
-      <entry value="6">7 Passengers</entry>
-      <entry value="7">8 Passengers</entry>
-      <entry value="8">9 Passengers</entry>
-      <entry value="9">10 Passengers</entry>
-      <entry value="10">11 Passengers</entry>
-      <entry value="11">12 Passengers</entry>
-      <entry value="12">13 Passengers</entry>
-      <entry value="13">14 Passengers</entry>
-      <entry value="14">15 Passengers</entry>
-      <entry value="15">16 Passengers</entry>
-    </list>
+    <value nybble="11" start="1" title="Required Passengers" comment="This determines how many passengers are needed for the platform to move. A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers. It will change colors from blue to red when this condition is satisfied."/>
     <list nybble="7.3-7.4" title="Direction" comment="Determines the direction the platform will move in when touched." comment2="The arrow on the platform will always point down when the platform is touched and up when it is going back to its original position. Therefore only value 3 can be used without any visual side effects." requirednybble="7.2" requiredval="0">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -5924,62 +4973,11 @@
   </sprite> <!-- #396: Move-When-On Platform -->
 
   <sprite id="397" name="Move-When-On Ghost House Box" notes="A special block that will move at any point when a specified number of 'passengers' (players + enemies) are standing on it." files="lift_obake_chikei.arc">
-    <list nybble="9" title="Height" comment="This determines the height of the block.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
-    <list nybble="12" title="Width" comment="This determines the width of the block.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
+    <value nybble="9" start="2" title="Height" comment="This determines the height of the block."/>
+    <value nybble="12" start="2" title="Width" comment="This determines the width of the block."/>
     <checkbox nybble="7.2" title="Does not Move" comment="When enabled, the movement function of this block will be disabled making the block into a decorative object."/>
     <dualbox nybble="10.4" title1="Returns to Original Position" title2="Does not Return" comment="When 'Does not Return' is checked, the block will not stop moving once activated." requirednybble="7.2" requiredval="0"/> <!-- This option and below will not appear if [Does not Move] is set -->
-    <list nybble="11" title="Moves with Passenger Number" comment="This determines how many 'passengers' are needed for the platform's movement to activate." comment2="A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers." requirednybble="7.2" requiredval="0">
-      <entry value="0">1 Passenger</entry>
-      <entry value="1">2 Passengers</entry>
-      <entry value="2">3 Passengers</entry>
-      <entry value="3">4 Passengers</entry>
-      <entry value="4">5 Passengers</entry>
-      <entry value="5">6 Passengers</entry>
-      <entry value="6">7 Passengers</entry>
-      <entry value="7">8 Passengers</entry>
-      <entry value="8">9 Passengers</entry>
-      <entry value="9">10 Passengers</entry>
-      <entry value="10">11 Passengers</entry>
-      <entry value="11">12 Passengers</entry>
-      <entry value="12">13 Passengers</entry>
-      <entry value="13">14 Passengers</entry>
-      <entry value="14">15 Passengers</entry>
-      <entry value="15">16 Passengers</entry>
-    </list>
+    <value nybble="11" start="1" title="Required Passengers" comment="This determines how many passengers are needed for the platform to move." comment2="A passenger can be many things. Examples include the players themselves, Goombas and other enemies, and even loose coins created by Fire Flowers." requirednybble="7.2" requiredval="0"/>
     <list nybble="7.3-7.4" title="Direction" comment="This determines which direction the block will move when the Sprites Required value is satisfied." requirednybble="7.2" requiredval="0">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -6179,12 +5177,7 @@
       <required sprite="202"/>
       <required sprite="429"/>
     </dependency>
-    <list nybble="9" title="Number of Lives">
-      <entry value="0">1 Life</entry>
-      <entry value="1">2 Lives</entry>
-      <entry value="2">3 Lives</entry>
-      <entry value="3">4 Lives</entry>
-    </list>
+    <value nybble="9" start="1" title="Number of Lives"/>
     <checkbox nybble="11.4" title="Alternate Idle Animation" comment="When enabled, the balloon will use the alternate idle animation for balloons that do not have an attached handle."/>
   </sprite> <!-- #411: (Unused) Toad House Minigame - Lives Balloon -->
 
@@ -6200,12 +5193,7 @@
       <entry value="2">Swaying</entry>
       <entry value="3">Spinning</entry>
     </list> <!-- Appears only if No Handle is not set -->
-    <list nybble="9" title="Number of Lives">
-      <entry value="0">1 Life</entry>
-      <entry value="1">2 Lives</entry>
-      <entry value="2">3 Lives</entry>
-      <entry value="3">4 Lives</entry>
-    </list>
+    <value nybble="9" start="1" title="Number of Lives"/>
     <dualbox nybble="12.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the block will move based on the Line that it is connected to."/>
     <checkbox nybble="8.4" title="Positional Offset" comment="If set, the balloon is moved half a block to the right and half a block to the top." />
   </sprite> <!-- #412: Toad House Minigame - Lives Balloon -->
@@ -6288,16 +5276,7 @@
   </sprite> <!-- #423: Toad Needs Help - Brick Block -->
 
   <sprite id="424" name="Palm Tree" notes="A palm tree decoration with a solid-on-top collision." files="obj_yashi.arc">
-    <list nybble="12.2-12.4" title="Height" comment="This determines the height of the Palm Tree.">
-      <entry value="0">4 Blocks</entry>
-      <entry value="1">5 Blocks</entry>
-      <entry value="2">6 Blocks</entry>
-      <entry value="3">7 Blocks</entry>
-      <entry value="4">8 Blocks</entry>
-      <entry value="5">9 Blocks</entry>
-      <entry value="6">10 Blocks</entry>
-      <entry value="7">11 Blocks</entry>
-    </list>
+    <value nybble="12.2-12.4" start="4" title="Height" comment="This determines the height of the Palm Tree."/>
   </sprite> <!-- #424: Palm Tree -->
 
   <sprite id="425" name="Jellybeam" notes="A jellyfish enemy that produces a varying cone of light." files="kurage.arc">
@@ -6773,24 +5752,7 @@
     </dependency>
     <value nybble="5" title="Bolt ID" comment="This pairs the platform with a matching Bolt." idtype="Bolt"/>
     <checkbox nybble="10.4" title="Moves from Bolt" comment="When enabled, the metal block will move when the matching Bolt is spun." comment2="The platform can only be made to move downwards."/>
-    <list nybble="12" title="Width" comment="This determines the width of the platform.">
-      <entry value="0">2 Blocks</entry>
-      <entry value="1">3 Blocks</entry>
-      <entry value="2">4 Blocks</entry>
-      <entry value="3">5 Blocks</entry>
-      <entry value="4">6 Blocks</entry>
-      <entry value="5">7 Blocks</entry>
-      <entry value="6">8 Blocks</entry>
-      <entry value="7">9 Blocks</entry>
-      <entry value="8">10 Blocks</entry>
-      <entry value="9">11 Blocks</entry>
-      <entry value="10">12 Blocks</entry>
-      <entry value="11">13 Blocks</entry>
-      <entry value="12">14 Blocks</entry>
-      <entry value="13">15 Blocks</entry>
-      <entry value="14">16 Blocks</entry>
-      <entry value="15">17 Blocks</entry>
-    </list>
+    <value nybble="12" start="2" title="Width" comment="This determines the width of the platform."/>
   </sprite> <!-- #469: Bolt Controlled Airship Platform -->
 
   <!-- Test Nybble 6 for 'Direction' -->
@@ -6918,10 +5880,7 @@
     <dependency notes="While it can be placed, it only has two variants and lacks collision. Additionally, [419] Bowser must be present in the Loaded Sprites list (or in the level) for its model to be loaded.">
       <resource sprite="419"/>
     </dependency>
-    <list nybble="12" title="Size" comment="This determines the size of the block." comment2="Higher values crash the game.">
-      <entry value="0">2x1 Block</entry>
-      <entry value="1">3x2 Block</entry>
-    </list>
+    <dualbox nybble="12" title1="2x1 Block" title2="3x2 Block" comment="This determines the size of the block." comment2="Higher values crash the game."/>
     <value nybble="7-8" title="Horizontal Speed" comment="The horizontal speed of the block as it is falling. This option is rather useless as the block can only fall during the final Bowser Boss fight."/>
     <value nybble="9-10" title="Vertical Speed" comment="The vertical speed of the block as it is falling. This option is rather useless as the block can only fall during the final Bowser Boss fight."/>
   </sprite> <!-- #481: (Unused) Final Boss - Rubble Block -->

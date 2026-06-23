@@ -680,7 +680,7 @@
 		<string id="9">[b]Yoshi Notes:[/b] [notes]</string>
 		<string id="10">Advanced Notes</string>
 		<string id="11">[b]Advanced Notes:[/b] [notes]</string>
-		<string id="12">Yoshi</string>
+		<string id="12">Notes</string>
 		<string id="13">Read more...</string>
 		<string id="14">Read less...</string>
 		<string id="15">This sprite works properly with Yoshi.</string>
@@ -1002,5 +1002,12 @@
 		<string id="0">Warning</string>
 		<string id="1">This level contains sprite ID [id], which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.</string>
 		<string id="2">This level contains sprite IDs ([ids]) which are not defined in the current game patch. These sprites will be displayed as "UNKNOWN" but can still be edited and saved.</string>
+	</section>
+	<section id="ExternalOptionDlg">
+		<string id="0">Actors</string>
+		<string id="1">Models</string>
+		<string id="2">Sound Effects</string>
+		<string id="3">Graphical Effects</string>
+		<string id="4">Search:</string>
 	</section>
 </strings>

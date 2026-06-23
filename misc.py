@@ -496,6 +496,8 @@ class SpriteDefinition:
 
             advanced = attribs.get("advanced", "False") == "True"
             comment = comment2 = advancedcomment = required = idtype = None
+            start = 0
+            increment = 1
 
             if 'comment' in attribs:
                 comment = globals_.trans.string('SpriteDataEditor', 1, '[name]', title, '[note]', attribs['comment'])
@@ -531,11 +533,24 @@ class SpriteDefinition:
 
                     required.append(((bit_range,), (a, b + 1)))
 
+            # NOTE: idtype must be the LAST field passed to a sprite
             if 'idtype' in attribs:
                 idtype = attribs['idtype']
 
                 if field.tag not in {'value', 'list'}:
                     raise ValueError("Only values and lists support idtypes.")
+            
+            if 'start' in attribs:
+                start = int(attribs['start'])
+
+                if field.tag != 'value':
+                    raise ValueError("Only values support a start index.")
+            
+            if 'increment' in attribs:
+                increment = int(attribs['increment'])
+
+                if field.tag != 'value':
+                    raise ValueError("Only values support an increment.")
 
             # Parse the remaining type-specific attributes.
             if field.tag == 'checkbox':
@@ -559,7 +574,7 @@ class SpriteDefinition:
             elif field.tag == 'value':
                 bit, max_ = self.parseBits(attribs.get("nybble"))
 
-                fields.append((2, attribs['title'], bit, max_, comment, required, advanced, comment2, advancedcomment, idtype))
+                fields.append((2, attribs['title'], bit, max_, comment, required, advanced, comment2, advancedcomment, start, increment, idtype))
 
             elif field.tag == 'bitfield':
                 startbit = int(attribs['startbit'])
