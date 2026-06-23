@@ -7132,7 +7132,12 @@ class SpriteImage_CrystalBlock(SLib.SpriteImage_StaticMultiple):  # 361
     def dataChanged(self):
         size = self.parent.spritedata[4] & 3
 
-        if size == 3:
+        if size == 0:
+            self.offset = (-7 / 1.5, -10 / 1.5)
+        elif size == 1:
+            self.offset = (-8, -8 / 1.5)
+        else:
+            self.offset = (-10 / 1.5, -11 / 1.5)
             size = 2
 
         self.image = ImageCache['CrystalBlock%d' % size]
