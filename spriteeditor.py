@@ -124,7 +124,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         self._start = start
         self._increment = increment
 
-        self.setValue(0)
+        self.setValue(self._start)
 
     def interpretText(self):
         """
@@ -134,7 +134,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         # empty string
         text = self.lineEdit().text()
         if not text:
-            text = "0"
+            text = str(self._start)
 
         self.setValue(self.valueFromText(text))
 
@@ -154,7 +154,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         # This implementation really only works well if all prefixes of numbers
         # between the minimum and maximum are themselves numbers between the
         # minimum and maximum...
-        if not self._minimum <= val <= self._maximum:
+        if not self._minimum <= val <= self._maximum and not self._start <= val <= ((self._maximum * self._increment) + self._start):
             return (QtGui.QValidator.State.Invalid, text, pos)
 
         return (QtGui.QValidator.State.Acceptable, text, pos)
@@ -199,9 +199,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         )
 
     def valueFromText(self, text: str) -> int:
-        # Fix divide by 0 errors
-        div = 1 if (self._increment == 0) else self._increment
-        return (int(text) - self._start) // div
+        return (int(text) - self._start) // self._increment
 
     def textFromValue(self, val: int) -> str:
         return str(val)
