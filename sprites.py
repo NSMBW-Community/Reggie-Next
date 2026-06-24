@@ -51,6 +51,7 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.spritebox.shown = False
+        self.xOffset = -2 / 1.5
 
     @staticmethod
     def loadImages():
@@ -79,15 +80,15 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
             color = 'Bone'
 
         if self.width > 32:
-            painter.drawTiledPixmap(24, 0, int((self.width * 1.5) - 48), int(self.height * 1.5), ImageCache[color + 'PlatformM'])
+            painter.drawTiledPixmap(26, 0, int((self.width * 1.5) - 44), int(self.height * 1.5), ImageCache[color + 'PlatformM'])
 
         if self.width == 24:
             # replicate glitch effect for some platforms
             painter.drawPixmap(0, 0, ImageCache[color + 'PlatformR'])
-            painter.drawPixmap(8, 0, ImageCache[color + 'PlatformL'])
+            painter.drawPixmap(10, 0, ImageCache[color + 'PlatformL'])
         else:
             # normal rendering
-            painter.drawPixmap(int((self.width - 16) * 1.5), 0, ImageCache[color + 'PlatformR'])
+            painter.drawPixmap(round((self.width - 16) * 1.5 - 2), 0, ImageCache[color + 'PlatformR'])
             painter.drawPixmap(0, 0, ImageCache[color + 'PlatformL'])
 
 
@@ -1169,17 +1170,17 @@ class SpriteImage_HorzMovingPlatform(SpriteImage_WoodenPlatform):  # 23
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
-        self.width = ((self.parent.spritedata[5] & 0xF) + 1) << 4
+        self.width = (((self.parent.spritedata[5] & 0xF) + 1) << 4) + (4 / 1.5)
         self.aux.append(SLib.AuxiliaryTrackObject(parent, self.width, 16, SLib.AuxiliaryTrackObject.Horizontal))
 
     def dataChanged(self):
         super().dataChanged()
 
         # get width and distance
-        self.width = ((self.parent.spritedata[5] & 0xF) + 1) << 4
-        if self.width == 16: self.width = 32
+        self.width = (((self.parent.spritedata[5] & 0xF) + 1) << 4) + (4 / 1.5)
+        if self.width < 20: self.width = 32 + (4 / 1.5)
 
-        distance = (self.parent.spritedata[4] & 0xF) << 4
+        distance = ((self.parent.spritedata[4] & 0xF) << 4) - 1
 
         # update the track
         self.aux[0].setSize(self.width + distance, 16)
@@ -1326,15 +1327,15 @@ class SpriteImage_VertMovingPlatform(SpriteImage_WoodenPlatform):  # 31
     def __init__(self, parent):
         super().__init__(parent, 1.5)
 
-        self.width = ((self.parent.spritedata[5] & 0xF) + 1) << 4
+        self.width = (((self.parent.spritedata[5] & 0xF) + 1) << 4) + (4 / 1.5)
         self.aux.append(SLib.AuxiliaryTrackObject(parent, self.width, 16, SLib.AuxiliaryTrackObject.Vertical))
 
     def dataChanged(self):
         super().dataChanged()
 
         # get width and distance
-        self.width = ((self.parent.spritedata[5] & 0xF) + 1) << 4
-        if self.width == 16: self.width = 32
+        self.width = (((self.parent.spritedata[5] & 0xF) + 1) << 4) + (4 / 1.5)
+        if self.width < 20: self.width = 32 + (4 / 1.5)
 
         distance = (self.parent.spritedata[4] & 0xF) << 4
 
@@ -1540,7 +1541,7 @@ class SpriteImage_FallingPlatform(SpriteImage_WoodenPlatform):  # 50
         raw_width = self.parent.spritedata[5] & 0xF
         slow = (self.parent.spritedata[5] >> 4) & 1
 
-        self.width = (raw_width + 1) << 4
+        self.width = ((raw_width + 1) << 4) + (4 / 1.5)
         if raw_width == 0:
             # override this for the "glitchy" effect caused by length=0
             self.width = 24
@@ -1549,7 +1550,7 @@ class SpriteImage_FallingPlatform(SpriteImage_WoodenPlatform):  # 50
             if slow:
                 self.xOffset = 0
             else:
-                self.xOffset = -16 * (raw_width >> 1)
+                self.xOffset = -16 * (raw_width >> 1) - 2 / 1.5
 
         # set color
         color = (self.parent.spritedata[3] >> 4) & 3
@@ -2443,9 +2444,9 @@ class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
 
         # adjust offset since each direction is slightly different
         if direction == 0: # up
-            self.yOffset = 16
+            self.yOffset = 22 / 1.5
         elif direction == 1: # down
-            self.yOffset = -16
+            self.yOffset = -22 / 1.5
         else: # right, left
             self.yOffset = 0
 
@@ -2459,9 +2460,10 @@ class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
         # override the x offset for the "glitchy" effect caused by length 0
         if self.width in {16, 24}:
             self.width = 24
-            self.xOffset = -8
+            self.xOffset = -4
         else:
-            self.xOffset = 0
+            self.width += 4 / 1.5
+            self.xOffset = -2 / 1.5
 
         self.color = 0
 
@@ -2522,12 +2524,16 @@ class SpriteImage_LinePlatform(SpriteImage_WoodenPlatform):  # 106
 
         # length=0 becomes length=4
         if self.width == 0: self.width = 64
-
         # override this for the "glitchy" effect caused by length=0
         if self.width == 16: self.width = 24
 
         # reposition platform
-        self.xOffset = 32 - (self.width / 2)
+        self.xOffset = 32 - (self.width / 2) - (2 / 1.5)
+
+        if self.width == 0 or self.width > 24:
+            self.width += 4 / 1.5
+        else:
+            self.xOffset += 2 / 1.5
 
         color = (self.parent.spritedata[4] & 0xF0) >> 4
         if color > 1: color = 0
@@ -2965,7 +2971,7 @@ class SpriteImage_OneWayPlatform(SpriteImage_WoodenPlatform):  # 122
         super().dataChanged()
         width = self.parent.spritedata[5] & 0xF
         if width < 2: width = 1
-        self.width = width * 32 + 32
+        self.width = width * 32 + (52 / 1.5)
 
         self.xOffset = self.width * -0.5
 
@@ -3916,7 +3922,7 @@ class SpriteImage_FireChomp(SLib.SpriteImage_Static):  # 177
 class SpriteImage_ScalePlatform(SLib.SpriteImage):  # 178
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.offset = (0, -8)
+        self.offset = (0, -16 / 1.5)
         self.spritebox.shown = False
 
     @staticmethod
@@ -3944,13 +3950,13 @@ class SpriteImage_ScalePlatform(SLib.SpriteImage):  # 178
 
         ropeWidth = self.parent.ropeWidth * 16
         platformWidth = (self.parent.platformWidth + 3) * 16
-        self.width = ropeWidth + platformWidth
+        self.width = ropeWidth + platformWidth + 4
 
         maxRopeHeight = max(self.parent.ropeLengthLeft, self.parent.ropeLengthRight)
         self.height = maxRopeHeight * 16 + 19
         if maxRopeHeight == 0: self.height += 8
 
-        self.xOffset = -(self.parent.platformWidth + 3) * 8
+        self.xOffset = -(self.parent.platformWidth + 3) * 8 - (2 / 1.5)
 
     def paint(self, painter):
         super().paint(painter)
@@ -3964,22 +3970,22 @@ class SpriteImage_ScalePlatform(SLib.SpriteImage):  # 178
         ropeRight = int(self.parent.ropeLengthRight * 24 + 4)
         if self.parent.ropeLengthRight == 0: ropeRight += 12
 
-        ropeWidth = int(self.parent.ropeWidth * 24 + 8)
+        ropeWidth = int(self.parent.ropeWidth * 24 + 12)
         platformWidth = int((self.parent.platformWidth + 3) * 24)
 
-        ropeX = int(platformWidth / 2 - 3)
+        ropeX = int(platformWidth / 2 - 1)
 
-        painter.drawTiledPixmap(ropeX + 10, 0, ropeWidth - 22, ropeThickness, ImageCache['ScaleRopeH'])
+        painter.drawTiledPixmap(ropeX + 10, 0, ropeWidth - 26, ropeThickness, ImageCache['ScaleRopeH'])
 
         ropeVertImage = ImageCache['ScaleRopeV']
         painter.drawTiledPixmap(ropeX, 10, ropeThickness, ropeLeft - ropeThickness, ropeVertImage)
-        painter.drawTiledPixmap(ropeX + ropeWidth - 8, 10, ropeThickness, ropeRight - ropeThickness, ropeVertImage)
+        painter.drawTiledPixmap(ropeX + ropeWidth - 12, 10, ropeThickness, ropeRight - ropeThickness, ropeVertImage)
 
         pulleyImage = ImageCache['ScalePulley']
         painter.drawPixmap(ropeX, 0, pulleyImage)
-        painter.drawPixmap(ropeX + ropeWidth - 22, 0, pulleyImage)
+        painter.drawPixmap(ropeX + ropeWidth - 26, 0, pulleyImage)
 
-        platforms = [(0, ropeLeft), (ropeX + ropeWidth - int(platformWidth / 2) - 4, ropeRight)]
+        platforms = [(0, ropeLeft), (ropeX + ropeWidth - int(platformWidth / 2) - 9, ropeRight)]
         for x, y in platforms:
             painter.drawPixmap(x, y, ImageCache['WoodenPlatformL'])
             painter.drawTiledPixmap(x + 24, y, (platformWidth - 48), 24, ImageCache['WoodenPlatformM'])
@@ -7715,19 +7721,7 @@ class SpriteImage_MoveWhenOn(SLib.SpriteImage):  # 396
         ImageCache['MoveWhenOnM'] = SLib.GetImg('mwo_middle.png')
         ImageCache['MoveWhenOnR'] = SLib.GetImg('mwo_right.png')
         ImageCache['MoveWhenOnC'] = SLib.GetImg('mwo_circle.png')
-
-        transform90 = QtGui.QTransform()
-        transform180 = QtGui.QTransform()
-        transform270 = QtGui.QTransform()
-        transform90.rotate(90)
-        transform180.rotate(180)
-        transform270.rotate(270)
-
-        image = SLib.GetImg('sm_arrow.png', True)
-        ImageCache['SmArrowR'] = QtGui.QPixmap.fromImage(image)
-        ImageCache['SmArrowD'] = QtGui.QPixmap.fromImage(image.transformed(transform90))
-        ImageCache['SmArrowL'] = QtGui.QPixmap.fromImage(image.transformed(transform180))
-        ImageCache['SmArrowU'] = QtGui.QPixmap.fromImage(image.transformed(transform270))
+        ImageCache['MoveWhenOnCEmpty'] = SLib.GetImg('mwo_circle_empty.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -7737,17 +7731,17 @@ class SpriteImage_MoveWhenOn(SLib.SpriteImage):  # 396
         if self.raw_size == 0:
             self.xOffset = -16
             self.width = 32
+        elif self.raw_size == 1:
+            self.width = 16
         else:
-            self.xOffset = 0
-            self.width = self.raw_size * 16
+            self.xOffset = -2 / 1.5
+            self.width = self.raw_size * 16 + 4
 
-        # set direction
-        self.direction = (self.parent.spritedata[3] >> 4) % 5
+        self.height = 28 / 1.5
+        self.yOffset = -2 / 1.5
 
     def paint(self, painter):
         super().paint(painter)
-
-        direction = ("R", "L", "U", "D", None)[self.direction]
 
         if self.raw_size == 0:
             # hack for the glitchy version
@@ -7758,13 +7752,11 @@ class SpriteImage_MoveWhenOn(SLib.SpriteImage):  # 396
         else:
             painter.drawPixmap(0, 2, ImageCache['MoveWhenOnL'])
             if self.raw_size > 2:
-                painter.drawTiledPixmap(24, 2, (self.raw_size - 2) * 24, 24, ImageCache['MoveWhenOnM'])
-            painter.drawPixmap(int((self.width * 1.5) - 24), 2, ImageCache['MoveWhenOnR'])
+                painter.drawTiledPixmap(26, 2, (self.raw_size - 2) * 24, 24, ImageCache['MoveWhenOnM'])
+            painter.drawPixmap(int((self.width * 1.5) - 28), 2, ImageCache['MoveWhenOnR'])
 
         center = int((self.width / 2) * 1.5)
-        painter.drawPixmap(center - 14, 0, ImageCache['MoveWhenOnC'])
-        if direction is not None:
-            painter.drawPixmap(center - 12, 1, ImageCache['SmArrow%s' % direction])
+        painter.drawPixmap(center - 15, 0, ImageCache['MoveWhenOnCEmpty'])
 
 
 class SpriteImage_GhostHouseBox(SLib.SpriteImage):  # 397
