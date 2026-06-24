@@ -4408,12 +4408,12 @@ class SpriteImage_MGCannon(SLib.SpriteImage_Static):  # 202
         SLib.loadIfNotInImageCache('MGCannon', 'mg_cannon.png')
 
 
-class SpriteImage_MGChest(SLib.SpriteImage_StaticMultiple):  # 203
+class SpriteImage_Chest(SLib.SpriteImage_StaticMultiple):  # 203
     def __init__(self, parent):
         super().__init__(
             parent,
             1.5,
-            ImageCache['MGChest'],
+            ImageCache['Chest'],
             (-12, -11),
         )
 
@@ -4423,7 +4423,7 @@ class SpriteImage_MGChest(SLib.SpriteImage_StaticMultiple):  # 203
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MGChest', 'mg_chest.png')
+        SLib.loadIfNotInImageCache('Chest', 'chest.png')
 
     def dataChanged(self):
         pipeAlign = (self.parent.spritedata[2] >> 4) & 1
@@ -4445,10 +4445,8 @@ class SpriteImage_MGChest(SLib.SpriteImage_StaticMultiple):  # 203
 
             itemsIdx = [2, 3, 4, 5, 6, 7, 15]
             self.aux[0].image = ImageCache['BlockContents'][itemsIdx[item-2]]
-            pass
         else: # Mushroom
             self.aux[0].image = ImageCache['BlockContents'][2]
-            pass
 
         super().dataChanged()
 
@@ -9263,7 +9261,7 @@ ImageClasses = {
     200: SpriteImage_Microgoomba,
     201: SpriteImage_Icicle,
     202: SpriteImage_MGCannon,
-    203: SpriteImage_MGChest,
+    203: SpriteImage_Chest,
     204: SpriteImage_RollObjSpawner,
     205: SpriteImage_GiantBubbleNormal,
     206: SpriteImage_Zoom,
