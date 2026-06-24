@@ -2466,7 +2466,7 @@ class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
         self.color = 0
 
         # Draw a direction arrow
-        dirStr = ('Up', 'Down', 'Right', 'Left')[self.arrowDir % 3]
+        dirStr = ('Up', 'Down', 'Right', 'Left')[self.arrowDir % 4]
         self.aux[0].image = ImageCache['DirectionArrow%s' % dirStr]
         self.aux[0].setPos(int(((self.width - 16) / 2) * 1.5), 0)
 
