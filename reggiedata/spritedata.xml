@@ -2485,21 +2485,20 @@
     </dependency>
   </sprite> <!-- #202: Toad House Minigame - Cannon -->
 
-  <!-- Test 12 combined with 8 in various combinations. May be Primary Item and Secondary Items, with the Secondary Items list dependent on the Primary Item. -->
-  <sprite id="203" name="Chest" noyoshi="True" notes="A chest affected by gravity that will award some type of inventory item to the player. Note that opening a chest will complete the level with the standard exit. Keep in mind that if you allow the player to leave the vicinity of the chest before it exits the player from the level, they will be able to open it again for another item, so do not allow the player to do this." files="treasure_box.arc">
+  <sprite id="203" name="Chest" noyoshi="True" notes="A gravity-affected chest that can award inventory items. Opening one will clear the current level, however if the player leaves the vicinity of the chest, the level will not end and another item can be obtained from the chest." files="treasure_box.arc">
     <dependency notes="Requires one of these two sprites somewhere in the level (or in the Loaded Sprites list) in order to not cause the game to crash. Besides that, if you're using the chest as part of an Ambush level, [454] is required.">
       <resource sprite="432"/>
       <suggested sprite="454"/>
     </dependency>
-    <checkbox nybble="5" title="Shift Down 2 Units" comment="Shifts the chest model down by 2 units. Used in the World 6 Ambushes to align the chest with the top of the pipe tiles." />
-    <checkbox nybble="9" title="Useless Flag 9 (1)" comment="This value is read by the game, but never used for anything. Enabled on all ambushes outside of Worlds 1 and 2." />
+    <checkbox nybble="5.4" title="Shift Down 2 Units" comment="Shifts the chest model down by 2 units. Used in the World 6 Ambushes to align the chest with the top of the pipe tiles." />
+    <checkbox nybble="9.4" title="Useless Flag 9 (1)" comment="This value is read by the game, but never used for anything. Enabled on all ambushes outside of Worlds 1 and 2." />
     <list nybble="10" title="Chest Type" comment="Determines the behavior and contents of the chest.">
       <entry value="0">Default</entry>
       <entry value="1">Triggered by Ambush Controller</entry>
       <entry value="2">Contains Toad (Unused)</entry>
     </list>
-    <value nybble="8" start="3" title="Mushroom Reward Amount" comment="Determines the number of Mushrooms the chest spawns. Specifying more than 5 Mushrooms can cause glitchy visual behavior, but it still works." requirednybble="10" requiredval="1-2"/> <!-- Appears Chest Type Value 1-2 -->
-    <list nybble="12" title="Contains" comment="Determines the item in the chest. This only works with the Default Chest Type, as the other settings would just spawn Mushrooms." requirednybble="10" requiredval="0"> <!-- Appears only for Default Chests -->
+    <value nybble="8" start="3" title="Rewarded Mushrooms" comment="Determines the number of Mushrooms the chest spawns. Specifying more than 5 Mushrooms can cause glitchy visual behavior, but it still works." requirednybble="10" requiredval="1-2"/> <!-- Appears Chest Type Value 1-2 -->
+    <list nybble="12" title="Contains" comment="Determines the item contained in the chest." requirednybble="10" requiredval="0"> <!-- Appears only for Default Chests -->
       <entry value="0">Nothing</entry> <!-- 1, 9-14 is Nothing -->
       <entry value="2">Mushroom</entry>
       <entry value="3">Fire Flower</entry>
@@ -2510,7 +2509,7 @@
       <entry value="7">Star</entry>
       <entry value="15">Random</entry>
     </list>
-    <value nybble="3-4" title="Triggering Event ID" comment="The chest will only appear when the Triggering Event is 0 or is activated. It will not disappear if the Event is deactivated." idtype="Triggering Event"/>
+    <value nybble="3-4" title="Triggering Event ID" comment="The chest will only appear when the Triggering Event is 0 or is activated. It will not disappear if the Event is deactivated. This does not work for Chests activated by an Ambush Controller." idtype="Triggering Event"/>
   </sprite>
 
   <sprite id="204" name="Rolling Object Spawner" notes="A spawner that will create loose Spiked Balls or Rolling Barrels." files="iron_ball.arc;lift_taru.arc">

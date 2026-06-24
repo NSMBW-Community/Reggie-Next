@@ -4408,7 +4408,7 @@ class SpriteImage_MGCannon(SLib.SpriteImage_Static):  # 202
         SLib.loadIfNotInImageCache('MGCannon', 'mg_cannon.png')
 
 
-class SpriteImage_MGChest(SLib.SpriteImage_Static):  # 203
+class SpriteImage_MGChest(SLib.SpriteImage_StaticMultiple):  # 203
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -4417,9 +4417,40 @@ class SpriteImage_MGChest(SLib.SpriteImage_Static):  # 203
             (-12, -11),
         )
 
+        self.aux.append(SLib.AuxiliaryImage(parent, 24, 24))
+        self.aux[0].setIsBehindSprite(False)
+        self.aux[0].setPos(16, 8)
+
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('MGChest', 'mg_chest.png')
+
+    def dataChanged(self):
+        pipeAlign = (self.parent.spritedata[2] >> 4) & 1
+        if pipeAlign:
+            self.yOffset = -9
+        else:
+            self.yOffset = -11
+
+        # Render item
+        chestType = self.parent.spritedata[4] & 0xF
+        if chestType == 0:
+            item = self.parent.spritedata[5] & 0xF
+            # Hide for 'Nothing' values (or Random)
+            if item < 2 or item > 8:
+                self.aux[0].alpha = 0.0
+                return
+            else:
+                self.aux[0].alpha = 1.0
+
+            itemsIdx = [2, 3, 4, 5, 6, 7, 15]
+            self.aux[0].image = ImageCache['BlockContents'][itemsIdx[item-2]]
+            pass
+        else: # Mushroom
+            self.aux[0].image = ImageCache['BlockContents'][2]
+            pass
+
+        super().dataChanged()
 
 
 class SpriteImage_RollObjSpawner(SLib.SpriteImage_StaticMultiple):  # 204
