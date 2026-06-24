@@ -111,10 +111,12 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
     _maximum: int
     _start: int
     _increment: int
+    # Formatted like: ((raw value, num to display), ...)
+    _overrides: list
 
     valueChanged = QtCore.pyqtSignal('int')
 
-    def __init__(self, parent=None, start=0, increment=1):
+    def __init__(self, parent=None, start=0, increment=1, overrides=None):
         QtWidgets.QAbstractSpinBox.__init__(self, parent)
         self.editingFinished.connect(self.interpretText)
 
@@ -123,6 +125,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         self._maximum = 1 << 32
         self._start = start
         self._increment = increment
+        self._overrides = overrides
 
         self.setValue(self._start)
 
@@ -216,8 +219,15 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
             if val == 0:
                 self.lineEdit().setText(self.textFromValue(self._start))
             return
+        
+        textVal = (val * self._increment) + self._start
 
-        self.lineEdit().setText(self.textFromValue((val * self._increment) + self._start))
+        # Check for any value overrides
+        for rawVal, dispNum in self._overrides:
+            if val == rawVal:
+                textVal = dispNum
+
+        self.lineEdit().setText(self.textFromValue(textVal))
         self._value = val
         self.valueChanged.emit(val)
 
@@ -756,13 +766,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a spinbox
         """
 
-        def __init__(self, title, bit, max_, comment, required, _, comment2, commentAdv, start, increment, idtype, layout, row, parent):
+        def __init__(self, title, bit, max_, comment, required, _, comment2, commentAdv, start, increment, overrides, idtype, layout, row, parent):
             """
             Creates the widget
             """
             super().__init__()
 
-            self.widget = IntSpinBox(None, start, increment)
+            self.widget = IntSpinBox(None, start, increment, overrides)
             self.widget.setRange(0, max_ - 1)
             self.widget.valueChanged.connect(self.HandleValueChanged)
 
@@ -1872,7 +1882,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
 
             elif f[0] == 2:
-                nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], f[10], f[11], layout, row, self)
+                nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], f[10], f[11], f[12], layout, row, self)
 
             elif f[0] == 3:
                 nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)

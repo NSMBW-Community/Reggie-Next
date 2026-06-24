@@ -35,7 +35,9 @@
     </dependency>
     <checkbox nybble="#" title="What it does when checked." comment="Information about it." comment2="Another bit of commentary." advancedcomment="Wordy complicated information about it." idtype="ID Type etc." requirednybble="#-#, #-#" requiredval="#-#, #-#" />
     <dualbox nybble="#" title1="What it does when unchecked." title2="What it does when checked." comment="All of that stuff above here is an option."/>
-    <value nybble="#" start="Visual start index." increment="#" title="What it's for." comment="Etc."/>
+    <value nybble="#" start="Visual start index." increment="#" title="What it's for." comment="Etc.">
+      <override index="Raw value to replace." value="#"/> (Optional)
+    </value>
     <list nybble="#" title="What it's for." comment="Etc.">
       <entry value="#">Name</entry>
     </list>

@@ -574,7 +574,13 @@ class SpriteDefinition:
             elif field.tag == 'value':
                 bit, max_ = self.parseBits(attribs.get("nybble"))
 
-                fields.append((2, attribs['title'], bit, max_, comment, required, advanced, comment2, advancedcomment, start, increment, idtype))
+                overrides = []
+                for o in field:
+                    if o.tag != 'override': continue
+
+                    overrides.append((int(o.attrib['index']), int(o.attrib['value'])))
+
+                fields.append((2, attribs['title'], bit, max_, comment, required, advanced, comment2, advancedcomment, start, increment, overrides, idtype))
 
             elif field.tag == 'bitfield':
                 startbit = int(attribs['startbit'])
