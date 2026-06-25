@@ -1385,6 +1385,20 @@ class SpriteImage_NewerMegaGoomba(SLib.SpriteImage_StaticMultiple):  # 199
         super().dataChanged()
 
 
+class SpriteImage_Chest(SLib.SpriteImage_Static):  # 203
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            1.5,
+            ImageCache['Chest'],
+            (-12, -11),
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('Chest', 'chest.png')
+
+
 class SpriteImage_Topman(SLib.SpriteImage_Static):  # 210
     def __init__(self, parent):
         super().__init__(
@@ -2388,6 +2402,7 @@ ImageClasses = {
     195: SpriteImage_NewerHuckitCrab,
     198: SpriteImage_NewerGiantGoomba,
     199: SpriteImage_NewerMegaGoomba,
+    203: SpriteImage_Chest,
     207: SpriteImage_QBlock,
     208: SpriteImage_QBlockUnused,
     209: SpriteImage_BrickBlock,
