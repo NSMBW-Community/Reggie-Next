@@ -1065,10 +1065,8 @@ class SpriteImage_ToadHouseBalloon(SLib.SpriteImage_StaticMultiple):  # 411, 412
                     SLib.GetImg('mg_house_balloon_' + handleFileStr + str(num) + '.png')
 
     def dataChanged(self):
-
         self.image = ImageCache['ToadHouseBalloon' + ('Handle' if self.hasHandle else '') + str(self.livesNum)]
-
-        self.xOffset = 8 - (self.image.width() / 3)
+        self.xOffset = -13
 
         super().dataChanged()
 
@@ -7948,13 +7946,16 @@ class SpriteImage_ToadHouseBalloonUsed(SpriteImage_ToadHouseBalloon):  # 412
 
         self.livesNum = (self.parent.spritedata[4] >> 4) & 3
         self.hasHandle = not ((self.parent.spritedata[5] >> 4) & 1)
+        shiftPos = self.parent.spritedata[3] & 1
+        posAdj = 8 if shiftPos else 0
 
         super().dataChanged()
 
+        self.xOffset = -13 + posAdj
         if self.hasHandle:
-            self.yOffset = 12
+            self.yOffset = 12 - posAdj
         else:
-            self.yOffset = 16 - (self.image.height() / 3)
+            self.yOffset = 16 - (self.image.height() / 3) - posAdj
 
 
 class SpriteImage_WendyRing(SLib.SpriteImage_Static):  # 413
