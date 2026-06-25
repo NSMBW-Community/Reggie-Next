@@ -936,7 +936,7 @@
     </list>
   </sprite> <!-- #166: Snake Block (Ice) -->
 
-  <sprite id="167" name="Big Shy Guy" notes="" files="shyguy.arc">
+  <sprite id="167" name="Big Shy Guy" files="shyguy.arc">
     <list nybble="5" title="Size" comment="Sizes share no functional difference. This is separate from the size hacks.">
       <entry value="0">Big</entry>
       <entry value="1">Mega</entry>
@@ -988,7 +988,7 @@
     <value nybble="8" start="1" title="Distance" comment="This determines how far the Magic Platform will be moved when the Triggering Event is activated." requirednybble="2.4-4.4,5.4" requiredval="1-255, 0"/>
   </sprite> <!-- #169: Magic Platform -->
 
-  <sprite id="175" name="Flying ? Block" notes="" noyoshi="True" files="block_pata.arc">
+  <sprite id="175" name="Flying ? Block" noyoshi="True" files="block_pata.arc">
     <list nybble="9.3-9.4" title="Color">
       <entry value="0">Overworld (Yellow)</entry>
       <entry value="1">Underground (Blue)</entry>
@@ -1016,7 +1016,7 @@
     <checkbox nybble="5.4" title="Does Not Despawn" comment="When enabled, the hit block will not despawn when off-screen. Used in retail 06-05 A2."/>
   </sprite> <!-- #175: Flying ? Block -->
 
-  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" notes="" files="pukupuku.arc">
+  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" files="pukupuku.arc">
     <spritetex nybble="12" title="Style" comment="This determines the style of the spawned fish.">
       <entry value="0">Cheep Cheep</entry>
       <entry value="1">Fishbones</entry>
@@ -2163,7 +2163,7 @@
     </list>
   </sprite> <!-- #350: Fireball Laser -->
 
-  <sprite id="351" name="Shy Guy" notes="" files="shyguy.arc;iron_ball.arc">
+  <sprite id="351" name="Shy Guy" files="shyguy.arc;iron_ball.arc">
     <list nybble="5" title="Type" notes="Type 9 and 10 spawn T-posed Shy Guys that won't move until hit. Otherwise, they function the same.">
       <entry value="0">Walker (Walks Off Ledges)</entry>
       <entry value="1">Pacer (Turns Around At Ledges)</entry>
@@ -2324,7 +2324,7 @@
     <checkbox nybble="12.4" title="Longer Stuns" comment="When enabled, the stun duration will be longer."/>
   </sprite> <!-- #410: Giga Goomba -->
 
-  <sprite id="414" name="Spike/Stone Spike" notes="" sizehacks="True" files="gabon_rock.arc;gabon.arc">
+  <sprite id="414" name="Spike/Stone Spike" sizehacks="True" files="gabon_rock.arc;gabon.arc">
     <spritetex nybble="6" title="Color" requirednybble="12.4" requiredval="0">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>

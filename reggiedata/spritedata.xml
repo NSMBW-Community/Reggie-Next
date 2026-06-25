@@ -1011,7 +1011,7 @@
     <checkbox nybble="11.4" title="Unknown Flag 11 (1)" comment="Possibly determines behavior relating to [159]. ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #91: Auto-Scrolling Controller -->
 
-  <sprite id="92" name="Bill Blaster" notes="" files="killer_houdai.arc;killer.arc">
+  <sprite id="92" name="Bill Blaster" files="killer_houdai.arc;killer.arc">
     <value nybble="11" start="2" title="Height"/>
     <list nybble="10" title="Shooting Direction">
       <entry value="0">Towards Player</entry>
@@ -1029,7 +1029,7 @@
     <value nybble="6" title="Homing Bullet Bill Limit" comment="The Blaster will not create new Homing Bullet Bills unless the amount currently on the screen is less than this number. Value 0 functions the same as Value 1." requirednybble="12.4"/>
   </sprite> <!-- #92: Bill Blaster -->
 
-  <sprite id="93" name="Banzai Bill Blaster" notes="" files="killer_mag_houdai.arc;killer_mag.arc">
+  <sprite id="93" name="Banzai Bill Blaster" files="killer_mag_houdai.arc;killer_mag.arc">
     <list nybble="7" title="Camera Influence" comment="This determines how the Banzai Bills move relative to the camera." requirednybble="12.4" requiredval="0">
       <entry value="0">Unaffected by Camera</entry>
       <entry value="1">Affected by All Camera Movements</entry>
@@ -1204,7 +1204,7 @@
     <value nybble="12.2-12.4" start="2" title="Height" comment="This determines how tall the Pokey is. One piece will be the head, and every other piece is a body piece." comment2="The height value also affects what Yoshi lays when consumed whole."/>
   </sprite> <!-- #105: Pokey -->
 
-  <sprite id="106" name="Line Controlled Basic Platform" notes="" files="lift_han_wood.arc;lift_han_stone.arc;boss_koopa_lift.arc;boss_koopa_lift_down.arc">
+  <sprite id="106" name="Line Controlled Basic Platform" files="lift_han_wood.arc;lift_han_stone.arc;boss_koopa_lift.arc;boss_koopa_lift_down.arc">
     <dualbox nybble="9.4" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform."/>
     <value nybble="12" title="Width" comment="This determines the width of the platform." comment2="This value needs to be 2 or greater."/>
     <dualbox nybble="8.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the platform will move based on the Line that it is connected to."/>
@@ -1487,7 +1487,7 @@
   <sprite id="133" name="Wobble Rock Platform" noyoshi="True" notes="An 'unstable' platform that requires the player to balance it once touching it in order to keep it from completely falling." files="lift_guraIwa.arc">
   </sprite> <!-- #133: Wobble Rock Platform -->
 
-  <sprite id="134" name="Crowber" notes="" files="crow.arc">
+  <sprite id="134" name="Crowber" files="crow.arc">
   </sprite> <!-- #134: Crowber -->
 
   <sprite id="135" name="Unstable Hanging Chained Platform" noyoshi="True" notes="An 'unstable' large platform that will fall while a player stands on it, as well as tilt and wobble. The falling distance is 2½ blocks for the first player, and 1½ blocks more for additional players." files="lift_guraYuka.arc">
@@ -1499,7 +1499,7 @@
     </list>
   </sprite> <!-- #135: Unstable Hanging Chained Platform -->
 
-  <sprite id="136" name="Rotating Bill Blaster" notes="" files="killer_rot_houdai.arc;killer.arc">
+  <sprite id="136" name="Rotating Bill Blaster" files="killer_rot_houdai.arc;killer.arc">
     <checkbox nybble="5.4" title="Randomize Fire Delay"/>
     <checkbox nybble="5.2" title="Fire while Offscreen"/>
     <value nybble="8.2-8.4" start="1" title="Number of Cannon Pieces" comment="The bottom piece, starting at the Sprite's placement, corresponds to the last checkbox for each option below, and the top piece (when set to 7) will correspond to the first checkbox below."/>
@@ -2141,7 +2141,7 @@
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite>
 
-  <sprite id="166" name="Snake Block (Ice)" notes="" files="block_snake.arc;block_snake_ice.arc">
+  <sprite id="166" name="Snake Block (Ice)" files="block_snake.arc;block_snake_ice.arc">
   <dependency notes="The sprite snaps to the Path Node location. From Node 0 to Node 1, it must be a straight horizontal line, and it must be at least as long as the Snake Block itself. Straight lines and exact 45° angles are recommended, as after each Node, the Snake Block will navigate in a 1-by-1 zigzag until it reaches the height of the next Node before going straight."/>
     <checkbox nybble="7.4" title="Useless Flag 7 (1)" comment="This value is read by the game, but never used for anything. Used in retail 03-24 A1."/>
     <value nybble="11" title="Path ID" idtype="Path"/>
@@ -2220,7 +2220,7 @@
     </list>
   </sprite> <!-- #174: (Unused) One Way Swinging Gate -->
 
-  <sprite id="175" name="Flying ? Block" notes="" noyoshi="True" files="block_pata.arc">
+  <sprite id="175" name="Flying ? Block" noyoshi="True" files="block_pata.arc">
     <list nybble="9.3-9.4" title="Color">
       <entry value="0">Overworld (Yellow)</entry>
       <entry value="1">Underground (Blue)</entry>
@@ -2287,7 +2287,7 @@
   <sprite id="180" name="Cheep-Chomp" notes="A rather large Cheep enemy that is capable of swallowing the player whole, killing them instantly regardless of their power-up state. Star excluded, of course." files="bakubaku.arc">
   </sprite> <!-- #180: Cheep-Chomp -->
 
-  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" notes="" files="pukupuku.arc">
+  <sprite id="181" name="Cheep Cheep Spawn Area - Jumping" files="pukupuku.arc">
     <value nybble="8-9" title="Location ID" comment="The Cheep Cheep will spawn from below the camera line, attacking the player only while they are within this location." idtype="Location"/>
   </sprite> <!-- #181: Cheep Cheep Spawn Area - Jumping -->
 
@@ -3040,7 +3040,7 @@
     <value nybble="12" title="Collection ID" comment="Links this Coin to 459" idtype="Collection"/>
   </sprite> <!-- #237: Blue P-Switch Coin -->
 
-  <sprite id="238" name="Foo" notes="" files="huhu.arc;env_mist.arc">
+  <sprite id="238" name="Foo" files="huhu.arc;env_mist.arc">
     <checkbox nybble="12.4" title="Does Not Create Clouds"/>
   </sprite> <!-- #238: Foo, the Cloud Blower -->
 
@@ -3555,7 +3555,7 @@
     <value nybble="9-10" title="&quot;Jump to&quot; Node" comment="This determines which Node along the Path the test platform will return to after reaching the end of the Path." requirednybble="8.3-8.4" requiredval="1"/> <!-- Appears if Jump to Node is selected -->
   </sprite> <!-- #287: (Unused) Path Controlled Ice Block -->
 
-  <sprite id="288" name="Rolling Barrel" notes="" files="lift_taru.arc">
+  <sprite id="288" name="Rolling Barrel" files="lift_taru.arc">
     <list nybble="12.3-12.4" title="Intial Rolling Direction" comment2="Value 3 is the same as value 0.">
       <entry value="0">Towards closest player</entry>
       <entry value="1">Left</entry>
@@ -3658,7 +3658,7 @@
   </sprite> <!-- #297: Spine Coaster -->
 
   <!-- All Cannonball sprites need comprehensive testing on the Camera variable, Nybble 7. Test with auto-scrolling controller, zoom controller, and 399 Airship Rocking -->
-  <sprite id="298" name="Long Cannonball Cannon" notes="" files="houdai.arc;houdai_ball.arc">
+  <sprite id="298" name="Long Cannonball Cannon" files="houdai.arc;houdai_ball.arc">
     <list nybble="7" title="Camera Influence" comment="This determines how the cannonball moves relative to the camera.">
       <entry value="0">Unaffected by Camera</entry>
       <entry value="1">Affected by All Camera Movements</entry>
@@ -4112,19 +4112,19 @@
     </list>
   </sprite> <!-- #335: School of Cheep Cheeps -->
 
-  <sprite id="336" name="Wendy Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." files="wendy.arc">
+  <sprite id="336" name="Wendy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." files="wendy.arc">
     <dependency notes="Requires the Tower Boss Controller to start moving on her own and complete the level after she's beat. Otherwise, she will start moving when damaged.">
       <suggested sprite="363"/>
     </dependency>
   </sprite> <!-- #336: Wendy Koopa -->
 
-  <sprite id="337" name="Iggy Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." files="iggy.arc;boss_ef_attack.arc">
+  <sprite id="337" name="Iggy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." files="iggy.arc;boss_ef_attack.arc">
     <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged.">
       <suggested sprite="363"/>
     </dependency>
   </sprite> <!-- #337: Iggy Koopa -->
 
-  <sprite id="338" name="Rising/Falling Bill Blaster" notes="" files="killer_houdai.arc;killer.arc">
+  <sprite id="338" name="Rising/Falling Bill Blaster" files="killer_houdai.arc;killer.arc">
     <value nybble="12" start="2" title="Height at Shot 1"/>
     <value nybble="11" start="2" title="Height at Shot 2"/>
     <value nybble="10" title="Rising/Falling Speed" comment="Values 0-3 are each very different from each other, while Values 4+ have very minimal increases in speed beyond that."/>
@@ -4155,7 +4155,7 @@
     <value nybble="10" title="Rising / Lowering Speed" comment="This determines how quickly the Pipe will move when switching between Height 1 and Height 2." comment2="Values 0-3 are each very different from each other, while Values 4+ have very minimal increases in speed beyond that."/>
   </sprite> <!-- #339: Moving Pipe - Facing Up -->
 
-  <sprite id="340" name="Lemmy Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Lemmy's balls won't push Yoshi aside, and Yoshi will slide down if standing on one. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." files="lemmy.arc">
+  <sprite id="340" name="Lemmy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Lemmy's balls won't push Yoshi aside, and Yoshi will slide down if standing on one. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." files="lemmy.arc">
     <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged.">
       <suggested sprite="363"/>
     </dependency>
@@ -4170,7 +4170,7 @@
     <checkbox nybble="12.4" title="Frozen" comment="When enabled, the Muncher will be frozen. It can be thawed with a fireball. The ice collision matches with off-grid frozen Munchers until they are melted."/>
   </sprite> <!-- #342: Muncher -->
 
-  <sprite id="343" name="Line Controlled Fuzzy" noyoshi="True" notes="" files="chorobon.arc">
+  <sprite id="343" name="Line Controlled Fuzzy" noyoshi="True" files="chorobon.arc">
     <dependency notes="Use the Group Controller [236] for spawn synchronization with other Group controlled sprites.">
       <suggested sprite="236"/>
     </dependency>
@@ -4189,7 +4189,7 @@
     </list>
   </sprite> <!-- #343: Line Controlled Fuzzy -->
 
-  <sprite id="344" name="Morton Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." files="morton.arc;boss_ef_attack.arc">
+  <sprite id="344" name="Morton Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." files="morton.arc;boss_ef_attack.arc">
     <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged. Additionally, the Morton fight allows placement of [480] Morton's Skewer, a much more timing-sensitive spiked pillar.">
       <suggested sprite="363"/>
       <suggested sprite="480"/>
@@ -4218,13 +4218,13 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #346: Rotation Controlled Hanging Chain Platform -->
 
-  <sprite id="347" name="Roy Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." files="roy.arc;boss_ef_attack.arc">
+  <sprite id="347" name="Roy Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." files="roy.arc;boss_ef_attack.arc">
     <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged.">
       <suggested sprite="363"/>
     </dependency>
   </sprite> <!-- #347: Roy Koopa -->
 
-  <sprite id="348" name="Ludwig von Koopa" notes="" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." files="ludwig.arc;boss_ef_attack.arc">
+  <sprite id="348" name="Ludwig von Koopa" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." files="ludwig.arc;boss_ef_attack.arc">
     <dependency notes="Requires the Tower Boss Controller to start moving on his own and complete the level after he's beat. Otherwise, he will start moving when damaged.">
       <suggested sprite="363"/>
     </dependency>
@@ -4475,7 +4475,7 @@
     <value nybble="3.2-4.4" title="Triggering Event ID" comment="The Flashlight will be turned on when this Event ID is activated. The Flashlight can't be deactivated." requirednybble="9.4" requiredval="1" idtype="Triggering Event"/> <!-- Appears only if Use Flashlight and Event Activated Flashlight are active -->
   </sprite> <!-- #368: Path Controlled Flashlight Raft -->
 
-  <sprite id="369" name="Cooligan" notes="" noyoshi="True" yoshinotes="Yoshi cannot jump on Cooligans, though he can use the stomp attack and tongue attack to defeat them." files="penguin2.arc">
+  <sprite id="369" name="Cooligan" noyoshi="True" yoshinotes="Yoshi cannot jump on Cooligans, though he can use the stomp attack and tongue attack to defeat them." files="penguin2.arc">
     <list nybble="12" title="Starting Direction">
       <entry value="0">Towards Mario</entry>
       <entry value="1">Right</entry>
@@ -4624,8 +4624,8 @@
   </sprite> <!-- #381: Lemmy Koopa - Castle Boss -->
 
   <sprite id="382" name="Screw Mushroom Platform without Bolt" notes="A mechanical biological hybrid of a mushroom platform that can be magically controlled by nearby similar platforms with Bolts." files="lift_spin_kinoko.arc;bolt.arc">
-    <dependency notes="">
-      <required sprite="172"/>
+    <dependency notes="The platform cannot be moved without an instance of [172] with the same Mushroom ID.">
+      <suggested sprite="172"/>
     </dependency>
     <value nybble="5" title="Mushroom ID" comment="This pairs the platform to a matching Mushroom Platform with a Bolt." comment2="You cannot have more than one pair of Screw Platforms with the same Mushroom ID." idtype="Mushroom"/>
     <dualbox nybble="6.4" title1="Moves Up" title2="Moves Down" comment="This determines which direction the platform will move when the matching Bolt is spun."/>
@@ -5496,7 +5496,7 @@
     <dualbox nybble="12.4" title1="Spikes on Right" title2="Spikes on Left" comment="This determines which side of the block has spikes."/>
   </sprite> <!-- #462: Enormous Tower Block with Spikes -->
 
-  <sprite id="463" name="Effect - Glare" notes="" files="hikari.arc">
+  <sprite id="463" name="Effect - Glare" files="hikari.arc">
   </sprite> <!-- #463: Effect - Glare -->
 
   <sprite id="464" name="Climbable Swinging Vine/Chain" noyoshi="True" notes="A swinging vine or chain that can be grabbed onto by the player and made to swing left and right. This does not count as a climbing animation for the IF Event Controller. It counts as being in the air." files="tarzantsuta.arc">
