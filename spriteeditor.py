@@ -1755,7 +1755,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         # object files
         self.relatedObjFilesButton.setVisible(sprite.relatedObjFiles is not None)
-        self.relatedObjFiles = sprite.relatedObjFiles
+        if sprite.relatedObjFiles is not None:
+            self.relatedObjFiles = sprite.relatedObjFiles
+
+            if sprite.notes is None:
+                self.com_more.setVisible(False)
+                self.com_extra.setVisible(False)
+                self.ShowRelatedObjFilesTooltip()
 
         self.asm.setVisible(sprite.asm is True)
 
@@ -1843,6 +1849,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         if sprite.dependencynotes is not None:
             self.dependencyNotes = sprite.dependencynotes
+
+            if sprite.notes is None:
+                self.com_more.setVisible(False)
+                self.com_extra.setVisible(False)
+                self.ShowDependencies()
 
         # yoshi info
         if sprite.noyoshi is True:
@@ -2108,6 +2119,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.com_deplist_w.setVisible(False)
         self.com_dep.setText(globals_.trans.string('SpriteDataEditor', 18))
         self.com_dep.setVisible(self.com_deplist.count() > 0)
+        self.com_box.setVisible(True)
 
     def DependencyToggle(self):
         """
