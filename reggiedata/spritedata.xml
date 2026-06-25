@@ -2478,9 +2478,9 @@
     </list>
   </sprite> <!-- #201: Icicle -->
 
-  <sprite id="202" name="Toad House Minigame - Cannon" notes="" files="MG_remo_cannon.arc">
+  <sprite id="202" name="Toad House Minigame - Cannon" files="MG_remo_cannon.arc">
     <dependency notes="Players shot out of the cannon will pass through all terrain, leave the Zone, and softlock without the controller.">
-      <suggested sprite="429"/>
+      <required sprite="429"/>
       <suggested sprite="412"/>
     </dependency>
   </sprite> <!-- #202: Toad House Minigame - Cannon -->
@@ -4991,7 +4991,7 @@
       <required sprite="429"/>
     </dependency>
     <value nybble="9" start="1" title="Number of Lives"/>
-    <checkbox nybble="11.4" title="Alternate Idle Animation" comment="When enabled, the balloon will use the alternate idle animation for balloons that do not have an attached handle."/>
+    <checkbox nybble="11.4" title="Alternate Idle Animation" comment="When enabled, the balloon will the animation meant for balloons without an attached handle."/>
   </sprite> <!-- #411: (Unused) Toad House Minigame - Lives Balloon -->
 
   <sprite id="412" name="Toad House Minigame - Lives Balloon" notes="A colored balloon with a number on it that will award extra lives when shot by a Toad Cannon." advancednotes="This sprite is actually just the handle that manages following along the Line objects, the balloon itself is sprite [411] which is automatically spawned by this sprite." files="MG_balloon.arc">
@@ -4999,8 +4999,8 @@
       <required sprite="202"/>
       <required sprite="429"/>
     </dependency>
-    <checkbox nybble="11.4" title="No Handle" comment="When enabled, the balloon will not have a handle." comment2="Only balloons with handles can have a type other than 'Normal'."/>
-    <list nybble="10.3-10.4" title="Type" comment="This determines the secondary movement effect of the balloon." comment2="A bobbing balloon will move up and down with its handle, a swaying balloon will swing left and right, and a spinning balloon will spin around in a circle." requirednybble="11.4" requiredval="0">
+    <checkbox nybble="11.4" title="No Handle" comment="When enabled, the balloon will not have a handle."/>
+    <list nybble="10.3-10.4" title="Movement Type" comment="This determines the secondary movement effect of the balloon." comment2="A bobbing balloon will move up and down with its handle, a swaying balloon will swing left and right, and a spinning balloon will spin around in a circle." requirednybble="11.4" requiredval="0">
       <entry value="0">Normal</entry>
       <entry value="1">Bobbing</entry>
       <entry value="2">Swaying</entry>
@@ -5008,7 +5008,7 @@
     </list> <!-- Appears only if No Handle is not set -->
     <value nybble="9" start="1" title="Number of Lives"/>
     <dualbox nybble="12.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the block will move based on the Line that it is connected to."/>
-    <checkbox nybble="8.4" title="Positional Offset" comment="If set, the balloon is moved half a block to the right and half a block to the top." />
+    <checkbox nybble="8.4" title="Shift Up and Right"/>
   </sprite> <!-- #412: Toad House Minigame - Lives Balloon -->
 
   <sprite id="413" name="Bouncing Wendy Ring" noyoshi="True" notes="A stand-alone version of the bouncing ring used in the Wendy Koopa boss fights." files="wendy.arc">
@@ -5208,16 +5208,16 @@
     <value nybble="11-12" title="Panel ID" comment="This determines the ID of the panel for the purposes of the minigame controller." comment2="See Dependency Notes for information on setting this up, or reference a retail 0X-27 level." idtype="Panel"/>
   </sprite> <!-- #428: Toad House Minigame - Flip Panel -->
 
-  <sprite id="429" name="Toad House Minigame - Cannon Controller" noyoshi="True" notes="This controls the minigame functionality of the Cannon minigame for extra lives found in Toad Houses.">
-    <dependency notes="This must be included with a proper Cannon balloon room in order for the minigame to function correctly.">
+  <sprite id="429" name="Toad House Minigame - Cannon Controller" noyoshi="True" notes="This controls the functionality of the 1-Up Blast minigame found in Toad Houses.">
+    <dependency notes="This must be included with the other 1-Up Blast sprites in order for the minigame to function correctly.">
       <required sprite="202"/>
       <required sprite="412"/>
       <suggested sprite="436"/>
     </dependency>
   </sprite> <!-- #429: Toad House Minigame - Cannon Controller -->
 
-  <sprite id="430" name="Toad House Minigame - Flip Panel Controller" noyoshi="True" notes="This controls the minigame functionality of the Flip Panel minigame for items found in Toad Houses.">
-    <dependency notes="This must be included with a proper Flip Panel room in order for the minigame to function correctly.">
+  <sprite id="430" name="Toad House Minigame - Flip Panel Controller" noyoshi="True" notes="This controls the functionality of the Power-Up Panels minigame found in Toad Houses.">
+    <dependency notes="This must be included with the other Power-Up Panels sprites in order for the minigame to function correctly.">
       <required sprite="428"/>
       <suggested sprite="436"/>
     </dependency>
