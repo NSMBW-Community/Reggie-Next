@@ -4453,13 +4453,13 @@
 
   <!-- Awaiting results from Collision Tests and Multiplayer Test -->
   <sprite id="367" name="Line Controlled Spinning Pink Mushroom Block" notes="A large mushroom block that automatically rotates from its center point and will move along Line objects after the player touches it." files="cube_kinoko.arc">
-    <dependency notes="Line objects are required for this sprite to function. It does not interact with other terrain, and will instead continue to follow the Line guide it is connected to. As with all Line controlled sprites, it will connect to a new Line guide when it falls off of its current one, if it touches one. [???]"/>
+    <dependency notes="Line objects are required for this sprite to function. It does not interact with other terrain, and will instead continue to follow the Line guide it is connected to. As with all Line controlled sprites, it can fall off the current one and connect to a new Line guide."/>
     <value nybble="3.2-4.4" title="Target Event ID" comment="When the mushroom block is stepped on by a player, in addition to starting to move, the Target Event ID will be activated." idtype="Target Event"/>
-    <dualbox nybble="12.4" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the mushroom block will rotate in."/>
-    <value nybble="9" title="Rotation Speed" comment="This determines the speed the mushroom block will rotate." comment2="The mushroom block will always rotate even at a speed value of 0."/>
-    <value nybble="10" title="Travel Speed" comment="This determines the speed the mushroom block will travel along Line objects."/>
-    <checkbox nybble="6.4" title="Bounce Back" comment="When enabled, the mushroom block will reverse its course along the Line guide when it reaches an end point." comment2="The mushroom block will always rotate in the same direction, even when traveling in reverse."/>
-    <value nybble="11" title="Useless Value 11" comment="Used by Nintendo in Retail 2-06 A1 as value 7, however the game never reads this value."/>
+    <dualbox nybble="12.4" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise"/>
+    <value nybble="9" title="Rotation Speed" comment="The mushroom block will always rotate even at a speed value of 0."/>
+    <value nybble="10" title="Travel Speed"/>
+    <checkbox nybble="8.4" title="Reverse" comment="When enabled, the mushroom block will reverse its course along the Line guide when it reaches an end point. It will always rotate in the same direction, even when traveling in reverse."/>
+    <value nybble="11" title="Useless Value 11" comment="Used by Nintendo in Retail 02-06 A1 as value 7, however the game never reads this value."/>
   </sprite> <!-- #367: Line Controlled Spinning Pink Mushroom Block -->
 
   <sprite id="368" name="Lighting - Path Controlled Flashlight Raft" notes="A floating Raft that travels slowly to the right, or follows along an assigned Path. It also has a flashlight that produces a cone of light on both sides that can be controlled by tilting the controller. It is activated when all players land on it." files="boat_light_wood.arc;Mask_flashlight.arc">
