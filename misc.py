@@ -1957,7 +1957,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 path = Path(1, scene, loops=True)
 
                 for x, y in ((13, 5), (18, 5), (18, 9), (13, 9)):
-                    path.add_node(x * 16, y * 16)
+                    path.add_node(x * 16, y * 16, add_to_list=False)
 
                 # Empty comment at (2, 3)
                 comment = CommentItem(2 * 16, 3 * 16, "")
