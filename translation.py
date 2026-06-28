@@ -412,6 +412,12 @@ class ReggieTranslation:
             'MainWindow': {
                 0: '[unsaved]',
                 1: 'You\'re trying to paste over 300 items at once.[br]This may take a while (depending on your computer speed), are you sure you want to continue?',
+                2: 'Entrance Limit Reached',
+                3: 'You cannot have more than 256 entrances in an area.',
+                4: 'Max Location ID Reached',
+                5: 'You cannot have a location with an ID greater than 255. You can have multiple locations with the same ID.',
+                6: 'Path Limit Reached',
+                7: 'You cannot have more than 256 paths in an area.',
             },
             'Menubar': {
                 0: '&File',

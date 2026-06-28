@@ -363,6 +363,12 @@
 	<section id="MainWindow">
 		<string id="0">[unsaved]</string>
 		<string id="1">You're trying to paste over 300 items at once.[br]This may take a while (depending on your computer speed), are you sure you want to continue?</string>
+		<string id="2">Entrance Limit Reached</string>
+		<string id="3">You cannot have more than 256 entrances in an area.</string>
+		<string id="4">Max Location ID Reached</string>
+		<string id="5">You cannot have a location with an ID greater than 255. You can have multiple locations with the same ID.</string>
+		<string id="6">Path Limit Reached</string>
+		<string id="7">You cannot have more than 256 paths in an area.</string>
 	</section>
 	<section id="Menubar">
 		<string id="0">&amp;File</string>

@@ -91,7 +91,7 @@ from misc import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, FilesAreMiss
 from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import GameDefMenu, LoadGameDef
-from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem
+from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem, Path
 from dialogs import AutoSavedInfoDialog, DiagnosticToolDialog, ScreenCapChoiceDialog, AreaChoiceDialog, ObjectTypeSwapDialog, ObjectTilesetSwapDialog, ObjectShiftDialog, MetaInfoDialog, AboutDialog, CameraProfilesDialog
 from background import BGDialog
 from zones import ZonesDialog
@@ -1684,66 +1684,64 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         self.undoStack.redo()
 
-    def Cut(self):
+    def CopyOrCut(self, cutAction):
         """
-        Cuts the selected items
+        Copies or cuts the selected items
         """
-        self.SelectionUpdateFlag = True
         selitems = self.scene.selectedItems()
-        self.scene.clearSelection()
+        if cutAction:
+            self.SelectionUpdateFlag = True
+            self.scene.clearSelection()
 
         if selitems:
             clipboard_o = []
             clipboard_s = []
+            clipboard_e = []
+            clipboard_l = []
+            clipboard_p = []
             ii = isinstance
-            type_obj = ObjectItem
-            type_spr = SpriteItem
 
             for obj in selitems:
-                if ii(obj, type_obj):
-                    obj.delete()
-                    obj.setSelected(False)
-                    self.scene.removeItem(obj)
+                if ii(obj, ObjectItem):
                     clipboard_o.append(obj)
-                elif ii(obj, type_spr):
+                elif ii(obj, SpriteItem):
+                    clipboard_s.append(obj)
+                elif ii(obj, EntranceItem):
+                    clipboard_e.append(obj)
+                elif ii(obj, LocationItem):
+                    clipboard_l.append(obj)
+                elif ii(obj, PathItem):
+                    clipboard_p.append(obj)
+
+                if cutAction:
                     obj.delete()
                     obj.setSelected(False)
                     self.scene.removeItem(obj)
-                    clipboard_s.append(obj)
 
-            if clipboard_o or clipboard_s:
-                SetDirty()
-                self.actions['cut'].setEnabled(False)
+            if clipboard_o or clipboard_s or clipboard_e or clipboard_l or clipboard_p:
+                if cutAction:
+                    SetDirty()
+                    self.actions['cut'].setEnabled(False)
                 self.actions['paste'].setEnabled(True)
-                self.clipboard = self.encodeObjects(clipboard_o, clipboard_s)
+                self.clipboard = self.encodeObjects(clipboard_o, clipboard_s, clipboard_e, clipboard_l, clipboard_p)
                 self.systemClipboard.setText(self.clipboard)
 
-        self.levelOverview.update()
-        self.SelectionUpdateFlag = False
-        self.ChangeSelectionHandler()
+        if cutAction:
+            self.levelOverview.update()
+            self.SelectionUpdateFlag = False
+            self.ChangeSelectionHandler()
+
+    def Cut(self):
+        """
+        Cuts the selected items
+        """
+        self.CopyOrCut(True)
 
     def Copy(self):
         """
         Copies the selected items
         """
-        selitems = self.scene.selectedItems()
-        if selitems:
-            clipboard_o = []
-            clipboard_s = []
-            ii = isinstance
-            type_obj = ObjectItem
-            type_spr = SpriteItem
-
-            for obj in selitems:
-                if ii(obj, type_obj):
-                    clipboard_o.append(obj)
-                elif ii(obj, type_spr):
-                    clipboard_s.append(obj)
-
-            if clipboard_o or clipboard_s:
-                self.actions['paste'].setEnabled(True)
-                self.clipboard = self.encodeObjects(clipboard_o, clipboard_s)
-                self.systemClipboard.setText(self.clipboard)
+        self.CopyOrCut(False)
 
     def Paste(self):
         """
@@ -1752,24 +1750,61 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if self.clipboard is not None:
             self.placeEncodedObjects(self.clipboard)
 
-    def encodeObjects(self, clipboard_o, clipboard_s):
+    def encodeObjects(self, clipboard_o, clipboard_s, clipboard_e=None, clipboard_l=None, clipboard_p=None):
         """
-        Encode a set of objects and sprites into a string
+        Encode a set of level items into a string
         """
         convclip = ['ReggieClip']
 
-        # get objects
+        # Objects
         clipboard_o.sort(key=lambda x: x.zValue())
 
         for item in clipboard_o:
             convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
             item.tileset, item.type, item.layer, item.objx, item.objy, item.width, item.height))
 
-        # get sprites
+        # Sprites
         for item in clipboard_s:
             data = item.spritedata
             convclip.append('1:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d' % (
             item.type, item.objx, item.objy, data[0], data[1], data[2], data[3], data[4], data[5], data[7]))
+
+        # Entrances
+        if clipboard_e is not None:
+            for item in clipboard_e:
+                convclip.append('2:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d' % (
+                item.objx, item.objy, item.entid, item.destarea, item.destentrance, item.enttype, item.entzone,
+                item.entsettings, item.entlayer, item.entpath, item.leave_level, item.cpdirection))
+
+        # Locations
+        if clipboard_l is not None:
+            for item in clipboard_l:
+                convclip.append('3:%d:%d:%d:%d:%d' % (
+                item.id, item.objx, item.objy, item.width, item.height))
+
+        # Path Nodes
+        clipboard_p.sort(key=lambda x: (x.pathid, x.nodeid))
+
+        if clipboard_p is not None:
+            currPathID = 0
+
+            for item in clipboard_p:
+                # Get parent path
+                path = None
+                for p in globals_.Area.paths:
+                    if item.pathid == p._id:
+                        path = p
+                        break
+
+                # Append a path object
+                if currPathID != item.pathid:
+                    convclip.append('4:%d:%d' % (path._id, path._loops))
+                    currPathID = item.pathid
+
+                if path is not None:
+                    x, y, speed, accel, delay = path.get_node_data(item.nodeid)
+                    convclip.append('5:%d:%d:%d:%d:%f:%f:%d' % (
+                    item.pathid, item.nodeid, x, y, speed, accel, delay))
 
         convclip.append('%')
         return '|'.join(convclip)
@@ -1800,7 +1835,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         globals_.OverrideSnapping = True
 
-        layers, sprites = self.getEncodedObjects(encoded)
+        layers, sprites, entrances, locations, paths, path_nodes = self.getEncodedObjects(encoded)
 
         # Find the bounding box of all created objects
         bounding = QtCore.QRectF()
@@ -1811,6 +1846,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for layer in layers:
             for obj in layer:
                 bounding |= obj.LevelRect
+
+        for ent in entrances:
+            bounding |= ent.LevelRect
+
+        for loc in locations:
+            bounding |= loc.LevelRect
+
+        for node in path_nodes:
+            bounding |= node.LevelRect
 
         x1, y1, width, height = bounding.getRect()
 
@@ -1847,6 +1891,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 item.UpdateRects()
                 if select: item.setSelected(True)
 
+        for item in entrances:
+            item.setPos((item.objx + xpixeloffset) * 1.5, (item.objy + ypixeloffset) * 1.5)
+            item.UpdateRects()
+            if select: item.setSelected(True)
+
+        for item in locations:
+            item.setPos((item.objx + xpixeloffset) * 1.5, (item.objy + ypixeloffset) * 1.5)
+            item.UpdateRects()
+            if select: item.setSelected(True)
+
+        for item in path_nodes:
+            item.setPos((item.objx + xpixeloffset) * 1.5, (item.objy + ypixeloffset) * 1.5)
+            if select: item.setSelected(True)
+
         globals_.OverrideSnapping = False
 
         self.levelOverview.update()
@@ -1855,7 +1913,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.ChangeSelectionHandler()
 
         # Combine the sprites and layers
-        added = sprites
+        added = sprites + entrances + locations + paths + path_nodes
         for layer in layers:
             added += layer
 
@@ -1868,9 +1926,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         layers = ([], [], [])
         sprites = []
+        entrances = []
+        locations = []
+        paths = []
+        path_nodes = []
 
         if not (encoded.startswith('ReggieClip|') and encoded.endswith('|%')):
-            return layers, sprites
+            return layers, sprites, entrances, locations, paths, path_nodes
 
         clip = encoded[11:-2].split('|')
 
@@ -1878,11 +1940,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for item in clip:
 
             try:
-                # Check to see whether it's an object or sprite
+                # Check to see the item type
                 # and add it to the correct stack
                 split = item.split(':')
+
+                # Object
                 if split[0] == '0':
-                    # object
                     if len(split) != 8: continue
 
                     tileset = int(split[1])
@@ -1906,8 +1969,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                     layers[layer].append(newitem)
 
+                # Sprite
                 elif split[0] == '1':
-                    # sprite
                     if len(split) != 11: continue
 
                     objx = int(split[2])
@@ -1923,13 +1986,105 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     newitem = self.CreateSprite(objx, objy, type, data)
                     sprites.append(newitem)
 
+                # Entrance
+                elif split[0] == '2':
+                    if len(split) != 13: continue
+
+                    objx = int(split[1])
+                    objy = int(split[2])
+                    entID = int(split[3])
+                    destArea = int(split[4])
+                    destEnt = int(split[5])
+                    entType = int(split[6])
+                    zone = int(split[7])
+                    settings = int(split[8])
+                    layer = int(split[9])
+                    path = int(split[10])
+                    exitLvl = int(split[11])
+                    cPipeDir = int(split[12])
+
+                    # Sanity check data
+                    if destArea < 0 or destArea > 4: print(destArea); continue
+                    if destEnt < 0 or destEnt > 255: print(destEnt); continue
+                    if entType < 0 or entType >= len(globals_.EntranceTypeNames): print(entType); continue
+                    if layer < 0 or layer > 2: print(layer); continue
+                    if path < 0 or path > 255: print(path); continue
+                    if cPipeDir < 0 or cPipeDir > 3: print(cPipeDir); continue
+
+                    newitem = self.CreateEntrance(objx, objy, entID, allow_dupe_id=True)
+
+                    # Set entrance data
+                    newitem.destarea = destArea
+                    newitem.destentrance = destEnt
+                    newitem.enttype = entType
+                    newitem.entzone = zone
+                    newitem.entsettings = settings
+                    newitem.entlayer = layer
+                    newitem.entpath = path
+                    newitem.leave_level = exitLvl != 0
+                    newitem.cpdirection = cPipeDir
+
+                    # Update it
+                    newitem.TypeChange()
+                    newitem.UpdateTooltip()
+                    newitem.UpdateListItem(True)
+
+                    entrances.append(newitem)
+
+                # Location
+                elif split[0] == '3':
+                    if len(split) != 6: continue
+
+                    locID = int(split[1])
+                    objx = int(split[2])
+                    objy = int(split[3])
+                    width = int(split[4])
+                    height = int(split[5])
+
+                    newitem = self.CreateLocation(objx, objy, width, height, locID)
+                    locations.append(newitem)
+
+                # Path
+                elif split[0] == '4':
+                    if len(split) != 3: continue
+
+                    pathID = int(split[1])
+                    loops = int(split[2])
+
+                    path = Path(pathID, globals_.mainWindow.scene, loops)
+                    globals_.Area.paths.append(path)
+                    paths.append(path)
+
+                # Path Node
+                elif split[0] == '5':
+                    if len(split) != 8: continue
+
+                    pathID = int(split[1])
+                    nodeID = int(split[2])
+                    objx = int(split[3])
+                    objy = int(split[4])
+                    speed = float(split[5])
+                    accel = float(split[6])
+                    delay = int(split[7])
+
+                    # Make sure the clip has the parent path
+                    if paths is not None:
+                        path = paths[0]
+                        for p in paths:
+                            if pathID == p._id:
+                                path = p
+                                break
+
+                        node = path.add_node(objx, objy, speed, accel, delay, nodeID)
+                        path_nodes.append(node)
+
             except ValueError:
                 # an int() probably failed somewhere
                 pass
 
         self.spriteList.endBatchAdd()
 
-        return layers, sprites
+        return layers, sprites, entrances, locations, paths, path_nodes
 
     def ShiftItems(self):
         """
@@ -2061,8 +2216,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
             id_ = common.find_first_available_id(all_ids, 256, 1)
 
             if id_ is None:
-                print("ReggieWindow#CreateLocation: No free location id")
-                return None
+                result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('MainWindow', 4), globals_.trans.string('MainWindow', 5),
+                                                       QtWidgets.QMessageBox.StandardButton.Ok)
+                if result == QtWidgets.QMessageBox.StandardButton.Ok:
+                    return None
 
         globals_.OverrideSnapping = True
         loc = LocationItem(x, y, width, height, id_)
@@ -2117,7 +2274,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         return obj
 
-    def CreateEntrance(self, x, y, id_ = None, add_to_scene = True):
+    def CreateEntrance(self, x, y, id_ = None, add_to_scene = True, allow_dupe_id = False):
         """
         Creates and returns a new entrance and makes sure it's added to the
         right lists. This function returns None if this entrance could not be
@@ -2128,9 +2285,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
             id_ = common.find_first_available_id(all_ids, 256)
 
         if id_ is None:
-            print("ReggieWindow#CreateEntrance: No free entrance id")
-            return None
-        elif id_ in all_ids and add_to_scene:
+            result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('MainWindow', 2), globals_.trans.string('MainWindow', 3),
+                                                   QtWidgets.QMessageBox.StandardButton.Ok)
+            if result == QtWidgets.QMessageBox.StandardButton.Ok:
+                return None
+        elif id_ in all_ids and add_to_scene and not allow_dupe_id:
             print("ReggieWindow#CreateEntrance: Given entrance id (%d) already in use" % id_)
             return None
 
@@ -2474,10 +2633,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('UseFullFilepath', globals_.UseFullFilepath)
 
         # Update window title
-        if globals_.UseFullFilepath:
-            self.fileTitle = self.fileSavePath
-        else:
-            self.fileTitle = os.path.basename(self.fileSavePath)
+        if self.fileSavePath:
+            if globals_.UseFullFilepath:
+                self.fileTitle = self.fileSavePath
+            else:
+                self.fileTitle = os.path.basename(self.fileSavePath)
         self.UpdateTitle()
 
         # Get the Toolbar tab settings

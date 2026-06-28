@@ -1641,6 +1641,7 @@ class LocationItem(LevelEditorItem):
         self.height = height
         self.id = id
         self.listitem = None
+        self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
 
         self.UpdateTitle()
         self.UpdateRects()

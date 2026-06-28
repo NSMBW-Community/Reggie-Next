@@ -229,7 +229,10 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         # be enough. Also, the game doesn't allow path ids greater
                         # than 255 anyway, so just don't let the user create the
                         # path.
-                        return
+                        result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('MainWindow', 6), globals_.trans.string('MainWindow', 7),
+                                                               QtWidgets.QMessageBox.StandardButton.Ok)
+                        if result == QtWidgets.QMessageBox.StandardButton.Ok:
+                            return
 
                     newpathid = getids.index(False)
 
