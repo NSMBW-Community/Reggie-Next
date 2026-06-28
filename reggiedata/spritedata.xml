@@ -5450,9 +5450,10 @@
   </sprite> <!-- #458: Rotation Controlled Metal Bar -->
 
   <sprite id="459" name="Crowd Clapping Controller for Coin Collection #1" notes="A controller that generates a clapping sound when the player collects the listed number of coins of both types from the Collection ID group.">
-    <dependency notes="You cannot use tileset coins for this to function."/>
+    <dependency notes="You cannot use tileset coins for this to function.">
       <suggested sprite="147"/>
       <suggested sprite="237"/>
+    </dependency>
     <value nybble="7-8" title="# of Blue Coins Required" comment="This determines the number of paired blue coins required to trigger the Crowd Clapper."/>
     <value nybble="9-10" title="# of Yellow Coins Required" comment="This determines the number of paired standard coins required to trigger the Crowd Clapper."/>
     <value nybble="12" title="Collection ID" comment="This pairs matching Coins with the Crowd Clapper to track their collection." idtype="Collection"/>
@@ -5473,6 +5474,10 @@
   </sprite> <!-- #460: Silver Gear Block -->
 
   <sprite id="461" name="Crowd Clapping Controller for Coin Collection #2" notes="A controller that generates a clapping sound when the player collects the listed number of coins of both types from the Collection ID group. Seems to be identical to #1.">
+    <dependency notes="You cannot use tileset coins for this to function.">
+      <suggested sprite="147"/>
+      <suggested sprite="237"/>
+    </dependency>
     <value nybble="7-8" title="# of Blue Coins Required" comment="This determines the number of paired blue coins required to trigger the Crowd Clapper."/>
     <value nybble="9-10" title="# of Yellow Coins Required" comment="This determines the number of paired standard coins required to trigger the Crowd Clapper."/>
     <value nybble="12" title="Collection ID" comment="This pairs matching Coins with the Crowd Clapper to track their collection." idtype="Collection"/>
