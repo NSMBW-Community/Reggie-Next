@@ -1869,15 +1869,39 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L2.addLayout(L, 0, 0)
                 boxGB.setLayout(L2)
 
+                # Temp options to modify the preview rendering
+                self.prev_setSelect = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 50))
+                self.prev_setSelect.clicked.connect(self.UpdatePreview)
+
+                currGrid = 0
+                if globals_.GridType is not None:
+                    if globals_.GridType == 'grid':
+                        currGrid = 1
+                    else:
+                        currGrid = 2
+
+                self.prev_gridType = QtWidgets.QComboBox()
+                self.prev_gridType.addItems(globals_.trans.stringList('PrefsDlg', 52))
+                self.prev_gridType.setCurrentIndex(currGrid)
+                self.prev_gridType.currentIndexChanged.connect(self.UpdatePreview)
+
+                L = QtWidgets.QHBoxLayout()
+                L.addWidget(QtWidgets.QLabel(globals_.trans.string('PrefsDlg', 51)))
+                L.addWidget(self.prev_gridType)
+                L.addSpacing(5)
+                L.addWidget(self.prev_setSelect)
+                L.addStretch(1)
+
                 # Create the preview labels and groupbox
                 self.preview = QtWidgets.QLabel()
                 self.description = QtWidgets.QLabel()
-                L = QtWidgets.QVBoxLayout()
-                L.addWidget(self.preview)
-                L.addWidget(self.description)
-                L.addStretch(1)
+                L2 = QtWidgets.QVBoxLayout()
+                L2.addLayout(L)
+                L2.addWidget(self.preview)
+                L2.addWidget(self.description)
+                L2.addStretch(1)
                 previewGB = QtWidgets.QGroupBox(globals_.trans.string('PrefsDlg', 22))
-                previewGB.setLayout(L)
+                previewGB.setLayout(L2)
 
                 # Create a main layout
                 Layout = QtWidgets.QGridLayout()
@@ -1928,10 +1952,15 @@ class PreferencesDialog(QtWidgets.QDialog):
                 """
 
                 scene = QtWidgets.QGraphicsScene(0, 0, 32 * 16, 17 * 16, self)
-                old_theme, old_real_view, old_round_rect = globals_.theme, globals_.RealViewEnabled, globals_.UseRoundedRectangles
+                old_theme, old_real_view, old_round_rect, old_grid = globals_.theme, globals_.RealViewEnabled, globals_.UseRoundedRectangles, globals_.GridType
                 globals_.theme = theme
                 globals_.UseRoundedRectangles = self.roundedRects.isChecked()
                 globals_.RealViewEnabled = False  # Disable so the zone looks 'plain'
+                setSelect = self.prev_setSelect.isChecked()
+
+                gridType = self.prev_gridType.currentIndex()
+                gridTypes = [None, 'grid', 'checker']
+                globals_.GridType = gridTypes[gridType]
 
                 # Sprite [38] at (11, 4)
                 sprite = globals_.mainWindow.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(8), add_to_scene=False)
@@ -1963,6 +1992,10 @@ class PreferencesDialog(QtWidgets.QDialog):
                 comment = CommentItem(2 * 16, 3 * 16, "")
                 scene.addItem(comment)
 
+                # Toggle item selection
+                for item in scene.items():
+                    item.setSelected(setSelect)
+
                 # Take a screenshot
                 px = QtGui.QPixmap(32 * 16, 17 * 16)
                 px.fill(theme.color('bg'))
@@ -1982,6 +2015,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 globals_.theme = old_theme
                 globals_.RealViewEnabled = old_real_view
                 globals_.UseRoundedRectangles = old_round_rect
+                globals_.GridType = old_grid
 
                 return px
 

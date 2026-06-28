@@ -683,6 +683,13 @@ class ReggieTranslation:
                 47: 'Dark Mode',
                 48: '[b]Dark Mode[/b][br]This determines the overall color style Reggie uses, independent from the current theme.[br][br]Note that this may cause issues with certain themes.',
                 49: 'Display full filepath of opened level',
+                50: 'Show Items as Selected',
+                51: 'Grid Type:',
+                52: (
+                    'None',
+                    'Standard',
+                    'Checker',
+                ),
             },
             'ScrShtDlg': {
                 0: 'Level Screenshot',

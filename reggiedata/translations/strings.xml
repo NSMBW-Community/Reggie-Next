@@ -633,6 +633,14 @@
         <string id="46">[b]Use Rounded Rectangles[/b][br]This makes the corners of sprites, entrances, and path nodes appear rounded instead of sharp.</string>
 		<string id="47">Dark Mode</string>
         <string id="48">[b]Dark Mode[/b][br]This determines the overall color style Reggie uses, independent from the current theme.[br][br]Note that this may cause issues with certain themes.</string> 
+		<string id="49">Display full filepath of opened level</string>
+		<string id="50">Show Items as Selected</string>
+		<string id="51">Grid Type:</string>
+		<stringlist id="52">
+			<entry>None</entry>
+			<entry>Standard</entry>
+			<entry>Checker</entry>
+		</stringlist>
 	</section>
 	<section id="ScrShtDlg">
 		<string id="0">Level Screenshot</string>
