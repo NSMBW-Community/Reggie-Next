@@ -724,11 +724,13 @@ class ReggieTranslation:
             },
             'SwapObjDlg': {
                 0: 'Swap Objects',
-                1: 'From Object:',
-                2: 'From Tileset:',
+                1: 'Object:',
+                2: 'From Tileset Slot:',
                 3: 'To Object:',
-                4: 'To Tileset:',
+                4: 'In Tileset Slot:',
                 5: 'Exchange (perform 2-way conversion)',
+                6: 'Swap',
+                7: 'Close',
             },
             'SpriteDataEditor': {
                 0: 'Modify Selected Sprite Properties',

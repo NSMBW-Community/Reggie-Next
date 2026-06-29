@@ -675,11 +675,13 @@
 	</section>
 	<section id="SwapObjDlg">
 		<string id="0">Swap Objects</string>
-		<string id="1">From Object:</string>
-		<string id="2">From Tileset:</string>
+		<string id="1">Object:</string>
+		<string id="2">From Tileset Slot:</string>
 		<string id="3">To Object:</string>
-		<string id="4">To Tileset:</string>
+		<string id="4">In Tileset Slot:</string>
 		<string id="5">Exchange (perform 2-way conversion)</string>
+		<string id="6">Swap</string>
+		<string id="7">Close</string>
 	</section>
 	<section id="SpriteDataEditor">
 		<string id="0">Modify Selected Sprite Properties</string>
