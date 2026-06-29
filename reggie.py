@@ -2511,8 +2511,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Deletes the current area
         """
         result = QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('DeleteArea', 0),
-                                               QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-                                               QtWidgets.QMessageBox.StandardButton.No)
+                                               QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
         if result == QtWidgets.QMessageBox.StandardButton.No: return
 
         # Save the current area in case something goes wrong.
