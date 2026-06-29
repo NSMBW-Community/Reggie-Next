@@ -220,18 +220,20 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
                 self.lineEdit().setText(self.textFromValue(self._start))
 
                 # Fixes a bug when reloading spritedata
-                for rawVal, dispNum in self._overrides:
-                    if val == rawVal:
-                        textVal = dispNum
-                        self.lineEdit().setText(self.textFromValue(textVal))
+                if self._overrides is not None:
+                    for rawVal, dispNum in self._overrides:
+                        if val == rawVal:
+                            textVal = dispNum
+                            self.lineEdit().setText(self.textFromValue(textVal))
             return
         
         textVal = (val * self._increment) + self._start
 
         # Check for any value overrides
-        for rawVal, dispNum in self._overrides:
-            if val == rawVal:
-                textVal = dispNum
+        if self._overrides is not None:
+            for rawVal, dispNum in self._overrides:
+                if val == rawVal:
+                    textVal = dispNum
 
         self.lineEdit().setText(self.textFromValue(textVal))
         self._value = val
