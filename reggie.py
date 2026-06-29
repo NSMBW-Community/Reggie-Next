@@ -2147,8 +2147,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        from_tileset = dlg.FromTS.value() - 1
-        to_tileset = dlg.ToTS.value() - 1
+        from_tileset = dlg.FromTS.currentIndex()
+        to_tileset = dlg.ToTS.currentIndex()
         do_exchange = dlg.DoExchange.isChecked()
 
         if from_tileset == to_tileset:

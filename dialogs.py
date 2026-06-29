@@ -128,11 +128,14 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
         self.setWindowIcon(GetIcon('swap'))
 
         # Create widgets
-        self.FromTS = QtWidgets.QSpinBox()
-        self.FromTS.setRange(1, 4)
+        self.FromTS = QtWidgets.QComboBox()
+        self.ToTS = QtWidgets.QComboBox()
 
-        self.ToTS = QtWidgets.QSpinBox()
-        self.ToTS.setRange(1, 4)
+        slots = ('Pa0', 'Pa1', 'Pa2', 'Pa3')
+        for i in range(4): # Only offer slots that have a tileset
+            if globals_.mainWindow.objAllTab.isTabEnabled(i):
+                self.FromTS.addItem(slots[i])
+                self.ToTS.addItem(slots[i])
 
         # Swap layouts
         swapLayout = QtWidgets.QFormLayout()
@@ -143,7 +146,9 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
         self.DoExchange = QtWidgets.QCheckBox(globals_.trans.string('SwapObjTilesDlg', 3))
 
         # Buttonbox
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        buttonBox = QtWidgets.QDialogButtonBox()
+        buttonBox.addButton(globals_.trans.string('SwapObjTilesDlg', 4), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        buttonBox.addButton(globals_.trans.string('SwapObjTilesDlg', 5), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 

@@ -669,9 +669,11 @@
 	</section>
 	<section id="SwapObjTilesDlg">
 		<string id="0">Swap Objects' Tilesets</string>
-		<string id="1">From Tileset:</string>
-		<string id="2">To Tileset:</string>
+		<string id="1">From Tileset Slot:</string>
+		<string id="2">To Tileset Slot:</string>
 		<string id="3">Exchange (perform 2-way conversion)</string>
+		<string id="4">Swap</string>
+		<string id="5">Close</string>
 	</section>
 	<section id="SwapObjDlg">
 		<string id="0">Swap Objects</string>

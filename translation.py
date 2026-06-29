@@ -718,9 +718,11 @@ class ReggieTranslation:
             },
             'SwapObjTilesDlg': {
                 0: 'Swap Objects\' Tilesets',
-                1: 'From Tileset:',
-                2: 'To Tileset:',
+                1: 'From Tileset Slot:',
+                2: 'To Tileset Slot:',
                 3: 'Exchange (perform 2-way conversion)',
+                4: 'Swap',
+                5: 'Close',
             },
             'SwapObjDlg': {
                 0: 'Swap Objects',
