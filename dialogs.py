@@ -172,13 +172,16 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         self.FromType = QtWidgets.QSpinBox()
         self.ToType = QtWidgets.QSpinBox()
 
-        slots = ('Pa0', 'Pa1', 'Pa2', 'Pa3')
         self.FromTileset = QtWidgets.QComboBox()
-        self.FromTileset.addItems(slots)
-        self.FromTileset.currentIndexChanged.connect(self.setObjectMax)
-
         self.ToTileset = QtWidgets.QComboBox()
-        self.ToTileset.addItems(slots)
+
+        slots = ('Pa0', 'Pa1', 'Pa2', 'Pa3')
+        for i in range(4): # Only offer slots that have a tileset
+            if globals_.mainWindow.objAllTab.isTabEnabled(i):
+                self.FromTileset.addItem(slots[i])
+                self.ToTileset.addItem(slots[i])
+
+        self.FromTileset.currentIndexChanged.connect(self.setObjectMax)
         self.ToTileset.currentIndexChanged.connect(self.setObjectMax)
 
         # Call this manually to set maximums
@@ -273,8 +276,8 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
         from_obj_num = self.getTilesetObjNum(from_tileset)
         to_obj_num = self.getTilesetObjNum(to_tileset)
 
-        self.FromType.setMaximum(from_obj_num)
-        self.ToType.setMaximum(to_obj_num)
+        self.FromType.setRange(0, from_obj_num)
+        self.ToType.setRange(0, to_obj_num)
 
         # Make sure we aren't above the new maximum
         if self.FromType.value() > from_obj_num:
