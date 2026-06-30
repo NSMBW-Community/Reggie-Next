@@ -523,7 +523,7 @@ class SpriteImage_ScrewMushroom(SLib.SpriteImage):  # 172, 382
         self.spritebox.shown = False
 
         self.hasBolt = False
-        self.size = (122, 190)
+        self.size = (124, 180)
 
     @staticmethod
     def loadImages():
@@ -536,24 +536,30 @@ class SpriteImage_ScrewMushroom(SLib.SpriteImage):  # 172, 382
     def dataChanged(self):
         super().dataChanged()
 
+        mushroomId = self.parent.spritedata[2] >> 4 & 0xf
         posOffset = self.parent.spritedata[3]
-        if posOffset == 0: posOffset = 8
 
-        self.height = 206 if self.hasBolt else 190
-        self.yOffset = posOffset * -16
-        if self.hasBolt:
-            self.yOffset -= 16
+        if posOffset == 0:
+            posOffset = 8
+        elif mushroomId == 0:
+            posOffset += 1
+        elif mushroomId > 0 and posOffset > 1:
+            posOffset = 1
+
+        self.height = 196 if self.hasBolt else 180
+        self.xOffset = 2
+        self.yOffset = posOffset * -16 + 16
 
     def paint(self, painter):
         super().paint(painter)
 
         y = 0
         if self.hasBolt:
-            painter.drawPixmap(70, 0, ImageCache['Bolt'])
+            painter.drawPixmap(71, 0, ImageCache['Bolt'])
             y += 24
         painter.drawPixmap(0, y, ImageCache['ScrewShroomT'])
-        painter.drawTiledPixmap(76, y + 93, 31, 172, ImageCache['ScrewShroomM'])
-        painter.drawPixmap(76, y + 253, ImageCache['ScrewShroomB'])
+        painter.drawTiledPixmap(78, y + 96, 30, 144, ImageCache['ScrewShroomM'])
+        painter.drawPixmap(78, y + 240, ImageCache['ScrewShroomB'])
 
 
 class SpriteImage_Door(SLib.SpriteImage):  # 182, 259, 276, 277, 278
@@ -6264,7 +6270,7 @@ class SpriteImage_Bolt(SLib.SpriteImage_Static):  # 315
             parent,
             1.5,
             ImageCache['Bolt'],
-            (2, 0),
+            (2 / 1.5, 0),
         )
 
     @staticmethod
