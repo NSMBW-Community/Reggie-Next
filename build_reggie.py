@@ -232,7 +232,6 @@ print('>> Will use the following binaries excludes list: ' + ', '.join(excludes_
 args = [
     '--windowed',
     '--onefile',
-    '--upx-dir=/path/to/upx',
     '--upx-exclude=vcruntime140.dll',
     '--distpath=' + DIR,
     '--workpath=' + WORKPATH,
@@ -317,7 +316,6 @@ with open(SPECFILE, 'w', encoding='utf-8') as f:
 # run with minimal arguments this time.
 
 args = [
-    '--upx-dir=/path/to/upx',
     '--distpath=' + DIR,
     '--workpath=' + WORKPATH,
     SPECFILE,
