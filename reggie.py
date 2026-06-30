@@ -31,7 +31,7 @@
 ################################################################
 
 # Python version: sanity check
-minimum = (3, 5)
+minimum = (3, 9)
 import sys
 
 if sys.version_info < minimum:

@@ -30,7 +30,7 @@ If you are not on those systems or you want the very latest features, you'll nee
 ### How to Run Reggie! from Source
 
 Download and install the following:
- * Python 3.5 (or newer) - http://www.python.org
+ * Python 3.9 (or newer) - http://www.python.org
  * PyQt 6.9 (or newer) - http://www.riverbankcomputing.co.uk/software/pyqt/intro
 
 Optional dependencies:
