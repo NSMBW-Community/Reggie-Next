@@ -1934,7 +1934,7 @@ class SpriteImage_PipePiranhaUp(SLib.SpriteImage_Static):  # 65
             parent,
             1.5,
             ImageCache['PipePlantUp'],
-            (2, -32),
+            (4 / 1.5, -30),
         )
 
     @staticmethod
@@ -1948,7 +1948,7 @@ class SpriteImage_PipePiranhaDown(SLib.SpriteImage_Static):  # 66
             parent,
             1.5,
             ImageCache['PipePlantDown'],
-            (2, 32),
+            (4 / 1.5, 32),
         )
 
     @staticmethod
@@ -1962,7 +1962,7 @@ class SpriteImage_PipePiranhaRight(SLib.SpriteImage_Static):  # 67
             parent,
             1.5,
             ImageCache['PipePlantRight'],
-            (32, 2),
+            (32, 4 / 1.5),
         )
 
     @staticmethod
@@ -1976,7 +1976,7 @@ class SpriteImage_PipePiranhaLeft(SLib.SpriteImage_Static):  # 68
             parent,
             1.5,
             ImageCache['PipePlantLeft'],
-            (-32, 2),
+            (-30, 4 / 1.5),
         )
 
     @staticmethod
@@ -1990,7 +1990,7 @@ class SpriteImage_PipeFiretrapUp(SLib.SpriteImage_Static):  # 69
             parent,
             1.5,
             ImageCache['PipeFiretrapUp'],
-            (-4, -29),
+            (-8 / 1.5, -26),
         )
 
     @staticmethod
@@ -2004,7 +2004,7 @@ class SpriteImage_PipeFiretrapDown(SLib.SpriteImage_Static):  # 70
             parent,
             1.5,
             ImageCache['PipeFiretrapDown'],
-            (-4, 32),
+            (-8 / 1.5, 32),
         )
 
     @staticmethod
@@ -2018,7 +2018,7 @@ class SpriteImage_PipeFiretrapRight(SLib.SpriteImage_Static):  # 71
             parent,
             1.5,
             ImageCache['PipeFiretrapRight'],
-            (32, 6),
+            (32, 10 / 1.5),
         )
 
     @staticmethod
@@ -2032,7 +2032,7 @@ class SpriteImage_PipeFiretrapLeft(SLib.SpriteImage_Static):  # 72
             parent,
             1.5,
             ImageCache['PipeFiretrapLeft'],
-            (-29, 6),
+            (-26, 10 / 1.5),
         )
 
     @staticmethod
@@ -2047,19 +2047,17 @@ class SpriteImage_GroundPiranha(SLib.SpriteImage_StaticMultiple):  # 73
 
     @staticmethod
     def loadImages():
-        if 'GroundPiranha' in ImageCache: return
-        GP = SLib.GetImg('ground_piranha.png', True)
-        ImageCache['GroundPiranha'] = QtGui.QPixmap.fromImage(GP)
-        ImageCache['GroundPiranhaU'] = QtGui.QPixmap.fromImage(GP.mirrored(False, True))
+        SLib.loadIfNotInImageCache('GroundPiranha', 'ground_piranha.png')
+        SLib.loadIfNotInImageCache('GroundPiranhaU', 'ground_piranha_ceiling.png')
 
     def dataChanged(self):
 
         upsideDown = self.parent.spritedata[5] & 1
         if not upsideDown:
-            self.yOffset = 6
+            self.yOffset = 14 / 1.5
             self.image = ImageCache['GroundPiranha']
         else:
-            self.yOffset = 0
+            self.yOffset = -2 / 1.5
             self.image = ImageCache['GroundPiranhaU']
 
         super().dataChanged()
@@ -2068,23 +2066,21 @@ class SpriteImage_GroundPiranha(SLib.SpriteImage_StaticMultiple):  # 73
 class SpriteImage_BigGroundPiranha(SLib.SpriteImage_StaticMultiple):  # 74
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.xOffset = -65
+        self.xOffset = -64
 
     @staticmethod
     def loadImages():
-        if 'BigGroundPiranha' in ImageCache: return
-        BGP = SLib.GetImg('big_ground_piranha.png', True)
-        ImageCache['BigGroundPiranha'] = QtGui.QPixmap.fromImage(BGP)
-        ImageCache['BigGroundPiranhaU'] = QtGui.QPixmap.fromImage(BGP.mirrored(False, True))
+        SLib.loadIfNotInImageCache('BigGroundPiranha', 'big_ground_piranha.png')
+        SLib.loadIfNotInImageCache('BigGroundPiranhaU', 'big_ground_piranha_ceiling.png')
 
     def dataChanged(self):
 
         upsideDown = self.parent.spritedata[5] & 1
         if not upsideDown:
-            self.yOffset = -32
+            self.yOffset = -46 / 1.5
             self.image = ImageCache['BigGroundPiranha']
         else:
-            self.yOffset = 0
+            self.yOffset = -4 / 1.5
             self.image = ImageCache['BigGroundPiranhaU']
 
         super().dataChanged()
@@ -2097,19 +2093,17 @@ class SpriteImage_GroundFiretrap(SLib.SpriteImage_StaticMultiple):  # 75
 
     @staticmethod
     def loadImages():
-        if 'GroundFiretrap' in ImageCache: return
-        GF = SLib.GetImg('ground_firetrap.png', True)
-        ImageCache['GroundFiretrap'] = QtGui.QPixmap.fromImage(GF)
-        ImageCache['GroundFiretrapU'] = QtGui.QPixmap.fromImage(GF.mirrored(False, True))
+        SLib.loadIfNotInImageCache('GroundFiretrap', 'ground_firetrap.png')
+        SLib.loadIfNotInImageCache('GroundFiretrapU', 'ground_firetrap_ceiling.png')
 
     def dataChanged(self):
 
         upsideDown = self.parent.spritedata[5] & 1
         if not upsideDown:
-            self.yOffset = -10
+            self.yOffset = -13 / 1.5
             self.image = ImageCache['GroundFiretrap']
         else:
-            self.yOffset = 0
+            self.yOffset = -2 / 1.5
             self.image = ImageCache['GroundFiretrapU']
 
         super().dataChanged()
@@ -2118,23 +2112,21 @@ class SpriteImage_GroundFiretrap(SLib.SpriteImage_StaticMultiple):  # 75
 class SpriteImage_BigGroundFiretrap(SLib.SpriteImage_StaticMultiple):  # 76
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.xOffset = -14
+        self.xOffset = -12
 
     @staticmethod
     def loadImages():
-        if 'BigGroundFiretrap' in ImageCache: return
-        BGF = SLib.GetImg('big_ground_firetrap.png', True)
-        ImageCache['BigGroundFiretrap'] = QtGui.QPixmap.fromImage(BGF)
-        ImageCache['BigGroundFiretrapU'] = QtGui.QPixmap.fromImage(BGF.mirrored(False, True))
+        SLib.loadIfNotInImageCache('BigGroundFiretrap', 'big_ground_firetrap.png')
+        SLib.loadIfNotInImageCache('BigGroundFiretrapU', 'big_ground_firetrap_ceiling.png')
 
     def dataChanged(self):
 
         upsideDown = self.parent.spritedata[5] & 1
         if not upsideDown:
-            self.yOffset = -68
+            self.yOffset = -100 / 1.5
             self.image = ImageCache['BigGroundFiretrap']
         else:
-            self.yOffset = 0
+            self.yOffset = -4 / 1.5
             self.image = ImageCache['BigGroundFiretrapU']
 
         super().dataChanged()
