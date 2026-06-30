@@ -29,6 +29,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         self.spritebrush = QtGui.QBrush(globals_.theme.color('overview_sprite'))
         self.entrancebrush = QtGui.QBrush(globals_.theme.color('overview_entrance'))
         self.locationbrush = QtGui.QBrush(globals_.theme.color('overview_location_fill'))
+        self.pathbrush = QtGui.QBrush(globals_.theme.color('overview_path'))
 
         self.Reset()
 
@@ -119,6 +120,15 @@ class LevelOverviewWidget(QtWidgets.QWidget):
             fr(rect, b)
             dr(rect)
 
+        b = self.pathbrush
+
+        for path in globals_.Area.paths:
+            for node in path._nodes:
+                rect = transform.mapRect(node.sceneBoundingRect())
+                fr(rect, b)
+
+            # TODO: Draw the path lines
+
         painter.setPen(QtGui.QPen(globals_.theme.color('overview_viewbox'), 1))
 
         scalar = 1 / (24 * self.mainWindowScale)
@@ -156,6 +166,10 @@ class LevelOverviewWidget(QtWidgets.QWidget):
 
         for location in globals_.Area.locations:
             rect |= transform.mapRect(location.sceneBoundingRect())
+
+        for path in globals_.Area.paths:
+            for node in path._nodes:
+                rect |= node.LevelRect
 
         _, _, self.maxX, self.maxY = rect.getCoords()
 
@@ -567,11 +581,10 @@ class Stamp:
 
         minX, minY, maxX, maxY = 24576, 12288, 0, 0
 
-        layers, sprites = globals_.mainWindow.getEncodedObjects(self.ReggieClip)
+        layers, sprites, _, _, _, _ = globals_.mainWindow.getEncodedObjects(self.ReggieClip, False)
 
         # Go through the sprites and find the maxs and mins
         for spr in sprites:
-
             br = spr.getFullRect()
 
             x1 = br.topLeft().x()
@@ -718,6 +731,7 @@ class Stamp:
         # Draw the text
         textRect = QtCore.QRectF(0, prevIcon.height() + 2, totalWidth, textSize.height())
         painter.setFont(QtGui.QFont())
+        painter.setPen(QtCore.Qt.GlobalColor.gray)
         painter.drawText(textRect, QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.TextFlag.TextWordWrap, self.Name)
 
         # Return the pixmap

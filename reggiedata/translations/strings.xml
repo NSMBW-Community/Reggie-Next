@@ -554,16 +554,17 @@
 		<string id="24">Event [id]</string>
 		<string id="25">Add</string>
 		<string id="26">Current</string>
-		<string id="27">Available stamps:</string>
+		<string id="27">Available stamps:[br](Select one or more objects/sprites to create one)</string>
 		<string id="28">Add</string>
 		<string id="29">Remove</string>
 		<string id="30">Tools</string>
-		<string id="31">Open Set...</string>
+		<string id="31">Import Set...</string>
 		<string id="32">Save Set As...</string>
 		<string id="33">Comments</string>
 		<string id="34">Comments currently in this area:[br](Double-click one to jump to it instantly)</string>
 		<string id="35">Name:</string>
 		<string id="36">Change Layer</string>
+		<string id="37">Copy to Clipboard</string>
 	</section>
 	<section id="PathDataEditor">
 		<string id="0">Loops:</string>

@@ -1292,6 +1292,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         stampToolsBtn.setSizePolicy(stampAddBtn.sizePolicy())
         stampToolsBtn.setMinimumHeight(stampAddBtn.height() // 20)
 
+        stampCopyBtn = QtWidgets.QPushButton(globals_.trans.string('Palette', 37))
+        stampCopyBtn.clicked.connect(self.handleStampsCopy)
+        stampCopyBtn.setEnabled(False)
+        self.stampCopyBtn = stampCopyBtn  # so we can enable/disable it later
+
         stampNameLabel = QtWidgets.QLabel(globals_.trans.string('Palette', 35))
         self.stampNameEdit = QtWidgets.QLineEdit()
         self.stampNameEdit.setEnabled(False)
@@ -1309,8 +1314,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         stampL.addWidget(stampAddBtn, 1, 0)
         stampL.addWidget(stampRemoveBtn, 1, 1)
         stampL.addWidget(stampToolsBtn, 1, 2)
-        stampL.addLayout(nameLayout, 2, 0, 1, 3)
-        stampL.addWidget(self.stampChooser, 3, 0, 1, 3)
+        stampL.addWidget(stampCopyBtn, 2, 0, 1, 3)
+        stampL.addLayout(nameLayout, 3, 0, 1, 3)
+        stampL.addWidget(self.stampChooser, 4, 0, 1, 3)
         self.stampTab.setLayout(stampL)
 
         # comments tab
@@ -1341,6 +1347,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         for selecteditem in self.pathList.selectedItems():
             selecteditem.setSelected(False)
+
+        # Also deselect nodes in the scene
+        for item in self.scene.selectedItems():
+            if isinstance(item, PathItem):
+                item.setSelected(False)
 
     def Autosave(self):
         """
@@ -1516,6 +1527,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Create a Stamp
         self.stampChooser.addStamp(Stamp(RegClp, 'New Stamp'))
 
+    def handleStampsCopy(self):
+        """
+        Handles the "Copy Selected to Clipboard" btn being clicked
+        """
+        stamp = self.stampChooser.currentlySelectedStamp()
+        self.systemClipboard.setText(stamp.ReggieClip)
+
     def handleStampsRemove(self):
         """
         Handles the "Remove Stamp" btn being clicked
@@ -1578,6 +1596,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         newStamp = self.stampChooser.currentlySelectedStamp()
         stampSelected = newStamp is not None
         self.stampRemoveBtn.setEnabled(stampSelected)
+        self.stampCopyBtn.setEnabled(stampSelected)
         self.stampNameEdit.setEnabled(stampSelected)
 
         newName = '' if not stampSelected else newStamp.Name
@@ -1783,9 +1802,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 item.id, item.objx, item.objy, item.width, item.height))
 
         # Path Nodes
-        clipboard_p.sort(key=lambda x: (x.pathid, x.nodeid))
-
         if clipboard_p is not None:
+            clipboard_p.sort(key=lambda x: (x.pathid, x.nodeid))
             currPathID = 0
 
             for item in clipboard_p:
@@ -1919,7 +1937,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         return added
 
-    def getEncodedObjects(self, encoded):
+    def getEncodedObjects(self, encoded, add_to_scene=True):
         """
         Create the objects from a ReggieClip
         """
@@ -1965,7 +1983,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     if width < 1 or width > 1023: continue
                     if height < 1 or height > 511: continue
 
-                    newitem = self.CreateObject(tileset, type, layer, objx, objy, width, height)  # , add_to_scene = False)
+                    newitem = self.CreateObject(tileset, type, layer, objx, objy, width, height, add_to_scene)
 
                     layers[layer].append(newitem)
 
@@ -1983,7 +2001,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                         # Unknown sprite, skip it
                         continue
 
-                    newitem = self.CreateSprite(objx, objy, type, data)
+                    newitem = self.CreateSprite(objx, objy, type, data, add_to_scene)
                     sprites.append(newitem)
 
                 # Entrance
@@ -2011,7 +2029,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     if path < 0 or path > 255: print(path); continue
                     if cPipeDir < 0 or cPipeDir > 3: print(cPipeDir); continue
 
-                    newitem = self.CreateEntrance(objx, objy, entID, allow_dupe_id=True)
+                    newitem = self.CreateEntrance(objx, objy, entID, add_to_scene, True)
 
                     # Set entrance data
                     newitem.destarea = destArea
@@ -2041,7 +2059,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     width = int(split[4])
                     height = int(split[5])
 
-                    newitem = self.CreateLocation(objx, objy, width, height, locID)
+                    newitem = self.CreateLocation(objx, objy, width, height, locID, add_to_scene)
                     locations.append(newitem)
 
                 # Path
@@ -2075,7 +2093,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                                 path = p
                                 break
 
-                        node = path.add_node(objx, objy, speed, accel, delay, nodeID)
+                        node = path.add_node(objx, objy, speed, accel, delay, nodeID, add_to_scene, add_to_scene)
                         path_nodes.append(node)
 
             except ValueError:
@@ -3651,6 +3669,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         type_path = PathItem
         type_com = CommentItem
 
+        allowStamp = True
+
         if not selitems:
             # nothing is selected
             self.actions['cut'].setEnabled(False)
@@ -3667,9 +3687,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             item = selitems[0]
             self.selObj = item
-            if func_ii(item, type_spr):
+            if func_ii(item, type_obj):
+                allowStamp = True
+            elif func_ii(item, type_spr):
                 showSpritePanel = True
                 updateModeInfo = True
+                allowStamp = True
             elif func_ii(item, type_ent):
                 self.creationTabs.setCurrentIndex(2)
                 self.UpdateFlag = True
@@ -3677,6 +3700,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.UpdateFlag = False
                 showEntrancePanel = True
                 updateModeInfo = True
+                allowStamp = False
             elif func_ii(item, type_loc):
                 self.creationTabs.setCurrentIndex(3)
                 self.UpdateFlag = True
@@ -3684,6 +3708,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.UpdateFlag = False
                 showLocationPanel = True
                 updateModeInfo = True
+                allowStamp = False
             elif func_ii(item, type_path):
                 self.creationTabs.setCurrentIndex(4)
                 self.UpdateFlag = True
@@ -3691,15 +3716,21 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.UpdateFlag = False
                 showPathPanel = True
                 updateModeInfo = True
+                allowStamp = False
             elif func_ii(item, type_com):
                 self.creationTabs.setCurrentIndex(7)
                 self.UpdateFlag = True
                 self.commentList.setCurrentItem(item.listitem)
                 self.UpdateFlag = False
                 updateModeInfo = True
+                allowStamp = False
 
         else:
             updateModeInfo = True
+
+            for item in selitems:
+                if not func_ii(item, (type_obj, type_spr)):
+                    allowStamp = False
 
             # more than one item
             self.actions['cut'].setEnabled(True)
@@ -3707,7 +3738,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.actions['shiftitems'].setEnabled(True)
 
         # turn on the Stamp Add btn if applicable
-        self.stampAddBtn.setEnabled(bool(selitems))
+        self.stampAddBtn.setEnabled(bool(selitems) and allowStamp)
 
         # count the # of each type, for the statusbar label
         spr = 0
@@ -4048,6 +4079,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         obj.UpdateListItem()
         if obj == self.selObj:
             SetDirty()
+        self.levelOverview.update()
 
     def HandleComPosChange(self, obj, oldx, oldy, x, y):
         """

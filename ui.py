@@ -69,6 +69,7 @@ class ReggieTheme:
             'overview_viewbox': QtGui.QColor(0, 0, 255),  # Overview background fill
             'overview_zone_fill': QtGui.QColor(47, 79, 79, 120),  # Overview zone fill
             'overview_zone_lines': QtGui.QColor(0, 255, 255),  # Overview zone lines
+            'overview_path': QtGui.QColor(6, 249, 20),  # Overview path fill
             'path_connector': QtGui.QColor(6, 249, 20),  # Path node connecting lines
             'path_fill': QtGui.QColor(6, 249, 20, 120),  # Unselected path node fill
             'path_fill_s': QtGui.QColor(6, 249, 20, 240),  # Selected path node fill
