@@ -1672,6 +1672,7 @@ class LocationItem(LevelEditorItem):
         # since font never changes, we can just define TitleRect here
         metrics = QtGui.QFontMetrics(self.font)
         self.TitleRect = QtCore.QRectF(metrics.boundingRect(self.title))
+        self.TitleRect.setWidth(self.TitleRect.width() + 4.0)
         self.TitleRect.moveTo(4, 4)
 
         self.UpdateRects()
