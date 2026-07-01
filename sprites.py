@@ -3007,12 +3007,12 @@ class SpriteImage_OneWayPlatform(SpriteImage_WoodenPlatform):  # 122
             self.aux[0].setSize(0, 0)
 
 
-class SpriteImage_UnusedCastlePlatform(SLib.SpriteImage_StaticMultiple):  # 123
+class SpriteImage_UnusedCastlePlatform(SLib.SpriteImage):  # 123
     def __init__(self, parent):
         super().__init__(parent, 1.5)
+        self.parent.setZValue(24999)
 
-        self.image = ImageCache['UnusedCastlePlatform']
-        self.size = (255, 255)
+        self.aux.append(SLib.AuxiliaryImage(parent, 384, 410))
 
     @staticmethod
     def loadImages():
@@ -3029,12 +3029,8 @@ class SpriteImage_UnusedCastlePlatform(SLib.SpriteImage_StaticMultiple):  # 123
         topRadiusInBlocks = widthInBlocks / 10
         heightInBlocks = widthInBlocks + topRadiusInBlocks
 
-        self.image = ImageCache['UnusedCastlePlatform'].scaled(widthInBlocks * 24, int(heightInBlocks * 24))
-
-        self.offset = (
-            -(self.image.width() / 1.5) / 2,
-            -topRadiusInBlocks * 16,
-        )
+        self.aux[0].image = ImageCache['UnusedCastlePlatform'].scaled(widthInBlocks * 24, int(heightInBlocks * 24))
+        self.aux[0].setPos(-(self.aux[0].image.width() / 2), (-topRadiusInBlocks * 16) * 1.5)
 
         super().dataChanged()
 
