@@ -109,8 +109,14 @@ class InstanceDefinition:
         Returns a matching instance of this thing in the level
         """
         for item in self.itemList():
-            if self.matches(item):
-                return item
+            if isinstance(item, Path):
+                # Path does not have objx/y, but the nodes do
+                for node in item._nodes:
+                    if self.matches(node):
+                        return node
+            else:
+                if self.matches(item):
+                    return item
 
 
 class InstanceDefinition_ObjectItem(InstanceDefinition):
