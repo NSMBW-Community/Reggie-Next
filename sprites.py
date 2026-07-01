@@ -437,7 +437,7 @@ class SpriteImage_Amp(SLib.SpriteImage_Static):  # 104, 108
         SLib.loadIfNotInImageCache('Amp', 'amp.png')
 
 
-class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
+class SpriteImage_Skewer(SLib.SpriteImage):  # 137, 140, 141, 142
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.spritebox.shown = False
@@ -449,12 +449,12 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
 
     @staticmethod
     def loadImages():
-        if 'StakeM0up' not in ImageCache:
+        if 'SkewerM0up' not in ImageCache:
             for dir in ['up', 'down', 'left', 'right']:
-                ImageCache['StakeM0' + dir] = SLib.GetImg('stake_%s_m_0.png' % dir)
-                ImageCache['StakeM1' + dir] = SLib.GetImg('stake_%s_m_1.png' % dir)
-                ImageCache['StakeE0' + dir] = SLib.GetImg('stake_%s_e_0.png' % dir)
-                ImageCache['StakeE1' + dir] = SLib.GetImg('stake_%s_e_1.png' % dir)
+                ImageCache['SkewerM0' + dir] = SLib.GetImg('skewer_%s_m_0.png' % dir)
+                ImageCache['SkewerM1' + dir] = SLib.GetImg('skewer_%s_m_1.png' % dir)
+                ImageCache['SkewerE0' + dir] = SLib.GetImg('skewer_%s_e_0.png' % dir)
+                ImageCache['SkewerE1' + dir] = SLib.GetImg('skewer_%s_e_1.png' % dir)
 
     def dataChanged(self):
         super().dataChanged()
@@ -490,11 +490,11 @@ class SpriteImage_SpikedStake(SLib.SpriteImage):  # 137, 140, 141, 142
 
         color = self.parent.spritedata[3] & 15
         if color == 2 or color == 3 or color == 7:
-            mid = ImageCache['StakeM1' + self.dir]
-            end = ImageCache['StakeE1' + self.dir]
+            mid = ImageCache['SkewerM1' + self.dir]
+            end = ImageCache['SkewerE1' + self.dir]
         else:
-            mid = ImageCache['StakeM0' + self.dir]
-            end = ImageCache['StakeE0' + self.dir]
+            mid = ImageCache['SkewerM0' + self.dir]
+            end = ImageCache['SkewerE0' + self.dir]
 
         tiles = 16
         tilesize = 36
@@ -947,7 +947,7 @@ class SpriteImage_RollingHillWithPipe(SLib.SpriteImage):  # 355, 360
         self.aux.append(SLib.AuxiliaryCircleOutline(parent, 800))
 
 
-class SpriteImage_LongSpikedStake(SLib.SpriteImage):  # 398, 400
+class SpriteImage_LongSkewer(SLib.SpriteImage):  # 398, 400
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.parent.setZValue(24999) # to see sprites behind it easily
@@ -958,12 +958,12 @@ class SpriteImage_LongSpikedStake(SLib.SpriteImage):  # 398, 400
 
     @staticmethod
     def loadImages():
-        if 'LongStakeM0left' in ImageCache: return
+        if 'LongSkewerM0left' in ImageCache: return
         for dir in ['left', 'right']:
-            ImageCache['LongStakeM0' + dir] = SLib.GetImg('stake_%s_m_0.png' % dir)
-            ImageCache['LongStakeM1' + dir] = SLib.GetImg('stake_%s_m_1.png' % dir)
-            ImageCache['LongStakeE0' + dir] = SLib.GetImg('stake_%s_e_0.png' % dir)
-            ImageCache['LongStakeE1' + dir] = SLib.GetImg('stake_%s_e_1.png' % dir)
+            ImageCache['LongSkewerM0' + dir] = SLib.GetImg('skewer_%s_m_0.png' % dir)
+            ImageCache['LongSkewerM1' + dir] = SLib.GetImg('skewer_%s_m_1.png' % dir)
+            ImageCache['LongSkewerE0' + dir] = SLib.GetImg('skewer_%s_e_0.png' % dir)
+            ImageCache['LongSkewerE1' + dir] = SLib.GetImg('skewer_%s_e_1.png' % dir)
 
     def dataChanged(self):
         super().dataChanged()
@@ -979,11 +979,11 @@ class SpriteImage_LongSpikedStake(SLib.SpriteImage):  # 398, 400
         paint = QtGui.QPainter(pix)
 
         if color == 2 or color == 3 or color == 6 or color == 7:
-            mid = ImageCache['LongStakeM1' + self.dir]
-            end = ImageCache['LongStakeE1' + self.dir]
+            mid = ImageCache['LongSkewerM1' + self.dir]
+            end = ImageCache['LongSkewerE1' + self.dir]
         else:
-            mid = ImageCache['LongStakeM0' + self.dir]
-            end = ImageCache['LongStakeE0' + self.dir]
+            mid = ImageCache['LongSkewerM0' + self.dir]
+            end = ImageCache['LongSkewerE0' + self.dir]
 
         if self.dir == 'left':
             self.aux[0].setPos(-1896, 36)
@@ -999,7 +999,7 @@ class SpriteImage_LongSpikedStake(SLib.SpriteImage):  # 398, 400
         self.aux[1].alpha = 0.9
 
 
-class SpriteImage_MassiveSpikedStake(SLib.SpriteImage):  # 401, 404
+class SpriteImage_MassiveSkewer(SLib.SpriteImage):  # 401, 404
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.parent.setZValue(24999) # to see sprites behind it easily
@@ -1011,12 +1011,12 @@ class SpriteImage_MassiveSpikedStake(SLib.SpriteImage):  # 401, 404
 
     @staticmethod
     def loadImages():
-        if 'MassiveStakeM0up' in ImageCache: return
+        if 'MassiveSkewerM0up' in ImageCache: return
         for dir in ['up', 'down']:
-            ImageCache['MassiveStakeM0'] = SLib.GetImg('massive_stake_m_0.png')
-            ImageCache['MassiveStakeM1'] = SLib.GetImg('massive_stake_m_1.png')
-            ImageCache['MassiveStakeE0' + dir] = SLib.GetImg('massive_stake_%s_e_0.png' % dir)
-            ImageCache['MassiveStakeE1' + dir] = SLib.GetImg('massive_stake_%s_e_1.png' % dir)
+            ImageCache['MassiveSkewerM0'] = SLib.GetImg('massive_skewer_m_0.png')
+            ImageCache['MassiveSkewerM1'] = SLib.GetImg('massive_skewer_m_1.png')
+            ImageCache['MassiveSkewerE0' + dir] = SLib.GetImg('massive_skewer_%s_e_0.png' % dir)
+            ImageCache['MassiveSkewerE1' + dir] = SLib.GetImg('massive_skewer_%s_e_1.png' % dir)
 
     def dataChanged(self):
         super().dataChanged()
@@ -1032,11 +1032,11 @@ class SpriteImage_MassiveSpikedStake(SLib.SpriteImage):  # 401, 404
         paint = QtGui.QPainter(pix)
 
         if color == 2 or color == 3 or color == 6 or color == 7:
-            mid = ImageCache['MassiveStakeM1']
-            end = ImageCache['MassiveStakeE1' + self.dir]
+            mid = ImageCache['MassiveSkewerM1']
+            end = ImageCache['MassiveSkewerE1' + self.dir]
         else:
-            mid = ImageCache['MassiveStakeM0']
-            end = ImageCache['MassiveStakeE0' + self.dir]
+            mid = ImageCache['MassiveSkewerM0']
+            end = ImageCache['MassiveSkewerE0' + self.dir]
 
         if self.dir == 'up':
             self.aux[0].setPos(112, -96)
@@ -3265,7 +3265,7 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
                 painter.drawPixmap(xo, int(ysize - (piece + 1) * 24), image)
 
 
-class SpriteImage_SpikedStakeDown(SpriteImage_SpikedStake):  # 137
+class SpriteImage_SkewerDown(SpriteImage_Skewer):  # 137
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'down'
@@ -3351,7 +3351,7 @@ class SpriteImage_Lava(SpriteImage_LiquidOrFog):  # 139
         super().positionChanged()
 
 
-class SpriteImage_SpikedStakeUp(SpriteImage_SpikedStake):  # 140
+class SpriteImage_SkewerUp(SpriteImage_Skewer):  # 140
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'up'
@@ -3360,7 +3360,7 @@ class SpriteImage_SpikedStakeUp(SpriteImage_SpikedStake):  # 140
         self.dimensions = (0, 0, 66, self.VertSpikeLength)
 
 
-class SpriteImage_SpikedStakeRight(SpriteImage_SpikedStake):  # 141
+class SpriteImage_SkewerRight(SpriteImage_Skewer):  # 141
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'right'
@@ -3369,7 +3369,7 @@ class SpriteImage_SpikedStakeRight(SpriteImage_SpikedStake):  # 141
         self.dimensions = (16 - self.HorzSpikeLength, 0, self.HorzSpikeLength, 66)
 
 
-class SpriteImage_SpikedStakeLeft(SpriteImage_SpikedStake):  # 142
+class SpriteImage_SkewerLeft(SpriteImage_Skewer):  # 142
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'left'
@@ -7800,7 +7800,7 @@ class SpriteImage_GhostHouseBox(SLib.SpriteImage):  # 397
         painter.drawTiledPixmap(24, 24, xsize - 48, ysize - 48, ImageCache[prefix + 'M'])
 
 
-class SpriteImage_LongSpikedStakeRight(SpriteImage_LongSpikedStake):  # 398
+class SpriteImage_LongSkewerRight(SpriteImage_LongSkewer):  # 398
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'right'
@@ -7810,7 +7810,7 @@ class SpriteImage_LongSpikedStakeRight(SpriteImage_LongSpikedStake):  # 398
         self.dimensions = (-112, 0, 128, 66) # 6 mid sections + end section
 
 
-class SpriteImage_LongSpikedStakeLeft(SpriteImage_LongSpikedStake):  # 400
+class SpriteImage_LongSkewerLeft(SpriteImage_LongSkewer):  # 400
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'left'
@@ -7820,7 +7820,7 @@ class SpriteImage_LongSpikedStakeLeft(SpriteImage_LongSpikedStake):  # 400
         self.dimensions = (0, 0, 128, 66)
 
 
-class SpriteImage_MassiveSpikedStakeDown(SpriteImage_MassiveSpikedStake):  # 401
+class SpriteImage_MassiveSkewerDown(SpriteImage_MassiveSkewer):  # 401
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'down'
@@ -7843,7 +7843,7 @@ class SpriteImage_LineBrickBlock(SpriteImage_Block):  # 403
         self.tilenum = 48
 
 
-class SpriteImage_MassiveSpikedStakeUp(SpriteImage_MassiveSpikedStake):  # 404
+class SpriteImage_MassiveSkewerUp(SpriteImage_MassiveSkewer):  # 404
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.dir = 'up'
@@ -9030,7 +9030,7 @@ class SpriteImage_BowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
         super().dataChanged()
 
 
-class SpriteImage_MortonSpikedStake(SLib.SpriteImage):  # 480
+class SpriteImage_MortonSkewer(SLib.SpriteImage):  # 480
     def __init__(self, parent):
         super().__init__(parent)
         self.spritebox.shown = False
@@ -9039,8 +9039,8 @@ class SpriteImage_MortonSpikedStake(SLib.SpriteImage):  # 480
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('MortonStakeM', 'stake_down_m_0.png')
-        SLib.loadIfNotInImageCache('MortonStakeE', 'stake_down_e_0.png')
+        SLib.loadIfNotInImageCache('MortonSkewerM', 'skewer_down_m_0.png')
+        SLib.loadIfNotInImageCache('MortonSkewerE', 'skewer_down_e_0.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -9051,8 +9051,8 @@ class SpriteImage_MortonSpikedStake(SLib.SpriteImage):  # 480
     def paint(self, painter):
         super().paint(painter)
 
-        painter.drawTiledPixmap(0, 0, 98, 576, ImageCache['MortonStakeM'])
-        painter.drawPixmap(0, 576, ImageCache['MortonStakeE'])
+        painter.drawTiledPixmap(0, 0, 98, 576, ImageCache['MortonSkewerM'])
+        painter.drawPixmap(0, 576, ImageCache['MortonSkewerE'])
 
 
 class SpriteImage_FinalBossRubble(SLib.SpriteImage_StaticMultiple):  # 481
@@ -9218,12 +9218,12 @@ ImageClasses = {
     134: SpriteImage_Crow,
     135: SpriteImage_HangingPlatform,
     136: SpriteImage_RotBulletLauncher,
-    137: SpriteImage_SpikedStakeDown,
+    137: SpriteImage_SkewerDown,
     138: SpriteImage_Water,
     139: SpriteImage_Lava,
-    140: SpriteImage_SpikedStakeUp,
-    141: SpriteImage_SpikedStakeRight,
-    142: SpriteImage_SpikedStakeLeft,
+    140: SpriteImage_SkewerUp,
+    141: SpriteImage_SkewerRight,
+    142: SpriteImage_SkewerLeft,
     143: SpriteImage_Arrow,
     144: SpriteImage_RedCoin,
     145: SpriteImage_FloatingBarrel,
@@ -9422,12 +9422,12 @@ ImageClasses = {
     395: SpriteImage_SpinyCheep,
     396: SpriteImage_MoveWhenOn,
     397: SpriteImage_GhostHouseBox,
-    398: SpriteImage_LongSpikedStakeRight,
-    400: SpriteImage_LongSpikedStakeLeft,
-    401: SpriteImage_MassiveSpikedStakeDown,
+    398: SpriteImage_LongSkewerRight,
+    400: SpriteImage_LongSkewerLeft,
+    401: SpriteImage_MassiveSkewerDown,
     402: SpriteImage_LineQBlock,
     403: SpriteImage_LineBrickBlock,
-    404: SpriteImage_MassiveSpikedStakeUp,
+    404: SpriteImage_MassiveSkewerUp,
     405: SpriteImage_BowserJr2ndController,
     406: SpriteImage_BowserJr3rdController,
     407: SpriteImage_BossControllerCastleBoss,
@@ -9487,7 +9487,7 @@ ImageClasses = {
     477: SpriteImage_SuperGuideBlock,
     478: SpriteImage_BowserSwitchSm,
     479: SpriteImage_BowserSwitchLg,
-    480: SpriteImage_MortonSpikedStake,
+    480: SpriteImage_MortonSkewer,
     481: SpriteImage_FinalBossRubble,
     482: SpriteImage_FinalBossEffects,
 }
