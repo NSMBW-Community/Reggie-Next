@@ -5200,19 +5200,19 @@ class SpriteImage_WaterPiranha(SLib.SpriteImage_Static):  # 263
             parent,
             1.5,
             ImageCache['WaterPiranhaBody'],
-            (-5, -28),
+            (-4 / 1.5, -30),
         )
 
-        # High point
+        # Highest point
         self.aux.append(SLib.AuxiliaryImage(parent, 38, 30))
         self.aux[0].image = ImageCache['WaterPiranhaBall']
-        self.aux[0].setPos(0, -170)
+        self.aux[0].setPos(2, -170)
         self.aux[0].hover = True
 
-        # Low point
+        # Lowest point
         self.aux.append(SLib.AuxiliaryImage(parent, 38, 30))
         self.aux[1].image = ImageCache['WaterPiranhaBall']
-        self.aux[1].setPos(0, -32)
+        self.aux[1].setPos(2, -24)
         self.aux[1].alpha = 0.5
         self.aux[1].hover = True
 
