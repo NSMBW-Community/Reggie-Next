@@ -5228,7 +5228,7 @@ class SpriteImage_WalkingPiranha(SLib.SpriteImage_Static):  # 264
             parent,
             1.5,
             ImageCache['WalkPiranha'],
-            (0, -50),
+            (-4 / 1.5, -50),
         )
         self.aux.append(SLib.AuxiliaryTrackObject(parent, self.width, 16, SLib.AuxiliaryTrackObject.Horizontal))
         self.aux.append(SLib.AuxiliaryTrackObject(parent, self.width, 16, SLib.AuxiliaryTrackObject.Horizontal))
@@ -5241,10 +5241,10 @@ class SpriteImage_WalkingPiranha(SLib.SpriteImage_Static):  # 264
         distance = self.parent.spritedata[5] & 0xF
         sideLen = (distance + 2) * 16
 
-        self.aux[0].setPos(0, 76)
+        self.aux[0].setPos(6 / 1.5, 112 / 1.5)
         self.aux[0].setSize(sideLen, 16)
 
-        self.aux[1].setPos(-(sideLen * 1.5) + 24, 76)
+        self.aux[1].setPos(-(sideLen * 1.5) + (42 / 1.5), 112 / 1.5)
         self.aux[1].setSize(sideLen, 16)
 
         self.aux[0].update()
