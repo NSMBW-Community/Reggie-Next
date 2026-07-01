@@ -260,7 +260,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 loaded = self.LoadLevel(lastlevel, True, 1)
 
         if not loaded:
-            self.LoadLevel(globals_.FirstStageFilename, False, 1)
+            self.LoadLevel(globals_.FirstStageFilename, True, 1)
 
         # call each toggle-button handler to set each feature correctly upon
         # startup
@@ -2596,7 +2596,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if not auto:
             # Try loading the first detected file in our Stage folder. If that fails, load up an empty canvas.
-            ok = self.LoadLevel(globals_.FirstStageFilename, False, 1)
+            ok = self.LoadLevel(globals_.FirstStageFilename, True, 1)
             if not ok:
                 self.LoadLevel(None, False, 1)
 

@@ -5274,18 +5274,15 @@ class SpriteImage_FallingIcicle(SLib.SpriteImage_StaticMultiple):  # 265
             self.height = 36
 
 
-class SpriteImage_RotatingFence(SLib.SpriteImage_Static):  # 266
+class SpriteImage_RotatingFence(SLib.SpriteImage):  # 266
     def __init__(self, parent):
         w, h = ImageCache['RotatingFence'].width(), ImageCache['RotatingFence'].height()
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['RotatingFence'],
-            (
-                -((w / 2) - 12) / 1.5,
-                -((h / 2) - 12) / 1.5,
-            ),
-        )
+        super().__init__(parent)
+        self.parent.setZValue(24999)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, w, h))
+        self.aux[0].image = ImageCache['RotatingFence']
+        self.aux[0].setPos(-((w / 2) + 90) / 1.5, -((h / 2) + 90) / 1.5)
 
     @staticmethod
     def loadImages():
@@ -6600,23 +6597,32 @@ class SpriteImage_RopeLadder(SLib.SpriteImage_StaticMultiple):  # 330
 
 
 class SpriteImage_DishPlatform(SLib.SpriteImage_StaticMultiple):  # 331
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent.setZValue(24999)
+        self.spritebox.shown = True
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 304, 195))
+
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('DishPlatform0', 'dish_platform_short.png')
         SLib.loadIfNotInImageCache('DishPlatform1', 'dish_platform_long.png')
 
     def dataChanged(self):
-        self.yOffset = -8
+        posY = -8
 
         size = self.parent.spritedata[4] & 15
         if size == 0:
-            self.xOffset = -144
-            self.width = 304
+            posX = -144
+            width = 304
         else:
-            self.xOffset = -208
-            self.width = 433
+            size = 1
+            posX = -208
+            width = 433
 
-        self.image = ImageCache['DishPlatform%d' % size]
+        self.aux[0].image = ImageCache['DishPlatform%d' % size]
+        self.aux[0].setSize(width * 1.5, 195, posX * 1.5, posY * 1.5)
 
         super().dataChanged()
 
@@ -8600,15 +8606,15 @@ class SpriteImage_Seaweed(SLib.SpriteImage_StaticMultiple):  # 453
         super().dataChanged()
 
 
-class SpriteImage_HammerPlatform(SLib.SpriteImage_Static):  # 455
+class SpriteImage_HammerPlatform(SLib.SpriteImage):  # 455
     def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['HammerPlatform'],
-            (-24, -8),
-        )
+        super().__init__(parent)
         self.parent.setZValue(24999)
+
+        w, h = ImageCache['HammerPlatform'].width(), ImageCache['HammerPlatform'].height()
+        self.aux.append(SLib.AuxiliaryImage(parent, w, h))
+        self.aux[0].image = ImageCache['HammerPlatform']
+        self.aux[0].setPos(-24 * 1.5, -8 * 1.5)
 
     @staticmethod
     def loadImages():
@@ -8634,14 +8640,15 @@ class SpriteImage_BossBridge(SLib.SpriteImage_StaticMultiple):  # 456
         super().dataChanged()
 
 
-class SpriteImage_SpinningThinBars(SLib.SpriteImage_Static):  # 457
+class SpriteImage_SpinningThinBars(SLib.SpriteImage):  # 457
     def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['SpinningThinBars'],
-            (-115.4, -115.4),
-        )
+        super().__init__(parent)
+        self.parent.setZValue(24999)
+
+        w, h = ImageCache['SpinningThinBars'].width(), ImageCache['SpinningThinBars'].height()
+        self.aux.append(SLib.AuxiliaryImage(parent, w, h))
+        self.aux[0].image = ImageCache['SpinningThinBars']
+        self.aux[0].setPos(-115.4 * 1.5, -115.4 * 1.5)
 
     @staticmethod
     def loadImages():

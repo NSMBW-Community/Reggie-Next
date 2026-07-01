@@ -131,8 +131,14 @@ def areValidGamePaths(stage_check='ug', texture_check='ug'):
     for fname in files:
         if os.path.isfile(os.path.join(stage_check, fname)):
             name, ext = os.path.splitext(os.path.join(stage_check, fname))
+
+            # For compressed files, splitting only gives us the LH/LZ extension, while '.arc' is considered part of the filename
+            if ext in ('.LH', '.LZ'):
+                ext = globals_.FileExtentions[0] + ext
+                name = name.removesuffix('.arc')
+
             if ext in globals_.FileExtentions:
-                globals_.FirstStageFilename = name 
+                globals_.FirstStageFilename = name + ext
                 return True
 
     return False
