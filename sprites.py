@@ -8343,27 +8343,41 @@ class SpriteImage_PurplePole(SLib.SpriteImage):  # 437
         painter.drawPixmap(0, int(self.height * 1.5 - 24), ImageCache['VertPoleBottom'])
 
 
-class SpriteImage_CageBlocks(SLib.SpriteImage_StaticMultiple):  # 438
+class SpriteImage_ShapeBlocks(SLib.SpriteImage_StaticMultiple):  # 438
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent.setZValue(24999)
+        self.spritebox.shown = True
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 360, 360))
+
     @staticmethod
     def loadImages():
-        if 'CageBlock0' in ImageCache: return
+        if 'ShapeBlock0' in ImageCache: return
 
         for i in range(5):
-            ImageCache['CageBlock%d' % i] = SLib.GetImg('cage_block_%d.png' % i)
+            ImageCache['ShapeBlock%d' % i] = SLib.GetImg('shape_block_%d.png' % i)
 
     def dataChanged(self):
-
         type = (self.parent.spritedata[4] & 15) % 5
 
-        self.offset = (
+        offsets = (
             (-112, -112),
             (-112, -112),
             (-97, -81),
             (-80, -96),
             (-112, -112),
-        )[type]
+        )
+        sizes = (
+            (360, 360),
+            (360, 360),
+            (312, 264),
+            (264, 312),
+            (360, 360),
+        )
 
-        self.image = ImageCache['CageBlock%d' % type]
+        self.aux[0].image = ImageCache['ShapeBlock%d' % type]
+        self.aux[0].setSize(sizes[type][0], sizes[type][1], offsets[type][0] * 1.5, offsets[type][1] * 1.5)
 
         super().dataChanged()
 
@@ -9444,7 +9458,7 @@ ImageClasses = {
     434: SpriteImage_WarpCannon,
     435: SpriteImage_GhostFog,
     437: SpriteImage_PurplePole,
-    438: SpriteImage_CageBlocks,
+    438: SpriteImage_ShapeBlocks,
     439: SpriteImage_CagePeachFake,
     440: SpriteImage_HorizontalRope,
     441: SpriteImage_MushroomPlatform,
