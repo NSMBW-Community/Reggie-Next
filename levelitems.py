@@ -1445,7 +1445,7 @@ class ZoneItem(LevelEditorItem):
                 painter.drawLine(lineStart, lineEnd)
 
         # Paint liquids/fog
-        if globals_.SpritesShown and globals_.RealViewEnabled:
+        if globals_.SpritesShown and globals_.SpriteImagesShown and globals_.RealViewEnabled:
             zoneRect = self.mapRectToScene(self.DrawRect)
             from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
             from sprites import SpriteImage_BubbleGen as bubbleGenType
@@ -1455,6 +1455,8 @@ class ZoneItem(LevelEditorItem):
                     sprite.ImageObj.realViewZone(painter, zoneRect)
                 if isinstance(sprite.ImageObj, bubbleGenType) and hasattr(sprite, 'zoneID') and self.id == sprite.zoneID:
                     sprite.ImageObj.realViewZone(painter, zoneRect)
+        else: # Fixes issues with the liquid/fog only disappearing where sprites updated the scene
+            self.update(self.DrawRect)
 
         # Now paint the borders
         painter.setPen(QtGui.QPen(globals_.theme.color('zone_lines'), 3))
@@ -1716,7 +1718,7 @@ class LocationItem(LevelEditorItem):
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         # Paint liquids/fog
-        if globals_.SpritesShown and globals_.RealViewEnabled:
+        if globals_.SpritesShown and globals_.SpriteImagesShown and globals_.RealViewEnabled:
             location_rect = self.sceneTransform().mapRect(self.DrawRect)
             from sprites import SpriteImage_LiquidOrFog as liquidOrFogType
 
