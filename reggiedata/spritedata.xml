@@ -3595,17 +3595,10 @@
   <sprite id="290" name="Incomplete Sprite - 'En_Iwao'" notes="Does nothing.">
   </sprite> <!-- #290: Incomplete Sprite - 'En_Iwao' -->
 
-  <!-- Redo and reinvestigate ALL setting values. Do not assume any of the current information is accurate. Test one setting at a time!! -->
-  <!-- Test 9 separate between normal and heavy. Remember to test between True Left, True Right, and Faces Player for spawning. Also test the range of Speed. Is the maximum 3, 7, or 15? -->
-  <!-- Options still need 'sorted' after ensuring what each one does -->
   <sprite id="291" name="Para-Beetle" notes="A small flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below." files="met_pata.arc">
-    <list nybble="9" title="Initial Movement">
-      <entry value="0">Up</entry>
-      <entry value="1">Down</entry>
-    </list>
-    <value nybble="10" title="Speed" comment="Value 0 keeps it in place."/>
+    <value nybble="10" title="Speed" comment="Each value is incremented by 0.25. A value of 0 will keep the Para-Beetle stationary."/>
     <dualbox nybble="11.4" title1="Moves Right" title2="Moves Left"/>
-    <list nybble="12" title="Facing" comment="Will fly backwards if facing wrong direction.">
+    <list nybble="12" title="Facing" comment="The Para-Beetle will fly backwards if facing the wrong direction.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
       <entry value="2">Right-ish</entry>
@@ -3614,13 +3607,9 @@
   </sprite> <!-- #291: Para-Beetle -->
 
   <sprite id="292" name="Heavy Para-Beetle" notes="A large flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below." files="met_pataBig.arc">
-    <list nybble="9" title="Initial Movement">
-      <entry value="0">Up</entry>
-      <entry value="1">Down</entry>
-    </list>
-    <value nybble="10" title="Speed" comment="Value 0 keeps it in place."/>
+    <value nybble="10" title="Speed" comment="Each value is incremented by 0.25. A value of 0 will keep the Para-Beetle stationary."/>
     <dualbox nybble="11.4" title1="Moves Right" title2="Moves Left"/>
-    <list nybble="12" title="Facing" comment="Will fly backwards if facing wrong direction.">
+    <list nybble="12" title="Facing" comment="The Para-Beetle will fly backwards if facing the wrong direction.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
       <entry value="2">Right-ish</entry>
