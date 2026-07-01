@@ -8121,8 +8121,7 @@ class SpriteImage_ToadBrickBlock(SpriteImage_Block):  # 423
 class SpriteImage_PalmTree(SLib.SpriteImage_StaticMultiple):  # 424
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.parent.setZValue(24999)
-        self.xOffset = -24.5
+        self.xOffset = -24
 
     @staticmethod
     def loadImages():
