@@ -1310,7 +1310,7 @@ def ProcessOverrides(idx, name):
         t[61].main = globals_.Overrides[26 + 9].main       # multiplayer coin
         t[63].main = globals_.Overrides[26 * 2 + 13].main  # invisible damage tile
 
-    elif name in tsidx["Flowers"] or name in tsidx["Forest Flowers"]:
+    if name in tsidx["Flowers"] or name in tsidx["Forest Flowers"]:
         # flowers
         t = globals_.Tiles
         t[tsOffs + 0xA0].main = globals_.Overrides_safe[26 + 4].main     # grass
@@ -1337,7 +1337,16 @@ def ProcessOverrides(idx, name):
             t[tsOffs + 0xC1].main = globals_.Overrides[26 * 3 + 7].main
             t[tsOffs + 0xC2].main = globals_.Overrides[26 * 3 + 8].main
 
-    elif name in tsidx["Lines"] or name in tsidx["Full Lines"]:
+    if name in tsidx["Conveyors"]:
+        # Conveyor belts
+        t = globals_.Tiles
+        tiles = [0x40, 0x41, 0x42, 0x43, 0x44, 0x45, # Right (slow), Right (fast)
+                 0x50, 0x51, 0x52, 0x53, 0x54, 0x55] # Left  (slow), Left  (fast)
+
+        for i, tileNum in enumerate(tiles):
+            t[tsOffs + tileNum].main = overlay(t[tsOffs + tileNum].main, globals_.Overrides[26 * 5 + i].main)
+
+    if name in tsidx["Lines"] or name in tsidx["Full Lines"]:
         # These are the line guides
         # normal lines have fewer though
 
@@ -1472,8 +1481,8 @@ def LoadOverrides():
     """
     Load overrides
     """
-    globals_.Overrides = [None] * (5 * 26)
-    globals_.Overrides_safe = [None] * (5 * 26)
+    globals_.Overrides = [None] * (6 * 26)
+    globals_.Overrides_safe = [None] * (6 * 26)
     globals_.OVERRIDE_UNKNOWN = 2 * 26 + 12
 
     OverrideBitmap = QtGui.QPixmap(os.path.join('reggiedata', 'overrides.png'))

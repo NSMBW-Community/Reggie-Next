@@ -28,11 +28,11 @@
 			<tileset filename="Pa1_suichu" name="Underwater" />
 		</category>
 		<category name="Tower" sorted="true">
-			<tileset filename="Pa1_toride" name="Tower" />
-			<tileset filename="Pa1_toride_sabaku" name="Tower (Desert)" />
-			<tileset filename="Pa1_toride_kori" name="Tower (Ice)" />
-			<tileset filename="Pa1_toride_yogan" name="Tower (Lava)" />
-			<tileset filename="Pa1_toride_soto" name="Tower (Sky)" />
+			<tileset filename="Pa1_toride" name="Tower" override="Conveyors" />
+			<tileset filename="Pa1_toride_sabaku" name="Tower (Desert)" override="Conveyors" />
+			<tileset filename="Pa1_toride_kori" name="Tower (Ice)" override="Conveyors" />
+			<tileset filename="Pa1_toride_yogan" name="Tower (Lava)" override="Conveyors" />
+			<tileset filename="Pa1_toride_soto" name="Tower (Outside)" override="Conveyors" />
 			<!-- The boss tilesets need to be in this order which is why
 			     this category has sorted="true" -->
 			<tileset filename="Pa1_toride_boss1" name="Tower Battle (Larry)" />
@@ -93,7 +93,7 @@
 		<category name="Line Guides &amp; Fences">
 			<tileset filename="Pa3_rail" name="Normal Line Guides &amp; Fences" override="Full Lines" />
 			<tileset filename="Pa3_rail_white" name="White Line Guides &amp; Fences" override="Full Lines" />
-			<tileset filename="Pa3_daishizen" name="Forest &amp; Line Guides" override="Lines" />
+			<tileset filename="Pa3_daishizen" name="Forest &amp; Line Guides" override="Lines,Conveyors" />
 			<tileset filename="Pa3_MG_house_ami_rail" name="Line Guides &amp; Minigame Fences" override="Minigame Lines" />
 		</category>
 		<category name="Other">

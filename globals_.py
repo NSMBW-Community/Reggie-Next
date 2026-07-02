@@ -47,7 +47,8 @@ OverriddenTilesets = {
     "Forest Flowers": set(),
     "Lines": set(),
     "Minigame Lines": set(),
-    "Full Lines": set()
+    "Full Lines": set(),
+    "Conveyors": set()
 }
 OverrideSnapping = False
 Overrides = None # 320 tiles, this is put into Tiles usually

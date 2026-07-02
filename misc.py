@@ -258,12 +258,14 @@ def LoadTilesetNames_Category(node):
                 continue
 
             # override present, add it to the correct type
-            type_ = str(child.attrib['override'])
+            
+            types = str(child.attrib['override']).split(',')
 
-            if type_ not in globals_.OverriddenTilesets:
-                raise ValueError("Unknown override type '%s' for tileset '%s'" % (type_, fname))
+            for type_ in types:
+                if type_ not in globals_.OverriddenTilesets:
+                    raise ValueError("Unknown override type '%s' for tileset '%s'" % (type_, fname))
 
-            globals_.OverriddenTilesets[type_].add(fname)
+                globals_.OverriddenTilesets[type_].add(fname)
 
     return list(cat)
 
