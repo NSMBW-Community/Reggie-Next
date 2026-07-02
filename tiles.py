@@ -1476,7 +1476,7 @@ def LoadOverrides():
     globals_.Overrides_safe = [None] * (5 * 26)
     globals_.OVERRIDE_UNKNOWN = 2 * 26 + 12
 
-    OverrideBitmap = QtGui.QPixmap(globals_.theme.overridesFile)
+    OverrideBitmap = QtGui.QPixmap(os.path.join('reggiedata', 'overrides.png'))
     idx = 0
     xcount = OverrideBitmap.width() // 24
     ycount = OverrideBitmap.height() // 24

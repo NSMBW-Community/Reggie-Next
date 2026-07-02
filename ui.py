@@ -39,7 +39,6 @@ class ReggieTheme:
         self.style = None
         self.forceUiColor = False
         self.forceStyleSheet = False
-        self.overridesFile = os.path.join('reggiedata', 'overrides.png')
 
         # Add the colors                                                       # Descriptions:
         self.colors = {
@@ -148,30 +147,6 @@ class ReggieTheme:
                     ico = QtGui.QIcon(pix)
 
                     cache[iconname] = ico
-            elif node.tag.lower() == 'overrides':
-                fn = node.attrib['file']
-                if not fn.endswith('.png'):
-                    continue
-
-                filename = os.path.join(folder, fn)
-                if not os.path.isfile(filename):
-                    continue
-
-                self.overridesFile = filename
-                ##        # Add some overview colors if they weren't specified
-                ##        fallbacks = {
-                ##            'overview_entrance': 'entrance_fill',
-                ##            'overview_location_fill': 'location_fill',
-                ##            'overview_location_lines': 'location_lines',
-                ##            'overview_sprite': 'sprite_fill',
-                ##            'overview_zone_lines': 'zone_lines',
-                ##            }
-                ##        for index in fallbacks:
-                ##            if (index not in colors) and (fallbacks[index] in colors): colors[index] = colors[fallbacks[index]]
-                ##
-                ##        # Use the new colors dict to overwrite values in self.colors
-                ##        for index in colors:
-                ##            self.colors[index] = colors[index]
 
     def parseMainXMLHead(self, root):
         """
