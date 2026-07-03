@@ -391,7 +391,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10.4" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10.4" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #40: ?-Switch -->
-  
+
   <sprite id="41" name="P-Switch" notes="This switch is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (tileset-based and sprite-based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block." files="switch.arc">
     <dependency notes="Activates 'Pow Block Coin' tileset tiles."/>
 	  <spritetex nybble="8" title="Style" comment="This determines which style is seen on the switch. While the P-Switch supports SpriteTex, there aren't any custom textures for it." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
@@ -1914,11 +1914,23 @@
     </list>
     <value nybble="10" title="Speed" comment="Value 0 keeps it in place."/>
     <dualbox nybble="11.4" title1="Moves Right" title2="Moves Left"/>
-    <list nybble="12" title="Facing" comment="Will fly backwards if facing wrong direction.">
+    <list nybble="12" title="Facing" comment="Will fly backwards if facing wrong direction." advancedcomment="Anything beyond value 1 is read out of bounds leading to undefined behaviour. Use those extra values with caution.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
       <entry value="2">Right-ish</entry>
       <entry value="3">Towards Screen</entry>
+      <entry value="4">Right-ish</entry>
+      <entry value="5">Towards Screen</entry>
+      <entry value="6">Right-ish</entry>
+      <entry value="7">Towards Screen</entry>
+      <entry value="8">Right-ish</entry>
+      <entry value="9">Towards Screen</entry>
+      <entry value="10">Right-ish</entry>
+      <entry value="11">Towards Screen</entry>
+      <entry value="12">Towards Screen</entry>
+      <entry value="13">Towards Screen</entry>
+      <entry value="14">Left</entry>
+      <entry value="15">Towards Screen</entry>
     </list>
   </sprite> <!-- #291: Para-Beetle -->
 

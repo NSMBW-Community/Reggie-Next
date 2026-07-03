@@ -5699,25 +5699,28 @@ class SpriteImage_Box(SLib.SpriteImage_StaticMultiple):  # 289
 class SpriteImage_Parabeetle(SLib.SpriteImage_StaticMultiple):  # 291
     @staticmethod
     def loadImages():
-        if 'Parabeetle0' in ImageCache: return
-        ImageCache['Parabeetle0'] = SLib.GetImg('parabeetle_right.png')
-        ImageCache['Parabeetle1'] = SLib.GetImg('parabeetle_left.png')
-        ImageCache['Parabeetle2'] = SLib.GetImg('parabeetle_moreright.png')
-        ImageCache['Parabeetle3'] = SLib.GetImg('parabeetle_atyou.png')
+        if 'ParabeetleRight' in ImageCache: return
+        ImageCache['ParabeetleRight'] = SLib.GetImg('parabeetle_right.png')
+        ImageCache['ParabeetleLeft'] = SLib.GetImg('parabeetle_left.png')
+        ImageCache['ParabeetleMoreRight'] = SLib.GetImg('parabeetle_moreright.png')
+        ImageCache['ParabeetleAtYou'] = SLib.GetImg('parabeetle_atyou.png')
 
     def dataChanged(self):
-        direction = self.parent.spritedata[5] & 3
-        self.image = ImageCache['Parabeetle%d' % direction]
-        self.yOffset = -8
+        direction = self.parent.spritedata[5] & 0xf
+        self.yOffset = -8 / 1.5
 
-        if direction == 0 or direction > 3:  # right
-            self.xOffset = -12
-        elif direction == 1:  # left
-            self.xOffset = -10
-        elif direction == 2:  # more right
-            self.xOffset = -12
-        elif direction == 3:  # at you
-            self.xOffset = -24
+        if direction == 0:  # right
+            self.xOffset = -19 / 1.5
+            self.image = ImageCache['ParabeetleRight']
+        elif direction in [1, 14]:  # left
+            self.xOffset = -14 / 1.5
+            self.image = ImageCache['ParabeetleLeft']
+        elif direction in [2, 4, 6, 8, 10]:  # more right
+            self.xOffset = -14
+            self.image = ImageCache['ParabeetleMoreRight']
+        elif direction in [3, 5, 7, 9, 11, 12, 13, 15]:  # at you
+            self.xOffset = -22
+            self.image = ImageCache['ParabeetleAtYou']
 
         super().dataChanged()
 
