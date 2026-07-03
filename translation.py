@@ -640,7 +640,7 @@ class ReggieTranslation:
                 3: 'Appearance',
                 4: '[b]Reggie Preferences[/b][br]Customize Reggie Next by changing these settings.[br]Use the tabs below to view even more settings.[br]Reggie Next must be restarted before certain changes can take effect.',
                 5: '[b]Toolbar Preferences[/b][br]Choose menu items you would like to appear on the toolbar.[br]Reggie Next must be restarted before the toolbar can be updated.[br]',
-                6: '[b]Reggie Appearance[/b][br]Customize the appearance of Reggie Next by changing these settings.[br]Reggie Next must be restarted before the theme can be changed.[br]',
+                6: '[b]Reggie Appearance[/b][br]Customize the appearance of Reggie Next by changing these settings.[br]Certain window styles may not work correctly with Dark Mode or themes.[br]Reggie Next must be restarted before the theme or window style can be changed.',
                 7: None,  # REMOVED: 'Show the splash screen:'
                 8: None,  # REMOVED: 'If TPLLib cannot use a fast backend (recommended)'
                 9: None,  # REMOVED: 'Always'
