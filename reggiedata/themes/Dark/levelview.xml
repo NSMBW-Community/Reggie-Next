@@ -6,6 +6,5 @@
     <color id="location_fill_s"  value="#FFFF008C" />
     <color id="spritebox_fill"   value="#9A3AFF78" />
     <color id="spritebox_fill_s" value="#9A3AFFF0" />
-    <color id="ui"               value="#646464"   />
     <color id="zone_text"        value="#F5F5F5"   />
 </colors>
