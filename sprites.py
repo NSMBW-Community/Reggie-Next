@@ -1003,7 +1003,6 @@ class SpriteImage_MassiveSkewer(SLib.SpriteImage):  # 401, 404
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.parent.setZValue(24999) # to see sprites behind it easily
-        self.spritebox.shown = False
 
         self.SpikeLength = ((72 * 40) + 136) / 1.5
         # (40 mid sections + an end section), accounting for image/sprite size difference
@@ -1038,21 +1037,25 @@ class SpriteImage_MassiveSkewer(SLib.SpriteImage):  # 401, 404
             mid = ImageCache['MassiveSkewerM0']
             end = ImageCache['MassiveSkewerE0' + self.dir]
 
+        offsX = 91
+        offsY = -183 # Only used for down skewer
+
         if self.dir == 'up':
-            self.aux[0].setPos(112, -96)
-            self.aux[1].setPos(4, -2592)
+            self.aux[0].setPos(102 - offsX, -96)
+            self.aux[1].setPos(-7  - offsX, -2592)
+            self.aux[2].setPos(-10 - offsX, 0)
             paint.drawPixmap(0, 0, end)
             paint.drawTiledPixmap(0, endsize, width, tilesize * tiles, mid)
         elif self.dir == 'down':
-            self.aux[0].setPos(112, 184)
-            self.aux[1].setPos(4, 137)
-            self.aux[2].setPos(0, -2808)
+            self.aux[0].setPos(102 - offsX, 184   + offsY)
+            self.aux[1].setPos(-7  - offsX, 137   + offsY)
+            self.aux[2].setPos(-10 - offsX, -2808 + offsY)
             paint.drawTiledPixmap(0, 0, width, tilesize * tiles, mid)
             paint.drawPixmap(0, 2880, end)
 
         paint = None
         self.aux[2].image = pix
-        self.aux[2].alpha = 0.9
+        self.aux[2].alpha = 0.5
 
 
 class SpriteImage_ToadHouseBalloon(SLib.SpriteImage_StaticMultiple):  # 411, 412
@@ -7828,8 +7831,6 @@ class SpriteImage_MassiveSkewerDown(SpriteImage_MassiveSkewer):  # 401
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 240, 2664, 4, 2944))
         self.aux.append(SLib.AuxiliaryImage(parent, 248, 3016))
 
-        self.dimensions = (-67, -123, 165, 139)
-
 class SpriteImage_LineQBlock(SpriteImage_Block):  # 402
     def __init__(self, parent):
         super().__init__(parent, 1.5)
@@ -7850,8 +7851,6 @@ class SpriteImage_MassiveSkewerUp(SpriteImage_MassiveSkewer):  # 404
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 80, SLib.AuxiliaryTrackObject.Vertical))
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 240, 2664, 4, -2592))
         self.aux.append(SLib.AuxiliaryImage(parent, 248, 3016))
-
-        self.dimensions = (-67, 0, 165, 139)
 
 
 class SpriteImage_BowserJr2ndController(SLib.SpriteImage):  # 405
