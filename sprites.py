@@ -1577,7 +1577,7 @@ class SpriteImage_TiltingGirder(SLib.SpriteImage_Static):  # 51
             parent,
             1.5,
             ImageCache['TiltingGirder'],
-            (0, -18),
+            (-1 / 1.5, -28 / 1.5),
         )
 
     @staticmethod
