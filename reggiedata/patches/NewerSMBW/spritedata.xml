@@ -298,8 +298,7 @@
       <entry value="2">Left</entry>
       <entry value="3">Right</entry>
     </list>
-    <dualbox nybble="6.4" title1="Jumps Left" title2="Jumps Right" requirednybble="12" requiredval="4"/>
-    <dualbox nybble="6.4" title1="Jumps Left" title2="Jumps Right" requirednybble="12" requiredval="5"/>
+    <dualbox nybble="6.4" title1="Jumps Left" title2="Jumps Right" requirednybble="12" requiredval="4-5"/>
   </sprite> <!-- #20: Goomba -->
 
   <sprite id="21" name="Paragoomba" sizehacks="True" notes="A Goomba with wings that will flutter towards Mario when it loads." files="kuribo.arc;wing.arc">
