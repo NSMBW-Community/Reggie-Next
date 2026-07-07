@@ -2204,7 +2204,7 @@ class SpriteImage_GigaGoomba(SLib.SpriteImage_Static):  # 410
             parent,
             1.5,
             ImageCache['GigaGoomba'],
-            (-108, -160),
+            (-128 / 1.5, -188),
         )
 
     @staticmethod
