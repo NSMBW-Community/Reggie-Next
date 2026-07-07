@@ -281,15 +281,25 @@
       <entry value="7">Santa</entry>
       <entry value="8">Gray Santa</entry>
     </spritetex> <!-- Update [21] Paragoomba and [99] Pipe Enemy Spawner when new items are added to this list! -->
-    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Goomba placing it further behind other sprites."/>
-    <list nybble="12" title="Load-In Animation" comment="This determines what animation state is used by the Goomba when it is first loaded. This is useful for Goombas within range of a nearby Entrance." comment2="Jumps and 'Tumble' will result in it landing on the next platform below where it was initially placed.">
+    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the Goomba placing it further behind other sprites."/>
+    <list nybble="12" title="Spawn Behavior" comment="This value affects the spawning animation of the Goomba. Falls will result in the Goomba falling to the next platform below, but only if in singleplayer. Otherwise, the goomba falls through all terrain.">
       <entry value="0">Normal</entry>
-      <entry value="1">Tumble</entry>
-      <entry value="2">Small Jump</entry>
-      <entry value="3">Hesitates</entry>
-      <entry value="4">Medium Jump</entry>
-      <entry value="5">Large Jump</entry>
+      <entry value="1">Falls</entry>
+      <entry value="2">Spawn from Pipe [99]</entry>
+      <entry value="3">Frozen for 40 Frames</entry>
+      <entry value="4">Small Jump (Spawned from Stomped Giant/Mega Goomba)</entry>
+      <entry value="5">Big Jump (Spawned from Ground-Pounded Giant/Mega Goombas)</entry>
+      <entry value="6">Doesn't Appear</entry>
     </list>
+    <value nybble="6" title="Z-Order" comment="Adjusts the Z-Order relative to other Goombas. Higher values will place the Goomba behind others." requirednybble="12" requiredval="2"/>
+    <list nybble="11.4" title="Exit Direction" requirednybble="12" requiredval="2">
+      <entry value="0">Up</entry>
+      <entry value="1">Down</entry>
+      <entry value="2">Left</entry>
+      <entry value="3">Right</entry>
+    </list>
+    <dualbox nybble="6.4" title1="Jumps Left" title2="Jumps Right" requirednybble="12" requiredval="4"/>
+    <dualbox nybble="6.4" title1="Jumps Left" title2="Jumps Right" requirednybble="12" requiredval="5"/>
   </sprite> <!-- #20: Goomba -->
 
   <sprite id="21" name="Paragoomba" sizehacks="True" notes="A Goomba with wings that will flutter towards Mario when it loads." files="kuribo.arc;wing.arc">
