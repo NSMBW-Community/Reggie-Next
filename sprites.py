@@ -3224,7 +3224,7 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
 
-        self.dimensions = (-4, 0, 26, 16)
+        self.dimensions = (-8 / 1.5, 0, 40 / 1.5, 16)
 
     @staticmethod
     def loadImages():
@@ -3257,15 +3257,15 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
         for piece in range(pieces):
             bitpos = 1 << (piece & 3)
             if pivots[piece // 4] & bitpos:
-                painter.drawPixmap(4, int(ysize - (piece + 1) * 24), ImageCache['RotLauncherPivot'])
+                painter.drawPixmap(7, int(ysize - (piece + 1) * 24), ImageCache['RotLauncherPivot'])
             else:
-                xo = 6
+                xo = 8
                 image = ImageCache['RotLauncherCannonR']
                 if startleft[piece // 4] & bitpos:
                     transform = QtGui.QTransform()
                     transform.rotate(180)
                     image = ImageCache['RotLauncherCannonL']
-                    xo = -2
+                    xo = 0
                 painter.drawPixmap(xo, int(ysize - (piece + 1) * 24 - 1), image)
 
 
