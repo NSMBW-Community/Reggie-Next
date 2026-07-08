@@ -8046,7 +8046,7 @@ class SpriteImage_BanzaiGen(SLib.SpriteImage_Static):  # 418
             parent,
             1.5,
             ImageCache['BanzaiGen'],
-            (-48, -16),
+            (-56 / 1.5, -16),
         )
 
     @staticmethod
