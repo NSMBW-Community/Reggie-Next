@@ -3224,12 +3224,13 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
 
-        self.dimensions = (-4, 0, 24, 16)
+        self.dimensions = (-4, 0, 26, 16)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('RotLauncherCannon', 'bullet_cannon_rot_0.png')
-        SLib.loadIfNotInImageCache('RotLauncherPivot', 'bullet_cannon_rot_1.png')
+        SLib.loadIfNotInImageCache('RotLauncherCannonL', 'bullet_cannon_rot_L.png')
+        SLib.loadIfNotInImageCache('RotLauncherCannonR', 'bullet_cannon_rot_R.png')
+        SLib.loadIfNotInImageCache('RotLauncherPivot', 'bullet_cannon_rot_P.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -3256,16 +3257,16 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
         for piece in range(pieces):
             bitpos = 1 << (piece & 3)
             if pivots[piece // 4] & bitpos:
-                painter.drawPixmap(5, int(ysize - (piece + 1) * 24), ImageCache['RotLauncherPivot'])
+                painter.drawPixmap(4, int(ysize - (piece + 1) * 24), ImageCache['RotLauncherPivot'])
             else:
                 xo = 6
-                image = ImageCache['RotLauncherCannon']
+                image = ImageCache['RotLauncherCannonR']
                 if startleft[piece // 4] & bitpos:
                     transform = QtGui.QTransform()
                     transform.rotate(180)
-                    image = QtGui.QPixmap(image.transformed(transform))
-                    xo = 0
-                painter.drawPixmap(xo, int(ysize - (piece + 1) * 24), image)
+                    image = ImageCache['RotLauncherCannonL']
+                    xo = -2
+                painter.drawPixmap(xo, int(ysize - (piece + 1) * 24 - 1), image)
 
 
 class SpriteImage_SkewerDown(SpriteImage_Skewer):  # 137
@@ -6791,31 +6792,31 @@ class SpriteImage_MovingBulletBillLauncher(SLib.SpriteImage):  # 338
 
         if self.cannonHeight >= self.cannonHeightTwo:
             self.height = (self.cannonHeight + 2) * 16
-
+            self.yOffset = -(self.cannonHeight + 1) * 16
         else:
             self.height = (self.cannonHeightTwo + 2) * 16
-
-        if self.cannonHeight >= self.cannonHeightTwo:
-            self.yOffset = -(self.cannonHeight + 1) * 16
-
-        else:
             self.yOffset = -(self.cannonHeightTwo + 1) * 16
 
         super().dataChanged()
 
     def paint(self, painter):
         if self.cannonHeightTwo > self.cannonHeight:
-            painter.setOpacity(0.5)
             painter.drawPixmap(0, 0, 24, 48, ImageCache['BBLauncherT'])
             painter.drawTiledPixmap(0, 48, 24, 24 * self.cannonHeightTwo, ImageCache['BBLauncherM'])
-            painter.setOpacity(1)
 
+            painter.setOpacity(0.5)
             painter.drawPixmap(0, 24 * (self.cannonHeightTwo - self.cannonHeight), 24, 48, ImageCache['BBLauncherT'])
             painter.drawTiledPixmap(0, 24 * (self.cannonHeightTwo - self.cannonHeight + 2), 24, 48 * self.cannonHeight, ImageCache['BBLauncherM'])
-
+            painter.setOpacity(1)
         else:
-            painter.drawPixmap(0, 0, 24, 48, ImageCache['BBLauncherT'])
-            painter.drawTiledPixmap(0, 48, 24, 24 * self.cannonHeight, ImageCache['BBLauncherM'])
+            if self.cannonHeightTwo < self.cannonHeight: # No need to draw both if they're at the same height
+                painter.setOpacity(0.5)
+                painter.drawPixmap(0, 0, 24, 48, ImageCache['BBLauncherT'])
+                painter.drawTiledPixmap(0, 48, 24, 24 * self.cannonHeight, ImageCache['BBLauncherM'])
+                painter.setOpacity(1)
+
+            painter.drawPixmap(0, 24 * (self.cannonHeight - self.cannonHeightTwo), 24, 48, ImageCache['BBLauncherT'])
+            painter.drawTiledPixmap(0, 24 * (self.cannonHeight - self.cannonHeightTwo + 2), 24, 48 * self.cannonHeight, ImageCache['BBLauncherM'])
 
 
 class SpriteImage_Pipe_MovingUp(SpriteImage_Pipe):  # 339
