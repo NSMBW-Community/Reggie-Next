@@ -5342,10 +5342,11 @@
     </dependency>
   </sprite> <!-- #442: Hint Movie Block Controller -->
 
-  <sprite id="443" name="Hint Movie Block" notes="A block that loads a menu of special replays." files="block_otehon.arc">
-    <dependency notes="The game will crash unless [442] Hint Movie Block Controller is present. Additionally, this is hardcoded to only function in Peach's Castle, hitting it in any other stage will stop the game like usual, but without the displaying the menu (essentially softlocking the player).">
+  <sprite id="443" name="Hint Movie Block" notes="A block that loads the Hint Movies menu. The block only functions in Peach's Castle level slots, hitting the block in any other level will softlock the game." files="block_otehon.arc">
+    <dependency notes="The game will crash unless [442] Hint Movie Block Controller is present.">
       <required sprite="442"/>
     </dependency>
+    <value nybble="12.3-12.4" title="Useless Value 12" comment="The game reads this value, but it is never used for anything."/>
   </sprite> <!-- #443: Hint Movie Block -->
 
   <sprite id="444" name="Climbable Swinging Vine - Already Swinging" notes="A swinging vine that loads in with a small amount of momentum already applied to it. Not especially useful compared to [464]. This does not count as a climbing animation for the IF Event Controller. It counts as being in the air." files="tarzantsuta.arc">
