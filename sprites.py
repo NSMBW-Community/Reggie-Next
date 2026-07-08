@@ -2698,8 +2698,8 @@ class SpriteImage_Flagpole(SLib.SpriteImage):  # 113
         self.image = ImageCache['Flagpole']
 
         self.aux.append(SLib.AuxiliaryImage(parent, 144, 149))
-        self.offset = (-30, -144)
-        self.size = (self.image.width() / 1.5, self.image.height() / 1.5)
+        self.offset = (-34, -144)
+        self.size = (73 / 1.5, 160)
 
     @staticmethod
     def loadImages():
@@ -2738,10 +2738,10 @@ class SpriteImage_Flagpole(SLib.SpriteImage):  # 113
 
         if show_snow:
             self.aux[0].image = ImageCache['SnowCastle' + suffix]
-            self.aux[0].setPos(356, 91)
+            self.aux[0].setPos(362, 94)
         else:
             self.aux[0].image = ImageCache['Castle' + suffix]
-            self.aux[0].setPos(356, 97)
+            self.aux[0].setPos(362, 101)
 
         super().dataChanged()
 
