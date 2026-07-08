@@ -5441,7 +5441,7 @@ class SpriteImage_CastleGear(SLib.SpriteImage):  # 274
             self.aux[0].setPos(-216, -216)
         else:
             self.aux[0].image = ImageCache['CastleGearS']
-            self.aux[0].setPos(-144, -144)
+            self.aux[0].setPos(-145, -145)
 
         super().dataChanged()
 
