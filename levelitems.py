@@ -928,9 +928,19 @@ class ObjectItem(LevelEditorItem):
 
                 self.objsDragging[selitem] = [selitem.width, selitem.height]
 
+            # Set an appropriate size cursor for the selected grabber
+            if self.MTGrabbed or self.MBGrabbed:
+                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeVerCursor)
+            elif self.MLGrabbed or self.MRGrabbed:
+                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeHorCursor)
+            elif self.TLGrabbed or self.BRGrabbed:
+                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
+            else:
+                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeBDiagCursor)
             event.accept()
 
         else:
+            globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
             LevelEditorItem.mousePressEvent(self, event)
             self.dragging = False
             self.objsDragging = {}
@@ -1230,6 +1240,7 @@ class ObjectItem(LevelEditorItem):
         Overrides releasing the mouse after a move
         """
         LevelEditorItem.mouseReleaseEvent(self, event)
+        globals_.app.restoreOverrideCursor()
 
         self.TLGrabbed = self.TRGrabbed = self.BLGrabbed = self.BRGrabbed = False
         self.MTGrabbed = self.MLGrabbed = self.MBGrabbed = self.MRGrabbed = False
@@ -1524,6 +1535,11 @@ class ZoneItem(LevelEditorItem):
             self.draginitialy1 = self.objy
             self.draginitialx2 = self.objx + self.width
             self.draginitialy2 = self.objy + self.height
+
+            if self.dragcorner in (1, 4):
+                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
+            else:
+                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeBDiagCursor)
             event.accept()
         else:
             LevelEditorItem.mousePressEvent(self, event)
@@ -1620,6 +1636,16 @@ class ZoneItem(LevelEditorItem):
             event.accept()
         else:
             LevelEditorItem.mouseMoveEvent(self, event)
+
+    def mouseReleaseEvent(self, event):
+        """
+        Overrides releasing the mouse after a move
+        """
+        LevelEditorItem.mouseReleaseEvent(self, event)
+        globals_.app.restoreOverrideCursor()
+
+        self.dragging = False
+        self.update()
 
     def itemChange(self, change, value):
         """
@@ -1759,8 +1785,10 @@ class LocationItem(LevelEditorItem):
             self.dragging = True
             self.dragstartx = self.objx
             self.dragstarty = self.objy
+            globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
             event.accept()
         else:
+            globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
             LevelEditorItem.mousePressEvent(self, event)
             self.dragging = False
 
@@ -1851,6 +1879,16 @@ class LocationItem(LevelEditorItem):
         loclist.selectionModel().clearSelection()
         globals_.Area.locations.remove(self)
         self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+
+    def mouseReleaseEvent(self, event):
+        """
+        Overrides releasing the mouse after a move
+        """
+        LevelEditorItem.mouseReleaseEvent(self, event)
+        globals_.app.restoreOverrideCursor()
+
+        self.dragging = False
+        self.update()
 
 
 class SpriteItem(LevelEditorItem):
@@ -2316,6 +2354,7 @@ class SpriteItem(LevelEditorItem):
         """
         Overrides mouse pressing events if needed for cloning
         """
+        globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
         if event.button() != QtCore.Qt.MouseButton.LeftButton or QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.KeyboardModifier.ControlModifier:
             if not globals_.SpriteImagesShown:
                 oldpos = (self.objx, self.objy)
@@ -2330,6 +2369,12 @@ class SpriteItem(LevelEditorItem):
         globals_.mainWindow.CreateSprite(self.objx, self.objy, self.type, self.spritedata)
         globals_.mainWindow.scene.clearSelection()
         self.setSelected(True)
+
+    def mouseReleaseEvent(self, event):
+        LevelEditorItem.mouseReleaseEvent(self, event)
+        globals_.app.restoreOverrideCursor()
+
+        self.update()
 
     def nearestZone(self, obj=False):
         """
@@ -2718,6 +2763,16 @@ class EntranceItem(LevelEditorItem):
 
         return br.translated(self.pos())
 
+    def mousePressEvent(self, event):
+        LevelEditorItem.mousePressEvent(self, event)
+        globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
+
+    def mouseReleaseEvent(self, event):
+        LevelEditorItem.mouseReleaseEvent(self, event)
+        globals_.app.restoreOverrideCursor()
+
+        self.update()
+
 
 class Path:
     """
@@ -3070,6 +3125,16 @@ class PathItem(LevelEditorItem):
 
         if was_last:
             globals_.Area.paths.remove(self.path)
+
+    def mousePressEvent(self, event):
+        LevelEditorItem.mousePressEvent(self, event)
+        globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
+
+    def mouseReleaseEvent(self, event):
+        LevelEditorItem.mouseReleaseEvent(self, event)
+        globals_.app.restoreOverrideCursor()
+
+        self.update()
 
 
 class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
