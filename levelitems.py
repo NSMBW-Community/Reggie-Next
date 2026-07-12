@@ -467,6 +467,7 @@ class ObjectItem(LevelEditorItem):
         Creates an object with specific data
         """
         LevelEditorItem.__init__(self)
+        self.setAcceptHoverEvents(True)
 
         self.tileset = tileset
         self.type = type
@@ -928,25 +929,51 @@ class ObjectItem(LevelEditorItem):
 
                 self.objsDragging[selitem] = [selitem.width, selitem.height]
 
-            # Set an appropriate size cursor for the selected grabber
-            if self.MTGrabbed or self.MBGrabbed:
-                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeVerCursor)
-            elif self.MLGrabbed or self.MRGrabbed:
-                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeHorCursor)
-            elif self.TLGrabbed or self.BRGrabbed:
-                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
-            else:
-                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeBDiagCursor)
             event.accept()
 
         else:
-            globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
             LevelEditorItem.mousePressEvent(self, event)
             self.dragging = False
             self.objsDragging = {}
 
         self.UpdateTooltip()
         self.update()
+
+    def hoverEnterEvent(self, event):
+        LevelEditorItem.hoverEnterEvent(self, event)
+        globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
+
+    def hoverMoveEvent(self, event):
+        LevelEditorItem.hoverMoveEvent(self, event)
+        TLHovered = self.GrabberRectTL.contains(event.pos())
+        TRHovered = self.GrabberRectTR.contains(event.pos())
+        BLHovered = self.GrabberRectBL.contains(event.pos())
+        BRHovered = self.GrabberRectBR.contains(event.pos())
+        MTHovered = self.GrabberRectMT_.contains(event.pos())
+        MLHovered = self.GrabberRectML_.contains(event.pos())
+        MBHovered = self.GrabberRectMB_.contains(event.pos())
+        MRHovered = self.GrabberRectMR_.contains(event.pos())
+
+        # Prevent original cursor from being lost
+        globals_.app.restoreOverrideCursor()
+
+        if self.isSelected(): # Can only resize if first selected
+            if MTHovered or MBHovered:
+                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeVerCursor)
+            elif MLHovered or MRHovered:
+                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeHorCursor)
+            elif TLHovered or BRHovered:
+                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
+            elif TRHovered or BLHovered:
+                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeBDiagCursor)
+            else:
+                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
+        else:
+            globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
+
+    def hoverLeaveEvent(self, event):
+        LevelEditorItem.hoverLeaveEvent(self, event)
+        globals_.app.restoreOverrideCursor()
 
     def UpdateObj(self, oldX, oldY, newSize):
         """
@@ -1234,13 +1261,13 @@ class ObjectItem(LevelEditorItem):
         """
         globals_.Area.RemoveFromLayer(self)
         self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+        globals_.app.restoreOverrideCursor()
 
     def mouseReleaseEvent(self, event):
         """
         Overrides releasing the mouse after a move
         """
         LevelEditorItem.mouseReleaseEvent(self, event)
-        globals_.app.restoreOverrideCursor()
 
         self.TLGrabbed = self.TRGrabbed = self.BLGrabbed = self.BRGrabbed = False
         self.MTGrabbed = self.MLGrabbed = self.MBGrabbed = self.MRGrabbed = False
@@ -1257,6 +1284,9 @@ class ZoneItem(LevelEditorItem):
         Creates a zone with specific data
         """
         LevelEditorItem.__init__(self)
+        # Supporting this causes hovering to not work for level items, as the zone has a higher Z value,
+        # and lowering the Z value will just make selecting zone edges too harder
+        #self.setAcceptHoverEvents(True)
 
         self.font = globals_.NumberFont
         self.TitlePos = QtCore.QPointF(10, 18)
@@ -1535,11 +1565,6 @@ class ZoneItem(LevelEditorItem):
             self.draginitialy1 = self.objy
             self.draginitialx2 = self.objx + self.width
             self.draginitialy2 = self.objy + self.height
-
-            if self.dragcorner in (1, 4):
-                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
-            else:
-                globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeBDiagCursor)
             event.accept()
         else:
             LevelEditorItem.mousePressEvent(self, event)
@@ -1637,15 +1662,28 @@ class ZoneItem(LevelEditorItem):
         else:
             LevelEditorItem.mouseMoveEvent(self, event)
 
-    def mouseReleaseEvent(self, event):
-        """
-        Overrides releasing the mouse after a move
-        """
-        LevelEditorItem.mouseReleaseEvent(self, event)
-        globals_.app.restoreOverrideCursor()
+    # def hoverMoveEvent(self, event):
+    #     if self.GrabberRectTL.contains(event.pos()):
+    #         corner = 1
+    #     elif self.GrabberRectTR.contains(event.pos()):
+    #         corner = 2
+    #     elif self.GrabberRectBL.contains(event.pos()):
+    #         corner = 3
+    #     elif self.GrabberRectBR.contains(event.pos()):
+    #         corner = 4
+    #     else:
+    #         corner = 0
 
-        self.dragging = False
-        self.update()
+    #     # Prevent losing the original cursor
+    #     globals_.app.restoreOverrideCursor()
+
+    #     if corner in (1, 4):
+    #         globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
+    #     elif corner in (2, 3):
+    #         globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeBDiagCursor)
+
+    # def hoverLeaveEvent(self, event):
+    #     globals_.app.restoreOverrideCursor()
 
     def itemChange(self, change, value):
         """
@@ -1667,6 +1705,7 @@ class LocationItem(LevelEditorItem):
         Creates a location with specific data
         """
         LevelEditorItem.__init__(self)
+        self.setAcceptHoverEvents(True)
 
         self.font = globals_.NumberFont
         self.objx = x
@@ -1879,6 +1918,7 @@ class LocationItem(LevelEditorItem):
         loclist.selectionModel().clearSelection()
         globals_.Area.locations.remove(self)
         self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+        globals_.app.restoreOverrideCursor()
 
     def mouseReleaseEvent(self, event):
         """
@@ -1889,6 +1929,26 @@ class LocationItem(LevelEditorItem):
 
         self.dragging = False
         self.update()
+    
+    def hoverEnterEvent(self, event):
+        LevelEditorItem.hoverEnterEvent(self, event)
+        globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
+    
+    def hoverMoveEvent(self, event):
+        LevelEditorItem.hoverMoveEvent(self, event)
+
+        # Prevent old cursor being lost
+        globals_.app.restoreOverrideCursor()
+
+        if self.isSelected() and self.GrabberRect.contains(event.pos()):
+            globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
+        else:
+            globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
+    
+    def hoverLeaveEvent(self, event):
+        LevelEditorItem.hoverLeaveEvent(self, event)
+        globals_.app.restoreOverrideCursor()
+    
 
 
 class SpriteItem(LevelEditorItem):
@@ -1905,6 +1965,7 @@ class SpriteItem(LevelEditorItem):
         """
         LevelEditorItem.__init__(self)
         self.setZValue(26000)
+        self.setAcceptHoverEvents(True)
 
         self.font = globals_.NumberFont
         self.type = type_
@@ -2354,7 +2415,6 @@ class SpriteItem(LevelEditorItem):
         """
         Overrides mouse pressing events if needed for cloning
         """
-        globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
         if event.button() != QtCore.Qt.MouseButton.LeftButton or QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.KeyboardModifier.ControlModifier:
             if not globals_.SpriteImagesShown:
                 oldpos = (self.objx, self.objy)
@@ -2370,11 +2430,13 @@ class SpriteItem(LevelEditorItem):
         globals_.mainWindow.scene.clearSelection()
         self.setSelected(True)
 
-    def mouseReleaseEvent(self, event):
-        LevelEditorItem.mouseReleaseEvent(self, event)
-        globals_.app.restoreOverrideCursor()
+    def hoverEnterEvent(self, event):
+        LevelEditorItem.hoverEnterEvent(self, event)
+        globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
 
-        self.update()
+    def hoverLeaveEvent(self, event):
+        LevelEditorItem.hoverLeaveEvent(self, event)
+        globals_.app.restoreOverrideCursor()
 
     def nearestZone(self, obj=False):
         """
@@ -2470,6 +2532,7 @@ class SpriteItem(LevelEditorItem):
         globals_.mainWindow.spriteList.selectionModel().clearSelection()
         globals_.Area.RemoveSprite(self)
         self.scene().update()  # The zone painters need for the whole thing to update
+        globals_.app.restoreOverrideCursor()
 
 
 class EntranceItem(LevelEditorItem):
@@ -2578,6 +2641,7 @@ class EntranceItem(LevelEditorItem):
             EntranceItem.EntranceImages = ei
 
         LevelEditorItem.__init__(self)
+        self.setAcceptHoverEvents(True)
 
         self.font = globals_.NumberFont
         self.objx = x
@@ -2740,6 +2804,7 @@ class EntranceItem(LevelEditorItem):
         elist.selectionModel().clearSelection()
         globals_.Area.entrances.remove(self)
         self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+        globals_.app.restoreOverrideCursor()
 
     def itemChange(self, change, value):
         """
@@ -2763,15 +2828,13 @@ class EntranceItem(LevelEditorItem):
 
         return br.translated(self.pos())
 
-    def mousePressEvent(self, event):
-        LevelEditorItem.mousePressEvent(self, event)
+    def hoverEnterEvent(self, event):
+        LevelEditorItem.hoverEnterEvent(self, event)
         globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
 
-    def mouseReleaseEvent(self, event):
-        LevelEditorItem.mouseReleaseEvent(self, event)
+    def hoverLeaveEvent(self, event):
+        LevelEditorItem.hoverLeaveEvent(self, event)
         globals_.app.restoreOverrideCursor()
-
-        self.update()
 
 
 class Path:
@@ -3030,6 +3093,7 @@ class PathItem(LevelEditorItem):
         Creates a path node with specific data
         """
         LevelEditorItem.__init__(self)
+        self.setAcceptHoverEvents(True)
 
         self.font = globals_.NumberFont
         self.objx = objx
@@ -3121,20 +3185,19 @@ class PathItem(LevelEditorItem):
         """
         Delete the path from the level
         """
+        globals_.app.restoreOverrideCursor()
         was_last = self.path.remove_node(self.path.get_index(self))
 
         if was_last:
             globals_.Area.paths.remove(self.path)
 
-    def mousePressEvent(self, event):
-        LevelEditorItem.mousePressEvent(self, event)
+    def hoverEnterEvent(self, event):
+        LevelEditorItem.hoverEnterEvent(self, event)
         globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
 
-    def mouseReleaseEvent(self, event):
-        LevelEditorItem.mouseReleaseEvent(self, event)
+    def hoverLeaveEvent(self, event):
+        LevelEditorItem.hoverLeaveEvent(self, event)
         globals_.app.restoreOverrideCursor()
-
-        self.update()
 
 
 class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
@@ -3194,6 +3257,7 @@ class CommentItem(LevelEditorItem):
         Creates a in-level comment
         """
         LevelEditorItem.__init__(self)
+        self.setAcceptHoverEvents(True)
         zval = 50000
         self.zval = zval
 
@@ -3373,4 +3437,13 @@ class CommentItem(LevelEditorItem):
         globals_.Area.comments.remove(self)
         self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
         globals_.mainWindow.SaveComments()
+        globals_.app.restoreOverrideCursor()
+
+    def hoverEnterEvent(self, event):
+        LevelEditorItem.hoverEnterEvent(self, event)
+        globals_.app.setOverrideCursor(QtCore.Qt.CursorShape.SizeAllCursor)
+
+    def hoverLeaveEvent(self, event):
+        LevelEditorItem.hoverLeaveEvent(self, event)
+        globals_.app.restoreOverrideCursor()
 
