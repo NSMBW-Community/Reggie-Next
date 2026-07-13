@@ -692,16 +692,17 @@
   </sprite> <!-- #58: Koopa Paratroopa -->
 
   <sprite id="59" name="Line Controlled Tilt Controlled Girder" notes="A platform similar to the Tilt Controlled Girder that can navigate along Line guides." files="remo_lift_line.arc">
-    <checkbox nybble="7.4" title="Loads at Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point."/>
+    <checkbox nybble="7.4" title="Spawns at Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point."/>
     <list nybble="11.3-11.4" title="Activation Mode" comment="This determines when the platform will start moving.">
       <entry value="0">Will Move with One Player</entry>
       <entry value="1">Will Move ONLY with All Players</entry>
-      <entry value="3">Will Not Move</entry>
+      <entry value="2">Moves Automatically (Broken)</entry>
     </list>
+    <value nybble="9.3-9.4" title="Useless Value 9" comment="This value is read by the game, but never actually used for anything specific."/>
     <value nybble="8" title="Rendering Related" advanced="True" advancedcomment="Actually a pointless option. This option only affects the code that renders the sprite. Setting a value of 0 results in an automatic use of value 5. Furthermore, the value is automatically multiplied by 64. At 0 and 5, we get a value of 320. Treeki also thinks that this option could represent a counter. What this option actually does is control the blinking of the carrier platform. If the multiplied value is below 180 AND if the second bit of the nybble was used, the carrier platform will not be rendered. Otherwise, this option only has the ability to tweak the blinking of the carrier platform. One would have to play around with some values​​."/>
     <checkbox nybble="8.3" title="No Rendering?" advanced="True" advancedcomment="Selecting this option will trigger the effect described under [Rendering Related]."/>
     <checkbox nybble="10.4" title="Stays Off" advanced="True" advancedcomment="Activating this will cause the platform to not react/move when a player stands on it. The code hints that it should only prevent this platform from disappearing instead of freezing it altogether."/>
-    <value nybble="12" title="Width of the Collision Box" advanced="True" advancedcomment="Value + 6. This option does not change the length of the platform, but instead the length of the (invisible) collision box attached. The collision box ensures that Mario does not fall through the platform. The collision box usually has the same size as the platform itself. The collision box and the platform have the same center point. Per value, the collision box will extend its length 1/2 blocks to the left and right. If you stand on this collision box but outside the platform, then it looks as if you are standing in midair."/>
+    <value nybble="12" start="7" title="Collision Width" comment="This determines the width of the platform's collision. The platform itself does not visually extend, however."/>
   </sprite> <!-- #59: Line Controlled Tilt Controlled Girder -->
 
   <sprite id="60" name="Spike Top" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spike Tops don't properly work on slopes." files="met_toge.arc">
@@ -4478,7 +4479,7 @@
     <checkbox nybble="12.4" title="Uses Paths" comment="When enabled, the Raft will follow the assigned Path. Otherwise, the Raft will move slowly to the right."/>
     <value nybble="7" title="Path ID" idtype="Path" requirednybble="12.4" requiredval="1"/>
     <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the Raft will appear at and start moving from." requirednybble="12.4" requiredval="1"/>
-	<checkbox nybble="8.4" title="Reverse Direction" comment="When enabled, the Raft will follow the path in reverse." requirednybble="12.4" requiredval="1"/>
+	  <checkbox nybble="8.4" title="Reverse Direction" comment="When enabled, the Raft will follow the path in reverse." requirednybble="12.4" requiredval="1"/>
     <dualbox nybble="11.4" title1="Spawns Before Midway" title2="Spawns After Midway" comment="This decides whether the Raft will spawn only before the Midway Flag is activated, or only after."/>
     <checkbox nybble="9.4" title="Event Activated Flashlight" comment="When enabled, the Flashlight will only be illuminated when the Triggering Event ID is activated. The Flashlight can only be controlled by tilting the controller when it is Event Activated."/> <!-- Appears only if Use Flashlight is active -->
     <value nybble="3.2-4.4" title="Triggering Event ID" comment="The Flashlight will be turned on when this Event ID is activated. The Flashlight can't be deactivated." requirednybble="9.4" requiredval="1" idtype="Triggering Event"/> <!-- Appears only if Use Flashlight and Event Activated Flashlight are active -->

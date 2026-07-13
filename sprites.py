@@ -1786,7 +1786,7 @@ class SpriteImage_KoopaParatroopa(SLib.SpriteImage_StaticMultiple):  # 58
         super().dataChanged()
 
 
-class SpriteImage_LineTiltGirder(SLib.SpriteImage_Static):  # 59
+class SpriteImage_LineTiltGirder(SLib.SpriteImage_StaticMultiple):  # 59
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1798,6 +1798,10 @@ class SpriteImage_LineTiltGirder(SLib.SpriteImage_Static):  # 59
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('LineGirder', 'line_tilt_girder.png')
+
+    def dataChanged(self):
+        midway = (self.parent.spritedata[3] >> 4) & 1
+        self.alpha = 0.5 if midway else 1.0
 
 
 class SpriteImage_SpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
