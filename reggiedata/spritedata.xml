@@ -691,7 +691,7 @@
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #58: Koopa Paratroopa -->
 
-  <sprite id="59" name="Line Controlled Tilt Controlled Girder" notes="A platform similar to the Tilt Controlled Girder that can navigate along Line guides." files="remo_lift_line.arc">
+  <sprite id="59" name="Line Controlled Tilt Controlled Girder" notes="A platform similar to the Tilt Controlled Girder that can navigate along Line guides." advancednotes="This sprite will move along with the edge of the screen, should the camera scroll past it. Additionally, it will cause massive lag spikes if it moves past the line guide it is attached to." files="remo_lift_line.arc">
     <checkbox nybble="7.4" title="Spawns at Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point."/>
     <list nybble="11.3-11.4" title="Activation Mode" comment="This determines when the platform will start moving.">
       <entry value="0">Will Move with One Player</entry>
