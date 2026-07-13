@@ -7296,19 +7296,19 @@ class SpriteImage_CubeKinokoLine(SLib.SpriteImage_Static):  # 367
 
 class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
     def __init__(self, parent):
-        super().__init__(
-            parent,
-            1.5,
-            ImageCache['FlashlightRaft'],
-            (-11, -20),
-        )
+        super().__init__( parent, 1.5, )
 
+        self.dimensions = (-5 / 1.5, 0, 322 / 1.5, 36)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 344, 87))
+        self.aux[0].image = ImageCache['FlashlightRaft']
+        self.aux[0].setPos(-11, -28)
         self.aux.append(SLib.AuxiliaryImage(parent, 132, 120))
-        self.aux[0].image = ImageCache['FlashlightLamp']
-        self.aux[0].setPos(-22, -91)
+        self.aux[1].image = ImageCache['FlashlightLamp']
+        self.aux[1].setPos(-33, -120)
 
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 24, 24, 144, 30))
-        self.aux[1].setIsBehindSprite(False)
+        self.aux[2].setIsBehindSprite(False)
 
     @staticmethod
     def loadImages():
@@ -7319,16 +7319,14 @@ class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
         pathcontrolled = self.parent.spritedata[5] & 1
         midway = (self.parent.spritedata[5] >> 4) & 1
 
-        self.aux[1].setSize(24, 24, 136, 30) if pathcontrolled else self.aux[1].setSize(0, 0)
+        self.aux[2].setSize(24, 24, 161, 24) if pathcontrolled else self.aux[2].setSize(0, 0)
 
         if midway:
-            self.alpha = 0.5
             self.aux[0].alpha = 0.5
+            self.aux[1].alpha = 0.5
         else:
-            self.alpha = 1
             self.aux[0].alpha = 1
-
-        super().dataChanged()
+            self.aux[1].alpha = 1
 
 
 class SpriteImage_SlidingPenguin(SLib.SpriteImage_StaticMultiple):  # 369
