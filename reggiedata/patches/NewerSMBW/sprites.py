@@ -1172,11 +1172,11 @@ class SpriteImage_ShyGuyGiant(SLib.SpriteImage_Static): # 167
         self.image = ImageCache['ShyGuy%s%s' % (scale, color)]
 
         if size == 0:
-            self.offset = (-12.7, -124)
+            self.offset = (-12.7, -118)
         elif size == 1:
-            self.offset = (-32, -165.3)
+            self.offset = (-32, -160)
         else:
-            self.offset = (-52.7, -229.3)
+            self.offset = (-52.7, -220)
 
         super().dataChanged()
 
@@ -2097,15 +2097,15 @@ class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
 
         self.image = ImageCache['ShyGuy%d' % imgtype]
         self.offset = (
-            (6, -7),  # 0: red
+            (6, -4),  # 0: red
             (6, -7),  # 1: blue
-            (6, -4),  # 2: red (sleeper)
+            (6, -6),  # 2: red (sleeper)
             (7, -6),  # 3: yellow (jumper)
             (6, -8),  # 4: purple (judo)
-            (6, -8),  # 5: green (spike thrower)
+            (6, -6),  # 5: green (spike thrower)
             (2, -9),  # 6: red (ballooneer - horizontal)
             (2, -9),  # 7: red (ballooneer - vertical)
-            (2, -9),  # 8: blue (ballooneer - circular)
+            (2, -14),  # 8: blue (ballooneer - circular)
         )[imgtype]
 
         super().dataChanged()
