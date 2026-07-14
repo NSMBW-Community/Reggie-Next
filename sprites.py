@@ -427,14 +427,21 @@ class SpriteImage_Amp(SLib.SpriteImage_Static):  # 104, 108
     def __init__(self, parent, scale=1.5):
         super().__init__(
             parent,
-            scale,
-            ImageCache['Amp'],
-            (-8, -8),
+            scale
         )
+
+        self.dimensions = (-5 / 1.5, -5 / 1.5, 34 / 1.5, 34 / 1.5)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 59, 50))
+        self.aux[0].image = ImageCache['Amp']
+        self.aux[0].setPos(-13, -13)
 
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Amp', 'amp.png')
+
+    def dataChanged(self):
+        pass
 
 
 class SpriteImage_Skewer(SLib.SpriteImage):  # 137, 140, 141, 142
