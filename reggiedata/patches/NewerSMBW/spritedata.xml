@@ -2185,7 +2185,7 @@
   </sprite> <!-- #350: Fireball Laser -->
 
   <sprite id="351" name="Shy Guy" files="shyguy.arc;iron_ball.arc">
-    <list nybble="5" title="Type" notes="Type 9 and 10 spawn T-posed Shy Guys that won't move until hit. Otherwise, they function the same.">
+    <list nybble="5" title="Type" comment="Type 9 and 10 spawn T-posed Shy Guys that won't move until hit. Otherwise, they function the same.">
       <entry value="0">Walker (Walks Off Ledges)</entry>
       <entry value="1">Pacer (Turns Around At Ledges)</entry>
       <entry value="2">Sleeper</entry>
@@ -2198,9 +2198,10 @@
 	    <entry value="9">Walker (Incomplete)</entry> <!-- 11-15 act like 9 -->
       <entry value="10">Pacer (Incomplete)</entry>
     </list>
-	  <checkbox nybble="9" title="Starts Walking Right" requirednybble="5" requiredval="0-1"/>
+    <checkbox nybble="9" title="Starts Walking Right +&lt;br&gt;Turns Around at Ledges" requirednybble="5" requiredval="0" comment="Turning around at ledges seems like more of a bug than an intentional feature."/>
+	  <checkbox nybble="9" title="Starts Walking Right" requirednybble="5" requiredval="1"/>
 	  <checkbox nybble="9" title="Starts Walking Right" requirednybble="5" requiredval="9-15"/> <!-- Any non-zero value -->
-    <value nybble="9" title="Distance" comment="It takes ballooners 20 seconds (1200 frames) before they return to their starting position." requirednybble="5" requiredval="6-8"/>
+    <value nybble="9" title="Distance" comment="It takes ballooners 20 seconds (1200 frames) before they return to their starting position." requirednybble="5" requiredval="6-7"/>
   </sprite> <!-- #351: Shy Guy -->
 
   <sprite id="357" name="Yoshi Fruit" sizehacks="True" notes="An edible fruit that Yoshi can grab. Collecting five will cause Yoshi to lay an egg. What's inside the egg will change depending on the player's current power-up. Normal -&gt; Fire -&gt; Ice -&gt; Propeller -&gt; 1-Up." files="fruit.arc;fruit_cookie.arc">
