@@ -1206,8 +1206,10 @@
     <dualbox nybble="12.4" title1="Spawn With 4 Platforms" title2="Spawn 1 Platform" comment="This determines if the sprite will spawn with 4 platforms already created, or only spawn one platform." comment2="When spawning just one, the platform will not be visible on-screen until it begins moving."/>
   </sprite> <!-- #103: Basic Platform - Spawner -->
 
-  <sprite id="104" name="Amp" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="A stationary floating enemy that will electrocute the player when they touch it.&lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interrupted and Mario will take no damage." files="bilikyu.arc">
+  <sprite id="104" name="Amp" notes="A stationary floating enemy that will electrocute the player when they touch it. Players cannot be electrocuted by the Amp while underwater." files="bilikyu.arc">
     <checkbox nybble="12.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Amp placing it further behind other sprites."/>
+    <checkbox nybble="11.4" title="Shift Right by Half a Tile"/>
+    <checkbox nybble="11.3" title="Shift Down by Half a Tile"/>
   </sprite> <!-- #104: Amp -->
 
   <sprite id="105" name="Pokey" notes="A tall segmented enemy whose pieces must be destroyed individually unless the head is defeated first." files="sanbo.arc">
@@ -1239,7 +1241,7 @@
     <value nybble="11-12" title="Rotation ID" comment="Works with both Swaying and Spinning." idtype="Rotation"/>
   </sprite>
 
-  <sprite id="108" name="Line Controlled Amp Spawner" yoshinotes="Yoshi will be damaged by this enemy, but Yoshi cannot eat it. The player will not get electrocuted if riding Yoshi." notes="This will spawn a specified number of Amps along the Line that the sprite is placed on. Once it has spawned the number of Amps it is set to, it will not do anything else even if they fall off.&lt;br&gt;&lt;br&gt;Be aware that if Mario is hit by an Amp underwater, the animation will be interrupted and Mario will take no damage." files="bilikyu.arc">
+  <sprite id="108" name="Line Controlled Amp Spawner" notes="This will spawn a specified number of Amps along the Line that the sprite is placed on. Once it has spawned the number of Amps it is set to, it will not do anything else even if they fall off.&lt;br&gt;&lt;br&gt;Players cannot be electrocuted by the Amp while underwater." files="bilikyu.arc">
     <dependency notes="Place this sprite directly onto the Line guide that you want it to spawn on."/>
     <value nybble="9" start="1" title="Number of Amps" comment="This determines how many Amps are spawned on the Line by this Spawner."/>
     <value nybble="10" title="Delay Between Amp Spawns" comment="This determines how long the game will wait between each Amp is spawned, increasing the distance between each Amp."/>
@@ -1254,7 +1256,7 @@
       <entry value="7">Faster</entry>
       <entry value="3">Very Fast</entry>
     </list>
-    <value nybble="12" title="Z-Order" comment="This will adjust the Z-Order of the Amps in relation to other objects." comment2="A higher value will place this sprite further towards the background."/>
+    <checkbox nybble="12.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Amp placing it further behind other sprites."/>
   </sprite> <!-- #108: Line Controlled Amp Spawner -->
 
   <sprite id="109" name="Spiked Ball on a Chain" notes="This is a Spiked Ball attached to a chain that rotates on its own." files="guru.arc">
