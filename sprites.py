@@ -8205,12 +8205,17 @@ class SpriteImage_BowserController(SLib.SpriteImage):  # 431
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 48, 288))
+        self.aux.append(SLib.AuxiliaryImage(parent, 48, 144))
         self.aux[0].image = ImageCache['BowserShutterDoor']
-        self.aux[0].setPos(1248, -288)
+        self.aux[0].setPos(1250, -288)
+
+        self.aux.append(SLib.AuxiliaryImage(parent, 48, 144))
+        self.aux[1].image = ImageCache['BowserShutterDoor']
+        self.aux[1].setPos(1250, -144)
+        self.aux[1].alpha = 0.5
 
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 768, 408, 1248, -336))
-        self.aux[1].fillFlag = False
+        self.aux[2].fillFlag = False
 
     @staticmethod
     def loadImages():
