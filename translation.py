@@ -691,6 +691,13 @@ class ReggieTranslation:
                     'Standard',
                     'Checker',
                 ),
+                53: 'Cursor Appearance:',
+                54: '[b]Cursor Appearance[/b][br]This determines the appearance of the cursor when moving or resizing level items.',
+                55: (
+                    'Use default cursor',
+                    'Show drag/resize cursors when selected',
+                    'Always show drag/resize cursors',
+                ),
             },
             'ScrShtDlg': {
                 0: 'Level Screenshot',

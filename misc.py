@@ -1606,6 +1606,12 @@ class PreferencesDialog(QtWidgets.QDialog):
                 # Display full filepath
                 self.fullFileTitle = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 49))
 
+                # Cursor modes
+                self.cursorMode = QtWidgets.QComboBox()
+                self.cursorMode.setMaximumWidth(256)
+                self.cursorMode.addItems(globals_.trans.stringList('PrefsDlg', 55))
+                self.cursorMode.setToolTip(globals_.trans.string('PrefsDlg', 54))
+
                 # Create the main layout
                 L = QtWidgets.QFormLayout()
                 L.addRow(globals_.trans.string('PrefsDlg', 14), self.Trans)
@@ -1620,6 +1626,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L.addWidget(self.fullObjSize)
                 L.addWidget(self.insertPathNode)
                 L.addWidget(self.fullFileTitle)
+                L.addRow(globals_.trans.string('PrefsDlg', 53), self.cursorMode)
                 self.setLayout(L)
 
                 # Set the buttons
@@ -1661,6 +1668,7 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.fullObjSize.setChecked(globals_.PlaceObjectsAtFullSize)
                 self.insertPathNode.setChecked(globals_.InsertPathNode)
                 self.fullFileTitle.setChecked(globals_.UseFullFilepath)
+                self.cursorMode.setCurrentIndex(globals_.CursorMode)
 
             def ClearRecent(self):
                 """

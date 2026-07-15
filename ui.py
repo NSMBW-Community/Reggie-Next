@@ -458,3 +458,18 @@ class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
                 self.toolTipAboutToShow.emit(item)
 
         return super().viewportEvent(e)
+
+
+def setOverrideCursor(cursor):
+    """
+    Safely override/restore the application cursor.
+    Pass cursor as None to restore the previous cursor
+    """
+    if cursor is None:
+        globals_.app.restoreOverrideCursor()
+        return
+
+    if globals_.app.overrideCursor() is None:
+        globals_.app.setOverrideCursor(cursor)
+    else:
+        globals_.app.changeOverrideCursor(cursor)

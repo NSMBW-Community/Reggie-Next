@@ -2660,16 +2660,24 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.PaddingLength = dlg.generalTab.psValue.value()
         setSetting('PaddingLength', globals_.PaddingLength)
 
-        # Full object size settings
+        # Full object size setting
         globals_.PlaceObjectsAtFullSize = dlg.generalTab.fullObjSize.isChecked()
         setSetting('PlaceObjectsAtFullSize', globals_.PlaceObjectsAtFullSize)
 
         # Insert Path Node setting
         globals_.InsertPathNode = dlg.generalTab.insertPathNode.isChecked()
         setSetting('InsertPathNode', globals_.InsertPathNode)
-        
+
         globals_.UseFullFilepath = dlg.generalTab.fullFileTitle.isChecked()
         setSetting('UseFullFilepath', globals_.UseFullFilepath)
+
+        globals_.CursorMode = dlg.generalTab.cursorMode.currentIndex()
+        setSetting('CursorMode', globals_.CursorMode)
+
+        # Toggle hover events for scene items
+        for item in self.scene.items():
+            if not isinstance(item, ZoneItem):
+                item.setAcceptHoverEvents(globals_.CursorMode != 0)
 
         # Update window title
         if self.fileSavePath:
@@ -4701,6 +4709,7 @@ def main():
     globals_.UseRoundedRectangles = setting('UseRoundedRectangles', True)
     globals_.DarkMode = setting('DarkMode', False)
     globals_.UseFullFilepath = setting('UseFullFilepath', False)
+    globals_.CursorMode = setting('CursorMode', 0)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game

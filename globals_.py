@@ -83,6 +83,7 @@ UseRoundedRectangles = True
 DarkMode = False
 UseFullFilepath = False
 FirstStageFilename = None
+CursorMode = 0
 
 # Config settings
 DispConnectedPipeDir = False

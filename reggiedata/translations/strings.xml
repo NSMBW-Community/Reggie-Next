@@ -642,6 +642,13 @@
 			<entry>Standard</entry>
 			<entry>Checker</entry>
 		</stringlist>
+		<string id="53">Cursor Appearance:</string>
+		<string id="54">[b]Cursor Appearance[/b][br]This determines the appearance of the cursor when moving or resizing level items.</string>
+		<stringlist id="55">
+			<entry>Use default cursor</entry>
+			<entry>Show drag/resize cursors when selected</entry>
+			<entry>Always show drag/resize cursors</entry>
+		</stringlist>
 	</section>
 	<section id="ScrShtDlg">
 		<string id="0">Level Screenshot</string>

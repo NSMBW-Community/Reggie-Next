@@ -3,7 +3,8 @@ import pickletools
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 import globals_
-from levelitems import ListWidgetItem_SortsByOther, PathItem, CommentItem, SpriteItem, EntranceItem, LocationItem, ObjectItem, PathEditorLineItem
+from levelitems import ListWidgetItem_SortsByOther, PathItem, CommentItem, SpriteItem, EntranceItem, LocationItem, ObjectItem, PathEditorLineItem, ZoneItem
+from ui import setOverrideCursor
 from dirty import SetDirty
 
 class LevelScene(QtWidgets.QGraphicsScene):
@@ -724,6 +725,14 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             rect.adjust(-(x % mod), -(y % mod), 0, 0)
 
             painter.drawTiledPixmap(rect, board)
+
+    @staticmethod
+    def translateRect(rect, x, y):
+        """
+        Returns a translated copy of the rect
+        """
+        return rect.translated(x * 16, y * 16)
+
 
 def DecodeOldReggieInfo(data, validKeys):
     """
