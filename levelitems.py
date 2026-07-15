@@ -1286,9 +1286,6 @@ class ZoneItem(LevelEditorItem):
         Creates a zone with specific data
         """
         LevelEditorItem.__init__(self)
-        # Supporting this causes hovering to not work for level items, as the zone has a higher Z value,
-        # and lowering the Z value will just make selecting zone edges too hard
-        #self.setAcceptHoverEvents(True)
 
         self.font = globals_.NumberFont
         self.TitlePos = QtCore.QPointF(10, 18)
@@ -1309,8 +1306,14 @@ class ZoneItem(LevelEditorItem):
         self.camtrack = n
         self.music = o
         self.sfxmod = p
-        self.UpdateRects()
 
+        # Create grabbers for resizing
+        self.GrabberTL = ZoneGrabberItem(1, self)
+        self.GrabberTR = ZoneGrabberItem(2, self)
+        self.GrabberBL = ZoneGrabberItem(3, self)
+        self.GrabberBR = ZoneGrabberItem(4, self)
+
+        self.UpdateRects()
         self.aux = set()
 
         if id_ is not None:
@@ -1398,6 +1401,12 @@ class ZoneItem(LevelEditorItem):
         self.GrabberRectTR = QtCore.QRectF(self.width * 1.5 - grabberWidth + 3, -3, grabberWidth, grabberWidth)
         self.GrabberRectBL = QtCore.QRectF(-3, self.height * 1.5 - grabberWidth + 3, grabberWidth, grabberWidth)
         self.GrabberRectBR = QtCore.QRectF(self.width * 1.5 - grabberWidth + 3, self.height * 1.5 - grabberWidth + 3, grabberWidth, grabberWidth)
+
+        # Update grabber rects
+        self.GrabberTL.UpdateRects(self.GrabberRectTL)
+        self.GrabberTR.UpdateRects(self.GrabberRectTR)
+        self.GrabberBL.UpdateRects(self.GrabberRectBL)
+        self.GrabberBR.UpdateRects(self.GrabberRectBR)
 
     def getCameraHeight(self):
         """
@@ -1517,13 +1526,6 @@ class ZoneItem(LevelEditorItem):
         painter.setPen(QtGui.QPen(globals_.theme.color('zone_text'), 3))
         painter.setFont(self.font)
         painter.drawText(self.TitlePos, self.title)
-
-        # And corners ("grabbers")
-        GrabberColor = globals_.theme.color('zone_corner')
-        painter.fillRect(self.GrabberRectTL, GrabberColor)
-        painter.fillRect(self.GrabberRectTR, GrabberColor)
-        painter.fillRect(self.GrabberRectBL, GrabberColor)
-        painter.fillRect(self.GrabberRectBR, GrabberColor)
 
         # Draw the bounds indicator rectangle
         if globals_.BoundsDrawn:
@@ -1664,31 +1666,57 @@ class ZoneItem(LevelEditorItem):
         else:
             LevelEditorItem.mouseMoveEvent(self, event)
 
-    # def hoverMoveEvent(self, event):
-    #     if self.GrabberRectTL.contains(event.pos()):
-    #         corner = 1
-    #     elif self.GrabberRectTR.contains(event.pos()):
-    #         corner = 2
-    #     elif self.GrabberRectBL.contains(event.pos()):
-    #         corner = 3
-    #     elif self.GrabberRectBR.contains(event.pos()):
-    #         corner = 4
-    #     else:
-    #         corner = 0
-
-    #     if corner in (1, 4):
-    #         setOverrideCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
-    #     elif corner in (2, 3):
-    #         setOverrideCursor(QtCore.Qt.CursorShape.SizeBDiagCursor)
-
-    # def hoverLeaveEvent(self, event):
-    #     setOverrideCursor(None)
-
     def itemChange(self, change, value):
         """
         Avoids snapping for zones
         """
         return QtWidgets.QGraphicsItem.itemChange(self, change, value)
+
+
+class ZoneGrabberItem(LevelEditorItem):
+    """
+    Level editor item that visually represents a Zone's resize grabbers.
+    These are separate to allow for hover events
+    """
+    def __init__(self, parent, corner):
+        """
+        Creates a zone grabber with specific data
+        """
+        LevelEditorItem.__init__(self)
+        self.setZValue(50001)
+        self.setParentItem(parent)
+
+        if globals_.CursorMode != 0:
+            self.setAcceptHoverEvents(True)
+
+        self.BoundingRect = None
+        self.corner = corner
+
+    def UpdateRects(self, rect):
+        """
+        Updates the grabber's bounding rectangle
+        """
+        self.prepareGeometryChange()
+        self.BoundingRect = QtCore.QRectF(rect)
+
+    def paint(self, painter, option, widget):
+        """
+        Paints the grabber on screen
+        """
+        painter.setClipRect(option.exposedRect)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
+
+        painter.fillRect(self.BoundingRect, globals_.theme.color('zone_corner'))
+
+    def hoverMoveEvent(self, event):
+        # Zones cannot be selected, so the cursor will always be shown for these
+        if self.corner in (1, 4):
+            setOverrideCursor(QtCore.Qt.CursorShape.SizeFDiagCursor)
+        elif self.corner in (2, 3):
+            setOverrideCursor(QtCore.Qt.CursorShape.SizeBDiagCursor)
+
+    def hoverLeaveEvent(self, event):
+        setOverrideCursor(None)
 
 
 class LocationItem(LevelEditorItem):
