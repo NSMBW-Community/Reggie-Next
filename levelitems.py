@@ -1308,10 +1308,10 @@ class ZoneItem(LevelEditorItem):
         self.sfxmod = p
 
         # Create grabbers for resizing
-        self.GrabberTL = ZoneGrabberItem(1, self)
-        self.GrabberTR = ZoneGrabberItem(2, self)
-        self.GrabberBL = ZoneGrabberItem(3, self)
-        self.GrabberBR = ZoneGrabberItem(4, self)
+        self.GrabberTL = ZoneGrabberItem(self, 1)
+        self.GrabberTR = ZoneGrabberItem(self, 2)
+        self.GrabberBL = ZoneGrabberItem(self, 3)
+        self.GrabberBR = ZoneGrabberItem(self, 4)
 
         self.UpdateRects()
         self.aux = set()
