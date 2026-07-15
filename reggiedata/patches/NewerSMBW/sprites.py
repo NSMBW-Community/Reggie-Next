@@ -2186,7 +2186,7 @@ class SpriteImage_NewerGlowBlock(SLib.SpriteImage):  # 391
         self.spritebox.shown = False
 
         self.aux.append(SLib.AuxiliaryImage(parent, 48, 48))
-        self.aux[0].setPos(-12, -12)
+        self.aux[0].setPos(-11, -11)
 
     def dataChanged(self):
         purple = self.parent.spritedata[2] & 1

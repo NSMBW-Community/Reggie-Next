@@ -7662,9 +7662,9 @@ class SpriteImage_GlowBlock(SLib.SpriteImage):  # 391
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 48, 48))
+        self.aux.append(SLib.AuxiliaryImage(parent, 46, 46))
         self.aux[0].image = ImageCache['GlowBlock']
-        self.aux[0].setPos(-12, -12)
+        self.aux[0].setPos(-11, -11)
 
     @staticmethod
     def loadImages():
@@ -8097,7 +8097,7 @@ class SpriteImage_GiantGlowBlock(SLib.SpriteImage):  # 420
         type = self.parent.spritedata[4] >> 4
         if type == 0:
             self.aux[0].image = ImageCache['GiantGlowBlockOn']
-            self.aux[0].setSize(100, 100, -25, -30)
+            self.aux[0].setSize(100, 100, -23, -23)
         else:
             self.aux[0].image = ImageCache['GiantGlowBlockOff']
             self.aux[0].setSize(48, 48)
