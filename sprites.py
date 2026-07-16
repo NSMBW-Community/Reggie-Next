@@ -5166,30 +5166,31 @@ class SpriteImage_PoltergeistItem(SLib.SpriteImage):  # 262
         self.spritebox.shown = False
 
         self.aux.append(SLib.AuxiliaryImage(parent, 60, 60))
-        self.aux[0].image = ImageCache['PolterQBlock']
-        self.aux[0].setPos(-18, -18)
+        self.aux[0].image = ImageCache['PoltergeistBlock']
+        self.aux[0].setPos(-28, -28) # (image_width_of_glow - tile-width) / 2; Same for every value that is a multiple of 14 here
         self.aux[0].hover = False
 
     @staticmethod
     def loadImages():
-        if 'PolterQBlock' in ImageCache: return
+        if 'PoltergeistBlock' in ImageCache: return
 
         SLib.loadIfNotInImageCache('GhostHouseStand', 'ghost_house_stand.png')
+        SLib.loadIfNotInImageCache('PoltergeistBlock', 'poltergeist_block.png')
 
-        polterstand = SLib.GetImg('polter_stand.png')
-        polterblock = SLib.GetImg('polter_qblock.png')
+        polterstand = SLib.GetImg('poltergeist_light.png')
+        polterblock = SLib.GetImg('poltergeist_light.png')
 
         standpainter = QtGui.QPainter(polterstand)
         blockpainter = QtGui.QPainter(polterblock)
 
-        standpainter.drawPixmap(18, 18, ImageCache['GhostHouseStand'])
-        blockpainter.drawPixmap(18, 18, ImageCache['Blocks'][0])
+        standpainter.drawPixmap(28, 14, ImageCache['GhostHouseStand'])
+        blockpainter.drawPixmap(28, 28, ImageCache['PoltergeistBlock'])
 
         del standpainter
         del blockpainter
 
-        ImageCache['PolterStand'] = polterstand
-        ImageCache['PolterQBlock'] = polterblock
+        ImageCache['PoltergeistStand'] = polterstand
+        ImageCache['PoltergeistBlock'] = polterblock
 
     def dataChanged(self):
 
@@ -5197,15 +5198,16 @@ class SpriteImage_PoltergeistItem(SLib.SpriteImage):  # 262
         if style == 0:
             self.offset = (0, 0)
             self.height = 16
-            self.aux[0].setSize(60, 60)
-            self.aux[0].image = ImageCache['PolterQBlock']
+            self.aux[0].setSize(80, 80)
+            self.aux[0].image = ImageCache['PoltergeistBlock']
+            self.aux[0].setPos(-28, -28)
         else:
             self.offset = (8, -16)
             self.height = 32
-            self.aux[0].setSize(60, 84)
-            self.aux[0].image = ImageCache['PolterStand']
+            self.aux[0].setSize(80, 80)
+            self.aux[0].image = ImageCache['PoltergeistStand']
+            self.aux[0].setPos(-28, -14)
 
-        self.aux[0].setPos(-18, -18)
 
         super().dataChanged()
 
