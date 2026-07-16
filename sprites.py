@@ -4428,12 +4428,12 @@ class SpriteImage_Chest(SLib.SpriteImage_StaticMultiple):  # 203
             parent,
             1.5,
             ImageCache['Chest'],
-            (-12, -11),
+            (-12, -10),
         )
 
         self.aux.append(SLib.AuxiliaryImage(parent, 24, 24))
         self.aux[0].setIsBehindSprite(False)
-        self.aux[0].setPos(16, 8)
+        self.aux[0].setPos(18, 8)
 
     @staticmethod
     def loadImages():
@@ -4442,9 +4442,9 @@ class SpriteImage_Chest(SLib.SpriteImage_StaticMultiple):  # 203
     def dataChanged(self):
         pipeAlign = (self.parent.spritedata[2] >> 4) & 1
         if pipeAlign:
-            self.yOffset = -9
+            self.yOffset = -13 / 1.5
         else:
-            self.yOffset = -11
+            self.yOffset = -10
 
         # Render item
         chestType = self.parent.spritedata[4] & 0xF
