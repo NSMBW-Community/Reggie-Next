@@ -29,10 +29,6 @@ class BGDialog(QtWidgets.QDialog):
             name = globals_.trans.string('BGDlg', 2, '[num]', i + 1)
             self.tabWidget.addTab(tab, name)
 
-        if self.tabWidget.count() > 5:
-            for tab in range(self.tabWidget.count()):
-                self.tabWidget.setTabText(tab, str(tab + 1))
-
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 
         buttonBox.accepted.connect(self.accept)
