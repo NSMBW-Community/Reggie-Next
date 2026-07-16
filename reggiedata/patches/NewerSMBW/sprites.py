@@ -1391,7 +1391,7 @@ class SpriteImage_Chest(SLib.SpriteImage_Static):  # 203
             parent,
             1.5,
             ImageCache['Chest'],
-            (-12, -11),
+            (-12, -10),
         )
 
     @staticmethod
