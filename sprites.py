@@ -3404,14 +3404,15 @@ class SpriteImage_Arrow(SLib.SpriteImage_StaticMultiple):  # 143
             ImageCache['Arrow%d' % i] = SLib.GetImg('arrow_%d.png' % i)
 
     def dataChanged(self):
-        ArrowOffsets = [(3, 0), (5, 4), (1, 3), (5, -1), (3, 0), (-1, -1), (0, 3), (-1, 4)]
+        ArrowOffsets = [(4, 1), (7, 7), (1, 4), (7, -2), (4, 0), (-2, -2), (0, 4), (-2, 7)]
 
         direction = self.parent.spritedata[5] & 7
         self.image = ImageCache['Arrow%d' % direction]
 
         self.width = self.image.width() / 1.5
         self.height = self.image.height() / 1.5
-        self.offset = ArrowOffsets[direction]
+        # dividing here so the tuple looks more readable and the images can use pixels instead of units for their offsets
+        self.offset = (ArrowOffsets[direction][0] / 1.5, ArrowOffsets[direction][1] / 1.5)
 
         super().dataChanged()
 
