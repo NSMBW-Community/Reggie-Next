@@ -4069,7 +4069,7 @@ class SpriteImage_MidwayFlag(SLib.SpriteImage_Static):  # 188
             parent,
             1.5,
             ImageCache['MidwayFlag'],
-            (0, -38),
+            (1 / 1.5, -55 / 1.5),
         )
 
     @staticmethod

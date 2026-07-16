@@ -1246,24 +1246,17 @@ class SpriteImage_MidwayFlag(SLib.SpriteImage_StaticMultiple):  # 188
     @staticmethod
     def loadImages():
         if 'MidwayFlag0' in ImageCache: return
-        transform30 = QtGui.QTransform()
-        transform30.rotate(330)
-        for i in range(18):
+        for i in range(19):
             ImageCache['MidwayFlag%d' % i] = SLib.GetImg('midway_flag_%d.png' % i)
-
-        midwayflag = SLib.GetImg('midway_flag_0.png', True)
-        if midwayflag is None: return
-        ImageCache['MidwayFlag18'] = QtGui.QPixmap.fromImage(midwayflag.transformed(transform30))
 
     def dataChanged(self):
         style = self.parent.spritedata[2] % 19
 
-        if 'MidwayFlag18' not in ImageCache: return
         self.image = ImageCache['MidwayFlag%d' % style]
         if style == 18:
-            self.offset = (-24, -42)
+            self.offset = (-31 / 1.5, -47 / 1.5)
         else:
-            self.offset = (0, -38)
+            self.offset = (1 / 1.5, -55 / 1.5)
 
         super().dataChanged()
 
