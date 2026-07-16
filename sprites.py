@@ -3792,8 +3792,8 @@ class SpriteImage_OneWayGate(SLib.SpriteImage_StaticMultiple):  # 174
     def loadImages():
         if '1WayGate00' in ImageCache: return
 
-        # This loop generates all 1-way gate images from a single image
-        gate = SLib.GetImg('1_way_gate.png', True)
+        # This loop generates all one-way gate images from a single image
+        gate = SLib.GetImg('one_way_gate.png', True)
         for flip in (0, 1):
             for direction in range(4):
                 if flip:
@@ -3839,10 +3839,10 @@ class SpriteImage_OneWayGate(SLib.SpriteImage_StaticMultiple):  # 174
 
         if direction > 3: direction = 3
         self.offset = (
-            (0, -24),
-            (0, 0),
-            (-24, 0),
-            (0, 0),
+            (0, -22),
+            (0, -2),
+            (-22, 0),
+            (-2, 0),
         )[direction]
 
         super().dataChanged()
