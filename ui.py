@@ -460,6 +460,30 @@ class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
         return super().viewportEvent(e)
 
 
+class KeybindLineEdit(QtWidgets.QKeySequenceEdit):
+    """
+    A QtWidgets.QKeySequenceEdit that includes placeholder text
+    """
+    def __init__(self, keySequence=None):
+        QtWidgets.QKeySequenceEdit.__init__(self, keySequence)
+
+        # Only record one sequence input
+        self.setMaximumSequenceLength(1)
+
+        # Set placeholder text on the QLineEdit
+        lineEdit = self.findChild(QtWidgets.QLineEdit, "qt_keysequenceedit_lineedit")
+        if lineEdit: lineEdit.setPlaceholderText(globals_.trans.string('PrefsDlg', 60)) # No keybind set
+
+    def keyPressEvent(self, event):
+        """
+        Clears the current keybind if Delete or Backspace is pressed
+        """
+        QtWidgets.QKeySequenceEdit.keyPressEvent(self, event)
+
+        if event.key() == QtCore.Qt.Key.Key_Delete or event.key() == QtCore.Qt.Key.Key_Backspace:
+            self.clear()
+
+
 def setOverrideCursor(cursor):
     """
     Safely override/restore the application cursor.

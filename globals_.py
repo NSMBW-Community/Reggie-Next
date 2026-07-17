@@ -85,6 +85,12 @@ UseFullFilepath = False
 FirstStageFilename = None
 CursorMode = 0
 
+FileKeybinds = None
+EditKeybinds = None
+ViewKeybinds = None
+SettingsKeybinds = None
+HelpKeybinds = None
+
 # Config settings
 DispConnectedPipeDir = False
 SpecialEventSpriteID = 0

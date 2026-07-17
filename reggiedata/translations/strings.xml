@@ -650,6 +650,12 @@
 			<entry>Show drag/resize cursors when selected</entry>
 			<entry>Always show drag/resize cursors</entry>
 		</stringlist>
+		<string id="56">Keybinds</string>
+		<string id="57">[b]Configure Keybinds[/b][br]Modify the keybinds for menu items. Press Backspace/Delete to clear a keybind.[br]Reggie Next must be restarted before keybinds can be updated.[br]</string>
+		<string id="58">Reset All Keybinds</string>
+		<string id="59">Check for Conflicts</string>
+		<string id="60">No keybind set</string>
+		<string id="61">General</string>
 	</section>
 	<section id="ScrShtDlg">
 		<string id="0">Level Screenshot</string>

@@ -699,6 +699,12 @@ class ReggieTranslation:
                     'Show drag/resize cursors when selected',
                     'Always show drag/resize cursors',
                 ),
+                56: 'Keybinds (Experimental)',
+                57: '[b]Configure Keybinds[/b][br]Modify the keybinds for menu items. Press Backspace/Delete to clear a keybind.[br]Reggie Next must be restarted before keybinds can be updated.[br]',
+                58: 'Reset All Keybinds',
+                59: 'Check for Conflicts',
+                60: 'No keybind set',
+                61: 'General',
             },
             'ScrShtDlg': {
                 0: 'Level Screenshot',

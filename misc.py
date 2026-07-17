@@ -10,7 +10,7 @@ from xml.etree import ElementTree
 ################################################################################
 
 import globals_
-from ui import GetIcon, ReggieTheme, clipStr
+from ui import GetIcon, ReggieTheme, clipStr, KeybindLineEdit
 from dirty import setting, setSetting
 from dialogs import DiagnosticToolDialog
 from translation import ReggieTranslation
@@ -1490,6 +1490,83 @@ def LoadActionsLists():
     )
 
 
+def LoadDefaultKeybinds():
+    """
+    Defines the default keybinds for each menu item
+    """
+    globals_.FileKeybinds = {
+        'newlevel':       QtGui.QKeySequence.StandardKey.New,
+        'openfromname':   QtGui.QKeySequence.StandardKey.Open,
+        'openfromfile':   'Ctrl+Shift+O',
+        'save':           QtGui.QKeySequence.StandardKey.Save,
+        'saveas':         QtGui.QKeySequence.StandardKey.SaveAs,
+        'savecopyas':     None,
+        'metainfo':       'Ctrl+Alt+I',
+        'screenshot':     'Ctrl+Alt+S',
+        'changegamepath': 'Ctrl+Alt+G',
+        'preferences':    'Ctrl+Alt+P',
+        'exit':           'Ctrl+Q',
+    }
+    globals_.EditKeybinds = {
+        'selectall':           QtGui.QKeySequence.StandardKey.SelectAll,
+        'deselect':            'Ctrl+D',
+        'undo':                QtGui.QKeySequence.StandardKey.Undo,
+        'redo':                QtGui.QKeySequence.StandardKey.Redo,
+        'cut':                 QtGui.QKeySequence.StandardKey.Cut,
+        'copy':                QtGui.QKeySequence.StandardKey.Copy,
+        'paste':               QtGui.QKeySequence.StandardKey.Paste,
+        'shiftitems':          'Ctrl+Alt+Shift+S',
+        'mergelocations':      'Ctrl+Shift+E',
+        'swapobjectstilesets': 'Ctrl+Shift+L',
+        'swapobjectstypes':    'Ctrl+Shift+Y',
+        'diagnostic':          'Ctrl+Shift+D',
+        'freezeobjects':       'Ctrl+Shift+1',
+        'freezesprites':       'Ctrl+Shift+2',
+        'freezeentrances':     'Ctrl+Shift+3',
+        'freezelocations':     'Ctrl+Shift+4',
+        'freezepaths':         'Ctrl+Shift+5',
+        'freezecomments':      'Ctrl+Shift+9',
+    }
+    globals_.ViewKeybinds = {
+        'showlay0':         'Ctrl+1',
+        'showlay1':         'Ctrl+2',
+        'showlay2':         'Ctrl+3',
+        'tileanim':         'Ctrl+7',
+        'collisions':       'Ctrl+8',
+        'realview':         'Ctrl+9',
+        'showsprites':      'Ctrl+4',
+        'showspriteimages': 'Ctrl+6',
+        'showlocations':    'Ctrl+5',
+        'showcomments':     None,
+        'showpaths':        'Ctrl+*',
+        'grid':             'Ctrl+G',
+        'zoommax':          'Ctrl+PgDown',
+        'zoomin':           QtGui.QKeySequence.StandardKey.ZoomIn,
+        'zoomactual':       'Ctrl+0',
+        'zoomout':          QtGui.QKeySequence.StandardKey.ZoomOut,
+        'zoommin':          'Ctrl+PgUp',
+        'leveloverview':    'Ctrl+M',
+        'palette':          'Ctrl+P',
+    }
+    globals_.SettingsKeybinds = {
+        'areaoptions': 'Ctrl+Alt+A',
+        'zones':       'Ctrl+Alt+Z',
+        'backgrounds': 'Ctrl+Alt+B',
+        'camprofiles': 'Ctrl+Alt+C',
+        'addarea':     'Ctrl+Alt+N',
+        'importarea':  'Ctrl+Alt+O',
+        'deletearea':  'Ctrl+Alt+D',
+        'reloadgfx':   'Ctrl+Shift+R',
+        'reloaddata':  None,
+    }
+    globals_.HelpKeybinds = {
+        'infobox': 'Ctrl+Shift+I',
+        'helpbox': 'Ctrl+Shift+H',
+        'tipbox':  'Ctrl+Shift+T',
+        'aboutqt': 'Ctrl+Shift+Q',
+    }
+
+
 class PreferencesDialog(QtWidgets.QDialog):
     """
     Dialog which lets you customize Reggie
@@ -1511,9 +1588,11 @@ class PreferencesDialog(QtWidgets.QDialog):
         self.infoLabel = QtWidgets.QLabel()
         self.generalTab = self.getGeneralTab()
         self.toolbarTab = self.getToolbarTab()
+        self.keybindsTab = self.getKeybindsTab()
         self.appearaceTab = self.getAppearanceTab(QtWidgets.QWidget)()
         self.tabWidget.addTab(self.generalTab, globals_.trans.string('PrefsDlg', 1))
         self.tabWidget.addTab(self.toolbarTab, globals_.trans.string('PrefsDlg', 2))
+        self.tabWidget.addTab(self.keybindsTab, globals_.trans.string('PrefsDlg', 56))
         self.tabWidget.addTab(self.appearaceTab, globals_.trans.string('PrefsDlg', 3))
 
         # Create the buttonbox
@@ -1822,6 +1901,93 @@ class PreferencesDialog(QtWidgets.QDialog):
                         box.setChecked(default[1])
 
         return ToolbarTab()
+
+    def getKeybindsTab(self):
+        """
+        Returns the Keybinds Tab
+        """
+        class GeneralTab(QtWidgets.QWidget):
+            def __init__(self):
+                QtWidgets.QWidget.__init__(self)
+
+                fields = (
+                    ('Example:', QtGui.QKeySequence.StandardKey.Save),
+                    ('Example:', 'Ctrl+A'),
+                    ('Example:', 'Ctrl+Alt+F'),
+                    ('Example:', 'Ctrl+Shift+G'),
+                    ('Example:', 'Ctrl+Alt+Shift+5'),
+                    ('Example:', 'F12'),
+                    ('Example:', None),
+                )
+
+                self.keyEdits = []
+
+                L = QtWidgets.QFormLayout()
+                for label, keySeq in fields:
+                    edit = KeybindLineEdit(keySeq)
+                    self.keyEdits.append(edit)
+                    L.addRow(label, edit)
+
+                self.setLayout(L)
+                
+
+        class KeybindsTab(QtWidgets.QWidget):
+            """
+            Keybinds Tab
+            """
+            info = globals_.trans.string('PrefsDlg', 57)
+
+            def __init__(self):
+                """
+                Initializes the Toolbar Tab
+                """
+                QtWidgets.QWidget.__init__(self)
+                self.tabWidget = QtWidgets.QTabWidget()
+
+                self.gTab = GeneralTab()
+                self.fTab = QtWidgets.QWidget()
+                self.eTab = QtWidgets.QWidget()
+                self.vTab = QtWidgets.QWidget()
+                self.sTab = QtWidgets.QWidget()
+                self.hTab = QtWidgets.QWidget()
+
+                self.tabWidget.addTab(self.gTab, globals_.trans.string('PrefsDlg', 61))
+                self.tabWidget.addTab(self.fTab, globals_.trans.string('Menubar', 0))
+                self.tabWidget.addTab(self.eTab, globals_.trans.string('Menubar', 1))
+                self.tabWidget.addTab(self.vTab, globals_.trans.string('Menubar', 2))
+                self.tabWidget.addTab(self.sTab, globals_.trans.string('Menubar', 3))
+                self.tabWidget.addTab(self.hTab, globals_.trans.string('Menubar', 4))
+
+                # Create the Reset button
+                reset = QtWidgets.QPushButton(globals_.trans.string('PrefsDlg', 58))
+                reset.clicked.connect(self.reset)
+
+                chkConflict = QtWidgets.QPushButton(globals_.trans.string('PrefsDlg', 59))
+                chkConflict.clicked.connect(self.checkConflicts)
+
+                # Create the main layout
+                L = QtWidgets.QGridLayout()
+                L.addWidget(self.tabWidget, 0, 0, 1, 2)
+                L.addWidget(reset, 1, 0, 1, 1)
+                L.addWidget(chkConflict, 1, 1, 1, 1)
+                self.setLayout(L)
+
+            def reset(self):
+                """
+                Resets all keybinds to their original values
+                """
+                pass
+                # result = QtWidgets.QMessageBox.warning(None, 'TITLE', 'MESSAGE',
+                #                                        QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
+                # if result == QtWidgets.QMessageBox.StandardButton.Yes:
+
+            def checkConflicts(self):
+                """
+                Checks for any conflicting keybinds
+                """
+                pass
+
+        return KeybindsTab()
 
     @staticmethod
     def getAppearanceTab(parent):
