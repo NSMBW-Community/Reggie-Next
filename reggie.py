@@ -1061,12 +1061,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.createObjectLayout = oel
 
         ll = QtWidgets.QHBoxLayout()
+        layerChangeStr = globals_.trans.string('Palette', 38)
         self.objUseLayer0 = QtWidgets.QRadioButton('0')
-        self.objUseLayer0.setToolTip(globals_.trans.string('Palette', 1))
+        self.objUseLayer0.setToolTip(globals_.trans.string('Palette', 1) + layerChangeStr)
         self.objUseLayer1 = QtWidgets.QRadioButton('1')
-        self.objUseLayer1.setToolTip(globals_.trans.string('Palette', 2))
+        self.objUseLayer1.setToolTip(globals_.trans.string('Palette', 2) + layerChangeStr)
         self.objUseLayer2 = QtWidgets.QRadioButton('2')
-        self.objUseLayer2.setToolTip(globals_.trans.string('Palette', 3))
+        self.objUseLayer2.setToolTip(globals_.trans.string('Palette', 3) + layerChangeStr)
 
         self.layerChangeButton = QtWidgets.QPushButton(globals_.trans.string('Palette', 36))
         self.layerChangeButton.clicked.connect(self.ChangeSelectionLayer)
