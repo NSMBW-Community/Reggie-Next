@@ -462,13 +462,15 @@ class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
 
 class KeybindLineEdit(QtWidgets.QKeySequenceEdit):
     """
-    A QtWidgets.QKeySequenceEdit that includes placeholder text
+    A wrapper for QtWidgets.QKeySequenceEdit
     """
     def __init__(self, keySequence=None):
         QtWidgets.QKeySequenceEdit.__init__(self, keySequence)
 
         # Only record one sequence input
         self.setMaximumSequenceLength(1)
+
+        self.setClearButtonEnabled(True)
 
         # Set placeholder text on the QLineEdit
         lineEdit = self.findChild(QtWidgets.QLineEdit, "qt_keysequenceedit_lineedit")

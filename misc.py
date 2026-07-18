@@ -11,7 +11,7 @@ from xml.etree import ElementTree
 
 import globals_
 from ui import GetIcon, ReggieTheme, clipStr, KeybindLineEdit
-from dirty import setting, setSetting
+from dirty import setting, setSetting, delSetting
 from dialogs import DiagnosticToolDialog
 from translation import ReggieTranslation
 from libs import lh
@@ -1565,6 +1565,54 @@ def LoadDefaultKeybinds():
         'tipbox':  'Ctrl+Shift+T',
         'aboutqt': 'Ctrl+Shift+Q',
     }
+
+
+def GetKeybind(name):
+    """
+    Returns a QKeySequence from the settings, or a default keybind
+    """
+    groups = [
+        globals_.FileKeybinds,
+        globals_.EditKeybinds,
+        globals_.ViewKeybinds,
+        globals_.SettingsKeybinds,
+        globals_.HelpKeybinds,
+    ]
+
+    for g in groups:
+        if name in g.keys():
+            keySeq = setting('Keybind_' + name, g[name])
+            return QtGui.QKeySequence(keySeq)
+
+    print(f'GetKeybind(): Unknown identifier \'{name}\'!')
+    return QtGui.QKeySequence(None)
+
+
+def SetKeybind(name, keySeq):
+    """
+    Saves a QKeySequence keybind to the settings, and updates the relevant menubar action
+    """
+    groups = [
+        globals_.FileKeybinds,
+        globals_.EditKeybinds,
+        globals_.ViewKeybinds,
+        globals_.SettingsKeybinds,
+        globals_.HelpKeybinds,
+    ]
+
+    # Update the action keybind
+    globals_.mainWindow.actions[name].setShortcut(keySeq)
+
+    # Check if the given keybind is identical to the default
+    # If so, remove the keybind setting, no need to store it
+    for g in groups:
+        if name in g.keys() and QtGui.QKeySequence(g[name]) == keySeq:
+            delSetting('Keybind_' + name)
+            return
+
+    # Convert QKeySequence to string for storage
+    keyStr = keySeq.toString()
+    setSetting('Keybind_' + name, keyStr)
 
 
 class PreferencesDialog(QtWidgets.QDialog):
