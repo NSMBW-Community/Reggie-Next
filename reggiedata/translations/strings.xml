@@ -451,9 +451,9 @@
 		<string id="69">Zoom out of the main level view</string>
 		<string id="70">Zoom to Minimum</string>
 		<string id="71">Zoom out all the way</string>
-		<string id="72">Area[br]Settings...</string>
+		<string id="72">Area Settings...</string>
 		<string id="73">Control tileset swapping, stage timer, entrance on load, and stage wrap</string>
-		<string id="74">Zone[br]Settings...</string>
+		<string id="74">Zone Settings...</string>
 		<string id="75">Zone creation, deletion, and preference editing</string>
 		<string id="76">Backgrounds...</string>
 		<string id="77">Apply backgrounds to individual zones in the current area</string>
@@ -651,11 +651,10 @@
 			<entry>Always show drag/resize cursors</entry>
 		</stringlist>
 		<string id="56">Keybinds</string>
-		<string id="57">[b]Configure Keybinds[/b][br]Modify the keybinds for menu items. Press Backspace/Delete to clear a keybind.[br]Reggie Next must be restarted before keybinds can be updated.[br]</string>
+		<string id="57">[b]Configure Keybinds[/b][br]Customize the keybinds used for drop-down actions.[br]Press Backspace/Delete to clear a keybind, or hit the X button.[br]</string>
 		<string id="58">Reset All Keybinds</string>
 		<string id="59">Check for Conflicts</string>
 		<string id="60">No keybind set</string>
-		<string id="61">General</string>
 	</section>
 	<section id="ScrShtDlg">
 		<string id="0">Level Screenshot</string>
