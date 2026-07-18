@@ -39,7 +39,7 @@
 4502=Sky Athletic (Hills)
 4602=Desert Athletic
 4C02=World 8 Airship
-4D02=Underwater (Sub Area)
+4D02=Underwater (Mostly submerged)
 4E02=Forest Clouds
 4F02=Tower (Desert/Mountain)
 5002=Tower (Ice)

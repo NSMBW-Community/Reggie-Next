@@ -41,7 +41,7 @@
 4402=Castle Boss (Desert)
 4502=Sky Athletic Clouds (Hills)
 4602=Desert Athletic Clouds
-4D02=Underwater (Sub Area)
+4D02=Underwater (Mostly submerged)
 4F02=Tower (Desert/Mountain)
 5002=Tower (Ice)
 5102=Tower (Lava)
