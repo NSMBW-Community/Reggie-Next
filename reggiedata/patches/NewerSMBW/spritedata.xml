@@ -1963,11 +1963,23 @@
     </list>
     <value nybble="10" title="Speed" comment="Value 0 keeps it in place."/>
     <dualbox nybble="11.4" title1="Moves Right" title2="Moves Left"/>
-    <list nybble="12" title="Facing" comment="Will fly backwards if facing wrong direction.">
+    <list nybble="12" title="Facing" comment="Will fly backwards if facing wrong direction." advancedcomment="Anything beyond value 1 is read out of bounds leading to undefined behaviour. Use those extra values with caution.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
       <entry value="2">Right-ish</entry>
       <entry value="3">Towards Screen</entry>
+      <entry value="4">Right-ish</entry>
+      <entry value="5">Towards Screen</entry>
+      <entry value="6">Right-ish</entry>
+      <entry value="7">Towards Screen</entry>
+      <entry value="8">Right-ish</entry>
+      <entry value="9">Towards Screen</entry>
+      <entry value="10">Right-ish</entry>
+      <entry value="11">Towards Screen</entry>
+      <entry value="12">Towards Screen</entry>
+      <entry value="13">Towards Screen</entry>
+      <entry value="14">Left</entry>
+      <entry value="15">Towards Screen</entry>
     </list>
   </sprite> <!-- #292: Heavy Para-Beetle -->
 

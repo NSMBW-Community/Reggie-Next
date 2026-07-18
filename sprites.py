@@ -5742,26 +5742,29 @@ class SpriteImage_Parabeetle(SLib.SpriteImage_StaticMultiple):  # 291
 class SpriteImage_HeavyParabeetle(SLib.SpriteImage_StaticMultiple):  # 292
     @staticmethod
     def loadImages():
-        if 'HeavyParabeetle0' in ImageCache: return
-        ImageCache['HeavyParabeetle0'] = SLib.GetImg('heavy_parabeetle_right.png')
-        ImageCache['HeavyParabeetle1'] = SLib.GetImg('heavy_parabeetle_left.png')
-        ImageCache['HeavyParabeetle2'] = SLib.GetImg('heavy_parabeetle_moreright.png')
-        ImageCache['HeavyParabeetle3'] = SLib.GetImg('heavy_parabeetle_atyou.png')
+        if 'HeavyParabeetleRight' in ImageCache: return
+        ImageCache['HeavyParabeetleRight'] = SLib.GetImg('heavy_parabeetle_right.png')
+        ImageCache['HeavyParabeetleLeft'] = SLib.GetImg('heavy_parabeetle_left.png')
+        ImageCache['HeavyParabeetleMoreRight'] = SLib.GetImg('heavy_parabeetle_moreright.png')
+        ImageCache['HeavyParabeetleAtYou'] = SLib.GetImg('heavy_parabeetle_atyou.png')
 
     def dataChanged(self):
 
-        direction = self.parent.spritedata[5] & 3
-        self.image = ImageCache['HeavyParabeetle%d' % direction]
-        self.yOffset = -60
+        direction = self.parent.spritedata[5] & 0xf
+        self.yOffset = -85 / 1.5
 
-        if direction == 0 or direction > 3:  # right
-            self.xOffset = -38
-        elif direction == 1:  # left
-            self.xOffset = -38
-        elif direction == 2:  # more right
-            self.xOffset = -38
-        elif direction == 3:  # at you
-            self.xOffset = -52
+        if direction == 0:  # right
+            self.xOffset = -58 / 1.5
+            self.image = ImageCache['HeavyParabeetleRight']
+        elif direction in [1, 14]:  # left
+            self.xOffset = -58 / 1.5
+            self.image = ImageCache['HeavyParabeetleLeft']
+        elif direction in [2, 4, 6, 8, 10]:  # more right
+            self.xOffset = -58 / 1.5
+            self.image = ImageCache['HeavyParabeetleMoreRight']
+        elif direction in [3, 5, 7, 9, 11, 12, 13, 15]:  # at you
+            self.xOffset = -58
+            self.image = ImageCache['HeavyParabeetleAtYou']
 
         super().dataChanged()
 
