@@ -3307,6 +3307,7 @@ class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
         ImageCache['LiquidWaterCrest'] = SLib.GetImg('liquid_water_crest.png')
         ImageCache['LiquidWaterRise'] = SLib.GetImg('liquid_water_rise.png')
         ImageCache['LiquidWaterRiseCrest'] = SLib.GetImg('liquid_water_rise_crest.png')
+        ImageCache['LiquidWaterFull'] = SLib.GetImg('liquid_water_full.png')
 
     def dataChanged(self):
         self.locId = self.parent.spritedata[5] & 0x7F
@@ -3318,11 +3319,9 @@ class SpriteImage_Water(SpriteImage_LiquidOrFog):  # 138
             self.risingHeight = -self.risingHeight
 
         if not self.drawCrest and self.locId == 0:
-            self.top = self.parent.objy + 20
-            self.mid.alpha = 0.1
+            self.mid = ImageCache['LiquidWaterFull']
         else:
-            self.top = self.parent.objy
-            self.mid.alpha = 1
+            self.mid = ImageCache['LiquidWater']
 
         super().dataChanged()
 
