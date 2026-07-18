@@ -24,7 +24,8 @@ var/
 *.egg
 *.spec
 build.bat
-reggiedata/patches/NSMBWerPlus/
+reggiedata/patches/*
+!reggiedata/patches/NewerSMBW
 
 # Installer logs
 pip-log.txt
