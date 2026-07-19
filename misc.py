@@ -2061,12 +2061,47 @@ class PreferencesDialog(QtWidgets.QDialog):
 
             def checkConflicts(self):
                 """
-                Checks for any conflicting keybinds
+                Checks for any conflicting (duplicate) keybinds
                 """
-                # Show a tooltip, since a message box would be too disruptive
-                #pos = self.chkConflict.mapToGlobal(self.chkConflict.rect().center())
-                #QtWidgets.QToolTip.showText(pos, globals_.trans.string('PrefsDlg', 65), self.chkConflict)
-                pass
+                # Get all of the current keybinds
+                currKeys = {}
+                for tab in self.tabs:
+                    for kEdit in tab.keyEdits:
+                        if kEdit.keySequence().toString() != '': # Ignore blanks
+                            currKeys[kEdit.name] = kEdit.keySequence()
+
+                # Group everything together
+                sorted = collections.defaultdict(list)
+                for key, value in currKeys.items():
+                    sorted[value].append(key)
+
+                conflicts = {
+                    value: keys 
+                    for value, keys in sorted.items() 
+                    if len(keys) > 1
+                }
+
+                if not conflicts:
+                    # No conflicts, show a quick tooltip
+                    pos = self.chkConflict.mapToGlobal(self.chkConflict.rect().center())
+                    QtWidgets.QToolTip.showText(pos, globals_.trans.string('PrefsDlg', 65), self.chkConflict)
+                else:
+                    # Conflicts were detected, list them in a warning message
+                    outStr = ''
+
+                    for keybind, names in conflicts.items():
+                        outStr += f'* {keybind.toString()}: '
+
+                        # We have the shortname identifier, but we need
+                        # to show the translation string instead
+                        for i, name in enumerate(names):
+                            for g in groups:
+                                if name in g.keys():
+                                    outStr += f'<i>{g[name][1]}</i>'
+                                    if i != len(names)-1: outStr += ', '
+                        outStr += '<br>'
+
+                    QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 63), globals_.trans.string('PrefsDlg', 64, '[conflicts]', outStr))
 
         return KeybindsTab()
 

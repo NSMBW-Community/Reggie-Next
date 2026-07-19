@@ -658,7 +658,7 @@
 		<string id="61">Reset Keybinds</string>
 		<string id="62">Are you sure you want to reset all keybinds to their default values?[br]This cannot be undone.</string>
 		<string id="63">Conflicts Found</string>
-		<string id="64">The following keybinds were found to be conflicting:[br][keys]</string>
+		<string id="64">The following options were found to have conflicting keybinds:[br][conflicts][br]Reusing keybinds can cause issues, so ensure all keybinds are unique!</string>
 		<string id="65">No conflicts found.</string>
 	</section>
 	<section id="ScrShtDlg">
