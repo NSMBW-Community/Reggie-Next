@@ -6569,13 +6569,30 @@ class SpriteImage_LinePlatformBolt(SLib.SpriteImage_Static):  # 327
         super().__init__(
             parent,
             1.5,
-            ImageCache['LinePlatformBolt'],
-            (0, -16),
         )
+
+        self.dimensions = (0, -16, 112, 32)
 
     @staticmethod
     def loadImages():
-        SLib.loadIfNotInImageCache('LinePlatformBolt', 'line_platform_with_bolt.png')
+        if 'LinePlatformBoltLeft' in ImageCache:
+            return
+
+        ImageCache['LinePlatformBoltLeft'] = SLib.GetImg('line_platform_with_bolt_left.png')
+        ImageCache['LinePlatformBoltCenter'] = SLib.GetImg('line_platform_with_bolt_center.png')
+        ImageCache['LinePlatformBoltRight'] = SLib.GetImg('line_platform_with_bolt_right.png')
+        SLib.loadIfNotInImageCache('Bolt', 'bolt.png')
+
+    def dataChanged(self):
+        pass
+
+    def paint(self, painter):
+        super().paint(painter)
+
+        painter.drawPixmap(62, 0, ImageCache['Bolt'])
+        painter.drawPixmap(0, 24, ImageCache['LinePlatformBoltLeft'])
+        painter.drawTiledPixmap(24, 24, 120, 24, ImageCache['LinePlatformBoltCenter'])
+        painter.drawPixmap(144, 24, ImageCache['LinePlatformBoltRight'])
 
 
 class SpriteImage_BubbleCannon(SLib.SpriteImage_StaticMultiple):  # 328
