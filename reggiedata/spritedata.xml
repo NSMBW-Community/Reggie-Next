@@ -1861,7 +1861,7 @@
     </list>
   </sprite> <!-- #147: Coin -->
 
-  <sprite id="148" name="Springboard" notes="A springboard item that the player can bounce on to reach new heights, and can carry around with them.">
+  <sprite id="148" name="Springboard" notes="A springboard item that the player can bounce on to reach new heights, and can carry around with them." files="jump_stepb.arc">
     <checkbox nybble="5.4" title="Does Not Despawn" comment="When enabled, the Springboard will not despawn from being offscreen. This is enabled on Springboards spawned from item blocks."/>
     <checkbox nybble="10.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Springboard placing it further behind other sprites."/>
     <checkbox nybble="11.4" title="Shift Spawn Position" comment="When enabled, this moves the Springboard half a block to the right. Likely a leftover from NSMBDS."/>
