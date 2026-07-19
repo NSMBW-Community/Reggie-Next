@@ -4945,10 +4945,15 @@ class SpriteImage_Bulber(SLib.SpriteImage_StaticMultiple):  # 233
         type = self.parent.spritedata[5] & 0xF
         if type == 1:
             distance = ((self.parent.spritedata[4] & 0xF) + 1) * 16
+            isLeft = (self.parent.spritedata[4] >> 4) & 1
             self.aux[0].setSize((distance * 2) + 48, 16)
             self.aux[0].setPos((-distance * 1.5) + self.width - 48, self.height)
-            self.aux[1].image = ImageCache['BulberR']
-            self.aux[1].setPos(6, 0)
+            if isLeft:
+                self.aux[1].image = ImageCache['BulberL']
+                self.aux[1].setPos(-8, 0)
+            else:
+                self.aux[1].image = ImageCache['BulberR']
+                self.aux[1].setPos(6, 0)
         else:
             self.aux[0].setSize(0, 24)
             self.aux[1].image = ImageCache['BulberL']
