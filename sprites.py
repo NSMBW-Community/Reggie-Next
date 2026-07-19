@@ -1799,7 +1799,7 @@ class SpriteImage_LineTiltGirder(SLib.SpriteImage_StaticMultiple):  # 59
             parent,
             1.5,
             ImageCache['LineGirder'],
-            (-8, -10),
+            (-13 / 1.5, -14),
         )
 
     @staticmethod
