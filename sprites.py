@@ -5305,7 +5305,9 @@ class SpriteImage_RotatingFence(SLib.SpriteImage):  # 266
 class SpriteImage_TiltGrate(SLib.SpriteImage_StaticMultiple):  # 267
     @staticmethod
     def loadImages():
-        if 'TiltGrateU' in ImageCache: return
+        if 'TiltGrateU' in ImageCache:
+            return
+
         ImageCache['TiltGrateU'] = SLib.GetImg('tilt_grate_up.png')
         ImageCache['TiltGrateD'] = SLib.GetImg('tilt_grate_down.png')
         ImageCache['TiltGrateL'] = SLib.GetImg('tilt_grate_left.png')
@@ -5313,7 +5315,8 @@ class SpriteImage_TiltGrate(SLib.SpriteImage_StaticMultiple):  # 267
 
     def dataChanged(self):
         direction = self.parent.spritedata[5] & 3
-        if direction > 3: direction = 3
+        if direction > 3:
+            direction = 3
 
         if direction < 2:
             self.size = (69, 166)
@@ -5321,16 +5324,16 @@ class SpriteImage_TiltGrate(SLib.SpriteImage_StaticMultiple):  # 267
             self.size = (166, 69)
 
         if direction == 0:
-            self.offset = (-36, -115)
+            self.offset = (-50 / 1.5, -170 / 1.5)
             self.image = ImageCache['TiltGrateU']
         elif direction == 1:
-            self.offset = (-36, 12)
+            self.offset = (-50 / 1.5, 20 / 1.5)
             self.image = ImageCache['TiltGrateD']
         elif direction == 2:
-            self.offset = (-144, 0)
+            self.offset = (-218 / 1.5, -2 / 1.5)
             self.image = ImageCache['TiltGrateL']
         elif direction == 3:
-            self.offset = (-20, 0)
+            self.offset = (-28 / 1.5, -2 / 1.5)
             self.image = ImageCache['TiltGrateR']
 
         super().dataChanged()
