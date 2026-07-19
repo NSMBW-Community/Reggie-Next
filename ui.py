@@ -464,8 +464,9 @@ class KeybindLineEdit(QtWidgets.QKeySequenceEdit):
     """
     A wrapper for QtWidgets.QKeySequenceEdit
     """
-    def __init__(self, keySequence=None):
+    def __init__(self, keySequence=None, name=str):
         QtWidgets.QKeySequenceEdit.__init__(self, keySequence)
+        self.name = name
 
         # Only record one sequence input
         self.setMaximumSequenceLength(1)

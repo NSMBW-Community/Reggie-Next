@@ -704,6 +704,11 @@ class ReggieTranslation:
                 58: 'Reset All Keybinds',
                 59: 'Check for Conflicts',
                 60: 'No keybind set',
+                61: 'Reset Keybinds',
+                62: 'Are you sure you want to reset all keybinds to their default values?[br]This cannot be undone.',
+                63: 'Conflicts Found',
+                64: 'The following keybinds were found to be conflicting:[br][keys]',
+                65: 'No conflicts found.',
             },
             'ScrShtDlg': {
                 0: 'Level Screenshot',

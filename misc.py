@@ -1601,6 +1601,10 @@ def SetKeybind(name, keySeq):
         globals_.HelpKeybinds,
     ]
 
+    # Fix issues with items that have no default keybind
+    if keySeq is None:
+        keySeq = QtGui.QKeySequence()
+
     # Update the action keybind
     globals_.mainWindow.actions[name].setShortcut(keySeq)
 
@@ -1969,6 +1973,7 @@ class PreferencesDialog(QtWidgets.QDialog):
             """
             def __init__(self, index):
                 QtWidgets.QWidget.__init__(self)
+                self.index = index
                 widget = QtWidgets.QWidget()
 
                 # Make the tab scrollable so the window doesn't become absurdly tall
@@ -1981,7 +1986,7 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 # Create each keybind entry
                 for name in groups[index].keys():
-                    edit = KeybindLineEdit(GetKeybind(name))
+                    edit = KeybindLineEdit(GetKeybind(name), name)
                     self.keyEdits.append(edit)
 
                     # Get the label from the keybind data
@@ -1991,6 +1996,22 @@ class PreferencesDialog(QtWidgets.QDialog):
                 L = QtWidgets.QVBoxLayout()
                 L.addWidget(scrollArea)
                 self.setLayout(L)
+
+            def resetKeys(self):
+                """
+                Resets keybinds for this tab
+                """
+                for kEdit in self.keyEdits:
+                    if kEdit.name in groups[self.index].keys():
+                        # Get default and update the action's keybind
+                        defKey = groups[self.index][kEdit.name][0]
+                        if defKey is None:
+                            kEdit.clear()
+                        else:
+                            kEdit.setKeySequence(defKey)
+
+                        # Restore default keybind
+                        SetKeybind(kEdit.name, defKey)
 
 
         class KeybindsTab(QtWidgets.QWidget):
@@ -2018,29 +2039,33 @@ class PreferencesDialog(QtWidgets.QDialog):
                 reset.clicked.connect(self.reset)
 
                 # Check for Conflicts button
-                chkConflict = QtWidgets.QPushButton(globals_.trans.string('PrefsDlg', 59))
-                chkConflict.clicked.connect(self.checkConflicts)
+                self.chkConflict = QtWidgets.QPushButton(globals_.trans.string('PrefsDlg', 59))
+                self.chkConflict.clicked.connect(self.checkConflicts)
 
                 # Create the main layout
                 L = QtWidgets.QGridLayout()
                 L.addWidget(self.tabWidget, 0, 0, 1, 2)
                 L.addWidget(reset, 1, 0, 1, 1)
-                L.addWidget(chkConflict, 1, 1, 1, 1)
+                L.addWidget(self.chkConflict, 1, 1, 1, 1)
                 self.setLayout(L)
 
             def reset(self):
                 """
                 Resets all keybinds to their original values
                 """
-                pass
-                # result = QtWidgets.QMessageBox.warning(None, 'TITLE', 'MESSAGE',
-                #                                        QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
-                # if result == QtWidgets.QMessageBox.StandardButton.Yes:
+                result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 61), globals_.trans.string('PrefsDlg', 62),
+                                                       QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
+                if result == QtWidgets.QMessageBox.StandardButton.Yes:
+                    for tab in self.tabs:
+                        tab.resetKeys()
 
             def checkConflicts(self):
                 """
                 Checks for any conflicting keybinds
                 """
+                # Show a tooltip, since a message box would be too disruptive
+                #pos = self.chkConflict.mapToGlobal(self.chkConflict.rect().center())
+                #QtWidgets.QToolTip.showText(pos, globals_.trans.string('PrefsDlg', 65), self.chkConflict)
                 pass
 
         return KeybindsTab()

@@ -952,6 +952,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         act.setIcon(GetIcon('overview'))
         act.setStatusTip(globals_.trans.string('MenuItems', 95))
         self.vmenu.addAction(act)
+        self.actions['leveloverview'] = act
 
         # create the sprite editor panel
         dock = QtWidgets.QDockWidget(globals_.trans.string('SpriteDataEditor', 0), self)
@@ -1027,6 +1028,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         act.setIcon(GetIcon('palette'))
         act.setStatusTip(globals_.trans.string('MenuItems', 97))
         self.vmenu.addAction(act)
+        self.actions['palette'] = act
 
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setVisible(True)
@@ -2697,6 +2699,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
             for box in boxList:
                 ToolbarSettings[box.InternalName] = box.isChecked()
         setSetting('ToolbarActs', ToolbarSettings)
+
+        # Get keybinds and save them
+        for tab in dlg.keybindsTab.tabs:
+            for keyEdit in tab.keyEdits:
+                SetKeybind(keyEdit.name, keyEdit.keySequence())
 
         # Get the theme settings
         setSetting('Theme', dlg.appearaceTab.themeBox.currentText())
