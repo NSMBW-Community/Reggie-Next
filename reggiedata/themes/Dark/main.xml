@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <theme
-		format="1.0"
-		name="Dark"
-		version="1.1"
-		creator="JasonP27"
-		description="A dark-colored Reggie theme. Only recolors canvas elements."
-		>
+        format="1.0"
+        name="Dark"
+        version="1.1"
+        creator="JasonP27"
+        description="A dark-colored Reggie theme. Only recolors canvas elements."
+        >
 
-	<colors file="levelview.xml" />
-	<icons size="sm" folder="icosm" />
-	<icons size="lg" folder="icolg" />
+    <colors file="levelview.xml" />
+    <icons size="sm" folder="icosm" />
+    <icons size="lg" folder="icolg" />
 
 </theme>
