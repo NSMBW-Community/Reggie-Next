@@ -2160,7 +2160,7 @@ class SpriteItem(LevelEditorItem):
         type_ = self.type
 
         if not 0 <= type_ < globals_.NumSprites:
-            print('Tried to initialize a sprite of type %d, but this is out of range %d.' % (type_, globals_.NumSprites))
+            # print('Tried to initialize a sprite of type %d, but this is out of range %d.' % (type_, globals_.NumSprites))
             return
 
         self.name = globals_.Sprites[type_].name
