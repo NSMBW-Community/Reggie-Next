@@ -95,7 +95,7 @@ class UndoAction:
 
     def extend(self, other):
         """
-        Extends this UndoAction with the data from an extention of it.
+        Extends this UndoAction with the data from an extension of it.
         isExtentionOf must have returned True first!
         """
         pass
@@ -191,7 +191,7 @@ class MoveItemUndoAction(UndoAction):
 
     def extend(self, other):
         """
-        Extends this MoveItemUndoAction with the data from an extention of it.
+        Extends this MoveItemUndoAction with the data from an extension of it.
         isExtentionOf must have returned True first!
         """
         self.finalDef.objx = other.finalDef.objx
@@ -249,7 +249,7 @@ class SimultaneousUndoAction(UndoAction):
 
     def extend(self, other):
         """
-        Extend this SimultaneousUndoAction with the data from an extention of it.
+        Extend this SimultaneousUndoAction with the data from an extension of it.
         isExtentionOf must have returned True first!
         """
         searchMine = set(self.children)
