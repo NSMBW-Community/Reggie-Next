@@ -81,7 +81,7 @@ class LevelScene(QtWidgets.QGraphicsScene):
 
                     continue
 
-                # This is not an unkown object, so update the tile map normally.
+                # This is not an unknown object, so update the tile map normally.
                 for i, row in enumerate(item.objdata, desty):
                     destrow = tmap[i]
                     for j, tile in enumerate(row, startx):
