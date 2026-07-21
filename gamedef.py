@@ -630,6 +630,11 @@ def LoadGameDef(name=None, dlg=None):
         LoadSpriteListData(True)
         LoadSpriteCategories(True)
 
+        # Reload all of the spritedata ID types in the area
+        # Fixes bugs related to these being outdated when switching game patches
+        if globals_.Area is not None:
+            globals_.Area.InitialiseIdTypes()
+
         if globals_.mainWindow is not None:
             globals_.mainWindow.spriteViewPicker.clear()
 
