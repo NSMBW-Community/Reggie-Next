@@ -9036,22 +9036,13 @@ class SpriteImage_SuperGuideBlock(SLib.SpriteImage_Static):  # 477
         SLib.loadIfNotInImageCache('SuperGuide', 'superguide_block.png')
 
 
-class SpriteImage_BowserSwitchSm(SLib.SpriteImage_StaticMultiple):  # 478
-    @staticmethod
-    def loadImages():
-        if 'ESwitch' in ImageCache: return
-        e = SLib.GetImg('e_switch.png', True)
-        ImageCache['ESwitch'] = QtGui.QPixmap.fromImage(e)
-        ImageCache['ESwitchU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
+class SpriteImage_BowserSwitchSm(common.SpriteImage_Switch):  # 478
+    def __init__(self, parent):
+        super().__init__(parent, 1.5)
+        self.switchType = 'E'
 
     def dataChanged(self):
-
-        upsideDown = self.parent.spritedata[5] & 1
-        if not upsideDown:
-            self.image = ImageCache['ESwitch']
-        else:
-            self.image = ImageCache['ESwitchU']
-
+        self.offset = (0, 0)
         super().dataChanged()
 
 
