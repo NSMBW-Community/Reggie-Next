@@ -2159,7 +2159,7 @@
     <value nybble="11" title="Path ID" idtype="Path"/>
     <value nybble="8-9" title="Starting Node" comment="This determines the Node of the Path that the Snake Block will start moving from."/>
     <value nybble="12" start="3" title="Length"/>
-    <list nybble="10.3-10.4" title="Speed" comment2="Depending on the speed, game can crash if the Snake Block is too short, due an animation-related bug.">
+    <list nybble="10.3-10.4" title="Speed" comment2="Due to a bug in the code, Snake Blocks can crash depending on the combination of their length and speed. If this occurs, try decreasing the speed and/or increasing the length.">
       <entry value="0">Very Slow (0.5)</entry>
       <entry value="1">Slow (1.0)</entry>
       <entry value="2">Fast (1.4)</entry>
