@@ -839,8 +839,8 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Checks if there are any sprites which are known to be crashy and cause problems often
         """
-        problems = (121,  # en reverse
-                    475)  # will crash if you use a looped path
+        # TODO: Fill out this list, if needed
+        problems = (121) # Collision Switcher
 
         founds = []
         for sprite in globals_.Area.sprites:
