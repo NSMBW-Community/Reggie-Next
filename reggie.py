@@ -813,15 +813,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         else:
             nsmblib_info_text = "Not using NSMBLib"
 
-        if lib_versions["cython"] is not None:
-            cython_info_text = "Using Cython %s" % lib_versions["cython"]
-        else:
-            cython_info_text = "Not using Cython"
-
         menu.addAction("Using Python %d.%d.%d" % sys.version_info[:3]).setEnabled(False)
         menu.addAction("Using PyQt %s" % QtCore.PYQT_VERSION_STR).setEnabled(False)
         menu.addAction("Using Qt %s" % QtCore.QT_VERSION_STR).setEnabled(False)
-        menu.addAction(cython_info_text).setEnabled(False)
         menu.addAction(nsmblib_info_text).setEnabled(False)
 
         return menu
