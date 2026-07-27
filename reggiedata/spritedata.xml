@@ -210,7 +210,7 @@
   <!-- Research Unknown Flag 12 -->
   <sprite id="26" name="Upside-Down Spiny" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading." files="togezo.arc;paipo.arc">
     <checkbox nybble="8.4" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
-    <checkbox nybble="12.4" title="Unknown Flag 12" advanced="True" advancedcomment="Used in Retail: 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
+    <checkbox nybble="12.4" title="Unknown Flag 12" advanced="True" advancedcomment="Used in retail 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 
@@ -686,8 +686,8 @@
     <dualbox nybble="10.4" title1="Moves in specified direction (4 blocks), then turns around" title2="Moves in opposite direction immediately" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 9 Blocks, so this only sets the initial movement distance on load." requirednybble="11.3-11.4" requiredval="2"/> <!-- Only appears when Flying: Up and Down is selected -->
     <dualbox nybble="12.4" title1="Walks Off Ledges" title2="Turns Around At Ledges" comment="This determines if the Koopa Troopa, once stepped on and de-winged, will mindlessly walk off of ledges or if it will turn around when it reaches a ledge." comment2="This also changes the color of the Koopa Troopa."/>
     <checkbox nybble="8.4" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Paratroopa will be able to move behind Chainlink Fences." advancedcomment="Exact values are 1500.0 unchecked, -2500.0 checked."/>
-    <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="Used in Retail: 06-01 A1 as 12"/>
-    <value nybble="6.1" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in Retail: 06-01 A1"/>
+    <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="Used in retail 06-01 A1 as 12"/>
+    <value nybble="6.1" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in retail 06-01 A1"/>
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #58: Koopa Paratroopa -->
 
@@ -794,12 +794,12 @@
 
   <sprite id="73" name="Piranha Plant" notes="The standard Piranha Plant. It is affected by gravity." files="pakkun.arc">
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling." comment2="It isn't affected by gravity when upside-down."/>
-    <checkbox nybble="11.4" title="Shift Half-Tile when Falling" comment="When the Piranha Plant falls, it will shift over half a tile to the left." comment2="Used in Retail 05-04 A1"/>
+    <checkbox nybble="11.4" title="Shift Half-Tile when Falling" comment="When the Piranha Plant falls, it will shift over half a tile to the left." comment2="Used in retail 05-04 A1"/>
   </sprite> <!-- #73: Piranha Plant -->
 
   <sprite id="74" name="Big Piranha Plant" notes="A large version of the standard Piranha Plant that takes 3 fireballs to kill. It is affected by gravity." files="pakkun.arc">
     <checkbox nybble="12.4" title="Upside-Down" comment="When enabled, the Piranha Plant will hang from the ceiling."/>
-    <checkbox nybble="11.4" title="Shift Half-Tile when Falling" comment="When the Piranha Plant falls, it will shift over half a tile to the left." comment2="Used in Retail 05-04 A1"/>
+    <checkbox nybble="11.4" title="Shift Half-Tile when Falling" comment="When the Piranha Plant falls, it will shift over half a tile to the left." comment2="Used in retail 05-04 A1"/>
   </sprite> <!-- #74: Big Piranha Plant -->
 
   <sprite id="75" name="Fire Piranha Plant" notes="The Piranha Plant that shoots fireballs." files="pakkun.arc">
@@ -1017,7 +1017,7 @@
     <value nybble="1-2" title="Target Event ID" comment="When the Auto-Scroller reaches its final path Node, this Event ID is activated." requirednybble="8.2-8.4, 7" requiredval="0, 0" idtype="Target Event"/> <!-- Appears only if set to Event Activated and Release Control and Activate Event -->
     <value nybble="12" title="Path ID" comment="This determines which Path the camera will follow while scrolling. [CLARIFY] The upper left corner of the Screen, relative to the Auto-Scroller's placement, is the starting point for the path." idtype="Path"/>
     <value nybble="5-6" title="Midway Start Node ID" comment="If the level was entered from the Midway Point, the Auto-Scroller will begin from this Node instead of the first Node in the Path." idtype="Path Node"/>
-    <checkbox nybble="10.4" title="Unknown Flag 10 (1)" comment="Used in Retail 08-07; might be related to (unused) Path and Spine Coaster in A1Z1 and A2Z1."/>
+    <checkbox nybble="10.4" title="Unknown Flag 10 (1)" comment="Used in retail 08-07; might be related to (unused) Path and Spine Coaster in A1 Z1 and A2 Z1."/>
     <checkbox nybble="11.4" title="Unknown Flag 11 (1)" comment="Possibly determines behavior relating to [159]. ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #91: Auto-Scrolling Controller -->
 
@@ -1034,7 +1034,7 @@
       <entry value="2">Affected by Vertical Camera Movements</entry>
       <entry value="3">Affected by Horizontal Camera Movements</entry>
     </list>
-    <value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see Retail: 07-04 A1 Z5."/>
+    <value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see retail 07-04 A1 Z5."/>
     <checkbox nybble="12.4" title="Shoots Homing Bullet Bills"/>
     <value nybble="6" title="Homing Bullet Bill Limit" comment="The Blaster will not create new Homing Bullet Bills unless the amount currently on the screen is less than this number. Value 0 functions the same as Value 1." requirednybble="12.4"/>
   </sprite> <!-- #92: Bill Blaster -->
@@ -1059,7 +1059,7 @@
     </list>
     <checkbox nybble="12.4" title="(Broken) Shoots Homing Banzai Bills" comment="The Banzai Bills do not home on the player but instead only move up and left, regardless of the shooting direction. Use the Homing Banzai Bill Spawner sprite instead."/>
     <value nybble="6" title="Homing Banzai Bill Limit" comment="The Blaster will not create new Homing Banzai Bills unless the amount currently on the screen is less than this number." requirednybble="12.4"/>
-    <value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see Retail: 07-04 A1 Z5."/>
+    <value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see retail 07-04 A1 Z5."/>
     <list nybble="9.3-9.4" title="Unknown Value 9" comment="ASM shows Nybble 8 might affect something.">
       <entry value="0">???</entry>
       <entry value="1">???</entry>
@@ -1117,7 +1117,7 @@
     </list>
     <value nybble="8" title="Delay at Extremes" comment="This determines how long the Swing Arc will wait at the extremes of its angle."/>
     <checkbox nybble="9.4" title="Reverse" comment="When enabled, the timing of the left and right positions of the Swing Arc will be reversed in relation to other Swaying Controllers with the same settings."/>
-    <list nybble="10.3-10.4" title="Unknown Value 10" advanced="True" advancedcomment="1: Used in Retail: 07-21 A2, 2: Used in Retail: 04-21 A1/A2/A3, 07-21 A1/A2/A4">
+    <list nybble="10.3-10.4" title="Unknown Value 10" advanced="True" advancedcomment="1: Used in retail 07-21 A2, 2: Used in retail 04-21 A1/A2/A3, 07-21 A1/A2/A4">
       <entry value="0">Normal</entry>
       <entry value="1">???</entry>
       <entry value="2">???</entry>
@@ -1448,7 +1448,7 @@
       <entry value="1">Throws Spinies (Dies if hit from below on a block)</entry>
       <entry value="2">Throws Coins</entry>
     </list>
-    <checkbox nybble="6.4" title="Longer Throw Delay" comment="If enabled, the Lakitu will wait longer before throwing the first Spiny after previously hitting the max limit of 4." comment2="Exact values are 280 frames checked, 140 unchecked." advancedcomment="Used in Retail 04-05 A1."/>
+    <checkbox nybble="6.4" title="Longer Throw Delay" comment="If enabled, the Lakitu will wait longer before throwing the first Spiny after previously hitting the max limit of 4." comment2="Exact values are 280 frames checked, 140 unchecked." advancedcomment="Used in retail 04-05 A1."/>
   </sprite> <!-- #124: Lakitu Spawn Area -->
 
   <sprite id="125" name="Climbing Koopa - Horizontal" notes="A Koopa Troopa that clings to and walks around on Chainlink Fence type objects and terrain. This one only moves from left to right.
@@ -2106,7 +2106,7 @@
     <dualbox nybble="5.4" title1="Create Bottom Boundary" title2="Create Top Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
     <checkbox nybble="9.4" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
     <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in Retail: 02-01 A1, 05-24 A1, 06-02 A4."/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4."/>
     <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite> <!-- Vertical Scroll Limit 1 - Left Side -->
@@ -2122,7 +2122,7 @@
     <dualbox nybble="5.4" title1="Create Bottom Boundary" title2="Create Top Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
     <checkbox nybble="9.4" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
     <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in Retail: 02-01 A1, 05-24 A1, 06-02 A4."/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4."/>
     <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite>
@@ -2135,7 +2135,7 @@
     <dualbox nybble="5.4" title1="Create Bottom Boundary" title2="Create Top Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
     <checkbox nybble="9.4" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
     <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in Retail: 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
     <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite>
@@ -2148,7 +2148,7 @@
     <dualbox nybble="5.4" title1="Create Bottom Boundary" title2="Create Top Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
     <checkbox nybble="9.4" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
     <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in Retail: 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
     <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite>
@@ -2339,7 +2339,7 @@
     <checkbox nybble="10.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Toad Balloon placing it further behind other sprites."/>
   </sprite> <!-- #185: Ambush - Toad Balloon -->
 
-  <sprite id="186" name="Collision Switcher - Mini-Mario Only" notes="This controller will switch the active collision layer from Layer 1 to Layer 2 and vice versa, but only for players with the Mini-Mushroom power-up. See Retail W1-3 A1 for a usage example.">
+  <sprite id="186" name="Collision Switcher - Mini-Mario Only" notes="This controller will switch the active collision layer from Layer 1 to Layer 2 and vice versa, but only for players with the Mini-Mushroom power-up. See retail 01-03 A1 for a usage example.">
     <list nybble="12" title="Switch to Layer 2 (Behind)" comment="This determines the direction the player must be traveling from in order to activate the switch to Layer 2, the background layer.">
       <entry value="0">from the Left</entry>
       <entry value="1">from the Right</entry>
@@ -2719,7 +2719,7 @@
   </sprite> <!-- #210: Incomplete Sprite - 'Tarzan_Rope' -->
 
   <sprite id="211" name="Boss Controller - Bowser Jr. (1st Battle)" noyoshi="True" notes="This controls the mechanics for the first Bowser Jr. Boss Fight in World 4. It spawns the backgrounds BgA_5602 and BgB_5302, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller." files="koopaJr.arc;koopaJr_clown.arc;boss_ef_attack.arc;block_fly.arc;boss_koopaJr_down_ashiba.arc;W4_Fly_Boss.arc">
-    <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 04-38 A1.">
+    <dependency notes="Specific room settings are likely required. Please reference the original retail level, 04-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
     </dependency>
@@ -2931,7 +2931,7 @@
     </dependency>
     <value nybble="8-9" title="Initial Delay?" comment="Definitely not measured in Mario seconds."/>
     <dualbox nybble="10.4" title1="Flies Left to Right" title2="Flies Right to Left" comment="This determines the direction the Jumbo Ray will travel across the screen."/>
-    <value nybble="11" title="Altitude (Flight Route)" comment="This determines how high the Jumbo Ray will fly up from the bottom of the screen." comment2="More research is required on the exact details of each number, but Retail levels use 1 and 2 with 2 being higher, while Newer also uses 0 which also seems to be fairly high."/>
+    <value nybble="11" title="Altitude (Flight Route)" comment="This determines how high the Jumbo Ray will fly up from the bottom of the screen." comment2="More research is required on the exact details of each number, but retail levels use 1 and 2 (with 2 being higher), while Newer also uses 0 which also seems to be fairly high."/>
     <value nybble="12" title="Ray ID" comment="This determines which Jumbo Ray Respawner will influence the respawn of this Jumbo Ray." idtype="Ray"/>
   </sprite> <!-- #224: Jumbo Ray -->
 
@@ -3117,7 +3117,7 @@
     <dualbox nybble="5.4" title1="Create Left Boundary" title2="Create Right Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
     <checkbox nybble="9.4" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
     <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in Retail: 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
     <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite> <!-- #248: Horizontal Scroll Limiter - Top -->
@@ -3130,7 +3130,7 @@
     <dualbox nybble="5.4" title1="Create Left Boundary" title2="Create Right Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
     <checkbox nybble="9.4" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
     <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in Retail: 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
     <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite> <!-- #249: Horizontal Scroll Limiter - Bottom -->
@@ -3315,7 +3315,7 @@
   <sprite id="264" name="Stalking Piranha Plant" notes="A walking Piranha Plant that will extend and harass the player, then shrink and wander around for a bit." files="pakkun_walk.arc">
     <dualbox nybble="10.4" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Piranha Plant will attempt to move first after shrinking."/>
     <value nybble="12" title="Movement Distance" comment="This determines how far the Piranha Plant will wander in both directions from its starting point."/>
-    <checkbox nybble="8.4" title="Useless Flag 8 (1)" comment="Enabled by Nintendo in Retail 06-03 A2, however the game never reads this value."/>
+    <checkbox nybble="8.4" title="Useless Flag 8 (1)" comment="Enabled by Nintendo in retail 06-03 A2, however the game never reads this value."/>
     <checkbox nybble="9.4" title="Increase Z-Order by 200" comment="When ticked, the Piranha Plant's Z-Order will be increased by 200 units."/>
   </sprite> <!-- #264: Stalking Piranha Plant -->
 
@@ -3517,7 +3517,7 @@
     </list>
     <value nybble="11-12" title="Activation Location ID" comment="When set, the specified object will be created when a player inhabits this location." requirednybble="7" requiredval="0" idtype="Location"/>
     <value nybble="9-10" title="Spawn Area Location ID" comment="This specifies the rough vertical area where the blocks can spawn within." requirednybble="7" requiredval="0" idtype="Location"/>
-    <list nybble="8" title="Object Type" comment="Determines what object is created. Set to 1 in Retail 02-04 A1, despite this not affecting Type 1." requirednybble="7" requiredval="0">
+    <list nybble="8" title="Object Type" comment="Determines what object is created. Set to 1 in retail 02-04 A1, despite this not affecting Type 1." requirednybble="7" requiredval="0">
       <entry value="0">Brick Blocks</entry>
       <entry value="1">Coins</entry>
     </list>
@@ -4160,7 +4160,7 @@
       <entry value="1">Left Only</entry>
       <entry value="2">Right Only</entry>
     </list>
-    <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. See Retail: 07-04 A1 Z5." comment2="The z-order is 400 - 32 * value" />
+    <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. See retail 07-04 A1 Z5." comment2="The z-order is 400 - 32 * value" />
     <list nybble="9" title="Shoots at">
       <entry value="0">Shot 1 and 2</entry>
       <entry value="1">Shot 1 Only</entry>
@@ -4189,7 +4189,7 @@
   </sprite> <!-- #340: Lemmy Koopa -->
 
   <sprite id="341" name="Giant Koopa Shell Cave" notes="A decorative large shell that can be used as a cave with the right arrangement of invisible blocks and settings. Toggle viewing of Layer 0 to see inside the shell!" files="big_shell.arc">
-    <dependency notes="Look in Retail 05-01 A1 for an example of how to use this sprite correctly. You will need to make use of Spotlight Lighting, Layer 0 tiles, and invisible collision blocks in order for it to look correct."/>
+    <dependency notes="Look in retail 05-01 A1 for an example of how to use this sprite correctly. You will need to make use of Spotlight Lighting, Layer 0 tiles, and invisible collision blocks in order for it to look correct."/>
     <checkbox nybble="12.4" title="Remove Grass/Rocks" comment="When enabled, this will remove the decoration from the bottom of the Shell Cave."/>
   </sprite> <!-- #341: Giant Koopa Shell Cave -->
 
@@ -4432,7 +4432,7 @@
   </sprite> <!-- #362: Rotation Controlled Colored Box -->
 
   <sprite id="363" name="Boss Controller - Tower Boss" yoshinotes="Yoshi plays an unused animation when he enters the area from a Boss Entrance. However, he lacks proper compatibility with the bosses themselves." notes="This controls the level completion for the World 1-7 Tower battles, as well as the listed Koopaling's initial movements. Koopalings function without this controller, but they won't move until hit, and the level won't end when they are defeated.">
-    <dependency notes="An appropriate loose Koopaling is required in order for the controller to do what it needs to. It's also required to place the sprite on a spot without terrain. See Retail X-22 for suggested room builds for Tower bosses.">
+    <dependency notes="An appropriate loose Koopaling is required in order for the controller to do what it needs to. It's also required to place the sprite on a spot without terrain. See the retail level for suggested room builds for Tower bosses.">
       <suggested sprite="436"/>
       <suggested sprite="189"/>
       <suggested sprite="347"/>
@@ -4486,7 +4486,7 @@
     <value nybble="9" title="Rotation Speed" comment="The mushroom block will always rotate even at a speed value of 0."/>
     <value nybble="10" title="Travel Speed"/>
     <checkbox nybble="8.4" title="Reverse" comment="When enabled, the mushroom block will reverse its course along the Line guide when it reaches an end point. It will always rotate in the same direction, even when traveling in reverse."/>
-    <value nybble="11" title="Useless Value 11" comment="Used by Nintendo in Retail 02-06 A1 as value 7, however the game never reads this value."/>
+    <value nybble="11" title="Useless Value 11" comment="Used by Nintendo in retail 02-06 A1 as value 7, however the game never reads this value."/>
   </sprite> <!-- #367: Line Controlled Spinning Pink Mushroom Block -->
 
   <sprite id="368" name="Lighting - Path Controlled Flashlight Raft" notes="A floating Raft that travels slowly to the right, or follows along an assigned Path. It also has a flashlight that produces a cone of light on both sides that can be controlled by tilting the controller. It is activated when all players land on it." files="boat_light_wood.arc;Mask_flashlight.arc">
@@ -4938,14 +4938,14 @@
   </sprite> <!-- #404: Massive Skewer - Up -->
 
   <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the second Bowser Jr. Boss Fight in World 6. It spawns the backgrounds BgA_0B02 and BgB_5202, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller." files="koopaJr.arc;koopaJr_clown.arc;koopaJr_clown_ply.arc;boss_ef_attack.arc;boss_koopaJr_toge.arc;boss_koopaJr_down_asiba.arc;W6_Fly_Boss.arc">
-    <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 06-38 A1.">
+    <dependency notes="Specific room settings are likely required. Please reference the original retail level, 06-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
     </dependency>
   </sprite> <!-- #405: Boss Controller - Bowser Jr. (2nd Battle) -->
 
   <sprite id="406" name="Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the third Bowser Jr. Boss Fight in World 8.  It spawns the backgrounds BgA_5502 and BgB_4C02, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller." files="koopaJr.arc;koopa_clown.arc;koopaJr_clown.arc;boss_ef_attack.arc;koopa_clown_bomb.arc;boss_koopaJr_move_asiba.arc;W8_Fly_Boss.arc">
-    <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 08-38 A1.">
+    <dependency notes="Specific room settings are likely required. Please reference the original retail level, 08-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
     </dependency>
@@ -4974,7 +4974,7 @@
   </sprite> <!-- #407: Boss Controller - Castle Boss -->
 
   <sprite id="408" name="Cutscene Controller - Bowser Jr and Peach at Castle" noyoshi="True" notes="This controller manages the Castle Boss's Airship cinematics and the level completion." files="koopaJr.arc;KoopaShip.arc;peach.arc">
-    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the desired Castle's Boss Room in the Retail level.">
+    <dependency notes="For help in placement of the Boss Controllers and Cutscene Controllers, see the desired Castle's Boss Room in the retail level.">
       <required sprite="407"/>
       <suggested sprite="192"/>
       <suggested sprite="364"/>
@@ -4996,7 +4996,7 @@
   </sprite> <!-- #408: Cutscene Controller - Bowser Jr and Peach at Castle -->
 
   <sprite id="409" name="Cutscene Controller - Bowser Jr and Peach at Airship" noyoshi="True" notes="This controller manages the Bowser Jr. cinematics and level completion, as well as the World 8 Airship transition segment. This sprite will be used twice in the Third Bowser Jr. Fight's arrangement." files="koopaJr.arc;KoopaShip_2D.arc;peach.arc;kameck.arc">
-    <dependency notes="Specific room settings are likely required. Please reference the original Retail levels, 04-38 A1, 06-38 A1, and 08-38 A1.">
+    <dependency notes="Specific room settings are likely required. Please reference the original retail levels, 04-38 A1, 06-38 A1, and 08-38 A1.">
       <suggested sprite="211"/>
       <suggested sprite="405"/>
       <suggested sprite="406"/>
@@ -5250,7 +5250,7 @@
     </dependency>
   </sprite> <!-- #430: Toad House Minigame - Flip Panel Controller -->
 
-  <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the Retail Bowser battle. It will override the Zone's camera settings." files="boss_shutter_koopa.arc">
+  <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the retail Bowser battle. It will override the Zone's camera settings." files="boss_shutter_koopa.arc">
     <dependency notes="Most of the final Bowser fight involves hardcoded elements, so directly copying 08-24 A4 is strongly recommended. The Basic Platform listed is required for Bowser half-way in the fight to move onto the 2nd phase. The direction it heads controls the camera until it leaves the Zone. The Locations from the original level do not affect the fight, and were likely included to aid the developers visualize different parts of the fight.">
       <required sprite="122"/> <!-- Basic Platform - One-Way -->
       <required sprite="419"/> <!-- Bowser -->
@@ -5386,8 +5386,8 @@
 
   <sprite id="448" name="Metal Bar" notes="A metal bar that is essentially just a 5x2 block." files="kanaami_urakabe.arc">
     <checkbox nybble="8.4" title="Place Behind Chainlink Fence" comment="When enabled, every part of the metal bar that is touching a fence tile has no collision on the frontside of chainlink fences. This also changes the relative Z-Order of the bar to -2500, placing it further behind other sprites."/>
-    <value nybble="11" title="Useless Value 11" comment="Used in Retail (04-24 A1), but the game's code never reads this value."/>
-    <checkbox nybble="12.4" title="Useless Flag 12 (1)" comment="Used in Retail (04-24 A1), but the game's code never reads this value."/>
+    <value nybble="11" title="Useless Value 11" comment="Used in retail 04-24 A1, but the game's code never reads this value."/>
+    <checkbox nybble="12.4" title="Useless Flag 12 (1)" comment="Used in retail 04-24 A1, but the game's code never reads this value."/>
   </sprite> <!-- #448: Metal Bar -->
 
   <sprite id="449" name="Bowser Fireball Spawn Area" noyoshi="True" notes="Assigns a spawn area where Bowser's Fireballs will fire from the screen's right edge while a player is inside it. The fireballs spawn in a range of 6 tiles below its placement." advancednotes="[br][b]Location Placement:[/b][br] - Bowser Fireballs start spawning as soon as the left edge of the location enters the screen[/b][br][b]Location Size (fireballs won't spawn if requirements aren't met):[/b][br] - X Size: Unknown, but a specific minimal X location size is required for the Bowser Fireballs to spawn correctly.[br] - Y Size: At least 120px (5 blocks). A specific minimal Y location size is required for the Bowser Fireballs to spawn correctly." files="boss_ef_attack.arc">
@@ -5670,7 +5670,7 @@
   </sprite> <!-- #476: Loose Flying Wrench -->
 
   <sprite id="477" name="Super Guide Block" notes="A block that activates a special Luigi replay where Luigi will complete the level as minimally as possible with as little running or wall jumping as he can get away with." files="block_help.arc">
-    <dependency notes="This block cannot currently be utilized, as there is no tool to create and assign replays. As a result, do NOT use this block in your levels, and if you edit a Retail level, you need to remove this block."/>
+    <dependency notes="This block cannot currently be utilized, as there is no tool to create and assign replays. As a result, do NOT use this block in your levels, and if you edit a retail level, you need to remove this block."/>
     <checkbox nybble="10.3" title="Glows" comment="When enabled, the block will glow and emit light in Full Darkness."/>
     <checkbox nybble="12.4" title="Loads at Midway" comment="When enabled, the block will only appear if the level has been loaded from a Midway point."/>
   </sprite> <!-- #477: Super Guide Block -->

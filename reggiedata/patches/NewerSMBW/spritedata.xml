@@ -369,7 +369,7 @@
       <entry value="7">Sidestepper</entry>
     </spritetex>
     <checkbox nybble="8.4" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
-    <checkbox nybble="12.4" title="Unknown Flag 12" advanced="True" advancedcomment="Used in Retail: 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
+    <checkbox nybble="12.4" title="Unknown Flag 12" advanced="True" advancedcomment="Used in retail 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 
@@ -622,8 +622,8 @@
       <entry value="4">Red w/Blue Coat (No Wings)</entry>
     </spritetex>
     <checkbox nybble="8.4" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Paratroopa will be able to move behind Chainlink Fences." advancedcomment="Exact values are 1500.0 unchecked, -2500.0 checked."/>
-    <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="Used in Retail: 06-01 A1 as 12"/>
-    <value nybble="6.1" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in Retail: 06-01 A1"/>
+    <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="Used in retail 06-01 A1 as 12"/>
+    <value nybble="6.1" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in retail 06-01 A1"/>
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #58: Koopa Paratroopa -->
 
@@ -1047,6 +1047,7 @@
   </sprite> <!-- #183: Meteor -->
 
   <sprite id="188" name="Midway Flag" notes="A flag that when touched by the player will mark their progress in the level and respawn them at this location when re-entering the level." files="middle_flag.arc">
+    <dependency notes="The flag will play an alternative animation when submerged in water, but only if placed after the water."/>
     <spritetex nybble="5-6" title="Logo">
       <entry value="0">Newer Logo</entry>
       <entry value="1">Yoshi's Island</entry>
@@ -1536,7 +1537,7 @@
     </spritetex>
     <value nybble="8-9" title="Initial Delay?" comment="Definitely not measured in Mario seconds."/>
     <dualbox nybble="10.4" title1="Flies Left to Right" title2="Flies Right to Left" comment="This determines the direction the Jumbo Ray will travel across the screen."/>
-    <value nybble="11" title="Altitude (Flight Route)" comment="This determines how high the Jumbo Ray will fly up from the bottom of the screen." comment2="More research is required on the exact details of each number, but Retail levels use 1 and 2 with 2 being higher, while Newer also uses 0 which also seems to be fairly high."/>
+    <value nybble="11" title="Altitude (Flight Route)" comment="This determines how high the Jumbo Ray will fly up from the bottom of the screen." comment2="More research is required on the exact details of each number, but retail levels use 1 and 2 (with 2 being higher), while Newer also uses 0 which also seems to be fairly high."/>
     <value nybble="12" title="Ray ID" comment="This determines which Jumbo Ray Respawner will influence the respawn of this Jumbo Ray." idtype="Ray"/>
   </sprite> <!-- #224: Jumbo Ray -->
 
@@ -2174,7 +2175,7 @@
   </sprite> <!-- #332: Effect/Sound Spawner -->
 
   <sprite id="341" name="Giant Koopa Shell Cave" notes="A decorative large shell that can be used as a cave with the right arrangement of invisible blocks and settings. Toggle viewing of Layer 0 to see inside the shell!" files="big_shell.arc">
-    <dependency notes="Look in Retail 05-01 A1 for an example of how to use this sprite correctly. You will need to make use of Spotlight Lighting, Layer 0 tiles, and invisible collision blocks in order for it to look correct."/>
+    <dependency notes="Look in retail 05-01 A1 for an example of how to use this sprite correctly. You will need to make use of Spotlight Lighting, Layer 0 tiles, and invisible collision blocks in order for it to look correct."/>
     <spritetex nybble="6" title="Color" comment="This determines the color of the Shell Cave.">
       <entry value="0">Green</entry>
       <entry value="1">Red</entry>
@@ -2341,14 +2342,14 @@
   </sprite> <!-- #403: Line Controlled Brick Block -->
 
   <sprite id="405" name="Boss Controller - Bowser Jr. (2nd Battle)" noyoshi="True" notes="This controls the mechanics for the second Bowser Jr. Boss Fight in World 6. It spawns the backgrounds BgA_0B02 and BgB_5202, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller. The cannon used in Newer's final boss fight is included on the clown car, but don't damage Bowser Jr." files="koopaJr.arc;koopaJr_clown.arc;koopaJr_clown_ply.arc;boss_ef_attack.arc;boss_koopaJr_toge.arc;boss_koopaJr_down_asiba.arc;W6_Fly_Boss.arc">
-    <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 06-38 A1.">
+    <dependency notes="Specific room settings are likely required. Please reference the original retail level, 06-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
     </dependency>
   </sprite> <!-- #405: Boss Controller - Bowser Jr. (2nd Battle) -->
 
   <sprite id="406" name="(Crashes) Boss Controller - Bowser Jr. (3rd Battle)" noyoshi="True" notes="This controls the mechanics for the third Bowser Jr. Boss Fight in World 8. It spawns the backgrounds BgA_5502 and BgB_4C02, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;This fight crashes randomly in Newer.&lt;/font&gt;" files="koopaJr.arc;koopa_clown.arc;koopaJr_clown.arc;boss_ef_attack.arc;koopa_clown_bomb.arc;boss_koopaJr_move_asiba.arc;W8_Fly_Boss.arc">
-    <dependency notes="Specific room settings are likely required. Please reference the original Retail level, 08-38 A1.">
+    <dependency notes="Specific room settings are likely required. Please reference the original retail level, 08-38 A1.">
       <required sprite="409"/>
       <suggested sprite="436"/>
     </dependency>
@@ -2391,7 +2392,7 @@
     <checkbox nybble="12.4" title="Small Form" comment="If enabled, the Toad will be small."/>
   </sprite> <!-- #423: Toad Needs Help - Brick Block -->
 
-  <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the Retail Bowser battle." files="boss_shutter_koopa.arc">
+  <sprite id="431" name="Boss Controller - Bowser" noyoshi="True" notes="The main boss controller for the retail Bowser battle." files="boss_shutter_koopa.arc">
     <dependency notes="Most of the final Bowser fight involves hardcoded elements, some of which that were removed in Newer. Directly copying 08-24 A4 from Newer is strongly recommended. Sprites won't spawn if on screen when entering the zone.">
       <required sprite="439"/>
       <required sprite="445"/>
