@@ -35,11 +35,12 @@ import math
 import random
 
 from PyQt6 import QtCore, QtGui
-Qt = QtCore.Qt
 
+import globals_
 import spritelib as SLib
 import sprites_common as common
-import globals_
+
+Qt = QtCore.Qt
 ImageCache = SLib.ImageCache
 
 
@@ -52,6 +53,7 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
         super().__init__(parent, scale)
         self.spritebox.shown = False
         self.xOffset = -2 / 1.5
+        self.color = 0
 
     @staticmethod
     def loadImages():
@@ -72,6 +74,7 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
     def paint(self, painter):
         super().paint(painter)
 
+        color = 'Wooden'
         if self.color == 0:
             color = 'Wooden'
         elif self.color == 1:
@@ -270,10 +273,10 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.crest = None
-        self.mid = None
-        self.rise = None
-        self.riseCrestless = None
+        self.crest: QtGui.QPixmap | None = None
+        self.mid: QtGui.QPixmap | None = None
+        self.rise: QtGui.QPixmap | None = None
+        self.riseCrestless: QtGui.QPixmap | None = None
 
         self.top = 0
 
@@ -322,6 +325,8 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         if fill_rect.top() <= 0:
             drawCrest = False  # off the top of the zone; no crest
 
+        rise_img: QtGui.QPixmap | None = None
+
         # Determine where to put the rise image
         if drawRise:
             rise_rect = fill_rect.translated(0, -24 * self.risingHeight)
@@ -334,12 +339,12 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
                 rise_img = self.riseCrestless
 
             # Set the correct height
-            rise_rect.setHeight(rise_img.height())
+            rise_rect.setHeight(rise_img.height() if rise_img is not None else 0)
 
         # If all that fits in the zone is some of the crest, determine how much
         if drawCrest:
             crest_rect = QtCore.QRectF(fill_rect)
-            crest_rect.setHeight(self.crest.height())
+            crest_rect.setHeight(self.crest.height() if self.crest is not None else 0)
 
             # Adjust the fill rect
             fill_rect.setTop(crest_rect.bottom())
@@ -375,12 +380,12 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         if draw_rect.isEmpty():
             return
 
-        x, y, width, height = draw_rect.getRect()
+        _x, y, _width, height = draw_rect.getRect()
 
         drawCrest = False
         crestHeight = 0
 
-        if self.drawCrest:
+        if self.drawCrest and self.crest:
             crestHeight = self.crest.height()
             drawCrest = y < crestHeight
 
@@ -458,10 +463,10 @@ class SpriteImage_Skewer(SLib.SpriteImage):  # 137, 140, 141, 142
     def loadImages():
         if 'SkewerM0up' not in ImageCache:
             for dir in ['up', 'down', 'left', 'right']:
-                ImageCache['SkewerM0' + dir] = SLib.GetImg('skewer_%s_m_0.png' % dir)
-                ImageCache['SkewerM1' + dir] = SLib.GetImg('skewer_%s_m_1.png' % dir)
-                ImageCache['SkewerE0' + dir] = SLib.GetImg('skewer_%s_e_0.png' % dir)
-                ImageCache['SkewerE1' + dir] = SLib.GetImg('skewer_%s_e_1.png' % dir)
+                ImageCache['SkewerM0' + dir] = SLib.GetImg(f'skewer_{dir}_m_0.png')
+                ImageCache['SkewerM1' + dir] = SLib.GetImg(f'skewer_{dir}_m_1.png')
+                ImageCache['SkewerE0' + dir] = SLib.GetImg(f'skewer_{dir}_e_0.png')
+                ImageCache['SkewerE1' + dir] = SLib.GetImg(f'skewer_{dir}_e_1.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -593,7 +598,9 @@ class SpriteImage_Door(SLib.SpriteImage):  # 182, 259, 276, 277, 278
         transform270.rotate(270)
 
         for door, filename in doors.items():
-            image = SLib.GetImg('%s.png' % filename, True)
+            image = SLib.GetImg(f'{filename}.png', True)
+            if image is None:
+                continue
             ImageCache[door + 'U'] = QtGui.QPixmap.fromImage(image)
             ImageCache[door + 'R'] = QtGui.QPixmap.fromImage(image.transformed(transform90))
             ImageCache[door + 'D'] = QtGui.QPixmap.fromImage(image.transformed(transform180))
@@ -611,6 +618,7 @@ class SpriteImage_Door(SLib.SpriteImage):  # 182, 259, 276, 277, 278
         if direction > 3: direction = 0
         doorName = self.doorName
         doorSize = self.doorDimensions
+        paintEntrancePos = False
         if direction == 0:
             self.image = ImageCache[doorName + 'U']
             self.dimensions = doorSize
@@ -668,7 +676,7 @@ class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
     def loadImages():
         if 'GiantBubble0' in ImageCache: return
         for shape in range(3):
-            ImageCache['GiantBubble%d' % shape] = SLib.GetImg('giant_bubble_%d.png' % shape)
+            ImageCache[f'GiantBubble{shape}'] = SLib.GetImg(f'giant_bubble_{shape}.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -703,7 +711,7 @@ class SpriteImage_GiantBubble(SLib.SpriteImage):  # 205, 226
     def paint(self, painter):
         super().paint(painter)
 
-        painter.drawPixmap(0, 0, ImageCache['GiantBubble%d' % self.shape])
+        painter.drawPixmap(0, 0, ImageCache[f'GiantBubble{self.shape}'])
 
 
 class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402, 403, 422, 423
@@ -804,12 +812,12 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
         if 'PipeTopGreen' not in ImageCache:
             for color in ('Green', 'Red', 'Yellow', 'Blue'):
                 color_l = color.lower()
-                ImageCache['PipeTop%s' % color] = SLib.GetImg('pipe_%s_top.png' % color_l)
-                ImageCache['PipeMiddleV%s' % color] = SLib.GetImg('pipe_%s_middle.png' % color_l)
-                ImageCache['PipeBottom%s' % color] = SLib.GetImg('pipe_%s_bottom.png' % color_l)
-                ImageCache['PipeLeft%s' % color] = SLib.GetImg('pipe_%s_left.png' % color_l)
-                ImageCache['PipeMiddleH%s' % color] = SLib.GetImg('pipe_%s_center.png' % color_l)
-                ImageCache['PipeRight%s' % color] = SLib.GetImg('pipe_%s_right.png' % color_l)
+                ImageCache[f'PipeTop{color}'] = SLib.GetImg(f'pipe_{color_l}_top.png')
+                ImageCache[f'PipeMiddleV{color}'] = SLib.GetImg(f'pipe_{color_l}_middle.png')
+                ImageCache[f'PipeBottom{color}'] = SLib.GetImg(f'pipe_{color_l}_bottom.png')
+                ImageCache[f'PipeLeft{color}'] = SLib.GetImg(f'pipe_{color_l}_left.png')
+                ImageCache[f'PipeMiddleH{color}'] = SLib.GetImg(f'pipe_{color_l}_center.png')
+                ImageCache[f'PipeRight{color}'] = SLib.GetImg(f'pipe_{color_l}_right.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -868,13 +876,13 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
                 # draw semi-transparent pipe
                 painter.save()
                 painter.setOpacity(0.5)
-                painter.drawPixmap(0, int(y2), ImageCache['PipeTop%s' % color])
-                painter.drawTiledPixmap(0, int(y2 + 24), 48, int(high - 24), ImageCache['PipeMiddleV%s' % color])
+                painter.drawPixmap(0, int(y2), ImageCache[f'PipeTop{color}'])
+                painter.drawTiledPixmap(0, int(y2 + 24), 48, int(high - 24), ImageCache[f'PipeMiddleV{color}'])
                 painter.restore()
 
             # draw opaque pipe
-            painter.drawPixmap(0, int(y1), ImageCache['PipeTop%s' % color])
-            painter.drawTiledPixmap(0, int(y1 + 24), 48, int(low - 24), ImageCache['PipeMiddleV%s' % color])
+            painter.drawPixmap(0, int(y1), ImageCache[f'PipeTop{color}'])
+            painter.drawTiledPixmap(0, int(y1 + 24), 48, int(low - 24), ImageCache[f'PipeMiddleV{color}'])
 
         elif self.direction == 'D':
 
@@ -882,13 +890,13 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
                 # draw semi-transparent pipe
                 painter.save()
                 painter.setOpacity(0.5)
-                painter.drawTiledPixmap(0, 0, 48, int(high - 24), ImageCache['PipeMiddleV%s' % color])
-                painter.drawPixmap(0, int(high - 24), ImageCache['PipeBottom%s' % color])
+                painter.drawTiledPixmap(0, 0, 48, int(high - 24), ImageCache[f'PipeMiddleV{color}'])
+                painter.drawPixmap(0, int(high - 24), ImageCache[f'PipeBottom{color}'])
                 painter.restore()
 
             # draw opaque pipe
-            painter.drawTiledPixmap(0, 0, 48, int(low - 24), ImageCache['PipeMiddleV%s' % color])
-            painter.drawPixmap(0, int(low - 24), ImageCache['PipeBottom%s' % color])
+            painter.drawTiledPixmap(0, 0, 48, int(low - 24), ImageCache[f'PipeMiddleV{color}'])
+            painter.drawPixmap(0, int(low - 24), ImageCache[f'PipeBottom{color}'])
 
         elif self.direction == 'R':
 
@@ -896,13 +904,13 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
                 # draw semi-transparent pipe
                 painter.save()
                 painter.setOpacity(0.5)
-                painter.drawPixmap(int(high), 0, ImageCache['PipeRight%s' % color])
-                painter.drawTiledPixmap(0, 0, int(high - 24), 48, ImageCache['PipeMiddleH%s' % color])
+                painter.drawPixmap(int(high), 0, ImageCache[f'PipeRight{color}'])
+                painter.drawTiledPixmap(0, 0, int(high - 24), 48, ImageCache[f'PipeMiddleH{color}'])
                 painter.restore()
 
             # draw opaque pipe
-            painter.drawPixmap(int(low - 24), 0, ImageCache['PipeRight%s' % color])
-            painter.drawTiledPixmap(0, 0, int(low - 24), 48, ImageCache['PipeMiddleH%s' % color])
+            painter.drawPixmap(int(low - 24), 0, ImageCache[f'PipeRight{color}'])
+            painter.drawTiledPixmap(0, 0, int(low - 24), 48, ImageCache[f'PipeMiddleH{color}'])
 
         else:  # left
 
@@ -910,13 +918,13 @@ class SpriteImage_Pipe(SLib.SpriteImage):  # 254, 339, 353, 377, 378, 379, 380, 
                 # draw semi-transparent pipe
                 painter.save()
                 painter.setOpacity(0.5)
-                painter.drawTiledPixmap(0, 0, int(high - 24), 48, ImageCache['PipeMiddleH%s' % color])
-                painter.drawPixmap(int(high - 24), 0, ImageCache['PipeLeft%s' % color])
+                painter.drawTiledPixmap(0, 0, int(high - 24), 48, ImageCache[f'PipeMiddleH{color}'])
+                painter.drawPixmap(int(high - 24), 0, ImageCache[f'PipeLeft{color}'])
                 painter.restore()
 
             # draw opaque pipe
-            painter.drawTiledPixmap(24, 0, int(low - 24), 48, ImageCache['PipeMiddleH%s' % color])
-            painter.drawPixmap(0, 0, ImageCache['PipeLeft%s' % color])
+            painter.drawTiledPixmap(24, 0, int(low - 24), 48, ImageCache[f'PipeMiddleH{color}'])
+            painter.drawPixmap(0, 0, ImageCache[f'PipeLeft{color}'])
 
 
 class SpriteImage_PipeStationary(SpriteImage_Pipe):  # 377, 378, 379, 380, 450
@@ -967,10 +975,10 @@ class SpriteImage_LongSkewer(SLib.SpriteImage):  # 398, 400
     def loadImages():
         if 'LongSkewerM0left' in ImageCache: return
         for dir in ['left', 'right']:
-            ImageCache['LongSkewerM0' + dir] = SLib.GetImg('skewer_%s_m_0.png' % dir)
-            ImageCache['LongSkewerM1' + dir] = SLib.GetImg('skewer_%s_m_1.png' % dir)
-            ImageCache['LongSkewerE0' + dir] = SLib.GetImg('skewer_%s_e_0.png' % dir)
-            ImageCache['LongSkewerE1' + dir] = SLib.GetImg('skewer_%s_e_1.png' % dir)
+            ImageCache[f'LongSkewerM0{dir}'] = SLib.GetImg(f'skewer_{dir}_m_0.png')
+            ImageCache[f'LongSkewerM1{dir}'] = SLib.GetImg(f'skewer_{dir}_m_1.png')
+            ImageCache[f'LongSkewerE0{dir}'] = SLib.GetImg(f'skewer_{dir}_e_0.png')
+            ImageCache[f'LongSkewerE1{dir}'] = SLib.GetImg(f'skewer_{dir}_e_1.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -1021,8 +1029,8 @@ class SpriteImage_MassiveSkewer(SLib.SpriteImage):  # 401, 404
         for dir in ['up', 'down']:
             ImageCache['MassiveSkewerM0'] = SLib.GetImg('massive_skewer_m_0.png')
             ImageCache['MassiveSkewerM1'] = SLib.GetImg('massive_skewer_m_1.png')
-            ImageCache['MassiveSkewerE0' + dir] = SLib.GetImg('massive_skewer_%s_e_0.png' % dir)
-            ImageCache['MassiveSkewerE1' + dir] = SLib.GetImg('massive_skewer_%s_e_1.png' % dir)
+            ImageCache[f'MassiveSkewerE0{dir}'] = SLib.GetImg(f'massive_skewer_{dir}_e_0.png')
+            ImageCache[f'MassiveSkewerE1{dir}'] = SLib.GetImg(f'massive_skewer_{dir}_e_1.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -1102,8 +1110,8 @@ class SpriteImage_MeasureJump(SLib.SpriteImage):
             return
 
         for i in range(1, 4):
-            ImageCache["JumpRun%d" % i] = SLib.GetImg("jump_run_%d.png" % i)
-            ImageCache["JumpRunSpin%d" % i] = SLib.GetImg("jump_run_spin_%d.png" % i)
+            ImageCache[f'JumpRun{i}'] = SLib.GetImg(f'jump_run_{i}.png')
+            ImageCache[f'JumpRunSpin{i}'] = SLib.GetImg(f'jump_run_spin_{i}.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -1112,15 +1120,14 @@ class SpriteImage_MeasureJump(SLib.SpriteImage):
         flags = (self.parent.spritedata[3] & 0xF0) >> 4
         direction = flags >> 3
         spin = (flags & 4) >> 2
-        vertical = (flags & 2) >> 1
 
         if jumptype > 2:
             jumptype = 0
 
         if spin:
-            img = ImageCache["JumpRunSpin%d" % (jumptype + 1)]
+            img = ImageCache[f'JumpRunSpin{jumptype + 1}']
         else:
-            img = ImageCache["JumpRun%d" % (jumptype + 1)]
+            img = ImageCache[f'JumpRun{jumptype + 1}']
 
         if direction == 1:
             img = img.transformed(QtGui.QTransform().scale(-1, 1))
@@ -1824,6 +1831,7 @@ class SpriteImage_SpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
     def loadImages():
         if 'SpikeTop00' in ImageCache: return
         SpikeTop = SLib.GetImg('spiketop.png', True)
+        if SpikeTop is None: return
 
         Transform = QtGui.QTransform()
         ImageCache['SpikeTop00'] = QtGui.QPixmap.fromImage(SpikeTop.mirrored(True, False))
@@ -1847,7 +1855,7 @@ class SpriteImage_SpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
         orientation = (self.parent.spritedata[5] >> 4) & 3
         direction = self.parent.spritedata[5] & 1
 
-        self.image = ImageCache['SpikeTop%d%d' % (orientation, direction)]
+        self.image = ImageCache[f'SpikeTop{orientation}{direction}']
 
         self.offset = (
             (0, -4),
@@ -2479,7 +2487,7 @@ class SpriteImage_PlatformGenerator(SpriteImage_WoodenPlatform):  # 103
 
         # Draw a direction arrow
         dirStr = ('Up', 'Down', 'Right', 'Left')[self.arrowDir % 4]
-        self.aux[0].image = ImageCache['DirectionArrow%s' % dirStr]
+        self.aux[0].image = ImageCache[f'DirectionArrow{dirStr}']
         self.aux[0].setPos(int(((self.width - 16) / 2) * 1.5), 0)
 
         self.aux[0].setIsBehindSprite(False)
@@ -2776,6 +2784,9 @@ class SpriteImage_FlameCannon(SLib.SpriteImage_StaticMultiple):  # 114
         transform270.rotate(270)
 
         image = SLib.GetImg('continuous_flame_cannon.png', True)
+        if image is None:
+            return
+
         ImageCache['FlameCannonR'] = QtGui.QPixmap.fromImage(image)
         ImageCache['FlameCannonD'] = QtGui.QPixmap.fromImage(image.transformed(transform90))
         ImageCache['FlameCannonL'] = QtGui.QPixmap.fromImage(image.mirrored(True, False))
@@ -2795,7 +2806,7 @@ class SpriteImage_FlameCannon(SLib.SpriteImage_StaticMultiple):  # 114
             del self.offset
 
         directionstr = 'RLUD'[direction]
-        self.image = ImageCache['FlameCannon%s' % directionstr]
+        self.image = ImageCache[f'FlameCannon{directionstr}']
 
         super().dataChanged()
 
@@ -2899,6 +2910,9 @@ class SpriteImage_PulseFlameCannon(SLib.SpriteImage_StaticMultiple):  # 117
         transform270.rotate(270)
 
         onImage = SLib.GetImg('synchro_flame_jet.png', True)
+        if onImage is None:
+            return
+
         ImageCache['PulseFlameCannonR'] = QtGui.QPixmap.fromImage(onImage)
         ImageCache['PulseFlameCannonD'] = QtGui.QPixmap.fromImage(onImage.transformed(transform90))
         ImageCache['PulseFlameCannonL'] = QtGui.QPixmap.fromImage(onImage.mirrored(True, False))
@@ -2920,7 +2934,7 @@ class SpriteImage_PulseFlameCannon(SLib.SpriteImage_StaticMultiple):  # 117
             del self.offset
 
         directionstr = 'RLUD'[direction]
-        self.image = ImageCache['PulseFlameCannon%s' % directionstr]
+        self.image = ImageCache[f'PulseFlameCannon{directionstr}']
 
         super().dataChanged()
 
@@ -3246,7 +3260,7 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
     def dataChanged(self):
         super().dataChanged()
         pieces = self.parent.spritedata[3] & 15
-        if pieces > 7: pieces = 7
+        pieces = min(pieces, 7)
         self.yOffset = -pieces * 16
         self.height = (pieces + 1) * 16
 
@@ -3254,7 +3268,7 @@ class SpriteImage_RotBulletLauncher(SLib.SpriteImage):  # 136
         super().paint(painter)
 
         pieces = (self.parent.spritedata[3] & 15) + 1
-        if pieces > 8: pieces = 8
+        pieces = min(pieces, 8)
         pivot1_4 = self.parent.spritedata[4] & 15
         pivot5_8 = self.parent.spritedata[4] >> 4
         startleft1_4 = self.parent.spritedata[5] & 15
@@ -3400,13 +3414,13 @@ class SpriteImage_Arrow(SLib.SpriteImage_StaticMultiple):  # 143
     def loadImages():
         if 'Arrow0' in ImageCache: return
         for i in range(8):
-            ImageCache['Arrow%d' % i] = SLib.GetImg('arrow_%d.png' % i)
+            ImageCache[f'Arrow{i}'] = SLib.GetImg(f'arrow_{i}.png')
 
     def dataChanged(self):
         ArrowOffsets = [(4, 1), (7, 7), (1, 4), (7, -2), (4, 0), (-2, -2), (0, 4), (-2, 7)]
 
         direction = self.parent.spritedata[5] & 7
-        self.image = ImageCache['Arrow%d' % direction]
+        self.image = ImageCache[f'Arrow{direction}']
 
         self.width = self.image.width() / 1.5
         self.height = self.image.height() / 1.5
@@ -3474,11 +3488,15 @@ class SpriteImage_Coin(SLib.SpriteImage_StaticMultiple):  # 147
     def loadImages():
         if 'CoinF' in ImageCache: return
 
+        iceblock = SLib.GetImg('iceblock00.png')
+        if iceblock is None:
+            return
+
         pix = QtGui.QPixmap(24, 24)
         pix.fill(Qt.GlobalColor.transparent)
         paint = QtGui.QPainter(pix)
         paint.setOpacity(0.9)
-        paint.drawPixmap(0, 0, SLib.GetImg('iceblock00.png'))
+        paint.drawPixmap(0, 0, iceblock)
         paint.setOpacity(0.6)
         paint.drawPixmap(0, 0, ImageCache['Coin'])
         del paint
@@ -3617,7 +3635,7 @@ class SpriteImage_BigBrick(SLib.SpriteImage_StaticMultiple):  # 157
 
         for power in range(16):
             if power in (0, 8, 12, 13):
-                ImageCache['BigBrick%d' % power] = ImageCache['BigBrick']
+                ImageCache[f'BigBrick{power}'] = ImageCache['BigBrick']
                 continue
 
             x = y = 24
@@ -3635,12 +3653,12 @@ class SpriteImage_BigBrick(SLib.SpriteImage_StaticMultiple):  # 157
             paint = QtGui.QPainter(new)
             paint.drawPixmap(x, y, overlay)
             del paint
-            ImageCache['BigBrick%d' % power] = new
+            ImageCache[f'BigBrick{power}'] = new
 
     def dataChanged(self):
 
         power = self.parent.spritedata[5] & 0xF
-        self.image = ImageCache['BigBrick%d' % power]
+        self.image = ImageCache[f'BigBrick{power}']
         super().dataChanged()
 
 
@@ -3689,10 +3707,13 @@ class SpriteImage_PipeBubbles(SLib.SpriteImage_StaticMultiple):  # 161
         transform270.rotate(270)
 
         image = SLib.GetImg('pipe_bubbles.png', True)
-        ImageCache['PipeBubbles' + 'U'] = QtGui.QPixmap.fromImage(image)
-        ImageCache['PipeBubbles' + 'R'] = QtGui.QPixmap.fromImage(image.transformed(transform90))
-        ImageCache['PipeBubbles' + 'D'] = QtGui.QPixmap.fromImage(image.transformed(transform180))
-        ImageCache['PipeBubbles' + 'L'] = QtGui.QPixmap.fromImage(image.transformed(transform270))
+        if image is None:
+            return
+
+        ImageCache['PipeBubblesU'] = QtGui.QPixmap.fromImage(image)
+        ImageCache['PipeBubblesR'] = QtGui.QPixmap.fromImage(image.transformed(transform90))
+        ImageCache['PipeBubblesD'] = QtGui.QPixmap.fromImage(image.transformed(transform180))
+        ImageCache['PipeBubblesL'] = QtGui.QPixmap.fromImage(image.transformed(transform270))
 
     def dataChanged(self):
 
@@ -3710,7 +3731,7 @@ class SpriteImage_PipeBubbles(SLib.SpriteImage_StaticMultiple):  # 161
             self.dimensions = (-52, -16, 53, 32)
             direction = 'L'
 
-        self.image = ImageCache['PipeBubbles%s' % direction]
+        self.image = ImageCache[f'PipeBubbles{direction}']
 
         super().dataChanged()
 
@@ -3793,6 +3814,9 @@ class SpriteImage_OneWayGate(SLib.SpriteImage_StaticMultiple):  # 174
 
         # This loop generates all one-way gate images from a single image
         gate = SLib.GetImg('one_way_gate.png', True)
+        if gate is None:
+            return
+
         for flip in (0, 1):
             for direction in range(4):
                 if flip:
@@ -3804,11 +3828,10 @@ class SpriteImage_OneWayGate(SLib.SpriteImage_StaticMultiple):  # 174
                 height = 60  # constants, from the PNG
                 xsize = width if direction in (0, 1) else height
                 ysize = width if direction in (2, 3) else height
-                if direction == 0:
-                    rotValue = 0
-                    xpos = 0
-                    ypos = 0
-                elif direction == 1:
+                rotValue = 0
+                xpos = 0
+                ypos = 0
+                if direction == 1:
                     rotValue = 180
                     xpos = -width
                     ypos = -height
@@ -3828,15 +3851,15 @@ class SpriteImage_OneWayGate(SLib.SpriteImage_StaticMultiple):  # 174
                 p.drawPixmap(xpos, ypos, newgate)
                 del p
 
-                ImageCache['1WayGate%d%d' % (flip, direction)] = dest
+                ImageCache[f'1WayGate{flip}{direction}'] = dest
 
     def dataChanged(self):
 
         flag = (self.parent.spritedata[5] >> 4) & 1
         direction = self.parent.spritedata[5] & 3
-        self.image = ImageCache['1WayGate%d%d' % (flag, direction)]
+        self.image = ImageCache[f'1WayGate{flag}{direction}']
 
-        if direction > 3: direction = 3
+        direction = min(direction, 3)
         self.offset = (
             (0, -22),
             (0, -2),
@@ -4109,26 +4132,26 @@ class SpriteImage_TileEvent(common.SpriteImage_TileEvent):  # 191
         super().__init__(parent)
         self.notAllowedTypes = (2, 5, 7)
 
-    def getTileFromType(self, type_):
-        if type_ == 0:
+    def getTileFromType(self, type):
+        if type == 0:
             return SLib.GetTile(55)
 
-        if type_ == 1:
+        if type == 1:
             return SLib.GetTile(48)
 
-        if type_ == 3:
+        if type == 3:
             return SLib.GetTile(52)
 
-        if type_ == 4:
+        if type == 4:
             return SLib.GetTile(51)
 
-        if type_ == 6:
+        if type == 6:
             return SLib.GetTile(45)
 
-        if type_ == 12:
+        if type == 12:
             return SLib.GetTile(256 * 3 + 67)
 
-        if type_ == 14:
+        if type == 14:
             return SLib.GetTile(256)
 
         return None
@@ -4223,6 +4246,9 @@ class SpriteImage_HuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
     def loadImages():
         if 'HuckitCrabR' in ImageCache: return
         Huckitcrab = SLib.GetImg('huckit_crab.png', True)
+        if Huckitcrab is None:
+            return
+
         ImageCache['HuckitCrabL'] = QtGui.QPixmap.fromImage(Huckitcrab)
         ImageCache['HuckitCrabR'] = QtGui.QPixmap.fromImage(Huckitcrab.mirrored(True, False))
 
@@ -4282,6 +4308,9 @@ class SpriteImage_Fishbones(SLib.SpriteImage_StaticMultiple):  # 196
     def loadImages():
         if 'FishbonesL' in ImageCache: return
         Fishbones = SLib.GetImg('fishbones.png', True)
+        if Fishbones is None:
+            return
+
         ImageCache['FishbonesL'] = QtGui.QPixmap.fromImage(Fishbones)
         ImageCache['FishbonesR'] = QtGui.QPixmap.fromImage(Fishbones.mirrored(True, False))
 
@@ -4296,9 +4325,12 @@ class SpriteImage_Clam(SLib.SpriteImage_StaticMultiple):  # 197
         if 'ClamEmpty' in ImageCache: return
 
         if 'PSwitch' not in ImageCache:
-            p = SLib.GetImg('p_switch.png', True)
-            ImageCache['PSwitch'] = QtGui.QPixmap.fromImage(p)
-            ImageCache['PSwitchU'] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
+            pSwitch = SLib.GetImg('p_switch.png', True)
+            if pSwitch is None:
+                return
+
+            ImageCache['PSwitch'] = QtGui.QPixmap.fromImage(pSwitch)
+            ImageCache['PSwitchU'] = QtGui.QPixmap.fromImage(pSwitch.mirrored(True, True))
 
         SLib.loadIfNotInImageCache('ClamEmpty', 'clam.png')
 
@@ -4541,10 +4573,10 @@ class SpriteImage_BowserJr1stController(SLib.SpriteImage):  # 211
 
 
 class SpriteImage_RollingHill(SLib.SpriteImage):  # 212
-    RollingHillSizes = [0, 18 * 16, 32 * 16, 50 * 16, 64 * 16, 10 * 16, 14 * 16, 20 * 16, 0, 0, 0, 0, 0, 0, 0, 0]
 
     def __init__(self, parent):
         super().__init__(parent, 1.5)
+        self.RollingHillSizes = [0, 18 * 16, 32 * 16, 50 * 16, 64 * 16, 10 * 16, 14 * 16, 20 * 16, 0, 0, 0, 0, 0, 0, 0, 0]
 
         size = (self.parent.spritedata[3] >> 4) & 0xF
         realSize = self.RollingHillSizes[size]
@@ -4664,6 +4696,9 @@ class SpriteImage_JumboRay(SLib.SpriteImage_StaticMultiple):  # 224
     def loadImages():
         if 'JumboRayL' in ImageCache: return
         Ray = SLib.GetImg('jumbo_ray.png', True)
+        if Ray is None:
+            return
+
         ImageCache['JumboRayL'] = QtGui.QPixmap.fromImage(Ray)
         ImageCache['JumboRayR'] = QtGui.QPixmap.fromImage(Ray.mirrored(True, False))
 
@@ -4709,15 +4744,20 @@ class SpriteImage_PipeCannon(SLib.SpriteImage):  # 227
     def loadImages():
         if 'PipeCannon0' in ImageCache: return
         for i in range(7):
-            ImageCache['PipeCannon%d' % i] = SLib.GetImg('pipe_cannon_%d.png' % i)
+            pipeCannon = SLib.GetImg('pipe_cannon_%d.png' % i)
+            if pipeCannon is None:
+                continue
+
+            ImageCache[f'PipeCannon{i}'] = QtGui.QPixmap.fromImage(pipeCannon)
 
     def dataChanged(self):
         super().dataChanged()
 
         fireDirection = (self.parent.spritedata[5] & 0xF) % 7
 
-        self.aux[0].image = ImageCache['PipeCannon%d' % (fireDirection)]
+        self.aux[0].image = ImageCache[f'PipeCannon{fireDirection}']
 
+        path = None
         if fireDirection == 0:
             # 30 deg to the right
             self.aux[0].setSize(84, 101, 0, -5)
@@ -4938,6 +4978,9 @@ class SpriteImage_Bulber(SLib.SpriteImage_StaticMultiple):  # 233
     def loadImages():
         if 'BulberL' in ImageCache: return
         Bulber = SLib.GetImg('bulber.png', True)
+        if Bulber is None:
+            return
+
         ImageCache['BulberL'] = QtGui.QPixmap.fromImage(Bulber)
         ImageCache['BulberR'] = QtGui.QPixmap.fromImage(Bulber.mirrored(True, False))
 
@@ -5123,7 +5166,7 @@ class SpriteImage_MoveWhenOnMetalLavaBlock(SLib.SpriteImage_StaticMultiple):  # 
 
     def dataChanged(self):
         size = (self.parent.spritedata[5] & 0xF) % 3
-        self.image = ImageCache['MetalLavaBlock%d' % size]
+        self.image = ImageCache[f'MetalLavaBlock{size}']
 
         super().dataChanged()
 
@@ -5320,8 +5363,7 @@ class SpriteImage_TiltGrate(SLib.SpriteImage_StaticMultiple):  # 267
 
     def dataChanged(self):
         direction = self.parent.spritedata[5] & 3
-        if direction > 3:
-            direction = 3
+        direction = min(direction, 3)
 
         if direction < 2:
             self.size = (69, 166)
@@ -5355,7 +5397,11 @@ class SpriteImage_LavaGeyser(SLib.SpriteImage_StaticMultiple):  # 268
     def loadImages():
         if 'LavaGeyser0' in ImageCache: return
         for i in range(7):
-            ImageCache['LavaGeyser%d' % i] = SLib.GetImg('lava_geyser_%d.png' % i)
+            lavaGeyser = SLib.GetImg(f'lava_geyser_{i}.png')
+            if lavaGeyser is None:
+                continue
+
+            ImageCache[f'LavaGeyser{i}'] = QtGui.QPixmap.fromImage(lavaGeyser)
 
     def dataChanged(self):
 
@@ -5375,7 +5421,7 @@ class SpriteImage_LavaGeyser(SLib.SpriteImage_StaticMultiple):  # 268
 
         self.alpha = 0.75 if startsOn else 0.5
 
-        self.image = ImageCache['LavaGeyser%d' % height]
+        self.image = ImageCache[f'LavaGeyser{height}']
 
         super().dataChanged()
 
@@ -5557,6 +5603,9 @@ class SpriteImage_RiseFallWater(SpriteImage_LiquidOrFog):  # 285
         super().dataChanged()
 
     def realViewZone(self, painter, zoneRect):
+        if self.rise is None or self.crest is None:
+            return
+
         crest_rect = QtCore.QRectF()
         rise_rect = QtCore.QRectF()
 
@@ -5610,7 +5659,7 @@ class SpriteImage_WoodCircle(SLib.SpriteImage_StaticMultiple):  # 286
         super().dataChanged()
         size = (self.parent.spritedata[5] & 0xF) % 3
 
-        self.image = ImageCache['WoodCircle%d' % size]
+        self.image = ImageCache[f'WoodCircle{size}']
 
         if size > 2: size = 0
         self.dimensions = (
@@ -5671,7 +5720,11 @@ class SpriteImage_Box(SLib.SpriteImage_StaticMultiple):  # 289
         if 'Box00' in ImageCache: return
         for style, stylestr in ((0, 'wood'), (1, 'metal')):
             for size, sizestr in zip(range(4), ('small', 'wide', 'tall', 'big')):
-                ImageCache['Box%d%d' % (style, size)] = SLib.GetImg('box_%s_%s.png' % (stylestr, sizestr))
+                box = SLib.GetImg(f'box_{stylestr}_{sizestr}.png')
+                if box is None:
+                    continue
+
+                ImageCache[f'Box{style}{size}'] = QtGui.QPixmap.fromImage(box)
 
                 items = (
                     (12, 12, 'Coin',  ImageCache['BlockContents'][1]),
@@ -5688,7 +5741,7 @@ class SpriteImage_Box(SLib.SpriteImage_StaticMultiple):  # 289
                     (12, 12, 'Ice',   ImageCache['BlockContents'][15]),
                 )
                 for x, y, itemName, overlayImage in items:
-                    newPix = QtGui.QPixmap(ImageCache['Box%d%d' % (style, size)])
+                    newPix = QtGui.QPixmap(ImageCache[f'Box{style}{size}'])
                     painter = QtGui.QPainter(newPix)
 
                     sizeOffs = (
@@ -5699,7 +5752,7 @@ class SpriteImage_Box(SLib.SpriteImage_StaticMultiple):  # 289
                     )
                     painter.drawPixmap(x + sizeOffs[size][0], y + sizeOffs[size][1], overlayImage)
                     del painter
-                    ImageCache['Box%d%d' % (style, size) + itemName] = newPix
+                    ImageCache[f'Box{style}{size}{itemName}'] = newPix
 
     def dataChanged(self):
 
@@ -5713,7 +5766,7 @@ class SpriteImage_Box(SLib.SpriteImage_StaticMultiple):  # 289
                         'Mush', 'EggF', '5Coin', '1Up', 'Mush', 'Mush', 'Key', 'Ice')
             itemStr = itemNames[item]
 
-        self.image = ImageCache['Box%d%d' % (style, size) + itemStr]
+        self.image = ImageCache[f'Box{style}{size}{itemStr}']
 
         super().dataChanged()
 
@@ -6017,6 +6070,9 @@ class SpriteImage_CannonMulti(SLib.SpriteImage_StaticMultiple):  # 299
         if 'CannonMultiU0' in ImageCache: return
         CannonUR = SLib.GetImg('cannon_multi_0.png', True)
         CannonUL = SLib.GetImg('cannon_multi_1.png', True)
+        if CannonUR is None or CannonUL is None:
+            return
+
         ImageCache['CannonMultiU0'] = QtGui.QPixmap.fromImage(CannonUR)
         ImageCache['CannonMultiU1'] = QtGui.QPixmap.fromImage(CannonUL)
         ImageCache['CannonMultiD0'] = QtGui.QPixmap.fromImage(CannonUR.mirrored(False, True))
@@ -6027,10 +6083,10 @@ class SpriteImage_CannonMulti(SLib.SpriteImage_StaticMultiple):  # 299
         upsideDown = (self.parent.spritedata[5] >> 4) & 1
 
         if upsideDown:
-            self.image = ImageCache['CannonMultiD%d' % left]
+            self.image = ImageCache[f'CannonMultiD{left}']
             self.offset = (-8, -1)
         else:
-            self.image = ImageCache['CannonMultiU%d' % left]
+            self.image = ImageCache[f'CannonMultiU{left}']
             self.offset = (-8, -11)
 
         super().dataChanged()
@@ -6098,9 +6154,13 @@ class SpriteImage_RotFlameCannon(SLib.SpriteImage_StaticMultiple):  # 304
     def loadImages():
         if 'RotFlameCannon0' in ImageCache: return
         for i in range(5):
-            ImageCache['RotFlameCannon%d' % i] = SLib.GetImg('rotating_flame_cannon_%d.png' % i)
-            originalImg = SLib.GetImg('rotating_flame_cannon_%d.png' % i, True)
-            ImageCache['RotFlameCannonFlipped%d' % i] = QtGui.QPixmap.fromImage(originalImg.mirrored(False, True))
+            originalImg = SLib.GetImg(f'rotating_flame_cannon_{i}.png', True)
+            if originalImg is None:
+                continue
+
+            mirroredImg = QtGui.QPixmap.fromImage(originalImg.mirrored(False, True))
+            ImageCache[f'RotFlameCannon{i}'] = originalImg
+            ImageCache[f'RotFlameCannonFlipped{i}'] = mirroredImg
 
     def dataChanged(self):
 
@@ -6114,7 +6174,7 @@ class SpriteImage_RotFlameCannon(SLib.SpriteImage_StaticMultiple):  # 304
         else:
             self.yOffset = 0
 
-        self.image = ImageCache['RotFlameCannon%s%d' % (orientation, length)]
+        self.image = ImageCache[f'RotFlameCannon{orientation}{length}']
 
         super().dataChanged()
 
@@ -6143,12 +6203,12 @@ class SpriteImage_RotSpotlight(SLib.SpriteImage_StaticMultiple):  # 306
     def loadImages():
         if 'RotSpotlight0' in ImageCache: return
         for i in range(16):
-            ImageCache['RotSpotlight%d' % i] = SLib.GetImg('rotational_spotlight_%d.png' % i)
+            ImageCache[f'RotSpotlight{i}'] = SLib.GetImg(f'rotational_spotlight_{i}.png')
 
     def dataChanged(self):
 
         angle = self.parent.spritedata[3] & 15
-        self.image = ImageCache['RotSpotlight%d' % angle]
+        self.image = ImageCache[f'RotSpotlight{angle}']
 
         super().dataChanged()
 
@@ -6168,6 +6228,9 @@ class SpriteImage_SynchroFlameJet(SLib.SpriteImage_StaticMultiple):  # 309
 
         onImage = SLib.GetImg('synchro_flame_jet.png', True)
         offImage = SLib.GetImg('synchro_flame_jet_off.png', True)
+        if onImage is None or offImage is None:
+            return
+
         ImageCache['SynchroFlameJetOnR'] = QtGui.QPixmap.fromImage(onImage)
         ImageCache['SynchroFlameJetOnD'] = QtGui.QPixmap.fromImage(onImage.transformed(transform90))
         ImageCache['SynchroFlameJetOnL'] = QtGui.QPixmap.fromImage(onImage.mirrored(True, False))
@@ -6192,7 +6255,7 @@ class SpriteImage_SynchroFlameJet(SLib.SpriteImage_StaticMultiple):  # 309
         )[direction]
         directionstr = 'RLUD'[direction]
 
-        self.image = ImageCache['SynchroFlameJet%s%s' % (mode, directionstr)]
+        self.image = ImageCache[f'SynchroFlameJet{mode}{directionstr}']
 
         super().dataChanged()
 
@@ -6206,12 +6269,12 @@ class SpriteImage_ArrowSign(SLib.SpriteImage_StaticMultiple):  # 310
     def loadImages():
         if 'ArrowSign0' in ImageCache: return
         for i in range(8):
-            ImageCache['ArrowSign%d' % i] = SLib.GetImg('arrow_sign_%d.png' % i)
+            ImageCache[f'ArrowSign{i}'] = SLib.GetImg(f'arrow_sign_{i}.png')
 
     def dataChanged(self):
 
         direction = self.parent.spritedata[5] & 0xF
-        self.image = ImageCache['ArrowSign%d' % direction]
+        self.image = ImageCache[f'ArrowSign{direction}']
 
         super().dataChanged()
 
@@ -6389,7 +6452,7 @@ class SpriteImage_ArrowBlock(SLib.SpriteImage_StaticMultiple):  # 321
 
     def dataChanged(self):
         direction = self.parent.spritedata[5] & 3
-        self.image = ImageCache['ArrowBlock%d' % direction]
+        self.image = ImageCache[f'ArrowBlock{direction}']
 
         super().dataChanged()
 
@@ -6425,7 +6488,7 @@ class SpriteImage_BooCircle(SLib.SpriteImage):  # 323
         outrad = self.parent.spritedata[2] & 15
         inrad = self.parent.spritedata[3] >> 4
         ghostnum = 1 + (self.parent.spritedata[3] & 15)
-        differentRads = not (inrad == outrad)
+        differentRads = inrad != outrad
 
         # Give up if the data is invalid
         if inrad > outrad:
@@ -6451,7 +6514,7 @@ class SpriteImage_BooCircle(SLib.SpriteImage):  # 323
             offsetY = (ImageCache['Boo1'].height() / 2) + 16  # the circle is not centered
 
             # Pick a pixmap
-            boo = ImageCache['Boo%d' % (1 if i == 0 else ((i - 1) % 3) + 2)]  # 1  2 3 4  2 3 4  2 3 4 ...
+            boo = ImageCache[f'Boo{1 if i == 0 else ((i - 1) % 3) + 2}']  # 1  2 3 4  2 3 4  2 3 4 ...
 
             # Find the abs pos, and paint the ghost at its inner position
             x = math.sin(angle) * ((inrad * radiusMultiplier) + radiusConstant) - offsetX
@@ -6512,6 +6575,7 @@ class SpriteImage_KingBill(SLib.SpriteImage):  # 326
                 QtCore.QPointF(192 + 72, -180 + 180),
             )
 
+            arc = 'LR'
             for thing in PointsRects:  # translate each point to flip the image
                 if direction == 0:  # faces left
                     arc = 'LR'
@@ -6612,7 +6676,7 @@ class SpriteImage_BubbleCannon(SLib.SpriteImage_StaticMultiple):  # 328
 
     def dataChanged(self):
         size = self.parent.spritedata[5] & 1
-        self.image = ImageCache['BubbleCannon%d' % size]
+        self.image = ImageCache[f'BubbleCannon{size}']
         self.offset = (
             (-17, -15),
             (-36, -31),
@@ -6634,7 +6698,7 @@ class SpriteImage_RopeLadder(SLib.SpriteImage_StaticMultiple):  # 330
         size = self.parent.spritedata[5]
         if size > 2: size = 0
 
-        self.image = ImageCache['RopeLadder%d' % size]
+        self.image = ImageCache[f'RopeLadder{size}']
         self.offset = (-3, -2)
 
         super().dataChanged()
@@ -6665,7 +6729,7 @@ class SpriteImage_DishPlatform(SLib.SpriteImage_StaticMultiple):  # 331
             posX = -311
             width = 646
 
-        self.aux[0].image = ImageCache['DishPlatform%d' % size]
+        self.aux[0].image = ImageCache[f'DishPlatform{size}']
         self.aux[0].setSize(width, 195, posX, posY)
 
         super().dataChanged()
@@ -6756,8 +6820,7 @@ class SpriteImage_CheepSchool(SLib.SpriteImage_Static):  # 335
             aux.alpha = 0.0 if noPreview else 1.0
         if noPreview: return
 
-        if shape > 2:
-            shape = 2
+        shape = min(shape, 2)
 
         positions = [
         ( # Shape 0
@@ -6990,7 +7053,7 @@ class SpriteImage_HangingChainPlatform(SLib.SpriteImage_StaticMultiple):  # 346
             (-42, -12),
             (-58, -12),
         )[size]
-        self.image = ImageCache['HangingChainPlatform%d' % size]
+        self.image = ImageCache[f'HangingChainPlatform{size}']
 
         super().dataChanged()
 
@@ -7083,8 +7146,8 @@ class SpriteImage_BrownBlock(SLib.SpriteImage):  # 356
         for vert in 'TMB':
             for horz in 'LMR':
                 SLib.loadIfNotInImageCache(
-                    'BrownBlock' + vert + horz,
-                    'brown_block_%s%s.png' % (vert, horz)
+                    f'BrownBlock{vert}{horz}',
+                    f'brown_block_{vert}{horz}.png'
                 )
 
     def dataChanged(self):
@@ -7208,7 +7271,7 @@ class SpriteImage_CrystalBlock(SLib.SpriteImage_StaticMultiple):  # 361
     def loadImages():
         if 'CrystalBlock0' in ImageCache: return
         for size in range(3):
-            ImageCache['CrystalBlock%d' % size] = SLib.GetImg('crystal_block_%d.png' % size)
+            ImageCache[f'CrystalBlock{size}'] = SLib.GetImg(f'crystal_block_{size}.png')
 
     def dataChanged(self):
         size = self.parent.spritedata[4] & 3
@@ -7221,7 +7284,7 @@ class SpriteImage_CrystalBlock(SLib.SpriteImage_StaticMultiple):  # 361
             self.offset = (-10 / 1.5, -11 / 1.5)
             size = 2
 
-        self.image = ImageCache['CrystalBlock%d' % size]
+        self.image = ImageCache[f'CrystalBlock{size}']
 
         super().dataChanged()
 
@@ -7236,7 +7299,7 @@ class SpriteImage_ColoredBox(SLib.SpriteImage):  # 362
         if 'CBox0TL' in ImageCache: return
         for color in range(4):
             for direction in ('TL', 'T', 'TR', 'L', 'M', 'R', 'BL', 'B', 'BR'):
-                ImageCache['CBox%d%s' % (color, direction)] = SLib.GetImg('cbox_%s_%d.png' % (direction, color))
+                ImageCache[f'CBox{color}{direction}'] = SLib.GetImg(f'cbox_{direction}_{color}.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -7252,7 +7315,7 @@ class SpriteImage_ColoredBox(SLib.SpriteImage):  # 362
     def paint(self, painter):
         super().paint(painter)
 
-        prefix = 'CBox%d' % self.color
+        prefix = f'CBox{self.color}'
         xsize = int(self.width * 1.5)
         ysize = int(self.height * 1.5)
 
@@ -7369,8 +7432,12 @@ class SpriteImage_FlashRaft(SLib.SpriteImage_StaticMultiple):  # 368
 class SpriteImage_SlidingPenguin(SLib.SpriteImage_StaticMultiple):  # 369
     @staticmethod
     def loadImages():
-        if 'PenguinL' in ImageCache: return
+        if 'PenguinL' in ImageCache:
+            return
         penguin = SLib.GetImg('sliding_penguin.png', True)
+        if penguin is None:
+            return
+
         ImageCache['PenguinL'] = QtGui.QPixmap.fromImage(penguin)
         ImageCache['PenguinR'] = QtGui.QPixmap.fromImage(penguin.mirrored(True, False))
 
@@ -7417,7 +7484,7 @@ class SpriteImage_IggyKoopaCastleBoss(SLib.SpriteImage):  # 372
         self.aux[2].fillFlag = False
 
         w = SLib.OutlinePen.widthF()
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 336 + w, 24 + w, 168 - w / 2, 144 - w / 2))
+        self.aux.append(SLib.AuxiliaryRectOutline(parent, 336 + w, 24 + w, int(168 - w / 2), int(144 - w / 2)))
         self.aux[3].fillFlag = False
 
     @staticmethod
@@ -7485,7 +7552,7 @@ class SpriteImage_MovingFence(SLib.SpriteImage):  # 376
     def loadImages():
         if 'MovingFence0' in ImageCache: return
         for shape in range(4):
-            ImageCache['MovingFence%d' % shape] = SLib.GetImg('moving_fence_%d.png' % shape)
+            ImageCache[f'MovingFence{shape}'] = SLib.GetImg(f'moving_fence_{shape}.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -7518,7 +7585,7 @@ class SpriteImage_MovingFence(SLib.SpriteImage):  # 376
     def paint(self, painter):
         super().paint(painter)
 
-        painter.drawPixmap(0, 0, ImageCache['MovingFence%d' % self.shape])
+        painter.drawPixmap(0, 0, ImageCache[f'MovingFence{self.shape}'])
 
 
 class SpriteImage_Pipe_Up(SpriteImage_PipeStationary):  # 377
@@ -7606,7 +7673,7 @@ class SpriteImage_IceBlock(SLib.SpriteImage_StaticMultiple):  # 385
         if 'IceBlock00' in ImageCache: return
         for i in range(4):
             for j in range(4):
-                ImageCache['IceBlock%d%d' % (i, j)] = SLib.GetImg('iceblock%d%d.png' % (i, j))
+                ImageCache[f'IceBlock{i}{j}'] = SLib.GetImg(f'iceblock{i}{j}.png')
 
     def dataChanged(self):
 
@@ -7614,7 +7681,7 @@ class SpriteImage_IceBlock(SLib.SpriteImage_StaticMultiple):  # 385
         height = (size & 0x30) >> 4
         width = size & 3
 
-        self.image = ImageCache['IceBlock%d%d' % (width, height)]
+        self.image = ImageCache[f'IceBlock{width}{height}']
         self.xOffset = width * -4
         self.yOffset = height * -8
 
@@ -7645,7 +7712,7 @@ class SpriteImage_Bush(SLib.SpriteImage_StaticMultiple):  # 387
         if 'Bush00' in ImageCache: return
         for typenum, typestr in enumerate(('green', 'yellowish')):
             for sizenum, sizestr in enumerate(('small', 'med', 'large', 'xlarge')):
-                ImageCache['Bush%d%d' % (typenum, sizenum)] = SLib.GetImg('bush_%s_%s.png' % (typestr, sizestr))
+                ImageCache[f'Bush{typenum}{sizenum}'] = SLib.GetImg(f'bush_{typestr}_{sizestr}.png')
 
     def dataChanged(self):
 
@@ -7660,7 +7727,7 @@ class SpriteImage_Bush(SLib.SpriteImage_StaticMultiple):  # 387
             (-53, -78),
         )[size]
 
-        self.image = ImageCache['Bush%d%d' % (style, size)]
+        self.image = ImageCache[f'Bush{style}{size}']
 
         super().dataChanged()
 
@@ -7812,7 +7879,7 @@ class SpriteImage_GhostHouseBox(SLib.SpriteImage):  # 397
     def loadImages():
         if 'GHBoxTL' in ImageCache: return
         for direction in ('TL', 'T', 'TR', 'L', 'M', 'R', 'BL', 'B', 'BR'):
-            ImageCache['GHBox%s' % direction] = SLib.GetImg('ghbox_%s.png' % direction)
+            ImageCache[f'GHBox{direction}'] = SLib.GetImg(f'ghbox_{direction}.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -8019,6 +8086,9 @@ class SpriteImage_Gabon(SLib.SpriteImage_StaticMultiple):  # 414
     def loadImages():
         if 'GabonLeft' in ImageCache: return
         gabon = SLib.GetImg('gabon.png', True)
+        if gabon is None:
+            return
+
         ImageCache['GabonLeft'] = QtGui.QPixmap.fromImage(gabon)
         ImageCache['GabonRight'] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
         SLib.loadIfNotInImageCache('GabonSpike', 'gabon_spike.png')
@@ -8169,12 +8239,12 @@ class SpriteImage_PalmTree(SLib.SpriteImage_StaticMultiple):  # 424
     def loadImages():
         if 'PalmTree0' in ImageCache: return
         for i in range(8):
-            ImageCache['PalmTree%d' % i] = SLib.GetImg('palmtree_%d.png' % i)
+            ImageCache[f'PalmTree{i}'] = SLib.GetImg(f'palmtree_{i}.png')
 
     def dataChanged(self):
 
         size = self.parent.spritedata[5] & 7
-        self.image = ImageCache['PalmTree%d' % size]
+        self.image = ImageCache[f'PalmTree{size}']
         self.yOffset = 16 - (self.image.height() / 1.5)
 
         super().dataChanged()
@@ -8331,7 +8401,7 @@ class SpriteImage_WarpCannon(SLib.SpriteImage_StaticMultiple):  # 434
 
         dest = self.parent.spritedata[5] & 3
         if dest == 3: dest = 0
-        self.image = ImageCache['Warp%d' % dest]
+        self.image = ImageCache[f'Warp{dest}']
 
         super().dataChanged()
 
@@ -8398,7 +8468,7 @@ class SpriteImage_ShapeBlocks(SLib.SpriteImage_StaticMultiple):  # 438
         if 'ShapeBlock0' in ImageCache: return
 
         for i in range(5):
-            ImageCache['ShapeBlock%d' % i] = SLib.GetImg('shape_block_%d.png' % i)
+            ImageCache[f'ShapeBlock{i}'] = SLib.GetImg(f'shape_block_{i}.png')
 
     def dataChanged(self):
         type = (self.parent.spritedata[4] & 15) % 5
@@ -8418,7 +8488,7 @@ class SpriteImage_ShapeBlocks(SLib.SpriteImage_StaticMultiple):  # 438
             (360, 360),
         )
 
-        self.aux[0].image = ImageCache['ShapeBlock%d' % type]
+        self.aux[0].image = ImageCache[f'ShapeBlock{type}']
         self.aux[0].setSize(sizes[type][0], sizes[type][1], offsets[type][0] * 1.5, offsets[type][1] * 1.5)
 
         super().dataChanged()
@@ -8644,7 +8714,7 @@ class SpriteImage_Seaweed(SLib.SpriteImage_StaticMultiple):  # 453
     def loadImages():
         if 'Seaweed0' in ImageCache: return
         for i in range(4):
-            ImageCache['Seaweed%d' % i] = SLib.GetImg('seaweed_%d.png' % i)
+            ImageCache[f'Seaweed{i}'] = SLib.GetImg(f'seaweed_{i}.png')
 
     def dataChanged(self):
         SeaweedSizes = [0, 1, 2, 2, 3, 3]
@@ -8653,7 +8723,7 @@ class SpriteImage_Seaweed(SLib.SpriteImage_StaticMultiple):  # 453
         style = (self.parent.spritedata[5] & 0xF) % 6
         size = SeaweedSizes[style]
 
-        self.image = ImageCache['Seaweed%d' % size]
+        self.image = ImageCache[f'Seaweed{size}']
         self.offset = (
             SeaweedXOffsets[size],
             16 - (self.image.height() / 1.5),
@@ -8729,18 +8799,21 @@ class SpriteImage_SilverGearBlock(SLib.SpriteImage_StaticMultiple):  # 460
     def loadImages():
         if 'SilverGearBlockDown3' in ImageCache: return
         for gear in range(4):
-            image = SLib.GetImg('silver_gear_block_%d.png' % gear, True)
-            ImageCache['SilverGearBlockUp%d' % gear] = QtGui.QPixmap.fromImage(image)
-            ImageCache['SilverGearBlockDown%d' % gear] = QtGui.QPixmap.fromImage(image.mirrored(True, True))
+            image = SLib.GetImg(f'silver_gear_block_{gear}.png', True)
+            if image is None:
+                continue
+
+            ImageCache[f'SilverGearBlockUp{gear}'] = QtGui.QPixmap.fromImage(image)
+            ImageCache[f'SilverGearBlockDown{gear}'] = QtGui.QPixmap.fromImage(image.mirrored(True, True))
 
     def dataChanged(self):
         style = self.parent.spritedata[5] & 3
         flipped = (self.parent.spritedata[5] >> 4) & 1
 
         if flipped:
-            self.image = ImageCache['SilverGearBlockDown%d' % style]
+            self.image = ImageCache[f'SilverGearBlockDown{style}']
         else:
-            self.image = ImageCache['SilverGearBlockUp%d' % style]
+            self.image = ImageCache[f'SilverGearBlockUp{style}']
 
         super().dataChanged()
 
@@ -8979,7 +9052,11 @@ class SpriteImage_IceFloe(SLib.SpriteImage_StaticMultiple):  # 475
         if 'IceFloe0' in ImageCache: return
 
         for size in range(13):
-            ImageCache['IceFloe%d' % size] = SLib.GetImg('ice_floe_%d.png' % size)
+            image = SLib.GetImg(f'ice_floe_{size}.png')
+            if image is None:
+                continue
+
+            ImageCache[f'IceFloe{size}'] = QtGui.QPixmap.fromImage(image)
 
     def dataChanged(self):
 
@@ -9004,7 +9081,7 @@ class SpriteImage_IceFloe(SLib.SpriteImage_StaticMultiple):  # 475
             (-1, -64),  # 12: 3x5
         )[size]
 
-        self.image = ImageCache['IceFloe%d' % size]
+        self.image = ImageCache[f'IceFloe{size}']
 
         super().dataChanged()
 
@@ -9051,6 +9128,9 @@ class SpriteImage_BowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
     def loadImages():
         if 'ELSwitch' in ImageCache: return
         elg = SLib.GetImg('e_switch_lg.png', True)
+        if elg is None:
+            return
+
         ImageCache['ELSwitch'] = QtGui.QPixmap.fromImage(elg)
         ImageCache['ELSwitchU'] = QtGui.QPixmap.fromImage(elg.mirrored(True, True))
 
@@ -9100,12 +9180,16 @@ class SpriteImage_FinalBossRubble(SLib.SpriteImage_StaticMultiple):  # 481
     def loadImages():
         if 'FinalBossRubble0' in ImageCache: return
         for size in range(2):
-            ImageCache['FinalBossRubble%d' % size] = SLib.GetImg('final_boss_rubble_%d.png' % size)
+            image = SLib.GetImg(f'final_boss_rubble_{size}.png')
+            if image is None:
+                continue
+
+            ImageCache[f'FinalBossRubble{size}'] = QtGui.QPixmap.fromImage(image)
 
     def dataChanged(self):
         size = self.parent.spritedata[5] & 1
 
-        self.image = ImageCache['FinalBossRubble%d' % size]
+        self.image = ImageCache[f'FinalBossRubble{size}']
 
         super().dataChanged()
 
@@ -9123,7 +9207,11 @@ class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
         if 'FinalBossEffects0' in ImageCache: return
 
         for i in range(3):
-            ImageCache["FinalBossEffects%d" % i] = SLib.GetImg("final_boss_effects_%d.png" % i)
+            image = SLib.GetImg(f'final_boss_effects_{i}.png')
+            if image is None:
+                continue
+
+            ImageCache[f'FinalBossEffects{i}'] = QtGui.QPixmap.fromImage(image)
 
     def dataChanged(self):
         style = self.parent.spritedata[5] & 15
@@ -9133,7 +9221,7 @@ class SpriteImage_FinalBossEffects(SLib.SpriteImage):  # 482
             self.aux[0].image = None
 
         else:
-            self.aux[0].image = ImageCache['FinalBossEffects%d' % style]
+            self.aux[0].image = ImageCache[f'FinalBossEffects{style}']
 
             if style == 0:
                 self.aux[0].setPos(-228, -555)
