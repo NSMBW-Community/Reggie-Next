@@ -371,6 +371,7 @@ class ReggieTranslation:
                 16: 'Loading entrance names...',
                 17: 'Error',
                 18: 'An error occurred while attempting to load this game patch. It will now be unloaded. Here\'s the specific error:[br][error]',
+                19: 'Reload Game Patches',
             },
             'InfoDlg': {
                 0: 'Level Information',

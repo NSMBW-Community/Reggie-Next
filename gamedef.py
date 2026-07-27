@@ -85,13 +85,17 @@ class GameDefMenu(QtWidgets.QMenu):
     gameChanged = QtCore.pyqtSignal()
     update_flag = False
 
-
     def __init__(self):
         """
         Creates and initializes the menu
         """
         QtWidgets.QMenu.__init__(self)
+        self.createActions()
 
+    def createActions(self):
+        """
+        Creates all the actions for the menu
+        """
         # Add the gamedef viewer widget
         self.currentView = GameDefViewer()
         self.currentView.setMinimumHeight(100)
@@ -121,6 +125,19 @@ class GameDefMenu(QtWidgets.QMenu):
 
             self.addAction(act)
 
+        self.addSeparator()
+
+        # Add the reload button
+        act = QtGui.QAction(self)
+        act.setText(globals_.trans.string('Gamedefs', 19))
+        act.setData('reload_gamedef')
+        act.setActionGroup(self.actGroup)
+        act.setIcon(GetIcon('reload'))
+        act.setCheckable(False)
+        act.setChecked(False)
+        act.triggered.connect(self.handleReloadClicked)
+
+        self.addAction(act)
 
     def handleGameDefClicked(self, checked):
         """
@@ -134,8 +151,7 @@ class GameDefMenu(QtWidgets.QMenu):
             self.gameChanged.emit()
             return
 
-        # Setting the new gamedef failed for some reason, so load back the old
-        # game def.
+        # Setting the new gamedef failed for some reason, so load back the old one
         real_gamedef = setting('LastGameDef')
         success = loadNewGameDef(real_gamedef)
         if not success:
@@ -145,6 +161,26 @@ class GameDefMenu(QtWidgets.QMenu):
         for act in self.actGroup.actions():
             act.setChecked(act.data() == real_gamedef)
         self.update_flag = False
+
+    def handleReloadClicked(self):
+        """
+        Handles the user clicking the Reload button
+        """
+        self.clear()
+        self.createActions()
+
+    def mouseReleaseEvent(self, event):
+        """
+        Handles mouse press events
+        """
+        action = self.actionAt(event.pos())
+
+        # If this is the Reload button, don't close the menu when clicked
+        if action and action.data() == 'reload_gamedef':
+            action.trigger()
+            event.accept()
+        else:
+            super().mouseReleaseEvent(event)
 
 
 class ReggieGameDefinition:

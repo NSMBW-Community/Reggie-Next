@@ -322,6 +322,7 @@
         <string id="16">Loading entrance names...</string>
         <string id="17">Error</string>
         <string id="18">An error occurred while attempting to load this game patch. It will now be unloaded. Here's the specific error:[br][error]</string>
+        <string id="19">Reload Game Patches</string>
     </section>
     <section id="InfoDlg">
         <string id="0">Level Information</string>
