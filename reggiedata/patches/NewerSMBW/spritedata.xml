@@ -667,16 +667,34 @@
   </sprite> <!-- #63: Spiked Ball / Snowball -->
 
   <sprite id="78" name="Bouncy Cloud" noyoshi="True" notes="A cloud platform with a happy face that the player can bounce on to jump really high. NewerSMBW adds more style options including Mushrooms and Checkered Block." files="lift_trampoline.arc">
-    <spritetex nybble="6" title="Style" comment="This determines the color and style of the Bouncy Cloud." comment2="If you want the Angry Cloud to hurt players, you have to add an invisible tileset piece to do that for you. Sorry.">
+    <spritetex nybble="6" title="Style" comment="This determines the color and style of the Bouncy Cloud." comment2="If you want the Sad Cloud to hurt players, you'll have to add an invisible tileset object to do that for you.">
       <entry value="0">Normal</entry>
-      <entry value="1">Angry</entry>
+      <entry value="1">Sad Cloud</entry>
       <entry value="2">Green Mushroom</entry>
       <entry value="3">Red Mushroom</entry>
       <entry value="4">Blue Mushroom</entry>
       <entry value="5">Yellow Mushroom</entry>
       <entry value="6">Big Checkered Block</entry>
     </spritetex>
-    <checkbox nybble="9.4" title="Larger Cloud" comment="When enabled, the Bouncy Cloud will be bigger."/>
+    <dualbox nybble="9.4" title1="Small Cloud" title2="Large Cloud"/>
+    <list nybble="10" title="Regulated Jump Momentum" comment="This will apply a modifier to the player's momentum while bouncing. Smaller values seem to result in less horizontal distance.">
+      <entry value="0">0.5x</entry>
+      <entry value="1">1.0x</entry>
+      <entry value="2">0.5x</entry>
+      <entry value="3">0.33x</entry>
+      <entry value="4">0.25x</entry>
+      <entry value="5">0.2x</entry>
+      <entry value="6">0.16x</entry>
+      <entry value="7">0.143x</entry>
+      <entry value="8">0.125x</entry>
+      <entry value="9">0.11x</entry>
+      <entry value="10">0.1x</entry>
+      <entry value="11">0.09x</entry>
+      <entry value="12">0.083x</entry>
+      <entry value="13">0.077x</entry>
+      <entry value="14">0.071x</entry>
+      <entry value="15">0.066x</entry>
+    </list>
   </sprite> <!-- #78: Bouncy Cloud -->
 
   <!-- Determine the scope of this event controller with a video showcasing its behavior with a delay of 6 and 10 Red Coins. Create a Zone that the player will stand in and an IF controller that governs the Looper. Stand in it until the coins have come on, and all gone off, at least twice (assuming they turn off). If they do not turn off, exit the location and observe the behavior. If they do turn off, exit the location after half of the coins have come on and observe the behavior. -->
