@@ -4413,7 +4413,7 @@ class SpriteImage_MGCannon(SLib.SpriteImage_Static):  # 202
             parent,
             1.5,
             ImageCache['MGCannon'],
-            (-12, -42),
+            (-19 / 1.5, -40),
         )
 
     @staticmethod
