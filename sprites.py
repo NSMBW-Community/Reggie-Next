@@ -8223,7 +8223,7 @@ class SpriteImage_MGPanel(SLib.SpriteImage_Static):  # 428
             parent,
             1.5,
             ImageCache['MGPanel'],
-            (-2, -6),
+            (-4, -8),
         )
 
     @staticmethod
