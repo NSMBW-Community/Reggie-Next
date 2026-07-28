@@ -728,6 +728,13 @@
         <string id="29">Next Free</string>
         <string id="30">Sprite [id]: required resource</string>
         <string id="31">Add to Loaded Sprites</string>
+        <string id="32">Layer</string>
+        <string id="33">[b]Layer[/b]: This determines what layer the sprite will be active on. In almost all cases, you\'ll want to use Layer 1.</string>
+        <stringlist id="34">
+            <entry>Layer 1</entry>
+            <entry>Layer 2</entry>
+            <entry>Layer 0</entry>
+        </stringlist>
     </section>
     <section id="Sprites">
         <string id="0">[b]Sprite [type]:[/b][br][name]</string>

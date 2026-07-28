@@ -451,12 +451,13 @@ class SpriteDefinition:
         Contains all the possible values for a list property on a sprite
         """
 
-        def __init__(self, entries):
+        def __init__(self, entries, hideVal=False):
             """
             Constructor
             """
             QtCore.QAbstractListModel.__init__(self)
             self.entries = entries
+            self.hideVal = hideVal
 
         def rowCount(self, parent=None):
             """
@@ -475,7 +476,10 @@ class SpriteDefinition:
             if not 0 <= n < len(self.entries):
                 return None
 
-            return '%d: %s' % self.entries[n]
+            if self.hideVal:
+                return '%s' % self.entries[n][1]
+            else:
+                return '%d: %s' % self.entries[n]
 
 
     def loadFrom(self, elem):
@@ -769,6 +773,7 @@ def LoadSpriteData():
             noyoshi = sprite.get('noyoshi', 'False') == "True"
             asm = sprite.get('asmhacks', 'False') == "True"
             size = sprite.get('sizehacks', 'False') == "True"
+            noLayer = sprite.get('nolayer', 'False') == "True"
 
             sdef = SpriteDefinition()
             sdef.id = spriteid
@@ -780,6 +785,7 @@ def LoadSpriteData():
             sdef.noyoshi = noyoshi
             sdef.asm = asm
             sdef.size = size
+            sdef.noLayer = noLayer
             sdef.dependencies = []
             sdef.dependencynotes = None
 

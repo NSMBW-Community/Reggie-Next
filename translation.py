@@ -777,6 +777,13 @@ class ReggieTranslation:
                 29: 'Next Free',
                 30: 'Sprite [id]: required resource',
                 31: 'Add to Loaded Sprites',
+                32: 'Layer',
+                33: '[b]Layer[/b]: This determines what layer the sprite will be active on. In almost all cases, you\'ll want to use Layer 1.',
+                34: (
+                    'Layer 1',
+                    'Layer 2',
+                    'Layer 0',
+                ),
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',

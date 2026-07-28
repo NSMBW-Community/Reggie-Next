@@ -5,6 +5,7 @@ from PyQt6 import QtWidgets, QtCore, QtGui
 
 import globals_
 from levelitems import SpriteItem, ListWidgetItem_SortsByOther
+from misc import SpriteDefinition
 from ui import GetIcon
 from dirty import SetDirty
 import common
@@ -1921,6 +1922,27 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             elif f[0] == 8:
                 nf = SpriteEditorWidget.SpriteTexPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
 
+            nf.updateData.connect(self.HandleFieldUpdate)
+            fields.append(nf)
+            row += 1
+
+        # Now create fields that exist across ALL sprites
+        if not sprite.noLayer:
+            # Add a small bit of spacing
+            spacer = QtWidgets.QSpacerItem(0, 8, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
+            layout.addItem(spacer, row, 0)
+            row += 1
+
+            title = globals_.trans.string('SpriteDataEditor', 32)
+            comment = globals_.trans.string('SpriteDataEditor', 33)
+            strList = globals_.trans.stringList('SpriteDataEditor', 34)
+            itemList = [(0, strList[0]), (1, strList[1]), (2, strList[2])]
+
+            # Layer reads entire byte, instead of the first two bits
+            bit, _ = SpriteDefinition().parseBits('15-16')
+            model = SpriteDefinition.ListPropertyModel(itemList, True)
+
+            nf = SpriteEditorWidget.ListPropertyDecoder(title, bit, model, comment, None, None, None, None, None, layout, row, self)
             nf.updateData.connect(self.HandleFieldUpdate)
             fields.append(nf)
             row += 1
