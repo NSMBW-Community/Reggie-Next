@@ -60,6 +60,9 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# VSCode
+.vscode/
+
 # Quick Paint presets
 *.qpp
 

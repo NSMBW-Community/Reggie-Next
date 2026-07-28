@@ -1071,10 +1071,6 @@ class ReggieTranslation:
                 18: 'Warning: This sprite has one or more settings that overlap Nybble [id].',
                 19: 'Warning: This sprite has one or more settings that overlap both Nybbles 5 and 7.',
             },
-            'SpriteUpgradeDlg': {
-                0: 'Sprite Upgrader',
-                1: 'Reggie Next has detected that the game patch\'s sprites.py file is outdated, and must be upgraded to PyQt6 in order to work correctly.[br][br]Would you like to upgrade?[br]A copy of the old file will remain in the game patch folder.',
-            },
             'Err_UnknownSprite': {
                 0: 'Warning',
                 1: 'This level contains sprite ID [id], which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.',
