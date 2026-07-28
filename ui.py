@@ -113,40 +113,44 @@ class ReggieTheme:
         # Parse the other nodes
         for node in root:
             if node.tag.lower() == 'colors':
-                if 'file' not in node.attrib: continue
+                if 'file' not in node.attrib:
+                    continue
 
                 # Load the colors XML
                 self.loadColorsXml(os.path.join(folder, node.attrib['file']))
 
             elif node.tag.lower() == 'qss':
-                if 'file' not in node.attrib: continue
+                if 'file' not in node.attrib:
+                    continue
 
                 # Load the style sheet
                 self.loadStyleSheet(os.path.join(folder, node.attrib['file']))
 
             elif node.tag.lower() == 'icons':
-                if not all(thing in node.attrib for thing in ['size', 'folder']): continue
+                if not all(thing in node.attrib for thing in ['size', 'folder']):
+                    continue
 
-                foldername = node.attrib['folder']
+                folderName = node.attrib['folder']
                 big = node.attrib['size'].lower()[:2] == 'lg'
                 cache = self.iconCacheLg if big else self.iconCacheSm
 
                 # Load the icons
-                for iconfilename in fileList:
-                    iconname = iconfilename
-                    if not iconname.startswith(foldername + os.sep): continue
-                    iconname = iconname[len(foldername) + 1:]
-                    if len(iconname) <= len('icon-.png'): continue
-                    if not iconname.startswith('icon-') or not iconname.endswith('.png'): continue
-                    iconname = iconname[len('icon-'): -len('.png')]
+                for fileName in os.listdir(os.path.join(folder, folderName)):
+                    iconName = fileName
 
-                    with open(os.path.join(folder, iconfilename), "rb") as inf:
-                        icodata = inf.read()
+                    # Remove the 'icon-' prefix and file extension
+                    iconName = iconName.removeprefix('icon-')
+                    iconName = iconName.removesuffix('.png')
+
+                    with open(os.path.join(folder, folderName, fileName), "rb") as inf:
+                        iconData = inf.read()
+
                     pix = QtGui.QPixmap()
-                    if not pix.loadFromData(icodata): continue
-                    ico = QtGui.QIcon(pix)
+                    if not pix.loadFromData(iconData):
+                        continue
 
-                    cache[iconname] = ico
+                    ico = QtGui.QIcon(pix)
+                    cache[iconName] = ico
 
     def parseMainXMLHead(self, root):
         """
