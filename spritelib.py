@@ -73,6 +73,46 @@ def main():
     SpritesFolders = []
 
 
+def GetPath(imgname: str) -> str:
+    """
+    Returns the path to the image 'imgname' from the first matching sprite image folder.
+    """
+    imgname = str(imgname)
+    path = os.path.join('reggiedata', 'sprites', imgname)
+    for folder in reversed(SpritesFolders):
+        tryPath = os.path.join(folder, imgname)
+        if os.path.isfile(tryPath):
+            path = tryPath
+            break
+
+    return path
+
+def GetPixmap(imgname: str) -> QtGui.QPixmap:
+    """
+    Returns the image as a QPixmap from the PNG filename 'imgname' from the first
+    matching sprite image folder.
+    """
+    path = GetPath(imgname)
+    if os.path.isfile(path):
+        return QtGui.QPixmap(path)
+
+    print(f'[Warning] Could not load sprite image ({imgname})!') # TODO probably raise an Exception instead
+    return QtGui.QPixmap()
+
+
+def GetImage(imgname: str) -> QtGui.QImage:
+    """
+    Returns the image as a QImage from the PNG filename 'imgname' from the first
+    matching sprite image folder.
+    """
+    path = GetPath(imgname)
+    if os.path.isfile(path):
+        return QtGui.QImage(path)
+
+    print(f'[Warning] Could not load sprite image ({imgname})!')
+    return QtGui.QImage()
+
+
 def GetImg(imgname, image=False):
     """
     Returns the image as a QImage from the PNG filename 'imgname' from the first
@@ -80,6 +120,8 @@ def GetImg(imgname, image=False):
     is returned. If the image could not be found, None is returned and a warning
     is printed.
     """
+    print("[Warning] spritelib.GetImg is deprecated and will be removed in a future Reggie! Next version.\n" +
+        "Update your code to use spritelib.GetImage and spritelib.GetPixmap instead.")
     imgname = str(imgname)
 
     # Try to find the best path
@@ -118,7 +160,7 @@ def loadIfNotInImageCache(name, filename):
     referenced by 'filename' and puts it there
     """
     if name not in ImageCache:
-        ImageCache[name] = GetImg(filename)
+        ImageCache[name] = GetPixmap(filename)
 
 
 def MapPositionToZoneID(zones, x, y, get_id=False):
