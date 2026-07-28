@@ -84,8 +84,6 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         self.flipOverride = False
 
     def dataChanged(self):
-        super().dataChanged()
-
         # SET CONTENTS
         # In the blocks.png file:
         # 0 = Empty, 1 = Coin, 2 = Mushroom, 3 = Fire Flower, 4 = Propeller, 5 = Penguin Suit,
@@ -131,7 +129,6 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
             self.image = self.image.fromImage(flip)
 
     def paint(self, painter):
-        super().paint(painter)
         if self.image is None:
             return
 
@@ -609,7 +606,6 @@ class SpriteImage_NewerPodoboo(SLib.SpriteImage):  # 46
             self.aux[0].image = ImageCache['Podoboo0']
         else:
             self.aux[0].image = ImageCache[f'Podoboo{style}']
-        super().dataChanged()
 
 
 class SpriteImage_Thwomp(SLib.SpriteImage_StaticMultiple):  # 47
@@ -1474,8 +1470,6 @@ class SpriteImage_NewerLineBlock(common.SpriteImage_LineBlock):  # 219
 
         self.setLineBlockImage(ImageCache[f'LineBlock{color}'])
 
-        super().dataChanged()
-
 
 class SpriteImage_NewerSpringBlock(SLib.SpriteImage_StaticMultiple):  # 223
     @staticmethod
@@ -1551,7 +1545,6 @@ class SpriteImage_NewerWiggleShroom(SLib.SpriteImage):  # 231
             ImageCache['WiggleShroomNewerS'] = SLib.GetPixmap('wiggle_shroom_newer_stem.png')
 
     def dataChanged(self):
-        super().dataChanged()
         if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
             return
 
@@ -1584,8 +1577,6 @@ class SpriteImage_NewerWiggleShroom(SLib.SpriteImage):  # 231
             self.height = (distance * 16) + 64
 
     def paint(self, painter):
-        super().paint(painter)
-
         xsize = self.width * 1.5
         painter.drawPixmap(0, 0, self.wiggleleft)
         painter.drawTiledPixmap(18, 0, int(xsize - 36), 24, self.wigglemiddle)
@@ -1609,7 +1600,6 @@ class SpriteImage_LineEvent(SLib.SpriteImage):  # 244
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 0, 0))
 
     def dataChanged(self):
-        super().dataChanged()
         if not isinstance(self.aux[0], SLib.AuxiliaryRectOutline):
             return
 
@@ -2042,7 +2032,6 @@ class SpriteImage_MegaThwomp(SLib.SpriteImage):  # 322
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
 
     def dataChanged(self):
-        super().dataChanged()
         if (
             not isinstance(self.aux[1], SLib.AuxiliaryTrackObject)
             or not isinstance(self.aux[2], SLib.AuxiliaryTrackObject)
@@ -2103,8 +2092,6 @@ class SpriteImage_Podouble(SLib.SpriteImage):  # 324
 
         self.aux[0].image = ImageCache['PodoubleFire' if fire else 'PodoubleIce']
         self.aux[1].setSize(16, 208 + (distance * 8))
-
-        super().dataChanged()
 
 
 class SpriteImage_NewerBigShell(SLib.SpriteImage_StaticMultiple):  # 341

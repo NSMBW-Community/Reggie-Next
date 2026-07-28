@@ -317,8 +317,6 @@ class SpriteImage_Static(SpriteImage):
             self.yOffset = offset[1]
 
     def dataChanged(self):
-        super().dataChanged()
-
         if self.image is not None:
             self.size = (
                 (self.image.width() / self.scale),
@@ -328,8 +326,6 @@ class SpriteImage_Static(SpriteImage):
             del self.size
 
     def paint(self, painter):
-        super().paint(painter)
-
         if self.image is None:
             return
 
