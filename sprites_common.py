@@ -33,9 +33,10 @@
 
 # Imports
 from PyQt6 import QtCore, QtGui
-Qt = QtCore.Qt
 
 import spritelib as SLib
+
+Qt = QtCore.Qt
 ImageCache = SLib.ImageCache
 
 ################################################################
@@ -46,33 +47,29 @@ def LoadBasics():
     Loads basic images used in NSMBW. This runs every time a new GameDef is loaded
     """
     # Load some coins, because coins are in almost every Mario level ever
-    ImageCache['Coin'] = SLib.GetImg('coin.png')
-    ImageCache['SpecialCoin'] = SLib.GetImg('special_coin.png')
-    ImageCache['PCoin'] = SLib.GetImg('p_coin.png')
-    ImageCache['RedCoin'] = SLib.GetImg('redcoin.png')
-    ImageCache['StarCoin'] = SLib.GetImg('starcoin.png')
+    ImageCache['Coin'] = SLib.GetPixmap('coin.png')
+    ImageCache['SpecialCoin'] = SLib.GetPixmap('special_coin.png')
+    ImageCache['PCoin'] = SLib.GetPixmap('p_coin.png')
+    ImageCache['RedCoin'] = SLib.GetPixmap('redcoin.png')
+    ImageCache['StarCoin'] = SLib.GetPixmap('starcoin.png')
 
     # Load block contents
-    ContentImage = SLib.GetImg('block_contents.png')
-    Blocks = []
+    ContentImage = SLib.GetPixmap('block_contents.png')
     count = ContentImage.width() // 24
     for i in range(count):
-        Blocks.append(ContentImage.copy(i * 24, 0, 24, 24))
-    ImageCache['BlockContents'] = Blocks
+        ImageCache[f'BlockContents{i}'] = ContentImage.copy(i * 24, 0, 24, 24)
 
     # Load the blocks
-    BlockImage = SLib.GetImg('blocks.png')
-    Blocks = []
+    BlockImage = SLib.GetPixmap('blocks.png')
     count = BlockImage.width() // 24
     for i in range(count):
-        Blocks.append(BlockImage.copy(i * 24, 0, 24, 24))
-    ImageCache['Blocks'] = Blocks
+        ImageCache[f'Blocks{i}'] = BlockImage.copy(i * 24, 0, 24, 24)
 
     # Load the characters
     for num in range(4):
         for direction in 'lr':
-            ImageCache['Character%d%s' % (num + 1, direction.upper())] = \
-                SLib.GetImg('character_%d_%s.png' % (num + 1, direction))
+            ImageCache[f'Character{num + 1}{direction.upper()}'] = \
+                SLib.GetPixmap(f'character_{num + 1}_{direction}.png')
 
     # Load vines, because these are used by entrances
     SLib.loadIfNotInImageCache('VineTop', 'vine_top.png')
@@ -91,6 +88,7 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
         super().__init__(parent, 1.5)
         self.alpha = 0.5
         self.aux.append(SLib.AuxiliaryRectOutline(parent, 0, 0))
+        self.notAllowedTypes: list[int] = []
 
     def dataChanged(self):
         super().dataChanged()
@@ -186,17 +184,17 @@ class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153
     def loadImages():
 
         if 'QSwitch' not in ImageCache:
-            q = SLib.GetImg('q_switch.png', True)
+            q = SLib.GetImage('q_switch.png')
             ImageCache['QSwitch'] = QtGui.QPixmap.fromImage(q)
             ImageCache['QSwitchU'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
 
         if 'PSwitch' not in ImageCache:
-            p = SLib.GetImg('p_switch.png', True)
+            p = SLib.GetImage('p_switch.png')
             ImageCache['PSwitch'] = QtGui.QPixmap.fromImage(p)
             ImageCache['PSwitchU'] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
 
         if 'ESwitch' not in ImageCache:
-            e = SLib.GetImg('e_switch.png', True)
+            e = SLib.GetImage('e_switch.png')
             ImageCache['ESwitch'] = QtGui.QPixmap.fromImage(e)
             ImageCache['ESwitchU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
 

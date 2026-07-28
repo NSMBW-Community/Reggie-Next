@@ -40,7 +40,7 @@ Qt = QtCore.Qt
 OutlineColor = None
 OutlinePen = None
 OutlineBrush = None
-ImageCache = {}
+ImageCache: dict[str, QtGui.QPixmap] = {}
 Tiles = {}
 SpriteImagesLoaded = set()
 
@@ -89,8 +89,9 @@ def GetPath(imgname: str) -> str:
 
 def GetPixmap(imgname: str) -> QtGui.QPixmap:
     """
-    Returns the image as a QPixmap from the PNG filename 'imgname' from the first
-    matching sprite image folder.
+    Returns a QPixmap with the image 'imgname' from the first matching sprite image folder.
+
+    :param imgname: The name of the image to load.
     """
     path = GetPath(imgname)
     if os.path.isfile(path):
@@ -102,8 +103,9 @@ def GetPixmap(imgname: str) -> QtGui.QPixmap:
 
 def GetImage(imgname: str) -> QtGui.QImage:
     """
-    Returns the image as a QImage from the PNG filename 'imgname' from the first
-    matching sprite image folder.
+    Returns a QImage with the image 'imgname' from the first matching sprite image folder.
+
+    :param imgname: The name of the image to load.
     """
     path = GetPath(imgname)
     if os.path.isfile(path):
@@ -712,7 +714,7 @@ class AuxiliaryImage(AuxiliarySpriteItem):
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.width = width
         self.height = height
-        self.image = None
+        self.image: QtGui.QPixmap | QtGui.QImage | None = None
         self.hover = True
         self.alpha = 1
 

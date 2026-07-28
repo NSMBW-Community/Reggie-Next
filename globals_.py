@@ -1,4 +1,6 @@
-Area = None
+from level import Area as AreaType
+
+Area: AreaType | None = None
 AutoSaveData = b''
 AutoSaveDirty = False
 AutoSavePath = ''

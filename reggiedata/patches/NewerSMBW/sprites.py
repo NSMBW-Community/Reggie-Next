@@ -4,12 +4,12 @@
 
 
 from PyQt6 import QtCore, QtGui
-Qt = QtCore.Qt
 
+import globals_
 import spritelib as SLib
 import sprites_common as common
-import globals_
 
+Qt = QtCore.Qt
 ImageCache = SLib.ImageCache
 
 ################################################################################
@@ -25,26 +25,26 @@ class SpriteImage_NewerSwitch(common.SpriteImage_Switch):
 
         if 'QSwitch2' not in ImageCache:
             for i in range(2, 5):
-                p = SLib.GetImg('q_switch%d.png' % i, True)
+                p = SLib.GetImage(f'q_switch{i}.png')
 
                 if p is None:
                     # happens when the newer patch folder is not loaded yet
                     return
 
-                ImageCache['QSwitch%d' % i] = QtGui.QPixmap.fromImage(p)
-                ImageCache['QSwitchU%d' % i] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
+                ImageCache[f'QSwitch{i}'] = QtGui.QPixmap.fromImage(p)
+                ImageCache[f'QSwitchU{i}'] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
 
         if 'PSwitch2' not in ImageCache:
             for i in range(2, 5):
-                p = SLib.GetImg('P_switch%d.png' % i, True)
-                ImageCache['PSwitch%d' % i] = QtGui.QPixmap.fromImage(p)
-                ImageCache['PSwitchU%d' % i] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
+                p = SLib.GetImage(f'P_switch{i}.png')
+                ImageCache[f'PSwitch{i}'] = QtGui.QPixmap.fromImage(p)
+                ImageCache[f'PSwitchU{i}'] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
 
         if 'ESwitch2' not in ImageCache:
             for i in range(2, 5):
-                p = SLib.GetImg('e_switch%d.png' % i, True)
-                ImageCache['ESwitch%d' % i] = QtGui.QPixmap.fromImage(p)
-                ImageCache['ESwitchU%d' % i] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
+                p = SLib.GetImage(f'e_switch{i}.png')
+                ImageCache[f'ESwitch{i}'] = QtGui.QPixmap.fromImage(p)
+                ImageCache[f'ESwitchU{i}'] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
 
     def dataChanged(self):
         self.styleType = self.parent.spritedata[3] & 0xF
@@ -105,7 +105,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         if contents == 8 and self.eightIsMushroom:
             contents = 2  # same as above, but for type 8
 
-        self.image = ImageCache['BlockContents'][contents]
+        self.image = ImageCache[f'BlockContents{contents}']
 
         # SET UP ROTATION
         if self.rotates:
@@ -180,13 +180,15 @@ class SpriteImage_RotatingBrickBlock(SpriteImage_Block):  # 256
 class SpriteImage_NewerWoodCircle(SLib.SpriteImage_StaticMultiple):  # 286
     @staticmethod
     def loadImages():
-        if 'WoodCircle0' in ImageCache: return
+        if 'WoodCircle0' in ImageCache:
+            return
         for i in range(3):
-            ImageCache['WoodCircle%d' % i] = SLib.GetImg('wood_circle_%d.png' % i)
+            ImageCache[f'WoodCircle{i}'] = SLib.GetPixmap(f'wood_circle_{i}.png')
 
-        if 'GrayWoodCircle0' in ImageCache: return
+        if 'GrayWoodCircle0' in ImageCache:
+            return
         for i in range(3):
-            ImageCache['GrayWoodCircle%d' % i] = SLib.GetImg('gray_wood_circle_%d.png' % i)
+            ImageCache[f'GrayWoodCircle{i}'] = SLib.GetPixmap(f'gray_wood_circle_{i}.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -194,11 +196,12 @@ class SpriteImage_NewerWoodCircle(SLib.SpriteImage_StaticMultiple):  # 286
         gray = self.parent.spritedata[2] & 1
 
         if gray:
-            self.image = ImageCache['GrayWoodCircle%d' % size]
+            self.image = ImageCache[f'GrayWoodCircle{size}']
         else:
-            self.image = ImageCache['WoodCircle%d' % size]
+            self.image = ImageCache[f'WoodCircle{size}']
 
-        if size > 2: size = 0
+        if size > 2:
+            size = 0
         self.dimensions = (
             (-24, -24, 64, 64),
             (-40, -40, 96, 96),
@@ -254,9 +257,10 @@ class SpriteImage_MusicBlock(SLib.SpriteImage_StaticMultiple): # 17
 
     @staticmethod
     def loadImages():
-        if 'MusicBlock1' in ImageCache: return
+        if 'MusicBlock1' in ImageCache:
+            return
         for i in range(8):
-            ImageCache['MusicBlock%d' % (i + 1)] = SLib.GetImg('music_block_%d.png' % (i + 1))
+            ImageCache[f'MusicBlock{i + 1}'] = SLib.GetPixmap(f'music_block_{i + 1}.png')
 
     def dataChanged(self):
         colour = (self.parent.spritedata[5] & 0xF) % 9
@@ -264,7 +268,7 @@ class SpriteImage_MusicBlock(SLib.SpriteImage_StaticMultiple): # 17
         if colour == 0:
             self.image = ImageCache['MusicBlock1']
         else:
-            self.image = ImageCache['MusicBlock%d' % colour]
+            self.image = ImageCache[f'MusicBlock{colour}']
 
         super().dataChanged()
 
@@ -282,10 +286,11 @@ class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple): # 18
 
     @staticmethod
     def loadImages():
-        if 'DragonHead' in ImageCache: return
-        ImageCache['DragonHead'] = SLib.GetImg('dragon_coaster_head.png')
-        ImageCache['DragonBody'] = SLib.GetImg('dragon_coaster_body.png')
-        ImageCache['DragonTail'] = SLib.GetImg('dragon_coaster_tail.png')
+        if 'DragonHead' in ImageCache:
+            return
+        ImageCache['DragonHead'] = SLib.GetPixmap('dragon_coaster_head.png')
+        ImageCache['DragonBody'] = SLib.GetPixmap('dragon_coaster_body.png')
+        ImageCache['DragonTail'] = SLib.GetPixmap('dragon_coaster_tail.png')
 
     def dataChanged(self):
         piece = self.parent.spritedata[5] & 3
@@ -294,7 +299,7 @@ class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple): # 18
 
         sPiece = ("Head", "Body", "Tail")[piece]
 
-        self.image = ImageCache["Dragon%s" % sPiece]
+        self.image = ImageCache[f'Dragon{sPiece}']
 
         transform = None
 
@@ -355,9 +360,10 @@ class SpriteImage_NewerGoomba(SLib.SpriteImage_StaticMultiple):  # 20
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Goomba', 'goomba.png')
-        if 'Goomba1' in ImageCache: return
+        if 'Goomba1' in ImageCache:
+            return
         for i in range(8):
-            ImageCache['Goomba%d' % (i + 1)] = SLib.GetImg('goomba_%d.png' % (i + 1))
+            ImageCache[f'Goomba{i + 1}'] = SLib.GetPixmap(f'goomba_{i + 1}.png')
 
     def dataChanged(self):
 
@@ -367,7 +373,7 @@ class SpriteImage_NewerGoomba(SLib.SpriteImage_StaticMultiple):  # 20
             self.image = ImageCache['Goomba']
             self.offset = (-1, -4)
         else:
-            self.image = ImageCache['Goomba%d' % color]
+            self.image = ImageCache[f'Goomba{color}']
             self.offset = (0, -4) if color not in (7, 8) else (0, -5)
 
         super().dataChanged()
@@ -377,9 +383,10 @@ class SpriteImage_NewerParaGoomba(SLib.SpriteImage_StaticMultiple):  # 21
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('ParaGoomba', 'para_goomba.png')
-        if 'ParaGoomba1' in ImageCache: return
+        if 'ParaGoomba1' in ImageCache:
+            return
         for i in range(8):
-            ImageCache['ParaGoomba%d' % (i + 1)] = SLib.GetImg('para_goomba_%d.png' % (i + 1))
+            ImageCache[f'ParaGoomba{i + 1}'] = SLib.GetPixmap(f'para_goomba_{i + 1}.png')
 
     def dataChanged(self):
         colour = (self.parent.spritedata[2] & 0xF) % 9
@@ -389,7 +396,7 @@ class SpriteImage_NewerParaGoomba(SLib.SpriteImage_StaticMultiple):  # 21
             self.image = ImageCache['ParaGoomba']
 
         else:
-            self.image = ImageCache['ParaGoomba%d' % colour]
+            self.image = ImageCache[f'ParaGoomba{colour}']
 
         super().dataChanged()
 
@@ -415,17 +422,17 @@ class SpriteImage_NewerBuzzyBeetle(SLib.SpriteImage_StaticMultiple):  # 24
     @staticmethod
     def loadImages():
         if "BuzzyBeetle" not in ImageCache:
-            ImageCache["BuzzyBeetle"] = SLib.GetImg('buzzy_beetle.png')
-            ImageCache["BuzzyBeetleU"] = SLib.GetImg('buzzy_beetle_u.png')
-            ImageCache["BuzzyBeetleShell"] = SLib.GetImg('buzzy_beetle_shell.png')
-            ImageCache["BuzzyBeetleShellU"] = SLib.GetImg('buzzy_beetle_shell_u.png')
+            ImageCache["BuzzyBeetle"] = SLib.GetPixmap('buzzy_beetle.png')
+            ImageCache["BuzzyBeetleU"] = SLib.GetPixmap('buzzy_beetle_u.png')
+            ImageCache["BuzzyBeetleShell"] = SLib.GetPixmap('buzzy_beetle_shell.png')
+            ImageCache["BuzzyBeetleShellU"] = SLib.GetPixmap('buzzy_beetle_shell_u.png')
 
         if "BuzzyBeetleblack" not in ImageCache:
             for colour in ("black", "blue", "green", "orange", "purple", "red", "yellow"):
-                ImageCache["BuzzyBeetle%s" % colour] = SLib.GetImg('buzzy_beetle_%s.png' % colour.lower())
-                ImageCache["BuzzyBeetle%sU" % colour] = SLib.GetImg('buzzy_beetle_%s_u.png' % colour.lower())
-                ImageCache["BuzzyBeetle%sShell" % colour] = SLib.GetImg('buzzy_beetle_%s_shell.png' % colour.lower())
-                ImageCache["BuzzyBeetle%sShellU" % colour] = SLib.GetImg('buzzy_beetle_%s_shell_u.png' % colour.lower())
+                ImageCache[f'BuzzyBeetle{colour}'] = SLib.GetPixmap(f'buzzy_beetle_{colour}.png')
+                ImageCache[f'BuzzyBeetle{colour}U'] = SLib.GetPixmap(f'buzzy_beetle_{colour}_u.png')
+                ImageCache[f'BuzzyBeetle{colour}Shell'] = SLib.GetPixmap(f'buzzy_beetle_{colour}_shell.png')
+                ImageCache[f'BuzzyBeetle{colour}ShellU'] = SLib.GetPixmap(f'buzzy_beetle_{colour}_shell_u.png')
 
     def dataChanged(self):
 
@@ -436,16 +443,16 @@ class SpriteImage_NewerBuzzyBeetle(SLib.SpriteImage_StaticMultiple):  # 24
 
         colour = ("", "red", "orange", "yellow", "green", "blue", "purple", "black")[colour]
         if orient == 1:
-            self.image = ImageCache['BuzzyBeetle%sU' % colour]
+            self.image = ImageCache[f'BuzzyBeetle{colour}U']
             self.yOffset = 0
         elif orient == 2:
-            self.image = ImageCache['BuzzyBeetle%sShell' % colour]
+            self.image = ImageCache[f'BuzzyBeetle{colour}Shell']
             self.yOffset = 2
         elif orient == 3:
-            self.image = ImageCache['BuzzyBeetle%sShellU' % colour]
+            self.image = ImageCache[f'BuzzyBeetle{colour}ShellU']
             self.yOffset = 2
         else:
-            self.image = ImageCache['BuzzyBeetle%s' % colour]
+            self.image = ImageCache[f'BuzzyBeetle{colour}']
             self.yOffset = 0
 
         super().dataChanged()
@@ -459,11 +466,12 @@ class SpriteImage_NewerSpiny(SLib.SpriteImage_StaticMultiple):  # 25
         SLib.loadIfNotInImageCache('SpinyShellU', 'spiny_shell_u.png')
         SLib.loadIfNotInImageCache('SpinyBall', 'spiny_ball.png')
 
-        if 'Spinyorange' in ImageCache: return
+        if 'Spinyorange' in ImageCache:
+            return
         for colour in ("orange", "yellow", "green", "blue", "violet", "black", "sidestepper"):
-            ImageCache["Spiny%s" % colour] = SLib.GetImg('spiny_%s.png' % colour.lower())
-            ImageCache["Spiny%sShell" % colour] = SLib.GetImg('spiny_%s_shell.png' % colour.lower())
-            ImageCache["Spiny%sShellU" % colour] = SLib.GetImg('spiny_%s_shell_u.png' % colour.lower())
+            ImageCache[f'Spiny{colour}'] = SLib.GetPixmap(f'spiny_{colour}.png')
+            ImageCache[f'Spiny{colour}Shell'] = SLib.GetPixmap(f'spiny_{colour}_shell.png')
+            ImageCache[f'Spiny{colour}ShellU'] = SLib.GetPixmap(f'spiny_{colour}_shell_u.png')
 
     def dataChanged(self):
         orient = self.parent.spritedata[5] & 15
@@ -476,13 +484,13 @@ class SpriteImage_NewerSpiny(SLib.SpriteImage_StaticMultiple):  # 25
             self.image = ImageCache['SpinyBall']
             self.yOffset = 8
         elif orient == 2:
-            self.image = ImageCache['Spiny%sShell' % colour]
+            self.image = ImageCache[f'Spiny{colour}Shell']
             self.yOffset = 1
         elif orient == 3:
-            self.image = ImageCache['Spiny%sShellU' % colour]
+            self.image = ImageCache[f'Spiny{colour}ShellU']
             self.yOffset = 2
         else:
-            self.image = ImageCache['Spiny%s' % colour]
+            self.image = ImageCache[f'Spiny{colour}']
             self.yOffset = 0
 
         super().dataChanged()
@@ -494,13 +502,13 @@ class SpriteImage_NewerUpsideDownSpiny(SLib.SpriteImage_StaticMultiple):  # 26
         SLib.loadIfNotInImageCache('SpinyU', 'spiny_u.png')
         if 'SpinyorangeU' not in ImageCache:
             for style in ("orange", "yellow", "green", "blue", "violet", "black", "sidestepper"):
-                Spiny = SLib.GetImg('spiny_%s.png' % style, True)
+                Spiny = SLib.GetImage(f'spiny_{style}.png')
 
                 if Spiny is None:
                     # slow patch folder is slow
                     return
 
-                ImageCache['Spiny%sU' % style] = QtGui.QPixmap.fromImage(Spiny.mirrored(False, True))
+                ImageCache[f'Spiny{style}U'] = QtGui.QPixmap.fromImage(Spiny.mirrored(False, True))
 
     def dataChanged(self):
         colour = self.parent.spritedata[2] & 15
@@ -513,7 +521,7 @@ class SpriteImage_NewerUpsideDownSpiny(SLib.SpriteImage_StaticMultiple):  # 26
         if 'SpinyorangeU' not in ImageCache:
             return
 
-        self.image = ImageCache['Spiny%sU' % colour]
+        self.image = ImageCache[f'Spiny{colour}U']
 
         super().dataChanged()
 
@@ -579,19 +587,22 @@ class SpriteImage_NewerPodoboo(SLib.SpriteImage):  # 46
         self.aux[0].hover = False
         self.dimensions = (-3, 5, 24, 24)
 
+    @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Podoboo0', 'podoboo.png')
-        if 'Podoboo1' in ImageCache: return
+        if 'Podoboo1' in ImageCache:
+            return
         for i in range(1, 9):
-            if i == 2: continue  # skip 2 since it's a duplicate
-            ImageCache['Podoboo%d' % i] = SLib.GetImg('podoboo%d.png' % i)
+            if i == 2:
+                continue  # skip 2 since it's a duplicate
+            ImageCache[f'Podoboo{i}'] = SLib.GetPixmap(f'podoboo{i}.png')
 
     def dataChanged(self):
         style = (self.parent.spritedata[2] & 0xF) % 9
         if style == 2:
             self.aux[0].image = ImageCache['Podoboo0']
         else:
-            self.aux[0].image = ImageCache['Podoboo%d' % style]
+            self.aux[0].image = ImageCache[f'Podoboo{style}']
         super().dataChanged()
 
 
@@ -659,21 +670,22 @@ class SpriteImage_NewerKoopa(SLib.SpriteImage_StaticMultiple):  # 57
     @staticmethod
     def loadImages():
         if 'KoopaG' not in ImageCache:
-            ImageCache['KoopaG'] = SLib.GetImg('koopa_green.png')
-            ImageCache['KoopaR'] = SLib.GetImg('koopa_red.png')
-            ImageCache['KoopaShellG'] = SLib.GetImg('koopa_green_shell.png')
-            ImageCache['KoopaShellR'] = SLib.GetImg('koopa_red_shell.png')
+            ImageCache['KoopaG'] = SLib.GetPixmap('koopa_green.png')
+            ImageCache['KoopaR'] = SLib.GetPixmap('koopa_red.png')
+            ImageCache['KoopaShellG'] = SLib.GetPixmap('koopa_green_shell.png')
+            ImageCache['KoopaShellR'] = SLib.GetPixmap('koopa_red_shell.png')
 
-        if 'Koopa01' in ImageCache: return
+        if 'Koopa01' in ImageCache:
+            return
 
         for flag in (0, 1):
             for style in range(1, 5):
-                flag_style = '%d%d' % (flag, style)
-                ImageCache['Koopa%s' % flag_style] = SLib.GetImg('koopa_%s.png' % flag_style)
+                flag_style = f'{flag}{style}'
+                ImageCache[f'Koopa{flag_style}'] = SLib.GetPixmap(f'koopa_{flag_style}.png')
 
             for style in range(1, 4):
-                flag_style = '%d%d' % (flag, style)
-                ImageCache['KoopaShell%s' % flag_style] = SLib.GetImg('koopa_shell_%s.png' % flag_style)
+                flag_style = f'{flag}{style}'
+                ImageCache[f'KoopaShell{flag_style}'] = SLib.GetPixmap(f'koopa_shell_{flag_style}.png')
 
     def dataChanged(self):
         # get properties
@@ -689,14 +701,14 @@ class SpriteImage_NewerKoopa(SLib.SpriteImage_StaticMultiple):  # 57
                 self.image = ImageCache['KoopaG'] if not red else ImageCache['KoopaR']
             else:
                 self.offset = (-5, -13)
-                self.image = ImageCache['Koopa%d%d' % (red, texhack)]
+                self.image = ImageCache[f'Koopa{red}{texhack}']
         else:
             del self.offset
 
             if texhack in (0, 4):
                 self.image = ImageCache['KoopaShellG'] if not red else ImageCache['KoopaShellR']
             else:
-                self.image = ImageCache['KoopaShell%d%d' % (red, texhack)]
+                self.image = ImageCache[f'KoopaShell{red}{texhack}']
 
         super().dataChanged()
 
@@ -710,24 +722,24 @@ class SpriteImage_NewerParaKoopa(SLib.SpriteImage_StaticMultiple):  # 58
     def loadImages():
 
         if 'ParaKoopaG' not in ImageCache:
-            ImageCache['ParaKoopaG'] = SLib.GetImg('parakoopa_green.png')
-            ImageCache['ParaKoopaR'] = SLib.GetImg('parakoopa_red.png')
+            ImageCache['ParaKoopaG'] = SLib.GetPixmap('parakoopa_green.png')
+            ImageCache['ParaKoopaR'] = SLib.GetPixmap('parakoopa_red.png')
 
         if 'KoopaShellG' not in ImageCache:
-            ImageCache['KoopaShellG'] = SLib.GetImg('koopa_green_shell.png')
-            ImageCache['KoopaShellR'] = SLib.GetImg('koopa_red_shell.png')
+            ImageCache['KoopaShellG'] = SLib.GetPixmap('koopa_green_shell.png')
+            ImageCache['KoopaShellR'] = SLib.GetPixmap('koopa_red_shell.png')
 
         if 'ParaKoopa01' not in ImageCache:
             for flag in (0, 1):
                 for style in range(1, 5):
-                    flag_style = '%d%d' % (flag, style)
-                    ImageCache['ParaKoopa%s' % flag_style] = SLib.GetImg('parakoopa_%s.png' % flag_style)
+                    flag_style = f'{flag}{style}'
+                    ImageCache[f'ParaKoopa{flag_style}'] = SLib.GetPixmap(f'parakoopa_{flag_style}.png')
 
         if 'KoopaShell01' not in ImageCache:
             for flag in (0, 1):
                 for style in range(1, 4):
-                    flag_style = '%d%d' % (flag, style)
-                    ImageCache['KoopaShell%s' % flag_style] = SLib.GetImg('koopa_shell_%s.png' % flag_style)
+                    flag_style = f'{flag}{style}'
+                    ImageCache[f'KoopaShell{flag_style}'] = SLib.GetPixmap(f'koopa_shell_{flag_style}.png')
 
     def dataChanged(self):
         # get properties
@@ -748,10 +760,10 @@ class SpriteImage_NewerParaKoopa(SLib.SpriteImage_StaticMultiple):  # 58
                 if texhack == 4:
                     self.image = ImageCache['KoopaShellG'] if not red else ImageCache['KoopaShellR']
                 else:
-                    self.image = ImageCache['KoopaShell%d%d' % (red, texhack)]
+                    self.image = ImageCache[f'KoopaShell{red}{texhack}']
             else:
                 self.offset = (-8, -12)
-                self.image = ImageCache['ParaKoopa%d%d' % (red, texhack)]
+                self.image = ImageCache[f'ParaKoopa{red}{texhack}']
 
         if mode == 1 or mode == 2:
 
@@ -790,30 +802,31 @@ class SpriteImage_NewerSpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
 
     @staticmethod
     def loadImages():
-        if 'SpikeTop00' in ImageCache: return
+        if 'SpikeTop00' in ImageCache:
+            return
         for style in ("", "_red", "_orange", "_yellow", "_green", "_hothead", "_purple", "_black"):
-            SpikeTop = SLib.GetImg('spiketop%s.png' % style, True)
+            SpikeTop = SLib.GetImage(f'spiketop{style}.png')
             if SpikeTop is None:
                 # happens when the newer patch folder is not loaded yet
                 return
 
             Transform = QtGui.QTransform()
-            ImageCache['SpikeTop00%s' % style] = QtGui.QPixmap.fromImage(SpikeTop.mirrored(True, False))
+            ImageCache[f'SpikeTop00{style}'] = QtGui.QPixmap.fromImage(SpikeTop.mirrored(True, False))
             Transform.rotate(90)
-            ImageCache['SpikeTop10%s' % style] = ImageCache['SpikeTop00%s' % style].transformed(Transform)
+            ImageCache[f'SpikeTop10{style}'] = ImageCache[f'SpikeTop00{style}'].transformed(Transform)
             Transform.rotate(90)
-            ImageCache['SpikeTop20%s' % style] = ImageCache['SpikeTop00%s' % style].transformed(Transform)
+            ImageCache[f'SpikeTop20{style}'] = ImageCache[f'SpikeTop00{style}'].transformed(Transform)
             Transform.rotate(90)
-            ImageCache['SpikeTop30%s' % style] = ImageCache['SpikeTop00%s' % style].transformed(Transform)
+            ImageCache[f'SpikeTop30{style}'] = ImageCache[f'SpikeTop00{style}'].transformed(Transform)
 
             Transform = QtGui.QTransform()
-            ImageCache['SpikeTop01%s' % style] = QtGui.QPixmap.fromImage(SpikeTop)
+            ImageCache[f'SpikeTop01{style}'] = QtGui.QPixmap.fromImage(SpikeTop)
             Transform.rotate(90)
-            ImageCache['SpikeTop11%s' % style] = ImageCache['SpikeTop01%s' % style].transformed(Transform)
+            ImageCache[f'SpikeTop11{style}'] = ImageCache[f'SpikeTop01{style}'].transformed(Transform)
             Transform.rotate(90)
-            ImageCache['SpikeTop21%s' % style] = ImageCache['SpikeTop01%s' % style].transformed(Transform)
+            ImageCache[f'SpikeTop21{style}'] = ImageCache[f'SpikeTop01{style}'].transformed(Transform)
             Transform.rotate(90)
-            ImageCache['SpikeTop31%s' % style] = ImageCache['SpikeTop01%s' % style].transformed(Transform)
+            ImageCache[f'SpikeTop31{style}'] = ImageCache[f'SpikeTop01{style}'].transformed(Transform)
 
     def dataChanged(self):
         orientation = (self.parent.spritedata[5] >> 4) % 4
@@ -825,7 +838,7 @@ class SpriteImage_NewerSpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
         if 'SpikeTop01_red' not in ImageCache:
             return
 
-        self.image = ImageCache['SpikeTop%d%d%s' % (orientation, direction, color)]
+        self.image = ImageCache[f'SpikeTop{orientation}{direction}{color}']
 
         if colour == 5:
             self.offset = (
@@ -885,8 +898,8 @@ class SpriteImage_NewerBouncyCloud(SLib.SpriteImage_StaticMultiple):  # 78
 
         for size in ("Big", "Small"):
             for style in range(1, 7):
-                name = "CloudTr%s%d" % (size, style)
-                ImageCache[name] = SLib.GetImg("cloud_trampoline_%s%d.png" % (size.lower(), style))
+                name = f'CloudTr{size}{style}'
+                ImageCache[name] = SLib.GetPixmap(f"cloud_trampoline_{size.lower()}{style}.png")
 
     def dataChanged(self):
         style = (self.parent.spritedata[2] & 0xF) % 7
@@ -894,10 +907,10 @@ class SpriteImage_NewerBouncyCloud(SLib.SpriteImage_StaticMultiple):  # 78
         size = "Small" if raw_size == 0 else "Big"
 
         if style == 0 or style > 6:
-            self.image = ImageCache['CloudTr%s' % size]
+            self.image = ImageCache[f'CloudTr{size}']
             self.offset = (-2, -2)
         else:
-            self.image = ImageCache['CloudTr%s%d' % (size, style)]
+            self.image = ImageCache[f'CloudTr{size}{style}']
             self.offset = (-2, -2)
 
         super().dataChanged()
@@ -975,9 +988,10 @@ class SpriteImage_NewerBobomb(SLib.SpriteImage_StaticMultiple):  # 101
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Bobomb', 'bobomb.png')
-        if 'Bobomb1' in ImageCache: return
+        if 'Bobomb1' in ImageCache:
+            return
         for i in range(8):
-            ImageCache['Bobomb%d' % (i + 1)] = SLib.GetImg('bobomb_%d.png' % (i + 1))
+            ImageCache[f'Bobomb{i + 1}'] = SLib.GetPixmap(f'bobomb_{i + 1}.png')
 
     def dataChanged(self):
         colour = (self.parent.spritedata[2] & 0xF) % 9
@@ -985,7 +999,7 @@ class SpriteImage_NewerBobomb(SLib.SpriteImage_StaticMultiple):  # 101
             self.image = ImageCache['Bobomb']
             self.offset = (-8, -8)
         else:
-            self.image = ImageCache['Bobomb%d' % colour]
+            self.image = ImageCache[f'Bobomb{colour}']
             self.offset = (-10, -8)
 
         super().dataChanged()
@@ -1006,10 +1020,10 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
 
         for style in ("pumpkin", "jungle", "lava"):
             for i in range(8):
-                ImageCache['Pokey%sTop' % style] = SLib.GetImg('pokey_%s_top.png' % style)
-                ImageCache['Pokey%sMiddle' % style] = SLib.GetImg('pokey_%s_middle.png' % style)
-                ImageCache['Pokey%sBottom' % style] = SLib.GetImg('pokey_%s_bottom.png' % style)
-                ImageCache['Pokeysnowman%d' % i] = SLib.GetImg('pokey_snowman%d.png' % i)
+                ImageCache[f'Pokey{style}Top'] = SLib.GetPixmap(f'pokey_{style}_top.png')
+                ImageCache[f'Pokey{style}Middle'] = SLib.GetPixmap(f'pokey_{style}_middle.png')
+                ImageCache[f'Pokey{style}Bottom'] = SLib.GetPixmap(f'pokey_{style}_bottom.png')
+                ImageCache[f'Pokeysnowman{i}'] = SLib.GetPixmap(f'pokey_snowman{i}.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -1023,7 +1037,7 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
         paint = QtGui.QPainter(pix)
 
         if style == 2:
-            snowman = ImageCache['Pokeysnowman%d' % height]
+            snowman = ImageCache[f'Pokeysnowman{height}']
             self.aux[0].image = snowman
             self.offset = (
                 (-4, -31),  # (-6, -46)
@@ -1042,9 +1056,9 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
             self.height = (height * 16) + 16 + 25
             self.offset = (-4, -self.height + 16)
 
-            paint.drawPixmap(0, 0, ImageCache['Pokey%sTop' % color])
-            paint.drawTiledPixmap(0, 37, 36, int(self.height * 1.5 - 61), ImageCache['Pokey%sMiddle' % color])
-            paint.drawPixmap(0, int(self.height * 1.5 - 24), ImageCache['Pokey%sBottom' % color])
+            paint.drawPixmap(0, 0, ImageCache[f'PokeyTop{color}'])
+            paint.drawTiledPixmap(0, 37, 36, int(self.height * 1.5 - 61), ImageCache[f'PokeyMiddle{color}'])
+            paint.drawPixmap(0, int(self.height * 1.5 - 24), ImageCache[f'PokeyBottom{color}'])
             self.aux[0].image = pix
 
         paint = None
@@ -1069,17 +1083,18 @@ class SpriteImage_NewerFloatingBarrel(SLib.SpriteImage_StaticMultiple):  # 145
 
     @staticmethod
     def loadImages():
-        if 'FloatingBarrel' in ImageCache: return
-        ImageCache['FloatingBarrel'] = SLib.GetImg('barrel_floating.png')
+        if 'FloatingBarrel' in ImageCache:
+            return
+        ImageCache['FloatingBarrel'] = SLib.GetPixmap('barrel_floating.png')
         for flag in (1, 2):
-            ImageCache['FloatingBarrel%d' % flag] = SLib.GetImg('barrel_floating_%d.png' % flag)
+            ImageCache[f'FloatingBarrel{flag}'] = SLib.GetPixmap(f'barrel_floating_{flag}.png')
 
     def dataChanged(self):
         color = self.parent.spritedata[2] & 3
         if color == 0:
             img = ImageCache['FloatingBarrel']
         else:
-            img = ImageCache['FloatingBarrel%d' % color]
+            img = ImageCache[f'FloatingBarrel{color}']
 
         self.aux[0].image = img
 
@@ -1118,18 +1133,18 @@ class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
             pix = QtGui.QPixmap(48, 24)
             pix.fill(Qt.GlobalColor.transparent)
             paint = QtGui.QPainter(pix)
-            paint.drawPixmap(0, 0, ImageCache['BlockContents'][9])
-            paint.drawPixmap(24, 0, ImageCache['BlockContents'][3])
+            paint.drawPixmap(0, 0, ImageCache['BlockContents9'])
+            paint.drawPixmap(24, 0, ImageCache['BlockContents3'])
             del paint
             ImageCache['YoshiFire'] = pix
 
         for power in range(0x10):
             if power in (0, 8, 12, 13):
-                ImageCache['BigPumpkin%d' % power] = ImageCache['BigPumpkin']
+                ImageCache[f'BigPumpkin{power}'] = ImageCache['BigPumpkin']
                 continue
 
             x, y = 36, 48
-            overlay = ImageCache['BlockContents'][power]
+            overlay = ImageCache[f'BlockContents{power}']
             if power == 9:
                 overlay = ImageCache['YoshiFire']
                 x = 24
@@ -1143,12 +1158,12 @@ class SpriteImage_BigPumpkin(SLib.SpriteImage_StaticMultiple):  # 157
             paint = QtGui.QPainter(new)
             paint.drawPixmap(x, y, overlay)
             del paint
-            ImageCache['BigPumpkin%d' % power] = new
+            ImageCache[f'BigPumpkin{power}'] = new
 
     def dataChanged(self):
 
         power = self.parent.spritedata[5] & 0xF
-        self.image = ImageCache['BigPumpkin%d' % power]
+        self.image = ImageCache[f'BigPumpkin{power}']
         super().dataChanged()
 
 
@@ -1158,10 +1173,11 @@ class SpriteImage_ShyGuyGiant(SLib.SpriteImage_Static): # 167
 
     @staticmethod
     def loadImages():
-        if "ShyGuy%s%s" in ImageCache: return
+        if "ShyGuy%s%s" in ImageCache:
+            return
         for size in ("big", "mega", "colossal"):
             for colour in ("red", "blue", "green", "yellow", "magenta"):
-                ImageCache['ShyGuy%s%s' % (size, colour)] = SLib.GetImg('shyguy_%s_%s.png' % (size, colour))
+                ImageCache[f'ShyGuy{size}{colour}'] = SLib.GetPixmap(f'shyguy_{size}_{colour}.png')
 
     def dataChanged(self):
         size = (self.parent.spritedata[2] >> 4) & 3
@@ -1169,7 +1185,7 @@ class SpriteImage_ShyGuyGiant(SLib.SpriteImage_Static): # 167
         scale = ("big", "mega", "colossal")[size]
         color = ("red", "blue", "green", "yellow", "magenta")[colour]
 
-        self.image = ImageCache['ShyGuy%s%s' % (scale, color)]
+        self.image = ImageCache[f'ShyGuy{scale}{color}']
 
         if size == 0:
             self.offset = (-12.7, -118)
@@ -1198,12 +1214,13 @@ class SpriteImage_Thundercloud(SLib.SpriteImage_Static):  # 168
 class SpriteImage_Meteor(SLib.SpriteImage_StaticMultiple):  # 183
     @staticmethod
     def loadImages():
-        ImageCache['Meteor'] = SLib.GetImg('meteor.png')
-        ImageCache['MeteorElectric'] = SLib.GetImg('meteor_electric.png')
+        ImageCache['Meteor'] = SLib.GetPixmap('meteor.png')
+        ImageCache['MeteorElectric'] = SLib.GetPixmap('meteor_electric.png')
 
     def dataChanged(self):
         multiplier = self.parent.spritedata[4] / 20
-        if multiplier == 0: multiplier = 0.01
+        if multiplier == 0:
+            multiplier = 0.01
         isElectric = (self.parent.spritedata[5] >> 4) & 1
 
         # Get the size data, taking into account the size
@@ -1245,14 +1262,15 @@ class SpriteImage_MidwayFlag(SLib.SpriteImage_StaticMultiple):  # 188
 
     @staticmethod
     def loadImages():
-        if 'MidwayFlag0' in ImageCache: return
+        if 'MidwayFlag0' in ImageCache:
+            return
         for i in range(19):
-            ImageCache['MidwayFlag%d' % i] = SLib.GetImg('midway_flag_%d.png' % i)
+            ImageCache[f'MidwayFlag{i}'] = SLib.GetPixmap(f'midway_flag_{i}.png')
 
     def dataChanged(self):
         style = self.parent.spritedata[2] % 19
 
-        self.image = ImageCache['MidwayFlag%d' % style]
+        self.image = ImageCache[f'MidwayFlag{style}']
         if style == 18:
             self.offset = (-31 / 1.5, -47 / 1.5)
         else:
@@ -1264,37 +1282,37 @@ class SpriteImage_MidwayFlag(SLib.SpriteImage_StaticMultiple):  # 188
 class SpriteImage_TileEventNewer(common.SpriteImage_TileEvent):  # 191
     def __init__(self, parent):
         super().__init__(parent)
-        self.notAllowedTypes = (2, 5, 7, 13, 15)
+        self.notAllowedTypes = [2, 5, 7, 13, 15]
 
-    def getTileFromType(self, type_):
-        if type_ == 0:
+    def getTileFromType(self, type):
+        if type == 0:
             return SLib.GetTile(55)
 
-        if type_ == 1:
+        if type == 1:
             return SLib.GetTile(48)
 
-        if type_ == 3:
+        if type == 3:
             return SLib.GetTile(52)
 
-        if type_ == 4:
+        if type == 4:
             return SLib.GetTile(51)
 
-        if type_ == 6:
+        if type == 6:
             return SLib.GetTile(45)
 
-        if type_ in [8, 9, 10, 11]:
+        if type in [8, 9, 10, 11]:
             row = self.parent.spritedata[2] & 0xF
             col = self.parent.spritedata[3] >> 4
 
-            tilenum = 256 * (type_ - 8)
+            tilenum = 256 * (type - 8)
             tilenum += row * 16 + col
 
             return SLib.GetTile(tilenum)
 
-        if type_ == 12:
+        if type == 12:
             return SLib.GetTile(256 * 3 + 67)
 
-        if type_ == 14:
+        if type == 14:
             return SLib.GetTile(256)
 
         return None
@@ -1303,9 +1321,10 @@ class SpriteImage_TileEventNewer(common.SpriteImage_TileEvent):  # 191
 class SpriteImage_NewerHuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
     @staticmethod
     def loadImages():
-        if 'HuckitCrabWhiteR' in ImageCache: return
-        Huckitcrab = SLib.GetImg('huckit_crab.png', True)
-        Wintercrab = SLib.GetImg('huckit_crab_white.png', True)
+        if 'HuckitCrabWhiteR' in ImageCache:
+            return
+        Huckitcrab = SLib.GetImage('huckit_crab.png')
+        Wintercrab = SLib.GetImage('huckit_crab_white.png')
         if Wintercrab is None:
             return
 
@@ -1322,14 +1341,14 @@ class SpriteImage_NewerHuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
         if 'HuckitCrabWhiteR' not in ImageCache:
             return
         if info == 1:
-            self.image = ImageCache['HuckitCrab%sR' % colour]
+            self.image = ImageCache[f'HuckitCrab{colour}R']
             self.xOffset = 0
         else:
             if info == 13:
-                self.image = ImageCache['HuckitCrab%sR' % colour]
+                self.image = ImageCache[f'HuckitCrab{colour}R']
                 self.xOffset = 0
             else:
-                self.image = ImageCache['HuckitCrab%sL' % colour]
+                self.image = ImageCache[f'HuckitCrab{colour}L']
                 self.xOffset = -16
 
         super().dataChanged()
@@ -1339,9 +1358,10 @@ class SpriteImage_NewerGiantGoomba(SLib.SpriteImage_StaticMultiple):  # 198
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('GiantGoomba', 'giant_goomba.png')
-        if 'GiantGoomba1' in ImageCache: return
+        if 'GiantGoomba1' in ImageCache:
+            return
         for i in range(6):
-            ImageCache['GiantGoomba%d' % (i + 1)] = SLib.GetImg('giant_goomba_%d.png' % (i + 1))
+            ImageCache[f'GiantGoomba{i + 1}'] = SLib.GetPixmap(f'giant_goomba_{i + 1}.png')
 
     def dataChanged(self):
 
@@ -1351,7 +1371,7 @@ class SpriteImage_NewerGiantGoomba(SLib.SpriteImage_StaticMultiple):  # 198
             self.image = ImageCache['GiantGoomba']
             self.offset = (-6, -19)
         else:
-            self.image = ImageCache['GiantGoomba%d' % colour]
+            self.image = ImageCache[f'GiantGoomba{colour}']
             self.offset = (-7, -18)
 
         super().dataChanged()
@@ -1361,9 +1381,10 @@ class SpriteImage_NewerMegaGoomba(SLib.SpriteImage_StaticMultiple):  # 199
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('MegaGoomba', 'mega_goomba.png')
-        if 'MegaGoomba1' in ImageCache: return
+        if 'MegaGoomba1' in ImageCache:
+            return
         for i in range(6):
-            ImageCache['MegaGoomba%d' % (i + 1)] = SLib.GetImg('mega_goomba_%d.png' % (i + 1))
+            ImageCache[f'MegaGoomba{i + 1}'] = SLib.GetPixmap(f'mega_goomba_{i + 1}.png')
 
     def dataChanged(self):
         colour = (self.parent.spritedata[2] & 0xF) % 7
@@ -1372,7 +1393,7 @@ class SpriteImage_NewerMegaGoomba(SLib.SpriteImage_StaticMultiple):  # 199
             self.image = ImageCache['MegaGoomba']
             self.offset = (-11, -37)
         else:
-            self.image = ImageCache['MegaGoomba%d' % colour]
+            self.image = ImageCache[f'MegaGoomba{colour}']
             self.offset = (-11, -37)
 
         super().dataChanged()
@@ -1424,9 +1445,10 @@ class SpriteImage_NewerLineBlock(common.SpriteImage_LineBlock):  # 219
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('LineBlock0', 'lineblock.png')
-        if 'LineBlock8' in ImageCache: return
+        if 'LineBlock8' in ImageCache:
+            return
         for i in range(8):
-            ImageCache['LineBlock%d' % (i + 1)] = SLib.GetImg('lineblock%d.png' % (i + 1))
+            ImageCache[f'LineBlock{i + 1}'] = SLib.GetPixmap(f'lineblock{i + 1}.png')
 
     def dataChanged(self):
         # Make sure the relevant images have been loaded before processing the
@@ -1436,7 +1458,7 @@ class SpriteImage_NewerLineBlock(common.SpriteImage_LineBlock):  # 219
 
         color = (self.parent.spritedata[2] & 0xF) % 9
 
-        self.setLineBlockImage(ImageCache['LineBlock%d' % color])
+        self.setLineBlockImage(ImageCache[f'LineBlock{color}'])
 
         super().dataChanged()
 
@@ -1446,10 +1468,11 @@ class SpriteImage_NewerSpringBlock(SLib.SpriteImage_StaticMultiple):  # 223
     def loadImages():
         SLib.loadIfNotInImageCache('SpringBlock', 'spring_block.png')
         SLib.loadIfNotInImageCache('SpringBlockAlt', 'spring_block_alt.png')
-        if 'SpringBlock1' in ImageCache: return
+        if 'SpringBlock1' in ImageCache:
+            return
         for i in range(3):
-            ImageCache['SpringBlock%d' % (i + 1)] = SLib.GetImg('spring_block_%d.png' % (i + 1))
-            ImageCache['SpringBlockAlt%d' % (i + 1)] = SLib.GetImg('spring_block_alt_%d.png' % (i + 1))
+            ImageCache[f'SpringBlock{i + 1}'] = SLib.GetPixmap(f'spring_block_{i + 1}.png')
+            ImageCache[f'SpringBlockAlt{i + 1}'] = SLib.GetPixmap(f'spring_block_alt_{i + 1}.png')
 
     def dataChanged(self):
         colour = (self.parent.spritedata[2] & 0xF) % 4
@@ -1458,7 +1481,7 @@ class SpriteImage_NewerSpringBlock(SLib.SpriteImage_StaticMultiple):  # 223
         if colour == 0:
             self.image = ImageCache['SpringBlockAlt'] if alt else ImageCache['SpringBlock']
         else:
-            self.image = ImageCache['SpringBlockAlt%d' % colour] if alt else ImageCache['SpringBlock%d' % colour]
+            self.image = ImageCache[f'SpringBlockAlt{colour}'] if alt else ImageCache[f'SpringBlock{colour}']
 
         super().dataChanged()
 
@@ -1472,10 +1495,11 @@ class SpriteImage_NewerBramball(SLib.SpriteImage_StaticMultiple):  # 230
     def loadImages():
         SLib.loadIfNotInImageCache('Bramball', 'bramball.png')
 
-        if 'Bramball1' in ImageCache: return
+        if 'Bramball1' in ImageCache:
+            return
 
         for i in range(1, 5):
-            ImageCache['Bramball%d' % i] = SLib.GetImg('bramball_%d.png' % i)
+            ImageCache[f'Bramball{i}'] = SLib.GetPixmap(f'bramball_{i}.png')
 
     def dataChanged(self):
         colour = (self.parent.spritedata[2] & 0xF) % 5
@@ -1483,7 +1507,7 @@ class SpriteImage_NewerBramball(SLib.SpriteImage_StaticMultiple):  # 230
         if colour == 0:
             self.image = ImageCache['Bramball']
         else:
-            self.image = ImageCache['Bramball%d' % colour]
+            self.image = ImageCache[f'Bramball{colour}']
 
         super().dataChanged()
 
@@ -1497,18 +1521,20 @@ class SpriteImage_NewerWiggleShroom(SLib.SpriteImage):  # 231
 
     @staticmethod
     def loadImages():
-        if 'WiggleShroomL' in ImageCache: return
-        ImageCache['WiggleShroomL'] = SLib.GetImg('wiggle_shroom_left.png')
-        ImageCache['WiggleShroomM'] = SLib.GetImg('wiggle_shroom_middle.png')
-        ImageCache['WiggleShroomR'] = SLib.GetImg('wiggle_shroom_right.png')
-        ImageCache['WiggleShroomS'] = SLib.GetImg('wiggle_shroom_stem.png')
+        if 'WiggleShroomL' in ImageCache:
+            return
+        ImageCache['WiggleShroomL'] = SLib.GetPixmap('wiggle_shroom_left.png')
+        ImageCache['WiggleShroomM'] = SLib.GetPixmap('wiggle_shroom_middle.png')
+        ImageCache['WiggleShroomR'] = SLib.GetPixmap('wiggle_shroom_right.png')
+        ImageCache['WiggleShroomS'] = SLib.GetPixmap('wiggle_shroom_stem.png')
 
-        if 'WiggleShroomredL' in ImageCache: return
+        if 'WiggleShroomredL' in ImageCache:
+            return
         for style in ("red", "orange", "green", "blue"):
-            ImageCache['WiggleShroom%sL' % (style)] = SLib.GetImg('wiggle_shroom_%s_left.png' % (style))
-            ImageCache['WiggleShroom%sM' % (style)] = SLib.GetImg('wiggle_shroom_%s_middle.png' % (style))
-            ImageCache['WiggleShroom%sR' % (style)] = SLib.GetImg('wiggle_shroom_%s_right.png' % (style))
-            ImageCache['WiggleShroomNewerS'] = SLib.GetImg('wiggle_shroom_newer_stem.png')
+            ImageCache[f'WiggleShroom{style}L'] = SLib.GetPixmap(f'wiggle_shroom_{style}_left.png')
+            ImageCache[f'WiggleShroom{style}M'] = SLib.GetPixmap(f'wiggle_shroom_{style}_middle.png')
+            ImageCache[f'WiggleShroom{style}R'] = SLib.GetPixmap(f'wiggle_shroom_{style}_right.png')
+            ImageCache['WiggleShroomNewerS'] = SLib.GetPixmap('wiggle_shroom_newer_stem.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -1521,9 +1547,9 @@ class SpriteImage_NewerWiggleShroom(SLib.SpriteImage):  # 231
 
         self.xOffset = -(width * 8) - 20
         self.width = (width * 16) + 56
-        self.wiggleleft = ImageCache['WiggleShroom%sL' % shroom]
-        self.wigglemiddle = ImageCache['WiggleShroom%sM' % shroom]
-        self.wiggleright = ImageCache['WiggleShroom%sR' % shroom]
+        self.wiggleleft = ImageCache[f'WiggleShroom{shroom}L']
+        self.wigglemiddle = ImageCache[f'WiggleShroom{shroom}M']
+        self.wiggleright = ImageCache[f'WiggleShroom{shroom}R']
         if colour > 0:
             self.wigglestem = ImageCache['WiggleShroomNewerS']
         else:
@@ -1626,9 +1652,10 @@ class SpriteImage_NewerParabomb(SLib.SpriteImage_StaticMultiple):  # 269
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('Parabomb', 'parabomb.png')
-        if 'Parabomb1' in ImageCache: return
+        if 'Parabomb1' in ImageCache:
+            return
         for i in range(8):
-            ImageCache['Parabomb%d' % (i + 1)] = SLib.GetImg('parabomb_%d.png' % (i + 1))
+            ImageCache[f'Parabomb{i + 1}'] = SLib.GetPixmap(f'parabomb_{i + 1}.png')
 
     def dataChanged(self):
         colour = (self.parent.spritedata[2] & 0xF) % 9
@@ -1638,7 +1665,7 @@ class SpriteImage_NewerParabomb(SLib.SpriteImage_StaticMultiple):  # 269
             self.image = ImageCache['Parabomb']
 
         else:
-            self.image = ImageCache['Parabomb%d' % colour]
+            self.image = ImageCache[f'Parabomb{colour}']
 
         super().dataChanged()
 
@@ -1708,12 +1735,13 @@ class SpriteImage_NewerParabeetle(SLib.SpriteImage_StaticMultiple):  # 291
         SLib.loadIfNotInImageCache('ParabeetleMoreRight', 'parabeetle_moreright.png')
         SLib.loadIfNotInImageCache('ParabeetleAtYou', 'parabeetle_atyou.png')
 
-        if 'ParabeetleredRight' in ImageCache: return
+        if 'ParabeetleredRight' in ImageCache:
+            return
         for colour in ("red", "orange", "yellow", "green", "skyblue", "blue", "purple", "black", "white", "pink"):
-            ImageCache["Parabeetle%sRight" % colour] = SLib.GetImg('parabeetle_%s_right.png' % colour.lower())
-            ImageCache["Parabeetle%sLeft" % colour] = SLib.GetImg('parabeetle_%s_left.png' % colour.lower())
-            ImageCache["Parabeetle%sMoreRight" % colour] = SLib.GetImg('parabeetle_%s_moreright.png' % colour.lower())
-            ImageCache["Parabeetle%sAtYou" % colour] = SLib.GetImg('parabeetle_%s_atyou.png' % colour.lower())
+            ImageCache[f'Parabeetle{colour}Right'] = SLib.GetPixmap(f'parabeetle_{colour}_right.png')
+            ImageCache[f'Parabeetle{colour}Left'] = SLib.GetPixmap(f'parabeetle_{colour}_left.png')
+            ImageCache[f'Parabeetle{colour}MoreRight'] = SLib.GetPixmap(f'parabeetle_{colour}_moreright.png')
+            ImageCache[f'Parabeetle{colour}AtYou'] = SLib.GetPixmap(f'parabeetle_{colour}_atyou.png')
 
     def dataChanged(self):
         self.yOffset = -8 / 1.5
@@ -1725,16 +1753,16 @@ class SpriteImage_NewerParabeetle(SLib.SpriteImage_StaticMultiple):  # 291
         colour = ("", "red", "orange", "yellow", "green", "skyblue", "blue", "purple", "black", "white", "pink")[colour]
         if direction == 0:  # right
             self.xOffset = -19 / 1.5
-            self.image = ImageCache['Parabeetle%sRight' % colour]
+            self.image = ImageCache[f'Parabeetle{colour}Right']
         elif direction in [1, 14]:  # left
             self.xOffset = -14 / 1.5
-            self.image = ImageCache['Parabeetle%sLeft' % colour]
+            self.image = ImageCache[f'Parabeetle{colour}Left']
         elif direction in [2, 4, 6, 8, 10]:  # more right
             self.xOffset = -14
-            self.image = ImageCache['Parabeetle%sMoreRight' % colour]
+            self.image = ImageCache[f'Parabeetle{colour}MoreRight']
         elif direction in [3, 5, 7, 9, 11, 12, 13, 15]:  # at you
             self.xOffset = -22
-            self.image = ImageCache['Parabeetle%sAtYou' % colour]
+            self.image = ImageCache[f'Parabeetle{colour}AtYou']
 
         super().dataChanged()
 
@@ -1747,12 +1775,13 @@ class SpriteImage_NewerHeavyParabeetle(SLib.SpriteImage_StaticMultiple):  # 292
         SLib.loadIfNotInImageCache('HeavyParabeetleMoreRight', 'heavy_parabeetle_moreright.png')
         SLib.loadIfNotInImageCache('HeavyParabeetleAtYou', 'heavy_parabeetle_atyou.png')
 
-        if 'HeavyParabeetleredRight' in ImageCache: return
+        if 'HeavyParabeetleredRight' in ImageCache:
+            return
         for colour in ("red", "orange", "yellow", "green", "skyblue", "blue", "purple", "black", "white", "pink"):
-            ImageCache["HeavyParabeetle%sRight" % colour] = SLib.GetImg('heavy_parabeetle_%s_right.png' % colour.lower())
-            ImageCache["HeavyParabeetle%sLeft" % colour] = SLib.GetImg('heavy_parabeetle_%s_left.png' % colour.lower())
-            ImageCache["HeavyParabeetle%sMoreRight" % colour] = SLib.GetImg('heavy_parabeetle_%s_moreright.png' % colour.lower())
-            ImageCache["HeavyParabeetle%sAtYou" % colour] = SLib.GetImg('heavy_parabeetle_%s_atyou.png' % colour.lower())
+            ImageCache[f'HeavyParabeetle{colour}Right'] = SLib.GetPixmap(f'heavy_parabeetle_{colour}_right.png')
+            ImageCache[f'HeavyParabeetle{colour}Left'] = SLib.GetPixmap(f'heavy_parabeetle_{colour}_left.png')
+            ImageCache[f'HeavyParabeetle{colour}MoreRight'] = SLib.GetPixmap(f'heavy_parabeetle_{colour}_moreright.png')
+            ImageCache[f'HeavyParabeetle{colour}AtYou'] = SLib.GetPixmap(f'heavy_parabeetle_{colour}_atyou.png')
 
     def dataChanged(self):
         self.yOffset = -85 / 1.5
@@ -1764,16 +1793,16 @@ class SpriteImage_NewerHeavyParabeetle(SLib.SpriteImage_StaticMultiple):  # 292
         colour = ("", "red", "orange", "yellow", "green", "skyblue", "blue", "purple", "black", "white", "pink")[colour]
         if direction == 0:  # right
             self.xOffset = -58 / 1.5
-            self.image = ImageCache['HeavyParabeetle%sRight' % colour]
+            self.image = ImageCache[f'HeavyParabeetle{colour}Right']
         elif direction in [1, 14]:  # left
             self.xOffset = -58 / 1.5
-            self.image = ImageCache['HeavyParabeetle%sLeft' % colour]
+            self.image = ImageCache[f'HeavyParabeetle{colour}Left']
         elif direction in [2, 4, 6, 8, 10]:  # more right
             self.xOffset = -58 / 1.5
-            self.image = ImageCache['HeavyParabeetle%sMoreRight' % colour]
+            self.image = ImageCache[f'HeavyParabeetle{colour}MoreRight']
         elif direction in [3, 5, 7, 9, 11, 12, 13, 15]:  # at you
             self.xOffset = -58
-            self.image = ImageCache['HeavyParabeetle%sAtYou' % colour]
+            self.image = ImageCache[f'HeavyParabeetle{colour}AtYou']
 
         super().dataChanged()
 
@@ -1781,16 +1810,18 @@ class SpriteImage_NewerHeavyParabeetle(SLib.SpriteImage_StaticMultiple):  # 292
 class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
     @staticmethod
     def loadImages():
-        if 'MegaBuzzyR' in ImageCache: return
-        ImageCache['MegaBuzzyR'] = SLib.GetImg('megabuzzy_right.png')
-        ImageCache['MegaBuzzyL'] = SLib.GetImg('megabuzzy_left.png')
+        if 'MegaBuzzyR' in ImageCache:
+            return
+        ImageCache['MegaBuzzyR'] = SLib.GetPixmap('megabuzzy_right.png')
+        ImageCache['MegaBuzzyL'] = SLib.GetPixmap('megabuzzy_left.png')
         SLib.loadIfNotInImageCache('MegaBuzzyF', 'megabuzzy_front.png')
 
-        if 'MegaBuzzyredR' in ImageCache: return
+        if 'MegaBuzzyredR' in ImageCache:
+            return
         for style in ('red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'shyguy', 'monty'):
-            ImageCache['MegaBuzzy%sR' % style] = SLib.GetImg('megabuzzy_%s_right.png' % style)
-            ImageCache['MegaBuzzy%sL' % style] = SLib.GetImg('megabuzzy_%s_left.png' % style)
-            ImageCache['MegaBuzzy%sF' % style] = SLib.GetImg('megabuzzy_%s_front.png' % style)
+            ImageCache[f'MegaBuzzy{style}R'] = SLib.GetPixmap(f'megabuzzy_{style}_right.png')
+            ImageCache[f'MegaBuzzy{style}L'] = SLib.GetPixmap(f'megabuzzy_{style}_left.png')
+            ImageCache[f'MegaBuzzy{style}F'] = SLib.GetPixmap(f'megabuzzy_{style}_front.png')
 
     def dataChanged(self):
 
@@ -1799,8 +1830,9 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
         dir = ("R", "L", "F", "R")[direction]
         colour = ("", "red", "orange", "yellow", "green", "blue", "purple", "black", "shyguy", "monty")[style]
 
-        if 'MegaBuzzymontyF' not in ImageCache: return
-        self.image = ImageCache['MegaBuzzy%s%s' % (colour, dir)]
+        if 'MegaBuzzymontyF' not in ImageCache:
+            return
+        self.image = ImageCache[f'MegaBuzzy{colour}{dir}']
 
         if style == 8: # Shy Guy's offset
             if direction == 2:
@@ -1825,10 +1857,11 @@ class SpriteImage_NewerMegaBuzzy(SLib.SpriteImage_StaticMultiple):  # 296
 class SpriteImage_RockyBossWrench(SLib.SpriteImage_StaticMultiple):  # 302
     @staticmethod
     def loadImages():
-        if 'RockyBossWrench0' in ImageCache: return
+        if 'RockyBossWrench0' in ImageCache:
+            return
         for big in (0, 1):
             for direction in range(3):
-                ImageCache['RockyBossWrench%d%d' % (big, direction)] = SLib.GetImg('rocky_boss_wrench_%d%d.png' % (big, direction))
+                ImageCache[f'RockyBossWrench{big}{direction}'] = SLib.GetPixmap(f'rocky_boss_wrench_{big}{direction}.png')
 
     def dataChanged(self):
         big = (self.parent.spritedata[5] >> 4) & 1
@@ -1836,7 +1869,7 @@ class SpriteImage_RockyBossWrench(SLib.SpriteImage_StaticMultiple):  # 302
         if direction == 3:
             direction = 2
 
-        self.image = ImageCache['RockyBossWrench%d%d' % (big, direction)]
+        self.image = ImageCache[f'RockyBossWrench{big}{direction}']
         if big:
             self.offset = (
                     (2, -33),
@@ -1894,19 +1927,20 @@ class SpriteImage_FallingChestnut(SLib.SpriteImage_StaticMultiple):  # 320
         SLib.loadIfNotInImageCache('Spiny', 'spiny.png')
         SLib.loadIfNotInImageCache('StarCoin', 'starcoin.png')
 
-        if 'ChestnutBrown' in ImageCache: return
+        if 'ChestnutBrown' in ImageCache:
+            return
         for color in ('Brown', 'Yellow'):
-            ImageCache['Chestnut%s' % color] = SLib.GetImg('chestnut_%s.png' % color)
+            ImageCache[f'Chestnut{color}'] = SLib.GetPixmap(f'chestnut_{color}.png')
 
             items = (
                 (4, 'Goomba',   ImageCache['Goomba']),
                 (4, 'Spiny',    ImageCache['Spiny']),
-                (4, 'Coin',     ImageCache['BlockContents'][1]),
-                (4, 'Fire',     ImageCache['BlockContents'][3]),
+                (4, 'Coin',     ImageCache['BlockContents1']),
+                (4, 'Fire',     ImageCache['BlockContents3']),
                 (3, 'StarCoin', ImageCache['StarCoin']),
             )
             for scaleF, itemName, overlayImage in items:
-                newPix = QtGui.QPixmap(ImageCache['Chestnut%s' % color])
+                newPix = QtGui.QPixmap(ImageCache[f'Chestnut{color}'])
                 painter = QtGui.QPainter(newPix)
 
                 w = overlayImage.width()
@@ -1914,7 +1948,7 @@ class SpriteImage_FallingChestnut(SLib.SpriteImage_StaticMultiple):  # 320
 
                 painter.drawPixmap(113 - w, 119 - h, int(w * scaleF), int(h * scaleF), overlayImage)
                 del painter
-                ImageCache['Chestnut%s' % color + itemName] = newPix
+                ImageCache[f'Chestnut{color}{itemName}'] = newPix
 
     def dataChanged(self):
         yellow = self.parent.spritedata[5] & 1
@@ -1929,8 +1963,9 @@ class SpriteImage_FallingChestnut(SLib.SpriteImage_StaticMultiple):  # 320
         else:
             itemStr = itemName[item]
 
-        if ImageCache['ChestnutBrown'] is None: return
-        self.image = ImageCache['Chestnut%s' % color + itemStr].scaled(*(
+        if ImageCache['ChestnutBrown'] is None:
+            return
+        self.image = ImageCache[f'Chestnut{color}{itemStr}'].scaled(*(
             (45, 40),
             (68, 59),
             (92, 80),
@@ -2053,9 +2088,9 @@ class SpriteImage_NewerBigShell(SLib.SpriteImage_StaticMultiple):  # 341
 
         colour = ("Green", "Red")[colour]
         if style == 0:
-            self.image = ImageCache['BigShell%sGrass' % colour]
+            self.image = ImageCache[f'BigShell{colour}Grass']
         else:
-            self.image = ImageCache['BigShell%s' % colour]
+            self.image = ImageCache[f'BigShell{colour}']
 
         super().dataChanged()
 
@@ -2069,14 +2104,15 @@ class SpriteImage_NewerBigShell(SLib.SpriteImage_StaticMultiple):  # 341
 class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
     @staticmethod
     def loadImages():
-        if 'ShyGuy0' in ImageCache: return
+        if 'ShyGuy0' in ImageCache:
+            return
         for i in range(9):  # 0-8
-            if i == 7: continue  # there's no ShyGuy7.png
-            ImageCache['ShyGuy%d' % i] = SLib.GetImg('shyguy_%d.png' % i)
+            if i == 7:
+                continue  # there's no ShyGuy7.png
+            ImageCache[f'ShyGuy{i}'] = SLib.GetPixmap(f'shyguy_{i}.png')
 
     def dataChanged(self):
         type = (self.parent.spritedata[2] >> 4) & 15
-        distance = (self.parent.spritedata[4] >> 4) & 15
 
         #1 & 6 use the same image as 10 & 7 respectively, the rest use 0
         if type == 7:
@@ -2088,7 +2124,7 @@ class SpriteImage_ShyGuy(SLib.SpriteImage_StaticMultiple):  # 351
         else:
             imgtype = 0
 
-        self.image = ImageCache['ShyGuy%d' % imgtype]
+        self.image = ImageCache[f'ShyGuy{imgtype}']
         self.offset = (
             (6, -4),  # 0: red
             (6, -7),  # 1: blue
@@ -2130,15 +2166,17 @@ class SpriteImage_NewerBush(SLib.SpriteImage_StaticMultiple):  # 387
 
     @staticmethod
     def loadImages():
-        if 'bushgreensmall' in ImageCache: return
+        if 'bushgreensmall' in ImageCache:
+            return
         for style in ('green', 'yellowish', 'yellow'):
             for size in ('small', 'med', 'large', 'xlarge'):
-                ImageCache['bush%s%s' % (style, size)] = SLib.GetImg('bush_%s_%s.png' % (style, size))
+                ImageCache[f'bush{style}{size}'] = SLib.GetPixmap(f'bush_{style}_{size}.png')
 
-        if 'bushtreeleafsxlarge' in ImageCache: return
+        if 'bushtreeleafsxlarge' in ImageCache:
+            return
         for style in ('brown', 'darkred', 'yellow', 'darkbrown', 'red', 'treeleafs'):
             for size in ('small', 'med', 'large', 'xlarge'):
-                ImageCache['bush%s%s' % (style, size)] = SLib.GetImg('bush_%s_%s.png' % (style, size))
+                ImageCache[f'bush{style}{size}'] = SLib.GetPixmap(f'bush_{style}_{size}.png')
 
     def dataChanged(self):
         style = self.parent.spritedata[2] >> 4
@@ -2149,11 +2187,11 @@ class SpriteImage_NewerBush(SLib.SpriteImage_StaticMultiple):  # 387
         bush = ("green", "brown", "darkred", "yellow", "darkbrown", "red")[colors]
         scale = ("small", "med", "large", "xlarge")[size]
         if yellowish:
-            self.image = ImageCache['bushyellowish%s' % scale]
+            self.image = ImageCache[f'bushyellowish{scale}']
         elif style == 15:
-            self.image = ImageCache['bushtreeleafs%s' % scale]
+            self.image = ImageCache[f'bushtreeleafs{scale}']
         else:
-            self.image = ImageCache['bush%s%s' % (bush, scale)]
+            self.image = ImageCache[f'bush{bush}{scale}']
 
         if style == 15:
             self.offset = (
@@ -2208,42 +2246,47 @@ class SpriteImage_GigaGoomba(SLib.SpriteImage_Static):  # 410
 class SpriteImage_NewerGabon(SLib.SpriteImage_StaticMultiple):  # 414
     @staticmethod
     def loadImages():
-        if 'GabonLeft' in ImageCache: return
-        gabon = SLib.GetImg('gabon.png', True)
+        if 'GabonLeft' in ImageCache:
+            return
+        gabon = SLib.GetImage('gabon.png')
         ImageCache['GabonLeft'] = QtGui.QPixmap.fromImage(gabon)
         ImageCache['GabonRight'] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
         SLib.loadIfNotInImageCache('GabonSpike', 'gabon_spike.png')
 
-        if 'GabonsnowRight' in ImageCache: return
+        if 'GabonsnowRight' in ImageCache:
+            return
 
         for style in ("red", "orange", "yellow", "snow"):
-            gabon = SLib.GetImg('gabon_%s.png' % style, True)
+            gabon = SLib.GetImage(f'gabon_{style}.png')
 
-            if gabon is None: return
+            if gabon is None:
+                return
 
-            ImageCache['Gabon%sLeft' % style] = QtGui.QPixmap.fromImage(gabon)
-            ImageCache['Gabon%sRight' % style] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
+            ImageCache[f'Gabon{style}Left'] = QtGui.QPixmap.fromImage(gabon)
+            ImageCache[f'Gabon{style}Right'] = QtGui.QPixmap.fromImage(gabon.mirrored(True, False))
 
-        if 'GabonblackSpike' in ImageCache: return
+        if 'GabonblackSpike' in ImageCache:
+            return
 
         for color in ("red", "orange", "yellow", "green", "purple", "black"):
-            ImageCache['Gabon%sSpike' % color] = SLib.GetImg('gabon_%s_spike.png' % color)
+            ImageCache[f'Gabon{color}Spike'] = SLib.GetPixmap(f'gabon_{color}_spike.png')
 
     def dataChanged(self):
         throwdir = self.parent.spritedata[5] & 1
         facing = self.parent.spritedata[4] & 1
         style = self.parent.spritedata[2] & 7
 
-        if 'GabonsnowRight' not in ImageCache: return
+        if 'GabonsnowRight' not in ImageCache:
+            return
         color = ("", "red", "orange", "yellow", "", "snow")[style % 6]
         colour = ("", "red", "orange", "yellow", "green", "", "purple", "black")[style & 7]
         if throwdir == 0:
-            self.image = ImageCache['Gabon%sSpike' % colour]
+            self.image = ImageCache[f'Gabon{colour}Spike']
             self.offset = (-7, -31) #-11, -47
         else:
             self.image = (
-                ImageCache['Gabon%sLeft' % color],
-                ImageCache['Gabon%sRight' % color],
+                ImageCache[f'Gabon{color}Left'],
+                ImageCache[f'Gabon{color}Right'],
             )[facing]
             self.offset = (-8, -33) #-12, -50
 
@@ -2264,21 +2307,21 @@ class SpriteImage_NewerFloatingQBlock(SLib.SpriteImage_StaticMultiple):  # 433
         SLib.loadIfNotInImageCache('FloatingQBlock', 'floating_qblock.png')
 
         items = (
-            ('Coin',   ImageCache['BlockContents'][1]),
-            ('Hamr',   ImageCache['BlockContents'][20]),
-            ('Fire',   ImageCache['BlockContents'][3]),
-            ('Prop',   ImageCache['BlockContents'][4]),
-            ('Peng',   ImageCache['BlockContents'][5]),
-            ('Mini',   ImageCache['BlockContents'][6]),
-            ('Star',   ImageCache['BlockContents'][7]),
-            ('StarC',  ImageCache['BlockContents'][8]),
-            ('Egg',    ImageCache['BlockContents'][9]),
-            ('10Coin', ImageCache['BlockContents'][10]),
-            ('1Up',    ImageCache['BlockContents'][11]),
-            ('Mush',   ImageCache['BlockContents'][2]),
-            ('Spring', ImageCache['BlockContents'][13]),
-            ('MushC',  ImageCache['BlockContents'][14]),
-            ('Ice',    ImageCache['BlockContents'][15]),
+            ('Coin',   ImageCache['BlockContents1']),
+            ('Hamr',   ImageCache['BlockContents20']),
+            ('Fire',   ImageCache['BlockContents3']),
+            ('Prop',   ImageCache['BlockContents4']),
+            ('Peng',   ImageCache['BlockContents5']),
+            ('Mini',   ImageCache['BlockContents6']),
+            ('Star',   ImageCache['BlockContents7']),
+            ('StarC',  ImageCache['BlockContents8']),
+            ('Egg',    ImageCache['BlockContents9']),
+            ('10Coin', ImageCache['BlockContents10']),
+            ('1Up',    ImageCache['BlockContents11']),
+            ('Mush',   ImageCache['BlockContents2']),
+            ('Spring', ImageCache['BlockContents13']),
+            ('MushC',  ImageCache['BlockContents14']),
+            ('Ice',    ImageCache['BlockContents15']),
         )
         for itemName, overlayImage in items:
             newPix = QtGui.QPixmap(ImageCache['FloatingQBlock'])
@@ -2309,27 +2352,29 @@ class SpriteImage_NewerBowserSwitchSm(SpriteImage_NewerSwitch):  # 478
 class SpriteImage_NewerBowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
     @staticmethod
     def loadImages():
-        if 'ELSwitch' in ImageCache: return
-        elg = SLib.GetImg('e_switch_lg.png', True)
+        if 'ELSwitch' in ImageCache:
+            return
+        elg = SLib.GetImage('e_switch_lg.png')
         ImageCache['ELSwitch'] = QtGui.QPixmap.fromImage(elg)
         ImageCache['ELSwitchU'] = QtGui.QPixmap.fromImage(elg.mirrored(True, True))
 
         if 'ELSwitch1' not in ImageCache:
             for i in range(1, 6):
-                elg2 = SLib.GetImg('e_switch_lg%d.png' % i, True)
+                elg2 = SLib.GetImage(f'e_switch_lg{i}.png')
 
                 if elg2 is None:
                     return
 
-                ImageCache['ELSwitch%d' % i] = QtGui.QPixmap.fromImage(elg2)
-                ImageCache['ELSwitchU%d' % i] = QtGui.QPixmap.fromImage(elg2.mirrored(True, True))
+                ImageCache[f'ELSwitch{i}'] = QtGui.QPixmap.fromImage(elg2)
+                ImageCache[f'ELSwitchU{i}'] = QtGui.QPixmap.fromImage(elg2.mirrored(True, True))
 
     def dataChanged(self):
 
         colour = (self.parent.spritedata[3] & 0xF) % 6
         upsideDown = self.parent.spritedata[5] & 1
 
-        if 'ELSwitch5' not in ImageCache: return
+        if 'ELSwitch5' not in ImageCache:
+            return
         if colour == 0:
             if not upsideDown:
                 self.image = ImageCache['ELSwitch']
@@ -2339,10 +2384,10 @@ class SpriteImage_NewerBowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
                 self.offset = (-15, 0)
         else:
             if not upsideDown:
-                self.image = ImageCache['ELSwitch%d' % colour]
+                self.image = ImageCache[f'ELSwitch{colour}']
                 self.offset = (-15, -40)
             else:
-                self.image = ImageCache['ELSwitchU%d' % colour]
+                self.image = ImageCache[f'ELSwitchU{colour}']
                 self.offset = (-15, -16)
 
 
