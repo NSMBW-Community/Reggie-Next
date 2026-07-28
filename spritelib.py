@@ -223,7 +223,7 @@ class SpriteImage:
         self.alpha = 1.0
         self.image: QtGui.QPixmap | None = None
         self.spritebox = Spritebox(scale)
-        self.setDimensions((0, 0, 16, 16))
+        self.dimensions = (0, 0, 16, 16)
         self.scale = scale
         self.aux: list[AuxiliaryItem] = []
 
