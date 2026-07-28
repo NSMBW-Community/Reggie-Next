@@ -35,13 +35,16 @@ import os.path
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
+from levelitems import SpriteItem
+from tiles import TilesetTile
+
 Qt = QtCore.Qt
 
-OutlineColor = None
-OutlinePen = None
-OutlineBrush = None
+OutlineColor: QtGui.QColor | None = None
+OutlinePen: QtGui.QPen | None = None
+OutlineBrush: QtGui.QBrush | None = None
 ImageCache: dict[str, QtGui.QPixmap] = {}
-Tiles = {}
+Tiles: dict[int, TilesetTile | None] = {}
 SpriteImagesLoaded = set()
 
 SpritesFolders = []
@@ -58,8 +61,8 @@ def main():
     """
     Resets Sprites.py to its original settings
     """
-    global OutlineColor, OutlinePen, OutlineBrush, ImageCache, SpritesFolders
-    OutlinePen = QtGui.QPen(OutlineColor, 4)
+    global OutlinePen, OutlineBrush, SpritesFolders
+    OutlinePen = QtGui.QPen(OutlineColor if OutlineColor is not None else QtCore.Qt.GlobalColor.white, 4)
     OutlineBrush = QtGui.QBrush(OutlineColor)
 
     for i in range(256):
@@ -73,7 +76,7 @@ def main():
     SpritesFolders = []
 
 
-def GetPath(imgname: str) -> str:
+def GetSpriteImageFilePath(imgname: str) -> str:
     """
     Returns the path to the image 'imgname' from the first matching sprite image folder.
     """
@@ -93,7 +96,7 @@ def GetPixmap(imgname: str) -> QtGui.QPixmap:
 
     :param imgname: The name of the image to load.
     """
-    path = GetPath(imgname)
+    path = GetSpriteImageFilePath(imgname)
     if os.path.isfile(path):
         return QtGui.QPixmap(path)
 
@@ -107,7 +110,7 @@ def GetImage(imgname: str) -> QtGui.QImage:
 
     :param imgname: The name of the image to load.
     """
-    path = GetPath(imgname)
+    path = GetSpriteImageFilePath(imgname)
     if os.path.isfile(path):
         return QtGui.QImage(path)
 
@@ -144,7 +147,7 @@ def GetImg(imgname, image=False):
 
     print("[Warning] Could not load sprite image (%s)!" % imgname)
 
-def GetTile(tile_id):
+def GetTile(tile_id: int) -> QtGui.QPixmap:
     """
     Returns the corresponding tile image if a tile is loaded. Otherwise, it
     returns the "unknown tile" override.
@@ -154,9 +157,12 @@ def GetTile(tile_id):
     if tile is None:
         tile = Tiles[4 * 0x200 + 64]  # The "Unknown Tile" override
 
+    if tile is None:
+        raise ValueError("\"Unknown Tile\" Tile not found")
+
     return tile.main
 
-def loadIfNotInImageCache(name, filename):
+def loadIfNotInImageCache(name: str, filename: str):
     """
     If name is not in ImageCache, loads the image
     referenced by 'filename' and puts it there
@@ -165,7 +171,7 @@ def loadIfNotInImageCache(name, filename):
         ImageCache[name] = GetPixmap(filename)
 
 
-def MapPositionToZoneID(zones, x, y, get_id=False):
+def MapPositionToZoneID(zones: list, x: int, y: int, get_id=False):
     """
     Returns the index of the zone containing or nearest the specified position
     by default. Set 'get_id' to True to get the actual zone id. Returns -1 on
@@ -208,55 +214,50 @@ class SpriteImage:
     Class that contains information about a sprite image
     """
 
-    def __init__(self, parent, scale=1.5):
+    def __init__(self, parent: SpriteItem, scale=1.5):
         """
         Intializes the sprite image
         """
         self.parent = parent
 
         self.alpha = 1.0
-        self.image = None
+        self.image: QtGui.QPixmap | None = None
         self.spritebox = Spritebox(scale)
-        self.dimensions = 0, 0, 16, 16
+        self.setDimensions((0, 0, 16, 16))
         self.scale = scale
-        self.aux = []
+        self.aux: list[AuxiliaryItem] = []
 
     @staticmethod
     def loadImages():
         """
         Loads all images needed by the sprite
         """
-        pass
 
     def dataChanged(self):
         """
         Called whenever the sprite data changes
         """
-        pass
 
     def positionChanged(self):
         """
         Called whenever the sprite position changes
         """
-        pass
 
-    def paint(self, painter):
+    def paint(self, painter: QtGui.QPainter):
         """
         Paints the sprite
         """
-        pass
 
     def remove(self):
         """
         Called whenever the parent is removed
         """
-        pass
 
     # Offset property
-    def getOffset(self):
+    def getOffset(self) -> tuple[float, float]:
         return (self.xOffset, self.yOffset)
 
-    def setOffset(self, new):
+    def setOffset(self, new: tuple[float, float]):
         self.xOffset, self.yOffset = new[0], new[1]
 
     def delOffset(self):
@@ -268,10 +269,10 @@ class SpriteImage:
     )
 
     # Size property
-    def getSize(self):
+    def getSize(self) -> tuple[float, float]:
         return (self.width, self.height)
 
-    def setSize(self, new):
+    def setSize(self, new: tuple[float, float]):
         self.width, self.height = new[0], new[1]
 
     def delSize(self):
@@ -283,10 +284,10 @@ class SpriteImage:
     )
 
     # Dimensions property
-    def getDimensions(self):
+    def getDimensions(self) -> tuple[float, float, float, float]:
         return (self.xOffset, self.yOffset, self.width, self.height)
 
-    def setDimensions(self, new):
+    def setDimensions(self, new: tuple[float, float, float, float]):
         self.xOffset, self.yOffset, self.width, self.height = new[0], new[1], new[2], new[3]
 
     def delDimensions(self):
@@ -303,7 +304,7 @@ class SpriteImage_Static(SpriteImage):
     A simple class for drawing a static sprite image
     """
 
-    def __init__(self, parent, scale=1.5, image=None, offset=None):
+    def __init__(self, parent: SpriteItem, scale=1.5, image: QtGui.QPixmap | None = None, offset: tuple[float, float] | None = None):
         super().__init__(parent, scale)
         self.image = image
         self.spritebox.shown = False
@@ -329,7 +330,9 @@ class SpriteImage_Static(SpriteImage):
     def paint(self, painter):
         super().paint(painter)
 
-        if self.image is None: return
+        if self.image is None:
+            return
+
         painter.save()
         painter.setOpacity(self.alpha)
         painter.scale(1.5 / self.scale, 1.5 / self.scale)  # rescale images not based on a 24x24 block size
@@ -360,18 +363,18 @@ class Spritebox:
 
     def __init__(self, scale=1.5):
         super().__init__()
-        self.shown = True
-        self.xOffset = 0
-        self.yOffset = 0
-        self.width = 16
-        self.height = 16
+        self.shown: bool = True
+        self.xOffset: float = 0
+        self.yOffset: float = 0
+        self.width: float = 16
+        self.height: float = 16
         self.scale = scale
 
     # Offset property
-    def getOffset(self):
+    def getOffset(self) -> tuple[float, float]:
         return self.xOffset, self.yOffset
 
-    def setOffset(self, new):
+    def setOffset(self, new: tuple[float, float]):
         self.xOffset, self.yOffset = new[0], new[1]
 
     def delOffset(self):
@@ -383,10 +386,10 @@ class Spritebox:
     )
 
     # Size property
-    def getSize(self):
+    def getSize(self) -> tuple[float, float]:
         return self.width, self.height
 
-    def setSize(self, new):
+    def setSize(self, new: tuple[float, float]):
         self.width, self.height = new[0], new[1]
 
     def delSize(self):
@@ -398,10 +401,10 @@ class Spritebox:
     )
 
     # Dimensions property
-    def getDimensions(self):
+    def getDimensions(self) -> tuple[float, float, float, float]:
         return self.xOffset, self.yOffset, self.width, self.height
 
-    def setDimensions(self, new):
+    def setDimensions(self, new: tuple[float, float, float, float]):
         self.xOffset, self.yOffset, self.width, self.height = new[0], new[1], new[2], new[3]
 
     def delDimensions(self):
@@ -422,7 +425,7 @@ class Spritebox:
             (self.height * self.scale) - 2,
         )
 
-    def setRR(self, new):
+    def setRR(self, new: QtCore.QRectF):
         self.dimensions = (
             (new.x() / self.scale) - 1,
             (new.y() / self.scale) - 1,
@@ -447,7 +450,7 @@ class Spritebox:
             self.height * self.scale,
         )
 
-    def setBR(self, new):
+    def setBR(self, new: QtCore.QRectF):
         self.dimensions = (
             new.x() * self.scale,
             new.y() * self.scale,
@@ -474,7 +477,6 @@ class AuxiliaryItem:
     """
     Base class for all auxiliary things
     """
-    pass
 
 
 class AuxiliarySpriteItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
@@ -492,7 +494,7 @@ class AuxiliarySpriteItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, False)
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, True)
         self.setParentItem(parent)
-        self.hover = False
+        self.hover: bool = False
 
         self.BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 
@@ -518,7 +520,7 @@ class AuxiliaryTrackObject(AuxiliarySpriteItem):
     Horizontal = 1
     Vertical = 2
 
-    def __init__(self, parent, width, height, direction):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float, direction: int):
         """
         Constructor
         """
@@ -529,7 +531,7 @@ class AuxiliaryTrackObject(AuxiliarySpriteItem):
         self.width = width
         self.height = height
         self.direction = direction
-        self.hover = False
+        self.hover: bool = False
 
     def setSize(self, width, height):
         self.prepareGeometryChange()
@@ -538,12 +540,15 @@ class AuxiliaryTrackObject(AuxiliarySpriteItem):
         self.height = height
 
     def paint(self, painter, option, widget=None):
+        if painter is None:
+            return
 
         if option is not None:
             painter.setClipRect(option.exposedRect)
             painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
-        painter.setPen(OutlinePen)
+        if OutlinePen is not None:
+            painter.setPen(OutlinePen)
 
         if self.direction == self.Horizontal:
             lineY = int(self.height * 0.75)
@@ -558,18 +563,18 @@ class AuxiliaryTrackObject(AuxiliarySpriteItem):
 
 
 class AuxiliaryCircleOutline(AuxiliarySpriteItem):
-    def __init__(self, parent, width, alignMode=Qt.AlignmentFlag.AlignHCenter):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, alignMode=Qt.AlignmentFlag.AlignHCenter):
         """
         Constructor
         """
         super().__init__(parent)
 
-        self.hover = False
-        self.fillFlag = True
+        self.hover: bool = False
+        self.fillFlag: bool = True
         self.alignMode = alignMode
         self.setSize(width)
 
-    def setSize(self, width):
+    def setSize(self, width: float):
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(0, 0, width * 1.5, width * 1.5)
 
@@ -592,17 +597,21 @@ class AuxiliaryCircleOutline(AuxiliarySpriteItem):
         self.width = width
 
     def paint(self, painter, option, widget=None):
-        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
-        painter.setPen(OutlinePen)
+        if painter is None:
+            return
 
-        if self.fillFlag:
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
+        if OutlinePen is not None:
+            painter.setPen(OutlinePen)
+
+        if self.fillFlag and OutlineBrush is not None:
             painter.setBrush(OutlineBrush)
 
         painter.drawEllipse(self.BoundingRect)
 
 
 class AuxiliaryRotationAreaOutline(AuxiliarySpriteItem):
-    def __init__(self, parent, width):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float):
         """
         Constructor
         """
@@ -611,23 +620,28 @@ class AuxiliaryRotationAreaOutline(AuxiliarySpriteItem):
         self.BoundingRect = QtCore.QRectF(0, 0, width * 1.5, width * 1.5)
         self.setPos((8 - (width / 2)) * 1.5, (8 - (width / 2)) * 1.5)
         self.width = width
-        self.startAngle = 0
-        self.spanAngle = 0
-        self.hover = False
+        self.startAngle: float = 0
+        self.spanAngle: float = 0
+        self.hover: bool = False
 
     def SetAngle(self, startAngle, spanAngle):
         self.startAngle = startAngle * 16
         self.spanAngle = spanAngle * 16
 
     def paint(self, painter, option, widget=None):
+        if painter is None:
+            return
+
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
-        painter.setPen(OutlinePen)
-        painter.setBrush(OutlineBrush)
+        if OutlinePen is not None:
+            painter.setPen(OutlinePen)
+        if OutlineBrush is not None:
+            painter.setBrush(OutlineBrush)
         painter.drawPie(self.BoundingRect, int(self.startAngle), int(self.spanAngle))
 
 
 class AuxiliaryRectOutline(AuxiliarySpriteItem):
-    def __init__(self, parent, width, height, xoff=0, yoff=0):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float, xoff: float = 0, yoff: float = 0):
         """
         Constructor
         """
@@ -635,28 +649,32 @@ class AuxiliaryRectOutline(AuxiliarySpriteItem):
 
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.setPos(xoff, yoff)
-        self.hover = False
-        self.color = None
-        self.fillFlag = True
+        self.hover: bool = False
+        self.color: QtGui.QColor | None = None
+        self.fillFlag: bool = True
 
-    def setSize(self, width, height, xoff=0, yoff=0):
+    def setSize(self, width: float, height: float, xoff: float = 0, yoff: float = 0):
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.setPos(xoff, yoff)
 
-    def setColor(self, color):
+    def setColor(self, color: QtGui.QColor | None):
         if color is None:
             self.color = None
         else:
             self.color = QtGui.QColor(color)
 
     def paint(self, painter, option, widget=None):
+        if painter is None:
+            return
+
         if option is not None:
             painter.setClipRect(option.exposedRect)
             painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         if self.color is None:
-            painter.setPen(OutlinePen)
-            if self.fillFlag:
+            if OutlinePen is not None:
+                painter.setPen(OutlinePen)
+            if self.fillFlag and OutlineBrush is not None:
                 painter.setBrush(OutlineBrush)
         else:
             pen = QtGui.QPen(OutlinePen)
@@ -674,7 +692,7 @@ class AuxiliaryRectOutline(AuxiliarySpriteItem):
 
 
 class AuxiliaryPainterPath(AuxiliarySpriteItem):
-    def __init__(self, parent, path, width, height, xoff=0, yoff=0):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, path: QtGui.QPainterPath, width: float, height: float, xoff: float = 0, yoff: float = 0):
         """
         Constructor
         """
@@ -685,28 +703,32 @@ class AuxiliaryPainterPath(AuxiliarySpriteItem):
         self.fillFlag = True
 
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
-        self.hover = False
+        self.hover: bool = False
 
-    def setPath(self, path):
+    def setPath(self, path: QtGui.QPainterPath):
         self.PainterPath = path
 
-    def setSize(self, width, height, xoff=0, yoff=0):
+    def setSize(self, width: float, height: float, xoff: float = 0, yoff: float = 0):
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.setPos(xoff, yoff)
 
     def paint(self, painter, option, widget=None):
+        if painter is None:
+            return
 
         if option is not None:
             painter.setClipRect(option.exposedRect)
             painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
-        painter.setPen(OutlinePen)
-        if self.fillFlag: painter.setBrush(OutlineBrush)
+        if OutlinePen is not None:
+            painter.setPen(OutlinePen)
+        if self.fillFlag and OutlineBrush is not None:
+            painter.setBrush(OutlineBrush)
         painter.drawPath(self.PainterPath)
 
 
 class AuxiliaryImage(AuxiliarySpriteItem):
-    def __init__(self, parent, width, height):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float):
         """
         Constructor
         """
@@ -714,18 +736,20 @@ class AuxiliaryImage(AuxiliarySpriteItem):
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.width = width
         self.height = height
-        self.image: QtGui.QPixmap | QtGui.QImage | None = None
-        self.hover = True
-        self.alpha = 1
+        self.image: QtGui.QPixmap | None = None
+        self.hover: bool = True
+        self.alpha: float = 1
 
-    def setSize(self, width, height, xoff=0, yoff=0):
+    def setSize(self, width: float, height: float, xoff: float = 0, yoff: float = 0):
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.setPos(xoff, yoff)
         self.width = width
         self.height = height
 
-    def paint(self, painter, option, widget=None):
+    def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionGraphicsItem | None, widget: QtWidgets.QWidget | None = None):
+        if painter is None:
+            return
 
         if option is not None:
             painter.setClipRect(option.exposedRect)
@@ -737,7 +761,7 @@ class AuxiliaryImage(AuxiliarySpriteItem):
 
 
 class AuxiliaryImage_FollowsRect(AuxiliaryImage):
-    def __init__(self, parent, width, height):
+    def __init__(self, parent: QtWidgets.QGraphicsItem, width: float, height: float):
         """
         Constructor
         """
@@ -749,24 +773,21 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
         # Doing it this way may provide a slight speed boost?
         self.flagPresent = lambda flags, flag: flags | flag == flags
 
-    def setSize(self, width, height):
-        super().setSize(width, height)
+    def setSize(self, width: float, height: float, xoff: float = 0, yoff: float = 0):
+        super().setSize(width, height, xoff, yoff)
 
         self.realwidth = width
         self.realheight = height
 
     def paint(self, painter, option, widget=None):
-
-        if not RealViewEnabled: return
+        if not RealViewEnabled:
+            return
         super().paint(painter, option, widget)
 
         if self.realimage is None:
-            try:
-                self.realimage = self.image
-            except:
-                pass
+            self.realimage = self.image
 
-    def move(self, x, y, w, h):
+    def move(self, x: float, y: float, w: float, h: float):
         """
         Repositions the auxiliary image
         """
@@ -809,13 +830,13 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
             newy = y + (h / 2) - (self.height / 2)
 
         # Translate that to relative coords
-        try:
-            parent = self.parent
-            newx = newx - parent.x()
-            newy = newy - parent.y()
-        except RuntimeError:
-            # Must catch this error -> if parent is deleted
+        if self.parent is None:
+            # parent is deleted
             return
+
+        parent = self.parent
+        newx = newx - parent.x()
+        newy = newy - parent.y()
 
         if newx == oldx and newy == oldy:
             # Don't set the position and update the scene if the item did not
@@ -826,8 +847,9 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
         self.setPos(newx, newy)
 
         # Update the affected area of the scene
-        if self.scene() is not None:
-            self.scene().update(oldx + parent.x(), oldy + parent.y(), self.width, self.height)
+        scene = self.scene()
+        if scene is not None:
+            scene.update(oldx + parent.x(), oldy + parent.y(), self.width, self.height)
 
 
 class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
@@ -853,7 +875,7 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
 
         self.BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 
-    def setIsBehindZone(self, behind):
+    def setIsBehindZone(self, behind: bool):
         """
         This allows you to choose whether the auiliary item will display
         behind the zone or in front of it. Default is for the item to
@@ -861,17 +883,19 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         """
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, behind)
 
-    def setZoneID(self, id):
+    def setZoneID(self, id: int):
         """
         Changes this aux item's parent to zone with the given id.
         Raises ValueError if no zone with this id exists.
         """
 
-        if not hasattr(Area, 'zones'): return
+        if not hasattr(Area, 'zones'):
+            return
 
         z = None
-        for iterz in Area.zones:
-            if iterz.id == id: z = iterz
+        if Area is not None:
+            for iterz in Area.zones:
+                if iterz.id == id: z = iterz
         if z is None:
             raise ValueError('No zone with this ID exists.')
 
@@ -896,7 +920,6 @@ class AuxiliaryZoneItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         """
         Called when the zone is repositioned or resized
         """
-        pass
 
     def boundingRect(self):
         """
@@ -910,7 +933,7 @@ class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
     An auxiliary item that can have a location as its parent
     """
 
-    def __init__(self, parent, imageObj):
+    def __init__(self, parent, imageObj: QtGui.QPixmap):
         """
         Generic constructor for auxiliary items
         """
@@ -923,7 +946,7 @@ class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         self.setParentItem(parent)
         self.hover = False
 
-    def setIsBehindLocation(self, behind):
+    def setIsBehindLocation(self, behind: bool):
         """
         This allows you to choose whether the auiliary item will display
         behind the location or in front of it. Default is for the item to
@@ -937,14 +960,13 @@ class AuxiliaryLocationItem(AuxiliaryItem, QtWidgets.QGraphicsItem):
         location.
         """
         self.setPos(0, 0)
-        self.setSize(self.parent.width(), self.parent.height())
 
     def paint(self, painter, option, widget=None):
         """
         Paints the image, tiled to fill the bounding rect of the location it
         belongs to.
         """
-        if self.imageObj is None:
+        if self.imageObj is None or painter is None:
             return
 
         painter.drawTiledPixmap(self.boundingRect(), self.imageObj)

@@ -64,7 +64,7 @@ class TilesetTile:
     Class that represents a single tile in a tileset
     """
 
-    def __init__(self, main):
+    def __init__(self, main: QtGui.QPixmap):
         """
         Initializes the TilesetTile
         """
@@ -1511,4 +1511,3 @@ def LoadOverrides():
             sourcex += 24
         sourcex = 0
         sourcey += 24
-

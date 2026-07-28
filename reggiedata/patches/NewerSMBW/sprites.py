@@ -132,6 +132,8 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
 
     def paint(self, painter):
         super().paint(painter)
+        if self.image is None:
+            return
 
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         if self.tilenum < len(SLib.Tiles):
@@ -582,9 +584,10 @@ class SpriteImage_NewerPodoboo(SLib.SpriteImage):  # 46
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
-        self.aux.append(SLib.AuxiliaryImage(parent, 48, 48))
-        self.aux[0].setPos(-6, -6)
-        self.aux[0].hover = False
+        podobooAuxImage = SLib.AuxiliaryImage(parent, 48, 48)
+        podobooAuxImage.setPos(-6, -6)
+        podobooAuxImage.hover = False
+        self.aux.append(podobooAuxImage)
         self.dimensions = (-3, 5, 24, 24)
 
     @staticmethod
@@ -598,6 +601,9 @@ class SpriteImage_NewerPodoboo(SLib.SpriteImage):  # 46
             ImageCache[f'Podoboo{i}'] = SLib.GetPixmap(f'podoboo{i}.png')
 
     def dataChanged(self):
+        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+            return
+
         style = (self.parent.spritedata[2] & 0xF) % 9
         if style == 2:
             self.aux[0].image = ImageCache['Podoboo0']
@@ -742,6 +748,9 @@ class SpriteImage_NewerParaKoopa(SLib.SpriteImage_StaticMultiple):  # 58
                     ImageCache[f'KoopaShell{flag_style}'] = SLib.GetPixmap(f'koopa_shell_{flag_style}.png')
 
     def dataChanged(self):
+        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+            return
+
         # get properties
         red = self.parent.spritedata[5] & 1
         mode = (self.parent.spritedata[5] >> 4) & 3
@@ -1027,6 +1036,8 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
 
     def dataChanged(self):
         super().dataChanged()
+        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+            return
 
         height = self.parent.spritedata[5] % 8
         style = self.parent.spritedata[2] % 5
@@ -1090,6 +1101,9 @@ class SpriteImage_NewerFloatingBarrel(SLib.SpriteImage_StaticMultiple):  # 145
             ImageCache[f'FloatingBarrel{flag}'] = SLib.GetPixmap(f'barrel_floating_{flag}.png')
 
     def dataChanged(self):
+        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+            return
+
         color = self.parent.spritedata[2] & 3
         if color == 0:
             img = ImageCache['FloatingBarrel']
@@ -1538,6 +1552,9 @@ class SpriteImage_NewerWiggleShroom(SLib.SpriteImage):  # 231
 
     def dataChanged(self):
         super().dataChanged()
+        if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
+            return
+
         width = (self.parent.spritedata[4] & 0xF0) >> 4
         long = (self.parent.spritedata[3] >> 2) & 1
         extends = (self.parent.spritedata[3] >> 5) & 1
@@ -1593,6 +1610,9 @@ class SpriteImage_LineEvent(SLib.SpriteImage):  # 244
 
     def dataChanged(self):
         super().dataChanged()
+        if not isinstance(self.aux[0], SLib.AuxiliaryRectOutline):
+            return
+
         width = (self.parent.spritedata[5] >> 4) & 0xF
         height = self.parent.spritedata[4] & 0xF
         if width == 0:
@@ -1610,8 +1630,9 @@ class SpriteImage_LineEvent(SLib.SpriteImage):  # 244
 class SpriteImage_ElectricLine(SLib.SpriteImage_StaticMultiple):  # 250
     def __init__(self, parent):
         super().__init__(parent)
-        self.aux.append(SLib.AuxiliaryRectOutline(parent, 48, 672))
-        self.aux[0].fillFlag = False
+        lineOutline = SLib.AuxiliaryRectOutline(parent, 48, 672)
+        lineOutline.fillFlag = False
+        self.aux.append(lineOutline)
 
     @staticmethod
     def loadImages():
@@ -1619,6 +1640,9 @@ class SpriteImage_ElectricLine(SLib.SpriteImage_StaticMultiple):  # 250
         SLib.loadIfNotInImageCache('ElectricLineRight', 'electric_line_right.png')
 
     def dataChanged(self):
+        if not isinstance(self.aux[0], SLib.AuxiliaryRectOutline):
+            return
+
         left = self.parent.spritedata[5] & 1
 
         if left:
@@ -2008,9 +2032,10 @@ class SpriteImage_FallingChestnut(SLib.SpriteImage_StaticMultiple):  # 320
 class SpriteImage_MegaThwomp(SLib.SpriteImage):  # 322
     def __init__(self, parent):
         super().__init__(parent)
-        self.aux.append(SLib.AuxiliaryImage(parent, 121, 140))
-        self.aux[0].image = ImageCache['MegaThwomp']
-        self.aux[0].setPos(-60, -101)
+        megaThwompAuxImage = SLib.AuxiliaryImage(parent, 121, 140)
+        megaThwompAuxImage.image = ImageCache['MegaThwomp']
+        megaThwompAuxImage.setPos(-60, -101)
+        self.aux.append(megaThwompAuxImage)
 
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
@@ -2018,6 +2043,12 @@ class SpriteImage_MegaThwomp(SLib.SpriteImage):  # 322
 
     def dataChanged(self):
         super().dataChanged()
+        if (
+            not isinstance(self.aux[1], SLib.AuxiliaryTrackObject)
+            or not isinstance(self.aux[2], SLib.AuxiliaryTrackObject)
+            or not isinstance(self.aux[3], SLib.AuxiliaryTrackObject)
+        ):
+            return
 
         left_buffer = self.parent.spritedata[2] + 2
         right_buffer = self.parent.spritedata[3] + 2
@@ -2049,10 +2080,12 @@ class SpriteImage_MegaThwomp(SLib.SpriteImage):  # 322
 class SpriteImage_Podouble(SLib.SpriteImage):  # 324
     def __init__(self, parent):
         super().__init__(parent)
-        self.aux.append(SLib.AuxiliaryImage(parent, 110, 110))
-        self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
-        self.aux[0].setPos(-45, -67)
-        self.aux[1].setPos(0, -288)
+        podoubleAuxImage = SLib.AuxiliaryImage(parent, 110, 110)
+        podoubleTrackObject = SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical)
+        podoubleAuxImage.setPos(-45, -67)
+        podoubleTrackObject.setPos(0, -288)
+        self.aux.append(podoubleAuxImage)
+        self.aux.append(podoubleTrackObject)
 
     @staticmethod
     def loadImages():
@@ -2060,6 +2093,11 @@ class SpriteImage_Podouble(SLib.SpriteImage):  # 324
         SLib.loadIfNotInImageCache('PodoubleIce', 'podouble_ice.png')
 
     def dataChanged(self):
+        if (
+            not isinstance(self.aux[0], SLib.AuxiliaryImage)
+            or not isinstance(self.aux[1], SLib.AuxiliaryTrackObject)
+        ):
+            return
         fire = (self.parent.spritedata[2] >> 4) & 1
         distance = self.parent.spritedata[5] & 0xFF
 
@@ -2095,7 +2133,7 @@ class SpriteImage_NewerBigShell(SLib.SpriteImage_StaticMultiple):  # 341
         super().dataChanged()
 
     def paint(self, painter):
-        if globals_.Layer0Shown:
+        if globals_.Layer0Shown and self.image is not None:
             painter.drawPixmap(0, 0, self.image.width(), self.image.height(), self.image)
         else:
             painter.drawPixmap(0, 0, 322, 248, ImageCache['BigShellInside'])
@@ -2216,10 +2254,14 @@ class SpriteImage_NewerGlowBlock(SLib.SpriteImage):  # 391
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 48, 48))
-        self.aux[0].setPos(-11, -11)
+        glowBoxAuxImage = SLib.AuxiliaryImage(parent, 48, 48)
+        glowBoxAuxImage.setPos(-11, -11)
+        self.aux.append(glowBoxAuxImage)
 
     def dataChanged(self):
+        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+            return
+
         purple = self.parent.spritedata[2] & 1
         self.aux[0].image = ImageCache['GlowBlock' if not purple else 'GlowBlockPurple']
 
