@@ -5038,7 +5038,7 @@ class SpriteImage_MechaKoopa(SLib.SpriteImage_Static):  # 232
         SLib.loadIfNotInImageCache('MechaKoopa', 'mechakoopa.png')
 
 
-class SpriteImage_Bulber(SLib.SpriteImage_StaticMultiple):  # 233
+class SpriteImage_Bulber(SLib.SpriteImage):  # 233
     def __init__(self, parent):
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
@@ -5078,9 +5078,11 @@ class SpriteImage_Bulber(SLib.SpriteImage_StaticMultiple):  # 233
             if isLeft:
                 self.aux[1].image = ImageCache['BulberL']
                 self.aux[1].setPos(-8, 0)
+                self.offset = (-35 / 1.5, -26 / 1.5)
             else:
                 self.aux[1].image = ImageCache['BulberR']
-                self.aux[1].setPos(6, 0)
+                self.aux[1].setPos(0, 0)
+                self.offset = (-27 / 1.5, -26 / 1.5)
         else:
             self.aux[0].setSize(0, 24)
             self.aux[1].image = ImageCache['BulberL']
