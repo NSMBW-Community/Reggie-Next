@@ -8358,7 +8358,7 @@ class SpriteImage_Jellybeam(SLib.SpriteImage_Static):  # 425
             parent,
             1.5,
             ImageCache['Jellybeam'],
-            (-13 / 1.5, -11 / 1,5),
+            (-13 / 1.5, -11 / 1.5),
         )
 
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Vertical))
