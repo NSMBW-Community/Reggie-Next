@@ -233,9 +233,6 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         
         textVal = (val * self._increment) + self._start
 
-        if textVal < self._start:
-            textVal = self._start
-
         # Check for any value overrides
         if self._overrides is not None:
             for rawVal, dispNum in self._overrides:
