@@ -2487,6 +2487,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
                                               globals_.trans.string('Err_Decompress', 1, '[file]', str(fn)))
                 return
+        elif not arcdata.startswith(b"U\xAA8-"):  # If LZ-compressed
+            try:
+                arcdata = lz77.UncompressLZ77(arcdata)
+            except IndexError:
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
+                                                globals_.trans.string('Err_Decompress', 2, '[file]', name))
+                return
 
         arc = archive.U8.load(arcdata)
 
