@@ -8,10 +8,6 @@ import archive
 
 from libs import lh, lz77, tpl, lib_versions
 
-################################################################################
-################################################################################
-################################################################################
-
 class ObjectDef:
     """
     Class for the object definitions
@@ -72,7 +68,7 @@ class TilesetTile:
         self.isAnimated = False
         self.animFrame = 0
         self.animTiles = []
-        self.collData = ()
+        self.collData = (0, 0, 0, 0, 0, 0, 0, 0)
         self.collOverlay = None
 
     def addAnimationData(self, data, reverse=False):
@@ -95,18 +91,6 @@ class TilesetTile:
         self.animTiles = animTiles
         self.isAnimated = True
 
-        # This NSMBLib method crashes.
-        ##padded = str(data)
-        ##padded += ' ' * (0x80000 - len(data))
-        ### It'll crash on this next line
-        ##rgbdata = NSMBLib.decodeTileAnims(padded)
-        ##tilesImg = QtGui.QImage(rgbdata, 32, (len(rgbdata)/4)/32, 32*4, QtGui.QImage.Format_ARGB32_Premultiplied)
-        ##tilesPix = QtGui.QPixmap.fromImage(tilesImg)
-
-        ##self.isAnimated = True
-        ##self.animTiles = []
-        ##self.animTiles.append(tilesPix.copy(0, 0, 31, 31).scaled(24, 24))
-
     def nextFrame(self):
         """
         Increments to the next frame
@@ -125,7 +109,7 @@ class TilesetTile:
         """
         self.animFrame = 0
 
-    def getCurrentTile(self, show_collision = False):
+    def getCurrentTile(self, showCollision = False):
         """
         Returns the current tile based on the current animation frame
         """
@@ -136,14 +120,14 @@ class TilesetTile:
             result = self.animTiles[self.animFrame]
         result = QtGui.QPixmap(result)
 
-        if globals_.CollisionsShown and show_collision and (self.collOverlay is not None):
+        if globals_.CollisionsShown and showCollision and (self.collOverlay is not None):
             p = QtGui.QPainter(result)
             p.drawPixmap(0, 0, self.collOverlay)
             del p
 
         return result
 
-    def setCollisions(self, colldata):
+    def setCollisions(self, colldata: tuple[int, int, int, int, int, int, int, int]):
         """
         Sets the collision data for this tile
         """
@@ -166,48 +150,39 @@ class TilesetTile:
         """
         Updates the collisions overlay for this pixmap
         """
-        # This is completely stolen from Puzzle. Only minor
-        # changes have been made. Thanks, Treeki!
+        # Heavily based on Puzzle
         CD = self.collData
-        if CD[2] & 16:  # Red
+
+        # Get the color for the overlay
+        if CD[2] & 16: # Spike core type
             color = QtGui.QColor(255, 0, 0, 120)
-        elif CD[5] == 1:  # Ice
-            color = QtGui.QColor(0, 0, 255, 120)
-        elif CD[5] == 2:  # Snow
-            color = QtGui.QColor(0, 0, 255, 120)
-        elif CD[5] == 3:  # Quicksand
-            color = QtGui.QColor(128, 64, 0, 120)
-        elif CD[5] == 4:  # Conveyor
-            color = QtGui.QColor(128, 128, 128, 120)
-        elif CD[5] == 5:  # Conveyor
-            color = QtGui.QColor(128, 128, 128, 120)
-        elif CD[5] == 6:  # Rope
-            color = QtGui.QColor(128, 0, 255, 120)
-        elif CD[5] == 7:  # Half Spike
-            color = QtGui.QColor(128, 0, 255, 120)
-        elif CD[5] == 8:  # Ledge
-            color = QtGui.QColor(128, 0, 255, 120)
-        elif CD[5] == 9:  # Ladder
-            color = QtGui.QColor(128, 0, 255, 120)
-        elif CD[5] == 10:  # Staircase
-            color = QtGui.QColor(255, 0, 0, 120)
-        elif CD[5] == 11:  # Carpet
-            color = QtGui.QColor(255, 0, 0, 120)
-        elif CD[5] == 12:  # Dust
-            color = QtGui.QColor(128, 64, 0, 120)
-        elif CD[5] == 13:  # Grass
-            color = QtGui.QColor(0, 255, 0, 120)
-        elif CD[5] == 14:  # Unknown
-            color = QtGui.QColor(255, 0, 0, 120)
-        elif CD[5] == 15:  # Beach Sand
-            color = QtGui.QColor(128, 64, 0, 120)
-        else:  # Brown?
+        elif CD[5] >= 1 or CD[5] <= 15:
+            colors = [ # Terrain types
+                QtGui.QColor(0, 0, 255, 120),     # Ice
+                QtGui.QColor(0, 0, 255, 120),     # Snow
+                QtGui.QColor(128, 64, 0, 120),    # Quicksand
+                QtGui.QColor(128, 128, 128, 120), # Conveyor (Left)
+                QtGui.QColor(128, 128, 128, 120), # Conveyor (Right)
+                QtGui.QColor(128, 0, 255, 120),   # Rope
+                QtGui.QColor(128, 0, 255, 120),   # Anti Wall Jumps
+                QtGui.QColor(128, 0, 255, 120),   # Ledge
+                QtGui.QColor(128, 0, 255, 120),   # Ladder
+                QtGui.QColor(255, 0, 0, 120),     # Staircase
+                QtGui.QColor(255, 0, 0, 120),     # Carpet
+                QtGui.QColor(128, 64, 0, 120),    # Desert Sand ("Dusty")
+                QtGui.QColor(0, 255, 0, 120),     # Grass
+                QtGui.QColor(255, 0, 0, 120),     # Muffled
+                QtGui.QColor(128, 64, 0, 120),    # Beach Sand
+            ]
+
+            color = colors[CD[5]-1]
+        else: # Others
             color = QtGui.QColor(64, 30, 0, 120)
 
         # Sets Brush style for fills
-        if CD[2] & 4:  # Climbing Grid
+        if CD[2] & 4: # Climbing Grid
             style = QtCore.Qt.BrushStyle.DiagCrossPattern
-        elif (CD[3] & 16) or (CD[3] & 4) or (CD[3] & 8):  # Breakable
+        elif (CD[3] & 16) or (CD[3] & 4) or (CD[3] & 8): # Breakable
             style = QtCore.Qt.BrushStyle.Dense5Pattern
         else:
             style = QtCore.Qt.BrushStyle.SolidPattern
@@ -222,280 +197,128 @@ class TilesetTile:
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         painter.setOpacity(1.0)
 
-        # Paints shape based on other stuff
-        if CD[3] & 32:  # Slope
-            if CD[7] == 0:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(24, 0)]))
-            elif CD[7] == 1:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 2:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(24, 12)]))
-            elif CD[7] == 3:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(0, 12),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 24)]))
-            elif CD[7] == 4:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 12),
-                                                    QtCore.QPoint(24, 24)]))
-            elif CD[7] == 5:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 12),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 6:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(12, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 24)]))
-            elif CD[7] == 7:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(12, 24),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 24)]))
-            elif CD[7] == 8:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(12, 0),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 9:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(12, 24)]))
-            elif CD[7] == 10:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(24, 0)]))
-            elif CD[7] == 11:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(24, 18),
-                                                    QtCore.QPoint(24, 24)]))
-            elif CD[7] == 12:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(24, 12),
-                                                    QtCore.QPoint(0, 18),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 13:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(24, 6),
-                                                    QtCore.QPoint(0, 12),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 14:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(0, 6),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 15:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(24, 6),
-                                                    QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 16:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(24, 12),
-                                                    QtCore.QPoint(0, 6),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 17:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(24, 18),
-                                                    QtCore.QPoint(0, 12),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 18:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(0, 18),
-                                                    QtCore.QPoint(0, 24)]))
+        # Paint specific shapes
 
-        elif CD[3] & 64:  # Reverse Slope
-            if CD[7] == 0:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(24, 0)]))
-            elif CD[7] == 1:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0)]))
-            elif CD[7] == 2:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 12)]))
-            elif CD[7] == 3:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(0, 12),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(24, 0)]))
-            elif CD[7] == 4:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 12)]))
-            elif CD[7] == 5:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 12),
-                                                    QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0)]))
-            elif CD[7] == 6:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(12, 24)]))
-            elif CD[7] == 7:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(12, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 24)]))
-            elif CD[7] == 8:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(12, 24),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 9:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(12, 0),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 10:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(24, 0)]))
-            elif CD[7] == 11:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 6)]))
-            elif CD[7] == 12:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 12),
-                                                    QtCore.QPoint(0, 6)]))
-            elif CD[7] == 13:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 18),
-                                                    QtCore.QPoint(0, 12)]))
-            elif CD[7] == 14:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(0, 18)]))
-            elif CD[7] == 15:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 18),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 16:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 12),
-                                                    QtCore.QPoint(0, 18)]))
-            elif CD[7] == 17:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 6),
-                                                    QtCore.QPoint(0, 12)]))
-            elif CD[7] == 18:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(0, 6)]))
+        # Ground slopes
+        if CD[3] & 32:
+            slopes = [
+                [QtCore.QPoint(0, 24), QtCore.QPoint(24, 24), QtCore.QPoint(24, 0)], # 1x1 up
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 24), QtCore.QPoint(0, 24)],  # 1x1 down
+                # 2x1 up
+                [QtCore.QPoint(0, 24), QtCore.QPoint(24, 24), QtCore.QPoint(24, 12)],
+                [QtCore.QPoint(0, 24), QtCore.QPoint(0, 12), QtCore.QPoint(24, 0), QtCore.QPoint(24, 24)],
+                # 2x1 down
+                [QtCore.QPoint(0, 24), QtCore.QPoint(0, 0), QtCore.QPoint(24, 12), QtCore.QPoint(24, 24)],
+                [QtCore.QPoint(0, 12), QtCore.QPoint(24, 24), QtCore.QPoint(0, 24)],
+                # 1x2 up
+                [QtCore.QPoint(0, 24), QtCore.QPoint(12, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 24)],
+                [QtCore.QPoint(12, 24), QtCore.QPoint(24, 0), QtCore.QPoint(24, 24)],
+                # 1x2 down
+                [QtCore.QPoint(0, 0), QtCore.QPoint(12, 0), QtCore.QPoint(24, 24), QtCore.QPoint(0, 24)],
+                [QtCore.QPoint(0, 0), QtCore.QPoint(0, 24), QtCore.QPoint(12, 24)],
+                # Slope edge
+                [QtCore.QPoint(0, 0), QtCore.QPoint(0, 24), QtCore.QPoint(24, 24), QtCore.QPoint(24, 0)],
+                # 4x1 up
+                [QtCore.QPoint(0, 24), QtCore.QPoint(24, 18), QtCore.QPoint(24, 24)],
+                [QtCore.QPoint(24, 24), QtCore.QPoint(24, 12), QtCore.QPoint(0, 18), QtCore.QPoint(0, 24)],
+                [QtCore.QPoint(24, 24), QtCore.QPoint(24, 6), QtCore.QPoint(0, 12), QtCore.QPoint(0, 24)],
+                [QtCore.QPoint(24, 24), QtCore.QPoint(24, 0), QtCore.QPoint(0, 6), QtCore.QPoint(0, 24)],
+                # 4x1 down
+                [QtCore.QPoint(24, 24), QtCore.QPoint(24, 6), QtCore.QPoint(0, 0), QtCore.QPoint(0, 24)],
+                [QtCore.QPoint(24, 24), QtCore.QPoint(24, 12), QtCore.QPoint(0, 6), QtCore.QPoint(0, 24)],
+                [QtCore.QPoint(24, 24), QtCore.QPoint(24, 18), QtCore.QPoint(0, 12), QtCore.QPoint(0, 24)],
+                [QtCore.QPoint(24, 24), QtCore.QPoint(0, 18), QtCore.QPoint(0, 24)]
+            ]
 
-        elif CD[2] & 8:  # Partial
-            if CD[7] == 1:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(12, 0),
-                                                    QtCore.QPoint(12, 12),
-                                                    QtCore.QPoint(0, 12)]))
-            elif CD[7] == 2:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(12, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 12),
-                                                    QtCore.QPoint(12, 12)]))
-            elif CD[7] == 3:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 12),
-                                                    QtCore.QPoint(0, 12)]))
-            elif CD[7] == 4:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 12),
-                                                    QtCore.QPoint(12, 12),
-                                                    QtCore.QPoint(12, 24),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 5:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(12, 0),
-                                                    QtCore.QPoint(12, 24),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 6:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(12, 24),
-                                                    QtCore.QPoint(12, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 12),
-                                                    QtCore.QPoint(0, 12)]))
-            elif CD[7] == 7:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 12),
-                                                    QtCore.QPoint(12, 12),
-                                                    QtCore.QPoint(12, 24),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 8:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(12, 12),
-                                                    QtCore.QPoint(24, 12),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(12, 24)]))
-            elif CD[7] == 9:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 12),
-                                                    QtCore.QPoint(0, 12),
-                                                    QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(12, 24),
-                                                    QtCore.QPoint(12, 0)]))
-            elif CD[7] == 10:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(12, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(12, 24)]))
-            elif CD[7] == 11:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(12, 24),
-                                                    QtCore.QPoint(12, 12),
-                                                    QtCore.QPoint(0, 12)]))
-            elif CD[7] == 12:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 12),
-                                                    QtCore.QPoint(24, 12),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 13:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(12, 0),
-                                                    QtCore.QPoint(12, 12),
-                                                    QtCore.QPoint(24, 12),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 14:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(12, 0),
-                                                    QtCore.QPoint(12, 12),
-                                                    QtCore.QPoint(0, 12),
-                                                    QtCore.QPoint(0, 24)]))
-            elif CD[7] == 15:
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(0, 24)]))
+            if CD[7] <= 18:
+                painter.drawPolygon(QtGui.QPolygon(slopes[CD[7]]))
 
-        elif CD[2] & 0x20:  # Solid-on-bottom
+        # Ceiling slopes
+        elif CD[3] & 64:
+            slopes = [
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 24), QtCore.QPoint(24, 0)], # 1x1 down
+                [QtCore.QPoint(0, 24), QtCore.QPoint(0, 0), QtCore.QPoint(24, 0)],  # 1x1 up
+                # 2x1 down
+                [QtCore.QPoint(24, 0), QtCore.QPoint(0, 0), QtCore.QPoint(24, 12)],
+                [QtCore.QPoint(0, 0), QtCore.QPoint(0, 12), QtCore.QPoint(24, 24), QtCore.QPoint(24, 0)],
+                # 2x1 up
+                [QtCore.QPoint(0, 24), QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 12)],
+                [QtCore.QPoint(0, 12), QtCore.QPoint(0, 0), QtCore.QPoint(24, 0)],
+                # 1x2 down
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 24), QtCore.QPoint(12, 24)],
+                [QtCore.QPoint(12, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 24)],
+                # 1x2 up
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(12, 24), QtCore.QPoint(0, 24)],
+                [QtCore.QPoint(0, 0), QtCore.QPoint(12, 0), QtCore.QPoint(0, 24)],
+                # Slope edge
+                [QtCore.QPoint(0, 0), QtCore.QPoint(0, 24), QtCore.QPoint(24, 24), QtCore.QPoint(24, 0)],
+                # 4x1 down
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 6)],
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 12), QtCore.QPoint(0, 6)],
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 18), QtCore.QPoint(0, 12)],
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 24), QtCore.QPoint(0, 18)],
+                # 4x1 up
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 18), QtCore.QPoint(0, 24)],
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 12), QtCore.QPoint(0, 18)],
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 6), QtCore.QPoint(0, 12)],
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(0, 6)],
+            ]
+
+            if CD[7] <= 18:
+                painter.drawPolygon(QtGui.QPolygon(slopes[CD[7]]))
+
+        # Partial tiles
+        elif CD[2] & 8:
+            parts = [
+                # Top left
+                [QtCore.QPoint(0, 0), QtCore.QPoint(12, 0), QtCore.QPoint(12, 12), QtCore.QPoint(0, 12)],
+                # Top right
+                [QtCore.QPoint(12, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 12), QtCore.QPoint(12, 12)],
+                # Top half
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 12), QtCore.QPoint(0, 12)],
+                # Bottom left
+                [QtCore.QPoint(0, 12), QtCore.QPoint(12, 12), QtCore.QPoint(12, 24), QtCore.QPoint(0, 24)],
+                # Left half
+                [QtCore.QPoint(0, 0), QtCore.QPoint(12, 0), QtCore.QPoint(12, 24), QtCore.QPoint(0, 24)],
+                # Diagonal TL + BR
+                [QtCore.QPoint(0, 24), QtCore.QPoint(12, 24), QtCore.QPoint(12, 0), QtCore.QPoint(24, 0),
+                 QtCore.QPoint(24, 12), QtCore.QPoint(0, 12)],
+                # 3/4 (no BR)
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 12), QtCore.QPoint(12, 12),
+                 QtCore.QPoint(12, 24), QtCore.QPoint(0, 24)],
+                # Bottom right
+                [QtCore.QPoint(12, 12), QtCore.QPoint(24, 12), QtCore.QPoint(24, 24), QtCore.QPoint(12, 24)],
+                # Diagonal TL + BR (copy)
+                [QtCore.QPoint(24, 0), QtCore.QPoint(24, 12), QtCore.QPoint(0, 12), QtCore.QPoint(0, 24),
+                 QtCore.QPoint(12, 24), QtCore.QPoint(12, 0)],
+                # Right half
+                [QtCore.QPoint(12, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 24), QtCore.QPoint(12, 24)],
+                # 3/4 (no BL)
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 24), QtCore.QPoint(12, 24),
+                 QtCore.QPoint(12, 12), QtCore.QPoint(0, 12)],
+                # Bottom half
+                [QtCore.QPoint(0, 12), QtCore.QPoint(24, 12), QtCore.QPoint(24, 24), QtCore.QPoint(0, 24)],
+                # 3/4 (no TR)
+                [QtCore.QPoint(0, 0), QtCore.QPoint(12, 0), QtCore.QPoint(12, 12), QtCore.QPoint(24, 12),
+                 QtCore.QPoint(24, 24), QtCore.QPoint(0, 24)],
+                # 3/4 (no TL)
+                [QtCore.QPoint(24, 24), QtCore.QPoint(24, 0), QtCore.QPoint(12, 0), QtCore.QPoint(12, 12),
+                 QtCore.QPoint(0, 12), QtCore.QPoint(0, 24)],
+                # Full block
+                [QtCore.QPoint(0, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 24), QtCore.QPoint(0, 24)],
+            ]
+
+            if CD[7] > 0 and CD[7] <= 15:
+                painter.drawPolygon(QtGui.QPolygon(parts[CD[7]]))
+
+        # Solid-on-bottom
+        elif CD[2] & 0x20:
+            # Platform
             painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
                                                 QtCore.QPoint(24, 24),
                                                 QtCore.QPoint(24, 18),
                                                 QtCore.QPoint(0, 18)]))
-
+            # Arrow
             painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(15, 0),
                                                 QtCore.QPoint(15, 12),
                                                 QtCore.QPoint(18, 12),
@@ -504,12 +327,14 @@ class TilesetTile:
                                                 QtCore.QPoint(9, 12),
                                                 QtCore.QPoint(9, 0)]))
 
-        elif CD[2] & 0x80:  # Solid-on-top
+        # Solid-on-top
+        elif CD[2] & 0x80:
+            # Platform
             painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
                                                 QtCore.QPoint(24, 0),
                                                 QtCore.QPoint(24, 6),
                                                 QtCore.QPoint(0, 6)]))
-
+            # Arrow
             painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(15, 24),
                                                 QtCore.QPoint(15, 12),
                                                 QtCore.QPoint(18, 12),
@@ -518,51 +343,53 @@ class TilesetTile:
                                                 QtCore.QPoint(9, 12),
                                                 QtCore.QPoint(9, 24)]))
 
-        elif CD[2] & 16:  # Spikes
-            if CD[7] == 0:
+        # Spikes
+        elif CD[2] & 16:
+            if CD[7] == 0: # 2 left spikes
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 0),
                                                     QtCore.QPoint(24, 12),
                                                     QtCore.QPoint(0, 6)]))
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 12),
                                                     QtCore.QPoint(24, 24),
                                                     QtCore.QPoint(0, 18)]))
-            if CD[7] == 1:
+            if CD[7] == 1: # 2 right spikes
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
                                                     QtCore.QPoint(0, 12),
                                                     QtCore.QPoint(24, 6)]))
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 12),
                                                     QtCore.QPoint(0, 24),
                                                     QtCore.QPoint(24, 18)]))
-            if CD[7] == 2:
+            if CD[7] == 2: # 2 up spikes
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
                                                     QtCore.QPoint(12, 24),
                                                     QtCore.QPoint(6, 0)]))
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(12, 24),
                                                     QtCore.QPoint(24, 24),
                                                     QtCore.QPoint(18, 0)]))
-            if CD[7] == 3:
+            if CD[7] == 3: # 2 down spikes
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
                                                     QtCore.QPoint(12, 0),
                                                     QtCore.QPoint(6, 24)]))
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(12, 0),
                                                     QtCore.QPoint(24, 0),
                                                     QtCore.QPoint(18, 24)]))
-            if CD[7] == 4:
+            if CD[7] == 4: # 1x2 spike base
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
                                                     QtCore.QPoint(24, 0),
                                                     QtCore.QPoint(18, 24),
                                                     QtCore.QPoint(6, 24)]))
-            if CD[7] == 5:
+            if CD[7] == 5: # 1x2 spike point
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(6, 0),
                                                     QtCore.QPoint(18, 0),
                                                     QtCore.QPoint(12, 24)]))
-            if CD[7] == 6:
+            if CD[7] == 6: # 1x1 spike
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
                                                     QtCore.QPoint(24, 0),
                                                     QtCore.QPoint(12, 24)]))
-            if CD[7] == 7:
+            if CD[7] == 7: # Full spike
                 # Center Fill
                 painter.drawRect(7, 7, 10, 10)
+
                 # Top Left
                 painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
                                                     QtCore.QPoint(10, 6),
@@ -596,53 +423,14 @@ class TilesetTile:
                                                     QtCore.QPoint(16, 8),
                                                     QtCore.QPoint(16, 16)]))
 
-        elif CD[1] & 2: # Donut Blocks
+        # Donut Blocks
+        elif CD[1] & 2:
             painter.setOpacity(0.471) # A:120
-            painter.drawPixmap(0, 0, globals_.Overrides[26 * 1 + 12].main) # Donut
+            painter.drawPixmap(0, 0, globals_.Overrides[26 * 1 + 12].main)
 
-            ##        elif CD[3] & 4: # QBlock
-            ##            if CD[7] == 0:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/FireF.png'))
-            ##            if CD[7] == 1:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Star.png'))
-            ##            if CD[7] == 2:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Coin.png'))
-            ##            if CD[7] == 3:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Vine.png'))
-            ##            if CD[7] == 4:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/1up.png'))
-            ##            if CD[7] == 5:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Mini.png'))
-            ##            if CD[7] == 6:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Prop.png'))
-            ##            if CD[7] == 7:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/Peng.png'))
-            ##            if CD[7] == 8:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'QBlock/IceF.png'))
-            ##
-            ##        elif CD[3] & 2: # Coin
-            ##            if CD[7] == 0:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Coin/Coin.png'))
-            ##            if CD[7] == 4:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Coin/POW.png'))
-            ##
-            ##        elif CD[3] & 8: # Exploder
-            ##            if CD[7] == 1:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Explode/Stone.png'))
-            ##            if CD[7] == 2:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Explode/Wood.png'))
-            ##            if CD[7] == 3:
-            ##                painter.drawPixmap(option.rect, QtGui.QPixmap(path + 'Explode/Red.png'))
-            ##
-
-            #                elif CD[5] == 4 or 5: # Conveyor
-            #                    d
-
-        elif (CD[3] & 1) or (CD[3] in (5, 0x10)) or (CD[3] & 4) or (CD[3] & 8):  # Solid, question or brick
+        # Solid, question or brick
+        elif (CD[3] & 1) or (CD[3] in (5, 0x10)) or (CD[3] & 4) or (CD[3] & 8):
             painter.drawRect(0, 0, 24, 24)
-
-        else:  # No fill
-            pass
 
         self.collOverlay = collPix
 
@@ -755,26 +543,25 @@ def RenderDiagonalObject(dest, obj, width, height, fullslope):
     """
     Render a diagonal object
     """
-    # set all to empty tiles
+    # Set all to empty tiles
     for row in dest:
         for x in range(width):
             row[x] = -1
 
-    # get sections
+    # Get sections
     mainBlock, subBlock = GetSlopeSections(obj)
     cbyte = obj.rows[0][0][0]
 
-    # get direction
+    # Get direction
     goLeft = ((cbyte & 1) != 0)
     goDown = ((cbyte & 2) != 0)
 
-    # base the amount to draw by seeing how much we can fit in each direction
+    # Base the amount to draw by seeing how much we can fit in each direction
     if fullslope:
         drawAmount = max(height // len(mainBlock), width // len(mainBlock[0]))
     else:
         drawAmount = min(height // len(mainBlock), width // len(mainBlock[0]))
 
-    # if it's not goingLeft and not goingDown:
     if not goLeft and not goDown:
         # slope going from SW => NE
         # start off at the bottom left
@@ -783,7 +570,6 @@ def RenderDiagonalObject(dest, obj, width, height, fullslope):
         xi = len(mainBlock[0])
         yi = -len(mainBlock)
 
-    # ... and if it's goingLeft and not goingDown:
     elif goLeft and not goDown:
         # slope going from SE => NW
         # start off at the top left
@@ -792,7 +578,6 @@ def RenderDiagonalObject(dest, obj, width, height, fullslope):
         xi = len(mainBlock[0])
         yi = len(mainBlock)
 
-    # ... and if it's not goingLeft but it's goingDown:
     elif not goLeft and goDown:
         # slope going from NW => SE
         # start off at the top left
@@ -801,7 +586,6 @@ def RenderDiagonalObject(dest, obj, width, height, fullslope):
         xi = len(mainBlock[0])
         yi = len(mainBlock)
 
-    # ... and finally, if it's goingLeft and goingDown:
     else:
         # slope going from SW => NE
         # start off at the bottom left
@@ -810,7 +594,7 @@ def RenderDiagonalObject(dest, obj, width, height, fullslope):
         xi = len(mainBlock[0])
         yi = -len(mainBlock)
 
-    # finally draw it
+    # Finally draw it
     for i in range(drawAmount):
         PutObjectArray(dest, x, y, mainBlock, width, height)
         if subBlock is not None:
@@ -828,13 +612,12 @@ def PutObjectArray(dest, xo, yo, block, width, height):
     """
     Places a tile array into an object
     """
-    # for y in range(yo,min(yo+len(block),height)):
     for y in range(yo, yo + len(block)):
         if y < 0: continue
         if y >= height: continue
         drow = dest[y]
         srow = block[y - yo]
-        # for x in range(xo,min(xo+len(srow),width)):
+
         for x in range(xo, xo + len(srow)):
             if x < 0: continue
             if x >= width: continue
@@ -846,16 +629,18 @@ def GetSlopeSections(obj):
     Sorts the slope data into sections
     """
     sections = []
-    currentSection = None
+    currentSection = []
 
     for row in obj.rows:
-        if row and (row[0][0] & 0x80) != 0:  # begin new section
-            if currentSection is not None:
+        # Begin new section
+        if row and (row[0][0] & 0x80) != 0:
+            if currentSection:
                 sections.append(CreateSection(currentSection))
             currentSection = []
         currentSection.append(row)
 
-    if currentSection is not None:  # end last section
+    # End last section
+    if currentSection:
         sections.append(CreateSection(currentSection))
 
     if len(sections) == 1:
@@ -868,13 +653,13 @@ def CreateSection(rows):
     """
     Create a slope section
     """
-    # calculate width
+    # Calculate width
     width = 0
     for row in rows:
         thiswidth = CountTiles(row)
         if width < thiswidth: width = thiswidth
 
-    # create the section
+    # Create the section
     section = []
     for row in rows:
         drow = [0] * width
@@ -924,33 +709,43 @@ def LoadTileset(idx, name, reload_=False):
     tileset_paths = reversed(globals_.gamedef.GetTexturePaths())
 
     found = False
+    compressed = False
+    arcname = ''
     for path in tileset_paths:
         if path is None: break
 
         arcname = os.path.join(path, name + ".arc.LH")
 
-        # Prioritise .arc.LH over regular .arc, just like the game does.
+        # Prioritise .arc.LH over regular .arc, just like Newer does.
         if os.path.isfile(arcname):
             compressed = True
             found = True
             break
 
-        arcname = os.path.splitext(arcname)[0]  # strip away the .LH suffix
+        # Now check for LZ compression
+        arcname = os.path.join(path, name + ".arc.LZ")
+        if os.path.isfile(arcname):
+            compressed = True
+            found = True
+            break
+
+        # Strip away the .LH suffix
+        arcname = os.path.splitext(arcname)[0]
         if os.path.isfile(arcname):
             compressed = False
             found = True
             break
 
-    # warning if not found
+    # Warning if not found
     if not found:
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_MissingTileset', 0),
                                       globals_.trans.string('Err_MissingTileset', 1, '[file]', name))
         return False
 
-    # if this file's already loaded, return
+    # If this file's already loaded, return
     if globals_.TilesetFilesLoaded[idx] == arcname and not reload_: return
 
-    # get the data
+    # Get the data
     with open(arcname, 'rb') as fileobj:
         arcdata = fileobj.read()
 
@@ -961,6 +756,13 @@ def LoadTileset(idx, name, reload_=False):
             except IndexError:
                 QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
                                               globals_.trans.string('Err_Decompress', 1, '[file]', name))
+                return False
+        elif not arcdata.startswith(b"U\xAA8-"):  # If LZ-compressed
+            try:
+                arcdata = lz77.UncompressLZ77(arcdata)
+            except IndexError:
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
+                                                globals_.trans.string('Err_Decompress', 2, '[file]', name))
                 return False
 
     arc = archive.U8.load(arcdata)
@@ -973,19 +775,19 @@ def LoadTileset(idx, name, reload_=False):
             return False
         return True
 
-    # decompress the textures
+    # Decompress the textures
     found = exists('BG_tex/%s_tex.bin.LZ' % name)
     found2 = exists('BG_chk/d_bgchk_%s.bin' % name)
 
     if found and found2:
         comptiledata = arc['BG_tex/%s_tex.bin.LZ' % name]
-        colldata = arc['BG_chk/d_bgchk_%s.bin' % name]
+        colldata = bytes(arc['BG_chk/d_bgchk_%s.bin' % name])
     else:
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_CorruptedTilesetData', 0),
                                       globals_.trans.string('Err_CorruptedTilesetData', 1, '[file]', name))
         return False
 
-    # load in the textures
+    # Load in the textures
     img = LoadTexture_NSMBW(lz77.UncompressLZ77(comptiledata))
 
     # Divide it into individual tiles and
@@ -1012,7 +814,7 @@ def LoadTileset(idx, name, reload_=False):
 
     isAnimated, prefix = CheckTilesetAnimated(arc)
 
-    for i in range(tileoffset,tileoffset+256):
+    for i in range(tileoffset, tileoffset + 256):
         if idx == 0:
             if globals_.Tiles[i].collData[3] == 5:
                 fn = 'BG_tex/hatena_anime.bin'
@@ -1035,6 +837,7 @@ def LoadTileset(idx, name, reload_=False):
                 if found:
                     globals_.Tiles[i].addAnimationData(arc[fn])
 
+        # TODO: Dehardcode this?
         elif idx == 1 and name in containsConveyor:
             for x in range(2):
                 if i == 320+x*16:
@@ -1078,6 +881,7 @@ def LoadTileset(idx, name, reload_=False):
                     if found:
                         globals_.Tiles[i].addAnimationData(arc[fn])
 
+        # Setup Newer-style animated tiles
         if isAnimated:
             filenames = []
             filenames.append('%s_%d%s%s.bin' % (prefix, idx, hex(row)[2].lower(), hex(col)[2].lower()))
@@ -1101,10 +905,10 @@ def LoadTileset(idx, name, reload_=False):
             col = 0
             row += 1
 
-    # load the object definitions
+    # Load the object definitions
     defs = [None] * 256
 
-    indexfile = arc['BG_unt/%s_hd.bin' % name]
+    indexfile = bytes(arc['BG_unt/%s_hd.bin' % name])
     deffile = arc['BG_unt/%s.bin' % name]
     objcount = len(indexfile) // 4
     indexstruct = struct.Struct('>HBB')
@@ -1152,6 +956,13 @@ def IncrementTilesetFrame():
     if not globals_.TilesetsAnimating: return
     for tile in globals_.Tiles:
         if tile is not None: tile.nextFrame()
+
+    # TODO: Test if this is more efficient over updating the entire scene
+    # (seems obvious on paper, but tests are wildly inconsistent and give no answer)
+    # for layer in globals_.Area.layers:
+    #     for obj in layer:
+    #         obj.update()
+
     globals_.mainWindow.scene.update()
     globals_.mainWindow.objPicker.update()
 
@@ -1233,6 +1044,7 @@ def ProcessOverrides(idx, name):
         t = globals_.Tiles
 
         # 0: invisibg
+
         ## Items:
         # 1:coin, 2:fire, 3:star, 4:stoi, 5:vine,
         # 6:spri, 7:mini, 8:prop, 9:ping, 10:yosh,
@@ -1241,6 +1053,7 @@ def ProcessOverrides(idx, name):
         # Invisible blocks
         invisiblocks = (3, 4, 5, 6, 7, 8, 9, 10, 13)
         replacement = (1, 2, 3, 13, 5, 7, 8, 9, 11)
+
         # coin, fire, star, 1up, vine, mini, prop, ping, ice
         baseblock = globals_.Overrides_safe[0].main
         for i, replace in zip(invisiblocks, replacement):

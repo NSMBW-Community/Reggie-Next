@@ -1,4 +1,5 @@
 from level import Area as AreaType
+from tiles import TilesetTile, ObjectDef
 
 Area: AreaType | None = None
 AutoSaveData = b''
@@ -40,7 +41,7 @@ MusicInfo = None
 NumberFont = None
 NumSprites = 0
 ObjDesc = None
-ObjectDefinitions = None # 4 tilesets
+ObjectDefinitions: list[ObjectDef] # 4 tilesets
 ObjectsFrozen = False
 OverriddenTilesets = {
     "Pa0": set(),
@@ -53,8 +54,8 @@ OverriddenTilesets = {
     "Conveyors": set()
 }
 OverrideSnapping = False
-Overrides = None # 320 tiles, this is put into Tiles usually
-Overrides_safe = None
+Overrides: list[TilesetTile] = [] # 320 tiles, this is put into Tiles usually
+Overrides_safe: list[TilesetTile] = []
 OVERRIDE_UNKNOWN = 0
 PaddingLength = 0
 PathsFrozen = False
@@ -73,9 +74,9 @@ SpriteListData = None
 SpritesFrozen = False
 SpritesShown = True
 Sprites = None
-Tiles = None # 0x200 tiles per tileset, plus 64 for each type of override
+Tiles: dict[int, TilesetTile] = {} # 0x200 tiles per tileset, plus 64 for each type of override
 TilesetAnimTimer = None
-TilesetFilesLoaded = [None, None, None, None]
+TilesetFilesLoaded: [str, str, str, str]
 TilesetInfo = None
 TilesetNames = None
 TilesetsAnimating = False
