@@ -203,7 +203,10 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         )
 
     def valueFromText(self, text: str) -> int:
-        return (int(text) - self._start) // self._increment
+        val = (int(text) - self._start) // self._increment
+        if val < 0:
+            val = 0
+        return val
 
     def textFromValue(self, val: int) -> str:
         return str(val)
@@ -229,6 +232,9 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
             return
         
         textVal = (val * self._increment) + self._start
+
+        if textVal < self._start:
+            textVal = self._start
 
         # Check for any value overrides
         if self._overrides is not None:
