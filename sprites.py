@@ -71,6 +71,7 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
             ImageCache['BonePlatformM'] = SLib.GetPixmap('bone_platform_middle.png')
             ImageCache['BonePlatformR'] = SLib.GetPixmap('bone_platform_right.png')
 
+
     def paint(self, painter):
         color = 'Wooden'
         if self.color == 0:
@@ -7339,18 +7340,29 @@ class SpriteImage_BrownBlock(SLib.SpriteImage):  # 356
         column3x = width - 24
         row2y = 24
         row3y = height - 24
+        mid_offset_x = 48
+        mid_offset_y = 24
+
+        if height % 48 == 24:
+            mid_offset_y -= 12
+        if width % 72 == 0:
+            mid_offset_x -= 12
+        elif width % 72 == 24:
+            mid_offset_x -= 24
 
         painter.drawPixmap(0, 0, ImageCache['BrownBlockTL'])
         painter.drawTiledPixmap(column2x, 0, width - 48, 24, ImageCache['BrownBlockTM'])
         painter.drawPixmap(column3x, 0, ImageCache['BrownBlockTR'])
 
         painter.drawTiledPixmap(0, row2y, 24, height - 48, ImageCache['BrownBlockML'])
-        painter.drawTiledPixmap(column2x, row2y, width - 48, height - 48, ImageCache['BrownBlockMM'])
         painter.drawTiledPixmap(column3x, row2y, 24, height - 48, ImageCache['BrownBlockMR'])
 
         painter.drawPixmap(0, row3y, ImageCache['BrownBlockBL'])
         painter.drawTiledPixmap(column2x, row3y, width - 48, 24, ImageCache['BrownBlockBM'])
         painter.drawPixmap(column3x, row3y, ImageCache['BrownBlockBR'])
+
+        # Needs to be drawn last because it covers parts the other tiles
+        painter.drawTiledPixmap(column2x - 12, row2y - 12, width - 24, height - 24, ImageCache['BrownBlockMM'], mid_offset_x, mid_offset_y)
 
 
 class SpriteImage_Fruit(SLib.SpriteImage_StaticMultiple):  # 357
