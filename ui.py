@@ -388,13 +388,13 @@ class HexSpinBox(QtWidgets.QSpinBox):
     class HexValidator(QtGui.QValidator):
         def __init__(self, min, max):
             QtGui.QValidator.__init__(self)
-            self.valid = set('0123456789abcdef')
+            self.valid = set('0123456789ABCDEF')
             self.min = min
             self.max = max
 
         def validate(self, input, pos):
             try:
-                input = str(input).lower()
+                input = str(input).upper()
             except Exception:
                 return (self.State.Invalid, input, pos)
             valid = self.valid
