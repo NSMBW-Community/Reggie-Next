@@ -1907,7 +1907,7 @@ class SpriteImage_SpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
     def loadImages():
         if 'SpikeTop00' in ImageCache:
             return
-        SpikeTop = SLib.GetImage('GetImage.png')
+        SpikeTop = SLib.GetImage('spiketop.png')
         if SpikeTop is None:
             return
 
