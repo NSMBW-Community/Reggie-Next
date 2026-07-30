@@ -7338,7 +7338,7 @@ class SpriteImage_Pipe_MovingDown(SpriteImage_Pipe):  # 353
         super().dataChanged()
 
 
-class SpriteImage_BrownTowerBlockTwoLine(SpriteImage_BrownTowerBlock):  # 354
+class SpriteImage_BrownTowerBlockTwoWayLine(SpriteImage_BrownTowerBlock):  # 354
     pass
 
 
@@ -9751,7 +9751,7 @@ ImageClasses = {
     349: SpriteImage_MortonKoopaCastleBoss,
     352: SpriteImage_RockyWrench,
     353: SpriteImage_Pipe_MovingDown,
-    354: SpriteImage_BrownTowerBlockTwoLine,
+    354: SpriteImage_BrownTowerBlockTwoWayLine,
     355: SpriteImage_RollingHillWith1Pipe,
     356: SpriteImage_BrownTowerBlockNormal,
     357: SpriteImage_Fruit,
