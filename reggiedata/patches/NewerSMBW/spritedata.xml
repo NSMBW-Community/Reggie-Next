@@ -881,7 +881,7 @@
     <dependency notes="The Message Box Controller must be included in each Zone for Message Boxes to function correctly.">
       <required sprite="107"/>
     </dependency>
-    <checkbox nybble="10.4" title="Apply Message ID Offset"/>
+    <checkbox nybble="10.4" title="Apply Message ID Offset" comment2="This is a workaround to the Messages.bin file arbitrarily adding 256 to each message ID. It must be enabled for any messages to appear in-game."/>
     <value nybble="11-12" title="Message ID" requirednybble="10" requiredval="1" idtype="Message"/>
   </sprite> <!-- 152: Message Box -->
 
