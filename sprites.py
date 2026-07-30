@@ -952,6 +952,62 @@ class SpriteImage_UnusedGiantDoor(SLib.SpriteImage_Static):  # 319, 320
         SLib.loadIfNotInImageCache('UnusedGiantDoor', 'unused_giant_door.png')
 
 
+class SpriteImage_BrownTowerBlock(SLib.SpriteImage):  # 354, 356
+    def __init__(self, parent, scale=1.5):
+        super().__init__(parent, scale)
+        self.spritebox.shown = False
+
+    @staticmethod
+    def loadImages():
+        for vert in 'TMB':
+            for horz in 'LMR':
+                SLib.loadIfNotInImageCache(
+                    f'BrownBlock{vert}{horz}',
+                    f'brown_block_{vert}{horz}.png'
+                )
+
+    def dataChanged(self):
+        size = self.parent.spritedata[5]
+        height = size >> 4
+        width = size & 0xF
+        height = 1 if height == 0 else height
+        width = 1 if width == 0 else width
+        self.width = width * 16 + 16
+        self.height = height * 16 + 16
+
+    def paint(self, painter):
+        width = int(self.width * 1.5)
+        height = int(self.height * 1.5)
+
+        column2x = 24
+        column3x = width - 24
+        row2y = 24
+        row3y = height - 24
+        mid_offset_x = 48
+        mid_offset_y = 24
+
+        if height % 48 == 24:
+            mid_offset_y -= 12
+        if width % 72 == 0:
+            mid_offset_x -= 12
+        elif width % 72 == 24:
+            mid_offset_x -= 24
+
+        painter.drawPixmap(0, 0, ImageCache['BrownBlockTL'])
+        painter.drawTiledPixmap(column2x, 0, width - 48, 24, ImageCache['BrownBlockTM'])
+        painter.drawPixmap(column3x, 0, ImageCache['BrownBlockTR'])
+
+        painter.drawTiledPixmap(0, row2y, 24, height - 48, ImageCache['BrownBlockML'])
+        painter.drawTiledPixmap(column3x, row2y, 24, height - 48, ImageCache['BrownBlockMR'])
+
+        painter.drawPixmap(0, row3y, ImageCache['BrownBlockBL'])
+        painter.drawTiledPixmap(column2x, row3y, width - 48, 24, ImageCache['BrownBlockBM'])
+        painter.drawPixmap(column3x, row3y, ImageCache['BrownBlockBR'])
+
+        # Needs to be drawn last because it covers parts the other tiles
+        painter.drawTiledPixmap(12, 12, width - 24, height - 24, ImageCache['BrownBlockMM'], mid_offset_x, mid_offset_y)
+
+
 class SpriteImage_RollingHillWithPipe(SLib.SpriteImage):  # 355, 360
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
@@ -7282,37 +7338,24 @@ class SpriteImage_Pipe_MovingDown(SpriteImage_Pipe):  # 353
         super().dataChanged()
 
 
+class SpriteImage_BrownTowerBlockTwoLine(SpriteImage_BrownTowerBlock):  # 354
+    pass
+
+
+
 class SpriteImage_RollingHillWith1Pipe(SpriteImage_RollingHillWithPipe):  # 355
     pass
 
 
-class SpriteImage_BrownBlock(SLib.SpriteImage):  # 356
+class SpriteImage_BrownTowerBlockNormal(SpriteImage_BrownTowerBlock):  # 356
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.spritebox.shown = False
-
         self.aux.append(SLib.AuxiliaryTrackObject(parent, 16, 16, SLib.AuxiliaryTrackObject.Horizontal))
 
-    @staticmethod
-    def loadImages():
-        for vert in 'TMB':
-            for horz in 'LMR':
-                SLib.loadIfNotInImageCache(
-                    f'BrownBlock{vert}{horz}',
-                    f'brown_block_{vert}{horz}.png'
-                )
-
     def dataChanged(self):
+        super().dataChanged()
         if not isinstance(self.aux[0], SLib.AuxiliaryTrackObject):
             return
-
-        size = self.parent.spritedata[5]
-        height = size >> 4
-        width = size & 0xF
-        height = 1 if height == 0 else height
-        width = 1 if width == 0 else width
-        self.width = width * 16 + 16
-        self.height = height * 16 + 16
 
         # now set up the track
         direction = self.parent.spritedata[2] & 3
@@ -7331,38 +7374,6 @@ class SpriteImage_BrownBlock(SLib.SpriteImage):  # 356
             self.aux[0].setPos(-distance * 24, 0)
         elif direction == 2:  # up
             self.aux[0].setPos(0, -distance * 24)
-
-    def paint(self, painter):
-        width = int(self.width * 1.5)
-        height = int(self.height * 1.5)
-
-        column2x = 24
-        column3x = width - 24
-        row2y = 24
-        row3y = height - 24
-        mid_offset_x = 48
-        mid_offset_y = 24
-
-        if height % 48 == 24:
-            mid_offset_y -= 12
-        if width % 72 == 0:
-            mid_offset_x -= 12
-        elif width % 72 == 24:
-            mid_offset_x -= 24
-
-        painter.drawPixmap(0, 0, ImageCache['BrownBlockTL'])
-        painter.drawTiledPixmap(column2x, 0, width - 48, 24, ImageCache['BrownBlockTM'])
-        painter.drawPixmap(column3x, 0, ImageCache['BrownBlockTR'])
-
-        painter.drawTiledPixmap(0, row2y, 24, height - 48, ImageCache['BrownBlockML'])
-        painter.drawTiledPixmap(column3x, row2y, 24, height - 48, ImageCache['BrownBlockMR'])
-
-        painter.drawPixmap(0, row3y, ImageCache['BrownBlockBL'])
-        painter.drawTiledPixmap(column2x, row3y, width - 48, 24, ImageCache['BrownBlockBM'])
-        painter.drawPixmap(column3x, row3y, ImageCache['BrownBlockBR'])
-
-        # Needs to be drawn last because it covers parts the other tiles
-        painter.drawTiledPixmap(column2x - 12, row2y - 12, width - 24, height - 24, ImageCache['BrownBlockMM'], mid_offset_x, mid_offset_y)
 
 
 class SpriteImage_Fruit(SLib.SpriteImage_StaticMultiple):  # 357
@@ -9740,9 +9751,9 @@ ImageClasses = {
     349: SpriteImage_MortonKoopaCastleBoss,
     352: SpriteImage_RockyWrench,
     353: SpriteImage_Pipe_MovingDown,
-    354: SpriteImage_BrownBlock,
+    354: SpriteImage_BrownTowerBlockTwoLine,
     355: SpriteImage_RollingHillWith1Pipe,
-    356: SpriteImage_BrownBlock,
+    356: SpriteImage_BrownTowerBlockNormal,
     357: SpriteImage_Fruit,
     358: SpriteImage_LavaParticles,
     359: SpriteImage_WallLantern,
