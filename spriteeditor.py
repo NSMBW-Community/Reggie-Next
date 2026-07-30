@@ -2710,7 +2710,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         self.slider.setMaximumHeight(20)
         self.slider.setMinimum(0)
         self.slider.setMaximum(len(self.scaleLevels) - 1)
-        self.slider.setTickInterval(2)
+        self.slider.setTickInterval(1)
         self.slider.setTickPosition(self.slider.TickPosition.TicksAbove)
         self.slider.setPageStep(1)
         self.slider.setTracking(True)
@@ -2722,7 +2722,6 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         glbSclLyt = QtWidgets.QHBoxLayout()
         glbSclLyt.addWidget(sliderLabel)
         glbSclLyt.addWidget(self.slider)
-        glbSclLyt.addWidget(self.sliderVal)
 
         # This allows us to toggle the entire thing
         self.glbScaleWidget = QtWidgets.QWidget()
@@ -2734,6 +2733,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         slotsLayout.addWidget(selectiveBox,        0, 0, 1, 2, QtCore.Qt.AlignmentFlag.AlignHCenter)
         slotsLayout.addWidget(globalBox,           0, 2, 1, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
         slotsLayout.addWidget(self.glbScaleWidget, 1, 0, 1, 3)
+        slotsLayout.addWidget(self.sliderVal,      1, 3, 1, 1)
 
         # Auto-select the relevant button
         if self.present:
