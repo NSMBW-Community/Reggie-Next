@@ -282,6 +282,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if globals_.settings.contains('MainWindowState'):
             self.restoreState(setting('MainWindowState'), 0)
 
+        # Restore zoom level
+        zoom = setting('ZoomLevel', 100.0)
+        self.ZoomTo(zoom, towardsCursor=False)
+
         # Aaaaaand... initializing is done!
         globals_.Initializing = False
 
@@ -3295,6 +3299,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # geometry: determines the main window position
         setSetting('MainWindowState', self.saveState(0))
         setSetting('MainWindowGeometry', self.saveGeometry())
+
+        setSetting('ZoomLevel', self.ZoomLevel)
 
         if hasattr(self, 'HelpBoxInstance'):
             self.HelpBoxInstance.close()
