@@ -280,7 +280,7 @@ class TilesetTile:
                 [QtCore.QPoint(0, 12), QtCore.QPoint(12, 12), QtCore.QPoint(12, 24), QtCore.QPoint(0, 24)],
                 # Left half
                 [QtCore.QPoint(0, 0), QtCore.QPoint(12, 0), QtCore.QPoint(12, 24), QtCore.QPoint(0, 24)],
-                # Diagonal TL + BR
+                # Diagonal upward
                 [QtCore.QPoint(0, 24), QtCore.QPoint(12, 24), QtCore.QPoint(12, 0), QtCore.QPoint(24, 0),
                  QtCore.QPoint(24, 12), QtCore.QPoint(0, 12)],
                 # 3/4 (no BR)
@@ -288,9 +288,9 @@ class TilesetTile:
                  QtCore.QPoint(12, 24), QtCore.QPoint(0, 24)],
                 # Bottom right
                 [QtCore.QPoint(12, 12), QtCore.QPoint(24, 12), QtCore.QPoint(24, 24), QtCore.QPoint(12, 24)],
-                # Diagonal TL + BR (copy)
-                [QtCore.QPoint(24, 0), QtCore.QPoint(24, 12), QtCore.QPoint(0, 12), QtCore.QPoint(0, 24),
-                 QtCore.QPoint(12, 24), QtCore.QPoint(12, 0)],
+                # Diagonal downward
+                [QtCore.QPoint(0, 0), QtCore.QPoint(12, 0), QtCore.QPoint(12, 24), QtCore.QPoint(24, 24),
+                 QtCore.QPoint(24, 12), QtCore.QPoint(0, 12)],
                 # Right half
                 [QtCore.QPoint(12, 0), QtCore.QPoint(24, 0), QtCore.QPoint(24, 24), QtCore.QPoint(12, 24)],
                 # 3/4 (no BL)
@@ -309,7 +309,7 @@ class TilesetTile:
             ]
 
             if CD[7] > 0 and CD[7] <= 15:
-                painter.drawPolygon(QtGui.QPolygon(parts[CD[7]]))
+                painter.drawPolygon(QtGui.QPolygon(parts[CD[7] - 1]))
 
         # Solid-on-bottom
         elif CD[2] & 0x20:
@@ -390,38 +390,19 @@ class TilesetTile:
                 # Center Fill
                 painter.drawRect(7, 7, 10, 10)
 
-                # Top Left
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 0),
-                                                    QtCore.QPoint(10, 6),
-                                                    QtCore.QPoint(6, 10)]))
-                # Top Right
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 0),
-                                                    QtCore.QPoint(14, 6),
-                                                    QtCore.QPoint(18, 10)]))
-                # Bottom Left
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(0, 24),
-                                                    QtCore.QPoint(10, 18),
-                                                    QtCore.QPoint(6, 14)]))
-                # Bottom Right
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(24, 24),
-                                                    QtCore.QPoint(14, 18),
-                                                    QtCore.QPoint(18, 14)]))
-                # Top Middle
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(12, -1),
-                                                    QtCore.QPoint(8, 8),
-                                                    QtCore.QPoint(16, 8)]))
-                # Bottom Middle
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(12, 25),
-                                                    QtCore.QPoint(8, 16),
-                                                    QtCore.QPoint(16, 16)]))
-                # Left Middle
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(-1, 12),
-                                                    QtCore.QPoint(8, 8),
-                                                    QtCore.QPoint(8, 16)]))
-                # Right Middle
-                painter.drawPolygon(QtGui.QPolygon([QtCore.QPoint(25, 12),
-                                                    QtCore.QPoint(16, 8),
-                                                    QtCore.QPoint(16, 16)]))
+                spikes = [
+                    [QtCore.QPoint(0, 0), QtCore.QPoint(10, 6), QtCore.QPoint(6, 10)],     # Top left
+                    [QtCore.QPoint(24, 0), QtCore.QPoint(14, 6), QtCore.QPoint(18, 10)],   # Top right
+                    [QtCore.QPoint(0, 24), QtCore.QPoint(10, 18), QtCore.QPoint(6, 14)],   # Bottom left
+                    [QtCore.QPoint(24, 24), QtCore.QPoint(14, 18), QtCore.QPoint(18, 14)], # Bottom right
+                    [QtCore.QPoint(12, -1), QtCore.QPoint(8, 8), QtCore.QPoint(16, 8)],    # Top
+                    [QtCore.QPoint(12, 25), QtCore.QPoint(8, 16), QtCore.QPoint(16, 16)],  # Bottom
+                    [QtCore.QPoint(-1, 12), QtCore.QPoint(8, 8), QtCore.QPoint(8, 16)],    # Left
+                    [QtCore.QPoint(25, 12), QtCore.QPoint(16, 8), QtCore.QPoint(16, 16)],  # Right
+                ]
+
+                for spike in spikes:
+                    painter.drawPolygon(QtGui.QPolygon(spike))
 
         # Donut Blocks
         elif CD[1] & 2:
@@ -459,12 +440,12 @@ def RenderObject(tileset, objnum, width, height, fullslope=False):
     if obj is None or not obj.rows:
         return dest
 
-    # diagonal objects are rendered differently
+    # Diagonal objects are rendered differently
     if (obj.rows[0][0][0] & 0x80) != 0:
         RenderDiagonalObject(dest, obj, width, height, fullslope)
         return dest
 
-    # standard object
+    # Standard object
     repeatFound = False
     beforeRepeat = []
     inRepeat = []
@@ -729,7 +710,7 @@ def LoadTileset(idx, name, reload_=False):
             found = True
             break
 
-        # Strip away the .LH suffix
+        # Strip away the suffix (check for no compression)
         arcname = os.path.splitext(arcname)[0]
         if os.path.isfile(arcname):
             compressed = False
