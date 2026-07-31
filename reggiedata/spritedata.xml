@@ -5336,7 +5336,7 @@
 
   <sprite id="437" name="Climbable Striped Pole" noyoshi="True" notes="A stationary purple striped pole that can be climbed up. This does not count as a climbing animation for the IF Event Controller. It counts as being in the air." files="noboribou_obake.arc">
     <dependency notes="This sprite must be placed evenly on the grid in order to function properly."/>
-    <value nybble="12" title="Height" comment="This determines the height of the pole."/>
+    <value nybble="12" start="3" title="Height" comment="This determines the height of the pole."/>
   </sprite> <!-- #437: Climbable Striped Pole -->
 
   <sprite id="438" name="Rotation Controlled Shape Block" notes="A large textured block meant for use with a Spinning rotation controller. It has several different shapes and poses a challenging obstacle when trying to climb it." files="lift_zen_kaiten.arc">
