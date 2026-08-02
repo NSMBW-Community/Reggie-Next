@@ -88,11 +88,11 @@ UseFullFilepath = False
 FirstStageFilename = None
 CursorMode = 0
 
-FileKeybinds = None
-EditKeybinds = None
-ViewKeybinds = None
-SettingsKeybinds = None
-HelpKeybinds = None
+FileKeybinds: dict
+EditKeybinds: dict 
+ViewKeybinds: dict
+SettingsKeybinds: dict
+HelpKeybinds: dict
 
 # Config settings
 DispConnectedPipeDir = False

@@ -452,9 +452,9 @@
         <string id="69">Zoom out of the main level view</string>
         <string id="70">Zoom to Minimum</string>
         <string id="71">Zoom out all the way</string>
-        <string id="72">Area[br]Settings...</string>
+        <string id="72">Area Settings...</string>
         <string id="73">Control tileset swapping, stage timer, entrance on load, and stage wrap</string>
-        <string id="74">Zone[br]Settings...</string>
+        <string id="74">Zone Settings...</string>
         <string id="75">Zone creation, deletion, and preference editing</string>
         <string id="76">Backgrounds...</string>
         <string id="77">Apply backgrounds to individual zones in the current area</string>

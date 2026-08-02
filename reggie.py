@@ -250,10 +250,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Add menu action for the toolbar
         act = self.toolbar.toggleViewAction()
-        act.setShortcut(QtGui.QKeySequence('Ctrl+T'))
+        act.setShortcut(GetKeybind('toolbar'))
         act.setIcon(GetIcon('diagnostics'))
-        act.setStatusTip(globals_.trans.string('Menubar', 5))
         self.vmenu.addAction(act)
+        self.actions['toolbar'] = act
 
         # now get stuff ready
         loaded = False

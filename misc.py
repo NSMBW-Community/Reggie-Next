@@ -1554,6 +1554,7 @@ def LoadDefaultKeybinds():
         'zoommin':          ('Ctrl+PgUp',                            globals_.trans.string('MenuItems', 70)),
         'leveloverview':    ('Ctrl+M',                               globals_.trans.string('MenuItems', 94)),
         'palette':          ('Ctrl+P',                               globals_.trans.string('MenuItems', 96)),
+        'toolbar':          ('Ctrl+T',                               globals_.trans.string('Menubar', 5)),
     }
     globals_.SettingsKeybinds = {
         'areaoptions': ('Ctrl+Alt+A',   globals_.trans.string('MenuItems', 72)),
@@ -1574,7 +1575,7 @@ def LoadDefaultKeybinds():
     }
 
 
-def GetKeybind(name):
+def GetKeybind(name: str):
     """
     Returns a QKeySequence from the settings, or a default keybind
     """
@@ -1595,7 +1596,7 @@ def GetKeybind(name):
     return QtGui.QKeySequence(None)
 
 
-def SetKeybind(name, keySeq):
+def SetKeybind(name, keySeq: QtGui.QKeySequence | None):
     """
     Saves a QKeySequence keybind to the settings, and updates the relevant menubar action
     """

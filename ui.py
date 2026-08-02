@@ -481,13 +481,13 @@ class KeybindLineEdit(QtWidgets.QKeySequenceEdit):
         lineEdit = self.findChild(QtWidgets.QLineEdit, "qt_keysequenceedit_lineedit")
         if lineEdit: lineEdit.setPlaceholderText(globals_.trans.string('PrefsDlg', 60)) # No keybind set
 
-    def keyPressEvent(self, event):
+    def keyPressEvent(self, a0: QtGui.QKeyEvent | None):
         """
         Clears the current keybind if Delete or Backspace is pressed
         """
-        QtWidgets.QKeySequenceEdit.keyPressEvent(self, event)
+        QtWidgets.QKeySequenceEdit.keyPressEvent(self, a0)
 
-        if event.key() == QtCore.Qt.Key.Key_Delete or event.key() == QtCore.Qt.Key.Key_Backspace:
+        if a0.key() in (QtCore.Qt.Key.Key_Delete, QtCore.Qt.Key.Key_Backspace):
             self.clear()
 
 
