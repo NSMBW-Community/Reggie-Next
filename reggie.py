@@ -248,6 +248,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # create the various panels
         self.SetupDocksAndPanels()
 
+        # Add menu action for the toolbar
+        act = self.toolbar.toggleViewAction()
+        act.setShortcut(QtGui.QKeySequence('Ctrl+T'))
+        act.setIcon(GetIcon('diagnostics'))
+        act.setStatusTip(globals_.trans.string('Menubar', 5))
+        self.vmenu.addAction(act)
+
         # now get stuff ready
         loaded = False
         self.fileSavePath = None
