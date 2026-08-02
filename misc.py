@@ -10,8 +10,8 @@ from xml.etree import ElementTree
 ################################################################################
 
 import globals_
-from ui import GetIcon, ReggieTheme, clipStr
-from dirty import setting, setSetting
+from ui import GetIcon, ReggieTheme, clipStr, KeybindLineEdit
+from dirty import setting, setSetting, delSetting
 from dialogs import DiagnosticToolDialog
 from translation import ReggieTranslation
 from libs import lh
@@ -1496,6 +1496,136 @@ def LoadActionsLists():
     )
 
 
+def LoadDefaultKeybinds():
+    """
+    Defines the default keybinds (and display strings) for each menu item
+    """
+    globals_.FileKeybinds = {
+        # Identifier      # Key Sequence                          # Display String, used by Preferences
+        'newlevel':       (QtGui.QKeySequence.StandardKey.New,    globals_.trans.string('MenuItems', 0)),
+        'openfromname':   (QtGui.QKeySequence.StandardKey.Open,   globals_.trans.string('MenuItems', 2)),
+        'openfromfile':   ('Ctrl+Shift+O',                        globals_.trans.string('MenuItems', 4)),
+        'save':           (QtGui.QKeySequence.StandardKey.Save,   globals_.trans.string('MenuItems', 8)),
+        'saveas':         (QtGui.QKeySequence.StandardKey.SaveAs, globals_.trans.string('MenuItems', 10)),
+        'savecopyas':     (None,                                  globals_.trans.string('MenuItems', 128)),
+        'metainfo':       ('Ctrl+Alt+I',                          globals_.trans.string('MenuItems', 12)),
+        'screenshot':     ('Ctrl+Alt+S',                          globals_.trans.string('MenuItems', 14)),
+        'changegamepath': ('Ctrl+Alt+G',                          globals_.trans.string('MenuItems', 16)),
+        'preferences':    ('Ctrl+Alt+P',                          globals_.trans.string('MenuItems', 18)),
+        'exit':           ('Ctrl+Q',                              globals_.trans.string('MenuItems', 20)),
+    }
+    globals_.EditKeybinds = {
+        'selectall':           (QtGui.QKeySequence.StandardKey.SelectAll, globals_.trans.string('MenuItems', 22)),
+        'deselect':            ('Ctrl+D',                                 globals_.trans.string('MenuItems', 24)),
+        'undo':                (QtGui.QKeySequence.StandardKey.Undo,      globals_.trans.string('MenuItems', 124)),
+        'redo':                (QtGui.QKeySequence.StandardKey.Redo,      globals_.trans.string('MenuItems', 126)),
+        'cut':                 (QtGui.QKeySequence.StandardKey.Cut,       globals_.trans.string('MenuItems', 26)),
+        'copy':                (QtGui.QKeySequence.StandardKey.Copy,      globals_.trans.string('MenuItems', 28)),
+        'paste':               (QtGui.QKeySequence.StandardKey.Paste,     globals_.trans.string('MenuItems', 30)),
+        'shiftitems':          ('Ctrl+Alt+Shift+S',                       globals_.trans.string('MenuItems', 32)),
+        'mergelocations':      ('Ctrl+Shift+E',                           globals_.trans.string('MenuItems', 34)),
+        'swapobjectstilesets': ('Ctrl+Shift+L',                           globals_.trans.string('MenuItems', 104)),
+        'swapobjectstypes':    ('Ctrl+Shift+Y',                           globals_.trans.string('MenuItems', 106)),
+        'diagnostic':          ('Ctrl+Shift+D',                           globals_.trans.string('MenuItems', 36)),
+        'freezeobjects':       ('Ctrl+Shift+1',                           globals_.trans.string('MenuItems', 38)),
+        'freezesprites':       ('Ctrl+Shift+2',                           globals_.trans.string('MenuItems', 40)),
+        'freezeentrances':     ('Ctrl+Shift+3',                           globals_.trans.string('MenuItems', 42)),
+        'freezelocations':     ('Ctrl+Shift+4',                           globals_.trans.string('MenuItems', 44)),
+        'freezepaths':         ('Ctrl+Shift+5',                           globals_.trans.string('MenuItems', 46)),
+        'freezecomments':      ('Ctrl+Shift+9',                           globals_.trans.string('MenuItems', 114)),
+    }
+    globals_.ViewKeybinds = {
+        'showlay0':         ('Ctrl+1',                               globals_.trans.string('MenuItems', 48)),
+        'showlay1':         ('Ctrl+2',                               globals_.trans.string('MenuItems', 50)),
+        'showlay2':         ('Ctrl+3',                               globals_.trans.string('MenuItems', 52)),
+        'tileanim':         ('Ctrl+7',                               globals_.trans.string('MenuItems', 108)),
+        'collisions':       ('Ctrl+8',                               globals_.trans.string('MenuItems', 110)),
+        'realview':         ('Ctrl+9',                               globals_.trans.string('MenuItems', 118)),
+        'showsprites':      ('Ctrl+4',                               globals_.trans.string('MenuItems', 54)),
+        'showspriteimages': ('Ctrl+6',                               globals_.trans.string('MenuItems', 56)),
+        'showlocations':    ('Ctrl+5',                               globals_.trans.string('MenuItems', 58)),
+        'showcomments':     (None,                                   globals_.trans.string('MenuItems', 116)),
+        'showpaths':        ('Ctrl+*',                               globals_.trans.string('MenuItems', 130)),
+        'grid':             ('Ctrl+G',                               globals_.trans.string('MenuItems', 60)),
+        'zoommax':          ('Ctrl+PgDown',                          globals_.trans.string('MenuItems', 62)),
+        'zoomin':           (QtGui.QKeySequence.StandardKey.ZoomIn,  globals_.trans.string('MenuItems', 64)),
+        'zoomactual':       ('Ctrl+0',                               globals_.trans.string('MenuItems', 66)),
+        'zoomout':          (QtGui.QKeySequence.StandardKey.ZoomOut, globals_.trans.string('MenuItems', 68)),
+        'zoommin':          ('Ctrl+PgUp',                            globals_.trans.string('MenuItems', 70)),
+        'leveloverview':    ('Ctrl+M',                               globals_.trans.string('MenuItems', 94)),
+        'palette':          ('Ctrl+P',                               globals_.trans.string('MenuItems', 96)),
+    }
+    globals_.SettingsKeybinds = {
+        'areaoptions': ('Ctrl+Alt+A',   globals_.trans.string('MenuItems', 72)),
+        'zones':       ('Ctrl+Alt+Z',   globals_.trans.string('MenuItems', 74)),
+        'backgrounds': ('Ctrl+Alt+B',   globals_.trans.string('MenuItems', 76)),
+        'camprofiles': ('Ctrl+Alt+C',   globals_.trans.string('MenuItems', 140)),
+        'addarea':     ('Ctrl+Alt+N',   globals_.trans.string('MenuItems', 78)),
+        'importarea':  ('Ctrl+Alt+O',   globals_.trans.string('MenuItems', 80)),
+        'deletearea':  ('Ctrl+Alt+D',   globals_.trans.string('MenuItems', 82)),
+        'reloadgfx':   ('Ctrl+Shift+R', globals_.trans.string('MenuItems', 84)),
+        'reloaddata':  (None,           globals_.trans.string('MenuItems', 138)),
+    }
+    globals_.HelpKeybinds = {
+        'infobox': ('Ctrl+Shift+I', globals_.trans.string('MenuItems', 86)),
+        'helpbox': ('Ctrl+Shift+H', globals_.trans.string('MenuItems', 88)),
+        'tipbox':  ('Ctrl+Shift+T', globals_.trans.string('MenuItems', 90)),
+        'aboutqt': ('Ctrl+Shift+Q', globals_.trans.string('MenuItems', 92)),
+    }
+
+
+def GetKeybind(name):
+    """
+    Returns a QKeySequence from the settings, or a default keybind
+    """
+    groups = [
+        globals_.FileKeybinds,
+        globals_.EditKeybinds,
+        globals_.ViewKeybinds,
+        globals_.SettingsKeybinds,
+        globals_.HelpKeybinds,
+    ]
+
+    for g in groups:
+        if name in g.keys():
+            keySeq = setting('Keybind_' + name, g[name][0])
+            return QtGui.QKeySequence(keySeq)
+
+    print(f'GetKeybind(): Unknown identifier \'{name}\'!')
+    return QtGui.QKeySequence(None)
+
+
+def SetKeybind(name, keySeq):
+    """
+    Saves a QKeySequence keybind to the settings, and updates the relevant menubar action
+    """
+    groups = [
+        globals_.FileKeybinds,
+        globals_.EditKeybinds,
+        globals_.ViewKeybinds,
+        globals_.SettingsKeybinds,
+        globals_.HelpKeybinds,
+    ]
+
+    # Fix issues with items that have no default keybind
+    if keySeq is None:
+        keySeq = QtGui.QKeySequence()
+
+    # Update the action keybind
+    globals_.mainWindow.actions[name].setShortcut(keySeq)
+
+    # Check if the given keybind is identical to the default
+    # If so, remove the keybind setting, no need to store it
+    for g in groups:
+        if name in g.keys() and QtGui.QKeySequence(g[name][0]) == keySeq:
+            delSetting('Keybind_' + name)
+            return
+
+    # Convert QKeySequence to string for storage
+    keyStr = keySeq.toString()
+    setSetting('Keybind_' + name, keyStr)
+
+
 class PreferencesDialog(QtWidgets.QDialog):
     """
     Dialog which lets you customize Reggie
@@ -1517,9 +1647,11 @@ class PreferencesDialog(QtWidgets.QDialog):
         self.infoLabel = QtWidgets.QLabel()
         self.generalTab = self.getGeneralTab()
         self.toolbarTab = self.getToolbarTab()
+        self.keybindsTab = self.getKeybindsTab()
         self.appearaceTab = self.getAppearanceTab(QtWidgets.QWidget)()
         self.tabWidget.addTab(self.generalTab, globals_.trans.string('PrefsDlg', 1))
         self.tabWidget.addTab(self.toolbarTab, globals_.trans.string('PrefsDlg', 2))
+        self.tabWidget.addTab(self.keybindsTab, globals_.trans.string('PrefsDlg', 56))
         self.tabWidget.addTab(self.appearaceTab, globals_.trans.string('PrefsDlg', 3))
 
         # Create the buttonbox
@@ -1828,6 +1960,156 @@ class PreferencesDialog(QtWidgets.QDialog):
                         box.setChecked(default[1])
 
         return ToolbarTab()
+
+    def getKeybindsTab(self):
+        """
+        Returns the Keybinds Tab
+        """
+        groups = [
+            globals_.FileKeybinds,
+            globals_.EditKeybinds,
+            globals_.ViewKeybinds,
+            globals_.SettingsKeybinds,
+            globals_.HelpKeybinds,
+        ]
+
+        class KeybindEditorTab(QtWidgets.QWidget):
+            """
+            Represents a tab within the Keybinds tab
+            """
+            def __init__(self, index):
+                QtWidgets.QWidget.__init__(self)
+                self.index = index
+                widget = QtWidgets.QWidget()
+
+                # Make the tab scrollable so the window doesn't become absurdly tall
+                scrollArea = QtWidgets.QScrollArea()
+                scrollArea.setWidget(widget)
+                scrollArea.setWidgetResizable(True)
+
+                scrollLyt = QtWidgets.QFormLayout(widget)
+                self.keyEdits = []
+
+                # Create each keybind entry
+                for name in groups[index].keys():
+                    edit = KeybindLineEdit(GetKeybind(name), name)
+                    self.keyEdits.append(edit)
+
+                    # Get the label from the keybind data
+                    label = groups[index][name][1]
+                    scrollLyt.addRow(label, edit)
+
+                L = QtWidgets.QVBoxLayout()
+                L.addWidget(scrollArea)
+                self.setLayout(L)
+
+            def resetKeys(self):
+                """
+                Resets keybinds for this tab
+                """
+                for kEdit in self.keyEdits:
+                    if kEdit.name in groups[self.index].keys():
+                        # Get default and update the action's keybind
+                        defKey = groups[self.index][kEdit.name][0]
+                        if defKey is None:
+                            kEdit.clear()
+                        else:
+                            kEdit.setKeySequence(defKey)
+
+                        # Restore default keybind
+                        SetKeybind(kEdit.name, defKey)
+
+
+        class KeybindsTab(QtWidgets.QWidget):
+            """
+            Keybinds Tab
+            """
+            info = globals_.trans.string('PrefsDlg', 57)
+
+            def __init__(self):
+                """
+                Initializes the Keybinds Tab
+                """
+                QtWidgets.QWidget.__init__(self)
+                self.tabWidget = QtWidgets.QTabWidget()
+                self.tabs = []
+
+                # Create tabs
+                for i in range(5):
+                    tab = KeybindEditorTab(i)
+                    self.tabs.append(tab)
+                    self.tabWidget.addTab(tab, globals_.trans.string('Menubar', i))
+
+                # Reset button
+                reset = QtWidgets.QPushButton(globals_.trans.string('PrefsDlg', 58))
+                reset.clicked.connect(self.reset)
+
+                # Check for Conflicts button
+                self.chkConflict = QtWidgets.QPushButton(globals_.trans.string('PrefsDlg', 59))
+                self.chkConflict.clicked.connect(self.checkConflicts)
+
+                # Create the main layout
+                L = QtWidgets.QGridLayout()
+                L.addWidget(self.tabWidget, 0, 0, 1, 2)
+                L.addWidget(reset, 1, 0, 1, 1)
+                L.addWidget(self.chkConflict, 1, 1, 1, 1)
+                self.setLayout(L)
+
+            def reset(self):
+                """
+                Resets all keybinds to their original values
+                """
+                result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 61), globals_.trans.string('PrefsDlg', 62),
+                                                       QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
+                if result == QtWidgets.QMessageBox.StandardButton.Yes:
+                    for tab in self.tabs:
+                        tab.resetKeys()
+
+            def checkConflicts(self):
+                """
+                Checks for any conflicting (duplicate) keybinds
+                """
+                # Get all of the current keybinds
+                currKeys = {}
+                for tab in self.tabs:
+                    for kEdit in tab.keyEdits:
+                        if kEdit.keySequence().toString() != '': # Ignore blanks
+                            currKeys[kEdit.name] = kEdit.keySequence()
+
+                # Group everything together
+                sorted = collections.defaultdict(list)
+                for key, value in currKeys.items():
+                    sorted[value].append(key)
+
+                conflicts = {
+                    value: keys 
+                    for value, keys in sorted.items() 
+                    if len(keys) > 1
+                }
+
+                if not conflicts:
+                    # No conflicts, show a quick tooltip
+                    pos = self.chkConflict.mapToGlobal(self.chkConflict.rect().center())
+                    QtWidgets.QToolTip.showText(pos, globals_.trans.string('PrefsDlg', 65), self.chkConflict)
+                else:
+                    # Conflicts were detected, list them in a warning message
+                    outStr = ''
+
+                    for keybind, names in conflicts.items():
+                        outStr += f'* {keybind.toString()}: '
+
+                        # We have the shortname identifier, but we need
+                        # to show the translation string instead
+                        for i, name in enumerate(names):
+                            for g in groups:
+                                if name in g.keys():
+                                    outStr += f'<i>{g[name][1]}</i>'
+                                    if i != len(names)-1: outStr += ', '
+                        outStr += '<br>'
+
+                    QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 63), globals_.trans.string('PrefsDlg', 64, '[conflicts]', outStr))
+
+        return KeybindsTab()
 
     @staticmethod
     def getAppearanceTab(parent):

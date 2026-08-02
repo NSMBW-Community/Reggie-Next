@@ -651,6 +651,16 @@
             <entry>Show drag/resize cursors when selected</entry>
             <entry>Always show drag/resize cursors</entry>
         </stringlist>
+        <string id="56">Keybinds</string>
+        <string id="57">[b]Configure Keybinds[/b][br]Customize the keybinds used for drop-down actions.[br]Press Backspace/Delete to clear a keybind, or hit the X button.[br]</string>
+        <string id="58">Reset All Keybinds</string>
+        <string id="59">Check for Conflicts</string>
+        <string id="60">No keybind set</string>
+        <string id="61">Reset Keybinds</string>
+        <string id="62">Are you sure you want to reset all keybinds to their default values?[br]This cannot be undone.</string>
+        <string id="63">Conflicts Found</string>
+        <string id="64">The following options were found to have conflicting keybinds:[br][conflicts][br]Reusing keybinds can cause issues, so ensure all keybinds are unique!</string>
+        <string id="65">No conflicts found.</string>
     </section>
     <section id="ScrShtDlg">
         <string id="0">Level Screenshot</string>
