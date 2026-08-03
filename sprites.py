@@ -3222,7 +3222,7 @@ class SpriteImage_FlipFenceLong(SLib.SpriteImage_Static):  # 128
             parent,
             1.5,
             ImageCache['FlipFenceLong'],
-            (6, 0),
+            (4, 0),
         )
         parent.setZValue(24999)
 
