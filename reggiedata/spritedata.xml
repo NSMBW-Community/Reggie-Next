@@ -90,16 +90,16 @@
     <checkbox nybble="7.3" title="Vertical Override" comment="Enabling this uses the vertical-only image for Propeller and Bouncy." requirednybble="6" requiredval="5"/>
   </sprite> <!-- #0: Mario Jumps [TESTING ONLY] -->
 
-  <sprite id="1" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-  <sprite id="2" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-  <sprite id="3" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-  <sprite id="4" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-  <sprite id="5" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-  <sprite id="6" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-  <sprite id="7" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
-  <sprite id="8" name="(Unused) Glitch Mario" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="1" name="(Unused) Glitch Mario" nolayer="True" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="2" name="(Unused) Glitch Mario" nolayer="True" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="3" name="(Unused) Glitch Mario" nolayer="True" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="4" name="(Unused) Glitch Mario" nolayer="True" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="5" name="(Unused) Glitch Mario" nolayer="True" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="6" name="(Unused) Glitch Mario" nolayer="True" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="7" name="(Unused) Glitch Mario" nolayer="True" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
+  <sprite id="8" name="(Unused) Glitch Mario" nolayer="True" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
 
-  <sprite id="9" name="(Unused) Glitch Player Actor" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is the most stable version of all the &quot;Glitch Marios.&quot; (#0-#9)&lt;br&gt;It creates a stationary Player clone. The clone will not move, and will shoot Fireballs if the matching player has the Fire Flower powerup. Other possible functions are untested. It's possible the game utilizes this data to create a temporary player actor at Entrances for no-control load-ins before switching to a controlled player actor. Additionally, depending on the position of this sprite relative to an Entrance, this Player Actor can sometimes be controlled instead of the one created by the entrance.">
+  <sprite id="9" name="(Unused) Glitch Player Actor" nolayer="True" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is the most stable version of all the &quot;Glitch Marios.&quot; (#0-#9)&lt;br&gt;It creates a stationary Player clone. The clone will not move, and will shoot Fireballs if the matching player has the Fire Flower powerup. Other possible functions are untested. It's possible the game utilizes this data to create a temporary player actor at Entrances for no-control load-ins before switching to a controlled player actor. Additionally, depending on the position of this sprite relative to an Entrance, this Player Actor can sometimes be controlled instead of the one created by the entrance.">
     <dualbox nybble="6.4" title1="Faces Right" title2="Faces Left" comment="This determines which way the spawned Player Actor faces." advanced="True"/>
     <list nybble="7-8" title="Load-In Animation" comment="This determines what animation is used by the spawned Player Actor when it is first loaded." comment2="This value uses the same list and order as normal entrances. Every value creates a character at its position. Compared to normal entrances, Mario will be positioned on top of the sprite's placement and not inside it. The 3D model is stationary and does not move." advanced="True">
       <entry value="0">Normal</entry>
@@ -141,16 +141,16 @@
     </list>
   </sprite> <!-- #9: (Unused) Glitch Player Actor -->
 
-  <sprite id="10" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #10: Unused -->
-  <sprite id="11" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #11: Unused -->
-  <sprite id="12" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #12: Unused -->
-  <sprite id="13" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #13: Unused -->
-  <sprite id="14" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #14: Unused -->
-  <sprite id="15" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #15: Unused -->
-  <sprite id="16" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #16: Unused -->
-  <sprite id="17" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #17: Unused -->
-  <sprite id="18" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #18: Unused -->
-  <sprite id="19" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #19: Unused -->
+  <sprite id="10" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game."/><!-- #10: Unused -->
+  <sprite id="11" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game."/><!-- #11: Unused -->
+  <sprite id="12" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game."/><!-- #12: Unused -->
+  <sprite id="13" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game."/><!-- #13: Unused -->
+  <sprite id="14" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game."/><!-- #14: Unused -->
+  <sprite id="15" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game."/><!-- #15: Unused -->
+  <sprite id="16" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game."/><!-- #16: Unused -->
+  <sprite id="17" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game."/><!-- #17: Unused -->
+  <sprite id="18" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game."/><!-- #18: Unused -->
+  <sprite id="19" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game."/><!-- #19: Unused -->
 
   <sprite id="20" name="Goomba" notes="Your standard Goomba. Place it in the level and it will walk towards Mario when it loads." files="kuribo.arc">
     <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the Goomba placing it further behind other sprites."/>
@@ -177,7 +177,7 @@
     <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the Paragoomba placing it further behind other sprites."/>
   </sprite> <!-- #21: Paragoomba -->
 
-  <sprite id="22" name="Unused" notes="No assigned function, does nothing in-game." files="kuribo.arc"/><!-- #22: Unused -->
+  <sprite id="22" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game." files="kuribo.arc"/><!-- #22: Unused -->
 
   <sprite id="23" name="Basic Platform - Horizontal Movement" notes="The most basic platform in the game. Moves on its own from left to right." files="lift_han_wood.arc;lift_han_stone.arc;boss_koopa_lift.arc;boss_koopa_lift_down.arc">
     <dualbox nybble="7.3" title1="Normal Model" title2="boss_koopa_lift.arc" advanced="True" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
@@ -835,7 +835,7 @@
     </list>
   </sprite> <!-- #78: Bouncy Cloud -->
 
-  <sprite id="79" name="Incomplete Sprite - 'En_Helpos'" notes="Does nothing.">
+  <sprite id="79" name="Incomplete Sprite - 'En_Helpos'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #79: Incomplete Sprite - 'En_Helpos' -->
 
   <sprite id="80" name="Fire Bro" notes="A standard Brothers enemy that shoots fireballs at the player." files="bros.arc">
@@ -983,10 +983,10 @@
     <value start="1" nybble="12" title="Height" comment="This determines how tall the Trampoline Wall is."/>
   </sprite> <!-- #87 (Unused) Trampoline Wall -->
 
-  <sprite id="88" name="Incomplete Sprite - 'En_Boyon'" notes="Does nothing.">
+  <sprite id="88" name="Incomplete Sprite - 'En_Boyon'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #88: Incomplete Sprite - 'En_Boyon' -->
 
-  <sprite id="89" name="Incomplete Sprite - 'En_Remocon_Torimochi'" notes="Does nothing.">
+  <sprite id="89" name="Incomplete Sprite - 'En_Remocon_Torimochi'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #89: Incomplete Sprite - 'En_Remocon_Torimochi' -->
 
   <sprite id="90" name="Effect - Wind Physics and Sound" notes="This will generate occasional windy pushbacks and wind sound effects. It is best used in conjunction with the suggested sprites, but they are not required.">
@@ -1961,7 +1961,7 @@
     <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #151: Porcupuffer -->
 
-  <sprite id="152" name="Incomplete Sprite - 'En_Blur'" notes="Does nothing.">
+  <sprite id="152" name="Incomplete Sprite - 'En_Blur'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #152: Incomplete Sprite - 'En_Blur' -->
 
   <sprite id="153" name="(Unused) ?-Switch" notes="An exact duplicate of the normal ?-Switch.">
@@ -2191,10 +2191,10 @@
     </list>
   </sprite> <!-- #166: Snake Block (Ice) -->
 
-  <sprite id="167" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #167: Unused -->
-  <sprite id="168" name="Unused" notes="No assigned function, does nothing in-game."/><!-- #168: Unused -->
+  <sprite id="167" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game."/><!-- #167: Unused -->
+  <sprite id="168" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game."/><!-- #168: Unused -->
 
-  <sprite id="169" name="Incomplete Sprite - 'En_Slip_Penguin'" notes="Does nothing.">
+  <sprite id="169" name="Incomplete Sprite - 'En_Slip_Penguin'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #169: Incomplete Sprite - 'En_Slip_Penguin' -->
 
   <sprite id="170" name="Prickly Goomba" notes="A spiky brown ball that contains a normal Goomba, which will appear if it is shot with a Fireball. Fire Bro fireballs will also open it, but Fire Chomp fireballs will not." files="iga_kuribo.arc;kuribo_iga.arc">
@@ -2333,10 +2333,10 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation" requirednybble="10.4"/>
   </sprite> <!-- #182: Event Triggered Door -->
 
-  <sprite id="183" name="Incomplete Sprite - 'En_TarzanRope'" notes="Does nothing.">
+  <sprite id="183" name="Incomplete Sprite - 'En_TarzanRope'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #183: Incomplete Sprite - 'En_TarzanRope' -->
 
-  <sprite id="184" name="Incomplete Sprite - 'Mask'" notes="Does nothing. &quot;Mask&quot; Original sprite used to create the see-through effect of Layer 0 tiles. The effect was meant to activate once the selected character enters Layer 0 tiles, but this actor is spawned automatically by the game with all 8 options enabled.">
+  <sprite id="184" name="Incomplete Sprite - 'Mask'" nolayer="True" notes="Does nothing. &quot;Mask&quot; Original sprite used to create the see-through effect of Layer 0 tiles. The effect was meant to activate once the selected character enters Layer 0 tiles, but this actor is spawned automatically by the game with all 8 options enabled.">
     <list nybble="12" title="Character" comment="The Yoshi's are numbered by their spawn order.">
       <entry value="0">Mario</entry>
       <entry value="1">Luigi</entry>
@@ -2733,7 +2733,7 @@
     <dualbox nybble="9.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Brick Block will move based on the Line that it is connected to."/>
   </sprite> <!-- #209: Brick Block -->
 
-  <sprite id="210" name="Incomplete Sprite - 'Tarzan_Rope'" notes="Does nothing.">
+  <sprite id="210" name="Incomplete Sprite - 'Tarzan_Rope'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #210: Incomplete Sprite - 'Tarzan_Rope' -->
 
   <sprite id="211" name="Boss Controller - Bowser Jr. (1st Battle)" noyoshi="True" notes="This controls the mechanics for the first Bowser Jr. Boss Fight in World 4. It spawns the backgrounds BgA_5602 and BgB_5302, and will overlap any other backgrounds set in the zone. The white square indicates the placement for the Airship Boss Cutscene controller." files="koopaJr.arc;koopaJr_clown.arc;boss_ef_attack.arc;block_fly.arc;boss_koopaJr_down_ashiba.arc;W4_Fly_Boss.arc">
@@ -2762,7 +2762,7 @@
     <value nybble="5-6" title="Hill ID" comment="This pairs matching Rolling Hill Coins to this hill." idtype="Hill"/>
   </sprite> <!-- #212: Rolling Hill -->
 
-  <sprite id="213" name="Incomplete Sprite - 'Branch'" notes="Does nothing." files="test_lift.arc">
+  <sprite id="213" name="Incomplete Sprite - 'Branch'" nolayer="True" notes="Does nothing." files="test_lift.arc">
   </sprite> <!-- #213: Incomplete Sprite - 'Branch' -->
 
   <sprite id="214" name="Path Controlled Ghost House Platform" notes="A wide path controlled platform that will trigger a spooky sound when it is quickly descending." files="lift_freehole.arc">
@@ -3077,7 +3077,7 @@
     <checkbox nybble="12.4" title="Does Not Create Clouds"/>
   </sprite> <!-- #238: Foo, the Cloud Blower -->
 
-  <sprite id="239" name="Incomplete Sprite - 'Mist_Intermittent'" notes="Does nothing.">
+  <sprite id="239" name="Incomplete Sprite - 'Mist_Intermittent'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #239: Incomplete Sprite - 'Mist_Intermittent' -->
 
   <sprite id="240" name="Big Wiggler" noyoshi="True" notes="A very large Wiggler that could not care less what you do to it, so you can safely ride on its back." files="hanachan_big_head.arc;hanachan_big_body.arc;hanachan_head.arc;hanachan_body.arc">
@@ -3099,13 +3099,13 @@
     <value nybble="5-6" title="Current Force" comment="This determines the strength of the current."/>
   </sprite> <!-- #243: (Unused) Water Current Controller -->
 
-  <sprite id="244" name="Incomplete Sprite - 'River_Mgr'" notes="Does nothing." files="lift_han_wood.arc;togezo.arc;paipo.arc;pukupuku.arc;lift_taru.arc">
+  <sprite id="244" name="Incomplete Sprite - 'River_Mgr'" nolayer="True" notes="Does nothing." files="lift_han_wood.arc;togezo.arc;paipo.arc;pukupuku.arc;lift_taru.arc">
   </sprite> <!-- #244: Incomplete Sprite - 'River_Mgr' -->
 
-  <sprite id="245" name="Incomplete Sprite - 'Hana_Mountain'" notes="Does nothing.">
+  <sprite id="245" name="Incomplete Sprite - 'Hana_Mountain'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #245: Incomplete Sprite - 'Hana_Mountain' -->
 
-  <sprite id="246" name="Incomplete Sprite - 'Tag_Thunder'" notes="Does nothing.">
+  <sprite id="246" name="Incomplete Sprite - 'Tag_Thunder'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #246: Incomplete Sprite - 'Tag_Thunder' -->
 
   <sprite id="247" name="(Unused) Cheep Cheep Formation Spawner" notes="This creates groups of Cheep Cheeps that generate formation shapes." files="pukupuku.arc">
@@ -3153,10 +3153,10 @@
     <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite> <!-- #249: Horizontal Scroll Limiter - Bottom -->
 
-  <sprite id="250" name="Incomplete Sprite - 'Kawanagare'" notes="Does nothing.">
+  <sprite id="250" name="Incomplete Sprite - 'Kawanagare'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #250: Incomplete Sprite 'Kawanagare' -->
 
-  <sprite id="251" name="Incomplete Sprite - 'Slow_Quick_Tag'" notes="Does nothing.">
+  <sprite id="251" name="Incomplete Sprite - 'Slow_Quick_Tag'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #251: Incomplete Sprite 'Slow_Quick_Tag'" -->
 
   <sprite id="252" name="Rotation Controlled Event Deactivation Block" notes="When struck, this ?-Block will deactivate the Target Event. It can also appear through use of a Rotation Controller allowing it to be hidden from sight before hand.">
@@ -3434,7 +3434,7 @@
   <sprite id="272" name="Ice Bro" notes="A standard Brothers enemy that shoots ice balls at the player." files="bros.arc">
   </sprite> <!-- #272: Ice Bro -->
 
-  <sprite id="273" name="Unused" notes="No assigned function, does nothing in-game." files="manjirou.arc"/> <!-- #273: Unused -->
+  <sprite id="273" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game." files="manjirou.arc"/> <!-- #273: Unused -->
 
   <sprite id="274" name="Rotation Controlled Metal Castle Gear" notes="A metallic rotating gear object with either 4 or 8 teeth. It can crush the player with an instant-kill if they get trapped between terrain or other solid objects from the rotation." files="obj_gear.arc">
     <dependency notes="The gear can either rotate by itself, or can paired with a rotation controller. The cogs on the center and teeth all draw in front of Layer 1, but everything else draws behind it.">
@@ -3495,7 +3495,7 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
   </sprite> <!-- #278: Castle Boss Door -->
 
-  <sprite id="279" name="Incomplete Sprite - 'Ac_Lift_Ice_Spring'" notes="Does nothing.">
+  <sprite id="279" name="Incomplete Sprite - 'Ac_Lift_Ice_Spring'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #279: Incomplete Sprite - 'Ac_Lift_Ice_Spring' -->
 
   <sprite id="280" name="Giant Ice Block" notes="A large 4x4 ice block that can be broken with an explosion." files="lift_icebox.arc;bombhei.arc;iron_ball.arc">
@@ -3519,10 +3519,10 @@
     </dependency>
   </sprite> <!-- #281: Rising Tilt Controlled Girder Controller -->
 
-  <sprite id="282" name="Incomplete Sprite - 'En_WallInsect'" notes="Does nothing.">
+  <sprite id="282" name="Incomplete Sprite - 'En_WallInsect'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #282: Incomplete Sprite - 'En_WallInsect' -->
 
-  <sprite id="283" name="Incomplete Sprite - 'WallInsect_Mgr'" notes="Does nothing.">
+  <sprite id="283" name="Incomplete Sprite - 'WallInsect_Mgr'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #283: Incomplete Sprite - 'WallInsect_Mgr' -->
 
   <sprite id="284" name="Physics Coin Controller" notes="A coin related controller that currently is only known to be paired with [90] Wind Physics.">
@@ -3624,7 +3624,7 @@
     <checkbox nybble="5" title="Made by Box Spawner" comment="Changes the Z-Order of the box to appear behind the spawner model, and slightly adjusts the collision." comment2="Set on all boxes spawned by [318] Box Spawner."/>
   </sprite> <!-- #289: Wooden/Metal Box -->
 
-  <sprite id="290" name="Incomplete Sprite - 'En_Iwao'" notes="Does nothing.">
+  <sprite id="290" name="Incomplete Sprite - 'En_Iwao'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #290: Incomplete Sprite - 'En_Iwao' -->
 
   <sprite id="291" name="Para-Beetle" notes="A small flying Buzzy Beetle type enemy that can be ridden on top of, but will still hurt the player if they contact one from the side or from below." files="met_pata.arc">
@@ -3761,7 +3761,7 @@
     <checkbox nybble="11.4" title="Upside-Down" comment="When enabled, the cannon is upside-down and can be placed against the ceiling." advanced="True" advancedcomment="The pipe will load on the opposite side alongside a cannon, leaving a hole on one side. As such, this option should not be used."/>
   </sprite> <!-- #301: 4-Way Large Cannon with Pipe -->
 
-  <sprite id="302" name="Incomplete Sprite - 'En_Gake_Noko'" notes="Does nothing." files="nokonokoB.arc">
+  <sprite id="302" name="Incomplete Sprite - 'En_Gake_Noko'" nolayer="True" notes="Does nothing." files="nokonokoB.arc">
   </sprite> <!-- #302: Incomplete Sprite - 'En_Gake_Noko' -->
 
   <sprite id="303" name="Monty Mole" notes="An energetic mole enemy that will pop out of the terrain after loading on screen and proceed to move quickly after the player. A Monty Hole is left behind after the mole jumps out." files="choropoo.arc">
@@ -4000,7 +4000,7 @@
     <dualbox nybble="10.4" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the arrow will rotate." requirednybble="11.4"/> <!-- Appears if Ground-Pound Rotate is enabled -->
   </sprite> <!-- #321: Beta Arrow Block -->
 
-  <sprite id="322" name="Incomplete Sprite - 'En_Ghost_Jugem'" notes="Does nothing.">
+  <sprite id="322" name="Incomplete Sprite - 'En_Ghost_Jugem'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #322: Incomplete Sprite - "En_Ghost_Jugem" -->
 
   <sprite id="323" name="Boo Circle" notes="A circle of Boos that can rotate along a central point. It will always have one opening for the player to pass through.">
@@ -4028,7 +4028,7 @@
     <dualbox nybble="12.4" title1="Rotates Clockwise" title2="Rotates Counterclockwise"/>
   </sprite> <!-- #323: Boo Circle -->
 
-  <sprite id="324" name="Incomplete Sprite - 'Ship_Window'" notes="Does nothing.">
+  <sprite id="324" name="Incomplete Sprite - 'Ship_Window'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #324: Incomplete Sprite - 'Ship_Window' -->
 
   <sprite id="325" name="Ghost House Stand" notes="A decorative stand that cannot be interacted with, typically used inside Ghost House levels." files="poltergeist.arc">
@@ -4101,7 +4101,7 @@
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #331: Rotation Controlled Dish Platform -->
 
-  <sprite id="332" name="Incomplete Sprite - 'Lift_Toride_Roll'" notes="Does nothing.">
+  <sprite id="332" name="Incomplete Sprite - 'Lift_Toride_Roll'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #332: Incomplete Sprite - 'Lift_Toride_Roll' -->
 
   <sprite id="333" name="Line Controlled Player-Block Platform" notes="A tilt controlled platform that only activates when a player strikes the Player Block. It will zip from one end of a line guide to the other when the controlling player tilts their controller." files="remo_lift_soroban.arc">
@@ -4283,10 +4283,10 @@
     </dependency>
   </sprite> <!-- #349: Morton Koopa - Castle Boss -->
 
-  <sprite id="350" name="Incomplete Sprite - 'Dummy_Door_Parent'" notes="Does nothing.">
+  <sprite id="350" name="Incomplete Sprite - 'Dummy_Door_Parent'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #350: Incomplete Sprite - 'Dummy_Door_Parent' -->
 
-  <sprite id="351" name="Incomplete Sprite - 'Dummy_Door_Child'" notes="Does nothing.">
+  <sprite id="351" name="Incomplete Sprite - 'Dummy_Door_Child'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #351: Incomplete Sprite - 'Dummy_Door_Child' -->
 
   <!-- More research is needed alongside 302 and 476 -->
@@ -5027,7 +5027,7 @@
     </list>
   </sprite> <!-- #409: Cutscene Controller - Bowser Jr and Peach at Airship -->
 
-  <sprite id="410" name="Incomplete Sprite - 'Ac_Block_Group'" notes="Does nothing.">
+  <sprite id="410" name="Incomplete Sprite - 'Ac_Block_Group'" nolayer="True" notes="Does nothing.">
   </sprite> <!-- #410: Incomplete Sprite - 'Ac_Block_Group' -->
 
   <sprite id="411" name="(Unused) Toad House Minigame - Lives Balloon" notes="The balloon seen in 1-Up Blast minigames. This sprite is not used directly, it is instead spawned automatically by [412] Toad House Minigame - Lives Balloon." files="MG_balloon.arc">
