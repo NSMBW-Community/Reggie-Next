@@ -1478,3 +1478,72 @@ class CameraProfilesDialog(QtWidgets.QDialog):
 
     def updateItemTitle(self, item):
         item.setText(globals_.trans.string('CamProfsDlg', 7, '[id]', item.data(QtCore.Qt.ItemDataRole.UserRole)[0]))
+
+
+class SpriteSwitchDialog(QtWidgets.QDialog):
+    """
+    Lets you switch sprites of one ID to another
+    """
+
+    def __init__(self):
+        """
+        Creates and initializes the dialog
+        """
+        QtWidgets.QDialog.__init__(self)
+        self.setWindowTitle(globals_.trans.string('SwitchSpriteDlg', 0))
+        self.setWindowIcon(GetIcon('move'))
+
+        self.fromType = QtWidgets.QSpinBox()
+        self.toType = QtWidgets.QSpinBox()
+
+        # It should be safe to assume nobody would use an ID higher than this
+        self.fromType.setMaximum(999)
+        self.toType.setMaximum(999)
+
+        swapLayout = QtWidgets.QGridLayout()
+
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwitchSpriteDlg', 1)), 0, 0)
+        swapLayout.addWidget(self.fromType, 0, 1)
+
+        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwitchSpriteDlg', 2)), 1, 0)
+        swapLayout.addWidget(self.toType, 1, 1)
+
+        self.buttons = QtWidgets.QDialogButtonBox()
+        self.buttons.addButton(globals_.trans.string('SwitchSpriteDlg', 3), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        self.buttons.addButton(globals_.trans.string('SwitchSpriteDlg', 4), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
+        self.buttons.clicked.connect(self.buttonClicked)
+
+        # Main layout
+        mainLayout = QtWidgets.QVBoxLayout()
+        mainLayout.addLayout(swapLayout)
+        mainLayout.addWidget(self.buttons)
+        self.setLayout(mainLayout)
+
+    def buttonClicked(self, button):
+        """
+        Handles one of the buttons being pressed and calls the correct handler.
+        """
+        role = self.buttons.buttonRole(button)
+
+        if role == QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole:
+            self.switchSpriteIDs()
+        else:
+            self.reject()
+
+    def switchSpriteIDs(self):
+        """
+        Updates the sprites' IDs
+        """
+        fromType = self.fromType.value()
+        toType = self.toType.value()
+
+        # Do we need to switch anything?
+        if fromType == toType:
+            return
+
+        for sprite in globals_.Area.sprites:
+            if sprite.type == fromType:
+                sprite.SetType(toType)
+
+                globals_.Area.InitialiseIdTypes()
+                SetDirty()

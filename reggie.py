@@ -92,7 +92,7 @@ from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import GameDefMenu, LoadGameDef
 from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem, Path
-from dialogs import AutoSavedInfoDialog, DiagnosticToolDialog, ScreenCapChoiceDialog, AreaChoiceDialog, ObjectTypeSwapDialog, ObjectTilesetSwapDialog, ObjectShiftDialog, MetaInfoDialog, AboutDialog, CameraProfilesDialog
+from dialogs import AutoSavedInfoDialog, DiagnosticToolDialog, ScreenCapChoiceDialog, AreaChoiceDialog, ObjectTypeSwapDialog, ObjectTilesetSwapDialog, ObjectShiftDialog, MetaInfoDialog, AboutDialog, CameraProfilesDialog, SpriteSwitchDialog
 from background import BGDialog
 from zones import ZonesDialog
 from tiles import UnloadTileset, LoadTileset, LoadOverrides
@@ -459,6 +459,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         )
 
         self.CreateAction(
+            'switchsprites', self.SwitchSprites, GetIcon('move'),
+            globals_.trans.stringOneLine('MenuItems', 142), globals_.trans.stringOneLine('MenuItems', 143),
+            GetKeybind('switchsprites'),
+        )
+
+        self.CreateAction(
             'diagnostic', self.HandleDiagnostics, GetIcon('diagnostics'),
             globals_.trans.stringOneLine('MenuItems', 36), globals_.trans.stringOneLine('MenuItems', 37),
             GetKeybind('diagnostic'),
@@ -728,6 +734,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         emenu.addAction(self.actions['mergelocations'])
         emenu.addAction(self.actions['swapobjectstilesets'])
         emenu.addAction(self.actions['swapobjectstypes'])
+        emenu.addAction(self.actions['switchsprites'])
         emenu.addSeparator()
         emenu.addAction(self.actions['diagnostic'])
         emenu.addSeparator()
@@ -2215,6 +2222,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Swaps objects' types
         """
         ObjectTypeSwapDialog().exec()
+
+    def SwitchSprites(self):
+        """
+        Switches sprites of one ID to another
+        """
+        SpriteSwitchDialog().exec()
 
     def MergeLocations(self):
         """

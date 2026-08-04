@@ -1526,6 +1526,7 @@ def LoadDefaultKeybinds():
         'mergelocations':      ('Ctrl+Shift+E',                           globals_.trans.string('MenuItems', 34)),
         'swapobjectstilesets': ('Ctrl+Shift+L',                           globals_.trans.string('MenuItems', 104)),
         'swapobjectstypes':    ('Ctrl+Shift+Y',                           globals_.trans.string('MenuItems', 106)),
+        'switchsprites':       (None,                                     globals_.trans.string('MenuItems', 142)),
         'diagnostic':          ('Ctrl+Shift+D',                           globals_.trans.string('MenuItems', 36)),
         'freezeobjects':       ('Ctrl+Shift+1',                           globals_.trans.string('MenuItems', 38)),
         'freezesprites':       ('Ctrl+Shift+2',                           globals_.trans.string('MenuItems', 40)),
