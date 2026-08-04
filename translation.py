@@ -58,7 +58,7 @@ class ReggieTranslation:
             'external-actors': os.path.join('reggiedata', 'external', 'actors.xml')
         }}
 
-        self.strings = {
+        self.strings: dict[str, dict[int, str | None | tuple[str | None, ...]]] = {
             'AboutDlg': {
                 0: 'About Reggie Next',
                 1: '[i]Reggie Next[/i] Level Editor',
@@ -1208,7 +1208,7 @@ class ReggieTranslation:
 
         return True
 
-    def string(self, *args):
+    def string(self, *args) -> str | None:
         """
         Usage: string(section, numcode, replacementDummy, replacement, replacementDummy2, replacement2, etc.)
         """
@@ -1231,13 +1231,17 @@ class ReggieTranslation:
 
             return text
 
-    def string_(self, *args):
+    def string_(self, *args) -> str | None:
         """
         Gets a string from the translation and returns it
         """
 
         # Get the string
         astring = self.strings[args[0]][args[1]]
+        if astring is None:
+            return None
+        if isinstance(astring, tuple):
+            raise TypeError(f"String {args[0]}/{args[1]} is a tuple: {astring}. Use stringList() instead")
 
         # Perform any replacements
         i = 2
@@ -1272,22 +1276,26 @@ class ReggieTranslation:
         # Return it
         return astring
 
-    def stringOneLine(self, *args):
+    def stringOneLine(self, *args) -> str | None:
         """
         Works like string(), but guarantees that the resulting string will have
         no line breaks or <br>s.
         """
         newstr = self.string(*args)
+        if newstr is None:
+            return None
+
         return newstr.replace('\n', ' ').replace('<br>', ' ')
 
     def stringList(self, section, numcode):
         """
         Returns a list of strings
         """
-        try:
-            return self.strings[section][numcode]
-        except Exception:
-            return ('ReggieTranslation.stringList() ERROR:', section, numcode)
+        strList = self.strings[section][numcode]
+        if isinstance(strList, str):
+            return ('ReggieTranslation.stringList() ERROR:',)
+
+        return strList
 
     def path(self, key, gamedef=None):
         """
@@ -1345,4 +1353,3 @@ class ReggieTranslation:
 
         tree = ElementTree.ElementTree(root)
         tree.write('strings.xml', encoding='utf-8')
-

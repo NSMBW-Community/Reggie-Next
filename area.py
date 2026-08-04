@@ -359,7 +359,7 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         area.
         """
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return []
 
         used_ids = set(sprite.type for sprite in globals_.Area.sprites)
@@ -371,7 +371,7 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         Returns a list of strings with the names of all sprites that are forced
         to load in the current area.
         """
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return []
 
         return self._stringify_sprites(sorted(globals_.Area.force_loaded_sprites))

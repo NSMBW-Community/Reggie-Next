@@ -1,12 +1,24 @@
-from level import Area as AreaType
-from tiles import TilesetTile, ObjectDef
+from collections import OrderedDict
+from typing import Literal
 
-Area: AreaType | None = None
+from PyQt6 import QtCore, QtGui, QtWidgets
+
+from classlib import MenuAction, SpriteCategory
+from gamedef import ReggieGameDefinition
+from level import AbstractLevel
+from level import Area as AreaType
+from misc import SpriteDefinition
+from reggie import ReggieWindow
+from tiles import ObjectDef, TilesetTile
+from translation import ReggieTranslation
+from ui import ReggieTheme
+
+Area: AreaType = AreaType.DummyArea()
 AutoSaveData = b''
 AutoSaveDirty = False
 AutoSavePath = ''
-BgANames = None
-BgBNames = None
+BgANames: list[str] = []
+BgBNames: list[str] = []
 BoundsDrawn = False
 CollisionsShown = False
 CommentsFrozen = False
@@ -18,32 +30,32 @@ CurrentSprite = -1
 Dirty = False
 DirtyOverride = 0
 DrawEntIndicators = False
-EditActions = None
+EditActions: tuple[MenuAction, ...] = ()
 EnablePadding = False
-EntranceTypeNames = None
+EntranceTypeNames: OrderedDict[int, str] | None = None
 EntrancesFrozen = False
 ErrMsg = ''
-FileActions = None
+FileActions: tuple[MenuAction, ...] = ()
 FileExtentions = ('.arc', '.arc.LH', '.arc.LZ')
-GridType = None
+GridType: Literal['grid', 'checker'] | None = None
 HideResetSpritedata = False
-HelpActions = None
-Initializing = None
+HelpActions: tuple[MenuAction, ...] = ()
+Initializing = False
 InsertPathNode = False
 Layer0Shown = True
 Layer1Shown = True
 Layer2Shown = True
-Level = None
-LevelNames = None
+Level: AbstractLevel # Uninitialized on purpose. It's never accessed before being written to. Reduces redudant "is None" checks.
+LevelNames: tuple[str, ...] = ()
 LocationsFrozen = False
 LocationsShown = True
-MusicInfo = None
-NumberFont = None
+MusicInfo: dict[str, str] = {}
+NumberFont: QtGui.QFont | None = None
 NumSprites = 0
-ObjDesc = None
-ObjectDefinitions: list[ObjectDef] # 4 tilesets
+ObjDesc: dict[int, str] = {}
+ObjectDefinitions: tuple[ObjectDef, ObjectDef, ObjectDef, ObjectDef] = (ObjectDef(), ObjectDef(), ObjectDef(), ObjectDef()) # 4 tilesets
 ObjectsFrozen = False
-OverriddenTilesets = {
+OverriddenTilesets: dict[str, set[str]] = {
     "Pa0": set(),
     "no-Pa0": set(),
     "Flowers": set(),
@@ -67,42 +79,43 @@ ReggieVersionFloat = 4.11
 ReggieVersionShort = 'v4.11.0'
 ResetDataWhenHiding = False
 RestoredFromAutoSave = False
-SettingsActions = None
-SpriteCategories = None
+SettingsActions: tuple[MenuAction, ...] = ()
+SpriteCategories: list[SpriteCategory] = []
 SpriteImagesShown = True
-SpriteListData = None
+SpriteListData: list[list[int]] = []
 SpritesFrozen = False
 SpritesShown = True
-Sprites = None
+Sprites: list[SpriteDefinition] = []
 Tiles: dict[int, TilesetTile] = {} # 0x200 tiles per tileset, plus 64 for each type of override
-TilesetAnimTimer = None
-TilesetFilesLoaded: [str, str, str, str]
-TilesetInfo = None
-TilesetNames = None
+TilesetAnimTimer: QtCore.QTimer | None = None
+TilesetFilesLoaded: tuple[str | None, str | None, str | None, str | None] = (None, None, None, None)
+TilesetInfo: dict[str, dict[int, tuple[int, int, int]]] = {}
+TilesetNames: list = [] # TODO: add proper typing later. I don't even know what is happening here
 TilesetsAnimating = False
-ViewActions = None
-ZoneThemeValues = None
+ViewActions: tuple[MenuAction, ...] = ()
+ZoneThemeValues: list[str] = []
 UseRoundedRectangles = True
 DarkMode = False
 UseFullFilepath = False
-FirstStageFilename = None
+FirstStageFilename: str | None = None
 CursorMode = 0
 
-FileKeybinds: dict
-EditKeybinds: dict 
-ViewKeybinds: dict
-SettingsKeybinds: dict
-HelpKeybinds: dict
+FileKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]]
+EditKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]]
+ViewKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]]
+SettingsKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]]
+HelpKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]]
 
 # Config settings
 DispConnectedPipeDir = False
 SpecialEventSpriteID = 0
 AllowSizeHacks = False
 
-app = None
+app: QtWidgets.QApplication | None = None
 firstLoad = True
-gamedef = None
-mainWindow = None
-settings = None
-theme = None
-trans = None
+trans: ReggieTranslation = ReggieTranslation('UNDEFINED')
+gamedef: ReggieGameDefinition = ReggieGameDefinition()
+mainWindow: ReggieWindow | None = None
+# uninitialized
+settings: QtCore.QSettings
+theme: ReggieTheme

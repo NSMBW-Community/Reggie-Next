@@ -660,14 +660,14 @@ def LoadGameDef(name=None, dlg=None):
 
         # Reload all of the spritedata ID types in the area
         # Fixes bugs related to these being outdated when switching game patches
-        if globals_.Area is not None:
+        if globals_.Area.areanum != 1:
             globals_.Area.InitialiseIdTypes()
 
         if globals_.mainWindow is not None:
             globals_.mainWindow.spriteViewPicker.clear()
 
             for cat in globals_.SpriteCategories:
-                globals_.mainWindow.spriteViewPicker.addItem(cat[0])
+                globals_.mainWindow.spriteViewPicker.addItem(cat.name)
 
             globals_.mainWindow.sprPicker.LoadItems()  # Reloads the sprite picker list items
             globals_.mainWindow.spriteViewPicker.setCurrentIndex(0)  # Sets the sprite picker to category 0 (enemies)
@@ -706,7 +706,7 @@ def LoadGameDef(name=None, dlg=None):
         # again and also simplifies the sprite image code.
         SLib.SpritesFolders = globals_.gamedef.recursiveFiles('sprites', is_folder=True)[0]
 
-        if globals_.Area is not None:
+        if globals_.Area.areanum != 1:
             SLib.ImageCache.clear()
             SLib.SpriteImagesLoaded.clear()
             LoadBasics()
@@ -736,7 +736,7 @@ def LoadGameDef(name=None, dlg=None):
 
             # Update the Area's unknown_sprite_ids
             globals_.Area.unknown_sprite_ids = unknown_sprite_ids
-            
+
             # Check for unknown sprite IDs and show warning icon in status bar
             if unknown_sprite_ids:
                 sprite_ids = sorted(unknown_sprite_ids)
@@ -752,7 +752,7 @@ def LoadGameDef(name=None, dlg=None):
 
         # Reload the sprite-picker text
         if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 12))  # Applying sprite image data...
-        if globals_.Area is not None:
+        if globals_.Area.areanum != 1:
             for spr in globals_.Area.sprites:
                 spr.UpdateListItem()  # Reloads the sprite-picker text
         if dlg: dlg.setValue(6)

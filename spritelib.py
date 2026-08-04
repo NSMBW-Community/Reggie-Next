@@ -783,10 +783,19 @@ class AuxiliaryImage_FollowsRect(AuxiliaryImage):
         if self.realimage is None:
             self.realimage = self.image
 
-    def move(self, x: float, y: float, w: float, h: float):
+    def move(self, x: float | None, y: float | None, w: float | None, h: float | None):
         """
         Repositions the auxiliary image
         """
+
+        if x is None:
+            x = self.x()
+        if y is None:
+            y = self.y()
+        if w is None:
+            w = self.width
+        if h is None:
+            h = self.height
 
         # This will be used later
         oldx, oldy = self.x(), self.y()

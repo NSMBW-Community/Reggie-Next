@@ -920,8 +920,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             # Get the default settings
             toggled = {}
             for List in (globals_.FileActions, globals_.EditActions, globals_.ViewActions, globals_.SettingsActions, globals_.HelpActions):
-                for name, activated, key in List:
-                    toggled[key] = activated
+                for action in List:
+                    toggled[action.id] = action.active
         else:
             # Get the settings from the .ini
             toggled = setting('ToolbarActs')
@@ -1128,7 +1128,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         LoadSpriteCategories()
         viewpicker = QtWidgets.QComboBox()
         for view in globals_.SpriteCategories:
-            viewpicker.addItem(view[0])
+            viewpicker.addItem(view.name)
         viewpicker.currentIndexChanged.connect(self.SelectNewSpriteView)
 
         self.spriteViewPicker = viewpicker
@@ -2936,7 +2936,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         globals_.Layer0Shown = checked
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         for obj in globals_.Area.layers[0]:
@@ -2950,7 +2950,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         globals_.Layer1Shown = checked
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         for obj in globals_.Area.layers[1]:
@@ -2964,7 +2964,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         globals_.Layer2Shown = checked
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         for obj in globals_.Area.layers[2]:
@@ -3009,7 +3009,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.SpritesShown = checked
         setSetting('ShowSprites', globals_.SpritesShown)
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         for spr in globals_.Area.sprites:
@@ -3023,7 +3023,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         setSetting('ShowSpriteImages', globals_.SpriteImagesShown)
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         globals_.DirtyOverride += 1
@@ -3061,7 +3061,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.LocationsShown = checked
         setSetting('ShowLocations', globals_.LocationsShown)
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         for loc in globals_.Area.locations:
@@ -3074,7 +3074,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.CommentsShown = checked
         setSetting('ShowComments', globals_.CommentsShown)
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         for com in globals_.Area.comments:
@@ -3087,7 +3087,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.PathsShown = checked
         setSetting('ShowPaths', globals_.PathsShown)
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         for path in globals_.Area.paths:
@@ -3100,7 +3100,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.ObjectsFrozen = checked
         setSetting('FreezeObjects', globals_.ObjectsFrozen)
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
@@ -3119,7 +3119,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.SpritesFrozen = checked
         setSetting('FreezeSprites', globals_.SpritesFrozen)
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
@@ -3137,7 +3137,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.EntrancesFrozen = checked
         setSetting('FreezeEntrances', globals_.EntrancesFrozen)
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
@@ -3155,7 +3155,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.LocationsFrozen = checked
         setSetting('FreezeLocations', globals_.LocationsFrozen)
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
@@ -3173,7 +3173,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.PathsFrozen = checked
         setSetting('FreezePaths', globals_.PathsFrozen)
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         for path in globals_.Area.paths:
@@ -3186,7 +3186,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.CommentsFrozen = checked
         setSetting('FreezeComments', globals_.CommentsFrozen)
 
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         flag1 = QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable
@@ -4792,7 +4792,7 @@ def main():
         else:
             setSetting('AutoSaveFilePath', None)
             setSetting('AutoSaveFileData', 'x')
-    
+
     # Toggle light/dark mode
     SetColorScheme()
 

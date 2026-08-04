@@ -285,7 +285,7 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         self.findZone()
 
     def findZone(self):
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             return
 
         self.zoneId = SLib.MapPositionToZoneID(globals_.Area.zones, self.parent.objx, self.parent.objy, True)
@@ -361,7 +361,7 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         """
         Real view location painter for liquids/fog
         """
-        if self.paintZone() or globals_.Area is None:
+        if self.paintZone() or globals_.Area.areanum == -1:
             return
 
         for zone in globals_.Area.zones:
@@ -2715,11 +2715,18 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
 
         # scrolling
         view = self.parent.scene().views()[0]
-        view.XScrollBar.valueChanged.connect(slot)
-        view.YScrollBar.valueChanged.connect(slot)
+        horizontalScrollBar = view.horizontalScrollBar()
+        verticalScrollBar = view.verticalScrollBar()
+        if horizontalScrollBar is None or verticalScrollBar is None:
+            return
+        horizontalScrollBar.valueChanged.connect(slot)
+        verticalScrollBar.valueChanged.connect(slot)
 
         # zooming
-        self.parent.scene().getMainWindow().ZoomWidget.slider.valueChanged.connect(slot)
+        mainWindow = self.parent.scene().getMainWindow()
+        if mainWindow is None:
+            return
+        mainWindow.ZoomWidget.slider.valueChanged.connect(slot)
 
     @staticmethod
     def loadImages():
@@ -2747,7 +2754,10 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
 
             zoneRect = QtCore.QRectF(zone.objx * 1.5, zone.objy * 1.5, zone.width * 1.5, zone.height * 1.5)
             view = self.parent.scene().views()[0]
-            viewRect = view.mapToScene(view.viewport().rect()).boundingRect()
+            viewport = view.viewport()
+            if viewport is None:
+                return
+            viewRect = view.mapToScene(viewport.rect()).boundingRect()
             bothRect = zoneRect & viewRect
 
             if bothRect.getRect() == (0, 0, 0, 0):

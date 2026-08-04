@@ -10,6 +10,7 @@ from xml.etree import ElementTree
 ################################################################################
 
 import globals_
+from classlib import MenuAction, SpriteCategory, SpriteSubCategory
 from ui import GetIcon, ReggieTheme, clipStr, KeybindLineEdit
 from dirty import setting, setSetting, delSetting
 from dialogs import DiagnosticToolDialog
@@ -258,7 +259,7 @@ def LoadTilesetNames_Category(node):
                 continue
 
             # override present, add it to the correct type
-            
+
             types = str(child.attrib['override']).split(',')
 
             for type_ in types:
@@ -412,8 +413,8 @@ def LoadZoneThemes(reload_=False):
     """
     Ensures that custom zone themes get loaded
     """
-    if (globals_.ZoneThemeValues is not None) and not reload_: return
-    
+    if len(globals_.ZoneThemeValues) > 0 and not reload_: return
+
     paths = getResourcePaths('zonethemes')
 
     for path in paths:
@@ -445,6 +446,21 @@ class SpriteDefinition:
     """
     Stores and manages the data info for a specific sprite
     """
+
+    def __init__(self):
+        self.id: int = -1
+        self.name: str | None = None
+        self.notes: str | None = None
+        self.advNotes: str | None = None
+        self.relatedObjFiles: str | None = None
+        self.yoshiNotes: str | None = None
+        self.noyoshi: bool = False
+        self.asm: bool = False
+        self.size: bool = False
+        self.noLayer: bool = False
+        self.dependencies: list[str] = []
+        self.dependencynotes: str | None = None
+
 
     class ListPropertyModel(QtCore.QAbstractListModel):
         """
@@ -551,13 +567,13 @@ class SpriteDefinition:
 
                 if field.tag not in {'value', 'list'}:
                     raise ValueError("Only values and lists support idtypes.")
-            
+
             if 'start' in attribs:
                 start = int(attribs['start'])
 
                 if field.tag != 'value':
                     raise ValueError("Only values support a start index.")
-            
+
             if 'increment' in attribs:
                 increment = int(attribs['increment'])
 
@@ -721,15 +737,14 @@ def LoadSpriteData():
         for sprite in tree.iter("sprite"):
             id_text = sprite.get("id")
 
-            try:
-                id_ = int(id_text)
-            except ValueError:
+            if id_text is None:
                 continue
 
+            id_ = int(id_text)
             sprite_ids.append(id_)
 
     globals_.NumSprites = max(sprite_ids) + 1
-    globals_.Sprites = [None] * globals_.NumSprites
+    globals_.Sprites = [SpriteDefinition()] * globals_.NumSprites
 
     for sdpath in paths:
 
@@ -809,19 +824,21 @@ def LoadSpriteCategories(reload_=False):
     """
     Ensures that the sprite category info is loaded
     """
-    if (globals_.SpriteCategories is not None) and not reload_: return
+    if len(globals_.SpriteCategories) == 0 and not reload_: return
 
     paths = getResourcePaths('spritecategories')
 
     globals_.SpriteCategories = []
     # Add a Search category
-    globals_.SpriteCategories.append((globals_.trans.string('Sprites', 19), [(globals_.trans.string('Sprites', 16), list(range(globals_.NumSprites)))], []))
-    globals_.SpriteCategories[-1][1][0][1].append(9999)  # 'no results' special case
+    globals_.SpriteCategories.append(SpriteCategory(globals_.trans.string('Sprites', 19), [SpriteSubCategory(globals_.trans.string('Sprites', 16), list(range(globals_.NumSprites)))], []))
+    globals_.SpriteCategories[0].subCategories[0].spriteIds.append(9999)  # 'no results' special case
     for path in paths:
+        if path is None:
+            continue
         tree = ElementTree.parse(path)
         root = tree.getroot()
 
-        CurrentView = None
+        CurrentView: list[SpriteSubCategory] | None = None
         for view in root:
             if view.tag.lower() != 'view': continue
 
@@ -830,8 +847,9 @@ def LoadSpriteCategories(reload_=False):
             # See if it's in there already
             CurrentView = []
             for potentialview in globals_.SpriteCategories:
-                if potentialview[0] == viewname: CurrentView = potentialview[1]
-            if CurrentView == []: globals_.SpriteCategories.append((viewname, CurrentView, []))
+                if potentialview.name == viewname:
+                    CurrentView = potentialview.subCategories
+            if CurrentView == []: globals_.SpriteCategories.append(SpriteCategory(viewname, CurrentView, []))
 
             CurrentCategory = None
             for category in view:
@@ -842,8 +860,8 @@ def LoadSpriteCategories(reload_=False):
                 # See if it's in there already
                 CurrentCategory = []
                 for potentialcat in CurrentView:
-                    if potentialcat[0] == catname: CurrentCategory = potentialcat[1]
-                if CurrentCategory == []: CurrentView.append((catname, CurrentCategory))
+                    if potentialcat.name == catname: CurrentCategory = potentialcat.spriteIds
+                if CurrentCategory == []: CurrentView.append(SpriteSubCategory(catname, CurrentCategory))
 
                 for attach in category:
                     if attach.tag.lower() != 'attach': continue
@@ -954,7 +972,7 @@ def LoadTilesetInfo(reload_=False):
                     special = 0b10
 
             for item in list_:
-                randoms[item] = [values, direction, special]
+                randoms[item] = (values, direction, special)
 
         return randoms
 
@@ -1430,69 +1448,69 @@ def LoadActionsLists():
     # These are used both in the Preferences Dialog and when init'ing the toolbar.
 
     globals_.FileActions = (
-        (globals_.trans.string('MenuItems', 0), True, 'newlevel'),
-        (globals_.trans.string('MenuItems', 2), True, 'openfromname'),
-        (globals_.trans.string('MenuItems', 4), False, 'openfromfile'),
-        (globals_.trans.string('MenuItems', 6),  False, 'openrecent'),
-        (globals_.trans.string('MenuItems', 8), True, 'save'),
-        (globals_.trans.string('MenuItems', 10), False, 'saveas'),
-        (globals_.trans.string('MenuItems', 128), False, 'savecopyas'),
-        (globals_.trans.string('MenuItems', 12), False, 'metainfo'),
-        (globals_.trans.string('MenuItems', 98), False, 'changegamedef'),
-        (globals_.trans.string('MenuItems', 14), True, 'screenshot'),
-        (globals_.trans.string('MenuItems', 16), False, 'changegamepath'),
-        (globals_.trans.string('MenuItems', 18), False, 'preferences'),
-        (globals_.trans.string('MenuItems', 20), False, 'exit'),
+        MenuAction('newlevel', globals_.trans.string('MenuItems', 0), True),
+        MenuAction('openfromname', globals_.trans.string('MenuItems', 2), True),
+        MenuAction('openfromfile', globals_.trans.string('MenuItems', 4), False),
+        MenuAction('openrecent', globals_.trans.string('MenuItems', 6), False),
+        MenuAction('save', globals_.trans.string('MenuItems', 8), True),
+        MenuAction('saveas', globals_.trans.string('MenuItems', 10), False),
+        MenuAction('savecopyas', globals_.trans.string('MenuItems', 128), False),
+        MenuAction('metainfo', globals_.trans.string('MenuItems', 12), False),
+        MenuAction('changegamedef', globals_.trans.string('MenuItems', 98), False),
+        MenuAction('screenshot', globals_.trans.string('MenuItems', 14), True),
+        MenuAction('changegamepath', globals_.trans.string('MenuItems', 16), False),
+        MenuAction('preferences', globals_.trans.string('MenuItems', 18), False),
+        MenuAction('exit', globals_.trans.string('MenuItems', 20), False),
     )
     globals_.EditActions = (
-        (globals_.trans.string('MenuItems', 22), False, 'selectall'),
-        (globals_.trans.string('MenuItems', 24), False, 'deselect'),
-        (globals_.trans.string('MenuItems', 26), True, 'cut'),
-        (globals_.trans.string('MenuItems', 28), True, 'copy'),
-        (globals_.trans.string('MenuItems', 30), True, 'paste'),
-        (globals_.trans.string('MenuItems', 32), False, 'shiftitems'),
-        (globals_.trans.string('MenuItems', 34), False, 'mergelocations'),
-        (globals_.trans.string('MenuItems', 36), False, 'diagnostic'),
-        (globals_.trans.string('MenuItems', 38), False, 'freezeobjects'),
-        (globals_.trans.string('MenuItems', 40), False, 'freezesprites'),
-        (globals_.trans.string('MenuItems', 42), False, 'freezeentrances'),
-        (globals_.trans.string('MenuItems', 44), False, 'freezelocations'),
-        (globals_.trans.string('MenuItems', 46), False, 'freezepaths'),
+        MenuAction('selectall', globals_.trans.string('MenuItems', 22), False),
+        MenuAction('deselect', globals_.trans.string('MenuItems', 24), False),
+        MenuAction('cut', globals_.trans.string('MenuItems', 26), True),
+        MenuAction('copy', globals_.trans.string('MenuItems', 28), True),
+        MenuAction('paste', globals_.trans.string('MenuItems', 30), True),
+        MenuAction('shiftitems', globals_.trans.string('MenuItems', 32), False),
+        MenuAction('mergelocations', globals_.trans.string('MenuItems', 34), False),
+        MenuAction('diagnostic', globals_.trans.string('MenuItems', 36), False),
+        MenuAction('freezeobjects', globals_.trans.string('MenuItems', 38), False),
+        MenuAction('freezesprites', globals_.trans.string('MenuItems', 40), False),
+        MenuAction('freezeentrances', globals_.trans.string('MenuItems', 42), False),
+        MenuAction('freezelocations', globals_.trans.string('MenuItems', 44), False),
+        MenuAction('freezepaths', globals_.trans.string('MenuItems', 46), False),
     )
     globals_.ViewActions = (
-        (globals_.trans.string('MenuItems', 48), True, 'showlay0'),
-        (globals_.trans.string('MenuItems', 50), True, 'showlay1'),
-        (globals_.trans.string('MenuItems', 52), True, 'showlay2'),
-        (globals_.trans.string('MenuItems', 108), False, 'tileanim'),
-        (globals_.trans.string('MenuItems', 110), False, 'collisions'),
-        (globals_.trans.string('MenuItems', 118), False, 'realview'),
-        (globals_.trans.string('MenuItems', 54), True, 'showsprites'),
-        (globals_.trans.string('MenuItems', 56), False, 'showspriteimages'),
-        (globals_.trans.string('MenuItems', 58), True, 'showlocations'),
-        (globals_.trans.string('MenuItems', 130), True, 'showpaths'),
-        (globals_.trans.string('MenuItems', 60), True, 'grid'),
-        (globals_.trans.string('MenuItems', 62), True, 'zoommax'),
-        (globals_.trans.string('MenuItems', 64), True, 'zoomin'),
-        (globals_.trans.string('MenuItems', 66), True, 'zoomactual'),
-        (globals_.trans.string('MenuItems', 68), True, 'zoomout'),
-        (globals_.trans.string('MenuItems', 70), True, 'zoommin'),
+        MenuAction('showlay0', globals_.trans.string('MenuItems', 48), True),
+        MenuAction('showlay1', globals_.trans.string('MenuItems', 50), True),
+        MenuAction('showlay2', globals_.trans.string('MenuItems', 52), True),
+        MenuAction('tileanim', globals_.trans.string('MenuItems', 108), False),
+        MenuAction('collisions', globals_.trans.string('MenuItems', 110), False),
+        MenuAction('realview', globals_.trans.string('MenuItems', 118), False),
+        MenuAction('showsprites', globals_.trans.string('MenuItems', 54), True),
+        MenuAction('showspriteimages', globals_.trans.string('MenuItems', 56), False),
+        MenuAction('showlocations', globals_.trans.string('MenuItems', 58), True),
+        MenuAction('showpaths', globals_.trans.string('MenuItems', 130), True),
+        MenuAction('grid', globals_.trans.string('MenuItems', 60), True),
+        MenuAction('zoommax', globals_.trans.string('MenuItems', 62), True),
+        MenuAction('zoomin', globals_.trans.string('MenuItems', 64), True),
+        MenuAction('zoomactual', globals_.trans.string('MenuItems', 66), True),
+        MenuAction('zoomout', globals_.trans.string('MenuItems', 68), True),
+        MenuAction('zoommin', globals_.trans.string('MenuItems', 70), True),
     )
     globals_.SettingsActions = (
-        (globals_.trans.string('MenuItems', 72), True, 'areaoptions'),
-        (globals_.trans.string('MenuItems', 140), False, 'camprofiles'),
-        (globals_.trans.string('MenuItems', 74), True, 'zones'),
-        (globals_.trans.string('MenuItems', 76), True, 'backgrounds'),
-        (globals_.trans.string('MenuItems', 78), False, 'addarea'),
-        (globals_.trans.string('MenuItems', 80), False, 'importarea'),
-        (globals_.trans.string('MenuItems', 82), False, 'deletearea'),
-        (globals_.trans.string('MenuItems', 84), False, 'reloadgfx'),
-        (globals_.trans.string('MenuItems', 138), False, 'reloaddata'),
+        MenuAction('areaoptions', globals_.trans.string('MenuItems', 72), True),
+        MenuAction('camprofiles', globals_.trans.string('MenuItems', 140), False),
+        MenuAction('zones', globals_.trans.string('MenuItems', 74), True),
+        MenuAction('backgrounds', globals_.trans.string('MenuItems', 76), True),
+        MenuAction('addarea', globals_.trans.string('MenuItems', 78), False),
+        MenuAction('importarea', globals_.trans.string('MenuItems', 80), False),
+        MenuAction('deletearea', globals_.trans.string('MenuItems', 82), False),
+        MenuAction('reloadgfx', globals_.trans.string('MenuItems', 84), False),
+        MenuAction('reloaddata', globals_.trans.string('MenuItems', 138), False),
     )
     globals_.HelpActions = (
-        (globals_.trans.string('MenuItems', 86), False, 'infobox'),
-        (globals_.trans.string('MenuItems', 88), False, 'helpbox'),
-        (globals_.trans.string('MenuItems', 90), False, 'tipbox'),
-        (globals_.trans.string('MenuItems', 92), False, 'aboutqt'),
+        MenuAction('infobox', globals_.trans.string('MenuItems', 86), False),
+        MenuAction('helpbox', globals_.trans.string('MenuItems', 88), False),
+        MenuAction('tipbox', globals_.trans.string('MenuItems', 90), False),
+        MenuAction('aboutqt', globals_.trans.string('MenuItems', 92), False),
     )
 
 
@@ -1878,8 +1896,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                     # Get the default settings
                     toggled = {}
                     for List in (globals_.FileActions, globals_.EditActions, globals_.ViewActions, globals_.SettingsActions, globals_.HelpActions):
-                        for name, activated, key in List:
-                            toggled[key] = activated
+                        for action in List:
+                            toggled[action.id] = action.active
                 else:
                     # Get the settings from the .ini
                     toggled = setting('ToolbarActs')
@@ -1914,15 +1932,15 @@ class PreferencesDialog(QtWidgets.QDialog):
 
                 # Set up the menus by iterating over the above data
                 for defaults, boxes, layout, group in menuItems:
-                    for L, C, I in defaults:
-                        box = QtWidgets.QCheckBox(L.replace('<br>', ' '))
+                    for action in defaults:
+                        box = QtWidgets.QCheckBox(action.text.replace('<br>', ' '))
                         boxes.append(box)
                         layout.addWidget(box)
                         try:
-                            box.setChecked(toggled[I])
+                            box.setChecked(toggled[action.id])
                         except KeyError:
                             pass
-                        box.InternalName = I  # to save settings later
+                        box.InternalName = action.id  # to save settings later
                     group.setLayout(layout)
 
                 # Create the always-enabled Current Area checkbox
@@ -2084,8 +2102,8 @@ class PreferencesDialog(QtWidgets.QDialog):
                     sorted[value].append(key)
 
                 conflicts = {
-                    value: keys 
-                    for value, keys in sorted.items() 
+                    value: keys
+                    for value, keys in sorted.items()
                     if len(keys) > 1
                 }
 
@@ -2327,4 +2345,3 @@ class PreferencesDialog(QtWidgets.QDialog):
                 return px
 
         return AppearanceTab
-

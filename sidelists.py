@@ -2,6 +2,7 @@ import base64
 
 from PyQt6 import QtWidgets, QtGui, QtCore
 
+from classlib import SpriteCategory
 import globals_
 from tiles import RenderObject, TilesetTile
 from ui import ListWidgetWithToolTipSignal
@@ -141,7 +142,7 @@ class LevelOverviewWidget(QtWidgets.QWidget):
         """
         Calculates self.maxX and self.maxY.
         """
-        if globals_.Area is None:
+        if globals_.Area.areanum == -1:
             # fixes race condition where this widget's size is calculated
             # after the level is created, but before it's loaded
             self.maxX = 100
@@ -778,12 +779,12 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         """
         Updates all spritenames
         """
-        for viewname, view, nodelist in globals_.SpriteCategories:
-            for cnode in nodelist:
+        for cat in globals_.SpriteCategories:
+            for cnode in cat.nodes:
                 for i in range(cnode.childCount()):
                     snode = cnode.child(i)
 
-                    if snode == self.NoSpritesFound:
+                    if snode is None or snode == self.NoSpritesFound:
                         # Don't change the name of the "no sprites found" marker
                         continue
 
@@ -807,19 +808,19 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         """
         self.clear()
 
-        for viewname, view, nodelist in globals_.SpriteCategories:
-            for n in nodelist: nodelist.remove(n)
-            for catname, category in view:
+        SearchableItems = []
+        for cat in globals_.SpriteCategories:
+            for n in cat.nodes: cat.nodes.remove(n)
+            for view in cat.subCategories:
                 cnode = QtWidgets.QTreeWidgetItem()
-                cnode.setText(0, catname)
+                cnode.setText(0, view.name)
                 cnode.setData(0, QtCore.Qt.ItemDataRole.UserRole, -1)
 
-                isSearch = (catname == globals_.trans.string('Sprites', 16))
+                isSearch = (view.name == globals_.trans.string('Sprites', 16))
                 if isSearch:
                     self.SearchResultsCategory = cnode
-                    SearchableItems = []
 
-                for id_ in category:
+                for id_ in view.spriteIds:
                     snode = QtWidgets.QTreeWidgetItem()
                     if id_ == 9999:
                         snode.setText(0, globals_.trans.string('Sprites', 17))
@@ -846,7 +847,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
 
                 self.addTopLevelItem(cnode)
                 cnode.setHidden(True)
-                nodelist.append(cnode)
+                cat.nodes.append(cnode)
 
         self.ShownSearchResults = SearchableItems
         self.NoSpritesFound.setHidden(True)
@@ -855,14 +856,17 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
 
         self.SwitchView(globals_.SpriteCategories[0])
 
-    def SwitchView(self, view):
+    def SwitchView(self, view: SpriteCategory):
         """
         Changes the selected sprite view
         """
         for i in range(self.topLevelItemCount()):
-            self.topLevelItem(i).setHidden(True)
+            item = self.topLevelItem(i)
+            if item is None:
+                continue
+            item.setHidden(True)
 
-        for node in view[2]:
+        for node in view.nodes:
             node.setHidden(False)
 
     def HandleItemChange(self, current, previous):

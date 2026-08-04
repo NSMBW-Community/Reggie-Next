@@ -263,6 +263,8 @@ class Area:
         self.MetaData = None
         self._is_loaded = False
 
+        if self.areanum == -1:
+            return
         CreateTilesets()
 
     def set_num(self, area_num):
@@ -1127,6 +1129,10 @@ class Area:
                 del counter[value]
             else:
                 counter[value] -= 1
+
+    @classmethod
+    def DummyArea(cls) -> "Area":
+        return cls(-1)
 
 
 class Metadata:
