@@ -1545,5 +1545,11 @@ class SpriteSwitchDialog(QtWidgets.QDialog):
             if sprite.type == fromType:
                 sprite.SetType(toType)
 
+                spriteClasses = globals_.gamedef.getImageClasses()
+                if sprite.type in spriteClasses:
+                    sprite.setImageObj(spriteClasses[sprite.type])
+                else:
+                    sprite.setImageObj(SLib.SpriteImage)
+
                 globals_.Area.InitialiseIdTypes()
                 SetDirty()
