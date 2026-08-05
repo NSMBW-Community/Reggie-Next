@@ -9,6 +9,7 @@ from xml.etree import ElementTree
 ################################################################################
 ################################################################################
 
+from build_reggie import e
 import globals_
 from classlib import MenuAction, SpriteCategory, SpriteSubCategory
 from ui import GetIcon, ReggieTheme, clipStr, KeybindLineEdit
@@ -197,7 +198,7 @@ def LoadTilesetNames(reload_=False):
     """
     Ensures that the tileset name info is loaded
     """
-    if (globals_.TilesetNames is not None) and (not reload_): return
+    if len(globals_.TilesetNames) and (not reload_): return
 
     # Get paths
     paths = getResourcePaths('tilesets')
@@ -341,7 +342,7 @@ def LoadObjDescriptions(reload_=False):
     """
     Ensures that the object description is loaded
     """
-    if (globals_.ObjDesc is not None) and not reload_: return
+    if len(globals_.ObjDesc) and not reload_: return
 
     paths = getResourcePaths('ts1_descriptions')
 
@@ -359,7 +360,7 @@ def LoadBgANames(reload_=False):
     """
     Ensures that the background name info is loaded
     """
-    if (globals_.BgANames is not None) and not reload_: return
+    if len(globals_.BgANames) and not reload_: return
 
     paths = getResourcePaths('bga')
 
@@ -386,7 +387,7 @@ def LoadBgBNames(reload_=False):
     """
     Ensures that the background name info is loaded
     """
-    if (globals_.BgBNames is not None) and not reload_: return
+    if (globals_.BgBNames) and not reload_: return
 
     paths = getResourcePaths('bgb')
 
@@ -881,7 +882,7 @@ def LoadSpriteListData(reload_=False):
     """
     Ensures that the sprite list modifier data is loaded
     """
-    if (globals_.SpriteListData is not None) and not reload_: return
+    if len(globals_.SpriteListData) and not reload_: return
 
     paths = getResourcePaths('spritelistdata')
 
@@ -910,7 +911,7 @@ def LoadEntranceNames(reload_=False):
     """
     Ensures that the entrance names are loaded
     """
-    if (globals_.EntranceTypeNames is not None) and not reload_: return
+    if len(globals_.EntranceTypeNames) and not reload_: return
 
     paths = getResourcePaths('entrancetypes')
 
@@ -921,9 +922,13 @@ def LoadEntranceNames(reload_=False):
                 id_, name = line.strip().split(':')
                 names[int(id_)] = name
 
-    globals_.EntranceTypeNames = collections.OrderedDict()
+    globals_.EntranceTypeNames.clear()
     for idx in names:
-        globals_.EntranceTypeNames[idx] = globals_.trans.string('EntranceDataEditor', 28, '[id]', idx, '[name]', names[idx])
+        entrance_name = globals_.trans.string('EntranceDataEditor', 28, '[id]', idx, '[name]', names[idx])
+        if not entrance_name:
+            continue
+
+        globals_.EntranceTypeNames[idx] = entrance_name
 
 
 def LoadTilesetInfo(reload_=False):
@@ -976,7 +981,7 @@ def LoadTilesetInfo(reload_=False):
 
         return randoms
 
-    if (globals_.TilesetInfo is not None) and not reload_:
+    if len(globals_.TilesetInfo) and not reload_:
         return
 
     # Convert the iterable to list, because we need to iterate over it twice
@@ -1024,7 +1029,7 @@ def LoadMusicInfo(reload_=False):
     Uses the current gamedef + translation to load the music data, and saves it
     in the MusicInfo global.
     """
-    if (globals_.MusicInfo is not None) and not reload_:
+    if len(globals_.MusicInfo) and not reload_:
         return
 
     paths = getResourcePaths('music')

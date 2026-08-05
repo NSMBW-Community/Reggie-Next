@@ -541,7 +541,7 @@ class ObjectItem(LevelEditorItem):
         Returns whether the bottom row of self.objdata contains the special
         vdouble top tile.
         """
-        if globals_.TilesetFilesLoaded[self.tileset] is None or globals_.TilesetInfo is None:
+        if globals_.TilesetFilesLoaded[self.tileset] is None or not len(globals_.TilesetInfo):
             # no randomisation info -> false
             return False
 
@@ -578,7 +578,7 @@ class ObjectItem(LevelEditorItem):
         # that returns the tile on the block next to the current tile on a
         # specified layer. Maybe something for the Area class?
 
-        if globals_.TilesetInfo is None or globals_.TilesetFilesLoaded[self.tileset] is None:
+        if not len(globals_.TilesetInfo) or globals_.TilesetFilesLoaded[self.tileset] is None:
             # no randomisation info -> exit
             return
 
@@ -688,7 +688,7 @@ class ObjectItem(LevelEditorItem):
         """
         # if we don't have to randomise, simply rerender everything
         if globals_.TilesetFilesLoaded[self.tileset] is None \
-           or globals_.TilesetInfo is None \
+           or not len(globals_.TilesetInfo) \
            or globals_.ObjectDefinitions is None \
            or globals_.ObjectDefinitions[self.tileset] is None \
            or globals_.ObjectDefinitions[self.tileset][self.type] is None \
@@ -1954,7 +1954,7 @@ class LocationItem(LevelEditorItem):
 
         self.dragging = False
         self.update()
-    
+
     def hoverMoveEvent(self, event):
         LevelEditorItem.hoverMoveEvent(self, event)
         if globals_.LocationsFrozen:
@@ -1968,7 +1968,7 @@ class LocationItem(LevelEditorItem):
     def hoverLeaveEvent(self, event):
         LevelEditorItem.hoverLeaveEvent(self, event)
         setOverrideCursor(None)
-    
+
 
 
 class SpriteItem(LevelEditorItem):

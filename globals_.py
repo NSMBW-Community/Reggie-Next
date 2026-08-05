@@ -32,7 +32,7 @@ DirtyOverride = 0
 DrawEntIndicators = False
 EditActions: tuple[MenuAction, ...] = ()
 EnablePadding = False
-EntranceTypeNames: OrderedDict[int, str] | None = None
+EntranceTypeNames: OrderedDict[int, str] = OrderedDict()
 EntrancesFrozen = False
 ErrMsg = ''
 FileActions: tuple[MenuAction, ...] = ()
@@ -53,7 +53,7 @@ MusicInfo: dict[str, str] = {}
 NumberFont: QtGui.QFont | None = None
 NumSprites = 0
 ObjDesc: dict[int, str] = {}
-ObjectDefinitions: tuple[ObjectDef, ObjectDef, ObjectDef, ObjectDef] = (ObjectDef(), ObjectDef(), ObjectDef(), ObjectDef()) # 4 tilesets
+ObjectDefinitions: list[list[ObjectDef | None]] = [] # 4 tilesets
 ObjectsFrozen = False
 OverriddenTilesets: dict[str, set[str]] = {
     "Pa0": set(),
@@ -66,8 +66,8 @@ OverriddenTilesets: dict[str, set[str]] = {
     "Conveyors": set()
 }
 OverrideSnapping = False
-Overrides: list[TilesetTile] = [] # 320 tiles, this is put into Tiles usually
-Overrides_safe: list[TilesetTile] = []
+Overrides: list[TilesetTile | None] = [] # 320 tiles, this is put into Tiles usually
+Overrides_safe: list[TilesetTile | None] = []
 OVERRIDE_UNKNOWN = 0
 PaddingLength = 0
 PathsFrozen = False
@@ -86,9 +86,9 @@ SpriteListData: list[list[int]] = []
 SpritesFrozen = False
 SpritesShown = True
 Sprites: list[SpriteDefinition] = []
-Tiles: dict[int, TilesetTile] = {} # 0x200 tiles per tileset, plus 64 for each type of override
+Tiles: dict[int, list[TilesetTile | None]] = {} # 0x200 tiles per tileset, plus 64 for each type of override
 TilesetAnimTimer: QtCore.QTimer | None = None
-TilesetFilesLoaded: tuple[str | None, str | None, str | None, str | None] = (None, None, None, None)
+TilesetFilesLoaded: list[str | None] = []
 TilesetInfo: dict[str, dict[int, tuple[int, int, int]]] = {}
 TilesetNames: list = [] # TODO: add proper typing later. I don't even know what is happening here
 TilesetsAnimating = False
@@ -100,7 +100,7 @@ UseFullFilepath = False
 FirstStageFilename: str | None = None
 CursorMode = 0
 
-FileKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]]
+FileKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]] # TODO may turn into a class in classlib.py
 EditKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]]
 ViewKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]]
 SettingsKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]]
