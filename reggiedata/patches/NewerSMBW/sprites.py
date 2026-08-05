@@ -1028,7 +1028,7 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
                 ImageCache[f'Pokey{style}Top'] = SLib.GetPixmap(f'pokey_{style}_top.png')
                 ImageCache[f'Pokey{style}Middle'] = SLib.GetPixmap(f'pokey_{style}_middle.png')
                 ImageCache[f'Pokey{style}Bottom'] = SLib.GetPixmap(f'pokey_{style}_bottom.png')
-                ImageCache[f'Pokeysnowman{i}'] = SLib.GetPixmap(f'pokey_snowman{i}.png')
+                ImageCache[f'PokeySnowman{i}'] = SLib.GetPixmap(f'pokey_snowman{i}.png')
 
     def dataChanged(self):
         super().dataChanged()
@@ -1044,7 +1044,7 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
         paint = QtGui.QPainter(pix)
 
         if style == 2:
-            snowman = ImageCache[f'Pokeysnowman{height}']
+            snowman = ImageCache[f'PokeySnowman{height}']
             self.aux[0].image = snowman
             self.offset = (
                 (-4, -31),  # (-6, -46)
@@ -1063,9 +1063,9 @@ class SpriteImage_NewerPokey(SLib.SpriteImage_StaticMultiple):  # 105
             self.height = (height * 16) + 16 + 25
             self.offset = (-4, -self.height + 16)
 
-            paint.drawPixmap(0, 0, ImageCache[f'PokeyTop{color}'])
-            paint.drawTiledPixmap(0, 37, 36, int(self.height * 1.5 - 61), ImageCache[f'PokeyMiddle{color}'])
-            paint.drawPixmap(0, int(self.height * 1.5 - 24), ImageCache[f'PokeyBottom{color}'])
+            paint.drawPixmap(0, 0, ImageCache[f'Pokey{color}Top'])
+            paint.drawTiledPixmap(0, 37, 36, int(self.height * 1.5 - 61), ImageCache[f'Pokey{color}Middle'])
+            paint.drawPixmap(0, int(self.height * 1.5 - 24), ImageCache[f'Pokey{color}Bottom'])
             self.aux[0].image = pix
 
         paint = None
