@@ -9,7 +9,6 @@ from xml.etree import ElementTree
 ################################################################################
 ################################################################################
 
-from build_reggie import e
 import globals_
 from classlib import MenuAction, SpriteCategory, SpriteSubCategory
 from ui import GetIcon, ReggieTheme, clipStr, KeybindLineEdit
