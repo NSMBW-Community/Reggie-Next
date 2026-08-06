@@ -3,7 +3,7 @@ from typing import Literal
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from classlib import MenuAction, SpriteCategory
+from classlib import MenuAction, SpriteCategory, TilesetCategory
 from gamedef import ReggieGameDefinition
 from level import AbstractLevel
 from level import Area as AreaType
@@ -88,9 +88,9 @@ SpritesShown = True
 Sprites: list[SpriteDefinition] = []
 Tiles: dict[int, list[TilesetTile | None]] = {} # 0x200 tiles per tileset, plus 64 for each type of override
 TilesetAnimTimer: QtCore.QTimer | None = None
-TilesetFilesLoaded: list[str | None] = []
+TilesetFilesLoaded: list[str | None] = [None for _ in range(4)] # should always have exactly 4 entries
 TilesetInfo: dict[str, dict[int, tuple[int, int, int]]] = {}
-TilesetNames: list = [] # TODO: add proper typing later. I don't even know what is happening here
+TilesetNames: list[TilesetCategory] = [TilesetCategory() for _ in range(4)] # should always have exactly 4 entries
 TilesetsAnimating = False
 ViewActions: tuple[MenuAction, ...] = ()
 ZoneThemeValues: list[str] = []

@@ -10,7 +10,7 @@ from xml.etree import ElementTree
 ################################################################################
 
 import globals_
-from classlib import MenuAction, SpriteCategory, SpriteSubCategory
+from classlib import MenuAction, SpriteCategory, SpriteSubCategory, TilesetCategory, TilesetFileEntry
 from ui import GetIcon, ReggieTheme, clipStr, KeybindLineEdit
 from dirty import setting, setSetting, delSetting
 from dialogs import DiagnosticToolDialog
@@ -197,13 +197,13 @@ def LoadTilesetNames(reload_=False):
     """
     Ensures that the tileset name info is loaded
     """
-    if len(globals_.TilesetNames) and (not reload_): return
+    if not reload_: return
 
     # Get paths
     paths = getResourcePaths('tilesets')
 
     # Read each file
-    globals_.TilesetNames = [[[], False], [[], False], [[], False], [[], False]]
+    globals_.TilesetNames = [TilesetCategory() for _ in range(4)]
     for path in paths:
         tree = ElementTree.parse(path)
         root = tree.getroot()
@@ -218,41 +218,36 @@ def LoadTilesetNames(reload_=False):
             if slot > 3: continue
 
             # Parse the category data into a list
-            newlist = [LoadTilesetNames_Category(node), ]
-            if 'sorted' in node.attrib:
-                newlist.append(node.attrib['sorted'].lower() == 'true')
-            else:
-                newlist.append(globals_.TilesetNames[slot][1])  # inherit
+            newlist = TilesetCategory()
+            newlist.children = LoadTilesetNames_Category(node)
+            newlist.sorted = node.attrib['sorted'].lower() == 'true' if 'sorted' in node.attrib else globals_.TilesetNames[slot].sorted
 
             # Apply it as a patch over the current entry
-            newlist[0] = CascadeTilesetNames_Category(globals_.TilesetNames[slot][0], newlist[0])
+            newlist.children = CascadeTilesetNames_Category(globals_.TilesetNames[slot].children, newlist.children)
 
             # Sort it
-            if not newlist[1]:
-                newlist[0] = SortTilesetNames_Category(newlist[0])
+            if not newlist.sorted:
+                newlist.children = SortTilesetNames_Category(newlist.children)
 
             globals_.TilesetNames[slot] = newlist
 
 
-def LoadTilesetNames_Category(node):
+
+def LoadTilesetNames_Category(node: ElementTree.Element) -> list[TilesetCategory | TilesetFileEntry]:
     """
     Loads a TilesetNames XML category
     """
-    cat = []
+    cat: list[TilesetCategory | TilesetFileEntry] = []
     for child in node:
         if child.tag.lower() == 'category':
-            new = [
-                str(child.attrib['name']),
-                LoadTilesetNames_Category(child),
-            ]
+            new = TilesetCategory(child.attrib['name'])
+            new.children = LoadTilesetNames_Category(child)
             if 'sorted' in child.attrib:
-                new.append(str(child.attrib['sorted'].lower()) == 'true')
-            else:
-                new.append(False)
+                new.sorted = str(child.attrib['sorted'].lower()) == 'true'
             cat.append(new)
         elif child.tag.lower() == 'tileset':
             fname = str(child.attrib['filename'])
-            cat.append((fname, str(child.attrib['name'])))
+            cat.append(TilesetFileEntry(fname, str(child.attrib['name'])))
 
             # read override attribute
             if 'override' not in child.attrib:
@@ -268,73 +263,68 @@ def LoadTilesetNames_Category(node):
 
                 globals_.OverriddenTilesets[type_].add(fname)
 
-    return list(cat)
+    return cat
 
 
-def CascadeTilesetNames_Category(lower, upper):
+def CascadeTilesetNames_Category(
+    lower: list[TilesetCategory | TilesetFileEntry],
+    upper: list[TilesetCategory | TilesetFileEntry],
+) -> list[TilesetCategory | TilesetFileEntry]:
     """
     Applies upper as a patch of lower
     """
-    lower = list(lower)
     for item in upper:
-
-        if isinstance(item[1], tuple) or isinstance(item[1], list):
-            # It's a category
-
+        if isinstance(item, TilesetCategory):
             found = False
             for i, lowitem in enumerate(lower):
-                lowitem = lower[i]
-                if lowitem[0] == item[0]:  # names are ==
-                    lower[i] = list(lower[i])
-                    lower[i][1] = CascadeTilesetNames_Category(lowitem[1], item[1])
+                if isinstance(lowitem, TilesetCategory) and lowitem.name == item.name:  # names are ==
+                    lowitem.children = CascadeTilesetNames_Category(lowitem.children, item.children)
                     found = True
                     break
 
             if not found:
                 i = 0
-                while (i < len(lower)) and (isinstance(lower[i][1], tuple) or isinstance(lower[i][1], list)): i += 1
+                while (i < len(lower)) and isinstance(lower[i], TilesetCategory): i += 1
                 lower.insert(i + 1, item)
 
-        else:  # It's a tileset entry
+        else: # It's a tileset entry
             found = False
             for i, lowitem in enumerate(lower):
-                lowitem = lower[i]
-                if lowitem[0] == item[0]:  # filenames are ==
-                    lower[i] = list(lower[i])
-                    lower[i][1] = item[1]
+                if not isinstance(lowitem, TilesetFileEntry):
+                    continue
+                if lowitem.filename == item.filename:  # filenames are ==
+                    lower[i] = item
                     found = True
                     break
 
-            if not found: lower.append(item)
+            if not found:
+                lower.append(item)
+
     return lower
 
 
-def SortTilesetNames_Category(cat):
+def SortTilesetNames_Category(cat: list[TilesetCategory | TilesetFileEntry]) -> list[TilesetCategory | TilesetFileEntry]:
     """
     Sorts a tileset names category
     """
-    cat = list(cat)
-
     # First, remove all category nodes
-    cats = []
+    cats: list[TilesetCategory] = []
     for node in cat:
-        if isinstance(node[1], tuple) or isinstance(node[1], list):
+        if isinstance(node, TilesetCategory):
             cats.append(node)
     for node in cats: cat.remove(node)
 
     # Sort the tileset names
-    cat.sort(key=lambda entry: entry[1])
+    cat.sort(key=lambda entry: entry.name if isinstance(entry, TilesetCategory) else entry.displayName)
 
     # Sort the data within each category
     for i, cat_ in enumerate(cats):
-        cats[i] = list(cat_)
-        if not cats[i][2]: cats[i][1] = SortTilesetNames_Category(cats[i][1])
+        cats[i] = cat_
+        if not cats[i].sorted: cats[i].children = SortTilesetNames_Category(cats[i].children)
 
     # Put them back together
-    new = []
-    for category in cats: new.append(tuple(category))
-    for tileset in cat: new.append(tuple(tileset))
-    return tuple(new)
+    new = cats + cat
+    return new
 
 
 def LoadObjDescriptions(reload_=False):

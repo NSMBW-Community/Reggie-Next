@@ -1,7 +1,9 @@
-from PyQt6 import QtWidgets, QtCore
+from PyQt6 import QtCore, QtWidgets
 
 import globals_
+from classlib import TilesetCategory, TilesetFileEntry
 from ui import GetIcon
+
 
 # Sets up the Area Options Menu
 class AreaOptionsDialog(QtWidgets.QDialog):
@@ -147,36 +149,7 @@ class TilesetsTab(QtWidgets.QWidget):
             # Keep an unsorted list for the textbox autocomplete
             tilesetList = []
 
-            # Add entries for each tileset
-            def ParseCategory(items):
-                """
-                Parses a list of strings and returns a tuple of QTreeWidgetItem's
-                """
-                nodes = []
-                for item in items:
-                    node = QtWidgets.QTreeWidgetItem()
-
-                    # Check if it's a tileset or a category
-                    if isinstance(item[1], str):
-                        # It's a tileset
-                        node.setText(0, item[1])
-                        node.setText(1, item[0])
-                        node.setToolTip(0, item[1])
-                        node.setToolTip(1, item[0])
-                        self.itemDict[slot][item[0]] = node
-                        tilesetList.append(item[0])
-                    else:
-                        # It's a category
-                        node.setText(0, item[0])
-                        node.setToolTip(0, item[0])
-                        node.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
-                        children = ParseCategory(item[1])
-                        for cnode in children:
-                            node.addChild(cnode)
-                    nodes.append(node)
-                return tuple(nodes)
-
-            categories = ParseCategory(globals_.TilesetNames[slot][0])
+            categories = self.ParseCategory(globals_.TilesetNames[slot].children, tilesetList, slot)
             tree.addTopLevelItems(categories)
 
             # Create the line edit
@@ -209,6 +182,35 @@ class TilesetsTab(QtWidgets.QWidget):
         L = QtWidgets.QVBoxLayout()
         L.addWidget(T)
         self.setLayout(L)
+
+    # Add entries for each tileset
+    def ParseCategory(self, items: list[TilesetCategory | TilesetFileEntry], tilesets: list[str], tilesetSlot: int) -> tuple[QtWidgets.QTreeWidgetItem, ...]:
+        """
+        Parses a list of strings and returns a tuple of `QTreeWidgetItem`s
+        """
+        nodes: list[QtWidgets.QTreeWidgetItem] = []
+        for item in items:
+            node = QtWidgets.QTreeWidgetItem()
+
+            # Check if it's a tileset or a category
+            if isinstance(item, TilesetFileEntry):
+                # It's a tileset
+                node.setText(0, item.displayName)
+                node.setText(1, item.filename)
+                node.setToolTip(0, item.displayName)
+                node.setToolTip(1, item.filename)
+                self.itemDict[tilesetSlot][item.filename] = node
+                tilesets.append(item.filename)
+            else:
+                # It's a category
+                node.setText(0, item.name)
+                node.setToolTip(0, item.name)
+                node.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
+                children = self.ParseCategory(item.children, tilesets, tilesetSlot)
+                for cnode in children:
+                    node.addChild(cnode)
+            nodes.append(node)
+        return tuple(nodes)
 
     # Tree handlers
     def handleTreeSel0(self):
