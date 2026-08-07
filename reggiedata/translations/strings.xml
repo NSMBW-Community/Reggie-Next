@@ -516,8 +516,10 @@
         <string id="139">Reload the spritedata file, including any changes made since the level was loaded</string>
         <string id="140">Camera Profiles...</string>
         <string id="141">Edit event-activated camera settings</string>
-        <string id="142">Switch Sprites...</string>
+        <string id="142">Switch Sprite IDs...</string>
         <string id="143">Switches all sprites of one ID to another</string>
+        <string id="144">Show Entrances</string>
+        <string id="145">Toggle viewing of entrances</string>
     </section>
     <section id="Objects">
         <string id="0">[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]</string>
@@ -1054,7 +1056,7 @@
         <string id="4">Search:</string>
     </section>
     <section id="SwitchSpriteDlg">
-        <string id="0">Switch Sprites</string>
+        <string id="0">Switch Sprite IDs</string>
         <string id="1">From Sprite:</string>
         <string id="2">To Sprite:</string>
         <string id="3">Swap</string>

@@ -565,8 +565,10 @@ class ReggieTranslation:
                 139: 'Reload the spritedata file, including any changes made since the level was loaded',
                 140: 'Camera Profiles...',
                 141: 'Edit event-activated camera settings',
-                142: 'Switch Sprites...',
+                142: 'Switch Sprite IDs...',
                 143: 'Switches all sprites of one ID to another',
+                144: 'Show Entrances',
+                145: 'Toggle viewing of entrances',
             },
             'Objects': {
                 0: '[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]',
@@ -1103,7 +1105,7 @@ class ReggieTranslation:
                 4: 'Search:',
             },
             'SwitchSpriteDlg': {
-                0: 'Switch Sprites',
+                0: 'Switch Sprite IDs',
                 1: 'From Sprite:',
                 2: 'To Sprite:',
                 3: 'Swap',

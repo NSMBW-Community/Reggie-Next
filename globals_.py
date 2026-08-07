@@ -34,6 +34,7 @@ EditActions: tuple[MenuAction, ...] = ()
 EnablePadding = False
 EntranceTypeNames: OrderedDict[int, str] = OrderedDict()
 EntrancesFrozen = False
+EntrancesShown = True
 ErrMsg = ''
 FileActions: tuple[MenuAction, ...] = ()
 FileExtentions = ('.arc', '.arc.LH', '.arc.LZ')

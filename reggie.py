@@ -274,6 +274,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         toggleHandlers = {
             self.HandleSpritesVisibility: globals_.SpritesShown,
             self.HandleSpriteImages: globals_.SpriteImagesShown,
+            self.HandleEntrancesVisibility: globals_.EntrancesShown,
             self.HandleLocationsVisibility: globals_.LocationsShown,
             self.HandleCommentsVisibility: globals_.CommentsShown,
             self.HandlePathsVisibility: globals_.PathsShown,
@@ -556,6 +557,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         )
 
         self.CreateAction(
+            'showentrances', self.HandleEntrancesVisibility, GetIcon('entrances'),
+            globals_.trans.stringOneLine('MenuItems', 144), globals_.trans.stringOneLine('MenuItems', 145),
+            GetKeybind('showentrances'), True,
+        )
+
+        self.CreateAction(
             'showlocations', self.HandleLocationsVisibility, GetIcon('locations'),
             globals_.trans.stringOneLine('MenuItems', 58), globals_.trans.stringOneLine('MenuItems', 59),
             GetKeybind('showlocations'), True,
@@ -677,6 +684,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.actions['showsprites'].setChecked(globals_.SpritesShown)
         self.actions['showspriteimages'].setChecked(globals_.SpriteImagesShown)
+        self.actions['showentrances'].setChecked(globals_.EntrancesShown)
         self.actions['showlocations'].setChecked(globals_.LocationsShown)
         self.actions['showcomments'].setChecked(globals_.CommentsShown)
         self.actions['showpaths'].setChecked(globals_.PathsShown)
@@ -755,6 +763,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         vmenu.addSeparator()
         vmenu.addAction(self.actions['showsprites'])
         vmenu.addAction(self.actions['showspriteimages'])
+        vmenu.addAction(self.actions['showentrances'])
         vmenu.addAction(self.actions['showlocations'])
         vmenu.addAction(self.actions['showpaths'])
         vmenu.addAction(self.actions['showcomments'])
@@ -893,6 +902,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             ), (
                 'showsprites',
                 'showspriteimages',
+                'showentrances',
                 'showlocations',
                 'showpaths',
             ), (
@@ -3054,6 +3064,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.levelOverview.update()
 
+    def HandleEntrancesVisibility(self, checked):
+        """
+        Handle toggling of entrance visibility
+        """
+        globals_.EntrancesShown = checked
+        setSetting('ShowEntrances', globals_.EntrancesShown)
+
+        if globals_.Area.areanum == -1:
+            return
+
+        for ent in globals_.Area.entrances:
+            ent.setVisible(checked)
+
     def HandleLocationsVisibility(self, checked):
         """
         Handle toggling of location visibility
@@ -3455,6 +3478,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Also enable things that use 'True' by default
         globals_.SpritesShown = True
         globals_.LocationsShown = True
+        globals_.EntrancesShown = True
         globals_.PathsShown = True
         globals_.CommentsShown = True
 
@@ -3508,6 +3532,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.actions['showlay1'].setChecked(True)
         self.actions['showlay2'].setChecked(True)
         self.actions['showsprites'].setChecked(True)
+        self.actions['showentrances'].setChecked(True)
         self.actions['showlocations'].setChecked(True)
         self.actions['showpaths'].setChecked(True)
         self.actions['showcomments'].setChecked(True)
@@ -4731,6 +4756,7 @@ def main():
     globals_.SpritesShown = setting('ShowSprites', True)
     globals_.SpriteImagesShown = setting('ShowSpriteImages', True)
     globals_.LocationsShown = setting('ShowLocations', True)
+    globals_.EntrancesShown = setting('ShowEntrances', True)
     globals_.CommentsShown = setting('ShowComments', True)
     globals_.PathsShown = setting('ShowPaths', True)
     globals_.DrawEntIndicators = setting('ZoneEntIndicators', False)
