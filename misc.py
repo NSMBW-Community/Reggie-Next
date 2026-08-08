@@ -574,8 +574,9 @@ class SpriteDefinition:
             if field.tag == 'checkbox':
                 bit, _ = self.parseBits(attribs.get("nybble"))
                 mask = int(attribs.get('mask', 1))
+                fullNybble = attribs.get('fullnybble', 'False') == "True"
 
-                fields.append((0, attribs['title'], bit, mask, comment, required, advanced, comment2, advancedcomment))
+                fields.append((0, attribs['title'], bit, mask, comment, required, advanced, comment2, advancedcomment, fullNybble))
 
             elif field.tag == 'list':
                 bit, _ = self.parseBits(attribs.get("nybble"))

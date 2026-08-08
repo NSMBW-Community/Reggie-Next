@@ -542,7 +542,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a checkbox
         """
 
-        def __init__(self, title, bit, mask, comment, required, _, comment2, commentAdv, layout, row, parent):
+        def __init__(self, title, bit, mask, comment, required, _, comment2, commentAdv, fullNybble, layout, row, parent):
             """
             Creates the widget
             """
@@ -564,6 +564,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.layout = layout
 
             self.mask = mask
+            self.fullNybble = fullNybble
 
             label = QtWidgets.QLabel(title + ':')
             # label.setWordWrap(True)
@@ -608,7 +609,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             # check if requirements are met
             self.checkReq(data, first)
 
-            value = ((self.retrieve(data) & self.mask) == self.mask)
+            if self.fullNybble:
+                value = (self.retrieve(data) != 0)
+            else:
+                value = ((self.retrieve(data) & self.mask) == self.mask)
             self.widget.setChecked(value)
 
         def assign(self, data):
@@ -1899,7 +1903,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         for f in sprite.fields:
             if f[0] == 0:
-                nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+                nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
 
             elif f[0] == 1:
                 nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
