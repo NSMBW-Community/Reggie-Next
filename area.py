@@ -4,8 +4,6 @@ import globals_
 from classlib import TilesetCategory, TilesetFileEntry
 from ui import GetIcon
 
-
-# Sets up the Area Options Menu
 class AreaOptionsDialog(QtWidgets.QDialog):
     """
     Dialog which lets you choose among various area options from tabs
@@ -20,12 +18,12 @@ class AreaOptionsDialog(QtWidgets.QDialog):
         self.setWindowIcon(GetIcon('area'))
 
         self.tabWidget = QtWidgets.QTabWidget()
-        self.LoadingTab = LoadingTab()
-        self.TilesetsTab = TilesetsTab()
-        self.LoadedSpritesTab = LoadedSpritesTab()
-        self.tabWidget.addTab(self.TilesetsTab, globals_.trans.string('AreaDlg', 1))
-        self.tabWidget.addTab(self.LoadingTab, globals_.trans.string('AreaDlg', 2))
-        self.tabWidget.addTab(self.LoadedSpritesTab, globals_.trans.string('AreaDlg', 46))
+        self.tilesetsTab = TilesetsTab()
+        self.settingsTab = SettingsTab()
+        self.loadedSpritesTab = LoadedSpritesTab()
+        self.tabWidget.addTab(self.tilesetsTab, globals_.trans.string('AreaDlg', 1))
+        self.tabWidget.addTab(self.settingsTab, globals_.trans.string('AreaDlg', 2))
+        self.tabWidget.addTab(self.loadedSpritesTab, globals_.trans.string('AreaDlg', 46))
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 
@@ -38,7 +36,11 @@ class AreaOptionsDialog(QtWidgets.QDialog):
         self.setLayout(mainLayout)
 
 
-class LoadingTab(QtWidgets.QWidget):
+class SettingsTab(QtWidgets.QWidget):
+    """
+    Widget that represents the area's settings
+    """
+
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
 
@@ -105,6 +107,10 @@ class LoadingTab(QtWidgets.QWidget):
 
 
 class TilesetsTab(QtWidgets.QWidget):
+    """
+    The widget that represents the Tileset picker
+    """
+
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
         self.setMinimumWidth(384)
@@ -117,6 +123,12 @@ class TilesetsTab(QtWidgets.QWidget):
         self.noneItems = []
 
         for slot in range(4):
+            def treeSel(slot):
+                return lambda: self.handleTreeSel(slot)
+
+            def textEdit(slot):
+                return lambda: self.handleTextEdit(slot)
+
             # Create the main widget
             widget = QtWidgets.QWidget()
             self.widgets.append(widget)
@@ -124,20 +136,12 @@ class TilesetsTab(QtWidgets.QWidget):
             # Create the tree widget
             tree = QtWidgets.QTreeWidget()
             tree.setColumnCount(2)
-            # hardcoded initial width because the default width
-            # is too small
+
+            # Hardcoded initial width because the default width is too small
             tree.setColumnWidth(0, 192)
             tree.setHeaderLabels([globals_.trans.string('AreaDlg', 28), globals_.trans.string('AreaDlg', 29)])  # ['Name', 'File']
             tree.setIndentation(16)
-            if slot == 0:
-                handler = self.handleTreeSel0
-            elif slot == 1:
-                handler = self.handleTreeSel1
-            elif slot == 2:
-                handler = self.handleTreeSel2
-            else:
-                handler = self.handleTreeSel3
-            tree.itemSelectionChanged.connect(handler)
+            tree.itemSelectionChanged.connect((lambda slot: treeSel(slot))(slot))
             self.trees.append(tree)
 
             # Add "None" entry
@@ -154,14 +158,15 @@ class TilesetsTab(QtWidgets.QWidget):
 
             # Create the line edit
             line = QtWidgets.QLineEdit()
-            line.textChanged.connect(eval('self.handleTextEdit%d' % slot))
+            line.textChanged.connect((lambda slot: textEdit(slot))(slot))
             line.setCompleter(QtWidgets.QCompleter(tilesetList))
             line.setPlaceholderText(globals_.trans.string('AreaDlg', 30))  # '(None)'
             self.lineEdits.append(line)
             line.setText(eval('globals_.Area.tileset%d' % slot))
-            self.handleTextEdit(slot)
-            # Above line: For some reason, PyQt doesn't automatically call
+
+            # For some reason, PyQt doesn't automatically call
             # the handler if (globals_.Area.tileset%d % slot) == ''
+            #self.handleTextEdit(slot)
 
             # Create the layout and add it to the widget
             L = QtWidgets.QGridLayout()
@@ -173,7 +178,13 @@ class TilesetsTab(QtWidgets.QWidget):
 
         # Set up the tab widget
         T = QtWidgets.QTabWidget()
-        T.setTabPosition(T.TabPosition.West)
+
+        # Set tab position based on the settings
+        if globals_.TilesetTabPos == 0:
+            T.setTabPosition(T.TabPosition.North)
+        else:
+            T.setTabPosition(T.TabPosition.West)
+
         T.setUsesScrollButtons(False)
         T.addTab(self.widgets[0], globals_.trans.string('AreaDlg', 11))  # 'Standard Suite'
         T.addTab(self.widgets[1], globals_.trans.string('AreaDlg', 12))  # 'Stage Suite'
@@ -189,6 +200,7 @@ class TilesetsTab(QtWidgets.QWidget):
         Parses a list of strings and returns a tuple of `QTreeWidgetItem`s
         """
         nodes: list[QtWidgets.QTreeWidgetItem] = []
+
         for item in items:
             node = QtWidgets.QTreeWidgetItem()
 
@@ -209,45 +221,23 @@ class TilesetsTab(QtWidgets.QWidget):
                 children = self.ParseCategory(item.children, tilesets, tilesetSlot)
                 for cnode in children:
                     node.addChild(cnode)
+
             nodes.append(node)
+
         return tuple(nodes)
-
-    # Tree handlers
-    def handleTreeSel0(self):
-        self.handleTreeSel(0)
-
-    def handleTreeSel1(self):
-        self.handleTreeSel(1)
-
-    def handleTreeSel2(self):
-        self.handleTreeSel(2)
-
-    def handleTreeSel3(self):
-        self.handleTreeSel(3)
 
     def handleTreeSel(self, slot):
         """
         Handles changes to the selections in all tree widgets
         """
         selItems = self.trees[slot].selectedItems()
-        if len(selItems) != 1: return
+        if len(selItems) != 1:
+            return
+
         item = selItems[0]
 
         value = str(item.text(1))
         self.lineEdits[slot].setText(value)
-
-    # Line-edit handlers
-    def handleTextEdit0(self):
-        self.handleTextEdit(0)
-
-    def handleTextEdit1(self):
-        self.handleTextEdit(1)
-
-    def handleTextEdit2(self):
-        self.handleTextEdit(2)
-
-    def handleTextEdit3(self):
-        self.handleTextEdit(3)
 
     def handleTextEdit(self, slot):
         """
@@ -302,73 +292,71 @@ class LoadedSpritesTab(QtWidgets.QWidget):
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
 
-        sprites_layout = QtWidgets.QGridLayout()
+        spritesLayout = QtWidgets.QGridLayout()
 
-        self.custom_model = QtCore.QStringListModel(self.get_extra_sprite_names())
+        self.customModel = QtCore.QStringListModel(self.getForceSpriteNames())
 
-        self.custom_list = QtWidgets.QListView()
-        self.custom_list.setModel(self.custom_model)
-        self.custom_list.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
-        model = self.custom_list.selectionModel()
+        self.customList = QtWidgets.QListView()
+        self.customList.setModel(self.customModel)
+        self.customList.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+        model = self.customList.selectionModel()
         model.selectionChanged.connect(
-            lambda *_: self.remove_button.setEnabled(bool(len(model.selectedIndexes())))
+            lambda *_: self.removeButton.setEnabled(bool(len(model.selectedIndexes())))
         )
 
-        self.sprite_input = QtWidgets.QLineEdit()
-        self.sprite_input.setPlaceholderText(globals_.trans.string('AreaDlg', 52))
-        self.sprite_input.textChanged.connect(self.handle_input_change)
+        self.spriteInput = QtWidgets.QLineEdit()
+        self.spriteInput.setPlaceholderText(globals_.trans.string('AreaDlg', 52))
+        self.spriteInput.textChanged.connect(self.handleInputChange)
 
-        self.add_button = QtWidgets.QPushButton(globals_.trans.string('AreaDlg', 47))
-        self.add_button.clicked.connect(self.handle_add_sprite)
-        self.add_button.setEnabled(False)
+        self.addButton = QtWidgets.QPushButton(globals_.trans.string('AreaDlg', 47))
+        self.addButton.clicked.connect(self.handleAddSprite)
+        self.addButton.setEnabled(False)
 
-        self.remove_button = QtWidgets.QPushButton(globals_.trans.string('AreaDlg', 48))
-        self.remove_button.clicked.connect(self.handle_remove_sprite)
-        self.remove_button.setEnabled(False)
+        self.removeButton = QtWidgets.QPushButton(globals_.trans.string('AreaDlg', 48))
+        self.removeButton.clicked.connect(self.handleRemoveSprite)
+        self.removeButton.setEnabled(False)
 
-        custom_layout = QtWidgets.QGridLayout()
-        custom_layout.addWidget(self.sprite_input, 0, 0)
-        custom_layout.addWidget(self.add_button, 0, 1)
-        custom_layout.addWidget(self.remove_button, 1, 0, 1, 2)
-        custom_layout.addWidget(self.custom_list, 2, 0, 1, 2)
+        customLayout = QtWidgets.QGridLayout()
+        customLayout.addWidget(self.spriteInput, 0, 0)
+        customLayout.addWidget(self.addButton, 0, 1)
+        customLayout.addWidget(self.removeButton, 1, 0, 1, 2)
+        customLayout.addWidget(self.customList, 2, 0, 1, 2)
 
-        self.auto_model = LoadedSpritesTab.StaticModel(self.get_all_sprite_names())
+        self.autoModel = LoadedSpritesTab.StaticModel(self.getDefaultSpriteNames())
 
-        auto_list = QtWidgets.QListView()
-        auto_list.setModel(self.auto_model)
-        auto_list.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+        autoList = QtWidgets.QListView()
+        autoList.setModel(self.autoModel)
+        autoList.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
 
         # Dark mode readability fixes
-        self.custom_list.setStyleSheet("color: #7f7f7f;")
-        auto_list.setStyleSheet("color: #7f7f7f;")
+        autoList.setStyleSheet("color: #7f7f7f;")
 
-        sprites_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 49)), 0, 0)
-        sprites_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 50)), 0, 1)
-        sprites_layout.addWidget(auto_list, 1, 0)
-        sprites_layout.addLayout(custom_layout, 1, 1)
+        spritesLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 49)), 0, 0)
+        spritesLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('AreaDlg', 50)), 0, 1)
+        spritesLayout.addWidget(autoList, 1, 0)
+        spritesLayout.addLayout(customLayout, 1, 1)
 
         explanation = QtWidgets.QLabel(globals_.trans.string('AreaDlg', 51))
         explanation.setWordWrap(True)
 
         layout = QtWidgets.QVBoxLayout()
         layout.addWidget(explanation)
-        layout.addLayout(sprites_layout)
+        layout.addLayout(spritesLayout)
         self.setLayout(layout)
 
-    def get_all_sprite_names(self):
+    def getDefaultSpriteNames(self):
         """
         Returns a list of strings with the names of all sprites in the current
         area.
         """
-
         if globals_.Area.areanum == -1:
             return []
 
-        used_ids = set(sprite.type for sprite in globals_.Area.sprites)
+        usedIDs = set(sprite.type for sprite in globals_.Area.sprites)
 
-        return self._stringify_sprites(sorted(used_ids))
+        return self.stringifySprites(sorted(usedIDs))
 
-    def get_extra_sprite_names(self):
+    def getForceSpriteNames(self):
         """
         Returns a list of strings with the names of all sprites that are forced
         to load in the current area.
@@ -376,9 +364,9 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         if globals_.Area.areanum == -1:
             return []
 
-        return self._stringify_sprites(sorted(globals_.Area.force_loaded_sprites))
+        return self.stringifySprites(sorted(globals_.Area.force_loaded_sprites))
 
-    def _stringify_sprites(self, list_of_sprites):
+    def stringifySprites(self, spriteIDs):
         """
         Turns a list of sprite ids into a list of strings representing the
         sprites.
@@ -387,38 +375,52 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         and saves the entered values in reggie.py. This code is pretty hacky,
         but at least it works.
         """
-        return ["[%d] %s" % (x, globals_.Sprites[x].name if 0 <= x < globals_.NumSprites else "UNKNOWN") for x in list_of_sprites]
+        sprites = []
+        for x in spriteIDs:
+            if 0 <= x < globals_.NumSprites:
+                name = globals_.Sprites[x].name
+            else:
+                name = globals_.trans.string('AreaDlg', 53)
 
-    def handle_add_sprite(self, _):
+            sprites.append("[%d] %s" % (x, name))
+
+        return sprites
+
+    def handleAddSprite(self, _):
         """
         Add a sprite to the list of sprites whose resources are forced to load.
         """
-        text = self.sprite_input.text()
+        text = self.spriteInput.text()
 
         try:
-            sprite_id = int(text) & 0xFFFF  # Restrict value to unsigned short
+            spriteID = int(text) & 0xFFFF  # Restrict value to unsigned short
         except ValueError:
             return
 
         # Add a row to the end that represents the entered sprite.
-        if not self.custom_model.insertRow(self.custom_model.rowCount()):
+        if not self.customModel.insertRow(self.customModel.rowCount()):
             return
 
-        index = self.custom_model.index(self.custom_model.rowCount() - 1, 0)
-        self.custom_model.setData(index, "[%d] %s" % (sprite_id, globals_.Sprites[sprite_id].name if 0 <= sprite_id < globals_.NumSprites else "UNKNOWN"))
+        index = self.customModel.index(self.customModel.rowCount() - 1, 0)
+
+        if 0 <= spriteID < globals_.NumSprites:
+            name = globals_.Sprites[spriteID].name
+        else:
+            name = globals_.trans.string('AreaDlg', 53)
+        self.customModel.setData(index, "[%d] %s" % (spriteID, name))
 
         # Clear the input so the user can enter a new sprite number
-        self.sprite_input.clear()
+        self.spriteInput.clear()
 
-    def handle_remove_sprite(self, _):
+    def handleRemoveSprite(self, _):
         """
         Remove the currently selected sprite.
         """
-        selected_index = self.custom_list.currentIndex()
-        self.custom_model.removeRow(selected_index.row())
+        currIdx = self.customList.currentIndex()
+        self.customModel.removeRow(currIdx.row())
 
-    def handle_input_change(self, new_text):
+    def handleInputChange(self, newText):
         """
         Enable "add" button when the text is changed to something not empty.
         """
-        self.add_button.setEnabled(bool(new_text))
+        self.addButton.setEnabled(bool(newText))

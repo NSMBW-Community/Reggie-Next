@@ -100,6 +100,7 @@ DarkMode = False
 UseFullFilepath = False
 FirstStageFilename: str | None = None
 CursorMode = 0
+TilesetTabPos = 0
 
 FileKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None, str | None]] # TODO may turn into a class in classlib.py
 EditKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None, str | None]]

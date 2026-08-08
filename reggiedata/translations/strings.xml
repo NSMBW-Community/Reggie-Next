@@ -14,7 +14,7 @@
         <string id="0">About Reggie Next</string>
         <string id="1">[i]Reggie Next[/i] Level Editor</string>
         <string id="2">[i]Reggie Next Level Editor[/i] is an open-source project, started by Treeki in 2010 and forked by RoadrunnerWMC in 2013, that aims to bring you the fun of designing original New Super Mario Bros. Wii[tm]-compatible levels.[br]</string>
-        <string id="3">Interested? Join the [a href="[discord]"]Discord server[/a] to get in touch with the current developer(s).[br]</string>
+        <string id="3">Interested? Join the [a href="[link]"]Horizon Discord server[/a] to get in touch with the current developer(s).[br]</string>
     </section>
     <section id="ErrorDlg">
         <string id="0">An unhandled exception occurred. Please report the problem in the Horizon Discord server.\nA log will be written to \"[log]\".\n\nError information:\n</string>
@@ -85,7 +85,8 @@
         <string id="49">Present:</string>
         <string id="50">Custom:</string>
         <string id="51">On the left is a list of sprites already present in the level (their resources will be loaded by default). On the right, you can add more sprites you'd like to load.</string>
-        <string id="51">Type a Sprite ID...</string>
+        <string id="52">Type a Sprite ID...</string>
+        <string id="53">UNKNOWN</string>
     </section>
     <section id="AutoSaveDlg">
         <string id="0">Auto-saved backup found</string>
@@ -452,7 +453,7 @@
         <string id="69">Zoom out of the main level view</string>
         <string id="70">Zoom to Minimum</string>
         <string id="71">Zoom out all the way</string>
-        <string id="72">Area Settings...</string>
+        <string id="72">Area Options...</string>
         <string id="73">Control tileset swapping, stage timer, entrance on load, and stage wrap</string>
         <string id="74">Zone Settings...</string>
         <string id="75">Zone creation, deletion, and preference editing</string>
@@ -665,6 +666,12 @@
         <string id="63">Conflicts Found</string>
         <string id="64">The following options were found to have conflicting keybinds:[br][conflicts][br]Reusing keybinds can cause issues, so ensure all keybinds are unique!</string>
         <string id="65">No conflicts found.</string>
+        <string id="66">Tileset Tabs Position:</string>
+        <string id="67">[b]Tileset Tabs Position:[/b][br]This determines the position of the tileset tabs in the Area Options dialog.</string>
+        <stringlist id="68">
+            <entry>On Top</entry>
+            <entry>Left Side</entry>
+        </stringlist>
     </section>
     <section id="ScrShtDlg">
         <string id="0">Level Screenshot</string>

@@ -2746,9 +2746,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         globals_.UseRoundedRectangles = dlg.appearaceTab.roundedRects.isChecked()
         globals_.DarkMode = dlg.appearaceTab.darkMode.isChecked()
+        globals_.TilesetTabPos = dlg.appearaceTab.tsTabPos.currentIndex()
 
         setSetting('UseRoundedRectangles', globals_.UseRoundedRectangles)
         setSetting('DarkMode', globals_.DarkMode)
+        setSetting('TilesetTabPos', globals_.TilesetTabPos)
 
         # Update mode
         SetColorScheme()
@@ -4388,24 +4390,24 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Sprites
         # Extracting the sprite id from the sprite name is hacky, but it works.
-        globals_.Area.loaded_sprites = set(int(desc.split(']')[0][1:]) for desc in dlg.LoadedSpritesTab.auto_model.stringList())
-        globals_.Area.force_loaded_sprites = set(int(desc.split(']')[0][1:]) for desc in dlg.LoadedSpritesTab.custom_model.stringList())
+        globals_.Area.loaded_sprites = set(int(desc.split(']')[0][1:]) for desc in dlg.loadedSpritesTab.autoModel.stringList())
+        globals_.Area.force_loaded_sprites = set(int(desc.split(']')[0][1:]) for desc in dlg.loadedSpritesTab.customModel.stringList())
 
         # Settings
-        globals_.Area.timeLimit = dlg.LoadingTab.timer.value() - 200
-        globals_.Area.startEntrance = dlg.LoadingTab.entrance.value()
-        globals_.Area.toadHouseType = dlg.LoadingTab.toadHouseType.currentIndex()
-        globals_.Area.wrapFlag = dlg.LoadingTab.wrap.isChecked()
-        globals_.Area.creditsFlag = dlg.LoadingTab.credits.isChecked()
-        globals_.Area.faceLeftFlag = dlg.LoadingTab.faceLeft.isChecked()
-        globals_.Area.unkFlag1 = dlg.LoadingTab.unk1.isChecked()
-        globals_.Area.unkFlag2 = dlg.LoadingTab.unk2.isChecked()
-        globals_.Area.unkVal1 = dlg.LoadingTab.unk3.value()
-        globals_.Area.unkVal2 = dlg.LoadingTab.unk4.value()
+        globals_.Area.timeLimit = dlg.settingsTab.timer.value() - 200
+        globals_.Area.startEntrance = dlg.settingsTab.entrance.value()
+        globals_.Area.toadHouseType = dlg.settingsTab.toadHouseType.currentIndex()
+        globals_.Area.wrapFlag = dlg.settingsTab.wrap.isChecked()
+        globals_.Area.creditsFlag = dlg.settingsTab.credits.isChecked()
+        globals_.Area.faceLeftFlag = dlg.settingsTab.faceLeft.isChecked()
+        globals_.Area.unkFlag1 = dlg.settingsTab.unk1.isChecked()
+        globals_.Area.unkFlag2 = dlg.settingsTab.unk2.isChecked()
+        globals_.Area.unkVal1 = dlg.settingsTab.unk3.value()
+        globals_.Area.unkVal2 = dlg.settingsTab.unk4.value()
 
         # Tilesets
         tilesetNum = 0
-        for idx, fname in enumerate(dlg.TilesetsTab.values()):
+        for idx, fname in enumerate(dlg.tilesetsTab.values()):
 
             if fname in ('', None):
                 fname = ''
@@ -4771,6 +4773,7 @@ def main():
     globals_.DarkMode = setting('DarkMode', False)
     globals_.UseFullFilepath = setting('UseFullFilepath', False)
     globals_.CursorMode = setting('CursorMode', 0)
+    globals_.TilesetTabPos = setting('TilesetTabPos', 0)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game

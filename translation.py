@@ -135,6 +135,7 @@ class ReggieTranslation:
                 50: 'Custom:',
                 51: 'On the left is a list of sprites already present in the level (their resources will be loaded by default). On the right, you can add more sprites you\'d like to load the resources for.',
                 52: 'Type a Sprite ID...',
+                53: 'UNKNOWN',
             },
             'AutoSaveDlg': {
                 0: 'Auto-saved backup found',
@@ -501,7 +502,7 @@ class ReggieTranslation:
                 69: 'Zoom out of the main level view',
                 70: 'Zoom to Minimum',
                 71: 'Zoom out all the way',
-                72: 'Area Settings...',
+                72: 'Area Options...',
                 73: 'Control tileset swapping, stage timer, entrance on load, and stage wrap',
                 74: 'Zone Settings...',
                 75: 'Zone creation, deletion, and preference editing',
@@ -714,6 +715,12 @@ class ReggieTranslation:
                 63: 'Conflicts Found',
                 64: 'The following options were found to have conflicting keybinds:[br][conflicts][br]Reusing keybinds can cause issues, so ensure all keybinds are unique!',
                 65: 'No conflicts found.',
+                66: 'Tileset Tabs Position:',
+                67: '[b]Tileset Tabs Position:[/b][br]This determines the position of the tileset tabs in the Area Options dialog.',
+                68: (
+                    'On Top',
+                    'Left Side',
+                ),
             },
             'ScrShtDlg': {
                 0: 'Level Screenshot',

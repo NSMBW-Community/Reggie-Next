@@ -2182,12 +2182,19 @@ class PreferencesDialog(QtWidgets.QDialog):
                 self.darkMode.setToolTip(globals_.trans.string('PrefsDlg', 48))
                 self.darkMode.setChecked(globals_.DarkMode)
 
+                # Tilesets Tab Position
+                self.tsTabPos = QtWidgets.QComboBox()
+                self.tsTabPos.setToolTip(globals_.trans.string('PrefsDlg', 67))
+                self.tsTabPos.addItems(globals_.trans.stringList('PrefsDlg', 68))
+                self.tsTabPos.setCurrentIndex(globals_.TilesetTabPos)
+
                 boxGB = QtWidgets.QGroupBox(globals_.trans.string('PrefsDlg', 40))
                 L = QtWidgets.QFormLayout()
                 L.addRow(globals_.trans.string('PrefsDlg', 41), self.themeBox)
                 L.addRow(globals_.trans.string('PrefsDlg', 25), self.windowStyle)
                 L.addRow(self.darkMode)
                 L.addRow(self.roundedRects)
+                L.addRow(globals_.trans.string('PrefsDlg', 66), self.tsTabPos)
                 L2 = QtWidgets.QGridLayout()
                 L2.addLayout(L, 0, 0)
                 boxGB.setLayout(L2)
