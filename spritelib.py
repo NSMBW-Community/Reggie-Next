@@ -220,10 +220,13 @@ class SpriteImage:
         """
         self.parent = parent
 
-        self.alpha = 1.0
+        self.alpha: float = 1.0
         self.image: QtGui.QPixmap | None = None
         self.spritebox = Spritebox(scale)
-        self.dimensions = (0, 0, 16, 16)
+        self.xOffset: float = 0
+        self.yOffset: float = 0
+        self.width: float = 16
+        self.height: float = 16
         self.scale = scale
         self.aux: list[AuxiliaryItem] = []
 
