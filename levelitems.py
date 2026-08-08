@@ -557,13 +557,12 @@ class ObjectItem(LevelEditorItem):
             # get the special data for this tile
             tile = self.objdata[-1][x] & 0xFF
 
-            try:
-                *_, special = tileset_info[tile]
-            except KeyError:
+            tile_selection = tileset_info.get(tile)
+            if tile_selection is None:
                 # tile not randomised -> continue with next position
                 continue
 
-            if special & 0b01:
+            if tile_selection.special & 0b01:
                 return True
 
         return False
@@ -593,7 +592,9 @@ class ObjectItem(LevelEditorItem):
             # tileset not randomised -> exit
             return
 
-        tileset_info = globals_.TilesetInfo[name]
+        tileset_info = globals_.TilesetInfo.get(name)
+        if tileset_info is None:
+            return
 
         if width is None:
             width = self.width
@@ -607,18 +608,17 @@ class ObjectItem(LevelEditorItem):
                 # should we randomise this tile?
                 tile = self.objdata[y][x] & 0xFF
 
-                try:
-                    tiles, direction, special = tileset_info[tile]
-                except KeyError:
+                tile_selection = tileset_info.get(tile)
+                if tile_selection is None:
                     # tile not randomised -> continue with next position
                     continue
 
                 # If the special indicates the top, don't randomise it now, but
                 # randomise it when we come across the bottom.
-                if special & 0b01:
+                if tile_selection.special & 0b01:
                     continue
 
-                tiles_ = tiles[:]
+                tiles_ = tile_selection.tiles[:]
 
                 # Take direction into account - chosen tile must be different from
                 # the tile to the left/top. Using try/except here so the value has
@@ -626,7 +626,7 @@ class ObjectItem(LevelEditorItem):
 
                 # direction is 2 bits:
                 # highest := vertical direction; lowest := horizontal direction
-                if direction & 0b01 and x > 0:
+                if tile_selection.direction & 0b01 and x > 0:
                     # only look at the left neighbour, since we will generate the
                     # right neighbour later
                     try:
@@ -634,7 +634,7 @@ class ObjectItem(LevelEditorItem):
                     except ValueError:
                         pass
 
-                if direction & 0b10 and y > 0:
+                if tile_selection.direction & 0b10 and y > 0:
                     # only look at the above neighbour, since we will generate the
                     # neighbour below later
                     try:
@@ -644,14 +644,14 @@ class ObjectItem(LevelEditorItem):
 
                 # if we removed all options, just use the original tiles
                 if not tiles_:
-                    tiles_ = tiles
+                    tiles_ = tile_selection.tiles
 
                 choice = (self.tileset << 8) | random.choice(tiles_)
                 self.objdata[y][x] = choice
 
                 # Bottom of special, so change the tile above to the tile in the
                 # previous row of the tileset image (at offset choice - 0x10).
-                if special & 0b10:
+                if tile_selection.special & 0b10:
                     if y > 0:
                         self.objdata[y - 1][x] = choice - 0x10
                     else:
@@ -674,6 +674,9 @@ class ObjectItem(LevelEditorItem):
         file name has all extensions ('.arc' or '.arc.LH') removed.
         """
         tileset_path = globals_.TilesetFilesLoaded[self.tileset]
+        if tileset_path is None:
+            return None
+
         filename = os.path.splitext(os.path.basename(tileset_path))[0]
 
         if "." in filename:

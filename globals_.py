@@ -3,7 +3,7 @@ from typing import Literal
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from classlib import MenuAction, SpriteCategory, TilesetCategory
+from classlib import MenuAction, RandTileSelection, SpriteCategory, TilesetCategory
 from gamedef import ReggieGameDefinition
 from level import AbstractLevel
 from level import Area as AreaType
@@ -90,7 +90,7 @@ Sprites: list[SpriteDefinition] = []
 Tiles: dict[int, list[TilesetTile | None]] = {} # 0x200 tiles per tileset, plus 64 for each type of override
 TilesetAnimTimer: QtCore.QTimer | None = None
 TilesetFilesLoaded: list[str | None] = [None for _ in range(4)] # should always have exactly 4 entries
-TilesetInfo: dict[str, dict[int, tuple[int, int, int]]] = {}
+TilesetInfo: dict[str, dict[int, RandTileSelection]] = {}
 TilesetNames: list[TilesetCategory] = [TilesetCategory() for _ in range(4)] # should always have exactly 4 entries
 TilesetsAnimating = False
 ViewActions: tuple[MenuAction, ...] = ()
@@ -101,11 +101,11 @@ UseFullFilepath = False
 FirstStageFilename: str | None = None
 CursorMode = 0
 
-FileKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]] # TODO may turn into a class in classlib.py
-EditKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]]
-ViewKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]]
-SettingsKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]]
-HelpKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None]]
+FileKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None, str | None]] # TODO may turn into a class in classlib.py
+EditKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None, str | None]]
+ViewKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None, str | None]]
+SettingsKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None, str | None]]
+HelpKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None, str | None]]
 
 # Config settings
 DispConnectedPipeDir = False

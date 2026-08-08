@@ -10,7 +10,7 @@ from xml.etree import ElementTree
 ################################################################################
 
 import globals_
-from classlib import MenuAction, SpriteCategory, SpriteSubCategory, TilesetCategory, TilesetFileEntry
+from classlib import MenuAction, RandTileSelection, SpriteCategory, SpriteSubCategory, TilesetCategory, TilesetFileEntry
 from ui import GetIcon, ReggieTheme, clipStr, KeybindLineEdit
 from dirty import setting, setSetting, delSetting
 from dialogs import DiagnosticToolDialog
@@ -921,9 +921,11 @@ def LoadEntranceNames(reload_=False):
 
 
 def LoadTilesetInfo(reload_=False):
-    def parseRandom(node, types):
+    def parseRandom(
+        node: ElementTree.Element, types: dict[str, dict[int, RandTileSelection]]
+    ) -> dict[int, RandTileSelection]:
         """Parses all 'random' tags that are a child of the given node"""
-        randoms = {}
+        randoms: dict[int, RandTileSelection] = {}
         for type_ in node:
             # if this uses the 'name' attribute, insert the settings of the type
             # and go to the next child
@@ -934,7 +936,7 @@ def LoadTilesetInfo(reload_=False):
 
             # [list | range] = input space
             if 'list' in type_.attrib:
-                list_ = list(map(lambda s: int(s, 0), type_.attrib['list'].split(",")))
+                list_ = [int(s, 0) for s in type_.attrib['list'].split(",")]
             else:
                 numbers = type_.attrib['range'].split(",")
 
@@ -943,7 +945,7 @@ def LoadTilesetInfo(reload_=False):
 
             # values = output space [= [list | range] by default]
             if 'values' in type_.attrib:
-                values = list(map(lambda s: int(s, 0), type_.attrib['values'].split(",")))
+                values = [int(s, 0) for s in type_.attrib['values'].split(",")]
             else:
                 values = list(list_)[:]
 
@@ -966,7 +968,7 @@ def LoadTilesetInfo(reload_=False):
                     special = 0b10
 
             for item in list_:
-                randoms[item] = (values, direction, special)
+                randoms[item] = RandTileSelection(values, direction, special)
 
         return randoms
 
@@ -977,7 +979,7 @@ def LoadTilesetInfo(reload_=False):
     paths = list(getResourcePaths('tilesetinfo'))
 
     # go through the types
-    types = {}
+    types: dict[str, dict[int, RandTileSelection]] = {}
     for path in paths:
         tree = ElementTree.parse(path)
         root = tree.getroot()
@@ -994,7 +996,7 @@ def LoadTilesetInfo(reload_=False):
         del root
 
     # go through the groups
-    info = {}
+    groups: dict[str, dict[int, RandTileSelection]] = {}
     for path in paths:
         tree = ElementTree.parse(path)
         root = tree.getroot()
@@ -1005,12 +1007,12 @@ def LoadTilesetInfo(reload_=False):
 
                 for name in node.attrib['names'].split(","):
                     name = name.strip()
-                    info[name] = randoms
+                    groups[name] = randoms
 
         del tree
         del root
 
-    globals_.TilesetInfo = info
+    globals_.TilesetInfo = groups
 
 
 def LoadMusicInfo(reload_=False):
