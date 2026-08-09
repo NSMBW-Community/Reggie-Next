@@ -13,9 +13,9 @@ class MenuAction:
 class SpriteSubCategory:
     """Object representation of a sprite subcategory."""
 
-    def __init__(self, name: str | None, spriteIds: list[int]):
+    def __init__(self, name: str | None, sprite_ids: list[int]):
         self.name = name
-        self.spriteIds = spriteIds
+        self.sprite_ids = sprite_ids
 
 
 class SpriteCategory:
@@ -23,12 +23,12 @@ class SpriteCategory:
 
     def __init__(
         self,
-        categoryName: str | None,
-        subCategories: list[SpriteSubCategory],
+        name: str | None,
+        sub_categories: list[SpriteSubCategory],
         nodes: list[QtWidgets.QTreeWidgetItem],
     ):
-        self.name = categoryName
-        self.subCategories = subCategories
+        self.name = name
+        self.sub_categories = sub_categories
         self.nodes = nodes
 
 
@@ -37,7 +37,7 @@ class TilesetFileEntry:
 
     def __init__(self, filename: str, name: str):
         self.filename = filename
-        self.displayName = name
+        self.name = name
 
 
 class TilesetCategory:

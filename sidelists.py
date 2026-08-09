@@ -811,7 +811,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
         SearchableItems = []
         for cat in globals_.SpriteCategories:
             for n in cat.nodes: cat.nodes.remove(n)
-            for view in cat.subCategories:
+            for view in cat.sub_categories:
                 cnode = QtWidgets.QTreeWidgetItem()
                 cnode.setText(0, view.name)
                 cnode.setData(0, QtCore.Qt.ItemDataRole.UserRole, -1)
@@ -820,7 +820,7 @@ class SpritePickerWidget(QtWidgets.QTreeWidget):
                 if isSearch:
                     self.SearchResultsCategory = cnode
 
-                for id_ in view.spriteIds:
+                for id_ in view.sprite_ids:
                     snode = QtWidgets.QTreeWidgetItem()
                     if id_ == 9999:
                         snode.setText(0, globals_.trans.string('Sprites', 17))

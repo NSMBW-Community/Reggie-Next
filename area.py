@@ -207,9 +207,9 @@ class TilesetsTab(QtWidgets.QWidget):
             # Check if it's a tileset or a category
             if isinstance(item, TilesetFileEntry):
                 # It's a tileset
-                node.setText(0, item.displayName)
+                node.setText(0, item.name)
                 node.setText(1, item.filename)
-                node.setToolTip(0, item.displayName)
+                node.setToolTip(0, item.name)
                 node.setToolTip(1, item.filename)
                 self.itemDict[tilesetSlot][item.filename] = node
                 tilesets.append(item.filename)

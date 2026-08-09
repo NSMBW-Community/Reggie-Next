@@ -315,7 +315,7 @@ def SortTilesetNames_Category(cat: list[TilesetCategory | TilesetFileEntry]) -> 
     for node in cats: cat.remove(node)
 
     # Sort the tileset names
-    cat.sort(key=lambda entry: entry.name if isinstance(entry, TilesetCategory) else entry.displayName)
+    cat.sort(key=lambda entry: entry.name)
 
     # Sort the data within each category
     for i, cat_ in enumerate(cats):
@@ -331,7 +331,7 @@ def LoadObjDescriptions(reload_=False):
     """
     Ensures that the object description is loaded
     """
-    if len(globals_.ObjDesc) and not reload_: return
+    if globals_.ObjDesc and not reload_: return
 
     paths = getResourcePaths('ts1_descriptions')
 
@@ -349,7 +349,7 @@ def LoadBgANames(reload_=False):
     """
     Ensures that the background name info is loaded
     """
-    if len(globals_.BgANames) and not reload_: return
+    if globals_.BgANames and not reload_: return
 
     paths = getResourcePaths('bga')
 
@@ -403,7 +403,7 @@ def LoadZoneThemes(reload_=False):
     """
     Ensures that custom zone themes get loaded
     """
-    if len(globals_.ZoneThemeValues) > 0 and not reload_: return
+    if globals_.ZoneThemeValues and not reload_: return
 
     paths = getResourcePaths('zonethemes')
 
@@ -815,14 +815,14 @@ def LoadSpriteCategories(reload_=False):
     """
     Ensures that the sprite category info is loaded
     """
-    if len(globals_.SpriteCategories) == 0 and not reload_: return
+    if not globals_.SpriteCategories and not reload_: return
 
     paths = getResourcePaths('spritecategories')
 
     globals_.SpriteCategories = []
     # Add a Search category
     globals_.SpriteCategories.append(SpriteCategory(globals_.trans.string('Sprites', 19), [SpriteSubCategory(globals_.trans.string('Sprites', 16), list(range(globals_.NumSprites)))], []))
-    globals_.SpriteCategories[0].subCategories[0].spriteIds.append(9999)  # 'no results' special case
+    globals_.SpriteCategories[0].sub_categories[0].sprite_ids.append(9999)  # 'no results' special case
     for path in paths:
         if path is None:
             continue
@@ -839,7 +839,7 @@ def LoadSpriteCategories(reload_=False):
             CurrentView = []
             for potentialview in globals_.SpriteCategories:
                 if potentialview.name == viewname:
-                    CurrentView = potentialview.subCategories
+                    CurrentView = potentialview.sub_categories
             if CurrentView == []: globals_.SpriteCategories.append(SpriteCategory(viewname, CurrentView, []))
 
             CurrentCategory = None
@@ -851,7 +851,7 @@ def LoadSpriteCategories(reload_=False):
                 # See if it's in there already
                 CurrentCategory = []
                 for potentialcat in CurrentView:
-                    if potentialcat.name == catname: CurrentCategory = potentialcat.spriteIds
+                    if potentialcat.name == catname: CurrentCategory = potentialcat.sprite_ids
                 if CurrentCategory == []: CurrentView.append(SpriteSubCategory(catname, CurrentCategory))
 
                 for attach in category:
@@ -872,7 +872,7 @@ def LoadSpriteListData(reload_=False):
     """
     Ensures that the sprite list modifier data is loaded
     """
-    if len(globals_.SpriteListData) and not reload_: return
+    if globals_.SpriteListData and not reload_: return
 
     paths = getResourcePaths('spritelistdata')
 
@@ -901,7 +901,7 @@ def LoadEntranceNames(reload_=False):
     """
     Ensures that the entrance names are loaded
     """
-    if len(globals_.EntranceTypeNames) and not reload_: return
+    if globals_.EntranceTypeNames and not reload_: return
 
     paths = getResourcePaths('entrancetypes')
 
@@ -973,7 +973,7 @@ def LoadTilesetInfo(reload_=False):
 
         return randoms
 
-    if len(globals_.TilesetInfo) and not reload_:
+    if globals_.TilesetInfo and not reload_:
         return
 
     # Convert the iterable to list, because we need to iterate over it twice
@@ -1021,7 +1021,7 @@ def LoadMusicInfo(reload_=False):
     Uses the current gamedef + translation to load the music data, and saves it
     in the MusicInfo global.
     """
-    if len(globals_.MusicInfo) and not reload_:
+    if globals_.MusicInfo and not reload_:
         return
 
     paths = getResourcePaths('music')
