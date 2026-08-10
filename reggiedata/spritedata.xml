@@ -690,9 +690,9 @@
   <sprite id="60" name="Spike Top" notes="A Buzzy Beetle type enemy with a spike on top of it. It will follow and wrap around terrain and blocks." advancednotes="Spike Tops don't properly work on slopes." files="met_toge.arc">
     <list nybble="11.3-11.4" title="Orientation" comment="The Spike Top must be placed against something for it to appear.">
       <entry value="0">Placed on Ground</entry>
-      <entry value="1">Placed on Left Wall</entry>
+      <entry value="1">Placed on Right Wall</entry>
       <entry value="2">Placed on Ceiling</entry>
-      <entry value="3">Placed on Right Wall</entry>
+      <entry value="3">Placed on Left Wall</entry>
     </list>
     <dualbox nybble="12.4" title1="Walks Clockwise" title2="Walks Counter-Clockwise" comment="This determines which direction the Spike Top will walk."/>
   </sprite> <!-- #60: Spike Top -->
