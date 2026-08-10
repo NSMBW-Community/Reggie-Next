@@ -448,7 +448,7 @@ class SpriteDefinition:
         self.asm: bool = False
         self.size: bool = False
         self.noLayer: bool = False
-        self.dependencies: list[str] = []
+        self.dependencies: list[tuple[int, int]] = []
         self.dependencynotes: str | None = None
 
 
@@ -571,6 +571,7 @@ class SpriteDefinition:
                     raise ValueError("Only values support an increment.")
 
             # Parse the remaining type-specific attributes.
+            # TODO: Make proper field classes in classlib.py instead of using tuples and relying on index 0 for the field type.
             if field.tag == 'checkbox':
                 bit, _ = self.parseBits(attribs.get("nybble"))
                 mask = int(attribs.get('mask', 1))

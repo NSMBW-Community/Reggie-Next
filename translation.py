@@ -1296,7 +1296,7 @@ class ReggieTranslation:
 
         return newstr.replace('\n', ' ').replace('<br>', ' ')
 
-    def stringList(self, section, numcode):
+    def stringList(self, section, numcode) -> tuple[str | None, ...] | None:
         """
         Returns a list of strings
         """

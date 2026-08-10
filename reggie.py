@@ -4080,7 +4080,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         else:
             self.defaultPropButton.setEnabled(False)
             self.defaultPropDock.setVisible(False)
-            self.defaultDataEditor.update()
+            self.defaultDataEditor.updateFields()
 
     def SpriteReplace(self, type):
         """

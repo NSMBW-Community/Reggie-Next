@@ -1,14 +1,15 @@
 import os
 from xml.etree import ElementTree
 
-from PyQt6 import QtWidgets, QtCore, QtGui
+from PyQt6 import QtCore, QtGui, QtWidgets
 
+import common
 import globals_
-from levelitems import SpriteItem, ListWidgetItem_SortsByOther
+from dirty import SetDirty
+from levelitems import InstanceDefinition
 from misc import SpriteDefinition
 from ui import GetIcon
-from dirty import SetDirty
-import common
+
 
 class DualBox(QtWidgets.QWidget):
     """
@@ -16,7 +17,7 @@ class DualBox(QtWidgets.QWidget):
     """
     toggled = QtCore.pyqtSignal('PyQt_PyObject')
 
-    def __init__(self, text1 = None, text2 = None, initial = 0, direction = 0):
+    def __init__(self, text1: str | None = None, text2: str | None = None, initial = 0, direction = 0):
         """
         Inits the dualbox with text to the left/above and text to the right/below
         """
@@ -107,7 +108,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
     """
     A spin box that can handle integers of arbitrary size.
     """
-    _value: int
+    _value: int | None
     _minimum: int
     _maximum: int
     _start: int
@@ -126,7 +127,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         self._maximum = 1 << 32
         self._start = start
         self._increment = increment
-        self._overrides = overrides
+        self._overrides = overrides if overrides is not None else []
 
         self.setValue(self._start)
 
@@ -136,32 +137,36 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         """
         # The text has already been validated - it's either a number or the
         # empty string
-        text = self.lineEdit().text()
+        lineEdit = self.lineEdit()
+        if not lineEdit:
+            return
+
+        text = lineEdit.text()
         if not text:
             text = str(self._start)
 
         self.setValue(self.valueFromText(text))
 
-    def validate(self, text: str, pos: int):
+    def validate(self, input: str | None, pos: int):
         """
         Checks whether the currently entered text is valid.
         """
-        if not text:
+        if not input:
             # The empty string is a prefix of a valid input
-            return (QtGui.QValidator.State.Intermediate, text, pos)
+            return (QtGui.QValidator.State.Intermediate, '', pos)
 
         try:
-            val = int(text, 10)
+            val = int(input, 10)
         except ValueError:
-            return (QtGui.QValidator.State.Invalid, text, pos)
+            return (QtGui.QValidator.State.Invalid, input, pos)
 
         # This implementation really only works well if all prefixes of numbers
         # between the minimum and maximum are themselves numbers between the
         # minimum and maximum...
         if not self._minimum <= val <= self._maximum and not self._start <= val <= ((self._maximum * self._increment) + self._start):
-            return (QtGui.QValidator.State.Invalid, text, pos)
+            return (QtGui.QValidator.State.Invalid, input, pos)
 
-        return (QtGui.QValidator.State.Acceptable, text, pos)
+        return (QtGui.QValidator.State.Acceptable, input, pos)
 
     def stepEnabled(self):
         """
@@ -177,7 +182,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
 
         return flag
 
-    def value(self) -> int:
+    def value(self) -> int | None:
         return self._value
 
     def setMaximum(self, val: int):
@@ -199,19 +204,17 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         Add 'steps' to the current value.
         """
         self.setValue(
-            common.clamp(self._value + steps, self._minimum, self._maximum)
+            common.clamp((self._value or 0) + steps, self._minimum, self._maximum)
         )
 
     def valueFromText(self, text: str) -> int:
         val = (int(text) - self._start) // self._increment
-        if val < 0:
-            val = 0
-        return val
+        return max(val, 0)
 
     def textFromValue(self, val: int) -> str:
         return str(val)
 
-    def setValue(self, val: int):
+    def setValue(self, val: int | None):
         """
         Updates the value shown by the line edit and emits a signal when the
         value represented by the text of the line edit has changed.
@@ -219,18 +222,22 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         if val is None and val != 0:
             val = self._maximum
 
+        lineEdit = self.lineEdit()
+        if lineEdit is None:
+            return
+
         if self._value == val:
             if val == 0:
-                self.lineEdit().setText(self.textFromValue(self._start))
+                lineEdit.setText(self.textFromValue(self._start))
 
                 # Fixes a bug when reloading spritedata
                 if self._overrides is not None:
                     for rawVal, dispNum in self._overrides:
                         if val == rawVal:
                             textVal = dispNum
-                            self.lineEdit().setText(self.textFromValue(textVal))
+                            lineEdit.setText(self.textFromValue(textVal))
             return
-        
+
         textVal = (val * self._increment) + self._start
 
         # Check for any value overrides
@@ -239,7 +246,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
                 if val == rawVal:
                     textVal = dispNum
 
-        self.lineEdit().setText(self.textFromValue(textVal))
+        lineEdit.setText(self.textFromValue(textVal))
         self._value = val
         self.valueChanged.emit(val)
 
@@ -411,23 +418,26 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         """
         updateData = QtCore.pyqtSignal('PyQt_PyObject')
 
-        bit = None  # list: ranges
-        required = None  # tuple (range, value)
-        layout = None  # QLayout
-        row = None  # int: row in the parent's layout
-        comment = None  # str: comment text
-        comment2 = None  # str: additional comment text
-        commentAdv = None  # str: even more comment text
-        parent = None  # SpriteEditorWidget: the widget this belongs to
-        idtype = None  # str: the idtype of this property
+        bit: list[tuple[int, int]] | None = None  # list: ranges
+        required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None = None  # tuple (range, value)
+        layout: QtWidgets.QGridLayout | None = None  # QLayout
+        row: int = 0  # int: row in the parent's layout
+        comment: str | None = None  # str: comment text
+        comment2: str | None = None  # str: additional comment text
+        commentAdv: str | None = None  # str: even more comment text
+        parentWidget: QtWidgets.QWidget | None = None  # SpriteEditorWidget: the widget this belongs to
+        idtype: str | None = None  # str: the idtype of this property
 
-        def retrieve(self, data, bits=None):
+        def retrieve(self, data, bits: list[tuple[int, int]] | None = None):
             """
             Extracts the value from the specified bit(s). Bit numbering is ltr BE
             and starts at 1.
             """
             if bits is None:
                 bits = self.bit
+
+            if bits is None:
+                return 0
 
             value = 0
 
@@ -452,6 +462,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             if bits is None:
                 bits = self.bit
+
+            if bits is None:
+                return data
 
             sdata = list(data)
 
@@ -484,14 +497,16 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             Checks the requirements
             """
-            if self.required is None:
+            if self.required is None or self.layout is None:
                 return
 
             show = True
             for pos, ran in self.required:
                 show = show and ran[0] <= self.retrieve(data, pos) < ran[1]
 
-            visibleNow = self.layout.itemAtPosition(self.row, 0).widget().isVisible()
+            layoutItem = self.layout.itemAtPosition(self.row, 0)
+            widget = layoutItem.widget() if layoutItem is not None else None
+            visibleNow = widget is not None and widget.isVisible()
 
             if show == visibleNow and not first:
                 return
@@ -499,9 +514,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             # show/hide all widgets in this row
             for i in range(self.layout.columnCount()):
                 w = self.layout.itemAtPosition(self.row, i)
-                if w is not None:
-                    w.widget().clearFocus()
-                    w.widget().setVisible(show)
+                if w is None:
+                    continue
+                layoutWidget = w.widget()
+                if layoutWidget is None:
+                    continue
+                layoutWidget.clearFocus()
+                layoutWidget.setVisible(show)
 
             # maybe reset hidden stuff
             if globals_.ResetDataWhenHiding and not show:
@@ -511,43 +530,66 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             Sets the comment text
             """
-            self.parent.com_main.setText(self.comment)
-            self.parent.com_main.setVisible(True)
-            self.parent.com_more.setVisible(False)
-            self.parent.com_extra.setVisible(False)
-            self.parent.com_box.setVisible(True)
+            if self.parentWidget is None or not isinstance(self.parentWidget, SpriteEditorWidget):
+                return
+
+            self.parentWidget.com_main.setText(self.comment)
+            self.parentWidget.com_main.setVisible(True)
+            self.parentWidget.com_more.setVisible(False)
+            self.parentWidget.com_extra.setVisible(False)
+            self.parentWidget.com_box.setVisible(True)
 
         def ShowComment2(self):
             """
             Sets the comment2 text
             """
-            self.parent.com_main.setText(self.comment2)
-            self.parent.com_main.setVisible(True)
-            self.parent.com_more.setVisible(False)
-            self.parent.com_extra.setVisible(False)
-            self.parent.com_box.setVisible(True)
+            if self.parentWidget is None or not isinstance(self.parentWidget, SpriteEditorWidget):
+                return
+
+            self.parentWidget.com_main.setText(self.comment2)
+            self.parentWidget.com_main.setVisible(True)
+            self.parentWidget.com_more.setVisible(False)
+            self.parentWidget.com_extra.setVisible(False)
+            self.parentWidget.com_box.setVisible(True)
 
         def ShowAdvancedComment(self):
             """
             Sets the advanced comment
             """
-            self.parent.com_main.setText(self.commentAdv)
-            self.parent.com_main.setVisible(True)
-            self.parent.com_more.setVisible(False)
-            self.parent.com_extra.setVisible(False)
-            self.parent.com_box.setVisible(True)
+            if self.parentWidget is None or not isinstance(self.parentWidget, SpriteEditorWidget):
+                return
+
+            self.parentWidget.com_main.setText(self.commentAdv)
+            self.parentWidget.com_main.setVisible(True)
+            self.parentWidget.com_more.setVisible(False)
+            self.parentWidget.com_extra.setVisible(False)
+            self.parentWidget.com_box.setVisible(True)
 
     class CheckboxPropertyDecoder(PropertyDecoder):
         """
         Class that decodes/encodes sprite data to/from a checkbox
         """
 
-        def __init__(self, title, bit, mask, comment, required, _, comment2, commentAdv, fullNybble, layout, row, parent):
+        def __init__(
+            self,
+            title: str,
+            bit: list[tuple[int, int]],
+            mask: int,
+            comment: str | None,
+            required: list[tuple[list[tuple[int, int]], tuple[int, int]]],
+            _,
+            comment2: str | None,
+            commentAdv: str | None,
+            fullNybble: bool,
+            layout: QtWidgets.QGridLayout,
+            row: int,
+            parentWidget: QtWidgets.QWidget
+        ):
             """
             Creates the widget
             """
             if not isinstance(bit, list):
-                raise ValueError("bit should be a list. " + repr(bit))
+                raise TypeError("bit should be a list. " + repr(bit))
 
             super().__init__()
 
@@ -559,7 +601,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.comment = comment
             self.comment2 = comment2
             self.commentAdv = commentAdv
-            self.parent = parent
+            self.parentWidget = parentWidget
             self.row = row
             self.layout = layout
 
@@ -639,13 +681,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a combobox
         """
 
-        def __init__(self, title, bit, model, comment, required, _, comment2, commentAdv, idtype, layout, row, parent):
+        def __init__(self, title, bit, model, comment, required, _, comment2, commentAdv, idtype, layout, row, parentWidget):
             """
             Creates the widget
             """
             super().__init__()
 
-            self.parent = parent
+            self.parentWidget = parentWidget
             self.bit = bit
             self.required = required
             self.row = row
@@ -746,7 +788,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             # No idtype is set, the widget is updating because of an automatic
             # change in spritedata or this is the default data editor.
-            if self.idtype is None or self.parent.AutoFlag or self.parent.DefaultMode:
+            if (
+                self.idtype is None
+                or self.parentWidget is None
+                or not isinstance(self.parentWidget, SpriteEditorWidget)
+                or self.parentWidget.AutoFlag
+                or self.parentWidget.DefaultMode
+            ):
                 return
 
             # Increment the count of the new value
@@ -782,7 +830,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a spinbox
         """
 
-        def __init__(self, title, bit, max_, comment, required, _, comment2, commentAdv, start, increment, overrides, idtype, layout, row, parent):
+        def __init__(self, title, bit, max_, comment, required, _, comment2, commentAdv, start, increment, overrides, idtype, layout, row, parentWidget):
             """
             Creates the widget
             """
@@ -794,7 +842,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.bit = bit
             self.required = required
-            self.parent = parent
+            self.parentWidget = parentWidget
             self.comment = comment
             self.comment2 = comment2
             self.commentAdv = commentAdv
@@ -879,7 +927,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             # No idtype is set, the widget is updating because of an automatic
             # change in spritedata or this is the default data editor.
-            if self.idtype is None or self.parent.AutoFlag or self.parent.DefaultMode:
+            if (
+                self.idtype is None
+                or self.parentWidget is None
+                or not isinstance(self.parentWidget, SpriteEditorWidget)
+                or self.parentWidget.AutoFlag
+                or self.parentWidget.DefaultMode
+            ):
                 return
 
             # Increment the count of the new value
@@ -899,7 +953,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if self.idtype is None: return
 
             used_ids = globals_.Area.sprite_idtypes[self.idtype]
-            next_id = common.find_first_available_id(used_ids, self.widget.maximum(), self.widget.value() + 1)
+            next_id = common.find_first_available_id(used_ids, self.widget.maximum(), (self.widget.value() or 0) + 1)
 
             self.widget.setValue(next_id)
 
@@ -909,7 +963,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a bitfield
         """
 
-        def __init__(self, title, startbit, bitnum, comment, required, _, comment2, commentAdv, layout, row, parent):
+        def __init__(self, title, startbit, bitnum, comment, required, _, comment2, commentAdv, layout, row, parentWidget):
             """
             Creates the widget
             """
@@ -917,7 +971,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.bit = [(startbit, startbit + bitnum)]
             self.required = required
-            self.parent = parent
+            self.parentWidget = parentWidget
             self.comment = comment
             self.comment2 = comment2
             self.commentAdv = commentAdv
@@ -1017,7 +1071,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a multibox
         """
 
-        def __init__(self, title, bit, comment, required, advanced, comment2, commentAdv, layout, row, parent):
+        def __init__(self, title, bit, comment, required, advanced, comment2, commentAdv, layout, row, parentWidget):
             """
             Creates the widget
             """
@@ -1031,7 +1085,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.bitnum = bitnum
             self.required = required
             self.advanced = advanced
-            self.parent = parent
+            self.parentWidget = parentWidget
 
             self.widgets = []
             CheckboxLayout = QtWidgets.QGridLayout()
@@ -1156,7 +1210,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a dualbox
         """
 
-        def __init__(self, title1, title2, bit, comment, required, _, comment2, commentAdv, fullNybble, layout, row, parent):
+        def __init__(self, title1, title2, bit, comment, required, _, comment2, commentAdv, fullNybble, layout, row, parentWidget):
             """
             Creates the widget
             """
@@ -1164,7 +1218,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.bit = bit
             self.required = required
-            self.parent = parent
+            self.parentWidget = parentWidget
             self.comment = comment
             self.comment2 = comment2
             self.commentAdv = commentAdv
@@ -1261,7 +1315,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
     class ExternalPropertyDecoder(PropertyDecoder):
 
-        def __init__(self, title, bit, comment, required, _, comment2, commentAdv, type_, layout, row, parent):
+        def __init__(self, title, bit, comment, required, _, comment2, commentAdv, type_, layout, row, parentWidget):
             """
             Creates the widget
             """
@@ -1272,7 +1326,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.bit = bit
             self.row = row
             self.layout = layout
-            self.parent = parent
+            self.parentWidget = parentWidget
             self.comment = comment
             self.comment2 = comment2
             self.required = required
@@ -1390,10 +1444,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             tree = ElementTree.parse(filename)
             root = tree.getroot()
 
-            try:
-                fmt = root.attrib['short']
-            except:
-                return str(value)
+            fmt = root.attrib['short']
 
             option = None
             for option_ in root:
@@ -1407,7 +1458,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             # Do replacements
             for prop in option:
-                name = "[%s]" % prop.attrib['name']
+                name = f"[{prop.attrib['name']}]"
                 fmt = fmt.replace(name, prop.attrib['value'])
 
             del tree, root
@@ -1420,8 +1471,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 '[/i]': '</i>',
             }
 
-            for old in replace:
-                fmt = fmt.replace(old, replace[old])
+            for old, value in replace.items():
+                fmt = fmt.replace(old, value)
 
             # only display the first 27 characters and ...
             # so len(fmt) is at most 30.
@@ -1436,7 +1487,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a row of dualboxes
         """
 
-        def __init__(self, title1, title2, bit, comment, required, advanced, comment2, commentAdv, layout, row, parent):
+        def __init__(self, title1, title2, bit, comment, required, advanced, comment2, commentAdv, layout, row, parentWidget):
             """
             Creates the widget
             """
@@ -1447,7 +1498,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.bit = bit
             self.required = required
             self.advanced = advanced
-            self.parent = parent
+            self.parentWidget = parentWidget
             self.layout = layout
             self.row = row
             self.comment = comment
@@ -1563,7 +1614,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a SpriteTex element (valuebox + list)
         """
 
-        def __init__(self, title, bit, model, max_, comment, required, _, comment2, commentAdv, layout, row, parent):
+        def __init__(self, title, bit, model, max_, comment, required, _, comment2, commentAdv, layout, row, parentWidget):
             """
             Creates the widgets
             """
@@ -1581,7 +1632,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.bit = bit
             self.required = required
-            self.parent = parent
+            self.parentWidget = parentWidget
             self.comment = comment
             self.comment2 = comment2
             self.commentAdv = commentAdv
@@ -1689,27 +1740,29 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.HandleDataChanged(self.model.entries[index][0])
 
 
-    def setSprite(self, type_, reset=False, initial_data=None):
+    def setSprite(self, type_: int, reset=False, initial_data: bytes | None = None):
         """
         Change the sprite type used by the data editor
         """
         if self.spritetype == type_ and not reset:
             if initial_data is not None:
                 self.data = initial_data
-                self.update(True)
+                self.updateFields(True)
 
             return
 
         self.spritetype = type_
+        sprite: SpriteDefinition | None = None
         if type_ != 1000 and 0 <= type_ < globals_.NumSprites:
             sprite = globals_.Sprites[type_]
-        else:
-            sprite = None
 
         # remove all the existing widgets in the layout
         self.clearMessages()
 
-        def _clear_layout(layout):
+        def _clear_layout(layout: QtWidgets.QLayout | None):
+            if layout is None:
+                return
+
             while True:
                 item = layout.takeAt(0)
 
@@ -1720,13 +1773,15 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                     x = item.widget()
                     layout.removeItem(item)
                     layout.removeWidget(x)
-                    x.setParent(None)
+                    if x is not None:
+                        x.setParent(None)
                 elif item.layout() is not None:
                     x = item.layout()
                     _clear_layout(x)
                     layout.removeItem(x)
                     layout.removeItem(item)
-                    x.setParent(None)
+                    if x is not None:
+                        x.setParent(None)
                 else:
                     x = item.spacerItem()
                     layout.removeItem(x)
@@ -1906,6 +1961,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         row = 2
 
         for f in sprite.fields:
+            nf = None
             if f[0] == 0:
                 nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
 
@@ -1933,6 +1989,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             elif f[0] == 8:
                 nf = SpriteEditorWidget.SpriteTexPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
 
+            if nf is None:
+                continue
+
             nf.updateData.connect(self.HandleFieldUpdate)
             fields.append(nf)
             row += 1
@@ -1947,6 +2006,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             title = globals_.trans.string('SpriteDataEditor', 32)
             comment = globals_.trans.string('SpriteDataEditor', 33)
             strList = globals_.trans.stringList('SpriteDataEditor', 34)
+            if strList is None:
+                return
             itemList = [(0, strList[0]), (1, strList[1]), (2, strList[2])]
 
             # Layer reads entire byte, instead of the first two bits
@@ -1963,9 +2024,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         if initial_data is not None:
             self.data = initial_data
 
-        self.update(True)
+        self.updateFields(True)
 
-    def addMessage(self, text, action = None, level = 0, close = "x"):
+    def addMessage(self, text, action = None, level = 0, close: str | None = "x"):
         """
         Adds a message to the message layout which can be removed
         """
@@ -1988,36 +2049,36 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         label = QtWidgets.QLabel(text)
         label.setWordWrap(True)
-        label.setStyleSheet("""
-            QLabel {
-                color: %s;
-            }
-        """ % colours[2])
+        label.setStyleSheet(f"""
+            QLabel {{
+                color: {colours[2]};
+            }}
+        """)
 
-        close = QtWidgets.QPushButton(close)
-        close.setStyleSheet("""
-            QPushButton {
-                background: %s;
-                color: %s;
-            }
-        """ % colours[:2])
+        closeButton = QtWidgets.QPushButton(close)
+        closeButton.setStyleSheet("""
+            QPushButton {{
+                background: {};
+                color: {};
+            }}
+        """.format(*colours[:2]))
 
         L = QtWidgets.QHBoxLayout()
         L.addWidget(label)
         L.addStretch(1)
-        L.addWidget(close)
+        L.addWidget(closeButton)
 
         message = QtWidgets.QWidget()
         message.setStyleSheet("""
-            .QWidget {
-                background: %s;
-                border: 2px solid %s;
+            .QWidget {{
+                background: {};
+                border: 2px solid {};
                 border-radius: 3px;
-            }
-        """ % colours[3:])
+            }}
+        """.format(*colours[3:]))
         message.setLayout(L)
 
-        close.clicked.connect(self.closeMessageCallback(message, action))
+        closeButton.clicked.connect(self.closeMessageCallback(message, action))
 
         self.msg_layout.addWidget(message)
 
@@ -2031,10 +2092,13 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         for row in range(l.count() - 1, -1, -1):
             w = l.itemAt(row)
-            if w is not None:
-                widget = w.widget()
-                l.removeWidget(widget)
-                widget.setParent(None)
+            if w is None:
+                continue
+            widget = w.widget()
+            if widget is None:
+                continue
+            l.removeWidget(widget)
+            widget.setParent(None)
 
     def closeMessageCallback(self, message_, action_):
         """
@@ -2066,7 +2130,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 close.clicked.connect(callback)
                 break
 
-    def update(self, first=False):
+    def updateFields(self, first=False):
         """
         Updates all the fields to display the appropriate info
         """
@@ -2075,10 +2139,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # data[6] is the sprite's zone ID. Modifying it is unnecessary since Reggie sets it automatically,
         # and overwrites whatever you change it to. If anything, it seems to just confuse everybody who
         # sees it, so we're just going to hide the value from the user
-        self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
-            data[0], data[1], data[2], data[3],
-            data[4], data[5], 0x00, data[7],
-        ))
+        self.raweditor.setText(f'{data[0]:02x}{data[1]:02x} {data[2]:02x}{data[3]:02x} {data[4]:02x}{data[5]:02x} {0x00:02x}{data[7]:02x}')
 
         self.raweditor.setStyleSheet('')
 
@@ -2093,8 +2154,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.UpdateFlag = False
 
         # minimise height
-        if globals_.mainWindow.spriteEditorDock.isFloating():
-            self.window().resize(self.width(), 0)
+        if globals_.mainWindow is not None and globals_.mainWindow.spriteEditorDock.isFloating():
+            window = self.window()
+            if window is not None:
+                window.resize(self.width(), 0)
 
     def ShowNoteTooltip(self):
         """
@@ -2187,10 +2250,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         # data[6] is the sprite's zone ID. Modifying it is unnecessary since Reggie sets it automatically,
         # and overwrites whatever you change it to. If anything, it seems to just confuse everybody who
         # sees it, so we're just going to hide the value from the user
-        self.raweditor.setText('%02x%02x %02x%02x %02x%02x %02x%02x' % (
-            data[0], data[1], data[2], data[3],
-            data[4], data[5], 0x00, data[7],
-        ))
+        self.raweditor.setText(f'{data[0]:02x}{data[1]:02x} {data[2]:02x}{data[3]:02x} {data[4]:02x}{data[5]:02x} {0x00:02x}{data[7]:02x}')
         self.raweditor.setStyleSheet('')
 
         self.UpdateData(data, exclude_update_field=field, do_update=False, was_automatic=False)
@@ -2231,8 +2291,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         self.DataUpdate.emit(new_data)
 
         # Fix window not shrinking after fields are hidden
-        if globals_.mainWindow.spriteEditorDock.isFloating():
-            self.window().resize(self.width(), 0)
+        if globals_.mainWindow is not None and globals_.mainWindow.spriteEditorDock.isFloating():
+            window = self.window()
+            if window is not None:
+                window.resize(self.width(), 0)
 
     def HandleRawDataEdited(self, text):
         """
@@ -2241,6 +2303,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         raw = text.replace(' ', '')
         valid = False
+        data = b""
 
         if len(raw) == 16:
             try:
@@ -2261,15 +2324,19 @@ class SpriteEditorWidget(QtWidgets.QWidget):
     def HandleSpritePlaced(self, id_, button_):
         def placeSprite():
             mw = globals_.mainWindow
+            if mw is None or mw.selObj is None or not isinstance(mw.selObj, InstanceDefinition):
+                return
 
-            x_ = mw.selObj.objx + 16
-            y_ = mw.selObj.objy
-            globals_.mainWindow.CreateSprite(x_, y_, id_, data=bytes(8))
+            x_ = mw.selObj.objx + 16 if mw.selObj.objx is not None else 16
+            y_ = mw.selObj.objy if mw.selObj.objy is not None else 0
+            mw.CreateSprite(x_, y_, id_, data=bytes(8))
 
             # remove this dependency, because it is now fulfilled.
             # get row of button
             idx = self.com_deplist.indexOf(button_)
             row, *_ = self.com_deplist.getItemPosition(idx)
+            if row is None:
+                return
 
             # remove this row
             l = self.com_deplist
@@ -2277,8 +2344,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 w = l.itemAtPosition(row, column)
                 if w is not None:
                     widget = w.widget()
-                    l.removeWidget(widget)
-                    widget.setParent(None)
+                    if widget is not None:
+                        l.removeWidget(widget)
+                        widget.setParent(None)
 
 
         return placeSprite
@@ -2292,6 +2360,8 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             # get row of button
             idx = self.com_deplist.indexOf(button_)
             row, *_ = self.com_deplist.getItemPosition(idx)
+            if row is None:
+                return
 
             # remove this row
             l = self.com_deplist
@@ -2299,8 +2369,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 w = l.itemAtPosition(row, column)
                 if w is not None:
                     widget = w.widget()
-                    l.removeWidget(widget)
-                    widget.setParent(None)
+                    if widget is not None:
+                        l.removeWidget(widget)
+                        widget.setParent(None)
 
 
         return addToLoadList
@@ -2419,7 +2490,7 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         # find correct xml
         filename = globals_.gamedef.externalFile(self.type + '.xml')
         if not os.path.isfile(filename):
-            raise Exception # file does not exist
+            raise FileNotFoundError # file does not exist
 
         # parse the xml
         options = {}
@@ -2429,21 +2500,9 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         tree = ElementTree.parse(filename)
         root = tree.getroot()
 
-        try:
-            primary += list(map(
-                lambda x: None if x.strip().lower() == "[id]" else x.strip(),
-                root.attrib['primary'].split(',')
-            ))
-        except:
-            pass
+        primary += [None if x.strip().lower() == "[id]" else x.strip() for x in root.attrib['primary'].split(',')]
 
-        try:
-            secondary += list(map(
-                lambda x: x.strip(),
-                root.attrib['secondary'].split(',')
-            ))
-        except:
-            pass
+        secondary += [x.strip() for x in root.attrib['secondary'].split(',')]
 
         for option in root:
             # skip if this is not an <option>
@@ -2502,7 +2561,9 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         """
         Sets the current value to 'value'
         """
-        self.buttongroup.button(value).setChecked(True)
+        button = self.buttongroup.button(value)
+        if button is not None:
+            button.setChecked(True)
 
     def getValue(self):
         """
@@ -2541,6 +2602,8 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
         """
 
         layout = self.widget.layout()
+        if layout is None or not isinstance(layout, QtWidgets.QVBoxLayout):
+            return
 
         # clear layout
         self.clearLayout(layout)
@@ -2617,7 +2680,10 @@ class ExternalSpriteOptionRow(QtWidgets.QWidget):
 
         layout = self.gridLayout
         cols = layout.columnCount()
-        button = layout.itemAtPosition(0, cols - 1).widget()
+        layoutItem = layout.itemAtPosition(0, cols - 1)
+        button = layoutItem.widget() if layoutItem is not None else None
+        if button is None or not isinstance(button, QtWidgets.QPushButton):
+            return
 
         width = (cols - 1) // len(self.secondary)
 
@@ -2724,8 +2790,9 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         self.slider.setTracking(True)
         self.slider.setSliderPosition(0)
         self.slider.valueChanged.connect(self.sliderMoved)
-        if self.present:
-            self.slider.setValue(self.getGlobalScale())
+        globalScale = self.getGlobalScale()
+        if self.present and globalScale is not None:
+            self.slider.setValue(globalScale)
 
         glbSclLyt = QtWidgets.QHBoxLayout()
         glbSclLyt.addWidget(sliderLabel)
@@ -2772,7 +2839,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
                 self.radio1.setChecked(True)
             else:
                 self.radio2.setChecked(True)
-        
+
         # Action button (does the create/update behavior)
         if not self.present:
             btnText = globals_.trans.string('ResizeChoiceDlg', 4)
@@ -2903,14 +2970,22 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         if slot == 2: # Global
             data[5] = (size << 4) | 5
         else: # Selective
-            data[5] = (slot << 4) | 6 
+            data[5] = (slot << 4) | 6
 
-        x = globals_.mainWindow.selObj.objx + 16
-        y = globals_.mainWindow.selObj.objy
+        mainWindow = globals_.mainWindow
+        if mainWindow is None:
+            return
+
+        selObj = mainWindow.selObj
+        if selObj is None or not isinstance(selObj, InstanceDefinition):
+            return
+
+        x = selObj.objx + 16 if selObj.objx is not None else 16
+        y = selObj.objy if selObj.objy is not None else 0
         special_event_id = globals_.SpecialEventSpriteID
 
-        if globals_.mainWindow.CreateSprite(x, y, special_event_id, data) is not None:
-            globals_.mainWindow.scene.update()
+        if mainWindow.CreateSprite(x, y, special_event_id, data) is not None:
+            mainWindow.scene.update()
 
     def getGlobalScale(self):
         """
