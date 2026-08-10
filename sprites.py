@@ -9388,14 +9388,29 @@ class SpriteImage_BowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
         ImageCache['ELSwitchU'] = QtGui.QPixmap.fromImage(elg.mirrored(True, True))
 
     def dataChanged(self):
-
         upsideDown = self.parent.spritedata[5] & 1
+        shiftY = self.parent.spritedata[3] & 0xF
+        shiftX = (self.parent.spritedata[5] >> 4) & 0xF
+
+        if shiftX != 0:
+            self.xOffset = -7
+        else:
+            self.xOffset = -15
+
         if not upsideDown:
             self.image = ImageCache['ELSwitch']
-            self.offset = (-15, -25)
+
+            if shiftY != 0:
+                self.yOffset = -40
+            else:
+                self.yOffset = -24
         else:
             self.image = ImageCache['ELSwitchU']
-            self.offset = (-15, 0)
+
+            if shiftY != 0:
+                self.yOffset = 16
+            else:
+                self.yOffset = 0
 
         super().dataChanged()
 

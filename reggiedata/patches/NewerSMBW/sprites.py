@@ -48,13 +48,8 @@ class SpriteImage_NewerSwitch(common.SpriteImage_Switch):
 
     def dataChanged(self):
         self.styleType = self.parent.spritedata[3] & 0xF
-        upsideDown = self.parent.spritedata[5] & 1
 
-        if self.styleType > 0:
-            self.yOffset = -16 + 32 * upsideDown
-        else:
-            self.yOffset = 0
-
+        self.yOffset = 0
         self.xOffset = 0
 
         if self.styleType == 1 or self.styleType > 4:
@@ -553,7 +548,7 @@ class SpriteImage_NewerQSwitchBlock(SpriteImage_Block):  # 43
         self.flipOverride = upsideDown
 
         color = self.parent.spritedata[3] & 3
-        if color == 0:
+        if color < 2:
             self.contentsOverride = 17
         else:
             self.contentsOverride = 21
@@ -570,7 +565,7 @@ class SpriteImage_NewerExcSwitchBlock(SpriteImage_Block):  # 45
         self.flipOverride = upsideDown
 
         color = self.parent.spritedata[3] & 3
-        if color == 0:
+        if color < 2:
             self.contentsOverride = 19
         else:
             self.contentsOverride = 22

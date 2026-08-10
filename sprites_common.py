@@ -174,7 +174,7 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
         painter.restore()
 
 
-class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153
+class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153, 478
     def __init__(self, parent, scale=1.5):
         super().__init__(parent, scale)
         self.switchType = ''
@@ -200,23 +200,34 @@ class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153
 
     def dataChanged(self):
         upsideDown = self.parent.spritedata[5] & 1
+        shiftY = self.parent.spritedata[3] & 0xF
+        shiftX = (self.parent.spritedata[5] >> 4) & 0xF
 
         if self.styleType != 0:
             style = str(self.styleType)
         else:
             style = ''
 
+        if shiftX != 0:
+            self.xOffset += 8
+
         if upsideDown:
             self.image = ImageCache[self.switchType + 'SwitchU' + style]
 
             if self.switchType != 'E':
                 self.yOffset -= 1
+
+            if shiftY != 0:
+                self.yOffset += 16
         else:
             self.image = ImageCache[self.switchType + 'Switch' + style]
             if self.switchType == 'E':
                 self.yOffset -= 3
             else:
                 self.yOffset -= 3
+
+            if shiftY != 0:
+                self.yOffset -= 16
 
         super().dataChanged()
 
