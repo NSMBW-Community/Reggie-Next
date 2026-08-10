@@ -1913,20 +1913,20 @@ class SpriteImage_SpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
 
         Transform = QtGui.QTransform()
         ImageCache['SpikeTop00'] = QtGui.QPixmap.fromImage(SpikeTop.mirrored(True, False))
-        Transform.rotate(90)
+        Transform.rotate(-90)
         ImageCache['SpikeTop10'] = ImageCache['SpikeTop00'].transformed(Transform)
-        Transform.rotate(90)
+        Transform.rotate(-90)
         ImageCache['SpikeTop20'] = ImageCache['SpikeTop00'].transformed(Transform)
-        Transform.rotate(90)
+        Transform.rotate(-90)
         ImageCache['SpikeTop30'] = ImageCache['SpikeTop00'].transformed(Transform)
 
         Transform = QtGui.QTransform()
         ImageCache['SpikeTop01'] = QtGui.QPixmap.fromImage(SpikeTop)
-        Transform.rotate(90)
+        Transform.rotate(-90)
         ImageCache['SpikeTop11'] = ImageCache['SpikeTop01'].transformed(Transform)
-        Transform.rotate(90)
+        Transform.rotate(-90)
         ImageCache['SpikeTop21'] = ImageCache['SpikeTop01'].transformed(Transform)
-        Transform.rotate(90)
+        Transform.rotate(-90)
         ImageCache['SpikeTop31'] = ImageCache['SpikeTop01'].transformed(Transform)
 
     def dataChanged(self):
@@ -1937,9 +1937,9 @@ class SpriteImage_SpikeTop(SLib.SpriteImage_StaticMultiple):  # 60
 
         self.offset = (
             (0, -4),
-            (0, 0),
-            (0, 0),
             (-4, 0),
+            (0, 0),
+            (0, 0),
         )[orientation]
 
         super().dataChanged()
