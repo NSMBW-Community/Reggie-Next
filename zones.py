@@ -1,4 +1,5 @@
 from PyQt6 import QtWidgets, QtCore
+from typing import cast
 
 import common
 import globals_
@@ -63,6 +64,9 @@ class ZonesDialog(QtWidgets.QDialog):
             if result == QtWidgets.QMessageBox.StandardButton.No:
                 return
 
+        if globals_.mainWindow is None:
+            return
+
         zone = globals_.mainWindow.CreateZone(256, 256)
         tabName = globals_.trans.string('ZonesDlg', 3, '[num]', zone.id + 1)
 
@@ -84,8 +88,11 @@ class ZonesDialog(QtWidgets.QDialog):
             if result == QtWidgets.QMessageBox.StandardButton.No:
                 return
 
+        if globals_.mainWindow is None:
+            return
+
         z = globals_.mainWindow.CreateZone(256, 256)
-        widget = self.tabWidget.widget(self.tabWidget.currentIndex())
+        widget = cast(ZoneTab, self.tabWidget.widget(self.tabWidget.currentIndex()))
         widget.copyZoneData(z, self.tabWidget.currentIndex())
 
         tabName = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
@@ -348,7 +355,8 @@ class ZoneTab(QtWidgets.QWidget):
         self.terrainLight.setToolTip(globals_.trans.string('ZonesDlg', 23))
         self.terrainLight.setSizePolicy(comboboxSizePolicy)
 
-        zone.terraindark = common.clamp(zone.terraindark, 0, len(terrainLightValues))
+        if terrainLightValues is not None:
+            zone.terraindark = common.clamp(zone.terraindark, 0, len(terrainLightValues))
         self.terrainLight.setCurrentIndex(zone.terraindark)
 
         self.spotlight = QtWidgets.QCheckBox(globals_.trans.string('ZonesDlg', 26))
@@ -399,7 +407,8 @@ class ZoneTab(QtWidgets.QWidget):
         self.direction.setToolTip(globals_.trans.string('ZonesDlg', 40))
         self.direction.setSizePolicy(comboboxSizePolicy)
 
-        zone.camtrack = common.clamp(zone.camtrack, 0, len(dirs) - 1)
+        if dirs is not None:
+            zone.camtrack = common.clamp(zone.camtrack, 0, len(dirs) - 1)
         self.direction.setCurrentIndex(zone.camtrack)
 
         self.restrictY = QtWidgets.QCheckBox()
@@ -448,8 +457,9 @@ class ZoneTab(QtWidgets.QWidget):
         self.visibility.addItems(addList)
         self.visibility.setToolTip(globals_.trans.string('ZonesDlg', addIdx + 1))
 
-        choice = min(self.vis & 0xF, len(addList) - 1)
-        self.visibility.setCurrentIndex(choice)
+        if addList is not None:
+            choice = min(self.vis & 0xF, len(addList) - 1)
+            self.visibility.setCurrentIndex(choice)
 
     def handleMPZoomAdjust(self):
         """
@@ -838,7 +848,9 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
         self.updating = True
         camMode = common.clamp(camMode, 0, 7)
 
-        self.modeButtonGroup.button(camMode).setChecked(True)
+        button = self.modeButtonGroup.button(camMode)
+        if button is not None:
+            button.setChecked(True)
         self.changeCamModeList()
 
         camZoom = common.clamp(camZoom, 0, self.screenSizes.count())
