@@ -617,7 +617,7 @@ class SpriteDefinition:
                 bit, _ = self.parseBits(attribs.get("nybble"))
                 fullNybble = attribs.get('fullnybble', 'False') == "True"
 
-                fields.append(DualBoxSpriteField(attribs['title1'], comment, comment2, advancedcomment, required, attribs['title2'], bit, fullNybble))
+                fields.append(DualBoxSpriteField(attribs['title1'], comment, comment2, advancedcomment, required, bit, attribs['title2'], fullNybble))
 
             elif field.tag == 'dependency':
                 type_dict = {'required': 0, 'suggested': 1, 'resource': 2, 'suggestedresource': 3}
@@ -642,7 +642,7 @@ class SpriteDefinition:
                 # multibox but with dualboxes instead of checkboxes
                 bit, _ = self.parseBits(attribs.get("nybble"))
 
-                fields.append(MultiDualBoxSpriteField(attribs['title1'], comment, comment2, advancedcomment, required, attribs['title2'], bit))
+                fields.append(MultiDualBoxSpriteField(attribs['title1'], comment, comment2, advancedcomment, required, bit, attribs['title2']))
 
             elif field.tag == 'spritetex':
                 bit, max_ = self.parseBits(attribs.get("nybble"))
@@ -656,7 +656,7 @@ class SpriteDefinition:
                 model = SpriteDefinition.ListPropertyModel(entries)
                 fields.append(SpriteTexSpriteField(title, comment, comment2, advancedcomment, required, bit, model, max_))
 
-    def parseBits(self, nybble_val):
+    def parseBits(self, nybble_val) -> tuple[list[tuple[int, int]], int]:
         """
         Parses a description of the bits a setting affects into a tuple of a
         list of ranges and the number of possible values. Ranges include the
@@ -674,7 +674,7 @@ class SpriteDefinition:
         # The total number of bits that can be controlled.
         bit_length = 0
         # A list of tuples (start_bit, end_bit) that represent inclusive ranges.
-        bit_ranges = []
+        bit_ranges: list[tuple[int, int]] = []
 
         for range_ in nybble_val.split(","):
             if "-" in range_:

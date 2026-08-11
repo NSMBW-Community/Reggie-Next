@@ -1,7 +1,7 @@
 import struct
 from PyQt6 import QtWidgets
 
-from classlib import CheckBoxSpriteField, DualBoxSpriteField, ListSpriteField, ValueSpriteField
+from classlib import ListSpriteField, SpriteField, ValueSpriteField
 import globals_
 import spritelib as SLib
 import archive
@@ -1061,7 +1061,7 @@ class Area:
         """
 
         self.sprite_idtypes = {}
-        decoder = SpriteEditorWidget.PropertyDecoder()
+        decoder = SpriteEditorWidget.PropertyDecoder(SpriteField())
 
         for sprite in self.sprites:
             # Check if sprite data exists for this type
@@ -1107,7 +1107,7 @@ class Area:
             return
 
         # Remove the ids the sprite used from the id list
-        decoder = SpriteEditorWidget.PropertyDecoder()
+        decoder = SpriteEditorWidget.PropertyDecoder(SpriteField())
         sdef = globals_.Sprites[sprite.type]
 
         # Find what values are used by this sprite

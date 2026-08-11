@@ -2,7 +2,7 @@ import base64
 
 from PyQt6 import QtWidgets, QtGui, QtCore
 
-from classlib import ListSpriteField, SpriteCategory, ValueSpriteField
+from classlib import ListSpriteField, SpriteCategory, SpriteField, ValueSpriteField
 import globals_
 from tiles import RenderObject, TilesetTile
 from ui import ListWidgetWithToolTipSignal
@@ -1229,7 +1229,7 @@ class SpriteList(QtWidgets.QWidget):
 
         sdef = globals_.Sprites[sprite.type]
         res = {}
-        decoder = SpriteEditorWidget.PropertyDecoder()
+        decoder = SpriteEditorWidget.PropertyDecoder(SpriteField())
         data = sprite.spritedata
 
         for field in sdef.fields:

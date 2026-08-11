@@ -3,7 +3,6 @@ import os
 import random
 import base64
 
-from classlib import BitFieldSpriteField, CheckBoxSpriteField, DualBoxSpriteField, ExternalSpriteField, ListSpriteField, MultiBoxSpriteField, MultiDualBoxSpriteField, SpriteField, ValueSpriteField
 import spritelib as SLib
 import globals_
 import common

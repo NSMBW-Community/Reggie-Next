@@ -66,19 +66,22 @@ class RandTileSelection:
 
 class SpriteField:
     """Base class for all sprite editor fields."""
+
     def __init__(
         self,
-        title: str | None,
-        comment: str | None,
-        comment2: str | None,
-        advanced_comment: str | None,
-        required: list[tuple[int, int]] | None,
+        title: str | None = None,
+        comment: str | None = None,
+        comment2: str | None = None,
+        advanced_comment: str | None = None,
+        required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None = None,
+        bit: list[tuple[int, int]] | None = None,
     ):
-        self.title = title if title is not None else ''
+        self.title = title if title is not None else ""
         self.comment = comment
         self.comment2 = comment2
         self.advanced_comment = advanced_comment
         self.required = required
+        self.bit = bit
 
 
 class CheckBoxSpriteField(SpriteField):
@@ -88,13 +91,12 @@ class CheckBoxSpriteField(SpriteField):
         comment: str | None,
         comment2: str | None,
         advanced_comment: str | None,
-        required: list[tuple[int, int]] | None,
-        bit: list[tuple[int, int]],
+        required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
+        bit: list[tuple[int, int]] | None,
         mask: int,
         full_nybble: bool,
     ):
-        super().__init__(title, comment, comment2, advanced_comment, required)
-        self.bit = bit
+        super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.mask = mask
         self.full_nybble = full_nybble
 
@@ -106,13 +108,12 @@ class ListSpriteField(SpriteField):
         comment: str | None,
         comment2: str | None,
         advanced_comment: str | None,
-        required: list[tuple[int, int]] | None,
-        bit: list[tuple[int, int]],
+        required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
+        bit: list[tuple[int, int]] | None,
         model: QtCore.QAbstractItemModel,
         idtype: str | None,
     ):
-        super().__init__(title, comment, comment2, advanced_comment, required)
-        self.bit = bit
+        super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.model = model
         self.idtype = idtype
 
@@ -124,16 +125,15 @@ class ValueSpriteField(SpriteField):
         comment: str | None,
         comment2: str | None,
         advanced_comment: str | None,
-        required: list[tuple[int, int]] | None,
-        bit: list[tuple[int, int]],
+        required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
+        bit: list[tuple[int, int]] | None,
         max: int,
         start: int,
         increment: int,
         overrides: list[tuple[int, int]],
         idtype: str | None,
     ):
-        super().__init__(title, comment, comment2, advanced_comment, required)
-        self.bit = bit
+        super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.max = max
         self.start = start
         self.increment = increment
@@ -148,27 +148,17 @@ class BitFieldSpriteField(SpriteField):
         comment: str | None,
         comment2: str | None,
         advanced_comment: str | None,
-        required: list[tuple[int, int]] | None,
+        required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
         start_bit: int,
         bit_num: int,
     ):
-        super().__init__(title, comment, comment2, advanced_comment, required)
+        super().__init__(title, comment, comment2, advanced_comment, required, [])
         self.start_bit = start_bit
         self.bit_num = bit_num
 
 
 class MultiBoxSpriteField(SpriteField):
-    def __init__(
-        self,
-        title: str | None,
-        comment: str | None,
-        comment2: str | None,
-        advanced_comment: str | None,
-        required: list[tuple[int, int]] | None,
-        bit: tuple[int, int],
-    ):
-        super().__init__(title, comment, comment2, advanced_comment, required)
-        self.bit = bit
+    pass
 
 
 class DualBoxSpriteField(SpriteField):
@@ -178,14 +168,13 @@ class DualBoxSpriteField(SpriteField):
         comment: str | None,
         comment2: str | None,
         advanced_comment: str | None,
-        required: list[tuple[int, int]] | None,
+        required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
+        bit: list[tuple[int, int]] | None,
         title2: str | None,
-        bit: list[tuple[int, int]],
         full_nybble: bool,
     ):
-        super().__init__(title, comment, comment2, advanced_comment, required)
+        super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.title2 = title2
-        self.bit = bit
         self.full_nybble = full_nybble
 
 
@@ -196,13 +185,12 @@ class ExternalSpriteField(SpriteField):
         comment: str | None,
         comment2: str | None,
         advanced_comment: str | None,
-        required: list[tuple[int, int]] | None,
-        bit: list[tuple[int, int]],
+        required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
+        bit: list[tuple[int, int]] | None,
         type: str | None,
     ):
-        super().__init__(title, comment, comment2, advanced_comment, required)
-        self.bit = bit
-        self.type = type
+        super().__init__(title, comment, comment2, advanced_comment, required, bit)
+        self.type = type or ""
 
 
 class MultiDualBoxSpriteField(SpriteField):
@@ -212,13 +200,12 @@ class MultiDualBoxSpriteField(SpriteField):
         comment: str | None,
         comment2: str | None,
         advanced_comment: str | None,
-        required: list[tuple[int, int]] | None,
+        required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
+        bit: list[tuple[int, int]] | None,
         title2: str | None,
-        bit: list[tuple[int, int]],
     ):
-        super().__init__(title, comment, comment2, advanced_comment, required)
+        super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.title2 = title2
-        self.bit = bit
 
 
 class SpriteTexSpriteField(SpriteField):
@@ -228,12 +215,11 @@ class SpriteTexSpriteField(SpriteField):
         comment: str | None,
         comment2: str | None,
         advanced_comment: str | None,
-        required: list[tuple[int, int]] | None,
-        bit: list[tuple[int, int]],
+        required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
+        bit: list[tuple[int, int]] | None,
         model: QtCore.QAbstractItemModel,
         max: int,
     ):
-        super().__init__(title, comment, comment2, advanced_comment, required)
-        self.bit = bit
+        super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.model = model
         self.max = max

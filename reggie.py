@@ -34,7 +34,7 @@
 minimum = (3, 9)
 import sys
 
-from classlib import ListSpriteField, ValueSpriteField
+from classlib import ListSpriteField, SpriteField, ValueSpriteField
 
 if sys.version_info < minimum:
     errormsg = 'Please update your copy of Python to ' + '.'.join(map(str, minimum)) + \
@@ -2415,7 +2415,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             globals_.Area.sprites.append(spr)
 
             # Add the ids for the idtype count
-            decoder = SpriteEditorWidget.PropertyDecoder()
+            decoder = SpriteEditorWidget.PropertyDecoder(SpriteField())
             sdef = globals_.Sprites[id_]
 
             # Find what values are used by this sprite
