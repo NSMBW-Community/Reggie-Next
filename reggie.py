@@ -34,6 +34,8 @@
 minimum = (3, 9)
 import sys
 
+from classlib import ListSpriteField, ValueSpriteField
+
 if sys.version_info < minimum:
     errormsg = 'Please update your copy of Python to ' + '.'.join(map(str, minimum)) + \
                ' or greater. Currently running on: ' + sys.version[:5]
@@ -2418,16 +2420,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             # Find what values are used by this sprite
             for field in sdef.fields:
-                if field[0] not in (1, 2):
+                if not isinstance(field, (ListSpriteField, ValueSpriteField)):
                     # Only values and lists can be idtypes
                     continue
 
-                idtype = field[-1]
+                idtype = field.idtype
                 if idtype is None:
                     # Only look at settings with idtypes
                     continue
 
-                value = decoder.retrieve(data, field[2])
+                value = decoder.retrieve(data, field.bit)
 
                 # 3. Add the value to self.sprite_idtypes
                 try:

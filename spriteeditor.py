@@ -5,6 +5,17 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 import common
 import globals_
+from classlib import (
+    BitFieldSpriteField,
+    CheckBoxSpriteField,
+    DualBoxSpriteField,
+    ExternalSpriteField,
+    ListSpriteField,
+    MultiBoxSpriteField,
+    MultiDualBoxSpriteField,
+    SpriteTexSpriteField,
+    ValueSpriteField,
+)
 from dirty import SetDirty
 from levelitems import InstanceDefinition
 from misc import SpriteDefinition
@@ -572,15 +583,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
         def __init__(
             self,
-            title: str,
-            bit: list[tuple[int, int]],
-            mask: int,
-            comment: str | None,
-            required: list[tuple[list[tuple[int, int]], tuple[int, int]]],
-            _,
-            comment2: str | None,
-            commentAdv: str | None,
-            fullNybble: bool,
+            field: CheckBoxSpriteField,
             layout: QtWidgets.QGridLayout,
             row: int,
             parentWidget: QtWidgets.QWidget
@@ -588,34 +591,34 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             """
             Creates the widget
             """
-            if not isinstance(bit, list):
-                raise TypeError("bit should be a list. " + repr(bit))
+            if not isinstance(field.bit, list):
+                raise TypeError("bit should be a list. " + repr(field.bit))
 
             super().__init__()
 
             self.widget = QtWidgets.QCheckBox()
             self.widget.clicked.connect(self.HandleClick)
 
-            self.bit = bit
-            self.required = required
-            self.comment = comment
-            self.comment2 = comment2
-            self.commentAdv = commentAdv
+            self.bit = field.bit
+            self.required = field.required
+            self.comment = field.comment
+            self.comment2 = field.comment2
+            self.commentAdv = field.advanced_comment
             self.parentWidget = parentWidget
             self.row = row
             self.layout = layout
 
-            self.mask = mask
-            self.fullNybble = fullNybble
+            self.mask = field.mask
+            self.fullNybble = field.full_nybble
 
-            label = QtWidgets.QLabel(title + ':')
+            label = QtWidgets.QLabel(field.title + ':')
             # label.setWordWrap(True)
 
             layout.addWidget(label, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
             layout.addWidget(self.widget, row, 1)
 
             col = 3
-            if comment is not None:
+            if field.comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
                 button_com.setStyleSheet("border-radius: 50%")
@@ -625,7 +628,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com, row, col)
                 col += 1
 
-            if comment2 is not None:
+            if field.comment2 is not None:
                 button_com2 = QtWidgets.QToolButton()
                 button_com2.setIcon(GetIcon('setting-comment2'))
                 button_com2.setStyleSheet("border-radius: 50%")
@@ -635,7 +638,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com2, row, col)
                 col += 1
 
-            if commentAdv is not None:
+            if field.advanced_comment is not None:
                 button_adv = QtWidgets.QToolButton()
                 button_adv.setIcon(GetIcon('setting-comment-adv'))
                 button_adv.setStyleSheet("border-radius: 50%")
@@ -681,35 +684,36 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a combobox
         """
 
-        def __init__(self, title, bit, model, comment, required, _, comment2, commentAdv, idtype, layout, row, parentWidget):
+        def __init__(self, field: ListSpriteField, layout, row, parentWidget):
             """
             Creates the widget
             """
             super().__init__()
 
             self.parentWidget = parentWidget
-            self.bit = bit
-            self.required = required
+            self.bit = field.bit
+            self.required = field.required
             self.row = row
             self.layout = layout
-            self.comment = comment
-            self.comment2 = comment2
-            self.commentAdv = commentAdv
-            self.idtype = idtype
+            self.comment = field.comment
+            self.comment2 = field.comment2
+            self.commentAdv = field.advanced_comment
+            self.idtype = field.idtype
             self.prev_value = 0
 
             self.widget = QtWidgets.QComboBox()
-            self.widget.setModel(model)
+            self.widget.setModel(field.model)
             self.widget.currentIndexChanged.connect(self.HandleIndexChanged)
 
-            self.model = model
+            if isinstance(field.model, SpriteDefinition.ListPropertyModel):
+                self.model = field.model
 
-            label = QtWidgets.QLabel(title + ':')
+            label = QtWidgets.QLabel(field.title + ':')
             # label.setWordWrap(True)
 
             layout.addWidget(label, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
 
-            if idtype is not None:
+            if self.idtype is not None:
                 next_free_button = QtWidgets.QPushButton(globals_.trans.string('SpriteDataEditor', 29))
                 next_free_button.clicked.connect(self.handle_next_free)
 
@@ -719,7 +723,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(self.widget, row, 1, 1, 2)
 
             col = 3
-            if comment is not None:
+            if self.comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
                 button_com.setStyleSheet("border-radius: 50%")
@@ -729,7 +733,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com, row, col)
                 col += 1
 
-            if comment2 is not None:
+            if self.comment2 is not None:
                 button_com2 = QtWidgets.QToolButton()
                 button_com2.setIcon(GetIcon('setting-comment2'))
                 button_com2.setStyleSheet("border-radius: 50%")
@@ -739,7 +743,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com2, row, col)
                 col += 1
 
-            if commentAdv is not None:
+            if self.commentAdv is not None:
                 button_adv = QtWidgets.QToolButton()
                 button_adv.setIcon(GetIcon('setting-comment-adv'))
                 button_adv.setStyleSheet("border-radius: 50%")
@@ -830,35 +834,35 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a spinbox
         """
 
-        def __init__(self, title, bit, max_, comment, required, _, comment2, commentAdv, start, increment, overrides, idtype, layout, row, parentWidget):
+        def __init__(self, field: ValueSpriteField, layout, row, parentWidget):
             """
             Creates the widget
             """
             super().__init__()
 
-            self.widget = IntSpinBox(None, start, increment, overrides)
-            self.widget.setRange(0, max_ - 1)
+            self.widget = IntSpinBox(None, field.start, field.increment, field.overrides)
+            self.widget.setRange(0, field.max - 1)
             self.widget.valueChanged.connect(self.HandleValueChanged)
 
-            self.bit = bit
-            self.required = required
+            self.bit = field.bit
+            self.required = field.required
             self.parentWidget = parentWidget
-            self.comment = comment
-            self.comment2 = comment2
-            self.commentAdv = commentAdv
-            self.idtype = idtype
-            self.start = start
-            self.increment = increment
+            self.comment = field.comment
+            self.comment2 = field.comment2
+            self.commentAdv = field.advanced_comment
+            self.idtype = field.idtype
+            self.start = field.start
+            self.increment = field.increment
             self.layout = layout
             self.row = row
             self.prev_value = None
 
-            label = QtWidgets.QLabel(title + ':')
+            label = QtWidgets.QLabel(field.title + ':')
             # label.setWordWrap(True)
 
             layout.addWidget(label, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
 
-            if idtype is not None:
+            if field.idtype is not None:
                 next_free_button = QtWidgets.QPushButton(globals_.trans.string('SpriteDataEditor', 29))
                 next_free_button.clicked.connect(self.handle_next_free)
 
@@ -868,7 +872,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(self.widget, row, 1, 1, 2)
 
             col = 3
-            if comment is not None:
+            if field.comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
                 button_com.setStyleSheet("border-radius: 50%")
@@ -878,7 +882,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com, row, col)
                 col += 1
 
-            if comment2 is not None:
+            if field.comment2 is not None:
                 button_com2 = QtWidgets.QToolButton()
                 button_com2.setIcon(GetIcon('setting-comment2'))
                 button_com2.setStyleSheet("border-radius: 50%")
@@ -888,7 +892,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com2, row, col)
                 col += 1
 
-            if commentAdv is not None:
+            if field.advanced_comment is not None:
                 button_adv = QtWidgets.QToolButton()
                 button_adv.setIcon(GetIcon('setting-comment-adv'))
                 button_adv.setStyleSheet("border-radius: 50%")
@@ -963,28 +967,28 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a bitfield
         """
 
-        def __init__(self, title, startbit, bitnum, comment, required, _, comment2, commentAdv, layout, row, parentWidget):
+        def __init__(self, field: BitFieldSpriteField, layout, row, parentWidget):
             """
             Creates the widget
             """
             super().__init__()
 
-            self.bit = [(startbit, startbit + bitnum)]
-            self.required = required
+            self.bit = [(field.startbit, field.startbit + field.bitnum)]
+            self.required = field.required
             self.parentWidget = parentWidget
-            self.comment = comment
-            self.comment2 = comment2
-            self.commentAdv = commentAdv
+            self.comment = field.comment
+            self.comment2 = field.comment2
+            self.commentAdv = field.advanced_comment
             self.layout = layout
             self.row = row
 
-            self.bitnum = bitnum
+            self.bitnum = field.bitnum
             self.widgets = []
 
             CheckboxLayout = QtWidgets.QGridLayout()
             # CheckboxLayout.setContentsMargins(0, 0, 0, 0)
 
-            for i in range(bitnum):
+            for i in range(field.bitnum):
                 c = QtWidgets.QCheckBox()
                 c.toggled.connect(self.HandleValueChanged)
                 self.widgets.append(c)
@@ -992,7 +996,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 CheckboxLayout.addWidget(c, 0, i)
                 CheckboxLayout.addWidget(QtWidgets.QLabel(str(i + 1)), 1, i, QtCore.Qt.AlignmentFlag.AlignHCenter)
 
-            label = QtWidgets.QLabel(title + ':')
+            label = QtWidgets.QLabel(field.title + ':')
             # label.setWordWrap(True)
 
             checkbox_widget = QtWidgets.QWidget()
@@ -1002,7 +1006,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(checkbox_widget, row, 1, 1, 2)
 
             col = 3
-            if comment is not None:
+            if field.comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
                 button_com.setStyleSheet("border-radius: 50%")
@@ -1012,7 +1016,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com, row, col)
                 col += 1
 
-            if comment2 is not None:
+            if field.comment2 is not None:
                 button_com2 = QtWidgets.QToolButton()
                 button_com2.setIcon(GetIcon('setting-comment2'))
                 button_com2.setStyleSheet("border-radius: 50%")
@@ -1022,7 +1026,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com2, row, col)
                 col += 1
 
-            if commentAdv is not None:
+            if field.advanced_comment is not None:
                 button_adv = QtWidgets.QToolButton()
                 button_adv.setIcon(GetIcon('setting-comment-adv'))
                 button_adv.setStyleSheet("border-radius: 50%")
@@ -1071,20 +1075,20 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a multibox
         """
 
-        def __init__(self, title, bit, comment, required, advanced, comment2, commentAdv, layout, row, parentWidget):
+        def __init__(self, field: MultiBoxSpriteField, layout, row, parentWidget):
             """
             Creates the widget
             """
             super().__init__()
 
-            bitnum = bit[1] - bit[0]
-            startbit = bit[0]
+            bitnum = field.bit[1] - field.bit[0]
+            startbit = field.bit[0]
 
-            self.bit = bit
+            self.bit = field.bit
             self.startbit = startbit
             self.bitnum = bitnum
-            self.required = required
-            self.advanced = advanced
+            self.required = field.required
+            self.advanced = field.advanced_comment
             self.parentWidget = parentWidget
 
             self.widgets = []
@@ -1101,11 +1105,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             w = QtWidgets.QWidget()
             w.setLayout(CheckboxLayout)
 
-            self.comment = comment
-            self.comment2 = comment2
-            self.commentAdv = commentAdv
+            self.comment = field.comment
+            self.comment2 = field.comment2
+            self.commentAdv = field.advanced_comment
 
-            if comment is not None:
+            if field.comment is not None:
                 button_com = QtWidgets.QToolButton()
 
                 button_com.setIcon(GetIcon('setting-comment'))
@@ -1117,7 +1121,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 button_com = None
 
-            if comment2 is not None:
+            if field.comment2 is not None:
                 button_com2 = QtWidgets.QToolButton()
                 button_com2.setIcon(GetIcon('setting-comment2'))
                 button_com2.setStyleSheet("border-radius: 50%")
@@ -1127,7 +1131,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 button_com2 = None
 
-            if commentAdv is not None:
+            if field.advanced_comment is not None:
                 button_adv = QtWidgets.QToolButton()
 
                 button_adv.setIcon(GetIcon('setting-comment-adv'))
@@ -1152,7 +1156,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 if button_adv is not None:
                     L.addWidget(button_adv)
 
-                label = QtWidgets.QLabel(title + ':')
+                label = QtWidgets.QLabel(field.title + ':')
                 label.setWordWrap(True)
 
                 L.addWidget(label)
@@ -1162,7 +1166,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 widget.setLayout(L)
 
             else:
-                widget = QtWidgets.QLabel(title + ':')
+                widget = QtWidgets.QLabel(field.title + ':')
                 widget.setWordWrap(True)
 
             layout.addWidget(widget, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
@@ -1210,31 +1214,31 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a dualbox
         """
 
-        def __init__(self, title1, title2, bit, comment, required, _, comment2, commentAdv, fullNybble, layout, row, parentWidget):
+        def __init__(self, field: DualBoxSpriteField, layout, row, parentWidget):
             """
             Creates the widget
             """
             super().__init__()
 
-            self.bit = bit
-            self.required = required
+            self.bit = field.bit
+            self.required = field.required
             self.parentWidget = parentWidget
-            self.comment = comment
-            self.comment2 = comment2
-            self.commentAdv = commentAdv
+            self.comment = field.comment
+            self.comment2 = field.comment2
+            self.commentAdv = field.advanced_comment
             self.row = row
             self.layout = layout
-            self.fullNybble = fullNybble
+            self.fullNybble = field.full_nybble
 
             self.buttons = [QtWidgets.QRadioButton(), QtWidgets.QRadioButton()]
 
             for button in self.buttons:
                 button.clicked.connect(self.HandleClick)
 
-            label1 = QtWidgets.QLabel(title1)
+            label1 = QtWidgets.QLabel(field.title)
             # label1.setWordWrap(True)
 
-            label2 = QtWidgets.QLabel(title2)
+            label2 = QtWidgets.QLabel(field.title2)
             # label2.setWordWrap(True)
 
             L = QtWidgets.QHBoxLayout()
@@ -1254,7 +1258,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(widget, row, 0, 1, 3)
 
             col = 3
-            if comment is not None:
+            if field.comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
                 button_com.setStyleSheet("border-radius: 50%")
@@ -1264,7 +1268,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com, row, col)
                 col += 1
 
-            if comment2 is not None:
+            if field.comment2 is not None:
                 button_com2 = QtWidgets.QToolButton()
                 button_com2.setIcon(GetIcon('setting-comment2'))
                 button_com2.setStyleSheet("border-radius: 50%")
@@ -1274,7 +1278,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com2, row, col)
                 col += 1
 
-            if commentAdv is not None:
+            if field.advanced_comment is not None:
                 button_adv = QtWidgets.QToolButton()
                 button_adv.setIcon(GetIcon('setting-comment-adv'))
                 button_adv.setStyleSheet("border-radius: 50%")
@@ -1315,27 +1319,27 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
     class ExternalPropertyDecoder(PropertyDecoder):
 
-        def __init__(self, title, bit, comment, required, _, comment2, commentAdv, type_, layout, row, parentWidget):
+        def __init__(self, field: ExternalSpriteField, layout, row, parentWidget):
             """
             Creates the widget
             """
             super().__init__()
 
-            assert len(bit) == 1
+            assert len(field.bit) == 1
 
-            self.bit = bit
+            self.bit = field.bit
             self.row = row
             self.layout = layout
             self.parentWidget = parentWidget
-            self.comment = comment
-            self.comment2 = comment2
-            self.required = required
-            self.commentAdv = commentAdv
+            self.comment = field.comment
+            self.comment2 = field.comment2
+            self.required = field.required
+            self.commentAdv = field.advanced_comment
 
-            self.type = type_
+            self.type = field.type
             self.dispvalue = 0
 
-            bits = bit[0][1] - bit[0][0]
+            bits = field.bit[0][1] - field.bit[0][0]
 
             # button that contains the current value
             self.button = QtWidgets.QPushButton()
@@ -1347,7 +1351,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.box.setValue(self.dispvalue)
             self.box.valueChanged.connect(self.HandleValueChanged)
 
-            label = QtWidgets.QLabel(title + ":")
+            label = QtWidgets.QLabel(field.title + ":")
             # label.setWordWrap(True)
 
             layout.addWidget(label, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
@@ -1355,7 +1359,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(self.box, row, 2)
 
             col = 3
-            if comment is not None:
+            if field.comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
                 button_com.setStyleSheet("border-radius: 50%")
@@ -1365,7 +1369,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com, row, col)
                 col += 1
 
-            if comment2 is not None:
+            if field.comment2 is not None:
                 button_com2 = QtWidgets.QToolButton()
                 button_com2.setIcon(GetIcon('setting-comment2'))
                 button_com2.setStyleSheet("border-radius: 50%")
@@ -1375,7 +1379,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com2, row, col)
                 col += 1
 
-            if commentAdv is not None:
+            if field.advanced_comment is not None:
                 button_adv = QtWidgets.QToolButton()
                 button_adv.setIcon(GetIcon('setting-comment-adv'))
                 button_adv.setStyleSheet("border-radius: 50%")
@@ -1487,23 +1491,23 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a row of dualboxes
         """
 
-        def __init__(self, title1, title2, bit, comment, required, advanced, comment2, commentAdv, layout, row, parentWidget):
+        def __init__(self, field: MultiDualBoxSpriteField, layout, row, parentWidget):
             """
             Creates the widget
             """
             super().__init__()
 
-            assert len(bit) == 1
+            assert len(field.bit) == 1
 
-            self.bit = bit
-            self.required = required
-            self.advanced = advanced
+            self.bit = field.bit
+            self.required = field.required
+            self.advanced = field.advanced_comment
             self.parentWidget = parentWidget
             self.layout = layout
             self.row = row
-            self.comment = comment
-            self.comment2 = comment2
-            self.commentAdv = commentAdv
+            self.comment = field.comment
+            self.comment2 = field.comment2
+            self.commentAdv = field.advanced_comment
             self.bitnum = self.bit[0][1] - self.bit[0][0]
             self.startbit = self.bit[0][0]
 
@@ -1529,9 +1533,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 DualboxLayout.addWidget(buttons[0], 0, i)
                 DualboxLayout.addWidget(buttons[1], 1, i)
 
-            label1 = QtWidgets.QLabel(title1)
+            label1 = QtWidgets.QLabel(field.title)
             # label1.setWordWrap(True)
-            label2 = QtWidgets.QLabel(title2)
+            label2 = QtWidgets.QLabel(field.title2)
             # label2.setWordWrap(True)
 
             labels = QtWidgets.QGridLayout()
@@ -1548,7 +1552,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(dualbox_widget, row, 1, 1, 2)
 
             col = 3
-            if comment is not None:
+            if field.comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
                 button_com.setStyleSheet("border-radius: 50%")
@@ -1558,7 +1562,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com, row, col)
                 col += 1
 
-            if comment2 is not None:
+            if field.comment2 is not None:
                 button_com2 = QtWidgets.QToolButton()
                 button_com2.setIcon(GetIcon('setting-comment2'))
                 button_com2.setStyleSheet("border-radius: 50%")
@@ -1568,7 +1572,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com2, row, col)
                 col += 1
 
-            if commentAdv is not None:
+            if field.advanced_comment is not None:
                 button_adv = QtWidgets.QToolButton()
                 button_adv.setIcon(GetIcon('setting-comment-adv'))
                 button_adv.setStyleSheet("border-radius: 50%")
@@ -1614,34 +1618,34 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a SpriteTex element (valuebox + list)
         """
 
-        def __init__(self, title, bit, model, max_, comment, required, _, comment2, commentAdv, layout, row, parentWidget):
+        def __init__(self, field: SpriteTexSpriteField, layout, row, parentWidget):
             """
             Creates the widgets
             """
             super().__init__()
 
             self.spinBox = IntSpinBox()
-            self.spinBox.setRange(0, max_ - 1)
+            self.spinBox.setRange(0, field.max_ - 1)
             self.spinBox.valueChanged.connect(self.HandleValueChanged)
 
             self.comboBox = QtWidgets.QComboBox()
-            self.comboBox.setModel(model)
+            self.comboBox.setModel(field.model)
             self.comboBox.currentIndexChanged.connect(self.HandleIndexChanged)
 
-            self.model = model
+            self.model = field.model
 
-            self.bit = bit
-            self.required = required
+            self.bit = field.bit
+            self.required = field.required
             self.parentWidget = parentWidget
-            self.comment = comment
-            self.comment2 = comment2
-            self.commentAdv = commentAdv
+            self.comment = field.comment
+            self.comment2 = field.comment2
+            self.commentAdv = field.advanced_comment
             self.layout = layout
             self.row = row
             self.prev_value = None
             self.editWidget = 0 # 0 = spin box, 1 = combo box
 
-            label = QtWidgets.QLabel(title + ':')
+            label = QtWidgets.QLabel(field.title + ':')
 
             #texIdLayout = QtWidgets.QFormLayout()
             #texIdLayout.addRow('Raw ID:', self.spinBox)
@@ -1652,7 +1656,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             layout.addWidget(self.spinBox,  row, 2, 1, 1)
 
             col = 3
-            if comment is not None:
+            if field.comment is not None:
                 button_com = QtWidgets.QToolButton()
                 button_com.setIcon(GetIcon('setting-comment'))
                 button_com.setStyleSheet("border-radius: 50%")
@@ -1662,7 +1666,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com, row, col)
                 col += 1
 
-            if comment2 is not None:
+            if field.comment2 is not None:
                 button_com2 = QtWidgets.QToolButton()
                 button_com2.setIcon(GetIcon('setting-comment2'))
                 button_com2.setStyleSheet("border-radius: 50%")
@@ -1672,7 +1676,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
                 layout.addWidget(button_com2, row, col)
                 col += 1
 
-            if commentAdv is not None:
+            if field.advanced_comment is not None:
                 button_adv = QtWidgets.QToolButton()
                 button_adv.setIcon(GetIcon('setting-comment-adv'))
                 button_adv.setStyleSheet("border-radius: 50%")
@@ -1960,34 +1964,34 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         fields = []
         row = 2
 
-        for f in sprite.fields:
+        for field in sprite.fields:
             nf = None
-            if f[0] == 0:
-                nf = SpriteEditorWidget.CheckboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
+            if isinstance(field, CheckBoxSpriteField):
+                nf = SpriteEditorWidget.CheckboxPropertyDecoder(field, layout, row, self)
 
-            elif f[0] == 1:
-                nf = SpriteEditorWidget.ListPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
+            elif isinstance(field, ListSpriteField):
+                nf = SpriteEditorWidget.ListPropertyDecoder(field, layout, row, self)
 
-            elif f[0] == 2:
-                nf = SpriteEditorWidget.ValuePropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], f[10], f[11], f[12], layout, row, self)
+            elif isinstance(field, ValueSpriteField):
+                nf = SpriteEditorWidget.ValuePropertyDecoder(field, layout, row, self)
 
-            elif f[0] == 3:
-                nf = SpriteEditorWidget.BitfieldPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+            elif isinstance(field, BitFieldSpriteField):
+                nf = SpriteEditorWidget.BitfieldPropertyDecoder(field, layout, row, self)
 
-            elif f[0] == 4:
-                nf = SpriteEditorWidget.MultiboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], layout, row, self)
+            elif isinstance(field, MultiBoxSpriteField):
+                nf = SpriteEditorWidget.MultiboxPropertyDecoder(field, layout, row, self)
 
-            elif f[0] == 5:
-                nf = SpriteEditorWidget.DualboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
+            elif isinstance(field, DualBoxSpriteField):
+                nf = SpriteEditorWidget.DualboxPropertyDecoder(field, layout, row, self)
 
-            elif f[0] == 6:
-                nf = SpriteEditorWidget.ExternalPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+            elif isinstance(field, ExternalSpriteField):
+                nf = SpriteEditorWidget.ExternalPropertyDecoder(field, layout, row, self)
 
-            elif f[0] == 7:
-                nf = SpriteEditorWidget.MultiDualboxPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], layout, row, self)
+            elif isinstance(field, MultiDualBoxSpriteField):
+                nf = SpriteEditorWidget.MultiDualboxPropertyDecoder(field, layout, row, self)
 
-            elif f[0] == 8:
-                nf = SpriteEditorWidget.SpriteTexPropertyDecoder(f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], layout, row, self)
+            elif isinstance(field, SpriteTexSpriteField):
+                nf = SpriteEditorWidget.SpriteTexPropertyDecoder(field, layout, row, self)
 
             if nf is None:
                 continue
@@ -2014,7 +2018,9 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             bit, _ = SpriteDefinition().parseBits('15-16')
             model = SpriteDefinition.ListPropertyModel(itemList, True)
 
-            nf = SpriteEditorWidget.ListPropertyDecoder(title, bit, model, comment, None, None, None, None, None, layout, row, self)
+            listField = ListSpriteField(title, comment, None, None, None, bit, model, None)
+
+            nf = SpriteEditorWidget.ListPropertyDecoder(listField, layout, row, self)
             nf.updateData.connect(self.HandleFieldUpdate)
             fields.append(nf)
             row += 1
@@ -2879,16 +2885,14 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             return found
 
         for field in self.sprite.fields:
-
-            type = field[0]
-            if type == 3: # multibox
-                start = field[2]
-                num = field[3]
+            if isinstance(field, BitFieldSpriteField): # bitfield
+                start = field.start_bit
+                num = field.bit_num
                 bit = (start, start + num)
-            elif type in (5, 7): # (multi)dualbox
-                bit = field[3]
+            elif isinstance(field, (DualBoxSpriteField, MultiDualBoxSpriteField)): # (multi)dualbox
+                bit = field.bit
             else:
-                bit = field[2]
+                bit = field.bit
 
             if not isinstance(bit[0], tuple):
                 bit = (bit,)

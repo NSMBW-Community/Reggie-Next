@@ -2,7 +2,7 @@ import base64
 
 from PyQt6 import QtWidgets, QtGui, QtCore
 
-from classlib import SpriteCategory
+from classlib import ListSpriteField, SpriteCategory, ValueSpriteField
 import globals_
 from tiles import RenderObject, TilesetTile
 from ui import ListWidgetWithToolTipSignal
@@ -1035,11 +1035,11 @@ class SpriteList(QtWidgets.QWidget):
         for field in sdef.fields:
             # Only values (1) and lists (2) have idtypes, so ignore the other
             # fields.
-            if field[0] < 1 or field[0] > 2:
+            if isinstance(field, (ListSpriteField, ValueSpriteField)):
                 continue
 
             # The idtype is the last element in the field tuple.
-            if field[-1] == filtertype:
+            if field.idtype == filtertype:
                 self.table.setRowHidden(row, False)
                 return
 
@@ -1235,18 +1235,18 @@ class SpriteList(QtWidgets.QWidget):
         for field in sdef.fields:
             # Only values (1) and fields (2) have idtypes, so ignore all other
             # fields.
-            if field[0] < 1 or field[0] > 2:
+            if not isinstance(field, (ValueSpriteField, ListSpriteField)):
                 continue
 
             # The idtype is the last element in the field tuple, bit is the
             # third element in the field tuple (for both list and value).
-            idtype = field[-1]
+            idtype = field.idtype
 
             # No id type specified
             if idtype is None:
                 continue
 
-            value = decoder.retrieve(data, field[2])
+            value = decoder.retrieve(data, field.bit)
 
             try:
                 res[idtype].append(value)

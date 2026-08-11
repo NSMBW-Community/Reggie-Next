@@ -1,6 +1,7 @@
 import struct
 from PyQt6 import QtWidgets
 
+from classlib import CheckBoxSpriteField, DualBoxSpriteField, ListSpriteField, ValueSpriteField
 import globals_
 import spritelib as SLib
 import archive
@@ -1074,16 +1075,16 @@ class Area:
             data = sprite.spritedata
 
             for field in sdef.fields:
-                if field[0] not in (1, 2):
+                if not isinstance(field, (ListSpriteField, ValueSpriteField)):
                     # Only values and lists can be idtypes
                     continue
 
-                idtype = field[-1]
+                idtype = field.idtype
                 if idtype is None:
                     # Only look at settings with idtypes
                     continue
 
-                value = decoder.retrieve(data, field[2])
+                value = decoder.retrieve(data, field.bit)
 
                 # 3. Add the value to self.sprite_idtypes
                 try:
@@ -1111,16 +1112,16 @@ class Area:
 
         # Find what values are used by this sprite
         for field in sdef.fields:
-            if field[0] not in (1, 2):
+            if not isinstance(field, (ListSpriteField, ValueSpriteField)):
                 # Only <value> and <list> tags can have id types
                 continue
 
-            idtype = field[-1]
+            idtype = field.idtype
             if idtype is None:
                 # Only look at settings with idtypes
                 continue
 
-            value = decoder.retrieve(sprite.spritedata, field[2])
+            value = decoder.retrieve(sprite.spritedata, field.bit)
 
             # 3. Decrement the counter for this idtype
             counter = self.sprite_idtypes[idtype]

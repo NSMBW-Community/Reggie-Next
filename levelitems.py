@@ -3,6 +3,7 @@ import os
 import random
 import base64
 
+from classlib import BitFieldSpriteField, CheckBoxSpriteField, DualBoxSpriteField, ExternalSpriteField, ListSpriteField, MultiBoxSpriteField, MultiDualBoxSpriteField, SpriteField, ValueSpriteField
 import spritelib as SLib
 import globals_
 import common
@@ -47,7 +48,7 @@ class InstanceDefinition:
         Clears all data
         """
         for field in self.fields:
-            field[1] = None
+            field.title = None
 
     def setFrom(self, other):
         """
@@ -164,7 +165,7 @@ class InstanceDefinition_LocationItem(InstanceDefinition):
         return globals_.Area.locations
 
     def createNew(self):
-        return LocationItem(self.objx, self.objy, *(field[1] for field in self.fields))
+        return LocationItem(self.objx, self.objy, *(field.title for field in self.fields))
 
 
 class InstanceDefinition_SpriteItem(InstanceDefinition):
@@ -205,7 +206,7 @@ class InstanceDefinition_EntranceItem(InstanceDefinition):
         return globals_.Area.entrances
 
     def createNew(self):
-        return EntranceItem(self.objx, self.objy, *(field[1] for field in self.fields))
+        return EntranceItem(self.objx, self.objy, *(field.title for field in self.fields))
 
 
 class InstanceDefinition_PathItem(InstanceDefinition):
@@ -223,7 +224,7 @@ class InstanceDefinition_PathItem(InstanceDefinition):
         return globals_.Area.paths
 
     def createNew(self):
-        return PathItem(self.objx, self.objy, *(field[1] for field in self.fields))
+        return PathItem(self.objx, self.objy, *(field.title for field in self.fields))
 
 
 class InstanceDefinition_CommentItem(InstanceDefinition):

@@ -1,4 +1,4 @@
-from PyQt6 import QtWidgets
+from PyQt6 import QtCore, QtWidgets
 
 
 class MenuAction:
@@ -62,3 +62,178 @@ class RandTileSelection:
         self.tiles: list[int] = tiles
         self.direction = direction
         self.special = special
+
+
+class SpriteField:
+    """Base class for all sprite editor fields."""
+    def __init__(
+        self,
+        title: str | None,
+        comment: str | None,
+        comment2: str | None,
+        advanced_comment: str | None,
+        required: list[tuple[int, int]] | None,
+    ):
+        self.title = title if title is not None else ''
+        self.comment = comment
+        self.comment2 = comment2
+        self.advanced_comment = advanced_comment
+        self.required = required
+
+
+class CheckBoxSpriteField(SpriteField):
+    def __init__(
+        self,
+        title: str | None,
+        comment: str | None,
+        comment2: str | None,
+        advanced_comment: str | None,
+        required: list[tuple[int, int]] | None,
+        bit: list[tuple[int, int]],
+        mask: int,
+        full_nybble: bool,
+    ):
+        super().__init__(title, comment, comment2, advanced_comment, required)
+        self.bit = bit
+        self.mask = mask
+        self.full_nybble = full_nybble
+
+
+class ListSpriteField(SpriteField):
+    def __init__(
+        self,
+        title: str | None,
+        comment: str | None,
+        comment2: str | None,
+        advanced_comment: str | None,
+        required: list[tuple[int, int]] | None,
+        bit: list[tuple[int, int]],
+        model: QtCore.QAbstractItemModel,
+        idtype: str | None,
+    ):
+        super().__init__(title, comment, comment2, advanced_comment, required)
+        self.bit = bit
+        self.model = model
+        self.idtype = idtype
+
+
+class ValueSpriteField(SpriteField):
+    def __init__(
+        self,
+        title: str | None,
+        comment: str | None,
+        comment2: str | None,
+        advanced_comment: str | None,
+        required: list[tuple[int, int]] | None,
+        bit: list[tuple[int, int]],
+        max: int,
+        start: int,
+        increment: int,
+        overrides: list[tuple[int, int]],
+        idtype: str | None,
+    ):
+        super().__init__(title, comment, comment2, advanced_comment, required)
+        self.bit = bit
+        self.max = max
+        self.start = start
+        self.increment = increment
+        self.overrides = overrides
+        self.idtype = idtype
+
+
+class BitFieldSpriteField(SpriteField):
+    def __init__(
+        self,
+        title: str | None,
+        comment: str | None,
+        comment2: str | None,
+        advanced_comment: str | None,
+        required: list[tuple[int, int]] | None,
+        start_bit: int,
+        bit_num: int,
+    ):
+        super().__init__(title, comment, comment2, advanced_comment, required)
+        self.start_bit = start_bit
+        self.bit_num = bit_num
+
+
+class MultiBoxSpriteField(SpriteField):
+    def __init__(
+        self,
+        title: str | None,
+        comment: str | None,
+        comment2: str | None,
+        advanced_comment: str | None,
+        required: list[tuple[int, int]] | None,
+        bit: tuple[int, int],
+    ):
+        super().__init__(title, comment, comment2, advanced_comment, required)
+        self.bit = bit
+
+
+class DualBoxSpriteField(SpriteField):
+    def __init__(
+        self,
+        title: str | None,
+        comment: str | None,
+        comment2: str | None,
+        advanced_comment: str | None,
+        required: list[tuple[int, int]] | None,
+        title2: str | None,
+        bit: list[tuple[int, int]],
+        full_nybble: bool,
+    ):
+        super().__init__(title, comment, comment2, advanced_comment, required)
+        self.title2 = title2
+        self.bit = bit
+        self.full_nybble = full_nybble
+
+
+class ExternalSpriteField(SpriteField):
+    def __init__(
+        self,
+        title: str | None,
+        comment: str | None,
+        comment2: str | None,
+        advanced_comment: str | None,
+        required: list[tuple[int, int]] | None,
+        bit: list[tuple[int, int]],
+        type: str | None,
+    ):
+        super().__init__(title, comment, comment2, advanced_comment, required)
+        self.bit = bit
+        self.type = type
+
+
+class MultiDualBoxSpriteField(SpriteField):
+    def __init__(
+        self,
+        title: str | None,
+        comment: str | None,
+        comment2: str | None,
+        advanced_comment: str | None,
+        required: list[tuple[int, int]] | None,
+        title2: str | None,
+        bit: list[tuple[int, int]],
+    ):
+        super().__init__(title, comment, comment2, advanced_comment, required)
+        self.title2 = title2
+        self.bit = bit
+
+
+class SpriteTexSpriteField(SpriteField):
+    def __init__(
+        self,
+        title: str | None,
+        comment: str | None,
+        comment2: str | None,
+        advanced_comment: str | None,
+        required: list[tuple[int, int]] | None,
+        bit: list[tuple[int, int]],
+        model: QtCore.QAbstractItemModel,
+        max: int,
+    ):
+        super().__init__(title, comment, comment2, advanced_comment, required)
+        self.bit = bit
+        self.model = model
+        self.max = max

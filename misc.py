@@ -10,7 +10,7 @@ from xml.etree import ElementTree
 ################################################################################
 
 import globals_
-from classlib import MenuAction, RandTileSelection, SpriteCategory, SpriteSubCategory, TilesetCategory, TilesetFileEntry
+from classlib import BitFieldSpriteField, CheckBoxSpriteField, DualBoxSpriteField, ExternalSpriteField, ListSpriteField, MenuAction, MultiBoxSpriteField, MultiDualBoxSpriteField, RandTileSelection, SpriteCategory, SpriteField, SpriteSubCategory, SpriteTexSpriteField, TilesetCategory, TilesetFileEntry, ValueSpriteField
 from ui import GetIcon, ReggieTheme, clipStr, KeybindLineEdit
 from dirty import setting, setSetting, delSetting
 from dialogs import DiagnosticToolDialog
@@ -450,6 +450,7 @@ class SpriteDefinition:
         self.noLayer: bool = False
         self.dependencies: list[tuple[int, int]] = []
         self.dependencynotes: str | None = None
+        self.fields: list[SpriteField] = []
 
 
     class ListPropertyModel(QtCore.QAbstractListModel):
@@ -492,7 +493,6 @@ class SpriteDefinition:
         """
         Loads in all the field data from an XML node
         """
-        self.fields = []
         fields = self.fields
         allowed = ['checkbox', 'list', 'value', 'bitfield', 'multibox', 'dualbox',
                    'dependency', 'external', 'multidualbox', 'spritetex']
@@ -577,7 +577,7 @@ class SpriteDefinition:
                 mask = int(attribs.get('mask', 1))
                 fullNybble = attribs.get('fullnybble', 'False') == "True"
 
-                fields.append((0, attribs['title'], bit, mask, comment, required, advanced, comment2, advancedcomment, fullNybble))
+                fields.append(CheckBoxSpriteField(attribs['title'], comment, comment2, advancedcomment, required, bit, mask, fullNybble))
 
             elif field.tag == 'list':
                 bit, _ = self.parseBits(attribs.get("nybble"))
@@ -589,7 +589,7 @@ class SpriteDefinition:
                     entries.append((int(e.attrib['value']), e.text))
 
                 model = SpriteDefinition.ListPropertyModel(entries)
-                fields.append((1, title, bit, model, comment, required, advanced, comment2, advancedcomment, idtype))
+                fields.append(ListSpriteField(title, comment, comment2, advancedcomment, required, bit, model, idtype))
 
             elif field.tag == 'value':
                 bit, max_ = self.parseBits(attribs.get("nybble"))
@@ -600,24 +600,24 @@ class SpriteDefinition:
 
                     overrides.append((int(o.attrib['index']), int(o.attrib['value'])))
 
-                fields.append((2, attribs['title'], bit, max_, comment, required, advanced, comment2, advancedcomment, start, increment, overrides, idtype))
+                fields.append(ValueSpriteField(attribs['title'], comment, comment2, advancedcomment, required, bit, max_, start, increment, overrides, idtype))
 
             elif field.tag == 'bitfield':
                 startbit = int(attribs['startbit'])
                 bitnum = int(attribs['bitnum'])
 
-                fields.append((3, attribs['title'], startbit, bitnum, comment, required, advanced, comment2, advancedcomment))
+                fields.append(BitFieldSpriteField(attribs['title'], comment, comment2, advancedcomment, required, startbit, bitnum))
 
             elif field.tag == 'multibox':
                 bit, _ = self.parseBits(attribs.get("nybble"))
 
-                fields.append((4, attribs['title'], bit, comment, required, advanced, comment2, advancedcomment))
+                fields.append(MultiBoxSpriteField(attribs['title'], comment, comment2, advancedcomment, required, bit))
 
             elif field.tag == 'dualbox':
                 bit, _ = self.parseBits(attribs.get("nybble"))
                 fullNybble = attribs.get('fullnybble', 'False') == "True"
 
-                fields.append((5, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment, fullNybble))
+                fields.append(DualBoxSpriteField(attribs['title1'], comment, comment2, advancedcomment, required, attribs['title2'], bit, fullNybble))
 
             elif field.tag == 'dependency':
                 type_dict = {'required': 0, 'suggested': 1, 'resource': 2, 'suggestedresource': 3}
@@ -636,13 +636,13 @@ class SpriteDefinition:
                 bit, _ = self.parseBits(attribs.get("nybble"))
                 type_ = attribs['type']
 
-                fields.append((6, title, bit, comment, required, advanced, comment2, advancedcomment, type_))
+                fields.append(ExternalSpriteField(title, comment, comment2, advancedcomment, required, bit, type_))
 
             elif field.tag == 'multidualbox':
                 # multibox but with dualboxes instead of checkboxes
                 bit, _ = self.parseBits(attribs.get("nybble"))
 
-                fields.append((7, attribs['title1'], attribs['title2'], bit, comment, required, advanced, comment2, advancedcomment))
+                fields.append(MultiDualBoxSpriteField(attribs['title1'], comment, comment2, advancedcomment, required, attribs['title2'], bit))
 
             elif field.tag == 'spritetex':
                 bit, max_ = self.parseBits(attribs.get("nybble"))
@@ -654,7 +654,7 @@ class SpriteDefinition:
                     entries.append((int(e.attrib['value']), e.text))
 
                 model = SpriteDefinition.ListPropertyModel(entries)
-                fields.append((8, title, bit, model, max_, comment, required, advanced, comment2, advancedcomment))
+                fields.append(SpriteTexSpriteField(title, comment, comment2, advancedcomment, required, bit, model, max_))
 
     def parseBits(self, nybble_val):
         """
