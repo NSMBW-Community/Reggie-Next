@@ -31,7 +31,7 @@
 ################################################################
 
 # Python version: sanity check
-minimum = (3, 9)
+minimum = (3, 12)
 import sys
 
 from classlib import ListSpriteField, SpriteField, ValueSpriteField

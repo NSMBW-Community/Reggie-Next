@@ -7,7 +7,7 @@
 Building without Cython will slow down the program a bit when it deals with anything LH related. However, this is the easiest method of building Reggie Next,
 and therefore is recommended.
 
-1. You need to have at least Python 3.9, so make sure to install it and add it to `PATH` on Windows.
+1. You need to have at least Python 3.12, so make sure to install it and add it to `PATH` on Windows.
 1. Run the following command to install the required modules:
    ```
    pip install PyQt6 nsmblib https://github.com/pyinstaller/pyinstaller/archive/develop.zip
