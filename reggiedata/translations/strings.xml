@@ -756,6 +756,7 @@
             <entry>Layer 2</entry>
             <entry>Layer 0</entry>
         </stringlist>
+        <string id="35">[id]: Undefined Entry</string>
     </section>
     <section id="Sprites">
         <string id="0">[b]Sprite [type]:[/b][br][name]</string>
@@ -1014,6 +1015,7 @@
         <string id="105">Multiplayer Lower Bounds Adjust:</string>
         <string id="106">[b]Multiplayer Lower Bounds Adjust:[/b][br]Added to the lower bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.</string>
         <string id="107">Duplicate</string>
+        <string id="108">Undefined Track [id]</string>
     </section>
     <section id="Zones">
         <string id="0">Zone [num]</string>

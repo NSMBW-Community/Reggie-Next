@@ -4476,45 +4476,45 @@ class ReggieWindow(QtWidgets.QMainWindow):
             globals_.Area.zones.append(z)
             self.scene.addItem(z)
 
-            z.objx = common.clamp(16, 24560, tab.Zone_xpos.value())
-            z.objy = common.clamp(16, 12272, tab.Zone_ypos.value())
-            z.width = min(24560 - z.objx, tab.Zone_width.value())
-            z.height = min(12272 - z.objy, tab.Zone_height.value())
+            z.objx = common.clamp(16, 24560, tab.zPosX.value())
+            z.objy = common.clamp(16, 12272, tab.zPosY.value())
+            z.width = min(24560 - z.objx, tab.zWidth.value())
+            z.height = min(12272 - z.objy, tab.zHeight.value())
 
             z.prepareGeometryChange()
             z.UpdateRects()
             z.setPos(z.objx * 1.5, z.objy * 1.5)
 
-            z.modeldark = tab.Zone_modeldark.currentIndex()
-            z.terraindark = tab.Zone_terraindark.currentIndex()
-            z.cammode = tab.Zone_cammodezoom.modeButtonGroup.checkedId()
-            z.camzoom = tab.Zone_cammodezoom.screenSizes.currentIndex()
-            z.camtrack = tab.Zone_direction.currentIndex()
+            z.modeldark = tab.theme.currentIndex()
+            z.terraindark = tab.terrainLight.currentIndex()
+            z.cammode = tab.camModeZoom.modeButtonGroup.checkedId()
+            z.camzoom = tab.camModeZoom.screenSizes.currentIndex()
+            z.camtrack = tab.direction.currentIndex()
 
-            if tab.Zone_yrestrict.isChecked():
-                z.mpcamzoomadjust = tab.Zone_mpzoomadjust.value()
+            if tab.restrictY.isChecked():
+                z.mpcamzoomadjust = tab.mpZoomAdjust.value()
             else:
                 z.mpcamzoomadjust = 15
 
             z.visibility = 0
 
-            if tab.Zone_vspotlight.isChecked():
+            if tab.spotlight.isChecked():
                 z.visibility |= 1 << 4
-            if tab.Zone_vfulldark.isChecked():
+            if tab.fullDark.isChecked():
                 z.visibility |= 1 << 5
 
-            z.visibility |= tab.Zone_visibility.currentIndex()
+            z.visibility |= tab.visibility.currentIndex()
 
-            z.yupperbound = tab.Zone_yboundup.value()
-            z.ylowerbound = tab.Zone_ybounddown.value()
-            z.yupperbound2 = tab.Zone_yboundup2.value()
-            z.ylowerbound2 = tab.Zone_ybounddown2.value()
-            z.yupperbound3 = tab.Zone_yboundup3.value()
-            z.ylowerbound3 = tab.Zone_ybounddown3.value()
+            z.yupperbound = tab.boundUp.value()
+            z.ylowerbound = tab.boundDown.value()
+            z.yupperbound2 = tab.lakituBoundUp.value()
+            z.ylowerbound2 = tab.lakituBoundDown.value()
+            z.yupperbound3 = tab.mpBoundUp.value()
+            z.ylowerbound3 = tab.mpBoundDown.value()
 
-            z.music = tab.Zone_musicid.value()
-            z.sfxmod = tab.Zone_sfx.currentIndex() << 4
-            if tab.Zone_boss.isChecked():
+            z.music = tab.musicID.value()
+            z.sfxmod = tab.modulation.currentIndex() << 4
+            if tab.bossFlag.isChecked():
                 z.sfxmod |= 1
 
         for spr in globals_.Area.sprites:

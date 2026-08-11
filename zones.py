@@ -5,10 +5,9 @@ import globals_
 from ui import GetIcon
 from levelitems import ZoneItem
 
-# Sets up the Zones Menu
 class ZonesDialog(QtWidgets.QDialog):
     """
-    Dialog which lets you choose among various from tabs
+    Dialog which lets you modify zones
     """
 
     def __init__(self):
@@ -20,57 +19,65 @@ class ZonesDialog(QtWidgets.QDialog):
         self.setWindowIcon(GetIcon('zones'))
 
         self.tabWidget = QtWidgets.QTabWidget()
+        self.zoneTabs: list[ZoneTab]
         self.zoneTabs = []
 
         for i, z in enumerate(globals_.Area.zones):
-            zone_tab_name = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
+            tabName = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
 
             tab = ZoneTab(z)
             self.zoneTabs.append(tab)
-            self.tabWidget.addTab(tab, zone_tab_name)
+            self.tabWidget.addTab(tab, tabName)
 
-        self.NewButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 4))
-        self.CopyButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 107))
-        self.DeleteButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 5))
+        self.newButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 4))
+        self.copyButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 107))
+        self.deleteButton = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 5))
 
         buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
-        buttonBox.addButton(self.NewButton, buttonBox.ButtonRole.ActionRole)
-        buttonBox.addButton(self.CopyButton, buttonBox.ButtonRole.ActionRole)
-        buttonBox.addButton(self.DeleteButton, buttonBox.ButtonRole.ActionRole)
+        buttonBox.addButton(self.newButton, buttonBox.ButtonRole.ActionRole)
+        buttonBox.addButton(self.copyButton, buttonBox.ButtonRole.ActionRole)
+        buttonBox.addButton(self.deleteButton, buttonBox.ButtonRole.ActionRole)
 
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 
-        self.NewButton.clicked.connect(self.NewZone)
-        self.CopyButton.clicked.connect(self.CopyZone)
-        self.DeleteButton.clicked.connect(self.DeleteZone)
+        self.newButton.clicked.connect(self.handleNewZone)
+        self.copyButton.clicked.connect(self.handleCopyZone)
+        self.deleteButton.clicked.connect(self.handleDeleteZone)
 
-        self.UpdateCopyDelete()
+        self.updateCopyDelete()
 
         mainLayout = QtWidgets.QVBoxLayout()
         mainLayout.addWidget(self.tabWidget)
         mainLayout.addWidget(buttonBox)
         self.setLayout(mainLayout)
 
-    def NewZone(self):
+    def handleNewZone(self):
+        """
+        Handles creating a new zone
+        """
+        # Show warning about the zone 'limit'
         if len(self.zoneTabs) >= 6:
             result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('ZonesDlg', 6), globals_.trans.string('ZonesDlg', 7),
                                                    QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
             if result == QtWidgets.QMessageBox.StandardButton.No:
                 return
 
-        z = globals_.mainWindow.CreateZone(256, 256)
-        zone_tab_name = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
+        zone = globals_.mainWindow.CreateZone(256, 256)
+        tabName = globals_.trans.string('ZonesDlg', 3, '[num]', zone.id + 1)
 
-        tab = ZoneTab(z)
+        tab = ZoneTab(zone)
         self.zoneTabs.append(tab)
-        self.tabWidget.addTab(tab, zone_tab_name)
+        self.tabWidget.addTab(tab, tabName)
 
-        tab_amount = self.tabWidget.count()
-        self.tabWidget.setCurrentIndex(tab_amount - 1)
-        self.UpdateCopyDelete()
+        tabCount = self.tabWidget.count()
+        self.tabWidget.setCurrentIndex(tabCount - 1)
+        self.updateCopyDelete()
     
-    def CopyZone(self):
+    def handleCopyZone(self):
+        """
+        Handles copying the current zone data to a new one
+        """
         if len(self.zoneTabs) >= 6:
             result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('ZonesDlg', 6), globals_.trans.string('ZonesDlg', 7),
                                                    QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
@@ -81,93 +88,105 @@ class ZonesDialog(QtWidgets.QDialog):
         widget = self.tabWidget.widget(self.tabWidget.currentIndex())
         widget.copyZoneData(z, self.tabWidget.currentIndex())
 
-        zone_tab_name = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
+        tabName = globals_.trans.string('ZonesDlg', 3, '[num]', z.id + 1)
 
         tab = ZoneTab(z)
         self.zoneTabs.append(tab)
-        self.tabWidget.addTab(tab, zone_tab_name)
+        self.tabWidget.addTab(tab, tabName)
 
-        tab_amount = self.tabWidget.count()
-        self.tabWidget.setCurrentIndex(tab_amount - 1)
-        self.UpdateCopyDelete()
+        tabCount = self.tabWidget.count()
+        self.tabWidget.setCurrentIndex(tabCount - 1)
+        self.updateCopyDelete()
 
-    def DeleteZone(self):
-        index = self.tabWidget.currentIndex()
-        tab_amount = self.tabWidget.count()
-        if tab_amount == 0:
+    def handleDeleteZone(self):
+        """
+        Handles deleting the current zone
+        """
+        tabCount = self.tabWidget.count()
+        if tabCount == 0:
             return
 
+        index = self.tabWidget.currentIndex()
         self.tabWidget.removeTab(index)
         self.zoneTabs.pop(index)
-        self.UpdateCopyDelete()
+        self.updateCopyDelete()
 
-        new_tab_amount = tab_amount - 1
-
-    def UpdateCopyDelete(self):
-        tab_amount = self.tabWidget.count()
-        self.CopyButton.setEnabled(tab_amount != 0)
-        self.DeleteButton.setEnabled(tab_amount != 0)
+    def updateCopyDelete(self):
+        """
+        Toggles the Copy and Delete buttons
+        """
+        tabCount = self.tabWidget.count()
+        self.copyButton.setEnabled(tabCount != 0)
+        self.deleteButton.setEnabled(tabCount != 0)
 
 class ZoneTab(QtWidgets.QWidget):
-    def __init__(self, z):
+    """
+    Represents an individial zone
+    """
+
+    def __init__(self, zone: ZoneItem):
         QtWidgets.QWidget.__init__(self)
 
-        self.zoneObj = z
-        self.AutoChangingSize = False
+        self.zoneObj = zone
+        self.autoChangeSize = False
 
-        self.createDimensions(z)
-        self.createRendering(z)
-        self.createAudio(z)
+        # Create the different sections of the tab
+        self.createDimensions(zone)
+        self.createRendering(zone)
+        self.createAudio(zone)
 
-        self.createCamera(z)
-        self.createBounds(z)
+        self.createCamera(zone)
+        self.createBounds(zone)
 
         leftLayout = QtWidgets.QVBoxLayout()
-        leftLayout.addWidget(self.Dimensions)
-        leftLayout.addWidget(self.Rendering)
-        leftLayout.addWidget(self.Audio)
+        leftLayout.addWidget(self.dimensions)
+        leftLayout.addWidget(self.rendering)
+        leftLayout.addWidget(self.audio)
 
         rightLayout = QtWidgets.QVBoxLayout()
-        rightLayout.addWidget(self.Camera)
-        rightLayout.addWidget(self.Bounds)
+        rightLayout.addWidget(self.camera)
+        rightLayout.addWidget(self.bounds)
 
         mainLayout = QtWidgets.QHBoxLayout()
         mainLayout.addLayout(leftLayout)
         mainLayout.addLayout(rightLayout)
         self.setLayout(mainLayout)
 
-    def createDimensions(self, z):
-        self.Dimensions = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 8))
+    def createDimensions(self, zone: ZoneItem):
+        """
+        Creates the "Dimensions" section of the tab
+        """
+        self.dimensions = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 8))
 
-        self.Zone_xpos = QtWidgets.QSpinBox()
-        self.Zone_xpos.setRange(16, 65535)
-        self.Zone_xpos.setToolTip(globals_.trans.string('ZonesDlg', 10))
-        self.Zone_xpos.setValue(z.objx)
+        self.zPosX = QtWidgets.QSpinBox()
+        self.zPosX.setRange(16, 65535)
+        self.zPosX.setToolTip(globals_.trans.string('ZonesDlg', 10))
+        self.zPosX.setValue(zone.objx)
 
-        self.Zone_ypos = QtWidgets.QSpinBox()
-        self.Zone_ypos.setRange(16, 65535)
-        self.Zone_ypos.setToolTip(globals_.trans.string('ZonesDlg', 12))
-        self.Zone_ypos.setValue(z.objy)
+        self.zPosY = QtWidgets.QSpinBox()
+        self.zPosY.setRange(16, 65535)
+        self.zPosY.setToolTip(globals_.trans.string('ZonesDlg', 12))
+        self.zPosY.setValue(zone.objy)
 
         self.snapButton8 = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 76))
-        self.snapButton8.clicked.connect(lambda: self.HandleSnapTo8x8Grid(z))
+        self.snapButton8.clicked.connect(self.handleSnapGrid8)
 
         self.snapButton16 = QtWidgets.QPushButton(globals_.trans.string('ZonesDlg', 77))
-        self.snapButton16.clicked.connect(lambda: self.HandleSnapTo16x16Grid(z))
+        self.snapButton16.clicked.connect(self.handleSnapGrid16)
 
-        self.Zone_width = QtWidgets.QSpinBox()
-        self.Zone_width.setRange(204, 65535)
-        self.Zone_width.setToolTip(globals_.trans.string('ZonesDlg', 14))
-        self.Zone_width.setValue(z.width)
-        self.Zone_width.valueChanged.connect(self.PresetDeselected)
+        self.zWidth = QtWidgets.QSpinBox()
+        self.zWidth.setRange(204, 65535)
+        self.zWidth.setToolTip(globals_.trans.string('ZonesDlg', 14))
+        self.zWidth.setValue(zone.width)
+        self.zWidth.valueChanged.connect(self.handlePresetChanged)
 
-        self.Zone_height = QtWidgets.QSpinBox()
-        self.Zone_height.setRange(112, 65535)
-        self.Zone_height.setToolTip(globals_.trans.string('ZonesDlg', 16))
-        self.Zone_height.setValue(z.height)
-        self.Zone_height.valueChanged.connect(self.PresetDeselected)
+        self.zHeight = QtWidgets.QSpinBox()
+        self.zHeight.setRange(112, 65535)
+        self.zHeight.setToolTip(globals_.trans.string('ZonesDlg', 16))
+        self.zHeight.setValue(zone.height)
+        self.zHeight.valueChanged.connect(self.handlePresetChanged)
 
-        # Common retail zone presets
+        # Common retail zone presets:
         # 416 x 224 (used with minigames)
         # 448 x 224 (used with boss battles)
         # 512 x 272 (used in many, many places)
@@ -176,50 +195,49 @@ class ZoneTab(QtWidgets.QWidget):
         # 784 x 320 (not added to list because it's just an expansion of 608x320)
         # 704 x 384 (used multiple times; therefore it's important)
         # 944 x 448 (used in 9-3 zone 3)
-        self.Zone_presets_values = (
+        self.sizePresets = (
             '204x112', '308x168', '408x224', '468x256', '496x272', '556x304', '584x320', '700x384', '816x448'
         )
 
-        self.Zone_presets = QtWidgets.QComboBox()
-        self.Zone_presets.addItems(self.Zone_presets_values)
-        self.Zone_presets.setToolTip(globals_.trans.string('ZonesDlg', 18))
-        self.Zone_presets.currentIndexChanged.connect(self.PresetSelected)
-        self.PresetDeselected()  # can serve as an initializer for self.Zone_presets
+        self.presetChooser = QtWidgets.QComboBox()
+        self.presetChooser.addItems(self.sizePresets)
+        self.presetChooser.setToolTip(globals_.trans.string('ZonesDlg', 18))
+        self.presetChooser.currentIndexChanged.connect(self.handlePresetSelected)
 
-        ZonePositionLayout = QtWidgets.QFormLayout()
-        ZonePositionLayout.addRow(globals_.trans.string('ZonesDlg', 9), self.Zone_xpos)
-        ZonePositionLayout.addRow(globals_.trans.string('ZonesDlg', 11), self.Zone_ypos)
+        # Initialize self.presetChooser
+        self.handlePresetChanged()
 
-        ZoneSizeLayout = QtWidgets.QFormLayout()
-        ZoneSizeLayout.addRow(globals_.trans.string('ZonesDlg', 13), self.Zone_width)
-        ZoneSizeLayout.addRow(globals_.trans.string('ZonesDlg', 15), self.Zone_height)
-        ZoneSizeLayout.addRow(globals_.trans.string('ZonesDlg', 17), self.Zone_presets)
+        zonePosLyt = QtWidgets.QFormLayout()
+        zonePosLyt.addRow(globals_.trans.string('ZonesDlg', 9), self.zPosX)
+        zonePosLyt.addRow(globals_.trans.string('ZonesDlg', 11), self.zPosY)
+
+        zoneSizeLyt = QtWidgets.QFormLayout()
+        zoneSizeLyt.addRow(globals_.trans.string('ZonesDlg', 13), self.zWidth)
+        zoneSizeLyt.addRow(globals_.trans.string('ZonesDlg', 15), self.zHeight)
+        zoneSizeLyt.addRow(globals_.trans.string('ZonesDlg', 17), self.presetChooser)
 
         snapLayout = QtWidgets.QHBoxLayout()
-
         snapLayout.addWidget(self.snapButton8)
         snapLayout.addWidget(self.snapButton16)
 
         innerLayout = QtWidgets.QHBoxLayout()
-
-        innerLayout.addLayout(ZonePositionLayout)
-        innerLayout.addLayout(ZoneSizeLayout)
+        innerLayout.addLayout(zonePosLyt)
+        innerLayout.addLayout(zoneSizeLyt)
 
         verticalLayout = QtWidgets.QVBoxLayout()
-
         verticalLayout.addLayout(innerLayout)
         verticalLayout.addLayout(snapLayout)
 
-        self.Dimensions.setLayout(verticalLayout)
+        self.dimensions.setLayout(verticalLayout)
 
-    def HandleSnapTo8x8Grid(self, z):
+    def handleSnapGrid8(self):
         """
         Snaps the current zone to an 8x8 grid
         """
-        left = self.Zone_xpos.value()
-        top = self.Zone_ypos.value()
-        right = left + self.Zone_width.value()
-        bottom = top + self.Zone_height.value()
+        left = self.zPosX.value()
+        top = self.zPosY.value()
+        right = left + self.zWidth.value()
+        bottom = top + self.zHeight.value()
 
         if left % 8 < 4:
             left -= (left % 8)
@@ -241,35 +259,33 @@ class ZoneTab(QtWidgets.QWidget):
         else:
             bottom += 8 - (bottom % 8)
 
-        if right <= left: right += 8
-        if bottom <= top: bottom += 8
+        if right <= left:
+            right += 8
+        if bottom <= top:
+            bottom += 8
 
         right -= left
         bottom -= top
 
-        if left < 16: left = 16
-        if top < 16: top = 16
-        if right < 304: right = 304
-        if bottom < 200: bottom = 200
+        # Keep zone size within reasonable bounds
+        left = common.clamp(left, 16, 65528)
+        top = common.clamp(top, 16, 65528)
+        right = common.clamp(right, 304, 65528)
+        bottom = common.clamp(bottom, 200, 65528)
 
-        if left > 65528: left = 65528
-        if top > 65528: top = 65528
-        if right > 65528: right = 65528
-        if bottom > 65528: bottom = 65528
+        self.zPosX.setValue(left)
+        self.zPosY.setValue(top)
+        self.zWidth.setValue(right)
+        self.zHeight.setValue(bottom)
 
-        self.Zone_xpos.setValue(left)
-        self.Zone_ypos.setValue(top)
-        self.Zone_width.setValue(right)
-        self.Zone_height.setValue(bottom)
-
-    def HandleSnapTo16x16Grid(self, z):
+    def handleSnapGrid16(self):
         """
         Snaps the current zone to a 16x16 grid
         """
-        left = self.Zone_xpos.value()
-        top = self.Zone_ypos.value()
-        right = left + self.Zone_width.value()
-        bottom = top + self.Zone_height.value()
+        left = self.zPosX.value()
+        top = self.zPosY.value()
+        right = left + self.zWidth.value()
+        bottom = top + self.zHeight.value()
 
         if left % 16 < 8:
             left -= (left % 16)
@@ -297,184 +313,196 @@ class ZoneTab(QtWidgets.QWidget):
         right -= left
         bottom -= top
 
-        if left < 16: left = 16
-        if top < 16: top = 16
-        if right < 304: right = 304
-        if bottom < 208: bottom = 208
+        # Keep zone size within reasonable bounds
+        left = common.clamp(left, 16, 65520)
+        top = common.clamp(top, 16, 65520)
+        right = common.clamp(right, 304, 65520)
+        bottom = common.clamp(bottom, 208, 65520)
 
-        if left > 65520: left = 65520
-        if top > 65520: top = 65520
-        if right > 65520: right = 65520
-        if bottom > 65520: bottom = 65520
+        self.zPosX.setValue(left)
+        self.zPosY.setValue(top)
+        self.zWidth.setValue(right)
+        self.zHeight.setValue(bottom)
 
-        self.Zone_xpos.setValue(left)
-        self.Zone_ypos.setValue(top)
-        self.Zone_width.setValue(right)
-        self.Zone_height.setValue(bottom)
-
-    def createRendering(self, z):
-        self.Rendering = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 84))
-
-        comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed)
-
-        zone_theme_values = globals_.ZoneThemeValues
-        zone_terrain_theme_values = globals_.trans.stringList('ZonesDlg', 2)
-
-        self.Zone_modeldark = QtWidgets.QComboBox()
-        self.Zone_modeldark.addItems(zone_theme_values)
-        self.Zone_modeldark.setToolTip(globals_.trans.string('ZonesDlg', 21))
-        self.Zone_modeldark.setSizePolicy(comboboxSizePolicy)
-
-        z.modeldark = common.clamp(z.modeldark, 0, len(zone_theme_values))
-        self.Zone_modeldark.setCurrentIndex(z.modeldark)
-
-        self.Zone_terraindark = QtWidgets.QComboBox()
-        self.Zone_terraindark.addItems(zone_terrain_theme_values)
-        self.Zone_terraindark.setToolTip(globals_.trans.string('ZonesDlg', 23))
-        self.Zone_terraindark.setSizePolicy(comboboxSizePolicy)
-
-        z.terraindark = common.clamp(z.terraindark, 0, len(zone_terrain_theme_values))
-        self.Zone_terraindark.setCurrentIndex(z.terraindark)
-
-        self.Zone_vspotlight = QtWidgets.QCheckBox(globals_.trans.string('ZonesDlg', 26))
-        self.Zone_vspotlight.setToolTip(globals_.trans.string('ZonesDlg', 27))
-
-        self.Zone_vfulldark = QtWidgets.QCheckBox(globals_.trans.string('ZonesDlg', 28))
-        self.Zone_vfulldark.setToolTip(globals_.trans.string('ZonesDlg', 29))
-
-        self.Zone_visibility = QtWidgets.QComboBox()
-
-        self.zv = z.visibility
-
-        self.Zone_vspotlight.setChecked(self.zv & 0x10)
-        self.Zone_vfulldark.setChecked(self.zv & 0x20)
-
-        self.ChangeVisibilityList()
-        self.Zone_vspotlight.clicked.connect(self.ChangeVisibilityList)
-        self.Zone_vfulldark.clicked.connect(self.ChangeVisibilityList)
-
-        ZoneRenderingLayout = QtWidgets.QFormLayout()
-        ZoneRenderingLayout.addRow(globals_.trans.string('ZonesDlg', 20), self.Zone_modeldark)
-        ZoneRenderingLayout.addRow(globals_.trans.string('ZonesDlg', 22), self.Zone_terraindark)
-
-        ZoneVisibilityLayout = QtWidgets.QHBoxLayout()
-        ZoneVisibilityLayout.addWidget(self.Zone_vspotlight)
-        ZoneVisibilityLayout.addWidget(self.Zone_vfulldark)
-
-        InnerLayout = QtWidgets.QVBoxLayout()
-        InnerLayout.addLayout(ZoneRenderingLayout)
-        InnerLayout.addLayout(ZoneVisibilityLayout)
-        InnerLayout.addWidget(self.Zone_visibility)
-        self.Rendering.setLayout(InnerLayout)
-
-    def createCamera(self, z):
-        self.Camera = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 19))
+    def createRendering(self, zone: ZoneItem):
+        """
+        Creates the "Rendering" section of the tab
+        """
+        self.rendering = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 84))
 
         comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed)
 
-        self.Zone_cammodezoom = CameraModeZoomSettingsLayout(True)
-        self.Zone_cammodezoom.setValues(z.cammode, z.camzoom)
+        themeValues = globals_.ZoneThemeValues
+        terrainLightValues = globals_.trans.stringList('ZonesDlg', 2)
+
+        self.theme = QtWidgets.QComboBox()
+        self.theme.addItems(themeValues)
+        self.theme.setToolTip(globals_.trans.string('ZonesDlg', 21))
+        self.theme.setSizePolicy(comboboxSizePolicy)
+
+        zone.modeldark = common.clamp(zone.modeldark, 0, len(themeValues))
+        self.theme.setCurrentIndex(zone.modeldark)
+
+        self.terrainLight = QtWidgets.QComboBox()
+        self.terrainLight.addItems(terrainLightValues)
+        self.terrainLight.setToolTip(globals_.trans.string('ZonesDlg', 23))
+        self.terrainLight.setSizePolicy(comboboxSizePolicy)
+
+        zone.terraindark = common.clamp(zone.terraindark, 0, len(terrainLightValues))
+        self.terrainLight.setCurrentIndex(zone.terraindark)
+
+        self.spotlight = QtWidgets.QCheckBox(globals_.trans.string('ZonesDlg', 26))
+        self.spotlight.setToolTip(globals_.trans.string('ZonesDlg', 27))
+
+        self.fullDark = QtWidgets.QCheckBox(globals_.trans.string('ZonesDlg', 28))
+        self.fullDark.setToolTip(globals_.trans.string('ZonesDlg', 29))
+
+        self.visibility = QtWidgets.QComboBox()
+
+        self.vis = zone.visibility
+
+        self.spotlight.setChecked(self.vis & 0x10)
+        self.fullDark.setChecked(self.vis & 0x20)
+
+        self.handleVisibilityList()
+        self.spotlight.clicked.connect(self.handleVisibilityList)
+        self.fullDark.clicked.connect(self.handleVisibilityList)
+
+        renderLyt = QtWidgets.QFormLayout()
+        renderLyt.addRow(globals_.trans.string('ZonesDlg', 20), self.theme)
+        renderLyt.addRow(globals_.trans.string('ZonesDlg', 22), self.terrainLight)
+
+        visibilityLyt = QtWidgets.QHBoxLayout()
+        visibilityLyt.addWidget(self.spotlight)
+        visibilityLyt.addWidget(self.fullDark)
+
+        innerLyt = QtWidgets.QVBoxLayout()
+        innerLyt.addLayout(renderLyt)
+        innerLyt.addLayout(visibilityLyt)
+        innerLyt.addWidget(self.visibility)
+        self.rendering.setLayout(innerLyt)
+
+    def createCamera(self, zone: ZoneItem):
+        """
+        Creates the "Camera" section of the tab
+        """
+        self.camera = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 19))
+
+        comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed)
+
+        self.camModeZoom = CameraModeZoomSettingsLayout(True)
+        self.camModeZoom.setValues(zone.cammode, zone.camzoom)
 
         dirs = globals_.trans.stringList('ZonesDlg', 38)
-        self.Zone_direction = QtWidgets.QComboBox()
-        self.Zone_direction.addItems(dirs)
-        self.Zone_direction.setToolTip(globals_.trans.string('ZonesDlg', 40))
-        self.Zone_direction.setSizePolicy(comboboxSizePolicy)
-        if z.camtrack < 0: z.camtrack = 0
-        if z.camtrack >= len(dirs): z.camtrack = len(dirs) - 1
-        self.Zone_direction.setCurrentIndex(z.camtrack)
+        self.direction = QtWidgets.QComboBox()
+        self.direction.addItems(dirs)
+        self.direction.setToolTip(globals_.trans.string('ZonesDlg', 40))
+        self.direction.setSizePolicy(comboboxSizePolicy)
 
-        self.Zone_yrestrict = QtWidgets.QCheckBox()
-        self.Zone_yrestrict.setToolTip(globals_.trans.string('ZonesDlg', 78))
-        self.Zone_yrestrict.setChecked(z.mpcamzoomadjust != 15)
-        self.Zone_yrestrict.stateChanged.connect(self.ChangeMPZoomAdjust)
+        zone.camtrack = common.clamp(zone.camtrack, 0, len(dirs) - 1)
+        self.direction.setCurrentIndex(zone.camtrack)
 
-        self.Zone_mpzoomadjust = QtWidgets.QSpinBox()
-        self.Zone_mpzoomadjust.setRange(0, 14)
-        self.Zone_mpzoomadjust.setToolTip(globals_.trans.string('ZonesDlg', 79))
+        self.restrictY = QtWidgets.QCheckBox()
+        self.restrictY.setToolTip(globals_.trans.string('ZonesDlg', 78))
+        self.restrictY.setChecked(zone.mpcamzoomadjust != 15)
+        self.restrictY.stateChanged.connect(self.handleMPZoomAdjust)
 
-        self.ChangeMPZoomAdjust()
-        if z.mpcamzoomadjust < 15:
-            self.Zone_mpzoomadjust.setValue(z.mpcamzoomadjust)
+        self.mpZoomAdjust = QtWidgets.QSpinBox()
+        self.mpZoomAdjust.setRange(0, 14)
+        self.mpZoomAdjust.setToolTip(globals_.trans.string('ZonesDlg', 79))
+
+        self.handleMPZoomAdjust()
+        if zone.mpcamzoomadjust < 15:
+            self.mpZoomAdjust.setValue(zone.mpcamzoomadjust)
 
         # Layouts
-        ZoneCameraLayout = QtWidgets.QFormLayout()
-        ZoneCameraLayout.addRow(self.Zone_cammodezoom)
-        ZoneCameraLayout.addRow(globals_.trans.string('ZonesDlg', 39), self.Zone_direction)
-        ZoneCameraLayout.addRow(globals_.trans.string('ZonesDlg', 80), self.Zone_yrestrict)
-        ZoneCameraLayout.addRow(globals_.trans.string('ZonesDlg', 81), self.Zone_mpzoomadjust)
+        camLyt = QtWidgets.QFormLayout()
+        camLyt.addRow(self.camModeZoom)
+        camLyt.addRow(globals_.trans.string('ZonesDlg', 39), self.direction)
+        camLyt.addRow(globals_.trans.string('ZonesDlg', 80), self.restrictY)
+        camLyt.addRow(globals_.trans.string('ZonesDlg', 81), self.mpZoomAdjust)
 
-        self.Camera.setLayout(ZoneCameraLayout)
+        self.camera.setLayout(camLyt)
 
-    def ChangeVisibilityList(self):
-        add_idx = 0
+    def handleVisibilityList(self):
+        """
+        Handles changing the visibility type list
+        """
+        addIdx = 0
 
-        if self.Zone_vfulldark.isChecked():
-            if self.Zone_vspotlight.isChecked():
-                add_idx = 82
+        # Figure out which set of options to show
+        if self.fullDark.isChecked():
+            if self.spotlight.isChecked():
+                addIdx = 82
             else:
-                add_idx = 45
+                addIdx = 45
         else:
-            if self.Zone_vspotlight.isChecked():
-                add_idx = 43
+            if self.spotlight.isChecked():
+                addIdx = 43
             else:
-                add_idx = 41
+                addIdx = 41
 
-        add_list = globals_.trans.stringList('ZonesDlg', add_idx)
+        addList = globals_.trans.stringList('ZonesDlg', addIdx)
 
-        self.Zone_visibility.clear()
-        self.Zone_visibility.addItems(add_list)
-        self.Zone_visibility.setToolTip(globals_.trans.string('ZonesDlg', add_idx + 1))
+        self.visibility.clear()
+        self.visibility.addItems(addList)
+        self.visibility.setToolTip(globals_.trans.string('ZonesDlg', addIdx + 1))
 
-        choice = min(self.zv & 0xF, len(add_list) - 1)
-        self.Zone_visibility.setCurrentIndex(choice)
+        choice = min(self.vis & 0xF, len(addList) - 1)
+        self.visibility.setCurrentIndex(choice)
 
-    def ChangeMPZoomAdjust(self):
-        self.Zone_mpzoomadjust.setEnabled(self.Zone_yrestrict.isChecked())
-        self.Zone_mpzoomadjust.setValue(0)
+    def handleMPZoomAdjust(self):
+        """
+        Handles toggling the multiplayer zoom adjust
+        """
+        self.mpZoomAdjust.setEnabled(self.restrictY.isChecked())
+        self.mpZoomAdjust.setValue(0)
 
-    def createBounds(self, z):
-        self.Bounds = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 47))
+    def createBounds(self, zone: ZoneItem):
+        """
+        Creates the "Bounds" section of the tab
+        """
+        self.bounds = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 47))
 
-        self.Zone_yboundup = QtWidgets.QSpinBox()
-        self.Zone_yboundup.setRange(-32768, 32767)
-        self.Zone_yboundup.setToolTip(globals_.trans.string('ZonesDlg', 49))
-        self.Zone_yboundup.setSpecialValueText('32')
-        self.Zone_yboundup.setValue(z.yupperbound)
+        self.boundUp = QtWidgets.QSpinBox()
+        self.boundUp.setRange(-32768, 32767)
+        self.boundUp.setToolTip(globals_.trans.string('ZonesDlg', 49))
+        self.boundUp.setSpecialValueText('32')
+        self.boundUp.setValue(zone.yupperbound)
 
-        self.Zone_ybounddown = QtWidgets.QSpinBox()
-        self.Zone_ybounddown.setRange(-32768, 32767)
-        self.Zone_ybounddown.setToolTip(globals_.trans.string('ZonesDlg', 51))
-        self.Zone_ybounddown.setValue(z.ylowerbound)
+        self.boundDown = QtWidgets.QSpinBox()
+        self.boundDown.setRange(-32768, 32767)
+        self.boundDown.setToolTip(globals_.trans.string('ZonesDlg', 51))
+        self.boundDown.setValue(zone.ylowerbound)
 
-        self.Zone_yboundup2 = QtWidgets.QSpinBox()
-        self.Zone_yboundup2.setRange(-32768, 32767)
-        self.Zone_yboundup2.setToolTip(globals_.trans.string('ZonesDlg', 71))
-        self.Zone_yboundup2.setValue(z.yupperbound2)
+        self.lakituBoundUp = QtWidgets.QSpinBox()
+        self.lakituBoundUp.setRange(-32768, 32767)
+        self.lakituBoundUp.setToolTip(globals_.trans.string('ZonesDlg', 71))
+        self.lakituBoundUp.setValue(zone.yupperbound2)
 
-        self.Zone_ybounddown2 = QtWidgets.QSpinBox()
-        self.Zone_ybounddown2.setRange(-32768, 32767)
-        self.Zone_ybounddown2.setToolTip(globals_.trans.string('ZonesDlg', 73))
-        self.Zone_ybounddown2.setValue(z.ylowerbound2)
+        self.lakituBoundDown = QtWidgets.QSpinBox()
+        self.lakituBoundDown.setRange(-32768, 32767)
+        self.lakituBoundDown.setToolTip(globals_.trans.string('ZonesDlg', 73))
+        self.lakituBoundDown.setValue(zone.ylowerbound2)
 
-        self.Zone_yboundup3 = QtWidgets.QSpinBox()
-        self.Zone_yboundup3.setRange(-32768, 32767)
-        self.Zone_yboundup3.setToolTip(globals_.trans.string('ZonesDlg', 104))
-        self.Zone_yboundup3.setSpecialValueText('32')
-        self.Zone_yboundup3.setValue(z.yupperbound3)
+        self.mpBoundUp = QtWidgets.QSpinBox()
+        self.mpBoundUp.setRange(-32768, 32767)
+        self.mpBoundUp.setToolTip(globals_.trans.string('ZonesDlg', 104))
+        self.mpBoundUp.setSpecialValueText('32')
+        self.mpBoundUp.setValue(zone.yupperbound3)
 
-        self.Zone_ybounddown3 = QtWidgets.QSpinBox()
-        self.Zone_ybounddown3.setRange(-32768, 32767)
-        self.Zone_ybounddown3.setToolTip(globals_.trans.string('ZonesDlg', 106))
-        self.Zone_ybounddown3.setValue(z.ylowerbound3)
+        self.mpBoundDown = QtWidgets.QSpinBox()
+        self.mpBoundDown.setRange(-32768, 32767)
+        self.mpBoundDown.setToolTip(globals_.trans.string('ZonesDlg', 106))
+        self.mpBoundDown.setValue(zone.ylowerbound3)
 
         LA = QtWidgets.QFormLayout()
-        LA.addRow(globals_.trans.string('ZonesDlg', 48), self.Zone_yboundup)
-        LA.addRow(globals_.trans.string('ZonesDlg', 50), self.Zone_ybounddown)
+        LA.addRow(globals_.trans.string('ZonesDlg', 48), self.boundUp)
+        LA.addRow(globals_.trans.string('ZonesDlg', 50), self.boundDown)
 
         LB = QtWidgets.QFormLayout()
-        LB.addRow(globals_.trans.string('ZonesDlg', 70), self.Zone_yboundup2)
-        LB.addRow(globals_.trans.string('ZonesDlg', 72), self.Zone_ybounddown2)
+        LB.addRow(globals_.trans.string('ZonesDlg', 70), self.lakituBoundUp)
+        LB.addRow(globals_.trans.string('ZonesDlg', 72), self.lakituBoundDown)
 
         LC = QtWidgets.QHBoxLayout()
         LC.addLayout(LA)
@@ -482,170 +510,197 @@ class ZoneTab(QtWidgets.QWidget):
 
         LD = QtWidgets.QFormLayout()
         LD.addRow(LC)
-        LD.addRow(globals_.trans.string('ZonesDlg', 103), self.Zone_yboundup3)
-        LD.addRow(globals_.trans.string('ZonesDlg', 105), self.Zone_ybounddown3)
+        LD.addRow(globals_.trans.string('ZonesDlg', 103), self.mpBoundUp)
+        LD.addRow(globals_.trans.string('ZonesDlg', 105), self.mpBoundDown)
 
-        self.Bounds.setLayout(LD)
+        self.bounds.setLayout(LD)
 
-    def createAudio(self, z):
-        self.Audio = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 52))
-        self.AutoEditMusic = False
+    def createAudio(self, zone: ZoneItem):
+        """
+        Creates the "Audio" section of the tab
+        """
+        self.audio = QtWidgets.QGroupBox(globals_.trans.string('ZonesDlg', 52))
+        self.autoEditMusic = False
 
-        self.Zone_music = QtWidgets.QComboBox()
-        self.Zone_music.setToolTip(globals_.trans.string('ZonesDlg', 54))
-        for songid, text in globals_.MusicInfo:
-            self.Zone_music.addItem(text, songid)
-        self.Zone_music.setCurrentIndex(self.Zone_music.findData(z.music))
-        self.Zone_music.currentIndexChanged.connect(self.handleMusicListSelect)
+        self.musicList = QtWidgets.QComboBox()
+        self.musicList.setToolTip(globals_.trans.string('ZonesDlg', 54))
 
-        self.Zone_musicid = QtWidgets.QSpinBox()
-        self.Zone_musicid.setToolTip(globals_.trans.string('ZonesDlg', 69))
-        self.Zone_musicid.setMaximum(255)
-        self.Zone_musicid.setValue(z.music)
-        self.Zone_musicid.valueChanged.connect(self.handleMusicIDChange)
+        for songID, text in globals_.MusicInfo:
+            self.musicList.addItem(text, songID)
 
-        self.Zone_sfx = QtWidgets.QComboBox()
-        self.Zone_sfx.setToolTip(globals_.trans.string('ZonesDlg', 56))
-        newItems3 = globals_.trans.stringList('ZonesDlg', 57)
-        self.Zone_sfx.addItems(newItems3)
-        self.Zone_sfx.setCurrentIndex(z.sfxmod // 16)
+        self.musicList.setCurrentIndex(self.musicList.findData(zone.music))
+        self.musicList.currentIndexChanged.connect(self.handleMusicListSelect)
 
-        self.Zone_boss = QtWidgets.QCheckBox()
-        self.Zone_boss.setToolTip(globals_.trans.string('ZonesDlg', 59))
-        self.Zone_boss.setChecked(z.sfxmod % 16)
+        # Show 'Undefined Track XX' if there's no list item to show
+        if self.musicList.findData(zone.music) == -1:
+            self.musicList.setPlaceholderText(globals_.trans.string('ZonesDlg', 108, '[id]', str(zone.music)))
 
-        ZoneAudioLayout = QtWidgets.QFormLayout()
-        ZoneAudioLayout.addRow(globals_.trans.string('ZonesDlg', 53), self.Zone_music)
-        ZoneAudioLayout.addRow(globals_.trans.string('ZonesDlg', 68), self.Zone_musicid)
-        ZoneAudioLayout.addRow(globals_.trans.string('ZonesDlg', 55), self.Zone_sfx)
-        ZoneAudioLayout.addRow(globals_.trans.string('ZonesDlg', 58), self.Zone_boss)
+        self.musicID = QtWidgets.QSpinBox()
+        self.musicID.setToolTip(globals_.trans.string('ZonesDlg', 69))
+        self.musicID.setMaximum(255)
+        self.musicID.setValue(zone.music)
+        self.musicID.valueChanged.connect(self.handleMusicIDChange)
 
-        self.Audio.setLayout(ZoneAudioLayout)
+        self.modulation = QtWidgets.QComboBox()
+        self.modulation.setToolTip(globals_.trans.string('ZonesDlg', 56))
+
+        modulationList = globals_.trans.stringList('ZonesDlg', 57)
+        self.modulation.addItems(modulationList)
+        self.modulation.setCurrentIndex(zone.sfxmod // 16)
+
+        self.bossFlag = QtWidgets.QCheckBox()
+        self.bossFlag.setToolTip(globals_.trans.string('ZonesDlg', 59))
+        self.bossFlag.setChecked(zone.sfxmod % 16)
+
+        audioLyt = QtWidgets.QFormLayout()
+        audioLyt.addRow(globals_.trans.string('ZonesDlg', 53), self.musicList)
+        audioLyt.addRow(globals_.trans.string('ZonesDlg', 68), self.musicID)
+        audioLyt.addRow(globals_.trans.string('ZonesDlg', 55), self.modulation)
+        audioLyt.addRow(globals_.trans.string('ZonesDlg', 58), self.bossFlag)
+
+        self.audio.setLayout(audioLyt)
 
     def handleMusicListSelect(self):
         """
         Handles the user selecting an entry from the music list
         """
-        if self.AutoEditMusic: return
-        id = self.Zone_music.itemData(self.Zone_music.currentIndex())
-        id = int(str(id))  # id starts out as a QString
+        if self.autoEditMusic:
+            return
 
-        self.AutoEditMusic = True
-        self.Zone_musicid.setValue(id)
-        self.AutoEditMusic = False
+        id = self.musicList.itemData(self.musicList.currentIndex())
+        id = int(str(id)) # ID starts out as QString
+
+        self.autoEditMusic = True
+        self.musicID.setValue(id)
+        self.autoEditMusic = False
 
     def handleMusicIDChange(self):
         """
         Handles the user selecting a custom music ID
         """
-        if self.AutoEditMusic: return
-        id = self.Zone_musicid.value()
+        if self.autoEditMusic:
+            return
+        id = self.musicID.value()
 
         # BUG: The music entries are out of order
+        # (What does this mean?)
 
-        self.AutoEditMusic = True
-        self.Zone_music.setCurrentIndex(self.Zone_music.findData(id))
-        self.AutoEditMusic = False
+        self.autoEditMusic = True
+        self.musicList.setCurrentIndex(self.musicList.findData(id))
 
-    def PresetSelected(self, info=None):
+        # Show 'Undefined Track XX' if there's no list item to show
+        if self.musicList.findData(id) == -1:
+            self.musicList.setPlaceholderText(globals_.trans.string('ZonesDlg', 108, '[id]', str(id)))
+
+        self.autoEditMusic = False
+
+    def handlePresetSelected(self, info=None):
         """
         Handles a zone size preset being selected
         """
-        if self.AutoChangingSize: return
+        if self.autoChangeSize:
+            return
 
-        if self.Zone_presets.currentText() == globals_.trans.string('ZonesDlg', 60): return
-        w, h = self.Zone_presets.currentText().split('x')
+        # Check if preset text is currently "(none)"
+        if self.presetChooser.currentText() == globals_.trans.string('ZonesDlg', 60):
+            return
 
-        self.AutoChangingSize = True
-        self.Zone_width.setValue(int(w))
-        self.Zone_height.setValue(int(h))
-        self.AutoChangingSize = False
+        w, h = self.presetChooser.currentText().split('x')
 
-        if self.Zone_presets.itemText(0) == globals_.trans.string('ZonesDlg', 60): self.Zone_presets.removeItem(0)
+        self.autoChangeSize = True
+        self.zWidth.setValue(int(w))
+        self.zHeight.setValue(int(h))
+        self.autoChangeSize = False
 
-    def PresetDeselected(self, info=None):
+        # Since a preset is now chosen, remove the None option from the list
+        if self.presetChooser.itemText(0) == globals_.trans.string('ZonesDlg', 60):
+            self.presetChooser.removeItem(0)
+
+    def handlePresetChanged(self, info=None):
         """
         Handles the zone height or width boxes being changed
         """
-        if self.AutoChangingSize: return
+        if self.autoChangeSize:
+            return
 
-        self.AutoChangingSize = True
-        w = self.Zone_width.value()
-        h = self.Zone_height.value()
+        self.autoChangeSize = True
+        w = self.zWidth.value()
+        h = self.zHeight.value()
         check = str(w) + 'x' + str(h)
 
-        custom_size_name = globals_.trans.string('ZonesDlg', 60)
+        sizeName = globals_.trans.string('ZonesDlg', 60)
 
         try:
-            idx = self.Zone_presets_values.index(check)
+            idx = self.sizePresets.index(check)
         except ValueError:
             idx = -1
 
         if idx == -1:
-            if self.Zone_presets.itemText(0) != custom_size_name:
-                self.Zone_presets.insertItem(0, custom_size_name)
+            if self.presetChooser.itemText(0) != sizeName:
+                self.presetChooser.insertItem(0, sizeName)
 
             idx = 0
 
-        elif self.Zone_presets.itemText(0) == custom_size_name:
-            self.Zone_presets.removeItem(0)
+        elif self.presetChooser.itemText(0) == sizeName:
+            self.presetChooser.removeItem(0)
 
-        self.Zone_presets.setCurrentIndex(idx)
-        self.AutoChangingSize = False
+        self.presetChooser.setCurrentIndex(idx)
+        self.autoChangeSize = False
 
-    def copyZoneData(self, z, cur_id):
+    def copyZoneData(self, z, currID):
         """
         Copies data from one zone into another
         """
-        z.objx = common.clamp(16, 24560, self.Zone_xpos.value())
-        z.objy = common.clamp(16, 12272, self.Zone_ypos.value())
-        z.width = min(24560 - z.objx, self.Zone_width.value())
-        z.height = min(12272 - z.objy, self.Zone_height.value())
+        z.objx = common.clamp(16, 24560, self.zPosX.value())
+        z.objy = common.clamp(16, 12272, self.zPosY.value())
+        z.width = min(24560 - z.objx, self.zWidth.value())
+        z.height = min(12272 - z.objy, self.zHeight.value())
 
         z.prepareGeometryChange()
         z.UpdateRects()
         z.setPos(z.objx * 1.5, z.objy * 1.5)
 
-        z.modeldark = self.Zone_modeldark.currentIndex()
-        z.terraindark = self.Zone_terraindark.currentIndex()
-        z.cammode = self.Zone_cammodezoom.modeButtonGroup.checkedId()
-        z.camzoom = self.Zone_cammodezoom.screenSizes.currentIndex()
-        z.camtrack = self.Zone_direction.currentIndex()
+        z.modeldark = self.theme.currentIndex()
+        z.terraindark = self.terrainLight.currentIndex()
+        z.cammode = self.camModeZoom.modeButtonGroup.checkedId()
+        z.camzoom = self.camModeZoom.screenSizes.currentIndex()
+        z.camtrack = self.direction.currentIndex()
 
-        if self.Zone_yrestrict.isChecked():
-            z.mpcamzoomadjust = self.Zone_mpzoomadjust.value()
+        if self.restrictY.isChecked():
+            z.mpcamzoomadjust = self.mpZoomAdjust.value()
         else:
             z.mpcamzoomadjust = 15
 
         z.visibility = 0
 
-        if self.Zone_vspotlight.isChecked():
+        if self.spotlight.isChecked():
             z.visibility |= 1 << 4
-        if self.Zone_vfulldark.isChecked():
+        if self.fullDark.isChecked():
             z.visibility |= 1 << 5
 
-        z.visibility |= self.Zone_visibility.currentIndex()
+        z.visibility |= self.visibility.currentIndex()
 
-        z.yupperbound = self.Zone_yboundup.value()
-        z.ylowerbound = self.Zone_ybounddown.value()
-        z.yupperbound2 = self.Zone_yboundup2.value()
-        z.ylowerbound2 = self.Zone_ybounddown2.value()
-        z.yupperbound3 = self.Zone_yboundup3.value()
-        z.ylowerbound3 = self.Zone_ybounddown3.value()
+        z.yupperbound = self.boundUp.value()
+        z.ylowerbound = self.boundDown.value()
+        z.yupperbound2 = self.lakituBoundUp.value()
+        z.ylowerbound2 = self.lakituBoundDown.value()
+        z.yupperbound3 = self.mpBoundUp.value()
+        z.ylowerbound3 = self.mpBoundDown.value()
 
-        z.music = self.Zone_musicid.value()
-        z.sfxmod = self.Zone_sfx.currentIndex() << 4
-        if self.Zone_boss.isChecked():
+        z.music = self.musicID.value()
+        z.sfxmod = self.modulation.currentIndex() << 4
+        if self.bossFlag.isChecked():
             z.sfxmod |= 1
 
         # For convenience, let's copy the background data too
+        curZone = globals_.Area.zones[0]
 
         # Since the BG dialog isn't open, we must copy data directly from the selected zone
         for zone in globals_.Area.zones:
-            if (zone.id == cur_id):
+            if (zone.id == currID):
                 curZone = zone
 
-        # bgA first
+        # Copy the bgA first
         z.XscrollA = curZone.XscrollA
         z.YscrollA = curZone.YscrollA
         z.YpositionA = curZone.YpositionA
@@ -669,39 +724,40 @@ class ZoneTab(QtWidgets.QWidget):
 class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
     """
     A layout that shows the camera mode / zoom settings for editing.
+    Separate from Zone Options so it can be reused for Camera Profiles
     """
     edited = QtCore.pyqtSignal()
     updating = False
 
-    def __init__(self, show_mode_5):
+    def __init__(self, showCamMode5: bool):
         super().__init__()
         self.updating = True
 
         comboboxSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed)
-
-        self.zm = -1
+        self.zoomMode = -1
 
         self.modeButtonGroup = QtWidgets.QButtonGroup()
-        modebuttons = []
+        modeButtons = []
         for i, name, tooltip in [
-                    (0, globals_.trans.string('ZonesDlg', 85), globals_.trans.string('ZonesDlg', 86)),
-                    (3, globals_.trans.string('ZonesDlg', 87), globals_.trans.string('ZonesDlg', 88)),
-                    (4, globals_.trans.string('ZonesDlg', 89), globals_.trans.string('ZonesDlg', 90)),
-                    (5, globals_.trans.string('ZonesDlg', 91), globals_.trans.string('ZonesDlg', 92)),
-                    (6, globals_.trans.string('ZonesDlg', 93), globals_.trans.string('ZonesDlg', 94)),
-                    (7, globals_.trans.string('ZonesDlg', 95), globals_.trans.string('ZonesDlg', 96)),
-                    (1, globals_.trans.string('ZonesDlg', 97), globals_.trans.string('ZonesDlg', 98)),
-                    (2, globals_.trans.string('ZonesDlg', 99), globals_.trans.string('ZonesDlg', 100)),
+                    (0, globals_.trans.string('ZonesDlg', 85), globals_.trans.string('ZonesDlg', 86)),  # Normal
+                    (3, globals_.trans.string('ZonesDlg', 87), globals_.trans.string('ZonesDlg', 88)),  # Static
+                    (4, globals_.trans.string('ZonesDlg', 89), globals_.trans.string('ZonesDlg', 90)),  # Static, Y Track
+                    (5, globals_.trans.string('ZonesDlg', 91), globals_.trans.string('ZonesDlg', 92)),  # Static, Event
+                    (6, globals_.trans.string('ZonesDlg', 93), globals_.trans.string('ZonesDlg', 94)),  # X Track
+                    (7, globals_.trans.string('ZonesDlg', 95), globals_.trans.string('ZonesDlg', 96)),  # X Expand
+                    (1, globals_.trans.string('ZonesDlg', 97), globals_.trans.string('ZonesDlg', 98)),  # Y Track
+                    (2, globals_.trans.string('ZonesDlg', 99), globals_.trans.string('ZonesDlg', 100)), # Y Expand
                 ]:
             rb = QtWidgets.QRadioButton(name)
-            rb.setToolTip('<b>' + name + ':</b><br>' + tooltip)
+            rb.setToolTip(f'<b>{name}:</b><br>{tooltip}')
             self.modeButtonGroup.addButton(rb, i)
-            modebuttons.append(rb)
+            modeButtons.append(rb)
 
-            if i == 5 and not show_mode_5:
+            # Hides "Static Zoom, Event Controlled"
+            if i == 5 and not showCamMode5:
                 rb.setVisible(False)
 
-            rb.clicked.connect(self.ChangeCamModeList)
+            rb.clicked.connect(self.changeCamModeList)
             rb.clicked.connect(self.handleModeChanged)
 
         self.screenSizes = QtWidgets.QComboBox()
@@ -710,21 +766,24 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
 
         self.screenSizes.currentIndexChanged.connect(self.handleScreenSizesChanged)
 
-        ModesLayout = QtWidgets.QGridLayout()
-        for i, b in enumerate(modebuttons):
-            ModesLayout.addWidget(b, i % 4, i // 4)
+        modesLyt = QtWidgets.QGridLayout()
+        for i, btn in enumerate(modeButtons):
+            modesLyt.addWidget(btn, i % 4, i // 4)
 
-        self.addRow(ModesLayout)
+        self.addRow(modesLyt)
         self.addRow(globals_.trans.string('ZonesDlg', 101), self.screenSizes)
 
         self.updating = False
 
-    def ChangeCamModeList(self):
+    def changeCamModeList(self):
+        """
+        Handles changing the available Screen Heights items
+        """
         mode = self.modeButtonGroup.checkedId()
-        oldListChoice = [1, 1, 2, 3, 3, 3, 1, 1][self.zm]
+        oldListChoice = [1, 1, 2, 3, 3, 3, 1, 1][self.zoomMode]
         newListChoice = [1, 1, 2, 3, 3, 3, 1, 1][mode]
 
-        if self.zm != -1 and oldListChoice == newListChoice:
+        if self.zoomMode != -1 and oldListChoice == newListChoice:
             return
 
         if newListChoice == 1:
@@ -773,29 +832,33 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
         self.screenSizes.clear()
         self.screenSizes.addItems(items)
         self.screenSizes.setCurrentIndex(0)
-        self.zm = mode
+        self.zoomMode = mode
 
-    def setValues(self, cammode, camzoom):
+    def setValues(self, camMode, camZoom):
         self.updating = True
+        camMode = common.clamp(camMode, 0, 7)
 
-        if cammode < 0: cammode = 0
-        if cammode >= 8: cammode = 7
+        self.modeButtonGroup.button(camMode).setChecked(True)
+        self.changeCamModeList()
 
-        self.modeButtonGroup.button(cammode).setChecked(True)
-        self.ChangeCamModeList()
+        camZoom = common.clamp(camZoom, 0, self.screenSizes.count())
 
-        if camzoom < 0: camzoom = 0
-        if camzoom >= self.screenSizes.count(): camzoom = self.screenSizes.count() - 1
-
-        self.screenSizes.setCurrentIndex(camzoom)
-
+        self.screenSizes.setCurrentIndex(camZoom)
         self.updating = False
 
     def handleModeChanged(self):
-        if self.updating: return
-        self.ChangeCamModeList()
+        """
+        Handles the camera mode being changed
+        """
+        if self.updating:
+            return
+        self.changeCamModeList()
         self.edited.emit()
 
     def handleScreenSizesChanged(self):
-        if self.updating: return
+        """
+        Handles the screen size being changed
+        """
+        if self.updating:
+            return
         self.edited.emit()

@@ -805,6 +805,7 @@ class ReggieTranslation:
                     'Layer 2',
                     'Layer 0',
                 ),
+                35: '[id]: Undefined Entry',
             },
             'Sprites': {
                 0: '[b]Sprite [type]:[/b][br][name]',
@@ -1063,6 +1064,7 @@ class ReggieTranslation:
                 105: 'Multiplayer Lower Bounds Adjust:',
                 106: '[b]Multiplayer Lower Bounds Adjust:[/b][br]Added to the lower bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.',
                 107: 'Duplicate',
+                108: 'Undefined Track [id]',
             },
             'Zones': {
                 0: 'Zone [num]',
