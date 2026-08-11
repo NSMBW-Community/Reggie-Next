@@ -4535,29 +4535,29 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         SetDirty()
-        for tab, z in zip(dlg.BGTabs, globals_.Area.zones):
-            # first index: BGA/BGB
-            # second index: X/Y
-            z.XpositionA = tab.pos_boxes[0][0].value()
-            z.YpositionA = -tab.pos_boxes[0][1].value()
-            z.XpositionB = tab.pos_boxes[1][0].value()
-            z.YpositionB = -tab.pos_boxes[1][1].value()
+        for tab, z in zip(dlg.bgTabs, globals_.Area.zones):
+            # First index: BGA/BGB
+            # Second index: X/Y
+            z.XpositionA = tab.posBoxes[0][0].value()
+            z.YpositionA = -tab.posBoxes[0][1].value()
+            z.XpositionB = tab.posBoxes[1][0].value()
+            z.YpositionB = -tab.posBoxes[1][1].value()
 
-            z.XscrollA = tab.scroll_boxes[0][0].currentIndex()
-            z.YscrollA = tab.scroll_boxes[0][1].currentIndex()
-            z.XscrollB = tab.scroll_boxes[1][0].currentIndex()
-            z.YscrollB = tab.scroll_boxes[1][1].currentIndex()
+            z.XscrollA = tab.scrollBoxes[0][0].currentIndex()
+            z.YscrollA = tab.scrollBoxes[0][1].currentIndex()
+            z.XscrollB = tab.scrollBoxes[1][0].currentIndex()
+            z.YscrollB = tab.scrollBoxes[1][1].currentIndex()
 
-            z.ZoomA = tab.zoom_boxes[0].currentIndex()
-            z.ZoomB = tab.zoom_boxes[1].currentIndex()
+            z.ZoomA = tab.zoomBoxes[0].currentIndex()
+            z.ZoomB = tab.zoomBoxes[1].currentIndex()
 
-            z.bg1A = tab.hex_boxes[0][0].value()
-            z.bg2A = tab.hex_boxes[0][1].value()
-            z.bg3A = tab.hex_boxes[0][2].value()
+            z.bg1A = tab.hexBoxes[0][0].value()
+            z.bg2A = tab.hexBoxes[0][1].value()
+            z.bg3A = tab.hexBoxes[0][2].value()
 
-            z.bg1B = tab.hex_boxes[1][0].value()
-            z.bg2B = tab.hex_boxes[1][1].value()
-            z.bg3B = tab.hex_boxes[1][2].value()
+            z.bg1B = tab.hexBoxes[1][0].value()
+            z.bg2B = tab.hexBoxes[1][1].value()
+            z.bg3B = tab.hexBoxes[1][2].value()
 
     def HandleScreenshot(self):
         """

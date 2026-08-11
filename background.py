@@ -5,10 +5,9 @@ import common
 import globals_
 from ui import GetIcon, HexSpinBox
 
-# Sets up the Background Dialog
 class BGDialog(QtWidgets.QDialog):
     """
-    Dialog which lets you choose among various from tabs
+    Dialog which lets you modify backgrounds
     """
 
     def __init__(self):
@@ -20,11 +19,11 @@ class BGDialog(QtWidgets.QDialog):
         self.setWindowIcon(GetIcon('background'))
 
         self.tabWidget = QtWidgets.QTabWidget()
+        self.bgTabs: list[BackgroundTab] = []
 
-        self.BGTabs = []
         for i, zone in enumerate(globals_.Area.zones):
-            tab = BGTab(zone)
-            self.BGTabs.append(tab)
+            tab = BackgroundTab(zone)
+            self.bgTabs.append(tab)
 
             name = globals_.trans.string('BGDlg', 2, '[num]', i + 1)
             self.tabWidget.addTab(tab, name)
@@ -39,118 +38,104 @@ class BGDialog(QtWidgets.QDialog):
         mainLayout.addWidget(buttonBox)
         self.setLayout(mainLayout)
 
-class BGTab(QtWidgets.QWidget):
+class BackgroundTab(QtWidgets.QWidget):
     def __init__(self, z):
         QtWidgets.QWidget.__init__(self)
 
-        self.createBGSettings(z)
-        self.createBGViewers(z)
+        self.createSettings(z)
+        self.createPreviews(z)
 
         mainLayout = QtWidgets.QGridLayout()
-        mainLayout.addWidget(self.BGASettings, 0, 0)
-        mainLayout.addWidget(self.BGBSettings, 1, 0)
-        mainLayout.addWidget(self.BGAViewer, 0, 1)
-        mainLayout.addWidget(self.BGBViewer, 1, 1)
+        mainLayout.addWidget(self.bgASettings, 0, 0)
+        mainLayout.addWidget(self.bgBSettings, 1, 0)
+        mainLayout.addWidget(self.bgAPreview, 0, 1)
+        mainLayout.addWidget(self.bgBPreview, 1, 1)
         self.setLayout(mainLayout)
 
         self.updatePreviews()
 
-    def createBGSettings(self, z):
+    def createSettings(self, z):
         """
         Creates the BG Settings for BGA and BGB
         """
-        self.BGASettings = QtWidgets.QGroupBox(
-            globals_.trans.string('BGDlg', 3)  # 'Scenery'
-        )
+        self.bgASettings = QtWidgets.QGroupBox(globals_.trans.string('BGDlg', 3)) # 'Scenery'
+        self.bgBSettings = QtWidgets.QGroupBox(globals_.trans.string('BGDlg', 4)) # 'Backdrop'
 
-        self.BGBSettings = QtWidgets.QGroupBox(
-            globals_.trans.string('BGDlg', 4)  # 'Backdrop'
-        )
+        bgIDs = (z.bg1A, z.bg2A, z.bg3A), (z.bg1B, z.bg2B, z.bg3B)
+        bgNames = globals_.BgANames, globals_.BgBNames
+        bgPosVals = (z.XpositionA, -z.YpositionA), (z.XpositionB, -z.YpositionB)
+        bgZooms = z.ZoomA, z.ZoomB
+        bgScrollVals = (z.XscrollA, z.YscrollA), (z.XscrollB, z.YscrollB)
 
-        bg_vals = (z.bg1A, z.bg2A, z.bg3A), (z.bg1B, z.bg2B, z.bg3B)
-        bg_names = globals_.BgANames, globals_.BgBNames
-        bg_pos_vals = (z.XpositionA, -z.YpositionA), (z.XpositionB, -z.YpositionB)
-        bg_zooms = z.ZoomA, z.ZoomB
-        bg_scroll_vals = (z.XscrollA, z.YscrollA), (z.XscrollB, z.YscrollB)
+        self.hexBoxes: list[tuple[HexSpinBox, HexSpinBox, HexSpinBox]] = []
+        self.nameBoxes: list[tuple[QtWidgets.QComboBox, QtWidgets.QComboBox, QtWidgets.QComboBox]] = []
+        self.posBoxes: list[tuple[QtWidgets.QSpinBox, QtWidgets.QSpinBox]] = []
+        self.scrollBoxes: list[tuple[QtWidgets.QComboBox, QtWidgets.QComboBox]] = []
+        self.zoomBoxes: list[QtWidgets.QComboBox] = []
 
-        self.hex_boxes = []
-        self.name_boxes = []
-        self.pos_boxes = []
-        self.scroll_boxes = []
-        self.zoom_boxes = []
-
-        for slot_id, target_box in enumerate((self.BGASettings, self.BGBSettings)):
-            # hex values
-            self.hex_boxes.append((HexSpinBox(), HexSpinBox(), HexSpinBox()))
-
-            for box, value in zip(self.hex_boxes[-1], bg_vals[slot_id]):
+        for slotID, targetBox in enumerate((self.bgASettings, self.bgBSettings)):
+            # Raw file IDs
+            self.hexBoxes.append((HexSpinBox(), HexSpinBox(), HexSpinBox()))
+            for box, value in zip(self.hexBoxes[-1], bgIDs[slotID]):
                 box.setRange(0, 0xFFFF)
                 box.setValue(value)
                 box.valueChanged.connect(self.handleHexBox)
 
-            # name combobox
-            self.name_boxes.append((QtWidgets.QComboBox(), QtWidgets.QComboBox(), QtWidgets.QComboBox()))
-
-            for box in self.name_boxes[-1]:
+            # Name combobox
+            self.nameBoxes.append((QtWidgets.QComboBox(), QtWidgets.QComboBox(), QtWidgets.QComboBox()))
+            for box in self.nameBoxes[-1]:
                 box.activated.connect(self.handleNameBox)
 
             # Fill the name comboboxes with values
-            for i, (bfile_raw, bname) in enumerate(bg_names[slot_id]):
-                bfile = int(bfile_raw, 16)
+            for i, (fileRaw, bgName) in enumerate(bgNames[slotID]):
+                bfile = int(fileRaw, 16)
+                for name in self.nameBoxes[-1]:
+                    name.addItem(globals_.trans.string('BGDlg', 17, '[name]', bgName, '[hex]', '%04X' % bfile), bfile)
 
-                for name in self.name_boxes[-1]:
-                    name.addItem(
-                        globals_.trans.string(
-                            'BGDlg', 17,
-                            '[name]', bname,
-                            '[hex]', '%04X' % bfile
-                        ),
-                        bfile
-                    )
+            # Find the correct one to select
+            for nameBox, value in zip(self.nameBoxes[-1], bgIDs[slotID]):
+                idx = nameBox.findData(value)
 
-            # Find the correct ones to select
-            for name_box, value in zip(self.name_boxes[-1], bg_vals[slot_id]):
-                idx = name_box.findData(value)
+                if idx != -1: # Defined BG entry
+                    nameBox.setCurrentIndex(idx)
+                else: # Undefined BG entry
+                    customText = globals_.trans.string('BGDlg', 18)
+                    lastEntry = nameBox.itemText(nameBox.count() - 1)
 
-                if idx != -1:
-                    # it's a known BG value
-                    name_box.setCurrentIndex(idx)
-                else:
-                    # it's an unknown BG value
-                    lastEntry = name_box.itemText(name_box.count() - 1)
-                    if lastEntry != globals_.trans.string('BGDlg', 18):
-                        name_box.addItem(globals_.trans.string('BGDlg', 18))
-                    name_box.setCurrentIndex(name_box.count() - 1)
+                    if lastEntry != customText:
+                        nameBox.addItem(customText)
+                    nameBox.setCurrentIndex(nameBox.count() - 1)
 
             # Position
-            self.pos_boxes.append((QtWidgets.QSpinBox(), QtWidgets.QSpinBox()))
-
-            for pos_box, desc, val in zip(self.pos_boxes[-1], (7, 9), bg_pos_vals[slot_id]):
-                pos_box.setToolTip(globals_.trans.string('BGDlg', desc))
-                pos_box.setRange(-256, 255)
-                pos_box.setValue(val)
+            self.posBoxes.append((QtWidgets.QSpinBox(), QtWidgets.QSpinBox()))
+            for posBox, desc, val in zip(self.posBoxes[-1], (7, 9), bgPosVals[slotID]):
+                posBox.setToolTip(globals_.trans.string('BGDlg', desc))
+                posBox.setRange(-256, 255)
+                posBox.setValue(val)
 
             # Scrolling
-            self.scroll_boxes.append((QtWidgets.QComboBox(), QtWidgets.QComboBox()))
+            self.scrollBoxes.append((QtWidgets.QComboBox(), QtWidgets.QComboBox()))
 
             # The list of background scroll rate names
-            scroll_names = globals_.trans.stringList('BGDlg', 1)
+            scrollNames = globals_.trans.stringList('BGDlg', 1)
 
-            for scroll_box, val in zip(self.scroll_boxes[-1], bg_scroll_vals[slot_id]):
-                scroll_box.addItems(scroll_names)
-                scroll_box.setToolTip(globals_.trans.string('BGDlg', 11))
+            for scrollBox, val in zip(self.scrollBoxes[-1], bgScrollVals[slotID]):
+                scrollBox.addItems(scrollNames)
+                scrollBox.setToolTip(globals_.trans.string('BGDlg', 11))
 
-                val = common.clamp(val, 0, len(scroll_names) - 1)
-                scroll_box.setCurrentIndex(val)
+                if scrollNames is not None:
+                    val = common.clamp(val, 0, len(scrollNames) - 1)
+                    scrollBox.setCurrentIndex(val)
+                else:
+                    scrollBox.setCurrentIndex(0)
 
             # Zoom
-            zoom_box = QtWidgets.QComboBox()
+            zoomBox = QtWidgets.QComboBox()
+            zoomBox.addItems(globals_.trans.stringList('BGDlg', 15))
+            zoomBox.setToolTip(globals_.trans.string('BGDlg', 14))
+            zoomBox.setCurrentIndex(bgZooms[slotID])
 
-            zoom_box.addItems(globals_.trans.stringList('BGDlg', 15))
-            zoom_box.setToolTip(globals_.trans.string('BGDlg', 14))
-            zoom_box.setCurrentIndex(bg_zooms[slot_id])
-
-            self.zoom_boxes.append(zoom_box)
+            self.zoomBoxes.append(zoomBox)
 
             # Labels
             bgLabel = QtWidgets.QLabel(globals_.trans.string('BGDlg', 19))
@@ -158,35 +143,35 @@ class BGTab(QtWidgets.QWidget):
             scrollLabel = QtWidgets.QLabel(globals_.trans.string('BGDlg', 10))
 
             # Layouts
-            Lpos = QtWidgets.QFormLayout()
-            Lpos.addRow(globals_.trans.string('BGDlg', 6), self.pos_boxes[-1][0])
-            Lpos.addRow(globals_.trans.string('BGDlg', 8), self.pos_boxes[-1][1])
+            posLyt = QtWidgets.QFormLayout()
+            posLyt.addRow(globals_.trans.string('BGDlg', 6), self.posBoxes[-1][0])
+            posLyt.addRow(globals_.trans.string('BGDlg', 8), self.posBoxes[-1][1])
 
-            Lscroll = QtWidgets.QFormLayout()
-            Lscroll.addRow(globals_.trans.string('BGDlg', 6), self.scroll_boxes[-1][0])
-            Lscroll.addRow(globals_.trans.string('BGDlg', 8), self.scroll_boxes[-1][1])
+            scrollLyt = QtWidgets.QFormLayout()
+            scrollLyt.addRow(globals_.trans.string('BGDlg', 6), self.scrollBoxes[-1][0])
+            scrollLyt.addRow(globals_.trans.string('BGDlg', 8), self.scrollBoxes[-1][1])
 
-            Lzoom = QtWidgets.QFormLayout()
-            Lzoom.addRow(globals_.trans.string('BGDlg', 13), zoom_box)
+            zoomLyt = QtWidgets.QFormLayout()
+            zoomLyt.addRow(globals_.trans.string('BGDlg', 13), zoomBox)
 
             mainLayout = QtWidgets.QGridLayout()
             mainLayout.addWidget(bgLabel, 0, 0, 1, 2)
-            for i, box in enumerate(self.hex_boxes[-1]):
+            for i, box in enumerate(self.hexBoxes[-1]):
                 mainLayout.addWidget(box, i + 1, 0)
-            for i, box in enumerate(self.name_boxes[-1]):
+            for i, box in enumerate(self.nameBoxes[-1]):
                 mainLayout.addWidget(box, i + 1, 1)
             mainLayout.addWidget(positionLabel, 4, 0)
-            mainLayout.addLayout(Lpos, 5, 0)
+            mainLayout.addLayout(posLyt, 5, 0)
             mainLayout.addWidget(scrollLabel, 4, 1)
-            mainLayout.addLayout(Lscroll, 5, 1)
-            mainLayout.addLayout(Lzoom, 6, 0, 1, 2)
+            mainLayout.addLayout(scrollLyt, 5, 1)
+            mainLayout.addLayout(zoomLyt, 6, 0, 1, 2)
             mainLayout.setRowStretch(7, 1)
 
-            target_box.setLayout(mainLayout)
+            targetBox.setLayout(mainLayout)
 
-    def createBGViewers(self, z):
-        self.BGAViewer = QtWidgets.QGroupBox(globals_.trans.string('BGDlg', 16))  # Preview
-        self.BGBViewer = QtWidgets.QGroupBox(globals_.trans.string('BGDlg', 16))  # Preview
+    def createPreviews(self, z):
+        self.bgAPreview = QtWidgets.QGroupBox(globals_.trans.string('BGDlg', 16)) # Preview
+        self.bgBPreview = QtWidgets.QGroupBox(globals_.trans.string('BGDlg', 16)) # Preview
 
         self.previewA = (QtWidgets.QLabel(), QtWidgets.QLabel(), QtWidgets.QLabel())
         self.alignA = QtWidgets.QLabel()
@@ -205,7 +190,7 @@ class BGTab(QtWidgets.QWidget):
         mainLayout.addWidget(self.alignNoteA, 3, 0, 1, 3)
         mainLayout.setRowStretch(4, 1)
 
-        self.BGAViewer.setLayout(mainLayout)
+        self.bgAPreview.setLayout(mainLayout)
 
         mainLayout = QtWidgets.QGridLayout()
         for i, preview in enumerate(self.previewB):
@@ -216,29 +201,29 @@ class BGTab(QtWidgets.QWidget):
         mainLayout.addWidget(self.alignNoteB, 3, 0, 1, 3)
         mainLayout.setRowStretch(4, 1)
 
-        self.BGBViewer.setLayout(mainLayout)
+        self.bgBPreview.setLayout(mainLayout)
 
     def handleHexBox(self):
         """
         Handles any hex box changing
         """
-        for slot_id, slot in enumerate(('A', 'B')):
+        for slotID, slot in enumerate(('A', 'B')):
             for boxnum in range(3):
-                name_box = self.name_boxes[slot_id][boxnum]
-                val = self.hex_boxes[slot_id][boxnum].value()
-                idx = name_box.findData(val)
-                if idx != -1:
-                    # it's a known BG value
-                    name_box.setCurrentIndex(idx)
-                    lastEntry = name_box.itemText(name_box.count() - 1)
-                    if lastEntry == globals_.trans.string('BGDlg', 18):
-                        name_box.removeItem(name_box.count() - 1)
-                else:
-                    # it's an unknown BG value
-                    lastEntry = name_box.itemText(name_box.count() - 1)
-                    if lastEntry != globals_.trans.string('BGDlg', 18):
-                        name_box.addItem(globals_.trans.string('BGDlg', 18))
-                    name_box.setCurrentIndex(name_box.count() - 1)
+                nameBox = self.nameBoxes[slotID][boxnum]
+                customStr = globals_.trans.string('BGDlg', 18)
+                val = self.hexBoxes[slotID][boxnum].value()
+                idx = nameBox.findData(val)
+
+                if idx != -1: # Defined BG entry
+                    nameBox.setCurrentIndex(idx)
+                    lastEntry = nameBox.itemText(nameBox.count() - 1)
+                    if lastEntry == customStr:
+                        nameBox.removeItem(nameBox.count() - 1)
+                else: # Undefined BG entry
+                    lastEntry = nameBox.itemText(nameBox.count() - 1)
+                    if lastEntry != customStr:
+                        nameBox.addItem(customStr)
+                    nameBox.setCurrentIndex(nameBox.count() - 1)
 
         self.updatePreviews()
 
@@ -246,15 +231,16 @@ class BGTab(QtWidgets.QWidget):
         """
         Handles any name box changing
         """
-        for slot_id, slot in enumerate(('A', 'B')):
-            for box_num in range(3):
-                name_box = self.name_boxes[slot_id][box_num]
-                val = name_box.itemData(name_box.currentIndex())
+        for slotID, slot in enumerate(('A', 'B')):
+            for boxNum in range(3):
+                nameBox = self.nameBoxes[slotID][boxNum]
+                val = nameBox.itemData(nameBox.currentIndex())
+
+                # Check if '(custom)' was chosen
                 if val is None:
-                    # the user chose '(Custom)'
                     continue
 
-                self.hex_boxes[slot_id][box_num].setValue(val)
+                self.hexBoxes[slotID][boxNum].setValue(val)
 
         self.updatePreviews()
 
@@ -265,35 +251,37 @@ class BGTab(QtWidgets.QWidget):
         scale = 0.75
         previews = (self.previewA, self.previewB)
         alignNotes = (self.alignNoteA, self.alignNoteB)
-        for slot_id, align_box in enumerate((self.alignA, self.alignB)):
-            for box_num in range(3):
-                val = '%04X' % self.hex_boxes[slot_id][box_num].value()
 
-                filename = globals_.gamedef.bgFile(val + '.png', 'ab'[slot_id])
+        for slotID, alignBox in enumerate((self.alignA, self.alignB)):
+            for boxNum in range(3):
+                val = '%04X' % self.hexBoxes[slotID][boxNum].value()
+
+                filename = globals_.gamedef.bgFile(val + '.png', 'ab'[slotID])
                 if not os.path.isfile(filename):
-                    filename = os.path.join('reggiedata', ['bga', 'bgb'][slot_id], 'no_preview.png')
+                    filename = os.path.join('reggiedata', ['bga', 'bgb'][slotID], 'no_preview.png')
 
                 pix = QtGui.QPixmap(filename)
                 pix = pix.scaled(int(pix.width() * scale), int(pix.height() * scale))
-                previews[slot_id][box_num].setPixmap(pix)
+                previews[slotID][boxNum].setPixmap(pix)
 
             # Alignment mode
-            box1 = self.hex_boxes[slot_id][0].value()
-            box2 = self.hex_boxes[slot_id][1].value()
-            box3 = self.hex_boxes[slot_id][2].value()
+            box1 = self.hexBoxes[slotID][0].value()
+            box2 = self.hexBoxes[slotID][1].value()
+            box3 = self.hexBoxes[slotID][2].value()
             alignMode = calculateBgAlignmentMode(box1, box2, box3)
 
-            alignText = globals_.trans.stringList('BGDlg', 21)[alignMode]
-            align_box.setText(globals_.trans.string('BGDlg', 20, '[mode]', alignText))
+            alignList = globals_.trans.stringList('BGDlg', 21)
+            if alignList is not None:
+                alignBox.setText(globals_.trans.string('BGDlg', 20, '[mode]', alignList[alignMode]))
 
             if alignMode == 0: # No BGs
-                alignNotes[slot_id].setStyleSheet('color: orange;')
-                alignNotes[slot_id].setText(globals_.trans.string('BGDlg', 23))
+                alignNotes[slotID].setStyleSheet('color: orange;')
+                alignNotes[slotID].setText(globals_.trans.string('BGDlg', 23))
             elif alignMode in (3, 4): # Crashes
-                alignNotes[slot_id].setStyleSheet('color: red;')
-                alignNotes[slot_id].setText(globals_.trans.string('BGDlg', 24))
+                alignNotes[slotID].setStyleSheet('color: red;')
+                alignNotes[slotID].setText(globals_.trans.string('BGDlg', 24))
             else:
-                alignNotes[slot_id].setText('')
+                alignNotes[slotID].setText('')
 
 
 def calculateBgAlignmentMode(idA, idB, idC):
