@@ -441,13 +441,44 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             field: T_SPRITE_FIELD,
             layout: QtWidgets.QGridLayout | None = None,
             row: int | None = None,
-            parentWidget: QtWidgets.QWidget | None = None,
+            parent_widget: QtWidgets.QWidget | None = None,
         ):
             super().__init__()
             self.field = field
             self.layout = layout if layout is not None else QtWidgets.QGridLayout()
             self.row = row if row is not None else 0
-            self.parentWidget = parentWidget if parentWidget is not None else QtWidgets.QWidget()
+            self.parent_widget = parent_widget if parent_widget is not None else QtWidgets.QWidget()
+            self.button_com: QtWidgets.QToolButton | None = None
+            self.button_com2: QtWidgets.QToolButton | None = None
+            self.button_adv: QtWidgets.QToolButton | None = None
+
+            if self.field.comment is not None:
+                self.button_com = QtWidgets.QToolButton()
+                self.button_com.setIcon(GetIcon('setting-comment'))
+                self.button_com.setStyleSheet("border-radius: 50%")
+                self.button_com.clicked.connect(lambda: self.show_comment(self.field.comment))
+                self.button_com.setAutoRaise(True)
+
+            if self.field.comment2 is not None:
+                self.button_com2 = QtWidgets.QToolButton()
+                self.button_com2.setIcon(GetIcon('setting-comment2'))
+                self.button_com2.setStyleSheet("border-radius: 50%")
+                self.button_com2.clicked.connect(lambda: self.show_comment(self.field.comment2))
+                self.button_com2.setAutoRaise(True)
+
+            if self.field.advanced_comment is not None:
+                self.button_adv = QtWidgets.QToolButton()
+                self.button_adv.setIcon(GetIcon('setting-comment-adv'))
+                self.button_adv.setStyleSheet("border-radius: 50%")
+                self.button_adv.clicked.connect(lambda: self.show_comment(self.field.advanced_comment))
+                self.button_adv.setAutoRaise(True)
+
+        def init_comment_buttons(self):
+            col = 3
+            for button in [self.button_com, self.button_com2, self.button_adv]:
+                if button is not None:
+                    self.layout.addWidget(button, self.row, col)
+                    col += 1
 
         def retrieve(self, data, bits: list[tuple[int, int]] | None = None):
             """
@@ -547,55 +578,29 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             if globals_.ResetDataWhenHiding and not show:
                 self.insertvalue(data, 0)
 
-        def ShowComment(self):
+        def show_comment(self, comment: str | None):
             """
-            Sets the comment text
+            Sets the current comment text
             """
-            if self.parentWidget is None or not isinstance(self.parentWidget, SpriteEditorWidget):
+            if self.parent_widget is None or not isinstance(self.parent_widget, SpriteEditorWidget):
                 return
 
-            self.parentWidget.com_main.setText(self.field.comment)
-            self.parentWidget.com_main.setVisible(True)
-            self.parentWidget.com_more.setVisible(False)
-            self.parentWidget.com_extra.setVisible(False)
-            self.parentWidget.com_box.setVisible(True)
-
-        def ShowComment2(self):
-            """
-            Sets the comment2 text
-            """
-            if self.parentWidget is None or not isinstance(self.parentWidget, SpriteEditorWidget):
-                return
-
-            self.parentWidget.com_main.setText(self.field.comment2)
-            self.parentWidget.com_main.setVisible(True)
-            self.parentWidget.com_more.setVisible(False)
-            self.parentWidget.com_extra.setVisible(False)
-            self.parentWidget.com_box.setVisible(True)
-
-        def ShowAdvancedComment(self):
-            """
-            Sets the advanced comment
-            """
-            if self.parentWidget is None or not isinstance(self.parentWidget, SpriteEditorWidget):
-                return
-
-            self.parentWidget.com_main.setText(self.field.advanced_comment)
-            self.parentWidget.com_main.setVisible(True)
-            self.parentWidget.com_more.setVisible(False)
-            self.parentWidget.com_extra.setVisible(False)
-            self.parentWidget.com_box.setVisible(True)
+            self.parent_widget.com_main.setText(comment)
+            self.parent_widget.com_main.setVisible(True)
+            self.parent_widget.com_more.setVisible(False)
+            self.parent_widget.com_extra.setVisible(False)
+            self.parent_widget.com_box.setVisible(True)
 
     class CheckboxPropertyDecoder(PropertyDecoder[CheckBoxSpriteField]):
         """
         Class that decodes/encodes sprite data to/from a checkbox
         """
 
-        def __init__(self, field, layout, row, parentWidget):
+        def __init__(self, field, layout, row, parent_widget):
             """
             Creates the widget
             """
-            super().__init__(field, layout, row, parentWidget)
+            super().__init__(field, layout, row, parent_widget)
 
             self.widget = QtWidgets.QCheckBox()
             self.widget.clicked.connect(self.HandleClick)
@@ -606,35 +611,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.layout.addWidget(label, self.row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
             self.layout.addWidget(self.widget, self.row, 1)
 
-            col = 3
-            if self.field.comment is not None:
-                button_com = QtWidgets.QToolButton()
-                button_com.setIcon(GetIcon('setting-comment'))
-                button_com.setStyleSheet("border-radius: 50%")
-                button_com.clicked.connect(self.ShowComment)
-                button_com.setAutoRaise(True)
-
-                self.layout.addWidget(button_com, self.row, col)
-                col += 1
-
-            if self.field.comment2 is not None:
-                button_com2 = QtWidgets.QToolButton()
-                button_com2.setIcon(GetIcon('setting-comment2'))
-                button_com2.setStyleSheet("border-radius: 50%")
-                button_com2.clicked.connect(self.ShowComment2)
-                button_com2.setAutoRaise(True)
-
-                self.layout.addWidget(button_com2, self.row, col)
-                col += 1
-
-            if self.field.advanced_comment is not None:
-                button_adv = QtWidgets.QToolButton()
-                button_adv.setIcon(GetIcon('setting-comment-adv'))
-                button_adv.setStyleSheet("border-radius: 50%")
-                button_adv.clicked.connect(self.ShowAdvancedComment)
-                button_adv.setAutoRaise(True)
-
-                self.layout.addWidget(button_adv, self.row, col)
+            self.init_comment_buttons()
 
         def update(self, data, first=False):
             """
@@ -673,11 +650,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a combobox
         """
 
-        def __init__(self, field, layout, row, parentWidget):
+        def __init__(self, field, layout, row, parent_widget):
             """
             Creates the widget
             """
-            super().__init__(field, layout, row, parentWidget)
+            super().__init__(field, layout, row, parent_widget)
 
             self.prev_value = 0
 
@@ -702,35 +679,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 self.layout.addWidget(self.widget, self.row, 1, 1, 2)
 
-            col = 3
-            if self.field.comment is not None:
-                button_com = QtWidgets.QToolButton()
-                button_com.setIcon(GetIcon('setting-comment'))
-                button_com.setStyleSheet("border-radius: 50%")
-                button_com.clicked.connect(self.ShowComment)
-                button_com.setAutoRaise(True)
-
-                self.layout.addWidget(button_com, self.row, col)
-                col += 1
-
-            if self.field.comment2 is not None:
-                button_com2 = QtWidgets.QToolButton()
-                button_com2.setIcon(GetIcon('setting-comment2'))
-                button_com2.setStyleSheet("border-radius: 50%")
-                button_com2.clicked.connect(self.ShowComment2)
-                button_com2.setAutoRaise(True)
-
-                self.layout.addWidget(button_com2, self.row, col)
-                col += 1
-
-            if self.field.advanced_comment is not None:
-                button_adv = QtWidgets.QToolButton()
-                button_adv.setIcon(GetIcon('setting-comment-adv'))
-                button_adv.setStyleSheet("border-radius: 50%")
-                button_adv.clicked.connect(self.ShowAdvancedComment)
-                button_adv.setAutoRaise(True)
-
-                self.layout.addWidget(button_adv, self.row, col)
+            self.init_comment_buttons()
 
         def update(self, data, first=False):
             """
@@ -774,10 +723,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             # change in spritedata or this is the default data editor.
             if (
                 self.field.idtype is None
-                or self.parentWidget is None
-                or not isinstance(self.parentWidget, SpriteEditorWidget)
-                or self.parentWidget.AutoFlag
-                or self.parentWidget.DefaultMode
+                or self.parent_widget is None
+                or not isinstance(self.parent_widget, SpriteEditorWidget)
+                or self.parent_widget.AutoFlag
+                or self.parent_widget.DefaultMode
             ):
                 return
 
@@ -814,11 +763,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a spinbox
         """
 
-        def __init__(self, field, layout, row, parentWidget):
+        def __init__(self, field, layout, row, parent_widget):
             """
             Creates the widget
             """
-            super().__init__(field, layout, row, parentWidget)
+            super().__init__(field, layout, row, parent_widget)
 
             self.widget = IntSpinBox(None, field.start, field.increment, field.overrides)
             self.widget.setRange(0, field.max - 1)
@@ -840,35 +789,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             else:
                 self.layout.addWidget(self.widget, self.row, 1, 1, 2)
 
-            col = 3
-            if field.comment is not None:
-                button_com = QtWidgets.QToolButton()
-                button_com.setIcon(GetIcon('setting-comment'))
-                button_com.setStyleSheet("border-radius: 50%")
-                button_com.clicked.connect(self.ShowComment)
-                button_com.setAutoRaise(True)
-
-                self.layout.addWidget(button_com, self.row, col)
-                col += 1
-
-            if field.comment2 is not None:
-                button_com2 = QtWidgets.QToolButton()
-                button_com2.setIcon(GetIcon('setting-comment2'))
-                button_com2.setStyleSheet("border-radius: 50%")
-                button_com2.clicked.connect(self.ShowComment2)
-                button_com2.setAutoRaise(True)
-
-                self.layout.addWidget(button_com2, self.row, col)
-                col += 1
-
-            if field.advanced_comment is not None:
-                button_adv = QtWidgets.QToolButton()
-                button_adv.setIcon(GetIcon('setting-comment-adv'))
-                button_adv.setStyleSheet("border-radius: 50%")
-                button_adv.clicked.connect(self.ShowAdvancedComment)
-                button_adv.setAutoRaise(True)
-
-                self.layout.addWidget(button_adv, self.row, col)
+            self.init_comment_buttons()
 
         def update(self, data, first=False):
             """
@@ -902,10 +823,10 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             # change in spritedata or this is the default data editor.
             if (
                 self.field.idtype is None
-                or self.parentWidget is None
-                or not isinstance(self.parentWidget, SpriteEditorWidget)
-                or self.parentWidget.AutoFlag
-                or self.parentWidget.DefaultMode
+                or self.parent_widget is None
+                or not isinstance(self.parent_widget, SpriteEditorWidget)
+                or self.parent_widget.AutoFlag
+                or self.parent_widget.DefaultMode
             ):
                 return
 
@@ -936,11 +857,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a bitfield
         """
 
-        def __init__(self, field: BitFieldSpriteField, layout, row, parentWidget):
+        def __init__(self, field: BitFieldSpriteField, layout, row, parent_widget):
             """
             Creates the widget
             """
-            super().__init__(field, layout, row, parentWidget)
+            super().__init__(field, layout, row, parent_widget)
 
             self.bit = [(field.start_bit, field.start_bit + field.bit_num)]
 
@@ -966,35 +887,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.layout.addWidget(label, self.row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
             self.layout.addWidget(checkbox_widget, self.row, 1, 1, 2)
 
-            col = 3
-            if field.comment is not None:
-                button_com = QtWidgets.QToolButton()
-                button_com.setIcon(GetIcon('setting-comment'))
-                button_com.setStyleSheet("border-radius: 50%")
-                button_com.clicked.connect(self.ShowComment)
-                button_com.setAutoRaise(True)
-
-                self.layout.addWidget(button_com, self.row, col)
-                col += 1
-
-            if field.comment2 is not None:
-                button_com2 = QtWidgets.QToolButton()
-                button_com2.setIcon(GetIcon('setting-comment2'))
-                button_com2.setStyleSheet("border-radius: 50%")
-                button_com2.clicked.connect(self.ShowComment2)
-                button_com2.setAutoRaise(True)
-
-                self.layout.addWidget(button_com2, self.row, col)
-                col += 1
-
-            if field.advanced_comment is not None:
-                button_adv = QtWidgets.QToolButton()
-                button_adv.setIcon(GetIcon('setting-comment-adv'))
-                button_adv.setStyleSheet("border-radius: 50%")
-                button_adv.clicked.connect(self.ShowAdvancedComment)
-                button_adv.setAutoRaise(True)
-
-                self.layout.addWidget(button_adv, self.row, col)
+            self.init_comment_buttons()
 
         def update(self, data, first=False):
             """
@@ -1038,11 +931,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a multibox
         """
 
-        def __init__(self, field, layout, row, parentWidget):
+        def __init__(self, field, layout, row, parent_widget):
             """
             Creates the widget
             """
-            super().__init__(field, layout, row, parentWidget)
+            super().__init__(field, layout, row, parent_widget)
 
             self.startbit = 0
             self.bitnum = 0
@@ -1067,52 +960,18 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             w = QtWidgets.QWidget()
             w.setLayout(CheckboxLayout)
 
-            if field.comment is not None:
-                button_com = QtWidgets.QToolButton()
-
-                button_com.setIcon(GetIcon('setting-comment'))
-                button_com.setStyleSheet("border-radius: 50%")
-
-                button_com.clicked.connect(self.ShowComment)
-                button_com.setAutoRaise(True)
-
-            else:
-                button_com = None
-
-            if field.comment2 is not None:
-                button_com2 = QtWidgets.QToolButton()
-                button_com2.setIcon(GetIcon('setting-comment2'))
-                button_com2.setStyleSheet("border-radius: 50%")
-                button_com2.clicked.connect(self.ShowComment2)
-                button_com2.setAutoRaise(True)
-
-            else:
-                button_com2 = None
-
-            if field.advanced_comment is not None:
-                button_adv = QtWidgets.QToolButton()
-
-                button_adv.setIcon(GetIcon('setting-comment-adv'))
-                button_adv.setStyleSheet("border-radius: 50%")
-
-                button_adv.clicked.connect(self.ShowAdvancedComment)
-                button_adv.setAutoRaise(True)
-
-            else:
-                button_adv = None
-
-            if button_com is not None or button_com2 is not None or button_adv is not None:
+            if self.button_com is not None or self.button_com2 is not None or self.button_adv is not None:
                 L = QtWidgets.QHBoxLayout()
                 L.addStretch(1)
 
-                if button_com is not None:
-                    L.addWidget(button_com)
+                if self.button_com is not None:
+                    L.addWidget(self.button_com)
 
-                if button_com2 is not None:
-                    L.addWidget(button_com2)
+                if self.button_com2 is not None:
+                    L.addWidget(self.button_com2)
 
-                if button_adv is not None:
-                    L.addWidget(button_adv)
+                if self.button_adv is not None:
+                    L.addWidget(self.button_adv)
 
                 label = QtWidgets.QLabel(field.title + ':')
                 label.setWordWrap(True)
@@ -1169,11 +1028,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a dualbox
         """
 
-        def __init__(self, field, layout, row, parentWidget):
+        def __init__(self, field, layout, row, parent_widget):
             """
             Creates the widget
             """
-            super().__init__(field, layout, row, parentWidget)
+            super().__init__(field, layout, row, parent_widget)
 
             self.buttons = [QtWidgets.QRadioButton(), QtWidgets.QRadioButton()]
 
@@ -1202,35 +1061,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             # span three columns
             self.layout.addWidget(widget, self.row, 0, 1, 3)
 
-            col = 3
-            if self.field.comment is not None:
-                button_com = QtWidgets.QToolButton()
-                button_com.setIcon(GetIcon('setting-comment'))
-                button_com.setStyleSheet("border-radius: 50%")
-                button_com.clicked.connect(self.ShowComment)
-                button_com.setAutoRaise(True)
-
-                self.layout.addWidget(button_com, self.row, col)
-                col += 1
-
-            if self.field.comment2 is not None:
-                button_com2 = QtWidgets.QToolButton()
-                button_com2.setIcon(GetIcon('setting-comment2'))
-                button_com2.setStyleSheet("border-radius: 50%")
-                button_com2.clicked.connect(self.ShowComment2)
-                button_com2.setAutoRaise(True)
-
-                self.layout.addWidget(button_com2, self.row, col)
-                col += 1
-
-            if self.field.advanced_comment is not None:
-                button_adv = QtWidgets.QToolButton()
-                button_adv.setIcon(GetIcon('setting-comment-adv'))
-                button_adv.setStyleSheet("border-radius: 50%")
-                button_adv.clicked.connect(self.ShowAdvancedComment)
-                button_adv.setAutoRaise(True)
-
-                self.layout.addWidget(button_adv, self.row, col)
+            self.init_comment_buttons()
 
 
         def update(self, data, first=False):
@@ -1264,11 +1095,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
     class ExternalPropertyDecoder(PropertyDecoder[ExternalSpriteField]):
 
-        def __init__(self, field, layout, row, parentWidget):
+        def __init__(self, field, layout, row, parent_widget):
             """
             Creates the widget
             """
-            super().__init__(field, layout, row, parentWidget)
+            super().__init__(field, layout, row, parent_widget)
 
             assert self.field.bit is not None and len(self.field.bit) == 1
 
@@ -1293,35 +1124,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.layout.addWidget(self.button, self.row, 1)
             self.layout.addWidget(self.box, self.row, 2)
 
-            col = 3
-            if self.field.comment is not None:
-                button_com = QtWidgets.QToolButton()
-                button_com.setIcon(GetIcon('setting-comment'))
-                button_com.setStyleSheet("border-radius: 50%")
-                button_com.clicked.connect(self.ShowComment)
-                button_com.setAutoRaise(True)
-
-                self.layout.addWidget(button_com, self.row, col)
-                col += 1
-
-            if self.field.comment2 is not None:
-                button_com2 = QtWidgets.QToolButton()
-                button_com2.setIcon(GetIcon('setting-comment2'))
-                button_com2.setStyleSheet("border-radius: 50%")
-                button_com2.clicked.connect(self.ShowComment2)
-                button_com2.setAutoRaise(True)
-
-                self.layout.addWidget(button_com2, self.row, col)
-                col += 1
-
-            if self.field.advanced_comment is not None:
-                button_adv = QtWidgets.QToolButton()
-                button_adv.setIcon(GetIcon('setting-comment-adv'))
-                button_adv.setStyleSheet("border-radius: 50%")
-                button_adv.clicked.connect(self.ShowAdvancedComment)
-                button_adv.setAutoRaise(True)
-
-                self.layout.addWidget(button_adv, self.row, col)
+            self.init_comment_buttons()
 
         def update(self, data, first=False):
             """
@@ -1426,11 +1229,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a row of dualboxes
         """
 
-        def __init__(self, field, layout, row, parentWidget):
+        def __init__(self, field, layout, row, parent_widget):
             """
             Creates the widget
             """
-            super().__init__(field, layout, row, parentWidget)
+            super().__init__(field, layout, row, parent_widget)
 
             assert self.field.bit is not None and len(self.field.bit) == 1
 
@@ -1477,35 +1280,7 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             self.layout.addWidget(labels_widget, self.row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
             self.layout.addWidget(dualbox_widget, self.row, 1, 1, 2)
 
-            col = 3
-            if self.field.comment is not None:
-                button_com = QtWidgets.QToolButton()
-                button_com.setIcon(GetIcon('setting-comment'))
-                button_com.setStyleSheet("border-radius: 50%")
-                button_com.clicked.connect(self.ShowComment)
-                button_com.setAutoRaise(True)
-
-                self.layout.addWidget(button_com, self.row, col)
-                col += 1
-
-            if self.field.comment2 is not None:
-                button_com2 = QtWidgets.QToolButton()
-                button_com2.setIcon(GetIcon('setting-comment2'))
-                button_com2.setStyleSheet("border-radius: 50%")
-                button_com2.clicked.connect(self.ShowComment2)
-                button_com2.setAutoRaise(True)
-
-                self.layout.addWidget(button_com2, self.row, col)
-                col += 1
-
-            if self.field.advanced_comment is not None:
-                button_adv = QtWidgets.QToolButton()
-                button_adv.setIcon(GetIcon('setting-comment-adv'))
-                button_adv.setStyleSheet("border-radius: 50%")
-                button_adv.clicked.connect(self.ShowAdvancedComment)
-                button_adv.setAutoRaise(True)
-
-                self.layout.addWidget(button_adv, self.row, col)
+            self.init_comment_buttons()
 
         def HandleClicked(self, _):
             """
@@ -1544,11 +1319,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
         Class that decodes/encodes sprite data to/from a SpriteTex element (valuebox + list)
         """
 
-        def __init__(self, f, layout, row, parentWidget):
+        def __init__(self, field, layout, row, parent_widget):
             """
             Creates the widgets
             """
-            super().__init__(f, layout, row, parentWidget)
+            super().__init__(field, layout, row, parent_widget)
 
             self.spinBox = IntSpinBox()
             self.spinBox.setRange(0, self.field.max - 1)
@@ -1567,39 +1342,11 @@ class SpriteEditorWidget(QtWidgets.QWidget):
             #texIdLayout.addRow('Raw ID:', self.spinBox)
             #layout.addLayout(texIdLayout, row, 2, 1, 1)
 
-            layout.addWidget(label, row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
-            layout.addWidget(self.comboBox, row, 1, 1, 1)
-            layout.addWidget(self.spinBox,  row, 2, 1, 1)
+            self.layout.addWidget(label, self.row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
+            self.layout.addWidget(self.comboBox, self.row, 1, 1, 1)
+            self.layout.addWidget(self.spinBox,  self.row, 2, 1, 1)
 
-            col = 3
-            if self.field.comment is not None:
-                button_com = QtWidgets.QToolButton()
-                button_com.setIcon(GetIcon('setting-comment'))
-                button_com.setStyleSheet("border-radius: 50%")
-                button_com.clicked.connect(self.ShowComment)
-                button_com.setAutoRaise(True)
-
-                layout.addWidget(button_com, row, col)
-                col += 1
-
-            if self.field.comment2 is not None:
-                button_com2 = QtWidgets.QToolButton()
-                button_com2.setIcon(GetIcon('setting-comment2'))
-                button_com2.setStyleSheet("border-radius: 50%")
-                button_com2.clicked.connect(self.ShowComment2)
-                button_com2.setAutoRaise(True)
-
-                layout.addWidget(button_com2, row, col)
-                col += 1
-
-            if self.field.advanced_comment is not None:
-                button_adv = QtWidgets.QToolButton()
-                button_adv.setIcon(GetIcon('setting-comment-adv'))
-                button_adv.setStyleSheet("border-radius: 50%")
-                button_adv.clicked.connect(self.ShowAdvancedComment)
-                button_adv.setAutoRaise(True)
-
-                layout.addWidget(button_adv, row, col)
+            self.init_comment_buttons()
 
         def update(self, data, first=False):
             """
