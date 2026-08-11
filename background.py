@@ -190,23 +190,31 @@ class BGTab(QtWidgets.QWidget):
 
         self.previewA = (QtWidgets.QLabel(), QtWidgets.QLabel(), QtWidgets.QLabel())
         self.alignA = QtWidgets.QLabel()
+        self.alignNoteA = QtWidgets.QLabel()
 
         self.previewB = (QtWidgets.QLabel(), QtWidgets.QLabel(), QtWidgets.QLabel())
         self.alignB = QtWidgets.QLabel()
+        self.alignNoteB = QtWidgets.QLabel()
 
         mainLayout = QtWidgets.QGridLayout()
         for i, preview in enumerate(self.previewA):
-            mainLayout.addWidget(preview, 0, i)
-        mainLayout.addWidget(self.alignA, 1, 0, 1, 3)
-        mainLayout.setRowStretch(2, 1)
+            slotLabel = globals_.trans.string('BGDlg', 22, '[i]', i + 1)
+            mainLayout.addWidget(QtWidgets.QLabel(slotLabel), 0, i)
+            mainLayout.addWidget(preview, 1, i)
+        mainLayout.addWidget(self.alignA, 2, 0, 1, 3)
+        mainLayout.addWidget(self.alignNoteA, 3, 0, 1, 3)
+        mainLayout.setRowStretch(4, 1)
 
         self.BGAViewer.setLayout(mainLayout)
 
         mainLayout = QtWidgets.QGridLayout()
         for i, preview in enumerate(self.previewB):
-            mainLayout.addWidget(preview, 0, i)
-        mainLayout.addWidget(self.alignB, 1, 0, 1, 3)
-        mainLayout.setRowStretch(2, 1)
+            slotLabel = globals_.trans.string('BGDlg', 22, '[i]', i + 1)
+            mainLayout.addWidget(QtWidgets.QLabel(slotLabel), 0, i)
+            mainLayout.addWidget(preview, 1, i)
+        mainLayout.addWidget(self.alignB, 2, 0, 1, 3)
+        mainLayout.addWidget(self.alignNoteB, 3, 0, 1, 3)
+        mainLayout.setRowStretch(4, 1)
 
         self.BGBViewer.setLayout(mainLayout)
 
@@ -256,6 +264,7 @@ class BGTab(QtWidgets.QWidget):
         """
         scale = 0.75
         previews = (self.previewA, self.previewB)
+        alignNotes = (self.alignNoteA, self.alignNoteB)
         for slot_id, align_box in enumerate((self.alignA, self.alignB)):
             for box_num in range(3):
                 val = '%04X' % self.hex_boxes[slot_id][box_num].value()
@@ -272,54 +281,41 @@ class BGTab(QtWidgets.QWidget):
             box1 = self.hex_boxes[slot_id][0].value()
             box2 = self.hex_boxes[slot_id][1].value()
             box3 = self.hex_boxes[slot_id][2].value()
-            alignText = globals_.trans.stringList('BGDlg', 21)[calculateBgAlignmentMode(box1, box2, box3)]
-            alignText = globals_.trans.string('BGDlg', 20, '[mode]', alignText)
-            align_box.setText(alignText)
+            alignMode = calculateBgAlignmentMode(box1, box2, box3)
+
+            alignText = globals_.trans.stringList('BGDlg', 21)[alignMode]
+            align_box.setText(globals_.trans.string('BGDlg', 20, '[mode]', alignText))
+
+            if alignMode == 0: # No BGs
+                alignNotes[slot_id].setStyleSheet('color: orange;')
+                alignNotes[slot_id].setText(globals_.trans.string('BGDlg', 23))
+            elif alignMode in (3, 4): # Crashes
+                alignNotes[slot_id].setStyleSheet('color: red;')
+                alignNotes[slot_id].setText(globals_.trans.string('BGDlg', 24))
+            else:
+                alignNotes[slot_id].setText('')
 
 
 def calculateBgAlignmentMode(idA, idB, idC):
     """
     Calculates alignment modes using the exact same logic as NSMBW
     """
-    # This really is RE'd ASM translated to Python, mostly
-
-    if idA <= 0x000A: idA = 0
-    if idB <= 0x000A: idB = 0
-    if idC <= 0x000A: idC = 0
-
-    if idA == idB == 0 or idC == 0:
-        # Either both the first two are empty or the last one is empty
-        return 0
-    elif idA == idC == idB:
-        # They are all the same
-        return 5
-    elif idA == idC != idB and idB != 0:
-        # The first and last ones are the same, but
-        # the middle one is different (not empty, though)
-        return 1
-    elif idC == idB != idA and idA != 0:
-        # The second and last ones are the same, but
-        # the first one is different (not empty, though)
-        return 2
-    elif idB == 0 and idC != idA != 0:
-        # The middle one is empty. The first and last
-        # ones are different, and the first one is not
-        # empty
-        return 3
-    elif idA == 0 and idC != idB != 0:
-        # The first one is empty. The second and last
-        # ones are different, and the second one is not
-        # empty
-        return 4
-    elif idA == idB != 0:
-        # The first two match, and are not empty
-        return 6
-    elif idA != 0 != idB:
-        # Every single one is not empty
-        # note that idC is guaranteed to be nonzero,
-        # otherwise it'd have returned 0 already.
-        return 7
+    if idA == 0 and idC == 0 or idB == 0:
+        return 0 # None, renders nothing in-game
+    elif idA == idB and idB == idC:
+        return 5 # 'Align to Screen, single BG'
+    elif idA == idB and idB != idC and idC != 0:
+        return 1 # 'Align Slot 3 to Bottom'
+    elif idB == idC and idA != idB and idA != 0:
+        return 2 # 'Align Slot 1 to Top'
+    elif idC == 0 and idA != idB and idA != 0:
+        return 3 # Crashes
+    elif idA == 0 and idC != idB and idC != 0:
+        return 4 # Also crashes
+    elif idA == idC and idA != 0 and idC != 0:
+        return 6 # 'Default'
+    elif idA != 0 and idB != 0 and idC != 0:
+        return 7 # 'Align to Screen, multiple BGs'
 
     # Doesn't fit into any of the above categories
     return 0
-

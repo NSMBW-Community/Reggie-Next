@@ -124,7 +124,7 @@
         <string id="11">[b]Scroll Rate (X):[/b][br]Changes the rate that the background moves in relation to Mario when he moves horizontally.[br]Values higher than 1x may be glitchy!</string>
         <string id="12">[b]Scroll Rate (Y):[/b][br]Changes the rate that the background moves in relation to Mario when he moves vertically.[br]Values higher than 1x may be glitchy!</string>
         <string id="13">Zoom:</string>
-        <string id="14">[b]Zoom:[/b][br]Sets the zoom level of the background image</string>
+        <string id="14">[b]Zoom:[/b][br]Sets the zoom level of the background model</string>
         <stringlist id="15">
             <entry>100%</entry>
             <entry>125%</entry>
@@ -137,15 +137,18 @@
         <string id="19">Background Types:</string>
         <string id="20">Alignment Mode: This combination of backgrounds will result in "[mode]"</string>
         <stringlist id="21">
-            <entry>Normal</entry>
-            <entry>Unknown 1</entry>
-            <entry>Unknown 2</entry>
-            <entry>Unknown 3</entry>
-            <entry>Unknown 4</entry>
-            <entry>Align to Screen</entry>
-            <entry>Unknown 5</entry>
-            <entry>Unknown 6</entry>
+            <entry>Invalid</entry>
+            <entry>Align Slot 3 to Bottom of Zone</entry>
+            <entry>Align Slot 1 to Top of Zone</entry>
+            <entry>Crashes</entry>
+            <entry>Crashes</entry>
+            <entry>Align to Screen, Single Background</entry>
+            <entry>Default</entry>
+            <entry>Align to Screen, Multiple Backgrounds</entry>
         </stringlist>
+        <string id="22">Slot [i]</string>
+        <string id="23">This mode will not render any backgrounds.</string>
+        <string id="24">This mode crashes the game, so consider changing your background configuation.</string>
     </section>
     <section id="ChangeGamePath">
         <string id="0">Choose the Stage folder from [game]</string>
