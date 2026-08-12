@@ -711,6 +711,13 @@
     <value nybble="12.1-12.2" title="Nybble 11" />
     <value nybble="12.3-12.4" title="Nybble 12" />
   </sprite> <!-- #88: Actor Spawner -->
+	
+	<sprite id="80" name="Fire Bro" notes="A standard Brothers enemy that shoots fireballs at the player." files="bros.arc">
+      <list nybble="6" title="color" comment="This determines the color of the Fire Bro.">
+        <entry value="0">Normal</entry>
+        <entry value="1">Normal (2)</entry>
+      </list>
+  </sprite> <!-- #80: Fire Bro -->
 
   <sprite id="89" name="Actor Multi-Spawner" notes="With this sprite, you can spawn anything and everything that exists in the game. It will spawn the Actor every 2 seconds while the Triggering Event is on. If you need to spawn them at a faster rate, use an Event Controller to deactivate and activate the Triggering Event. Sprite Data can be applied to sprites spawned through this within certain limitations. Please utilize Raw Data to determine what the settings should be set to. Combine the Actor Spawner with [332] Effect/Sound Spawner to add flair to the spawn effect. &lt;br&gt; &lt;br&gt;Additionally, anything spawned by the Actor Spawner will need to be respawned each time the player changes Zones. If returning from a bonus room, be sure to trigger any relevant spawns. Each Actor Spawner can only trigger once each Zone.">
     <dependency notes="Directly place any sprite you want to spawn with the Actor Spawner somewhere in your level for the game to load the required secondary assets of that sprite."/>
@@ -725,6 +732,13 @@
     <value nybble="12.1-12.2" title="Nybble 11" />
     <value nybble="12.3-12.4" title="Nybble 12" />
   </sprite> <!-- #89: Actor Multi-Spawner -->
+
+	<sprite id="94" name="Boomerang Bro" notes="A standard Brothers enemy that throws Boomerangs at the player." files="bros.arc">
+    <list nybble="6" title="Color" comment="This determines the color of the Boomerang Bro.">
+      <entry value="0">Normal</entry>
+      <entry value="1">Normal (2)</entry>
+    </list>
+  </sprite> <!-- #94: Boomerang Bro" -->
 
   <sprite id="95" name="Hammer Bro Plus" sizehacks="True" notes="A standard Brothers enemy that throws hammers (or other objects!) at the player." files="bros.arc">
     <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. With a platform limit of one, he can jump onto any passthrough terrain or brick blocks above this solid ground at a distance of 4. With a platform limit of two, he can jump between this platform and another one above it. When on the top of this platform limit, he will not try and jump upwards. He can also jump down from passthrough terrain set higher than 8 blocks above the solid ground, though he will not be able to return.">
@@ -1816,6 +1830,13 @@
       <entry value="8">Pink</entry>
     </spritetex>
   </sprite> <!-- #269: Parachute Bob-Omb -->
+
+	<sprite id="272" name="Ice Bro" sizehacks="True" notes="A standard Brothers enemy that shoots ice balls at the player.">
+    <list nybble="6" title="Color" comment="This determines the color of the Ice Bro.">
+      <entry value="0">Normal</entry>
+      <entry value="1">Normal (2)</entry>
+    </list>
+  </sprite> <!-- #272: Ice Bro -->
 
   <sprite id="273" name="Level Exit Controller" notes="Upon activation by a Triggering Event, the Level Exit Controller will display a message box for a fixed amount of time and then complete the current level. It can also set world flags for the Switch Palaces." files="OpeningScene.arc">
     <value nybble="3-4" title="Triggering Event ID" comment="The Level Exit Controller will begin to eject the player from the level when the Triggering Event is activated." idtype="Triggering Event"/>
