@@ -10,7 +10,7 @@ from xml.etree import ElementTree
 ################################################################################
 
 import globals_
-from classlib import BitFieldSpriteField, CheckBoxSpriteField, DualBoxSpriteField, ExternalSpriteField, ListSpriteField, MenuAction, MultiBoxSpriteField, MultiDualBoxSpriteField, RandTileSelection, SpriteCategory, SpriteField, SpriteSubCategory, SpriteTexSpriteField, TilesetCategory, TilesetFileEntry, ValueSpriteField
+from classlib import CheckBoxSpriteField, DualBoxSpriteField, ExternalSpriteField, ListSpriteField, MenuAction, MultiDualBoxSpriteField, RandTileSelection, SpriteCategory, SpriteField, SpriteSubCategory, SpriteTexSpriteField, TilesetCategory, TilesetFileEntry, ValueSpriteField
 from ui import GetIcon, ReggieTheme, clipStr, KeybindLineEdit
 from dirty import setting, setSetting, delSetting
 from dialogs import DiagnosticToolDialog
@@ -494,8 +494,7 @@ class SpriteDefinition:
         Loads in all the field data from an XML node
         """
         fields = self.fields
-        allowed = ['checkbox', 'list', 'value', 'bitfield', 'multibox', 'dualbox',
-                   'dependency', 'external', 'multidualbox', 'spritetex']
+        allowed = ['checkbox', 'list', 'value', 'dualbox', 'dependency', 'external', 'multidualbox', 'spritetex']
 
         for field in elem:
             if field.tag not in allowed:
@@ -601,17 +600,6 @@ class SpriteDefinition:
                     overrides.append((int(o.attrib['index']), int(o.attrib['value'])))
 
                 fields.append(ValueSpriteField(attribs['title'], comment, comment2, advancedcomment, required, bit, max_, start, increment, overrides, idtype))
-
-            elif field.tag == 'bitfield':
-                startbit = int(attribs['startbit'])
-                bitnum = int(attribs['bitnum'])
-
-                fields.append(BitFieldSpriteField(attribs['title'], comment, comment2, advancedcomment, required, startbit, bitnum))
-
-            elif field.tag == 'multibox':
-                bit, _ = self.parseBits(attribs.get("nybble"))
-
-                fields.append(MultiBoxSpriteField(attribs['title'], comment, comment2, advancedcomment, required, bit))
 
             elif field.tag == 'dualbox':
                 bit, _ = self.parseBits(attribs.get("nybble"))

@@ -7,12 +7,10 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 import common
 import globals_
 from classlib import (
-    BitFieldSpriteField,
     CheckBoxSpriteField,
     DualBoxSpriteField,
     ExternalSpriteField,
     ListSpriteField,
-    MultiBoxSpriteField,
     MultiDualBoxSpriteField,
     SpriteField,
     SpriteTexSpriteField,
@@ -851,178 +849,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             self.widget.setValue(next_id)
 
-    # UNUSED
-    class BitfieldPropertyDecoder(PropertyDecoder[BitFieldSpriteField]):
-        """
-        Class that decodes/encodes sprite data to/from a bitfield
-        """
-
-        def __init__(self, field: BitFieldSpriteField, layout, row, parent_widget):
-            """
-            Creates the widget
-            """
-            super().__init__(field, layout, row, parent_widget)
-
-            self.bit = [(field.start_bit, field.start_bit + field.bit_num)]
-
-            self.widgets = []
-
-            CheckboxLayout = QtWidgets.QGridLayout()
-            # CheckboxLayout.setContentsMargins(0, 0, 0, 0)
-
-            for i in range(field.bit_num):
-                c = QtWidgets.QCheckBox()
-                c.toggled.connect(self.HandleValueChanged)
-                self.widgets.append(c)
-
-                CheckboxLayout.addWidget(c, 0, i)
-                CheckboxLayout.addWidget(QtWidgets.QLabel(str(i + 1)), 1, i, QtCore.Qt.AlignmentFlag.AlignHCenter)
-
-            label = QtWidgets.QLabel(field.title + ':')
-            # label.setWordWrap(True)
-
-            checkbox_widget = QtWidgets.QWidget()
-            checkbox_widget.setLayout(CheckboxLayout)
-
-            self.layout.addWidget(label, self.row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
-            self.layout.addWidget(checkbox_widget, self.row, 1, 1, 2)
-
-            self.init_comment_buttons()
-
-        def update(self, data, first=False):
-            """
-            Updates the value shown by the widget
-            """
-            # check if requirements are met
-            self.checkReq(data, first)
-
-            value = self.retrieve(data)
-            i = self.field.bit_num
-
-            # run at most self.bitnum times
-            while value != 0 and i != 0:
-                self.widgets[i].setChecked(value & 1)
-                value >>= 1
-                i -= 1
-
-        def assign(self, data):
-            """
-            Assigns the checkbox states to the data
-            """
-            value = 0
-
-            # construct bitmask
-            # crashes because bit_num gets parsed during construction in "SpriteDefinition.loadFrom()"
-            # But this is unused anyway
-            for i in [self.field.bit_num]:   # pyright: ignore[reportGeneralTypeIssues]
-                value = (value | self.widgets[i].isChecked()) << 1
-
-            return self.insertvalue(data, value)
-
-        def HandleValueChanged(self, value):
-            """
-            Handle any checkbox being changed
-            """
-            self.updateData.emit(self)
-
-    # UNUSED
-    class MultiboxPropertyDecoder(PropertyDecoder[MultiBoxSpriteField]):
-        """
-        Class that decodes/encodes sprite data to/from a multibox
-        """
-
-        def __init__(self, field, layout, row, parent_widget):
-            """
-            Creates the widget
-            """
-            super().__init__(field, layout, row, parent_widget)
-
-            self.startbit = 0
-            self.bitnum = 0
-
-            if field.bit is not None:
-                bitnum = field.bit[1] - field.bit[0]  # pyright: ignore[reportOperatorIssue]
-                startbit = field.bit[0]
-                self.startbit = startbit
-                self.bitnum = bitnum
-
-            self.widgets = []
-            CheckboxLayout = QtWidgets.QGridLayout()
-            CheckboxLayout.setContentsMargins(0, 0, 0, 0)
-
-            for i in range(self.bitnum):
-                c = QtWidgets.QCheckBox(str(self.bitnum - i))
-                c.toggled.connect(self.HandleValueChanged)
-
-                self.widgets.append(c)
-                CheckboxLayout.addWidget(c, 0, i)
-
-            w = QtWidgets.QWidget()
-            w.setLayout(CheckboxLayout)
-
-            if self.button_com is not None or self.button_com2 is not None or self.button_adv is not None:
-                L = QtWidgets.QHBoxLayout()
-                L.addStretch(1)
-
-                if self.button_com is not None:
-                    L.addWidget(self.button_com)
-
-                if self.button_com2 is not None:
-                    L.addWidget(self.button_com2)
-
-                if self.button_adv is not None:
-                    L.addWidget(self.button_adv)
-
-                label = QtWidgets.QLabel(field.title + ':')
-                label.setWordWrap(True)
-
-                L.addWidget(label)
-                L.setContentsMargins(0, 0, 0, 0)
-
-                widget = QtWidgets.QWidget()
-                widget.setLayout(L)
-
-            else:
-                widget = QtWidgets.QLabel(field.title + ':')
-                widget.setWordWrap(True)
-
-            self.layout.addWidget(widget, self.row, 0, QtCore.Qt.AlignmentFlag.AlignRight)
-            self.layout.addWidget(w, self.row, 1, 1, 2)
-
-        def update(self, data, first=False):
-            """
-            Updates the value shown by the widget
-            """
-            # check if requirements are met
-            self.checkReq(data, first)
-
-            value = self.retrieve(data)
-            i = self.bitnum - 1
-
-            # run at most self.bitnum times
-            while value != 0 and i != 0:
-                self.widgets[i].setChecked(value & 1)
-                value >>= 1
-                i -= 1
-
-        def assign(self, data):
-            """
-            Assigns the checkbox states to the data
-            """
-            value = 0
-
-            # construct bitmask
-            for i in range(self.bitnum):
-                value = (value << 1) | self.widgets[i].isChecked()
-
-            return self.insertvalue(data, value)
-
-        def HandleValueChanged(self, value):
-            """
-            Handle any checkbox being changed
-            """
-            self.updateData.emit(self)
-
     class DualboxPropertyDecoder(PropertyDecoder[DualBoxSpriteField]):
         """
         Class that decodes/encodes sprite data to/from a dualbox
@@ -1649,12 +1475,6 @@ class SpriteEditorWidget(QtWidgets.QWidget):
 
             elif isinstance(field, ValueSpriteField):
                 nf = SpriteEditorWidget.ValuePropertyDecoder(field, layout, row, self)
-
-            elif isinstance(field, BitFieldSpriteField):
-                nf = SpriteEditorWidget.BitfieldPropertyDecoder(field, layout, row, self)
-
-            elif isinstance(field, MultiBoxSpriteField):
-                nf = SpriteEditorWidget.MultiboxPropertyDecoder(field, layout, row, self)
 
             elif isinstance(field, DualBoxSpriteField):
                 nf = SpriteEditorWidget.DualboxPropertyDecoder(field, layout, row, self)
@@ -2560,15 +2380,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             return found
 
         for field in self.sprite.fields:
-            if isinstance(field, BitFieldSpriteField): # bitfield
-                start = field.start_bit
-                num = field.bit_num
-                bit = (start, start + num)
-            elif isinstance(field, (DualBoxSpriteField, MultiDualBoxSpriteField)): # (multi)dualbox
-                bit = field.bit
-            else:
-                bit = field.bit
-
+            bit = field.bit
             if isinstance(bit, tuple) and not isinstance(bit[0], tuple):
                 bit = (bit,)
 

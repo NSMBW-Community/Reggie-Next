@@ -141,26 +141,6 @@ class ValueSpriteField(SpriteField):
         self.idtype = idtype
 
 
-class BitFieldSpriteField(SpriteField):
-    def __init__(
-        self,
-        title: str | None,
-        comment: str | None,
-        comment2: str | None,
-        advanced_comment: str | None,
-        required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
-        start_bit: int,
-        bit_num: int,
-    ):
-        super().__init__(title, comment, comment2, advanced_comment, required, [])
-        self.start_bit = start_bit
-        self.bit_num = bit_num
-
-
-class MultiBoxSpriteField(SpriteField):
-    pass
-
-
 class DualBoxSpriteField(SpriteField):
     def __init__(
         self,
