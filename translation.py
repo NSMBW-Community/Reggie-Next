@@ -61,17 +61,20 @@ class ReggieTranslation:
         self.strings: dict[str, dict[int, str | None | tuple[str | None, ...]]] = {
             'AboutDlg': {
                 0: 'About Reggie Next',
-                1: '[i]Reggie Next[/i] Level Editor',
-                2: '[i]Reggie Next Level Editor[/i] is an open-source project, started by Treeki in 2010 and forked by RoadrunnerWMC in 2013, that aims to bring you the fun of designing original New Super Mario Bros. Wii[tm]-compatible levels.[br]',
+                1: '[i]Reggie! Next[/i] Level Editor',
+                2: '[i]Reggie! Next Level Editor[/i] is an open-source project, started by Treeki in 2010 and forked by RoadrunnerWMC in 2013, that aims to bring you the fun of designing original New Super Mario Bros. Wii[tm]-compatible levels.[br]',
                 3: 'Interested? Join the [a href="[link]"]Horizon Discord server[/a] to get in touch with the current developer(s).[br]',
+                4: 'File "readme.md" not found!\nPlease go to https://github.com/NSMBW-Community/Reggie-Next to find it.',
             },
             'ErrorDlg': {
                 0: 'An unhandled exception occurred. Please report the problem in the Horizon Discord server.\nA log will be written to \"[log]\".\n\nError information:\n',
             },
-            'AreaChoiceDlg': {
-                0: 'Choose an Area',
+            'AreaImportDlg': {
+                0: 'Import Area',
                 1: 'Area [num]',
                 2: 'You have reached the maximum amount of areas in this level.[br]Due to the game\'s limitations, Reggie Next only allows you to add up to 4 areas to a level.',
+                3: 'Choose an area to import from the selected level:',
+                4: 'It will be added to this level as Area [num].',
             },
             'AreaCombobox': {
                 0: 'Area [num]',
@@ -215,6 +218,7 @@ class ReggieTranslation:
             },
             'DeleteArea': {
                 0: 'Are you [b]sure[/b] you want to delete this area?[br][br]The level will automatically save afterwards - there is no way[br]you can undo the deletion or get it back afterwards!',
+                1: 'Delete Area',
             },
             'Diag': {
                 0: 'Level Diagnostics Tool',
@@ -393,6 +397,7 @@ class ReggieTranslation:
                 12: 'Level Information',
                 13: 'Password may be composed of any ASCII character,[br]and up to 64 characters long.[br]',
                 14: 'Sorry![br][br]You can only view or edit Level Information in Area 1.',
+                15: '(unknown version)',
             },
             'LocationDataEditor': {
                 0: 'ID:',

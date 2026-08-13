@@ -1,5 +1,6 @@
 from PyQt6 import QtGui, QtWidgets, QtCore
 from xml.etree import ElementTree
+from types import MethodType
 import os
 
 import globals_
@@ -496,6 +497,9 @@ def setOverrideCursor(cursor):
     Safely override/restore the application cursor.
     Pass cursor as None to restore the previous cursor
     """
+    if globals_.app is None:
+        return
+
     if cursor is None:
         globals_.app.restoreOverrideCursor()
         return
@@ -504,3 +508,16 @@ def setOverrideCursor(cursor):
         globals_.app.setOverrideCursor(cursor)
     else:
         globals_.app.changeOverrideCursor(cursor)
+
+
+class CustomSortableListWidgetItem(QtWidgets.QListWidgetItem):
+    """
+    ListWidgetItem subclass that allows sorting by arbitrary key
+    """
+    sort_key = 0
+
+    def __lt__(self, other):
+        if hasattr(self, 'sort_key') and hasattr(other, 'sort_key'):
+            return self.sort_key < other.sort_key
+
+        return False

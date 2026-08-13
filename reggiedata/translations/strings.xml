@@ -12,17 +12,20 @@
 <strings>
     <section id="AboutDlg">
         <string id="0">About Reggie Next</string>
-        <string id="1">[i]Reggie Next[/i] Level Editor</string>
-        <string id="2">[i]Reggie Next Level Editor[/i] is an open-source project, started by Treeki in 2010 and forked by RoadrunnerWMC in 2013, that aims to bring you the fun of designing original New Super Mario Bros. Wii[tm]-compatible levels.[br]</string>
+        <string id="1">[i]Reggie! Next[/i] Level Editor</string>
+        <string id="2">[i]Reggie! Next Level Editor[/i] is an open-source project, started by Treeki in 2010 and forked by RoadrunnerWMC in 2013, that aims to bring you the fun of designing original New Super Mario Bros. Wii[tm]-compatible levels.[br]</string>
         <string id="3">Interested? Join the [a href="[link]"]Horizon Discord server[/a] to get in touch with the current developer(s).[br]</string>
+        <string id="4">File "readme.md" not found!\nPlease go to https://github.com/NSMBW-Community/Reggie-Next to find it.</string>
     </section>
     <section id="ErrorDlg">
         <string id="0">An unhandled exception occurred. Please report the problem in the Horizon Discord server.\nA log will be written to \"[log]\".\n\nError information:\n</string>
     </section>
-    <section id="AreaChoiceDlg">
-        <string id="0">Choose an Area</string>
+    <section id="AreaImportDlg">
+        <string id="0">Import Area</string>
         <string id="1">Area [num]</string>
         <string id="2">You have reached the maximum amount of areas in this level.[br]Due to the game's limitations, Reggie Next only allows you to add up to 4 areas to a level.</string>
+        <string id="3">Choose an area to import from the selected level:</string>
+        <string id="4">It will be added to this level as Area [num].</string>
     </section>
     <section id="AreaCombobox">
         <string id="0">Area [num]</string>
@@ -166,6 +169,7 @@
     </section>
     <section id="DeleteArea">
         <string id="0">Are you [b]sure[/b] you want to delete this area?[br][br]The level will automatically save afterwards - there is no way[br]you can undo the deletion or get it back afterwards!</string>
+        <string id="1">Delete Area</string>
     </section>
     <section id="Diag">
         <string id="0">Level Diagnostics Tool</string>
@@ -344,6 +348,7 @@
         <string id="12">Level Information</string>
         <string id="13">Password may be composed of any ASCII character,[br]and up to 64 characters long.[br]</string>
         <string id="14">Sorry![br][br]You can only view or edit Level Information in Area 1.</string>
+        <string id="15">(unknown version)</string>
     </section>
     <section id="LocationDataEditor">
         <string id="0">ID:</string>

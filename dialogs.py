@@ -1,257 +1,256 @@
 import os
+from enum import IntEnum
 
 from PyQt6 import QtWidgets, QtGui, QtCore
 
-from ui import GetIcon, clipStr
+from ui import GetIcon
 import globals_
 import spritelib as SLib
-from levelitems import ListWidgetItem_SortsByOther, SpriteItem, ZoneItem
+from levelitems import ListWidgetItem_SortsByOther, SpriteItem, ZoneItem, EntranceItem
 from dirty import SetDirty
 from zones import CameraModeZoomSettingsLayout
-from ui import createHorzLine
+from ui import createHorzLine, createVertLine, CustomSortableListWidgetItem
 
 class AboutDialog(QtWidgets.QDialog):
     """
-    The About info for Reggie
+    Displays the README and some other info
     """
 
     def __init__(self):
         """
         Creates and initializes the dialog
         """
-        QtWidgets.QDialog.__init__(self)
+        super().__init__()
         self.setWindowTitle(globals_.trans.string('AboutDlg', 0))
 
-
         # Open the readme file
-        readme = ""
-        with open('readme.md', 'r', encoding='utf-8') as f:
-            readme = f.read()
+        readme = ''
+        try:
+            with open('readme.md', 'r', encoding='utf-8') as f:
+                readme = f.read()
+        except FileNotFoundError:
+            readme = globals_.trans.string('AboutDlg', 4)
 
-        # Logo
         logo = QtGui.QPixmap(os.path.join('reggiedata', 'icon.png'))
-        logoLabel = QtWidgets.QLabel()
-        logoLabel.setPixmap(logo)
-        logoLabel.setContentsMargins(16, 4, 32, 4)
+        logo_label = QtWidgets.QLabel()
+        logo_label.setPixmap(logo)
+        logo_label.setContentsMargins(16, 4, 32, 4)
 
         link = 'https://horizon.miraheze.org/wiki/Discord_Servers'
 
-        # Description
-        description = '<html><head><style type="text/CSS">'
-        description += 'body {font-family: Calibri}'
-        description += '.main {font-size: 12px}'
-        description += '</style></head><body>'
-        description += '<center><h1>'
-        description += globals_.trans.string('AboutDlg', 1)
-        description += '</h1><div class="main">'
-        description += globals_.trans.string('AboutDlg', 2)
-        description += globals_.trans.string('AboutDlg', 3, '[link]', link)
-        description += '</div></center></body></html>'
+        header = globals_.trans.string('AboutDlg', 1)
+        info = globals_.trans.string('AboutDlg', 2)
+        contact = globals_.trans.string('AboutDlg', 3, '[link]', link)
 
-        # Description label
-        descLabel = QtWidgets.QLabel()
-        descLabel.setText(description)
-        descLabel.setMinimumWidth(512)
-        descLabel.setOpenExternalLinks(True)
-        descLabel.setWordWrap(True)
+        description = (
+            '<html><head><style type="text/CSS">'
+            'body {font-family: Calibri}'
+            '.main {font-size: 12px}'
+            '</style></head><body>'
+            '<center><h1>'
+            f'{header}'
+            '</h1><div class="main">'
+            f'{info}'
+            f'{contact}'
+            '</div></center></body></html>'
+        )
+
+        about_label = QtWidgets.QLabel()
+        about_label.setText(description)
+        about_label.setMinimumWidth(512)
+        about_label.setOpenExternalLinks(True)
+        about_label.setWordWrap(True)
 
         # Readme.md viewer
-        readmeView = QtWidgets.QPlainTextEdit()
-        readmeView.setPlainText(readme)
-        readmeView.setReadOnly(True)
+        readme_view = QtWidgets.QPlainTextEdit()
+        readme_view.setPlainText(readme)
+        readme_view.setReadOnly(True)
 
-        # Buttonbox
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok)
-        buttonBox.accepted.connect(self.accept)
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        button_box.accepted.connect(self.accept)
 
         # Main layout
         L = QtWidgets.QGridLayout()
-        L.addWidget(logoLabel, 0, 0, 2, 1)
-        L.addWidget(descLabel, 0, 1)
-        L.addWidget(readmeView, 1, 1)
-        L.addWidget(buttonBox, 2, 0, 1, 2)
+        L.addWidget(logo_label, 0, 0, 2, 1)
+        L.addWidget(about_label, 0, 1)
+        L.addWidget(readme_view, 1, 1)
+        L.addWidget(button_box, 2, 0, 1, 2)
         L.setRowStretch(1, 1)
         L.setColumnStretch(1, 1)
         self.setLayout(L)
 
 
-class ObjectShiftDialog(QtWidgets.QDialog):
+class ItemShiftDialog(QtWidgets.QDialog):
     """
-    Lets you pick an amount to shift selected items by
+    Dialog to shift selected items by a certain number of units
     """
 
     def __init__(self):
         """
         Creates and initializes the dialog
         """
-        QtWidgets.QDialog.__init__(self)
+        super().__init__()
         self.setWindowTitle(globals_.trans.string('ShftItmDlg', 0))
         self.setWindowIcon(GetIcon('move'))
 
-        self.XOffset = QtWidgets.QSpinBox()
-        self.XOffset.setRange(-16384, 16383)
+        self.offset_x = QtWidgets.QSpinBox()
+        self.offset_x.setRange(-16384, 16383)
 
-        self.YOffset = QtWidgets.QSpinBox()
-        self.YOffset.setRange(-8192, 8191)
+        self.offset_y = QtWidgets.QSpinBox()
+        self.offset_y.setRange(-8192, 8191)
 
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
-        buttonBox.accepted.connect(self.accept)
-        buttonBox.rejected.connect(self.reject)
+        offset_label = QtWidgets.QLabel(globals_.trans.string('ShftItmDlg', 2))
+        offset_label.setWordWrap(True)
 
-        moveLayout = QtWidgets.QFormLayout()
-        offsetlabel = QtWidgets.QLabel(globals_.trans.string('ShftItmDlg', 2))
-        offsetlabel.setWordWrap(True)
-        moveLayout.addWidget(offsetlabel)
-        moveLayout.addRow(globals_.trans.string('ShftItmDlg', 3), self.XOffset)
-        moveLayout.addRow(globals_.trans.string('ShftItmDlg', 4), self.YOffset)
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
 
-        moveGroupBox = QtWidgets.QGroupBox(globals_.trans.string('ShftItmDlg', 1))
-        moveGroupBox.setLayout(moveLayout)
+        move_lyt = QtWidgets.QFormLayout()
+        move_lyt.addWidget(offset_label)
+        move_lyt.addRow(globals_.trans.string('ShftItmDlg', 3), self.offset_x)
+        move_lyt.addRow(globals_.trans.string('ShftItmDlg', 4), self.offset_y)
 
-        mainLayout = QtWidgets.QVBoxLayout()
-        mainLayout.addWidget(moveGroupBox)
-        mainLayout.addWidget(buttonBox)
-        self.setLayout(mainLayout)
+        move_box = QtWidgets.QGroupBox(globals_.trans.string('ShftItmDlg', 1))
+        move_box.setLayout(move_lyt)
+
+        main_layout = QtWidgets.QVBoxLayout()
+        main_layout.addWidget(move_box)
+        main_layout.addWidget(button_box)
+        self.setLayout(main_layout)
 
 
 class ObjectTilesetSwapDialog(QtWidgets.QDialog):
     """
-    Lets you pick tilesets to swap objects to
+    Dialog to swap all objects of one tileset to another
     """
 
     def __init__(self):
         """
         Creates and initializes the dialog
         """
-        QtWidgets.QDialog.__init__(self)
+        super().__init__()
         self.setWindowTitle(globals_.trans.string('SwapObjTilesDlg', 0))
         self.setWindowIcon(GetIcon('swap'))
 
         # Create widgets
-        self.FromTS = QtWidgets.QComboBox()
-        self.ToTS = QtWidgets.QComboBox()
+        self.curr_tileset = QtWidgets.QComboBox()
+        self.new_tileset = QtWidgets.QComboBox()
 
         slots = ('Pa0', 'Pa1', 'Pa2', 'Pa3')
-        for i in range(4): # Only offer slots that have a tileset
-            if globals_.mainWindow.objAllTab.isTabEnabled(i):
-                self.FromTS.addItem(slots[i])
-                self.ToTS.addItem(slots[i])
 
-        # Swap layouts
-        swapLayout = QtWidgets.QFormLayout()
+        # Only offer slots that have a tileset
+        if globals_.mainWindow is not None:
+            for i in range(4):
+                if globals_.mainWindow.objAllTab.isTabEnabled(i):
+                    self.curr_tileset.addItem(slots[i])
+                    self.new_tileset.addItem(slots[i])
 
-        swapLayout.addRow(globals_.trans.string('SwapObjTilesDlg', 1), self.FromTS)
-        swapLayout.addRow(globals_.trans.string('SwapObjTilesDlg', 2), self.ToTS)
+        swap_layout = QtWidgets.QFormLayout()
+        swap_layout.addRow(globals_.trans.string('SwapObjTilesDlg', 1), self.curr_tileset)
+        swap_layout.addRow(globals_.trans.string('SwapObjTilesDlg', 2), self.new_tileset)
 
-        self.DoExchange = QtWidgets.QCheckBox(globals_.trans.string('SwapObjTilesDlg', 3))
+        self.exchange_tiles = QtWidgets.QCheckBox(globals_.trans.string('SwapObjTilesDlg', 3))
 
-        # Buttonbox
-        buttonBox = QtWidgets.QDialogButtonBox()
-        buttonBox.addButton(globals_.trans.string('SwapObjTilesDlg', 4), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        buttonBox.addButton(globals_.trans.string('SwapObjTilesDlg', 5), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
-        buttonBox.accepted.connect(self.accept)
-        buttonBox.rejected.connect(self.reject)
+        button_box = QtWidgets.QDialogButtonBox()
+        button_box.addButton(globals_.trans.string('SwapObjTilesDlg', 4), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        button_box.addButton(globals_.trans.string('SwapObjTilesDlg', 5), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
 
-        # Main layout
-        mainLayout = QtWidgets.QVBoxLayout()
-        mainLayout.addLayout(swapLayout)
-        mainLayout.addWidget(self.DoExchange)
-        mainLayout.addWidget(buttonBox)
-        self.setLayout(mainLayout)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        main_layout = QtWidgets.QVBoxLayout()
+        main_layout.addLayout(swap_layout)
+        main_layout.addWidget(self.exchange_tiles)
+        main_layout.addWidget(button_box)
+        self.setLayout(main_layout)
 
 
 class ObjectTypeSwapDialog(QtWidgets.QDialog):
     """
-    Lets you pick object types to swap objects to
+    Dialog to swap individual objects
     """
 
     def __init__(self):
         """
         Creates and initializes the dialog
         """
-        QtWidgets.QDialog.__init__(self)
+        super().__init__()
         self.setWindowTitle(globals_.trans.string('SwapObjDlg', 0))
         self.setWindowIcon(GetIcon('swap'))
 
         # Create widgets
-        self.FromType = QtWidgets.QSpinBox()
-        self.ToType = QtWidgets.QSpinBox()
+        self.curr_type = QtWidgets.QSpinBox()
+        self.new_type = QtWidgets.QSpinBox()
 
-        self.FromTileset = QtWidgets.QComboBox()
-        self.ToTileset = QtWidgets.QComboBox()
+        self.curr_tileset = QtWidgets.QComboBox()
+        self.new_tileset = QtWidgets.QComboBox()
 
         slots = ('Pa0', 'Pa1', 'Pa2', 'Pa3')
-        for i in range(4): # Only offer slots that have a tileset
-            if globals_.mainWindow.objAllTab.isTabEnabled(i):
-                self.FromTileset.addItem(slots[i])
-                self.ToTileset.addItem(slots[i])
 
-        self.FromTileset.currentIndexChanged.connect(self.setObjectMax)
-        self.ToTileset.currentIndexChanged.connect(self.setObjectMax)
+        # Only offer slots that have a tileset
+        if globals_.mainWindow is not None:
+            for i in range(4): 
+                if globals_.mainWindow.objAllTab.isTabEnabled(i):
+                    self.curr_tileset.addItem(slots[i])
+                    self.new_tileset.addItem(slots[i])
+
+        self.curr_tileset.currentIndexChanged.connect(self.set_object_counts)
+        self.new_tileset.currentIndexChanged.connect(self.set_object_counts)
 
         # Call this manually to set maximums
-        self.setObjectMax()
+        self.set_object_counts()
 
-        self.DoExchange = QtWidgets.QCheckBox(globals_.trans.string('SwapObjDlg', 5))
-
-        separator = QtWidgets.QFrame()
-        separator.setFrameShape(QtWidgets.QFrame.Shape.VLine)
-        separator.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        self.exchange_objects = QtWidgets.QCheckBox(globals_.trans.string('SwapObjDlg', 5))
 
         # Swap layout
-        swapLayout = QtWidgets.QGridLayout()
+        swap_layout = QtWidgets.QGridLayout()
+        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 1)), 0, 0)
+        swap_layout.addWidget(self.curr_type, 0, 1)
+        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 2)), 1, 0)
+        swap_layout.addWidget(self.curr_tileset, 1, 1)
 
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 1)), 0, 0)
-        swapLayout.addWidget(self.FromType, 0, 1)
+        swap_layout.addWidget(createVertLine(), 0, 2, 2, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
 
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 2)), 1, 0)
-        swapLayout.addWidget(self.FromTileset, 1, 1)
+        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 3)), 0, 3)
+        swap_layout.addWidget(self.new_type, 0, 4)
+        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 4)), 1, 3)
+        swap_layout.addWidget(self.new_tileset, 1, 4)
 
-        swapLayout.addWidget(separator, 0, 2, 2, 1, QtCore.Qt.AlignmentFlag.AlignHCenter)
-
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 3)), 0, 3)
-        swapLayout.addWidget(self.ToType, 0, 4)
-
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwapObjDlg', 4)), 1, 3)
-        swapLayout.addWidget(self.ToTileset, 1, 4)
-
-        # Buttonbox
-        self.buttons = QtWidgets.QDialogButtonBox()
-        self.buttons.addButton(globals_.trans.string('SwapObjDlg', 6), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        self.buttons.addButton(globals_.trans.string('SwapObjDlg', 7), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
-        self.buttons.clicked.connect(self.buttonClicked)
+        self.button_box = QtWidgets.QDialogButtonBox()
+        self.button_box.addButton(globals_.trans.string('SwapObjDlg', 6), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        self.button_box.addButton(globals_.trans.string('SwapObjDlg', 7), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
+        self.button_box.clicked.connect(self.button_clicked)
 
         # Main layout
-        mainLayout = QtWidgets.QVBoxLayout()
-        mainLayout.addLayout(swapLayout)
-        mainLayout.addWidget(self.DoExchange)
-        mainLayout.addWidget(self.buttons)
-        self.setLayout(mainLayout)
+        main_layout = QtWidgets.QVBoxLayout()
+        main_layout.addLayout(swap_layout)
+        main_layout.addWidget(self.exchange_objects)
+        main_layout.addWidget(self.button_box)
+        self.setLayout(main_layout)
 
-    def buttonClicked(self, button):
+    def button_clicked(self, button):
         """
-        Handles one of the buttons being pressed and calls the correct handler.
+        Handles one of the buttons being pressed and calls the correct handler
         """
-        role = self.buttons.buttonRole(button)
+        role = self.button_box.buttonRole(button)
 
-        if role == QtWidgets.QDialogButtonBox.ButtonRole.RejectRole:
-            self.reject()
-        elif role == QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole:
-            self.swapTiles()
+        if role == QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole:
+            self.swap_tiles()
         else:
-            raise ValueError("ObjectTypeSwapDialog: Unknown role on pressed button. " + repr(role))
+            self.reject()
 
-    def swapTiles(self):
+    def swap_tiles(self):
         """
         Swaps the tile objects
         """
-        from_type = self.FromType.value()
-        from_tileset = self.FromTileset.currentIndex()
-        to_type = self.ToType.value()
-        to_tileset = self.ToTileset.currentIndex()
-        do_exchange = self.DoExchange.isChecked()
+        from_type = self.curr_type.value()
+        from_tileset = self.curr_tileset.currentIndex()
+        to_type = self.new_type.value()
+        to_tileset = self.new_tileset.currentIndex()
+        do_exchange = self.exchange_objects.isChecked()
 
-        # If we don't need to do anything, don't do anything.
+        # If we don't need to do anything, don't do anything
         if from_type == to_type and from_tileset == to_tileset:
             return
 
@@ -264,44 +263,46 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
                     nsmbobj.SetType(from_tileset, from_type)
                     SetDirty()
 
-    def getTilesetObjNum(self, index):
+    def get_tileset_object_count(self, index):
         """
         Returns the number of objects in a tileset
         """
-        # There's probably a better way to do this
+        if globals_.mainWindow is None:
+            return 0
+
         return len(globals_.mainWindow.objPicker.models[index].ritems) - 1
 
-    def setObjectMax(self):
+    def set_object_counts(self):
         """
         Sets upper limits for the object spinboxes
         """
-        from_tileset = self.FromTileset.currentIndex()
-        to_tileset = self.ToTileset.currentIndex()
+        from_tileset = self.curr_tileset.currentIndex()
+        to_tileset = self.new_tileset.currentIndex()
 
-        from_obj_num = self.getTilesetObjNum(from_tileset)
-        to_obj_num = self.getTilesetObjNum(to_tileset)
+        from_obj_num = self.get_tileset_object_count(from_tileset)
+        to_obj_num = self.get_tileset_object_count(to_tileset)
 
-        self.FromType.setRange(0, from_obj_num)
-        self.ToType.setRange(0, to_obj_num)
+        self.curr_type.setRange(0, from_obj_num)
+        self.new_type.setRange(0, to_obj_num)
 
-        # Make sure we aren't above the new maximum
-        if self.FromType.value() > from_obj_num:
-            self.FromType.setValue(from_obj_num)
+        # Make sure we aren't above the new maximums
+        if self.curr_type.value() > from_obj_num:
+            self.curr_type.setValue(from_obj_num)
 
-        if self.ToType.value() > to_obj_num:
-            self.ToType.setValue(to_obj_num)
+        if self.new_type.value() > to_obj_num:
+            self.new_type.setValue(to_obj_num)
 
 
 class MetaInfoDialog(QtWidgets.QDialog):
     """
-    Allows the user to enter in various meta-info to be kept in the level for display
+    Dialog to set level metadata
     """
 
     def __init__(self):
         """
         Creates and initializes the dialog
         """
-        QtWidgets.QDialog.__init__(self)
+        super().__init__()
         self.setWindowTitle(globals_.trans.string('InfoDlg', 0))
         self.setWindowIcon(GetIcon('info'))
 
@@ -311,213 +312,219 @@ class MetaInfoDialog(QtWidgets.QDialog):
         website = globals_.Area.Metadata.strData('Website')
         creator = globals_.Area.Metadata.strData('Creator')
         password = globals_.Area.Metadata.strData('Password')
-        if title is None: title = '-'
-        if author is None: author = '-'
-        if group is None: group = '-'
-        if website is None: website = '-'
-        if creator is None: creator = '(unknown)'
-        if password is None: password = ''
 
-        self.levelName = QtWidgets.QLineEdit()
-        self.levelName.setMaxLength(128)
-        self.levelName.setReadOnly(True)
-        self.levelName.setMinimumWidth(320)
-        self.levelName.setText(title)
+        # Set defaults
+        if title is None:
+            title = '-'
+        if author is None:
+            author = '-'
+        if group is None:
+            group = '-'
+        if website is None:
+            website = '-'
+        if creator is None:
+            creator = globals_.trans.string('InfoDlg', 15)
+        if password is None:
+            password = ''
 
-        self.Author = QtWidgets.QLineEdit()
-        self.Author.setMaxLength(128)
-        self.Author.setReadOnly(True)
-        self.Author.setMinimumWidth(320)
-        self.Author.setText(author)
+        self.name_field = QtWidgets.QLineEdit()
+        self.name_field.setMaxLength(128)
+        self.name_field.setMinimumWidth(320)
+        self.name_field.setText(title)
 
-        self.Group = QtWidgets.QLineEdit()
-        self.Group.setMaxLength(128)
-        self.Group.setReadOnly(True)
-        self.Group.setMinimumWidth(320)
-        self.Group.setText(group)
+        self.author_field = QtWidgets.QLineEdit()
+        self.author_field.setMaxLength(128)
+        self.author_field.setMinimumWidth(320)
+        self.author_field.setText(author)
 
-        self.Website = QtWidgets.QLineEdit()
-        self.Website.setMaxLength(128)
-        self.Website.setReadOnly(True)
-        self.Website.setMinimumWidth(320)
-        self.Website.setText(website)
+        self.group_field = QtWidgets.QLineEdit()
+        self.group_field.setMaxLength(128)
+        self.group_field.setMinimumWidth(320)
+        self.group_field.setText(group)
 
-        self.Password = QtWidgets.QLineEdit()
-        self.Password.setMaxLength(128)
-        self.Password.textChanged.connect(self.PasswordEntry)
-        self.Password.setMinimumWidth(320)
+        self.website_field = QtWidgets.QLineEdit()
+        self.website_field.setMaxLength(128)
+        self.website_field.setMinimumWidth(320)
+        self.website_field.setText(website)
 
-        self.changepw = QtWidgets.QPushButton(globals_.trans.string('InfoDlg', 1))
+        self.password_field = QtWidgets.QLineEdit()
+        self.password_field.setMaxLength(128)
+        self.password_field.textChanged.connect(self.update_password)
+        self.password_field.setMinimumWidth(320)
+
+        self.edit_password_button = QtWidgets.QPushButton(globals_.trans.string('InfoDlg', 1))
 
         if password != '':
-            self.levelName.setReadOnly(False)
-            self.Author.setReadOnly(False)
-            self.Group.setReadOnly(False)
-            self.Website.setReadOnly(False)
-            self.changepw.setDisabled(False)
+            self.name_field.setReadOnly(False)
+            self.author_field.setReadOnly(False)
+            self.group_field.setReadOnly(False)
+            self.website_field.setReadOnly(False)
+            self.edit_password_button.setDisabled(False)
 
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
-        buttonBox.addButton(self.changepw, buttonBox.ButtonRole.ActionRole)
-        buttonBox.accepted.connect(self.accept)
-        buttonBox.rejected.connect(self.reject)
-        self.changepw.clicked.connect(self.ChangeButton)
-        self.changepw.setDisabled(True)
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        button_box.addButton(self.edit_password_button, button_box.ButtonRole.ActionRole)
 
-        self.lockedLabel = QtWidgets.QLabel(globals_.trans.string('InfoDlg', 2))
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        self.edit_password_button.clicked.connect(self.change_password)
+        self.edit_password_button.setDisabled(True)
+
+        self.locked_label = QtWidgets.QLabel(globals_.trans.string('InfoDlg', 2))
 
         infoLayout = QtWidgets.QFormLayout()
-        infoLayout.addWidget(self.lockedLabel)
-        infoLayout.addRow(globals_.trans.string('InfoDlg', 3), self.Password)
-        infoLayout.addRow(globals_.trans.string('InfoDlg', 4), self.levelName)
-        infoLayout.addRow(globals_.trans.string('InfoDlg', 5), self.Author)
-        infoLayout.addRow(globals_.trans.string('InfoDlg', 6), self.Group)
-        infoLayout.addRow(globals_.trans.string('InfoDlg', 7), self.Website)
+        infoLayout.addWidget(self.locked_label)
+        infoLayout.addRow(globals_.trans.string('InfoDlg', 3), self.password_field)
+        infoLayout.addRow(createHorzLine())
+        infoLayout.addRow(globals_.trans.string('InfoDlg', 4), self.name_field)
+        infoLayout.addRow(globals_.trans.string('InfoDlg', 5), self.author_field)
+        infoLayout.addRow(globals_.trans.string('InfoDlg', 6), self.group_field)
+        infoLayout.addRow(globals_.trans.string('InfoDlg', 7), self.website_field)
 
-        self.PasswordLabel = infoLayout.labelForField(self.Password)
+        self.password_label = infoLayout.labelForField(self.password_field)
 
         levelIsLocked = password != ''
-        self.lockedLabel.setVisible(levelIsLocked)
-        self.PasswordLabel.setVisible(levelIsLocked)
-        self.Password.setVisible(levelIsLocked)
+        self.locked_label.setVisible(levelIsLocked)
+        if self.password_label is not None:
+            self.password_label.setVisible(levelIsLocked)
+        self.password_field.setVisible(levelIsLocked)
 
-        infoGroupBox = QtWidgets.QGroupBox(globals_.trans.string('InfoDlg', 8, '[name]', creator))
-        infoGroupBox.setLayout(infoLayout)
+        info_box = QtWidgets.QGroupBox(globals_.trans.string('InfoDlg', 8, '[name]', creator))
+        info_box.setLayout(infoLayout)
 
-        mainLayout = QtWidgets.QVBoxLayout()
-        mainLayout.addWidget(infoGroupBox)
-        mainLayout.addWidget(buttonBox)
-        self.setLayout(mainLayout)
+        main_layout = QtWidgets.QVBoxLayout()
+        main_layout.addWidget(info_box)
+        main_layout.addWidget(button_box)
+        self.setLayout(main_layout)
 
-        self.PasswordEntry('')
+        self.update_password('')
 
-    def PasswordEntry(self, text):
-        pswd = globals_.Area.Metadata.strData('Password')
-        if pswd is None: pswd = ''
-        if text == pswd:
-            self.levelName.setReadOnly(False)
-            self.Author.setReadOnly(False)
-            self.Group.setReadOnly(False)
-            self.Website.setReadOnly(False)
-            self.changepw.setDisabled(False)
+    def update_password(self, text):
+        password = globals_.Area.Metadata.strData('Password')
+        if password is None:
+            password = ''
+
+        if text == password:
+            self.name_field.setReadOnly(False)
+            self.author_field.setReadOnly(False)
+            self.group_field.setReadOnly(False)
+            self.website_field.setReadOnly(False)
+            self.edit_password_button.setDisabled(False)
         else:
-            self.levelName.setReadOnly(True)
-            self.Author.setReadOnly(True)
-            self.Group.setReadOnly(True)
-            self.Website.setReadOnly(True)
-            self.changepw.setDisabled(True)
+            self.name_field.setReadOnly(True)
+            self.author_field.setReadOnly(True)
+            self.group_field.setReadOnly(True)
+            self.website_field.setReadOnly(True)
+            self.edit_password_button.setDisabled(True)
 
-
-        #   To all would be crackers who are smart enough to reach here:
-        #
-        #   Make your own damn levels.
-        #
-        #
-        #
-        #       - The management
-        #
-
-    def ChangeButton(self):
+    def change_password(self):
         """
         Allows the changing of a given password
         """
 
-        class ChangePWDialog(QtWidgets.QDialog):
+        class ChangePasswordDialog(QtWidgets.QDialog):
             """
-            Dialog
+            Dialog to set a password for the meta-info
             """
-
             def __init__(self):
                 QtWidgets.QDialog.__init__(self)
                 self.setWindowTitle(globals_.trans.string('InfoDlg', 9))
                 self.setWindowIcon(GetIcon('info'))
 
-                self.New = QtWidgets.QLineEdit()
-                self.New.setMaxLength(64)
-                self.New.textChanged.connect(self.PasswordMatch)
-                self.New.setMinimumWidth(320)
+                self.new_pass = QtWidgets.QLineEdit()
+                self.new_pass.setMaxLength(64)
+                self.new_pass.textChanged.connect(self.check_password_match)
+                self.new_pass.setMinimumWidth(320)
 
-                self.Verify = QtWidgets.QLineEdit()
-                self.Verify.setMaxLength(64)
-                self.Verify.textChanged.connect(self.PasswordMatch)
-                self.Verify.setMinimumWidth(320)
+                self.verify_pass = QtWidgets.QLineEdit()
+                self.verify_pass.setMaxLength(64)
+                self.verify_pass.textChanged.connect(self.check_password_match)
+                self.verify_pass.setMinimumWidth(320)
 
-                self.Ok = QtWidgets.QPushButton('OK')
-                self.Cancel = QtWidgets.QDialogButtonBox.StandardButton.Cancel
+                self.ok_button = QtWidgets.QPushButton('OK')
+                self.cancel_button = QtWidgets.QDialogButtonBox.StandardButton.Cancel
 
-                buttonBox = QtWidgets.QDialogButtonBox()
-                buttonBox.addButton(self.Ok, buttonBox.ButtonRole.AcceptRole)
-                buttonBox.addButton(self.Cancel)
+                button_box = QtWidgets.QDialogButtonBox()
+                button_box.addButton(self.ok_button, button_box.ButtonRole.AcceptRole)
+                button_box.addButton(self.cancel_button)
 
-                buttonBox.accepted.connect(self.accept)
-                buttonBox.rejected.connect(self.reject)
-                self.Ok.setDisabled(True)
+                button_box.accepted.connect(self.accept)
+                button_box.rejected.connect(self.reject)
+                self.ok_button.setDisabled(True)
 
-                infoLayout = QtWidgets.QFormLayout()
-                infoLayout.addRow(globals_.trans.string('InfoDlg', 10), self.New)
-                infoLayout.addRow(globals_.trans.string('InfoDlg', 11), self.Verify)
+                info_layout = QtWidgets.QFormLayout()
+                info_layout.addRow(globals_.trans.string('InfoDlg', 10), self.new_pass)
+                info_layout.addRow(globals_.trans.string('InfoDlg', 11), self.verify_pass)
 
-                infoGroupBox = QtWidgets.QGroupBox(globals_.trans.string('InfoDlg', 12))
+                info_box = QtWidgets.QGroupBox(globals_.trans.string('InfoDlg', 12))
 
-                infoLabel = QtWidgets.QVBoxLayout()
-                infoLabel.addWidget(QtWidgets.QLabel(globals_.trans.string('InfoDlg', 13)), 0, QtCore.Qt.AlignmentFlag.AlignCenter)
-                infoLabel.addLayout(infoLayout)
-                infoGroupBox.setLayout(infoLabel)
+                info_label = QtWidgets.QVBoxLayout()
+                info_label.addWidget(QtWidgets.QLabel(globals_.trans.string('InfoDlg', 13)), 0, QtCore.Qt.AlignmentFlag.AlignCenter)
+                info_label.addLayout(info_layout)
+                info_box.setLayout(info_label)
 
-                mainLayout = QtWidgets.QVBoxLayout()
-                mainLayout.addWidget(infoGroupBox)
-                mainLayout.addWidget(buttonBox)
-                self.setLayout(mainLayout)
+                main_layout = QtWidgets.QVBoxLayout()
+                main_layout.addWidget(info_box)
+                main_layout.addWidget(button_box)
+                self.setLayout(main_layout)
 
-            def PasswordMatch(self, text):
-                self.Ok.setDisabled(self.New.text() != self.Verify.text() and self.New.text() != '')
+            def check_password_match(self):
+                """
+                Enables the OK button if the password matches
+                """
+                self.ok_button.setDisabled(self.new_pass.text() != self.verify_pass.text() and self.new_pass.text() != '')
 
-        dlg = ChangePWDialog()
+        dlg = ChangePasswordDialog()
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-            self.lockedLabel.setVisible(True)
-            self.Password.setVisible(True)
-            self.PasswordLabel.setVisible(True)
-            pswd = str(dlg.Verify.text())
-            globals_.Area.Metadata.setStrData('Password', pswd)
-            self.Password.setText(pswd)
+            self.locked_label.setVisible(True)
+            self.password_field.setVisible(True)
+            if self.password_label is not None:
+                self.password_label.setVisible(True)
+
+            password = str(dlg.verify_pass.text())
+            globals_.Area.Metadata.setStrData('Password', password)
+            self.password_field.setText(password)
             SetDirty()
 
-            self.levelName.setReadOnly(False)
-            self.Author.setReadOnly(False)
-            self.Group.setReadOnly(False)
-            self.Website.setReadOnly(False)
-            self.changepw.setDisabled(False)
+            self.name_field.setReadOnly(False)
+            self.author_field.setReadOnly(False)
+            self.group_field.setReadOnly(False)
+            self.website_field.setReadOnly(False)
+            self.edit_password_button.setDisabled(False)
 
 
-class ScreenCapChoiceDialog(QtWidgets.QDialog):
+class ScreenshotDialog(QtWidgets.QDialog):
     """
-    Dialog which lets you choose which zone to take a pic of
+    Dialog to take screenshots
     """
 
     def __init__(self):
         """
         Creates and initializes the dialog
         """
-        QtWidgets.QDialog.__init__(self)
+        super().__init__()
         self.setWindowTitle(globals_.trans.string('ScrShtDlg', 0))
         self.setWindowIcon(GetIcon('screenshot'))
 
-        self.zoneCombo = QtWidgets.QComboBox()
-        self.zoneCombo.addItem(globals_.trans.string('ScrShtDlg', 1))
-        self.zoneCombo.addItem(globals_.trans.string('ScrShtDlg', 2))
+        self.target_combo = QtWidgets.QComboBox()
+        self.target_combo.addItem(globals_.trans.string('ScrShtDlg', 1)) # Current Screen
+        self.target_combo.addItem(globals_.trans.string('ScrShtDlg', 2)) # All Zones
+
+        # Individual zones
         for i in range(len(globals_.Area.zones)):
-            self.zoneCombo.addItem(globals_.trans.string('ScrShtDlg', 3, '[zone]', i + 1))
+            self.target_combo.addItem(globals_.trans.string('ScrShtDlg', 3, '[zone]', i + 1))
 
-        self.gridCombo = QtWidgets.QComboBox()
-        self.gridCombo.addItems(globals_.trans.stringList('ScrShtDlg', 9))
+        self.grid_type = QtWidgets.QComboBox()
+        self.grid_type.addItems(globals_.trans.stringList('ScrShtDlg', 9))
 
-        currGrid = 0
+        curr_grid = 0
         if globals_.GridType is not None:
             if globals_.GridType == 'grid':
-                currGrid = 1
+                curr_grid = 1
             else:
-                currGrid = 2
+                curr_grid = 2
 
-        self.gridCombo.setCurrentIndex(currGrid)
+        self.grid_type.setCurrentIndex(curr_grid)
 
         self.hide_background = QtWidgets.QCheckBox()
         self.save_img = QtWidgets.QRadioButton()
@@ -525,251 +532,248 @@ class ScreenCapChoiceDialog(QtWidgets.QDialog):
 
         self.save_img.setChecked(True)
 
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
 
-        buttonBox.accepted.connect(self.accept)
-        buttonBox.rejected.connect(self.reject)
-
-        mainLayout = QtWidgets.QFormLayout()
-        mainLayout.addRow(globals_.trans.string('ScrShtDlg', 4), self.zoneCombo)
-        mainLayout.addRow(globals_.trans.string('ScrShtDlg', 8), self.gridCombo)
-        mainLayout.addRow(globals_.trans.string('ScrShtDlg', 5), self.hide_background)
-        mainLayout.addRow(globals_.trans.string('ScrShtDlg', 6), self.save_img)
-        mainLayout.addRow(globals_.trans.string('ScrShtDlg', 7), self.save_clip)
-        mainLayout.addRow(buttonBox)
-        self.setLayout(mainLayout)
+        main_layout = QtWidgets.QFormLayout()
+        main_layout.addRow(globals_.trans.string('ScrShtDlg', 4), self.target_combo)
+        main_layout.addRow(globals_.trans.string('ScrShtDlg', 8), self.grid_type)
+        main_layout.addRow(globals_.trans.string('ScrShtDlg', 5), self.hide_background)
+        main_layout.addRow(globals_.trans.string('ScrShtDlg', 6), self.save_img)
+        main_layout.addRow(globals_.trans.string('ScrShtDlg', 7), self.save_clip)
+        main_layout.addRow(button_box)
+        self.setLayout(main_layout)
 
 
-class AutoSavedInfoDialog(QtWidgets.QDialog):
+class AutoSaveDialog(QtWidgets.QDialog):
     """
-    Dialog which lets you know that an auto saved level exists
+    Dialog specifying that auto-save data exists
     """
 
     def __init__(self, filename):
         """
         Creates and initializes the dialog
         """
-        QtWidgets.QDialog.__init__(self)
+        super().__init__()
         self.setWindowTitle(globals_.trans.string('AutoSaveDlg', 0))
         self.setWindowIcon(GetIcon('save'))
 
-        mainlayout = QtWidgets.QVBoxLayout(self)
+        info = QtWidgets.QLabel(globals_.trans.string('AutoSaveDlg', 1, '[path]', filename))
+        info.setWordWrap(True)
 
-        hlayout = QtWidgets.QHBoxLayout()
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Yes | QtWidgets.QDialogButtonBox.StandardButton.No)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
 
-        icon = QtWidgets.QLabel()
-        hlayout.addWidget(icon)
-
-        label = QtWidgets.QLabel(globals_.trans.string('AutoSaveDlg', 1, '[path]', filename))
-        label.setWordWrap(True)
-        hlayout.addWidget(label)
-        hlayout.setStretch(1, 1)
-
-        buttonbox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.No | QtWidgets.QDialogButtonBox.StandardButton.Yes)
-        buttonbox.accepted.connect(self.accept)
-        buttonbox.rejected.connect(self.reject)
-
-        mainlayout.addLayout(hlayout)
-        mainlayout.addWidget(buttonbox)
+        main_layout = QtWidgets.QVBoxLayout(self)
+        main_layout.addWidget(info)
+        main_layout.addWidget(button_box)
 
 
-class AreaChoiceDialog(QtWidgets.QDialog):
+class AreaImportDialog(QtWidgets.QDialog):
     """
     Dialog which lets you choose an area to import
     """
 
-    def __init__(self, areacount):
+    def __init__(self, area_count):
         """
         Creates and initializes the dialog
         """
-        QtWidgets.QDialog.__init__(self)
-        self.setWindowTitle(globals_.trans.string('AreaChoiceDlg', 0))
+        super().__init__()
+        self.setWindowTitle(globals_.trans.string('AreaImportDlg', 0))
         self.setWindowIcon(GetIcon('area'))
 
-        self.areaCombo = QtWidgets.QComboBox()
-        for i in range(areacount):
-            self.areaCombo.addItem(globals_.trans.string('AreaChoiceDlg', 1, '[num]', i + 1))
+        info_top = QtWidgets.QLabel()
+        info_top.setText(globals_.trans.string('AreaImportDlg', 3))
 
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        info_bottom = QtWidgets.QLabel()
+        curr_area_count = len(globals_.Level.areas) + 1
+        info_bottom.setText(globals_.trans.string('AreaImportDlg', 4, '[num]', curr_area_count))
 
-        buttonBox.accepted.connect(self.accept)
-        buttonBox.rejected.connect(self.reject)
+        self.area_combo = QtWidgets.QComboBox()
+        for i in range(area_count):
+            self.area_combo.addItem(globals_.trans.string('AreaImportDlg', 1, '[num]', i + 1))
 
-        mainLayout = QtWidgets.QVBoxLayout()
-        mainLayout.addWidget(self.areaCombo)
-        mainLayout.addWidget(buttonBox)
-        self.setLayout(mainLayout)
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        main_layout = QtWidgets.QVBoxLayout()
+        main_layout.addWidget(info_top)
+        main_layout.addWidget(self.area_combo)
+        main_layout.addWidget(info_bottom)
+        main_layout.addWidget(button_box)
+        self.setLayout(main_layout)
 
 
 class DiagnosticToolDialog(QtWidgets.QDialog):
     """
     Dialog which checks for errors within the level
     """
+    class Result(IntEnum):
+        """
+        Diagnostic check results
+        """
+        NO_ERROR = 0
+        WARNING = 1
+        CRITICAL = 2
 
     def __init__(self):
         """
         Creates and initializes the dialog
         """
-        QtWidgets.QDialog.__init__(self)
+        super().__init__()
         self.setWindowTitle(globals_.trans.string('Diag', 0))
         self.setWindowIcon(GetIcon('diagnostics'))
 
-        # CheckFunctions: (icon, description, function, iscritical)
-        self.CheckFunctions = (('objects', globals_.trans.string('Diag', 2), self.ObjsInTileset, True),
-                               ('sprites', globals_.trans.string('Diag', 3), self.CrashSprites, False),
-                               ('sprites', globals_.trans.string('Diag', 4), self.CrashSpriteSettings, True),
-                               ('sprites', globals_.trans.string('Diag', 5), self.TooManySprites, False),
-                               ('entrances', globals_.trans.string('Diag', 6), self.DuplicateEntranceIDs, True),
-                               ('entrances', globals_.trans.string('Diag', 7), self.NoStartEntrance, True),
-                               ('entrances', globals_.trans.string('Diag', 8), self.EntranceTooCloseToZoneEdge, False),
-                               ('entrances', globals_.trans.string('Diag', 9), self.EntranceOutsideOfZone, False),
-                               ('zones', globals_.trans.string('Diag', 10), self.TooManyZones, True),
-                               ('zones', globals_.trans.string('Diag', 11), self.NoZones, True),
-                               ('zones', globals_.trans.string('Diag', 12), self.ZonesTooClose, True),
-                               ('zones', globals_.trans.string('Diag', 13), self.ZonesTooCloseToAreaEdges, True),
-                               ('zones', globals_.trans.string('Diag', 14), self.BiasNotEnabled, False),
-                               ('zones', globals_.trans.string('Diag', 15), self.ZonesTooBig, True),
-                               )
+        # check_functions: (icon, description, function, is_critical)
+        self.check_functions = (
+            ('objects',   globals_.trans.string('Diag', 2),  self.check_invalid_obj,          True),
+            ('sprites',   globals_.trans.string('Diag', 3),  self.check_crash_sprite,         False),
+            ('sprites',   globals_.trans.string('Diag', 4),  self.check_sprite_param,         True),
+            ('sprites',   globals_.trans.string('Diag', 5),  self.check_sprite_max,           False),
+            ('entrances', globals_.trans.string('Diag', 6),  self.check_duplicate_entrance,   True),
+            ('entrances', globals_.trans.string('Diag', 7),  self.check_start_entrance,       True),
+            ('entrances', globals_.trans.string('Diag', 8),  self.check_entrance_near_edge,   False),
+            ('entrances', globals_.trans.string('Diag', 9),  self.check_entrance_out_zone,    False),
+            ('zones',     globals_.trans.string('Diag', 10), self.check_zone_max,             True),
+            ('zones',     globals_.trans.string('Diag', 11), self.check_no_zone_exist,        True),
+            ('zones',     globals_.trans.string('Diag', 12), self.check_zone_proximity,       True),
+            ('zones',     globals_.trans.string('Diag', 13), self.check_zone_on_area_edge,    True),
+            ('zones',     globals_.trans.string('Diag', 14), self.check_no_bias,              False),
+            ('zones',     globals_.trans.string('Diag', 15), self.check_zone_max_size,        True),
+            # Possible things to implement checks for:
+            # Non-location liquid in zone bigger than 8192 pixels (crest stops rendering)
+        )
 
-        box = QtWidgets.QGroupBox(globals_.trans.string('Diag', 17))
-        self.errorLayout = QtWidgets.QVBoxLayout()
-        result, numErrors = self.populateLists()
-        box.setLayout(self.errorLayout)
+        error_box = QtWidgets.QGroupBox(globals_.trans.string('Diag', 17))
+        self.error_layout = QtWidgets.QVBoxLayout()
+        result, numErrors = self.populate_list()
+        error_box.setLayout(self.error_layout)
 
-        self.updateHeader(result)
-        hW = QtWidgets.QWidget()
-        hW.setLayout(self.header)
+        self.update_header(result)
+        header_widget = QtWidgets.QWidget()
+        header_widget.setLayout(self.header)
 
-        self.buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Close)
-        self.buttonBox.accepted.connect(self.accept)
-        self.buttonBox.rejected.connect(self.reject)
+        self.button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Close)
+        self.button_box.accepted.connect(self.accept)
+        self.button_box.rejected.connect(self.reject)
 
-        self.mainLayout = QtWidgets.QVBoxLayout()
-        self.mainLayout.addWidget(hW)
-        self.mainLayout.addWidget(box)
-        self.mainLayout.addWidget(self.buttonBox)
-        self.setLayout(self.mainLayout)
+        self.main_layout = QtWidgets.QVBoxLayout()
+        self.main_layout.addWidget(header_widget)
+        self.main_layout.addWidget(error_box)
+        self.main_layout.addWidget(self.button_box)
+        self.setLayout(self.main_layout)
 
-    def updateHeader(self, testresult, secondTime=False):
+    def update_header(self, result: Result, not_first_run=False):
         """
-        Creates the header
+        Creates/updates the header
         """
         self.header = QtWidgets.QGridLayout()
         self.header.addWidget(QtWidgets.QLabel(globals_.trans.string('Diag', 18)), 0, 0, 1, 3)
 
-        pointsize = 14  # change this if you don't like it
-        if testresult is None:  # good
-            L = QtWidgets.QLabel()
-            L.setPixmap(GetIcon('check', True).pixmap(64, 64))
-            self.header.addWidget(L, 1, 0)
+        point_size = 14
+        icon_names = ['check', 'warning', 'delete']
+        widths = [64, 128, 72]
+        string_ids = [(19, 20), (21, 22), (23, 24)]
+        colors = [
+            QtGui.QColor(0, 200, 0),
+            QtGui.QColor(210, 210, 0),
+            QtGui.QColor(255, 0, 0)
+        ]
 
-            px = QtGui.QPixmap(64, pointsize)
-            px.fill(QtGui.QColor(0, 0, 0, 0))
-            p = QtGui.QPainter(px)
-            f = p.font()
-            f.setPointSize(pointsize)
-            p.setFont(f)
-            p.setPen(QtGui.QColor(0, 200, 0))
-            p.drawText(0, pointsize, globals_.trans.string('Diag', 19))
-            del p
-            L = QtWidgets.QLabel()
-            L.setPixmap(px)
-            self.header.addWidget(L, 1, 1)
+        icon_label = QtWidgets.QLabel()
+        icon_label.setPixmap(GetIcon(icon_names[result], True).pixmap(64, 64))
+        self.header.addWidget(icon_label, 1, 0)
 
-            self.header.addWidget(QtWidgets.QLabel(globals_.trans.string('Diag', 20)), 1, 2)
-        elif not testresult:  # warnings
-            L = QtWidgets.QLabel()
-            L.setPixmap(GetIcon('warning', True).pixmap(64, 64))
-            self.header.addWidget(L, 1, 0)
+        if result == self.Result.WARNING:
+            pixmap = QtGui.QPixmap(widths[result], int(point_size * 3 / 2))
+        else:
+            pixmap = QtGui.QPixmap(widths[result], point_size)
+        pixmap.fill(QtGui.QColor(0, 0, 0, 0))
+        painter = QtGui.QPainter(pixmap)
 
-            px = QtGui.QPixmap(128, int(pointsize * 3 / 2))
-            px.fill(QtGui.QColor(0, 0, 0, 0))
-            p = QtGui.QPainter(px)
-            f = p.font()
-            f.setPointSize(pointsize)
-            p.setFont(f)
-            p.setPen(QtGui.QColor(210, 210, 0))
-            p.drawText(0, pointsize, globals_.trans.string('Diag', 21))
-            del p
-            L = QtWidgets.QLabel()
-            L.setPixmap(px)
-            self.header.addWidget(L, 1, 1)
+        font = painter.font()
+        font.setPointSize(point_size)
+        painter.setFont(font)
+        painter.setPen(colors[result])
+        painter.drawText(0, point_size, globals_.trans.string('Diag', string_ids[result][0]))
 
-            self.header.addWidget(QtWidgets.QLabel(globals_.trans.string('Diag', 22)), 1, 2)
-        else:  # bad
-            L = QtWidgets.QLabel()
-            L.setPixmap(GetIcon('delete', True).pixmap(64, 64))
-            self.header.addWidget(L, 1, 0)
+        del painter
 
-            px = QtGui.QPixmap(72, pointsize)
-            px.fill(QtGui.QColor(0, 0, 0, 0))
-            p = QtGui.QPainter(px)
-            f = p.font()
-            f.setPointSize(pointsize)
-            p.setFont(f)
-            p.setPen(QtGui.QColor(255, 0, 0))
-            p.drawText(0, pointsize, globals_.trans.string('Diag', 23))
-            del p
-            L = QtWidgets.QLabel()
-            L.setPixmap(px)
-            self.header.addWidget(L, 1, 1)
+        pix_label = QtWidgets.QLabel()
+        pix_label.setPixmap(pixmap)
+        self.header.addWidget(pix_label, 1, 1)
 
-            self.header.addWidget(QtWidgets.QLabel(globals_.trans.string('Diag', 24)), 1, 2)
+        self.header.addWidget(QtWidgets.QLabel(globals_.trans.string('Diag', string_ids[result][1])), 1, 2)
 
-        if secondTime:
-            w = QtWidgets.QWidget()
-            w.setLayout(self.header)
-            self.mainLayout.takeAt(0).widget().hide()
-            self.mainLayout.insertWidget(0, w)
+        if not_first_run:
+            widget = QtWidgets.QWidget()
+            widget.setLayout(self.header)
 
-    def populateLists(self):
+            item = self.main_layout.takeAt(0)
+            if item is not None:
+                item_widget = item.widget()
+                if item_widget is not None:
+                    item_widget.hide()
+
+            self.main_layout.insertWidget(0, widget)
+
+    def populate_list(self) -> tuple[Result, int]:
         """
         Runs the check functions and adds items to the list if needed
         """
-        self.buttonHandlers = []
+        self.button_handlers = []
 
-        self.errorList = QtWidgets.QListWidget()
-        self.errorList.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.MultiSelection)
+        self.error_list = QtWidgets.QListWidget()
+        self.error_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.MultiSelection)
 
-        foundAnything = False
-        foundCritical = False
-        for ico, desc, fxn, isCritical in self.CheckFunctions:
-            if fxn('c'):
+        has_error = False
+        is_critical = False
 
-                foundAnything = True
-                if isCritical: foundCritical = True
+        for icon, description, func, critical in self.check_functions:
+            if func('c'):
+                has_error = True
+                if critical:
+                    is_critical = True
 
                 item = QtWidgets.QListWidgetItem()
-                item.setText(desc)
-                if isCritical:
+                item.setText(description)
+                if critical:
                     item.setForeground(QtGui.QColor(255, 0, 0))
                 else:
                     item.setForeground(QtGui.QColor(172, 172, 0))
-                item.setIcon(GetIcon(ico))
-                item.fix = fxn
+                item.setIcon(GetIcon(icon))
+                # Not sure how to fix the typing here...
+                item.fix = func
 
-                self.errorList.addItem(item)
+                self.error_list.addItem(item)
 
-        self.fixBtn = QtWidgets.QPushButton(globals_.trans.string('Diag', 25))
-        self.fixBtn.setToolTip(globals_.trans.string('Diag', 26))
-        self.fixBtn.clicked.connect(self.FixSelected)
-        if not foundAnything: self.fixBtn.setEnabled(False)
+        self.fix_button = QtWidgets.QPushButton(globals_.trans.string('Diag', 25))
+        self.fix_button.setToolTip(globals_.trans.string('Diag', 26))
+        self.fix_button.clicked.connect(self.fix_selected)
+        if not has_error:
+            self.fix_button.setEnabled(False)
 
-        self.errorLayout.addWidget(self.errorList)
-        self.errorLayout.addWidget(self.fixBtn)
+        self.error_layout.addWidget(self.error_list)
+        self.error_layout.addWidget(self.fix_button)
 
         # Automatically select first item since its "focused" by default, which makes it
         # look selected, and it can be super confusing
-        if self.errorList.count() != 0:
-            self.errorList.item(0).setSelected(True)
+        if self.error_list.count() != 0:
+            item = self.error_list.item(0)
+            if item is not None:
+                item.setSelected(True)
 
-        if foundCritical:
-            return True, len(self.buttonHandlers)
-        elif foundAnything:
-            return False, len(self.buttonHandlers)
-        return None, len(self.buttonHandlers)
+        if is_critical:
+            return self.Result.CRITICAL, len(self.button_handlers)
+        elif has_error:
+            return self.Result.WARNING, len(self.button_handlers)
 
-    def FixSelected(self):
+        return self.Result.NO_ERROR, len(self.button_handlers)
+
+    def fix_selected(self):
         """
         Fixes the selected items
         """
@@ -777,46 +781,50 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         # Ask the user to make sure
         btn = QtWidgets.QMessageBox.warning(None, globals_.trans.string('Diag', 27), globals_.trans.string('Diag', 28),
                                             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
-        if btn != QtWidgets.QMessageBox.StandardButton.Yes: return
+        if btn != QtWidgets.QMessageBox.StandardButton.Yes:
+            return
 
         # Show the 'Fixing...' box while fixing
-        pleasewait = QtWidgets.QProgressDialog()
-        pleasewait.setLabelText(globals_.trans.string('Diag', 29))  # Fixing...
-        pleasewait.setMinimum(0)
-        pleasewait.setMaximum(100)
-        pleasewait.setAutoClose(True)
-        pleasewait.open()
-        pleasewait.show()
-        pleasewait.setValue(0)
+        fix_progress = QtWidgets.QProgressDialog()
+        fix_progress.setLabelText(globals_.trans.string('Diag', 29))  # Fixing...
+        fix_progress.setMinimum(0)
+        fix_progress.setMaximum(100)
+        fix_progress.setAutoClose(True)
+        fix_progress.open()
+        fix_progress.show()
+        fix_progress.setValue(0)
 
         # Fix them
-        for index, item in enumerate(self.errorList.selectedIndexes()[:]):
-            listItem = self.errorList.itemFromIndex(item)
+        for index, item in enumerate(self.error_list.selectedIndexes()[:]):
+            listItem = self.error_list.itemFromIndex(item)
             try:
                 listItem.fix()
                 SetDirty()
             except Exception:
-                pass  # fail silently
-            self.errorList.takeItem(item.row())
+                pass  # Fail silently
 
-            total = len(self.errorList.selectedIndexes())
-            if total != 0: pleasewait.setValue(int(index / total * 100))
+            self.error_list.takeItem(item.row())
+
+            total = len(self.error_list.selectedIndexes())
+            if total != 0: fix_progress.setValue(int(index / total * 100))
 
         # Remove the 'Fixing...' box
-        pleasewait.setValue(100)
-        del pleasewait
+        fix_progress.setValue(100)
+        del fix_progress
 
         # Gray out the Fix button if there are no more problems
-        if self.errorList.count() == 0: self.fixBtn.setEnabled(False)
+        if self.error_list.count() == 0:
+            self.fix_button.setEnabled(False)
 
-    def ObjsInTileset(self, mode='f'):
+
+    # Check functions begin here
+    def check_invalid_obj(self, mode='f'):
         """
         Checks for any objects which cannot be found in the tilesets
         """
         deletions = []
         for layer in globals_.Area.layers:
             for obj in layer:
-
                 if globals_.ObjectDefinitions[obj.tileset] is None:
                     deletions.append(obj)
                 elif globals_.ObjectDefinitions[obj.tileset][obj.type] is None:
@@ -826,119 +834,165 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         if mode == 'c':
             return has_problem
 
-        if not has_problem: return
+        if not has_problem:
+            return
 
-        for obj in deletions:
-            obj.delete()
-            obj.setSelected(False)
-            globals_.mainWindow.scene.removeItem(obj)
+        if globals_.mainWindow is not None:
+            for obj in deletions:
+                obj.delete()
+                obj.setSelected(False)
+                globals_.mainWindow.scene.removeItem(obj)
 
-        globals_.mainWindow.levelOverview.update()
+            globals_.mainWindow.levelOverview.update()
 
-    def CrashSprites(self, mode='f'):
+    def check_crash_sprite(self, mode='f'):
         """
-        Checks if there are any sprites which are known to be crashy and cause problems often
+        Checks if there are any sprites which are known to crash or cause problems often
         """
-        # TODO: Fill out this list, if needed
+        # TODO: Fill out this list, add support for sprites that only crash in Newer
         problems = [121] # Collision Switcher
 
-        founds = []
+        crash_sprites = []
         for sprite in globals_.Area.sprites:
-            if sprite.type in problems: founds.append(sprite)
+            if sprite.type in problems:
+                crash_sprites.append(sprite)
 
         if mode == 'c':
-            return bool(founds)
+            return bool(crash_sprites)
         else:
-            for sprite in founds:
+            sprite: SpriteItem
+            for sprite in crash_sprites:
                 sprite.delete()
                 sprite.setSelected(False)
-                globals_.mainWindow.scene.removeItem(sprite)
-                globals_.mainWindow.levelOverview.update()
+                if globals_.mainWindow is not None:
+                    globals_.mainWindow.scene.removeItem(sprite)
+                    globals_.mainWindow.levelOverview.update()
 
-    def CrashSpriteSettings(self, mode='f'):
+    # TODO: Split 'missing resource' checks into their own function (153 needs it too)
+    def check_sprite_param(self, mode='f'):
         """
         Checks for sprite settings which are known to cause major glitches and crashes
         """
-        checkfor = []
+        check_list = []
         problem = False
-        for sprite in globals_.Area.sprites:
-            # ask somebody about 153 for clarification, the add it to the fixers
-            if sprite.type == 166 and (sprite.spritedata[2] & 0xF0) >> 4 == 4: problem = True
-            #           also double-check nyb10, then add it to the fixers
-            if sprite.type == 171 and sprite.spritedata[4] & 0xF != 1: problem = True
-            if sprite.type == 203 and sprite.spritedata[4] & 0xF == 1:
-                if [454, 432] not in checkfor: checkfor.append([454, 432])
-            if sprite.type == 247 and sprite.spritedata[5] & 0xF == 1: problem = True
-            if sprite.type == 323:
-                if sprite.spritedata[4] & 0xF == 4: problem = True
-                if sprite.spritedata[2] & 0xF < (sprite.spritedata[3] & 0xF0) >> 4: problem = True
-            if sprite.type == 449 and (sprite.spritedata[5] & 0xF0) >> 4 == 1: problem = True
-            if sprite.type == 479 and sprite.spritedata[4] & 0xF == 1: problem = True
-            if sprite.type == 481:
-                if sprite.spritedata[5] & 0xF > 2: problem = True
-                if [419] not in checkfor: checkfor.append([419])
 
-        # check for sprites which are depended on by other sprites
-        new = list(checkfor)
-        for item in checkfor:
+        sprite: SpriteItem
+        for sprite in globals_.Area.sprites:
+            # Snake Block, end-of-path behavior is above 3
+            if sprite.type == 166 and ((sprite.spritedata[2] & 0xF0) >> 4) > 3:
+                problem = True
+
+            # Also double-check nyb10, then add it to the fixers
+            # Mushroom in Bubble, spawns player
+            if sprite.type == 171 and sprite.spritedata[4] & 0xF != 1:
+                problem = True
+
+            # Chest, check if we need a Toad
+            if sprite.type == 203 and sprite.spritedata[4] & 0xF == 1:
+                if [454, 432] not in check_list:
+                    check_list.append([454, 432])
+
+            # Cheep Cheep Formation, shape is 'Filled Arrow'
+            # TODO: Investigate, this doesn't crash the game?
+            if sprite.type == 247 and sprite.spritedata[5] & 0xF == 1:
+                problem = True
+
+            # Boo circle
+            if sprite.type == 323:
+                # Expand behavior
+                if sprite.spritedata[4] & 0xF == 4:
+                    problem = True
+
+                # Greater Radius < Lesser Radius
+                if sprite.spritedata[2] & 0xF < (sprite.spritedata[3] & 0xF0) >> 4:
+                    problem = True
+
+            # Bowser Fireball Spawner, position mod 1 can sometimes freeze the game
+            if sprite.type == 449 and (sprite.spritedata[5] & 0xF0) >> 4 == 1:
+                problem = True
+
+            # Giant Bowser Switch, has Multi-Use enabled
+            if sprite.type == 479 and sprite.spritedata[4] & 0xF != 0:
+                problem = True
+
+            # Rubble Block
+            if sprite.type == 481:
+                # Invalid size
+                if sprite.spritedata[5] & 0xF > 1:
+                    problem = True
+
+                # Check for resource
+                if [419] not in check_list:
+                    check_list.append([419])
+
+        # Check for sprites which depend on others' resources
+        new = list(check_list)
+        for item in check_list:
             for sprite in globals_.Area.sprites:
                 if sprite.type in item:
                     try:
                         new.remove(item)
                     except Exception:
-                        pass  # probably already removed it
-        checkfor = new
-        if checkfor: problem = True
+                        pass
+        check_list = new
+
+        if check_list:
+            problem = True
 
         if mode == 'c':
             return problem
+
         elif problem:
-            addsprites = []
+            add_sprites = []
             for sprite in globals_.Area.sprites:
-                # :(
-                if sprite.type == 166 and (
-                    sprite.spritedata[2] & 0xF0) >> 4 == 4: sprite.spritedata = sprite.spritedata[
-                                                                                0:2] + ' ' + sprite.spritedata[3:]
-                if sprite.type == 171 and sprite.spritedata[4] & 0xF != 1: sprite.spritedata = sprite.spritedata[
-                                                                                               0:4] + chr(
-                    1) + sprite.spritedata[5:]
+                if sprite.type == 166 and (sprite.spritedata[2] & 0xF0) >> 4 > 3:
+                    sprite.spritedata = sprite.spritedata[0:2] + ' ' + sprite.spritedata[3:]
+
+                if sprite.type == 171 and sprite.spritedata[4] & 0xF != 1:
+                    sprite.spritedata = sprite.spritedata[0:4] + chr(1) + sprite.spritedata[5:]
+
                 if sprite.type == 203 and sprite.spritedata[4] & 0xF == 1:
-                    if [454, 432] in checkfor:
-                        addsprites.append((454, sprite.objx - 128, sprite.objy - 128))
-                if sprite.type == 247 and sprite.spritedata[5] & 0xF == 1: sprite.spritedata = sprite.spritedata[
-                                                                                               0:5] + chr(
-                    0) + sprite.spritedata[6:]
+                    if [454, 432] in check_list:
+                        add_sprites.append((454, sprite.objx - 128, sprite.objy - 128))
+
+                if sprite.type == 247 and sprite.spritedata[5] & 0xF == 1:
+                    sprite.spritedata = sprite.spritedata[0:5] + chr(0) + sprite.spritedata[6:]
+
                 if sprite.type == 323:
-                    if sprite.spritedata[4] & 0xF == 4: sprite.spritedata = sprite.spritedata[0:4] + chr(
-                        1) + sprite.spritedata[5:]
+                    if sprite.spritedata[4] & 0xF == 4:
+                        sprite.spritedata = sprite.spritedata[0:4] + chr(1) + sprite.spritedata[5:]
+
                     if sprite.spritedata[2] & 0xF < (sprite.spritedata[3] & 0xF0) >> 4:
-                        sprite.spritedata = sprite.spritedata[0:2] + chr(
-                            (sprite.spritedata[3] & 0xF0) >> 4) + sprite.spritedata[3:]
-                if sprite.type == 449 and (
-                    sprite.spritedata[5] & 0xF0) >> 4 == 1: sprite.spritedata = sprite.spritedata[0:5] + chr(
-                    0) + sprite.spritedata[6:]
+                        sprite.spritedata = sprite.spritedata[0:2] + chr((sprite.spritedata[3] & 0xF0) >> 4) + sprite.spritedata[3:]
+
+                if sprite.type == 449 and (sprite.spritedata[5] & 0xF0) >> 4 == 1:
+                    sprite.spritedata = sprite.spritedata[0:5] + chr(0) + sprite.spritedata[6:]
+
                 if sprite.type == 479 and sprite.spritedata[4] & 0xF == 1:
                     if (sprite.spritedata[4] & 0xF0) >> 4 == 1:
                         sprite.spritedata = sprite.spritedata[0:4] + chr(0x10) + sprite.spritedata[5:]
                     else:
                         sprite.spritedata = sprite.spritedata[0:4] + chr(0) + sprite.spritedata[5:]
+
                 if sprite.type == 481:
-                    if sprite.spritedata[5] & 0xF > 2: sprite.spritedata = sprite.spritdata[0:5] + chr(
-                        2) + sprite.spritedata[6:]
-                    addsprites.append((419, sprite.objx - 128, sprite.objy - 128))
+                    if sprite.spritedata[5] & 0xF > 2:
+                        sprite.spritedata = sprite.spritedata[0:5] + chr(2) + sprite.spritedata[6:]
 
-            for id_, x, y in addsprites:
-                globals_.mainWindow.CreateSprite(x, y, id_, bytes(8))
+                    add_sprites.append((419, sprite.objx - 128, sprite.objy - 128))
 
-            globals_.mainWindow.scene.update()
+            if globals_.mainWindow is not None:
+                for id_, x, y in add_sprites:
+                    globals_.mainWindow.CreateSprite(x, y, id_, bytes(8))
 
-    def TooManySprites(self, mode='f'):
+                globals_.mainWindow.scene.update()
+
+    def check_sprite_max(self, mode='f'):
         """
-        Determines if the # of sprites in the current area is > max_
+        Determines if the number of sprites in the current area is > 1000
         """
-        max_ = 1000
+        max_sprite_num = 1000
 
-        problem = len(globals_.Area.sprites) > max_
+        problem = len(globals_.Area.sprites) > max_sprite_num
 
         if mode == 'c':
             return problem
@@ -946,27 +1000,30 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         if not problem:
             return None
 
-        for spr in globals_.Area.sprites[max_:]:
-            spr.delete()
-            spr.setSelected(False)
-            globals_.mainWindow.scene.removeItem(spr)
+        if globals_.mainWindow is not None:
+            sprite: SpriteItem
+            for sprite in globals_.Area.sprites[max_sprite_num:]:
+                sprite.delete()
+                sprite.setSelected(False)
+                globals_.mainWindow.scene.removeItem(sprite)
 
-        globals_.Area.sprites = globals_.Area.sprites[:max_]
-        globals_.mainWindow.scene.update()
-        globals_.mainWindow.levelOverview.update()
+            globals_.Area.sprites = globals_.Area.sprites[:max_sprite_num]
+            globals_.mainWindow.scene.update()
+            globals_.mainWindow.levelOverview.update()
 
-    def DuplicateEntranceIDs(self, mode='f'):
+    def check_duplicate_entrance(self, mode='f'):
         """
-        mode 'c': Checks for the prescence of multiple entrances with the same ID
-        mode 'f': Fixes the entrance id of the duplicate entrances
+        Checks for entrances with duplicate IDs
         """
         ids = []
+
+        ent: EntranceItem
         for ent in globals_.Area.entrances:
             if ent.entid in ids:
                 if mode == 'c':
-                    return False
+                    return True
 
-                # find the lowest available ID
+                # Find the lowest available ID
                 getids = [False for _ in range(256)]
                 for check in globals_.Area.entrances:
                     getids[check.entid] = True
@@ -981,68 +1038,81 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         return False
 
-    def NoStartEntrance(self, mode='f'):
+    def check_start_entrance(self, mode='f'):
         """
         Determines if there is a start entrance or not
         """
+        # Only applies to Area 1
         if globals_.Area.areanum != 1:
             return False
 
-        start = None
+        start: EntranceItem | None = None
+        end: EntranceItem
         for ent in globals_.Area.entrances:
             if ent.entid == globals_.Area.startEntrance:
                 start = ent
             else:
                 problem = False
+
         problem = start is None
 
         if mode == 'c':
             return problem
         elif problem:
-            # make an entrance at 1024, 512 with an ID of globals_.Area.startEntrance
-            globals_.mainWindow.CreateEntrance(1024, 512, globals_.Area.startEntrance)
+            if globals_.mainWindow is not None:
+                # TODO: Maybe place it 6 blocks right, 3 blocks up from Zone 1's bottom-left corner?
+                globals_.mainWindow.CreateEntrance(1024, 512, globals_.Area.startEntrance)
 
-    def EntranceTooCloseToZoneEdge(self, mode='f'):
+    def check_entrance_near_edge(self, mode='f'):
         """
-        Checks if the main entrance is too close to the left zone edge
+        Checks if the start entrance is too close to the left zone edge
         """
-        offset = 24 * 8  # 8 blocks away from the left zone edge
-        if not globals_.Area.zones: return False
+        if not globals_.Area.zones:
+            return False
 
-        # if the ent isn't even in the zone, return
-        if self.EntranceOutsideOfZone('c'): return False
+        # If the entrance isn't even in a zone, return
+        if self.check_entrance_out_zone('c'):
+            return False
 
-        start = None
+        start: EntranceItem | None = None
+        ent: EntranceItem
         for ent in globals_.Area.entrances:
-            if ent.entid == globals_.Area.startEntrance: start = ent
-        if start is None: return False
+            if ent.entid == globals_.Area.startEntrance:
+                start = ent
 
-        firstzone_idx = SLib.MapPositionToZoneID(globals_.Area.zones, start.objx, start.objy)
+        if start is None:
+            return False
 
-        if firstzone_idx == -1: return False
+        first_zone_idx = SLib.MapPositionToZoneID(globals_.Area.zones, start.objx, start.objy)
+        if first_zone_idx == -1:
+            return False
 
-        firstzone = globals_.Area.zones[firstzone_idx]
+        first_zone: ZoneItem = globals_.Area.zones[first_zone_idx]
+        offset = 24 * 8  # 8 blocks from left edge
 
-        problem = start.objx < firstzone.objx + offset
+        problem = start.objx < first_zone.objx + offset
         if mode == 'c':
             return problem
         elif problem:
-            start.setPos((firstzone.objx + offset) * 1.5, start.objy * 1.5)
+            start.setPos((first_zone.objx + offset) * 1.5, start.objy * 1.5)
 
-    def EntranceOutsideOfZone(self, mode='f'):
+    def check_entrance_out_zone(self, mode='f'):
         """
         Checks if any entrances are not inside of a zone
         """
-        left_offset = 24 * 8  # 8 blocks away from the left zone edge
-        if not globals_.Area.zones: return False
+        if not globals_.Area.zones:
+            return False
 
+        left_offset = 24 * 8  # 8 blocks away from the left zone edge
+        ent: EntranceItem
         for ent in globals_.Area.entrances:
             x = ent.objx
             y = ent.objy
             zone_idx = SLib.MapPositionToZoneID(globals_.Area.zones, x, y)
+            if zone_idx == -1:
+                return False
 
-            if zone_idx == -1: return False
-            zone = globals_.Area.zones[zone_idx]
+            zone: ZoneItem = globals_.Area.zones[zone_idx]
 
             if x < zone.objx:
                 problem = True
@@ -1064,23 +1134,29 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                     newx = zone.objx + zone.width - 16
                 else:
                     newx = ent.objx
+
+                # Entrances can be placed a few blocks above the top zone border
                 if y < (zone.objy - 64):
-                    newy = zone.objy - 64  # entrances can be placed a few blocks above the top zone border
+                    newy = zone.objy - 64
                 elif y > zone.objy + zone.height:
                     newy = zone.objy + zone.height - 32
                 else:
                     newy = ent.objy
+    
                 ent.objx = newx
                 ent.objy = newy
                 ent.setPos(int(newx * 1.5), int(newy * 1.5))
-                globals_.mainWindow.scene.update()
+
+                if globals_.mainWindow is not None:
+                    globals_.mainWindow.scene.update()
 
         return False
 
-    def TooManyZones(self, mode='f'):
+    def check_zone_max(self, mode='f'):
         """
         Checks if there are too many zones in this area
         """
+
         problem = len(globals_.Area.zones) > 6
 
         if mode == 'c':
@@ -1088,10 +1164,11 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         elif problem:
             globals_.Area.zones = globals_.Area.zones[:6]
 
-            globals_.mainWindow.scene.update()
-            globals_.mainWindow.levelOverview.update()
+            if globals_.mainWindow is not None:
+                globals_.mainWindow.scene.update()
+                globals_.mainWindow.levelOverview.update()
 
-    def NoZones(self, mode='f'):
+    def check_no_zone_exist(self, mode='f'):
         """
         Checks if there are no zones in this area
         """
@@ -1102,104 +1179,120 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         if not problem:
             return
 
-        # make a default zone
-        globals_.mainWindow.CreateZone(16, 16)
+        # Make a default zone
+        if globals_.mainWindow is not None:
+            globals_.mainWindow.CreateZone(16, 16)
 
-    def ZonesTooClose(self, mode='f'):
+    def check_zone_proximity(self, mode='f'):
         """
         Checks for any zones which are too close together or are overlapping
         """
-        padding = 4  # minimum blocks between zones
+        padding = 4 # Minimum blocks between zones
+        check: ZoneItem
+        against: ZoneItem
 
-        for check in reversed(
-                globals_.Area.zones):  # reversed because generally zone 0 is most important, 1 is less, 2 is lesser, etc.
-            crect = check.ZoneRect
+        # Reversed because generally Zone 1 is most important, 1 is less, 2 is lesser, etc.
+        for check in reversed(globals_.Area.zones):
+            chk_rect = check.ZoneRect
             for against in globals_.Area.zones:
-                if check is against: continue
-                arect = against.ZoneRect.adjusted(-16 * padding, -16 * padding, 16 * padding, 16 * padding)
+                if check is against:
+                    continue
 
-                if crect.intersects(arect):
+                against_rect = against.ZoneRect.adjusted(-16 * padding, -16 * padding, 16 * padding, 16 * padding)
+                if chk_rect.intersects(against_rect):
                     if mode == 'c':
                         return True
                     else:
-                        # AAAAAAAAAAA
-                        center = crect.center()
+                        center = chk_rect.center()
 
-                        if arect.contains(crect) or crect.contains(arect):
-                            # one inside the other
+                        # Figure out what to adjust
+                        if against_rect.contains(chk_rect) or chk_rect.contains(against_rect):
+                            # One inside the other
                             axes = [None, 'both']
-                        elif abs(center.x() - arect.center().x()) > abs(center.y() - arect.center().y()):
-                            # horizontally positioned
-                            if arect.center().x() > center.x():
-                                # shrink the right
+                        elif abs(center.x() - against_rect.center().x()) > abs(center.y() - against_rect.center().y()):
+                            # Horizontally positioned
+                            if against_rect.center().x() > center.x():
+                                # Shrink the right
                                 axes = [None, 'w']
                             else:
-                                # shrink the left
+                                # Shrink the left
                                 axes = ['x', 'w']
                         else:
-                            # vertically positioned
-                            if arect.center().y() < center.y():
-                                # shrink the top
+                            # Vertically positioned
+                            if against_rect.center().y() < center.y():
+                                # Shrink the top
                                 axes = ['y', 'h']
                             else:
-                                # shrink the bottom
+                                # Shrink the bottom
                                 axes = [None, 'h']
 
-                        # the simplest method :D
-                        checkzone = check.ZoneRect
-                        oldCoords = checkzone.getCoords()
-                        while checkzone.intersects(arect):
-                            if axes[0] is None:
-                                pass
-                            elif axes[0] == 'x':
-                                check.objx += 1
-                            else:
-                                check.objy += 1
-
-                            if axes[1] == 'both':
-                                check.objx += 1
-                                check.objy += 1
-                            elif axes[1] == 'w':
-                                check.width -= 1
-                            else:
-                                check.height -= 1
-                            if check.width < 204: check.width = 204
-                            if check.height < 112: check.height = 112
-
-                            check.UpdateRects()
-                            check.setPos(int(check.objx * 1.5), int(check.objy * 1.5))
-                            globals_.mainWindow.scene.update()
+                        # Make the actual adjustments
+                        if globals_.mainWindow is not None:
                             checkzone = check.ZoneRect
-
-                            if oldCoords == checkzone.getCoords(): break
                             oldCoords = checkzone.getCoords()
+                            while checkzone.intersects(against_rect):
+                                if axes[0] is None:
+                                    pass
+                                elif axes[0] == 'x':
+                                    check.objx += 1
+                                else:
+                                    check.objy += 1
 
+                                if axes[1] == 'both':
+                                    check.objx += 1
+                                    check.objy += 1
+                                elif axes[1] == 'w':
+                                    check.width -= 1
+                                else:
+                                    check.height -= 1
+
+                                check.width = max(check.width, 204)
+                                check.height = max(check.height, 112)
+
+                                check.UpdateRects()
+                                check.setPos(int(check.objx * 1.5), int(check.objy * 1.5))
+                                globals_.mainWindow.scene.update()
+                                checkzone = check.ZoneRect
+
+                                if oldCoords == checkzone.getCoords():
+                                    break
+
+                                oldCoords = checkzone.getCoords()
+
+                            globals_.mainWindow.scene.update()
+
+        return False
+
+    def check_zone_on_area_edge(self, mode='f'):
+        """
+        Checks for any zones which are too close to the area edges, and moves them
+        """
+        area_width = 16384
+        area_height = 8192
+
+        zone: ZoneItem
+        for zone in globals_.Area.zones:
+            if (zone.objx < 16) or (zone.objy < 16) or (zone.objx + zone.width > area_width - 16) or (zone.objy + zone.height > area_height - 16):
+                if mode == 'c':
+                    return False
+                else:
+                    zone.objx = max(zone.objx, 16)
+                    zone.objy = max(zone.objx, 16)
+
+                    if zone.objx + zone.width > area_width - 16:
+                        zone.width = area_width - zone.objx - 16
+
+                    if zone.objy + zone.height > area_height - 16:
+                        zone.height = area_height - zone.objy - 16
+                    zone.UpdateRects()
+
+                    if globals_.mainWindow is not None:
                         globals_.mainWindow.scene.update()
 
         return False
 
-    def ZonesTooCloseToAreaEdges(self, mode='f'):
-        """
-        Checks for any zones which are too close to the area edges, and moves them
-        """
-        areaw = 16384
-        areah = 8192
-
-        for z in globals_.Area.zones:
-            if (z.objx < 16) or (z.objy < 16) or (z.objx + z.width > areaw - 16) or (z.objy + z.height > areah - 16):
-                if mode == 'c':
-                    return False
-                else:
-                    if z.objx < 16: z.objx = 16
-                    if z.objy < 16: z.objy = 16
-                    if z.objx + z.width > areaw - 16: z.width = areaw - z.objx - 16
-                    if z.objy + z.height > areah - 16: z.height = areah - z.objy - 16
-                    z.UpdateRects()
-                    globals_.mainWindow.scene.update()
-
-        return False
-
-    def BiasNotEnabled(self, mode='f'):
+    # TODO: What is this??? Needs more research
+    def check_no_bias(self, mode='f'):
         """
         Checks for any zones which do not have bias enabled
         """
@@ -1217,150 +1310,40 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                '4 2': (1, 3),
                '4 7': (4, 3)}
 
-        for z in globals_.Area.zones:
-            check = str(z.cammode) + ' ' + str(z.camzoom)
+        zone: ZoneItem
+        for zone in globals_.Area.zones:
+            check = str(zone.cammode) + ' ' + str(zone.camzoom)
             if check in fix:
                 if mode == 'c':
                     return False
                 else:
-                    z.cammode = fix[check][0]
-                    z.camzoom = fix[check][1]
+                    zone.cammode = fix[check][0]
+                    zone.camzoom = fix[check][1]
 
         return False
 
-    def ZonesTooBig(self, mode='f'):
+    # TODO: Fix this? Also make it actually useful
+    def check_zone_max_size(self, mode='f'):
         """
         Checks for any zones which may be too large
         """
-        maxarea = 16384  # blocks (approximated value)
+        max_area = 16384 # Blocks (approximated value)
 
-        for z in globals_.Area.zones:
-            if int((z.width / 32) * (z.height / 32)) > maxarea * 8:
+        zone: ZoneItem
+        for zone in globals_.Area.zones:
+            if int((zone.width / 32) * (zone.height / 32)) > max_area * 8:
                 if mode == 'c':
                     return False
-                else:  # shrink it by whichever dimension is larger
-                    if z.width > z.height:
-                        z.width = int(256 * maxarea / z.height)
+                else:
+                    # Shrink it by the larger dimension
+                    if zone.width > zone.height:
+                        zone.width = int(256 * max_area / zone.height)
                     else:
-                        z.height = int(256 * maxarea / z.width)
-                    z.UpdateRects()
-                    globals_.mainWindow.scene.update()
+                        zone.height = int(256 * max_area / zone.width)
+                    zone.UpdateRects()
 
-        return False
-
-    def ZonesTooSmall(self, mode='f'):
-        """
-        Checks for any zones which may be too small for their zoom level
-        """
-        MinimumSize = (484, 272)
-        ##                        (484, 272), # -1
-        ##                        (484, 272), # 0
-        ##                        (484, 272), # 1
-        ##                        (540, 304), # 2
-        ##                        (596, 336), # 3
-        ##                        (796, 448)) # 4
-        ##        ZoomLevels = (3,
-        ##                      3,
-        ##                      6,
-        ##                      6,
-        ##                      5,
-        ##                      None,
-        ##                      4,
-        ##                      4,
-        ##                      0,
-        ##                      1,
-        ##                      None,
-        ##                      5)
-
-        fixes = []
-        for z in globals_.Area.zones:
-            if z.width < MinimumSize[0]:
-                fixes.append(z)
-            elif z.height < MinimumSize[1]:
-                fixes.append(z)
-
-        if mode == 'c':
-            return bool(fixes)
-
-        for z in fixes:
-            if z.width < MinimumSize[0]: z.width = MinimumSize[0]
-            if z.height < MinimumSize[1]: z.height = MinimumSize[1]
-            z.prepareGeometryChange()
-            z.UpdateRects()
-
-        globals_.mainWindow.scene.update()
-        globals_.mainWindow.levelOverview.update()
-
-
-class InfoPreviewWidget(QtWidgets.QWidget):
-    """
-    Widget that shows a preview of the level metadata info - available in vertical & horizontal flavors
-    """
-
-    def __init__(self, direction):
-        """
-        Creates and initializes the widget
-        """
-        QtWidgets.QWidget.__init__(self)
-        self.direction = direction
-
-        self.Label1 = QtWidgets.QLabel('')
-        if self.direction == QtCore.Qt.Horizontal: self.Label2 = QtWidgets.QLabel('')
-        self.updateLabels()
-
-        self.mainLayout = QtWidgets.QHBoxLayout()
-        self.mainLayout.addWidget(self.Label1)
-        if self.direction == QtCore.Qt.Horizontal: self.mainLayout.addWidget(self.Label2)
-        self.setLayout(self.mainLayout)
-
-        if self.direction == QtCore.Qt.Horizontal: self.setMinimumWidth(256)
-
-    def updateLabels(self):
-        """
-        Updates the widget labels
-        """
-        if (not globals_.Area) or not hasattr(globals_.Area, 'filename'):  # can't get level metadata if there's no level
-            self.Label1.setText('')
-            if self.direction == QtCore.Qt.Horizontal: self.Label2.setText('')
-            return
-
-        a = [  # MUST be a list, not a tuple
-            globals_.mainWindow.fileTitle,
-            globals_.Area.Title,
-            globals_.trans.string('InfoDlg', 8, '[name]', globals_.Area.Creator),
-            globals_.trans.string('InfoDlg', 5) + ' ' + globals_.Area.Author,
-            globals_.trans.string('InfoDlg', 6) + ' ' + globals_.Area.Group,
-            globals_.trans.string('InfoDlg', 7) + ' ' + globals_.Area.Webpage,
-        ]
-
-        for b, section in enumerate(a):  # cut off excessively long strings
-            if self.direction == QtCore.Qt.Vertical:
-                short = clipStr(section, 128)
-            else:
-                short = clipStr(section, 184)
-            if short is not None: a[b] = short + '...'
-
-        if self.direction == QtCore.Qt.Vertical:
-            str1 = a[0] + '<br>' + a[1] + '<br>' + a[2] + '<br>' + a[3] + '<br>' + a[4] + '<br>' + a[5]
-            self.Label1.setText(str1)
-        else:
-            str1 = a[0] + '<br>' + a[1] + '<br>' + a[2]
-            str2 = a[3] + '<br>' + a[4] + '<br>' + a[5]
-            self.Label1.setText(str1)
-            self.Label2.setText(str2)
-
-        self.update()
-
-
-class CustomSortableListWidgetItem(QtWidgets.QListWidgetItem):
-    """
-    ListWidgetItem subclass that allows sorting by arbitrary key
-    """
-    sortKey = 0
-
-    def __lt__(self, other):
-        if hasattr(self, 'sortKey') and hasattr(other, 'sortKey'):
-            return self.sortKey < other.sortKey
+                    if globals_.mainWindow is not None:
+                        globals_.mainWindow.scene.update()
 
         return False
 
@@ -1374,118 +1357,149 @@ class CameraProfilesDialog(QtWidgets.QDialog):
         """
         Creates and initialises the dialog
         """
-        super(CameraProfilesDialog, self).__init__()
+        super().__init__()
         self.setWindowTitle(globals_.trans.string('CamProfsDlg', 0))
         self.setWindowIcon(GetIcon('camprofile'))
         self.setMinimumHeight(450)
 
         self.list = QtWidgets.QListWidget()
-        self.list.itemSelectionChanged.connect(self.handleSelectionChanged)
+        self.list.itemSelectionChanged.connect(self.handle_selection_changed)
         self.list.setSortingEnabled(True)
 
-        self.addButton = QtWidgets.QPushButton(globals_.trans.string('CamProfsDlg', 1))
-        self.addButton.clicked.connect(self.handleAdd)
-        self.removeButton = QtWidgets.QPushButton(globals_.trans.string('CamProfsDlg', 2))
-        self.removeButton.clicked.connect(self.handleRemove)
-        self.removeButton.setEnabled(False)
+        self.add_button = QtWidgets.QPushButton(globals_.trans.string('CamProfsDlg', 1))
+        self.add_button.clicked.connect(self.handle_add)
 
-        listLayout = QtWidgets.QGridLayout()
-        listLayout.addWidget(self.addButton, 0, 0)
-        listLayout.addWidget(self.removeButton, 0, 1)
-        listLayout.addWidget(self.list, 1, 0, 1, 2)
+        self.remove_button = QtWidgets.QPushButton(globals_.trans.string('CamProfsDlg', 2))
+        self.remove_button.clicked.connect(self.handle_remove)
+        self.remove_button.setEnabled(False)
 
-        self.eventid = QtWidgets.QSpinBox()
-        self.eventid.setRange(0, 255)
-        self.eventid.setToolTip(globals_.trans.string('CamProfsDlg', 6))
-        self.eventid.valueChanged.connect(self.handleEventIDChanged)
+        list_layout = QtWidgets.QGridLayout()
+        list_layout.addWidget(self.add_button, 0, 0)
+        list_layout.addWidget(self.remove_button, 0, 1)
+        list_layout.addWidget(self.list, 1, 0, 1, 2)
 
-        self.camsettings = CameraModeZoomSettingsLayout(False)
-        self.camsettings.setValues(0, 0)
-        self.camsettings.edited.connect(self.handleCamSettingsChanged)
+        self.event_id = QtWidgets.QSpinBox()
+        self.event_id.setRange(0, 255)
+        self.event_id.setToolTip(globals_.trans.string('CamProfsDlg', 6))
+        self.event_id.valueChanged.connect(self.handle_event_id_changed)
 
-        profileLayout = QtWidgets.QFormLayout()
-        profileLayout.addRow(globals_.trans.string('CamProfsDlg', 5), self.eventid)
-        profileLayout.addRow(createHorzLine())
-        profileLayout.addRow(self.camsettings)
+        self.camera_settings = CameraModeZoomSettingsLayout(False)
+        self.camera_settings.setValues(0, 0)
+        self.camera_settings.edited.connect(self.handle_camera_settings_changed)
 
-        self.profileBox = QtWidgets.QGroupBox(globals_.trans.string('CamProfsDlg', 3))
-        self.profileBox.setLayout(profileLayout)
-        self.profileBox.setEnabled(False)
-        self.profileBox.setToolTip(globals_.trans.string('CamProfsDlg', 4))
+        profile_layout = QtWidgets.QFormLayout()
+        profile_layout.addRow(globals_.trans.string('CamProfsDlg', 5), self.event_id)
+        profile_layout.addRow(createHorzLine())
+        profile_layout.addRow(self.camera_settings)
 
-        buttonBox = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        self.profile_box = QtWidgets.QGroupBox(globals_.trans.string('CamProfsDlg', 3))
+        self.profile_box.setLayout(profile_layout)
+        self.profile_box.setEnabled(False)
+        self.profile_box.setToolTip(globals_.trans.string('CamProfsDlg', 4))
 
-        buttonBox.accepted.connect(self.accept)
-        buttonBox.rejected.connect(self.reject)
+        button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
 
-        Layout = QtWidgets.QGridLayout()
-        Layout.addLayout(listLayout, 0, 0)
-        Layout.addWidget(self.profileBox, 0, 1)
-        Layout.addWidget(buttonBox, 1, 0, 1, 2)
-        self.setLayout(Layout)
+        main_layout = QtWidgets.QGridLayout()
+        main_layout.addLayout(list_layout, 0, 0)
+        main_layout.addWidget(self.profile_box, 0, 1)
+        main_layout.addWidget(button_box, 1, 0, 1, 2)
+        self.setLayout(main_layout)
 
+        # Populate the profile list
         for profile in globals_.Area.camprofiles:
             item = CustomSortableListWidgetItem()
             item.setData(QtCore.Qt.ItemDataRole.UserRole, profile)
-            item.sortKey = profile[0]
-            self.updateItemTitle(item)
+
+            item.sort_key = profile[0]
+            self.update_item_title(item)
             self.list.addItem(item)
 
         self.list.sortItems()
 
-    def handleAdd(self, item=None):
+        # If we have items, go ahead and select the first one
+        if self.list.count() != 0:
+            self.list.setCurrentRow(0)
+
+    def handle_add(self):
+        """
+        Handles adding a profile
+        """
         new_id = 1
         for row in range(self.list.count()):
             item = self.list.item(row)
-            values = item.data(QtCore.Qt.ItemDataRole.UserRole)
-            new_id = max(new_id, values[0] + 1)
+            if item is not None:
+                values = item.data(QtCore.Qt.ItemDataRole.UserRole)
+                new_id = max(new_id, values[0] + 1)
 
         item = CustomSortableListWidgetItem()
         item.setData(QtCore.Qt.ItemDataRole.UserRole, [new_id, 0, 0])
-        self.updateItemTitle(item)
+        self.update_item_title(item)
         self.list.addItem(item)
 
-    def handleRemove(self):
+    def handle_remove(self):
+        """
+        Handles removing a profile
+        """
         self.list.takeItem(self.list.currentRow())
 
-    def handleSelectionChanged(self):
+    def handle_selection_changed(self):
+        """
+        Handles updating the profile fields
+        """
         selItems = self.list.selectedItems()
 
-        self.removeButton.setEnabled(bool(selItems))
-        self.profileBox.setEnabled(bool(selItems))
+        self.remove_button.setEnabled(bool(selItems))
+        self.profile_box.setEnabled(bool(selItems))
 
         if selItems:
             selItem = selItems[0]
             values = selItem.data(QtCore.Qt.ItemDataRole.UserRole)
 
-            self.eventid.setValue(values[0])
-            self.camsettings.setValues(values[1], values[2])
+            self.event_id.setValue(values[0])
+            self.camera_settings.setValues(values[1], values[2])
 
-    def handleEventIDChanged(self, eventid):
+    def handle_event_id_changed(self, event_id):
+        """
+        Handles the Triggering Event ID being changed
+        """
         selItem = self.list.selectedItems()[0]
         values = selItem.data(QtCore.Qt.ItemDataRole.UserRole)
-        values[0] = eventid
+        values[0] = event_id
         selItem.setData(QtCore.Qt.ItemDataRole.UserRole, values)
-        selItem.sortKey = eventid
-        self.updateItemTitle(selItem)
 
-    def handleCamSettingsChanged(self):
+        if isinstance(selItem, CustomSortableListWidgetItem):
+            selItem.sort_key = event_id
+        self.update_item_title(selItem)
+
+    def handle_camera_settings_changed(self):
+        """
+        Handles updating the camera settings
+        """
         selItem = self.list.selectedItems()[0]
         values = selItem.data(QtCore.Qt.ItemDataRole.UserRole)
-        values[1] = self.camsettings.modeButtonGroup.checkedId()
-        values[2] = self.camsettings.screenSizes.currentIndex()
+        values[1] = self.camera_settings.modeButtonGroup.checkedId()
+        values[2] = self.camera_settings.screenSizes.currentIndex()
         selItem.setData(QtCore.Qt.ItemDataRole.UserRole, values)
 
-    def updateItemTitle(self, item):
+    def update_item_title(self, item):
+        """
+        Updates the profile name in the list
+        """
         item.setText(globals_.trans.string('CamProfsDlg', 7, '[id]', item.data(QtCore.Qt.ItemDataRole.UserRole)[0]))
 
 
+# TODO:
+# - Batch feature
+# - Import file for quick batch swapping
+# - Selection multi-swapping (select sprites of different types, open dialog, already in batch mode with those IDs chosen)
 class SpriteSwitchDialog(QtWidgets.QDialog):
     """
-    Lets you switch sprites of one ID to another
+    Dialog to switch the types of selected sprites
     """
 
-    def __init__(self):
+    def __init__(self, selected):
         """
         Creates and initializes the dialog
         """
@@ -1493,61 +1507,62 @@ class SpriteSwitchDialog(QtWidgets.QDialog):
         self.setWindowTitle(globals_.trans.string('SwitchSpriteDlg', 0))
         self.setWindowIcon(GetIcon('move'))
 
-        self.fromType = QtWidgets.QSpinBox()
-        self.toType = QtWidgets.QSpinBox()
+        self.curr_type = QtWidgets.QSpinBox()
+        self.new_type = QtWidgets.QSpinBox()
 
-        # It should be safe to assume nobody would use an ID higher than this
-        self.fromType.setMaximum(999)
-        self.toType.setMaximum(999)
+        self.curr_type.setValue(selected)
 
-        swapLayout = QtWidgets.QGridLayout()
+        self.curr_type.setRange(0, 65535)
+        self.new_type.setRange(0, 65535)
 
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwitchSpriteDlg', 1)), 0, 0)
-        swapLayout.addWidget(self.fromType, 0, 1)
+        swap_layout = QtWidgets.QGridLayout()
 
-        swapLayout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwitchSpriteDlg', 2)), 1, 0)
-        swapLayout.addWidget(self.toType, 1, 1)
+        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwitchSpriteDlg', 1)), 0, 0)
+        swap_layout.addWidget(self.curr_type, 0, 1)
 
-        self.buttons = QtWidgets.QDialogButtonBox()
-        self.buttons.addButton(globals_.trans.string('SwitchSpriteDlg', 3), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        self.buttons.addButton(globals_.trans.string('SwitchSpriteDlg', 4), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
-        self.buttons.clicked.connect(self.buttonClicked)
+        swap_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('SwitchSpriteDlg', 2)), 1, 0)
+        swap_layout.addWidget(self.new_type, 1, 1)
 
-        # Main layout
-        mainLayout = QtWidgets.QVBoxLayout()
-        mainLayout.addLayout(swapLayout)
-        mainLayout.addWidget(self.buttons)
-        self.setLayout(mainLayout)
+        self.button_box = QtWidgets.QDialogButtonBox()
+        self.button_box.addButton(globals_.trans.string('SwitchSpriteDlg', 3), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        self.button_box.addButton(globals_.trans.string('SwitchSpriteDlg', 4), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
+        self.button_box.clicked.connect(self.button_clicked)
 
-    def buttonClicked(self, button):
+        main_layout = QtWidgets.QVBoxLayout()
+        main_layout.addLayout(swap_layout)
+        main_layout.addWidget(self.button_box)
+        self.setLayout(main_layout)
+
+    def button_clicked(self, button):
         """
-        Handles one of the buttons being pressed and calls the correct handler.
+        Handles one of the buttons being pressed and calls the correct handler
         """
-        role = self.buttons.buttonRole(button)
+        role = self.button_box.buttonRole(button)
 
         if role == QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole:
-            self.switchSpriteIDs()
+            self.switch_sprite_ids()
         else:
             self.reject()
 
-    def switchSpriteIDs(self):
+    def switch_sprite_ids(self):
         """
         Updates the sprites' IDs
         """
-        fromType = self.fromType.value()
-        toType = self.toType.value()
+        curr_type = self.curr_type.value()
+        new_type = self.new_type.value()
 
         # Do we need to switch anything?
-        if fromType == toType:
+        if curr_type == new_type:
             return
 
         for sprite in globals_.Area.sprites:
-            if sprite.type == fromType:
-                sprite.SetType(toType)
+            if sprite.type == curr_type:
+                sprite.SetType(new_type)
 
-                spriteClasses = globals_.gamedef.getImageClasses()
-                if sprite.type in spriteClasses:
-                    sprite.setImageObj(spriteClasses[sprite.type])
+                # Fixes sprite image issues
+                image_classes = globals_.gamedef.getImageClasses()
+                if sprite.type in image_classes:
+                    sprite.setImageObj(image_classes[sprite.type])
                 else:
                     sprite.setImageObj(SLib.SpriteImage)
 

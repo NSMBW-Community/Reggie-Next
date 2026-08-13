@@ -94,7 +94,7 @@ from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import GameDefMenu, LoadGameDef
 from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem, Path
-from dialogs import AutoSavedInfoDialog, DiagnosticToolDialog, ScreenCapChoiceDialog, AreaChoiceDialog, ObjectTypeSwapDialog, ObjectTilesetSwapDialog, ObjectShiftDialog, MetaInfoDialog, AboutDialog, CameraProfilesDialog, SpriteSwitchDialog
+from dialogs import AutoSaveDialog, DiagnosticToolDialog, ScreenshotDialog, AreaImportDialog, ObjectTypeSwapDialog, ObjectTilesetSwapDialog, ItemShiftDialog, MetaInfoDialog, AboutDialog, CameraProfilesDialog, SpriteSwitchDialog
 from background import BGDialog
 from zones import ZonesDialog
 from tiles import UnloadTileset, LoadTileset, LoadOverrides
@@ -1661,13 +1661,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
             dlg = MetaInfoDialog()
             if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
                 globals_.Area.Metadata.setStrData('Creator', 'Reggie! Next %s' % globals_.ReggieVersionShort)
-                globals_.Area.Metadata.setStrData('Title', dlg.levelName.text())
-                globals_.Area.Metadata.setStrData('Author', dlg.Author.text())
-                globals_.Area.Metadata.setStrData('Group', dlg.Group.text())
-                globals_.Area.Metadata.setStrData('Website', dlg.Website.text())
+                globals_.Area.Metadata.setStrData('Title', dlg.name_field.text())
+                globals_.Area.Metadata.setStrData('Author', dlg.author_field.text())
+                globals_.Area.Metadata.setStrData('Group', dlg.group_field.text())
+                globals_.Area.Metadata.setStrData('Website', dlg.website_field.text())
 
                 SetDirty()
-                return
         else:
             dlg = QtWidgets.QMessageBox()
             dlg.setText(globals_.trans.string('InfoDlg', 14))
@@ -2159,16 +2158,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
         items = self.scene.selectedItems()
         if not items: return
 
-        dlg = ObjectShiftDialog()
+        dlg = ItemShiftDialog()
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        xoffset = dlg.XOffset.value()
-        yoffset = dlg.YOffset.value()
-        if xoffset == 0 and yoffset == 0: return
+        offs_x = dlg.offset_x.value()
+        offs_y = dlg.offset_y.value()
 
-        if ((xoffset % 16) != 0) or ((yoffset % 16) != 0):
-            # warn if any objects exist
+        # Do we need to do anything?
+        if offs_x == 0 and offs_y == 0:
+            return
+
+        if ((offs_x % 16) != 0) or ((offs_y % 16) != 0):
+            # Warn if any objects exist
             objectsExist = False
             type_obj = ObjectItem
 
@@ -2190,16 +2192,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     return
 
                 # Round the offset to the nearest multiple of 16
-                xoffset = 16 * round(xoffset / 16)
-                yoffset = 16 * round(yoffset / 16)
+                offs_x = 16 * round(offs_x / 16)
+                offs_y = 16 * round(offs_y / 16)
 
-        xpoffset = xoffset * 1.5
-        ypoffset = yoffset * 1.5
+        pos_offs_x = offs_x * 1.5
+        pos_offs_y = offs_y * 1.5
 
         globals_.OverrideSnapping = True
 
         for obj in items:
-            obj.setPos(obj.x() + xpoffset, obj.y() + ypoffset)
+            obj.setPos(obj.x() + pos_offs_x, obj.y() + pos_offs_y)
 
         globals_.OverrideSnapping = False
 
@@ -2213,9 +2215,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        from_tileset = dlg.FromTS.currentIndex()
-        to_tileset = dlg.ToTS.currentIndex()
-        do_exchange = dlg.DoExchange.isChecked()
+        from_tileset = dlg.curr_tileset.currentIndex()
+        to_tileset = dlg.new_tileset.currentIndex()
+        do_exchange = dlg.exchange_tiles.isChecked()
 
         if from_tileset == to_tileset:
             return
@@ -2239,7 +2241,22 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Switches sprites of one ID to another
         """
-        SpriteSwitchDialog().exec()
+        initial_id = 0
+
+        items = self.scene.selectedItems()
+        if items:
+            id_list = []
+
+            # Get all the sprite IDs
+            for item in items:
+                if isinstance(item, SpriteItem):
+                    id_list.append(item.type)
+
+            # If we only have one unique item, pass that as an ID
+            if len(set(id_list)) <= 1:
+                initial_id = id_list[0]
+
+        SpriteSwitchDialog(initial_id).exec()
 
     def MergeLocations(self):
         """
@@ -2479,7 +2496,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Adds a new area to the level
         """
         if len(globals_.Level.areas) >= 4:
-            QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('AreaChoiceDlg', 2))
+            QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('AreaImportDlg', 2))
             return
 
         if self.CheckDirty():
@@ -2500,7 +2517,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Imports an area from another level
         """
         if len(globals_.Level.areas) >= 4:
-            QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('AreaChoiceDlg', 2))
+            QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('AreaImportDlg', 2))
             return
 
         if self.CheckDirty():
@@ -2545,12 +2562,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     maxarea = int(fname[6])
                     if maxarea > areacount: areacount = maxarea
 
-        # choose one
-        dlg = AreaChoiceDialog(areacount)
+        # Choose the area
+        dlg = AreaImportDialog(areacount)
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Rejected:
             return
 
-        area = dlg.areaCombo.currentIndex() + 1
+        area = dlg.area_combo.currentIndex() + 1
 
         # get the required files
         reqcourse = 'course%d.bin' % area
@@ -2589,7 +2606,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Deletes the current area
         """
-        result = QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('DeleteArea', 0),
+        result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('DeleteArea', 1), globals_.trans.string('DeleteArea', 0),
                                                QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
         if result == QtWidgets.QMessageBox.StandardButton.No: return
 
@@ -4563,42 +4580,44 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Takes a screenshot of the entire level and saves it
         """
-
-        dlg = ScreenCapChoiceDialog()
+        dlg = ScreenshotDialog()
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        screenshot_type = dlg.zoneCombo.currentIndex()
-        grid_type = dlg.gridCombo.currentIndex()
+        screenshot_type = dlg.target_combo.currentIndex()
+        grid_type = dlg.grid_type.currentIndex()
         hide_background = dlg.hide_background.isChecked()
-        do_save = dlg.save_img.isChecked()
+        save_to_file = dlg.save_img.isChecked()
 
+        # Update the canvas grid while we take the screenshot
         grid_type_list = [None, 'grid', 'checker']
         gt = globals_.GridType
         globals_.GridType = grid_type_list[grid_type]
         self.scene.update()
 
-        if do_save:
-            fn = QtWidgets.QFileDialog.getSaveFileName(self,
-                globals_.trans.string('FileDlgs', 3), 'untitled.png',
-                globals_.trans.string('FileDlgs', 4) + ' (*.png)')[0]
+        file_name = ''
+        if save_to_file:
+            filt = f'{globals_.trans.string('FileDlgs', 4)} (*.png)'
 
-            if fn == '':
+            file_name = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans.string('FileDlgs', 3), None, filt)[0]
+            if file_name == '':
                 return
 
-        if screenshot_type == 0:  # Current view
+        # Current view
+        if screenshot_type == 0:
             screenshot_rect = QtCore.QRect(QtCore.QPoint(), self.view.size())
             renderer = self.view
             ss_img = QtGui.QImage(screenshot_rect.size(), QtGui.QImage.Format.Format_ARGB32)
-
         else:
-            if screenshot_type == 1:  # All zones together
+            # All zones together
+            if screenshot_type == 1:
                 screenshot_rect = QtCore.QRectF()
 
                 for z in globals_.Area.zones:
                     screenshot_rect |= z.ZoneRect
 
-            else:  # One specific zone
+            # Specific zone
+            else:
                 screenshot_rect = globals_.Area.zones[screenshot_type - 2].ZoneRect
 
             # Map the zone rects to the scene coordinate system
@@ -4614,8 +4633,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         ss_img.fill(Qt.GlobalColor.transparent)
         ss_painter = QtGui.QPainter(ss_img)
 
+        # Remove the background
         if hide_background:
-            # Remove the background
             brush = self.scene.backgroundBrush()
             style = brush.style()
             brush.setStyle(Qt.BrushStyle.NoBrush)
@@ -4627,18 +4646,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
             # Restore the background
             brush.setStyle(style)
             self.scene.setBackgroundBrush(brush)
-
         else:
-            # Render with background
             renderer.render(ss_painter, source=screenshot_rect)
 
         ss_painter.end()
 
-        if do_save:
-            ss_img.save(fn, 'PNG', 50)
+        if save_to_file:
+            ss_img.save(file_name, 'PNG', 50)
         else:
-            globals_.app.clipboard().setImage(ss_img)
+            if globals_.app is not None:
+                clip = globals_.app.clipboard()
+                if clip is not None:
+                    clip.setImage(ss_img)
 
+        # Restore grid
         globals_.GridType = gt
         self.scene.update()
 
@@ -4815,7 +4836,7 @@ def main():
     autofile = setting('AutoSaveFilePath')
     autofiledata = setting('AutoSaveFileData', 'x')
     if autofile is not None and autofiledata != 'x':
-        result = AutoSavedInfoDialog(autofile).exec()
+        result = AutoSaveDialog(autofile).exec()
         if result == QtWidgets.QDialog.DialogCode.Accepted:
             globals_.RestoredFromAutoSave = True
             globals_.AutoSavePath = autofile
