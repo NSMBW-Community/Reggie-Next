@@ -1,6 +1,5 @@
 from PyQt6 import QtGui, QtWidgets, QtCore
 from xml.etree import ElementTree
-from types import MethodType
 import os
 
 import globals_
@@ -383,65 +382,6 @@ def clipStr(text, idealWidth, font=None):
         width = QtGui.QFontMetrics(font).horizontalAdvance(text)
 
     return text
-
-
-class HexSpinBox(QtWidgets.QSpinBox):
-    class HexValidator(QtGui.QValidator):
-        def __init__(self, min, max):
-            QtGui.QValidator.__init__(self)
-            self.valid = set('0123456789ABCDEF')
-            self.min = min
-            self.max = max
-
-        def validate(self, input, pos):
-            try:
-                input = str(input).upper()
-            except Exception:
-                return (self.State.Invalid, input, pos)
-            valid = self.valid
-
-            for char in input:
-                if char not in valid:
-                    return (self.State.Invalid, input, pos)
-
-            try:
-                value = int(input, 16)
-            except ValueError:
-                # If value == '' it raises ValueError
-                return (self.State.Invalid, input, pos)
-
-            if value < self.min or value > self.max:
-                return (self.State.Intermediate, input, pos)
-
-            return (self.State.Acceptable, input, pos)
-
-    def __init__(self, format='%04X', *args):
-        self.format = format
-        QtWidgets.QSpinBox.__init__(self, *args)
-        self.validator = self.HexValidator(self.minimum(), self.maximum())
-
-    def setMinimum(self, value):
-        self.validator.min = value
-        QtWidgets.QSpinBox.setMinimum(self, value)
-
-    def setMaximum(self, value):
-        self.validator.max = value
-        QtWidgets.QSpinBox.setMaximum(self, value)
-
-    def setRange(self, min, max):
-        self.validator.min = min
-        self.validator.max = max
-        QtWidgets.QSpinBox.setMinimum(self, min)
-        QtWidgets.QSpinBox.setMaximum(self, max)
-
-    def validate(self, text, pos):
-        return self.validator.validate(text, pos)
-
-    def textFromValue(self, value):
-        return self.format % value
-
-    def valueFromText(self, value):
-        return int(str(value), 16)
 
 
 class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):

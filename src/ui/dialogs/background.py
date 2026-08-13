@@ -3,9 +3,11 @@ import os
 
 import common
 import globals_
-from ui import GetIcon, HexSpinBox
+from ui import GetIcon
 
-class BGDialog(QtWidgets.QDialog):
+from src.ui.widgets.hex_spin_box import HexSpinBox
+
+class BackgroundDialog(QtWidgets.QDialog):
     """
     Dialog which lets you modify backgrounds
     """

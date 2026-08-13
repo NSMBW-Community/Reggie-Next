@@ -94,7 +94,6 @@ from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import GameDefMenu, LoadGameDef
 from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem, Path
-from background import BGDialog
 from zones import ZonesDialog
 from tiles import UnloadTileset, LoadTileset, LoadOverrides
 from area import AreaOptionsDialog
@@ -109,6 +108,7 @@ from translation import LoadTranslation
 from src.ui.dialogs.about import AboutDialog
 from src.ui.dialogs.area_import import AreaImportDialog
 from src.ui.dialogs.auto_save import AutoSaveDialog
+from src.ui.dialogs.background import BackgroundDialog
 from src.ui.dialogs.camera_profile import CameraProfilesDialog
 from src.ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 from src.ui.dialogs.item_shift import ItemShiftDialog
@@ -4559,7 +4559,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Pops up the Background settings Dialog
         """
-        dlg = BGDialog()
+        dlg = BackgroundDialog()
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
