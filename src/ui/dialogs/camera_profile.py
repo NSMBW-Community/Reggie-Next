@@ -2,7 +2,7 @@ from PyQt6 import QtWidgets, QtCore
 
 import globals_
 from ui import GetIcon, createHorzLine, CustomSortableListWidgetItem
-from zones import CameraModeZoomSettingsLayout
+from src.ui.layouts.camera_mode import CameraModeZoomSettingsLayout
 
 class CameraProfilesDialog(QtWidgets.QDialog):
     """

@@ -7,7 +7,7 @@ from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import Proper
 from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,
 )
-from src.ui.widgets.spriteeditor.int_spin_box import IntSpinBox
+from src.ui.widgets.generic.int_spin_box import IntSpinBox
 
 
 class ValuePropertyDecoder(PropertyDecoder[ValueSpriteField]):

@@ -5,7 +5,7 @@ import common
 import globals_
 from ui import GetIcon
 
-from src.ui.widgets.hex_spin_box import HexSpinBox
+from src.ui.widgets.generic.hex_spin_box import HexSpinBox
 
 class BackgroundDialog(QtWidgets.QDialog):
     """

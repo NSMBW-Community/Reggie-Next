@@ -94,9 +94,7 @@ from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import GameDefMenu, LoadGameDef
 from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem, Path
-from zones import ZonesDialog
 from tiles import UnloadTileset, LoadTileset, LoadOverrides
-from area import AreaOptionsDialog
 from level import Level_NSMBW
 from sidelists import Stamp, StampChooserWidget, SpriteList, SpritePickerWidget, ObjectPickerWidget, LevelOverviewWidget
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
@@ -106,6 +104,7 @@ from undo import UndoStack
 from translation import LoadTranslation
 
 from src.ui.dialogs.about import AboutDialog
+from src.ui.dialogs.area import AreaOptionsDialog
 from src.ui.dialogs.area_import import AreaImportDialog
 from src.ui.dialogs.auto_save import AutoSaveDialog
 from src.ui.dialogs.background import BackgroundDialog
@@ -117,6 +116,7 @@ from src.ui.dialogs.obj_tileset_swap import ObjectTilesetSwapDialog
 from src.ui.dialogs.object_swap import ObjectTypeSwapDialog
 from src.ui.dialogs.screenshot import ScreenshotDialog
 from src.ui.dialogs.sprite_switch import SpriteSwitchDialog
+from src.ui.dialogs.zone import ZonesDialog
 
 ################################################################################
 ################################################################################

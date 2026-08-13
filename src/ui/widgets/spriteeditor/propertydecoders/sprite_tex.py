@@ -4,7 +4,7 @@ import globals_
 from classlib import SpriteTexSpriteField
 from misc import SpriteDefinition
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
-from src.ui.widgets.spriteeditor.int_spin_box import IntSpinBox
+from src.ui.widgets.generic.int_spin_box import IntSpinBox
 
 
 class SpriteTexPropertyDecoder(PropertyDecoder[SpriteTexSpriteField]):

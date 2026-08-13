@@ -300,9 +300,10 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         self.customList.setModel(self.customModel)
         self.customList.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         model = self.customList.selectionModel()
-        model.selectionChanged.connect(
-            lambda *_: self.removeButton.setEnabled(bool(len(model.selectedIndexes())))
-        )
+        if model is not None:
+            model.selectionChanged.connect(
+                lambda *_: self.removeButton.setEnabled(bool(len(model.selectedIndexes())))
+            )
 
         self.spriteInput = QtWidgets.QLineEdit()
         self.spriteInput.setPlaceholderText(globals_.trans.string('AreaDlg', 52))
