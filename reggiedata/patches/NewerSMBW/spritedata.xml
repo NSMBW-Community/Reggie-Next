@@ -713,7 +713,7 @@
   </sprite> <!-- #88: Actor Spawner -->
 	
 	<sprite id="80" name="Fire Bro" notes="A standard Brothers enemy that shoots fireballs at the player." files="bros.arc">
-      <list nybble="6" title="color" comment="This determines the color of the Fire Bro.">
+      <list nybble="6" title="Color" comment="This determines the color of the Fire Bro.">
         <entry value="0">Normal</entry>
         <entry value="1">Normal (2)</entry>
       </list>
