@@ -89,7 +89,7 @@ import globals_
 
 from libs import lh, lib_versions, lz77
 from ui import GetIcon, SetAppStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, IconsOnlyTabBar, SetColorScheme
-from misc import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, ChooseLevelNameDialog, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePaths, areValidGamePaths, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
+from misc import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePaths, areValidGamePaths, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
 from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import GameDefMenu, LoadGameDef
@@ -109,6 +109,7 @@ from src.ui.dialogs.area_import import AreaImportDialog
 from src.ui.dialogs.auto_save import AutoSaveDialog
 from src.ui.dialogs.background import BackgroundDialog
 from src.ui.dialogs.camera_profile import CameraProfilesDialog
+from src.ui.dialogs.choose_level_name import ChooseLevelNameDialog
 from src.ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 from src.ui.dialogs.item_shift import ItemShiftDialog
 from src.ui.dialogs.meta_info import MetaInfoDialog
@@ -2805,13 +2806,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         LoadLevelNames()
         dlg = ChooseLevelNameDialog()
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-            self.LoadLevel(dlg.currentlevel, False, 1)
+            self.LoadLevel(dlg.current_level, False, 1)
 
     def HandleOpenFromFile(self):
         """
         Open a level using the filename
         """
-        if self.CheckDirty(): return
+        if self.CheckDirty():
+            return
 
         filetypes = ''
         filetypes += globals_.trans.string('FileDlgs', 9) + ' (*.arc *.arc.LH *.arc.LZ);;'   # *.arc, *arc.LH, *.arc.LZ
