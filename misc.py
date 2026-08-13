@@ -13,11 +13,13 @@ import globals_
 from classlib import CheckBoxSpriteField, DualBoxSpriteField, ExternalSpriteField, ListSpriteField, MenuAction, MultiDualBoxSpriteField, RandTileSelection, SpriteCategory, SpriteField, SpriteSubCategory, SpriteTexSpriteField, TilesetCategory, TilesetFileEntry, ValueSpriteField
 from ui import GetIcon, ReggieTheme, clipStr, KeybindLineEdit
 from dirty import setting, setSetting, delSetting
-from dialogs import DiagnosticToolDialog
+import spritelib as SLib
+from levelitems import ListWidgetItem_SortsByOther, SpriteItem, ZoneItem, EntranceItem, Path, CommentItem
 from translation import ReggieTranslation
 from libs import lh
 from misc2 import LevelViewWidget
-from levelitems import Path, CommentItem
+
+from src.ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 
 ################################################################################
 ################################################################################

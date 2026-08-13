@@ -94,7 +94,6 @@ from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import GameDefMenu, LoadGameDef
 from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem, Path
-from dialogs import AutoSaveDialog, DiagnosticToolDialog, ScreenshotDialog, AreaImportDialog, ObjectTypeSwapDialog, ObjectTilesetSwapDialog, ItemShiftDialog, MetaInfoDialog, AboutDialog, CameraProfilesDialog, SpriteSwitchDialog
 from background import BGDialog
 from zones import ZonesDialog
 from tiles import UnloadTileset, LoadTileset, LoadOverrides
@@ -105,6 +104,18 @@ from spriteeditor import SpriteEditorWidget
 from editors import LocationEditorWidget, PathNodeEditorWidget, EntranceEditorWidget
 from undo import UndoStack
 from translation import LoadTranslation
+
+from src.ui.dialogs.about import AboutDialog
+from src.ui.dialogs.area_import import AreaImportDialog
+from src.ui.dialogs.auto_save import AutoSaveDialog
+from src.ui.dialogs.camera_profile import CameraProfilesDialog
+from src.ui.dialogs.diagnostic_tool import DiagnosticToolDialog
+from src.ui.dialogs.item_shift import ItemShiftDialog
+from src.ui.dialogs.meta_info import MetaInfoDialog
+from src.ui.dialogs.obj_tileset_swap import ObjectTilesetSwapDialog
+from src.ui.dialogs.object_swap import ObjectTypeSwapDialog
+from src.ui.dialogs.screenshot import ScreenshotDialog
+from src.ui.dialogs.sprite_switch import SpriteSwitchDialog
 
 ################################################################################
 ################################################################################
