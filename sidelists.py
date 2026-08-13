@@ -4,10 +4,10 @@ from PyQt6 import QtWidgets, QtGui, QtCore
 
 from classlib import ListSpriteField, SpriteCategory, SpriteField, ValueSpriteField
 import globals_
+from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 from tiles import RenderObject, TilesetTile
 from ui import ListWidgetWithToolTipSignal
 from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories
-from spriteeditor import SpriteEditorWidget
 
 class LevelOverviewWidget(QtWidgets.QWidget):
     """
@@ -1229,7 +1229,7 @@ class SpriteList(QtWidgets.QWidget):
 
         sdef = globals_.Sprites[sprite.type]
         res = {}
-        decoder = SpriteEditorWidget.PropertyDecoder(SpriteField())
+        decoder = PropertyDecoder(SpriteField())
         data = sprite.spritedata
 
         for field in sdef.fields:

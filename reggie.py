@@ -100,7 +100,8 @@ from tiles import UnloadTileset, LoadTileset, LoadOverrides
 from area import AreaOptionsDialog
 from level import Level_NSMBW
 from sidelists import Stamp, StampChooserWidget, SpriteList, SpritePickerWidget, ObjectPickerWidget, LevelOverviewWidget
-from spriteeditor import SpriteEditorWidget
+from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
+from src.ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
 from editors import LocationEditorWidget, PathNodeEditorWidget, EntranceEditorWidget
 from undo import UndoStack
 from translation import LoadTranslation
@@ -2443,7 +2444,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             globals_.Area.sprites.append(spr)
 
             # Add the ids for the idtype count
-            decoder = SpriteEditorWidget.PropertyDecoder(SpriteField())
+            decoder = PropertyDecoder(SpriteField())
             sdef = globals_.Sprites[id_]
 
             # Find what values are used by this sprite

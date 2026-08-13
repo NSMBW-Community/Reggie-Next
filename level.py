@@ -6,10 +6,10 @@ import globals_
 import spritelib as SLib
 import archive
 
+from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 from tiles import CreateTilesets, LoadTileset
 from levelitems import EntranceItem, SpriteItem, ZoneItem, LocationItem, ObjectItem, PathItem, CommentItem
 from misc2 import DecodeOldReggieInfo
-from spriteeditor import SpriteEditorWidget
 
 class AbstractLevel:
     """
@@ -1061,7 +1061,7 @@ class Area:
         """
 
         self.sprite_idtypes = {}
-        decoder = SpriteEditorWidget.PropertyDecoder(SpriteField())
+        decoder = PropertyDecoder(SpriteField())
 
         for sprite in self.sprites:
             # Check if sprite data exists for this type
@@ -1107,7 +1107,7 @@ class Area:
             return
 
         # Remove the ids the sprite used from the id list
-        decoder = SpriteEditorWidget.PropertyDecoder(SpriteField())
+        decoder = PropertyDecoder(SpriteField())
         sdef = globals_.Sprites[sprite.type]
 
         # Find what values are used by this sprite
