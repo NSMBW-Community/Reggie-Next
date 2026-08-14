@@ -35,6 +35,7 @@ ReggieVersionShort = 'v4.11.0'
 RestoredFromAutoSave = False
 TilesetTabPos = 0
 UseFullFilepath = False
+UseRecentFileKeys = True
 
 # Menu
 EditActions: tuple[MenuAction, ...] = ()

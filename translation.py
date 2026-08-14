@@ -729,6 +729,7 @@ class ReggieTranslation:
                     'On Top',
                     'Left Side',
                 ),
+                69: 'Enable shortcuts in Recent Files menu',
             },
             'ScrShtDlg': {
                 0: 'Level Screenshot',

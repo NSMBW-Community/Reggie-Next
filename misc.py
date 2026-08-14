@@ -11,7 +11,7 @@ from xml.etree import ElementTree
 
 import globals_
 from classlib import CheckBoxSpriteField, DualBoxSpriteField, ExternalSpriteField, ListSpriteField, MenuAction, MultiDualBoxSpriteField, RandTileSelection, SpriteCategory, SpriteField, SpriteSubCategory, SpriteTexSpriteField, TilesetCategory, TilesetFileEntry, ValueSpriteField
-from ui import GetIcon, clipStr
+from ui import GetIcon
 from dirty import setting, setSetting, delSetting
 
 from src.ui.dialogs.diagnostic_tool import DiagnosticToolDialog
@@ -1032,111 +1032,6 @@ def LoadMusicInfo(reload_=False):
             songs[songid] = name
 
     globals_.MusicInfo = sorted(songs.items(), key=lambda kv: int(kv[0]))
-
-
-class RecentFilesMenu(QtWidgets.QMenu):
-    """
-    A menu which displays recently opened files
-    """
-    def __init__(self):
-        """
-        Creates and initializes the menu
-        """
-        QtWidgets.QMenu.__init__(self)
-        self.setMinimumWidth(192)
-        self.setToolTipsVisible(True)
-
-        # Here's how this works:
-        # - Upon startup, RecentFiles is obtained from QSettings and put into self.FileList
-        # - All modifications to the menu thereafter are then applied to self.FileList
-        # - The actions displayed in the menu are determined by whatever's in self.FileList
-        # - Whenever self.FileList is changed, self.writeSettings is called which writes
-        #      it all back to the QSettings
-
-        # Populate FileList upon startup
-        if globals_.settings.contains('RecentFiles'):
-            self.FileList = str(setting('RecentFiles')).split('|')
-
-        else:
-            self.FileList = ['']
-
-        # This fixes bugs
-        self.FileList = [path for path in self.FileList if path.lower() not in ('', 'none', 'false', 'true')]
-
-        self.updateActionList()
-
-    def writeSettings(self):
-        """
-        Writes FileList back to the Registry
-        """
-        setSetting('RecentFiles', str('|'.join(self.FileList)))
-
-    def updateActionList(self):
-        """
-        Updates the actions visible in the menu
-        """
-
-        self.clear()  # removes any actions already in the menu
-        ico = GetIcon('new')
-
-        for i, filename in enumerate(self.FileList):
-            filename = os.path.basename(filename)
-            short = clipStr(filename, 72)
-            if short is not None: filename = short + '...'
-
-            act = QtGui.QAction(ico, filename, self)
-            if i <= 9: act.setShortcut(QtGui.QKeySequence('Ctrl+Alt+%d' % i))
-            act.setToolTip(str(self.FileList[i]))
-
-            handler = self.HandleOpenRecentFile_(i)
-            act.triggered.connect(handler)
-
-            self.addAction(act)
-
-    def AddToList(self, path):
-        """
-        Adds an entry to the list
-        """
-        MaxLength = 16
-        path = str(path)
-
-        if path in ('None', 'True', 'False'): return  # fixes bugs
-
-        new = [path]
-        for filename in self.FileList:
-            if filename != path:
-                new.append(filename)
-
-        self.FileList = new[:MaxLength]
-        self.writeSettings()
-        self.updateActionList()
-
-    def RemoveFromList(self, index):
-        """
-        Removes an entry from the list
-        """
-        del self.FileList[index]
-        self.writeSettings()
-        self.updateActionList()
-
-    def clearAll(self):
-        """
-        Clears all recent files from the list and the registry
-        """
-        self.FileList = []
-        self.writeSettings()
-        self.updateActionList()
-
-    def HandleOpenRecentFile_(self, i):
-        return (lambda e: self.HandleOpenRecentFile(i))
-
-    def HandleOpenRecentFile(self, number):
-        """
-        Open a recently opened level picked from the main menu
-        """
-        if globals_.mainWindow.CheckDirty(): return
-
-        if not globals_.mainWindow.LoadLevel(self.FileList[number], True, 1): self.RemoveFromList(number)
 
 
 class DiagnosticWidget(QtWidgets.QWidget):

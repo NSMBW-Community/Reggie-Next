@@ -680,6 +680,7 @@
             <entry>On Top</entry>
             <entry>Left Side</entry>
         </stringlist>
+        <string id="69">Enable shortcuts in Recent Files menu</string>
     </section>
     <section id="ScrShtDlg">
         <string id="0">Level Screenshot</string>

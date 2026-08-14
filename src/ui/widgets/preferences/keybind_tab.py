@@ -2,7 +2,6 @@ from PyQt6 import QtWidgets
 import collections
 
 import globals_
-from misc import GetKeybind, SetKeybind
 
 from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
 from src.ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
@@ -35,11 +34,16 @@ class KeybindTab(PreferenceTabWidget):
         self.check_conflict_button = QtWidgets.QPushButton(globals_.trans.string('PrefsDlg', 59))
         self.check_conflict_button.clicked.connect(self.check_conflicts)
 
+        # Toggle Recent Files keybinds
+        self.recent_file_keybind = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 69))
+        self.recent_file_keybind.setChecked(globals_.UseRecentFileKeys)
+
         # Create the main layout
         L = QtWidgets.QGridLayout()
-        L.addWidget(self.tab_widget, 0, 0, 1, 2)
-        L.addWidget(reset, 1, 0, 1, 1)
-        L.addWidget(self.check_conflict_button, 1, 1, 1, 1)
+        L.addWidget(self.recent_file_keybind, 0, 0)
+        L.addWidget(self.tab_widget, 1, 0, 1, 2)
+        L.addWidget(reset, 2, 0, 1, 1)
+        L.addWidget(self.check_conflict_button, 2, 1, 1, 1)
         self.setLayout(L)
 
     def reset(self):

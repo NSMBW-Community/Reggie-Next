@@ -89,7 +89,7 @@ import globals_
 
 from libs import lh, lib_versions, lz77
 from ui import GetIcon, SetAppStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, IconsOnlyTabBar, SetColorScheme
-from misc import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, LoadLevelNames, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePaths, areValidGamePaths, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
+from misc import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, LoadLevelNames, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, SetGamePaths, areValidGamePaths, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
 from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import LoadGameDef
@@ -121,6 +121,7 @@ from src.ui.dialogs.sprite_switch import SpriteSwitchDialog
 from src.ui.dialogs.zone import ZonesDialog
 
 from src.ui.menus.game_def_menu import GameDefMenu
+from src.ui.menus.recent_files_menu import RecentFilesMenu
 
 from src.ui.widgets.preferences.widgets.toolbar_check_box import ToolbarCheckBox
 from src.ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
@@ -2785,6 +2786,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
             for key_edit in tab.key_edits:
                 SetKeybind(key_edit.name, key_edit.keySequence())
 
+        # Toggle keybinds for first 10 items in Recent Files menu
+        globals_.UseRecentFileKeys = dlg.keybind_tab.recent_file_keybind.isChecked()
+        setSetting('UseRecentFileKeys', globals_.UseRecentFileKeys)
+
+        for i, act in enumerate(self.RecentMenu.actions()):
+            if not globals_.UseRecentFileKeys:
+                act.setShortcut(QtGui.QKeySequence())
+            else:
+                if i <= 9:
+                    act.setShortcut(QtGui.QKeySequence(f'Ctrl+Alt+{i}'))
+
         # Get the theme settings
         setSetting('Theme', dlg.appearance_tab.theme_combo.currentText())
         setSetting('uiStyle', dlg.appearance_tab.window_style.currentText())
@@ -2956,7 +2968,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             setSetting('AutoSaveFileData', 'x')
 
             self.UpdateTitle()
-            self.RecentMenu.AddToList(self.fileSavePath)
+            self.RecentMenu.add_to_list(self.fileSavePath)
 
         return True
 
@@ -3610,7 +3622,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         elif not same:
             # Add the path to Recent Files
-            self.RecentMenu.AddToList(self.fileSavePath)
+            self.RecentMenu.add_to_list(self.fileSavePath)
 
         # If we got this far, everything worked! Return True.
         return True
@@ -4826,6 +4838,7 @@ def main():
     globals_.UseFullFilepath = setting('UseFullFilepath', False)
     globals_.CursorMode = setting('CursorMode', 0)
     globals_.TilesetTabPos = setting('TilesetTabPos', 0)
+    globals_.UseRecentFileKeys = setting('UseRecentFileKeys', True)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game

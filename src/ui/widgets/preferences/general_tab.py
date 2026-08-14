@@ -143,7 +143,7 @@ class GeneralTab(PreferenceTabWidget):
             return
 
         if globals_.mainWindow is not None:
-            globals_.mainWindow.RecentMenu.clearAll()
+            globals_.mainWindow.RecentMenu.clear_all()
 
     @property
     def get_translations(self):
