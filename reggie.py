@@ -89,7 +89,7 @@ import globals_
 
 from libs import lh, lib_versions, lz77
 from ui import GetIcon, SetAppStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, IconsOnlyTabBar, SetColorScheme
-from misc import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePaths, areValidGamePaths, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
+from misc import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, LoadLevelNames, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePaths, areValidGamePaths, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
 from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import LoadGameDef
@@ -115,11 +115,16 @@ from src.ui.dialogs.item_shift import ItemShiftDialog
 from src.ui.dialogs.meta_info import MetaInfoDialog
 from src.ui.dialogs.obj_tileset_swap import ObjectTilesetSwapDialog
 from src.ui.dialogs.object_swap import ObjectTypeSwapDialog
+from src.ui.dialogs.preference import PreferencesDialog
 from src.ui.dialogs.screenshot import ScreenshotDialog
 from src.ui.dialogs.sprite_switch import SpriteSwitchDialog
 from src.ui.dialogs.zone import ZonesDialog
 
 from src.ui.menus.game_def_menu import GameDefMenu
+
+from src.ui.widgets.preferences.widgets.toolbar_check_box import ToolbarCheckBox
+from src.ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
+from src.ui.widgets.preferences.widgets.keybind_editor_tab import KeybindEditorTab
 
 ################################################################################
 ################################################################################
@@ -2705,44 +2710,44 @@ class ReggieWindow(QtWidgets.QMainWindow):
             return
 
         # Get the translation
-        name = str(dlg.generalTab.Trans.itemData(dlg.generalTab.Trans.currentIndex(), Qt.ItemDataRole.UserRole))
+        name = str(dlg.general_tab.trans_combo.itemData(dlg.general_tab.trans_combo.currentIndex(), Qt.ItemDataRole.UserRole))
         setSetting('Translation', name)
 
         # Get the Zone Entrance Indicators setting
-        globals_.DrawEntIndicators = dlg.generalTab.zEntIndicator.isChecked()
+        globals_.DrawEntIndicators = dlg.general_tab.zone_entrance_line.isChecked()
         setSetting('ZoneEntIndicators', globals_.DrawEntIndicators)
 
         # Get the Zone Bounds Indicators setting
-        globals_.BoundsDrawn = dlg.generalTab.zBndIndicator.isChecked()
+        globals_.BoundsDrawn = dlg.general_tab.zone_bound_indicators.isChecked()
         setSetting('ZoneBoundIndicators', globals_.BoundsDrawn)
 
         # Get the reset data when hiding setting
-        globals_.ResetDataWhenHiding = dlg.generalTab.rdhIndicator.isChecked()
+        globals_.ResetDataWhenHiding = dlg.general_tab.reset_data_hide.isChecked()
         setSetting('ResetDataWhenHiding', globals_.ResetDataWhenHiding)
 
         # Get the reset data when hiding setting
-        globals_.HideResetSpritedata = dlg.generalTab.erbIndicator.isChecked()
+        globals_.HideResetSpritedata = dlg.general_tab.no_reset_button.isChecked()
         setSetting('HideResetSpritedata', globals_.HideResetSpritedata)
 
         # Padding settings
-        globals_.EnablePadding = dlg.generalTab.epbIndicator.isChecked()
+        globals_.EnablePadding = dlg.general_tab.enable_padding.isChecked()
         setSetting('EnablePadding', globals_.EnablePadding)
 
-        globals_.PaddingLength = dlg.generalTab.psValue.value()
+        globals_.PaddingLength = dlg.general_tab.padding_value.value()
         setSetting('PaddingLength', globals_.PaddingLength)
 
         # Full object size setting
-        globals_.PlaceObjectsAtFullSize = dlg.generalTab.fullObjSize.isChecked()
+        globals_.PlaceObjectsAtFullSize = dlg.general_tab.full_object_size.isChecked()
         setSetting('PlaceObjectsAtFullSize', globals_.PlaceObjectsAtFullSize)
 
         # Insert Path Node setting
-        globals_.InsertPathNode = dlg.generalTab.insertPathNode.isChecked()
+        globals_.InsertPathNode = dlg.general_tab.insert_path_node.isChecked()
         setSetting('InsertPathNode', globals_.InsertPathNode)
 
-        globals_.UseFullFilepath = dlg.generalTab.fullFileTitle.isChecked()
+        globals_.UseFullFilepath = dlg.general_tab.full_file_path.isChecked()
         setSetting('UseFullFilepath', globals_.UseFullFilepath)
 
-        globals_.CursorMode = dlg.generalTab.cursorMode.currentIndex()
+        globals_.CursorMode = dlg.general_tab.cursor_mode.currentIndex()
         setSetting('CursorMode', globals_.CursorMode)
 
         # Toggle hover events for scene items
@@ -2760,27 +2765,37 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Get the Toolbar tab settings
         boxes = (
-            dlg.toolbarTab.FileBoxes, dlg.toolbarTab.EditBoxes, dlg.toolbarTab.ViewBoxes, dlg.toolbarTab.SettingsBoxes,
-            dlg.toolbarTab.HelpBoxes
+            dlg.toolbar_tab.file_boxes,
+            dlg.toolbar_tab.edit_boxes,
+            dlg.toolbar_tab.view_boxes,
+            dlg.toolbar_tab.settings_boxes,
+            dlg.toolbar_tab.help_boxes
         )
-        ToolbarSettings = {}
-        for boxList in boxes:
-            for box in boxList:
-                ToolbarSettings[box.InternalName] = box.isChecked()
-        setSetting('ToolbarActs', ToolbarSettings)
+
+        toolbar_actions = {}
+        box: ToolbarCheckBox
+
+        for box_list in boxes:
+            for box in box_list:
+                toolbar_actions[box.internal_name] = box.isChecked()
+
+        setSetting('ToolbarActs', toolbar_actions)
 
         # Get keybinds and save them
-        for tab in dlg.keybindsTab.tabs:
-            for keyEdit in tab.keyEdits:
-                SetKeybind(keyEdit.name, keyEdit.keySequence())
+        tab: KeybindEditorTab
+        key_edit: KeybindLineEdit
+
+        for tab in dlg.keybind_tab.tabs:
+            for key_edit in tab.key_edits:
+                SetKeybind(key_edit.name, key_edit.keySequence())
 
         # Get the theme settings
-        setSetting('Theme', dlg.appearaceTab.themeBox.currentText())
-        setSetting('uiStyle', dlg.appearaceTab.windowStyle.currentText())
+        setSetting('Theme', dlg.appearance_tab.theme_combo.currentText())
+        setSetting('uiStyle', dlg.appearance_tab.window_style.currentText())
 
-        globals_.UseRoundedRectangles = dlg.appearaceTab.roundedRects.isChecked()
-        globals_.DarkMode = dlg.appearaceTab.darkMode.isChecked()
-        globals_.TilesetTabPos = dlg.appearaceTab.tsTabPos.currentIndex()
+        globals_.UseRoundedRectangles = dlg.appearance_tab.rounded_rects.isChecked()
+        globals_.DarkMode = dlg.appearance_tab.dark_mode.isChecked()
+        globals_.TilesetTabPos = dlg.appearance_tab.tileset_tab_pos.currentIndex()
 
         setSetting('UseRoundedRectangles', globals_.UseRoundedRectangles)
         setSetting('DarkMode', globals_.DarkMode)
@@ -2796,14 +2811,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Create a new level
         """
-        if self.CheckDirty(): return
+        if self.CheckDirty():
+            return
+
         self.LoadLevel(None, False, 1)
 
     def HandleOpenFromName(self):
         """
         Open a level using the level picker
         """
-        if self.CheckDirty(): return
+        if self.CheckDirty():
+            return
 
         LoadLevelNames()
         dlg = ChooseLevelNameDialog()
