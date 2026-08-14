@@ -43,10 +43,6 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
     def __init__(self, defaultmode=False):
         super().__init__(defaultmode)
-        """
-        Constructor
-        """
-        super().__init__()
         self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred))
 
         # create the raw editor
