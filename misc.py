@@ -1034,6 +1034,8 @@ def LoadMusicInfo(reload_=False):
     globals_.MusicInfo = sorted(songs.items(), key=lambda kv: int(kv[0]))
 
 
+# TODO: This seems to be the diagnostic tool that would go next to the zoom widget
+# This should be fixed up and added back into Reggie (make it an option probably)
 class DiagnosticWidget(QtWidgets.QWidget):
     """
     Widget for the auto-diagnostic tool
@@ -1125,111 +1127,6 @@ class DiagnosticWidget(QtWidgets.QWidget):
         if foundCritical: return True, len(self.buttonHandlers)
         elif foundAnything: return False, len(self.buttonHandlers)
         return None, len(self.buttonHandlers)
-
-
-class ZoomWidget(QtWidgets.QWidget):
-    """
-    Widget that allows easy zoom level control
-    """
-
-    def __init__(self):
-        """
-        Creates and initializes the widget
-        """
-        QtWidgets.QWidget.__init__(self)
-        maxwidth = 512 - 128
-        maxheight = 20
-
-        self.slider = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal)
-        self.minLabel = QtWidgets.QPushButton()
-        self.minusLabel = QtWidgets.QPushButton()
-        self.plusLabel = QtWidgets.QPushButton()
-        self.maxLabel = QtWidgets.QPushButton()
-
-        self.slider.setMaximumHeight(maxheight)
-        self.slider.setMinimum(0)
-        self.slider.setMaximum(len(globals_.mainWindow.ZoomLevels) - 1)
-        self.slider.setTickInterval(2)
-        self.slider.setTickPosition(self.slider.TickPosition.TicksAbove)
-        self.slider.setPageStep(1)
-        self.slider.setTracking(True)
-        self.slider.setSliderPosition(self.findIndexOfLevel(100))
-        self.slider.valueChanged.connect(self.sliderMoved)
-
-        self.minLabel.setIcon(GetIcon('zoommin'))
-        self.minusLabel.setIcon(GetIcon('zoomout'))
-        self.plusLabel.setIcon(GetIcon('zoomin'))
-        self.maxLabel.setIcon(GetIcon('zoommax'))
-        self.minLabel.setFlat(True)
-        self.minusLabel.setFlat(True)
-        self.plusLabel.setFlat(True)
-        self.maxLabel.setFlat(True)
-        self.minLabel.clicked.connect(globals_.mainWindow.HandleZoomMin)
-        self.minusLabel.clicked.connect(globals_.mainWindow.HandleZoomOut)
-        self.plusLabel.clicked.connect(globals_.mainWindow.HandleZoomIn)
-        self.maxLabel.clicked.connect(globals_.mainWindow.HandleZoomMax)
-
-        self.layout = QtWidgets.QGridLayout()
-        self.layout.addWidget(self.minLabel, 0, 0)
-        self.layout.addWidget(self.minusLabel, 0, 1)
-        self.layout.addWidget(self.slider, 0, 2)
-        self.layout.addWidget(self.plusLabel, 0, 3)
-        self.layout.addWidget(self.maxLabel, 0, 4)
-        self.layout.setVerticalSpacing(0)
-        self.layout.setHorizontalSpacing(0)
-        self.layout.setContentsMargins(0, 0, 4, 0)
-
-        self.setLayout(self.layout)
-        self.setMinimumWidth(maxwidth)
-        self.setMaximumWidth(maxwidth)
-        self.setMaximumHeight(maxheight)
-
-    def sliderMoved(self):
-        """
-        Handle the slider being moved
-        """
-        globals_.mainWindow.ZoomTo(globals_.mainWindow.ZoomLevels[self.slider.value()])
-
-    def setZoomLevel(self, newLevel):
-        """
-        Moves the slider to the zoom level given
-        """
-        self.slider.setSliderPosition(self.findIndexOfLevel(newLevel))
-
-    def findIndexOfLevel(self, level):
-        for i, mainlevel in enumerate(globals_.mainWindow.ZoomLevels):
-            if float(mainlevel) == float(level): return i
-
-
-class ZoomStatusWidget(QtWidgets.QWidget):
-    """
-    Shows the current zoom level, in percent
-    """
-
-    def __init__(self):
-        """
-        Creates and initializes the widget
-        """
-        QtWidgets.QWidget.__init__(self)
-        self.label = QtWidgets.QPushButton('100%')
-        self.label.setFlat(True)
-        self.label.clicked.connect(globals_.mainWindow.HandleZoomActual)
-
-        self.layout = QtWidgets.QHBoxLayout()
-        self.layout.addWidget(self.label)
-        self.layout.setContentsMargins(4, 0, 8, 0)
-        self.setMaximumWidth(57)
-
-        self.setLayout(self.layout)
-
-    def setZoomLevel(self, zoomLevel):
-        """
-        Updates the widget
-        """
-        if float(int(zoomLevel)) == float(zoomLevel):
-            self.label.setText(str(int(zoomLevel)) + '%')
-        else:
-            self.label.setText(str(float(zoomLevel)) + '%')
 
 
 def LoadActionsLists():

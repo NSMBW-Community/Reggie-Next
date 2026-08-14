@@ -89,7 +89,7 @@ import globals_
 
 from libs import lh, lib_versions, lz77
 from ui import GetIcon, SetAppStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, IconsOnlyTabBar, SetColorScheme
-from misc import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, LoadLevelNames, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, SetGamePaths, areValidGamePaths, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
+from misc import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, LoadLevelNames, LoadSpriteCategories, SetGamePaths, areValidGamePaths, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
 from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import LoadGameDef
@@ -126,6 +126,9 @@ from src.ui.menus.recent_files_menu import RecentFilesMenu
 from src.ui.widgets.preferences.widgets.toolbar_check_box import ToolbarCheckBox
 from src.ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
 from src.ui.widgets.preferences.widgets.keybind_editor_tab import KeybindEditorTab
+
+from src.ui.widgets.zoom import ZoomWidget
+from src.ui.widgets.zoom_status import ZoomStatusWidget
 
 ################################################################################
 ################################################################################
@@ -258,15 +261,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.posLabel = QtWidgets.QLabel()
         self.selectionLabel = QtWidgets.QLabel()
         self.hoverLabel = QtWidgets.QLabel()
-        self.statusBar().addWidget(self.posLabel)
-        self.statusBar().addWidget(self.selectionLabel)
-        self.statusBar().addWidget(self.hoverLabel)
-        #self.diagnostic = DiagnosticWidget()
-        self.ZoomWidget = ZoomWidget()
-        self.ZoomStatusWidget = ZoomStatusWidget()
-        #self.statusBar().addPermanentWidget(self.diagnostic)
-        self.statusBar().addPermanentWidget(self.ZoomWidget)
-        self.statusBar().addPermanentWidget(self.ZoomStatusWidget)
+
+        status_bar = self.statusBar()
+        if status_bar is not None:
+            status_bar.addWidget(self.posLabel)
+            status_bar.addWidget(self.selectionLabel)
+            status_bar.addWidget(self.hoverLabel)
+
+            #self.diagnostic = DiagnosticWidget()
+            self.ZoomWidget = ZoomWidget()
+            self.ZoomStatusWidget = ZoomStatusWidget()
+
+            #status_bar.addPermanentWidget(self.diagnostic)
+            status_bar.addPermanentWidget(self.ZoomWidget)
+            status_bar.addPermanentWidget(self.ZoomStatusWidget)
 
         # create the various panels
         self.SetupDocksAndPanels()
@@ -3357,8 +3365,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.actions['zoomout'].setEnabled(zi > 0)
         self.actions['zoommin'].setEnabled(zi > 0)
 
-        self.ZoomWidget.setZoomLevel(z)
-        self.ZoomStatusWidget.setZoomLevel(z)
+        self.ZoomWidget.set_zoom_level(z)
+        self.ZoomStatusWidget.set_zoom_level(z)
 
         # Update the zone grabber rects, to resize for the new zoom level
         for z in globals_.Area.zones:
