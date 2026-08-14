@@ -1,5 +1,6 @@
-from enum import IntEnum
 from PyQt6 import QtWidgets, QtGui
+from enum import IntEnum
+from typing import cast
 
 import globals_
 
@@ -7,6 +8,8 @@ from dirty import SetDirty
 import spritelib as SLib
 from levelitems import SpriteItem, ZoneItem, EntranceItem
 from ui import GetIcon
+
+from src.ui.widgets.diag_list_widget_item import DiagnosticListWidgetItem
 
 class DiagnosticToolDialog(QtWidgets.QDialog):
     """
@@ -137,14 +140,13 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 if critical:
                     is_critical = True
 
-                item = QtWidgets.QListWidgetItem()
+                item = DiagnosticListWidgetItem()
                 item.setText(description)
                 if critical:
                     item.setForeground(QtGui.QColor(255, 0, 0))
                 else:
                     item.setForeground(QtGui.QColor(172, 172, 0))
                 item.setIcon(GetIcon(icon))
-                # Not sure how to fix the typing here...
                 item.fix = func
 
                 self.error_list.addItem(item)
@@ -195,9 +197,9 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         # Fix them
         for index, item in enumerate(self.error_list.selectedIndexes()[:]):
-            listItem = self.error_list.itemFromIndex(item)
+            listItem = cast(DiagnosticListWidgetItem, self.error_list.itemFromIndex(item))
             try:
-                listItem.fix()
+                listItem.fix('f')
                 SetDirty()
             except Exception:
                 pass  # Fail silently
@@ -217,7 +219,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
 
     # Check functions begin here
-    def check_invalid_obj(self, mode='f'):
+    def check_invalid_obj(self, mode):
         """
         Checks for any objects which cannot be found in the tilesets
         """
@@ -244,7 +246,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
             globals_.mainWindow.levelOverview.update()
 
-    def check_crash_sprite(self, mode='f'):
+    def check_crash_sprite(self, mode):
         """
         Checks if there are any sprites which are known to crash or cause problems often
         """
@@ -268,7 +270,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                     globals_.mainWindow.levelOverview.update()
 
     # TODO: Split 'missing resource' checks into their own function (153 needs it too)
-    def check_sprite_param(self, mode='f'):
+    def check_sprite_param(self, mode):
         """
         Checks for sprite settings which are known to cause major glitches and crashes
         """
@@ -385,7 +387,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
                 globals_.mainWindow.scene.update()
 
-    def check_sprite_max(self, mode='f'):
+    def check_sprite_max(self, mode):
         """
         Determines if the number of sprites in the current area is > 1000
         """
@@ -410,7 +412,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             globals_.mainWindow.scene.update()
             globals_.mainWindow.levelOverview.update()
 
-    def check_duplicate_entrance(self, mode='f'):
+    def check_duplicate_entrance(self, mode):
         """
         Checks for entrances with duplicate IDs
         """
@@ -437,7 +439,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         return False
 
-    def check_start_entrance(self, mode='f'):
+    def check_start_entrance(self, mode):
         """
         Determines if there is a start entrance or not
         """
@@ -462,7 +464,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 # TODO: Maybe place it 6 blocks right, 3 blocks up from Zone 1's bottom-left corner?
                 globals_.mainWindow.CreateEntrance(1024, 512, globals_.Area.startEntrance)
 
-    def check_entrance_near_edge(self, mode='f'):
+    def check_entrance_near_edge(self, mode):
         """
         Checks if the start entrance is too close to the left zone edge
         """
@@ -495,7 +497,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         elif problem:
             start.setPos((first_zone.objx + offset) * 1.5, start.objy * 1.5)
 
-    def check_entrance_out_zone(self, mode='f'):
+    def check_entrance_out_zone(self, mode):
         """
         Checks if any entrances are not inside of a zone
         """
@@ -551,7 +553,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         return False
 
-    def check_zone_max(self, mode='f'):
+    def check_zone_max(self, mode):
         """
         Checks if there are too many zones in this area
         """
@@ -567,7 +569,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 globals_.mainWindow.scene.update()
                 globals_.mainWindow.levelOverview.update()
 
-    def check_no_zone_exist(self, mode='f'):
+    def check_no_zone_exist(self, mode):
         """
         Checks if there are no zones in this area
         """
@@ -582,7 +584,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         if globals_.mainWindow is not None:
             globals_.mainWindow.CreateZone(16, 16)
 
-    def check_zone_proximity(self, mode='f'):
+    def check_zone_proximity(self, mode):
         """
         Checks for any zones which are too close together or are overlapping
         """
@@ -662,7 +664,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         return False
 
-    def check_zone_on_area_edge(self, mode='f'):
+    def check_zone_on_area_edge(self, mode):
         """
         Checks for any zones which are too close to the area edges, and moves them
         """
@@ -691,7 +693,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         return False
 
     # TODO: What is this??? Needs more research
-    def check_no_bias(self, mode='f'):
+    def check_no_bias(self, mode):
         """
         Checks for any zones which do not have bias enabled
         """
@@ -722,7 +724,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         return False
 
     # TODO: Fix this? Also make it actually useful
-    def check_zone_max_size(self, mode='f'):
+    def check_zone_max_size(self, mode):
         """
         Checks for any zones which may be too large
         """
