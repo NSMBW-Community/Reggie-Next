@@ -2725,10 +2725,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.ResetDataWhenHiding = dlg.general_tab.reset_data_hide.isChecked()
         setSetting('ResetDataWhenHiding', globals_.ResetDataWhenHiding)
 
-        # Get the reset data when hiding setting
-        globals_.HideResetSpritedata = dlg.general_tab.no_reset_button.isChecked()
-        setSetting('HideResetSpritedata', globals_.HideResetSpritedata)
-
         # Padding settings
         globals_.EnablePadding = dlg.general_tab.enable_padding.isChecked()
         setSetting('EnablePadding', globals_.EnablePadding)
@@ -4821,7 +4817,6 @@ def main():
     globals_.DrawEntIndicators = setting('ZoneEntIndicators', False)
     globals_.BoundsDrawn = setting('ZoneBoundIndicators', False)
     globals_.ResetDataWhenHiding = setting('ResetDataWhenHiding', False)
-    globals_.HideResetSpritedata = setting('HideResetSpritedata', False)
     globals_.EnablePadding = setting('EnablePadding', False)
     globals_.PaddingLength = int(setting('PaddingLength', 0))
     globals_.PlaceObjectsAtFullSize = setting('PlaceObjectsAtFullSize', True)

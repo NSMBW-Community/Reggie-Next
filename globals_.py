@@ -114,7 +114,6 @@ TilesetInfo: dict[str, dict[int, RandTileSelection]] = {}
 TilesetNames: list[TilesetCategory] = [TilesetCategory() for _ in range(4)] # should always have exactly 4 entries
 
 # Sprites
-HideResetSpritedata = False
 NumSprites = 0
 ResetDataWhenHiding = False
 SpriteCategories: list[SpriteCategory] = []

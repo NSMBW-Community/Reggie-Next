@@ -52,9 +52,6 @@ class GeneralTab(PreferenceTabWidget):
         # Reset data when hide checkbox
         self.reset_data_hide = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 33))
 
-        # Hide reset spritedata button
-        self.no_reset_button = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 34))
-
         # Enable padding button
         self.enable_padding = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 35))
         self.enable_padding.stateChanged.connect(
@@ -90,7 +87,6 @@ class GeneralTab(PreferenceTabWidget):
         L.addWidget(self.zone_entrance_line)
         L.addWidget(self.zone_bound_indicators)
         L.addWidget(self.reset_data_hide)
-        L.addWidget(self.no_reset_button)
         L.addWidget(self.full_object_size)
         L.addWidget(self.insert_path_node)
         L.addWidget(self.full_file_path)
@@ -127,7 +123,6 @@ class GeneralTab(PreferenceTabWidget):
         self.zone_entrance_line.setChecked(globals_.DrawEntIndicators)
         self.zone_bound_indicators.setChecked(globals_.BoundsDrawn)
         self.reset_data_hide.setChecked(globals_.ResetDataWhenHiding)
-        self.no_reset_button.setChecked(globals_.HideResetSpritedata)
 
         self.enable_padding.setChecked(globals_.EnablePadding)
         self.padding_value.setEnabled(globals_.EnablePadding)
