@@ -92,7 +92,7 @@ from ui import GetIcon, SetAppStyle, ListWidgetWithToolTipSignal, LoadNumberFont
 from misc import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, FilesAreMissing, module_path, IsNSMBLevel, LoadLevelNames, PreferencesDialog, LoadSpriteCategories, ZoomWidget, ZoomStatusWidget, RecentFilesMenu, SetGamePaths, areValidGamePaths, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
 from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
-from gamedef import GameDefMenu, LoadGameDef
+from gamedef import LoadGameDef
 from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem, Path
 from tiles import UnloadTileset, LoadTileset, LoadOverrides
 from level import Level_NSMBW
@@ -118,6 +118,8 @@ from src.ui.dialogs.object_swap import ObjectTypeSwapDialog
 from src.ui.dialogs.screenshot import ScreenshotDialog
 from src.ui.dialogs.sprite_switch import SpriteSwitchDialog
 from src.ui.dialogs.zone import ZonesDialog
+
+from src.ui.menus.game_def_menu import GameDefMenu
 
 ################################################################################
 ################################################################################
