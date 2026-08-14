@@ -5,10 +5,10 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 from classlib import MenuAction, RandTileSelection, SpriteCategory, TilesetCategory
 from gamedef import ReggieGameDefinition
-from level import AbstractLevel
-from level import Area as AreaType
+from src.data.level.area import Area as AreaType
 from misc import SpriteDefinition
 from reggie import ReggieWindow
+from src.data.level.abstract_level import AbstractLevel
 from tiles import ObjectDef, TilesetTile
 from translation import ReggieTranslation
 from ui import ReggieTheme

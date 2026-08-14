@@ -4,7 +4,7 @@ import struct
 
 import globals_
 import spritelib as SLib
-import archive
+from src.data import archive
 
 from libs import lh, lz77, tpl, lib_versions
 

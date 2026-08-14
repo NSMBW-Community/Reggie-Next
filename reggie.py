@@ -75,7 +75,7 @@ for v, c in zip(version, pqt_min):
 ################################################################################
 
 # Local imports
-import archive
+from src.data import archive
 import sprites
 import spritelib as SLib
 from sprites_common import LoadBasics
@@ -95,7 +95,7 @@ from dirty import setting, setSetting, SetDirty
 from gamedef import LoadGameDef
 from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem, Path
 from tiles import UnloadTileset, LoadTileset, LoadOverrides
-from level import Level_NSMBW
+from src.data.level.nsmbw_level import NSMBWLevel
 from sidelists import Stamp, StampChooserWidget, SpriteList, SpritePickerWidget, ObjectPickerWidget, LevelOverviewWidget
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 from src.ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
@@ -3561,7 +3561,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if new:
             self.newLevel()
         elif not same:
-            self.LoadLevel_NSMBW(levelData, areaNum)
+            self.LoadNSMBWLevel(levelData, areaNum)
         else:
             # We have already loaded this area's data - it's stored as
             # AbstractAreas in the Level. This means we do not have to open and
@@ -3638,7 +3638,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
     def newLevel(self):
         # Create the new level object
-        globals_.Level = Level_NSMBW()
+        globals_.Level = NSMBWLevel()
 
         # Load it
         globals_.Level.new()
@@ -3657,13 +3657,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.actions['swapobjectstypes'].setEnabled(True)
         self.actions['swapobjectstilesets'].setEnabled(True)
 
-    def LoadLevel_NSMBW(self, levelData, areaNum):
+    def LoadNSMBWLevel(self, levelData, areaNum):
         """
         Performs all level-loading tasks specific to New Super Mario Bros. Wii levels.
         Do not call this directly - use LoadLevel instead!
         """
         # Create the new level object
-        globals_.Level = Level_NSMBW()
+        globals_.Level = NSMBWLevel()
 
         # Load it
         if not globals_.Level.load(levelData, areaNum):
