@@ -14,6 +14,8 @@ from translation import ReggieTranslation
 from ui import ReggieTheme
 
 # Reggie / UI
+AutoDiagEnabled = True
+AutoDiagFrequency = 1
 AutoSaveData = b''
 AutoSaveDirty = False
 AutoSavePath = ''

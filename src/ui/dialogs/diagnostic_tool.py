@@ -125,8 +125,6 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         """
         Runs the check functions and adds items to the list if needed
         """
-        self.button_handlers = []
-
         self.error_list = QtWidgets.QListWidget()
         self.error_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.MultiSelection)
 
@@ -168,11 +166,11 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 item.setSelected(True)
 
         if is_critical:
-            return self.Result.CRITICAL, len(self.button_handlers)
+            return self.Result.CRITICAL, len(self.error_list)
         elif has_error:
-            return self.Result.WARNING, len(self.button_handlers)
+            return self.Result.WARNING, len(self.error_list)
 
-        return self.Result.NO_ERROR, len(self.button_handlers)
+        return self.Result.NO_ERROR, len(self.error_list)
 
     def fix_selected(self):
         """

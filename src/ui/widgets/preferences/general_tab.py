@@ -36,12 +36,9 @@ class GeneralTab(PreferenceTabWidget):
         self.translation_info = QtWidgets.QLabel()
 
         trans_info_box = QtWidgets.QGroupBox(globals_.trans.string('PrefsDlg', 42))
-        L = QtWidgets.QFormLayout()
-        L.addRow(self.translation_info)
-        
-        L2 = QtWidgets.QGridLayout()
-        L2.addLayout(L, 0, 0)
-        trans_info_box.setLayout(L2)
+        trans_lyt = QtWidgets.QFormLayout()
+        trans_lyt.addRow(self.translation_info)
+        trans_info_box.setLayout(trans_lyt)
 
         # Add the Zone Entrance Indicator checkbox
         self.zone_entrance_line = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 31))
@@ -77,21 +74,39 @@ class GeneralTab(PreferenceTabWidget):
         self.cursor_mode.addItems(globals_.trans.stringList('PrefsDlg', 55))
         self.cursor_mode.setToolTip(globals_.trans.string('PrefsDlg', 54))
 
-        # Create the main layout
-        L = QtWidgets.QFormLayout()
-        L.addRow(globals_.trans.string('PrefsDlg', 14), self.trans_combo)
-        L.addRow('', trans_info_box) # Blank label so this right-aligns
-        L.addRow(globals_.trans.string('PrefsDlg', 15), clear_recent_button)
-        L.addWidget(self.enable_padding)
-        L.addRow(globals_.trans.string('PrefsDlg', 36), self.padding_value)
-        L.addWidget(self.zone_entrance_line)
-        L.addWidget(self.zone_bound_indicators)
-        L.addWidget(self.reset_data_hide)
-        L.addWidget(self.full_object_size)
-        L.addWidget(self.insert_path_node)
-        L.addWidget(self.full_file_path)
-        L.addRow(globals_.trans.string('PrefsDlg', 53), self.cursor_mode)
-        self.setLayout(L)
+        # Toggle auto-diag
+        self.auto_diag = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 71))
+        self.auto_diag.stateChanged.connect(
+            lambda v: self.diag_freq.setDisabled(v == 0)
+        )
+
+        # Auto-diag frequency
+        self.diag_freq = QtWidgets.QComboBox()
+        self.diag_freq.setMaximumWidth(256)
+        self.diag_freq.addItems(globals_.trans.stringList('PrefsDlg', 73))
+        self.diag_freq.setToolTip(globals_.trans.string('PrefsDlg', 74))
+
+        auto_diag_box = QtWidgets.QGroupBox(globals_.trans.string('PrefsDlg', 70))
+        diag_lyt = QtWidgets.QFormLayout()
+        diag_lyt.addRow(self.auto_diag)
+        diag_lyt.addRow(globals_.trans.string('PrefsDlg', 72), self.diag_freq)
+        auto_diag_box.setLayout(diag_lyt)
+
+        main_layout = QtWidgets.QFormLayout()
+        main_layout.addRow(globals_.trans.string('PrefsDlg', 14), self.trans_combo)
+        main_layout.addWidget(trans_info_box)
+        main_layout.addRow(globals_.trans.string('PrefsDlg', 15), clear_recent_button)
+        main_layout.addWidget(self.enable_padding)
+        main_layout.addRow(globals_.trans.string('PrefsDlg', 36), self.padding_value)
+        main_layout.addWidget(self.zone_entrance_line)
+        main_layout.addWidget(self.zone_bound_indicators)
+        main_layout.addWidget(self.reset_data_hide)
+        main_layout.addWidget(self.full_object_size)
+        main_layout.addWidget(self.insert_path_node)
+        main_layout.addWidget(self.full_file_path)
+        main_layout.addRow(globals_.trans.string('PrefsDlg', 53), self.cursor_mode)
+        main_layout.addWidget(auto_diag_box)
+        self.setLayout(main_layout)
 
         # Set the button data
         self.set_data()
@@ -132,6 +147,10 @@ class GeneralTab(PreferenceTabWidget):
         self.insert_path_node.setChecked(globals_.InsertPathNode)
         self.full_file_path.setChecked(globals_.UseFullFilepath)
         self.cursor_mode.setCurrentIndex(globals_.CursorMode)
+
+        self.auto_diag.setChecked(globals_.AutoDiagEnabled)
+        self.diag_freq.setEnabled(globals_.AutoDiagEnabled)
+        self.diag_freq.setCurrentIndex(globals_.AutoDiagFrequency)
 
     def clear_recent_files(self):
         """

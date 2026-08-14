@@ -255,29 +255,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.AutosaveTimer.timeout.connect(self.Autosave)
         self.AutosaveTimer.start(20000)
 
-        # set up actions and menus
+        # Set up actions and menus
         self.SetupActionsAndMenus()
 
-        # set up the status bar
-        self.posLabel = QtWidgets.QLabel()
-        self.selectionLabel = QtWidgets.QLabel()
-        self.hoverLabel = QtWidgets.QLabel()
+        # Set up the status bar
+        self.setup_status_bar()
 
-        status_bar = self.statusBar()
-        if status_bar is not None:
-            status_bar.addWidget(self.posLabel)
-            status_bar.addWidget(self.selectionLabel)
-            status_bar.addWidget(self.hoverLabel)
-
-            #self.diagnostic = DiagnosticWidget()
-            self.ZoomWidget = ZoomWidget()
-            self.ZoomStatusWidget = ZoomStatusWidget()
-
-            #status_bar.addPermanentWidget(self.diagnostic)
-            status_bar.addPermanentWidget(self.ZoomWidget)
-            status_bar.addPermanentWidget(self.ZoomStatusWidget)
-
-        # create the various panels
+        # Create the various panels
         self.SetupDocksAndPanels()
 
         # Add menu action for the toolbar
@@ -326,8 +310,42 @@ class ReggieWindow(QtWidgets.QMainWindow):
         zoom = setting('ZoomLevel', 100.0)
         self.ZoomTo(zoom, towardsCursor=False)
 
+        # Set initial state for diagnostic widget
+        # Calling this while the auto-diag is initing
+        # will cause the 'no zones' check to always fail
+        if globals_.AutoDiagEnabled:
+            self.diagnostic.update_status()
+
         # Aaaaaand... initializing is done!
         globals_.Initializing = False
+
+    def setup_status_bar(self):
+        """
+        Sets up the status bar
+        """
+        self.posLabel = QtWidgets.QLabel()
+        self.selectionLabel = QtWidgets.QLabel()
+        self.hoverLabel = QtWidgets.QLabel()
+
+        status_bar = self.statusBar()
+        if status_bar is not None:
+            for widget in status_bar.findChildren(QtWidgets.QWidget):
+                status_bar.removeWidget(widget)
+
+            status_bar.addWidget(self.posLabel)
+            status_bar.addWidget(self.selectionLabel)
+            status_bar.addWidget(self.hoverLabel)
+
+            self.diagnostic = DiagnosticWidget()
+            if globals_.AutoDiagEnabled:
+                self.diagnostic.set_timer()
+                status_bar.addPermanentWidget(self.diagnostic)
+
+            self.ZoomWidget = ZoomWidget()
+            self.ZoomStatusWidget = ZoomStatusWidget()
+
+            status_bar.addPermanentWidget(self.ZoomWidget)
+            status_bar.addPermanentWidget(self.ZoomStatusWidget)
 
     def SetupActionsAndMenus(self):
         """
@@ -2756,6 +2774,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.CursorMode = dlg.general_tab.cursor_mode.currentIndex()
         setSetting('CursorMode', globals_.CursorMode)
 
+        globals_.AutoDiagEnabled = dlg.general_tab.auto_diag.isChecked()
+        setSetting('AutoDiagEnabled', globals_.AutoDiagEnabled)
+
+        globals_.AutoDiagFrequency = dlg.general_tab.diag_freq.currentIndex()
+        setSetting('AutoDiagFrequency', globals_.AutoDiagFrequency)
+
         # Toggle hover events for scene items
         for item in self.scene.items():
             if not isinstance(item, ZoneItem):
@@ -2768,6 +2792,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
             else:
                 self.fileTitle = os.path.basename(self.fileSavePath)
         self.UpdateTitle()
+
+        # Update diagnostic widget
+        self.diagnostic.set_timer()
+        if globals_.AutoDiagEnabled:
+            # Need to remake the entire bar, or else
+            # auto-diag will appear after the zoom stuff
+            self.setup_status_bar()
+
+            self.diagnostic.update_status()
+        else:
+            status_bar = self.statusBar()
+            if status_bar is not None:
+                status_bar.removeWidget(self.diagnostic)
 
         # Get the Toolbar tab settings
         boxes = (
@@ -4848,6 +4885,8 @@ def main():
     globals_.CursorMode = setting('CursorMode', 0)
     globals_.TilesetTabPos = setting('TilesetTabPos', 0)
     globals_.UseRecentFileKeys = setting('UseRecentFileKeys', True)
+    globals_.AutoDiagEnabled = setting('AutoDiagEnabled', True)
+    globals_.AutoDiagFrequency = setting('AutoDiagFrequency', 1)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game

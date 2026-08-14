@@ -140,6 +140,13 @@ class ReggieTranslation:
                 52: 'Type a Sprite ID...',
                 53: 'UNKNOWN',
             },
+            'AutoDiag': {
+                0: '[num] error found.',
+                1: '[num] errors found.',
+                2: 'No errors found.',
+                3: 'Checking Disabled',
+                4: 'Manually check for errors.',
+            },
             'AutoSaveDlg': {
                 0: 'Auto-saved backup found',
                 1: 'Reggie Next has found some level data which wasn\'t saved - possibly due to a crash within the editor or by your computer. Do you want to restore this level?[br][br]If you pick No, the autosaved level data will be deleted and will no longer be accessible.[br][br]Original file path: [path]',
@@ -730,6 +737,16 @@ class ReggieTranslation:
                     'Left Side',
                 ),
                 69: 'Enable shortcuts in Recent Files menu',
+                70: 'Auto-Diagnostic Tool',
+                71: 'Enable Auto-Diagnostic Tool',
+                72: 'Error Checking Frequency:',
+                73: (
+                    'Never',
+                    'Every 5 seconds',
+                    'Every 10 seconds',
+                    'Every 15 seconds',
+                ),
+                74: '[b]Error Checking Frequency:[/b][br]This determines how often the Auto-Diagnostic Tool will check for errors.'
             },
             'ScrShtDlg': {
                 0: 'Level Screenshot',

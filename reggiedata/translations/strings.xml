@@ -91,6 +91,13 @@
         <string id="52">Type a Sprite ID...</string>
         <string id="53">UNKNOWN</string>
     </section>
+    <section id="AutoDiag">
+        <string id="0">[num] error found.</string>
+        <string id="1">[num] errors found.</string>
+        <string id="2">No errors found.</string>
+        <string id="3">Checking Disabled</string>
+        <string id="4">Manually check for errors.</string>
+    </section>
     <section id="AutoSaveDlg">
         <string id="0">Auto-saved backup found</string>
         <string id="1">Reggie Next has found some level data which wasn't saved - possibly due to a crash within the editor or by your computer. Do you want to restore this level?[br][br]If you pick No, the autosaved level data will be deleted and will no longer be accessible.[br][br]Original file path: [path]</string>
@@ -681,6 +688,16 @@
             <entry>Left Side</entry>
         </stringlist>
         <string id="69">Enable shortcuts in Recent Files menu</string>
+        <string id="70">Auto-Diagnostic Tool</string>
+        <string id="71">Enable Auto-Diagnostic Tool</string>
+        <string id="72">Error Checking Frequency:</string>
+        <stringlist id="73">
+            <entry>Never</entry>
+            <entry>Every 5 seconds</entry>
+            <entry>Every 10 seconds</entry>
+            <entry>Every 15 seconds</entry>
+        </stringlist>
+        <string id="74">[b]Error Checking Frequency:[/b][br]This determines how often the Auto-Diagnostic Tool will check for errors.</string>
     </section>
     <section id="ScrShtDlg">
         <string id="0">Level Screenshot</string>
