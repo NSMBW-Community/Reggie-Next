@@ -11,10 +11,7 @@ from xml.etree import ElementTree
 
 import globals_
 from classlib import CheckBoxSpriteField, DualBoxSpriteField, ExternalSpriteField, ListSpriteField, MenuAction, MultiDualBoxSpriteField, RandTileSelection, SpriteCategory, SpriteField, SpriteSubCategory, SpriteTexSpriteField, TilesetCategory, TilesetFileEntry, ValueSpriteField
-from ui import GetIcon
 from dirty import setting, setSetting, delSetting
-
-from src.ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 
 ################################################################################
 ################################################################################
@@ -1032,101 +1029,6 @@ def LoadMusicInfo(reload_=False):
             songs[songid] = name
 
     globals_.MusicInfo = sorted(songs.items(), key=lambda kv: int(kv[0]))
-
-
-# TODO: This seems to be the diagnostic tool that would go next to the zoom widget
-# This should be fixed up and added back into Reggie (make it an option probably)
-class DiagnosticWidget(QtWidgets.QWidget):
-    """
-    Widget for the auto-diagnostic tool
-    """
-    def __init__(self):
-        """
-        Creates and initializes the widget
-        """
-        super().__init__()
-        self.CheckFunctions = (('objects', globals_.trans.string('Diag', 1), DiagnosticToolDialog.UnusedTilesets, False),
-               ('objects', globals_.trans.string('Diag', 2), DiagnosticToolDialog.ObjsInTileset, True),
-               ('sprites', globals_.trans.string('Diag', 3), DiagnosticToolDialog.CrashSprites, False),
-               ('sprites', globals_.trans.string('Diag', 4), DiagnosticToolDialog.CrashSpriteSettings, True),
-               ('sprites', globals_.trans.string('Diag', 5), DiagnosticToolDialog.TooManySprites, False),
-               ('entrances', globals_.trans.string('Diag', 6), DiagnosticToolDialog.DuplicateEntranceIDs, True),
-               ('entrances', globals_.trans.string('Diag', 7), DiagnosticToolDialog.NoStartEntrance, True),
-               ('entrances', globals_.trans.string('Diag', 8), DiagnosticToolDialog.EntranceTooCloseToZoneEdge, False),
-               ('entrances', globals_.trans.string('Diag', 9), DiagnosticToolDialog.EntranceOutsideOfZone, False),
-               ('zones', globals_.trans.string('Diag', 10), DiagnosticToolDialog.TooManyZones, True),
-               ('zones', globals_.trans.string('Diag', 11), DiagnosticToolDialog.NoZones, True),
-               ('zones', globals_.trans.string('Diag', 12), DiagnosticToolDialog.ZonesTooClose, True),
-               ('zones', globals_.trans.string('Diag', 13), DiagnosticToolDialog.ZonesTooCloseToAreaEdges, True),
-               ('zones', globals_.trans.string('Diag', 14), DiagnosticToolDialog.BiasNotEnabled, False),
-               ('zones', globals_.trans.string('Diag', 15), DiagnosticToolDialog.ZonesTooBig, True),
-               ('background', globals_.trans.string('Diag', 16), DiagnosticToolDialog.UnusedBackgrounds, False),
-               )
-        self.diagnosticIcon = QtWidgets.QPushButton()
-
-        self.diagnosticIcon.setIcon(GetIcon('autodiagnosticgood'))
-        self.diagnosticIcon.setFlat(True)
-        self.diagnosticIcon.setGeometry(2, 1, 2, 1)
-        # self.diagnosticIcon.setHeight(59)
-        # self.diagnosticIcon.clicked.connect(ReggieWindow.HandleDiagnostics)
-        self.diagnosticIcon.clicked.connect(self.findIssues)
-        self.layout = QtWidgets.QGridLayout()
-        self.layout.addWidget(self.diagnosticIcon, 0, 0)
-        self.layout.setVerticalSpacing(0)
-        self.layout.setHorizontalSpacing(0)
-        self.layout.setContentsMargins(0, 0, 0, 0)
-        self.setLayout(self.layout)
-
-        self.starttimer = QtCore.QTimer()
-        self.starttimer.setSingleShot(True)
-        self.starttimer.timeout.connect(self.startloopytimer)
-        self.starttimer.start(10000)
-
-    def startloopytimer(self):
-        self.loopytimer = QtCore.QTimer()
-        self.loopytimer.timeout.connect(self.findIssues)
-        self.loopytimer.start(50)
-
-    def findIssues(self):
-        try:
-            dtd = DiagnosticToolDialog()
-            issues = dtd.populateLists()
-
-            print(issues)
-
-        except:
-            pass
-
-    def populateLists(self):
-        """
-        Runs the check functions and adds items to the list if needed
-        """
-        self.buttonHandlers = []
-
-        foundAnything = False
-        foundCritical = False
-        for ico, desc, fxn, isCritical in self.CheckFunctions:
-            if False and fxn('c'):
-
-                foundAnything = True
-                if isCritical: foundCritical = True
-
-                if isCritical:
-                    self.diagnosticIcon.setIcon(GetIcon('autodiagnosticbad'))
-                    print("THIS IS BAD")
-                else:
-                    self.diagnosticIcon.setIcon(GetIcon('autodiagnosticwarning'))
-                    print("Warning!")
-        if not foundAnything:
-            self.diagnosticIcon.setIcon(GetIcon('autodiagnosticgood', True))
-            print("'Sall cool!")
-
-        '''if foundCritical: True, len(self.buttonHandlers)#   self.diagnosticIcon.setIcon(GetIcon('autodiagnosticbad'))
-        elif foundAnything: False, len(self.buttonHandlers)   #self.diagnosticIcon.setIcon(GetIcon('autodiagnosticwarning'))
-        return None, len(self.buttonHandlers)'''
-        if foundCritical: return True, len(self.buttonHandlers)
-        elif foundAnything: return False, len(self.buttonHandlers)
-        return None, len(self.buttonHandlers)
 
 
 def LoadActionsLists():

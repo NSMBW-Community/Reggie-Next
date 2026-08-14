@@ -30,20 +30,20 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
         # check_functions: (icon, description, function, is_critical)
         self.check_functions = (
-            ('objects',   globals_.trans.string('Diag', 2),  self.check_invalid_obj,          True),
-            ('sprites',   globals_.trans.string('Diag', 3),  self.check_crash_sprite,         False),
-            ('sprites',   globals_.trans.string('Diag', 4),  self.check_sprite_param,         True),
-            ('sprites',   globals_.trans.string('Diag', 5),  self.check_sprite_max,           False),
-            ('entrances', globals_.trans.string('Diag', 6),  self.check_duplicate_entrance,   True),
-            ('entrances', globals_.trans.string('Diag', 7),  self.check_start_entrance,       True),
-            ('entrances', globals_.trans.string('Diag', 8),  self.check_entrance_near_edge,   False),
-            ('entrances', globals_.trans.string('Diag', 9),  self.check_entrance_out_zone,    False),
-            ('zones',     globals_.trans.string('Diag', 10), self.check_zone_max,             True),
-            ('zones',     globals_.trans.string('Diag', 11), self.check_no_zone_exist,        True),
-            ('zones',     globals_.trans.string('Diag', 12), self.check_zone_proximity,       True),
-            ('zones',     globals_.trans.string('Diag', 13), self.check_zone_on_area_edge,    True),
-            ('zones',     globals_.trans.string('Diag', 14), self.check_no_bias,              False),
-            ('zones',     globals_.trans.string('Diag', 15), self.check_zone_max_size,        True),
+            ('objects',   globals_.trans.string('Diag', 2),  self.check_invalid_obj,        True),
+            ('sprites',   globals_.trans.string('Diag', 3),  self.check_crash_sprite,       False),
+            ('sprites',   globals_.trans.string('Diag', 4),  self.check_sprite_param,       True),
+            ('sprites',   globals_.trans.string('Diag', 5),  self.check_sprite_max,         False),
+            ('entrances', globals_.trans.string('Diag', 6),  self.check_duplicate_entrance, True),
+            ('entrances', globals_.trans.string('Diag', 7),  self.check_start_entrance,     True),
+            ('entrances', globals_.trans.string('Diag', 8),  self.check_entrance_near_edge, False),
+            ('entrances', globals_.trans.string('Diag', 9),  self.check_entrance_out_zone,  False),
+            ('zones',     globals_.trans.string('Diag', 10), self.check_zone_max,           True),
+            ('zones',     globals_.trans.string('Diag', 11), self.check_no_zone_exist,      True),
+            ('zones',     globals_.trans.string('Diag', 12), self.check_zone_proximity,     True),
+            ('zones',     globals_.trans.string('Diag', 13), self.check_zone_on_area_edge,  True),
+            ('zones',     globals_.trans.string('Diag', 14), self.check_no_bias,            False),
+            ('zones',     globals_.trans.string('Diag', 15), self.check_zone_max_size,      True),
             # Possible things to implement checks for:
             # Non-location liquid in zone bigger than 8192 pixels (crest stops rendering)
         )

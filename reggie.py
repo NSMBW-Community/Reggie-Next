@@ -129,6 +129,7 @@ from src.ui.widgets.preferences.widgets.keybind_editor_tab import KeybindEditorT
 
 from src.ui.widgets.zoom import ZoomWidget
 from src.ui.widgets.zoom_status import ZoomStatusWidget
+from src.ui.widgets.diagnostic import DiagnosticWidget
 
 ################################################################################
 ################################################################################
