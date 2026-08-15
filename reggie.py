@@ -99,7 +99,6 @@ from src.data.level.nsmbw_level import NSMBWLevel
 from sidelists import Stamp, StampChooserWidget, SpriteList, SpritePickerWidget, ObjectPickerWidget, LevelOverviewWidget
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 from src.ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
-from editors import LocationEditorWidget, PathNodeEditorWidget, EntranceEditorWidget
 from undo import UndoStack
 from translation import LoadTranslation
 
@@ -130,6 +129,10 @@ from src.ui.widgets.preferences.widgets.keybind_editor_tab import KeybindEditorT
 from src.ui.widgets.zoom import ZoomWidget
 from src.ui.widgets.zoom_status import ZoomStatusWidget
 from src.ui.widgets.diagnostic import DiagnosticWidget
+
+from src.ui.widgets.editors.entrance import EntranceEditorWidget
+from src.ui.widgets.editors.location import LocationEditorWidget
+from src.ui.widgets.editors.path_node import PathNodeEditorWidget
 
 ################################################################################
 ################################################################################
@@ -1050,9 +1053,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setObjectName('entranceeditor')  # needed for the state to save/restore correctly
         dock.move(100, 100) # offset the dock from the top-left corner
 
-        self.entranceEditor = EntranceEditorWidget()
-        dock.setWidget(self.entranceEditor)
-        self.entranceEditorDock = dock
+        self.entrance_editor = EntranceEditorWidget()
+        dock.setWidget(self.entrance_editor)
+        self.entrance_editor_dock = dock
 
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setFloating(True)
@@ -1065,9 +1068,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setObjectName('pathnodeeditor')  # needed for the state to save/restore correctly
         dock.move(100, 100) # offset the dock from the top-left corner
 
-        self.pathEditor = PathNodeEditorWidget()
-        dock.setWidget(self.pathEditor)
-        self.pathEditorDock = dock
+        self.path_editor = PathNodeEditorWidget()
+        dock.setWidget(self.path_editor)
+        self.path_editor_dock = dock
 
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setFloating(True)
@@ -1080,9 +1083,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         dock.setObjectName('locationeditor')  # needed for the state to save/restore correctly
         dock.move(100, 100) # offset the dock from the top-left corner
 
-        self.locationEditor = LocationEditorWidget()
-        dock.setWidget(self.locationEditor)
-        self.locationEditorDock = dock
+        self.location_editor = LocationEditorWidget()
+        dock.setWidget(self.location_editor)
+        self.location_editor_dock = dock
 
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setFloating(True)
@@ -3448,9 +3451,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # save our state
         self.spriteEditorDock.setVisible(False)
-        self.entranceEditorDock.setVisible(False)
-        self.pathEditorDock.setVisible(False)
-        self.locationEditorDock.setVisible(False)
+        self.entrance_editor_dock.setVisible(False)
+        self.path_editor_dock.setVisible(False)
+        self.location_editor_dock.setVisible(False)
         self.defaultPropDock.setVisible(False)
 
         # state: determines positions of docks
@@ -4017,9 +4020,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 thing.dragoffsety = (((thing.objy // 16) * 16) - thing.objy) * 1.5
 
         self.spriteEditorDock.setVisible(showSpritePanel)
-        self.entranceEditorDock.setVisible(showEntrancePanel)
-        self.locationEditorDock.setVisible(showLocationPanel)
-        self.pathEditorDock.setVisible(showPathPanel)
+        self.entrance_editor_dock.setVisible(showEntrancePanel)
+        self.location_editor_dock.setVisible(showLocationPanel)
+        self.path_editor_dock.setVisible(showPathPanel)
 
         self.actions['deselect'].setEnabled(bool(selitems))
 
@@ -4379,7 +4382,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         if loc == self.selObj:
             if oldx == x and oldy == y: return
-            self.locationEditor.setLocation(loc)
+            self.location_editor.set_location(loc)
             SetDirty()
 
         loc.UpdateListItem()
@@ -4390,7 +4393,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle the location being resized
         """
         if loc == self.selObj:
-            self.locationEditor.setLocation(loc)
+            self.location_editor.set_location(loc)
             SetDirty()
 
         loc.UpdateListItem()
@@ -4402,15 +4405,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         self.UpdateFlag = True
 
-        if self.spriteEditorDock.isVisible():
+        if isinstance(self.selObj, SpriteItem) and self.spriteEditorDock.isVisible():
             obj = self.selObj
             self.spriteDataEditor.setSprite(obj.type, initial_data=obj.spritedata)
-        elif self.entranceEditorDock.isVisible():
-            self.entranceEditor.setEntrance(self.selObj)
-        elif self.pathEditorDock.isVisible():
-            self.pathEditor.setPath(self.selObj)
-        elif self.locationEditorDock.isVisible():
-            self.locationEditor.setLocation(self.selObj)
+        elif isinstance(self.selObj, EntranceItem) and self.entrance_editor_dock.isVisible():
+            self.entrance_editor.set_entrance(self.selObj)
+        elif isinstance(self.selObj, PathItem) and self.path_editor_dock.isVisible():
+            self.path_editor.setPath(self.selObj)
+        elif isinstance(self.selObj, LocationItem) and self.location_editor_dock.isVisible():
+            self.location_editor.set_location(self.selObj)
 
         self.UpdateFlag = False
 

@@ -149,6 +149,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Overrides mouse pressing events if needed
         """
+        if globals_.mainWindow is None or event is None:
+            return
 
         if event.button() == QtCore.Qt.MouseButton.BackButton:
             self.xButtonScrollTimer = QtCore.QTimer()
@@ -262,7 +264,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     new_node.positionChanged = globals_.mainWindow.HandlePathPosChange
 
                     # The path length changed, so update the editor's maximums
-                    globals_.mainWindow.pathEditor.UpdatePathLength()
+                    globals_.mainWindow.path_editor.update_path_length()
 
                 self.dragstamp = False
                 self.currentobj = new_node
@@ -427,6 +429,9 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         pos = self.mapToScene(self.mapFromGlobal(QtGui.QCursor.pos()))
         obj = self.currentobj
 
+        if globals_.mainWindow is None:
+            return
+
         if not self.dragstamp:
             # possibly a small optimization
             type_obj = ObjectItem
@@ -494,8 +499,8 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     # resize/move the current location
                     change = obj.dragResize(pos, self.dragstartx, self.dragstarty)
 
-                    if change:  # Update the location editor
-                        globals_.mainWindow.locationEditor.setLocation(obj)
+                    if change: # Update the location editor
+                        globals_.mainWindow.location_editor.set_location(obj)
                         globals_.mainWindow.levelOverview.update()
 
                 elif isinstance(obj, type_spr):
