@@ -244,7 +244,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 obj.setSelected(False)
                 globals_.mainWindow.scene.removeItem(obj)
 
-            globals_.mainWindow.levelOverview.update()
+            globals_.mainWindow.level_overview.update()
 
     def check_crash_sprite(self, mode):
         """
@@ -267,7 +267,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                 sprite.setSelected(False)
                 if globals_.mainWindow is not None:
                     globals_.mainWindow.scene.removeItem(sprite)
-                    globals_.mainWindow.levelOverview.update()
+                    globals_.mainWindow.level_overview.update()
 
     # TODO: Split 'missing resource' checks into their own function (153 needs it too)
     def check_sprite_param(self, mode):
@@ -410,7 +410,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
             globals_.Area.sprites = globals_.Area.sprites[:max_sprite_num]
             globals_.mainWindow.scene.update()
-            globals_.mainWindow.levelOverview.update()
+            globals_.mainWindow.level_overview.update()
 
     def check_duplicate_entrance(self, mode):
         """
@@ -567,7 +567,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
             if globals_.mainWindow is not None:
                 globals_.mainWindow.scene.update()
-                globals_.mainWindow.levelOverview.update()
+                globals_.mainWindow.level_overview.update()
 
     def check_no_zone_exist(self, mode):
         """

@@ -6,184 +6,7 @@ from classlib import ListSpriteField, SpriteCategory, SpriteField, ValueSpriteFi
 import globals_
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 from tiles import RenderObject, TilesetTile
-from ui import ListWidgetWithToolTipSignal
 from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories
-
-class LevelOverviewWidget(QtWidgets.QWidget):
-    """
-    Widget that shows an overview of the level and can be clicked to move the view
-    """
-    moveIt = QtCore.pyqtSignal(float, float)
-
-    def __init__(self):
-        """
-        Constructor for the level overview widget
-        """
-        QtWidgets.QWidget.__init__(self)
-        self.setSizePolicy(
-            QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.MinimumExpanding))
-
-        self.bgbrush = QtGui.QBrush(globals_.theme.color('bg'))
-        self.objbrush = QtGui.QBrush(globals_.theme.color('overview_object'))
-        self.viewbrush = QtGui.QBrush(globals_.theme.color('overview_zone_fill'))
-        self.view = QtCore.QRectF()
-        self.spritebrush = QtGui.QBrush(globals_.theme.color('overview_sprite'))
-        self.entrancebrush = QtGui.QBrush(globals_.theme.color('overview_entrance'))
-        self.locationbrush = QtGui.QBrush(globals_.theme.color('overview_location_fill'))
-        self.pathbrush = QtGui.QBrush(globals_.theme.color('overview_path'))
-
-        self.Reset()
-
-        self.Xposlocator = 0
-        self.Yposlocator = 0
-        self.Hlocator = 50
-        self.Wlocator = 80
-        self.mainWindowScale = 1
-
-    def Reset(self):
-        """
-        Resets the max and scale variables
-        """
-        self.maxX = 100
-        self.maxY = 40
-        self.Rescale()
-
-    def mouseMoveEvent(self, event):
-        """
-        Handles mouse movement over the widget
-        """
-        QtWidgets.QWidget.mouseMoveEvent(self, event)
-
-        if event.buttons() == QtCore.Qt.MouseButton.LeftButton:
-            self.moveIt.emit(event.pos().x() * self.posmult, event.pos().y() * self.posmult)
-
-    def mousePressEvent(self, event):
-        """
-        Handles mouse pressing events over the widget
-        """
-        QtWidgets.QWidget.mousePressEvent(self, event)
-
-        if event.button() == QtCore.Qt.MouseButton.LeftButton:
-            self.moveIt.emit(event.pos().x() * self.posmult, event.pos().y() * self.posmult)
-
-    def paintEvent(self, event):
-        """
-        Paints the level overview widget
-        """
-        if not hasattr(globals_.Area, 'layers'):
-            # fixes race condition where this widget is painted after
-            # the level is created, but before it's loaded
-            return
-
-        painter = QtGui.QPainter(self)
-        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing, True)
-
-        self.CalcSize()
-        self.Rescale()
-
-        painter.fillRect(event.rect(), self.bgbrush)
-        painter.scale(self.scale, self.scale)
-
-        transform = QtGui.QTransform() / 24
-
-        dr = painter.drawRect
-        fr = painter.fillRect
-
-        b = self.viewbrush
-        painter.setPen(QtGui.QPen(globals_.theme.color('overview_zone_lines'), 1))
-
-        for zone in globals_.Area.zones:
-            rect = transform.mapRect(zone.sceneBoundingRect())
-            fr(rect, b)
-            dr(rect)
-
-        b = self.objbrush
-
-        for layer in globals_.Area.layers:
-            for obj in layer:
-                fr(obj.LevelRect, b)
-
-        b = self.spritebrush
-
-        for sprite in globals_.Area.sprites:
-            fr(sprite.LevelRect, b)
-
-        b = self.entrancebrush
-
-        for ent in globals_.Area.entrances:
-            fr(ent.LevelRect, b)
-
-        b = self.locationbrush
-        painter.setPen(QtGui.QPen(globals_.theme.color('overview_location_lines'), 1))
-
-        for location in globals_.Area.locations:
-            rect = transform.mapRect(location.sceneBoundingRect())
-            fr(rect, b)
-            dr(rect)
-
-        b = self.pathbrush
-
-        for path in globals_.Area.paths:
-            for node in path._nodes:
-                rect = transform.mapRect(node.sceneBoundingRect())
-                fr(rect, b)
-
-            # TODO: Draw the path lines
-
-        painter.setPen(QtGui.QPen(globals_.theme.color('overview_viewbox'), 1))
-
-        scalar = 1 / (24 * self.mainWindowScale)
-        painter.drawRect(QtCore.QRectF(
-            scalar * self.Xposlocator, scalar * self.Yposlocator,
-            scalar * self.Wlocator, scalar * self.Hlocator
-        ))
-
-    def CalcSize(self):
-        """
-        Calculates self.maxX and self.maxY.
-        """
-        if globals_.Area.areanum == -1:
-            # fixes race condition where this widget's size is calculated
-            # after the level is created, but before it's loaded
-            self.maxX = 100
-            self.maxY = 40
-            return
-
-        transform = QtGui.QTransform() / 24
-        rect = QtCore.QRectF()
-
-        for zone in globals_.Area.zones:
-            rect |= transform.mapRect(zone.sceneBoundingRect())
-
-        for layer in globals_.Area.layers:
-            for obj in layer:
-                rect |= obj.LevelRect
-
-        for sprite in globals_.Area.sprites:
-            rect |= sprite.LevelRect
-
-        for ent in globals_.Area.entrances:
-            rect |= ent.LevelRect
-
-        for location in globals_.Area.locations:
-            rect |= transform.mapRect(location.sceneBoundingRect())
-
-        for path in globals_.Area.paths:
-            for node in path._nodes:
-                rect |= node.LevelRect
-
-        _, _, self.maxX, self.maxY = rect.getCoords()
-
-    def Rescale(self):
-        """
-        Calculates self.scale and self.posmult.
-        """
-        x_scale = self.width() / (self.maxX + 45)
-        y_scale = self.height() / (self.maxY + 25)
-
-        self.scale = max(0.002, min(x_scale, y_scale))
-        self.posmult = 24 / self.scale
-
 
 class ObjectPickerWidget(QtWidgets.QListView):
     """
@@ -289,10 +112,6 @@ class ObjectPickerWidget(QtWidgets.QListView):
             self.itemsize = []
             QtCore.QAbstractListModel.__init__(self)
 
-            # for i in range(256):
-            #    self.items.append(None)
-            #    self.ritems.append(None)
-
         def rowCount(self, parent=None):
             """
             Required by Qt
@@ -303,10 +122,15 @@ class ObjectPickerWidget(QtWidgets.QListView):
             """
             Get what we have for a specific row
             """
-            if not index.isValid(): return None
+            if not index.isValid():
+                return None
+
             n = index.row()
-            if n < 0: return None
-            if n >= len(self.items): return None
+            if n < 0:
+                return None
+
+            if n >= len(self.items):
+                return None
 
             if role == QtCore.Qt.ItemDataRole.DecorationRole:
                 return self.ritems[n]

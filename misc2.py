@@ -192,14 +192,17 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedy = int((clicked.y() - 12) / 12) * 8
 
                 spr = globals_.mainWindow.CreateSprite(clickedx, clickedy, globals_.CurrentSprite)
-                spr.UpdateDynamicSizing()
+                if spr is not None:
+                    spr.UpdateDynamicSizing()
 
                 self.dragstamp = False
                 self.currentobj = spr
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
 
-                self.scene().update()
+                scene = self.scene()
+                if scene is not None:
+                    scene.update()
 
             elif globals_.CurrentPaintType == 5:
                 # paint an entrance
@@ -358,7 +361,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         else:
             QtWidgets.QGraphicsView.mousePressEvent(self, event)
 
-        globals_.mainWindow.levelOverview.update()
+        globals_.mainWindow.level_overview.update()
 
     def resizeEvent(self, event):
         """
@@ -478,7 +481,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.objx = x
                         obj.objy = y
                         obj.setPos(x * 24, y * 24)
-                        globals_.mainWindow.levelOverview.update()
+                        globals_.mainWindow.level_overview.update()
 
                     # if the size changed, recache it and update the area
                     if obj.width != width or obj.height != height:
@@ -493,7 +496,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                         obj.UpdateRects()
                         obj.scene().update(updaterect)
-                        globals_.mainWindow.levelOverview.update()
+                        globals_.mainWindow.level_overview.update()
 
                 elif isinstance(obj, type_loc):
                     # resize/move the current location
@@ -501,7 +504,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                     if change: # Update the location editor
                         globals_.mainWindow.location_editor.set_location(obj)
-                        globals_.mainWindow.levelOverview.update()
+                        globals_.mainWindow.level_overview.update()
 
                 elif isinstance(obj, type_spr):
                     # move the created sprite
@@ -512,7 +515,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.setNewObjPos(clickedx, clickedy)
                         obj.ImageObj.positionChanged()
                         obj.UpdateListItem()
-                        globals_.mainWindow.levelOverview.update()
+                        globals_.mainWindow.level_overview.update()
 
                 elif isinstance(obj, (type_ent, type_path, type_com)):
                     # move the created entrance/path/comment
@@ -528,7 +531,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                             obj.path.node_moved(obj)
 
                         obj.UpdateListItem()
-                        globals_.mainWindow.levelOverview.update()
+                        globals_.mainWindow.level_overview.update()
 
         else:
             # The user is dragging a stamp - many objects.
@@ -573,7 +576,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                         obj.ImageObj.positionChanged()
 
             self.scene().update()
-            globals_.mainWindow.levelOverview.update()
+            globals_.mainWindow.level_overview.update()
 
     def scrollIfCursorNearEdge(self):
         """Scroll the view if the cursor is dragging and near the edge"""

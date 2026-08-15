@@ -181,7 +181,7 @@ class MoveItemUndoAction(UndoAction):
             obj.objx, obj.objy = newX, newY
             obj.setPos(newX * 1.5, newY * 1.5)
 
-        globals_.mainWindow.levelOverview.update()
+        globals_.mainWindow.level_overview.update()
 
     def isExtentionOf(self, other):
         """

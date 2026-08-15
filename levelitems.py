@@ -1658,7 +1658,7 @@ class ZoneItem(LevelEditorItem):
 
             self.scene().update(updaterect)
 
-            globals_.mainWindow.levelOverview.update()
+            globals_.mainWindow.level_overview.update()
 
             for spr in globals_.Area.sprites:
                 spr.ImageObj.positionChanged()
@@ -1870,7 +1870,7 @@ class LocationItem(LevelEditorItem):
 
             if change:
                 SetDirty()
-                globals_.mainWindow.levelOverview.update()
+                globals_.mainWindow.level_overview.update()
 
                 if self.sizeChanged is not None:
                     self.sizeChanged(self, self.width, self.height)
@@ -2789,8 +2789,9 @@ class EntranceItem(LevelEditorItem):
         self.UpdateRects()
 
         # Update the scene and level overview
-        globals_.mainWindow.scene.update(old_rect.united(self.getFullRect()))
-        globals_.mainWindow.levelOverview.update()
+        if globals_.mainWindow is not None:
+            globals_.mainWindow.scene.update(old_rect.united(self.getFullRect()))
+            globals_.mainWindow.level_overview.update()
 
     def paint(self, painter, option, widget):
         """

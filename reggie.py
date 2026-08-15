@@ -96,7 +96,7 @@ from gamedef import LoadGameDef
 from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem, Path
 from tiles import UnloadTileset, LoadTileset, LoadOverrides
 from src.data.level.nsmbw_level import NSMBWLevel
-from sidelists import Stamp, StampChooserWidget, SpriteList, SpritePickerWidget, ObjectPickerWidget, LevelOverviewWidget
+from sidelists import Stamp, StampChooserWidget, SpriteList, SpritePickerWidget, ObjectPickerWidget
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 from src.ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
 from undo import UndoStack
@@ -129,6 +129,7 @@ from src.ui.widgets.preferences.widgets.keybind_editor_tab import KeybindEditorT
 from src.ui.widgets.zoom import ZoomWidget
 from src.ui.widgets.zoom_status import ZoomStatusWidget
 from src.ui.widgets.diagnostic import DiagnosticWidget
+from src.ui.widgets.level_overview import LevelOverviewWidget
 
 from src.ui.widgets.editors.entrance import EntranceEditorWidget
 from src.ui.widgets.editors.location import LocationEditorWidget
@@ -829,7 +830,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         vmenu.addAction(self.actions['zoomout'])
         vmenu.addAction(self.actions['zoommin'])
         vmenu.addSeparator()
-        # self.levelOverviewDock.toggleViewAction() is added here later
+
+        # self.level_overview_dock.toggleViewAction() is added here later
         # so we assign it to self.vmenu
         self.vmenu = vmenu
 
@@ -1015,10 +1017,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         dock.setObjectName('leveloverview')  # needed for the state to save/restore correctly
 
-        self.levelOverview = LevelOverviewWidget()
-        self.levelOverview.moveIt.connect(self.HandleOverviewClick)
-        self.levelOverviewDock = dock
-        dock.setWidget(self.levelOverview)
+        self.level_overview = LevelOverviewWidget()
+        self.level_overview.moved.connect(self.HandleOverviewClick)
+        self.level_overview_dock = dock
+        dock.setWidget(self.level_overview)
 
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setVisible(True)
@@ -1462,20 +1464,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Moves the Overview current position box based on X scroll bar value
         """
-        self.levelOverview.Xposlocator = pos
-        self.levelOverview.update()
+        self.level_overview.pos_x_locator = pos
+        self.level_overview.update()
 
     def YScrollChange(self, pos):
         """
         Moves the Overview current position box based on Y scroll bar value
         """
-        self.levelOverview.Yposlocator = pos
-        self.levelOverview.update()
+        self.level_overview.pos_y_locator = pos
+        self.level_overview.update()
 
     def HandleWindowSizeChange(self, w, h):
-        self.levelOverview.Hlocator = h
-        self.levelOverview.Wlocator = w
-        self.levelOverview.update()
+        self.level_overview.height_locator = h
+        self.level_overview.width_locator = w
+        self.level_overview.update()
 
     def UpdateTitle(self):
         """
@@ -1829,7 +1831,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.systemClipboard.setText(self.clipboard)
 
         if cutAction:
-            self.levelOverview.update()
+            self.level_overview.update()
             self.SelectionUpdateFlag = False
             self.ChangeSelectionHandler()
 
@@ -2023,7 +2025,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         globals_.OverrideSnapping = False
 
-        self.levelOverview.update()
+        self.level_overview.update()
         SetDirty()
         self.SelectionUpdateFlag = False
         self.ChangeSelectionHandler()
@@ -2328,7 +2330,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             obj.delete()
             obj.setSelected(False)
             self.scene.removeItem(obj)
-            self.levelOverview.update()
+            self.level_overview.update()
             SetDirty()
 
         if not new_rect.isValid():
@@ -2536,7 +2538,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.scene.addItem(zone)
 
             self.scene.update()
-            self.levelOverview.update()
+            self.level_overview.update()
 
             SetDirty()
 
@@ -3174,7 +3176,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         globals_.DirtyOverride -= 1
 
-        self.levelOverview.update()
+        self.level_overview.update()
 
     def HandleEntrancesVisibility(self, checked):
         """
@@ -3393,7 +3395,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         tr.scale(z / 100.0, z / 100.0)
         self.ZoomLevel = z
         self.view.setTransform(tr)
-        self.levelOverview.mainWindowScale = z / 100.0
+        self.level_overview.main_window_scale = z / 100.0
 
         if towardsCursor:
             # (reset back to original transformation anchor)
@@ -3420,7 +3422,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle position changes from the level overview
         """
         self.view.centerOn(x, y)
-        self.levelOverview.update()
+        self.level_overview.update()
 
     def SaveComments(self):
         """
@@ -3663,8 +3665,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Update UI things
         self.scene.update()
 
-        self.levelOverview.Reset()
-        self.levelOverview.update()
+        self.level_overview.reset()
+        self.level_overview.update()
 
         if new:
             SetDirty()
@@ -4036,9 +4038,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle the object being dragged
         """
         if obj == self.selObj:
-            if oldx == x and oldy == y: return
+            if oldx == x and oldy == y:
+                return
             SetDirty()
-        self.levelOverview.update()
+        self.level_overview.update()
 
     def CreationTabChanged(self, nt):
         """
@@ -4241,13 +4244,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle the sprite being dragged
         """
         if obj == self.selObj:
-            if oldx == x and oldy == y: return
+            if oldx == x and oldy == y:
+                return
             obj.UpdateListItem()
             SetDirty()
 
             # The sprite has changed position, so its LevelRect changed, so the
             # level overview needs to be redrawn.
-            self.levelOverview.update()
+            self.level_overview.update()
 
     def SpriteDataUpdated(self, data):
         """
@@ -4266,7 +4270,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle the entrance being dragged
         """
-        if oldx == x and oldy == y: return
+        if oldx == x and oldy == y:
+            return
         obj.UpdateListItem()
         if obj == self.selObj:
             SetDirty()
@@ -4275,18 +4280,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle the path being dragged
         """
-        if oldx == x and oldy == y: return
+        if oldx == x and oldy == y:
+            return
         obj.path.node_moved(obj)
         obj.UpdateListItem()
         if obj == self.selObj:
             SetDirty()
-        self.levelOverview.update()
+        self.level_overview.update()
 
     def HandleComPosChange(self, obj, oldx, oldy, x, y):
         """
         Handle the comment being dragged
         """
-        if oldx == x and oldy == y: return
+        if oldx == x and oldy == y:
+            return
         obj.UpdateTooltip()
         obj.handlePosChange(oldx, oldy)
         obj.UpdateListItem()
@@ -4381,12 +4388,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handle the location being dragged
         """
         if loc == self.selObj:
-            if oldx == x and oldy == y: return
+            if oldx == x and oldy == y:
+                return
             self.location_editor.set_location(loc)
             SetDirty()
 
         loc.UpdateListItem()
-        self.levelOverview.update()
+        self.level_overview.update()
 
     def HandleLocSizeChange(self, loc, width, height):
         """
@@ -4397,7 +4405,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             SetDirty()
 
         loc.UpdateListItem()
-        self.levelOverview.update()
+        self.level_overview.update()
 
     def UpdateModeInfo(self):
         """
@@ -4479,12 +4487,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 SetDirty()
                 event.accept()
-                self.levelOverview.update()
+                self.level_overview.update()
                 self.SelectionUpdateFlag = False
                 self.ChangeSelectionHandler()
                 return
 
-        self.levelOverview.update()
+        self.level_overview.update()
 
         QtWidgets.QMainWindow.keyPressEvent(self, event)
 
@@ -4563,7 +4571,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         dlg = ZonesDialog()
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-            self.levelOverview.update()
+            self.level_overview.update()
             return
 
         SetDirty()
@@ -4631,7 +4639,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             spr.ImageObj.positionChanged()
 
         self.actions['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
-        self.levelOverview.update()
+        self.level_overview.update()
 
     # Handles setting the backgrounds
     def HandleBG(self):
