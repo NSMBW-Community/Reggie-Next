@@ -2603,6 +2603,17 @@ class EntranceItem(LevelEditorItem):
                 # Jumping facing left
                 self.setPos(-74, -276)
                 self.BoundingRect = QtCore.QRectF(0, 0, 98, 300)
+            elif self.parent.enttype in (3, 4, 5, 6) and ((self.parent.entsettings & 4) != 0):
+                # Forward pipe
+                idx = self.parent.enttype - 3
+                exit_pos = [
+                    (0, 144), # Up
+                    (0, -144), # Down
+                    (120, 24), # Left
+                    (-144, 24), # Right
+                ]
+                self.setPos(exit_pos[idx][0], exit_pos[idx][1])
+                self.BoundingRect = QtCore.QRectF(0, 0, 48, 48)
             else:
                 self.setPos(0, 0)
                 self.BoundingRect = QtCore.QRectF(0, 0, 24, 24)
@@ -2647,6 +2658,13 @@ class EntranceItem(LevelEditorItem):
 
                 painter.setPen(SLib.OutlinePen)
                 painter.drawPath(path)
+
+            elif self.parent.enttype in (3, 4, 5, 6) and ((self.parent.entsettings & 4) != 0):
+                # Forward pipe
+                painter.setBrush(QtGui.QBrush(globals_.theme.color('entrance_fill')))
+                painter.setPen(QtGui.QPen(globals_.theme.color('entrance_lines'), 2))
+
+                painter.drawEllipse(4, 4, 40, 40)
 
         def boundingRect(self):
             """
