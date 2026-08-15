@@ -380,9 +380,9 @@ class EntranceEditorWidget(QtWidgets.QWidget):
             else:
                 self.ent.entsettings &= ~4
 
-        # Update exit indicator
-        self.ent.TypeChange()
-        self.ent.update()
+            # Update exit indicator
+            self.ent.TypeChange()
+            self.ent.update()
 
     def handle_layer_id_changed(self, i):
         """
