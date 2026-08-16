@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtWidgets
 
 import globals_
-from misc import LoadLevelNames
+from src.data.loaders import LoadLevelNames
 from ui import GetIcon
 
 class ChooseLevelNameDialog(QtWidgets.QDialog):
@@ -46,7 +46,7 @@ class ChooseLevelNameDialog(QtWidgets.QDialog):
         layout.addWidget(self.button_box)
 
         self.setLayout(layout)
-        
+
         # Wide enough to fit "World 5: Freezeflame Volcano/Freezeflame Glacier"
         self.setMinimumWidth(320)
         self.setMinimumHeight(384)

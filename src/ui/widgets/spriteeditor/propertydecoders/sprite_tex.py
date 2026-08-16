@@ -2,7 +2,7 @@ from PyQt6 import QtCore, QtWidgets
 
 import globals_
 from classlib import SpriteTexSpriteField
-from misc import SpriteDefinition
+from src.data.model.list_property import ListPropertyModel
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 from src.ui.widgets.generic.int_spin_box import IntSpinBox
 
@@ -51,7 +51,7 @@ class SpriteTexPropertyDecoder(PropertyDecoder[SpriteTexSpriteField]):
         value = self.retrieve(data)
         self.spinBox.setValue(value)
         model = self.field.model
-        if not isinstance(model, SpriteDefinition.ListPropertyModel):
+        if not isinstance(model, ListPropertyModel):
             return
 
         for i, x in enumerate(model.entries):
@@ -66,7 +66,7 @@ class SpriteTexPropertyDecoder(PropertyDecoder[SpriteTexSpriteField]):
         Assigns the selected value to the data
         """
         model = self.field.model
-        if not isinstance(model, SpriteDefinition.ListPropertyModel):
+        if not isinstance(model, ListPropertyModel):
             return
 
         if self.editWidget == 0:
@@ -79,7 +79,7 @@ class SpriteTexPropertyDecoder(PropertyDecoder[SpriteTexSpriteField]):
         Handle the data changing in either widget
         """
         model = self.field.model
-        if not isinstance(model, SpriteDefinition.ListPropertyModel):
+        if not isinstance(model, ListPropertyModel):
             return
 
         self.updateData.emit(self)
@@ -105,7 +105,7 @@ class SpriteTexPropertyDecoder(PropertyDecoder[SpriteTexSpriteField]):
         Handle the current index changing in the combobox
         """
         model = self.field.model
-        if index < 0 or not isinstance(model, SpriteDefinition.ListPropertyModel):
+        if index < 0 or not isinstance(model, ListPropertyModel):
             return
 
         self.editWidget = 1

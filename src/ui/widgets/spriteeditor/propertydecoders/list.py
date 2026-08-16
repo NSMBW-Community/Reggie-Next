@@ -2,7 +2,7 @@ from PyQt6 import QtCore, QtWidgets
 
 import globals_
 from classlib import ListSpriteField
-from misc import SpriteDefinition
+from src.data.model.list_property import ListPropertyModel
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,
@@ -26,7 +26,7 @@ class ListPropertyDecoder(PropertyDecoder[ListSpriteField]):
         self.widget.setModel(field.model)
         self.widget.currentIndexChanged.connect(self.HandleIndexChanged)
 
-        if isinstance(field.model, SpriteDefinition.ListPropertyModel):
+        if isinstance(field.model, ListPropertyModel):
             self.model = field.model
 
         label = QtWidgets.QLabel(field.title + ':')

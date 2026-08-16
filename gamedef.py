@@ -6,7 +6,7 @@ from xml.etree import ElementTree as etree
 
 from PyQt6 import QtWidgets
 
-from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo, LoadZoneThemes, LoadConfig
+from src.data.loaders import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo, LoadZoneThemes, LoadConfig
 from dirty import setting, setSetting
 from sprites_common import LoadBasics
 

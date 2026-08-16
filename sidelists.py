@@ -6,7 +6,7 @@ from classlib import ListSpriteField, SpriteCategory, SpriteField, ValueSpriteFi
 import globals_
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 from tiles import RenderObject, TilesetTile
-from misc import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories
+from src.data.loaders import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories
 
 class ObjectPickerWidget(QtWidgets.QListView):
     """

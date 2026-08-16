@@ -6,7 +6,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from classlib import MenuAction, RandTileSelection, SpriteCategory, TilesetCategory
 from gamedef import ReggieGameDefinition
 from src.data.level.area import Area as AreaType
-from misc import SpriteDefinition
+from src.data.level.sprite_definition import SpriteDefinition
 from reggie import ReggieWindow
 from src.data.level.abstract_level import AbstractLevel
 from tiles import ObjectDef, TilesetTile
@@ -19,8 +19,8 @@ AutoDiagFrequency = 1
 AutoSaveData = b''
 AutoSaveDirty = False
 AutoSavePath = ''
-BgANames: list[str] = []
-BgBNames: list[str] = []
+BgANames: list[list[str]] = []
+BgBNames: list[list[str]] = []
 CursorMode = 0
 DarkMode = False
 EntranceTypeNames: OrderedDict[int, str] = OrderedDict()

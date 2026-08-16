@@ -3,7 +3,7 @@ from PyQt6 import QtWidgets, QtCore
 import globals_
 from ui import createHorzLine
 from dirty import SetDirty
-from misc import LoadEntranceNames
+from src.data.loaders import LoadEntranceNames
 
 from levelitems import EntranceItem
 

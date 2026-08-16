@@ -12,7 +12,8 @@ from classlib import (
 )
 from dirty import SetDirty
 from levelitems import InstanceDefinition
-from misc import SpriteDefinition
+from src.data.level.sprite_definition import SpriteDefinition
+from src.data.model.list_property import ListPropertyModel
 from src.ui.dialogs.spriteeditor.resize_choice import ResizeChoiceDialog
 from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,
@@ -448,7 +449,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
             # Layer reads entire byte, instead of the first two bits
             bit, _ = SpriteDefinition().parseBits('15-16')
-            model = SpriteDefinition.ListPropertyModel(itemList, True)
+            model = ListPropertyModel(itemList, True)
 
             listField = ListSpriteField(title, comment, None, None, None, bit, model, None)
 
