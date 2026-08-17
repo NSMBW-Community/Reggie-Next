@@ -64,7 +64,7 @@ class ToolbarTab(PreferenceTabWidget):
         # Set up the menus by iterating over the above data
         for defaults, boxes, layout, group in menu_items:
             for action in defaults:
-                box = ToolbarCheckBox(action.text)
+                box = ToolbarCheckBox(action.name)
                 boxes.append(box)
                 layout.addWidget(box)
                 if toggled is None:
@@ -114,4 +114,4 @@ class ToolbarTab(PreferenceTabWidget):
 
         for boxes, defaults in items:
             for box, default in zip(boxes, defaults):
-                box.setChecked(default[1])
+                box.setChecked(default.active)
