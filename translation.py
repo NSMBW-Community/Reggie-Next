@@ -686,7 +686,7 @@ class ReggieTranslation:
                 27: None,  # REMOVED: 'Tilesets:',
                 28: None,  # REMOVED: 'Use Default Tileset Picker (recommended)',
                 29: None,  # REMOVED: 'Use Old Tileset Picker',
-                30: 'You may need to restart Reggie Next for changes to take effect.',
+                30: 'You will need to restart Reggie Next for certain changes to take effect.',
                 31: 'Display lines indicating the leftmost x-position where entrances can be safely placed in zones',
                 32: None,  # REMOVED: 'Enable advanced mode',
                 33: 'Reset sprite data when hiding sprite fields',

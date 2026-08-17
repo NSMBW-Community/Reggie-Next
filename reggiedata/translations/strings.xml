@@ -637,7 +637,7 @@
         <string id="27" />
         <string id="28" />
         <string id="29" />
-        <string id="30">You may need to restart Reggie Next for changes to take effect.</string>
+        <string id="30">You will need to restart Reggie Next for certain changes to take effect.</string>
         <string id="31">Display lines indicating the leftmost x-position where entrances can be safely placed in zones</string>
         <string id="32" />
         <string id="33">Reset sprite data when hiding sprite fields</string>

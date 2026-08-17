@@ -2745,8 +2745,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Rejected:
             return
 
+        # Check if we need to show the restart warning
+        show_restart_warning = False
+
         # Get the translation
         name = str(dlg.general_tab.trans_combo.itemData(dlg.general_tab.trans_combo.currentIndex(), Qt.ItemDataRole.UserRole))
+        if setting('Translation') != name:
+            show_restart_warning = True
         setSetting('Translation', name)
 
         # Get the Zone Entrance Indicators setting
@@ -2830,6 +2835,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             for box in box_list:
                 toolbar_actions[box.internal_name] = box.isChecked()
 
+        if setting('ToolbarActs') != toolbar_actions:
+            show_restart_warning = True
         setSetting('ToolbarActs', toolbar_actions)
 
         # Get keybinds and save them
@@ -2852,8 +2859,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     act.setShortcut(QtGui.QKeySequence(f'Ctrl+Alt+{i}'))
 
         # Get the theme settings
-        setSetting('Theme', dlg.appearance_tab.theme_combo.currentText())
-        setSetting('uiStyle', dlg.appearance_tab.window_style.currentText())
+        theme = dlg.appearance_tab.theme_combo.currentText()
+        style = dlg.appearance_tab.window_style.currentText()
+
+        if setting('Theme') != theme:
+            show_restart_warning = True
+        if setting('uiStyle') != style:
+            show_restart_warning = True
+
+        setSetting('Theme', theme)
+        setSetting('uiStyle', style)
 
         globals_.UseRoundedRectangles = dlg.appearance_tab.rounded_rects.isChecked()
         globals_.DarkMode = dlg.appearance_tab.dark_mode.isChecked()
@@ -2867,7 +2882,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         SetColorScheme()
 
         # Warn the user that they may need to restart
-        QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 0), globals_.trans.string('PrefsDlg', 30))
+        if show_restart_warning:
+            QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 0), globals_.trans.string('PrefsDlg', 30))
 
     def HandleNewLevel(self):
         """
