@@ -4,11 +4,13 @@ from xml.etree import ElementTree
 from PyQt6 import QtCore, QtWidgets
 
 import globals_
-from classlib import ExternalSpriteField
+from src.data.model.spritefield.external import ExternalSpriteField
 from src.ui.dialogs.spriteeditor.external_sprite_option import (
     ExternalSpriteOptionDialog,
 )
-from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
+from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+    PropertyDecoder,
+)
 
 
 class ExternalPropertyDecoder(PropertyDecoder[ExternalSpriteField]):

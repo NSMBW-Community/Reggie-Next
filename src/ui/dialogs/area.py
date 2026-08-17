@@ -1,8 +1,9 @@
 from PyQt6 import QtCore, QtWidgets
 
 import globals_
-from classlib import TilesetCategory, TilesetFileEntry
+from src.data.model.tileset_category import TilesetCategory, TilesetFileEntry
 from ui import GetIcon
+
 
 class AreaOptionsDialog(QtWidgets.QDialog):
     """

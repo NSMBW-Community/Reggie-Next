@@ -4,7 +4,6 @@ from PyQt6 import QtWidgets
 
 import globals_
 import spritelib as SLib
-from classlib import ListSpriteField, SpriteField, ValueSpriteField
 from levelitems import (
     CommentItem,
     EntranceItem,
@@ -14,6 +13,9 @@ from levelitems import (
     ZoneItem,
 )
 from src.data.level.metadata import Metadata
+from src.data.model.spritefield.list import ListSpriteField
+from src.data.model.spritefield.sprite_field import SpriteField
+from src.data.model.spritefield.value import ValueSpriteField
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )

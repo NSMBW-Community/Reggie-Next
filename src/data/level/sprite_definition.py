@@ -1,15 +1,13 @@
 import globals_
-from classlib import (
-    CheckBoxSpriteField,
-    DualBoxSpriteField,
-    ExternalSpriteField,
-    ListSpriteField,
-    MultiDualBoxSpriteField,
-    SpriteField,
-    SpriteTexSpriteField,
-    ValueSpriteField,
-)
 from src.data.model.list_property import ListPropertyModel
+from src.data.model.spritefield.check_box import CheckBoxSpriteField
+from src.data.model.spritefield.dual_box import DualBoxSpriteField
+from src.data.model.spritefield.external import ExternalSpriteField
+from src.data.model.spritefield.list import ListSpriteField
+from src.data.model.spritefield.multi_dual_box import MultiDualBoxSpriteField
+from src.data.model.spritefield.sprite_field import SpriteField
+from src.data.model.spritefield.sprite_tex import SpriteTexSpriteField
+from src.data.model.spritefield.value import ValueSpriteField
 
 
 class SpriteDefinition:
@@ -114,7 +112,6 @@ class SpriteDefinition:
                     raise ValueError("Only values support an increment.")
 
             # Parse the remaining type-specific attributes.
-            # TODO: Make proper field classes in classlib.py instead of using tuples and relying on index 0 for the field type.
             if field.tag == 'checkbox':
                 bit, _ = self.parseBits(attribs.get("nybble"))
                 mask = int(attribs.get('mask', 1))

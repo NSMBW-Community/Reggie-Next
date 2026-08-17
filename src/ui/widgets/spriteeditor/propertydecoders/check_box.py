@@ -1,7 +1,9 @@
 from PyQt6 import QtCore, QtWidgets
 
-from classlib import CheckBoxSpriteField
-from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
+from src.data.model.spritefield.check_box import CheckBoxSpriteField
+from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+    PropertyDecoder,
+)
 
 
 class CheckBoxPropertyDecoder(PropertyDecoder[CheckBoxSpriteField]):

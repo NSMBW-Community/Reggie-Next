@@ -3,12 +3,15 @@ from typing import Literal
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from classlib import MenuAction, RandTileSelection, SpriteCategory, TilesetCategory
 from gamedef import ReggieGameDefinition
-from src.data.level.area import Area as AreaType
-from src.data.level.sprite_definition import SpriteDefinition
 from reggie import ReggieWindow
 from src.data.level.abstract_level import AbstractLevel
+from src.data.level.area import Area as AreaType
+from src.data.level.sprite_definition import SpriteDefinition
+from src.data.model.menu_action import MenuAction
+from src.data.model.randtiles import RandTileSelection
+from src.data.model.sprite_category import SpriteCategory
+from src.data.model.tileset_category import TilesetCategory
 from tiles import ObjectDef, TilesetTile
 from translation import ReggieTranslation
 from ui import ReggieTheme

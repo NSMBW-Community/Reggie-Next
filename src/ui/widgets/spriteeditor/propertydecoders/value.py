@@ -2,12 +2,14 @@ from PyQt6 import QtCore, QtWidgets
 
 import common
 import globals_
-from classlib import ValueSpriteField
-from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
+from src.data.model.spritefield.value import ValueSpriteField
+from src.ui.widgets.generic.int_spin_box import IntSpinBox
 from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,
 )
-from src.ui.widgets.generic.int_spin_box import IntSpinBox
+from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+    PropertyDecoder,
+)
 
 
 class ValuePropertyDecoder(PropertyDecoder[ValueSpriteField]):

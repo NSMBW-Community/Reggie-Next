@@ -5,16 +5,12 @@ from xml.etree import ElementTree
 from PyQt6 import QtGui, QtWidgets
 
 import globals_
-from classlib import (
-    MenuAction,
-    RandTileSelection,
-    SpriteCategory,
-    SpriteSubCategory,
-    TilesetCategory,
-    TilesetFileEntry,
-)
 from dirty import delSetting, setSetting, setting
 from src.data.level.sprite_definition import SpriteDefinition
+from src.data.model.menu_action import MenuAction
+from src.data.model.randtiles import RandTileSelection
+from src.data.model.sprite_category import SpriteCategory, SpriteSubCategory
+from src.data.model.tileset_category import TilesetCategory, TilesetFileEntry
 
 
 def getResourcePaths(res_name):

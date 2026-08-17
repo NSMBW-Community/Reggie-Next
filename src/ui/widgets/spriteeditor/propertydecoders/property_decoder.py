@@ -3,7 +3,7 @@ from typing import Generic, TypeVar
 from PyQt6 import QtCore, QtWidgets
 
 import globals_
-from classlib import SpriteField
+from src.data.model.spritefield.sprite_field import SpriteField
 from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,
 )

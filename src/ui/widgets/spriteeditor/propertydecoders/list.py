@@ -1,11 +1,13 @@
 from PyQt6 import QtCore, QtWidgets
 
 import globals_
-from classlib import ListSpriteField
 from src.data.model.list_property import ListPropertyModel
-from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
+from src.data.model.spritefield.list import ListSpriteField
 from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,
+)
+from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+    PropertyDecoder,
 )
 
 

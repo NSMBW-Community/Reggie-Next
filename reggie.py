@@ -34,7 +34,9 @@
 minimum = (3, 12)
 import sys
 
-from classlib import ListSpriteField, SpriteField, ValueSpriteField
+from src.data.model.spritefield.list import ListSpriteField
+from src.data.model.spritefield.sprite_field import SpriteField
+from src.data.model.spritefield.value import ValueSpriteField
 
 if sys.version_info < minimum:
     errormsg = 'Please update your copy of Python to ' + '.'.join(map(str, minimum)) + \

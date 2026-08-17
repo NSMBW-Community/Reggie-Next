@@ -1,12 +1,18 @@
 import base64
 
-from PyQt6 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtCore, QtGui, QtWidgets
 
-from classlib import ListSpriteField, SpriteCategory, SpriteField, ValueSpriteField
 import globals_
-from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
+from src.data.loaders import LoadSpriteCategories, LoadSpriteData, LoadSpriteListData
+from src.data.model.sprite_category import SpriteCategory
+from src.data.model.spritefield.list import ListSpriteField
+from src.data.model.spritefield.sprite_field import SpriteField
+from src.data.model.spritefield.value import ValueSpriteField
+from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+    PropertyDecoder,
+)
 from tiles import RenderObject, TilesetTile
-from src.data.loaders import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories
+
 
 class ObjectPickerWidget(QtWidgets.QListView):
     """
