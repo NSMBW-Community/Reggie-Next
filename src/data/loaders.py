@@ -2,11 +2,12 @@ import collections
 import itertools
 from xml.etree import ElementTree
 
-from PyQt6 import QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 import globals_
 from dirty import delSetting, setSetting, setting
 from src.data.level.sprite_definition import SpriteDefinition
+from src.data.model.keybind import Keybind
 from src.data.model.menu_action import MenuAction
 from src.data.model.randtiles import RandTileSelection
 from src.data.model.sprite_category import SpriteCategory, SpriteSubCategory
@@ -717,115 +718,243 @@ def LoadDefaultKeybinds():
     """
     Defines the default keybinds (and display strings) for each menu item
     """
-    globals_.FileKeybinds = {
-        # Identifier      # Key Sequence                          # Display String, used by Preferences
-        'newlevel':       (QtGui.QKeySequence.StandardKey.New,    globals_.trans.string('MenuItems', 0)),
-        'openfromname':   (QtGui.QKeySequence.StandardKey.Open,   globals_.trans.string('MenuItems', 2)),
-        'openfromfile':   ('Ctrl+Shift+O',                        globals_.trans.string('MenuItems', 4)),
-        'save':           (QtGui.QKeySequence.StandardKey.Save,   globals_.trans.string('MenuItems', 8)),
-        'saveas':         (QtGui.QKeySequence.StandardKey.SaveAs, globals_.trans.string('MenuItems', 10)),
-        'savecopyas':     (None,                                  globals_.trans.string('MenuItems', 128)),
-        'metainfo':       ('Ctrl+Alt+I',                          globals_.trans.string('MenuItems', 12)),
-        'screenshot':     ('Ctrl+Alt+S',                          globals_.trans.string('MenuItems', 14)),
-        'changegamepath': ('Ctrl+Alt+G',                          globals_.trans.string('MenuItems', 16)),
-        'preferences':    ('Ctrl+Alt+P',                          globals_.trans.string('MenuItems', 18)),
-        'exit':           ('Ctrl+Q',                              globals_.trans.string('MenuItems', 20)),
-    }
-    globals_.EditKeybinds = {
-        'selectall':           (QtGui.QKeySequence.StandardKey.SelectAll, globals_.trans.string('MenuItems', 22)),
-        'deselect':            ('Ctrl+D',                                 globals_.trans.string('MenuItems', 24)),
-        'undo':                (QtGui.QKeySequence.StandardKey.Undo,      globals_.trans.string('MenuItems', 124)),
-        'redo':                (QtGui.QKeySequence.StandardKey.Redo,      globals_.trans.string('MenuItems', 126)),
-        'cut':                 (QtGui.QKeySequence.StandardKey.Cut,       globals_.trans.string('MenuItems', 26)),
-        'copy':                (QtGui.QKeySequence.StandardKey.Copy,      globals_.trans.string('MenuItems', 28)),
-        'paste':               (QtGui.QKeySequence.StandardKey.Paste,     globals_.trans.string('MenuItems', 30)),
-        'shiftitems':          ('Ctrl+Alt+Shift+S',                       globals_.trans.string('MenuItems', 32)),
-        'mergelocations':      ('Ctrl+Shift+E',                           globals_.trans.string('MenuItems', 34)),
-        'swapobjectstilesets': ('Ctrl+Shift+L',                           globals_.trans.string('MenuItems', 104)),
-        'swapobjectstypes':    ('Ctrl+Shift+Y',                           globals_.trans.string('MenuItems', 106)),
-        'switchsprites':       (None,                                     globals_.trans.string('MenuItems', 142)),
-        'diagnostic':          ('Ctrl+Shift+D',                           globals_.trans.string('MenuItems', 36)),
-        'freezeobjects':       ('Ctrl+Shift+1',                           globals_.trans.string('MenuItems', 38)),
-        'freezesprites':       ('Ctrl+Shift+2',                           globals_.trans.string('MenuItems', 40)),
-        'freezeentrances':     ('Ctrl+Shift+3',                           globals_.trans.string('MenuItems', 42)),
-        'freezelocations':     ('Ctrl+Shift+4',                           globals_.trans.string('MenuItems', 44)),
-        'freezepaths':         ('Ctrl+Shift+5',                           globals_.trans.string('MenuItems', 46)),
-        'freezecomments':      ('Ctrl+Shift+9',                           globals_.trans.string('MenuItems', 114)),
-    }
-    globals_.ViewKeybinds = {
-        'showlay0':         ('Ctrl+1',                               globals_.trans.string('MenuItems', 48)),
-        'showlay1':         ('Ctrl+2',                               globals_.trans.string('MenuItems', 50)),
-        'showlay2':         ('Ctrl+3',                               globals_.trans.string('MenuItems', 52)),
-        'tileanim':         ('Ctrl+7',                               globals_.trans.string('MenuItems', 108)),
-        'collisions':       ('Ctrl+8',                               globals_.trans.string('MenuItems', 110)),
-        'realview':         ('Ctrl+9',                               globals_.trans.string('MenuItems', 118)),
-        'showsprites':      ('Ctrl+4',                               globals_.trans.string('MenuItems', 54)),
-        'showspriteimages': ('Ctrl+6',                               globals_.trans.string('MenuItems', 56)),
-        'showentrances':    (None,                                   globals_.trans.string('MenuItems', 144)),
-        'showlocations':    ('Ctrl+5',                               globals_.trans.string('MenuItems', 58)),
-        'showcomments':     (None,                                   globals_.trans.string('MenuItems', 116)),
-        'showpaths':        ('Ctrl+*',                               globals_.trans.string('MenuItems', 130)),
-        'grid':             ('Ctrl+G',                               globals_.trans.string('MenuItems', 60)),
-        'zoommax':          ('Ctrl+PgDown',                          globals_.trans.string('MenuItems', 62)),
-        'zoomin':           (QtGui.QKeySequence.StandardKey.ZoomIn,  globals_.trans.string('MenuItems', 64)),
-        'zoomactual':       ('Ctrl+0',                               globals_.trans.string('MenuItems', 66)),
-        'zoomout':          (QtGui.QKeySequence.StandardKey.ZoomOut, globals_.trans.string('MenuItems', 68)),
-        'zoommin':          ('Ctrl+PgUp',                            globals_.trans.string('MenuItems', 70)),
-        'leveloverview':    ('Ctrl+M',                               globals_.trans.string('MenuItems', 94)),
-        'palette':          ('Ctrl+P',                               globals_.trans.string('MenuItems', 96)),
-        'toolbar':          ('Ctrl+T',                               globals_.trans.string('Menubar', 5)),
-    }
-    globals_.SettingsKeybinds = {
-        'areaoptions': ('Ctrl+Alt+A',   globals_.trans.string('MenuItems', 72)),
-        'zones':       ('Ctrl+Alt+Z',   globals_.trans.string('MenuItems', 74)),
-        'backgrounds': ('Ctrl+Alt+B',   globals_.trans.string('MenuItems', 76)),
-        'camprofiles': ('Ctrl+Alt+C',   globals_.trans.string('MenuItems', 140)),
-        'addarea':     ('Ctrl+Alt+N',   globals_.trans.string('MenuItems', 78)),
-        'importarea':  ('Ctrl+Alt+O',   globals_.trans.string('MenuItems', 80)),
-        'deletearea':  ('Ctrl+Alt+D',   globals_.trans.string('MenuItems', 82)),
-        'reloadgfx':   ('Ctrl+Shift+R', globals_.trans.string('MenuItems', 84)),
-        'reloaddata':  (None,           globals_.trans.string('MenuItems', 138)),
-    }
-    globals_.HelpKeybinds = {
-        'infobox': ('Ctrl+Shift+I', globals_.trans.string('MenuItems', 86)),
-        'helpbox': ('Ctrl+Shift+H', globals_.trans.string('MenuItems', 88)),
-        'tipbox':  ('Ctrl+Shift+T', globals_.trans.string('MenuItems', 90)),
-        'aboutqt': ('Ctrl+Shift+Q', globals_.trans.string('MenuItems', 92)),
-    }
+    globals_.FileKeybinds = [
+        Keybind(
+            "newlevel",
+            globals_.trans.string("MenuItems", 0),
+            QtGui.QKeySequence.StandardKey.New,
+        ),
+        Keybind(
+            "openfromname",
+            globals_.trans.string("MenuItems", 2),
+            QtGui.QKeySequence.StandardKey.Open,
+        ),
+        Keybind(
+            "openfromfile",
+            globals_.trans.string("MenuItems", 4),
+            "Ctrl+Shift+O",
+        ),
+        Keybind(
+            "save",
+            globals_.trans.string("MenuItems", 8),
+            QtGui.QKeySequence.StandardKey.Save,
+        ),
+        Keybind(
+            "saveas",
+            globals_.trans.string("MenuItems", 10),
+            QtGui.QKeySequence.StandardKey.SaveAs,
+        ),
+        Keybind(
+            "savecopyas",
+            globals_.trans.string("MenuItems", 128),
+            None,
+        ),
+        Keybind(
+            "metainfo",
+            globals_.trans.string("MenuItems", 12),
+            "Ctrl+Alt+I",
+        ),
+        Keybind(
+            "screenshot",
+            globals_.trans.string("MenuItems", 14),
+            "Ctrl+Alt+S",
+        ),
+        Keybind(
+            "changegamepath",
+            globals_.trans.string("MenuItems", 16),
+            "Ctrl+Alt+G",
+        ),
+        Keybind(
+            "preferences",
+            globals_.trans.string("MenuItems", 18),
+            "Ctrl+Alt+P",
+        ),
+        Keybind(
+            "exit",
+            globals_.trans.string("MenuItems", 20),
+            "Ctrl+Q",
+        ),
+    ]
+    globals_.EditKeybinds = [
+        Keybind(
+            "selectall",
+            globals_.trans.string("MenuItems", 22),
+            QtGui.QKeySequence.StandardKey.SelectAll,
+        ),
+        Keybind(
+            "deselect",
+            globals_.trans.string("MenuItems", 24),
+            "Ctrl+D",
+        ),
+        Keybind(
+            "undo",
+            globals_.trans.string("MenuItems", 124),
+            QtGui.QKeySequence.StandardKey.Undo,
+        ),
+        Keybind(
+            "redo",
+            globals_.trans.string("MenuItems", 126),
+            QtGui.QKeySequence.StandardKey.Redo,
+        ),
+        Keybind(
+            "cut",
+            globals_.trans.string("MenuItems", 26),
+            QtGui.QKeySequence.StandardKey.Cut,
+        ),
+        Keybind(
+            "copy",
+            globals_.trans.string("MenuItems", 28),
+            QtGui.QKeySequence.StandardKey.Copy,
+        ),
+        Keybind(
+            "paste",
+            globals_.trans.string("MenuItems", 30),
+            QtGui.QKeySequence.StandardKey.Paste,
+        ),
+        Keybind(
+            "shiftitems",
+            globals_.trans.string("MenuItems", 32),
+            "Ctrl+Alt+Shift+S",
+        ),
+        Keybind(
+            "mergelocations",
+            globals_.trans.string("MenuItems", 34),
+            "Ctrl+Shift+E",
+        ),
+        Keybind(
+            "swapobjectstilesets",
+            globals_.trans.string("MenuItems", 104),
+            "Ctrl+Shift+L",
+        ),
+        Keybind(
+            "swapobjectstypes",
+            globals_.trans.string("MenuItems", 106),
+            "Ctrl+Shift+Y",
+        ),
+        Keybind(
+            "switchsprites",
+            globals_.trans.string("MenuItems", 142),
+            None,
+        ),
+        Keybind(
+            "diagnostic",
+            globals_.trans.string("MenuItems", 36),
+            "Ctrl+Shift+D",
+        ),
+        Keybind(
+            "freezeobjects",
+            globals_.trans.string("MenuItems", 38),
+            "Ctrl+Shift+1",
+        ),
+        Keybind(
+            "freezesprites",
+            globals_.trans.string("MenuItems", 40),
+            "Ctrl+Shift+2",
+        ),
+        Keybind(
+            "freezeentrances",
+            globals_.trans.string("MenuItems", 42),
+            "Ctrl+Shift+3",
+        ),
+        Keybind(
+            "freezelocations",
+            globals_.trans.string("MenuItems", 44),
+            "Ctrl+Shift+4",
+        ),
+        Keybind(
+            "freezepaths",
+            globals_.trans.string("MenuItems", 46),
+            "Ctrl+Shift+5",
+        ),
+        Keybind(
+            "freezecomments",
+            globals_.trans.string("MenuItems", 114),
+            "Ctrl+Shift+9",
+        ),
+    ]
+    globals_.ViewKeybinds = [
+        Keybind("showlay0", globals_.trans.string("MenuItems", 48), "Ctrl+1"),
+        Keybind("showlay1", globals_.trans.string("MenuItems", 50), "Ctrl+2"),
+        Keybind("showlay2", globals_.trans.string("MenuItems", 52), "Ctrl+3"),
+        Keybind("tileanim", globals_.trans.string("MenuItems", 108), "Ctrl+7"),
+        Keybind("collisions", globals_.trans.string("MenuItems", 110), "Ctrl+8"),
+        Keybind("realview", globals_.trans.string("MenuItems", 118), "Ctrl+9"),
+        Keybind("showsprites", globals_.trans.string("MenuItems", 54), "Ctrl+4"),
+        Keybind("showspriteimages", globals_.trans.string("MenuItems", 56), "Ctrl+6"),
+        Keybind("showentrances", globals_.trans.string("MenuItems", 144), None),
+        Keybind("showlocations", globals_.trans.string("MenuItems", 58), "Ctrl+5"),
+        Keybind("showcomments", globals_.trans.string("MenuItems", 116), None),
+        Keybind("showpaths", globals_.trans.string("MenuItems", 130), "Ctrl"),
+        Keybind("grid", globals_.trans.string("MenuItems", 60), "Ctrl+G"),
+        Keybind("zoommax", globals_.trans.string("MenuItems", 62), "Ctrl+PgDown"),
+        Keybind(
+            "zoomin",
+            globals_.trans.string("MenuItems", 64),
+            QtGui.QKeySequence.StandardKey.ZoomIn,
+        ),
+        Keybind("zoomactual", globals_.trans.string("MenuItems", 66), "Ctrl+0"),
+        Keybind(
+            "zoomout",
+            globals_.trans.string("MenuItems", 68),
+            QtGui.QKeySequence.StandardKey.ZoomOut,
+        ),
+        Keybind("zoommin", globals_.trans.string("MenuItems", 70), "Ctrl+PgUp"),
+        Keybind("leveloverview", globals_.trans.string("MenuItems", 94), "Ctrl+M"),
+        Keybind("palette", globals_.trans.string("MenuItems", 96), "Ctrl+P"),
+        Keybind("toolbar", globals_.trans.string("Menubar", 5), "Ctrl+T"),
+    ]
+    globals_.SettingsKeybinds = [
+        Keybind("areaoptions", globals_.trans.string("MenuItems", 72), "Ctrl+Alt+A"),
+        Keybind("zones", globals_.trans.string("MenuItems", 74), "Ctrl+Alt+Z"),
+        Keybind("backgrounds", globals_.trans.string("MenuItems", 76), "Ctrl+Alt+B"),
+        Keybind("camprofiles", globals_.trans.string("MenuItems", 140), "Ctrl+Alt+C"),
+        Keybind("addarea", globals_.trans.string("MenuItems", 78), "Ctrl+Alt+N"),
+        Keybind("importarea", globals_.trans.string("MenuItems", 80), "Ctrl+Alt+O"),
+        Keybind("deletearea", globals_.trans.string("MenuItems", 82), "Ctrl+Alt+D"),
+        Keybind("reloadgfx", globals_.trans.string("MenuItems", 84), "Ctrl+Shift+R"),
+        Keybind("reloaddata", globals_.trans.string("MenuItems", 138), None),
+    ]
+    globals_.HelpKeybinds = [
+        Keybind("infobox", globals_.trans.string("MenuItems", 86), "Ctrl+Shift+I"),
+        Keybind("helpbox", globals_.trans.string("MenuItems", 88), "Ctrl+Shift+H"),
+        Keybind("tipbox", globals_.trans.string("MenuItems", 90), "Ctrl+Shift+T"),
+        Keybind("aboutqt", globals_.trans.string("MenuItems", 92), "Ctrl+Shift+Q"),
+    ]
 
 
 def GetKeybind(name: str):
     """
     Returns a QKeySequence from the settings, or a default keybind
     """
-    groups = [
-        globals_.FileKeybinds,
-        globals_.EditKeybinds,
-        globals_.ViewKeybinds,
-        globals_.SettingsKeybinds,
-        globals_.HelpKeybinds,
-    ]
+    groups = (
+        globals_.FileKeybinds
+        + globals_.EditKeybinds
+        + globals_.ViewKeybinds
+        + globals_.SettingsKeybinds
+        + globals_.HelpKeybinds
+    )
+
 
     for g in groups:
-        if name in g.keys():
-            keySeq = setting('Keybind_' + name, g[name][0])
+        if g.id == name:
+            keySeq = setting('Keybind_' + name, g.key_sequence)
             return QtGui.QKeySequence(keySeq)
 
     print(f'GetKeybind(): Unknown identifier \'{name}\'!')
     return QtGui.QKeySequence(None)
 
 
-def SetKeybind(name, sequence: QtGui.QKeySequence | None):
+def SetKeybind(name, sequence: QtCore.QKeyCombination | QtGui.QKeySequence.StandardKey | str | None):
     """
     Saves a QKeySequence keybind to the settings, and updates the relevant menubar action
     """
-    groups = [
-        globals_.FileKeybinds,
-        globals_.EditKeybinds,
-        globals_.ViewKeybinds,
-        globals_.SettingsKeybinds,
-        globals_.HelpKeybinds,
-    ]
+    groups = (
+        globals_.FileKeybinds
+        + globals_.EditKeybinds
+        + globals_.ViewKeybinds
+        + globals_.SettingsKeybinds
+        + globals_.HelpKeybinds
+    )
 
     # Fix issues with items that have no default keybind
     if sequence is None:
@@ -838,7 +967,7 @@ def SetKeybind(name, sequence: QtGui.QKeySequence | None):
     # Check if the given keybind is identical to the default
     # If so, remove the keybind setting, no need to store it
     for g in groups:
-        if name in g.keys() and QtGui.QKeySequence(g[name][0]) == sequence:
+        if g.id == name and QtGui.QKeySequence(g.key_sequence) == sequence:
             delSetting('Keybind_' + name)
             return
 

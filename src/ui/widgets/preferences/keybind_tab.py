@@ -1,11 +1,12 @@
-from PyQt6 import QtWidgets
 import collections
 
-import globals_
+from PyQt6 import QtWidgets
 
-from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
-from src.ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
+import globals_
 from src.ui.widgets.preferences.widgets.keybind_editor_tab import KeybindEditorTab
+from src.ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
+from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
+
 
 class KeybindTab(PreferenceTabWidget):
     """
@@ -81,13 +82,13 @@ class KeybindTab(PreferenceTabWidget):
             if len(keys) > 1
         }
 
-        groups = [
-            globals_.FileKeybinds,
-            globals_.EditKeybinds,
-            globals_.ViewKeybinds,
-            globals_.SettingsKeybinds,
-            globals_.HelpKeybinds,
-        ]
+        groups = (
+            globals_.FileKeybinds
+            + globals_.EditKeybinds
+            + globals_.ViewKeybinds
+            + globals_.SettingsKeybinds
+            + globals_.HelpKeybinds
+        )
 
         if not conflicts:
             # No conflicts, show a quick tooltip
@@ -97,17 +98,17 @@ class KeybindTab(PreferenceTabWidget):
             # Conflicts were detected, list them in a warning message
             out_string = ''
 
-            for keybind, names in conflicts.items():
+            for keybind, id in conflicts.items():
                 out_string += f'* {keybind.toString()}: '
 
                 # We have the shortname identifier, but we need
                 # to show the translation string instead
-                for i, name in enumerate(names):
+                for i, name in enumerate(id):
                     for g in groups:
-                        if name in g.keys():
+                        if g.id == name:
                             # Formatting, italicize and separate entries
-                            out_string += f'<i>{g[name][1]}</i>'
-                            if i != len(names) - 1:
+                            out_string += f'<i>{g.name}</i>'
+                            if i != len(id) - 1:
                                 out_string += ', '
                 out_string += '<br>'
 

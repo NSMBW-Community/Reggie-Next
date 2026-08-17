@@ -8,6 +8,7 @@ from reggie import ReggieWindow
 from src.data.level.abstract_level import AbstractLevel
 from src.data.level.area import Area as AreaType
 from src.data.level.sprite_definition import SpriteDefinition
+from src.data.model.keybind import Keybind
 from src.data.model.menu_action import MenuAction
 from src.data.model.randtiles import RandTileSelection
 from src.data.model.sprite_category import SpriteCategory
@@ -50,12 +51,11 @@ SettingsActions: tuple[MenuAction, ...] = ()
 ViewActions: tuple[MenuAction, ...] = ()
 
 # Keybinds
-# TODO may turn into a class in classlib.py
-FileKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None, str | None]]
-EditKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None, str | None]]
-ViewKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None, str | None]]
-SettingsKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None, str | None]]
-HelpKeybinds: dict[str, tuple[QtCore.QKeyCombination | str | None, str | None]]
+FileKeybinds: list[Keybind]
+EditKeybinds: list[Keybind]
+ViewKeybinds: list[Keybind]
+SettingsKeybinds: list[Keybind]
+HelpKeybinds: list[Keybind]
 
 # Canvas / Editor
 BoundsDrawn = False

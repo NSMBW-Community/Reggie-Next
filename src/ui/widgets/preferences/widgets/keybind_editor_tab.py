@@ -2,8 +2,8 @@ from PyQt6 import QtWidgets
 
 import globals_
 from src.data.loaders import GetKeybind, SetKeybind
-
 from src.ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
+
 
 class KeybindEditorTab(QtWidgets.QWidget):
     """
@@ -31,12 +31,12 @@ class KeybindEditorTab(QtWidgets.QWidget):
         ]
 
         # Create each keybind entry
-        for name in groups[index].keys():
-            edit = KeybindLineEdit(GetKeybind(name), name)
+        for keybind in groups[index]:
+            edit = KeybindLineEdit(GetKeybind(keybind.id), keybind.id)
             self.key_edits.append(edit)
 
             # Get the label from the keybind data
-            label = groups[index][name][1]
+            label = keybind.name
             scroll_lyt.addRow(label, edit)
 
         main_layout = QtWidgets.QVBoxLayout()
@@ -56,13 +56,14 @@ class KeybindEditorTab(QtWidgets.QWidget):
         ]
 
         for key_edit in self.key_edits:
-            if key_edit.name in groups[self.index].keys():
-                # Get default and update the action's keybind
-                defKey = groups[self.index][key_edit.name][0]
-                if defKey is None:
-                    key_edit.clear()
-                else:
-                    key_edit.setKeySequence(defKey)
+            for keybind in groups[self.index]:
+                if keybind.id == key_edit.name:
+                    # Get default and update the action's keybind
+                    defKey = keybind.key_sequence
+                    if defKey is None:
+                        key_edit.clear()
+                    else:
+                        key_edit.setKeySequence(defKey)
 
-                # Restore default keybind
-                SetKeybind(key_edit.name, defKey)
+                    # Restore default keybind
+                    SetKeybind(key_edit.name, defKey)
