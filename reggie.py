@@ -99,7 +99,11 @@ from gamedef import LoadGameDef
 from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem, Path
 from tiles import UnloadTileset, LoadTileset, LoadOverrides
 from src.data.level.nsmbw_level import NSMBWLevel
-from sidelists import Stamp, StampChooserWidget, SpriteList, SpritePickerWidget, ObjectPickerWidget
+from src.data.stamp.stamp import Stamp
+from src.ui.widgets.sidelists.stamp_chooser import StampChooserWidget
+from src.ui.widgets.sidelists.sprite_list import SpriteList
+from src.ui.widgets.sidelists.sprite_picker import SpritePickerWidget
+from src.ui.widgets.sidelists.object_picker import ObjectPickerWidget
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 from src.ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
 from undo import UndoStack
