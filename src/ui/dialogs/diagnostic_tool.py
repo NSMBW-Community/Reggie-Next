@@ -213,6 +213,11 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         fix_progress.setValue(100)
         del fix_progress
 
+        # Update the widget
+        if globals_.mainWindow is not None and globals_.AutoDiagEnabled:
+            globals_.mainWindow.diagnostic.update_status()
+            globals_.mainWindow.diagnostic.set_timer()
+
         # Gray out the Fix button if there are no more problems
         if self.error_list.count() == 0:
             self.fix_button.setEnabled(False)
