@@ -4713,7 +4713,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Update the canvas grid while we take the screenshot
         grid_type_list = [None, 'grid', 'checker']
-        gt = globals_.GridType
+        current_grid_type = globals_.GridType
         globals_.GridType = grid_type_list[grid_type]
         self.scene.update()
 
@@ -4782,28 +4782,31 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     clip.setImage(ss_img)
 
         # Restore grid
-        globals_.GridType = gt
+        globals_.GridType = current_grid_type
         self.scene.update()
 
     @staticmethod
     def HandleDiagnostics():
         """
-        Checks the level for any obvious problems and provides options to autofix them
+        Checks the level for any obvious problems and provides options to fix them
         """
         DiagnosticToolDialog().exec()
 
     def HandleCameraProfiles(self):
-        """Pops up the options for camera profiles"""
+        """
+        Pops up the options for camera profiles
+        """
         dlg = CameraProfilesDialog()
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        camprofiles = []
+        cam_profiles = []
         for row in range(dlg.list.count()):
             item = dlg.list.item(row)
-            camprofiles.append(item.data(QtCore.Qt.ItemDataRole.UserRole))
+            if item is not None:
+                cam_profiles.append(item.data(QtCore.Qt.ItemDataRole.UserRole))
 
-        globals_.Area.camprofiles = camprofiles
+        globals_.Area.camprofiles = cam_profiles
         SetDirty()
 
 
@@ -4812,7 +4815,7 @@ def main():
     Main startup function for Reggie
     """
 
-    # set High-DPI-Displays-related attributes before creating an application
+    # Set High-DPI-Displays-related attributes before creating an application
     # QtGui.QGuiApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     if hasattr(QtGui.QGuiApplication, 'setHighDpiScaleFactorRoundingPolicy'):
         QtGui.QGuiApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.Round)
@@ -4831,12 +4834,13 @@ def main():
         copy2('settings.ini', 'settings.ini.bak')
         del copy2
 
-    # Try to get the last commit id - if it failed, we're in a build.
+    # Try to get the last commit ID, and append it to the version ID
+    # (Only works when the repository's ".git" folder is present)
     import subprocess
 
     try:
         commit_id = subprocess.check_output(["git", "describe", "--always"], stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL).decode('utf-8').strip()
-        globals_.ReggieVersionShort += "-" + commit_id
+        globals_.ReggieVersionShort += f'-{commit_id}'
     except (FileNotFoundError, subprocess.CalledProcessError):
         pass
 
@@ -4850,8 +4854,9 @@ def main():
         setSetting("ReggieVersion", globals_.ReggieVersionFloat)
         setSetting('uiStyle', "Fusion")
 
-    # 4.0 -> oldest version with settings.ini compatible with the current version
-    if setting("ReggieVersion") < 4.0:
+    # 4.0 -> Oldest version with settings.ini compatible with the current version
+    reggie_ver = setting("ReggieVersion")
+    if reggie_ver is not None and reggie_ver < 4.0:
         warningBox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Icon.NoIcon, 'Unsupported settings file', 'Your settings.ini file is unsupported. Please remove it and run Reggie again.')
         warningBox.exec()
         sys.exit(1)
@@ -4885,12 +4890,11 @@ def main():
     globals_.app.setWindowIcon(GetIcon('reggie'))
     globals_.app.setApplicationDisplayName('Reggie! Next %s' % globals_.ReggieVersionShort)
 
-    gt = setting('GridType')
-
-    if gt not in ('checker', 'grid'):
+    grid_type = setting('GridType')
+    if grid_type not in ('checker', 'grid'):
         globals_.GridType = None
     else:
-        globals_.GridType = gt
+        globals_.GridType = grid_type
 
     globals_.CollisionsShown = setting('ShowCollisions', False)
     globals_.RealViewEnabled = setting('RealViewEnabled', True)
@@ -4910,7 +4914,9 @@ def main():
     globals_.BoundsDrawn = setting('ZoneBoundIndicators', False)
     globals_.ResetDataWhenHiding = setting('ResetDataWhenHiding', False)
     globals_.EnablePadding = setting('EnablePadding', False)
-    globals_.PaddingLength = int(setting('PaddingLength', 0))
+    pad_len = setting('PaddingLength', 0)
+    if pad_len is not None:
+        globals_.PaddingLength = int(pad_len)
     globals_.PlaceObjectsAtFullSize = setting('PlaceObjectsAtFullSize', True)
     globals_.InsertPathNode = setting('InsertPathNode', False)
     globals_.UseRoundedRectangles = setting('UseRoundedRectangles', True)
@@ -4957,14 +4963,14 @@ def main():
         QtWidgets.QMessageBox.information(None, globals_.trans.string('ChangeGamePath', 1), msg)
 
     # Check to see if we have anything saved
-    autofile = setting('AutoSaveFilePath')
-    autofiledata = setting('AutoSaveFileData', 'x')
-    if autofile is not None and autofiledata != 'x':
-        result = AutoSaveDialog(autofile).exec()
+    auto_file = setting('AutoSaveFilePath')
+    auto_file_data = setting('AutoSaveFileData', 'x')
+    if auto_file is not None and auto_file_data not in (None, 'x'):
+        result = AutoSaveDialog(auto_file).exec()
         if result == QtWidgets.QDialog.DialogCode.Accepted:
             globals_.RestoredFromAutoSave = True
-            globals_.AutoSavePath = autofile
-            globals_.AutoSaveData = bytes(autofiledata)
+            globals_.AutoSavePath = auto_file
+            globals_.AutoSaveData = bytes(auto_file_data)
         else:
             setSetting('AutoSaveFilePath', None)
             setSetting('AutoSaveFileData', 'x')

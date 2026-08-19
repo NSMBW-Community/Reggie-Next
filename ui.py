@@ -326,10 +326,18 @@ def SetAppStyle(styleKey=''):
         globals_.app.setStyleSheet("""QMenu::item:disabled{color: #646464;}""")
 
 def SetColorScheme():
-    if globals_.DarkMode:
-        globals_.app.styleHints().setColorScheme(QtCore.Qt.ColorScheme.Dark)
-    else:
-        globals_.app.styleHints().setColorScheme(QtCore.Qt.ColorScheme.Light)
+    """
+    Sets the application color scheme
+    """
+    if globals_.app is None:
+        return
+
+    style_hint = globals_.app.styleHints()
+    if style_hint is not None:
+        if globals_.DarkMode:
+            style_hint.setColorScheme(QtCore.Qt.ColorScheme.Dark)
+        else:
+            style_hint.setColorScheme(QtCore.Qt.ColorScheme.Light)
 
 def GetIcon(name, big=False):
     """
