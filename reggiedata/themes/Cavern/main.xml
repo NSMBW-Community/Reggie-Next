@@ -11,6 +11,5 @@
         
     <colors file="levelview.xml" />
     <icons size="sm" folder="icosm" />
-    <icons size="lg" folder="icolg" />
     
 </theme>
