@@ -1,5 +1,3 @@
-from typing import Generic, TypeVar
-
 from PyQt6 import QtCore, QtWidgets
 
 import globals_
@@ -9,9 +7,8 @@ from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
 )
 from ui import GetIcon
 
-T_SPRITE_FIELD = TypeVar("T_SPRITE_FIELD", bound=SpriteField)
 
-class PropertyDecoder(QtCore.QObject, Generic[T_SPRITE_FIELD]):
+class PropertyDecoder[T: SpriteField](QtCore.QObject):
     """
     Base class for all the sprite data decoder/encoders
     """
@@ -19,7 +16,7 @@ class PropertyDecoder(QtCore.QObject, Generic[T_SPRITE_FIELD]):
 
     def __init__(
         self,
-        field: T_SPRITE_FIELD,
+        field: T,
         layout: QtWidgets.QGridLayout | None = None,
         row: int | None = None,
         parent_widget: QtWidgets.QWidget | None = None,
