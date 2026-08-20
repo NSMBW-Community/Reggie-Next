@@ -4820,6 +4820,14 @@ def main():
     if hasattr(QtGui.QGuiApplication, 'setHighDpiScaleFactorRoundingPolicy'):
         QtGui.QGuiApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.Round)
 
+    # Add a unique ID for the app so the taskbar shows the icon
+    # instead of the default Python interpreter icon
+    if sys.platform == 'win32':
+        import ctypes
+        app_id = f'reggie.next.{globals_.ReggieVersionShort}'
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
+        del ctypes
+
     # Create an application
     globals_.app = QtWidgets.QApplication(sys.argv)
 
