@@ -149,6 +149,8 @@ def _excepthook(*exc_info):
     separator = '-' * 80
     logFile = "log.txt"
     notice = globals_.trans.string('ErrorDlg', 0, '[log]', logFile)
+    if notice is None:
+        notice = ''
 
     timeString = time.strftime("%Y-%m-%d, %H:%M:%S")
 
@@ -4052,7 +4054,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.UpdateModeInfo()
             globals_.DirtyOverride -= 1
 
-    def HandleObjPosChange(self, obj, oldx, oldy, x, y):
+    def HandleObjPosChange(self, obj: ObjectItem, oldx, oldy, x, y):
         """
         Handle the object being dragged
         """
@@ -4062,55 +4064,56 @@ class ReggieWindow(QtWidgets.QMainWindow):
             SetDirty()
         self.level_overview.update()
 
-    def CreationTabChanged(self, nt):
+    def CreationTabChanged(self, new_tab):
         """
         Handles the selected palette tab changing
         """
-        CPT = -1
+        paint_type = -1
 
-        if nt == 0:  # objects
-            CPT = self.objAllTab.currentIndex()
-        elif nt == 1:  # sprites
+        if new_tab == 0: # Objects
+            paint_type = self.objAllTab.currentIndex()
+        elif new_tab == 1: # Sprites
             # Ensure the user can't paint sprites
             # when the 'current sprites' tab is
             # opened.
             if self.sprAllTab.currentIndex() != 1:
-                CPT = 4
-        elif nt == 2:
-            CPT = 5  # entrances
-        elif nt == 3:
-            CPT = 7  # locations
-        elif nt == 4:
-            CPT = 6  # paths
-        elif nt == 6:
-            CPT = 8  # stamp pad
-        elif nt == 7:
-            CPT = 9  # comment
+                paint_type = 4
+        elif new_tab == 2:
+            paint_type = 5  # Entrances
+        elif new_tab == 3:
+            paint_type = 7  # Locations
+        elif new_tab == 4:
+            paint_type = 6  # Paths
+        elif new_tab == 6:
+            paint_type = 8  # Stamps
+        elif new_tab == 7:
+            paint_type = 9  # Comments
 
-        globals_.CurrentPaintType = CPT
+        globals_.CurrentPaintType = paint_type
 
-    def ObjTabChanged(self, nt):
+    def ObjTabChanged(self, new_tab):
         """
         Handles the selected slot tab in the object palette changing
         """
         if hasattr(self, 'objPicker'):
-            if 0 <= nt <= 3:
-                self.objPicker.ShowTileset(nt)
-                eval('self.objTS%dTab' % nt).setLayout(self.createObjectLayout)
+            if clamp(new_tab, 0, 3):
+                self.objPicker.ShowTileset(new_tab)
+                eval(f'self.objTS{new_tab}Tab').setLayout(self.createObjectLayout)
+
             self.defaultPropDock.setVisible(False)
 
-        globals_.CurrentPaintType = nt
+        globals_.CurrentPaintType = new_tab
 
-    def SprTabChanged(self, nt):
+    def SprTabChanged(self, new_tab):
         """
         Handles the selected tab in the sprite palette changing
         """
-        if nt == 0:
-            cpt = 4
+        if new_tab == 0:
+            paint_type = 4 # Sprites
         else:
-            cpt = -1
+            paint_type = -1 # None
 
-        globals_.CurrentPaintType = cpt
+        globals_.CurrentPaintType = paint_type
 
     def ChangeSelectionLayer(self, checked):
         """
@@ -4118,15 +4121,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         self.ChangeSelectedObjectsLayer(globals_.CurrentLayer)
 
-    def LayerChoiceChanged(self, nl):
+    def LayerChoiceChanged(self, new_layer):
         """
         Handles the selected layer changing
         """
-        globals_.CurrentLayer = nl
+        globals_.CurrentLayer = new_layer
 
-        # should we replace?
+        # Should we change layers?
         if QtWidgets.QApplication.keyboardModifiers() == Qt.KeyboardModifier.AltModifier:
-            self.ChangeSelectedObjectsLayer(nl)
+            self.ChangeSelectedObjectsLayer(new_layer)
 
     def ChangeSelectedObjectsLayer(self, new_layer_id):
         """
@@ -4135,39 +4138,38 @@ class ReggieWindow(QtWidgets.QMainWindow):
         assert new_layer_id in (0, 1, 2)
 
         items = self.scene.selectedItems()
-        type_obj = ObjectItem
         area = globals_.Area
         change = []
 
         for x in items:
-            if isinstance(x, type_obj) and x.layer != new_layer_id:
+            if isinstance(x, ObjectItem) and x.layer != new_layer_id:
                 change.append(x)
 
         if not change:
             return
 
         change.sort(key=lambda x: x.zValue())
-        newLayer = area.layers[new_layer_id]
+        new_layer = area.layers[new_layer_id]
 
-        if not newLayer:
+        if not new_layer:
             z_value = (2 - new_layer_id) * 8192
         else:
-            z_value = newLayer[-1].zValue() + 1
+            z_value = new_layer[-1].zValue() + 1
 
         if new_layer_id == 0:
-            newVisibility = globals_.Layer0Shown
+            new_vis = globals_.Layer0Shown
         elif new_layer_id == 1:
-            newVisibility = globals_.Layer1Shown
+            new_vis = globals_.Layer1Shown
         else:
-            newVisibility = globals_.Layer2Shown
+            new_vis = globals_.Layer2Shown
 
         for item in change:
             area.RemoveFromLayer(item)
             item.layer = new_layer_id
-            newLayer.append(item)
+            new_layer.append(item)
 
             item.setZValue(z_value)
-            item.setVisible(newVisibility)
+            item.setVisible(new_vis)
             item.update()
             item.UpdateTooltip()
 
@@ -4187,12 +4189,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handles a new object being chosen to replace the selected objects
         """
         items = self.scene.selectedItems()
-        type_obj = ObjectItem
         tileset = globals_.CurrentPaintType
         changed = False
 
         for x in items:
-            if isinstance(x, type_obj) and (x.tileset != tileset or x.type != type):
+            if isinstance(x, ObjectItem) and (x.tileset != tileset or x.type != type):
                 x.SetType(tileset, type)
                 x.update()
                 changed = True
@@ -4219,17 +4220,26 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handles a new sprite type being chosen to replace the selected sprites
         """
         items = self.scene.selectedItems()
-        type_spr = SpriteItem
         changed = False
 
         for x in items:
-            if isinstance(x, type_spr):
-                x.spritedata = self.defaultDataEditor.data  # change this first or else images get messed up
+            if isinstance(x, SpriteItem):
+                # Reset spritedata
+                x.spritedata = self.defaultDataEditor.data
                 x.SetType(type)
                 x.update()
+
+                # Assign the new sprite image class
+                image_classes = globals_.gamedef.getImageClasses()
+                if type in image_classes:
+                    x.setImageObj(image_classes[type])
+                else:
+                    x.setImageObj(SLib.SpriteImage)
                 changed = True
 
         if changed:
+            # Fixes any issues from outdated types
+            globals_.Area.InitialiseIdTypes()
             SetDirty()
 
         self.ChangeSelectionHandler()
@@ -4243,8 +4253,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         isSearch = (type == 0)
         layout = self.spriteSearchLayout
-        layout.itemAt(0).widget().setVisible(isSearch)
-        layout.itemAt(1).widget().setVisible(isSearch)
+
+        # Show/hide the searchbar
+        # Item 0 is "Search:", 1 is the box itself
+        for i in range(2):
+            item = layout.itemAt(i)
+            if item is None:
+                return
+
+            widget = item.widget()
+            if widget is None:
+                return
+
+            widget.setVisible(isSearch)
 
     def NewSearchTerm(self, text):
         """
@@ -4258,13 +4279,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         self.defaultPropDock.setVisible(True)
 
-    def HandleSprPosChange(self, obj, oldx, oldy, x, y):
+    def HandleSprPosChange(self, obj: SpriteItem, oldx, oldy, x, y):
         """
         Handle the sprite being dragged
         """
         if obj == self.selObj:
             if oldx == x and oldy == y:
                 return
+
             obj.UpdateListItem()
             SetDirty()
 
@@ -4278,14 +4300,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         if self.spriteEditorDock.isVisible():
             obj = self.selObj
-            obj.spritedata = data
-            obj.UpdateListItem()
-            SetDirty()
+            if isinstance(obj, SpriteItem):
+                obj.spritedata = data
+                obj.UpdateListItem()
+                SetDirty()
 
-            obj.UpdateDynamicSizing()
-            self.spriteList.updateSprite(obj)
+                obj.UpdateDynamicSizing()
+                self.spriteList.updateSprite(obj)
 
-    def HandleEntPosChange(self, obj, oldx, oldy, x, y):
+    def HandleEntPosChange(self, obj: EntranceItem, oldx, oldy, x, y):
         """
         Handle the entrance being dragged
         """
@@ -4295,24 +4318,26 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if obj == self.selObj:
             SetDirty()
 
-    def HandlePathPosChange(self, obj, oldx, oldy, x, y):
+    def HandlePathPosChange(self, obj: PathItem, oldx, oldy, x, y):
         """
         Handle the path being dragged
         """
         if oldx == x and oldy == y:
             return
+
         obj.path.node_moved(obj)
         obj.UpdateListItem()
         if obj == self.selObj:
             SetDirty()
         self.level_overview.update()
 
-    def HandleComPosChange(self, obj, oldx, oldy, x, y):
+    def HandleComPosChange(self, obj: CommentItem, oldx, oldy, x, y):
         """
         Handle the comment being dragged
         """
         if oldx == x and oldy == y:
             return
+
         obj.UpdateTooltip()
         obj.handlePosChange(oldx, oldy)
         obj.UpdateListItem()
@@ -4320,7 +4345,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.SaveComments()
             SetDirty()
 
-    def HandleComTxtChange(self, obj):
+    def HandleComTxtChange(self, obj: CommentItem):
         """
         Handle the comment's text being changed
         """
@@ -4333,17 +4358,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle an entrance being selected from the list
         """
-        if self.UpdateFlag: return
+        if self.UpdateFlag:
+            return
 
         ent = item.reference
         ent.ensureVisible(xMargin=192, yMargin=192)
         self.scene.clearSelection()
         ent.setSelected(True)
 
-    def HandleEntranceToolTipAboutToShow(self, item):
+    def HandleEntranceToolTipAboutToShow(self, item: EntranceItem):
         """
         Handle an entrance being hovered in the list
         """
+        ent: EntranceItem
         for ent in globals_.Area.entrances:
             if ent.listitem == item:
                 ent.UpdateListItem(True)
@@ -4353,7 +4380,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handle a location being selected from the list
         """
-        if self.UpdateFlag: return
+        if self.UpdateFlag:
+            return
 
         loc = item.reference
         loc.ensureVisible(xMargin=192, yMargin=192)
