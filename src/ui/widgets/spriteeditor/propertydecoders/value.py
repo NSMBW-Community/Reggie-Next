@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtWidgets
 
-import common
 import globals_
+from src.data.common.utils import find_first_available_id
 from src.data.sprite.spritefield.value import ValueSpriteField
 from src.ui.widgets.generic.int_spin_box import IntSpinBox
 from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
@@ -101,6 +101,6 @@ class ValuePropertyDecoder(PropertyDecoder[ValueSpriteField]):
         if self.field.idtype is None: return
 
         used_ids = globals_.Area.sprite_idtypes[self.field.idtype]
-        next_id = common.find_first_available_id(used_ids, self.widget.maximum(), (self.widget.value() or 0) + 1)
+        next_id = find_first_available_id(used_ids, self.widget.maximum(), (self.widget.value() or 0) + 1)
 
         self.widget.setValue(next_id)

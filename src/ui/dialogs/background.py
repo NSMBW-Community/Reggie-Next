@@ -1,8 +1,8 @@
 from PyQt6 import QtWidgets, QtGui
 import os
 
-import common
 import globals_
+from src.data.common.utils import clamp
 from ui import GetIcon
 
 from src.ui.widgets.generic.hex_spin_box import HexSpinBox
@@ -126,7 +126,7 @@ class BackgroundTab(QtWidgets.QWidget):
                 scrollBox.setToolTip(globals_.trans.string('BGDlg', 11))
 
                 if scrollNames is not None:
-                    val = common.clamp(val, 0, len(scrollNames) - 1)
+                    val = clamp(val, 0, len(scrollNames) - 1)
                     scrollBox.setCurrentIndex(val)
                 else:
                     scrollBox.setCurrentIndex(0)

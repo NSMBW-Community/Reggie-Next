@@ -1,10 +1,8 @@
-from PyQt6 import QtWidgets, QtCore
-from typing import cast
+from PyQt6 import QtCore, QtWidgets
 
-import common
 import globals_
-from ui import GetIcon
-from levelitems import ZoneItem
+from src.data.common.utils import clamp
+
 
 class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
     """
@@ -121,14 +119,14 @@ class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):
 
     def setValues(self, camMode, camZoom):
         self.updating = True
-        camMode = common.clamp(camMode, 0, 7)
+        camMode = clamp(camMode, 0, 7)
 
         button = self.modeButtonGroup.button(camMode)
         if button is not None:
             button.setChecked(True)
         self.changeCamModeList()
 
-        camZoom = common.clamp(camZoom, 0, self.screenSizes.count())
+        camZoom = clamp(camZoom, 0, self.screenSizes.count())
 
         self.screenSizes.setCurrentIndex(camZoom)
         self.updating = False

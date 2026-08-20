@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import common
+from src.data.common.utils import clamp
 
 
 class IntSpinBox(QtWidgets.QAbstractSpinBox):
@@ -103,7 +103,7 @@ class IntSpinBox(QtWidgets.QAbstractSpinBox):
         Add 'steps' to the current value.
         """
         self.setValue(
-            common.clamp((self._value or 0) + steps, self._minimum, self._maximum)
+            clamp((self._value or 0) + steps, self._minimum, self._maximum)
         )
 
     def valueFromText(self, text: str) -> int:

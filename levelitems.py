@@ -5,7 +5,7 @@ import base64
 
 import spritelib as SLib
 import globals_
-import common
+from src.data.common.utils import clamp
 from tiles import RenderObject
 from ui import GetIcon, clipStr, setOverrideCursor
 from dirty import SetDirty
@@ -1890,8 +1890,8 @@ class LocationItem(LevelEditorItem):
         Handles resizing the location and returns whether the location was
         changed.
         """
-        clickx = common.clamp(int(clicked.x() / 1.5), 0, 65535)
-        clicky = common.clamp(int(clicked.y() / 1.5), 0, 65535)
+        clickx = clamp(int(clicked.x() / 1.5), 0, 65535)
+        clicky = clamp(int(clicked.y() / 1.5), 0, 65535)
 
         # if alt is not held, snap to 8x8 grid
         if QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.KeyboardModifier.AltModifier:
@@ -2366,8 +2366,8 @@ class SpriteItem(LevelEditorItem):
                 snap_level = 8
 
             # Make sure the position is in bounds
-            x = common.clamp(origin_pos.x(), 0, 16368)
-            y = common.clamp(origin_pos.y(), 0, 8176)
+            x = clamp(origin_pos.x(), 0, 16368)
+            y = clamp(origin_pos.y(), 0, 8176)
 
             # When snapping, round to the nearest multiple of snap_level. Round
             # up when two multiples are equally far apart.

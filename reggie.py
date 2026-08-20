@@ -81,7 +81,6 @@ from src.data.common import archive
 import sprites
 import spritelib as SLib
 from sprites_common import LoadBasics
-import common
 
 import globals_
 
@@ -92,6 +91,7 @@ import globals_
 from libs import lh, lib_versions, lz77
 from ui import GetIcon, SetAppStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, IconsOnlyTabBar, SetColorScheme
 from src.data.common.loaders import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, LoadLevelNames, LoadSpriteCategories, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
+from src.data.common.utils import clamp, find_first_available_id
 from misc import FilesAreMissing, module_path, IsNSMBLevel, SetGamePaths, areValidGamePaths
 from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
@@ -2358,7 +2358,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             # This can be done more efficiently, but 255 is not that big, so it
             # does not really matter.
             all_ids = set(loc.id for loc in globals_.Area.locations)
-            id_ = common.find_first_available_id(all_ids, 256, 1)
+            id_ = find_first_available_id(all_ids, 256, 1)
 
             if id_ is None:
                 result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('MainWindow', 4), globals_.trans.string('MainWindow', 5),
@@ -2427,7 +2427,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         all_ids = set(ent.entid for ent in globals_.Area.entrances)
         if id_ is None:
-            id_ = common.find_first_available_id(all_ids, 256)
+            id_ = find_first_available_id(all_ids, 256)
 
         if id_ is None:
             result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('MainWindow', 2), globals_.trans.string('MainWindow', 3),
@@ -4613,8 +4613,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             globals_.Area.zones.append(z)
             self.scene.addItem(z)
 
-            z.objx = common.clamp(16, 24560, tab.zPosX.value())
-            z.objy = common.clamp(16, 12272, tab.zPosY.value())
+            z.objx = clamp(16, 24560, tab.zPosX.value())
+            z.objy = clamp(16, 12272, tab.zPosY.value())
             z.width = min(24560 - z.objx, tab.zWidth.value())
             z.height = min(12272 - z.objy, tab.zHeight.value())
 

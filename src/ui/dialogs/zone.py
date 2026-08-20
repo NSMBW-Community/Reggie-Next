@@ -1,11 +1,11 @@
 from PyQt6 import QtWidgets, QtCore
 from typing import cast
 
-import common
 import globals_
 from ui import GetIcon
 from levelitems import ZoneItem
 
+from src.data.common.utils import clamp
 from src.ui.layouts.camera_mode import CameraModeZoomSettingsLayout
 
 class ZonesDialog(QtWidgets.QDialog):
@@ -79,7 +79,7 @@ class ZonesDialog(QtWidgets.QDialog):
         tabCount = self.tabWidget.count()
         self.tabWidget.setCurrentIndex(tabCount - 1)
         self.updateCopyDelete()
-    
+
     def handleCopyZone(self):
         """
         Handles copying the current zone data to a new one
@@ -277,10 +277,10 @@ class ZoneTab(QtWidgets.QWidget):
         bottom -= top
 
         # Keep zone size within reasonable bounds
-        left = common.clamp(left, 16, 65528)
-        top = common.clamp(top, 16, 65528)
-        right = common.clamp(right, 304, 65528)
-        bottom = common.clamp(bottom, 200, 65528)
+        left = clamp(left, 16, 65528)
+        top = clamp(top, 16, 65528)
+        right = clamp(right, 304, 65528)
+        bottom = clamp(bottom, 200, 65528)
 
         self.zPosX.setValue(left)
         self.zPosY.setValue(top)
@@ -323,10 +323,10 @@ class ZoneTab(QtWidgets.QWidget):
         bottom -= top
 
         # Keep zone size within reasonable bounds
-        left = common.clamp(left, 16, 65520)
-        top = common.clamp(top, 16, 65520)
-        right = common.clamp(right, 304, 65520)
-        bottom = common.clamp(bottom, 208, 65520)
+        left = clamp(left, 16, 65520)
+        top = clamp(top, 16, 65520)
+        right = clamp(right, 304, 65520)
+        bottom = clamp(bottom, 208, 65520)
 
         self.zPosX.setValue(left)
         self.zPosY.setValue(top)
@@ -349,7 +349,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.theme.setToolTip(globals_.trans.string('ZonesDlg', 21))
         self.theme.setSizePolicy(comboboxSizePolicy)
 
-        zone.modeldark = common.clamp(zone.modeldark, 0, len(themeValues))
+        zone.modeldark = clamp(zone.modeldark, 0, len(themeValues))
         self.theme.setCurrentIndex(zone.modeldark)
 
         self.terrainLight = QtWidgets.QComboBox()
@@ -358,7 +358,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.terrainLight.setSizePolicy(comboboxSizePolicy)
 
         if terrainLightValues is not None:
-            zone.terraindark = common.clamp(zone.terraindark, 0, len(terrainLightValues))
+            zone.terraindark = clamp(zone.terraindark, 0, len(terrainLightValues))
         self.terrainLight.setCurrentIndex(zone.terraindark)
 
         self.spotlight = QtWidgets.QCheckBox(globals_.trans.string('ZonesDlg', 26))
@@ -410,7 +410,7 @@ class ZoneTab(QtWidgets.QWidget):
         self.direction.setSizePolicy(comboboxSizePolicy)
 
         if dirs is not None:
-            zone.camtrack = common.clamp(zone.camtrack, 0, len(dirs) - 1)
+            zone.camtrack = clamp(zone.camtrack, 0, len(dirs) - 1)
         self.direction.setCurrentIndex(zone.camtrack)
 
         self.restrictY = QtWidgets.QCheckBox()
@@ -663,8 +663,8 @@ class ZoneTab(QtWidgets.QWidget):
         """
         Copies data from one zone into another
         """
-        z.objx = common.clamp(16, 24560, self.zPosX.value())
-        z.objy = common.clamp(16, 12272, self.zPosY.value())
+        z.objx = clamp(16, 24560, self.zPosX.value())
+        z.objy = clamp(16, 12272, self.zPosY.value())
         z.width = min(24560 - z.objx, self.zWidth.value())
         z.height = min(12272 - z.objy, self.zHeight.value())
 

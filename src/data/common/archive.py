@@ -1,6 +1,8 @@
 import os
 
-from common import Struct, WiiArchive, align
+from src.data.common.wii import WiiArchive
+from src.data.common.struct import Struct
+from src.data.common.utils import align
 
 
 class U8(WiiArchive):

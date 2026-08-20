@@ -1,38 +1,3 @@
-#!/usr/bin/python
-# -*- coding: latin-1 -*-
-
-# Reggie Next - New Super Mario Bros. Wii Level Editor
-# Milestone 4
-# Copyright (C) 2009-2020 Treeki, Tempus, angelsl, JasonP27, Kamek64,
-# MalStar1000, RoadrunnerWMC, AboodXD, John10v10, TheGrop, CLF78,
-# Zementblock, Danster64
-
-# This file is part of Reggie Next.
-
-# Reggie Next is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-
-# Reggie Next is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-
-# You should have received a copy of the GNU General Public License
-# along with Reggie Next.  If not, see <http://www.gnu.org/licenses/>.
-
-
-# common.py
-# API for general Wii-related functions.
-# From the wii.py library.
-
-
-################################################################
-################################################################
-
-
-import os.path
 import struct
 import sys
 
@@ -52,7 +17,7 @@ class StructException(Exception):
     pass
 
 
-class Struct(object):
+class Struct:
     __slots__ = ('__attrs__', '__baked__', '__defs__', '__next__', '__sizes__', '__values__')
     int8 = StructType(('b', 1))
     uint8 = StructType(('B', 1))
@@ -322,79 +287,3 @@ class Struct(object):
 
     def __getitem__(self, value):
         return [('struct', self.__class__)] * value
-
-
-class WiiObject(object):
-    @classmethod
-    def load(cls, data, *args, **kwargs):
-        self = cls()
-        self._load(data, *args, **kwargs)
-        return self
-
-    @classmethod
-    def loadFile(cls, filename, *args, **kwargs):
-        return cls.load(open(filename, 'rb').read(), *args, **kwargs)
-
-    def dump(self, *args, **kwargs):
-        return self._dump(*args, **kwargs)
-
-    def dumpFile(self, filename, *args, **kwargs):
-        open(filename, 'wb').write(self.dump(*args, **kwargs))
-        return filename
-
-
-class WiiArchive(WiiObject):
-    @classmethod
-    def loadDir(cls, dirname):
-        self = cls()
-        self._loadDir(dirname)
-        return self
-
-    def dumpDir(self, dirname):
-        if not os.path.isdir(dirname):
-            os.mkdir(dirname)
-        self._dumpDir(dirname)
-        return dirname
-
-
-class WiiHeader(object):
-    def __init__(self, data):
-        self.data = data
-
-    def addFile(self, filename):
-        open(filename, 'wb').write(self.add())
-
-    def removeFile(self, filename):
-        open(filename, 'wb').write(self.remove())
-
-    @classmethod
-    def loadFile(cls, filename, *args, **kwargs):
-        return cls(open(filename, 'rb').read(), *args, **kwargs)
-
-
-def align(x, boundary):
-    rem = x % boundary
-
-    if rem != 0:
-        x += boundary - rem
-
-    return x
-
-
-def clamp(var, min, max):
-    if var < min: var = min
-    if var > max: var = max
-    return var
-
-
-def find_first_available_id(used: set, maximum: int, minimum: int = 0):
-    """
-    Returns the smallest integer in the range [minimum = 0, maximum) that is
-    not in the given set. If there is no such integer, None is returned.
-    """
-    for i in range(minimum, maximum):
-        if i not in used:
-            return i
-
-    return None
-
