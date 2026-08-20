@@ -3,9 +3,9 @@ import base64
 from PyQt6 import QtCore, QtWidgets
 
 import globals_
-from src.data.model.spritefield.list import ListSpriteField
-from src.data.model.spritefield.sprite_field import SpriteField
-from src.data.model.spritefield.value import ValueSpriteField
+from src.data.sprite.spritefield.list import ListSpriteField
+from src.data.sprite.spritefield.sprite_field import SpriteField
+from src.data.sprite.spritefield.value import ValueSpriteField
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )

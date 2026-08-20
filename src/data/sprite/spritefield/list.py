@@ -1,9 +1,9 @@
 from PyQt6 import QtCore
 
-from src.data.model.spritefield.sprite_field import SpriteField
+from src.data.sprite.spritefield.sprite_field import SpriteField
 
 
-class SpriteTexSpriteField(SpriteField):
+class ListSpriteField(SpriteField):
     def __init__(
         self,
         title: str | None,
@@ -13,8 +13,8 @@ class SpriteTexSpriteField(SpriteField):
         required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
         bit: list[tuple[int, int]] | None,
         model: QtCore.QAbstractItemModel,
-        max: int,
+        idtype: str | None,
     ):
         super().__init__(title, comment, comment2, advanced_comment, required, bit)
         self.model = model
-        self.max = max
+        self.idtype = idtype

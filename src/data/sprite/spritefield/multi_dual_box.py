@@ -1,7 +1,7 @@
-from src.data.model.spritefield.sprite_field import SpriteField
+from src.data.sprite.spritefield.sprite_field import SpriteField
 
 
-class CheckBoxSpriteField(SpriteField):
+class MultiDualBoxSpriteField(SpriteField):
     def __init__(
         self,
         title: str | None,
@@ -10,9 +10,7 @@ class CheckBoxSpriteField(SpriteField):
         advanced_comment: str | None,
         required: list[tuple[list[tuple[int, int]], tuple[int, int]]] | None,
         bit: list[tuple[int, int]] | None,
-        mask: int,
-        full_nybble: bool,
+        title2: str | None,
     ):
         super().__init__(title, comment, comment2, advanced_comment, required, bit)
-        self.mask = mask
-        self.full_nybble = full_nybble
+        self.title2 = title2

@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtWidgets
 
 import globals_
-from src.data.model.tileset_category import TilesetCategory, TilesetFileEntry
+from src.data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
 from ui import GetIcon
 
 

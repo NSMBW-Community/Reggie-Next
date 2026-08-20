@@ -7,11 +7,11 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 import globals_
 from dirty import delSetting, setSetting, setting
 from src.data.level.sprite_definition import SpriteDefinition
-from src.data.model.keybind import Keybind
-from src.data.model.menu_action import MenuAction
-from src.data.model.randtiles import RandTileSelection
-from src.data.model.sprite_category import SpriteCategory, SpriteSubCategory
-from src.data.model.tileset_category import TilesetCategory, TilesetFileEntry
+from src.data.common.keybind import Keybind
+from src.data.common.menu_action import MenuAction
+from src.data.tileset.tile.rand_tile_selection import RandTileSelection
+from src.data.sprite.sprite_category import SpriteCategory, SpriteSubCategory
+from src.data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
 
 
 def getResourcePaths(res_name):

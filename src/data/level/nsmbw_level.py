@@ -1,6 +1,6 @@
 import globals_
 import spritelib as SLib
-from src.data import archive
+from src.data.common import archive
 from src.data.level.abstract_level import AbstractLevel
 from src.data.level.area import Area
 

@@ -2,7 +2,7 @@ from PyQt6 import QtCore, QtWidgets
 
 import common
 import globals_
-from src.data.model.spritefield.value import ValueSpriteField
+from src.data.sprite.spritefield.value import ValueSpriteField
 from src.ui.widgets.generic.int_spin_box import IntSpinBox
 from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,

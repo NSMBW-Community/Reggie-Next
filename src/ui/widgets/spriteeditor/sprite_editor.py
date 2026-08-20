@@ -4,14 +4,14 @@ import globals_
 from dirty import SetDirty
 from levelitems import InstanceDefinition
 from src.data.level.sprite_definition import SpriteDefinition
-from src.data.model.list_property import ListPropertyModel
-from src.data.model.spritefield.check_box import CheckBoxSpriteField
-from src.data.model.spritefield.dual_box import DualBoxSpriteField
-from src.data.model.spritefield.external import ExternalSpriteField
-from src.data.model.spritefield.list import ListSpriteField
-from src.data.model.spritefield.multi_dual_box import MultiDualBoxSpriteField
-from src.data.model.spritefield.sprite_tex import SpriteTexSpriteField
-from src.data.model.spritefield.value import ValueSpriteField
+from src.data.common.list_property import ListPropertyModel
+from src.data.sprite.spritefield.check_box import CheckBoxSpriteField
+from src.data.sprite.spritefield.dual_box import DualBoxSpriteField
+from src.data.sprite.spritefield.external import ExternalSpriteField
+from src.data.sprite.spritefield.list import ListSpriteField
+from src.data.sprite.spritefield.multi_dual_box import MultiDualBoxSpriteField
+from src.data.sprite.spritefield.sprite_tex import SpriteTexSpriteField
+from src.data.sprite.spritefield.value import ValueSpriteField
 from src.ui.dialogs.spriteeditor.resize_choice import ResizeChoiceDialog
 from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,

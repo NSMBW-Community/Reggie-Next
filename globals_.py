@@ -8,11 +8,11 @@ from reggie import ReggieWindow
 from src.data.level.abstract_level import AbstractLevel
 from src.data.level.area import Area as AreaType
 from src.data.level.sprite_definition import SpriteDefinition
-from src.data.model.keybind import Keybind
-from src.data.model.menu_action import MenuAction
-from src.data.model.randtiles import RandTileSelection
-from src.data.model.sprite_category import SpriteCategory
-from src.data.model.tileset_category import TilesetCategory
+from src.data.common.keybind import Keybind
+from src.data.common.menu_action import MenuAction
+from src.data.tileset.tile.rand_tile_selection import RandTileSelection
+from src.data.sprite.sprite_category import SpriteCategory
+from src.data.tileset.tileset_category import TilesetCategory
 from tiles import ObjectDef, TilesetTile
 from translation import ReggieTranslation
 from ui import ReggieTheme
