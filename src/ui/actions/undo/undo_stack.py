@@ -69,5 +69,5 @@ class UndoStack:
         """
         main_window = globals_.mainWindow
         if main_window is not None:
-            main_window.actions['undo'].setEnabled(bool(self.pastActions))
-            main_window.actions['redo'].setEnabled(bool(self.futureActions))
+            main_window.action_list['undo'].setEnabled(bool(self.pastActions))
+            main_window.action_list['redo'].setEnabled(bool(self.futureActions))

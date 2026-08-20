@@ -962,7 +962,7 @@ def SetKeybind(name, sequence: QtCore.QKeyCombination | QtGui.QKeySequence.Stand
 
     # Update the action keybind
     if globals_.mainWindow is not None:
-        globals_.mainWindow.actions[name].setShortcut(sequence)
+        globals_.mainWindow.action_list[name].setShortcut(sequence)
 
     # Check if the given keybind is identical to the default
     # If so, remove the keybind setting, no need to store it

@@ -185,24 +185,35 @@ class ReggieWindow(QtWidgets.QMainWindow):
     """
     Reggie main level editor window
     """
+    action_list: dict[str, QtGui.QAction] = {}
 
-    def CreateAction(self, shortname, function, icon, text, statustext, shortcut, toggle=False):
+    def CreateAction(self, shortname, function, icon, text, status_text, shortcut, toggle=False):
         """
         Helper function to create an action
         """
-
         if icon is not None:
             act = QtGui.QAction(icon, text, self)
         else:
             act = QtGui.QAction(text, self)
 
-        if shortcut is not None: act.setShortcut(shortcut)
-        if statustext is not None: act.setStatusTip(statustext)
+        if shortcut is not None:
+            act.setShortcut(shortcut)
+        if status_text is not None:
+            act.setStatusTip(status_text)
         if toggle:
             act.setCheckable(True)
-        if function is not None: act.triggered.connect(function)
+        if function is not None:
+            act.triggered.connect(function)
 
-        self.actions[shortname] = act
+        self.action_list[shortname] = act
+
+    def CreateVerInfoAction(self, menu: QtWidgets.QMenu, text: str):
+        """
+        Helper to create an action for library version info
+        """
+        act = menu.addAction(text)
+        if act is not None:
+            act.setEnabled(False)
 
     def __init__(self):
         """
@@ -250,7 +261,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # set up the clipboard stuff
         self.clipboard = None
         self.systemClipboard = QtWidgets.QApplication.clipboard()
-        self.systemClipboard.dataChanged.connect(self.TrackClipboardUpdates)
+        if self.systemClipboard is not None:
+            self.systemClipboard.dataChanged.connect(self.TrackClipboardUpdates)
 
         # we might have something there already, activate Paste if so
         self.TrackClipboardUpdates()
@@ -274,11 +286,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.SetupDocksAndPanels()
 
         # Add menu action for the toolbar
+        if self.toolbar is None:
+            return
+
         act = self.toolbar.toggleViewAction()
+        if act is None:
+            return
+
         act.setShortcut(GetKeybind('toolbar'))
         act.setIcon(GetIcon('diagnostics'))
-        self.vmenu.addAction(act)
-        self.actions['toolbar'] = act
+        if self.vmenu is not None:
+            self.vmenu.addAction(act)
+
+        self.action_list['toolbar'] = act
 
         # now get stuff ready
         loaded = False
@@ -311,9 +331,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # geometry: determines the main window position
         # state: determines positions of docks
         if globals_.settings.contains('MainWindowGeometry'):
-            self.restoreGeometry(setting('MainWindowGeometry'))
+            geo = setting('MainWindowGeometry')
+            if geo is not None:
+                self.restoreGeometry(geo)
         if globals_.settings.contains('MainWindowState'):
-            self.restoreState(setting('MainWindowState'), 0)
+            state = setting('MainWindowState')
+            if state is not None:
+                self.restoreState(state, 0)
 
         # Restore zoom level
         zoom = setting('ZoomLevel', 100.0)
@@ -364,8 +388,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.GameDefMenu = GameDefMenu()
 
         self.createMenubar()
-
-    actions = {}
 
     def createMenubar(self):
         """
@@ -675,7 +697,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             GetKeybind('zoommin'),
         )
 
-        # Show Overview and Show Palette are added later
+        # Overview, Palette, and Editor Toolbar toggles are added later
 
         # Settings
         self.CreateAction(
@@ -734,131 +756,136 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Help actions are created later
 
-        # Configure them
-        self.actions['openrecent'].setMenu(self.RecentMenu)
-        self.actions['changegamedef'].setMenu(self.GameDefMenu)
+        # Set default states
+        self.action_list['openrecent'].setMenu(self.RecentMenu)
+        self.action_list['changegamedef'].setMenu(self.GameDefMenu)
 
-        self.actions['collisions'].setChecked(globals_.CollisionsShown)
-        self.actions['realview'].setChecked(globals_.RealViewEnabled)
+        self.action_list['collisions'].setChecked(globals_.CollisionsShown)
+        self.action_list['realview'].setChecked(globals_.RealViewEnabled)
 
-        self.actions['showsprites'].setChecked(globals_.SpritesShown)
-        self.actions['showspriteimages'].setChecked(globals_.SpriteImagesShown)
-        self.actions['showentrances'].setChecked(globals_.EntrancesShown)
-        self.actions['showlocations'].setChecked(globals_.LocationsShown)
-        self.actions['showcomments'].setChecked(globals_.CommentsShown)
-        self.actions['showpaths'].setChecked(globals_.PathsShown)
+        self.action_list['showsprites'].setChecked(globals_.SpritesShown)
+        self.action_list['showspriteimages'].setChecked(globals_.SpriteImagesShown)
+        self.action_list['showentrances'].setChecked(globals_.EntrancesShown)
+        self.action_list['showlocations'].setChecked(globals_.LocationsShown)
+        self.action_list['showcomments'].setChecked(globals_.CommentsShown)
+        self.action_list['showpaths'].setChecked(globals_.PathsShown)
 
-        self.actions['freezeobjects'].setChecked(globals_.ObjectsFrozen)
-        self.actions['freezesprites'].setChecked(globals_.SpritesFrozen)
-        self.actions['freezeentrances'].setChecked(globals_.EntrancesFrozen )
-        self.actions['freezelocations'].setChecked(globals_.LocationsFrozen)
-        self.actions['freezepaths'].setChecked(globals_.PathsFrozen)
-        self.actions['freezecomments'].setChecked(globals_.CommentsFrozen)
+        self.action_list['freezeobjects'].setChecked(globals_.ObjectsFrozen)
+        self.action_list['freezesprites'].setChecked(globals_.SpritesFrozen)
+        self.action_list['freezeentrances'].setChecked(globals_.EntrancesFrozen)
+        self.action_list['freezelocations'].setChecked(globals_.LocationsFrozen)
+        self.action_list['freezepaths'].setChecked(globals_.PathsFrozen)
+        self.action_list['freezecomments'].setChecked(globals_.CommentsFrozen)
 
-        self.actions['undo'].setEnabled(False)
-        self.actions['redo'].setEnabled(False)
-        self.actions['cut'].setEnabled(False)
-        self.actions['copy'].setEnabled(False)
-        self.actions['paste'].setEnabled(False)
-        self.actions['shiftitems'].setEnabled(False)
-        self.actions['mergelocations'].setEnabled(False)
-        self.actions['deselect'].setEnabled(False)
+        self.action_list['undo'].setEnabled(False)
+        self.action_list['redo'].setEnabled(False)
+        self.action_list['cut'].setEnabled(False)
+        self.action_list['copy'].setEnabled(False)
+        self.action_list['paste'].setEnabled(False)
+        self.action_list['shiftitems'].setEnabled(False)
+        self.action_list['mergelocations'].setEnabled(False)
+        self.action_list['deselect'].setEnabled(False)
 
         ####
         menubar = QtWidgets.QMenuBar()
         self.setMenuBar(menubar)
 
         fmenu = menubar.addMenu(globals_.trans.string('Menubar', 0))
-        fmenu.addAction(self.actions['newlevel'])
-        fmenu.addAction(self.actions['openfromname'])
-        fmenu.addAction(self.actions['openfromfile'])
-        fmenu.addAction(self.actions['openrecent'])
-        fmenu.addSeparator()
-        fmenu.addAction(self.actions['save'])
-        fmenu.addAction(self.actions['saveas'])
-        fmenu.addAction(self.actions['savecopyas'])
-        fmenu.addAction(self.actions['metainfo'])
-        fmenu.addSeparator()
-        fmenu.addAction(self.actions['changegamedef'])
-        fmenu.addAction(self.actions['screenshot'])
-        fmenu.addAction(self.actions['changegamepath'])
-        fmenu.addAction(self.actions['preferences'])
-        fmenu.addSeparator()
-        fmenu.addAction(self.actions['exit'])
+        if fmenu is not None:
+            fmenu.addAction(self.action_list['newlevel'])
+            fmenu.addAction(self.action_list['openfromname'])
+            fmenu.addAction(self.action_list['openfromfile'])
+            fmenu.addAction(self.action_list['openrecent'])
+            fmenu.addSeparator()
+            fmenu.addAction(self.action_list['save'])
+            fmenu.addAction(self.action_list['saveas'])
+            fmenu.addAction(self.action_list['savecopyas'])
+            fmenu.addAction(self.action_list['metainfo'])
+            fmenu.addSeparator()
+            fmenu.addAction(self.action_list['changegamedef'])
+            fmenu.addAction(self.action_list['screenshot'])
+            fmenu.addAction(self.action_list['changegamepath'])
+            fmenu.addAction(self.action_list['preferences'])
+            fmenu.addSeparator()
+            fmenu.addAction(self.action_list['exit'])
 
         emenu = menubar.addMenu(globals_.trans.string('Menubar', 1))
-        emenu.addAction(self.actions['selectall'])
-        emenu.addAction(self.actions['deselect'])
-        emenu.addSeparator()
-        emenu.addAction(self.actions['undo'])
-        emenu.addAction(self.actions['redo'])
-        emenu.addSeparator()
-        emenu.addAction(self.actions['cut'])
-        emenu.addAction(self.actions['copy'])
-        emenu.addAction(self.actions['paste'])
-        emenu.addSeparator()
-        emenu.addAction(self.actions['shiftitems'])
-        emenu.addAction(self.actions['mergelocations'])
-        emenu.addAction(self.actions['swapobjectstilesets'])
-        emenu.addAction(self.actions['swapobjectstypes'])
-        emenu.addAction(self.actions['switchsprites'])
-        emenu.addSeparator()
-        emenu.addAction(self.actions['diagnostic'])
-        emenu.addSeparator()
-        emenu.addAction(self.actions['freezeobjects'])
-        emenu.addAction(self.actions['freezesprites'])
-        emenu.addAction(self.actions['freezeentrances'])
-        emenu.addAction(self.actions['freezelocations'])
-        emenu.addAction(self.actions['freezepaths'])
-        emenu.addAction(self.actions['freezecomments'])
+        if emenu is not None:
+            emenu.addAction(self.action_list['selectall'])
+            emenu.addAction(self.action_list['deselect'])
+            emenu.addSeparator()
+            emenu.addAction(self.action_list['undo'])
+            emenu.addAction(self.action_list['redo'])
+            emenu.addSeparator()
+            emenu.addAction(self.action_list['cut'])
+            emenu.addAction(self.action_list['copy'])
+            emenu.addAction(self.action_list['paste'])
+            emenu.addSeparator()
+            emenu.addAction(self.action_list['shiftitems'])
+            emenu.addAction(self.action_list['mergelocations'])
+            emenu.addAction(self.action_list['swapobjectstilesets'])
+            emenu.addAction(self.action_list['swapobjectstypes'])
+            emenu.addAction(self.action_list['switchsprites'])
+            emenu.addSeparator()
+            emenu.addAction(self.action_list['diagnostic'])
+            emenu.addSeparator()
+            emenu.addAction(self.action_list['freezeobjects'])
+            emenu.addAction(self.action_list['freezesprites'])
+            emenu.addAction(self.action_list['freezeentrances'])
+            emenu.addAction(self.action_list['freezelocations'])
+            emenu.addAction(self.action_list['freezepaths'])
+            emenu.addAction(self.action_list['freezecomments'])
 
         vmenu = menubar.addMenu(globals_.trans.string('Menubar', 2))
-        vmenu.addAction(self.actions['showlay0'])
-        vmenu.addAction(self.actions['showlay1'])
-        vmenu.addAction(self.actions['showlay2'])
-        vmenu.addAction(self.actions['tileanim'])
-        vmenu.addAction(self.actions['collisions'])
-        vmenu.addAction(self.actions['realview'])
-        vmenu.addSeparator()
-        vmenu.addAction(self.actions['showsprites'])
-        vmenu.addAction(self.actions['showspriteimages'])
-        vmenu.addAction(self.actions['showentrances'])
-        vmenu.addAction(self.actions['showlocations'])
-        vmenu.addAction(self.actions['showpaths'])
-        vmenu.addAction(self.actions['showcomments'])
-        vmenu.addSeparator()
-        vmenu.addAction(self.actions['grid'])
-        vmenu.addSeparator()
-        vmenu.addAction(self.actions['zoommax'])
-        vmenu.addAction(self.actions['zoomin'])
-        vmenu.addAction(self.actions['zoomactual'])
-        vmenu.addAction(self.actions['zoomout'])
-        vmenu.addAction(self.actions['zoommin'])
-        vmenu.addSeparator()
+        if vmenu is not None:
+            vmenu.addAction(self.action_list['showlay0'])
+            vmenu.addAction(self.action_list['showlay1'])
+            vmenu.addAction(self.action_list['showlay2'])
+            vmenu.addAction(self.action_list['tileanim'])
+            vmenu.addAction(self.action_list['collisions'])
+            vmenu.addAction(self.action_list['realview'])
+            vmenu.addSeparator()
+            vmenu.addAction(self.action_list['showsprites'])
+            vmenu.addAction(self.action_list['showspriteimages'])
+            vmenu.addAction(self.action_list['showentrances'])
+            vmenu.addAction(self.action_list['showlocations'])
+            vmenu.addAction(self.action_list['showpaths'])
+            vmenu.addAction(self.action_list['showcomments'])
+            vmenu.addSeparator()
+            vmenu.addAction(self.action_list['grid'])
+            vmenu.addSeparator()
+            vmenu.addAction(self.action_list['zoommax'])
+            vmenu.addAction(self.action_list['zoomin'])
+            vmenu.addAction(self.action_list['zoomactual'])
+            vmenu.addAction(self.action_list['zoomout'])
+            vmenu.addAction(self.action_list['zoommin'])
+            vmenu.addSeparator()
 
         # self.level_overview_dock.toggleViewAction() is added here later
         # so we assign it to self.vmenu
         self.vmenu = vmenu
 
         lmenu = menubar.addMenu(globals_.trans.string('Menubar', 3))
-        lmenu.addAction(self.actions['areaoptions'])
-        lmenu.addAction(self.actions['camprofiles'])
-        lmenu.addAction(self.actions['zones'])
-        lmenu.addAction(self.actions['backgrounds'])
-        lmenu.addSeparator()
-        lmenu.addAction(self.actions['addarea'])
-        lmenu.addAction(self.actions['importarea'])
-        lmenu.addAction(self.actions['deletearea'])
-        lmenu.addSeparator()
-        lmenu.addAction(self.actions['reloadgfx'])
-        lmenu.addAction(self.actions['reloaddata'])
+        if lmenu is not None:
+            lmenu.addAction(self.action_list['areaoptions'])
+            lmenu.addAction(self.action_list['camprofiles'])
+            lmenu.addAction(self.action_list['zones'])
+            lmenu.addAction(self.action_list['backgrounds'])
+            lmenu.addSeparator()
+            lmenu.addAction(self.action_list['addarea'])
+            lmenu.addAction(self.action_list['importarea'])
+            lmenu.addAction(self.action_list['deletearea'])
+            lmenu.addSeparator()
+            lmenu.addAction(self.action_list['reloadgfx'])
+            lmenu.addAction(self.action_list['reloaddata'])
 
         hmenu = menubar.addMenu(globals_.trans.string('Menubar', 4))
         self.SetupHelpMenu(hmenu)
 
-        # create a toolbar
+        # Create a toolbar
         self.toolbar = self.addToolBar(globals_.trans.string('Menubar', 5))
-        self.toolbar.setObjectName('MainToolbar')
+        if self.toolbar is not None:
+            self.toolbar.setObjectName('MainToolbar')
 
         # Add buttons to the toolbar
         self.addToolbarButtons()
@@ -866,11 +893,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Add the area combo box
         self.areaComboBox = QtWidgets.QComboBox()
         self.areaComboBox.activated.connect(self.HandleSwitchArea)
-        self.toolbar.addWidget(self.areaComboBox)
+        if self.toolbar is not None:
+            self.toolbar.addWidget(self.areaComboBox)
 
     def SetupHelpMenu(self, menu=None):
         """
-        Creates the help menu.
+        Creates the help menu
         """
         self.CreateAction('infobox', self.AboutBox, GetIcon('reggie'), globals_.trans.stringOneLine('MenuItems', 86),
                           globals_.trans.string('MenuItems', 87), GetKeybind('infobox'))
@@ -878,18 +906,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
                           globals_.trans.string('MenuItems', 89), GetKeybind('helpbox'))
         self.CreateAction('tipbox', self.TipBox, GetIcon('tips'), globals_.trans.stringOneLine('MenuItems', 90),
                           globals_.trans.string('MenuItems', 91), GetKeybind('tipbox'))
-        self.CreateAction('aboutqt', QtWidgets.QApplication.instance().aboutQt, GetIcon('qt'), globals_.trans.stringOneLine('MenuItems', 92),
+        self.CreateAction('aboutqt', self.AboutQt, GetIcon('qt'), globals_.trans.stringOneLine('MenuItems', 92),
                           globals_.trans.string('MenuItems', 93), GetKeybind('aboutqt'))
 
         if menu is None:
             menu = QtWidgets.QMenu(globals_.trans.string('Menubar', 4))
-        menu.addAction(self.actions['infobox'])
-        menu.addAction(self.actions['helpbox'])
-        menu.addAction(self.actions['tipbox'])
+
+        menu.addAction(self.action_list['infobox'])
+        menu.addAction(self.action_list['helpbox'])
+        menu.addAction(self.action_list['tipbox'])
         menu.addSeparator()
-        menu.addAction(self.actions['aboutqt'])
+        menu.addAction(self.action_list['aboutqt'])
         menu.addSeparator()
 
+        # Add version info actions
         if lib_versions["nsmblib-updated"] is not None:
             value = str(lib_versions["nsmblib-updated"])
             version = int(value[:4]), int(value[4:6]), int(value[6:8]), int(value[8:10])
@@ -899,10 +929,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         else:
             nsmblib_info_text = "Not using NSMBLib"
 
-        menu.addAction("Using Python %d.%d.%d" % sys.version_info[:3]).setEnabled(False)
-        menu.addAction("Using PyQt %s" % QtCore.PYQT_VERSION_STR).setEnabled(False)
-        menu.addAction("Using Qt %s" % QtCore.QT_VERSION_STR).setEnabled(False)
-        menu.addAction(nsmblib_info_text).setEnabled(False)
+        self.CreateVerInfoAction(menu, "Using Python %d.%d.%d" % sys.version_info[:3])
+        self.CreateVerInfoAction(menu, "Using PyQt %s" % QtCore.PYQT_VERSION_STR)
+        self.CreateVerInfoAction(menu, "Using Qt %s" % QtCore.QT_VERSION_STR)
+        self.CreateVerInfoAction(menu, nsmblib_info_text)
 
         return menu
 
@@ -989,38 +1019,47 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if setting('ToolbarActs') in (None, 'None', 'none', '', 0):
             # Get the default settings
             toggled = {}
-            for List in (globals_.FileActions, globals_.EditActions, globals_.ViewActions, globals_.SettingsActions, globals_.HelpActions):
-                for action in List:
+            for act_list in (globals_.FileActions, globals_.EditActions, globals_.ViewActions, globals_.SettingsActions, globals_.HelpActions):
+                for action in act_list:
                     toggled[action.id] = action.active
         else:
             # Get the settings from the .ini
             toggled = setting('ToolbarActs')
-            newToggled = {}  # here, I'm replacing QStrings with python strings
+            if toggled is None:
+                return
+
+            new_toggled = {}  # Replacing QStrings with Python strings
             for key in toggled:
-                newToggled[str(key)] = toggled[key]
-            toggled = newToggled
+                new_toggled[str(key)] = toggled[key]
+            toggled = new_toggled
+
+        if self.toolbar is None:
+            return
 
         # Add each to the toolbar if toggled[key]
         for group in Groups:
-            addedButtons = False
+            added_buttons = False
             for key in group:
                 if key in toggled and toggled[key]:
-                    act = self.actions[key]
+                    act = self.action_list[key]
                     self.toolbar.addAction(act)
-                    addedButtons = True
-            if addedButtons:
+                    added_buttons = True
+            if added_buttons:
                 self.toolbar.addSeparator()
 
     def SetupDocksAndPanels(self):
         """
         Sets up the dock widgets and panels
         """
-        # level overview
+        # TODO: Make a helper for the dock creation
+
+        # Level Overview
         dock = QtWidgets.QDockWidget(globals_.trans.string('MenuItems', 94), self)
-        dock.setFeatures(
-            QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable)
+        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable |
+                         QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable |
+                         QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable)
         # dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        dock.setObjectName('leveloverview')  # needed for the state to save/restore correctly
+        dock.setObjectName('leveloverview') # Needed for the state to save/restore correctly
 
         self.level_overview = LevelOverviewWidget()
         self.level_overview.moved.connect(self.HandleOverviewClick)
@@ -1030,19 +1069,22 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setVisible(True)
         act = dock.toggleViewAction()
-        act.setShortcut(GetKeybind('leveloverview'))
-        act.setIcon(GetIcon('overview'))
-        act.setStatusTip(globals_.trans.string('MenuItems', 95))
-        self.vmenu.addAction(act)
-        self.actions['leveloverview'] = act
+        if act is not None:
+            act.setShortcut(GetKeybind('leveloverview'))
+            act.setIcon(GetIcon('overview'))
+            act.setStatusTip(globals_.trans.string('MenuItems', 95))
+            if self.vmenu is not None:
+                self.vmenu.addAction(act)
 
-        # create the sprite editor panel
+            self.action_list['leveloverview'] = act
+
+        # Create the sprite editor panel
         dock = QtWidgets.QDockWidget(globals_.trans.string('SpriteDataEditor', 0), self)
         dock.setVisible(False)
         dock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable)
         dock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
-        dock.setObjectName('spriteeditor')  # needed for the state to save/restore correctly
-        dock.move(100, 100) # offset the dock from the top-left corner
+        dock.setObjectName('spriteeditor') # Needed for the state to save/restore correctly
+        dock.move(100, 100) # Offset the dock from the top-left corner
 
         self.spriteDataEditor = SpriteEditorWidget()
         self.spriteDataEditor.DataUpdate.connect(self.SpriteDataUpdated)
@@ -1052,13 +1094,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setFloating(True)
 
-        # create the entrance editor panel
+        # Create the entrance editor panel
         dock = QtWidgets.QDockWidget(globals_.trans.string('EntranceDataEditor', 24), self)
         dock.setVisible(False)
         dock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable)
         dock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
-        dock.setObjectName('entranceeditor')  # needed for the state to save/restore correctly
-        dock.move(100, 100) # offset the dock from the top-left corner
+        dock.setObjectName('entranceeditor') # Needed for the state to save/restore correctly
+        dock.move(100, 100) # Offset the dock from the top-left corner
 
         self.entrance_editor = EntranceEditorWidget()
         dock.setWidget(self.entrance_editor)
@@ -1106,11 +1148,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.creationDock = dock
         act = dock.toggleViewAction()
-        act.setShortcut(GetKeybind('palette'))
-        act.setIcon(GetIcon('palette'))
-        act.setStatusTip(globals_.trans.string('MenuItems', 97))
-        self.vmenu.addAction(act)
-        self.actions['palette'] = act
+        if act is not None:
+            act.setShortcut(GetKeybind('palette'))
+            act.setIcon(GetIcon('palette'))
+            act.setStatusTip(globals_.trans.string('MenuItems', 97))
+            if self.vmenu is not None:
+                self.vmenu.addAction(act)
+
+            self.action_list['palette'] = act
 
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         dock.setVisible(True)
@@ -1144,13 +1189,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.createObjectLayout = oel
 
         ll = QtWidgets.QHBoxLayout()
-        layerChangeStr = globals_.trans.string('Palette', 38)
+        layer_change_str = globals_.trans.string('Palette', 38)
+        tip_0 = globals_.trans.string('Palette', 1)
+        tip_1 = globals_.trans.string('Palette', 2)
+        tip_2 = globals_.trans.string('Palette', 3)
+
+        if layer_change_str is None or tip_0 is None or tip_1 is None or tip_2 is None:
+            return
+
         self.objUseLayer0 = QtWidgets.QRadioButton('0')
-        self.objUseLayer0.setToolTip(globals_.trans.string('Palette', 1) + layerChangeStr)
+        self.objUseLayer0.setToolTip(tip_0 + layer_change_str)
         self.objUseLayer1 = QtWidgets.QRadioButton('1')
-        self.objUseLayer1.setToolTip(globals_.trans.string('Palette', 2) + layerChangeStr)
+        self.objUseLayer1.setToolTip(tip_1 + layer_change_str)
         self.objUseLayer2 = QtWidgets.QRadioButton('2')
-        self.objUseLayer2.setToolTip(globals_.trans.string('Palette', 3) + layerChangeStr)
+        self.objUseLayer2.setToolTip(tip_2 + layer_change_str)
 
         self.layerChangeButton = QtWidgets.QPushButton(globals_.trans.string('Palette', 36))
         self.layerChangeButton.clicked.connect(self.ChangeSelectionLayer)
@@ -1452,18 +1504,24 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Catches systemwide clipboard updates
         """
-        if globals_.Initializing: return
-        clip = self.systemClipboard.text()
+        if globals_.Initializing:
+            return
+
+        clipboard = self.systemClipboard
+        if clipboard is None:
+            return
+
+        clip = clipboard.text()
         if clip is not None and clip != '':
             clip = str(clip).strip()
 
             if clip.startswith('ReggieClip|') and clip.endswith('|%'):
                 self.clipboard = clip.replace(' ', '').replace('\n', '').replace('\r', '').replace('\t', '')
 
-                self.actions['paste'].setEnabled(True)
+                self.action_list['paste'].setEnabled(True)
             else:
                 self.clipboard = None
-                self.actions['paste'].setEnabled(False)
+                self.action_list['paste'].setEnabled(False)
 
     def XScrollChange(self, pos):
         """
@@ -1488,8 +1546,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Sets the window title accordingly
         """
-        # ' - Reggie Next' is added automatically by Qt (see QApplication.setApplicationDisplayName()).
-        self.setWindowTitle('%s%s' % (self.fileTitle, (' ' + globals_.trans.string('MainWindow', 0)) if globals_.Dirty else ''))
+        dirty_text = ''
+        if globals_.Dirty:
+            dirty_text = f' {globals_.trans.string('MainWindow', 0)}'
+
+        # ' - Reggie Next' is added automatically by Qt (see QApplication.setApplicationDisplayName())
+        self.setWindowTitle(f'{self.fileTitle}{dirty_text}')
 
     def CheckDirty(self):
         """
@@ -1616,6 +1678,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handles the "Copy Selected to Clipboard" btn being clicked
         """
         stamp = self.stampChooser.currentlySelectedStamp()
+        if stamp is None or self.systemClipboard is None:
+            return
+
         self.systemClipboard.setText(stamp.ReggieClip)
 
     def handleStampsRemove(self):
@@ -1758,15 +1823,26 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(file_path))
 
+    def AboutQt(self):
+        """
+        Shows the "About Qt" dialog
+        """
+        QtWidgets.QMessageBox.aboutQt(None)
+
     def SelectAll(self):
         """
         Select all objects in the current area, or selects all text in the focused widget
         """
+        if globals_.app is None:
+            return
+
         if globals_.app.activeWindow() is not globals_.mainWindow:
             focus = globals_.app.focusWidget()
-            if focus is not None:
-                if isinstance(focus, (QtWidgets.QTextEdit, QtWidgets.QPlainTextEdit, QtWidgets.QLineEdit)):
-                    focus.selectAll()
+            if focus is None:
+                return
+
+            if isinstance(focus, (QtWidgets.QTextEdit, QtWidgets.QPlainTextEdit, QtWidgets.QLineEdit)):
+                focus.selectAll()
             return
 
         paintRect = QtGui.QPainterPath()
@@ -1821,6 +1897,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     clipboard_l.append(obj)
                 elif ii(obj, PathItem):
                     clipboard_p.append(obj)
+                else: # Ignore
+                    continue
 
                 if cutAction:
                     obj.delete()
@@ -1830,10 +1908,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if clipboard_o or clipboard_s or clipboard_e or clipboard_l or clipboard_p:
                 if cutAction:
                     SetDirty()
-                    self.actions['cut'].setEnabled(False)
-                self.actions['paste'].setEnabled(True)
+                    self.action_list['cut'].setEnabled(False)
+                self.action_list['paste'].setEnabled(True)
                 self.clipboard = self.encodeObjects(clipboard_o, clipboard_s, clipboard_e, clipboard_l, clipboard_p)
-                self.systemClipboard.setText(self.clipboard)
+                if self.systemClipboard is not None:
+                    self.systemClipboard.setText(self.clipboard)
 
         if cutAction:
             self.level_overview.update()
@@ -1850,6 +1929,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Copies the selected items or text
         """
+        if globals_.app is None:
+            return
+
         # Check if we should copy selected text from a separate window
         if globals_.app.activeWindow() is not globals_.mainWindow:
             focus = globals_.app.focusWidget()
@@ -1861,7 +1943,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 else:
                     return
 
-                self.systemClipboard.setText(text)
+                if self.systemClipboard is not None:
+                    self.systemClipboard.setText(text)
             return
 
         # Main window is focused, copy selected items
@@ -1913,18 +1996,18 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             for item in clipboard_p:
                 # Get parent path
-                path = None
+                path: Path | None = None
                 for p in globals_.Area.paths:
                     if item.pathid == p._id:
                         path = p
                         break
 
                 # Append a path object
-                if currPathID != item.pathid:
-                    convclip.append('4:%d:%d' % (path._id, path._loops))
-                    currPathID = item.pathid
-
                 if path is not None:
+                    if currPathID != item.pathid:
+                        convclip.append('4:%d:%d' % (path._id, path._loops))
+                        currPathID = item.pathid
+
                     x, y, speed, accel, delay = path.get_node_data(item.nodeid)
                     convclip.append('5:%d:%d:%d:%d:%f:%f:%d' % (
                     item.pathid, item.nodeid, x, y, speed, accel, delay))
@@ -2135,6 +2218,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     if cPipeDir < 0 or cPipeDir > 3: print(cPipeDir); continue
 
                     newitem = self.CreateEntrance(objx, objy, entID, add_to_scene, True)
+                    if newitem is None:
+                        continue
 
                     # Set entrance data
                     newitem.destarea = destArea
@@ -2172,11 +2257,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     if len(split) != 3: continue
 
                     pathID = int(split[1])
-                    loops = int(split[2])
+                    loops = bool(split[2])
 
-                    path = Path(pathID, globals_.mainWindow.scene, loops)
-                    globals_.Area.paths.append(path)
-                    paths.append(path)
+                    if globals_.mainWindow is not None:
+                        path = Path(pathID, globals_.mainWindow.scene, loops)
+                        globals_.Area.paths.append(path)
+                        paths.append(path)
 
                 # Path Node
                 elif split[0] == '5':
@@ -2341,8 +2427,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if not new_rect.isValid():
             return
 
-        loc = self.CreateLocation(*new_rect.getRect())
-        loc.setSelected(True)
+        loc_rect = new_rect.getRect()
+        loc = self.CreateLocation(loc_rect[0], loc_rect[1], int(loc_rect[2]), int(loc_rect[3]))
+        if loc is not None:
+            loc.setSelected(True)
 
     ###########################################################################
     # Functions that create items
@@ -2586,8 +2674,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         filetypes += globals_.trans.string('FileDlgs', 5) + ' (*' + '.arc' + '.LH);;'  # *.arc.LH
         filetypes += globals_.trans.string('FileDlgs', 10) + ' (*' + '.arc' + '.LZ);;'  # *.arc.LZ
         filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'  # *
+
         fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), '', filetypes)[0]
-        if fn == '': return
+        if fn == '':
+            return
 
         with open(str(fn), 'rb') as fileobj:
             arcdata = fileobj.read()
@@ -2604,7 +2694,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 arcdata = lz77.UncompressLZ77(arcdata)
             except IndexError:
                 QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
-                                                globals_.trans.string('Err_Decompress', 2, '[file]', name))
+                                                globals_.trans.string('Err_Decompress', 2, '[file]', str(fn)))
                 return
 
         arc = archive.U8.load(arcdata)
@@ -2681,7 +2771,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Actually delete the area
         globals_.Level.deleteArea(area_to_delete)
 
-        self.actions['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
+        self.action_list['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
 
         # Update the area selection combobox
         self.areaComboBox.clear()
@@ -3423,11 +3513,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.view.setTransformationAnchor(QtWidgets.QGraphicsView.ViewportAnchor.AnchorViewCenter)
 
         zi = self.ZoomLevels.index(z)
-        self.actions['zoommax'].setEnabled(zi < len(self.ZoomLevels) - 1)
-        self.actions['zoomin'].setEnabled(zi < len(self.ZoomLevels) - 1)
-        self.actions['zoomactual'].setEnabled(z != 100.0)
-        self.actions['zoomout'].setEnabled(zi > 0)
-        self.actions['zoommin'].setEnabled(zi > 0)
+        self.action_list['zoommax'].setEnabled(zi < len(self.ZoomLevels) - 1)
+        self.action_list['zoomin'].setEnabled(zi < len(self.ZoomLevels) - 1)
+        self.action_list['zoomactual'].setEnabled(z != 100.0)
+        self.action_list['zoomout'].setEnabled(zi > 0)
+        self.action_list['zoommin'].setEnabled(zi > 0)
 
         self.ZoomWidget.set_zoom_level(z)
         self.ZoomStatusWidget.set_zoom_level(z)
@@ -3464,40 +3554,37 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         globals_.Area.Metadata.setBinData('InLevelComments_A%d' % globals_.Area.areanum, b)
 
-    def closeEvent(self, event):
+    def closeEvent(self, a0):
         """
         Handler for the main window close event
         """
-        if self.CheckDirty():
-            event.ignore()
+        if a0 is None:
             return
 
-        # save our state
+        if self.CheckDirty():
+            a0.ignore()
+            return
+
+        # Save our state
         self.spriteEditorDock.setVisible(False)
         self.entrance_editor_dock.setVisible(False)
         self.path_editor_dock.setVisible(False)
         self.location_editor_dock.setVisible(False)
         self.defaultPropDock.setVisible(False)
 
-        # state: determines positions of docks
-        # geometry: determines the main window position
+        # State: determines positions of docks
+        # Geometry: determines the main window position
         setSetting('MainWindowState', self.saveState(0))
         setSetting('MainWindowGeometry', self.saveGeometry())
 
         setSetting('ZoomLevel', self.ZoomLevel)
-
-        if hasattr(self, 'HelpBoxInstance'):
-            self.HelpBoxInstance.close()
-
-        if hasattr(self, 'TipsBoxInstance'):
-            self.TipsBoxInstance.close()
 
         globals_.gamedef.SetLastLevel(str(self.fileSavePath))
 
         setSetting('AutoSaveFilePath', None)
         setSetting('AutoSaveFileData', 'x')
 
-        event.accept()
+        a0.accept()
 
     def LoadLevel(self, name, isFullPath, areaNum):
         """
@@ -3544,6 +3631,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 # Set the filepath variables
                 self.fileSavePath = name
+                if self.fileSavePath is None:
+                    return
+
                 if globals_.UseFullFilepath:
                     self.fileTitle = self.fileSavePath
                 else:
@@ -3580,7 +3670,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     if globals_.UseFullFilepath:
                         self.fileTitle = self.fileSavePath
                     else:
-                        self.fileTitle = os.path.basename(name)
+                        if name is not None:
+                            self.fileTitle = os.path.basename(name)
 
                 # Get the level data
                 levelData = globals_.AutoSaveData
@@ -3663,18 +3754,18 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.ZoomTo(100.0)
 
         # Reset some editor things
-        self.actions['showlay0'].setChecked(True)
-        self.actions['showlay1'].setChecked(True)
-        self.actions['showlay2'].setChecked(True)
-        self.actions['showsprites'].setChecked(True)
-        self.actions['showentrances'].setChecked(True)
-        self.actions['showlocations'].setChecked(True)
-        self.actions['showpaths'].setChecked(True)
-        self.actions['showcomments'].setChecked(True)
-        self.actions['addarea'].setEnabled(len(globals_.Level.areas) < 4)
-        self.actions['importarea'].setEnabled(len(globals_.Level.areas) < 4)
-        self.actions['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
-        self.actions['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
+        self.action_list['showlay0'].setChecked(True)
+        self.action_list['showlay1'].setChecked(True)
+        self.action_list['showlay2'].setChecked(True)
+        self.action_list['showsprites'].setChecked(True)
+        self.action_list['showentrances'].setChecked(True)
+        self.action_list['showlocations'].setChecked(True)
+        self.action_list['showpaths'].setChecked(True)
+        self.action_list['showcomments'].setChecked(True)
+        self.action_list['addarea'].setEnabled(len(globals_.Level.areas) < 4)
+        self.action_list['importarea'].setEnabled(len(globals_.Level.areas) < 4)
+        self.action_list['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
+        self.action_list['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
 
         # Turn snapping back on
         globals_.OverrideSnapping = False
@@ -3717,8 +3808,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.objAllTab.setTabEnabled(2, False)
         self.objAllTab.setTabEnabled(3, False)
 
-        self.actions['swapobjectstypes'].setEnabled(True)
-        self.actions['swapobjectstilesets'].setEnabled(True)
+        self.action_list['swapobjectstypes'].setEnabled(True)
+        self.action_list['swapobjectstilesets'].setEnabled(True)
 
     def LoadNSMBWLevel(self, levelData, areaNum):
         """
@@ -3764,8 +3855,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.objAllTab.setTabEnabled(3, (globals_.Area.tileset3 != ''))
 
         if globals_.Area.tileset0 == '' and globals_.Area.tileset1 == '' and globals_.Area.tileset2 == '' and globals_.Area.tileset3 == '':
-            self.actions['swapobjectstypes'].setEnabled(False)
-            self.actions['swapobjectstilesets'].setEnabled(False)
+            self.action_list['swapobjectstypes'].setEnabled(False)
+            self.action_list['swapobjectstilesets'].setEnabled(False)
 
         # Load events
         self.LoadEventTabFromLevel()
@@ -3897,17 +3988,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if not selitems:
             # nothing is selected
-            self.actions['cut'].setEnabled(False)
-            self.actions['copy'].setEnabled(False)
-            self.actions['shiftitems'].setEnabled(False)
-            self.actions['mergelocations'].setEnabled(False)
+            self.action_list['cut'].setEnabled(False)
+            self.action_list['copy'].setEnabled(False)
+            self.action_list['shiftitems'].setEnabled(False)
+            self.action_list['mergelocations'].setEnabled(False)
 
         elif len(selitems) == 1:
             # only one item, check the type
-            self.actions['cut'].setEnabled(True)
-            self.actions['copy'].setEnabled(True)
-            self.actions['shiftitems'].setEnabled(True)
-            self.actions['mergelocations'].setEnabled(False)
+            self.action_list['cut'].setEnabled(True)
+            self.action_list['copy'].setEnabled(True)
+            self.action_list['shiftitems'].setEnabled(True)
+            self.action_list['mergelocations'].setEnabled(False)
 
             item = selitems[0]
             self.selObj = item
@@ -3957,9 +4048,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     allowStamp = False
 
             # more than one item
-            self.actions['cut'].setEnabled(True)
-            self.actions['copy'].setEnabled(True)
-            self.actions['shiftitems'].setEnabled(True)
+            self.action_list['cut'].setEnabled(True)
+            self.action_list['copy'].setEnabled(True)
+            self.action_list['shiftitems'].setEnabled(True)
 
         # turn on the Stamp Add btn if applicable
         self.stampAddBtn.setEnabled(bool(selitems) and allowStamp)
@@ -3979,7 +4070,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if func_ii(item, type_path): path += 1
             if func_ii(item, type_com): com += 1
 
-        self.actions['mergelocations'].setEnabled(loc >= 2)
+        self.action_list['mergelocations'].setEnabled(loc >= 2)
         self.layerChangeButton.setEnabled(obj != 0)
 
         # write the statusbar label text
@@ -4047,7 +4138,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.location_editor_dock.setVisible(showLocationPanel)
         self.path_editor_dock.setVisible(showPathPanel)
 
-        self.actions['deselect'].setEnabled(bool(selitems))
+        self.action_list['deselect'].setEnabled(bool(selitems))
 
         if updateModeInfo:
             globals_.DirtyOverride += 1
@@ -4605,8 +4696,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             for obj in layer:
                 obj.updateObjCache()
 
-        self.actions['swapobjectstypes'].setEnabled(tilesetNum != 0)
-        self.actions['swapobjectstilesets'].setEnabled(tilesetNum != 0)
+        self.action_list['swapobjectstypes'].setEnabled(tilesetNum != 0)
+        self.action_list['swapobjectstilesets'].setEnabled(tilesetNum != 0)
 
         self.scene.update()
 
@@ -4685,7 +4776,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for spr in globals_.Area.sprites:
             spr.ImageObj.positionChanged()
 
-        self.actions['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
+        self.action_list['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
         self.level_overview.update()
 
     # Handles setting the backgrounds
