@@ -9,7 +9,8 @@ from src.data.common.utils import clamp
 from tiles import RenderObject
 from ui import GetIcon, clipStr, setOverrideCursor
 from dirty import SetDirty
-from undo import MoveItemUndoAction, SimultaneousUndoAction
+from src.ui.actions.undo.move_item import MoveItemUndoAction
+from src.ui.actions.undo.simultaneous import SimultaneousUndoAction
 
 class InstanceDefinition:
     """
