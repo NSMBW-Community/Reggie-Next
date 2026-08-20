@@ -755,8 +755,8 @@ class ReggieTranslation:
                 3: 'Zone [zone]',
                 4: 'Target:',
                 5: 'Hide Background:',
-                6: 'Save Image to File:',
-                7: 'Copy Image:',
+                6: 'Save Image to File',
+                7: 'Copy Image to Clipboard',
                 8: 'Grid Type:',
                 9: (
                     'None',

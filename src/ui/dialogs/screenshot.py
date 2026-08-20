@@ -46,11 +46,16 @@ class ScreenshotDialog(QtWidgets.QDialog):
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
 
+        save_type_layout = QtWidgets.QHBoxLayout()
+        save_type_layout.addWidget(self.save_img)
+        save_type_layout.addWidget(QtWidgets.QLabel('|'))
+        save_type_layout.addWidget(self.save_clip)
+        save_type_layout.addWidget(QtWidgets.QLabel(globals_.trans.string('ScrShtDlg', 7)))
+
         main_layout = QtWidgets.QFormLayout()
         main_layout.addRow(globals_.trans.string('ScrShtDlg', 4), self.target_combo)
         main_layout.addRow(globals_.trans.string('ScrShtDlg', 8), self.grid_type)
         main_layout.addRow(globals_.trans.string('ScrShtDlg', 5), self.hide_background)
-        main_layout.addRow(globals_.trans.string('ScrShtDlg', 6), self.save_img)
-        main_layout.addRow(globals_.trans.string('ScrShtDlg', 7), self.save_clip)
+        main_layout.addRow(globals_.trans.string('ScrShtDlg', 6), save_type_layout)
         main_layout.addRow(button_box)
         self.setLayout(main_layout)

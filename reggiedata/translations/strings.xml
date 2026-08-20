@@ -706,8 +706,8 @@
         <string id="3">Zone [zone]</string>
         <string id="4">Target:</string>
         <string id="5">Hide Background:</string>
-        <string id="6">Save Image to File:</string>
-        <string id="7">Copy Image:</string>
+        <string id="6">Save Image to File</string>
+        <string id="7">Copy Image to Clipboard</string>
         <string id="8">Grid Type:</string>
         <stringlist id="9">
             <entry>None</entry>
