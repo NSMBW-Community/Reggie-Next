@@ -4508,11 +4508,13 @@
   </sprite> <!-- #368: Path Controlled Flashlight Raft -->
 
   <sprite id="369" name="Cooligan" noyoshi="True" yoshinotes="Yoshi cannot jump on Cooligans, though he can use the stomp attack and tongue attack to defeat them." files="penguin2.arc">
-    <list nybble="12" title="Starting Direction">
-      <entry value="0">Towards Mario</entry>
-      <entry value="1">Right</entry>
-      <entry value="2">Left</entry>
+    <list nybble="12.3-12.4" title="Starting Direction" comment="Values 0 and 3 are the same.">
+      <entry value="0">Towards Player</entry>
+      <entry value="1">Moves Right</entry>
+      <entry value="2">Moves Left</entry>
+      <entry value="3">Towards Player</entry>
     </list>
+    <checkbox nybble="5.4" title="Created by Spawner" comment="Changes the spawning behavior. Enabled on all Cooligans spawned by [384] Cooligan Spawner."/>
   </sprite> <!-- #369: Cooligan -->
 
   <sprite id="370" name="Lakitu Cloud Block" notes="A block that when struck from below will spawn a Lakitu enemy that throws coins instead of Spinies." files="jugem.arc;block_cloud.arc">
