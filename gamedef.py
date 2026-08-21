@@ -1,6 +1,6 @@
 import os
 import sys
-import importlib
+import importlib.util
 import functools
 from xml.etree import ElementTree as etree
 
@@ -29,7 +29,7 @@ class ReggieGameDefinition:
             """
             Initializes the GameDefinitionFile
             """
-            self.path = path
+            self.path: str = path
             self.patch = patch
 
     def __init__(self, name=None):
@@ -110,7 +110,10 @@ class ReggieGameDefinition:
             raise ValueError("Game definition XML %r has no 'name' attribute on the root node." % path)
 
         default = globals_.trans.string('Gamedefs', 15)
-        self.description = root.get('description', default).replace('[', '<').replace(']', '>')
+
+        desc = root.get('description', default)
+        if desc is not None:
+            self.description = desc.replace('[', '<').replace(']', '>')
         self.version = root.get('version')
         return True
 
@@ -119,7 +122,7 @@ class ReggieGameDefinition:
         Finishes up initialisation of custom gamedefs. This avoids infinite
         recursion with gamedefs referring to other gamedefs.
         """
-        if not self.custom:
+        if not self.custom or not isinstance(self.gamepath, str):
             return
 
         path = os.path.join("reggiedata", "patches", self.gamepath, "main.xml")
@@ -143,18 +146,22 @@ class ReggieGameDefinition:
                 continue
 
             patch = node.get('patch', 'true').lower() == 'true'
+            node_path = node.get('path')
+            if node_path is not None:
+                game = node.get('game')
+                if game is None:
+                    path = os.path.join(addpath, node_path)
+                elif game == globals_.trans.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
+                    path = os.path.join('reggiedata', node_path)
+                else:
+                    def_ = FindGameDef(game, self.gamepath)
+                    if def_ is not None and def_.gamepath is not None:
+                        path = os.path.join('reggiedata', 'patches', def_.gamepath, node_path)
 
-            game = node.get('game')
-            if game is None:
-                path = os.path.join(addpath, node.get('path'))
-            elif game == globals_.trans.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
-                path = os.path.join('reggiedata', node.get('path'))
-            else:
-                def_ = FindGameDef(game, self.gamepath)
-                path = os.path.join('reggiedata', 'patches', def_.gamepath, node.get('path'))
-
-            dict_type = self.files if n == 'file' else self.folders  # self.files or self.folders
-            dict_type[node.get('name')] = self.GameDefinitionFile(path, patch)
+                node_name = node.get('name')
+                dict_type = self.files if n == 'file' else self.folders  # self.files or self.folders
+                if node_name is not None:
+                    dict_type[node_name] = self.GameDefinitionFile(path, patch)
 
         # Get rid of the XML stuff
         del tree, root
@@ -168,12 +175,16 @@ class ReggieGameDefinition:
                 filedata = f.read()
 
             # https://stackoverflow.com/a/53080237 with modifications
-            spec = importlib.util.spec_from_loader(self.name + "->sprites", loader=None)
-            new_module = importlib.util.module_from_spec(spec)
+            if self.name is None:
+                return
 
-            exec(filedata, new_module.__dict__)
-            sys.modules[new_module.__name__] = new_module
-            self.sprites = new_module
+            spec = importlib.util.spec_from_loader(self.name + "->sprites", loader=None)
+            if spec is not None:
+                new_module = importlib.util.module_from_spec(spec)
+
+                exec(filedata, new_module.__dict__)
+                sys.modules[new_module.__name__] = new_module
+                self.sprites = new_module
 
     def bgFile(self, name, layer):
         """
@@ -186,12 +197,15 @@ class ReggieGameDefinition:
         # See if it was defined specifically
         if filename in self.files:
             path = self.files[filename].path
-            if os.path.isfile(path): return path
+            if os.path.isfile(path):
+                return path
 
         # See if it's in one of self.folders
         if self.folders['bg%s' % layer].path is not None:
-            trypath = os.path.join(self.folders['bg%s' % layer].path, name)
-            if os.path.isfile(trypath): return trypath
+            if not name:
+                trypath = os.path.join(self.folders[f'bg{layer}'].path, name)
+                if os.path.isfile(trypath):
+                    return trypath
 
         # If there's a base, return self.base.bgFile
         if self.base is not None:
@@ -234,7 +248,7 @@ class ReggieGameDefinition:
         if not self.custom:
             return setting('TextureGamePath')
 
-        name = 'TextureGamePath_' + self.name
+        name = f'TextureGamePath_{self.name}'
         setname = setting(name)
 
         # Use the default if there are no settings for this yet
@@ -250,7 +264,7 @@ class ReggieGameDefinition:
         if not self.custom:
             setSetting('TextureGamePath', path)
         else:
-            name = 'TextureGamePath_' + self.name
+            name = f'TextureGamePath_{self.name}'
             setSetting(name, path)
 
     def GetStageGamePath(self):
@@ -260,7 +274,7 @@ class ReggieGameDefinition:
         if not self.custom:
             return setting('StageGamePath')
 
-        name = 'StageGamePath_' + self.name
+        name = f'StageGamePath_{self.name}'
         setname = setting(name)
 
         # Use the default if there are no settings for this yet
@@ -276,7 +290,7 @@ class ReggieGameDefinition:
         if not self.custom:
             setSetting('StageGamePath', path)
         else:
-            name = 'StageGamePath_' + self.name
+            name = f'StageGamePath_{self.name}'
             setSetting(name, path)
 
     def GetTexturePaths(self):
@@ -288,7 +302,7 @@ class ReggieGameDefinition:
         if not self.custom:
             return paths
 
-        stg = setting('TextureGamePath_' + self.name)
+        stg = setting(f'TextureGamePath_{self.name}')
 
         if self.base is not None:
             paths = self.base.GetTexturePaths()
@@ -304,7 +318,7 @@ class ReggieGameDefinition:
         if not self.custom:
             return setting('LastLevel')
 
-        name = 'LastLevel_' + self.name
+        name = f'LastLevel_{self.name}'
         stg = setting(name)
 
         # Use the default if there are no settings for this yet
@@ -323,7 +337,7 @@ class ReggieGameDefinition:
         if not self.custom:
             setSetting('LastLevel', path)
         else:
-            name = 'LastLevel_' + self.name
+            name = f'LastLevel_{self.name}'
             setSetting(name, path)
 
     def recursiveFiles(self, name, is_folder=False):
@@ -366,13 +380,16 @@ class ReggieGameDefinition:
         """
         Returns a file by recursively checking successive globals_.gamedef bases
         """
-        if name not in self.files: return
+        if name not in self.files:
+            return
 
         if self.files[name].path is not None:
             return self.files[name].path
         else:
-            if self.base is None: return
-            return self.base.file(name)  # it can recursively check its base, too
+            if self.base is None:
+                return
+
+            return self.base.file(name)  # It can recursively check its base, too
 
     def getImageClasses(self):
         """
@@ -397,7 +414,8 @@ def getAvailableGameDefs():
     # Add them
     folders = os.listdir(os.path.join('reggiedata', 'patches'))
     for folder in folders:
-        if not os.path.isfile(os.path.join('reggiedata', 'patches', folder, 'main.xml')): continue
+        if not os.path.isfile(os.path.join('reggiedata', 'patches', folder, 'main.xml')):
+            continue
 
         def_ = ReggieGameDefinition(folder)
         if def_.custom:
@@ -431,19 +449,21 @@ def LoadGameDef(name=None, dlg=None):
     """
     Loads a game definition
     """
-    if dlg: dlg.setMaximum(7)
+    if dlg:
+        dlg.setMaximum(7)
 
     # Put the whole thing into a try-except clause
     # to catch whatever errors may happen
     try:
 
         # Load the globals_.gamedef
-        if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 1))  # Loading game patch...
+        if dlg:
+            dlg.setLabelText(globals_.trans.string('Gamedefs', 1))  # Loading game patch...
 
         globals_.gamedef = ReggieGameDefinition(name)
         globals_.gamedef.__init2__()
 
-        if globals_.gamedef.custom and (not globals_.settings.contains('StageGamePath_' + globals_.gamedef.name)):
+        if globals_.gamedef.custom and (not globals_.settings.contains(f'StageGamePath_{globals_.gamedef.name}')):
             # First-time usage of this globals_.gamedef. Have the
             # user pick a stage folder so we can load stages
             # and tilesets from there
@@ -481,10 +501,12 @@ def LoadGameDef(name=None, dlg=None):
                 # switching process.
                 return False
 
-        if dlg: dlg.setValue(1)
+        if dlg:
+            dlg.setValue(1)
 
         # Load spritedata.xml and spritecategories.xml
-        if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 8))  # Loading sprite data...
+        if dlg:
+            dlg.setLabelText(globals_.trans.string('Gamedefs', 8))  # Loading sprite data...
 
         LoadSpriteData()
         LoadSpriteListData(True)
@@ -506,10 +528,12 @@ def LoadGameDef(name=None, dlg=None):
             globals_.mainWindow.spriteDataEditor.setSprite(globals_.mainWindow.spriteDataEditor.spritetype,
                                                   True)  # Reloads the sprite data editor fields
 
-        if dlg: dlg.setValue(2)
+        if dlg:
+            dlg.setValue(2)
 
         # Load BgA/BgB names
-        if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 9))  # Loading background names...
+        if dlg:
+            dlg.setLabelText(globals_.trans.string('Gamedefs', 9))  # Loading background names...
 
         LoadBgANames(True)
         LoadBgBNames(True)
@@ -517,10 +541,12 @@ def LoadGameDef(name=None, dlg=None):
         LoadMusicInfo(True)  # reloads the music names
         LoadConfig()
 
-        if dlg: dlg.setValue(3)
+        if dlg:
+            dlg.setValue(3)
 
         # Reload tilesets
-        if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 10))  # Reloading tilesets...
+        if dlg:
+            dlg.setLabelText(globals_.trans.string('Gamedefs', 10))  # Reloading tilesets...
 
         LoadObjDescriptions(True)  # reloads ts1_descriptions
         if globals_.mainWindow is not None:
@@ -528,10 +554,12 @@ def LoadGameDef(name=None, dlg=None):
         LoadTilesetNames(True)  # reloads tileset names
         LoadTilesetInfo(True)  # reloads tileset info
 
-        if dlg: dlg.setValue(4)
+        if dlg:
+            dlg.setValue(4)
 
         # Load sprites.py
-        if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 11))  # Loading sprite image data...
+        if dlg:
+            dlg.setLabelText(globals_.trans.string('Gamedefs', 11))  # Loading sprite image data...
 
         # Always load the sprites folders so the correct sprite images can be
         # loaded when Reggie is started. This avoids loading all sprite images
@@ -546,8 +574,10 @@ def LoadGameDef(name=None, dlg=None):
             spriteClasses = globals_.gamedef.getImageClasses()
 
             for s in globals_.Area.sprites:
-                if s.type in SLib.SpriteImagesLoaded: continue
-                if s.type not in spriteClasses: continue
+                if s.type in SLib.SpriteImagesLoaded:
+                    continue
+                if s.type not in spriteClasses:
+                    continue
 
                 spriteClasses[s.type].loadImages()
 
@@ -580,31 +610,35 @@ def LoadGameDef(name=None, dlg=None):
                     msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
                 QtWidgets.QMessageBox.warning(None, title, msg)
 
-        if dlg: dlg.setValue(5)
+        if dlg:
+            dlg.setValue(5)
 
         # Reload the sprite-picker text
-        if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 12))  # Applying sprite image data...
+        if dlg:
+            dlg.setLabelText(globals_.trans.string('Gamedefs', 12))  # Applying sprite image data...
+
         if globals_.Area.areanum != -1:
             for spr in globals_.Area.sprites:
                 spr.UpdateListItem()  # Reloads the sprite-picker text
-        if dlg: dlg.setValue(6)
+
+        if dlg:
+            dlg.setValue(6)
 
         # Load entrance names
-        if dlg: dlg.setLabelText(globals_.trans.string('Gamedefs', 16))  # Loading entrance names...
+        if dlg:
+            dlg.setLabelText(globals_.trans.string('Gamedefs', 16))  # Loading entrance names...
+
         LoadEntranceNames(True)
-        if dlg: dlg.setValue(7)
+
+        if dlg:
+            dlg.setValue(7)
 
     except Exception:
         raise
-    #    # Something went wrong.
-    #    if dlg: dlg.setValue(7) # autocloses it
-    #    QtWidgets.QMessageBox.information(None, globals_.trans.string('Gamedefs', 17), globals_.trans.string('Gamedefs', 18, '[error]', str(e)))
-    #    if name is not None: LoadGameDef(None)
-    #    return False
-
 
     # Success!
-    if dlg: setSetting('LastGameDef', name)
+    if dlg:
+        setSetting('LastGameDef', name)
     return True
 
 @functools.lru_cache(maxsize=None)
