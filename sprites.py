@@ -4090,7 +4090,7 @@ class SpriteImage_ScalePlatform(SLib.SpriteImage):  # 178
 
         ropeWidth = self.ropeWidth * 16
         platformWidth = (self.platformWidth + 3) * 16
-        self.width = ropeWidth + platformWidth + 4
+        self.width = ropeWidth + platformWidth + (8 / 1.5)
 
         maxRopeHeight = max(self.ropeLengthLeft, self.ropeLengthRight)
         self.height = maxRopeHeight * 16 + 19
@@ -4126,11 +4126,11 @@ class SpriteImage_ScalePlatform(SLib.SpriteImage):  # 178
         painter.drawPixmap(ropeX, 0, pulleyImage)
         painter.drawPixmap(ropeX + ropeWidth - 26, 0, pulleyImage)
 
-        platforms = [(0, ropeLeft), (ropeX + ropeWidth - int(platformWidth / 2) - 9, ropeRight)]
+        platforms = [(0, ropeLeft), (ropeX + ropeWidth - int(platformWidth / 2) - 7, ropeRight)]
         for x, y in platforms:
             painter.drawPixmap(x, y, ImageCache['WoodenPlatformL'])
-            painter.drawTiledPixmap(x + 24, y, (platformWidth - 48), 24, ImageCache['WoodenPlatformM'])
-            painter.drawPixmap(x + platformWidth - 24, y, ImageCache['WoodenPlatformR'])
+            painter.drawTiledPixmap(x + 26, y, (platformWidth - 48), 24, ImageCache['WoodenPlatformM'])
+            painter.drawPixmap(x + platformWidth - 22, y, ImageCache['WoodenPlatformR'])
 
 
 class SpriteImage_SpecialExit(SLib.SpriteImage):  # 179
