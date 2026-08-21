@@ -117,7 +117,7 @@ class ReggieTheme:
                     continue
 
                 # Load the colors XML
-                self.loadColorsXml(os.path.join(folder, node.attrib['file']))
+                self.loadColorsXML(os.path.join(folder, node.attrib['file']))
 
             elif node.tag.lower() == 'qss':
                 if 'file' not in node.attrib:
@@ -156,11 +156,13 @@ class ReggieTheme:
         """
         Parses the main attributes of main.xml
         """
-        MaxSupportedXMLVersion = 1.0
+        max_support_version = 1.0
         self.styleSheet = ''
 
         # Check for required attributes
-        if root.tag.lower() != 'theme': return False
+        if root.tag.lower() != 'theme':
+            return False
+
         if 'format' in root.attrib:
             formatver = root.attrib['format']
             try:
@@ -170,7 +172,7 @@ class ReggieTheme:
         else:
             return False
 
-        if self.formatver > MaxSupportedXMLVersion:
+        if self.formatver > max_support_version:
             return False
 
         if 'name' in root.attrib:
@@ -192,7 +194,7 @@ class ReggieTheme:
 
         return True
 
-    def loadColorsXml(self, file):
+    def loadColorsXML(self, file):
         """
         Loads a colors.xml file
         """
@@ -202,15 +204,20 @@ class ReggieTheme:
             return
 
         root = tree.getroot()
-        if root.tag.lower() != 'colors': return False
+        if root.tag.lower() != 'colors':
+            return False
 
         colorDict = {}
         for colorNode in root:
-            if colorNode.tag.lower() != 'color': continue
-            if not all(thing in colorNode.attrib for thing in ['id', 'value']): continue
+            if colorNode.tag.lower() != 'color':
+                continue
+            if not all(thing in colorNode.attrib for thing in ['id', 'value']):
+                continue
 
             colorval = colorNode.attrib['value']
-            if colorval.startswith('#'): colorval = colorval[1:]
+            if colorval.startswith('#'):
+                colorval = colorval[1:]
+
             a = 255
             try:
                 if len(colorval) == 3:
@@ -235,6 +242,8 @@ class ReggieTheme:
                     g = int(colorval[2:4], 16)
                     b = int(colorval[4:6], 16)
                     a = int(colorval[6:8], 16)
+                else:
+                    continue
             except ValueError:
                 continue
             colorobj = QtGui.QColor(r, g, b, a)
@@ -258,7 +267,6 @@ class ReggieTheme:
         """
         try:
             return self.colors[name]
-
         except KeyError:
             return None
 
@@ -266,7 +274,6 @@ class ReggieTheme:
         """
         Returns an icon
         """
-
         cache = self.iconCacheLg if big else self.iconCacheSm
 
         if name not in cache:
@@ -281,12 +288,16 @@ def SetAppStyle(styleKey=''):
     """
     Set the application window color
     """
+    if globals_.app is None:
+        return
+
     # Change the color if applicable
     if globals_.theme.color('ui') is not None and not globals_.theme.forceStyleSheet:
         globals_.app.setPalette(QtGui.QPalette(globals_.theme.color('ui')))
 
     # Change the style
-    if not styleKey: styleKey = setting('uiStyle', "Fusion")
+    if not styleKey:
+        styleKey = setting('uiStyle', "Fusion")
     style = QtWidgets.QStyleFactory.create(styleKey)
     globals_.app.setStyle(style)
 
@@ -296,12 +307,17 @@ def SetAppStyle(styleKey=''):
 
     # Manually set the background color
     if globals_.theme.forceUiColor and not globals_.theme.forceStyleSheet:
-        color = globals_.theme.color('ui').getRgb()
-        bgColor = "#%02x%02x%02x" % tuple(map(lambda x: x // 2, color[:3]))
-        globals_.app.setStyleSheet("""
-            QListView, QTreeWidget, QLineEdit, QDoubleSpinBox, QSpinBox, QTextEdit, QPlainTextEdit{
-                background-color: %s;
-            }""" % bgColor)
+        color = None
+        qcolor = globals_.theme.color('ui')
+        if qcolor is not None:
+            color = qcolor.getRgb()
+
+        if color is not None:
+            bgColor = "#%02x%02x%02x" % tuple(map(lambda x: x // 2, color[:3]))
+            globals_.app.setStyleSheet("""
+                QListView, QTreeWidget, QLineEdit, QDoubleSpinBox, QSpinBox, QTextEdit, QPlainTextEdit{
+                    background-color: %s;
+                }""" % bgColor)
 
         # Fix disabled menubar items being nearly unreadable in some cases
         # (mainly in dark mode and/or when the UI color is overriden)
@@ -344,7 +360,8 @@ def LoadNumberFont():
     """
     Creates a valid font we can use to display the item numbers
     """
-    if globals_.NumberFont is not None: return
+    if globals_.NumberFont is not None:
+        return
 
     # this is a really crappy method, but I can't think of any other way
     # normal Qt defines Q_WS_WIN and Q_WS_MAC but we don't have that here
@@ -363,7 +380,8 @@ def clipStr(text, idealWidth, font=None):
     """
     if font is None: font = QtGui.QFont()
     width = QtGui.QFontMetrics(font).horizontalAdvance(text)
-    if width <= idealWidth: return None
+    if width <= idealWidth:
+        return None
 
     # note that Qt has a builtin function for this:
     # QFontMetricsF::elidedText(text, Qt.TextElideMode.ElideNone, idealWidth)
@@ -373,7 +391,7 @@ def clipStr(text, idealWidth, font=None):
 
     return text
 
-
+from typing import cast
 class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
     """
     A QtWidgets.QListWidget that includes a signal that
@@ -387,10 +405,11 @@ class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
         """
         Handles viewport events
         """
-        if e.type() == e.Type.ToolTip:
-            item = self.itemFromIndex(self.indexAt(e.pos()))
-            if item is not None:
-                self.toolTipAboutToShow.emit(item)
+        if e is not None:
+            if e.type() == e.Type.ToolTip and isinstance(e, QtGui.QHelpEvent):
+                item = self.itemFromIndex(self.indexAt(e.pos()))
+                if item is not None:
+                    self.toolTipAboutToShow.emit(item)
 
         return super().viewportEvent(e)
 
@@ -421,6 +440,7 @@ class CustomSortableListWidgetItem(QtWidgets.QListWidgetItem):
 
     def __lt__(self, other):
         if hasattr(self, 'sort_key') and hasattr(other, 'sort_key'):
+            other = cast(CustomSortableListWidgetItem, other)
             return self.sort_key < other.sort_key
 
         return False
