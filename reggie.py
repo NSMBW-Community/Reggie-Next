@@ -89,7 +89,7 @@ import globals_
 ################################################################################
 
 from libs import lh, lib_versions, lz77
-from ui import GetIcon, SetAppStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, IconsOnlyTabBar, SetColorScheme
+from ui import GetIcon, SetAppStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, SetColorScheme
 from src.data.common.loaders import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, LoadLevelNames, LoadSpriteCategories, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
 from src.data.common.utils import clamp, find_first_available_id
 from misc import FilesAreMissing, module_path, IsNSMBLevel, SetGamePaths, areValidGamePaths
@@ -137,6 +137,7 @@ from src.ui.widgets.zoom import ZoomWidget
 from src.ui.widgets.zoom_status import ZoomStatusWidget
 from src.ui.widgets.diagnostic import DiagnosticWidget
 from src.ui.widgets.level_overview import LevelOverviewWidget
+from src.ui.widgets.icon_only_tab_bar import IconsOnlyTabBar
 
 from src.ui.widgets.editors.entrance import EntranceEditorWidget
 from src.ui.widgets.editors.location import LocationEditorWidget
@@ -209,11 +210,34 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
     def CreateVerInfoAction(self, menu: QtWidgets.QMenu, text: str):
         """
-        Helper to create an action for library version info
+        Helper function to create an action for library version info
         """
         act = menu.addAction(text)
         if act is not None:
             act.setEnabled(False)
+
+    def CreateDockWidget(self, title, obj_name, widget, features, area, allowed_areas, visible, floating):
+        """
+        Helper function to create docks
+        """
+        dock = QtWidgets.QDockWidget(title, self)
+        dock.setFeatures(features)
+        if allowed_areas is not None:
+            dock.setAllowedAreas(allowed_areas)
+
+        # Allows for state saving/restoring
+        dock.setObjectName(obj_name)
+
+        dock.setWidget(widget)
+        dock.setVisible(visible)
+        dock.setFloating(floating)
+
+        # Offset from top-left corner
+        if floating:
+            dock.move(100, 100)
+
+        self.addDockWidget(area, dock)
+        return dock
 
     def __init__(self):
         """
@@ -1051,103 +1075,69 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Sets up the dock widgets and panels
         """
-        # TODO: Make a helper for the dock creation
-
         # Level Overview
-        dock = QtWidgets.QDockWidget(globals_.trans.string('MenuItems', 94), self)
-        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable |
-                         QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable |
-                         QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable)
-        # dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        dock.setObjectName('leveloverview') # Needed for the state to save/restore correctly
-
         self.level_overview = LevelOverviewWidget()
         self.level_overview.moved.connect(self.HandleOverviewClick)
-        self.level_overview_dock = dock
-        dock.setWidget(self.level_overview)
+        features = QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable   | \
+                   QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | \
+                   QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable
 
-        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
-        dock.setVisible(True)
-        act = dock.toggleViewAction()
-        if act is not None:
-            act.setShortcut(GetKeybind('leveloverview'))
-            act.setIcon(GetIcon('overview'))
-            act.setStatusTip(globals_.trans.string('MenuItems', 95))
-            if self.vmenu is not None:
-                self.vmenu.addAction(act)
+        overview_dock = self.CreateDockWidget(globals_.trans.string('MenuItems', 94), 'leveloverview', self.level_overview,
+                                              features, Qt.DockWidgetArea.RightDockWidgetArea, None, True, False)
+        self.level_overview_dock = overview_dock
 
-            self.action_list['leveloverview'] = act
+        # These apply to all editor docks
+        features = QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable
+        allowed_areas = Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea
 
-        # Create the sprite editor panel
-        dock = QtWidgets.QDockWidget(globals_.trans.string('SpriteDataEditor', 0), self)
-        dock.setVisible(False)
-        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable)
-        dock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
-        dock.setObjectName('spriteeditor') # Needed for the state to save/restore correctly
-        dock.move(100, 100) # Offset the dock from the top-left corner
-
+        # Sprite Editor
         self.spriteDataEditor = SpriteEditorWidget()
         self.spriteDataEditor.DataUpdate.connect(self.SpriteDataUpdated)
-        dock.setWidget(self.spriteDataEditor)
-        self.spriteEditorDock = dock
+        sprite_dock = self.CreateDockWidget(globals_.trans.string('SpriteDataEditor', 0), 'spriteeditor', self.spriteDataEditor,
+                                            features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
+        self.spriteEditorDock = sprite_dock
 
-        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
-        dock.setFloating(True)
+        # Default Sprite Editor
+        self.defaultDataEditor = SpriteEditorWidget(True)
+        self.defaultDataEditor.setVisible(False)
+        def_sprite_dock = self.CreateDockWidget(globals_.trans.string('Palette', 7), 'defaultprops', self.defaultDataEditor,
+                                                features | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable,
+                                                Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
+        self.defaultPropDock = def_sprite_dock
 
-        # Create the entrance editor panel
-        dock = QtWidgets.QDockWidget(globals_.trans.string('EntranceDataEditor', 24), self)
-        dock.setVisible(False)
-        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable)
-        dock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
-        dock.setObjectName('entranceeditor') # Needed for the state to save/restore correctly
-        dock.move(100, 100) # Offset the dock from the top-left corner
-
+        # Entrance Editor
         self.entrance_editor = EntranceEditorWidget()
-        dock.setWidget(self.entrance_editor)
-        self.entrance_editor_dock = dock
+        entrance_dock = self.CreateDockWidget(globals_.trans.string('EntranceDataEditor', 24), 'entranceeditor', self.entrance_editor,
+                                              features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
+        self.entrance_editor_dock = entrance_dock
 
-        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
-        dock.setFloating(True)
-
-        # create the path node editor panel
-        dock = QtWidgets.QDockWidget(globals_.trans.string('PathDataEditor', 10), self)
-        dock.setVisible(False)
-        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable)
-        dock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
-        dock.setObjectName('pathnodeeditor')  # needed for the state to save/restore correctly
-        dock.move(100, 100) # offset the dock from the top-left corner
-
-        self.path_editor = PathNodeEditorWidget()
-        dock.setWidget(self.path_editor)
-        self.path_editor_dock = dock
-
-        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
-        dock.setFloating(True)
-
-        # create the location editor panel
-        dock = QtWidgets.QDockWidget(globals_.trans.string('LocationDataEditor', 12), self)
-        dock.setVisible(False)
-        dock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable)
-        dock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
-        dock.setObjectName('locationeditor')  # needed for the state to save/restore correctly
-        dock.move(100, 100) # offset the dock from the top-left corner
-
+        # Location Editor
         self.location_editor = LocationEditorWidget()
-        dock.setWidget(self.location_editor)
-        self.location_editor_dock = dock
+        location_dock = self.CreateDockWidget(globals_.trans.string('LocationDataEditor', 12), 'locationeditor', self.location_editor,
+                                              features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
+        self.location_editor_dock = location_dock
 
-        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
-        dock.setFloating(True)
+        # Path (Node) Editor
+        self.path_editor = PathNodeEditorWidget()
+        path_dock = self.CreateDockWidget(globals_.trans.string('PathDataEditor', 10), 'pathnodeeditor', self.path_editor,
+                                            features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, False, True)
+        self.path_editor_dock = path_dock
 
-        # create the palette
-        dock = QtWidgets.QDockWidget(globals_.trans.string('MenuItems', 96), self)
-        dock.setFeatures(
-            QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable)
-        dock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
-        dock.setObjectName('palette')  # needed for the state to save/restore correctly
+        # Palette
+        features = QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable   | \
+                   QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | \
+                   QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable
 
-        self.creationDock = dock
-        act = dock.toggleViewAction()
+        palette_dock = self.CreateDockWidget(globals_.trans.string('MenuItems', 96), 'palette', None,
+                                             features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, True, False)
+        self.creationDock = palette_dock
+
+        # Create palette contents
+        self.SetupPalette()
+        self.CreationTabChanged(0) # Objects tab
+
+        # Palette toggle option
+        act = self.creationDock.toggleViewAction()
         if act is not None:
             act.setShortcut(GetKeybind('palette'))
             act.setIcon(GetIcon('palette'))
@@ -1157,18 +1147,30 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             self.action_list['palette'] = act
 
-        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
-        dock.setVisible(True)
+        # Overview toggle action
+        act = overview_dock.toggleViewAction()
+        if act is not None:
+            act.setShortcut(GetKeybind('leveloverview'))
+            act.setIcon(GetIcon('overview'))
+            act.setStatusTip(globals_.trans.string('MenuItems', 95))
+            if self.vmenu is not None:
+                self.vmenu.addAction(act)
 
-        # add tabs to it
+            self.action_list['leveloverview'] = act
+
+    def SetupPalette(self):
+        """
+        Creates palette tabs
+        """
         tabs = QtWidgets.QTabWidget()
         tabs.setTabBar(IconsOnlyTabBar())
         tabs.setIconSize(QtCore.QSize(16, 16))
         tabs.currentChanged.connect(self.CreationTabChanged)
-        dock.setWidget(tabs)
+
+        self.creationDock.setWidget(tabs)
         self.creationTabs = tabs
 
-        # object choosing tabs
+        # Object tabs
         tsicon = GetIcon('objects')
 
         self.objAllTab = QtWidgets.QTabWidget()
@@ -1228,13 +1230,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.objPicker.ObjReplace.connect(self.ObjectReplace)
         oel.addWidget(self.objPicker, 1)
 
-        # sprite tab
+        # Sprite tab
         self.sprAllTab = QtWidgets.QTabWidget()
         self.sprAllTab.currentChanged.connect(self.SprTabChanged)
         tabs.addTab(self.sprAllTab, GetIcon('sprites'), '')
         tabs.setTabToolTip(1, globals_.trans.string('Palette', 14))
 
-        # sprite tab: add
+        # Add sprites
         self.sprPickerTab = QtWidgets.QWidget()
         self.sprAllTab.addTab(self.sprPickerTab, GetIcon('spritesadd'), globals_.trans.string('Palette', 25))
 
@@ -1281,24 +1283,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         sdpl.addStretch(1)
         spl.addLayout(sdpl)
 
-        # default sprite data editor
-        ddock = QtWidgets.QDockWidget(globals_.trans.string('Palette', 7), self)
-        ddock.setFeatures(
-            QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable)
-        ddock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
-        ddock.setObjectName('defaultprops')  # needed for the state to save/restore correctly
-        ddock.move(100, 100) # offset the dock from the top-left corner
-
-        self.defaultDataEditor = SpriteEditorWidget(True)
-        self.defaultDataEditor.setVisible(False)
-        ddock.setWidget(self.defaultDataEditor)
-
-        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, ddock)
-        ddock.setVisible(False)
-        ddock.setFloating(True)
-        self.defaultPropDock = ddock
-
-        # sprite tab: current
+        # Current sprites
         self.sprEditorTab = QtWidgets.QWidget()
         self.sprAllTab.addTab(self.sprEditorTab, GetIcon('spritelist'), globals_.trans.string('Palette', 26))
 
@@ -1312,7 +1297,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         spel.addWidget(slabel)
         spel.addWidget(self.spriteList)
 
-        # entrance tab
+        # Entrances
         self.entEditorTab = QtWidgets.QWidget()
         tabs.addTab(self.entEditorTab, GetIcon('entrances'), '')
         tabs.setTabToolTip(2, globals_.trans.string('Palette', 15))
@@ -1330,7 +1315,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         eel.addWidget(elabel)
         eel.addWidget(self.entranceList)
 
-        # locations tab
+        # Locations
         self.locEditorTab = QtWidgets.QWidget()
         tabs.addTab(self.locEditorTab, GetIcon('locations'), '')
         tabs.setTabToolTip(3, globals_.trans.string('Palette', 16))
@@ -1348,7 +1333,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         locL.addWidget(Llabel)
         locL.addWidget(self.locationList)
 
-        # paths tab
+        # Paths
         self.pathEditorTab = QtWidgets.QWidget()
         tabs.addTab(self.pathEditorTab, GetIcon('paths'), '')
         tabs.setTabToolTip(4, globals_.trans.string('Palette', 17))
@@ -1369,7 +1354,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         pathel.addWidget(deselectbtn)
         pathel.addWidget(self.pathList)
 
-        # events tab
+        # Events
         self.eventEditorTab = QtWidgets.QWidget()
         tabs.addTab(self.eventEditorTab, GetIcon('events'), '')
         tabs.setTabToolTip(5, globals_.trans.string('Palette', 18))
@@ -1402,7 +1387,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         eventel.addWidget(self.eventNotesEditor, 1, 1)
         eventel.addWidget(self.eventChooser, 2, 0, 1, 2)
 
-        # stamps tab
+        # Stamps
         self.stampTab = QtWidgets.QWidget()
         tabs.addTab(self.stampTab, GetIcon('stamp'), '')
         tabs.setTabToolTip(6, globals_.trans.string('Palette', 19))
@@ -1412,15 +1397,18 @@ class ReggieWindow(QtWidgets.QMainWindow):
         stampAddBtn = QtWidgets.QPushButton(globals_.trans.string('Palette', 28))
         stampAddBtn.clicked.connect(self.handleStampsAdd)
         stampAddBtn.setEnabled(False)
-        self.stampAddBtn = stampAddBtn  # so we can enable/disable it later
+
         stampRemoveBtn = QtWidgets.QPushButton(globals_.trans.string('Palette', 29))
         stampRemoveBtn.clicked.connect(self.handleStampsRemove)
         stampRemoveBtn.setEnabled(False)
-        self.stampRemoveBtn = stampRemoveBtn  # so we can enable/disable it later
+
+        # So we can toggle it later
+        self.stampAddBtn = stampAddBtn
+        self.stampRemoveBtn = stampRemoveBtn
 
         menu = QtWidgets.QMenu()
-        menu.addAction(globals_.trans.string('Palette', 31), self.handleStampsOpen)  # Open Set...
-        menu.addAction(globals_.trans.string('Palette', 32), self.handleStampsSave)  # Save Set As...
+        menu.addAction(globals_.trans.string('Palette', 31), self.handleStampsOpen) # 'Open Set...'
+        menu.addAction(globals_.trans.string('Palette', 32), self.handleStampsSave) # 'Save Set As...'
         stampToolsBtn = QtWidgets.QToolButton()
         stampToolsBtn.setText(globals_.trans.string('Palette', 30))
         stampToolsBtn.setMenu(menu)
@@ -1431,7 +1419,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         stampCopyBtn = QtWidgets.QPushButton(globals_.trans.string('Palette', 37))
         stampCopyBtn.clicked.connect(self.handleStampsCopy)
         stampCopyBtn.setEnabled(False)
-        self.stampCopyBtn = stampCopyBtn  # so we can enable/disable it later
+        self.stampCopyBtn = stampCopyBtn # So we can enable/disable it later
 
         stampNameLabel = QtWidgets.QLabel(globals_.trans.string('Palette', 35))
         self.stampNameEdit = QtWidgets.QLineEdit()
@@ -1455,7 +1443,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         stampL.addWidget(self.stampChooser, 4, 0, 1, 3)
         self.stampTab.setLayout(stampL)
 
-        # comments tab
+        # Comments
         self.commentsTab = QtWidgets.QWidget()
         tabs.addTab(self.commentsTab, GetIcon('comments'), '')
         tabs.setTabToolTip(7, globals_.trans.string('Palette', 33))
@@ -1473,9 +1461,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         cel.addWidget(clabel)
         cel.addWidget(self.commentList)
-
-        # Set the current tab to the Object tab
-        self.CreationTabChanged(0)
 
     def DeselectPathSelection(self, checked):
         """
@@ -4187,7 +4172,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Handles the selected slot tab in the object palette changing
         """
         if hasattr(self, 'objPicker'):
-            if clamp(new_tab, 0, 3):
+            if 0 <= new_tab <= 3:
                 self.objPicker.ShowTileset(new_tab)
                 eval(f'self.objTS{new_tab}Tab').setLayout(self.createObjectLayout)
 
