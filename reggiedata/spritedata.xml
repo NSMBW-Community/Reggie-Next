@@ -3875,7 +3875,7 @@
       <entry value="6">Down</entry>
       <entry value="7">Down + Right</entry>
     </list>
-    <checkbox nybble="11.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Signboard placing it further behind other sprites."/>
+    <checkbox nybble="11" fullnybble="True" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Signboard placing it further behind other sprites."/>
   </sprite> <!-- #310: Signboard - Arrow -->
 
   <!-- In what way does Yoshi not interact with this sprite? -->

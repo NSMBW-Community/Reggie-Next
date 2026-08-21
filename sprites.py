@@ -6463,10 +6463,11 @@ class SpriteImage_ArrowSign(SLib.SpriteImage_StaticMultiple):  # 310
             ImageCache[f'ArrowSign{i}'] = SLib.GetPixmap(f'arrow_sign_{i}.png')
 
     def dataChanged(self):
-
         direction = self.parent.spritedata[5] & 0xF
-        self.image = ImageCache[f'ArrowSign{direction}']
+        if direction > 7:
+            direction = 0
 
+        self.image = ImageCache[f'ArrowSign{direction}']
         super().dataChanged()
 
 
