@@ -36,7 +36,7 @@ import os.path
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from levelitems import SpriteItem
-from tiles import TilesetTile
+from src.data.tileset.tile.tileset_tile import TilesetTile
 
 Qt = QtCore.Qt
 

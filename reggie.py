@@ -97,7 +97,7 @@ from misc2 import LevelScene, LevelViewWidget
 from dirty import setting, setSetting, SetDirty
 from gamedef import LoadGameDef
 from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem, Path
-from tiles import UnloadTileset, LoadTileset, LoadOverrides
+from src.data.common.loaders import UnloadTileset, LoadTileset, LoadOverrides
 from src.data.level.nsmbw_level import NSMBWLevel
 from src.data.stamp.stamp import Stamp
 from src.ui.widgets.sidelists.stamp_chooser import StampChooserWidget

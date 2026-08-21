@@ -13,7 +13,8 @@ from src.data.common.menu_action import MenuAction
 from src.data.tileset.tile.rand_tile_selection import RandTileSelection
 from src.data.sprite.sprite_category import SpriteCategory
 from src.data.tileset.tileset_category import TilesetCategory
-from tiles import ObjectDef, TilesetTile
+from src.data.tileset.object.object_def import ObjectDef
+from src.data.tileset.tile.tileset_tile import TilesetTile
 from translation import ReggieTranslation
 from ui import ReggieTheme
 

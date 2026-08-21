@@ -1,16 +1,24 @@
 import collections
 import itertools
+import os
+import struct
 from xml.etree import ElementTree
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 import globals_
+import spritelib as SLib
 from dirty import delSetting, setSetting, setting
-from src.data.level.sprite_definition import SpriteDefinition
+from libs import lh, lib_versions, lz77, tpl
+from src.data.common import archive
 from src.data.common.keybind import Keybind
 from src.data.common.menu_action import MenuAction
-from src.data.tileset.tile.rand_tile_selection import RandTileSelection
+from src.data.level.sprite_definition import SpriteDefinition
 from src.data.sprite.sprite_category import SpriteCategory, SpriteSubCategory
+from src.data.tileset.object.object_def import ObjectDef
+from src.data.tileset.object.renderers import IncrementTilesetFrame
+from src.data.tileset.tile.rand_tile_selection import RandTileSelection
+from src.data.tileset.tile.tileset_tile import TilesetTile
 from src.data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
 
 
@@ -974,3 +982,627 @@ def SetKeybind(name, sequence: QtCore.QKeyCombination | QtGui.QKeySequence.Stand
     # Convert QKeySequence to string for storage
     key_str = sequence.toString()
     setSetting('Keybind_' + name, key_str)
+
+
+def CreateTilesets():
+    """
+    Blank out the tileset arrays
+    """
+    globals_.Tiles = [None] * 0x200 * 4
+    globals_.Tiles += globals_.Overrides
+    globals_.TilesetFilesLoaded = [None, None, None, None]
+    globals_.TilesetAnimTimer = QtCore.QTimer()
+    globals_.TilesetAnimTimer.timeout.connect(IncrementTilesetFrame)
+    globals_.TilesetAnimTimer.start(90)
+    globals_.ObjectDefinitions = [None] * 4
+    SLib.Tiles = globals_.Tiles
+
+
+def LoadTileset(idx, name, reload_=False):
+    """
+    Load in a tileset into a specific slot
+    """
+    if not name:
+        return False
+
+    # find the tileset path
+    tileset_paths = reversed(globals_.gamedef.GetTexturePaths())
+
+    found = False
+    compressed = False
+    arcname = ''
+    for path in tileset_paths:
+        if path is None: break
+
+        arcname = os.path.join(path, name + ".arc.LH")
+
+        # Prioritise .arc.LH over regular .arc, just like Newer does.
+        if os.path.isfile(arcname):
+            compressed = True
+            found = True
+            break
+
+        # Now check for LZ compression
+        arcname = os.path.join(path, name + ".arc.LZ")
+        if os.path.isfile(arcname):
+            compressed = True
+            found = True
+            break
+
+        # Strip away the suffix (check for no compression)
+        arcname = os.path.splitext(arcname)[0]
+        if os.path.isfile(arcname):
+            compressed = False
+            found = True
+            break
+
+    # Warning if not found
+    if not found:
+        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_MissingTileset', 0),
+                                      globals_.trans.string('Err_MissingTileset', 1, '[file]', name))
+        return False
+
+    # If this file's already loaded, return
+    if globals_.TilesetFilesLoaded[idx] == arcname and not reload_: return
+
+    # Get the data
+    with open(arcname, 'rb') as fileobj:
+        arcdata = fileobj.read()
+
+    if compressed:
+        if (arcdata[0] & 0xF0) == 0x40:  # If LH-compressed
+            try:
+                arcdata = lh.UncompressLH(arcdata)
+            except IndexError:
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
+                                              globals_.trans.string('Err_Decompress', 1, '[file]', name))
+                return False
+        elif not arcdata.startswith(b"U\xAA8-"):  # If LZ-compressed
+            try:
+                arcdata = lz77.UncompressLZ77(arcdata)
+            except IndexError:
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
+                                                globals_.trans.string('Err_Decompress', 2, '[file]', name))
+                return False
+
+    arc = archive.U8.load(arcdata)
+
+    def exists(fn):
+        nonlocal arc
+        try:
+            arc[fn]
+        except:
+            return False
+        return True
+
+    # Decompress the textures
+    found = exists('BG_tex/%s_tex.bin.LZ' % name)
+    found2 = exists('BG_chk/d_bgchk_%s.bin' % name)
+
+    if found and found2:
+        comptiledata = arc['BG_tex/%s_tex.bin.LZ' % name]
+        colldata = bytes(arc['BG_chk/d_bgchk_%s.bin' % name])
+    else:
+        QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_CorruptedTilesetData', 0),
+                                      globals_.trans.string('Err_CorruptedTilesetData', 1, '[file]', name))
+        return False
+
+    # Load in the textures
+    img = LoadTexture_NSMBW(lz77.UncompressLZ77(comptiledata))
+
+    # Divide it into individual tiles and
+    # add collisions at the same time
+    dest = QtGui.QPixmap.fromImage(img)
+    sourcex = 4
+    sourcey = 4
+    tileoffset = idx * 256
+    for i in range(tileoffset, tileoffset + 256):
+        T = TilesetTile(dest.copy(sourcex, sourcey, 24, 24))
+        T.setCollisions(struct.unpack_from('>8B', colldata, (i - tileoffset) * 8))
+        globals_.Tiles[i] = T
+        sourcex += 32
+        if sourcex >= 1024:
+            sourcex = 4
+            sourcey += 32
+
+    # Load the tileset animations, if there are any
+    tileoffset = idx * 256
+    row = 0
+    col = 0
+
+    containsConveyor = ['Pa1_toride', 'Pa1_toride_sabaku', 'Pa1_toride_kori', 'Pa1_toride_yogan', 'Pa1_toride_soto']
+
+    isAnimated, prefix = CheckTilesetAnimated(arc)
+
+    for i in range(tileoffset, tileoffset + 256):
+        if idx == 0:
+            if globals_.Tiles[i].collData[3] == 5:
+                fn = 'BG_tex/hatena_anime.bin'
+                found = exists(fn)
+
+                if found:
+                    globals_.Tiles[i].addAnimationData(arc[fn])
+
+            elif globals_.Tiles[i].collData[3] == 0x10:
+                fn = 'BG_tex/block_anime.bin'
+                found = exists(fn)
+
+                if found:
+                    globals_.Tiles[i].addAnimationData(arc[fn])
+
+            elif globals_.Tiles[i].collData[7] == 0x28:
+                fn = 'BG_tex/tuka_coin_anime.bin'
+                found = exists(fn)
+
+                if found:
+                    globals_.Tiles[i].addAnimationData(arc[fn])
+
+        # TODO: Dehardcode this?
+        elif idx == 1 and name in containsConveyor:
+            for x in range(2):
+                if i == 320+x*16:
+                    fn = 'BG_tex/belt_conveyor_L_anime.bin'
+                    found = exists(fn)
+
+                    if found:
+                        globals_.Tiles[i].addAnimationData(arc[fn], True)
+
+                elif i == 321+x*16:
+                    fn = 'BG_tex/belt_conveyor_M_anime.bin'
+                    found = exists(fn)
+
+                    if found:
+                        globals_.Tiles[i].addAnimationData(arc[fn], True)
+
+                elif i == 322+x*16:
+                    fn = 'BG_tex/belt_conveyor_R_anime.bin'
+                    found = exists(fn)
+
+                    if found:
+                        globals_.Tiles[i].addAnimationData(arc[fn], True)
+
+                elif i == 323+x*16:
+                    fn = 'BG_tex/belt_conveyor_L_anime.bin'
+                    found = exists(fn)
+
+                    if found:
+                        globals_.Tiles[i].addAnimationData(arc[fn])
+
+                elif i == 324+x*16:
+                    fn = 'BG_tex/belt_conveyor_M_anime.bin'
+                    found = exists(fn)
+
+                    if found:
+                        globals_.Tiles[i].addAnimationData(arc[fn])
+
+                elif i == 325+x*16:
+                    fn = 'BG_tex/belt_conveyor_R_anime.bin'
+                    found = exists(fn)
+                    if found:
+                        globals_.Tiles[i].addAnimationData(arc[fn])
+
+        # Setup Newer-style animated tiles
+        if isAnimated:
+            filenames = []
+            filenames.append('%s_%d%s%s.bin' % (prefix, idx, hex(row)[2].lower(), hex(col)[2].lower()))
+            filenames.append('%s_%d%s%s.bin' % (prefix, idx, hex(row)[2].upper(), hex(col)[2].upper()))
+
+            if filenames[0] == filenames[1]:
+                item = filenames[0]
+                filenames = []
+                filenames.append(item)
+
+            for fn in filenames:
+                fn = 'BG_tex/' + fn
+                found = exists(fn)
+
+                if found:
+                    globals_.Tiles[i].addAnimationData(arc[fn])
+
+        col += 1
+
+        if col == 16:
+            col = 0
+            row += 1
+
+    # Load the object definitions
+    defs = [None] * 256
+
+    indexfile = bytes(arc['BG_unt/%s_hd.bin' % name])
+    deffile = arc['BG_unt/%s.bin' % name]
+    objcount = len(indexfile) // 4
+    indexstruct = struct.Struct('>HBB')
+
+    for i in range(objcount):
+        data = indexstruct.unpack_from(indexfile, i << 2)
+        obj = ObjectDef()
+        obj.width = data[1]
+        obj.height = data[2]
+        obj.load(deffile, data[0], tileoffset)
+        defs[i] = obj
+
+    globals_.ObjectDefinitions[idx] = defs
+
+    ProcessOverrides(idx, name)
+
+    # Keep track of this filepath
+    globals_.TilesetFilesLoaded[idx] = arcname
+
+    # Add Tiles to spritelib
+    SLib.Tiles = globals_.Tiles
+
+    return True
+
+
+def LoadTexture_NSMBW(tiledata):
+    data = tpl.decodeRGB4A3(tiledata, 1024, 256, False)
+
+    # nsmblib returns the image data with premultiplied alpha, while the cython
+    # and python implementations do not. As such, we have to set the correct
+    # format for Qt - ARGB32 premultiplied if nsmblib is used, and ARGB32 by
+    # default.
+    if lib_versions["nsmblib"] is not None:
+        data_format = QtGui.QImage.Format.Format_ARGB32_Premultiplied
+    else:
+        data_format = QtGui.QImage.Format.Format_ARGB32
+
+    return QtGui.QImage(data, 1024, 256, 4096, data_format)
+
+
+def UnloadTileset(idx):
+    """
+    Unload the tileset from a specific slot
+    """
+    tileoffset = idx * 256
+    globals_.Tiles[tileoffset:tileoffset + 256] = [None] * 256
+    globals_.ObjectDefinitions[idx] = [None] * 256
+    globals_.TilesetFilesLoaded[idx] = None
+
+
+def ProcessOverrides(idx, name):
+    """
+    Load overridden tiles if there are any
+    """
+    tsOffs = idx * 256
+
+    if globals_.OverriddenTilesets is None:
+        raise ValueError("Overridden tilesets not yet initialised")
+
+    def overlay(base, overlay):
+        img = QtGui.QPixmap(base.width(), base.height())
+        img.fill(QtCore.Qt.GlobalColor.transparent)
+
+        p = QtGui.QPainter(img)
+        p.drawPixmap(0, 0, base)
+        p.drawPixmap(0, 0, overlay)
+
+        return img
+
+    tsidx = globals_.OverriddenTilesets
+
+    # Automatically apply the Pa0 override if the tileset name starts with 'Pa0_'
+    # and the tileset is not excluded by setting 'override="no-Pa0"'
+    if name in tsidx["Pa0"] or (name.startswith("Pa0_") and name not in tsidx["no-Pa0"]):
+        defs = globals_.ObjectDefinitions[idx]
+        t = globals_.Tiles
+
+        # 0: invisibg
+
+        ## Items:
+        # 1:coin, 2:fire, 3:star, 4:stoi, 5:vine,
+        # 6:spri, 7:mini, 8:prop, 9:ping, 10:yosh,
+        # 11:ice, 12:10c, 13:1up,
+
+        # Invisible blocks
+        invisiblocks = (3, 4, 5, 6, 7, 8, 9, 10, 13)
+        replacement = (1, 2, 3, 13, 5, 7, 8, 9, 11)
+
+        # coin, fire, star, 1up, vine, mini, prop, ping, ice
+        baseblock = globals_.Overrides_safe[0].main
+        for i, replace in zip(invisiblocks, replacement):
+            t[i].main = overlay(baseblock, globals_.Overrides_safe[replace].main)
+
+        # Question and brick blocks
+        # these don't have their own tiles so we have to do them by objects
+        rangeA, rangeB = range(39, 49), range(27, 38)
+        replace = 2048 + 10
+        baseblock = t[defs[39].rows[0][0][1]].main
+
+        # question blocks
+        for i, a in zip(rangeA, range(2, 12)):
+            t[replace].main = overlay(baseblock, globals_.Overrides_safe[a].main)
+            defs[i].rows[0][0] = (0, replace, 0)
+            replace += 1
+
+        replace += 1
+        baseblock = t[defs[26].rows[0][0][1]].main
+        # brick block
+        for i, a in zip(rangeB, (1, 12, 2, 3, 13, 5, 7, 8, 9, 10, 11)):
+            t[replace].main = overlay(baseblock, globals_.Overrides_safe[a].main)
+            defs[i].rows[0][0] = (0, replace, 0)
+            replace += 1
+
+        # now the extra stuff (invisible collisions etc)
+        # @ row i, col j => globals_.Overrides[26 * i + j]
+
+        t[1].main = globals_.Overrides[26 * 4].main        # solid
+        t[2].main = globals_.Overrides[26 + 10].main       # vine stopper
+        t[11].main = globals_.Overrides[26 * 3 + 13].main  # jumpthrough platform
+        t[12].main = globals_.Overrides[26 * 3 + 12].main  # mini mario passageway
+
+        t[16].main = globals_.Overrides[26 * 4 + 11].main  # 1x1 slope going up
+        t[17].main = globals_.Overrides[26 * 4 + 12].main  # 1x1 slope going down
+        t[18].main = globals_.Overrides[26 * 4 + 1].main   # 2x1 slope going up (part 1)
+        t[19].main = globals_.Overrides[26 * 4 + 2].main   # 2x1 slope going up (part 2)
+        t[20].main = globals_.Overrides[26 * 4 + 3].main   # 2x1 slope going down (part 1)
+        t[21].main = globals_.Overrides[26 * 4 + 4].main   # 2x1 slope going down (part 2)
+        t[22].main = globals_.Overrides[26 * 4 + 21].main  # 4x1 slope going up (part 1)
+        t[23].main = globals_.Overrides[26 * 4 + 22].main  # 4x1 slope going up (part 2)
+        t[24].main = globals_.Overrides[26 * 4 + 23].main  # 4x1 slope going up (part 3)
+        t[25].main = globals_.Overrides[26 * 4 + 24].main  # 4x1 slope going up (part 4)
+        t[26].main = globals_.Overrides[26 * 4 + 25].main  # 4x1 slope going down (part 1)
+        t[27].main = globals_.Overrides[26 * 4 - 3].main   # 4x1 slope going down (part 2)
+        t[28].main = globals_.Overrides[26 * 4 - 2].main   # 4x1 slope going down (part 3)
+        t[29].main = globals_.Overrides[26 * 4 - 1].main   # 4x1 slope going down (part 4)
+        t[30].main = globals_.Overrides[1].main            # coin
+
+        t[32].main = globals_.Overrides[26 * 4 + 9].main   # 1x1 roof going down
+        t[33].main = globals_.Overrides[26 * 4 + 10].main  # 1x1 roof going up
+        t[34].main = globals_.Overrides[26 * 4 + 5].main   # 2x1 roof going down (part 1)
+        t[35].main = globals_.Overrides[26 * 4 + 6].main   # 2x1 roof going down (part 2)
+        t[36].main = globals_.Overrides[26 * 4 + 7].main   # 2x1 roof going up (part 1)
+        t[37].main = globals_.Overrides[26 * 4 + 8].main   # 2x1 roof going up (part 2)
+        t[38].main = globals_.Overrides[26 * 4 + 13].main  # 4x1 roof going down (part 1)
+        t[39].main = globals_.Overrides[26 * 4 + 14].main  # 4x1 roof going down (part 2)
+        t[40].main = globals_.Overrides[26 * 4 + 15].main  # 4x1 roof going down (part 3)
+        t[41].main = globals_.Overrides[26 * 4 + 16].main  # 4x1 roof going down (part 4)
+        t[42].main = globals_.Overrides[26 * 4 + 17].main  # 4x1 roof going up (part 1)
+        t[43].main = globals_.Overrides[26 * 4 + 18].main  # 4x1 roof going up (part 2)
+        t[44].main = globals_.Overrides[26 * 4 + 19].main  # 4x1 roof going up (part 3)
+        t[45].main = globals_.Overrides[26 * 4 + 20].main  # 4x1 roof going up (part 4)
+        t[46].main = globals_.Overrides[26 + 11].main      # P-switch coin
+
+        t[53].main = globals_.Overrides[26 + 12].main      # donut lift
+        t[61].main = globals_.Overrides[26 + 9].main       # multiplayer coin
+        t[63].main = globals_.Overrides[26 * 2 + 13].main  # invisible damage tile
+
+    if name in tsidx["Flowers"] or name in tsidx["Forest Flowers"]:
+        # flowers
+        t = globals_.Tiles
+        t[tsOffs + 0xA0].main = globals_.Overrides_safe[26 + 4].main     # grass
+        t[tsOffs + 0xA1].main = globals_.Overrides_safe[26 + 5].main
+        t[tsOffs + 0xA2].main = globals_.Overrides[26 + 6].main
+        t[tsOffs + 0xA3].main = globals_.Overrides[26 + 7].main
+        t[tsOffs + 0xA4].main = globals_.Overrides[26 + 8].main
+
+        if name in tsidx["Flowers"]:
+            t[tsOffs + 0xB0].main = globals_.Overrides[26 * 2 + 9].main  # flowers
+            t[tsOffs + 0xB1].main = globals_.Overrides[26 * 2 + 10].main
+            t[tsOffs + 0xB2].main = globals_.Overrides[26 * 2 + 11].main
+
+            t[tsOffs + 0xC0].main = globals_.Overrides[26 * 2 + 6].main  # flowers on grass
+            t[tsOffs + 0xC1].main = globals_.Overrides[26 * 2 + 7].main
+            t[tsOffs + 0xC2].main = globals_.Overrides[26 * 2 + 8].main
+        elif name in tsidx["Forest Flowers"]:
+            # forest flowers
+            t[tsOffs + 0xB0].main = globals_.Overrides[26 * 3 + 9].main  # flowers
+            t[tsOffs + 0xB1].main = globals_.Overrides[26 * 3 + 10].main
+            t[tsOffs + 0xB2].main = globals_.Overrides[26 * 3 + 11].main
+
+            t[tsOffs + 0xC0].main = globals_.Overrides[26 * 3 + 6].main  # flowers on grass
+            t[tsOffs + 0xC1].main = globals_.Overrides[26 * 3 + 7].main
+            t[tsOffs + 0xC2].main = globals_.Overrides[26 * 3 + 8].main
+
+    if name in tsidx["Conveyors"]:
+        # Conveyor belts
+        t = globals_.Tiles
+        tiles = [0x40, 0x41, 0x42, 0x43, 0x44, 0x45, # Right (slow), Right (fast)
+                 0x50, 0x51, 0x52, 0x53, 0x54, 0x55] # Left  (slow), Left  (fast)
+
+        for i, tileNum in enumerate(tiles):
+            t[tsOffs + tileNum].main = overlay(t[tsOffs + tileNum].main, globals_.Overrides[26 * 5 + i].main)
+
+    if name in tsidx["Lines"] or name in tsidx["Full Lines"]:
+        # These are the line guides
+        # normal lines have fewer though
+
+        t = globals_.Tiles
+
+        # use Overrides_safe here because the beginning of Overrides is overwritten
+        t[tsOffs].main = globals_.Overrides_safe[26].main             # horizontal line
+        t[tsOffs + 1].main = globals_.Overrides_safe[26 + 1].main     # vertical line
+        t[tsOffs + 2].main = globals_.Overrides_safe[26 + 2].main     # bottom-right corner
+        t[tsOffs + 3].main = globals_.Overrides_safe[26 + 3].main     # top-left corner
+
+        t[tsOffs + 0x10].main = globals_.Overrides[26 * 2].main       # left red blob (part 1)
+        t[tsOffs + 0x11].main = globals_.Overrides[26 * 2 + 1].main   # top red blob (part 1)
+        t[tsOffs + 0x12].main = globals_.Overrides[26 * 2 + 2].main   # top red blob (part 2)
+        t[tsOffs + 0x13].main = globals_.Overrides[26 * 2 + 3].main   # right red blob (part 1)
+        t[tsOffs + 0x14].main = globals_.Overrides[26 * 2 + 4].main   # top-left red blob
+        t[tsOffs + 0x15].main = globals_.Overrides[26 * 2 + 5].main   # top-right red blob
+
+        t[tsOffs + 0x20].main = globals_.Overrides[26 * 3].main       # left red blob (part 2)
+        t[tsOffs + 0x21].main = globals_.Overrides[26 * 3 + 1].main   # bottom red blob (part 1)
+        t[tsOffs + 0x22].main = globals_.Overrides[26 * 3 + 2].main   # bottom red blob (part 2)
+        t[tsOffs + 0x23].main = globals_.Overrides[26 * 3 + 3].main   # right red blob (part 2)
+        t[tsOffs + 0x24].main = globals_.Overrides[26 * 3 + 4].main   # bottom-left red blob
+        t[tsOffs + 0x25].main = globals_.Overrides[26 * 3 + 5].main   # bottom-right red blob
+
+        # Those are all for normal lines
+        if name in tsidx["Lines"]: return
+
+        t[tsOffs + 0x30].main = globals_.Overrides_safe[14].main      # 1x2 diagonal going up (top edge)
+        t[tsOffs + 0x31].main = globals_.Overrides_safe[15].main      # 1x2 diagonal going down (top edge)
+
+        t[tsOffs + 0x40].main = globals_.Overrides[26 + 14].main      # 1x2 diagonal going up (part 1)
+        t[tsOffs + 0x41].main = globals_.Overrides[26 + 15].main      # 1x2 diagonal going down (part 1)
+        t[tsOffs + 0x42].main = globals_.Overrides[26 * 2 + 19].main  # 1x1 diagonal going up
+        t[tsOffs + 0x43].main = globals_.Overrides[26 * 2 + 20].main  # 1x1 diagonal going down
+        #t[tsOffs + 0x44].main = globals_.Overrides[ + 1058].main     # 2x1 diagonal going up (part 1) nothing
+        t[tsOffs + 0x45].main = globals_.Overrides[20].main           # 2x1 diagonal going up (part 2)
+        t[tsOffs + 0x46].main = globals_.Overrides_safe[21].main      # 2x1 diagonal going down (part 1)
+        #t[tsOffs + 0x47].main = globals_.Overrides[ + 1061].main     # 2x1 diagonal going down (part 2) nothing
+
+        t[tsOffs + 0x50].main = globals_.Overrides[26 * 2 + 14].main  # 1x2 diagonal going up (part 2)
+        t[tsOffs + 0x51].main = globals_.Overrides[26 * 2 + 15].main  # 1x2 diagonal going down (part 2)
+        t[tsOffs + 0x52].main = globals_.Overrides[26 * 3 + 14].main  # 1x1 diagonal going up
+        t[tsOffs + 0x53].main = globals_.Overrides[26 * 3 + 15].main  # 1x1 diagonal going down
+        t[tsOffs + 0x54].main = globals_.Overrides[26 + 19].main      # 2x1 diagonal going up (part 1)
+        t[tsOffs + 0x55].main = globals_.Overrides[26 + 20].main      # 2x1 diagonal going up (part 2)
+        t[tsOffs + 0x56].main = globals_.Overrides[26 + 21].main      # 2x1 diagonal going down (part 1)
+        t[tsOffs + 0x57].main = globals_.Overrides[26 + 22].main      # 2x1 diagonal going down (part 2)
+
+        t[tsOffs + 0x62].main = globals_.Overrides[26 * 3 + 17].main  # big circle piece 1st row
+        t[tsOffs + 0x63].main = globals_.Overrides[26 * 3 + 18].main  # big circle piece 1st row
+        t[tsOffs + 0x66].main = globals_.Overrides_safe[17].main      # medium circle piece 1st row
+        t[tsOffs + 0x67].main = globals_.Overrides_safe[18].main      # medium circle piece 1st row
+
+        t[tsOffs + 0x71].main = globals_.Overrides[26 * 3 + 20].main  # big circle piece 2nd row
+        t[tsOffs + 0x72].main = globals_.Overrides_safe[23].main      # big circle piece 2nd row
+        t[tsOffs + 0x73].main = globals_.Overrides_safe[24].main      # big circle piece 2nd row
+        t[tsOffs + 0x74].main = globals_.Overrides_safe[25].main      # big circle piece 2nd row
+        t[tsOffs + 0x75].main = globals_.Overrides[26 + 16].main      # medium circle piece 2nd row
+        t[tsOffs + 0x76].main = globals_.Overrides[26 + 17].main      # medium circle piece 2nd row
+        t[tsOffs + 0x77].main = globals_.Overrides[26 + 18].main      # medium circle piece 2nd row
+        t[tsOffs + 0x78].main = globals_.Overrides[26 + 13].main      # small circle
+
+        t[tsOffs + 0x80].main = globals_.Overrides[26 * 2 + 21].main  # big circle piece 3rd row
+        t[tsOffs + 0x81].main = globals_.Overrides[26 * 2 + 22].main  # big circle piece 3rd row
+        t[tsOffs + 0x84].main = globals_.Overrides[26 * 2 + 24].main  # big circle piece 3rd row
+        t[tsOffs + 0x85].main = globals_.Overrides[26 * 2 + 16].main  # medium circle piece 3rd row
+        t[tsOffs + 0x86].main = globals_.Overrides[26 * 2 + 17].main  # medium circle piece 3rd row
+        t[tsOffs + 0x87].main = globals_.Overrides[26 * 2 + 18].main  # medium circle piece 3rd row
+
+        t[tsOffs + 0x90].main = globals_.Overrides[26 * 3 + 21].main  # big circle piece 4th row
+        t[tsOffs + 0x91].main = globals_.Overrides[26 * 3 + 22].main  # big circle piece 4th row
+        t[tsOffs + 0x94].main = globals_.Overrides[26 * 2 + 25].main  # big circle piece 4th row
+
+        t[tsOffs + 0xA1].main = globals_.Overrides[26 * 2 + 23].main  # big circle piece 5th row
+        t[tsOffs + 0xA2].main = globals_.Overrides[26 + 23].main      # big circle piece 5th row
+        t[tsOffs + 0xA3].main = globals_.Overrides[26 + 24].main      # big circle piece 5th row
+        t[tsOffs + 0xA4].main = globals_.Overrides[26 + 25].main      # big circle piece 5th row
+
+    elif name in tsidx["Minigame Lines"]:
+        t = globals_.Tiles
+
+        t[tsOffs + 0x40].main = globals_.Overrides_safe[26].main      # horizontal line
+        t[tsOffs + 0x41].main = globals_.Overrides_safe[26 + 2].main  # bottom-right corner
+        t[tsOffs + 0x42].main = globals_.Overrides_safe[26].main      # horizontal line
+
+        t[tsOffs + 0x50].main = globals_.Overrides_safe[26 + 1].main  # vertical line
+        t[tsOffs + 0x51].main = globals_.Overrides_safe[26 + 1].main  # vertical line
+        t[tsOffs + 0x52].main = globals_.Overrides_safe[26 + 3].main  # top-left corner
+
+        t[tsOffs + 0x43].main = globals_.Overrides[26 * 2].main       # left red blob (part 1)
+        t[tsOffs + 0x44].main = globals_.Overrides[26 * 2 + 1].main   # top red blob (part 1)
+        t[tsOffs + 0x45].main = globals_.Overrides[26 * 2 + 2].main   # top red blob (part 2)
+        t[tsOffs + 0x46].main = globals_.Overrides[26 * 2 + 3].main   # right red blob (part 1)
+
+        t[tsOffs + 0x53].main = globals_.Overrides[26 * 3].main       # left red blob (part 2)
+        t[tsOffs + 0x54].main = globals_.Overrides[26 * 3 + 1].main   # bottom red blob (part 1)
+        t[tsOffs + 0x55].main = globals_.Overrides[26 * 3 + 2].main   # bottom red blob (part 2)
+        t[tsOffs + 0x56].main = globals_.Overrides[26 * 3 + 3].main   # right red blob (part 2)
+
+        t[tsOffs + 0x62].main = globals_.Overrides[26 * 3 + 17].main  # big circle piece 1st row
+        t[tsOffs + 0x63].main = globals_.Overrides[26 * 3 + 18].main  # big circle piece 1st row
+        t[tsOffs + 0x66].main = globals_.Overrides_safe[17].main      # medium circle piece 1st row
+        t[tsOffs + 0x67].main = globals_.Overrides_safe[18].main      # medium circle piece 1st row
+
+        t[tsOffs + 0x71].main = globals_.Overrides[26 * 3 + 20].main  # big circle piece 2nd row
+        t[tsOffs + 0x72].main = globals_.Overrides_safe[23].main      # big circle piece 2nd row
+        t[tsOffs + 0x73].main = globals_.Overrides_safe[24].main      # big circle piece 2nd row
+        t[tsOffs + 0x74].main = globals_.Overrides_safe[25].main      # big circle piece 2nd row
+        t[tsOffs + 0x75].main = globals_.Overrides[26 + 16].main      # medium circle piece 2nd row
+        t[tsOffs + 0x76].main = globals_.Overrides[26 + 17].main      # medium circle piece 2nd row
+        t[tsOffs + 0x77].main = globals_.Overrides[26 + 18].main      # medium circle piece 2nd row
+
+        t[tsOffs + 0x80].main = globals_.Overrides[26 * 2 + 21].main  # big circle piece 3rd row
+        t[tsOffs + 0x81].main = globals_.Overrides[26 * 2 + 22].main  # big circle piece 3rd row
+        t[tsOffs + 0x84].main = globals_.Overrides[26 * 2 + 24].main  # big circle piece 3rd row
+        t[tsOffs + 0x85].main = globals_.Overrides[26 * 2 + 16].main  # medium circle piece 3rd row
+        t[tsOffs + 0x86].main = globals_.Overrides[26 * 2 + 17].main  # medium circle piece 3rd row
+        t[tsOffs + 0x87].main = globals_.Overrides[26 * 2 + 18].main  # medium circle piece 3rd row
+
+        t[tsOffs + 0x90].main = globals_.Overrides[26 * 3 + 21].main  # big circle piece 4th row
+        t[tsOffs + 0x91].main = globals_.Overrides[26 * 3 + 22].main  # big circle piece 4th row
+        t[tsOffs + 0x94].main = globals_.Overrides[26 * 2 + 25].main  # big circle piece 4th row
+
+        t[tsOffs + 0xA1].main = globals_.Overrides[26 * 2 + 23].main  # big circle piece 5th row
+        t[tsOffs + 0xA2].main = globals_.Overrides[26 + 23].main      # big circle piece 5th row
+        t[tsOffs + 0xA3].main = globals_.Overrides[26 + 24].main      # big circle piece 5th row
+        t[tsOffs + 0xA4].main = globals_.Overrides[26 + 25].main      # big circle piece 5th row
+
+
+def LoadOverrides():
+    """
+    Load overrides
+    """
+    globals_.Overrides = [None] * (6 * 26)
+    globals_.Overrides_safe = [None] * (6 * 26)
+    globals_.OVERRIDE_UNKNOWN = 2 * 26 + 12
+
+    OverrideBitmap = QtGui.QPixmap(os.path.join('reggiedata', 'overrides.png'))
+    idx = 0
+    xcount = OverrideBitmap.width() // 24
+    ycount = OverrideBitmap.height() // 24
+    sourcex = 0
+    sourcey = 0
+
+    for y in range(ycount):
+        for x in range(xcount):
+            bmp = OverrideBitmap.copy(sourcex, sourcey, 24, 24)
+            globals_.Overrides[idx] = TilesetTile(bmp)
+            globals_.Overrides_safe[idx] = TilesetTile(bmp)
+
+            # Set collisions if it's a brick or question
+            if y <= 4:
+                if 8 < x < 20:
+                    globals_.Overrides[idx].setQuestionCollisions()
+                    globals_.Overrides_safe[idx].setQuestionCollisions()
+                elif 20 <= x < 32:
+                    globals_.Overrides[idx].setBrickCollisions()
+                    globals_.Overrides_safe[idx].setBrickCollisions()
+
+            idx += 1
+            sourcex += 24
+        sourcex = 0
+        sourcey += 24
+
+
+def CheckTilesetAnimated(tileset):
+    """Checks if a tileset contains Newer-style animations, and if so, returns
+    (True, prefix) where prefix is the animation prefix. If not, (False, None).
+    tileset should be a Wii.py U8 object."""
+    # Find the animation files, if any
+    excludes = (
+        'block_anime.bin',
+        'hatena_anime.bin',
+        'tuka_coin_anime.bin',
+    )
+    texFiles = tileset['BG_tex']
+    animFiles = []
+    for f in texFiles:
+        # Determine if it's likely an animation file
+        if f.lower() in excludes: continue
+        if f[-4:].lower() != '.bin': continue
+        namelen = len(f)
+        if namelen == 9:
+            if f[1] != '_': continue
+            if f[2] not in '0123': continue
+            if f[3].lower() not in '0123456789abcdef': continue
+            if f[4].lower() not in '0123456789abcdef': continue
+        elif namelen == 10:
+            if f[2] != '_': continue
+            if f[3] not in '0123': continue
+            if f[4].lower() not in '0123456789abcdef': continue
+            if f[5].lower() not in '0123456789abcdef': continue
+        animFiles.append(f)
+
+    # Quit if there's no animation
+    if not animFiles:
+        return False, None
+    else:
+        # This makes so many assumptions
+        fn = animFiles[0]
+        prefix = fn[0] if len(fn) == 9 else fn[:2]
+        return True, prefix

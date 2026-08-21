@@ -19,7 +19,7 @@ from src.data.sprite.spritefield.value import ValueSpriteField
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
-from tiles import CreateTilesets, LoadTileset
+from src.data.common.loaders import CreateTilesets, LoadTileset
 
 
 class Area:

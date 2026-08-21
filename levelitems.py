@@ -6,7 +6,7 @@ import base64
 import spritelib as SLib
 import globals_
 from src.data.common.utils import clamp
-from tiles import RenderObject
+from src.data.tileset.object.renderers import RenderObject
 from ui import GetIcon, clipStr, setOverrideCursor
 from dirty import SetDirty
 from src.ui.actions.undo.move_item import MoveItemUndoAction
