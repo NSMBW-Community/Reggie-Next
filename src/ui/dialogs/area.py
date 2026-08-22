@@ -354,7 +354,7 @@ class LoadedSpritesTab(QtWidgets.QWidget):
         if globals_.Area.areanum == -1:
             return []
 
-        usedIDs = set(sprite.type for sprite in globals_.Area.sprites)
+        usedIDs = set(sprite.sprite_num for sprite in globals_.Area.sprites)
 
         return self.stringifySprites(sorted(usedIDs))
 

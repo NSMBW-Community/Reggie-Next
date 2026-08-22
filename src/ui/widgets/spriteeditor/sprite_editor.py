@@ -290,7 +290,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         # (sprite id, importance level)
         # importance level is 0 for 'required', 1 for 'suggested', 2 for 'resource', 3 for 'suggestedresource'
         missing = [[], [], [], []]
-        cur_sprites = [s.type for s in globals_.Area.sprites]
+        cur_sprites = [s.sprite_num for s in globals_.Area.sprites]
         for dependency, importance in sprite.dependencies:
             if dependency not in cur_sprites:
                 if importance == 2:

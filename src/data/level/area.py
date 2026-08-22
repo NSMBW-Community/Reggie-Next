@@ -389,7 +389,7 @@ class Area:
                 unknown_sprite_ids.add(type_)
 
         self.sprites = sprites
-        self.force_loaded_sprites = self.loaded_sprites - set(sprite.type for sprite in sprites)
+        self.force_loaded_sprites = self.loaded_sprites - set(sprite.sprite_num for sprite in sprites)
 
         # Store unknown sprite IDs for later warning
         self.unknown_sprite_ids = unknown_sprite_ids
@@ -646,7 +646,7 @@ class Area:
         for obj in layer:
             objstruct.pack_into(buffer,
                                 offset,
-                                f_int((obj.tileset << 12) | obj.type),
+                                f_int((obj.tileset << 12) | obj.object_num),
                                 f_int(obj.objx),
                                 f_int(obj.objy),
                                 f_int(obj.width),
@@ -738,14 +738,14 @@ class Area:
                 sprite.zoneID = 0
 
             try:
-                sprstruct.pack_into(buffer, offset, f_int(sprite.type) % 0xFFFF, f_int(sprite.objx), f_int(sprite.objy),
+                sprstruct.pack_into(buffer, offset, f_int(sprite.sprite_num) % 0xFFFF, f_int(sprite.objx), f_int(sprite.objy),
                                     sprite.spritedata[:6], sprite.zoneID, bytes([sprite.spritedata[7]]))
             except:
                 # Hopefully this will solve the mysterious bug, and will
                 # soon no longer be necessary.
                 raise ValueError('SaveSprites struct.error. Current sprite data dump:\n' + \
                                  str(offset) + '\n' + \
-                                 str(sprite.type) + '\n' + \
+                                 str(sprite.sprite_num) + '\n' + \
                                  str(sprite.objx) + '\n' + \
                                  str(sprite.objy) + '\n' + \
                                  str(sprite.spritedata[:6]) + '\n' + \
@@ -763,7 +763,7 @@ class Area:
         """
         Saves the list of loaded sprites back to block 9
         """
-        ls = sorted(set(sprite.type for sprite in self.sprites) | self.force_loaded_sprites)
+        ls = sorted(set(sprite.sprite_num for sprite in self.sprites) | self.force_loaded_sprites)
 
         offset = 0
         sprstruct = struct.Struct('>Hxx')
@@ -881,11 +881,11 @@ class Area:
 
         for sprite in self.sprites:
             # Check if sprite data exists for this type
-            if not (0 <= sprite.type < globals_.NumSprites) or globals_.Sprites[sprite.type] is None:
+            if not (0 <= sprite.sprite_num < globals_.NumSprites) or globals_.Sprites[sprite.sprite_num] is None:
                 # Unknown sprite, skip it
                 continue
 
-            sdef = globals_.Sprites[sprite.type]
+            sdef = globals_.Sprites[sprite.sprite_num]
 
             # Find what values are used by this sprite
             data = sprite.spritedata
@@ -919,12 +919,12 @@ class Area:
         self.sprites.remove(sprite)
 
         # Skip unknown sprites
-        if sprite.type >= globals_.NumSprites or globals_.Sprites[sprite.type] is None:
+        if sprite.sprite_num >= globals_.NumSprites or globals_.Sprites[sprite.sprite_num] is None:
             return
 
         # Remove the ids the sprite used from the id list
         decoder = PropertyDecoder(SpriteField())
-        sdef = globals_.Sprites[sprite.type]
+        sdef = globals_.Sprites[sprite.sprite_num]
 
         # Find what values are used by this sprite
         for field in sdef.fields:

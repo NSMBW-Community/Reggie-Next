@@ -497,38 +497,6 @@ def LoadSpriteCategories(reload_=False):
                                 CurrentCategory.append(i)
 
 
-def LoadSpriteListData(reload_=False):
-    """
-    Ensures that the sprite list modifier data is loaded
-    """
-    if globals_.SpriteListData and not reload_: return
-
-    paths = getResourcePaths('spritelistdata')
-
-    globals_.SpriteListData = [[] for _ in range(24)]
-    for path in paths:
-        if path is None:
-            continue
-
-        with open(path, 'r', encoding='utf-8') as f:
-            data = f.read()
-
-        split = data.replace('\n', '').split(';')
-        for lineidx in range(24):
-            line = split[lineidx]
-            splitline = line.split(',')
-
-            # Add them
-            for item in splitline:
-                try:
-                    newitem = int(item)
-                except ValueError:
-                    continue
-                if newitem in globals_.SpriteListData[lineidx]: continue
-                globals_.SpriteListData[lineidx].append(newitem)
-            globals_.SpriteListData[lineidx].sort()
-
-
 def LoadEntranceNames(reload_=False):
     """
     Ensures that the entrance names are loaded
@@ -1112,7 +1080,7 @@ def LoadTileset(idx, name, reload_=False):
         nonlocal arc
         try:
             arc[fn]
-        except IndexError:
+        except (IndexError, KeyError):
             return False
         return True
 

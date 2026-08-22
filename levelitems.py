@@ -2,6 +2,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 import os
 import random
 import base64
+from typing import cast
 
 import spritelib as SLib
 import globals_
@@ -48,7 +49,7 @@ class InstanceDefinition:
         Clears all data
         """
         for field in self.fields:
-            field.title = None
+            field = None
 
     def setFrom(self, other):
         """
@@ -134,10 +135,14 @@ class InstanceDefinition_ObjectItem(InstanceDefinition):
 
     @staticmethod
     def itemList():
-        # list concatenation here
+        # List concatenation here
         return globals_.Area.layers[0] + globals_.Area.layers[1] + globals_.Area.layers[2]
 
     def createNew(self):
+        if not self.objx or not self.objy:
+            self.objx = 0
+            self.objy = 0
+
         return ObjectItem(
             self.fields[0][1],
             self.fields[1][1],
@@ -165,7 +170,7 @@ class InstanceDefinition_LocationItem(InstanceDefinition):
         return globals_.Area.locations
 
     def createNew(self):
-        return LocationItem(self.objx, self.objy, *(field.title for field in self.fields))
+        return LocationItem(self.objx, self.objy, *(field for field in self.fields))
 
 
 class InstanceDefinition_SpriteItem(InstanceDefinition):
@@ -206,7 +211,7 @@ class InstanceDefinition_EntranceItem(InstanceDefinition):
         return globals_.Area.entrances
 
     def createNew(self):
-        return EntranceItem(self.objx, self.objy, *(field.title for field in self.fields))
+        return EntranceItem(self.objx, self.objy, *(field for field in self.fields))
 
 
 class InstanceDefinition_PathItem(InstanceDefinition):
@@ -224,7 +229,7 @@ class InstanceDefinition_PathItem(InstanceDefinition):
         return globals_.Area.paths
 
     def createNew(self):
-        return PathItem(self.objx, self.objy, *(field.title for field in self.fields))
+        return PathItem(self.objx, self.objy, *(field for field in self.fields))
 
 
 class InstanceDefinition_CommentItem(InstanceDefinition):
@@ -253,6 +258,7 @@ class ListWidgetItem_SortsByOther(QtWidgets.QListWidgetItem):
         self.reference = reference
 
     def __lt__(self, other):
+        other = cast(ListWidgetItem_SortsByOther, other)
         return self.reference < other.reference
 
 
@@ -266,6 +272,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
     dragoffsetx = 0
     dragoffsety = 0
     objx, objy = 0, 0
+    BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 
     def __init__(self):
         """
@@ -274,21 +281,32 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         QtWidgets.QGraphicsItem.__init__(self)
         self.setFlag(self.GraphicsItemFlag.ItemSendsGeometryChanges, True)
 
+        self.listitem: ListWidgetItem_SortsByOther | None = None
+
     def __lt__(self, other):
         if self.objx != other.objx:
             return self.objx < other.objx
+
         return self.objy < other.objy
+
+    def ListString(self) -> str | None:
+        """
+        Returns a string that can be used to describe the item in a list
+        """
+        return None
 
     def itemChange(self, change, value):
         """
         Makes sure positions don't go out of bounds and updates them as necessary
         """
+        if not globals_.mainWindow:
+            return
 
         if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange:
-            # snap to 24x24
+            # Snap to 24x24
             newpos = value
 
-            # snap even further if Alt isn't held
+            # Snap even further if Alt isn't held
             # but -only- if OverrideSnapping is off
             if (not globals_.OverrideSnapping) and (not self.autoPosChange):
                 if self.scene() is None:
@@ -302,10 +320,16 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
                 elif not objectsSelected and self.isSelected() and len(globals_.mainWindow.CurrentSelection) > 1:
                     # Snap to 8x8, but with the dragoffsets
                     dragoffsetx, dragoffsety = int(self.dragoffsetx), int(self.dragoffsety)
-                    if dragoffsetx < -12: dragoffsetx += 12
-                    if dragoffsety < -12: dragoffsety += 12
-                    if dragoffsetx == 0: dragoffsetx = -12
-                    if dragoffsety == 0: dragoffsety = -12
+
+                    if dragoffsetx < -12:
+                        dragoffsetx += 12
+                    if dragoffsety < -12:
+                        dragoffsety += 12
+                    if dragoffsetx == 0:
+                        dragoffsetx = -12
+                    if dragoffsety == 0:
+                        dragoffsety = -12
+
                     referenceX = int((newpos.x() + 6 + 12 + dragoffsetx) / 12) * 12
                     referenceY = int((newpos.y() + 6 + 12 + dragoffsety) / 12) * 12
                     newpos.setX(referenceX - (12 + dragoffsetx))
@@ -313,8 +337,12 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
                 elif objectsSelected and self.isSelected():
                     # Objects are selected, too; move in sync by snapping to whole blocks
                     dragoffsetx, dragoffsety = int(self.dragoffsetx), int(self.dragoffsety)
-                    if dragoffsetx == 0: dragoffsetx = -24
-                    if dragoffsety == 0: dragoffsety = -24
+
+                    if dragoffsetx == 0:
+                        dragoffsetx = -24
+                    if dragoffsety == 0:
+                        dragoffsety = -24
+
                     referenceX = int((newpos.x() + 12 + 24 + dragoffsetx) / 24) * 24
                     referenceY = int((newpos.y() + 12 + 24 + dragoffsety) / 24) * 24
                     newpos.setX(referenceX - (24 + dragoffsetx))
@@ -327,13 +355,11 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
             x = newpos.x()
             y = newpos.y()
 
-            # don't let it get out of the boundaries
-            if x < 0: newpos.setX(0)
-            if x > 24552: newpos.setX(24552)
-            if y < 0: newpos.setY(0)
-            if y > 12264: newpos.setY(12264)
+            # Don't let it get out of the boundaries
+            newpos.setX(clamp(x, 0, 24552))
+            newpos.setY(clamp(y, 0, 12264))
 
-            # update the data
+            # Update the data
             x = int(newpos.x() / 1.5)
             y = int(newpos.y() / 1.5)
             if x != self.objx or y != self.objy:
@@ -343,8 +369,10 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
                     self.BoundingRect.width(),
                     self.BoundingRect.height(),
                 )
-                if self.scene() is not None:
-                    self.scene().update(updRect)
+
+                scene = self.scene()
+                if scene is not None:
+                    scene.update(updRect)
 
                 oldx = self.objx
                 oldy = self.objy
@@ -363,10 +391,15 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
                         # it works and I can't think of a better way to do it. :P
                         acts = set()
                         acts.add(MoveItemUndoAction(self, oldx, oldy, x, y))
+
                         for item in globals_.mainWindow.CurrentSelection:
-                            if item is self: continue
+                            if item is self:
+                                continue
+
+                            item = cast(LevelEditorItem, item)
                             act = MoveItemUndoAction(item, item.objx, item.objy, item.objx, item.objy)
                             acts.add(act)
+
                         act = SimultaneousUndoAction(acts)
                         globals_.mainWindow.undoStack.addOrExtendAction(act)
 
@@ -386,15 +419,19 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         """
         Updates the list item
         """
-        if not hasattr(self, 'listitem'): return
-        if self.listitem is None: return
+        if not hasattr(self, 'listitem'):
+            return
+
+        if self.listitem is None:
+            return
 
         if updateTooltipPreview:
             # It's just like Qt to make this overly complicated. XP
             img = self.renderInLevelIcon()
             byteArray = QtCore.QByteArray()
             buf = QtCore.QBuffer(byteArray)
-            img.save(buf, 'PNG')
+            if img is not None:
+                img.save(buf, 'PNG')
             byteObj = bytes(byteArray)
             b64 = base64.b64encode(byteObj).decode('utf-8')
 
@@ -406,22 +443,25 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         """
         Renders an icon of this item as it appears in the level
         """
+        if globals_.mainWindow is None:
+            return
+
         # Constants:
         # Maximum size of the preview (it will be shrunk if it exceeds this)
-        maxSize = QtCore.QSize(256, 256)
+        max_size = QtCore.QSize(256, 256)
         # Percentage of the size to use for margins
-        marginPct = 0.75
+        margin_pct = 0.75
         # Maximum margin (24 = 1 block)
-        maxMargin = 96
+        max_margin = 96
 
         # Get the full bounding rectangle
         br = self.getFullRect()
 
         # Expand the rect to add extra margins around the edges
-        marginX = br.width() * marginPct
-        marginY = br.height() * marginPct
-        marginX = min(marginX, maxMargin)
-        marginY = min(marginY, maxMargin)
+        marginX = br.width() * margin_pct
+        marginY = br.height() * margin_pct
+        marginX = min(marginX, max_margin)
+        marginY = min(marginY, max_margin)
         br.setX(br.x() - marginX)
         br.setY(br.y() - marginY)
         br.setWidth(br.width() + marginX)
@@ -441,9 +481,9 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
 
         # Shrink it if it's too big
         final = ScreenshotImage
-        if ScreenshotImage.width() > maxSize.width() or ScreenshotImage.height() > maxSize.height():
+        if ScreenshotImage.width() > max_size.width() or ScreenshotImage.height() > max_size.height():
             final = ScreenshotImage.scaled(
-                maxSize,
+                max_size,
                 QtCore.Qt.AspectRatioMode.KeepAspectRatio,
                 QtCore.Qt.TransformationMode.SmoothTransformation,
             )
@@ -463,7 +503,7 @@ class ObjectItem(LevelEditorItem):
     """
     instanceDef = InstanceDefinition_ObjectItem
 
-    def __init__(self, tileset, type, layer, x, y, width, height, z):
+    def __init__(self, tileset: int, object_num: int, layer: int, x: int, y: int, width: int, height: int, z: int):
         """
         Creates an object with specific data
         """
@@ -472,7 +512,7 @@ class ObjectItem(LevelEditorItem):
             self.setAcceptHoverEvents(True)
 
         self.tileset = tileset
-        self.type = type
+        self.object_num = object_num
         self.objx = x
         self.objy = y
         self.layer = layer
@@ -511,12 +551,12 @@ class ObjectItem(LevelEditorItem):
         self.updateObjCache()
         self.UpdateTooltip()
 
-    def SetType(self, tileset, type):
+    def SetType(self, tileset, object_num):
         """
         Sets the type of the object
         """
         self.tileset = tileset
-        self.type = type
+        self.object_num = object_num
         self.updateObjCache()
         self.update()
 
@@ -527,14 +567,14 @@ class ObjectItem(LevelEditorItem):
         Updates the tooltip
         """
         self.setToolTip(
-            globals_.trans.string('Objects', 0, '[tileset]', self.tileset + 1, '[obj]', self.type, '[width]', self.width,
+            globals_.trans.string('Objects', 0, '[tileset]', self.tileset + 1, '[obj]', self.object_num, '[width]', self.width,
                          '[height]', self.height, '[layer]', self.layer))
 
     def updateObjCache(self):
         """
         Updates the rendered object data
         """
-        self.objdata = RenderObject(self.tileset, self.type, self.width, self.height)
+        self.objdata = RenderObject(self.tileset, self.object_num, self.width, self.height)
         self.randomise()
 
     def isBottomRowSpecial(self):
@@ -543,24 +583,27 @@ class ObjectItem(LevelEditorItem):
         vdouble top tile.
         """
         if globals_.TilesetFilesLoaded[self.tileset] is None or not len(globals_.TilesetInfo):
-            # no randomisation info -> false
+            # No randomisation info -> false
             return False
 
         name = self.get_tileset_base_name()
 
         if name not in globals_.TilesetInfo:
-            # tileset not randomised -> false
+            # Tileset not randomised -> false
             return False
 
         tileset_info = globals_.TilesetInfo[name]
 
         for x in range(self.width):
-            # get the special data for this tile
+            # Get the special data for this tile
+            if self.objdata is None:
+                return
+
             tile = self.objdata[-1][x] & 0xFF
 
             tile_selection = tileset_info.get(tile)
             if tile_selection is None:
-                # tile not randomised -> continue with next position
+                # Tile not randomised -> continue with next position
                 continue
 
             if tile_selection.special & 0b01:
@@ -582,15 +625,21 @@ class ObjectItem(LevelEditorItem):
             # no randomisation info -> exit
             return
 
-        if globals_.ObjectDefinitions[self.tileset][self.type] is None or \
-                len(globals_.ObjectDefinitions[self.tileset][self.type].rows[0][0]) == 1:
-            # slope -> exit
+        if self.objdata is None:
+            return
+
+        obj_def = globals_.ObjectDefinitions[self.tileset][self.object_num]
+        if obj_def is None:
+            return
+
+        if globals_.ObjectDefinitions[self.tileset][self.object_num] is None or len(obj_def.rows[0][0]) == 1:
+            # Slope -> exit
             return
 
         name = self.get_tileset_base_name()
 
         if name not in globals_.TilesetInfo:
-            # tileset not randomised -> exit
+            # Tileset not randomised -> exit
             return
 
         tileset_info = globals_.TilesetInfo.get(name)
@@ -603,15 +652,15 @@ class ObjectItem(LevelEditorItem):
         if height is None:
             height = self.height
 
-        # randomise every tile in this region
+        # Randomise every tile in this region
         for y in range(starty, starty + height):
             for x in range(startx, startx + width):
-                # should we randomise this tile?
+                # Should we randomise this tile?
                 tile = self.objdata[y][x] & 0xFF
 
                 tile_selection = tileset_info.get(tile)
                 if tile_selection is None:
-                    # tile not randomised -> continue with next position
+                    # Tile not randomised -> continue with next position
                     continue
 
                 # If the special indicates the top, don't randomise it now, but
@@ -636,14 +685,14 @@ class ObjectItem(LevelEditorItem):
                         pass
 
                 if tile_selection.direction & 0b10 and y > 0:
-                    # only look at the above neighbour, since we will generate the
+                    # Only look at the above neighbour, since we will generate the
                     # neighbour below later
                     try:
                         tiles_.remove(self.objdata[y-1][x] & 0xFF)
                     except ValueError:
                         pass
 
-                # if we removed all options, just use the original tiles
+                # If we removed all options, just use the original tiles
                 if not tiles_:
                     tiles_ = tile_selection.tiles
 
@@ -690,17 +739,21 @@ class ObjectItem(LevelEditorItem):
         """
         Updates the rendered object data with custom width and height
         """
-        # if we don't have to randomise, simply rerender everything
+        obj_def = globals_.ObjectDefinitions[self.tileset][self.object_num]
+        if obj_def is None:
+            return
+
+        # If we don't have to randomise, simply rerender everything
         if globals_.TilesetFilesLoaded[self.tileset] is None \
            or not len(globals_.TilesetInfo) \
            or globals_.ObjectDefinitions is None \
            or globals_.ObjectDefinitions[self.tileset] is None \
-           or globals_.ObjectDefinitions[self.tileset][self.type] is None \
-           or globals_.ObjectDefinitions[self.tileset][self.type].rows is None \
-           or globals_.ObjectDefinitions[self.tileset][self.type].rows[0] is None \
-           or globals_.ObjectDefinitions[self.tileset][self.type].rows[0][0] is None \
-           or len(globals_.ObjectDefinitions[self.tileset][self.type].rows[0][0]) == 1:
-            # no randomisation info -> exit
+           or obj_def is None \
+           or obj_def.rows is None \
+           or obj_def.rows[0] is None \
+           or obj_def.rows[0][0] is None \
+           or len(obj_def.rows[0][0]) == 1:
+            # No randomisation info -> exit
             save = (self.width, self.height)
             self.width, self.height = width, height
             self.updateObjCache()
@@ -708,10 +761,10 @@ class ObjectItem(LevelEditorItem):
             return
 
         name = self.get_tileset_base_name()
-        tile = globals_.ObjectDefinitions[self.tileset][self.type].rows[0][0][1] & 0xFF
+        tile = obj_def.rows[0][0][1] & 0xFF
 
         if name not in globals_.TilesetInfo or tile not in globals_.TilesetInfo[name]:
-            # no randomisation needed -> exit
+            # No randomisation needed -> exit
             save = (self.width, self.height)
             self.width, self.height = width, height
             self.updateObjCache()
@@ -722,23 +775,26 @@ class ObjectItem(LevelEditorItem):
             # Width and height did not change, so there is nothing to do
             return
 
+        if self.objdata is None:
+            return
+
         if height < self.height:
             self.objdata = self.objdata[:height]
         elif height > self.height:
-            # add extra rows at the bottom
+            # Add extra rows at the bottom
             if self.isBottomRowSpecial():
-                # re-render the bottom row as well
+                # Re-render the bottom row as well
                 self.objdata = self.objdata[:-1]
                 self.height -= 1
 
-            self.objdata += RenderObject(self.tileset, self.type, self.width, height - self.height)
+            self.objdata += RenderObject(self.tileset, self.object_num, self.width, height - self.height)
             self.randomise(0, self.height, self.width, height - self.height)
 
         if width < self.width:
             for y in range(len(self.objdata)):
                 self.objdata[y] = self.objdata[y][:width]
         elif width > self.width:
-            new = RenderObject(self.tileset, self.type, width - self.width, height)
+            new = RenderObject(self.tileset, self.object_num, width - self.width, height)
             for y in range(len(self.objdata)):
                 self.objdata[y] += new[y]
             self.randomise(self.width, 0, width - self.width, height)
@@ -751,7 +807,7 @@ class ObjectItem(LevelEditorItem):
         self.BoundingRect = QtCore.QRectF(0, 0, 24 * self.width, 24 * self.height)
         self.SelectionRect = self.BoundingRect - QtCore.QMarginsF(0.5, 0.5, 0.5, 0.5)
 
-        # make sure the grabbers don't overlap
+        # Make sure the grabbers don't overlap
         size = min(4.8 + self.width * self.height * 0.01, min(self.width, self.height) * 24 / 3 - 1)
 
         corner_offset_width = 24 * self.width - size
@@ -782,25 +838,23 @@ class ObjectItem(LevelEditorItem):
         """
         Makes sure positions don't go out of bounds and updates them as necessary
         """
-
         if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange:
             scene = self.scene()
-            if scene is None: return value
+            if scene is None or globals_.mainWindow is None:
+                return value
 
-            # snap to 24x24
+            # Snap to 24x24
             newpos = value
             newpos.setX(int((newpos.x() + 12) / 24) * 24)
             newpos.setY(int((newpos.y() + 12) / 24) * 24)
             x = newpos.x()
             y = newpos.y()
 
-            # don't let it get out of the boundaries
-            if x < 0: newpos.setX(0)
-            if x > 24576: newpos.setX(24576)
-            if y < 0: newpos.setY(0)
-            if y > 12288: newpos.setY(12288)
+            # Don't let it get out of the boundaries
+            newpos.setX(clamp(x, 0, 24576))
+            newpos.setY(clamp(y, 0, 12288))
 
-            # update the data
+            # Update the data
             x = int(newpos.x() / 24)
             y = int(newpos.y() / 24)
             if x != self.objx or y != self.objy:
@@ -821,80 +875,71 @@ class ObjectItem(LevelEditorItem):
 
                 SetDirty()
 
-                # updRect = QtCore.QRectF(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
-                # scene.invalidate(updRect)
-
                 scene.invalidate(self.x(), self.y(), self.width * 24, self.height * 24,
                                  QtWidgets.QGraphicsScene.SceneLayer.BackgroundLayer)
-                # scene.invalidate(newpos.x(), newpos.y(), self.width*24, self.height*24, QtWidgets.QGraphicsScene.BackgroundLayer)
 
             return newpos
 
         return QtWidgets.QGraphicsItem.itemChange(self, change, value)
 
-    def paint(self, painter, option, widget):
+    def paint(self, painter, option, widget = ...):
         """
         Paints the object
         """
         if not self.isSelected():
             return
 
-        painter.setPen(QtGui.QPen(globals_.theme.color('object_lines_s'), 1, QtCore.Qt.PenStyle.DashLine))
+        if not painter or not globals_.theme:
+            return
+
+        color_line_s = globals_.theme.color('object_lines_s')
+        color_line_r = globals_.theme.color('object_lines_r')
+        if not color_line_s or not color_line_r:
+            return
+
+        painter.setPen(QtGui.QPen(color_line_s, 1, QtCore.Qt.PenStyle.DashLine))
         painter.drawRect(self.SelectionRect)
-        painter.fillRect(self.SelectionRect, globals_.theme.color('object_fill_s'))
 
-        if self.TLGrabbed:
-            painter.fillRect(self.GrabberRectTL, globals_.theme.color('object_lines_r'))
-        else:
-            painter.fillRect(self.GrabberRectTL, globals_.theme.color('object_lines_s'))
+        color = globals_.theme.color('object_fill_s')
+        if color is not None:
+            painter.fillRect(self.SelectionRect, color)
 
-        if self.TRGrabbed:
-            painter.fillRect(self.GrabberRectTR, globals_.theme.color('object_lines_r'))
-        else:
-            painter.fillRect(self.GrabberRectTR, globals_.theme.color('object_lines_s'))
+        is_grabbed = [
+            self.TLGrabbed, self.TRGrabbed,
+            self.BLGrabbed, self.BRGrabbed,
+            self.MTGrabbed, self.MLGrabbed,
+            self.MRGrabbed, self.MBGrabbed
+        ]
+        grabber_rects = [
+            self.GrabberRectTL, self.GrabberRectTR,
+            self.GrabberRectBL, self.GrabberRectBR,
+            self.GrabberRectMT, self.GrabberRectML,
+            self.GrabberRectMR, self.GrabberRectMB
+        ]
 
-        if self.BLGrabbed:
-            painter.fillRect(self.GrabberRectBL, globals_.theme.color('object_lines_r'))
-        else:
-            painter.fillRect(self.GrabberRectBL, globals_.theme.color('object_lines_s'))
+        for i, rect in enumerate(grabber_rects):
+            if is_grabbed[i]:
+                color = color_line_r
+            else:
+                color = color_line_s
 
-        if self.BRGrabbed:
-            painter.fillRect(self.GrabberRectBR, globals_.theme.color('object_lines_r'))
-        else:
-            painter.fillRect(self.GrabberRectBR, globals_.theme.color('object_lines_s'))
-
-        if self.MTGrabbed:
-            painter.fillRect(self.GrabberRectMT, globals_.theme.color('object_lines_r'))
-        else:
-            painter.fillRect(self.GrabberRectMT, globals_.theme.color('object_lines_s'))
-
-        if self.MLGrabbed:
-            painter.fillRect(self.GrabberRectML, globals_.theme.color('object_lines_r'))
-        else:
-            painter.fillRect(self.GrabberRectML, globals_.theme.color('object_lines_s'))
-
-        if self.MBGrabbed:
-            painter.fillRect(self.GrabberRectMB, globals_.theme.color('object_lines_r'))
-        else:
-            painter.fillRect(self.GrabberRectMB, globals_.theme.color('object_lines_s'))
-
-        if self.MRGrabbed:
-            painter.fillRect(self.GrabberRectMR, globals_.theme.color('object_lines_r'))
-        else:
-            painter.fillRect(self.GrabberRectMR, globals_.theme.color('object_lines_s'))
+            painter.fillRect(rect, color)
 
     def mousePressEvent(self, event):
         """
         Overrides mouse pressing events if needed for resizing
         """
+        if not event or not globals_.mainWindow:
+            return
+
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
             if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
                 new_item = globals_.mainWindow.CreateObject(
-                    self.tileset, self.type, self.layer, self.objx,
+                    self.tileset, self.object_num, self.layer, self.objx,
                     self.objy, self.width, self.height
                 )
 
-                # swap the Z values so it doesn't look like the
+                # Swap the Z values so it doesn't look like the
                 # cloned item is the old one
                 newZ = new_item.zValue()
                 new_item.setZValue(self.zValue())
@@ -922,7 +967,7 @@ class ObjectItem(LevelEditorItem):
             or self.MBGrabbed
             or self.MRGrabbed
         ):
-            # start dragging
+            # Start dragging
             self.dragging = True
             self.dragstartx = int((event.pos().x() - 10) / 24)
             self.dragstarty = int((event.pos().y() - 10) / 24)
@@ -951,7 +996,7 @@ class ObjectItem(LevelEditorItem):
 
     def hoverMoveEvent(self, event):
         LevelEditorItem.hoverMoveEvent(self, event)
-        if globals_.ObjectsFrozen:
+        if globals_.ObjectsFrozen or not event:
             return
 
         TLHovered = self.GrabberRectTL.contains(event.pos())
@@ -994,14 +1039,19 @@ class ObjectItem(LevelEditorItem):
         self.UpdateRects()
 
         updaterect = oldrect.united(self.BoundingRect.translated(self.objx * 24, self.objy * 24))
-        self.scene().update(updaterect)
+        scene = self.scene()
+        if scene is not None:
+            scene.update(updaterect)
 
     def mouseMoveEvent(self, event):
         """
         Overrides mouse movement events if needed for resizing
         """
+        if event is None:
+            return
+
         if event.buttons() != QtCore.Qt.MouseButton.NoButton and self.dragging:
-            # resize it
+            # Resize it
             dsx = self.dragstartx
             dsy = self.dragstarty
 
@@ -1010,6 +1060,7 @@ class ObjectItem(LevelEditorItem):
 
             cx = self.objx
             cy = self.objy
+            obj: ObjectItem
 
             if self.TLGrabbed:
                 if clickedx != dsx or clickedy != dsy:
@@ -1266,7 +1317,9 @@ class ObjectItem(LevelEditorItem):
         Delete the object from the level
         """
         globals_.Area.RemoveFromLayer(self)
-        self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+        scene = self.scene()
+        if scene is not None:
+            scene.update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
         setOverrideCursor(None)
 
     def mouseReleaseEvent(self, event):
@@ -1331,44 +1384,49 @@ class ZoneItem(LevelEditorItem):
                 bounding = block
                 break
 
-        self.yupperbound = bounding[0]
-        self.ylowerbound = bounding[1]
-        self.yupperbound2 = bounding[2]
-        self.ylowerbound2 = bounding[3]
-        self.entryid = bounding[4]
-        self.mpcamzoomadjust = bounding[5]
-        self.yupperbound3 = bounding[6]
-        self.ylowerbound3 = bounding[7]
+        if bounding is not None:
+            self.yupperbound = bounding[0]
+            self.ylowerbound = bounding[1]
+            self.yupperbound2 = bounding[2]
+            self.ylowerbound2 = bounding[3]
+            self.entryid = bounding[4]
+            self.mpcamzoomadjust = bounding[5]
+            self.yupperbound3 = bounding[6]
+            self.ylowerbound3 = bounding[7]
 
         bgABlock = None
         id = self.block5id
         for block in bgA:
-            if block[0] == id: bgABlock = block
+            if block[0] == id:
+                bgABlock = block
 
-        self.entryidA = bgABlock[0]
-        self.XscrollA = bgABlock[1]
-        self.YscrollA = bgABlock[2]
-        self.YpositionA = bgABlock[3]
-        self.XpositionA = bgABlock[4]
-        self.bg1A = bgABlock[5]
-        self.bg2A = bgABlock[6]
-        self.bg3A = bgABlock[7]
-        self.ZoomA = bgABlock[8]
+        if bgABlock is not None:
+            self.entryidA = bgABlock[0]
+            self.XscrollA = bgABlock[1]
+            self.YscrollA = bgABlock[2]
+            self.YpositionA = bgABlock[3]
+            self.XpositionA = bgABlock[4]
+            self.bg1A = bgABlock[5]
+            self.bg2A = bgABlock[6]
+            self.bg3A = bgABlock[7]
+            self.ZoomA = bgABlock[8]
 
         bgBBlock = None
         id = self.block6id
         for block in bgB:
-            if block[0] == id: bgBBlock = block
+            if block[0] == id:
+                bgBBlock = block
 
-        self.entryidB = bgBBlock[0]
-        self.XscrollB = bgBBlock[1]
-        self.YscrollB = bgBBlock[2]
-        self.YpositionB = bgBBlock[3]
-        self.XpositionB = bgBBlock[4]
-        self.bg1B = bgBBlock[5]
-        self.bg2B = bgBBlock[6]
-        self.bg3B = bgBBlock[7]
-        self.ZoomB = bgBBlock[8]
+        if bgBBlock is not None:
+            self.entryidB = bgBBlock[0]
+            self.XscrollB = bgBBlock[1]
+            self.YscrollB = bgBBlock[2]
+            self.YpositionB = bgBBlock[3]
+            self.XpositionB = bgBBlock[4]
+            self.bg1B = bgBBlock[5]
+            self.bg2B = bgBBlock[6]
+            self.bg3B = bgBBlock[7]
+            self.ZoomB = bgBBlock[8]
 
         self.dragging = False
         self.dragstartx = -1
@@ -1391,9 +1449,13 @@ class ZoneItem(LevelEditorItem):
         """
         Updates the zone's bounding rectangle
         """
+        if globals_.mainWindow is None:
+            return
+
         if hasattr(globals_.mainWindow, 'ZoomLevel'):
             grabberWidth = 480 / globals_.mainWindow.ZoomLevel
-            if grabberWidth < 4.8: grabberWidth = 4.8
+            if grabberWidth < 4.8:
+                grabberWidth = 4.8
         else:
             grabberWidth = 4.8
 
@@ -1483,10 +1545,13 @@ class ZoneItem(LevelEditorItem):
         # combined to reduce floating point rounding errors.
         self.ent_indicator_offset = height * 24 * 16 / 18
 
-    def paint(self, painter, option, widget):
+    def paint(self, painter, option, widget = ...):
         """
         Paints the zone on screen
         """
+        if not painter or not option or not globals_.theme or not self.font:
+            return
+
         painter.setClipRect(option.exposedRect)
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
@@ -1501,7 +1566,9 @@ class ZoneItem(LevelEditorItem):
             if self.ent_indicator_show and self.ent_indicator_offset < self.DrawRect.width():
                 offset = self.ent_indicator_offset
 
-                painter.setPen(QtGui.QPen(globals_.theme.color('zone_entrance_helper'), 2))
+                color = globals_.theme.color('zone_entrance_helper')
+                if color is not None:
+                    painter.setPen(QtGui.QPen(color, 2))
                 lineStart = QtCore.QPointF(self.DrawRect.x() + offset, self.DrawRect.y())
                 lineEnd = QtCore.QPointF(self.DrawRect.x() + offset, self.DrawRect.y() + self.DrawRect.height())
                 painter.drawLine(lineStart, lineEnd)
@@ -1521,13 +1588,17 @@ class ZoneItem(LevelEditorItem):
             self.update(self.DrawRect)
 
         # Now paint the borders
-        painter.setPen(QtGui.QPen(globals_.theme.color('zone_lines'), 3))
+        color = globals_.theme.color('zone_lines')
+        if color is not None:
+            painter.setPen(QtGui.QPen(color, 3))
         if self.visibility >= 32 and globals_.RealViewEnabled:
             painter.setBrush(QtGui.QBrush(globals_.theme.color('zone_dark_fill')))
         painter.drawRect(self.DrawRect)
 
         # And text
-        painter.setPen(QtGui.QPen(globals_.theme.color('zone_text'), 3))
+        color = globals_.theme.color('zone_text')
+        if color is not None:
+            painter.setPen(QtGui.QPen(color, 3))
         painter.setFont(self.font)
         painter.drawText(self.TitlePos, self.title)
 
@@ -1549,6 +1620,8 @@ class ZoneItem(LevelEditorItem):
         """
         Overrides mouse pressing events if needed for resizing
         """
+        if not event:
+            return
 
         if self.GrabberRectTL.contains(event.pos()):
             self.dragging = True
@@ -1566,7 +1639,7 @@ class ZoneItem(LevelEditorItem):
             self.dragging = False
 
         if self.dragging:
-            # start dragging
+            # Start dragging
             self.dragstartx = int(event.scenePos().x() / 1.5)
             self.dragstarty = int(event.scenePos().y() / 1.5)
             self.draginitialx1 = self.objx
@@ -1581,9 +1654,11 @@ class ZoneItem(LevelEditorItem):
         """
         Overrides mouse movement events if needed for resizing
         """
+        if not event or not globals_.mainWindow:
+            return
 
         if event.buttons() != QtCore.Qt.MouseButton.NoButton and self.dragging:
-            # resize it
+            # Resize it
             clickedx = int(event.scenePos().x() / 1.5)
             clickedy = int(event.scenePos().y() / 1.5)
 
@@ -1592,7 +1667,7 @@ class ZoneItem(LevelEditorItem):
             x2 = self.draginitialx2
             y2 = self.draginitialy2
 
-            # if alt is not held, snap to 8x8 grid
+            # If alt is not held, snap to 8x8 grid
             if QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.KeyboardModifier.AltModifier:
                 clickedx = 8 * round(clickedx / 8)
                 clickedy = 8 * round(clickedy / 8)
@@ -1607,7 +1682,7 @@ class ZoneItem(LevelEditorItem):
             MIN_H = 112
 
             if self.dragcorner == 1: # TL
-                # rect from (x2, y2) to clicked
+                # Rect from (x2, y2) to clicked
                 x1 = clickedx
                 y1 = clickedy
                 if x1 < MIN_X: x1 = MIN_X
@@ -1616,7 +1691,7 @@ class ZoneItem(LevelEditorItem):
                 if y2 - y1 < MIN_H: y1 = y2 - MIN_H
 
             elif self.dragcorner == 2: # TR
-                # rect from (x1, y2) to clicked
+                # Rect from (x1, y2) to clicked
                 x2 = clickedx
                 y1 = clickedy
                 if y1 < MIN_Y: y1 = MIN_Y
@@ -1624,7 +1699,7 @@ class ZoneItem(LevelEditorItem):
                 if y2 - y1 < MIN_H: y1 = y2 - MIN_H
 
             elif self.dragcorner == 3: # BL
-                # rect from (x2, y1) to clicked
+                # Rect from (x2, y1) to clicked
                 x1 = clickedx
                 y2 = clickedy
                 if x1 < MIN_X: x1 = MIN_X
@@ -1632,7 +1707,7 @@ class ZoneItem(LevelEditorItem):
                 if y2 - y1 < MIN_H: y2 = y1 + MIN_H
 
             elif self.dragcorner == 4: # BR
-                # rect from (x1, y1) to clicked
+                # Rect from (x1, y1) to clicked
                 x2 = clickedx
                 y2 = clickedy
                 if x2 - x1 < MIN_W: x2 = x1 + MIN_W
@@ -1657,7 +1732,9 @@ class ZoneItem(LevelEditorItem):
             updaterect = oldrect.united(newrect)
             updaterect += QtCore.QMarginsF(-3, -3, 3, 3)
 
-            self.scene().update(updaterect)
+            scene = self.scene()
+            if scene is not None:
+                scene.update(updaterect)
 
             globals_.mainWindow.level_overview.update()
 
@@ -1703,14 +1780,19 @@ class ZoneGrabberItem(LevelEditorItem):
         self.prepareGeometryChange()
         self.BoundingRect = QtCore.QRectF(rect)
 
-    def paint(self, painter, option, widget):
+    def paint(self, painter, option, widget = ...):
         """
         Paints the grabber on screen
         """
+        if not painter or not option or not globals_.theme:
+            return
+
         painter.setClipRect(option.exposedRect)
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
-        painter.fillRect(self.BoundingRect, globals_.theme.color('zone_corner'))
+        color = globals_.theme.color('zone_corner')
+        if color is not None and self.BoundingRect is not None:
+            painter.fillRect(self.BoundingRect, color)
 
     def hoverMoveEvent(self, event):
         # Zones cannot be selected, so the cursor will always be shown for these
@@ -1774,11 +1856,12 @@ class LocationItem(LevelEditorItem):
         """
         self.title = globals_.trans.string('Locations', 0, '[id]', self.id)
 
-        # since font never changes, we can just define TitleRect here
-        metrics = QtGui.QFontMetrics(self.font)
-        self.TitleRect = QtCore.QRectF(metrics.boundingRect(self.title))
-        self.TitleRect.setWidth(self.TitleRect.width() + 4.0)
-        self.TitleRect.moveTo(4, 4)
+        # Since font never changes, we can just define TitleRect here
+        if self.font is not None:
+            metrics = QtGui.QFontMetrics(self.font)
+            self.TitleRect = QtCore.QRectF(metrics.boundingRect(self.title))
+            self.TitleRect.setWidth(self.TitleRect.width() + 4.0)
+            self.TitleRect.moveTo(4, 4)
 
         self.UpdateRects()
 
@@ -1814,10 +1897,13 @@ class LocationItem(LevelEditorItem):
         qpp.addRect(self.TitleRect)
         return qpp
 
-    def paint(self, painter, option, widget):
+    def paint(self, painter, option, widget = ...):
         """
         Paints the location on screen
         """
+        if not painter or not globals_.theme or not self.font:
+            return
+
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
         # Paint liquids/fog
@@ -1835,7 +1921,9 @@ class LocationItem(LevelEditorItem):
             painter.setPen(QtGui.QPen(globals_.theme.color('location_lines')))
         else:
             painter.setBrush(QtGui.QBrush(globals_.theme.color('location_fill_s')))
-            painter.setPen(QtGui.QPen(globals_.theme.color('location_lines_s'), 1, QtCore.Qt.PenStyle.DashLine))
+            color = globals_.theme.color('location_lines_s')
+            if color is not None:
+                painter.setPen(QtGui.QPen(color, 1, QtCore.Qt.PenStyle.DashLine))
         painter.drawRect(self.DrawRect)
 
         # Draw the ID
@@ -1845,12 +1933,17 @@ class LocationItem(LevelEditorItem):
 
         # Draw the resizer rectangle, if selected
         if self.isSelected():
-            painter.fillRect(self.GrabberRect, globals_.theme.color('location_lines_s'))
+            color = globals_.theme.color('location_lines_s')
+            if color is not None:
+                painter.fillRect(self.GrabberRect, color)
 
     def mousePressEvent(self, event):
         """
         Overrides mouse pressing events if needed for resizing
         """
+        if not event:
+            return
+
         if self.isSelected() and self.GrabberRect.contains(event.pos()):
             # start dragging
             self.dragging = True
@@ -1865,6 +1958,9 @@ class LocationItem(LevelEditorItem):
         """
         Overrides mouse movement events if needed for resizing
         """
+        if not event or not globals_.mainWindow:
+            return
+
         if event.buttons() != QtCore.Qt.MouseButton.NoButton and self.dragging:
             # Resize the location.
             change = self.dragResize(event.scenePos(), self.dragstartx, self.dragstarty)
@@ -1932,7 +2028,10 @@ class LocationItem(LevelEditorItem):
             updaterect = oldrect.united(newrect)
 
             self.UpdateRects()
-            self.scene().update(updaterect)
+            scene = self.scene()
+            if scene is not None:
+                scene.update(updaterect)
+
             change = True
 
         return change
@@ -1941,13 +2040,22 @@ class LocationItem(LevelEditorItem):
         """
         Delete the location from the level
         """
+        if globals_.mainWindow is None:
+            return
+
         loclist = globals_.mainWindow.locationList
         globals_.mainWindow.UpdateFlag = True
         loclist.takeItem(loclist.row(self.listitem))
         globals_.mainWindow.UpdateFlag = False
-        loclist.selectionModel().clearSelection()
+
+        sel_model = loclist.selectionModel()
+        if sel_model is not None:
+            sel_model.clearSelection()
+
         globals_.Area.locations.remove(self)
-        self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+        scene = self.scene()
+        if scene is not None:
+            scene.update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
         setOverrideCursor(None)
 
     def mouseReleaseEvent(self, event):
@@ -1960,6 +2068,9 @@ class LocationItem(LevelEditorItem):
         self.update()
 
     def hoverMoveEvent(self, event):
+        if event is None:
+            return
+
         LevelEditorItem.hoverMoveEvent(self, event)
         if globals_.LocationsFrozen:
             return
@@ -1983,7 +2094,7 @@ class SpriteItem(LevelEditorItem):
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
     SelectionRect = QtCore.QRectF(0, 0, 23, 23)
 
-    def __init__(self, type_, x, y, data):
+    def __init__(self, sprite_num, x, y, data):
         """
         Creates a sprite with specific data
         """
@@ -1993,7 +2104,7 @@ class SpriteItem(LevelEditorItem):
             self.setAcceptHoverEvents(True)
 
         self.font = globals_.NumberFont
-        self.type = type_
+        self.sprite_num = sprite_num
         self.objx = x
         self.objy = y
         self.spritedata = data
@@ -2002,10 +2113,10 @@ class SpriteItem(LevelEditorItem):
 
         self.ImageObj = SLib.SpriteImage(self)
 
-        if 0 <= type_ < globals_.NumSprites:
-            self.name = globals_.Sprites[type_].name
+        if 0 <= sprite_num < globals_.NumSprites:
+            self.name = globals_.Sprites[sprite_num].name
         else:
-            self.name = "UNKNOWN"
+            self.name = globals_.trans.string('Sprites', 24)
 
         self.InitializeSprite()
 
@@ -2025,131 +2136,20 @@ class SpriteItem(LevelEditorItem):
             )
         globals_.DirtyOverride -= 1
 
-    def SetType(self, type_):
+    def SetType(self, sprite_num):
         """
         Sets the type of the sprite
         """
-        if 0 <= type_ < globals_.NumSprites:
-            self.name = globals_.Sprites[type_].name
+        if 0 <= sprite_num < globals_.NumSprites:
+            self.name = globals_.Sprites[sprite_num].name
         else:
-            self.name = "UNKNOWN"
+            self.name = globals_.trans.string('Sprites', 24) # 'UNKNOWN'
 
-        self.setToolTip(globals_.trans.string('Sprites', 0, '[type]', type_, '[name]', self.name))
-        self.type = type_
+        self.setToolTip(globals_.trans.string('Sprites', 0, '[type]', sprite_num, '[name]', self.name))
+        self.sprite_num = sprite_num
 
         self.InitializeSprite()
-
         self.UpdateListItem()
-
-    def ListString(self):
-        """
-        Returns a string that can be used to describe the sprite in a list
-        """
-        baseString = globals_.trans.string('Sprites', 1, '[name]', self.name, '[x]', self.objx, '[y]', self.objy)
-
-        SpritesThatActivateAnEvent = set(globals_.SpriteListData[0])
-        SpritesThatActivateAnEventNyb0 = set(globals_.SpriteListData[1])
-        SpritesTriggeredByAnEventNyb1 = set(globals_.SpriteListData[2])
-        SpritesTriggeredByAnEventNyb0 = set(globals_.SpriteListData[3])
-        StarCoinNumbers = set(globals_.SpriteListData[4])
-        SpritesWithSetIDs = set(globals_.SpriteListData[5])
-        SpritesWithMovementIDsNyb2 = set(globals_.SpriteListData[6])
-        SpritesWithMovementIDsNyb3 = set(globals_.SpriteListData[7])
-        SpritesWithMovementIDsNyb5 = set(globals_.SpriteListData[8])
-        SpritesWithRotationIDs = set(globals_.SpriteListData[9])
-        SpritesWithLocationIDsNyb5 = set(globals_.SpriteListData[10])
-        SpritesWithLocationIDsNyb5and0xF = set(globals_.SpriteListData[11])
-        SpritesWithLocationIDsNyb4 = set(globals_.SpriteListData[12])
-        AndController = set(globals_.SpriteListData[13])
-        OrController = set(globals_.SpriteListData[14])
-        MultiChainer = set(globals_.SpriteListData[15])
-        Random = set(globals_.SpriteListData[16])
-        Clam = set(globals_.SpriteListData[17])
-        Coin = set(globals_.SpriteListData[18])
-        MushroomScrewPlatforms = set(globals_.SpriteListData[19])
-        SpritesWithMovementIDsNyb5Type2 = set(globals_.SpriteListData[20])
-        BowserFireballArea = set(globals_.SpriteListData[21])
-        CheepCheepArea = set(globals_.SpriteListData[22])
-        PoltergeistItem = set(globals_.SpriteListData[23])
-
-        # Triggered by an Event
-        if self.type in SpritesTriggeredByAnEventNyb1 and self.spritedata[1] != '\0':
-            baseString += globals_.trans.string('Sprites', 2, '[event]', self.spritedata[1])
-        elif self.type in SpritesTriggeredByAnEventNyb0 and self.spritedata[0] != '\0':
-            baseString += globals_.trans.string('Sprites', 2, '[event]', self.spritedata[0])
-        elif self.type in AndController:
-            baseString += globals_.trans.string('Sprites', 3, '[event1]', self.spritedata[0], '[event2]', self.spritedata[2],
-                                       '[event3]', self.spritedata[3], '[event4]', self.spritedata[4])
-        elif self.type in OrController:
-            baseString += globals_.trans.string('Sprites', 4, '[event1]', self.spritedata[0], '[event2]', self.spritedata[2],
-                                       '[event3]', self.spritedata[3], '[event4]', self.spritedata[4])
-
-        # Activates an Event
-        if (self.type in SpritesThatActivateAnEvent) and (self.spritedata[1] != '\0'):
-            baseString += globals_.trans.string('Sprites', 5, '[event]', self.spritedata[1])
-        elif (self.type in SpritesThatActivateAnEventNyb0) and (self.spritedata[0] != '\0'):
-            baseString += globals_.trans.string('Sprites', 5, '[event]', self.spritedata[0])
-        elif (self.type in MultiChainer):
-            baseString += globals_.trans.string('Sprites', 6, '[event1]', self.spritedata[0], '[event2]', self.spritedata[1])
-        elif (self.type in Random):
-            baseString += globals_.trans.string('Sprites', 7, '[event1]', self.spritedata[0], '[event2]', self.spritedata[2],
-                                       '[event3]', self.spritedata[3], '[event4]', self.spritedata[4])
-
-        # Star Coin
-        if (self.type in StarCoinNumbers):
-            number = (self.spritedata[4] & 15) + 1
-            baseString += globals_.trans.string('Sprites', 8, '[num]', number)
-        elif (self.type in Clam) and (self.spritedata[5] & 15) == 1:
-            baseString += globals_.trans.string('Sprites', 9)
-
-        # Set ID
-        if self.type in SpritesWithSetIDs:
-            baseString += globals_.trans.string('Sprites', 10, '[id]', self.spritedata[5] & 15)
-        elif self.type in Coin and self.spritedata[2] != '\0':
-            baseString += globals_.trans.string('Sprites', 11, '[id]', self.spritedata[2])
-
-        # Movement ID (Nybble 2)
-        if self.type in SpritesWithMovementIDsNyb2 and self.spritedata[2] != '\0':
-            baseString += globals_.trans.string('Sprites', 12, '[id]', self.spritedata[2])
-        elif self.type in MushroomScrewPlatforms and self.spritedata[2] >> 4 != '\0':
-            baseString += globals_.trans.string('Sprites', 12, '[id]', self.spritedata[2] >> 4)
-
-        # Movement ID (Nybble 3)
-        if self.type in SpritesWithMovementIDsNyb3 and self.spritedata[3] >> 4 != '\0':
-            baseString += globals_.trans.string('Sprites', 12, '[id]', (self.spritedata[3] >> 4))
-
-        # Movement ID (Nybble 5)
-        if self.type in SpritesWithMovementIDsNyb5 and self.spritedata[5] >> 4:
-            baseString += globals_.trans.string('Sprites', 12, '[id]', (self.spritedata[5] >> 4))
-        elif self.type in SpritesWithMovementIDsNyb5Type2 and self.spritedata[5] != '\0':
-            baseString += globals_.trans.string('Sprites', 12, '[id]', self.spritedata[5])
-
-        # Rotation ID
-        if self.type in SpritesWithRotationIDs and self.spritedata[5] != '\0':
-            baseString += globals_.trans.string('Sprites', 13, '[id]', self.spritedata[5])
-
-        # Location ID (Nybble 5)
-        if self.type in SpritesWithLocationIDsNyb5 and self.spritedata[5] != '\0':
-            baseString += globals_.trans.string('Sprites', 14, '[id]', self.spritedata[5])
-        elif self.type in SpritesWithLocationIDsNyb5and0xF and self.spritedata[5] & 15 != '\0':
-            baseString += globals_.trans.string('Sprites', 14, '[id]', self.spritedata[5] & 15)
-        elif self.type in SpritesWithLocationIDsNyb4 and self.spritedata[4] != '\0':
-            baseString += globals_.trans.string('Sprites', 14, '[id]', self.spritedata[4])
-        elif self.type in BowserFireballArea and self.spritedata[3] != '\0':
-            baseString += globals_.trans.string('Sprites', 14, '[id]', self.spritedata[3])
-        elif self.type in CheepCheepArea:  # nybble 8-9
-            if (((self.spritedata[3] & 0xF) << 4) | ((self.spritedata[4] & 0xF0) >> 4)) != '\0':
-                baseString += globals_.trans.string('Sprites', 14, '[id]',
-                                           (((self.spritedata[3] & 0xF) << 4) | ((self.spritedata[4] & 0xF0) >> 4)))
-        elif self.type in PoltergeistItem and (
-            ((self.spritedata[4] & 0xF) << 4) | ((self.spritedata[5] & 0xF0) >> 4)) != '\0':  # nybble 10-11
-            baseString += globals_.trans.string('Sprites', 14, '[id]',
-                                       (((self.spritedata[4] & 0xF) << 4) | ((self.spritedata[5] & 0xF0) >> 4)))
-
-        # Add ')' to the end
-        baseString += globals_.trans.string('Sprites', 15)
-
-        return baseString
 
     def __lt__(self, other):
         # Sort by objx, then objy, then sprite type
@@ -2161,38 +2161,41 @@ class SpriteItem(LevelEditorItem):
         """
         Initializes sprite and creates any auxiliary objects needed
         """
-        type_ = self.type
+        sprite_num = self.sprite_num
 
-        if not 0 <= type_ < globals_.NumSprites:
-            # print('Tried to initialize a sprite of type %d, but this is out of range %d.' % (type_, globals_.NumSprites))
+        if not 0 <= sprite_num < globals_.NumSprites:
             return
 
-        self.name = globals_.Sprites[type_].name
-        self.setToolTip(globals_.trans.string('Sprites', 0, '[type]', self.type, '[name]', self.name))
+        self.name = globals_.Sprites[sprite_num].name
+        self.setToolTip(globals_.trans.string('Sprites', 0, '[type]', self.sprite_num, '[name]', self.name))
 
         imgs = globals_.gamedef.getImageClasses()
-        if type_ in imgs:
-            self.setImageObj(imgs[type_])
+        if sprite_num in imgs:
+            self.setImageObj(imgs[sprite_num])
 
     def setImageObj(self, obj):
         """
         Sets a new sprite image object for this SpriteItem
         """
-        for auxObj in self.ImageObj.aux:
-            if auxObj.scene() is None: continue
-            auxObj.scene().removeItem(auxObj)
+        for aux_obj in self.ImageObj.aux:
+            aux_obj = cast(SLib.AuxiliarySpriteItem, aux_obj)
+            scene = aux_obj.scene()
+
+            if scene is not None:
+                scene.removeItem(aux_obj)
 
         self.setZValue(26000)
         self.resetTransform()
 
-        if (self.type in globals_.gamedef.getImageClasses()) and (self.type not in SLib.SpriteImagesLoaded):
-            globals_.gamedef.getImageClasses()[self.type].loadImages()
-            SLib.SpriteImagesLoaded.add(self.type)
+        if (self.sprite_num in globals_.gamedef.getImageClasses()) and (self.sprite_num not in SLib.SpriteImagesLoaded):
+            globals_.gamedef.getImageClasses()[self.sprite_num].loadImages()
+            SLib.SpriteImagesLoaded.add(self.sprite_num)
 
         self.ImageObj = obj(self) if obj else SLib.SpriteImage(self)
 
         # show auxiliary objects properly
         for aux in self.ImageObj.aux:
+            aux = cast(SLib.AuxiliarySpriteItem, aux)
             aux.setVisible(globals_.SpriteImagesShown)
 
         self.UpdateDynamicSizing()
@@ -2201,14 +2204,16 @@ class SpriteItem(LevelEditorItem):
         """
         Updates the sizes for dynamically sized sprites
         """
-        CurrentRect = QtCore.QRectF(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
-        CurrentAuxRects = []
-        for auxObj in self.ImageObj.aux:
-            CurrentAuxRects.append(QtCore.QRectF(
-                auxObj.x() + self.x(),
-                auxObj.y() + self.y(),
-                auxObj.boundingRect().width(),
-                auxObj.boundingRect().height(),
+        curr_rect = QtCore.QRectF(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+        curr_aux_rects = []
+        for aux_obj in self.ImageObj.aux:
+            aux_obj = cast(SLib.AuxiliarySpriteItem, aux_obj)
+
+            curr_aux_rects.append(QtCore.QRectF(
+                aux_obj.x() + self.x(),
+                aux_obj.y() + self.y(),
+                aux_obj.boundingRect().width(),
+                aux_obj.boundingRect().height(),
             ))
 
         self.ImageObj.dataChanged()
@@ -2222,11 +2227,12 @@ class SpriteItem(LevelEditorItem):
             )
             self.ChangingPos = False
 
-        if self.scene() is not None:
-            self.scene().update(CurrentRect)
-            self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
-            for auxUpdateRect in CurrentAuxRects:
-                self.scene().update(auxUpdateRect)
+        scene = self.scene()
+        if scene is not None:
+            scene.update(curr_rect)
+            scene.update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+            for auxUpdateRect in curr_aux_rects:
+                scene.update(auxUpdateRect)
 
     def UpdateRects(self):
         """
@@ -2309,6 +2315,8 @@ class SpriteItem(LevelEditorItem):
             self.y(),
         )
         for aux in self.ImageObj.aux:
+            aux = cast(SLib.AuxiliarySpriteItem, aux)
+
             br = br.united(
                 aux.boundingRect().translated(
                     aux.x() + self.x(),
@@ -2324,8 +2332,12 @@ class SpriteItem(LevelEditorItem):
         """
 
         if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange:
-            if self.scene() is None: return value
-            if self.ChangingPos: return value
+            scene = self.scene()
+            if scene is None or globals_.mainWindow is None:
+                return value
+
+            if self.ChangingPos:
+                return value
 
             # The sprite image offset as a point
             if globals_.SpriteImagesShown:
@@ -2387,18 +2399,20 @@ class SpriteItem(LevelEditorItem):
 
             if x != self.objx or y != self.objy:
                 updRect = QtCore.QRectF(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
-                self.scene().update(updRect)
+                scene.update(updRect)
 
                 self.LevelRect.moveTo(new_pos / 24)
 
-                for auxObj in self.ImageObj.aux:
-                    auxUpdRect = QtCore.QRectF(
-                        self.pos() + auxObj.pos(),
-                        auxObj.boundingRect().size(),
-                    )
-                    self.scene().update(auxUpdRect)
+                for aux_obj in self.ImageObj.aux:
+                    aux_obj = cast(SLib.AuxiliarySpriteItem, aux_obj)
 
-                self.scene().update(
+                    update_rect = QtCore.QRectF(
+                        self.pos() + aux_obj.pos(),
+                        aux_obj.boundingRect().size(),
+                    )
+                    scene.update(update_rect)
+
+                scene.update(
                     self.ImageObj.spritebox.BoundingRect.translated(self.pos())
                 )
 
@@ -2440,18 +2454,20 @@ class SpriteItem(LevelEditorItem):
         """
         Overrides mouse pressing events if needed for cloning
         """
+        if not event or not globals_.mainWindow:
+            return
+
         if event.button() != QtCore.Qt.MouseButton.LeftButton or QtWidgets.QApplication.keyboardModifiers() != QtCore.Qt.KeyboardModifier.ControlModifier:
-            if not globals_.SpriteImagesShown:
-                oldpos = (self.objx, self.objy)
+            old_pos = (self.objx, self.objy)
 
             LevelEditorItem.mousePressEvent(self, event)
 
             if not globals_.SpriteImagesShown:
-                self.setNewObjPos(*oldpos)
+                self.setNewObjPos(*old_pos)
 
             return
 
-        globals_.mainWindow.CreateSprite(self.objx, self.objy, self.type, self.spritedata)
+        globals_.mainWindow.CreateSprite(self.objx, self.objy, self.sprite_num, self.spritedata)
         globals_.mainWindow.scene.clearSelection()
         self.setSelected(True)
 
@@ -2489,12 +2505,17 @@ class SpriteItem(LevelEditorItem):
         # Some of the more advanced painters need to update the whole scene
         # and this is a convenient way to do it:
         # self.parent.updateScene()
-        if self.scene() is not None: self.scene().update()
+        scene = self.scene()
+        if scene is not None:
+            scene.update()
 
-    def paint(self, painter, option=None, widget=None, overrideGlobals=False):
+    def paint(self, painter: QtGui.QPainter | None, option: 'QtWidgets.QStyleOptionGraphicsItem | None'=None,
+              widget: QtWidgets.QWidget | None=None, overrideGlobals=False):
         """
         Paints the sprite
         """
+        if not painter or not self.font:
+            return
 
         # Setup stuff
         if option is not None:
@@ -2503,6 +2524,7 @@ class SpriteItem(LevelEditorItem):
 
         # Turn aux things on or off
         for aux in self.ImageObj.aux:
+            aux = cast(SLib.AuxiliarySpriteItem, aux)
             aux.setVisible(globals_.SpriteImagesShown)
 
         # Default spritebox
@@ -2516,9 +2538,13 @@ class SpriteItem(LevelEditorItem):
 
             # Draw the selected-sprite-image overlay box
             if self.isSelected() and (not drawSpritebox or self.ImageObj.size != (16, 16)):
-                painter.setPen(QtGui.QPen(globals_.theme.color('sprite_lines_s'), 1, QtCore.Qt.PenStyle.DashLine))
+                color = globals_.theme.color('sprite_lines_s')
+                if color is not None:
+                    painter.setPen(QtGui.QPen(color, 1, QtCore.Qt.PenStyle.DashLine))
                 painter.drawRect(self.SelectionRect)
-                painter.fillRect(self.SelectionRect, globals_.theme.color('sprite_fill_s'))
+                color = globals_.theme.color('sprite_fill_s')
+                if color is not None:
+                    painter.fillRect(self.SelectionRect, color)
 
             # Determine the spritebox position
             if drawSpritebox:
@@ -2528,10 +2554,14 @@ class SpriteItem(LevelEditorItem):
         if drawSpritebox:
             if self.isSelected():
                 painter.setBrush(QtGui.QBrush(globals_.theme.color('spritebox_fill_s')))
-                painter.setPen(QtGui.QPen(globals_.theme.color('spritebox_lines_s'), 1))
+                color = globals_.theme.color('spritebox_lines_s')
+                if color is not None:
+                    painter.setPen(QtGui.QPen(color, 1))
             else:
                 painter.setBrush(QtGui.QBrush(globals_.theme.color('spritebox_fill')))
-                painter.setPen(QtGui.QPen(globals_.theme.color('spritebox_lines'), 1))
+                color = globals_.theme.color('spritebox_lines')
+                if color is not None:
+                    painter.setPen(QtGui.QPen(color, 1))
 
             if globals_.UseRoundedRectangles:
                 painter.drawRoundedRect(spriteboxRect, 4, 4)
@@ -2539,27 +2569,38 @@ class SpriteItem(LevelEditorItem):
                 painter.drawRect(spriteboxRect)
 
             painter.setFont(self.font)
-            painter.drawText(spriteboxRect, QtCore.Qt.AlignmentFlag.AlignCenter, str(self.type))
+            painter.drawText(spriteboxRect, QtCore.Qt.AlignmentFlag.AlignCenter, str(self.sprite_num))
 
     def scene(self):
         """
         Solves a small bug
         """
-        return globals_.mainWindow.scene
+        if globals_.mainWindow is not None:
+            return globals_.mainWindow.scene
 
     def delete(self):
         """
         Delete the sprite from the level
         """
+        if globals_.mainWindow is None:
+            return
+
         self.ImageObj.remove()
         globals_.mainWindow.UpdateFlag = True
         globals_.mainWindow.spriteList.takeSprite(self)
         globals_.mainWindow.UpdateFlag = False
-        globals_.mainWindow.spriteList.selectionModel().clearSelection()
-        globals_.Area.RemoveSprite(self)
-        self.scene().update()  # The zone painters need for the whole thing to update
-        setOverrideCursor(None)
 
+        sel_model = globals_.mainWindow.spriteList.selectionModel()
+        if sel_model is not None:
+            sel_model.clearSelection()
+        globals_.Area.RemoveSprite(self)
+
+        # The zone painters need for the whole thing to update
+        scene = self.scene()
+        if scene is not None:
+            scene.update()
+
+        setOverrideCursor(None)
 
 class EntranceItem(LevelEditorItem):
     """
@@ -2581,7 +2622,7 @@ class EntranceItem(LevelEditorItem):
             Initializes the auxiliary entrance thing
             """
             super().__init__(parent)
-            self.parent = parent
+            self.parent = cast(EntranceItem, parent)
             self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, False)
             self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, False)
             self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemStacksBehindParent, True)
@@ -2619,10 +2660,12 @@ class EntranceItem(LevelEditorItem):
                 self.setPos(0, 0)
                 self.BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 
-        def paint(self, painter, option, widget):
+        def paint(self, painter, option, widget = ...):
             """
             Paints the entrance aux
             """
+            if not painter or not option or not SLib.OutlinePen or not globals_.theme:
+                return
 
             painter.setClipRect(option.exposedRect)
             painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
@@ -2663,7 +2706,9 @@ class EntranceItem(LevelEditorItem):
             elif self.parent.enttype in (3, 4, 5, 6) and ((self.parent.entsettings & 4) != 0):
                 # Forward pipe
                 painter.setBrush(QtGui.QBrush(globals_.theme.color('entrance_fill')))
-                painter.setPen(QtGui.QPen(globals_.theme.color('entrance_lines'), 2))
+                color = globals_.theme.color('entrance_lines')
+                if color is not None:
+                    painter.setPen(QtGui.QPen(color, 2))
 
                 painter.drawEllipse(4, 4, 40, 40)
 
@@ -2794,10 +2839,13 @@ class EntranceItem(LevelEditorItem):
             globals_.mainWindow.scene.update(old_rect.united(self.getFullRect()))
             globals_.mainWindow.level_overview.update()
 
-    def paint(self, painter, option, widget):
+    def paint(self, painter, option, widget = ...):
         """
         Paints the entrance
         """
+        if not painter or not option or not globals_.theme or not self.font:
+            return
+
         painter.setClipRect(option.exposedRect)
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
@@ -2813,28 +2861,40 @@ class EntranceItem(LevelEditorItem):
         else:
             painter.drawRect(self.RoundedRect)
 
-        icontype = 0
-        enttype = self.enttype
-        if enttype == 0 or enttype == 1: icontype = 1  # normal
-        if enttype == 2: icontype = 2  # door exit
-        if enttype == 3: icontype = 4  # pipe up
-        if enttype == 4: icontype = 5  # pipe down
-        if enttype == 5: icontype = 6  # pipe left
-        if enttype == 6: icontype = 7  # pipe right
-        if enttype == 8: icontype = 12  # ground pound
-        if enttype == 9: icontype = 13  # sliding
-        # 0F/15 is unknown?
-        if enttype == 16: icontype = 8  # mini pipe up
-        if enttype == 17: icontype = 9  # mini pipe down
-        if enttype == 18: icontype = 10  # mini pipe left
-        if enttype == 19: icontype = 11  # mini pipe right
-        if enttype == 20: icontype = 15  # jump out facing right
-        if enttype == 21: icontype = 17  # vine entrance
-        if enttype == 23: icontype = 14  # boss battle entrance
-        if enttype == 24: icontype = 16  # jump out facing left
-        if enttype == 27: icontype = 3  # door entrance
+        icon_type = 0
+        ent_type = self.enttype
 
-        painter.drawPixmap(0, 0, EntranceItem.EntranceImages[icontype])
+        ent_types = [
+            1,  # 0: Normal
+            1,  # 1: ^
+            2,  # 2: Door Exit
+            4,  # 3: Pipe Up
+            5,  # 4: Pipe Down
+            6,  # 5: Pipe Left
+            7,  # 6: Pipe Right
+            0,  # 7
+            12, # 8: Ground Pound
+            13, # 9: Sliding
+            0, 0, 0, # 10, 11, 12
+            0, 0, 0, # 13, 14, 15
+            8,  # 16: Mini Pipe Up
+            9,  # 17: Mini Pipe Down
+            10, # 18: Mini Pipe Up
+            11, # 19: Mini Pipe Left
+            15, # 20: Mini Pipe Right
+            17, # 21: Vine
+            0,  # 22
+            14, # 23: Boss Entrance
+            16, # 24: Jump Left
+            0, 0, # 25, 26
+            3,  # 27: Door Entrance
+            0, 0, # 28, 29
+        ]
+        icon_type = ent_types[ent_type]
+
+        imgs = EntranceItem.EntranceImages
+        if imgs is not None:
+            painter.drawPixmap(0, 0, imgs[icon_type])
 
         painter.setFont(self.font)
         painter.drawText(3, 12, str(self.entid))
@@ -2843,13 +2903,23 @@ class EntranceItem(LevelEditorItem):
         """
         Delete the entrance from the level
         """
+        if globals_.mainWindow is None:
+            return
+
         elist = globals_.mainWindow.entranceList
         globals_.mainWindow.UpdateFlag = True
         elist.takeItem(elist.row(self.listitem))
         globals_.mainWindow.UpdateFlag = False
-        elist.selectionModel().clearSelection()
+
+        sel_model = elist.selectionModel()
+        if sel_model is not None:
+            sel_model.clearSelection()
+
         globals_.Area.entrances.remove(self)
-        self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+        scene = self.scene()
+        if scene is not None:
+            scene.update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+
         setOverrideCursor(None)
 
     def itemChange(self, change, value):
@@ -3026,6 +3096,8 @@ class Path:
         Adds a node to the path at the specified position. If no index is given,
         the node is appended to the end of the path.
         """
+        if globals_.mainWindow is None:
+            return
 
         if index is None:
             index = len(self._nodes)
@@ -3061,15 +3133,19 @@ class Path:
         this node has been removed.
         """
         node = self._nodes[index]
+        if globals_.mainWindow is None:
+            return
 
-        # hacky stuff
+        # Hacky stuff
         plist = globals_.mainWindow.pathList
 
         globals_.mainWindow.UpdateFlag = True
         plist.takeItem(plist.row(node.listitem))
         globals_.mainWindow.UpdateFlag = False
 
-        plist.selectionModel().clearSelection()
+        sel_model = plist.selectionModel()
+        if sel_model is not None:
+            sel_model.clearSelection()
 
         # Remove node from internal lists
         del self._nodes[index]
@@ -3150,7 +3226,9 @@ class PathItem(LevelEditorItem):
         self.nodeid = node_id
         self.path = parent
 
-        self.listitem = ListWidgetItem_SortsByOther(self, self.ListString())
+        list_str = self.ListString()
+        if list_str is not None:
+            self.listitem = ListWidgetItem_SortsByOther(self, list_str)
 
         self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
         self.setFlag(self.GraphicsItemFlag.ItemIsMovable, not globals_.PathsFrozen)
@@ -3173,7 +3251,8 @@ class PathItem(LevelEditorItem):
         self.pathid = new_id
 
         self.UpdateTooltip()
-        self.listitem.setText(self.ListString())
+        if self.listitem is not None:
+            self.listitem.setText(self.ListString())
         self.update()
 
     def UpdateTooltip(self):
@@ -3191,12 +3270,6 @@ class PathItem(LevelEditorItem):
     def __lt__(self, other):
         return (self.pathid, self.nodeid) < (other.pathid, other.nodeid)
 
-    def updatePos(self):
-        """
-        Our x/y was changed, update path info
-        """
-        print("Deprecated: PathItem.updatePos was called")
-
     def update_id(self, new_id):
         """
         Path was changed, find our new node id
@@ -3206,10 +3279,13 @@ class PathItem(LevelEditorItem):
         self.UpdateListItem()
         self.update()
 
-    def paint(self, painter, option, widget):
+    def paint(self, painter, option, widget = ...):
         """
         Paints the path node
         """
+        if not painter or not option or not self.font or not globals_.theme:
+            return
+
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         painter.setClipRect(option.exposedRect)
 
@@ -3267,7 +3343,8 @@ class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
         self.setFlag(self.GraphicsItemFlag.ItemIsSelectable, False)
 
         color = globals_.theme.color('path_connector')
-        self.setPen(QtGui.QPen(color, 3, join=QtCore.Qt.PenJoinStyle.RoundJoin, cap=QtCore.Qt.PenCapStyle.RoundCap))
+        if color is not None:
+            self.setPen(QtGui.QPen(color, 3, join=QtCore.Qt.PenJoinStyle.RoundJoin, cap=QtCore.Qt.PenCapStyle.RoundCap))
 
         self.update_path()
         self.setZValue(25002)
@@ -3288,7 +3365,7 @@ class PathEditorLineItem(QtWidgets.QGraphicsPathItem):
 
         # Bug in Qt? The old rect of the path is not updated, so artifacts
         # remain on the scene if we do not update the scene manually...
-        if old_rect:
+        if globals_.mainWindow is not None:
             globals_.mainWindow.scene.update(old_rect)
 
 
@@ -3328,11 +3405,15 @@ class CommentItem(LevelEditorItem):
         self.setZValue(zval + 1)
         self.UpdateTooltip()
 
+        if globals_.mainWindow is None:
+            return
+
         self.TextEdit = QtWidgets.QPlainTextEdit()
         self.TextEditProxy = globals_.mainWindow.scene.addWidget(self.TextEdit)
-        self.TextEditProxy.setZValue(self.zval)
-        self.TextEditProxy.setCursor(QtCore.Qt.CursorShape.IBeamCursor)
-        self.TextEditProxy.boundingRect = lambda self: QtCore.QRectF(0, 0, 4000, 4000)
+        if self.TextEditProxy is not None:
+            self.TextEditProxy.setZValue(self.zval)
+            self.TextEditProxy.setCursor(QtCore.Qt.CursorShape.IBeamCursor)
+            self.TextEditProxy.boundingRect = lambda: QtCore.QRectF(0, 0, 4000, 4000)
         self.TextEdit.setVisible(False)
         self.TextEdit.setMaximumWidth(192)
         self.TextEdit.setMaximumHeight(128)
@@ -3340,21 +3421,24 @@ class CommentItem(LevelEditorItem):
         self.TextEdit.textChanged.connect(self.handleTextChanged)
         self.reposTextEdit()
 
-    def mousePressEvent(self, e):
+    def mousePressEvent(self, event):
         """
         Override the mouse press event to delegate it to the text edit
         if required. This ensures the user can select the first characters of the
         comment text.
         """
+        if event is None:
+            return
+
         # Also check the position to only allow clicks in the region that
         # overlaps with the text edit.
-        if self.isSelected() and e.pos().x() > 22 and e.pos().y() > 15:
-            e.ignore()
+        if self.isSelected() and event.pos().x() > 22 and event.pos().y() > 15:
+            event.ignore()
             return
 
         # We're not selected yet. Pass the event to the base class so we get
         # selected properly.
-        LevelEditorItem.mousePressEvent(self, e)
+        LevelEditorItem.mousePressEvent(self, event)
 
     def UpdateTooltip(self):
         """
@@ -3377,22 +3461,33 @@ class CommentItem(LevelEditorItem):
         if not t.strip():
             t = globals_.trans.string('Comments', 3)
 
+        if t is None:
+            return ''
+
         while '\n\n' in t:
             t = t.replace('\n\n', '\n')
 
-        t = t.replace('\n', globals_.trans.string('Comments', 2))
+        new = globals_.trans.string('Comments', 2)
+        if new is not None:
+            t = t.replace('\n', new)
 
         f = None
-        if self.listitem is not None: f = self.listitem.font()
+        if self.listitem is not None:
+            f = self.listitem.font()
+
         t2 = clipStr(t, 128, f)
-        if t2 is not None: t = t2 + '...'
+        if t2 is not None:
+            t = t2 + '...'
 
         return t
 
-    def paint(self, painter, option, widget):
+    def paint(self, painter, option, widget = ...):
         """
         Paints the comment
         """
+        if not painter or not option or not globals_.mainWindow:
+            return
+
         painter.setClipRect(option.exposedRect)
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
 
@@ -3412,7 +3507,7 @@ class CommentItem(LevelEditorItem):
         else:
             painter.drawRect(self.Circle)
         if not self.isSelected(): painter.setOpacity(.5)
-        painter.drawPixmap(4, 4, GetIcon('comments', 24).pixmap(24, 24))
+        painter.drawPixmap(4, 4, GetIcon('comments').pixmap(24, 24))
         painter.setOpacity(1)
 
         # Set the text edit visibility
@@ -3427,10 +3522,10 @@ class CommentItem(LevelEditorItem):
             # Therefore, I need to make a new one.
             self.TextEdit = QtWidgets.QPlainTextEdit()
             self.TextEditProxy = globals_.mainWindow.scene.addWidget(self.TextEdit)
-            self.TextEditProxy.setZValue(self.zval)
-            self.TextEditProxy.setCursor(QtCore.Qt.CursorShape.IBeamCursor)
-            self.TextEditProxy.BoundingRect = QtCore.QRectF(0, 0, 4000, 4000)
-            self.TextEditProxy.boundingRect = lambda self: self.BoundingRect
+            if self.TextEditProxy is not None:
+                self.TextEditProxy.setZValue(self.zval)
+                self.TextEditProxy.setCursor(QtCore.Qt.CursorShape.IBeamCursor)
+                self.TextEditProxy.boundingRect = lambda: QtCore.QRectF(0, 0, 4000, 4000)
             self.TextEdit.setMaximumWidth(192)
             self.TextEdit.setMaximumHeight(128)
             self.TextEdit.setPlainText(self.text)
@@ -3453,13 +3548,15 @@ class CommentItem(LevelEditorItem):
         Handles the text being changed
         """
         self.text = str(self.TextEdit.toPlainText())
-        if hasattr(self, 'textChanged'): self.textChanged(self)
+        if hasattr(self, 'textChanged'):
+            self.textChanged(self)
 
     def reposTextEdit(self):
         """
         Repositions the text edit
         """
-        self.TextEditProxy.setPos((self.objx * 3 / 2) + 24, (self.objy * 3 / 2) + 16)
+        if self.TextEditProxy is not None:
+            self.TextEditProxy.setPos((self.objx * 3 / 2) + 24, (self.objy * 3 / 2) + 16)
 
     def handlePosChange(self, oldx, oldy):
         """
@@ -3473,22 +3570,37 @@ class CommentItem(LevelEditorItem):
         oldx *= 1.5
         oldy *= 1.5
         oldRect = QtCore.QRectF(oldx, oldy, w, h)
-        self.scene().update(oldRect)
+        scene = self.scene()
+        if scene is not None:
+            scene.update(oldRect)
 
     def delete(self):
         """
         Delete the comment from the level
         """
-        clist = globals_.mainWindow.commentList
+        if globals_.mainWindow is None:
+            return
+
+        comment_list = globals_.mainWindow.commentList
+
         globals_.mainWindow.UpdateFlag = True
-        clist.takeItem(clist.row(self.listitem))
+        comment_list.takeItem(comment_list.row(self.listitem))
         globals_.mainWindow.UpdateFlag = False
-        clist.selectionModel().clearSelection()
-        p = self.TextEditProxy
-        p.setSelected(False)
-        globals_.mainWindow.scene.removeItem(p)
+        sel_model = comment_list.selectionModel()
+        if sel_model is not None:
+            sel_model.clearSelection()
+
+        proxy = self.TextEditProxy
+        if proxy is not None:
+            proxy.setSelected(False)
+
+        globals_.mainWindow.scene.removeItem(proxy)
         globals_.Area.comments.remove(self)
-        self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+
+        scene = self.scene()
+        if scene is not None:
+            scene.update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+
         globals_.mainWindow.SaveComments()
         setOverrideCursor(None)
 

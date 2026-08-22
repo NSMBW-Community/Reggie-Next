@@ -786,21 +786,21 @@
     </section>
     <section id="Sprites">
         <string id="0">[b]Sprite [type]:[/b][br][name]</string>
-        <string id="1">[name] (at [x], [y]</string>
-        <string id="2">, triggered by event [event]</string>
-        <string id="3">, triggered by events [event1]+[event2]+[event3]+[event4]</string>
-        <string id="4">, triggered by event [event1], [event2], [event3], or [event4]</string>
-        <string id="5">, activates event [event]</string>
-        <string id="6">, activates events [event1] - [event2]</string>
-        <string id="7">, activates event [event1], [event2], [event3], or [event4]</string>
-        <string id="8">, Star Coin [num]</string>
-        <string id="9">, Star Coin 1</string>
-        <string id="10">, Coin/Set ID [id]</string>
-        <string id="11">, Movement/Coin ID [id]</string>
-        <string id="12">, Movement ID [id]</string>
-        <string id="13">, Rotation ID [id]</string>
-        <string id="14">, Location ID [id]</string>
-        <string id="15">)</string>
+        <string id="1" />
+        <string id="2" />
+        <string id="3" />
+        <string id="4" />
+        <string id="5" />
+        <string id="6" />
+        <string id="7" />
+        <string id="8" />
+        <string id="9" />
+        <string id="10" />
+        <string id="11" />
+        <string id="12" />
+        <string id="13" />
+        <string id="14" />
+        <string id="15" />
         <string id="16">Search Results</string>
         <string id="17">No sprites found</string>
         <string id="18">[id]: [name]</string>
@@ -838,6 +838,7 @@
             <entry>Entrance ID</entry>
             <entry>Path Node ID</entry>
         </stringlist>
+        <string id="24">UNKNOWN</string>
     </section>
     <section id="Statusbar">
         <string id="0">- 1 object selected</string>

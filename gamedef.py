@@ -6,7 +6,7 @@ from xml.etree import ElementTree as etree
 
 from PyQt6 import QtWidgets
 
-from src.data.common.loaders import LoadSpriteData, LoadSpriteListData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo, LoadZoneThemes, LoadConfig
+from src.data.common.loaders import LoadSpriteData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo, LoadZoneThemes, LoadConfig
 from dirty import setting, setSetting
 from sprites_common import LoadBasics
 
@@ -72,7 +72,6 @@ class ReggieGameDefinition:
             'music': gdf(os.path.join('reggiedata', 'music.txt'), False),
             'spritecategories': gdf(os.path.join('reggiedata', 'spritecategories.xml'), False),
             'spritedata': gdf(os.path.join('reggiedata', 'spritedata.xml'), False),
-            'spritelistdata': gdf(os.path.join('reggiedata', 'spritelistdata.txt'), False),
             'tilesetinfo': gdf(os.path.join('reggiedata', 'tilesetinfo.xml'), False),
             'tilesets': gdf(os.path.join('reggiedata', 'tilesets.xml'), False),
             'ts1_descriptions': gdf(os.path.join('reggiedata', 'ts1_descriptions.txt'), False),
@@ -509,7 +508,6 @@ def LoadGameDef(name=None, dlg=None):
             dlg.setLabelText(globals_.trans.string('Gamedefs', 8))  # Loading sprite data...
 
         LoadSpriteData()
-        LoadSpriteListData(True)
         LoadSpriteCategories(True)
 
         # Reload all of the spritedata ID types in the area
@@ -574,18 +572,18 @@ def LoadGameDef(name=None, dlg=None):
             spriteClasses = globals_.gamedef.getImageClasses()
 
             for s in globals_.Area.sprites:
-                if s.type in SLib.SpriteImagesLoaded:
+                if s.sprite_num in SLib.SpriteImagesLoaded:
                     continue
-                if s.type not in spriteClasses:
+                if s.sprite_num not in spriteClasses:
                     continue
 
-                spriteClasses[s.type].loadImages()
+                spriteClasses[s.sprite_num].loadImages()
 
-                SLib.SpriteImagesLoaded.add(s.type)
+                SLib.SpriteImagesLoaded.add(s.sprite_num)
 
             for s in globals_.Area.sprites:
-                if s.type in spriteClasses:
-                    s.setImageObj(spriteClasses[s.type])
+                if s.sprite_num in spriteClasses:
+                    s.setImageObj(spriteClasses[s.sprite_num])
                 else:
                     s.setImageObj(SLib.SpriteImage)
 
@@ -593,8 +591,8 @@ def LoadGameDef(name=None, dlg=None):
             # Recalculate unknown sprite IDs based on current patch's sprite definitions
             unknown_sprite_ids = set()
             for sprite in globals_.Area.sprites:
-                if sprite.type >= globals_.NumSprites or globals_.Sprites[sprite.type] is None:
-                    unknown_sprite_ids.add(sprite.type)
+                if sprite.sprite_num >= globals_.NumSprites or globals_.Sprites[sprite.sprite_num] is None:
+                    unknown_sprite_ids.add(sprite.sprite_num)
 
             # Update the Area's unknown_sprite_ids
             globals_.Area.unknown_sprite_ids = unknown_sprite_ids

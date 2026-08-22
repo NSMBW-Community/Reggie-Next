@@ -124,7 +124,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             self.radio1.setChecked(True)
 
             for type, sprite in self.present:
-                if sprite.type != globals_.SpecialEventSpriteID:
+                if sprite.sprite_num != globals_.SpecialEventSpriteID:
                     continue
 
                 type = sprite.spritedata[5] & 0xF
@@ -216,7 +216,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         """
         slots = []
         for sprite in globals_.Area.sprites:
-            if sprite.type != globals_.SpecialEventSpriteID:
+            if sprite.sprite_num != globals_.SpecialEventSpriteID:
                 continue
 
             type = sprite.spritedata[5] & 0xF
@@ -238,7 +238,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
             self.createResizer()
         else:
             for type, sprite in self.present:
-                if sprite.type == globals_.SpecialEventSpriteID:
+                if sprite.sprite_num == globals_.SpecialEventSpriteID:
                     self.editResizer(sprite)
                     break
 
@@ -291,7 +291,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         Get the scale for the Global Resizer
         """
         for sprite in globals_.Area.sprites:
-            if sprite.type != globals_.SpecialEventSpriteID:
+            if sprite.sprite_num != globals_.SpecialEventSpriteID:
                 continue
 
             type = sprite.spritedata[5] & 0xF

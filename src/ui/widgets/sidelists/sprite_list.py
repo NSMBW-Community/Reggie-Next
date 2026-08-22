@@ -137,8 +137,8 @@ class SpriteList(QtWidgets.QWidget):
             return
         sprite = row_item.data(QtCore.Qt.ItemDataRole.UserRole)
 
-        if 0 <= sprite.type < globals_.NumSprites:
-            sdef = globals_.Sprites[sprite.type]
+        if 0 <= sprite.sprite_num < globals_.NumSprites:
+            sdef = globals_.Sprites[sprite.sprite_num]
         else:
             # No sprite definition -> hide
             self.table.setRowHidden(row, True)
@@ -207,7 +207,7 @@ class SpriteList(QtWidgets.QWidget):
 
         # Add the sprite id
         id_item = QtWidgets.QTableWidgetItem()
-        id_item.setData(QtCore.Qt.ItemDataRole.DisplayRole, sprite.type)
+        id_item.setData(QtCore.Qt.ItemDataRole.DisplayRole, sprite.sprite_num)
         id_item.setData(QtCore.Qt.ItemDataRole.UserRole, sprite)
         id_item.setFlags(id_item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
         self.table.setItem(row, 0, id_item)
@@ -341,10 +341,10 @@ class SpriteList(QtWidgets.QWidget):
         Returns an (idtype, [values]) dict for every
         idtype this sprite has
         """
-        if not 0 <= sprite.type < globals_.NumSprites:
+        if not 0 <= sprite.sprite_num < globals_.NumSprites:
             return {}
 
-        sdef = globals_.Sprites[sprite.type]
+        sdef = globals_.Sprites[sprite.sprite_num]
         res = {}
         decoder = PropertyDecoder(SpriteField())
         data = sprite.spritedata

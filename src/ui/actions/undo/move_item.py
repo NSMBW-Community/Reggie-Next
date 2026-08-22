@@ -69,7 +69,6 @@ class MoveItemUndoAction(UndoAction):
         elif isinstance(obj, PathItem):
             obj.objx, obj.objy = newX, newY
             obj.setPos(newX * 1.5, newY * 1.5)
-            obj.updatePos()
 
             # Update the path line
             obj.path._line_item.update_path()

@@ -72,7 +72,7 @@ class LevelScene(QtWidgets.QGraphicsScene):
                 desty = item.objy - y1
 
                 if odefs[item.tileset] is None or \
-                        odefs[item.tileset][item.type] is None:
+                        odefs[item.tileset][item.object_num] is None:
                     # This is an unknown object, so place -1 in the tile map.
                     for i, row in enumerate(item.objdata, desty):
                         destrow = tmap[i]

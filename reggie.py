@@ -1953,13 +1953,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         for item in clipboard_o:
             convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
-            item.tileset, item.type, item.layer, item.objx, item.objy, item.width, item.height))
+            item.tileset, item.object_num, item.layer, item.objx, item.objy, item.width, item.height))
 
         # Sprites
         for item in clipboard_s:
             data = item.spritedata
             convclip.append('1:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d' % (
-            item.type, item.objx, item.objy, data[0], data[1], data[2], data[3], data[4], data[5], data[7]))
+            item.sprite_num, item.objx, item.objy, data[0], data[1], data[2], data[3], data[4], data[5], data[7]))
 
         # Entrances
         if clipboard_e is not None:
@@ -2354,10 +2354,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for layer in globals_.Area.layers:
             for nsmbobj in layer:
                 if nsmbobj.tileset == from_tileset:
-                    nsmbobj.SetType(to_tileset, nsmbobj.type)
+                    nsmbobj.SetType(to_tileset, nsmbobj.object_num)
                     SetDirty()
                 elif do_exchange and nsmbobj.tileset == to_tileset:
-                    nsmbobj.SetType(from_tileset, nsmbobj.type)
+                    nsmbobj.SetType(from_tileset, nsmbobj.object_num)
                     SetDirty()
 
     def SwapObjectsTypes(self):
@@ -2379,7 +2379,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             # Get all the sprite IDs
             for item in items:
                 if isinstance(item, SpriteItem):
-                    id_list.append(item.type)
+                    id_list.append(item.sprite_num)
 
             # If we only have one unique item, pass that as an ID
             if len(set(id_list)) <= 1:
@@ -2461,17 +2461,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         return loc
 
-    def CreateObject(self, tileset, object_num, layer, x, y, width = None, height = None, add_to_scene = True):
+    def CreateObject(self, tileset: int, object_num: int, layer: int, x: int, y: int,
+                     width: int = 0, height: int = 0, add_to_scene = True):
         """
         Creates and returns a new object and makes sure it's added to
         the right lists.
         """
-        if width is None or height is None:
+        if width == 0 or height == 0:
             if globals_.PlaceObjectsAtFullSize:
                 try:
                     tile_def = globals_.ObjectDefinitions[tileset][object_num]
-                    width = tile_def.width
-                    height = tile_def.height
+                    if tile_def is not None:
+                        width = tile_def.width
+                        height = tile_def.height
                 except TypeError:  # Something was None
                     width = height = 1
             else:
@@ -4260,7 +4262,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         globals_.CurrentObject = type_
 
-    def ObjectReplace(self, type):
+    def ObjectReplace(self, object_num):
         """
         Handles a new object being chosen to replace the selected objects
         """
@@ -4269,29 +4271,29 @@ class ReggieWindow(QtWidgets.QMainWindow):
         changed = False
 
         for x in items:
-            if isinstance(x, ObjectItem) and (x.tileset != tileset or x.type != type):
-                x.SetType(tileset, type)
+            if isinstance(x, ObjectItem) and (x.tileset != tileset or x.object_num != object_num):
+                x.SetType(tileset, object_num)
                 x.update()
                 changed = True
 
         if changed:
             SetDirty()
 
-    def SpriteChoiceChanged(self, type):
+    def SpriteChoiceChanged(self, sprite_num):
         """
         Handles a new sprite being chosen
         """
-        globals_.CurrentSprite = type
+        globals_.CurrentSprite = sprite_num
 
-        if type != 1000 and type >= 0:
-            self.defaultDataEditor.setSprite(type, initial_data=bytes(10))
+        if sprite_num != 1000 and sprite_num >= 0:
+            self.defaultDataEditor.setSprite(sprite_num, initial_data=bytes(10))
             self.defaultPropButton.setEnabled(True)
         else:
             self.defaultPropButton.setEnabled(False)
             self.defaultPropDock.setVisible(False)
             self.defaultDataEditor.updateFields()
 
-    def SpriteReplace(self, type):
+    def SpriteReplace(self, sprite_num):
         """
         Handles a new sprite type being chosen to replace the selected sprites
         """
@@ -4302,13 +4304,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if isinstance(x, SpriteItem):
                 # Reset spritedata
                 x.spritedata = self.defaultDataEditor.data
-                x.SetType(type)
+                x.SetType(sprite_num)
                 x.update()
 
                 # Assign the new sprite image class
                 image_classes = globals_.gamedef.getImageClasses()
-                if type in image_classes:
-                    x.setImageObj(image_classes[type])
+                if sprite_num in image_classes:
+                    x.setImageObj(image_classes[sprite_num])
                 else:
                     x.setImageObj(SLib.SpriteImage)
                 changed = True
@@ -4538,7 +4540,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         if isinstance(self.selObj, SpriteItem) and self.spriteEditorDock.isVisible():
             obj = self.selObj
-            self.spriteDataEditor.setSprite(obj.type, initial_data=obj.spritedata)
+            self.spriteDataEditor.setSprite(obj.sprite_num, initial_data=obj.spritedata)
         elif isinstance(self.selObj, EntranceItem) and self.entrance_editor_dock.isVisible():
             self.entrance_editor.set_entrance(self.selObj)
         elif isinstance(self.selObj, PathItem) and self.path_editor_dock.isVisible():
@@ -4567,7 +4569,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if isinstance(hovered, ObjectItem):  # Object
                 info = globals_.trans.string('Statusbar', 23, '[width]', hovered.width, '[height]', hovered.height, '[xpos]',
                                     hovered.objx, '[ypos]', hovered.objy, '[layer]', hovered.layer, '[type]',
-                                    hovered.type, '[tileset]', hovered.tileset + 1)
+                                    hovered.object_num, '[tileset]', hovered.tileset + 1)
             elif isinstance(hovered, SpriteItem):  # Sprite
                 info = globals_.trans.string('Statusbar', 24, '[name]', hovered.name, '[xpos]', hovered.objx, '[ypos]',
                                     hovered.objy)

@@ -124,7 +124,6 @@ TilesetNames: list[TilesetCategory] = [TilesetCategory() for _ in range(4)] # sh
 NumSprites = 0
 ResetDataWhenHiding = False
 SpriteCategories: list[SpriteCategory] = []
-SpriteListData: list[list[int]] = []
 Sprites: list[SpriteDefinition] = []
 
 # Game patch config settings

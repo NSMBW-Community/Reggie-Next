@@ -94,10 +94,10 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
 
         for layer in globals_.Area.layers:
             for nsmbobj in layer:
-                if nsmbobj.type == from_type and nsmbobj.tileset == from_tileset:
+                if nsmbobj.object_num == from_type and nsmbobj.tileset == from_tileset:
                     nsmbobj.SetType(to_tileset, to_type)
                     SetDirty()
-                elif do_exchange and nsmbobj.type == to_type and nsmbobj.tileset == to_tileset:
+                elif do_exchange and nsmbobj.object_num == to_type and nsmbobj.tileset == to_tileset:
                     nsmbobj.SetType(from_tileset, from_type)
                     SetDirty()
 
