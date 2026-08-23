@@ -57,7 +57,7 @@ class GeneralTab(PreferenceTabWidget):
 
         # Padding size value
         self.padding_value = QtWidgets.QSpinBox()
-        self.padding_value.setRange(0, 2147483647) # Maximum value allowed by Qt
+        self.padding_value.setRange(0, 500000) # Set maximum to 500kb, more than enough for any level
 
         # Place objects at full size
         self.full_object_size = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 37))
