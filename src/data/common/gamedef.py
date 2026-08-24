@@ -1,38 +1,51 @@
+import functools
+import importlib.util
 import os
 import sys
-import importlib.util
-import functools
 from xml.etree import ElementTree as etree
 
 from PyQt6 import QtWidgets
 
-from src.data.common.loaders import LoadSpriteData, LoadSpriteCategories, LoadBgANames, LoadBgBNames, LoadObjDescriptions, LoadTilesetNames, LoadTilesetInfo, LoadEntranceNames, LoadMusicInfo, LoadZoneThemes, LoadConfig
-from dirty import setting, setSetting
-from sprites_common import LoadBasics
-
 import globals_
 import spritelib as SLib
 import sprites
+from dirty import setSetting, setting
+from sprites_common import LoadBasics
+from src.data.common.loaders import (
+    LoadBgANames,
+    LoadBgBNames,
+    LoadConfig,
+    LoadEntranceNames,
+    LoadMusicInfo,
+    LoadObjDescriptions,
+    LoadSpriteCategories,
+    LoadSpriteData,
+    LoadTilesetInfo,
+    LoadTilesetNames,
+    LoadZoneThemes,
+)
+
+
+# Gamedef File - has 2 values: name (str) and patch (bool)
+class GameDefinitionFile:
+    """
+    A class that defines a filepath, and some options
+    """
+
+    def __init__(self, path: str | None, patch: bool):
+        """
+        Initializes the GameDefinitionFile
+        """
+        self.path = path or ''
+        self.patch = patch
+
 
 class ReggieGameDefinition:
     """
     A class that defines a NSMBW hack: songs, tilesets, sprites, etc.
     """
 
-    # Gamedef File - has 2 values: name (str) and patch (bool)
-    class GameDefinitionFile:
-        """
-        A class that defines a filepath, and some options
-        """
-
-        def __init__(self, path, patch):
-            """
-            Initializes the GameDefinitionFile
-            """
-            self.path: str = path
-            self.patch = patch
-
-    def __init__(self, name=None):
+    def __init__(self, name: str | None = None):
         """
         Initializes the ReggieGameDefinition
         """
@@ -52,7 +65,7 @@ class ReggieGameDefinition:
         """
         Sets all properties to their default values
         """
-        gdf = self.GameDefinitionFile
+        gdf = GameDefinitionFile
 
         self.custom = False
         self.base = None  # gamedef to use as a base
@@ -84,7 +97,7 @@ class ReggieGameDefinition:
             'external': gdf(None, False),
         }
 
-    def InitFromName(self, name):
+    def InitFromName(self, name: str):
         """
         Attempts to open/load a Game Definition from a name string. Just loads
         the name and description to avoid referring to other game definitions.
@@ -160,7 +173,7 @@ class ReggieGameDefinition:
                 node_name = node.get('name')
                 dict_type = self.files if n == 'file' else self.folders  # self.files or self.folders
                 if node_name is not None:
-                    dict_type[node_name] = self.GameDefinitionFile(path, patch)
+                    dict_type[node_name] = GameDefinitionFile(path, patch)
 
         # Get rid of the XML stuff
         del tree, root
@@ -185,7 +198,7 @@ class ReggieGameDefinition:
                 sys.modules[new_module.__name__] = new_module
                 self.sprites = new_module
 
-    def bgFile(self, name, layer):
+    def bgFile(self, name: str, layer: str):
         """
         Returns the folder to a bg image. Layer must be 'a' or 'b'
         """
@@ -256,7 +269,7 @@ class ReggieGameDefinition:
         else:
             return str(setname)
 
-    def SetTextureGamePath(self, path):
+    def SetTextureGamePath(self, path: str):
         """
         Sets the texture game path
         """
@@ -282,7 +295,7 @@ class ReggieGameDefinition:
         else:
             return str(setname)
 
-    def SetStageGamePath(self, path):
+    def SetStageGamePath(self, path: str):
         """
         Sets the stage game path
         """
@@ -326,7 +339,7 @@ class ReggieGameDefinition:
 
         return stg
 
-    def SetLastLevel(self, path):
+    def SetLastLevel(self, path: str):
         """
         Sets the last loaded level
         """
@@ -339,7 +352,7 @@ class ReggieGameDefinition:
             name = f'LastLevel_{self.name}'
             setSetting(name, path)
 
-    def recursiveFiles(self, name, is_folder=False):
+    def recursiveFiles(self, name: str, is_folder=False):
         """
         Checks each base of this globals_.gamedef and returns a list of successive file paths
         """
@@ -375,7 +388,7 @@ class ReggieGameDefinition:
 
         return current_list, was_patch, names
 
-    def file(self, name):
+    def file(self, name: str):
         """
         Returns a file by recursively checking successive globals_.gamedef bases
         """
@@ -408,7 +421,7 @@ class ReggieGameDefinition:
 
 
 def getAvailableGameDefs():
-    game_defs = []
+    game_defs: list[tuple[str | None, str]] = []
 
     # Add them
     folders = os.listdir(os.path.join('reggiedata', 'patches'))
@@ -426,7 +439,7 @@ def getAvailableGameDefs():
     return [None] + [folder for _, folder in game_defs]
 
 
-def loadNewGameDef(def_):
+def loadNewGameDef(def_: str):
     """
     Loads ReggieGameDefinition def_, and displays a progress dialog
     """
@@ -444,7 +457,7 @@ def loadNewGameDef(def_):
     return res
 
 # Game Definitions
-def LoadGameDef(name=None, dlg=None):
+def LoadGameDef(name: str | None = None, dlg: QtWidgets.QProgressDialog | None = None):
     """
     Loads a game definition
     """
@@ -639,8 +652,8 @@ def LoadGameDef(name=None, dlg=None):
         setSetting('LastGameDef', name)
     return True
 
-@functools.lru_cache(maxsize=None)
-def FindGameDef(name, skip=None):
+@functools.cache
+def FindGameDef(name: str, skip: str | None = None):
     """
     Helper function to find a game def with a specific name.
     Skip will be skipped
@@ -660,7 +673,7 @@ def FindGameDef(name, skip=None):
         return def_
 
 
-def FixSpritesModule(filename):
+def FixSpritesModule(filename: str):
     """
     Fixes any PyQt5 -> PyQt6 incompatibilities with sprites.py modules
     """

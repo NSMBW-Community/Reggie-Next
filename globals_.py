@@ -3,7 +3,7 @@ from typing import Literal
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from gamedef import ReggieGameDefinition
+from src.data.common.gamedef import ReggieGameDefinition
 from reggie import ReggieWindow
 from src.data.level.abstract_level import AbstractLevel
 from src.data.level.area import Area as AreaType

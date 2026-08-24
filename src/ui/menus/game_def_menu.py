@@ -6,7 +6,7 @@ from dirty import setting
 import globals_
 
 from src.ui.widgets.game_def_viewer import GameDefViewer
-from gamedef import getAvailableGameDefs, loadNewGameDef, ReggieGameDefinition
+from src.data.common.gamedef import getAvailableGameDefs, loadNewGameDef, ReggieGameDefinition
 
 class GameDefMenu(QtWidgets.QMenu):
     """
