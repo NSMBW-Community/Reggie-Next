@@ -1941,8 +1941,24 @@ class LocationItem(LevelEditorItem):
         """
         Overrides mouse pressing events if needed for resizing
         """
-        if not event:
+        if not event or not globals_.mainWindow:
             return
+
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
+            if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
+                new_item = globals_.mainWindow.CreateLocation(
+                    self.objx, self.objy, self.width, self.height, self.id
+                )
+
+                if new_item is not None:
+                    # Swap the Z values so it doesn't look like the
+                    # cloned item is the old one
+                    new_z = new_item.zValue()
+                    new_item.setZValue(self.zValue())
+                    self.setZValue(new_z)
+
+                    globals_.mainWindow.scene.clearSelection()
+                    self.setSelected(True)
 
         if self.isSelected() and self.GrabberRect.contains(event.pos()):
             # start dragging
