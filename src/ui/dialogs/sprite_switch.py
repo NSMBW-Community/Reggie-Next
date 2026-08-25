@@ -3,7 +3,7 @@ from PyQt6 import QtWidgets
 import globals_
 import spritelib as SLib
 from dirty import SetDirty
-from ui import GetIcon
+from src.ui.theme.reggie_theme import GetIcon
 
 # TODO:
 # - Batch feature

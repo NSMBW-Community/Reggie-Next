@@ -2,7 +2,7 @@ from PyQt6 import QtWidgets, QtGui
 import os
 
 import globals_
-from ui import GetIcon, clipStr
+from src.ui.theme.reggie_theme import GetIcon, clipStr
 from dirty import setting, setSetting
 
 class RecentFilesMenu(QtWidgets.QMenu):
@@ -76,7 +76,7 @@ class RecentFilesMenu(QtWidgets.QMenu):
 
         # Fixes bugs
         if path in ('None', 'True', 'False'):
-            return 
+            return
 
         new = [path]
         for filename in self.file_list:

@@ -2,7 +2,7 @@ from PyQt6 import QtWidgets, QtCore
 from typing import cast
 
 import globals_
-from ui import GetIcon
+from src.ui.theme.reggie_theme import GetIcon
 from levelitems import ZoneItem
 
 from src.data.common.utils import clamp

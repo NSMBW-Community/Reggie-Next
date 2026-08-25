@@ -1,7 +1,7 @@
 from PyQt6 import QtWidgets
 
 import globals_
-from ui import GetIcon
+from src.ui.theme.reggie_theme import GetIcon
 
 class ScreenshotDialog(QtWidgets.QDialog):
     """

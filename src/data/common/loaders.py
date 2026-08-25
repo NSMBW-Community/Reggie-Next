@@ -20,6 +20,7 @@ from src.data.tileset.object.renderers import IncrementTilesetFrame
 from src.data.tileset.tile.rand_tile_selection import RandTileSelection
 from src.data.tileset.tile.tileset_tile import TilesetTile
 from src.data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
+from src.ui.theme.reggie_theme import ReggieTheme
 
 
 def getResourcePaths(res_name):
@@ -1642,3 +1643,10 @@ def CheckTilesetAnimated(tileset):
         fn = animFiles[0]
         prefix = fn[0] if len(fn) == 9 else fn[:2]
         return True, prefix
+
+
+def LoadTheme():
+    """
+    Loads the theme
+    """
+    globals_.theme = ReggieTheme(setting("Theme", "Classic"))

@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
 
-from ui import GetIcon
+from src.ui.theme.reggie_theme import GetIcon
 from dirty import setting
 
 import globals_

@@ -5,7 +5,7 @@ from src.data.sprite.spritefield.sprite_field import SpriteField
 from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,
 )
-from ui import GetIcon
+from src.ui.theme.reggie_theme import GetIcon
 
 
 class PropertyDecoder[T: SpriteField](QtCore.QObject):

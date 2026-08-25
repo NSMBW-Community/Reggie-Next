@@ -7,7 +7,7 @@ import globals_
 from dirty import SetDirty
 import spritelib as SLib
 from levelitems import SpriteItem, ZoneItem, EntranceItem
-from ui import GetIcon
+from src.ui.theme.reggie_theme import GetIcon
 
 from src.ui.widgets.diag_list_widget_item import DiagnosticListWidgetItem
 
@@ -548,7 +548,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
                     newy = zone.objy + zone.height - 32
                 else:
                     newy = ent.objy
-    
+
                 ent.objx = newx
                 ent.objy = newy
                 ent.setPos(int(newx * 1.5), int(newy * 1.5))

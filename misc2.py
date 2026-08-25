@@ -4,7 +4,6 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 import globals_
 from levelitems import ListWidgetItem_SortsByOther, PathItem, CommentItem, SpriteItem, EntranceItem, LocationItem, ObjectItem, PathEditorLineItem, ZoneItem
-from ui import setOverrideCursor
 from dirty import SetDirty
 
 class LevelScene(QtWidgets.QGraphicsScene):

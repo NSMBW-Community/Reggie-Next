@@ -3,7 +3,7 @@ import os
 
 import globals_
 from src.data.common.utils import clamp
-from ui import GetIcon
+from src.ui.theme.reggie_theme import GetIcon
 
 from src.ui.widgets.generic.hex_spin_box import HexSpinBox
 

@@ -4,7 +4,7 @@ import os
 import typing
 
 import globals_
-from ui import GetIcon
+from src.ui.theme.reggie_theme import GetIcon
 
 from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
 from src.ui.widgets.preferences.general_tab import GeneralTab

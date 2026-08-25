@@ -2,7 +2,7 @@ from PyQt6 import QtWidgets, QtCore
 
 import globals_
 from dirty import SetDirty
-from ui import GetIcon, createVertLine
+from src.ui.theme.reggie_theme import GetIcon, createVertLine
 
 class ObjectTypeSwapDialog(QtWidgets.QDialog):
     """
@@ -28,7 +28,7 @@ class ObjectTypeSwapDialog(QtWidgets.QDialog):
 
         # Only offer slots that have a tileset
         if globals_.mainWindow is not None:
-            for i in range(4): 
+            for i in range(4):
                 if globals_.mainWindow.objAllTab.isTabEnabled(i):
                     self.curr_tileset.addItem(slots[i])
                     self.new_tileset.addItem(slots[i])

@@ -31,7 +31,7 @@ from src.ui.widgets.spriteeditor.propertydecoders.sprite_tex import (
     SpriteTexPropertyDecoder,
 )
 from src.ui.widgets.spriteeditor.propertydecoders.value import ValuePropertyDecoder
-from ui import GetIcon
+from src.ui.theme.reggie_theme import GetIcon
 
 
 class SpriteEditorWidget(AbstractSpriteEditorWidget):

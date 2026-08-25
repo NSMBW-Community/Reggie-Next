@@ -5,7 +5,7 @@ import globals_
 from dirty import setting
 from levelitems import Path, CommentItem
 from misc2 import LevelViewWidget
-from ui import ReggieTheme
+from src.ui.theme.reggie_theme import ReggieTheme
 
 from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
 
@@ -19,7 +19,7 @@ class AppearanceTab(PreferenceTabWidget):
         Initializes the Appearance Tab
         """
         super().__init__(info_text)
-        
+
         # Get the current and available themes
         self.theme_id = globals_.theme.themeName
         self.themes = self.get_themes

@@ -2,7 +2,7 @@ from PyQt6 import QtCore, QtWidgets
 from enum import IntEnum
 
 import globals_
-from ui import GetIcon
+from src.ui.theme.reggie_theme import GetIcon
 
 from src.ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 

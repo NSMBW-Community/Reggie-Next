@@ -16,7 +16,7 @@ from src.data.tileset.tileset_category import TilesetCategory
 from src.data.tileset.object.object_def import ObjectDef
 from src.data.tileset.tile.tileset_tile import TilesetTile
 from translation import ReggieTranslation
-from ui import ReggieTheme
+from src.ui.theme.reggie_theme import ReggieTheme
 
 # Reggie / UI
 AutoDiagEnabled = True

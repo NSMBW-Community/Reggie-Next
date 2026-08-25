@@ -1,15 +1,11 @@
-from PyQt6 import QtGui, QtWidgets, QtCore
-from xml.etree import ElementTree
 import os
+from xml.etree import ElementTree
+
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 import globals_
 from dirty import setting
 
-def LoadTheme():
-    """
-    Loads the theme
-    """
-    globals_.theme = ReggieTheme(setting("Theme", "Classic"))
 
 class ReggieTheme:
     """
@@ -95,7 +91,7 @@ class ReggieTheme:
         folder = os.path.join('reggiedata', 'themes', folder)
 
         try:
-            fileList = os.listdir(folder)
+            _fileList = os.listdir(folder)
         except FileNotFoundError:
             # Return if the theme cannot be found
             # (default theme is already inited)
@@ -200,7 +196,7 @@ class ReggieTheme:
         """
         try:
             tree = ElementTree.parse(file)
-        except Exception:
+        except ElementTree.ParseError:
             return
 
         root = tree.getroot()
@@ -215,8 +211,7 @@ class ReggieTheme:
                 continue
 
             colorval = colorNode.attrib['value']
-            if colorval.startswith('#'):
-                colorval = colorval[1:]
+            colorval = colorval.removeprefix('#')
 
             a = 255
             try:
@@ -283,7 +278,7 @@ class ReggieTheme:
 
         return cache[name]
 
-# Related functions
+
 def SetAppStyle(styleKey=''):
     """
     Set the application window color
@@ -313,15 +308,16 @@ def SetAppStyle(styleKey=''):
             color = qcolor.getRgb()
 
         if color is not None:
-            bgColor = "#%02x%02x%02x" % tuple(map(lambda x: x // 2, color[:3]))
-            globals_.app.setStyleSheet("""
-                QListView, QTreeWidget, QLineEdit, QDoubleSpinBox, QSpinBox, QTextEdit, QPlainTextEdit{
-                    background-color: %s;
-                }""" % bgColor)
+            bgColor = "#{:02x}{:02x}{:02x}".format(*tuple(x // 2 if x is not None else 0 for x in color[:3]))
+            globals_.app.setStyleSheet(f"""
+                QListView, QTreeWidget, QLineEdit, QDoubleSpinBox, QSpinBox, QTextEdit, QPlainTextEdit{{
+                    background-color: {bgColor};
+                }}""")
 
         # Fix disabled menubar items being nearly unreadable in some cases
         # (mainly in dark mode and/or when the UI color is overriden)
         globals_.app.setStyleSheet("""QMenu::item:disabled{color: #646464;}""")
+
 
 def SetColorScheme():
     """
@@ -337,7 +333,8 @@ def SetColorScheme():
         else:
             style_hint.setColorScheme(QtCore.Qt.ColorScheme.Light)
 
-def GetIcon(name, big=False):
+
+def GetIcon(name: str, big=False):
     """
     Helper function to grab a specific icon
     """
@@ -374,7 +371,7 @@ def LoadNumberFont():
         globals_.NumberFont = QtGui.QFont('Sans', 8)
 
 
-def clipStr(text, idealWidth, font=None):
+def clipStr(text: str, idealWidth: int, font=None):
     """
     Returns a shortened string, or None if it need not be shortened
     """
@@ -391,30 +388,8 @@ def clipStr(text, idealWidth, font=None):
 
     return text
 
-from typing import cast
-class ListWidgetWithToolTipSignal(QtWidgets.QListWidget):
-    """
-    A QtWidgets.QListWidget that includes a signal that
-    is emitted when a tooltip is about to be shown. Useful
-    for making tooltips that update every time you show
-    them.
-    """
-    toolTipAboutToShow = QtCore.pyqtSignal(QtWidgets.QListWidgetItem)
 
-    def viewportEvent(self, e):
-        """
-        Handles viewport events
-        """
-        if e is not None:
-            if e.type() == e.Type.ToolTip and isinstance(e, QtGui.QHelpEvent):
-                item = self.itemFromIndex(self.indexAt(e.pos()))
-                if item is not None:
-                    self.toolTipAboutToShow.emit(item)
-
-        return super().viewportEvent(e)
-
-
-def setOverrideCursor(cursor):
+def setOverrideCursor(cursor: QtGui.QCursor | QtCore.Qt.CursorShape | None):
     """
     Safely override/restore the application cursor.
     Pass cursor as None to restore the previous cursor
@@ -430,17 +405,3 @@ def setOverrideCursor(cursor):
         globals_.app.setOverrideCursor(cursor)
     else:
         globals_.app.changeOverrideCursor(cursor)
-
-
-class CustomSortableListWidgetItem(QtWidgets.QListWidgetItem):
-    """
-    ListWidgetItem subclass that allows sorting by arbitrary key
-    """
-    sort_key = 0
-
-    def __lt__(self, other):
-        if hasattr(self, 'sort_key') and hasattr(other, 'sort_key'):
-            other = cast(CustomSortableListWidgetItem, other)
-            return self.sort_key < other.sort_key
-
-        return False

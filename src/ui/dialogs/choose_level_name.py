@@ -2,7 +2,7 @@ from PyQt6 import QtCore, QtWidgets
 
 import globals_
 from src.data.common.loaders import LoadLevelNames
-from ui import GetIcon
+from src.ui.theme.reggie_theme import GetIcon
 
 class ChooseLevelNameDialog(QtWidgets.QDialog):
     """

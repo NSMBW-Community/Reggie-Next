@@ -89,8 +89,9 @@ import globals_
 ################################################################################
 
 from libs import lh, lib_versions, lz77
-from ui import GetIcon, SetAppStyle, ListWidgetWithToolTipSignal, LoadNumberFont, LoadTheme, SetColorScheme
-from src.data.common.loaders import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, LoadLevelNames, LoadSpriteCategories, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
+from src.ui.theme.reggie_theme import GetIcon, SetAppStyle, LoadNumberFont, SetColorScheme
+from src.ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
+from src.data.common.loaders import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, LoadLevelNames, LoadSpriteCategories, LoadTheme, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
 from src.data.common.utils import clamp, find_first_available_id
 from misc import FilesAreMissing, module_path, IsNSMBLevel, SetGamePaths, areValidGamePaths
 from misc2 import LevelScene, LevelViewWidget
