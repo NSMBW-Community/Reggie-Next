@@ -13,6 +13,7 @@ from libs import lh, lib_versions, lz77, tpl
 from src.data.common import archive
 from src.data.common.keybind import Keybind
 from src.data.common.menu_action import MenuAction
+from src.data.common.reggie_translation import ReggieTranslation
 from src.data.level.sprite_definition import SpriteDefinition
 from src.data.sprite.sprite_category import SpriteCategory, SpriteSubCategory
 from src.data.tileset.object.object_def import ObjectDef
@@ -1650,3 +1651,17 @@ def LoadTheme():
     Loads the theme
     """
     globals_.theme = ReggieTheme(setting("Theme", "Classic"))
+
+
+def LoadTranslation():
+    """
+    Loads the translation
+    """
+    name = setting('Translation')
+
+    # The default value is English and can be represented in the settings in
+    # several ways.
+    if name in (None, 'None', 'English', '', 0):
+        name = None
+
+    globals_.trans = ReggieTranslation(name)

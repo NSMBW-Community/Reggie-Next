@@ -108,7 +108,7 @@ from src.ui.widgets.sidelists.object_picker import ObjectPickerWidget
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 from src.ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
 from src.ui.actions.undo.undo_stack import UndoStack
-from translation import LoadTranslation
+from src.data.common.loaders import LoadTranslation
 
 from src.ui.dialogs.about import AboutDialog
 from src.ui.dialogs.area import AreaOptionsDialog

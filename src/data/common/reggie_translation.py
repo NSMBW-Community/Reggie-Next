@@ -1,23 +1,6 @@
 import os
 from xml.etree import ElementTree
 
-import globals_
-from dirty import setting
-
-
-def LoadTranslation():
-    """
-    Loads the translation
-    """
-    name = setting('Translation')
-
-    # The default value is English and can be represented in the settings in
-    # several ways.
-    if name in (None, 'None', 'English', '', 0):
-        name = None
-
-    globals_.trans = ReggieTranslation(name)
-
 
 class ReggieTranslation:
     """

@@ -3,7 +3,7 @@ import os
 
 import globals_
 from dirty import setting
-from translation import ReggieTranslation
+from src.data.common.reggie_translation import ReggieTranslation
 
 from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
 

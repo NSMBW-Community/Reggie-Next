@@ -15,7 +15,7 @@ from src.data.sprite.sprite_category import SpriteCategory
 from src.data.tileset.tileset_category import TilesetCategory
 from src.data.tileset.object.object_def import ObjectDef
 from src.data.tileset.tile.tileset_tile import TilesetTile
-from translation import ReggieTranslation
+from src.data.common.reggie_translation import ReggieTranslation
 from src.ui.theme.reggie_theme import ReggieTheme
 
 # Reggie / UI
