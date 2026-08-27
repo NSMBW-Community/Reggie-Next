@@ -2,7 +2,7 @@ from PyQt6 import QtWidgets
 
 import globals_
 import spritelib as SLib
-from dirty import SetDirty
+from src.data.level.dirty import SetDirty
 from src.ui.theme.reggie_theme import GetIcon
 
 # TODO:

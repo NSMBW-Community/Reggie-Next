@@ -9,7 +9,7 @@ from PyQt6 import QtWidgets
 import globals_
 import spritelib as SLib
 import sprites
-from dirty import setSetting, setting
+from src.data.common.settings import setSetting, setting
 from sprites_common import LoadBasics
 from src.data.common.loaders import (
     LoadBgANames,

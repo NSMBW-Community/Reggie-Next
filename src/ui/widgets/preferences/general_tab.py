@@ -2,7 +2,7 @@ from PyQt6 import QtCore, QtWidgets
 import os
 
 import globals_
-from dirty import setting
+from src.data.common.settings import setting
 from src.data.common.reggie_translation import ReggieTranslation
 
 from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget

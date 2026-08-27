@@ -4,7 +4,7 @@ from typing import cast
 
 import globals_
 
-from dirty import SetDirty
+from src.data.level.dirty import SetDirty
 import spritelib as SLib
 from levelitems import SpriteItem, ZoneItem, EntranceItem
 from src.ui.theme.reggie_theme import GetIcon

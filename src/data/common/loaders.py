@@ -8,7 +8,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 import globals_
 import spritelib as SLib
-from dirty import delSetting, setSetting, setting
+from src.data.common.settings import delSetting, setSetting, setting
 from libs import lh, lib_versions, lz77, tpl
 from src.data.common import archive
 from src.data.common.keybind import Keybind

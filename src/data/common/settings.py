@@ -1,25 +1,11 @@
+from typing import Any
+
 from PyQt6 import QtCore, QtGui
 
 import globals_
 
-def SetDirty(noautosave=False):
-    if globals_.DirtyOverride > 0:
-        return
 
-    if not noautosave:
-        globals_.AutoSaveDirty = True
-    if globals_.Dirty:
-        return
-
-    globals_.Dirty = True
-    try:
-        if globals_.mainWindow is not None:
-            globals_.mainWindow.UpdateTitle()
-    except Exception:
-        pass
-
-
-def setting(name, default=None):
+def setting(name: str, default: Any | None = None) -> Any | None:
     """
     Thin wrapper around QSettings, fixes the type=bool bug
     """
@@ -28,14 +14,14 @@ def setting(name, default=None):
     types = {'str': str, 'int': int, 'float': float, 'dict': dict, 'bool': bool, 'QByteArray': QtCore.QByteArray,
              'StandardKey': QtGui.QKeySequence.StandardKey}
 
-    type_ = globals_.settings.value('typeof(%s)' % name, types_str[type(default)], str)
+    type_ = globals_.settings.value(f'typeof({name})', types_str[type(default)], str)
     if type_ == 'NoneType':
         return None
 
     return globals_.settings.value(name, default, types[type_])
 
 
-def setSetting(name, value):
+def setSetting(name: str, value: Any):
     """
     Thin wrapper around QSettings
     """
@@ -44,14 +30,14 @@ def setSetting(name, value):
     assert isinstance(name, str) and type(value) in types_str
 
     globals_.settings.setValue(name, value)
-    globals_.settings.setValue('typeof(%s)' % name, types_str[type(value)])
+    globals_.settings.setValue(f'typeof({name})', types_str[type(value)])
 
 
-def delSetting(name):
+def delSetting(name: str):
     """
     Thin wrapper around QSettings, removes both the setting and its type identifier
     """
     assert isinstance(name, str)
 
     globals_.settings.remove(name)
-    globals_.settings.remove('typeof(%s)' % name)
+    globals_.settings.remove(f'typeof({name})')

@@ -2,7 +2,7 @@
 from PyQt6 import QtWidgets
 
 import globals_
-from dirty import setting
+from src.data.common.settings import setting
 
 from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
 from src.ui.widgets.preferences.widgets.toolbar_check_box import ToolbarCheckBox

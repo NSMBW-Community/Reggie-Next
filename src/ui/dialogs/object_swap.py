@@ -1,7 +1,7 @@
 from PyQt6 import QtWidgets, QtCore
 
 import globals_
-from dirty import SetDirty
+from src.data.level.dirty import SetDirty
 from src.ui.theme.reggie_theme import GetIcon, createVertLine
 
 class ObjectTypeSwapDialog(QtWidgets.QDialog):

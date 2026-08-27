@@ -2,7 +2,7 @@ from PyQt6 import QtWidgets, QtCore
 
 import globals_
 from src.ui.theme.reggie_theme import createHorzLine
-from dirty import SetDirty
+from src.data.level.dirty import SetDirty
 
 from levelitems import LocationItem
 

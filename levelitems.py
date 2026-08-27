@@ -9,7 +9,7 @@ import globals_
 from src.data.common.utils import clamp
 from src.data.tileset.object.renderers import RenderObject
 from src.ui.theme.reggie_theme import GetIcon, clipStr, setOverrideCursor
-from dirty import SetDirty
+from src.data.level.dirty import SetDirty
 from src.ui.actions.undo.move_item import MoveItemUndoAction
 from src.ui.actions.undo.simultaneous import SimultaneousUndoAction
 

@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 import globals_
-from dirty import SetDirty
+from src.data.level.dirty import SetDirty
 from levelitems import InstanceDefinition
 from src.data.level.sprite_definition import SpriteDefinition
 from src.data.common.list_property import ListPropertyModel

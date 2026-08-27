@@ -2,7 +2,7 @@ from PyQt6 import QtCore, QtWidgets, QtGui
 import os
 
 import globals_
-from dirty import setting
+from src.data.common.settings import setting
 from levelitems import Path, CommentItem
 from misc2 import LevelViewWidget
 from src.ui.theme.reggie_theme import ReggieTheme

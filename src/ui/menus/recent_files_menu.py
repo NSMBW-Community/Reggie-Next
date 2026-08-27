@@ -3,7 +3,7 @@ import os
 
 import globals_
 from src.ui.theme.reggie_theme import GetIcon, clipStr
-from dirty import setting, setSetting
+from src.data.common.settings import setting, setSetting
 
 class RecentFilesMenu(QtWidgets.QMenu):
     """

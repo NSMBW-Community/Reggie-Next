@@ -95,7 +95,8 @@ from src.data.common.loaders import LoadActionsLists, LoadSpriteData, LoadTilese
 from src.data.common.utils import clamp, find_first_available_id
 from misc import FilesAreMissing, module_path, IsNSMBLevel, SetGamePaths, areValidGamePaths
 from misc2 import LevelScene, LevelViewWidget
-from dirty import setting, setSetting, SetDirty
+from src.data.level.dirty import SetDirty
+from src.data.common.settings import setting, setSetting
 from src.data.common.gamedef import LoadGameDef
 from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem, Path
 from src.data.common.loaders import UnloadTileset, LoadTileset, LoadOverrides
