@@ -3,6 +3,7 @@ import importlib.util
 import os
 import sys
 from xml.etree import ElementTree as etree
+import re
 
 from PyQt6 import QtWidgets
 
@@ -180,8 +181,8 @@ class ReggieGameDefinition:
 
         # Load sprites.py if provided
         if 'sprites' in self.files:
-            # Check if sprites.py has anything that won't work in PyQt6
-            FixSpritesModule(self.files['sprites'].path)
+            # Fix any potential incompatibilities
+            update_sprites_module(self.files['sprites'].path)
 
             with open(self.files['sprites'].path, 'r', encoding='utf-8') as f:
                 filedata = f.read()
@@ -673,9 +674,9 @@ def FindGameDef(name: str, skip: str | None = None):
         return def_
 
 
-def FixSpritesModule(filename: str):
+def update_sprites_module(filename: str):
     """
-    Fixes any PyQt5 -> PyQt6 incompatibilities with sprites.py modules
+    Fixes compatibility issues with sprites.py modules made for older versions of Reggie Next
     """
     try:
         with open(filename, "r", encoding="utf-8") as f:
@@ -684,21 +685,31 @@ def FixSpritesModule(filename: str):
         # Fix the import
         new_data = orig_data.replace("PyQt5", "PyQt6")
 
-        # Commonly used things that need to be fixed
-        strings = [
+        # Common PyQt5 -> 6 changes that need to be fixed
+        pyqt_strings = [
             ("QPainter.Antialiasing",   "QPainter.RenderHint.Antialiasing"),
             ("Qt.SmoothTransformation", "Qt.TransformationMode.SmoothTransformation"),
             ("Qt.IgnoreAspectRatio",    "Qt.AspectRatioMode.IgnoreAspectRatio"),
-            ("QPoint(",                 "QPointF("), # Skip existing instances of QPointF
+            ("QPoint(",                 "QPointF("),
             ("Qt.transparent",          "Qt.GlobalColor.transparent"),
-            ("Qt.Align",                "Qt.AlignmentFlag.Align"),
+            ("Qt.Align",                "Qt.AlignmentFlag.Align")
         ]
 
-        for old, new in strings:
+        for old, new in pyqt_strings:
             new_data = new_data.replace(old, new)
 
-        with open(filename, 'w') as fileOut:
-            fileOut.write(new_data)
+        # Fix BlockContents references
+        block_content_strings = [
+            (r"\['BlockContents'\]\[(\d+)\]", r"['BlockContents\1']"),
+            (r"\['BlockContents'\]\[(.*?)\]", r"[f'BlockContents{\1}']") # Replace variables
+        ]
+
+        for pattern, replace in block_content_strings:
+            new_data = re.sub(pattern, replace, new_data)
+
+        # All done, save the file
+        with open(filename, 'w') as file_out:
+            file_out.write(new_data)
 
     except Exception:
         raise
