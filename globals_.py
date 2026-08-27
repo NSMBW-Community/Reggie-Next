@@ -133,7 +133,7 @@ AllowSizeHacks = False
 
 app: QtWidgets.QApplication | None = None
 firstLoad = True
-trans: ReggieTranslation = ReggieTranslation('UNDEFINED')
+trans: ReggieTranslation = ReggieTranslation(None)
 gamedef: ReggieGameDefinition = ReggieGameDefinition()
 mainWindow: ReggieWindow | None = None
 # uninitialized

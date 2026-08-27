@@ -1,4 +1,5 @@
 import os
+from typing import Any
 from xml.etree import ElementTree
 
 
@@ -7,7 +8,7 @@ class ReggieTranslation:
     A translation of all visible Reggie strings
     """
 
-    def __init__(self, name):
+    def __init__(self, name: str | None):
         """
         Creates a Reggie translation
         """
@@ -18,7 +19,7 @@ class ReggieTranslation:
         if not ok:
             self.InitAsEnglish()
 
-    def InitAsEnglish(self):
+    def InitAsEnglish(self) -> None:
         """
         Initializes the ReggieTranslation as the English translation
         """
@@ -27,7 +28,7 @@ class ReggieTranslation:
         self.translator = 'Treeki, Tempus'
 
         # TODO: Add support for translating "external" folder XMLs
-        self.files = { None: {
+        self.files: dict[str | None, dict[str, str]] = { None: {
             'bga': os.path.join('reggiedata', 'bga.txt'),
             'bgb': os.path.join('reggiedata', 'bgb.txt'),
             'entrancetypes': os.path.join('reggiedata', 'entrancetypes.txt'),
@@ -1132,11 +1133,13 @@ class ReggieTranslation:
             },
         }
 
-    def InitFromXML(self, name):
+    def InitFromXML(self, name: str | None) -> bool:
         """
         Parses the translation XML - returns True if successful, False if not.
         """
-        if name in ('', None, 'None'): return
+        if name in ('', None, 'None'):
+            return False
+
         name = str(name)
 
         # Parse the file
@@ -1229,16 +1232,16 @@ class ReggieTranslation:
 
         return True
 
-    def string(self, *args) -> str | None:
+    def string(self, name: str, numcode: int, *args: Any) -> str | None:
         """
         Usage: string(section, numcode, replacementDummy, replacement, replacementDummy2, replacement2, etc.)
         """
 
         # If there are errors when the string is found, return an error report instead
         try:
-            return self.string_(*args)
+            return self.string_(name, numcode, *args)
         except Exception as e:
-            text = '\nReggieTranslation.string() ERROR: ' + str(args[1]) + '; ' + str(args[2]) + '; ' + repr(e) + '\n'
+            text = '\nReggieTranslation.string() ERROR: ' + str(numcode) + '; ' + str(args[0]) + '; ' + repr(e) + '\n'
             # do 3 things with the text - print it, save it to ReggieErrors.txt, return it
             print(text)
 
@@ -1252,20 +1255,20 @@ class ReggieTranslation:
 
             return text
 
-    def string_(self, *args) -> str | None:
+    def string_(self, name: str, numcode: int, *args: Any) -> str | None:
         """
         Gets a string from the translation and returns it
         """
 
         # Get the string
-        astring = self.strings[args[0]][args[1]]
+        astring = self.strings[name][numcode]
         if astring is None:
             return None
         if isinstance(astring, tuple):
-            raise TypeError(f"String {args[0]}/{args[1]} is a tuple: {astring}. Use stringList() instead")
+            raise TypeError(f"String {name}/{numcode} is a tuple: {astring}. Use stringList() instead")
 
         # Perform any replacements
-        i = 2
+        i = 0
         while i < len(args):
             # Get the old string
             old = str(args[i])
@@ -1291,24 +1294,24 @@ class ReggieTranslation:
             '//n': '\n',
             '[tm]': '™',
         }
-        for old in replace:
-            astring = astring.replace(old, replace[old])
+        for old, value in replace.items():
+            astring = astring.replace(old, value)
 
         # Return it
         return astring
 
-    def stringOneLine(self, *args) -> str | None:
+    def stringOneLine(self, name: str, numcode: int, *args: Any) -> str | None:
         """
         Works like string(), but guarantees that the resulting string will have
         no line breaks or <br>s.
         """
-        newstr = self.string(*args)
+        newstr = self.string(name, numcode, *args)
         if newstr is None:
             return None
 
         return newstr.replace('\n', ' ').replace('<br>', ' ')
 
-    def stringList(self, section, numcode) -> tuple[str | None, ...] | None:
+    def stringList(self, section: str, numcode: int) -> tuple[str | None, ...] | None:
         """
         Returns a list of strings
         """
@@ -1318,7 +1321,7 @@ class ReggieTranslation:
 
         return strList
 
-    def path(self, key, gamedef=None):
+    def path(self, key: str, gamedef: str | None = None) -> str | None:
         """
         Returns the path to the file indicated by key
         """
@@ -1330,13 +1333,13 @@ class ReggieTranslation:
         except KeyError:
             return None
 
-    def paths(self, key, gamedef_names=None):
+    def paths(self, key: str, gamedef_names: list[str | None] | None = None) -> list[str | None]:
         if gamedef_names is None:
             return [self.path(key)]
 
         return [self.path(key, name) for name in gamedef_names]
 
-    def generateXML(self):
+    def generateXML(self) -> None:
         """
         Generates a strings.xml and places it in the folder of reggie.py
         """
@@ -1344,12 +1347,12 @@ class ReggieTranslation:
         # Sort self.strings
         sortedstrings = sorted(
             (
-                [
+                (
                     key,
                     sorted(
                         self.strings[key].items(),
                         key=lambda entry: entry[0]),
-                ]
+                )
                 for key in self.strings
             ),
             key=lambda entry: entry[0])
