@@ -108,11 +108,11 @@
         <level file="06-04" name="World 6-4: Glowlit Manor" />
         <level file="06-05" name="World 6-5: Moonlit Woods" />
         <level file="06-06" name="World 6-6: Cawcaw Treeway" />
-        <level file="06-08" name="World 6-7: Gloomsilt Lake" />
+        <level file="06-08" name="World 6-7: Drenched Gloomlake" />
         <level file="06-09" name="World 6-8: Sunken Boneyard" />
         <level file="06-25" name="World 6-Castle: Delusion Castle" />
         <level file="06-38" name="World 6-Ship: Shipwreck Galleon" />
-        <level file="05-33" name="Challenge House E" />
+        <level file="06-33" name="Challenge House E" />
         <level file="06-34" name="Haunted Music House" />
         <level file="06-99" name="Haunted Emporium" />
     </category>
@@ -134,7 +134,7 @@
             <level file="07-38" name="World 7-Ship: Spaceship Koopa" />
         </category>
         <level file="07-31" name="The Blue Switch Palace" />
-        <level file="06-33" name="Challenge House F" />
+        <level file="07-33" name="Challenge House F" />
         <level file="07-34" name="Space Music House" />
         <level file="07-99" name="Star Bucks" />
     </category>
@@ -158,7 +158,7 @@
             <level file="08-08" name="World 8-A: Dragonride Firesea" />
             <level file="08-24" name="World 8-Castle 2: Bowser's Keep" />
         </category>
-        <level file="07-33" name="Challenge House G" />
+        <level file="08-33" name="Challenge House G" />
     </category>
 
     <category name="World A: Goldwood Forest">
@@ -195,7 +195,7 @@
         <level file="10-14" name="World D-A: Carapace Catacomb" />
         <level file="10-15" name="World D-Tower: Toxic Fortress" />
         <level file="10-31" name="The Red Switch Palace" />
-        <level file="08-33" name="Challenge House H" />
+        <level file="10-34" name="Challenge House H" />
         <level file="10-36" name="Crystal Music House" />
     </category>
 
@@ -240,6 +240,7 @@
             <level file="09-22" name="World 9-22" />
             <level file="09-25" name="World 9-22 (Unfinished)" />
             <level file="08-42" name="Ending Cutscene (Copy)" />
+            <level file="05-33" name="Challenge House UNUSED (World 5)" />
             <level file="10-33" name="Challenge House I (Unknown World)" />
             <level file="10-34" name="Challenge House J (Unknown World)" />
             <level file="09-33" name="Challenge House ?1 (World 9)" />
