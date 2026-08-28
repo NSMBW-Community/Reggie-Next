@@ -3,7 +3,8 @@ import os
 
 import globals_
 from src.data.common.settings import setting
-from levelitems import Path, CommentItem
+from src.data.level.path import Path
+from src.data.level.items.comment import CommentItem
 from src.ui.widgets.level_view import LevelViewWidget
 from src.ui.theme.reggie_theme import ReggieTheme
 

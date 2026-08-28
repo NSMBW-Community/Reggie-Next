@@ -5,7 +5,7 @@ from src.ui.theme.reggie_theme import createHorzLine
 from src.data.level.dirty import SetDirty
 from src.data.common.loaders import LoadEntranceNames
 
-from levelitems import EntranceItem
+from src.data.level.items.entrance import EntranceItem
 
 class EntranceEditorWidget(QtWidgets.QWidget):
     """

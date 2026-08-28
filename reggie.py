@@ -37,6 +37,7 @@ import sys
 from src.data.sprite.spritefield.list import ListSpriteField
 from src.data.sprite.spritefield.sprite_field import SpriteField
 from src.data.sprite.spritefield.value import ValueSpriteField
+from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 
 if sys.version_info < minimum:
     errormsg = 'Please update your copy of Python to ' + '.'.join(map(str, minimum)) + \
@@ -99,7 +100,15 @@ from src.ui.widgets.level_view import LevelViewWidget
 from src.data.level.dirty import SetDirty
 from src.data.common.settings import setting, setSetting
 from src.data.common.gamedef import LoadGameDef
-from levelitems import LocationItem, ZoneItem, ObjectItem, SpriteItem, EntranceItem, ListWidgetItem_SortsByOther, PathItem, CommentItem, PathEditorLineItem, Path
+from src.data.level.items.comment import CommentItem
+from src.data.level.items.entrance import EntranceItem
+from src.data.level.items.location import LocationItem
+from src.data.level.items.object import ObjectItem
+from src.data.level.items.path import PathItem
+from src.data.level.items.path_editor_line import PathEditorLineItem
+from src.data.level.items.sprite import SpriteItem
+from src.data.level.items.zone import ZoneItem
+from src.data.level.path import Path
 from src.data.common.loaders import UnloadTileset, LoadTileset, LoadOverrides
 from src.data.level.nsmbw_level import NSMBWLevel
 from src.data.stamp.stamp import Stamp

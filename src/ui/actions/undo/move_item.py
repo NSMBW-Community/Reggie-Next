@@ -44,7 +44,9 @@ class MoveItemUndoAction(UndoAction):
         """
         Changes the position of an object
         """
-        from levelitems import ObjectItem, PathItem, SpriteItem
+        from src.data.level.items.object import ObjectItem
+        from src.data.level.items.path import PathItem
+        from src.data.level.items.sprite import SpriteItem
 
         main_window = globals_.mainWindow
 

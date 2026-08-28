@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtWidgets
 
 import globals_
-from levelitems import InstanceDefinition
+from src.data.level.items.basic import InstanceDefinition
 from src.ui.theme.reggie_theme import GetIcon
 
 

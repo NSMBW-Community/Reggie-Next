@@ -6,7 +6,9 @@ import globals_
 
 from src.data.level.dirty import SetDirty
 import spritelib as SLib
-from levelitems import SpriteItem, ZoneItem, EntranceItem
+from src.data.level.items.entrance import EntranceItem
+from src.data.level.items.sprite import SpriteItem
+from src.data.level.items.zone import ZoneItem
 from src.ui.theme.reggie_theme import GetIcon
 
 from src.ui.widgets.diag_list_widget_item import DiagnosticListWidgetItem

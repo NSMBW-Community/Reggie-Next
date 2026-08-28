@@ -4,7 +4,8 @@ import globals_
 from src.ui.theme.reggie_theme import createHorzLine
 from src.data.level.dirty import SetDirty
 
-from levelitems import Path, PathItem
+from src.data.level.path import Path
+from src.data.level.items.path import PathItem
 
 class PathNodeEditorWidget(QtWidgets.QWidget):
     """

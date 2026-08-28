@@ -4,14 +4,13 @@ from PyQt6 import QtWidgets
 
 import globals_
 import spritelib as SLib
-from levelitems import (
-    CommentItem,
-    EntranceItem,
-    LocationItem,
-    ObjectItem,
-    SpriteItem,
-    ZoneItem,
-)
+from src.data.common.loaders import CreateTilesets, LoadTileset
+from src.data.level.items.comment import CommentItem
+from src.data.level.items.entrance import EntranceItem
+from src.data.level.items.location import LocationItem
+from src.data.level.items.object import ObjectItem
+from src.data.level.items.sprite import SpriteItem
+from src.data.level.items.zone import ZoneItem
 from src.data.level.metadata import Metadata
 from src.data.sprite.spritefield.list import ListSpriteField
 from src.data.sprite.spritefield.sprite_field import SpriteField
@@ -19,7 +18,6 @@ from src.data.sprite.spritefield.value import ValueSpriteField
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
-from src.data.common.loaders import CreateTilesets, LoadTileset
 
 
 class Area:
@@ -516,7 +514,7 @@ class Area:
         unpack = pathstruct.unpack_from
         paths = []
 
-        from levelitems import Path
+        from src.data.level.path import Path
 
         for offset in range(0, len(pathdata), 8):
             data = unpack(pathdata, offset)

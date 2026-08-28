@@ -1,15 +1,13 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 import globals_
-from levelitems import (
-    CommentItem,
-    EntranceItem,
-    LocationItem,
-    ObjectItem,
-    PathItem,
-    SpriteItem,
-)
 from src.data.level.dirty import SetDirty
+from src.data.level.items.comment import CommentItem
+from src.data.level.items.entrance import EntranceItem
+from src.data.level.items.location import LocationItem
+from src.data.level.items.object import ObjectItem
+from src.data.level.items.path import PathItem
+from src.data.level.items.sprite import SpriteItem
 
 
 class LevelViewWidget(QtWidgets.QGraphicsView):
@@ -143,7 +141,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
                     newpathid = getids.index(False)
 
-                    from levelitems import Path
+                    from src.data.level.path import Path
 
                     path = Path(newpathid, globals_.mainWindow.scene)
                     new_node = path.add_node(clickedx, clickedy)

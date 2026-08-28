@@ -3,7 +3,7 @@ from typing import cast
 
 import globals_
 from src.ui.theme.reggie_theme import GetIcon
-from levelitems import ZoneItem
+from src.data.level.items.zone import ZoneItem
 
 from src.data.common.utils import clamp
 from src.ui.layouts.camera_mode import CameraModeZoomSettingsLayout
