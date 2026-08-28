@@ -1,6 +1,6 @@
 import struct
 
-from misc2 import DecodeOldReggieInfo
+from src.data.common.utils import DecodeOldReggieInfo
 
 
 class Metadata:

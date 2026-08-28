@@ -4,7 +4,7 @@ import os
 import globals_
 from src.data.common.settings import setting
 from levelitems import Path, CommentItem
-from misc2 import LevelViewWidget
+from src.ui.widgets.level_view import LevelViewWidget
 from src.ui.theme.reggie_theme import ReggieTheme
 
 from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget

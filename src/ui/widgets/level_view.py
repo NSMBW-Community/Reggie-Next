@@ -1,113 +1,15 @@
-import pickletools
-
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 import globals_
-from levelitems import ListWidgetItem_SortsByOther, PathItem, CommentItem, SpriteItem, EntranceItem, LocationItem, ObjectItem, PathEditorLineItem, ZoneItem
+from levelitems import (
+    CommentItem,
+    EntranceItem,
+    LocationItem,
+    ObjectItem,
+    PathItem,
+    SpriteItem,
+)
 from src.data.level.dirty import SetDirty
-
-class LevelScene(QtWidgets.QGraphicsScene):
-    """
-    GraphicsScene subclass for the level scene
-    """
-
-    def __init__(self, *args):
-        QtWidgets.QGraphicsScene.__init__(self, *args)
-        self.setBackgroundBrush(QtGui.QBrush(globals_.theme.color('bg')))
-
-    def drawBackground(self, painter, rect):
-        """
-        Draws all visible tiles
-        """
-        QtWidgets.QGraphicsScene.drawBackground(self, painter, rect)
-        if not hasattr(globals_.Area, 'layers'): return
-
-        drawrect = QtCore.QRectF(rect.x() / 24, rect.y() / 24, rect.width() / 24 + 1, rect.height() / 24 + 1)
-        isect = drawrect.intersects
-
-        layer0 = []
-        layer1 = []
-        layer2 = []
-
-        x1 = 1024
-        y1 = 512
-        x2 = 0
-        y2 = 0
-
-        # iterate through each object
-        funcs = [layer0.append, layer1.append, layer2.append]
-        show = [globals_.Layer0Shown, globals_.Layer1Shown, globals_.Layer2Shown]
-        for layer, add, process in zip(globals_.Area.layers, funcs, show):
-            if not process:
-                continue
-
-            for item in layer:
-                if not isect(item.LevelRect):
-                    continue
-
-                add(item)
-                x1 = min(x1, item.objx)
-                x2 = max(x2, item.objx + item.width)
-                y1 = min(y1, item.objy)
-                y2 = max(y2, item.objy + item.height)
-
-        width = x2 - x1
-        height = y2 - y1
-
-        # Assigning global variables to local variables for performance
-        tiles = globals_.Tiles
-        odefs = globals_.ObjectDefinitions
-        unkn_tile = globals_.Overrides[globals_.OVERRIDE_UNKNOWN].getCurrentTile()
-
-        # create and draw the tilemaps
-        for layer_idx, layer in enumerate([layer2, layer1, layer0]):
-            if not layer:
-                continue
-
-            tmap = [[None] * width for _ in range(height)]
-
-            for item in layer:
-                startx = item.objx - x1
-                desty = item.objy - y1
-
-                if odefs[item.tileset] is None or \
-                        odefs[item.tileset][item.object_num] is None:
-                    # This is an unknown object, so place -1 in the tile map.
-                    for i, row in enumerate(item.objdata, desty):
-                        destrow = tmap[i]
-                        for j in range(startx, startx + len(row)):
-                            destrow[j] = -1
-
-                    continue
-
-                # This is not an unkown object, so update the tile map normally.
-                for i, row in enumerate(item.objdata, desty):
-                    destrow = tmap[i]
-                    for j, tile in enumerate(row, startx):
-                        if tile > 0:
-                            destrow[j] = tile
-
-            painter.save()
-            painter.translate(x1 * 24, y1 * 24)
-
-            desty = -24
-            for row in tmap:
-                desty += 24
-                destx = -24
-                for tile in row:
-                    destx += 24
-                    if tile == -1:
-                        # Draw unknown tiles
-                        painter.drawPixmap(destx, desty, unkn_tile)
-                    elif tile is not None:
-                        # Only show collisions on layer 1 (i.e. layer_idx == 1)
-                        pixmap = tiles[tile].getCurrentTile(layer_idx == 1)
-                        painter.drawPixmap(destx, desty, pixmap)
-
-            painter.restore()
-
-    def getMainWindow(self):
-        return globals_.mainWindow
 
 
 class LevelViewWidget(QtWidgets.QGraphicsView):
@@ -739,57 +641,3 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         Returns a translated copy of the rect
         """
         return rect.translated(x * 16, y * 16)
-
-
-def DecodeOldReggieInfo(data, validKeys):
-    """
-    Decode the provided level info data into a dictionary, which will
-    have only the keys specified. Raises an exception if the data can't
-    be parsed.
-    """
-    # The idea here is that we implement just enough of the pickle
-    # protocol (v2) to be able to parse the dictionaries that past
-    # Reggies have pickled, even if PyQt4 isn't available.
-    #
-    # We keep track of the stack and memo, just enough to figure out
-    # in what order the strings are pushed to the stack. (We need to
-    # implement the memo because default level info uses memoization to
-    # avoid encoding the '-' string more than once.) Then we filter out
-    # 'PyQt4.QtCore' and 'QString'. Assuming nobody's crazy enough to
-    # use those as actual level info field values, that should leave us
-    # with exactly 12 strings (6 field names and 6 fields). Then we just
-    # put the dictionary together in the same way as the SETITEMS pickle
-    # instruction, and we're done.
-
-    # Figure out in what order strings are pushed to the pickle stack
-    stack = []
-    memo = {}
-    for inst, arg, _ in pickletools.genops(data):
-        if inst.name in ['SHORT_BINSTRING', 'BINSTRING', 'BINUNICODE']:
-            stack.append(arg)
-        elif inst.name == 'GLOBAL':
-            # In practice, this is used to push sip._unpickle_type,
-            # which then gets BINGET'd over and over. So we have to take
-            # it into account, or else we get confused and end up
-            # pushing some random string to the stack repeatedly instead
-            stack.append(None)
-        elif inst.name == 'BINPUT' and stack:
-            memo[arg] = stack[-1]
-        elif inst.name == 'BINGET' and arg in memo:
-            stack.append(memo[arg])
-
-    # Filter out uninteresting strings and check that the length is right
-    strings = [s for s in stack if s not in {'PyQt4.QtCore', 'QString', None}]
-    if len(strings) != 12:
-        raise ValueError('Wrong number of strings in level metadata (%d)' % len(strings))
-
-    # Convert e.g. [a, b, c, d, e, f] -> {a: b, c: d, e: f}
-    # https://stackoverflow.com/a/12739974
-    it = iter(strings)
-    levelinfo = dict(zip(it, it))
-
-    # Double-check that the keys are as expected, and return
-    if set(levelinfo) != validKeys:
-        raise ValueError('Wrong keys in level metadata: ' + str(set(levelinfo)))
-
-    return levelinfo

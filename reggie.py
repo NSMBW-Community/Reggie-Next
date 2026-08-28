@@ -94,7 +94,8 @@ from src.ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolT
 from src.data.common.loaders import LoadActionsLists, LoadSpriteData, LoadTilesetInfo, LoadLevelNames, LoadSpriteCategories, LoadTheme, LoadZoneThemes, LoadDefaultKeybinds, GetKeybind, SetKeybind
 from src.data.common.utils import clamp, find_first_available_id
 from misc import FilesAreMissing, module_path, IsNSMBLevel, SetGamePaths, areValidGamePaths
-from misc2 import LevelScene, LevelViewWidget
+from src.ui.widgets.level_scene import LevelScene
+from src.ui.widgets.level_view import LevelViewWidget
 from src.data.level.dirty import SetDirty
 from src.data.common.settings import setting, setSetting
 from src.data.common.gamedef import LoadGameDef
