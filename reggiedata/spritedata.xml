@@ -5060,9 +5060,9 @@
 
   <sprite id="414" name="Spike/Stone Spike" files="gabon_rock.arc;gabon.arc">
     <dualbox nybble="12.4" title1="Stone Spike (Throws Down)" title2="Spike (Throws to Side)"/>
-    <!-- Direction also applies for Stone Spike, but their rotation is barely noticable in-game -->
-    <dualbox nybble="10.4" title1="Faces Player" title2="Faces Right" requirednybble="12.4" requiredval="1"/>
-    <checkbox nybble="11.4" title="Throw from Above Screen" comment="If enabled, the Spike will be able to throw spikes even when above the top of the screen."/>
+    <dualbox nybble="10.4" title1="Faces Player" title2="Faces Right" comment="While the Stone Spike supports this setting, its effect is purely visual and very subtle."/>
+    <checkbox nybble="11.4" title="Throw from Above Screen" comment="If enabled, the Spike will be able to throw objects even when above the top of the screen."/>
+    <checkbox nybble="5.4" title="Adjust Rock/Spike Ball Z-Order" comment="If enabled, the thrown object will be forced to 3200. Enabled on all Stone Spikes in retail 06-01."/>
   </sprite> <!-- #414: Spike/Stone Spike -->
 
   <sprite id="415" name="(Unused) Larry Koopa" notes="An unused and incomplete version of the Larry Koopa boss fight that stands still in place, even with a Tower or Castle Boss Controller attached. You can still put this sprite in a normal level without any additional setup. He can be defeated with Fire and Ice. If Mario jumps on him, Mario will get hit. Nonetheless, Mario can do a Ground-Pound to defeat him immediately. Larry just stands there and waits..." files="larry.arc;boss_ef_attack.arc;arrow.arc">
