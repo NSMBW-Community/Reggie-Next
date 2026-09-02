@@ -31,7 +31,7 @@
         <random list="0x8E, 0x9E, 0xAE, 0xBE" direction="vertical" />
         <random list="0x8F, 0x9F, 0xAF, 0xBF" direction="vertical" />
         <random range="0xC4, 0xC9" direction="horizontal" />
-        <random range="0xD4, 0xD9" direction="horizontal" />
+        <random range="0xD4, 0xD9" />
         <random range="0xE4, 0xE9" direction="horizontal" />
     </group>
     <group names="Pa1_kaigan">
