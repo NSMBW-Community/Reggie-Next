@@ -4738,6 +4738,10 @@ class SpriteImage_FreefallPlatform(SLib.SpriteImage_Static):  # 214
         )
         self.parent.setZValue(24999)
 
+        pathNodeAuxRect = SLib.AuxiliaryRectOutline(parent, 24, 24, 0, 0)
+        pathNodeAuxRect.setIsBehindSprite(False)
+        self.aux.append(pathNodeAuxRect)
+
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('FreefallGH', 'freefall_gh_platform.png')
