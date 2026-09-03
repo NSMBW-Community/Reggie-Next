@@ -158,8 +158,10 @@ class CommentItem(LevelEditorItem):
             painter.drawEllipse(self.Circle)
         else:
             painter.drawRect(self.Circle)
-        if not self.isSelected(): painter.setOpacity(.5)
-        painter.drawPixmap(4, 4, GetIcon('comments').pixmap(24, 24))
+
+        if not self.isSelected():
+            painter.setOpacity(.5)
+        painter.drawPixmap(4, 4, GetIcon('comments', True).pixmap(24, 24))
         painter.setOpacity(1)
 
         # Set the text edit visibility
