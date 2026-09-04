@@ -2,7 +2,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 import globals_
 from src.data.level.dirty import SetDirty
-from src.data.level.items.basic import InstanceDefinition
+from src.data.level.items.sprite import SpriteItem
 from src.data.level.sprite_definition import SpriteDefinition
 from src.data.common.list_property import ListPropertyModel
 from src.data.sprite.spritefield.check_box import CheckBoxSpriteField
@@ -761,7 +761,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
     def HandleSpritePlaced(self, id_, button_):
         def placeSprite():
             mw = globals_.mainWindow
-            if mw is None or mw.selObj is None or not isinstance(mw.selObj, InstanceDefinition):
+            if mw is None or mw.selObj is None or not isinstance(mw.selObj, SpriteItem):
                 return
 
             x_ = mw.selObj.objx + 16 if mw.selObj.objx is not None else 16
