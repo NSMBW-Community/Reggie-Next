@@ -2549,8 +2549,8 @@
   </sprite> <!-- #204: Rolling Object Spawner -->
 
   <sprite id="205" name="Water Ball" noyoshi="True" notes="A floating ball of water that can move around and synchronize its movement with Coins." files="obj_waterfloat.arc">
-    <dependency notes="Water Balls require that [317] Enables Bubbles be placed in every Zone containing a Water Ball.">
-      <required sprite="317"/>
+    <dependency notes="Water Balls can be used with [317] Enables Bubbles in each Zone to spawn additional bubbles.">
+      <suggested sprite="317"/>
     </dependency>
     <value nybble="5-6" title="Water Ball ID" comment="This pairs matching 'Water Ball' controlled objects to this controller." idtype="Water Ball"/>
     <list nybble="9" title="Size" comment="This determines the size and shape of the Water Ball.">
@@ -2949,8 +2949,8 @@
   </sprite> <!-- #225: Floating Coin -->
 
   <sprite id="226" name="(Unused) Water Ball" noyoshi="True" notes="Appears to be identical to [205] Water Ball, but it has an internal name ending in _Regular. Just use [205] instead." files="obj_waterfloat.arc">
-    <dependency notes="Water Balls require that [317] Enables Bubbles be placed in every Zone containing a Water Ball.">
-      <required sprite="317"/>
+    <dependency notes="Water Balls can be used with [317] Enables Bubbles in each Zone to spawn additional bubbles.">
+      <suggested sprite="317"/>
     </dependency>
     <value nybble="5-6" title="Water Ball ID" comment="This pairs matching 'Water Ball' controlled objects to this controller." idtype="Water Ball"/>
     <list nybble="9" title="Size" comment="This determines the size and shape of the Water Ball.">
