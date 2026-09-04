@@ -3089,7 +3089,7 @@
       <suggested sprite="373"/>
     </dependency>
     <dualbox nybble="12.4" title1="Pushes Left" title2="Pushes Right" comment="This determines the direction of the current." comment2="Due to a bug, players with a Penguin suit will always be pushed right."/>
-    <value nybble="5-6" title="Current Force (Increment)" comment="This determines the strength of the current. The exact calculation done by the game is (nybble 5 * -0.5) - (nybble 6 * 0.05)."/>
+    <value nybble="5-6" title="Current Force" comment="This determines the strength of the current. The exact calculation done by the game is (nybble 5 * -0.5) - (nybble 6 * 0.05)."/>
   </sprite> <!-- #243: (Unused) Liquid Current Controller -->
 
   <sprite id="244" name="Incomplete Sprite - 'River_Mgr'" nolayer="True" notes="Does nothing." files="lift_han_wood.arc;togezo.arc;paipo.arc;pukupuku.arc;lift_taru.arc">
