@@ -149,7 +149,7 @@ class SpriteList(QtWidgets.QWidget):
         for field in sdef.fields:
             # Only values (1) and lists (2) have idtypes, so ignore the other
             # fields.
-            if isinstance(field, (ListSpriteField, ValueSpriteField)):
+            if not isinstance(field, (ListSpriteField, ValueSpriteField)):
                 continue
 
             # The idtype is the last element in the field tuple.
