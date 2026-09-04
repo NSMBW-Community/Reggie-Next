@@ -4582,8 +4582,8 @@
   </sprite> <!-- #372: Iggy Koopa - Castle Boss -->
 
   <sprite id="373" name="Flashlight Raft Water" notes="This is the Water that is used with the Flashlight Raft. It will rise and fall along the Path indicated by the Flashlight Raft." files="obj_waterfull.arc;obj_waterhalf.arc">
-    <dependency notes="This must be included with the [368] Flashlight Raft in order to function. Do not include more than one in a Zone.">
-      <required sprite="368"/>
+    <dependency notes="The water will move alongside [368] Flashlight Raft if it is included in the Zone. Do not include more than one.">
+      <suggested sprite="368"/>
     </dependency>
   </sprite> <!-- #373: Flashlight Raft Water -->
 
