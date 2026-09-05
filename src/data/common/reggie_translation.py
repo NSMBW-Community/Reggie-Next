@@ -620,6 +620,8 @@ class ReggieTranslation:
                 36: 'Change Layer',
                 37: 'Copy Selected to Clipboard',
                 38: '[b]Note:[/b] To switch objects on other layers to this layer, select them and then click this button while holding down the [i]Alt[/i] key.',
+                39: 'Sprite Order',
+                40: 'Use this tab to modify the order of sprites within the level file.[br]The sprite order can sometimes change behavior between sprites.',
             },
             'PathDataEditor': {
                 0: 'Loops:',
@@ -872,6 +874,8 @@ class ReggieTranslation:
                     'Path Node ID',
                 ),
                 24: 'UNKNOWN',
+                25: 'Move Up',
+                26: 'Move Down',
             },
             'Statusbar': {
                 0: '- 1 object selected',

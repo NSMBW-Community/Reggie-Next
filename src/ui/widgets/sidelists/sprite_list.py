@@ -9,6 +9,8 @@ from src.data.sprite.spritefield.value import ValueSpriteField
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
+from src.ui.widgets.sprite_table import SpriteTableWidget
+from src.data.level.items.sprite import SpriteItem
 
 
 class SpriteList(QtWidgets.QWidget):
@@ -40,14 +42,6 @@ class SpriteList(QtWidgets.QWidget):
         # Set of row ids
         self.SearchResults = set()
 
-        # Probably not the bext way to do this?
-        class SpriteTableWidget(QtWidgets.QTableWidget):
-            def keyPressEvent(self, event):
-                if event.key() == QtCore.Qt.Key.Key_Space or event.key() == QtCore.Qt.Key.Key_Return:
-                    SpriteList().moveToSprite(self.currentItem())
-
-                super().keyPressEvent(event)
-
         sprite_translations = globals_.trans.stringList('Sprites', 23)
         self.table = SpriteTableWidget(0, len(sprite_translations if sprite_translations is not None else []) + 1)
         headers = [globals_.trans.string('Sprites', 21), globals_.trans.string('Sprites', 22)] + list(sprite_translations[1:] if sprite_translations is not None else [])
@@ -58,9 +52,15 @@ class SpriteList(QtWidgets.QWidget):
         horizontal_header = self.table.horizontalHeader()
         if horizontal_header is not None:
             horizontal_header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
+
         self.table.setSortingEnabled(True)
         self.table.setMouseTracking(True) # for 'entered' signal
-        self.table.itemDoubleClicked.connect(self.moveToSprite)
+
+        # Only select one item at a time, and select the entire row
+        self.table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
+        self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+
+        self.table.itemDoubleClicked.connect(SpriteItem.moveToSprite)
         self.table.itemEntered.connect(self.toolTip)
 
         # populate filter box
@@ -319,21 +319,6 @@ class SpriteList(QtWidgets.QWidget):
         item.setToolTip(
             '<img src="data:image/png;base64,' + b64 + '" />'
         )
-
-    # TODO: Consider moving this to the SpriteItem class
-    @staticmethod
-    def moveToSprite(item):
-        """
-        Moves the view to the sprite and selects it.
-        """
-        sprite = item.data(QtCore.Qt.ItemDataRole.UserRole)
-
-        if sprite is None:
-            return
-
-        sprite.ensureVisible(xMargin=192, yMargin=192)
-        sprite.scene().clearSelection()
-        sprite.setSelected(True)
 
     @staticmethod
     def getIDsFor(sprite):

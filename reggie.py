@@ -114,6 +114,7 @@ from src.data.level.nsmbw_level import NSMBWLevel
 from src.data.stamp.stamp import Stamp
 from src.ui.widgets.sidelists.stamp_chooser import StampChooserWidget
 from src.ui.widgets.sidelists.sprite_list import SpriteList
+from src.ui.widgets.sidelists.sprite_order import SpriteOrderList
 from src.ui.widgets.sidelists.sprite_picker import SpritePickerWidget
 from src.ui.widgets.sidelists.object_picker import ObjectPickerWidget
 from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
@@ -1309,6 +1310,20 @@ class ReggieWindow(QtWidgets.QMainWindow):
         spel.addWidget(slabel)
         spel.addWidget(self.spriteList)
 
+        # Sprite Order
+        self.sprOrderTab = QtWidgets.QWidget()
+        self.sprAllTab.addTab(self.sprOrderTab, GetIcon('spritesorder'), globals_.trans.string('Palette', 39))
+
+        order_layout = QtWidgets.QVBoxLayout(self.sprOrderTab)
+        self.sprOrderLayout = order_layout
+
+        slabel = QtWidgets.QLabel(globals_.trans.string('Palette', 40))
+        slabel.setWordWrap(True)
+        self.spriteOrder = SpriteOrderList()
+
+        order_layout.addWidget(slabel)
+        order_layout.addWidget(self.spriteOrder)
+
         # Entrances
         self.entEditorTab = QtWidgets.QWidget()
         tabs.addTab(self.entEditorTab, GetIcon('entrances'), '')
@@ -2140,6 +2155,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         clip = encoded[11:-2].split('|')
 
         self.spriteList.prepareBatchAdd()
+        self.spriteOrder.prepareBatchAdd()
         for item in clip:
 
             try:
@@ -2289,6 +2305,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 pass
 
         self.spriteList.endBatchAdd()
+        self.spriteOrder.endBatchAdd()
 
         return layers, sprites, entrances, locations, paths, path_nodes
 
@@ -2574,6 +2591,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 return
 
             self.spriteList.addSprite(spr)
+            self.spriteOrder.addSprite(spr)
             globals_.Area.sprites.append(spr)
 
             # Add the ids for the idtype count
@@ -3689,9 +3707,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clear()
 
         # Clear out all level-thing lists
-        for thingList in (self.spriteList, self.entranceList, self.locationList, self.pathList, self.commentList):
+        for thingList in (self.spriteList, self.spriteOrder, self.entranceList, self.locationList, self.pathList, self.commentList):
             thingList.clear()
-            thingList.selectionModel().setCurrentIndex(QtCore.QModelIndex(), QtCore.QItemSelectionModel.SelectionFlag.Clear)
+            sel_model = thingList.selectionModel()
+            if sel_model is not None:
+                sel_model.setCurrentIndex(QtCore.QModelIndex(), QtCore.QItemSelectionModel.SelectionFlag.Clear)
 
         # Reset these here, because if they are set after
         # creating the objects, they use the old values.
@@ -3870,13 +3890,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         pcEvent = self.HandleSprPosChange
 
         self.spriteList.prepareBatchAdd()
+        self.spriteOrder.prepareBatchAdd()
         for spr in globals_.Area.sprites:
             spr.positionChanged = pcEvent
             self.spriteList.addSprite(spr)
+            self.spriteOrder.addSprite(spr)
             self.scene.addItem(spr)
             spr.UpdateListItem()
 
         self.spriteList.endBatchAdd()
+        self.spriteOrder.endBatchAdd()
 
         pcEvent = self.HandleEntPosChange
         for ent in globals_.Area.entrances:

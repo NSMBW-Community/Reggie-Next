@@ -587,6 +587,8 @@
         <string id="36">Change Layer</string>
         <string id="37">Copy to Clipboard</string>
         <string id="38">[b]Note:[/b] To switch objects on other layers to this layer, select them and then click this button while holding down the [i]Alt[/i] key.</string>
+        <string id="39">Sprite Order</string>
+        <string id="40">Use this tab to modify the order of sprites within the level file.[br]The sprite order can sometimes change behavior between sprites.</string>
     </section>
     <section id="PathDataEditor">
         <string id="0">Loops:</string>
@@ -839,6 +841,8 @@
             <entry>Path Node ID</entry>
         </stringlist>
         <string id="24">UNKNOWN</string>
+        <string id="25">Move Up</string>
+        <string id="26">Move Down</string>
     </section>
     <section id="Statusbar">
         <string id="0">- 1 object selected</string>

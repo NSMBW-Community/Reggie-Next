@@ -393,6 +393,20 @@ class SpriteItem(LevelEditorItem):
 
         self.setPos(newobjx * 1.5, newobjy * 1.5)
 
+    @staticmethod
+    def moveToSprite(item):
+        """
+        Moves the view to the sprite and selects it.
+        """
+        sprite = item.data(QtCore.Qt.ItemDataRole.UserRole)
+
+        if sprite is None:
+            return
+
+        sprite.ensureVisible(xMargin=192, yMargin=192)
+        sprite.scene().clearSelection()
+        sprite.setSelected(True)
+
     def mousePressEvent(self, event):
         """
         Overrides mouse pressing events if needed for cloning
@@ -531,9 +545,14 @@ class SpriteItem(LevelEditorItem):
         self.ImageObj.remove()
         globals_.mainWindow.UpdateFlag = True
         globals_.mainWindow.spriteList.takeSprite(self)
+        globals_.mainWindow.spriteOrder.takeSprite(self)
         globals_.mainWindow.UpdateFlag = False
 
         sel_model = globals_.mainWindow.spriteList.selectionModel()
+        if sel_model is not None:
+            sel_model.clearSelection()
+
+        sel_model = globals_.mainWindow.spriteOrder.selectionModel()
         if sel_model is not None:
             sel_model.clearSelection()
         globals_.Area.RemoveSprite(self)
