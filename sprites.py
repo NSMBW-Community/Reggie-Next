@@ -1761,7 +1761,7 @@ class SpriteImage_UnusedRisingSeesaw(SLib.SpriteImage_Static):  # 55
             parent,
             1.5,
             ImageCache['UnusedPlatformDark'].scaled(
-                377, 24,
+                168, 24,
                 Qt.AspectRatioMode.IgnoreAspectRatio, Qt.TransformationMode.SmoothTransformation,
             ),
         )
