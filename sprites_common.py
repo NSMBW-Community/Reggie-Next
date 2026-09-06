@@ -199,9 +199,15 @@ class SpriteImage_Switch(SLib.SpriteImage_StaticMultiple):  # 40, 41, 42, 153, 4
             ImageCache['ESwitchU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
 
     def dataChanged(self):
+        midway = (self.parent.spritedata[2] >> 6) & 1
         upsideDown = self.parent.spritedata[5] & 1
         shiftY = self.parent.spritedata[3] & 0xF
         shiftX = (self.parent.spritedata[5] >> 4) & 0xF
+
+        if midway:
+            self.alpha = 0.5
+        else:
+            self.alpha = 1.0
 
         if self.styleType != 0:
             style = str(self.styleType)

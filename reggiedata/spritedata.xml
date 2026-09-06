@@ -429,7 +429,7 @@
       <entry value="6">120 frames</entry>
       <entry value="7">140 frames</entry>
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
-    <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
+    <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #40: ?-Switch -->
@@ -445,7 +445,7 @@
     <checkbox nybble="5.1" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requirednybble="7" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox nybble="5.1" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requirednybble="7"/> <!-- Appears if Permanent Event is set -->
     <dualbox nybble="10" fullnybble="True" title1="Single Use" title2="Multi-Use" comment="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." comment2="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7" requiredval="0"/>
-    <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
+    <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #41: P-Switch -->
@@ -462,7 +462,7 @@
     <checkbox nybble="5.1" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requirednybble="7"/> <!-- Appears if Permanent Event is set -->
     <dualbox nybble="10" fullnybble="True" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox nybble="6.2-6.4" fullnybble="True" title="Unknown Value 6" advancedcomment="Changes how the switch activates, but the exact details are unknown."/>
-    <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
+    <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #42: !-Switch -->
@@ -485,7 +485,7 @@
       <entry value="6">120 frames</entry>
       <entry value="7">140 frames</entry>
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
-    <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
+    <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #43: Brick Block ?-Switch -->
@@ -499,7 +499,7 @@
     <checkbox nybble="5.1" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requirednybble="7" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox nybble="5.1" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requirednybble="7"/> <!-- Appears if Permanent Event is set -->
     <dualbox nybble="10" fullnybble="True" title1="Single Use" title2="Multi-Use" comment="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." comment2="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7" requiredval="0"/>
-    <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
+    <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #44: Brick Block P-Switch -->
@@ -514,7 +514,7 @@
     <checkbox nybble="5.1" title="Disable Permanent Music Interruption" comment="When enabled, the switch will not disable the background music. This setting is highly recommended if Permanent Event is set." requirednybble="7"/> <!-- Appears if Permanent Event is set -->
     <dualbox nybble="10" fullnybble="True" title1="Single Use" title2="Multi-Use" comment="This determines if the switch will pop back up when the Timed effect expires." comment2="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." advancedcomment="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own.&lt;br&gt;&lt;br&gt;The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7.4" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <checkbox nybble="6.2-6.4" fullnybble="True" title="Unknown Value 6" advancedcomment="Changes how the switch activates, but the exact details are unknown."/>
-    <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
+    <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #45: Brick Block !-Switch -->
@@ -599,8 +599,8 @@
     <checkbox nybble="11.4" title="Flies Off-Screen (Useless)" comment="Enabling this will allow the Lakitu to fly away after a certain period of time. However, this option is rather useless as stand-alone Lakitus cannot meet the requirements for this to occur." comment2="This is set on all Lakitus spawned from [124] Lakitu Spawn Area and [370] Lakitu Cloud Block."/>
   </sprite> <!-- #54: Lakitu -->
 
-  <sprite id="55" name="(Unused) Rising Tilting Platform" notes="This is a platform imported from New Super Mario Bros. DS.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;It is not recommended for use due to various glitches and a lack of texture.&lt;/font&gt;" advancednotes="Size is 1x7 blocks. The distance covered depends on two factors: Y-position and zone height. See [Movement Distance]." files="test_lift.arc">
-    <checkbox nybble="7.4" title="Loads at Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point." advanced="True"/>
+  <sprite id="55" name="(Unused) Rising Tilting Platform" notes="This is an unused platform, clearly leftover from NSMBDS. The distance it can travel depends on two factors: Y-position and zone height. See [Movement Distance].&lt;br&gt;&lt;br&gt;It is not recommended for use due to various glitches and a lack of texture." files="test_lift.arc">
+    <checkbox nybble="7.4" title="Spawns After Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point." advanced="True"/>
     <list nybble="9.3-9.4" title="Movement Distance" advanced="True" advancedcomment="This determines the maximum distance this Platform will cover. The platform covers 'Travel Limit' distance at value '0'. After any set amount of time, the platform will start blinking two blocks before the 'Travel Limit' and disappear once the player gets off it. For values marked with an asterisk (*), Mario must leave the platform for the blinking to begin. Once it starts blinking, the platform's disappearance can't be prevented.">
       <entry value="0">No Limit (Travel Limit)</entry>
       <entry value="1">5 Blocks</entry>
@@ -622,7 +622,7 @@
        <required sprite="281"/> <!-- Requires Controller -->
     </dependency>
     <checkbox nybble="5.4" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites." advancedcomment="Exact values are 80.0 unchecked, 450.0 checked."/>
-    <checkbox nybble="12.4" title="Loads at Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point."/>
+    <checkbox nybble="12.4" title="Spawns After Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point."/>
     <checkbox nybble="10.4" title="Useless Flag 10 (1)" comment="Seems to be for keeping the collision active even after the sprite is deleted, however the game doesn't allow for this, making this option useless."/>
     <list nybble="11.3-11.4" title="Activation Mode" comment="This controls the movement behavior of the platform, specifically how many players need to be on the platform for it to begin ascending." comment2="A value of 2 seems to have been meant for making the platform move automatically, however the platform is designed to not move without any riders, rendering the option useless. A value of 3 is supported, however it functions the same as 0.">
       <entry value="0">Will Move with One Player</entry>
@@ -674,7 +674,7 @@
   </sprite> <!-- #58: Koopa Paratroopa -->
 
   <sprite id="59" name="Line Controlled Tilt Controlled Girder" notes="A platform similar to the Tilt Controlled Girder that can navigate along Line guides." advancednotes="This sprite will move along with the edge of the screen, should the camera scroll past it. Additionally, it will cause massive lag spikes if it moves past the line guide it is attached to." files="remo_lift_line.arc">
-    <checkbox nybble="7.4" title="Spawns at Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point."/>
+    <checkbox nybble="7.4" title="Spawns After Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point."/>
     <list nybble="11.3-11.4" title="Activation Mode" comment="This determines when the platform will start moving.">
       <entry value="0">Will Move with One Player</entry>
       <entry value="1">Will Move ONLY with All Players</entry>
@@ -1969,7 +1969,7 @@
       <entry value="6">120 frames</entry>
       <entry value="7">140 frames</entry>
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
-    <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
+    <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #153: (Unused) ?-Switch -->
@@ -5685,7 +5685,7 @@
   <sprite id="477" name="Super Guide Block" notes="A block that activates a special Luigi replay where Luigi will complete the level as minimally as possible with as little running or wall jumping as he can get away with." files="block_help.arc">
     <dependency notes="This block cannot currently be utilized, as there is no tool to create and assign replays. As a result, do NOT use this block in your levels, and if you edit a retail level, you need to remove this block."/>
     <checkbox nybble="10.3" title="Glows" comment="When enabled, the block will glow and emit light in Full Darkness."/>
-    <checkbox nybble="12.4" title="Loads at Midway" comment="When enabled, the block will only appear if the level has been loaded from a Midway point."/>
+    <dualbox nybble="12.4" title1="Spawns Before Midway" title2="Spawns After Midway" comment="This decides whether the block will spawn only before the Midway Flag is activated, or only after."/>
   </sprite> <!-- #477: Super Guide Block -->
 
   <sprite id="478" name="Bowser Switch (Small)" notes="This switch is nearly identical to the Red ! Switch, but it does not activate outlined Red Blocks. It may have additional bugs. Not recommended for use outside of the final Bowser Boss fight. Hitting the switch will award the player 4000 points." files="switch.arc;switch_koopa.arc">
@@ -5711,7 +5711,7 @@
       <entry value="6">120 frames</entry>
       <entry value="7">140 frames</entry>
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
-    <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
+    <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #478: Bowser Switch (Small) -->
@@ -5729,7 +5729,7 @@
     <dualbox nybble="7" fullnybble="True" title1="Timed Event" title2="Permanent Event" comment="This determines if the Target Event is modified temporarily or permanently."/>
     <checkbox nybble="5.1" title="Disable Music Interruption" comment="When enabled, the switch will not interrupt the normal level music with Timed music. This setting is only applicable if Timed Event is set." requirednybble="7" requiredval="0"/> <!-- Appears only if Timed Event is set -->
     <dualbox nybble="10" fullnybble="True" title1="Single Use" title2="Multi-Use [Crashes]" advancedcomment="If Multi-Use is enabled, the game will crash when the switch pops back up." requirednybble="7" requiredval="0"/>
-    <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
+    <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
   </sprite> <!-- #479: Bowser Switch (Large) -->
 

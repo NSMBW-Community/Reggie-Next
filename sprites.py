@@ -727,6 +727,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         self.twelveIsMushroom = False
         self.rotates = False
         self.flipOverride = False
+        self.transparent = False
 
     def dataChanged(self):
         # SET CONTENTS
@@ -776,6 +777,11 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
     def paint(self, painter):
         if self.image is None:
             return
+
+        if self.transparent:
+            painter.setOpacity(0.5)
+        else:
+            painter.setOpacity(1.0)
 
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         if self.tilenum < len(SLib.Tiles):
@@ -1492,7 +1498,9 @@ class SpriteImage_QSwitchBlock(SpriteImage_Block):  # 43
 
     def dataChanged(self):
         upsideDown = self.parent.spritedata[5] & 1
+        midway = (self.parent.spritedata[2] >> 6) & 1
         self.flipOverride = upsideDown
+        self.transparent = midway
         super().dataChanged()
 
 
@@ -1505,6 +1513,7 @@ class SpriteImage_PSwitchBlock(SpriteImage_Block):  # 44
     def dataChanged(self):
         upsideDown = self.parent.spritedata[5] & 1
         self.flipOverride = upsideDown
+        self.transparent = (self.parent.spritedata[2] >> 6) & 1
         super().dataChanged()
 
 
@@ -1517,6 +1526,7 @@ class SpriteImage_ExcSwitchBlock(SpriteImage_Block):  # 45
     def dataChanged(self):
         upsideDown = self.parent.spritedata[5] & 1
         self.flipOverride = upsideDown
+        self.transparent = (self.parent.spritedata[2] >> 6) & 1
         super().dataChanged()
 
 
@@ -1755,7 +1765,7 @@ class SpriteImage_Lakitu(SLib.SpriteImage_Static):  # 54
         SLib.loadIfNotInImageCache('Lakitu', 'lakitu.png')
 
 
-class SpriteImage_UnusedRisingSeesaw(SLib.SpriteImage_Static):  # 55
+class SpriteImage_UnusedRisingSeesaw(SLib.SpriteImage_StaticMultiple):  # 55
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1770,8 +1780,15 @@ class SpriteImage_UnusedRisingSeesaw(SLib.SpriteImage_Static):  # 55
     def loadImages():
         SLib.loadIfNotInImageCache('UnusedPlatformDark', 'unused_platform_dark.png')
 
+    def dataChanged(self):
+        midway = (self.parent.spritedata[3] >> 4) & 1
+        if midway:
+            self.alpha = 0.5
+        else:
+            self.alpha = 1.0
 
-class SpriteImage_RisingTiltGirder(SLib.SpriteImage_Static):  # 56
+
+class SpriteImage_RisingTiltGirder(SLib.SpriteImage_StaticMultiple):  # 56
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -1783,6 +1800,13 @@ class SpriteImage_RisingTiltGirder(SLib.SpriteImage_Static):  # 56
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('RisingTiltGirder', 'rising_girder.png')
+
+    def dataChanged(self):
+        midway = self.parent.spritedata[5] & 1
+        if midway:
+            self.alpha = 0.5
+        else:
+            self.alpha = 1.0
 
 
 class SpriteImage_KoopaTroopa(SLib.SpriteImage_StaticMultiple):  # 57
@@ -9356,7 +9380,7 @@ class SpriteImage_FlyingWrench(SLib.SpriteImage_Static):  # 476
         SLib.loadIfNotInImageCache('Wrench', 'wrench.png')
 
 
-class SpriteImage_SuperGuideBlock(SLib.SpriteImage_Static):  # 477
+class SpriteImage_SuperGuideBlock(SLib.SpriteImage_StaticMultiple):  # 477
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -9368,6 +9392,13 @@ class SpriteImage_SuperGuideBlock(SLib.SpriteImage_Static):  # 477
     @staticmethod
     def loadImages():
         SLib.loadIfNotInImageCache('SuperGuide', 'superguide_block.png')
+
+    def dataChanged(self):
+        midway = self.parent.spritedata[5] & 1
+        if midway:
+            self.alpha = 0.5
+        else:
+            self.alpha = 1.0
 
 
 class SpriteImage_BowserSwitchSm(common.SpriteImage_Switch):  # 478
@@ -9393,9 +9424,15 @@ class SpriteImage_BowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
         ImageCache['ELSwitchU'] = QtGui.QPixmap.fromImage(elg.mirrored(True, True))
 
     def dataChanged(self):
+        midway = (self.parent.spritedata[2] >> 6) & 1
         upsideDown = self.parent.spritedata[5] & 1
         shiftY = self.parent.spritedata[3] & 0xF
         shiftX = (self.parent.spritedata[5] >> 4) & 0xF
+
+        if midway:
+            self.alpha = 0.5
+        else:
+            self.alpha = 1.0
 
         if shiftX != 0:
             self.xOffset = -7

@@ -77,6 +77,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         self.twelveIsMushroom = False
         self.rotates = False
         self.flipOverride = False
+        self.transparent = False
 
     def dataChanged(self):
         # SET CONTENTS
@@ -126,6 +127,11 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
     def paint(self, painter):
         if self.image is None:
             return
+
+        if self.transparent:
+            painter.setOpacity(0.5)
+        else:
+            painter.setOpacity(1.0)
 
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         if self.tilenum < len(SLib.Tiles):
@@ -546,6 +552,8 @@ class SpriteImage_NewerQSwitchBlock(SpriteImage_Block):  # 43
     def dataChanged(self):
         upsideDown = self.parent.spritedata[5] & 1
         self.flipOverride = upsideDown
+        midway = (self.parent.spritedata[2] >> 6) & 1
+        self.transparent = midway
 
         color = self.parent.spritedata[3] & 3
         if color < 2:
@@ -563,6 +571,8 @@ class SpriteImage_NewerExcSwitchBlock(SpriteImage_Block):  # 45
     def dataChanged(self):
         upsideDown = self.parent.spritedata[5] & 1
         self.flipOverride = upsideDown
+        midway = (self.parent.spritedata[2] >> 6) & 1
+        self.transparent = midway
 
         color = self.parent.spritedata[3] & 3
         if color < 2:
@@ -2393,9 +2403,14 @@ class SpriteImage_NewerBowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
                 ImageCache[f'ELSwitchU{i}'] = QtGui.QPixmap.fromImage(elg2.mirrored(True, True))
 
     def dataChanged(self):
-
+        midway = (self.parent.spritedata[2] >> 6) & 1
         colour = (self.parent.spritedata[3] & 0xF) % 6
         upsideDown = self.parent.spritedata[5] & 1
+
+        if midway:
+            self.alpha = 0.5
+        else:
+            self.alpha = 1.0
 
         if 'ELSwitch5' not in ImageCache:
             return
@@ -2413,7 +2428,6 @@ class SpriteImage_NewerBowserSwitchLg(SLib.SpriteImage_StaticMultiple):  # 479
             else:
                 self.image = ImageCache[f'ELSwitchU{colour}']
                 self.offset = (-15, -16)
-
 
         super().dataChanged()
 
