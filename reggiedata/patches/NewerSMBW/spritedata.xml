@@ -2056,7 +2056,7 @@
   </sprite> <!-- #303: Monty Mole -->
 
   <!-- Do we know what makes this one special compared to #95? -->
-  <sprite id="308" name="Platform Hammer Bro" sizehacks="True" notes="'En_Lift_HammerBros' - Likely allows it to be used on places where he shouldn't jump off." files="bros.arc">
+  <sprite id="308" name="Platform Hammer Bro" sizehacks="True" notes="EN_LIFT_HAMMERBROS - Likely allows it to be used on places where he shouldn't jump off." files="bros.arc">
     <dependency notes="Thrown Object types 1-3, and 5 need the corresponding sprite present in the level (or in the Loaded Sprites list), or else the game will crash.">
       <suggestedresource sprite="20"/>
       <suggestedresource sprite="25"/>
