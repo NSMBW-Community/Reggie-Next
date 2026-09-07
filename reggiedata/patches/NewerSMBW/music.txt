@@ -2,13 +2,13 @@
 1:World Map Drums
 2:World Map Drums
 3:Underwater [NSMBW]
-4:Mushrooms/Athletic [NSMBW]
+4:Hijacked for Custom Music
 5:Ghost House [NSMBW]
 6:Pyramids [NSMBW]
 7:Snow [NSMBW]
 8:Lava [NSMBW]
 9:Opening Cutscene
-10:Castle [NSMBW]
+10:Hijacked for Custom Music
 11:Airship [NSMBW]
 12:Bonus Area [NSMBW]
 13:Drum Rolls [NSMBW]
@@ -21,7 +21,7 @@
 20:Beach [NSMBW]
 21:Lava Cave [NSMBW]
 22:Peach's Castle [NSMBW]
-23:Credits Jazz
+23:Credits
 24:Airship Drums [NSMBW]
 25:Bowser Bridge
 26:Mega Bowser [NSMBW]
