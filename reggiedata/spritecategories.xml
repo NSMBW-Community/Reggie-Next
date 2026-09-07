@@ -7,6 +7,7 @@
             <attach sprite="198-199"/> <!-- Goomba Big -->
             <attach sprite="170"/> <!-- Goomba Chestnut -->
             <attach sprite="57-58"/> <!-- Koopas -->
+            <attach sprite="125-126"/> <!-- Chain Koopa -->
             <attach sprite="24"/> <!-- Buzzy -->
             <attach sprite="60"/> <!-- Spike Buzzy -->
             <attach sprite="296"/> <!-- Giant Buzzy -->
@@ -63,7 +64,6 @@
             <attach sprite="100"/> <!-- Swooper -->
         </category>
         <category name="Water">
-            <attach sprite="138"/> <!-- Water -->
             <attach sprite="317"/> <!-- Water Controller -->
             <attach sprite="263"/> <!-- Wplant -->
             <attach sprite="115"/> <!-- Cheep-1 -->
@@ -109,7 +109,7 @@
             <attach sprite="271"/> <!-- Mouser -->
             <attach sprite="451"/> <!-- Mouser Despawn -->
         </category>
-        <category name="Doomship">
+        <category name="Airship">
             <attach sprite="232"/> <!-- Mecha -->
             <attach sprite="101"/> <!-- BobOmb -->
             <attach sprite="269-270"/> <!-- ParaOmb -->
@@ -142,7 +142,7 @@
             <attach sprite="318"/> <!-- Wood/Metal Box Gen -->
             <attach sprite="472"/> <!-- Ice Flow Gen -->
         </category>
-        <category name="Giant">
+        <category name="Big Enemies">
             <attach sprite="198-199"/> <!-- Goomba -->
             <attach sprite="296"/> <!-- Buzzy -->
             <attach sprite="120"/> <!-- Brother -->
@@ -158,10 +158,7 @@
             <attach sprite="292"/> <!-- Parabeetle -->
             <attach sprite="343"/> <!-- Line Fuzzy -->
         </category>
-        <category name="Special and Other">
-            <attach sprite="125-126"/> <!-- Chain Koopa -->
-            <attach sprite="108"/> <!-- Line Amp Gen -->
-            <attach sprite="343"/> <!-- Line Fuzzy -->
+        <category name="Bosses">
             <attach sprite="189"/> <!-- Larry -->
             <attach sprite="347"/> <!-- Roy -->
             <attach sprite="340"/> <!-- Lemmy -->
@@ -171,8 +168,13 @@
             <attach sprite="348"/> <!-- Ludwig -->
             <attach sprite="427"/> <!-- Kamek -->
             <attach sprite="419"/> <!-- Bowser -->
-            <attach sprite="439"/> <!-- Fake Peach -->
-            <attach sprite="445"/> <!-- Real Peach -->
+            <attach sprite="192"/> <!-- Larry Boss -->
+            <attach sprite="364"/> <!-- Roy Boss -->
+            <attach sprite="381"/> <!-- Lemmy Boss -->
+            <attach sprite="375"/> <!-- Wendy Boss -->
+            <attach sprite="372"/> <!-- Iggy Boss -->
+            <attach sprite="349"/> <!-- Morton Boss -->
+            <attach sprite="365"/> <!-- Ludwig Boss -->
         </category>
     </view>
     <view name="Platforms and Hazards">
@@ -358,6 +360,7 @@
             <attach sprite="374"/> <!-- Snow/Wind -->
             <attach sprite="90"/> <!-- Wind Physics -->
             <attach sprite="465"/> <!-- Sound Effects -->
+            <attach sprite="243"/> <!-- Current Controller -->
             <attach sprite="314"/> <!-- Bubble Gen -->
             <attach sprite="317"/> <!-- Bubble Controller -->
             <attach sprite="143"/> <!-- Arrow -->
@@ -516,25 +519,16 @@
             <attach sprite="442"/> <!-- Hint - Super Vid Controller -->
             <attach sprite="477"/> <!-- Hint - Exclamation Block -->
         </category>
-        <category name="Boss and Cutscene Controllers">
+        <category name="Boss/Cutscene Controllers">
             <attach sprite="363"/> <!-- Tower Boss -->
-            <attach sprite="407"/> <!-- Boss Castle Cutscene -->
-            <attach sprite="192"/> <!-- Larry Boss -->
-            <attach sprite="415"/> <!-- Larry Boss2 -->
-            <attach sprite="364"/> <!-- Roy Boss -->
-            <attach sprite="381"/> <!-- Lemmy Boss -->
-            <attach sprite="375"/> <!-- Wendy Boss -->
-            <attach sprite="372"/> <!-- Iggy Boss -->
-            <attach sprite="349"/> <!-- Morton Boss -->
-            <attach sprite="365"/> <!-- Ludwig Boss -->
-            <attach sprite="408"/> <!-- Jr Castle Cutscene -->
+            <attach sprite="407"/> <!-- Castle Boss -->
             <attach sprite="211"/> <!-- Jr 1st Boss -->
             <attach sprite="405"/> <!-- Jr 2nd Boss -->
             <attach sprite="406"/> <!-- Jr 3rd Boss -->
-            <attach sprite="408"/> <!-- Jr Ship Cutscene -->
             <attach sprite="383"/> <!-- Kamek Boss -->
-            <attach sprite="482"/> <!-- Final Boss BG Effects -->
             <attach sprite="431"/> <!-- Final Boss -->
+            <attach sprite="408"/> <!-- Jr Castle Cutscene -->
+            <attach sprite="408"/> <!-- Jr Ship Cutscene -->
             <attach sprite="468"/> <!-- Credits -->
         </category>
         <category name="Camera/Scrolling Related">
@@ -547,9 +541,11 @@
             <attach sprite="399"/> <!-- Rocking -->
             <attach sprite="374"/> <!-- Snow/Wind -->
             <attach sprite="358"/> <!-- Lava Particle -->
+            <attach sprite="482"/> <!-- Final Boss BG Effects -->
         </category>
         <category name="Misc Controllers">
             <attach sprite="90"/> <!-- Wind Physics -->
+            <attach sprite="243"/> <!-- Current Controller -->
             <attach sprite="179"/> <!-- Special Exit -->
             <attach sprite="186"/> <!-- Mini-Mario Collision Switch -->
             <attach sprite="474"/> <!-- Dancing Coins -->
@@ -557,60 +553,64 @@
             <attach sprite="459"/> <!-- Crowd Clapper1 -->
             <attach sprite="461"/> <!-- Crowd Clapper2 -->
         </category>
-        <category name="???????">
-            <attach sprite="79"/>
-            <attach sprite="116"/>
-            <attach sprite="132"/>
-            <attach sprite="150"/>
-            <attach sprite="160"/>
-            <attach sprite="171"/>
-            <attach sprite="184"/>
-            <attach sprite="218"/>
-            <attach sprite="241"/>
-            <attach sprite="245"/>
-            <attach sprite="243"/>
-            <attach sprite="246"/>
-            <attach sprite="251"/>
-            <attach sprite="244"/>
-            <attach sprite="250"/>
-            <attach sprite="247"/>
-            <attach sprite="285"/>
-            <attach sprite="287"/>
-            <attach sprite="332"/>
-            <attach sprite="350"/>
-            <attach sprite="351"/>
-        </category>
-        <category name="Incomplete / Beta">
-            <attach sprite="29"/>
+        <category name="Unused Sprites">
+            <attach sprite="1-9"/>
             <attach sprite="49"/>
-            <attach sprite="52"/>
             <attach sprite="55"/>
+            <attach sprite="77"/>
             <attach sprite="87"/>
-            <attach sprite="88"/>
-            <attach sprite="89"/>
             <attach sprite="97"/>
             <attach sprite="107"/>
-            <attach sprite="121"/>
+            <attach sprite="116"/>
+            <attach sprite="123"/>
+            <attach sprite="132"/>
+            <attach sprite="150"/>
+            <attach sprite="153"/>
+            <attach sprite="160"/>
+            <attach sprite="174"/>
+            <attach sprite="184"/>
+            <attach sprite="190"/>
+            <attach sprite="208"/>
+            <attach sprite="218"/>
+            <attach sprite="222"/>
+            <attach sprite="226"/>
+            <attach sprite="241"/>
+            <attach sprite="243"/>
+            <attach sprite="247"/>
+            <attach sprite="287"/>
+            <attach sprite="319-321"/>
+            <attach sprite="328-329"/>
+            <attach sprite="411"/>
+            <attach sprite="415"/>
+            <attach sprite="421"/>
+            <attach sprite="423"/>
+            <attach sprite="481"/>
+            <attach sprite="10-19"/>
+            <attach sprite="22"/>
+            <attach sprite="167-168"/>
+            <attach sprite="273"/>
+        </category>
+        <category name="Incomplete (Useless) Sprites">
+            <attach sprite="29"/>
+            <attach sprite="79"/>
+            <attach sprite="88-89"/>
             <attach sprite="152"/>
             <attach sprite="169"/>
             <attach sprite="183"/>
             <attach sprite="210"/>
             <attach sprite="213"/>
             <attach sprite="239"/>
+            <attach sprite="244-246"/>
+            <attach sprite="250-251"/>
             <attach sprite="279"/>
-            <attach sprite="282"/>
-            <attach sprite="283"/>
+            <attach sprite="282-283"/>
             <attach sprite="290"/>
             <attach sprite="302"/>
-            <attach sprite="319"/>
-            <attach sprite="320"/>
             <attach sprite="322"/>
             <attach sprite="324"/>
-            <attach sprite="328"/>
-            <attach sprite="329"/>
+            <attach sprite="332"/>
+            <attach sprite="350-351"/>
             <attach sprite="410"/>
-            <attach sprite="421"/>
-            <attach sprite="481"/>
         </category>
     </view>
 </views>
