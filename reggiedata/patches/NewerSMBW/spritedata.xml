@@ -265,9 +265,9 @@
     <dualbox nybble="7.4" title1="Faces Left" title2="Faces Right" comment="This determines which direction the platform will face." requirednybble="12.4" requiredval="0"/> <!-- Only shows when Segment is set to Head or Tail; assumes no effect on Body -->
   </sprite> <!-- #18: Spine Coaster Platform -->
 
-  <sprite id="19" name="World-4 Boss: Samurshai" noyoshi="True" notes="Newer's Shy Guy boss found in World 4." files="Shynja.arc">
+  <sprite id="19" name="World 4 Boss: Samurshai" noyoshi="True" notes="Newer's Shy Guy boss found in World 4." files="Shynja.arc">
     <dualbox nybble="5.4" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics and boss difficulty."/>
-  </sprite> <!-- #19: World-4 Boss: Samurshai -->
+  </sprite> <!-- #19: World 4 Boss: Samurshai -->
 
   <sprite id="20" name="Goomba" sizehacks="True" notes="Your standard Goomba. Place it in the level and it will walk towards Mario when it loads." files="kuribo.arc">
     <spritetex nybble="6" title="Color" comment="This determines the color and style of the Goomba.">
@@ -1751,14 +1751,14 @@
     <dualbox nybble="12.4" title1="Faces Right" title2="Faces Left"/>
   </sprite> <!-- #250: Electric Line -->
 
-  <sprite id="251" name="World-7 Boss: Super Topman" notes="Large Topman boss used by NewerSMBW. It can be beaten by luring it into [250] Electric Lines." files="topman.arc">
+  <sprite id="251" name="World 7 Boss: Super Topman" notes="Large Topman boss used by NewerSMBW. It can be beaten by luring it into [250] Electric Lines." files="topman.arc">
     <dependency notes="Kamek and his controller should be included in the level.">
       <suggested sprite="250"/> <!-- Electric Line -->
       <required sprite="427"/> <!-- Kamek -->
       <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
     <checkbox nybble="12.4" title="Low Gravity" comment="When enabled, the Topman will fall much more slowly."/>
-  </sprite> <!-- #251: World-7 Boss: Super Topman -->
+  </sprite> <!-- #251: World 7 Boss: Super Topman -->
 
   <sprite id="255" name="Rotation Controlled ? Block" notes="A ?-Block that can either be moved by rotation controllers or manually angled.">
     <dependency notes="A rotation controller is not required for this sprite to function. You can, instead, set a manual angle for the block.">
@@ -1851,7 +1851,7 @@
     <value nybble="7-12" title="Message ID" comment="Messages defined in Messages.bin" idtype="Message"/>
   </sprite> <!-- #273: Level Exit Controller -->
 
-  <sprite id="279" name="World-3 Boss: Balboa Wrench" noyoshi="True" notes="The giant Rocky Wrench boss used by NewerSMBW. He must be Ground-Pounded 3 times to be defeated. ">
+  <sprite id="279" name="World 3 Boss: Balboa Wrench" noyoshi="True" notes="The giant Rocky Wrench boss used by NewerSMBW. He must be Ground-Pounded 3 times to be defeated. ">
     <dependency notes="A Rocky Wrench, a NSMBDS Stone Block, Kamek and his controller should be included in the level.">
       <resource sprite="352"/> <!-- Rocky Wrench -->
       <resource sprite="27"/>  <!-- lift_zen.arc from grey block -->
@@ -1859,7 +1859,7 @@
       <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
     <dualbox nybble="5.4" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
-  </sprite> <!-- #279: World-3 Boss: Balboa Wrench -->
+  </sprite> <!-- #279: World 3 Boss: Balboa Wrench -->
 
   <sprite id="282" name="Angry Sun and Moon" notes="A recreation of the Angry Sun enemy from Super Mario Bros. 3 that will chase the player indefinitely unless the Triggering Event is activated." files="mrsun.arc">
     <dualbox nybble="12.4" title1="Angry Sun" title2="Angry Moon" comment="This determines which model the enemy will use."/>
@@ -1867,7 +1867,7 @@
     <checkbox nybble="5.4" title="Never Respawns" comment="When enabled, the enemy will not respawn after being defeated or after leaving the screen." comment2="If this is not enabled, the enemy will continue to respawn once loaded until the Triggering Event is activated. One way to manage this with locations is to use an IF controller that deactivates the Triggering Event while a player is inside the specified location."/>
   </sprite> <!-- #282: Angry Sun and Moon -->
 
-  <sprite id="283" name="World-1 Boss: Fuzzy Bear" noyoshi="True" notes="The giant Fuzzy boss that jumps around and occasionally rolls after the player. It can only be defeated by having grabbable items thrown at it.">
+  <sprite id="283" name="World 1 Boss: Fuzzy Bear" noyoshi="True" notes="The giant Fuzzy boss that jumps around and occasionally rolls after the player. It can only be defeated by having grabbable items thrown at it.">
     <dependency notes="A Fuzzy, Kamek and his controller should be included in the level.">
       <suggested sprite="391"/> <!-- Glow Block -->
       <required sprite="427"/> <!-- Kamek -->
@@ -1875,7 +1875,7 @@
       <required sprite="343"/> <!-- Fuzzy -->
     </dependency>
     <dualbox nybble="5.4" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
-  </sprite> <!-- #283: World-1 Boss: Fuzzy Bear -->
+  </sprite> <!-- #283: World 1 Boss: Fuzzy Bear -->
 
   <sprite id="286" name="Rotating Wooden Airship Wheel" notes="A circular wheel matching the standard airship decor that rotates, making it hard to stand on." files="obj_Hgear.arc">
     <list nybble="12" title="Size" comment="This determines the size of the wheel.">
@@ -1928,14 +1928,14 @@
     <checkbox nybble="5" title="Made by Box Spawner" comment="Changes the Z-Order of the box to appear behind the spawner model, and slightly adjusts the collision." comment2="Set on all boxes spawned by [318] Box Spawner."/>
   </sprite> <!-- #289: Wooden/Metal Box -->
 
-  <sprite id="290" name="World-6 Boss: Ramboo" noyoshi="True" notes="The extra large Boo boss that is not the least bit shy about continuing to advance towards the player. He can be knocked back with grabbable items and can only be defeated when the specified Event is activated.">
+  <sprite id="290" name="World 6 Boss: Ramboo" noyoshi="True" notes="The extra large Boo boss that is not the least bit shy about continuing to advance towards the player. He can be knocked back with grabbable items and can only be defeated when the specified Event is activated.">
     <dependency notes="Kamek and his controller must be included in the level.">
       <required sprite="427"/> <!-- Kamek -->
       <required sprite="383"/> <!-- Kamek Controller -->
     </dependency>
     <value nybble="7.2-8.4" title="Die on Triggering Event ID" comment="When activated, the Ramboo will be killed, completing the level." idtype="Triggering Event"/>
     <dualbox nybble="5.4" title1="Tower Boss" title2="Castle Boss" comment="Affects certain cinematics."/>
-  </sprite> <!-- #290: World-6 Boss: Ramboo -->
+  </sprite> <!-- #290: World 6 Boss: Ramboo -->
 
   <!-- Redo and reinvestigate ALL setting values. Do not assume any of the current information is accurate. Test one setting at a time!! -->
   <!-- Test 9 separate between normal and heavy. Remember to test between True Left, True Right, and Faces Player for spawning. Also test the range of Speed. Is the maximum 3, 7, or 15? -->
@@ -2165,7 +2165,7 @@
     </dependency>
   </sprite> <!-- #321: Custom Model Loader Resources (block_arrow.arc) -->
 
-  <sprite id="322" name="World-2 Boss: Thwompa Domp" notes="A large Thwomp boss used by NewerSMBW. It can be defeated by having it fall through crushable terrain at least 4 blocks wide.">
+  <sprite id="322" name="World 2 Boss: Thwompa Domp" notes="A large Thwomp boss used by NewerSMBW. It can be defeated by having it fall through crushable terrain at least 4 blocks wide.">
     <dependency notes="Kamek and his controller must be included in the level.">
       <required sprite="427"/> <!-- Kamek -->
       <required sprite="383"/> <!-- Kamek Controller -->
@@ -2173,9 +2173,9 @@
     <value nybble="5-6" title="Left Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move through from the left side of the sprite's placement, calculated in half-blocks."/>
     <value nybble="7-8" title="Right Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move through from the right side of the sprite's placement, calculated in half-blocks."/>
     <value nybble="9-10" title="Top Buffer" comment="This defines the empty space the Mega Thwomp will be allowed to move upwards from the sprite's placement, calculated in half-blocks."/>
-  </sprite> <!-- #322: World-2 Boss: Mega Thwomp -->
+  </sprite> <!-- #322: World 2 Boss: Mega Thwomp -->
 
-  <sprite id="324" name="World-5 Boss: Podouble" notes="A pair of large Podoboo bosses used in NewerSMBW. It can only be defeated by using fire or ice attacks against the correct half, and spawns a Yoshi for each player to assist them.">
+  <sprite id="324" name="World 5 Boss: Podouble" notes="A pair of large Podoboo bosses used in NewerSMBW. It can only be defeated by using fire or ice attacks against the correct half, and spawns a Yoshi for each player to assist them.">
     <dependency notes="A Podoboo, Kamek and his controller must be included in the level. Yoshis are spawned by the boss at 16 blocks in from the left side of the zone.">
       <resource sprite="46"/> <!-- Lava Bubble -->
 	    <required sprite="427"/> <!-- Kamek -->
@@ -2183,7 +2183,7 @@
     </dependency>
     <dualbox nybble="5.4" title1="Ice Podouble" title2="Fire Podouble" comment="This determines which half of the Podouble duo the sprite is." comment2="Fire will always face right, and Ice will always face left."/>
     <value nybble="11-12" title="Falling Offset" comment="This determines the bottom of the Podouble's jump relative to the sprite's placement, calculated in half-blocks."/>
-  </sprite> <!-- #324: World-5 Boss: Podouble -->
+  </sprite> <!-- #324: World 5 Boss: Podouble -->
 
   <sprite id="332" name="Sound/Graphic Effects Spawner" phonebook="Effects" notes="Enables event-driven spawning of Sound Effects and Graphic Effects.&lt;br&gt;&lt;u&gt;Limitations&lt;/u&gt;&lt;br&gt; 1) Do not use 1000 or more sounds/effects per area.&lt;br&gt; 2) A single Event ID can only trigger one sound/effect per area&lt;br&gt; 3) Only a specific number of sounds/effects can be active at the same time&lt;br&gt; 4) Only two BRSTMs can be active at the same time." advancednotes="If spawning a Sound Effect, the placement of the sprite is crucial, as the sound is emitted from that position. If the player is ~3 screens away from the sprite, then they won't hear it anymore. Placing multiple sprites with the same settings at different locations is possible.">
     <value nybble="5-6" title="Triggering Event ID" comment="When this Event ID is activated, the associated sound or affect will be played." idtype="Triggering Event"/>
