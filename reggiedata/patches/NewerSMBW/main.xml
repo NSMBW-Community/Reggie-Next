@@ -15,6 +15,7 @@
     <file name="music" path="music.txt" patch="False" />
     <file name="spritedata" path="spritedata.xml" />
     <file name="sprites" path="sprites.py" />
+    <file name="spritecategories" path="spritecategories.xml" />
     <file name="tilesets" path="tilesets.xml" />
     <file name="tilesetinfo" path="tilesetinfo.xml" />
 
