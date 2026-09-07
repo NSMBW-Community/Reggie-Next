@@ -638,7 +638,7 @@
     <dualbox nybble="12.4" title1="Walks Clockwise" title2="Walks Counter-Clockwise" comment="This determines which direction the Spike Top will walk."/>
   </sprite> <!-- #60: Spike Top -->
 
-  <sprite id="63" name="Spiked Ball / Snowball" sizehacks="True" notes="A loose Spiked Ball that will also destroy certain types of blocks. It can also be turned into a Snowball." files="iron_ball.arc">
+  <sprite id="63" name="Spiked Ball/Snowball" sizehacks="True" notes="A loose Spiked Ball that will also destroy certain types of blocks. It can also be turned into a Snowball." files="iron_ball.arc">
     <spritetex nybble="6" title="Style" comment="This determines the style of the Spiked Ball.">
       <entry value="0">Normal</entry>
       <entry value="1">Snowball</entry>
@@ -697,6 +697,13 @@
     <value nybble="11-12" title="Delay" comment="This determines the amount of frames the Looper will wait between activating/deactivating each event. &lt;br&gt; &lt;br&gt; The code for this specifically is a bit messy. The entered value is multiplied by 10, and then 10 is added. However, it can only be a value from 0-255, and any number past that loops. For example, value 24 would be 250 frames of delay.&lt;br&gt;It's easier to follow these expressions:&lt;br&gt;&lt;br&gt;0-24 is 'value * 10 + 10' frames&lt;br&gt;25-50 is (value - 25) * 10 + 4 frames&lt;br&gt;51-101 is (value - 51) * 10 + 8 frames&lt;br&gt;102-126 is (value - 102) * 10 + 6.&lt;br&gt; &lt;br&gt;Finally, value 127 would be 0 frames of delay, and values 128-255 are essentially the same as 0-127."/>
   </sprite> <!-- #79: Event Looper -->
 
+  <sprite id="80" name="Fire Bro" notes="A standard Brothers enemy that shoots fireballs at the player." files="bros.arc">
+    <spritetex nybble="6" title="Style" comment="The Fire Bro supports SpriteTex, however it does not include any unique styles.">
+      <entry value="0">Original</entry>
+      <entry value="1">Original (Copy)</entry>
+    </spritetex>
+  </sprite> <!-- #80: Fire Bro -->
+
   <sprite id="88" name="Actor Spawner" notes="With this sprite, you can spawn anything and everything that exists in the game. Sprite Data can be applied to sprites spawned through this within certain limitations. Please utilize Raw Data to determine what the settings should be set to. Combine the Actor Spawner with [332] Effect/Sound Spawner to add flair to the spawn effect. &lt;br&gt; &lt;br&gt;Additionally, anything spawned by the Actor Spawner will need to be respawned each time the player changes Zones. If returning from a bonus room, be sure to trigger any relevant spawns. Each Actor Spawner can only trigger once each Zone.">
     <dependency notes="Directly place any sprite you want to spawn with the Actor Spawner somewhere in your level for the game to load the required secondary assets of that sprite."/>
     <value nybble="5" title="Triggering Event ID" comment="When this event is activated, the Actor Spawner will create one copy of the Actor at the location of the Spawner. Keep in mind that some sprites have abnormal placement so expect a lot of testing to make sure that everything works correctly." idtype="Triggering Event"/>
@@ -725,6 +732,13 @@
     <value nybble="12.1-12.2" title="Nybble 11" />
     <value nybble="12.3-12.4" title="Nybble 12" />
   </sprite> <!-- #89: Actor Multi-Spawner -->
+
+  <sprite id="94" name="Boomerang Bro" notes="A standard Brothers enemy that throws Boomerangs at the player." files="bros.arc">
+    <spritetex nybble="6" title="Style" comment="The Boomerang Bro supports SpriteTex, however it does not include any unique styles.">
+      <entry value="0">Original</entry>
+      <entry value="1">Original (Copy)</entry>
+    </spritetex>
+  </sprite> <!-- #94: Boomerang Bro" -->
 
   <sprite id="95" name="Hammer Bro Plus" sizehacks="True" notes="A standard Brothers enemy that throws hammers (or other objects!) at the player." files="bros.arc">
     <dependency notes="The Hammer Bro will first calculate where the nearest solid ground is. This is defined as a terrain object with solid block collision. With a platform limit of one, he can jump onto any passthrough terrain or brick blocks above this solid ground at a distance of 4. With a platform limit of two, he can jump between this platform and another one above it. When on the top of this platform limit, he will not try and jump upwards. He can also jump down from passthrough terrain set higher than 8 blocks above the solid ground, though he will not be able to return.">
@@ -1817,6 +1831,13 @@
     </spritetex>
   </sprite> <!-- #269: Parachute Bob-Omb -->
 
+  <sprite id="272" name="Ice Bro" notes="A standard Brothers enemy that shoots ice balls at the player." files="bros.arc">
+    <spritetex nybble="6" title="Style" comment="The Ice Bro supports SpriteTex, however it does not include any unique styles.">
+      <entry value="0">Original</entry>
+      <entry value="1">Original (Copy)</entry>
+    </spritetex>
+  </sprite> <!-- #272: Ice Bro -->
+
   <sprite id="273" name="Level Exit Controller" notes="Upon activation by a Triggering Event, the Level Exit Controller will display a message box for a fixed amount of time and then complete the current level. It can also set world flags for the Switch Palaces." files="OpeningScene.arc">
     <value nybble="3-4" title="Triggering Event ID" comment="The Level Exit Controller will begin to eject the player from the level when the Triggering Event is activated." idtype="Triggering Event"/>
     <checkbox nybble="6.4" title="Level Intro" comment="When enabled, the Level Exit Controller will show a message box for 1020 time units. It will then eject you from the level and set a hardcoded flag in the world settings that Newer uses when starting the game for the first time. The game will also be saved." comment2="It's not recommended to use this unless directly editing the NewerSMBW pack."/>
@@ -2375,7 +2396,7 @@
   </sprite> <!-- #410: Giga Goomba -->
 
   <sprite id="414" name="Spike/Stone Spike" sizehacks="True" files="gabon_rock.arc;gabon.arc">
-    <spritetex nybble="6" title="Color" requirednybble="12.4" requiredval="0">
+    <spritetex nybble="6" title="Color" comment="The object thrown by the Spike also supports SpriteTex." requirednybble="12.4" requiredval="0">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -2385,7 +2406,7 @@
       <entry value="6">Violet</entry>
       <entry value="7">Black</entry>
     </spritetex> <!-- Stone Spike colors -->
-    <spritetex nybble="6" title="Color" requirednybble="12.4" requiredval="1">
+    <spritetex nybble="6" title="Color" comment="The object thrown by the Spike also supports SpriteTex." requirednybble="12.4" requiredval="1">
       <entry value="0">Original</entry>
       <entry value="1">Red</entry>
       <entry value="2">Orange</entry>
@@ -2393,6 +2414,7 @@
       <entry value="4">Green</entry>
       <entry value="5">NSMBDS Snow Spike</entry>
     </spritetex> <!-- Spike colors -->
+    <dualbox nybble="12.4" title1="Stone Spike (Throws Down)" title2="Spike (Throws to Side)"/>
     <dualbox nybble="10.4" title1="Faces Player" title2="Faces Right" comment="While the Stone Spike supports this setting, its effect is purely visual and very subtle."/>
     <checkbox nybble="11.4" title="Throw from Above Screen" comment="If enabled, the Spike will be able to throw objects even when above the top of the screen."/>
     <checkbox nybble="5.4" title="Adjust Rock/Spike Ball Z-Order" comment="If enabled, the thrown object will be forced to 3200. Enabled on all Stone Spikes in retail 06-01."/>
@@ -2475,6 +2497,29 @@
     </list> <!-- Appears only if Angled + Right is enabled -->
     <checkbox nybble="9.4" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites." comment2="The player will jump behind the mushroom platform when passing through from underneath."/>
   </sprite> <!-- #441: Mushroom Platform -->
+
+  <sprite id="441" name="Mushroom Platform" notes="A mushroom platform with a solid-on-top collision representing the top segment of a large mushroom. The stem portion must be painted with tileset objects." files="obj_kinoko.arc">
+    <spritetex nybble="7" title="Style" comment="While this sprite supports SpriteTex, it does not include any styles other than the default.">
+      <entry value="0">Original</entry>
+    </spritetex>
+    <dualbox nybble="11.4" title1="Skinny" title2="Thick" comment="This determines the thickness (style) of the mushroom platform."/>
+    <dualbox nybble="10.4" title1="Orange" title2="Blue" comment="This determines the color of the Skinny mushroom platform." requirednybble="11.4" requiredval="0"/> <!-- Appears if Skinny is set -->
+    <dualbox nybble="10.4" title1="Red" title2="Green" comment="This determines the color of the Thick mushroom platform." requirednybble="11.4"/> <!-- Appears if Thick is set -->
+    <value nybble="12" title="Width" comment="This determines the width of the mushroom platform."/>
+    <checkbox nybble="9.4" title="Place In Front Of Other Sprites" comment="When enabled, this changes the relative Z-Order of the platform placing it in front of other sprites." comment2="The player will jump behind the mushroom platform when passing through from underneath."/>
+  </sprite> <!-- #441: Mushroom Platform -->
+
+  <sprite id="446" name="Effect - Light Cloud Area" notes="This adds a light cloud effect to the level. It must use a Location ID." files="env_mist.arc">
+    <checkbox nybble="5.4" title="Red Clouds" comment="When enabled, the cloud area will produce red clouds. They do not function any differently from the normal clouds."/>
+    <value nybble="11-12" title="Location ID" comment="This determines the location in which the cloud effect will appear." idtype="Location"/>
+  </sprite> <!-- #446: Effect - Light Cloud Area -->
+
+  <sprite id="451" name="Scaredy Rat Passage" notes="A decorative mouse hole that only Scaredy Rats can pass through. NewerSMBW modifies Bob-ombs to allow them to walk into these as well." files="mouse_hole.arc">
+    <dependency notes="Scaredy Rats or Bob-ombs are recommended to include in the Zone.">
+      <suggested sprite="271"/>
+      <suggested sprite="101"/>
+    </dependency>
+  </sprite> <!-- #451: Scaredy Rat Passage -->
 
   <sprite id="468" name="Newer Cutscene Controller - Credits" notes="This controller manages the game's credits and staffroll after the ending cutscene. The credits sequence and staffroll text are defined in NewerStaffRoll.bin." files="CreditsBG.arc">
   </sprite> <!-- #468: Newer Cutscene Controller - Credits -->

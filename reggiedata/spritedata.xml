@@ -5390,7 +5390,6 @@
   </sprite> <!-- #445: Peach in Cage - Real -->
 
   <sprite id="446" name="Effect - Light Cloud Area" notes="This adds a light cloud effect to the level. It must use a Location ID." files="env_mist.arc">
-    <checkbox nybble="5.4" title="Death Clouds" comment="When enabled, the cloud area will produce purple instant death clouds instead of normal white clouds."/>
     <value nybble="11-12" title="Location ID" comment="This determines the location in which the cloud effect will appear." idtype="Location"/>
   </sprite> <!-- #446: Effect - Light Cloud Area -->
 
@@ -5427,12 +5426,11 @@
     <value nybble="9-10" title="Entrance ID" comment="This determines which Entrance is paired with the pipe." idtype="Entrance"/>
   </sprite> <!-- #450: Enterable Warp Pipe - Up -->
 
-  <sprite id="451" name="Scaredy Rat Despawner" notes="A decorative mouse hole with a secondary function. It will despawn Scaredy Rats that pass through it." files="mouse_hole.arc">
-    <dependency notes="This has the ability to despawn two different sprites.">
+  <sprite id="451" name="Scaredy Rat Passage" notes="A decorative mouse hole that only Scaredy Rats can pass through." files="mouse_hole.arc">
+    <dependency notes="Scaredy Rats are recommended to include in the Zone.">
       <suggested sprite="271"/>
-      <suggested sprite="101"/>
     </dependency>
-  </sprite> <!-- #451: Scaredy Rat Despawner -->
+  </sprite> <!-- #451: Scaredy Rat Passage -->
 
   <sprite id="452" name="Bowser Boss Door" noyoshi="True" notes="A very large green door that can have an Entrance placed on it." files="boss_koopa_door.arc">
   </sprite> <!-- #452: Bowser Boss Door -->
