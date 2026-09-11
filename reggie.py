@@ -2890,30 +2890,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.InsertPathNode = dlg.general_tab.insert_path_node.isChecked()
         setSetting('InsertPathNode', globals_.InsertPathNode)
 
-        globals_.UseFullFilepath = dlg.general_tab.full_file_path.isChecked()
-        setSetting('UseFullFilepath', globals_.UseFullFilepath)
-
-        globals_.CursorMode = dlg.general_tab.cursor_mode.currentIndex()
-        setSetting('CursorMode', globals_.CursorMode)
-
         globals_.AutoDiagEnabled = dlg.general_tab.auto_diag.isChecked()
         setSetting('AutoDiagEnabled', globals_.AutoDiagEnabled)
 
         globals_.AutoDiagFrequency = dlg.general_tab.diag_freq.currentIndex()
         setSetting('AutoDiagFrequency', globals_.AutoDiagFrequency)
-
-        # Toggle hover events for scene items
-        for item in self.scene.items():
-            if not isinstance(item, ZoneItem):
-                item.setAcceptHoverEvents(globals_.CursorMode != 0)
-
-        # Update window title
-        if self.fileSavePath:
-            if globals_.UseFullFilepath:
-                self.fileTitle = self.fileSavePath
-            else:
-                self.fileTitle = os.path.basename(self.fileSavePath)
-        self.UpdateTitle()
 
         # Update diagnostic widget
         self.diagnostic.set_timer()
@@ -2982,10 +2963,27 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.UseRoundedRectangles = dlg.appearance_tab.rounded_rects.isChecked()
         globals_.DarkMode = dlg.appearance_tab.dark_mode.isChecked()
         globals_.TilesetTabPos = dlg.appearance_tab.tileset_tab_pos.currentIndex()
+        globals_.UseFullFilepath = dlg.appearance_tab.full_file_path.isChecked()
+        globals_.CursorMode = dlg.appearance_tab.cursor_mode.currentIndex()    
 
         setSetting('UseRoundedRectangles', globals_.UseRoundedRectangles)
         setSetting('DarkMode', globals_.DarkMode)
         setSetting('TilesetTabPos', globals_.TilesetTabPos)
+        setSetting('UseFullFilepath', globals_.UseFullFilepath)
+        setSetting('CursorMode', globals_.CursorMode)
+
+        # Update window title
+        if self.fileSavePath:
+            if globals_.UseFullFilepath:
+                self.fileTitle = self.fileSavePath
+            else:
+                self.fileTitle = os.path.basename(self.fileSavePath)
+        self.UpdateTitle()
+
+        # Toggle hover events for scene items
+        for item in self.scene.items():
+            if not isinstance(item, ZoneItem):
+                item.setAcceptHoverEvents(globals_.CursorMode != 0)
 
         # Update mode
         SetColorScheme()

@@ -655,10 +655,10 @@
         <string id="43">[b][name][/b][br]Default language for Reggie Next.</string>
         <string id="44">[b][name][/b] - Version [version][br]Translators: [translator]</string>
         <string id="45">Use Rounded Rectangles</string>
-        <string id="46">[b]Use Rounded Rectangles[/b][br]This makes the corners of sprites, entrances, path nodes, and comments appear rounded instead of sharp.</string>
+        <string id="46">[b]Use Rounded Rectangles:[/b][br]This makes the corners of sprites, entrances, path nodes, and comments appear rounded instead of sharp.</string>
         <string id="47">Dark Mode</string>
-        <string id="48">[b]Dark Mode[/b][br]This determines the overall color style Reggie uses, independent from the current theme.[br][br]Note that this may cause issues with certain themes.</string> 
-        <string id="49">Display full filepath of opened level</string>
+        <string id="48">[b]Dark Mode:[/b][br]This determines the overall color style Reggie uses, independent from the current theme.[br][br]Note that this may cause issues with certain themes.</string> 
+        <string id="49">Display full file path of opened level</string>
         <string id="50">Show Items as Selected</string>
         <string id="51">Grid Type:</string>
         <stringlist id="52">
@@ -666,12 +666,12 @@
             <entry>Standard</entry>
             <entry>Checker</entry>
         </stringlist>
-        <string id="53">Cursor Appearance:</string>
-        <string id="54">[b]Cursor Appearance[/b][br]This determines the appearance of the cursor when moving or resizing level items.</string>
+        <string id="53">Change Item Cursors:</string>
+        <string id="54">[b]Change Item Cursors:[/b][br]This determines the appearance of the cursor when moving or resizing level items.</string>
         <stringlist id="55">
-            <entry>Use default cursor</entry>
-            <entry>Show drag/resize cursors when selected</entry>
-            <entry>Always show drag/resize cursors</entry>
+            <entry>Never</entry>
+            <entry>Only while selected</entry>
+            <entry>Always</entry>
         </stringlist>
         <string id="56">Keybinds</string>
         <string id="57">[b]Configure Keybinds[/b][br]Customize the keybinds used for drop-down actions.[br]Press Backspace/Delete to clear a keybind, or hit the X button.[br]</string>

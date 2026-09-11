@@ -63,13 +63,26 @@ class AppearanceTab(PreferenceTabWidget):
         self.tileset_tab_pos.addItems(globals_.trans.stringList('PrefsDlg', 68))
         self.tileset_tab_pos.setCurrentIndex(globals_.TilesetTabPos)
 
+        # Display full filepath
+        self.full_file_path = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 49))
+        self.full_file_path.setChecked(globals_.UseFullFilepath)
+
+        # Cursor modes
+        self.cursor_mode = QtWidgets.QComboBox()
+        self.cursor_mode.setMaximumWidth(256)
+        self.cursor_mode.addItems(globals_.trans.stringList('PrefsDlg', 55))
+        self.cursor_mode.setToolTip(globals_.trans.string('PrefsDlg', 54))
+        self.cursor_mode.setCurrentIndex(globals_.CursorMode)
+
         settings_box = QtWidgets.QGroupBox(globals_.trans.string('PrefsDlg', 40))
         L = QtWidgets.QFormLayout()
         L.addRow(globals_.trans.string('PrefsDlg', 41), self.theme_combo)
         L.addRow(globals_.trans.string('PrefsDlg', 25), self.window_style)
         L.addRow(self.dark_mode)
         L.addRow(self.rounded_rects)
+        L.addRow(self.full_file_path)
         L.addRow(globals_.trans.string('PrefsDlg', 66), self.tileset_tab_pos)
+        L.addRow(globals_.trans.string('PrefsDlg', 53), self.cursor_mode)
         L2 = QtWidgets.QGridLayout()
         L2.addLayout(L, 0, 0)
         settings_box.setLayout(L2)
