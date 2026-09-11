@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <theme
         format="1.0"
-        name="Dark"
-        version="1.1"
+        name="Dark Mode Canvas"
+        version="1.2"
         creator="JasonP27"
-        description="A dark-colored Reggie theme. Only recolors canvas elements."
+        description="A dark-colored Reggie theme.[br]Only recolors canvas elements, so it pairs perfectly with Dark Mode!"
         >
 
     <colors file="levelview.xml" />
