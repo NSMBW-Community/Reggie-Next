@@ -4849,7 +4849,7 @@
     <checkbox nybble="8.2" title="'Silent' (Doesn't work)" comment="This setting in normal Skewers disables all of its sound effects. However, this doesn't work with Long Skewers at all."/>
   </sprite> <!-- #398: Long Skewer - Right -->
 
-  <sprite id="399" name="Effect - Airship Rocking" notes="When placed in a Zone, the camera will pan up and down about two blocks, used to simulate the effect of being on a ship. It cannot be used alongside the Auto-Scroller.">
+  <sprite id="399" name="Effect - Airship Rocking" notes="When placed in a Zone, the camera will pan up and down about two blocks, used to simulate the effect of being on a ship. While it can be used with auto-scroll, the effect will not occur while the camera is being moved vertically.">
   </sprite> <!-- #399: Effect - Airship Rocking -->
 
   <sprite id="400" name="Long Skewer - Left" notes="A long spiked pillar that covers a distance of about 80 Blocks to the left. It has a fixed distance and fixed speed, but it is loaded no matter how far away from the player it is placed." files="daikonbou.arc">
