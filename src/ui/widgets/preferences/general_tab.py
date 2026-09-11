@@ -116,7 +116,6 @@ class GeneralTab(PreferenceTabWidget):
         Read the preferences and check the respective boxes
         """
         self.trans_combo.addItem('English')
-        self.trans_combo.setItemData(0, None, QtCore.Qt.ItemDataRole.UserRole)
         self.trans_combo.setCurrentIndex(0)
 
         for i, trans_dir in enumerate(os.listdir(os.path.join('reggiedata', 'translations'))):
@@ -129,9 +128,8 @@ class GeneralTab(PreferenceTabWidget):
 
             trans_obj = ReggieTranslation(trans_dir)
             self.trans_combo.addItem(trans_obj.name)
-            self.trans_combo.setItemData(i+1, trans_dir, QtCore.Qt.ItemDataRole.UserRole)
             if trans_dir == str(setting('Translation')):
-                self.trans_combo.setCurrentIndex(i+1)
+                self.trans_combo.setCurrentIndex(i)
 
         self.update_translation()
 

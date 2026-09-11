@@ -27,10 +27,10 @@ class AppearanceTab(PreferenceTabWidget):
 
         # Create the theme box
         self.theme_combo = QtWidgets.QComboBox()
-        for name, theme_obj in self.themes:
-            self.theme_combo.addItem(name)
+        for folder_name, theme_obj in self.themes:
+            self.theme_combo.addItem(theme_obj.themeName)
 
-        index = self.theme_combo.findText(setting('Theme'), QtCore.Qt.MatchFlag.MatchFixedString)
+        index = self.theme_combo.findText(self.theme_id, QtCore.Qt.MatchFlag.MatchFixedString)
         if index >= 0:
             self.theme_combo.setCurrentIndex(index)
 
@@ -42,7 +42,7 @@ class AppearanceTab(PreferenceTabWidget):
         self.window_style.setToolTip(globals_.trans.string('PrefsDlg', 24))
         self.window_style.addItems(keys)
 
-        ui_style = setting('uiStyle', "Fusion")
+        ui_style = setting('uiStyle', 'Fusion')
         if ui_style in keys:
             self.window_style.setCurrentIndex(keys.index(ui_style))
 
@@ -145,12 +145,11 @@ class AppearanceTab(PreferenceTabWidget):
         """
         Updates the preview and theme box
         """
-        for name, themeObj in self.themes:
-            if name == self.theme_combo.currentText():
-                t = themeObj
-                self.preview.setPixmap(self.draw_preview(t))
-                text = globals_.trans.string('PrefsDlg', 26, '[name]', t.themeName, '[version]', t.version,
-                                    '[creator]', t.creator, '[description]', t.description)
+        for name, theme in self.themes:
+            if theme.themeName == self.theme_combo.currentText():
+                self.preview.setPixmap(self.draw_preview(theme))
+                text = globals_.trans.string('PrefsDlg', 26, '[name]', theme.themeName, '[version]', theme.version,
+                                             '[creator]', theme.creator, '[description]', theme.description)
                 self.description.setText(text)
 
     def draw_preview(self, theme):

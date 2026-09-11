@@ -26,6 +26,7 @@ var/
 build.bat
 reggiedata/patches/*
 !reggiedata/patches/NewerSMBW
+reggiedata/translations/*/
 
 # Installer logs
 pip-log.txt

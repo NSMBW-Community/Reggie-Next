@@ -2857,8 +2857,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Check if we need to show the restart warning
         show_restart_warning = False
 
-        # Get the translation
-        name = str(dlg.general_tab.trans_combo.itemData(dlg.general_tab.trans_combo.currentIndex(), Qt.ItemDataRole.UserRole))
+        # Get the translation's folder name
+        name = dlg.general_tab.translations[dlg.general_tab.trans_combo.currentIndex()][0]
         if setting('Translation') != name:
             show_restart_warning = True
         setSetting('Translation', name)
@@ -2956,7 +2956,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             for key_edit in tab.key_edits:
                 SetKeybind(key_edit.name, key_edit.keySequence())
 
-        # Toggle keybinds for first 10 items in Recent Files menu
+        # Toggles keybinds for first 10 items in Recent Files menu
         globals_.UseRecentFileKeys = dlg.keybind_tab.recent_file_keybind.isChecked()
         setSetting('UseRecentFileKeys', globals_.UseRecentFileKeys)
 
@@ -2968,7 +2968,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     act.setShortcut(QtGui.QKeySequence(f'Ctrl+Alt+{i}'))
 
         # Get the theme settings
-        theme = dlg.appearance_tab.theme_combo.currentText()
+        theme = dlg.appearance_tab.themes[dlg.appearance_tab.theme_combo.currentIndex()][0]
         style = dlg.appearance_tab.window_style.currentText()
 
         if setting('Theme') != theme:
