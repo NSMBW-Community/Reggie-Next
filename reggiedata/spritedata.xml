@@ -2377,15 +2377,18 @@
   <sprite id="190" name="(Unused) Tilt Controlled Girder" notes="&lt;font color=&quot;red&quot;&gt;It is not recommended for use due to a collision box not completely matching the model.&lt;/font&gt; Just use [51] instead." advancednotes="This uses the same 3D model as the used Tilt Lift, but this one has collisions that extend two blocks farther on the right side." files="remo_lift.arc">
   </sprite> <!-- #190: (Unused) Tilt Controlled Girder -->
 
-  <sprite id="191" name="Tile God Event" notes="The Tile God can Create / Change / Destroy tiles within a specified area when an Event is activated.">
-    <dependency notes="The Tile God sprite can be placed no more than one block outside of the Zone it is being activated in for it to function."/>
-    <value nybble="3-4" title="Triggering Event ID" comment="When this Event ID is activated, the tiles affected by the Tile God's area will be created or destroyed, depending on the Mode." idtype="Triggering Event"/>
-    <value nybble="11" title="Width" comment="This determines the width of the area that is affected."/>
-    <value nybble="12" title="Height" comment="This determines the height of the area that is affected."/>
-    <dualbox nybble="10.4" title1="Destroys Tiles" title2="Creates Tiles" comment="This determines how the Tile God will act when the Triggering Event is activated." comment2="When creating, the Tile God will place these tiles on top of existing tiles instead of replacing them."/>
-    <dualbox nybble="5.4" title1="Reverse Action when Deactivated" title2="Permanent" comment="This determines how the Tile God will act when the Triggering Event is deactivated" comment2="When set to Reverse, previously created tiles will be destroyed, and locations where tiles were destroyed will be filled by the creation settings of the Tile God."/>
-    <checkbox nybble="8.2" title="Disable Effects" comment="When enabled, the visual effect for Tile Creation/Destruction will be removed."/>
-    <checkbox nybble="8.1" title="Disable Sounds" comment="When enabled, the sound effect for Tile Creation/Destruction will be removed."/>
+  <sprite id="191" name="Tile God Event" notes="The Tile God can create, change, or destroy tiles within a specified area when an Event is activated. It must placed no more than one block outside of the Zone it is being activated in for it to function.">
+    <value nybble="3-4" title="Triggering Event ID" comment="When this Event ID is activated, the tiles affected by the Tile God's area will be created or destroyed, depending on the mode." idtype="Triggering Event"/>
+    <value nybble="11" title="Width" comment="This determines the width of the area that is affected.">
+      <override index="0" value="1"/>
+    </value>
+    <value nybble="12" title="Height" comment="This determines the height of the area that is affected.">
+      <override index="0" value="1"/>
+    </value>
+    <dualbox nybble="10.4" title1="Destroys Tiles" title2="Creates Tiles" comment="This determines how the Tile God will act when the Triggering Event is activated." comment2="When creating, the Tile God will replace any tiles under the sprite, assuming they are on the same layer."/>
+    <dualbox nybble="5.4" title1="Reverse Action when Deactivated" title2="Permanent" comment="This determines how the Tile God will act when the Triggering Event is deactivated." comment2="When set to Reverse, previously created tiles will be destroyed, and locations where tiles were destroyed will be filled by the creation settings of the Tile God."/>
+    <checkbox nybble="8.2" title="Disable Effects" comment="When enabled, the visual effect for Tile creation/destruction will be removed."/>
+    <checkbox nybble="8.1" title="Disable Sounds" comment="When enabled, the sound effect for Tile creation/destruction will be removed."/>
     <list nybble="8.3-8.4" title="Pattern" comment="This determines the fill pattern for the Tile God's selected area." comment2="A checkered pattern and reverse checked pattern overlapping will create the same effect as a regular fill. This is sometimes useful for its visual effect.">
       <entry value="0">Fill</entry>
       <entry value="1">Checkers</entry>
