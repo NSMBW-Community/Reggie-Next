@@ -438,8 +438,15 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
             layout.addItem(spacer, row, 0)
             row += 1
 
-            title = globals_.trans.string('SpriteDataEditor', 32)
-            comment = globals_.trans.string('SpriteDataEditor', 33)
+            if hasattr(sprite, 'layer_title'):
+                title = sprite.layer_title
+            else:
+                title = globals_.trans.string('SpriteDataEditor', 32)
+
+            if hasattr(sprite, 'layer_comment'):
+                comment = sprite.layer_comment
+            else:
+                comment = globals_.trans.string('SpriteDataEditor', 33)
             strList = globals_.trans.stringList('SpriteDataEditor', 34)
             if strList is None:
                 return

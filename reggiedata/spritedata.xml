@@ -2400,6 +2400,7 @@
       <entry value="14">Pa1 0,0</entry>
       <entry value="12">Pa3 4,3</entry>
     </list>
+    <layer title="Target Layer" comment="This determines what layer the Tile God will create/destroy tiles on."/>
   </sprite> <!-- #191: Tile God Event -->
 
   <sprite id="192" name="Larry Koopa - Castle Boss" noyoshi="True" yoshinotes="Yoshi can only be hurt while the boss is inside its shell and spinning around. Additionally, Yoshi will despawn the boss entirely if he ground pounds it, softlocking the game." notes="The boss initially has no collision. From rest, the platform moves 3 tiles up and 1 tile down. The white square indicates the placement for the Castle Boss controller. Mario spawns at Entrance 3 after the battle." files="larry.arc;boss_ef_attack.arc;boss_larry_block.arc">

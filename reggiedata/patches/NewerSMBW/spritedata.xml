@@ -1132,6 +1132,7 @@
     </list>
     <value nybble="6" title="Tileset Row" comment="When using Tile from Pa(x), you can spawn any tile from the tileset by selecting it from a grid formation. Each tileset contains 16 Rows (0-15), and 16 Columns (0-15). The first tile in the top left is 0,0 and the last tile in the bottom right is 15,15." comment2="Some common examples for Pa0: &lt;br&gt; &lt;i&gt;Coin: 1,14 | Coin Outline: 1,15 | ?-Block: 3,1 | Used Block: 3,2 | Wooden Block: 3,3 | Stone Block: 3,4 | Donut Lift: 3,5 | Steel Block: 3,6" requirednybble="9" requiredval="8-11"/> <!-- Appears only if Tile = 8-11 -->
     <value nybble="7" title="Tileset Column" comment="When using Tile from Pa(x), you can spawn any tile from the tileset by selecting it from a grid formation. Each tileset contains 16 Rows (0-15), and 16 Columns (0-15). The first tile in the top left is 0,0 and the last tile in the bottom right is 15,15." comment2="Some common examples for Pa0: &lt;br&gt; &lt;i&gt;Coin: 1,14 | Coin Outline: 1,15 | ?-Block: 3,1 | Used Block: 3,2 | Wooden Block: 3,3 | Stone Block: 3,4 | Donut Lift: 3,5 | Steel Block: 3,6" requirednybble="9" requiredval="8-11"/> <!-- Appears only if Tile = 8-11 -->
+    <layer title="Target Layer" comment="This determines what layer the Tile God will create/destroy tiles on."/>
   </sprite> <!-- #191: Tile God Event -->
 
   <sprite id="195" name="Huckit Crab" sizehacks="True" notes="A crab enemy that will throw projectiles at the player while occasionally jumping in the air." files="kanibo.arc">

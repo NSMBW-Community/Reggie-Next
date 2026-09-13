@@ -36,7 +36,7 @@ class SpriteDefinition:
         Loads in all the field data from an XML node
         """
         fields = self.fields
-        allowed = ['checkbox', 'list', 'value', 'dualbox', 'dependency', 'external', 'multidualbox', 'spritetex']
+        allowed = ['checkbox', 'list', 'value', 'dualbox', 'dependency', 'external', 'multidualbox', 'spritetex', 'layer']
 
         for field in elem:
             if field.tag not in allowed:
@@ -53,7 +53,6 @@ class SpriteDefinition:
             else:
                 title = globals_.trans.string('SpriteDataEditor', 28)
 
-            advanced = attribs.get("advanced", "False") == "True"
             comment = comment2 = advancedcomment = required = idtype = None
             start = 0
             increment = 1
@@ -184,6 +183,11 @@ class SpriteDefinition:
 
                 model = ListPropertyModel(entries)
                 fields.append(SpriteTexSpriteField(title, comment, comment2, advancedcomment, required, bit, model, max_))
+
+            # Override name/comment for the default layer field
+            elif field.tag == 'layer':
+                self.layer_title = title
+                self.layer_comment = comment
 
     def parseBits(self, nybble_val) -> tuple[list[tuple[int, int]], int]:
         """
