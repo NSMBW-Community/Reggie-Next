@@ -4500,7 +4500,7 @@
     <value nybble="11" title="Useless Value 11" comment="Used by Nintendo in retail 02-06 A1 as value 7, however the game never reads this value."/>
   </sprite> <!-- #367: Line Controlled Spinning Pink Mushroom Block -->
 
-  <sprite id="368" name="Lighting - Path Controlled Flashlight Raft" notes="A floating Raft that travels slowly to the right, or follows along an assigned Path. It also has a flashlight that produces a cone of light on both sides that can be controlled by tilting the controller. It is activated when all players land on it." files="boat_light_wood.arc;Mask_flashlight.arc">
+  <sprite id="368" name="Lighting - Path Controlled Flashlight Raft" notes="A floating Raft that travels slowly to the right, or follows along an assigned Path. It also has a flashlight that produces a cone of light on both sides that can be controlled by tilting the controller. It is activated when all players land on it." advancednotes="The Raft is hardcoded to play a creaking sound when it reaches specific nodes along its path, those being nodes 5, 7, 13, 22, 26, 32, 37, and 42." files="boat_light_wood.arc;Mask_flashlight.arc">
     <dependency notes="The sprite's placement is irrelevant if Path Controlled, as the Raft will be located at the listed Starting Path Node (indicated by the white square). A special Water sprite [373] is recommended to be used with the Raft, but it's not required.">
       <suggested sprite="373"/>
     </dependency>
