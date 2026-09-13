@@ -9,6 +9,10 @@ class HexSpinBox(QtWidgets.QSpinBox):
             self.max = max
 
         def validate(self, a0, a1):
+            if not a0:
+                # The empty string is a prefix of a valid input
+                return (QtGui.QValidator.State.Intermediate, '', a1)
+
             try:
                 a0 = str(a0).upper()
             except Exception:
