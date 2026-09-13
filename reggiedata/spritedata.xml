@@ -100,8 +100,8 @@
   <sprite id="8" name="(Unused) Glitch Mario" nolayer="True" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;"/>
 
   <sprite id="9" name="(Unused) Glitch Player Actor" nolayer="True" noyoshi="True" notes="&lt;font color=&quot;red&quot;&gt;Use of this sprite is not recommended.&lt;/font&gt;" advancednotes="This sprite is the most stable version of all the &quot;Glitch Marios.&quot; (#0-#9)&lt;br&gt;It creates a stationary Player clone. The clone will not move, and will shoot Fireballs if the matching player has the Fire Flower powerup. Other possible functions are untested. It's possible the game utilizes this data to create a temporary player actor at Entrances for no-control load-ins before switching to a controlled player actor. Additionally, depending on the position of this sprite relative to an Entrance, this Player Actor can sometimes be controlled instead of the one created by the entrance.">
-    <dualbox nybble="6.4" title1="Faces Right" title2="Faces Left" comment="This determines which way the spawned Player Actor faces." advanced="True"/>
-    <list nybble="7-8" title="Load-In Animation" comment="This determines what animation is used by the spawned Player Actor when it is first loaded." comment2="This value uses the same list and order as normal entrances. Every value creates a character at its position. Compared to normal entrances, Mario will be positioned on top of the sprite's placement and not inside it. The 3D model is stationary and does not move." advanced="True">
+    <dualbox nybble="6.4" title1="Faces Right" title2="Faces Left" comment="This determines which way the spawned Player Actor faces."/>
+    <list nybble="7-8" title="Load-In Animation" comment="This determines what animation is used by the spawned Player Actor when it is first loaded." comment2="This value uses the same list and order as normal entrances. Every value creates a character at its position. Compared to normal entrances, Mario will be positioned on top of the sprite's placement and not inside it. The 3D model is stationary and does not move.">
       <entry value="0">Normal</entry>
       <entry value="1">Normal</entry>
       <entry value="2">Door Exit</entry>
@@ -133,7 +133,7 @@
       <entry value="28">Unknown (Crashes)</entry>
       <entry value="29">Unknown (Freezes)</entry>
     </list>
-    <list nybble="12.3-12.4" title="Character" comment="This determines which character will be spawned." advanced="True">
+    <list nybble="12.3-12.4" title="Character" comment="This determines which character will be spawned.">
       <entry value="0">Mario</entry>
       <entry value="1">Luigi</entry>
       <entry value="2">Yellow Toad</entry>
@@ -180,7 +180,7 @@
   <sprite id="22" name="Unused" nolayer="True" notes="No assigned function, does nothing in-game." files="kuribo.arc"/><!-- #22: Unused -->
 
   <sprite id="23" name="Basic Platform - Horizontal Movement" notes="The most basic platform in the game. Moves on its own from left to right." files="lift_han_wood.arc;lift_han_stone.arc;boss_koopa_lift.arc;boss_koopa_lift_down.arc">
-    <dualbox nybble="7.3" title1="Normal Model" title2="boss_koopa_lift.arc" advanced="True" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
+    <dualbox nybble="7.3" title1="Normal Model" title2="boss_koopa_lift.arc" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
     <dualbox nybble="7.4" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requirednybble="7.3" requiredval="0"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
     <dualbox nybble="8.4" title1="Starts Moving Right" title2="Starts Moving Left" comment="This determines which direction the platform will initially start moving in."/>
@@ -209,8 +209,8 @@
 
   <!-- Research Unknown Flag 12 -->
   <sprite id="26" name="Upside-Down Spiny" notes="An upside-down Spiny that clings to the ceiling. They will only function when attached to flat ceilings, and do not follow slopes or walk around edges. When placed mid-air, they will fall and attack upon loading." files="togezo.arc;paipo.arc">
-    <checkbox nybble="8.4" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
-    <checkbox nybble="12.4" title="Unknown Flag 12" advanced="True" advancedcomment="Used in retail 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
+    <checkbox nybble="8.4" title="Unknown Flag 8" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
+    <checkbox nybble="12.4" title="Unknown Flag 12" advancedcomment="Used in retail 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 
@@ -278,7 +278,7 @@
   </sprite> <!-- #30: Grey Tiled Block -->
 
   <sprite id="31" name="Basic Platform - Vertical Movement" notes="The most basic platform in the game. Moves on its own, upwards and downwards." files="lift_han_wood.arc;lift_han_stone.arc;boss_koopa_lift.arc;boss_koopa_lift_down.arc">
-    <dualbox nybble="7.3" title1="Normal Model" title2="boss_koopa_lift.arc" advanced="True" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
+    <dualbox nybble="7.3" title1="Normal Model" title2="boss_koopa_lift.arc" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
     <dualbox nybble="7.4" title1="Gold Platform" title2="Silver Platform" comment="This determines the color of the platform." requirednybble="7.3" requiredval="0"/>
     <value nybble="12" title="Width" comment="This determines the width of the platform."/>
     <dualbox nybble="8.4" title1="Starts Moving Up" title2="Starts Moving Down" comment="This determines which direction the platform will initially start moving in."/>
@@ -431,7 +431,7 @@
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #40: ?-Switch -->
 
   <sprite id="41" name="P-Switch" notes="This switch is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (tileset-based and sprite-based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block." files="switch.arc">
@@ -447,7 +447,7 @@
     <dualbox nybble="10" fullnybble="True" title1="Single Use" title2="Multi-Use" comment="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." comment2="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7" requiredval="0"/>
     <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #41: P-Switch -->
 
   <sprite id="42" name="!-Switch" notes="This switch is similar to the ? Switch, but it has the additional effect of changing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." files="switch.arc">
@@ -464,7 +464,7 @@
     <checkbox nybble="6.2-6.4" fullnybble="True" title="Unknown Value 6" advancedcomment="Changes how the switch activates, but the exact details are unknown."/>
     <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #42: !-Switch -->
 
   <sprite id="43" name="Brick Block ?-Switch" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
@@ -487,7 +487,7 @@
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #43: Brick Block ?-Switch -->
 
   <sprite id="44" name="Brick Block P-Switch" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (both tileset based and sprite based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Bug: &lt;/b&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if they were blocks.&lt;/font&gt;" advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
@@ -501,7 +501,7 @@
     <dualbox nybble="10" fullnybble="True" title1="Single Use" title2="Multi-Use" comment="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." comment2="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7" requiredval="0"/>
     <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #44: Brick Block P-Switch -->
 
   <sprite id="45" name="Brick Block !-Switch" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
@@ -516,7 +516,7 @@
     <checkbox nybble="6.2-6.4" fullnybble="True" title="Unknown Value 6" advancedcomment="Changes how the switch activates, but the exact details are unknown."/>
     <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #45: Brick Block !-Switch -->
 
   <sprite id="46" name="Lava Bubble (Podoboo)" notes="The Lava Bubble (Podoboo) is a firey enemy that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava." files="bubble.arc">
@@ -592,7 +592,7 @@
       <entry value="1">Throws Spinies (Dies if hit from below on a block)</entry>
       <entry value="2">Throws Coins</entry>
     </list>
-    <checkbox nybble="2.4" title="Low Throw Arc" advanced="True" comment="When enabled, the Lakitu will throw Spinies from a low throwing arc. This behavior looks glitchy when the Lakitu is moving quickly." advancedcomment="It also should be noted this option is in a space normally used for events, so it may have a deeper function."/>
+    <checkbox nybble="2.4" title="Low Throw Arc" comment="When enabled, the Lakitu will throw Spinies from a low throwing arc. This behavior looks glitchy when the Lakitu is moving quickly." advancedcomment="It also should be noted this option is in a space normally used for events, so it may have a deeper function."/>
     <checkbox nybble="6.4" title="Longer Throw Delay" comment="If enabled, the Lakitu will wait longer before throwing the first Spiny after previously hitting the max limit of 4." comment2="Exact values are 280 frames checked, 140 unchecked."/>
     <value nybble="7" title="Spawn Height (Useless)" comment2="This value determines the spawning height for Coin Lakitus spawned from [370] Lakitu Cloud Block. As this Lakitu is not spawned from a block, this option is rather useless." requirednybble="12" requiredval="2"/>
     <value nybble="8" title="Lifespan (Useless)" comment="This would determine how long the Lakitu will exist before flying off. However, a stand-alone Lakitu cannot meet the requirements for this timer to be processed, making this option useless." requirednybble="12" requiredval="2"/>
@@ -600,16 +600,16 @@
   </sprite> <!-- #54: Lakitu -->
 
   <sprite id="55" name="(Unused) Rising Tilting Platform" notes="This is an unused platform, clearly leftover from NSMBDS. The distance it can travel depends on two factors: Y-position and zone height. See [Movement Distance].&lt;br&gt;&lt;br&gt;It is not recommended for use due to various glitches and a lack of texture." files="test_lift.arc">
-    <checkbox nybble="7.4" title="Spawns After Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point." advanced="True"/>
-    <list nybble="9.3-9.4" title="Movement Distance" advanced="True" advancedcomment="This determines the maximum distance this Platform will cover. The platform covers 'Travel Limit' distance at value '0'. After any set amount of time, the platform will start blinking two blocks before the 'Travel Limit' and disappear once the player gets off it. For values marked with an asterisk (*), Mario must leave the platform for the blinking to begin. Once it starts blinking, the platform's disappearance can't be prevented.">
+    <checkbox nybble="7.4" title="Spawns After Midway" comment="When enabled, the platform will only appear if the level has been loaded from a Midway point."/>
+    <list nybble="9.3-9.4" title="Movement Distance" advancedcomment="This determines the maximum distance this Platform will cover. The platform covers 'Travel Limit' distance at value '0'. After any set amount of time, the platform will start blinking two blocks before the 'Travel Limit' and disappear once the player gets off it. For values marked with an asterisk (*), Mario must leave the platform for the blinking to begin. Once it starts blinking, the platform's disappearance can't be prevented.">
       <entry value="0">No Limit (Travel Limit)</entry>
       <entry value="1">5 Blocks</entry>
       <entry value="2">5 Blocks*</entry>
       <entry value="3">5 Blocks*</entry>
     </list>
-    <checkbox nybble="10.4" title="Invisible Collision Box" advanced="True" advancedcomment="While strange, this value's function is clear: When the game loads the platform for the first time into view, and the player then leaves the screen, this value tells the game to remember the last position of the platform. It will then spawn an equally large collision box exactly over its last position. Mario cannot fall through this collision box, but he may pass through coming from below. I.e. when loading the platforms back to the original position, Mario is carried by the collision box, if he stands on it. This happens each time the platform leaves the screen. The bad thing is that Mario cannot activate more platforms when he stands exactly over their original position, where they spawned initially."/>
-    <dualbox nybble="11.3" title1="Touch to Activate" title2="Activates when Loaded" comment="This determines how the platform begins to move. It can either be set to move only when touched by a player, or it can be set to move automatically when loaded into memory." advanced="True"/>
-    <list nybble="12.3-12.4" title="Vertical Movement and Direction" advanced="True" advancedcomment="This determines how the platform moves on the Y-axis. If the value is set to '0' or '2', the platform will rise up. With value '1', the platform will fall slowly. The platform stops only after it has reached the 'Travel Limit' line. At this position, an upward-moving platform will stop ; however, a downward-moving platform will move continuously if a value of '1' is used and the platform is positioned below the 'Travel Limit' line. If the platform is placed above the 'Travel Limit' line, it will automatically be moved to the 'Travel Limit' line (no matter which direction it is moving) when it becomes active. The 'Travel Limit' line is located 7.5 Blocks below the upper zone border.&lt;br&gt;&lt;br&gt;This platform functions independently of scroll limits (therefore, the 'Travel Limit' ignores scroll limits).">
+    <checkbox nybble="10.4" title="Invisible Collision Box" advancedcomment="While strange, this value's function is clear: When the game loads the platform for the first time into view, and the player then leaves the screen, this value tells the game to remember the last position of the platform. It will then spawn an equally large collision box exactly over its last position. Mario cannot fall through this collision box, but he may pass through coming from below. I.e. when loading the platforms back to the original position, Mario is carried by the collision box, if he stands on it. This happens each time the platform leaves the screen. The bad thing is that Mario cannot activate more platforms when he stands exactly over their original position, where they spawned initially."/>
+    <dualbox nybble="11.3" title1="Touch to Activate" title2="Activates when Loaded" comment="This determines how the platform begins to move. It can either be set to move only when touched by a player, or it can be set to move automatically when loaded into memory."/>
+    <list nybble="12.3-12.4" title="Vertical Movement and Direction" advancedcomment="This determines how the platform moves on the Y-axis. If the value is set to '0' or '2', the platform will rise up. With value '1', the platform will fall slowly. The platform stops only after it has reached the 'Travel Limit' line. At this position, an upward-moving platform will stop ; however, a downward-moving platform will move continuously if a value of '1' is used and the platform is positioned below the 'Travel Limit' line. If the platform is placed above the 'Travel Limit' line, it will automatically be moved to the 'Travel Limit' line (no matter which direction it is moving) when it becomes active. The 'Travel Limit' line is located 7.5 Blocks below the upper zone border.&lt;br&gt;&lt;br&gt;This platform functions independently of scroll limits (therefore, the 'Travel Limit' ignores scroll limits).">
       <entry value="3">No Vertical Movement</entry>
       <entry value="0">Up</entry>
       <entry value="2">Up</entry>
@@ -668,8 +668,8 @@
     <dualbox nybble="10.4" title1="Moves in specified direction (4 blocks), then turns around" title2="Moves in opposite direction immediately" comment="This determines how far the Flying Paratroopa will move before first turning around. The Paratroopa will always have a path of 9 Blocks, so this only sets the initial movement distance on load." requirednybble="11.3-11.4" requiredval="2"/> <!-- Only appears when Flying: Up and Down is selected -->
     <dualbox nybble="12.4" title1="Walks Off Ledges" title2="Turns Around At Ledges" comment="This determines if the Koopa Troopa, once stepped on and de-winged, will mindlessly walk off of ledges or if it will turn around when it reaches a ledge." comment2="This also changes the color of the Koopa Troopa."/>
     <checkbox nybble="8.4" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Paratroopa will be able to move behind Chainlink Fences." advancedcomment="Exact values are 1500.0 unchecked, -2500.0 checked."/>
-    <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="Used in retail 06-01 A1 as 12"/>
-    <value nybble="6.1" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in retail 06-01 A1"/>
+    <value nybble="5" title="Unknown Value 5" advancedcomment="Used in retail 06-01 A1 as 12"/>
+    <value nybble="6.1" title="Unknown Flag 6 (8)" advancedcomment="Used in retail 06-01 A1"/>
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #58: Koopa Paratroopa -->
 
@@ -681,9 +681,9 @@
       <entry value="2">Moves Automatically (Broken)</entry>
     </list>
     <value nybble="9.3-9.4" title="Useless Value 9" comment="This value is read by the game, but never actually used for anything specific."/>
-    <value nybble="8" title="Rendering Related" advanced="True" advancedcomment="Actually a pointless option. This option only affects the code that renders the sprite. Setting a value of 0 results in an automatic use of value 5. Furthermore, the value is automatically multiplied by 64. At 0 and 5, we get a value of 320. Treeki also thinks that this option could represent a counter. What this option actually does is control the blinking of the carrier platform. If the multiplied value is below 180 AND if the second bit of the nybble was used, the carrier platform will not be rendered. Otherwise, this option only has the ability to tweak the blinking of the carrier platform. One would have to play around with some values​​."/>
-    <checkbox nybble="8.3" title="No Rendering?" advanced="True" advancedcomment="Selecting this option will trigger the effect described under [Rendering Related]."/>
-    <checkbox nybble="10.4" title="Stays Off" advanced="True" advancedcomment="Activating this will cause the platform to not react/move when a player stands on it. The code hints that it should only prevent this platform from disappearing instead of freezing it altogether."/>
+    <value nybble="8" title="Rendering Related" advancedcomment="Actually a pointless option. This option only affects the code that renders the sprite. Setting a value of 0 results in an automatic use of value 5. Furthermore, the value is automatically multiplied by 64. At 0 and 5, we get a value of 320. Treeki also thinks that this option could represent a counter. What this option actually does is control the blinking of the carrier platform. If the multiplied value is below 180 AND if the second bit of the nybble was used, the carrier platform will not be rendered. Otherwise, this option only has the ability to tweak the blinking of the carrier platform. One would have to play around with some values​​."/>
+    <checkbox nybble="8.3" title="No Rendering?" advancedcomment="Selecting this option will trigger the effect described under [Rendering Related]."/>
+    <checkbox nybble="10.4" title="Stays Off" advancedcomment="Activating this will cause the platform to not react/move when a player stands on it. The code hints that it should only prevent this platform from disappearing instead of freezing it altogether."/>
     <value nybble="12" start="7" title="Collision Width" comment="This determines the width of the platform's collision. The platform itself does not visually extend, however."/>
   </sprite> <!-- #59: Line Controlled Tilt Controlled Girder -->
 
@@ -1117,7 +1117,7 @@
     </list>
     <value nybble="8" title="Delay at Extremes" comment="This determines how long the Swing Arc will wait at the extremes of its angle."/>
     <checkbox nybble="9.4" title="Reverse" comment="When enabled, the timing of the left and right positions of the Swing Arc will be reversed in relation to other Swaying Controllers with the same settings."/>
-    <list nybble="10.3-10.4" title="Unknown Value 10" advanced="True" advancedcomment="1: Used in retail 07-21 A2, 2: Used in retail 04-21 A1/A2/A3, 07-21 A1/A2/A4">
+    <list nybble="10.3-10.4" title="Unknown Value 10" advancedcomment="1: Used in retail 07-21 A2, 2: Used in retail 04-21 A1/A2/A3, 07-21 A1/A2/A4">
       <entry value="0">Normal</entry>
       <entry value="1">???</entry>
       <entry value="2">???</entry>
@@ -1271,7 +1271,7 @@
 
   <sprite id="110" name="Effect - Sunbeam" notes="This will generate a bright Sunbeam effect from the top right of the camera. Note that despawning this sprite does not remove the effect.">
     <dependency notes="If this sprite is placed more than once in the same Zone, the game will crash. The placement of this sprite does not change its effects."/>
-    <list nybble="12" title="Type" advanced="True" advancedcomment="The ASM implies that this nybble was once used to select the type of effect. However, there is no code for any type that is not &quot;Sunbeam&quot; in the final game, so setting this to any other value will make this sprite do nothing. Interestingly, it does not delete itself, so it continues to use some memory.">
+    <list nybble="12" title="Type" advancedcomment="The ASM implies that this nybble was once used to select the type of effect. However, there is no code for any type that is not &quot;Sunbeam&quot; in the final game, so setting this to any other value will make this sprite do nothing. Interestingly, it does not delete itself, so it continues to use some memory.">
       <entry value="0">Sunbeam</entry>
       <entry value="1">None</entry>
     </list>
@@ -1353,9 +1353,9 @@
     <dependency notes="The Coin Cheep can be placed in both non-location water and location water.">
       <required sprite="138"/> <!-- Requires Water -->
     </dependency>
-    <checkbox nybble="12.4" title="Waiting" comment="When enabled, if the player is not within ~5 blocks, the Coin Cheep will sit facing the camera. When the player gets within range, it will activate and start swimming Left. This direction overrides the swimming direction." advanced="True"/>
-    <dualbox nybble="5.1" title1="Swims Right" title2="Swims Left" comment="This determines the direction the Coin Cheep will swim when loaded. It does not have a Towards Player option." advanced="True" requirednybble="12.4" requiredval="0"/> <!-- Appears only if Waiting is unchecked -->
-    <!-- <list nybble="5" title="Swimming Direction" comment="This determines the direction the Coin Cheep will swim when loaded. It does not have a Towards Player option." advanced="True" requirednybble="12.4" requiredval="0">
+    <checkbox nybble="12.4" title="Waiting" comment="When enabled, if the player is not within ~5 blocks, the Coin Cheep will sit facing the camera. When the player gets within range, it will activate and start swimming Left. This direction overrides the swimming direction."/>
+    <dualbox nybble="5.1" title1="Swims Right" title2="Swims Left" comment="This determines the direction the Coin Cheep will swim when loaded. It does not have a Towards Player option." requirednybble="12.4" requiredval="0"/> <!-- Appears only if Waiting is unchecked -->
+    <!-- <list nybble="5" title="Swimming Direction" comment="This determines the direction the Coin Cheep will swim when loaded. It does not have a Towards Player option." requirednybble="12.4" requiredval="0">
       <entry value="0">Right</entry>
       <entry value="1">Right</entry>
       <entry value="2">Right</entry>
@@ -1373,7 +1373,7 @@
       <entry value="14">Left</entry>
       <entry value="15">Deletes itself</entry>
     </list> --> <!-- Old version of the list, may have additional flags within Nybble 5. -->
-    <list nybble="9" title="Speed" comment="This determines the speed that the Coin Cheep swims at." advanced="True">
+    <list nybble="9" title="Speed" comment="This determines the speed that the Coin Cheep swims at.">
       <entry value="3">Slower</entry>
       <entry value="1">Slow</entry>
       <entry value="2">Slow+</entry>
@@ -1840,19 +1840,19 @@
     </list> <!-- Eventually this list will be divided based on what Behavior Types work with which Movement Types -->
     <checkbox nybble="10.4" title="Place Behind Chainlink Fence" comment="When enabled, this modifies the placement of the Coin so that the player must be on the other side of a Chainlink Fence to collect it." comment2="[What movement types does this work with? What movement types totally don't work with this? We need answers, MAN!]"/>
     <checkbox nybble="10.3" title="Place Behind Layer 1" comment="When enabled, this modifies the Z-Order of the coin where it will be hidden behind all Layer 1 objects." comment2="[This is similar to the above option, but we have no clue how it differs or if this is just a normal Z-Order VALUE option.]"/>
-    <value nybble="8" title="Unknown Value 8" advanced="True" advancedcomment="ASM: Something involving 'Direction' somehow."/>
-    <list nybble="11" title="Sinking Slowly in Bubble: Unknown Value 11" advanced="True" advancedcomment="ASM: Involves [Behavior Type 4] Only." requirednybble="12" requiredval="4">
+    <value nybble="8" title="Unknown Value 8" advancedcomment="ASM: Something involving 'Direction' somehow."/>
+    <list nybble="11" title="Sinking Slowly in Bubble: Unknown Value 11" advancedcomment="ASM: Involves [Behavior Type 4] Only." requirednybble="12" requiredval="4">
       <entry value="0">???</entry>
       <entry value="1">???</entry>
       <entry value="2">???</entry>
     </list>
-    <list nybble="11" title="Floats Upwards: Unknown Value 11" advanced="True" advancedcomment="ASM: Involves [Behavior Type 7] Only." requirednybble="12" requiredval="7">
+    <list nybble="11" title="Floats Upwards: Unknown Value 11" advancedcomment="ASM: Involves [Behavior Type 7] Only." requirednybble="12" requiredval="7">
       <entry value="0">???</entry>
       <entry value="1">???</entry>
       <entry value="2">???</entry>
       <entry value="3">???</entry>
     </list>
-    <value nybble="11" title="Loose Coin [5]: Initial Movement Speed" comment="This sets [something relating to initial movement speed]." advanced="True" advancedcomment="ASM: Involves [Behavior Type 5] Only." requirednybble="12" requiredval="5"/>
+    <value nybble="11" title="Loose Coin [5]: Initial Movement Speed" comment="This sets [something relating to initial movement speed]." advancedcomment="ASM: Involves [Behavior Type 5] Only." requirednybble="12" requiredval="5"/>
     <list nybble="9" title="Awarded Player" comment="This determines which player will be awarded with the coin." requirednybble="12" requiredval="9">
       <entry value="0">Mario</entry>
       <entry value="1">Luigi</entry>
@@ -1933,14 +1933,14 @@
     <dependency notes="Cannot be used without Water for the Cheep Cheep to live in.">
       <required sprite="138"/>
     </dependency>
-    <checkbox nybble="12.4" title="Alternate Movement" comment="When enabled, after the first jump, the Cheep Cheep will not continue swimming but instead wait at the landing point to jump again." comment2="It ends up looking like the Cheep Cheep is 'stuck' in the water." advanced="True"/>
+    <checkbox nybble="12.4" title="Alternate Movement" comment="When enabled, after the first jump, the Cheep Cheep will not continue swimming but instead wait at the landing point to jump again." comment2="It ends up looking like the Cheep Cheep is 'stuck' in the water."/>
   </sprite> <!-- #150: (Unused) Jumping Cheep Cheep -->
 
   <sprite id="151" name="Porcupuffer" notes="A stand-alone Porcupuffer that will chase the player along the water line indefinitely until killed, but will not respawn." files="fugu.arc">
     <dependency notes="Water is required for the Porcupuffer to function. It must be non-location water, possibly non-moving water.">
       <required sprite="138"/>
     </dependency>
-    <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
+    <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advancedcomment="ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #151: Porcupuffer -->
 
   <sprite id="152" name="Incomplete Sprite - EN_BLUR" nolayer="True" notes="Does nothing.">
@@ -1971,7 +1971,7 @@
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #153: (Unused) ?-Switch -->
 
   <sprite id="154" name="Porcupuffer Spawn Area" notes="Assigns a spawn area where Porcupuffers will continue to respawn while the player is inside it. Porcupuffers will follow the player along the water line." files="fugu.arc">
@@ -2024,7 +2024,7 @@
       <entry value="3">Ice Flower</entry>
     </list>
     <checkbox nybble="12.4" title="Shift Horizontally" comment="When this checkbox is ticked, the ring is moved half a block to the right. This is likely a leftover from NSMBDS, where sprites must be placed on the tile grid." comment2="Note that this setting overlaps with the Red Coin ID."/>
-    <checkbox nybble="10.4" title="Unknown Flag 10 (1)" advanced="True" advancedcomment="ASM shows Nybble 10 might affect something. No visible or functional change. Likely Z-Order related, or at least intended to be."/>
+    <checkbox nybble="10.4" title="Unknown Flag 10 (1)" advancedcomment="ASM shows Nybble 10 might affect something. No visible or functional change. Likely Z-Order related, or at least intended to be."/>
   </sprite> <!-- #156: Red Coin Ring -->
 
   <sprite id="157" name="Big Brick Block" notes="No matter what is inside, this light-colored 3x3 brick block always breaks open. It can even be broken by small Mario." files="big_renga_block.arc;I_ship_key.arc">
@@ -2058,7 +2058,7 @@
 
   <sprite id="158" name="Fire Snake" yoshinotes="While Yoshi cannot safely jump on this enemy, if he eats one he will spit out a fireball." notes="A hopping fire enemy that will also affect the lighting in a dark Zone." files="fire_snake.arc">
     <checkbox nybble="12.4" title="Hides and Waits" comment="When enabled, the Fire Snake will be a stationary ball of fire until a player is within 6 blocks of it."/>
-    <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advanced="True" advancedcomment="ASM shows Nybble 11 might affect something."/>
+    <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advancedcomment="ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #158: Fire Snake -->
 
   <sprite id="159" name="Movement Controller - Uses Paths" notes="A movement controller that connects certain sprites so they can be moved by Paths. Paths are a special type of data within the level structure that has speed, acceleration, and delay values built into each Node." files="test_lift.arc">
@@ -2111,9 +2111,9 @@
     <dualbox nybble="5.4" title1="Create Bottom Boundary" title2="Create Top Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
     <checkbox nybble="9.4" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
     <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4."/>
-    <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
-    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4."/>
+    <value nybble="10" title="Unknown Value 10" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <value nybble="12" title="Unknown Value 12" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite> <!-- Vertical Scroll Limit 1 - Left Side -->
 
 <!-- Sprite 163-165 are still unedited -->
@@ -2127,9 +2127,9 @@
     <dualbox nybble="5.4" title1="Create Bottom Boundary" title2="Create Top Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
     <checkbox nybble="9.4" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
     <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4."/>
-    <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
-    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4."/>
+    <value nybble="10" title="Unknown Value 10" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <value nybble="12" title="Unknown Value 12" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite>
 
   <sprite id="164" name="Vertical Scroll Limiter 2 - Left Side" notes="Similar to sprite 162; the differences are unknown. This sprite allows you to limit how far the camera will scroll vertically by creating an imaginary horizontal border between a matching pair of Scroll Limiters. This can be used to create a deeper kill zone, hide secret areas, or otherwise restrict the camera in certain sections of a level.">
@@ -2140,9 +2140,9 @@
     <dualbox nybble="5.4" title1="Create Bottom Boundary" title2="Create Top Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
     <checkbox nybble="9.4" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
     <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
-    <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
-    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
+    <value nybble="10" title="Unknown Value 10" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <value nybble="12" title="Unknown Value 12" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite>
 
   <sprite id="165" name="Vertical Scroll Limiter 2 - Right Side" notes="Similar to sprite 163; the differences are unknown. This sprite allows you to limit how far the camera will scroll vertically by creating an imaginary horizontal border between a matching pair of Scroll Limiters. This can be used to create a deeper kill zone, hide secret areas, or otherwise restrict the camera in certain sections of a level.">
@@ -2153,9 +2153,9 @@
     <dualbox nybble="5.4" title1="Create Bottom Boundary" title2="Create Top Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
     <checkbox nybble="9.4" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
     <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
-    <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
-    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
+    <value nybble="10" title="Unknown Value 10" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <value nybble="12" title="Unknown Value 12" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite>
 
   <sprite id="166" name="Snake Block (Ice)" files="block_snake.arc;block_snake_ice.arc">
@@ -2190,7 +2190,7 @@
   <sprite id="171" name="Mushroom in a Bubble" notes="&lt;font color=&quot;orange&quot;&gt;This sprite is not recommended for use, and it WILL crash the game if used with invalid settings.&lt;/font&gt;" advancednotes="This is capable of spawning both items and players inside of bubbles. Unfortunately it was not designed to be called on for stand-alone functions.">
     <checkbox nybble="10.4" title="Spawns Mushroom in a Bubble" comment="When enabled, this will spawn a Mushroom floating in a bubble."/>
     <dualbox nybble="11.3" title1="Floats in from Right" title2="Spawns at Sprite/Player" comment="This determines how the floating bubble will appear. "/>
-    <list nybble="12.3-12.4" title="Spawns Player in a Bubble" advanced="True" advancedcomment="Unfortunately, this doesn't work as cleanly as it needs to in order to be usable. If the right player doesn't exist when this loads, the game will crash. It could potentially respawn a dead player who has zero lives, or with the multiplayer bubbles deactivated, except that there is no way to only load the players you actually need. Thus, this function is completely and totally unreliable unless requiring all 4 players to play a particular level." requirednybble="10.4" requiredval="0">
+    <list nybble="12.3-12.4" title="Spawns Player in a Bubble" advancedcomment="Unfortunately, this doesn't work as cleanly as it needs to in order to be usable. If the right player doesn't exist when this loads, the game will crash. It could potentially respawn a dead player who has zero lives, or with the multiplayer bubbles deactivated, except that there is no way to only load the players you actually need. Thus, this function is completely and totally unreliable unless requiring all 4 players to play a particular level." requirednybble="10.4" requiredval="0">
       <entry value="0">Spawns Mario</entry>
       <entry value="1">Spawns Luigi</entry>
       <entry value="2">Spawns Blue Toad</entry>
@@ -2316,8 +2316,8 @@
       <entry value="2">Down</entry>
       <entry value="3">Right</entry>
     </list>
-    <checkbox nybble="10.4" title="Rotation Controlled (Buggy)" comment="When enabled, the door will only function when paired with a Rotation ID." advanced="True" advancedcomment="'Function' is perhaps misleading. There are only a few ways you can successfully utilize a Rotation Controller door. For starters, you can only enter the door while it is almost fully upright. There is also a peculiarity with how the Entrance is placed. The most reliable way to use a Rotation Controlled Door is to place it with an already activated Spinning controller that returns to its original position when deactivated."/>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation" requirednybble="10.4"/>
+    <checkbox nybble="10.4" title="Rotation Controlled (Buggy)" comment="When enabled, the door will only function when paired with a Rotation ID." advancedcomment="'Function' is perhaps misleading. There are only a few ways you can successfully utilize a Rotation Controller door. For starters, you can only enter the door while it is almost fully upright. There is also a peculiarity with how the Entrance is placed. The most reliable way to use a Rotation Controlled Door is to place it with an already activated Spinning controller that returns to its original position when deactivated."/>
+    <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." idtype="Rotation" requirednybble="10.4"/>
   </sprite> <!-- #182: Event Triggered Door -->
 
   <sprite id="183" name="Incomplete Sprite - EN_TARZANROPE" nolayer="True" notes="Does nothing.">
@@ -2430,7 +2430,7 @@
       <entry value="0">Normal</entry>
       <entry value="9">Fast</entry>
     </list>
-    <list nybble="12" title="Advanced / Glitchy Shooting Options" comment="A full list of the Shooting Speed options including duplicates and those not suggested for use." advanced="True" advancedcomment="Many values will cause the Huckit Crab to toss his projectile behind him. One option will also cause him to face the wrong direction, as well.">
+    <list nybble="12" title="Advanced / Glitchy Shooting Options" comment="A full list of the Shooting Speed options including duplicates and those not suggested for use." advancedcomment="Many values will cause the Huckit Crab to toss his projectile behind him. One option will also cause him to face the wrong direction, as well.">
       <entry value="2">Nothing (Stationary Projectile)</entry>
       <entry value="3">Nothing (Stationary Projectile)</entry>
       <entry value="8">Nothing (Stationary Projectile)</entry>
@@ -2477,7 +2477,7 @@
       <entry value="3">1-Up</entry>
       <entry value="4">P-Switch</entry>
     </list>
-    <checkbox nybble="10.4" title="Upside-Down P-Switch/Star-Coin Z-Order" comment="This will affect the secondary trait of the P-Switch or Star Coin." advanced="True" advancedcomment="These are both incredibly useless options. An Upside-Down P-Switch cannot be pressed, and the Z-Order puts the Star Coin behind the Clampy."/>
+    <checkbox nybble="10.4" title="Upside-Down P-Switch/Star-Coin Z-Order" comment="This will affect the secondary trait of the P-Switch or Star Coin." advancedcomment="These are both incredibly useless options. An Upside-Down P-Switch cannot be pressed, and the Z-Order puts the Star Coin behind the Clampy."/>
   </sprite> <!-- #197: Clampy -->
 
   <sprite id="198" name="Giant Goomba" notes="A larger version of the Goomba that splits into two regular Goombas when stepped on." files="kuribo.arc;kuriboBig.arc">
@@ -2672,7 +2672,7 @@
       <entry value="12">Vine</entry>
       <entry value="13">Spring</entry>
     </list>
-    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the ?-Block placing it further behind other sprites." comment2="This will place the ?-Block behind even Chainlink Fence and Layer 1 terrain."  advanced="True" advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
+    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the ?-Block placing it further behind other sprites." comment2="This will place the ?-Block behind even Chainlink Fence and Layer 1 terrain."  advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
   </sprite> <!-- #208: (Unused) ? Block -->
 
   <sprite id="209" name="Brick Block" notes="Your most basic, most flexible, standard brown Brick Block. When spawning power-ups, it will spawn only one, no matter how many players! Such a stingy block~" files="I_ship_key.arc">
@@ -2715,7 +2715,7 @@
       <entry value="12">Vine</entry>
       <entry value="13">Spring</entry>
     </list>
-    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Brick Block placing it further behind other sprites." comment2="This will place the Brick Block behind even Chainlink Fence and Layer 1 terrain."  advanced="True" advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
+    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Brick Block placing it further behind other sprites." comment2="This will place the Brick Block behind even Chainlink Fence and Layer 1 terrain."  advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
     <checkbox nybble="10.4" title="Follows Lines" comment="It is recommended to use [403] Line Controlled Brick Block instead."/>
     <dualbox nybble="9.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Brick Block will move based on the Line that it is connected to."/>
   </sprite> <!-- #209: Brick Block -->
@@ -2839,15 +2839,15 @@
   <sprite id="217" name="Fire Chomp Spawn Area" notes="Assigns a spawn area where Fire Chomps will continue to respawn while the player is inside it. Fire Chomps will float after the player shooting the fireballs from its tail, and explode when they run out of ammo." files="keronpa.arc">
     <value nybble="12" title="Location ID" comment="Fire Chomps respawn and chase the player only while a player is in this location." idtype="Location"/>
     <value nybble="11" title="Spawn Delay" comment="This determines the amount of time the game will wait before spawning another Fire Chomp." comment2="Each value is equal to one second."/>
-    <checkbox nybble="10.4" title="Unused Flag 10 (1)" advanced="True" comment="This value is not used by the game in any way. Nintendo toggles this in 02-06 A1."/>
+    <checkbox nybble="10.4" title="Unused Flag 10 (1)" comment="This value is not used by the game in any way. Nintendo toggles this in 02-06 A1."/>
   </sprite> <!-- #217: Fire Chomp Spawn Area -->
 
   <sprite id="218" name="(Unused) Invisible Block" notes="Creates an invisible block. When hit, it will release a coin and move one tile up. The settings seem to be hardcoded, making this sprite almost fully unusable.">
-    <value nybble="9" title="Unknown Value 9" advanced="True" advancedcomment="Setting this and nybble 11 to something nonzero might influence the collision of the block."/>
-    <value nybble="11" title="Unknown Value 11" advanced="True" advancedcomment="Setting this and nybble 9 to something nonzero might influence the collision of the block."/>
-    <value nybble="8" title="Unknown Value 8" advanced="True" advancedcomment="Does nothing."/>
-    <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="Does nothing."/>
-    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="Does nothing."/>
+    <value nybble="9" title="Unknown Value 9" advancedcomment="Setting this and nybble 11 to something nonzero might influence the collision of the block."/>
+    <value nybble="11" title="Unknown Value 11" advancedcomment="Setting this and nybble 9 to something nonzero might influence the collision of the block."/>
+    <value nybble="8" title="Unknown Value 8" advancedcomment="Does nothing."/>
+    <value nybble="10" title="Unknown Value 10" advancedcomment="Does nothing."/>
+    <value nybble="12" title="Unknown Value 12" advancedcomment="Does nothing."/>
   </sprite> <!-- #218: (Unused) Invisible Block -->
 
   <sprite id="219" name="Stretching Line Block" notes="A platform made up of orange or other-colored blocks that shrinks and expands while moving up and down." files="block_slide.arc">
@@ -3072,7 +3072,7 @@
   </sprite> <!-- #240: Big Wiggler -->
 
   <sprite id="241" name="(Unused) Big Wiggler Spawner" notes="&lt;font color=&quot;red&quot;&gt;Currently non-functioning.&lt;/font&gt;" advancednotes="Appears to need a corresponding Path, and the sprite must be placed to the left of the player's Entrance. Even still, the Sprite doesn't seem to function, possibly due to missing Node ID related functions." files="hanachan_head.arc;hanachan_body.arc">
-    <value nybble="11-12" title="Path ID" advanced="True" advancedcomment="This is intended to pair the Mega Wiggler to a Path." idtype="Path"/>
+    <value nybble="11-12" title="Path ID" advancedcomment="This is intended to pair the Mega Wiggler to a Path." idtype="Path"/>
   </sprite> <!-- #241: (Unused) Big Wiggler Spawner -->
 
   <sprite id="242" name="Donut Ledge" noyoshi="True" notes="A cliff-walking donut-style platform that will fall if a player stands on it for too long." files="lift_rakka_ashiba.arc">
@@ -3128,9 +3128,9 @@
     <dualbox nybble="5.4" title1="Create Left Boundary" title2="Create Right Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
     <checkbox nybble="9.4" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
     <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
-    <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
-    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
+    <value nybble="10" title="Unknown Value 10" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <value nybble="12" title="Unknown Value 12" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite> <!-- #248: Horizontal Scroll Limiter - Top -->
 
   <sprite id="249" name="Horizontal Scroll Limiter - Bottom" notes="The same Values ​​are listed as the Vertical Scroll Limiter (162, 163, 164, 165). This sprite allows you to limit how far the camera will scroll horizontally by creating an imaginary horizontal border between a matching pair of Scroll Limiters. This can be used to create a deeper kill zone, hide secret areas, or otherwise restrict the camera in certain sections of a level.">
@@ -3141,9 +3141,9 @@
     <dualbox nybble="5.4" title1="Create Left Boundary" title2="Create Right Boundary" comment="This determines which camera boundary will be restricted by this Limit pair."/>
     <checkbox nybble="9.4" title="Permeable Scroll Limit" comment="I know what purpose this has but this description sounds excessive and confusing. I need it boiled down!" comment2="With this option, two new specific 'areas' are specified, above and below the scroll limit ('default area' and 'secret area'). Both areas touch the scroll border from the outside. If the bottom of a player's collision box leaves the original (default) area, the screen will quickly 'jump' to this new (secret) area. The shifting is independent of the height of the screen limit. The screen will be pushed up/down as far as needed, until the bottom of the screen is a certain number of blocks above/below the end of the original screen limit. || The required number of blocks between the bottom of the source region and the bottom of the screen is by default 5 (shifting upward) and 8 (for a downward shift). You can alter these values under 'Zone Settings' (Upper/Lower Bounds). || Shifting from the default area to the secret area above/below the scroll limit can be tweaked by changing values for 'Upper Bounds'. The opposite is true for 'Lower Bounds' (shifting from default area to the secret area below. The increase/decrease of the scrollable area reduces/enlarges the necessary distance to the same extent that is needed to pull off the shifting. |||| If Mario goes back to the default area, the screen will quickly follow and it will be locked to the default area as usual (unless Mario goes above/below the scroll limit once again to reach the secret area)... |||| This option can be used to set up secret zones that can only be seen if Mario reaches a specific position. This technique was used in many older Mario games, e.g. Super Mario Land 3: Wario Land. So if you are located below the screen, nothing happens. Only when jumping over the area, the screen scrolls up so you can hide secret paths there as you like. Similarly, one can also hide secret paths under the screen."/>
     <value nybble="11" title="Scroll Limit Shifting in Restricted Direction" comment="I don't know what practical purpose this has?" comment2="Determines how far the screen can scroll above/below the scroll limit (in blocks). Somewhat flawed if used together with 'Permeable Scroll Limit'. The position where the scrolling will begin does not differ from a scroll limit with shifting of 0. So it looks as if the screen is scrolling faster with increasing values ​​when Mario approaches it. Even higher values are canceled entirely and have no effect because the scrolling is no longer necessary when the end of the screen is too far above or below the end of the original screen border. Nevertheless, the screen jumps to the end of the scroll border when entering the default area again. Only if the bottom of the screen is too far beyond the original area (or vice versa), then the screen is already at the end of the scroll border, and no shifting of the screen is needed."/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
-    <value nybble="10" title="Unknown Value 10" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
-    <value nybble="12" title="Unknown Value 12" advanced="True" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advancedcomment="Used in retail 02-01 A1, 05-24 A1, 06-02 A4. May be Multiplayer related?"/>
+    <value nybble="10" title="Unknown Value 10" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
+    <value nybble="12" title="Unknown Value 12" advancedcomment="From ASM: An independent effect differing from [Permeable Scroll Limit]. Details have not been researched."/>
   </sprite> <!-- #249: Horizontal Scroll Limiter - Bottom -->
 
   <sprite id="250" name="Incomplete Sprite - KAWANAGARE" nolayer="True" notes="Does nothing.">
@@ -3269,8 +3269,8 @@
       <entry value="2">Down</entry>
       <entry value="3">Right</entry>
     </list>
-    <checkbox nybble="10.4" title="Rotation Controlled (Buggy)" comment="When enabled, the door will only function when paired with a Rotation ID." advanced="True" advancedcomment="'Function' is perhaps misleading. There are only a few ways you can successfully utilize a Rotation Controller door. For starters, you can only enter the door while it is almost fully upright. There is also a peculiarity with how the Entrance is placed. The most reliable way to use a Rotation Controlled Door is to place it with an already activated Spinning controller that returns to its original position when deactivated."/>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
+    <checkbox nybble="10.4" title="Rotation Controlled (Buggy)" comment="When enabled, the door will only function when paired with a Rotation ID." advancedcomment="'Function' is perhaps misleading. There are only a few ways you can successfully utilize a Rotation Controller door. For starters, you can only enter the door while it is almost fully upright. There is also a peculiarity with how the Entrance is placed. The most reliable way to use a Rotation Controlled Door is to place it with an already activated Spinning controller that returns to its original position when deactivated."/>
+    <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #259: D-Pad Door -->
 
   <sprite id="260" name="Movement Controller - Two Way Line" notes="This controller will create synchronized movement between matched sprites and cause them to move in two-way line back and forth. A delay can be specified on each end of this movement.">
@@ -3451,7 +3451,7 @@
     <dualbox nybble="9.3-9.4" title1="Moves Right" title2="Moves Left" comment="This determines which direction the raft will move in when it is actively moving." comment2="Values 2 and 3 both make the raft stationary. It's possible these may have served another purpose during development (such as alternate movement speeds)."/>
     <checkbox nybble="10.4" title="Starts Moving on Touch" comment="When enabled, the raft will start moving when any player touches it. Otherwise, it will begin moving when loaded."/>
     <value nybble="11" start="1" title="Maximum Passengers" comment="This determines the number of enemies and other non-player sprites needed to cause the raft to stop moving. A value of 5 is recommended, as this does change the colors or sounds of the counter."/>
-    <value nybble="12" title="Unused Value 12" advanced="True" comment="This value is not used by the game in any way. Nintendo sets this as 12 in retail 05-04 A1."/>
+    <value nybble="12" title="Unused Value 12" comment="This value is not used by the game in any way. Nintendo sets this as 12 in retail 05-04 A1."/>
   </sprite> <!-- #275: 5-Enemy-Max Raft -->
 
   <sprite id="276" name="Ghost House Door" noyoshi="True" notes="A Ghost House door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors." files="obj_door_obake.arc">
@@ -3462,8 +3462,8 @@
       <entry value="2">Down</entry>
       <entry value="3">Right</entry>
     </list>
-    <checkbox nybble="10.4" title="Rotation Controlled (Buggy)" comment="When enabled, the door will only function when paired with a Rotation ID." advanced="True" advancedcomment="'Function' is perhaps misleading. There are only a few ways you can successfully utilize a Rotation Controller door. For starters, you can only enter the door while it is almost fully upright. There is also a peculiarity with how the Entrance is placed. The most reliable way to use a Rotation Controlled Door is to place it with an already activated Spinning controller that returns to its original position when deactivated."/>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
+    <checkbox nybble="10.4" title="Rotation Controlled (Buggy)" comment="When enabled, the door will only function when paired with a Rotation ID." advancedcomment="'Function' is perhaps misleading. There are only a few ways you can successfully utilize a Rotation Controller door. For starters, you can only enter the door while it is almost fully upright. There is also a peculiarity with how the Entrance is placed. The most reliable way to use a Rotation Controlled Door is to place it with an already activated Spinning controller that returns to its original position when deactivated."/>
+    <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #276: Ghost House Door -->
 
   <sprite id="277" name="Tower Boss Door" noyoshi="True" notes="A large red door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors." files="obj_door_torideboss.arc">
@@ -3473,8 +3473,8 @@
       <entry value="2">Down</entry>
       <entry value="3">Right</entry>
     </list>
-    <checkbox nybble="10.4" title="Rotation Controlled (Buggy)" comment="When enabled, the door will only function when paired with a Rotation ID." advanced="True" advancedcomment="'Function' is perhaps misleading. There are only a few ways you can successfully utilize a Rotation Controller door. For starters, you can only enter the door while it is almost fully upright. There is also a peculiarity with how the Entrance is placed. The most reliable way to use a Rotation Controlled Door is to place it with an already activated Spinning controller that returns to its original position when deactivated."/>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
+    <checkbox nybble="10.4" title="Rotation Controlled (Buggy)" comment="When enabled, the door will only function when paired with a Rotation ID." advancedcomment="'Function' is perhaps misleading. There are only a few ways you can successfully utilize a Rotation Controller door. For starters, you can only enter the door while it is almost fully upright. There is also a peculiarity with how the Entrance is placed. The most reliable way to use a Rotation Controlled Door is to place it with an already activated Spinning controller that returns to its original position when deactivated."/>
+    <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #277: Tower Boss Door -->
 
   <sprite id="278" name="Castle Boss Door" noyoshi="True" notes="A large blue door that can have an Entrance placed on it." advancednotes="The door can also be paired with a Rotation Controller, but the results are moderately glitchy with many combinations not functioning and several restrictions on getting them to work as actual doors." files="obj_door_shiroboss.arc">
@@ -3484,8 +3484,8 @@
       <entry value="2">Down</entry>
       <entry value="3">Right</entry>
     </list>
-    <checkbox nybble="10.4" title="Rotation Controlled (Buggy)" comment="When enabled, the door will only function when paired with a Rotation ID." advanced="True" advancedcomment="'Function' is perhaps misleading. There are only a few ways you can successfully utilize a Rotation Controller door. For starters, you can only enter the door while it is almost fully upright. There is also a peculiarity with how the Entrance is placed. The most reliable way to use a Rotation Controlled Door is to place it with an already activated Spinning controller that returns to its original position when deactivated."/>
-    <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." advanced="True" idtype="Rotation"/>
+    <checkbox nybble="10.4" title="Rotation Controlled (Buggy)" comment="When enabled, the door will only function when paired with a Rotation ID." advancedcomment="'Function' is perhaps misleading. There are only a few ways you can successfully utilize a Rotation Controller door. For starters, you can only enter the door while it is almost fully upright. There is also a peculiarity with how the Entrance is placed. The most reliable way to use a Rotation Controlled Door is to place it with an already activated Spinning controller that returns to its original position when deactivated."/>
+    <value nybble="11-12" title="Rotation ID" comment="This pairs the Door to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #278: Castle Boss Door -->
 
   <sprite id="279" name="Incomplete Sprite - AC_LIFT_ICE_SPRING" nolayer="True" notes="Does nothing.">
@@ -3707,7 +3707,7 @@
     <dualbox nybble="12.4" title1="Faces Right" title2="Faces Left" comment="This determines which direction the cannon will face."/>
     <value nybble="10" start="2" title="Normal Cannon Length" comment="This determines how long the cannon is." requirednybble="11.4" requiredval="0"/>
     <value nybble="10" start="3" title="Giant Cannon Length" comment="This determines how long the cannon is. If the cannon is giant, the collision will always be value + 3 blocks long, but the visual will not." requirednybble="11.4" requiredval="1"/>
-    <checkbox nybble="12.3" title="Direction Override: Down, Causes Weird Bugs" advanced="True" advancedcomment="Only the front of the cannon will be changed, and when also set to face left, causes weird influence on the cannonball's trajectory. Highly suggested to not use this setting."/>
+    <checkbox nybble="12.3" title="Direction Override: Down, Causes Weird Bugs" advancedcomment="Only the front of the cannon will be changed, and when also set to face left, causes weird influence on the cannonball's trajectory. Highly suggested to not use this setting."/>
   </sprite> <!-- #298: Long Cannonball Cannons -->
 
   <sprite id="299" name="45° Cannon" notes="A cannon that will fire ammo in a 45° direction, and can fire either cannonballs or Bob-Ombs." files="houdai_slope.arc;houdai_ball.arc;bombhei.arc">
@@ -3751,7 +3751,7 @@
     <dualbox nybble="10.4" title1="Rotates Clockwise" title2="Rotates Counter-Clockwise" comment="This determines which direction the cannon and pipe will rotate."/>
     <value nybble="12.2-12.4" increment="45" title="Pipe Position at Load" comment="This determines the pipe's position when the cannon first loads on the screen."/>
     <value nybble="8-9" title="Entrance ID" comment="This determines the Entrance ID that the pipe will connect with." comment2="It does not have to be placed on the pipe. It can only be used as an exit." idtype="Entrance"/>
-    <checkbox nybble="11.4" title="Upside-Down" comment="When enabled, the cannon is upside-down and can be placed against the ceiling." advanced="True" advancedcomment="The pipe will load on the opposite side alongside a cannon, leaving a hole on one side. As such, this option should not be used."/>
+    <checkbox nybble="11.4" title="Upside-Down" comment="When enabled, the cannon is upside-down and can be placed against the ceiling." advancedcomment="The pipe will load on the opposite side alongside a cannon, leaving a hole on one side. As such, this option should not be used."/>
   </sprite> <!-- #301: 4-Way Large Cannon with Pipe -->
 
   <sprite id="302" name="Incomplete Sprite - EN_GAKE_NOKO" nolayer="True" notes="Does nothing." files="nokonokoB.arc">
@@ -4405,7 +4405,7 @@
     <dualbox nybble="12.4" title1="Rotates Counter-Clockwise" title2="Rotates Clockwise" comment="This determines which direction the Rolling Hill rolls."/>
     <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Rolling Hill in relation to other Rolling Hills." comment2="If you have multiple Rolling Hills overlapping each other, you must use this setting to prevent graphical glitches. Rolling Hills with a higher Z-Order number will show behind those with a lower number."/>
     <value nybble="10" title="Entrance ID" comment="This determines the Entrance ID that the pipe will connect with." comment2="It does not have to be placed on the pipe. It can only be used as an exit." idtype="Entrance"/>
-    <checkbox nybble="6.4" title="Invisible Pipes" advanced="True" advancedcomment="When enabled, the Pipes will be invisible, but still able to be entered. It was likely meant to be another texture, but was never actually added in. Do not use this setting."/>
+    <checkbox nybble="6.4" title="Invisible Pipes" advancedcomment="When enabled, the Pipes will be invisible, but still able to be entered. It was likely meant to be another texture, but was never actually added in. Do not use this setting."/>
   </sprite> <!-- #360: Rolling Hill - 8 Pipes -->
 
   <sprite id="361" name="Rotation Controlled Crystal Block" notes="A rotation controlled large purple crystal block." files="lift_zen_chika_pori.arc">
@@ -4421,7 +4421,7 @@
     </list>
     <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Crystal Block in relation to other Crystal Blocks." comment2="If you have multiple Crystal Blocks overlapping each other, you can use this setting to avoid some types of graphical glitches. Crystal Blocks with a higher Z-Order number will show behind those with a lower number. Unlike with Rolling Hills, it is not necessary to do this. Placing blocks with the correct distance apart can allow them to seamlessly coexist."/>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Nintendo uses this value, but no effect was observed. Likely a removed setting."/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advancedcomment="Nintendo uses this value, but no effect was observed. Likely a removed setting."/>
   </sprite> <!-- #361: Rotation Controlled Crystal Block -->
 
   <sprite id="362" name="Rotation Controlled Colored Box" notes="A rotation controlled large resizable block with the appearance of a patterned box." files="lift_zen_color_pori.arc">
@@ -4439,7 +4439,7 @@
     </list>
     <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Colored Box in relation to other Colored Boxes." comment2="If you have multiple Colored Boxes overlapping each other, you must use this setting to prevent graphical glitches. Colored Boxes with a higher Z-Order number will show behind those with a lower number."/>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advanced="True" advancedcomment="Nintendo uses this value, but no effect was observed. Likely a removed setting."/>
+    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advancedcomment="Nintendo uses this value, but no effect was observed. Likely a removed setting."/>
   </sprite> <!-- #362: Rotation Controlled Colored Box -->
 
   <sprite id="363" name="Boss Controller - Tower Boss" yoshinotes="Yoshi plays an unused animation when he enters the area from a Boss Entrance. However, he lacks proper compatibility with the bosses themselves." notes="This controls the level completion for the World 1-7 Tower battles, as well as the listed Koopaling's initial movements. Koopalings function without this controller, but they won't move until hit, and the level won't end when they are defeated.">
@@ -5317,7 +5317,7 @@
 
   <sprite id="435" name="Effect - Ghost Fog" notes="This adds a thin wispy fog effect to the level that can be used with or without a Location ID.&lt;br&gt;The fog will make non-location Lava/Poisoned Water function just like Water if it is added into the level after the liquids. You can avoid this by adding the fog and then re-adding the Lava/Poisoned Water, or by placing the liquids in their own separate locations." files="obj_envfog.arc">
     <value nybble="11.2-12.4" title="Location ID" comment="This determines the location in which the Ghost Fog will spawn." idtype="Location"/>
-    <checkbox nybble="10.2" title="Unknown Flag 10 (4)" advanced="True" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function."/>
+    <checkbox nybble="10.2" title="Unknown Flag 10 (4)" advancedcomment="This sprite may support the Water property of being able to be placed behind the main layer by enabling this. It is not tested, however, and may not function."/>
   </sprite> <!-- #435: Effect - Ghost Fog -->
 
   <sprite id="436" name="Background Parallax Center Point" notes="This will center the scrolling of the Zone's backgrounds at the placement of the sprite.">
@@ -5548,7 +5548,7 @@
 
   <sprite id="464" name="Climbable Swinging Vine/Chain" noyoshi="True" notes="A swinging vine or chain that can be grabbed onto by the player and made to swing left and right. This does not count as a climbing animation for the IF Event Controller. It counts as being in the air." files="tarzantsuta.arc">
     <dualbox nybble="12.4" title1="Vine" title2="Chain" comment="This determines which type of visuals are used for the swinging object."/>
-    <value nybble="6" title="Unknown Value 6" advanced="True" advancedcomment="Nintendo uses value 1 in 5-01 A1. No visible effect."/>
+    <value nybble="6" title="Unknown Value 6" advancedcomment="Nintendo uses value 1 in 5-01 A1. No visible effect."/>
   </sprite> <!-- #464: Climbable Swinging Vine/Chain -->
 
   <sprite id="465" name="Effect - Ambiance Sound Effects" notes="This generates various ambiance effects for the Zone, such as birds and thunder.">
@@ -5712,7 +5712,7 @@
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox nybble="5.2" title="Spawns After Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #478: Bowser Switch (Small) -->
 
   <sprite id="479" name="Bowser Switch (Large)" noyoshi="True" notes="A much larger, fancier switch that was originally used for the final Bowser Boss fight. It always flashes red. Hitting the switch will award the player 8000 points." files="switch.arc;switch_koopa.arc">

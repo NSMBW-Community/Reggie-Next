@@ -103,7 +103,7 @@
   </sprite> <!-- #12: Toad House Minigame - Silver Star -->
 
   <sprite id="13" name="Rideable Clowncar with Cannon" noyoshi="True" notes="Used in the NewerSMBW Final Boss Fight. The player can fly around freely and shoot a cannon at a fixed angle. &lt;br&gt; &lt;br&gt;&lt;font color=&quot;red&quot;&gt;Not recommended for use outside of the Final Boss Fight.&lt;/font&gt;" advancedcomment="If you do choose to use this vehicle outside of the boss fight, please keep in mind there is no documentation for what issues you might encounter. Be sure to test your level for crashes and glitches. Cannon shots behave similarly but not identically to Bob-omb explosions. Water causes it to react similarly to Yoshi, with the player jumping off and the Clowncar sinking." files="koopaJr_clown_ply.arc">
-    <value nybble="12" title="Minimum Number of Players" comment="This determines the number of players required for the Clowncar to load. A value of 4 will only load if there are 4 players." advanced="True"/>
+    <value nybble="12" title="Minimum Number of Players" comment="This determines the number of players required for the Clowncar to load. A value of 4 will only load if there are 4 players."/>
   </sprite> <!-- #13: Rideable Clowncar with Cannon -->
 
   <sprite id="14" name="(Unused) Captain Bowser Flame Breath" notes="Captain Bowser uses this in the NewerSMBW Final Boss Fight. The game will crash if this is placed as an individual sprite.">
@@ -368,8 +368,8 @@
       <entry value="6">Black</entry>
       <entry value="7">Sidestepper</entry>
     </spritetex>
-    <checkbox nybble="8.4" title="Unknown Flag 8" advanced="True" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
-    <checkbox nybble="12.4" title="Unknown Flag 12" advanced="True" advancedcomment="Used in retail 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
+    <checkbox nybble="8.4" title="Unknown Flag 8" advancedcomment="Used in retail Ambush Stages. Causes a bugged attribute if the Spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
+    <checkbox nybble="12.4" title="Unknown Flag 12" advancedcomment="Used in retail 06-02. May relate to how the Spiny interacts with slanted terrain, blocks, POW effects, or causes the Spiny to load from much further away."/>
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 
@@ -402,7 +402,7 @@
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #40: ?-Switch -->
 
   <sprite id="41" name="P-Switch" sizehacks="True" notes="This switch is similar to the ? Switch, but it has the additional effect of causing all Blue Coins (tileset-based and sprite-based) to appear, turning empty Brick Blocks into Coins, and turning Coins into empty Brick Blocks. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality.&lt;br&gt;&lt;br&gt;Do not use this switch around Dancing Controlled Brick Blocks, as the collision data for the transformed coins remains as if it were a block." files="switch.arc">
@@ -421,7 +421,7 @@
     <dualbox nybble="10" fullnybble="True" title1="Single Use" title2="Multi-Use" comment="Single Use: The switch will vanish entirely after pressed.&lt;br&gt;&lt;br&gt;Multi-Use: The switch will enter a flat state. When the Timed effect expires, the switch will pop back up following the Delay setting." comment2="If the Target Event is deactivated/activated by another method, Multi-Use switches will flatten or pop-up on their own. The pop up effect can be used to launch the player much higher than they could normally jump." requirednybble="7" requiredval="0"/>
     <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #41: P-Switch -->
 
   <sprite id="42" name="!-Switch" sizehacks="True" notes="This switch is similar to the ? Switch, but it has the additional effect of changing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." files="switch.arc">
@@ -445,7 +445,7 @@
     <checkbox nybble="6.2-6.4" fullnybble="True" title="Unknown Value 6" advancedcomment="Changes how the switch activates, but the exact details are unknown."/>
     <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #42: !-Switch -->
 
   <sprite id="43" name="Brick Block ?-Switch" sizehacks="True" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
@@ -474,7 +474,7 @@
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #43: Brick Block ?-Switch -->
 
   <sprite id="45" name="Brick Block !-Switch" sizehacks="True" notes="This switch, stored inside a Brick Block, is similar to the ? Switch, but it has the additional effect of causing all outlined Red Blocks (Pa0 Object 57) into solid Red Blocks. This also applies to any outlined Red Blocks spawned by a Tile God. This additional functionality only occurs when using the Timed Event mode, but a Target Event is not required to make use of this functionality." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
@@ -495,7 +495,7 @@
     <checkbox nybble="6.2-6.4" fullnybble="True" title="Unknown Value 6" advancedcomment="Changes how the switch activates, but the exact details are unknown."/>
     <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="If a Triggering Event is defined, hitting the block will produce nothing, and the switch will not appear until that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #45: Brick Block !-Switch -->
 
   <sprite id="46" name="Lava Bubble (Podoboo)" sizehacks="True" notes="The Lava Bubble (Podoboo) is a firey enemy that will jump up from the lava to the height it is placed at. It can only jump a maximum of 15 blocks above the lava." files="bubble.arc">
@@ -613,8 +613,8 @@
       <entry value="4">Red w/Blue Coat (No Wings)</entry>
     </spritetex>
     <checkbox nybble="8.4" title="Place Behind Chainlink Fence" comment="When enabled, the Koopa Paratroopa will be able to move behind Chainlink Fences." advancedcomment="Exact values are 1500.0 unchecked, -2500.0 checked."/>
-    <value nybble="5" title="Unknown Value 5" advanced="True" advancedcomment="Used in retail 06-01 A1 as 12"/>
-    <value nybble="6.1" title="Unknown Flag 6 (8)" advanced="True" advancedcomment="Used in retail 06-01 A1"/>
+    <value nybble="5" title="Unknown Value 5" advancedcomment="Used in retail 06-01 A1 as 12"/>
+    <value nybble="6.1" title="Unknown Flag 6 (8)" advancedcomment="Used in retail 06-01 A1"/>
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #58: Koopa Paratroopa -->
 
@@ -922,7 +922,7 @@
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #153: (Unused) ?-Switch -->
 
   <sprite id="157" name="Big Pumpkin" notes="No matter what is inside, this pumpkin always breaks open. It can even be broken by small Mario." files="big_renga_block.arc;I_ship_key.arc">
@@ -1144,7 +1144,7 @@
       <entry value="0">Normal</entry>
       <entry value="9">Fast</entry>
     </list>
-    <list nybble="12" title="Advanced / Glitchy Shooting Options" comment="A full list of the Shooting Speed options including duplicates and those not suggested for use." advanced="True" advancedcomment="Many values will cause the Huckit Crab to toss his projectile behind him. One option will also cause him to face the wrong direction, as well.">
+    <list nybble="12" title="Advanced / Glitchy Shooting Options" comment="A full list of the Shooting Speed options including duplicates and those not suggested for use." advancedcomment="Many values will cause the Huckit Crab to toss his projectile behind him. One option will also cause him to face the wrong direction, as well.">
       <entry value="2">Nothing (Stationary Projectile)</entry>
       <entry value="3">Nothing (Stationary Projectile)</entry>
       <entry value="8">Nothing (Stationary Projectile)</entry>
@@ -1365,7 +1365,7 @@
       <entry value="12">Vine</entry>
       <entry value="13">Spring</entry>
     </list>
-    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the ?-Block placing it further behind other sprites." comment2="This will place the ?-Block behind even Chainlink Fence and Layer 1 terrain." advanced="True" advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
+    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the ?-Block placing it further behind other sprites." comment2="This will place the ?-Block behind even Chainlink Fence and Layer 1 terrain." advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
   </sprite> <!-- #208: (Unused) ? Block -->
 
   <sprite id="209" name="Brick Block" sizehacks="True" notes="Your most basic, most flexible, standard brown Brick Block. When spawning power-ups, it will spawn only one, no matter how many players! Such a stingy block~" files="I_ship_key.arc">
@@ -1408,7 +1408,7 @@
       <entry value="12">Vine</entry>
       <entry value="13">Spring</entry>
     </list>
-    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Brick Block placing it further behind other sprites." comment2="This will place the Brick Block behind even Chainlink Fence and Layer 1 terrain." advanced="True" advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
+    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Brick Block placing it further behind other sprites." comment2="This will place the Brick Block behind even Chainlink Fence and Layer 1 terrain." advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
     <checkbox nybble="10.4" title="Follows Lines" comment="It is recommended to use [403] Line Controlled Brick Block instead."/>
     <dualbox nybble="9.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Brick Block will move based on the Line that it is connected to."/>
   </sprite> <!-- #209: Brick Block -->
@@ -2556,7 +2556,7 @@
     </list> <!-- Appears only if Timed Event AND Multi-Use are set -->
     <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." requirednybble="10" requiredval="0" idtype="Triggering Event"/> <!-- Disappears if Multi-Use is set -->
-    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advanced="True" advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
+    <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #478: Bowser Switch (Small) -->
 
   <sprite id="479" name="Bowser Switch (Large)" sizehacks="True" noyoshi="True" notes="A much larger, fancier switch that was originally used for the final Bowser Boss fight, and Switch Palaces. It always flashes red. Hitting the switch will award the player 8000 points." files="switch.arc;switch_koopa.arc">
