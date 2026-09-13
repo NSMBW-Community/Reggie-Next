@@ -5656,7 +5656,8 @@
 
   <sprite id="475" name="Path Controlled Ice Floe" noyoshi="True" notes="A stand-alone Ice Floe that can travel along an assigned Path." files="lift_ice_ashiba.arc">
     <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the Ice Floe will be linked to, although the sprite works fine without one. Additionally, the Ice Floe will move at the speed of the Path it's linked to." idtype="Path"/>
-    <value nybble="6" title="Starting Node" comment="This determines the Node of the Path that the Ice Floe will appear at and start moving from."/>
+    <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the Ice Floe will appear at and start moving from."/>
+    <checkbox nybble="8.4" title="Reverse Direction" comment="When enabled, the Ice Floe will follow the path in reverse." requirednybble="7"/>
     <list nybble="12" title="Size" comment="This determines the size of the Ice Floe.">
       <entry value="8">2x4</entry>
       <entry value="11">2x5</entry>
