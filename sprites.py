@@ -4389,26 +4389,23 @@ class SpriteImage_HuckitCrab(SLib.SpriteImage_StaticMultiple):  # 195
     def loadImages():
         if 'HuckitCrabR' in ImageCache:
             return
-        Huckitcrab = SLib.GetImage('huckit_crab.png')
-        if Huckitcrab is None:
+
+        huckit_crab = SLib.GetImage('huckit_crab.png')
+        if huckit_crab is None:
             return
 
-        ImageCache['HuckitCrabL'] = QtGui.QPixmap.fromImage(Huckitcrab)
-        ImageCache['HuckitCrabR'] = QtGui.QPixmap.fromImage(Huckitcrab.mirrored(True, False))
+        ImageCache['HuckitCrabL'] = QtGui.QPixmap.fromImage(huckit_crab)
+        ImageCache['HuckitCrabR'] = QtGui.QPixmap.fromImage(huckit_crab.mirrored(True, False))
 
     def dataChanged(self):
-        info = self.parent.spritedata[5]
+        direction = self.parent.spritedata[5]
 
-        if info == 1:
+        if direction == 1: # Right
             self.image = ImageCache['HuckitCrabR']
             self.xOffset = 0
-        else:
-            if info == 13:
-                self.image = ImageCache['HuckitCrabR']
-                self.xOffset = 0
-            else:
-                self.image = ImageCache['HuckitCrabL']
-                self.xOffset = -16
+        else: # Left
+            self.image = ImageCache['HuckitCrabL']
+            self.xOffset = -16
 
         super().dataChanged()
 

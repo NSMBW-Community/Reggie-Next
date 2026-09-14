@@ -2428,29 +2428,25 @@
     <dualbox nybble="10.4" title1="Moves Left First" title2="Moves Right First" comment="This determines which direction the Urchin will move first." requirednybble="11,12.4" requiredval="1-15, 1"/> <!-- Appears only if Movement Distance is set, and movement is Horizontal -->
   </sprite> <!-- #194: Mega Urchin -->
 
-  <sprite id="195" name="Huckit Crab" notes="A crab enemy that will throw projectiles at the player while occasionally jumping in the air." files="kanibo.arc">
-    <list nybble="12" title="Shooting Speed" comment="This determines the speed of the projectile that the Huckit Crab will huck." comment2="Many values are excluded due to abnormal or glitchy behavior.">
-      <entry value="6">Very Very Slow</entry>
-      <entry value="0">Normal</entry>
-      <entry value="9">Fast</entry>
-    </list>
-    <list nybble="12" title="Advanced / Glitchy Shooting Options" comment="A full list of the Shooting Speed options including duplicates and those not suggested for use." advancedcomment="Many values will cause the Huckit Crab to toss his projectile behind him. One option will also cause him to face the wrong direction, as well.">
-      <entry value="2">Nothing (Stationary Projectile)</entry>
-      <entry value="3">Nothing (Stationary Projectile)</entry>
-      <entry value="8">Nothing (Stationary Projectile)</entry>
-      <entry value="10">Nothing (Stationary Projectile)</entry>
-      <entry value="14">Nothing (Stationary Projectile)</entry>
-      <entry value="6">Very Very Slow</entry>
-      <entry value="11">Very Slow (Shoots Backward)</entry>
-      <entry value="7">Slow* (Shoots Backward)</entry>
-      <entry value="0">Normal</entry>
-      <entry value="1">Normal (Shoots + Faces Backward)</entry>
-      <entry value="12">Fast</entry>
-      <entry value="9">Fast</entry>
-      <entry value="13">Fast (Shoots Backward)</entry>
-      <entry value="15">Very Fast (Shoots Backward)</entry>
-      <entry value="4">Very Very Fast (Shoots Backward)</entry>
-      <entry value="5">Very Very Fast (Shoots Backward)</entry>
+  <sprite id="195" name="Huckit Crab" notes="A crab enemy that will hop in the air and throw a rock at any player within a ~13.5 tile range on either side." files="kanibo.arc">
+    <dualbox nybble="12" title1="Faces Left" title2="Faces Right" comment="This determines what direction the Huckit Crab will face." comment2="These are the only 'valid' values, setting nybble 12 to a higher value will cause undefined, buggy behavior due to out-of-bounds data being read."/>
+    <list nybble="12" title="All Options" comment="A full list of the nybble 12 values, values 2 and above are undefined behavior, and result from data being read out of bounds." comment2="Positive values go to the right, negative values go to the left.">
+      <entry value="0">Jumps -16 units, Rock speed -1.5</entry>
+      <entry value="1">Jumps 16 units, Rock speed 1.5</entry>
+      <entry value="2">Jumps 3.2815 units, Rock speed 0.0</entry>
+      <entry value="3">Jumps 24 units, Rock speed 0.0</entry>
+      <entry value="4">Jumps 0 units, Rock speed 32.0</entry>
+      <entry value="5">Jumps 0 units, Rock speed 32.0</entry>
+      <entry value="6">Jumps 0 units, Rock speed -0.1875</entry>
+      <entry value="7">Jumps 24 units, Rock speed 1.0</entry>
+      <entry value="8">Jumps 6 units, Rock speed 0.0</entry>
+      <entry value="9">Jumps 0 units, Rock speed -4.0</entry>
+      <entry value="10">Jumps 0 units, Rock speed 0.0</entry>
+      <entry value="11">Jumps 6 units, Rock speed 0.3</entry>
+      <entry value="12">Jumps 0 units, Rock speed -3.0</entry>
+      <entry value="13">Jumps 0 units, Rock speed 3.0</entry>
+      <entry value="14">Jumps 0 units, Rock speed 0.0</entry>
+      <entry value="15">Jumps 0 units, Rock speed 8.0</entry>
     </list>
   </sprite> <!-- #195: Huckit Crab -->
 
