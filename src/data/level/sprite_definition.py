@@ -154,7 +154,10 @@ class SpriteDefinition:
                     if entry.attrib['sprite'] == "":
                         continue
 
-                    self.dependencies.append((int(entry.attrib['sprite']), type_dict[entry.tag]))
+                    sprite_ids = str(entry.attrib['sprite']).split(',')
+
+                    for id in sprite_ids:
+                        self.dependencies.append((int(id), type_dict[entry.tag]))
 
                 self.dependencynotes = attribs.get('notes')
 
