@@ -1848,7 +1848,8 @@
       <entry value="2">Yellow Blocks</entry>
       <entry value="3">Blue Blocks</entry>
     </list>
-    <value nybble="7-12" title="Message ID" comment="Messages defined in Messages.bin" idtype="Message"/>
+    <checkbox nybble="10.4" title="Apply Message ID Offset" comment2="This is a workaround to the Messages.bin file arbitrarily adding 256 to each message ID. It must be enabled for any messages to appear in-game."/>
+    <value nybble="11-12" title="Message ID" comment="Messages defined in Messages.bin" requirednybble="10" requiredval="1" idtype="Message"/>
   </sprite> <!-- #273: Level Exit Controller -->
 
   <sprite id="279" name="World 3 Boss: Balboa Wrench" noyoshi="True" notes="The giant Rocky Wrench boss used by NewerSMBW. He must be Ground-Pounded 3 times to be defeated. ">
