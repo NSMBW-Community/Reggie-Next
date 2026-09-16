@@ -985,7 +985,6 @@
     <dualbox nybble="7.4" title1="Blows Right" title2="Blows Left" comment="This determines which direction the wind will blow."/>
     <value nybble="5" title="Time Active" comment="This sets the amount of time that the wind is on."/>
     <value nybble="6" title="Time Inactive" comment="This sets the amount of time that the wind is off. Setting this to 0 will enable the wind indefinitely."/>
-    <value nybble="11" title="Physics ID" comment="This will pair the Wind Physics with Physics Coin Controller." idtype="Physics"/>
   </sprite> <!-- #90: Effect - Wind Physics and Sound -->
 
   <!-- Research Loop Last 2 Nodes and its accompanying Screen Shake option, as well as the rest of the End Behaviors to confirm their descriptions. With and without 'Loops' -->

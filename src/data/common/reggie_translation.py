@@ -856,7 +856,6 @@ class ReggieTranslation:
                     'Triggering Event ID',
                     'Collection ID',
                     'Location ID',
-                    'Physics ID',
                     'Message ID',
                     'Path ID',
                     'Path Movement ID',

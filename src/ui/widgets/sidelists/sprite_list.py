@@ -23,7 +23,7 @@ class SpriteList(QtWidgets.QWidget):
     idtypes = (
         "Star Set", "Rotation", "Two Way Line", "Water Ball", "Mushroom",
         "Group", "Bolt", "Target Event", "Triggering Event", "Collection",
-        "Location", "Physics", "Message", "Path", "Path Movement", "Red Coin",
+        "Location", "Message", "Path", "Path Movement", "Red Coin",
         "Hill", "Stretch", "Ray", "Coaster", "Bubble Cannon", "Burner",
         "Wiggling", "Panel", "Colony", "Entrance", "Path Node"
     )
