@@ -118,7 +118,7 @@ class ExternalSpriteOptionDialog(QtWidgets.QDialog):
 
         primary += [None if x.strip().lower() == "[id]" else x.strip() for x in root.attrib['primary'].split(',')]
 
-        secondary += [x.strip() for x in root.attrib['secondary'].split(',')]
+        secondary += [x.strip() for x in root.attrib.get('secondary', '').split(',')]
 
         for option in root:
             # skip if this is not an <option>
