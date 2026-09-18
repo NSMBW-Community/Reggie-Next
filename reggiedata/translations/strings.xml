@@ -444,11 +444,11 @@
         <string id="45">Make locations non-selectable</string>
         <string id="46">Freeze Paths</string>
         <string id="47">Make paths non-selectable</string>
-        <string id="48">Layer 0</string>
+        <string id="48">Show Layer 0</string>
         <string id="49">Toggle viewing of object layer 0</string>
-        <string id="50">Layer 1</string>
+        <string id="50">Show Layer 1</string>
         <string id="51">Toggle viewing of object layer 1</string>
-        <string id="52">Layer 2</string>
+        <string id="52">Show Layer 2</string>
         <string id="53">Toggle viewing of object layer 2</string>
         <string id="54">Show Sprites</string>
         <string id="55">Toggle viewing of sprites</string>
@@ -812,7 +812,6 @@
         <string id="22">Name</string>
         <stringlist id="23">
             <entry>Any</entry>
-            <entry>Star Set ID</entry>
             <entry>Rotation ID</entry>
             <entry>Two Way Line ID</entry>
             <entry>Water Ball ID</entry>
@@ -823,7 +822,6 @@
             <entry>Triggering Event ID</entry>
             <entry>Collection ID</entry>
             <entry>Location ID</entry>
-            <entry>Physics ID</entry>
             <entry>Message ID</entry>
             <entry>Path ID</entry>
             <entry>Path Movement ID</entry>
