@@ -943,6 +943,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
                           globals_.trans.string('MenuItems', 89), GetKeybind('helpbox'))
         self.CreateAction('tipbox', self.TipBox, GetIcon('tips'), globals_.trans.stringOneLine('MenuItems', 90),
                           globals_.trans.string('MenuItems', 91), GetKeybind('tipbox'))
+        self.CreateAction('genstrxml', lambda: globals_.trans.generateXML(), GetIcon('note'), globals_.trans.stringOneLine('MenuItems', 146),
+                                  globals_.trans.string('MenuItems', 147), GetKeybind('genstrxml'))
         self.CreateAction('aboutqt', self.AboutQt, GetIcon('qt'), globals_.trans.stringOneLine('MenuItems', 92),
                           globals_.trans.string('MenuItems', 93), GetKeybind('aboutqt'))
 
@@ -952,6 +954,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         menu.addAction(self.action_list['infobox'])
         menu.addAction(self.action_list['helpbox'])
         menu.addAction(self.action_list['tipbox'])
+        menu.addSeparator()
+        menu.addAction(self.action_list['genstrxml'])
         menu.addSeparator()
         menu.addAction(self.action_list['aboutqt'])
         menu.addSeparator()

@@ -86,7 +86,7 @@ class GeneralTab(PreferenceTabWidget):
         main_layout = QtWidgets.QFormLayout()
         main_layout.addRow(globals_.trans.string('PrefsDlg', 14), self.trans_combo)
         main_layout.addWidget(trans_info_box)
-        main_layout.addRow(globals_.trans.string('PrefsDlg', 15), clear_recent_button)
+        main_layout.addWidget(clear_recent_button)
         main_layout.addWidget(self.enable_padding)
         main_layout.addRow(globals_.trans.string('PrefsDlg', 36), self.padding_value)
         main_layout.addWidget(self.zone_entrance_line)
@@ -141,7 +141,7 @@ class GeneralTab(PreferenceTabWidget):
         """
         Handle the Clear Recent Files button being clicked
         """
-        ans = QtWidgets.QMessageBox.question(None, globals_.trans.string('PrefsDlg', 17), globals_.trans.string('PrefsDlg', 18),
+        ans = QtWidgets.QMessageBox.question(None, globals_.trans.string('PrefsDlg', 16), globals_.trans.string('PrefsDlg', 18),
                                                 QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
         if ans != QtWidgets.QMessageBox.StandardButton.Yes:
             return

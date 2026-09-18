@@ -591,6 +591,8 @@ class ReggieTranslation:
                 143: 'Switches all sprites of one ID to another',
                 144: 'Show Entrances',
                 145: 'Toggle viewing of entrances',
+                146: 'Generate Strings XML',
+                147: 'Generates a new strings.xml and saves it to /reggiedata/translations'
             },
             'Objects': {
                 0: '[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]',
@@ -680,8 +682,8 @@ class ReggieTranslation:
                 13: 'Use the menubar',
                 14: 'Language:',
                 15: 'Recent Files data:',
-                16: 'Clear All',
-                17: 'Clear All Recent Files Data',
+                16: 'Clear Recent Files',
+                17: None, # REMOVED: 'Clear All Recent Files Data'
                 18: 'Are you sure you want to delete all recent files data? This [b]cannot[/b] be undone!',
                 19: 'Current Area',
                 20: 'Reset',

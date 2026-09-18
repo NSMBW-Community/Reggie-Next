@@ -550,6 +550,8 @@
         <string id="143">Switches all sprites of one ID to another</string>
         <string id="144">Show Entrances</string>
         <string id="145">Toggle viewing of entrances</string>
+        <string id="146">Generate Strings XML</string>
+        <string id="147">Generates a new strings.xml and saves it to /reggiedata/translations</string>
     </section>
     <section id="Menubar">
         <string id="0">&amp;File</string>
@@ -647,8 +649,8 @@
         <string id="13">Use the menubar</string>
         <string id="14">Language:</string>
         <string id="15">Recent Files data:</string>
-        <string id="16">Clear All</string>
-        <string id="17">Clear All Recent Files Data</string>
+        <string id="16">Clear Recent Files</string>
+        <string id="17" />
         <string id="18">Are you sure you want to delete all recent files data? This [b]cannot[/b] be undone!</string>
         <string id="19">Current Area</string>
         <string id="20">Reset</string>

@@ -938,6 +938,7 @@ def LoadDefaultKeybinds():
         Keybind("helpbox", globals_.trans.string("MenuItems", 88), "Ctrl+Shift+H"),
         Keybind("tipbox", globals_.trans.string("MenuItems", 90), "Ctrl+Shift+T"),
         Keybind("aboutqt", globals_.trans.string("MenuItems", 92), "Ctrl+Shift+Q"),
+        Keybind("genstrxml", globals_.trans.string("MenuItems", 146), None),
     ]
 
 
