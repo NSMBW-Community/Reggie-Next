@@ -845,7 +845,6 @@ class ReggieTranslation:
                 22: 'Name',
                 23: (
                     'Any',
-                    'Star Set ID',
                     'Rotation ID',
                     'Two Way Line ID',
                     'Water Ball ID',

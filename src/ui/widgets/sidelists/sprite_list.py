@@ -21,7 +21,7 @@ class SpriteList(QtWidgets.QWidget):
     # These are straight from the spritedata xml
     # Don't translate these
     idtypes = (
-        "Star Set", "Rotation", "Two Way Line", "Water Ball", "Mushroom",
+        "Rotation", "Two Way Line", "Water Ball", "Mushroom",
         "Group", "Bolt", "Target Event", "Triggering Event", "Collection",
         "Location", "Message", "Path", "Path Movement", "Red Coin",
         "Hill", "Stretch", "Ray", "Coaster", "Bubble Cannon", "Burner",
