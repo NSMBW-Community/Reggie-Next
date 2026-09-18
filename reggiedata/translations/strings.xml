@@ -20,13 +20,6 @@
     <section id="AreaCombobox">
         <string id="0">Area [num]</string>
     </section>
-    <section id="AreaImportDlg">
-        <string id="0">Import Area</string>
-        <string id="1">Area [num]</string>
-        <string id="2">You have reached the maximum amount of areas in this level.[br]Due to the game's limitations, Reggie Next only allows you to add up to 4 areas to a level.</string>
-        <string id="3">Choose an area to import from the selected level:</string>
-        <string id="4">It will be added to this level as Area [num].</string>
-    </section>
     <section id="AreaDlg">
         <string id="0">Area Options</string>
         <string id="1">Tilesets</string>
@@ -84,9 +77,16 @@
         <string id="48">Remove Selected Sprite</string>
         <string id="49">Present:</string>
         <string id="50">Custom:</string>
-        <string id="51">On the left is a list of sprites already present in the level (their resources will be loaded by default). On the right, you can add more sprites you'd like to load.</string>
+        <string id="51">On the left is a list of sprites already present in the level (their resources will be loaded by default). On the right, you can add more sprites you'd like to load the resources for.</string>
         <string id="52">Type a Sprite ID...</string>
         <string id="53">UNKNOWN</string>
+    </section>
+    <section id="AreaImportDlg">
+        <string id="0">Import Area</string>
+        <string id="1">Area [num]</string>
+        <string id="2">You have reached the maximum amount of areas in this level.[br]Due to the game's limitations, Reggie Next only allows you to add up to 4 areas to a level.</string>
+        <string id="3">Choose an area to import from the selected level:</string>
+        <string id="4">It will be added to this level as Area [num].</string>
     </section>
     <section id="AutoDiag">
         <string id="0">[num] error found.</string>
@@ -153,7 +153,7 @@
             <entry>Default</entry>
             <entry>Align to Screen, Multiple Backgrounds</entry>
         </stringlist>
-        <string id="22">Slot [i]</string>
+        <string id="22">Slot [i]:</string>
         <string id="23">This mode will not render any backgrounds.</string>
         <string id="24">This mode crashes the game, so consider changing your background configuation.</string>
     </section>
@@ -164,7 +164,7 @@
         <string id="3">Modify Selected Camera Profile Properties</string>
         <string id="4">[b]Modify Selected Camera Profile Properties:[/b][br]Camera Profiles can only be used with the "Event-Controlled" camera mode in the "Zones" dialog.[br][br]Transitions between zoom levels are instant, but can be hidden through careful use of zoom sprites (206).</string>
         <string id="5">Triggering Event ID:</string>
-        <string id="6">[b]Triggering Event ID:[/b][br]Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile's event ID will be automatically deactivated (so the game doesn\'t instantly switch back to it).</string>
+        <string id="6">[b]Triggering Event ID:[/b][br]Sets the event ID that will trigger the camera profile. If switching away from a different profile, the previous profile's event ID will be automatically deactivated (so the game doesn't instantly switch back to it).</string>
         <string id="7">Camera Profile on Event [id]</string>
     </section>
     <section id="ChangeGamePath">
@@ -280,7 +280,7 @@
         <string id="0">Could not find file:[br][name]</string>
     </section>
     <section id="Err_Common">
-        <string id="0">An unhandled exception occurred. Please report the problem in the Horizon Discord server.\nA log will be written to \"[log]\".\n\nError information:\n</string>
+        <string id="0">An unhandled exception occurred. Please report the problem in the Horizon Discord server.\nA log will be written to "[log]".\n\nError information:\n</string>
     </section>
     <section id="Err_CorruptedTileset">
         <string id="0">Error</string>
@@ -409,14 +409,6 @@
         <string id="6">Path Limit Reached</string>
         <string id="7">You cannot have more than 256 paths in an area.</string>
     </section>
-    <section id="Menubar">
-        <string id="0">&amp;File</string>
-        <string id="1">&amp;Edit</string>
-        <string id="2">&amp;View</string>
-        <string id="3">&amp;Settings</string>
-        <string id="4">&amp;Help</string>
-        <string id="5">Editor Toolbar</string>
-    </section>
     <section id="MenuItems">
         <string id="0">New Level</string>
         <string id="1">Create a new, blank level</string>
@@ -531,7 +523,7 @@
         <string id="110">Tileset Collisions</string>
         <string id="111">View tileset collisions for existing objects</string>
         <string id="112">Open Level...</string>
-        <string id="113" /> <!-- This keeps the even-odd pattern going, since 112 uses description 3 -->
+        <string id="113" />
         <string id="114">Freeze Comments</string>
         <string id="115">Make comments non-selectable</string>
         <string id="116">Show Comments</string>
@@ -558,6 +550,14 @@
         <string id="143">Switches all sprites of one ID to another</string>
         <string id="144">Show Entrances</string>
         <string id="145">Toggle viewing of entrances</string>
+    </section>
+    <section id="Menubar">
+        <string id="0">&amp;File</string>
+        <string id="1">&amp;Edit</string>
+        <string id="2">&amp;View</string>
+        <string id="3">&amp;Settings</string>
+        <string id="4">&amp;Help</string>
+        <string id="5">Editor Toolbar</string>
     </section>
     <section id="Objects">
         <string id="0">[b]Tileset [tileset], object [obj]:[/b][br][width]x[height] on layer [layer]</string>
@@ -607,7 +607,7 @@
         <string id="34">Comments currently in this area:[br](Double-click one to jump to it instantly)</string>
         <string id="35">Name:</string>
         <string id="36">Change Layer</string>
-        <string id="37">Copy to Clipboard</string>
+        <string id="37">Copy Selected to Clipboard</string>
         <string id="38">[b]Note:[/b] To switch objects on other layers to this layer, select them and then click this button while holding down the [i]Alt[/i] key.</string>
         <string id="39">Sprite Order</string>
         <string id="40">Use this tab to modify the order of sprites within the level file.[br]The sprite order can sometimes change behavior between sprites.</string>
@@ -679,7 +679,7 @@
         <string id="45">Use Rounded Rectangles</string>
         <string id="46">[b]Use Rounded Rectangles:[/b][br]This makes the corners of sprites, entrances, path nodes, and comments appear rounded instead of sharp.</string>
         <string id="47">Dark Mode</string>
-        <string id="48">[b]Dark Mode:[/b][br]This determines the overall color style Reggie uses, independent from the current theme.[br][br]Note that this may cause issues with certain themes.</string> 
+        <string id="48">[b]Dark Mode:[/b][br]This determines the overall color style Reggie uses, independent from the current theme.[br][br]Note that this may cause issues with certain themes.</string>
         <string id="49">Display full file path of opened level</string>
         <string id="50">Show Items as Selected</string>
         <string id="51">Grid Type:</string>
@@ -770,31 +770,6 @@
         <string id="5">Warning</string>
         <string id="6">You are trying to move object(s) by an offset which isn't a multiple of 16. The offset will be rounded to the nearest multiple of 16. Are you sure you want to do this?</string>
     </section>
-    <section id="SwapObjDlg">
-        <string id="0">Swap Objects</string>
-        <string id="1">Object:</string>
-        <string id="2">From Tileset Slot:</string>
-        <string id="3">To Object:</string>
-        <string id="4">In Tileset Slot:</string>
-        <string id="5">Exchange (perform 2-way conversion)</string>
-        <string id="6">Swap</string>
-        <string id="7">Close</string>
-    </section>
-    <section id="SwapObjTilesDlg">
-        <string id="0">Swap Objects' Tilesets</string>
-        <string id="1">From Tileset Slot:</string>
-        <string id="2">To Tileset Slot:</string>
-        <string id="3">Exchange (perform 2-way conversion)</string>
-        <string id="4">Swap</string>
-        <string id="5">Close</string>
-    </section>
-    <section id="SwitchSpriteDlg">
-        <string id="0">Switch Sprite IDs</string>
-        <string id="1">From Sprite:</string>
-        <string id="2">To Sprite:</string>
-        <string id="3">Swap</string>
-        <string id="4">Close</string>
-    </section>
     <section id="SpriteDataEditor">
         <string id="0">Modify Selected Sprite Properties</string>
         <string id="1">[b][name][/b]: [note]</string>
@@ -829,7 +804,7 @@
         <string id="30">Sprite [id]: required resource</string>
         <string id="31">Add to Loaded Sprites</string>
         <string id="32">Layer</string>
-        <string id="33">[b]Layer[/b]: This determines what layer the sprite will be active on. In almost all cases, you\'ll want to use Layer 1.</string>
+        <string id="33">[b]Layer[/b]: This determines what layer the sprite will be active on. In almost all cases, you'll want to use Layer 1.</string>
         <stringlist id="34">
             <entry>Layer 1</entry>
             <entry>Layer 2</entry>
@@ -929,6 +904,31 @@
         <string id="32">[x] comments</string>
         <string id="33">- Comment under mouse: [xpos], [ypos]; "[text]"</string>
     </section>
+    <section id="SwapObjDlg">
+        <string id="0">Swap Objects</string>
+        <string id="1">Object:</string>
+        <string id="2">From Tileset Slot:</string>
+        <string id="3">To Object:</string>
+        <string id="4">In Tileset Slot:</string>
+        <string id="5">Exchange (perform 2-way conversion)</string>
+        <string id="6">Swap</string>
+        <string id="7">Close</string>
+    </section>
+    <section id="SwapObjTilesDlg">
+        <string id="0">Swap Objects' Tilesets</string>
+        <string id="1">From Tileset Slot:</string>
+        <string id="2">To Tileset Slot:</string>
+        <string id="3">Exchange (perform 2-way conversion)</string>
+        <string id="4">Swap</string>
+        <string id="5">Close</string>
+    </section>
+    <section id="SwitchSpriteDlg">
+        <string id="0">Switch Sprite IDs</string>
+        <string id="1">From Sprite:</string>
+        <string id="2">To Sprite:</string>
+        <string id="3">Swap</string>
+        <string id="4">Close</string>
+    </section>
     <section id="Themes">
         <string id="0">Classic</string>
         <string id="1">Treeki, Tempus</string>
@@ -939,9 +939,12 @@
     <section id="WindowTitle">
         <string id="0">Untitled</string>
     </section>
+    <section id="Zones">
+        <string id="0">Zone [num]</string>
+    </section>
     <section id="ZonesDlg">
         <string id="0">Zones</string>
-        <string id="1" /> <!-- Formerly a list of zone theme values. Moved to reggidata/zonethemes.txt -->
+        <string id="1" />
         <stringlist id="2">
             <entry>Normal/Overworld</entry>
             <entry>Underground</entry>
@@ -1096,8 +1099,5 @@
         <string id="106">[b]Multiplayer Lower Bounds Adjust:[/b][br]Added to the lower bounds value (regular or Lakitu) during multiplayer mode, and during the transition back to normal camera behavior after an Auto-Scrolling Controller reaches the end of its path.</string>
         <string id="107">Duplicate</string>
         <string id="108">Undefined Track [id]</string>
-    </section>
-    <section id="Zones">
-        <string id="0">Zone [num]</string>
     </section>
 </strings>
