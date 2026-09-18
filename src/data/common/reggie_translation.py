@@ -48,7 +48,7 @@ class ReggieTranslation:
                 1: '[i]Reggie! Next[/i] Level Editor',
                 2: '[i]Reggie! Next Level Editor[/i] is an open-source project, started by Treeki in 2010 and forked by RoadrunnerWMC in 2013, that aims to bring you the fun of designing original New Super Mario Bros. Wii[tm]-compatible levels.[br]',
                 3: 'Interested? Join the [a href="[link]"]Horizon Discord server[/a] to get in touch with the current developer(s).[br]',
-                4: 'File "readme.md" not found!\nPlease go to https://github.com/NSMBW-Community/Reggie-Next to find it.',
+                4: 'File "readme.md" not found!\\nPlease go to https://github.com/NSMBW-Community/Reggie-Next to find it.',
             },
             'AreaCombobox': {
                 0: 'Area [num]',
@@ -313,7 +313,7 @@ class ReggieTranslation:
                 0: 'Could not find file:[br][name]',
             },
             'Err_Common': {
-                0: 'An unhandled exception occurred. Please report the problem in the Horizon Discord server.\nA log will be written to \"[log]\".\n\nError information:\n',
+                0: 'An unhandled exception occurred. Please report the problem in the Horizon Discord server.\\nA log will be written to \"[log]\".\\n\\nError information:\\n',
             },
             'Err_CorruptedTileset': {
                 0: 'Error',
@@ -1377,5 +1377,25 @@ class ReggieTranslation:
                     stringElem.text = string
                     sectionElem.append(stringElem)
 
-        tree = ElementTree.ElementTree(root)
-        tree.write('strings.xml', encoding='utf-8')
+        # Indent everything
+        ElementTree.indent(root, space='    ')
+
+        # Provide sample info at the start, this is so the XML can be quickly updated alongside this
+        header = (
+            '<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<!-- Reggie! Next sample translations XML -->\n'
+            '<!-- &lt;   = < -->\n'
+            '<!-- &gt;   = > -->\n'
+            '<!-- &quot; = " -->\n'
+            '<!-- &lt;font color=&quot;COLOR&quot;&gt;TEXT TEXT TEXT.&lt;/font&gt; = Colored Text -->\n'
+            '<!-- Bracketed placeholders ([id], [num], [x], [y], etc.) should not be modified, the editor fills these in with proper data -->\n\n'
+
+            '<!-- The contents of this file are based on (and should be identical to) the default English strings in translation.py -->\n'
+            '<!-- Removed strings are self-closing and do not contain any text. These can be ignored while translating -->\n\n'
+        )
+
+        raw_string = ElementTree.tostring(root, encoding='utf-8').decode('utf-8')
+        path = os.path.join('reggiedata', 'translations', 'strings.xml')
+
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(header + raw_string + '\n')
