@@ -162,7 +162,7 @@ def _excepthook(*exc_info):
     """
     separator = '-' * 80
     logFile = "log.txt"
-    notice = globals_.trans.string('ErrorDlg', 0, '[log]', logFile)
+    notice = globals_.trans.string('Err_Common', 0, '[log]', logFile)
     if notice is None:
         notice = ''
 
