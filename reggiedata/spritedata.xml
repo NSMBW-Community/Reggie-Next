@@ -2340,7 +2340,7 @@
       <required sprite="454"/>
       <required sprite="203"/>
     </dependency>
-    <checkbox nybble="10.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Toad Balloon placing it further behind other sprites."/>
+    <checkbox nybble="10" fullnybble="True" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Toad Balloon placing it further behind other sprites."/>
   </sprite> <!-- #185: Ambush - Toad Balloon -->
 
   <sprite id="186" name="Collision Switcher - Mini-Mario Only" notes="This controller will switch the active collision layer from Layer 1 to Layer 2 and vice versa, but only for players with the Mini-Mushroom power-up. See retail 01-03 A1 for a usage example.">
