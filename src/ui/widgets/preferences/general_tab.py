@@ -83,6 +83,9 @@ class GeneralTab(PreferenceTabWidget):
         diag_lyt.addRow(globals_.trans.string('PrefsDlg', 72), self.diag_freq)
         auto_diag_box.setLayout(diag_lyt)
 
+        # Display unknown sprite warnings
+        self.show_unk_sprite_msg = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 75))
+
         main_layout = QtWidgets.QFormLayout()
         main_layout.addRow(globals_.trans.string('PrefsDlg', 14), self.trans_combo)
         main_layout.addWidget(trans_info_box)
@@ -94,6 +97,7 @@ class GeneralTab(PreferenceTabWidget):
         main_layout.addWidget(self.reset_data_hide)
         main_layout.addWidget(self.full_object_size)
         main_layout.addWidget(self.insert_path_node)
+        main_layout.addWidget(self.show_unk_sprite_msg)
         main_layout.addWidget(auto_diag_box)
         self.setLayout(main_layout)
 
@@ -132,6 +136,7 @@ class GeneralTab(PreferenceTabWidget):
 
         self.full_object_size.setChecked(globals_.PlaceObjectsAtFullSize)
         self.insert_path_node.setChecked(globals_.InsertPathNode)
+        self.show_unk_sprite_msg.setChecked(globals_.ShowUnknownSpriteWarning)
 
         self.auto_diag.setChecked(globals_.AutoDiagEnabled)
         self.diag_freq.setEnabled(globals_.AutoDiagEnabled)

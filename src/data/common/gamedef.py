@@ -610,8 +610,8 @@ def LoadGameDef(name: str | None = None, dlg: QtWidgets.QProgressDialog | None =
             # Update the Area's unknown_sprite_ids
             globals_.Area.unknown_sprite_ids = unknown_sprite_ids
 
-            # Check for unknown sprite IDs and show warning icon in status bar
-            if unknown_sprite_ids:
+            # Check for unknown sprite IDs and show warning message
+            if unknown_sprite_ids and globals_.ShowUnknownSpriteWarning:
                 sprite_ids = sorted(unknown_sprite_ids)
 
                 title = globals_.trans.string('Err_UnknownSprite', 0)

@@ -123,6 +123,7 @@ TilesetNames: list[TilesetCategory] = [TilesetCategory() for _ in range(4)] # sh
 # Sprites
 NumSprites = 0
 ResetDataWhenHiding = False
+ShowUnknownSpriteWarning = True
 SpriteCategories: list[SpriteCategory] = []
 Sprites: list[SpriteDefinition] = []
 

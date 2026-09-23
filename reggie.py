@@ -2900,6 +2900,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.AutoDiagFrequency = dlg.general_tab.diag_freq.currentIndex()
         setSetting('AutoDiagFrequency', globals_.AutoDiagFrequency)
 
+        globals_.ShowUnknownSpriteWarning = dlg.general_tab.show_unk_sprite_msg.isChecked()
+        setSetting('ShowUnknownSpriteWarning', globals_.ShowUnknownSpriteWarning)
+
         # Update diagnostic widget
         self.diagnostic.set_timer()
         if globals_.AutoDiagEnabled:
@@ -3846,16 +3849,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # https://github.com/Zement/Reggie/blob/master/reggie.py#L3630-L3637
         # Check for unknown sprite IDs and show warning message
-        if hasattr(globals_.Area, 'unknown_sprite_ids') and globals_.Area.unknown_sprite_ids is not None:
-            sprite_ids = sorted(globals_.Area.unknown_sprite_ids)
+        if globals_.ShowUnknownSpriteWarning:
+            if hasattr(globals_.Area, 'unknown_sprite_ids') and globals_.Area.unknown_sprite_ids is not None:
+                sprite_ids = sorted(globals_.Area.unknown_sprite_ids)
 
-            title = globals_.trans.string('Err_UnknownSprite', 0)
-            if len(sprite_ids) == 1:
-                msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
-            else:
-                if map(str, sprite_ids) is not None:
+                title = globals_.trans.string('Err_UnknownSprite', 0)
+                if len(sprite_ids) == 1:
+                    msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
+                else:
                     msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
-            QtWidgets.QMessageBox.warning(None, title, msg)
+
+                QtWidgets.QMessageBox.warning(None, title, msg)
 
         self.ResetPalette()
 
@@ -5074,6 +5078,7 @@ def main():
     globals_.UseRecentFileKeys = setting('UseRecentFileKeys', True)
     globals_.AutoDiagEnabled = setting('AutoDiagEnabled', True)
     globals_.AutoDiagFrequency = setting('AutoDiagFrequency', 1)
+    globals_.ShowUnknownSpriteWarning = setting('ShowUnknownSpriteWarning', True)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game
