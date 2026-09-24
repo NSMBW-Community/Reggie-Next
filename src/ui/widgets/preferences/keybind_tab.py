@@ -39,12 +39,17 @@ class KeybindTab(PreferenceTabWidget):
         self.recent_file_keybind = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 69))
         self.recent_file_keybind.setChecked(globals_.UseRecentFileKeys)
 
+        # Allow arrow keys to move selected level items
+        self.arrow_move_items = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 76))
+        self.arrow_move_items.setChecked(globals_.MoveItemsWithArrowKeys)
+
         # Create the main layout
         L = QtWidgets.QGridLayout()
         L.addWidget(self.recent_file_keybind, 0, 0)
-        L.addWidget(self.tab_widget, 1, 0, 1, 2)
-        L.addWidget(reset, 2, 0, 1, 1)
-        L.addWidget(self.check_conflict_button, 2, 1, 1, 1)
+        L.addWidget(self.arrow_move_items, 1, 0)
+        L.addWidget(self.tab_widget, 2, 0, 1, 2)
+        L.addWidget(reset, 3, 0, 1, 1)
+        L.addWidget(self.check_conflict_button, 3, 1, 1, 1)
         self.setLayout(L)
 
     def reset(self):

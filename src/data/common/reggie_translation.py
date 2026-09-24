@@ -758,6 +758,7 @@ class ReggieTranslation:
                 ),
                 74: '[b]Error Checking Frequency:[/b][br]This determines how often the Auto-Diagnostic Tool will check for errors.',
                 75: 'Display warnings when unknown sprites are present in the level',
+                76: 'Move selected level items when pressing the arrow keys',
             },
             'ResizeChoiceDlg': {
                 0: 'Let\'s resize your sprite. In order to do this, choose one of the two modes, based on the below information. Note that some choices can overlap with other settings, leading to undesired effects.',

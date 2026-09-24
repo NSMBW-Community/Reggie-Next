@@ -77,6 +77,7 @@ Layer1Shown = True
 Layer2Shown = True
 LocationsFrozen = False
 LocationsShown = True
+MoveItemsWithArrowKeys = True
 ObjectsFrozen = False
 PathsFrozen = False
 PathsShown = True

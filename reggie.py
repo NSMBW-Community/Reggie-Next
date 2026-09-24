@@ -2948,6 +2948,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.UseRecentFileKeys = dlg.keybind_tab.recent_file_keybind.isChecked()
         setSetting('UseRecentFileKeys', globals_.UseRecentFileKeys)
 
+        globals_.MoveItemsWithArrowKeys = dlg.keybind_tab.arrow_move_items.isChecked()
+        setSetting('MoveItemsWithArrowKeys', globals_.MoveItemsWithArrowKeys)
+
         for i, act in enumerate(self.RecentMenu.actions()):
             if not globals_.UseRecentFileKeys:
                 act.setShortcut(QtGui.QKeySequence())
@@ -5079,6 +5082,7 @@ def main():
     globals_.AutoDiagEnabled = setting('AutoDiagEnabled', True)
     globals_.AutoDiagFrequency = setting('AutoDiagFrequency', 1)
     globals_.ShowUnknownSpriteWarning = setting('ShowUnknownSpriteWarning', True)
+    globals_.MoveItemsWithArrowKeys = setting('MoveItemsWithArrowKeys', True)
     SLib.RealViewEnabled = globals_.RealViewEnabled
 
     # Choose a folder for the game

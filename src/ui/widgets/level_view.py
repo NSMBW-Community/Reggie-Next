@@ -633,6 +633,39 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
 
             painter.drawTiledPixmap(rect, board)
 
+    def keyPressEvent(self, event):
+        """
+        Allow for arrow keys to move selected items
+        """
+        scene = self.scene()
+        if event is None or scene is None or not globals_.MoveItemsWithArrowKeys or not scene.selectedItems():
+            super().keyPressEvent(event)
+            return
+
+        stepX = 0
+        stepY = 0
+        stepAmt = 16 # This doesn't matter much since we don't override snapping
+        if event.modifiers() & QtCore.Qt.KeyboardModifier.AltModifier:
+            stepAmt = 1
+
+        if event.key() == QtCore.Qt.Key.Key_Left:
+            stepX = -stepAmt
+            stepY = 0
+        elif event.key() == QtCore.Qt.Key.Key_Right:
+            stepX = stepAmt
+            stepY = 0
+        elif event.key() == QtCore.Qt.Key.Key_Up:
+            stepX = 0
+            stepY = -stepAmt
+        elif event.key() == QtCore.Qt.Key.Key_Down:
+            stepX = 0
+            stepY = stepAmt
+
+        for item in scene.selectedItems():
+            curX = item.pos().x()
+            curY = item.pos().y()
+            item.setPos(curX + stepX, curY + stepY)
+
     @staticmethod
     def translateRect(rect, x, y):
         """
