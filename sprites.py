@@ -82,7 +82,8 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
             color = 'Bone'
 
         if self.width > 32:
-            painter.drawTiledPixmap(26, 0, int((self.width * 1.5) - 44), int(self.height * 1.5), ImageCache[color + 'PlatformM'])
+            x = 25 if color == 'Bone' else 26
+            painter.drawTiledPixmap(x, 0, int((self.width * 1.5) - 44), int(self.height * 1.5), ImageCache[color + 'PlatformM'])
 
         if self.width == 24:
             # replicate glitch effect for some platforms
@@ -90,7 +91,8 @@ class SpriteImage_WoodenPlatform(SLib.SpriteImage):  # 23, 31, 50, 103, 106, 122
             painter.drawPixmap(10, 0, ImageCache[color + 'PlatformL'])
         else:
             # normal rendering
-            painter.drawPixmap(round((self.width - 16) * 1.5 - 2), 0, ImageCache[color + 'PlatformR'])
+            offs = 4 if color == 'Bone' else 3
+            painter.drawPixmap(round((self.width - 16) * 1.5 - offs), 0, ImageCache[color + 'PlatformR'])
             painter.drawPixmap(0, 0, ImageCache[color + 'PlatformL'])
 
 
