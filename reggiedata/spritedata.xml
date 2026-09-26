@@ -4420,7 +4420,7 @@
     </list>
     <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Crystal Block in relation to other Crystal Blocks." comment2="If you have multiple Crystal Blocks overlapping each other, you can use this setting to avoid some types of graphical glitches. Crystal Blocks with a higher Z-Order number will show behind those with a lower number. Unlike with Rolling Hills, it is not necessary to do this. Placing blocks with the correct distance apart can allow them to seamlessly coexist."/>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advancedcomment="Nintendo uses this value, but no effect was observed. Likely a removed setting."/>
+    <checkbox nybble="6.4" title="Useless Flag 6 (1)" comment="Nintendo toggles this, however it has no effect in-game."/>
   </sprite> <!-- #361: Rotation Controlled Crystal Block -->
 
   <sprite id="362" name="Rotation Controlled Colored Box" notes="A rotation controlled large resizable block with the appearance of a patterned box." files="lift_zen_color_pori.arc">
@@ -4438,7 +4438,7 @@
     </list>
     <value nybble="8" title="Z-Order" comment="This will adjust the Z-Order of the Colored Box in relation to other Colored Boxes." comment2="If you have multiple Colored Boxes overlapping each other, you must use this setting to prevent graphical glitches. Colored Boxes with a higher Z-Order number will show behind those with a lower number."/>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the platform to a matching rotation controller." idtype="Rotation"/>
-    <checkbox nybble="6.4" title="Unknown Flag 6 (1)" advancedcomment="Nintendo uses this value, but no effect was observed. Likely a removed setting."/>
+    <checkbox nybble="6.4" title="Useless Flag 6 (1)" comment="Nintendo toggles this, however it has no effect in-game."/>
   </sprite> <!-- #362: Rotation Controlled Colored Box -->
 
   <sprite id="363" name="Boss Controller - Tower Boss" yoshinotes="Yoshi plays an unused animation when he enters the area from a Boss Entrance. However, he lacks proper compatibility with the bosses themselves." notes="This controls the level completion for the World 1-7 Tower battles, as well as the listed Koopaling's initial movements. Koopalings function without this controller, but they won't move until hit, and the level won't end when they are defeated.">
