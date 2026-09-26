@@ -409,7 +409,7 @@
     <dualbox nybble="11.4" title1="Single Run" title2="Only While Active" comment="This will determine if the Multi-Chainer will only run once, or if it can deactivate the events with the potential to activate them again." comment2="Single Run: When the Start Event ID is first activated, the Multi-Chainer will activate all events through End Event ID and then cease functioning.&lt;br&gt;&lt;br&gt;Only While Active: Every time the Start Event ID is activated, the Multi-Chainer will begin to activate all events through End Event ID. Every time the Start Event ID is deactivated, the Multi-Chainer will begin to deactivate all events through End Event ID."/>
   </sprite> <!-- #39: Event Controller - Multi-Chainer (If X, do Y THROUGH Z) -->
 
-  <sprite id="40" name="?-Switch" notes="This is the basic stand-alone switch. When triggered, it modifies the Target Event." files="switch.arc">
+  <sprite id="40" name="?-Switch" notes="This is the basic standalone switch. When triggered, it modifies the Target Event." files="switch.arc">
     <checkbox nybble="12" fullnybble="True" title="Upside-Down" comment="When enabled, the switch will be facing downwards. Upside-Down switches cannot be set to fall."/>
     <checkbox nybble="5.4" title="Falls" comment="When enabled, the switch will be movable by environmental factors, such as dropping down when bricks below it are destroyed, or moving along platforms." comment2="Conveyor belts cannot move Switches, even when [Falls] is set." requirednybble="12" requiredval="0"/>
     <checkbox nybble="8" fullnybble="True" title="Shift Up/Down 1 Tile" comment="This is enabled on all switches spawned from blocks."/>
@@ -467,7 +467,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #42: !-Switch -->
 
-  <sprite id="43" name="Brick Block ?-Switch" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
+  <sprite id="43" name="Brick Block ?-Switch" notes="This is the basic standalone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
     <checkbox nybble="12" fullnybble="True" title="Upside-Down" comment="When enabled, the switch will forcibly spawn on the underside of the block facing down, even if struck from below." comment2="Brick-Block switches cannot be set to fall, even if Upside-Down is unchecked."/>
     <checkbox nybble="11" fullnybble="True" title="Shift Right Half a Tile"/>
     <value nybble="3-4" title="Target Event ID" comment="This event will be modified when the switch is pressed." idtype="Target Event"/>
@@ -584,8 +584,8 @@
     <value nybble="11.2-12.4" title="Location ID" comment="This determines the Location where the quicksand animation will be created." idtype="Location"/>
   </sprite> <!-- #53: Effect - Quicksand -->
 
-   <sprite id="54" name="Lakitu" notes="A stand-alone Lakitu, more useful for small rooms than entire levels. Lakitu will throw Spinies (or coins) at the player and will follow the player until killed." files="jugem.arc;togezo.arc;paipo.arc">
-    <dependency notes="The stand-alone Lakitu will spawn at exactly the height that it is placed and will remain at that height as it follows the player. Additionally, as it does not respawn after killed unless re-entering the zone, utilizing it for its cloud riding is not recommended for mandatory progress."/>
+   <sprite id="54" name="Lakitu" notes="A standalone Lakitu, more useful for small rooms than entire levels. Lakitu will throw Spinies (or coins) at the player and will follow the player until killed." files="jugem.arc;togezo.arc;paipo.arc">
+    <dependency notes="The standalone Lakitu will spawn at exactly the height that it is placed and will remain at that height as it follows the player. Additionally, as it does not respawn after killed unless re-entering the zone, utilizing it for its cloud riding is not recommended for mandatory progress."/>
     <dualbox nybble="10.4" title1="Spawn from the Side" title2="Spawn from the Background" comment="This will determine which animation state is used by the Lakitu when it is first loaded." comment2="Spawning from the Background means that the Lakitu will fly in from the background, facing the camera."/>
     <list nybble="12.3-12.4" title="Thrown Item" comment="This determines what the Lakitu will throw." comment2="A value of 1 throws a Spiny that can be killed if hit from below on a block, but only while balled up.">
       <entry value="0">Throws Spinies</entry>
@@ -595,8 +595,8 @@
     <checkbox nybble="2.4" title="Low Throw Arc" comment="When enabled, the Lakitu will throw Spinies from a low throwing arc. This behavior looks glitchy when the Lakitu is moving quickly." advancedcomment="It also should be noted this option is in a space normally used for events, so it may have a deeper function."/>
     <checkbox nybble="6.4" title="Longer Throw Delay" comment="If enabled, the Lakitu will wait longer before throwing the first Spiny after previously hitting the max limit of 4." comment2="Exact values are 280 frames checked, 140 unchecked."/>
     <value nybble="7" title="Spawn Height (Useless)" comment2="This value determines the spawning height for Coin Lakitus spawned from [370] Lakitu Cloud Block. As this Lakitu is not spawned from a block, this option is rather useless." requirednybble="12" requiredval="2"/>
-    <value nybble="8" title="Lifespan (Useless)" comment="This would determine how long the Lakitu will exist before flying off. However, a stand-alone Lakitu cannot meet the requirements for this timer to be processed, making this option useless." requirednybble="12" requiredval="2"/>
-    <checkbox nybble="11.4" title="Flies Off-Screen (Useless)" comment="Enabling this will allow the Lakitu to fly away after a certain period of time. However, this option is rather useless as stand-alone Lakitus cannot meet the requirements for this to occur." comment2="This is set on all Lakitus spawned from [124] Lakitu Spawn Area and [370] Lakitu Cloud Block."/>
+    <value nybble="8" title="Lifespan (Useless)" comment="This would determine how long the Lakitu will exist before flying off. However, a standalone Lakitu cannot meet the requirements for this timer to be processed, making this option useless." requirednybble="12" requiredval="2"/>
+    <checkbox nybble="11.4" title="Flies Off-Screen (Useless)" comment="Enabling this will allow the Lakitu to fly away after a certain period of time. However, this option is rather useless as standalone Lakitus cannot meet the requirements for this to occur." comment2="This is set on all Lakitus spawned from [124] Lakitu Spawn Area and [370] Lakitu Cloud Block."/>
   </sprite> <!-- #54: Lakitu -->
 
   <sprite id="55" name="(Unused) Rising Tilting Platform" notes="This is an unused platform, clearly leftover from NSMBDS. The distance it can travel depends on two factors: Y-position and zone height. See [Movement Distance].&lt;br&gt;&lt;br&gt;It is not recommended for use due to various glitches and a lack of texture." files="test_lift.arc">
@@ -1111,11 +1111,7 @@
     </list>
     <value nybble="8" title="Delay at Extremes" comment="This determines how long the Swing Arc will wait at the extremes of its angle."/>
     <checkbox nybble="9.4" title="Reverse" comment="When enabled, the timing of the left and right positions of the Swing Arc will be reversed in relation to other Swaying Controllers with the same settings."/>
-    <list nybble="10.3-10.4" title="Unknown Value 10" advancedcomment="1: Used in retail 07-21 A2, 2: Used in retail 04-21 A1/A2/A3, 07-21 A1/A2/A4">
-      <entry value="0">Normal</entry>
-      <entry value="1">???</entry>
-      <entry value="2">???</entry>
-    </list>
+    <value nybble="10.3-10.4" title="Useless Value 10" comment="Nintendo uses this in a few levels, however it does nothing in-game." comment2="1: Used in retail 07-21 A2, 2: Used in retail 04-21 A1/A2/A3, 07-21 A1/A2/A4"/>
   </sprite> <!-- #96: Rotation Controller - Swaying -->
 
   <sprite id="97" name="(Unused) Rotation Controlled Block" notes="This is a block platform that is able to be controlled by a Rotation Controller." files="test_lift.arc">
@@ -1930,11 +1926,11 @@
     <checkbox nybble="12.4" title="Alternate Movement" comment="When enabled, after the first jump, the Cheep Cheep will not continue swimming but instead wait at the landing point to jump again." comment2="It ends up looking like the Cheep Cheep is 'stuck' in the water."/>
   </sprite> <!-- #150: (Unused) Jumping Cheep Cheep -->
 
-  <sprite id="151" name="Porcupuffer" notes="A stand-alone Porcupuffer that will chase the player along the water line indefinitely until killed, but will not respawn." files="fugu.arc">
+  <sprite id="151" name="Porcupuffer" notes="A standalone Porcupuffer that will chase the player along the water line indefinitely until killed, but will not respawn." files="fugu.arc">
     <dependency notes="Water is required for the Porcupuffer to function. It must be non-location water, possibly non-moving water.">
       <required sprite="138"/>
     </dependency>
-    <checkbox nybble="11.4" title="Unknown Flag 11 (1)" advancedcomment="ASM shows Nybble 11 might affect something."/>
+    <checkbox nybble="11.4" title="Increase Visible Range" comment="If enabled, the Porcupuffer will be able to go further off-screen before despawning."/>
   </sprite> <!-- #151: Porcupuffer -->
 
   <sprite id="152" name="Incomplete Sprite - EN_BLUR" nolayer="True" notes="Does nothing.">
@@ -2181,7 +2177,7 @@
   <sprite id="170" name="Prickly Goomba" notes="A spiky brown ball that contains a normal Goomba, which will appear if it is shot with a Fireball. Fire Bro fireballs will also open it, but Flame Chomp fireballs will not." files="iga_kuribo.arc;kuribo_iga.arc">
   </sprite> <!-- #170: Prickly Goomba -->
 
-  <sprite id="171" name="Mushroom in a Bubble" notes="&lt;font color=&quot;orange&quot;&gt;This sprite is not recommended for use, and it WILL crash the game if used with invalid settings.&lt;/font&gt;" advancednotes="This is capable of spawning both items and players inside of bubbles. Unfortunately it was not designed to be called on for stand-alone functions.">
+  <sprite id="171" name="Mushroom in a Bubble" notes="&lt;font color=&quot;orange&quot;&gt;This sprite is not recommended for use, and it WILL crash the game if used with invalid settings.&lt;/font&gt;" advancednotes="This is capable of spawning both items and players inside of bubbles. Unfortunately it was not designed to be called on for standalone functions.">
     <checkbox nybble="10.4" title="Spawns Mushroom in a Bubble" comment="When enabled, this will spawn a Mushroom floating in a bubble."/>
     <dualbox nybble="11.3" title1="Floats in from Right" title2="Spawns at Sprite/Player" comment="This determines how the floating bubble will appear. "/>
     <list nybble="12.3-12.4" title="Spawns Player in a Bubble" advancedcomment="Unfortunately, this doesn't work as cleanly as it needs to in order to be usable. If the right player doesn't exist when this loads, the game will crash. It could potentially respawn a dead player who has zero lives, or with the multiplayer bubbles deactivated, except that there is no way to only load the players you actually need. Thus, this function is completely and totally unreliable unless requiring all 4 players to play a particular level." requirednybble="10.4" requiredval="0">
@@ -3528,7 +3524,7 @@
     </list>
   </sprite> <!-- #284: Physics Coin Controller -->
 
-  <sprite id="285" name="Rising/Falling Water" notes="Unlike normal [138] Water, Rising/Falling Water contains many functions of Moving Water in a stand-alone form. Similar compatibility issues still exist, and in particular it should be noted that this functions by moving a fixed depth 'block' of water up and down." files="obj_waterfull.arc;obj_waterhalf.arc">
+  <sprite id="285" name="Rising/Falling Water" notes="Unlike normal [138] Water, Rising/Falling Water contains many functions of Moving Water in a standalone form. Similar compatibility issues still exist, and in particular it should be noted that this functions by moving a fixed depth 'block' of water up and down." files="obj_waterfull.arc;obj_waterhalf.arc">
     <dependency notes="The bottom edge of the water can be exposed if the Depth value is not large enough. Additionally, the player can fall out from the bottom edge of the water unless there is approximately 4 blocks of water under the bottom edge of the screen. Outside of that restriction, all setting combinations with this sprite function just fine."/>
     <value nybble="3-4" title="Triggering Event ID" comment="When set, the Water will only move when the Triggering Event is activated. Otherwise, the Water will move automatically." idtype="Triggering Event"/>
     <dualbox nybble="8.1" title1="Rises First" title2="Falls First" comment="This determines which direction the Water will move first when activated."/>
@@ -4791,7 +4787,7 @@
   <sprite id="393" name="Propeller Block" notes="A grabbable propeller block that is affected by gravity. It can be picked up and thrown by shaking the controller next to it. It can also boost the player into the air like a Propeller Cap if the player shakes their controller a second time while holding it. If it is thrown and it hits the ground, it will bounce slightly." files="block_fly.arc">
   </sprite> <!-- #393: Propeller Block -->
 
-  <sprite id="394" name="Bouncing Lemmy Ball" noyoshi="True" yoshinotes="Lemmy's balls won't push Yoshi aside, and Yoshi will slide down if standing on one." notes="A stand-alone version of the bouncing ball used in the Lemmy Koopa boss fights." files="lemmy_ball.arc">
+  <sprite id="394" name="Bouncing Lemmy Ball" noyoshi="True" yoshinotes="Lemmy's balls won't push Yoshi aside, and Yoshi will slide down if standing on one." notes="A standalone version of the bouncing ball used in the Lemmy Koopa boss fights." files="lemmy_ball.arc">
     <dualbox nybble="5.4" title1="Starts Bouncing Right" title2="Starts Bouncing Left" comment="This determines the direction the Lemmy Ball will initially be bouncing in."/>
   </sprite> <!-- #394: Bouncing Lemmy Ball -->
 
@@ -5045,7 +5041,7 @@
     <checkbox nybble="8.4" title="Shift Up and Right"/>
   </sprite> <!-- #412: Toad House Minigame - Lives Balloon -->
 
-  <sprite id="413" name="Bouncing Wendy Ring" noyoshi="True" notes="A stand-alone version of the bouncing ring used in the Wendy Koopa boss fights." files="wendy.arc">
+  <sprite id="413" name="Bouncing Wendy Ring" noyoshi="True" notes="A standalone version of the bouncing ring used in the Wendy Koopa boss fights." files="wendy.arc">
     <list nybble="12" title="Starting Direction" comment="This determines the direction the ring will initially be moving in.">
       <entry value="0">Right</entry>
       <entry value="1">Up + Right</entry>
@@ -5108,7 +5104,7 @@
     <value nybble="11-12" title="Rotation ID" comment="If pairing the glow block with sprite 96 or 149, match the Rotation ID to allow enable Rotation controlled movement." requirednybble="10.3-10.4" requiredval="2-3" idtype="Rotation"/> <!-- Appears if [Movement Type] = 2/3 -->
   </sprite> <!-- #420: Lighting - Giant Glow Block -->
 
-  <sprite id="421" name="(Unused) Fake Ghost House Door" noyoshi="True" notes="A stand-alone version of the 'Fake Door' effect from the normal Ghost House Door." files="obj_door_obake.arc">
+  <sprite id="421" name="(Unused) Fake Ghost House Door" noyoshi="True" notes="A standalone version of the 'Fake Door' effect from the normal Ghost House Door." files="obj_door_obake.arc">
   </sprite> <!-- #421: (Unused) Fake Ghost House Door -->
 
   <sprite id="422" name="Toad Needs Help - ? Block" notes="This block will spawn a Toad if the stage has an active Toad Rescue on the World Map. Otherwise, it contains a single coin.">
@@ -5648,7 +5644,7 @@
     <dependency notes="Only one Dancing controller is needed per Zone. It is recommended to place it nearby the Zone's entrance, but it can exist anywhere."/>
   </sprite> <!-- #474: Dancing Coin/Block Controller -->
 
-  <sprite id="475" name="Path Controlled Ice Floe" noyoshi="True" notes="A stand-alone Ice Floe that can travel along an assigned Path." files="lift_ice_ashiba.arc">
+  <sprite id="475" name="Path Controlled Ice Floe" noyoshi="True" notes="A standalone Ice Floe that can travel along an assigned Path." files="lift_ice_ashiba.arc">
     <value nybble="7" title="Path ID" comment="This determines the ID of the Path that the Ice Floe will be linked to, although the sprite works fine without one. Additionally, the Ice Floe will move at the speed of the Path it's linked to." idtype="Path"/>
     <value nybble="5-6" title="Starting Node" comment="This determines the Node of the Path that the Ice Floe will appear at and start moving from."/>
     <checkbox nybble="8.4" title="Reverse Direction" comment="When enabled, the Ice Floe will follow the path in reverse." requirednybble="7"/>
@@ -5670,9 +5666,9 @@
     <checkbox nybble="11.4" title="Floating" comment="When enabled, the Ice Floe will wiggle around as though it is floating on the surface of the water."/>
   </sprite> <!-- #475: Path Controlled Ice Floe -->
 
-  <sprite id="476" name="Loose Flying Wrench" notes="A stand-alone Rocky Wrench's wrench that will fly across the screen." files="choropoo.arc">
+  <sprite id="476" name="Loose Flying Wrench" notes="A standalone Rocky Wrench's wrench that will fly across the screen." files="choropoo.arc">
     <dualbox nybble="12.4" title1="Moves Right" title2="Moves Left" comment="This determines which direction the wrench flies in when it loads."/>
-    <checkbox nybble="11.4" title="Thrown by Rocky Wrench" comment="Enabled on wrenches thrown by [352] Rocky Wrench." advancedcomment="This makes the wrench despawn if the parent Rocky Wrench doesn't exist. Since this wrench is stand-alone, it will always despawn."/>
+    <checkbox nybble="11.4" title="Thrown by Rocky Wrench" comment="Enabled on wrenches thrown by [352] Rocky Wrench." advancedcomment="This makes the wrench despawn if the parent Rocky Wrench doesn't exist. Since this wrench is standalone, it will always despawn."/>
   </sprite> <!-- #476: Loose Flying Wrench -->
 
   <sprite id="477" name="Super Guide Block" notes="A block that activates a special Luigi replay where Luigi will complete the level as minimally as possible with as little running or wall jumping as he can get away with." files="block_help.arc">

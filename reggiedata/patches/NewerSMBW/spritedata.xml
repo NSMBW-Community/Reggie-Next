@@ -373,7 +373,7 @@
     <checkbox nybble="7.4" title="Allow the Koopa 1-Up Trick"/>
   </sprite> <!-- #26: Upside-Down Spiny -->
 
-  <sprite id="40" name="?-Switch" sizehacks="True" notes="This is the basic stand-alone switch. When triggered, it modifies the Target Event." files="switch.arc">
+  <sprite id="40" name="?-Switch" sizehacks="True" notes="This is the basic standalone switch. When triggered, it modifies the Target Event." files="switch.arc">
     <spritetex nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch." comment2="[Bug] All color values other than the original will spawn one block further upwards than it should. This is accounted for in the sprite image.">
       <entry value="0">Standard Question Mark (Original)</entry>
       <entry value="1">Standard Question Mark</entry>
@@ -448,7 +448,7 @@
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." advancedcomment="Using a Triggering ID with Multi-Use functionality is somewhat glitchy and not recommended." requirednybble="10" idtype="Triggering Event"/> <!-- Appears if Multi-Use is set, but only if Advanced fields are enabled -->
   </sprite> <!-- #42: !-Switch -->
 
-  <sprite id="43" name="Brick Block ?-Switch" sizehacks="True" notes="This is the basic stand-alone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
+  <sprite id="43" name="Brick Block ?-Switch" sizehacks="True" notes="This is the basic standalone switch stored inside a Brick Block. When triggered, it modifies the Target Event." advancednotes="A brick block containing or supporting a switch cannot be destroyed by sprites that destroy normal brick and solid blocks as long as the switch exists." files="switch.arc">
     <spritetex nybble="8" title="Style" comment="This determines which Symbol is seen on the switch. This allows you to communicate different things about the expected function of the switch.">
       <entry value="0">Standard Question Mark</entry>
       <entry value="1">Standard Question Mark</entry>
