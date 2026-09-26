@@ -13,7 +13,7 @@ try:
     import pyximport
     pyximport.install()
     has_cython = True
-except ModuleNotFoundError:
+except (ModuleNotFoundError, AttributeError):
     has_cython = False
 
 # Now use whether we have nsmblib and/or cython to do the actual imports.
