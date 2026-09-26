@@ -1035,7 +1035,8 @@
     </list>
     <value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see retail 07-04 A1 Z5."/>
     <checkbox nybble="12.4" title="Shoots Homing Bullet Bills"/>
-    <value nybble="6" title="Homing Bullet Bill Limit" comment="The Blaster will not create new Homing Bullet Bills unless the amount currently on the screen is less than this number. Value 0 functions the same as Value 1." requirednybble="12.4"/>
+    <value nybble="6" start="1" title="Homing Bullet Bill Limit" comment="The Blaster will not create new Homing Bullet Bills unless the amount currently on the screen is less than this number." requirednybble="12.4"/>
+    <value nybble="6" start="32" increment="32" title="Bullet Bill Limit" comment="The Blaster will not create new Bullet Bills unless the amount currently on the screen is less than this number." requirednybble="12.4" requiredval="0"/>
   </sprite> <!-- #92: Bill Blaster -->
 
   <sprite id="93" name="Banzai Bill Blaster" files="killer_mag_houdai.arc;killer_mag.arc">
@@ -1050,12 +1051,7 @@
       <entry value="1">Left Only</entry>
       <entry value="2">Right Only</entry>
     </list>
-    <list nybble="5" title="Shooting Delay">
-      <entry value="0">Normal</entry>
-      <entry value="2">Long</entry>
-      <entry value="1">Very Long</entry>
-      <entry value="3">???</entry>
-    </list>
+    <value nybble="5-6" increment="20" title="Firing Delay" comment="This determines how many frames it will take for the next Banzai Bill to be fired. Each value increments by 20 frames. A value of 0 will use the default delay of 192 frames."/>
     <checkbox nybble="12.4" title="(Broken) Shoots Homing Banzai Bills" comment="The Banzai Bills do not home on the player but instead only move up and left, regardless of the shooting direction. Use the Homing Banzai Bill Spawner sprite instead."/>
     <value nybble="6" title="Homing Banzai Bill Limit" comment="The Blaster will not create new Homing Banzai Bills unless the amount currently on the screen is less than this number." requirednybble="12.4"/>
     <value nybble="8.2-8.4" title="Z-Order" comment="This will adjust the Z-Order of the Bullet Bills in relation to other Launchers. For usage examples, see retail 07-04 A1 Z5."/>
@@ -1065,7 +1061,6 @@
       <entry value="2">???</entry>
       <entry value="3">???</entry>
     </list>
-    <value nybble="11" title="Unknown Value 11" comment="ASM shows Nybble 11 might affect something."/>
   </sprite> <!-- #93: Banzai Bill Blaster -->
 
   <sprite id="94" name="Boomerang Bro" notes="A standard Brothers enemy that throws Boomerangs at the player." files="bros.arc">
