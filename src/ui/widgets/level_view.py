@@ -637,8 +637,16 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Allow for arrow keys to move selected items
         """
+
+        arrow_keys = (
+            QtCore.Qt.Key.Key_Left,
+            QtCore.Qt.Key.Key_Right,
+            QtCore.Qt.Key.Key_Up,
+            QtCore.Qt.Key.Key_Down
+        )
+        
         scene = self.scene()
-        if event is None or scene is None or not globals_.MoveItemsWithArrowKeys or not scene.selectedItems():
+        if event is None or scene is None or not globals_.MoveItemsWithArrowKeys or not scene.selectedItems() or event.key() not in arrow_keys:
             super().keyPressEvent(event)
             return
 
