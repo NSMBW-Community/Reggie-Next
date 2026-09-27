@@ -380,16 +380,13 @@
       <entry value="2">Air</entry>
       <entry value="3">Climbing a fence</entry>
     </list>
-    <list nybble="9" title="Player Power-up Status" comment="When [Player Location ID] is set, the Target Event will only be triggered if the Player's power-up matches the one specified here." comment2="Currently, Ice Flower, Propeller Cap, Penguin Suit, and Hammer Suit are unavailable to check for." requirednybble="5-6" requiredval="0-254">
+    <list nybble="9" title="Player Power-up Status" comment="When [Player Location ID] is set, the Target Event will only be triggered if the Player's power-up matches the one specified here." comment2="The Ice Flower, Propeller Suit, and Penguin Suit cannot be checked for." requirednybble="5-6" requiredval="0-254">
       <entry value="0">Any Status</entry>
       <entry value="1">No Power-up</entry>
       <entry value="2">Mushroom</entry>
       <entry value="3">Fire Flower</entry>
       <entry value="4">Mini Mushroom</entry>
       <entry value="7">Star</entry>
-      <!--<entry value="5">Mini Mushroom</entry>-->
-      <!--<entry value="6">No Power-up</entry>-->
-      <!--<entry value="8">Star (8-15)</entry>-->
     </list>
     <checkbox nybble="7-8" title="Ignore Enemy Location" mask="255" comment="When enabled, the Event Controller will ignore the requirement to have at least one enemy within a Location ID when determining if it will modify the Target Event."/>
     <value nybble="7-8" title="Enemy Location ID" comment="The Target Event is only modified if there is at least one enemy sprite inside this Location ID." requirednybble="7-8" requiredval="0-254" idtype="Location" />
