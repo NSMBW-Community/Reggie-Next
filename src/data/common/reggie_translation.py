@@ -684,7 +684,7 @@ class ReggieTranslation:
                 15: 'Recent Files data:',
                 16: 'Clear Recent Files',
                 17: None, # REMOVED: 'Clear All Recent Files Data'
-                18: 'Are you sure you want to delete all recent files data? This [b]cannot[/b] be undone!',
+                18: 'Are you sure you want to clear all recent files? This cannot be undone.',
                 19: 'Current Area',
                 20: 'Reset',
                 21: 'Available Themes',

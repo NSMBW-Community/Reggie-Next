@@ -651,7 +651,7 @@
         <string id="15">Recent Files data:</string>
         <string id="16">Clear Recent Files</string>
         <string id="17" />
-        <string id="18">Are you sure you want to delete all recent files data? This [b]cannot[/b] be undone!</string>
+        <string id="18">Are you sure you want to clear all recent files? This cannot be undone.</string>
         <string id="19">Current Area</string>
         <string id="20">Reset</string>
         <string id="21">Available Themes</string>

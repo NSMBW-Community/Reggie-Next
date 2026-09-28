@@ -146,7 +146,7 @@ class GeneralTab(PreferenceTabWidget):
         """
         Handle the Clear Recent Files button being clicked
         """
-        ans = QtWidgets.QMessageBox.question(None, globals_.trans.string('PrefsDlg', 16), globals_.trans.string('PrefsDlg', 18),
+        ans = QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 16), globals_.trans.string('PrefsDlg', 18),
                                                 QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
         if ans != QtWidgets.QMessageBox.StandardButton.Yes:
             return
