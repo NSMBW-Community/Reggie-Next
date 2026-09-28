@@ -104,6 +104,11 @@ class ToolbarTab(PreferenceTabWidget):
         """
         This is called when the Reset button is clicked
         """
+        dlg = QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 77), globals_.trans.string('PrefsDlg', 78),
+                                            QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
+        if dlg != QtWidgets.QMessageBox.StandardButton.Yes:
+            return
+
         items = (
             (self.file_boxes, globals_.FileActions),
             (self.edit_boxes, globals_.EditActions),
