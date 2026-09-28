@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtWidgets
 
-import globals_
+from src.data import globals_
 from src.data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
 from src.ui.theme.reggie_theme import GetIcon
 

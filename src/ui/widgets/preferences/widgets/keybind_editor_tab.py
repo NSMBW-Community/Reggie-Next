@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets
 
-import globals_
+from src.data import globals_
 from src.data.common.loaders import GetKeybind, SetKeybind
 from src.ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
 

@@ -2,7 +2,7 @@ import collections
 
 from PyQt6 import QtWidgets
 
-import globals_
+from src.data import globals_
 from src.ui.widgets.preferences.widgets.keybind_editor_tab import KeybindEditorTab
 from src.ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
 from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget

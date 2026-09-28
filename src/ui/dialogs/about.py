@@ -1,7 +1,7 @@
 import os
 from PyQt6 import QtWidgets, QtGui
 
-import globals_
+from src.data import globals_
 
 class AboutDialog(QtWidgets.QDialog):
     """

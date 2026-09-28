@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtWidgets, QtGui
 import os
 
-import globals_
+from src.data import globals_
 from src.data.common.settings import setting
 from src.data.level.path import Path
 from src.data.level.items.comment import CommentItem

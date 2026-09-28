@@ -1,4 +1,4 @@
-import globals_
+from src.data import globals_
 
 
 class UndoStack:

@@ -3,7 +3,7 @@ from typing import cast
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import globals_
+from src.data import globals_
 import spritelib as SLib
 from src.data.level.items.basic import InstanceDefinition, LevelEditorItem
 from src.ui.theme.reggie_theme import setOverrideCursor

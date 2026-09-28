@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets, QtCore
 
-import globals_
+from src.data import globals_
 from src.ui.theme.reggie_theme import createHorzLine
 from src.data.level.dirty import SetDirty
 from src.data.common.loaders import LoadEntranceNames

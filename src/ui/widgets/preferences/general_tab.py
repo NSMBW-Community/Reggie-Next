@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtWidgets
 import os
 
-import globals_
+from src.data import globals_
 from src.data.common.settings import setting
 from src.data.common.reggie_translation import ReggieTranslation
 

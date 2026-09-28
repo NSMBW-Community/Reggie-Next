@@ -2,7 +2,7 @@ import struct
 
 from PyQt6 import QtWidgets
 
-import globals_
+from src.data import globals_
 import spritelib as SLib
 from src.data.common.loaders import CreateTilesets, LoadTileset
 from src.data.level.items.comment import CommentItem

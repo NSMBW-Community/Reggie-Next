@@ -2,7 +2,7 @@ import base64
 
 from PyQt6 import QtCore, QtWidgets
 
-import globals_
+from src.data import globals_
 from src.data.sprite.spritefield.list import ListSpriteField
 from src.data.sprite.spritefield.sprite_field import SpriteField
 from src.data.sprite.spritefield.value import ValueSpriteField

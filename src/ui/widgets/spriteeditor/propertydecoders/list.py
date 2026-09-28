@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtWidgets
 
-import globals_
+from src.data import globals_
 from src.data.common.list_property import ListPropertyModel
 from src.data.sprite.spritefield.list import ListSpriteField
 from src.ui.widgets.spriteeditor.abstract_sprite_editor import (

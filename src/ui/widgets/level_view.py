@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import globals_
+from src.data import globals_
 from src.data.level.dirty import SetDirty
 from src.data.level.items.comment import CommentItem
 from src.data.level.items.entrance import EntranceItem
@@ -644,7 +644,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
             QtCore.Qt.Key.Key_Up,
             QtCore.Qt.Key.Key_Down
         )
-        
+
         scene = self.scene()
         if event is None or scene is None or not globals_.MoveItemsWithArrowKeys or not scene.selectedItems() or event.key() not in arrow_keys:
             super().keyPressEvent(event)

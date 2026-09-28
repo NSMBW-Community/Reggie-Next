@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui
 
-import globals_
+from src.data import globals_
 from src.data.level.items.basic import LevelEditorItem
 from src.ui.theme.reggie_theme import setOverrideCursor
 

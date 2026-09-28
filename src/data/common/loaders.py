@@ -6,7 +6,7 @@ from xml.etree import ElementTree
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import globals_
+from src.data import globals_
 import spritelib as SLib
 from src.data.common.settings import delSetting, setSetting, setting
 from libs import lh, lib_versions, lz77, tpl

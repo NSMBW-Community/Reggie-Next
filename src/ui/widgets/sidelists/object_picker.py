@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import globals_
+from src.data import globals_
 from src.data.tileset.object.renderers import RenderObject
 from src.data.tileset.tile.tileset_tile import TilesetTile
 

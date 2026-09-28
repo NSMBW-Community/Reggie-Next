@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets, QtCore
 
-import globals_
+from src.data import globals_
 from src.ui.theme.reggie_theme import GetIcon, createHorzLine
 from src.ui.widgets.generic.custom_sortable_list_item import CustomSortableListWidgetItem
 from src.ui.layouts.camera_mode import CameraModeZoomSettingsLayout

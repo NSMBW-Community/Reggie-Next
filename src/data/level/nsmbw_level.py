@@ -1,4 +1,4 @@
-import globals_
+from src.data import globals_
 import spritelib as SLib
 from src.data.common import archive
 from src.data.level.abstract_level import AbstractLevel

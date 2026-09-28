@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtWidgets
 
-import globals_
+from src.data import globals_
 from src.data.common.utils import clamp
 
 

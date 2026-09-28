@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtWidgets
 
-import globals_
+from src.data import globals_
 from src.data.common.list_property import ListPropertyModel
 from src.data.sprite.spritefield.sprite_tex import SpriteTexSpriteField
 from src.ui.widgets.generic.int_spin_box import IntSpinBox

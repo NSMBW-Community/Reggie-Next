@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtWidgets
 
-import globals_
+from src.data import globals_
 from src.data.common.utils import find_first_available_id
 from src.data.sprite.spritefield.value import ValueSpriteField
 from src.ui.widgets.generic.int_spin_box import IntSpinBox

@@ -2,7 +2,7 @@ from PyQt6 import QtWidgets, QtGui
 from enum import IntEnum
 from typing import cast
 
-import globals_
+from src.data import globals_
 
 from src.data.level.dirty import SetDirty
 import spritelib as SLib

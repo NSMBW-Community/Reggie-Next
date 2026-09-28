@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui
 
-import globals_
+from src.data import globals_
 from src.data.level.items.basic import InstanceDefinition, LevelEditorItem
 from src.ui.theme.reggie_theme import setOverrideCursor
 from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther

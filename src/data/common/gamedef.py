@@ -7,7 +7,7 @@ import re
 
 from PyQt6 import QtWidgets
 
-import globals_
+from src.data import globals_
 import spritelib as SLib
 import sprites
 from src.data.common.settings import setSetting, setting

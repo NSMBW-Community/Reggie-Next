@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtWidgets
 
-import globals_
+from src.data import globals_
 from src.data.level.abstract_path import AbstractPath
 from src.data.level.items.path import PathItem
 from src.data.level.items.path_editor_line import PathEditorLineItem

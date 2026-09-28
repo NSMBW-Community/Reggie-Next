@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import globals_
+from src.data import globals_
 from src.data.level.dirty import SetDirty
 from src.data.level.items.sprite import SpriteItem
 from src.data.level.sprite_definition import SpriteDefinition

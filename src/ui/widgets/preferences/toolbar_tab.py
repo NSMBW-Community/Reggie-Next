@@ -1,7 +1,7 @@
 
 from PyQt6 import QtWidgets
 
-import globals_
+from src.data import globals_
 from src.data.common.settings import setting
 
 from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget

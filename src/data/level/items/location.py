@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import globals_
+from src.data import globals_
 from src.data.common.utils import clamp
 from src.data.level.dirty import SetDirty
 from src.data.level.items.basic import InstanceDefinition, LevelEditorItem

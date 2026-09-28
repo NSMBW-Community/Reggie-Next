@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import globals_
+from src.data import globals_
 import spritelib as SLib
 from src.data.level.dirty import SetDirty
 from src.data.level.items.basic import LevelEditorItem

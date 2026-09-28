@@ -2,7 +2,7 @@ import base64
 
 from PyQt6 import QtCore, QtWidgets
 
-import globals_
+from src.data import globals_
 from src.ui.widgets.sprite_table import SpriteTableWidget
 from src.data.level.items.sprite import SpriteItem
 from src.data.level.dirty import SetDirty

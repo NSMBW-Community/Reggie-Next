@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets
 
-import globals_
+from src.data import globals_
 from src.ui.theme.reggie_theme import GetIcon
 
 class ItemShiftDialog(QtWidgets.QDialog):

@@ -1,4 +1,4 @@
-import globals_
+from src.data import globals_
 from src.data.common.list_property import ListPropertyModel
 from src.data.sprite.spritefield.check_box import CheckBoxSpriteField
 from src.data.sprite.spritefield.dual_box import DualBoxSpriteField

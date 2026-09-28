@@ -1,7 +1,7 @@
 from PyQt6 import QtWidgets, QtGui
 import os
 
-import globals_
+from src.data import globals_
 from src.data.common.utils import clamp
 from src.ui.theme.reggie_theme import GetIcon
 

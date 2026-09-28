@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtWidgets
 
-from reggie import globals_
+from src.data import globals_
 from src.data.common.loaders import LoadSpriteCategories, LoadSpriteData
 from src.data.sprite.sprite_category import SpriteCategory
 

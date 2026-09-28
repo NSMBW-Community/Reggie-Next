@@ -83,7 +83,7 @@ import sprites
 import spritelib as SLib
 from sprites_common import LoadBasics
 
-import globals_
+from src.data import globals_
 
 ################################################################################
 ################################################################################
@@ -2974,7 +2974,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.DarkMode = dlg.appearance_tab.dark_mode.isChecked()
         globals_.TilesetTabPos = dlg.appearance_tab.tileset_tab_pos.currentIndex()
         globals_.UseFullFilepath = dlg.appearance_tab.full_file_path.isChecked()
-        globals_.CursorMode = dlg.appearance_tab.cursor_mode.currentIndex()    
+        globals_.CursorMode = dlg.appearance_tab.cursor_mode.currentIndex()
 
         setSetting('UseRoundedRectangles', globals_.UseRoundedRectangles)
         setSetting('DarkMode', globals_.DarkMode)

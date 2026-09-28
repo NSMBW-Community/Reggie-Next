@@ -1,4 +1,4 @@
-import globals_
+from src.data import globals_
 from src.ui.actions.undo.undo_action import UndoAction
 
 

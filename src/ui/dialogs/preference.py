@@ -3,7 +3,7 @@ import collections
 import os
 import typing
 
-import globals_
+from src.data import globals_
 from src.ui.theme.reggie_theme import GetIcon
 
 from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget

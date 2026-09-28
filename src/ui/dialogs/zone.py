@@ -1,7 +1,7 @@
 from PyQt6 import QtWidgets, QtCore
 from typing import cast
 
-import globals_
+from src.data import globals_
 from src.ui.theme.reggie_theme import GetIcon
 from src.data.level.items.zone import ZoneItem
 

@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui
 
-from reggie import globals_
+from src.data import globals_
 
 
 class Stamp:
