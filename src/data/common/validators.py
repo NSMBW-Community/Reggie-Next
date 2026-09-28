@@ -1,41 +1,8 @@
-from PyQt6 import QtWidgets
-import sys
 import os
-from xml.etree import ElementTree
 
-################################################################################
-################################################################################
-################################################################################
+from PyQt6 import QtWidgets
 
 from src.data import globals_
-
-################################################################################
-################################################################################
-################################################################################
-
-def module_path():
-    """
-    This will get us the program's directory, even if we are frozen using
-    PyInstaller.
-    """
-    if hasattr(sys, 'frozen') and hasattr(sys, '_MEIPASS'):  # PyInstaller
-        if sys.platform == 'darwin':  # macOS
-            # sys.executable is /x/y/z/reggie.app/Contents/MacOS/reggie
-            # We need to return /x/y/z/reggie.app/Contents/Resources/
-
-            macos = os.path.dirname(sys.executable)
-            if os.path.basename(macos) != 'MacOS':
-                return None
-
-            return os.path.join(os.path.dirname(macos), 'Resources')
-
-        else:  # Windows, Linux
-            return os.path.dirname(sys.executable)
-
-    if __name__ == 'misc':
-        return os.path.dirname(os.path.abspath(__file__))
-
-    return None
 
 
 def checkContent(data):
@@ -88,16 +55,6 @@ def FilesAreMissing():
         return True
 
     return False
-
-
-def SetGamePaths(new_stage_path, new_texture_path):
-    """
-    Sets the NSMBW game path
-    """
-    # os.path.join crashes if QStrings are used, so we must change the paths to
-    # a Python string manually
-    globals_.gamedef.SetStageGamePath(str(new_stage_path))
-    globals_.gamedef.SetTextureGamePath(str(new_texture_path))
 
 
 def areValidGamePaths(stage_check='ug', texture_check='ug'):

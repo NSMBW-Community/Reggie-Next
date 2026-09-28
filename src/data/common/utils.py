@@ -1,5 +1,7 @@
 import pickletools
 
+from src.data import globals_
+
 
 def align(x, boundary):
     rem = x % boundary
@@ -78,3 +80,13 @@ def DecodeOldReggieInfo(data, validKeys):
         raise ValueError('Wrong keys in level metadata: ' + str(set(levelinfo)))
 
     return levelinfo
+
+
+def SetGamePaths(new_stage_path, new_texture_path):
+    """
+    Sets the NSMBW game path
+    """
+    # os.path.join crashes if QStrings are used, so we must change the paths to
+    # a Python string manually
+    globals_.gamedef.SetStageGamePath(str(new_stage_path))
+    globals_.gamedef.SetTextureGamePath(str(new_texture_path))
