@@ -11,7 +11,7 @@ from src.data import globals_
 import spritelib as SLib
 import sprites
 from src.data.common.settings import setSetting, setting
-from sprites_common import LoadBasics
+from src.data.common.sprites import LoadBasics
 from src.data.common.loaders import (
     LoadBgANames,
     LoadBgBNames,

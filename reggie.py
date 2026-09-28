@@ -78,12 +78,12 @@ for v, c in zip(version, pqt_min):
 ################################################################################
 
 # Local imports
-from src.data.common import archive
-import sprites
-import spritelib as SLib
-from sprites_common import LoadBasics
-
 from src.data import globals_
+
+from src.data.common import archive
+import spritelib as SLib
+from src.data.common.sprites import LoadBasics
+
 
 ################################################################################
 ################################################################################

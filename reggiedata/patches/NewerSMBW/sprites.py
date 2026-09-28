@@ -7,7 +7,7 @@ from PyQt6 import QtCore, QtGui
 
 from src.data import globals_
 import spritelib as SLib
-import sprites_common as common
+import src.data.common.sprites as common
 
 Qt = QtCore.Qt
 ImageCache = SLib.ImageCache

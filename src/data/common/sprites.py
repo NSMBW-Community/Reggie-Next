@@ -23,7 +23,7 @@
 # along with Reggie Next.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# sprites_common.py
+# sprites.py
 # Contains code to render sprite images from different gamedefs.
 # Use this for base classes
 
