@@ -773,7 +773,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
 
             x_ = mw.selObj.objx + 16 if mw.selObj.objx is not None else 16
             y_ = mw.selObj.objy if mw.selObj.objy is not None else 0
-            mw.CreateSprite(x_, y_, id_, data=bytes(8))
+            SpriteItem.CreateSprite(x_, y_, id_, data=bytes(8))
 
             # remove this dependency, because it is now fulfilled.
             # get row of button

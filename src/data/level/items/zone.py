@@ -113,6 +113,35 @@ class ZoneItem(LevelEditorItem):
         globals_.DirtyOverride -= 1
         self.setZValue(50000)
 
+    @staticmethod
+    def CreateZone(x: int, y: int, width: int = 408, height: int = 224, id_: int | None = None, add_to_scene = True):
+        """
+        Creates and returns a new zone and makes sure it's added to the right
+        lists if 'add_to_scene' is set.
+        If 'id_' is not set, the current number of zones in this Area is used as
+        an id.
+        """
+        if id_ is None:
+            id_ = len(globals_.Area.zones) + 1
+
+        default_bounding = [[0, 0, 0, 0, 0, 15, 0, 0]]
+        default_bga = [[0, 2, 2, 0, 0, 10, 10, 10, 1]]
+        default_bgb = [[0, 1, 1, 0, 0, 10, 10, 10, 2]]
+
+        zone = ZoneItem(x, y, width, height, 0, 0, id_ - 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, default_bounding, default_bga, default_bgb)
+
+        if add_to_scene:
+            globals_.Area.zones.append(zone)
+            if globals_.mainWindow is not None:
+                globals_.mainWindow.scene.addItem(zone)
+
+                globals_.mainWindow.scene.update()
+                globals_.mainWindow.level_overview.update()
+
+            SetDirty()
+
+        return zone
+
     def UpdateTitle(self):
         """
         Updates the zone's title

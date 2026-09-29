@@ -4,7 +4,11 @@ import os
 from src.data import globals_
 from src.data.common.settings import setting
 from src.data.level.path import Path
+from src.data.level.items.location import LocationItem
 from src.data.level.items.comment import CommentItem
+from src.data.level.items.entrance import EntranceItem
+from src.data.level.items.sprite import SpriteItem
+from src.data.level.items.zone import ZoneItem
 from src.ui.widgets.level_view import LevelViewWidget
 from src.ui.theme.reggie_theme import ReggieTheme
 
@@ -186,23 +190,23 @@ class AppearanceTab(PreferenceTabWidget):
         globals_.GridType = types[grid_type]
 
         # Sprite [38] at (11, 4)
-        sprite = globals_.mainWindow.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(8), add_to_scene=False)
+        sprite = SpriteItem.CreateSprite(11 * 16, 4 * 16, 38, data=bytes(8), add_to_scene=False)
         scene.addItem(sprite)
 
         # Sprite [53] at (1, 6)
-        sprite = globals_.mainWindow.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(8), add_to_scene=False)
+        sprite = SpriteItem.CreateSprite(1 * 16, 6 * 16, 53, data=bytes(8), add_to_scene=False)
         scene.addItem(sprite)
 
         # Entrance [0] at (13, 8)
-        ent = globals_.mainWindow.CreateEntrance(13 * 16, 8 * 16, 0, add_to_scene=False)
+        ent = EntranceItem.CreateEntrance(13 * 16, 8 * 16, 0, add_to_scene=False)
         scene.addItem(ent)
 
         # Location [1] at (1, 9) size (6, 2)
-        loc = globals_.mainWindow.CreateLocation(1 * 16, 9 * 16, 6 * 16, 2 * 16, 1, add_to_scene=False)
+        loc = LocationItem.CreateLocation(1 * 16, 9 * 16, 6 * 16, 2 * 16, 1, add_to_scene=False)
         scene.addItem(loc)
 
         # Zone [1] at (8.5, 3.25) size (16, 7.5)
-        zone = globals_.mainWindow.CreateZone(8.5 * 16, 3.25 * 16, 16 * 16, int(7.5 * 16), id_=1, add_to_scene=False)
+        zone = ZoneItem.CreateZone(8.5 * 16, 3.25 * 16, 16 * 16, int(7.5 * 16), id_=1, add_to_scene=False)
         scene.addItem(zone)
 
         # Path [1] making a rectangle shape between (13, 5) and (18, 9)

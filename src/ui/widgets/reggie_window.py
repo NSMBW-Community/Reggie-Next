@@ -1,6 +1,3 @@
-from src.data.sprite.spritefield.list import ListSpriteField
-from src.data.sprite.spritefield.sprite_field import SpriteField
-from src.data.sprite.spritefield.value import ValueSpriteField
 from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 
 import os.path
@@ -19,7 +16,7 @@ from libs import lh, lib_versions, lz77
 from src.ui.theme.reggie_theme import GetIcon, SetColorScheme
 from src.ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
 from src.data.common.loaders import LoadMenuActions, LoadSpriteData, LoadTilesetInfo, LoadLevelNames, LoadSpriteCategories, LoadZoneThemes, GetKeybind, SetKeybind, module_path
-from src.data.common.utils import clamp, find_first_available_id, SetGamePaths
+from src.data.common.utils import clamp, SetGamePaths
 from src.data.common.validators import IsNSMBLevel, areValidGamePaths
 from src.ui.widgets.level_scene import LevelScene
 from src.ui.widgets.level_view import LevelViewWidget
@@ -42,7 +39,6 @@ from src.ui.widgets.sidelists.sprite_list import SpriteList
 from src.ui.widgets.sidelists.sprite_order import SpriteOrderList
 from src.ui.widgets.sidelists.sprite_picker import SpritePickerWidget
 from src.ui.widgets.sidelists.object_picker import ObjectPickerWidget
-from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 from src.ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
 from src.ui.actions.undo.undo_stack import UndoStack
 
@@ -1719,7 +1715,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     if width < 1 or width > 1023: continue
                     if height < 1 or height > 511: continue
 
-                    newitem = self.CreateObject(tileset, type, layer, objx, objy, width, height, add_to_scene)
+                    newitem = ObjectItem.CreateObject(tileset, type, layer, objx, objy, width, height, add_to_scene)
 
                     layers[layer].append(newitem)
 
@@ -1737,7 +1733,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                         # Unknown sprite, skip it
                         continue
 
-                    newitem = self.CreateSprite(objx, objy, type, data, add_to_scene)
+                    newitem = SpriteItem.CreateSprite(objx, objy, type, data, add_to_scene)
                     sprites.append(newitem)
 
                 # Entrance
@@ -1765,7 +1761,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     if path < 0 or path > 255: print(path); continue
                     if cPipeDir < 0 or cPipeDir > 3: print(cPipeDir); continue
 
-                    newitem = self.CreateEntrance(objx, objy, entID, add_to_scene, True)
+                    newitem = EntranceItem.CreateEntrance(objx, objy, entID, add_to_scene, True)
                     if newitem is None:
                         continue
 
@@ -1797,7 +1793,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     width = int(split[4])
                     height = int(split[5])
 
-                    newitem = self.CreateLocation(objx, objy, width, height, locID, add_to_scene)
+                    newitem = LocationItem.CreateLocation(objx, objy, width, height, locID, add_to_scene)
                     locations.append(newitem)
 
                 # Path
@@ -1950,244 +1946,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 initial_id = id_list[0]
 
         SpriteSwitchDialog(initial_id).exec()
-
-    def MergeLocations(self):
-        """
-        Merges selected sprite locations
-        """
-        items = self.scene.selectedItems()
-        if not items: return
-
-        new_rect = QtCore.QRectF()
-
-        type_loc = LocationItem
-        for obj in items:
-            if not isinstance(obj, type_loc):
-                continue
-
-            new_rect |= obj.ZoneRect
-
-            obj.delete()
-            obj.setSelected(False)
-            self.scene.removeItem(obj)
-            self.level_overview.update()
-            SetDirty()
-
-        if not new_rect.isValid():
-            return
-
-        loc_rect = new_rect.getRect()
-        loc = self.CreateLocation(loc_rect[0], loc_rect[1], int(loc_rect[2]), int(loc_rect[3]))
-        if loc is not None:
-            loc.setSelected(True)
-
-    ###########################################################################
-    # Functions that create items
-    ###########################################################################
-    # Maybe move these as static methods to their respective classes
-    def CreateLocation(self, x, y, width = 16, height = 16, id_ = None, add_to_scene = True):
-        """
-        Creates and returns a new location and makes sure it's added to the
-        right lists, unless 'add_to_scene' is set to False. If 'id' is None, the
-        smallest available id is used.
-        This function returns None if there is no free location id available, and
-        the created location otherwise.
-        """
-        if id_ is None:
-            # This can be done more efficiently, but 255 is not that big, so it
-            # does not really matter.
-            all_ids = set(loc.id for loc in globals_.Area.locations)
-            id_ = find_first_available_id(all_ids, 256, 1)
-
-            if id_ is None:
-                result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('MainWindow', 4), globals_.trans.string('MainWindow', 5),
-                                                       QtWidgets.QMessageBox.StandardButton.Ok)
-                if result == QtWidgets.QMessageBox.StandardButton.Ok:
-                    return None
-
-        globals_.OverrideSnapping = True
-        loc = LocationItem(x, y, width, height, id_)
-        globals_.OverrideSnapping = False
-
-        loc.positionChanged = self.HandleLocPosChange
-        loc.sizeChanged = self.HandleLocSizeChange
-        loc.listitem = ListWidgetItem_SortsByOther(loc)
-
-        if add_to_scene:
-            self.locationList.addItem(loc.listitem)
-            self.scene.addItem(loc)
-            globals_.Area.locations.append(loc)
-
-            loc.UpdateListItem()
-
-            # We've changed the level, so set the dirty flag
-            SetDirty()
-
-        return loc
-
-    def CreateObject(self, tileset: int, object_num: int, layer: int, x: int, y: int,
-                     width: int = 0, height: int = 0, add_to_scene = True):
-        """
-        Creates and returns a new object and makes sure it's added to
-        the right lists.
-        """
-        if width == 0 or height == 0:
-            if globals_.PlaceObjectsAtFullSize:
-                try:
-                    tile_def = globals_.ObjectDefinitions[tileset][object_num]
-                    if tile_def is not None:
-                        width = tile_def.width
-                        height = tile_def.height
-                except TypeError:  # Something was None
-                    width = height = 1
-            else:
-                width = height = 1
-
-        layer_list = globals_.Area.layers[layer]
-        if not layer_list:
-            z = (2 - layer) * 8192
-        else:
-            z = layer_list[-1].zValue() + 1
-
-        obj = ObjectItem(tileset, object_num, layer, x, y, width, height, z)
-
-        if add_to_scene:
-            layer_list.append(obj)
-            obj.positionChanged = self.HandleObjPosChange
-            self.scene.addItem(obj)
-
-            SetDirty()
-
-        return obj
-
-    def CreateEntrance(self, x, y, id_ = None, add_to_scene = True, allow_dupe_id = False):
-        """
-        Creates and returns a new entrance and makes sure it's added to the
-        right lists. This function returns None if this entrance could not be
-        created.
-        """
-        all_ids = set(ent.entid for ent in globals_.Area.entrances)
-        if id_ is None:
-            id_ = find_first_available_id(all_ids, 256)
-
-        if id_ is None:
-            result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('MainWindow', 2), globals_.trans.string('MainWindow', 3),
-                                                   QtWidgets.QMessageBox.StandardButton.Ok)
-            if result == QtWidgets.QMessageBox.StandardButton.Ok:
-                return None
-        elif id_ in all_ids and add_to_scene and not allow_dupe_id:
-            print("ReggieWindow#CreateEntrance: Given entrance id (%d) already in use" % id_)
-            return None
-
-        ent = EntranceItem(x, y, id_, 0, 0, 0, 0, 0, 0, 0x80, 0, 0)
-        ent.positionChanged = self.HandleEntPosChange
-        ent.listitem = ListWidgetItem_SortsByOther(ent)
-
-        if add_to_scene:
-            # If it's the first available ID, all the other indices should match, so
-            # we can just use the ID to insert.
-            self.entranceList.insertItem(id_, ent.listitem)
-            globals_.Area.entrances.insert(id_, ent)
-
-            self.scene.addItem(ent)
-            ent.UpdateListItem()
-
-            SetDirty()
-
-        return ent
-
-    def CreateSprite(self, x, y, id_ = None, data = None, add_to_scene = True):
-        """
-        Creates and returns a new sprite and makes sure it's added to the right
-        lists if 'add_to_scene' is set.
-        If 'id_' is not set, the currently selected sprite id is used.
-        If 'data' is not set, the current data of the default data editor is used.
-        If 'data' is not set and the default data editor is configured for another
-        sprite id than the id of the sprite that is created, a ValueError will
-        be raised.
-        """
-
-        if id_ is None:
-            id_ = globals_.CurrentSprite
-
-        if data is None:
-            if self.defaultDataEditor.spritetype != id_:
-                raise ValueError("The default data editor was configured for sprite id %d while trying to use data for sprite id %d" % (self.defaultDataEditor.spritetype, id_))
-
-            data = self.defaultDataEditor.data
-
-        spr = SpriteItem(id_, x, y, data)
-        spr.positionChanged = self.HandleSprPosChange
-
-        if add_to_scene:
-            # Check if sprite data exists for this type
-            if not (0 <= id_ < globals_.NumSprites) or globals_.Sprites[id_] is None:
-                # Unknown sprite, don't create
-                return
-
-            self.spriteList.addSprite(spr)
-            self.spriteOrder.addSprite(spr)
-            globals_.Area.sprites.append(spr)
-
-            # Add the ids for the idtype count
-            decoder = PropertyDecoder(SpriteField())
-            sdef = globals_.Sprites[id_]
-
-            # Find what values are used by this sprite
-            for field in sdef.fields:
-                if not isinstance(field, (ListSpriteField, ValueSpriteField)):
-                    # Only values and lists can be idtypes
-                    continue
-
-                idtype = field.idtype
-                if idtype is None:
-                    # Only look at settings with idtypes
-                    continue
-
-                value = decoder.retrieve(data, field.bit)
-
-                # 3. Add the value to self.sprite_idtypes
-                try:
-                    counter = globals_.Area.sprite_idtypes[idtype]
-                except KeyError:
-                    globals_.Area.sprite_idtypes[idtype] = {value: 1}
-                    continue
-
-                counter[value] = counter.get(value, 0) + 1
-
-            self.scene.addItem(spr)
-            spr.UpdateListItem()
-
-            SetDirty()
-
-        return spr
-
-    def CreateZone(self, x, y, width = 408, height = 224, id_ = None, add_to_scene = True):
-        """
-        Creates and returns a new zone and makes sure it's added to the right
-        lists if 'add_to_scene' is set.
-        If 'id_' is not set, the current number of zones in this Area is used as
-        an id.
-        """
-        if id_ is None:
-            id_ = len(globals_.Area.zones) + 1
-
-        default_bounding = [[0, 0, 0, 0, 0, 15, 0, 0]]
-        default_bga = [[0, 2, 2, 0, 0, 10, 10, 10, 1]]
-        default_bgb = [[0, 1, 1, 0, 0, 10, 10, 10, 2]]
-
-        zone = ZoneItem(x, y, width, height, 0, 0, id_ - 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, default_bounding, default_bga, default_bgb)
-
-        if add_to_scene:
-            globals_.Area.zones.append(zone)
-            self.scene.addItem(zone)
-
-            self.scene.update()
-            self.level_overview.update()
-
-            SetDirty()
-
-        return zone
 
     def HandleAddNewArea(self):
         """

@@ -7,6 +7,9 @@ from src.data import globals_
 import spritelib as SLib
 from src.data.level.items.basic import InstanceDefinition, LevelEditorItem
 from src.ui.theme.reggie_theme import setOverrideCursor
+from src.data.common.utils import find_first_available_id
+from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
+from src.data.level.dirty import SetDirty
 
 
 class InstanceDefinition_EntranceItem(InstanceDefinition):
@@ -192,6 +195,47 @@ class EntranceItem(LevelEditorItem):
         self.setZValue(27000)
         self.UpdateTooltip()
         self.UpdateRects()
+
+    @staticmethod
+    def CreateEntrance(x: int, y: int, id_: int | None = None, add_to_scene = True, allow_dupe_id = False):
+        """
+        Creates and returns a new entrance and makes sure it's added to the
+        right lists. This function returns None if this entrance could not be
+        created.
+        """
+        if globals_.mainWindow is None:
+            return None
+
+        all_ids = set(ent.entid for ent in globals_.Area.entrances)
+        if id_ is None:
+            id_ = find_first_available_id(all_ids, 256)
+
+        if id_ is None:
+            result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('MainWindow', 2), globals_.trans.string('MainWindow', 3),
+                                                    QtWidgets.QMessageBox.StandardButton.Ok)
+            if result == QtWidgets.QMessageBox.StandardButton.Ok:
+                return None
+        elif id_ in all_ids and add_to_scene and not allow_dupe_id:
+            print("EntranceItem#CreateEntrance: Given entrance id (%d) already in use" % id_)
+            return None
+
+        ent = EntranceItem(x, y, id_, 0, 0, 0, 0, 0, 0, 0x80, 0, 0)
+        ent.positionChanged = globals_.mainWindow.HandleEntPosChange
+        ent.listitem = ListWidgetItem_SortsByOther(ent)
+
+        if add_to_scene:
+            # If it's the first available ID, all the other indices should match, so
+            # we can just use the ID to insert.
+            if isinstance(id_, int):
+                globals_.mainWindow.entranceList.insertItem(id_, ent.listitem)
+                globals_.Area.entrances.insert(id_, ent)
+
+            globals_.mainWindow.scene.addItem(ent)
+            ent.UpdateListItem()
+
+            SetDirty()
+
+        return ent
 
     def UpdateTooltip(self):
         """

@@ -11,6 +11,11 @@ from src.data.level.items.object import ObjectItem
 from src.ui.actions.undo.move_item import MoveItemUndoAction
 from src.ui.theme.reggie_theme import setOverrideCursor
 
+from src.data.sprite.spritefield.sprite_field import SpriteField
+from src.data.sprite.spritefield.list import ListSpriteField
+from src.data.sprite.spritefield.value import ValueSpriteField
+from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
+
 
 class InstanceDefinition_SpriteItem(InstanceDefinition):
     """
@@ -78,6 +83,75 @@ class SpriteItem(LevelEditorItem):
                 self.objy * 1.5,
             )
         globals_.DirtyOverride -= 1
+
+    @staticmethod
+    def CreateSprite(x: int, y: int, id_: int | None = None, data = None, add_to_scene = True):
+        """
+        Creates and returns a new sprite and makes sure it's added to the right
+        lists if 'add_to_scene' is set.
+        If 'id_' is not set, the currently selected sprite id is used.
+        If 'data' is not set, the current data of the default data editor is used.
+        If 'data' is not set and the default data editor is configured for another
+        sprite id than the id of the sprite that is created, a ValueError will
+        be raised.
+        """
+        if globals_.mainWindow is None:
+            return None
+
+        if id_ is None:
+            id_ = globals_.CurrentSprite
+
+        if data is None:
+            if globals_.mainWindow.defaultDataEditor.spritetype != id_:
+                raise ValueError(f'The default data editor was configured for sprite {globals_.mainWindow.defaultDataEditor.spritetype} while trying to use data for sprite {id_}')
+
+            data = globals_.mainWindow.defaultDataEditor.data
+
+        spr = SpriteItem(id_, x, y, data)
+        spr.positionChanged = globals_.mainWindow.HandleSprPosChange
+
+        if add_to_scene:
+            # Check if sprite data exists for this type
+            if not (0 <= id_ < globals_.NumSprites) or globals_.Sprites[id_] is None:
+                # Unknown sprite, don't create
+                return
+
+            globals_.mainWindow.spriteList.addSprite(spr)
+            globals_.mainWindow.spriteOrder.addSprite(spr)
+            globals_.Area.sprites.append(spr)
+
+            # Add the ids for the idtype count
+            decoder = PropertyDecoder(SpriteField())
+            sdef = globals_.Sprites[id_]
+
+            # Find what values are used by this sprite
+            for field in sdef.fields:
+                if not isinstance(field, (ListSpriteField, ValueSpriteField)):
+                    # Only values and lists can be idtypes
+                    continue
+
+                idtype = field.idtype
+                if idtype is None:
+                    # Only look at settings with idtypes
+                    continue
+
+                value = decoder.retrieve(data, field.bit)
+
+                # 3. Add the value to self.sprite_idtypes
+                try:
+                    counter = globals_.Area.sprite_idtypes[idtype]
+                except KeyError:
+                    globals_.Area.sprite_idtypes[idtype] = {value: 1}
+                    continue
+
+                counter[value] = counter.get(value, 0) + 1
+
+            globals_.mainWindow.scene.addItem(spr)
+            spr.UpdateListItem()
+
+            SetDirty()
+
+        return spr
 
     def SetType(self, sprite_num):
         """
@@ -424,7 +498,7 @@ class SpriteItem(LevelEditorItem):
 
             return
 
-        globals_.mainWindow.CreateSprite(self.objx, self.objy, self.sprite_num, self.spritedata)
+        self.CreateSprite(self.objx, self.objy, self.sprite_num, self.spritedata)
         globals_.mainWindow.scene.clearSelection()
         self.setSelected(True)
 

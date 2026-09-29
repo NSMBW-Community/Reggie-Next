@@ -1,10 +1,11 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from src.data import globals_
-from src.data.common.utils import clamp
+from src.data.common.utils import clamp, find_first_available_id
 from src.data.level.dirty import SetDirty
 from src.data.level.items.basic import InstanceDefinition, LevelEditorItem
 from src.ui.theme.reggie_theme import setOverrideCursor
+from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 
 
 class InstanceDefinition_LocationItem(InstanceDefinition):
@@ -62,6 +63,85 @@ class LocationItem(LevelEditorItem):
 
         self.dragging = False
         self.setZValue(24000)
+
+    @staticmethod
+    def CreateLocation(x, y, width = 16, height = 16, id_ = None, add_to_scene = True):
+        """
+        Creates and returns a new location and makes sure it's added to the
+        right lists, unless 'add_to_scene' is set to False. If 'id' is None, the
+        smallest available id is used.
+        This function returns None if there is no free location id available, and
+        the created location otherwise.
+        """
+        if globals_.mainWindow is None:
+            return None
+
+        if id_ is None:
+            # This can be done more efficiently, but 255 is not that big, so it
+            # does not really matter.
+            all_ids = set(loc.id for loc in globals_.Area.locations)
+            id_ = find_first_available_id(all_ids, 256, 1)
+
+            if id_ is None:
+                result = QtWidgets.QMessageBox.warning(None, globals_.trans.string('MainWindow', 4), globals_.trans.string('MainWindow', 5),
+                                                        QtWidgets.QMessageBox.StandardButton.Ok)
+                if result == QtWidgets.QMessageBox.StandardButton.Ok:
+                    return None
+
+        globals_.OverrideSnapping = True
+        loc = LocationItem(x, y, width, height, id_)
+        globals_.OverrideSnapping = False
+
+        loc.positionChanged = globals_.mainWindow.HandleLocPosChange
+        loc.sizeChanged = globals_.mainWindow.HandleLocSizeChange
+        loc.listitem = ListWidgetItem_SortsByOther(loc)
+
+        if add_to_scene:
+            globals_.mainWindow.locationList.addItem(loc.listitem)
+            globals_.mainWindow.scene.addItem(loc)
+            globals_.Area.locations.append(loc)
+
+            loc.UpdateListItem()
+
+            # We've changed the level, so set the dirty flag
+            SetDirty()
+
+        return loc
+
+    @staticmethod
+    def MergeLocations():
+        """
+        Merges selected locations into a single one
+        """
+        if globals_.mainWindow is None:
+            return
+
+        items = globals_.mainWindow.scene.selectedItems()
+        if not items:
+            return
+
+        new_rect = QtCore.QRectF()
+
+        type_loc = LocationItem
+        for obj in items:
+            if not isinstance(obj, type_loc):
+                continue
+
+            new_rect |= obj.ZoneRect
+
+            obj.delete()
+            obj.setSelected(False)
+            globals_.mainWindow.scene.removeItem(obj)
+            globals_.mainWindow.level_overview.update()
+            SetDirty()
+
+        if not new_rect.isValid():
+            return
+
+        loc_rect = new_rect.getRect()
+        loc = LocationItem.CreateLocation(loc_rect[0], loc_rect[1], int(loc_rect[2]), int(loc_rect[3]))
+        if loc is not None:
+            loc.setSelected(True)
 
     def ListString(self):
         """
@@ -166,7 +246,7 @@ class LocationItem(LevelEditorItem):
 
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
             if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
-                new_item = globals_.mainWindow.CreateLocation(
+                new_item = self.CreateLocation(
                     self.objx, self.objy, self.width, self.height, self.id
                 )
 

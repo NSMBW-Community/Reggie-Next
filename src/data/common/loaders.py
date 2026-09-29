@@ -24,6 +24,7 @@ from src.data.tileset.tile.rand_tile_selection import RandTileSelection
 from src.data.tileset.tile.tileset_tile import TilesetTile
 from src.data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
 from src.ui.theme.reggie_theme import ReggieTheme, GetIcon
+from src.data.level.items.location import LocationItem
 
 
 def getResourcePaths(res_name):
@@ -753,7 +754,7 @@ def LoadMenuActions(mw):
             globals_.trans.stringOneLine('MenuItems', 33), GetKeybind('shiftitems')
         ),
         MenuAction(
-            'mergelocations', mw.MergeLocations, GetIcon('merge'), globals_.trans.stringOneLine('MenuItems', 34),
+            'mergelocations', LocationItem.MergeLocations, GetIcon('merge'), globals_.trans.stringOneLine('MenuItems', 34),
             globals_.trans.stringOneLine('MenuItems', 35), GetKeybind('mergelocations')
         ),
         MenuAction(

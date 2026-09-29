@@ -2,6 +2,7 @@ from PyQt6 import QtCore, QtWidgets
 
 from src.data import globals_
 from src.data.level.items.basic import InstanceDefinition
+from src.data.level.items.sprite import SpriteItem
 from src.ui.theme.reggie_theme import GetIcon
 
 
@@ -283,7 +284,7 @@ class ResizeChoiceDialog(QtWidgets.QDialog):
         y = selObj.objy if selObj.objy is not None else 0
         special_event_id = globals_.SpecialEventSpriteID
 
-        if mainWindow.CreateSprite(x, y, special_event_id, data) is not None:
+        if SpriteItem.CreateSprite(x, y, special_event_id, data) is not None:
             mainWindow.scene.update()
 
     def getGlobalScale(self):

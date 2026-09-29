@@ -104,6 +104,45 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
         self.updateObjCache()
         self.UpdateTooltip()
 
+    @staticmethod
+    def CreateObject(tileset: int, object_num: int, layer: int, x: int, y: int,
+                     width: int = 0, height: int = 0, add_to_scene = True):
+        """
+        Creates and returns a new object and makes sure it's added to
+        the right lists.
+        """
+        if globals_.mainWindow is None:
+            return None
+
+        if width == 0 or height == 0:
+            if globals_.PlaceObjectsAtFullSize:
+                try:
+                    tile_def = globals_.ObjectDefinitions[tileset][object_num]
+                    if tile_def is not None:
+                        width = tile_def.width
+                        height = tile_def.height
+                except TypeError:  # Something was None
+                    width = height = 1
+            else:
+                width = height = 1
+
+        layer_list = globals_.Area.layers[layer]
+        if not layer_list:
+            z = (2 - layer) * 8192
+        else:
+            z = layer_list[-1].zValue() + 1
+
+        obj = ObjectItem(tileset, object_num, layer, x, y, width, height, z)
+
+        if add_to_scene:
+            layer_list.append(obj)
+            obj.positionChanged = globals_.mainWindow.HandleObjPosChange
+            globals_.mainWindow.scene.addItem(obj)
+
+            SetDirty()
+
+        return obj
+
     def SetType(self, tileset, object_num):
         """
         Sets the type of the object
@@ -487,7 +526,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
 
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
             if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
-                new_item = globals_.mainWindow.CreateObject(
+                new_item = self.CreateObject(
                     self.tileset, self.object_num, self.layer, self.objx,
                     self.objy, self.width, self.height
                 )

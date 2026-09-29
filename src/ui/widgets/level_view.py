@@ -75,7 +75,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int(clicked.x() / 24)
                 clickedy = int(clicked.y() / 24)
 
-                obj = globals_.mainWindow.CreateObject(
+                obj = ObjectItem.CreateObject(
                     globals_.CurrentPaintType, globals_.CurrentObject, globals_.CurrentLayer,
                     clickedx, clickedy
                 )
@@ -90,7 +90,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int((clicked.x() - 12) / 12) * 8
                 clickedy = int((clicked.y() - 12) / 12) * 8
 
-                spr = globals_.mainWindow.CreateSprite(clickedx, clickedy, globals_.CurrentSprite)
+                spr = SpriteItem.CreateSprite(clickedx, clickedy, globals_.CurrentSprite)
                 if spr is not None:
                     spr.UpdateDynamicSizing()
 
@@ -108,7 +108,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int((clicked.x() - 12) / 1.5)
                 clickedy = int((clicked.y() - 12) / 1.5)
 
-                ent = globals_.mainWindow.CreateEntrance(clickedx, clickedy)
+                ent = EntranceItem.CreateEntrance(clickedx, clickedy)
 
                 self.dragstamp = False
                 self.currentobj = ent
@@ -180,7 +180,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int(clicked.x() / 1.5)
                 clickedy = int(clicked.y() / 1.5)
 
-                loc = globals_.mainWindow.CreateLocation(clickedx, clickedy)
+                loc = LocationItem.CreateLocation(clickedx, clickedy)
 
                 self.dragstamp = False
                 self.currentobj = loc

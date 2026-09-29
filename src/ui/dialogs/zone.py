@@ -69,7 +69,7 @@ class ZonesDialog(QtWidgets.QDialog):
         if globals_.mainWindow is None:
             return
 
-        zone = globals_.mainWindow.CreateZone(256, 256)
+        zone = ZoneItem.CreateZone(256, 256)
         tabName = globals_.trans.string('ZonesDlg', 3, '[num]', zone.id + 1)
 
         tab = ZoneTab(zone)
@@ -93,7 +93,7 @@ class ZonesDialog(QtWidgets.QDialog):
         if globals_.mainWindow is None:
             return
 
-        z = globals_.mainWindow.CreateZone(256, 256)
+        z = ZoneItem.CreateZone(256, 256)
         widget = cast(ZoneTab, self.tabWidget.widget(self.tabWidget.currentIndex()))
         widget.copyZoneData(z, self.tabWidget.currentIndex())
 

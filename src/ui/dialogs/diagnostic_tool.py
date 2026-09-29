@@ -390,7 +390,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
 
             if globals_.mainWindow is not None:
                 for id_, x, y in add_sprites:
-                    globals_.mainWindow.CreateSprite(x, y, id_, bytes(8))
+                    SpriteItem.CreateSprite(x, y, id_, bytes(8))
 
                 globals_.mainWindow.scene.update()
 
@@ -469,7 +469,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
         elif problem:
             if globals_.mainWindow is not None:
                 # TODO: Maybe place it 6 blocks right, 3 blocks up from Zone 1's bottom-left corner?
-                globals_.mainWindow.CreateEntrance(1024, 512, globals_.Area.startEntrance)
+                EntranceItem.CreateEntrance(1024, 512, globals_.Area.startEntrance)
 
     def check_entrance_near_edge(self, mode):
         """
@@ -588,8 +588,7 @@ class DiagnosticToolDialog(QtWidgets.QDialog):
             return
 
         # Make a default zone
-        if globals_.mainWindow is not None:
-            globals_.mainWindow.CreateZone(16, 16)
+        ZoneItem.CreateZone(16, 16)
 
     def check_zone_proximity(self, mode):
         """
