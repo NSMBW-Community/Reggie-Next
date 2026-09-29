@@ -706,6 +706,9 @@ def update_sprites_module(filename: str):
         for pattern, replace in block_content_strings:
             new_data = re.sub(pattern, replace, new_data)
 
+        # Fix old sprites_common imports
+        new_data = new_data.replace("import sprites_common", "import src.data.common.sprites")
+
         # All done, save the file
         with open(filename, 'w') as file_out:
             file_out.write(new_data)
