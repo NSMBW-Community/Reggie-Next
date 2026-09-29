@@ -335,7 +335,7 @@ class ReggieTranslation:
             'Err_MissingFiles': {
                 0: 'Error',
                 1: 'Sorry, you seem to be missing the required data files for Reggie Next to work. Please redownload your copy of the editor.',
-                2: 'Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor. These are the files you are missing: [files]',
+                2: 'Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor.[br][br]These are the files you are missing:[br][files]',
             },
             'Err_MissingTileset': {
                 0: 'Error',
@@ -1249,16 +1249,16 @@ class ReggieTranslation:
         try:
             return self.string_(name, numcode, *args)
         except Exception as e:
-            text = '\nReggieTranslation.string() ERROR: ' + str(numcode) + '; ' + str(args[0]) + '; ' + repr(e) + '\n'
-            # do 3 things with the text - print it, save it to ReggieErrors.txt, return it
+            text = '\n\nReggieTranslation.string() ERROR: ' + str(numcode) + '; ' + str(args[0]) + '; ' + repr(e) + '\n'
+            # do 3 things with the text - print it, write it to the error log, return it
             print(text)
 
-            if not os.path.isfile('ReggieErrors.txt'):
+            if not os.path.isfile('log.txt'):
                 mode = 'w'
             else:
                 mode = 'a'
 
-            with open('ReggieErrors.txt', mode, encoding='utf-8') as f:
+            with open('log.txt', mode, encoding='utf-8') as f:
                 f.write(text)
 
             return text
@@ -1311,7 +1311,7 @@ class ReggieTranslation:
     def stringOneLine(self, name: str, numcode: int, *args: Any) -> str | None:
         """
         Works like string(), but guarantees that the resulting string will have
-        no line breaks or <br>s.
+        no line breaks or \\<br>'s.
         """
         newstr = self.string(name, numcode, *args)
         if newstr is None:

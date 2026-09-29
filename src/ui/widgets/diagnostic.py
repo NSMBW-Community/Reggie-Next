@@ -6,11 +6,6 @@ from src.ui.theme.reggie_theme import GetIcon
 
 from src.ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 
-# TODO:
-# Add some proper functionality for this
-# Make it check for issues every 5 (or 10?) seconds
-# Have it say the number of issues found, clicking on it opens diag tool
-# Make it a togglable option in the preferences
 class DiagnosticWidget(QtWidgets.QWidget):
     """
     Widget for the auto-diagnostic tool
@@ -54,7 +49,7 @@ class DiagnosticWidget(QtWidgets.QWidget):
         if not globals_.AutoDiagEnabled or globals_.AutoDiagFrequency == 0:
             return
 
-        # Frequencies (in seconds)
+        # Frequencies (in milliseconds)
         timer_values = [
             5000,
             10000,

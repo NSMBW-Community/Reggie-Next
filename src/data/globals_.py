@@ -10,6 +10,7 @@ from src.data.level.area import Area as AreaType
 from src.data.level.sprite_definition import SpriteDefinition
 from src.data.common.keybind import Keybind
 from src.data.common.menu_action import MenuAction
+from src.data.common.toolbar_action import ToolbarAction
 from src.data.tileset.tile.rand_tile_selection import RandTileSelection
 from src.data.sprite.sprite_category import SpriteCategory
 from src.data.tileset.tileset_category import TilesetCategory
@@ -45,11 +46,13 @@ UseFullFilepath = False
 UseRecentFileKeys = True
 
 # Menu
-EditActions: tuple[MenuAction, ...] = ()
-FileActions: tuple[MenuAction, ...] = ()
-HelpActions: tuple[MenuAction, ...] = ()
-SettingsActions: tuple[MenuAction, ...] = ()
-ViewActions: tuple[MenuAction, ...] = ()
+EditActions: tuple[ToolbarAction, ...] = ()
+FileActions: tuple[ToolbarAction, ...] = ()
+HelpActions: tuple[ToolbarAction, ...] = ()
+SettingsActions: tuple[ToolbarAction, ...] = ()
+ViewActions: tuple[ToolbarAction, ...] = ()
+
+MenuActions: tuple[MenuAction, ...] = ()
 
 # Keybinds
 FileKeybinds: list[Keybind]
