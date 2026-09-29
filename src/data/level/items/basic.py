@@ -1,5 +1,6 @@
 from typing import cast
 
+import base64
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from src.data import globals_
@@ -11,7 +12,6 @@ from src.data.level.items.path_editor_line import PathEditorLineItem
 from src.ui.actions.undo.move_item import MoveItemUndoAction
 from src.ui.actions.undo.simultaneous import SimultaneousUndoAction
 from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
-
 
 class InstanceDefinition:
     """
