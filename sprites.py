@@ -189,9 +189,9 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage):  # 30, 81, 82, 83, 84, 85, 86
         size = self.parent.spritedata[5]
         height = (size & 0xF0) >> 4
         width = size & 0xF
-        if self.parent.type == 30:
-            height = 1 if height == 0 else height
-            width = 1 if width == 0 else width
+        height = 1 if height == 0 else height
+        width = 1 if width == 0 else width
+
         self.width = width * 16 + 16
         self.height = height * 16 + 16
 
@@ -232,7 +232,6 @@ class SpriteImage_OldStoneBlock(SLib.SpriteImage):  # 30, 81, 82, 83, 84, 85, 86
     def paint(self, painter):
         blockX = 0
         blockY = 0
-        _type = self.parent.type
         width = self.width * 1.5
         height = self.height * 1.5
 

@@ -250,11 +250,11 @@
   <sprite id="29" name="Incomplete Sprite - AC_LIFT_OBJBG_HMOVE_BIG" notes="This sprite does not load. Settings are the same as in sprite 28. We're currently unsure why this sprite does not load.&lt;br&gt;Needs RE (reverse-engineering) data to figure out the issue." files="lift_zen.arc">
   </sprite> <!-- #29: Incomplete Sprite - AC_LIFT_OBJBG_HMOVE_BIG -->
 
-  <sprite id="30" name="Grey Tiled Block" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc">
-    <value nybble="11" title="Height">
+  <sprite id="30" name="(Unused) Moving Stone Block" notes="This is a resizable stone block that was not used in the retail game. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc">
+    <value nybble="11" start="1" title="Height">
       <override index="0" value="2"/>
     </value>
-    <value nybble="12" title="Width">
+    <value nybble="12" start="1" title="Width">
       <override index="0" value="2"/>
     </value>
     <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
@@ -275,7 +275,7 @@
     </list>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated, for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
     <value nybble="3.2-4.4" title="Triggering Event ID" comment="This determines which Event must be activated for the platform to appear." requirednybble="5.4" idtype="Triggering Event"/>
-  </sprite> <!-- #30: Grey Tiled Block -->
+  </sprite> <!-- #30: (Unused) Moving Stone Block -->
 
   <sprite id="31" name="Basic Platform - Vertical Movement" notes="The most basic platform in the game. Moves on its own, upwards and downwards." files="lift_han_wood.arc;lift_han_stone.arc;boss_koopa_lift.arc;boss_koopa_lift_down.arc">
     <dualbox nybble="7.3" title1="Normal Model" title2="boss_koopa_lift.arc" advancedcomment="Instead of the normal model, a texture from boss_koopa_lift.arc can be used. Replacing this model will result in custom textures for the platform."/>
@@ -820,9 +820,13 @@
   <sprite id="80" name="Fire Bro" notes="A standard Brothers enemy that shoots fireballs at the player." files="bros.arc">
   </sprite> <!-- #80: Fire Bro -->
 
-  <sprite id="81" name="Grey Tiled Block with Spikes - Left" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
-    <value nybble="11" start="1" title="Height" comment="This determines how tall the block is."/>
-    <value nybble="12" start="1" title="Width" comment="This determines how wide the block is."/>
+  <sprite id="81" name="(Unused) Moving Stone Block with Spikes - Left" notes="This is a resizable spiked stone block that was not used in the retail game. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
+    <value nybble="12" start="1" title="Width">
+      <override index="0" value="2"/>
+    </value>
+    <value nybble="11" start="1" title="Height">
+      <override index="0" value="2"/>
+    </value>
     <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -841,11 +845,15 @@
     </list>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
     <value nybble="3.2-4.4" title="Triggering Event ID" requirednybble="5.4" idtype="Triggering Event"/>
-  </sprite> <!-- #81: Grey Tiled Block with Spikes - Left -->
+  </sprite> <!-- #81: (Unused) Moving Stone Block with Spikes - Left -->
 
-  <sprite id="82" name="Grey Tiled Block with Spikes - Right" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
-    <value nybble="11" start="1" title="Height" comment="This determines how tall the block is."/>
-    <value nybble="12" start="1" title="Width" comment="This determines how wide the block is."/>
+  <sprite id="82" name="(Unused) Moving Stone Block with Spikes - Right" notes="This is a resizable spiked stone block that was not used in the retail game. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
+    <value nybble="12" start="1" title="Width">
+      <override index="0" value="2"/>
+    </value>
+    <value nybble="11" start="1" title="Height">
+      <override index="0" value="2"/>
+    </value>
     <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -864,11 +872,15 @@
     </list>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
     <value nybble="3.2-4.4" title="Triggering Event ID" requirednybble="5.4" idtype="Triggering Event"/>
-  </sprite> <!-- #82: Grey Tiled Block with Spikes - Right -->
+  </sprite> <!-- #82: (Unused) Moving Stone Block with Spikes - Right -->
 
-  <sprite id="83" name="Grey Tiled Block with Spikes - Left + Right" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
-    <value nybble="11" start="1" title="Height" comment="This determines how tall the block is."/>
-    <value nybble="12" start="1" title="Width" comment="This determines how wide the block is."/>
+  <sprite id="83" name="(Unused) Moving Stone Block with Spikes - Left + Right" notes="This is a resizable spiked stone block that was not used in the retail game. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
+    <value nybble="12" start="1" title="Width">
+      <override index="0" value="2"/>
+    </value>
+    <value nybble="11" start="1" title="Height">
+      <override index="0" value="2"/>
+    </value>
     <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -887,11 +899,15 @@
     </list>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
     <value nybble="3.2-4.4" title="Triggering Event ID" requirednybble="5.4" idtype="Triggering Event"/>
-  </sprite> <!-- #83: Grey Tiled Block with Spikes - Left + Right -->
+  </sprite> <!-- #83: (Unused) Moving Stone Block with Spikes - Left + Right -->
 
-  <sprite id="84" name="Grey Tiled Block with Spikes - Top" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
-    <value nybble="11" start="1" title="Height" comment="This determines how tall the block is."/>
-    <value nybble="12" start="1" title="Width" comment="This determines how wide the block is."/>
+  <sprite id="84" name="(Unused) Moving Stone Block with Spikes - Top" notes="This is a resizable spiked stone block that was not used in the retail game. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
+    <value nybble="12" start="1" title="Width">
+      <override index="0" value="2"/>
+    </value>
+    <value nybble="11" start="1" title="Height">
+      <override index="0" value="2"/>
+    </value>
     <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -910,11 +926,15 @@
     </list>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
     <value nybble="3.2-4.4" title="Triggering Event ID" requirednybble="5.4" idtype="Triggering Event"/>
-  </sprite> <!-- #84: Grey Tiled Block with Spikes - Top -->
+  </sprite> <!-- #84: (Unused) Moving Stone Block with Spikes - Top -->
 
-  <sprite id="85" name="Grey Tiled Block with Spikes - Bottom" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
-    <value nybble="11" start="1" title="Height" comment="This determines how tall the block is."/>
-    <value nybble="12" start="1" title="Width" comment="This determines how wide the block is."/>
+  <sprite id="85" name="(Unused) Moving Stone Block with Spikes - Bottom" notes="This is a resizable spiked stone block that was not used in the retail game. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
+    <value nybble="12" start="1" title="Width">
+      <override index="0" value="2"/>
+    </value>
+    <value nybble="11" start="1" title="Height">
+      <override index="0" value="2"/>
+    </value>
     <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -933,11 +953,15 @@
     </list>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
     <value nybble="3.2-4.4" title="Triggering Event ID" requirednybble="5.4" idtype="Triggering Event"/>
-  </sprite> <!-- #85: Grey Tiled Block with Spikes - Bottom -->
+  </sprite> <!-- #85: (Unused) Moving Stone Block with Spikes - Bottom -->
 
-  <sprite id="86" name="Grey Tiled Block with Spikes - Top + Bottom" notes="This is a resizable stone block that was not used in retail NSMBW. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
-    <value nybble="11" start="1" title="Height" comment="This determines how tall the block is."/>
-    <value nybble="12" start="1" title="Width" comment="This determines how wide the block is."/>
+  <sprite id="86" name="(Unused) Moving Stone Block with Spikes - Top + Bottom" notes="This is a resizable spiked stone block that was not used in the retail game. Be aware that you cannot synchronize this block for level-wide timing purposes." files="lift_intore.arc;lift_zen.arc">
+    <value nybble="12" start="1" title="Width">
+      <override index="0" value="2"/>
+    </value>
+    <value nybble="11" start="1" title="Height">
+      <override index="0" value="2"/>
+    </value>
     <list nybble="6.3-6.4" title="Movement Direction" comment="This determines the initial direction the block will travel.">
       <entry value="0">Right</entry>
       <entry value="1">Left</entry>
@@ -956,9 +980,9 @@
     </list>
     <checkbox nybble="5.4" title="Event Activated" comment="When enabled, the block will only appear if the Triggering Event ID is activated." comment2="Note: The block will not disappear when the event is deactivated for as long as it remains loaded on screen. The player must place enough distance between them and the block's spawning location for it to despawn."/>
     <value nybble="3.2-4.4" title="Triggering Event ID" requirednybble="5.4" idtype="Triggering Event"/>
-  </sprite> <!-- #86: Grey Tiled Block with Spikes - Top + Bottom -->
+  </sprite> <!-- #86: (Unused) Moving Stone Block with Spikes - Top + Bottom -->
 
-  <sprite id="87" name="(Unused) Trampoline Wall" notes="This sprite lacks finished textures and as such, is incomplete. Upon contact, the player is thrust in the opposite direction.&lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;This sprite is not recommended for normal use at this time.&lt;/font&gt;" files="test_lift.arc">
+  <sprite id="87" name="(Unused) Trampoline Wall" notes="Upon contact with this wall, the player is bounced in the opposite direction." files="test_lift.arc">
     <value start="1" nybble="12" title="Height" comment="This determines how tall the Trampoline Wall is."/>
   </sprite> <!-- #87 (Unused) Trampoline Wall -->
 
