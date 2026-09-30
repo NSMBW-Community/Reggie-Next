@@ -80,11 +80,6 @@ class ToolbarTab(PreferenceTabWidget):
 
             group.setLayout(layout)
 
-        # Create the always-enabled Current Area checkbox
-        current_area = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 19))
-        current_area.setChecked(True)
-        current_area.setEnabled(False)
-
         # Create the Reset button
         reset = QtWidgets.QPushButton(globals_.trans.string('PrefsDlg', 20))
         reset.clicked.connect(self.reset)
@@ -97,7 +92,6 @@ class ToolbarTab(PreferenceTabWidget):
         L.addWidget(view_box, 1, 2, 3, 1)
         L.addWidget(settings_box, 1, 3, 1, 1)
         L.addWidget(help_box, 2, 3, 1, 1)
-        L.addWidget(current_area, 3, 3, 1, 1)
         self.setLayout(L)
 
     def reset(self):
