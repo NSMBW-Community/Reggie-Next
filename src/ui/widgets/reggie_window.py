@@ -4,6 +4,8 @@ import os.path
 import struct
 import sys
 
+from typing import cast
+
 from PyQt6 import QtCore, QtGui, QtWidgets
 Qt = QtCore.Qt
 
@@ -14,8 +16,7 @@ import spritelib as SLib
 
 from libs import lh, lib_versions, lz77
 from src.ui.theme.reggie_theme import GetIcon, SetColorScheme
-from src.ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
-from src.data.common.loaders import LoadMenuActions, LoadSpriteData, LoadTilesetInfo, LoadLevelNames, LoadSpriteCategories, LoadZoneThemes, GetKeybind, SetKeybind, module_path
+from src.data.common.loaders import LoadMenuActions, LoadSpriteData, LoadTilesetInfo, LoadLevelNames, LoadZoneThemes, GetKeybind, SetKeybind, module_path
 from src.data.common.utils import clamp, SetGamePaths
 from src.data.common.validators import IsNSMBLevel, areValidGamePaths
 from src.ui.widgets.level_scene import LevelScene
@@ -46,7 +47,6 @@ from src.ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 from src.ui.dialogs.item_shift import ItemShiftDialog
 from src.ui.dialogs.meta_info import MetaInfoDialog
 from src.ui.dialogs.obj_tileset_swap import ObjectTilesetSwapDialog
-from src.ui.dialogs.object_swap import ObjectTypeSwapDialog
 from src.ui.dialogs.preference import PreferencesDialog
 from src.ui.dialogs.screenshot import ScreenshotDialog
 from src.ui.dialogs.sprite_switch import SpriteSwitchDialog
@@ -631,7 +631,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         features = QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable   | \
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | \
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable
-        from typing import cast
+
         palette_dock = self.CreateDockWidget(globals_.trans.string('MenuItems', 96), 'palette', None, features,
                                              Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, True, False, True)
         self.palette_dock = cast(PaletteDock, palette_dock)
