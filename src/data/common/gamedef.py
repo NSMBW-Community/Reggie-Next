@@ -703,8 +703,8 @@ def update_sprites_module(filename: str):
             (r"\['BlockContents'\]\[(\d+)\]", r"['BlockContents\1']"),
             (r"\['BlockContents'\]\[(.*?)\]", r"[f'BlockContents{\1}']"),
             # Update GetImg() calls to the proper function
-            (r"SLib\.GetImg\((\w?[\"']?[\w{}\.]+[\"']?)(?:, ?False)?\)", r"SLib.GetImage(\1)"),
-            (r"SLib\.GetImg\((\w?[\"']?[\w{}\.]+[\"']?)(?:, ?True)\)", r"SLib.GetPixmap(\1)")
+            #(r"SLib\.GetImg\((\w?[\"']?[\w{}\.]+[\"']?)(?:, ?False)?\)", r"SLib.GetImage(\1)"),
+            #(r"SLib\.GetImg\((\w?[\"']?[\w{}\.]+[\"']?)(?:, ?True)\)", r"SLib.GetPixmap(\1)")
         ]
 
         for pattern, replace in regex_strings:
