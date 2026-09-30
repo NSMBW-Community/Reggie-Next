@@ -646,6 +646,7 @@ class ReggieTranslation:
                 38: '[b]Note:[/b] To switch objects on other layers to this layer, select them and then click this button while holding down the [i]Alt[/i] key.',
                 39: 'Sprite Order',
                 40: 'Use this tab to modify the order of sprites within the level file.[br]The sprite order can sometimes change behavior between sprites.',
+                41: 'New Stamp',
             },
             'PathDataEditor': {
                 0: 'Loops:',

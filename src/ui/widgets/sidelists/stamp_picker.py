@@ -3,7 +3,7 @@ from PyQt6 import QtCore, QtWidgets
 from src.data.stamp.stamp_list import StampListModel
 
 
-class StampChooserWidget(QtWidgets.QListView):
+class StampPickerWidget(QtWidgets.QListView):
     """
     Widget that shows a list of available stamps
     """
@@ -23,7 +23,7 @@ class StampChooserWidget(QtWidgets.QListView):
 
         self.setModel(StampListModel())
 
-        self.setItemDelegate(StampChooserWidget.StampItemDelegate())
+        self.setItemDelegate(StampPickerWidget.StampItemDelegate())
 
     class StampItemDelegate(QtWidgets.QStyledItemDelegate):
         """

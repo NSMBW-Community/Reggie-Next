@@ -227,7 +227,7 @@ class EntranceItem(LevelEditorItem):
             # If it's the first available ID, all the other indices should match, so
             # we can just use the ID to insert.
             if isinstance(id_, int):
-                globals_.mainWindow.entranceList.insertItem(id_, ent.listitem)
+                globals_.mainWindow.palette_dock.entrance_tab.entrance_list.insertItem(id_, ent.listitem)
                 globals_.Area.entrances.insert(id_, ent)
 
             globals_.mainWindow.scene.addItem(ent)
@@ -381,7 +381,7 @@ class EntranceItem(LevelEditorItem):
         if globals_.mainWindow is None:
             return
 
-        elist = globals_.mainWindow.entranceList
+        elist = globals_.mainWindow.palette_dock.entrance_tab.entrance_list
         globals_.mainWindow.UpdateFlag = True
         elist.takeItem(elist.row(self.listitem))
         globals_.mainWindow.UpdateFlag = False

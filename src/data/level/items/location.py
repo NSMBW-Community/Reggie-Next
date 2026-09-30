@@ -97,7 +97,7 @@ class LocationItem(LevelEditorItem):
         loc.listitem = ListWidgetItem_SortsByOther(loc)
 
         if add_to_scene:
-            globals_.mainWindow.locationList.addItem(loc.listitem)
+            globals_.mainWindow.palette_dock.location_tab.location_list.addItem(loc.listitem)
             globals_.mainWindow.scene.addItem(loc)
             globals_.Area.locations.append(loc)
 
@@ -359,7 +359,7 @@ class LocationItem(LevelEditorItem):
         if globals_.mainWindow is None:
             return
 
-        loclist = globals_.mainWindow.locationList
+        loclist = globals_.mainWindow.palette_dock.location_tab.location_list
         globals_.mainWindow.UpdateFlag = True
         loclist.takeItem(loclist.row(self.listitem))
         globals_.mainWindow.UpdateFlag = False

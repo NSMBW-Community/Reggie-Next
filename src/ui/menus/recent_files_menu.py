@@ -4,6 +4,7 @@ import os
 from src.data import globals_
 from src.ui.theme.reggie_theme import GetIcon, clipStr
 from src.data.common.settings import setting, setSetting
+from src.data.level.dirty import CheckDirty
 
 class RecentFilesMenu(QtWidgets.QMenu):
     """
@@ -113,7 +114,7 @@ class RecentFilesMenu(QtWidgets.QMenu):
         if globals_.mainWindow is None:
             return
 
-        if globals_.mainWindow.CheckDirty():
+        if CheckDirty():
             return
 
         if not globals_.mainWindow.LoadLevel(self.file_list[number], True, 1):

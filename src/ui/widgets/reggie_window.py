@@ -20,7 +20,7 @@ from src.data.common.utils import clamp, SetGamePaths
 from src.data.common.validators import IsNSMBLevel, areValidGamePaths
 from src.ui.widgets.level_scene import LevelScene
 from src.ui.widgets.level_view import LevelViewWidget
-from src.data.level.dirty import SetDirty
+from src.data.level.dirty import SetDirty, CheckDirty
 from src.data.common.settings import setting, setSetting
 from src.data.level.items.comment import CommentItem
 from src.data.level.items.entrance import EntranceItem
@@ -33,12 +33,6 @@ from src.data.level.items.zone import ZoneItem
 from src.data.level.path import Path
 from src.data.common.loaders import UnloadTileset, LoadTileset
 from src.data.level.nsmbw_level import NSMBWLevel
-from src.data.stamp.stamp import Stamp
-from src.ui.widgets.sidelists.stamp_chooser import StampChooserWidget
-from src.ui.widgets.sidelists.sprite_list import SpriteList
-from src.ui.widgets.sidelists.sprite_order import SpriteOrderList
-from src.ui.widgets.sidelists.sprite_picker import SpritePickerWidget
-from src.ui.widgets.sidelists.object_picker import ObjectPickerWidget
 from src.ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
 from src.ui.actions.undo.undo_stack import UndoStack
 
@@ -69,13 +63,13 @@ from src.ui.widgets.zoom import ZoomWidget
 from src.ui.widgets.zoom_status import ZoomStatusWidget
 from src.ui.widgets.diagnostic import DiagnosticWidget
 from src.ui.widgets.level_overview import LevelOverviewWidget
-from src.ui.widgets.icon_only_tab_bar import IconsOnlyTabBar
 
 from src.ui.widgets.editors.entrance import EntranceEditorWidget
 from src.ui.widgets.editors.location import LocationEditorWidget
 from src.ui.widgets.editors.path_node import PathNodeEditorWidget
 
-from src.data.common.menu_action import MenuAction
+from src.ui.widgets.palette_dock import PaletteDock
+from src.data.common.reggie_clip import ReggieClip
 
 ################################################################################
 ################################################################################
@@ -87,11 +81,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
     """
     action_list: dict[str, QtGui.QAction] = {}
 
-    def CreateDockWidget(self, title, obj_name, widget, features, area, allowed_areas, visible, floating):
+    def CreateDockWidget(self, title, obj_name, widget, features, area, allowed_areas, visible, floating, is_palette = False):
         """
         Helper function to create docks
         """
-        dock = QtWidgets.QDockWidget(title, self)
+        if is_palette:
+            dock = PaletteDock(title, self)
+        else:
+            dock = QtWidgets.QDockWidget(title, self)
+
         dock.setFeatures(features)
         if allowed_areas is not None:
             dock.setAllowedAreas(allowed_areas)
@@ -633,17 +631,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
         features = QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetMovable   | \
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetFloatable | \
                    QtWidgets.QDockWidget.DockWidgetFeature.DockWidgetClosable
-
-        palette_dock = self.CreateDockWidget(globals_.trans.string('MenuItems', 96), 'palette', None,
-                                             features, Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, True, False)
-        self.creationDock = palette_dock
+        from typing import cast
+        palette_dock = self.CreateDockWidget(globals_.trans.string('MenuItems', 96), 'palette', None, features,
+                                             Qt.DockWidgetArea.RightDockWidgetArea, allowed_areas, True, False, True)
+        self.palette_dock = cast(PaletteDock, palette_dock)
 
         # Create palette contents
-        self.SetupPalette()
-        self.CreationTabChanged(0) # Objects tab
+        self.palette_dock.setup()
+        self.palette_dock.current_tab_changed(0) # Default to the Objects tab
 
         # Palette toggle option
-        act = self.creationDock.toggleViewAction()
+        act = self.palette_dock.toggleViewAction()
         if act is not None:
             act.setShortcut(GetKeybind('palette'))
             act.setIcon(GetIcon('palette'))
@@ -663,336 +661,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 self.vmenu.addAction(act)
 
             self.action_list['leveloverview'] = act
-
-    def SetupPalette(self):
-        """
-        Creates palette tabs
-        """
-        tabs = QtWidgets.QTabWidget()
-        tabs.setTabBar(IconsOnlyTabBar())
-        tabs.setIconSize(QtCore.QSize(16, 16))
-        tabs.currentChanged.connect(self.CreationTabChanged)
-
-        self.creationDock.setWidget(tabs)
-        self.creationTabs = tabs
-
-        # Object tabs
-        tsicon = GetIcon('objects')
-
-        self.objAllTab = QtWidgets.QTabWidget()
-        self.objAllTab.currentChanged.connect(self.ObjTabChanged)
-        tabs.addTab(self.objAllTab, tsicon, '')
-        tabs.setTabToolTip(0, globals_.trans.string('Palette', 13))
-
-        self.objTS0Tab = QtWidgets.QWidget()
-        self.objTS1Tab = QtWidgets.QWidget()
-        self.objTS2Tab = QtWidgets.QWidget()
-        self.objTS3Tab = QtWidgets.QWidget()
-        self.objAllTab.addTab(self.objTS0Tab, tsicon, '1')
-        self.objAllTab.addTab(self.objTS1Tab, tsicon, '2')
-        self.objAllTab.addTab(self.objTS2Tab, tsicon, '3')
-        self.objAllTab.addTab(self.objTS3Tab, tsicon, '4')
-
-        oel = QtWidgets.QVBoxLayout(self.objTS0Tab)
-        self.createObjectLayout = oel
-
-        ll = QtWidgets.QHBoxLayout()
-        layer_change_str = globals_.trans.string('Palette', 38)
-        tip_0 = globals_.trans.string('Palette', 1)
-        tip_1 = globals_.trans.string('Palette', 2)
-        tip_2 = globals_.trans.string('Palette', 3)
-
-        if layer_change_str is None or tip_0 is None or tip_1 is None or tip_2 is None:
-            return
-
-        self.objUseLayer0 = QtWidgets.QRadioButton('0')
-        self.objUseLayer0.setToolTip(tip_0 + layer_change_str)
-        self.objUseLayer1 = QtWidgets.QRadioButton('1')
-        self.objUseLayer1.setToolTip(tip_1 + layer_change_str)
-        self.objUseLayer2 = QtWidgets.QRadioButton('2')
-        self.objUseLayer2.setToolTip(tip_2 + layer_change_str)
-
-        self.layerChangeButton = QtWidgets.QPushButton(globals_.trans.string('Palette', 36))
-        self.layerChangeButton.clicked.connect(self.ChangeSelectionLayer)
-        self.layerChangeButton.setEnabled(False)
-
-        ll.addWidget(QtWidgets.QLabel(globals_.trans.string('Palette', 0)))
-        ll.addWidget(self.objUseLayer0)
-        ll.addWidget(self.objUseLayer1)
-        ll.addWidget(self.objUseLayer2)
-        ll.addStretch(1)
-        ll.addWidget(self.layerChangeButton)
-        oel.addLayout(ll)
-
-        lbg = QtWidgets.QButtonGroup(self)
-        lbg.addButton(self.objUseLayer0, 0)
-        lbg.addButton(self.objUseLayer1, 1)
-        lbg.addButton(self.objUseLayer2, 2)
-        lbg.buttonClicked.connect(lambda button: self.LayerChoiceChanged(lbg.id(button)))
-        self.LayerButtonGroup = lbg
-
-        self.objPicker = ObjectPickerWidget()
-        self.objPicker.ObjChanged.connect(self.ObjectChoiceChanged)
-        self.objPicker.ObjReplace.connect(self.ObjectReplace)
-        oel.addWidget(self.objPicker, 1)
-
-        # Sprite tab
-        self.sprAllTab = QtWidgets.QTabWidget()
-        self.sprAllTab.currentChanged.connect(self.SprTabChanged)
-        tabs.addTab(self.sprAllTab, GetIcon('sprites'), '')
-        tabs.setTabToolTip(1, globals_.trans.string('Palette', 14))
-
-        # Add sprites
-        self.sprPickerTab = QtWidgets.QWidget()
-        self.sprAllTab.addTab(self.sprPickerTab, GetIcon('spritesadd'), globals_.trans.string('Palette', 25))
-
-        spl = QtWidgets.QVBoxLayout(self.sprPickerTab)
-        self.sprPickerLayout = spl
-
-        svpl = QtWidgets.QHBoxLayout()
-        svpl.addWidget(QtWidgets.QLabel(globals_.trans.string('Palette', 4)))
-
-        sspl = QtWidgets.QHBoxLayout()
-        sspl.addWidget(QtWidgets.QLabel(globals_.trans.string('Palette', 5)))
-
-        LoadSpriteCategories()
-        viewpicker = QtWidgets.QComboBox()
-        for view in globals_.SpriteCategories:
-            viewpicker.addItem(view.name)
-        viewpicker.currentIndexChanged.connect(self.SelectNewSpriteView)
-
-        self.spriteViewPicker = viewpicker
-        svpl.addWidget(viewpicker, 1)
-
-        self.spriteSearchTerm = QtWidgets.QLineEdit()
-        self.spriteSearchTerm.textChanged.connect(self.NewSearchTerm)
-        sspl.addWidget(self.spriteSearchTerm, 1)
-
-        spl.addLayout(svpl)
-        spl.addLayout(sspl)
-
-        self.spriteSearchLayout = sspl
-
-        self.sprPicker = SpritePickerWidget()
-        self.sprPicker.SpriteChanged.connect(self.SpriteChoiceChanged)
-        self.sprPicker.SpriteReplace.connect(self.SpriteReplace)
-        self.sprPicker.SwitchView(globals_.SpriteCategories[0])
-        spl.addWidget(self.sprPicker, 1)
-
-        self.defaultPropButton = QtWidgets.QPushButton(globals_.trans.string('Palette', 6))
-        self.defaultPropButton.setEnabled(False)
-        self.defaultPropButton.clicked.connect(self.ShowDefaultProps)
-
-        sdpl = QtWidgets.QHBoxLayout()
-        sdpl.addStretch(1)
-        sdpl.addWidget(self.defaultPropButton)
-        sdpl.addStretch(1)
-        spl.addLayout(sdpl)
-
-        # Current sprites
-        self.sprEditorTab = QtWidgets.QWidget()
-        self.sprAllTab.addTab(self.sprEditorTab, GetIcon('spritelist'), globals_.trans.string('Palette', 26))
-
-        spel = QtWidgets.QVBoxLayout(self.sprEditorTab)
-        self.sprEditorLayout = spel
-
-        slabel = QtWidgets.QLabel(globals_.trans.string('Palette', 11))
-        slabel.setWordWrap(True)
-        self.spriteList = SpriteList()
-
-        spel.addWidget(slabel)
-        spel.addWidget(self.spriteList)
-
-        # Sprite Order
-        self.sprOrderTab = QtWidgets.QWidget()
-        self.sprAllTab.addTab(self.sprOrderTab, GetIcon('spritesorder'), globals_.trans.string('Palette', 39))
-
-        order_layout = QtWidgets.QVBoxLayout(self.sprOrderTab)
-        self.sprOrderLayout = order_layout
-
-        slabel = QtWidgets.QLabel(globals_.trans.string('Palette', 40))
-        slabel.setWordWrap(True)
-        self.spriteOrder = SpriteOrderList()
-
-        order_layout.addWidget(slabel)
-        order_layout.addWidget(self.spriteOrder)
-
-        # Entrances
-        self.entEditorTab = QtWidgets.QWidget()
-        tabs.addTab(self.entEditorTab, GetIcon('entrances'), '')
-        tabs.setTabToolTip(2, globals_.trans.string('Palette', 15))
-
-        eel = QtWidgets.QVBoxLayout(self.entEditorTab)
-        self.entEditorLayout = eel
-
-        elabel = QtWidgets.QLabel(globals_.trans.string('Palette', 8))
-        elabel.setWordWrap(True)
-        self.entranceList = ListWidgetWithToolTipSignal()
-        self.entranceList.itemActivated.connect(self.HandleEntranceSelectByList)
-        self.entranceList.toolTipAboutToShow.connect(self.HandleEntranceToolTipAboutToShow)
-        self.entranceList.setSortingEnabled(True)
-
-        eel.addWidget(elabel)
-        eel.addWidget(self.entranceList)
-
-        # Locations
-        self.locEditorTab = QtWidgets.QWidget()
-        tabs.addTab(self.locEditorTab, GetIcon('locations'), '')
-        tabs.setTabToolTip(3, globals_.trans.string('Palette', 16))
-
-        locL = QtWidgets.QVBoxLayout(self.locEditorTab)
-        self.locEditorLayout = locL
-
-        Llabel = QtWidgets.QLabel(globals_.trans.string('Palette', 12))
-        Llabel.setWordWrap(True)
-        self.locationList = ListWidgetWithToolTipSignal()
-        self.locationList.itemActivated.connect(self.HandleLocationSelectByList)
-        self.locationList.toolTipAboutToShow.connect(self.HandleLocationToolTipAboutToShow)
-        self.locationList.setSortingEnabled(True)
-
-        locL.addWidget(Llabel)
-        locL.addWidget(self.locationList)
-
-        # Paths
-        self.pathEditorTab = QtWidgets.QWidget()
-        tabs.addTab(self.pathEditorTab, GetIcon('paths'), '')
-        tabs.setTabToolTip(4, globals_.trans.string('Palette', 17))
-
-        pathel = QtWidgets.QVBoxLayout(self.pathEditorTab)
-        self.pathEditorLayout = pathel
-
-        pathlabel = QtWidgets.QLabel(globals_.trans.string('Palette', 9))
-        pathlabel.setWordWrap(True)
-        deselectbtn = QtWidgets.QPushButton(globals_.trans.string('Palette', 10))
-        deselectbtn.clicked.connect(self.DeselectPathSelection)
-        self.pathList = ListWidgetWithToolTipSignal()
-        self.pathList.itemActivated.connect(self.HandlePathSelectByList)
-        self.pathList.toolTipAboutToShow.connect(self.HandlePathToolTipAboutToShow)
-        self.pathList.setSortingEnabled(True)
-
-        pathel.addWidget(pathlabel)
-        pathel.addWidget(deselectbtn)
-        pathel.addWidget(self.pathList)
-
-        # Events
-        self.eventEditorTab = QtWidgets.QWidget()
-        tabs.addTab(self.eventEditorTab, GetIcon('events'), '')
-        tabs.setTabToolTip(5, globals_.trans.string('Palette', 18))
-
-        eventel = QtWidgets.QGridLayout(self.eventEditorTab)
-
-        eventlabel = QtWidgets.QLabel(globals_.trans.string('Palette', 20))
-        eventNotesLabel = QtWidgets.QLabel(globals_.trans.string('Palette', 21))
-        self.eventNotesEditor = QtWidgets.QLineEdit()
-        self.eventNotesEditor.textEdited.connect(self.handleEventNotesEdit)
-
-        self.eventChooser = QtWidgets.QTreeWidget()
-        self.eventChooser.setColumnCount(2)
-        self.eventChooser.setHeaderLabels((globals_.trans.string('Palette', 22), globals_.trans.string('Palette', 23)))
-        self.eventChooser.itemClicked.connect(self.handleEventTabItemClick)
-        self.eventChooserItems = []
-        flags = Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled
-        for id in range(64):
-            itm = QtWidgets.QTreeWidgetItem()
-            itm.setFlags(flags)
-            itm.setCheckState(0, Qt.CheckState.Unchecked)
-            itm.setText(0, globals_.trans.string('Palette', 24, '[id]', str(id + 1)))
-            itm.setText(1, '')
-            self.eventChooser.addTopLevelItem(itm)
-            self.eventChooserItems.append(itm)
-            if id == 0: itm.setSelected(True)
-
-        eventel.addWidget(eventlabel, 0, 0, 1, 2)
-        eventel.addWidget(eventNotesLabel, 1, 0)
-        eventel.addWidget(self.eventNotesEditor, 1, 1)
-        eventel.addWidget(self.eventChooser, 2, 0, 1, 2)
-
-        # Stamps
-        self.stampTab = QtWidgets.QWidget()
-        tabs.addTab(self.stampTab, GetIcon('stamp'), '')
-        tabs.setTabToolTip(6, globals_.trans.string('Palette', 19))
-
-        stampLabel = QtWidgets.QLabel(globals_.trans.string('Palette', 27))
-
-        stampAddBtn = QtWidgets.QPushButton(globals_.trans.string('Palette', 28))
-        stampAddBtn.clicked.connect(self.handleStampsAdd)
-        stampAddBtn.setEnabled(False)
-
-        stampRemoveBtn = QtWidgets.QPushButton(globals_.trans.string('Palette', 29))
-        stampRemoveBtn.clicked.connect(self.handleStampsRemove)
-        stampRemoveBtn.setEnabled(False)
-
-        # So we can toggle it later
-        self.stampAddBtn = stampAddBtn
-        self.stampRemoveBtn = stampRemoveBtn
-
-        menu = QtWidgets.QMenu()
-        menu.addAction(globals_.trans.string('Palette', 31), self.handleStampsOpen) # 'Open Set...'
-        menu.addAction(globals_.trans.string('Palette', 32), self.handleStampsSave) # 'Save Set As...'
-        stampToolsBtn = QtWidgets.QToolButton()
-        stampToolsBtn.setText(globals_.trans.string('Palette', 30))
-        stampToolsBtn.setMenu(menu)
-        stampToolsBtn.setPopupMode(QtWidgets.QToolButton.ToolButtonPopupMode.InstantPopup)
-        stampToolsBtn.setSizePolicy(stampAddBtn.sizePolicy())
-        stampToolsBtn.setMinimumHeight(stampAddBtn.height() // 20)
-
-        stampCopyBtn = QtWidgets.QPushButton(globals_.trans.string('Palette', 37))
-        stampCopyBtn.clicked.connect(self.handleStampsCopy)
-        stampCopyBtn.setEnabled(False)
-        self.stampCopyBtn = stampCopyBtn # So we can enable/disable it later
-
-        stampNameLabel = QtWidgets.QLabel(globals_.trans.string('Palette', 35))
-        self.stampNameEdit = QtWidgets.QLineEdit()
-        self.stampNameEdit.setEnabled(False)
-        self.stampNameEdit.textChanged.connect(self.handleStampNameEdited)
-
-        nameLayout = QtWidgets.QHBoxLayout()
-        nameLayout.addWidget(stampNameLabel)
-        nameLayout.addWidget(self.stampNameEdit)
-
-        self.stampChooser = StampChooserWidget()
-        self.stampChooser.selectionChangedSignal.connect(self.handleStampSelectionChanged)
-
-        stampL = QtWidgets.QGridLayout()
-        stampL.addWidget(stampLabel, 0, 0, 1, 3)
-        stampL.addWidget(stampAddBtn, 1, 0)
-        stampL.addWidget(stampRemoveBtn, 1, 1)
-        stampL.addWidget(stampToolsBtn, 1, 2)
-        stampL.addWidget(stampCopyBtn, 2, 0, 1, 3)
-        stampL.addLayout(nameLayout, 3, 0, 1, 3)
-        stampL.addWidget(self.stampChooser, 4, 0, 1, 3)
-        self.stampTab.setLayout(stampL)
-
-        # Comments
-        self.commentsTab = QtWidgets.QWidget()
-        tabs.addTab(self.commentsTab, GetIcon('comments'), '')
-        tabs.setTabToolTip(7, globals_.trans.string('Palette', 33))
-
-        cel = QtWidgets.QVBoxLayout()
-        self.commentsTab.setLayout(cel)
-
-        clabel = QtWidgets.QLabel(globals_.trans.string('Palette', 34))
-        clabel.setWordWrap(True)
-
-        self.commentList = ListWidgetWithToolTipSignal()
-        self.commentList.itemActivated.connect(self.HandleCommentSelectByList)
-        self.commentList.toolTipAboutToShow.connect(self.HandleCommentToolTipAboutToShow)
-        self.commentList.setSortingEnabled(True)
-
-        cel.addWidget(clabel)
-        cel.addWidget(self.commentList)
-
-    def DeselectPathSelection(self, checked):
-        """
-        Deselects selected path nodes in the list
-        """
-        for selecteditem in self.pathList.selectedItems():
-            selecteditem.setSelected(False)
-
-        # Also deselect nodes in the scene
-        for item in self.scene.selectedItems():
-            if isinstance(item, PathItem):
-                item.setSelected(False)
 
     def Autosave(self):
         """
@@ -1054,227 +722,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         dirty_text = ''
         if globals_.Dirty:
-            dirty_text = f' {globals_.trans.string('MainWindow', 0)}'
+            dirty_text = f' {globals_.trans.string('MainWindow', 0)}' # '[unsaved]'
 
         # ' - Reggie Next' is added automatically by Qt (see QApplication.setApplicationDisplayName())
         self.setWindowTitle(f'{self.fileTitle}{dirty_text}')
-
-    def CheckDirty(self):
-        """
-        Checks if the level is unsaved and attempts to save it if so.
-        Returns whether the level still contains unsaved changes.
-        """
-        if not globals_.Dirty:
-            return False
-
-        msg = QtWidgets.QMessageBox()
-        msg.setText(globals_.trans.string('AutoSaveDlg', 2))
-        msg.setInformativeText(globals_.trans.string('AutoSaveDlg', 3))
-        msg.setStandardButtons(
-            QtWidgets.QMessageBox.StandardButton.Save | QtWidgets.QMessageBox.StandardButton.Discard | QtWidgets.QMessageBox.StandardButton.Cancel)
-        msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Save)
-        ret = msg.exec()
-
-        if ret == QtWidgets.QMessageBox.StandardButton.Save:
-            # If the save failed, the file is still dirty, so we need to negate
-            # the return value.
-            return not self.HandleSave()
-
-        elif ret == QtWidgets.QMessageBox.StandardButton.Cancel:
-            return True
-
-        return False
-
-    def LoadEventTabFromLevel(self):
-        """
-        Configures the Events tab from the data in globals_.Area.defEvents
-        """
-        defEvents = globals_.Area.defEvents
-        checked = Qt.CheckState.Checked
-        unchecked = Qt.CheckState.Unchecked
-
-        data = globals_.Area.Metadata.binData('EventNotes_A%d' % globals_.Area.areanum)
-        eventTexts = {}
-        if data is not None:
-            # Iterate through the data
-            idx = 0
-
-            while idx < len(data):
-                event_id, str_len = struct.unpack_from(">2I", data, idx)
-                eventTexts[event_id] = data[idx + 8:idx + 8 + str_len].decode('utf-8')
-
-                idx += 8 + str_len
-
-        for i, item in enumerate(self.eventChooserItems):
-            item.setCheckState(0, checked if (defEvents & (1 << i)) != 0 else unchecked)
-            item.setText(1, eventTexts.get(i, ""))
-            item.setSelected(False)
-
-        self.eventChooserItems[0].setSelected(True)
-        self.eventNotesEditor.setText(eventTexts.get(0, ""))
-
-    def handleEventTabItemClick(self, item):
-        """
-        Handles an item being clicked in the Events tab
-        """
-        # Write the current note to the event note editor
-        noteText = item.text(1)
-        self.eventNotesEditor.setText(noteText)
-
-        selIdx = self.eventChooserItems.index(item)
-        isOn = (globals_.Area.defEvents & 1 << selIdx) == 1 << selIdx
-        if item.checkState(0) == Qt.CheckState.Checked and not isOn:
-            # Turn a bit on
-            globals_.Area.defEvents |= 1 << selIdx
-            SetDirty()
-        elif item.checkState(0) == Qt.CheckState.Unchecked and isOn:
-            # Turn a bit off (mask out 1 bit)
-            globals_.Area.defEvents &= ~(1 << selIdx)
-            SetDirty()
-
-    def handleEventNotesEdit(self):
-        """
-        Handles the text within self.eventNotesEditor changing
-        """
-        newText = self.eventNotesEditor.text()
-
-        # Set the text to the event chooser
-        currentItem = self.eventChooser.selectedItems()[0]
-        currentItem.setText(1, newText)
-
-        # Save all the events to the metadata
-        data = b""
-        for i in range(64):
-            event_note = str(self.eventChooserItems[i].text(1))
-            if not event_note:
-                continue
-
-            encoded = event_note.encode('utf-8')
-
-            # Add the event id, note length and note to the data.
-            data += struct.pack(">2I", i, len(encoded))
-            data += encoded
-
-        globals_.Area.Metadata.setBinData('EventNotes_A%d' % globals_.Area.areanum, data)
-        SetDirty()
-
-    def handleStampsAdd(self):
-        """
-        Handles the "Add Stamp" btn being clicked
-        """
-        # Create a ReggieClip
-        selitems = self.scene.selectedItems()
-        if not selitems:
-            return
-
-        clipboard_o = []
-        clipboard_s = []
-
-        for obj in selitems:
-            if isinstance(obj, ObjectItem):
-                clipboard_o.append(obj)
-            elif isinstance(obj, SpriteItem):
-                clipboard_s.append(obj)
-        RegClp = self.encodeObjects(clipboard_o, clipboard_s)
-
-        # Create a Stamp
-        self.stampChooser.addStamp(Stamp(RegClp, 'New Stamp'))
-
-    def handleStampsCopy(self):
-        """
-        Handles the "Copy Selected to Clipboard" btn being clicked
-        """
-        stamp = self.stampChooser.currentlySelectedStamp()
-        if stamp is None or self.systemClipboard is None:
-            return
-
-        self.systemClipboard.setText(stamp.ReggieClip)
-
-    def handleStampsRemove(self):
-        """
-        Handles the "Remove Stamp" btn being clicked
-        """
-        self.stampChooser.removeStamp(self.stampChooser.currentlySelectedStamp())
-        self.handleStampSelectionChanged()
-
-    def handleStampsOpen(self):
-        """
-        Handles the "Open Set..." btn being clicked
-        """
-        filetypes = f'{globals_.trans.string('FileDlgs', 7)}  (*.stamps);; {globals_.trans.string('FileDlgs', 2)} (*)'
-
-        fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 6), '', filetypes)[0]
-        if fn == '':
-            return
-
-        with open(fn, 'r', encoding='utf-8') as file:
-            filedata = file.read()
-
-        if not filedata.startswith('stamps\n------\n'):
-            return
-
-        filesplit = filedata.split('\n')[3:]
-        for i in range(0, len(filesplit), 3):
-            try:
-                # Get data
-                name = filesplit[i]
-                rc = filesplit[i + 1]
-            except IndexError:
-                break
-
-            self.stampChooser.addStamp(Stamp(rc, name))
-
-    def handleStampsSave(self):
-        """
-        Handles the "Save Set As..." btn being clicked
-        """
-        filetypes = f'{globals_.trans.string('FileDlgs', 7)}  (*.stamps);; {globals_.trans.string('FileDlgs', 2)} (*)'
-
-        fn = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans.string('FileDlgs', 3), '', filetypes)[0]
-        if fn == '':
-            return
-
-        newdata = ''
-        newdata += 'stamps\n'
-        newdata += '------\n'
-
-        for stampobj in self.stampChooser.model.items:
-            newdata += '\n'
-            newdata += stampobj.Name + '\n'
-            newdata += stampobj.ReggieClip + '\n'
-
-        with open(fn, 'w', encoding='utf-8') as f:
-            f.write(newdata)
-
-    def handleStampSelectionChanged(self):
-        """
-        Called when the stamp selection is changed
-        """
-        newStamp = self.stampChooser.currentlySelectedStamp()
-        stampSelected = newStamp is not None
-        self.stampRemoveBtn.setEnabled(stampSelected)
-        self.stampCopyBtn.setEnabled(stampSelected)
-        self.stampNameEdit.setEnabled(stampSelected)
-
-        newName = '' if not stampSelected else newStamp.Name
-        self.stampNameEdit.setText(newName)
-
-    def handleStampNameEdited(self):
-        """
-        Called when the user edits the name of the current stamp
-        """
-        stamp = self.stampChooser.currentlySelectedStamp()
-        if not stamp:
-            return
-
-        text = self.stampNameEdit.text()
-        stamp.Name = text
-        stamp.update()
-
-        self.stampChooser.updateGeometries()
-        self.stampChooser.update(self.stampChooser.currentIndex())
-        self.stampChooser.update()
-        self.stampChooser.repaint()
 
     def HandleInfo(self):
         """
@@ -1360,41 +811,23 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.SelectionUpdateFlag = True
             self.scene.clearSelection()
 
-        if selitems:
-            clipboard_o = []
-            clipboard_s = []
-            clipboard_e = []
-            clipboard_l = []
-            clipboard_p = []
-            ii = isinstance
-
-            for obj in selitems:
-                if ii(obj, ObjectItem):
-                    clipboard_o.append(obj)
-                elif ii(obj, SpriteItem):
-                    clipboard_s.append(obj)
-                elif ii(obj, EntranceItem):
-                    clipboard_e.append(obj)
-                elif ii(obj, LocationItem):
-                    clipboard_l.append(obj)
-                elif ii(obj, PathItem):
-                    clipboard_p.append(obj)
-                else: # Ignore
-                    continue
-
-                if cutAction:
+        if selitems is not None:
+            if cutAction:
+                # Delete everything
+                for obj in selitems:
+                    if isinstance(obj, CommentItem):
+                        continue
                     obj.delete()
                     obj.setSelected(False)
                     self.scene.removeItem(obj)
 
-            if clipboard_o or clipboard_s or clipboard_e or clipboard_l or clipboard_p:
-                if cutAction:
-                    SetDirty()
-                    self.action_list['cut'].setEnabled(False)
-                self.action_list['paste'].setEnabled(True)
-                self.clipboard = self.encodeObjects(clipboard_o, clipboard_s, clipboard_e, clipboard_l, clipboard_p)
-                if self.systemClipboard is not None:
-                    self.systemClipboard.setText(self.clipboard)
+                SetDirty()
+                self.action_list['cut'].setEnabled(False)
+    
+            self.action_list['paste'].setEnabled(True)
+            self.clipboard = ReggieClip.get_reggie_clip(selitems)
+            if self.systemClipboard is not None:
+                self.systemClipboard.setText(self.clipboard)
 
         if cutAction:
             self.level_overview.update()
@@ -1437,347 +870,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Paste the selected items
         """
         if self.clipboard is not None:
-            self.placeEncodedObjects(self.clipboard)
-
-    def encodeObjects(self, clipboard_o, clipboard_s, clipboard_e=None, clipboard_l=None, clipboard_p=None):
-        """
-        Encode a set of level items into a string
-        """
-        convclip = ['ReggieClip']
-
-        # Objects
-        clipboard_o.sort(key=lambda x: x.zValue())
-
-        for item in clipboard_o:
-            convclip.append('0:%d:%d:%d:%d:%d:%d:%d' % (
-            item.tileset, item.object_num, item.layer, item.objx, item.objy, item.width, item.height))
-
-        # Sprites
-        for item in clipboard_s:
-            data = item.spritedata
-            convclip.append('1:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d' % (
-            item.sprite_num, item.objx, item.objy, data[0], data[1], data[2], data[3], data[4], data[5], data[7]))
-
-        # Entrances
-        if clipboard_e is not None:
-            for item in clipboard_e:
-                convclip.append('2:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d' % (
-                item.objx, item.objy, item.entid, item.destarea, item.destentrance, item.enttype, item.entzone,
-                item.entsettings, item.entlayer, item.entpath, item.leave_level, item.cpdirection))
-
-        # Locations
-        if clipboard_l is not None:
-            for item in clipboard_l:
-                convclip.append('3:%d:%d:%d:%d:%d' % (
-                item.id, item.objx, item.objy, item.width, item.height))
-
-        # Path Nodes
-        if clipboard_p is not None:
-            clipboard_p.sort(key=lambda x: (x.pathid, x.nodeid))
-            currPathID = 0
-
-            for item in clipboard_p:
-                # Get parent path
-                path: Path | None = None
-                for p in globals_.Area.paths:
-                    if item.pathid == p._id:
-                        path = p
-                        break
-
-                # Append a path object
-                if path is not None:
-                    if currPathID != item.pathid:
-                        convclip.append('4:%d:%d' % (path._id, path._loops))
-                        currPathID = item.pathid
-
-                    x, y, speed, accel, delay = path.get_node_data(item.nodeid)
-                    convclip.append('5:%d:%d:%d:%d:%f:%f:%d' % (
-                    item.pathid, item.nodeid, x, y, speed, accel, delay))
-
-        convclip.append('%')
-        return '|'.join(convclip)
-
-    def placeEncodedObjects(self, encoded, select=True, xOverride=None, yOverride=None):
-        """
-        Decode and place a set of objects
-        """
-        self.SelectionUpdateFlag = True
-        self.scene.clearSelection()
-        added = []
-
-        # Remove leading and trailing whitespace
-        encoded = encoded.strip()
-
-        if not (encoded.startswith('ReggieClip|') and encoded.endswith('|%')):
-            self.SelectionUpdateFlag = False
-            return added
-
-        clip = encoded.split('|')
-
-        if len(clip) > 300 + 2:
-            result = QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('MainWindow', 1),
-                                                   QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
-            if result == QtWidgets.QMessageBox.StandardButton.No:
-                self.SelectionUpdateFlag = False
-                return added
-
-        globals_.OverrideSnapping = True
-
-        layers, sprites, entrances, locations, paths, path_nodes = self.getEncodedObjects(encoded)
-
-        # Find the bounding box of all created objects
-        bounding = QtCore.QRectF()
-
-        for spr in sprites:
-            bounding |= spr.LevelRect
-
-        for layer in layers:
-            for obj in layer:
-                bounding |= obj.LevelRect
-
-        for ent in entrances:
-            bounding |= ent.LevelRect
-
-        for loc in locations:
-            bounding |= loc.LevelRect
-
-        for node in path_nodes:
-            bounding |= node.LevelRect
-
-        x1, y1, width, height = bounding.getRect()
-
-        # now center everything
-        zoomscaler = self.ZoomLevel / 100
-        viewportx = (self.view.XScrollBar.value() / zoomscaler) / 24
-        viewporty = (self.view.YScrollBar.value() / zoomscaler) / 24
-        viewportwidth = (self.view.width() / zoomscaler) / 24
-        viewportheight = (self.view.height() / zoomscaler) / 24
-
-        # tiles
-        if xOverride is None:
-            xoffset = int(0 - x1 + viewportx + ((viewportwidth / 2) - (width / 2)))
-            xpixeloffset = xoffset * 16
-        else:
-            xoffset = int(0 - x1 + (xOverride / 16) - (width / 2))
-            xpixeloffset = xoffset * 16
-        if yOverride is None:
-            yoffset = int(0 - y1 + viewporty + ((viewportheight / 2) - (height / 2)))
-            ypixeloffset = yoffset * 16
-        else:
-            yoffset = int(0 - y1 + (yOverride / 16) - (height / 2))
-            ypixeloffset = yoffset * 16
-
-        # Center and select everything
-        for item in sprites:
-            item.setNewObjPos(item.objx + xpixeloffset, item.objy + ypixeloffset)
-            item.UpdateRects()
-            if select: item.setSelected(True)
-
-        for layer in layers:
-            for item in layer:
-                item.setPos((item.objx + xoffset) * 24, (item.objy + yoffset) * 24)
-                item.UpdateRects()
-                if select: item.setSelected(True)
-
-        for item in entrances:
-            item.setPos((item.objx + xpixeloffset) * 1.5, (item.objy + ypixeloffset) * 1.5)
-            item.UpdateRects()
-            if select: item.setSelected(True)
-
-        for item in locations:
-            item.setPos((item.objx + xpixeloffset) * 1.5, (item.objy + ypixeloffset) * 1.5)
-            item.UpdateRects()
-            if select: item.setSelected(True)
-
-        for item in path_nodes:
-            item.setPos((item.objx + xpixeloffset) * 1.5, (item.objy + ypixeloffset) * 1.5)
-            if select: item.setSelected(True)
-
-        globals_.OverrideSnapping = False
-
-        self.level_overview.update()
-        SetDirty()
-        self.SelectionUpdateFlag = False
-        self.ChangeSelectionHandler()
-
-        # Combine the sprites and layers
-        added = sprites + entrances + locations + paths + path_nodes
-        for layer in layers:
-            added += layer
-
-        return added
-
-    def getEncodedObjects(self, encoded, add_to_scene=True):
-        """
-        Create the objects from a ReggieClip
-        """
-
-        layers = ([], [], [])
-        sprites = []
-        entrances = []
-        locations = []
-        paths = []
-        path_nodes = []
-
-        if not (encoded.startswith('ReggieClip|') and encoded.endswith('|%')):
-            return layers, sprites, entrances, locations, paths, path_nodes
-
-        clip = encoded[11:-2].split('|')
-
-        self.spriteList.prepareBatchAdd()
-        self.spriteOrder.prepareBatchAdd()
-        for item in clip:
-
-            try:
-                # Check to see the item type
-                # and add it to the correct stack
-                split = item.split(':')
-
-                # Object
-                if split[0] == '0':
-                    if len(split) != 8: continue
-
-                    tileset = int(split[1])
-                    type = int(split[2])
-                    layer = int(split[3])
-                    objx = int(split[4])
-                    objy = int(split[5])
-                    width = int(split[6])
-                    height = int(split[7])
-
-                    # basic sanity checks
-                    if tileset < 0 or tileset > 3: continue
-                    if type < 0 or type > 255: continue
-                    if layer < 0 or layer > 2: continue
-                    if objx < 0 or objx > 1023: continue
-                    if objy < 0 or objy > 511: continue
-                    if width < 1 or width > 1023: continue
-                    if height < 1 or height > 511: continue
-
-                    newitem = ObjectItem.CreateObject(tileset, type, layer, objx, objy, width, height, add_to_scene)
-
-                    layers[layer].append(newitem)
-
-                # Sprite
-                elif split[0] == '1':
-                    if len(split) != 11: continue
-
-                    objx = int(split[2])
-                    objy = int(split[3])
-                    type = int(split[1])
-                    data = bytes(map(int, [split[4], split[5], split[6], split[7], split[8], split[9], '0', split[10]]))
-
-                    # Check if sprite data exists for this type
-                    if not (0 <= type < globals_.NumSprites) or globals_.Sprites[type] is None:
-                        # Unknown sprite, skip it
-                        continue
-
-                    newitem = SpriteItem.CreateSprite(objx, objy, type, data, add_to_scene)
-                    sprites.append(newitem)
-
-                # Entrance
-                elif split[0] == '2':
-                    if len(split) != 13: continue
-
-                    objx = int(split[1])
-                    objy = int(split[2])
-                    entID = int(split[3])
-                    destArea = int(split[4])
-                    destEnt = int(split[5])
-                    entType = int(split[6])
-                    zone = int(split[7])
-                    settings = int(split[8])
-                    layer = int(split[9])
-                    path = int(split[10])
-                    exitLvl = int(split[11])
-                    cPipeDir = int(split[12])
-
-                    # Sanity check data
-                    if destArea < 0 or destArea > 4: print(destArea); continue
-                    if destEnt < 0 or destEnt > 255: print(destEnt); continue
-                    if entType < 0 or entType >= len(globals_.EntranceTypeNames): print(entType); continue
-                    if layer < 0 or layer > 2: print(layer); continue
-                    if path < 0 or path > 255: print(path); continue
-                    if cPipeDir < 0 or cPipeDir > 3: print(cPipeDir); continue
-
-                    newitem = EntranceItem.CreateEntrance(objx, objy, entID, add_to_scene, True)
-                    if newitem is None:
-                        continue
-
-                    # Set entrance data
-                    newitem.destarea = destArea
-                    newitem.destentrance = destEnt
-                    newitem.enttype = entType
-                    newitem.entzone = zone
-                    newitem.entsettings = settings
-                    newitem.entlayer = layer
-                    newitem.entpath = path
-                    newitem.leave_level = exitLvl != 0
-                    newitem.cpdirection = cPipeDir
-
-                    # Update it
-                    newitem.TypeChange()
-                    newitem.UpdateTooltip()
-                    newitem.UpdateListItem(True)
-
-                    entrances.append(newitem)
-
-                # Location
-                elif split[0] == '3':
-                    if len(split) != 6: continue
-
-                    locID = int(split[1])
-                    objx = int(split[2])
-                    objy = int(split[3])
-                    width = int(split[4])
-                    height = int(split[5])
-
-                    newitem = LocationItem.CreateLocation(objx, objy, width, height, locID, add_to_scene)
-                    locations.append(newitem)
-
-                # Path
-                elif split[0] == '4':
-                    if len(split) != 3: continue
-
-                    pathID = int(split[1])
-                    loops = bool(split[2])
-
-                    if globals_.mainWindow is not None:
-                        path = Path(pathID, globals_.mainWindow.scene, loops)
-                        globals_.Area.paths.append(path)
-                        paths.append(path)
-
-                # Path Node
-                elif split[0] == '5':
-                    if len(split) != 8: continue
-
-                    pathID = int(split[1])
-                    nodeID = int(split[2])
-                    objx = int(split[3])
-                    objy = int(split[4])
-                    speed = float(split[5])
-                    accel = float(split[6])
-                    delay = int(split[7])
-
-                    # Make sure the clip has the parent path
-                    if paths is not None:
-                        path = paths[0]
-                        for p in paths:
-                            if pathID == p._id:
-                                path = p
-                                break
-
-                        node = path.add_node(objx, objy, speed, accel, delay, nodeID, add_to_scene, add_to_scene)
-                        path_nodes.append(node)
-
-            except ValueError:
-                # an int() probably failed somewhere
-                pass
-
-        self.spriteList.endBatchAdd()
-        self.spriteOrder.endBatchAdd()
-
-        return layers, sprites, entrances, locations, paths, path_nodes
+            ReggieClip.paste_reggie_clip(self.clipboard)
 
     def ShiftItems(self):
         """
@@ -1889,7 +982,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('AreaImportDlg', 2))
             return
 
-        if self.CheckDirty():
+        if CheckDirty():
             # Level is still dirty
             return
 
@@ -1910,7 +1003,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('AreaImportDlg', 2))
             return
 
-        if self.CheckDirty():
+        if CheckDirty():
             return
 
         filetypes = ''
@@ -2034,7 +1127,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Change the game path used by the current game definition
         """
-        if self.CheckDirty():
+        if CheckDirty():
             return
 
         while True:
@@ -2232,7 +1325,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Create a new level
         """
-        if self.CheckDirty():
+        if CheckDirty():
             return
 
         self.LoadLevel(None, False, 1)
@@ -2241,7 +1334,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Open a level using the level picker
         """
-        if self.CheckDirty():
+        if CheckDirty():
             return
 
         LoadLevelNames()
@@ -2253,7 +1346,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Open a level using the filename
         """
-        if self.CheckDirty():
+        if CheckDirty():
             return
 
         filetypes = ''
@@ -2395,7 +1488,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if idx == old_idx:
             return
 
-        if self.CheckDirty():
+        if CheckDirty():
             self.areaComboBox.setCurrentIndex(old_idx)
             return
 
@@ -2801,7 +1894,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if a0 is None:
             return
 
-        if self.CheckDirty():
+        if CheckDirty():
             a0.ignore()
             return
 
@@ -2930,9 +2023,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.scene.clear()
 
         # Clear out all level-thing lists
-        for thingList in (self.spriteList, self.spriteOrder, self.entranceList, self.locationList, self.pathList, self.commentList):
-            thingList.clear()
-            sel_model = thingList.selectionModel()
+        for item_list in (
+            self.palette_dock.sprite_tab.sprite_list,
+            self.palette_dock.sprite_tab.sprite_order_list,
+            self.palette_dock.entrance_tab.entrance_list,
+            self.palette_dock.location_tab.location_list,
+            self.palette_dock.path_tab.path_list,
+            self.palette_dock.comment_tab.comment_list
+        ):
+            item_list.clear()
+            sel_model = item_list.selectionModel()
             if sel_model is not None:
                 sel_model.setCurrentIndex(QtCore.QModelIndex(), QtCore.QItemSelectionModel.SelectionFlag.Clear)
 
@@ -3039,16 +2139,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Load it
         globals_.Level.new()
 
-        # Prepare the object picker
-        self.objUseLayer1.setChecked(True)
-
-        self.objPicker.LoadFromTilesets()
-
-        self.objAllTab.setCurrentIndex(0)
-        self.objAllTab.setTabEnabled(0, True)
-        self.objAllTab.setTabEnabled(1, False)
-        self.objAllTab.setTabEnabled(2, False)
-        self.objAllTab.setTabEnabled(3, False)
+        self.palette_dock.object_tab.reset(True)
 
         self.action_list['swapobjectstypes'].setEnabled(True)
         self.action_list['swapobjectstilesets'].setEnabled(True)
@@ -3086,23 +2177,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Resets the palette and initialises the scene from the currently loaded
         Area.
         """
-        # Prepare the object picker
-        self.objUseLayer1.setChecked(True)
-
-        self.objPicker.LoadFromTilesets()
-
-        self.objAllTab.setCurrentIndex(0)
-        self.objAllTab.setTabEnabled(0, (globals_.Area.tileset0 != ''))
-        self.objAllTab.setTabEnabled(1, (globals_.Area.tileset1 != ''))
-        self.objAllTab.setTabEnabled(2, (globals_.Area.tileset2 != ''))
-        self.objAllTab.setTabEnabled(3, (globals_.Area.tileset3 != ''))
+        self.palette_dock.object_tab.reset(False)
 
         if globals_.Area.tileset0 == '' and globals_.Area.tileset1 == '' and globals_.Area.tileset2 == '' and globals_.Area.tileset3 == '':
             self.action_list['swapobjectstypes'].setEnabled(False)
             self.action_list['swapobjectstilesets'].setEnabled(False)
 
         # Load events
-        self.LoadEventTabFromLevel()
+        self.palette_dock.event_tab.load_event_data()
 
         # Add all things to the scene
         pcEvent = self.HandleObjPosChange
@@ -3113,24 +2195,24 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         pcEvent = self.HandleSprPosChange
 
-        self.spriteList.prepareBatchAdd()
-        self.spriteOrder.prepareBatchAdd()
+        self.palette_dock.sprite_tab.sprite_list.prepareBatchAdd()
+        self.palette_dock.sprite_tab.sprite_order_list.prepareBatchAdd()
         for spr in globals_.Area.sprites:
             spr.positionChanged = pcEvent
-            self.spriteList.addSprite(spr)
-            self.spriteOrder.addSprite(spr)
+            self.palette_dock.sprite_tab.sprite_list.addSprite(spr)
+            self.palette_dock.sprite_tab.sprite_order_list.addSprite(spr)
             self.scene.addItem(spr)
             spr.UpdateListItem()
 
-        self.spriteList.endBatchAdd()
-        self.spriteOrder.endBatchAdd()
+        self.palette_dock.sprite_tab.sprite_list.endBatchAdd()
+        self.palette_dock.sprite_tab.sprite_order_list.endBatchAdd()
 
         pcEvent = self.HandleEntPosChange
         for ent in globals_.Area.entrances:
             ent.positionChanged = pcEvent
             ent.listitem = ListWidgetItem_SortsByOther(ent)
             ent.listitem.entid = ent.entid
-            self.entranceList.addItem(ent.listitem)
+            self.palette_dock.entrance_tab.entrance_list.addItem(ent.listitem)
             self.scene.addItem(ent)
             ent.UpdateListItem()
 
@@ -3143,7 +2225,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             location.positionChanged = pcEvent
             location.sizeChanged = scEvent
             location.listitem = ListWidgetItem_SortsByOther(location)
-            self.locationList.addItem(location.listitem)
+            self.palette_dock.location_tab.location_list.addItem(location.listitem)
             self.scene.addItem(location)
             location.UpdateListItem()
 
@@ -3154,7 +2236,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             com.positionChanged = self.HandleComPosChange
             com.textChanged = self.HandleComTxtChange
             com.listitem = QtWidgets.QListWidgetItem()
-            self.commentList.addItem(com.listitem)
+            self.palette_dock.comment_tab.comment_list.addItem(com.listitem)
             self.scene.addItem(com)
             com.UpdateListItem()
 
@@ -3169,7 +2251,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if (name is not None) and (name != ''):
                 LoadTileset(idx, name, not soft)
 
-        self.objPicker.LoadFromTilesets()
+        self.palette_dock.object_tab.object_picker.LoadFromTilesets()
 
         for layer in globals_.Area.layers:
             for obj in layer:
@@ -3185,12 +2267,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.spriteDataEditor.setSprite(cur_sel_sprite, True)
 
         # Update list
-        self.sprPicker.UpdateSpriteNames()
+        self.palette_dock.sprite_tab.sprite_picker.UpdateSpriteNames()
 
         # Redo the search if a search was made
-        search = self.spriteSearchTerm.text()
+        search = self.palette_dock.sprite_tab.search_box.text()
         if search != "":
-            self.sprPicker.SetSearchString(search)
+            self.palette_dock.sprite_tab.sprite_picker.SetSearchString(search)
 
     def ChangeSelectionHandler(self):
         """
@@ -3217,10 +2299,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.selObj = None
         self.selObjs = None
 
-        self.entranceList.setCurrentItem(None)
-        self.locationList.setCurrentItem(None)
-        self.pathList.setCurrentItem(None)
-        self.commentList.setCurrentItem(None)
+        self.palette_dock.entrance_tab.entrance_list.setCurrentItem(None)
+        self.palette_dock.location_tab.location_list.setCurrentItem(None)
+        self.palette_dock.path_tab.path_list.setCurrentItem(None)
+        self.palette_dock.comment_tab.comment_list.setCurrentItem(None)
 
         # possibly a small optimization
         func_ii = isinstance
@@ -3256,33 +2338,33 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 updateModeInfo = True
                 allowStamp = True
             elif func_ii(item, type_ent):
-                self.creationTabs.setCurrentIndex(2)
+                self.palette_dock.set_tab(2)
                 self.UpdateFlag = True
-                self.entranceList.setCurrentItem(item.listitem)
+                self.palette_dock.entrance_tab.entrance_list.setCurrentItem(item.listitem)
                 self.UpdateFlag = False
                 showEntrancePanel = True
                 updateModeInfo = True
                 allowStamp = False
             elif func_ii(item, type_loc):
-                self.creationTabs.setCurrentIndex(3)
+                self.palette_dock.set_tab(3)
                 self.UpdateFlag = True
-                self.locationList.setCurrentItem(item.listitem)
+                self.palette_dock.location_tab.location_list.setCurrentItem(item.listitem)
                 self.UpdateFlag = False
                 showLocationPanel = True
                 updateModeInfo = True
                 allowStamp = False
             elif func_ii(item, type_path):
-                self.creationTabs.setCurrentIndex(4)
+                self.palette_dock.set_tab(4)
                 self.UpdateFlag = True
-                self.pathList.setCurrentItem(item.listitem)
+                self.palette_dock.path_tab.path_list.setCurrentItem(item.listitem)
                 self.UpdateFlag = False
                 showPathPanel = True
                 updateModeInfo = True
                 allowStamp = False
             elif func_ii(item, type_com):
-                self.creationTabs.setCurrentIndex(7)
+                self.palette_dock.set_tab(7)
                 self.UpdateFlag = True
-                self.commentList.setCurrentItem(item.listitem)
+                self.palette_dock.comment_tab.comment_list.setCurrentItem(item.listitem)
                 self.UpdateFlag = False
                 updateModeInfo = True
                 allowStamp = False
@@ -3300,7 +2382,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.action_list['shiftitems'].setEnabled(True)
 
         # turn on the Stamp Add btn if applicable
-        self.stampAddBtn.setEnabled(bool(selitems) and allowStamp)
+        self.palette_dock.stamp_tab.add_button.setEnabled(bool(selitems) and allowStamp)
 
         # count the # of each type, for the statusbar label
         spr = 0
@@ -3318,7 +2400,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if func_ii(item, type_com): com += 1
 
         self.action_list['mergelocations'].setEnabled(loc >= 2)
-        self.layerChangeButton.setEnabled(obj != 0)
+        self.palette_dock.object_tab.layer_change_button.setEnabled(obj != 0)
 
         # write the statusbar label text
         text = ''
@@ -3402,221 +2484,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             SetDirty()
         self.level_overview.update()
 
-    def CreationTabChanged(self, new_tab):
-        """
-        Handles the selected palette tab changing
-        """
-        paint_type = -1
-
-        if new_tab == 0: # Objects
-            paint_type = self.objAllTab.currentIndex()
-        elif new_tab == 1: # Sprites
-            # Ensure the user can't paint sprites
-            # when the 'current sprites' tab is
-            # opened.
-            if self.sprAllTab.currentIndex() != 1:
-                paint_type = 4
-        elif new_tab == 2:
-            paint_type = 5  # Entrances
-        elif new_tab == 3:
-            paint_type = 7  # Locations
-        elif new_tab == 4:
-            paint_type = 6  # Paths
-        elif new_tab == 6:
-            paint_type = 8  # Stamps
-        elif new_tab == 7:
-            paint_type = 9  # Comments
-
-        globals_.CurrentPaintType = paint_type
-
-    def ObjTabChanged(self, new_tab):
-        """
-        Handles the selected slot tab in the object palette changing
-        """
-        if hasattr(self, 'objPicker'):
-            if 0 <= new_tab <= 3:
-                self.objPicker.ShowTileset(new_tab)
-                eval(f'self.objTS{new_tab}Tab').setLayout(self.createObjectLayout)
-
-            self.defaultPropDock.setVisible(False)
-
-        globals_.CurrentPaintType = new_tab
-
-    def SprTabChanged(self, new_tab):
-        """
-        Handles the selected tab in the sprite palette changing
-        """
-        if new_tab == 0:
-            paint_type = 4 # Sprites
-        else:
-            paint_type = -1 # None
-
-        globals_.CurrentPaintType = paint_type
-
-    def ChangeSelectionLayer(self, checked):
-        """
-        Changes the layer of the selection to the current layer.
-        """
-        self.ChangeSelectedObjectsLayer(globals_.CurrentLayer)
-
-    def LayerChoiceChanged(self, new_layer):
-        """
-        Handles the selected layer changing
-        """
-        globals_.CurrentLayer = new_layer
-
-        # Should we change layers?
-        if QtWidgets.QApplication.keyboardModifiers() == Qt.KeyboardModifier.AltModifier:
-            self.ChangeSelectedObjectsLayer(new_layer)
-
-    def ChangeSelectedObjectsLayer(self, new_layer_id):
-        """
-        Changes the layer of the selected objects to the new layer.
-        """
-        assert new_layer_id in (0, 1, 2)
-
-        items = self.scene.selectedItems()
-        area = globals_.Area
-        change = []
-
-        for x in items:
-            if isinstance(x, ObjectItem) and x.layer != new_layer_id:
-                change.append(x)
-
-        if not change:
-            return
-
-        change.sort(key=lambda x: x.zValue())
-        new_layer = area.layers[new_layer_id]
-
-        if not new_layer:
-            z_value = (2 - new_layer_id) * 8192
-        else:
-            z_value = new_layer[-1].zValue() + 1
-
-        if new_layer_id == 0:
-            new_vis = globals_.Layer0Shown
-        elif new_layer_id == 1:
-            new_vis = globals_.Layer1Shown
-        else:
-            new_vis = globals_.Layer2Shown
-
-        for item in change:
-            area.RemoveFromLayer(item)
-            item.layer = new_layer_id
-            new_layer.append(item)
-
-            item.setZValue(z_value)
-            item.setVisible(new_vis)
-            item.update()
-            item.UpdateTooltip()
-
-            z_value += 1
-
-        self.scene.update()
-        SetDirty()
-
-    def ObjectChoiceChanged(self, type_):
-        """
-        Handles a new object being chosen
-        """
-        globals_.CurrentObject = type_
-
-    def ObjectReplace(self, object_num):
-        """
-        Handles a new object being chosen to replace the selected objects
-        """
-        items = self.scene.selectedItems()
-        tileset = globals_.CurrentPaintType
-        changed = False
-
-        for x in items:
-            if isinstance(x, ObjectItem) and (x.tileset != tileset or x.object_num != object_num):
-                x.SetType(tileset, object_num)
-                x.update()
-                changed = True
-
-        if changed:
-            SetDirty()
-
-    def SpriteChoiceChanged(self, sprite_num):
-        """
-        Handles a new sprite being chosen
-        """
-        globals_.CurrentSprite = sprite_num
-
-        if sprite_num != 1000 and sprite_num >= 0:
-            self.defaultDataEditor.setSprite(sprite_num, initial_data=bytes(10))
-            self.defaultPropButton.setEnabled(True)
-        else:
-            self.defaultPropButton.setEnabled(False)
-            self.defaultPropDock.setVisible(False)
-            self.defaultDataEditor.updateFields()
-
-    def SpriteReplace(self, sprite_num):
-        """
-        Handles a new sprite type being chosen to replace the selected sprites
-        """
-        items = self.scene.selectedItems()
-        changed = False
-
-        for x in items:
-            if isinstance(x, SpriteItem):
-                # Reset spritedata
-                x.spritedata = self.defaultDataEditor.data
-                x.SetType(sprite_num)
-                x.update()
-
-                # Assign the new sprite image class
-                image_classes = globals_.gamedef.getImageClasses()
-                if sprite_num in image_classes:
-                    x.setImageObj(image_classes[sprite_num])
-                else:
-                    x.setImageObj(SLib.SpriteImage)
-                changed = True
-
-        if changed:
-            # Fixes any issues from outdated types
-            globals_.Area.InitialiseIdTypes()
-            SetDirty()
-
-        self.ChangeSelectionHandler()
-
-    def SelectNewSpriteView(self, type):
-        """
-        Handles a new sprite view being chosen
-        """
-        cat = globals_.SpriteCategories[type]
-        self.sprPicker.SwitchView(cat)
-
-        isSearch = (type == 0)
-        layout = self.spriteSearchLayout
-
-        # Show/hide the searchbar
-        # Item 0 is "Search:", 1 is the box itself
-        for i in range(2):
-            item = layout.itemAt(i)
-            if item is None:
-                return
-
-            widget = item.widget()
-            if widget is None:
-                return
-
-            widget.setVisible(isSearch)
-
-    def NewSearchTerm(self, text):
-        """
-        Handles a new sprite search term being entered
-        """
-        self.sprPicker.SetSearchString(text)
-
-    def ShowDefaultProps(self):
-        """
-        Handles the Show Default Properties button being clicked
-        """
-        self.defaultPropDock.setVisible(True)
-
     def HandleSprPosChange(self, obj: SpriteItem, oldx, oldy, x, y):
         """
         Handle the sprite being dragged
@@ -3644,7 +2511,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 SetDirty()
 
                 obj.UpdateDynamicSizing()
-                self.spriteList.updateSprite(obj)
+                self.palette_dock.sprite_tab.sprite_list.updateSprite(obj)
 
     def HandleEntPosChange(self, obj: EntranceItem, oldx, oldy, x, y):
         """
@@ -3691,82 +2558,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         obj.UpdateTooltip()
         self.SaveComments()
         SetDirty()
-
-    def HandleEntranceSelectByList(self, item):
-        """
-        Handle an entrance being selected from the list
-        """
-        if self.UpdateFlag:
-            return
-
-        ent = item.reference
-        ent.ensureVisible(xMargin=192, yMargin=192)
-        self.scene.clearSelection()
-        ent.setSelected(True)
-
-    def HandleEntranceToolTipAboutToShow(self, item: EntranceItem):
-        """
-        Handle an entrance being hovered in the list
-        """
-        ent: EntranceItem
-        for ent in globals_.Area.entrances:
-            if ent.listitem == item:
-                ent.UpdateListItem(True)
-                break
-
-    def HandleLocationSelectByList(self, item):
-        """
-        Handle a location being selected from the list
-        """
-        if self.UpdateFlag:
-            return
-
-        loc = item.reference
-        loc.ensureVisible(xMargin=192, yMargin=192)
-        self.scene.clearSelection()
-        loc.setSelected(True)
-
-    def HandleLocationToolTipAboutToShow(self, item):
-        """
-        Handle a location being hovered in the list
-        """
-        item.reference.UpdateListItem(True)
-
-    def HandlePathSelectByList(self, item):
-        """
-        Handle a path node being selected
-        """
-        path_item = item.reference
-
-        path_item.ensureVisible(xMargin=192, yMargin=192)
-        self.scene.clearSelection()
-        path_item.setSelected(True)
-
-    def HandlePathToolTipAboutToShow(self, item):
-        """
-        Handle a path node being hovered in the list
-        """
-        item.reference.UpdateListItem(True)
-
-    def HandleCommentSelectByList(self, item):
-        """
-        Handle a comment being selected
-        """
-        for comment in globals_.Area.comments:
-            if comment.listitem == item:
-                comment.ensureVisible(xMargin=192, yMargin=192)
-                self.scene.clearSelection()
-                comment.setSelected(True)
-                break
-
-    def HandleCommentToolTipAboutToShow(self, item):
-        """
-        Handle a comment being hovered in the list
-        """
-        for comment in globals_.Area.comments:
-            if comment.listitem == item:
-                comment.UpdateListItem(True)
-                break
 
     def HandleLocPosChange(self, loc, oldx, oldy, x, y):
         """
@@ -3932,12 +2723,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             else:
                 UnloadTileset(idx)
 
-        self.objPicker.LoadFromTilesets()
-        self.objAllTab.setCurrentIndex(0)
-        self.objAllTab.setTabEnabled(0, (globals_.Area.tileset0 != ''))
-        self.objAllTab.setTabEnabled(1, (globals_.Area.tileset1 != ''))
-        self.objAllTab.setTabEnabled(2, (globals_.Area.tileset2 != ''))
-        self.objAllTab.setTabEnabled(3, (globals_.Area.tileset3 != ''))
+        self.palette_dock.object_tab.reset(False, False)
 
         for layer in globals_.Area.layers:
             for obj in layer:

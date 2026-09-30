@@ -116,8 +116,8 @@ class SpriteItem(LevelEditorItem):
                 # Unknown sprite, don't create
                 return
 
-            globals_.mainWindow.spriteList.addSprite(spr)
-            globals_.mainWindow.spriteOrder.addSprite(spr)
+            globals_.mainWindow.palette_dock.sprite_tab.sprite_list.addSprite(spr)
+            globals_.mainWindow.palette_dock.sprite_tab.sprite_order_list.addSprite(spr)
             globals_.Area.sprites.append(spr)
 
             # Add the ids for the idtype count
@@ -618,15 +618,15 @@ class SpriteItem(LevelEditorItem):
 
         self.ImageObj.remove()
         globals_.mainWindow.UpdateFlag = True
-        globals_.mainWindow.spriteList.takeSprite(self)
-        globals_.mainWindow.spriteOrder.takeSprite(self)
+        globals_.mainWindow.palette_dock.sprite_tab.sprite_list.takeSprite(self)
+        globals_.mainWindow.palette_dock.sprite_tab.sprite_order_list.takeSprite(self)
         globals_.mainWindow.UpdateFlag = False
 
-        sel_model = globals_.mainWindow.spriteList.selectionModel()
+        sel_model = globals_.mainWindow.palette_dock.sprite_tab.sprite_list.selectionModel()
         if sel_model is not None:
             sel_model.clearSelection()
 
-        sel_model = globals_.mainWindow.spriteOrder.selectionModel()
+        sel_model = globals_.mainWindow.palette_dock.sprite_tab.sprite_order_list.selectionModel()
         if sel_model is not None:
             sel_model.clearSelection()
         globals_.Area.RemoveSprite(self)

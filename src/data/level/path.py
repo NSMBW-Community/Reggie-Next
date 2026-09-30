@@ -164,7 +164,7 @@ class Path(AbstractPath):
 
         if add_to_list:
             node.positionChanged = globals_.mainWindow.HandlePathPosChange
-            globals_.mainWindow.pathList.addItem(node.listitem)
+            globals_.mainWindow.palette_dock.path_tab.path_list.addItem(node.listitem)
 
         # Update ids of all nodes after the newly created node
         for new_id, later_node in enumerate(self._nodes[index + 1:], index + 1):
@@ -189,7 +189,7 @@ class Path(AbstractPath):
             return
 
         # Hacky stuff
-        plist = globals_.mainWindow.pathList
+        plist = globals_.mainWindow.palette_dock.path_tab.path_list
 
         globals_.mainWindow.UpdateFlag = True
         plist.takeItem(plist.row(node.listitem))

@@ -143,6 +143,76 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
 
         return obj
 
+    @staticmethod
+    def change_layer(new_layer_id):
+        """
+        Changes the layer of the selected objects to the new layer
+        """
+        assert new_layer_id in (0, 1, 2)
+        if globals_.mainWindow is None:
+            return
+
+        items = globals_.mainWindow.scene.selectedItems()
+        area = globals_.Area
+        change = []
+
+        for x in items:
+            if isinstance(x, ObjectItem) and x.layer != new_layer_id:
+                change.append(x)
+
+        if not change:
+            return
+
+        change.sort(key=lambda x: x.zValue())
+        new_layer = area.layers[new_layer_id]
+
+        if not new_layer:
+            z_value = (2 - new_layer_id) * 8192
+        else:
+            z_value = new_layer[-1].zValue() + 1
+
+        if new_layer_id == 0:
+            new_vis = globals_.Layer0Shown
+        elif new_layer_id == 1:
+            new_vis = globals_.Layer1Shown
+        else:
+            new_vis = globals_.Layer2Shown
+
+        for item in change:
+            area.RemoveFromLayer(item)
+            item.layer = new_layer_id
+            new_layer.append(item)
+
+            item.setZValue(z_value)
+            item.setVisible(new_vis)
+            item.update()
+            item.UpdateTooltip()
+
+            z_value += 1
+
+        globals_.mainWindow.scene.update()
+        SetDirty()
+
+    @staticmethod
+    def object_replaced(object_num):
+        """
+        Handles a new object being chosen to replace the selected objects
+        """
+        if globals_.mainWindow is None:
+            return
+        items = globals_.mainWindow.scene.selectedItems()
+        tileset = globals_.CurrentPaintType
+        changed = False
+
+        for x in items:
+            if isinstance(x, ObjectItem) and (x.tileset != tileset or x.object_num != object_num):
+                x.SetType(tileset, object_num)
+                x.update()
+                changed = True
+
+        if changed:
+            SetDirty()
+
     def SetType(self, tileset, object_num):
         """
         Sets the type of the object

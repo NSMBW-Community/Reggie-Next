@@ -529,13 +529,13 @@ def LoadGameDef(name: str | None = None, dlg: QtWidgets.QProgressDialog | None =
             globals_.Area.InitialiseIdTypes()
 
         if globals_.mainWindow is not None:
-            globals_.mainWindow.spriteViewPicker.clear()
+            globals_.mainWindow.palette_dock.sprite_tab.view_picker.clear()
 
             for cat in globals_.SpriteCategories:
-                globals_.mainWindow.spriteViewPicker.addItem(cat.name)
+                globals_.mainWindow.palette_dock.sprite_tab.view_picker.addItem(cat.name)
 
-            globals_.mainWindow.sprPicker.LoadItems()  # Reloads the sprite picker list items
-            globals_.mainWindow.spriteViewPicker.setCurrentIndex(0)  # Sets the sprite picker to category 0 (enemies)
+            globals_.mainWindow.palette_dock.sprite_tab.sprite_picker.LoadItems()  # Reloads the sprite picker list items
+            globals_.mainWindow.palette_dock.sprite_tab.view_picker.setCurrentIndex(0)  # Sets the sprite picker to category 0 (enemies)
             globals_.mainWindow.spriteDataEditor.setSprite(globals_.mainWindow.spriteDataEditor.spritetype,
                                                   True)  # Reloads the sprite data editor fields
 

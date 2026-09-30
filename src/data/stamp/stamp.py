@@ -1,6 +1,7 @@
 from PyQt6 import QtCore, QtGui
 
 from src.data import globals_
+from src.data.common.reggie_clip import ReggieClip
 
 
 class Stamp:
@@ -24,7 +25,7 @@ class Stamp:
 
         minX, minY, maxX, maxY = 24576, 12288, 0, 0
 
-        layers, sprites, _, _, _, _ = globals_.mainWindow.getEncodedObjects(self.ReggieClip, False)
+        layers, sprites, _, _, _, _ = ReggieClip.decode_reggie_clip(self.ReggieClip, False)
 
         # Go through the sprites and find the maxs and mins
         for spr in sprites:

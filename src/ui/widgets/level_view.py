@@ -8,6 +8,7 @@ from src.data.level.items.location import LocationItem
 from src.data.level.items.object import ObjectItem
 from src.data.level.items.path import PathItem
 from src.data.level.items.sprite import SpriteItem
+from src.data.common.reggie_clip import ReggieClip
 
 
 class LevelViewWidget(QtWidgets.QGraphicsView):
@@ -119,7 +120,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 # paint a path node
                 clickedx = int((clicked.x() - 12) / 1.5)
                 clickedy = int((clicked.y() - 12) / 1.5)
-                plist = globals_.mainWindow.pathList
+                plist = globals_.mainWindow.palette_dock.path_tab.path_list
                 selectedpn = None if not plist.selectedItems() else plist.selectedItems()[0]
 
                 if selectedpn is None:
@@ -193,9 +194,9 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int(clicked.x() / 1.5)
                 clickedy = int(clicked.y() / 1.5)
 
-                stamp = globals_.mainWindow.stampChooser.currentlySelectedStamp()
+                stamp = globals_.mainWindow.palette_dock.stamp_tab.stamp_picker.currentlySelectedStamp()
                 if stamp is not None:
-                    objs = globals_.mainWindow.placeEncodedObjects(stamp.ReggieClip, False, clickedx, clickedy)
+                    objs = ReggieClip.paste_reggie_clip(stamp.ReggieClip, False, clickedx, clickedy)
 
                     for obj in objs:
                         obj.dragstartx = obj.objx
@@ -223,7 +224,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 mw.scene.addItem(com)
                 com.setVisible(globals_.CommentsShown)
 
-                clist = mw.commentList
+                clist = mw.palette_dock.comment_tab.comment_list
                 com.listitem = QtWidgets.QListWidgetItem()
                 clist.addItem(com.listitem)
 

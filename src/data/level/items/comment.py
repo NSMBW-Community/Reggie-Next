@@ -235,7 +235,7 @@ class CommentItem(LevelEditorItem):
         if globals_.mainWindow is None:
             return
 
-        comment_list = globals_.mainWindow.commentList
+        comment_list = globals_.mainWindow.palette_dock.comment_tab.comment_list
 
         globals_.mainWindow.UpdateFlag = True
         comment_list.takeItem(comment_list.row(self.listitem))
