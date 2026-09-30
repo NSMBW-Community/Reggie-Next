@@ -323,6 +323,9 @@ def main():
     globals_.mainWindow.__init2__()
     globals_.mainWindow.show()
 
+    # We might have something in the clipboard already, activate Paste if so
+    globals_.mainWindow.TrackClipboardUpdates()
+
     if '-generatestringsxml' in sys.argv:
         globals_.trans.generateXML()
 

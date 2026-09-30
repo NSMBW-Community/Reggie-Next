@@ -1,4 +1,4 @@
-from PyQt6 import QtWidgets
+from PyQt6 import QtWidgets, QtGui
 
 from src.data import globals_
 from src.ui.theme.reggie_theme import GetIcon
@@ -14,7 +14,7 @@ class AutoSaveDialog(QtWidgets.QDialog):
         """
         super().__init__()
         self.setWindowTitle(globals_.trans.string('AutoSaveDlg', 0))
-        self.setWindowIcon(GetIcon('save'))
+        self.setWindowIcon(QtGui.QIcon('reggiedata/icon.png'))
 
         info = QtWidgets.QLabel(globals_.trans.string('AutoSaveDlg', 1, '[path]', filename))
         info.setWordWrap(True)

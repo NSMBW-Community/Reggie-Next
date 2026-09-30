@@ -392,7 +392,7 @@ class ReggieTranslation:
                 16: 'Loading entrance names...',
                 17: 'Error',
                 18: 'An error occurred while attempting to load this game patch. It will now be unloaded. Here\'s the specific error:[br][error]',
-                19: 'Reload Game Patches',
+                19: 'Refresh List',
             },
             'InfoDlg': {
                 0: 'Level Information',
@@ -685,7 +685,7 @@ class ReggieTranslation:
                 16: 'Clear Recent Files',
                 17: None, # REMOVED: 'Clear All Recent Files Data'
                 18: 'Are you sure you want to clear all recent files? This cannot be undone.',
-                19: 'Current Area',
+                19: None, # REMOVED: 'Current Area'
                 20: 'Reset',
                 21: 'Available Themes',
                 22: 'Preview',

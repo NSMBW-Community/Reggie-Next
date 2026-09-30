@@ -302,7 +302,7 @@
     <section id="Err_MissingFiles">
         <string id="0">Error</string>
         <string id="1">Sorry, you seem to be missing the required data files for Reggie Next to work. Please redownload your copy of the editor.</string>
-        <string id="2">Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor. These are the files you are missing: [files]</string>
+        <string id="2">Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor.[br][br]These are the files you are missing:[br][files]</string>
     </section>
     <section id="Err_MissingTileset">
         <string id="0">Error</string>
@@ -359,7 +359,7 @@
         <string id="16">Loading entrance names...</string>
         <string id="17">Error</string>
         <string id="18">An error occurred while attempting to load this game patch. It will now be unloaded. Here's the specific error:[br][error]</string>
-        <string id="19">Reload Game Patches</string>
+        <string id="19">Refresh List</string>
     </section>
     <section id="InfoDlg">
         <string id="0">Level Information</string>
@@ -652,7 +652,7 @@
         <string id="16">Clear Recent Files</string>
         <string id="17" />
         <string id="18">Are you sure you want to clear all recent files? This cannot be undone.</string>
-        <string id="19">Current Area</string>
+        <string id="19" />
         <string id="20">Reset</string>
         <string id="21">Available Themes</string>
         <string id="22">Preview</string>

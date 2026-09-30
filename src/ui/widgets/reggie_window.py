@@ -87,14 +87,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
     """
     action_list: dict[str, QtGui.QAction] = {}
 
-    def CreateInfoAction(self, menu: QtWidgets.QMenu, text: str):
-        """
-        Helper function to create an action for library version info
-        """
-        act = menu.addAction(text)
-        if act is not None:
-            act.setEnabled(False)
-
     def CreateDockWidget(self, title, obj_name, widget, features, area, allowed_areas, visible, floating):
         """
         Helper function to create docks
@@ -124,9 +116,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         globals_.Initializing = True
 
-        # Reggie Version number goes below here. 64 char max (32 if non-ascii).
-        self.ReggieInfo = globals_.ReggieID
-
         self.ZoomLevels = [7.5, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0,
                            85.0, 90.0, 95.0, 100.0, 125.0, 150.0, 175.0, 200.0, 250.0, 300.0, 350.0, 400.0]
 
@@ -141,7 +130,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Set up the window
         QtWidgets.QMainWindow.__init__(self, None)
-        self.setWindowTitle('Reggie! Next Level Editor %s' % globals_.ReggieVersionShort)
+        self.setWindowTitle(f'Reggie! Next {globals_.ReggieVersionShort}')
         self.setWindowIcon(QtGui.QIcon('reggiedata/icon.png'))
         self.setIconSize(QtCore.QSize(16, 16))
         self.setUnifiedTitleAndToolBarOnMac(True)
@@ -167,17 +156,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if self.systemClipboard is not None:
             self.systemClipboard.dataChanged.connect(self.TrackClipboardUpdates)
 
-        # We might have something there already, activate Paste if so
-        self.TrackClipboardUpdates()
-
     def __init2__(self):
         """
         Finishes initialization. (fixes bugs with some widgets calling globals_.mainWindow.something before it's init'ed)
         """
-
-        self.AutosaveTimer = QtCore.QTimer()
-        self.AutosaveTimer.timeout.connect(self.Autosave)
-        self.AutosaveTimer.start(20000)
+        self.auto_save_timer = QtCore.QTimer()
+        self.auto_save_timer.timeout.connect(self.Autosave)
+        self.auto_save_timer.start(20000) # 20 seconds
 
         # Set up actions and menus
         self.RecentMenu = RecentFilesMenu()
@@ -192,19 +177,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Add a menu action for the toolbar
         # That way it can be easily toggled if hidden by accident
-        if self.toolbar is None:
-            return
+        if self.toolbar is not None:
+            act = self.toolbar.toggleViewAction()
+            if act is None:
+                return
 
-        act = self.toolbar.toggleViewAction()
-        if act is None:
-            return
+            act.setShortcut(GetKeybind('toolbar'))
+            act.setIcon(GetIcon('diagnostics'))
+            if self.vmenu is not None:
+                self.vmenu.addAction(act)
 
-        act.setShortcut(GetKeybind('toolbar'))
-        act.setIcon(GetIcon('diagnostics'))
-        if self.vmenu is not None:
-            self.vmenu.addAction(act)
-
-        self.action_list['toolbar'] = act
+            self.action_list['toolbar'] = act
 
         # Now get stuff ready
         loaded = False
@@ -259,7 +242,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if globals_.AutoDiagEnabled:
             self.diagnostic.update_status()
 
-        # Aaaaaand... initializing is done!
         globals_.Initializing = False
 
     def setup_status_bar(self):
@@ -305,10 +287,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
             act = action.create_action(self)
             self.action_list[action.shortname] = act
 
-        # Set default states
         self.action_list['openrecent'].setMenu(self.RecentMenu)
         self.action_list['changegamedef'].setMenu(self.GameDefMenu)
 
+        # Set default states
         self.action_list['collisions'].setChecked(globals_.CollisionsShown)
         self.action_list['realview'].setChecked(globals_.RealViewEnabled)
 
@@ -448,33 +430,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Creates the help menu
         """
-        help_actions = (
-            MenuAction(
-                'infobox', self.AboutBox, GetIcon('reggie'), globals_.trans.stringOneLine('MenuItems', 86),
-                globals_.trans.string('MenuItems', 87), GetKeybind('infobox')
-            ),
-            MenuAction(
-                'helpbox', self.HelpBox, GetIcon('contents'), globals_.trans.stringOneLine('MenuItems', 88),
-                globals_.trans.string('MenuItems', 89), GetKeybind('helpbox')
-            ),
-            MenuAction(
-                'tipbox', self.TipBox, GetIcon('tips'), globals_.trans.stringOneLine('MenuItems', 90),
-                globals_.trans.string('MenuItems', 91), GetKeybind('tipbox')
-            ),
-            MenuAction(
-                'genstrxml', lambda: globals_.trans.generateXML(), GetIcon('note'), globals_.trans.stringOneLine('MenuItems', 146),
-                globals_.trans.string('MenuItems', 147), GetKeybind('genstrxml')
-            ),
-            MenuAction(
-                'aboutqt', self.AboutQt, GetIcon('qt'), globals_.trans.stringOneLine('MenuItems', 92),
-                globals_.trans.string('MenuItems', 93), GetKeybind('aboutqt')
-            ),
-        )
-
-        for action in help_actions:
-            act = action.create_action(self)
-            self.action_list[action.shortname] = act
-
         if menu is None:
             menu = QtWidgets.QMenu(globals_.trans.string('Menubar', 4))
 
@@ -497,10 +452,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
         else:
             nsmblib_info_text = "Not using NSMBLib"
 
-        self.CreateInfoAction(menu, "Using Python %d.%d.%d" % sys.version_info[:3])
-        self.CreateInfoAction(menu, "Using PyQt %s" % QtCore.PYQT_VERSION_STR)
-        self.CreateInfoAction(menu, "Using Qt %s" % QtCore.QT_VERSION_STR)
-        self.CreateInfoAction(menu, nsmblib_info_text)
+        info_labels = [
+            "Using Python %d.%d.%d" % sys.version_info[:3],
+            "Using PyQt %s" % QtCore.PYQT_VERSION_STR,
+            "Using Qt %s" % QtCore.QT_VERSION_STR,
+            nsmblib_info_text
+        ]
+
+        for label in info_labels:
+            act = menu.addAction(label)
+            if act is not None:
+                act.setEnabled(False)
 
         return menu
 
@@ -1036,7 +998,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Auto saves the level
         """
-        if not globals_.AutoSaveDirty: return
+        if not globals_.AutoSaveDirty:
+            return
 
         data = globals_.Level.save()
         setSetting('AutoSaveFilePath', self.fileSavePath)
@@ -1183,7 +1146,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         data = b""
         for i in range(64):
             event_note = str(self.eventChooserItems[i].text(1))
-            if not event_note: continue
+            if not event_note:
+                continue
 
             encoded = event_note.encode('utf-8')
 
@@ -1200,16 +1164,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         # Create a ReggieClip
         selitems = self.scene.selectedItems()
-        if not selitems: return
+        if not selitems:
+            return
+
         clipboard_o = []
         clipboard_s = []
-        ii = isinstance
-        type_obj = ObjectItem
-        type_spr = SpriteItem
+
         for obj in selitems:
-            if ii(obj, type_obj):
+            if isinstance(obj, ObjectItem):
                 clipboard_o.append(obj)
-            elif ii(obj, type_spr):
+            elif isinstance(obj, SpriteItem):
                 clipboard_s.append(obj)
         RegClp = self.encodeObjects(clipboard_o, clipboard_s)
 
@@ -1237,16 +1201,17 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handles the "Open Set..." btn being clicked
         """
-        filetypes = ''
-        filetypes += globals_.trans.string('FileDlgs', 7) + ' (*.stamps);;'  # *.stamps
-        filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'  # *
+        filetypes = f'{globals_.trans.string('FileDlgs', 7)}  (*.stamps);; {globals_.trans.string('FileDlgs', 2)} (*)'
+
         fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 6), '', filetypes)[0]
-        if fn == '': return
+        if fn == '':
+            return
 
         with open(fn, 'r', encoding='utf-8') as file:
             filedata = file.read()
 
-        if not filedata.startswith('stamps\n------\n'): return
+        if not filedata.startswith('stamps\n------\n'):
+            return
 
         filesplit = filedata.split('\n')[3:]
         for i in range(0, len(filesplit), 3):
@@ -1263,11 +1228,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Handles the "Save Set As..." btn being clicked
         """
-        filetypes = ''
-        filetypes += globals_.trans.string('FileDlgs', 7) + ' (*.stamps);;'  # *.stamps
-        filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'  # *
+        filetypes = f'{globals_.trans.string('FileDlgs', 7)}  (*.stamps);; {globals_.trans.string('FileDlgs', 2)} (*)'
+
         fn = QtWidgets.QFileDialog.getSaveFileName(self, globals_.trans.string('FileDlgs', 3), '', filetypes)[0]
-        if fn == '': return
+        if fn == '':
+            return
 
         newdata = ''
         newdata += 'stamps\n'
@@ -1306,18 +1271,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         stamp.Name = text
         stamp.update()
 
-        # Try to get it to update!!! But fail. D:
-        for i in range(3):
-            self.stampChooser.updateGeometries()
-            self.stampChooser.update(self.stampChooser.currentIndex())
-            self.stampChooser.update()
-            self.stampChooser.repaint()
-
-    def AboutBox(self):
-        """
-        Shows the about box
-        """
-        AboutDialog().exec()
+        self.stampChooser.updateGeometries()
+        self.stampChooser.update(self.stampChooser.currentIndex())
+        self.stampChooser.update()
+        self.stampChooser.repaint()
 
     def HandleInfo(self):
         """
@@ -1326,7 +1283,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if globals_.Area.areanum == 1:
             dlg = MetaInfoDialog()
             if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-                globals_.Area.Metadata.setStrData('Creator', 'Reggie! Next %s' % globals_.ReggieVersionShort)
+                globals_.Area.Metadata.setStrData('Creator', f'Reggie! Next {globals_.ReggieVersionShort}')
                 globals_.Area.Metadata.setStrData('Title', dlg.name_field.text())
                 globals_.Area.Metadata.setStrData('Author', dlg.author_field.text())
                 globals_.Area.Metadata.setStrData('Group', dlg.group_field.text())
@@ -1366,12 +1323,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(file_path))
 
-    def AboutQt(self):
-        """
-        Shows the "About Qt" dialog
-        """
-        QtWidgets.QMessageBox.aboutQt(None)
-
     def SelectAll(self):
         """
         Select all objects in the current area, or selects all text in the focused widget
@@ -1399,18 +1350,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         items = self.scene.selectedItems()
         for obj in items:
             obj.setSelected(False)
-
-    def Undo(self):
-        """
-        Undoes something
-        """
-        self.undoStack.undo()
-
-    def Redo(self):
-        """
-        Redoes something previously undone
-        """
-        self.undoStack.redo()
 
     def CopyOrCut(self, cutAction):
         """
@@ -1845,7 +1784,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Shifts the selected object(s)
         """
         items = self.scene.selectedItems()
-        if not items: return
+        if not items:
+            return
 
         dlg = ItemShiftDialog()
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
@@ -1919,12 +1859,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 elif do_exchange and nsmbobj.tileset == to_tileset:
                     nsmbobj.SetType(from_tileset, nsmbobj.object_num)
                     SetDirty()
-
-    def SwapObjectsTypes(self):
-        """
-        Swaps objects' types
-        """
-        ObjectTypeSwapDialog().exec()
 
     def SwitchSprites(self):
         """
@@ -2066,10 +2000,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         result = QtWidgets.QMessageBox.warning(self, globals_.trans.string('DeleteArea', 1), globals_.trans.string('DeleteArea', 0),
                                                QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
-        if result == QtWidgets.QMessageBox.StandardButton.No: return
+        if result == QtWidgets.QMessageBox.StandardButton.No:
+            return
 
         # Save the current area in case something goes wrong.
-        if not self.HandleSave(): return
+        if not self.HandleSave():
+            return
 
         area_to_delete = globals_.Area.areanum
         new_area_one = 1 if area_to_delete != 1 else 2
@@ -2098,7 +2034,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Change the game path used by the current game definition
         """
-        if self.CheckDirty(): return
+        if self.CheckDirty():
+            return
 
         while True:
             stage_path = QtWidgets.QFileDialog.getExistingDirectory(
@@ -2326,7 +2263,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
         filetypes += globals_.trans.string('FileDlgs', 10) + ' (*.arc.LZ);;'         # *.arc.LZ
         filetypes += globals_.trans.string('FileDlgs', 2) + ' (*)'                  # *
         fn = QtWidgets.QFileDialog.getOpenFileName(self, globals_.trans.string('FileDlgs', 0), '', filetypes)[0]
-        if fn == '': return
+        if fn == '':
+            return
+
         self.LoadLevel(str(fn), True, 1)
 
     def HandleSave(self):
@@ -2448,24 +2387,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         return True
 
-    def HandleSaveCopyAs(self):
-        """
-        Save a level back to the archive, with a new filename, but does not store this filename
-        """
-        self.HandleSaveAs(True)
-
-    def HandleExit(self):
-        """
-        Exit the editor. Why would you want to do this anyway?
-        """
-        self.close()
-
     def HandleSwitchArea(self, idx):
         """
         Handle activated signals for areaComboBox
         """
         old_idx = globals_.Area.areanum - 1
-
         if idx == old_idx:
             return
 
@@ -2984,8 +2910,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     if globals_.UseFullFilepath:
                         self.fileTitle = self.fileSavePath
                     else:
-                        if name is not None:
-                            self.fileTitle = os.path.basename(name)
+                        name = globals_.AutoSavePath
+                        self.fileTitle = os.path.basename(name)
 
                 # Get the level data
                 levelData = globals_.AutoSaveData
@@ -3270,7 +3196,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Update the visible panels whenever the selection changes
         """
-        if self.SelectionUpdateFlag: return
+        if self.SelectionUpdateFlag:
+            return
 
         try:
             selitems = self.scene.selectedItems()

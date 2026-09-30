@@ -26,6 +26,8 @@ from src.data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
 from src.ui.theme.reggie_theme import ReggieTheme, GetIcon
 from src.data.level.items.location import LocationItem
 
+from src.ui.dialogs.about import AboutDialog
+from src.ui.dialogs.object_swap import ObjectTypeSwapDialog
 
 def getResourcePaths(res_name):
     """
@@ -694,7 +696,7 @@ def LoadMenuActions(mw):
             globals_.trans.stringOneLine('MenuItems', 11), GetKeybind('saveas')
         ),
         MenuAction(
-            'savecopyas', mw.HandleSaveCopyAs, GetIcon('savecopyas'), globals_.trans.stringOneLine('MenuItems', 128),
+            'savecopyas', lambda: mw.HandleSaveAs(True), GetIcon('savecopyas'), globals_.trans.stringOneLine('MenuItems', 128),
             globals_.trans.stringOneLine('MenuItems', 129), GetKeybind('savecopyas')
         ),
         MenuAction(
@@ -718,7 +720,7 @@ def LoadMenuActions(mw):
             globals_.trans.stringOneLine('MenuItems', 19), GetKeybind('preferences')
         ),
         MenuAction(
-            'exit', mw.HandleExit, GetIcon('delete'), globals_.trans.stringOneLine('MenuItems', 20),
+            'exit', lambda: mw.close(), GetIcon('delete'), globals_.trans.stringOneLine('MenuItems', 20),
             globals_.trans.stringOneLine('MenuItems', 21), GetKeybind('exit')
         ),
         MenuAction(
@@ -730,11 +732,11 @@ def LoadMenuActions(mw):
             globals_.trans.stringOneLine('MenuItems', 25), GetKeybind('deselect')
         ),
         MenuAction(
-            'undo', mw.Undo, GetIcon('undo'), globals_.trans.stringOneLine('MenuItems', 124),
+            'undo', lambda: mw.undoStack.undo(), GetIcon('undo'), globals_.trans.stringOneLine('MenuItems', 124),
             globals_.trans.stringOneLine('MenuItems', 125), GetKeybind('undo')
         ),
         MenuAction(
-            'redo', mw.Redo, GetIcon('redo'), globals_.trans.stringOneLine('MenuItems', 126),
+            'redo', lambda: mw.undoStack.redo(), GetIcon('redo'), globals_.trans.stringOneLine('MenuItems', 126),
             globals_.trans.stringOneLine('MenuItems', 127), GetKeybind('redo')
         ),
         MenuAction(
@@ -762,7 +764,7 @@ def LoadMenuActions(mw):
             globals_.trans.stringOneLine('MenuItems', 105), GetKeybind('swapobjectstilesets')
         ),
         MenuAction(
-            'swapobjectstypes', mw.SwapObjectsTypes, GetIcon('swap'), globals_.trans.stringOneLine('MenuItems', 106),
+            'swapobjectstypes', lambda: ObjectTypeSwapDialog().exec(), GetIcon('swap'), globals_.trans.stringOneLine('MenuItems', 106),
             globals_.trans.stringOneLine('MenuItems', 107), GetKeybind('swapobjectstypes')
         ),
         MenuAction(
@@ -904,6 +906,26 @@ def LoadMenuActions(mw):
         MenuAction(
             'reloaddata', mw.ReloadSpritedata, GetIcon('reload-spritedata'), globals_.trans.stringOneLine('MenuItems', 138),
             globals_.trans.stringOneLine('MenuItems', 139), GetKeybind('reloaddata')
+        ),
+        MenuAction(
+            'infobox', lambda: AboutDialog().exec(), GetIcon('reggie'), globals_.trans.stringOneLine('MenuItems', 86),
+            globals_.trans.string('MenuItems', 87), GetKeybind('infobox')
+        ),
+        MenuAction(
+            'helpbox', mw.HelpBox, GetIcon('contents'), globals_.trans.stringOneLine('MenuItems', 88),
+            globals_.trans.string('MenuItems', 89), GetKeybind('helpbox')
+        ),
+        MenuAction(
+            'tipbox', mw.TipBox, GetIcon('tips'), globals_.trans.stringOneLine('MenuItems', 90),
+            globals_.trans.string('MenuItems', 91), GetKeybind('tipbox')
+        ),
+        MenuAction(
+            'genstrxml', lambda: globals_.trans.generateXML(), GetIcon('note'), globals_.trans.stringOneLine('MenuItems', 146),
+            globals_.trans.string('MenuItems', 147), GetKeybind('genstrxml')
+        ),
+        MenuAction(
+            'aboutqt', lambda: QtWidgets.QMessageBox.aboutQt(None), GetIcon('qt'), globals_.trans.stringOneLine('MenuItems', 92),
+            globals_.trans.string('MenuItems', 93), GetKeybind('aboutqt')
         ),
     )
 

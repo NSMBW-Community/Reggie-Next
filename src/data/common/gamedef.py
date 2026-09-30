@@ -697,17 +697,24 @@ def update_sprites_module(filename: str):
         for old, new in pyqt_strings:
             new_data = new_data.replace(old, new)
 
-        # Fix BlockContents references
-        block_content_strings = [
+        # Regex fixes
+        regex_strings = [
+            # Fix BlockContents accesses
             (r"\['BlockContents'\]\[(\d+)\]", r"['BlockContents\1']"),
-            (r"\['BlockContents'\]\[(.*?)\]", r"[f'BlockContents{\1}']") # Replace variables
+            (r"\['BlockContents'\]\[(.*?)\]", r"[f'BlockContents{\1}']"),
+            # Update GetImg() calls to the proper function
+            (r"SLib\.GetImg\((\w?[\"']?[\w{}\.]+[\"']?)(?:, ?False)?\)", r"SLib.GetImage(\1)"),
+            (r"SLib\.GetImg\((\w?[\"']?[\w{}\.]+[\"']?)(?:, ?True)\)", r"SLib.GetPixmap(\1)")
         ]
 
-        for pattern, replace in block_content_strings:
+        for pattern, replace in regex_strings:
             new_data = re.sub(pattern, replace, new_data)
 
         # Fix old sprites_common imports
         new_data = new_data.replace("import sprites_common", "import src.data.common.sprites")
+
+        # Fix (very rarely used) references to the sprite ID
+        new_data = new_data.replace("parent.type", "parent.sprite_num")
 
         # All done, save the file
         with open(filename, 'w') as file_out:
