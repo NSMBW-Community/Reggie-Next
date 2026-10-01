@@ -1,12 +1,12 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
 
-from src.ui.theme.reggie_theme import GetIcon
-from src.data.common.settings import setting
+from ui.theme.reggie_theme import GetIcon
+from data.common.settings import setting
 
-from src.data import globals_
+from data import globals_
 
-from src.ui.widgets.game_def_viewer import GameDefViewer
-from src.data.common.gamedef import getAvailableGameDefs, loadNewGameDef, ReggieGameDefinition
+from ui.widgets.game_def_viewer import GameDefViewer
+from data.common.gamedef import getAvailableGameDefs, loadNewGameDef, ReggieGameDefinition
 
 class GameDefMenu(QtWidgets.QMenu):
     """

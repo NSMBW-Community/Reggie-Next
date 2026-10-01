@@ -1,4 +1,4 @@
-from src.data.level.area import Area
+from data.level.area import Area
 
 
 class AbstractLevel:

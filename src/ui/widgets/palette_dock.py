@@ -1,17 +1,17 @@
 from PyQt6 import QtCore, QtWidgets, QtGui
 
-from src.data import globals_
-from src.ui.widgets.icon_only_tab_bar import IconsOnlyTabBar
-from src.ui.theme.reggie_theme import GetIcon
+from data import globals_
+from ui.widgets.icon_only_tab_bar import IconsOnlyTabBar
+from ui.theme.reggie_theme import GetIcon
 
-from src.ui.widgets.palette.object import ObjectTab
-from src.ui.widgets.palette.sprite import SpriteTab
-from src.ui.widgets.palette.entrance import EntranceTab
-from src.ui.widgets.palette.location import LocationTab
-from src.ui.widgets.palette.path import PathTab
-from src.ui.widgets.palette.event import EventTab
-from src.ui.widgets.palette.stamp import StampTab
-from src.ui.widgets.palette.comment import CommentTab
+from ui.widgets.palette.object import ObjectTab
+from ui.widgets.palette.sprite import SpriteTab
+from ui.widgets.palette.entrance import EntranceTab
+from ui.widgets.palette.location import LocationTab
+from ui.widgets.palette.path import PathTab
+from ui.widgets.palette.event import EventTab
+from ui.widgets.palette.stamp import StampTab
+from ui.widgets.palette.comment import CommentTab
 
 class PaletteDock(QtWidgets.QDockWidget):
     """
@@ -88,14 +88,14 @@ class PaletteDock(QtWidgets.QDockWidget):
             if self.sprite_tab.currentIndex() != 1:
                 paint_type = 4
         elif new_tab == 2: # Entrances
-            paint_type = 5  
+            paint_type = 5
         elif new_tab == 3: # Locations
-            paint_type = 7  
+            paint_type = 7
         elif new_tab == 4: # Paths
             paint_type = 6
         elif new_tab == 6: # Stamps
-            paint_type = 8  
+            paint_type = 8
         elif new_tab == 7: # Comments
-            paint_type = 9  
+            paint_type = 9
 
         globals_.CurrentPaintType = paint_type

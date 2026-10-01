@@ -1,4 +1,4 @@
-from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
+from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 
 import os.path
 import struct
@@ -9,67 +9,67 @@ from typing import cast
 from PyQt6 import QtCore, QtGui, QtWidgets
 Qt = QtCore.Qt
 
-from src.data import globals_
+from data import globals_
 
-from src.data.common import archive
+from data.common import archive
 import spritelib as SLib
 
 from libs import lh, lib_versions, lz77
-from src.ui.theme.reggie_theme import GetIcon, SetColorScheme
-from src.data.common.loaders import LoadMenuActions, LoadSpriteData, LoadTilesetInfo, LoadLevelNames, LoadZoneThemes, GetKeybind, SetKeybind, module_path
-from src.data.common.utils import clamp, SetGamePaths
-from src.data.common.validators import IsNSMBLevel, areValidGamePaths
-from src.ui.widgets.level_scene import LevelScene
-from src.ui.widgets.level_view import LevelViewWidget
-from src.data.level.dirty import SetDirty, CheckDirty
-from src.data.common.settings import setting, setSetting
-from src.data.level.items.comment import CommentItem
-from src.data.level.items.entrance import EntranceItem
-from src.data.level.items.location import LocationItem
-from src.data.level.items.object import ObjectItem
-from src.data.level.items.path import PathItem
-from src.data.level.items.path_editor_line import PathEditorLineItem
-from src.data.level.items.sprite import SpriteItem
-from src.data.level.items.zone import ZoneItem
-from src.data.level.path import Path
-from src.data.common.loaders import UnloadTileset, LoadTileset
-from src.data.level.nsmbw_level import NSMBWLevel
-from src.ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
-from src.ui.actions.undo.undo_stack import UndoStack
+from ui.theme.reggie_theme import GetIcon, SetColorScheme
+from data.common.loaders import LoadMenuActions, LoadSpriteData, LoadTilesetInfo, LoadLevelNames, LoadZoneThemes, GetKeybind, SetKeybind, module_path
+from data.common.utils import clamp, SetGamePaths, get_reggiedata_folder
+from data.common.validators import IsNSMBLevel, areValidGamePaths
+from ui.widgets.level_scene import LevelScene
+from ui.widgets.level_view import LevelViewWidget
+from data.level.dirty import SetDirty, CheckDirty
+from data.common.settings import setting, setSetting
+from data.level.items.comment import CommentItem
+from data.level.items.entrance import EntranceItem
+from data.level.items.location import LocationItem
+from data.level.items.object import ObjectItem
+from data.level.items.path import PathItem
+from data.level.items.path_editor_line import PathEditorLineItem
+from data.level.items.sprite import SpriteItem
+from data.level.items.zone import ZoneItem
+from data.level.path import Path
+from data.common.loaders import UnloadTileset, LoadTileset
+from data.level.nsmbw_level import NSMBWLevel
+from ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
+from ui.actions.undo.undo_stack import UndoStack
 
-from src.ui.dialogs.about import AboutDialog
-from src.ui.dialogs.area import AreaOptionsDialog
-from src.ui.dialogs.area_import import AreaImportDialog
-from src.ui.dialogs.background import BackgroundDialog
-from src.ui.dialogs.camera_profile import CameraProfilesDialog
-from src.ui.dialogs.choose_level_name import ChooseLevelNameDialog
-from src.ui.dialogs.diagnostic_tool import DiagnosticToolDialog
-from src.ui.dialogs.item_shift import ItemShiftDialog
-from src.ui.dialogs.meta_info import MetaInfoDialog
-from src.ui.dialogs.obj_tileset_swap import ObjectTilesetSwapDialog
-from src.ui.dialogs.preference import PreferencesDialog
-from src.ui.dialogs.screenshot import ScreenshotDialog
-from src.ui.dialogs.sprite_switch import SpriteSwitchDialog
-from src.ui.dialogs.zone import ZonesDialog
+from ui.dialogs.about import AboutDialog
+from ui.dialogs.area import AreaOptionsDialog
+from ui.dialogs.area_import import AreaImportDialog
+from ui.dialogs.background import BackgroundDialog
+from ui.dialogs.camera_profile import CameraProfilesDialog
+from ui.dialogs.choose_level_name import ChooseLevelNameDialog
+from ui.dialogs.diagnostic_tool import DiagnosticToolDialog
+from ui.dialogs.item_shift import ItemShiftDialog
+from ui.dialogs.meta_info import MetaInfoDialog
+from ui.dialogs.obj_tileset_swap import ObjectTilesetSwapDialog
+from ui.dialogs.preference import PreferencesDialog
+from ui.dialogs.screenshot import ScreenshotDialog
+from ui.dialogs.sprite_switch import SpriteSwitchDialog
+from ui.dialogs.zone import ZonesDialog
 
-from src.ui.menus.game_def_menu import GameDefMenu
-from src.ui.menus.recent_files_menu import RecentFilesMenu
+from ui.menus.game_def_menu import GameDefMenu
+from ui.menus.recent_files_menu import RecentFilesMenu
 
-from src.ui.widgets.preferences.widgets.toolbar_check_box import ToolbarCheckBox
-from src.ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
-from src.ui.widgets.preferences.widgets.keybind_editor_tab import KeybindEditorTab
+from ui.widgets.preferences.widgets.toolbar_check_box import ToolbarCheckBox
+from ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
+from ui.widgets.preferences.widgets.keybind_editor_tab import KeybindEditorTab
 
-from src.ui.widgets.zoom import ZoomWidget
-from src.ui.widgets.zoom_status import ZoomStatusWidget
-from src.ui.widgets.diagnostic import DiagnosticWidget
-from src.ui.widgets.level_overview import LevelOverviewWidget
+from ui.widgets.zoom import ZoomWidget
+from ui.widgets.zoom_status import ZoomStatusWidget
+from ui.widgets.diagnostic import DiagnosticWidget
+from ui.widgets.level_overview import LevelOverviewWidget
 
-from src.ui.widgets.editors.entrance import EntranceEditorWidget
-from src.ui.widgets.editors.location import LocationEditorWidget
-from src.ui.widgets.editors.path_node import PathNodeEditorWidget
+from ui.widgets.editors.entrance import EntranceEditorWidget
+from ui.widgets.editors.location import LocationEditorWidget
+from ui.widgets.editors.path_node import PathNodeEditorWidget
 
-from src.ui.widgets.palette_dock import PaletteDock
-from src.data.common.reggie_clip import ReggieClip
+from ui.widgets.palette_dock import PaletteDock
+from data.common.reggie_clip import ReggieClip
 
 ################################################################################
 ################################################################################
@@ -129,7 +129,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Set up the window
         QtWidgets.QMainWindow.__init__(self, None)
         self.setWindowTitle(f'Reggie! Next {globals_.ReggieVersionShort}')
-        self.setWindowIcon(QtGui.QIcon('reggiedata/icon.png'))
+        self.setWindowIcon(QtGui.QIcon(os.path.join(get_reggiedata_folder(), 'icon.png')))
         self.setIconSize(QtCore.QSize(16, 16))
         self.setUnifiedTitleAndToolBarOnMac(True)
 
@@ -750,13 +750,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Shows the help box
         """
-        mod_path = module_path()
-
-        file_path = os.path.join('reggiedata', 'help', 'index.html')
-        if mod_path is None:
-            file_path = os.path.join(os.getcwd(), file_path)
-        else:
-            file_path = os.path.join(mod_path, file_path)
+        file_path = os.path.join(get_reggiedata_folder(), 'help', 'index.html')
 
         QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(file_path))
 
@@ -764,13 +758,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         Reggie Next Tips and Commands
         """
-        mod_path = module_path()
-
-        file_path = os.path.join('reggiedata', 'help', 'tips.html')
-        if mod_path is None:
-            file_path = os.path.join(os.getcwd(), file_path)
-        else:
-            file_path = os.path.join(mod_path, file_path)
+        file_path = os.path.join(get_reggiedata_folder(), 'help', 'tips.html')
 
         QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(file_path))
 
@@ -823,7 +811,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 SetDirty()
                 self.action_list['cut'].setEnabled(False)
-    
+
             self.action_list['paste'].setEnabled(True)
             self.clipboard = ReggieClip.get_reggie_clip(selitems)
             if self.systemClipboard is not None:

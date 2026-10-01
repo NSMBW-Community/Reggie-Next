@@ -1,9 +1,9 @@
 from PyQt6 import QtCore, QtWidgets
 
-from src.data import globals_
-from src.data.level.items.basic import InstanceDefinition
-from src.data.level.items.sprite import SpriteItem
-from src.ui.theme.reggie_theme import GetIcon
+from data import globals_
+from data.level.items.basic import InstanceDefinition
+from data.level.items.sprite import SpriteItem
+from ui.theme.reggie_theme import GetIcon
 
 
 class ResizeChoiceDialog(QtWidgets.QDialog):

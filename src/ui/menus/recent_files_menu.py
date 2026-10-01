@@ -1,10 +1,10 @@
 from PyQt6 import QtWidgets, QtGui
 import os
 
-from src.data import globals_
-from src.ui.theme.reggie_theme import GetIcon, clipStr
-from src.data.common.settings import setting, setSetting
-from src.data.level.dirty import CheckDirty
+from data import globals_
+from ui.theme.reggie_theme import GetIcon, clipStr
+from data.common.settings import setting, setSetting
+from data.level.dirty import CheckDirty
 
 class RecentFilesMenu(QtWidgets.QMenu):
     """

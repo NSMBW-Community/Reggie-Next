@@ -1,9 +1,9 @@
 from PyQt6 import QtWidgets
 
-from src.data import globals_
+from data import globals_
 
-from src.data.level.items.comment import CommentItem
-from src.ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
+from data.level.items.comment import CommentItem
+from ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
 
 class CommentTab(QtWidgets.QWidget):
     """

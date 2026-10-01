@@ -1,8 +1,8 @@
 from PyQt6 import QtCore, QtWidgets
 
-from src.data import globals_
-from src.data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
-from src.ui.theme.reggie_theme import GetIcon
+from data import globals_
+from data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
+from ui.theme.reggie_theme import GetIcon
 
 
 class AreaOptionsDialog(QtWidgets.QDialog):

@@ -1,10 +1,10 @@
 from PyQt6 import QtCore, QtWidgets
 
-from src.data import globals_
-from src.ui.theme.reggie_theme import GetIcon
+from data import globals_
+from ui.theme.reggie_theme import GetIcon
 
-from src.data.level.items.object import ObjectItem
-from src.ui.widgets.sidelists.object_picker import ObjectPickerWidget
+from data.level.items.object import ObjectItem
+from ui.widgets.sidelists.object_picker import ObjectPickerWidget
 
 class ObjectTab(QtWidgets.QTabWidget):
     """
@@ -57,7 +57,7 @@ class ObjectTab(QtWidgets.QTabWidget):
             layer_lyt.addWidget(self.layer_buttons[i])
         layer_lyt.addStretch(1)
         layer_lyt.addWidget(self.layer_change_button)
-        
+
 
         self.object_picker = ObjectPickerWidget()
         self.object_picker.ObjChanged.connect(self.object_selected)

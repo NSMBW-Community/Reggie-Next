@@ -3,12 +3,12 @@ from xml.etree import ElementTree
 
 from PyQt6 import QtCore, QtWidgets
 
-from src.data import globals_
-from src.data.sprite.spritefield.external import ExternalSpriteField
-from src.ui.dialogs.spriteeditor.external_sprite_option import (
+from data import globals_
+from data.sprite.spritefield.external import ExternalSpriteField
+from ui.dialogs.spriteeditor.external_sprite_option import (
     ExternalSpriteOptionDialog,
 )
-from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 

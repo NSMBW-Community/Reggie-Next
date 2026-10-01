@@ -1,8 +1,8 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data import globals_
-from src.data.level.items.basic import InstanceDefinition, LevelEditorItem
-from src.ui.theme.reggie_theme import GetIcon, clipStr, setOverrideCursor
+from data import globals_
+from data.level.items.basic import InstanceDefinition, LevelEditorItem
+from ui.theme.reggie_theme import GetIcon, clipStr, setOverrideCursor
 
 
 class InstanceDefinition_CommentItem(InstanceDefinition):

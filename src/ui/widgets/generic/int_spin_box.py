@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data.common.utils import clamp
+from data.common.utils import clamp
 
 
 class IntSpinBox(QtWidgets.QAbstractSpinBox):

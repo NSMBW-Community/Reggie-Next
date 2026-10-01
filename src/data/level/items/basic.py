@@ -3,15 +3,15 @@ from typing import cast
 import base64
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data import globals_
-from src.data.common.utils import clamp
-from src.data.level.abstract_path import AbstractPath
-from src.data.level.dirty import SetDirty
-from src.data.level.items.abstract_object import AbstractObjectItem
-from src.data.level.items.path_editor_line import PathEditorLineItem
-from src.ui.actions.undo.move_item import MoveItemUndoAction
-from src.ui.actions.undo.simultaneous import SimultaneousUndoAction
-from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
+from data import globals_
+from data.common.utils import clamp
+from data.level.abstract_path import AbstractPath
+from data.level.dirty import SetDirty
+from data.level.items.abstract_object import AbstractObjectItem
+from data.level.items.path_editor_line import PathEditorLineItem
+from ui.actions.undo.move_item import MoveItemUndoAction
+from ui.actions.undo.simultaneous import SimultaneousUndoAction
+from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 
 class InstanceDefinition:
     """

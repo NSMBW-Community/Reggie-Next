@@ -1,11 +1,11 @@
 from PyQt6 import QtWidgets
 
-from src.data import globals_
-from src.ui.theme.reggie_theme import createHorzLine
-from src.data.level.dirty import SetDirty
+from data import globals_
+from ui.theme.reggie_theme import createHorzLine
+from data.level.dirty import SetDirty
 
-from src.data.level.path import Path
-from src.data.level.items.path import PathItem
+from data.level.path import Path
+from data.level.items.path import PathItem
 
 class PathNodeEditorWidget(QtWidgets.QWidget):
     """

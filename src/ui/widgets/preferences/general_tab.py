@@ -1,11 +1,12 @@
 from PyQt6 import QtCore, QtWidgets
 import os
 
-from src.data import globals_
-from src.data.common.settings import setting
-from src.data.common.reggie_translation import ReggieTranslation
+from data import globals_
+from data.common.settings import setting
+from data.common.reggie_translation import ReggieTranslation
 
-from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
+from data.common.utils import get_reggiedata_folder
+from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
 
 class GeneralTab(PreferenceTabWidget):
     """
@@ -111,11 +112,11 @@ class GeneralTab(PreferenceTabWidget):
         self.trans_combo.addItem('English')
         self.trans_combo.setCurrentIndex(0)
 
-        for i, trans_dir in enumerate(os.listdir(os.path.join('reggiedata', 'translations'))):
+        for i, trans_dir in enumerate(os.listdir(os.path.join(get_reggiedata_folder(), 'translations'))):
             if trans_dir.lower() == 'english':
                 continue
 
-            fp = os.path.join('reggiedata', 'translations', trans_dir, 'main.xml')
+            fp = os.path.join(get_reggiedata_folder(), 'translations', trans_dir, 'main.xml')
             if not os.path.isfile(fp):
                 continue
 
@@ -160,7 +161,7 @@ class GeneralTab(PreferenceTabWidget):
         Searches the Translations folder and returns a list of filepaths.
         Automatically adds 'English' to the list.
         """
-        trans_path = os.path.join('reggiedata', 'translations')
+        trans_path = os.path.join(get_reggiedata_folder(), 'translations')
         trans_list = [('English', ReggieTranslation(None))]
         for trans_name in os.listdir(trans_path):
             if not os.path.isdir(os.path.join(trans_path, trans_name)):

@@ -1,8 +1,8 @@
 from PyQt6 import QtWidgets, QtCore
 
-from src.data import globals_
-from src.data.level.dirty import SetDirty
-from src.ui.theme.reggie_theme import GetIcon, createHorzLine
+from data import globals_
+from data.level.dirty import SetDirty
+from ui.theme.reggie_theme import GetIcon, createHorzLine
 
 class ChangePasswordDialog(QtWidgets.QDialog):
     """

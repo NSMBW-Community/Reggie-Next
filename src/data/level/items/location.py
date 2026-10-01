@@ -1,11 +1,11 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data import globals_
-from src.data.common.utils import clamp, find_first_available_id
-from src.data.level.dirty import SetDirty
-from src.data.level.items.basic import InstanceDefinition, LevelEditorItem
-from src.ui.theme.reggie_theme import setOverrideCursor
-from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
+from data import globals_
+from data.common.utils import clamp, find_first_available_id
+from data.level.dirty import SetDirty
+from data.level.items.basic import InstanceDefinition, LevelEditorItem
+from ui.theme.reggie_theme import setOverrideCursor
+from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
 
 
 class InstanceDefinition_LocationItem(InstanceDefinition):

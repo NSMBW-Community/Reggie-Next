@@ -1,12 +1,12 @@
 from PyQt6 import QtWidgets, QtCore
 
-from src.data import globals_
+from data import globals_
 from typing import cast
 
-from src.ui.widgets.sidelists.stamp_picker import StampPickerWidget
-from src.data.stamp.stamp import Stamp
-from src.data.stamp.stamp_list import StampListModel
-from src.data.common.reggie_clip import ReggieClip
+from ui.widgets.sidelists.stamp_picker import StampPickerWidget
+from data.stamp.stamp import Stamp
+from data.stamp.stamp_list import StampListModel
+from data.common.reggie_clip import ReggieClip
 
 class StampTab(QtWidgets.QWidget):
     """

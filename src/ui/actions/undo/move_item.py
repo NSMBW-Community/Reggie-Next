@@ -1,5 +1,5 @@
-from src.data import globals_
-from src.ui.actions.undo.undo_action import UndoAction
+from data import globals_
+from ui.actions.undo.undo_action import UndoAction
 
 
 class MoveItemUndoAction(UndoAction):
@@ -44,9 +44,9 @@ class MoveItemUndoAction(UndoAction):
         """
         Changes the position of an object
         """
-        from src.data.level.items.object import ObjectItem
-        from src.data.level.items.path import PathItem
-        from src.data.level.items.sprite import SpriteItem
+        from data.level.items.object import ObjectItem
+        from data.level.items.path import PathItem
+        from data.level.items.sprite import SpriteItem
 
         main_window = globals_.mainWindow
 

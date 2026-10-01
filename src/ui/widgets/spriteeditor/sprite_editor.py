@@ -1,37 +1,37 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data import globals_
-from src.data.level.dirty import SetDirty
-from src.data.level.items.sprite import SpriteItem
-from src.data.level.sprite_definition import SpriteDefinition
-from src.data.common.list_property import ListPropertyModel
-from src.data.sprite.spritefield.check_box import CheckBoxSpriteField
-from src.data.sprite.spritefield.dual_box import DualBoxSpriteField
-from src.data.sprite.spritefield.external import ExternalSpriteField
-from src.data.sprite.spritefield.list import ListSpriteField
-from src.data.sprite.spritefield.multi_dual_box import MultiDualBoxSpriteField
-from src.data.sprite.spritefield.sprite_tex import SpriteTexSpriteField
-from src.data.sprite.spritefield.value import ValueSpriteField
-from src.ui.dialogs.spriteeditor.resize_choice import ResizeChoiceDialog
-from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
+from data import globals_
+from data.level.dirty import SetDirty
+from data.level.items.sprite import SpriteItem
+from data.level.sprite_definition import SpriteDefinition
+from data.common.list_property import ListPropertyModel
+from data.sprite.spritefield.check_box import CheckBoxSpriteField
+from data.sprite.spritefield.dual_box import DualBoxSpriteField
+from data.sprite.spritefield.external import ExternalSpriteField
+from data.sprite.spritefield.list import ListSpriteField
+from data.sprite.spritefield.multi_dual_box import MultiDualBoxSpriteField
+from data.sprite.spritefield.sprite_tex import SpriteTexSpriteField
+from data.sprite.spritefield.value import ValueSpriteField
+from ui.dialogs.spriteeditor.resize_choice import ResizeChoiceDialog
+from ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,
 )
-from src.ui.widgets.spriteeditor.propertydecoders.check_box import (
+from ui.widgets.spriteeditor.propertydecoders.check_box import (
     CheckBoxPropertyDecoder,
 )
-from src.ui.widgets.spriteeditor.propertydecoders.dual_box import DualBoxPropertyDecoder
-from src.ui.widgets.spriteeditor.propertydecoders.external import (
+from ui.widgets.spriteeditor.propertydecoders.dual_box import DualBoxPropertyDecoder
+from ui.widgets.spriteeditor.propertydecoders.external import (
     ExternalPropertyDecoder,
 )
-from src.ui.widgets.spriteeditor.propertydecoders.list import ListPropertyDecoder
-from src.ui.widgets.spriteeditor.propertydecoders.multi_dual_box import (
+from ui.widgets.spriteeditor.propertydecoders.list import ListPropertyDecoder
+from ui.widgets.spriteeditor.propertydecoders.multi_dual_box import (
     MultiDualboxPropertyDecoder,
 )
-from src.ui.widgets.spriteeditor.propertydecoders.sprite_tex import (
+from ui.widgets.spriteeditor.propertydecoders.sprite_tex import (
     SpriteTexPropertyDecoder,
 )
-from src.ui.widgets.spriteeditor.propertydecoders.value import ValuePropertyDecoder
-from src.ui.theme.reggie_theme import GetIcon
+from ui.widgets.spriteeditor.propertydecoders.value import ValuePropertyDecoder
+from ui.theme.reggie_theme import GetIcon
 
 
 class SpriteEditorWidget(AbstractSpriteEditorWidget):

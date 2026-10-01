@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data import globals_
+from data import globals_
 
 
 class PathEditorLineItem(QtWidgets.QGraphicsPathItem):

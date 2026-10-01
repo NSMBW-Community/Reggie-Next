@@ -1,9 +1,9 @@
 from PyQt6 import QtWidgets
 
-from src.data import globals_
+from data import globals_
 
-from src.data.level.items.entrance import EntranceItem
-from src.ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
+from data.level.items.entrance import EntranceItem
+from ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
 
 class EntranceTab(QtWidgets.QWidget):
     """

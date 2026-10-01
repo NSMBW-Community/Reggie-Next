@@ -1,8 +1,8 @@
 from PyQt6 import QtWidgets, QtCore
 Qt = QtCore.Qt
 
-from src.data import globals_
-from src.data.level.dirty import SetDirty
+from data import globals_
+from data.level.dirty import SetDirty
 
 import struct
 

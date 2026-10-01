@@ -1,11 +1,11 @@
 from PyQt6 import QtCore, QtWidgets
 
-from src.data import globals_
-from src.data.sprite.spritefield.sprite_field import SpriteField
-from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
+from data import globals_
+from data.sprite.spritefield.sprite_field import SpriteField
+from ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,
 )
-from src.ui.theme.reggie_theme import GetIcon
+from ui.theme.reggie_theme import GetIcon
 
 
 class PropertyDecoder[T: SpriteField](QtCore.QObject):

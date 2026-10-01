@@ -1,13 +1,13 @@
-from src.data import globals_
-from src.data.common.list_property import ListPropertyModel
-from src.data.sprite.spritefield.check_box import CheckBoxSpriteField
-from src.data.sprite.spritefield.dual_box import DualBoxSpriteField
-from src.data.sprite.spritefield.external import ExternalSpriteField
-from src.data.sprite.spritefield.list import ListSpriteField
-from src.data.sprite.spritefield.multi_dual_box import MultiDualBoxSpriteField
-from src.data.sprite.spritefield.sprite_field import SpriteField
-from src.data.sprite.spritefield.sprite_tex import SpriteTexSpriteField
-from src.data.sprite.spritefield.value import ValueSpriteField
+from data import globals_
+from data.common.list_property import ListPropertyModel
+from data.sprite.spritefield.check_box import CheckBoxSpriteField
+from data.sprite.spritefield.dual_box import DualBoxSpriteField
+from data.sprite.spritefield.external import ExternalSpriteField
+from data.sprite.spritefield.list import ListSpriteField
+from data.sprite.spritefield.multi_dual_box import MultiDualBoxSpriteField
+from data.sprite.spritefield.sprite_field import SpriteField
+from data.sprite.spritefield.sprite_tex import SpriteTexSpriteField
+from data.sprite.spritefield.value import ValueSpriteField
 
 
 class SpriteDefinition:

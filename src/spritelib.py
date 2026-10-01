@@ -35,8 +35,9 @@ import os.path
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data.level.items.sprite import SpriteItem
-from src.data.tileset.tile.tileset_tile import TilesetTile
+from data.level.items.sprite import SpriteItem
+from data.tileset.tile.tileset_tile import TilesetTile
+from data.common.utils import get_reggiedata_folder
 
 Qt = QtCore.Qt
 
@@ -81,7 +82,7 @@ def GetSpriteImageFilePath(imgname: str) -> str:
     Returns the path to the image 'imgname' from the first matching sprite image folder.
     """
     imgname = str(imgname)
-    path = os.path.join('reggiedata', 'sprites', imgname)
+    path = os.path.join(get_reggiedata_folder(), 'sprites', imgname)
     for folder in reversed(SpritesFolders):
         tryPath = os.path.join(folder, imgname)
         if os.path.isfile(tryPath):
@@ -130,7 +131,7 @@ def GetImg(imgname, image=False):
     imgname = str(imgname)
 
     # Try to find the best path
-    path = os.path.join('reggiedata', 'sprites', imgname)
+    path = os.path.join(get_reggiedata_folder(), 'sprites', imgname)
 
     for folder in reversed(SpritesFolders):  # find the most recent copy
         tryPath = os.path.join(folder, imgname)

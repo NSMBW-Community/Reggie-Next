@@ -1,10 +1,10 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data import globals_
+from data import globals_
 import spritelib as SLib
-from src.data.level.dirty import SetDirty
-from src.data.level.items.basic import LevelEditorItem
-from src.data.level.items.zone_grabber import ZoneGrabberItem
+from data.level.dirty import SetDirty
+from data.level.items.basic import LevelEditorItem
+from data.level.items.zone_grabber import ZoneGrabberItem
 
 
 class ZoneItem(LevelEditorItem):

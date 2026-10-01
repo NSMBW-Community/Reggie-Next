@@ -2,6 +2,8 @@ import os
 from typing import Any
 from xml.etree import ElementTree
 
+from data.common.utils import get_reggiedata_folder
+
 
 class ReggieTranslation:
     """
@@ -29,17 +31,17 @@ class ReggieTranslation:
 
         # TODO: Add support for translating "external" folder XMLs
         self.files: dict[str | None, dict[str, str]] = { None: {
-            'bga': os.path.join('reggiedata', 'bga.txt'),
-            'bgb': os.path.join('reggiedata', 'bgb.txt'),
-            'entrancetypes': os.path.join('reggiedata', 'entrancetypes.txt'),
-            'levelnames': os.path.join('reggiedata', 'levelnames.xml'),
-            'music': os.path.join('reggiedata', 'music.txt'),
-            'spritecategories': os.path.join('reggiedata', 'spritecategories.xml'),
-            'spritedata': os.path.join('reggiedata', 'spritedata.xml'),
-            'tilesets': os.path.join('reggiedata', 'tilesets.xml'),
-            'ts1_descriptions': os.path.join('reggiedata', 'ts1_descriptions.txt'),
-            'zonethemes': os.path.join('reggiedata', 'zonethemes.txt'),
-            'external-actors': os.path.join('reggiedata', 'external', 'actors.xml')
+            'bga': os.path.join(get_reggiedata_folder(), 'bga.txt'),
+            'bgb': os.path.join(get_reggiedata_folder(), 'bgb.txt'),
+            'entrancetypes': os.path.join(get_reggiedata_folder(), 'entrancetypes.txt'),
+            'levelnames': os.path.join(get_reggiedata_folder(), 'levelnames.xml'),
+            'music': os.path.join(get_reggiedata_folder(), 'music.txt'),
+            'spritecategories': os.path.join(get_reggiedata_folder(), 'spritecategories.xml'),
+            'spritedata': os.path.join(get_reggiedata_folder(), 'spritedata.xml'),
+            'tilesets': os.path.join(get_reggiedata_folder(), 'tilesets.xml'),
+            'ts1_descriptions': os.path.join(get_reggiedata_folder(), 'ts1_descriptions.txt'),
+            'zonethemes': os.path.join(get_reggiedata_folder(), 'zonethemes.txt'),
+            'external-actors': os.path.join(get_reggiedata_folder(), 'external', 'actors.xml')
         }}
 
         self.strings: dict[str, dict[int, str | None | tuple[str | None, ...]]] = {
@@ -52,7 +54,7 @@ class ReggieTranslation:
             },
             'AreaCombobox': {
                 0: 'Area [num]',
-            },               
+            },
             'AreaDlg': {
                 0: 'Area Options',
                 1: 'Tilesets',
@@ -120,7 +122,7 @@ class ReggieTranslation:
                 2: 'You have reached the maximum amount of areas in this level.[br]Due to the game\'s limitations, Reggie Next only allows you to add up to 4 areas to a level.',
                 3: 'Choose an area to import from the selected level:',
                 4: 'It will be added to this level as Area [num].',
-            }, 
+            },
             'AutoDiag': {
                 0: '[num] error found.',
                 1: '[num] errors found.',
@@ -346,7 +348,7 @@ class ReggieTranslation:
                 1: 'Error while Reggie was trying to save the level:[br](#[err1]) [err2][br][br](Your work has not been saved! Try saving it under a different filename or in a different folder.)',
                 2: 'Error while Reggie was trying to save the level:[br]The original file data ([orig-len] bytes) exceeded the fixed length ([pad-len] bytes).[br][br](Your work has not been saved! Increase the fixed length in the Preferences Dialog.)',
                 3: 'Error while Reggie was trying to save the level:[br]An error occurred while compressing the level. Is it too big? The uncompressed size is [file-size] bytes.[br][br](Your work has not been saved! Try saving without compression or removing elements from your level.)',
-            },       
+            },
             'Err_UnknownSprite': {
                 0: 'Warning',
                 1: 'This level contains sprite ID [id], which is not defined in the current game patch. The sprite will be displayed as "UNKNOWN" but can still be edited and saved.',
@@ -1152,7 +1154,7 @@ class ReggieTranslation:
         name = str(name)
 
         # Parse the file
-        path = os.path.join('reggiedata', 'translations', name, 'main.xml')
+        path = os.path.join(get_reggiedata_folder(), 'translations', name, 'main.xml')
 
         try:
             tree = ElementTree.parse(path)
@@ -1174,7 +1176,7 @@ class ReggieTranslation:
 
         # Parse the nodes
         strings = False
-        base_path = os.path.join('reggiedata', 'translations', name)
+        base_path = os.path.join(get_reggiedata_folder(), 'translations', name)
         for node in root:
             if node.tag.lower() == 'file':
                 # It's a file node
@@ -1402,7 +1404,7 @@ class ReggieTranslation:
         )
 
         raw_string = ElementTree.tostring(root, encoding='utf-8').decode('utf-8')
-        path = os.path.join('reggiedata', 'translations', 'strings.xml')
+        path = os.path.join(get_reggiedata_folder(), 'translations', 'strings.xml')
 
         with open(path, 'w', encoding='utf-8') as f:
             f.write(header + raw_string + '\n')

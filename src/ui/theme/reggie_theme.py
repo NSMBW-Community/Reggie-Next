@@ -3,8 +3,9 @@ from xml.etree import ElementTree
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data import globals_
-from src.data.common.settings import setting
+from data import globals_
+from data.common.settings import setting
+from data.common.utils import get_reggiedata_folder
 
 
 class ReggieTheme:
@@ -88,7 +89,7 @@ class ReggieTheme:
         """
         Initializes the theme from the folder
         """
-        folder = os.path.join('reggiedata', 'themes', folder)
+        folder = os.path.join(get_reggiedata_folder(), 'themes', folder)
 
         try:
             _fileList = os.listdir(folder)
@@ -272,7 +273,7 @@ class ReggieTheme:
         cache = self.iconCacheLg if big else self.iconCacheSm
 
         if name not in cache:
-            path = os.path.join('reggiedata', 'ico', 'lg' if big else 'sm', 'icon-')
+            path = os.path.join(get_reggiedata_folder(), 'ico', 'lg' if big else 'sm', 'icon-')
             path += name
             cache[name] = QtGui.QIcon(path)
 

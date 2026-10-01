@@ -1,7 +1,7 @@
 from PyQt6 import QtWidgets, QtGui
 
-from src.ui.theme.reggie_theme import GetIcon, createVertLine
-from src.data import globals_
+from ui.theme.reggie_theme import GetIcon, createVertLine
+from data import globals_
 
 class GameDefViewer(QtWidgets.QWidget):
     """

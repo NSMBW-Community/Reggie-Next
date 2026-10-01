@@ -1,7 +1,7 @@
 from PyQt6 import QtWidgets
 
-from src.data import globals_
-from src.ui.theme.reggie_theme import GetIcon
+from data import globals_
+from ui.theme.reggie_theme import GetIcon
 
 class AreaImportDialog(QtWidgets.QDialog):
     """

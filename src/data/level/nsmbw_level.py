@@ -1,8 +1,8 @@
-from src.data import globals_
+from data import globals_
 import spritelib as SLib
-from src.data.common import archive
-from src.data.level.abstract_level import AbstractLevel
-from src.data.level.area import Area
+from data.common import archive
+from data.level.abstract_level import AbstractLevel
+from data.level.area import Area
 
 
 class NSMBWLevel(AbstractLevel):

@@ -2,7 +2,8 @@ import os
 
 from PyQt6 import QtWidgets
 
-from src.data import globals_
+from data import globals_
+from data.common.utils import get_reggiedata_folder
 
 
 def checkContent(data):
@@ -37,7 +38,7 @@ def FilesAreMissing():
     Checks to see if any of the required files for Reggie are missing
     """
 
-    if not os.path.isdir('reggiedata'):
+    if not os.path.isdir(get_reggiedata_folder()):
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_MissingFiles', 0), globals_.trans.string('Err_MissingFiles', 1))
         return True
 
@@ -46,7 +47,7 @@ def FilesAreMissing():
     missing = []
 
     for check in required:
-        if not os.path.isfile(os.path.join('reggiedata', check)):
+        if not os.path.isfile(os.path.join(get_reggiedata_folder(), check)):
             missing.append(check)
 
     if missing:

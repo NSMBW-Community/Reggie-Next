@@ -9,25 +9,26 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 import spritelib as SLib
 from libs import lh, lib_versions, lz77, tpl
-from src.data import globals_
-from src.data.common import archive
-from src.data.common.keybind import Keybind
-from src.data.common.menu_action import MenuAction
-from src.data.common.toolbar_action import ToolbarAction
-from src.data.common.reggie_translation import ReggieTranslation
-from src.data.common.settings import delSetting, setSetting, setting
-from src.data.level.sprite_definition import SpriteDefinition
-from src.data.sprite.sprite_category import SpriteCategory, SpriteSubCategory
-from src.data.tileset.object.object_def import ObjectDef
-from src.data.tileset.object.renderers import IncrementTilesetFrame
-from src.data.tileset.tile.rand_tile_selection import RandTileSelection
-from src.data.tileset.tile.tileset_tile import TilesetTile
-from src.data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
-from src.ui.theme.reggie_theme import ReggieTheme, GetIcon
-from src.data.level.items.location import LocationItem
+from data import globals_
+from data.common import archive
+from data.common.keybind import Keybind
+from data.common.menu_action import MenuAction
+from data.common.toolbar_action import ToolbarAction
+from data.common.reggie_translation import ReggieTranslation
+from data.common.settings import delSetting, setSetting, setting
+from data.level.sprite_definition import SpriteDefinition
+from data.sprite.sprite_category import SpriteCategory, SpriteSubCategory
+from data.tileset.object.object_def import ObjectDef
+from data.tileset.object.renderers import IncrementTilesetFrame
+from data.tileset.tile.rand_tile_selection import RandTileSelection
+from data.tileset.tile.tileset_tile import TilesetTile
+from data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
+from data.common.utils import get_main_path, get_reggiedata_folder
+from ui.theme.reggie_theme import ReggieTheme, GetIcon
+from data.level.items.location import LocationItem
 
-from src.ui.dialogs.about import AboutDialog
-from src.ui.dialogs.object_swap import ObjectTypeSwapDialog
+from ui.dialogs.about import AboutDialog
+from ui.dialogs.object_swap import ObjectTypeSwapDialog
 
 def getResourcePaths(res_name):
     """
@@ -1846,7 +1847,7 @@ def LoadOverrides():
     globals_.Overrides_safe = [None] * (6 * 26)
     globals_.OVERRIDE_UNKNOWN = 2 * 26 + 12
 
-    OverrideBitmap = QtGui.QPixmap(os.path.join('reggiedata', 'overrides.png'))
+    OverrideBitmap = QtGui.QPixmap(os.path.join(get_reggiedata_folder(), 'overrides.png'))
     idx = 0
     xcount = OverrideBitmap.width() // 24
     ycount = OverrideBitmap.height() // 24
@@ -1962,7 +1963,7 @@ def module_path() -> str | None:
         #   - B1, 2026-09-28
         loaders_module = next(filter(lambda k: k.endswith('common.loaders'), sys.modules.keys()))
         if __name__ == loaders_module:
-            main_path = sys.modules['__main__'].__file__
+            main_path = get_main_path()
             if main_path is not None:
                 return os.path.dirname(os.path.abspath(main_path))
     except StopIteration:

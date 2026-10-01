@@ -1,10 +1,10 @@
 from PyQt6 import QtCore, QtWidgets
 
-from src.data import globals_
-from src.data.common.list_property import ListPropertyModel
-from src.data.sprite.spritefield.sprite_tex import SpriteTexSpriteField
-from src.ui.widgets.generic.int_spin_box import IntSpinBox
-from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from data import globals_
+from data.common.list_property import ListPropertyModel
+from data.sprite.spritefield.sprite_tex import SpriteTexSpriteField
+from ui.widgets.generic.int_spin_box import IntSpinBox
+from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 

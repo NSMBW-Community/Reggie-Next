@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtWidgets
 
-from src.data import globals_
-from src.data.common.utils import clamp
+from data import globals_
+from data.common.utils import clamp
 
 
 class CameraModeZoomSettingsLayout(QtWidgets.QFormLayout):

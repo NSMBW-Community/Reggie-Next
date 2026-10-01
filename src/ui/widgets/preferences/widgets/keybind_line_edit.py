@@ -1,6 +1,6 @@
 from PyQt6 import QtGui, QtWidgets, QtCore
 
-from src.data import globals_
+from data import globals_
 
 class KeybindLineEdit(QtWidgets.QKeySequenceEdit):
     """

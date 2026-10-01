@@ -15,4 +15,4 @@ REM Usage: Double-click this to run Reggie from source.
 REM
 @echo ON
 
-py -3 reggie.py
+py -3 src/reggie.py

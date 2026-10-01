@@ -1,8 +1,8 @@
 from PyQt6 import QtWidgets
 
-from src.data import globals_
-from src.data.common.loaders import GetKeybind, SetKeybind
-from src.ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
+from data import globals_
+from data.common.loaders import GetKeybind, SetKeybind
+from ui.widgets.preferences.widgets.keybind_line_edit import KeybindLineEdit
 
 
 class KeybindEditorTab(QtWidgets.QWidget):

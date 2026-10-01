@@ -1,8 +1,8 @@
 from PyQt6 import QtCore, QtWidgets
 
-from src.data import globals_
-from src.data.common.loaders import LoadSpriteCategories, LoadSpriteData
-from src.data.sprite.sprite_category import SpriteCategory
+from data import globals_
+from data.common.loaders import LoadSpriteCategories, LoadSpriteData
+from data.sprite.sprite_category import SpriteCategory
 
 
 class SpritePickerWidget(QtWidgets.QTreeWidget):

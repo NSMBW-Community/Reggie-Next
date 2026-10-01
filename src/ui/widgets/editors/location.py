@@ -1,10 +1,10 @@
 from PyQt6 import QtWidgets, QtCore
 
-from src.data import globals_
-from src.ui.theme.reggie_theme import createHorzLine
-from src.data.level.dirty import SetDirty
+from data import globals_
+from ui.theme.reggie_theme import createHorzLine
+from data.level.dirty import SetDirty
 
-from src.data.level.items.location import LocationItem
+from data.level.items.location import LocationItem
 
 class LocationEditorWidget(QtWidgets.QWidget):
     """

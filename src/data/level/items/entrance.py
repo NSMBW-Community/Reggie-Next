@@ -3,13 +3,13 @@ from typing import cast
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data import globals_
+from data import globals_
 import spritelib as SLib
-from src.data.level.items.basic import InstanceDefinition, LevelEditorItem
-from src.ui.theme.reggie_theme import setOverrideCursor
-from src.data.common.utils import find_first_available_id
-from src.ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
-from src.data.level.dirty import SetDirty
+from data.level.items.basic import InstanceDefinition, LevelEditorItem
+from ui.theme.reggie_theme import setOverrideCursor
+from data.common.utils import find_first_available_id, get_reggiedata_folder
+from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
+from data.level.dirty import SetDirty
 
 
 class InstanceDefinition_EntranceItem(InstanceDefinition):
@@ -158,7 +158,7 @@ class EntranceItem(LevelEditorItem):
         """
         if EntranceItem.EntranceImages is None:
             ei = []
-            src = QtGui.QPixmap(os.path.join('reggiedata', 'entrances.png'))
+            src = QtGui.QPixmap(os.path.join(get_reggiedata_folder(), 'entrances.png'))
             for i in range(18):
                 ei.append(src.copy(i * 24, 0, 24, 24))
             EntranceItem.EntranceImages = ei

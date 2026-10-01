@@ -81,25 +81,25 @@ Qt = QtCore.Qt
 ################################################################################
 
 # Local imports
-from src.data import globals_
+from data import globals_
 
 import spritelib as SLib
-from src.data.common.sprites import LoadBasics
+from data.common.sprites import LoadBasics
 
-from src.ui.theme.reggie_theme import SetAppStyle, LoadNumberFont, SetColorScheme
-from src.data.common.loaders import LoadToolbarActionsLists, LoadTheme, LoadDefaultKeybinds, module_path
-from src.data.common.utils import SetGamePaths
-from src.data.common.validators import FilesAreMissing, areValidGamePaths
+from ui.theme.reggie_theme import SetAppStyle, LoadNumberFont, SetColorScheme
+from data.common.loaders import LoadToolbarActionsLists, LoadTheme, LoadDefaultKeybinds, module_path
+from data.common.utils import SetGamePaths, get_reggiedata_folder
+from data.common.validators import FilesAreMissing, areValidGamePaths
 
-from src.data.common.settings import setting, setSetting
-from src.data.common.gamedef import LoadGameDef
+from data.common.settings import setting, setSetting
+from data.common.gamedef import LoadGameDef
 
-from src.data.common.loaders import LoadOverrides
+from data.common.loaders import LoadOverrides
 
-from src.data.common.loaders import LoadTranslation
+from data.common.loaders import LoadTranslation
 
-from src.ui.dialogs.auto_save import AutoSaveDialog
-from src.ui.widgets.reggie_window import ReggieWindow
+from ui.dialogs.auto_save import AutoSaveDialog
+from ui.widgets.reggie_window import ReggieWindow
 
 def _excepthook(*exc_info):
     """
@@ -192,7 +192,7 @@ def main():
         setSetting('uiStyle', "Fusion")
 
     # Set the default window name/icon (used for random popups and stuff)
-    globals_.app.setWindowIcon(QtGui.QIcon('reggiedata/icon.png'))
+    globals_.app.setWindowIcon(QtGui.QIcon(os.path.join(get_reggiedata_folder(), 'icon.png')))
     globals_.app.setApplicationDisplayName('Reggie! Next %s' % globals_.ReggieVersionShort)
 
     # 4.0 -> Oldest version with settings.ini compatible with the current version

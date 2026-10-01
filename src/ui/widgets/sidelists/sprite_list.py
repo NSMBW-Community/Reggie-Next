@@ -2,15 +2,15 @@ import base64
 
 from PyQt6 import QtCore, QtWidgets
 
-from src.data import globals_
-from src.data.sprite.spritefield.list import ListSpriteField
-from src.data.sprite.spritefield.sprite_field import SpriteField
-from src.data.sprite.spritefield.value import ValueSpriteField
-from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from data import globals_
+from data.sprite.spritefield.list import ListSpriteField
+from data.sprite.spritefield.sprite_field import SpriteField
+from data.sprite.spritefield.value import ValueSpriteField
+from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
-from src.ui.widgets.sprite_table import SpriteTableWidget
-from src.data.level.items.sprite import SpriteItem
+from ui.widgets.sprite_table import SpriteTableWidget
+from data.level.items.sprite import SpriteItem
 
 
 class SpriteList(QtWidgets.QWidget):

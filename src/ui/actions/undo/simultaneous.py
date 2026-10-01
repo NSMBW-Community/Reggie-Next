@@ -1,4 +1,4 @@
-from src.ui.actions.undo.undo_action import UndoAction
+from ui.actions.undo.undo_action import UndoAction
 
 
 class SimultaneousUndoAction(UndoAction):

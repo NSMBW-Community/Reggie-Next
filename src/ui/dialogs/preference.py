@@ -3,14 +3,14 @@ import collections
 import os
 import typing
 
-from src.data import globals_
-from src.ui.theme.reggie_theme import GetIcon
+from data import globals_
+from ui.theme.reggie_theme import GetIcon
 
-from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
-from src.ui.widgets.preferences.general_tab import GeneralTab
-from src.ui.widgets.preferences.toolbar_tab import ToolbarTab
-from src.ui.widgets.preferences.appearance_tab import AppearanceTab
-from src.ui.widgets.preferences.keybind_tab import KeybindTab
+from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
+from ui.widgets.preferences.general_tab import GeneralTab
+from ui.widgets.preferences.toolbar_tab import ToolbarTab
+from ui.widgets.preferences.appearance_tab import AppearanceTab
+from ui.widgets.preferences.keybind_tab import KeybindTab
 
 class PreferencesDialog(QtWidgets.QDialog):
     """

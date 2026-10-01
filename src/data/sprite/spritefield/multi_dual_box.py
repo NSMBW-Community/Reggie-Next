@@ -1,4 +1,4 @@
-from src.data.sprite.spritefield.sprite_field import SpriteField
+from data.sprite.spritefield.sprite_field import SpriteField
 
 
 class MultiDualBoxSpriteField(SpriteField):

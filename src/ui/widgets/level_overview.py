@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets, QtGui, QtCore
 
-from src.data import globals_
+from data import globals_
 
 class LevelOverviewWidget(QtWidgets.QWidget):
     """

@@ -1,7 +1,7 @@
 from PyQt6 import QtWidgets
 
-from src.data.sprite.spritefield.dual_box import DualBoxSpriteField
-from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from data.sprite.spritefield.dual_box import DualBoxSpriteField
+from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 

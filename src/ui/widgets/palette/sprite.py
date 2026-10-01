@@ -1,17 +1,17 @@
 from PyQt6 import QtWidgets, QtCore
 Qt = QtCore.Qt
 
-from src.data import globals_
+from data import globals_
 
-from src.ui.theme.reggie_theme import GetIcon
-from src.data.common.loaders import LoadSpriteCategories
-from src.data.level.dirty import SetDirty
+from ui.theme.reggie_theme import GetIcon
+from data.common.loaders import LoadSpriteCategories
+from data.level.dirty import SetDirty
 
-from src.ui.widgets.sidelists.sprite_picker import SpritePickerWidget
-from src.ui.widgets.sidelists.sprite_list import SpriteList
-from src.ui.widgets.sidelists.sprite_order import SpriteOrderList
+from ui.widgets.sidelists.sprite_picker import SpritePickerWidget
+from ui.widgets.sidelists.sprite_list import SpriteList
+from ui.widgets.sidelists.sprite_order import SpriteOrderList
 
-from src.data.level.items.sprite import SpriteItem
+from data.level.items.sprite import SpriteItem
 from spritelib import SpriteImage
 
 class SpriteTab(QtWidgets.QTabWidget):

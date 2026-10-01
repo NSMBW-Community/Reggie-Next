@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtWidgets
 
-from src.data.stamp.stamp_list import StampListModel
+from data.stamp.stamp_list import StampListModel
 
 
 class StampPickerWidget(QtWidgets.QListView):

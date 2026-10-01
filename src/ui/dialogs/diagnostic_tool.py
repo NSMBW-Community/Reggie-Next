@@ -2,16 +2,16 @@ from PyQt6 import QtWidgets, QtGui
 from enum import IntEnum
 from typing import cast
 
-from src.data import globals_
+from data import globals_
 
-from src.data.level.dirty import SetDirty
+from data.level.dirty import SetDirty
 import spritelib as SLib
-from src.data.level.items.entrance import EntranceItem
-from src.data.level.items.sprite import SpriteItem
-from src.data.level.items.zone import ZoneItem
-from src.ui.theme.reggie_theme import GetIcon
+from data.level.items.entrance import EntranceItem
+from data.level.items.sprite import SpriteItem
+from data.level.items.zone import ZoneItem
+from ui.theme.reggie_theme import GetIcon
 
-from src.ui.widgets.diag_list_widget_item import DiagnosticListWidgetItem
+from ui.widgets.diag_list_widget_item import DiagnosticListWidgetItem
 
 class DiagnosticToolDialog(QtWidgets.QDialog):
     """

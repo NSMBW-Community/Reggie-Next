@@ -2,20 +2,20 @@ import struct
 
 from PyQt6 import QtWidgets
 
-from src.data import globals_
+from data import globals_
 import spritelib as SLib
-from src.data.common.loaders import CreateTilesets, LoadTileset
-from src.data.level.items.comment import CommentItem
-from src.data.level.items.entrance import EntranceItem
-from src.data.level.items.location import LocationItem
-from src.data.level.items.object import ObjectItem
-from src.data.level.items.sprite import SpriteItem
-from src.data.level.items.zone import ZoneItem
-from src.data.level.metadata import Metadata
-from src.data.sprite.spritefield.list import ListSpriteField
-from src.data.sprite.spritefield.sprite_field import SpriteField
-from src.data.sprite.spritefield.value import ValueSpriteField
-from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from data.common.loaders import CreateTilesets, LoadTileset
+from data.level.items.comment import CommentItem
+from data.level.items.entrance import EntranceItem
+from data.level.items.location import LocationItem
+from data.level.items.object import ObjectItem
+from data.level.items.sprite import SpriteItem
+from data.level.items.zone import ZoneItem
+from data.level.metadata import Metadata
+from data.sprite.spritefield.list import ListSpriteField
+from data.sprite.spritefield.sprite_field import SpriteField
+from data.sprite.spritefield.value import ValueSpriteField
+from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 
@@ -514,7 +514,7 @@ class Area:
         unpack = pathstruct.unpack_from
         paths = []
 
-        from src.data.level.path import Path
+        from data.level.path import Path
 
         for offset in range(0, len(pathdata), 8):
             data = unpack(pathdata, offset)

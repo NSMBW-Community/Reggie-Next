@@ -1,9 +1,9 @@
 from PyQt6 import QtWidgets
 
-from src.data import globals_
+from data import globals_
 import spritelib as SLib
-from src.data.level.dirty import SetDirty
-from src.ui.theme.reggie_theme import GetIcon
+from data.level.dirty import SetDirty
+from ui.theme.reggie_theme import GetIcon
 
 # TODO:
 # - Batch feature

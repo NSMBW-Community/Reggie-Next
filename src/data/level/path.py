@@ -1,9 +1,9 @@
 from PyQt6 import QtCore, QtWidgets
 
-from src.data import globals_
-from src.data.level.abstract_path import AbstractPath
-from src.data.level.items.path import PathItem
-from src.data.level.items.path_editor_line import PathEditorLineItem
+from data import globals_
+from data.level.abstract_path import AbstractPath
+from data.level.items.path import PathItem
+from data.level.items.path_editor_line import PathEditorLineItem
 
 
 class Path(AbstractPath):

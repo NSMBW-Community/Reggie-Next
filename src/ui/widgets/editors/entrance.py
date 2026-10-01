@@ -1,11 +1,11 @@
 from PyQt6 import QtWidgets, QtCore
 
-from src.data import globals_
-from src.ui.theme.reggie_theme import createHorzLine
-from src.data.level.dirty import SetDirty
-from src.data.common.loaders import LoadEntranceNames
+from data import globals_
+from ui.theme.reggie_theme import createHorzLine
+from data.level.dirty import SetDirty
+from data.common.loaders import LoadEntranceNames
 
-from src.data.level.items.entrance import EntranceItem
+from data.level.items.entrance import EntranceItem
 
 class EntranceEditorWidget(QtWidgets.QWidget):
     """

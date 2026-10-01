@@ -3,21 +3,21 @@ from typing import Literal
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data.common.gamedef import ReggieGameDefinition
+from data.common.gamedef import ReggieGameDefinition
 from reggie import ReggieWindow
-from src.data.level.abstract_level import AbstractLevel
-from src.data.level.area import Area as AreaType
-from src.data.level.sprite_definition import SpriteDefinition
-from src.data.common.keybind import Keybind
-from src.data.common.menu_action import MenuAction
-from src.data.common.toolbar_action import ToolbarAction
-from src.data.tileset.tile.rand_tile_selection import RandTileSelection
-from src.data.sprite.sprite_category import SpriteCategory
-from src.data.tileset.tileset_category import TilesetCategory
-from src.data.tileset.object.object_def import ObjectDef
-from src.data.tileset.tile.tileset_tile import TilesetTile
-from src.data.common.reggie_translation import ReggieTranslation
-from src.ui.theme.reggie_theme import ReggieTheme
+from data.level.abstract_level import AbstractLevel
+from data.level.area import Area as AreaType
+from data.level.sprite_definition import SpriteDefinition
+from data.common.keybind import Keybind
+from data.common.menu_action import MenuAction
+from data.common.toolbar_action import ToolbarAction
+from data.tileset.tile.rand_tile_selection import RandTileSelection
+from data.sprite.sprite_category import SpriteCategory
+from data.tileset.tileset_category import TilesetCategory
+from data.tileset.object.object_def import ObjectDef
+from data.tileset.tile.tileset_tile import TilesetTile
+from data.common.reggie_translation import ReggieTranslation
+from ui.theme.reggie_theme import ReggieTheme
 
 # Reggie / UI
 AutoDiagEnabled = True

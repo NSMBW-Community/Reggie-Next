@@ -2,10 +2,10 @@ import base64
 
 from PyQt6 import QtCore, QtWidgets
 
-from src.data import globals_
-from src.ui.widgets.sprite_table import SpriteTableWidget
-from src.data.level.items.sprite import SpriteItem
-from src.data.level.dirty import SetDirty
+from data import globals_
+from ui.widgets.sprite_table import SpriteTableWidget
+from data.level.items.sprite import SpriteItem
+from data.level.dirty import SetDirty
 
 
 class SpriteOrderList(QtWidgets.QWidget):

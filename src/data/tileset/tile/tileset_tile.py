@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui
 
-from src.data import globals_
+from data import globals_
 from libs import tpl
 
 

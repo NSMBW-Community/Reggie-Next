@@ -2,19 +2,19 @@ from typing import cast
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data import globals_
+from data import globals_
 import spritelib as SLib
-from src.data.common.utils import clamp
-from src.data.level.dirty import SetDirty
-from src.data.level.items.basic import InstanceDefinition, LevelEditorItem
-from src.data.level.items.object import ObjectItem
-from src.ui.actions.undo.move_item import MoveItemUndoAction
-from src.ui.theme.reggie_theme import setOverrideCursor
+from data.common.utils import clamp
+from data.level.dirty import SetDirty
+from data.level.items.basic import InstanceDefinition, LevelEditorItem
+from data.level.items.object import ObjectItem
+from ui.actions.undo.move_item import MoveItemUndoAction
+from ui.theme.reggie_theme import setOverrideCursor
 
-from src.data.sprite.spritefield.sprite_field import SpriteField
-from src.data.sprite.spritefield.list import ListSpriteField
-from src.data.sprite.spritefield.value import ValueSpriteField
-from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
+from data.sprite.spritefield.sprite_field import SpriteField
+from data.sprite.spritefield.list import ListSpriteField
+from data.sprite.spritefield.value import ValueSpriteField
+from ui.widgets.spriteeditor.propertydecoders.property_decoder import PropertyDecoder
 
 
 class InstanceDefinition_SpriteItem(InstanceDefinition):

@@ -1,8 +1,8 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data import globals_
-from src.data.tileset.object.renderers import RenderObject
-from src.data.tileset.tile.tileset_tile import TilesetTile
+from data import globals_
+from data.tileset.object.renderers import RenderObject
+from data.tileset.tile.tileset_tile import TilesetTile
 
 
 class ObjectPickerWidget(QtWidgets.QListView):

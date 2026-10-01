@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtGui
 
-from src.data import globals_
-from src.data.common.reggie_clip import ReggieClip
+from data import globals_
+from data.common.reggie_clip import ReggieClip
 
 
 class Stamp:

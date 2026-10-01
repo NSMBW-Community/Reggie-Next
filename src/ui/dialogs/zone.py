@@ -1,12 +1,12 @@
 from PyQt6 import QtWidgets, QtCore
 from typing import cast
 
-from src.data import globals_
-from src.ui.theme.reggie_theme import GetIcon
-from src.data.level.items.zone import ZoneItem
+from data import globals_
+from ui.theme.reggie_theme import GetIcon
+from data.level.items.zone import ZoneItem
 
-from src.data.common.utils import clamp
-from src.ui.layouts.camera_mode import CameraModeZoomSettingsLayout
+from data.common.utils import clamp
+from ui.layouts.camera_mode import CameraModeZoomSettingsLayout
 
 class ZonesDialog(QtWidgets.QDialog):
     """

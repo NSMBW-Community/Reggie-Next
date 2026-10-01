@@ -1,18 +1,19 @@
 from PyQt6 import QtCore, QtWidgets, QtGui
 import os
 
-from src.data import globals_
-from src.data.common.settings import setting
-from src.data.level.path import Path
-from src.data.level.items.location import LocationItem
-from src.data.level.items.comment import CommentItem
-from src.data.level.items.entrance import EntranceItem
-from src.data.level.items.sprite import SpriteItem
-from src.data.level.items.zone import ZoneItem
-from src.ui.widgets.level_view import LevelViewWidget
-from src.ui.theme.reggie_theme import ReggieTheme
+from data import globals_
+from data.common.settings import setting
+from data.level.path import Path
+from data.level.items.location import LocationItem
+from data.level.items.comment import CommentItem
+from data.level.items.entrance import EntranceItem
+from data.level.items.sprite import SpriteItem
+from data.level.items.zone import ZoneItem
+from data.common.utils import get_reggiedata_folder
+from ui.widgets.level_view import LevelViewWidget
+from ui.theme.reggie_theme import ReggieTheme
 
-from src.ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
+from ui.widgets.preferences.widgets.preference_tab import PreferenceTabWidget
 
 class AppearanceTab(PreferenceTabWidget):
     """
@@ -142,7 +143,7 @@ class AppearanceTab(PreferenceTabWidget):
         Searches the Themes folder and returns a list of theme filepaths.
         Automatically adds 'Classic' to the list.
         """
-        theme_path = os.path.join('reggiedata', 'themes')
+        theme_path = os.path.join(get_reggiedata_folder(), 'themes')
         theme_list = [('Classic', ReggieTheme())]
 
         for theme_name in os.listdir(theme_path):

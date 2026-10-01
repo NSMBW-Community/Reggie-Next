@@ -1,9 +1,9 @@
 from PyQt6 import QtWidgets
 
-from src.data import globals_
+from data import globals_
 
-from src.data.level.items.path import PathItem
-from src.ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
+from data.level.items.path import PathItem
+from ui.widgets.generic.list_with_tool_tip_signal import ListWidgetWithToolTipSignal
 
 class PathTab(QtWidgets.QWidget):
     """

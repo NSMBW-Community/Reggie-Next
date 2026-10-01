@@ -1,6 +1,9 @@
+import os
+from pathlib import Path
 import pickletools
+import sys
 
-from src.data import globals_
+from data import globals_
 
 
 def align(x, boundary):
@@ -90,3 +93,21 @@ def SetGamePaths(new_stage_path, new_texture_path):
     # a Python string manually
     globals_.gamedef.SetStageGamePath(str(new_stage_path))
     globals_.gamedef.SetTextureGamePath(str(new_texture_path))
+
+def get_main_path():
+    """
+    Returns the path to the main script
+    """
+    return sys.modules['__main__'].__file__
+
+def get_root_path():
+    """
+    Returns the path to the root folder
+    """
+    return Path(get_main_path()).parent.parent.absolute()
+
+def get_reggiedata_folder():
+    """
+    Returns the path to the reggiedata folder
+    """
+    return os.path.join(get_root_path(), 'reggiedata')

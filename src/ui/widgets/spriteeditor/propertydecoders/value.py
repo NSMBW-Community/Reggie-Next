@@ -1,13 +1,13 @@
 from PyQt6 import QtCore, QtWidgets
 
-from src.data import globals_
-from src.data.common.utils import find_first_available_id
-from src.data.sprite.spritefield.value import ValueSpriteField
-from src.ui.widgets.generic.int_spin_box import IntSpinBox
-from src.ui.widgets.spriteeditor.abstract_sprite_editor import (
+from data import globals_
+from data.common.utils import find_first_available_id
+from data.sprite.spritefield.value import ValueSpriteField
+from ui.widgets.generic.int_spin_box import IntSpinBox
+from ui.widgets.spriteeditor.abstract_sprite_editor import (
     AbstractSpriteEditorWidget,
 )
-from src.ui.widgets.spriteeditor.propertydecoders.property_decoder import (
+from ui.widgets.spriteeditor.propertydecoders.property_decoder import (
     PropertyDecoder,
 )
 

@@ -1,11 +1,11 @@
 from PyQt6 import QtWidgets, QtGui
 import os
 
-from src.data import globals_
-from src.data.common.utils import clamp
-from src.ui.theme.reggie_theme import GetIcon
+from data import globals_
+from data.common.utils import clamp, get_reggiedata_folder
+from ui.theme.reggie_theme import GetIcon
 
-from src.ui.widgets.generic.hex_spin_box import HexSpinBox
+from ui.widgets.generic.hex_spin_box import HexSpinBox
 
 class BackgroundDialog(QtWidgets.QDialog):
     """
@@ -260,7 +260,7 @@ class BackgroundTab(QtWidgets.QWidget):
 
                 filename = globals_.gamedef.bgFile(val + '.png', 'ab'[slotID])
                 if not os.path.isfile(filename):
-                    filename = os.path.join('reggiedata', ['bga', 'bgb'][slotID], 'no_preview.png')
+                    filename = os.path.join(get_reggiedata_folder(), ['bga', 'bgb'][slotID], 'no_preview.png')
 
                 pix = QtGui.QPixmap(filename)
                 pix = pix.scaled(int(pix.width() * scale), int(pix.height() * scale))

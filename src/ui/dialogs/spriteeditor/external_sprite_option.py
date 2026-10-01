@@ -3,8 +3,8 @@ from xml.etree import ElementTree
 
 from PyQt6 import QtCore, QtWidgets
 
-from src.data import globals_
-from src.ui.dialogs.spriteeditor.external_sprite_option_row import (
+from data import globals_
+from ui.dialogs.spriteeditor.external_sprite_option_row import (
     ExternalSpriteOptionRow,
 )
 

@@ -1,10 +1,10 @@
 from PyQt6 import QtCore, QtWidgets
 from enum import IntEnum
 
-from src.data import globals_
-from src.ui.theme.reggie_theme import GetIcon
+from data import globals_
+from ui.theme.reggie_theme import GetIcon
 
-from src.ui.dialogs.diagnostic_tool import DiagnosticToolDialog
+from ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 
 class DiagnosticWidget(QtWidgets.QWidget):
     """

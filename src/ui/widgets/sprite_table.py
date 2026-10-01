@@ -1,6 +1,6 @@
 
 from PyQt6 import QtCore, QtWidgets
-from src.data.level.items.sprite import SpriteItem
+from data.level.items.sprite import SpriteItem
 
 class SpriteTableWidget(QtWidgets.QTableWidget):
     """

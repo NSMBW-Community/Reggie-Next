@@ -3,14 +3,14 @@ import random
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from src.data import globals_
-from src.data.common.utils import clamp
-from src.data.level.dirty import SetDirty
-from src.data.level.items.abstract_object import AbstractObjectItem
-from src.data.level.items.basic import InstanceDefinition, LevelEditorItem
-from src.data.tileset.object.renderers import RenderObject
-from src.ui.actions.undo.move_item import MoveItemUndoAction
-from src.ui.theme.reggie_theme import setOverrideCursor
+from data import globals_
+from data.common.utils import clamp
+from data.level.dirty import SetDirty
+from data.level.items.abstract_object import AbstractObjectItem
+from data.level.items.basic import InstanceDefinition, LevelEditorItem
+from data.tileset.object.renderers import RenderObject
+from ui.actions.undo.move_item import MoveItemUndoAction
+from ui.theme.reggie_theme import setOverrideCursor
 
 
 class InstanceDefinition_ObjectItem(InstanceDefinition):

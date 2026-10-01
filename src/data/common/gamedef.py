@@ -7,12 +7,12 @@ import re
 
 from PyQt6 import QtWidgets
 
-from src.data import globals_
+from data import globals_
 import spritelib as SLib
 import sprites
-from src.data.common.settings import setSetting, setting
-from src.data.common.sprites import LoadBasics
-from src.data.common.loaders import (
+from data.common.settings import setSetting, setting
+from data.common.sprites import LoadBasics
+from data.common.loaders import (
     LoadBgANames,
     LoadBgBNames,
     LoadConfig,
@@ -25,6 +25,7 @@ from src.data.common.loaders import (
     LoadTilesetNames,
     LoadZoneThemes,
 )
+from data.common.utils import get_reggiedata_folder
 
 
 # Gamedef File - has 2 values: name (str) and patch (bool)
@@ -77,19 +78,20 @@ class ReggieGameDefinition:
 
         self.sprites = sprites
 
+        reggiedata_folder = get_reggiedata_folder()
         self.files = {
-            'bga': gdf(os.path.join('reggiedata', 'bga.txt'), False),
-            'bgb': gdf(os.path.join('reggiedata', 'bgb.txt'), False),
-            'config': gdf(os.path.join('reggiedata', 'config.xml'), False),
-            'entrancetypes': gdf(os.path.join('reggiedata', 'entrancetypes.txt'), False),
-            'levelnames': gdf(os.path.join('reggiedata', 'levelnames.xml'), False),
-            'music': gdf(os.path.join('reggiedata', 'music.txt'), False),
-            'spritecategories': gdf(os.path.join('reggiedata', 'spritecategories.xml'), False),
-            'spritedata': gdf(os.path.join('reggiedata', 'spritedata.xml'), False),
-            'tilesetinfo': gdf(os.path.join('reggiedata', 'tilesetinfo.xml'), False),
-            'tilesets': gdf(os.path.join('reggiedata', 'tilesets.xml'), False),
-            'ts1_descriptions': gdf(os.path.join('reggiedata', 'ts1_descriptions.txt'), False),
-            'zonethemes': gdf(os.path.join('reggiedata', 'zonethemes.txt'), False),
+            'bga': gdf(os.path.join(reggiedata_folder, 'bga.txt'), False),
+            'bgb': gdf(os.path.join(reggiedata_folder, 'bgb.txt'), False),
+            'config': gdf(os.path.join(reggiedata_folder, 'config.xml'), False),
+            'entrancetypes': gdf(os.path.join(reggiedata_folder, 'entrancetypes.txt'), False),
+            'levelnames': gdf(os.path.join(reggiedata_folder, 'levelnames.xml'), False),
+            'music': gdf(os.path.join(reggiedata_folder, 'music.txt'), False),
+            'spritecategories': gdf(os.path.join(reggiedata_folder, 'spritecategories.xml'), False),
+            'spritedata': gdf(os.path.join(reggiedata_folder, 'spritedata.xml'), False),
+            'tilesetinfo': gdf(os.path.join(reggiedata_folder, 'tilesetinfo.xml'), False),
+            'tilesets': gdf(os.path.join(reggiedata_folder, 'tilesets.xml'), False),
+            'ts1_descriptions': gdf(os.path.join(reggiedata_folder, 'ts1_descriptions.txt'), False),
+            'zonethemes': gdf(os.path.join(reggiedata_folder, 'zonethemes.txt'), False),
         }
         self.folders = {
             'bga': gdf(None, False),
@@ -108,7 +110,7 @@ class ReggieGameDefinition:
         self.gamepath = name
 
         # Parse the file (errors are handled by __init__())
-        path = os.path.join("reggiedata", "patches", name, "main.xml")
+        path = os.path.join(get_reggiedata_folder(), "patches", name, "main.xml")
         try:
             tree = etree.parse(path)
         except FileNotFoundError:
@@ -138,7 +140,7 @@ class ReggieGameDefinition:
         if not self.custom or not isinstance(self.gamepath, str):
             return
 
-        path = os.path.join("reggiedata", "patches", self.gamepath, "main.xml")
+        path = os.path.join(get_reggiedata_folder(), "patches", self.gamepath, "main.xml")
         try:
             tree = etree.parse(path)
         except FileNotFoundError:
@@ -152,7 +154,7 @@ class ReggieGameDefinition:
             self.base = ReggieGameDefinition()
 
         # Parse the nodes
-        addpath = os.path.join("reggiedata", "patches", self.gamepath)
+        addpath = os.path.join(get_reggiedata_folder(), "patches", self.gamepath)
         for node in root:
             n = node.tag.lower()
             if n not in ('file', 'folder'):
@@ -165,11 +167,11 @@ class ReggieGameDefinition:
                 if game is None:
                     path = os.path.join(addpath, node_path)
                 elif game == globals_.trans.string('Gamedefs', 13):  # 'New Super Mario Bros. Wii'
-                    path = os.path.join('reggiedata', node_path)
+                    path = os.path.join(get_reggiedata_folder(), node_path)
                 else:
                     def_ = FindGameDef(game, self.gamepath)
                     if def_ is not None and def_.gamepath is not None:
-                        path = os.path.join('reggiedata', 'patches', def_.gamepath, node_path)
+                        path = os.path.join(get_reggiedata_folder(), 'patches', def_.gamepath, node_path)
 
                 node_name = node.get('name')
                 dict_type = self.files if n == 'file' else self.folders  # self.files or self.folders
@@ -204,7 +206,7 @@ class ReggieGameDefinition:
         Returns the folder to a bg image. Layer must be 'a' or 'b'
         """
         # Name will be of the format '0000.png'
-        fallback = os.path.join('reggiedata', 'bg' + layer, name)
+        fallback = os.path.join(get_reggiedata_folder(), 'bg' + layer, name)
         filename = os.path.join('bg' + layer, name)
 
         # See if it was defined specifically
@@ -232,7 +234,7 @@ class ReggieGameDefinition:
         """
         # Name is of the format 'something.xml'
         filename = os.path.join('external', name)
-        fallback = os.path.join('reggiedata', filename)
+        fallback = os.path.join(get_reggiedata_folder(), filename)
 
         # check if it's in self.files
         if filename in self.files:
@@ -424,9 +426,9 @@ def getAvailableGameDefs():
     game_defs: list[tuple[str | None, str]] = []
 
     # Add them
-    folders = os.listdir(os.path.join('reggiedata', 'patches'))
+    folders = os.listdir(os.path.join(get_reggiedata_folder(), 'patches'))
     for folder in folders:
-        if not os.path.isfile(os.path.join('reggiedata', 'patches', folder, 'main.xml')):
+        if not os.path.isfile(os.path.join(get_reggiedata_folder(), 'patches', folder, 'main.xml')):
             continue
 
         def_ = ReggieGameDefinition(folder)
@@ -658,7 +660,7 @@ def FindGameDef(name: str, skip: str | None = None):
     Helper function to find a game def with a specific name.
     Skip will be skipped
     """
-    patches_path = os.path.join('reggiedata', 'patches')
+    patches_path = os.path.join(get_reggiedata_folder(), 'patches')
 
     for folder in os.listdir(patches_path):
         if folder == skip:
@@ -711,7 +713,7 @@ def update_sprites_module(filename: str):
             new_data = re.sub(pattern, replace, new_data)
 
         # Fix old sprites_common imports
-        new_data = new_data.replace("import sprites_common", "import src.data.common.sprites")
+        new_data = new_data.replace("import sprites_common", "import data.common.sprites")
 
         # Fix (very rarely used) references to the sprite ID
         new_data = new_data.replace("parent.type", "parent.sprite_num")

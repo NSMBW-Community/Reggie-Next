@@ -1,7 +1,10 @@
 import os
-from PyQt6 import QtWidgets, QtGui
 
-from src.data import globals_
+from PyQt6 import QtGui, QtWidgets
+
+from data import globals_
+from data.common.utils import get_reggiedata_folder, get_root_path
+
 
 class AboutDialog(QtWidgets.QDialog):
     """
@@ -18,12 +21,12 @@ class AboutDialog(QtWidgets.QDialog):
         # Open the readme file
         readme = ''
         try:
-            with open('readme.md', 'r', encoding='utf-8') as f:
+            with open(os.path.join(get_root_path(), 'readme.md'), 'r', encoding='utf-8') as f:
                 readme = f.read()
         except FileNotFoundError:
             readme = globals_.trans.string('AboutDlg', 4)
 
-        logo = QtGui.QPixmap(os.path.join('reggiedata', 'icon.png'))
+        logo = QtGui.QPixmap(os.path.join(get_reggiedata_folder(), 'icon.png'))
         logo_label = QtWidgets.QLabel()
         logo_label.setPixmap(logo)
         logo_label.setContentsMargins(16, 4, 32, 4)
