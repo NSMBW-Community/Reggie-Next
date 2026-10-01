@@ -44,7 +44,7 @@ WIN_ICON = os.path.join('reggiedata', 'win_icon.ico')
 MAC_ICON = os.path.join('reggiedata', 'reggie.icns')
 MAC_BUNDLE_IDENTIFIER = 'ca.chronometry.reggie'
 
-SCRIPT_FILE = 'reggie.py'
+SCRIPT_FILE = 'src/reggie.py'
 DATA_FOLDERS = ['reggiedata', 'reggieextras']
 DATA_FILES = ['README.md', 'license.txt']
 
@@ -66,7 +66,7 @@ else:
 
 DIR = os.path.join('distrib', 'reggie_next_v%s_%s' % (PROJECT_VERSION, platform))
 WORKPATH = 'build_temp'
-SPECFILE = SCRIPT_FILE[:-3] + '.spec'
+SPECFILE = SCRIPT_FILE[4:-3] + '.spec'
 
 def print_emphasis(s):
     print('>>')
