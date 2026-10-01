@@ -120,7 +120,7 @@ def _excepthook(*exc_info):
     globals_.ErrMsg += msg
 
     try:
-        with open(log_file, 'w', encoding='utf-8') as f:
+        with open(os.path.join(get_root_path(), log_file), 'w', encoding='utf-8') as f:
             f.write(globals_.ErrMsg)
     except IOError:
         pass
