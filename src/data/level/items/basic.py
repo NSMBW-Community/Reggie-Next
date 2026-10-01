@@ -130,6 +130,8 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
     autoPosChange = False
     dragoffsetx = 0
     dragoffsety = 0
+    dragstartx = 0
+    dragstarty = 0
     objx, objy = 0, 0
     BoundingRect = QtCore.QRectF(0, 0, 24, 24)
 

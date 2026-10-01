@@ -1,22 +1,23 @@
-from PyQt6 import QtWidgets, QtCore
+from PyQt6 import QtCore, QtWidgets
 
 from data import globals_
-
-from data.level.items.object import ObjectItem
-from data.level.items.sprite import SpriteItem
+from data.level.dirty import SetDirty
+from data.level.items.basic import LevelEditorItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
+from data.level.items.object import ObjectItem
 from data.level.items.path import PathItem
+from data.level.items.sprite import SpriteItem
 from data.level.path import Path
 
-from data.level.dirty import SetDirty
 
 class ReggieClip:
     """
     Represents Reggie level items encoded as plaintext
     """
+
     @staticmethod
-    def get_reggie_clip(items: list[QtWidgets.QGraphicsItem]) -> str:
+    def get_reggie_clip(items: list[LevelEditorItem]) -> str:
         """
         Generates a ReggieClip from a list of items and returns it
         """
@@ -45,8 +46,12 @@ class ReggieClip:
 
     @staticmethod
     def encode_reggie_clip(
-        objects: list[ObjectItem], sprites: list[SpriteItem], entrances: list[EntranceItem], locations: list[LocationItem], path_nodes: list[PathItem]
-    ):
+        objects: list[ObjectItem],
+        sprites: list[SpriteItem],
+        entrances: list[EntranceItem],
+        locations: list[LocationItem],
+        path_nodes: list[PathItem],
+    ) -> str:
         """
         Encode sets of level items into a ReggieClip string
         """
@@ -56,25 +61,20 @@ class ReggieClip:
         objects.sort(key=lambda x: x.zValue())
 
         for obj in objects:
-            output.append('0:%d:%d:%d:%d:%d:%d:%d' % (
-            obj.tileset, obj.object_num, obj.layer, obj.objx, obj.objy, obj.width, obj.height))
+            output.append(f'0:{obj.tileset}:{obj.object_num}:{obj.layer}:{obj.objx}:{obj.objy}:{obj.width}:{obj.height}')
 
         # Sprites
         for spr in sprites:
             data = spr.spritedata
-            output.append('1:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d' % (
-            spr.sprite_num, spr.objx, spr.objy, data[0], data[1], data[2], data[3], data[4], data[5], data[7]))
+            output.append(f'1:{spr.sprite_num}:{spr.objx}:{spr.objy}:{data[0]}:{data[1]}:{data[2]}:{data[3]}:{data[4]}:{data[5]}:{data[7]}')
 
         # Entrances
         for item in entrances:
-            output.append('2:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d' % (
-            item.objx, item.objy, item.entid, item.destarea, item.destentrance, item.enttype, item.entzone,
-            item.entsettings, item.entlayer, item.entpath, item.leave_level, item.cpdirection))
+            output.append(f'2:{item.objx}:{item.objy}:{item.entid}:{item.destarea}:{item.destentrance}:{item.enttype}:{item.entzone}:{item.entsettings}:{item.entlayer}:{item.entpath}:{item.leave_level}:{item.cpdirection}')
 
         # Locations
         for loc in locations:
-            output.append('3:%d:%d:%d:%d:%d' % (
-            loc.id, loc.objx, loc.objy, loc.width, loc.height))
+            output.append(f'3:{loc.id}:{loc.objx}:{loc.objy}:{loc.width}:{loc.height}')
 
         # Path Nodes
         path_nodes.sort(key=lambda x: (x.pathid, x.nodeid))
@@ -91,27 +91,31 @@ class ReggieClip:
             # Append a path object
             if path is not None:
                 if currPathID != item.pathid:
-                    output.append('4:%d:%d' % (path._id, path._loops))
+                    output.append(f'4:{path._id}:{path._loops}')
                     currPathID = item.pathid
 
                 x, y, speed, accel, delay = path.get_node_data(item.nodeid)
-                output.append('5:%d:%d:%d:%d:%f:%f:%d' % (
-                item.pathid, item.nodeid, x, y, speed, accel, delay))
+                output.append(f'5:{item.pathid}:{item.nodeid}:{x}:{y}:{speed}:{accel}:{delay}')
 
         output.append('%')
         return '|'.join(output)
 
     @staticmethod
-    def paste_reggie_clip(reggie_clip, select=True, xOverride=None, yOverride=None):
+    def paste_reggie_clip(
+        reggie_clip: str,
+        select: bool = True,
+        xOverride: int | None = None,
+        yOverride: int | None = None,
+    ) -> list[LevelEditorItem]:
         """
         Decode and place a set of items
         """
         if globals_.mainWindow is None:
-            return
+            return []
 
         globals_.mainWindow.SelectionUpdateFlag = True
         globals_.mainWindow.scene.clearSelection()
-        added = []
+        added: list[LevelEditorItem] = []
 
         # Remove leading and trailing whitespace
         reggie_clip = reggie_clip.strip()
@@ -153,6 +157,8 @@ class ReggieClip:
             bounding |= node.LevelRect
 
         x1, y1, width, height = bounding.getRect()
+        if x1 is None or y1 is None or width is None or height is None:
+            return []
 
         # Now center everything
         zoomscaler = globals_.mainWindow.ZoomLevel / 100
@@ -209,14 +215,18 @@ class ReggieClip:
         globals_.mainWindow.ChangeSelectionHandler()
 
         # Combine the sprites and layers
-        added = sprites + entrances + locations + paths + path_nodes
+        added.extend(sprites)
+        added.extend(entrances)
+        added.extend(locations)
+        added.extend(paths)
+        added.extend(path_nodes)
         for layer in layers:
-            added += layer
+            added.extend(layer)
 
         return added
 
     @staticmethod
-    def decode_reggie_clip(reggie_clip: str, add_to_scene=True):
+    def decode_reggie_clip(reggie_clip: str, add_to_scene: bool = True) -> tuple[tuple[list[ObjectItem], list[ObjectItem], list[ObjectItem]], list[SpriteItem], list[EntranceItem], list[LocationItem], list[PathItem], list[PathItem]]:
         """
         Decode the objects from a ReggieClip
         """

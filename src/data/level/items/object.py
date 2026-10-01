@@ -106,13 +106,13 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
 
     @staticmethod
     def CreateObject(tileset: int, object_num: int, layer: int, x: int, y: int,
-                     width: int = 0, height: int = 0, add_to_scene = True):
+                     width: int = 0, height: int = 0, add_to_scene = True) -> "ObjectItem":
         """
         Creates and returns a new object and makes sure it's added to
         the right lists.
         """
         if globals_.mainWindow is None:
-            return None
+            return ObjectItem(-1, -1, -1, -1, -1, -1, -1, -1)
 
         if width == 0 or height == 0:
             if globals_.PlaceObjectsAtFullSize:

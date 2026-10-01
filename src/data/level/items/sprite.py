@@ -95,7 +95,7 @@ class SpriteItem(LevelEditorItem):
         be raised.
         """
         if globals_.mainWindow is None:
-            return None
+            return SpriteItem(-1, -1, -1, -1)
 
         if id_ is None:
             id_ = globals_.CurrentSprite

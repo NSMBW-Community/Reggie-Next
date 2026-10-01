@@ -6,7 +6,7 @@ from data import globals_
 from data.common.utils import get_reggiedata_folder
 
 
-def checkContent(data):
+def checkContent(data: bytes) -> bool:
     if not data.startswith(b'U\xAA8-'):
         return False
 
@@ -18,7 +18,7 @@ def checkContent(data):
     return True
 
 
-def IsNSMBLevel(filename):
+def IsNSMBLevel(filename: str) -> bool:
     """
     Does some basic checks to confirm a file is a NSMB level
     """
@@ -33,7 +33,7 @@ def IsNSMBLevel(filename):
     return checkContent(data)
 
 
-def FilesAreMissing():
+def FilesAreMissing() -> bool:
     """
     Checks to see if any of the required files for Reggie are missing
     """
@@ -58,7 +58,7 @@ def FilesAreMissing():
     return False
 
 
-def areValidGamePaths(stage_check='ug', texture_check='ug'):
+def areValidGamePaths(stage_check: str = 'ug', texture_check: str = 'ug') -> bool:
     """
     Checks to see if the path for NSMBW contains a valid game
     """

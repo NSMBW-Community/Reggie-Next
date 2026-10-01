@@ -105,14 +105,18 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
         if self.pattern == 3:
             self.pattern = 0
 
+        rect_outline = self.aux[0]
+        if not isinstance(rect_outline, SLib.AuxiliaryRectOutline):
+            return
+
         if self.creationtype == 0: # destroys
             if self.permanent or self.noeffect:
-                self.aux[0].setColor(None)
+                rect_outline.setColor(None)
                 self.shouldTile = False
             else:
-                self.aux[0].setColor("#f00000")
+                rect_outline.setColor("#f00000")
         else:
-            self.aux[0].setColor("#00f000")
+            rect_outline.setColor("#00f000")
 
         if self.width == 0:
             self.width = 16
@@ -120,7 +124,7 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
         if self.height == 0:
             self.height = 16
 
-        self.aux[0].setSize(self.width * 1.5, self.height * 1.5)
+        rect_outline.setSize(self.width * 1.5, self.height * 1.5)
 
         type_ = self.parent.spritedata[4] >> 4
         if type_ in self.notAllowedTypes:
@@ -128,7 +132,7 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
             self.image = None
 
             if self.width == self.height == 16:
-                self.aux[0].setSize(0, 0)
+                rect_outline.setSize(0, 0)
 
             return
 
@@ -153,6 +157,7 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
 
         painter.setOpacity(self.alpha)
         painter.setRenderHint(painter.RenderHint.SmoothPixmapTransform)
+        self.height = int(self.height)
 
         if self.pattern == 0 and self.shouldTile:
             painter.drawTiledPixmap(QtCore.QRectF(0, 0, self.width * 1.5, self.height * 1.5), self.image)
@@ -169,7 +174,9 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
                 for x in range(int(start), int(self.width * 1.5), 48):
                     painter.drawPixmap(x, y, self.image)
 
-        self.aux[0].paint(painter, None, None)
+        rect_outline = self.aux[0]
+        if isinstance(rect_outline, SLib.AuxiliaryRectOutline):
+            rect_outline.paint(painter, None, None)
 
         painter.restore()
 
@@ -243,8 +250,9 @@ class SpriteImage_LineBlock(SLib.SpriteImage):  # 219
         super().__init__(parent, 1.5)
         self.spritebox.shown = False
 
-        self.aux.append(SLib.AuxiliaryImage(parent, 24, 24))
-        self.aux[0].setPos(0, 32)
+        line_block_aux_image = SLib.AuxiliaryImage(parent, 24, 24)
+        line_block_aux_image.setPos(0, 32)
+        self.aux.append(line_block_aux_image)
 
     def setLineBlockImage(self, block_img):
         """
@@ -328,10 +336,14 @@ class SpriteImage_LineBlock(SLib.SpriteImage):  # 219
         self.width = width_a * 16
         self.xOffset = xposA
 
-        self.aux[0].setSize(img_b.width(), img_b.height(), xposB, yposB)
-        self.aux[0].image = img_b
-        self.aux[0].alpha = alpha_b
+        line_block_aux_image = self.aux[0]
+
+        if isinstance(line_block_aux_image, SLib.AuxiliaryImage):
+            line_block_aux_image.setSize(img_b.width(), img_b.height(), xposB, yposB)
+            line_block_aux_image.image = img_b
+            line_block_aux_image.alpha = alpha_b
 
     def paint(self, painter):
         super().paint(painter)
-        painter.drawPixmap(0, 0, self.image)
+        if self.image is not None:
+            painter.drawPixmap(0, 0, self.image)

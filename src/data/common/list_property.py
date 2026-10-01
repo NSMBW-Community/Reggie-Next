@@ -32,6 +32,6 @@ class ListPropertyModel(QtCore.QAbstractListModel):
             return None
 
         if self.hideVal:
-            return '%s' % self.entries[n][1]
+            return f'{self.entries[n][1]}'
         else:
-            return '%d: %s' % self.entries[n]
+            return f'{self.entries[n][0]}: {self.entries[n][1]}'

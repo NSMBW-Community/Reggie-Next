@@ -8,14 +8,15 @@ from xml.etree import ElementTree
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 import spritelib as SLib
-from libs import lh, lib_versions, lz77, tpl
 from data import globals_
 from data.common import archive
 from data.common.keybind import Keybind
 from data.common.menu_action import MenuAction
-from data.common.toolbar_action import ToolbarAction
 from data.common.reggie_translation import ReggieTranslation
 from data.common.settings import delSetting, setSetting, setting
+from data.common.toolbar_action import ToolbarAction
+from data.common.utils import get_main_path, get_reggiedata_folder
+from data.level.items.location import LocationItem
 from data.level.sprite_definition import SpriteDefinition
 from data.sprite.sprite_category import SpriteCategory, SpriteSubCategory
 from data.tileset.object.object_def import ObjectDef
@@ -23,14 +24,13 @@ from data.tileset.object.renderers import IncrementTilesetFrame
 from data.tileset.tile.rand_tile_selection import RandTileSelection
 from data.tileset.tile.tileset_tile import TilesetTile
 from data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
-from data.common.utils import get_main_path, get_reggiedata_folder
-from ui.theme.reggie_theme import ReggieTheme, GetIcon
-from data.level.items.location import LocationItem
-
+from libs import lh, lib_versions, lz77, tpl
 from ui.dialogs.about import AboutDialog
 from ui.dialogs.object_swap import ObjectTypeSwapDialog
+from ui.theme.reggie_theme import GetIcon, ReggieTheme
 
-def getResourcePaths(res_name):
+
+def getResourcePaths(res_name: str) -> list[str]:
     """
     Returns an iterable containing the paths that have the specified resource.
     The paths are included in order from general to specific. That is, the base
@@ -50,10 +50,10 @@ def getResourcePaths(res_name):
     #   [gamedef_files[0], trans_files[0], ..., gamedef[i], trans_files[i]]
     # If any entry (gamedef or translation) has no value, it will have None. As
     # such, we also need to filter out the None values from the final iterable.
-    return filter(lambda x: x is not None, itertools.chain.from_iterable(zip(gamedef_files, trans_files)))
+    return [x for x in itertools.chain.from_iterable(zip(gamedef_files, trans_files)) if x is not None]
 
 
-def LoadLevelNames():
+def LoadLevelNames() -> None:
     """
     Ensures that the level name info is loaded
     """
@@ -68,7 +68,7 @@ def LoadLevelNames():
         globals_.LevelNames = LoadLevelNames_Category(root)
 
 
-def LoadLevelNames_Category(node):
+def LoadLevelNames_Category(node: ElementTree.Element) -> tuple[str, ...]:
     """
     Loads a LevelNames XML category
     """
@@ -81,7 +81,7 @@ def LoadLevelNames_Category(node):
     return tuple(cat)
 
 
-def LoadTilesetNames(reload_=False):
+def LoadTilesetNames(reload_: bool = False) -> None:
     """
     Ensures that the tileset name info is loaded
     """
@@ -218,7 +218,7 @@ def SortTilesetNames_Category(cat: list[TilesetCategory | TilesetFileEntry]) -> 
     return new
 
 
-def LoadObjDescriptions(reload_=False):
+def LoadObjDescriptions(reload_: bool = False) -> None:
     """
     Ensures that the object description is loaded
     """
@@ -239,7 +239,7 @@ def LoadObjDescriptions(reload_=False):
             globals_.ObjDesc[int(w[0])] = w[1]
 
 
-def LoadBgANames(reload_=False):
+def LoadBgANames(reload_: bool = False) -> None:
     """
     Ensures that the background name info is loaded
     """
@@ -269,7 +269,7 @@ def LoadBgANames(reload_=False):
         globals_.BgANames.sort(key=lambda entry: int(entry[0], 16))
 
 
-def LoadBgBNames(reload_=False):
+def LoadBgBNames(reload_: bool = False) -> None:
     """
     Ensures that the background name info is loaded
     """
@@ -299,7 +299,7 @@ def LoadBgBNames(reload_=False):
         globals_.BgBNames.sort(key=lambda entry: int(entry[0], 16))
 
 
-def LoadZoneThemes(reload_=False):
+def LoadZoneThemes(reload_: bool = False) -> None:
     """
     Ensures that custom zone themes get loaded
     """
@@ -315,7 +315,7 @@ def LoadZoneThemes(reload_=False):
             globals_.ZoneThemeValues = [x.strip() for x in f]
 
 
-def LoadConfig():
+def LoadConfig() -> None:
     """
     Ensures that gamedef-specific config info is loaded
     """
@@ -338,7 +338,7 @@ def LoadConfig():
                     globals_.AllowSizeHacks = value.strip().lower() == 'true'
 
 
-def LoadSpriteData():
+def LoadSpriteData() -> None:
     """
     Ensures that the sprite data info is loaded
     """
@@ -448,7 +448,7 @@ def LoadSpriteData():
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenSpriteData', 2), repr(errortext))
 
 
-def LoadSpriteCategories(reload_=False):
+def LoadSpriteCategories(reload_: bool = False) -> None:
     """
     Ensures that the sprite category info is loaded
     """
@@ -505,7 +505,7 @@ def LoadSpriteCategories(reload_=False):
                                 CurrentCategory.append(i)
 
 
-def LoadEntranceNames(reload_=False):
+def LoadEntranceNames(reload_: bool = False) -> None:
     """
     Ensures that the entrance names are loaded
     """
@@ -532,7 +532,7 @@ def LoadEntranceNames(reload_=False):
         globals_.EntranceTypeNames[idx] = entrance_name
 
 
-def LoadTilesetInfo(reload_=False):
+def LoadTilesetInfo(reload_: bool = False) -> None:
     def parseRandom(
         node: ElementTree.Element, types: dict[str, dict[int, RandTileSelection]]
     ) -> dict[int, RandTileSelection]:
@@ -633,7 +633,7 @@ def LoadTilesetInfo(reload_=False):
     globals_.TilesetInfo = groups
 
 
-def LoadMusicInfo(reload_=False):
+def LoadMusicInfo(reload_: bool = False) -> None:
     """
     Uses the current gamedef + translation to load the music data, and saves it
     in the MusicInfo global.
@@ -667,7 +667,8 @@ def LoadMusicInfo(reload_=False):
     globals_.MusicInfo = sorted(songs.items(), key=lambda kv: int(kv[0]))
 
 
-def LoadMenuActions(mw):
+def LoadMenuActions(mw) -> None:
+    # TODO: Maybe make a proper Protocol type that has all methods from ReggieWindow which are referenced here
     # Define the global list of menu items, and their associated data
     # Some menu items are tied to docks or have special behavior, and thus are not defined here
 
@@ -931,7 +932,7 @@ def LoadMenuActions(mw):
     )
 
 
-def LoadToolbarActionsLists():
+def LoadToolbarActionsLists() -> None:
     # Define the menu items present on the toolbar, their default settings and their globals_.mainWindow.actions keys
     # These are used both in the Preferences Dialog and when init'ing the toolbar.
 
@@ -1003,7 +1004,7 @@ def LoadToolbarActionsLists():
     )
 
 
-def LoadDefaultKeybinds():
+def LoadDefaultKeybinds() -> None:
     """
     Defines the default keybinds (and display strings) for each menu item
     """
@@ -1212,7 +1213,7 @@ def LoadDefaultKeybinds():
     ]
 
 
-def GetKeybind(name: str):
+def GetKeybind(name: str) -> QtGui.QKeySequence | None:
     """
     Returns a QKeySequence from the settings, or a default keybind
     """
@@ -1234,7 +1235,7 @@ def GetKeybind(name: str):
     return QtGui.QKeySequence(None)
 
 
-def SetKeybind(name, sequence: QtGui.QKeySequence | None):
+def SetKeybind(name: str, sequence: QtGui.QKeySequence | None) -> None:
     """
     Saves a QKeySequence keybind to the settings, and updates the relevant menubar action
     """
@@ -1266,7 +1267,7 @@ def SetKeybind(name, sequence: QtGui.QKeySequence | None):
     setSetting('Keybind_' + name, key_str)
 
 
-def CreateTilesets():
+def CreateTilesets() -> None:
     """
     Blank out the tileset arrays
     """
@@ -1280,12 +1281,12 @@ def CreateTilesets():
     SLib.Tiles = globals_.Tiles
 
 
-def LoadTileset(idx, name, reload_=False):
+def LoadTileset(idx: int, name: str, reload_: bool = False) -> None:
     """
     Load in a tileset into a specific slot
     """
     if not name:
-        return False
+        return
 
     # find the tileset path
     tileset_paths = reversed(globals_.gamedef.GetTexturePaths())
@@ -1322,7 +1323,7 @@ def LoadTileset(idx, name, reload_=False):
     if not found:
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_MissingTileset', 0),
                                       globals_.trans.string('Err_MissingTileset', 1, '[file]', name))
-        return False
+        return
 
     # If this file's already loaded, return
     if globals_.TilesetFilesLoaded[idx] == arcname and not reload_: return
@@ -1338,18 +1339,18 @@ def LoadTileset(idx, name, reload_=False):
             except IndexError:
                 QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
                                               globals_.trans.string('Err_Decompress', 1, '[file]', name))
-                return False
+                return
         elif not arcdata.startswith(b"U\xAA8-"):  # If LZ-compressed
             try:
                 arcdata = lz77.UncompressLZ77(arcdata)
             except IndexError:
                 QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_Decompress', 0),
                                                 globals_.trans.string('Err_Decompress', 2, '[file]', name))
-                return False
+                return
 
     arc = archive.U8.load(arcdata)
 
-    def exists(fn):
+    def exists(fn: str) -> bool:
         nonlocal arc
         try:
             arc[fn]
@@ -1367,7 +1368,7 @@ def LoadTileset(idx, name, reload_=False):
     else:
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_CorruptedTilesetData', 0),
                                       globals_.trans.string('Err_CorruptedTilesetData', 1, '[file]', name))
-        return False
+        return
 
     # Load in the textures
     img = LoadTexture_NSMBW(lz77.UncompressLZ77(comptiledata))
@@ -1517,10 +1518,10 @@ def LoadTileset(idx, name, reload_=False):
     # Add Tiles to spritelib
     SLib.Tiles = globals_.Tiles
 
-    return True
+    return
 
 
-def LoadTexture_NSMBW(tiledata):
+def LoadTexture_NSMBW(tiledata: bytes) -> QtGui.QImage:
     data = tpl.decodeRGB4A3(tiledata, 1024, 256, False)
 
     # nsmblib returns the image data with premultiplied alpha, while the cython
@@ -1535,7 +1536,7 @@ def LoadTexture_NSMBW(tiledata):
     return QtGui.QImage(data, 1024, 256, 4096, data_format)
 
 
-def UnloadTileset(idx):
+def UnloadTileset(idx: int) -> None:
     """
     Unload the tileset from a specific slot
     """
@@ -1545,7 +1546,7 @@ def UnloadTileset(idx):
     globals_.TilesetFilesLoaded[idx] = None
 
 
-def ProcessOverrides(idx, name):
+def ProcessOverrides(idx: int, name: str) -> None:
     """
     Load overridden tiles if there are any
     """
@@ -1596,7 +1597,9 @@ def ProcessOverrides(idx, name):
             # these don't have their own tiles so we have to do them by objects
             rangeA, rangeB = range(39, 49), range(27, 38)
             replace = 2048 + 10
-            baseblock = t[defs[39].rows[0][0][1]].main
+            question_block_def = defs[39]
+            if question_block_def is not None:
+                baseblock = t[question_block_def.rows[0][0][1]].main
 
             # question blocks
             for i, a in zip(rangeA, range(2, 12)):
@@ -1604,18 +1607,24 @@ def ProcessOverrides(idx, name):
                 override_tile = globals_.Overrides_safe[a]
                 if current_tile is not None and override_tile is not None:
                     current_tile.main = overlay(baseblock, override_tile.main)
-                defs[i].rows[0][0] = (0, replace, 0)
-                replace += 1
+                current_def = defs[i]
+                if current_def is not None:
+                    current_def.rows[0][0] = (0, replace, 0)
+                    replace += 1
 
             replace += 1
-            baseblock = t[defs[26].rows[0][0][1]].main
+            brick_block_def = defs[26]
+            if brick_block_def is not None:
+                baseblock = t[brick_block_def.rows[0][0][1]].main
             # brick block
             for i, a in zip(rangeB, (1, 12, 2, 3, 13, 5, 7, 8, 9, 10, 11)):
                 current_tile = t[replace]
                 override_tile = globals_.Overrides_safe[a]
                 if current_tile is not None and override_tile is not None:
                     current_tile.main = overlay(baseblock, override_tile.main)
-                defs[i].rows[0][0] = (0, replace, 0)
+                current_def = defs[i]
+                if current_def is not None:
+                    current_def.rows[0][0] = (0, replace, 0)
                 replace += 1
 
         # now the extra stuff (invisible collisions etc)
@@ -1839,7 +1848,7 @@ def assign_override(tile: TilesetTile | None, override: TilesetTile | None) -> N
     if tile is not None and override is not None:
         tile.main = override.main
 
-def LoadOverrides():
+def LoadOverrides() -> None:
     """
     Load overrides
     """
@@ -1878,7 +1887,7 @@ def LoadOverrides():
         sourcey += 24
 
 
-def CheckTilesetAnimated(tileset):
+def CheckTilesetAnimated(tileset: archive.U8) -> tuple[bool, str | None]:
     """Checks if a tileset contains Newer-style animations, and if so, returns
     (True, prefix) where prefix is the animation prefix. If not, (False, None).
     tileset should be a Wii.py U8 object."""
@@ -1917,14 +1926,14 @@ def CheckTilesetAnimated(tileset):
         return True, prefix
 
 
-def LoadTheme():
+def LoadTheme() -> None:
     """
     Loads the theme
     """
     globals_.theme = ReggieTheme(setting("Theme", "Classic"))
 
 
-def LoadTranslation():
+def LoadTranslation() -> None:
     """
     Loads the translation
     """

@@ -1251,7 +1251,7 @@ class ReggieTranslation:
         # If there are errors when the string is found, return an error report instead
         try:
             return self.string_(name, numcode, *args)
-        except Exception as e:
+        except TypeError as e:
             text = '\n\nReggieTranslation.string() ERROR: ' + str(numcode) + '; ' + str(args[0]) + '; ' + repr(e) + '\n'
             # do 3 things with the text - print it, write it to the error log, return it
             print(text)
@@ -1374,7 +1374,7 @@ class ReggieTranslation:
             sectionElem = ElementTree.Element('section', {'id': sectionname})
             root.append(sectionElem)
             for stringid, string in section:
-                if isinstance(string, tuple) or isinstance(string, list):
+                if isinstance(string, (tuple, list)):
                     stringlistElem = ElementTree.Element('stringlist', {'id': str(stringid)})
                     sectionElem.append(stringlistElem)
                     for entryname in string:

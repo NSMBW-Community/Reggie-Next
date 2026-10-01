@@ -21,7 +21,7 @@ def setting(name: str, default: Any | None = None) -> Any | None:
     return globals_.settings.value(name, default, types[type_])
 
 
-def setSetting(name: str, value: Any):
+def setSetting(name: str, value: Any) -> None:
     """
     Thin wrapper around QSettings
     """
@@ -33,7 +33,7 @@ def setSetting(name: str, value: Any):
     globals_.settings.setValue(f'typeof({name})', types_str[type(value)])
 
 
-def delSetting(name: str):
+def delSetting(name: str) -> None:
     """
     Thin wrapper around QSettings, removes both the setting and its type identifier
     """

@@ -657,7 +657,7 @@ class AuxiliaryRectOutline(AuxiliarySpriteItem):
         self.BoundingRect = QtCore.QRectF(0, 0, width, height)
         self.setPos(xoff, yoff)
 
-    def setColor(self, color: QtGui.QColor | None):
+    def setColor(self, color: str | None):
         if color is None:
             self.color = None
         else:

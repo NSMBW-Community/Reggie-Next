@@ -1,17 +1,15 @@
 import functools
 import importlib.util
 import os
+import re
 import sys
 from xml.etree import ElementTree as etree
-import re
 
 from PyQt6 import QtWidgets
 
-from data import globals_
 import spritelib as SLib
 import sprites
-from data.common.settings import setSetting, setting
-from data.common.sprites import LoadBasics
+from data import globals_
 from data.common.loaders import (
     LoadBgANames,
     LoadBgBNames,
@@ -25,6 +23,8 @@ from data.common.loaders import (
     LoadTilesetNames,
     LoadZoneThemes,
 )
+from data.common.settings import setSetting, setting
+from data.common.sprites import LoadBasics
 from data.common.utils import get_reggiedata_folder
 
 
@@ -122,7 +122,7 @@ class ReggieGameDefinition:
         self.name = root.get('name')
 
         if self.name is None:
-            raise ValueError("Game definition XML %r has no 'name' attribute on the root node." % path)
+            raise ValueError(f"Game definition XML {path!r} has no 'name' attribute on the root node.")
 
         default = globals_.trans.string('Gamedefs', 15)
 
@@ -216,7 +216,7 @@ class ReggieGameDefinition:
                 return path
 
         # See if it's in one of self.folders
-        if self.folders['bg%s' % layer].path is not None and name:
+        if self.folders[f'bg{layer}'].path is not None and name:
             trypath = os.path.join(self.folders[f'bg{layer}'].path, name)
             if os.path.isfile(trypath):
                 return trypath
@@ -345,7 +345,7 @@ class ReggieGameDefinition:
         """
         Sets the last loaded level
         """
-        if path in {None, 'None', 'none', True, 'True', 'true', False, 'False', 'false', 0, 1, ''}:
+        if path in {None, 'None', 'none', True, 'True', 'true', False, 'False', 'false', ''}:
             return
 
         if not self.custom:
@@ -466,188 +466,181 @@ def LoadGameDef(name: str | None = None, dlg: QtWidgets.QProgressDialog | None =
     if dlg:
         dlg.setMaximum(7)
 
-    # Put the whole thing into a try-except clause
-    # to catch whatever errors may happen
-    try:
+    # Load the globals_.gamedef
+    if dlg:
+        dlg.setLabelText(globals_.trans.string('Gamedefs', 1))  # Loading game patch...
 
-        # Load the globals_.gamedef
-        if dlg:
-            dlg.setLabelText(globals_.trans.string('Gamedefs', 1))  # Loading game patch...
+    globals_.gamedef = ReggieGameDefinition(name)
+    globals_.gamedef.__init2__()
 
-        globals_.gamedef = ReggieGameDefinition(name)
-        globals_.gamedef.__init2__()
+    if globals_.gamedef.custom and (not globals_.settings.contains(f'StageGamePath_{globals_.gamedef.name}')):
+        # First-time usage of this globals_.gamedef. Have the
+        # user pick a stage folder so we can load stages
+        # and tilesets from there
+        pressed_button = QtWidgets.QMessageBox.information(None,
+            globals_.trans.string('Gamedefs', 2),
+            globals_.trans.string('Gamedefs', 3, '[game]', globals_.gamedef.name),
+            QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel
+        )
 
-        if globals_.gamedef.custom and (not globals_.settings.contains(f'StageGamePath_{globals_.gamedef.name}')):
-            # First-time usage of this globals_.gamedef. Have the
-            # user pick a stage folder so we can load stages
-            # and tilesets from there
-            pressed_button = QtWidgets.QMessageBox.information(None,
-                globals_.trans.string('Gamedefs', 2),
-                globals_.trans.string('Gamedefs', 3, '[game]', globals_.gamedef.name),
-                QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel
-            )
+        if pressed_button == QtWidgets.QMessageBox.StandardButton.Cancel:
+            return False
 
-            if pressed_button == QtWidgets.QMessageBox.StandardButton.Cancel:
-                return False
+        if globals_.mainWindow is None:
+            # This check avoids an error because globals_.mainWindow is None
+            # when first loading the editor. Returning False here avoids a
+            # loop where the user cannot open the editor because the program
+            # closes after returning the error.
+            return False
 
-            if globals_.mainWindow is None:
-                # This check avoids an error because globals_.mainWindow is None
-                # when first loading the editor. Returning False here avoids a
-                # loop where the user cannot open the editor because the program
-                # closes after returning the error.
-                return False
+        result = globals_.mainWindow.HandleChangeGamePath(True)
 
-            result = globals_.mainWindow.HandleChangeGamePath(True)
+        if result:
+            msg_ids = (6, 7)
+        else:
+            msg_ids = (4, 5)
 
-            if result:
-                msg_ids = (6, 7)
+        QtWidgets.QMessageBox.information(None,
+            globals_.trans.string('Gamedefs', msg_ids[0]),
+            globals_.trans.string('Gamedefs', msg_ids[1], '[game]', globals_.gamedef.name),
+            QtWidgets.QMessageBox.StandardButton.Ok
+        )
+
+        if not result:
+            # If the user refused to select a game path, abort the patch
+            # switching process.
+            return False
+
+    if dlg:
+        dlg.setValue(1)
+
+    # Load spritedata.xml and spritecategories.xml
+    if dlg:
+        dlg.setLabelText(globals_.trans.string('Gamedefs', 8))  # Loading sprite data...
+
+    LoadSpriteData()
+    LoadSpriteCategories(True)
+
+    # Reload all of the spritedata ID types in the area
+    # Fixes bugs related to these being outdated when switching game patches
+    if globals_.Area.areanum != -1:
+        globals_.Area.InitialiseIdTypes()
+
+    if globals_.mainWindow is not None:
+        globals_.mainWindow.palette_dock.sprite_tab.view_picker.clear()
+
+        for cat in globals_.SpriteCategories:
+            globals_.mainWindow.palette_dock.sprite_tab.view_picker.addItem(cat.name)
+
+        globals_.mainWindow.palette_dock.sprite_tab.sprite_picker.LoadItems()  # Reloads the sprite picker list items
+        globals_.mainWindow.palette_dock.sprite_tab.view_picker.setCurrentIndex(0)  # Sets the sprite picker to category 0 (enemies)
+        globals_.mainWindow.spriteDataEditor.setSprite(globals_.mainWindow.spriteDataEditor.spritetype,
+                                                True)  # Reloads the sprite data editor fields
+
+    if dlg:
+        dlg.setValue(2)
+
+    # Load BgA/BgB names
+    if dlg:
+        dlg.setLabelText(globals_.trans.string('Gamedefs', 9))  # Loading background names...
+
+    LoadBgANames(True)
+    LoadBgBNames(True)
+    LoadZoneThemes(True)
+    LoadMusicInfo(True)  # reloads the music names
+    LoadConfig()
+
+    if dlg:
+        dlg.setValue(3)
+
+    # Reload tilesets
+    if dlg:
+        dlg.setLabelText(globals_.trans.string('Gamedefs', 10))  # Reloading tilesets...
+
+    LoadObjDescriptions(True)  # reloads ts1_descriptions
+    if globals_.mainWindow is not None:
+        globals_.mainWindow.ReloadTilesets(True)
+    LoadTilesetNames(True)  # reloads tileset names
+    LoadTilesetInfo(True)  # reloads tileset info
+
+    if dlg:
+        dlg.setValue(4)
+
+    # Load sprites.py
+    if dlg:
+        dlg.setLabelText(globals_.trans.string('Gamedefs', 11))  # Loading sprite image data...
+
+    # Always load the sprites folders so the correct sprite images can be
+    # loaded when Reggie is started. This avoids loading all sprite images
+    # again and also simplifies the sprite image code.
+    SLib.SpritesFolders = globals_.gamedef.recursiveFiles('sprites', is_folder=True)[0]
+
+    if globals_.Area.areanum != -1:
+        SLib.ImageCache.clear()
+        SLib.SpriteImagesLoaded.clear()
+        LoadBasics()
+
+        spriteClasses = globals_.gamedef.getImageClasses()
+
+        for s in globals_.Area.sprites:
+            if s.sprite_num in SLib.SpriteImagesLoaded:
+                continue
+            if s.sprite_num not in spriteClasses:
+                continue
+
+            spriteClasses[s.sprite_num].loadImages()
+
+            SLib.SpriteImagesLoaded.add(s.sprite_num)
+
+        for s in globals_.Area.sprites:
+            if s.sprite_num in spriteClasses:
+                s.setImageObj(spriteClasses[s.sprite_num])
             else:
-                msg_ids = (4, 5)
+                s.setImageObj(SLib.SpriteImage)
 
-            QtWidgets.QMessageBox.information(None,
-                globals_.trans.string('Gamedefs', msg_ids[0]),
-                globals_.trans.string('Gamedefs', msg_ids[1], '[game]', globals_.gamedef.name),
-                QtWidgets.QMessageBox.StandardButton.Ok
-            )
+        # https://github.com/Zement/Reggie/blob/master/gamedef.py#L1036-L1053
+        # Recalculate unknown sprite IDs based on current patch's sprite definitions
+        unknown_sprite_ids = set()
+        for sprite in globals_.Area.sprites:
+            if sprite.sprite_num >= globals_.NumSprites or globals_.Sprites[sprite.sprite_num] is None:
+                unknown_sprite_ids.add(sprite.sprite_num)
 
-            if not result:
-                # If the user refused to select a game path, abort the patch
-                # switching process.
-                return False
+        # Update the Area's unknown_sprite_ids
+        globals_.Area.unknown_sprite_ids = unknown_sprite_ids
 
-        if dlg:
-            dlg.setValue(1)
+        # Check for unknown sprite IDs and show warning message
+        if unknown_sprite_ids and globals_.ShowUnknownSpriteWarning:
+            sprite_ids = sorted(unknown_sprite_ids)
 
-        # Load spritedata.xml and spritecategories.xml
-        if dlg:
-            dlg.setLabelText(globals_.trans.string('Gamedefs', 8))  # Loading sprite data...
+            title = globals_.trans.string('Err_UnknownSprite', 0)
+            if len(sprite_ids) == 1:
+                msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
+            else:
+                msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
+            QtWidgets.QMessageBox.warning(None, title, msg)
 
-        LoadSpriteData()
-        LoadSpriteCategories(True)
+    if dlg:
+        dlg.setValue(5)
 
-        # Reload all of the spritedata ID types in the area
-        # Fixes bugs related to these being outdated when switching game patches
-        if globals_.Area.areanum != -1:
-            globals_.Area.InitialiseIdTypes()
+    # Reload the sprite-picker text
+    if dlg:
+        dlg.setLabelText(globals_.trans.string('Gamedefs', 12))  # Applying sprite image data...
 
-        if globals_.mainWindow is not None:
-            globals_.mainWindow.palette_dock.sprite_tab.view_picker.clear()
+    if globals_.Area.areanum != -1:
+        for spr in globals_.Area.sprites:
+            spr.UpdateListItem()  # Reloads the sprite-picker text
 
-            for cat in globals_.SpriteCategories:
-                globals_.mainWindow.palette_dock.sprite_tab.view_picker.addItem(cat.name)
+    if dlg:
+        dlg.setValue(6)
 
-            globals_.mainWindow.palette_dock.sprite_tab.sprite_picker.LoadItems()  # Reloads the sprite picker list items
-            globals_.mainWindow.palette_dock.sprite_tab.view_picker.setCurrentIndex(0)  # Sets the sprite picker to category 0 (enemies)
-            globals_.mainWindow.spriteDataEditor.setSprite(globals_.mainWindow.spriteDataEditor.spritetype,
-                                                  True)  # Reloads the sprite data editor fields
+    # Load entrance names
+    if dlg:
+        dlg.setLabelText(globals_.trans.string('Gamedefs', 16))  # Loading entrance names...
 
-        if dlg:
-            dlg.setValue(2)
+    LoadEntranceNames(True)
 
-        # Load BgA/BgB names
-        if dlg:
-            dlg.setLabelText(globals_.trans.string('Gamedefs', 9))  # Loading background names...
-
-        LoadBgANames(True)
-        LoadBgBNames(True)
-        LoadZoneThemes(True)
-        LoadMusicInfo(True)  # reloads the music names
-        LoadConfig()
-
-        if dlg:
-            dlg.setValue(3)
-
-        # Reload tilesets
-        if dlg:
-            dlg.setLabelText(globals_.trans.string('Gamedefs', 10))  # Reloading tilesets...
-
-        LoadObjDescriptions(True)  # reloads ts1_descriptions
-        if globals_.mainWindow is not None:
-            globals_.mainWindow.ReloadTilesets(True)
-        LoadTilesetNames(True)  # reloads tileset names
-        LoadTilesetInfo(True)  # reloads tileset info
-
-        if dlg:
-            dlg.setValue(4)
-
-        # Load sprites.py
-        if dlg:
-            dlg.setLabelText(globals_.trans.string('Gamedefs', 11))  # Loading sprite image data...
-
-        # Always load the sprites folders so the correct sprite images can be
-        # loaded when Reggie is started. This avoids loading all sprite images
-        # again and also simplifies the sprite image code.
-        SLib.SpritesFolders = globals_.gamedef.recursiveFiles('sprites', is_folder=True)[0]
-
-        if globals_.Area.areanum != -1:
-            SLib.ImageCache.clear()
-            SLib.SpriteImagesLoaded.clear()
-            LoadBasics()
-
-            spriteClasses = globals_.gamedef.getImageClasses()
-
-            for s in globals_.Area.sprites:
-                if s.sprite_num in SLib.SpriteImagesLoaded:
-                    continue
-                if s.sprite_num not in spriteClasses:
-                    continue
-
-                spriteClasses[s.sprite_num].loadImages()
-
-                SLib.SpriteImagesLoaded.add(s.sprite_num)
-
-            for s in globals_.Area.sprites:
-                if s.sprite_num in spriteClasses:
-                    s.setImageObj(spriteClasses[s.sprite_num])
-                else:
-                    s.setImageObj(SLib.SpriteImage)
-
-            # https://github.com/Zement/Reggie/blob/master/gamedef.py#L1036-L1053
-            # Recalculate unknown sprite IDs based on current patch's sprite definitions
-            unknown_sprite_ids = set()
-            for sprite in globals_.Area.sprites:
-                if sprite.sprite_num >= globals_.NumSprites or globals_.Sprites[sprite.sprite_num] is None:
-                    unknown_sprite_ids.add(sprite.sprite_num)
-
-            # Update the Area's unknown_sprite_ids
-            globals_.Area.unknown_sprite_ids = unknown_sprite_ids
-
-            # Check for unknown sprite IDs and show warning message
-            if unknown_sprite_ids and globals_.ShowUnknownSpriteWarning:
-                sprite_ids = sorted(unknown_sprite_ids)
-
-                title = globals_.trans.string('Err_UnknownSprite', 0)
-                if len(sprite_ids) == 1:
-                    msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
-                else:
-                    msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
-                QtWidgets.QMessageBox.warning(None, title, msg)
-
-        if dlg:
-            dlg.setValue(5)
-
-        # Reload the sprite-picker text
-        if dlg:
-            dlg.setLabelText(globals_.trans.string('Gamedefs', 12))  # Applying sprite image data...
-
-        if globals_.Area.areanum != -1:
-            for spr in globals_.Area.sprites:
-                spr.UpdateListItem()  # Reloads the sprite-picker text
-
-        if dlg:
-            dlg.setValue(6)
-
-        # Load entrance names
-        if dlg:
-            dlg.setLabelText(globals_.trans.string('Gamedefs', 16))  # Loading entrance names...
-
-        LoadEntranceNames(True)
-
-        if dlg:
-            dlg.setValue(7)
-
-    except Exception:
-        raise
+    if dlg:
+        dlg.setValue(7)
 
     # Success!
     if dlg:
@@ -679,48 +672,44 @@ def update_sprites_module(filename: str):
     """
     Fixes compatibility issues with sprites.py modules made for older versions of Reggie Next
     """
-    try:
-        with open(filename, "r", encoding="utf-8") as f:
-            orig_data = f.read()
+    with open(filename, "r", encoding="utf-8") as f:
+        orig_data = f.read()
 
-        # Fix the import
-        new_data = orig_data.replace("PyQt5", "PyQt6")
+    # Fix the import
+    new_data = orig_data.replace("PyQt5", "PyQt6")
 
-        # Common PyQt5 -> 6 changes that need to be fixed
-        pyqt_strings = [
-            ("QPainter.Antialiasing",   "QPainter.RenderHint.Antialiasing"),
-            ("Qt.SmoothTransformation", "Qt.TransformationMode.SmoothTransformation"),
-            ("Qt.IgnoreAspectRatio",    "Qt.AspectRatioMode.IgnoreAspectRatio"),
-            ("QPoint(",                 "QPointF("),
-            ("Qt.transparent",          "Qt.GlobalColor.transparent"),
-            ("Qt.Align",                "Qt.AlignmentFlag.Align")
-        ]
+    # Common PyQt5 -> 6 changes that need to be fixed
+    pyqt_strings = [
+        ("QPainter.Antialiasing",   "QPainter.RenderHint.Antialiasing"),
+        ("Qt.SmoothTransformation", "Qt.TransformationMode.SmoothTransformation"),
+        ("Qt.IgnoreAspectRatio",    "Qt.AspectRatioMode.IgnoreAspectRatio"),
+        ("QPoint(",                 "QPointF("),
+        ("Qt.transparent",          "Qt.GlobalColor.transparent"),
+        ("Qt.Align",                "Qt.AlignmentFlag.Align")
+    ]
 
-        for old, new in pyqt_strings:
-            new_data = new_data.replace(old, new)
+    for old, new in pyqt_strings:
+        new_data = new_data.replace(old, new)
 
-        # Regex fixes
-        regex_strings = [
-            # Fix BlockContents accesses
-            (r"\['BlockContents'\]\[(\d+)\]", r"['BlockContents\1']"),
-            (r"\['BlockContents'\]\[(.*?)\]", r"[f'BlockContents{\1}']"),
-            # Update GetImg() calls to the proper function
-            (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?False)?\)", r"SLib.GetPixmap(\1)"),
-            (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?True)\)", r"SLib.GetImage(\1)")
-        ]
+    # Regex fixes
+    regex_strings = [
+        # Fix BlockContents accesses
+        (r"\['BlockContents'\]\[(\d+)\]", r"['BlockContents\1']"),
+        (r"\['BlockContents'\]\[(.*?)\]", r"[f'BlockContents{\1}']"),
+        # Update GetImg() calls to the proper function
+        (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?False)?\)", r"SLib.GetPixmap(\1)"),
+        (r"SLib\.GetImg\((\w?[\"']?[\w{}%\.]+[\"']?(?: ?% ?(?:(?:\([\w, +-\.()]+\))|(?:[\w +\-\.()]+)))?)(?:, ?True)\)", r"SLib.GetImage(\1)")
+    ]
 
-        for pattern, replace in regex_strings:
-            new_data = re.sub(pattern, replace, new_data)
+    for pattern, replace in regex_strings:
+        new_data = re.sub(pattern, replace, new_data)
 
-        # Fix old sprites_common imports
-        new_data = new_data.replace("import sprites_common", "import data.common.sprites")
+    # Fix old sprites_common imports
+    new_data = new_data.replace("import sprites_common", "import data.common.sprites")
 
-        # Fix (very rarely used) references to the sprite ID
-        new_data = new_data.replace("parent.type", "parent.sprite_num")
+    # Fix (very rarely used) references to the sprite ID
+    new_data = new_data.replace("parent.type", "parent.sprite_num")
 
-        # All done, save the file
-        with open(filename, 'w') as file_out:
-            file_out.write(new_data)
-
-    except Exception:
-        raise
+    # All done, save the file
+    with open(filename, 'w') as file_out:
+        file_out.write(new_data)

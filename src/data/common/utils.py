@@ -1,7 +1,7 @@
 import os
-from pathlib import Path
 import pickletools
 import sys
+from pathlib import Path
 
 from data import globals_
 
@@ -94,19 +94,23 @@ def SetGamePaths(new_stage_path, new_texture_path):
     globals_.gamedef.SetStageGamePath(str(new_stage_path))
     globals_.gamedef.SetTextureGamePath(str(new_texture_path))
 
-def get_main_path():
+def get_main_path() -> str:
     """
     Returns the path to the main script
     """
-    return sys.modules['__main__'].__file__
+    main_module = sys.modules['__main__'].__file__
+    if main_module is None:
+        raise RuntimeError('__main__ module not found')
 
-def get_root_path():
+    return main_module
+
+def get_root_path() -> Path:
     """
     Returns the path to the root folder
     """
     return Path(get_main_path()).parent.parent.absolute()
 
-def get_reggiedata_folder():
+def get_reggiedata_folder() -> str:
     """
     Returns the path to the reggiedata folder
     """
