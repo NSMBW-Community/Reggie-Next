@@ -21,7 +21,7 @@ class AboutDialog(QtWidgets.QDialog):
         # Open the readme file
         readme = ''
         try:
-            with open(os.path.join(get_root_path(), 'readme.md'), 'r', encoding='utf-8') as f:
+            with open(os.path.join(get_root_path(), 'README.md'), 'r', encoding='utf-8') as f:
                 readme = f.read()
         except FileNotFoundError:
             readme = globals_.trans.string('AboutDlg', 4)
@@ -56,7 +56,7 @@ class AboutDialog(QtWidgets.QDialog):
         about_label.setOpenExternalLinks(True)
         about_label.setWordWrap(True)
 
-        # Readme.md viewer
+        # README.md viewer
         readme_view = QtWidgets.QPlainTextEdit()
         readme_view.setPlainText(readme)
         readme_view.setReadOnly(True)

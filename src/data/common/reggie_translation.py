@@ -50,7 +50,7 @@ class ReggieTranslation:
                 1: '[i]Reggie! Next[/i] Level Editor',
                 2: '[i]Reggie! Next Level Editor[/i] is an open-source project, started by Treeki in 2010 and forked by RoadrunnerWMC in 2013, that aims to bring you the fun of designing original New Super Mario Bros. Wii[tm]-compatible levels.[br]',
                 3: 'Interested? Join the [a href="[link]"]Horizon Discord server[/a] to get in touch with the current developer(s).[br]',
-                4: 'File "readme.md" not found!\\nPlease go to https://github.com/NSMBW-Community/Reggie-Next to find it.',
+                4: 'File "README.md" not found!\\nPlease go to https://github.com/NSMBW-Community/Reggie-Next to find it.',
             },
             'AreaCombobox': {
                 0: 'Area [num]',
