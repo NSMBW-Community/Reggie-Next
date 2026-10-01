@@ -88,7 +88,7 @@ from data.common.sprites import LoadBasics
 
 from ui.theme.reggie_theme import SetAppStyle, LoadNumberFont, SetColorScheme
 from data.common.loaders import LoadToolbarActionsLists, LoadTheme, LoadDefaultKeybinds, module_path
-from data.common.utils import SetGamePaths, get_reggiedata_folder
+from data.common.utils import SetGamePaths, get_reggiedata_folder, get_root_path
 from data.common.validators import FilesAreMissing, areValidGamePaths
 
 from data.common.settings import setting, setSetting
@@ -166,9 +166,9 @@ def main():
         os.chdir(path)
 
     # Create backup of settings
-    if os.path.isfile('settings.ini'):
+    if os.path.isfile(os.path.join(get_root_path(), 'settings.ini')):
         from shutil import copy2
-        copy2('settings.ini', 'settings.ini.bak')
+        copy2(os.path.join(get_root_path(), 'settings.ini'), os.path.join(get_root_path(), 'settings.ini.bak'))
         del copy2
 
     # Try to get the last commit ID, and append it to the version ID
@@ -184,7 +184,7 @@ def main():
     del subprocess
 
     # Load the settings
-    globals_.settings = QtCore.QSettings('settings.ini', QtCore.QSettings.Format.IniFormat)
+    globals_.settings = QtCore.QSettings(os.path.join(get_root_path(), 'settings.ini'), QtCore.QSettings.Format.IniFormat)
 
     # Check the version and set the UI style to Fusion by default
     if setting("ReggieVersion") is None:
