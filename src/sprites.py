@@ -36,9 +36,9 @@ import random
 
 from PyQt6 import QtCore, QtGui
 
-from data import globals_
-import spritelib as SLib
 import data.common.sprites as common
+import spritelib as SLib
+from data import globals_
 
 Qt = QtCore.Qt
 ImageCache = SLib.ImageCache
@@ -293,10 +293,14 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
 
     def positionChanged(self):
         self.findZone()
-        self.parent.scene().update()
+        scene = self.parent.scene()
+        if scene is not None:
+            scene.update()
 
     def dataChanged(self):
-        self.parent.scene().update()
+        scene = self.parent.scene()
+        if scene is not None:
+            scene.update()
 
     def paintZone(self):
         return self.locId == 0 and self.zoneId != -1
@@ -2739,7 +2743,10 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
         slot = self.moveSunlight
 
         # scrolling
-        view = self.parent.scene().views()[0]
+        scene = self.parent.scene()
+        if scene is None:
+            return
+        view = scene.views()[0]
         horizontalScrollBar = view.horizontalScrollBar()
         verticalScrollBar = view.verticalScrollBar()
         if horizontalScrollBar is None or verticalScrollBar is None:
@@ -2748,7 +2755,7 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
         verticalScrollBar.valueChanged.connect(slot)
 
         # zooming
-        mainWindow = self.parent.scene().getMainWindow()
+        mainWindow = scene.getMainWindow()
         if mainWindow is None:
             return
         mainWindow.ZoomWidget.slider.valueChanged.connect(slot)
@@ -2778,7 +2785,10 @@ class SpriteImage_Sunlight(SLib.SpriteImage):  # 110
                 return
 
             zoneRect = QtCore.QRectF(zone.objx * 1.5, zone.objy * 1.5, zone.width * 1.5, zone.height * 1.5)
-            view = self.parent.scene().views()[0]
+            scene = self.parent.scene()
+            if scene is None:
+                return
+            view = scene.views()[0]
             viewport = view.viewport()
             if viewport is None:
                 return
@@ -5239,7 +5249,7 @@ class SpriteImage_CheepFormation(SLib.SpriteImage_Static):  # 247
         self.spritebox.shown = True
 
         # Create auxes
-        for i in range(16):
+        for _ in range(16):
             cheepRedLeftAuxImage = SLib.AuxiliaryImage(parent, 26, 24)
             cheepRedLeftAuxImage.image = ImageCache['CheepRedLeft']
             cheepRedLeftAuxImage.setIsBehindSprite(False)
@@ -6518,10 +6528,14 @@ class SpriteImage_BubbleGen(SLib.SpriteImage):  # 314
         SLib.loadIfNotInImageCache('BubbleGenEffect', 'bubble_gen.png')
 
     def dataChanged(self):
-        self.parent.scene().update()
+        scene = self.parent.scene()
+        if scene is not None:
+            scene.update()
 
     def positionChanged(self):
-        self.parent.scene().update()
+        scene = self.parent.scene()
+        if scene is not None:
+            scene.update()
 
     def realViewZone(self, painter, zoneRect):
 

@@ -35,9 +35,9 @@ import os.path
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
+from data.common.utils import get_reggiedata_folder
 from data.level.items.sprite import SpriteItem
 from data.tileset.tile.tileset_tile import TilesetTile
-from data.common.utils import get_reggiedata_folder
 
 Qt = QtCore.Qt
 
@@ -146,7 +146,7 @@ def GetImg(imgname, image=False):
         else:
             return QtGui.QPixmap(path)
 
-    print("[Warning] Could not load sprite image (%s)!" % imgname)
+    print(f"[Warning] Could not load sprite image ({imgname})!")
 
 def GetTile(tile_id: int) -> QtGui.QPixmap:
     """
