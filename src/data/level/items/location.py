@@ -244,6 +244,10 @@ class LocationItem(LevelEditorItem):
         if not event or not globals_.mainWindow:
             return
 
+        if event.buttons() & QtCore.Qt.MouseButton.MiddleButton:
+            event.ignore()
+            return
+
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
             if QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
                 new_item = self.CreateLocation(
@@ -277,7 +281,11 @@ class LocationItem(LevelEditorItem):
         if not event or not globals_.mainWindow:
             return
 
-        if event.buttons() != QtCore.Qt.MouseButton.NoButton and self.dragging:
+        if event.buttons() & QtCore.Qt.MouseButton.MiddleButton:
+            event.ignore()
+            return
+
+        if event.buttons() == QtCore.Qt.MouseButton.LeftButton and self.dragging:
             # Resize the location.
             change = self.dragResize(event.scenePos(), self.dragstartx, self.dragstarty)
 
