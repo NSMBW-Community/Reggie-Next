@@ -1314,6 +1314,14 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Update mode
         SetColorScheme()
 
+        # We have to restart since this must be applied before the QApplication
+        # is created... no way to do that while the editor is running
+        globals_.IgnoreWinScale = dlg.appearance_tab.ignore_win_scale.isChecked()
+        if setting('IgnoreWinScale') != globals_.IgnoreWinScale:
+            show_restart_warning = True
+
+        setSetting('IgnoreWinScale', globals_.IgnoreWinScale)
+
         # Warn the user that they may need to restart
         if show_restart_warning:
             QtWidgets.QMessageBox.warning(None, globals_.trans.string('PrefsDlg', 0), globals_.trans.string('PrefsDlg', 30))

@@ -768,6 +768,8 @@ class ReggieTranslation:
                 76: 'Move selected level items when pressing the arrow keys',
                 77: 'Reset Toolbar',
                 78: 'Are you sure you want to reset the toolbar to its default configuration?[br]This cannot be undone.',
+                79: 'Ignore Windows Scale',
+                80: '[b]Ignore Windows Scale[/b][br]This will force the program to ignore the app scaling applied by Windows, which may help in some cases.'
             },
             'ResizeChoiceDlg': {
                 0: 'Let\'s resize your sprite. In order to do this, choose one of the two modes, based on the below information. Note that some choices can overlap with other settings, leading to undesired effects.',

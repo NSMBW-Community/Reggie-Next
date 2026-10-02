@@ -32,6 +32,7 @@ DarkMode = False
 EntranceTypeNames: OrderedDict[int, str] = OrderedDict()
 ErrMsg = ''
 FirstStageFilename: str | None = None
+IgnoreWinScale = False
 Initializing = False
 LevelNames: tuple[str, ...] = ()
 MusicInfo: dict[str, str] = {}

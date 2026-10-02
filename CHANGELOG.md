@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added an auto-diagnostic tool that regularly checks the current level for issues.
 - Added an exit indicator for forward-linking pipes.
 - Added a sprite order list to help with issues caused by an incorrect level-internal sprite order.
+- Added an option to forcefully ignore Windows' app scaling setting.
 
 ### Changed
 

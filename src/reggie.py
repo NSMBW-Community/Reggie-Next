@@ -143,11 +143,23 @@ def main():
     """
     Main startup function for Reggie
     """
-
     # Set High-DPI-Displays-related attributes before creating an application
-    # QtGui.QGuiApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     if hasattr(QtGui.QGuiApplication, 'setHighDpiScaleFactorRoundingPolicy'):
         QtGui.QGuiApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.Round)
+
+    # Create backup of settings
+    if os.path.isfile(os.path.join(get_root_path(), 'settings.ini')):
+        from shutil import copy2
+        copy2(os.path.join(get_root_path(), 'settings.ini'), os.path.join(get_root_path(), 'settings.ini.bak'))
+        del copy2
+
+    # Load the settings
+    globals_.settings = QtCore.QSettings(os.path.join(get_root_path(), 'settings.ini'), QtCore.QSettings.Format.IniFormat)
+
+    globals_.IgnoreWinScale = setting('IgnoreWinScale', False)
+    if globals_.IgnoreWinScale:
+        os.environ["QT_ENABLE_HIGHDPI_SCALING"] = '0'
+        os.environ["QT_FONT_DPI"] = '96'
 
     # Add a unique ID for the app so the taskbar separates Reggie
     # from the default Python interpreter
@@ -165,12 +177,6 @@ def main():
     if path is not None:
         os.chdir(path)
 
-    # Create backup of settings
-    if os.path.isfile(os.path.join(get_root_path(), 'settings.ini')):
-        from shutil import copy2
-        copy2(os.path.join(get_root_path(), 'settings.ini'), os.path.join(get_root_path(), 'settings.ini.bak'))
-        del copy2
-
     # Try to get the last commit ID, and append it to the version ID
     # (Only works when the repository's ".git" folder is present)
     import subprocess
@@ -182,9 +188,6 @@ def main():
         pass
 
     del subprocess
-
-    # Load the settings
-    globals_.settings = QtCore.QSettings(os.path.join(get_root_path(), 'settings.ini'), QtCore.QSettings.Format.IniFormat)
 
     # Check the version and set the UI style to Fusion by default
     if setting("ReggieVersion") is None:

@@ -79,6 +79,11 @@ class AppearanceTab(PreferenceTabWidget):
         self.cursor_mode.setToolTip(globals_.trans.string('PrefsDlg', 54))
         self.cursor_mode.setCurrentIndex(globals_.CursorMode)
 
+        # Ignore Windows Scaling
+        self.ignore_win_scale = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 79))
+        self.ignore_win_scale.setToolTip(globals_.trans.string('PrefsDlg', 80))
+        self.ignore_win_scale.setChecked(globals_.IgnoreWinScale)
+
         settings_box = QtWidgets.QGroupBox(globals_.trans.string('PrefsDlg', 40))
         L = QtWidgets.QFormLayout()
         L.addRow(globals_.trans.string('PrefsDlg', 41), self.theme_combo)
@@ -88,6 +93,7 @@ class AppearanceTab(PreferenceTabWidget):
         L.addRow(self.full_file_path)
         L.addRow(globals_.trans.string('PrefsDlg', 66), self.tileset_tab_pos)
         L.addRow(globals_.trans.string('PrefsDlg', 53), self.cursor_mode)
+        L.addRow(self.ignore_win_scale)
         L2 = QtWidgets.QGridLayout()
         L2.addLayout(L, 0, 0)
         settings_box.setLayout(L2)
@@ -207,7 +213,7 @@ class AppearanceTab(PreferenceTabWidget):
         scene.addItem(loc)
 
         # Zone [1] at (8.5, 3.25) size (16, 7.5)
-        zone = ZoneItem.CreateZone(8.5 * 16, 3.25 * 16, 16 * 16, int(7.5 * 16), id_=1, add_to_scene=False)
+        zone = ZoneItem.CreateZone(int(8.5 * 16), int(3.25 * 16), 16 * 16, int(7.5 * 16), id_=1, add_to_scene=False)
         scene.addItem(zone)
 
         # Path [1] making a rectangle shape between (13, 5) and (18, 9)
