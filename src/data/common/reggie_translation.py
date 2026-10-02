@@ -667,6 +667,9 @@ class ReggieTranslation:
                 9: '[b]Node [id][/b]',
                 10: 'Modify Selected Path Node Properties',
                 11: 'ID',
+                12: 'Append Node to End of Path',
+                13: 'Insert After Selected Node',
+                14: '[b]Placement Mode:[/b][br]This determines how new nodes will be added onto the path.[br][b]Appending[/b] will add each node to the end of the path.[br][b]Inserting[/b] will add a new node after the [i]selected[/i] node.'
             },
             'Paths': {
                 0: '[b]Path [path][/b][br]Node [node]',
@@ -712,7 +715,7 @@ class ReggieTranslation:
                 36: 'Fixed level size (bytes):',
                 37: 'Place objects at their full size',
                 38: 'Display rectangles indicating the zone bounds',
-                39: 'Insert new path node after selected node',
+                39: None,  # REMOVED: 'Insert new path node after selected node'
                 40: 'Style',
                 41: 'Theme:',
                 42: 'Translation Info',

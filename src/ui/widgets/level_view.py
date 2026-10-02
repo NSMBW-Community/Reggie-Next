@@ -167,6 +167,11 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                     new_node = path.add_node(clickedx, clickedy, index=idx)
                     new_node.positionChanged = PathItem.position_changed
 
+                    # For the insert mode, select new nodes automatically
+                    if globals_.InsertPathNode:
+                        path_node.setSelected(False)
+                        new_node.setSelected(True)
+
                     # The path length changed, so update the editor's maximums
                     globals_.mainWindow.path_editor.update_path_length()
 

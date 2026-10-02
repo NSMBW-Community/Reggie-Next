@@ -48,6 +48,11 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         self.loops.setToolTip(globals_.trans.string('PathDataEditor', 1))
         self.loops.clicked.connect(self.handle_loops_changed)
 
+        self.mode_button = QtWidgets.QPushButton()
+        self.mode_button.clicked.connect(self.handle_mode_changed)
+        self.mode_button.setToolTip(globals_.trans.string('PathDataEditor', 14))
+        self.set_mode_text()
+
         # Create a layout
         layout = QtWidgets.QFormLayout()
         self.setLayout(layout)
@@ -69,6 +74,7 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
         # Add labels
         layout.addRow(globals_.trans.string('PathDataEditor', 11), self.path_id)
         layout.addRow(globals_.trans.string('PathDataEditor', 0), self.loops)
+        layout.addRow(self.mode_button)
         layout.addRow(createHorzLine())
 
         layout.addRow(self.editing_label)
@@ -179,3 +185,17 @@ class PathNodeEditorWidget(QtWidgets.QWidget):
 
         self.path_node.path.move_node(self.path_node, i)
         SetDirty()
+
+    def set_mode_text(self):
+        """
+        Sets the mode button text
+        """
+        text_id = 13 if globals_.InsertPathNode else 12
+        self.mode_button.setText(globals_.trans.string('PathDataEditor', text_id))
+
+    def handle_mode_changed(self):
+        """
+        Handles the placement mode being switched
+        """
+        globals_.InsertPathNode = not globals_.InsertPathNode
+        self.set_mode_text()

@@ -63,9 +63,6 @@ class GeneralTab(PreferenceTabWidget):
         # Place objects at full size
         self.full_object_size = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 37))
 
-        # Insert new path node
-        self.insert_path_node = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 39))
-
         # Toggle auto-diag
         self.auto_diag = QtWidgets.QCheckBox(globals_.trans.string('PrefsDlg', 71))
         self.auto_diag.stateChanged.connect(
@@ -97,7 +94,6 @@ class GeneralTab(PreferenceTabWidget):
         main_layout.addWidget(self.zone_bound_indicators)
         main_layout.addWidget(self.reset_data_hide)
         main_layout.addWidget(self.full_object_size)
-        main_layout.addWidget(self.insert_path_node)
         main_layout.addWidget(self.show_unk_sprite_msg)
         main_layout.addWidget(auto_diag_box)
         self.setLayout(main_layout)
@@ -136,7 +132,6 @@ class GeneralTab(PreferenceTabWidget):
         self.padding_value.setValue(globals_.PaddingLength)
 
         self.full_object_size.setChecked(globals_.PlaceObjectsAtFullSize)
-        self.insert_path_node.setChecked(globals_.InsertPathNode)
         self.show_unk_sprite_msg.setChecked(globals_.ShowUnknownSpriteWarning)
 
         self.auto_diag.setChecked(globals_.AutoDiagEnabled)

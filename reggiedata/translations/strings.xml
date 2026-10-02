@@ -632,6 +632,9 @@
         <string id="9">[b]Node [id][/b]</string>
         <string id="10">Modify Selected Path Node Properties</string>
         <string id="11">ID</string>
+        <string id="12">Append Node to End of Path</string>
+        <string id="13">Insert After Selected Node</string>
+        <string id="14">[b]Placement Mode:[/b][br]This determines how new nodes will be added onto the path.[br][b]Appending[/b] will add each node to the end of the path.[br][b]Inserting[/b] will add a new node after the [i]selected[/i] node.</string>
     </section>
     <section id="Paths">
         <string id="0">[b]Path [path][/b][br]Node [node]</string>
@@ -677,7 +680,7 @@
         <string id="36">Fixed level size (bytes):</string>
         <string id="37">Place objects at their full size</string>
         <string id="38">Display rectangles indicating the zone bounds</string>
-        <string id="39">Insert new path node after selected node</string>
+        <string id="39" />
         <string id="40">Style</string>
         <string id="41">Theme:</string>
         <string id="42">Translation Info</string>

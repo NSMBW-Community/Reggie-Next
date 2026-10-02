@@ -1206,10 +1206,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.PlaceObjectsAtFullSize = dlg.general_tab.full_object_size.isChecked()
         setSetting('PlaceObjectsAtFullSize', globals_.PlaceObjectsAtFullSize)
 
-        # Insert Path Node setting
-        globals_.InsertPathNode = dlg.general_tab.insert_path_node.isChecked()
-        setSetting('InsertPathNode', globals_.InsertPathNode)
-
         globals_.AutoDiagEnabled = dlg.general_tab.auto_diag.isChecked()
         setSetting('AutoDiagEnabled', globals_.AutoDiagEnabled)
 
@@ -1915,10 +1911,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         setSetting('MainWindowState', self.saveState(0))
         setSetting('MainWindowGeometry', self.saveGeometry())
 
-        setSetting('ZoomLevel', self.ZoomLevel)
-
         globals_.gamedef.SetLastLevel(str(self.fileSavePath))
 
+        # Save some other settings not handled by Preferences
+        setSetting('ZoomLevel', self.ZoomLevel)
+        print(globals_.InsertPathNode)
+        setSetting('InsertPathNode', globals_.InsertPathNode)
         setSetting('AutoSaveFilePath', None)
         setSetting('AutoSaveFileData', 'x')
 

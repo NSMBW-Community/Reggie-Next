@@ -45,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved sprite categories and added a category dedicated to NewerSMBW's sprites.
 - Reorganised a few sections in the preferences dialog.
 - The toolbar will now update when edited in the preferences dialog, rather than requiring a restart.
+- Replaced the "Insert new path node..." setting with a button in the Path Editor to toggle the two modes.
+- When inserting nodes into an existing path, the new node will now be selected automatically.
 
 ### Removed
 
