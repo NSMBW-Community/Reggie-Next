@@ -576,6 +576,12 @@ def LoadGameDef(name: str | None = None):
 
     LoadEntranceNames(True)
 
+    # Reload current entrance since the config can change entrance settings
+    if globals_.mainWindow is not None:
+        entrance = globals_.mainWindow.entrance_editor.ent
+        if entrance is not None:
+            globals_.mainWindow.entrance_editor.set_entrance(entrance, True)
+
     # Success!
     setSetting('LastGameDef', name)
     return True

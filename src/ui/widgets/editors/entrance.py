@@ -137,11 +137,11 @@ class EntranceEditorWidget(QtWidgets.QWidget):
         self.ent = None
         self.update_flag = False
 
-    def set_entrance(self, ent: EntranceItem):
+    def set_entrance(self, ent: EntranceItem, reset = False):
         """
         Change the entrance being edited by the editor, update all fields
         """
-        if self.ent == ent:
+        if self.ent == ent and not reset:
             return
 
         self.editing_label.setText(globals_.trans.string('EntranceDataEditor', 23, '[id]', ent.entid))
