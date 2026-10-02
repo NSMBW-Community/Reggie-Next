@@ -861,6 +861,14 @@
     </dependency>
   </sprite> <!-- #107: Message Box Controller -->
 
+  <sprite id="113" name="Goal Pole and Fortress" notes="The invisible wall does not extend below the Goal Pole." files="goal_set.arc">
+    <spritetex nybble="8" title="Style" comment="This determines the style. While the Goal Pole supports SpriteTex, it does not include any custom styles.">
+      <entry value="0">Original</entry>
+    </spritetex>
+    <dualbox nybble="5.4" title1="Normal Exit" title2="Secret Exit"/>
+    <checkbox nybble="12.4" title="Snowy Castle"/>
+  </sprite> <!-- #113: Goal Pole and Fortress -->
+
   <sprite id="143" name="Custom Model Loader Resources (arrow.arc)" notes="This stores some of the models used by NewerSMBW for their cinematics. &lt;font color=&quot;red&quot;&gt;This sprite freezes the game if it shows up on-screen." files="arrow.arc">
     <dependency notes="If using option 0-6 or 17-24 of [11], Custom Model Loader, you'll need one of these placed somewhere in the level. It does not have to be within a Zone or in the same Area.">
       <suggested sprite="11"/>
