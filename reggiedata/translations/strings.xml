@@ -278,9 +278,11 @@
     </section>
     <section id="Err_CantFindLevel">
         <string id="0">Could not find file:[br][name]</string>
+        <string id="1">Error</string>
     </section>
     <section id="Err_Common">
         <string id="0">An unhandled exception occurred. Please report the problem in the Horizon Discord server.\nA log will be written to "[log]".\n\nError information:\n</string>
+        <string id="1">Error</string>
     </section>
     <section id="Err_CorruptedTileset">
         <string id="0">Error</string>
@@ -298,10 +300,11 @@
     </section>
     <section id="Err_InvalidLevel">
         <string id="0">This file doesn't seem to be a valid level.</string>
+        <string id="1">Error</string>
     </section>
     <section id="Err_MissingFiles">
         <string id="0">Error</string>
-        <string id="1">Sorry, you seem to be missing the required data files for Reggie Next to work. Please redownload your copy of the editor.</string>
+        <string id="1">Sorry, you seem to be missing the required data folder for Reggie Next to work. Please redownload your copy of the editor.</string>
         <string id="2">Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor.[br][br]These are the files you are missing:[br][files]</string>
     </section>
     <section id="Err_MissingTileset">
@@ -341,22 +344,22 @@
     </section>
     <section id="Gamedefs">
         <string id="0">This game has custom sprite images</string>
-        <string id="1">Loading patch...</string>
+        <string id="1" />
         <string id="2">New Game Patch</string>
         <string id="3">It appears that this is your first time using the game patch for [game]. Please select its Stage folder so custom tilesets and levels can be loaded.</string>
         <string id="4">Aborted Game Path Selection</string>
         <string id="5">Since you did not select the stage folder for [game], stages and tilesets will not load correctly. You can try again by choosing Change Game Path while the [game] patch is loaded.</string>
         <string id="6">New Game Patch</string>
         <string id="7">You can change the game path for [game] at any time by choosing Change Game Path while the [game] patch is loaded.</string>
-        <string id="8">Loading sprite data...</string>
-        <string id="9">Loading background names...</string>
-        <string id="10">Reloading tilesets...</string>
-        <string id="11">Loading sprite image data...</string>
-        <string id="12">Applying sprite image data...</string>
+        <string id="8" />
+        <string id="9" />
+        <string id="10" />
+        <string id="11" />
+        <string id="12" />
         <string id="13">New Super Mario Bros. Wii</string>
         <string id="14">A new Mario adventure![br]Published by Nintendo in November 2009.</string>
         <string id="15">[i]No description[/i]</string>
-        <string id="16">Loading entrance names...</string>
+        <string id="16" />
         <string id="17">Error</string>
         <string id="18">An error occurred while attempting to load this game patch. It will now be unloaded. Here's the specific error:[br][error]</string>
         <string id="19">Refresh List</string>
@@ -370,7 +373,7 @@
         <string id="5">Author:</string>
         <string id="6">Group:</string>
         <string id="7">Website:</string>
-        <string id="8">Created with [name]</string>
+        <string id="8">Last saved using [name]</string>
         <string id="9">Change Password</string>
         <string id="10">New Password:</string>
         <string id="11">Verify Password:</string>
@@ -408,6 +411,7 @@
         <string id="5">You cannot have a location with an ID greater than 255. You can have multiple locations with the same ID.</string>
         <string id="6">Path Limit Reached</string>
         <string id="7">You cannot have more than 256 paths in an area.</string>
+        <string id="8">Warning</string>
     </section>
     <section id="MenuItems">
         <string id="0">New Level</string>

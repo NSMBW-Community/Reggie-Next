@@ -22,6 +22,7 @@ from data.common.loaders import (
     LoadTilesetInfo,
     LoadTilesetNames,
     LoadZoneThemes,
+    ReloadTilesets,
 )
 from data.common.settings import setSetting, setting
 from data.common.sprites import LoadBasics
@@ -441,35 +442,12 @@ def getAvailableGameDefs():
     return [None] + [folder for _, folder in game_defs]
 
 
-def loadNewGameDef(def_: str):
-    """
-    Loads ReggieGameDefinition def_, and displays a progress dialog
-    """
-    dlg = QtWidgets.QProgressDialog()
-    dlg.setAutoClose(True)
-    btn = QtWidgets.QPushButton('Cancel')
-    btn.setEnabled(False)
-    dlg.setCancelButton(btn)
-    dlg.show()
-    dlg.setValue(0)
-
-    res = LoadGameDef(def_, dlg)
-
-    dlg.setValue(100)
-    return res
-
 # Game Definitions
-def LoadGameDef(name: str | None = None, dlg: QtWidgets.QProgressDialog | None = None):
+def LoadGameDef(name: str | None = None):
     """
     Loads a game definition
     """
-    if dlg:
-        dlg.setMaximum(7)
-
     # Load the globals_.gamedef
-    if dlg:
-        dlg.setLabelText(globals_.trans.string('Gamedefs', 1))  # Loading game patch...
-
     globals_.gamedef = ReggieGameDefinition(name)
     globals_.gamedef.__init2__()
 
@@ -511,13 +489,6 @@ def LoadGameDef(name: str | None = None, dlg: QtWidgets.QProgressDialog | None =
             # switching process.
             return False
 
-    if dlg:
-        dlg.setValue(1)
-
-    # Load spritedata.xml and spritecategories.xml
-    if dlg:
-        dlg.setLabelText(globals_.trans.string('Gamedefs', 8))  # Loading sprite data...
-
     LoadSpriteData()
     LoadSpriteCategories(True)
 
@@ -537,38 +508,17 @@ def LoadGameDef(name: str | None = None, dlg: QtWidgets.QProgressDialog | None =
         globals_.mainWindow.spriteDataEditor.setSprite(globals_.mainWindow.spriteDataEditor.spritetype,
                                                 True)  # Reloads the sprite data editor fields
 
-    if dlg:
-        dlg.setValue(2)
-
-    # Load BgA/BgB names
-    if dlg:
-        dlg.setLabelText(globals_.trans.string('Gamedefs', 9))  # Loading background names...
-
     LoadBgANames(True)
     LoadBgBNames(True)
+
     LoadZoneThemes(True)
-    LoadMusicInfo(True)  # reloads the music names
+    LoadMusicInfo(True)
     LoadConfig()
 
-    if dlg:
-        dlg.setValue(3)
-
-    # Reload tilesets
-    if dlg:
-        dlg.setLabelText(globals_.trans.string('Gamedefs', 10))  # Reloading tilesets...
-
-    LoadObjDescriptions(True)  # reloads ts1_descriptions
-    if globals_.mainWindow is not None:
-        globals_.mainWindow.ReloadTilesets(True)
-    LoadTilesetNames(True)  # reloads tileset names
-    LoadTilesetInfo(True)  # reloads tileset info
-
-    if dlg:
-        dlg.setValue(4)
-
-    # Load sprites.py
-    if dlg:
-        dlg.setLabelText(globals_.trans.string('Gamedefs', 11))  # Loading sprite image data...
+    LoadObjDescriptions(True)
+    ReloadTilesets(True)
+    LoadTilesetNames(True)
+    LoadTilesetInfo(True)
 
     # Always load the sprites folders so the correct sprite images can be
     # loaded when Reggie is started. This avoids loading all sprite images
@@ -619,32 +569,15 @@ def LoadGameDef(name: str | None = None, dlg: QtWidgets.QProgressDialog | None =
                 msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
             QtWidgets.QMessageBox.warning(None, title, msg)
 
-    if dlg:
-        dlg.setValue(5)
-
     # Reload the sprite-picker text
-    if dlg:
-        dlg.setLabelText(globals_.trans.string('Gamedefs', 12))  # Applying sprite image data...
-
     if globals_.Area.areanum != -1:
         for spr in globals_.Area.sprites:
-            spr.UpdateListItem()  # Reloads the sprite-picker text
-
-    if dlg:
-        dlg.setValue(6)
-
-    # Load entrance names
-    if dlg:
-        dlg.setLabelText(globals_.trans.string('Gamedefs', 16))  # Loading entrance names...
+            spr.UpdateListItem()
 
     LoadEntranceNames(True)
 
-    if dlg:
-        dlg.setValue(7)
-
     # Success!
-    if dlg:
-        setSetting('LastGameDef', name)
+    setSetting('LastGameDef', name)
     return True
 
 @functools.cache

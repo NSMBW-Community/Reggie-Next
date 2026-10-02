@@ -2227,40 +2227,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.scene.addItem(com)
             com.UpdateListItem()
 
-    def ReloadTilesets(self, soft=False):
-        """
-        Reloads all the tilesets. If soft is True, they will not be reloaded if the filepaths have not changed.
-        """
-        LoadTilesetInfo(True)
-
-        tilesets = [globals_.Area.tileset0, globals_.Area.tileset1, globals_.Area.tileset2, globals_.Area.tileset3]
-        for idx, name in enumerate(tilesets):
-            if (name is not None) and (name != ''):
-                LoadTileset(idx, name, not soft)
-
-        self.palette_dock.object_tab.object_picker.LoadFromTilesets()
-
-        for layer in globals_.Area.layers:
-            for obj in layer:
-                obj.updateObjCache()
-
-        self.scene.update()
-
-    def ReloadSpritedata(self):
-        LoadSpriteData()
-
-        # Reload spritedata editor
-        cur_sel_sprite = self.spriteDataEditor.spritetype
-        self.spriteDataEditor.setSprite(cur_sel_sprite, True)
-
-        # Update list
-        self.palette_dock.sprite_tab.sprite_picker.UpdateSpriteNames()
-
-        # Redo the search if a search was made
-        search = self.palette_dock.sprite_tab.search_box.text()
-        if search != "":
-            self.palette_dock.sprite_tab.sprite_picker.SetSearchString(search)
-
     def ChangeSelectionHandler(self):
         """
         Update the visible panels whenever the selection changes

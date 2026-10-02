@@ -6,7 +6,7 @@ from data.common.settings import setting
 from data import globals_
 
 from ui.widgets.game_def_viewer import GameDefViewer
-from data.common.gamedef import getAvailableGameDefs, loadNewGameDef, ReggieGameDefinition
+from data.common.gamedef import getAvailableGameDefs, LoadGameDef, ReggieGameDefinition
 
 class GameDefMenu(QtWidgets.QMenu):
     """
@@ -81,14 +81,14 @@ class GameDefMenu(QtWidgets.QMenu):
             return
 
         name = action.data()
-        success = loadNewGameDef(name)
+        success = LoadGameDef(name)
         if success:
             self.game_changed.emit()
             return
 
         # Setting the new gamedef failed for some reason, so load back the old one
         real_gamedef = setting('LastGameDef')
-        success = loadNewGameDef(real_gamedef)
+        success = LoadGameDef(real_gamedef)
         if not success:
             raise Exception("Restoring the previous game def (%r) failed after failing to load new game def (%r)" % (real_gamedef, name))
 

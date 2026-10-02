@@ -448,11 +448,34 @@ def LoadSpriteData() -> None:
         QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_BrokenSpriteData', 2), repr(errortext))
 
 
+def ReloadSpritedata():
+    """
+    Reload the entire spritedata
+    """
+    if globals_.mainWindow is None:
+        return
+
+    LoadSpriteData()
+
+    # Reload spritedata editor
+    cur_sel_sprite = globals_.mainWindow.spriteDataEditor.spritetype
+    globals_.mainWindow.spriteDataEditor.setSprite(cur_sel_sprite, True)
+
+    # Update list
+    globals_.mainWindow.palette_dock.sprite_tab.sprite_picker.UpdateSpriteNames()
+
+    # Redo the search if a search was made
+    search = globals_.mainWindow.palette_dock.sprite_tab.search_box.text()
+    if search != "":
+        globals_.mainWindow.palette_dock.sprite_tab.sprite_picker.SetSearchString(search)
+
+
 def LoadSpriteCategories(reload_: bool = False) -> None:
     """
     Ensures that the sprite category info is loaded
     """
-    if not globals_.SpriteCategories and not reload_: return
+    if not globals_.SpriteCategories and not reload_:
+        return
 
     paths = getResourcePaths('spritecategories')
 
@@ -463,12 +486,14 @@ def LoadSpriteCategories(reload_: bool = False) -> None:
     for path in paths:
         if path is None:
             continue
+
         tree = ElementTree.parse(path)
         root = tree.getroot()
 
         CurrentView: list[SpriteSubCategory] | None = None
         for view in root:
-            if view.tag.lower() != 'view': continue
+            if view.tag.lower() != 'view':
+                continue
 
             viewname = view.attrib['name']
 
@@ -481,7 +506,8 @@ def LoadSpriteCategories(reload_: bool = False) -> None:
 
             CurrentCategory = None
             for category in view:
-                if category.tag.lower() != 'category': continue
+                if category.tag.lower() != 'category':
+                    continue
 
                 catname = category.attrib['name']
 
@@ -492,7 +518,8 @@ def LoadSpriteCategories(reload_: bool = False) -> None:
                 if CurrentCategory == []: CurrentView.append(SpriteSubCategory(catname, CurrentCategory))
 
                 for attach in category:
-                    if attach.tag.lower() != 'attach': continue
+                    if attach.tag.lower() != 'attach':
+                        continue
 
                     sprite = attach.attrib['sprite']
                     if '-' not in sprite:
@@ -509,7 +536,8 @@ def LoadEntranceNames(reload_: bool = False) -> None:
     """
     Ensures that the entrance names are loaded
     """
-    if globals_.EntranceTypeNames and not reload_: return
+    if globals_.EntranceTypeNames and not reload_:
+        return
 
     paths = getResourcePaths('entrancetypes')
 
@@ -902,11 +930,11 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 83), GetKeybind('deletearea')
         ),
         MenuAction(
-            'reloadgfx', mw.ReloadTilesets, GetIcon('reload-tilesets'), globals_.trans.stringOneLine('MenuItems', 84),
+            'reloadgfx', ReloadTilesets, GetIcon('reload-tilesets'), globals_.trans.stringOneLine('MenuItems', 84),
             globals_.trans.stringOneLine('MenuItems', 85), GetKeybind('reloadgfx')
         ),
         MenuAction(
-            'reloaddata', mw.ReloadSpritedata, GetIcon('reload-spritedata'), globals_.trans.stringOneLine('MenuItems', 138),
+            'reloaddata', ReloadSpritedata, GetIcon('reload-spritedata'), globals_.trans.stringOneLine('MenuItems', 138),
             globals_.trans.stringOneLine('MenuItems', 139), GetKeybind('reloaddata')
         ),
         MenuAction(
@@ -1544,6 +1572,29 @@ def UnloadTileset(idx: int) -> None:
     globals_.Tiles[tileoffset:tileoffset + 256] = [None] * 256
     globals_.ObjectDefinitions[idx] = [None] * 256
     globals_.TilesetFilesLoaded[idx] = None
+
+
+def ReloadTilesets(soft=False):
+    """
+    Reloads all the tilesets. If soft is True, they will not be reloaded if the filepaths have not changed.
+    """
+    if globals_.mainWindow is None:
+        return
+
+    LoadTilesetInfo(True)
+
+    tilesets = [globals_.Area.tileset0, globals_.Area.tileset1, globals_.Area.tileset2, globals_.Area.tileset3]
+    for idx, name in enumerate(tilesets):
+        if (name is not None) and (name != ''):
+            LoadTileset(idx, name, not soft)
+
+    globals_.mainWindow.palette_dock.object_tab.object_picker.LoadFromTilesets()
+
+    for layer in globals_.Area.layers:
+        for obj in layer:
+            obj.updateObjCache()
+
+    globals_.mainWindow.scene.update()
 
 
 def ProcessOverrides(idx: int, name: str) -> None:
