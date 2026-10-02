@@ -1,12 +1,12 @@
 # Reggie! Level Editor Next
 ## The New Super Mario Bros. Wii Editor
-(Milestone 4)
+(Milestone 5)
 
 ----------------------------------------------------------------
 
 Advanced level editor for New Super Mario Bros. Wii originally created by Treeki, Tempus and RoadrunnerWMC using Python, PyQt and Wii.py.
 
-"Next" version created by RoadrunnerWMC, based on official release 3. Milestone 4 version is a collaboration of Horizon users and it aims to add more features requested by users.
+"Next" version created by RoadrunnerWMC, based on official release 3. Milestone 5 version is a collaboration of Horizon users and it aims to add more features requested by users.
 
 This release contains many improvements, in addition to code imports from the following Reggie! forks:
  * "ReggieMod 3.7.2" by JasonP27
@@ -108,4 +108,4 @@ See the license file in the distribution for information.
 
 ## Changelog
 
-A full changelog can be found here: https://horizon.miraheze.org/wiki/Reggie_Level_Editor#Changelog
+See [CHANGELOG.md](CHANGELOG.md).
