@@ -85,10 +85,8 @@ class ObjectTab(QtWidgets.QTabWidget):
             for i in range(1, 4):
                 self.setTabEnabled(i, False)
         else: # Check tileset validity
-            self.setTabEnabled(0, (globals_.Area.tileset0 != ''))
-            self.setTabEnabled(1, (globals_.Area.tileset1 != ''))
-            self.setTabEnabled(2, (globals_.Area.tileset2 != ''))
-            self.setTabEnabled(3, (globals_.Area.tileset3 != ''))
+            for i, tileset in enumerate(globals_.Area.tilesets):
+                self.setTabEnabled(i, tileset != '')
 
     def slot_tab_changed(self, new_tab):
         """

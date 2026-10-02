@@ -163,11 +163,7 @@ class TilesetsTab(QtWidgets.QWidget):
             line.setCompleter(QtWidgets.QCompleter(tilesetList))
             line.setPlaceholderText(globals_.trans.string('AreaDlg', 30))  # '(None)'
             self.lineEdits.append(line)
-            line.setText(eval('globals_.Area.tileset%d' % slot))
-
-            # For some reason, PyQt doesn't automatically call
-            # the handler if (globals_.Area.tileset%d % slot) == ''
-            #self.handleTextEdit(slot)
+            line.setText(globals_.Area.tilesets[slot])
 
             # Create the layout and add it to the widget
             L = QtWidgets.QGridLayout()

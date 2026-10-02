@@ -2166,7 +2166,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         """
         self.palette_dock.object_tab.reset(False)
 
-        if globals_.Area.tileset0 == '' and globals_.Area.tileset1 == '' and globals_.Area.tileset2 == '' and globals_.Area.tileset3 == '':
+        if all(tileset == '' for tileset in globals_.Area.tilesets):
             self.action_list['swapobjectstypes'].setEnabled(False)
             self.action_list['swapobjectstilesets'].setEnabled(False)
 
@@ -2661,14 +2661,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             elif fname.startswith(globals_.trans.string('AreaDlg', 16)):
                 fname = fname[len(globals_.trans.string('AreaDlg', 17, '[name]', '')):]
 
-            if idx == 0:
-                globals_.Area.tileset0 = fname
-            elif idx == 1:
-                globals_.Area.tileset1 = fname
-            elif idx == 2:
-                globals_.Area.tileset2 = fname
-            else:
-                globals_.Area.tileset3 = fname
+            globals_.Area.tilesets[idx] = fname
 
             if fname != '':
                 tilesetNum += 1

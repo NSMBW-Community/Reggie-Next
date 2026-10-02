@@ -1583,8 +1583,7 @@ def ReloadTilesets(soft=False):
 
     LoadTilesetInfo(True)
 
-    tilesets = [globals_.Area.tileset0, globals_.Area.tileset1, globals_.Area.tileset2, globals_.Area.tileset3]
-    for idx, name in enumerate(tilesets):
+    for idx, name in enumerate(globals_.Area.tilesets):
         if (name is not None) and (name != ''):
             LoadTileset(idx, name, not soft)
 

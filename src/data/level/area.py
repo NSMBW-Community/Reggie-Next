@@ -36,10 +36,7 @@ class Area:
         self.L2 = None
 
         # Default tileset names
-        self.tileset0 = 'Pa0_jyotyu'
-        self.tileset1 = ''
-        self.tileset2 = ''
-        self.tileset3 = ''
+        self.tilesets = ['Pa0_jyotyu', '', '', '']
 
         self.blocks = [b''] * 14
         self.blocks[0] = b'Pa0_jyotyu' + bytes(128 - len('Pa0_jyotyu'))
@@ -97,10 +94,8 @@ class Area:
 
         # Load tilesets
         CreateTilesets()
-        LoadTileset(0, self.tileset0)
-        LoadTileset(1, self.tileset1)
-        LoadTileset(2, self.tileset2)
-        LoadTileset(3, self.tileset3)
+        for i, tileset in enumerate(self.tilesets):
+            LoadTileset(i, tileset)
 
         # Mark the area as loaded
         self._is_loaded = True
@@ -123,10 +118,7 @@ class Area:
         del self.blocks
         del self.layers
         del self.Metadata
-        del self.tileset0
-        del self.tileset1
-        del self.tileset2
-        del self.tileset3
+        del self.tilesets
         del self.wrapFlag
         del self.unkFlag1
         del self.unkFlag2
@@ -188,10 +180,8 @@ class Area:
             globals_.firstLoad = False
 
         # Load the tilesets
-        LoadTileset(0, self.tileset0)
-        LoadTileset(1, self.tileset1)
-        LoadTileset(2, self.tileset2)
-        LoadTileset(3, self.tileset3)
+        for i, tileset in enumerate(self.tilesets):
+            LoadTileset(i, tileset)
 
         # Load the object layers
         self.layers = [[], [], []]
@@ -318,10 +308,8 @@ class Area:
         Loads block 1, the tileset names
         """
         data = struct.unpack('>32s32s32s32s', self.blocks[0])
-        self.tileset0 = data[0].strip(b'\0').decode('latin-1')
-        self.tileset1 = data[1].strip(b'\0').decode('latin-1')
-        self.tileset2 = data[2].strip(b'\0').decode('latin-1')
-        self.tileset3 = data[3].strip(b'\0').decode('latin-1')
+        for i in range(4):
+            self.tilesets[i] = data[i].strip(b'\0').decode('latin-1')
 
     def LoadOptions(self):
         """
@@ -603,10 +591,10 @@ class Area:
         Saves the tileset names back to block 1
         """
         self.blocks[0] = struct.pack('>32s32s32s32s',
-            self.tileset0.encode('latin-1'),
-            self.tileset1.encode('latin-1'),
-            self.tileset2.encode('latin-1'),
-            self.tileset3.encode('latin-1')
+            self.tilesets[0].encode('latin-1'),
+            self.tilesets[1].encode('latin-1'),
+            self.tilesets[2].encode('latin-1'),
+            self.tilesets[3].encode('latin-1')
         )
 
     def SaveOptions(self):
