@@ -119,35 +119,6 @@ def GetImage(imgname: str) -> QtGui.QImage:
     return QtGui.QImage()
 
 
-def GetImg(imgname, image=False):
-    """
-    Returns the image as a QImage from the PNG filename 'imgname' from the first
-    matching sprite image folder. If 'image' is False, a QPixmap of this image
-    is returned. If the image could not be found, None is returned and a warning
-    is printed.
-    """
-    print("[Warning] spritelib.GetImg is deprecated and will be removed in a future Reggie! Next version.\n" +
-        "Update your code to use spritelib.GetImage and spritelib.GetPixmap instead.")
-    imgname = str(imgname)
-
-    # Try to find the best path
-    path = os.path.join(get_reggiedata_folder(), 'sprites', imgname)
-
-    for folder in reversed(SpritesFolders):  # find the most recent copy
-        tryPath = os.path.join(folder, imgname)
-        if os.path.isfile(tryPath):
-            path = tryPath
-            break
-
-    # Return the appropriate object
-    if os.path.isfile(path):
-        if image:
-            return QtGui.QImage(path)
-        else:
-            return QtGui.QPixmap(path)
-
-    print(f"[Warning] Could not load sprite image ({imgname})!")
-
 def GetTile(tile_id: int) -> QtGui.QPixmap:
     """
     Returns the corresponding tile image if a tile is loaded. Otherwise, it

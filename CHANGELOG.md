@@ -44,16 +44,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved sprite categories and added a category dedicated to NewerSMBW's sprites.
 - Reorganised a few sections in the preferences dialog.
 
-### Deprecated
-
-- `spritelib.GetImg` has been deprecated in favour of `spritelib.GetImage` and `spritelib.GetPixmap` used for their respective image types.
-
 ### Removed
 
 - Removed the Cython version from the Help menu.
 - Removed unused icons.
 - Removed the "advanced" attribute from spritedata.
 - Removed useless / counterintuitive settings from the toolbar tab of the preferences dialog.
+- `spritelib.GetImg` has been removed and replaced by `spritelib.GetImage` and `spritelib.GetPixmap` used for their respective image types.
 
 ### Fixed
 
