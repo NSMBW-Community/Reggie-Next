@@ -307,6 +307,9 @@ class Area:
         """
         Loads block 1, the tileset names
         """
+        if not hasattr(self, 'tilesets'):
+            self.tilesets = ['', '', '', '']
+
         data = struct.unpack('>32s32s32s32s', self.blocks[0])
         for i in range(4):
             self.tilesets[i] = data[i].strip(b'\0').decode('latin-1')
