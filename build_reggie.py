@@ -46,7 +46,7 @@ MAC_BUNDLE_IDENTIFIER = 'ca.chronometry.reggie'
 
 SCRIPT_FILE = 'src/reggie.py'
 DATA_FOLDERS = ['reggiedata', 'reggieextras']
-DATA_FILES = ['README.md', 'license.txt']
+DATA_FILES = ['README.md', 'CHANGELOG.md', 'license.txt']
 
 # macOS only
 AUTO_APP_BUNDLE_NAME = SCRIPT_FILE.split('.')[0] + '.app'
