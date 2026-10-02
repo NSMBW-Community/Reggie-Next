@@ -9,114 +9,112 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added the ability to reload the patch list
-- Added a dedicated layer selector to sprites which support being on different layers
-- Added support for importing areas from LZ-compressed levels
-- Added the ability to set custom keybinds
-- Added a sprite ID switcher
-- Added an option to toggle the visibility of entrances
-- Added an auto-diagnostic tool that regularly checks the current level for issues
-- Added an exit indicator for forward-linking pipes
-- Added a sprite order list to help with order-related issues
+- Added the ability to reload the patch list.
+- Added a dedicated layer selector to sprites which support being on different layers.
+- Added several new definitions for how a spritedata value can be manipulated.
+- Added support for importing areas from LZ-compressed levels.
+- The toolbar can now be toggled through a dedicated option in the "View" menu.
+- Added the ability to set custom keybinds.
+- Added an option to toggle the visibility of entrances.
+- Added an auto-diagnostic tool that regularly checks the current level for issues.
+- Added an exit indicator for forward-linking pipes.
+- Added a sprite order list to help with issues caused by an incorrect level-internal sprite order.
 
 ### Changed
 
-- Bumped minimum Python version to 3.12
-- Improved level diagnostics tool
+- The entire codebase has been improved and restructured to help with future development.
+- Bumped minimum Python version to 3.12.
+- Improved level diagnostics tool.
 - Updated spritedata of sprites:
   - 30, 38, 53, 55, 78, 81 - 87, 92, 93, 96, 138, 139, 152, 185, 188, 191, 195, 205, 216, 226, 243, 310, 361, 362, 368, 369, 373, 399, 414, 437, 451, 459, 461, 475
 - Updated spritedata for (Newer) sprites:
   - 63, 80, 94, 113, 272, 273, 414, 441, 446, 451
 - Added/updated image previews for sprites:
-  - 30, 40, 41, 42, 50, 60, 62, 81 - 87, 105, 128, 178, 195, 202, 214, 233, 310, 354, 356, 425, 428
-- The current zoom level is saved between sessions and used on the next startup
-- Improved tile collision preview
-- Marked unknown area settings as useless
-- The toolbar can now be toggled via a dedicated option in the "View" menu
-- Improved documentation of background alignment types and the usage of specific backgrounds
-- The preferences dialog now only shows a restart warning when Reggie actually needs to be restarted
-- Minor adjustments to a few dialog windows
-- When running the source code, the application icon will now be shown properly in the taskbar
-- The level padding value is now capped at 500 KB
-- Locations can now be duplicated using Ctrl + Left Click
-- Improved randomization of specific tilesets
-- Sprite images now become translucent if their "Spawn after Midway" setting is enabled
-- Improved sprite categories and added a category dedicated to NewerSMBW's sprites
-- Moved some settings around in the preferences dialog
+  - 30, 40, 41, 42, 50, 60, 62, 81-87, 105, 128, 178, 195, 202, 214, 233, 310, 354, 356, 425, 428
+- The current zoom level is saved between sessions and used on the next startup.
+- Improved the tile collision preview.
+- Improved the documentation of area settings, background alignment types and the usage of specific backgrounds.
+- The preferences dialog now only shows a restart warning when Reggie actually needs to be restarted.
+- Minor adjustments to a few dialog windows.
+- When running the source code, the application icon will now be shown properly in the taskbar on Windows.
+- The level padding value is now capped at 500 KB.
+- Locations can now be duplicated using Ctrl + Left Click.
+- Improved randomization of specific tilesets.
+- Sprite images now become translucent if their "Spawn after Midway" setting is enabled.
+- Improved sprite categories and added a category dedicated to NewerSMBW's sprites.
+- Reorganised a few sections in the preferences dialog.
 
 ### Deprecated
 
-- `spritelib.GetImg` has been deprecated in favour of `spritelib.GetImage` and `spritelib.GetPixmap` used for their respective image types
+- `spritelib.GetImg` has been deprecated in favour of `spritelib.GetImage` and `spritelib.GetPixmap` used for their respective image types.
 
 ### Removed
 
-- Removed Cython version from Help menu
-- Removed unused icons
-- Removed the "advanced" attribute from the spritedata
-- Removed useless settings from the toolbar tab of the preferences dialog
+- Removed the Cython version from the Help menu.
+- Removed unused icons.
+- Removed the "advanced" attribute from spritedata.
+- Removed useless / counterintuitive settings from the toolbar tab of the preferences dialog.
 
 ### Fixed
 
-- Fixed error when opening the level diagnostics tool
-- Fixed icons not loading for custom themes
-- Fixed an underflow issue with spin boxes
-- Fixed some small issues with the sprite resizer
-- Fixed some small issues with NewerSMBW's level names
-- Fixed the "Comment" icon being smaller than intended
-- Fixed an issue where the middle mouse button can resize objects / locations
-- Fixed the "Can't find level" warningg box not appearing in the taskbar
-- The entrance editor now reloads when changing game patches
+- Fixed icons not loading for custom themes.
+- Fixed some small issues with the sprite resizing functionality.
+- Fixed inaccuracies with some of NewerSMBW's level names.
+- Fixed the comment icon being smaller than intended.
+- Fixed an issue where the middle mouse button would resize objects / locations.
+- Fixed the "Can't find level" warning box not appearing in the taskbar.
+- The entrance editor now reloads when changing game patches to accomodate for NewerSMBW-specific features.
 
 ## [4.10.0] - 2026-07-25
 
 ### Added
 
-- Added support for copy/pasting Entrances, Locations, and Path Nodes
-- Added Conveyor Belt tile overrides (made by B1 Gaming)
-- Added a toggle for Dark Mode, and rounded rectangles
-- Hovering over level items will now display drag/resize cursors
-- The spritedata now tells the user about all archive files that sprite uses
+- Added support for copy/pasting Entrances, Locations, and Path Nodes.
+- Added Conveyor Belt tile overrides (made by B1 Gaming).
+- Added a toggle for Dark Mode, and rounded rectangles.
+- Hovering over level items will now display drag/resize cursors.
+- The spritedata now tells the user about all archive files that sprite uses.
 
 ### Changed
 
-- Improved spritedata
+- Improved spritedata.
 - Added/updated image previews for sprites:
   - 23, 31, 43-45, 50, 51, 56, 59, 65-76, 92, 97, 103, 104, 106, 108, 113, 122, 123, 136, 138, 143, 148, 156, 160, 166, 174-176, 178, 188, 193, 194, 203, 204, 219, 230, 233, 247, 262-264, 266, 267, 274, 285, 289, 291, 292, 303, 314-316, 318, 327, 331, 335, 338, 341, 361, 365, 368, 382, 391, 395, 396, 401, 404, 405, 411, 412, 418, 420, 424, 425, 431-433, 438, 455, 457, 478
 - Added/updated image previews for (Newer) sprites:
   - 13, 18, 43, 44, 45, 167, 188, 203, 210, 230, 291, 292, 320, 341, 351, 391, 405, 410, 433
-- Toggling Layer 0 will display the inside of the Giant Koopa Shell Cave sprite
-- Overhauled the Sprite Resizer Dialog to make it more user-friendly
-- Stage folders no longer require 01-01.arc to be considered valid
-- Duplicating a zone will now copy over its background data
-- Overhauled the Sprite Resizer Dialog to make it more user-friendly
-- Various improvements to the UI of several dialogs
+- Toggling Layer 0 will display the inside of the Giant Koopa Shell Cave sprite.
+- Overhauled the Sprite Resizer Dialog to make it more user-friendly.
+- Stage folders no longer require 01-01.arc to be considered valid.
+- Duplicating a zone will now copy over its background data.
+- Various improvements to the UI of several dialog windows.
 
 ### Removed
 
-- Removed the "Add Reggie Patch Folder" feature
+- Removed the "Add Reggie Patch Folder" feature.
 
 ### Fixed
 
-- Other miscellaneous bug fixes and improvements
+- Other miscellaneous bug fixes and improvements.
 
 ## [4.9.0] - 2026-04-19
 
 ### Added
 
-- Added better support for translations
-- Added button in the Zone Options to duplicate the current zone
-- Added a few new icons to the UI
+- Added better support for translations.
+- Added button in the Zone Options to duplicate the current zone.
+- Added a few new icons to the UI.
 	
 ### Changed
 
-- Updated to PyQt6
-- Improved spritedata and sprite image previews
-- Improved background preview names (they now describe their in-game usage)
-- Levels with unknown sprite IDs can now be loaded in the editor
+- Updated to PyQt6.
+- Improved spritedata and sprite image previews.
+- Improved background preview names (they now describe their in-game usage).
+- Levels with unknown sprite IDs can now be loaded in the editor.
 
 ### Fixed
 
-- Other miscellaneous bug fixes
+- Fixed level corruption issues introduced in 4.8.0.
+- Other miscellaneous bug fixes.
 
 ## [4.8.0] - 2022-06-06
 
@@ -129,9 +127,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Improved spritedata.
-- Pa0 overrides now automatically apply to all Tilesets starting with "Pa0_" (Also you can add 'override="no-Pa0"' to your tilesets in the 'tilesets.xml').
+- Pa0 overrides now automatically apply to all Tilesets starting with "Pa0_". Adding `override="no-Pa0"` to a Pa0 tileset will disable this behavior.
 - The camera now automatically scrolls when dragging items near the screen edge.
-- Made CTRL+Scroll zoom in/out to the cursor's position.
+- Made CTRL + Scroll zoom in/out to the cursor's position.
 - Added/updated images for sprites 53, 111, 112, 138, 139, 216, 311.
 
 ### Removed
@@ -147,7 +145,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added a "Change Layer" button for tiles.
-- Added the "Send to Worldmap" and most importantly "Spawn half a tile left" settings for Entrances.
+- Added the "Send to Worldmap" and "Spawn half a tile left" settings for Entrances.
 
 ### Changed
 
@@ -155,7 +153,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated Reggie Next icons for both Windows and Mac (credit to Meorge and grishhung).
 - Implemented LZ-compressed level support from Reggie Updated.
 - Updated the Sound Modulation names to correspond to the respective level they're used with from the original game.
-- Changed the format spritedata.xml's use to refer to bits, as proposed by RoadrunnerWMC (it's much better).
+- Changed the format spritedata.xml's use to refer to bits, as proposed by RoadrunnerWMC.
 - Reworked Paths to allow changing the Path and Path Node IDs.
 - Changed the default Area timer to 500.
 - Added/updated images for sprites 101, 212, 231, 262, 277, 278, 299, 325, 452.
@@ -227,12 +225,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implemented support for editing Camera Profiles.
 - Made Zones and Locations snap to the 8x8 grid when resized by default (unless Alt is held).
 - Updated screenshot feature.
-- Repaired AnotherSMBW's and NewerSumSun's game patch.
 - Removed NewerGEM game patch.
 - Added/updated images for sprites 52, 110, 138, 139, 156, 216, 435.
 
 ### Fixed
 
+- Repaired AnotherSMBW's and NewerSumSun's game patch.
 - Other miscellaneous bug fixes.
 
 ## [4.4.0] - 2021-02-12
