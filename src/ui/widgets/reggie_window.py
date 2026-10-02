@@ -967,7 +967,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Adds a new area to the level
         """
         if len(globals_.Level.areas) >= 4:
-            QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('AreaImportDlg', 2))
+            QtWidgets.QMessageBox.warning(self, globals_.trans.string('Menu Items', 78), globals_.trans.string('AreaImportDlg', 2))
             return
 
         if CheckDirty():
@@ -988,7 +988,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         Imports an area from another level
         """
         if len(globals_.Level.areas) >= 4:
-            QtWidgets.QMessageBox.warning(self, 'Reggie', globals_.trans.string('AreaImportDlg', 2))
+            QtWidgets.QMessageBox.warning(self, globals_.trans.string('AreaImportDlg', 0), globals_.trans.string('AreaImportDlg', 2))
             return
 
         if CheckDirty():
@@ -1926,13 +1926,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 if os.path.isfile(checkname):
                     break
             else:
-                QtWidgets.QMessageBox.warning(self, 'Reggie!',
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_CantFindLevel', 1),
                                               globals_.trans.string('Err_CantFindLevel', 0, '[name]', checkname),
                                               QtWidgets.QMessageBox.StandardButton.Ok)
                 return False
 
             if not IsNSMBLevel(checkname):
-                QtWidgets.QMessageBox.warning(self, 'Reggie!', globals_.trans.string('Err_InvalidLevel', 0),
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_InvalidLevel', 1), globals_.trans.string('Err_InvalidLevel', 0),
                                               QtWidgets.QMessageBox.StandardButton.Ok)
                 return False
 
@@ -2150,13 +2150,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if hasattr(globals_.Area, 'unknown_sprite_ids') and globals_.Area.unknown_sprite_ids is not None:
                 sprite_ids = sorted(globals_.Area.unknown_sprite_ids)
 
-                title = globals_.trans.string('Err_UnknownSprite', 0)
                 if len(sprite_ids) == 1:
                     msg = globals_.trans.string('Err_UnknownSprite', 1, '[id]', str(sprite_ids[0]))
                 else:
                     msg = globals_.trans.string('Err_UnknownSprite', 2, '[ids]', ', '.join(map(str, sprite_ids)))
 
-                QtWidgets.QMessageBox.warning(None, title, msg)
+                QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_UnknownSprite', 0), msg)
 
         self.ResetPalette()
 

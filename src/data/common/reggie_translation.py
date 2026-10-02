@@ -313,9 +313,11 @@ class ReggieTranslation:
             },
             'Err_CantFindLevel': {
                 0: 'Could not find file:[br][name]',
+                1: 'Error',
             },
             'Err_Common': {
                 0: 'An unhandled exception occurred. Please report the problem in the Horizon Discord server.\\nA log will be written to \"[log]\".\\n\\nError information:\\n',
+                1: 'Error',
             },
             'Err_CorruptedTileset': {
                 0: 'Error',
@@ -333,10 +335,11 @@ class ReggieTranslation:
             },
             'Err_InvalidLevel': {
                 0: 'This file doesn\'t seem to be a valid level.',
+                1: 'Error',
             },
             'Err_MissingFiles': {
                 0: 'Error',
-                1: 'Sorry, you seem to be missing the required data files for Reggie Next to work. Please redownload your copy of the editor.',
+                1: 'Sorry, you seem to be missing the required data folder for Reggie Next to work. Please redownload your copy of the editor.',
                 2: 'Sorry, you seem to be missing some of the required data files for Reggie Next to work. Please redownload your copy of the editor.[br][br]These are the files you are missing:[br][files]',
             },
             'Err_MissingTileset': {
@@ -443,6 +446,7 @@ class ReggieTranslation:
                 5: 'You cannot have a location with an ID greater than 255. You can have multiple locations with the same ID.',
                 6: 'Path Limit Reached',
                 7: 'You cannot have more than 256 paths in an area.',
+                8: 'Warning',
             },
             'Menubar': {
                 0: '&File',
