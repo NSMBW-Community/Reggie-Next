@@ -411,18 +411,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.setup_help_menu(hmenu)
 
         # Create a toolbar
-        self.toolbar = self.addToolBar(globals_.trans.string('Menubar', 5))
-        if self.toolbar is not None:
-            self.toolbar.setObjectName('MainToolbar')
+        self.area_combo_box = QtWidgets.QComboBox()
+        self.area_combo_box.activated.connect(self.HandleSwitchArea)
 
-        # Add buttons to the toolbar
-        self.addToolbarButtons()
-
-        # Add the area combo box
-        self.areaComboBox = QtWidgets.QComboBox()
-        self.areaComboBox.activated.connect(self.HandleSwitchArea)
-        if self.toolbar is not None:
-            self.toolbar.addWidget(self.areaComboBox)
+        self.setup_toolbar()
 
     def setup_help_menu(self, menu=None):
         """
@@ -464,12 +456,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         return menu
 
-    def addToolbarButtons(self):
+    def setup_toolbar(self):
         """
         Reads from the Preferences file and adds the appropriate options to the toolbar
         """
         # First, define groups. Each group is isolated by separators.
-        Groups = (
+        toolbar_groups = (
             (
                 'newlevel',
                 'openfromname',
@@ -561,11 +553,19 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 new_toggled[str(key)] = toggled[key]
             toggled = new_toggled
 
+        if not hasattr(self, 'toolbar'):
+            self.toolbar = self.addToolBar(globals_.trans.string('Menubar', 5))
+        else:
+            if self.toolbar is not None:
+                self.toolbar.clear()
+
         if self.toolbar is None:
             return
 
+        self.toolbar.setObjectName('MainToolbar')
+
         # Add each to the toolbar if toggled[key]
-        for group in Groups:
+        for group in toolbar_groups:
             added_buttons = False
             for key in group:
                 if key in toggled and toggled[key]:
@@ -574,6 +574,15 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     added_buttons = True
             if added_buttons:
                 self.toolbar.addSeparator()
+
+        # Add the area combo box
+        if self.toolbar is not None:
+            # The widget cannot be added back onto the toolbar unless we do this
+            if hasattr(self, 'area_combo_action'):
+                self.toolbar.addAction(self.area_combo_action)
+                return
+
+            self.area_combo_action = self.toolbar.addWidget(self.area_combo_box)
 
     def setup_docks(self):
         """
@@ -1101,12 +1110,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.action_list['deletearea'].setEnabled(len(globals_.Level.areas) > 1)
 
         # Update the area selection combobox
-        self.areaComboBox.clear()
+        self.area_combo_box.clear()
 
         for area in globals_.Level.areas:
-            self.areaComboBox.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
+            self.area_combo_box.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
 
-        self.areaComboBox.setCurrentIndex(0)
+        self.area_combo_box.setCurrentIndex(0)
 
         # Save the level without the area as promised
         self.HandleSave()
@@ -1238,10 +1247,10 @@ class ReggieWindow(QtWidgets.QMainWindow):
         for box_list in boxes:
             for box in box_list:
                 toolbar_actions[box.internal_name] = box.isChecked()
-
-        if setting('ToolbarActs') != toolbar_actions:
-            show_restart_warning = True
         setSetting('ToolbarActs', toolbar_actions)
+
+        # Update the toolbar
+        self.setup_toolbar()
 
         # Get keybinds and save them
         tab: KeybindEditorTab
@@ -1470,21 +1479,21 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
     def HandleSwitchArea(self, idx):
         """
-        Handle activated signals for areaComboBox
+        Handle activated signals for area_combo_box
         """
         old_idx = globals_.Area.areanum - 1
         if idx == old_idx:
             return
 
         if CheckDirty():
-            self.areaComboBox.setCurrentIndex(old_idx)
+            self.area_combo_box.setCurrentIndex(old_idx)
             return
 
         ok = self.LoadLevel(self.fileSavePath, True, idx + 1)
 
         if not ok:
             # loading the new area failed, so reset the combobox
-            self.areaComboBox.setCurrentIndex(old_idx)
+            self.area_combo_box.setCurrentIndex(old_idx)
 
     def HandleUpdateLayer0(self, checked):
         """
@@ -2055,12 +2064,12 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.reset_area()
 
         # Fill up the area list
-        self.areaComboBox.clear()
+        self.area_combo_box.clear()
 
         for area in globals_.Level.areas:
-            self.areaComboBox.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
+            self.area_combo_box.addItem(globals_.trans.string('AreaCombobox', 0, '[num]', area.areanum))
 
-        self.areaComboBox.setCurrentIndex(areaNum - 1)
+        self.area_combo_box.setCurrentIndex(areaNum - 1)
 
         # Refresh object layouts
         for layer in globals_.Area.layers:

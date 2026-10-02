@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sprite images now become translucent if their "Spawn after Midway" setting is enabled.
 - Improved sprite categories and added a category dedicated to NewerSMBW's sprites.
 - Reorganised a few sections in the preferences dialog.
+- The toolbar will now update when edited in the preferences dialog, rather than requiring a restart.
 
 ### Removed
 
