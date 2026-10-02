@@ -1,6 +1,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
+from data.level.dirty import SetDirty
 from data.level.items.basic import InstanceDefinition, LevelEditorItem
 from ui.theme.reggie_theme import GetIcon, clipStr, setOverrideCursor
 
@@ -72,6 +73,32 @@ class CommentItem(LevelEditorItem):
         self.TextEdit.setPlainText(self.text)
         self.TextEdit.textChanged.connect(self.handleTextChanged)
         self.reposTextEdit()
+
+    def position_changed(self, oldx: int, oldy: int, x: int, y: int):
+        """
+        Handle the comment being dragged
+        """
+        if oldx == x and oldy == y or globals_.mainWindow is None:
+            return
+
+        self.UpdateTooltip()
+        self.handlePosChange(oldx, oldy)
+        self.UpdateListItem()
+        if self == globals_.mainWindow.selObj:
+            globals_.mainWindow.SaveComments()
+            SetDirty()
+
+    def text_changed(self):
+        """
+        Handle the comment's text being changed
+        """
+        if globals_.mainWindow is None:
+            return
+
+        self.UpdateListItem()
+        self.UpdateTooltip()
+        globals_.mainWindow.SaveComments()
+        SetDirty()
 
     def mousePressEvent(self, event):
         """

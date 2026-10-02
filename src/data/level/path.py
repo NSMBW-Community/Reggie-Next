@@ -163,7 +163,7 @@ class Path(AbstractPath):
             self._scene.addItem(node)
 
         if add_to_list:
-            node.positionChanged = globals_.mainWindow.HandlePathPosChange
+            node.positionChanged = PathItem.position_changed
             globals_.mainWindow.palette_dock.path_tab.path_list.addItem(node.listitem)
 
         # Update ids of all nodes after the newly created node

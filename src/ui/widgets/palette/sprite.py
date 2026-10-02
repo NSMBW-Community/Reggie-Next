@@ -187,3 +187,24 @@ class SpriteTab(QtWidgets.QTabWidget):
         """
         if globals_.mainWindow is not None:
             globals_.mainWindow.defaultPropDock.setVisible(True)
+
+    def prepare_batch_add(self):
+        """
+        Helper to prepare adding sprites in batch
+        """
+        self.sprite_list.prepareBatchAdd()
+        self.sprite_order_list.prepareBatchAdd()
+
+    def add_sprite(self, sprite):
+        """
+        Helper to add a sprite to the lists
+        """
+        self.sprite_list.addSprite(sprite)
+        self.sprite_order_list.addSprite(sprite)
+
+    def end_batch_add(self):
+        """
+        Helper to end batch-adding
+        """
+        self.sprite_list.endBatchAdd()
+        self.sprite_order_list.endBatchAdd()

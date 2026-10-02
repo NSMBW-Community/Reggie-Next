@@ -107,7 +107,7 @@ class SpriteItem(LevelEditorItem):
             data = globals_.mainWindow.defaultDataEditor.data
 
         spr = SpriteItem(id_, x, y, data)
-        spr.positionChanged = globals_.mainWindow.HandleSprPosChange
+        spr.positionChanged = SpriteItem.position_changed
 
         if add_to_scene:
             # Check if sprite data exists for this type
@@ -151,6 +151,24 @@ class SpriteItem(LevelEditorItem):
             SetDirty()
 
         return spr
+
+    def position_changed(self, oldx: int, oldy: int, x: int, y: int):
+        """
+        Handle the sprite being dragged
+        """
+        if globals_.mainWindow is None:
+            return
+
+        if self == globals_.mainWindow.selObj:
+            if oldx == x and oldy == y:
+                return
+
+            self.UpdateListItem()
+            SetDirty()
+
+            # The sprite has changed position, so its LevelRect changed, so the
+            # level overview needs to be redrawn.
+            globals_.mainWindow.level_overview.update()
 
     def SetType(self, sprite_num):
         """

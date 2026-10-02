@@ -27,6 +27,7 @@ from data.tileset.tileset_category import TilesetCategory, TilesetFileEntry
 from libs import lh, lib_versions, lz77, tpl
 from ui.dialogs.about import AboutDialog
 from ui.dialogs.object_swap import ObjectTypeSwapDialog
+from ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 from ui.theme.reggie_theme import GetIcon, ReggieTheme
 
 
@@ -802,7 +803,7 @@ def LoadMenuActions(mw) -> None:
             globals_.trans.stringOneLine('MenuItems', 143), GetKeybind('switchsprites')
         ),
         MenuAction(
-            'diagnostic', mw.HandleDiagnostics, GetIcon('diagnostics'), globals_.trans.stringOneLine('MenuItems', 36),
+            'diagnostic', lambda: DiagnosticToolDialog().exec(), GetIcon('diagnostics'), globals_.trans.stringOneLine('MenuItems', 36),
             globals_.trans.stringOneLine('MenuItems', 37), GetKeybind('diagnostic')
         ),
         MenuAction(

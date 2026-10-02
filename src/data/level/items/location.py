@@ -92,8 +92,8 @@ class LocationItem(LevelEditorItem):
         loc = LocationItem(x, y, width, height, id_)
         globals_.OverrideSnapping = False
 
-        loc.positionChanged = globals_.mainWindow.HandleLocPosChange
-        loc.sizeChanged = globals_.mainWindow.HandleLocSizeChange
+        loc.positionChanged = LocationItem.position_changed
+        loc.sizeChanged = LocationItem.size_changed
         loc.listitem = ListWidgetItem_SortsByOther(loc)
 
         if add_to_scene:
@@ -142,6 +142,36 @@ class LocationItem(LevelEditorItem):
         loc = LocationItem.CreateLocation(loc_rect[0], loc_rect[1], int(loc_rect[2]), int(loc_rect[3]))
         if loc is not None:
             loc.setSelected(True)
+
+    def position_changed(self, oldx: int, oldy: int, x: int, y: int):
+        """
+        Handle the location being dragged
+        """
+        if globals_.mainWindow is None:
+            return
+
+        if self == globals_.mainWindow.selObj:
+            if oldx == x and oldy == y:
+                return
+            globals_.mainWindow.location_editor.set_location(self)
+            SetDirty()
+
+        self.UpdateListItem()
+        globals_.mainWindow.level_overview.update()
+
+    def size_changed(self, width: int, height: int):
+        """
+        Handle the location being resized
+        """
+        if globals_.mainWindow is None:
+            return
+
+        if self == globals_.mainWindow.selObj:
+            globals_.mainWindow.location_editor.set_location(self)
+            SetDirty()
+
+        self.UpdateListItem()
+        globals_.mainWindow.level_overview.update()
 
     def ListString(self):
         """

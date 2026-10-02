@@ -13,6 +13,13 @@ from ui.widgets.palette.event import EventTab
 from ui.widgets.palette.stamp import StampTab
 from ui.widgets.palette.comment import CommentTab
 
+from data.level.items.sprite import SpriteItem
+from data.level.items.entrance import EntranceItem
+from data.level.items.location import LocationItem
+from data.level.items.comment import CommentItem
+
+from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
+
 class PaletteDock(QtWidgets.QDockWidget):
     """
     Represents the Palette widget
@@ -67,6 +74,67 @@ class PaletteDock(QtWidgets.QDockWidget):
         self.tabs.setTabToolTip(7, globals_.trans.string('Palette', 33))
 
         self.setWidget(self.tabs)
+
+    def reset(self):
+        """
+        Resets data for all child tabs
+        """
+        if globals_.mainWindow is None:
+            return
+
+        self.object_tab.reset(False)
+        if all(tileset == '' for tileset in globals_.Area.tilesets):
+            globals_.mainWindow.action_list['swapobjectstypes'].setEnabled(False)
+            globals_.mainWindow.action_list['swapobjectstilesets'].setEnabled(False)
+
+        # Add all the level items
+
+        # Sprites
+        self.sprite_tab.prepare_batch_add()
+
+        pos_change = SpriteItem.position_changed
+        for spr in globals_.Area.sprites:
+            spr.positionChanged = pos_change
+            self.sprite_tab.add_sprite(spr)
+            globals_.mainWindow.scene.addItem(spr)
+            spr.UpdateListItem()
+
+        self.sprite_tab.end_batch_add()
+
+        # Entrances
+        pos_change = EntranceItem.position_changed
+        for ent in globals_.Area.entrances:
+            ent.positionChanged = pos_change
+            ent.listitem = ListWidgetItem_SortsByOther(ent)
+            ent.listitem.entid = ent.entid
+            self.entrance_tab.entrance_list.addItem(ent.listitem)
+            globals_.mainWindow.scene.addItem(ent)
+            ent.UpdateListItem()
+
+        # Locations
+        pos_change = LocationItem.position_changed
+        size_change = LocationItem.size_changed
+        for location in globals_.Area.locations:
+            location.positionChanged = pos_change
+            location.sizeChanged = size_change
+            location.listitem = ListWidgetItem_SortsByOther(location)
+            self.location_tab.location_list.addItem(location.listitem)
+            globals_.mainWindow.scene.addItem(location)
+            location.UpdateListItem()
+
+        # Load events
+        self.event_tab.load_event_data()
+
+        # Comments
+        pos_change = CommentItem.position_changed
+        text_change = CommentItem.text_changed
+        for com in globals_.Area.comments:
+            com.positionChanged = pos_change
+            com.textChanged = text_change
+            com.listitem = QtWidgets.QListWidgetItem()
+            self.comment_tab.comment_list.addItem(com.listitem)
+            globals_.mainWindow.scene.addItem(com)
+            com.UpdateListItem()
 
     def set_tab(self, index):
         """

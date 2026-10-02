@@ -1,6 +1,7 @@
 from PyQt6 import QtCore, QtGui
 
 from data import globals_
+from data.level.dirty import SetDirty
 from data.level.items.basic import InstanceDefinition, LevelEditorItem
 from ui.theme.reggie_theme import setOverrideCursor
 from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
@@ -75,6 +76,19 @@ class PathItem(LevelEditorItem):
         if self.listitem is not None:
             self.listitem.setText(self.ListString())
         self.update()
+
+    def position_changed(self, oldx, oldy, x, y):
+        """
+        Handle the path being dragged
+        """
+        if oldx == x and oldy == y or globals_.mainWindow is None:
+            return
+
+        self.path.node_moved(self)
+        self.UpdateListItem()
+        if self == globals_.mainWindow.selObj:
+            SetDirty()
+        globals_.mainWindow.level_overview.update()
 
     def UpdateTooltip(self):
         """

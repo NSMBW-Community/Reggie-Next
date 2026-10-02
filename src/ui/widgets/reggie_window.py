@@ -2052,7 +2052,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             # optionally decompress the level file. Hence, we can just relay
             # this to the level.
             globals_.Level.changeArea(areaNum)
-            self.ResetPalette()
+            self.reset_area()
 
         # Fill up the area list
         self.areaComboBox.clear()
@@ -2157,75 +2157,27 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 QtWidgets.QMessageBox.warning(None, globals_.trans.string('Err_UnknownSprite', 0), msg)
 
-        self.ResetPalette()
+        self.reset_area()
 
-    def ResetPalette(self):
+    def reset_area(self):
         """
         Resets the palette and initialises the scene from the currently loaded
         Area.
         """
-        self.palette_dock.object_tab.reset(False)
+        # Reset the palette
+        self.palette_dock.reset()
 
-        if all(tileset == '' for tileset in globals_.Area.tilesets):
-            self.action_list['swapobjectstypes'].setEnabled(False)
-            self.action_list['swapobjectstilesets'].setEnabled(False)
-
-        # Load events
-        self.palette_dock.event_tab.load_event_data()
-
-        # Add all things to the scene
-        pcEvent = self.HandleObjPosChange
+        pos_change = ObjectItem.position_changed
         for layer in reversed(globals_.Area.layers):
             for obj in layer:
-                obj.positionChanged = pcEvent
+                obj.positionChanged = pos_change
                 self.scene.addItem(obj)
-
-        pcEvent = self.HandleSprPosChange
-
-        self.palette_dock.sprite_tab.sprite_list.prepareBatchAdd()
-        self.palette_dock.sprite_tab.sprite_order_list.prepareBatchAdd()
-        for spr in globals_.Area.sprites:
-            spr.positionChanged = pcEvent
-            self.palette_dock.sprite_tab.sprite_list.addSprite(spr)
-            self.palette_dock.sprite_tab.sprite_order_list.addSprite(spr)
-            self.scene.addItem(spr)
-            spr.UpdateListItem()
-
-        self.palette_dock.sprite_tab.sprite_list.endBatchAdd()
-        self.palette_dock.sprite_tab.sprite_order_list.endBatchAdd()
-
-        pcEvent = self.HandleEntPosChange
-        for ent in globals_.Area.entrances:
-            ent.positionChanged = pcEvent
-            ent.listitem = ListWidgetItem_SortsByOther(ent)
-            ent.listitem.entid = ent.entid
-            self.palette_dock.entrance_tab.entrance_list.addItem(ent.listitem)
-            self.scene.addItem(ent)
-            ent.UpdateListItem()
 
         for zone in globals_.Area.zones:
             self.scene.addItem(zone)
 
-        pcEvent = self.HandleLocPosChange
-        scEvent = self.HandleLocSizeChange
-        for location in globals_.Area.locations:
-            location.positionChanged = pcEvent
-            location.sizeChanged = scEvent
-            location.listitem = ListWidgetItem_SortsByOther(location)
-            self.palette_dock.location_tab.location_list.addItem(location.listitem)
-            self.scene.addItem(location)
-            location.UpdateListItem()
-
         for path in globals_.Area.paths:
             path.add_to_scene()
-
-        for com in globals_.Area.comments:
-            com.positionChanged = self.HandleComPosChange
-            com.textChanged = self.HandleComTxtChange
-            com.listitem = QtWidgets.QListWidgetItem()
-            self.palette_dock.comment_tab.comment_list.addItem(com.listitem)
-            self.scene.addItem(com)
-            com.UpdateListItem()
 
     def ChangeSelectionHandler(self):
         """
@@ -2427,31 +2379,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.UpdateModeInfo()
             globals_.DirtyOverride -= 1
 
-    def HandleObjPosChange(self, obj: ObjectItem, oldx, oldy, x, y):
-        """
-        Handle the object being dragged
-        """
-        if obj == self.selObj:
-            if oldx == x and oldy == y:
-                return
-            SetDirty()
-        self.level_overview.update()
-
-    def HandleSprPosChange(self, obj: SpriteItem, oldx, oldy, x, y):
-        """
-        Handle the sprite being dragged
-        """
-        if obj == self.selObj:
-            if oldx == x and oldy == y:
-                return
-
-            obj.UpdateListItem()
-            SetDirty()
-
-            # The sprite has changed position, so its LevelRect changed, so the
-            # level overview needs to be redrawn.
-            self.level_overview.update()
-
     def SpriteDataUpdated(self, data):
         """
         Handle the current sprite's data being updated
@@ -2465,76 +2392,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
                 obj.UpdateDynamicSizing()
                 self.palette_dock.sprite_tab.sprite_list.updateSprite(obj)
-
-    def HandleEntPosChange(self, obj: EntranceItem, oldx, oldy, x, y):
-        """
-        Handle the entrance being dragged
-        """
-        if oldx == x and oldy == y:
-            return
-        obj.UpdateListItem()
-        if obj == self.selObj:
-            SetDirty()
-
-    def HandlePathPosChange(self, obj: PathItem, oldx, oldy, x, y):
-        """
-        Handle the path being dragged
-        """
-        if oldx == x and oldy == y:
-            return
-
-        obj.path.node_moved(obj)
-        obj.UpdateListItem()
-        if obj == self.selObj:
-            SetDirty()
-        self.level_overview.update()
-
-    def HandleComPosChange(self, obj: CommentItem, oldx, oldy, x, y):
-        """
-        Handle the comment being dragged
-        """
-        if oldx == x and oldy == y:
-            return
-
-        obj.UpdateTooltip()
-        obj.handlePosChange(oldx, oldy)
-        obj.UpdateListItem()
-        if obj == self.selObj:
-            self.SaveComments()
-            SetDirty()
-
-    def HandleComTxtChange(self, obj: CommentItem):
-        """
-        Handle the comment's text being changed
-        """
-        obj.UpdateListItem()
-        obj.UpdateTooltip()
-        self.SaveComments()
-        SetDirty()
-
-    def HandleLocPosChange(self, loc, oldx, oldy, x, y):
-        """
-        Handle the location being dragged
-        """
-        if loc == self.selObj:
-            if oldx == x and oldy == y:
-                return
-            self.location_editor.set_location(loc)
-            SetDirty()
-
-        loc.UpdateListItem()
-        self.level_overview.update()
-
-    def HandleLocSizeChange(self, loc, width, height):
-        """
-        Handle the location being resized
-        """
-        if loc == self.selObj:
-            self.location_editor.set_location(loc)
-            SetDirty()
-
-        loc.UpdateListItem()
-        self.level_overview.update()
 
     def UpdateModeInfo(self):
         """
@@ -2598,15 +2455,16 @@ class ReggieWindow(QtWidgets.QMainWindow):
                          '[spry]', int(y / 1.5)))
         self.hoverLabel.setText(info)
 
-    def keyPressEvent(self, event):
+    def keyPressEvent(self, a0):
         """
         Handles key press events for the main window if needed
         """
-        if event.key() == Qt.Key.Key_Delete or event.key() == Qt.Key.Key_Backspace:
+        if a0 is None:
+            return
+
+        if a0.key() == Qt.Key.Key_Delete or a0.key() == Qt.Key.Key_Backspace:
             sel = self.scene.selectedItems()
-
             if sel:
-
                 self.SelectionUpdateFlag = True
 
                 for obj in sel:
@@ -2615,7 +2473,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
                     self.scene.removeItem(obj)
 
                 SetDirty()
-                event.accept()
+                a0.accept()
                 self.level_overview.update()
                 self.SelectionUpdateFlag = False
                 self.ChangeSelectionHandler()
@@ -2623,7 +2481,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.level_overview.update()
 
-        QtWidgets.QMainWindow.keyPressEvent(self, event)
+        QtWidgets.QMainWindow.keyPressEvent(self, a0)
 
     def HandleAreaOptions(self):
         """
@@ -2758,7 +2616,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         self.action_list['backgrounds'].setEnabled(len(globals_.Area.zones) > 0)
         self.level_overview.update()
 
-    # Handles setting the backgrounds
     def HandleBG(self):
         """
         Pops up the Background settings Dialog
@@ -2882,13 +2739,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
         # Restore grid
         globals_.GridType = current_grid_type
         self.scene.update()
-
-    @staticmethod
-    def HandleDiagnostics():
-        """
-        Checks the level for any obvious problems and provides options to fix them
-        """
-        DiagnosticToolDialog().exec()
 
     def HandleCameraProfiles(self):
         """

@@ -136,7 +136,7 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
 
         if add_to_scene:
             layer_list.append(obj)
-            obj.positionChanged = globals_.mainWindow.HandleObjPosChange
+            obj.positionChanged = ObjectItem.position_changed
             globals_.mainWindow.scene.addItem(obj)
 
             SetDirty()
@@ -212,6 +212,19 @@ class ObjectItem(LevelEditorItem, AbstractObjectItem):
 
         if changed:
             SetDirty()
+
+    def position_changed(self, oldx: int, oldy: int, x: int, y: int):
+        """
+        Handle the object being dragged
+        """
+        if globals_.mainWindow is None:
+            return
+
+        if self == globals_.mainWindow.selObj:
+            if oldx == x and oldy == y:
+                return
+            SetDirty()
+        globals_.mainWindow.level_overview.update()
 
     def SetType(self, tileset, object_num):
         """

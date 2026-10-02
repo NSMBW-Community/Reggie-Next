@@ -220,7 +220,7 @@ class EntranceItem(LevelEditorItem):
             return None
 
         ent = EntranceItem(x, y, id_, 0, 0, 0, 0, 0, 0, 0x80, 0, 0)
-        ent.positionChanged = globals_.mainWindow.HandleEntPosChange
+        ent.positionChanged = EntranceItem.position_changed
         ent.listitem = ListWidgetItem_SortsByOther(ent)
 
         if add_to_scene:
@@ -236,6 +236,17 @@ class EntranceItem(LevelEditorItem):
             SetDirty()
 
         return ent
+
+    def position_changed(self, oldx: int, oldy: int, x: int, y: int):
+        """
+        Handle the entrance being dragged
+        """
+        if oldx == x and oldy == y or globals_.mainWindow is None:
+            return
+
+        self.UpdateListItem()
+        if self == globals_.mainWindow.selObj:
+            SetDirty()
 
     def UpdateTooltip(self):
         """

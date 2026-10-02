@@ -22,7 +22,7 @@ class DiagnosticWidget(QtWidgets.QWidget):
         self.status_button.setAutoRaise(True)
         self.status_button.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         if globals_.mainWindow is not None:
-            self.status_button.clicked.connect(globals_.mainWindow.HandleDiagnostics)
+            self.status_button.clicked.connect(lambda: DiagnosticToolDialog().exec())
 
         self.manual_check_button = QtWidgets.QToolButton()
         self.manual_check_button.setAutoRaise(True)
