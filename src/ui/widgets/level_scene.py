@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
-
+from ui.graphics.grid import draw_foreground_grid
 
 class LevelScene(QtWidgets.QGraphicsScene):
     """
@@ -11,13 +11,22 @@ class LevelScene(QtWidgets.QGraphicsScene):
     def __init__(self, *args):
         QtWidgets.QGraphicsScene.__init__(self, *args)
         self.setBackgroundBrush(QtGui.QBrush(globals_.theme.color('bg')))
+        self.is_screenshot = False
+
+    def drawForeground(self, painter, rect):
+        """
+        Draw a grid for screenshots
+        """
+        if self.is_screenshot:
+            draw_foreground_grid(painter, rect)
 
     def drawBackground(self, painter, rect):
         """
         Draws all visible tiles
         """
         QtWidgets.QGraphicsScene.drawBackground(self, painter, rect)
-        if not hasattr(globals_.Area, 'layers'): return
+        if not hasattr(globals_.Area, 'layers'):
+            return
 
         drawrect = QtCore.QRectF(rect.x() / 24, rect.y() / 24, rect.width() / 24 + 1, rect.height() / 24 + 1)
         isect = drawrect.intersects

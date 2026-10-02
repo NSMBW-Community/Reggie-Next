@@ -2842,7 +2842,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
         if dlg.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        screenshot_type = dlg.target_combo.currentIndex()
+        target = dlg.target_combo.currentIndex()
         grid_type = dlg.grid_type.currentIndex()
         hide_background = dlg.hide_background.isChecked()
         save_to_file = dlg.save_img.isChecked()
@@ -2862,13 +2862,13 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 return
 
         # Current view
-        if screenshot_type == 0:
+        if target == 0:
             screenshot_rect = QtCore.QRect(QtCore.QPoint(), self.view.size())
             renderer = self.view
             ss_img = QtGui.QImage(screenshot_rect.size(), QtGui.QImage.Format.Format_ARGB32)
         else:
             # All zones together
-            if screenshot_type == 1:
+            if target == 1:
                 screenshot_rect = QtCore.QRectF()
 
                 for z in globals_.Area.zones:
@@ -2876,7 +2876,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
             # Specific zone
             else:
-                screenshot_rect = globals_.Area.zones[screenshot_type - 2].ZoneRect
+                screenshot_rect = globals_.Area.zones[target - 2].ZoneRect
 
             # Map the zone rects to the scene coordinate system
             screenshot_rect = (QtGui.QTransform() * 1.5).mapRect(screenshot_rect)
@@ -2886,6 +2886,7 @@ class ReggieWindow(QtWidgets.QMainWindow):
             screenshot_rect &= QtCore.QRectF(0, 0, 1024 * 24, 512 * 24)
 
             renderer = self.scene
+            renderer.is_screenshot = True
             ss_img = QtGui.QImage(screenshot_rect.size().toSize(), QtGui.QImage.Format.Format_ARGB32)
 
         ss_img.fill(Qt.GlobalColor.transparent)
@@ -2916,6 +2917,9 @@ class ReggieWindow(QtWidgets.QMainWindow):
                 clip = globals_.app.clipboard()
                 if clip is not None:
                     clip.setImage(ss_img)
+
+        if target != 0:
+            self.scene.is_screenshot = False
 
         # Restore grid
         globals_.GridType = current_grid_type

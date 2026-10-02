@@ -9,6 +9,7 @@ from data.level.items.object import ObjectItem
 from data.level.items.path import PathItem
 from data.level.items.sprite import SpriteItem
 from data.common.reggie_clip import ReggieClip
+from ui.graphics.grid import draw_foreground_grid
 
 
 class LevelViewWidget(QtWidgets.QGraphicsView):
@@ -532,107 +533,7 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
         """
         Draws a foreground grid and other stuff
         """
-        # Draws a foreground grid
-        if globals_.GridType is None: return
-
-        Zoom = globals_.mainWindow.ZoomLevel
-        drawLine = painter.drawLine
-        GridColor = globals_.theme.color('grid')
-
-        if globals_.GridType == 'grid':  # draw a classic grid
-            startx = rect.x()
-            startx -= (startx % 24)
-            endx = startx + rect.width() + 24
-
-            starty = rect.y()
-            starty -= (starty % 24)
-            endy = starty + rect.height() + 24
-
-            x = startx
-            while x <= endx:
-                if x % 192 == 0:
-                    painter.setPen(QtGui.QPen(GridColor, 2, QtCore.Qt.PenStyle.DashLine))
-                    drawLine(QtCore.QPointF(x, starty), QtCore.QPointF(x, endy))
-                elif x % 96 == 0 and Zoom >= 25:
-                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.PenStyle.DashLine))
-                    drawLine(QtCore.QPointF(x, starty), QtCore.QPointF(x, endy))
-                elif Zoom >= 50:
-                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.PenStyle.DotLine))
-                    drawLine(QtCore.QPointF(x, starty), QtCore.QPointF(x, endy))
-                x += 24
-
-            y = starty
-            while y <= endy:
-                if y % 192 == 0:
-                    painter.setPen(QtGui.QPen(GridColor, 2, QtCore.Qt.PenStyle.DashLine))
-                    drawLine(QtCore.QPointF(startx, y), QtCore.QPointF(endx, y))
-                elif y % 96 == 0 and Zoom >= 25:
-                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.PenStyle.DashLine))
-                    drawLine(QtCore.QPointF(startx, y), QtCore.QPointF(endx, y))
-                elif Zoom >= 50:
-                    painter.setPen(QtGui.QPen(GridColor, 1, QtCore.Qt.PenStyle.DotLine))
-                    drawLine(QtCore.QPointF(startx, y), QtCore.QPointF(endx, y))
-                y += 24
-
-        else:  # draw a checkerboard
-            L = 0.2
-            D = 0.1  # Change these values to change the checkerboard opacity
-
-            Light = QtGui.QColor(GridColor)
-            Dark = QtGui.QColor(GridColor)
-            Light.setAlpha(int(Light.alpha() * L))
-            Dark.setAlpha(int(Dark.alpha() * D))
-
-            size = 24 if Zoom >= 50 else 96
-
-            board = QtGui.QPixmap(8 * size, 8 * size)
-            board.fill(QtGui.QColor(0, 0, 0, 0))
-            p = QtGui.QPainter(board)
-            p.setPen(QtCore.Qt.PenStyle.NoPen)
-
-            p.setBrush(QtGui.QBrush(Light))
-            for x, y in ((0, size), (size, 0)):
-                p.drawRect(x + (4 * size), y, size, size)
-                p.drawRect(x + (4 * size), y + (2 * size), size, size)
-                p.drawRect(x + (6 * size), y, size, size)
-                p.drawRect(x + (6 * size), y + (2 * size), size, size)
-
-                p.drawRect(x, y + (4 * size), size, size)
-                p.drawRect(x, y + (6 * size), size, size)
-                p.drawRect(x + (2 * size), y + (4 * size), size, size)
-                p.drawRect(x + (2 * size), y + (6 * size), size, size)
-
-            p.setBrush(QtGui.QBrush(Dark))
-            for x, y in ((0, 0), (size, size)):
-                p.drawRect(x, y, size, size)
-                p.drawRect(x, y + (2 * size), size, size)
-                p.drawRect(x + (2 * size), y, size, size)
-                p.drawRect(x + (2 * size), y + (2 * size), size, size)
-
-                p.drawRect(x, y + (4 * size), size, size)
-                p.drawRect(x, y + (6 * size), size, size)
-                p.drawRect(x + (2 * size), y + (4 * size), size, size)
-                p.drawRect(x + (2 * size), y + (6 * size), size, size)
-
-                p.drawRect(x + (4 * size), y, size, size)
-                p.drawRect(x + (4 * size), y + (2 * size), size, size)
-                p.drawRect(x + (6 * size), y, size, size)
-                p.drawRect(x + (6 * size), y + (2 * size), size, size)
-
-                p.drawRect(x + (4 * size), y + (4 * size), size, size)
-                p.drawRect(x + (4 * size), y + (6 * size), size, size)
-                p.drawRect(x + (6 * size), y + (4 * size), size, size)
-                p.drawRect(x + (6 * size), y + (6 * size), size, size)
-
-            del p
-
-            # Adjust the rectangle to align with the grid, so we don't have to
-            # paint pixmaps on non-integer coordinates
-            x, y, _, _ = rect.getRect()
-            mod = board.width()
-            rect.adjust(-(x % mod), -(y % mod), 0, 0)
-
-            painter.drawTiledPixmap(rect, board)
+        draw_foreground_grid(painter, rect)
 
     def keyPressEvent(self, event):
         """
