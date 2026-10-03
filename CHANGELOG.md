@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The toolbar will now update when edited in the preferences dialog, rather than requiring a restart.
 - Replaced the "Insert new path node..." setting with a button in the Path Editor to toggle the two modes.
 - When inserting nodes into an existing path, the new node will now be selected automatically.
+- Improved rendering of liquids if the sprite is near the top edge or outside of a zone.
 
 ### Removed
 
@@ -66,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed the "Can't find level" warning box not appearing in the taskbar.
 - The entrance editor now reloads when changing game patches to accomodate for NewerSMBW-specific features.
 - Fixed some small issues regarding creating new Areas without properly saving the level.
+- Fixed location-based liquids rendering incorrectly if their crest texture is outside of the zone.
 
 ## [4.10.0] - 2026-07-25
 

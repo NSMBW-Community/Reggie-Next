@@ -362,11 +362,15 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         if drawRise:
             painter.drawTiledPixmap(rise_rect, rise_img)
 
-    def realViewLocation(self, painter, location_rect):
+    def realViewLocation(self, painter: QtGui.QPainter, location_rect: QtCore.QRectF):
         """
         Real view location painter for liquids/fog
         """
-        if self.paintZone() or globals_.Area.areanum == -1:
+        if (
+            self.paintZone()
+            or globals_.Area.areanum == -1
+            or self.mid is None
+        ):
             return
 
         for zone in globals_.Area.zones:
@@ -384,7 +388,9 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
         if draw_rect.isEmpty():
             return
 
-        _x, y, _width, height = draw_rect.getRect()
+        x, y, width, height = draw_rect.getRect()
+        if (x is None or y is None or width is None or height is None):
+            return
 
         drawCrest = False
         crestHeight = 0
@@ -393,17 +399,17 @@ class SpriteImage_LiquidOrFog(SLib.SpriteImage):  # 53, 64, 138, 139, 216, 358, 
             crestHeight = self.crest.height()
             drawCrest = y < crestHeight
 
-        if drawCrest:
+        if drawCrest and self.crest is not None:
             if (crestHeight - y) >= height:
                 painter.drawTiledPixmap(draw_rect, self.crest, draw_rect.topLeft())
             else:
-                draw_rect.setBottom(crestHeight - y)
+                draw_rect.setBottom(crestHeight)
                 painter.drawTiledPixmap(draw_rect, self.crest, draw_rect.topLeft())
-                draw_rect.setTop(crestHeight - y)
+                draw_rect.setTop(crestHeight)
                 draw_rect.setHeight(height - crestHeight + y)
-                painter.drawTiledPixmap(draw_rect, self.mid, draw_rect.topLeft())
+                painter.drawTiledPixmap(draw_rect, self.mid)
         else:
-            painter.drawTiledPixmap(draw_rect, self.mid, draw_rect.topLeft())
+            painter.drawTiledPixmap(draw_rect, self.mid, QtCore.QPointF(0, -location_rect.top() - crestHeight))
 
 
 class SpriteImage_UnusedBlockPlatform(SLib.SpriteImage):  # 97, 107, 132, 160
