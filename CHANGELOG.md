@@ -29,9 +29,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated spritedata of sprites:
   - 30, 38, 53, 55, 78, 81 - 87, 92, 93, 96, 138, 139, 152, 185, 188, 191, 195, 205, 216, 226, 243, 310, 361, 362, 368, 369, 373, 399, 414, 437, 451, 459, 461, 475
 - Updated spritedata for (Newer) sprites:
-  - 63, 80, 94, 113, 272, 273, 414, 441, 446, 451
+  - 18, 63, 80, 94, 113, 272, 273, 414, 441, 446, 451
 - Added/updated image previews for sprites:
   - 30, 40, 41, 42, 50, 60, 62, 81-87, 105, 128, 178, 195, 202, 214, 233, 255, 256, 310, 354, 356, 425, 428
+- Added/updated image previews for (Newer) sprites:
+  - 40, 41, 42, 43, 45, 105, 153, 478, 479
 - The current zoom level is saved between sessions and used on the next startup.
 - Improved the tile collision preview.
 - Improved the documentation of area settings, background alignment types and the usage of specific backgrounds.

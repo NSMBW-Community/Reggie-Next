@@ -70,6 +70,14 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         super().__init__(parent, scale)
         self.spritebox.shown = False
 
+        rot_block_aux_image = SLib.AuxiliaryImage(parent, 24, 24)
+        rot_block_aux_image.setPos(0, 0)
+        self.aux.append(rot_block_aux_image)
+
+        rot_item_aux_image = SLib.AuxiliaryImage(parent, 24, 24)
+        rot_item_aux_image.setPos(0, 0)
+        self.aux.append(rot_item_aux_image)
+
         self.tilenum = 1315
         self.contentsNybble = 5
         self.contentsOverride = None
@@ -85,6 +93,8 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
         # 0 = Empty, 1 = Coin, 2 = Mushroom, 3 = Fire Flower, 4 = Propeller, 5 = Penguin Suit,
         # 6 = Mini Shroom, 7 = Star, 8 = Continuous Star, 9 = Yoshi Egg, 10 = 10 Coins,
         # 11 = 1-up, 12 = Vine, 13 = Spring, 14 = Shroom/Coin, 15 = Ice Flower, 16 = Toad, 20 = Hammer
+        if not isinstance(self.aux[0], SLib.AuxiliaryImage) or not isinstance(self.aux[1], SLib.AuxiliaryImage):
+            return
 
         if self.contentsOverride is not None:
             contents = self.contentsOverride
@@ -114,10 +124,18 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
             if leftTilt == 0:
                 transform.rotate(angle)
             else:
-                transform.rotate(360.0 - angle)
+                transform.rotate(360 - angle)
 
             transform.translate(-12, -12)
-            self.parent.setTransform(transform)
+            self.transform = transform
+
+            self.aux[0].image = SLib.GetTile(self.tilenum).transformed(transform, QtCore.Qt.TransformationMode.SmoothTransformation)
+            self.aux[0].setSize(self.aux[0].image.width(), self.aux[0].image.height())
+
+            self.aux[1].image = ImageCache[f'BlockContents{contents}'].transformed(transform, QtCore.Qt.TransformationMode.SmoothTransformation)
+            self.aux[1].setSize(self.aux[1].image.width(), self.aux[1].image.height())
+
+            self.setSize((self.aux[0].image.width() / 1.5, self.aux[0].image.height() / 1.5))
 
         # Flip a switch override
         if self.flipOverride:
@@ -125,7 +143,7 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
             self.image = self.image.fromImage(flip)
 
     def paint(self, painter):
-        if self.image is None:
+        if self.image is None or not isinstance(self.aux[0], SLib.AuxiliaryImage):
             return
 
         if self.transparent:
@@ -134,9 +152,13 @@ class SpriteImage_Block(SLib.SpriteImage):  # 207, 208, 209, 221, 255, 256, 402,
             painter.setOpacity(1.0)
 
         painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
-        if self.tilenum < len(SLib.Tiles):
-            painter.drawPixmap(0, 0, SLib.GetTile(self.tilenum))
-        painter.drawPixmap(0, 0, self.image)
+        if self.rotates:
+            self.aux[0].image = SLib.GetTile(self.tilenum).transformed(self.transform, QtCore.Qt.TransformationMode.SmoothTransformation)
+            self.aux[0].setSize(self.aux[0].image.width(), self.aux[0].image.height())
+        else:
+            if self.tilenum < len(SLib.Tiles):
+                painter.drawPixmap(0, 0, SLib.GetTile(self.tilenum))
+            painter.drawPixmap(0, 0, self.image)
 
 
 class SpriteImage_QBlock(SpriteImage_Block):  # 207
@@ -273,8 +295,6 @@ class SpriteImage_MusicBlock(SLib.SpriteImage_StaticMultiple): # 17
         super().dataChanged()
 
 
-# TODO: Fix massive artifacts when moving the sprite image, caused by an incorrect
-# bounding rectangle.
 class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple): # 18
     def __init__(self, parent):
         super().__init__(
@@ -282,6 +302,10 @@ class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple): # 18
             1.5
         )
 
+        bone_piece_aux_image = SLib.AuxiliaryImage(parent, 48, 29)
+        self.aux.append(bone_piece_aux_image)
+
+        self.xOffset = -16
         self.yOffset = -4
 
     @staticmethod
@@ -299,43 +323,41 @@ class SpriteImage_DragonCoasterPiece(SLib.SpriteImage_StaticMultiple): # 18
 
         sPiece = ("Head", "Body", "Tail")[piece]
 
-        self.image = ImageCache[f'Dragon{sPiece}']
-
-        transform = None
+        transform = QtGui.QTransform()
+        if not isinstance(self.aux[0], SLib.AuxiliaryImage):
+            return
 
         if direction == 1:
-            transform = QtGui.QTransform()
             transform.translate(12, 0)
             transform.scale(-1, 1)
             transform.translate(-12, 0)
-        else:
-            self.xOffset = -16
 
         if rotates:
-            if transform is None:
-                transform = QtGui.QTransform()
-
             angle = self.parent.spritedata[2] & 0xF
 
             if angle < 8:
                 angle -= 8
+                offs_x = 0
             else:
                 angle -= 7
+                offs_x = -4
 
             angle *= (180.0 / 16)
 
             transform.translate(24, 15)
             transform.rotate(angle)
             transform.translate(-24, -15)
+            offs_y = -6
         else:
             # Reset angle
-            transform = QtGui.QTransform()
+            offs_x = 0
+            offs_y = 0
             transform.rotate(0)
 
-        if transform is not None:
-            self.parent.setTransform(transform)
+        self.aux[0].image = ImageCache[f'Dragon{sPiece}'].transformed(transform, QtCore.Qt.TransformationMode.SmoothTransformation)
+        self.aux[0].setSize(self.aux[0].image.width(), self.aux[0].image.height(), offs_x, offs_y)
 
-        super().dataChanged()
+        self.setSize((self.aux[0].image.width() / 1.5, self.aux[0].image.height() / 1.5))
 
     def paint(self, painter):
         painter.setRenderHint(QtGui.QPainter.RenderHint.SmoothPixmapTransform)

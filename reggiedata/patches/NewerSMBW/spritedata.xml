@@ -262,7 +262,7 @@
       <entry value="1">Body</entry>
       <entry value="2">Tail</entry>
     </list>
-    <dualbox nybble="7.4" title1="Faces Left" title2="Faces Right" comment="This determines which direction the platform will face." requirednybble="12.4" requiredval="0"/> <!-- Only shows when Segment is set to Head or Tail; assumes no effect on Body -->
+    <dualbox nybble="7.4" title1="Faces Right" title2="Faces Left" comment="This determines which direction the platform will face." requirednybble="12.4" requiredval="0"/> <!-- Only shows when Segment is set to Head or Tail; assumes no effect on Body -->
   </sprite> <!-- #18: Spine Coaster Platform -->
 
   <sprite id="19" name="World 4 Boss: Samurshai" noyoshi="True" notes="Newer's Shy Guy boss found in World 4." files="Shynja.arc">
