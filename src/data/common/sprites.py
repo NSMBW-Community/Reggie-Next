@@ -126,8 +126,8 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
 
         rect_outline.setSize(self.width * 1.5, self.height * 1.5)
 
-        type_ = self.parent.spritedata[4] >> 4
-        if type_ in self.notAllowedTypes:
+        self.tile_num = self.parent.spritedata[4] >> 4
+        if self.tile_num in self.notAllowedTypes:
             self.spritebox.shown = True
             self.image = None
 
@@ -137,7 +137,6 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
             return
 
         self.spritebox.shown = False
-        self.image = self.getTileFromType(type_)
 
     def getTileFromType(self, type):
         """
@@ -150,6 +149,7 @@ class SpriteImage_TileEvent(SLib.SpriteImage_StaticMultiple):  # 191
         )
 
     def paint(self, painter: QtGui.QPainter):
+        self.image = self.getTileFromType(self.tile_num)
         if self.image is None:
             return
 

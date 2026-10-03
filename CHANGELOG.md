@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced the "Insert new path node..." setting with a button in the Path Editor to toggle the two modes.
 - When inserting nodes into an existing path, the new node will now be selected automatically.
 - Improved rendering of liquids if the sprite is near the top edge or outside of a zone.
+- Sprite Images that use tileset graphics now support animated tile playback.
 
 ### Removed
 

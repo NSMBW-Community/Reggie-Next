@@ -132,7 +132,7 @@ def GetTile(tile_id: int) -> QtGui.QPixmap:
     if tile is None:
         raise ValueError("\"Unknown Tile\" Tile not found")
 
-    return tile.main
+    return tile.getCurrentTile()
 
 def loadIfNotInImageCache(name: str, filename: str):
     """

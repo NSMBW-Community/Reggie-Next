@@ -5328,10 +5328,10 @@ class SpriteImage_CheepFormation(SLib.SpriteImage_Static):  # 247
         super().dataChanged()
 
 
-class SpriteImage_EventDeactivBlock(SLib.SpriteImage_Static):  # 252
+class SpriteImage_EventDeactivBlock(SpriteImage_Block):  # 252
     def __init__(self, parent):
         super().__init__(parent, 1.5)
-        self.image = SLib.GetTile(49)  # ? block
+        self.tilenum = 49 # ? block
 
 
 class SpriteImage_RotControlledCoin(SpriteImage_SpecialCoin):  # 253
