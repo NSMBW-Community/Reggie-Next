@@ -251,9 +251,12 @@ def IncrementTilesetFrame():
     """
     Moves each tileset to the next frame
     """
-    if not globals_.TilesetsAnimating: return
+    if not globals_.TilesetsAnimating:
+        return
+
     for tile in globals_.Tiles:
-        if tile is not None: tile.nextFrame()
+        if tile is not None:
+            tile.nextFrame()
 
     # TODO: Test if this is more efficient over updating the entire scene
     # (seems obvious on paper, but tests are wildly inconsistent and give no answer)
@@ -264,4 +267,4 @@ def IncrementTilesetFrame():
     main_window = globals_.mainWindow
     if main_window is not None:
         main_window.scene.update()
-        main_window.objPicker.update()
+        main_window.palette_dock.object_tab.object_picker.update()
