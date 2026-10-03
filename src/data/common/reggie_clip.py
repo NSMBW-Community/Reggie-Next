@@ -70,7 +70,8 @@ class ReggieClip:
 
         # Entrances
         for item in entrances:
-            output.append(f'2:{item.objx}:{item.objy}:{item.entid}:{item.destarea}:{item.destentrance}:{item.enttype}:{item.entzone}:{item.entsettings}:{item.entlayer}:{item.entpath}:{item.leave_level}:{item.cpdirection}')
+            output.append(f'2:{item.objx}:{item.objy}:{item.entid}:{item.destarea}:{item.destentrance}:{item.enttype}:{item.entzone}:'
+                          f'{item.entsettings}:{item.entlayer}:{item.entpath}:{int(item.leave_level)}:{item.cpdirection}')
 
         # Locations
         for loc in locations:
@@ -78,7 +79,7 @@ class ReggieClip:
 
         # Path Nodes
         path_nodes.sort(key=lambda x: (x.pathid, x.nodeid))
-        currPathID = 0
+        curr_path_id = 0
 
         for item in path_nodes:
             # Get parent path
@@ -90,9 +91,9 @@ class ReggieClip:
 
             # Append a path object
             if path is not None:
-                if currPathID != item.pathid:
-                    output.append(f'4:{path._id}:{path._loops}')
-                    currPathID = item.pathid
+                if curr_path_id != item.pathid: # Check if we should append a new Path
+                    output.append(f'4:{path._id}:{int(path._loops)}')
+                    curr_path_id = item.pathid
 
                 x, y, speed, accel, delay = path.get_node_data(item.nodeid)
                 output.append(f'5:{item.pathid}:{item.nodeid}:{x}:{y}:{speed}:{accel}:{delay}')

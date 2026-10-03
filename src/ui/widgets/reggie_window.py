@@ -1,5 +1,3 @@
-from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
-
 import os.path
 import struct
 import sys
@@ -16,13 +14,14 @@ import spritelib as SLib
 
 from libs import lh, lib_versions, lz77
 from ui.theme.reggie_theme import GetIcon, SetColorScheme
-from data.common.loaders import LoadMenuActions, LoadSpriteData, LoadTilesetInfo, LoadLevelNames, LoadZoneThemes, GetKeybind, SetKeybind, module_path
+from data.common.loaders import LoadMenuActions, LoadLevelNames, LoadZoneThemes, GetKeybind, SetKeybind
 from data.common.utils import clamp, SetGamePaths, get_reggiedata_folder
 from data.common.validators import IsNSMBLevel, areValidGamePaths
 from ui.widgets.level_scene import LevelScene
 from ui.widgets.level_view import LevelViewWidget
 from data.level.dirty import SetDirty, CheckDirty
 from data.common.settings import setting, setSetting
+from data.level.items.basic import LevelEditorItem
 from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
 from data.level.items.location import LocationItem
@@ -37,13 +36,11 @@ from data.level.nsmbw_level import NSMBWLevel
 from ui.widgets.spriteeditor.sprite_editor import SpriteEditorWidget
 from ui.actions.undo.undo_stack import UndoStack
 
-from ui.dialogs.about import AboutDialog
 from ui.dialogs.area import AreaOptionsDialog
 from ui.dialogs.area_import import AreaImportDialog
 from ui.dialogs.background import BackgroundDialog
 from ui.dialogs.camera_profile import CameraProfilesDialog
 from ui.dialogs.choose_level_name import ChooseLevelNameDialog
-from ui.dialogs.diagnostic_tool import DiagnosticToolDialog
 from ui.dialogs.item_shift import ItemShiftDialog
 from ui.dialogs.meta_info import MetaInfoDialog
 from ui.dialogs.obj_tileset_swap import ObjectTilesetSwapDialog
@@ -809,22 +806,24 @@ class ReggieWindow(QtWidgets.QMainWindow):
             self.scene.clearSelection()
 
         if selitems is not None:
+            # Enable pasting and encode the ReggieClip
+            self.action_list['paste'].setEnabled(True)
+            self.clipboard = ReggieClip.get_reggie_clip(selitems)
+            if self.systemClipboard is not None:
+                self.systemClipboard.setText(self.clipboard)
+
             if cutAction:
                 # Delete everything
                 for obj in selitems:
                     if isinstance(obj, CommentItem):
                         continue
+
                     obj.delete()
                     obj.setSelected(False)
                     self.scene.removeItem(obj)
 
                 SetDirty()
                 self.action_list['cut'].setEnabled(False)
-
-            self.action_list['paste'].setEnabled(True)
-            self.clipboard = ReggieClip.get_reggie_clip(selitems)
-            if self.systemClipboard is not None:
-                self.systemClipboard.setText(self.clipboard)
 
         if cutAction:
             self.level_overview.update()
@@ -1915,7 +1914,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         # Save some other settings not handled by Preferences
         setSetting('ZoomLevel', self.ZoomLevel)
-        print(globals_.InsertPathNode)
         setSetting('InsertPathNode', globals_.InsertPathNode)
         setSetting('AutoSaveFilePath', None)
         setSetting('AutoSaveFileData', 'x')
