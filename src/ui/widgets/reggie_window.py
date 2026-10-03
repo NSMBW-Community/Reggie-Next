@@ -1547,7 +1547,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
         globals_.TilesetsAnimating = checked
 
         for tile in globals_.Tiles:
-            if tile is not None: tile.resetAnimation()
+            if tile is not None:
+                tile.resetAnimation()
 
         self.scene.update()
 

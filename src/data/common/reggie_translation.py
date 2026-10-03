@@ -408,7 +408,7 @@ class ReggieTranslation:
                 5: 'Author:',
                 6: 'Group:',
                 7: 'Website:',
-                8: 'Last saved using [name]',
+                8: 'Information last modified using [name]',
                 9: 'Change Password',
                 10: 'New Password:',
                 11: 'Verify Password:',

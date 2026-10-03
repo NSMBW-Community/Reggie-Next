@@ -25,7 +25,7 @@ class ObjectTilesetSwapDialog(QtWidgets.QDialog):
         # Only offer slots that have a tileset
         if globals_.mainWindow is not None:
             for i in range(4):
-                if globals_.mainWindow.objAllTab.isTabEnabled(i):
+                if globals_.mainWindow.palette_dock.object_tab.isTabEnabled(i):
                     self.curr_tileset.addItem(slots[i])
                     self.new_tileset.addItem(slots[i])
 
