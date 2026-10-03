@@ -235,7 +235,7 @@ class SpriteEditorWidget(AbstractSpriteEditorWidget):
         # show the raw editor
         self.raweditor.setVisible(True)
         self.editbox.setVisible(True)
-        self.resetButton.setVisible(sprite is None or bool(sprite.fields))
+        self.resetButton.setVisible(sprite is None or bool(sprite.fields) or not sprite.noLayer)
 
         # show size stuff
         self.sizeButton.setVisible(sprite is not None and sprite.size and globals_.AllowSizeHacks)
