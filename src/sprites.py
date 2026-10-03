@@ -8341,9 +8341,6 @@ class SpriteImage_ToadHouseBalloonUnused(SpriteImage_ToadHouseBalloon):  # 411
 
 class SpriteImage_ToadHouseBalloonUsed(SpriteImage_ToadHouseBalloon):  # 412
     def dataChanged(self):
-        if self.image is None:
-            return
-
         self.livesNum = (self.parent.spritedata[4] >> 4) & 3
         self.hasHandle = not ((self.parent.spritedata[5] >> 4) & 1)
         shiftPos = self.parent.spritedata[3] & 1
@@ -8354,9 +8351,8 @@ class SpriteImage_ToadHouseBalloonUsed(SpriteImage_ToadHouseBalloon):  # 412
         self.xOffset = -13 + posAdj
         if self.hasHandle:
             self.yOffset = 12 - posAdj
-        else:
-            if self.image is not None:
-                self.yOffset = 16 - (self.image.height() / 3) - posAdj
+        elif self.image is not None:
+            self.yOffset = 16 - (self.image.height() / 3) - posAdj
 
 
 class SpriteImage_WendyRing(SLib.SpriteImage_Static):  # 413
