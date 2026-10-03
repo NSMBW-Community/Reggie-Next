@@ -1,6 +1,6 @@
+import base64
 from typing import cast
 
-import base64
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from data import globals_
@@ -11,7 +11,7 @@ from data.level.items.abstract_object import AbstractObjectItem
 from data.level.items.path_editor_line import PathEditorLineItem
 from ui.actions.undo.move_item import MoveItemUndoAction
 from ui.actions.undo.simultaneous import SimultaneousUndoAction
-from ui.widgets.item_sorts_by_other import ListWidgetItem_SortsByOther
+
 
 class InstanceDefinition:
     """
@@ -142,7 +142,7 @@ class LevelEditorItem(QtWidgets.QGraphicsItem):
         QtWidgets.QGraphicsItem.__init__(self)
         self.setFlag(self.GraphicsItemFlag.ItemSendsGeometryChanges, True)
 
-        self.listitem: ListWidgetItem_SortsByOther | None = None
+        self.listitem: QtWidgets.QListWidgetItem | None = None
 
     def __lt__(self, other):
         if self.objx != other.objx:

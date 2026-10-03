@@ -57,6 +57,7 @@ class SpriteItem(LevelEditorItem):
         self.spritedata = data
         self.LevelRect = QtCore.QRectF(self.objx / 16, self.objy / 16, 1.5, 1.5)
         self.ChangingPos = False
+        self.zoneID = -1
 
         self.ImageObj = SLib.SpriteImage(self)
 

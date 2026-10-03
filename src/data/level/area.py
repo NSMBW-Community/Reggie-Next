@@ -2,8 +2,8 @@ import struct
 
 from PyQt6 import QtWidgets
 
-from data import globals_
 import spritelib as SLib
+from data import globals_
 from data.common.loaders import CreateTilesets, LoadTileset
 from data.level.items.comment import CommentItem
 from data.level.items.entrance import EntranceItem
@@ -12,6 +12,7 @@ from data.level.items.object import ObjectItem
 from data.level.items.sprite import SpriteItem
 from data.level.items.zone import ZoneItem
 from data.level.metadata import Metadata
+from data.level.path import Path
 from data.sprite.spritefield.list import ListSpriteField
 from data.sprite.spritefield.sprite_field import SpriteField
 from data.sprite.spritefield.value import ValueSpriteField
@@ -25,67 +26,67 @@ class Area:
     Class for a parsed NSMBW level area
     """
 
-    def __init__(self, area_num):
+    def __init__(self, area_num: int) -> None:
         """
         Creates a completely new NSMBW area
         """
-        self.areanum = area_num
-        self.course = None
-        self.L0 = None
-        self.L1 = None
-        self.L2 = None
+        self.areanum: int = area_num
+        self.course: bytes | None = None
+        self.L0: bytes | None = None
+        self.L1: bytes | None = None
+        self.L2: bytes | None = None
 
         # Default tileset names
-        self.tilesets = ['Pa0_jyotyu', '', '', '']
+        self.tilesets: list[str] = ['Pa0_jyotyu', '', '', '']
 
-        self.blocks = [b''] * 14
+        self.blocks: list[bytes] = [b''] * 14
         self.blocks[0] = b'Pa0_jyotyu' + bytes(128 - len('Pa0_jyotyu'))
         self.blocks[1] = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x2c\x00\x00\x00\x00\x00\x00\x00\x00'
         self.blocks[3] = bytes(8)
         self.blocks[7] = b'\xff\xff\xff\xff'
 
-        self.defEvents = 0
-        self.timeLimit = 300
-        self.creditsFlag = False
-        self.startEntrance = 0
-        self.faceLeftFlag = False
-        self.toadHouseType = 0
-        self.wrapFlag = False
-        self.unkFlag1 = False
-        self.unkFlag2 = False
+        self.defEvents: int = 0
+        self.timeLimit: int = 300
+        self.creditsFlag: bool = False
+        self.startEntrance: int = 0
+        self.faceLeftFlag: bool = False
+        self.toadHouseType: int = 0
+        self.wrapFlag: bool = False
+        self.unkFlag1: bool = False
+        self.unkFlag2: bool = False
 
-        self.unkVal1 = 0
-        self.unkVal2 = 0
+        self.unkVal1: int = 0
+        self.unkVal2: int = 0
 
-        self.entrances = []
-        self.sprites = []
-        self.bounding = []
-        self.bgA = []
-        self.bgB = []
-        self.zones = []
-        self.locations = []
-        self.camprofiles = []
-        self.paths = []
-        self.comments = []
-        self.layers = [[], [], []]
-        self.loaded_sprites = set()
-        self.force_loaded_sprites = set()
-        self.sprite_idtypes = {}  # {idtype: {id: number of usages of id}}
+        self.entrances: list[EntranceItem] = []
+        self.sprites: list[SpriteItem] = []
+        self.bgA: list[int] = []
+        self.bounding: list[int] = []
+        self.bgB: list[int] = []
+        self.zones: list[ZoneItem] = []
+        self.locations: list[LocationItem] = []
+        self.camprofiles: list[bytes] = []
+        self.paths: list[Path] = []
+        self.comments: list[CommentItem] = []
+        self.layers: list[list[ObjectItem]] = [[], [], []]
+        self.loaded_sprites: set[int] = set()
+        self.force_loaded_sprites: set[int] = set()
+        self.sprite_idtypes: dict[str, dict[int, int]] = {}  # {idtype: {id: number of usages of id}}
 
-        self.MetaData = None
-        self._is_loaded = False
+        self.MetaData: Metadata | None = None
+        self._is_loaded: bool = False
 
         if self.areanum == -1:
             return
         CreateTilesets()
 
-    def set_num(self, area_num):
+    def set_num(self, area_num: int) -> None:
         """
         Changes the area number of this area.
         """
         self.areanum = area_num
 
-    def load_defaults(self):
+    def load_defaults(self) -> None:
         """
         Loads default data.
         """
@@ -100,7 +101,7 @@ class Area:
         # Mark the area as loaded
         self._is_loaded = True
 
-    def set_data(self, course, L0, L1, L2):
+    def set_data(self, course: bytes, L0: bytes, L1: bytes, L2: bytes) -> None:
         """
         Assigns the archive file data to this area.
         """
@@ -109,7 +110,7 @@ class Area:
         self.L1 = L1
         self.L2 = L2
 
-    def unload(self):
+    def unload(self) -> None:
         """
         Unloads most of an area, except for the raw data
         """
@@ -138,7 +139,7 @@ class Area:
 
         self._is_loaded = False
 
-    def load(self):
+    def load(self) -> bool:
         """
         Loads an area from the archive files
         """
@@ -200,7 +201,7 @@ class Area:
         self._is_loaded = True
         return True
 
-    def save(self):
+    def save(self) -> tuple[bytes | None, bytes | None, bytes | None, bytes | None]:
         """
         Save the area back to a file
         """
@@ -242,7 +243,7 @@ class Area:
 
         HeaderOffset = 0
         FileOffset = (14 * 8) + len(rdata)
-        struct.pack_into('%ds' % len(rdata), course, 0x70, rdata)
+        struct.pack_into(f'{len(rdata)}s', course, 0x70, rdata)
 
         for block in self.blocks:
             blocksize = len(block)
@@ -259,7 +260,7 @@ class Area:
 
         return (self.course, self.L0, self.L1, self.L2)
 
-    def RemoveFromLayer(self, obj):
+    def RemoveFromLayer(self, obj: ObjectItem) -> None:
         """
         Removes a specific object from the level and updates Z-indices accordingly
         """
@@ -270,18 +271,18 @@ class Area:
         for upd in layer[idx:]:
             upd.setZValue(upd.zValue() - 1)
 
-    def SortSpritesByZone(self):
+    def SortSpritesByZone(self) -> None:
         """
         Sorts the sprite list by zone ID so it will work in-game
         """
-        def compKey(zonelist, sprite):
+        def compKey(zonelist: list[ZoneItem], sprite: SpriteItem) -> int:
             id_ = SLib.MapPositionToZoneID(zonelist, sprite.objx, sprite.objy)
             sprite.zoneID = zonelist[id_].id if id_ != -1 else -1
             return id_
 
         self.sprites.sort(key = lambda s: compKey(self.zones, s))
 
-    def LoadReggieInfo(self, data):
+    def LoadReggieInfo(self, data: bytes | None) -> None:
         if not data:
             self.Metadata = Metadata()
             return
@@ -291,11 +292,11 @@ class Area:
         except Exception:
             self.Metadata = Metadata()  # fallback
 
-    def LoadBlocks(self, course):
+    def LoadBlocks(self, course: bytes) -> None:
         """
         Loads self.blocks from the course file
         """
-        self.blocks = [None] * 14
+        self.blocks = [b''] * 14
         getblock = struct.Struct('>II')
         for i in range(14):
             start, length = getblock.unpack_from(course, i * 8)
@@ -303,7 +304,7 @@ class Area:
 
         self.block1pos = getblock.unpack_from(course, 0)
 
-    def LoadTilesetNames(self):
+    def LoadTilesetNames(self) -> None:
         """
         Loads block 1, the tileset names
         """
@@ -314,7 +315,7 @@ class Area:
         for i in range(4):
             self.tilesets[i] = data[i].strip(b'\0').decode('latin-1')
 
-    def LoadOptions(self):
+    def LoadOptions(self) -> None:
         """
         Loads block 2, the general options
         """
@@ -334,7 +335,7 @@ class Area:
         data = optdata2struct.unpack(optdata2)
         self.unkVal1, self.unkVal2 = data
 
-    def LoadEntrances(self):
+    def LoadEntrances(self) -> None:
         """
         Loads block 7, the entrances
         """
@@ -348,7 +349,7 @@ class Area:
 
         self.entrances = entrances
 
-    def LoadSprites(self):
+    def LoadSprites(self) -> None:
         """
         Loads block 8, the sprites. This needs to be called after
         'LoadLoadedSprites', because this relies on the loaded sprite ids being
@@ -367,7 +368,7 @@ class Area:
         for offset in range(0, len(spritedata) - 4, 16):
             data = unpack(spritedata, offset)
             append(obj(*data))
-            type_, x, y, sd = data
+            type_, _x, _y, _sd = data
 
             # Check if sprite ID is valid
             if 0 <= type_ < globals_.NumSprites and globals_.Sprites[type_] is not None:
@@ -378,12 +379,12 @@ class Area:
                 unknown_sprite_ids.add(type_)
 
         self.sprites = sprites
-        self.force_loaded_sprites = self.loaded_sprites - set(sprite.sprite_num for sprite in sprites)
+        self.force_loaded_sprites = self.loaded_sprites - {sprite.sprite_num for sprite in sprites}
 
         # Store unknown sprite IDs for later warning
         self.unknown_sprite_ids = unknown_sprite_ids
 
-    def LoadLoadedSprites(self):
+    def LoadLoadedSprites(self) -> None:
         """
         Loads block 9, the loaded sprite resources.
         """
@@ -395,7 +396,7 @@ class Area:
             sprite_id, = struct_.unpack_from(loading_data, offset)
             self.loaded_sprites.add(sprite_id)
 
-    def LoadZones(self):
+    def LoadZones(self) -> None:
         """
         Loads block 3, the bounding preferences
         """
@@ -443,12 +444,12 @@ class Area:
         zones = []
 
         for offset in range(0, len(zonedata), 24):
-            dataz = zonestruct.unpack_from(zonedata, offset)
+            dataz: tuple[int, int, int, int, int, int, int, int, int, int, int, int, int, int, int] = zonestruct.unpack_from(zonedata, offset)
             zones.append(ZoneItem(*dataz, bounding, bgA, bgB, offset // 24))
 
         self.zones = zones
 
-    def LoadLocations(self):
+    def LoadLocations(self) -> None:
         """
         Loads block 11, the locations
         """
@@ -462,7 +463,7 @@ class Area:
 
         self.locations = locations
 
-    def LoadLayer(self, idx, layerdata):
+    def LoadLayer(self, idx: int, layerdata: bytes) -> None:
         """
         Loads a specific object layer from a string
         """
@@ -475,11 +476,11 @@ class Area:
 
         # Ignore the last 2 bytes, because they are always 0xFFFF.
         for offset in range(0, len(layerdata) - 2, 10):
-            data = unpack(layerdata, offset)
+            data: tuple[int, int, int, int, int] = unpack(layerdata, offset)
             append(obj(data[0] >> 12, data[0] & 4095, idx, *data[1:], z))
             z += 1
 
-    def LoadCamProfiles(self):
+    def LoadCamProfiles(self) -> None:
         """
         Loads block 12, the camera profiles
         """
@@ -496,7 +497,7 @@ class Area:
 
         self.camprofiles = camprofiles
 
-    def LoadPaths(self):
+    def LoadPaths(self) -> None:
         """
         Loads blocks 13 and 14, the paths and path nodes
         """
@@ -511,7 +512,10 @@ class Area:
             data = unpack(pathdata, offset)
             nodes = self.LoadPathNodes(data[1], data[2])
 
-            path = Path(int(data[0]), globals_.mainWindow.scene, data[3] == 2)
+            main_window = globals_.mainWindow
+            if not main_window:
+                continue
+            path = Path(int(data[0]), main_window.scene, data[3] == 2)
 
             for node in nodes:
                 path.add_node(node['x'], node['y'], node['speed'], node['accel'], node['delay'], add_to_scene=False)
@@ -520,7 +524,7 @@ class Area:
 
         self.paths = paths
 
-    def LoadPathNodes(self, startindex, count):
+    def LoadPathNodes(self, startindex: int, count: int) -> list[dict]:
         """
         Loads block 14, the path nodes
         """
@@ -542,12 +546,12 @@ class Area:
 
         return nodes
 
-    def LoadComments(self):
+    def LoadComments(self) -> None:
         """
         Loads the comments from self.Metadata
         """
         self.comments = []
-        data = self.Metadata.binData('InLevelComments_A%d' % self.areanum)
+        data = self.Metadata.binData(f'InLevelComments_A{self.areanum}')
         if data is None:
             return
 
@@ -589,7 +593,7 @@ class Area:
 
             com.UpdateListItem()
 
-    def SaveTilesetNames(self):
+    def SaveTilesetNames(self) -> None:
         """
         Saves the tileset names back to block 1
         """
@@ -600,7 +604,7 @@ class Area:
             self.tilesets[3].encode('latin-1')
         )
 
-    def SaveOptions(self):
+    def SaveOptions(self) -> None:
         """
         Saves block 2, the general options
         """
@@ -619,7 +623,7 @@ class Area:
         """
         self.blocks[3] = struct.pack('>xxHHxx', self.unkVal1, self.unkVal2)
 
-    def SaveLayer(self, idx):
+    def SaveLayer(self, idx: int) -> bytes | None:
         """
         Saves an object layer to a string
         """
@@ -646,7 +650,7 @@ class Area:
         buffer[offset + 1] = 0xFF
         return bytes(buffer)
 
-    def SaveEntrances(self):
+    def SaveEntrances(self) -> None:
         """
         Saves the entrances back to block 7
         """
@@ -672,7 +676,7 @@ class Area:
             offset += 20
         self.blocks[6] = bytes(buffer)
 
-    def SavePaths(self):
+    def SavePaths(self) -> None:
         """
         Saves the paths back to block 13
         """
@@ -699,7 +703,7 @@ class Area:
         self.blocks[12] = bytes(buffer[:offset])
         self.blocks[13] = bytes(nodebuffer)
 
-    def WritePathNodes(self, buffer, offset, path):
+    def WritePathNodes(self, buffer: bytearray, offset: int, path: Path) -> None:
         """
         Writes the path node data to the block 14 bytearray
         """
@@ -709,7 +713,7 @@ class Area:
             nodestruct.pack_into(buffer, offset, *path.get_node_data(i))
             offset += 16
 
-    def SaveSprites(self):
+    def SaveSprites(self) -> None:
         """
         Saves the sprites back to block 8
         """
@@ -748,11 +752,11 @@ class Area:
         buffer[offset + 3] = 0xFF
         self.blocks[7] = bytes(buffer)
 
-    def SaveLoadedSprites(self):
+    def SaveLoadedSprites(self) -> None:
         """
         Saves the list of loaded sprites back to block 9
         """
-        ls = sorted(set(sprite.sprite_num for sprite in self.sprites) | self.force_loaded_sprites)
+        ls = sorted({sprite.sprite_num for sprite in self.sprites} | self.force_loaded_sprites)
 
         offset = 0
         sprstruct = struct.Struct('>Hxx')
@@ -763,7 +767,7 @@ class Area:
 
         self.blocks[8] = bytes(buffer)
 
-    def SaveZones(self):
+    def SaveZones(self) -> None:
         """
         Saves blocks 10, 3, 5 and 6, the zone data, boundings, bgA and bgB data respectively
         """
@@ -816,7 +820,7 @@ class Area:
         self.blocks[5] = bytes(buffer5)
         self.blocks[9] = bytes(buffer9)
 
-    def SaveLocations(self):
+    def SaveLocations(self) -> None:
         """
         Saves block 11, the location data
         """
@@ -828,7 +832,7 @@ class Area:
 
         self.blocks[10] = bytes(buffer)
 
-    def SaveCamProfiles(self):
+    def SaveCamProfiles(self) -> None:
         """
         Saves block 12, the camera profiles data.
         Also appends data to block 3, the bounding data.
@@ -860,7 +864,7 @@ class Area:
 
         self.blocks[11] = bytes(buffer)
 
-    def InitialiseIdTypes(self):
+    def InitialiseIdTypes(self) -> None:
         """
         Initialises all used id types in this area.
         """
@@ -900,7 +904,7 @@ class Area:
 
                 counter[value] = counter.get(value, 0) + 1
 
-    def RemoveSprite(self, sprite):
+    def RemoveSprite(self, sprite: SpriteItem) -> None:
         """
         This properly removes a sprite from the area.
         """
