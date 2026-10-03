@@ -992,6 +992,11 @@ class ReggieWindow(QtWidgets.QMainWindow):
 
         self.LoadLevel(self.fileSavePath, True, newID)
 
+        # Force the new area to be saved to the archive
+        # This fixes issues when switching back and forth without saving first,
+        # as the area tries load from data that doesn't exist in the archive
+        globals_.Level.areas[newID - 1].save()
+
     def HandleImportArea(self):
         """
         Imports an area from another level

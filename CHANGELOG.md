@@ -65,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed an issue where the middle mouse button would resize objects / locations.
 - Fixed the "Can't find level" warning box not appearing in the taskbar.
 - The entrance editor now reloads when changing game patches to accomodate for NewerSMBW-specific features.
+- Fixed some small issues regarding creating new Areas without properly saving the level.
 
 ## [4.10.0] - 2026-07-25
 
