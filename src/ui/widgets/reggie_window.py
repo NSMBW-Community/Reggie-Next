@@ -978,7 +978,8 @@ class ReggieWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.warning(self, globals_.trans.string('Menu Items', 78), globals_.trans.string('AreaImportDlg', 2))
             return
 
-        if CheckDirty():
+        # This is an unsaved new level if self.fileSavePath is None
+        if CheckDirty() or self.fileSavePath is None:
             # Level is still dirty
             return
 

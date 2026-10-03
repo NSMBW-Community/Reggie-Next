@@ -373,7 +373,7 @@
         <string id="5">Author:</string>
         <string id="6">Group:</string>
         <string id="7">Website:</string>
-        <string id="8">Last saved using [name]</string>
+        <string id="8">Information last modified using [name]</string>
         <string id="9">Change Password</string>
         <string id="10">New Password:</string>
         <string id="11">Verify Password:</string>
