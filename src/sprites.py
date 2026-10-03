@@ -8355,7 +8355,8 @@ class SpriteImage_ToadHouseBalloonUsed(SpriteImage_ToadHouseBalloon):  # 412
         if self.hasHandle:
             self.yOffset = 12 - posAdj
         else:
-            self.yOffset = 16 - (self.image.height() / 3) - posAdj
+            if self.image is not None:
+                self.yOffset = 16 - (self.image.height() / 3) - posAdj
 
 
 class SpriteImage_WendyRing(SLib.SpriteImage_Static):  # 413
