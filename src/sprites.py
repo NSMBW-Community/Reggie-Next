@@ -1855,7 +1855,7 @@ class SpriteImage_KoopaTroopa(SLib.SpriteImage_StaticMultiple):  # 57
     def dataChanged(self):
         # get properties
         props = self.parent.spritedata[5]
-        shell = (props >> 4) & 1
+        shell = (props >> 4) & 1 or (self.parent.spritedata[2] >> 4) != 0
         red = props & 1
 
         if not shell:
