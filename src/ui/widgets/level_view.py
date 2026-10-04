@@ -223,29 +223,12 @@ class LevelViewWidget(QtWidgets.QGraphicsView):
                 clickedx = int((clicked.x() - 12) / 1.5)
                 clickedy = int((clicked.y() - 12) / 1.5)
 
-                com = CommentItem(clickedx, clickedy, '')
-                mw = globals_.mainWindow
-                com.positionChanged = CommentItem.position_changed
-                com.textChanged = CommentItem.text_changed
-                mw.scene.addItem(com)
-                com.setVisible(globals_.CommentsShown)
-
-                clist = mw.palette_dock.comment_tab.comment_list
-                com.listitem = QtWidgets.QListWidgetItem()
-                clist.addItem(com.listitem)
-
-                globals_.Area.comments.append(com)
+                com = CommentItem.CreateComment(clickedx, clickedy, '')
 
                 self.dragstamp = False
                 self.currentobj = com
                 self.dragstartx = clickedx
                 self.dragstarty = clickedy
-
-                globals_.mainWindow.SaveComments()
-
-                com.UpdateListItem()
-
-                SetDirty()
 
             event.accept()
 

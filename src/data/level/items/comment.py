@@ -27,6 +27,7 @@ class CommentItem(LevelEditorItem):
     Level editor item that represents a in-level comment
     """
     instanceDef = InstanceDefinition_CommentItem
+    textChanged = None
     BoundingRect = QtCore.QRectF(-8, -8, 48, 48)
     SelectionRect = QtCore.QRectF(-4, -4, 4, 4)
     Circle = QtCore.QRectF(0, 0, 32, 32)
@@ -73,6 +74,33 @@ class CommentItem(LevelEditorItem):
         self.TextEdit.setPlainText(self.text)
         self.TextEdit.textChanged.connect(self.handleTextChanged)
         self.reposTextEdit()
+
+    @staticmethod
+    def CreateComment(x: int, y: int, text = '', add_to_scene = True):
+        """
+        Creates and returns a new comment and makes sure it's added to the
+        right lists, unless 'add_to_scene' is set to False.
+        """
+        if globals_.mainWindow is None:
+            return None
+
+        com = CommentItem(x, y, text)
+        com.positionChanged = CommentItem.position_changed
+        com.textChanged = CommentItem.text_changed
+        com.listitem = QtWidgets.QListWidgetItem()
+
+        if add_to_scene:
+            globals_.mainWindow.palette_dock.comment_tab.comment_list.addItem(com.listitem)
+            globals_.mainWindow.scene.addItem(com)
+            globals_.Area.comments.append(com)
+            globals_.mainWindow.SaveComments()
+
+            com.setVisible(globals_.CommentsShown)
+            com.UpdateListItem()
+
+            SetDirty()
+
+        return com
 
     def position_changed(self, oldx: int, oldy: int, x: int, y: int):
         """

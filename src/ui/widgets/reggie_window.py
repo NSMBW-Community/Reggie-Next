@@ -815,9 +815,6 @@ class ReggieWindow(QtWidgets.QMainWindow):
             if cutAction:
                 # Delete everything
                 for obj in selitems:
-                    if isinstance(obj, CommentItem):
-                        continue
-
                     obj.delete()
                     obj.setSelected(False)
                     self.scene.removeItem(obj)
